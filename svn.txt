@@ -1,0 +1,7 @@
+svn’Àªß
+user=srjc1234
+ctbri=srjc1234
+
+
+
+ip nat inside source static tcp 172.16.200.2 3690 124.127.117.183 63690 extendable
