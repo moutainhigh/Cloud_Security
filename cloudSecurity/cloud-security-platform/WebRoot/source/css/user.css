@@ -1,0 +1,26 @@
+@charset "utf-8";
+/* CSS Document */
+.user_center{ width:1110px; margin:auto; margin-top:28px; margin-bottom:25px;}
+.user_left{ float:left; width:93px; height:300px;}
+.user_left h2{ font-size:16px; font-weight:500; line-height:28px; color:#45b62b; text-align:center;}
+.user_left ul li{ height:30px; width:93px; font-size:14px; line-height:30px; text-align:center;}
+.user_left ul li.active{background:#e0e0e0;}
+.user_left ul li a{ color:#888;}
+
+.user_right{ float:left; width:1004px; border:1px solid #e0e0e0; height:500px; display:none;}
+
+/*基本资料代码*/
+.user_ren{ width:86px; height:86px; position:absolute; left:258px; top:120px;}
+.user_ren a{ width:86px; height:86px; display:block; border-radius:43px; overflow:hidden;}
+.user_table{ width:470px; margin-left:370px; margin-top:70px;}
+.regist_title{width:82px;color:#888; font-size:16px;}
+.regist_input{width:320px;}
+.regist_prompt{width:292px;color:#888;font-size:14px;}
+.regist_txt{width:286px;height:22px;border:1px solid #cbc9c9;padding:7px 8px;float:left;}
+.register_tr{height:58px;}
+.user_sub{ margin-top:45px; margin-left:33px;}
+/*基本资料代码*/
+
+
+
+

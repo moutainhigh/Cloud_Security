@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.UserMapper">
+	<sql id="cols">id,name,password,mobile,email,status,type,remarks</sql>
+	
+	<resultMap type="com.cn.ctbri.entity.User" id="UserRM">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="password" column="password"/>
+		<result property="mobile" column="mobile"/>
+		<result property="email" column="email"/>
+		<result property="status" column="status"/>
+		<result property="type" column="type"/>
+		<result property="remarks" column="remarks"/>
+	</resultMap>
+	
+	<!-- 查询所有记录 -->
+	<select id="list" resultMap="UserRM">
+		select<include refid="cols"/>from cs_user
+	</select>
+	
+	<!-- 插入用户 -->
+	<insert id="insert" parameterType="com.cn.ctbri.entity.User">
+		insert into cs_user 
+		(name,password,mobile,email,status,type,remarks) values(#{name},#{password},#{mobile},#{email},#{status},#{type},#{remarks})
+	</insert>
+	
+	<!-- 按用户名查询用户 -->
+	<select id="findUserByName" parameterType="String" resultMap="UserRM">
+		select * from cs_user
+		where name=#{name}
+	</select>
+	
+	<!-- 按手机号码查询用户 -->
+	<select id="findUserByMobile" parameterType="String" resultMap="UserRM">
+		select * from cs_user
+		where mobile=#{mobile}
+	</select>
+	
+	<!-- 按用邮箱查询用户 -->
+	<select id="findUserByEmail" parameterType="String" resultMap="UserRM">
+		select * from cs_user
+		where email=#{email}
+	</select>
+	
+	<!-- 按用用户名、邮箱、手机号码组合查询用户 -->
+	<select id="findUserByCombine" parameterType="String" resultMap="UserRM">
+		select * from cs_user
+		<where>
+			<if test="name!=null">
+			or name=#{name}
+			</if>
+			<if test="mobile!=null">
+			or mobile=#{mobile}
+			</if>
+			<if test="email!=null">
+			or email=#{email}
+			</if>
+		</where>
+	</select>
+</mapper>
