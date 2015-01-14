@@ -78,5 +78,9 @@ public class UserDaoImpl extends SqlSessionDaoSupport implements UserDao{
 		return this.getSqlSession().selectList(ns + "findUserByCombine",user);
 	}
 
+	public void update(User globle_user) {
+		this.getSqlSession().update(ns + "update",globle_user);
+	}
+
 	
 }
