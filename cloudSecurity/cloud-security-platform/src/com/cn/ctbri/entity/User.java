@@ -23,6 +23,8 @@ public class User {
 	private String remarks;
 	//邮箱验证码
 	private String verification_code;
+	//登录页面验证码
+	private String checkNumber;
 	/**
 	 * 功能描述：取用户ID
 	 *		 @time 2015-01-05
@@ -158,6 +160,11 @@ public class User {
 	public void setVerification_code(String verification_code) {
 		this.verification_code = verification_code;
 	}
-	
+	public String getCheckNumber() {
+		return checkNumber;
+	}
+	public void setCheckNumber(String checkNumber) {
+		this.checkNumber = checkNumber;
+	}
 	
 }

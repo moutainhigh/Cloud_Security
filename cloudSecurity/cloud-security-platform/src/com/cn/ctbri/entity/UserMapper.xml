@@ -15,7 +15,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="type" column="type"/>
 		<result property="remarks" column="remarks"/>
 	</resultMap>
-	
+	<!-- 修改用户 -->
+	<update id="update" parameterType="com.cn.ctbri.entity.User">
+		update cs_user
+		<set>
+			<if test="name!=null">
+			name=#{name},
+			</if>
+			<if test="mobile!=null">
+			mobile=#{mobile},
+			</if>
+			<if test="email!=null">
+			email=#{email},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
 	<!-- 查询所有记录 -->
 	<select id="list" resultMap="UserRM">
 		select<include refid="cols"/>from cs_user
