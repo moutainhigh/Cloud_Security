@@ -12,16 +12,18 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.cn.ctbri.cfg.Configuration;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IUserService;
+import com.cn.ctbri.util.LogonUtils;
 import com.cn.ctbri.util.Mail;
 import com.cn.ctbri.util.MailUtils;
 import com.cn.ctbri.util.Random;
@@ -39,18 +41,113 @@ public class UserController {
 	@Autowired
 	IUserService userService;
 	
+	/**
+	 * 功能描述： 基本资料
+	 * 参数描述： Model model,HttpServletRequest request
+	 *		 @time 2015-1-13
+	 */
+	@RequestMapping("/userDataUI.html")
+	public String userData(Model model,HttpServletRequest request){
+		User user = (User) request.getSession().getAttribute("globle_user");
+		model.addAttribute("user",user);		//传对象到页面
+		return "/source/page/userCenter/userData";
+	}
+	
+	/**
+	 * 功能描述： 保存修改后的基本资料
+	 * 参数描述：User user,Model model,HttpServletRequest request
+	 *		 @time 2015-1-13
+	 */
+	@RequestMapping("/saveUserData.html")
+	public String saveUserData(User user,Model model,HttpServletRequest request){
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		//用户名
+		String userName = user.getName();
+		globle_user.setName(userName);
+		//手机号码
+		String mobile = user.getMobile();
+		globle_user.setMobile(mobile);
+		//邮箱
+		String email = user.getEmail();
+		globle_user.setEmail(email);
+		userService.update(globle_user);
+		return "redirect:/userDataUI.html";
+	}
+	
+	/**
+	 * 功能描述： 首页
+	 * 参数描述：  Model m
+	 *		 @time 2015-1-12
+	 */
+	@RequestMapping(value="index.html")
+	public String index(Model m){
+		return "/index";
+	}
+	/**
+	 * 功能描述： 登录页面
+	 * 参数描述： Model m
+	 *		 @time 2015-1-8
+	 */
+	@RequestMapping(value="loginUI.html")
+	public String loginUI(Model m){
+		m.addAttribute("flag", "dl");
+		return "/source/page/regist/regist";
+	}
+	/**
+	 * 功能描述： 登录
+	 * 参数描述：  User user,HttpServletRequest request,HttpServletResponse response
+	 *		 @time 2015-1-8
+	 */
 	@RequestMapping(value="login.html")
-	public ModelAndView login(){
-		return null;
+	public String login(User user,HttpServletRequest request,HttpServletResponse response){
+		//添加验证码，判断验证码输入是否正确
+		boolean flag = LogonUtils.checkNumber(request);
+		if(!flag){
+			request.setAttribute("msg", "验证码输入有误");//向前台页面传值
+			return "/source/page/regist/regist";
+		}
+		//判断用户名密码输入是否正确
+		User _user = null;
+		String name = user.getName().trim();
+		String password = user.getPassword().trim();
+		List<User> users = userService.findUserByName(name);
+		if(users.size()>0){
+			_user = users.get(0);
+			//从页面上获取密码和User对象中存放的密码，进行匹配，如果不一致，提示【密码输入有误】
+			String md5password = DigestUtils.md5Hex(password);
+			if(!md5password.equals(_user.getPassword())){
+				request.setAttribute("msg", "密码输入有误");
+				return "/source/page/regist/regist";//跳转到登录页面
+			}
+		}else{
+			request.setAttribute("msg", "用户名输入有误");
+			return "/source/page/regist/regist";//跳转到登录页面
+		}
+		/**记住密码功能*/
+		LogonUtils.remeberMe(request,response,name,password);
+		//将User放置到Session中，用于这个系统的操作
+		request.getSession().setAttribute("globle_user", _user);
+		return "/source/page/userCenter/userCenter";
+	}
+	/**
+	 * 功能描述： 退出
+	 * 参数描述：  HttpServletRequest request
+	 *		 @time 2015-1-12
+	 */
+	@RequestMapping(value="exit.html")
+	public String exit(HttpServletRequest request){
+   		request.getSession().invalidate();
+   		return "redirect:/index.html";
 	}
 	
 	 /**
 	 * 功能描述： 注册页面
-	 * 参数描述：  无
+	 * 参数描述：  Model m
 	 *		 @time 2014-12-31
 	 */
 	@RequestMapping(value="registUI.html")
-	public String registUI(){
+	public String registUI(Model m){
+		m.addAttribute("flag", "zc");
 		return "/source/page/regist/regist";
 	}
 	
