@@ -14,6 +14,54 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.metadata.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/login.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/regist.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+ var flag = '<%= request.getAttribute("flag") %>';
+	if(flag=="zc"){
+		$('.user_regist').siblings().removeClass('cur');
+		$('.user_regist').addClass('cur');
+		$('.login_form').hide();
+		$('.regist_form').show();
+	}else{
+		$('.user_login').siblings().removeClass('cur');
+		$('.user_login').addClass('cur');
+		$('.login_form').show();
+		$('.regist_form').hide();
+	}
+});
+
+function loginSubmit(){
+	var name = $("#login_name").val();
+	var password = $("#login_password").val();
+	var checkNumber = $("#checkNumber").val();
+	if(name==null||name==""||password==null||password==""||checkNumber==null||checkNumber==""){
+		if(name==null||name==""){
+			$("#login_name_msg").html("请输入用户名");
+		}else{
+			$("#login_name_msg").html("");
+		}
+		if(password==null||password==""){
+			$("#login_password_msg").html("请输入密码");
+		}else{
+			$("#login_password_msg").html("");
+		}
+		if(checkNumber==null||checkNumber==""){
+			$("#login_checkNumber_msg").html("请输入验证码");
+		}else{
+			$("#login_checkNumber_msg").html("");
+		}
+	}else{
+			$("#form_login").submit();
+	}
+}
+
+
+function checkNumberImage(){
+	var imageNumber = document.getElementById("imageNumber");
+	imageNumber.src = "${pageContext.request.contextPath}/image.jsp?timestamp="+new Date().getTime();
+}
+
+</script>
 </head>
 <body>
 <!--头部代码-->
@@ -22,7 +70,7 @@
     <div class="logo"><img src="${ctx}/source/images/logo.png" /></div>
     <div class="list">
       <ul>
-        <li><a href="###">首页</a></li>
+        <li><a href="${ctx}/index.html">首页</a></li>
         <li><a href="###">我的资产</a></li>
         <li><a href="###">服务下单</a></li>
         <li><a href="###">订单追踪</a></li>
@@ -32,8 +80,8 @@
     <div class="lagst">
       <div class="lagst-left"> <a href="###"><img src="${ctx}/source/images/ren.png" /></a> </div>
       <div class="lagst-right">
-        <p ><a href="###">登陆</a></p>
-        <p> <a href="${pageContext.request.contextPath}/registUI.html">注册</a></p>
+        <p><a href="${pageContext.request.contextPath}/loginUI.html">登录</a></p>
+        <p><a href="${pageContext.request.contextPath}/registUI.html">注册</a></p>
       </div>
     </div>
   </div>
@@ -48,21 +96,27 @@
       </ul>
     </div>
     <div class="login_form">
-      <form  id="form_login" name="form_login" method="post">
+      <form  id="form_login" name="form_login" action="${pageContext.request.contextPath}/login.html" method="post">
         <div class="login_list">
-          <input type="text" class="login_txt required" id="name" name="name" />
+          <input type="text" class="login_txt required" id="login_name" name="name" value="${requestScope.name }"/>
+       	  <span id="login_name_msg" style="color:red;float:left"></span>
         </div>
         <div class="login_list">
-          <input type="password" class="login_txt login_pass" id="password" name="password"/>
+          <input type="password" class="login_txt login_pass" id="login_password" name="password" value="${requestScope.password }"/>
+          <span id="login_password_msg" style="color:red;float:left"></span>
         </div>
         <div class="login_list">
-          <input type="text" class="login_txt lgoin_yzm required" name="yzm"/>
-          <div class="yam_box"><img src="${ctx}/source/images/login_yzm.png" width="65" height="38" id="imageNumber"/></div>
+          <input type="text" class="login_txt lgoin_yzm required" name="checkNumber" id="checkNumber"/>
+          <span><img src="${pageContext.request.contextPath}/image.jsp" width="65" height="38" id="imageNumber" title="点击换一张" onclick="checkNumberImage()"/></img></span>
+          <span id="login_checkNumber_msg" style="color:red"></span>
         </div>
+        <span style="color:red" >${msg}</span>
         <div class="login_list">
-          <input type="checkbox" class="login_checkbox"/>
-          <span class="auto_login">自动登录</span><a href="#" class="forget_pass">忘记密码</a> </div>
-        <button class="login_btn" id="login_btn">登　　录</button>
+          <input type="checkbox" class="login_checkbox" name="remeberMe" id="remeberMe" value="yes" ${requestScope.checked }/>
+          <span class="auto_login">记住密码</span>
+          <a href="#" class="forget_pass">忘记密码</a> 
+        </div>
+        <input type="button" class="login_btn" id="login_btn" onclick="loginSubmit()" value="登　　录"/>
       </form>
     </div>
     

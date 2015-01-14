@@ -22,6 +22,9 @@
 .web_main h2 a{color:#666;}
 .web_main p{font-size:14px; line-height:26px; color:#999;}
 
+.web_input{margin-left:260px; margin-top:35px; width:614px; clear:both; overflow:hidden;}
+.web_input input{ width:480px; border:2px solid #2da039; height:36px; line-height:36px; padding-left:15px; color:#d8d8d8;}
+.web_input_r{ float:right; cursor:pointer;}
 
 .anti_fuwu h1{ font-size:20px; line-height:55px; color:#2da039; font-weight:500;}
 .anti_main{height:166px; border:1px solid #e6e6e6; width:305px; float:left; padding: 0px 31px; }

@@ -86,7 +86,7 @@ function checkMobile(){
 			$.ajax({
                type: "POST",
                url: "/cloud-security-platform/regist_checkMobile.html",
-               data: {"name":name},
+               data: {"mobile":mobile},
                dataType:"json",
                success: function(data){
                     if(data.count>0){
