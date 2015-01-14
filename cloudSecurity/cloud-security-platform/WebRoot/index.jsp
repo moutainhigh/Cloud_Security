@@ -24,17 +24,23 @@
                    <a href="###"><img src="${ctx}/source/images/ren.png" /></a>
                </div>
                <div class="lagst-right">
-                     <p ><a href="###">登陆</a></p>
-                     <p> <a href="${pageContext.request.contextPath}/registUI.html">注册</a></p>
+               <!-- 如果已经登录则显示用户名，否则需要登录 -->
+               <c:if test="${sessionScope.globle_user!=null }">
+                <p><a href="###" style="color: #fff">${sessionScope.globle_user.name }</a></p>
+        		<p><a href="${ctx}/exit.html">退出</a></p>
+               </c:if>
+               <c:if test="${sessionScope.globle_user==null }">
+                     <p><a href="${pageContext.request.contextPath}/loginUI.html">登陆</a></p>
+                     <p><a href="${pageContext.request.contextPath}/registUI.html">注册</a></p>
+               </c:if>
                </div>
            </div>
-           <div class="list">
+            <div class="list">
                <ul>
-                   <li><a href="###">首页</a></li>
-                   <li><a href="###">我的资产</a></li>
-                   <li><a href="###">服务下单</a></li>
-                   <li><a href="###">订单追踪</a></li>
-                   <li style="border-right:1px solid #11871d;"><a href="###">我的账单</a></li>
+                   <li class="list_active"><a href="${ctx}/index.html">首页</a></li>
+                   <li><a href="###">我的订单</a></li>
+                   <li><a href="aider.html">在线帮助</a></li>
+                   <li style="border-right:1px solid #11871d;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
                </ul>
            </div>
            
@@ -84,6 +90,10 @@
                     <p>漏洞扫描是对你的电脑进行全方位的扫描，检查你当前的系统是否有漏洞，如果有漏洞则需要马上进行修复。</p>
                  </div>
              </div>
+            	<div class="web_input">
+                    <input type="text"  value="http://"/>
+                    <div class="web_input_r"><img src="${ctx}/source/images/user_ico_16.jpg" /></div>
+              </div>
              <div class="anti_fuwu clear">
                   <h1>Anti-DDOS云安全服务</h1>
                   <div class="anti_main bor_right">
@@ -121,7 +131,7 @@
                  </ul>
              </div>
               <div  class="bottom_main">
-              <h3><a href="###">	帮助</a></h3>
+              <h3><a href="###">    帮助</a></h3>
                  <ul>
                       <li><a href="###">常见问题</a></li>
                     
