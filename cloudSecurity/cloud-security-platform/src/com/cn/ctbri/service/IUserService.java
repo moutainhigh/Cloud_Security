@@ -49,6 +49,12 @@ public interface IUserService {
 	 * 返回值    ：  List<User>
 	 */
 	List<User> findUserByCombine(User user);
+	/**
+	 * 功能描述：修改用户
+	 * 参数描述：User globle_user
+	 *		 @time 2015-1-5
+	 */
+	void update(User globle_user);
 
 
 	
