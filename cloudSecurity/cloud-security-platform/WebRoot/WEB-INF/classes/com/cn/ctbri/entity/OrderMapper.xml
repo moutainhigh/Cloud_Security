@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.OrderMapper">
+	<sql id="cols">id,type,begin_date,end_date,serviceId,create_date,task_date,scan_type,userId,contactId,remarks</sql>
+	<resultMap type="com.cn.ctbri.entity.Order" id="OrderRM">
+		<id property="id" column="id"/>
+		<result property="type" column="type"/>
+		<result property="begin_date" column="begin_date"/>
+		<result property="end_date" column="end_date"/>
+		<result property="serviceId" column="serviceId"/>
+		<result property="create_date" column="create_date"/>
+		<result property="task_date" column="task_date"/>
+		<result property="scan_type" column="scan_type"/>
+		<result property="userId" column="userId"/>
+		<result property="contactId" column="contactId"/>
+		<result property="remarks" column="remarks"/>
+	</resultMap>
+	<!-- 查询所有记录 -->
+	<select id="list" resultType="hashmap" parameterType="int">
+		select o.id,o.type,s.name,o.begin_date,o.end_date,o.create_date
+		from cs_order o,cs_service s,cs_user u
+		where u.id = #{id} and o.serviceId = s.id
+	</select>
+	<!-- 条件查询 -->
+	<!-- SELECT c.id,c.type,c.name,c.begin_date,c.end_date,c.create_date
+		FROM (SELECT o.id,o.type,s.name,o.begin_date,o.end_date,o.create_date
+		      FROM cs_order o,cs_service s,cs_user u
+		      WHERE u.id = 103 AND o.serviceId = s.id) c 
+		WHERE
+			1=1 AND c.type =2 AND c.name =1;  -->
+	<select id="findByCombine" resultType="hashmap" parameterType="hashmap">
+		SELECT c.id,c.type,c.name,c.begin_date,c.end_date,c.create_date
+		FROM (SELECT o.id,o.type,s.name,o.begin_date,o.end_date,o.create_date
+		      FROM cs_order o,cs_service s,cs_user u
+		      WHERE u.id = #{id} AND o.serviceId = s.id) c 
+		WHERE
+			1=1  
+			<if test="type!=0">
+				AND c.type = #{type}
+			</if>
+			<if test="name!=null">	
+				AND c.name = #{name} 
+			</if>	 
+			<if test="begin_date!=null">
+				AND c.begin_date = #{begin_date}
+			</if>	 
+			<if test="end_date!=null">
+				AND c.end_date = #{end_date}
+			</if>	  
+	</select>
+</mapper>

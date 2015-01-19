@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.SelfHelpOrderMapper">
+	
+	<!-- 查询服务类型所有记录 -->
+	<select id="findServiceType" resultType="serviceType">
+		select * from cs_service_type
+	</select>
+	
+	<!-- 查询厂商所有记录 -->
+    <select id="findFactory" resultType="factory">
+        select * from cs_factory
+    </select>
+    
+    <!-- 查询服务资产 -->
+    <select id="findServiceAsset" resultType="serviceAsset">
+        select * from cs_asset
+    </select>
+	
+	<!-- 插入订单 -->
+    <insert id="insert" parameterType="order">
+        insert into cs_order
+        (type, begin_date, end_date, serviceId, scan_date) 
+        values(#{type}, #{begin_date}, #{end_date}, #{serviceId}, #{scan_type})
+    </insert>
+</mapper>

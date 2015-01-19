@@ -1,0 +1,31 @@
+package com.cn.ctbri.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.User;
+
+/**
+ * 创 建 人  ：  邓元元
+ * 创建日期：  2015-1-14
+ * 描        述：  用户数据访问层接口类
+ * 版        本：  1.0
+ */
+public interface OrderDao {
+	/**
+	 * 功能描述：查询所有订单
+	 * 参数描述：无
+	 *		 @time 2015-1-15
+	 * 返回值    ：  List<Order>
+	 */
+	List findByUserId(int id);
+	/**
+	 * 功能描述：组合查询订单
+	 * 参数描述：String name
+	 *		 @time 2015-1-15
+	 * 返回值    ：  List<Order>
+	 */
+	List findByCombine(Map<String, Object> paramMap);
+	
+}
