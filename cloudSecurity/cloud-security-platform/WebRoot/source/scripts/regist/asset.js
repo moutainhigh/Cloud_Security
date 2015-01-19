@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	$("#status").val("${status}");
-	$("#searchAssetName").val("${name}");
+	$("#searchAssetName").val("${name1}");
 });
 function saveAsset() {
 	var assetName = $("#assetName").val();
