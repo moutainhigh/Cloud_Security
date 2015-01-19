@@ -50,6 +50,7 @@ public class MyAssetsController {
 		asset.setCreate_date(new Date());//创建日期
 		asset.setStatus(0);//资产状态(1：已验证，0：未验证)
 		String name = "";
+		//处理页面输入中文乱码的问题
 		try {
 			name = URLDecoder.decode(asset.getName(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
@@ -71,12 +72,17 @@ public class MyAssetsController {
 	}
 	/**
 	 * 功能描述：联合搜索
-	 * 参数描述： Model model
+	 * 参数描述： Model model,Asset asset,HttpServletRequest request
 	 *		 @time 2015-1-19
 	 */
-	@RequestMapping("/searchAssetsCombine.html")
-	public String searchCombine(Model model,Asset asset,HttpServletRequest request){
-		
-		return "redirect:/userAssetsUI.html";
+	@RequestMapping("/searchAssetCombine.html")
+	public String searchAssetsCombine(Model model,Asset asset,HttpServletRequest request){
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		asset.setUserid(globle_user.getId());//将用户登录用户的id赋值到asset中
+		List<Asset> result = assetService.searchAssetsCombine(asset);//根据userid 资产状态 和资产名称联合查询
+		model.addAttribute("list",result);		//传对象到页面
+		model.addAttribute("status",asset.getStatus());//回显资产类型	
+		model.addAttribute("name",asset.getName());//回显资产名称
+		return "/source/page/userCenter/userAssets";
 	}
 }

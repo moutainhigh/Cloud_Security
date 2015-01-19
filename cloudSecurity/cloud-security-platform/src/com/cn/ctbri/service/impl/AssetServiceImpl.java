@@ -47,5 +47,15 @@ public class AssetServiceImpl implements IAssetService{
 	public void delete(int id) {
 		assetDao.delete(id);
 	}
+	/**
+	 * 功能描述：联合搜索资产
+	 * 参数描述：Asset asset
+	 *		 @time 2015-1-19
+	 * 返回值    ：List<Asset>
+	 */
+	public List<Asset> searchAssetsCombine(Asset asset) {
+		List<Asset> list = assetDao.searchAssetsCombine(asset);
+		return list;
+	}
 	
 }

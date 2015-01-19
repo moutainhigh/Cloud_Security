@@ -59,28 +59,23 @@
   <div class="user_right" >
     <div class="user_top">
       <div class="user_ctive"><a href="###"><img src="${ctx}/source/images/user_ico_3.jpg" /></a></div>
+  <form action="${ctx}/searchAssetCombine.html" method="post" id="searchAssetForm">
       <div class="user_sec_cont" style=" left:200px; ">
-        <div class="user_secta" value="0">全部类型</div>
-        <div class="user_secta_list">
-        </div>
       </div>
-      <div class="user_sec_cont" style=" left:360px; ">
-        <div class="user_secta" value="0">全部状态</div>
-        <div class="user_secta_list">
-          <ul>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-          </ul>
-        </div>
+      <div class="user_sec_cont" style="left:360px;">
+        <select id="status" name="status">
+       		<option select="selected" value="">请选择状态</option>
+       		<option value="0" >未验证</option>
+       		<option value="1" >已验证</option>
+  		</select>
       </div>
       <div class="user_sec_txt">
-        <input type="text"  value="请输入关键字"/>
+        <input type="text" name="name" id="searchAssetName" value=""></input>
       </div>
-      <div class="user_soucuo" style="left:740px;"><img src="${ctx}/source/images/user_submit_2.jpg" /></div>
+      <div class="user_soucuo" style="left:740px;"><img src="${ctx}/source/images/user_submit_2.jpg" onclick="searchAssetCombine()"/></div>
+  </form>
     </div>
+    
     <div class="zhangd_table">
       <table>
         <tbody>
@@ -90,10 +85,10 @@
             <td  style="width:20%;">资产状态</td>
             <td  style="width:20%;">操作</td>
           </tr>
-          <c:forEach items="${list}" var="o"> 
+          <c:forEach items="${list}" var="asset"> 
           <tr>
-            <td>${o.name}</td>
-            <td>${o.addr}</td>
+            <td>${asset.name}</td>
+            <td>${asset.addr}</td>
             <td><div class="zican_wei">未验证</div>
               <div  class="zican_top">立即验证</div></td>
             <td><div class="zican_top">修改</div>

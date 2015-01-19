@@ -99,7 +99,7 @@ function searchCombine(){
     <div class="user_top">
       <div class="user_sec_cont">
          	<select id="type" name="type">
-         		<option select="selected" value="">请选择类型</option>
+         		<option selected="selected" value="">请选择类型</option>
          		<option value="1" >长期</option>
          		<option value="2" >单次</option>
     		</select>

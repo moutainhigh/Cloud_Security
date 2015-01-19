@@ -2,12 +2,11 @@ package com.cn.ctbri.dao;
 
 import java.util.List;
 
+import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
-import com.cn.ctbri.entity.ServiceAsset;
 import com.cn.ctbri.entity.ServiceType;
-import com.cn.ctbri.entity.User;
 /**
  * 创 建 人  ：  txr
  * 创建日期：  2015-1-14
@@ -35,7 +34,7 @@ public interface SelfHelpOrderDao {
      *       @time 2015-1-15
      * 返回值    ：  List<ServiceAsset>
      */
-    List<ServiceAsset> getServiceAsset();
+    List<Asset> getServiceAsset();
 
     /**
      * 功能描述：保存订单

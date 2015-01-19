@@ -6,15 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.SelfHelpOrderDao;
-import com.cn.ctbri.dao.UserDao;
+import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
-import com.cn.ctbri.entity.ServiceAsset;
 import com.cn.ctbri.entity.ServiceType;
-import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.ISelfHelpOrderService;
-import com.cn.ctbri.service.IUserService;
 /**
  * 创 建 人  ：  txr
  * 创建日期：  2015-1-14
@@ -49,7 +46,7 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
      *       @time 2015-1-15
      * 返回值    ：  List<ServiceAsset>
      */
-    public List<ServiceAsset> findServiceAsset() {
+    public List<Asset> findServiceAsset() {
         return selfHelpOrderDao.getServiceAsset();
     }
 

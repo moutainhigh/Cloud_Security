@@ -34,6 +34,13 @@ public interface IAssetService {
 	 * 返回值    ：无
 	 */
 	void delete(int id);
+	/**
+	 * 功能描述：联合搜索资产
+	 * 参数描述：Asset asset
+	 *		 @time 2015-1-19
+	 * 返回值    ：List<Asset>
+	 */
+	List<Asset> searchAssetsCombine(Asset asset);
 
 	
 }

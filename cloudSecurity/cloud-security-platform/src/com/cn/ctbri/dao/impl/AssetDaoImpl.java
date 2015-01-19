@@ -56,7 +56,15 @@ public class AssetDaoImpl extends SqlSessionDaoSupport implements AssetDao{
 	 */
 	public void delete(int id) {
 		this.getSqlSession().delete(ns +"delete",id);
+	}
+	/**
+	 * 功能描述：联合搜索资产
+	 * 参数描述：Asset asset
+	 *		 @time 2015-1-19
+	 * 返回值    ：List<Asset>
+	 */
+	public List<Asset> searchAssetsCombine(Asset asset) {
+		List<Asset> list = this.getSqlSession().selectList(ns +"searchAssetsCombine",asset);
+		return list;
 	}		
-	
-	
 }

@@ -7,7 +7,7 @@
     <typeAliases>  
         <typeAlias type="com.cn.ctbri.entity.ServiceType" alias="serviceType"/>
         <typeAlias type="com.cn.ctbri.entity.Factory" alias="factory"/>
-        <typeAlias type="com.cn.ctbri.entity.ServiceAsset" alias="serviceAsset"/>
+        <typeAlias type="com.cn.ctbri.entity.Asset" alias="asset"/>
         <typeAlias type="com.cn.ctbri.entity.Order" alias="order"/>
     </typeAliases>  
     

@@ -28,5 +28,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 删除资产 -->
 	<delete id="delete">
 		delete from cs_asset
-		where id=#{id}</delete>
+		where id=#{id}
+	</delete>
+	<!-- 根据资产状态和资产名称搜索资产 -->
+	<select id="searchAssetsCombine" parameterType="com.cn.ctbri.entity.Asset" resultMap="AssetRM">
+		select a.id,a.name,a.addr,a.status
+		from cs_asset a
+		where a.userid = #{userid}
+		<if test="status!=null">
+			and a.status=#{status}
+		</if>
+		<if test="name!=null and name!=''">
+			and a.name like #{name}
+		</if>
+	</select>
 </mapper>

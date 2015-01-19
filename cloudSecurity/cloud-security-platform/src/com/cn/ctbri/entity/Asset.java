@@ -14,7 +14,7 @@ public class Asset {
 	private String name;//资产名称
 	private int type;//资产类型：1为URL，2为IP
 	private String addr;//资产地址
-	private int status;//资产状态(1：已验证，0：未验证)
+	private Integer status;//资产状态(1：已验证，0：未验证)
 	private int userid;//用户ID
 	private Date create_date;//创建日期
 	private String remarks;//备注
@@ -42,10 +42,11 @@ public class Asset {
 	public void setAddr(String addr) {
 		this.addr = addr;
 	}
-	public int getStatus() {
+	
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(int status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 	public int getUserid() {

@@ -1,10 +1,8 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,20 +11,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
-import com.cn.ctbri.entity.ServiceAsset;
 import com.cn.ctbri.entity.ServiceType;
-import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.ISelfHelpOrderService;
-import com.cn.ctbri.service.IUserService;
 
 /**
  * 创 建 人  ：  txr
@@ -54,7 +49,7 @@ public class OrderMgrController {
 	    //获取厂商
 	    List<Factory> factoryList = selfHelpOrderService.findListFactory();
 	    //获取服务对象资产
-	    List<ServiceAsset> serviceAssetList = selfHelpOrderService.findServiceAsset();
+	    List<Asset> serviceAssetList = selfHelpOrderService.findServiceAsset();
 	    request.setAttribute("servList", servList);
 	    request.setAttribute("typeList", typeList);
         request.setAttribute("factoryList", factoryList);

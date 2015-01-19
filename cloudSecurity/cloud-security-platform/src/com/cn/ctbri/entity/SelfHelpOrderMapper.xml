@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <!-- 查询服务资产 -->
-    <select id="findServiceAsset" resultType="serviceAsset">
+    <select id="findServiceAsset" resultType="asset">
         select * from cs_asset
     </select>
 	
