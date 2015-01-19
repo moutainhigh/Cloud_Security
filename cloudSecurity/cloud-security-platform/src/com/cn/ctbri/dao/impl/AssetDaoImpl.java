@@ -47,6 +47,15 @@ public class AssetDaoImpl extends SqlSessionDaoSupport implements AssetDao{
 	 */
 	public void saveAsset(Asset asset) {
 		this.getSqlSession().insert(ns + "saveAsset", asset);
+	}
+	/**
+	 * 功能描述：删除资产
+	 * 参数描述：int id
+	 *		 @time 2015-1-19
+	 * 返回值    ：无
+	 */
+	public void delete(int id) {
+		this.getSqlSession().delete(ns +"delete",id);
 	}		
 	
 	

@@ -37,8 +37,9 @@ public class OrderDaoImpl extends SqlSessionDaoSupport implements OrderDao{
 		List list = this.getSqlSession().selectList(ns + "list",id);
 		return list;
 	}
+	
 	public List findByCombine(Map<String, Object> paramMap) {
-		List list = this.getSqlSession().selectList(ns + "search",paramMap);
+		List list = this.getSqlSession().selectList(ns + "findByCombine",paramMap);
 		return list;
 	}  
 	

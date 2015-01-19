@@ -20,8 +20,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 查询所有记录 -->
 	<select id="list" resultType="hashmap" parameterType="int">
 		select o.id,o.type,s.name,o.begin_date,o.end_date,o.create_date
-		from cs_order o,cs_service s,cs_user u
-		where u.id = #{id} and o.serviceId = s.id
+		from cs_order o,cs_service s
+		where o.userId = #{id} and o.serviceId = s.id
 	</select>
 	<!-- 条件查询 -->
 	<!-- SELECT c.id,c.type,c.name,c.begin_date,c.end_date,c.create_date
@@ -33,15 +33,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findByCombine" resultType="hashmap" parameterType="hashmap">
 		SELECT c.id,c.type,c.name,c.begin_date,c.end_date,c.create_date
 		FROM (SELECT o.id,o.type,s.name,o.begin_date,o.end_date,o.create_date
-		      FROM cs_order o,cs_service s,cs_user u
-		      WHERE u.id = #{id} AND o.serviceId = s.id) c 
+		      FROM cs_order o,cs_service s
+		      WHERE o.userId = #{userId} AND o.serviceId = s.id) c 
 		WHERE
 			1=1  
-			<if test="type!=0">
+			<if test="type!=null">
 				AND c.type = #{type}
 			</if>
-			<if test="name!=null">	
-				AND c.name = #{name} 
+			<if test="servName!=null and servName!=''">	
+				AND c.name = #{servName} 
 			</if>	 
 			<if test="begin_date!=null">
 				AND c.begin_date = #{begin_date}

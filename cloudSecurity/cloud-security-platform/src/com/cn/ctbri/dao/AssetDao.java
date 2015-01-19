@@ -25,5 +25,12 @@ public interface AssetDao {
 	 * 返回值    ：无
 	 */
 	void saveAsset(Asset asset);
+	/**
+	 * 功能描述：删除资产
+	 * 参数描述：int id
+	 *		 @time 2015-1-19
+	 * 返回值    ：无
+	 */
+	void delete(int id);
 
 }

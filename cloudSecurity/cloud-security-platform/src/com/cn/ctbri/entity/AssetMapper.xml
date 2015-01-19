@@ -25,4 +25,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into cs_asset 
 		(name,type,addr,status,userid,create_date,remarks) values(#{name},#{type},#{addr},#{status},#{userid},#{create_date},#{remarks})
 	</insert>
+	<!-- 删除资产 -->
+	<delete id="delete">
+		delete from cs_asset
+		where id=#{id}</delete>
 </mapper>

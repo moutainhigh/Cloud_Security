@@ -59,16 +59,9 @@
   <div class="user_right" >
     <div class="user_top">
       <div class="user_ctive"><a href="###"><img src="${ctx}/source/images/user_ico_3.jpg" /></a></div>
-      <div class="user_sec_cont">
+      <div class="user_sec_cont" style=" left:200px; ">
         <div class="user_secta" value="0">全部类型</div>
         <div class="user_secta_list">
-          <ul>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-          </ul>
         </div>
       </div>
       <div class="user_sec_cont" style=" left:360px; ">
@@ -93,7 +86,6 @@
         <tbody>
           <tr style="background:#e0e0e0; height:30px; line-height:30px;">
             <td style="width:20%;">资产名称</td>
-            <td  style="width:20%;">资产类型</td>
             <td  style="width:20%;">资产地址</td>
             <td  style="width:20%;">资产状态</td>
             <td  style="width:20%;">操作</td>
@@ -101,12 +93,11 @@
           <c:forEach items="${list}" var="o"> 
           <tr>
             <td>${o.name}</td>
-            <td>${o.type}</td>
             <td>${o.addr}</td>
             <td><div class="zican_wei">未验证</div>
               <div  class="zican_top">立即验证</div></td>
             <td><div class="zican_top">修改</div>
-              <div class="zican_bottom">删除</div></td>
+              <div class="zican_bottom"><a href="${ctx}/deleteAsset.html?id=${o.id}">删除</a></div></td>
           </tr>
           </c:forEach>
         </tbody>
@@ -168,13 +159,13 @@
         <tr>
           <td style="width:20%;">资产名称</td>
           <td style="width:45%;"><input class="boz_inout_1" type="text" name="name" id="assetName"/></td>
-          <td style="width:35%; text-align:left; color:#e32929;">资产名称不允许为空！</td>
+          <td style="width:35%; text-align:left; color:#e32929;"><div id="assetName_msg"></div></td>
         </tr>
         <tr></tr>
         <tr>
           <td>资产地址</td>
           <td><input class="boz_inout_1" type="text" name="addr" id="assetAddr"/></td>
-          <td style="color:#e32929;"">资产IP重复，该资产已添加过！</td>
+          <td style="color:#e32929;"><div id="assetAddr_msg"></div></td>
         </tr>
       </table>
     </div>
@@ -182,6 +173,38 @@
   </div>
   </form>
 </div>
+
+
+<!--新增资产遮罩层样式-->
+<div id="box_mark"></div>
+<div id="box_logoIn1">
+  <div id="close1"></div>
+  <div class="text_1">
+    <form id="saveAsset" action="${ctx}/addAsset.html">
+    <div class="text_top">修改资产</div>
+    <div class="text_bottm">
+  
+      <table>
+        <tr>
+          <td style="width:20%;">资产名称</td>
+          <td style="width:45%;"><input class="boz_inout_1" type="text" name="name" id="assetName"/></td>
+          <td style="width:35%; text-align:left; color:#e32929;"><div id="assetName_msg"></div></td>
+        </tr>
+        <tr></tr>
+        <tr>
+          <td>资产地址</td>
+          <td><input class="boz_inout_1" type="text" name="addr" id="assetAddr"/></td>
+          <td style="color:#e32929;"><div id="assetAddr_msg"></div></td>
+        </tr>
+      </table>
+    </div>
+    <div style="margin-top:35px;"><a href="javascript:void(0)"><img src="${ctx}/source/images/user_submit_3.jpg" onclick="saveAsset()"/></a></div>
+  </div>
+  </form>
+</div>
+
+
+
 <div id="box_logoIn2">
 <div  id="close2"></div>
 <div class="text_1">

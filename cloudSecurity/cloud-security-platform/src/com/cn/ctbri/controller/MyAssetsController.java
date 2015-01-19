@@ -1,6 +1,8 @@
 package com.cn.ctbri.controller;
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class MyAssetsController {
 		return "/source/page/userCenter/userAssets";
 	}
 	/**
-	 * 功能描述： 我的资产页面
+	 * 功能描述： 添加资产
 	 * 参数描述： Model model
 	 *		 @time 2015-1-16
 	 */
@@ -47,8 +49,34 @@ public class MyAssetsController {
 		asset.setUserid(globle_user.getId());//用户ID
 		asset.setCreate_date(new Date());//创建日期
 		asset.setStatus(0);//资产状态(1：已验证，0：未验证)
+		String name = "";
+		try {
+			name = URLDecoder.decode(asset.getName(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		asset.setName(name);
 		assetService.saveAsset(asset);
 		return "redirect:/userAssetsUI.html";
 	}
-	
+	/**
+	 * 功能描述：删除资产
+	 * 参数描述： Model model
+	 *		 @time 2015-1-19
+	 */
+	@RequestMapping("/deleteAsset.html")
+	public String delete(Asset asset){
+		assetService.delete(asset.getId());
+		return "redirect:/userAssetsUI.html";
+	}
+	/**
+	 * 功能描述：联合搜索
+	 * 参数描述： Model model
+	 *		 @time 2015-1-19
+	 */
+	@RequestMapping("/searchAssetsCombine.html")
+	public String searchCombine(Model model,Asset asset,HttpServletRequest request){
+		
+		return "redirect:/userAssetsUI.html";
+	}
 }

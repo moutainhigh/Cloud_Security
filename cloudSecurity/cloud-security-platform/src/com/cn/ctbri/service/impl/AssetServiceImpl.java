@@ -38,5 +38,14 @@ public class AssetServiceImpl implements IAssetService{
 	public void saveAsset(Asset asset) {
 		assetDao.saveAsset(asset);
 	}
+	/**
+	 * 功能描述：删除资产
+	 * 参数描述：int id
+	 *		 @time 2015-1-19
+	 * 返回值    ：无
+	 */
+	public void delete(int id) {
+		assetDao.delete(id);
+	}
 	
 }
