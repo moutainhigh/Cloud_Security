@@ -67,6 +67,8 @@ public class MyAssetsController {
 	 */
 	@RequestMapping("/deleteAsset.html")
 	public String delete(Asset asset){
+		//检查订单资产表里面是否含有次资产
+		
 		assetService.delete(asset.getId());
 		return "redirect:/userAssetsUI.html";
 	}
@@ -82,7 +84,7 @@ public class MyAssetsController {
 		List<Asset> result = assetService.searchAssetsCombine(asset);//根据userid 资产状态 和资产名称联合查询
 		model.addAttribute("list",result);		//传对象到页面
 		model.addAttribute("status",asset.getStatus());//回显资产类型	
-		model.addAttribute("name",asset.getName());//回显资产名称
+		model.addAttribute("name1",asset.getName());//回显资产名称
 		return "/source/page/userCenter/userAssets";
 	}
 }
