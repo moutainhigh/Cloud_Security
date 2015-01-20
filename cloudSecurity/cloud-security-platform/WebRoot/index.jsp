@@ -30,7 +30,7 @@
         		<p><a href="${ctx}/exit.html">退出</a></p>
                </c:if>
                <c:if test="${sessionScope.globle_user==null }">
-                     <p><a href="${pageContext.request.contextPath}/loginUI.html">登陆</a></p>
+                     <p><a href="${pageContext.request.contextPath}/loginUI.html">登录</a></p>
                      <p><a href="${pageContext.request.contextPath}/registUI.html">注册</a></p>
                </c:if>
                </div>
@@ -43,7 +43,6 @@
                    <li style="border-right:1px solid #11871d;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
                </ul>
            </div>
-           
         </div>
     </div>
     <div class="nav">

@@ -96,8 +96,8 @@ $(document).ready(function(){
             <td>${asset.name}</td>
             <td>${asset.addr}</td>
             <td><div class="zican_wei">未验证</div>
-              <div class="zican_top">立即验证</div></td>
-            <td><div class="zican_top">修改</div>
+              <div class="zican_top" id="${asset.id}" name="${asset.name}">立即验证</div></td>
+            <td><div class="zican_top1">修改</div>
               <div class="zican_bottom"><a href="javascript:void(0)" onclick="deleteAsset('${asset.id}')" >删除</a></div></td>
           </tr>
           </c:forEach>
@@ -152,7 +152,7 @@ $(document).ready(function(){
 <div id="box_logoIn1">
   <div id="close1"></div>
   <div class="text_1">
-    <form id="saveAsset" action="${ctx}/addAsset.html">
+    <form id="saveAsset" action="${ctx}/addAsset.html" method="post">
     <div class="text_top">新增资产</div>
     <div class="text_bottm">
   
@@ -175,58 +175,30 @@ $(document).ready(function(){
   </form>
 </div>
 
-
-<!--新增资产遮罩层样式-->
-<div id="box_mark"></div>
-<div id="box_logoIn1">
-  <div id="close1"></div>
-  <div class="text_1">
-    <form id="saveAsset" action="${ctx}/addAsset.html">
-    <div class="text_top">修改资产</div>
-    <div class="text_bottm">
-  
-      <table>
-        <tr>
-          <td style="width:20%;">资产名称</td>
-          <td style="width:45%;"><input class="boz_inout_1" type="text" name="name" id="assetName"/></td>
-          <td style="width:35%; text-align:left; color:#e32929;"><div id="assetName_msg"></div></td>
-        </tr>
-        <tr></tr>
-        <tr>
-          <td>资产地址</td>
-          <td><input class="boz_inout_1" type="text" name="addr" id="assetAddr"/></td>
-          <td style="color:#e32929;"><div id="assetAddr_msg"></div></td>
-        </tr>
-      </table>
-    </div>
-    <div style="margin-top:35px;"><a href="javascript:void(0)"><img src="${ctx}/source/images/user_submit_3.jpg" onclick="saveAsset()"/></a></div>
-  </div>
-  </form>
-</div>
-
-
-
 <div id="box_logoIn2">
 <div  id="close2"></div>
-<div class="text_1">
-  <div class="text_top">请验证资产1.1.1.1的权限</div>
-  <div class="text_bottm">
-    <div class="txt_yz clear">
-      <div class="txt_yz_left">
-        <input type="radio" />
-        &nbsp;&nbsp;代码验证 ( 推荐 )</div>
-      <div class="txt_yz_right">
-        <input type="radio" />
-        &nbsp;&nbsp;上传文件验证</div>
-    </div>
-    <div class="txt_1">
-      <div class="txt_2"> “http://webscan.360.cn/index/checkwebsite/url/1.1.1.1”
-        name=“9d4f9e27bc0c401fb20aqa2420ff1e5”>云服务平台</div>
-      <p>请在您的<span>网站首页</span>中任何位置加入如上代码。（<a href="###">复制代码</a>）<br />
-        如果添加成功，您的网站首页上能够看到右边的文字：“云服务平台”</p>
-    </div>
-  </div>
-  <div style="margin-top:35px;"><a href="###"><img src="${ctx}/source/images/user_submit_4.jpg" /></a></div>
-
+<form action="${ctx}/verificationAsset.html?code=document.getElementById('code').innerHTML" method="post" >
+<input type="hidden" value="" id="hiddenId" name="id"/>
+	<div class="text_1">
+	  <div class="text_top" id="verificationName"></div>
+	  <div class="text_bottm">
+	    <div class="txt_yz clear">
+	      <div class="txt_yz_left">
+	        <input type="radio" name="verification_msg" checked id="codeVerification" value="代码验证"/>
+	        &nbsp;&nbsp;代码验证(推荐)</div>
+	      <div class="txt_yz_right">
+	        <input type="radio" name="verification_msg" id="fileVerification" value="上传文件验证"/>
+	        &nbsp;&nbsp;上传文件验证</div>
+	    </div>
+	    <div class="txt_1">
+	      <div class="txt_2" id="code">"http://webscan.360.cn/index/checkwebsite/url/1.1.1.1"
+	        name="9d4f9e27bc0c401fb20aqa2420ff1e5">云服务平台</div>
+	      <p>请在您的<span><a href="${ctx}/index.html">网站首页<a/></span>中任何位置加入如上代码。（<a href="###">复制代码</a>）<br />
+	        如果添加成功，您的网站首页上能够看到右边的文字：“云服务平台”</p>
+	    </div>
+	  </div>
+	  <div style="margin-top:35px;"><a href="javascript:void(0)"><img src="${ctx}/source/images/user_submit_4.jpg" onclick="verificationAsset()"/></a></div>
+	</div>
+</form>
 </body>
 </html>

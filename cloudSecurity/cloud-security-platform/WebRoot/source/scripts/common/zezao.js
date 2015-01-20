@@ -46,17 +46,19 @@ $(function(){
 	
 	$(".zican_top").click(function(){
 		var _index =$(".zican_top").index(this);  //获取当前点击按钮
-	
+		var id= $(".zican_top").eq(_index).attr("id");
+		var name= $(".zican_top").eq(_index).attr("name");
+		$("#verificationName").html("请验证资产"+name+"的权限");
+		$("#hiddenId").val(id);
 		oMark1.style.display ="block";
 		oLogin1.style.display ="block";
 		oMark1.style.width = viewWidth() + 'px';
 		oMark1.style.height = documentHeight() + 'px';
 		oLogin1.style.left = (viewWidth() - oLogin1.offsetWidth)/2 + 'px';
 		oLogin1.style.top = (viewHeight() - oLogin1.offsetHeight)/2-25 + 'px';	
-		
 		//image.clone(true).appendTo(".box_logoIn");
 	
-	})
+	});
      
 		//关闭按钮
 		function toClose(){

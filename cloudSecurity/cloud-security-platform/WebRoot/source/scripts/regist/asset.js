@@ -38,3 +38,8 @@ function deleteAsset(id){
 		}
 	});
 }
+//资产验证
+function verificationAsset(){
+	var code = document.getElementById("code").innerHTML;
+	alert(code);
+}

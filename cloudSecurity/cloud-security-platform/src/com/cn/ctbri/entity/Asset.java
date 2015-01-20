@@ -18,11 +18,19 @@ public class Asset {
 	private int userid;//用户ID
 	private Date create_date;//创建日期
 	private String remarks;//备注
+	
+	private String verification_msg;//VO :代码验证
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public String getVerification_msg() {
+		return verification_msg;
+	}
+	public void setVerification_msg(String verification_msg) {
+		this.verification_msg = verification_msg;
 	}
 	public String getName() {
 		return name;

@@ -151,4 +151,29 @@ public class MyAssetsController {
 		model.addAttribute("name",asset.getName());//回显资产名称
 		return "/source/page/userCenter/userAssets";
 	}
+	/**
+	 * 功能描述：资产验证
+	 * 参数描述： Asset asset
+	 *		 @time 2015-1-19
+	 *	返回值：redirect:/userAssetsUI.html
+	 */
+	@RequestMapping("/verificationAsset.html")
+	public String verificationAsset(Asset asset,HttpServletRequest request){
+		int id = asset.getId();
+		//获取验证方式:代码验证 上传文件验证
+		String verification_msg = asset.getVerification_msg();
+		//代码验证
+		if(verification_msg.equals("代码验证")){
+			//获取已知代码
+			String code = (String) request.getAttribute("code");
+			
+		}
+		//上传文件验证
+		if(verification_msg.equals("上传文件验证")){
+			
+		}
+		//如果验证成功，将验证状态设为1
+		//如果验证失败，提示错误信息
+		return "redirect:/userAssetsUI.html";
+	}
 }
