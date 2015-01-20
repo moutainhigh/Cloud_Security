@@ -1,12 +1,18 @@
 package com.cn.ctbri.controller;
 
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,8 +20,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAssetService;
+import com.cn.ctbri.service.IOrderAssetService;
 /**
  * 创 建 人  ：  邓元元
  * 创建日期：  2015-1-16
@@ -26,6 +34,8 @@ import com.cn.ctbri.service.IAssetService;
 public class MyAssetsController {
 	@Autowired
 	IAssetService assetService;
+	@Autowired
+	IOrderAssetService orderAssetService;
 	/**
 	 * 功能描述： 我的资产页面
 	 * 参数描述： Model model,HttpServletRequest request
@@ -60,6 +70,55 @@ public class MyAssetsController {
 		assetService.saveAsset(asset);
 		return "redirect:/userAssetsUI.html";
 	}
+
+	/**
+	 * 功能描述：检查资产是否可以被删除
+	 * 参数描述：Asset asset ,HttpServletResponse response
+	 *		 @time 2015-1-19
+	 */
+	@RequestMapping("/checkdelete.html")
+	public void checkdelete(Asset asset,HttpServletResponse response){
+		//检查订单资产表里面是否含有此资产
+		List<OrderAsset> list = orderAssetService.findAssetById(asset.getId());
+		int count = 0;
+		if(list.size()>0){
+			count = list.size();
+		}
+		Map<String, Object> m = new HashMap<String, Object>();
+		m.put("count", count);
+		//object转化为Json格式
+		JSONObject JSON = objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 功能描述： 把数据返回到页面
+	 * 参数描述： HttpServletResponse response, JSONObject JSON
+	 * @throws Exception 
+	 *		 @time 2014-12-31
+	 */
+	private void writeToJsp(HttpServletResponse response, JSONObject JSON)
+			throws IOException {
+		response.getWriter().write(JSON.toString());
+		response.getWriter().flush();
+	}
+	/**
+	 * 功能描述：  object转化为Json格式
+	 * 参数描述： HttpServletResponse response,Map<String, Object> m
+	 * @throws Exception 
+	 *		 @time 2014-12-31
+	 */
+	private JSONObject objectToJson(HttpServletResponse response,
+			Map<String, Object> m) {
+		JSONObject JSON = JSONObject.fromObject(m);
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("application/json;charset=UTF-8");
+		return JSON;
+	}
 	/**
 	 * 功能描述：删除资产
 	 * 参数描述： Model model
@@ -67,7 +126,12 @@ public class MyAssetsController {
 	 */
 	@RequestMapping("/deleteAsset.html")
 	public String delete(Asset asset){
-		//检查订单资产表里面是否含有次资产
+		//检查订单资产表里面是否含有此资产
+		List<OrderAsset> list = orderAssetService.findAssetById(asset.getId());
+		int count = 0;
+		if(list.size()>0){
+			count = list.size();
+		}
 		
 		assetService.delete(asset.getId());
 		return "redirect:/userAssetsUI.html";
@@ -84,7 +148,7 @@ public class MyAssetsController {
 		List<Asset> result = assetService.searchAssetsCombine(asset);//根据userid 资产状态 和资产名称联合查询
 		model.addAttribute("list",result);		//传对象到页面
 		model.addAttribute("status",asset.getStatus());//回显资产类型	
-		model.addAttribute("name1",asset.getName());//回显资产名称
+		model.addAttribute("name",asset.getName());//回显资产名称
 		return "/source/page/userCenter/userAssets";
 	}
 }

@@ -13,6 +13,12 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/asset.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#status").val("${status}");
+	$("#searchAssetName").val("${name}");
+});
+</script>
 </head>
 
 <body>
@@ -90,9 +96,9 @@
             <td>${asset.name}</td>
             <td>${asset.addr}</td>
             <td><div class="zican_wei">未验证</div>
-              <div  class="zican_top">立即验证</div></td>
+              <div class="zican_top">立即验证</div></td>
             <td><div class="zican_top">修改</div>
-              <div class="zican_bottom"><a href="${ctx}/deleteAsset.html?id=${o.id}">删除</a></div></td>
+              <div class="zican_bottom"><a href="javascript:void(0)" onclick="deleteAsset('${asset.id}')" >删除</a></div></td>
           </tr>
           </c:forEach>
         </tbody>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.OrderAssetMapper">
+<sql id="cols">id,orderId,assetId</sql>
+	<resultMap type="com.cn.ctbri.entity.OrderAsset" id="OrderAssetRM">
+		<id property="id" column="id"/>
+		<result property="orderId" column="orderId"/>
+		<result property="assetId" column="assetId"/>
+	</resultMap> 
+	<!-- 按资产id查询订单资产 -->
+	<select id="findAssetById" parameterType="int" resultMap="OrderAssetRM">
+		select o.id,o.orderId,o.assetId
+		from cs_order_asset o
+		where o.assetId = #{assetId}
+	</select>
+</mapper>

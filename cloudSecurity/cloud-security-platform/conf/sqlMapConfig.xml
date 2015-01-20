@@ -18,5 +18,6 @@
 		<mapper resource="com/cn/ctbri/entity/SelfHelpOrderMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/ServMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/AssetMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/ OrderAssetMapper.xml"/>
 	</mappers>
 </configuration>  

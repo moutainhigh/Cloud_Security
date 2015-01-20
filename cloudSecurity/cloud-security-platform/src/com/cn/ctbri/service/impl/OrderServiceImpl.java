@@ -24,7 +24,7 @@ public class OrderServiceImpl implements IOrderService{
 
 	/**
 	 * 功能描述：查询所有订单
-	 * 参数描述：无
+	 * 参数描述：int id
 	 *		 @time 2015-1-15
 	 * 返回值    ：  List<Order>
 	 */
