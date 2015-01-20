@@ -31,7 +31,7 @@ public class MyBillController {
 	@Autowired
 	IServService servService;
 	/**
-	 * 功能描述： 显示登录用户的订单信息
+	 * 功能描述： 用户中心——我的账单页面
 	 * 参数描述： Model model
 	 *		 @time 2015-1-15
 	 */
