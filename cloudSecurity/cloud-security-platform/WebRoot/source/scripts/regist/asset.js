@@ -1,5 +1,6 @@
 function saveAsset() {
 	var assetName = $("#assetName").val();
+alert(assetName);
 	var assetAddr = $("#assetAddr").val();
 	if(assetName == null || assetName == "" || assetAddr==null || assetAddr == ""){
 		if(assetName == null || assetName == ""){
@@ -40,6 +41,5 @@ function deleteAsset(id){
 }
 //资产验证
 function verificationAsset(){
-	var code = document.getElementById("code").innerHTML;
-	alert(code);
+	
 }
