@@ -1,17 +1,11 @@
 package com.cn.ctbri.util;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
-
-import com.cn.ctbri.entity.User;
-
 
 public class LogonUtils {
 
@@ -34,7 +28,7 @@ public class LogonUtils {
 		return checkNumber.equalsIgnoreCase(CHECK_NUMBER_KEY);
 	}
 
-	/**自动登录功能*/
+	/**记住密码*/
 	public static void remeberMe(HttpServletRequest request,
 			HttpServletResponse response, String name, String password) {
 		//创建2个Cookie

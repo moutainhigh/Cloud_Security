@@ -52,11 +52,6 @@ public class MyBillController {
 	@RequestMapping("/searchCombine.html")
 	public String searchCombine(Model model,Integer type,String servName,String begin_datevo,String end_datevo,HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
-//		Integer type = order.getType();//订单类型(1：长期，2：单次)
-//		String servName = order.getServName();//服务名称
-//		String begin_datevo = order.getBegin_datevo();//服务开始时间
-//		String end_datevo = order.getEnd_datevo();//服务结束时间
-		
 		//组织条件查询
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("userId", globle_user.getId());

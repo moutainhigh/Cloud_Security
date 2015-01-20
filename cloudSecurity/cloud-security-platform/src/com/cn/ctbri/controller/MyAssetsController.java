@@ -59,14 +59,22 @@ public class MyAssetsController {
 		asset.setUserid(globle_user.getId());//用户ID
 		asset.setCreate_date(new Date());//创建日期
 		asset.setStatus(0);//资产状态(1：已验证，0：未验证)
-		String name = "";
+		String name = "";//资产名称
 		//处理页面输入中文乱码的问题
 		try {
-			name = URLDecoder.decode(asset.getName(), "UTF-8");
+			//name = URLDecoder.decode(asset.getName(), "UTF-8");
+			name=new String(asset.getName().getBytes("ISO-8859-1"), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		asset.setName(name);
+		String addr = "";//资产地址
+		try {
+			addr=new String(asset.getAddr().getBytes("ISO-8859-1"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		asset.setAddr(addr);
 		assetService.saveAsset(asset);
 		return "redirect:/userAssetsUI.html";
 	}
