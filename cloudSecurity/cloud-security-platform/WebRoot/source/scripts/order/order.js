@@ -1,6 +1,14 @@
 $(function(){
 	$(".dan_2").eq(1).hide();
 	$(".hideEnddate").hide(); 
+	var type = $("#type").val();
+	if(type==1){
+		$('input:radio[name="orderType"]:eq(0)').attr("disabled", true);
+		$('input:radio[name="orderType"]:eq(1)').attr("checked",'checked');
+		$(".dan_2").eq(1).show();
+	}else if(type==2){
+		$('input:radio[name="orderType"]:eq(1)').attr("disabled", true);
+	}
 	
 	$('.dan_1 input').click(function (){
 		var orderType=$('input:radio[name="orderType"]:checked').val();
@@ -59,6 +67,13 @@ $(function(){
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
     	var scanType=$('input:radio[name="scanType"]:checked').val();
+    	var serviceId=$('.peiz_active').attr("id");
+    	var servName=$('.peiz_active').attr("name");
+    	var servRemark=$('.peiz_active input').val();
+    	if($('#addTr1 input[name="assetId"]').length==0){
+			alert("在资产列表中选择服务对象资产!");
+			return;
+		}
     	var typeName=null;
     	if(orderType==2){
     		typeName="单次";
@@ -77,6 +92,10 @@ $(function(){
     	$('td[name="begin"]').html(beginDate);
     	$('td[name="end"]').html(endDate);
     	$('td[name="scanName"]').html(scanName);
+    	$('td[name="servName"]').html(servName);
+    	$('h3[name="servName"]').html(servName);
+    	$('p[name="servRemark"]').html(servRemark);
+    	$('img[name="servImg"]').attr("src","/cloud-security-platform/source/images/center_"+serviceId+".png");
     	getActive(2);
     	
     	
@@ -115,6 +134,7 @@ $(function(){
     	$('td[name="linkname"]').html(linkname);
     	$('td[name="phone"]').html(phone);
     	$('td[name="email"]').html(email);
+    	$('td[name="company"]').html(company);
     	$('td[name="address"]').html(address);
     });
     
@@ -125,27 +145,37 @@ $(function(){
     
     //确认订单界面点击"确认订单"进入完成
     $("#fourStep").click(function(){
+    	var orderId = MathRand();
+    	var createDate = getCreateDate();
     	var orderType=$('input:radio[name="orderType"]:checked').val();
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
     	var scanType=$('input:radio[name="scanType"]:checked').val();
-    	var serviceId=$('#addTr1[name="assetId"]').val();
+    	var serviceId=$('.peiz_active').attr("id");
     	var linkname=$('#linkname').val();
     	var phone=$('#phone').val();
     	var email=$('#email').val();
     	var company=$('#company').val();
     	var address=$('#address').val();
-    	var obj = {'orderType':orderType,
+    	var obj = {'orderId':orderId,
+    			   'orderType':orderType,
     			   'beginDate': beginDate,
     			   'endDate':endDate,
+    			   'createDate':createDate,
     			   'scanType':scanType,
-    			   'serviceId':serviceId};
-    	$.post("/cloud-security-platform/saveOrder.html", obj, function(data){
-    		if(isSuccess){
-    			
-    		}
-        });
-    	getActive(4);
+    			   'serviceId':serviceId,
+    			   'linkname':linkname,
+    			   'phone':phone,
+    			   'email':email,
+    			   'company':company,
+    			   'address':address};
+    	var result = window.confirm("确定要提交订单吗？");
+    	if(result){
+	    	$.post("/cloud-security-platform/saveOrder.html", obj, function(data){
+	    		getActive(4);
+	        });
+    	}
+    	
     });
     
    function getActive(index){
@@ -180,20 +210,80 @@ $(function(){
    //勾选服务对象到右侧
    $("#to_right").click(function(){
    		if($('input:checkbox[name="serviceAssetId"]:checked').length==0){
-			alert("选择要服务对象!");
+			alert("在资产列表中选择服务对象资产!");
 			return;
 		}
-   		var $removeTr = $('input:checkbox[name="serviceAssetId"]:checked').parent().html('<a href="###" id="delete">X </a>');
+   		var $removeTr = $('input:checkbox[name="serviceAssetId"]:checked').parent().html('<a href="###" class="delete">X </a>');
    		$removeTr = $removeTr.parent().detach();
 		$("#addTr1").append($removeTr);
    });
    
    //删除服务对象
-   $("#delete").click(function(){
-	    alert("11");
+   $(".delete").click(function(){
+	    var _index = $(".delete").index(this);
+	    alert(_index);
    		var $removeTr = $(this).parent().html("<input type='checkbox' name='serviceAssetId'/>");
    		$removeTr = $removeTr.parent().detach();
 		$("#addTr").append($removeTr);
    });
+   
+   $('.pei_ul_1 li').click(function (){
+	   var _index = $(".pei_ul_1 li").index(this);
+	   if(_index==0){
+		   $('.pei_ul_1 li').removeClass('pei_active');
+		   $(this).addClass('pei_active');
+	   }else{
+		   $('.pei_ul_1 li').eq(0).removeClass('pei_active');
+		   $(this).addClass('pei_active');
+	   }
+	   
+	});
+   
+   $('.pei_ul_2 li').click(function (){
+	   var _index = $(".pei_ul_2 li").index(this);
+	   if(_index==0){
+		   $('.pei_ul_2 li').removeClass('pei_active');
+		   $(this).addClass('pei_active');
+	   }else{
+		   $('.pei_ul_2 li').eq(0).removeClass('pei_active');
+		   $(this).addClass('pei_active');
+	   }
+	   
+	});
+   
+   $('.pei_ul_3 li').click(function (){
+	   var _index = $(".pei_ul_3 li").index(this);
+	   if(_index==0){
+		   $('.pei_ul_3 li').removeClass('pei_active');
+		   $(this).addClass('pei_active');
+	   }else{
+		   $('.pei_ul_3 li').eq(0).removeClass('pei_active');
+		   $(this).addClass('pei_active');
+	   }
+	   
+	});
+   
+   
+   //随机数生成
+   function MathRand(){ 
+	   var Num=""; 
+	   for(var i=0;i<10;i++){ 
+		   Num+=Math.floor(Math.random()*10); 
+	   } 
+	   document.getElementById("orderId").innerText=Num; 
+	   document.getElementById("orderId").innerHTML=Num; 
+	   return Num;
+   } 
+   
+   function getCreateDate(){
+	   var now = new Date();
+   	   var createDate = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"-"+(now.getDate()<10?"0":"")+now.getDate()+" "+now.getHours()+":"+now.getMinutes()+":"+now.getSeconds();
+   	   document.getElementById("createDate").innerText=createDate; 
+	   document.getElementById("createDate").innerHTML=createDate;
+   	   return createDate;
+   }
+   
+   
+
     
 });

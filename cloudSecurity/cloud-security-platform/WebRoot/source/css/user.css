@@ -90,6 +90,14 @@
 .pei_ul_1 li{ float:left; width:75px; height:22px;  margin-left:35px; text-align:center; font-size:14px; line-height:22px;}
 .pei_ul_1 li a{ color:#707070;}
 .pei_ul_1 li.pei_active{border:2px solid #2da039;}
+.pei_ul_2 { clear:both; margin-bottom:10px; overflow:hidden; }
+.pei_ul_2 li{ float:left; width:75px; height:22px;  margin-left:35px; text-align:center; font-size:14px; line-height:22px;}
+.pei_ul_2 li a{ color:#707070;}
+.pei_ul_2 li.pei_active{border:2px solid #2da039;}
+.pei_ul_3 { clear:both; margin-bottom:10px; overflow:hidden; }
+.pei_ul_3 li{ float:left; width:75px; height:22px;  margin-left:35px; text-align:center; font-size:14px; line-height:22px;}
+.pei_ul_3 li a{ color:#707070;}
+.pei_ul_3 li.pei_active{border:2px solid #2da039;}
 .peiz_center{ margin-top:25px;margin-left:25px;}
 .peiz_center ul { clear:both; overflow:hidden;}
 .peiz_center ul li{ float:left; width:83px; text-align:center; font-size:14px; margin-right:2px; height:120px;  padding:20px 17px 0px 17px; border:1px dashed #fff;}

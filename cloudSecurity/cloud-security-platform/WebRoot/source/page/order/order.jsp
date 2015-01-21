@@ -55,6 +55,7 @@
   <!-- <jsp:include page="../userCenter/left.jsp"/> -->
   
   <!--自助下单-->
+  <input type="hidden" id="type" value="${type }"/>
   <div class="user_right" >
     <div class="ding_nav">
       <div style="border-top:1px solid #e0e0e0; width:800px; position:absolute; left:75px; top:111px;"></div>
@@ -96,14 +97,16 @@
 	          <li><a href="###">${list.name }</a></li>
           </c:forEach>
         </ul>
-        <ul class="pei_ul_1">
+        <ul class="pei_ul_2">
           <div class="pei_ul_txt"><a href="###">厂商</a></div>
+          <li class="pei_active"><a href="###">全部</a></li>
           <c:forEach var="list" items="${factoryList}" varStatus="status">
               <li><a href="###">${list.factory }</a></li>
           </c:forEach>
         </ul>
-        <ul class="pei_ul_1">
+        <ul class="pei_ul_3">
           <div class="pei_ul_txt"><a href="###">服务</a></div>
+          <li class="pei_active"><a href="###">全部</a></li>
           <li><a href="###">WEB</a></li>
           <li><a href="###">Anti-DDOS</a></li>
         </ul>
@@ -113,18 +116,18 @@
           <c:forEach var="list" items="${servList}" varStatus="status">
             <c:choose>
                <c:when test="${status.first}">
-                   <li class="peiz_active" id="${list.id }">
+                   <li class="peiz_active" id="${list.id }" name="${list.name }">
+                   <input type="hidden" value="${list.remarks }"/>
 	               <div><img src="${ctx}/source/images/user_${status.index+1 }.jpg" /></div>
 	               <a href="###">${list.name }</a> </li>
                </c:when>
                <c:otherwise>
-                   <li id="${list.id }">
+                   <li id="${list.id }" name="${list.name }">
+                   <input type="hidden" value="${list.remarks }"/>
                    <div><img src="${ctx}/source/images/user_${status.index+1 }.jpg" /></div>
                    <a href="###">${list.name }</a> </li>
                </c:otherwise>
             </c:choose>
-                
-            
           </c:forEach>
         </ul>
       </div>
@@ -246,16 +249,16 @@
           <div class="pinv_subnav">
             <ul class="pinv_sub_nav">
               <li class="pinv_active">
-                <input type="radio" name="scanType"/>
+                <input type="radio" name="scanType" value="1"/>
                 &nbsp;&nbsp;每天</li>
               <li>
-                <input type="radio" name="scanType"/>
+                <input type="radio" name="scanType" value="2"/>
                 &nbsp;&nbsp;每周</li>
               <li>
-                <input type="radio" name="scanType"/>
+                <input type="radio" name="scanType" value="3"/>
                 &nbsp;&nbsp;每月</li>
             </ul>
-            <div class="pinv_subcenter" style="display:block;"></div>
+            <!-- <div class="pinv_subcenter" style="display:block;"></div>
             <div class="pinv_subcenter">
               <ul>
                 <li><a href="###">周一</a></li>
@@ -267,7 +270,7 @@
                 <li style="border-right:0px"><a href="###">周日</a></li>
               </ul>
             </div>
-            <div class="pinv_subcenter"></div>
+            <div class="pinv_subcenter"></div> -->
           </div>
         </div>
       </div>
@@ -316,10 +319,10 @@
     <!-- 联系信息-->
     <div  class="ding_center">
       <div class="user_xinx clear">
-        <div class="xinx_left"><img src="${ctx}/source/images/user_9.jpg" /></div>
+        <div class="xinx_left"><img name="servImg" src="${ctx}/source/images/user_9.jpg" /></div>
         <div class="xinx_right">
-          <h3>漏洞扫描服务</h3>
-          <p>漏洞扫描是对你的电脑进行全方位的扫描，检查你当前的系统是否有漏洞，如果有漏洞则需要马上进行修复。</p>
+          <h3 name="servName"></h3>
+          <p name="servRemark"></p>
         </div>
       </div>
       <div class="xinx_table">
@@ -340,7 +343,7 @@
           </tr>
           <tr>
             <td>服务对象</td>
-            <td colspan="3">亿家康</td>
+            <td colspan="3" name="servName"></td>
           </tr>
           <tr>
             <td>扫描频率</td>
@@ -387,10 +390,10 @@
     <!-- 确认订单-->
     <div  class="ding_center">
       <div class="user_xinx clear">
-        <div class="xinx_left"><img src="${ctx}/source/images/user_9.jpg" /></div>
+        <div class="xinx_left"><img name="servImg" src="${ctx}/source/images/user_9.jpg" /></div>
         <div class="xinx_right">
-          <h3>漏洞扫描服务</h3>
-          <p>漏洞扫描是对你的电脑进行全方位的扫描，检查你当前的系统是否有漏洞，如果有漏洞则需要马上进行修复。</p>
+          <h3 name="servName"></h3>
+          <p name="servRemark"></p>
         </div>
       </div>
       <div class="xinx_table">
@@ -411,7 +414,7 @@
           </tr>
           <tr>
             <td>服务对象</td>
-            <td colspan="3">亿家康</td>
+            <td colspan="3" name="servName"></td>
           </tr>
           <tr>
             <td>扫描频率</td>
@@ -421,22 +424,27 @@
           <tr>
             <td>联系信息</td>
             <td>联系人姓名</td>
-            <td colspan="2" name="linkname">张某某</td>
+            <td colspan="2" name="linkname"></td>
           </tr>
           <tr>
             <td></td>
             <td>电话</td>
-            <td colspan="2" name="phone">18810101010</td>
+            <td colspan="2" name="phone"></td>
           </tr>
           <tr>
             <td></td>
             <td>邮箱</td>
-            <td colspan="2" name="email">zhangmomo2014@163.com</td>
+            <td colspan="2" name="email"></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>单位名称</td>
+            <td colspan="2" name="company"></td>
           </tr>
           <tr>
             <td></td>
             <td>地址</td>
-            <td colspan="2" name="address">北京市海淀区中关村科学院南路</td>
+            <td colspan="2" name="address"></td>
           </tr>
         </table>
       </div>
@@ -449,12 +457,12 @@
     </div>
     <!--下单成功-->
     <div  class="ding_center">
-      <div  class="user_wanc">下单成功！&nbsp;   &nbsp;   订单编号   9453540500  &nbsp;&nbsp;      下单时间   2014.12.17</div>
+      <div  class="user_wanc">下单成功！&nbsp;   &nbsp;   订单编号  <font id="orderId"></font> &nbsp;&nbsp;      下单时间   <font id="createDate"></font></div>
       <div class="user_xinx clear">
-        <div class="xinx_left"><img src="${ctx}/source/images/user_9.jpg" /></div>
+        <div class="xinx_left"><img name="servImg" src="${ctx}/source/images/user_9.jpg" /></div>
         <div class="xinx_right">
-          <h3>漏洞扫描服务</h3>
-          <p>漏洞扫描是对你的电脑进行全方位的扫描，检查你当前的系统是否有漏洞，如果有漏洞则需要马上进行修复。</p>
+          <h3 name="servName"></h3>
+          <p name="servRemark"></p>
         </div>
       </div>
       <div class="xinx_table">
@@ -475,7 +483,7 @@
           </tr>
           <tr>
             <td>服务对象</td>
-            <td colspan="3">亿家康</td>
+            <td colspan="3" name="servName"></td>
           </tr>
           <tr>
             <td>扫描频率</td>
@@ -485,22 +493,27 @@
           <tr>
             <td>联系信息</td>
             <td>联系人姓名</td>
-            <td colspan="2" name="linkname">张某某</td>
+            <td colspan="2" name="linkname"></td>
           </tr>
           <tr>
             <td></td>
             <td>电话</td>
-            <td colspan="2" name="phone">18810101010</td>
+            <td colspan="2" name="phone"></td>
           </tr>
           <tr>
             <td></td>
             <td>邮箱</td>
-            <td colspan="2" name="email">zhangmomo2014@163.com</td>
+            <td colspan="2" name="email"></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>单位名称</td>
+            <td colspan="2" name="company"></td>
           </tr>
           <tr>
             <td></td>
             <td>地址</td>
-            <td colspan="2" name="address">北京市海淀区中关村科学院南路</td>
+            <td colspan="2" name="address"></td>
           </tr>
         </table>
       </div>
