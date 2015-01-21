@@ -1,7 +1,11 @@
 package com.cn.ctbri.controller;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
@@ -9,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -183,5 +188,43 @@ public class MyAssetsController {
 		//如果验证成功，将验证状态设为1
 		//如果验证失败，提示错误信息
 		return "redirect:/userAssetsUI.html";
+	}
+	//================下载=================
+    private String type;// 文件的MIME类型
+    
+	public String getType() {
+		return type;
+	}
+	
+	/**
+	 * 功能描述：下载导入模板
+	 * 参数描述：HttpServletRequest request,HttpServletResponse response
+	 *		 @time 2015-1-21
+	 */
+	@RequestMapping("/download.html")
+	public void download(HttpServletRequest request,HttpServletResponse response) throws Exception{
+		String fileName = request.getParameter("fileName");
+		fileName = new String(fileName.getBytes("ISO-8859-1"), "UTF-8");//反编译解决路径乱码
+		//获取文件路径
+		String path = request.getSession().getServletContext().getRealPath("/source/download");
+		File file = new File(path+"/"+fileName);
+		response.setHeader("Content-Disposition", "attachment; filename=" + new String(fileName.getBytes("GBK"), "ISO-8859-1") + ";");//文件的下载方式：attachment：附件
+		// 通常文件名称得到mime类型
+		type = request.getSession().getServletContext().getMimeType(fileName);
+		//将路径path转化成输入流
+		InputStream in = new FileInputStream(file);
+		//将输入流的数据放置到模型驱动对象的InputStream的属性中
+		ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
+		byte[] temp = new byte[1024];
+		int size = 0;
+		while ((size = in.read(temp)) != -1) {
+			out.write(temp, 0, size);
+		}
+		in.close();
+		ServletOutputStream os = response.getOutputStream();
+		os.write(out.toByteArray());
+		os.flush();
+		os.close();
+		return;
 	}
 }
