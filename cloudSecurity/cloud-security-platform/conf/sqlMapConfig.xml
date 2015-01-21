@@ -9,6 +9,7 @@
         <typeAlias type="com.cn.ctbri.entity.Factory" alias="factory"/>
         <typeAlias type="com.cn.ctbri.entity.Asset" alias="asset"/>
         <typeAlias type="com.cn.ctbri.entity.Order" alias="order"/>
+        <typeAlias type="com.cn.ctbri.entity.Linkman" alias="linkman"/>
     </typeAliases>  
     
     <!-- 指定映射文件 -->
