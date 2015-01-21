@@ -41,6 +41,20 @@ public interface IAssetService {
 	 * 返回值    ：List<Asset>
 	 */
 	List<Asset> searchAssetsCombine(Asset asset);
+	/**
+	 * 功能描述：根据资产id获取资产
+	 * 参数描述：int id
+	 *		 @time 2015-1-21
+	 * 返回值    ：Asset
+	 */
+	Asset findById(int id);
+	/**
+	 * 功能描述：更新资产状态
+	 * 参数描述：Asset asset
+	 *		 @time 2015-1-21
+	 * 返回值    ：Asset
+	 */
+	void updateAsset(Asset asset);
 
 	
 }

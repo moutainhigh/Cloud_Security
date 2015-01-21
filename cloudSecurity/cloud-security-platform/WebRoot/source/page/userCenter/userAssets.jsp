@@ -17,6 +17,7 @@
 $(document).ready(function(){
 	$("#status").val("${status}");
 	$("#searchAssetName").val("${name}");
+	alert("${msg}");
 });
 </script>
 </head>
@@ -177,8 +178,9 @@ $(document).ready(function(){
 
 <div id="box_logoIn2">
 <div  id="close2"></div>
-<form action="${ctx}/verificationAsset.html?code=document.getElementById('code').innerHTML" method="post" >
+<form action="${ctx}/verificationAsset.html?code=document.getElementById('code').innerHTML" method="post" id="verificationAssetForm">
 <input type="hidden" value="" id="hiddenId" name="id"/>
+<input type="hidden" value="" id="hiddenAttr" name="attr"/>
 	<div class="text_1">
 	  <div class="text_top" id="verificationName"></div>
 	  <div class="text_bottm">
@@ -196,11 +198,13 @@ $(document).ready(function(){
 	      <p>请在您的<span><a href="###">网站首页</a></span>中任何位置加入如上代码。（<a href="javascript:void(0)" onclick="copyToClipBoard()">复制代码</a>）<br />
 	        如果添加成功，您的网站首页上能够看到右边的文字：“云服务平台”</p>
 	    </div>
+	    <!--  
 	    <div class="txt_1">
-        	<a href="${ctx}/download.html?fileName=验证文件.txt">验证文件.txt</a>
+        	<p>请点击下载：<a href="${ctx}/download.html?fileName=验证文件.txt">验证文件.txt</a></p>
 	      <p>请在您的<span><a href="###">网站首页</a></span>中任何位置加入如上文件。请点击验证文件下载！<br/>
 	        如果添加成功，您的网站首页上能够看到右边的文字：“云服务平台”</p>
 	    </div>
+	    -->
 	  </div>
 	  <div style="margin-top:35px;"><a href="javascript:void(0)"><img src="${ctx}/source/images/user_submit_4.jpg" onclick="verificationAsset()"/></a></div>
 	</div>

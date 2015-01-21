@@ -42,4 +42,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and a.name like CONCAT(CONCAT('%', #{name}), '%')
 		</if>
 	</select>
+	<!-- 根据资产id查询资产 -->
+	<select id="findById" parameterType="int" resultMap="AssetRM">
+		select * from cs_asset
+		where id=#{id} 
+	</select>
+	<!-- 修改资产状态 -->
+	<update id="updateAsset" parameterType="com.cn.ctbri.entity.Asset">
+		update cs_asset
+		<set>
+			status=#{status}
+		</set>
+		where id=#{id}
+	</update>
 </mapper>

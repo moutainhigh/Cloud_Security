@@ -57,5 +57,24 @@ public class AssetServiceImpl implements IAssetService{
 		List<Asset> list = assetDao.searchAssetsCombine(asset);
 		return list;
 	}
+	/**
+	 * 功能描述：根据资产id获取资产
+	 * 参数描述：int id
+	 *		 @time 2015-1-21
+	 * 返回值    ：Asset
+	 */
+	public Asset findById(int id) {
+		Asset asset = assetDao.findById(id);
+		return asset;
+	}
+	/**
+	 * 功能描述：更新资产状态
+	 * 参数描述：Asset asset
+	 *		 @time 2015-1-21
+	 * 返回值    ：Asset
+	 */
+	public void updateAsset(Asset asset) {
+		assetDao.updateAsset(asset);
+	}
 	
 }

@@ -41,7 +41,7 @@ function deleteAsset(id){
 }
 //资产验证
 function verificationAsset(){
-	
+	$("#verificationAssetForm").submit();
 }
 //复制文本
 function copyToClipBoard(){ 

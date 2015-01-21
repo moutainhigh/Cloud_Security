@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import org.htmlparser.util.NodeList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,7 @@ import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAssetService;
+import com.cn.ctbri.util.GetNetContent;
 /**
  * 创 建 人  ：  邓元元
  * 创建日期：  2015-1-16
@@ -171,19 +173,34 @@ public class MyAssetsController {
 	 *	返回值：redirect:/userAssetsUI.html
 	 */
 	@RequestMapping("/verificationAsset.html")
-	public String verificationAsset(Asset asset,HttpServletRequest request){
+	public String verificationAsset(Model model,Asset asset,HttpServletRequest request){
 		int id = asset.getId();
+		Asset _asset = assetService.findById(id);
 		//获取验证方式:代码验证 上传文件验证
-		String verification_msg = asset.getVerification_msg();
-		//代码验证
-		if(verification_msg.equals("代码验证")){
-			//获取已知代码
-			String code = (String) request.getAttribute("code");
-			
-		}
-		//上传文件验证
-		if(verification_msg.equals("上传文件验证")){
-			
+		String verification_msg;
+		try {
+			verification_msg = new String(asset.getVerification_msg().getBytes("ISO-8859-1"), "UTF-8");
+		
+			//代码验证
+			if(verification_msg.equals("代码验证")){
+				 //获取已知代码
+				 String code = (String) request.getAttribute("code");
+				 NodeList rt= GetNetContent.getNodeList(_asset.getAddr());
+				 String str= rt.toString();
+				 if(str.contains(code)){
+					 asset.setId(1);//如果验证成功，将验证状态设为1
+					 assetService.updateAsset(asset);
+				 }else{
+					 model.addAttribute("msg", "验证失败"); 
+				 }
+			}
+			//上传文件验证
+			if(verification_msg.equals("上传文件验证")){
+				
+			}
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		//如果验证成功，将验证状态设为1
 		//如果验证失败，提示错误信息
