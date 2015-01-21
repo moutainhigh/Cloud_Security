@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
+import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.service.ISelfHelpOrderService;
+import com.cn.ctbri.util.Random;
 
 /**
  * 创 建 人  ：  txr
@@ -42,6 +44,7 @@ public class OrderMgrController {
 	 */
 	@RequestMapping(value="selfHelpOrderInit.html")
 	public String selfHelpOrderInit(HttpServletRequest request){
+	    String type = request.getParameter("type");
 	    //获取服务类型
         List<Serv> servList = selfHelpOrderService.findService();
 	    //获取服务类型
@@ -54,6 +57,7 @@ public class OrderMgrController {
 	    request.setAttribute("typeList", typeList);
         request.setAttribute("factoryList", factoryList);
         request.setAttribute("serviceAssetList", serviceAssetList);
+        request.setAttribute("type", type);
 		return "/source/page/order/order";
 	}
 	
@@ -66,28 +70,57 @@ public class OrderMgrController {
     @RequestMapping(value="saveOrder.html")
     @ResponseBody
     public String saveOrder(HttpServletRequest request) throws Exception{
+        User globle_user = (User) request.getSession().getAttribute("globle_user");
+        String orderId = request.getParameter("orderId");
         String orderType = request.getParameter("orderType");
         String beginDate = request.getParameter("beginDate");
         String endDate = request.getParameter("endDate");
+        String createDate = request.getParameter("createDate");
         String scanType = request.getParameter("scanType");
         String serviceId = request.getParameter("serviceId");
+        String linkname = request.getParameter("linkname");
+        String phone = request.getParameter("phone");
+        String email = request.getParameter("email");
+        String company = request.getParameter("company");
+        String address = request.getParameter("address");
+        //新增联系人
+        Linkman linkObj = new Linkman();
+        int linkmanId = Random.eightcode();
+        linkObj.setId(linkmanId);
+        linkObj.setName(linkname);
+        linkObj.setMobile(phone);
+        linkObj.setEmail(email);
+        linkObj.setAddress(address);
+        linkObj.setCompany(company);
+        linkObj.setUserId(globle_user.getId());
+        selfHelpOrderService.insertLinkman(linkObj);
+        //新增订单
         Order order = new Order();
+        order.setId(Integer.parseInt(orderId));
         order.setType(Integer.parseInt(orderType));
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
         Date begin_date = null;
         Date end_date = null;
+        Date create_date = null;
         if(beginDate!=null && !beginDate.equals("")){
             begin_date=sdf.parse(beginDate); 
         }
         if(endDate!=null && !endDate.equals("")){
             end_date=sdf.parse(endDate); 
         }
+        if(createDate!=null && !createDate.equals("")){
+            create_date=sdf.parse(createDate); 
+        }
         order.setBegin_date(begin_date);
         order.setEnd_date(end_date);
+        order.setCreate_date(create_date);
         if(scanType!=null && !scanType.equals("")){
             order.setScan_type(Integer.parseInt(scanType));
         }
         order.setServiceId(Integer.parseInt(serviceId));
+        order.setTask_date(begin_date);
+        order.setUserId(globle_user.getId());
+        order.setContactId(linkmanId);
         selfHelpOrderService.insertOrder(order);
         request.setAttribute("isSuccess", true);
         return "/source/page/order/order";

@@ -19,10 +19,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from cs_asset
     </select>
 	
+	<!-- 插入联系人 -->
+    <insert id="insertLinkman" parameterType="linkman">
+        insert into cs_linkman
+        (id, name, mobile, email, company, address, userId) 
+        values(#{id}, #{name}, #{mobile}, #{email}, #{company}, #{address}, #{userId})
+    </insert>
+    
 	<!-- 插入订单 -->
     <insert id="insert" parameterType="order">
         insert into cs_order
-        (type, begin_date, end_date, serviceId, scan_date) 
-        values(#{type}, #{begin_date}, #{end_date}, #{serviceId}, #{scan_type})
+        (id, type, begin_date, end_date, serviceId, create_date, task_date, scan_date, userId, contactId, remarks) 
+        values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks})
     </insert>
+    
 </mapper>

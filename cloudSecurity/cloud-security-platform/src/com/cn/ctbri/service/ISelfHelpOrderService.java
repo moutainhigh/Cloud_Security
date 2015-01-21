@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
+import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
@@ -48,6 +49,13 @@ public interface ISelfHelpOrderService {
      * 返回值    ：  List<Serv>
      */
     List<Serv> findService();
+
+    /**
+     * 功能描述：保存联系人
+     *       @time 2015-1-19
+     */
+    void insertLinkman(Linkman linkObj);
+
 
 	
 }

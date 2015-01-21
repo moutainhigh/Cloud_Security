@@ -12,6 +12,7 @@ import com.cn.ctbri.dao.SelfHelpOrderDao;
 import com.cn.ctbri.dao.UserDao;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
+import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
@@ -82,6 +83,15 @@ public class SelfHelpOrderDaoImpl extends SqlSessionDaoSupport implements SelfHe
     public List<Serv> getService() {
         return this.getSqlSession().selectList(nv + "list");
     }
+
+    /**
+     * 功能描述：保存联系人
+     *       @time 2015-1-19
+     */
+    public void saveLinkman(Linkman linkObj) {
+        this.getSqlSession().insert(ns + "insertLinkman", linkObj);
+    }
+
 
 	
 }

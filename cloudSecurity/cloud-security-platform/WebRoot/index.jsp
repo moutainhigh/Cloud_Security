@@ -65,27 +65,27 @@
                  <h1>WEB云安全服务</h1>
                  <div class="web_main bor_right"> 
                     <div class="web_main_pic"><img src="${ctx}/source/images/center_1.png" /></div>
-                    <h2><a href="###">漏洞扫描服务</a></h2>
+                    <h2><a href="${ctx}/selfHelpOrderInit.html?type=0">漏洞扫描服务</a></h2>
                     <p>漏洞扫描是对你的电脑进行全方位的扫描，检查你当前的系统是否有漏洞，如果有漏洞则需要马上进行修复。</p>
                  </div>
                  <div class="web_main bor_right">
                      <div class="web_main_pic"><img src="${ctx}/source/images/center_2.png" /></div>
-                    <h2><a href="###">恶意代码监测服务</a></h2>
+                    <h2><a href="${ctx}/selfHelpOrderInit.html?type=0">恶意代码监测服务</a></h2>
                     <p>漏洞扫描是对你的电脑进行全方位的扫描，检查你当前的系统是否有漏洞，如果有漏洞则需要马上进行修复。</p>
                  </div>
                  <div class="web_main bor_right">
                      <div class="web_main_pic"><img src="${ctx}/source/images/center_3.png" /></div>
-                    <h2><a href="###">网页篡改监测服务</a></h2>
+                    <h2><a href="${ctx}/selfHelpOrderInit.html?type=1">网页篡改监测服务</a></h2>
                     <p>漏洞扫描是对你的电脑进行全方位的扫描，检查你当前的系统是否有漏洞，如果有漏洞则需要马上进行修复。</p>
                  </div>
                 <div class="web_main bor_right">
                     <div class="web_main_pic"><img src="${ctx}/source/images/center_4.png" /></div>
-                    <h2><a href="###">关键字监测服务</a></h2>
+                    <h2><a href="${ctx}/selfHelpOrderInit.html?type=0">关键字监测服务</a></h2>
                     <p>漏洞扫描是对你的电脑进行全方位的扫描，检查你当前的系统是否有漏洞，如果有漏洞则需要马上进行修复。</p>
                  </div>
                  <div class="web_main">
                      <div class="web_main_pic"><img src="${ctx}/source/images/center_5.png" /></div>
-                    <h2><a href="###">可用性监测服务</a></h2>
+                    <h2><a href="${ctx}/selfHelpOrderInit.html?type=1">可用性监测服务</a></h2>
                     <p>漏洞扫描是对你的电脑进行全方位的扫描，检查你当前的系统是否有漏洞，如果有漏洞则需要马上进行修复。</p>
                  </div>
              </div>
@@ -98,21 +98,21 @@
                   <div class="anti_main bor_right">
                      <div class="anti_main_pic"><img src="${ctx}/source/images/center_6.png" /></div>
                      <div class="anti_main_right">
-                        <h2><a href="###">日常流量监控服务</a></h2>
+                        <h2><a href="${ctx}/selfHelpOrderInit.html?type=1">日常流量监控服务</a></h2>
                         <p>漏洞扫描是对你的电脑进行全方位的扫描，检查你当前的系统是否有漏洞，如果有漏洞则需要马上进行修复。</p>
                     </div>
                   </div>
                    <div class="anti_main bor_right">
                      <div class="anti_main_pic"><img src="${ctx}/source/images/center_7.png" /></div>
                      <div class="anti_main_right">
-                        <h2><a href="###">日常攻击防护服务</a></h2>
+                        <h2><a href="${ctx}/selfHelpOrderInit.html?type=1">日常攻击防护服务</a></h2>
                         <p>漏洞扫描是对你的电脑进行全方位的扫描，检查你当前的系统是否有漏洞，如果有漏洞则需要马上进行修复。</p>
                     </div>
                   </div>
                   <div class="anti_main">
                      <div class="anti_main_pic"><img src="${ctx}/source/images/center_8.png" /></div>
                      <div class="anti_main_right">
-                        <h2><a href="###">突发异常流量清洗服务</a></h2>
+                        <h2><a href="${ctx}/selfHelpOrderInit.html?type=2">突发异常流量清洗服务</a></h2>
                         <p>漏洞扫描是对你的电脑进行全方位的扫描，检查你当前的系统是否有漏洞，如果有漏洞则需要马上进行修复。</p>
                     </div>
                   </div>
