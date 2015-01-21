@@ -19,4 +19,17 @@ public class Random {
         return n;
     }
 
+    /**
+     * 功能描述：获取8位随机数
+     * 参数描述： 无
+     *       @time 2014-12-31
+     */
+    public static int eightcode() {
+        int n = 0 ;
+        while(n < 10000000){
+                 n = (int)(Math.random()*100000000);
+        }
+        return n;
+    }
+
 }
