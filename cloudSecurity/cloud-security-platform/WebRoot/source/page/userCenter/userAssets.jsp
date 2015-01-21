@@ -192,8 +192,13 @@ $(document).ready(function(){
 	    </div>
 	    <div class="txt_1">
 	      <div class="txt_2" id="code">"http://webscan.360.cn/index/checkwebsite/url/1.1.1.1"
-	        name="9d4f9e27bc0c401fb20aqa2420ff1e5">云服务平台</div>
-	      <p>请在您的<span><a href="${ctx}/index.html">网站首页<a/></span>中任何位置加入如上代码。（<a href="###">复制代码</a>）<br />
+	        name="9d4f9e27bc0c401fb20aqa2420ff1e5"云服务平台</div>
+	      <p>请在您的<span><a href="###">网站首页</a></span>中任何位置加入如上代码。（<a href="javascript:void(0)" onclick="copyToClipBoard()">复制代码</a>）<br />
+	        如果添加成功，您的网站首页上能够看到右边的文字：“云服务平台”</p>
+	    </div>
+	    <div class="txt_1">
+        	<a href="${ctx}/download.html?fileName=验证文件.txt">验证文件.txt</a>
+	      <p>请在您的<span><a href="###">网站首页</a></span>中任何位置加入如上文件。请点击验证文件下载！<br/>
 	        如果添加成功，您的网站首页上能够看到右边的文字：“云服务平台”</p>
 	    </div>
 	  </div>
