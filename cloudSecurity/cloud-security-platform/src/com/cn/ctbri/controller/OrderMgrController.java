@@ -22,6 +22,7 @@ import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
+import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.util.Random;
 
