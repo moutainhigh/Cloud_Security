@@ -25,6 +25,7 @@ public class SystemFilter extends OncePerRequestFilter  {
 			throws ServletException, IOException {
 		//存放在没有Session之前，可以放行的连接
 		List<String> list = new ArrayList<String>();
+		list.add("/asset_verification.html");
 		list.add("/registUI.html");
 		list.add("/loginUI.html");
 		list.add("/login.html");

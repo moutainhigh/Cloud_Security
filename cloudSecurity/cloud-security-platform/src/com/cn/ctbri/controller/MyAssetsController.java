@@ -167,43 +167,58 @@ public class MyAssetsController {
 		return "/source/page/userCenter/userAssets";
 	}
 	/**
+	 * 功能描述：检查资产是否通过验证
+	 * 参数描述： Asset asset
+	 *		 @time 2015-1-19
+	 *	返回值：无
+	 */
+	@RequestMapping("/asset_verification.html")
+	public void asset_verification(HttpServletRequest request,HttpServletResponse response){
+		int id = Integer.valueOf(request.getParameter("id"));
+		Asset _asset = assetService.findById(id);
+		//获取验证方式:代码验证 ;上传文件验证
+		String verification_msg;
+		Map<String, Object> m = new HashMap<String, Object>();
+		try {
+			verification_msg = new String(request.getParameter("codeStyle").getBytes("ISO-8859-1"), "UTF-8");
+			//代码验证
+			if(verification_msg.equals("codeVerification")){
+				 //获取已知代码
+				 String code1 = String.valueOf(request.getParameter("code1"));
+				 NodeList rt= GetNetContent.getNodeList(_asset.getAddr());
+				 String str= rt.toString();
+				 if(str.contains(code1)){
+					 m.put("msg", 1);
+				 }else{
+					 m.put("msg", 0);
+				 }
+				 JSONObject JSON = objectToJson(response, m);
+					try {
+						// 把数据返回到页面
+						writeToJsp(response, JSON);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+			}
+			//上传文件验证
+			if(verification_msg.equals("fileVerification")){
+				
+			}
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * 功能描述：资产验证
 	 * 参数描述： Asset asset
 	 *		 @time 2015-1-19
 	 *	返回值：redirect:/userAssetsUI.html
 	 */
 	@RequestMapping("/verificationAsset.html")
-	public String verificationAsset(Model model,Asset asset,HttpServletRequest request){
-		int id = asset.getId();
-		Asset _asset = assetService.findById(id);
-		//获取验证方式:代码验证 上传文件验证
-		String verification_msg;
-		try {
-			verification_msg = new String(asset.getVerification_msg().getBytes("ISO-8859-1"), "UTF-8");
-		
-			//代码验证
-			if(verification_msg.equals("代码验证")){
-				 //获取已知代码
-				 String code = (String) request.getAttribute("code");
-				 NodeList rt= GetNetContent.getNodeList(_asset.getAddr());
-				 String str= rt.toString();
-				 if(str.contains(code)){
-					 asset.setId(1);//如果验证成功，将验证状态设为1
-					 assetService.updateAsset(asset);
-				 }else{
-					 model.addAttribute("msg", "验证失败"); 
-				 }
-			}
-			//上传文件验证
-			if(verification_msg.equals("上传文件验证")){
-				
-			}
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//如果验证成功，将验证状态设为1
-		//如果验证失败，提示错误信息
+	public String verificationAsset(Asset asset,HttpServletRequest request){
+		asset.setStatus(1);
+		assetService.updateAsset(asset);
 		return "redirect:/userAssetsUI.html";
 	}
 	//================下载=================
