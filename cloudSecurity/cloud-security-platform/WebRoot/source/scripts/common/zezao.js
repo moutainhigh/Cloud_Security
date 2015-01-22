@@ -50,7 +50,6 @@ $(function(){
 		var id= $(".zican_top").eq(_index).attr("id");
 		var name= $(".zican_top").eq(_index).attr("name");
 		var addr = $(".zican_top").eq(_index).attr("addr");
-		alert(addr);
 		$("#verificationName").html("请验证资产"+name+"的权限");
 		$("#hiddenId").val(id);
 		$("#hiddenAddr").val(addr);

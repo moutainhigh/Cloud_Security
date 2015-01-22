@@ -44,7 +44,6 @@ function verificationAsset(){
 	var id = $("#hiddenId").val();
 	var codeStyle = $("#codeVerification").val();
 	var code1 = document.getElementById('code').innerHTML;
-	alert(code1);
 	$.ajax({
         type: "POST",
         url: "/cloud-security-platform/asset_verification.html",
