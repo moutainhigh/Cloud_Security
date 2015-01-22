@@ -42,7 +42,7 @@ function deleteAsset(id){
 //资产验证
 function verificationAsset(){
 	var id = $("#hiddenId").val();
-	var codeStyle = $("#codeVerification").val();
+	var codeStyle = $("input[type='radio']:checked").val();
 	var code1 = document.getElementById('code').innerHTML;
 	$.ajax({
         type: "POST",

@@ -190,7 +190,7 @@ $(document).ready(function(){
 	  <div class="text_bottm">
 	    <div class="txt_yz clear">
 	      <div class="txt_yz_left">
-	        <input type="radio" name="verification_msg" checked id="codeVerification" value="codeVerification"/>
+	        <input type="radio" name="verification_msg" checked="checked" id="codeVerification" value="codeVerification"/>
 	        &nbsp;&nbsp;代码验证(推荐)</div>
 	      <div class="txt_yz_right">
 	        <input type="radio" name="verification_msg" id="fileVerification" value="fileVerification"/>
@@ -201,13 +201,16 @@ $(document).ready(function(){
 	      <p>请在您的<span><a href="" id="c">网站首页</a></span>中任何位置加入如上代码。（<a href="javascript:void(0)" onclick="copyToClipBoard()">复制代码</a>）<br />
 	        如果添加成功，您的网站首页上能够看到右边的文字：“云服务平台”</p>
 	    </div>
-	    <!--  
-	    <div class="txt_1">
+	    
+	    
+	    
+	    <div class="txt_3">
         	<p>请点击下载：<a href="${ctx}/download.html?fileName=验证文件.txt">验证文件.txt</a></p>
 	      <p>请在您的<span><a href="###">网站首页</a></span>中任何位置加入如上文件。请点击验证文件下载！<br/>
 	        如果添加成功，您的网站首页上能够看到右边的文字：“云服务平台”</p>
 	    </div>
-	    -->
+	    
+	    
 	  </div>
 	  <div style="margin-top:35px;"><a href="javascript:void(0)"><img src="${ctx}/source/images/user_submit_4.jpg" onclick="verificationAsset()"/></a></div>
 	</div>

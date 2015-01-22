@@ -24,7 +24,7 @@ public class Configuration {
 	private static String apikey;//APIKEY
 	private static String username;//用户名
 	private static String passwordMobile;//向StringBuffer追加密码
-	
+	private static String fileContent;//资产验证时的文件内容
 	static {
 		InputStream inputStream = Configuration.class.getClassLoader().getResourceAsStream("default.properties");
 		Properties prop = new Properties();
@@ -34,6 +34,7 @@ public class Configuration {
 			log.error(e1.getMessage());	
 		}
 		passwordMobile = (String) prop.get("passwordMobile");//向StringBuffer追加密码
+		fileContent = (String) prop.get("fileContent");//资产验证时的文件内容
 		username = (String) prop.get("username");//username
 		apikey = (String) prop.get("apikey");//APIKEY
 		stringBuffer = (String) prop.get("stringBuffer");//创建StringBuffer对象用来操作字符串
@@ -41,6 +42,12 @@ public class Configuration {
 		server=(String)prop.get("server");//服务器
 		name=(String)prop.get("name");//名称
 		password=(String)prop.get("password");//密码
+	}
+	public static String getFileContent() {
+		return fileContent;
+	}
+	public static void setFileContent(String fileContent) {
+		Configuration.fileContent = fileContent;
 	}
 	public static String getPasswordMobile() {
 		return passwordMobile;

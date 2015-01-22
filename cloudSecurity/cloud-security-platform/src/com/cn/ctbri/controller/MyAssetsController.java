@@ -2,12 +2,15 @@ package com.cn.ctbri.controller;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +28,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import sun.net.www.http.HttpClient;
+
+import com.cn.ctbri.cfg.Configuration;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.User;
@@ -67,20 +73,16 @@ public class MyAssetsController {
 		asset.setCreate_date(new Date());//创建日期
 		asset.setStatus(0);//资产状态(1：已验证，0：未验证)
 		String name = "";//资产名称
+		String addr = "";//资产地址
 		//处理页面输入中文乱码的问题
 		try {
 			//name = URLDecoder.decode(asset.getName(), "UTF-8");
 			name=new String(asset.getName().getBytes("ISO-8859-1"), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		asset.setName(name);
-		String addr = "";//资产地址
-		try {
 			addr=new String(asset.getAddr().getBytes("ISO-8859-1"), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
+		asset.setName(name);
 		asset.setAddr(addr);
 		assetService.saveAsset(asset);
 		return "redirect:/userAssetsUI.html";
@@ -142,12 +144,6 @@ public class MyAssetsController {
 	@RequestMapping("/deleteAsset.html")
 	public String delete(Asset asset){
 		//检查订单资产表里面是否含有此资产
-		List<OrderAsset> list = orderAssetService.findAssetById(asset.getId());
-		int count = 0;
-		if(list.size()>0){
-			count = list.size();
-		}
-		
 		assetService.delete(asset.getId());
 		return "redirect:/userAssetsUI.html";
 	}
@@ -176,35 +172,65 @@ public class MyAssetsController {
 	public void asset_verification(HttpServletRequest request,HttpServletResponse response){
 		int id = Integer.valueOf(request.getParameter("id"));
 		Asset _asset = assetService.findById(id);
+		String path = _asset.getAddr();
 		//获取验证方式:代码验证 ;上传文件验证
 		String verification_msg;
 		Map<String, Object> m = new HashMap<String, Object>();
 		try {
+//			URL url =new URL(path);
+//			HttpClient httpClient = HttpClient.New(url);
+//			OutputStream outputStream = httpClient.getOutputStream();
 			verification_msg = new String(request.getParameter("codeStyle").getBytes("ISO-8859-1"), "UTF-8");
 			//代码验证
 			if(verification_msg.equals("codeVerification")){
 				 //获取已知代码
 				 String code1 = String.valueOf(request.getParameter("code1"));
-				 NodeList rt= GetNetContent.getNodeList(_asset.getAddr());
+				 NodeList rt= GetNetContent.getNodeList(path);
 				 String str= rt.toString();
 				 if(str.contains(code1)){
-					 m.put("msg", 1);
+					 m.put("msg", 1);//验证成功
 				 }else{
-					 m.put("msg", 0);
+					 m.put("msg", 0);//验证失败
 				 }
-				 JSONObject JSON = objectToJson(response, m);
-					try {
-						// 把数据返回到页面
-						writeToJsp(response, JSON);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
 			}
 			//上传文件验证
 			if(verification_msg.equals("fileVerification")){
+				try{
+					String newPath = path+"key.txt";//http://localhost:8080/cloud-security-platform/验证文件.txt
+					URL fileUrl = new URL(newPath);
+					HttpURLConnection conn = (HttpURLConnection) fileUrl.openConnection();
+					DataInputStream input = new DataInputStream(conn.getInputStream());
+					StringBuffer sb = new StringBuffer();
+					int len = 0;
+					while ((len = input.read()) != -1) {
+	
+						sb.append((char) len);
+					}
+					String toStringSb = sb.toString();
+					input.close();
+					if(toStringSb!=null&&toStringSb.equals(Configuration.getFileContent())){
+						m.put("msg", 1);//验证成功
+					}else{
+						m.put("msg", 0);//验证失败
+					}
 				
+				}catch (Exception e) {
+					m.put("msg",0);//验证失败
+					e.printStackTrace();
+				}
 			}
-		} catch (UnsupportedEncodingException e) {
+			 JSONObject JSON = objectToJson(response, m);
+			// 把数据返回到页面
+			writeToJsp(response, JSON);
+		} catch (Exception e) {
+			m.put("msg",0);//验证失败
+			JSONObject JSON = objectToJson(response, m);
+				// 把数据返回到页面
+			try {
+				writeToJsp(response, JSON);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 	}
@@ -216,7 +242,7 @@ public class MyAssetsController {
 	 *	返回值：redirect:/userAssetsUI.html
 	 */
 	@RequestMapping("/verificationAsset.html")
-	public String verificationAsset(Asset asset,HttpServletRequest request){
+	public String verificationAsset(Asset asset){
 		asset.setStatus(1);
 		assetService.updateAsset(asset);
 		return "redirect:/userAssetsUI.html";
