@@ -36,5 +36,12 @@ public class OrderAssetDaoImpl extends SqlSessionDaoSupport implements OrderAsse
 		List<OrderAsset> list = this.getSqlSession().selectList(ns+"findAssetById", assetId);
 		return list;
 	}
+	/**
+     * 功能描述：保存服务资产
+     *       @time 2015-1-20
+     */
+    public void insert(OrderAsset orderAsset) {
+        this.getSqlSession().insert(ns + "insert", orderAsset);
+    }
 		
 }

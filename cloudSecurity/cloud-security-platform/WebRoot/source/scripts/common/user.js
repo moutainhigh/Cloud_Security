@@ -15,12 +15,13 @@
 
 $(function (){
 	$('.peiz_center ul li').click(function (){
-		
-		$('.peiz_center ul li').removeClass('peiz_active');
-		$(this).addClass('peiz_active');
-		
-		$('.peiz_cont').hide();
-		$('.peiz_cont').eq($(this).index()).show();
+		if(!$(this).hasClass("opacity")){
+			$('.peiz_center ul li').removeClass('peiz_active');
+			$(this).addClass('peiz_active');
+			
+			$('.peiz_cont').hide();
+			$('.peiz_cont').eq($(this).index()).show();
+		}
 	});
 });
 

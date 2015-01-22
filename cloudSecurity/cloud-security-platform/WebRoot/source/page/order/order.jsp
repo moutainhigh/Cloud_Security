@@ -56,6 +56,7 @@
   
   <!--自助下单-->
   <input type="hidden" id="type" value="${type }"/>
+  <input type="hidden" id="serviceId" value="${serviceId }"/>
   <div class="user_right" >
     <div class="ding_nav">
       <div style="border-top:1px solid #e0e0e0; width:800px; position:absolute; left:75px; top:111px;"></div>
@@ -117,13 +118,15 @@
             <c:choose>
                <c:when test="${status.first}">
                    <li class="peiz_active" id="${list.id }" name="${list.name }">
-                   <input type="hidden" value="${list.remarks }"/>
+                   <input type="hidden" value="${list.remarks }" name="remarks"/>
+                   <input type="hidden" value="${list.orderType }" name="typeOrder"/>
 	               <div><img src="${ctx}/source/images/user_${status.index+1 }.jpg" /></div>
 	               <a href="###">${list.name }</a> </li>
                </c:when>
                <c:otherwise>
                    <li id="${list.id }" name="${list.name }">
-                   <input type="hidden" value="${list.remarks }"/>
+                   <input type="hidden" value="${list.remarks }" name="remarks"/>
+                   <input type="hidden" value="${list.orderType }" name="typeOrder"/>
                    <div><img src="${ctx}/source/images/user_${status.index+1 }.jpg" /></div>
                    <a href="###">${list.name }</a> </li>
                </c:otherwise>
@@ -131,13 +134,14 @@
           </c:forEach>
         </ul>
       </div>
+      <div id="servicePage">
       <!-- 漏洞扫描服务-->
       <div class="peiz_cont" style="display:block;">
         <div style="position: absolute; top:-10px;"><img src="${ctx}/source/images/user_ico.jpg" /></div>
         <div class="clear">
           <h3>服务对象</h3>
           <div class="peiz_table">
-            <table id="addTr">
+            <table class="leftTr">
               <tr style="background:#e0e0e0;">
                 <td style="width:30%;">资产名称 </td>
                 <td style="width:25%;">资产类型 </td>
@@ -163,7 +167,7 @@
           </div>
           <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" id="to_right"/></div>
           <div class="peiz_table">
-            <table id="addTr1">
+            <table class="rightTr">
               <tr style="background:#e0e0e0;">
                 <td style="width:30%;">资产名称 </td>
                 <td style="width:25%;">资产类型 </td>
@@ -178,7 +182,7 @@
           <div class="pinv_subnav">
             <ul class="pinv_sub_nav">
               <li class="pinv_active">
-                <input type="radio" name="scanType" value="1"/>
+                <input type="radio" name="scanType" value="1" checked/>
                 &nbsp;&nbsp;每天</li>
               <li>
                 <input type="radio" name="scanType" value="2"/>
@@ -187,19 +191,6 @@
                 <input type="radio" name="scanType" value="3"/>
                 &nbsp;&nbsp;每月</li>
             </ul>
-            <!-- <div class="pinv_subcenter" style="display:block;"></div>
-            <div class="pinv_subcenter">
-              <ul>
-                <li><a href="###">周一</a></li>
-                <li><a href="###">周二</a></li>
-                <li><a href="###">周三</a></li>
-                <li><a href="###">周四</a></li>
-                <li><a href="###">周五</a></li>
-                <li><a href="###">周六</a></li>
-                <li style="border-right:0px"><a href="###">周日</a></li>
-              </ul>
-            </div>
-            <div class="pinv_subcenter"></div> -->
           </div>
         </div>
       </div>
@@ -218,6 +209,7 @@
               </tr>
               <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
                   <tr>
+                    <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
                     <td>${list.name }</td>
                     <c:if test="${list.type == 1 }">
                        <td>URL</td>
@@ -249,46 +241,225 @@
           <div class="pinv_subnav">
             <ul class="pinv_sub_nav">
               <li class="pinv_active">
-                <input type="radio" name="scanType" value="1"/>
-                &nbsp;&nbsp;每天</li>
-              <li>
-                <input type="radio" name="scanType" value="2"/>
-                &nbsp;&nbsp;每周</li>
-              <li>
-                <input type="radio" name="scanType" value="3"/>
-                &nbsp;&nbsp;每月</li>
+                <input type="text" value="" id="scanType1" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+              </li>
             </ul>
-            <!-- <div class="pinv_subcenter" style="display:block;"></div>
-            <div class="pinv_subcenter">
-              <ul>
-                <li><a href="###">周一</a></li>
-                <li><a href="###">周二</a></li>
-                <li><a href="###">周三</a></li>
-                <li><a href="###">周四</a></li>
-                <li><a href="###">周五</a></li>
-                <li><a href="###">周六</a></li>
-                <li style="border-right:0px"><a href="###">周日</a></li>
-              </ul>
-            </div>
-            <div class="pinv_subcenter"></div> -->
           </div>
         </div>
       </div>
       <!-- 网页篡改监测服务-->
       <div class="peiz_cont">
         <div style="position: absolute; top:-10px; left:300px;"><img src="${ctx}/source/images/user_ico.jpg" /></div>
+        <div class="clear">
+          <h3>服务对象</h3>
+          <div class="peiz_table">
+            <table id="addTr">
+              <tr style="background:#e0e0e0;">
+                <td style="width:30%;">资产名称 </td>
+                <td style="width:25%;">资产类型 </td>
+                <td style="width:30%;">资产地址 </td>
+                <td style="width:15%;"><input type="checkbox" id="checkItems"/></td>
+              </tr>
+              <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
+                  <tr>
+                    <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
+                    <td>${list.name }</td>
+                    <c:if test="${list.type == 1 }">
+                       <td>URL</td>
+                    </c:if>
+                    <c:if test="${list.type == 2 }">
+                       <td>IP</td>
+                    </c:if>
+                    <td>${list.addr }</td>
+                    <td><input type="checkbox" name="serviceAssetId"/></td>
+                  </tr>
+              </c:forEach>
+                            
+            </table>
+          </div>
+          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" id="to_right"/></div>
+          <div class="peiz_table">
+            <table id="addTr1">
+              <tr style="background:#e0e0e0;">
+                <td style="width:30%;">资产名称 </td>
+                <td style="width:25%;">资产类型 </td>
+                <td style="width:30%;">资产地址 </td>
+                <td style="width:15%;"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="pinv">
+          <h3>扫描频率</h3>
+          <div class="pinv_subnav">
+            <ul class="pinv_sub_nav">
+              <li class="pinv_active">
+                <input type="radio" name="scanType2" value="1" checked/>
+                &nbsp;&nbsp;30分钟</li>
+              <li>
+                <input type="radio" name="scanType2" value="2"/>
+                &nbsp;&nbsp;1小时</li>
+              <li>
+                <input type="radio" name="scanType2" value="3"/>
+                &nbsp;&nbsp;2小时</li>
+              <li>
+                <input type="radio" name="scanType2" value="3"/>
+                &nbsp;&nbsp;1天</li>
+            </ul>
+          </div>
+        </div>
       </div>
       <!-- 关键字监测服务-->
       <div class="peiz_cont">
         <div style="position: absolute; top:-10px; left:420px;"><img src="${ctx}/source/images/user_ico.jpg" /></div>
+        <div class="clear">
+          <h3>服务对象</h3>
+          <div class="peiz_table">
+            <table id="addTr">
+              <tr style="background:#e0e0e0;">
+                <td style="width:30%;">资产名称 </td>
+                <td style="width:25%;">资产类型 </td>
+                <td style="width:30%;">资产地址 </td>
+                <td style="width:15%;"><input type="checkbox" id="checkItems"/></td>
+              </tr>
+              <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
+                  <tr>
+                    <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
+                    <td>${list.name }</td>
+                    <c:if test="${list.type == 1 }">
+                       <td>URL</td>
+                    </c:if>
+                    <c:if test="${list.type == 2 }">
+                       <td>IP</td>
+                    </c:if>
+                    <td>${list.addr }</td>
+                    <td><input type="checkbox" name="serviceAssetId"/></td>
+                  </tr>
+              </c:forEach>
+                            
+            </table>
+          </div>
+          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" id="to_right"/></div>
+          <div class="peiz_table">
+            <table id="addTr1">
+              <tr style="background:#e0e0e0;">
+                <td style="width:30%;">资产名称 </td>
+                <td style="width:25%;">资产类型 </td>
+                <td style="width:30%;">资产地址 </td>
+                <td style="width:15%;"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="pinv">
+          <h3>扫描频率</h3>
+          <div class="pinv_subnav">
+            <ul class="pinv_sub_nav">
+              <li class="pinv_active">
+                <input type="text" value="" id="scanType3" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
       <!-- 可用性监测服务-->
       <div class="peiz_cont">
         <div style="position: absolute; top:-10px; left:540px;"><img src="${ctx}/source/images/user_ico.jpg" /></div>
+        <div class="clear">
+          <h3>服务对象</h3>
+          <div class="peiz_table">
+            <table id="addTr">
+              <tr style="background:#e0e0e0;">
+                <td style="width:30%;">资产名称 </td>
+                <td style="width:25%;">资产类型 </td>
+                <td style="width:30%;">资产地址 </td>
+                <td style="width:15%;"><input type="checkbox" id="checkItems"/></td>
+              </tr>
+              <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
+                  <tr>
+                    <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
+                    <td>${list.name }</td>
+                    <c:if test="${list.type == 1 }">
+                       <td>URL</td>
+                    </c:if>
+                    <c:if test="${list.type == 2 }">
+                       <td>IP</td>
+                    </c:if>
+                    <td>${list.addr }</td>
+                    <td><input type="checkbox" name="serviceAssetId"/></td>
+                  </tr>
+              </c:forEach>
+                            
+            </table>
+          </div>
+          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" id="to_right"/></div>
+          <div class="peiz_table">
+            <table id="addTr1">
+              <tr style="background:#e0e0e0;">
+                <td style="width:30%;">资产名称 </td>
+                <td style="width:25%;">资产类型 </td>
+                <td style="width:30%;">资产地址 </td>
+                <td style="width:15%;"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="pinv">
+          <h3>扫描频率</h3>
+          <div class="pinv_subnav">
+            <ul class="pinv_sub_nav">
+              <li class="pinv_active">
+                <input type="radio" name="scanType4" value="1" checked/>
+                &nbsp;&nbsp;10分钟</li>
+              <li>
+                <input type="radio" name="scanType4" value="2"/>
+                &nbsp;&nbsp;30分钟</li>
+              <li>
+                <input type="radio" name="scanType4" value="3"/>
+                &nbsp;&nbsp;1小时</li>
+              <li>
+                <input type="radio" name="scanType4" value="3"/>
+                &nbsp;&nbsp;2小时</li>
+            </ul>
+          </div>
+        </div>
       </div>
       <!-- 日常流量监控服务-->
       <div class="peiz_cont">
         <div style="position: absolute; top:-10px; left:660px;"><img src="${ctx}/source/images/user_ico.jpg" /></div>
+        <div class="jiance_top clear">
+          <div class="jiance_sub">监控对象IP地址/IP地址段</div>
+          <div class="jiance_txt">
+            <input type="text" />
+          </div>
+        </div>
+        <div class="jiance_bottom clear">
+          <div class="jiance_sub">防护带宽</div>
+          <div>
+            <div class="pinv_subnav">
+	            <ul class="pinv_sub_nav">
+	              <li class="pinv_active">
+	                <input type="radio" name="scanType5" value="1" checked/>
+	                &nbsp;&nbsp;10M</li>
+	              <li>
+	                <input type="radio" name="scanType5" value="2"/>
+	                &nbsp;&nbsp;100M</li>
+	              <li>
+	                <input type="radio" name="scanType5" value="3"/>
+	                &nbsp;&nbsp;500M</li>
+	              <li>
+                    <input type="radio" name="scanType5" value="1"/>
+                    &nbsp;&nbsp;1G</li>
+                  <li>
+                    <input type="radio" name="scanType5" value="2"/>
+                    &nbsp;&nbsp;5G</li>
+                  <li>
+                    <input type="radio" name="scanType5" value="3"/>
+                    &nbsp;&nbsp;10G</li>
+	            </ul>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- 日常攻击防护服务-->
       <div class="peiz_cont">
@@ -301,14 +472,70 @@
         </div>
         <div class="jiance_bottom clear">
           <div class="jiance_sub">防护带宽</div>
-          <div></div>
+          <div>
+            <div class="pinv_subnav">
+                <ul class="pinv_sub_nav">
+                  <li class="pinv_active">
+                    <input type="radio" name="scanType6" value="1" checked/>
+                    &nbsp;&nbsp;10M</li>
+                  <li>
+                    <input type="radio" name="scanType6" value="2"/>
+                    &nbsp;&nbsp;100M</li>
+                  <li>
+                    <input type="radio" name="scanType6" value="3"/>
+                    &nbsp;&nbsp;500M</li>
+                  <li>
+                    <input type="radio" name="scanType6" value="1"/>
+                    &nbsp;&nbsp;1G</li>
+                  <li>
+                    <input type="radio" name="scanType6" value="2"/>
+                    &nbsp;&nbsp;5G</li>
+                  <li>
+                    <input type="radio" name="scanType6" value="3"/>
+                    &nbsp;&nbsp;10G</li>
+                </ul>
+            </div>
+          </div>
         </div>
       </div>
       <!-- 突发异常流量清洗服务-->
       <div class="peiz_cont">
         <div style="position: absolute; top:-10px; left:900px;"><img src="${ctx}/source/images/user_ico.jpg" /></div>
+        <div class="jiance_top clear">
+          <div class="jiance_sub">监控对象IP地址/IP地址段</div>
+          <div class="jiance_txt">
+            <input type="text" />
+          </div>
+        </div>
+        <div class="jiance_bottom clear">
+          <div class="jiance_sub">防护带宽</div>
+          <div>
+            <div class="pinv_subnav">
+                <ul class="pinv_sub_nav">
+                  <li class="pinv_active">
+                    <input type="radio" name="scanType7" value="1" checked/>
+                    &nbsp;&nbsp;10M</li>
+                  <li>
+                    <input type="radio" name="scanType7" value="2"/>
+                    &nbsp;&nbsp;100M</li>
+                  <li>
+                    <input type="radio" name="scanType7" value="3"/>
+                    &nbsp;&nbsp;500M</li>
+                  <li>
+                    <input type="radio" name="scanType7" value="1"/>
+                    &nbsp;&nbsp;1G</li>
+                  <li>
+                    <input type="radio" name="scanType7" value="2"/>
+                    &nbsp;&nbsp;5G</li>
+                  <li>
+                    <input type="radio" name="scanType7" value="3"/>
+                    &nbsp;&nbsp;10G</li>
+                </ul>
+            </div>
+          </div>
+        </div>
       </div>
-      
+      </div>
       <!--上一步-->
       <div class="clear" style="margin-bottom:30px;">
         <div class="peiz_shang"><a href="###"><img src="${ctx}/source/images/user_submit.jpg" id="firstGoback"/></a></div>
@@ -345,7 +572,7 @@
             <td>服务对象</td>
             <td colspan="3" name="servName"></td>
           </tr>
-          <tr>
+          <tr class="scan">
             <td>扫描频率</td>
             <td name="scanName"></td>
           </tr>
@@ -416,7 +643,7 @@
             <td>服务对象</td>
             <td colspan="3" name="servName"></td>
           </tr>
-          <tr>
+          <tr class="scan">
             <td>扫描频率</td>
             <td name="scanName"></td>
           </tr>
@@ -485,7 +712,7 @@
             <td>服务对象</td>
             <td colspan="3" name="servName"></td>
           </tr>
-          <tr>
+          <tr class="scan">
             <td>扫描频率</td>
             <td name="scanName"></td>
           </tr>

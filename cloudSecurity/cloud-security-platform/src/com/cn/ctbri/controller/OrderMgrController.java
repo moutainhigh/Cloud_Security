@@ -20,9 +20,12 @@ import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.entity.User;
+import com.cn.ctbri.service.IOrderAssetService;
+import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.util.Random;
 
@@ -37,6 +40,10 @@ public class OrderMgrController {
 	
     @Autowired
     ISelfHelpOrderService selfHelpOrderService;
+    @Autowired
+    IOrderService orderService;
+    @Autowired
+    IOrderAssetService orderAssetService;
     
 	 /**
 	 * 功能描述： 用户中心-自助下单
@@ -45,7 +52,9 @@ public class OrderMgrController {
 	 */
 	@RequestMapping(value="selfHelpOrderInit.html")
 	public String selfHelpOrderInit(HttpServletRequest request){
+//	    String orderId = request.getParameter("orderId");
 	    String type = request.getParameter("type");
+	    String serviceId = request.getParameter("serviceId");
 	    //获取服务类型
         List<Serv> servList = selfHelpOrderService.findService();
 	    //获取服务类型
@@ -54,12 +63,20 @@ public class OrderMgrController {
 	    List<Factory> factoryList = selfHelpOrderService.findListFactory();
 	    //获取服务对象资产
 	    List<Asset> serviceAssetList = selfHelpOrderService.findServiceAsset();
+//	    Order order = new Order();
+//	    if(orderId!=null && orderId!=""){
+//	        order = orderService.findOrderById(orderId);
+//	    }
 	    request.setAttribute("servList", servList);
 	    request.setAttribute("typeList", typeList);
         request.setAttribute("factoryList", factoryList);
         request.setAttribute("serviceAssetList", serviceAssetList);
         request.setAttribute("type", type);
-		return "/source/page/order/order";
+        request.setAttribute("serviceId", serviceId);
+//        request.setAttribute("orderId", orderId);
+//        request.setAttribute("order", order);
+        String result = "/source/page/order/order";
+        return result;
 	}
 	
 	/**
@@ -72,6 +89,7 @@ public class OrderMgrController {
     @ResponseBody
     public String saveOrder(HttpServletRequest request) throws Exception{
         User globle_user = (User) request.getSession().getAttribute("globle_user");
+        String assets = request.getParameter("assets");
         String orderId = request.getParameter("orderId");
         String orderType = request.getParameter("orderType");
         String beginDate = request.getParameter("beginDate");
@@ -97,7 +115,7 @@ public class OrderMgrController {
         selfHelpOrderService.insertLinkman(linkObj);
         //新增订单
         Order order = new Order();
-        order.setId(Integer.parseInt(orderId));
+        order.setId(orderId);
         order.setType(Integer.parseInt(orderType));
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
         Date begin_date = null;
@@ -123,6 +141,16 @@ public class OrderMgrController {
         order.setUserId(globle_user.getId());
         order.setContactId(linkmanId);
         selfHelpOrderService.insertOrder(order);
+        
+        //新增服务资产
+        String[] assetArray = null;   
+        assetArray = assets.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+        for(int i=0;i<assetArray.length;i++){
+            OrderAsset orderAsset = new OrderAsset();
+            orderAsset.setOrderId(orderId);
+            orderAsset.setAssetId(Integer.parseInt(assetArray[i]));
+            orderAssetService.insertOrderAsset(orderAsset);
+        }
         request.setAttribute("isSuccess", true);
         return "/source/page/order/order";
     }
@@ -134,6 +162,10 @@ public class OrderMgrController {
      */
     @RequestMapping(value="orderTrackInit.html")
     public String orderTrackInit(HttpServletRequest request){
+        User globle_user = (User) request.getSession().getAttribute("globle_user");
+        //获取订单信息
+        List orderList = orderService.findByUserId(globle_user.getId());
+        request.setAttribute("orderList", orderList);
         return "/source/page/order/orderTrack";
     }
 	

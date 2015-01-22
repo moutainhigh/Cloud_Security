@@ -15,4 +15,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from cs_order_asset o
 		where o.assetId = #{assetId}
 	</select>
+	
+	<!-- 插入服务资产 -->
+    <insert id="insert" parameterType="com.cn.ctbri.entity.OrderAsset">
+        insert into cs_order_asset
+        (orderId, assetId) 
+        values(#{orderId}, #{assetId})
+    </insert>
 </mapper>

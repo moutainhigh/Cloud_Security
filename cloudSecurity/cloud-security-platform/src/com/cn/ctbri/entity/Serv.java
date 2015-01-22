@@ -14,6 +14,7 @@ public class Serv {
 	private int type;//类型(1：扫描类，2：监控类，3：防护类，4：其他)
 	private int status;//服务状态(1：可用，0：不可用)
 	private String remarks;//备注
+    private int orderType;	//订单类型(0:单次和长期,1:长期,2:单次)
 	public int getId() {
 		return id;
 	}
@@ -56,7 +57,11 @@ public class Serv {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
-	
-	
+    public int getOrderType() {
+        return orderType;
+    }
+    public void setOrderType(int orderType) {
+        this.orderType = orderType;
+    }
 	
 }

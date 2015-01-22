@@ -19,5 +19,11 @@ public interface IOrderAssetService {
 	 */
 	List<OrderAsset> findAssetById(int assetId);
 
+	/**
+     * 功能描述：保存服务资产
+     *       @time 2015-1-20
+     */
+    void insertOrderAsset(OrderAsset orderAsset);
+
 	
 }

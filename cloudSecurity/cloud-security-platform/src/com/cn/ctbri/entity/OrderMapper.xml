@@ -17,6 +17,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="contactId" column="contactId"/>
 		<result property="remarks" column="remarks"/>
 	</resultMap>
+	
+	<!-- 根据用户查询所有记录 -->
+    <select id="findOrderByUserId" resultMap="OrderRM" parameterType="Integer">
+        select * from cs_order
+        where userId = #{userId}
+    </select>
 	<!-- 查询所有记录 -->
 	<select id="list" resultType="hashmap" parameterType="int">
 		select o.id,o.type,s.name,o.begin_date,o.end_date,o.create_date

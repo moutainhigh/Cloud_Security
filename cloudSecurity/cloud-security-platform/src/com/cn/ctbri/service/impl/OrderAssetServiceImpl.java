@@ -23,5 +23,13 @@ public class OrderAssetServiceImpl implements IOrderAssetService{
 		List<OrderAsset> list = orderAssetDao.findAssetById(assetId);
 		return list;
 	}
+
+	/**
+     * 功能描述：保存服务资产
+     *       @time 2015-1-20
+     */
+    public void insertOrderAsset(OrderAsset orderAsset) {
+        orderAssetDao.insert(orderAsset);
+    }
 	
 }

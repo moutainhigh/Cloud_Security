@@ -7,7 +7,7 @@ package com.cn.ctbri.entity;
  */
 public class OrderAsset {
 	private int id;//主键Id
-	private int orderId;//订单Id
+	private String orderId;//订单Id
 	private int assetId;//资产Id
 	public int getId() {
 		return id;
@@ -15,10 +15,10 @@ public class OrderAsset {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getOrderId() {
+	public String getOrderId() {
 		return orderId;
 	}
-	public void setOrderId(int orderId) {
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
 	public int getAssetId() {

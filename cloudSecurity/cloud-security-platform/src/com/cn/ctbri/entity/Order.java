@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class Order {
 	
-	private int id;//主键Id
+	private String id;//主键Id
 	private int type;//订单类型(1：长期，2：单次)
 	private Date begin_date;//开始时间
 	private Date end_date;//结束日期
@@ -43,10 +43,10 @@ public class Order {
 	public void setServName(String servName) {
 		this.servName = servName;
 	}
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public int getType() {

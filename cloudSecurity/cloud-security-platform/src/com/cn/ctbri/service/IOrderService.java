@@ -27,6 +27,14 @@ public interface IOrderService {
 	 * 返回值    ：  List<Order>
 	 */
 	List findByCombine(Map<String, Object> paramMap);
+	
+	/**
+     * 功能描述：根据用户查询所有记录
+     * 参数描述：int userId
+     *       @time 2015-1-21
+     * 返回值    ：  List
+     */
+    List<Order> findOrderByUserId(int userId);
 
 
 }

@@ -1,7 +1,10 @@
 $(function(){
 	$(".dan_2").eq(1).hide();
-	$(".hideEnddate").hide(); 
+	$(".hideEnddate").hide();
+	$(".scan").hide(); 
+	//type和serviceId是从首页获取的
 	var type = $("#type").val();
+	var serviceId = $("#serviceId").val();
 	if(type==1){
 		$('input:radio[name="orderType"]:eq(0)').attr("disabled", true);
 		$('input:radio[name="orderType"]:eq(1)').attr("checked",'checked');
@@ -9,15 +12,31 @@ $(function(){
 	}else if(type==2){
 		$('input:radio[name="orderType"]:eq(1)').attr("disabled", true);
 	}
+	if(serviceId!=null && serviceId!=""){
+		getServicePage(serviceId);
+	}
+	
+	function getServicePage(serviceId){
+		var index = serviceId - 1;
+		$('.peiz_center ul li').removeClass('peiz_active');
+		$('.peiz_center ul li').eq(serviceId-1).addClass('peiz_active');
+		
+		$('.peiz_cont').hide();
+		$('.peiz_cont').eq(serviceId-1).show();
+	}
+	
 	
 	$('.dan_1 input').click(function (){
 		var orderType=$('input:radio[name="orderType"]:checked').val();
 		if(orderType==2){//如为单次订单，只有开始时间，不需要设置结束时间
     		$(".dan_2").eq(1).hide();
-    		$(".hideEnddate").hide(); 
+    		$(".hideEnddate").hide();
+    		$(".scan").hide();
+    		$("#endDate").val("");
     	}else{
     		$(".dan_2").eq(1).show();
-    		$(".hideEnddate").show(); 
+    		$(".hideEnddate").show();
+    		$(".scan").show();
     		$("#endDate").val("");
     	}
 	});
@@ -32,6 +51,16 @@ $(function(){
         		$("#beginDate_msg").html("开始时间不能为空");
         	}else{
            		$("#beginDate_msg").html("");
+           		$('.peiz_center ul li').removeClass('opacity');
+           		$('.peiz_center ul li').eq(2).addClass('opacity');
+        		$('.peiz_center ul li').eq(4).addClass('opacity');
+        		$('.peiz_center ul li').eq(5).addClass('opacity');
+        		$('.peiz_center ul li').eq(6).addClass('opacity');
+//        		$('.peiz_cont').eq(2).remove();
+//        		$('.peiz_cont').eq(3).remove();
+//        		$('.peiz_cont').eq(3).remove();
+//        		$('.peiz_cont').eq(3).remove();
+        		$('.pinv').hide();
            		getActive(1);
         	}
     	}else{
@@ -49,6 +78,10 @@ $(function(){
         	}else{
         		$("#beginDate_msg").html("");
         		$("#endDate_msg").html("");
+        		$('.peiz_center ul li').removeClass('opacity');
+        		$('.peiz_center ul li').eq(7).addClass('opacity');
+        		$('.pinv').show();
+        		$('input:radio[name="scanType"]:eq(0)').attr("checked",'checked');
         		getActive(1);
         	}
     	}
@@ -69,8 +102,8 @@ $(function(){
     	var scanType=$('input:radio[name="scanType"]:checked').val();
     	var serviceId=$('.peiz_active').attr("id");
     	var servName=$('.peiz_active').attr("name");
-    	var servRemark=$('.peiz_active input').val();
-    	if($('#addTr1 input[name="assetId"]').length==0){
+    	var servRemark=$('.peiz_active input[name="remarks"]').val();
+    	if($('.rightTr input[name="assetId"]').length==0){
 			alert("在资产列表中选择服务对象资产!");
 			return;
 		}
@@ -157,6 +190,17 @@ $(function(){
     	var email=$('#email').val();
     	var company=$('#company').val();
     	var address=$('#address').val();
+    	if(orderType==2){
+    		scanType="";
+    	}
+    	var assets = "";
+    	if(serviceId==1){
+    		var $temp = $(".peiz_cont").eq(serviceId-1);
+//    		alert($temp("input[name='assetId']"));
+    		$(".rightTr input[name='assetId']").each(function(){
+    			assets = assets + $(this).val() + ",";
+    		});
+    	}
     	var obj = {'orderId':orderId,
     			   'orderType':orderType,
     			   'beginDate': beginDate,
@@ -168,7 +212,8 @@ $(function(){
     			   'phone':phone,
     			   'email':email,
     			   'company':company,
-    			   'address':address};
+    			   'address':address,
+    			   'assets':assets};
     	var result = window.confirm("确定要提交订单吗？");
     	if(result){
 	    	$.post("/cloud-security-platform/saveOrder.html", obj, function(data){
@@ -215,7 +260,7 @@ $(function(){
 		}
    		var $removeTr = $('input:checkbox[name="serviceAssetId"]:checked').parent().html('<a href="###" class="delete">X </a>');
    		$removeTr = $removeTr.parent().detach();
-		$("#addTr1").append($removeTr);
+		$(".rightTr").append($removeTr);
    });
    
    //删除服务对象
@@ -224,7 +269,7 @@ $(function(){
 	    alert(_index);
    		var $removeTr = $(this).parent().html("<input type='checkbox' name='serviceAssetId'/>");
    		$removeTr = $removeTr.parent().detach();
-		$("#addTr").append($removeTr);
+		$(".leftTr").append($removeTr);
    });
    
    $('.pei_ul_1 li').click(function (){

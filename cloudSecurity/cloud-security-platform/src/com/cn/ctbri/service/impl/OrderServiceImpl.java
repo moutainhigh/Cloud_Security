@@ -42,4 +42,14 @@ public class OrderServiceImpl implements IOrderService{
 		List list = orderDao.findByCombine(paramMap);
 		return list;
 	}
+	
+	/**
+     * 功能描述：根据用户查询所有记录
+     * 参数描述：int userId
+     *       @time 2015-1-21
+     * 返回值    ：  List
+     */
+    public List<Order> findOrderByUserId(int userId) {
+        return orderDao.getOrderByUserId(userId);
+    }
 }

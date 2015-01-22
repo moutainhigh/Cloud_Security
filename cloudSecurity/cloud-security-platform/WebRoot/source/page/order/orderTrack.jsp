@@ -105,30 +105,19 @@
             <td  style="width:10%;">下单时间</td>
             <td  style="width:10%;">订单告警</td>
           </tr>
-          <tr>
-            <td>109890988</td>
-            <td>服务中</td>
-            <td>长期</td>
-            <td>2014.09.17   22:21:00~2014.12.17   22:21:00 </td>
-            <td>2014.12.17</td>
-            <td><img src="${ctx}/source/images/user_ico_1.jpg" /></td>
-          </tr>
-          <tr>
-            <td>109890988</td>
-            <td>服务中</td>
-            <td>长期</td>
-            <td>2014.09.17   22:21:00~2014.12.17   22:21:00 </td>
-            <td>2014.12.17</td>
-            <td><img src="${ctx}/source/images/user_ico_2.jpg" /></td>
-          </tr>
-          <tr>
-            <td>109890988</td>
-            <td>服务中</td>
-            <td>长期</td>
-            <td>2014.09.17   22:21:00~2014.12.17   22:21:00 </td>
-            <td>2014.12.17</td>
-            <td><img src="${ctx}/source/images/user_ico_2.jpg" /></td>
-          </tr>
+          <c:forEach var="list" items="${orderList}" varStatus="status">
+	          <tr>
+	            <td>${list.id }</td>
+	            <td>服务中</td>
+	            <td>
+	                                        
+	            </td>
+	            <td>${list.begin_date }~${list.end_date } </td>
+	            <td>${list.create_date }</td>
+	            <td><img src="${ctx}/source/images/user_ico_1.jpg" /></td>
+	          </tr>
+          </c:forEach>
+          
         </tbody>
       </table>
     </div>

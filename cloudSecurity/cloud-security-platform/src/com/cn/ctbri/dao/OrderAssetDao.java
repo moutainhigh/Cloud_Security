@@ -19,4 +19,10 @@ public interface OrderAssetDao {
 	 */
 	List<OrderAsset> findAssetById(int assetId);
 
+	/**
+     * 功能描述：保存服务资产
+     *       @time 2015-1-20
+     */
+    void insert(OrderAsset orderAsset);
+
 }
