@@ -17,7 +17,6 @@
 $(document).ready(function(){
 	$("#status").val("${status}");
 	$("#searchAssetName").val("${name}");
-	alert("${msg}");
 });
 </script>
 </head>
@@ -96,8 +95,13 @@ $(document).ready(function(){
           <tr>
             <td>${asset.name}</td>
             <td>${asset.addr}</td>
+            <c:if test="${asset.status==0}">
             <td><div class="zican_wei">未验证</div>
-              <div class="zican_top" id="${asset.id}" name="${asset.name}">立即验证</div></td>
+              <div class="zican_top" id="${asset.id}" name="${asset.name}" addr="${asset.addr}">立即验证</div></td>
+              </c:if>
+              <c:if test="${asset.status==1}">
+            <td><div class="zican_wei">已验证</div></td>
+              </c:if>
             <td><div class="zican_top1">修改</div>
               <div class="zican_bottom"><a href="javascript:void(0)" onclick="deleteAsset('${asset.id}')" >删除</a></div></td>
           </tr>
@@ -178,24 +182,23 @@ $(document).ready(function(){
 
 <div id="box_logoIn2">
 <div  id="close2"></div>
-<form action="${ctx}/verificationAsset.html?code=document.getElementById('code').innerHTML" method="post" id="verificationAssetForm">
+<form action="${ctx}/verificationAsset.html" method="post" id="verificationAssetForm">
 <input type="hidden" value="" id="hiddenId" name="id"/>
-<input type="hidden" value="" id="hiddenAttr" name="attr"/>
+<input type="hidden" value="" id="hiddenAddr" name="addr"/>
 	<div class="text_1">
 	  <div class="text_top" id="verificationName"></div>
 	  <div class="text_bottm">
 	    <div class="txt_yz clear">
 	      <div class="txt_yz_left">
-	        <input type="radio" name="verification_msg" checked id="codeVerification" value="代码验证"/>
+	        <input type="radio" name="verification_msg" checked id="codeVerification" value="codeVerification"/>
 	        &nbsp;&nbsp;代码验证(推荐)</div>
 	      <div class="txt_yz_right">
-	        <input type="radio" name="verification_msg" id="fileVerification" value="上传文件验证"/>
+	        <input type="radio" name="verification_msg" id="fileVerification" value="fileVerification"/>
 	        &nbsp;&nbsp;上传文件验证</div>
 	    </div>
 	    <div class="txt_1">
-	      <div class="txt_2" id="code">"http://webscan.360.cn/index/checkwebsite/url/1.1.1.1"
-	        name="9d4f9e27bc0c401fb20aqa2420ff1e5"云服务平台</div>
-	      <p>请在您的<span><a href="###">网站首页</a></span>中任何位置加入如上代码。（<a href="javascript:void(0)" onclick="copyToClipBoard()">复制代码</a>）<br />
+	      <div class="txt_2" id="code">漏洞扫描服务</div>
+	      <p>请在您的<span><a href="" id="c">网站首页</a></span>中任何位置加入如上代码。（<a href="javascript:void(0)" onclick="copyToClipBoard()">复制代码</a>）<br />
 	        如果添加成功，您的网站首页上能够看到右边的文字：“云服务平台”</p>
 	    </div>
 	    <!--  
