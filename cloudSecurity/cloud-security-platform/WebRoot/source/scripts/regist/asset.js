@@ -41,7 +41,25 @@ function deleteAsset(id){
 }
 //资产验证
 function verificationAsset(){
-	$("#verificationAssetForm").submit();
+	var id = $("#hiddenId").val();
+	var codeStyle = $("#codeVerification").val();
+	var code1 = document.getElementById('code').innerHTML;
+	alert(code1);
+	$.ajax({
+        type: "POST",
+        url: "/cloud-security-platform/asset_verification.html",
+        data: {"code1":code1,"id":id,"codeStyle":codeStyle},
+        dataType:"json",
+        success: function(data){
+            if(data.msg=="1"){
+            	alert("验证成功");
+            	$("#verificationAssetForm").submit();
+            }else{
+            	alert("验证失败");
+            	return;
+            }
+        },
+     }); 
 }
 //复制文本
 function copyToClipBoard(){ 
