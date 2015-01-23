@@ -35,6 +35,7 @@ public class MyBillController {
 	 * 参数描述： Model model
 	 *		 @time 2015-1-15
 	 */
+	@SuppressWarnings("rawtypes")
 	@RequestMapping("/userBillUI.html")
 	public String userBillUI(Model model,HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
