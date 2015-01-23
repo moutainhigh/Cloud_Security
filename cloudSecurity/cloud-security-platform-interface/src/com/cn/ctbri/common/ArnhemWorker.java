@@ -1,5 +1,6 @@
 package com.cn.ctbri.common;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.util.Properties;
@@ -259,13 +260,29 @@ public class ArnhemWorker {
         		 ));
         }
 	}
+	
+	/**
+	 * 根据任务id获取任务当前状态
+	 * @param sessionId 会话id
+	 * @param taskId 任务id
+	 * @return 任务状态代码
+	 */
+	public static String getStatusByTaskId(String sessionId, String taskId) {
+		//创建路径
+		String url = SERVER_WEB_ROOT + "/rest/task/Test/" + taskId;
+		//创建配置
+		ClientConfig config = new DefaultClientConfig();
+		//绑定配置
+    	buildConfig(url,config);
+    	//创建客户端
+        Client client = Client.create(config);
+        WebResource service = client.resource(url);
+        //连接服务器，返回结果
+        String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class);
+		return response;
+	}
+	
 	public static void main(String[] args) throws UnsupportedEncodingException {
-		String sessionId = ArnhemWorker.getSessionId();
-		String lssuedTask = ArnhemWorker.lssuedTask(sessionId, "test005", "", "65.61.137.117", "80", "可用性监测服务-周期10分钟");
-		System.err.println(lssuedTask);
-//		String  resultCountByTaskID= ArnhemWorker.getResultCountByTaskID(sessionId, "test");
-//		System.err.println(resultCountByTaskID);
-//		String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, "test004", "1", 0, 2);
-//		System.err.println(URLDecoder.decode(reportByTaskID, "UTF-8"));
+		
 	}
 }
