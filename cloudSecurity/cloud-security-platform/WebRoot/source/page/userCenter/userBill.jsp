@@ -142,8 +142,20 @@ function searchCombine(){
 		<c:forEach items="${list}" var="order"> 
 	          <tr>
 	            <td>YFW${order.id}</td>
-	            <td>${order.type}</td>
-	            <td>${order.name}</td>
+	            <td>
+	            	<c:if test="${order.type==1}">长期</c:if>
+	            	<c:if test="${order.type==2}">单次</c:if> 
+	           </td>
+	            <td>
+		            <c:if test="${order.name==1}">漏洞扫描服务</c:if>
+		            <c:if test="${order.name==2}">恶意代码监测服务</c:if>
+		            <c:if test="${order.name==3}">网页篡改监测服务</c:if>
+		            <c:if test="${order.name==4}">关键字监测服务</c:if>
+		            <c:if test="${order.name==5}">可用性监测服务</c:if>
+		            <c:if test="${order.name==6}">日常流量监测服务</c:if>
+		            <c:if test="${order.name==7}">日常攻击防护服务</c:if>
+		            <c:if test="${order.name==8}">突发异常流量清洗服务</c:if>
+	            </td>
 	            <td>${order.begin_date}~${order.end_date}</td>
 	            <td>${order.create_date}</td>
 	            <td class="seedetail" value="0"><span>查看详情</span></td>
