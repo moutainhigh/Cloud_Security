@@ -163,7 +163,7 @@ function searchCombine(){
           <tr  class="detailbox">
             <td colspan="6"><div  class="zhangd_div">
                 <div class="zhangd_ding"></div>
-                服务对象资产个数&nbsp;&nbsp; &nbsp; <span>2个 </span> &nbsp;&nbsp; &nbsp; 扫描频率 &nbsp;&nbsp; &nbsp; <span>每周</span> &nbsp;&nbsp; &nbsp;  扫描次数 &nbsp;&nbsp; &nbsp; <span>12次</span> </div></td>
+                服务对象资产个数&nbsp;&nbsp; &nbsp; <span>2个 </span> &nbsp;&nbsp; &nbsp; 扫描频率 &nbsp;&nbsp; &nbsp; <span>${order.scan_type}</span> &nbsp;&nbsp; &nbsp;  扫描次数 &nbsp;&nbsp; &nbsp; <span>12次</span> </div></td>
           </tr>
           
 	   </c:forEach> 
