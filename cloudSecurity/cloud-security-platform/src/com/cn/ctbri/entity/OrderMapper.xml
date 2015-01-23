@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 	<!-- 查询所有记录 -->
 	<select id="list" resultType="hashmap" parameterType="int">
-		select o.id,o.type,s.name,o.begin_date,o.end_date,o.create_date
+		select o.id,o.type,s.name,o.begin_date,o.end_date,o.create_date,o.scan_type
 		from cs_order o,cs_service s
 		where o.userId = #{id} and o.serviceId = s.id
 	</select>
@@ -35,10 +35,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		      FROM cs_order o,cs_service s,cs_user u
 		      WHERE u.id = 103 AND o.serviceId = s.id) c 
 		WHERE
-			1=1 AND c.type =2 AND c.name =1;  -->
+			1=1 AND c.type =2 AND c.name =1;  
+			.addCondition("o.createTime>= " + "str_to_date('"+dateBegin+"','%Y-%m-%d %H:%i:%s')")
+				.addCondition("o.createTime<= " + "str_to_date('"+dateEnd+"','%Y-%m-%d %H:%i:%s')")
+			-->
 	<select id="findByCombine" resultType="hashmap" parameterType="hashmap">
-		SELECT c.id,c.type,c.name,c.begin_date,c.end_date,c.create_date
-		FROM (SELECT o.id,o.type,s.name,o.begin_date,o.end_date,o.create_date
+		SELECT c.id,c.type,c.name,c.begin_date,c.end_date,c.create_date,c.scan_type
+		FROM (SELECT o.id,o.type,s.name,o.scan_type,o.begin_date,o.end_date,o.create_date
 		      FROM cs_order o,cs_service s
 		      WHERE o.userId = #{userId} AND o.serviceId = s.id) c 
 		WHERE
