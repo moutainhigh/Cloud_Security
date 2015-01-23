@@ -17,7 +17,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.cn.ctbri.entity.User;
 
 
-
+/**
+ * 创 建 人  ：  邓元元
+ * 创建日期：  2015-1-4
+ * 描        述：  系统过滤器
+ * 版        本：  1.0
+ */
 public class SystemFilter extends OncePerRequestFilter  {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request,  
