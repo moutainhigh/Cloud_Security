@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.OrderDao;
 import com.cn.ctbri.entity.Order;
-import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IOrderService;
 
 /**
