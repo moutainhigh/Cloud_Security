@@ -1,6 +1,5 @@
 function saveAsset() {
 	var assetName = $("#assetName").val();
-alert(assetName);
 	var assetAddr = $("#assetAddr").val();
 	if(assetName == null || assetName == "" || assetAddr==null || assetAddr == ""){
 		if(assetName == null || assetName == ""){
@@ -38,6 +37,19 @@ function deleteAsset(id){
 			}
 		}
 	});
+}
+//隐藏显示div
+function showAndHiddenRadio(){
+	var codeStyle = $("input[type='radio']:checked").val();
+	//隐藏div
+	if(codeStyle==="codeVerification"){
+		 document.getElementById("fileVerificationID").style.display="none";
+		 document.getElementById("codeVerificationID").style.display="block";
+	}
+	if(codeStyle==="fileVerification"){
+		document.getElementById("codeVerificationID").style.display="none";
+		document.getElementById("fileVerificationID").style.display="block";
+	}
 }
 //资产验证
 function verificationAsset(){
