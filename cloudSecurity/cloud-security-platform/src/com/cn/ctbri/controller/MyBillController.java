@@ -1,5 +1,6 @@
 package com.cn.ctbri.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,10 +55,16 @@ public class MyBillController {
 	public String searchCombine(Model model,Integer type,String servName,String begin_datevo,String end_datevo,HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		//组织条件查询
+		String name=null;
+		try {
+			name=new String(servName.getBytes("ISO-8859-1"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("userId", globle_user.getId());
 		paramMap.put("type", type);
-		paramMap.put("servName", servName);
+		paramMap.put("servName", name);
 		if(StringUtils.isNotEmpty(begin_datevo)){
 			paramMap.put("begin_date", DateUtils.stringToDate(begin_datevo));
 		}else{
@@ -72,7 +79,7 @@ public class MyBillController {
 		model.addAttribute("list",result);		//传对象到页面
 		
 		model.addAttribute("type",type);//回显类型	
-		model.addAttribute("servName",servName);//回显服务名称
+		model.addAttribute("servName",name);//回显服务名称
 		model.addAttribute("begin_date",begin_datevo);//回显服务开始时间	
 		model.addAttribute("end_date",end_datevo);	//回显结束时间
 		return "/source/page/userCenter/userBill";
