@@ -53,10 +53,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				AND c.name = #{servName} 
 			</if>	 
 			<if test="begin_date!=null">
-				AND c.begin_date = #{begin_date}
+				AND c.begin_date &gt;= #{begin_date}
 			</if>	 
 			<if test="end_date!=null">
-				AND c.end_date = #{end_date}
+				AND c.end_date &lt;=#{end_date}
 			</if>	  
 	</select>
 </mapper>

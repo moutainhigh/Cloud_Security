@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -95,7 +96,6 @@ function searchCombine(){
   <!--我的账单-->
   <div class="user_right" >
   <form action="${ctx}/searchCombine.html" method="post" id="searchForm">
-  
     <div class="user_top">
       <div class="user_sec_cont" style=" left:134px; ">
          	<select id="type" name="type" class="user_secta spiclesel">
@@ -118,11 +118,11 @@ function searchCombine(){
     	</select>
       </div>
       <div class="dan_3 user_sectime">
-          <input type="text" value="" id="begin_date" name="begin_datevo" onclick="WdatePicker()"/>
+          <input type="text" value="" id="begin_date" name="begin_datevo" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
         </div>
         
         <div class="dan_4 user_sectime" style="left:594px;">
-          <input type="text" value="" id="end_date" name="end_datevo" onclick="WdatePicker()"/>
+          <input type="text" value="" id="end_date" name="end_datevo" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
         </div>
       <div class="user_soucuo" style="left:764px;"><img src="${ctx}/source/images/user_submit_2.jpg" onclick="searchCombine()"/></div>
     </div>
@@ -141,7 +141,7 @@ function searchCombine(){
 	          </tr>
 		<c:forEach items="${list}" var="order"> 
 	          <tr>
-	            <td>YFW${order.id}</td>
+	            <td>${order.id}</td>
 	            <td>
 	            	<c:if test="${order.type==1}">长期</c:if>
 	            	<c:if test="${order.type==2}">单次</c:if> 
@@ -149,9 +149,9 @@ function searchCombine(){
 	            <td>
 	            ${order.name}
 	            </td>
-	            <td>${order.begin_date}~${order.end_date}</td>
-	            <td>${order.create_date}</td>
-	            <td class="seedetail" value="0"><span>查看详情</span></td>
+	            <td><fmt:formatDate value="${order.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>~<fmt:formatDate value="${order.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+	            <td><fmt:formatDate value="${order.create_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+	            <td class="seedetail" value="0" id="${order.id}"><span>查看详情</span></td>
 	          </tr>
           <tr  class="detailbox">
             <td colspan="6"><div  class="zhangd_div">

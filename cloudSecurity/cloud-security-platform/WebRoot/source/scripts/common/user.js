@@ -51,6 +51,11 @@ $(function(){/*
       }
 });*/
 $('.seedetail').click(function(){
+	var _index =$(".seedetail").index(this);  
+	var id= $(".seedetail").eq(_index).attr("id");
+	$.post("/cloud-security-platform/orderDetail.html", {"id" : id}, function(data, textStatus) {
+		
+	});
     var uservalue=$(this).attr('value');
     if(uservalue==0)
 	{
