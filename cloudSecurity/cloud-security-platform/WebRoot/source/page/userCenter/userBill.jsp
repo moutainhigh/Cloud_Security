@@ -107,14 +107,14 @@ function searchCombine(){
       <div class="user_sec_cont" style=" left:284px; ">
          <select id="servName" name="servName" class="user_secta spiclesel">
         	<option selected="selected" value="">请选择服务</option>
-      		<option value="1" >漏洞扫描服务</option>
-      		<option value="2" >恶意代码监测服务</option>
-      		<option value="3" >网页篡改监测服务</option>
-      		<option value="4" >关键字监测服务</option>
-      		<option value="5" >可用性监测服务</option>
-      		<option value="6" >日常流量监测服务</option>
-      		<option value="7" >日常攻击防护服务</option>
-      		<option value="8" >突发异常流量清洗服务</option>
+      		<option value="漏洞扫描服务" >漏洞扫描服务</option>
+      		<option value="恶意代码监测服务" >恶意代码监测服务</option>
+      		<option value="网页篡改监测服务" >网页篡改监测服务</option>
+      		<option value="关键字监测服务" >关键字监测服务</option>
+      		<option value="可用性监测服务" >可用性监测服务</option>
+      		<option value="日常流量监测服务" >日常流量监测服务</option>
+      		<option value="日常攻击防护服务" >日常攻击防护服务</option>
+      		<option value="突发异常流量清洗服务" >突发异常流量清洗服务</option>
     	</select>
       </div>
       <div class="dan_3 user_sectime">
@@ -147,14 +147,7 @@ function searchCombine(){
 	            	<c:if test="${order.type==2}">单次</c:if> 
 	           </td>
 	            <td>
-		            <c:if test="${order.name==1}">漏洞扫描服务</c:if>
-		            <c:if test="${order.name==2}">恶意代码监测服务</c:if>
-		            <c:if test="${order.name==3}">网页篡改监测服务</c:if>
-		            <c:if test="${order.name==4}">关键字监测服务</c:if>
-		            <c:if test="${order.name==5}">可用性监测服务</c:if>
-		            <c:if test="${order.name==6}">日常流量监测服务</c:if>
-		            <c:if test="${order.name==7}">日常攻击防护服务</c:if>
-		            <c:if test="${order.name==8}">突发异常流量清洗服务</c:if>
+	            ${order.name}
 	            </td>
 	            <td>${order.begin_date}~${order.end_date}</td>
 	            <td>${order.create_date}</td>
