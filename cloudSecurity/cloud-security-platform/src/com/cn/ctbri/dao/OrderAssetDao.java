@@ -3,6 +3,7 @@ package com.cn.ctbri.dao;
 import java.util.List;
 
 import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.OrderIP;
 
 /**
  * 创 建 人  ：  邓元元
@@ -24,5 +25,11 @@ public interface OrderAssetDao {
      *       @time 2015-1-20
      */
     void insert(OrderAsset orderAsset);
+
+    /**
+     * 功能描述：保存ip段
+     *       @time 2015-1-20
+     */
+    void insertIP(OrderIP orderIP);
 
 }

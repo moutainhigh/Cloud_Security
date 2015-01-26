@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.AssetDao;
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.OrderIP;
 import com.cn.ctbri.service.IAssetService;
 /**
  * 创 建 人  ：  邓元元
@@ -76,5 +78,22 @@ public class AssetServiceImpl implements IAssetService{
 	public void updateAsset(Asset asset) {
 		assetDao.updateAsset(asset);
 	}
+	
+	/**
+     * 功能描述： 根据条件查询服务资产
+     * 参数描述：  OrderAsset orderAsset
+     *       @time 2015-1-21
+     */
+    public List<Asset> findorderAssetByServId(OrderAsset orderAsset) {
+        return assetDao.getorderAssetByServId(orderAsset);
+    }
+    /**
+     * 功能描述： 根据条件查询服务IP段
+     * 参数描述：  OrderIP orderIP
+     *       @time 2015-1-21
+     */
+    public List<OrderIP> findorderIP(OrderIP orderIP) {
+        return assetDao.getorderIP(orderIP);
+    }
 	
 }

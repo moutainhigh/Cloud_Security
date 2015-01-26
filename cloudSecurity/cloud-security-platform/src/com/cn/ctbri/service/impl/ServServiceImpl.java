@@ -1,5 +1,7 @@
 package com.cn.ctbri.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,5 +28,15 @@ public class ServServiceImpl implements IServService{
 		Serv serv = servDao.findById(serviceid);
 		return serv;
 	}
+	
+	/**
+     * 功能描述： 根据条件查询服务
+     * 参数描述： Serv service
+     *       @time 2015-1-21
+     *  返回值 ：Serv
+     */
+    public List<Serv> findServiceByParam(Serv service) {
+        return servDao.getServiceByParam(service);
+    }
 	
 }

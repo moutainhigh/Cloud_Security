@@ -57,6 +57,7 @@
   <!--自助下单-->
   <input type="hidden" id="type" value="${type }"/>
   <input type="hidden" id="serviceId" value="${serviceId }"/>
+  <input type="hidden" id="indexPage" value="${indexPage }"/>
   <div class="user_right" >
     <div class="ding_nav">
       <div style="border-top:1px solid #e0e0e0; width:800px; position:absolute; left:75px; top:111px;"></div>
@@ -95,21 +96,21 @@
           <div class="pei_ul_txt"><a href="###">类型</a></div>
           <li class="pei_active"><a href="###">全部</a></li>
           <c:forEach var="list" items="${typeList}" varStatus="status">
-	          <li><a href="###">${list.name }</a></li>
+	          <li name="${list.id}"><a href="###">${list.name }</a></li>
           </c:forEach>
         </ul>
         <ul class="pei_ul_2">
           <div class="pei_ul_txt"><a href="###">厂商</a></div>
           <li class="pei_active"><a href="###">全部</a></li>
           <c:forEach var="list" items="${factoryList}" varStatus="status">
-              <li><a href="###">${list.factory }</a></li>
+              <li name="${list.factory}"><a href="###">${list.factory }</a></li>
           </c:forEach>
         </ul>
         <ul class="pei_ul_3">
           <div class="pei_ul_txt"><a href="###">服务</a></div>
           <li class="pei_active"><a href="###">全部</a></li>
-          <li><a href="###">WEB</a></li>
-          <li><a href="###">Anti-DDOS</a></li>
+          <li name="1"><a href="###">WEB</a></li>
+          <li name="2"><a href="###">Anti-DDOS</a></li>
         </ul>
       </div>
       <div class="peiz_center">
@@ -141,12 +142,12 @@
         <div class="clear">
           <h3>服务对象</h3>
           <div class="peiz_table">
-            <table class="leftTr">
+            <table class="leftTr0">
               <tr style="background:#e0e0e0;">
                 <td style="width:30%;">资产名称 </td>
                 <td style="width:25%;">资产类型 </td>
                 <td style="width:30%;">资产地址 </td>
-                <td style="width:15%;"><input type="checkbox" id="checkItems"/></td>
+                <td style="width:15%;"><input type="checkbox" class="checkItems"/></td>
               </tr>
               <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
 	              <tr>
@@ -159,15 +160,15 @@
                        <td>IP</td>
                     </c:if>
 	                <td>${list.addr }</td>
-	                <td><input type="checkbox" name="serviceAssetId"/></td>
+	                <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
 	              </tr>
               </c:forEach>
                             
             </table>
           </div>
-          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" id="to_right"/></div>
+          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
           <div class="peiz_table">
-            <table class="rightTr">
+            <table class="rightTr0">
               <tr style="background:#e0e0e0;">
                 <td style="width:30%;">资产名称 </td>
                 <td style="width:25%;">资产类型 </td>
@@ -177,18 +178,19 @@
             </table>
           </div>
         </div>
+        <div><font class="assets_msg" style="color:red;float:right"></font></div>
         <div class="pinv">
           <h3>扫描频率</h3>
           <div class="pinv_subnav">
             <ul class="pinv_sub_nav">
               <li class="pinv_active">
-                <input type="radio" name="scanType" value="1" checked/>
+                <input type="radio" name="scanType0" value="1" checked/>
                 &nbsp;&nbsp;每天</li>
               <li>
-                <input type="radio" name="scanType" value="2"/>
+                <input type="radio" name="scanType0" value="2"/>
                 &nbsp;&nbsp;每周</li>
               <li>
-                <input type="radio" name="scanType" value="3"/>
+                <input type="radio" name="scanType0" value="3"/>
                 &nbsp;&nbsp;每月</li>
             </ul>
           </div>
@@ -200,12 +202,12 @@
         <div class="clear">
           <h3>服务对象</h3>
           <div class="peiz_table">
-            <table id="addTr">
+            <table class="leftTr1">
               <tr style="background:#e0e0e0;">
                 <td style="width:30%;">资产名称 </td>
                 <td style="width:25%;">资产类型 </td>
                 <td style="width:30%;">资产地址 </td>
-                <td style="width:15%;"><input type="checkbox" id="checkItems"/></td>
+                <td style="width:15%;"><input type="checkbox" class="checkItems"/></td>
               </tr>
               <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
                   <tr>
@@ -218,15 +220,15 @@
                        <td>IP</td>
                     </c:if>
                     <td>${list.addr }</td>
-                    <td><input type="checkbox" name="serviceAssetId"/></td>
+                    <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
                   </tr>
               </c:forEach>
                             
             </table>
           </div>
-          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" id="to_right"/></div>
+          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
           <div class="peiz_table">
-            <table id="addTr1">
+            <table class="rightTr1">
               <tr style="background:#e0e0e0;">
                 <td style="width:30%;">资产名称 </td>
                 <td style="width:25%;">资产类型 </td>
@@ -236,12 +238,13 @@
             </table>
           </div>
         </div>
+        <div><font class="assets_msg" style="color:red;float:right"></font></div>
         <div class="pinv">
           <h3>扫描频率</h3>
           <div class="pinv_subnav">
             <ul class="pinv_sub_nav">
               <li class="pinv_active">
-                <input type="text" value="" id="scanType1" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+                <input type="text" value="" name="scanType1" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
               </li>
             </ul>
           </div>
@@ -253,12 +256,12 @@
         <div class="clear">
           <h3>服务对象</h3>
           <div class="peiz_table">
-            <table id="addTr">
+            <table class="leftTr2">
               <tr style="background:#e0e0e0;">
                 <td style="width:30%;">资产名称 </td>
                 <td style="width:25%;">资产类型 </td>
                 <td style="width:30%;">资产地址 </td>
-                <td style="width:15%;"><input type="checkbox" id="checkItems"/></td>
+                <td style="width:15%;"><input type="checkbox" class="checkItems"/></td>
               </tr>
               <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
                   <tr>
@@ -271,15 +274,15 @@
                        <td>IP</td>
                     </c:if>
                     <td>${list.addr }</td>
-                    <td><input type="checkbox" name="serviceAssetId"/></td>
+                    <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
                   </tr>
               </c:forEach>
                             
             </table>
           </div>
-          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" id="to_right"/></div>
+          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
           <div class="peiz_table">
-            <table id="addTr1">
+            <table class="rightTr2">
               <tr style="background:#e0e0e0;">
                 <td style="width:30%;">资产名称 </td>
                 <td style="width:25%;">资产类型 </td>
@@ -289,6 +292,7 @@
             </table>
           </div>
         </div>
+        <div><font class="assets_msg" style="color:red;float:right"></font></div>
         <div class="pinv">
           <h3>扫描频率</h3>
           <div class="pinv_subnav">
@@ -303,7 +307,7 @@
                 <input type="radio" name="scanType2" value="3"/>
                 &nbsp;&nbsp;2小时</li>
               <li>
-                <input type="radio" name="scanType2" value="3"/>
+                <input type="radio" name="scanType2" value="4"/>
                 &nbsp;&nbsp;1天</li>
             </ul>
           </div>
@@ -315,12 +319,12 @@
         <div class="clear">
           <h3>服务对象</h3>
           <div class="peiz_table">
-            <table id="addTr">
+            <table class="leftTr3">
               <tr style="background:#e0e0e0;">
                 <td style="width:30%;">资产名称 </td>
                 <td style="width:25%;">资产类型 </td>
                 <td style="width:30%;">资产地址 </td>
-                <td style="width:15%;"><input type="checkbox" id="checkItems"/></td>
+                <td style="width:15%;"><input type="checkbox" class="checkItems"/></td>
               </tr>
               <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
                   <tr>
@@ -333,15 +337,15 @@
                        <td>IP</td>
                     </c:if>
                     <td>${list.addr }</td>
-                    <td><input type="checkbox" name="serviceAssetId"/></td>
+                    <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
                   </tr>
               </c:forEach>
                             
             </table>
           </div>
-          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" id="to_right"/></div>
+          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
           <div class="peiz_table">
-            <table id="addTr1">
+            <table class="rightTr3">
               <tr style="background:#e0e0e0;">
                 <td style="width:30%;">资产名称 </td>
                 <td style="width:25%;">资产类型 </td>
@@ -351,12 +355,13 @@
             </table>
           </div>
         </div>
+        <div><font class="assets_msg" style="color:red;float:right"></font></div>
         <div class="pinv">
           <h3>扫描频率</h3>
           <div class="pinv_subnav">
             <ul class="pinv_sub_nav">
               <li class="pinv_active">
-                <input type="text" value="" id="scanType3" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+                <input type="text" value="" name="scanType3" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
               </li>
             </ul>
           </div>
@@ -368,12 +373,12 @@
         <div class="clear">
           <h3>服务对象</h3>
           <div class="peiz_table">
-            <table id="addTr">
+            <table class="leftTr4">
               <tr style="background:#e0e0e0;">
                 <td style="width:30%;">资产名称 </td>
                 <td style="width:25%;">资产类型 </td>
                 <td style="width:30%;">资产地址 </td>
-                <td style="width:15%;"><input type="checkbox" id="checkItems"/></td>
+                <td style="width:15%;"><input type="checkbox" class="checkItems"/></td>
               </tr>
               <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
                   <tr>
@@ -386,15 +391,15 @@
                        <td>IP</td>
                     </c:if>
                     <td>${list.addr }</td>
-                    <td><input type="checkbox" name="serviceAssetId"/></td>
+                    <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
                   </tr>
               </c:forEach>
                             
             </table>
           </div>
-          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" id="to_right"/></div>
+          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
           <div class="peiz_table">
-            <table id="addTr1">
+            <table class="rightTr4">
               <tr style="background:#e0e0e0;">
                 <td style="width:30%;">资产名称 </td>
                 <td style="width:25%;">资产类型 </td>
@@ -404,6 +409,7 @@
             </table>
           </div>
         </div>
+        <div><font class="assets_msg" style="color:red;float:right"></font></div>
         <div class="pinv">
           <h3>扫描频率</h3>
           <div class="pinv_subnav">
@@ -418,7 +424,7 @@
                 <input type="radio" name="scanType4" value="3"/>
                 &nbsp;&nbsp;1小时</li>
               <li>
-                <input type="radio" name="scanType4" value="3"/>
+                <input type="radio" name="scanType4" value="4"/>
                 &nbsp;&nbsp;2小时</li>
             </ul>
           </div>
@@ -430,7 +436,7 @@
         <div class="jiance_top clear">
           <div class="jiance_sub">监控对象IP地址/IP地址段</div>
           <div class="jiance_txt">
-            <input type="text" />
+            <input type="text" id="ip5"/>
           </div>
         </div>
         <div class="jiance_bottom clear">
@@ -439,22 +445,22 @@
             <div class="pinv_subnav">
 	            <ul class="pinv_sub_nav">
 	              <li class="pinv_active">
-	                <input type="radio" name="scanType5" value="1" checked/>
+	                <input type="radio" name="bandwidth5" value="1" checked/>
 	                &nbsp;&nbsp;10M</li>
 	              <li>
-	                <input type="radio" name="scanType5" value="2"/>
+	                <input type="radio" name="bandwidth5" value="2"/>
 	                &nbsp;&nbsp;100M</li>
 	              <li>
-	                <input type="radio" name="scanType5" value="3"/>
+	                <input type="radio" name="bandwidth5" value="3"/>
 	                &nbsp;&nbsp;500M</li>
 	              <li>
-                    <input type="radio" name="scanType5" value="1"/>
+                    <input type="radio" name="bandwidth5" value="4"/>
                     &nbsp;&nbsp;1G</li>
                   <li>
-                    <input type="radio" name="scanType5" value="2"/>
+                    <input type="radio" name="bandwidth5" value="5"/>
                     &nbsp;&nbsp;5G</li>
                   <li>
-                    <input type="radio" name="scanType5" value="3"/>
+                    <input type="radio" name="bandwidth5" value="6"/>
                     &nbsp;&nbsp;10G</li>
 	            </ul>
             </div>
@@ -467,7 +473,7 @@
         <div class="jiance_top clear">
           <div class="jiance_sub">监控对象IP地址/IP地址段</div>
           <div class="jiance_txt">
-            <input type="text" />
+            <input type="text" id="ip6"/>
           </div>
         </div>
         <div class="jiance_bottom clear">
@@ -476,22 +482,22 @@
             <div class="pinv_subnav">
                 <ul class="pinv_sub_nav">
                   <li class="pinv_active">
-                    <input type="radio" name="scanType6" value="1" checked/>
+                    <input type="radio" name="bandwidth6" value="1" checked/>
                     &nbsp;&nbsp;10M</li>
                   <li>
-                    <input type="radio" name="scanType6" value="2"/>
+                    <input type="radio" name="bandwidth6" value="2"/>
                     &nbsp;&nbsp;100M</li>
                   <li>
-                    <input type="radio" name="scanType6" value="3"/>
+                    <input type="radio" name="bandwidth6" value="3"/>
                     &nbsp;&nbsp;500M</li>
                   <li>
-                    <input type="radio" name="scanType6" value="1"/>
+                    <input type="radio" name="bandwidth6" value="4"/>
                     &nbsp;&nbsp;1G</li>
                   <li>
-                    <input type="radio" name="scanType6" value="2"/>
+                    <input type="radio" name="bandwidth6" value="5"/>
                     &nbsp;&nbsp;5G</li>
                   <li>
-                    <input type="radio" name="scanType6" value="3"/>
+                    <input type="radio" name="bandwidth6" value="6"/>
                     &nbsp;&nbsp;10G</li>
                 </ul>
             </div>
@@ -504,7 +510,7 @@
         <div class="jiance_top clear">
           <div class="jiance_sub">监控对象IP地址/IP地址段</div>
           <div class="jiance_txt">
-            <input type="text" />
+            <input type="text" id="ip7"/>
           </div>
         </div>
         <div class="jiance_bottom clear">
@@ -513,22 +519,22 @@
             <div class="pinv_subnav">
                 <ul class="pinv_sub_nav">
                   <li class="pinv_active">
-                    <input type="radio" name="scanType7" value="1" checked/>
+                    <input type="radio" name="bandwidth7" value="1" checked/>
                     &nbsp;&nbsp;10M</li>
                   <li>
-                    <input type="radio" name="scanType7" value="2"/>
+                    <input type="radio" name="bandwidth7" value="2"/>
                     &nbsp;&nbsp;100M</li>
                   <li>
-                    <input type="radio" name="scanType7" value="3"/>
+                    <input type="radio" name="bandwidth7" value="3"/>
                     &nbsp;&nbsp;500M</li>
                   <li>
-                    <input type="radio" name="scanType7" value="1"/>
+                    <input type="radio" name="bandwidth7" value="4"/>
                     &nbsp;&nbsp;1G</li>
                   <li>
-                    <input type="radio" name="scanType7" value="2"/>
+                    <input type="radio" name="bandwidth7" value="5"/>
                     &nbsp;&nbsp;5G</li>
                   <li>
-                    <input type="radio" name="scanType7" value="3"/>
+                    <input type="radio" name="bandwidth7" value="6"/>
                     &nbsp;&nbsp;10G</li>
                 </ul>
             </div>

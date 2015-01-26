@@ -55,4 +55,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</set>
 		where id=#{id}
 	</update>
+	
+	<!-- 按服务id查询订单资产 -->
+    <select id="findorderAssetByServId" parameterType="com.cn.ctbri.entity.OrderAsset" resultMap="AssetRM">
+        select * from cs_asset a 
+        where a.id in(select oa.assetId from cs_order_asset oa where oa.serviceid = #{serviceId}
+        <if test="scan_type!=0">
+            and oa.scan_type=#{scan_type}
+        </if>
+        <if test="scan_date!=null">
+            and oa.scan_date=#{scan_date}
+        </if>)
+    </select>
+    
+    <!-- 按服务id查询订单IP段 -->
+    <select id="findorderIP" parameterType="com.cn.ctbri.entity.OrderIP" resultType="com.cn.ctbri.entity.OrderIP">
+        select * from cs_order_ip where serviceid = #{serviceId} and ip = #{ip}
+    </select>
+	
 </mapper>

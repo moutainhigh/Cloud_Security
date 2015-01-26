@@ -8,6 +8,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 import com.cn.ctbri.dao.OrderAssetDao;
 import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.OrderIP;
 /**
  * 创 建 人  ：  邓元元
  * 创建日期：  2015-1-20
@@ -42,6 +43,14 @@ public class OrderAssetDaoImpl extends SqlSessionDaoSupport implements OrderAsse
      */
     public void insert(OrderAsset orderAsset) {
         this.getSqlSession().insert(ns + "insert", orderAsset);
+    }
+    
+    /**
+     * 功能描述：保存ip段
+     *       @time 2015-1-20
+     */
+    public void insertIP(OrderIP orderIP) {
+        this.getSqlSession().insert(ns + "insertIP", orderIP);
     }
 		
 }

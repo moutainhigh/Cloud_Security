@@ -97,15 +97,15 @@ function searchCombine(){
   <form action="${ctx}/searchCombine.html" method="post" id="searchForm">
   
     <div class="user_top">
-      <div class="user_sec_cont">
-         	<select id="type" name="type">
+      <div class="user_sec_cont" style=" left:134px; ">
+         	<select id="type" name="type" class="user_secta spiclesel">
          		<option selected="selected" value="">请选择类型</option>
          		<option value="1" >长期</option>
          		<option value="2" >单次</option>
     		</select>
       </div>
-      <div class="user_sec_cont" style=" left:200px; ">
-         <select id="servName" name="servName">
+      <div class="user_sec_cont" style=" left:284px; ">
+         <select id="servName" name="servName" class="user_secta spiclesel">
         	<option selected="selected" value="">请选择服务</option>
       		<option value="1" >漏洞扫描服务</option>
       		<option value="2" >恶意代码监测服务</option>
@@ -117,14 +117,14 @@ function searchCombine(){
       		<option value="8" >突发异常流量清洗服务</option>
     	</select>
       </div>
-      <div class="dan_3">
+      <div class="dan_3 user_sectime">
           <input type="text" value="" id="begin_date" name="begin_datevo" onclick="WdatePicker()"/>
         </div>
         
-        <div class="dan_4">
+        <div class="dan_4 user_sectime" style="left:594px;">
           <input type="text" value="" id="end_date" name="end_datevo" onclick="WdatePicker()"/>
         </div>
-      <div class="user_soucuo"><img src="${ctx}/source/images/user_submit_2.jpg" onclick="searchCombine()"/></div>
+      <div class="user_soucuo" style="left:764px;"><img src="${ctx}/source/images/user_submit_2.jpg" onclick="searchCombine()"/></div>
     </div>
    </form>
     <div class="zhangd_table">

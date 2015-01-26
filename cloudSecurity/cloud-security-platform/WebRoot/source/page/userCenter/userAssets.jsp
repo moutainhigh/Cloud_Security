@@ -68,17 +68,24 @@ $(document).ready(function(){
   <form action="${ctx}/searchAssetCombine.html" method="post" id="searchAssetForm">
       <div class="user_sec_cont" style=" left:200px; ">
       </div>
-      <div class="user_sec_cont" style="left:360px;">
-        <select id="status" name="status">
+      <div class="user_sec_cont" style="left:200px;">
+        <select id="status" name="status" class="user_secta spiclesel">
        		<option select="selected" value="">请选择状态</option>
        		<option value="0" >未验证</option>
        		<option value="1" >已验证</option>
   		</select>
       </div>
-      <div class="user_sec_txt">
-        <input type="text" name="name" id="searchAssetName" value=""></input>
+      <div class="user_sec_cont" style="left:354px;">
+        <select id="status" name="status" class="user_secta spiclesel">
+            <option select="selected" value="">请选择状态</option>
+            <option value="0" >未验证</option>
+            <option value="1" >已验证</option>
+        </select>
       </div>
-      <div class="user_soucuo" style="left:740px;"><img src="${ctx}/source/images/user_submit_2.jpg" onclick="searchAssetCombine()"/></div>
+      <div class="user_sec_txt">
+        <input type="text" name="name" id="searchAssetName" value="请输入关键字"></input>
+      </div>
+      <div class="user_soucuo" style="left:754px;"><img src="${ctx}/source/images/user_submit_2.jpg" onclick="searchAssetCombine()"/></div>
   </form>
     </div>
     

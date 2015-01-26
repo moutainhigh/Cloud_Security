@@ -3,6 +3,8 @@ package com.cn.ctbri.service;
 import java.util.List;
 
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.OrderIP;
 
 
 
@@ -55,6 +57,19 @@ public interface IAssetService {
 	 * 返回值    ：Asset
 	 */
 	void updateAsset(Asset asset);
+	
+	/**
+     * 功能描述： 根据条件查询服务资产
+     * 参数描述：  OrderAsset orderAsset
+     *       @time 2015-1-21
+     */
+    List<Asset> findorderAssetByServId(OrderAsset orderAsset);
+    /**
+     * 功能描述： 根据条件查询服务IP段
+     * 参数描述：  OrderIP orderIP
+     *       @time 2015-1-21
+     */
+    List<OrderIP> findorderIP(OrderIP orderIP);
 
 	
 }

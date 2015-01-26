@@ -54,75 +54,81 @@
   
   <!-- 订单跟踪-->
   <div class="user_right" >
+  <form action="${ctx}/searchCombine.html" method="post" id="searchForm">
+  
     <div class="user_top">
-      <div class="user_sec_cont" style="left:140px;">
-        <div class="user_secta" value="0">全部状态</div>
-        <div class="user_secta_list">
-          <ul>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-          </ul>
-        </div>
+      <div class="user_sec_cont">
+            <select class="user_secta spiclesel" id="type" name="type">
+                <option selected="selected" value="">请选择类型</option>
+                <option value="1" >长期</option>
+                <option value="2" >单次</option>
+            </select>
       </div>
-      <div class="user_sec_cont" style="left:265px;">
-        <div class="user_secta" value="0">全部类型</div>
-        <div class="user_secta_list">
-          <ul>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-          </ul>
-        </div>
+      <div class="user_sec_cont" style=" left:172px; ">
+         <select class="user_secta spiclesel" id="servName" name="servName">
+            <option selected="selected " value="">请选择服务</option>
+            <option value="1" >漏洞扫描服务</option>
+            <option value="2" >恶意代码监测服务</option>
+            <option value="3" >网页篡改监测服务</option>
+            <option value="4" >关键字监测服务</option>
+            <option value="5" >可用性监测服务</option>
+            <option value="6" >日常流量监测服务</option>
+            <option value="7" >日常攻击防护服务</option>
+            <option value="8" >突发异常流量清洗服务</option>
+        </select>
       </div>
-      <div class="user_sec_cont" style=" left:390px; ">
-        <div class="user_secta" value="0">全部服务</div>
-        <div class="user_secta_list">
-          <ul>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-            <li><a href="###">全部类型</a></li>
-          </ul>
-        </div>
+      
+      <div class="user_sec_cont" style=" left:302px; ">
+         <select class="user_secta spiclesel" id="servName" name="servName">
+            <option selected="selected" value="">请选择服务</option>
+            <option value="1" >漏洞扫描服务</option>
+            <option value="2" >恶意代码监测服务</option>
+            <option value="3" >网页篡改监测服务</option>
+            <option value="4" >关键字监测服务</option>
+            <option value="5" >可用性监测服务</option>
+            <option value="6" >日常流量监测服务</option>
+            <option value="7" >日常攻击防护服务</option>
+            <option value="8" >突发异常流量清洗服务</option>
+        </select>
       </div>
-      <div class="user_sectime1" style=" left:520px; ">选择服务时间范围</div>
-      <div class="user_soucuo" style=" left:720px; "><img src="${ctx}/source/images/user_submit_2.jpg" /></div>
+      <div class="dan_3 user_sectime1">
+          <input type="text" value="" id="begin_date" name="begin_datevo" onclick="WdatePicker()"/>
+        </div>
+        
+        <div class="dan_4 user_sectime1">
+          <input type="text" value="" id="end_date" name="end_datevo" onclick="WdatePicker()"/>
+        </div>
+      <div class="user_soucuo"><img src="${ctx}/source/images/user_submit_2.jpg" onclick="searchCombine()"/></div>
     </div>
+   </form>
     <div class="zhangd_table">
       <table>
+      
         <tbody>
-          <tr style="background:#e0e0e0; height:30px; line-height:30px;">
-            <td style="width:10%;">订单编号</td>
-            <td  style="width:10%;">订单状态</td>
-            <td  style="width:10%;">订单类型</td>
-            <td  style="width:50%;">服务起止时间</td>
-            <td  style="width:10%;">下单时间</td>
-            <td  style="width:10%;">订单告警</td>
-          </tr>
-          <c:forEach var="list" items="${orderList}" varStatus="status">
-	          <tr>
-	            <td>${list.id }</td>
-	            <td>服务中</td>
-	            <td>
-	                                        
-	            </td>
-	            <td>${list.begin_date }~${list.end_date } </td>
-	            <td>${list.create_date }</td>
-	            <td><img src="${ctx}/source/images/user_ico_1.jpg" /></td>
-	          </tr>
-          </c:forEach>
-          
+              <tr style="background:#e0e0e0; height:30px; line-height:30px;">
+                <td style="width:10%;">订单编号</td>
+                <td  style="width:10%;">订单类型</td>
+                <td  style="width:10%;">订单服务</td>
+                <td  style="width:50%;">服务起止时间</td>
+                <td  style="width:10%;">下单时间</td>
+                <td  style="width:10%;"></td>
+              </tr>
+	          <c:forEach var="list" items="${orderList}" varStatus="status">
+	              <tr>
+	                <td>${list.id }</td>
+	                <td>服务中</td>
+	                <td>
+	                                            
+	                </td>
+	                <td>${list.begin_date }~${list.end_date } </td>
+	                <td>${list.create_date }</td>
+	                <td><img src="${ctx}/source/images/user_ico_1.jpg" /></td>
+	              </tr>
+	          </c:forEach>
         </tbody>
       </table>
     </div>
   </div>
-</div>
 </div>
 <!-- 尾部代码开始-->
 <div class="bottom_bj">

@@ -1,15 +1,19 @@
 $(function(){
+	var type=null;//服务类型
+	var factory=null;//服务厂商
+	var parentC=null//服务大类
+	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
 	$(".dan_2").eq(1).hide();
 	$(".hideEnddate").hide();
 	$(".scan").hide(); 
 	//type和serviceId是从首页获取的
-	var type = $("#type").val();
+	var otype = $("#type").val();
 	var serviceId = $("#serviceId").val();
-	if(type==1){
+	if(otype==1){
 		$('input:radio[name="orderType"]:eq(0)').attr("disabled", true);
 		$('input:radio[name="orderType"]:eq(1)').attr("checked",'checked');
 		$(".dan_2").eq(1).show();
-	}else if(type==2){
+	}else if(otype==2){
 		$('input:radio[name="orderType"]:eq(1)').attr("disabled", true);
 	}
 	if(serviceId!=null && serviceId!=""){
@@ -23,6 +27,8 @@ $(function(){
 		
 		$('.peiz_cont').hide();
 		$('.peiz_cont').eq(serviceId-1).show();
+		$('.peiz_center ul li').addClass('opacity');
+   		$('.peiz_center ul li').eq(serviceId-1).removeClass('opacity');
 	}
 	
 	
@@ -51,15 +57,13 @@ $(function(){
         		$("#beginDate_msg").html("开始时间不能为空");
         	}else{
            		$("#beginDate_msg").html("");
-           		$('.peiz_center ul li').removeClass('opacity');
-           		$('.peiz_center ul li').eq(2).addClass('opacity');
-        		$('.peiz_center ul li').eq(4).addClass('opacity');
-        		$('.peiz_center ul li').eq(5).addClass('opacity');
-        		$('.peiz_center ul li').eq(6).addClass('opacity');
-//        		$('.peiz_cont').eq(2).remove();
-//        		$('.peiz_cont').eq(3).remove();
-//        		$('.peiz_cont').eq(3).remove();
-//        		$('.peiz_cont').eq(3).remove();
+           		if(indexPage==""||indexPage==null){
+           			$('.peiz_center ul li').removeClass('opacity');
+               		$('.peiz_center ul li').eq(2).addClass('opacity');
+            		$('.peiz_center ul li').eq(4).addClass('opacity');
+            		$('.peiz_center ul li').eq(5).addClass('opacity');
+            		$('.peiz_center ul li').eq(6).addClass('opacity');
+           		}
         		$('.pinv').hide();
            		getActive(1);
         	}
@@ -76,10 +80,16 @@ $(function(){
                		$("#endDate_msg").html("");
             	}
         	}else{
+        		if(beginDate>=endDate){
+            		alert("开始时间不能大于结束时间!");
+            		return;
+            	}
         		$("#beginDate_msg").html("");
         		$("#endDate_msg").html("");
-        		$('.peiz_center ul li').removeClass('opacity');
-        		$('.peiz_center ul li').eq(7).addClass('opacity');
+        		if(indexPage==""||indexPage==null){
+        			$('.peiz_center ul li').removeClass('opacity');
+            		$('.peiz_center ul li').eq(7).addClass('opacity');
+        		}
         		$('.pinv').show();
         		$('input:radio[name="scanType"]:eq(0)').attr("checked",'checked');
         		getActive(1);
@@ -101,12 +111,11 @@ $(function(){
     	var endDate=$('#endDate').val();
     	var scanType=$('input:radio[name="scanType"]:checked').val();
     	var serviceId=$('.peiz_active').attr("id");
+    	var index = serviceId-1;
     	var servName=$('.peiz_active').attr("name");
     	var servRemark=$('.peiz_active input[name="remarks"]').val();
-    	if($('.rightTr input[name="assetId"]').length==0){
-			alert("在资产列表中选择服务对象资产!");
-			return;
-		}
+    	var ip=$('#ip'+index).val();
+    	
     	var typeName=null;
     	if(orderType==2){
     		typeName="单次";
@@ -129,9 +138,21 @@ $(function(){
     	$('h3[name="servName"]').html(servName);
     	$('p[name="servRemark"]').html(servRemark);
     	$('img[name="servImg"]').attr("src","/cloud-security-platform/source/images/center_"+serviceId+".png");
-    	getActive(2);
-    	
-    	
+    	if(serviceId!=6&&serviceId!=7&&serviceId!=8){
+    		if($('.rightTr'+index+' input[name="assetId"]').length==0){
+    			alert("在资产列表中选择服务对象资产!");
+    			return;
+    		}
+    	}
+    	var obj = {'serviceId':serviceId,
+				   'ip':ip};
+	 	$.post("/cloud-security-platform/checkOrderAsset.html", obj, function(data){
+	 		if(data.ipText){
+	 			alert("ip不可用");
+	 		}else{
+	 			getActive(2);
+	 		}
+	     });
     });
     
     //联系信息界面点击"上一步"返回到服务配置
@@ -178,13 +199,19 @@ $(function(){
     
     //确认订单界面点击"确认订单"进入完成
     $("#fourStep").click(function(){
-    	var orderId = MathRand();
+    	//var orderId = MathRand();
     	var createDate = getCreateDate();
     	var orderType=$('input:radio[name="orderType"]:checked').val();
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
-    	var scanType=$('input:radio[name="scanType"]:checked').val();
     	var serviceId=$('.peiz_active').attr("id");
+    	var index = serviceId-1;
+    	if(serviceId==2 || serviceId ==4){
+    		var scanDate=$('input[name="scanType'+index+'"]').val();
+    	}else{
+    		var scanType=$('input:radio[name="scanType'+index+'"]:checked').val();
+    	}
+    	
     	var linkname=$('#linkname').val();
     	var phone=$('#phone').val();
     	var email=$('#email').val();
@@ -193,34 +220,41 @@ $(function(){
     	if(orderType==2){
     		scanType="";
     	}
-    	var assets = "";
-    	if(serviceId==1){
-    		var $temp = $(".peiz_cont").eq(serviceId-1);
-//    		alert($temp("input[name='assetId']"));
-    		$(".rightTr input[name='assetId']").each(function(){
-    			assets = assets + $(this).val() + ",";
-    		});
+    	if(beginDate<createDate){
+    		//获得服务资产
+	    	var assetIds = "";
+			$(".rightTr"+index+" input[name='assetId']").each(function(){
+				assetIds = assetIds + $(this).val() + ",";
+			});
+			var ip=$('#ip'+index).val();
+			var bandwidth=$('input:radio[name="bandwidth'+index+'"]:checked').val();
+	    	var obj = {
+	    			   'orderType':orderType,//'orderId':orderId,
+	    			   'beginDate': beginDate,
+	    			   'endDate':endDate,
+	    			   'createDate':createDate,
+	    			   'scanType':scanType,
+	    			   'scanDate':scanDate,
+	    			   'serviceId':serviceId,
+	    			   'linkname':linkname,
+	    			   'phone':phone,
+	    			   'email':email,
+	    			   'company':company,
+	    			   'address':address,
+	    			   'assetIds':assetIds,
+	    			   'ip':ip,
+	    			   'bandwidth':bandwidth};
+	    	var result = window.confirm("确定要提交订单吗？");
+	    	if(result){
+		    	$.post("/cloud-security-platform/saveOrder.html", obj, function(data){
+		    		$("#orderId").html(data.orderId);
+		    		getActive(4);
+		        });
+	    	}
+    	}else{
+    		alert("订单开始时间不能晚于当前订单提交时间!");
+    		return;
     	}
-    	var obj = {'orderId':orderId,
-    			   'orderType':orderType,
-    			   'beginDate': beginDate,
-    			   'endDate':endDate,
-    			   'createDate':createDate,
-    			   'scanType':scanType,
-    			   'serviceId':serviceId,
-    			   'linkname':linkname,
-    			   'phone':phone,
-    			   'email':email,
-    			   'company':company,
-    			   'address':address,
-    			   'assets':assets};
-    	var result = window.confirm("确定要提交订单吗？");
-    	if(result){
-	    	$.post("/cloud-security-platform/saveOrder.html", obj, function(data){
-	    		getActive(4);
-	        });
-    	}
-    	
     });
     
    function getActive(index){
@@ -244,8 +278,10 @@ $(function(){
 		$('.ding_center').eq(index).show();
 	}
 	
-   $("#checkItems").click(function(){
-	    var items = $('input:checkbox[name="serviceAssetId"]');
+   $(".checkItems").click(function(){
+	   	var serviceId=$('.peiz_active').attr("id");
+	    var index = $(".checkItems").index(this); //获取当前点击按钮
+	    var items = $('.leftTr'+index+' input:checkbox[name="serviceAssetId"]');
 		for(var i=0;i<items.length;i++){
 			var item = items[i];
 			item.checked = this.checked;
@@ -253,57 +289,181 @@ $(function(){
 	});
    
    //勾选服务对象到右侧
-   $("#to_right").click(function(){
-   		if($('input:checkbox[name="serviceAssetId"]:checked').length==0){
+   $(".to_right").click(function(){
+	    var serviceId=$('.peiz_active').attr("id");
+	    var index = $(".to_right").index(this); //获取当前点击按钮
+   		if($(".leftTr"+index+" input:checkbox[name='serviceAssetId']:checked").length==0){
 			alert("在资产列表中选择服务对象资产!");
 			return;
 		}
-   		var $removeTr = $('input:checkbox[name="serviceAssetId"]:checked').parent().html('<a href="###" class="delete">X </a>');
-   		$removeTr = $removeTr.parent().detach();
-		$(".rightTr").append($removeTr);
+   		var assetIds = "";
+   		$(".leftTr"+index+" input:checkbox[name='serviceAssetId']:checked").each(function(){
+   			assetIds = assetIds + $(this).val() + ",";
+		});
+   		if(serviceId==2 || serviceId ==4){
+    		var scanDate=$('input[name="scanType'+index+'"]').val();
+    	}else{
+    		var scanType=$('input:radio[name="scanType'+index+'"]:checked').val();
+    	}
+		var obj = {'serviceId':serviceId,
+				   'assetIds':assetIds,
+				   'scanType':scanType,
+				   'scanDate':scanDate};
+    	$.post("/cloud-security-platform/checkOrderAsset.html", obj, function(data){
+    		if(data.assetNames!=null){
+    			$(".assets_msg").eq(index).html(data.assetNames + "不能用,请重新选择!");
+    		}else{
+    			$(".assets_msg").eq(index).html("");
+    			var $removeTr = $(".leftTr"+index+" input:checkbox[name='serviceAssetId']:checked").parent().html('<a href="###" class="delete">X </a>');
+    	   		$removeTr = $removeTr.parent().detach();
+    			$(".rightTr"+index).append($removeTr);
+    		}
+        });
    });
    
    //删除服务对象
-   $(".delete").click(function(){
+   $(".delete").live('click',function(){
+	    var serviceId=$('.peiz_active').attr("id");
+	    var index  = serviceId-1;
 	    var _index = $(".delete").index(this);
-	    alert(_index);
    		var $removeTr = $(this).parent().html("<input type='checkbox' name='serviceAssetId'/>");
    		$removeTr = $removeTr.parent().detach();
-		$(".leftTr").append($removeTr);
+		$(".leftTr"+index).append($removeTr);
    });
    
    $('.pei_ul_1 li').click(function (){
+	   var orderType=$('input:radio[name="orderType"]:checked').val();
 	   var _index = $(".pei_ul_1 li").index(this);
-	   if(_index==0){
+	   type = $(this).attr("name");
+	   
+	   if((_index==0 && orderType ==2)||(_index==0 && orderType ==1)){
 		   $('.pei_ul_1 li').removeClass('pei_active');
 		   $(this).addClass('pei_active');
+		   type=null;
+		   var obj = {'type':type,
+				      'factory':factory,
+				      'parentC':parentC,
+				      'orderType':orderType};
+		   $.post("/cloud-security-platform/select.html", obj, function(data){
+			   if(data.servs!=null){
+				   var temp = data.servs;
+				   var res = temp.split(",");
+				   $('.peiz_center ul li').addClass('opacity');
+				   for(var n=0;n<res.length-1;n++){	
+			   			$('.peiz_center ul li').eq(res[n]-1).removeClass('opacity');
+				   }
+			   }
+		   });
 	   }else{
-		   $('.pei_ul_1 li').eq(0).removeClass('pei_active');
+//		   $('.pei_ul_1 li').eq(0).removeClass('pei_active');
+		   $('.pei_ul_1 li').removeClass('pei_active');
 		   $(this).addClass('pei_active');
+		   var obj = {'type':type,
+				      'factory':factory,
+				      'parentC':parentC,
+				      'orderType':orderType};
+		   $.post("/cloud-security-platform/select.html", obj, function(data){
+			   if(data.servs!=null){
+				   var temp = data.servs;
+				   var res = temp.split(",");
+				   $('.peiz_center ul li').addClass('opacity');
+				   for(var n=0;n<res.length-1;n++){	
+			   			$('.peiz_center ul li').eq(res[n]-1).removeClass('opacity');
+				   }
+			   }
+		   });
 	   }
 	   
 	});
    
    $('.pei_ul_2 li').click(function (){
+	   var orderType=$('input:radio[name="orderType"]:checked').val();
 	   var _index = $(".pei_ul_2 li").index(this);
-	   if(_index==0){
+	   factory = $(this).attr("name");
+	   if((_index==0 && orderType ==2)||(_index==0 && orderType ==1)){
 		   $('.pei_ul_2 li').removeClass('pei_active');
 		   $(this).addClass('pei_active');
+		   factory=null;
+		   var obj = {'type':type,
+				      'factory':factory,
+				      'parentC':parentC,
+				      'orderType':orderType};
+		   $.post("/cloud-security-platform/select.html", obj, function(data){
+			   if(data.servs!=null){
+				   var temp = data.servs;
+				   var res = temp.split(",");
+				   $('.peiz_center ul li').addClass('opacity');
+				   for(var n=0;n<res.length-1;n++){	
+			   			$('.peiz_center ul li').eq(res[n]-1).removeClass('opacity');
+				   }
+			   }
+		   });
 	   }else{
-		   $('.pei_ul_2 li').eq(0).removeClass('pei_active');
+//		   $('.pei_ul_1 li').eq(0).removeClass('pei_active');
+		   $('.pei_ul_2 li').removeClass('pei_active');
 		   $(this).addClass('pei_active');
+		   var obj = {'type':type,
+				      'factory':factory,
+				      'parentC':parentC,
+				      'orderType':orderType};
+		   $.post("/cloud-security-platform/select.html", obj, function(data){
+			   if(data.servs!=null){
+				   var temp = data.servs;
+				   var res = temp.split(",");
+				   $('.peiz_center ul li').addClass('opacity');
+				   for(var n=0;n<res.length-1;n++){	
+			   			$('.peiz_center ul li').eq(res[n]-1).removeClass('opacity');
+				   }
+			   }
+		   });
 	   }
 	   
 	});
    
    $('.pei_ul_3 li').click(function (){
+	   var orderType=$('input:radio[name="orderType"]:checked').val();
 	   var _index = $(".pei_ul_3 li").index(this);
-	   if(_index==0){
+	   parentC = $(this).attr("name");
+	   var obj = {'type':type,
+			      'factory':factory,
+			      'parentC':parentC,
+			      'orderType':orderType};
+	   if((_index==0 && orderType ==2)||(_index==0 && orderType ==1)){
 		   $('.pei_ul_3 li').removeClass('pei_active');
 		   $(this).addClass('pei_active');
+		   parentC=null;
+		   var obj = {'type':type,
+				      'factory':factory,
+				      'parentC':parentC,
+				      'orderType':orderType};
+		   $.post("/cloud-security-platform/select.html", obj, function(data){
+			   if(data.servs!=null){
+				   var temp = data.servs;
+				   var res = temp.split(",");
+				   $('.peiz_center ul li').addClass('opacity');
+				   for(var n=0;n<res.length-1;n++){	
+			   			$('.peiz_center ul li').eq(res[n]-1).removeClass('opacity');
+				   }
+			   }
+		   });
 	   }else{
-		   $('.pei_ul_3 li').eq(0).removeClass('pei_active');
+//		   $('.pei_ul_1 li').eq(0).removeClass('pei_active');
+		   $('.pei_ul_3 li').removeClass('pei_active');
 		   $(this).addClass('pei_active');
+		   var obj = {'type':type,
+				      'factory':factory,
+				      'parentC':parentC,
+				      'orderType':orderType};
+		   $.post("/cloud-security-platform/select.html", obj, function(data){
+			   if(data.servs!=null){
+				   var temp = data.servs;
+				   var res = temp.split(",");
+				   $('.peiz_center ul li').addClass('opacity');
+				   for(var n=0;n<res.length-1;n++){	
+			   			$('.peiz_center ul li').eq(res[n]-1).removeClass('opacity');
+				   }
+			   }
+		   });
 	   }
 	   
 	});

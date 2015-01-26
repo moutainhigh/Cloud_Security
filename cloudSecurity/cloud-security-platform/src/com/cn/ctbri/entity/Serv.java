@@ -15,6 +15,7 @@ public class Serv {
 	private int status;//服务状态(1：可用，0：不可用)
 	private String remarks;//备注
     private int orderType;	//订单类型(0:单次和长期,1:长期,2:单次)
+    private int parentC;//服务大类
 	public int getId() {
 		return id;
 	}
@@ -62,6 +63,12 @@ public class Serv {
     }
     public void setOrderType(int orderType) {
         this.orderType = orderType;
+    }
+    public int getParentC() {
+        return parentC;
+    }
+    public void setParentC(int parentC) {
+        this.parentC = parentC;
     }
 	
 }

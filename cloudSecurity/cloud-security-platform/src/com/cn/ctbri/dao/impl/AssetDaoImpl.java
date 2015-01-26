@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.AssetDao;
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.OrderIP;
 /**
  * 创 建 人  ：  邓元元
  * 创建日期：  2015-1-16
@@ -85,5 +87,24 @@ public class AssetDaoImpl extends SqlSessionDaoSupport implements AssetDao{
 	 */
 	public void updateAsset(Asset asset) {
 		this.getSqlSession().update(ns+"updateAsset", asset);
-	}		
+	}	
+	
+	/**
+     * 功能描述： 根据条件查询服务资产
+     * 参数描述：  OrderAsset orderAsset
+     *       @time 2015-1-21
+     */
+    public List<Asset> getorderAssetByServId(OrderAsset orderAsset) {
+        List list = this.getSqlSession().selectList(ns+"findorderAssetByServId", orderAsset);
+        return list;
+    }
+    /**
+     * 功能描述： 根据条件查询服务IP段
+     * 参数描述：  OrderIP orderIP
+     *       @time 2015-1-21
+     */
+    public List<OrderIP> getorderIP(OrderIP orderIP) {
+        List list = this.getSqlSession().selectList(ns+"findorderIP", orderIP);
+        return list;
+    }
 }

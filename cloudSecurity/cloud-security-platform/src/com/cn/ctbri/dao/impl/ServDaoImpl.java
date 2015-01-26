@@ -1,5 +1,7 @@
 package com.cn.ctbri.dao.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -24,12 +26,22 @@ public class ServDaoImpl extends SqlSessionDaoSupport implements ServDao{
 	/**
 	 * 功        能： OrderMapper命名空间
 	 */
-	private String ns = "com.cn.ctbri.entity.ServiceMapper.";
+	private String ns = "com.cn.ctbri.entity.ServMapper.";
 
 
 	public Serv findById(int serviceid) {
 		return this.getSqlSession().selectOne(ns + "findById",serviceid);
 	}
+
+	/**
+     * 功能描述： 根据条件查询服务
+     * 参数描述： Serv service
+     *       @time 2015-1-21
+     *  返回值 ：Serv
+     */
+    public List<Serv> getServiceByParam(Serv service) {
+        return this.getSqlSession().selectList(ns + "findServiceByParam",service);
+    }
 	
 	
 	

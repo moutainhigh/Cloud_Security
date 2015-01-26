@@ -1,8 +1,12 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +18,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.entity.Asset;
@@ -21,12 +26,16 @@ import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.OrderIP;
 import com.cn.ctbri.entity.Serv;
+import com.cn.ctbri.entity.Service;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.entity.User;
+import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
+import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.util.Random;
 
 /**
@@ -44,6 +53,10 @@ public class OrderMgrController {
     IOrderService orderService;
     @Autowired
     IOrderAssetService orderAssetService;
+    @Autowired
+    IAssetService assetService;
+    @Autowired
+    IServService servService;
     
 	 /**
 	 * 功能描述： 用户中心-自助下单
@@ -55,6 +68,7 @@ public class OrderMgrController {
 //	    String orderId = request.getParameter("orderId");
 	    String type = request.getParameter("type");
 	    String serviceId = request.getParameter("serviceId");
+	    String indexPage = request.getParameter("indexPage");
 	    //获取服务类型
         List<Serv> servList = selfHelpOrderService.findService();
 	    //获取服务类型
@@ -73,11 +87,138 @@ public class OrderMgrController {
         request.setAttribute("serviceAssetList", serviceAssetList);
         request.setAttribute("type", type);
         request.setAttribute("serviceId", serviceId);
+        request.setAttribute("indexPage", indexPage);
 //        request.setAttribute("orderId", orderId);
 //        request.setAttribute("order", order);
         String result = "/source/page/order/order";
         return result;
 	}
+	
+	/**
+     * 功能描述：  针对同一资产或同一IP是否存在时间重叠的同一类型服务订单
+     * 参数描述：  HttpServletResponse response,HttpServletRequest request
+	 * @throws Exception 
+     *       @time 2015-1-21
+     */
+    @RequestMapping(value="checkOrderAsset.html", method = RequestMethod.POST)
+    @ResponseBody
+    public void checkName(HttpServletResponse response,HttpServletRequest request) throws Exception{
+        int serviceId = Integer.parseInt(request.getParameter("serviceId"));
+        String assetIds = request.getParameter("assetIds");
+        String scanType = request.getParameter("scanType");
+        String scanDate = request.getParameter("scanDate");
+        String ip = request.getParameter("ip");
+        List<Asset> list = null;
+        List<OrderIP> listIP = null;
+        if(serviceId==6||serviceId==7||serviceId==8){
+            OrderIP orderIP = new OrderIP();
+            orderIP.setServiceId(serviceId);
+            orderIP.setIp(ip);
+            listIP = assetService.findorderIP(orderIP);
+        }else{
+            OrderAsset orderAsset = new OrderAsset();
+            orderAsset.setServiceId(serviceId);
+            if(scanType!=null && !scanType.equals("")){
+                orderAsset.setScan_type(Integer.parseInt(scanType));
+            }
+            Date scan_date = null;
+            if(scanDate!=null && !scanDate.equals("")){
+                SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
+                scan_date=sdf.parse(scanDate);
+                orderAsset.setScan_date(scan_date);
+            }
+            list = assetService.findorderAssetByServId(orderAsset);
+        }
+        Map<String, Object> m = new HashMap<String, Object>();
+        int count = 0;
+        if(list!=null&&list.size()>0){
+            count = list.size();
+            m.put("count", count);
+            String[] assetArray = null;   
+            assetArray = assetIds.split(",");
+            System.out.println(assetArray.length);
+            
+            String assets = "";
+            String assetNames = "";
+            for (Asset asset : list) {
+                assets = assets + asset.getId() + ",";
+                assetNames = assetNames + asset.getName() + ",";
+            }
+            assetNames = assetNames.substring(0,assetNames.length()-1);
+            
+            String[] assetArray1 = null;   
+            assetArray1 = assets.split(",");
+            //判断assetArray和assetArray1是否包含相同值
+            for(int i=0;i<assetArray.length;i++){
+                for(int j=0;j<assetArray1.length;j++){
+                    if(assetArray[i].equals(assetArray1[j])){
+                        m.put("assetNames", assetNames);
+                        break;
+                    }
+                }
+            }
+        }
+        
+        if(listIP!=null&&listIP.size()>0){
+            m.put("ipText", true);
+        }
+        //object转化为Json格式
+        JSONObject JSON = objectToJson(response, m);
+        try {
+            // 把数据返回到页面
+            writeToJsp(response, JSON);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    /**
+     * 功能描述：  筛选
+     * 参数描述：  HttpServletResponse response,HttpServletRequest request
+     * @throws Exception 
+     *       @time 2015-1-21
+     */
+    @RequestMapping(value="select.html", method = RequestMethod.POST)
+    @ResponseBody
+    public void select(HttpServletResponse response,HttpServletRequest request) throws Exception{
+        String type = request.getParameter("type");
+        String factory = new String(request.getParameter("factory").getBytes("ISO-8859-1"),"UTF-8");
+        String parentC = request.getParameter("parentC");
+        String orderType = request.getParameter("orderType");
+        Serv service = new Serv();
+        service.setOrderType(Integer.parseInt(orderType));
+        if(!type.equals("null")){
+            service.setType(Integer.parseInt(type));
+        }
+        if(!factory.equals("null")){
+            service.setFactory(factory);
+        }
+        if(!parentC.equals("null")){
+            service.setParentC(Integer.parseInt(parentC));
+        }
+        List<Serv> list = servService.findServiceByParam(service);
+        int count = 0;
+        if(list.size()>0){
+            count = list.size();
+        }
+        String servs = "";
+        for (Serv serv : list) {
+            servs = servs + serv.getId() + ",";
+        }
+        Map<String, Object> m = new HashMap<String, Object>();
+        m.put("count", count);
+        m.put("servs", servs);
+        
+        //object转化为Json格式
+        JSONObject JSON = objectToJson(response, m);
+        try {
+            // 把数据返回到页面
+            writeToJsp(response, JSON);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 	
 	/**
      * 功能描述： 保存订单
@@ -87,21 +228,25 @@ public class OrderMgrController {
      */
     @RequestMapping(value="saveOrder.html")
     @ResponseBody
-    public String saveOrder(HttpServletRequest request) throws Exception{
+    public void saveOrder(HttpServletResponse response,HttpServletRequest request) throws Exception{
         User globle_user = (User) request.getSession().getAttribute("globle_user");
-        String assets = request.getParameter("assets");
-        String orderId = request.getParameter("orderId");
+        String assetIds = request.getParameter("assetIds");
+        //String orderId = request.getParameter("orderId");
+        String orderId = String.valueOf(Random.tencode());
         String orderType = request.getParameter("orderType");
         String beginDate = request.getParameter("beginDate");
         String endDate = request.getParameter("endDate");
         String createDate = request.getParameter("createDate");
         String scanType = request.getParameter("scanType");
+        String scanDate = request.getParameter("scanDate");
         String serviceId = request.getParameter("serviceId");
         String linkname = request.getParameter("linkname");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
         String company = request.getParameter("company");
         String address = request.getParameter("address");
+        String ip = request.getParameter("ip");
+        String bandwidth = request.getParameter("bandwidth");
         //新增联系人
         Linkman linkObj = new Linkman();
         int linkmanId = Random.eightcode();
@@ -142,17 +287,48 @@ public class OrderMgrController {
         order.setContactId(linkmanId);
         selfHelpOrderService.insertOrder(order);
         
-        //新增服务资产
-        String[] assetArray = null;   
-        assetArray = assets.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
-        for(int i=0;i<assetArray.length;i++){
-            OrderAsset orderAsset = new OrderAsset();
-            orderAsset.setOrderId(orderId);
-            orderAsset.setAssetId(Integer.parseInt(assetArray[i]));
-            orderAssetService.insertOrderAsset(orderAsset);
+        if(serviceId.equals("6")||serviceId.equals("7")||serviceId.equals("8")){
+            //新增ip段
+            OrderIP orderIP = new OrderIP();
+            orderIP.setOrderId(orderId);
+            orderIP.setIp(ip);
+            orderIP.setBandwidth(Integer.parseInt(bandwidth));
+            orderIP.setServiceId(Integer.parseInt(serviceId));
+            orderAssetService.insertOrderIP(orderIP);
+        }else{
+            //新增服务资产
+            String[] assetArray = null;   
+            assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+            for(int i=0;i<assetArray.length;i++){
+                OrderAsset orderAsset = new OrderAsset();
+                orderAsset.setOrderId(orderId);
+                orderAsset.setAssetId(Integer.parseInt(assetArray[i]));
+                orderAsset.setServiceId(Integer.parseInt(serviceId));
+                if(scanType!=null && !scanType.equals("")){
+                    orderAsset.setScan_type(Integer.parseInt(scanType));
+                }
+                Date scan_date = null;
+                if(scanDate!=null && !scanDate.equals("")){
+                    scan_date=sdf.parse(scanDate);
+                    orderAsset.setScan_date(scan_date);
+                }
+                orderAssetService.insertOrderAsset(orderAsset);
+            }
         }
+        
         request.setAttribute("isSuccess", true);
-        return "/source/page/order/order";
+        Map<String, Object> m = new HashMap<String, Object>();
+        m.put("orderId", orderId);
+        
+        //object转化为Json格式
+        JSONObject JSON = objectToJson(response, m);
+        try {
+            // 把数据返回到页面
+            writeToJsp(response, JSON);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //return "/source/page/order/order";
     }
 	
 	/**

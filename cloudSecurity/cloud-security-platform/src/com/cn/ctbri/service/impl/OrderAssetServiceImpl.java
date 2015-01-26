@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cn.ctbri.dao.OrderAssetDao;
 import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.OrderIP;
 import com.cn.ctbri.service.IOrderAssetService;
 /**
  * 创 建 人  ：  邓元元
@@ -30,6 +31,14 @@ public class OrderAssetServiceImpl implements IOrderAssetService{
      */
     public void insertOrderAsset(OrderAsset orderAsset) {
         orderAssetDao.insert(orderAsset);
+    }
+
+    /**
+     * 功能描述：保存ip段
+     *       @time 2015-1-20
+     */
+    public void insertOrderIP(OrderIP orderIP) {
+        orderAssetDao.insertIP(orderIP);
     }
 	
 }

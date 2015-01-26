@@ -31,5 +31,18 @@ public class Random {
         }
         return n;
     }
+    
+    /**
+     * 功能描述：获取10位随机数
+     * 参数描述： 无
+     *       @time 2014-12-31
+     */
+    public static long tencode() {
+        long n = 0 ;
+        while(n < 1000000000){
+                 n = (long)(Math.random()*100000000*100);
+        }
+        return n;
+    }
 
 }

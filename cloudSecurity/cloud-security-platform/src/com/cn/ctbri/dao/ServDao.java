@@ -1,5 +1,7 @@
 package com.cn.ctbri.dao;
 
+import java.util.List;
+
 import com.cn.ctbri.entity.Serv;
 
 
@@ -19,6 +21,14 @@ public interface ServDao {
 	 *	返回值 ：Serv
 	 */
 	Serv findById(int serviceid);
+
+	/**
+     * 功能描述： 根据条件查询服务
+     * 参数描述： Serv service
+     *       @time 2015-1-21
+     *  返回值 ：Serv
+     */
+    List<Serv> getServiceByParam(Serv service);
 
 
 	
