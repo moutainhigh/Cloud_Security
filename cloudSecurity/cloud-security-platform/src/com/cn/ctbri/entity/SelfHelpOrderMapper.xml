@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入订单 -->
     <insert id="insert" parameterType="order">
         insert into cs_order
-        (id, type, begin_date, end_date, serviceId, create_date, task_date, scan_date, userId, contactId, remarks) 
+        (id, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, contactId, remarks) 
         values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks})
     </insert>
     
