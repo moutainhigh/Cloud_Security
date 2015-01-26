@@ -43,7 +43,7 @@
       <li style="font-size:16px; font-weight:500; line-height:28px; text-align:center;"><a  style="color:#45b62b; " href="${ctx}/userCenterUI.html">用户中心</a></li>
       <li><a href="${ctx}/userDataUI.html">基本资料</a></li>
       <li><a href="${ctx}/userBillUI.html">我的账单</a></li>
-      <li><a href="${ctx}/userAccetsUI.html">我的资产</a></li>
+      <li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
       <h2>订购中心</h2>
       <li><a href="${ctx}/selfHelpOrderInit.html">自助下单</a></li>
       <li class="active"><a href="${ctx}/orderTrackInit.html">订单跟踪</a></li>
