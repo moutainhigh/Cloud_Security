@@ -14,7 +14,32 @@ $(function(){
 		
 		//image.clone(true).appendTo(".box_logoIn");
 	
-	})
+	});
+	//修该
+	
+	var oMark2=document.getElementById('box_mark');
+	var oLogin2 =document.getElementById('box_logoIn_edit');
+	
+	$(".zc_edit").click(function(){
+		var _index =$(".zc_edit").index(this);  //获取当前点击按钮
+		var id= $(".zc_edit").eq(_index).attr("id");
+		var name= $(".zc_edit").eq(_index).attr("name");
+		var addr = $(".zc_edit").eq(_index).attr("addr");
+		$("#hiddenEditAssetid").val(id);
+		$("#hiddenEditAssetName").val(name);
+		$("#hiddenEditAssetAddr").val(addr);
+		$("#editAssetName").val(name);
+		$("#editAssetAddr").val(addr);
+		oMark2.style.display ="block";
+		oLogin2.style.display ="block";
+		oMark2.style.width = viewWidth() + 'px';
+		oMark2.style.height = documentHeight() + 'px';
+		oLogin2.style.left = (viewWidth() - oLogin2.offsetWidth)/2 + 'px';
+		oLogin2.style.top = (viewHeight() - oLogin2.offsetHeight)/2-25 + 'px';	
+		
+		//image.clone(true).appendTo(".box_logoIn");
+	
+	});
      
 		//关闭按钮
 		function toClose(){
@@ -26,14 +51,30 @@ $(function(){
 				
 			};
 		}
+		function toCloseedit(){
+			var oClose= document.getElementById('close_edit');
+			oClose.onclick = function(){
+				oMark2.style.display ="none";
+				oLogin2.style.display ="none";
+				//$(".box_logoIn").empty()
+				
+			};
+		}
+		
 		toClose();
+		toCloseedit();
 		
 		window.onscroll = window.onresize = function(){
 		
 		var oDiv = document.getElementById('box_logoIn1');
+		var oDiv2 = document.getElementById('box_logoIn1');
 		if(oDiv){
 			oDiv.style.left = (viewWidth() - oDiv.offsetWidth)/2 + 'px';
 			oDiv.style.top = (viewHeight() - oDiv.offsetHeight)/2-25 + 'px';
+		};
+		if(oDiv2){
+			oDiv2.style.left = (viewWidth() - oDiv.offsetWidth)/2 + 'px';
+			oDiv2.style.top = (viewHeight() - oDiv.offsetHeight)/2-25 + 'px';
 		}
 	
 	}

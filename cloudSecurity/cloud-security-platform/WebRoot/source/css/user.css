@@ -59,7 +59,7 @@
 .user_sectime1{background: url(../images/user_ico_8.jpg) no-repeat; width:180px; height:30px; font-size:14px; line-height:30px; padding-left:15px;  position:absolute; left:480px;color:#888; cursor:pointer;}
 /*我的资产代码*/
 .user_top{ padding-left:35px; padding-top:30px; margin-bottom:35px; position:relative; padding-left:45px; height:40px;}
-.zican_top{ height:25px; font-size:14px; line-height:25px; color:#49ad53; cursor:pointer;} 
+.zican_top,.zc_edit{ height:25px; font-size:14px; line-height:25px; color:#49ad53; cursor:pointer;} 
 .zican_bottom{height:25px; font-size:14px; line-height:25px;  color:#49ad53; cursor:pointer;}
 .zican_wei{ height:25px; font-size:14px; line-height:25px;}
 .user_ctive{ width:108px; height:33px; position:absolute; left:45px;}
@@ -145,8 +145,8 @@
 
 
 #box_mark{  width:100%; height:100%; display:none; position:absolute; top:0; left:0;  background:#000;  filter:alpha(opacity=50); opacity:0.5; z-index:1;  }
-#box_logoIn1{ display:none;  padding:20px; position:fixed; top:50%; left:0px; z-index:99; text-align:center; background:#fff; border-radius:10px; width:670px; height:350px;}
-#close1{ width:25px;  height:26px; position: absolute; top:19px; right:17px; z-index:101;cursor:pointer; background:url(../images/user_ico_4.jpg) no-repeat; }
+#box_logoIn1,#box_logoIn_edit{ display:none;  padding:20px; position:fixed; top:50%; left:0px; z-index:99; text-align:center; background:#fff; border-radius:10px; width:670px; height:350px;}
+#close1,#close_edit{ width:25px;  height:26px; position: absolute; top:19px; right:17px; z-index:101;cursor:pointer; background:url(../images/user_ico_4.jpg) no-repeat; }
 .text_top{ height:30px; border-bottom:1px solid #e0e0e0; color:#666666; font-size:18px; line-height:30px; padding-bottom:10px;}
 .text_bottm{ width:570px; margin-left:40px; margin-top:25px;}
 .text_bottm table{width:570px; word-break: break-all;word-wrap: break-word;border-collapse:collapse; text-align:center;} 

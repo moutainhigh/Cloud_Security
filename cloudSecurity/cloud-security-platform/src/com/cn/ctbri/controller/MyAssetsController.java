@@ -135,13 +135,29 @@ public class MyAssetsController {
 		return JSON;
 	}
 	/**
+	 * 功能描述：修改资产
+	 * 参数描述： Model model
+	 *		 @time 2015-1-19
+	 */
+	@RequestMapping("/editAsset.html")
+	public String editAsset(Asset asset){
+		String name = "";//资产名称
+		try {
+			name=new String(asset.getName().getBytes("ISO-8859-1"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		asset.setName(name);
+		assetService.updateAsset(asset);
+		return "redirect:/userAssetsUI.html";
+	}
+	/**
 	 * 功能描述：删除资产
 	 * 参数描述： Model model
 	 *		 @time 2015-1-19
 	 */
 	@RequestMapping("/deleteAsset.html")
 	public String delete(Asset asset){
-		//检查订单资产表里面是否含有此资产
 		assetService.delete(asset.getId());
 		return "redirect:/userAssetsUI.html";
 	}

@@ -64,23 +64,16 @@ $(document).ready(function(){
   <!--我的资产-->
   <div class="user_right" >
     <div class="user_top">
-      <div class="user_ctive"><a href="###"><img src="${ctx}/source/images/user_ico_3.jpg" /></a></div>
+      <div class="user_ctive" style="left:200px;"><a href="###"><img src="${ctx}/source/images/user_ico_3.jpg" /></a></div>
   <form action="${ctx}/searchAssetCombine.html" method="post" id="searchAssetForm">
       <div class="user_sec_cont" style=" left:200px; ">
       </div>
-      <div class="user_sec_cont" style="left:200px;">
+      <div class="user_sec_cont" style="left:350px;">
         <select id="status" name="status" class="user_secta spiclesel">
        		<option select="selected" value="">请选择状态</option>
        		<option value="0" >未验证</option>
        		<option value="1" >已验证</option>
   		</select>
-      </div>
-      <div class="user_sec_cont" style="left:354px;">
-        <select id="status" name="status" class="user_secta spiclesel">
-            <option select="selected" value="">请选择状态</option>
-            <option value="0" >未验证</option>
-            <option value="1" >已验证</option>
-        </select>
       </div>
       <div class="user_sec_txt">
         <input type="text" name="name" id="searchAssetName" value="请输入关键字"></input>
@@ -109,7 +102,7 @@ $(document).ready(function(){
               <c:if test="${asset.status==1}">
             <td><div class="zican_wei">已验证</div></td>
               </c:if>
-            <td><div class="zican_top1">修改</div>
+            <td><div class="zc_edit" id="${asset.id}" name="${asset.name}" addr="${asset.addr}">修改</div>
               <div class="zican_bottom"><a href="javascript:void(0)" onclick="deleteAsset('${asset.id}')" >删除</a></div></td>
           </tr>
           </c:forEach>
@@ -168,21 +161,48 @@ $(document).ready(function(){
     <div class="text_top">新增资产</div>
     <div class="text_bottm">
   
-      <table>
+      <table style="margin-top:56px;">
         <tr>
-          <td style="width:20%;">资产名称</td>
+          <td style="width:30%;">资产名称</td>
           <td style="width:45%;"><input class="boz_inout_1" type="text" name="name" id="assetName"/></td>
-          <td style="width:35%; text-align:left; color:#e32929;"><div id="assetName_msg"></div></td>
+          <td style="width:25%; text-align:left; color:#e32929;"><div id="assetName_msg"></div></td>
         </tr>
         <tr></tr>
         <tr>
           <td>资产地址</td>
           <td><input class="boz_inout_1" type="text" name="addr" id="assetAddr"/></td>
-          <td style="color:#e32929;"><div id="assetAddr_msg"></div></td>
+          <td style="color:#e32929;text-align:left"><div id="assetAddr_msg"></div></td>
         </tr>
       </table>
     </div>
     <div style="margin-top:35px;"><a href="javascript:void(0)"><img src="${ctx}/source/images/user_submit_3.jpg" onclick="saveAsset()"/></a></div>
+  </div>
+  </form>
+</div>
+
+<div id="box_logoIn_edit">
+  <div id="close_edit"></div>  <div class="text_1">
+    <form id="editAsset" action="${ctx}/editAsset.html" method="post">
+    <div class="text_top">修改资产</div>
+    <div class="text_bottm">
+  	<input type="text" name="id" id="hiddenEditAssetid"/>
+  	<input type="text" name="hiddenEditAssetName" id="hiddenEditAssetName"/>
+  	<input type="text" name="hiddenEditAssetAddr" id="hiddenEditAssetAddr"/>
+      <table style="margin-top:56px;">
+        <tr>
+          <td style="width:30%;">资产名称</td>
+          <td style="width:45%;"><input class="boz_inout_1" type="text" name="name" id="editAssetName"/></td>
+          <td style="width:25%; text-align:left; color:#e32929;"><div id="editAssetName_msg"></div></td>
+        </tr>
+        <tr></tr>
+        <tr>
+          <td>资产地址</td>
+          <td><input class="boz_inout_1" type="text" name="addr" id="editAssetAddr"/></td>
+          <td style="color:#e32929;text-align:left"><div id="editAssetAddr_msg"></div></td>
+        </tr>
+      </table>
+    </div>
+    <div style="margin-top:35px;"><a href="javascript:void(0)"><img src="${ctx}/source/images/user_submit_3.jpg" onclick="editAsset()"/></a></div>
   </div>
   </form>
 </div>

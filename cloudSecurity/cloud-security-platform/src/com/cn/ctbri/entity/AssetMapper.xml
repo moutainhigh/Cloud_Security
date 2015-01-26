@@ -51,7 +51,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateAsset" parameterType="com.cn.ctbri.entity.Asset">
 		update cs_asset
 		<set>
-			status=#{status}
+			<if test="name!=null">
+				name=#{name},
+			</if>
+			<if test="addr!=null">
+				addr=#{addr},
+			</if>
+			<if test="status=!null">
+				status=#{status}
+			</if>
 		</set>
 		where id=#{id}
 	</update>

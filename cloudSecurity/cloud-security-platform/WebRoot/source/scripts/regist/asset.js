@@ -21,6 +21,10 @@ function saveAsset() {
 function searchAssetCombine(){
 	$("#searchAssetForm").submit();
 }
+//修改资产
+function editAsset(){
+	$("#editAsset").submit();
+}
 //删除资产
 function deleteAsset(id){
 	var assetId = id;

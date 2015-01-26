@@ -36,7 +36,7 @@ $(function (){
 });
 
 
-$(function(){
+$(function(){/*
     $('.user_secta').click(function(){
     var uservalue=$(this).attr('value');
     if(uservalue==0)
@@ -49,7 +49,7 @@ $(function(){
         $(this).siblings('.user_secta_list').hide();
         $(this).attr('value','0');
       }
-})
+});*/
 $('.seedetail').click(function(){
     var uservalue=$(this).attr('value');
     if(uservalue==0)
@@ -62,6 +62,6 @@ $('.seedetail').click(function(){
         $(this).parents().next('.detailbox').hide();
         $(this).attr('value','0');
       }
-})
+});
 });
 
