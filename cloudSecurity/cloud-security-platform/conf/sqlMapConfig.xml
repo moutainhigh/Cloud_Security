@@ -21,8 +21,8 @@
 		<mapper resource="com/cn/ctbri/entity/SelfHelpOrderMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/ServMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/AssetMapper.xml"/>
-		<mapper resource="com/cn/ctbri/entity/ OrderAssetMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/OrderAssetMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/TaskMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/Alarm.xml"/>
-		<mapper resource="com/cn/ctbri/entity/Task.xml"/>
 	</mappers>
 </configuration>  
