@@ -111,14 +111,15 @@ public class MyBillController {
 		}
 		Map<String, Object> m = new HashMap<String, Object>();
 		m.put("count", count);
-		
-		
-//		int num=0;//扫描次数
-//		List<Task> taskList = taskService.findTaskByOrderId(orderId);
-//		if(taskList!=null&&taskList.size()>0){
-//			num=taskList.size();
-//		}
-//		m.put("num", num);
+		int num=0;//扫描次数
+		for(OrderAsset o : orderAsset){
+			int orderAssetId = o.getId();
+			List<Task> taskList= taskService.findTaskByOrderAssetId(orderAssetId);
+			if(taskList!=null&&taskList.size()>0){
+				num += taskList.size();
+			}
+		}
+		m.put("num", num);
 		//object转化为Json格式
 		JSONObject JSON = objectToJson(response, m);
 		try {

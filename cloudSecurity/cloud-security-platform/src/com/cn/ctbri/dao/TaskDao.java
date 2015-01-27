@@ -26,4 +26,10 @@ public interface TaskDao {
 	 * @return 任务信息集合
 	 */
 	public List<Task> findTask(Map<String,Object> map);
+	/**
+	 * 功       能：  根据OrderAssetId查询任务
+	 * 创建日期：  2015-1-27
+	 * 版        本：  1.0
+	 */
+	public List<Task> findTaskByOrderAssetId(int orderAssetId);
 }

@@ -20,9 +20,14 @@ public class TaskServiceImpl implements ITaskService{
 	@Autowired
 	TaskDao taskDao;
 	/**
-	 * 功       能：  根据OrderId查询任务
+	 * 功       能：  根据OrderAssetId查询任务
 	 * 创建日期：  2015-1-27
 	 * 版        本：  1.0
 	 */
+
+	public List<Task> findTaskByOrderAssetId(int orderAssetId) {
+		List<Task> list = taskDao.findTaskByOrderAssetId(orderAssetId);
+		return list;
+	}
 
 }

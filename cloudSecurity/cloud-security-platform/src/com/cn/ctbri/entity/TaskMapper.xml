@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="remarks" column="remarks"/>
 	</resultMap> 
 	<!-- 根据订单资产id查询任务表 -->
-	<select id="findTaskByOrderAssetId" parameterType="String" resultMap="TaskRM">
+	<select id="findTaskByOrderAssetId" parameterType="int" resultMap="TaskRM">
 		 select * from cs_task where order_asset_Id=#{order_asset_Id}
 	</select>
 </mapper>
