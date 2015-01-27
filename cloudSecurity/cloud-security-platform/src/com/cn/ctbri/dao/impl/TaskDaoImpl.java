@@ -28,7 +28,7 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 		return getSqlSession().selectList(ns+"findTask", map);
 	}
 	
-	public long insert(Task task) {
+	public int insert(Task task) {
 		return getSqlSession().insert(ns+"insert", task);
 	}
 
