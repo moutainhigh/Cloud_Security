@@ -52,5 +52,13 @@ public class OrderAssetDaoImpl extends SqlSessionDaoSupport implements OrderAsse
     public void insertIP(OrderIP orderIP) {
         this.getSqlSession().insert(ns + "insertIP", orderIP);
     }
+    /**
+     * 功能描述：根据orderid查询OrderAsset
+     *       @time 2015-1-27
+     */
+	public List<OrderAsset> findOrderAssetByOrderId(String orderId) {
+		List<OrderAsset> list = this.getSqlSession().selectList(ns+"findOrderAssetByOrderId",orderId);
+		return list;
+	}
 		
 }
