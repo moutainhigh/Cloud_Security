@@ -31,5 +31,10 @@ public interface OrderAssetDao {
      *       @time 2015-1-20
      */
     void insertIP(OrderIP orderIP);
+    /**
+     * 功能描述：根据orderid查询OrderAsset
+     *       @time 2015-1-27
+     */
+	List<OrderAsset> findOrderAssetByOrderId(String orderId);
 
 }
