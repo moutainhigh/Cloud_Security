@@ -59,4 +59,60 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				AND c.end_date &lt;=#{end_date}
 			</if>	  
 	</select>
+	
+	<select id="findByCombineOrderTrack" resultType="hashmap" parameterType="hashmap">
+        SELECT c.id,c.type,c.name,c.begin_date,c.end_date,c.create_date,c.scan_type
+        FROM (SELECT o.id,o.type,s.name,o.scan_type,o.begin_date,o.end_date,o.create_date
+              FROM cs_order o,cs_service s
+              WHERE o.userId = #{userId} AND o.serviceId = s.id) c 
+        WHERE
+            1=1  
+            <if test="type!=null">
+                AND c.type = #{type}
+            </if>
+            <if test="servName!=null and servName!=''"> 
+                AND c.name = #{servName} 
+            </if>    
+            <if test="begin_date!=null">
+                AND c.begin_date &gt;= #{begin_date}
+            </if>    
+            <if test="end_date!=null">
+                AND c.end_date &lt;=#{end_date}
+            </if>
+            <if test="state==1">
+                AND c.type = 1
+                AND c.end_date &gt;= #{currentDate}
+            </if>
+            <if test="state==2">
+                AND c.type = 1
+                AND c.end_date &lt; #{currentDate}
+            </if>
+         UNION
+            SELECT c.id,c.type,c.name,c.begin_date,c.end_date,c.create_date,c.scan_type
+            FROM (SELECT o.id,o.type,s.name,o.scan_type,o.begin_date,o.end_date,o.create_date
+                FROM cs_order o,cs_service s
+                WHERE o.userId = #{userId} AND o.serviceId = s.id) c 
+            WHERE
+            1=1  
+            <if test="type!=null">
+                AND c.type = #{type}
+            </if>
+            <if test="servName!=null and servName!=''"> 
+                AND c.name = #{servName} 
+            </if>    
+            <if test="begin_date!=null">
+                AND c.begin_date &gt;= #{begin_date}
+            </if>    
+            <if test="end_date!=null">
+                AND c.end_date &lt;=#{end_date}
+            </if>
+            <if test="state==1">
+                AND c.type = 2
+                AND c.begin_date &gt;= #{currentDate}
+            </if>
+            <if test="state==2">
+                AND c.type = 2
+                AND c.begin_date &lt; #{currentDate}
+            </if>
+    </select>
 </mapper>

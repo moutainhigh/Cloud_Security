@@ -298,7 +298,7 @@ $(function(){
 		}
    		var assetIds = "";
    		$(".leftTr"+index+" input:checkbox[name='serviceAssetId']:checked").each(function(){
-   			assetIds = assetIds + $(this).val() + ",";
+   			assetIds = assetIds + $(this).parent().siblings('input').attr("value") + ",";
 		});
    		if(serviceId==2 || serviceId ==4){
     		var scanDate=$('input[name="scanType'+index+'"]').val();

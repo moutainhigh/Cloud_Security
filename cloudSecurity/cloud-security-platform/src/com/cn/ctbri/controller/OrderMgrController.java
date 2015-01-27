@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,8 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,6 +39,7 @@ import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
+import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Random;
 
 /**
@@ -341,11 +345,63 @@ public class OrderMgrController {
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         //获取订单信息
         List orderList = orderService.findByUserId(globle_user.getId());
+        //获取当前时间
+        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String temp = setDateFormat.format(Calendar.getInstance().getTime());
+        request.setAttribute("nowDate",temp); 
         request.setAttribute("orderList", orderList);
         return "/source/page/order/orderTrack";
     }
 	
-	
+    /**
+     * 功能描述： 按条件查询订单
+     * 参数描述： Model model
+     *       @time 2015-1-15
+     */
+    @SuppressWarnings("rawtypes")
+    @RequestMapping("/searchCombineOrderTrack.html")
+    public String searchCombine(Model model,Integer type,String servName,String state,String begin_datevo,String end_datevo,HttpServletRequest request){
+        User globle_user = (User) request.getSession().getAttribute("globle_user");
+        //组织条件查询
+        String name=null;
+        try {
+            name=new String(servName.getBytes("ISO-8859-1"), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        Map<String,Object> paramMap = new HashMap<String,Object>();
+        paramMap.put("userId", globle_user.getId());
+        paramMap.put("type", type);
+        paramMap.put("servName", name);
+        paramMap.put("state", state);
+        if(StringUtils.isNotEmpty(begin_datevo)){
+            paramMap.put("begin_date", DateUtils.stringToDate(begin_datevo));
+        }else{
+            paramMap.put("begin_date", null);
+        }
+        if(StringUtils.isNotEmpty(end_datevo)){
+            paramMap.put("end_date", DateUtils.stringToDate(end_datevo));
+        }else{
+            paramMap.put("end_date", null);
+        }
+        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        /* 時：分：秒  HH:mm:ss  HH : 23小時制 (0-23)
+                                 kk : 24小時制 (1-24)
+                                 hh : 12小時制 (1-12)
+                                 KK : 11小時制 (0-11)*/
+        String temp = setDateFormat.format(Calendar.getInstance().getTime());
+        paramMap.put("currentDate", DateUtils.stringToDate(temp));
+        List result = orderService.findByCombineOrderTrack(paramMap);
+        
+        model.addAttribute("nowDate",temp); 
+        model.addAttribute("orderList",result);      //传对象到页面
+        model.addAttribute("type",type);//回显类型  
+        model.addAttribute("servName",name);//回显服务名称
+        model.addAttribute("state",state);//回显服务状态
+        model.addAttribute("begin_date",begin_datevo);//回显服务开始时间    
+        model.addAttribute("end_date",end_datevo);  //回显结束时间
+        return "/source/page/order/orderTrack";
+    }
 
 	
 

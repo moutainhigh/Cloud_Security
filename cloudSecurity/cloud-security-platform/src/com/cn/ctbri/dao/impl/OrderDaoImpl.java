@@ -52,6 +52,16 @@ public class OrderDaoImpl extends SqlSessionDaoSupport implements OrderDao{
      */
     public List<Order> getOrderByUserId(int userId) {
         return this.getSqlSession().selectList(ns + "findOrderByUserId",userId);
+    }
+
+    /**
+     * 功能描述：组合查询订单追踪
+     *       @time 2015-1-15
+     * 返回值    ：  List<Order>
+     */
+    public List findByCombineOrderTrack(Map<String, Object> paramMap) {
+        List list = this.getSqlSession().selectList(ns + "findByCombineOrderTrack",paramMap);
+        return list;
     }  
 	
 	

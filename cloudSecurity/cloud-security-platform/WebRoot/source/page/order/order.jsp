@@ -45,7 +45,7 @@
       <li style="font-size:16px; font-weight:500; line-height:28px; text-align:center;"><a  style="color:#45b62b; " href="${ctx}/userCenterUI.html">用户中心</a></li>
       <li><a href="${ctx}/userDataUI.html">基本资料</a></li>
       <li><a href="${ctx}/userBillUI.html">我的账单</a></li>
-      <li><a href="${ctx}//userAssetsUI.html">我的资产</a></li>
+      <li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
       <h2>订购中心</h2>
       <li class="active"><a href="${ctx}/selfHelpOrderInit.html">自助下单</a></li>
       <li><a href="${ctx}/orderTrackInit.html">订单跟踪</a></li>
@@ -153,12 +153,14 @@
 	              <tr>
 	                <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
 	                <td>${list.name }</td>
-	                <c:if test="${list.type == 1 }">
-	                   <td>URL</td>
-	                </c:if>
-	                <c:if test="${list.type == 2 }">
-                       <td>IP</td>
-                    </c:if>
+	                <td>
+		                <c:if test="${list.type == 1 }">
+		                   URL
+		                </c:if>
+		                <c:if test="${list.type == 2 }">
+                           IP
+                        </c:if>
+	                </td>
 	                <td>${list.addr }</td>
 	                <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
 	              </tr>
@@ -213,12 +215,14 @@
                   <tr>
                     <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
                     <td>${list.name }</td>
-                    <c:if test="${list.type == 1 }">
-                       <td>URL</td>
-                    </c:if>
-                    <c:if test="${list.type == 2 }">
-                       <td>IP</td>
-                    </c:if>
+                    <td>
+                        <c:if test="${list.type == 1 }">
+                           URL
+                        </c:if>
+                        <c:if test="${list.type == 2 }">
+                           IP
+                        </c:if>
+                    </td>
                     <td>${list.addr }</td>
                     <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
                   </tr>
@@ -242,9 +246,9 @@
         <div class="pinv">
           <h3>扫描频率</h3>
           <div class="pinv_subnav">
-            <ul class="pinv_sub_nav">
+            <ul class="pinv_sub_nav" style="height:30px;">
               <li class="pinv_active">
-                <input type="text" value="" name="scanType1" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+                <input style="background: url(${ctx}/source/images/user_ico_8.jpg) no-repeat; width:176px; height:30px;padding-left:4px;" type="text" value="" name="scanType1" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
               </li>
             </ul>
           </div>
@@ -267,12 +271,14 @@
                   <tr>
                     <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
                     <td>${list.name }</td>
-                    <c:if test="${list.type == 1 }">
-                       <td>URL</td>
-                    </c:if>
-                    <c:if test="${list.type == 2 }">
-                       <td>IP</td>
-                    </c:if>
+                    <td>
+                        <c:if test="${list.type == 1 }">
+                           URL
+                        </c:if>
+                        <c:if test="${list.type == 2 }">
+                           IP
+                        </c:if>
+                    </td>
                     <td>${list.addr }</td>
                     <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
                   </tr>
@@ -330,12 +336,14 @@
                   <tr>
                     <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
                     <td>${list.name }</td>
-                    <c:if test="${list.type == 1 }">
-                       <td>URL</td>
-                    </c:if>
-                    <c:if test="${list.type == 2 }">
-                       <td>IP</td>
-                    </c:if>
+                    <td>
+                        <c:if test="${list.type == 1 }">
+                           URL
+                        </c:if>
+                        <c:if test="${list.type == 2 }">
+                           IP
+                        </c:if>
+                    </td>
                     <td>${list.addr }</td>
                     <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
                   </tr>
@@ -361,7 +369,7 @@
           <div class="pinv_subnav">
             <ul class="pinv_sub_nav">
               <li class="pinv_active">
-                <input type="text" value="" name="scanType3" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+                <input style="background: url(${ctx}/source/images/user_ico_8.jpg) no-repeat; width:176px; height:30px;padding-left:4px;" type="text" value="" name="scanType3" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
               </li>
             </ul>
           </div>
@@ -384,12 +392,14 @@
                   <tr>
                     <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
                     <td>${list.name }</td>
-                    <c:if test="${list.type == 1 }">
-                       <td>URL</td>
-                    </c:if>
-                    <c:if test="${list.type == 2 }">
-                       <td>IP</td>
-                    </c:if>
+                    <td>
+                        <c:if test="${list.type == 1 }">
+                           URL
+                        </c:if>
+                        <c:if test="${list.type == 2 }">
+                           IP
+                        </c:if>
+                    </td>
                     <td>${list.addr }</td>
                     <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
                   </tr>

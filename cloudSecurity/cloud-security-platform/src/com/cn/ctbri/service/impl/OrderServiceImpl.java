@@ -51,4 +51,13 @@ public class OrderServiceImpl implements IOrderService{
     public List<Order> findOrderByUserId(int userId) {
         return orderDao.getOrderByUserId(userId);
     }
+    /**
+     * 功能描述：组合查询订单追踪
+     *       @time 2015-1-15
+     * 返回值    ：  List<Order>
+     */
+    public List findByCombineOrderTrack(Map<String, Object> paramMap) {
+        List list = orderDao.findByCombineOrderTrack(paramMap);
+        return list;
+    }
 }

@@ -21,6 +21,7 @@ public class Order {
 	private int userId;//用户ID
 	private int contactId;//联系人Id
 	private String remarks;//备注
+	private int state;//订单状态
 	private String begin_datevo;//begin_date vo
 	private String end_datevo;//end_date vo备注
 	
@@ -109,5 +110,11 @@ public class Order {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
-
+    public int getState() {
+        return state;
+    }
+    public void setState(int state) {
+        this.state = state;
+    }
+	
 }
