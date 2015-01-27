@@ -10,6 +10,8 @@
         <typeAlias type="com.cn.ctbri.entity.Asset" alias="asset"/>
         <typeAlias type="com.cn.ctbri.entity.Order" alias="order"/>
         <typeAlias type="com.cn.ctbri.entity.Linkman" alias="linkman"/>
+        <typeAlias type="com.cn.ctbri.entity.Alarm" alias="alarm"/>
+        <typeAlias type="com.cn.ctbri.entity.Task" alias="task"/>
     </typeAliases>  
     
     <!-- 指定映射文件 -->
@@ -20,5 +22,7 @@
 		<mapper resource="com/cn/ctbri/entity/ServMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/AssetMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/ OrderAssetMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/Alarm.xml"/>
+		<mapper resource="com/cn/ctbri/entity/Task.xml"/>
 	</mappers>
 </configuration>  
