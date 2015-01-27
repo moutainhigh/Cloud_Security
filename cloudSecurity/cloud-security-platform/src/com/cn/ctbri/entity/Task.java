@@ -31,4 +31,44 @@ public class Task implements Serializable{
 	 * 备注
 	 */
 	private String remarks;
+
+	public Long getTeskId() {
+		return teskId;
+	}
+
+	public void setTeskId(Long teskId) {
+		this.teskId = teskId;
+	}
+
+	public Long getOrder_asset_Id() {
+		return order_asset_Id;
+	}
+
+	public void setOrder_asset_Id(Long order_asset_Id) {
+		this.order_asset_Id = order_asset_Id;
+	}
+
+	public Date getExecute_time() {
+		return execute_time;
+	}
+
+	public void setExecute_time(Date execute_time) {
+		this.execute_time = execute_time;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
 }
