@@ -40,5 +40,13 @@ public class OrderAssetServiceImpl implements IOrderAssetService{
     public void insertOrderIP(OrderIP orderIP) {
         orderAssetDao.insertIP(orderIP);
     }
+    /**
+     * 功能描述：根据orderid查询OrderAsset
+     *       @time 2015-1-27
+     */
+	public List<OrderAsset> findOrderAssetByOrderId(String orderId) {
+		List<OrderAsset> list = orderAssetDao.findOrderAssetByOrderId(orderId);
+		return list;
+	}
 	
 }
