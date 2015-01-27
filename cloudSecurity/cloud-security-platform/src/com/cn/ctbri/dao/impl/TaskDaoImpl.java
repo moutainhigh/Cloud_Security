@@ -3,12 +3,14 @@ package com.cn.ctbri.dao.impl;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.TaskDao;
-import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Task;
 /**
  * 任务信息dao实现类
@@ -32,4 +34,16 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 		return getSqlSession().insert(ns+"insert", task);
 	}
 
+
+	@Resource
+	public final void setSessionFactoryRegister(SqlSessionFactory sessionFactory) {
+		this.setSqlSessionFactory(sessionFactory);
+	}  
+	
+
+	public List<Task> findTaskByOrderId(String orderId) {
+		List<Task> list = this.getSqlSession().selectList(ns+"findTaskByOrderId",orderId);
+		return list;
+	}
+	
 }
