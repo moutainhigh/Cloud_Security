@@ -35,38 +35,32 @@ $(function (){
 	});
 });
 
-
-$(function(){/*
-    $('.user_secta').click(function(){
-    var uservalue=$(this).attr('value');
-    if(uservalue==0)
-	{
-      $(this).siblings('.user_secta_list').show();
-      $(this).attr('value',1);
-     }
-	  else if(uservalue==1)
-	  {
-        $(this).siblings('.user_secta_list').hide();
-        $(this).attr('value','0');
-      }
-});*/
-$('.seedetail').click(function(){
-	var _index =$(".seedetail").index(this);  
-	var id= $(".seedetail").eq(_index).attr("id");
-	$.post("/cloud-security-platform/orderDetail.html", {"id" : id}, function(data, textStatus) {
-		
+function seedetail(e) {
+	var _index =$(".seedetail").index(e);  
+	var orderId= $(".seedetail").eq(_index).attr("name");
+	//资产个数
+	$.ajax({
+		type: "POST",
+		url: "/cloud-security-platform/orderDetail.html",
+		data: {"orderId" : orderId},
+		dataType:"json",
+		success: function(data){
+			$("#"+orderId).html(data.count);
+			$("#"+orderId+"scan").html(data.num);
+		},
 	});
-    var uservalue=$(this).attr('value');
+	var uservalue=$(e).attr('value');
     if(uservalue==0)
 	{
-      $(this).parents().next('.detailbox').show();
-      $(this).attr('value',1);
+      $(e).parents().next('.detailbox').show();
+      $(e).attr('value',1);
      }
 	  else if(uservalue==1)
 	  {
-        $(this).parents().next('.detailbox').hide();
-        $(this).attr('value','0');
+        $(e).parents().next('.detailbox').hide();
+        $(e).attr('value','0');
       }
-});
-});
+
+};
+
 
