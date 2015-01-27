@@ -185,9 +185,9 @@ $(document).ready(function(){
     <form id="editAsset" action="${ctx}/editAsset.html" method="post">
     <div class="text_top">修改资产</div>
     <div class="text_bottm">
-  	<input type="text" name="id" id="hiddenEditAssetid"/>
-  	<input type="text" name="hiddenEditAssetName" id="hiddenEditAssetName"/>
-  	<input type="text" name="hiddenEditAssetAddr" id="hiddenEditAssetAddr"/>
+  	<input type="hidden" name="id" id="hiddenEditAssetid"/>
+  	<input type="hidden" name="hiddenEditAssetName" id="hiddenEditAssetName"/>
+  	<input type="hidden" name="hiddenEditAssetAddr" id="hiddenEditAssetAddr"/>
       <table style="margin-top:56px;">
         <tr>
           <td style="width:30%;">资产名称</td>

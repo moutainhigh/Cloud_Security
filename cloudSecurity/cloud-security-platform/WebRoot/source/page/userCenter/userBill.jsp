@@ -22,33 +22,7 @@ $(document).ready(function(){
 });
 
 function searchCombine(){
-	/*var type = $("#type").val();
-	var servName = $("#servName").val();
-	var begin_date = $("#begin_date").val();
-	var end_date = $("#end_date").val();
-	alert(type);
-	alert(servName);
-	alert(begin_date);
-	alert(end_date);
-	$.ajax({
-	    type: "POST",
-	    url: "/cloud-security-platform/searchCombine.html",
-	    data: {"type":type,"servName":servName,"begin_date":begin_date,"end_date":end_date},
-	    dataType:"json",
-	    success: function(data){
-	    	alert("go");
-	    }
-	 }); 
-	var obj = {"type":type,"servName":servName,"begin_date":begin_date,"end_date":end_date};
-	alert(obj);
-	$.post("${ctx}/searchCombine.html",obj, function(data){
-            	 if(data.isSuccess){
-
-            	 }
-             }); 
-     */
      $("#searchForm").submit();
-     
 }
 </script>
 </head>
@@ -151,13 +125,13 @@ function searchCombine(){
 	            </td>
 	            <td><fmt:formatDate value="${order.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>~<fmt:formatDate value="${order.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 	            <td><fmt:formatDate value="${order.create_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-	            <td class="seedetail" value="0" id="${order.id}"><span>查看详情</span></td>
+	            <td class="seedetail" value="0" name="${order.id}" onclick="seedetail(this)"><span>查看详情</span></td>
 	          </tr>
-          <tr  class="detailbox">
-            <td colspan="6"><div  class="zhangd_div">
-                <div class="zhangd_ding"></div>
-                服务对象资产个数&nbsp;&nbsp; &nbsp; <span>2个 </span> &nbsp;&nbsp; &nbsp; 扫描频率 &nbsp;&nbsp; &nbsp; <span>${order.scan_type}</span> &nbsp;&nbsp; &nbsp;  扫描次数 &nbsp;&nbsp; &nbsp; <span>12次</span> </div></td>
-          </tr>
+	          <tr  class="detailbox">
+	            <td colspan="6"><div  class="zhangd_div">
+	                <div class="zhangd_ding"></div>
+	                服务对象资产个数&nbsp;&nbsp; &nbsp; <span id="${order.id}"></span> &nbsp;&nbsp; &nbsp; 扫描频率 &nbsp;&nbsp; &nbsp; <span id="scan_type">${order.scan_type}</span> &nbsp;&nbsp; &nbsp;  扫描次数 &nbsp;&nbsp; &nbsp; <span id="${order.id}scan"></span> </div></td>
+	          </tr>
           
 	   </c:forEach> 
         </tbody>
