@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.OrderAssetMapper">
+<sql id="cols">id,orderId,assetId,serviceId,scan_type,scan_date</sql>
+	<resultMap type="com.cn.ctbri.entity.OrderAsset" id="OrderAssetRM">
+		<id property="id" column="id"/>
+		<result property="orderId" column="orderId"/>
+		<result property="assetId" column="assetId"/>
+		<result property="serviceId" column="serviceId"/>
+		<result property="scan_type" column="scan_type"/>
+		<result property="scan_date" column="scan_date"/>
+	</resultMap> 
+	<!-- 按资产id查询订单资产 -->
+	<select id="findAssetById" parameterType="int" resultMap="OrderAssetRM">
+		select o.id,o.orderId,o.assetId,o.serviceId
+		from cs_order_asset o
+		where o.assetId = #{assetId}
+	</select>
+	
+	<!-- 插入服务资产 -->
+    <insert id="insert" parameterType="com.cn.ctbri.entity.OrderAsset">
+        insert into cs_order_asset
+        (orderId, assetId, serviceId, scan_type, scan_date) 
+        values(#{orderId}, #{assetId}, #{serviceId}, #{scan_type}, #{scan_date})
+    </insert>
+    
+    <!-- 插入ip段 -->
+    <insert id="insertIP" parameterType="com.cn.ctbri.entity.OrderIP">
+        insert into cs_order_ip
+        (orderId, ip, bandwidth, serviceId) 
+        values(#{orderId}, #{ip}, #{bandwidth}, #{serviceId})
+    </insert>
+    <!-- 根据orderid查询OrderAsset -->
+    <select id="findOrderAssetByOrderId" parameterType="String" resultMap="OrderAssetRM">
+        select * from cs_order_asset where orderId=#{orderId}
+    </select>
+</mapper>
