@@ -1,10 +1,11 @@
 package com.cn.ctbri.dao;
 
 import java.util.List;
+
+import com.cn.ctbri.entity.Task;
+
 import java.util.Map;
 
-import com.cn.ctbri.entity.Alarm;
-import com.cn.ctbri.entity.Task;
 /**
  * 任务信息dao接口
  * @author googe
