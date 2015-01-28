@@ -9,12 +9,15 @@
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/index.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
-
+<script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/index.js"></script>
-
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#body").load("index.html");
+});
+</script>
 </head>
-
-<body>
+<body id="body">
 <div>
     <div class="head_bj">
         <div class="head">
