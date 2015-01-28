@@ -49,7 +49,7 @@
 			<tr>
 				<td width="49" height="45"></td>
 				<td style="word-break:break-all" align="center">
-					<font face="宋体" size="4" color="red">
+					<font face="宋体" size="4" color="gray">
 						<b>请先登录！系统将在5秒内跳转到登录界面...</b>
                 	</font>
                 </td>
