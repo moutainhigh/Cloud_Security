@@ -116,16 +116,23 @@ public class Scheduler4Task implements Job{
 			//获取扫描类型
 			int scanType = o.getScan_type();
 			//根据不同类型指定相应的调度任务
-			if(Integer.parseInt(Constants.SCANTYPE_DAY) == scanType){  //每天
-				
-			}else if(Integer.parseInt(Constants.SCANTYPE_WEEK) == scanType){ //每周 
-				 
-			}else if(Integer.parseInt(Constants.SCANTYPE_MONTH) == scanType){  //每月
-				
-			}else{
-				logger.error("调度任务日志：订单扫描类型有误!");
-				throw new RuntimeException("调度任务日志：订单扫描类型有误!");
+			try{
+				if(Integer.parseInt(Constants.SCANTYPE_DAY) == scanType){  //每天 00:10:00
+					//秒 分 时 日 月 周 年(可选)
+					trigger.setCronExpression("0 10 00 * * ?");
+				}else if(Integer.parseInt(Constants.SCANTYPE_WEEK) == scanType){ //每周一
+					trigger.setCronExpression("0 10 00 ? * MON");
+				}else if(Integer.parseInt(Constants.SCANTYPE_MONTH) == scanType){  //每月一号
+					trigger.setCronExpression("0 10 00 1 * ?");
+				}else{
+					logger.error("调度任务日志：订单扫描类型有误!");
+					throw new RuntimeException("调度任务日志：订单扫描类型有误!");
+				}
+			}catch (Exception e) {
+				logger.error("调度任务日志：设置调度策略有误!");
+				throw new RuntimeException("调度任务日志：设置调度策略有误!");
 			}
+
 			
 		}else if(Integer.parseInt(Constants.ORDERTYPE_SINGLE) == type){
 			/**
