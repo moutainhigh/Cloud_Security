@@ -65,6 +65,8 @@ public class SystemFilter extends OncePerRequestFilter  {
 					response.sendRedirect(request.getContextPath()+"/loginUI.html");
 				}
 				return;
+			}else{
+				response.sendRedirect(request.getContextPath()+"/loginUI.html");
 			}
 		}
 	}
