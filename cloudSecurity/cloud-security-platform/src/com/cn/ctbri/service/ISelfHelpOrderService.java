@@ -32,10 +32,11 @@ public interface ISelfHelpOrderService {
 
     /**
      * 功能描述：查询服务资产
+     * @param userId 
      *       @time 2015-1-15
      * 返回值    ：  List<ServiceAsset>
      */
-    List<Asset> findServiceAsset();
+    List<Asset> findServiceAsset(int userId);
 
     /**
      * 功能描述：保存订单

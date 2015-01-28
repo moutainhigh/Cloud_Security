@@ -48,15 +48,15 @@ public class Scheduler4Task implements Job{
 		//根据orderid 获取要扫描的资产集合
 		
 		//遍历创建任务
-		for(){
-			
-		}
+//		for(){
+//			
+//		}
 		Task task = new Task(); 
 		
 		//插入一条任务数据  获取任务id
 		int taskId = taskDao.insert(task);
 		//调用接口下发任务
-		ArnhemWorker.lssuedTask(ArnhemWorker.getSessionId(), String.valueOf(taskId), "", "", "80", "");
+//		ArnhemWorker.lssuedTask(ArnhemWorker.getSessionId(), String.valueOf(taskId), "", "", "80", "");
 		
 		//调用 轮训获取任务状态和结果的调度
 		

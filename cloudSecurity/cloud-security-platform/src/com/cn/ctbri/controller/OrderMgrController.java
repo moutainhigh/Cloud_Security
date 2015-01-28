@@ -69,6 +69,7 @@ public class OrderMgrController {
 	 */
 	@RequestMapping(value="selfHelpOrderInit.html")
 	public String selfHelpOrderInit(HttpServletRequest request){
+	    User globle_user = (User) request.getSession().getAttribute("globle_user");
 //	    String orderId = request.getParameter("orderId");
 	    String type = request.getParameter("type");
 	    String serviceId = request.getParameter("serviceId");
@@ -80,7 +81,7 @@ public class OrderMgrController {
 	    //获取厂商
 	    List<Factory> factoryList = selfHelpOrderService.findListFactory();
 	    //获取服务对象资产
-	    List<Asset> serviceAssetList = selfHelpOrderService.findServiceAsset();
+	    List<Asset> serviceAssetList = selfHelpOrderService.findServiceAsset(globle_user.getId());
 //	    Order order = new Order();
 //	    if(orderId!=null && orderId!=""){
 //	        order = orderService.findOrderById(orderId);

@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -161,7 +162,7 @@
                            IP
                         </c:if>
 	                </td>
-	                <td>${list.addr }</td>
+	                <td title="${list.addr }">${fn:substring(list.addr, 0, 8)}...</td>
 	                <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
 	              </tr>
               </c:forEach>

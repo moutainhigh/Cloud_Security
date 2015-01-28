@@ -32,10 +32,11 @@ public interface SelfHelpOrderDao {
 
     /**
      * 功能描述：查询服务资产
+     * @param userId 
      *       @time 2015-1-15
      * 返回值    ：  List<ServiceAsset>
      */
-    List<Asset> getServiceAsset();
+    List<Asset> getServiceAsset(int userId);
 
     /**
      * 功能描述：保存订单

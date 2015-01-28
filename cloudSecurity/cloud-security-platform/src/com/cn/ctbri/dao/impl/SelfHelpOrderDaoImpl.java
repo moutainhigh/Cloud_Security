@@ -63,8 +63,8 @@ public class SelfHelpOrderDaoImpl extends SqlSessionDaoSupport implements SelfHe
      *       @time 2015-1-15
      * 返回值    ：  List<ServiceAsset>
      */
-    public List<Asset> getServiceAsset() {
-        return this.getSqlSession().selectList(ns + "findServiceAsset");
+    public List<Asset> getServiceAsset(int userId ) {
+        return this.getSqlSession().selectList(ns + "findServiceAsset",userId);
     }
 
     /**

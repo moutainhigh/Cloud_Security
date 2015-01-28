@@ -44,11 +44,12 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
     
     /**
      * 功能描述：查询服务资产
+     * @param userId 
      *       @time 2015-1-15
      * 返回值    ：  List<ServiceAsset>
      */
-    public List<Asset> findServiceAsset() {
-        return selfHelpOrderDao.getServiceAsset();
+    public List<Asset> findServiceAsset(int userId) {
+        return selfHelpOrderDao.getServiceAsset(userId);
     }
 
     /**
