@@ -141,14 +141,19 @@ public class MyAssetsController {
 	 */
 	@RequestMapping("/editAsset.html")
 	public String editAsset(Asset asset){
+		int id = asset.getId();
+		Asset newAsset = assetService.findById(id);
 		String name = "";//资产名称
 		try {
 			name=new String(asset.getName().getBytes("ISO-8859-1"), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		asset.setName(name);
-		assetService.updateAsset(asset);
+		if(!(name.equals(newAsset.getName())&&asset.getAddr().equals(newAsset.getAddr()))){
+			asset.setName(name);
+			asset.setStatus(0);
+			assetService.updateAsset(asset);
+		}
 		return "redirect:/userAssetsUI.html";
 	}
 	/**
