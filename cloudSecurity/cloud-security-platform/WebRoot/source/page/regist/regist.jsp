@@ -71,17 +71,23 @@ function checkNumberImage(){
     <div class="list">
       <ul>
         <li><a href="${ctx}/index.html">首页</a></li>
-        <li><a href="###">我的资产</a></li>
-        <li><a href="###">服务下单</a></li>
-        <li><a href="###">订单追踪</a></li>
-        <li style="border-right:1px solid #11871d;"><a href="###">我的账单</a></li>
+        <li><a href="###">我的订单</a></li>
+        <li><a href="aider.html">在线帮助</a></li>
+        <li style="border-right:1px solid #11871d;">
+        	<c:if test="${sessionScope.globle_user==null }">
+        		<a href="${ctx}/loginUI.html">用户中心</a>
+        	</c:if>
+        	<c:if test="${sessionScope.globle_user!=null }">
+        		<a href="${ctx}/userCenterUI.html">用户中心</a>
+        	</c:if>
+        </li>
       </ul>
     </div>
     <div class="lagst">
       <div class="lagst-left"> <a href="###"><img src="${ctx}/source/images/ren.png" /></a> </div>
       <div class="lagst-right">
-        <p><a href="${pageContext.request.contextPath}/loginUI.html">登录</a></p>
-        <p><a href="${pageContext.request.contextPath}/registUI.html">注册</a></p>
+        <p><a href="${ctx}/loginUI.html">登录</a></p>
+        <p><a href="${ctx}/registUI.html">注册</a></p>
       </div>
     </div>
   </div>
@@ -107,7 +113,7 @@ function checkNumberImage(){
         </div>
         <div class="login_list">
           <input type="text" class="login_txt lgoin_yzm required" name="checkNumber" id="checkNumber"/>
-          <span><img src="${pageContext.request.contextPath}/image.jsp" width="65" height="38" id="imageNumber" title="点击换一张" onclick="checkNumberImage()"/></img></span>
+          <span><img src="${ctx}/image.jsp" width="65" height="38" id="imageNumber" title="点击换一张" onclick="checkNumberImage()"/></img></span>
           <span id="login_checkNumber_msg" style="color:red"></span>
         </div>
         <span style="color:red" >${msg}</span>
@@ -124,7 +130,7 @@ function checkNumberImage(){
     
     
     <div class="regist_form">
-      <form  id="form_regist" action="${pageContext.request.contextPath}/regist.html" name="form_regist" method="post">
+      <form  id="form_regist" action="${ctx}/regist.html" name="form_regist" method="post">
         <table>
           <tr class="register_tr">
             <td class="regist_title">用户名</td>
