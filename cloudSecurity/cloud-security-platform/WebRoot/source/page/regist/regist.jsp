@@ -75,7 +75,7 @@ function checkNumberImage(){
         <li><a href="aider.html">在线帮助</a></li>
         <li style="border-right:1px solid #11871d;">
         	<c:if test="${sessionScope.globle_user==null }">
-        		<a href="${ctx}/loginUI.html">用户中心</a>
+        		<a href="${ctx}/toLoginUI.html">用户中心</a>
         	</c:if>
         	<c:if test="${sessionScope.globle_user!=null }">
         		<a href="${ctx}/userCenterUI.html">用户中心</a>
