@@ -98,7 +98,7 @@ public class MyBillController {
 	}
 	
 	/**
-	 * 功能描述： 查看详情——资产个数
+	 * 功能描述： 查看详情
 	 * 参数描述： Model model
 	 *		 @time 2015-1-15
 	 */
