@@ -87,6 +87,15 @@ public class UserController {
 	 * 参数描述： Model m
 	 *		 @time 2015-1-8
 	 */
+	@RequestMapping(value="toLoginUI.html")
+	public String toLoginUI(Model m){
+		return "/source/error/notLogin";
+	}
+	/**
+	 * 功能描述： 登录页面
+	 * 参数描述： Model m
+	 *		 @time 2015-1-8
+	 */
 	@RequestMapping(value="loginUI.html")
 	public String loginUI(Model m){
 		m.addAttribute("flag", "dl");

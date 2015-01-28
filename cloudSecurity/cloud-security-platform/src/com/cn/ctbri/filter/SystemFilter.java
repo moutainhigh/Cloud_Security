@@ -44,6 +44,7 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/regist_checkEmailActivationCode.html");
 		list.add("/regist_checkSendMobile.html");
 		list.add("/regist.html");
+		list.add("/toLoginUI.html");
 		
 		//获取访问的url路径
 		String path = request.getServletPath();
@@ -62,11 +63,11 @@ public class SystemFilter extends OncePerRequestFilter  {
 				try{
 					filterChain.doFilter(request, response);
 				}catch (Exception e) {
-					response.sendRedirect(request.getContextPath()+"/loginUI.html");
+					response.sendRedirect(request.getContextPath()+"/toLoginUI.html");
 				}
 				return;
 			}else{
-				response.sendRedirect(request.getContextPath()+"/loginUI.html");
+				response.sendRedirect(request.getContextPath()+"/toLoginUI.html");
 			}
 		}
 	}
