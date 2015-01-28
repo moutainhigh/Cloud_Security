@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.cfg.Configuration;
+import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.User;
+import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.LogonUtils;
 import com.cn.ctbri.util.Mail;
@@ -39,6 +41,8 @@ public class UserController {
 	
 	@Autowired
 	IUserService userService;
+	@Autowired
+    ISelfHelpOrderService selfHelpOrderService;
 	
 	/**
 	 * 功能描述： 基本资料
@@ -80,6 +84,9 @@ public class UserController {
 	 */
 	@RequestMapping(value="index.html")
 	public String index(Model m){
+	    //获取服务类型
+        List<Serv> servList = selfHelpOrderService.findService();
+        m.addAttribute("servList", servList);
 		return "/index";
 	}
 	/**
