@@ -14,19 +14,12 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.SimpleTrigger;
-import org.quartz.Trigger;
-import org.quartz.TriggerUtils;
 
-import com.cn.ctbri.common.ArnhemWorker;
 import com.cn.ctbri.common.Constants;
-import com.cn.ctbri.dao.AssetDao;
 import com.cn.ctbri.dao.OrderAssetDao;
-import com.cn.ctbri.dao.OrderDao;
 import com.cn.ctbri.dao.TaskDao;
-import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
-import com.cn.ctbri.entity.Service;
 import com.cn.ctbri.entity.Task;
 /**
  * 根据订单定制任务的调度类
@@ -40,7 +33,7 @@ public class Scheduler4Task implements Job{
 	/**
 	 * 任务执行预制时间点
 	 */
-	private static String tasktime = "";
+//	/private static String tasktime = "";
 	
 	private TaskDao taskDao;
 	
@@ -59,7 +52,7 @@ public class Scheduler4Task implements Job{
 			Properties p = new Properties();
 			p.load(Scheduler4Task.class.getClassLoader().getResourceAsStream("arnhem.properties"));
 			//获取预制时间点 
-			tasktime= p.getProperty("TASK_TIME");
+			//tasktime= p.getProperty("TASK_TIME");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
