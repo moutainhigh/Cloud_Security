@@ -71,14 +71,14 @@ function searchCombine(){
   <div class="user_right" >
   <form action="${ctx}/searchCombine.html" method="post" id="searchForm">
     <div class="user_top">
-      <div class="user_sec_cont" style=" left:134px; ">
+      <div class="user_sec_cont">
          	<select id="type" name="type" class="user_secta spiclesel">
          		<option selected="selected" value="">请选择类型</option>
          		<option value="1" >长期</option>
          		<option value="2" >单次</option>
     		</select>
       </div>
-      <div class="user_sec_cont" style=" left:284px; ">
+      <div class="user_sec_cont" style=" left:196px; ">
          <select id="servName" name="servName" class="user_secta spiclesel">
         	<option selected="selected" value="">请选择服务</option>
       		<option value="漏洞扫描服务" >漏洞扫描服务</option>
@@ -91,11 +91,11 @@ function searchCombine(){
       		<option value="突发异常流量清洗服务" >突发异常流量清洗服务</option>
     	</select>
       </div>
-      <div class="dan_3 user_sectime">
+      <div class="dan_3 user_sectime1" style="left:344px;">
           <input type="text" value="" id="begin_date" name="begin_datevo" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
         </div>
         
-        <div class="dan_4 user_sectime" style="left:594px;">
+        <div class="dan_4 user_sectime1" style="left:552px;">
           <input type="text" value="" id="end_date" name="end_datevo" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
         </div>
       <div class="user_soucuo" style="left:764px;"><img src="${ctx}/source/images/user_submit_2.jpg" onclick="searchCombine()"/></div>
@@ -130,7 +130,14 @@ function searchCombine(){
 	          <tr  class="detailbox">
 	            <td colspan="6"><div  class="zhangd_div">
 	                <div class="zhangd_ding"></div>
-	                服务对象资产个数&nbsp;&nbsp; &nbsp; <span id="${order.id}"></span> &nbsp;&nbsp; &nbsp; 扫描频率 &nbsp;&nbsp; &nbsp; <span id="scan_type">${order.scan_type}</span> &nbsp;&nbsp; &nbsp;  扫描次数 &nbsp;&nbsp; &nbsp; <span id="${order.id}scan"></span> </div></td>
+					                服务对象资产个数&nbsp;&nbsp; &nbsp; <span id="${order.id}"></span> &nbsp;&nbsp; &nbsp; 
+					                扫描频率 &nbsp;&nbsp; &nbsp; 
+					                <span id="scan_type">
+					                	<c:if test="${order.scan_type==1}">每天</c:if>
+					                	<c:if test="${order.scan_type==2}">每周</c:if>
+					                	<c:if test="${order.scan_type==3}">每月</c:if>
+					                </span> &nbsp;&nbsp; &nbsp;  
+					                扫描次数 &nbsp;&nbsp; &nbsp; <span id="${order.id}scan"></span> </div></td>
 	          </tr>
           
 	   </c:forEach> 
