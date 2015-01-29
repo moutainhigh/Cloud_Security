@@ -34,6 +34,7 @@ import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.Service;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.entity.User;
+import com.cn.ctbri.scheduler.Scheduler4Task;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
@@ -322,6 +323,7 @@ public class OrderMgrController {
         }
         
         request.setAttribute("isSuccess", true);
+        
         Map<String, Object> m = new HashMap<String, Object>();
         m.put("orderId", orderId);
         
@@ -333,6 +335,8 @@ public class OrderMgrController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Scheduler4Task task = new Scheduler4Task();
+        task.setTaskByOrder(order);
         //return "/source/page/order/order";
     }
 	
@@ -391,7 +395,7 @@ public class OrderMgrController {
                                  hh : 12小時制 (1-12)
                                  KK : 11小時制 (0-11)*/
         String temp = setDateFormat.format(Calendar.getInstance().getTime());
-        paramMap.put("currentDate", DateUtils.stringToDate(temp));
+        paramMap.put("currentDate", temp);
         List result = orderService.findByCombineOrderTrack(paramMap);
         
         model.addAttribute("nowDate",temp); 

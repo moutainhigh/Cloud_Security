@@ -133,10 +133,11 @@ public class Scheduler4Task implements Job{
 			 */
 			if(beginDate.getTime() > System.currentTimeMillis()){
 				// 从开始时间开始执行
-				SimpleTrigger trigger = new SimpleTrigger("SimpleTrigger" , "SimpleGroup");
+				SimpleTrigger trigger = new SimpleTrigger("SimpleTrigger" , Scheduler.DEFAULT_GROUP);
 				trigger.setStartTime(beginDate);
 				trigger.setEndTime(null);
-				trigger.setRepeatCount(1);
+				trigger.setRepeatCount(0);
+				trigger.setRepeatInterval(0);
 				scheduler.scheduleJob(jobDetail, trigger);
 			}
 		}else{

@@ -87,7 +87,7 @@ public class UserController {
 	    //获取服务类型
         List<Serv> servList = selfHelpOrderService.findService();
         m.addAttribute("servList", servList);
-		return "/index";
+		return "/main";
 	}
 	/**
 	 * 功能描述： 登录页面

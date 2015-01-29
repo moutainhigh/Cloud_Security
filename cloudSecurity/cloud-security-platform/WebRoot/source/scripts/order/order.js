@@ -220,7 +220,7 @@ $(function(){
     	if(orderType==2){
     		scanType="";
     	}
-    	if(beginDate<createDate){
+    	if(beginDate>createDate){
     		//获得服务资产
 	    	var assetIds = "";
 			$(".rightTr"+index+" input[name='assetId']").each(function(){
@@ -252,7 +252,7 @@ $(function(){
 		        });
 	    	}
     	}else{
-    		alert("订单开始时间不能晚于当前订单提交时间!");
+    		alert("订单开始时间不能早于当前订单提交时间!");
     		return;
     	}
     });
