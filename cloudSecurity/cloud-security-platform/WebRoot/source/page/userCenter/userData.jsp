@@ -131,10 +131,12 @@ function checkUserData(){
 	checkMobileAndEmail();
 	if(mobile!=null&&mobile!=""&&email!=null&&email!=""){
 		if(checkName1==1&&checkMobile1==1&&checkEmail1==1){
+			alert("保存成功！");
 			$("#userdata").submit();
 		}
 	}else {
 		if(checkName1==1&&(checkMobile1==1||checkEmail1==1)){
+			alert("保存成功！");
 			$("#userdata").submit();
 		}
 	}
