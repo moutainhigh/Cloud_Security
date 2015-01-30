@@ -39,7 +39,9 @@
 <div class="user_center clear">
   <div class="user_left">
     <ul class="user_1">
-      <li style="font-size:16px; font-weight:500; line-height:28px; text-align:center;"><a  style="color:#45b62b; " href="${ctx}/userCenterUI.html">用户中心</a></li>
+      <li style="font-size:16px; font-weight:500; line-height:28px; text-align:center;">
+      	<a  style="color:#45b62b;" href="${ctx}/userCenterUI.html">用户中心</a>
+      </li>
       <li><a href="${ctx}/userDataUI.html">基本资料</a></li>
       <li><a href="${ctx}/userBillUI.html">我的账单</a></li>
       <li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
@@ -57,11 +59,11 @@
     <div class="user_ico_2"> <img src="${ctx}/source/images/user_ico_10.jpg" /></div>
     <div class="center_bottom">
       <div class="center_bottom_div">
-        <div class="center_bottom_number">1</div>
+        <div class="center_bottom_number">${orderNum}</div>
         <div class="center_bottom_txt"><a href="###">订单总数</a></div>
       </div>
       <div class="center_bottom_div">
-        <div class="center_bottom_number">3</div>
+        <div class="center_bottom_number">${servNum}</div>
         <div class="center_bottom_txt"><a href="###">服务中订单总数 </a></div>
       </div>
       <div class="center_bottom_div">
@@ -69,7 +71,7 @@
         <div class="center_bottom_txt"><a href="###">各服务类型订单数 </a></div>
       </div>
       <div class="center_bottom_div" style="border-right:0px;">
-        <div class="center_bottom_number">0</div>
+        <div class="center_bottom_number">${alarmSum}</div>
         <div class="center_bottom_txt"><a href="###">总告警数</a></div>
       </div>
     </div>
