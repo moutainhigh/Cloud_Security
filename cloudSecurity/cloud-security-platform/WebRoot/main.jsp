@@ -72,17 +72,19 @@
                  <c:forEach var="list" items="${servList}" varStatus="status">
                     <c:choose>
                        <c:when test="${status.index<4}">
-                           <div class="web_main bor_right"> 
+                           <div class="web_main bor_right">
+                            <a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">
                             <div class="web_main_pic"><img src="${ctx}/source/images/center_${status.index+1 }.png" /></div>
-                            <h2><a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">${list.name }</a></h2>
-                            <p>${list.remarks }</p>
+                            <h2>${list.name }</h2>
+                            <p>${list.remarks }</p></a>
                            </div>
                        </c:when>
                        <c:when test="${status.index==4}">
                            <div class="web_main">
+                            <a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">
                             <div class="web_main_pic"><img src="${ctx}/source/images/center_${status.index+1 }.png" /></div>
-                            <h2><a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">${list.name }</a></h2>
-                            <p>${list.remarks }</p>
+                            <h2>${list.name }</h2>
+                            <p>${list.remarks }</p></a>
                            </div>
                        </c:when>
                     </c:choose>
@@ -94,20 +96,22 @@
                     <c:choose>
                        <c:when test="${status.index==5||status.index==6}">
                            <div class="anti_main bor_right">
+                             <a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">
                              <div class="anti_main_pic"><img src="${ctx}/source/images/center_${status.index+1 }.png" /></div>
                              <div class="anti_main_right">
-                                <h2><a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">${list.name }</a></h2>
+                                <h2>${list.name }</h2>
                                 <p>${list.remarks }</p>
-                            </div>
+                            </div></a>
                           </div>
                        </c:when>
                        <c:when test="${status.last}">
                            <div class="anti_main">
+                             <a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">
                              <div class="anti_main_pic"><img src="${ctx}/source/images/center_${status.index+1 }.png" /></div>
                              <div class="anti_main_right">
-                                <h2><a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">${list.name }</a></h2>
+                                <h2>${list.name }</h2>
                                 <p>${list.remarks }</p>
-                            </div>
+                            </div></a>
                           </div>
                        </c:when>
                     </c:choose>
