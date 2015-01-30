@@ -10,6 +10,9 @@
     
      --> 
      <mappers>  
-        <mapper resource="com/cn/ctbri/entity/Alarm.xml" />  
+        <mapper resource="com/cn/ctbri/entity/AlarmMapper.xml" />  
+        <mapper resource="com/cn/ctbri/entity/TaskMapper.xml" /> 
+        <mapper resource="com/cn/ctbri/entity/AssetMapper.xml" /> 
+        <mapper resource="com/cn/ctbri/entity/ServMapper.xml" /> 
     </mappers> 
 </configuration>  
