@@ -111,8 +111,8 @@
 .peiz_shang{ float:left; margin-right:30px; margin-left:350px;}
 .peiz_xia{ float:left;}
 .peiz_ico{ float:left; width:25px; padding-top:135px; padding-left:8px;}
-.peiz_table{ width:365px;border:1px solid #e0e0e0; border-bottom:0px; float:left; color:#a0a0a0;}
-.peiz_table table{width:365px; text-align:center;word-break: break-all;word-wrap: break-word;border-collapse:collapse; border:0;}
+.peiz_table{ width:670px;border:1px solid #e0e0e0; border-bottom:0px; float:left; color:#a0a0a0;}
+.peiz_table table{width:670px; text-align:center;word-break: break-all;word-wrap: break-word;border-collapse:collapse; border:0;}
 .peiz_table table tr{ height:35px; line-height:35px; border-bottom:1px solid #e0e0e0;}
 .pinv{ margin-top:45px;}
 .pinv_subnav ul{clear:both; overflow:hidden; height:28px;}

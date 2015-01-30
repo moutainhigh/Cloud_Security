@@ -19,7 +19,7 @@
 .bor_right{ border-right:0px;}
 .web_main_pic{ width:100%; text-align:center; margin-top:20px;}
 .web_main h2{ line-height:38px; font-size:18px; text-align:center; width:100%; }
-.web_main h2 a{color:#666;}
+.web_main a{color:#666;}
 .web_main p{font-size:14px; line-height:26px; color:#999;}
 
 .web_input{margin:auto; margin-top:35px; width:614px; clear:both; overflow:hidden;}
@@ -32,6 +32,6 @@
 .anti_main_pic{ width:105px; float:left; height:166px; margin-top:40px;}
 .anti_main_right{ margin-top:20px;}
 .anti_main_right h2{ line-height:28px; font-size:18px; width:100%; }
-.anti_main_right h2 a{color:#666;}
+.anti_main_right h2{color:#666;}
 .anti_main_right p{font-size:14px; line-height:24px; color:#c2c2c2;}
 
