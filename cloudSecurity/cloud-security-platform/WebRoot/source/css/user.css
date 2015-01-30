@@ -56,7 +56,7 @@
 .user_sectime{ background: url(../images/user_ico_6.jpg) no-repeat; width:117px; height:30px; font-size:14px; line-height:30px; padding-left:15px;  position:absolute; left:480px;color:#888; cursor:pointer;}
 .user_top .user_sectime input{width:92px;}
 .user_soucuo{position:absolute; left:820px; width:82px; height:33px; cursor:pointer;}
-.user_sectime1{background: url(../images/user_ico_8.jpg) no-repeat; width:180px; height:30px; font-size:13px; line-height:30px; padding-left:10px;  position:absolute; left:480px;color:#888; cursor:pointer;}
+.user_sectime1{/*background: url(../images/user_ico_8.jpg) no-repeat;*/ width:152px;border:1px solid #e0e0e0;border-radius:5px; height:30px; font-size:13px; line-height:30px; padding-left:10px;  position:absolute; left:480px;color:#888; cursor:pointer;}
 /*我的资产代码*/
 .user_top{ padding-left:35px; padding-top:30px; margin-bottom:35px; position:relative; padding-left:45px; height:40px;}
 .zican_top,.zc_edit{ height:25px; font-size:14px; line-height:25px; color:#49ad53; cursor:pointer;} 
@@ -80,9 +80,9 @@
 .dan_1{ margin-bottom:20px; line-height:25px; height:25px;}
 .dan_2{margin-top:15px; line-height:32px; height:32px; }
 .dan_2 input{line-height:32px; height:32px; border:1px solid #c9c9c9; width:170px; color:#858585; padding-left:15px;}
-.dan_3{line-height:32px; height:32px; position: absolute; left:426px;}
+.dan_3{line-height:30px; height:30px; position: absolute; left:426px;}
 .dan_3 input{line-height:28px; height:28px;  width:130px; color:#858585; margin-top:1px;}
-.dan_4{line-height:32px; height:32px; position: absolute; left:622px;}
+.dan_4{line-height:30px; height:30px; position: absolute; left:622px;}
 .dan_4 input{line-height:28px; height:28px; width:130px; color:#858585; margin-top:1px;}
 
 .peiz_nav{height:115px; width:915px; border:1px solid #e0e0e0; margin-left:25px; padding-left:35px; padding-top:15px;}
