@@ -256,7 +256,7 @@
 <div class="modelbox" id="modelbox"></div>
 <div id="box_logoIn" class="box_logoIn user_model">
   <div class="add_ser_top w678">
-	<p class="w634">添加用户</p><p id="close"><img src="images/b_exit.jpg" width="25" height="26"></p>
+	<p class="w634">添加用户</p><p id="close"><img src="${ctx}/source/adminImages/b_exit.jpg" width="25" height="26"></p>
    </div> 
        <div class="regist_form">
       <form  id="form_regist" name="form_regist" method="post">

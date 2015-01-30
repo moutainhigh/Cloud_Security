@@ -72,7 +72,7 @@ public class AdminUserController {
 			return "/source/adminPage/adminLogin/adminLogin";
 		}
 		/**记住密码功能*/
-		LogonUtils.remeberMe(request,response,name,password);
+		LogonUtils.remeberAdmin(request,response,name,password);
 		//将User放置到Session中，用于这个系统的操作
 		request.getSession().setAttribute("globle_user", _user);
 		return "/source/adminPage/userManage/userManage";

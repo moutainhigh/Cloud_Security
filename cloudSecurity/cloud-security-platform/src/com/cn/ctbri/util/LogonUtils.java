@@ -63,5 +63,39 @@ public class LogonUtils {
 		response.addCookie(passwordCookie);
 
 	}
+	//后台记住密码
+	public static void remeberAdmin(HttpServletRequest request,
+			HttpServletResponse response, String name, String password) {
+		//创建2个Cookie
+		//如果name存在中文
+		try {
+			name = URLEncoder.encode(name, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		Cookie nameCookie = new Cookie("name",name);
+		Cookie passwordCookie = new Cookie("password",password);
+		
+		//设置Cookie的有效路径
+		nameCookie.setPath(request.getContextPath()+"/admin.html");
+		passwordCookie.setPath(request.getContextPath()+"/admin.html");
+		
+		//设置Cookie的有效时长（一周），当页面复选框选中的时候，设置
+		//获取页面复选框的值
+		String remeberMe = request.getParameter("remeberMe");
+		//选中页面复选框
+		if(remeberMe!=null && remeberMe.equals("yes")){
+			nameCookie.setMaxAge(7*24*60*60);
+			passwordCookie.setMaxAge(7*24*60*60);
+		}
+		//如果没有被选中，清空有效时长
+		else{
+			nameCookie.setMaxAge(0);
+			passwordCookie.setMaxAge(0);
+		}
+		//将2个Cookie放置到response对象中
+		response.addCookie(nameCookie);
+		response.addCookie(passwordCookie);
 
+	}
 }

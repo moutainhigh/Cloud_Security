@@ -88,7 +88,7 @@ public class SystemFilter extends OncePerRequestFilter  {
 
 	/**在跳转到login.jsp页面之前，先执行从Cookie中获取name和password的操作*/
 	private void forwordIndexPage(String path, HttpServletRequest request,HttpServletResponse response) {
-		if(path.contains("loginUI.html")){
+		if(path.contains("loginUI.html")||path.contains("admin.html")){
 			//登录名
 			String name = "";
 			//密码
@@ -116,7 +116,6 @@ public class SystemFilter extends OncePerRequestFilter  {
 			request.setAttribute("name", name);
 			request.setAttribute("password", password);
 			request.setAttribute("checked", checked);
-			
 		}
 	}
 
