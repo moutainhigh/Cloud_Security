@@ -10,7 +10,7 @@ var checkEmailActivationCode1 = 0;
 var wait=30;
 function checkName(){
 	var name = $("#regist_name").val();
-	var	pattern	= /^[a-zA-Z0-9]{4,20}$/;
+	var	pattern	= /^[a-zA-Z0-9_]{4,20}$/;
 	var flag = pattern.test(name);
 	if(name==""||name==null){
 		$("#regist_name_msg").html("用户名不能为空");
@@ -41,7 +41,7 @@ function checkName(){
 //校验密码	
 function checkPassword(){
 	var p1 = $("#regist_password").val();
-	var	pattern	= /^[a-zA-Z0-9]{6,16}$/;
+	var	pattern	= /^[a-zA-Z0-9_]{6,16}$/;
 	var flag = pattern.test(p1);
 	if(p1==""||p1==null){
 		$("#regist_password_msg").html("密码不能为空");

@@ -98,6 +98,7 @@ public class UserController {
 	public String toLoginUI(Model m){
 		return "/source/error/notLogin";
 	}
+	
 	/**
 	 * 功能描述： 登录页面
 	 * 参数描述： Model m
@@ -172,7 +173,7 @@ public class UserController {
 	 * 参数描述：  User user
 	 *		 @time 2014-12-31
 	 */
-	@RequestMapping(value="regist.html")
+	@RequestMapping(value="registToLogin.html")
 	public String regist(User user){
 		String name = user.getName();
 		String password = user.getPassword();
@@ -187,8 +188,18 @@ public class UserController {
 				userService.insert(user);
 			}
 		}
-		return "/source/page/regist/regist";
+		return "/source/page/regist/registToLogin";
 		//return "redirect:/loginUI.html";
+	}
+	
+	/**
+	 * 功能描述： 注册成功跳转到登录页面
+	 * 参数描述： Model m
+	 *		 @time 2015-1-8
+	 */
+	@RequestMapping(value="regist.html")
+	public String registToLogin(){
+		return "redirect:/loginUI.html";
 	}
 	
 	/**

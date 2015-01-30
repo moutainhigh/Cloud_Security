@@ -130,17 +130,17 @@ function checkNumberImage(){
     
     
     <div class="regist_form">
-      <form  id="form_regist" action="${ctx}/regist.html" name="form_regist" method="post">
+      <form  id="form_regist" action="${ctx}/registToLogin.html" name="form_regist" method="post">
         <table>
           <tr class="register_tr">
             <td class="regist_title">用户名</td>
             <td class="regist_input"><input type="text" class="regist_txt required" name="name" id="regist_name" onblur="checkName()" /><span id="regist_name_msg" style="color:red;float:left"></span></td>
-            <td class="regist_prompt">4-20位字符，支持中英文，数字，字符组合</td>
+            <td class="regist_prompt">支持4-20位字母、数字、下划线及其组合</td>
           </tr>
           <tr class="register_tr">
             <td class="regist_title">设置密码</td>
             <td class="regist_input"><input type="password" class="regist_txt required" name="password" id="regist_password" onblur="checkPassword()"/><span id="regist_password_msg" style="color:red;float:left"></td>
-            <td class="regist_prompt">6-20位字符，可使用字母、数字和符号的组合，不建议纯字母、纯数字、纯符号</td>
+            <td class="regist_prompt">6-20位，可使用字母、数字和下划线的组合，不建议纯字母、纯数字</td>
           </tr>
           <tr class="register_tr">
             <td class="regist_title">确认密码</td>
