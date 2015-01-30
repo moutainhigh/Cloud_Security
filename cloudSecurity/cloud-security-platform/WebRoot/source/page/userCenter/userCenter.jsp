@@ -60,7 +60,7 @@
     <div class="center_bottom">
       <div class="center_bottom_div">
         <div class="center_bottom_number">${orderNum}</div>
-        <div class="center_bottom_txt"><a href="###">订单总数</a></div>
+        <div class="center_bottom_txt"><a href="${ctx}/userBillUI.html">订单总数</a></div>
       </div>
       <div class="center_bottom_div">
         <div class="center_bottom_number">${servNum}</div>
