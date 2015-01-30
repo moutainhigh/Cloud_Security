@@ -15,4 +15,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findTaskByOrderAssetId" parameterType="int" resultMap="TaskRM">
 		 select * from cs_task where order_asset_Id=#{order_asset_Id}
 	</select>
+	
+	<!-- 插入任务信息 -->
+	<insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO cs_task
+		(name,execute_time,status,remarks) 
+		VALUES(#{name,jdbcType=VARCHAR},#{execute_time,jdbcType=DATE},#{status},#{remarks})
+	</insert>
 </mapper>
