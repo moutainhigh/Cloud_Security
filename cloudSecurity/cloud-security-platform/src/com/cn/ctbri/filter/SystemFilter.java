@@ -45,10 +45,14 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/regist_checkSendMobile.html");
 		list.add("/regist.html");
 		list.add("/toLoginUI.html");
-		
+		list.add("/admin.html");
+		list.add("/adminLogin.html");
+		list.add("/adminExit.html");
+		list.add("/errorMsg.html");
 		//获取访问的url路径
 		String path = request.getServletPath();
 		forwordIndexPage(path,request,response);
+		
 		//当没有Session之前，可以放行的连接
 		if(list.contains(path)){
 			//放行
@@ -59,11 +63,20 @@ public class SystemFilter extends OncePerRequestFilter  {
 			User user = (User)request.getSession().getAttribute("globle_user");
 			//说明当前操作存在Session，需要放行
 			if(user!=null){
+				//如果访问路径包含admin说明是访问的后台，检验是否有权限访问，只有超级管理员和系统管理员才可以访问
+				if(path.contains("admin")){
+					if(user.getType()==2){
+						request.setAttribute("errorMsg", "对不起，您没有权限登录后台！");
+						request.getRequestDispatcher("/errorMsg.html").forward(request,response);
+						return;
+					}
+				}
 				//放行
 				try{
 					filterChain.doFilter(request, response);
 				}catch (Exception e) {
 					response.sendRedirect(request.getContextPath()+"/toLoginUI.html");
+					e.printStackTrace();
 				}
 				return;
 			}else{

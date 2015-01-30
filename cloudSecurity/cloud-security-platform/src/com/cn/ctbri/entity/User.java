@@ -5,7 +5,8 @@ package com.cn.ctbri.entity;
  * 描        述：  用户实体类
  * 版        本：  1.0
  */
-public class User {
+public class User implements java.io.Serializable{
+	private static final long serialVersionUID = 1L;
 	private int id;
 	//用户名
 	private String name;
@@ -25,6 +26,16 @@ public class User {
 	private String verification_code;
 	//登录页面验证码
 	private String checkNumber;
+	//构造方法
+	public User(){}
+	public User(String name, String password, int status, int type) {
+		super();
+		this.name = name;
+		this.password = password;
+		this.status = status;
+		this.type = type;
+	}
+
 	/**
 	 * 功能描述：取用户ID
 	 *		 @time 2015-01-05
