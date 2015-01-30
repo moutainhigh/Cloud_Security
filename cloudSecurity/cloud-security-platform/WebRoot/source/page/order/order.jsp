@@ -146,31 +146,22 @@
           <div class="peiz_table">
             <table class="leftTr0">
               <tr style="background:#e0e0e0;">
-                <td style="width:30%;">资产名称 </td>
-                <td style="width:25%;">资产类型 </td>
-                <td style="width:30%;">资产地址 </td>
+                <td style="width:25%;">资产名称 </td>
+                <td style="width:60%;">资产地址 </td>
                 <td style="width:15%;"><input type="checkbox" class="checkItems"/></td>
               </tr>
               <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
 	              <tr>
 	                <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
 	                <td>${list.name }</td>
-	                <td>
-		                <c:if test="${list.type == 1 }">
-		                   URL
-		                </c:if>
-		                <c:if test="${list.type == 2 }">
-                           IP
-                        </c:if>
-	                </td>
-	                <td title="${list.addr }">${fn:substring(list.addr, 0, 8)}...</td>
+	                <td>${list.addr}</td>
 	                <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
 	              </tr>
               </c:forEach>
                             
             </table>
           </div>
-          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
+          <!--<div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
           <div class="peiz_table">
             <table class="rightTr0">
               <tr style="background:#e0e0e0;">
@@ -180,7 +171,7 @@
                 <td style="width:15%;"></td>
               </tr>
             </table>
-          </div>
+          </div> -->
         </div>
         <div><font class="assets_msg" style="color:red;float:right"></font></div>
         <div class="pinv">
@@ -208,31 +199,22 @@
           <div class="peiz_table">
             <table class="leftTr1">
               <tr style="background:#e0e0e0;">
-                <td style="width:30%;">资产名称 </td>
-                <td style="width:25%;">资产类型 </td>
-                <td style="width:30%;">资产地址 </td>
+                <td style="width:25%;">资产名称 </td>
+                <td style="width:60%;">资产地址 </td>
                 <td style="width:15%;"><input type="checkbox" class="checkItems"/></td>
               </tr>
               <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
                   <tr>
                     <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
                     <td>${list.name }</td>
-                    <td>
-                        <c:if test="${list.type == 1 }">
-                           URL
-                        </c:if>
-                        <c:if test="${list.type == 2 }">
-                           IP
-                        </c:if>
-                    </td>
-                    <td title="${list.addr }">${fn:substring(list.addr, 0, 8)}...</td>
+                    <td>${list.addr}</td>
                     <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
                   </tr>
               </c:forEach>
                             
             </table>
           </div>
-          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
+          <!--<div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
           <div class="peiz_table">
             <table class="rightTr1">
               <tr style="background:#e0e0e0;">
@@ -242,7 +224,7 @@
                 <td style="width:15%;"></td>
               </tr>
             </table>
-          </div>
+          </div>-->
         </div>
         <div><font class="assets_msg" style="color:red;float:right"></font></div>
         <div class="pinv">
@@ -264,31 +246,22 @@
           <div class="peiz_table">
             <table class="leftTr2">
               <tr style="background:#e0e0e0;">
-                <td style="width:30%;">资产名称 </td>
-                <td style="width:25%;">资产类型 </td>
-                <td style="width:30%;">资产地址 </td>
+                <td style="width:25%;">资产名称 </td>
+                <td style="width:60%;">资产地址 </td>
                 <td style="width:15%;"><input type="checkbox" class="checkItems"/></td>
               </tr>
               <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
                   <tr>
                     <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
                     <td>${list.name }</td>
-                    <td>
-                        <c:if test="${list.type == 1 }">
-                           URL
-                        </c:if>
-                        <c:if test="${list.type == 2 }">
-                           IP
-                        </c:if>
-                    </td>
-                    <td title="${list.addr }">${fn:substring(list.addr, 0, 8)}...</td>
+                    <td>${list.addr}</td>
                     <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
                   </tr>
               </c:forEach>
                             
             </table>
           </div>
-          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
+          <!--<div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
           <div class="peiz_table">
             <table class="rightTr2">
               <tr style="background:#e0e0e0;">
@@ -298,7 +271,7 @@
                 <td style="width:15%;"></td>
               </tr>
             </table>
-          </div>
+          </div>-->
         </div>
         <div><font class="assets_msg" style="color:red;float:right"></font></div>
         <div class="pinv">
@@ -329,31 +302,22 @@
           <div class="peiz_table">
             <table class="leftTr3">
               <tr style="background:#e0e0e0;">
-                <td style="width:30%;">资产名称 </td>
-                <td style="width:25%;">资产类型 </td>
-                <td style="width:30%;">资产地址 </td>
+                <td style="width:25%;">资产名称 </td>
+                <td style="width:60%;">资产地址 </td>
                 <td style="width:15%;"><input type="checkbox" class="checkItems"/></td>
               </tr>
               <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
                   <tr>
                     <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
                     <td>${list.name }</td>
-                    <td>
-                        <c:if test="${list.type == 1 }">
-                           URL
-                        </c:if>
-                        <c:if test="${list.type == 2 }">
-                           IP
-                        </c:if>
-                    </td>
-                    <td title="${list.addr }">${fn:substring(list.addr, 0, 8)}...</td>
+                    <td>${list.addr}</td>
                     <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
                   </tr>
               </c:forEach>
                             
             </table>
           </div>
-          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
+          <!--<div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
           <div class="peiz_table">
             <table class="rightTr3">
               <tr style="background:#e0e0e0;">
@@ -363,7 +327,7 @@
                 <td style="width:15%;"></td>
               </tr>
             </table>
-          </div>
+          </div>-->
         </div>
         <div><font class="assets_msg" style="color:red;float:right"></font></div>
         <div class="pinv">
@@ -385,31 +349,22 @@
           <div class="peiz_table">
             <table class="leftTr4">
               <tr style="background:#e0e0e0;">
-                <td style="width:30%;">资产名称 </td>
-                <td style="width:25%;">资产类型 </td>
-                <td style="width:30%;">资产地址 </td>
+                <td style="width:25%;">资产名称 </td>
+                <td style="width:60%;">资产地址 </td>
                 <td style="width:15%;"><input type="checkbox" class="checkItems"/></td>
               </tr>
               <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
                   <tr>
                     <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
                     <td>${list.name }</td>
-                    <td>
-                        <c:if test="${list.type == 1 }">
-                           URL
-                        </c:if>
-                        <c:if test="${list.type == 2 }">
-                           IP
-                        </c:if>
-                    </td>
-                    <td title="${list.addr }">${fn:substring(list.addr, 0, 8)}...</td>
+                    <td>${list.addr}</td>
                     <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
                   </tr>
               </c:forEach>
                             
             </table>
           </div>
-          <div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
+          <!--<div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
           <div class="peiz_table">
             <table class="rightTr4">
               <tr style="background:#e0e0e0;">
@@ -419,7 +374,7 @@
                 <td style="width:15%;"></td>
               </tr>
             </table>
-          </div>
+          </div>-->
         </div>
         <div><font class="assets_msg" style="color:red;float:right"></font></div>
         <div class="pinv">
@@ -567,7 +522,7 @@
         <div class="xinx_left"><img name="servImg" src="${ctx}/source/images/user_9.jpg" /></div>
         <div class="xinx_right">
           <h3 name="servName"></h3>
-          <p name="servRemark"></p>
+          <!-- <p name="servRemark"></p> -->
         </div>
       </div>
       <div class="xinx_table">
@@ -638,7 +593,7 @@
         <div class="xinx_left"><img name="servImg" src="${ctx}/source/images/user_9.jpg" /></div>
         <div class="xinx_right">
           <h3 name="servName"></h3>
-          <p name="servRemark"></p>
+          <!-- <p name="servRemark"></p>-->
         </div>
       </div>
       <div class="xinx_table">
@@ -707,7 +662,7 @@
         <div class="xinx_left"><img name="servImg" src="${ctx}/source/images/user_9.jpg" /></div>
         <div class="xinx_right">
           <h3 name="servName"></h3>
-          <p name="servRemark"></p>
+          <!-- <p name="servRemark"></p>-->
         </div>
       </div>
       <div class="xinx_table">
