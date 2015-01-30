@@ -84,7 +84,14 @@ function checkNumberImage(){
       </ul>
     </div>
     <div class="lagst">
-      <div class="lagst-left"> <a href="###"><img src="${ctx}/source/images/ren.png" /></a> </div>
+      <div class="lagst-left"> 
+	      <c:if test="${sessionScope.globle_user!=null }">
+	          <a href="${ctx}/userDataUI.html"><img src="${ctx}/source/images/ren.png" /></a>
+	      </c:if>
+	      <c:if test="${sessionScope.globle_user==null }">
+	      	<a href="${ctx}/loginUI.html"><img src="${ctx}/source/images/ren.png" /></a>
+	      </c:if>
+      </div>
       <div class="lagst-right">
         <p><a href="${ctx}/loginUI.html">登录</a></p>
         <p><a href="${ctx}/registUI.html">注册</a></p>
