@@ -18,7 +18,12 @@
            <div class="logo"><img src="${ctx}/source/images/logo.png" /></div>
            <div class="lagst">
                <div class="lagst-left">
+               	<c:if test="${sessionScope.globle_user!=null }">
                    <a href="${ctx}/userDataUI.html"><img src="${ctx}/source/images/ren.png" /></a>
+                </c:if>
+                 <c:if test="${sessionScope.globle_user==null }">
+                 	<a href="${ctx}/toLoginUI.html"><img src="${ctx}/source/images/ren.png" /></a>
+                 </c:if>
                </div>
                <div class="lagst-right">
                <!-- 如果已经登录则显示用户名，否则需要登录 -->
