@@ -102,7 +102,7 @@ function checkNumberImage(){
       </ul>
     </div>
     <div class="login_form">
-      <form  id="form_login" name="form_login" action="${pageContext.request.contextPath}/login.html" method="post">
+      <form  id="form_login" name="form_login" action="${ctx}/login.html" method="post">
         <div class="login_list">
           <input type="text" class="login_txt required" id="login_name" name="name" value="${requestScope.name }"/>
        	  <span id="login_name_msg" style="color:red;float:left"></span>
