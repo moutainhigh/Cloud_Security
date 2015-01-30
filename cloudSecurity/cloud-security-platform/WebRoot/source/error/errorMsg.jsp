@@ -5,14 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
-<title>toLoginUI</title>
+<title>错误提示</title>
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 </head>
- <BODY onload = "showTimer()"> 
- <div class="head_bj">
+<BODY bgcolor="#FFFFFF"> 
+<div class="head_bj">
         <div class="head">
            <div class="logo"><img src="${ctx}/source/images/logo.png" /></div>
            <div class="lagst">
@@ -47,18 +47,13 @@
 		<td align="center">
 		<table border="0" width="60%" id="table2" cellspacing="0" cellpadding="0">
 			<tr>
-				<td width="49" height="45"></td>
 				<td style="word-break:break-all" align="center">
-					<font face="宋体" size="4" color="gray">
-						<b>您尚未登录或登录超时，系统将在5秒内跳转到登录界面...</b>
-                	</font>
-                </td>
-			</tr>
-			<tr>
-				<td width="39" height="34"></td>
-				<td style="word-break:break-all" align="center">
-					<font face="黑体" size="3" color="red">
-						<div id ="timer" style="color:#999;font-size:20pt;text-align:center"></div>
+					<font face="黑体" size="4" color="gray">
+						<b>
+							<c:if test="${requestScope.errorMsg!=null}">   
+							   ${requestScope.errorMsg}
+							</c:if>   
+						</b>
                 	</font>
                 </td>
 			</tr>
@@ -68,22 +63,3 @@
 </table>
 </Form>
 </BODY>
-<script>
-var i=6;
-var t;
-function showTimer(){
- if(i==0){//如果秒数为0的话,清除t,防止一直调用函数,对于反应慢的机器可能实现不了跳转到的效果，所以要清除掉 setInterval()
-  parent.location.href="${ctx}/loginUI.html";
-  window.clearInterval(t);
-
-  }else{
-  i = i - 1 ;
-  // 秒数减少并插入 timer 层中
-  document.getElementById("timer").innerHTML= i+"秒";
-  }
-}
-// 每隔一秒钟调用一次函数 showTimer()
-t = window.setInterval(showTimer,1000);
-</script>
-</body>
-</html>
