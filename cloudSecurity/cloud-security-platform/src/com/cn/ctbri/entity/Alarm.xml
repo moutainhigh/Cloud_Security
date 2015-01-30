@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cn.ctbri.entity.AlarmMapper">
 	<!-- 列集合 -->
-	<sql id="cols">id,name,alarm_time,level,advice,alarm_content,url,taskId,alarm_type</sql>
+	<sql id="cols">id,name,alarm_time,level,advice,alarm_content,url,userId,taskId,alarm_type</sql>
 	<!-- 结果对象 -->
 	<resultMap type="com.cn.ctbri.entity.Alarm" id="Alarm">
 		<id property="id" column="id"/>
@@ -15,14 +15,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="alarm_content" column="alarm_content"/>
 		<result property="url" column="url"/>
 		<result property="taskId" column="taskId"/>
+		<result property="userId" column="userId"/>
 		<result property="alarm_type" column="alarm_type"/>
 	</resultMap>
 	
 	<!-- 插入报警信息 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.Alarm" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO cs_alarm 
-		(name,alarm_time,level,advice,alarm_content,url,taskId,alarm_type) 
-		VALUES(#{name,jdbcType=VARCHAR},#{alarm_time,jdbcType=DATE},#{level},#{advice},#{alarm_content},#{url},#{taskId},#{alarm_type})
+		(name,alarm_time,level,advice,alarm_content,url,taskId,userId,alarm_type) 
+		VALUES(#{name,jdbcType=VARCHAR},#{alarm_time,jdbcType=DATE},#{level},#{advice},#{alarm_content},#{url},#{taskId},#{userId},#{alarm_type})
 	</insert>
 	
 	<!-- 查询报警信息  -->
@@ -42,5 +43,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND level=#{level}
 		</if>
 	</select>
-	
+	<!-- 根据用户id查询告警数  -->
+	<select id="findAlarmByUserId" parameterType="int" resultMap="Alarm">
+		select * from cs_alarm
+		where userId = #{userId}
+	</select>
 </mapper>

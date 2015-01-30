@@ -28,6 +28,15 @@ public class Alarm implements Serializable{
 	private String url;
 	//任务Id
 	private long taskId;
+	//用户id
+	private int userId;
+	
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 	//告警服务类型
 	private String alarm_type;
 	/**

@@ -1,6 +1,7 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +21,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.cfg.Configuration;
+import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.User;
+import com.cn.ctbri.service.IAlarmService;
+import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.LogonUtils;
@@ -43,7 +48,10 @@ public class UserController {
 	IUserService userService;
 	@Autowired
     ISelfHelpOrderService selfHelpOrderService;
-	
+	@Autowired
+	IAlarmService alarmService;
+	@Autowired
+	IOrderService orderService;
 	/**
 	 * 功能描述： 基本资料
 	 * 参数描述： Model model,HttpServletRequest request
@@ -143,8 +151,46 @@ public class UserController {
 		LogonUtils.remeberMe(request,response,name,password);
 		//将User放置到Session中，用于这个系统的操作
 		request.getSession().setAttribute("globle_user", _user);
-		return "/source/page/userCenter/userCenter";
+		return "redirect:/userCenterUI.html";
 	}
+	
+	 /**
+		 * 功能描述： 用户中心页面
+		 * 参数描述：  无
+		 *     @time 2015-1-12
+		 */
+		@RequestMapping(value="userCenterUI.html")
+		public String userCenterUI(HttpServletRequest request){
+			User globle_user = (User) request.getSession().getAttribute("globle_user");
+			//根据用户id查询订单表
+			List<Order> orderList = orderService.findOrderByUserId(globle_user.getId());
+			int orderNum = 0;
+			//根据用户id查询服务中订单表在开始时间和结束时间中间
+			int servNum = 0;
+			if(orderList.size()>0&&orderList!=null){
+				orderNum = orderList.size();
+				for(Order order:orderList){
+					Date begin_date = order.getBegin_date();
+					Date end_date = order.getEnd_date();
+					Long currentDate = new Date().getTime();
+					if(begin_date.getTime()<currentDate && end_date.getTime()>currentDate){
+						servNum +=1;
+					}
+				}
+			}
+			request.setAttribute("orderNum", orderNum);//订单总数
+			request.setAttribute("servNum","1");
+			//总告警数
+			List<Alarm> alarmList = alarmService.findAlarmByUserId(globle_user.getId());
+			int alarmSum = 0;
+			if(alarmList.size()>0&&alarmList!=null){
+				alarmSum = alarmList.size();
+			}
+			request.setAttribute("alarmSum",alarmSum);
+			return "/source/page/userCenter/userCenter";
+		}
+	
+	
 	/**
 	 * 功能描述： 退出
 	 * 参数描述：  HttpServletRequest request

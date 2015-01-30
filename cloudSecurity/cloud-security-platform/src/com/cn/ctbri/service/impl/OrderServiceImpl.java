@@ -27,8 +27,8 @@ public class OrderServiceImpl implements IOrderService{
 	 *		 @time 2015-1-15
 	 * 返回值    ：  List<Order>
 	 */
-	public List findByUserId(int id) {
-		List list = orderDao.findByUserId(id);
+	public List<Order> findByUserId(int id) {
+		List<Order> list = orderDao.findByUserId(id);
 		return list;
 	}
 	/**
