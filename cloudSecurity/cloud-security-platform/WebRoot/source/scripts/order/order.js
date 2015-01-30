@@ -139,20 +139,36 @@ $(function(){
     	$('p[name="servRemark"]').html(servRemark);
     	$('img[name="servImg"]').attr("src","/cloud-security-platform/source/images/center_"+serviceId+".png");
     	if(serviceId!=6&&serviceId!=7&&serviceId!=8){
-    		if($('.rightTr'+index+' input[name="assetId"]').length==0){
+    		if($(".leftTr"+index+" input:checkbox[name='serviceAssetId']:checked").length==0){
     			alert("在资产列表中选择服务对象资产!");
     			return;
     		}
     	}
-    	var obj = {'serviceId':serviceId,
+    	
+   		var assetIds = "";
+   		$(".leftTr"+index+" input:checkbox[name='serviceAssetId']:checked").each(function(){
+   			assetIds = assetIds + $(this).val() + ",";
+		});
+   		if(serviceId==2 || serviceId ==4){
+    		var scanDate=$('input[name="scanType'+index+'"]').val();
+    	}else{
+    		var scanType=$('input:radio[name="scanType'+index+'"]:checked').val();
+    	}
+		var obj = {'serviceId':serviceId,
+				   'assetIds':assetIds,
+				   'scanType':scanType,
+				   'scanDate':scanDate,
 				   'ip':ip};
-	 	$.post("/cloud-security-platform/checkOrderAsset.html", obj, function(data){
-	 		if(data.ipText){
-	 			alert("ip不可用");
-	 		}else{
-	 			getActive(2);
-	 		}
-	     });
+    	$.post("/cloud-security-platform/checkOrderAsset.html", obj, function(data){
+    		if(data.assetNames!=null){
+    			$(".assets_msg").eq(index).html(data.assetNames + "不能用,请重新选择!");
+    		}else if(data.ipText){
+    			alert("ip不可用");
+    		}else{
+    			$(".assets_msg").eq(index).html("");
+    			getActive(2);
+    		}
+        });
     });
     
     //联系信息界面点击"上一步"返回到服务配置
@@ -223,7 +239,7 @@ $(function(){
     	if(beginDate>createDate){
     		//获得服务资产
 	    	var assetIds = "";
-			$(".rightTr"+index+" input[name='assetId']").each(function(){
+			$(".leftTr"+index+" input:checkbox[name='serviceAssetId']:checked").each(function(){
 				assetIds = assetIds + $(this).val() + ",";
 			});
 			var ip=$('#ip'+index).val();
