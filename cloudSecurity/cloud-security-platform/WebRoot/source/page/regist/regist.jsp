@@ -144,13 +144,13 @@ function checkNumberImage(){
           </tr>
           <tr class="register_tr">
             <td class="regist_title">确认密码</td>
-            <td class="regist_input"><input type="password" class="regist_txt required" name="confirm_password" id="regist_confirm_password" onblur="checkConfirmPassword()" /><span id="regist_confirm_password_msg" style="color:red;float:left;"></td>
+            <td class="regist_input"><input type="password" class="regist_txt required" name="confirm_password" id="regist_confirm_password" onblur="checkConfirmPassword()"/><span id="regist_confirm_password_msg" style="color:red;float:left;"></td>
             <td class="regist_prompt"></td>
           </tr>
           <tr class="register_tr">
             <td class="regist_title"><span class="yzfs">验证手机</span></td>
             <td class="regist_input" id="yzbox">
-            <input type="text" class="regist_txt required" name="mobile" id="regist_phone" onblur="checkMobile()"/>
+            <input type="text" class="regist_txt required" name="mobile" id="regist_phone" onblur="checkMobile()" style="margin-right:20px"/>
             <span id="regist_mobile_email_msg" style="color:red;float:left;display:block;"></td>
             <td class="regist_prompt">或<a class="forget_pass" id="get_email_yzm">验证邮箱</a><a class="forget_pass" id="get_phone_yzm">验证手机</a></td>
           </tr>

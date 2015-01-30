@@ -22,7 +22,7 @@ window.onload =function(){
 		$('#email_yzm').show();
 		$('.yzfs').text('验证邮箱');
 		$('#regist_phone').remove();
-		$('#yzbox').html('<input type="text" class="regist_txt required email" name="email" id="regist_email" onblur="checkEmail()" /><span id="regist_mobile_email_msg" style="color:red">');
+		$('#yzbox').html('<input type="text" class="regist_txt required email" name="email" id="regist_email" onblur="checkEmail()" style="margin-right:20px" /><span id="regist_mobile_email_msg" style="color:red">');
 	});
 	//切换手机验证
 	$('#get_phone_yzm').click(function(){
@@ -32,7 +32,7 @@ window.onload =function(){
 		$('#phone_yzm').show();
 		$('.yzfs').text('验证手机');
 		$('#regist_email').remove();
-		$('#yzbox').html('<input type="text" class="regist_txt required" name="phone" id="regist_phone" onblur="checkMobile()" /><span id="regist_mobile_email_msg" style="color:red">');
+		$('#yzbox').html('<input type="text" class="regist_txt required" name="phone" id="regist_phone" onblur="checkMobile()" style="margin-right:20px" /><span id="regist_mobile_email_msg" style="color:red">');
 	});
 	//增加新规则
 	jQuery.validator.addMethod("username", function(value, element) {  
