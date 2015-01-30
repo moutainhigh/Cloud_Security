@@ -24,6 +24,7 @@ import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskService;
+import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
 
 /**
@@ -121,36 +122,12 @@ public class MyBillController {
 		}
 		m.put("num", num);
 		//object转化为Json格式
-		JSONObject JSON = objectToJson(response, m);
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
 		try {
 			// 把数据返回到页面
-			writeToJsp(response, JSON);
+			CommonUtil.writeToJsp(response, JSON);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	/**
-	 * 功能描述：  object转化为Json格式
-	 * 参数描述： HttpServletResponse response,Map<String, Object> m
-	 * @throws Exception 
-	 *		 @time 2014-12-31
-	 */
-	private JSONObject objectToJson(HttpServletResponse response,
-			Map<String, Object> m) {
-		JSONObject JSON = JSONObject.fromObject(m);
-		response.setCharacterEncoding("utf-8");
-		response.setContentType("application/json;charset=UTF-8");
-		return JSON;
-	}
-	/**
-	 * 功能描述： 把数据返回到页面
-	 * 参数描述： HttpServletResponse response, JSONObject JSON
-	 * @throws Exception 
-	 *		 @time 2014-12-31
-	 */
-	private void writeToJsp(HttpServletResponse response, JSONObject JSON)
-			throws IOException {
-		response.getWriter().write(JSON.toString());
-		response.getWriter().flush();
 	}
 }

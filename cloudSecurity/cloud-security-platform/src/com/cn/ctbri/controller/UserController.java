@@ -29,6 +29,7 @@ import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IUserService;
+import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.LogonUtils;
 import com.cn.ctbri.util.Mail;
 import com.cn.ctbri.util.MailUtils;
@@ -265,41 +266,15 @@ public class UserController {
 		Map<String, Object> m = new HashMap<String, Object>();
 		m.put("count", count);
 		//object转化为Json格式
-		JSONObject JSON = objectToJson(response, m);
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
 		try {
 			// 把数据返回到页面
-			writeToJsp(response, JSON);
+			CommonUtil.writeToJsp(response, JSON);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	/**
-	 * 功能描述： 把数据返回到页面
-	 * 参数描述： HttpServletResponse response, JSONObject JSON
-	 * @throws Exception 
-	 *		 @time 2014-12-31
-	 */
-	private void writeToJsp(HttpServletResponse response, JSONObject JSON)
-			throws IOException {
-		response.getWriter().write(JSON.toString());
-		response.getWriter().flush();
-	}
-	
-	/**
-	 * 功能描述：  object转化为Json格式
-	 * 参数描述： HttpServletResponse response,Map<String, Object> m
-	 * @throws Exception 
-	 *		 @time 2014-12-31
-	 */
-	private JSONObject objectToJson(HttpServletResponse response,
-			Map<String, Object> m) {
-		JSONObject JSON = JSONObject.fromObject(m);
-		response.setCharacterEncoding("utf-8");
-		response.setContentType("application/json;charset=UTF-8");
-		return JSON;
-	}
-	
 	/**
 	 * 功能描述：  注册时检验手机号码是否已经存在
 	 * 参数描述：  String name,HttpServletResponse response
@@ -317,10 +292,10 @@ public class UserController {
 		Map<String, Object> m = new HashMap<String, Object>();
 		m.put("count", count);
 		//object转化为Json格式
-		JSONObject JSON = objectToJson(response, m);
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
 		try {
 			// 把数据返回到页面
-			writeToJsp(response, JSON);
+			CommonUtil.writeToJsp(response, JSON);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -343,10 +318,10 @@ public class UserController {
 		Map<String, Object> m = new HashMap<String, Object>();
 		m.put("count", count);
 		//object转化为Json格式
-		JSONObject JSON = objectToJson(response, m);
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
 		try {
 			// 把数据返回到页面
-			writeToJsp(response, JSON);
+			CommonUtil.writeToJsp(response, JSON);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -377,16 +352,16 @@ public class UserController {
             MailUtils.send(session, mail);
             m.put("msg", "1");//1：验证码发送成功
             //object转化为Json格式
-    		JSONObject JSON = objectToJson(response, m);
+    		JSONObject JSON = CommonUtil.objectToJson(response, m);
     		// 把数据返回到页面
-    		writeToJsp(response, JSON);
+    		CommonUtil.writeToJsp(response, JSON);
         } catch (Exception e) {
         	m.put("msg", "0");//1：验证码发送失败
         	//object转化为Json格式
-     		JSONObject JSON = objectToJson(response, m);
+     		JSONObject JSON = CommonUtil.objectToJson(response, m);
      		try {
      			// 把数据返回到页面
-				writeToJsp(response, JSON);
+     			CommonUtil.writeToJsp(response, JSON);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -411,9 +386,9 @@ public class UserController {
 			smsUtils.sendMessage(user.getMobile(), String.valueOf(activationCode));
 			m.put("msg", "1");//1：验证码发送成功
 			 //object转化为Json格式
-    		JSONObject JSON = objectToJson(response, m);
+    		JSONObject JSON = CommonUtil.objectToJson(response, m);
     		// 把数据返回到页面
-    		writeToJsp(response, JSON);
+    		CommonUtil.writeToJsp(response, JSON);
 		} catch (IOException e) {
 			m.put("msg", "0");//0：验证码发送失败
 			e.printStackTrace();
@@ -438,20 +413,20 @@ public class UserController {
     	if(newactivationCode!=null&&newactivationCode.equals(myactivationCode) ){
     		m.put("msg", "1");//用户填写验证码正确
     		//object转化为Json格式
-    		JSONObject JSON = objectToJson(response, m);
+    		JSONObject JSON = CommonUtil.objectToJson(response, m);
     		try {
     			// 把数据返回到页面
-				writeToJsp(response, JSON);
+    			CommonUtil.writeToJsp(response, JSON);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
     	}else{
     		m.put("msg", "0");//用户填写验证码错误
     		//object转化为Json格式
-    		JSONObject JSON = objectToJson(response, m);
+    		JSONObject JSON = CommonUtil.objectToJson(response, m);
     		try {
     			// 把数据返回到页面
-				writeToJsp(response, JSON);
+    			CommonUtil.writeToJsp(response, JSON);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

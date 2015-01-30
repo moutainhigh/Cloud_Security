@@ -34,6 +34,7 @@ import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAssetService;
+import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.GetNetContent;
 /**
  * 创 建 人  ：  邓元元
@@ -102,37 +103,13 @@ public class MyAssetsController {
 		Map<String, Object> m = new HashMap<String, Object>();
 		m.put("count", count);
 		//object转化为Json格式
-		JSONObject JSON = objectToJson(response, m);
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
 		try {
 			// 把数据返回到页面
-			writeToJsp(response, JSON);
+			CommonUtil.writeToJsp(response, JSON);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	/**
-	 * 功能描述： 把数据返回到页面
-	 * 参数描述： HttpServletResponse response, JSONObject JSON
-	 * @throws Exception 
-	 *		 @time 2014-12-31
-	 */
-	private void writeToJsp(HttpServletResponse response, JSONObject JSON)
-			throws IOException {
-		response.getWriter().write(JSON.toString());
-		response.getWriter().flush();
-	}
-	/**
-	 * 功能描述：  object转化为Json格式
-	 * 参数描述： HttpServletResponse response,Map<String, Object> m
-	 * @throws Exception 
-	 *		 @time 2014-12-31
-	 */
-	private JSONObject objectToJson(HttpServletResponse response,
-			Map<String, Object> m) {
-		JSONObject JSON = JSONObject.fromObject(m);
-		response.setCharacterEncoding("utf-8");
-		response.setContentType("application/json;charset=UTF-8");
-		return JSON;
 	}
 	/**
 	 * 功能描述：修改资产
@@ -246,15 +223,15 @@ public class MyAssetsController {
 					e.printStackTrace();
 				}
 			}
-			 JSONObject JSON = objectToJson(response, m);
+			 JSONObject JSON = CommonUtil.objectToJson(response, m);
 			// 把数据返回到页面
-			writeToJsp(response, JSON);
+			 CommonUtil.writeToJsp(response, JSON);
 		} catch (Exception e) {
 			m.put("msg",0);//验证失败
-			JSONObject JSON = objectToJson(response, m);
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
 				// 把数据返回到页面
 			try {
-				writeToJsp(response, JSON);
+				CommonUtil.writeToJsp(response, JSON);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
