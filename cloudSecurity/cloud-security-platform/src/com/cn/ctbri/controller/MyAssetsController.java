@@ -175,10 +175,18 @@ public class MyAssetsController {
 	public String searchAssetsCombine(Model model,Asset asset,HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		asset.setUserid(globle_user.getId());//将用户登录用户的id赋值到asset中
+		String name = "";
+		try {
+			name = new String(asset.getName().getBytes("ISO-8859-1"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		asset.setName(name);
 		List<Asset> result = assetService.searchAssetsCombine(asset);//根据userid 资产状态 和资产名称联合查询
 		model.addAttribute("list",result);		//传对象到页面
 		model.addAttribute("status",asset.getStatus());//回显资产类型	
-		model.addAttribute("name",asset.getName());//回显资产名称
+		model.addAttribute("name",name);
+		//回显资产名称
 		return "/source/page/userCenter/userAssets";
 	}
 	/**
