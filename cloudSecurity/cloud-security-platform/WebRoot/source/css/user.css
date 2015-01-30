@@ -56,7 +56,7 @@
 .user_sectime{ background: url(../images/user_ico_6.jpg) no-repeat; width:117px; height:30px; font-size:14px; line-height:30px; padding-left:15px;  position:absolute; left:480px;color:#888; cursor:pointer;}
 .user_top .user_sectime input{width:92px;}
 .user_soucuo{position:absolute; left:820px; width:82px; height:33px; cursor:pointer;}
-.user_sectime1{background: url(../images/user_ico_8.jpg) no-repeat; width:180px; height:30px; font-size:14px; line-height:30px; padding-left:15px;  position:absolute; left:480px;color:#888; cursor:pointer;}
+.user_sectime1{background: url(../images/user_ico_8.jpg) no-repeat; width:180px; height:30px; font-size:13px; line-height:30px; padding-left:10px;  position:absolute; left:480px;color:#888; cursor:pointer;}
 /*我的资产代码*/
 .user_top{ padding-left:35px; padding-top:30px; margin-bottom:35px; position:relative; padding-left:45px; height:40px;}
 .zican_top,.zc_edit{ height:25px; font-size:14px; line-height:25px; color:#49ad53; cursor:pointer;} 

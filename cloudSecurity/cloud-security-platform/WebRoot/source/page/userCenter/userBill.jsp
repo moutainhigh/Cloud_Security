@@ -91,12 +91,12 @@ function searchCombine(){
       		<option value="突发异常流量清洗服务" >突发异常流量清洗服务</option>
     	</select>
       </div>
-      <div class="dan_3 user_sectime1" style="left:344px;">
-          <input type="text" value="" id="begin_date" name="begin_datevo" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+      <div class="dan_3 user_sectime1" style="left:344px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+          <input type="text" value="" id="begin_date" name="begin_datevo" />
         </div>
         
-        <div class="dan_4 user_sectime1" style="left:552px;">
-          <input type="text" value="" id="end_date" name="end_datevo" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+        <div class="dan_4 user_sectime1" style="left:552px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+          <input type="text" value="" id="end_date" name="end_datevo"/>
         </div>
       <div class="user_soucuo" style="left:764px;"><img src="${ctx}/source/images/user_submit_2.jpg" onclick="searchCombine()"/></div>
     </div>

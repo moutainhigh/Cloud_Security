@@ -5,7 +5,8 @@
 }
 .Wdate::-ms-clear{display:none;}
 
-.WdateFmtErr{
+/*.WdateFmtErr{
 	font-weight:bold;
 	color:red;
 }
+*/
