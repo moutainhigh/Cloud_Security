@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
+import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.UserDao;
 import com.cn.ctbri.entity.User;
 /**
@@ -17,13 +18,8 @@ import com.cn.ctbri.entity.User;
  * 版        本：  1.0
  */
 @Repository
-public class UserDaoImpl extends SqlSessionDaoSupport implements UserDao{
+public class UserDaoImpl extends DaoCommon implements UserDao{
 
-	@Resource
-	public final void setSessionFactoryRegister(SqlSessionFactory sessionFactory) {
-		this.setSqlSessionFactory(sessionFactory);
-	}  
-	
 	/**
 	 * 功        能： UserMapper命名空间
 	 */

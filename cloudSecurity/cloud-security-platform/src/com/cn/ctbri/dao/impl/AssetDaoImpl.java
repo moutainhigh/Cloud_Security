@@ -9,7 +9,9 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
+import com.cn.ctbri.dao.AlarmDao;
 import com.cn.ctbri.dao.AssetDao;
+import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderIP;
@@ -20,12 +22,8 @@ import com.cn.ctbri.entity.OrderIP;
  * 版        本：  1.0
  */
 @Repository
-public class AssetDaoImpl extends SqlSessionDaoSupport implements AssetDao{
+public class AssetDaoImpl extends DaoCommon implements AssetDao{
 
-	@Resource
-	public final void setSessionFactoryRegister(SqlSessionFactory sessionFactory) {
-		this.setSqlSessionFactory(sessionFactory);
-	}  
 	
 	/**
 	 * 功        能： AssetMapper命名空间

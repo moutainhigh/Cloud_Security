@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
+
+import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.OrderDao;
 import com.cn.ctbri.entity.Order;
 /**
@@ -16,14 +18,8 @@ import com.cn.ctbri.entity.Order;
  * 版        本：  1.0
  */
 @Repository
-public class OrderDaoImpl extends SqlSessionDaoSupport implements OrderDao{
+public class OrderDaoImpl extends DaoCommon implements OrderDao{
 
-	@Resource
-	public final void setSessionFactoryRegister(SqlSessionFactory sessionFactory) {
-		this.setSqlSessionFactory(sessionFactory);
-	}
-
-	
 	/**
 	 * 功        能： OrderMapper命名空间
 	 */

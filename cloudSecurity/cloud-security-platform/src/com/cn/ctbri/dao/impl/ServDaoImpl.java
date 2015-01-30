@@ -6,6 +6,8 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
+
+import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.ServDao;
 import com.cn.ctbri.entity.Serv;
 /**
@@ -15,12 +17,8 @@ import com.cn.ctbri.entity.Serv;
  * 版        本：  1.0
  */
 @Repository
-public class ServDaoImpl extends SqlSessionDaoSupport implements ServDao{
+public class ServDaoImpl extends DaoCommon implements ServDao{
 
-	@Resource
-	public final void setSessionFactoryRegister(SqlSessionFactory sessionFactory) {
-		this.setSqlSessionFactory(sessionFactory);
-	}
 
 	
 	/**
