@@ -179,7 +179,7 @@ public class UserController {
 				}
 			}
 			request.setAttribute("orderNum", orderNum);//订单总数
-			request.setAttribute("servNum","1");
+			request.setAttribute("servNum",servNum);
 			//总告警数
 			List<Alarm> alarmList = alarmService.findAlarmByUserId(globle_user.getId());
 			int alarmSum = 0;
