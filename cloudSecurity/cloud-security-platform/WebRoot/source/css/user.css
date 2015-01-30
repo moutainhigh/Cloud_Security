@@ -17,7 +17,7 @@
 .user_name span{display:block; font-size:14px; color:#909090; float:left; }
 .user_name a{ display:block; font-size:18px; color:#2da039; float:left;margin-left:20px; display:inline-block;}
 .center_bottom{ height:180px; border-top:1px solid #e0e0e0; width:1004px; position:absolute; bottom:0px;}
-.center_bottom_div{ height:180px; width:250px; float:left; border-right:1px solid #e0e0e0;}
+.center_bottom_div{ height:180px; width:324px; float:left; border-right:1px solid #e0e0e0;}
 .center_bottom_number{ font-size:30px; line-height:48px; text-align:center; margin-top:20px; margin-bottom:20px; color:#2da039;}
 .center_bottom_txt{ font-size:18px; line-height:30px; text-align:center;}
 .center_bottom_txt a{ text-decoration:underline; color:#2da039;}
