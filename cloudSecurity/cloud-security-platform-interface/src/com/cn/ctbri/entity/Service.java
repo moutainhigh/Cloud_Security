@@ -7,7 +7,10 @@ import java.io.Serializable;
  * 创建日期：  2015-01-05
  * 描        述：  服务实体
  * 版        本：  1.0
+ * <br>已废弃
+ * @see Serv实体类
  */
+@Deprecated
 public class Service  implements Serializable{
 	/***/
 	private static final long serialVersionUID = 1L;
