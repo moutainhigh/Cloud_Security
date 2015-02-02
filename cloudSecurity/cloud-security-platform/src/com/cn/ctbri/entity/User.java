@@ -1,4 +1,7 @@
 package com.cn.ctbri.entity;
+
+import java.util.Date;
+
 /**
  * 创 建 人  ：  邓元元
  * 创建日期：   2014-12-31
@@ -10,6 +13,10 @@ public class User implements java.io.Serializable{
 	private int id;
 	//用户名
 	private String name;
+	//创建时间
+	private Date createTime;
+	//真实姓名
+	private String realName;
 	//密码
 	private String password;
 	//手机号码
@@ -26,6 +33,10 @@ public class User implements java.io.Serializable{
 	private String verification_code;
 	//登录页面验证码
 	private String checkNumber;
+	//服务个数vo
+	private int servSum;
+	//服务个数vo
+	private int AssetSum;
 	//构造方法
 	public User(){}
 	public User(String name, String password, int status, int type) {
@@ -50,6 +61,13 @@ public class User implements java.io.Serializable{
 	 */
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getServSum() {
+		return servSum;
+	}
+	public void setServSum(int servSum) {
+		this.servSum = servSum;
 	}
 	/**
 	 * 功能描述：取用户名称
@@ -176,6 +194,24 @@ public class User implements java.io.Serializable{
 	}
 	public void setCheckNumber(String checkNumber) {
 		this.checkNumber = checkNumber;
+	}
+	public Date getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	public int getAssetSum() {
+		return AssetSum;
+	}
+	public void setAssetSum(int assetSum) {
+		AssetSum = assetSum;
+	}
+	public String getRealName() {
+		return realName;
+	}
+	public void setRealName(String realName) {
+		this.realName = realName;
 	}
 	
 }

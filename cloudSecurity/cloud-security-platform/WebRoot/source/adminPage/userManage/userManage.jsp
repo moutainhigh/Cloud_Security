@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -13,6 +14,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/backstage.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/modelbox.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/query.JPlaceholder.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/adminJs/userManage.js"></script>
 </head>
 
 <body>
@@ -38,11 +40,13 @@
   </div>
 </div>
 <!--头部代码结束-->
-<div class="user_search_box">
-    <div class="user_sea_box">
-      <input class="user_search" type="text" placeholder="请输入用户名">
-    </div>
-</div>
+<form action="">
+	<div class="user_search_box">
+	    <div class="user_sea_box">
+	      <input class="user_search" type="text" placeholder="请输入用户名">
+	    </div>
+	</div>
+</form>
 <div class="main_wrap">
 	<div class="main_center">
     	<div class="add_service">
@@ -52,17 +56,17 @@
         <div class="b_user_table">
         	<div class="b_user_table_box userbox_cur" id="supper">
             	<div class="b_user_table_c">
-                	<span class="user_title">超级管理员</span><span class="user_num">4</span>
+                	<span class="user_title">超级管理员</span><span class="user_num">${supSum}</span>
                 </div>
             </div>
             <div class="b_user_table_box" id="system">
             	<div class="b_user_table_c">
-                    <span class="user_title">系统管理员 </span><span class="user_num">12</span>
+                    <span class="user_title">系统管理员 </span><span class="user_num">${sysSum}</span>
                 </div>
             </div>
             <div class="b_user_table_box" id="users">
             	<div class="b_user_table_c" style="border-right:1px solid #e0e0e0;">
-                	<span class="user_title">注册用户　</span><span class="user_num">362</span>
+                	<span class="user_title">注册用户　</span><span class="user_num">${regSum}</span>
                 </div>
             </div>
         </div>
@@ -79,38 +83,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                	<tr>
-                    	<td class="t_username">admin92t4045iy0</td>
-                        <td class="t_date">2014/10/10</td>
-                        <td class="t_role">系统管理员</td>
-                        <td class="t_assets">34</td>
-                        <td class="t_service">5</td>
-                        <td class="t_operation"><a href="#" class="ope_a">修改</a><a href="#" class="ope_a ml20">删除</a></td>
-                    </tr>
-                    <tr>
-                    	<td class="t_username">admin92t4045iy0</td>
-                        <td class="t_date">2014/10/10</td>
-                        <td class="t_role">系统管理员</td>
-                        <td class="t_assets">34</td>
-                        <td class="t_service">5</td>
-                        <td class="t_operation"><a href="#" class="ope_a">修改</a><a href="#" class="ope_a ml20">删除</a></td>
-                    </tr>
-                    <tr>
-                    	<td class="t_username">admin92t4045iy0</td>
-                        <td class="t_date">2014/10/10</td>
-                        <td class="t_role">系统管理员</td>
-                        <td class="t_assets">34</td>
-                        <td class="t_service">5</td>
-                        <td class="t_operation"><a href="#" class="ope_a">修改</a><a href="#" class="ope_a ml20">删除</a></td>
-                    </tr>
-                    <tr>
-                    	<td class="t_username">admin92t4045iy0</td>
-                        <td class="t_date">2014/10/10</td>
-                        <td class="t_role">系统管理员</td>
-                        <td class="t_assets">34</td>
-                        <td class="t_service">5</td>
-                        <td class="t_operation"><a href="#" class="ope_a">修改</a><a href="#" class="ope_a ml20">删除</a></td>
-                    </tr>
+	                <c:forEach items="${sysList}" var="user">
+	                    <tr>
+	                    	<td class="t_username">${user.name}</td>
+	                        <td class="t_date"><fmt:formatDate value="${user.createTime}" pattern="yyyy-MM-dd"/></td>
+	                        <td class="t_role">
+	                        	<c:if test="${user.type==1}">系统管理员</c:if>
+	                        </td>
+	                        <td class="t_assets">${user.assetSum}</td>
+	                        <td class="t_service">${user.servSum}</td>
+	                        <td class="t_operation"><a href="#" class="ope_a">修改</a><a href="#" class="ope_a ml20">删除</a></td>
+                   		</tr>
+                    </c:forEach>
                 </tbody>
             </table>
         </div>
@@ -127,38 +111,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                	<tr>
-                    	<td class="t_username">admin92t4045iy0</td>
-                        <td class="t_date">2014/10/10</td>
-                        <td class="t_role">注册用户</td>
-                        <td class="t_assets">34</td>
-                        <td class="t_service">5</td>
-                        <td class="t_operation"><a href="#" class="ope_a">修改</a><a href="#" class="ope_a ml20">删除</a></td>
+               		<c:forEach items="${regList}" var="user">
+	                    <tr>
+                    	<td class="t_username">${user.name}</td>
+                        <td class="t_date"><fmt:formatDate value="${user.createTime}" pattern="yyyy-MM-dd"/></td>
+                        <td class="t_role">
+                        	<c:if test="${user.type==2}">注册用户</c:if>
+                        </td>
+                        <td class="t_assets">${user.assetSum}</td>
+                        <td class="t_service">${user.servSum}</td>
+                        <td class="t_operation">
+                        <a href="#" class="ope_a">修改</a>
+                        <a href="javascript:void(0)" class="ope_a ml20" onclick="deleteUser('${user.id}')">删除</a></td>
                     </tr>
-                    <tr>
-                    	<td class="t_username">admin92t4045iy0</td>
-                        <td class="t_date">2014/10/10</td>
-                        <td class="t_role">注册用户</td>
-                        <td class="t_assets">34</td>
-                        <td class="t_service">5</td>
-                        <td class="t_operation"><a href="#" class="ope_a">修改</a><a href="#" class="ope_a ml20">删除</a></td>
-                    </tr>
-                    <tr>
-                    	<td class="t_username">admin92t4045iy0</td>
-                        <td class="t_date">2014/10/10</td>
-                        <td class="t_role">注册用户</td>
-                        <td class="t_assets">34</td>
-                        <td class="t_service">5</td>
-                        <td class="t_operation"><a href="#" class="ope_a">修改</a><a href="#" class="ope_a ml20">删除</a></td>
-                    </tr>
-                    <tr>
-                    	<td class="t_username">admin92t4045iy0</td>
-                        <td class="t_date">2014/10/10</td>
-                        <td class="t_role">注册用户</td>
-                        <td class="t_assets">34</td>
-                        <td class="t_service">5</td>
-                        <td class="t_operation"><a href="#" class="ope_a">修改</a><a href="#" class="ope_a ml20">删除</a></td>
-                    </tr>
+                    </c:forEach>
                 </tbody>
             </table>
         </div>
@@ -175,38 +141,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                	<tr>
-                    	<td class="t_username">admin92t4045iy0</td>
-                        <td class="t_date">2014/10/10</td>
-                        <td class="t_role">超级管理员</td>
-                        <td class="t_assets">34</td>
-                        <td class="t_service">5</td>
-                        <td class="t_operation"><a href="#" class="ope_a">修改</a><a href="#" class="ope_a ml20">删除</a></td>
-                    </tr>
+                <c:forEach items="${list}" var="user">
                     <tr>
-                    	<td class="t_username">admin92t4045iy0</td>
-                        <td class="t_date">2014/10/10</td>
-                        <td class="t_role">超级管理员</td>
-                        <td class="t_assets">34</td>
-                        <td class="t_service">5</td>
+                    	<td class="t_username">${user.name}</td>
+                        <td class="t_date"><fmt:formatDate value="${user.createTime}" pattern="yyyy-MM-dd"/></td>
+                        <td class="t_role">
+                        	<c:if test="${user.type==0}">超级管理员	</c:if>
+                        </td>
+                        <td class="t_assets">${user.assetSum}</td>
+                        <td class="t_service">${user.servSum}</td>
                         <td class="t_operation"><a href="#" class="ope_a">修改</a><a href="#" class="ope_a ml20">删除</a></td>
                     </tr>
-                    <tr>
-                    	<td class="t_username">admin92t4045iy0</td>
-                        <td class="t_date">2014/10/10</td>
-                        <td class="t_role">超级管理员</td>
-                        <td class="t_assets">34</td>
-                        <td class="t_service">5</td>
-                        <td class="t_operation"><a href="#" class="ope_a">修改</a><a href="#" class="ope_a ml20">删除</a></td>
-                    </tr>
-                    <tr>
-                    	<td class="t_username">admin92t4045iy0</td>
-                        <td class="t_date">2014/10/10</td>
-                        <td class="t_role">超级管理员</td>
-                        <td class="t_assets">34</td>
-                        <td class="t_service">5</td>
-                        <td class="t_operation"><a href="#" class="ope_a">修改</a><a href="#" class="ope_a ml20">删除</a></td>
-                    </tr>
+                </c:forEach>
                 </tbody>
             </table>
         </div>
@@ -259,39 +205,44 @@
 	<p class="w634">添加用户</p><p id="close"><img src="${ctx}/source/adminImages/b_exit.jpg" width="25" height="26"></p>
    </div> 
        <div class="regist_form">
-      <form  id="form_regist" name="form_regist" method="post">
+      <form  id="form_regist" name="form_regist" method="post" action="${ctx}/adminAddUser.html">
         <table>
           <tr class="register_tr">
             <td class="regist_title">用户账号</td>
-            <td class="regist_input"><input type="text" class="regist_txt"/></td>
+            <td class="regist_input"><input type="text" class="regist_txt" name="name" id="regist_name" onblur="checkName()" /><span id="regist_name_msg" style="color:red;float:left"></span></td>
             <td class="regist_prompt" style="text-align:left;">4-20位字符，支持中英文，数字，字符组合</td>
           </tr>
-          <tr class="register_tr">
+           <tr class="register_tr">
             <td class="regist_title">设置密码</td>
-            <td class="regist_input"><input type="paddword" class="regist_txt"/></td>
-            <td class="regist_prompt" style="text-align:left;">6-20位字符，可使用字母、数字和符号的组合，不建议纯字母、纯数字、纯符号</td>
+            <td class="regist_input"><input type="password" class="regist_txt" name="password" id="regist_password" onblur="checkPassword()"/><span id="regist_password_msg" style="color:red;float:left"></td>
+            <td class="regist_prompt" style="text-align:left;">6-20位，可使用字母、数字和下划线的组合，不建议纯字母、纯数字</td>
           </tr>
-          <tr class="register_tr">
+           <tr class="register_tr">
             <td class="regist_title">确认密码</td>
-            <td class="regist_input"><input type="paddword" class="regist_txt"/></td>
-            <td class="regist_prompt red_prompt">两次密码输入不一致</td>
+            <td class="regist_input"><input type="password" class="regist_txt required" name="confirm_password" id="regist_confirm_password" onblur="checkConfirmPassword()"/><span id="regist_confirm_password_msg" style="color:red;float:left;"></td>
+            <td class="regist_prompt red_prompt"></td>
           </tr>
           <tr class="register_tr">
             <td class="regist_title">真实姓名</td>
-            <td class="regist_input"><input type="text" class="regist_txt"/></td>
+            <td class="regist_input"><input type="text" name="realName" id="realName" class="regist_txt"/></td>
             <td class="regist_prompt"></td>
           </tr>
           <tr class="register_tr">
             <td class="regist_title">用户分组</td>
             <td class="regist_input">
-                <select class="regist_sel">
-                	<option></option>
+                <select class="regist_sel" id="type" name="type" >
+                	<option selected="selected" value="">请选择分组</option>
+                	<option value="0" >超级管理员</option>
+         			<option value="1" >系统管理员</option>
+         			<option value="2" >自注册用户</option>
                 </select>
             </td>
             <td class="regist_prompt"></td>
           </tr>
           <tr>
-            <td colspan="3"><button class="ser_btn" id="seradd_btn">立即添加</button></td>
+          <input type="button" class="login_btn" onclick="submitForm()" value="立即注册"/>
+          
+            <td colspan="3"><input type="button" class="ser_btn" onclick="add()" value="立即添加"/></td>
           </tr>
         </table>
       </form>

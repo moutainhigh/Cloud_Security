@@ -55,6 +55,24 @@ public interface IUserService {
 	 *		 @time 2015-1-5
 	 */
 	void update(User globle_user);
+	/**
+	 * 功能描述：根据用户类型
+	 * 参数描述：int type
+	 *		 @time 2015-2-2
+	 */
+	List<User> findUserByUserType(int type);
+	/**
+	 * 功能描述：查询所有用户
+	 * 参数描述：int type
+	 *		 @time 2015-2-2
+	 */
+	List<User> findAll();
+	/**
+	 * 功能描述：删除用户
+	 * 参数描述：int id
+	 *		 @time 2015-2-2
+	 */
+	void delete(int id);
 
 
 	

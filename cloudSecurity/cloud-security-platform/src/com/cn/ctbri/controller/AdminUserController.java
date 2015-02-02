@@ -1,17 +1,31 @@
 package com.cn.ctbri.controller;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.User;
+import com.cn.ctbri.service.IAssetService;
+import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IUserService;
+import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.LogonUtils;
 
 
@@ -26,7 +40,10 @@ public class AdminUserController {
 	
 	@Autowired
 	IUserService userService;
-	
+	@Autowired
+	IAssetService assetService;
+	@Autowired
+	IOrderService orderService;
 	/**
 	 * 功能描述：后台登录页面 
 	 * 参数描述：无
@@ -39,7 +56,7 @@ public class AdminUserController {
 	/**
 	 * 功能描述：后台登录
 	 * 参数描述： Model model,HttpServletRequest request
-	 *		 @time 2015-1-29
+	 *		 @time 2015-2-2
 	 */
 	@RequestMapping("/adminLogin.html")
 	public String adminLogin(User user,HttpServletRequest request,HttpServletResponse response){
@@ -71,10 +88,73 @@ public class AdminUserController {
 			request.setAttribute("msg", "对不起，您没有登录后台的权限！");
 			return "/source/adminPage/adminLogin/adminLogin";
 		}
+		if(_user.getStatus()!=1){
+			request.setAttribute("msg", "对不起，您的帐号已停用");
+			return "/source/page/regist/regist";//跳转到登录页面
+		}
 		/**记住密码功能*/
 		LogonUtils.remeberAdmin(request,response,name,password);
 		//将User放置到Session中，用于这个系统的操作
 		request.getSession().setAttribute("globle_user", _user);
+		return "redirect:/adminUserManageUI.html";
+	}
+	/**
+	 * 功能描述：后台用户管理页面
+	 * 参数描述：无
+	 *		 @time 2015-1-29
+	 */
+	@RequestMapping("/adminUserManageUI.html")
+	public String adminUserManageUI(Model model,HttpServletRequest request){
+		//User globle_user = (User) request.getSession().getAttribute("globle_user");
+		List<User> list = userService.findAll();
+		List<User> newSupList = new ArrayList<User>();
+		List<User> newSysList = new ArrayList<User>();
+		List<User> newRegList = new ArrayList<User>();
+		if(list!=null && list.size()>0){
+			for(User u :list){
+				//查询服务个数,一个订单一个服务
+				List<Order> order = orderService.findOrderByUserId(u.getId());
+				if(order.size()>0&&order!=null){
+					u.setServSum(order.size());
+				}
+				//查询资产个数
+				List<Asset> assetList = assetService.findByUserId(u.getId());
+				if(assetList.size()>0&&assetList!=null){
+					u.setAssetSum(assetList.size());
+				}
+				//用户类型（0：超级管理员，1：管理员，2：用户）
+				if(u.getType()==0){
+					newSupList.add(u);	
+				}
+				if(u.getType()==1){
+					newSysList.add(u);	
+				}
+				if(u.getType()==2){
+					newRegList.add(u);	
+				}
+			}
+		}
+		model.addAttribute("list",newSupList);//超级管理员列表
+		model.addAttribute("sysList", newSysList);//系统管理员列表
+		model.addAttribute("regList", newRegList);//注册用户列表
+		int supSum = 0;//超级管理员个数
+		if(newSupList.size()>0&&newSupList!=null){
+			supSum = newSupList.size();
+		}
+		request.setAttribute("supSum", supSum);//超级管理员个数
+		
+		int sysSum = 0;//查询系统管理员个数
+		if(newSysList.size()>0&&newSysList!=null){
+			sysSum = newSysList.size();
+		}
+		request.setAttribute("sysSum", sysSum);
+		
+		int regSum = 0;//注册用户个数
+		if(newRegList.size()>0&&newRegList!=null){
+			regSum = newRegList.size();
+		}
+		request.setAttribute("regSum", regSum);
+		
 		return "/source/adminPage/userManage/userManage";
 	}
 	/**
@@ -96,5 +176,63 @@ public class AdminUserController {
 		return "/source/error/errorMsg";
 	}
 	
-	
+	/**
+	 * 功能描述：添加用户
+	 *		 @time 2015-2-2
+	 */
+	@RequestMapping("/adminAddUser.html")
+	public String add(User user){
+		String realName = "";
+		try {//中文乱码
+			realName = new String(user.getRealName().getBytes("ISO-8859-1"), "UTF-8");
+			user.setRealName(realName);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		String password = user.getPassword();
+		String md5password = DigestUtils.md5Hex(password);//密码加密
+		user.setPassword(md5password);
+		user.setStatus(1);//用户状态(1：正常，0：停用)
+		user.setCreateTime(new Date());//创建时间
+		userService.insert(user);
+		return "redirect:/adminUserManageUI.html";
+	}
+	/**
+	 * 功能描述：检查删除用户
+	 *		 @time 2015-2-2
+	 */
+	@RequestMapping("/adminDeleteCheck.html")
+	public void adminDeleteCheck(User user,HttpServletResponse response){
+		int id = user.getId();
+		int count = 0;
+		//检查要删除的用户下，是否有订单服务
+		List<Order> orderList = orderService.findOrderByUserId(id);
+		//检查要删除的用户下，是否有资产
+		List<Asset> assetList = assetService.findByUserId(id);
+		if(orderList.size()!=0&&orderList!=null){
+			count += orderList.size();
+		}
+		if(assetList.size()!=0&&assetList!=null){
+			count += assetList.size();
+		}
+		Map<String, Object> m = new HashMap<String, Object>();
+		m.put("count", count);
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 功能描述：删除用户
+	 *		 @time 2015-1-29
+	 */
+	@RequestMapping("/adminDeleteUser.html")
+	public String adminDeleteUser(User user){
+		userService.delete(user.getId());
+		return "redirect:/adminUserManageUI.html";
+	}
 }

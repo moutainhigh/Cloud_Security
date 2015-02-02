@@ -76,4 +76,28 @@ public class UserServiceImpl implements IUserService{
 	public void update(User globle_user) {
 		userDao.update(globle_user);
 	}
+	/**
+	 * 功能描述：根据用户类型
+	 * 参数描述：int type
+	 *		 @time 2015-2-2
+	 */
+	public List<User> findUserByUserType(int type) {
+		return userDao.findUserByUserType(type);
+	}
+	/**
+	 * 功能描述：查询所有用户
+	 * 参数描述：int type
+	 *		 @time 2015-2-2
+	 */
+	public List<User> findAll() {
+		return userDao.findAll();
+	}
+	/**
+	 * 功能描述：删除用户
+	 * 参数描述：int id
+	 *		 @time 2015-2-2
+	 */
+	public void delete(int id) {
+		userDao.delete(id);
+	}
 }

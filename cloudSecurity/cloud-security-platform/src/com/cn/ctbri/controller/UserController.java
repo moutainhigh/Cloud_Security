@@ -133,6 +133,7 @@ public class UserController {
 			request.setAttribute("msg", "验证码输入有误");//向前台页面传值
 			return "/source/page/regist/regist";
 		}
+		
 		//判断用户名密码输入是否正确
 		User _user = null;
 		String name = user.getName().trim();
@@ -144,6 +145,10 @@ public class UserController {
 			String md5password = DigestUtils.md5Hex(password);
 			if(!md5password.equals(_user.getPassword())){
 				request.setAttribute("msg", "密码输入有误");
+				return "/source/page/regist/regist";//跳转到登录页面
+			}
+			if(_user.getStatus()!=1){
+				request.setAttribute("msg", "对不起，您的帐号已停用");
 				return "/source/page/regist/regist";//跳转到登录页面
 			}
 		}else{
@@ -240,6 +245,7 @@ public class UserController {
 				user.setPassword(passwdMD5);
 				user.setStatus(1);  //用户状态(1：正常，0：停用)
 				user.setType(2);	//用户类型（0：超级管理员，1：管理员，2：用户）
+				user.setCreateTime(new Date());//创建时间
 				userService.insert(user);
 			}
 		}

@@ -77,6 +77,22 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
 	public void update(User globle_user) {
 		this.getSqlSession().update(ns + "update",globle_user);
 	}
+	/**
+	 * 功能描述：根据用户类型
+	 * 参数描述：int type
+	 *		 @time 2015-2-2
+	 */
+	public List<User> findUserByUserType(int type) {
+		return getSqlSession().selectList(ns + "findUserByUserType",type);
+	}
 
-	
+	public List<User> findAll() {
+		return getSqlSession().selectList(ns + "list");
+
+	}
+
+	public void delete(int id) {
+		getSqlSession().delete(ns +"delete",id);
+		
+	}
 }
