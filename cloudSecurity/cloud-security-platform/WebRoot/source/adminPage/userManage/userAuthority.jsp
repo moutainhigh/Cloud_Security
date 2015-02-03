@@ -1,0 +1,213 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>权限管理</title>
+<link href="${ctx}/source/adminCss/mian.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/adminCss/head_bottom.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/adminCss/backstage.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/backstage.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/jquery.JPlaceholder.js"></script>
+</head>
+
+<body>
+<!--头部代码-->
+<div class="head_bj b_head">
+  <div class="head">
+    <div class="logo"><img src="${ctx}/source/adminImages/b_logo2.jpg"/></div>
+    <div class="list b_list">
+      <ul>
+       <li class="b_current"><a href="${ctx}/adminUserManageUI.html" class="white">用户管理</a></li>
+        <li><a href="${ctx}/adminServUI.html" class="white">服务管理</a></li>
+        <li><a href="${ctx}/dataAnalysisUI.html" class="white">数据分析</a></li>
+        <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/SystemManageUI.html" class="white">系统管理</a></li>
+      </ul>
+    </div>
+    <div class="lagst">
+      <div class="lagst-left b_lagst_left"> <a href="#"><img src="${ctx}/source/adminImages/b_photo.jpg" width="43" height="42"></a> </div>
+      <div class="lagst-right">
+        <p ><a href="###" class="white">${sessionScope.globle_user.name }</a></p>
+        <p> <a href="${ctx}/adminExit.html" class="white">退出</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+<!--头部代码结束-->
+<div class="user_search_box">
+  <input class="user_search" type="text" placeholder="请输入用户名">
+</div>
+<div class="main_wrap">
+	<div class="main_center">
+    	<div class="add_service">
+        	<span class="addr">当前位置 : </span><a href="usermanagement.html" class="addr">用户中心</a><span class="addr"> > </span><a href="#" class="addr">用户权限</a>
+        </div>
+        <div class="juris_wrap">
+        	<table class="juris_table fl" cellpadding="1" cellspacing="1">
+            	<thead>
+                	<tr>
+                    	<th>功能</th>
+                        <th>超级管理员</th>
+                        <th>系统管理员</th>
+                        <th>注册用户</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                    	<td>用户注册</td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                        <td><span class="juris_choose"></span></td>
+                    </tr>
+                    <tr>
+                    	<td>用户登录</td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                        <td><span class="juris_choose"></span></td>
+                    </tr> 
+                    <tr>
+                    	<td>资产维护</td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                        <td><span class="juris_choose"></span></td>
+                    </tr> 
+                    <tr>
+                    	<td>资产验证</td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                        <td><span class="juris_choose"></span></td>
+                    </tr>
+                    <tr>
+                    	<td>自助下单</td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                        <td><span class="juris_choose"></span></td>
+                    </tr> 
+                    <tr>
+                    	<td>订单跟踪</td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                        <td><span class="juris_choose"></span></td>
+                    </tr>
+                    <tr>
+                    	<td>用户账单</td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                    </tr> 
+                    <tr>
+                    	<td>在线帮助</td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="juris_table fl ml12" cellpadding="1" cellspacing="1">
+            	<thead>
+                	<tr>
+                    	<th>功能</th>
+                        <th>超级管理员</th>
+                        <th>系统管理员</th>
+                        <th>注册用户</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                    	<td>资料修改</td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                    </tr>
+                    <tr>
+                    	<td>在线充值</td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                    </tr> 
+                    <tr>
+                    	<td>用户管理</td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                    </tr> 
+                    <tr>
+                    	<td>服务管理</td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                    </tr>
+                    <tr>
+                    	<td>数据分析</td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                    </tr> 
+                    <tr>
+                    	<td>系统管理</td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                    </tr>
+                    <tr>
+                    	<td>用户删除</td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose"></span></td>
+                        <td><span class="juris_choose juris_grey"></span></td>
+                    </tr> 
+                    <tr>
+                    	<td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!--尾部部分代码-->
+<div class="bottom_bj">
+<div class="bottom">
+<div class="bottom_main">
+  <h3><a href="###">新手入门</a></h3>
+  <ul>
+    <li><a href="###">新用户注册</a></li>
+    <li><a href="###">用户登录</a></li>
+    <li><a href="###">找回密码</a></li>
+  </ul>
+</div>
+<div  class="bottom_main">
+  <h3><a href="###"> 帮助</a></h3>
+  <ul>
+    <li><a href="###">常见问题</a></li>
+  </ul>
+</div>
+<div  class="bottom_main">
+  <h3><a href="###">厂商合作</a></h3>
+  <ul>
+    <li><a href="###">华为</a></li>
+    <li><a href="###">安恒</a></li>
+    <li><a href="###">360</a></li>
+  </ul>
+</div>
+<div  class="bottom_main">
+<h3><a href="###">联系我们</a></h3>
+<ul>
+<li><a href="###">客户电话</a></li>
+</div>
+<div  class="bottom_main" style="width:380px;">
+<h3><a href="###">版权信息</a></h3>
+<ul>
+<li>如未经授权用作他处，将保留追究侵权者法律责任的权利。<br />
+  京ICP备11111111号-4 / 京ICP证1111111号<br />
+  北京市公安局朝阳分局备案编号:110105000501</li>
+</div>
+</div>
+</div>
+<!--尾部部分代码结束-->
+</body>
+</html>

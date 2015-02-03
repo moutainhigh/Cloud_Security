@@ -86,8 +86,8 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
 		return getSqlSession().selectList(ns + "findUserByUserType",type);
 	}
 
-	public List<User> findAll() {
-		return getSqlSession().selectList(ns + "list");
+	public List<User> findAll(User user) {
+		return getSqlSession().selectList(ns + "list",user);
 
 	}
 
@@ -95,4 +95,9 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
 		getSqlSession().delete(ns +"delete",id);
 		
 	}
+
+	public List<User> fuzzyQueryByName(User user) {
+		return getSqlSession().selectList(ns +"fuzzyQueryByName",user);
+	}
+
 }

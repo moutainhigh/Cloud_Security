@@ -89,3 +89,7 @@ function deleteUser(id){
 		}
 	});
 }
+//搜索用户
+function adminSearch(){
+	$("#searchForm").submit();
+}

@@ -15,6 +15,11 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/modelbox.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/query.JPlaceholder.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/adminJs/userManage.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#searchName").val("${name}");
+});
+</script>
 </head>
 
 <body>
@@ -24,10 +29,10 @@
     <div class="logo"><img src="${ctx}/source/adminImages/b_logo2.jpg"/></div>
     <div class="list b_list">
       <ul>
-        <li class="b_current"><a href="usermanagement.html" class="white">用户管理</a></li>
-        <li><a href="service.html" class="white">服务管理</a></li>
-        <li><a href="dataanalysis.html" class="white">数据分析</a></li>
-        <li style="border-right:1px solid #1f8db4;"><a href="backstage_system.html" class="white">系统管理</a></li>
+        <li class="b_current"><a href="${ctx}/adminUserManageUI.html" class="white">用户管理</a></li>
+        <li><a href="${ctx}/adminServUI.html" class="white">服务管理</a></li>
+        <li><a href="${ctx}/dataAnalysisUI.html" class="white">数据分析</a></li>
+        <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/SystemManageUI.html" class="white">系统管理</a></li>
       </ul>
     </div>
     <div class="lagst">
@@ -40,10 +45,10 @@
   </div>
 </div>
 <!--头部代码结束-->
-<form action="">
+<form action="${ctx}/adminUserManageUI.html" method="post" id="searchForm">
 	<div class="user_search_box">
-	    <div class="user_sea_box">
-	      <input class="user_search" type="text" placeholder="请输入用户名">
+	    <div class="user_sea_box" onclick="adminSearch()">
+	      <input class="user_search" type="text" name="name" id="searchName" placeholder="请输入用户名">
 	    </div>
 	</div>
 </form>
@@ -51,7 +56,7 @@
 	<div class="main_center">
     	<div class="add_service">
         	<a href="#" class="add_ser fl" id="add_ser">添加用户</a>
-            <a href="jurisdiction.html" class="add_ser fl ml20 b_juris_btn">用户权限</a>
+            <a href="${ctx}/adminAuthorityUI.html" class="add_ser fl ml20 b_juris_btn">用户权限</a>
         </div>
         <div class="b_user_table">
         	<div class="b_user_table_box userbox_cur" id="supper">
@@ -240,8 +245,6 @@
             <td class="regist_prompt"></td>
           </tr>
           <tr>
-          <input type="button" class="login_btn" onclick="submitForm()" value="立即注册"/>
-          
             <td colspan="3"><input type="button" class="ser_btn" onclick="add()" value="立即添加"/></td>
           </tr>
         </table>

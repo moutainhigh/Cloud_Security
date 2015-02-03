@@ -89,8 +89,8 @@ public class UserServiceImpl implements IUserService{
 	 * 参数描述：int type
 	 *		 @time 2015-2-2
 	 */
-	public List<User> findAll() {
-		return userDao.findAll();
+	public List<User> findAll(User user) {
+		return userDao.findAll(user);
 	}
 	/**
 	 * 功能描述：删除用户
@@ -99,5 +99,13 @@ public class UserServiceImpl implements IUserService{
 	 */
 	public void delete(int id) {
 		userDao.delete(id);
+	}
+	/**
+	 * 功能描述：按用户名模糊查询用户
+	 * 参数描述：int id
+	 *		 @time 2015-2-2
+	 */
+	public List<User> fuzzyQueryByName(User user) {
+		return userDao.fuzzyQueryByName(user);
 	}
 }

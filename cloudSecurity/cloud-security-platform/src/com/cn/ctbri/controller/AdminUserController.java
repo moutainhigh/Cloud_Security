@@ -104,9 +104,9 @@ public class AdminUserController {
 	 *		 @time 2015-1-29
 	 */
 	@RequestMapping("/adminUserManageUI.html")
-	public String adminUserManageUI(Model model,HttpServletRequest request){
+	public String adminUserManageUI(Model model,HttpServletRequest request,User user){
 		//User globle_user = (User) request.getSession().getAttribute("globle_user");
-		List<User> list = userService.findAll();
+		List<User> list = userService.findAll(user);
 		List<User> newSupList = new ArrayList<User>();
 		List<User> newSysList = new ArrayList<User>();
 		List<User> newRegList = new ArrayList<User>();
@@ -154,7 +154,9 @@ public class AdminUserController {
 			regSum = newRegList.size();
 		}
 		request.setAttribute("regSum", regSum);
-		
+		if(user.getName()!=null){
+			model.addAttribute("name",user.getName());//回显用户名
+		}
 		return "/source/adminPage/userManage/userManage";
 	}
 	/**
@@ -228,7 +230,7 @@ public class AdminUserController {
 	}
 	/**
 	 * 功能描述：删除用户
-	 *		 @time 2015-1-29
+	 *		 @time 2015-2-2
 	 */
 	@RequestMapping("/adminDeleteUser.html")
 	public String adminDeleteUser(User user){

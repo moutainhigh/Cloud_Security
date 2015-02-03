@@ -65,14 +65,17 @@ public interface UserDao {
 	/**
 	 * 功能描述：查询所有用户
 	 * 参数描述：int type
+	 * @param user 
 	 *		 @time 2015-2-2
 	 */
-	List<User> findAll();
+	List<User> findAll(User user);
 	/**
 	 * 功能描述：删除用户
 	 * 参数描述：int id
 	 *		 @time 2015-2-2
 	 */
 	void delete(int id);
+
+	List<User> fuzzyQueryByName(User user);
 
 }

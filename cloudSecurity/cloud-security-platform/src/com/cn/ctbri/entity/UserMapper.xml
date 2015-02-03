@@ -34,8 +34,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where id=#{id}
 	</update>
 	<!-- 查询所有记录 -->
-	<select id="list" resultMap="UserRM">
+	<select id="list" resultMap="UserRM" parameterType="com.cn.ctbri.entity.User">
 		select * from cs_user
+		where 1=1
+		<if test="name!=null and name!=''">
+			and name like CONCAT(CONCAT('%', #{name}), '%')
+		</if>
 	</select>
 	
 	<!-- 插入用户 -->
@@ -89,4 +93,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from cs_user
 		where id=#{id}
 	</delete>
+	<!-- 按用户名模糊查询用户 
+	<select id="fuzzyQueryByName" parameterType="String" resultMap="UserRM">
+		select * from cs_user
+		where 1=1
+		<if test="name!=null and name!=''">
+			and a.name like CONCAT(CONCAT('%', #{name}), '%')
+		</if>
+	</select>-->
 </mapper>

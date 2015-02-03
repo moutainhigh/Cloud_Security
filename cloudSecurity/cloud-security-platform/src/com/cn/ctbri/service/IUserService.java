@@ -64,15 +64,22 @@ public interface IUserService {
 	/**
 	 * 功能描述：查询所有用户
 	 * 参数描述：int type
+	 * @param user 
 	 *		 @time 2015-2-2
 	 */
-	List<User> findAll();
+	List<User> findAll(User user);
 	/**
 	 * 功能描述：删除用户
 	 * 参数描述：int id
 	 *		 @time 2015-2-2
 	 */
 	void delete(int id);
+	/**
+	 * 功能描述：按用户名模糊查询用户
+	 * 参数描述：User user
+	 *		 @time 2015-2-3
+	 */
+	List<User> fuzzyQueryByName(User user);
 
 
 	
