@@ -91,5 +91,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from cs_order_asset oa left join cs_asset a 
         on oa.assetId = a.id  right join cs_task t 
         on t.order_asset_Id = oa.id
+        where t.taskId = #{taskId}
     </select>
 </mapper>

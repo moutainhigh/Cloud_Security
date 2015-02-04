@@ -41,4 +41,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
         </where>
     </select>
+    
+    <!-- 根据任务查询服务模版信息 -->
+    <select id="findServiceByTask" resultMap="ServRM" parameterType="com.cn.ctbri.entity.Task">
+        select s.* 
+        from cs_task t join cs_order_asset oa 
+        on t.order_asset_Id = oa.id join cs_order o 
+        on oa.orderId = o.id join cs_service s 
+        on o.serviceId = s.id
+        where t.taskId = #{taskId}
+    </select>
+   
 </mapper>

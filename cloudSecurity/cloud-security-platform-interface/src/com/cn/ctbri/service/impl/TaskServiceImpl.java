@@ -18,5 +18,9 @@ public class TaskServiceImpl implements ITaskService{
 	public List<Task> findTask(Map<String, Object> paramMap) {
 		return this.taskDao.findTask(paramMap);
 	}
+
+	public void update(Task task) {
+		this.taskDao.update(task);
+	}
 	
 }

@@ -19,7 +19,8 @@ public class TaskTest {
 	
 	@Test
 	public void testLssuedTask(){
-		String lssuedTask = ArnhemWorker.lssuedTask(sessionId, "test007", "", "65.61.137.117", "80", "可用性监测服务-周期10分钟");
+		//String lssuedTask = ArnhemWorker.lssuedTask(sessionId, "test007", "", "65.61.137.117", "80", "可用性监测服务-周期10分钟");
+		String lssuedTask = ArnhemWorker.lssuedTask(sessionId, "test008", "", "65.61.137.117", "80", "漏洞扫描服务");
 		System.out.println(lssuedTask);
 	}
 	
@@ -31,17 +32,23 @@ public class TaskTest {
 	
 	@Test
 	public void testGetReportPage(){
-		String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, "test007", "1", 0, 2);
+		String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, "qq", "1", 0, 500);
 		try {
-			System.out.println(URLDecoder.decode(reportByTaskID, "UTF-8"));
-		} catch (UnsupportedEncodingException e) {
+			System.out.println(reportByTaskID);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}	
 	
 	@Test
 	public void testGetStatus(){
-		String result = ArnhemWorker.getStatusByTaskId(sessionId, "test007");
+		String result = ArnhemWorker.getStatusByTaskId(sessionId, "test008");
+		System.out.println(result);
+	}
+	
+	@Test
+	public void testRemoveTask(){
+		String result = ArnhemWorker.removeTask(sessionId, "test007");
 		System.out.println(result);
 	}
 	

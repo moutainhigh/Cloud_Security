@@ -11,15 +11,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="status" column="status"/>
 		<result property="remarks" column="remarks"/>
 	</resultMap> 
-	<!-- 根据订单资产id查询任务表 -->
-	<select id="findTaskByOrderAssetId" parameterType="int" resultMap="TaskRM">
-		 select * from cs_task where order_asset_Id=#{order_asset_Id}
+	<!-- 根据条件查询任务表 -->
+	<select id="findTask" parameterType="hashmap" resultMap="TaskRM">
+		select * from cs_task t
+		where t.status = #{status}
+		limit #{page}
 	</select>
 	
-	<!-- 插入任务信息 -->
-	<insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO cs_task
-		(name,execute_time,status,remarks) 
-		VALUES(#{name,jdbcType=VARCHAR},#{execute_time,jdbcType=DATE},#{status},#{remarks})
-	</insert>
+	<!-- 更新任务信息 -->
+	<update id="update"  parameterType="TaskRM">
+		update cs_task
+		<set>
+			<if test="status!=null">
+				status=#{status}
+			</if>
+		</set>
+	</update>
 </mapper>
