@@ -160,7 +160,7 @@ public class ArnhemWorker {
 	 */
 	public static String removeTask(String sessionId, String taskId){
 		//创建路径
-		String url = SERVER_WEB_ROOT + "/rest/task/" + taskId;
+		String url = SERVER_WEB_ROOT + "/rest/task/Remove/" + taskId;
 		//创建配置
 		ClientConfig config = new DefaultClientConfig();
 		//绑定配置
@@ -169,7 +169,8 @@ public class ArnhemWorker {
         Client client = Client.create(config);
         WebResource service = client.resource(url);
         //连接服务器，返回结果
-        String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).delete(String.class);
+        //String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).delete(String.class);
+        String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class);
         return response;
 	}
 	/**

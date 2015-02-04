@@ -3,7 +3,6 @@ package com.cn.ctbri.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Task;
 /**
  * 任务信息dao接口
@@ -20,9 +19,15 @@ public interface TaskDao {
 	public int insert(Task task);
 
 	/**
-	 * 查询任务信息
+	 * 按条件查询任务信息集合
 	 * @param map
 	 * @return 任务信息集合
 	 */
 	public List<Task> findTask(Map<String,Object> map);
+	
+	/**
+	 * 更新任务信息
+	 * @param task
+	 */
+	public void update(Task task);
 }

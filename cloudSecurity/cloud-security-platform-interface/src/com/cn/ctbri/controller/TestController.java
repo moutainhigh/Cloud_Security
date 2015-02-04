@@ -28,8 +28,15 @@ public class TestController {
 	@RequestMapping(value="test.html",method=RequestMethod.GET)
 	public ModelAndView test() throws UnsupportedEncodingException, DocumentException, ParseException{
 		String sessionId = ArnhemWorker.getSessionId();
-		String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, "test004", "1", 0, 2);
+		String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, "test008", "1", 0, 200);
 		String decode = URLDecoder.decode(reportByTaskID, "UTF-8");
+//		decode = decode.replace("<bold>", "");
+//		decode = decode.replace("</bold>", "");
+//		decode = decode.replace("<>", "");
+//		decode = decode.replace("<%", "");
+//		decode = decode.replace("%>", "");
+//		System.out.println(decode);
+		//decode = tryXML(decode);
 		Alarm alarm = new Alarm();
 		Document document = DocumentHelper.parseText(decode);
 		Element task = document.getRootElement();
@@ -85,4 +92,16 @@ public class TestController {
 		return view;
 	}
 	
+	public static final String tryXML(String input) {
+        if (input == null) {
+             input = "";
+            return input;
+        }
+        input = input.trim().replace("&", "&amp;");
+        input = input.trim().replace("<", "&lt;");
+        input = input.trim().replace(">", "&gt;");
+        input = input.trim().replace("'", "&apos;");
+        input = input.trim().replace("\\\"", "&quot;");
+        return input;
+}
 }
