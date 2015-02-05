@@ -172,16 +172,13 @@ public class Scheduler4Result {
 	 */
 	private List<Alarm> getAlarmByRerult(String taskId, String taskStr) {
 		List<Alarm> aList = new ArrayList<Alarm>();
-		Alarm alarm = new Alarm();
 		try {
-			// String decode = URLDecoder.decode(taskStr, "UTF-8");
 			Document document = DocumentHelper.parseText(taskStr);
 			Element task = document.getRootElement();
 			// 任务ID节点
 			Element taskIDNode = task.element("TaskID");
 			// 任务ID值
 			// String taskId = taskIDNode.getTextTrim();
-			alarm.setTaskId(Long.parseLong(taskId));
 			// 获取报表节点
 			Element reportNode = task.element("Report");
 			// 获取所有的Funcs
@@ -191,45 +188,50 @@ public class Scheduler4Result {
 			for (Element func : funcList) {
 				// 报警服务类型
 				String alarm_type = func.element("name").getTextTrim();
-				alarm.setAlarm_type(URLDecoder.decode(alarm_type, "UTF-8"));
 				// 站点
 				Element siteNode = func.element("site");
 				// 资源地址
 				Attribute urlAb = siteNode.attribute("name");
 				String url = urlAb.getStringValue();
-				alarm.setUrl(URLDecoder.decode(url, "UTF-8"));
 				// 时间
 				String time = siteNode.attribute("time").getStringValue();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				alarm.setAlarm_time(sdf.parse(URLDecoder.decode(time, "UTF-8")));
 				// 一个漏洞对应一个issuetype
 				List<Element> issuetypes = siteNode.elements("issuetype");
 				for (Element issuetype : issuetypes) {
 					// 名称
 					String name = issuetype.attribute("name").getStringValue();
-					alarm.setName(URLDecoder.decode(name, "UTF-8"));
 					// 等级
 					String level = issuetype.attribute("level").getStringValue();
 					level = URLDecoder.decode(level, "UTF-8");
-					if ("信息".equals(level)) {
-						alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_LOW));
-					} else if ("低危".equals(level)) {
-						alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_LOW));
-					} else if ("中危".equals(level)) {
-						alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_MIDDLE));
-					} else if ("高危".equals(level)) {
-						alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_HIGH));
-					} else if ("紧急".equals(level)) {
-						alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_HIGH));
-					}
 					// 建议
 					String advice = issuetype.attribute("advice").getStringValue();
-					alarm.setAdvice(URLDecoder.decode(advice, "UTF-8"));
 					// issuedata
-					Element issuedata = issuetype.element("issuedata");
-					String content = issuedata.attribute("url").getStringValue();
-					alarm.setAlarm_content(URLDecoder.decode(content, "UTF-8"));
-					aList.add(alarm);
+					List<Element> issuedatas = issuetype.elements("issuedata");
+					for(Element issuedata : issuedatas){
+						Alarm alarm = new Alarm();
+						alarm.setTaskId(Long.parseLong(taskId));
+						alarm.setAlarm_time(sdf.parse(URLDecoder.decode(time, "UTF-8")));
+						alarm.setUrl(URLDecoder.decode(url, "UTF-8"));
+						alarm.setAlarm_type(URLDecoder.decode(alarm_type, "UTF-8"));
+						alarm.setName(URLDecoder.decode(name, "UTF-8"));
+						alarm.setAdvice(URLDecoder.decode(advice, "UTF-8"));
+						if ("信息".equals(level)) {
+							alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_LOW));
+						} else if ("低危".equals(level)) {
+							alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_LOW));
+						} else if ("中危".equals(level)) {
+							alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_MIDDLE));
+						} else if ("高危".equals(level)) {
+							alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_HIGH));
+						} else if ("紧急".equals(level)) {
+							alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_HIGH));
+						}
+						String content = issuedata.attribute("url").getStringValue();
+						alarm.setAlarm_content(URLDecoder.decode(content, "UTF-8"));
+						aList.add(alarm);
+					}
+
 				}
 
 			}
