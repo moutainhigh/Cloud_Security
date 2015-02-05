@@ -9,8 +9,11 @@
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/index.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/index.js"></script>
+<link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
 </head>
+
 <body>
 <div>
     <div class="head_bj">
@@ -18,11 +21,11 @@
            <div class="logo"><img src="${ctx}/source/images/logo.png" /></div>
            <div class="lagst">
                <div class="lagst-left">
-               	<c:if test="${sessionScope.globle_user!=null }">
+                <c:if test="${sessionScope.globle_user!=null }">
                    <a href="${ctx}/userDataUI.html"><img src="${ctx}/source/images/ren.png" /></a>
                 </c:if>
                  <c:if test="${sessionScope.globle_user==null }">
-                 	<a href="${ctx}/toLoginUI.html"><img src="${ctx}/source/images/ren.png" /></a>
+                    <a href="${ctx}/toLoginUI.html"><img src="${ctx}/source/images/ren.png" /></a>
                  </c:if>
                </div>
                <div class="lagst-right">
@@ -40,7 +43,7 @@
             <div class="list">
                <ul>
                    <li class="list_active"><a href="${ctx}/index.html">首页</a></li>
-                   <li><a href="###">我的订单</a></li>
+                   <li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
                    <li><a href="aider.html">在线帮助</a></li>
                    <li style="border-right:1px solid #11871d;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
                </ul>
@@ -48,13 +51,91 @@
         </div>
     </div>
     <div class="nav">
-         <div class="subnav" id="play">
+        <div class="subnav_box">
+        <div class="fl left_nav">
+            <div class="left_nav_box">
+                <ul>
+                    <li class="brbottom">
+                        <div class="lncenter">
+                            <p class="lntitle">WEB安全</p>
+                            <span class="ln_more">></span>
+                            <p class="lndetail"><a href="#">扫描类</a> / <a href="#">监控类</a> / <a href="#">防护类</a></p>
+                            <div class="lndetails">
+                                <div class="lndetails_line">
+                                    <div class="fl lndetailtitle">热门厂商：</div>
+                                    <div class="fl lndetaillist"><a href="#">中国电信</a><a href="#">奇虎360</a>     <a href="#">安恒</a></div>
+                                </div>
+                                <div class="lndetails_line">
+                                    <div class="fl lndetailtitle">热门服务：</div>
+                                    <div class="fl lndetaillist"><a href="${ctx}/filterPage.html">漏洞扫描服务</a><a href="#">恶意代码监测服务</a><a href="#">网页篡改检测服务</a><a href="#">关键字检测服务</a><a href="#">可用性监测服务</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="brbottom brtop">
+                        <div class="lncenter">
+                            <p class="lntitle">DDOS防护</p>
+                            <span class="ln_more">></span>
+                            <p class="lndetail"><a href="#">监控类 </a> / <a href="#">防护类</a></p>
+                            <div class="lndetails">
+                                <div class="lndetails_line">
+                                    <div class="fl lndetailtitle">热门厂商：</div>
+                                    <div class="fl lndetaillist"><a href="#">中国电信</a>     <a href="#">华为</a></div>
+                                </div>
+                                <div class="lndetails_line">
+                                    <div class="fl lndetailtitle">热门服务：</div>
+                                    <div class="fl lndetaillist"><a href="#">日常流量监控</a><a href="#">日常攻击防护服务</a><a href="#">突发异常流量清洗服务</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="brbottom brtop">
+                        <div class="lncenter">
+                            <p class="lntitle">DNS安全</p>
+                            <span class="ln_more">></span>
+                            <p class="lndetail"><a href="#">扫描类</a> / <a href="#">监控类</a> / <a href="#">防护类</a></p>
+                            <div class="lndetails">
+                                <div class="lndetails_line">
+                                    <div class="fl lndetailtitle">热门厂商：</div>
+                                    <div class="fl lndetaillist"><a href="#">中国电信</a><a href="#">奇虎360</a>     <a href="#">安恒</a></div>
+                                </div>
+                                <div class="lndetails_line">
+                                    <div class="fl lndetailtitle">热门服务：</div>
+                                    <div class="fl lndetaillist"><a href="#">漏洞扫描服务</a><a href="#">恶意代码监测服务</a><a href="#">网页篡改检测服务</a><a href="#">关键字检测服务</a><a href="#">可用性监测服务</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="brtop">
+                        <div class="lncenter">
+                            <p class="lntitle">移动安全</p>
+                            <span class="ln_more">></span>
+                            <p class="lndetail"><a href="#">手机应用安全检测 </a> / <a href="#">在线app加固</a></p>
+                            <div class="lndetails">
+                                <div class="lndetails_line">
+                                    <div class="fl lndetailtitle">热门厂商：</div>
+                                    <div class="fl lndetaillist"><a href="#">中国电信</a><a href="#">奇虎360</a>     <a href="#">安恒</a></div>
+                                </div>
+                                <div class="lndetails_line">
+                                    <div class="fl lndetailtitle">热门服务：</div>
+                                    <div class="fl lndetaillist"><a href="#">漏洞扫描服务</a><a href="#">恶意代码监测服务</a><a href="#">网页篡改检测服务</a><a href="#">关键字检测服务</a><a href="#">可用性监测服务</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+         <div class="subnav fl" id="play">
+          <div class="">
+            
+          </div>
            <!--<p class="prev">&laquo;</p>
           <p class="next">&raquo;</p>-->
              <ul>
-                  <li><a href="###"><img src="${ctx}/source/images/1.jpg" /></a></li>
-                  <li><a href="###"><img src="${ctx}/source/images/1.jpg" /></a></li>
-                  <li><a href="###"><img src="${ctx}/source/images/1.jpg" /></a></li>
+                  <li><a href="###"><img src="${ctx}/source/images/indexphoto.jpg" /></a></li>
+                  <li><a href="###"><img src="${ctx}/source/images/indexphoto2.jpg" /></a></li>
+                  <li><a href="###"><img src="${ctx}/source/images/indexphoto3.jpg" /></a></li>
              </ul>
              <ol>
                  <li  class="active"></li>
@@ -62,9 +143,26 @@
                  <li></li>
              </ol>
          </div>
+         <div class="fl right_nav">
+            <div class="right_title">系统公告</div>
+            <div class="right_list">
+                <ul>
+                    <li><a href="#">· 系统升级</a></li>
+                    <li><a href="#">· 新产品试用大招募</a></li>
+                    <li><a href="#">· 春节特惠</a></li>
+                    <li><a href="#">· 系统升级</a></li>
+                    <li><a href="#">· 新产品试用大招募</a></li>
+                    <li><a href="#">· 春节特惠</a></li>
+                    <li><a href="#">· 系统升级</a></li>
+                    <li><a href="#">· 新产品试用大招募</a></li>
+                </ul>
+            </div>
+            <div><a href="#"><img src="${ctx}/source/images/indexsmall.jpg" width="152" height="202" /></a></div>
+         </div>
+         </div>
          <div class="web_input">
-                <input type="text"  value="http://"/>
-                <div class="web_input_r"><img src="${ctx}/source/images/user_ico_16.jpg" /></div>
+                    <input type="text"  value="http://"/>
+                    <div class="web_input_r"><img src="${ctx}/source/images/user_ico_16.jpg" /></div>
          </div>
          <div class="center clear">
              <div class="web_fuwu clear">
@@ -90,6 +188,7 @@
                     </c:choose>
                  </c:forEach>
              </div>
+             
              <div class="anti_fuwu clear">
                   <h1>Anti-DDOS云安全服务</h1>
                   <c:forEach var="list" items="${servList}" varStatus="status">
