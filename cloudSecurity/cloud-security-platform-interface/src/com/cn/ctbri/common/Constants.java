@@ -117,18 +117,18 @@ public class Constants {
 	
 	/**
 	 * 告警等级<br>
-	 * 1 :高危
+	 * 2 :高危
 	 */
-	public static final String ALARMLEVEL_HIGH = "1"; 
+	public static final String ALARMLEVEL_HIGH = "2"; 
 	/**
 	 * 告警等级<br>
 	 * 1 :中危
 	 */
-	public static final String ALARMLEVEL_MIDDLE = "2"; 
+	public static final String ALARMLEVEL_MIDDLE = "1"; 
 	/**
 	 * 告警等级<br>
-	 * 1 :低危
+	 * 0 :低危
 	 */
-	public static final String ALARMLEVEL_LOW = "3"; 
+	public static final String ALARMLEVEL_LOW = "0"; 
 
 }
