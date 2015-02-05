@@ -48,4 +48,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from cs_alarm
 		where userId = #{userId}
 	</select>
+	<!-- 根据orderid查询告警数  -->
+    <select id="findAlarmByOrderId" resultMap="Alarm" parameterType="hashmap">
+        select * from cs_alarm a where a.taskId in
+		(select t.taskId from cs_task t where t.order_asset_id in
+		(select oa.id from cs_order_asset oa where 
+		oa.orderId=#{orderId})) 
+		<if test="level!=null">
+            and a.level=#{level}
+        </if>
+    </select>
+    
+    <!-- 根据orderid查询任务数  -->
+    <select id="findTaskByOrderId" resultType="com.cn.ctbri.entity.Task" parameterType="hashmap">
+        select * from cs_task t where t.order_asset_id in
+        (select oa.id from cs_order_asset oa where oa.orderId=#{orderId}) 
+        order by t.execute_time desc limit 0,7
+    </select>
+    
+    <!-- 根据taskid查询告警数  -->
+    <select id="findAlarmByTaskId" resultMap="Alarm" parameterType="hashmap">
+        select * from cs_alarm a where a.taskId = #{taskId} and a.level = #{level}
+    </select>
 </mapper>
