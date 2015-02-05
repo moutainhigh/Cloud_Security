@@ -25,6 +25,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="status!=null">
 				status=#{status}
 			</if>
+			<if test="execute_time!=null">
+				execute_time=#{execute_time}
+			</if>
 		</set>
 		where taskId = #{taskId}
 	</update>
