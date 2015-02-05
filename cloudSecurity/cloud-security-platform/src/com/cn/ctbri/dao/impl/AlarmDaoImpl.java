@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cn.ctbri.dao.AlarmDao;
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.Task;
 /**
  * 创 建 人  ：  于永波
  * 创建日期：  2015-01-07
@@ -50,5 +51,29 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
 	public List<Alarm> findAlarmByUserId(int id) {
 		return getSqlSession().selectList(ns+"findAlarmByUserId", id);
 	}
+	/**
+     * 功能描述：根据orderId查询告警信息
+     *       @time 2015-2-4
+     * 返回值    ：List<Alarm>
+     */
+    public List<Alarm> getAlarmByOrderId(Map<String, Object> paramMap) {
+        return getSqlSession().selectList(ns+"findAlarmByOrderId", paramMap);
+    }
+    /**
+     * 功能描述：根据orderId查询任务信息
+     *       @time 2015-2-4
+     * 返回值    ：List<Task>
+     */
+    public List<Task> getTaskByOrderId(Map<String, Object> paramMap) {
+        return getSqlSession().selectList(ns+"findTaskByOrderId", paramMap);
+    }
+    /**
+     * 功能描述：根据taskId查询告警信息
+     *       @time 2015-2-4
+     * 返回值    ：List<Task>
+     */
+    public List<Alarm> getAlarmByTaskId(Map<String, Object> param) {
+        return getSqlSession().selectList(ns+"findAlarmByTaskId", param);
+    }
 
 }

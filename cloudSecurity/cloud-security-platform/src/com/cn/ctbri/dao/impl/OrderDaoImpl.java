@@ -58,6 +58,16 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
     public List findByCombineOrderTrack(Map<String, Object> paramMap) {
         List list = this.getSqlSession().selectList(ns + "findByCombineOrderTrack",paramMap);
         return list;
+    }
+
+    /**
+     * 功能描述： 根据订单Id查询记录
+     *       @time 2015-2-2
+     * 返回值    ：  Order
+     */
+    public List findByOrderId(String orderId) {
+        List order = this.getSqlSession().selectList(ns + "findOrderByOrderId",orderId);
+        return order;
     }  
 	
 	
