@@ -64,8 +64,7 @@ public class Scheduler4Task {
 	}
 
 	public void execute() throws Exception {
-		//System.out.println(new Date().toLocaleString() + " : 任务表扫描开始...");
-		logger.info(new Date().toLocaleString() + " : 任务表扫描开始");
+		logger.info("[下发任务调度]:任务表扫描开始......");
 		/**
 		 * 定时要job任务执行的逻辑
 		 */
@@ -74,25 +73,24 @@ public class Scheduler4Task {
 		map.put("status", Integer.parseInt(Constants.TASK_START));   //设置为 已开始？
 		// 获取任务表前n条未下发的记录
 		List<Task> taskList = taskService.findTask(map);
-		logger.info(new Date().toLocaleString() + ": 当前等待下发的任务有 " + taskList.size() + " 个!");
+		logger.info("[下发任务调度]:当前等待下发的任务有 " + taskList.size() + " 个!");
 		// 调用接口下发任务
 		for (Task t : taskList) {
-			logger.info(new Date().toLocaleString() + "任务：[" + t.getTaskId() + "]开始下发!");
+			logger.info("[下发任务调度]:任务：[" + t.getTaskId() + "]开始下发!");
 			preTaskData(t);
 			ArnhemWorker.lssuedTask(ArnhemWorker.getSessionId(), String.valueOf(t.getTaskId()), this.destURL, this.destIP, "80",
 					this.tplName);
-			Thread.sleep(3000);   //判断任务是否running？？
+			//Thread.sleep(3000);   
 			//更新任务状态为running
 			t.setStatus(Integer.parseInt(Constants.TASK_RUNNING));
 			taskService.update(t);
 			//为此任务创建调度，定时获取任务结果
-//			/Scheduler4Result scheduler = new Scheduler4Result();
-			getResultByTask(t);
-			logger.info(new Date().toLocaleString() + "任务：[" + t.getTaskId() + "]完成下发!");
+			//getResultByTask(t);
+			logger.info("[下发任务调度]:任务：[" + t.getTaskId() + "]完成下发!");
 		}
 
 		//System.out.println(new Date().toLocaleString() + " : 任务表扫描结束!");
-		logger.info(new Date().toLocaleString() + " : 任务表扫描结束");
+		logger.info("[下发任务调度]:任务表扫描结束......");
 
 	}
 
@@ -155,6 +153,6 @@ public class Scheduler4Task {
 		trigger.setRepeatInterval(60*1000);   //   每隔1分钟执行一次
 		scheduler.scheduleJob(jobDetail, trigger);
 		//启动调度
-		scheduler.start();
+		//scheduler.start();
 	}
 }
