@@ -1,12 +1,14 @@
 package com.cn.ctbri.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.AlarmDao;
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IAlarmService;
 /**
  * 创 建 人  ：  邓元元
@@ -28,5 +30,29 @@ public class AlarmServiceImpl implements IAlarmService{
 	public List<Alarm> findAlarmByUserId(int id) {
 		return alarmDao.findAlarmByUserId(id);
 	}
+	/**
+     * 功能描述：根据orderId查询告警信息
+     *       @time 2015-2-4
+     * 返回值    ：List<Alarm>
+     */
+    public List<Alarm> getAlarmByOrderId(Map<String, Object> paramMap) {
+        return alarmDao.getAlarmByOrderId(paramMap);
+    }
+    /**
+     * 功能描述：根据orderId查询任务信息
+     *       @time 2015-2-4
+     * 返回值    ：List<Task>
+     */
+    public List<Task> getTaskByOrderId(Map<String, Object> paramMap) {
+        return alarmDao.getTaskByOrderId(paramMap);
+    }
+    /**
+     * 功能描述：根据taskId查询告警信息
+     *       @time 2015-2-4
+     * 返回值    ：List<Task>
+     */
+    public List<Alarm> getAlarmByTaskId(Map<String, Object> param) {
+        return alarmDao.getAlarmByTaskId(param);
+    }
 	
 }

@@ -60,4 +60,17 @@ public class OrderServiceImpl implements IOrderService{
         List list = orderDao.findByCombineOrderTrack(paramMap);
         return list;
     }
+    public List findByUserId(String orderId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    /**
+     * 功能描述： 根据订单Id查询记录
+     *       @time 2015-2-2
+     * 返回值    ：  Order
+     */
+    public List findByOrderId(String orderId) {
+        List order = orderDao.findByOrderId(orderId);
+        return order;
+    }
 }

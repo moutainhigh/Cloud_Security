@@ -48,5 +48,14 @@ public class OrderAssetServiceImpl implements IOrderAssetService{
 		List<OrderAsset> list = orderAssetDao.findOrderAssetByOrderId(orderId);
 		return list;
 	}
+
+	/**
+     * 功能描述：根据orderid查询Asset名称
+     *       @time 2015-2-2
+     */
+    public List findAssetNameByOrderId(String orderId) {
+        List list = orderAssetDao.findAssetNameByOrderId(orderId);
+        return list;
+    }
 	
 }
