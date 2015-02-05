@@ -47,8 +47,9 @@ $(document).ready(function(){
 <!--头部代码结束-->
 <form action="${ctx}/adminUserManageUI.html" method="post" id="searchForm">
 	<div class="user_search_box">
-	    <div class="user_sea_box" onclick="adminSearch()">
+	    <div class="user_sea_box" style="position:relative">
 	      <input class="user_search" type="text" name="name" id="searchName" placeholder="请输入用户名">
+	      <span style="width:49px;height:36px;z-index:10;position:absolute;display:block;cursor:pointer;top:4px;right:6px;"onclick="adminSearch()" ></span>
 	    </div>
 	</div>
 </form>
