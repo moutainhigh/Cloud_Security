@@ -4,7 +4,7 @@
 var timer      = null;
 var autoTime   = null;
 var ms         = 100;
-var autoMs     = 4000;
+var autoMs     = 30000;
 var iTarget    = 0;
 var speed      = 0;
 var nextTarget = 0;
@@ -132,5 +132,14 @@ function doMove(target)
         clearInterval(timer); timer = null;
     }
 }
-
-
+//首页左侧导航
+$(function(){
+$('.lncenter').hover(function(){
+	$('.lncenter').removeClass('whitebg');
+	$(this).addClass('whitebg');						  
+	$(this).children('.lndetails').show();						  
+},function(){
+	$('.lncenter').removeClass('whitebg');	
+	$(this).children('.lndetails').hide();								  
+})
+})
