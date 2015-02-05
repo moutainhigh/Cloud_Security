@@ -114,6 +114,10 @@ public class Scheduler4Task {
 		// 获取此任务的服务模版名称
 		List<Serv> servList = servService.findByTask(task);
 		this.tplName = servList.get(0).getModule_name();
+		/**
+		 * 可用性与网页篡改处理
+		 */
+		
 	}
 	
 	/** 

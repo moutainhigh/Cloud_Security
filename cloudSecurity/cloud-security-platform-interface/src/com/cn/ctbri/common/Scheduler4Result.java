@@ -234,6 +234,11 @@ public class Scheduler4Result {
 		return aList;
 	}
 
+	/**
+	 * 根据任务获取引擎id
+	 * @param task
+	 * @return
+	 */
 	private String getProductByTask(Task task) {
 		String productId = "";
 		List<Serv> sList = servService.findByTask(task);
