@@ -19,12 +19,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 更新任务信息 -->
-	<update id="update"  parameterType="TaskRM">
+	<update id="update"  parameterType="com.cn.ctbri.entity.Task">
 		update cs_task
 		<set>
 			<if test="status!=null">
 				status=#{status}
 			</if>
 		</set>
+		where taskId = #{taskId}
 	</update>
 </mapper>
