@@ -66,25 +66,41 @@
 
     <!-- Timer schedule -->
     <!--要调度的对象-->
-    <bean id="jobBean" class="com.cn.ctbri.common.Scheduler4Task" />
-    <bean id="jobDetail"
+    <bean id="taskJobBean" class="com.cn.ctbri.common.Scheduler4Task" />
+    <bean id="taskJobDetail"
     	class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-    	<property name="targetObject" ref="jobBean" />
+    	<property name="targetObject" ref="taskJobBean" />
     	<property name="targetMethod" value="execute" />
     	<property name="concurrent" value="false" />
     </bean>
-    <bean id="trigger"
+    <bean id="taskTrigger"
     	class="org.springframework.scheduling.quartz.CronTriggerBean">
-    	<property name="jobDetail" ref="jobDetail" />
+    	<property name="jobDetail" ref="taskJobDetail" />
     	<property name="cronExpression" value="0/30 * * * * ?" />
     </bean>
-    <!-- 将lazy-init='false'那么容器启动就会执行调度程序   -->
+    
+	 <!--要调度的对象-->
+    <bean id="resultJobBean" class="com.cn.ctbri.common.Scheduler4Result" />
+    <bean id="resultJobDetail"
+    	class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    	<property name="targetObject" ref="resultJobBean" />
+    	<property name="targetMethod" value="execute" />
+    	<property name="concurrent" value="false" />
+    </bean>
+    <bean id="resultTrigger"
+    	class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="resultJobDetail" />
+    	<property name="cronExpression" value="0/50 * * * * ?" />
+    </bean>
+    
+        <!-- 将lazy-init='false'那么容器启动就会执行调度程序   -->
     <bean id="startQuertz"
     	class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
     	lazy-init="false">
     	<property name="triggers">
     		<list>
-    			<ref bean="trigger" />
+    			<ref bean="taskTrigger" />
+    			<ref bean="resultTrigger" />
     		</list>
     	</property>
     </bean>
