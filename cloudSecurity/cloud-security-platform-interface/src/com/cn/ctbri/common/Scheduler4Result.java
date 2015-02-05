@@ -3,7 +3,6 @@ package com.cn.ctbri.common;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,16 +13,6 @@ import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.quartz.Job;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SchedulerFactory;
-import org.quartz.SimpleTrigger;
-import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cn.ctbri.entity.Alarm;
@@ -32,7 +21,6 @@ import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskService;
-import com.cn.ctbri.service.impl.ServServiceImpl;
 
 /**
  * 根据任务获取结果的调度类
@@ -54,10 +42,6 @@ public class Scheduler4Result {
 
 	@Autowired
 	private ITaskService taskService;
-
-	private String productId;
-
-	private Scheduler scheduler;
 
 	static {
 		try {
@@ -87,11 +71,14 @@ public class Scheduler4Result {
 			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(task.getTaskId()));
 			String status = this.getStatusByResult(resultStr);
 			List<Alarm> aList;
-			if ("finish".equals(status)) {
-				// 任务执行完毕
+			if ("finish".equals(status)) {// 任务执行完毕
 				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析结果......");
-				// 任务执行完毕 获取任务结果信息
-				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId()), "1", 0, 500);
+				/**
+				 * 获取任务结果信息并入库
+				 */
+				// 获取任务引擎
+				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId()),
+						getProductByTask(task), 0, 500);   //获取全部告警
 				aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID);
 				// 插入报警表
 				for (Alarm a : aList) {
@@ -101,47 +88,47 @@ public class Scheduler4Result {
 				task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
 				taskService.update(task);
 				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]告警结果已完成入库，已修改此任务为完成状态!");
-			}else{
+			} else {
 				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，等待下次拉取结果~");
 			}
 		}
 		logger.info("[获取结果调度]:任务表扫描结束....");
 	}
 
-//	public void execute(JobExecutionContext context) throws JobExecutionException {
-//		JobDetail jobDetail = context.getJobDetail();
-//		Task task = (Task) jobDetail.getJobDataMap().get("task");
-//		String taskId = String.valueOf(task.getTaskId());
-//		logger.info("任务：[" + taskId + "]扫描结果获取中........请等待....");
-//		// 根据任务id获取任务状态
-//		String sessionId = ArnhemWorker.getSessionId();
-//		String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, taskId);
-//		String status = this.getStatusByResult(resultStr);
-//		List<Alarm> aList;
-//		if (Constants.TASK_FINISH.equals(status)) {
-//			// 更新任务状态已完成
-//			task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
-//			taskService.update(task);
-//			logger.info("任务：[" + taskId + "]扫描已完成，准备解析结果......");
-//			// 任务执行完毕 获取任务结果信息
-//			String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, taskId, "1", 0, 500);
-//			aList = this.getAlarmByRerult(taskId, reportByTaskID);
-//			// 插入报警表
-//			for (Alarm a : aList) {
-//				// alarmService.saveAlarm(a);
-//			}
-//			logger.info("任务：[" + taskId + "]入库告警数为" + aList + "个!");
-//			try {
-//				logger.info("任务：[" + taskId + "]告警结果已完成入库，结束此任务的调度!");
-//				// 关闭此调度
-//				this.scheduler.shutdown();
-//			} catch (SchedulerException e) {
-//				e.printStackTrace();
-//			}
-//		} else {
-//			logger.info("任务：[" + taskId + "]扫描未完成，等待下次拉取~");
-//		}
-//	}
+	// public void execute(JobExecutionContext context) throws JobExecutionException {
+	// JobDetail jobDetail = context.getJobDetail();
+	// Task task = (Task) jobDetail.getJobDataMap().get("task");
+	// String taskId = String.valueOf(task.getTaskId());
+	// logger.info("任务：[" + taskId + "]扫描结果获取中........请等待....");
+	// // 根据任务id获取任务状态
+	// String sessionId = ArnhemWorker.getSessionId();
+	// String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, taskId);
+	// String status = this.getStatusByResult(resultStr);
+	// List<Alarm> aList;
+	// if (Constants.TASK_FINISH.equals(status)) {
+	// // 更新任务状态已完成
+	// task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
+	// taskService.update(task);
+	// logger.info("任务：[" + taskId + "]扫描已完成，准备解析结果......");
+	// // 任务执行完毕 获取任务结果信息
+	// String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, taskId, "1", 0, 500);
+	// aList = this.getAlarmByRerult(taskId, reportByTaskID);
+	// // 插入报警表
+	// for (Alarm a : aList) {
+	// // alarmService.saveAlarm(a);
+	// }
+	// logger.info("任务：[" + taskId + "]入库告警数为" + aList + "个!");
+	// try {
+	// logger.info("任务：[" + taskId + "]告警结果已完成入库，结束此任务的调度!");
+	// // 关闭此调度
+	// this.scheduler.shutdown();
+	// } catch (SchedulerException e) {
+	// e.printStackTrace();
+	// }
+	// } else {
+	// logger.info("任务：[" + taskId + "]扫描未完成，等待下次拉取~");
+	// }
+	// }
 
 	/**
 	 * 根据任务状态结果解析当前任务状态
@@ -151,12 +138,17 @@ public class Scheduler4Result {
 	 */
 	private String getStatusByResult(String resultStr) {
 		String decode;
+		String state = "";
 		try {
 			decode = URLDecoder.decode(resultStr, "UTF-8");
 			Document document = DocumentHelper.parseText(decode);
 			Element result = document.getRootElement();
-			Element StateNode = result.element("State");
-			String state = StateNode.getTextTrim();
+			Attribute attribute  = result.attribute("value");
+			String resultValue = attribute.getStringValue();
+			if("Success".equals(resultValue)){
+				Element StateNode = result.element("State");
+				state = StateNode.getTextTrim();
+			}
 			return state;
 		} catch (Exception e) {
 			logger.info("[获取结果调度]:解析任务状态发生异常,远程没有此任务!");
@@ -208,7 +200,7 @@ public class Scheduler4Result {
 					String advice = issuetype.attribute("advice").getStringValue();
 					// issuedata
 					List<Element> issuedatas = issuetype.elements("issuedata");
-					for(Element issuedata : issuedatas){
+					for (Element issuedata : issuedatas) {
 						Alarm alarm = new Alarm();
 						alarm.setTaskId(Long.parseLong(taskId));
 						alarm.setAlarm_time(sdf.parse(URLDecoder.decode(time, "UTF-8")));
@@ -240,6 +232,24 @@ public class Scheduler4Result {
 			throw new RuntimeException("[获取结果调度]:任务-[" + taskId + "]解析任务结果发生异常!");
 		}
 		return aList;
+	}
+
+	private String getProductByTask(Task task) {
+		String productId = "";
+		List<Serv> sList = servService.findByTask(task);
+		String SName = sList.get(0).getName();
+		if ("漏洞扫描服务".equals(SName)) {
+			productId = Constants.PRODUCT_LD;
+		} else if ("恶意代码监测服务".equals(SName)) {
+			productId = Constants.PRODUCT_MM;
+		} else if ("网页篡改监测服务".equals(SName)) {
+			productId = Constants.PRODUCT_CG;
+		} else if ("关键字监测服务".equals(SName)) {
+			productId = Constants.PRODUCT_GJZ;
+		} else if ("可用性监测服务".equals(SName)) {
+			productId = Constants.PRODUCT_KYX;
+		}
+		return productId;
 	}
 
 }

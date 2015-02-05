@@ -1,28 +1,29 @@
 package com.cn.ctbri.common;
 
+import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
+import org.dom4j.Attribute;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.quartz.SchedulerException;
-import org.quartz.SchedulerFactory;
-import org.quartz.SimpleTrigger;
-import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.cn.ctbri.dao.TaskDao;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskService;
-import com.cn.ctbri.service.impl.TaskServiceImpl;
 
 /**
  * 扫描任务表的调度类
@@ -76,20 +77,23 @@ public class Scheduler4Task {
 		logger.info("[下发任务调度]:当前等待下发的任务有 " + taskList.size() + " 个!");
 		// 调用接口下发任务
 		for (Task t : taskList) {
-			logger.info("[下发任务调度]:任务：[" + t.getTaskId() + "]开始下发!");
+//			logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]获取状态!");
+//			String sessionId = ArnhemWorker.getSessionId();
+//			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId()));
+//			String status = this.getStatusByResult(resultStr);
+			logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]开始下发!");
 			preTaskData(t);
 			ArnhemWorker.lssuedTask(ArnhemWorker.getSessionId(), String.valueOf(t.getTaskId()), this.destURL, this.destIP, "80",
 					this.tplName);
-			//Thread.sleep(3000);   
-			//更新任务状态为running
-			t.setStatus(Integer.parseInt(Constants.TASK_RUNNING));
-			taskService.update(t);
 			//为此任务创建调度，定时获取任务结果
 			//getResultByTask(t);
-			logger.info("[下发任务调度]:任务：[" + t.getTaskId() + "]完成下发!");
+			//更新任务状态为running
+			t.setStatus(Integer.parseInt(Constants.TASK_RUNNING));
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			t.setExecute_time(sdf.parse(new Date().toLocaleString()));
+			taskService.update(t);
+			logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]完成下发!");
 		}
-
-		//System.out.println(new Date().toLocaleString() + " : 任务表扫描结束!");
 		logger.info("[下发任务调度]:任务表扫描结束......");
 
 	}
@@ -102,7 +106,7 @@ public class Scheduler4Task {
 	private void preTaskData(Task task) {
 		// 获取此任务的资产信息
 		List<Asset> taskList = assetService.findByTask(task);
-		if(false){
+		if(!isboolIp(taskList.get(0).getAddr())){ //判断地址是否是ip
 			this.destURL = taskList.get(0).getAddr();
 		}else{
 			this.destIP = taskList.get(0).getAddr();
@@ -110,6 +114,41 @@ public class Scheduler4Task {
 		// 获取此任务的服务模版名称
 		List<Serv> servList = servService.findByTask(task);
 		this.tplName = servList.get(0).getModule_name();
+	}
+	
+	/** 
+	 * 判断是否为合法IP 
+	 * @return the ip 
+	 */  
+	public boolean isboolIp(String ipAddress)  
+	{  
+	       String ip = "([1-9]|[1-9]//d|1//d{2}|2[0-4]//d|25[0-5])(//.(//d|[1-9]//d|1//d{2}|2[0-4]//d|25[0-5])){3}";   
+	       Pattern pattern = Pattern.compile(ip);   
+	       Matcher matcher = pattern.matcher(ipAddress);   
+	       return matcher.matches();   
+	}  
+	
+	private String getStatusByResult(String resultStr) {
+		String decode;
+		String state = "";
+		try {
+			decode = URLDecoder.decode(resultStr, "UTF-8");
+			Document document = DocumentHelper.parseText(decode);
+			Element result = document.getRootElement();
+			Attribute attribute  = result.attribute("value");
+			String resultValue = attribute.getStringValue();
+			if("Success".equals(resultValue)){
+				Element StateNode = result.element("State");
+				state = StateNode.getTextTrim();
+			}else{
+				logger.info("[下发任务调度]:远程没有此任务，可以下发!");
+			}
+			return state;
+		} catch (Exception e) {
+			logger.info("[下发任务调度]:解析任务状态失败,远程没有此任务，可以下发!");
+			return "";
+		}
+		
 	}
 	
 	/**
@@ -133,26 +172,27 @@ public class Scheduler4Task {
 //		}else if("可用性监测服务".equals(SName)){
 //			this.productId = Constants.PRODUCT_KYX;
 //		}
+		
 		//获取任务id
 		//this.taskId = String.valueOf(task.getTaskId());
 		/**
 		 * 为任务创建一个调度
 		 */
-		SchedulerFactory schedFact = new StdSchedulerFactory();
-		Scheduler scheduler = schedFact.getScheduler();
-		// 创建一个JobDetail，指明name，groupname，以及具体的Job类名，
-		//该Job负责定义需要执行任务
-		JobDetail jobDetail = new JobDetail("job"+task.getTaskId(), Scheduler.DEFAULT_GROUP,Scheduler4Result.class);
-		jobDetail.getJobDataMap().put("task", task);
-		//jobDetail.getJobDataMap().put("task", task);
-		//根据任务信息创建触发器  设置调度策略
-		SimpleTrigger trigger = new SimpleTrigger("SimpleTrigger" , Scheduler.DEFAULT_GROUP);
-		trigger.setStartTime(new Date());  //立即执行
-		trigger.setEndTime(null);
-		trigger.setRepeatCount(0);
-		trigger.setRepeatInterval(60*1000);   //   每隔1分钟执行一次
-		scheduler.scheduleJob(jobDetail, trigger);
-		//启动调度
-		//scheduler.start();
+//		SchedulerFactory schedFact = new StdSchedulerFactory();
+//		Scheduler scheduler = schedFact.getScheduler();
+//		// 创建一个JobDetail，指明name，groupname，以及具体的Job类名，
+//		//该Job负责定义需要执行任务
+//		JobDetail jobDetail = new JobDetail("job"+task.getTaskId(), Scheduler.DEFAULT_GROUP,Scheduler4Result.class);
+//		jobDetail.getJobDataMap().put("task", task);
+//		//jobDetail.getJobDataMap().put("task", task);
+//		//根据任务信息创建触发器  设置调度策略
+//		SimpleTrigger trigger = new SimpleTrigger("SimpleTrigger" , Scheduler.DEFAULT_GROUP);
+//		trigger.setStartTime(new Date());  //立即执行
+//		trigger.setEndTime(null);
+//		trigger.setRepeatCount(0);
+//		trigger.setRepeatInterval(60*1000);   //   每隔1分钟执行一次
+//		scheduler.scheduleJob(jobDetail, trigger);
+//		//启动调度
+//		//scheduler.start();
 	}
 }
