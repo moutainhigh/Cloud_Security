@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cn.ctbri.annotation.AuthPassport;
 import com.cn.ctbri.cfg.Configuration;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Order;
@@ -167,6 +168,7 @@ public class UserController {
 		 * 参数描述：  无
 		 *     @time 2015-1-12
 		 */
+		@AuthPassport
 		@RequestMapping(value="userCenterUI.html")
 		public String userCenterUI(HttpServletRequest request){
 			User globle_user = (User) request.getSession().getAttribute("globle_user");

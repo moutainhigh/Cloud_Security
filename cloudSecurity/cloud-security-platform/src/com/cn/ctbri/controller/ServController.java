@@ -5,9 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cn.ctbri.entity.User;
-import com.cn.ctbri.service.IAssetService;
-import com.cn.ctbri.service.IOrderService;
-import com.cn.ctbri.service.IUserService;
+import com.cn.ctbri.service.IServService;
 
 
 /**
@@ -20,12 +18,7 @@ import com.cn.ctbri.service.IUserService;
 public class ServController {
 	
 	@Autowired
-	IUserService userService;
-	@Autowired
-	IAssetService assetService;
-	@Autowired
-	IOrderService orderService;
-	
+	IServService servService;
 	/**
 	 * 功能描述：服务管理页面
 	 *		 @time 2015-2-3
