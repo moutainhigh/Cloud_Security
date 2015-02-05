@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.Task;
 
 /**
  * 创 建 人  ：  于永波
@@ -33,4 +34,21 @@ public interface AlarmDao {
 	 * 返回值    ：List<Alarm>
 	 */
 	public List<Alarm> findAlarmByUserId(int id);
+	/**
+     * 功能描述：根据orderId查询告警信息
+     *       @time 2015-2-4
+     * 返回值    ：List<Alarm>
+     */
+    public List<Alarm> getAlarmByOrderId(Map<String, Object> paramMap);
+    /**
+     * 功能描述：根据orderId查询任务信息
+     *       @time 2015-2-4
+     * 返回值    ：List<Task>
+     */
+    public List<Task> getTaskByOrderId(Map<String, Object> paramMap);/**
+     * 功能描述：根据taskId查询告警信息
+     *       @time 2015-2-4
+     * 返回值    ：List<Task>
+     */
+    public List<Alarm> getAlarmByTaskId(Map<String, Object> param);
 }
