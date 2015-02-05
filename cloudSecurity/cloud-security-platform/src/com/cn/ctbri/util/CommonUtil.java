@@ -3,9 +3,12 @@ package com.cn.ctbri.util;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
+
+import com.cn.ctbri.entity.User;
 
 public class CommonUtil {
 	/**
@@ -32,5 +35,13 @@ public class CommonUtil {
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("application/json;charset=UTF-8");
 		return JSON;
+	}
+	/**
+	 * 获取当前登录用户
+	 * @param request
+	 * @return
+	 */
+	public static User getGloble_user(HttpServletRequest request){
+		return (User) request.getSession().getAttribute("globle_user");
 	}
 }
