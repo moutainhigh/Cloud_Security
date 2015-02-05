@@ -37,5 +37,11 @@ public interface IOrderAssetService {
      */
 	List<OrderAsset> findOrderAssetByOrderId(String orderId);
 
+	/**
+     * 功能描述：根据orderid查询Asset名称
+     *       @time 2015-2-2
+     */
+    List findAssetNameByOrderId(String orderId);
+
 	
 }

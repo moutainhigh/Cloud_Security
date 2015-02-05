@@ -40,6 +40,14 @@ public interface IOrderService {
      * 返回值    ：  List<Order>
      */
     List findByCombineOrderTrack(Map<String, Object> paramMap);
+    
+    List findByUserId(String orderId);
+    /**
+     * 功能描述： 根据订单Id查询记录
+     *       @time 2015-2-2
+     * 返回值    ：  Order
+     */
+    List findByOrderId(String orderId);
 
 
 }
