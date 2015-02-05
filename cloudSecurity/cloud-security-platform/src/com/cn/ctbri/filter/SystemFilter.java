@@ -76,12 +76,12 @@ public class SystemFilter extends OncePerRequestFilter  {
 				try{
 					filterChain.doFilter(request, response);
 				}catch (Exception e) {
-					response.sendRedirect(request.getContextPath()+"/toLoginUI.html");
+					response.sendRedirect(request.getContextPath()+"/loginUI.html");
 					e.printStackTrace();
 				}
 				return;
 			}else{
-				response.sendRedirect(request.getContextPath()+"/toLoginUI.html");
+				response.sendRedirect(request.getContextPath()+"/loginUI.html");
 			}
 		}
 	}
