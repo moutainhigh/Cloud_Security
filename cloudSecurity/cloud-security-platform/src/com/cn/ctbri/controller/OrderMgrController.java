@@ -72,8 +72,11 @@ public class OrderMgrController {
 	public String selfHelpOrderInit(HttpServletRequest request){
 	    User globle_user = (User) request.getSession().getAttribute("globle_user");
 //	    String orderId = request.getParameter("orderId");
+	    //订单类型
 	    String type = request.getParameter("type");
+	    //服务ID
 	    String serviceId = request.getParameter("serviceId");
+	    //是否从首页进入
 	    String indexPage = request.getParameter("indexPage");
 	    //获取服务类型
         List<Serv> servList = selfHelpOrderService.findService();
@@ -99,6 +102,16 @@ public class OrderMgrController {
         String result = "/source/page/order/order";
         return result;
 	}
+	
+	/**
+     * 功能描述： 筛选页面
+     * 参数描述：  无
+     *     @time 2015-2-2
+     */
+    @RequestMapping(value="filterPage.html")
+    public String filterPage(HttpServletRequest request){
+        return "/source/page/order/filter";
+    }
 	
 	/**
      * 功能描述：  针对同一资产或同一IP是否存在时间重叠的同一类型服务订单
@@ -291,6 +304,7 @@ public class OrderMgrController {
         order.setTask_date(begin_date);
         order.setUserId(globle_user.getId());
         order.setContactId(linkmanId);
+        order.setStatus(0);
         selfHelpOrderService.insertOrder(order);
         
         if(serviceId.equals("6")||serviceId.equals("7")||serviceId.equals("8")){
@@ -335,8 +349,8 @@ public class OrderMgrController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Scheduler4Task task = new Scheduler4Task();
-        task.setTaskByOrder(order);
+//        Scheduler4Task task = new Scheduler4Task();
+//        task.setTaskByOrder(order);
         //return "/source/page/order/order";
     }
 	
