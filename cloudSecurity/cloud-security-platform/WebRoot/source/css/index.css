@@ -3,13 +3,13 @@
 /* CSS Document */
 
 .nav{ width:100%; clear:both; overflow:hidden;}
-.subnav{ width:1366px; height:480px; margin: 0px auto 0;   position: relative; overflow:hidden; }
+.subnav{ width:802px; height:480px; margin: 0px auto 0;   position: relative; overflow:hidden; }
 
-.subnav ul{ position: absolute; top: 0; left: 0; z-index: 1;}
-.subnav ul li{ height:444px; width:1366px; float:left; }
+.subnav ul{ position: absolute; top: 0; left: 0; z-index: 1;width:802px;height:446px;}
+.subnav ul li{ height:444px; width:802px; float:left; }
 .subnavul img { float: left; height:444px; width:1100px;}
 
-.subnav ol { position: absolute; left: 680px; bottom: 5px; z-index: 2; }
+.subnav ol { position: absolute; left:374px; bottom: 5px; z-index: 2; }
 .subnav ol li{ background: url(../images/dian_2.png) no-repeat; width:9px; height:10px; float:left; margin-right:20px; display: inline; cursor: pointer; }
 .subnav ol li.active { background: url(../images/dian_1.png) no-repeat; }
 
