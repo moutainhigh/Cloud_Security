@@ -32,9 +32,9 @@ public class TaskTest {
 	
 	@Test
 	public void testGetReportPage(){
-		String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, "qq", "1", 0, 500);
+		String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, "1", "1", 0, 500);
 		try {
-			System.out.println(reportByTaskID);
+			System.out.println(URLDecoder.decode(reportByTaskID, "UTF-8"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -42,7 +42,7 @@ public class TaskTest {
 	
 	@Test
 	public void testGetStatus(){
-		String result = ArnhemWorker.getStatusByTaskId(sessionId, "test008");
+		String result = ArnhemWorker.getStatusByTaskId(sessionId, "2");
 		System.out.println(result);
 	}
 	
