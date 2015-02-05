@@ -27,7 +27,7 @@
       <ul>
         <ul>
           <li><a href="${ctx}/index.html">首页</a></li>
-          <li><a href="###">我的订单</a></li>
+          <li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
           <li><a href="aider.html">在线帮助</a></li>
           <li class="list_active" style="border-right:1px solid #11871d;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
         </ul>
@@ -60,7 +60,7 @@
     <div class="center_bottom">
       <div class="center_bottom_div">
         <div class="center_bottom_number">${orderNum}</div>
-        <div class="center_bottom_txt"><a href="${ctx}/userBillUI.html">订单总数</a></div>
+        <div class="center_bottom_txt"><a href="${ctx}/orderTrackInit.html">订单总数</a></div>
       </div>
       <div class="center_bottom_div">
         <div class="center_bottom_number">${servNum}</div>
