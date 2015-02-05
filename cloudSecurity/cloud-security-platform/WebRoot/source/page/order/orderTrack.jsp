@@ -15,7 +15,6 @@
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
-<!--<script type="text/javascript" src="${ctx}/source/scripts/echarts/js/echarts.js"></script>-->
 <script type="text/javascript">
 $(document).ready(function(){
     $("#type").val("${type}");
@@ -128,7 +127,7 @@ $(document).ready(function(){
               </tr>
 	          <c:forEach var="list" items="${orderList}" varStatus="status">
 	              <tr>
-	                <td>${list.id }</td>
+	                <td><a href="${ctx}/orderDetails.html?orderId=${list.id }">${list.id }</a></td>
 	                <td>
 	                    <c:if test="${list.type==1}">长期</c:if>
 	                    <c:if test="${list.type==2}">单次</c:if> 
@@ -149,17 +148,15 @@ $(document).ready(function(){
 	                </td>
 	                <td><fmt:formatDate value="${list.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>~<fmt:formatDate value="${list.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                     <td><fmt:formatDate value="${list.create_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-	                <td><img src="${ctx}/source/images/user_ico_1.jpg" /></td>
-	                <!--<td>
-	                   <c:if test="${list.status==0}"><img src="${ctx}/source/images/user_ico_2.jpg" onclick="abc('${list.id }')"/></c:if>
-                       <c:if test="${list.status==1}"><img src="${ctx}/source/images/user_ico_1.jpg" onclick="abc('${list.id }')"/></c:if>
-	                </td>-->
+	                <td>
+	                   <c:if test="${list.status==0}"><img src="${ctx}/source/images/user_ico_2.jpg" /></c:if>
+                       <c:if test="${list.status==1}"><a href="${ctx}/warningInit.html?orderId=${list.id }"><img src="${ctx}/source/images/user_ico_1.jpg" /></a></c:if>
+	                </td>
 	              </tr>
 	          </c:forEach>
         </tbody>
       </table>
     </div>
-    
   </div>
 </div>
 <!-- 尾部代码开始-->
