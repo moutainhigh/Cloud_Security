@@ -61,6 +61,7 @@ public class Scheduler4Task implements Job{
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		
 		String orderId = arg0.getJobDetail().getJobDataMap().getString("orderId");
+		System.out.println("-------------------------------" + orderId);
 		/**
 		 * 定时要job任务执行的逻辑
 		 */
