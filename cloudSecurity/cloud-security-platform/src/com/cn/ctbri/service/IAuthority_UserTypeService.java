@@ -1,5 +1,7 @@
 package com.cn.ctbri.service;
 
+import java.util.List;
+
 import com.cn.ctbri.entity.Authority_UserType;
 
 /**
@@ -12,5 +14,9 @@ public interface IAuthority_UserTypeService {
 
 	//插入新的记录
 	void insert(Authority_UserType au);
+	//删除记录
+	void delete(Authority_UserType au);
+	//查询所有
+	List<Authority_UserType> findAll();
 
 }

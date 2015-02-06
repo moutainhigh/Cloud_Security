@@ -12,15 +12,15 @@ public class Authority_UserType implements Serializable{
  
 	private static final long serialVersionUID = 1L;
 	
-	private int id;//主键
+	//private int id;//主键
 	private int userType;//用户类型（0：超级管理员，1：管理员，2：用户）
 	private int authorityId;//权限Id
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+//	public int getId() {
+//		return id;
+//	}
+//	public void setId(int id) {
+//		this.id = id;
+//	}
 	public int getUserType() {
 		return userType;
 	}

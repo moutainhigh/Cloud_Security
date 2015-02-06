@@ -26,5 +26,14 @@ public class Authority_UserTypeServiceImpl implements IAuthority_UserTypeService
 	public void insert(Authority_UserType au) {
 		authority_UserTypeDao.insert(au);
 	}
+
+	public void delete(Authority_UserType au) {
+		authority_UserTypeDao.delete(au);
+		
+	}
+
+	public List<Authority_UserType> findAll() {
+		return authority_UserTypeDao.findAll();
+	}
 	
 }

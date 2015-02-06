@@ -2,7 +2,6 @@ function getcheckbox(authorityId,i){
 //	alert(i);
 //	alert(authorityId);
     var test = document.getElementById(""+authorityId+i).checked;
-    alert(test);
     if(test){
     	$.ajax({
             type: "POST",
@@ -13,7 +12,13 @@ function getcheckbox(authorityId,i){
          }); 
     }else{
     	//将记录从用户类型权限表里面删除
-    	return;
+    	$.ajax({
+            type: "POST",
+            url: "/cloud-security-platform/deleteAuthority_userType.html",
+            data: {"authorityId":authorityId,"userType":i},
+            dataType:"json",
+            success: function(data){},
+         });
     }
     
 }

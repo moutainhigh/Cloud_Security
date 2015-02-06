@@ -3,10 +3,9 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cn.ctbri.entity.Authority_UserTypeMapper">
-	<sql id="cols">id,userType,authorityId</sql>
+	<sql id="cols">userType,authorityId</sql>
 	
 	<resultMap type="com.cn.ctbri.entity.Authority_UserType" id="Authority_UserTypeRM">
-		<id property="id" column="id"/>
 		<result property="userType" column="userType"/>
 		<result property="authorityId" column="authorityId"/>
 	</resultMap>
@@ -14,4 +13,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into cs_authority_usertype 
 		(userType,authorityId) values(#{userType},#{authorityId})
 	</insert>
+	<delete id="delete" parameterType="com.cn.ctbri.entity.Authority_UserType">
+		delete from cs_authority_usertype
+		where userType=#{userType} and authorityId=#{authorityId}
+	</delete> 
+	<select id="findAll" resultMap="Authority_UserTypeRM">
+		select * from cs_authority_usertype
+	</select>
 </mapper>

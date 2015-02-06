@@ -1,5 +1,7 @@
 package com.cn.ctbri.dao;
 
+import java.util.List;
+
 import com.cn.ctbri.entity.Authority_UserType;
 
 /**
@@ -11,5 +13,9 @@ import com.cn.ctbri.entity.Authority_UserType;
 public interface Authority_UserTypeDao {
 
 	void insert(Authority_UserType au);
+
+	void delete(Authority_UserType au);
+
+	List<Authority_UserType> findAll();
 
 }

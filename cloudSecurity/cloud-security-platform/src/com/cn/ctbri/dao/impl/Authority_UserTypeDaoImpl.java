@@ -1,5 +1,7 @@
 package com.cn.ctbri.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.Authority_UserTypeDao;
@@ -15,5 +17,14 @@ public class Authority_UserTypeDaoImpl  extends DaoCommon implements Authority_U
 
 	public void insert(Authority_UserType au) {
 		getSqlSession().insert(ns+"add", au);
+	}
+
+	public void delete(Authority_UserType au) {
+		getSqlSession().delete(ns+"delete", au);
+		
+	}
+
+	public List<Authority_UserType> findAll() {
+		return getSqlSession().selectList(ns+"findAll");
 	}
 }

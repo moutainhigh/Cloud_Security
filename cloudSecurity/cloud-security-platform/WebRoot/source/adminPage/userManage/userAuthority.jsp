@@ -13,6 +13,14 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/backstage.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.JPlaceholder.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/adminJs/authority.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var list = ${list};
+		for(var i=0;i<list.length;i++){
+			document.getElementById(""+list[i]).checked = true;
+		};
+});
+</script>
 </head>
 
 <body>
