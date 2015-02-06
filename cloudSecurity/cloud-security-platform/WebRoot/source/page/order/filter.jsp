@@ -10,6 +10,16 @@
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/order/filter.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var serviceId = ${serviceId};
+	var index = serviceId - 1;
+    $(".chooseservice ul li").eq(index).siblings().remove();
+});
+
+</script>
 </head>
 <body>
 <div>
@@ -65,30 +75,45 @@
       </div>
       <div class="chooseservice">
         <ul>
-          <li class="peiz_active">
+          <c:forEach var="list" items="${servList}" varStatus="status">
+            <c:choose>
+               <c:when test="${status.first}">
+                  <li class="peiz_active">
+                    <a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1" class="peiz_name">
+		            <div><img src="${ctx}/source/images/user_${status.index+1 }.jpg" /></div>
+		            <a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1" class="peiz_name">${list.name }</a><p class="peiz_company">厂商：中国电信</p> <p class="peiz_company">(扫描类)</p></a></li>
+               </c:when>
+               <c:when test="${!status.first}">
+                   <li>
+		            <div><img src="${ctx}/source/images/user_${status.index+1 }.jpg" /></div>
+		            <a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1" class="peiz_name">${list.name }</a> <p class="peiz_company">厂商：中国电信</p> <p class="peiz_company">(扫描类)</p></li>
+               </c:when>
+            </c:choose>
+          </c:forEach>
+          <!-- <li class="peiz_active">
             <div><img src="${ctx}/source/images/user_1.jpg" /></div>
             <a href="###" class="peiz_name">漏洞扫描服务</a><p class="peiz_company">厂商：中国电信</p> <p class="peiz_company">(扫描类)</p></li>
           <li>
             <div><img src="${ctx}/source/images/user_2.jpg" /></div>
             <a href="###" class="peiz_name">恶意代码监测服务</a> <p class="peiz_company">厂商：中国电信</p> <p class="peiz_company">(扫描类)</p></li>
-        <!-- <li>
-            <div><img src="images/user_3.jpg" /></div>
+         <li>
+            <div><img src="${ctx}/source/images/user_3.jpg" /></div>
             <a href="###" class="peiz_name">网页篡改监测服务</a> <p class="peiz_company">厂商：中国电信</p> <p class="peiz_company">(扫描类)</p></li>
           <li>
-            <div><img src="images/user_4.jpg" /></div>
+            <div><img src="${ctx}/source/images/user_4.jpg" /></div>
             <a href="###" class="peiz_name">关键字监测服务</a><p class="peiz_company">厂商：中国电信</p> <p class="peiz_company">(扫描类)</p> </li>
           <li>
-            <div><img src="images/user_5.jpg" /></div>
+            <div><img src="${ctx}/source/images/user_5.jpg" /></div>
             <a href="###" class="peiz_name">可用性监测服务</a> <p class="peiz_company">厂商：中国电信</p> <p class="peiz_company">(扫描类)</p></li>
           <li>
-            <div><img src="images/user_6.jpg" /></div>
+            <div><img src="${ctx}/source/images/user_6.jpg" /></div>
             <a href="###" class="peiz_name">日常流量监控服务</a><p class="peiz_company">厂商：中国电信</p> <p class="peiz_company">(扫描类)</p> </li>
           <li>
-            <div><img src="images/user_7.jpg" /></div>
+            <div><img src="${ctx}/source/images/user_7.jpg" /></div>
             <a href="###" class="peiz_name">日常攻击防护服务</a><p class="peiz_company">厂商：中国电信</p> <p class="peiz_company">(扫描类)</p> </li>
           <li>
-            <div><img src="images/user_8.jpg" /></div>
-            <a href="###" class="peiz_name">突发异常流量清洗服务</a><p class="peiz_company">厂商：中国电信</p> <p class="peiz_company">(扫描类)</p> </li>-->
+            <div><img src="${ctx}/source/images/user_8.jpg" /></div>
+            <a href="###" class="peiz_name">突发异常流量清洗服务</a><p class="peiz_company">厂商：中国电信</p> <p class="peiz_company">(扫描类)</p> </li> -->
         </ul>
       </div>
 </div>

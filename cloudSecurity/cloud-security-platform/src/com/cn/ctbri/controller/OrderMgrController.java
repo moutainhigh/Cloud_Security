@@ -110,6 +110,13 @@ public class OrderMgrController {
      */
     @RequestMapping(value="filterPage.html")
     public String filterPage(HttpServletRequest request){
+        String orderType = request.getParameter("type");
+        String serviceId = request.getParameter("serviceId");
+        //获取服务类型
+        List<Serv> servList = selfHelpOrderService.findService();
+        request.setAttribute("orderType",orderType); 
+        request.setAttribute("serviceId", serviceId);
+        request.setAttribute("servList", servList);
         return "/source/page/order/filter";
     }
 	
@@ -259,11 +266,11 @@ public class OrderMgrController {
         String scanType = request.getParameter("scanType");
         String scanDate = request.getParameter("scanDate");
         String serviceId = request.getParameter("serviceId");
-        String linkname = request.getParameter("linkname");
+        String linkname = new String(request.getParameter("linkname").getBytes("ISO-8859-1"),"UTF-8");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
-        String company = request.getParameter("company");
-        String address = request.getParameter("address");
+        String company = new String(request.getParameter("company").getBytes("ISO-8859-1"),"UTF-8");
+        String address = new String(request.getParameter("address").getBytes("ISO-8859-1"),"UTF-8");
         String ip = request.getParameter("ip");
         String bandwidth = request.getParameter("bandwidth");
         //新增联系人

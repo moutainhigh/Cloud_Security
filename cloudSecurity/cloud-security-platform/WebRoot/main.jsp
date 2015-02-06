@@ -67,7 +67,13 @@
                                 </div>
                                 <div class="lndetails_line">
                                     <div class="fl lndetailtitle">热门服务：</div>
-                                    <div class="fl lndetaillist"><a href="${ctx}/filterPage.html">漏洞扫描服务</a><a href="#">恶意代码监测服务</a><a href="#">网页篡改检测服务</a><a href="#">关键字检测服务</a><a href="#">可用性监测服务</a></div>
+                                    <div class="fl lndetaillist">
+                                        <c:forEach var="list" items="${servList}" varStatus="status">
+                                        <c:if test="${status.index<=4}">
+                                            <a href="${ctx}/filterPage.html?type=${list.orderType }&serviceId=${list.id }">${list.name }</a>
+                                        </c:if>
+                                    </c:forEach>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +117,7 @@
                             <p class="lntitle">移动安全</p>
                             <span class="ln_more">></span>
                             <p class="lndetail"><a href="#">手机应用安全检测 </a> / <a href="#">在线app加固</a></p>
-                            <div class="lndetails">
+                            <div class="lndetails" style="bottom:0;top:auto;">
                                 <div class="lndetails_line">
                                     <div class="fl lndetailtitle">热门厂商：</div>
                                     <div class="fl lndetaillist"><a href="#">中国电信</a><a href="#">奇虎360</a>     <a href="#">安恒</a></div>
@@ -133,7 +139,13 @@
            <!--<p class="prev">&laquo;</p>
           <p class="next">&raquo;</p>-->
              <ul>
-                  <li><a href="###"><img src="${ctx}/source/images/indexphoto.jpg" /></a></li>
+                  <li style="position:relative"><a href="###">
+                  <img src="${ctx}/source/images/indexphoto.jpg" />
+                  <span class="lb_font lb_first">累计检测<span class="lb_font_w">9387</span>个网页</span>
+                  <span class="lb_font lb_second">发现<span class="lb_font_w">2352</span>个漏洞</span>
+                  <span class="lb_font lb_third">累计拦截<span class="lb_font_w">0</span>次DDOS攻击</span>
+                  <span class="lb_font lb_forth">完成<span class="lb_font_w">2352</span>G防护</span>
+                  </a></li>
                   <li><a href="###"><img src="${ctx}/source/images/indexphoto2.jpg" /></a></li>
                   <li><a href="###"><img src="${ctx}/source/images/indexphoto3.jpg" /></a></li>
              </ul>

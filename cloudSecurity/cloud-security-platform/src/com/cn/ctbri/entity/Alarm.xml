@@ -61,9 +61,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 根据orderid查询任务数  -->
     <select id="findTaskByOrderId" resultType="com.cn.ctbri.entity.Task" parameterType="hashmap">
-        select * from cs_task t where t.order_asset_id in
-        (select oa.id from cs_order_asset oa where oa.orderId=#{orderId}) 
-        order by t.execute_time desc limit 0,7
+        select * from 
+		(select * from cs_task t where t.order_asset_id in
+		(select oa.id from cs_order_asset oa where oa.orderId=#{orderId}) 
+		order by t.execute_time desc limit 0,7)  a order by a.execute_time
     </select>
     
     <!-- 根据taskid查询告警数  -->

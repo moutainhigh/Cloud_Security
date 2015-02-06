@@ -45,3 +45,9 @@
 .right_title{font-size:16px;color:#666;height:32px;border-bottom:1px solid #dedede;text-align:center;line-height:32px;}
 .right_list{padding:12px 0 12px 14px;border-bottom:1px solid #dedede;}
 .right_list a{color:#999;font-size:14px;line-height:23px;}
+.lb_font{position:absolute;font-size:21px;text-align:center;color:#c6e72b;}
+.lb_first{bottom:100px;right:294px;}
+.lb_font_w{font-size:24px;font-weight:bold;color:#fff;padding:0 6px;}
+.lb_second{bottom:55px;right:48px;}
+.lb_third{top:70px;right:260px;}
+.lb_forth{top:43px;right:46px;}

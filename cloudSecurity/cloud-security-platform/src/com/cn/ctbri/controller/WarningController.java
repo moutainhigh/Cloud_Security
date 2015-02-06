@@ -84,27 +84,17 @@ public class WarningController {
         //高
         paramMap.put("level", WarnType.HIGHLEVEL.ordinal());
         List<Alarm> highList = alarmService.getAlarmByOrderId(paramMap);
-        int total = lowList.size()+ middleList.size() + highList.size();
         JSONArray json = new JSONArray();
-        if(lowList.size()>0&&lowList!=null){
-            JSONObject jo = new JSONObject();
-            jo.put("label", "0");
-            jo.put("ratio", (float)lowList.size()/total);
-            jo.put("value", lowList.size());
+        JSONObject jo = new JSONObject();
+        if(highList.size()>=2){//高风险
+            
+            jo.put("level", 90);
             json.add(jo);
-        }
-        if(middleList.size()>0&&middleList!=null){
-            JSONObject jo = new JSONObject();
-            jo.put("label", "1");
-            jo.put("ratio", (float)middleList.size()/total+(float)lowList.size()/total);
-            jo.put("value", middleList.size());
+        }else if(highList.size()<=0&&middleList.size()<=0){//低风险
+            jo.put("level", 20);
             json.add(jo);
-        }
-        if(highList.size()>0&&highList!=null){
-            JSONObject jo = new JSONObject();
-            jo.put("label", "2");
-            jo.put("ratio", 1);
-            jo.put("value", highList.size());
+        }else{//中风险
+            jo.put("level", 60);
             json.add(jo);
         }
         return json.toString();
