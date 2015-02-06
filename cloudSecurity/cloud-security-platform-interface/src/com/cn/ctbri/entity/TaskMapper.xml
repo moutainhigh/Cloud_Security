@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update cs_task
 		<set>
 			<if test="status!=null">
-				status=#{status}
+				status=#{status} , 
 			</if>
 			<if test="execute_time!=null">
 				execute_time=#{execute_time}

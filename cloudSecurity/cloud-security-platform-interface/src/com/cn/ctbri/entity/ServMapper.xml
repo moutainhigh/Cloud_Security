@@ -43,8 +43,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <!-- 根据任务查询服务模版信息 -->
-    <select id="findServiceByTask" resultMap="ServRM" parameterType="com.cn.ctbri.entity.Task">
-        select s.* 
+    <select id="findServiceByTask" resultType="java.util.HashMap" parameterType="com.cn.ctbri.entity.Task">
+        select s.* , oa.scan_type
         from cs_task t join cs_order_asset oa 
         on t.order_asset_Id = oa.id join cs_order o 
         on oa.orderId = o.id join cs_service s 
