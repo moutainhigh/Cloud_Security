@@ -17,6 +17,7 @@ $(function(){
     var lineData = [];
     var lineData2 = [];
     var lineData3 = [];
+    var high = null;
 	// 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
     require(
         [
@@ -27,38 +28,15 @@ $(function(){
         function (ec) {//回调函数
             //--- 仪表盘 ---
             var myChart = ec.init(document.getElementById('aqfx'));
-            var case1 = "";
-            var casetemp1 = "";
-            var case2 = "";
-            var casetemp2 = "";
-            var case3 = "";
             //后台获取数据
             $.ajax({
             	url:"getGaugeData.html?orderId="+$('#orderId').val(),
                 dataType:"json",
                 success:function(data){
                     $.each(data,function(i,p){
-//                    	label[i]=p['label'];
-                    	var temp = null;
-	                   	if(p['label']==0){
-	                   		temp='lightgreen';
-	                   		case1=p['ratio']*100/2;
-	                   		casetemp1=p['ratio']*100;
-	                   	}
-	                   	if(p['label']==1){
-	                   		temp='orange';
-	                   		case2=(p['ratio']*100-casetemp1)/2+casetemp1;
-	                   		casetemp2=p['ratio']*100;
-	                   	}
-	                   	if(p['label']==2){
-	                   		temp='skyblue';
-	                   		case3=(p['ratio']*100-casetemp2)/2+casetemp2;
-	                   	}
-                    	valueGauge[i]=[p['ratio'], temp];
+                    	level=p['level'];
+//                    	valueGauge[i]=[p['ratio'], temp];
                     });
-                    alert(case1);
-                    alert(case2);
-                    alert(case3);
                     var option = {//图形
                     	tooltip : {
                             formatter: "{a} <br/>{b} : {c}%"
@@ -86,8 +64,8 @@ $(function(){
                                 axisLine: {            // 坐标轴线
                                     show: true,        // 默认显示，属性show控制显示与否
                                     lineStyle: {       // 属性lineStyle控制线条样式
-//                                        color: [[0.4, 'lightgreen'],[0.8, 'orange'],[1, 'skyblue']], 
-                                    	color: testGauge(),
+                                        color: [[0.4, 'lightgreen'],[0.8, 'orange'],[1, 'skyblue']], 
+//                                    	color: testGauge(),
                                         width: 30
                                     }
                                 },
@@ -139,7 +117,7 @@ $(function(){
                                     }
                                 },
                                 detail : {
-                                    show : true,
+                                    show : false,
                                     backgroundColor: 'rgba(0,0,0,0)',
                                     borderWidth: 0,
                                     borderColor: '#ccc',
@@ -152,17 +130,17 @@ $(function(){
                                         fontSize : 30
                                     }
                                 },
-                                data:[{value: 50, name: '仪表盘'}]
+                                data:[{value: level, name: '仪表盘'}]
                             }
                         ]
                     };
                     //图形展示
                     //myChart.setOption(option);
-                    clearInterval(timeTicket);
-                    var timeTicket = setInterval(function (){
-                        option.series[0].data[0].value = (Math.random()*100).toFixed(2) - 0;
+//                    clearInterval(timeTicket);
+//                    var timeTicket = setInterval(function (){
+//                        option.series[0].data[0].value = (Math.random()*100).toFixed(2) - 0;
                         myChart.setOption(option, true);
-                    },2000)
+//                    },2000)
                     window.onresize = myChart.resize;
                 }//ajax执行后台
             }); 
