@@ -1,5 +1,6 @@
 package com.cn.ctbri.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class ServServiceImpl implements IServService{
      * @param task
      * @return
      */
-	public List<Serv> findByTask(Task task) {
+	public List<HashMap<String, Object>> findByTask(Task task) {
 		return servDao.getServByTask(task);
 	}
 	

@@ -1,5 +1,6 @@
 package com.cn.ctbri.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.cn.ctbri.entity.Serv;
@@ -35,7 +36,7 @@ public interface IServService {
      *       @time 2015-1-31
      *  返回值 ：Serv
      */
-	List<Serv> findByTask(Task task);
+	List<HashMap<String, Object>> findByTask(Task task);
 
 
 }
