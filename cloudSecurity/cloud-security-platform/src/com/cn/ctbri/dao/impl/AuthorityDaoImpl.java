@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cn.ctbri.dao.AuthorityDao;
 import com.cn.ctbri.dao.DaoCommon;
+import com.cn.ctbri.entity.Authority;
 /**
  * 创 建 人  ：  邓元元
  * 创建日期：  2015-02-05
@@ -29,6 +30,14 @@ public class AuthorityDaoImpl extends DaoCommon implements AuthorityDao {
 	 */
 	public List<String> findUrlByUserType(int type) {
 		return getSqlSession().selectList(ns+"findUrlByUserType", type);
+	}
+	/**
+	 * 查询权限列表
+	 * @param type
+	 * @return
+	 */
+	public List<Authority> findAllAuthority() {
+		return getSqlSession().selectList(ns+"findAllAuthority");
 	}		
 
 }

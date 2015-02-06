@@ -2,6 +2,8 @@ package com.cn.ctbri.service;
 
 import java.util.List;
 
+import com.cn.ctbri.entity.Authority;
+
 /**
  * 创 建 人  ：  邓元元
  * 创建日期：  2015-2-5
@@ -15,6 +17,13 @@ public interface IAuthorityService {
 	 * @param type
 	 * @return
 	 */
-	List findUrlByUserType(int type);
+	List<String> findUrlByUserType(int type);
+	/**
+	 * 查询权限列表
+	 * @param type
+	 * @return
+	 */
+	List<Authority> findAllAuthority();
+
 
 }

@@ -12,6 +12,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/backstage.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.JPlaceholder.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/adminJs/authority.js"></script>
 </head>
 
 <body>
@@ -37,13 +38,10 @@
   </div>
 </div>
 <!--头部代码结束-->
-<div class="user_search_box">
-  <input class="user_search" type="text" placeholder="请输入用户名">
-</div>
 <div class="main_wrap">
 	<div class="main_center">
     	<div class="add_service">
-        	<span class="addr">当前位置 : </span><a href="usermanagement.html" class="addr">用户中心</a><span class="addr"> > </span><a href="#" class="addr">用户权限</a>
+        	<span class="addr">当前位置 : </span><a href="${ctx}/adminUserManageUI.html" class="addr">用户管理</a><span class="addr"> > </span><a href="${ctx}/adminAuthorityUI.html" class="addr">用户权限</a>
         </div>
         <div class="juris_wrap">
         	<table class="juris_table fl" cellpadding="1" cellspacing="1">
@@ -56,54 +54,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                	<tr>
-                    	<td>用户注册</td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                        <td><span class="juris_choose"></span></td>
-                    </tr>
-                    <tr>
-                    	<td>用户登录</td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                        <td><span class="juris_choose"></span></td>
-                    </tr> 
-                    <tr>
-                    	<td>资产维护</td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                        <td><span class="juris_choose"></span></td>
-                    </tr> 
-                    <tr>
-                    	<td>资产验证</td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                        <td><span class="juris_choose"></span></td>
-                    </tr>
-                    <tr>
-                    	<td>自助下单</td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                        <td><span class="juris_choose"></span></td>
-                    </tr> 
-                    <tr>
-                    	<td>订单跟踪</td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                        <td><span class="juris_choose"></span></td>
-                    </tr>
-                    <tr>
-                    	<td>用户账单</td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                    </tr> 
-                    <tr>
-                    	<td>在线帮助</td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                    </tr>
+                	<c:forEach items="${authorityList}" var="authority" begin="0" end="7">
+	                	<tr>
+	                    	<td>${authority.authorityName}</td>
+	                        <td><input type="checkbox" name="subcheck" id="${authority.id}0" onclick="getcheckbox(${authority.id},0)"/></td>
+	                        <td><input type="checkbox" name="subcheck" id="${authority.id}1" onclick="getcheckbox(${authority.id},1)"/></td>
+	                        <td><input type="checkbox" name="subcheck" id="${authority.id}2" onclick="getcheckbox(${authority.id},2)"/></td>
+	                    </tr>
+                    </c:forEach>
                 </tbody>
             </table>
             <table class="juris_table fl ml12" cellpadding="1" cellspacing="1">
@@ -116,48 +74,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                	<tr>
-                    	<td>资料修改</td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                    </tr>
-                    <tr>
-                    	<td>在线充值</td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                    </tr> 
-                    <tr>
-                    	<td>用户管理</td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                    </tr> 
-                    <tr>
-                    	<td>服务管理</td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                    </tr>
-                    <tr>
-                    	<td>数据分析</td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                    </tr> 
-                    <tr>
-                    	<td>系统管理</td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                    </tr>
-                    <tr>
-                    	<td>用户删除</td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose"></span></td>
-                        <td><span class="juris_choose juris_grey"></span></td>
-                    </tr> 
+                	<c:forEach items="${authorityList}" var="authority" begin="8">
+	                	<tr>
+	                    	<td>${authority.authorityName}</td>
+	                        <td><input type="checkbox" name="subcheck" id="${authority.id}0" onclick="getcheckbox(${authority.id},0)"/></td>
+	                        <td><input type="checkbox" name="subcheck" id="${authority.id}1" onclick="getcheckbox(${authority.id},1)"/></td>
+	                        <td><input type="checkbox" name="subcheck" id="${authority.id}2" onclick="getcheckbox(${authority.id},2)"/></td>
+	                    </tr>
+                    </c:forEach>
                     <tr>
                     	<td></td>
                         <td></td>

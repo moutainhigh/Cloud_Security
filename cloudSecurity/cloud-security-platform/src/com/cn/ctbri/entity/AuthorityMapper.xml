@@ -17,4 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM cs_authority a,cs_authority_userType au
 		WHERE a.id = au.authorityId AND au.userType=#{userType};
 	</select>
+	<select id="findAllAuthority" resultMap="AuthorityRM" parameterType="int">
+		SELECT * FROM cs_authority
+	</select>
 </mapper>

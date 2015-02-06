@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.Authority_UserTypeMapper">
+	<sql id="cols">id,userType,authorityId</sql>
+	
+	<resultMap type="com.cn.ctbri.entity.Authority_UserType" id="Authority_UserTypeRM">
+		<id property="id" column="id"/>
+		<result property="userType" column="userType"/>
+		<result property="authorityId" column="authorityId"/>
+	</resultMap>
+	<insert id="add" parameterType="com.cn.ctbri.entity.Authority_UserType">
+		insert into cs_authority_usertype 
+		(userType,authorityId) values(#{userType},#{authorityId})
+	</insert>
+</mapper>

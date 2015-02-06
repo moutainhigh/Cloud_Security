@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.cn.ctbri.dao.AlarmDao;
 import com.cn.ctbri.dao.AuthorityDao;
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.Authority;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAuthorityService;
 /**
@@ -27,9 +28,16 @@ public class AuthorityServiceImpl implements IAuthorityService{
 	 * @param type
 	 * @return
 	 */
-	public List findUrlByUserType(int type) {
-		// TODO Auto-generated method stub
+	public List<String> findUrlByUserType(int type) {
 		return authorityDao.findUrlByUserType(type);
+	}
+	/**
+	 * 查询权限列表
+	 * @param type
+	 * @return
+	 */
+	public List<Authority> findAllAuthority() {
+		return authorityDao.findAllAuthority();
 	}
 	
 }
