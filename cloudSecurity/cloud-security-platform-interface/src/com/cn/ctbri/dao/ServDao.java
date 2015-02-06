@@ -1,5 +1,6 @@
 package com.cn.ctbri.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.cn.ctbri.entity.Serv;
@@ -36,7 +37,7 @@ public interface ServDao {
      * @param task
      * @return
      */
-	List<Serv> getServByTask(Task task);
+	List<HashMap<String, Object>> getServByTask(Task task);
 
 
 	

@@ -1,5 +1,6 @@
 package com.cn.ctbri.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -48,7 +49,7 @@ public class ServDaoImpl extends DaoCommon implements ServDao{
      *       @time 2015-1-31
      *  返回值 ：Serv
      */
-	public List<Serv> getServByTask(Task task) {
+	public List<HashMap<String, Object>> getServByTask(Task task) {
 		return this.getSqlSession().selectList(ns + "findServiceByTask",task);
 	}
 	
