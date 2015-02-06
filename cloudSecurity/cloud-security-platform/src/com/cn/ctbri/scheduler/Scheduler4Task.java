@@ -60,11 +60,12 @@ public class Scheduler4Task implements Job{
 	
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		
+		String orderId = arg0.getJobDetail().getJobDataMap().getString("orderId");
 		/**
 		 * 定时要job任务执行的逻辑
 		 */
 		//根据orderid 获取要扫描的订单详情集合
-		List<OrderAsset> oaList = orderAssetDao.findOrderAssetByOrderId(order.getId());
+		List<OrderAsset> oaList = orderAssetDao.findOrderAssetByOrderId(orderId);
 		//获取订单定制的服务信息
 		//Service s = orderDao.getTPLByServiceId();
 		//遍历订单详情  创建任务
@@ -98,6 +99,7 @@ public class Scheduler4Task implements Job{
 		//该Job负责定义需要执行任务
 		JobDetail jobDetail = new JobDetail("job"+order.getId(), Scheduler.DEFAULT_GROUP,Scheduler4Task.class);
 		jobDetail.getJobDataMap().put("type", "FULL");
+		jobDetail.getJobDataMap().put("orderId", o.getId());
 		//根据订单信息创建触发器  设置调度策略
 		if(Integer.parseInt(Constants.ORDERTYPE_LONG) == type){
 			CronTrigger trigger = new CronTrigger("CronTrigger","CronGroup");
@@ -113,9 +115,9 @@ public class Scheduler4Task implements Job{
 				if(Integer.parseInt(Constants.SCANTYPE_DAY) == scanType){  //每天 00:10:00
 					//秒 分 时 日 月 周 年(可选)
 					trigger.setCronExpression("0 10 00 * * ?");
-				}else if(Integer.parseInt(Constants.SCANTYPE_WEEK) == scanType){ //每周一
+				}else if(Integer.parseInt(Constants.SCANTYPE_WEEK) == scanType){ //每周一。。。
 					trigger.setCronExpression("0 10 00 ? * MON");
-				}else if(Integer.parseInt(Constants.SCANTYPE_MONTH) == scanType){  //每月一号
+				}else if(Integer.parseInt(Constants.SCANTYPE_MONTH) == scanType){  //每月一号。。。
 					trigger.setCronExpression("0 10 00 1 * ?");
 				}else{
 					logger.error("调度任务日志：订单扫描类型有误!");
