@@ -168,7 +168,6 @@ public class UserController {
 		 * 参数描述：  无
 		 *     @time 2015-1-12
 		 */
-		@AuthPassport
 		@RequestMapping(value="userCenterUI.html")
 		public String userCenterUI(HttpServletRequest request){
 			User globle_user = (User) request.getSession().getAttribute("globle_user");
