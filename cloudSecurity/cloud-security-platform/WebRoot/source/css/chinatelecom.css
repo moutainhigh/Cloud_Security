@@ -14,7 +14,7 @@
 .ldgs{height:374px;width:420px;}
 .gj_boxs{border-bottom:1px solid #e0e0e0;height:330px;}
 .aqpf{height:250px;padding-left:88px;}
-.zhangd_table .ld_table{margin-left:70px;width:860px;margin-bottom:36px;color:#888;}
+.zhangd_table .ld_table{margin-left:70px;width:860px;margin-bottom:36px;color:#888;height:338px;overflow:auto;display:block}
 .dd_detail{margin:0 0 24px 94px;color:#888;font-size:14px;height:20px;}
 .detail_l{dispay:inline-block;width:116px;}
 .detail_r{padding-right:30px;}
