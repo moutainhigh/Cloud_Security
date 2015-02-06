@@ -19,7 +19,6 @@ import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cn.ctbri.entity.Asset;
-import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IServService;
@@ -77,22 +76,32 @@ public class Scheduler4Task {
 		logger.info("[下发任务调度]:当前等待下发的任务有 " + taskList.size() + " 个!");
 		// 调用接口下发任务
 		for (Task t : taskList) {
-//			logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]获取状态!");
-//			String sessionId = ArnhemWorker.getSessionId();
-//			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId()));
-//			String status = this.getStatusByResult(resultStr);
-			logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]开始下发!");
-			preTaskData(t);
-			ArnhemWorker.lssuedTask(ArnhemWorker.getSessionId(), String.valueOf(t.getTaskId()), this.destURL, this.destIP, "80",
-					this.tplName);
-			//为此任务创建调度，定时获取任务结果
-			//getResultByTask(t);
-			//更新任务状态为running
-			t.setStatus(Integer.parseInt(Constants.TASK_RUNNING));
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			t.setExecute_time(sdf.parse(new Date().toLocaleString()));
-			taskService.update(t);
-			logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]完成下发!");
+			logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]获取状态!");
+			String sessionId = ArnhemWorker.getSessionId();
+			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId()));
+			String status = this.getStatusByResult(resultStr);
+			if("".equals(status)){
+				logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]开始下发!");
+				preTaskData(t);
+				try {
+					ArnhemWorker.lssuedTask(ArnhemWorker.getSessionId(), String.valueOf(t.getTaskId()), this.destURL, this.destIP, "80",
+							this.tplName);
+				} catch (Exception e) {
+					logger.info("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
+					throw new RuntimeException("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
+				}
+				//为此任务创建调度，定时获取任务结果
+				//getResultByTask(t);
+				//更新任务状态为running
+				t.setStatus(Integer.parseInt(Constants.TASK_RUNNING));
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				t.setExecute_time(sdf.parse(new Date().toLocaleString()));
+				taskService.update(t);
+				logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]完成下发!");
+			}else{
+				logger.info("[下发任务调度]: 任务-[" + t.getTaskId() + "]下发失败!，远程存在同名任务请先删除或重新下订单!");
+			}
+
 		}
 		logger.info("[下发任务调度]:任务表扫描结束......");
 
@@ -106,17 +115,66 @@ public class Scheduler4Task {
 	private void preTaskData(Task task) {
 		// 获取此任务的资产信息
 		List<Asset> taskList = assetService.findByTask(task);
-		if(!isboolIp(taskList.get(0).getAddr())){ //判断地址是否是ip
-			this.destURL = taskList.get(0).getAddr();
+		if(taskList != null && taskList.size() > 0 ){
+			if(!isboolIp(taskList.get(0).getAddr())){ //判断地址是否是ip
+				this.destURL = taskList.get(0).getAddr();
+			}else{
+				this.destIP = taskList.get(0).getAddr();
+			}
 		}else{
-			this.destIP = taskList.get(0).getAddr();
+			//从remarks获取地址
+			if(!isboolIp(task.getRemarks())){ //判断地址是否是ip
+				this.destURL = task.getRemarks();
+			}else{
+				this.destIP = task.getRemarks();
+			}
 		}
-		// 获取此任务的服务模版名称
-		List<Serv> servList = servService.findByTask(task);
-		this.tplName = servList.get(0).getModule_name();
-		/**
-		 * 可用性与网页篡改处理
-		 */
+		// 获取此任务的服务模版名称及扫描频率集合
+		List<HashMap<String, Object>> servList = servService.findByTask(task);
+		if(servList != null && servList.size() > 0 ){
+			this.tplName = (String) servList.get(0).get("module_name");
+			/**
+			 * 可用性与网页篡改处理
+			 */
+			//获取扫描频率
+			int rate = (Integer) servList.get(0).get("scan_type");
+			if(Constants.SERVICE_KYXJCFW.equals(this.tplName)){
+				
+				switch (rate) {
+				case 0:
+					this.tplName = Constants.TPL_KYXJCFU_10M ;
+					break;
+				case 1:
+					this.tplName = Constants.TPL_KYXJCFU_30M ;
+					break;
+				case 2:
+					this.tplName = Constants.TPL_KYXJCFU_1H ;
+					break;
+				case 3:
+					this.tplName = Constants.TPL_KYXJCFU_2H ;
+					break;
+				}
+				
+			}else if(Constants.SERVICE_WYCGJCFW.equals(this.tplName)){
+				switch (rate) {
+				case 0:
+					this.tplName = Constants.TPL_WYCGJCFW_30M2;
+					break;
+				case 1:
+					this.tplName = Constants.TPL_WYCGJCFW_1H2;
+					break;
+				case 2:
+					this.tplName = Constants.TPL_WYCGJCFW_2H2;
+					break;
+				case 3:
+					this.tplName = Constants.TPL_WYCGJCFW_1D2;
+					break;
+				}
+			}
+			
+		}else{
+			this.tplName = Constants.TPL_SYKSSM;
+		}
 		
 	}
 	

@@ -16,7 +16,6 @@ import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cn.ctbri.entity.Alarm;
-import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IServService;
@@ -241,18 +240,23 @@ public class Scheduler4Result {
 	 */
 	private String getProductByTask(Task task) {
 		String productId = "";
-		List<Serv> sList = servService.findByTask(task);
-		String SName = sList.get(0).getName();
-		if ("漏洞扫描服务".equals(SName)) {
+		List<HashMap<String, Object>> sList = servService.findByTask(task);
+		if(sList != null && sList.size() > 0){
+			String SName = (String) sList.get(0).get("name");
+			if (Constants.SERVICE_LDSMFW.equals(SName)) {
+				productId = Constants.PRODUCT_LD;
+			} else if (Constants.SERVICE_EYDMJCFW.equals(SName)) {
+				productId = Constants.PRODUCT_MM;
+			} else if (Constants.SERVICE_WYCGJCFW.equals(SName)) {
+				productId = Constants.PRODUCT_CG;
+			} else if (Constants.SERVICE_GJZJCFW.equals(SName)) {
+				productId = Constants.PRODUCT_GJZ;
+			} else if (Constants.SERVICE_KYXJCFW.equals(SName)) {
+				productId = Constants.PRODUCT_KYX;
+			}
+		}else{
+			//首页快扫用默认服务引擎：漏洞扫描
 			productId = Constants.PRODUCT_LD;
-		} else if ("恶意代码监测服务".equals(SName)) {
-			productId = Constants.PRODUCT_MM;
-		} else if ("网页篡改监测服务".equals(SName)) {
-			productId = Constants.PRODUCT_CG;
-		} else if ("关键字监测服务".equals(SName)) {
-			productId = Constants.PRODUCT_GJZ;
-		} else if ("可用性监测服务".equals(SName)) {
-			productId = Constants.PRODUCT_KYX;
 		}
 		return productId;
 	}

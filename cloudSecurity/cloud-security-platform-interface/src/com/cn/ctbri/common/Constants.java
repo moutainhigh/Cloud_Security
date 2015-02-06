@@ -86,22 +86,42 @@ public class Constants {
 	public static final String SCANTYPE_MONTH = "3"; 
 	
 	/**
-	 * 任务模版<br>
-	 * 漏洞扫描服务
+	 * 漏洞扫描服务<br>
+	 *对应保存在服务表中
 	 */
-	public static final String TPL_LDSMFU = "漏洞扫描服务"; 
+	public static final String SERVICE_LDSMFW = "漏洞扫描服务"; 
+	
+	/**
+	 * 恶意代码检测服务<br>
+	 * 对应保存在服务表中
+	 */
+	public static final String SERVICE_EYDMJCFW = "恶意代码监测服务"; 
+	
+	/**
+	 * 关键字监测服务<br>
+	 * 对应保存在服务表中
+	 */
+	public static final String SERVICE_GJZJCFW = "关键字监测服务"; 
+	
+	/**
+	 * 关键字监测服务<br>
+	 * 对应保存在服务表中
+	 */
+	public static final String SERVICE_KYXJCFW = "可用性监测服务"; 
+	
+	/**
+	 * 关键字监测服务<br>
+	 * 对应保存在服务表中
+	 */
+	public static final String SERVICE_WYCGJCFW = "网页篡改监测服务"; 
+	
+	
 	
 	/**
 	 * 任务模版<br>
-	 * 恶意代码检测服务
+	 * 可用性监测服务-周期1小时
 	 */
-	public static final String TPL_EYDMJCFU = "恶意代码监测服务"; 
-	
-	/**
-	 * 任务模版<br>
-	 * 关键字监测服务
-	 */
-	public static final String TPL_GJZJCFU = "关键字监测服务"; 
+	public static final String TPL_KYXJCFU_2H = "可用性监测服务-周期2小时"; 
 	
 	/**
 	 * 任务模版<br>
@@ -111,9 +131,47 @@ public class Constants {
 	
 	/**
 	 * 任务模版<br>
+	 * 可用性监测服务-周期1小时
+	 */
+	public static final String TPL_KYXJCFU_30M = "可用性监测服务-周期30分钟"; 
+	
+	/**
+	 * 任务模版<br>
+	 * 可用性监测服务-周期1小时
+	 */
+	public static final String TPL_KYXJCFU_10M = "可用性监测服务-周期10分钟"; 
+	
+	
+	
+	/**
+	 * 任务模版<br>
 	 * 网页篡改监测服务-周期2小时深度2
 	 */
-	public static final String TPL_WYCGJCFW_2H2 = "网页篡改监测服务-周期2小时深度2"; 
+	public static final String TPL_WYCGJCFW_1D2 = "网页篡改监测服务-周期1天深度2"; 
+	
+	/**
+	 * 任务模版<br>
+	 * 网页篡改监测服务-周期2小时深度2
+	 */
+	public static final String TPL_WYCGJCFW_2H2 = "网页篡改监测服务-周期2小时深度2";
+	
+	/**
+	 * 任务模版<br>
+	 * 网页篡改监测服务-周期2小时深度2
+	 */
+	public static final String TPL_WYCGJCFW_1H2 = "网页篡改监测服务-周期1小时深度2";
+	
+	/**
+	 * 任务模版<br>
+	 * 网页篡改监测服务-周期2小时深度2
+	 */
+	public static final String TPL_WYCGJCFW_30M2 = "网页篡改监测服务-周期30分钟深度2";
+	
+	/**
+	 * 任务模版<br>
+	 * 首页快速扫描模版
+	 */
+	public static final String TPL_SYKSSM = "首页快速扫描模版";
 	
 	/**
 	 * 告警等级<br>
