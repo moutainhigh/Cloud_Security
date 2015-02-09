@@ -23,6 +23,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
@@ -347,7 +349,10 @@ public class OrderMgrController {
         
         Map<String, Object> m = new HashMap<String, Object>();
         m.put("orderId", orderId);
-        
+        Scheduler4Task task = new Scheduler4Task();
+        WebApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
+        task.setAc(ac);
+        task.setTaskByOrder(order);
         //object转化为Json格式
         JSONObject JSON = objectToJson(response, m);
         try {
@@ -356,8 +361,6 @@ public class OrderMgrController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        Scheduler4Task task = new Scheduler4Task();
-//        task.setTaskByOrder(order);
         //return "/source/page/order/order";
     }
 	
