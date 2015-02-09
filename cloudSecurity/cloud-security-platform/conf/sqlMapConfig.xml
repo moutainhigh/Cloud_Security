@@ -25,5 +25,6 @@
 		<mapper resource="com/cn/ctbri/entity/TaskMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/Alarm.xml"/>
 		<mapper resource="com/cn/ctbri/entity/AuthorityMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/Authority_UserTypeMapper.xml"/>
 	</mappers>
 </configuration>  
