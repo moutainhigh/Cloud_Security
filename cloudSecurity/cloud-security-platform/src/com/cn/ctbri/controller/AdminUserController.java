@@ -200,6 +200,24 @@ public class AdminUserController {
 		return "redirect:/adminUserManageUI.html";
 	}
 	/**
+	 * 功能描述：修改用户
+	 *		 @time 2015-2-9
+	 */
+	@RequestMapping("/adminEditUser.html")
+	public String edit(User user){
+		String realName = "";
+		try {//中文乱码
+			realName = new String(user.getRealName().getBytes("ISO-8859-1"), "UTF-8");
+			user.setRealName(realName);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		userService.update(user);
+		return "redirect:/adminUserManageUI.html";
+	}
+	
+	
+	/**
 	 * 功能描述：检查删除用户
 	 *		 @time 2015-2-2
 	 */

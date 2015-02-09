@@ -22,13 +22,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update cs_user
 		<set>
 			<if test="name!=null">
-			name=#{name},
+				name=#{name},
 			</if>
 			<if test="mobile!=null">
-			mobile=#{mobile},
+				mobile=#{mobile},
 			</if>
 			<if test="email!=null">
-			email=#{email},
+				email=#{email},
+			</if>
+			<if test="realName!=null">
+				realName=#{realName},
+			</if>
+			<if test="type!=null">
+				type=#{type},
 			</if>
 		</set>
 		where id=#{id}

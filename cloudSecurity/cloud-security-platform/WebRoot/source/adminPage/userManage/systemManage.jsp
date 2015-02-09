@@ -18,7 +18,7 @@
 <!--头部代码-->
 <div class="head_bj b_head">
   <div class="head">
-    <div class="logo"><img src="images/b_logo2.jpg"/></div>
+    <div class="logo"><img src="${ctx}/source/adminImages/b_logo2.jpg"/></div>
     <div class="list b_list">
       <ul>
         <li><a href="${ctx}/adminUserManageUI.html" class="white">用户管理</a></li>
