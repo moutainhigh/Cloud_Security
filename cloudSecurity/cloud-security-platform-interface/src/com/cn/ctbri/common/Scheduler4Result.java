@@ -16,8 +16,10 @@ import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IAlarmService;
+import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskService;
 
@@ -31,16 +33,20 @@ public class Scheduler4Result {
 
 	static Logger logger = Logger.getLogger(Scheduler4Result.class.getName());
 
+	private static String taskpage;
+	
 	@Autowired
 	private IAlarmService alarmService;
-
-	private static String taskpage;
 
 	@Autowired
 	private IServService servService;
 
 	@Autowired
 	private ITaskService taskService;
+	
+	@Autowired
+	private IOrderService orderService;
+	
 
 	static {
 		try {
@@ -79,6 +85,15 @@ public class Scheduler4Result {
 				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId()),
 						getProductByTask(task), 0, 500);   //获取全部告警
 				aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID);
+				if(aList.size() > 0){
+					//更新订单告警状态
+					List<Order> oList = orderService.findOrderByTask(task);
+					if(oList.size() > 0){
+						Order o = oList.get(0);
+						o.setStatus(Integer.parseInt(Constants.ORDERALARM_YES));
+						orderService.update(o);
+					}
+				}
 				// 插入报警表
 				for (Alarm a : aList) {
 					alarmService.saveAlarm(a);

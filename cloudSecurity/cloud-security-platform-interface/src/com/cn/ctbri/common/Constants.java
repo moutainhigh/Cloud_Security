@@ -188,5 +188,17 @@ public class Constants {
 	 * 0 :低危
 	 */
 	public static final String ALARMLEVEL_LOW = "0"; 
+	
+	/**
+	 * 订单告警状态<br>
+	 * 0 :没有漏洞
+	 */
+	public static final String ORDERALARM_NO = "0"; 
+	
+	/**
+	 * 订单告警状态<br>
+	 * 1 :存在漏洞
+	 */
+	public static final String ORDERALARM_YES = "1"; 
 
 }
