@@ -44,10 +44,10 @@
 .ser_change a{width:60px;height:22px;text-align:center;line-height:22px;display:inline-block;background:#e0e0e0;color:#9e9e9e;font-size:14px;margin-right:10px;}
 .ser_list ul .nomr{margin-right:0;}
 /*模态框*/
-#modelbox{width:100%; height:100%; position:absolute; top:0; left:0;  background:#000;  filter:alpha(opacity=10); opacity:0.1; z-index:100;display:none; }
+.modelbox{width:100%; height:100%; position:absolute; top:0; left:0;  background:#000;  filter:alpha(opacity=10); opacity:0.1; z-index:100;display:none; }
 .box_logoIn{width:518px;height:356px;position:fixed; top:50%; left:0px; z-index:101; text-align:center; background:url(../adminImages/b_modelbox_bg.png) no-repeat;display:none;}
 .add_ser_top{height:60px;width:440px;border-bottom:1px solid #e0e0e0;line-height:60px;margin-left:32px;margin-bottom:32px;padding-top:10px}
-#close{float:right;margin-right:-10px;width:20px;padding-top:10px;cursor:pointer;padding-left:0;}
+.add_ser_top .modelclose{float:right;margin-right:-10px;width:20px;padding-top:10px;cursor:pointer;padding-left:0;}
 .add_ser_top p{float:left;width:400px;color:#239dc8;font-size:20px;padding-left:24px;}
 .ser_div{height:38px;line-height:38px;color:#888888;font-size:16px;padding-left:82px;padding-bottom:14px;}
 .ser_div p,.ser_div input,.ser_div select{float:left;margin-right:14px;}
