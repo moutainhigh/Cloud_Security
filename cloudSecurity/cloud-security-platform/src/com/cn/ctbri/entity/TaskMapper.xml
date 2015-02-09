@@ -19,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入任务信息 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO cs_task
-		(name,execute_time,status,remarks) 
-		VALUES(#{name,jdbcType=VARCHAR},#{execute_time,jdbcType=DATE},#{status},#{remarks})
+		(order_asset_Id,execute_time,status,remarks) 
+		VALUES( #{order_asset_Id} , #{execute_time},#{status},#{remarks})
 	</insert>
 </mapper>
