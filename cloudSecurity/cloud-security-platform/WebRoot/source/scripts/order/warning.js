@@ -334,7 +334,8 @@ $(function(){
                             {
                                 name:'低',
                                 type:'line',
-                                stack: '总量',
+//                                stack: '总量',
+                                smooth: true,
                                 itemStyle: {normal: {areaStyle: {type: 'default'}}},
 //                                data:[120, 132, 101, 134, 90, 230, 210]
                                 data: testLineData()
@@ -342,7 +343,8 @@ $(function(){
                             {
                                 name:'中',
                                 type:'line',
-                                stack: '总量',
+//                                stack: '总量',
+                                smooth: true,
                                 itemStyle: {normal: {areaStyle: {type: 'default'}}},
 //                                data:[220, 182, 191, 234, 290, 330, 310]
                                 data: testLineData2()
@@ -350,7 +352,8 @@ $(function(){
                             {
                                 name:'高',
                                 type:'line',
-                                stack: '总量',
+//                                stack: '总量',
+                                smooth: true,
                                 itemStyle: {normal: {areaStyle: {type: 'default'}}},
 //                                data:[150, 232, 201, 154, 190, 330, 410]
                                 data: testLineData3()
