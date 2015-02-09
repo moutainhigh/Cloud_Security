@@ -14,6 +14,10 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.SimpleTrigger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.dao.OrderAssetDao;
@@ -30,29 +34,20 @@ public class Scheduler4Task implements Job{
 	
 	static Logger logger = Logger.getLogger(Scheduler4Task.class.getName());
 	
-	/**
-	 * 任务执行预制时间点
-	 */
-//	/private static String tasktime = "";
+	WebApplicationContext ac;
 	
-	private TaskDao taskDao;
-	
-	private OrderAssetDao orderAssetDao;
-	
-	//private OrderDao serviceDao;
-	
-	private Order order;
-	
-	//private String destURL = "";
-	
-	//private String destIP = "";
-	
-	static{
+	public WebApplicationContext getAc() {
+        return ac;
+    }
+
+    public void setAc(WebApplicationContext ac) {
+        this.ac = ac;
+    }
+
+    static{
 		try {
 			Properties p = new Properties();
 			p.load(Scheduler4Task.class.getClassLoader().getResourceAsStream("arnhem.properties"));
-			//获取预制时间点 
-			//tasktime= p.getProperty("TASK_TIME");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -61,7 +56,9 @@ public class Scheduler4Task implements Job{
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		
 		String orderId = arg0.getJobDetail().getJobDataMap().getString("orderId");
-		System.out.println("-------------------------------" + orderId);
+		TaskDao taskDao = (TaskDao) arg0.getJobDetail().getJobDataMap().get("taskDao");
+		OrderAssetDao orderAssetDao = (OrderAssetDao) arg0.getJobDetail().getJobDataMap().get("orderAssetDao");
+		
 		/**
 		 * 定时要job任务执行的逻辑
 		 */
@@ -78,7 +75,6 @@ public class Scheduler4Task implements Job{
 			task.setOrder_asset_Id(oa.getId());
 			//插入一条任务数据  获取任务id
 			int taskId = taskDao.insert(task);
-			
 			///*******************************
 			//调用接口下发任务   由接口应用扫描任务表 下发任务
 			//ArnhemWorker.lssuedTask(ArnhemWorker.getSessionId(), String.valueOf(taskId), destURL, destIP, "80", "");
@@ -88,7 +84,8 @@ public class Scheduler4Task implements Job{
 	}
 	
 	public void setTaskByOrder(Order o) throws SchedulerException{
-		this.setOrder(o);
+	    TaskDao taskDao = (TaskDao) ac.getBean("taskDao");
+		OrderAssetDao orderAssetDao = (OrderAssetDao) ac.getBean("orderAssetDao");
 		//获取订单详情信息 
 		Date beginDate = o.getBegin_date();
 		Date endDate = o.getEnd_date();
@@ -98,9 +95,12 @@ public class Scheduler4Task implements Job{
 		Scheduler scheduler = schedFact.getScheduler();
 		// 创建一个JobDetail，指明name，groupname，以及具体的Job类名，
 		//该Job负责定义需要执行任务
-		JobDetail jobDetail = new JobDetail("job"+order.getId(), Scheduler.DEFAULT_GROUP,Scheduler4Task.class);
+		JobDetail jobDetail = new JobDetail("job"+o.getId(), Scheduler.DEFAULT_GROUP,Scheduler4Task.class);
 		jobDetail.getJobDataMap().put("type", "FULL");
 		jobDetail.getJobDataMap().put("orderId", o.getId());
+		jobDetail.getJobDataMap().put("orderAssetDao", orderAssetDao);
+		jobDetail.getJobDataMap().put("taskDao", taskDao);
+		
 		//根据订单信息创建触发器  设置调度策略
 		if(Integer.parseInt(Constants.ORDERTYPE_LONG) == type){
 			CronTrigger trigger = new CronTrigger("CronTrigger","CronGroup");
@@ -149,13 +149,6 @@ public class Scheduler4Task implements Job{
 		}
 		//开始调度任务
 		scheduler.start();
-	}
-	public Order getOrder() {
-		return order;
-	}
-
-	public void setOrder(Order order) {
-		this.order = order;
 	}
 
 }
