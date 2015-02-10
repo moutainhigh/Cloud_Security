@@ -161,7 +161,7 @@ $(function(){
 				   'ip':ip};
     	$.post("/cloud-security-platform/checkOrderAsset.html", obj, function(data){
     		if(data.assetNames!=null){
-    			$(".assets_msg").eq(index).html(data.assetNames + "不能用,请重新选择!");
+    			$(".assets_msg").eq(index).html('资产('+data.assetNames+')存在扫描频率重叠的同一类型服务订单,请重新选择!');
     		}else if(data.ipText){
     			alert("ip不可用");
     		}else{
