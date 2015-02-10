@@ -191,14 +191,14 @@ public class Constants {
 	
 	/**
 	 * 订单告警状态<br>
-	 * 0 :没有漏洞
+	 * 1 :任务完成 没有漏洞
 	 */
-	public static final String ORDERALARM_NO = "0"; 
+	public static final String ORDERALARM_NO = "1"; 
 	
 	/**
 	 * 订单告警状态<br>
-	 * 1 :存在漏洞
+	 * 2 :任务完成 存在漏洞
 	 */
-	public static final String ORDERALARM_YES = "1"; 
+	public static final String ORDERALARM_YES = "2"; 
 
 }
