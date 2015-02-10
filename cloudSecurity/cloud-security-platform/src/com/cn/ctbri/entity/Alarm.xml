@@ -57,6 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="level!=null">
             and a.level=#{level}
         </if>
+        order by a.level desc
     </select>
     
     <!-- 根据orderid查询任务数  -->
