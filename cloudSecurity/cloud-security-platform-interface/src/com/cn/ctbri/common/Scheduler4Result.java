@@ -85,14 +85,16 @@ public class Scheduler4Result {
 				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId()),
 						getProductByTask(task), 0, 500);   //获取全部告警
 				aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID);
-				if(aList.size() > 0){
-					//更新订单告警状态
-					List<Order> oList = orderService.findOrderByTask(task);
-					if(oList.size() > 0){
-						Order o = oList.get(0);
+				//更新订单告警状态
+				List<Order> oList = orderService.findOrderByTask(task);
+				if(oList.size() > 0){
+					Order o = oList.get(0);
+					if(aList.size() > 0){
 						o.setStatus(Integer.parseInt(Constants.ORDERALARM_YES));
-						orderService.update(o);
+					}else{
+						o.setStatus(Integer.parseInt(Constants.ORDERALARM_NO));
 					}
+					orderService.update(o);
 				}
 				// 插入报警表
 				for (Alarm a : aList) {
