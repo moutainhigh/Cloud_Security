@@ -64,7 +64,7 @@ $(function(){
                                 axisLine: {            // 坐标轴线
                                     show: true,        // 默认显示，属性show控制显示与否
                                     lineStyle: {       // 属性lineStyle控制线条样式
-                                        color: [[0.4, 'lightgreen'],[0.8, 'orange'],[1, 'skyblue']], 
+                                        color: [[0.4, 'lightgreen'],[0.8, 'orange'],[1, 'red']], 
 //                                    	color: testGauge(),
                                         width: 30
                                     }
@@ -192,6 +192,7 @@ $(function(){
 //                            data:['低','中','高']
                             data:testX()
                         },
+                        color:['lightgreen', 'orange','red'],
                         toolbox: {
                             show : true,
                             feature : {
