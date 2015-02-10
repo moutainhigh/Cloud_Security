@@ -14,5 +14,6 @@
         <mapper resource="com/cn/ctbri/entity/TaskMapper.xml" /> 
         <mapper resource="com/cn/ctbri/entity/AssetMapper.xml" /> 
         <mapper resource="com/cn/ctbri/entity/ServMapper.xml" /> 
+        <mapper resource="com/cn/ctbri/entity/OrderMapper.xml" /> 
     </mappers> 
 </configuration>  
