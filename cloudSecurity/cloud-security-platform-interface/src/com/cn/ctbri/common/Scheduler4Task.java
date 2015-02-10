@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -95,7 +96,12 @@ public class Scheduler4Task {
 				//更新任务状态为running
 				t.setStatus(Integer.parseInt(Constants.TASK_RUNNING));
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				t.setExecute_time(sdf.parse(new Date().toLocaleString()));
+				TimeZone tz = TimeZone.getTimeZone("Etc/GMT-8");
+			    TimeZone.setDefault(tz);
+			    Date date = new Date();//获得系统时间.
+			    String nowTime = sdf.format(date);//将时间格式转换成符合Timestamp要求的格式.
+			    t.setExecute_time(sdf.parse(nowTime));
+			    
 				taskService.update(t);
 				logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]完成下发!");
 			}else{
