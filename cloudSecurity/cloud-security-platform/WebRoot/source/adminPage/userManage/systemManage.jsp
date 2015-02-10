@@ -1,6 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -12,6 +11,9 @@
 <link href="${ctx}/source/adminCss/backstage.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/backstage.js"></script>
+<script src="${ctx}/source/scripts/echarts/esl.js"></script>
+<script src="${ctx}/source/scripts/echarts/echarts.js"></script>
+<script src="${ctx}/source/scripts/adminJs/sysManage.js"></script>
 </head>
 
 <body>
@@ -61,7 +63,9 @@
                     </div>
                     <div class="zy_top3">
                     	<div class="zy_top_l fl">
-                        	<div class="nc_jpg"><img src="${ctx}/source/adminImages/system3.jpg"></div>
+                        	<div class="nc_jpg" id="system3">
+                        		<!-- <img src="${ctx}/source/adminImages/system3.jpg"> -->
+                        	</div>
                             <div class="nc_font">
                             	<p><span class="nc_p">总内存</span><span class="nc_num">80GB</span></p>
                                 <p><span class="nc_p">已使用内存</span><span class="nc_num_r">52.6GB</span></p>
@@ -76,11 +80,13 @@
                     </div>
                 </div>
                 <div class="zy_right fl">
-                	<div class="zy_rtop1">
-                    	<img src="${ctx}/source/adminImages/system5.jpg">
+                	<div class="zy_rtop1" id="system5">
+                    	<!-- <img src="${ctx}/source/adminImages/system5.jpg"> -->
                     </div>
                     <div class="zy_rtop2">
-                    	<img src="${ctx}/source/adminImages/system6.jpg">
+                    	<!-- <img src="${ctx}/source/adminImages/system6.jpg"> -->
+                    	<div>磁盘总大小：${totalSpace}GB</div>
+                    	
                     </div>
                     <div class="zy_top2 h30 w364">
                     	<p class="system_title">磁盘占用情况</p>

@@ -2,16 +2,9 @@ package com.cn.ctbri.disk;
 
 public class SysDisk {
 
-	private String path;//磁盘路径
 	private Long freeSpace;//未用
 	private Long usableSpace;//已用
 	private Long totalSpace;//总大小
-	public String getPath() {
-		return path;
-	}
-	public void setPath(String path) {
-		this.path = path;
-	}
 	public Long getFreeSpace() {
 		return freeSpace;
 	}
