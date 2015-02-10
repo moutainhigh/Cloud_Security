@@ -271,7 +271,9 @@ $(function(){
         ],
         function (ec) {//回调函数
             //--- 趋势图 ---
-            var myChart = ec.init(document.getElementById('aqpf'));
+        	if($('#type').val()==1){
+        		var myChart = ec.init(document.getElementById('aqpf'));
+        	}
           //后台获取数据
             $.ajax({
             	type : "post",
