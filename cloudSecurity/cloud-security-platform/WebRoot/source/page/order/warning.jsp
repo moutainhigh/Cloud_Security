@@ -65,6 +65,7 @@
        <c:forEach var="order" items="${orderList}" varStatus="status">
         <div class="gj_title">
             <input type="hidden" value="${order.id }" id="orderId"/>
+            <input type="hidden" value="${order.type }" id="type"/>
             <p><span class="bigfont">${order.name }</span><span>(  订单编号：${order.id }  )</span></p>            
             <p>资产：<span>
             <c:forEach var="asset" items="${assetList}" varStatus="status">${asset.name }&nbsp;&nbsp;</c:forEach>
