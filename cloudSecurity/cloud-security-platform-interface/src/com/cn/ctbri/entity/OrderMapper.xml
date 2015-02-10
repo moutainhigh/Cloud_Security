@@ -128,7 +128,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <!-- 根据任务查询订单信息 -->
-    <select id="findOrderByTask" resultType="OrderRM" parameterType="com.cn.ctbri.entity.Task">
+    <select id="findOrderByTask" resultMap="OrderRM" parameterType="com.cn.ctbri.entity.Task">
         select o.*
         from cs_task t join cs_order_asset oa 
         on t.order_asset_Id = oa.id join cs_order o 
