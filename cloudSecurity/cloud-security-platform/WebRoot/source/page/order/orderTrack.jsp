@@ -139,8 +139,11 @@ $(document).ready(function(){
 		                    <c:if test="${list.end_date<temp}">已结束</c:if>
 	                    </c:if>
 	                    <c:if test="${list.type==2}">
-                            <c:if test="${list.begin_date>=temp}">服务中</c:if>
-                            <c:if test="${list.begin_date<temp}">已结束</c:if>
+                            <!-- <c:if test="${list.begin_date>=temp}">服务中</c:if> -->
+                            <!-- <c:if test="${list.begin_date<temp}">服务中</c:if> -->
+                            <c:if test="${list.status!=0}">已结束</c:if>
+                            <c:if test="${list.status==0}">扫描中</c:if>
+                            
                         </c:if>
 	                </td>
 	                <td>
@@ -149,8 +152,8 @@ $(document).ready(function(){
 	                <td><fmt:formatDate value="${list.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>~<fmt:formatDate value="${list.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                     <td><fmt:formatDate value="${list.create_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 	                <td>
-	                   <c:if test="${list.status==0}"><img src="${ctx}/source/images/user_ico_2.jpg" /></c:if>
-                       <c:if test="${list.status==1}"><a href="${ctx}/warningInit.html?orderId=${list.id }"><img src="${ctx}/source/images/user_ico_1.jpg" /></a></c:if>
+	                   <c:if test="${list.status!=2}"><img src="${ctx}/source/images/user_ico_2.jpg" /></c:if>
+                       <c:if test="${list.status==2}"><a href="${ctx}/warningInit.html?orderId=${list.id }"><img src="${ctx}/source/images/user_ico_1.jpg" /></a></c:if>
 	                </td>
 	              </tr>
 	          </c:forEach>
