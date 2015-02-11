@@ -14,6 +14,10 @@
 <script src="${ctx}/source/scripts/echarts/esl.js"></script>
 <script src="${ctx}/source/scripts/echarts/echarts.js"></script>
 <script src="${ctx}/source/scripts/adminJs/sysManage.js"></script>
+<script type="text/javascript" src="http://cdn.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/exporting.js"></script>
+<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts-3d.js"></script>
 </head>
 
 <body>
@@ -67,12 +71,12 @@
                         		<!-- <img src="${ctx}/source/adminImages/system3.jpg"> -->
                         	</div>
                             <div class="nc_font">
-                            	<p><span class="nc_p">总内存</span><span class="nc_num">80GB</span></p>
-                                <p><span class="nc_p">已使用内存</span><span class="nc_num_r">52.6GB</span></p>
+                            	<p><span class="nc_p">总内存</span><span class="nc_num">${total}MB</span></p>
+                                <p><span class="nc_p">已使用内存</span><span class="nc_num_r">${use}MB</span></p>
                             </div>
                         </div>
-                        <div class="zy_top_r fl">
-                        	<img src="${ctx}/source/adminImages/system4.jpg">
+                        <div class="zy_top_r fl" id="system4">
+                        	<!-- <img src="${ctx}/source/adminImages/system4.jpg"> -->
                         </div>
                     </div>
                     <div class="zy_top2 h30">

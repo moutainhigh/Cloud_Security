@@ -35,8 +35,18 @@ public class SystemManageController {
 		SysDisk sys = null;
 		if(diskUsage!=null && diskUsage.size()>0){
 			sys = diskUsage.get(0);
-			model.addAttribute("totalSpace", sys.getTotalSpace());
+			model.addAttribute("totalSpace", sys.getTotalSpace());//磁盘空间
 		}
+		long free=0;//空闲内存
+		long use=0;//已用内存
+		long total=0;//总内存
+		int kb=1024;
+		Runtime rt=Runtime.getRuntime(); 
+		total=rt.totalMemory();
+		free=rt.freeMemory();
+		use=total-free;
+		model.addAttribute("total", total/kb/kb);
+		model.addAttribute("use", use/kb/kb);
 		return "/source/adminPage/userManage/systemManage";
 	}
 	/**
@@ -76,17 +86,19 @@ public class SystemManageController {
 	@ResponseBody
 	public String sysMemoryUsage(){
 		//获取内存使用情况数据
-		 OperatingSystemMXBean osmb = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();   
-		 	JSONArray json = new JSONArray();
-			JSONObject jo1 = new JSONObject();
-			JSONObject jo2 = new JSONObject();
-			//JSONObject jo3 = new JSONObject();
-			jo1.put("label", "0");
-			jo1.put("value", osmb.getTotalPhysicalMemorySize() / 1024/1024);//系统物理内存总计
-			json.add(jo1);
-			jo2.put("label", "1");
-			jo2.put("value", osmb.getFreePhysicalMemorySize() / 1024/1024);//系统物理可用内存总计
-			json.add(jo2);
+		long free=0;//空闲内存
+		long use=0;//已用内存
+		long total=0;//总内存
+		int kb=1024; 
+		Runtime rt=Runtime.getRuntime(); 
+		total=rt.totalMemory();
+		free=rt.freeMemory();
+		use=total-free;
+		JSONArray json = new JSONArray();
+		JSONObject jo1 = new JSONObject();
+		jo1.put("use", use/kb/kb);
+		jo1.put("total", total/kb/kb);
+		json.add(jo1);
 		return json.toString();
 	}
 }

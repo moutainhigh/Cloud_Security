@@ -121,12 +121,17 @@ $(function(){
         ],
         function (ec) {//回调函数
             //--- 仪表盘 ---
-            var myChart = ec.init(document.getElementById('system3'));
+        	var myChart = ec.init(document.getElementById('system3'));
             //后台获取数据
             $.ajax({
             	url:"sysMemoryUsage.html",
                 dataType:"json",
                 success:function(data){
+                	$.each(data,function(i,p){
+                    	use=p['use'];
+                    	total=p['total'];
+//                    	valueGauge[i]=[p['ratio'], temp];
+                    });
                 	option = {
                 		    tooltip : {
                 		        formatter: "{a} <br/>{b} : {c}%"
@@ -144,9 +149,10 @@ $(function(){
                 		            name:'业务指标',
                 		            type:'gauge',
                 		            splitNumber: 5,       // 分割段数，默认为5
+                		            max: total,				//最大值
                 		            axisLine: {            // 坐标轴线
                 		                lineStyle: {       // 属性lineStyle控制线条样式
-                		                    color: [[0.2, '#228b22'],[0.8, '#48b'],[1, '#ff4500']], 
+                		                    color: [[0.8, '#48b'],[1, '#ff4500']], 
                 		                    width: 8
                 		                }
                 		            },
@@ -186,32 +192,121 @@ $(function(){
                 		                    fontWeight: 'bolder'
                 		                }
                 		            },
-                		            data:[{value: 50, name: ''}]
+                		            data:[{value: use, name: ''}]
                 		        }
                 		    ]
                 		};
 
                 	//图形展示
-                    //myChart.setOption(option);
-                    clearInterval(timeTicket);
-                    var timeTicket = setInterval(function (){
-                        option.series[0].data[0].value = (Math.random()*100).toFixed(2) - 0;
-                        myChart.setOption(option, true);
-                    },2000)
+//                    myChart.setOption(option);
+//                    clearInterval(timeTicket);
+//                    var timeTicket = setInterval(function (){
+//                        option.series[0].data[0].value = (Math.random()*100).toFixed(2) - 0;
+                       myChart.setOption(option, true);
+//                    },1000)
                     window.onresize = myChart.resize;
                 }//ajax执行后台
             }); 
         }
     );
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+   
+ //内存动态图                                                                   
+$(document).ready(function() {                                                  
+    Highcharts.setOptions({                                                     
+        global: {                                                               
+            useUTC: false                                                       
+        }                                                                       
+    });         
+    //http://www.blogjava.net/iamhuzl/archive/2012/08/03/384652.html
+    var chart; 
+    var use = null;
+    var total = null;
+    $('#system4').highcharts({                                                
+        chart: {                                                                
+            type: 'spline',                                                     
+            animation: Highcharts.svg, // don't animate in old IE               
+            marginRight: 10,                                                    
+            events: {                                                           
+                load: function() {                                              
+                	                                                          
+                    // set up the updating of the chart each second             
+                    var series = this.series[0];                                
+                    setInterval(function() {  
+                    	$.ajax({
+                        	url:"sysMemoryUsage.html",
+                            dataType:"json",
+                            success:function(data){
+                            	
+                            	$.each(data,function(i,p){
+                            		use=p['use'];
+                                	total=p['total'];
+                                });
+                            	
+                            	
+                            	var x = (new Date()).getTime(), // current time         
+                            	y = use;                                  
+                            	series.addPoint([x, y], true, true);                    
+                            }
+                    	}); 
+                    }, 1000);                                                   
+                }                                                               
+            }                                                                   
+        },                                                                      
+        title: {                                                                
+            text: ''                                            
+        },                                                                      
+        xAxis: {                                                                
+            type: 'datetime',                                                   
+            tickPixelInterval: 150                                              
+        },                                                                      
+        yAxis: {                                                                
+            title: {                                                            
+                text: ''                                                   
+            },                                                                  
+            plotLines: [{                                                       
+                value: 0,                                                       
+                width: total,                                                       
+                color: '#808080'                                                
+            }]                                                                  
+        },                                                                      
+        tooltip: {                                                              
+            formatter: function() {                                             
+                    return '<b>'+ this.series.name +'</b><br>'+                
+                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br>'+
+                    Highcharts.numberFormat(this.y, 2);                         
+            }                                                                   
+        },                                                                      
+        legend: {                                                               
+            enabled: false                                                      
+        },                                                                      
+        exporting: {                                                            
+            enabled: false                                                      
+        },   
+        credits: {
+            enabled: false
+       },
+        series: [{                                                              
+            name: '内存使用情况',                                                
+            data: (function() {                                                 
+                // generate an array of random data                             
+                var data = [],                                                  
+                    time = (new Date()).getTime(),                              
+                    i;                                                          
+                                                                                
+                for (i = -19; i <= 0; i++) {                                    
+                    data.push({                                                 
+                        x: time + i * 1000,                                     
+                        y: use                                        
+                    });                                                         
+                }                                                               
+                return data;                                                    
+            })()                                                                
+        }]                                                                      
+    });                                                                         
+});                                                                             
+                                                                                
+
+
+
     
 });
