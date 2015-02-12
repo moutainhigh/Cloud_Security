@@ -105,6 +105,51 @@ $(function(){
             }); 
         }
     );
+    
+    //3D饼图
+//    $('#system5').highcharts({
+//    	
+//    	
+//        chart: {
+//            type: 'pie',
+//            options3d: {
+//                enabled: true,
+//                alpha: 50
+//            }
+//        },
+//        title: {
+//            text: ''
+//        },
+//        subtitle: {
+//            text: ''
+//        },
+//        plotOptions: {
+//            pie: {
+//                innerSize: 100,
+//                depth: 40//深度
+//            }
+//        },
+//        series: [{
+//        	
+//            name: 'Delivered amount',
+//            data: [
+//                ['Bananas', 8],
+//                ['Kiwi', 3],
+//                ['Mixed nuts', 1],
+//                ['Oranges', 6],
+//                ['Apples', 8],
+//                ['Pears', 4], 
+//                ['Clementines', 4],
+//                ['Reddish (bag)', 1],
+//                ['Grapes (bunch)', 1]
+//            ]
+//        }]
+//    });
+    
+    
+    
+    
+    
     function testX(){
     	return label;
     }
@@ -134,7 +179,7 @@ $(function(){
                     });
                 	option = {
                 		    tooltip : {
-                		        formatter: "{a} <br/>{b} : {c}%"
+                		        formatter: "{a} <br/>{b} : {c}"
                 		    },
 //                		    toolbox: {
 //                		        show : true,
@@ -146,9 +191,9 @@ $(function(){
 //                		    },
                 		    series : [
                 		        {
-                		            name:'业务指标',
+                		            name:'内存已使用',
                 		            type:'gauge',
-                		            splitNumber: 5,       // 分割段数，默认为5
+                		            splitNumber: 4,       // 分割段数，默认为5
                 		            max: total,				//最大值
                 		            axisLine: {            // 坐标轴线
                 		                lineStyle: {       // 属性lineStyle控制线条样式
@@ -198,18 +243,39 @@ $(function(){
                 		};
 
                 	//图形展示
-//                    myChart.setOption(option);
-//                    clearInterval(timeTicket);
-//                    var timeTicket = setInterval(function (){
-//                        option.series[0].data[0].value = (Math.random()*100).toFixed(2) - 0;
+                    myChart.setOption(option);
+                    clearInterval(timeTicket);
+                    var timeTicket = setInterval(function (){
+                    	$.ajax({
+                        	url:"sysMemoryUsage.html",
+                            dataType:"json",
+                            success:function(data){
+                            	$.each(data,function(i,p){
+                            		useTemp=p['use'];
+//                                	valueGauge[i]=[p['ratio'], temp];
+                                });
+
+                            }//ajax执行后台
+                        });
+                    	
+                        option.series[0].data[0].value = useTemp.toFixed(2) - 0;
                        myChart.setOption(option, true);
-//                    },1000)
+                    },1000)
                     window.onresize = myChart.resize;
                 }//ajax执行后台
             }); 
         }
     );
-   
+    
+    function getData(){  
+        //使用JQuery从后台获取JSON格式的数据  
+		jQuery.getJSON('http://localhost:8080/JQueryPIC/ajax', null, function(data) {  
+		                        //为图表设置值  
+		chart.series[0].setData(data);  
+		});  
+	} 
+    
+    
  //内存动态图                                                                   
 $(document).ready(function() {                                                  
     Highcharts.setOptions({                                                     
