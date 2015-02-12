@@ -1,6 +1,7 @@
 package com.cn.ctbri.controller;
 
 import java.lang.management.ManagementFactory;
+import java.math.BigDecimal;
 import java.util.List;
 
 import net.sf.json.JSONArray;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cn.ctbri.cpuUse.MonitorServiceImpl;
 import com.cn.ctbri.disk.DiskUsage;
 import com.cn.ctbri.disk.SysDisk;
 import com.sun.management.OperatingSystemMXBean;
@@ -37,16 +39,24 @@ public class SystemManageController {
 			sys = diskUsage.get(0);
 			model.addAttribute("totalSpace", sys.getTotalSpace());//磁盘空间
 		}
-		long free=0;//空闲内存
-		long use=0;//已用内存
-		long total=0;//总内存
-		int kb=1024;
-		Runtime rt=Runtime.getRuntime(); 
-		total=rt.totalMemory();
-		free=rt.freeMemory();
+		double free=0;//空闲内存
+		double use=0;//已用内存
+		double total=0;//总内存
+		double kb=1024;
+//		Runtime rt=Runtime.getRuntime(); 
+//		total=rt.totalMemory();
+//		free=rt.freeMemory();
+//		use=total-free;
+		OperatingSystemMXBean osmb = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+		total = osmb.getTotalPhysicalMemorySize()/kb/kb/kb;
+		free = osmb.getFreePhysicalMemorySize()/kb/kb/kb;
 		use=total-free;
-		model.addAttribute("total", total/kb/kb);
-		model.addAttribute("use", use/kb/kb);
+		BigDecimal total1 = new BigDecimal(total);
+		double total2 = total1.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
+		BigDecimal use1 = new BigDecimal(use);
+		double use2 = use1.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
+		model.addAttribute("total", total2);
+		model.addAttribute("use",use2);
 		return "/source/adminPage/userManage/systemManage";
 	}
 	/**
@@ -86,19 +96,37 @@ public class SystemManageController {
 	@ResponseBody
 	public String sysMemoryUsage(){
 		//获取内存使用情况数据
-		long free=0;//空闲内存
-		long use=0;//已用内存
-		long total=0;//总内存
-		int kb=1024; 
-		Runtime rt=Runtime.getRuntime(); 
-		total=rt.totalMemory();
-		free=rt.freeMemory();
-		use=total-free;
+		double free=0;//空闲内存
+		double use=0;//已用内存
+		double total=0;//总内存
+		double kb=1024;
+		OperatingSystemMXBean osmb = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+		total = osmb.getTotalPhysicalMemorySize()/kb/kb/kb;
+		free = osmb.getFreePhysicalMemorySize()/kb/kb/kb;
+		use=total-free; 
+		BigDecimal total1 = new BigDecimal(total);
+		double total2 = total1.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
+		BigDecimal use1 = new BigDecimal(use);
+		double use2 = use1.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
+//		Runtime rt=Runtime.getRuntime(); 
+//		total=rt.totalMemory();
+//		free=rt.freeMemory();
+//		use=total-free;
 		JSONArray json = new JSONArray();
 		JSONObject jo1 = new JSONObject();
-		jo1.put("use", use/kb/kb);
-		jo1.put("total", total/kb/kb);
+		jo1.put("use", use2);
+		jo1.put("total", total2);
 		json.add(jo1);
 		return json.toString();
+	}
+	/**
+	 * 功能描述：获取cpu使用率使用情况数据
+	 *		 @time 2015-2-10
+	 */
+	@RequestMapping(value="sysCpuUsage.html")
+	@ResponseBody
+	public void sysCpuUsage(){
+		MonitorServiceImpl m = new MonitorServiceImpl();
+		m.getCpuRatioForWindows();
 	}
 }
