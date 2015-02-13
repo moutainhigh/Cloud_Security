@@ -236,7 +236,7 @@ $(function(){
     	if(orderType==2){
     		scanType="";
     	}
-    	if(beginDate>createDate){
+    	//if(beginDate>createDate){
     		//获得服务资产
 	    	var assetIds = "";
 			$(".leftTr"+index+" input:checkbox[name='serviceAssetId']:checked").each(function(){
@@ -267,10 +267,10 @@ $(function(){
 		    		getActive(4);
 		        });
 	    	}
-    	}else{
-    		alert("订单开始时间不能早于当前订单提交时间!");
-    		return;
-    	}
+//    	}else{
+//    		alert("订单开始时间不能早于当前订单提交时间!");
+//    		return;
+//    	}
     });
     
    function getActive(index){
