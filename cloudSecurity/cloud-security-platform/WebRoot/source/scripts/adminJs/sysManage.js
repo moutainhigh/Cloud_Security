@@ -327,7 +327,7 @@ $(document).ready(function() {
         },                                                                      
         yAxis: {                                                                
             title: {                                                            
-                text: ''                                                   
+                text: 'MB'                                                   
             },                                                                  
             plotLines: [{                                                       
                 value: 0,                                                       
@@ -339,7 +339,7 @@ $(document).ready(function() {
             formatter: function() {                                             
                     return '<b>'+ this.series.name +'</b><br>'+                
                     Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br>'+
-                    Highcharts.numberFormat(this.y, 2);                         
+                    Highcharts.numberFormat(this.y, 2)+'MB';                         
             }                                                                   
         },                                                                      
         legend: {                                                               
@@ -428,11 +428,11 @@ $(document).ready(function() {
                 color: '#808080'                                                
             }]                                                                  
         },                                                                      
-        tooltip: {                                                              
+        tooltip: {  
             formatter: function() {                                             
                     return '<b>'+ this.series.name +'</b><br>'+                
                     Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br>'+
-                    Highcharts.numberFormat(this.y, 2);                         
+                    Highcharts.numberFormat(this.y, 2)+'%';                         
             }                                                                   
         },                                                                      
         legend: {                                                               
