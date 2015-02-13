@@ -7,6 +7,9 @@ import java.util.List;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.hyperic.sigar.CpuPerc;
+import org.hyperic.sigar.Sigar;
+import org.hyperic.sigar.SigarException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.disk.DiskUsage;
 import com.cn.ctbri.disk.SysDisk;
+import com.cn.ctbri.util.SysInfo;
 import com.sun.management.OperatingSystemMXBean;
 
 
@@ -124,7 +128,39 @@ public class SystemManageController {
 	 */
 	@RequestMapping(value="sysCpuUsage.html")
 	@ResponseBody
-	public void sysCpuUsage(){
-		//http://www.docin.com/p-699185999.html
+	public String sysCpuUsage(){
+
+		JSONArray json = new JSONArray();
+		JSONObject jo = new JSONObject();
+		Sigar sigar = new Sigar();
+		// 方式一，主要是针对一块CPU的情况
+		CpuPerc cpu;
+		try {
+			cpu = sigar.getCpuPerc();
+			String printCpuPerc = printCpuPerc(cpu);
+			float result=new Float(printCpuPerc.substring(0,printCpuPerc.indexOf("%")));
+			jo.put("printCpuPerc", result);
+			json.add(jo);
+		} catch (SigarException e) {
+			e.printStackTrace();
+		}
+		// 方式二，不管是单块CPU还是多CPU都适用
+//		CpuPerc cpuList[] = null;
+//		try {
+//			cpuList = sigar.getCpuPercList();
+//		} catch (SigarException e) {
+//			e.printStackTrace();
+//			return;
+//		}
+//		for (int i = 0; i < cpuList.length; i++) {
+//			printCpuPerc(cpuList[i]);
+//		}
+		return json.toString();
+	
 	}
+	private String printCpuPerc(CpuPerc cpu) {
+		String format = CpuPerc.format(cpu.getCombined());// 总的使用率
+		return format;
+	} 
+
 }

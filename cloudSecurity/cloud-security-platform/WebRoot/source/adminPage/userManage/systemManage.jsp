@@ -58,8 +58,8 @@
                     	<div class="zy_top_l fl">
                         	<img src="${ctx}/source/adminImages/system1.jpg" width="249" height="164">
                         </div>
-                        <div class="zy_top_r fl">
-                        	<img src="${ctx}/source/adminImages/system2.jpg">
+                        <div class="zy_top_r fl" id="system2">
+                        	<!-- <img src="${ctx}/source/adminImages/system2.jpg"> -->
                         </div>
                     </div>
                     <div class="zy_top2">
@@ -72,7 +72,7 @@
                         	</div>
                             <div class="nc_font">
                             	<p><span class="nc_p">总内存</span><span class="nc_num">${total}MB</span></p>
-                                <p><span class="nc_p">已使用内存</span><span class="nc_num_r">${use}MB</span></p>
+                                <!-- <p><span class="nc_p">已使用内存</span><span class="nc_num_r">${use}MB</span></p> -->
                             </div>
                         </div>
                         <div class="zy_top_r fl" id="system4">
