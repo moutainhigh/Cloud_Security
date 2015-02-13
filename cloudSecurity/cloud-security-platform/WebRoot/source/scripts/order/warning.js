@@ -213,7 +213,7 @@ $(function(){
                                 saveAsImage : true
                             }
                         },
-                        calculable : true,
+                        calculable : false,
                         series : [
                             {
                                 name:'漏洞个数',
