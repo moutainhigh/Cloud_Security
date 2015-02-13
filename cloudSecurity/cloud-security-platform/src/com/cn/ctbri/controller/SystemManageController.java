@@ -126,7 +126,6 @@ public class SystemManageController {
 	@RequestMapping(value="sysCpuUsage.html")
 	@ResponseBody
 	public void sysCpuUsage(){
-		MonitorServiceImpl m = new MonitorServiceImpl();
-		m.getCpuRatioForWindows();
+		//http://www.docin.com/p-699185999.html
 	}
 }
