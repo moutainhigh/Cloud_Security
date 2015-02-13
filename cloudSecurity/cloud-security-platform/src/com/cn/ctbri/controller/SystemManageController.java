@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cn.ctbri.cpuUse.MonitorServiceImpl;
 import com.cn.ctbri.disk.DiskUsage;
 import com.cn.ctbri.disk.SysDisk;
 import com.sun.management.OperatingSystemMXBean;
