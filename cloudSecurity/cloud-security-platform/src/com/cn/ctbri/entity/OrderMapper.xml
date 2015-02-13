@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 根据订单Id查询记录 -->
     <select id="findOrderByOrderId" resultType="hashmap" parameterType="String">
-        select o.id,o.type,s.name,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status
+        select o.id,o.serviceId,o.type,s.name,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status
         from cs_order o,cs_service s
         where o.id = #{orderId} and o.serviceId = s.id
     </select>
