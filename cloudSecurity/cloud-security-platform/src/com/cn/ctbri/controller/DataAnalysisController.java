@@ -27,7 +27,7 @@ public class DataAnalysisController {
 	IOrderService orderService;
 	
 	/**
-	 * 功能描述：服务管理页面
+	 * 功能描述：数据分析页面
 	 *		 @time 2015-2-3
 	 */
 	@RequestMapping("/dataAnalysisUI.html")

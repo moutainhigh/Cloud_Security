@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.disk.DiskUsage;
 import com.cn.ctbri.disk.SysDisk;
-import com.cn.ctbri.util.SysInfo;
 import com.sun.management.OperatingSystemMXBean;
 
 
@@ -31,7 +30,7 @@ import com.sun.management.OperatingSystemMXBean;
 @Controller
 public class SystemManageController {
 	/**
-	 * 功能描述：服务管理页面
+	 * 功能描述： 系统管理页面
 	 *		 @time 2015-2-3
 	 */
 	@RequestMapping("/SystemManageUI.html")
