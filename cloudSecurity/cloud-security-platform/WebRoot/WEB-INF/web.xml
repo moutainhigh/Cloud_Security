@@ -42,6 +42,9 @@
 	    <url-pattern>*.png</url-pattern>
 	    <url-pattern>*.txt</url-pattern>
 	</servlet-mapping>
+	<!-- <session-config>   
+	<session-timeout>1</session-timeout>   
+	</session-config> -->
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
