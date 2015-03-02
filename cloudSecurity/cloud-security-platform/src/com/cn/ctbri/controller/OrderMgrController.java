@@ -42,6 +42,7 @@ import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
+import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Random;
 
@@ -105,6 +106,28 @@ public class OrderMgrController {
         return result;
 	}
 	
+	/**
+     * 功能描述： 筛选页面
+     * 参数描述：  无
+     *     @time 2015-2-2
+     */
+    @RequestMapping(value="getSession.html")
+    @ResponseBody
+    public void getSession(HttpServletResponse response,HttpServletRequest request){
+        User globle_user = (User) request.getSession().getAttribute("globle_user");
+        Map<String, Object> m = new HashMap<String, Object>();
+        m.put("globle_user", globle_user);
+        
+        //object转化为Json格式
+        JSONObject JSON = CommonUtil.objectToJson(response, m);
+        try {
+            // 把数据返回到页面
+            CommonUtil.writeToJsp(response, JSON);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
 	/**
      * 功能描述： 筛选页面
      * 参数描述：  无
@@ -191,10 +214,10 @@ public class OrderMgrController {
             m.put("ipText", true);
         }
         //object转化为Json格式
-        JSONObject JSON = objectToJson(response, m);
+        JSONObject JSON = CommonUtil.objectToJson(response, m);
         try {
             // 把数据返回到页面
-            writeToJsp(response, JSON);
+            CommonUtil.writeToJsp(response, JSON);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -239,10 +262,10 @@ public class OrderMgrController {
         m.put("servs", servs);
         
         //object转化为Json格式
-        JSONObject JSON = objectToJson(response, m);
+        JSONObject JSON = CommonUtil.objectToJson(response, m);
         try {
             // 把数据返回到页面
-            writeToJsp(response, JSON);
+            CommonUtil.writeToJsp(response, JSON);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -354,10 +377,10 @@ public class OrderMgrController {
         task.setAc(ac);
         task.setTaskByOrder(order);
         //object转化为Json格式
-        JSONObject JSON = objectToJson(response, m);
+        JSONObject JSON = CommonUtil.objectToJson(response, m);
         try {
             // 把数据返回到页面
-            writeToJsp(response, JSON);
+            CommonUtil.writeToJsp(response, JSON);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -431,38 +454,6 @@ public class OrderMgrController {
         model.addAttribute("end_date",end_datevo);  //回显结束时间
         return "/source/page/order/orderTrack";
     }
-
-	
-
-	/**
-	 * 功能描述： 把数据返回到页面
-	 * 参数描述： HttpServletResponse response, JSONObject JSON
-	 * @throws Exception 
-	 *		 @time 2015-1-12
-	 */
-	private void writeToJsp(HttpServletResponse response, JSONObject JSON)
-			throws IOException {
-		response.getWriter().write(JSON.toString());
-		response.getWriter().flush();
-	}
-	
-	/**
-	 * 功能描述：  object转化为Json格式
-	 * 参数描述： HttpServletResponse response,Map<String, Object> m
-	 * @throws Exception 
-	 *		 @time 2015-1-12
-	 */
-	private JSONObject objectToJson(HttpServletResponse response,
-			Map<String, Object> m) {
-		JSONObject JSON = JSONObject.fromObject(m);
-		response.setCharacterEncoding("utf-8");
-		response.setContentType("application/json;charset=UTF-8");
-		return JSON;
-	}
-	
-	
-	
-	
 	
 	
 }
