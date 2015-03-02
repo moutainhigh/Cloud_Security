@@ -3,19 +3,20 @@ $(function(){
 	var factory=null;//服务厂商
 	var parentC=null//服务大类
 	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
-	$(".dan_2").eq(1).hide();
-	$(".hideEnddate").hide();
-	$(".scan").hide(); 
-	//type和serviceId是从首页获取的
+	$(".dan_2").eq(1).hide();//隐藏结束下拉框时间
+	$(".hideEnddate").hide();//隐藏联系信息下的结束时间
+	$(".scan").hide(); //隐藏联系信息下的扫描频率
+	//服务类型type和服务serviceId是从首页获取的
 	var otype = $("#type").val();
 	var serviceId = $("#serviceId").val();
-	if(otype==1){
+	if(otype==1){//若是WEB云安全服务,单次不可用,长期选择状态
 		$('input:radio[name="orderType"]:eq(0)').attr("disabled", true);
 		$('input:radio[name="orderType"]:eq(1)').attr("checked",'checked');
 		$(".dan_2").eq(1).show();
-	}else if(otype==2){
+	}else if(otype==2){//Anti-DDOS云安全服务,长期不可用
 		$('input:radio[name="orderType"]:eq(1)').attr("disabled", true);
 	}
+	//根据serviceId,设置自助下单-服务配置中各服务显隐
 	if(serviceId!=null && serviceId!=""){
 		getServicePage(serviceId);
 	}
@@ -64,8 +65,21 @@ $(function(){
             		$('.peiz_center ul li').eq(5).addClass('opacity');
             		$('.peiz_center ul li').eq(6).addClass('opacity');
            		}
-        		$('.pinv').hide();
-           		getActive(1);
+        		
+        		$.ajax({ type: "POST",
+	    		     async: false, 
+	    		     url: "/cloud-security-platform/getSession.html", 
+	    		     dataType: "json", 
+//	    		     contentType: "application/json; charset=utf-8", 
+	    		     success: function(data) {
+	    		    	 $('.pinv').hide();
+	    		    	 getActive(1);
+	    		    	 }, 
+	    		     error: function(data){ 
+	    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+	    		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
+	    		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
+        		});
         	}
     	}else{
     		if(beginDate==""||beginDate==null||endDate==""||endDate==null){
@@ -92,7 +106,19 @@ $(function(){
         		}
         		$('.pinv').show();
         		$('input:radio[name="scanType"]:eq(0)').attr("checked",'checked');
-        		getActive(1);
+        		$.ajax({ type: "POST",
+	    		     async: false, 
+	    		     url: "/cloud-security-platform/getSession.html", 
+	    		     dataType: "json", 
+//	    		     contentType: "application/json; charset=utf-8", 
+	    		     success: function(data) {
+	    		    	 getActive(1);
+	    		    	 }, 
+	    		     error: function(data){ 
+	    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+	    		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
+	    		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
+       		});
         	}
     	}
     	
@@ -161,12 +187,24 @@ $(function(){
 				   'ip':ip};
     	$.post("/cloud-security-platform/checkOrderAsset.html", obj, function(data){
     		if(data.assetNames!=null){
-    			$(".assets_msg").eq(index).html('资产('+data.assetNames+')存在扫描频率重叠的同一类型服务订单,请重新选择!');
+    			$(".assets_msg").eq(index).html('资产('+data.assetNames+')针对该资产有同类任务，请重新设置!');
     		}else if(data.ipText){
     			alert("ip不可用");
     		}else{
     			$(".assets_msg").eq(index).html("");
-    			getActive(2);
+    			$.ajax({ type: "POST",
+	    		     async: false, 
+	    		     url: "/cloud-security-platform/getSession.html", 
+	    		     dataType: "json", 
+//	    		     contentType: "application/json; charset=utf-8", 
+	    		     success: function(data) {
+	    		    	 getActive(2);
+	    		    	 }, 
+	    		     error: function(data){ 
+	    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+	    		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
+	    		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
+    			});
     		}
         });
     });
@@ -199,7 +237,19 @@ $(function(){
     	}else{
     		$("#linkname_msg").html("");
     		$("#phone_msg").html("");
-    		getActive(3);
+    		$.ajax({ type: "POST",
+   		     async: false, 
+   		     url: "/cloud-security-platform/getSession.html", 
+   		     dataType: "json", 
+//   		     contentType: "application/json; charset=utf-8", 
+   		     success: function(data) {
+   		    	 getActive(3);
+   		    	 }, 
+   		     error: function(data){ 
+   		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+   		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
+   		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
+    		});
     	}
     	$('td[name="linkname"]').html(linkname);
     	$('td[name="phone"]').html(phone);
@@ -262,10 +312,39 @@ $(function(){
 	    			   'bandwidth':bandwidth};
 	    	var result = window.confirm("确定要提交订单吗？");
 	    	if(result){
-		    	$.post("/cloud-security-platform/saveOrder.html", obj, function(data){
-		    		$("#orderId").html(data.orderId);
-		    		getActive(4);
-		        });
+//		    	$.post("/cloud-security-platform/saveOrder.html", obj, function(data){
+//		    		$("#orderId").html(data.orderId);
+//		    		getActive(4);
+//		        });
+		    	
+		    	$.ajax({ type: "POST",
+		    		     async: false, 
+		    		     url: "/cloud-security-platform/saveOrder.html", 
+		    		     data: {"orderType":orderType,//'orderId':orderId,
+			    			   	"beginDate": beginDate,
+			    			   	"endDate":endDate,
+			    			   	"createDate":createDate,
+			    			   	"scanType":scanType,
+			    			   	"scanDate":scanDate,
+			    			   	"serviceId":serviceId,
+			    			   	"linkname":linkname,
+			    			   	"phone":phone,
+			    			   	"email":email,
+			    			   	"company":company,
+			    			   	"address":address,
+			    			   	"assetIds":assetIds,
+			    			   	"ip":ip,
+			    			   	"bandwidth":bandwidth},  
+		    		     dataType: "json", 
+//		    		     contentType: "application/json; charset=utf-8", 
+		    		     success: function(data) { 
+		    		    	 $("#orderId").html(data.orderId);
+				    		 getActive(4); }, 
+		    		     error: function(data){ 
+		    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+		    		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
+		    		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
+		    	});
 	    	}
 //    	}else{
 //    		alert("订单开始时间不能早于当前订单提交时间!");
