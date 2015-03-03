@@ -15,6 +15,7 @@
     <filter-mapping>  
         <filter-name>SystemFilter</filter-name>  
          <url-pattern>*.html</url-pattern>
+         <url-pattern>*.txt</url-pattern>
     </filter-mapping>  
    <context-param>
    		<param-name>contextConfigLocation</param-name>
