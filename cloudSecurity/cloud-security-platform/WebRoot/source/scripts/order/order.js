@@ -337,9 +337,15 @@ $(function(){
 			    			   	"bandwidth":bandwidth},  
 		    		     dataType: "json", 
 //		    		     contentType: "application/json; charset=utf-8", 
-		    		     success: function(data) { 
-		    		    	 $("#orderId").html(data.orderId);
-				    		 getActive(4); }, 
+		    		     success: function(data) {
+		    		    	 if(data.timeCompare == true){
+		    		    		 $("#orderId").html(data.orderId);
+					    		 getActive(4); 
+		    		    	 }else{
+		    		    		 alert("订单开始时间不能早于当前订单提交时间!");
+		    		     		 return;
+		    		    	 }
+		    		    	 }, 
 		    		     error: function(data){ 
 		    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
 		    		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
