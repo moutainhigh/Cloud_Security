@@ -105,7 +105,7 @@ $(document).ready(function(){
       <div class="dan_3 user_sectime1">
           <input type="text" value="" id="begin_date" name="begin_datevo" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
         </div>
-        
+        <div style="left:600px; position:absolute;">--</div>
         <div class="dan_4 user_sectime1">
           <input type="text" value="" id="end_date" name="end_datevo" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
         </div>
@@ -118,12 +118,12 @@ $(document).ready(function(){
         <tbody>
               <tr style="background:#e0e0e0; height:30px; line-height:30px;">
                 <td style="width:10%;">订单编号</td>
-                <td  style="width:10%;">订单类型</td>
-                <td  style="width:10%;">订单状态</td>
-                <td  style="width:10%;">订单服务</td>
-                <td  style="width:50%;">服务起止时间</td>
-                <td  style="width:10%;">下单时间</td>
-                <td  style="width:10%;"></td>
+                <td  style="width:8%;">订单类型</td>
+                <td  style="width:9%;">订单状态</td>
+                <td  style="width:17%;">订单服务</td>
+                <td  style="width:40%;">服务起止时间</td>
+                <td  style="width:15%;">下单时间</td>
+                <td  style="width:11%;"></td>
               </tr>
 	          <c:forEach var="list" items="${orderList}" varStatus="status">
 	              <tr>

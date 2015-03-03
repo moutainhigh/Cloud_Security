@@ -55,8 +55,8 @@
         	<div class="system_zy">
             	<div class="zy_left fl">
                 	<div class="zy_top1">
-                    	<div class="zy_top_l fl">
-                        	<img src="${ctx}/source/adminImages/system1.jpg" width="249" height="164">
+                    	<div class="zy_top_l fl" id="system1">
+                        	<!-- --><img src="${ctx}/source/adminImages/system1.jpg" width="249" height="164"> 
                         </div>
                         <div class="zy_top_r fl" id="system2">
                         	<!-- <img src="${ctx}/source/adminImages/system2.jpg"> -->

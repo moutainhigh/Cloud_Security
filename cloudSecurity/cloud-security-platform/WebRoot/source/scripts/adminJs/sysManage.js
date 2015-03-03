@@ -11,7 +11,8 @@ $(function(){
             'echarts/chart/pie' : '../echarts/echarts-map'
         }
     });
-	
+    
+    
     // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
     require(
         [
@@ -83,7 +84,7 @@ $(function(){
                           //  saveAsImage : {show: true}
                         }
                     },
-                    calculable : true,
+                    calculable : false,//是否允许拖拽图
                     series : [
                         {
                             name:'磁盘使用情况',
@@ -97,7 +98,17 @@ $(function(){
 //                                {value:135, name:'视频广告'},
 //                                {value:1548, name:'搜索引擎'}
 //                            ]
-                        data:testY()
+                        data:testY(),
+                        //显示百分比
+                        itemStyle:{ 
+                            normal:{ 
+                                  label:{ 
+                                    show: true, 
+                                    formatter: '{b}:{c}GB' 
+                                  }, 
+                                  labelLine :{show:true} 
+                                } 
+                            } 
                         }
                     ]},true);//图形展示
                     window.onresize = myChart.resize;
@@ -105,51 +116,6 @@ $(function(){
             }); 
         }
     );
-    
-    //3D饼图
-//    $('#system5').highcharts({
-//    	
-//    	
-//        chart: {
-//            type: 'pie',
-//            options3d: {
-//                enabled: true,
-//                alpha: 50
-//            }
-//        },
-//        title: {
-//            text: ''
-//        },
-//        subtitle: {
-//            text: ''
-//        },
-//        plotOptions: {
-//            pie: {
-//                innerSize: 100,
-//                depth: 40//深度
-//            }
-//        },
-//        series: [{
-//        	
-//            name: 'Delivered amount',
-//            data: [
-//                ['Bananas', 8],
-//                ['Kiwi', 3],
-//                ['Mixed nuts', 1],
-//                ['Oranges', 6],
-//                ['Apples', 8],
-//                ['Pears', 4], 
-//                ['Clementines', 4],
-//                ['Reddish (bag)', 1],
-//                ['Grapes (bunch)', 1]
-//            ]
-//        }]
-//    });
-    
-    
-    
-    
-    
     function testX(){
     	return label;
     }
@@ -260,7 +226,7 @@ $(function(){
                     	
                         option.series[0].data[0].value = useTemp.toFixed(2) - 0;
                        myChart.setOption(option, true);
-                    },1000)
+                    },1000);
                     window.onresize = myChart.resize;
                 }//ajax执行后台
             }); 
@@ -464,5 +430,6 @@ $(document).ready(function() {
     });                                                                         
 });                   
 
-    
 });
+
+

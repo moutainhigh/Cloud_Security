@@ -93,8 +93,8 @@ function searchCombine(){
       </div>
       <div class="dan_3 user_sectime1" style="left:344px;">
           <input type="text" value="" id="begin_date" name="begin_datevo" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
-        </div>
-        
+      </div>
+        <div style="left:520px; position:absolute;">--</div>
         <div class="dan_4 user_sectime1" style="left:552px;">
           <input type="text" value="" id="end_date" name="end_datevo"  onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
         </div>
@@ -108,9 +108,9 @@ function searchCombine(){
 	          <tr style="background:#e0e0e0; height:30px; line-height:30px;">
 	            <td style="width:10%;">订单编号</td>
 	            <td  style="width:10%;">订单类型</td>
-	            <td  style="width:10%;">订单服务</td>
-	            <td  style="width:50%;">服务起止时间</td>
-	            <td  style="width:10%;">下单时间</td>
+	            <td  style="width:15%;">订单服务</td>
+	            <td  style="width:40%;">服务起止时间</td>
+	            <td  style="width:15%;">下单时间</td>
 	            <td  style="width:10%;"></td>
 	          </tr>
 		<c:forEach items="${list}" var="order"> 
