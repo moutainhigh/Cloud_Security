@@ -287,7 +287,13 @@ public class OrderMgrController {
         String orderType = request.getParameter("orderType");
         String beginDate = request.getParameter("beginDate");
         String endDate = request.getParameter("endDate");
-        String createDate = request.getParameter("createDate");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String createDate = df.format(new Date());
+        System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
+        
+//        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String temp = setDateFormat.format(Calendar.getInstance().getTime());
+//        String createDate = request.getParameter("createDate");
         String scanType = request.getParameter("scanType");
         String scanDate = request.getParameter("scanDate");
         String serviceId = request.getParameter("serviceId");
@@ -371,6 +377,12 @@ public class OrderMgrController {
         request.setAttribute("isSuccess", true);
         
         Map<String, Object> m = new HashMap<String, Object>();
+        //订单开始时间不能早于当前订单提交时间,add by txr,2015-3-3
+        if(beginDate.compareTo(createDate)>0){
+            m.put("timeCompare", true);
+        }else{
+            m.put("timeCompare", false);
+        }
         m.put("orderId", orderId);
         Scheduler4Task task = new Scheduler4Task();
         WebApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
