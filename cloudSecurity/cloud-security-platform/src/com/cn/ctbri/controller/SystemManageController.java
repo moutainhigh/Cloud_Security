@@ -2,8 +2,6 @@ package com.cn.ctbri.controller;
 
 import java.lang.management.ManagementFactory;
 import java.math.BigDecimal;
-import java.util.List;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -49,24 +47,6 @@ public class SystemManageController {
 		} catch (SigarException e1) {
 			e1.printStackTrace();
 		}
-//		double free=0;//空闲内存
-//		double use=0;//已用内存
-//		double total=0;//总内存
-//		double kb=1024;
-////		Runtime rt=Runtime.getRuntime(); 
-////		total=rt.totalMemory();
-////		free=rt.freeMemory();
-////		use=total-free;
-//		OperatingSystemMXBean osmb = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-//		total = osmb.getTotalPhysicalMemorySize()/kb/kb/kb;
-//		free = osmb.getFreePhysicalMemorySize()/kb/kb/kb;
-//		use=total-free;
-//		BigDecimal total1 = new BigDecimal(total);
-//		double total2 = total1.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
-//		BigDecimal use1 = new BigDecimal(use);
-//		double use2 = use1.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
-//		model.addAttribute("total", total2);
-//		model.addAttribute("use",use2);
 		return "/source/adminPage/userManage/systemManage";
 	}
 	/**
@@ -127,10 +107,6 @@ public class SystemManageController {
 		double total2 = total1.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
 		BigDecimal use1 = new BigDecimal(use);
 		double use2 = use1.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
-//		Runtime rt=Runtime.getRuntime(); 
-//		total=rt.totalMemory();
-//		free=rt.freeMemory();
-//		use=total-free;
 		JSONArray json = new JSONArray();
 		JSONObject jo1 = new JSONObject();
 		jo1.put("use", use2);
@@ -160,17 +136,6 @@ public class SystemManageController {
 		} catch (SigarException e) {
 			e.printStackTrace();
 		}
-		// 方式二，不管是单块CPU还是多CPU都适用
-//		CpuPerc cpuList[] = null;
-//		try {
-//			cpuList = sigar.getCpuPercList();
-//		} catch (SigarException e) {
-//			e.printStackTrace();
-//			return;
-//		}
-//		for (int i = 0; i < cpuList.length; i++) {
-//			printCpuPerc(cpuList[i]);
-//		}
 		return json.toString();
 	
 	}
