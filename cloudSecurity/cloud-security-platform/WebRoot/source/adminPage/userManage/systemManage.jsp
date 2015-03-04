@@ -11,6 +11,8 @@
 <link href="${ctx}/source/adminCss/backstage.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/backstage.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/raphael.2.1.0.min.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/justgage.1.0.1.min.js"></script>
 <script src="${ctx}/source/scripts/echarts/esl.js"></script>
 <script src="${ctx}/source/scripts/echarts/echarts.js"></script>
 <script src="${ctx}/source/scripts/adminJs/sysManage.js"></script>
@@ -18,6 +20,44 @@
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/exporting.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts-3d.js"></script>
+<script>
+var g1;
+onload = function(){
+	test();
+	/**$(document).ready(function() {  
+		//每隔3秒自动调用方法，实现图表的实时更新  
+		window.setInterval(test,3000);   
+		});*/
+	
+};
+
+function test(){
+	$.ajax({
+	      type: "POST",
+	      url:"sysCpuUsage.html",
+	      dataType:"json",
+	      success: function(data){
+		      var printCpuPerc;
+	 		  $.each(data,function(i,p){
+	          printCpuPerc=p['printCpuPerc'];
+	          });
+	          var g1 = new JustGage({
+		          id: "system1", 
+		          value: printCpuPerc, 
+		          min: 0,
+		          max: 100,
+		          title: "Speedometer",
+		          label: "percent",
+					levelColors: [
+					  "#FF0000",
+					  "#FFF000",
+					  "#FF0000"
+					]    
+		        });
+	      	},
+	   });
+}
+</script>
 </head>
 
 <body>
@@ -56,7 +96,7 @@
             	<div class="zy_left fl">
                 	<div class="zy_top1">
                     	<div class="zy_top_l fl" id="system1">
-                        	<!-- --><img src="${ctx}/source/adminImages/system1.jpg" width="249" height="164"> 
+                        	<!--<img src="${ctx}/source/adminImages/system1.jpg" width="249" height="164">  -->
                         </div>
                         <div class="zy_top_r fl" id="system2">
                         	<!-- <img src="${ctx}/source/adminImages/system2.jpg"> -->
