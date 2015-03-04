@@ -199,8 +199,9 @@ public class MyAssetsController {
 			//上传文件验证
 			if(verification_msg.equals("fileVerification")){
 				try{
-					String newPath = path+"key.txt";//http://localhost:8080/cloud-security-platform/验证文件.txt
-					URL fileUrl = new URL(newPath);
+					String newPath = path+"key.txt";
+					URL fileUrl = new URL(newPath);//http://localhost:8080/cloud-security-platform/key.txt
+					//sun.net.www.protocol.http.HttpURLConnection:http://localhost:8080/cloud-security-platform/key.txt
 					HttpURLConnection conn = (HttpURLConnection) fileUrl.openConnection();
 					DataInputStream input = new DataInputStream(conn.getInputStream());
 					StringBuffer sb = new StringBuffer();

@@ -8,6 +8,8 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.hyperic.sigar.CpuPerc;
+import org.hyperic.sigar.FileSystem;
+import org.hyperic.sigar.FileSystemUsage;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
 import org.springframework.stereotype.Controller;
@@ -15,8 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cn.ctbri.disk.DiskUsage;
-import com.cn.ctbri.disk.SysDisk;
 import com.sun.management.OperatingSystemMXBean;
 
 
@@ -35,30 +35,38 @@ public class SystemManageController {
 	 */
 	@RequestMapping("/SystemManageUI.html")
 	public String systemManage(Model model){
-		List<SysDisk> diskUsage = DiskUsage.getDiskUsage();
-		SysDisk sys = null;
-		if(diskUsage!=null && diskUsage.size()>0){
-			sys = diskUsage.get(0);
-			model.addAttribute("totalSpace", sys.getTotalSpace());//磁盘空间
+		//获取硬盘的使用情况
+		Sigar sigar = new Sigar();
+		FileSystem fslist[];
+		try {
+			fslist = sigar.getFileSystemList();
+			if(fslist!=null && fslist.length>0){
+				FileSystem fs = fslist[0];
+				FileSystemUsage usage = null;
+				usage = sigar.getFileSystemUsage(fs.getDirName());
+				model.addAttribute("totalSpace", usage.getTotal()/1024/1024);//磁盘总空间空间
+			}
+		} catch (SigarException e1) {
+			e1.printStackTrace();
 		}
-		double free=0;//空闲内存
-		double use=0;//已用内存
-		double total=0;//总内存
-		double kb=1024;
-//		Runtime rt=Runtime.getRuntime(); 
-//		total=rt.totalMemory();
-//		free=rt.freeMemory();
+//		double free=0;//空闲内存
+//		double use=0;//已用内存
+//		double total=0;//总内存
+//		double kb=1024;
+////		Runtime rt=Runtime.getRuntime(); 
+////		total=rt.totalMemory();
+////		free=rt.freeMemory();
+////		use=total-free;
+//		OperatingSystemMXBean osmb = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+//		total = osmb.getTotalPhysicalMemorySize()/kb/kb/kb;
+//		free = osmb.getFreePhysicalMemorySize()/kb/kb/kb;
 //		use=total-free;
-		OperatingSystemMXBean osmb = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-		total = osmb.getTotalPhysicalMemorySize()/kb/kb/kb;
-		free = osmb.getFreePhysicalMemorySize()/kb/kb/kb;
-		use=total-free;
-		BigDecimal total1 = new BigDecimal(total);
-		double total2 = total1.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
-		BigDecimal use1 = new BigDecimal(use);
-		double use2 = use1.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
-		model.addAttribute("total", total2);
-		model.addAttribute("use",use2);
+//		BigDecimal total1 = new BigDecimal(total);
+//		double total2 = total1.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
+//		BigDecimal use1 = new BigDecimal(use);
+//		double use2 = use1.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
+//		model.addAttribute("total", total2);
+//		model.addAttribute("use",use2);
 		return "/source/adminPage/userManage/systemManage";
 	}
 	/**
@@ -69,22 +77,31 @@ public class SystemManageController {
 	@ResponseBody
 	public String sysDiskUsage(){
 		//获取硬盘的使用情况
-		List<SysDisk> diskUsage = DiskUsage.getDiskUsage();
-		SysDisk sys = null;
+		Sigar sigar = new Sigar();
+		FileSystem fslist[];
 		JSONArray json = new JSONArray();
-		if(diskUsage!=null && diskUsage.size()>0){
-			sys = diskUsage.get(0);
-			JSONObject jo1 = new JSONObject();
-			JSONObject jo2 = new JSONObject();
-			//JSONObject jo3 = new JSONObject();
-			jo1.put("label", "0");
-			jo1.put("value", sys.getFreeSpace());
-			json.add(jo1);
-			jo2.put("label", "1");
-			jo2.put("value", sys.getUsableSpace());
-			json.add(jo2);
+		try {
+			fslist = sigar.getFileSystemList();
+			if(fslist!=null && fslist.length>0){
+				JSONObject jo1 = new JSONObject();
+				JSONObject jo2 = new JSONObject();
+				FileSystem fs = fslist[0];
+				FileSystemUsage usage = null;
+				try {
+					usage = sigar.getFileSystemUsage(fs.getDirName());
+				} catch (SigarException e) {
+				}
+				jo1.put("label", "0");//未使用
+				jo1.put("value", usage.getFree()/1024/1024);
+				json.add(jo1);
+				jo2.put("label", "1");//已使用
+				jo2.put("value",  usage.getUsed()/1024/1024);
+				json.add(jo2);
+			}
+			
+		} catch (SigarException e1) {
+			e1.printStackTrace();
 		}
-		
 		return json.toString();
 	}
 	

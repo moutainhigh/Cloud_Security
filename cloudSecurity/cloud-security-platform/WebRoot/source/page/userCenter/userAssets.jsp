@@ -226,7 +226,7 @@ $(document).ready(function(){
 	    <div class="txt_1" id="codeVerificationID" style="display:block;">
 	      <div class="txt_2" id="code">漏洞扫描服务</div>
 	      <p>请在您的<span><a href="" id="c">网站首页</a></span>中任何位置加入如上代码。（<a href="javascript:void(0)" onclick="copyToClipBoard()">复制代码</a>）<br />
-	        如果添加成功，您的网站首页上能够看到右边的文字：“云服务平台”</p>
+	       </p>
 	    </div>
 	    
 	    
@@ -234,7 +234,7 @@ $(document).ready(function(){
 		    <div class="txt_2">
 	        	<p>请点击下载：<a href="${ctx}/download.html?fileName=key.txt">key.txt</a></p>
 	        </div>
-		    <p>请在您的资产根目录下添加 <span> key.txt </span>作为验证文件,如果添加成功<br/>您的网站首页上能够看到右边的文字：“云服务平台”</p>
+		    <p>请在您的资产根目录下添加 <span> key.txt </span>作为验证文件</p>
 	    </div>
 	    
 	    

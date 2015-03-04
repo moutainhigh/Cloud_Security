@@ -32,6 +32,8 @@ public class Installer{
 	private void createAdmin(){
 		User user = new User("admin",DigestUtils.md5Hex("qwer123"), 1, 0);
 		userService.insert(user);
+		System.out.println("超级管理员："+user.getName());
+		System.out.println("密码：qwer123");
 	}
 	
 	public static void main(String[] args) {

@@ -44,13 +44,13 @@
 	<!-- 使用annotation注解方式配置事务   -->
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
   	
-  	<bean id="websocket" class="com.cn.ctbri.websocket.WebsocketEndPoint"/>  
+  <!-- 	<bean id="websocket" class="com.cn.ctbri.websocket.WebsocketEndPoint"/>  
 	<websocket:handlers>  
 	    <websocket:mapping path="/websocket" handler="websocket"/>  
 	    <websocket:handshake-interceptors>  
 	    	<bean class="com.cn.ctbri.websocket.HandshakeInterceptor"/>  
 	    </websocket:handshake-interceptors>  
-	</websocket:handlers>
+	</websocket:handlers> -->
   
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
         <property name="dataSource" ref="dataSource" />  

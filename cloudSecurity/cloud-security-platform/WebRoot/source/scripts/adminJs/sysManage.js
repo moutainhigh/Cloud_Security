@@ -51,7 +51,7 @@ $(function(){
                     myChart.setOption({ title : {
                         text: '',
                         subtext: '',
-                        x:'center'
+                        x:'center',
                     },
                     tooltip : {
                         trigger: 'item',
@@ -63,6 +63,7 @@ $(function(){
                        // data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
                         data:testX()
                     },
+                    color:['blue','red'],
                     toolbox: {
                         show : true,
                         feature : {
