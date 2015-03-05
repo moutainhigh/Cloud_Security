@@ -53,6 +53,9 @@ function test(){
 	      	},
 	   });
 }
+function sysForm(){
+	$("#form_sys").submit();
+}
 </script>
 </head>
 
@@ -136,26 +139,27 @@ function test(){
         </div>
         <div class="gj_data_box">
         	<div class="system_pz">
-            	<form>
+            	<form id="form_sys" action="${ctx}/saveServerParam.html" method="post">
                 	<div class="pz_form">
                     	<label>用户会话时长</label>
-                        <input type="text" name="sessionTime" value="${sessionTime}" class="pz_input">
+                        <input type="text" name="sessionTime" value="${serverParamConfiguration.sessionTime}" class="pz_input">
                     </div>
                     <div class="pz_form">
                     	<label>邮件服务器地址</label>
-                        <input type="text" name="serverEmailAdd" class="pz_input">
+                        <input type="text" name="serverEmailAdd" value="${serverParamConfiguration.serverEmailAdd}" class="pz_input">
                     </div>
                     <div class="pz_form">
                     	<label>邮件用户名</label>
-                        <input type="text" name="serverEmailName" class="pz_input">
+                        <input type="text" name="serverEmailName" value="${serverParamConfiguration.serverEmailName}" class="pz_input">
                     </div>
                     <div class="pz_form">
                     	<label>邮件密码</label>
-                        <input type="text" name="serverEmailPassword" class="pz_input">
+                        <input type="password" name="serverEmailPassword" value="${serverParamConfiguration.serverEmailPassword}" class="pz_input">
                     </div>
                     <div class="pz_form mt20">
-                    	<button class="system_btn">保存</button>
+                    	<input type="button" class="system_btn" onclick="sysForm()" value="保存"/>
                         <button class="system_btn">取消</button>
+                        
                     </div>
                 </form>
             </div>
