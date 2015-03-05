@@ -2,6 +2,10 @@ package com.cn.ctbri.controller;
 
 import java.lang.management.ManagementFactory;
 import java.math.BigDecimal;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -32,7 +36,7 @@ public class SystemManageController {
 	 *		 @time 2015-2-3
 	 */
 	@RequestMapping("/SystemManageUI.html")
-	public String systemManage(Model model){
+	public String systemManage(Model model,HttpServletRequest request){
 		//获取硬盘的使用情况
 		Sigar sigar = new Sigar();
 		FileSystem fslist[];
@@ -47,6 +51,10 @@ public class SystemManageController {
 		} catch (SigarException e1) {
 			e1.printStackTrace();
 		}
+		//参数配置初始化数据
+		HttpSession session=request.getSession(true);
+		long maxInactiveInterval = session.getMaxInactiveInterval();
+		model.addAttribute("sessionTime", maxInactiveInterval/60);
 		return "/source/adminPage/userManage/systemManage";
 	}
 	/**
@@ -143,5 +151,14 @@ public class SystemManageController {
 		String format = CpuPerc.format(cpu.getCombined());// 总的使用率
 		return format;
 	} 
-
+	/**
+	 * 功能描述：参数配置
+	 *		 @time 2015-3-5
+	 */
+	
+	public void param(HttpServletRequest request){
+		HttpSession session=request.getSession(true);   
+		session.setMaxInactiveInterval(3600);//3600秒
+		
+	}
 }
