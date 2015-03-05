@@ -7,14 +7,15 @@ package com.cn.ctbri.entity;
  */
 public class ServerParamConfiguration {
 	
-	private Long sessionTime;//用户回话时常
+	private Integer sessionTime;//用户回话时常
 	private String serverEmailAdd;//邮件服务器地址
 	private String serverEmailName;//邮件用户名
 	private String serverEmailPassword;//邮件密码
-	public Long getSessionTime() {
+	
+	public Integer getSessionTime() {
 		return sessionTime;
 	}
-	public void setSessionTime(Long sessionTime) {
+	public void setSessionTime(Integer sessionTime) {
 		this.sessionTime = sessionTime;
 	}
 	public String getServerEmailAdd() {

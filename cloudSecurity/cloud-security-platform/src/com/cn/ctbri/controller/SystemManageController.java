@@ -1,7 +1,13 @@
 package com.cn.ctbri.controller;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.math.BigDecimal;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,6 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cn.ctbri.entity.ServerParamConfiguration;
 import com.sun.management.OperatingSystemMXBean;
 
 
@@ -52,9 +59,25 @@ public class SystemManageController {
 			e1.printStackTrace();
 		}
 		//参数配置初始化数据
+		ServerParamConfiguration serverParamConfiguration = new ServerParamConfiguration();
 		HttpSession session=request.getSession(true);
-		long maxInactiveInterval = session.getMaxInactiveInterval();
-		model.addAttribute("sessionTime", maxInactiveInterval/60);
+		int maxInactiveInterval = session.getMaxInactiveInterval();//服务器最大访问时间
+		
+		serverParamConfiguration.setSessionTime(maxInactiveInterval/60);
+		Properties p = new Properties();
+		try {
+			p.load(SystemManageController.class.getResourceAsStream("/default.properties"));
+			//邮件服务器地址
+			serverParamConfiguration.setServerEmailAdd(p.getProperty("emailFrom"));
+			//邮件用户名
+			serverParamConfiguration.setServerEmailName(p.getProperty("name"));
+			//邮件密码
+			serverParamConfiguration.setServerEmailPassword(p.getProperty("password"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("serverParamConfiguration", serverParamConfiguration);
+		
 		return "/source/adminPage/userManage/systemManage";
 	}
 	/**
@@ -153,12 +176,30 @@ public class SystemManageController {
 	} 
 	/**
 	 * 功能描述：参数配置
-	 *		 @time 2015-3-5
+	 *		 @time 2015-3-5 saveServerParam.html
 	 */
-	
-	public void param(HttpServletRequest request){
+	@RequestMapping("/saveServerParam.html")
+	public String saveServerParam(HttpServletRequest request,ServerParamConfiguration serverParamConfiguration){
 		HttpSession session=request.getSession(true);   
-		session.setMaxInactiveInterval(3600);//3600秒
+		session.setMaxInactiveInterval(serverParamConfiguration.getSessionTime()*60);//秒
+		// 加载配置文件
+		Properties pro = new Properties();
 		
+		String path = this.getClass().getClassLoader().getResource("").getPath()+"default.properties";
+		BufferedInputStream in;
+		try {
+			in = new BufferedInputStream(new FileInputStream(path));
+			pro.load(in);
+			// 重新写入配置文件
+			FileOutputStream file = new FileOutputStream(path);
+			pro.put("server",serverParamConfiguration.getServerEmailAdd());
+			pro.put("name",serverParamConfiguration.getServerEmailName());
+			pro.put("password",serverParamConfiguration.getServerEmailPassword());
+			pro.store(file, path); // 这句话表示重新写入配置文件
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:/SystemManageUI.html";
+
 	}
 }
