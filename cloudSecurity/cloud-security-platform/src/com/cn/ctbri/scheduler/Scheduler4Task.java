@@ -124,11 +124,13 @@ public class Scheduler4Task implements Job{
 					logger.error("调度任务日志：订单扫描类型有误!");
 					throw new RuntimeException("调度任务日志：订单扫描类型有误!");
 				}
+				//YUYONGBO 必须把任务和触发事件设置到调度中
+				scheduler.scheduleJob(jobDetail, trigger);
 			}catch (Exception e) {
 				logger.error("调度任务日志：设置调度策略有误!");
 				throw new RuntimeException("调度任务日志：设置调度策略有误!");
 			}
-
+			
 			
 		}else if(Integer.parseInt(Constants.ORDERTYPE_SINGLE) == type){
 			/**
