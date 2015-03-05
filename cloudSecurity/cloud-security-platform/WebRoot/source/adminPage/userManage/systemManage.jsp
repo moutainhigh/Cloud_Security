@@ -22,15 +22,11 @@
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts-3d.js"></script>
 <script>
 var g1;
-onload = function(){
+$(function () {
 	test();
-	/**$(document).ready(function() {  
-		//每隔3秒自动调用方法，实现图表的实时更新  
-		window.setInterval(test,3000);   
-		});*/
-	
-};
-
+	clearInterval(test);
+	//window.setInterval(test,3000); 
+});
 function test(){
 	$.ajax({
 	      type: "POST",
@@ -143,19 +139,19 @@ function test(){
             	<form>
                 	<div class="pz_form">
                     	<label>用户会话时长</label>
-                        <input type="text" class="pz_input">
+                        <input type="text" name="sessionTime" value="${sessionTime}" class="pz_input">
                     </div>
                     <div class="pz_form">
                     	<label>邮件服务器地址</label>
-                        <input type="text" class="pz_input">
+                        <input type="text" name="serverEmailAdd" class="pz_input">
                     </div>
                     <div class="pz_form">
                     	<label>邮件用户名</label>
-                        <input type="text" class="pz_input">
+                        <input type="text" name="serverEmailName" class="pz_input">
                     </div>
                     <div class="pz_form">
                     	<label>邮件密码</label>
-                        <input type="text" class="pz_input">
+                        <input type="text" name="serverEmailPassword" class="pz_input">
                     </div>
                     <div class="pz_form mt20">
                     	<button class="system_btn">保存</button>
