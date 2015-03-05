@@ -234,15 +234,6 @@ $(function(){
         }
     );
     
-    function getData(){  
-        //使用JQuery从后台获取JSON格式的数据  
-		jQuery.getJSON('http://localhost:8080/JQueryPIC/ajax', null, function(data) {  
-		                        //为图表设置值  
-		chart.series[0].setData(data);  
-		});  
-	} 
-    
-    
  //内存动态图                                                                   
 $(document).ready(function() {                                                  
     Highcharts.setOptions({                                                     
