@@ -73,4 +73,13 @@ public class OrderServiceImpl implements IOrderService{
         List order = orderDao.findByOrderId(orderId);
         return order;
     }
+    /**
+     * 功能描述： 根据pageIndex和用户id查询记录
+     *       @time 2015-3-4
+     * 返回值    ：  Order
+     */
+    public List findByUserIdAndPage(int id, int pageIndex) {
+        List list = orderDao.findByUserIdAndPage(id,pageIndex);
+        return list;
+    }
 }
