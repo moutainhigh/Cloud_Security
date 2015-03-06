@@ -48,6 +48,11 @@ public interface IOrderService {
      * 返回值    ：  Order
      */
     List findByOrderId(String orderId);
+    /**
+     * 功能描述： 根据pageIndex和用户id查询记录
+     *       @time 2015-3-4
+     */
+    List findByUserIdAndPage(int id, int pageIndex);
 
 
 }
