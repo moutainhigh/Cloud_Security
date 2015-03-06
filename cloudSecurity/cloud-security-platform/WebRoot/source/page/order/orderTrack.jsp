@@ -2,7 +2,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.sql.*,java.io.*,java.util.*,java.text.*"  %>
-
+<%
+    response.setHeader("Pragma","No-cache"); 
+    response.setHeader("Cache-Control","no-cache"); 
+    response.setDateHeader("Expires", -10); 
+%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -12,10 +16,14 @@
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
-<script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/order/tableDetail.js"></script>
 <script type="text/javascript">
+$.ajaxSetup({
+    cache: false //关闭AJAX相应的缓存
+});
 $(document).ready(function(){
     $("#type").val("${type}");
     $("#servName").val("${servName}");
@@ -112,52 +120,18 @@ $(document).ready(function(){
       <div class="user_soucuo"><img src="${ctx}/source/images/user_submit_2.jpg" onclick="searchCombine()"/></div>
     </div>
    </form>
-    <div class="zhangd_table">
-      <table>
+    <div class="zhangd_table" id="content_data_div">
+      <table id="orderTab">
       
-        <tbody>
               <tr style="background:#e0e0e0; height:30px; line-height:30px;">
                 <td style="width:10%;">订单编号</td>
                 <td  style="width:8%;">订单类型</td>
                 <td  style="width:9%;">订单状态</td>
                 <td  style="width:17%;">订单服务</td>
-                <td  style="width:40%;">服务起止时间</td>
+                <td  style="width:38%;">服务起止时间</td>
                 <td  style="width:15%;">下单时间</td>
                 <td  style="width:11%;"></td>
               </tr>
-	          <c:forEach var="list" items="${orderList}" varStatus="status">
-	              <tr>
-	                <td><a href="${ctx}/orderDetails.html?orderId=${list.id }">${list.id }</a></td>
-	                <td>
-	                    <c:if test="${list.type==1}">长期</c:if>
-	                    <c:if test="${list.type==2}">单次</c:if> 
-                    </td>
-	                <td>
-	                    <c:set var="temp" value="${nowDate }"/>
-		                <c:if test="${list.type==1}">
-		                    <c:if test="${list.end_date>=temp}">服务中</c:if>
-		                    <c:if test="${list.end_date<temp}">已结束</c:if>
-	                    </c:if>
-	                    <c:if test="${list.type==2}">
-                            <!-- <c:if test="${list.begin_date>=temp}">服务中</c:if> -->
-                            <!-- <c:if test="${list.begin_date<temp}">服务中</c:if> -->
-                            <c:if test="${list.status!=0}">已结束</c:if>
-                            <c:if test="${list.status==0}">扫描中</c:if>
-                            
-                        </c:if>
-	                </td>
-	                <td>
-	                   ${list.name}                         
-	                </td>
-	                <td><fmt:formatDate value="${list.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>~<fmt:formatDate value="${list.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                    <td><fmt:formatDate value="${list.create_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-	                <td>
-	                   <c:if test="${list.status!=2}"><img src="${ctx}/source/images/user_ico_2.jpg" /></c:if>
-                       <c:if test="${list.status==2}"><a href="${ctx}/warningInit.html?orderId=${list.id }"><img src="${ctx}/source/images/user_ico_1.jpg" /></a></c:if>
-	                </td>
-	              </tr>
-	          </c:forEach>
-        </tbody>
       </table>
     </div>
   </div>

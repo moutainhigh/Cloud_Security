@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>订单跟踪-告警详情</title>
+<title>订单跟踪-订单详情</title>
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
@@ -19,43 +19,10 @@
 
 <body>
 <div>
-<div class="head_bj">
-  <div class="head">
-    <div class="logo"><img src="${ctx}/source/images/logo.png" /></div>
-    <div class="lagst">
-      <div class="lagst-left"> <a href="${ctx}/userDataUI.html"><img src="${ctx}/source/images/ren.png" /></a> </div>
-      <div class="lagst-right">
-        <p><a href="${ctx}/userDataUI.html" style="color: #fff">${sessionScope.globle_user.name }</a></p>
-        <p><a href="${ctx}/exit.html">退出</a></p>
-      </div>
-    </div>
-    <div class="list">
-      <ul>
-        <ul>
-          <li><a href="${ctx}/index.html">首页</a></li>
-          <li><a href="###">我的订单</a></li>
-          <li><a href="aider.html">在线帮助</a></li>
-          <li class="list_active" style="border-right:1px solid #11871d;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
-        </ul>
-      </ul>
-    </div>
-  </div>
-</div>
 <!-- 头部代码结束-->
 <div class="user_center clear">
-  <div class="user_left">
-    <ul class="user_1">
-      <li style="font-size:16px; font-weight:500; line-height:28px; text-align:center;"><a  style="color:#45b62b; " href="${ctx}/userCenterUI.html">用户中心</a></li>
-      <li><a href="${ctx}/userDataUI.html">基本资料</a></li>
-      <li><a href="${ctx}/userBillUI.html">我的账单</a></li>
-      <li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
-      <h2>订购中心</h2>
-      <li><a href="${ctx}/selfHelpOrderInit.html">自助下单</a></li>
-      <li class="active"><a href="${ctx}/orderTrackInit.html">订单跟踪</a></li>
-    </ul>
-  </div>
   <!-- 订单详情-->
-  <div class="user_right" >
+  <div class="user_right" style="margin:auto;float:none;">
     <div class="gj_top"> <a href="#" class="aelse">订单跟踪</a>　>　<a href="#" class="acur">订单详情</a> </div>
     <c:forEach var="order" items="${orderList}" varStatus="status">
 	    <p style="margin:0 0 38px 286px;"><span class="bigfont">订单编号</span><span class="bigfont" style="margin-right:20px;">${order.id }</span><span class="bigfont">下单时间</span><span class="bigfont"><fmt:formatDate value="${order.create_date }" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
@@ -99,6 +66,8 @@
                     <c:if test="${order.scan_type==4}">2小时</c:if>
                 </c:if>
            </span></p>
+           <p class="dd_detail"><span class="detail_l fl">最近检测时间</span><span class="detail_r fl"></span></p>
+           <p class="dd_detail"><span class="detail_l fl">检测次数</span><span class="detail_r fl"></span></p>
         </c:if>
 	    <p class="dd_detail"><span class="detail_l fl">服务情况跟踪</span><span class="detail_r fl">
 	xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span></p>

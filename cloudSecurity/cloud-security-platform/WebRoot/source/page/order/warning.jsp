@@ -22,43 +22,11 @@
 
 <body>
 <div>
-<div class="head_bj">
-  <div class="head">
-    <div class="logo"><img src="${ctx}/source/images/logo.png" /></div>
-    <div class="lagst">
-      <div class="lagst-left"> <a href="${ctx}/userDataUI.html"><img src="${ctx}/source/images/ren.png" /></a> </div>
-      <div class="lagst-right">
-        <p><a href="${ctx}/userDataUI.html" style="color: #fff">${sessionScope.globle_user.name }</a></p>
-        <p><a href="${ctx}/exit.html">退出</a></p>
-      </div>
-    </div>
-    <div class="list">
-      <ul>
-        <ul>
-          <li><a href="${ctx}/index.html">首页</a></li>
-          <li><a href="###">我的订单</a></li>
-          <li><a href="aider.html">在线帮助</a></li>
-          <li class="list_active" style="border-right:1px solid #11871d;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
-        </ul>
-      </ul>
-    </div>
-  </div>
-</div>
 <!-- 头部代码结束-->
 <div class="user_center clear">
-  <div class="user_left">
-    <ul class="user_1">
-      <li style="font-size:16px; font-weight:500; line-height:28px; text-align:center;"><a  style="color:#45b62b; " href="${ctx}/userCenterUI.html">用户中心</a></li>
-      <li><a href="${ctx}/userDataUI.html">基本资料</a></li>
-      <li><a href="${ctx}/userBillUI.html">我的账单</a></li>
-      <li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
-      <h2>订购中心</h2>
-      <li><a href="${ctx}/selfHelpOrderInit.html">自助下单</a></li>
-      <li class="active"><a href="${ctx}/orderTrackInit.html">订单跟踪</a></li>
-    </ul>
-  </div>
+  
     <!-- 告警详情-->
-     <div class="user_right" >
+     <div class="user_right" style="margin:auto;float:none;">
         <div class="gj_top">
             <a href="#" class="aelse">订单跟踪</a>　>　<a href="#" class="acur">告警详情</a>
         </div>
