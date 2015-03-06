@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
@@ -384,10 +385,10 @@ public class OrderMgrController {
             m.put("timeCompare", false);
         }
         m.put("orderId", orderId);
-        Scheduler4Task task = new Scheduler4Task();
-        WebApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
-        task.setAc(ac);
-        task.setTaskByOrder(order);
+//        Scheduler4Task task = new Scheduler4Task();
+//        WebApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
+//        task.setAc(ac);
+//        task.setTaskByOrder(order);
         //object转化为Json格式
         JSONObject JSON = CommonUtil.objectToJson(response, m);
         try {
@@ -416,6 +417,28 @@ public class OrderMgrController {
         request.setAttribute("orderList", orderList);
         return "/source/page/order/orderTrack";
     }
+    
+    /**
+     * 功能描述： 用户中心-订单跟踪-滚动加载
+     * 参数描述：  无
+     *     @time 2015-3-4
+     */
+    @RequestMapping(value="getOrderList.html")
+    public ModelAndView getOrderList(HttpServletRequest request){
+        //获取pageIndex
+        int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
+        User globle_user = (User) request.getSession().getAttribute("globle_user");
+        //根据pageIndex获取每页order条数,获取订单信息
+        List orderList = orderService.findByUserIdAndPage(globle_user.getId(),pageIndex);
+        //获取当前时间
+        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String temp = setDateFormat.format(Calendar.getInstance().getTime());
+        ModelAndView mv = new ModelAndView("/source/page/order/orderList");
+        mv.addObject("orderList", orderList);
+        mv.addObject("nowDate", temp);
+        return mv;
+    }
+    
 	
     /**
      * 功能描述： 按条件查询订单
@@ -465,6 +488,61 @@ public class OrderMgrController {
         model.addAttribute("begin_date",begin_datevo);//回显服务开始时间    
         model.addAttribute("end_date",end_datevo);  //回显结束时间
         return "/source/page/order/orderTrack";
+    }
+    
+    /**
+     * 功能描述： 按条件分页查询订单
+     * 参数描述： Model model
+     *       @time 2015-3-6
+     */
+    @SuppressWarnings("rawtypes")
+    @RequestMapping("/searchCombineByPage.html")
+    public String searchCombineByPage(Model model,HttpServletRequest request){
+        String type = request.getParameter("type");
+        String servName = request.getParameter("servName");
+        String state = request.getParameter("state");
+        String begin_datevo = request.getParameter("begin_date");
+        String end_datevo = request.getParameter("end_date");
+        User globle_user = (User) request.getSession().getAttribute("globle_user");
+        //组织条件查询
+        String name=null;
+        try {
+            name=new String(servName.getBytes("ISO-8859-1"), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        Map<String,Object> paramMap = new HashMap<String,Object>();
+        paramMap.put("userId", globle_user.getId());
+        paramMap.put("type", type);
+        paramMap.put("servName", name);
+        paramMap.put("state", state);
+        if(StringUtils.isNotEmpty(begin_datevo)){
+            paramMap.put("begin_date", DateUtils.stringToDate(begin_datevo));
+        }else{
+            paramMap.put("begin_date", null);
+        }
+        if(StringUtils.isNotEmpty(end_datevo)){
+            paramMap.put("end_date", DateUtils.stringToDate(end_datevo));
+        }else{
+            paramMap.put("end_date", null);
+        }
+        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        /* 時：分：秒  HH:mm:ss  HH : 23小時制 (0-23)
+                                 kk : 24小時制 (1-24)
+                                 hh : 12小時制 (1-12)
+                                 KK : 11小時制 (0-11)*/
+        String temp = setDateFormat.format(Calendar.getInstance().getTime());
+        paramMap.put("currentDate", temp);
+        List result = orderService.findByCombineOrderTrack(paramMap);
+        
+        model.addAttribute("nowDate",temp); 
+        model.addAttribute("orderList",result);      //传对象到页面
+        model.addAttribute("type",type);//回显类型  
+        model.addAttribute("servName",name);//回显服务名称
+        model.addAttribute("state",state);//回显服务状态
+        model.addAttribute("begin_date",begin_datevo);//回显服务开始时间    
+        model.addAttribute("end_date",end_datevo);  //回显结束时间
+        return "/source/page/order/orderList";
     }
 	
 	
