@@ -1,5 +1,6 @@
 package com.cn.ctbri.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -68,6 +69,23 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
     public List findByOrderId(String orderId) {
         List order = this.getSqlSession().selectList(ns + "findOrderByOrderId",orderId);
         return order;
+    }
+
+    /**
+     * 功能描述： 根据pageIndex和用户id查询记录
+     *       @time 2015-3-4
+     * 返回值    ：  Order
+     */
+    public List findByUserIdAndPage(int id, int pageIndex) {
+        Map<String,Object> paramMap = new HashMap<String,Object>();
+        //当前页
+        int pageSize = 10;
+        int pageNow = pageIndex*pageSize;
+        paramMap.put("userId", id);
+        paramMap.put("pageNow", pageNow);
+        paramMap.put("pageSize", pageSize);
+        List list = this.getSqlSession().selectList(ns + "getOderByPage",paramMap);
+        return list;
     }  
 	
 	
