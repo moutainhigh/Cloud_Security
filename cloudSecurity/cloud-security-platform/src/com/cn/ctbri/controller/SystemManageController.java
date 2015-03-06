@@ -184,8 +184,10 @@ public class SystemManageController {
 		session.setMaxInactiveInterval(serverParamConfiguration.getSessionTime()*60);//秒
 		// 加载配置文件
 		Properties pro = new Properties();
-		
+		///D:/tomcat7-32/webapps/cloud-security-platform/WEB-INF/classes/default.properties
 		String path = this.getClass().getClassLoader().getResource("").getPath()+"default.properties";
+//		String path=request.getSession().getServletContext().getRealPath("");
+		//String path = "conf/default.properties";
 		BufferedInputStream in;
 		try {
 			in = new BufferedInputStream(new FileInputStream(path));
