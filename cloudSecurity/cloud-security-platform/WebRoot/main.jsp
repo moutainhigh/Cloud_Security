@@ -172,10 +172,10 @@
             <div><a href="#"><img src="${ctx}/source/images/indexsmall.jpg" width="152" height="202" /></a></div>
          </div>
          </div>
-         <div class="web_input">
+         <!-- <div class="web_input">
                     <input type="text"  value="http://"/>
                     <div class="web_input_r"><img src="${ctx}/source/images/user_ico_16.jpg" /></div>
-         </div>
+         </div>  -->
          <div class="center clear">
              <div class="web_fuwu clear">
                  <h1>WEB云安全服务</h1>
