@@ -80,7 +80,12 @@ $(document).ready(function(){
   <!-- 订单跟踪-->
   <div class="user_right" >
   <form action="${ctx}/searchCombineOrderTrack.html" method="post" id="searchForm">
-  
+    <input type="hidden" id="mark" value="${mark}"/>
+    <input type="hidden" id="typepage" value="${type}"/>
+    <input type="hidden" id="servNamepage" value="${servName}"/>
+    <input type="hidden" id="statepage" value="${state}"/>
+    <input type="hidden" id="begin_datepage" value="${begin_date}"/>
+    <input type="hidden" id="end_datepage" value="${end_date}"/>
     <div class="user_top">
       <div class="user_sec_cont">
             <select class="user_secta spiclesel" id="type" name="type">
@@ -92,14 +97,14 @@ $(document).ready(function(){
       <div class="user_sec_cont" style=" left:172px; ">
          <select class="user_secta spiclesel" id="servName" name="servName">
             <option selected="selected " value="">请选择服务</option>
-            <option value="漏洞扫描服务" >漏洞扫描服务</option>
-            <option value="恶意代码监测服务" >恶意代码监测服务</option>
-            <option value="网页篡改监测服务" >网页篡改监测服务</option>
-            <option value="关键字监测服务" >关键字监测服务</option>
-            <option value="可用性监测服务" >可用性监测服务</option>
-            <option value="日常流量监测服务" >日常流量监测服务</option>
-            <option value="日常攻击防护服务" >日常攻击防护服务</option>
-            <option value="突发异常流量清洗服务" >突发异常流量清洗服务</option>
+            <option value="1" >漏洞扫描服务</option>
+            <option value="2" >恶意代码监测服务</option>
+            <option value="3" >网页篡改监测服务</option>
+            <option value="4" >关键字监测服务</option>
+            <option value="5" >可用性监测服务</option>
+            <option value="6" >日常流量监测服务</option>
+            <option value="7" >日常攻击防护服务</option>
+            <option value="8" >突发异常流量清洗服务</option>
         </select>
       </div>
       
