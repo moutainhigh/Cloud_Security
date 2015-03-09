@@ -94,11 +94,11 @@ public class UserController {
      * 参数描述：  无
      *     @time 2015-3-9
      */
-    @RequestMapping(value="getNum.html")
+    @RequestMapping(value="/getNum.html")
     @ResponseBody
     public void getNum(HttpServletResponse response,HttpServletRequest request){
         Map<String, Object> m = new HashMap<String, Object>();
-        //查询漏洞个数
+        //查询漏洞个数 
         int leakNum = selfHelpOrderService.findLeakNum(1);
         m.put("leakNum", leakNum);
         
