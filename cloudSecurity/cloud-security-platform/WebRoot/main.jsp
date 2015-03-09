@@ -12,6 +12,22 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/index.js"></script>
 <link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript">
+    function showUnreadNews()
+    {
+        $(document).ready(function() {
+            $.ajax({
+                type: "GET",
+                url: "/cloud-security-platform/getNum.html",
+                dataType: "json",
+                success: function(data) {
+                	$("#num1").html(data.leakNum);
+                }
+            });
+        });
+    }
+    setInterval('showUnreadNews()',5000);
+</script>
 </head>
 
 <body>
@@ -141,10 +157,10 @@
              <ul>
                   <li style="position:relative"><a href="###">
                   <img src="${ctx}/source/images/indexphoto.jpg" />
-                  <span class="lb_font lb_first">累计检测<span class="lb_font_w">9387</span>个网页</span>
-                  <span class="lb_font lb_second">发现<span class="lb_font_w">2352</span>个漏洞</span>
-                  <span class="lb_font lb_third">累计拦截<span class="lb_font_w">0</span>次DDOS攻击</span>
-                  <span class="lb_font lb_forth">完成<span class="lb_font_w">2352</span>G防护</span>
+                  <span class="lb_font lb_first">累计检测<span class="lb_font_w" id="num"></span>个网页</span>
+                  <span class="lb_font lb_second">发现<span class="lb_font_w" id="num1">${leakNum }</span>个漏洞</span>
+                  <span class="lb_font lb_third">累计拦截<span class="lb_font_w" id="num2"></span>次DDOS攻击</span>
+                  <span class="lb_font lb_forth">完成<span class="lb_font_w" id="num3"></span>G防护</span>
                   </a></li>
                   <li><a href="###"><img src="${ctx}/source/images/indexphoto2.jpg" /></a></li>
                   <li><a href="###"><img src="${ctx}/source/images/indexphoto3.jpg" /></a></li>
@@ -169,7 +185,7 @@
                     <li><a href="#">· 新产品试用大招募</a></li>
                 </ul>
             </div>
-            <div><a href="#"><img src="${ctx}/source/images/indexsmall.jpg" width="152" height="202" /></a></div>
+            <!-- <div><a href="#"><img src="${ctx}/source/images/indexsmall.jpg" width="152" height="202" /></a></div> -->
          </div>
          </div>
          <!-- <div class="web_input">
