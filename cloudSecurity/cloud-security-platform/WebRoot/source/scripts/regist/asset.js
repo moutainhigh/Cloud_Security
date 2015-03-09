@@ -10,12 +10,30 @@ function saveAsset() {
 		if(assetAddr==null || assetAddr == ""){
 			$("#assetAddr_msg").html("请输入资产地址");
 		}else{
+			
+			
 			$("#assetAddr_msg").html("");
 		}
 	}else{
 		$("#assetName_msg").html("");
-		$("#assetAddr_msg").html("");
-		$("#saveAsset").submit();
+		//验证资产是否重复
+		$.ajax({
+	        type: "POST",
+	        url: "/cloud-security-platform/asset_addrIsExist.html",
+	        data: {"addr":assetAddr},
+	        dataType:"json",
+	        success: function(data){
+	            if(data.msg=="1"){
+	            	$("#assetAddr_msg").html("地址已经存在!");
+		            //	alert("地址已经存在");
+		            return;
+	            }else{
+	            	//alert("地址不存在，可以添加");
+	            	$("#assetAddr_msg").html("");
+	            	$("#saveAsset").submit();
+	            }
+	        },
+	     }); 
 	}
 }
 function searchAssetCombine(){

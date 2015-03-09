@@ -61,10 +61,34 @@ public class MyAssetsController {
 		return "/source/page/userCenter/userAssets";
 	}
 	/**
+	 * 功能描述： 检查资产地址是否已经存在
+	 * 参数描述： Model model
+	 *		 @time 2015-3-9
+	 */
+	
+	
+	/**
 	 * 功能描述： 添加资产
 	 * 参数描述： Model model
 	 *		 @time 2015-1-16
 	 */
+	@RequestMapping("/asset_addrIsExist.html")
+	public void addrIsExist(Model model,Asset asset,HttpServletResponse response){
+		String addr = asset.getAddr();
+		List<Asset> list = assetService.findByAssetAddr(addr);
+		if(list != null && list.size()>0){
+			Map<String, Object> m = new HashMap<String, Object>();
+			m.put("msg", 1);//1：表示资产已经存在
+			//object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	@RequestMapping("/addAsset.html")
 	public String addAsset(Model model,Asset asset,HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");

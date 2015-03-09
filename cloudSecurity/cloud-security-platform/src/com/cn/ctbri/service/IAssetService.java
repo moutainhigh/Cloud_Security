@@ -70,6 +70,12 @@ public interface IAssetService {
      *       @time 2015-1-21
      */
     List<OrderIP> findorderIP(OrderIP orderIP);
+    /**
+     * 功能描述： 根据资产地址查询资产
+     * 参数描述：String addr
+     *       @time 2015-3-9
+     */
+	List<Asset> findByAssetAddr(String addr);
 
 	
 }
