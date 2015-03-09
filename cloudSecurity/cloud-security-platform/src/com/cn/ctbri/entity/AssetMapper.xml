@@ -78,5 +78,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findorderIP" parameterType="com.cn.ctbri.entity.OrderIP" resultType="com.cn.ctbri.entity.OrderIP">
         select * from cs_order_ip where serviceid = #{serviceId} and ip = #{ip}
     </select>
-	
+		<!-- 根据资产地址查询资产 -->
+	<select id="findByAssetAddr" parameterType="String" resultMap="AssetRM">
+		select * from cs_asset
+		where addr=#{addr} 
+	</select>
 </mapper>
