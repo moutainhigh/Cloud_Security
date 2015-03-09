@@ -33,4 +33,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks}, #{status})
     </insert>
     
+    <!-- 查询漏洞个数 -->
+    <select id="findLeakNum" parameterType="Integer" resultType="hashmap">
+        select * from cs_alarm a,
+		(select t.taskId from cs_task t,
+		(select oa.id from cs_order o,cs_service s,cs_order_asset oa where o.serviceId = s.id and o.id = oa.orderId and s.parentC = 1 and s.id=#{i}) asset
+		where t.order_asset_id = asset.id) task where a.taskId = task.taskId
+    </select>
 </mapper>
