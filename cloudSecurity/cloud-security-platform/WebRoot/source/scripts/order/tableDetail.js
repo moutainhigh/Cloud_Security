@@ -25,14 +25,15 @@ function loadQueryData(){
 
 // 数据加载
 function loadData(){
-	var type = $("#type").val();
-    var servName = $("#servName").val();
-    var state = $("#state").val();
-    var begin_date = $("#begin_date").val();
-    var end_date = $("#end_date").val();
+	var mark = $("#mark").val();
+	var type = $("#typepage").val();
+    var servName = $("#servNamepage").val();
+    var state = $("#statepage").val();
+    var begin_date = $("#begin_datepage").val();
+    var end_date = $("#end_datepage").val();
     var data = "&pageIndex=" + pageIndex;
     var url = "";
-    if(type!=""||servName!=""||state!=""||begin_date!=""||end_date!=""){
+    if(mark!=1){
     	url = "/cloud-security-platform/searchCombineByPage.html?type="+type+"&servName="+servName+"&state="+state+"&begin_date="+begin_date+"&end_date="+end_date;
     }else{
     	url = "/cloud-security-platform/getOrderList.html";
