@@ -77,5 +77,13 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
         selfHelpOrderDao.saveLinkman(linkObj);
     }
 
+    /**
+     * 功能描述：查询漏洞个数
+     *       @time 2015-3-9
+     */
+    public int findLeakNum(int i) {
+        return selfHelpOrderDao.findLeakNum(i);
+    }
+
 
 }

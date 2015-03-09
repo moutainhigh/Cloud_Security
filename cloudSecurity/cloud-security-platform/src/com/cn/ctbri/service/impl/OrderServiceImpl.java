@@ -82,4 +82,13 @@ public class OrderServiceImpl implements IOrderService{
         List list = orderDao.findByUserIdAndPage(id,pageIndex);
         return list;
     }
+    /**
+     * 功能描述：组合查询订单追踪-分页
+     *       @time 2015-1-15
+     * 返回值    ：  List<Order>
+     */
+    public List findByCombineOrderTrackByPage(Map<String, Object> paramMap) {
+        List list = orderDao.findByCombineOrderTrackByPage(paramMap);
+        return list;
+    }
 }
