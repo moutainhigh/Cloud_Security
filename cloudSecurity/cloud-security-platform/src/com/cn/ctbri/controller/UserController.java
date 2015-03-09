@@ -90,6 +90,29 @@ public class UserController {
 	}
 	
 	/**
+     * 功能描述： 首页数据查询
+     * 参数描述：  无
+     *     @time 2015-3-9
+     */
+    @RequestMapping(value="getNum.html")
+    @ResponseBody
+    public void getNum(HttpServletResponse response,HttpServletRequest request){
+        Map<String, Object> m = new HashMap<String, Object>();
+        //查询漏洞个数
+        int leakNum = selfHelpOrderService.findLeakNum(1);
+        m.put("leakNum", leakNum);
+        
+        //object转化为Json格式
+        JSONObject JSON = CommonUtil.objectToJson(response, m);
+        try {
+            // 把数据返回到页面
+            CommonUtil.writeToJsp(response, JSON);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+	
+	/**
 	 * 功能描述： 首页
 	 * 参数描述：  Model m
 	 *		 @time 2015-1-12
@@ -98,6 +121,9 @@ public class UserController {
 	public String index(Model m){
 	    //获取服务类型
         List<Serv> servList = selfHelpOrderService.findService();
+        //查询漏洞个数
+        int leakNum = selfHelpOrderService.findLeakNum(1);
+        m.addAttribute("leakNum", leakNum);
         m.addAttribute("servList", servList);
 		return "/main";
 	}

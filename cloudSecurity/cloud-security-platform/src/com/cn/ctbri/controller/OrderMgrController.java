@@ -415,6 +415,7 @@ public class OrderMgrController {
         String temp = setDateFormat.format(Calendar.getInstance().getTime());
         request.setAttribute("nowDate",temp); 
         request.setAttribute("orderList", orderList);
+        request.setAttribute("mark","1");
         return "/source/page/order/orderTrack";
     }
     
@@ -497,7 +498,8 @@ public class OrderMgrController {
      */
     @SuppressWarnings("rawtypes")
     @RequestMapping("/searchCombineByPage.html")
-    public String searchCombineByPage(Model model,HttpServletRequest request){
+    public ModelAndView searchCombineByPage(HttpServletRequest request){
+        int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
         String type = request.getParameter("type");
         String servName = request.getParameter("servName");
         String state = request.getParameter("state");
@@ -533,17 +535,21 @@ public class OrderMgrController {
                                  KK : 11小時制 (0-11)*/
         String temp = setDateFormat.format(Calendar.getInstance().getTime());
         paramMap.put("currentDate", temp);
-        List result = orderService.findByCombineOrderTrack(paramMap);
-        
-        model.addAttribute("nowDate",temp); 
-        model.addAttribute("orderList",result);      //传对象到页面
-        model.addAttribute("type",type);//回显类型  
-        model.addAttribute("servName",name);//回显服务名称
-        model.addAttribute("state",state);//回显服务状态
-        model.addAttribute("begin_date",begin_datevo);//回显服务开始时间    
-        model.addAttribute("end_date",end_datevo);  //回显结束时间
-        return "/source/page/order/orderList";
+        //当前页
+        int pageSize = 10;
+        int pageNow = pageIndex*pageSize;
+        paramMap.put("pageNow", pageNow);
+        paramMap.put("pageSize", pageSize);
+        List result = orderService.findByCombineOrderTrackByPage(paramMap);
+        ModelAndView mv = new ModelAndView("/source/page/order/orderList");
+        mv.addObject("nowDate",temp); 
+        mv.addObject("orderList",result);      //传对象到页面
+        mv.addObject("type",type);//回显类型  
+        mv.addObject("servName",name);//回显服务名称
+        mv.addObject("state",state);//回显服务状态
+        mv.addObject("begin_date",begin_datevo);//回显服务开始时间    
+        mv.addObject("end_date",end_datevo);  //回显结束时间
+        return mv;
     }
-	
 	
 }
