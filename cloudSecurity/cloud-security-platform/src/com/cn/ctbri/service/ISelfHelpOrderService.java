@@ -57,6 +57,12 @@ public interface ISelfHelpOrderService {
      */
     void insertLinkman(Linkman linkObj);
 
+    /**
+     * 功能描述：查询漏洞个数
+     *       @time 2015-3-9
+     */
+    int findLeakNum(int i);
+
 
 	
 }

@@ -53,6 +53,12 @@ public interface IOrderService {
      *       @time 2015-3-4
      */
     List findByUserIdAndPage(int id, int pageIndex);
+    /**
+     * 功能描述：组合查询订单追踪-分页
+     *       @time 2015-1-15
+     * 返回值    ：  List<Order>
+     */
+    List findByCombineOrderTrackByPage(Map<String, Object> paramMap);
 
 
 }
