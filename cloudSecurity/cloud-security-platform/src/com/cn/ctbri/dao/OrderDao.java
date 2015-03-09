@@ -53,5 +53,11 @@ public interface OrderDao {
      * 返回值    ：  Order
      */
     List findByUserIdAndPage(int id, int pageIndex);
+    /**
+     * 功能描述：组合查询订单追踪-分页
+     *       @time 2015-1-15
+     * 返回值    ：  List<Order>
+     */
+    List findByCombineOrderTrackByPage(Map<String, Object> paramMap);
 	
 }
