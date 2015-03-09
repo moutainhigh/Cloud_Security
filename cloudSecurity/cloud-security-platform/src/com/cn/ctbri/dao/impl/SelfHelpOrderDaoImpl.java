@@ -89,6 +89,15 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
         this.getSqlSession().insert(ns + "insertLinkman", linkObj);
     }
 
+    /**
+     * 功能描述：查询漏洞个数
+     *       @time 2015-3-9
+     */
+    public int findLeakNum(int i) {
+        List leakList = this.getSqlSession().selectList(ns + "findLeakNum",i);
+        return leakList.size();
+    }
+
 
 	
 }

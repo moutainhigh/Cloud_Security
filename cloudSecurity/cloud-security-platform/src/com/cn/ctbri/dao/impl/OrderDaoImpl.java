@@ -86,6 +86,16 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
         paramMap.put("pageSize", pageSize);
         List list = this.getSqlSession().selectList(ns + "getOderByPage",paramMap);
         return list;
+    }
+
+    /**
+     * 功能描述：组合查询订单追踪-分页
+     *       @time 2015-1-15
+     * 返回值    ：  List<Order>
+     */
+    public List findByCombineOrderTrackByPage(Map<String, Object> paramMap) {
+        List list = this.getSqlSession().selectList(ns + "findByCombineOrderTrackByPage",paramMap);
+        return list;
     }  
 	
 	
