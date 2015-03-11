@@ -33,7 +33,8 @@ $(document).ready(function(){
        <li class="b_current"><a href="${ctx}/adminUserManageUI.html" class="white">用户管理</a></li>
         <li><a href="${ctx}/adminServUI.html" class="white">服务管理</a></li>
         <li><a href="${ctx}/dataAnalysisUI.html" class="white">数据分析</a></li>
-        <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/SystemManageUI.html" class="white">系统管理</a></li>
+        <li><a href="${ctx}/SystemManageUI.html" class="white">系统管理</a></li>
+        <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/noticeManageUI.html" class="white">公告管理</a></li>
       </ul>
     </div>
     <div class="lagst">
