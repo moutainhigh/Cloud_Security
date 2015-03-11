@@ -40,4 +40,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(select oa.id from cs_order o,cs_service s,cs_order_asset oa where o.serviceId = s.id and o.id = oa.orderId and s.parentC = 1 and s.id=#{i}) asset
 		where t.order_asset_id = asset.id) task where a.taskId = task.taskId
     </select>
+    
+    <!-- 查询网页数 -->
+    <select id="findWebPageNum" resultType="hashmap">
+        select * from cs_alarm a,
+        (select t.taskId from cs_task t,
+        (select oa.id from cs_order o,cs_service s,cs_order_asset oa 
+            where o.serviceId = s.id 
+            and o.id = oa.orderId 
+            and s.parentC = 1
+            ) asset
+        where t.order_asset_id = asset.id) task where a.taskId = task.taskId
+    </select>
 </mapper>
