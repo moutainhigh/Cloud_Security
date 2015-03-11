@@ -64,5 +64,11 @@ public interface SelfHelpOrderDao {
      */
     int findLeakNum(int i);
 
+    /**
+     * 功能描述：查询网页数
+     *       @time 2015-3-9
+     */
+    int findWebPageNum();
+
 
 }
