@@ -11,7 +11,7 @@
 .list ul li a{ color:#fff;}
 .list ul li:hover{ background:#45b62b;}
 
-.lagst{ width:200px; float:left; height:70px;}
+.lagst{ width:180px; float:left; height:70px;}
 .lagst-left{ width:65px; float:left;}
 .lagst-left a{ width:45px; height:45px; overflow:hidden; border-radius:22px; border:1px solid #177220; display:block; margin-top:13px; margin-left:10px;}
 .lagst-left a img{width:45px;}
