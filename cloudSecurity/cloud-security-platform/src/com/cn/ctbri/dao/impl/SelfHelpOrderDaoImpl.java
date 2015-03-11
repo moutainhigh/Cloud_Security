@@ -98,6 +98,15 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
         return leakList.size();
     }
 
+    /**
+     * 功能描述：查询网页数
+     *       @time 2015-3-9
+     */
+    public int findWebPageNum() {
+        List webPageList = this.getSqlSession().selectList(ns + "findWebPageNum");
+        return webPageList.size();
+    }
+
 
 	
 }
