@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.UserDao;
+import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.User;
 /**
  * 创 建 人  ：  邓元元
@@ -98,6 +99,13 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
 
 	public List<User> fuzzyQueryByName(User user) {
 		return getSqlSession().selectList(ns +"fuzzyQueryByName",user);
+	}
+	/**
+	 * 功能描述：查询活跃用户数
+	 *		 @time 2015-3-11
+	 */
+	public List<DataAnalysis> findHaveServSum() {
+		return getSqlSession().selectList(ns +"findHaveServSum");
 	}
 
 }

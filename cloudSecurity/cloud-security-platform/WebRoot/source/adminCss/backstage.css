@@ -140,3 +140,8 @@ p.w634{width:624px;}
 .juris_table td{background:#fff;height:42px;text-align:center;color:#888;font-size:14px;width:132px;}
 .juris_choose{width:24px;height:24px;background:url(../adminImages/juris_choose.jpg) no-repeat;display:block;margin-left:56px;}
 .juris_grey{background:url(../adminImages/juris_choose_grey.jpg) no-repeat;}
+
+
+.m_user_table_c{border:1px solid #e0e0e0;border-right:0;height:104px;width:233px;float:left; padding-left:40px;}
+.m_user_table_box{width:273px;height:120px;float:left;cursor:pointer;}
+.userbox_cur{background:url(../images/b_arrow.jpg) no-repeat center 106px;}

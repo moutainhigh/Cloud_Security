@@ -11,18 +11,26 @@ $(function(){
 		$(this).children('.ser_change').hide();
 	})	
 //数据分析页面的分析类型切换--ld
-	
+		$('#yy_btn').click(function(){
+				$(this).siblings().removeClass('datab_cur');
+				$(this).addClass('datab_cur');
+				$('.sj_data_box').show();
+				$('.dd_data_box').hide();
+				$('.gj_data_box').hide();
+			})
 		$('#dd_btn').click(function(){
 			$(this).siblings().removeClass('datab_cur');
 			$(this).addClass('datab_cur');
 			$('.dd_data_box').show();
 			$('.gj_data_box').hide();
+			$('.sj_data_box').hide();
 		})
 		$('#gj_btn').click(function(){
 			$(this).siblings().removeClass('datab_cur');
 			$(this).addClass('datab_cur');
 			$('.gj_data_box').show();
 			$('.dd_data_box').hide();
+			$('.sj_data_box').hide();
 		})
 //用户管理页面的用户类型切换--ld
 	$('.b_user_table_box').click(function(){

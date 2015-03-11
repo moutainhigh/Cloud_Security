@@ -72,4 +72,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findAlarmByTaskId" resultMap="Alarm" parameterType="hashmap">
         select * from cs_alarm a where a.taskId = #{taskId} and a.level = #{level}
     </select>
+    <!-- 告警统计分析 -->
+    <!-- 	SELECT a.level, COUNT(a.level)
+			FROM cs_alarm a
+			GROUP BY  a.level 
+			前十
+			SELECT * FROM cs_alarm a ORDER BY a.level DESC LIMIT 10;
+			-->
+			
+			
 </mapper>

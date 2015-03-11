@@ -76,6 +76,11 @@ public interface IAssetService {
      *       @time 2015-3-9
      */
 	List<Asset> findByAssetAddr(String addr);
+	 /**
+     * 功能描述： 查询所有资产
+     *       @time 2015-3-9
+     */
+	List<Asset> findAllAssetAddr();
 
 	
 }

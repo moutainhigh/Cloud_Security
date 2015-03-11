@@ -2,6 +2,7 @@ package com.cn.ctbri.service;
 
 import java.util.List;
 
+import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.User;
 /**
  * 创 建 人  ：  邓元元
@@ -80,6 +81,11 @@ public interface IUserService {
 	 *		 @time 2015-2-3
 	 */
 	List<User> fuzzyQueryByName(User user);
+	/**
+	 * 功能描述：查询活跃用户数
+	 *		 @time 2015-3-11
+	 */
+	List<DataAnalysis> findHaveServSum();
 
 
 	

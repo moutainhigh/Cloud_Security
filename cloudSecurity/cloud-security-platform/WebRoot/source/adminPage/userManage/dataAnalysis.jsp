@@ -45,12 +45,47 @@
 <div class="main_wrap">
 	<div class="main_center">
     	<div class="data_title">
-        	<button class="dataana_btn datab_cur fl" id="dd_btn">订单统计分析</button>
+    		<button class="dataana_btn datab_cur fl" id="yy_btn" >运营数据统计</button>
             <div class="bor_t_small fl"></div>
-            <button class="dataana_btn fl" id="gj_btn">告警统计分析</button>
+        	<button class="dataana_btn fl" id="dd_btn" onclick="orderData()">订单统计分析</button>
+            <div class="bor_t_small fl"></div>
+            <button class="dataana_btn fl" id="gj_btn" onclick="warningData()">告警统计分析</button>
             <div class="bor_t_big fl"></div>
         </div>
-        <div class="dd_data_box">
+         <!-- 运营统计 -->
+         <div class="sj_data_box">
+             <div style=" margin-top:30px; margin-bottom:20px; clear:both; overflow:hidden; height:300px;">
+                 <div class="m_user_table_box" id="m_supper">
+                     <div class="m_user_table_c" >
+                          <span class="user_title">注册用户数</a></span>
+                          <span class="user_num">${registCount}</span>
+                     </div>
+                 </div>
+                 <div class="m_user_table_box p_user_table" id="n_supper">
+                 <a href="###">
+                 <div class="m_user_table_c">
+                       <span class="user_title">活跃用户数</span>
+                      <span class="user_num">${haveServCount}</span>
+                 </div>
+                 </a>
+                 </div>
+                 <div class="m_user_table_box p_user_table" id="o_supper">
+                 <a href="###">
+                 <div class="m_user_table_c">
+                       <span class="user_title">监测网站数</span>
+                      <span class="user_num">${asserAddrCount}</span>
+                 </div>
+                 </a>
+                 </div>
+                 <div class="m_user_table_box"id="p_supper">
+                  <div class="m_user_table_c" style="border-right:1px solid #e0e0e0;">
+                      <span class="user_title">扫描页面数</span>
+                      <span class="user_num">3</span>
+                 </div>
+                 </div>
+            </div>
+        </div>
+        <div class="dd_data_box" style="display:none;">
         	<div class="data_choose dd_choose">
             	<form action="${ctx}/orderStatisticsAnalysis.html" method="post" id="searchForm">
                	  <label class="fl">统计时段</label>
@@ -93,29 +128,39 @@
         </div>
         <div class="gj_data_box">
         	<div class="data_choose gjchoose">
-            	<form>
+            	<form action="${ctx}/warningData.html" method="post" id="warningForm">
                	  <label class="fl">统计时段</label>
-              <select class="se_big fl">
-                    	<option></option>
+               	  <div class="se_big fl">
+			        	<input type="text" value="" id="begin_date" name="begin_datevo" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+			      </div>
+                   <div class="se_big fl se_last">
+			     		<input type="text" value="" id="end_date" name="end_datevo"  onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+			      </div>
+		             <select id="servName" name="servName" class="se_small fl se_last">
+			        	<option selected="selected" value="">请选择订单服务类型</option>
+			      		<option value="漏洞扫描服务" >漏洞扫描服务</option>
+			      		<option value="恶意代码监测服务" >恶意代码监测服务</option>
+			      		<option value="网页篡改监测服务" >网页篡改监测服务</option>
+			      		<option value="关键字监测服务" >关键字监测服务</option>
+			      		<option value="可用性监测服务" >可用性监测服务</option>
+			      		<option value="日常流量监测服务" >日常流量监测服务</option>
+			      		<option value="日常攻击防护服务" >日常攻击防护服务</option>
+			      		<option value="突发异常流量清洗服务" >突发异常流量清洗服务</option>
+			    	</select>
+              		<select class="se_small fl se_last" id="level" name="level">
+              			<option selected="selected" value="">请选择告警级别</option>
+                    	<option value="0">低</option>
+                    	<option value="1">中</option>
+                    	<option value="2">高</option>
                     </select>
-              <select class="se_big fl se_last">
-                    	<option></option>
-                    </select>
-                  <label class="fl ml20">服务类型</label>
-              <select class="se_small fl se_last">
-                    	<option></option>
-                    </select>
-                  <label class="fl ml20">告警级别</label>
-              <select class="se_small fl se_last">
-                    	<option></option>
-                    </select>
-                  <input type="button" class="dd_select fl ml20" value=""/>
+                  <input type="button" class="dd_select fl ml20" value="" onclick="warningData()"/>
                 </form>
             </div>
-            <div class="data_detail">
-       	    	<img src="${ctx}/source/adminImages/b_dataanalysis.jpg" width="1097" height="351">
+            <div class="data_detail" id="warningDataAnalysis">
+       	    	<!-- <img src="${ctx}/source/adminImages/b_dataanalysis.jpg" width="1097" height="351"> -->
             </div>
         </div>
+
     </div>
 </div>
 <!--尾部部分代码-->

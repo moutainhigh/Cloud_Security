@@ -113,4 +113,11 @@ public class AssetDaoImpl extends DaoCommon implements AssetDao{
 	public List<Asset> findByAssetAddr(String addr) {
 		return this.getSqlSession().selectList(ns+"findByAssetAddr", addr);
 	}
+	 /**
+     * 功能描述： 查询所有资产
+     *       @time 2015-3-9
+     */
+	public List<Asset> findAllAssetAddr() {
+		return this.getSqlSession().selectList(ns+"findAllAssetAddr");
+	}
 }

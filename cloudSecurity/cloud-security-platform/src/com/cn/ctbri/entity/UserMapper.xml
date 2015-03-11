@@ -107,4 +107,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and a.name like CONCAT(CONCAT('%', #{name}), '%')
 		</if>
 	</select>-->
+	<!-- 根据用户类型查询用户 -->
+	<select id="findHaveServSum" resultType="hashmap">
+		SELECT a.name,COUNT(a.name)
+		FROM 
+			(SELECT * 
+			FROM   (
+				SELECT  u.name , o.serviceId ,u.type	  
+				FROM cs_order o LEFT JOIN cs_user u 
+				ON o.userId=u.id ) uo 
+			WHERE uo.type=2 AND  uo.serviceId IS NOT NULL) a  
+		GROUP BY a.name ORDER BY COUNT(a.name) DESC;
+	</select>
 </mapper>

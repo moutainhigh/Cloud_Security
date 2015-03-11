@@ -12,18 +12,17 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import se.akerfeldt.com.google.gson.Gson;
 
+import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAssetService;
@@ -47,13 +46,33 @@ public class DataAnalysisController {
 	IAssetService assetService;
 	@Autowired
 	IOrderService orderService;
-	
 	/**
 	 * 功能描述：数据分析页面
 	 *		 @time 2015-2-3
 	 */
 	@RequestMapping("/dataAnalysisUI.html")
-	public String adminDeleteUser(User user){
+	public String adminDeleteUser(Model model,User user,HttpServletRequest request){
+		List<User> listRegist = userService.findUserByUserType(2);
+		int registCount = 0;
+		if(listRegist!=null && listRegist.size()>0){
+			registCount = listRegist.size();
+		}
+		request.setAttribute("registCount", registCount);//注册用户数
+		
+		List<DataAnalysis> listHaveServ= userService.findHaveServSum();
+		int haveServCount = 0;
+		if(listHaveServ!=null && listHaveServ.size()>0){
+			haveServCount = listHaveServ.size();
+		}
+		request.setAttribute("haveServCount", haveServCount);//活跃用户数
+		
+		List<Asset> listAsset = assetService.findAllAssetAddr();
+		int asserAddrCount = 0;
+		if(listAsset!=null && listAsset.size()>0){
+			asserAddrCount = listAsset.size();
+		}
+		request.setAttribute("asserAddrCount", asserAddrCount);//活跃用户数
+		
 		return "/source/adminPage/userManage/dataAnalysis";
 	}
 	/**
@@ -135,19 +154,17 @@ public class DataAnalysisController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
-//		JSONArray json = new JSONArray();
-//		JSONObject jo = new JSONObject();
-//		if(result!=null && result.size()>0){
-//			for(int i = 0; i< result.size();i++){
-//				Map<String,Object> map = (Map<String, Object>) result.get(i);
-//				Object name1 = map.get("name");
-//				Object count = map.get("cou");
-//				jo.put(name1, count);
-//			}
-//		}
-//		json.add(jo);//[{"关键字监测服务":2,"恶意代码监测服务":2,"漏洞扫描服务":23}]
-//		
-//		return json.toString();
+	}
+	/**
+	 * 功能描述：数据分析--告警统计分析
+	 *		 @time 2015-3-11
+	 */
+	@RequestMapping(value="warningData.html" ,method = RequestMethod.POST)
+	@ResponseBody
+	public void warningDataAnalysis(HttpServletRequest request,HttpServletResponse response,Integer level,String servName,String begin_datevo,String end_datevo){
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("application/json;charset=UTF-8");
+		
 	}
 	
 }

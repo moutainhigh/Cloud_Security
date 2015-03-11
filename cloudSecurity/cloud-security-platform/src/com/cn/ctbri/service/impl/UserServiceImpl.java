@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.UserDao;
+import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IUserService;
 /**
@@ -107,5 +108,12 @@ public class UserServiceImpl implements IUserService{
 	 */
 	public List<User> fuzzyQueryByName(User user) {
 		return userDao.fuzzyQueryByName(user);
+	}
+	/**
+	 * 功能描述：查询活跃用户数
+	 *		 @time 2015-3-11
+	 */
+	public List<DataAnalysis> findHaveServSum() {
+		return userDao.findHaveServSum();
 	}
 }
