@@ -30,7 +30,10 @@ function orderData(){
             text: ''
         },
         tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            formatter: function() {
+                return '<b>'+ this.point.name +'</b>: '+ Highcharts.numberFormat(this.percentage, 1) +'% ('+
+                             Highcharts.numberFormat(this.y, 0, ',') +' 个)';
+             }
         },
         plotOptions: {
             pie: {
@@ -39,7 +42,15 @@ function orderData(){
                 depth: 35,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.name}'
+                    //format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    formatter: function() {
+                         return '<b>'+ this.point.name +'</b>: '+ Highcharts.numberFormat(this.percentage, 1) +'% ('+
+                         Highcharts.numberFormat(this.y, 0, ',') +' 个)';
+                     },
+                     color: 'black',
+                     style: {
+                        font: '13px Trebuchet MS, Verdana, sans-serif'
+                     }
                 }
             }
         },
