@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -13,19 +14,22 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/index.js"></script>
 <link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript">
+    //首页广告页数据定时刷新,数据不去重
     function showUnreadNews()
     {
         $(document).ready(function() {
             $.ajax({
                 type: "GET",
-                url: "/cloud-security-platform/getNum.html",
+                url: "${ctx}/getNum.html",
                 dataType: "json",
                 success: function(data) {
                 	$("#num1").html(data.leakNum);
+                	$("#num").html(data.webPageNum);
                 }
             });
         });
     }
+    //定时30s刷新一次
     setInterval('showUnreadNews()',5000);
 </script>
 </head>
@@ -158,7 +162,7 @@
                   <li style="position:relative"><a href="###">
                   <img src="${ctx}/source/images/indexphoto.jpg" />
                   <span class="lb_font lb_first">累计检测<span class="lb_font_w" id="num"></span>个网页</span>
-                  <span class="lb_font lb_second">发现<span class="lb_font_w" id="num1">${leakNum }</span>个漏洞</span>
+                  <span class="lb_font lb_second">发现<span class="lb_font_w" id="num1"></span>个漏洞</span>
                   <span class="lb_font lb_third">累计拦截<span class="lb_font_w" id="num2"></span>次DDOS攻击</span>
                   <span class="lb_font lb_forth">完成<span class="lb_font_w" id="num3"></span>G防护</span>
                   </a></li>
@@ -175,14 +179,16 @@
             <div class="right_title">系统公告</div>
             <div class="right_list">
                 <ul>
-                    <li><a href="#">· 系统升级</a></li>
-                    <li><a href="#">· 新产品试用大招募</a></li>
-                    <li><a href="#">· 春节特惠</a></li>
-                    <li><a href="#">· 系统升级</a></li>
-                    <li><a href="#">· 新产品试用大招募</a></li>
-                    <li><a href="#">· 春节特惠</a></li>
-                    <li><a href="#">· 系统升级</a></li>
-                    <li><a href="#">· 新产品试用大招募</a></li>
+                <c:forEach var="list" items="${noticeList}" varStatus="status">
+                    <li><a href="${ctx}/noticeDescUI.html?id=${list.id}" title="${list.noticeName }">
+                        <c:if test="${fn:length(list.noticeName)<=9}">
+                                    ${list.noticeName }
+                        </c:if>
+                        <c:if test="${fn:length(list.noticeName)>9}">
+                                ${fn:substring(list.noticeName, 0, 9)}...
+                        </c:if>
+                    </a></li>
+                </c:forEach>
                 </ul>
             </div>
             <!-- <div><a href="#"><img src="${ctx}/source/images/indexsmall.jpg" width="152" height="202" /></a></div> -->
