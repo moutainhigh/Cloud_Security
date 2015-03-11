@@ -25,6 +25,7 @@ import se.akerfeldt.com.google.gson.Gson;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.User;
+import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IUserService;
@@ -46,6 +47,8 @@ public class DataAnalysisController {
 	IAssetService assetService;
 	@Autowired
 	IOrderService orderService;
+	@Autowired
+	IAlarmService alarmService;
 	/**
 	 * 功能描述：数据分析页面
 	 *		 @time 2015-2-3
@@ -72,7 +75,6 @@ public class DataAnalysisController {
 			asserAddrCount = listAsset.size();
 		}
 		request.setAttribute("asserAddrCount", asserAddrCount);//活跃用户数
-		
 		return "/source/adminPage/userManage/dataAnalysis";
 	}
 	/**
