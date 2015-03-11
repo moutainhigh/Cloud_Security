@@ -120,6 +120,17 @@ public class MyBillController {
 				num += taskList.size();
 			}
 		}
+		/**
+		 * sql根据订单id查询扫描次数
+		 * 	SELECT a.id ,COUNT(a.id)	
+			FROM	
+				(SELECT o.id ,t.taskId
+				FROM cs_order o, cs_order_asset oa, cs_task t
+				WHERE o.id=oa.orderId AND oa.id=t.order_asset_Id)a
+			GROUP BY a.id HAVING a.id=1213146668;
+		 */
+		//Object obj = taskService.findByOrderId(orderId);
+		
 		m.put("num", num);
 		//object转化为Json格式
 		JSONObject JSON = CommonUtil.objectToJson(response, m);

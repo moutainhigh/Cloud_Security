@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.OrderDao;
+import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.service.IOrderService;
 
@@ -91,4 +92,11 @@ public class OrderServiceImpl implements IOrderService{
         List list = orderDao.findByCombineOrderTrackByPage(paramMap);
         return list;
     }
+    /**
+     * 功能描述： 数据分析--订单统计分析
+     *       @time 2015-3-10
+     */
+	public List<DataAnalysis> findByCombineDataAnalysis(Map<String, Object> paramMap) {
+		return orderDao.findByCombineDataAnalysis(paramMap);
+	}
 }

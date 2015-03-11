@@ -20,4 +20,6 @@ public interface ITaskService {
 	 */
 	List<Task> findTaskByOrderAssetId(int orderAssetId);
 
+	Object findByOrderId(String orderId);
+
 }

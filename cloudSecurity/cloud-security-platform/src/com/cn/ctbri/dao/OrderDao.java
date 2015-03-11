@@ -3,6 +3,7 @@ package com.cn.ctbri.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.Order;
 
 /**
@@ -59,5 +60,10 @@ public interface OrderDao {
      * 返回值    ：  List<Order>
      */
     List findByCombineOrderTrackByPage(Map<String, Object> paramMap);
-	
+    /**
+     * 功能描述： 数据分析--订单统计分析
+     *       @time 2015-3-10
+     */
+	List<DataAnalysis> findByCombineDataAnalysis(Map<String, Object> paramMap);
+
 }

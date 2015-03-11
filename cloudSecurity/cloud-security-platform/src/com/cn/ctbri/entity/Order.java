@@ -24,7 +24,6 @@ public class Order {
 	private int status;//订单状态
 	private String begin_datevo;//begin_date vo
 	private String end_datevo;//end_date vo备注
-	
 	public String getBegin_datevo() {
 		return begin_datevo;
 	}

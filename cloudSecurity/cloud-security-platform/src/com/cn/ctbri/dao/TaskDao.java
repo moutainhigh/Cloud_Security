@@ -32,4 +32,6 @@ public interface TaskDao {
 	 * 版        本：  1.0
 	 */
 	public List<Task> findTaskByOrderAssetId(int orderAssetId);
+
+	public Object findByOrderId(String orderId);
 }

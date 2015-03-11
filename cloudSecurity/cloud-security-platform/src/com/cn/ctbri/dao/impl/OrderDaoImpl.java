@@ -4,13 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.OrderDao;
+import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.Order;
 /**
  * 创 建 人  ：  邓元元
@@ -97,6 +95,12 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
         List list = this.getSqlSession().selectList(ns + "findByCombineOrderTrackByPage",paramMap);
         return list;
     }  
-	
+    /**
+     * 功能描述： 数据分析--订单统计分析
+     *       @time 2015-3-10
+     */
+	public List<DataAnalysis> findByCombineDataAnalysis(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns + "findByCombineDataAnalysis",paramMap);
+	} 
 	
 }

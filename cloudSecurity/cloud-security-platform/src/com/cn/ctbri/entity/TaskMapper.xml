@@ -22,4 +22,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(order_asset_Id,execute_time,status,remarks) 
 		VALUES( #{order_asset_Id} , #{execute_time},#{status},#{remarks})
 	</insert>
+	<!-- 根据orderId查询扫描次数 -->
+	<select id="findByOrderId" parameterType="int" resultType="Object">
+		SELECT a.id ,COUNT(a.id)	
+		FROM	
+			(SELECT o.id ,t.taskId
+			FROM cs_order o, cs_order_asset oa, cs_task t
+			WHERE o.id={id} AND oa.id=t.order_asset_Id)a
+		GROUP BY a.id HAVING a.id={id}
+	</select>
 </mapper>
