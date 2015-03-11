@@ -11,6 +11,11 @@
 <link href="${ctx}/source/adminCss/backstage.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/backstage.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/adminJs/dataAnalysis.js"></script>
+<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/exporting.js"></script>
+<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts-3d.js"></script>
 </head>
 
 <body>
@@ -23,8 +28,8 @@
        <li><a href="${ctx}/adminUserManageUI.html" class="white">用户管理</a></li>
         <li><a href="${ctx}/adminServUI.html" class="white">服务管理</a></li>
         <li class="b_current"><a href="${ctx}/dataAnalysisUI.html" class="white">数据分析</a></li>
-        <li><a href="${ctx}/SystemManageUI.html" class="white">系统管理</a></li>
-        <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/noticeManageUI.html" class="white">公告管理</a></li>
+        <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/SystemManageUI.html" class="white">系统管理</a></li>
+      	<li style="border-right:1px solid #1f8db4;"><a href="${ctx}/noticeManageUI.html" class="white">公告管理</a></li>
       </ul>
     </div>
     <div class="lagst">
@@ -47,31 +52,43 @@
         </div>
         <div class="dd_data_box">
         	<div class="data_choose dd_choose">
-            	<form>
+            	<form action="${ctx}/orderStatisticsAnalysis.html" method="post" id="searchForm">
                	  <label class="fl">统计时段</label>
-              <select class="se_big fl">
-                    	<option></option>
-                    </select>
-              <select class="se_big fl se_last">
-                    	<option></option>
-                    </select>
-                  <label class="fl">订单类型</label>
-              <select class="se_small fl se_last">
-                    	<option></option>
-                    </select>
-                  <label class="fl">订单统计类型</label>
-              <select class="se_small fl se_last">
-                    	<option></option>
-                    </select>
-                  <label class="fl">订单状态</label>
-              <select class="se_small fl se_last">
-                    	<option></option>
-                    </select>
-                  <input type="submit" class="dd_select fl" value="">
+               	  <div class="se_big fl">
+			        	<input type="text" value="" id="begin_date" name="begin_datevo" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+			      </div>
+			      <div class="se_big fl se_last">
+			     		<input type="text" value="" id="end_date" name="end_datevo"  onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+			      </div>
+                  <label class="fl"></label>
+		            <select id="type" name="type" class="se_small fl se_last">
+		         		<option selected="selected" value="">请选择订单类型</option>
+		         		<option value="1" >长期</option>
+		         		<option value="2" >单次</option>
+		    		</select>
+                  <label class="fl"></label>
+                  <select id="servName" name="servName" class="se_small fl se_last">
+		        	<option selected="selected" value="">请选择订单服务类型</option>
+		      		<option value="漏洞扫描服务" >漏洞扫描服务</option>
+		      		<option value="恶意代码监测服务" >恶意代码监测服务</option>
+		      		<option value="网页篡改监测服务" >网页篡改监测服务</option>
+		      		<option value="关键字监测服务" >关键字监测服务</option>
+		      		<option value="可用性监测服务" >可用性监测服务</option>
+		      		<option value="日常流量监测服务" >日常流量监测服务</option>
+		      		<option value="日常攻击防护服务" >日常攻击防护服务</option>
+		      		<option value="突发异常流量清洗服务" >突发异常流量清洗服务</option>
+		    	</select>
+                  <label class="fl"></label>
+                   <select class="se_small fl se_last" id="state" name="state">
+			            <option selected="selected" value="">请选择订单状态</option>
+			            <option value="1" >服务中</option>
+			            <option value="2" >已结束</option>
+			       </select>
+                  <input type="button" class="dd_select fl" value=""  onclick="orderData()"/>
                 </form>
             </div>
-            <div class="data_detail">
-       	    	<img src="${ctx}/source/adminImages/b_dataanalysis.jpg" width="1097" height="351">
+            <div class="data_detail" id="orderStatisticsAnalysis">
+       	    	<!--  <img src="${ctx}/source/adminImages/b_dataanalysis.jpg" width="1097" height="351"> -->
             </div>
         </div>
         <div class="gj_data_box">
@@ -92,7 +109,7 @@
               <select class="se_small fl se_last">
                     	<option></option>
                     </select>
-                  <input type="submit" class="dd_select fl ml20" value="">
+                  <input type="button" class="dd_select fl ml20" value=""/>
                 </form>
             </div>
             <div class="data_detail">
