@@ -24,8 +24,7 @@
 var g1;
 $(function () {
 	test();
-	//clearInterval(test);
-	//window.setInterval(test,3000); 
+	window.setInterval(test,3000); 
 });
 function test(){
 	$.ajax({
@@ -35,8 +34,9 @@ function test(){
 	      success: function(data){
 		      var printCpuPerc;
 	 		  $.each(data,function(i,p){
-	          printCpuPerc=p['printCpuPerc'];
+	          	printCpuPerc=p['printCpuPerc'];
 	          });
+	          $("#system1").html("");
 	          var g1 = new JustGage({
 		          id: "system1", 
 		          value: printCpuPerc, 
@@ -69,7 +69,7 @@ function sysForm(){
         <li><a href="${ctx}/adminUserManageUI.html" class="white">用户管理</a></li>
         <li><a href="${ctx}/adminServUI.html" class="white">服务管理</a></li>
         <li><a href="${ctx}/dataAnalysisUI.html" class="white">数据分析</a></li>
-        <li class="b_current"><a href="${ctx}/SystemManageUI.html" class="white">系统管理</a></li>
+        <li class="b_current" style="border-right:1px solid #1f8db4;"><a href="${ctx}/SystemManageUI.html" class="white">系统管理</a></li>
         <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/noticeManageUI.html" class="white">公告管理</a></li>
       </ul>
     </div>
