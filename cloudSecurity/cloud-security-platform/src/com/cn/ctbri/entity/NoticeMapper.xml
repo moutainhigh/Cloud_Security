@@ -26,12 +26,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	<!-- 查询所有记录 -->
 	<select id="list" resultMap="NoticeRM" parameterType="com.cn.ctbri.entity.Notice">
-		select * from cs_notice order 
+		select * from cs_notice
 		where 1=1
         <if test="id!=null and id!=''">
             and id=#{id}
         </if>
-		by createDate desc
+		order by createDate desc
 	</select>
 	
 	<!-- 插入公告 -->
