@@ -25,10 +25,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cn.ctbri.annotation.AuthPassport;
 import com.cn.ctbri.cfg.Configuration;
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.Notice;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
+import com.cn.ctbri.service.INoticeService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IUserService;
@@ -56,6 +58,8 @@ public class UserController {
 	IAlarmService alarmService;
 	@Autowired
 	IOrderService orderService;
+	@Autowired
+    INoticeService noticeService;
 	/**
 	 * 功能描述： 基本资料
 	 * 参数描述： Model model,HttpServletRequest request
@@ -100,8 +104,10 @@ public class UserController {
         Map<String, Object> m = new HashMap<String, Object>();
         //查询漏洞个数 
         int leakNum = selfHelpOrderService.findLeakNum(1);
+        //查询网页数
+        int webPageNum = selfHelpOrderService.findWebPageNum();
         m.put("leakNum", leakNum);
-        
+        m.put("webPageNum", webPageNum);
         //object转化为Json格式
         JSONObject JSON = CommonUtil.objectToJson(response, m);
         try {
@@ -119,12 +125,18 @@ public class UserController {
 	 */
 	@RequestMapping(value="index.html")
 	public String index(Model m){
+	    //获取公告
+	    List<Notice> list = noticeService.findAllNotice();
 	    //获取服务类型
         List<Serv> servList = selfHelpOrderService.findService();
         //查询漏洞个数
         int leakNum = selfHelpOrderService.findLeakNum(1);
+        //查询网页数
+        int webPageNum = selfHelpOrderService.findWebPageNum();
         m.addAttribute("leakNum", leakNum);
+        m.addAttribute("webPageNum", webPageNum);
         m.addAttribute("servList", servList);
+        m.addAttribute("noticeList", list);
 		return "/main";
 	}
 	/**
