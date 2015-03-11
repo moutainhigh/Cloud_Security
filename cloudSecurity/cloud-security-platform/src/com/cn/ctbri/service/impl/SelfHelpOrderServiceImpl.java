@@ -85,5 +85,13 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
         return selfHelpOrderDao.findLeakNum(i);
     }
 
+    /**
+     * 功能描述：查询网页数
+     *       @time 2015-3-9
+     */
+    public int findWebPageNum() {
+        return selfHelpOrderDao.findWebPageNum();
+    }
+
 
 }
