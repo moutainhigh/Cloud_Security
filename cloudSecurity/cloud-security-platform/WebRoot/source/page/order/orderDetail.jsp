@@ -66,7 +66,12 @@
                     <c:if test="${order.scan_type==4}">2小时</c:if>
                 </c:if>
            </span></p>
-           <p class="dd_detail"><span class="detail_l fl">最近检测时间</span><span class="detail_r fl"><fmt:formatDate value="${lastTime.execute_time }" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
+           <p class="dd_detail"><span class="detail_l fl">最近检测时间</span><span class="detail_r fl">
+           <c:if test="${checkTime>0 }">
+                <fmt:formatDate value="${lastTime.execute_time }" pattern="yyyy-MM-dd HH:mm:ss"/>
+           </c:if>
+           <c:if test="${checkTime==0 }">暂无</c:if>
+           </span></p>
            <p class="dd_detail"><span class="detail_l fl">检测次数</span><span class="detail_r fl">${checkTime }次</span></p>
         </c:if>
 	    <p class="dd_detail"><span class="detail_l fl">服务情况跟踪</span><span class="detail_r fl">
