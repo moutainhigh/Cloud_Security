@@ -126,7 +126,7 @@ public class UserController {
 	@RequestMapping(value="index.html")
 	public String index(Model m){
 	    //获取公告
-	    List<Notice> list = noticeService.findAllNotice();
+	    //List<Notice> list = noticeService.findAllNotice();
 	    //获取服务类型
         List<Serv> servList = selfHelpOrderService.findService();
         //查询漏洞个数
@@ -136,7 +136,7 @@ public class UserController {
         m.addAttribute("leakNum", leakNum);
         m.addAttribute("webPageNum", webPageNum);
         m.addAttribute("servList", servList);
-        m.addAttribute("noticeList", list);
+        //m.addAttribute("noticeList", list);
 		return "/main";
 	}
 	/**
