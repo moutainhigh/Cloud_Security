@@ -28,7 +28,7 @@
 	    <p style="margin:0 0 38px 286px;"><span class="bigfont">订单编号</span><span class="bigfont" style="margin-right:20px;">${order.id }</span><span class="bigfont">下单时间</span><span class="bigfont"><fmt:formatDate value="${order.create_date }" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
 	    <c:forEach var="check" items="${checkTime}" varStatus="status">
 		    <c:if test="${!status.first}">
-	        <p class="dd_detail"><span class="detail_l fl">检测时间</span><span class="detail_r fl"><fmt:formatDate value="${check.execute_time }" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
+	        <p class="dd_detail"><span class="detail_l fl">历史检测时间${status.index}</span><span class="detail_r fl"><fmt:formatDate value="${check.execute_time }" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
 		    </c:if>
 	    </c:forEach>
 	</c:forEach>
