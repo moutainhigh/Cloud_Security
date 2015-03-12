@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -77,7 +78,14 @@ function deleteNotice(id){
                 <c:forEach items="${noticeList}" var="notice">
                     <tr>
                     	<td class="t_username">${notice.noticeName}</td>
-                        <td class="t_date">${notice.noticeDesc}</td>
+                        <td class="t_date" style="width:280px">
+	                        <c:if test="${fn:length(notice.noticeDesc)<=18}">
+	                                    ${notice.noticeDesc}
+	                        </c:if>
+	                        <c:if test="${fn:length(notice.noticeDesc)>18}">
+	                                ${fn:substring(notice.noticeDesc, 0, 18)}...
+	                        </c:if>
+                        </td>
                         <td class="t_role"><fmt:formatDate value="${notice.createDate}" pattern="yyyy-MM-dd"/></td>
                         <td class="t_operation"><a href="#" class="ope_a add_change" id="${notice.id}" noticeName="${notice.noticeName}" noticeDesc="${notice.noticeDesc}">修改</a>
                         <a href="javascript:void(0)" class="ope_a ml20" onclick="deleteNotice('${notice.id}')">删除</a></td>
@@ -143,8 +151,8 @@ function deleteNotice(id){
             <td class="regist_prompt"></td>
           </tr>
           <tr class="register_tr">
-            <td class="regist_title">公告内容</td>
-            <td class="regist_input"><input type="text" name="noticeDesc" id="noticeDesc" class="regist_txt"/></td>
+            <td class="regist_title" style="width:410px">公告内容</td>
+            <td class="regist_input"><textarea name="noticeDesc" id="noticeDesc" class="regist_txt" style="height:180px;width:500px"></textarea></td>
             <td class="regist_prompt"></td>
           </tr>
           
@@ -170,8 +178,8 @@ function deleteNotice(id){
             <td class="regist_prompt" style="text-align:left;"></td>
           </tr>
           <tr class="register_tr">
-            <td class="regist_title">公告内容</td>
-            <td class="regist_input"><input type="text" name="noticeDesc" id="editNoticeDesc" class="regist_txt"/></td>
+            <td class="regist_title" style="width:410px">公告内容</td>
+            <td class="regist_input"><textarea name="noticeDesc" id="editNoticeDesc" class="regist_txt" style="height:180px;width:500px"></textarea></td>
             <td class="regist_prompt"></td>
           </tr>
           <tr>
