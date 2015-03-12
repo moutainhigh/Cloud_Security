@@ -109,7 +109,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>-->
 	<!-- 根据用户类型查询用户 -->
 	<select id="findHaveServSum" resultType="hashmap">
-		SELECT a.name,COUNT(a.name)
+		SELECT a.name,COUNT(a.name) as count
 		FROM 
 			(SELECT * 
 			FROM   (

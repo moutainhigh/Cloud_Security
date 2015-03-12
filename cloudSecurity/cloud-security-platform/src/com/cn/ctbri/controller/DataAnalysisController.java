@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import se.akerfeldt.com.google.gson.Gson;
 
+import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.User;
@@ -74,8 +75,35 @@ public class DataAnalysisController {
 		if(listAsset!=null && listAsset.size()>0){
 			asserAddrCount = listAsset.size();
 		}
-		request.setAttribute("asserAddrCount", asserAddrCount);//活跃用户数
+		request.setAttribute("asserAddrCount", asserAddrCount);//检测网站
+		
+		List<Alarm> listAlarmCount = alarmService.findAll();
+		int alarmCount = 0;
+		if(listAlarmCount!=null && listAlarmCount.size()>0){
+			alarmCount = listAlarmCount.size();
+		}
+		request.setAttribute("alarmCount", alarmCount);//扫描页面数
 		return "/source/adminPage/userManage/dataAnalysis";
+	}
+	/**
+	 * 功能描述：活跃用户列表
+	 *		 @time 2015-3-12
+	 */
+	@RequestMapping("/haveServ.html")
+	public String haveServCount(Model model){
+		List<DataAnalysis> listHaveServ= userService.findHaveServSum();
+		model.addAttribute("listHaveServ", listHaveServ);
+		return "/source/adminPage/userManage/haveServ";
+	}
+	/**
+	 * 功能描述：检测网站（资产地址）
+	 *		 @time 2015-3-12
+	 */
+	@RequestMapping("/asserAddr.html")
+	public String asserAddr(Model model){
+		List<Asset> listAsset = assetService.findAllAssetAddr();
+		model.addAttribute("listAsset", listAsset);
+		return "/source/adminPage/userManage/asserAddr";
 	}
 	/**
 	 * 功能描述：运营数据统计

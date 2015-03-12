@@ -62,7 +62,7 @@
                      </div>
                  </div>
                  <div class="m_user_table_box p_user_table" id="n_supper">
-                 <a href="###">
+                 <a href="${ctx}/haveServ.html">
                  <div class="m_user_table_c">
                        <span class="user_title">活跃用户数</span>
                       <span class="user_num">${haveServCount}</span>
@@ -70,7 +70,7 @@
                  </a>
                  </div>
                  <div class="m_user_table_box p_user_table" id="o_supper">
-                 <a href="###">
+                 <a href="${ctx}/asserAddr.html">
                  <div class="m_user_table_c">
                        <span class="user_title">监测网站数</span>
                       <span class="user_num">${asserAddrCount}</span>
@@ -80,7 +80,7 @@
                  <div class="m_user_table_box"id="p_supper">
                   <div class="m_user_table_c" style="border-right:1px solid #e0e0e0;">
                       <span class="user_title">扫描页面数</span>
-                      <span class="user_num">3</span>
+                      <span class="user_num">${alarmCount}</span>
                  </div>
                  </div>
             </div>

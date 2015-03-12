@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.Task;
 
 /**
@@ -39,5 +40,10 @@ public interface IAlarmService {
      * 返回值    ：List<Task>
      */
     List<Alarm> getAlarmByTaskId(Map<String, Object> param);
+    /**
+     * 功能描述：查询扫描总数
+     *       @time 2015-3-12
+     */
+	List<Alarm> findAll();
 
 }

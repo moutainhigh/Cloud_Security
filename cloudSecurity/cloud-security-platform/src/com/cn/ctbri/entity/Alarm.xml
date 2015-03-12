@@ -81,6 +81,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			前十
 			SELECT * FROM cs_alarm a ORDER BY a.level DESC LIMIT 10;
 			-->
-			
+	<select id="findAll" resultMap="Alarm" parameterType="hashmap">
+      	SELECT * FROM cs_alarm
+    </select>		
 			
 </mapper>

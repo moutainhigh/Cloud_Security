@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cn.ctbri.dao.AlarmDao;
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.Task;
 /**
  * 创 建 人  ：  于永波
@@ -75,5 +76,12 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
     public List<Alarm> getAlarmByTaskId(Map<String, Object> param) {
         return getSqlSession().selectList(ns+"findAlarmByTaskId", param);
     }
+    /**
+     * 功能描述：查询扫描总数
+     *       @time 2015-3-12
+     */
+	public List<Alarm> findAll() {
+		return getSqlSession().selectList(ns+"findAll");
+	}
 
 }

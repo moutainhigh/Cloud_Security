@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.AlarmDao;
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IAlarmService;
 /**
@@ -54,5 +55,12 @@ public class AlarmServiceImpl implements IAlarmService{
     public List<Alarm> getAlarmByTaskId(Map<String, Object> param) {
         return alarmDao.getAlarmByTaskId(param);
     }
+    /**
+     * 功能描述：查询扫描总数
+     *       @time 2015-3-12
+     */
+	public List<Alarm> findAll() {
+		return alarmDao.findAll();
+	}
 	
 }
