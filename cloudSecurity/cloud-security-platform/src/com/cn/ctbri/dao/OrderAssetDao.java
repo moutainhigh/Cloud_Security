@@ -1,6 +1,7 @@
 package com.cn.ctbri.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderIP;
@@ -42,5 +43,11 @@ public interface OrderAssetDao {
      *       @time 2015-2-2
      */
     List findAssetNameByOrderId(String orderId);
+
+    /**
+     * 功能描述：根据orderid查询最近检测时间
+     *       @time 2015-3-12
+     */
+    List findLastTimeByOrderId(Map<String, Object> paramMap);
 
 }
