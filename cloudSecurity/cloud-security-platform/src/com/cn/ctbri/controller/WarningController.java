@@ -208,9 +208,20 @@ public class WarningController {
         //获取当前时间
         SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String temp = setDateFormat.format(Calendar.getInstance().getTime());
-        request.setAttribute("nowDate",temp);
+        //获取最近检测时间
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("orderId", orderId);
+        paramMap.put("limitNum", 1);
+        List lastTime = orderAssetService.findLastTimeByOrderId(paramMap);
+        //获取检测次数
+        Map<String, Object> paramMap1 = new HashMap<String, Object>();
+        paramMap1.put("orderId", orderId);
+        List checkTime = orderAssetService.findLastTimeByOrderId(paramMap1);
         request.setAttribute("orderList", orderList);
         request.setAttribute("assetList", assetList);
+        request.setAttribute("nowDate",temp);
+        request.setAttribute("lastTime",lastTime.get(0));
+        request.setAttribute("checkTime",checkTime.size());
         return "/source/page/order/orderDetail";
     }
 	
