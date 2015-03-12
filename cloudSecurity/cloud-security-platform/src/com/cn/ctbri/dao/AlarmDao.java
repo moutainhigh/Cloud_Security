@@ -63,4 +63,17 @@ public interface AlarmDao {
      *       返回值    ：List<Alarm>
      */
 	public List<Alarm> findAlarmByParam(Map<String, Object> paramMap);
+	/**
+     * 功能描述：根据组合查询条件查询告警--参数为空level为空，alarm_type不为空
+     *       @time 2015-3-12
+     *       返回值    ：List<Alarm>
+     */
+	public List<Alarm> findAlarmByParamAlarm_type(Map<String, Object> paramMap);
+	/**
+     * 功能描述：根据组合查询条件查询告警--参数为空level不为空，alarm_type不为空
+     *       @time 2015-3-12
+     *       返回值    ：List<Alarm>
+     */
+	public List<Alarm> findAlarmByParamAlarm_typeAndLevel(
+			Map<String, Object> paramMap);
 }

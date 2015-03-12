@@ -166,14 +166,8 @@ public class DataAnalysisController {
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("application/json;charset=UTF-8");
 		//组织条件查询
-		String name=null;
-		try {
-			name=new String(alarm_type.getBytes("ISO-8859-1"), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
 		Map<String,Object> paramMap = new HashMap<String,Object>();
-		paramMap.put("alarm_type", name);//订单服务类型
+		paramMap.put("alarm_type", alarm_type);//订单服务类型
 		if(StringUtils.isNotEmpty(begin_datevo)){//开始时间
 			paramMap.put("begin_datevo", DateUtils.stringToDate(begin_datevo));
 		}else{
@@ -186,11 +180,43 @@ public class DataAnalysisController {
 		}
 		paramMap.put("level", level);//告警级别
 		
-		//参数都为空
-		List<Alarm> result = alarmService.findAlarmByParam(paramMap);
-		
-		
-		
+		//参数为空level和alarm_type为空
+		List<Alarm> result = null;
+		if(alarm_type==""){
+			result = alarmService.findAlarmByParam(paramMap);
+		}
+		/**
+		 * 统计时段内同一服务类型不同级别告警的分布情况；
+		 * 参数为空level为空，alarm_type（服务类型）不为空
+		 */
+		if(level==null&&alarm_type!=""){
+			result = alarmService.findAlarmByParamAlarm_type(paramMap);
+			if(result.size()>0&&result!=null){
+				for(Alarm alarm : result){
+					int levl = alarm.getLevel();
+					switch (levl) {
+					case 0:
+						alarm.setAlarm_type("低");
+						break;
+					case 1:
+						alarm.setAlarm_type("中");
+						break;
+					case 2:
+						alarm.setAlarm_type("高");
+						break;
+					default:
+						break;
+					}
+				}
+			}
+		}
+		/**
+		 * 	统计时段内同一服务类型告警TOP10排名；
+		 * 参数为空level（告警等级）不空，alarm_type（服务类型）不为空
+		 */
+		if(level!=null&&alarm_type!=""){
+			result = alarmService.findAlarmByParamAlarm_typeAndLevel(paramMap);
+		}
 		Gson gson= new Gson();          
 		String resultGson = gson.toJson(result);//转成json数据
 		PrintWriter out;

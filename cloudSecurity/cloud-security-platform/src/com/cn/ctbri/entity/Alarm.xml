@@ -97,8 +97,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="end_datevo!=null">
 				AND a.alarm_time &lt;=#{end_datevo}
 			</if>
+			<if test="level!=null">
+				AND a.level=#{level}
+			</if>
 			) b
 		GROUP BY b.alarm_type    
     </select>	
-    		
+    <!-- 告警统计分析 ：alarm_type不为空，levle为空-->	
+    	<select id="findAlarmByParamAlarm_type" resultMap="Alarm" parameterType="hashmap">
+			SELECT b.level, COUNT(b.level) as count
+			FROM (
+				SELECT a.alarm_type,a.level
+				FROM cs_alarm a
+				WHERE 1=1 and a.alarm_type = #{alarm_type}
+				<if test="begin_datevo!=null">
+					AND a.alarm_time &gt;= #{begin_datevo}
+				</if>	 
+				<if test="end_datevo!=null">
+					AND a.alarm_time &lt;=#{end_datevo}
+				</if>
+				) b
+			GROUP BY b.level   
+    </select>	
+    <!-- 告警统计分析 ：alarm_type不为空，levle不为空-->		
+    <select id="findAlarmByParamAlarm_typeAndLevel" resultMap="Alarm" parameterType="hashmap">
+    	SELECT b.name as alarm_type, COUNT(b.name) AS count
+		FROM (
+			SELECT a.alarm_type ,a.level,a.name 
+			FROM cs_alarm a
+			WHERE a.alarm_type = #{alarm_type} AND a.level=#{level}
+			) b
+			<if test="begin_datevo!=null">
+				AND a.alarm_time &gt;= #{begin_datevo}
+			</if>	 
+			<if test="end_datevo!=null">
+				AND a.alarm_time &lt;=#{end_datevo}
+			</if>
+		GROUP BY b.name
+		ORDER BY  COUNT(b.name) DESC LIMIT 10
+    </select>
 </mapper>
