@@ -48,12 +48,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from cs_alarm
 		where userId = #{userId}
 	</select>
-	<!-- 根据orderid查询告警数  -->
+	<!-- 根据orderid查询告警数,最近告警信息  -->
     <select id="findAlarmByOrderId" resultMap="Alarm" parameterType="hashmap">
-        select * from cs_alarm a where a.taskId in
-		(select t.taskId from cs_task t where t.order_asset_id in
-		(select oa.id from cs_order_asset oa where 
-		oa.orderId=#{orderId})) 
+        select * from cs_alarm a,
+		  (select t.taskId from cs_order_asset oa,cs_task t 
+		    where oa.id = t.order_asset_id 
+		    and oa.orderId=#{orderId}
+		    order by t.execute_time desc limit 0,1) b
+		where a.taskId = b.taskId 
 		<if test="level!=null">
             and a.level=#{level}
         </if>
