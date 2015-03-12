@@ -57,4 +57,10 @@ public interface AlarmDao {
      *       @time 2015-3-12
      */
 	public List<Alarm> findAll();
+	 /**
+     * 功能描述：根据组合查询条件查询告警
+     *       @time 2015-3-12
+     *       返回值    ：List<Alarm>
+     */
+	public List<Alarm> findAlarmByParam(Map<String, Object> paramMap);
 }

@@ -136,16 +136,16 @@
                    <div class="se_big fl se_last">
 			     		<input type="text" value="" id="end_date" name="end_datevo"  onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
 			      </div>
-		             <select id="servName" name="servName" class="se_small fl se_last">
-			        	<option selected="selected" value="">请选择订单服务类型</option>
-			      		<option value="漏洞扫描服务" >漏洞扫描服务</option>
-			      		<option value="恶意代码监测服务" >恶意代码监测服务</option>
-			      		<option value="网页篡改监测服务" >网页篡改监测服务</option>
-			      		<option value="关键字监测服务" >关键字监测服务</option>
-			      		<option value="可用性监测服务" >可用性监测服务</option>
-			      		<option value="日常流量监测服务" >日常流量监测服务</option>
-			      		<option value="日常攻击防护服务" >日常攻击防护服务</option>
-			      		<option value="突发异常流量清洗服务" >突发异常流量清洗服务</option>
+		             <select id="alarm_type" name="alarm_type" class="se_small fl se_last">
+			        	<option selected="selected" value="">请选择服务类型</option>
+			      		<option value="漏洞扫描" >漏洞扫描服务</option>
+			      		<option value="恶意代码监测" >恶意代码监测服务</option>
+			      		<option value="网页篡改监测" >网页篡改监测服务</option>
+			      		<option value="关键字监测" >关键字监测服务</option>
+			      		<option value="可用性监测" >可用性监测服务</option>
+			      		<option value="日常流量监测" >日常流量监测服务</option>
+			      		<option value="日常攻击防护" >日常攻击防护服务</option>
+			      		<option value="突发异常流量清洗" >突发异常流量清洗服务</option>
 			    	</select>
               		<select class="se_small fl se_last" id="level" name="level">
               			<option selected="selected" value="">请选择告警级别</option>

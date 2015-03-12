@@ -30,7 +30,15 @@ public class Alarm implements Serializable{
 	private long taskId;
 	//用户id
 	private int userId;
+	//告警统计分析VO字段
+	private int count;
 	
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
 	public int getUserId() {
 		return userId;
 	}

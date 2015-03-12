@@ -84,5 +84,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findAll" resultMap="Alarm" parameterType="hashmap">
       	SELECT * FROM cs_alarm
     </select>		
-			
+	    <!-- 告警统计分析 -->	
+	<select id="findAlarmByParam" resultMap="Alarm" parameterType="hashmap">
+      	SELECT a.alarm_type ,COUNT(a.alarm_type) AS count 
+		FROM cs_alarm a 
+		GROUP BY a.alarm_type
+    </select>	
+    		
 </mapper>

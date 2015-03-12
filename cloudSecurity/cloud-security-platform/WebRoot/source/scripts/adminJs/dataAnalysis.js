@@ -1,5 +1,6 @@
 $(function () {
 	orderData();
+	warningData();
 });
 
 function orderData(){
@@ -85,7 +86,7 @@ function warningData(){
 	var begin_datevo = $("#begin_date").val();
 	var end_datevo = $("#end_date").val();
 	var level = $("#level").val();
-	var servName = $("#servName").val();
+	var alarm_type = $("#alarm_type").val();
 	var datas = [];
 	var chart = new Highcharts.Chart({
         chart: {
@@ -139,8 +140,8 @@ function warningData(){
 	
 	//异步请求数据
     $.ajax({
-    	url:"orderStatisticsAnalysis.html",
-    	data: {"begin_datevo":begin_datevo,"end_datevo":end_datevo,"level":level ,"servName":servName},
+    	url:"warningData.html",
+    	data: {"begin_datevo":begin_datevo,"end_datevo":end_datevo,"level":level ,"alarm_type":alarm_type},
     	dataType:"json",
     	contentType: "application/x-www-form-urlencoded; charset=utf-8",
     	type: "post",
@@ -150,7 +151,7 @@ function warningData(){
         	datas = [],
             //迭代，把异步获取的数据放到数组中
             $.each(data,function(i,d){
-            	datas.push([d.name,d.count]);
+            	datas.push([d.alarm_type,d.count]);
             });
             //设置数据
             chart.series[0].setData(datas);  

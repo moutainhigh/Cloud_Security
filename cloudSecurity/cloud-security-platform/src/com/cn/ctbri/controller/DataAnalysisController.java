@@ -106,35 +106,6 @@ public class DataAnalysisController {
 		return "/source/adminPage/userManage/asserAddr";
 	}
 	/**
-	 * 功能描述：运营数据统计
-	 *		 @time 2015-3-6
-	 */
-	@RequestMapping("/operationDataStatistics.html")
-	public String operationDataStatistics(User user){
-		//注册用户数
-		List<User> list = userService.findUserByUserType(2);
-		//活跃用户数：服务数大于0的注册用户数汇总，可点击查看所有活跃用户列表，包括：用户名、用户服务数，按用户服务数降序排列
-		/**
-		 * 	SELECT a.name,COUNT(a.name)
-			FROM 
-				(SELECT * 
-				FROM   (
-					SELECT  u.name , o.serviceId ,u.type	  
-					FROM cs_order o LEFT JOIN cs_user u 
-					ON o.userId=u.id ) uo 
-				WHERE uo.type=2 AND  uo.serviceId IS NOT NULL) a  
-			GROUP BY a.name ORDER BY COUNT(a.name) DESC;
-		 */
-		//监测网站数：所有已注册用户的资产数汇总，针对资产地址进行去重统计，只统计一级地址，可点击查看所有监测网站列表
-		//比如www.baidu.com和www.baidu.com/index.html只统计一次， 在监测网站列表中显示为www.baidu.com
-		/**
-		 * SELECT DISTINCT a.addr 
-		   FROM cs_asset a
-		   (只做了去重)
-		 */
-		return "/source/adminPage/userManage/dataAnalysis";
-	}
-	/**
 	 * 功能描述：订单统计分析
 	 *		 @time 2015-3-9
 	 */
@@ -191,10 +162,41 @@ public class DataAnalysisController {
 	 */
 	@RequestMapping(value="warningData.html" ,method = RequestMethod.POST)
 	@ResponseBody
-	public void warningDataAnalysis(HttpServletRequest request,HttpServletResponse response,Integer level,String servName,String begin_datevo,String end_datevo){
+	public void warningDataAnalysis(HttpServletRequest request,HttpServletResponse response,Integer level,String alarm_type,String begin_datevo,String end_datevo){
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("application/json;charset=UTF-8");
-		
+		//组织条件查询
+		String name=null;
+		try {
+			name=new String(alarm_type.getBytes("ISO-8859-1"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("alarm_type", name);//订单服务类型
+		if(StringUtils.isNotEmpty(begin_datevo)){//开始时间
+			paramMap.put("begin_date", DateUtils.stringToDate(begin_datevo));
+		}else{
+			paramMap.put("begin_date", null);
+		}
+		if(StringUtils.isNotEmpty(end_datevo)){//结束时间
+			paramMap.put("end_date", DateUtils.stringToDate(end_datevo));
+		}else{
+			paramMap.put("end_date", null);
+		}
+		paramMap.put("level", level);//告警级别
+		List<Alarm> result = alarmService.findAlarmByParam(paramMap);
+		Gson gson= new Gson();          
+		String resultGson = gson.toJson(result);//转成json数据
+		PrintWriter out;
+		try {
+			out = response.getWriter();
+			out.write(resultGson); 
+			out.flush(); 
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
