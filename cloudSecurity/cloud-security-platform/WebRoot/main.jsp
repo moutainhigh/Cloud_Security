@@ -179,7 +179,7 @@
             <div class="right_title">系统公告</div>
             <div class="right_list">
                 <ul>
-                <c:forEach var="list" items="${noticeList}" varStatus="status">
+                <!-- <c:forEach var="list" items="${noticeList}" varStatus="status">
                     <li><a href="${ctx}/noticeDescUI.html?id=${list.id}" title="${list.noticeName }">
                         <c:if test="${fn:length(list.noticeName)<=9}">
                                     ${list.noticeName }
@@ -188,7 +188,7 @@
                                 ${fn:substring(list.noticeName, 0, 9)}...
                         </c:if>
                     </a></li>
-                </c:forEach>
+                </c:forEach> -->
                 </ul>
             </div>
             <!-- <div><a href="#"><img src="${ctx}/source/images/indexsmall.jpg" width="152" height="202" /></a></div> -->
