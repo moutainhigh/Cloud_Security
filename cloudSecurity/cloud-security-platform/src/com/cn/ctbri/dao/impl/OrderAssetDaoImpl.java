@@ -1,6 +1,7 @@
 package com.cn.ctbri.dao.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -62,6 +63,14 @@ public class OrderAssetDaoImpl extends DaoCommon implements OrderAssetDao{
      */
     public List findAssetNameByOrderId(String orderId) {
         List list = this.getSqlSession().selectList(ns+"findAssetNameByOrderId",orderId);
+        return list;
+    }
+    /**
+     * 功能描述：根据orderid查询最近检测时间
+     *       @time 2015-3-12
+     */
+    public List findLastTimeByOrderId(Map<String, Object> paramMap) {
+        List list = this.getSqlSession().selectList(ns+"findLastTimeByOrderId",paramMap);
         return list;
     }
 		
