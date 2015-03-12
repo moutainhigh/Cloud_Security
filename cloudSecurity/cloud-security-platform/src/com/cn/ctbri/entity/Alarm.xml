@@ -64,16 +64,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 根据orderid查询任务数  -->
     <select id="findTaskByOrderId" resultType="com.cn.ctbri.entity.Task" parameterType="hashmap">
-        select * from 
-		(select * from cs_task t where t.order_asset_id in
-		(select oa.id from cs_order_asset oa where oa.orderId=#{orderId}) 
-		order by t.execute_time desc limit 0,7)  a order by a.execute_time
+		select * from
+	   (select * from cs_task t,cs_order_asset oa where oa.id = t.order_asset_id 
+	    and oa.orderId=#{orderId} order by t.execute_time desc limit 0,7) a order by a.execute_time
     </select>
     
     <!-- 根据taskid查询告警数  -->
     <select id="findAlarmByTaskId" resultMap="Alarm" parameterType="hashmap">
         select * from cs_alarm a where a.taskId = #{taskId} and a.level = #{level}
     </select>
+    
     <!-- 告警统计分析 -->
     <!-- 	SELECT a.level, COUNT(a.level)
 			FROM cs_alarm a
