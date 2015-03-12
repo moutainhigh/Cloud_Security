@@ -175,17 +175,22 @@ public class DataAnalysisController {
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("alarm_type", name);//订单服务类型
 		if(StringUtils.isNotEmpty(begin_datevo)){//开始时间
-			paramMap.put("begin_date", DateUtils.stringToDate(begin_datevo));
+			paramMap.put("begin_datevo", DateUtils.stringToDate(begin_datevo));
 		}else{
-			paramMap.put("begin_date", null);
+			paramMap.put("begin_datevo", null);
 		}
 		if(StringUtils.isNotEmpty(end_datevo)){//结束时间
-			paramMap.put("end_date", DateUtils.stringToDate(end_datevo));
+			paramMap.put("end_datevo", DateUtils.stringToDate(end_datevo));
 		}else{
-			paramMap.put("end_date", null);
+			paramMap.put("end_datevo", null);
 		}
 		paramMap.put("level", level);//告警级别
+		
+		//参数都为空
 		List<Alarm> result = alarmService.findAlarmByParam(paramMap);
+		
+		
+		
 		Gson gson= new Gson();          
 		String resultGson = gson.toJson(result);//转成json数据
 		PrintWriter out;

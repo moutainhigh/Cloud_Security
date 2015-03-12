@@ -83,8 +83,8 @@ function orderData(){
 }
 
 function warningData(){
-	var begin_datevo = $("#begin_date").val();
-	var end_datevo = $("#end_date").val();
+	var begin_datevo = $("#begin_dateW").val();
+	var end_datevo = $("#end_dateW").val();
 	var level = $("#level").val();
 	var alarm_type = $("#alarm_type").val();
 	var datas = [];

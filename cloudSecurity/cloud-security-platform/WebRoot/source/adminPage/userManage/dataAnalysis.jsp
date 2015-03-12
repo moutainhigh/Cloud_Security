@@ -131,10 +131,10 @@
             	<form action="${ctx}/warningData.html" method="post" id="warningForm">
                	  <label class="fl">统计时段</label>
                	  <div class="se_big fl">
-			        	<input type="text" value="" id="begin_date" name="begin_datevo" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+			        	<input type="text" value="" id="begin_dateW" name="begin_datevo" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
 			      </div>
                    <div class="se_big fl se_last">
-			     		<input type="text" value="" id="end_date" name="end_datevo"  onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+			     		<input type="text" value="" id="end_dateW" name="end_datevo"  onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
 			      </div>
 		             <select id="alarm_type" name="alarm_type" class="se_small fl se_last">
 			        	<option selected="selected" value="">请选择服务类型</option>

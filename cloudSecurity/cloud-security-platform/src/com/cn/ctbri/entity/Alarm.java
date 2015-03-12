@@ -32,7 +32,23 @@ public class Alarm implements Serializable{
 	private int userId;
 	//告警统计分析VO字段
 	private int count;
+	//统计开始时间
+	private Date begin_datevo;
+	//统计结束时间
+	private Date end_datevo;
 	
+	public Date getBegin_datevo() {
+		return begin_datevo;
+	}
+	public void setBegin_datevo(Date begin_datevo) {
+		this.begin_datevo = begin_datevo;
+	}
+	public Date getEnd_datevo() {
+		return end_datevo;
+	}
+	public void setEnd_datevo(Date end_datevo) {
+		this.end_datevo = end_datevo;
+	}
 	public int getCount() {
 		return count;
 	}

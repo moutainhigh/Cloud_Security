@@ -86,9 +86,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>		
 	    <!-- 告警统计分析 -->	
 	<select id="findAlarmByParam" resultMap="Alarm" parameterType="hashmap">
-      	SELECT a.alarm_type ,COUNT(a.alarm_type) AS count 
-		FROM cs_alarm a 
-		GROUP BY a.alarm_type
+		SELECT b.alarm_type,COUNT(b.alarm_type) AS count
+		FROM (
+	      	SELECT a.alarm_type 
+			FROM cs_alarm a 
+			WHERE 1=1
+			<if test="begin_datevo!=null">
+				AND a.alarm_time &gt;= #{begin_datevo}
+			</if>	 
+			<if test="end_datevo!=null">
+				AND a.alarm_time &lt;=#{end_datevo}
+			</if>
+			) b
+		GROUP BY b.alarm_type    
     </select>	
     		
 </mapper>
