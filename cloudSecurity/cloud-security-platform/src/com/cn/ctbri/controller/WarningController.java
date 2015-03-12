@@ -220,10 +220,34 @@ public class WarningController {
         request.setAttribute("orderList", orderList);
         request.setAttribute("assetList", assetList);
         request.setAttribute("nowDate",temp);
-        request.setAttribute("lastTime",lastTime.get(0));
+        if(lastTime.size()>0){
+            request.setAttribute("lastTime",lastTime.get(0));
+        }
         request.setAttribute("checkTime",checkTime.size());
         return "/source/page/order/orderDetail";
     }
 	
+    /**
+     * 功能描述： 用户中心-订单跟踪-历史记录查询
+     * 参数描述：  无
+     *     @time 2015-3-12
+     */
+    @RequestMapping(value="historyInit.html")
+    public String historyInit(HttpServletRequest request){
+        String orderId = request.getParameter("orderId");
+        //获取订单信息
+        List orderList = orderService.findByOrderId(orderId);
+        //获取对应告警信息
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("orderId", orderId);
+        List<Alarm> alarmList = alarmService.getAlarmByOrderId(paramMap);
+        //获取检测次数
+        List checkTime = orderAssetService.findLastTimeByOrderId(paramMap);
+        request.setAttribute("orderList", orderList);
+        request.setAttribute("alarmList", alarmList);
+        request.setAttribute("checkTime", checkTime);
+        return "/source/page/order/historyDetail";
+    }
+    
 
 }
