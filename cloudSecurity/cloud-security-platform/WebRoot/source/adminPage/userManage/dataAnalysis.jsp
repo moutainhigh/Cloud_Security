@@ -87,13 +87,14 @@
         </div>
         <div class="dd_data_box" style="display:none;">
         	<div class="data_choose dd_choose">
-            	<form action="${ctx}/orderStatisticsAnalysis.html" method="post" id="searchForm">
+            	<form action="${ctx}/orderStatisticsAnalysis.html" method="post" id="searchForm" >
                	  <label class="fl">统计时段</label>
-               	  <div class="se_big fl">
-			        	<input type="text" value="" id="begin_date" name="begin_datevo" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+               	 	  <div class="se_big fl">
+			        	<input style="border:1px solid #e0e0e0; height: 28px; line-height: 28px;" type="text" value="" id="begin_dateW" name="begin_datevo" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
 			      </div>
-			      <div class="se_big fl se_last">
-			     		<input type="text" value="" id="end_date" name="end_datevo"  onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+			      <div style="float:left; width:20xp;margin-right:15px;">--</div>
+                   <div class="se_big fl">
+			     		<input style="border:1px solid #e0e0e0; height: 28px; line-height: 28px;" type="text" value="" id="end_dateW" name="end_datevo"  onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
 			      </div>
                   <label class="fl"></label>
 		            <select id="type" name="type" class="se_small fl se_last">
@@ -131,10 +132,11 @@
             	<form action="${ctx}/warningData.html" method="post" id="warningForm">
                	  <label class="fl">统计时段</label>
                	  <div class="se_big fl">
-			        	<input type="text" value="" id="begin_dateW" name="begin_datevo" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+			        	<input style="border:1px solid #e0e0e0; height: 28px; line-height: 28px;" type="text" value="" id="begin_dateW" name="begin_datevo" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
 			      </div>
-                   <div class="se_big fl se_last">
-			     		<input type="text" value="" id="end_dateW" name="end_datevo"  onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+			      <div style="float:left; width:20xp;margin-right:15px;">--</div>
+                   <div class="se_big fl">
+			     		<input style="border:1px solid #e0e0e0; height: 28px; line-height: 28px;" type="text" value="" id="end_dateW" name="end_datevo"  onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
 			      </div>
 		             <select id="alarm_type" name="alarm_type" class="se_small fl se_last">
 			        	<option selected="selected" value="">请选择服务类型</option>
