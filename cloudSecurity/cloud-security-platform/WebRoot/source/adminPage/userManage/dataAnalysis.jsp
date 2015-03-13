@@ -90,11 +90,11 @@
             	<form action="${ctx}/orderStatisticsAnalysis.html" method="post" id="searchForm" >
                	  <label class="fl">统计时段</label>
                	 	  <div class="se_big fl">
-			        	<input style="border:1px solid #e0e0e0; height: 28px; line-height: 28px;" type="text" value="" id="begin_dateW" name="begin_datevo" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+			        	<input style="border:1px solid #e0e0e0; height: 28px; line-height: 28px;" type="text" value="" id="begin_date" name="begin_datevo" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
 			      </div>
 			      <div style="float:left; width:20xp;margin-right:15px;">--</div>
                    <div class="se_big fl">
-			     		<input style="border:1px solid #e0e0e0; height: 28px; line-height: 28px;" type="text" value="" id="end_dateW" name="end_datevo"  onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+			     		<input style="border:1px solid #e0e0e0; height: 28px; line-height: 28px;" type="text" value="" id="end_date" name="end_datevo"  onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
 			      </div>
                   <label class="fl"></label>
 		            <select id="type" name="type" class="se_small fl se_last">
