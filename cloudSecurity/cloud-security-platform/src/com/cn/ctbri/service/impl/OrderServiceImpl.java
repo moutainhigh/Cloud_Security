@@ -99,4 +99,14 @@ public class OrderServiceImpl implements IOrderService{
 	public List<DataAnalysis> findByCombineDataAnalysis(Map<String, Object> paramMap) {
 		return orderDao.findByCombineDataAnalysis(paramMap);
 	}
+	/**
+     * 功能描述：分页组合查询订单
+     * 参数描述：String name
+     *       @time 2015-3-13
+     * 返回值    ：  List<Order>
+     */
+    public List findByCombineByPage(Map<String, Object> paramMap) {
+        List list = orderDao.findByCombineByPage(paramMap);
+        return list;
+    }
 }
