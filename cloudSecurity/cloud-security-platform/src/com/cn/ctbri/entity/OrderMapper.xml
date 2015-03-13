@@ -74,6 +74,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				AND c.end_date &lt;=#{end_date}
 			</if>	  
 	</select>
+	  <!-- 滚动加载 -->
+	   <select id="findByCombineByPage" resultType="hashmap" parameterType="hashmap">
+        SELECT c.id,c.type,c.sid,c.name,c.begin_date,c.end_date,c.create_date,c.scan_type
+        FROM (SELECT o.id,o.type,s.id as sid,s.name,o.scan_type,o.begin_date,o.end_date,o.create_date
+              FROM cs_order o,cs_service s
+              WHERE o.userId = #{userId} AND o.serviceId = s.id order by o.create_date desc) c 
+        WHERE
+            1=1  
+            <if test="type!=null">
+                AND c.type = #{type}
+            </if>
+            <if test="servName!=null and servName!=''"> 
+                AND c.sid = #{servName} 
+            </if>    
+            <if test="begin_date!=null">
+                AND c.begin_date &gt;= #{begin_date}
+            </if>    
+            <if test="end_date!=null">
+                AND c.end_date &lt;=#{end_date}
+            </if>
+            limit #{pageNow},#{pageSize}    
+    </select>
+	
 	
 	<select id="findByCombineOrderTrack" resultType="hashmap" parameterType="hashmap">
         select b.id,b.type,b.sid,b.name,b.begin_date,b.end_date,b.create_date,b.scan_type,b.status from
