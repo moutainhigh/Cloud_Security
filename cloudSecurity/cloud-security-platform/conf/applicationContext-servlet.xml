@@ -11,9 +11,8 @@
 	<!-- 配置静态资源，不被DispatcherServlet处理，3.04新增功能，需要重新设置spring-mvc-3.0.xsd -->
 	 <!-- 对静态资源文件的访问  方案一 （二选一） -->    
     <!-- 对静态资源文件的访问  方案二 （二选一）
-    <mvc:resources mapping="/source/**" location="/source/"/>
+    <mvc:resources mapping="/source/**" location="/source/"/>-->
     <mvc:default-servlet-handler /> 
-	  -->
 	<context:component-scan base-package="com.cn.ctbri" />
     <mvc:annotation-driven/>
     
