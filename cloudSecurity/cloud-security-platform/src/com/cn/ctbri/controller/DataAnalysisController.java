@@ -114,16 +114,9 @@ public class DataAnalysisController {
 	public void orderStatisticsAnalysis(HttpServletRequest request,HttpServletResponse response,Integer state,Integer type,String servName,String begin_datevo,String end_datevo){
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("application/json;charset=UTF-8");
-		//组织条件查询
-		String name=null;
-		try {
-			name=new String(servName.getBytes("ISO-8859-1"), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("type", type);//订单类型
-		paramMap.put("servName", name);//订单服务类型
+		paramMap.put("servName", servName);//订单服务类型
 		paramMap.put("state", state);//订单状态
 		if(StringUtils.isNotEmpty(begin_datevo)){//开始时间
 			paramMap.put("begin_date", DateUtils.stringToDate(begin_datevo));
@@ -136,14 +129,9 @@ public class DataAnalysisController {
 			paramMap.put("end_date", null);
 		}
         SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        /* 時：分：秒  HH:mm:ss  HH : 23小時制 (0-23)
-                                 kk : 24小時制 (1-24)
-                                 hh : 12小時制 (1-12)
-                                 KK : 11小時制 (0-11)*/
         String temp = setDateFormat.format(Calendar.getInstance().getTime());
         paramMap.put("currentDate", temp);
 		List<DataAnalysis> result = orderService.findByCombineDataAnalysis(paramMap);//[{cou=2, name=关键字监测服务}, {cou=2, name=恶意代码监测服务}, {cou=23, name=漏洞扫描服务}]
-
 		Gson gson= new Gson();          
 		String resultGson = gson.toJson(result);//转成json数据
 		PrintWriter out;

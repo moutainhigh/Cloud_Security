@@ -22,6 +22,7 @@ public class Order {
 	private int contactId;//联系人Id
 	private String remarks;//备注
 	private int status;//订单状态
+	private String servName;//服务名称vo
 	private String begin_datevo;//begin_date vo
 	private String end_datevo;//end_date vo备注
 	public String getBegin_datevo() {
@@ -36,7 +37,7 @@ public class Order {
 	public void setEnd_datevo(String end_datevo) {
 		this.end_datevo = end_datevo;
 	}
-	private String servName;//服务名称vo
+	
 	public String getServName() {
 		return servName;
 	}
