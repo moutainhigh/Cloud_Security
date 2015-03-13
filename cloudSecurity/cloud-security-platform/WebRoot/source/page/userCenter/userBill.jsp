@@ -1,6 +1,11 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
+<%
+    response.setHeader("Pragma","No-cache"); 
+    response.setHeader("Cache-Control","no-cache"); 
+    response.setDateHeader("Expires", -10); 
+%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -13,7 +18,11 @@
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/order/billDetail.js"></script>
 <script type="text/javascript">
+$.ajaxSetup({
+    cache: false //关闭AJAX相应的缓存
+});
 $(document).ready(function(){
 	$("#type").val("${type}");
 	$("#servName").val("${servName}");
@@ -70,6 +79,11 @@ function searchCombine(){
   <!--我的账单-->
   <div class="user_right" >
   <form action="${ctx}/searchCombine.html" method="post" id="searchForm">
+    <input type="hidden" id="mark" value="${mark}"/>
+    <input type="hidden" id="typepage" value="${type}"/>
+    <input type="hidden" id="servNamepage" value="${servName}"/>
+    <input type="hidden" id="begin_datepage" value="${begin_date}"/>
+    <input type="hidden" id="end_datepage" value="${end_date}"/>
     <div class="user_top">
       <div class="user_sec_cont">
          	<select id="type" name="type" class="user_secta spiclesel">
@@ -81,14 +95,14 @@ function searchCombine(){
       <div class="user_sec_cont" style=" left:196px; ">
          <select id="servName" name="servName" class="user_secta spiclesel">
         	<option selected="selected" value="">请选择服务</option>
-      		<option value="漏洞扫描服务" >漏洞扫描服务</option>
-      		<option value="恶意代码监测服务" >恶意代码监测服务</option>
-      		<option value="网页篡改监测服务" >网页篡改监测服务</option>
-      		<option value="关键字监测服务" >关键字监测服务</option>
-      		<option value="可用性监测服务" >可用性监测服务</option>
-      		<option value="日常流量监测服务" >日常流量监测服务</option>
-      		<option value="日常攻击防护服务" >日常攻击防护服务</option>
-      		<option value="突发异常流量清洗服务" >突发异常流量清洗服务</option>
+      		<option value="1" >漏洞扫描服务</option>
+      		<option value="2" >恶意代码监测服务</option>
+      		<option value="3" >网页篡改监测服务</option>
+      		<option value="4" >关键字监测服务</option>
+      		<option value="5" >可用性监测服务</option>
+      		<option value="6" >日常流量监测服务</option>
+      		<option value="7" >日常攻击防护服务</option>
+      		<option value="8" >突发异常流量清洗服务</option>
     	</select>
       </div>
       <div class="dan_3 user_sectime1" style="left:344px;">
@@ -101,9 +115,8 @@ function searchCombine(){
       <div class="user_soucuo" style="left:764px;"><img src="${ctx}/source/images/user_submit_2.jpg" onclick="searchCombine()"/></div>
     </div>
    </form>
-    <div class="zhangd_table">
-      <table>
-      
+    <div class="zhangd_table" id="content_data_div">
+      <table id="billTab">
         <tbody>
 	          <tr style="background:#e0e0e0; height:30px; line-height:30px;">
 	            <td style="width:10%;">订单编号</td>
@@ -113,36 +126,6 @@ function searchCombine(){
 	            <td  style="width:15%;">下单时间</td>
 	            <td  style="width:10%;"></td>
 	          </tr>
-		<c:forEach items="${list}" var="order"> 
-	          <tr>
-	            <td>${order.id}</td>
-	            <td>
-	            	<c:if test="${order.type==1}">长期</c:if>
-	            	<c:if test="${order.type==2}">单次</c:if> 
-	           </td>
-	            <td>
-	            ${order.name}
-	            </td>
-	            <td><fmt:formatDate value="${order.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>~<fmt:formatDate value="${order.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-	            <td><fmt:formatDate value="${order.create_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-	            <td class="seedetail" value="0" name="${order.id}" onclick="seedetail(this)"><span>查看详情</span></td>
-	          </tr>
-	          <tr  class="detailbox">
-	            <td colspan="6"><div  class="zhangd_div">
-	                <div class="zhangd_ding"></div>
-					                服务对象资产个数&nbsp;&nbsp; &nbsp; <span id="${order.id}"></span> &nbsp;&nbsp; &nbsp; 
-					      <c:if test="${order.type!=2}">         
-					                扫描频率 &nbsp;&nbsp; &nbsp; 
-					                <span id="scan_type">
-					                	<c:if test="${order.scan_type==1}">每天</c:if>
-					                	<c:if test="${order.scan_type==2}">每周</c:if>
-					                	<c:if test="${order.scan_type==3}">每月</c:if>
-					                </span> &nbsp;&nbsp; &nbsp;  
-					     </c:if> 
-					                扫描次数 &nbsp;&nbsp; &nbsp; <span id="${order.id}scan"></span> </div></td>
-	          </tr>
-          
-	   </c:forEach> 
         </tbody>
       </table>
     </div>
