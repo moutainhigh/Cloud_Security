@@ -101,6 +101,17 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
      */
 	public List<DataAnalysis> findByCombineDataAnalysis(Map<String, Object> paramMap) {
 		return this.getSqlSession().selectList(ns + "findByCombineDataAnalysis",paramMap);
-	} 
+	}
+
+	/**
+     * 功能描述：分页组合查询订单
+     * 参数描述：String name
+     *       @time 2015-3-13
+     * 返回值    ：  List<Order>
+     */
+    public List findByCombineByPage(Map<String, Object> paramMap) {
+        List list = this.getSqlSession().selectList(ns + "findByCombineByPage",paramMap);
+        return list;
+    } 
 	
 }
