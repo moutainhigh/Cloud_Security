@@ -16,10 +16,9 @@
 <script src="${ctx}/source/scripts/echarts/esl.js"></script>
 <script src="${ctx}/source/scripts/echarts/echarts.js"></script>
 <script src="${ctx}/source/scripts/adminJs/sysManage.js"></script>
-<script type="text/javascript" src="http://cdn.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
-<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/exporting.js"></script>
-<script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts-3d.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/highcharts/js/highcharts.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/highcharts/js/modules/exporting.js></script>
+<script type="text/javascript" src="${ctx}/source/scripts/highcharts/js/highcharts-3d.js"></script>
 <script>
 var g1;
 $(function () {
