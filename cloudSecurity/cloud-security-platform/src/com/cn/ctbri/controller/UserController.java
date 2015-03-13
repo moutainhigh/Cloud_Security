@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cn.ctbri.annotation.AuthPassport;
 import com.cn.ctbri.cfg.Configuration;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Notice;
