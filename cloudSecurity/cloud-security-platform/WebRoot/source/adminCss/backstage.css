@@ -61,14 +61,14 @@ select.ser_input{height:38px;line-height:38px;width:262px;color:#888888;font-siz
 .bor_t_big{width:836px;border-top:1px solid #e0e0e0;}
 .bor_t_small{width:6px;border-top:1px solid #e0e0e0;}
 .data_choose{height:60px;width:100%;}
-.data_choose label{font-size:16px;color:#888;padding-right:6px;}
+.data_choose label{font-size:16px;color:#888;padding-right:6px;line-height:28px;}
 .data_choose select{height:28px;line-height:28px;margin-right:10px;border:1px solid #e0e0e0;}
-.se_big{width:138px;}
+.se_big{width:138px;  display: inline-block;  margin-right: 15px; width: 138px}
 .se_small{width:108px;}
 .data_choose .se_last{margin-right:24px;}
 .dd_select{background:url(../adminImages/b_search_bg.jpg);width:82px;height:32px;cursor:pointer;}
 .data_detail{border:1px solid #e0e0e0;width:1098px;height:352px;margin-bottom:30px;}
-.gjchoose{padding-left:80px;}
+
 .gj_data_box{display:none;}
 /*系统管理页面--ld*/
 .system_zy{width:100%;height:490px;margin-bottom:42px;}
