@@ -117,7 +117,7 @@ public class Scheduler4Task implements Job{
 					//秒 分 时 日 月 周 年(可选)
 					trigger.setCronExpression("0 10 00 * * ?");
 				}else if(Integer.parseInt(Constants.SCANTYPE_WEEK) == scanType){ //每周一。。。
-					trigger.setCronExpression("0 10 00 ? * MON");
+					trigger.setCronExpression("0 10 * ? * MON");
 				}else if(Integer.parseInt(Constants.SCANTYPE_MONTH) == scanType){  //每月一号。。。
 					trigger.setCronExpression("0 10 00 1 * ?");
 				}else{
@@ -127,6 +127,7 @@ public class Scheduler4Task implements Job{
 				//YUYONGBO 必须把任务和触发事件设置到调度中
 				scheduler.scheduleJob(jobDetail, trigger);
 			}catch (Exception e) {
+			    e.printStackTrace();
 				logger.error("调度任务日志：设置调度策略有误!");
 				throw new RuntimeException("调度任务日志：设置调度策略有误!");
 			}
