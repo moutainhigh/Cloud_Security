@@ -381,10 +381,11 @@ public class OrderMgrController {
             }
             
             request.setAttribute("isSuccess", true);
-//          Scheduler4Task task = new Scheduler4Task();
-//          WebApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
-//          task.setAc(ac);
-//          task.setTaskByOrder(order);
+            
+            Scheduler4Task task = new Scheduler4Task();
+            WebApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
+            task.setAc(ac);
+            task.setTaskByOrder(order);
         }else{
             m.put("timeCompare", false);
         }
