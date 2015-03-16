@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.AssetDao;
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderIP;
+import com.cn.ctbri.pager.PageBean;
 import com.cn.ctbri.service.IAssetService;
 /**
  * 创 建 人  ：  邓元元
@@ -110,5 +112,26 @@ public class AssetServiceImpl implements IAssetService{
 	public List<Asset> findAllAssetAddr() {
 		return assetDao.findAllAssetAddr();
 	}
-	
+	/**
+     * 功能描述： 分页
+     *       @time 2015-3-16
+     */
+	public PageBean<Asset> queryByPage(Asset criteria,int pageCode) {
+		try {
+			int totalRecord = 0 ;
+			List<Asset> list = assetDao.findAllAssetAddr();//获取总记录数
+			if(list!=null &&list.size()>=0){
+				totalRecord = list.size();
+			}
+			// 使用当前页码和总记录数创建PageBean
+			PageBean<Asset> pb = new PageBean<Asset>(pageCode, totalRecord);
+			// 查询本页记录
+			List<Asset> datas = assetDao.queryByPage(criteria, (pageCode - 1) * pb.getPageSize(), pb.getPageSize());
+			// 保存pageBean中
+			pb.setDatas(datas);
+			return pb;//返回pageBean
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

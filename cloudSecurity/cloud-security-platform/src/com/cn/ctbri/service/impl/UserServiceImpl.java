@@ -1,13 +1,14 @@
 package com.cn.ctbri.service.impl;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.cn.ctbri.dao.UserDao;
 import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.User;
+import com.cn.ctbri.pager.PageBean;
 import com.cn.ctbri.service.IUserService;
 /**
  * 创 建 人  ：  邓元元
@@ -115,5 +116,25 @@ public class UserServiceImpl implements IUserService{
 	 */
 	public List<DataAnalysis> findHaveServSum() {
 		return userDao.findHaveServSum();
+	}
+
+	public PageBean<DataAnalysis> queryByPage(DataAnalysis criteria,
+			int pageCode) {
+		try {
+			int totalRecord = 0 ;
+			List<DataAnalysis> list = userDao.findHaveServSum();//获取总记录数
+			if(list!=null &&list.size()>=0){
+				totalRecord = list.size();
+			}
+			// 使用当前页码和总记录数创建PageBean
+			PageBean<DataAnalysis> pb = new PageBean<DataAnalysis>(pageCode, totalRecord);
+			// 查询本页记录
+			List<DataAnalysis> datas = userDao.queryByPage(criteria, (pageCode - 1) * pb.getPageSize(), pb.getPageSize());
+			// 保存pageBean中
+			pb.setDatas(datas);
+			return pb;//返回pageBean
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

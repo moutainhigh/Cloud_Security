@@ -3,8 +3,10 @@ package com.cn.ctbri.service;
 import java.util.List;
 
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderIP;
+import com.cn.ctbri.pager.PageBean;
 
 
 
@@ -81,6 +83,11 @@ public interface IAssetService {
      *       @time 2015-3-9
      */
 	List<Asset> findAllAssetAddr();
+	/**
+     * 功能描述： 分页
+     *       @time 2015-3-16
+     */
+	PageBean<Asset> queryByPage(Asset criteria, int pageCode);
 
 	
 }

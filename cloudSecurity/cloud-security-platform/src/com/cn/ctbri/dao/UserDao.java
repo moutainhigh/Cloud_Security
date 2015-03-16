@@ -1,5 +1,6 @@
 package com.cn.ctbri.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.cn.ctbri.entity.DataAnalysis;
@@ -83,5 +84,7 @@ public interface UserDao {
 	 *		 @time 2015-3-11
 	 */
 	List<DataAnalysis> findHaveServSum();
+
+	List<DataAnalysis> queryByPage(DataAnalysis criteria, int i, int pageSize);
 
 }

@@ -1,7 +1,9 @@
 package com.cn.ctbri.dao.impl;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -13,6 +15,7 @@ import com.cn.ctbri.dao.AlarmDao;
 import com.cn.ctbri.dao.AssetDao;
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderIP;
 /**
@@ -119,5 +122,15 @@ public class AssetDaoImpl extends DaoCommon implements AssetDao{
      */
 	public List<Asset> findAllAssetAddr() {
 		return this.getSqlSession().selectList(ns+"findAllAssetAddr");
+	}
+	/**
+	 * 分页
+	 */
+	public List<Asset> queryByPage(Asset criteria, int offset, int pageSize) {
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("pageNow", offset);
+        paramMap.put("pageSize", pageSize);
+        List<Asset> list = getSqlSession().selectList(ns +"queryByPage",paramMap);
+		return list;
 	}
 }

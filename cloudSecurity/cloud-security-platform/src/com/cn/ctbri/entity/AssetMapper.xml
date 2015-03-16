@@ -88,4 +88,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 SELECT DISTINCT a.addr
 		 FROM cs_asset a
 	</select>
+	<!-- 分页查询 -->
+	<select id="queryByPage" resultMap="AssetRM">
+		 SELECT DISTINCT a.addr
+		 FROM cs_asset a LIMIT #{pageNow},#{pageSize}
+	</select>
 </mapper>

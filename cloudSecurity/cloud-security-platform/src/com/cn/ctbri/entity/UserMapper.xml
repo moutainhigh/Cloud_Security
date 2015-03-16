@@ -119,4 +119,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			WHERE uo.type=2 AND  uo.serviceId IS NOT NULL) a  
 		GROUP BY a.name ORDER BY COUNT(a.name) DESC;
 	</select>
+	<!-- 分页查询活跃用户数 -->
+		<select id="queryByPage" resultType="hashmap">
+		SELECT a.name,COUNT(a.name) as count
+		FROM 
+			(SELECT * 
+			 FROM   (
+				SELECT  u.name , o.serviceId ,u.type	  
+				FROM cs_order o LEFT JOIN cs_user u 
+				ON o.userId=u.id ) uo 
+			 WHERE uo.type=2 AND  uo.serviceId IS NOT NULL) a  
+		GROUP BY a.name ORDER BY COUNT(a.name) DESC LIMIT #{pageNow},#{pageSize}
+	</select>
 </mapper>

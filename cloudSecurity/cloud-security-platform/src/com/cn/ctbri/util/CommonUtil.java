@@ -6,6 +6,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.ConvertUtils;
+
 import net.sf.json.JSONObject;
 
 import com.cn.ctbri.entity.User;
@@ -43,5 +46,36 @@ public class CommonUtil {
 	 */
 	public static User getGloble_user(HttpServletRequest request){
 		return (User) request.getSession().getAttribute("globle_user");
+	}
+	/**
+	 * 创建一个bean，把数据封装到bean中返回
+	 * @param datas
+	 * @param clazz
+	 * @return
+	 */
+	public static <T> T toBean(Map datas, Class<T> clazz) {
+		/*
+		 * 依赖commons-beanutils
+		 */
+		try {
+			/*
+			 * 1. 通过clazz创建bean实例
+			 */
+			T bean = clazz.newInstance();
+			/*
+			 * 注册类型转换器，用来把字符串转换成Date类型
+			 */
+			ConvertUtils.register(new DateConverter(), java.util.Date.class);
+			/*
+			 * 2. 把datas封装到bean中
+			 */
+			BeanUtils.populate(bean, datas);
+			/*
+			 * 3. 返回bean
+			 */
+			return bean;
+		} catch(Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

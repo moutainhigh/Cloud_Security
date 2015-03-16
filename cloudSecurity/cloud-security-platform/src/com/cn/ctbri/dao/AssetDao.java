@@ -79,5 +79,12 @@ public interface AssetDao {
      *       @time 2015-3-9
      */
 	List<Asset> findAllAssetAddr();
+	/**
+	 * 分页
+	 * @param criteria
+	 * @param pageCode
+	 * @return
+	 */
+	List<Asset> queryByPage(Asset criteria, int i, int pageSize);
 
 }

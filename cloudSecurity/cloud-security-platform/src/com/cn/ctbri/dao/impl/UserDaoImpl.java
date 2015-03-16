@@ -1,11 +1,9 @@
 package com.cn.ctbri.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.annotation.Resource;
-
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.DaoCommon;
@@ -108,4 +106,11 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
 		return getSqlSession().selectList(ns +"findHaveServSum");
 	}
 
+	public List<DataAnalysis> queryByPage(DataAnalysis criteria,int offset, int len) {
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("pageNow", offset);
+        paramMap.put("pageSize", len);
+        List<DataAnalysis> list = getSqlSession().selectList(ns +"queryByPage",paramMap);
+		return list;
+	}
 }

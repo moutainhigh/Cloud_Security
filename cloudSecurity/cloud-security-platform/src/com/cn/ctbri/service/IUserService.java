@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.User;
+import com.cn.ctbri.pager.PageBean;
 /**
  * 创 建 人  ：  邓元元
  * 创建日期：  2015-1-16
@@ -86,6 +87,11 @@ public interface IUserService {
 	 *		 @time 2015-3-11
 	 */
 	List<DataAnalysis> findHaveServSum();
+	/**
+	 * 分页查询
+	 * @param pageCode
+	 */
+	PageBean<DataAnalysis> queryByPage(DataAnalysis criteria, int pageCode);
 
 
 	
