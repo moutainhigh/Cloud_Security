@@ -20,6 +20,14 @@ public class Asset {
 	private String remarks;//备注
 	
 	private String verification_msg;//VO :代码验证
+	private String addrType;//VO :资产地址类型
+	
+	public String getAddrType() {
+		return addrType;
+	}
+	public void setAddrType(String addrType) {
+		this.addrType = addrType;
+	}
 	public int getId() {
 		return id;
 	}

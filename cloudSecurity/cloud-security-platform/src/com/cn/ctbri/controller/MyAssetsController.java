@@ -101,6 +101,7 @@ public class MyAssetsController {
 		asset.setStatus(0);//资产状态(1：已验证，0：未验证)
 		String name = "";//资产名称
 		String addr = "";//资产地址
+		String addrType = asset.getAddrType();
 		//处理页面输入中文乱码的问题
 		try {
 			//name = URLDecoder.decode(asset.getName(), "UTF-8");
@@ -108,6 +109,9 @@ public class MyAssetsController {
 			addr=new String(asset.getAddr().getBytes("ISO-8859-1"), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
+		}
+		if(!(addr.startsWith(addrType))){
+			addr = addrType+ "://" + addr;
 		}
 		asset.setName(name);
 		asset.setAddr(addr);
@@ -227,7 +231,12 @@ public class MyAssetsController {
 			//上传文件验证
 			if(verification_msg.equals("fileVerification")){
 				try{
-					String newPath = path+"key.txt";
+					String newPath = "";
+					if(path.endsWith("/")){
+						newPath = path+"key.txt";
+					}else{
+						newPath =  path+"/key.txt";
+					}
 					URL fileUrl = new URL(newPath);//http://localhost:8080/cloud-security-platform/key.txt
 					//sun.net.www.protocol.http.HttpURLConnection:http://localhost:8080/cloud-security-platform/key.txt
 					HttpURLConnection conn = (HttpURLConnection) fileUrl.openConnection();
