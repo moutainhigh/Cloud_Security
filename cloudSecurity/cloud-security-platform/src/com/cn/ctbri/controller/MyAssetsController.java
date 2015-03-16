@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import com.cn.ctbri.cfg.Configuration;
@@ -73,20 +74,23 @@ public class MyAssetsController {
 	 *		 @time 2015-1-16
 	 */
 	@RequestMapping("/asset_addrIsExist.html")
+	 @ResponseBody
 	public void addrIsExist(Model model,Asset asset,HttpServletResponse response){
 		String addr = asset.getAddr();
 		List<Asset> list = assetService.findByAssetAddr(addr);
+		Map<String, Object> m = new HashMap<String, Object>();
 		if(list != null && list.size()>0){
-			Map<String, Object> m = new HashMap<String, Object>();
-			m.put("msg", 1);//1：表示资产已经存在
-			//object转化为Json格式
-			JSONObject JSON = CommonUtil.objectToJson(response, m);
-			try {
-				// 把数据返回到页面
-				CommonUtil.writeToJsp(response, JSON);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			m.put("msg", true);//1：表示资产已经存在
+		}else{
+			m.put("msg", false);
+		}
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	@RequestMapping("/addAsset.html")

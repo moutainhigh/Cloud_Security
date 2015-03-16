@@ -110,7 +110,6 @@ public class DataAnalysisController {
 	@RequestMapping("/asserAddr.html")
 	public String asserAddr(Model model,HttpServletRequest request){
 		Asset criteria = CommonUtil.toBean(request.getParameterMap(), Asset.class);
-		
 		int pageCode = 1;
 		String s = request.getParameter("pageCode");
 		if(s != null && !s.trim().isEmpty()) {

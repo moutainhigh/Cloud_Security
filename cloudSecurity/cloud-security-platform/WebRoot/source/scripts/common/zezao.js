@@ -48,7 +48,10 @@ $(function(){
 				oMark.style.display ="none";
 				oLogin.style.display ="none";
 				//$(".box_logoIn").empty()
-				
+				$("#assetName").val("");
+				$("#assetAddr").val("");
+				$("#assetName_msg").html("");
+				$("#assetAddr_msg").html("");
 			};
 		}
 		function toCloseedit(){

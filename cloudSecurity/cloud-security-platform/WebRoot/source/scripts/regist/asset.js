@@ -1,39 +1,28 @@
 function saveAsset() {
 	var assetName = $("#assetName").val();
 	var assetAddr = $("#assetAddr").val();
-	if(assetName == null || assetName == "" || assetAddr==null || assetAddr == ""){
-		if(assetName == null || assetName == ""){
-			$("#assetName_msg").html("请输入资产名称");
-		}else{
-			$("#assetName_msg").html("");
-		}
+	if(assetName == null || assetName == ""){
+		$("#assetName_msg").html("请输入资产名称");
+	}else{
 		if(assetAddr==null || assetAddr == ""){
 			$("#assetAddr_msg").html("请输入资产地址");
 		}else{
-			
-			
-			$("#assetAddr_msg").html("");
+			//验证资产是否重复
+			$.ajax({
+		        type: "POST",
+		        url: "/cloud-security-platform/asset_addrIsExist.html",
+		        data: {"addr":assetAddr},
+		        dataType:"json",
+		        success: function(data){
+		            if(data.msg){
+		            	$("#assetAddr_msg").html("地址已经存在!");
+		            }else{
+		            	$("#assetAddr_msg").html("");
+		            	$("#saveAsset").submit();
+		            }
+		        },
+		     }); 
 		}
-	}else{
-		$("#assetName_msg").html("");
-		//验证资产是否重复
-		$.ajax({
-	        type: "POST",
-	        url: "/cloud-security-platform/asset_addrIsExist.html",
-	        data: {"addr":assetAddr},
-	        dataType:"json",
-	        success: function(data){
-	            if(data.msg=="1"){
-	            	$("#assetAddr_msg").html("地址已经存在!");
-		            //	alert("地址已经存在");
-		            return;
-	            }else{
-	            	//alert("地址不存在，可以添加");
-	            	$("#assetAddr_msg").html("");
-	            	$("#saveAsset").submit();
-	            }
-	        },
-	     }); 
 	}
 }
 function searchAssetCombine(){
