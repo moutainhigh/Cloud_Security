@@ -29,6 +29,7 @@ import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IUserService;
+import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
 
 
@@ -89,9 +90,17 @@ public class DataAnalysisController {
 	 *		 @time 2015-3-12
 	 */
 	@RequestMapping("/haveServ.html")
-	public String haveServCount(Model model){
-		List<DataAnalysis> listHaveServ= userService.findHaveServSum();
-		model.addAttribute("listHaveServ", listHaveServ);
+	public String haveServCount(Model model,HttpServletRequest request){
+		DataAnalysis criteria = CommonUtil.toBean(request.getParameterMap(), DataAnalysis.class);
+		//获取pageCode参数，如果不存在，那么它等于1，如果存在，那就赋值即可
+		int pageCode = 1;
+		String s = request.getParameter("pageCode");
+		// 如果请求中存在pageCode参数，那么把它赋给变量pageCode
+		if(s != null && !s.trim().isEmpty()) {
+			pageCode = Integer.parseInt(s);
+		}
+		//通过pageCode来调用service的queryByPage得到PageBean,把pageBean保存到request中
+		request.setAttribute("pb", userService.queryByPage(criteria, pageCode));
 		return "/source/adminPage/userManage/haveServ";
 	}
 	/**
@@ -99,9 +108,15 @@ public class DataAnalysisController {
 	 *		 @time 2015-3-12
 	 */
 	@RequestMapping("/asserAddr.html")
-	public String asserAddr(Model model){
-		List<Asset> listAsset = assetService.findAllAssetAddr();
-		model.addAttribute("listAsset", listAsset);
+	public String asserAddr(Model model,HttpServletRequest request){
+		Asset criteria = CommonUtil.toBean(request.getParameterMap(), Asset.class);
+		
+		int pageCode = 1;
+		String s = request.getParameter("pageCode");
+		if(s != null && !s.trim().isEmpty()) {
+			pageCode = Integer.parseInt(s);
+		}
+		request.setAttribute("pb", assetService.queryByPage(criteria, pageCode));
 		return "/source/adminPage/userManage/asserAddr";
 	}
 	/**
