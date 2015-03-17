@@ -155,6 +155,8 @@ public class OrderMgrController {
     @RequestMapping(value="checkOrderAsset.html", method = RequestMethod.POST)
     @ResponseBody
     public void checkName(HttpServletResponse response,HttpServletRequest request) throws Exception{
+        User globle_user = (User) request.getSession().getAttribute("globle_user");
+        int userId = globle_user.getId();
         int serviceId = Integer.parseInt(request.getParameter("serviceId"));
         String assetIds = request.getParameter("assetIds");
         String scanType = request.getParameter("scanType");
@@ -162,12 +164,12 @@ public class OrderMgrController {
         String ip = request.getParameter("ip");
         List<Asset> list = null;
         List<OrderIP> listIP = null;
-        if(serviceId==6||serviceId==7||serviceId==8){
+        if(serviceId==6||serviceId==7||serviceId==8){//DDOS
             OrderIP orderIP = new OrderIP();
             orderIP.setServiceId(serviceId);
             orderIP.setIp(ip);
             listIP = assetService.findorderIP(orderIP);
-        }else{
+        }else{//web
             OrderAsset orderAsset = new OrderAsset();
             orderAsset.setServiceId(serviceId);
             if(scanType!=null && !scanType.equals("")){
@@ -179,6 +181,7 @@ public class OrderMgrController {
                 scan_date=sdf.parse(scanDate);
                 orderAsset.setScan_date(scan_date);
             }
+            orderAsset.setUserId(userId);
             list = assetService.findorderAssetByServId(orderAsset);
         }
         Map<String, Object> m = new HashMap<String, Object>();
