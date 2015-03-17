@@ -18,12 +18,12 @@ public class PageBean<T> {
 	/*
 	 * 不用动，固定值
 	 */
-	private int pageSize = 10;//每页记录数
+	private int pageSize = 20;//每页记录数
 	
 	public PageBean() {}
 	
 	public PageBean(int pageCode, int totalRecord) {
-		this(pageCode, totalRecord, 10);
+		this(pageCode, totalRecord, 20);
 	}
 	
 	public PageBean(int pageCode, int totalRecord, int pageSize) {
