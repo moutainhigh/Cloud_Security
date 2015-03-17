@@ -71,7 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>
         <if test="scan_date!=null">
             and oa.scan_date=#{scan_date}
-        </if>)
+        </if>) and a.userId = #{userId}
     </select>
     
     <!-- 按服务id查询订单IP段 -->

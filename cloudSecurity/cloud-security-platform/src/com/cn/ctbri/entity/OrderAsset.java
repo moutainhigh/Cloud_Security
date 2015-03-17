@@ -15,6 +15,7 @@ public class OrderAsset {
 	private int serviceId;//服务Id
 	private int scan_type;//扫描类型
 	private Date scan_date;//扫描类型
+	private int userId;
 	public int getId() {
 		return id;
 	}
@@ -50,6 +51,12 @@ public class OrderAsset {
     }
     public void setScan_date(Date scan_date) {
         this.scan_date = scan_date;
+    }
+    public int getUserId() {
+        return userId;
+    }
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
     
 }
