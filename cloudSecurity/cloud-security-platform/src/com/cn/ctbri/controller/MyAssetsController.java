@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
@@ -27,7 +28,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 
 import com.cn.ctbri.cfg.Configuration;
 import com.cn.ctbri.entity.Asset;
@@ -111,7 +111,7 @@ public class MyAssetsController {
 			e.printStackTrace();
 		}
 		if(!(addr.startsWith(addrType))){
-			addr = addrType+ "://" + addr;
+			addr = addrType + "://" + addr.trim();
 		}
 		asset.setName(name);
 		asset.setAddr(addr);
@@ -160,6 +160,12 @@ public class MyAssetsController {
 		}
 		if(!(name.equals(newAsset.getName())&&asset.getAddr().equals(newAsset.getAddr()))){
 			asset.setName(name);
+			String addrType = asset.getAddrType();
+			String addr = asset.getAddr();
+			if(!(addr.startsWith(addrType))){
+				addr = addrType+ "://" + addr.trim();
+			}
+			asset.setAddr(addr);
 			asset.setStatus(0);
 			assetService.updateAsset(asset);
 		}

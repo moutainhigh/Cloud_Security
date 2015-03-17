@@ -1,6 +1,7 @@
 function saveAsset() {
 	var assetName = $("#assetName").val();
 	var assetAddr = $("#assetAddr").val();
+	//获取选中的radio的值
 	if(assetName == null || assetName == ""){
 		$("#assetName_msg").html("请输入资产名称");
 	}else{
@@ -65,7 +66,14 @@ function showAndHiddenRadio(){
 //资产验证
 function verificationAsset(){
 	var id = $("#hiddenId").val();
-	var codeStyle = $("input[type='radio']:checked").val();
+	var codeStyle = "";
+	var zt = document.getElementsByName("verification_msg");
+	for(var i=0;i<zt.length;i++){ 
+			if(zt[i].checked) { 
+				alert(zt[i].value); 
+				codeStyle = zt[i].value;
+			} 
+		}
 	var code1 = document.getElementById('code').innerHTML;
 	$.ajax({
         type: "POST",

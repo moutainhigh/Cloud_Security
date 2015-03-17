@@ -169,10 +169,9 @@ $(document).ready(function(){
         </tr>
         <tr>
        	  <td>资产地址类型</td>
-          <td>
+          <td style="text-align:left">
 		        &nbsp;&nbsp;<input type="radio" name="addrType" checked="checked" id="assetAddrType1" value="http"/>
 		        &nbsp;http&nbsp;&nbsp;
-		      
 		        <input type="radio" name="addrType" id="assetAddrType2" value="https"/>
 		        &nbsp;https
 		  </td>
@@ -204,7 +203,15 @@ $(document).ready(function(){
           <td style="width:45%;"><input class="boz_inout_1" type="text" name="name" id="editAssetName"/></td>
           <td style="width:25%; text-align:left; color:#e32929;"><div id="editAssetName_msg"></div></td>
         </tr>
-        <tr></tr>
+        <tr>
+       	  <td>资产地址类型</td>
+          <td style="text-align:left">
+		        &nbsp;&nbsp;<input type="radio" name="addrType" id="editAssetAddrType1" value="http"/>
+		        &nbsp;http
+		        &nbsp;&nbsp;<input type="radio" name="addrType" id="editAssetAddrType2" value="https"/>
+		        &nbsp;https
+		  </td>
+        </tr>
         <tr>
           <td>资产地址</td>
           <td><input class="boz_inout_1" type="text" name="addr" id="editAssetAddr"/></td>

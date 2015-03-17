@@ -4,7 +4,6 @@ $(function(){
 	
 	$(".user_ctive").click(function(){
 		var _index =$(".user_ctive").index(this);  //获取当前点击按钮
-	
 		oMark.style.display ="block";
 		oLogin.style.display ="block";
 		oMark.style.width = viewWidth() + 'px';
@@ -25,11 +24,20 @@ $(function(){
 		var id= $(".zc_edit").eq(_index).attr("id");
 		var name= $(".zc_edit").eq(_index).attr("name");
 		var addr = $(".zc_edit").eq(_index).attr("addr");
+		var arr = new Array();
+		arr=addr.split(":"); //字符分割
+	    $('[name="addrType"]:radio').each(function() {
+	    	if (this.value ==arr[0] ) {
+	    		this.checked = true;
+	    		} 
+	    	}); 
+	    var address = new Array();
+	    address =addr.split("//"); 
 		$("#hiddenEditAssetid").val(id);
 		$("#hiddenEditAssetName").val(name);
-		$("#hiddenEditAssetAddr").val(addr);
+		$("#hiddenEditAssetAddr").val(address[1]);//设置不带   http://  的地址
 		$("#editAssetName").val(name);
-		$("#editAssetAddr").val(addr);
+		$("#editAssetAddr").val(address[1]);
 		oMark2.style.display ="block";
 		oLogin2.style.display ="block";
 		oMark2.style.width = viewWidth() + 'px';
