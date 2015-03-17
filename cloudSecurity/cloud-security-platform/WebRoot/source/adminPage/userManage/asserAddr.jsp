@@ -24,19 +24,26 @@
     		location="<c:url value='/asserAddr.html?query&pageCode='/>" + value;
     	}
 </script>
+<style>
+.table-c table{border-right:1px solid #000;border-bottom:1px solid #000}
+.table-c table td{border-left:1px solid #000;border-top:1px solid #000}
+</style>
   </head>
   
   <body style="text-align: center;">
-  <table table border="1" align="center" width="80%">
- 	<tr>
-    	<th class="t_username">网址</th>
-    </tr>
-  	<c:forEach items="${pb.datas }" var="asset">
-       	<tr>
-       	   <td>${asset.addr}</td>
-     	</tr>
-      </c:forEach>
-      </table>
+  <div class="table-c">
+	  <table  border="0" cellspacing="0" cellpadding="0" align="center" width="80%">
+	  <!-- <table  border="1" align="center" width="80%"> -->
+	 	<tr>
+	    	<td>网址</td>
+	    </tr>
+	  	<c:forEach items="${pb.datas }" var="asset">
+	       	<tr>
+	       	   <td>${asset.addr}</td>
+	     	</tr>
+	      </c:forEach>
+	      </table>
+      </div>
       </br>
       <!-- pagerBegin -->
  

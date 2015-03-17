@@ -24,21 +24,27 @@
     		location="<c:url value='/haveServ.html?query&pageCode='/>" + value;
     	}
 </script>
+<style>
+.table-c table{border-right:1px solid #000;border-bottom:1px solid #000}
+.table-c table td{border-left:1px solid #000;border-top:1px solid #000}
+</style>
   </head>
   
   <body style="text-align: center;">
-  <table table border="1" align="center" width="50%">
- 	<tr>
-    	<th class="t_username">用户名</th>
-        <th class="t_service">用户服务数</th>
-    </tr>
-  	<c:forEach items="${pb.datas }" var="dataAnalysis">
-       	<tr>
-       	   <td>${dataAnalysis.name}</td>
-           <td>${dataAnalysis.count}</td>
-     	</tr>
-     </c:forEach>
-  </table>
+  <div class="table-c">
+	  <table  border="0" cellspacing="0" cellpadding="0" align="center" width="50%">
+	 	<tr>
+	    	<td>用户名</td>
+	        <td>用户服务数</th>
+	    </tr>
+	  	<c:forEach items="${pb.datas }" var="dataAnalysis">
+	       	<tr>
+	       	   <td>${dataAnalysis.name}</td>
+	           <td>${dataAnalysis.count}</td>
+	     	</tr>
+	     </c:forEach>
+	  </table>
+  </div>
 <br/>
 <!-- pagerBegin -->
  
