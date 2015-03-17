@@ -170,12 +170,11 @@ $(document).ready(function(){
         <tr>
        	  <td>资产地址类型</td>
           <td>
-		      <div class="txt_yz_left">
-		        <input type="radio" name="addrType" checked="checked" id="assetAddrType1" value="http"/>
-		        &nbsp;&nbsp;http</div>
-		      <div class="txt_yz_right">
+		        &nbsp;&nbsp;<input type="radio" name="addrType" checked="checked" id="assetAddrType1" value="http"/>
+		        &nbsp;http&nbsp;&nbsp;
+		      
 		        <input type="radio" name="addrType" id="assetAddrType2" value="https"/>
-		        &nbsp;&nbsp;https</div>
+		        &nbsp;https
 		  </td>
         </tr>
         
