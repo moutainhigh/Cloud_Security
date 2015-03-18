@@ -153,14 +153,15 @@ public class MyAssetsController {
 		int id = asset.getId();
 		Asset newAsset = assetService.findById(id);
 		String name = "";//资产名称
+		String addrType = asset.getAddrType();
 		try {
 			name=new String(asset.getName().getBytes("ISO-8859-1"), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		if(!(name.equals(newAsset.getName())&&asset.getAddr().equals(newAsset.getAddr()))){
+		if(!(name.equals(newAsset.getName())&&(addrType+"://"+asset.getAddr()).equals(newAsset.getAddr()))){
 			asset.setName(name);
-			String addrType = asset.getAddrType();
+			
 			String addr = asset.getAddr();
 			if(!(addr.startsWith(addrType))){
 				addr = addrType+ "://" + addr.trim();

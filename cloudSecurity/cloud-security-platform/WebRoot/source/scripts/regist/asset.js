@@ -70,7 +70,6 @@ function verificationAsset(){
 	var zt = document.getElementsByName("verification_msg");
 	for(var i=0;i<zt.length;i++){ 
 			if(zt[i].checked) { 
-				alert(zt[i].value); 
 				codeStyle = zt[i].value;
 			} 
 		}
