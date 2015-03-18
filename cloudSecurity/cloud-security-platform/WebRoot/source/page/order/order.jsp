@@ -279,16 +279,16 @@
           <div class="pinv_subnav">
             <ul class="pinv_sub_nav">
               <li class="pinv_active">
-                <input type="radio" name="scanType2" value="1" checked/>
+                <input type="radio" name="scanType2" value="1" id="30分钟" checked/>
                 &nbsp;&nbsp;30分钟</li>
               <li>
-                <input type="radio" name="scanType2" value="2"/>
+                <input type="radio" name="scanType2" value="2" id="1小时"/>
                 &nbsp;&nbsp;1小时</li>
               <li>
-                <input type="radio" name="scanType2" value="3"/>
+                <input type="radio" name="scanType2" value="3" id="2小时"/>
                 &nbsp;&nbsp;2小时</li>
               <li>
-                <input type="radio" name="scanType2" value="4"/>
+                <input type="radio" name="scanType2" value="4" id="1天"/>
                 &nbsp;&nbsp;1天</li>
             </ul>
           </div>
@@ -382,16 +382,16 @@
           <div class="pinv_subnav">
             <ul class="pinv_sub_nav">
               <li class="pinv_active">
-                <input type="radio" name="scanType4" value="1" checked/>
+                <input type="radio" name="scanType4" value="1" id="10分钟" checked/>
                 &nbsp;&nbsp;10分钟</li>
               <li>
-                <input type="radio" name="scanType4" value="2"/>
+                <input type="radio" name="scanType4" value="2" id="30分钟" />
                 &nbsp;&nbsp;30分钟</li>
               <li>
-                <input type="radio" name="scanType4" value="3"/>
+                <input type="radio" name="scanType4" value="3" id="1小时" />
                 &nbsp;&nbsp;1小时</li>
               <li>
-                <input type="radio" name="scanType4" value="4"/>
+                <input type="radio" name="scanType4" value="4" id="2小时" />
                 &nbsp;&nbsp;2小时</li>
             </ul>
           </div>
