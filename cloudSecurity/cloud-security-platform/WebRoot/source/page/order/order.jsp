@@ -412,22 +412,22 @@
             <div class="pinv_subnav">
 	            <ul class="pinv_sub_nav">
 	              <li class="pinv_active">
-	                <input type="radio" name="bandwidth5" value="1" checked/>
+	                <input type="radio" name="bandwidth5" value="1" id="10M" checked/>
 	                &nbsp;&nbsp;10M</li>
 	              <li>
-	                <input type="radio" name="bandwidth5" value="2"/>
+	                <input type="radio" name="bandwidth5" value="2" id="100M"/>
 	                &nbsp;&nbsp;100M</li>
 	              <li>
-	                <input type="radio" name="bandwidth5" value="3"/>
+	                <input type="radio" name="bandwidth5" value="3" id="500M"/>
 	                &nbsp;&nbsp;500M</li>
 	              <li>
-                    <input type="radio" name="bandwidth5" value="4"/>
+                    <input type="radio" name="bandwidth5" value="4" id="1G"/>
                     &nbsp;&nbsp;1G</li>
                   <li>
-                    <input type="radio" name="bandwidth5" value="5"/>
+                    <input type="radio" name="bandwidth5" value="5" id="5G"/>
                     &nbsp;&nbsp;5G</li>
                   <li>
-                    <input type="radio" name="bandwidth5" value="6"/>
+                    <input type="radio" name="bandwidth5" value="6" id="10G"/>
                     &nbsp;&nbsp;10G</li>
 	            </ul>
             </div>
@@ -449,22 +449,22 @@
             <div class="pinv_subnav">
                 <ul class="pinv_sub_nav">
                   <li class="pinv_active">
-                    <input type="radio" name="bandwidth6" value="1" checked/>
+                    <input type="radio" name="bandwidth6" value="1" id="10M" checked/>
                     &nbsp;&nbsp;10M</li>
                   <li>
-                    <input type="radio" name="bandwidth6" value="2"/>
+                    <input type="radio" name="bandwidth6" value="2" id="100M"/>
                     &nbsp;&nbsp;100M</li>
                   <li>
-                    <input type="radio" name="bandwidth6" value="3"/>
+                    <input type="radio" name="bandwidth6" value="3" id="500M"/>
                     &nbsp;&nbsp;500M</li>
                   <li>
-                    <input type="radio" name="bandwidth6" value="4"/>
+                    <input type="radio" name="bandwidth6" value="4" id="1G"/>
                     &nbsp;&nbsp;1G</li>
                   <li>
-                    <input type="radio" name="bandwidth6" value="5"/>
+                    <input type="radio" name="bandwidth6" value="5" id="5G"/>
                     &nbsp;&nbsp;5G</li>
                   <li>
-                    <input type="radio" name="bandwidth6" value="6"/>
+                    <input type="radio" name="bandwidth6" value="6" id="10G"/>
                     &nbsp;&nbsp;10G</li>
                 </ul>
             </div>
@@ -486,22 +486,22 @@
             <div class="pinv_subnav">
                 <ul class="pinv_sub_nav">
                   <li class="pinv_active">
-                    <input type="radio" name="bandwidth7" value="1" checked/>
+                    <input type="radio" name="bandwidth7" value="1" id="10M" checked/>
                     &nbsp;&nbsp;10M</li>
                   <li>
-                    <input type="radio" name="bandwidth7" value="2"/>
+                    <input type="radio" name="bandwidth7" value="2" id="100M"/>
                     &nbsp;&nbsp;100M</li>
                   <li>
-                    <input type="radio" name="bandwidth7" value="3"/>
+                    <input type="radio" name="bandwidth7" value="3" id="500M"/>
                     &nbsp;&nbsp;500M</li>
                   <li>
-                    <input type="radio" name="bandwidth7" value="4"/>
+                    <input type="radio" name="bandwidth7" value="4" id="1G"/>
                     &nbsp;&nbsp;1G</li>
                   <li>
-                    <input type="radio" name="bandwidth7" value="5"/>
+                    <input type="radio" name="bandwidth7" value="5" id="5G"/>
                     &nbsp;&nbsp;5G</li>
                   <li>
-                    <input type="radio" name="bandwidth7" value="6"/>
+                    <input type="radio" name="bandwidth7" value="6" id="10G"/>
                     &nbsp;&nbsp;10G</li>
                 </ul>
             </div>
@@ -548,6 +548,14 @@
           <tr class="scan">
             <td>扫描频率</td>
             <td name="scanName"></td>
+          </tr>
+          <tr class="IPAddress">
+            <td>监控对象IP地址/IP地址段</td>
+            <td name="IPAddressName"></td>
+          </tr>
+          <tr class="network">
+            <td>防护带宽</td>
+            <td name="networkName"></td>
           </tr>
           <tr></tr>
           <tr>
@@ -620,6 +628,14 @@
             <td>扫描频率</td>
             <td name="scanName"></td>
           </tr>
+          <tr class="IPAddress">
+            <td>监控对象IP地址/IP地址段</td>
+            <td name="IPAddressName"></td>
+          </tr>
+          <tr class="network">
+            <td>防护带宽</td>
+            <td name="networkName"></td>
+          </tr>
           <tr></tr>
           <tr>
             <td>联系信息</td>
@@ -688,6 +704,14 @@
           <tr class="scan">
             <td>扫描频率</td>
             <td name="scanName"></td>
+          </tr>
+          <tr class="IPAddress">
+            <td>监控对象IP地址/IP地址段</td>
+            <td name="IPAddressName"></td>
+          </tr>
+          <tr class="network">
+            <td>防护带宽</td>
+            <td name="networkName"></td>
           </tr>
           <tr></tr>
           <tr>
