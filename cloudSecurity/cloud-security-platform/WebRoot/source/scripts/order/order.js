@@ -135,9 +135,14 @@ $(function(){
     	var orderType=$('input:radio[name="orderType"]:checked').val();
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
-    	var scanType=$('input:radio[name="scanType"]:checked').val();
     	var serviceId=$('.peiz_active').attr("id");
     	var index = serviceId-1;
+    	if(serviceId==2 || serviceId ==4){
+    		var scanDate=$('input[name="scanType'+index+'"]').val();
+    	}else{
+    		var scanType=$('input:radio[name="scanType'+index+'"]:checked').val();
+    	}
+    	
     	var servName=$('.peiz_active').attr("name");
     	var servRemark=$('.peiz_active input[name="remarks"]').val();
     	var ip=$('#ip'+index).val();
@@ -149,13 +154,20 @@ $(function(){
     		typeName="长期";
     	}
     	var scanName=null;
-    	if(scanType==1){
-    		scanName="每天0:0:10开始";
-    	}else if(scanType==2){
-    		scanName="每周一0:0:10开始";
-    	}else if(scanType==3){
-    		scanName="每月1日0:0:10开始";
+    	if(serviceId==2 || serviceId ==4){
+    		scanName=scanDate;
+    	}else if(serviceId==1){
+    		if(scanType==1){
+        		scanName="每天0:0:10开始";
+        	}else if(scanType==2){
+        		scanName="每周一0:0:10开始";
+        	}else if(scanType==3){
+        		scanName="每月1日0:0:10开始";
+        	}
+    	}else{
+    		scanName=$('input:radio[name="scanType'+index+'"]:checked').attr("id");
     	}
+    	
     	$('td[name="orderName"]').html(typeName);
     	$('td[name="begin"]').html(beginDate);
     	$('td[name="end"]').html(endDate);
@@ -170,16 +182,14 @@ $(function(){
     			return;
     		}
     	}
-    	
+    	if(orderType==2){
+    		scanType=null;
+    		scanDate=beginDate;
+    	}
    		var assetIds = "";
    		$(".leftTr"+index+" input:checkbox[name='serviceAssetId']:checked").each(function(){
    			assetIds = assetIds + $(this).val() + ",";
 		});
-   		if(serviceId==2 || serviceId ==4){
-    		var scanDate=$('input[name="scanType'+index+'"]').val();
-    	}else{
-    		var scanType=$('input:radio[name="scanType'+index+'"]:checked').val();
-    	}
 		var obj = {'serviceId':serviceId,
 				   'assetIds':assetIds,
 				   'scanType':scanType,
