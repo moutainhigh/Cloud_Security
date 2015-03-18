@@ -6,6 +6,8 @@ $(function(){
 	$(".dan_2").eq(1).hide();//隐藏结束下拉框时间
 	$(".hideEnddate").hide();//隐藏联系信息下的结束时间
 	$(".scan").hide(); //隐藏联系信息下的扫描频率
+	$(".IPAddress").hide();
+	$(".network").hide();
 	//服务类型type和服务serviceId是从首页获取的
 	var otype = $("#type").val();
 	var serviceId = $("#serviceId").val();
@@ -136,6 +138,17 @@ $(function(){
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
     	var serviceId=$('.peiz_active').attr("id");
+    	if(serviceId==6 || serviceId ==7 ||serviceId==8){
+    		$(".scan").hide();
+    		$(".IPAddress").show();
+    		$(".network").show();
+    	}else{
+    		if(orderType==1){//如为单次订单，只有开始时间，不需要设置结束时间
+        		$(".scan").show();
+        	}
+    		$(".IPAddress").hide();
+    		$(".network").hide();
+    	}
     	var index = serviceId-1;
     	if(serviceId==2 || serviceId ==4){
     		var scanDate=$('input[name="scanType'+index+'"]').val();
@@ -146,6 +159,7 @@ $(function(){
     	var servName=$('.peiz_active').attr("name");
     	var servRemark=$('.peiz_active input[name="remarks"]').val();
     	var ip=$('#ip'+index).val();
+		var bandwidth=$('input:radio[name="bandwidth'+index+'"]:checked').attr("id");
     	
     	var typeName=null;
     	if(orderType==2){
@@ -167,7 +181,7 @@ $(function(){
     	}else{
     		scanName=$('input:radio[name="scanType'+index+'"]:checked').attr("id");
     	}
-    	
+    	//页面回显
     	$('td[name="orderName"]').html(typeName);
     	$('td[name="begin"]').html(beginDate);
     	$('td[name="end"]').html(endDate);
@@ -175,6 +189,8 @@ $(function(){
     	$('td[name="servName"]').html(servName);
     	$('h3[name="servName"]').html(servName);
     	$('p[name="servRemark"]').html(servRemark);
+    	$('td[name="IPAddressName"]').html(ip);
+    	$('td[name="networkName"]').html(bandwidth);
     	$('img[name="servImg"]').attr("src","/cloud-security-platform/source/images/center_"+serviceId+".png");
     	if(serviceId!=6&&serviceId!=7&&serviceId!=8){
     		if($(".leftTr"+index+" input:checkbox[name='serviceAssetId']:checked").length==0){
