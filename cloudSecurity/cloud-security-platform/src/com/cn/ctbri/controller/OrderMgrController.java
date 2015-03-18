@@ -172,7 +172,7 @@ public class OrderMgrController {
         }else{//web
             OrderAsset orderAsset = new OrderAsset();
             orderAsset.setServiceId(serviceId);
-            if(scanType!=null && !scanType.equals("")){
+            if(!scanType.equals("null") && !scanType.equals("")){
                 orderAsset.setScan_type(Integer.parseInt(scanType));
             }
             Date scan_date = null;
