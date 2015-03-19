@@ -52,7 +52,13 @@ function deleteAsset(id){
 }
 //隐藏显示div
 function showAndHiddenRadio(){
-	var codeStyle = $("input[type='radio']:checked").val();
+	var codeStyle = "";
+	var zt = document.getElementsByName("verification_msg");
+	for(var i=0;i<zt.length;i++){ 
+			if(zt[i].checked) { 
+				codeStyle = zt[i].value;
+			} 
+		}
 	//隐藏div
 	if(codeStyle==="codeVerification"){
 		 document.getElementById("fileVerificationID").style.display="none";
