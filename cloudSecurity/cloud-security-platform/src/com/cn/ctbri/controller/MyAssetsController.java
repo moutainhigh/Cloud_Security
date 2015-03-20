@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
@@ -227,6 +226,8 @@ public class MyAssetsController {
 			if(verification_msg.equals("codeVerification")){
 				 //获取已知代码
 				 String code1 = String.valueOf(request.getParameter("code1"));
+				 //String code1 = new String(String.valueOf(request.getParameter("code1")).getBytes("ISO-8859-1"),"UTF-8");
+				 
 				 NodeList rt= GetNetContent.getNodeList(path);
 				 String str= rt.toString();
 				 if(str.contains(code1)){
