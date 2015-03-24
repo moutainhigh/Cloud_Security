@@ -50,4 +50,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 limit #{limitNum}
             </if>
     </select>
+    
+    <!-- 根据orderid查询ip -->
+    <select id="findIpByOrderId" parameterType="String" resultType="hashmap">
+        select * from cs_order_ip where orderId=#{orderId}
+    </select>
 </mapper>
