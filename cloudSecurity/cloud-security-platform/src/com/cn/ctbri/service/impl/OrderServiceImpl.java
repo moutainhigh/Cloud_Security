@@ -109,4 +109,14 @@ public class OrderServiceImpl implements IOrderService{
         List list = orderDao.findByCombineByPage(paramMap);
         return list;
     }
+	/**
+     * 功能描述：根据订单id查询扫描次数
+     * 参数描述：String orderId
+     *       @time 2015-3-24
+     * 返回值    ：  List<DataAnalysis>
+     */
+	public int findScanCountByOrderId(String orderId) {
+		
+		return orderDao.findScanCountByOrderId(orderId);
+	}
 }

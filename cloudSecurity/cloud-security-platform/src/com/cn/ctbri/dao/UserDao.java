@@ -1,6 +1,5 @@
 package com.cn.ctbri.dao;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import com.cn.ctbri.entity.DataAnalysis;

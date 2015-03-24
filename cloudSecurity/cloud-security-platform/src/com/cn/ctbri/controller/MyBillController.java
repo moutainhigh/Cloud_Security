@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.User;
@@ -181,25 +182,7 @@ public class MyBillController {
 		}
 		Map<String, Object> m = new HashMap<String, Object>();
 		m.put("count", count);
-		int num=0;//扫描次数
-		for(OrderAsset o : orderAsset){
-			int orderAssetId = o.getId();
-			List<Task> taskList= taskService.findTaskByOrderAssetId(orderAssetId);
-			if(taskList!=null&&taskList.size()>0){
-				num += taskList.size();
-			}
-		}
-		/**
-		 * sql根据订单id查询扫描次数
-		 * 	SELECT a.id ,COUNT(a.id)	
-			FROM	
-				(SELECT o.id ,t.taskId
-				FROM cs_order o, cs_order_asset oa, cs_task t
-				WHERE o.id=oa.orderId AND oa.id=t.order_asset_Id)a
-			GROUP BY a.id HAVING a.id=1213146668;
-		 */
-		//Object obj = taskService.findByOrderId(orderId);
-		
+		int num = orderService.findScanCountByOrderId(orderId);
 		m.put("num", num);
 		//object转化为Json格式
 		JSONObject JSON = CommonUtil.objectToJson(response, m);

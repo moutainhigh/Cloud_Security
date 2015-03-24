@@ -72,6 +72,13 @@ public interface IOrderService {
      * 返回值    ：  List<Order>
      */
 	List findByCombineByPage(Map<String, Object> paramMap);
+	/**
+     * 功能描述：根据订单id查询扫描次数
+     * 参数描述：String orderId
+     *       @time 2015-3-24
+     * 返回值    ：  List<DataAnalysis>
+     */
+	int findScanCountByOrderId(String orderId);
 
 
 }

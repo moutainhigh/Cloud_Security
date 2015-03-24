@@ -29,9 +29,9 @@ public class User implements java.io.Serializable{
 	private int type;
 	//备注
 	private String remarks;
-	//邮箱验证码
+	//邮箱验证码vo
 	private String verification_code;
-	//登录页面验证码
+	//登录页面验证码vo
 	private String checkNumber;
 	//服务个数vo
 	private int servSum;

@@ -112,6 +112,15 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
     public List findByCombineByPage(Map<String, Object> paramMap) {
         List list = this.getSqlSession().selectList(ns + "findByCombineByPage",paramMap);
         return list;
-    } 
+    }
+	/**
+     * 功能描述：根据订单id查询扫描次数
+     * 参数描述：String orderId
+     *       @time 2015-3-24
+     * 返回值    ：  List<DataAnalysis>
+     */
+	public int findScanCountByOrderId(String orderId) {
+		return this.getSqlSession().selectOne(ns + "findScanCountByOrderId",orderId);
+	} 
 	
 }
