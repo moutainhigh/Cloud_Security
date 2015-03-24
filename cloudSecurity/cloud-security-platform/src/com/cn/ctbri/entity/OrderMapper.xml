@@ -278,12 +278,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			  GROUP BY b.name
 		</select>
 		<select id="findScanCountByOrderId" parameterType="String" resultType="int">
-			SELECT IFNULL(
-				(
-				SELECT COUNT(o.id) 
+				SELECT IFNULL(COUNT(o.id),0)  
 				FROM cs_order o, cs_order_asset oa, cs_task t
 				WHERE o.id=oa.orderId AND oa.id=t.order_asset_Id AND o.id=#{orderId}
-				),
-			0) ;
 		</select>
 </mapper>
