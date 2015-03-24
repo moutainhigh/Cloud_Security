@@ -138,7 +138,9 @@ $(function(){
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
     	var serviceId=$('.peiz_active').attr("id");
-    	if(serviceId==6 || serviceId ==7 ||serviceId==8){
+    	var parentC=$('.peiz_active').attr("value");
+//    	if(serviceId==6 || serviceId ==7 ||serviceId==8){
+    	if(parentC==2){//Anti-DDOS
     		$(".scan").hide();
     		$(".IPAddress").show();
     		$(".network").show();
@@ -192,7 +194,8 @@ $(function(){
     	$('td[name="IPAddressName"]').html(ip);
     	$('td[name="networkName"]').html(bandwidth);
     	$('img[name="servImg"]').attr("src","/cloud-security-platform/source/images/center_"+serviceId+".png");
-    	if(serviceId!=6&&serviceId!=7&&serviceId!=8){
+//    	if(serviceId!=6&&serviceId!=7&&serviceId!=8){
+    	if(parentC!=2){
     		if($(".leftTr"+index+" input:checkbox[name='serviceAssetId']:checked").length==0){
     			alert("在资产列表中选择服务对象资产!");
     			return;
@@ -210,12 +213,13 @@ $(function(){
 				   'assetIds':assetIds,
 				   'scanType':scanType,
 				   'scanDate':scanDate,
-				   'ip':ip};
+				   'ip':ip,
+				   'parentC':parentC};
     	$.post("/cloud-security-platform/checkOrderAsset.html", obj, function(data){
     		if(data.assetNames!=null){
     			$(".assets_msg").eq(index).html('资产('+data.assetNames+')针对该资产有同类任务，请重新设置!');
     		}else if(data.ipText){
-    			alert("ip不可用");
+    			alert("针对该监控对象有同类任务，请重新设置!");
     		}else{
     			$(".assets_msg").eq(index).html("");
     			$.ajax({ type: "POST",
