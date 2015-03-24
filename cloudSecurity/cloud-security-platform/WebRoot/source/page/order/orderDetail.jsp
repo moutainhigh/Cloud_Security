@@ -46,6 +46,7 @@
 	       <p class="dd_detail"><span class="detail_l fl">订单结束时间</span><span class="detail_r fl"><fmt:formatDate value="${order.end_date }" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
 	    </c:if>
 	    <p class="dd_detail"><span class="detail_l fl">订单服务类型</span><span class="detail_r fl">${order.name }</span></p>
+	    <c:if test="${order.parentC==1}">
 	    <c:if test="${order.type==1}">
            <p class="dd_detail"><span class="detail_l fl">检测周期</span><span class="detail_r fl">
                 <c:if test="${order.serviceId==1}">
@@ -72,16 +73,30 @@
            </c:if>
            <c:if test="${checkTime==0 }">暂无</c:if>
            </span></p>
-           <p class="dd_detail"><span class="detail_l fl">检测次数</span><span class="detail_r fl">${checkTime }次</span></p>
+           <p class="dd_detail"><span class="detail_l fl">检测次数</span>
+           <span class="detail_r fl">
+           <c:if test="${checkTime>0 }"><a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank">${checkTime }次</a></c:if>
+           <c:if test="${checkTime==0 }">${checkTime }次</c:if>
+           </span></p>
         </c:if>
-	    <p class="dd_detail"><span class="detail_l fl">服务情况跟踪</span><span class="detail_r fl">
-	xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span></p>
+	    <!-- <p class="dd_detail"><span class="detail_l fl">服务情况跟踪</span><span class="detail_r fl">
+	xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span></p> -->
+		<p class="dd_detail"><span class="detail_l fl">服务对象资</span>
+	        <c:forEach var="asset" items="${assetList}" varStatus="status">
+	        <span class="detail_r fl">${asset.name }</span>
+	        </c:forEach>
+	    </p>
+	    </c:if>
+	    <c:if test="${order.parentC==2}">
+	       <c:forEach var="list" items="${ipList}" varStatus="status">
+	       <p class="dd_detail"><span class="detail_l fl">监控对象</span><span class="detail_r fl">${list.ip }</span></p>
+           </c:forEach>
+           <c:if test="${order.type==1}">
+                <p class="dd_detail"><span class="detail_l fl">累计告警数</span><span class="detail_r fl"></span></p>
+           </c:if>   
+	    </c:if>
 	</c:forEach>
-    <p class="dd_detail"><span class="detail_l fl">服务对象资</span>
-	    <c:forEach var="asset" items="${assetList}" varStatus="status">
-	    <span class="detail_r fl">${asset.name }</span>
-	    </c:forEach>
-    </p>
+    
    </div>
 </div>
 <!-- 尾部代码开始-->
