@@ -162,9 +162,11 @@ public class OrderMgrController {
         String scanType = request.getParameter("scanType");
         String scanDate = request.getParameter("scanDate");
         String ip = request.getParameter("ip");
+        int parentC = Integer.parseInt(request.getParameter("parentC"));
         List<Asset> list = null;
         List<OrderIP> listIP = null;
-        if(serviceId==6||serviceId==7||serviceId==8){//DDOS
+        //if(serviceId==6||serviceId==7||serviceId==8){//DDOS
+        if(parentC==2){
             OrderIP orderIP = new OrderIP();
             orderIP.setServiceId(serviceId);
             orderIP.setIp(ip);

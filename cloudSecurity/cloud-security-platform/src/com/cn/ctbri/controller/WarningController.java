@@ -205,6 +205,8 @@ public class WarningController {
         List orderList = orderService.findByOrderId(orderId);
         //获取对应资产
         List assetList = orderAssetService.findAssetNameByOrderId(orderId);
+        //获取对应资产
+        List ipList = orderAssetService.findIpByOrderId(orderId);
         //获取当前时间
         SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String temp = setDateFormat.format(Calendar.getInstance().getTime());
@@ -219,6 +221,7 @@ public class WarningController {
         List checkTime = orderAssetService.findLastTimeByOrderId(paramMap1);
         request.setAttribute("orderList", orderList);
         request.setAttribute("assetList", assetList);
+        request.setAttribute("ipList", ipList);
         request.setAttribute("nowDate",temp);
         if(lastTime.size()>0){
             request.setAttribute("lastTime",lastTime.get(0));
