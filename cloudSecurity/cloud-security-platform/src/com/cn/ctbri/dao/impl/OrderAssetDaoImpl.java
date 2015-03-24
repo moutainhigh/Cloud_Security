@@ -73,5 +73,13 @@ public class OrderAssetDaoImpl extends DaoCommon implements OrderAssetDao{
         List list = this.getSqlSession().selectList(ns+"findLastTimeByOrderId",paramMap);
         return list;
     }
+    /**
+     * 功能描述：根据orderid查询ip名称
+     *       @time 2015-2-2
+     */
+    public List findIpByOrderId(String orderId) {
+        List list = this.getSqlSession().selectList(ns+"findIpByOrderId",orderId);
+        return list;
+    }
 		
 }
