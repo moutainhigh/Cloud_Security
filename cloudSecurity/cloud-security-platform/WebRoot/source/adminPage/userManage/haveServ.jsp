@@ -102,11 +102,11 @@
 <a href="<c:url value='/haveServ.html?pageCode=${pb.totalPage }'/>">尾页</a>
 
 <%-- 下拉列表 --%>
-<select name="pageCode" onchange="_go(this)">
+跳到<select name="pageCode" onchange="_go(this)">
 	<c:forEach begin="1" end="${pb.totalPage }" var="i">
 		<option value="${i }" <c:if test="${pb.pageCode eq i }">selected='selected'</c:if>>${i}</option>
 	</c:forEach>
-</select>
+</select>页
 
 <!-- pagerEnd -->
   </body>
