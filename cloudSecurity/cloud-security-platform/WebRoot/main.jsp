@@ -121,7 +121,7 @@
                             <span class="ln_more">></span>
                             <p class="lndetail"></p>
                             <div class="lndetails">
-                               <div style="color:#666; font-size:28px; line-height:48px; margin-left:20px;"><font color="#399a34">网站建设中....</font></div>   
+                               <div style="color:#666; font-size:28px; line-height:48px; margin-left:20px;"><font color="#399a34">建设中....</font></div>   
                                <!-- <div class="lndetails_line">
                                     <div class="fl lndetailtitle">热门厂商：</div>
                                     <div class="fl lndetaillist"><a href="#">中国电信</a><a href="#">奇虎360</a>     <a href="#">安恒</a></div>
@@ -139,7 +139,7 @@
                             <span class="ln_more">></span>
                             <p class="lndetail"></p>
                             <div class="lndetails" style="bottom:0;top:auto;">
-                                <div style="color:#666; font-size:28px; line-height:48px; margin-left:20px;"><font color="#399a34">网站建设中....</font></div>
+                                <div style="color:#666; font-size:28px; line-height:48px; margin-left:20px;"><font color="#399a34">建设中....</font></div>
                                 <!--<div class="lndetails_line">
                                     <div class="fl lndetailtitle">热门厂商：</div>
                                     <div class="fl lndetaillist"><a href="#">中国电信</a><a href="#">奇虎360</a>     <a href="#">安恒</a></div>
