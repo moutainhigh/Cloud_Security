@@ -117,11 +117,11 @@
                     </li>
                     <li class="brbottom brtop">
                         <div class="lncenter">
-                            <p class="lntitle">DNS安全</p>
+                            <p class="lntitle">安全评估</p>
                             <span class="ln_more">></span>
-                            <p class="lndetail"><a href="#">扫描类</a> / <a href="#">监控类</a> / <a href="#">防护类</a></p>
+                            <p class="lndetail"></p>
                             <div class="lndetails">
-                               <div style="color:#666; font-size:28px; line-height:48px; margin-left:20px">正在建设中....</div>   
+                               <div style="color:#666; font-size:28px; line-height:48px; margin-left:20px;"><font color="#399a34">网站建设中....</font></div>   
                                <!-- <div class="lndetails_line">
                                     <div class="fl lndetailtitle">热门厂商：</div>
                                     <div class="fl lndetaillist"><a href="#">中国电信</a><a href="#">奇虎360</a>     <a href="#">安恒</a></div>
@@ -137,9 +137,9 @@
                         <div class="lncenter">
                             <p class="lntitle">移动安全</p>
                             <span class="ln_more">></span>
-                            <p class="lndetail"><a href="#">手机应用安全检测 </a> / <a href="#">在线app加固</a></p>
+                            <p class="lndetail"></p>
                             <div class="lndetails" style="bottom:0;top:auto;">
-                                <div style="color:#666; font-size:28px; line-height:48px; margin-left:20px">正在建设中....</div>
+                                <div style="color:#666; font-size:28px; line-height:48px; margin-left:20px;"><font color="#399a34">网站建设中....</font></div>
                                 <!--<div class="lndetails_line">
                                     <div class="fl lndetailtitle">热门厂商：</div>
                                     <div class="fl lndetaillist"><a href="#">中国电信</a><a href="#">奇虎360</a>     <a href="#">安恒</a></div>
