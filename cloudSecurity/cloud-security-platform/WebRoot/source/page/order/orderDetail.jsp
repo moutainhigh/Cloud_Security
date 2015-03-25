@@ -18,6 +18,40 @@
 </head>
 
 <body>
+<div class="head_bj">
+        <div class="head">
+           <div class="logo"><img src="${ctx}/source/images/logo.png" /></div>
+           <div class="lagst">
+               <div class="lagst-left">
+                <c:if test="${sessionScope.globle_user!=null }">
+                   <a href="${ctx}/userDataUI.html"><img src="${ctx}/source/images/ren.png" /></a>
+                </c:if>
+                 <c:if test="${sessionScope.globle_user==null }">
+                    <a href="${ctx}/toLoginUI.html"><img src="${ctx}/source/images/ren.png" /></a>
+                 </c:if>
+               </div>
+               <div class="lagst-right">
+               <!-- 如果已经登录则显示用户名，否则需要登录 -->
+               <c:if test="${sessionScope.globle_user!=null }">
+                <p><a href="${ctx}/userDataUI.html" style="color: #fff">${sessionScope.globle_user.name }</a></p>
+                <p><a href="${ctx}/exit.html">退出</a></p>
+               </c:if>
+               <c:if test="${sessionScope.globle_user==null }">
+                     <p><a href="${pageContext.request.contextPath}/loginUI.html">登录</a></p>
+                     <p><a href="${pageContext.request.contextPath}/registUI.html">注册</a></p>
+               </c:if>
+               </div>
+           </div>
+            <div class="list">
+               <ul>
+                   <li><a href="${ctx}/index.html">首页</a></li>
+                   <li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
+                   <li><a href="aider.html">在线帮助</a></li>
+                   <li style="border-right:1px solid #11871d;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
+               </ul>
+           </div>
+        </div>
+    </div>
 <div>
 <!-- 头部代码结束-->
 <div class="user_center clear">
