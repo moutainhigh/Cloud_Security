@@ -121,14 +121,15 @@
                             <span class="ln_more">></span>
                             <p class="lndetail"><a href="#">扫描类</a> / <a href="#">监控类</a> / <a href="#">防护类</a></p>
                             <div class="lndetails">
-                                <div class="lndetails_line">
+                               <div style="color:#666; font-size:28px; line-height:48px; margin-left:20px">正在建设中....</div>   
+                               <!-- <div class="lndetails_line">
                                     <div class="fl lndetailtitle">热门厂商：</div>
                                     <div class="fl lndetaillist"><a href="#">中国电信</a><a href="#">奇虎360</a>     <a href="#">安恒</a></div>
                                 </div>
                                 <div class="lndetails_line">
                                     <div class="fl lndetailtitle">热门服务：</div>
                                     <div class="fl lndetaillist"><a href="#">漏洞扫描服务</a><a href="#">恶意代码监测服务</a><a href="#">网页篡改检测服务</a><a href="#">关键字检测服务</a><a href="#">可用性监测服务</a></div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </li>
@@ -138,14 +139,15 @@
                             <span class="ln_more">></span>
                             <p class="lndetail"><a href="#">手机应用安全检测 </a> / <a href="#">在线app加固</a></p>
                             <div class="lndetails" style="bottom:0;top:auto;">
-                                <div class="lndetails_line">
+                                <div style="color:#666; font-size:28px; line-height:48px; margin-left:20px">正在建设中....</div>
+                                <!--<div class="lndetails_line">
                                     <div class="fl lndetailtitle">热门厂商：</div>
                                     <div class="fl lndetaillist"><a href="#">中国电信</a><a href="#">奇虎360</a>     <a href="#">安恒</a></div>
                                 </div>
                                 <div class="lndetails_line">
                                     <div class="fl lndetailtitle">热门服务：</div>
                                     <div class="fl lndetaillist"><a href="#">漏洞扫描服务</a><a href="#">恶意代码监测服务</a><a href="#">网页篡改检测服务</a><a href="#">关键字检测服务</a><a href="#">可用性监测服务</a></div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </li>
