@@ -49,6 +49,7 @@ public class WarningController {
     @RequestMapping(value="warningInit.html")
     public String warningInit(HttpServletRequest request){
         String orderId = request.getParameter("orderId");
+        String type = request.getParameter("type");
         //获取订单信息
         List orderList = orderService.findByOrderId(orderId);
         //获取对应资产
@@ -56,6 +57,7 @@ public class WarningController {
         //获取对应告警信息
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("orderId", orderId);
+        paramMap.put("type", type);
         List<Alarm> alarmList = alarmService.getAlarmByOrderId(paramMap);
         request.setAttribute("orderList", orderList);
         request.setAttribute("assetList", assetList);
@@ -73,8 +75,10 @@ public class WarningController {
     @ResponseBody
     public String getGaugeData(HttpServletRequest request){
         String orderId = request.getParameter("orderId");
+        String type = request.getParameter("type");
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("orderId", orderId);
+        paramMap.put("type", type);
         //低
         paramMap.put("level", WarnType.LOWLEVEL.ordinal());
         List<Alarm> lowList = alarmService.getAlarmByOrderId(paramMap);
@@ -109,8 +113,10 @@ public class WarningController {
     @ResponseBody
     public String getPieData(HttpServletRequest request){
         String orderId = request.getParameter("orderId");
+        String type = request.getParameter("type");
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("orderId", orderId);
+        paramMap.put("type", type);
         //低
         paramMap.put("level", WarnType.LOWLEVEL.ordinal());
         List<Alarm> lowList = alarmService.getAlarmByOrderId(paramMap);
@@ -152,8 +158,10 @@ public class WarningController {
     @ResponseBody
     public String getLineData(HttpServletRequest request){
         String orderId = request.getParameter("orderId");
+        String type = request.getParameter("type");
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("orderId", orderId);
+        paramMap.put("type", type);
         
         List<Task> taskList = alarmService.getTaskByOrderId(paramMap);
         JSONArray json = new JSONArray();
