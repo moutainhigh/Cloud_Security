@@ -38,7 +38,7 @@
                     <td><fmt:formatDate value="${list.create_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                     <td>
                        <c:if test="${list.status!=2}"><img src="${ctx}/source/images/user_ico_2.jpg" /></c:if>
-                       <c:if test="${list.status==2}"><a href="${ctx}/warningInit.html?orderId=${list.id }" target="_blank"><img src="${ctx}/source/images/user_ico_1.jpg" /></a></c:if>
+                       <c:if test="${list.status==2}"><a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}" target="_blank"><img src="${ctx}/source/images/user_ico_1.jpg" /></a></c:if>
                     </td>
                   </tr>
               </c:forEach>
