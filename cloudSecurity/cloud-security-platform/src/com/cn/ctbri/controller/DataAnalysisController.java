@@ -55,7 +55,7 @@ public class DataAnalysisController {
 	 *		 @time 2015-2-3
 	 */
 	@RequestMapping("/dataAnalysisUI.html")
-	public String adminDeleteUser(Model model,User user,HttpServletRequest request){
+	public String dataAnalysisUI(Model model,User user,HttpServletRequest request){
 		List<User> listRegist = userService.findUserByUserType(2);
 		int registCount = 0;
 		if(listRegist!=null && listRegist.size()>0){

@@ -57,6 +57,14 @@ public class SystemManageController {
 		} catch (SigarException e1) {
 			e1.printStackTrace();
 		}
+		//获取内存使用情况数据
+		double total=0;//总内存
+		double kb=1024;
+		OperatingSystemMXBean osmb = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+		total = osmb.getTotalPhysicalMemorySize()/kb/kb/kb;
+		BigDecimal total1 = new BigDecimal(total);
+		double total2 = total1.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
+		model.addAttribute("total", total2);
 		//参数配置初始化数据
 		ServerParamConfiguration serverParamConfiguration = new ServerParamConfiguration();
 		HttpSession session=request.getSession(true);
@@ -135,6 +143,7 @@ public class SystemManageController {
 		use=total-free; 
 		BigDecimal total1 = new BigDecimal(total);
 		double total2 = total1.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
+		//model.addAttribute("total", total2);
 		BigDecimal use1 = new BigDecimal(use);
 		double use2 = use1.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();
 		JSONArray json = new JSONArray();
