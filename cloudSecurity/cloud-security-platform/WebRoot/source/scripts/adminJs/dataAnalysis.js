@@ -1,6 +1,6 @@
 $(function () {
-	orderData();
-	warningData();
+	//orderData();
+	//warningData();
 });
 
 function orderData(){
@@ -77,7 +77,11 @@ function orderData(){
             	datas.push([d.name,d.count]);
             });
             //设置数据
-            chart.series[0].setData(datas);  
+        	if(datas.length==0){
+        		alert("没有相关结果");
+        	}else{
+        		chart.series[0].setData(datas); 
+        	}
         },
     });
 }
@@ -153,8 +157,12 @@ function warningData(){
             $.each(data,function(i,d){
             	datas.push([d.alarm_type,d.count]);
             });
-            //设置数据
-            chart.series[0].setData(datas);  
+        	//设置数据
+        	if(datas.length==0){
+        		alert("没有相关结果");
+        	}else{
+        		 chart.series[0].setData(datas);  
+        	}
         },
     });
 }
