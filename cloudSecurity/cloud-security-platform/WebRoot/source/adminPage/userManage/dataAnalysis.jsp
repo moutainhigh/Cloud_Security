@@ -47,9 +47,9 @@
     	<div class="data_title">
     		<button class="dataana_btn datab_cur fl" id="yy_btn" >运营数据统计</button>
             <div class="bor_t_small fl"></div>
-        	<button class="dataana_btn fl" id="dd_btn" onclick="orderData()">订单统计分析</button>
+        	<button class="dataana_btn fl" id="dd_btn" >订单统计分析</button>
             <div class="bor_t_small fl"></div>
-            <button class="dataana_btn fl" id="gj_btn" onclick="warningData()">告警统计分析</button>
+            <button class="dataana_btn fl" id="gj_btn" >告警统计分析</button>
             <div class="bor_t_big fl"></div>
         </div>
          <!-- 运营统计 -->
