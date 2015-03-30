@@ -27,6 +27,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Linkman;
@@ -36,6 +37,7 @@ import com.cn.ctbri.entity.OrderIP;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.Service;
 import com.cn.ctbri.entity.ServiceType;
+import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.scheduler.Scheduler4Task;
 import com.cn.ctbri.service.IAssetService;
@@ -43,6 +45,7 @@ import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
+import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Random;
@@ -66,6 +69,8 @@ public class OrderMgrController {
     IAssetService assetService;
     @Autowired
     IServService servService;
+    @Autowired
+    ITaskService taskService;
     
 	 /**
 	 * 功能描述： 用户中心-自助下单
@@ -165,8 +170,8 @@ public class OrderMgrController {
         int parentC = Integer.parseInt(request.getParameter("parentC"));
         List<Asset> list = null;
         List<OrderIP> listIP = null;
-        //if(serviceId==6||serviceId==7||serviceId==8){//DDOS
-        if(parentC==2){
+        if(serviceId==6||serviceId==7||serviceId==8){//DDOS
+        //if(parentC==2){
             OrderIP orderIP = new OrderIP();
             orderIP.setServiceId(serviceId);
             orderIP.setIp(ip);
@@ -174,7 +179,7 @@ public class OrderMgrController {
         }else{//web
             OrderAsset orderAsset = new OrderAsset();
             orderAsset.setServiceId(serviceId);
-            if(!scanType.equals("null") && !scanType.equals("")){
+            if(scanType!=null && !scanType.equals("null")){
                 orderAsset.setScan_type(Integer.parseInt(scanType));
             }
             Date scan_date = null;
@@ -386,11 +391,40 @@ public class OrderMgrController {
             }
             
             request.setAttribute("isSuccess", true);
+            //modify by txr 2015-03-27
+            if(serviceId.equals("1")&&orderType.equals("1")){
+                Scheduler4Task task = new Scheduler4Task();
+                WebApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
+                task.setAc(ac);
+                task.setTaskByOrder(order); 
+            }else if(serviceId.equals("3")||serviceId.equals("5")||orderType.equals("2")){//add by txr 2015-03-26
+              //根据orderid 获取要扫描的订单详情集合
+                List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
+                //获取订单定制的服务信息
+                //Service s = orderDao.getTPLByServiceId();
+                //遍历订单详情  创建任务
+                for(OrderAsset oa : oaList){
+                    Task task = new Task(); 
+                    task.setExecute_time(begin_date);
+                    task.setStatus(Integer.parseInt(Constants.TASK_START));
+                    //设置订单详情id
+                    task.setOrder_asset_Id(oa.getId());
+                    //插入一条任务数据  获取任务id
+                    int taskId = taskService.insert(task);
+                }
+            }else if((serviceId.equals("2")||serviceId.equals("4"))&&orderType.equals("1")){
+                List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
+                for(OrderAsset oa : oaList){
+                    Task task = new Task(); 
+                    task.setExecute_time(sdf.parse(scanDate));
+                    task.setStatus(Integer.parseInt(Constants.TASK_START));
+                    //设置订单详情id
+                    task.setOrder_asset_Id(oa.getId());
+                    //插入一条任务数据  获取任务id
+                    int taskId = taskService.insert(task);
+                }
+            }
             
-            Scheduler4Task task = new Scheduler4Task();
-            WebApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
-            task.setAc(ac);
-            task.setTaskByOrder(order);
         }else{
             m.put("timeCompare", false);
         }
