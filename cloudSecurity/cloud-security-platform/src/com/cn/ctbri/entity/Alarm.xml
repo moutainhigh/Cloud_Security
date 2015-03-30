@@ -54,6 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  (select t.taskId from cs_order_asset oa,cs_task t 
 		    where oa.id = t.order_asset_id 
 		    and oa.orderId=#{orderId}
+		    and t.status = 3
 		    order by t.execute_time desc
 		    <if test="type==1">
              limit 0,1
@@ -69,7 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findTaskByOrderId" resultType="com.cn.ctbri.entity.Task" parameterType="hashmap">
 		select * from
 	   (select * from cs_task t,cs_order_asset oa where oa.id = t.order_asset_id 
-	    and oa.orderId=#{orderId} order by t.execute_time desc limit 0,7) a order by a.execute_time
+	    and oa.orderId=#{orderId} and t.status = 3 order by t.execute_time desc limit 0,7) a order by a.execute_time
     </select>
     
     <!-- 根据taskid查询告警数  -->
