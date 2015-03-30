@@ -22,4 +22,6 @@ public interface ITaskService {
 
 	Object findByOrderId(String orderId);
 
+    int insert(Task task);
+
 }
