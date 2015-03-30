@@ -13,9 +13,9 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/backstage.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/raphael.2.1.0.min.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/justgage.1.0.1.min.js"></script>
-<script src="${ctx}/source/scripts/echarts/esl.js"></script>
-<script src="${ctx}/source/scripts/echarts/echarts.js"></script>
-<script src="${ctx}/source/scripts/adminJs/sysManage.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/adminJs/sysManage.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/highcharts/js/highcharts.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/highcharts/js/modules/exporting.js></script>
 <script type="text/javascript" src="${ctx}/source/scripts/highcharts/js/highcharts-3d.js"></script>
@@ -110,7 +110,7 @@ function sysForm(){
                         		<!-- <img src="${ctx}/source/adminImages/system3.jpg"> -->
                         	</div>
                             <div class="nc_font">
-                            	<p><span class="nc_p">总内存</span><span class="nc_num">${total}MB</span></p>
+                            	<p><span class="nc_p">总内存</span><span class="nc_num">${total}GB</span></p>
                                 <!-- <p><span class="nc_p">已使用内存</span><span class="nc_num_r">${use}MB</span></p> -->
                             </div>
                         </div>
