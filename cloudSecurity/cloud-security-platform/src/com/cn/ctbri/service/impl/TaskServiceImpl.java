@@ -33,5 +33,9 @@ public class TaskServiceImpl implements ITaskService{
 		Object obj = taskDao.findByOrderId(orderId);
 		return obj;
 	}
+    public int insert(Task task) {
+        int taskId = taskDao.insert(task);
+        return taskId;
+    }
 
 }
