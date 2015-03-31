@@ -213,6 +213,8 @@ $(function(){
 				   'assetIds':assetIds,
 				   'scanType':scanType,
 				   'scanDate':scanDate,
+				   'beginDate':beginDate,
+				   'endDate':endDate,
 				   'ip':ip,
 				   'parentC':parentC};
     	$.post("/cloud-security-platform/checkOrderAsset.html", obj, function(data){
