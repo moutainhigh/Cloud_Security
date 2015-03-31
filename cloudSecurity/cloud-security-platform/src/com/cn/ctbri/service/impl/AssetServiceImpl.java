@@ -1,15 +1,14 @@
 package com.cn.ctbri.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.AssetDao;
 import com.cn.ctbri.entity.Asset;
-import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.OrderAsset;
-import com.cn.ctbri.entity.OrderIP;
 import com.cn.ctbri.pager.PageBean;
 import com.cn.ctbri.service.IAssetService;
 /**
@@ -94,8 +93,9 @@ public class AssetServiceImpl implements IAssetService{
      * 参数描述：  OrderIP orderIP
      *       @time 2015-1-21
      */
-    public List<OrderIP> findorderIP(OrderIP orderIP) {
-        return assetDao.getorderIP(orderIP);
+    public List findorderIP(Map<String, Object> paramMap) {
+        List list=assetDao.getorderIP(paramMap);
+    	return list;
     }
     /**
      * 功能描述： 根据资产地址查询资产
