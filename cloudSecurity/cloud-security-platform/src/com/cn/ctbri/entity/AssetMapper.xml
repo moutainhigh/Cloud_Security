@@ -75,8 +75,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <!-- 按服务id查询订单IP段 -->
-    <select id="findorderIP" parameterType="com.cn.ctbri.entity.OrderIP" resultType="com.cn.ctbri.entity.OrderIP">
-        select * from cs_order_ip where serviceid = #{serviceId} and ip = #{ip}
+    <select id="findorderIP" resultType="hashmap" parameterType="hashmap">
+      select * from cs_order where  begin_date  &gt;= #{beginDate} and  end_date &lt;= #{endDate}  
+      and  id=(select  orderId  from cs_order_ip where serviceId = #{serviceId} and ip = #{ip})
     </select>
 		<!-- 根据资产地址查询资产 -->
 	<select id="findByAssetAddr" parameterType="String" resultMap="AssetRM">
