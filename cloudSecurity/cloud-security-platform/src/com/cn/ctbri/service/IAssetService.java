@@ -1,11 +1,10 @@
 package com.cn.ctbri.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cn.ctbri.entity.Asset;
-import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.OrderAsset;
-import com.cn.ctbri.entity.OrderIP;
 import com.cn.ctbri.pager.PageBean;
 
 
@@ -71,7 +70,7 @@ public interface IAssetService {
      * 参数描述：  OrderIP orderIP
      *       @time 2015-1-21
      */
-    List<OrderIP> findorderIP(OrderIP orderIP);
+    List findorderIP(Map<String, Object> paramMap);
     /**
      * 功能描述： 根据资产地址查询资产
      * 参数描述：String addr
