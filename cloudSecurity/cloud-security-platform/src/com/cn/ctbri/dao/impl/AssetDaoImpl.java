@@ -4,20 +4,12 @@ package com.cn.ctbri.dao.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
-import com.cn.ctbri.dao.AlarmDao;
 import com.cn.ctbri.dao.AssetDao;
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.entity.Asset;
-import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.OrderAsset;
-import com.cn.ctbri.entity.OrderIP;
 /**
  * 创 建 人  ：  邓元元
  * 创建日期：  2015-1-16
@@ -104,8 +96,8 @@ public class AssetDaoImpl extends DaoCommon implements AssetDao{
      * 参数描述：  OrderIP orderIP
      *       @time 2015-1-21
      */
-    public List<OrderIP> getorderIP(OrderIP orderIP) {
-        List list = this.getSqlSession().selectList(ns+"findorderIP", orderIP);
+    public List getorderIP(Map<String, Object> paramMap) {
+        List list = this.getSqlSession().selectList(ns+"findorderIP", paramMap);
         return list;
     }
     /**
