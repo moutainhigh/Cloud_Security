@@ -2,12 +2,10 @@ package com.cn.ctbri.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +33,6 @@ import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderIP;
 import com.cn.ctbri.entity.Serv;
-import com.cn.ctbri.entity.Service;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.User;
@@ -166,16 +163,24 @@ public class OrderMgrController {
         String assetIds = request.getParameter("assetIds");
         String scanType = request.getParameter("scanType");
         String scanDate = request.getParameter("scanDate");
+        String beginDate = request.getParameter("beginDate");
+        String endDate = request.getParameter("endDate");
         String ip = request.getParameter("ip");
         int parentC = Integer.parseInt(request.getParameter("parentC"));
         List<Asset> list = null;
-        List<OrderIP> listIP = null;
+        List listorder = null;
         if(serviceId==6||serviceId==7||serviceId==8){//DDOS
         //if(parentC==2){
             OrderIP orderIP = new OrderIP();
             orderIP.setServiceId(serviceId);
             orderIP.setIp(ip);
-            listIP = assetService.findorderIP(orderIP);
+            Map<String,Object> paramMap = new HashMap<String,Object>();
+            paramMap.put("serviceId", serviceId);
+            paramMap.put("ip", ip);
+            paramMap.put("beginDate", beginDate);
+            paramMap.put("endDate", endDate);
+            
+            listorder = assetService.findorderIP(paramMap);
         }else{//web
             OrderAsset orderAsset = new OrderAsset();
             orderAsset.setServiceId(serviceId);
@@ -221,7 +226,7 @@ public class OrderMgrController {
             }
         }
         
-        if(listIP!=null&&listIP.size()>0){
+        if(listorder!=null&&listorder.size()>0){
             m.put("ipText", true);
         }
         //object转化为Json格式
