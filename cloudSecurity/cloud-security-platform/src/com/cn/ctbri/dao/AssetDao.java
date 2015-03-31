@@ -1,10 +1,11 @@
 package com.cn.ctbri.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
-import com.cn.ctbri.entity.OrderIP;
 
 /**
  * 创 建 人  ：  邓元元
@@ -67,7 +68,7 @@ public interface AssetDao {
      * 参数描述：  OrderIP orderIP
      *       @time 2015-1-21
      */
-    List<OrderIP> getorderIP(OrderIP orderIP);
+    List<Order> getorderIP(Map<String, Object> paramMap);
     /**
      * 功能描述： 根据资产地址查询资产
      * 参数描述：  String addr
