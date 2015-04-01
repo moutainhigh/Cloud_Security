@@ -27,6 +27,9 @@ $(document).ready(function(){
 		$('.user_login').addClass('cur');
 		$('.login_form').show();
 		$('.regist_form').hide();
+		$("#login_name").attr("value",'');
+		$("#login_password").attr("value",'');
+		$("#remeberMe").attr("checked",false);
 	}
 });
 
