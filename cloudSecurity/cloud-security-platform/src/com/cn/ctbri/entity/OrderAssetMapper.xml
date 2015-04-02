@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 根据orderid查询Asset名称 -->
     <select id="findAssetNameByOrderId" parameterType="String" resultType="hashmap">
-        select a.name from cs_order_asset oa,cs_asset a where oa.orderId=#{orderId} and oa.assetid = a.id
+        select a.name,a.addr from cs_order_asset oa,cs_asset a where oa.orderId=#{orderId} and oa.assetid = a.id
     </select>
     <select id="findLastTimeByOrderId" parameterType="hashmap" resultType="hashmap">
         select t.execute_time from cs_order_asset oa,cs_task t 
