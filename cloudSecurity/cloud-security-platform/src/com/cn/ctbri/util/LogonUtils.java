@@ -27,6 +27,20 @@ public class LogonUtils {
 		}
 		return checkNumber.equalsIgnoreCase(CHECK_NUMBER_KEY);
 	}
+	
+	public static boolean checkNumberAdmin(HttpServletRequest request) {
+		//获取页面输入的验证码
+		String checkNumber = request.getParameter("checkNumber");
+		if(StringUtils.isBlank(checkNumber)){
+			return false;
+		}
+		//获取image.jsp生成的验证
+		String CHECK_NUMBER_KEY = (String) request.getSession().getAttribute("CHECK_NUMBER_KEY_admin");
+		if(StringUtils.isBlank(CHECK_NUMBER_KEY)){
+			return false;
+		}
+		return checkNumber.equalsIgnoreCase(CHECK_NUMBER_KEY);
+	}
 
 	/**记住密码*/
 	public static void remeberMe(HttpServletRequest request,
