@@ -15,7 +15,7 @@
 <script type="text/javascript">
 function checkNumberImage(){
 	var imageNumber = document.getElementById("imageNumber");
-	imageNumber.src = "${ctx}/image.jsp?timestamp="+new Date().getTime();
+	imageNumber.src = "${ctx}/imageAdmin.jsp?timestamp="+new Date().getTime();
 }
 </script>
 </head>
@@ -43,7 +43,7 @@ function checkNumberImage(){
         </div>
         <div class="login_list">
           <input type="text" class="b_login_txt b_lgoin_yzm required" name="checkNumber" id="checkNumber"/>
-          <span><img src="${ctx}/image.jsp" width="65" height="38" id="imageNumber" title="点击换一张" onclick="checkNumberImage()"/></img></span>
+          <span><img src="${ctx}/imageAdmin.jsp" width="65" height="38" id="imageNumber" title="点击换一张" onclick="checkNumberImage()"/></img></span>
           <span id="login_checkNumber_msg" style="color:red"></span>
         </div>
         <span style="color:red" >${msg}</span>

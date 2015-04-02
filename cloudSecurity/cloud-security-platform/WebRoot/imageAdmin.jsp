@@ -26,7 +26,7 @@
 		sRand += rand;
 	}
 	// 将认证码存入SESSION
-	session.setAttribute("CHECK_NUMBER_KEY", sRand);//前台
+	session.setAttribute("CHECK_NUMBER_KEY_admin", sRand);//后台
 	// 在内存中创建图象
 	int width = 55;
 	int height = 20;
