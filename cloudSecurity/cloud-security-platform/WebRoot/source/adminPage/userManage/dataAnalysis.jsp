@@ -27,8 +27,8 @@
       <ul>
        <li><a href="${ctx}/adminUserManageUI.html" class="white">用户管理</a></li>
         <li><a href="${ctx}/adminServUI.html" class="white">服务管理</a></li>
-        <li class="b_current"><a href="${ctx}/dataAnalysisUI.html" class="white">数据分析</a></li>
-        <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/SystemManageUI.html" class="white">系统管理</a></li>
+        <li class="b_current"><a href="${ctx}/adminDataAnalysisUI.html" class="white">数据分析</a></li>
+        <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/adminSystemManageUI.html" class="white">系统管理</a></li>
       	<li style="border-right:1px solid #1f8db4;"><a href="${ctx}/noticeManageUI.html" class="white">公告管理</a></li>
       </ul>
     </div>
@@ -62,7 +62,7 @@
                      </div>
                  </div>
                  <div class="m_user_table_box p_user_table" id="n_supper">
-                 <a target="_blank" href="${ctx}/haveServ.html">
+                 <a target="_blank" href="${ctx}/adminHaveServ.html">
                  <div class="m_user_table_c">
                        <span class="user_title">活跃用户数</span>
                       <span class="user_num">${haveServCount}</span>
@@ -70,7 +70,7 @@
                  </a>
                  </div>
                  <div class="m_user_table_box p_user_table" id="o_supper">
-                 <a target="_blank" href="${ctx}/asserAddr.html">
+                 <a target="_blank" href="${ctx}/adminAssetAddr.html">
                  <div class="m_user_table_c">
                        <span class="user_title">监测网站数</span>
                       <span class="user_num">${asserAddrCount}</span>
@@ -87,7 +87,7 @@
         </div>
         <div class="dd_data_box" style="display:none;">
         	<div class="data_choose dd_choose">
-            	<form action="${ctx}/orderStatisticsAnalysis.html" method="post" id="searchForm" >
+            	<form action="${ctx}/adminOrderStatisticsAnalysis.html" method="post" id="searchForm" >
                	  <label class="fl">统计时段</label>
                	 	  <div class="se_big fl">
 			        	<input style="border:1px solid #e0e0e0; height: 28px; line-height: 28px;" type="text" value="" id="begin_date" name="begin_datevo" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
@@ -129,7 +129,7 @@
         </div>
         <div class="gj_data_box">
         	<div class="data_choose gjchoose">
-            	<form action="${ctx}/warningData.html" method="post" id="warningForm">
+            	<form action="${ctx}/adminWarningData.html" method="post" id="warningForm">
                	  <label class="fl">统计时段</label>
                	  <div class="se_big fl">
 			        	<input style="border:1px solid #e0e0e0; height: 28px; line-height: 28px;" type="text" value="" id="begin_dateW" name="begin_datevo" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>

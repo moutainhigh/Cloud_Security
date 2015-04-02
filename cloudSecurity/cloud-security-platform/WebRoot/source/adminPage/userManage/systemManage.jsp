@@ -28,7 +28,7 @@ $(function () {
 function test(){
 	$.ajax({
 	      type: "POST",
-	      url:"sysCpuUsage.html",
+	      url:"adminSysCpuUsage.html",
 	      dataType:"json",
 	      success: function(data){
 		      var printCpuPerc;
@@ -52,9 +52,6 @@ function test(){
 	      	},
 	   });
 }
-function sysForm(){
-	$("#form_sys").submit();
-}
 </script>
 </head>
 
@@ -67,8 +64,8 @@ function sysForm(){
       <ul>
         <li><a href="${ctx}/adminUserManageUI.html" class="white">用户管理</a></li>
         <li><a href="${ctx}/adminServUI.html" class="white">服务管理</a></li>
-        <li><a href="${ctx}/dataAnalysisUI.html" class="white">数据分析</a></li>
-        <li class="b_current" style="border-right:1px solid #1f8db4;"><a href="${ctx}/SystemManageUI.html" class="white">系统管理</a></li>
+        <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">数据分析</a></li>
+        <li class="b_current" style="border-right:1px solid #1f8db4;"><a href="${ctx}/adminSystemManageUI.html" class="white">系统管理</a></li>
         <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/noticeManageUI.html" class="white">公告管理</a></li>
       </ul>
     </div>
@@ -139,7 +136,7 @@ function sysForm(){
         </div>
         <div class="gj_data_box">
         	<div class="system_pz">
-            	<form id="form_sys" action="${ctx}/saveServerParam.html" method="post">
+            	<form id="form_sys" action="${ctx}/adminSaveServerParam.html" method="post">
                 	<div class="pz_form">
                     	<label>用户会话时长</label>
                         <input type="text" name="sessionTime" value="${serverParamConfiguration.sessionTime}" class="pz_input">

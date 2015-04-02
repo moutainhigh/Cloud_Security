@@ -5,7 +5,7 @@ function getcheckbox(authorityId,i){
     if(test){
     	$.ajax({
             type: "POST",
-            url: "/cloud-security-platform/addAuthority_userType.html",
+            url: "/cloud-security-platform/adminAddAuthority_userType.html",
             data: {"authorityId":authorityId,"userType":i},
             dataType:"json",
             success: function(data){},
@@ -14,7 +14,7 @@ function getcheckbox(authorityId,i){
     	//将记录从用户类型权限表里面删除
     	$.ajax({
             type: "POST",
-            url: "/cloud-security-platform/deleteAuthority_userType.html",
+            url: "/cloud-security-platform/adminDeleteAuthority_userType.html",
             data: {"authorityId":authorityId,"userType":i},
             dataType:"json",
             success: function(data){},

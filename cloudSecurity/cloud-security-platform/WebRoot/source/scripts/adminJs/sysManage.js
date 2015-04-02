@@ -25,7 +25,7 @@ $(function(){
             //后台获取数据
             $.ajax({
             	type : "post",
-            	url:"sysDiskUsage.html",
+            	url:"adminSysDiskUsage.html",
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
@@ -136,7 +136,7 @@ $(function(){
         	var myChart = ec.init(document.getElementById('system3'));
             //后台获取数据
             $.ajax({
-            	url:"sysMemoryUsage.html",
+            	url:"adminSysMemoryUsage.html",
                 dataType:"json",
                 success:function(data){
                 	$.each(data,function(i,p){
@@ -214,7 +214,7 @@ $(function(){
                     clearInterval(timeTicket);
                     var timeTicket = setInterval(function (){
                     	$.ajax({
-                        	url:"sysMemoryUsage.html",
+                        	url:"adminSysMemoryUsage.html",
                             dataType:"json",
                             success:function(data){
                             	$.each(data,function(i,p){
@@ -257,7 +257,7 @@ $(document).ready(function() {
                     var series = this.series[0];                                
                     setInterval(function() {  
                     	$.ajax({
-                        	url:"sysMemoryUsage.html",
+                        	url:"adminSysMemoryUsage.html",
                             dataType:"json",
                             success:function(data){
                             	
@@ -351,7 +351,7 @@ $(document).ready(function() {
                     var series = this.series[0];                                
                     setInterval(function() {  
                     	$.ajax({
-                        	url:"sysCpuUsage.html",
+                        	url:"adminSysCpuUsage.html",
                             dataType:"json",
                             success:function(data){
                             	
@@ -424,4 +424,6 @@ $(document).ready(function() {
 
 });
 
-
+function sysForm(){
+	$("#form_sys").submit();
+}

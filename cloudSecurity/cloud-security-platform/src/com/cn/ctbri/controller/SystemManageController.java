@@ -41,7 +41,7 @@ public class SystemManageController {
 	 * 功能描述： 系统管理页面
 	 *		 @time 2015-2-3
 	 */
-	@RequestMapping("/SystemManageUI.html")
+	@RequestMapping("/adminSystemManageUI.html")
 	public String systemManage(Model model,HttpServletRequest request){
 		//获取硬盘的使用情况
 		Sigar sigar = new Sigar();
@@ -91,7 +91,7 @@ public class SystemManageController {
 	 * 功能描述：获取磁盘空间使用情况数据
 	 *		 @time 2015-2-10
 	 */
-	@RequestMapping(value="sysDiskUsage.html")
+	@RequestMapping(value="adminSysDiskUsage.html")
 	@ResponseBody
 	public String sysDiskUsage(){
 		//获取硬盘的使用情况
@@ -129,7 +129,7 @@ public class SystemManageController {
 	 * 功能描述：获取内存使用情况数据
 	 *		 @time 2015-2-10
 	 */
-	@RequestMapping(value="sysMemoryUsage.html")
+	@RequestMapping(value="adminSysMemoryUsage.html")
 	@ResponseBody
 	public String sysMemoryUsage(){
 		//获取内存使用情况数据
@@ -157,7 +157,7 @@ public class SystemManageController {
 	 * 功能描述：获取cpu使用率使用情况数据
 	 *		 @time 2015-2-10
 	 */
-	@RequestMapping(value="sysCpuUsage.html")
+	@RequestMapping(value="adminSysCpuUsage.html")
 	@ResponseBody
 	public String sysCpuUsage(){
 
@@ -186,7 +186,7 @@ public class SystemManageController {
 	 * 功能描述：参数配置
 	 *		 @time 2015-3-5 saveServerParam.html
 	 */
-	@RequestMapping("/saveServerParam.html")
+	@RequestMapping("/adminSaveServerParam.html")
 	public String saveServerParam(HttpServletRequest request,ServerParamConfiguration serverParamConfiguration){
 		HttpSession session=request.getSession(true);   
 		session.setMaxInactiveInterval(serverParamConfiguration.getSessionTime()*60);//秒
@@ -209,7 +209,7 @@ public class SystemManageController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/SystemManageUI.html";
+		return "redirect:/adminSystemManageUI.html";
 
 	}
 }

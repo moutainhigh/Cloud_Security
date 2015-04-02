@@ -63,7 +63,7 @@ function orderData(){
 	
 	//异步请求数据
     $.ajax({
-    	url:"orderStatisticsAnalysis.html",
+    	url:"adminOrderStatisticsAnalysis.html",
     	data: {"begin_datevo":begin_datevo,"end_datevo":end_datevo,"state":state ,"type":type,"servName":servName},
     	dataType:"json",
     	contentType: "application/x-www-form-urlencoded; charset=utf-8",
@@ -144,7 +144,7 @@ function warningData(){
 	
 	//异步请求数据
     $.ajax({
-    	url:"warningData.html",
+    	url:"adminWarningData.html",
     	data: {"begin_datevo":begin_datevo,"end_datevo":end_datevo,"level":level ,"alarm_type":alarm_type},
     	dataType:"json",
     	contentType: "application/x-www-form-urlencoded; charset=utf-8",

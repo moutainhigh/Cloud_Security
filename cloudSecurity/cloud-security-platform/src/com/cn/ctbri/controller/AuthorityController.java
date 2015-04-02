@@ -56,7 +56,7 @@ public class AuthorityController {
 	 * 功能描述：根据用户类型和权限保存权限信息
 	 *		 @time 2015-2-3
 	 */
-	@RequestMapping("/addAuthority_userType.html")
+	@RequestMapping("/adminAddAuthority_userType.html")
 	public String addAuthority_userType(Authority_UserType au){
 		authority_UserTypeService.insert(au);
 		return "/source/adminPage/userManage/userAuthority";
@@ -66,7 +66,7 @@ public class AuthorityController {
 	 * 功能描述：根据用户类型和权限删除权限信息
 	 *		 @time 2015-2-3
 	 */
-	@RequestMapping("/deleteAuthority_userType.html")
+	@RequestMapping("/adminDeleteAuthority_userType.html")
 	public String deleteAuthority_userType(Authority_UserType au){
 		authority_UserTypeService.delete(au);
 		return "/source/adminPage/userManage/userAuthority";

@@ -54,7 +54,7 @@ public class DataAnalysisController {
 	 * 功能描述：数据分析页面
 	 *		 @time 2015-2-3
 	 */
-	@RequestMapping("/dataAnalysisUI.html")
+	@RequestMapping("/adminDataAnalysisUI.html")
 	public String dataAnalysisUI(Model model,User user,HttpServletRequest request){
 		List<User> listRegist = userService.findUserByUserType(2);
 		int registCount = 0;
@@ -89,7 +89,7 @@ public class DataAnalysisController {
 	 * 功能描述：活跃用户列表
 	 *		 @time 2015-3-12
 	 */
-	@RequestMapping("/haveServ.html")
+	@RequestMapping("/adminHaveServ.html")
 	public String haveServCount(Model model,HttpServletRequest request){
 		DataAnalysis criteria = CommonUtil.toBean(request.getParameterMap(), DataAnalysis.class);
 		//获取pageCode参数，如果不存在，那么它等于1，如果存在，那就赋值即可
@@ -107,7 +107,7 @@ public class DataAnalysisController {
 	 * 功能描述：检测网站（资产地址）
 	 *		 @time 2015-3-12
 	 */
-	@RequestMapping("/asserAddr.html")
+	@RequestMapping("/adminAssetAddr.html")
 	public String asserAddr(Model model,HttpServletRequest request){
 		Asset criteria = CommonUtil.toBean(request.getParameterMap(), Asset.class);
 		int pageCode = 1;
@@ -122,7 +122,7 @@ public class DataAnalysisController {
 	 * 功能描述：订单统计分析
 	 *		 @time 2015-3-9
 	 */
-	@RequestMapping(value="orderStatisticsAnalysis.html" ,method = RequestMethod.POST)
+	@RequestMapping(value="adminOrderStatisticsAnalysis.html" ,method = RequestMethod.POST)
 	@ResponseBody
 	public void orderStatisticsAnalysis(HttpServletRequest request,HttpServletResponse response,Integer state,Integer type,String servName,String begin_datevo,String end_datevo){
 		response.setCharacterEncoding("utf-8");
@@ -161,7 +161,7 @@ public class DataAnalysisController {
 	 * 功能描述：数据分析--告警统计分析
 	 *		 @time 2015-3-11
 	 */
-	@RequestMapping(value="warningData.html" ,method = RequestMethod.POST)
+	@RequestMapping(value="adminWarningData.html" ,method = RequestMethod.POST)
 	@ResponseBody
 	public void warningDataAnalysis(HttpServletRequest request,HttpServletResponse response,Integer level,String alarm_type,String begin_datevo,String end_datevo){
 		response.setCharacterEncoding("utf-8");
