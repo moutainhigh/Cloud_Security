@@ -33,7 +33,7 @@ public class NoticeController {
      * 参数描述：无
      *       @time 2015-3-10
      */
-    @RequestMapping("/noticeManageUI.html")
+    @RequestMapping("/adminNoticeManageUI.html")
     public String noticeManageUI(Model model,HttpServletRequest request,User user){
         //User globle_user = (User) request.getSession().getAttribute("globle_user");
         List<Notice> list = noticeService.findAllNotice();
@@ -46,7 +46,7 @@ public class NoticeController {
      * 功能描述：添加公告
      *       @time 2015-3-10
      */
-    @RequestMapping("/noticeAdd.html")
+    @RequestMapping("/adminNoticeAdd.html")
     public String noticeAdd(Notice notice){
         String noticeName = "";
         String noticeDesc = "";
@@ -60,13 +60,13 @@ public class NoticeController {
         }
         notice.setCreateDate(new Date());//创建时间
         noticeService.insert(notice);
-        return "redirect:/noticeManageUI.html";
+        return "redirect:/adminNoticeManageUI.html";
     }
     /**
      * 功能描述：修改公告
      *       @time 2015-3-10
      */
-    @RequestMapping("/noticeEdit.html")
+    @RequestMapping("/adminNoticeEdit.html")
     public String edit(Notice notice){
         String noticeName = "";
         String noticeDesc = "";
@@ -79,7 +79,7 @@ public class NoticeController {
             e.printStackTrace();
         }
         noticeService.update(notice);
-        return "redirect:/noticeManageUI.html";
+        return "redirect:/adminNoticeManageUI.html";
     }
     
     
@@ -88,10 +88,10 @@ public class NoticeController {
      * 功能描述：删除公告
      *       @time 2015-3-10
      */
-    @RequestMapping("/noticeDelete.html")
+    @RequestMapping("/adminNoticeDelete.html")
     public String delete(Notice notice){
         noticeService.delete(notice.getId());
-        return "redirect:/noticeManageUI.html";
+        return "redirect:/adminNoticeManageUI.html";
     }
     
     /**
