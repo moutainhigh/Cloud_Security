@@ -95,7 +95,7 @@ public class AdminUserController {
 		/**记住密码功能*/
 		LogonUtils.remeberAdmin(request,response,name,password);
 		//将User放置到Session中，用于这个系统的操作
-		request.getSession().setAttribute("globle_user", _user);
+		request.getSession().setAttribute("admin_user", _user);
 		return "redirect:/adminUserManageUI.html";
 	}
 	/**
@@ -166,7 +166,8 @@ public class AdminUserController {
 	 */
 	@RequestMapping("/adminExit.html")
 	public String adminExit(HttpServletRequest request){
-		request.getSession().invalidate();
+		request.getSession().removeAttribute("admin_user");
+		//request.getSession().invalidate();
 		return "redirect:/admin.html";
 	}
 	/**

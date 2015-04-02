@@ -40,7 +40,7 @@ $(document).ready(function(){
     <div class="lagst">
       <div class="lagst-left b_lagst_left"> <a href="#"><img src="${ctx}/source/adminImages/b_photo.jpg" width="43" height="42"></a> </div>
       <div class="lagst-right">
-        <p ><a href="###" class="white">${sessionScope.globle_user.name }</a></p>
+        <p ><a href="###" class="white">${sessionScope.admin_user.name }</a></p>
         <p> <a href="${ctx}/adminExit.html" class="white">退出</a></p>
       </div>
     </div>

@@ -54,7 +54,6 @@ public class SystemFilter extends OncePerRequestFilter  {
 		//获取访问的url路径
 		String path = request.getServletPath();
 		forwordIndexPage(path,request,response);
-		
 		//当没有Session之前，可以放行的连接
 		if(list.contains(path)){
 			//放行
@@ -63,24 +62,46 @@ public class SystemFilter extends OncePerRequestFilter  {
 		}else{
 			//获取Session，完成粗颗粒权限控制，从Session中获取用户信息
 			User user = (User)request.getSession().getAttribute("globle_user");
-			//说明当前操作存在Session，需要放行
-			if(user!=null){
-				//如果访问路径包含admin说明是访问的后台，检验是否有权限访问，只有超级管理员和系统管理员才可以访问
-				if(path.contains("admin")){
-					if(user.getType()==2){
-						request.setAttribute("errorMsg", "对不起，您没有权限登录后台！");
-						request.getRequestDispatcher("/errorMsg.html").forward(request,response);
+			User adminUser = (User)request.getSession().getAttribute("admin_user");
+			if(user!=null||adminUser!=null){
+				//说明当前操作存在Session，需要放行
+				if(user!=null){
+					//如果访问路径包含admin说明是访问的后台，检验是否有权限访问，只有超级管理员和系统管理员才可以访问
+					if(!path.contains("admin")||user.getType()==2){
+						//放行
+						try{
+							filterChain.doFilter(request, response);
+						}catch (Exception e) {
+							response.sendRedirect(request.getContextPath()+"/loginUI.html");
+							e.printStackTrace();
+						}
 						return;
 					}
+					request.setAttribute("msg", "对不起，您没有权限登录后台！");
+					request.getRequestDispatcher("/loginUI.html").forward(request,response);
+					return;
 				}
-				//放行
-				try{
-					filterChain.doFilter(request, response);
-				}catch (Exception e) {
-					response.sendRedirect(request.getContextPath()+"/loginUI.html");
-					e.printStackTrace();
+				if(adminUser!=null){
+					//如果访问路径包含admin说明是访问的后台，检验是否有权限访问，只有超级管理员和系统管理员才可以访问
+					if((path.contains("admin"))||adminUser.getType()==0||adminUser.getType()==1){
+						try{
+							filterChain.doFilter(request, response);
+						}catch (Exception e) {
+							response.sendRedirect(request.getContextPath()+"/admin.html");
+							e.printStackTrace();
+						}
+						return;
+					}
+					request.setAttribute("msg", "对不起，您没有权限登录后台！");
+					request.getRequestDispatcher("/admin.html").forward(request,response);
+					return;
+					
 				}
-				return;
+			}
+			//判断session超时后转发的连接
+			//说明是后台
+			if(adminUser==null&&path.contains("admin")){
+				response.sendRedirect(request.getContextPath()+"/admin.html");
 			}else{
 				response.sendRedirect(request.getContextPath()+"/loginUI.html");
 			}
