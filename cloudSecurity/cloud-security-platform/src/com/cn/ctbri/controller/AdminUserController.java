@@ -61,7 +61,7 @@ public class AdminUserController {
 	@RequestMapping("/adminLogin.html")
 	public String adminLogin(User user,HttpServletRequest request,HttpServletResponse response){
 		//添加验证码，判断验证码输入是否正确
-		boolean flag = LogonUtils.checkNumber(request);
+		boolean flag = LogonUtils.checkNumberAdmin(request);
 		if(!flag){
 			request.setAttribute("msg", "验证码输入有误");//向前台页面传值
 			return "/source/adminPage/adminLogin/adminLogin";
@@ -83,11 +83,11 @@ public class AdminUserController {
 			request.setAttribute("msg", "用户名输入有误");
 			return "/source/adminPage/adminLogin/adminLogin";//跳转到登录页面
 		}
-		//判断是不是后台可以登录的用户0：超级管理员，1：管理员
-		if(_user.getType() == 2){
-			request.setAttribute("msg", "对不起，您没有登录后台的权限！");
-			return "/source/adminPage/adminLogin/adminLogin";
-		}
+//		//判断是不是后台可以登录的用户0：超级管理员，1：管理员
+//		if(_user.getType() == 2){
+//			request.setAttribute("msg", "对不起，您没有登录后台的权限！");
+//			return "/source/adminPage/adminLogin/adminLogin";
+//		}
 		if(_user.getStatus()!=1){
 			request.setAttribute("msg", "对不起，您的帐号已停用");
 			return "/source/page/regist/regist";//跳转到登录页面
