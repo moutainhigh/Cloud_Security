@@ -63,27 +63,10 @@ public class SystemFilter extends OncePerRequestFilter  {
 			//获取Session，完成粗颗粒权限控制，从Session中获取用户信息
 			User user = (User)request.getSession().getAttribute("globle_user");
 			User adminUser = (User)request.getSession().getAttribute("admin_user");
-			if(user!=null||adminUser!=null){
-				//说明当前操作存在Session，需要放行
-				if(user!=null){
-					//如果访问路径包含admin说明是访问的后台，检验是否有权限访问，只有超级管理员和系统管理员才可以访问
-					if(!path.contains("admin")||user.getType()==2){
-						//放行
-						try{
-							filterChain.doFilter(request, response);
-						}catch (Exception e) {
-							response.sendRedirect(request.getContextPath()+"/loginUI.html");
-							e.printStackTrace();
-						}
-						return;
-					}
-					request.setAttribute("msg", "对不起，您没有权限登录后台！");
-					request.getRequestDispatcher("/loginUI.html").forward(request,response);
-					return;
-				}
+			if(path.contains("admin")){
 				if(adminUser!=null){
 					//如果访问路径包含admin说明是访问的后台，检验是否有权限访问，只有超级管理员和系统管理员才可以访问
-					if((path.contains("admin"))||adminUser.getType()==0||adminUser.getType()==1){
+					if(adminUser.getType()==0||adminUser.getType()==1){
 						try{
 							filterChain.doFilter(request, response);
 						}catch (Exception e) {
@@ -95,15 +78,36 @@ public class SystemFilter extends OncePerRequestFilter  {
 					request.setAttribute("msg", "对不起，您没有权限登录后台！");
 					request.getRequestDispatcher("/admin.html").forward(request,response);
 					return;
-					
+				}
+			}else{
+				//说明当前操作存在Session，需要放行
+				if(!path.contains("admin")){
+					//如果访问路径包含admin说明是访问的后台，检验是否有权限访问，只有超级管理员和系统管理员才可以访问
+					if(user!=null&&user.getType()==2){
+						//放行
+						try{
+							filterChain.doFilter(request, response);
+						}catch (Exception e) {
+							response.sendRedirect(request.getContextPath()+"/loginUI.html");
+							e.printStackTrace();
+						}
+						return;
+					}
+					request.setAttribute("msg", "对不起，您没有权限登录前台！");
+					request.getRequestDispatcher("/loginUI.html").forward(request,response);
+					return;
 				}
 			}
 			//判断session超时后转发的连接
 			//说明是后台
 			if(adminUser==null&&path.contains("admin")){
-				response.sendRedirect(request.getContextPath()+"/admin.html");
+				request.setAttribute("msg", "对不起，登录超时！");
+				request.getRequestDispatcher("/admin.html").forward(request,response);
+				//response.sendRedirect(request.getContextPath()+"/admin.html");
 			}else{
-				response.sendRedirect(request.getContextPath()+"/loginUI.html");
+				request.setAttribute("msg", "对不起，登录超时！");
+				request.getRequestDispatcher("/loginUI.html").forward(request,response);
+				//response.sendRedirect(request.getContextPath()+"/loginUI.html");
 			}
 		}
 	}
