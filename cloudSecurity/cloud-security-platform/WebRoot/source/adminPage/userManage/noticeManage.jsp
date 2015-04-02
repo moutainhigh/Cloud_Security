@@ -28,7 +28,7 @@ function edit(){
 function deleteNotice(id){
     var noticeId = id;
     if (window.confirm("确实要删除吗?")==true) {
-        window.location.href="/cloud-security-platform/noticeDelete.html?id="+noticeId;
+        window.location.href="/cloud-security-platform/adminNoticeDelete.html?id="+noticeId;
     } else {
         return;
     }
@@ -46,8 +46,8 @@ function deleteNotice(id){
         <li><a href="${ctx}/adminUserManageUI.html" class="white">用户管理</a></li>
         <li><a href="${ctx}/adminServUI.html" class="white">服务管理</a></li>
         <li><a href="${ctx}/dataAnalysisUI.html" class="white">数据分析</a></li>
-        <li><a href="${ctx}/SystemManageUI.html" class="white">系统管理</a></li>
-        <li style="border-right:1px solid #1f8db4;" class="b_current"><a href="${ctx}/noticeManageUI.html" class="white">公告管理</a></li>
+        <li><a href="${ctx}/adminSystemManageUI.html" class="white">系统管理</a></li>
+        <li style="border-right:1px solid #1f8db4;" class="b_current"><a href="${ctx}/adminNoticeManageUI.html" class="white">公告管理</a></li>
       </ul>
     </div>
     <div class="lagst">
@@ -143,7 +143,7 @@ function deleteNotice(id){
 	<p class="w634">添加公告</p><p id="close" class="modelclose"><img src="${ctx}/source/adminImages/b_exit.jpg" width="25" height="26"></p>
    </div> 
        <div class="regist_form">
-      <form  id="form_notice" name="form_regist" method="post" action="${ctx}/noticeAdd.html">
+      <form  id="form_notice" name="form_regist" method="post" action="${ctx}/adminNoticeAdd.html">
         <table>
            <tr class="register_tr">
             <td class="regist_title">标题</td>
@@ -169,7 +169,7 @@ function deleteNotice(id){
 	<p class="w634">修改公告</p><p id="close2" class="modelclose"><img src="${ctx}/source/adminImages/b_exit.jpg" width="25" height="26"></p>
    </div> 
        <div class="regist_form">
-      <form  id="editNoticeForm" name="form_regist" method="post" action="${ctx}/noticeEdit.html">
+      <form  id="editNoticeForm" name="form_regist" method="post" action="${ctx}/adminNoticeEdit.html">
        <input type="hidden" name="id" id="hiddenEditNoticeid"/>
         <table>
           <tr class="register_tr">
