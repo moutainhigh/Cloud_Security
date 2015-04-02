@@ -17,8 +17,12 @@
                     <td>
                         <c:set var="temp" value="${nowDate }"/>
                         <c:if test="${list.type==1}">
-                            <c:if test="${list.end_date>=temp}">服务中</c:if>
-                            <c:if test="${list.end_date<temp}">已结束</c:if>
+                            <!-- <c:if test="${list.status==0||list.end_date>=temp}">服务中</c:if>
+                            <c:if test="${list.end_date<temp}">已结束</c:if> -->
+                            <c:choose>
+                                <c:when test="${list.status==0||list.end_date>=temp}">服务中</c:when>
+                                <c:otherwise>已结束</c:otherwise>
+                            </c:choose>
                         </c:if>
                         <c:if test="${list.type==2}">
                             <!-- <c:if test="${list.begin_date>=temp}">服务中</c:if> -->
@@ -26,7 +30,7 @@
                             <!--<c:if test="${list.status!=0}">已结束</c:if>-->
                             <!--<c:if test="${list.status==0}">扫描中</c:if>-->
                             <c:choose>
-	                            <c:when test="${list.status==0&&list.begin_date>temp}">扫描中</c:when>
+	                            <c:when test="${list.status==0||list.begin_date>temp}">扫描中</c:when>
 	                            <c:otherwise>已结束</c:otherwise>
                             </c:choose>
                         </c:if>

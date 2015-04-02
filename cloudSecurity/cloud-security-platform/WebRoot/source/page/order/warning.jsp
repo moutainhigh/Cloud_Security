@@ -109,8 +109,8 @@
             <td style="width:8%;">编号</td>
             <td  style="width:22%;">漏洞名称</td>
             <td  style="width:10%;">漏洞级别</td>
-            <td  style="width:25%;">漏洞相关URL</td>
             <td  style="width:35%;">漏洞详情描述</td>
+            <td  style="width:25%;">修复建议</td>
           </tr>
           <c:forEach var="alarm" items="${alarmList}" varStatus="status">
 	          <tr>                                            
@@ -121,8 +121,8 @@
                    <c:if test="${alarm.level==1}">中</c:if>
                    <c:if test="${alarm.level==2}">高</c:if> 
 	            </td>
-	            <td>${alarm.url }</td>
 	            <td>${alarm.alarm_content }</td>
+	            <td>${alarm.advice }</td>
 	          </tr>
           </c:forEach>
           

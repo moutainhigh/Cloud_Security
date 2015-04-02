@@ -115,11 +115,14 @@
         </c:if>
 	    <!-- <p class="dd_detail"><span class="detail_l fl">服务情况跟踪</span><span class="detail_r fl">
 	xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span></p> -->
-		<p class="dd_detail"><span class="detail_l fl">服务对象资</span>
+		<div class="dd_detail">
+		    <div class="detail_l fl"><span style="line-height:30px;">服务对象资产</span></div>
+		    <div class="detail_r fl">
 	        <c:forEach var="asset" items="${assetList}" varStatus="status">
-	        <span class="detail_r fl">${asset.name }</span>
+	        <span style="display:block; width:600px;line-height:30px; ">${asset.name }&nbsp;(${asset.addr })</span>
 	        </c:forEach>
-	    </p>
+	        </div>
+	    </div>
 	    </c:if>
 	    <c:if test="${order.parentC==2}">
 	       <c:forEach var="list" items="${ipList}" varStatus="status">
