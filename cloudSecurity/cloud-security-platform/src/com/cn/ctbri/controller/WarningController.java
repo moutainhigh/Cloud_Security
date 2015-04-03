@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.constant.WarnType;
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.AlarmDDOS;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IOrderAssetService;
@@ -54,15 +55,33 @@ public class WarningController {
         List orderList = orderService.findByOrderId(orderId);
         //获取对应资产
         List assetList = orderAssetService.findAssetNameByOrderId(orderId);
+        //获取对应IP
+        List IPList = orderService.findIPByOrderId(orderId);
         //获取对应告警信息
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("orderId", orderId);
         paramMap.put("type", type);
         List<Alarm> alarmList = alarmService.getAlarmByOrderId(paramMap);
+        int serviceId=0 ;
         request.setAttribute("orderList", orderList);
-        request.setAttribute("assetList", assetList);
-        request.setAttribute("alarmList", alarmList);
-        return "/source/page/order/warning";
+        
+        HashMap<String, Object> order=new HashMap<String, Object>();
+        for(int i=0;i<orderList.size();i++){
+        	 order=(HashMap) orderList.get(i);
+        	 serviceId=(Integer) order.get("serviceId");
+        }
+        if(serviceId==6||serviceId==7||serviceId==8){//DDOS
+        	 List<AlarmDDOS> alarmDDosList = alarmService.getAlarmDdosByOrderId(paramMap);
+        	request.setAttribute("ipList", IPList);
+        	request.setAttribute("serviceId", serviceId);
+            request.setAttribute("alarmList", alarmDDosList);
+            return "/source/page/order/order_warning";
+        	
+        }else{
+        	request.setAttribute("assetList", assetList);
+            request.setAttribute("alarmList", alarmList);
+            return "/source/page/order/warning";
+        }
     }
     
     
