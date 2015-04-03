@@ -111,6 +111,7 @@ $(document).ready(function(){
       <div class="user_sec_cont" style=" left:302px; ">
          <select class="user_secta spiclesel" id="state" name="state">
             <option selected="selected" value="">请选择状态</option>
+            <option value="3" >已下单</option>
             <option value="1" >服务中</option>
             <option value="2" >已结束</option>
         </select>
