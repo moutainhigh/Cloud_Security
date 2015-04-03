@@ -48,6 +48,11 @@ public interface OrderDao {
      * 返回值    ：  Order
      */
     List findByOrderId(String orderId);
+	/**
+     * 功能描述：根据orderid查询IP
+     *       @time 2015-2-2
+     */
+    List findIPByOrderId(String orderId);
     /**
      * 功能描述： 根据pageIndex和用户id查询记录
      *       @time 2015-3-4
