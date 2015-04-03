@@ -93,7 +93,7 @@ public class SystemFilter extends OncePerRequestFilter  {
 						}
 						return;
 					}
-					request.setAttribute("msg", "对不起，您可能存在的问题:没有权限登录前台、未登录、登录超时");
+//					request.setAttribute("msg", "对不起，您可能存在的问题:没有权限登录前台、未登录、登录超时");
 					request.getSession().removeAttribute("globle_user");
 					request.getRequestDispatcher("/loginUI.html").forward(request,response);
 					return;
