@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cn.ctbri.dao.AlarmDao;
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.entity.Alarm;
-import com.cn.ctbri.entity.DataAnalysis;
+import com.cn.ctbri.entity.AlarmDDOS;
 import com.cn.ctbri.entity.Task;
 /**
  * 创 建 人  ：  于永波
@@ -59,6 +59,14 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
      */
     public List<Alarm> getAlarmByOrderId(Map<String, Object> paramMap) {
         return getSqlSession().selectList(ns+"findAlarmByOrderId", paramMap);
+    }
+	/**
+     * 功能描述：根据orderId查询DDOS告警信息
+     *       @time 2015-2-4
+     * 返回值    ：List<Alarm>
+     */
+    public List<AlarmDDOS> getAlarmDdosByOrderId(Map<String, Object> paramMap) {
+        return getSqlSession().selectList(ns+"findAlarmDdosByOrderId", paramMap);
     }
     /**
      * 功能描述：根据orderId查询任务信息

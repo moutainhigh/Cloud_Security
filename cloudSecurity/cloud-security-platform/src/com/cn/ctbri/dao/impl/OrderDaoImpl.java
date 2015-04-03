@@ -69,6 +69,14 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
         return order;
     }
 
+	/**
+     * 功能描述：根据orderid查询IP名称
+     *       @time 2015-2-2
+     */
+    public List findIPByOrderId(String orderId) {
+        List list = this.getSqlSession().selectList(ns+"findIPByOrderId",orderId);
+        return list;
+    }
     /**
      * 功能描述： 根据pageIndex和用户id查询记录
      *       @time 2015-3-4
