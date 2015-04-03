@@ -166,8 +166,8 @@ public class AdminUserController {
 	 */
 	@RequestMapping("/adminExit.html")
 	public String adminExit(HttpServletRequest request){
-		request.getSession().removeAttribute("admin_user");
-		//request.getSession().invalidate();
+		//request.getSession().removeAttribute("admin_user");
+		request.getSession().invalidate();
 		return "redirect:/admin.html";
 	}
 	/**

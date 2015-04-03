@@ -75,10 +75,10 @@ public class SystemFilter extends OncePerRequestFilter  {
 						}
 						return;
 					}
-					request.setAttribute("msg", "对不起，您没有权限登录后台！");
-					request.getRequestDispatcher("/admin.html").forward(request,response);
-					return;
 				}
+				request.setAttribute("msg", "对不起，您可能存在的问题:没有权限登录后台、未登录、登录超时！");
+				request.getRequestDispatcher("/admin.html").forward(request,response);
+				return;
 			}else{
 				//说明当前操作存在Session，需要放行
 				if(!path.contains("admin")){
@@ -93,21 +93,11 @@ public class SystemFilter extends OncePerRequestFilter  {
 						}
 						return;
 					}
-					request.setAttribute("msg", "对不起，您没有权限登录前台！");
+					request.setAttribute("msg", "对不起，您可能存在的问题:没有权限登录前台、未登录、登录超时");
+					request.getSession().removeAttribute("globle_user");
 					request.getRequestDispatcher("/loginUI.html").forward(request,response);
 					return;
 				}
-			}
-			//判断session超时后转发的连接
-			//说明是后台
-			if(adminUser==null&&path.contains("admin")){
-				request.setAttribute("msg", "对不起，登录超时！");
-				request.getRequestDispatcher("/admin.html").forward(request,response);
-				//response.sendRedirect(request.getContextPath()+"/admin.html");
-			}else{
-				request.setAttribute("msg", "对不起，登录超时！");
-				request.getRequestDispatcher("/loginUI.html").forward(request,response);
-				//response.sendRedirect(request.getContextPath()+"/loginUI.html");
 			}
 		}
 	}

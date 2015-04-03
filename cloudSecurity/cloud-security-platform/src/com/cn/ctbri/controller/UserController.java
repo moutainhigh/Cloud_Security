@@ -250,8 +250,8 @@ public class UserController {
 	 */
 	@RequestMapping(value="exit.html")
 	public String exit(HttpServletRequest request){
-		request.getSession().removeAttribute("globle_user");
-   		//request.getSession().invalidate();
+		//request.getSession().removeAttribute("globle_user");
+   		request.getSession().invalidate();
    		return "redirect:/loginUI.html";
 	}
 	
