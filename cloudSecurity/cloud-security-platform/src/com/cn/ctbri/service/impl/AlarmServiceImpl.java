@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.AlarmDao;
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.AlarmDDOS;
 import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IAlarmService;
@@ -38,6 +39,14 @@ public class AlarmServiceImpl implements IAlarmService{
      */
     public List<Alarm> getAlarmByOrderId(Map<String, Object> paramMap) {
         return alarmDao.getAlarmByOrderId(paramMap);
+    }
+	/**
+     * 功能描述：根据orderId查询DDOS告警信息
+     *       @time 2015-2-4
+     * 返回值    ：List<Alarm>
+     */
+    public List<AlarmDDOS> getAlarmDdosByOrderId(Map<String, Object> paramMap) {
+        return alarmDao.getAlarmDdosByOrderId(paramMap);
     }
     /**
      * 功能描述：根据orderId查询任务信息
