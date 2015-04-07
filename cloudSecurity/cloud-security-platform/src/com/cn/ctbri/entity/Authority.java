@@ -14,6 +14,15 @@ public class Authority implements java.io.Serializable{
 	private String url;//访问路径
 	private int state;//状态:0:公共，1：前台权限页面，2：后台权限页面
 	private String remark;//备注
+	
+	public Authority() {}
+	
+	public Authority(String authorityName, String url) {
+		super();
+		this.authorityName = authorityName;
+		this.url = url;
+	}
+
 	public int getId() {
 		return id;
 	}

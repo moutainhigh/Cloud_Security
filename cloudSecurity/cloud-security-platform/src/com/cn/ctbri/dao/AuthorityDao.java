@@ -24,6 +24,10 @@ public interface AuthorityDao {
 	 * @return
 	 */
 	List<Authority> findAllAuthority();
+	/**
+	 * 保存权限
+	 */
+	void saveAuthority(Authority authority);
 
 	
 }

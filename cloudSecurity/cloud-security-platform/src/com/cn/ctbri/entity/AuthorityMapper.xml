@@ -20,4 +20,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findAllAuthority" resultMap="AuthorityRM" parameterType="int">
 		SELECT * FROM cs_authority
 	</select>
+	<insert id="saveAuthority">
+		insert into cs_authority
+		(authorityName,url)values(#{authorityName},#{url})
+	</insert>
 </mapper>

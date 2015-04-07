@@ -38,6 +38,11 @@ public class AuthorityDaoImpl extends DaoCommon implements AuthorityDao {
 	 */
 	public List<Authority> findAllAuthority() {
 		return getSqlSession().selectList(ns+"findAllAuthority");
+	}
+	/**
+	 * 保存权限
+	 */
+	public void saveAuthority(Authority authority) {
+		getSqlSession().insert(ns+"saveAuthority",authority);
 	}		
-
 }

@@ -24,6 +24,7 @@ public interface IAuthorityService {
 	 * @return
 	 */
 	List<Authority> findAllAuthority();
+	void saveAuthority(Authority authority);
 
 
 }

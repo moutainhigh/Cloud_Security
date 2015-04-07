@@ -39,5 +39,11 @@ public class AuthorityServiceImpl implements IAuthorityService{
 	public List<Authority> findAllAuthority() {
 		return authorityDao.findAllAuthority();
 	}
+	/**
+	 * 保存权限
+	 */
+	public void saveAuthority(Authority authority) {
+		authorityDao.saveAuthority(authority);
+	}
 	
 }
