@@ -27,10 +27,10 @@
                     <td><fmt:formatDate value="${list.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>~<fmt:formatDate value="${list.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                     <td><fmt:formatDate value="${list.create_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                     <td>
-                       <c:if test="${list.status==2}"><a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}" target="_blank"><img src="${ctx}/source/images/status_1.jpg" /></a></c:if>
-                       <c:if test="${list.status==1}"><a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}" target="_blank"><img src="${ctx}/source/images/status_2.jpg" /></a></c:if>
-                       <c:if test="${list.begin_date>temp}"><img src="${ctx}/source/images/status_3.jpg" /></c:if>
-                       <c:if test="${list.begin_date<=temp&&list.status==0}"><img src="${ctx}/source/images/status_4.jpg" /></c:if>
+                       <c:if test="${list.status==2}"><a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}" target="_blank"><img src="${ctx}/source/images/status_1.jpg" title="已完成有告警"/></a></c:if>
+                       <c:if test="${list.status==1}"><a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}" target="_blank"><img src="${ctx}/source/images/status_2.jpg" title="已完成无异常"/></a></c:if>
+                       <c:if test="${list.begin_date>temp}"><img src="${ctx}/source/images/status_3.jpg" title="服务中"/></c:if>
+                       <c:if test="${list.begin_date<=temp&&list.status==0}"><img src="${ctx}/source/images/status_4.jpg" title="等待"/></c:if>
                     </td>
                   </tr>
               </c:forEach>
