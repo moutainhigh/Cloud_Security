@@ -20,7 +20,6 @@ public class DateUtils {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		return dateFormat.format(date);
 	}
-	
 	/**将String类型转换成日期类型*/
 	public static Date stringToDate(String sDate) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

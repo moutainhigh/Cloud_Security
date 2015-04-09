@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			WHERE oa.orderId =#{orderId})
 	</select>
 	<!-- 根据orderId查询基本信息 -->
-	<select id="findBasicInfoByOrderId" parameterType="String" resultType="TaskRM">
+	<select id="findBasicInfoByOrderId" parameterType="String" resultMap="TaskRM">
 		SELECT MIN(t.begin_time) AS begin_time,MAX(t.end_time) AS end_time,AVG(t.scanTime) AS scanTime,AVG(t.issueCount) AS issueCount,AVG(t.requestCount) AS requestCount,AVG(t.urlCount) AS urlCount,AVG(t.averResponse) AS averResponse,AVG(t.averSendCount) AS averSendCount,AVG(t.sendBytes) AS sendBytes,AVG(t.receiveBytes) AS receiveBytes
 		FROM cs_task t
 		WHERE t.order_asset_Id IN (

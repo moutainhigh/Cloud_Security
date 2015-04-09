@@ -1,0 +1,27 @@
+@charset "utf-8";
+.safebox{width:352px;}
+.numbox{width:344px;}
+.aqfx{width:272px;}
+.ldgs{width:264px;}
+.formalinfo{color:#666;padding-left:38px;height:28px;line-height:38px;font-size:14px;}
+.formalinfo span{margin-right:10px;}
+.formalinfo .infotitle{margin-right:30px;}
+.formalinfo .infotitle2{display:inline-block;width:134px;}
+.asset{margin-right:20px;}
+.assets{margin-right:20px;margin-left:45px;}
+.historyde{font-size:15px;padding:0 10px 0 400px;height:24px;line-height:24px;}
+.historyse{width:180px;height:24px;line-height:24px;border:1px solid #e0e0e0;color:#999999;}
+.gj_title{padding-bottom:20px;}
+.process{padding:26px 0 24px 70px;border-bottom:1px solid #e0e0e0;}
+.scantitle{font-size:16px;color:#666;padding-right:30px;display:inline-block;}
+.scan{font-size:14px;color:#666;width:82px;height:18px;text-align:center;background:#e0e0e0;display:inline-block;line-height:18px;}
+.scancur{background:#2da039;color:#fff;}
+.propercent{font-size:18px;color:#2da039;padding-right:40px;}
+.processingbox{padding:10px 0 0 0;}
+.prourl{display:block;text-align:center;width:100%;color:#666;font-size:14px;}
+.progress{width:675px;display:inline-block;margin-bottom:0;border-radius:10px;background-image: linear-gradient(to bottom, #c1d3df 0px, #c1d3df 100%);box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;height: 20px;overflow:hidden;}
+.progress-bar{background-color:#97e456;border:1px solid #1abe2c;color:#666;font-size:16px;text-align:right;padding-right:10px;line-height:18px;border-radius:10px; box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15) inset;transition: width 0.6s ease 0s;float:left;height:100%;box-sizing: border-box;}
+.detail_title{display:inline-block;width:86px;}
+.progress-bar-striped{background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent); background-size: 40px 40px;}
+.progress.active .progress-bar,.progress-bar.active{-webkit-animation:progress-bar-stripes 2s linear infinite;-o-animation:progress-bar-stripes 2s linear infinite;animation:progress-bar-stripes 2s linear infinite}
+@-webkit-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@-o-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}

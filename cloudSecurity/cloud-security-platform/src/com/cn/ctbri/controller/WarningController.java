@@ -15,6 +15,7 @@ import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,6 +26,9 @@ import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
+import com.cn.ctbri.service.ITaskService;
+import com.cn.ctbri.util.CommonUtil;
+import com.cn.ctbri.util.DateUtils;
 
 /**
  * 创 建 人  ：  txr
@@ -41,7 +45,8 @@ public class WarningController {
     IOrderAssetService orderAssetService;
     @Autowired
     IAlarmService alarmService;
-	
+    @Autowired
+    ITaskService taskService;
 	/**
      * 功能描述： 用户中心-订单跟踪-告警提示
      * 参数描述：  无
@@ -64,7 +69,11 @@ public class WarningController {
         List<Alarm> alarmList = alarmService.getAlarmByOrderId(paramMap);
         int serviceId=0 ;
         request.setAttribute("orderList", orderList);
-        
+        /** 基本信息   dyy*/
+        Task task = taskService.findBasicInfoByOrderId(orderId);
+        request.setAttribute("beginTime", DateUtils.dateToString(task.getBegin_time()));
+        request.setAttribute("endTime", DateUtils.dateToString(task.getEnd_time()));
+        request.setAttribute("task", task);
         HashMap<String, Object> order=new HashMap<String, Object>();
         for(int i=0;i<orderList.size();i++){
         	 order=(HashMap) orderList.get(i);
@@ -278,6 +287,25 @@ public class WarningController {
         request.setAttribute("checkTime", checkTime);
         return "/source/page/order/historyDetail";
     }
-    
-
+    /**
+     * 功能描述：扫描进度
+     * 邓元元
+     * 		@time 2015-4-8
+     */
+    @RequestMapping(value="/scaning.html")
+    @ResponseBody
+    public void scaning(HttpServletRequest request,HttpServletResponse response){
+        String orderId = request.getParameter("orderId");
+        int progress = taskService.findProgressByOrderId(orderId);
+        Map<String, Object> m = new HashMap<String, Object>();
+        m.put("progress", progress);
+        //object转化为Json格式
+        JSONObject JSON = CommonUtil.objectToJson(response, m);
+        try {
+            // 把数据返回到页面
+            CommonUtil.writeToJsp(response, JSON);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

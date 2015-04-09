@@ -130,18 +130,18 @@
 .jiance_bottom{ margin-top:20px;}
 
 /*联系信息*/
-.user_xinx{ margin-left:250px;margin-top:20px}
+.user_xinx{ margin-left:250px;}
 .xinx_left{ float:left; width:100px;}
 .xinx_right { width:500px; float:left; margin-left:10px; display: inline-block;}
 .xinx_right h3{ font-size:18px; line-height:35px; color:#666}
 .xinx_right p{ color:#a7a7a7; font-size:14px; line-height:24px;}
-.xinx_table{margin-left:200px; margin-top:36px; color:#a0a0a0; width:700px; margin-bottom:40px;}
+.xinx_table{margin-left:200px; margin-top:60px; color:#a0a0a0; width:700px; margin-bottom:40px;}
 .xinx_table table{ width:700px;text-align:left;word-break: break-all;word-wrap: break-word;border-collapse:collapse; }
 .xinx_table table tr{ height:35px; line-height:35px; }
 .xinx_table table tr td span{ color:#f70101; display:block; float:left;text-align:center;height:27px; line-height:27px; }
 .xin_input{ width:303px; height:27px; line-height:27px; border:1px solid #cbc9c9; float:left;}
 
-.user_wanc{ margin:20px 0 40px 116px; font-weight:bold; color:#3ba646; font-size:22px; line-height:28px;}
+.user_wanc{ margin-left:250px; margin-bottom:40px; color:#3ba646; font-size:18px; line-height:28px;}
 
 
 #box_mark{  width:100%; height:100%; display:none; position:absolute; top:0; left:0;  background:#000;  filter:alpha(opacity=50); opacity:0.5; z-index:1;  }

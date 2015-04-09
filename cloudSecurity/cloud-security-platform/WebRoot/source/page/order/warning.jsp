@@ -13,11 +13,34 @@
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
+<link href="${ctx}/source/css/prompt.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
-<script src="${ctx}/source/scripts/echarts/esl.js"></script>
-<script src="${ctx}/source/scripts/echarts/echarts.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/warning.js"></script>
+<script type="text/javascript">
+$(function () {
+	getData();
+	window.setInterval(getData,30000);
+});
+function getData(){
+	var orderId = $("#orderId").val();
+ 		$.ajax({
+           type: "POST",
+           url: "/cloud-security-platform/scaning.html",
+           data: {"orderId":orderId},
+           dataType:"json",
+           success: function(data){
+          		var progress = data.progress;
+           		$("#bar1").html(progress+"%");
+           		$("#bar2").css("width", progress+"%");
+           		$("#bar2").html(progress+"%");
+           }
+        });
+}
+</script>
 </head>
 
 <body>
@@ -78,18 +101,41 @@
             <c:forEach var="asset" items="${assetList}" varStatus="status">${asset.name }&nbsp;&nbsp;</c:forEach>
             </span></p>
         </div>
+        <div class="process">
+       	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span><span class="scan">未开始</span><span class="scan scancur">扫描中</span><span class="scan">完成</span></p>
+            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>1%</span>
+            <span class="processingbox">
+            	<span class="progress">
+                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"  id="bar2">1%</span>
+				</span>
+            <span class="prourl">当前URL:http://www.sofpgipgospfops.cpm/</span>
+            </span></p>
+        </div>
         <div class="gj_box">
-            <div class="gj_left fl">
+            <div class="gj_left fl safebox">
                 <div class="detail_title">安全风险</div>
                 <div class="aqfx" id="aqfx">
                     <!-- <img src="${ctx}/source/images/aufx.jpg" width="271" height="263" /> -->
                 </div>
             </div>
-            <div class="fl">
+            <div class="fl numbox gj_left">
                 <div class="detail_title">漏洞个数</div>
                 <div class="ldgs" id="ldgs">
                     <!-- <img src="${ctx}/source/images/ldgs.jpg" width="368" height="269" />  -->
                 </div>
+            </div>
+            <div class="fl">
+            	<div class="detail_title">基本信息</div>
+                <P class="formalinfo"><span class="infotitle">开始时间</span><span>${beginTime}</span></P>
+                <P class="formalinfo"><span class="infotitle">结束时间</span><span>${endTime}</span></P>
+                <P class="formalinfo"><span class="infotitle">扫描时长</span><span>${task.scanTime}分钟</span></P>
+                <P class="formalinfo"><span class="infotitle2">已经发现弱点数</span><span>${task.issueCount}个</span></P>
+                <P class="formalinfo"><span class="infotitle2">请求次数</span><span>${task.requestCount}次</span></P>
+                <P class="formalinfo"><span class="infotitle2">URL个数</span><span>${task.urlCount}个</span></P>
+                <P class="formalinfo"><span class="infotitle2">平均响应时间</span><span>${task.averResponse}毫秒</span></P>
+                <P class="formalinfo"><span class="infotitle2">每秒访问个数</span><span>${task.averSendCount}个</span></P>
+                <P class="formalinfo"><span class="infotitle2">发送字节</span><span>${task.sendBytes}MB</span></P>
+                <P class="formalinfo"><span class="infotitle2">接收字节</span><span>${task.receiveBytes}MB</span></P>                  
             </div>
         </div>
         <c:if test="${order.type==1}"><!-- 单次订单不显示趋势图 -->
