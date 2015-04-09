@@ -93,6 +93,20 @@
     	<property name="cronExpression" value="0 0/3 * * * ?" />
     </bean>
     
+    <!--要调度的对象-->
+    <bean id="progressJobBean" class="com.cn.ctbri.common.Scheduler4Progress" />
+    <bean id="progressJobDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="progressJobBean" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="progressTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="progressJobDetail" />
+        <property name="cronExpression" value="0/30 * * * * ?" />
+    </bean>
+    
         <!-- 将lazy-init='false'那么容器启动就会执行调度程序   -->
     <bean id="startQuertz"
     	class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
@@ -101,6 +115,7 @@
     		<list>
     			<ref bean="taskTrigger" />
     			<ref bean="resultTrigger" />
+    			<ref bean="progressTrigger" />
     		</list>
     	</property>
     </bean>
