@@ -71,8 +71,8 @@ public class WarningController {
         request.setAttribute("orderList", orderList);
         /** 基本信息   dyy*/
         Task task = taskService.findBasicInfoByOrderId(orderId);
-        request.setAttribute("beginTime", DateUtils.dateToString(task.getBegin_time()));
-        request.setAttribute("endTime", DateUtils.dateToString(task.getEnd_time()));
+        task.setBeginTime( DateUtils.dateToString(task.getBegin_time()));
+        task.setEndTime(DateUtils.dateToString(task.getEnd_time()));
         request.setAttribute("task", task);
         HashMap<String, Object> order=new HashMap<String, Object>();
         for(int i=0;i<orderList.size();i++){

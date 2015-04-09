@@ -27,6 +27,20 @@ public class Task{
     private int averSendCount;//每秒访问个数
     private String sendBytes;//发送字节
     private String receiveBytes;//接收字节
+    private String beginTime;//vo开始时间
+    private String endTime;//vo结束时间
+	public String getBeginTime() {
+		return beginTime;
+	}
+	public void setBeginTime(String beginTime) {
+		this.beginTime = beginTime;
+	}
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
 	public int getTaskId() {
 		return taskId;
 	}
