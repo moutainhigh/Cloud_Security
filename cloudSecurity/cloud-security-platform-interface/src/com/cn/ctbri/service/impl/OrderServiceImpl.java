@@ -70,8 +70,8 @@ public class OrderServiceImpl implements IOrderService{
      *       @time 2015-2-2
      * 返回值    ：  Order
      */
-    public List findByOrderId(String orderId) {
-        List order = orderDao.findByOrderId(orderId);
+    public List<Order> findByOrderId(String orderId) {
+        List<Order> order = orderDao.findByOrderId(orderId);
         return order;
     }
     
