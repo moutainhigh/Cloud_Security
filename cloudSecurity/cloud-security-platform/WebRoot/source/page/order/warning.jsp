@@ -126,8 +126,8 @@ function getData(){
             </div>
             <div class="fl">
             	<div class="detail_title">基本信息</div>
-                <P class="formalinfo"><span class="infotitle">开始时间</span><span>${beginTime}</span></P>
-                <P class="formalinfo"><span class="infotitle">结束时间</span><span>${endTime}</span></P>
+                <P class="formalinfo"><span class="infotitle">开始时间</span><span>${task.beginTime}</span></P>
+                <P class="formalinfo"><span class="infotitle">结束时间</span><span>${task.endTime}</span></P>
                 <P class="formalinfo"><span class="infotitle">扫描时长</span><span>${task.scanTime}分钟</span></P>
                 <P class="formalinfo"><span class="infotitle2">已经发现弱点数</span><span>${task.issueCount}个</span></P>
                 <P class="formalinfo"><span class="infotitle2">请求次数</span><span>${task.requestCount}次</span></P>
