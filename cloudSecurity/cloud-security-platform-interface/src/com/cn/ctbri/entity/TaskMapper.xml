@@ -14,7 +14,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 根据条件查询任务表 -->
 	<select id="findTask" parameterType="hashmap" resultMap="TaskRM">
 		select * from cs_task t
-		where t.status = #{status}
+		where t.status = #{status} 
+		<if test="status==1">
+		  and t.execute_time between date_add(now(),interval -1 minute) and now()
+		</if>
 		limit #{page}
 	</select>
 	
@@ -31,4 +34,67 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</set>
 		where taskId = #{taskId}
 	</update>
+	
+	<!-- 更新任务信息 -->
+    <update id="updateTask"  parameterType="com.cn.ctbri.entity.Task">
+        update cs_task
+        <set>
+            <if test="begin_time!=null">
+                begin_time=#{begin_time},
+            </if>
+            <if test="end_time!=null">
+                end_time=#{end_time},
+            </if>
+            <if test="scanTime!=null">
+                scanTime=#{scanTime},
+            </if>
+            <if test="engineIP!=null">
+                engineIP=#{engineIP},
+            </if>
+            <if test="taskProgress!=null">
+                taskProgress=#{taskProgress},
+            </if>
+            <if test="currentUrl!=null">
+                currentUrl=#{currentUrl},
+            </if>
+            <if test="issueCount!=null">
+                issueCount=#{issueCount},
+            </if>
+            <if test="requestCount!=null">
+                requestCount=#{requestCount},
+            </if>
+            <if test="urlCount!=null">
+                urlCount=#{urlCount},
+            </if>
+            <if test="averResponse!=null">
+                averResponse=#{averResponse},
+            </if>
+            <if test="averSendCount!=null">
+                averSendCount=#{averSendCount},
+            </if>
+            <if test="sendBytes!=null">
+                sendBytes=#{sendBytes},
+            </if>
+            <if test="receiveBytes!=null">
+                receiveBytes=#{receiveBytes}
+            </if>
+        </set>
+        where taskId = #{taskId}
+    </update>
+	
+	<!-- 插入任务信息 -->
+    <insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cs_task
+        (order_asset_Id,execute_time,status,remarks) 
+        VALUES( #{order_asset_Id} , #{execute_time},#{status},#{remarks})
+    </insert>
+    
+    <select id="getTypeByAssetId" parameterType="Integer" resultType="com.cn.ctbri.entity.OrderAsset">
+        select oa.scan_type,oa.orderId from cs_task t,cs_order_asset oa where t.order_asset_id = oa.id and t.order_asset_id = #{order_asset_Id} and t.status = 1<!--  -->
+    </select>
+    
+    <select id="getNextScanTime" parameterType="java.util.HashMap" resultType="java.util.Date">
+        select date_add(#{executeTime},interval #{scantime} minute)   
+    </select>
+    
 </mapper>
