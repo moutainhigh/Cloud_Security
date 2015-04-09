@@ -71,8 +71,8 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
      *       @time 2015-2-2
      * 返回值    ：  Order
      */
-    public List findByOrderId(String orderId) {
-        List order = this.getSqlSession().selectList(ns + "findOrderByOrderId",orderId);
+    public List<Order> findByOrderId(String orderId) {
+        List<Order> order = this.getSqlSession().selectList(ns + "findOrderByOrderId",orderId);
         return order;
     }
     

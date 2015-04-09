@@ -1,5 +1,7 @@
 package com.cn.ctbri.dao.impl;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.TaskDao;
+import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Task;
 /**
  * 任务信息dao实现类
@@ -46,6 +49,26 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 	public void update(Task task) {
 		getSqlSession().update(ns+"update", task);
 	}
+
+	/**
+     * 根据资产获取订单类型
+     * @param order_asset_Id
+     */
+    public OrderAsset getTypeByAssetId(int order_asset_Id) {
+        return getSqlSession().selectOne(ns+"getTypeByAssetId", order_asset_Id);
+    }
+
+    /**
+     * 下一次扫描时间
+     * @param paramMap
+     */
+    public Date getNextScanTime(Map<String, Object> paramMap) {
+        return (Date) getSqlSession().selectList(ns+"getNextScanTime", paramMap).get(0);
+    }
+
+    public void updateTask(Task task) {
+        getSqlSession().update(ns+"updateTask", task);
+    }
 	
 	
 
