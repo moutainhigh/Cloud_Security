@@ -1,8 +1,11 @@
 package com.cn.ctbri.service;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Task;
 
 public interface ITaskService {
@@ -18,4 +21,20 @@ public interface ITaskService {
 	 * @param task
 	 */
 	void update(Task task);
+
+    int insert(Task task);
+
+    /**
+     * 根据资产获取订单类型
+     * @param order_asset_Id
+     */
+    OrderAsset getTypeByAssetId(int order_asset_Id);
+
+    /**
+     * 下一次扫描时间
+     * @param paramMap
+     */
+    Date getNextScanTime(Map<String, Object> paramMap);
+
+    void updateTask(Task task);
 }
