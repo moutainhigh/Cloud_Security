@@ -19,9 +19,13 @@ import org.dom4j.Element;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IAssetService;
+import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskService;
 
@@ -47,12 +51,17 @@ public class Scheduler4Task {
 	
 	@Autowired
 	IServService servService;
+	
+	@Autowired
+    IOrderService orderService;
 
 	private String destURL = "";
 
 	private String destIP = "";
 
 	private String tplName ="";
+	
+	private int scantime = 0;
 
 	static {
 		try {
@@ -87,6 +96,30 @@ public class Scheduler4Task {
 				try {
 					ArnhemWorker.lssuedTask(ArnhemWorker.getSessionId(), String.valueOf(t.getTaskId()), this.destURL, this.destIP, "80",
 							this.tplName);
+					//获取订单类型
+					OrderAsset orderAsset = taskService.getTypeByAssetId(t.getOrder_asset_Id());
+					List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
+//					if(!Constants.SERVICE_LDSMFW.equals(this.tplName)){
+					if(orderList.get(0).getServiceId()==3||orderList.get(0).getServiceId()==5){
+					    if(orderList.get(0).getType()==1){
+					        //下一次扫描时间
+					        Date endTime = orderList.get(0).getEnd_date();
+					        Map<String, Object> paramMap = new HashMap<String, Object>();
+					        paramMap.put("executeTime", t.getExecute_time());
+					        paramMap.put("scantime", this.scantime);
+					        Date nextTime = taskService.getNextScanTime(paramMap);
+					        if(nextTime.compareTo(endTime)<=0){
+					            //创建任务
+	                            Task task = new Task(); 
+	                            task.setExecute_time(nextTime);
+	                            task.setStatus(Integer.parseInt(Constants.TASK_START));
+	                            //设置订单详情id
+	                            task.setOrder_asset_Id(t.getOrder_asset_Id());
+	                            //插入一条任务数据  获取任务id
+	                            int taskId = taskService.insert(task);
+					        }
+					    }
+					}
 				} catch (Exception e) {
 					logger.info("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
 					throw new RuntimeException("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
@@ -147,33 +180,41 @@ public class Scheduler4Task {
 			if(Constants.SERVICE_KYXJCFW.equals(this.tplName)){
 				
 				switch (rate) {
-				case 0:
-					this.tplName = Constants.TPL_KYXJCFU_10M ;
-					break;
 				case 1:
-					this.tplName = Constants.TPL_KYXJCFU_30M ;
+					this.tplName = Constants.TPL_KYXJCFU_10M ;
+					this.scantime = 10;
 					break;
 				case 2:
-					this.tplName = Constants.TPL_KYXJCFU_1H ;
+					this.tplName = Constants.TPL_KYXJCFU_30M ;
+					this.scantime = 30;
 					break;
 				case 3:
+					this.tplName = Constants.TPL_KYXJCFU_1H ;
+					this.scantime = 60;
+					break;
+				case 4:
 					this.tplName = Constants.TPL_KYXJCFU_2H ;
+					this.scantime = 120;
 					break;
 				}
 				
 			}else if(Constants.SERVICE_WYCGJCFW.equals(this.tplName)){
 				switch (rate) {
-				case 0:
-					this.tplName = Constants.TPL_WYCGJCFW_30M2;
-					break;
 				case 1:
-					this.tplName = Constants.TPL_WYCGJCFW_1H2;
+					this.tplName = Constants.TPL_WYCGJCFW_30M2;
+					this.scantime = 30;
 					break;
 				case 2:
-					this.tplName = Constants.TPL_WYCGJCFW_2H2;
+					this.tplName = Constants.TPL_WYCGJCFW_1H2;
+					this.scantime = 60;
 					break;
 				case 3:
+					this.tplName = Constants.TPL_WYCGJCFW_2H2;
+					this.scantime = 120;
+					break;
+				case 4:
 					this.tplName = Constants.TPL_WYCGJCFW_1D2;
+					this.scantime = 1440;
 					break;
 				}
 			}

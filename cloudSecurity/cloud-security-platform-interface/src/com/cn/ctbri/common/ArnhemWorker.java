@@ -1,6 +1,5 @@
 package com.cn.ctbri.common;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.util.Properties;
@@ -283,6 +282,55 @@ public class ArnhemWorker {
 		return response;
 	}
 	
+	/**
+     * 根据任务id获取任务当前进度
+     * @param sessionId 会话id
+     * @param taskId 任务id
+     * @return 任务状态代码
+     */
+    public static String getProgressByTaskId(String sessionId, String taskId, String ServiceId) {
+        //组织发送内容XML
+        String xml = "<Task><TaskID>" + taskId + "</TaskID><ProductID>" + ServiceId +"</ProductID ></Task>";
+        //创建路径
+        String url = SERVER_WEB_ROOT + "/rest/task/getTaskProgress";
+        //创建配置
+        ClientConfig config = new DefaultClientConfig();
+        //绑定配置
+        buildConfig(url,config);
+        //创建客户端
+        Client client = Client.create(config);
+        WebResource service = client.resource(url);
+        //连接服务器，返回结果
+        String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class,xml);
+        return response;
+    }
+    
+    public static String arnhemGetWarn() {
+        String decode="111";
+        System.err.println(decode);
+        try {
+//            decode = URLDecoder.decode(str, "UTF-8");
+//            Document document = DocumentHelper.parseText(decode);
+//            Element task = document.getRootElement();
+//            String cat1 = task.element("CAT1").getTextTrim();
+//            String cat2 = task.element("CAT2").getTextTrim();
+//            String name = task.element("NAME").getTextTrim();
+//            String severity = task.element("SEVERITY").getTextTrim();
+//            String rule = task.element("RULE").getTextTrim();
+//            String ct = task.element("CT").getTextTrim();
+//            String app_p = task.element("APP_P").getTextTrim();
+//            String tran_p = task.element("TRAN_P").getTextTrim();
+//            String url = task.element("URL").getTextTrim();
+//            String msg = task.element("MSG").getTextTrim();
+//            String task_id = task.element("TASK_ID").getTextTrim();
+        } catch (Exception e) {
+            e.printStackTrace();
+//            log.info("[获取结果调度]:任务-[" + String.valueOf(t.getTaskId()) + "]解析任务进度发生异常!");
+//            throw new RuntimeException("[获取结果调度]:任务-[" + String.valueOf(t.getTaskId()) + "]解析任务进度发生异常!");
+        }
+        return null;
+    }
+    
 	public static void main(String[] args) throws UnsupportedEncodingException {
 		
 	}

@@ -3,6 +3,7 @@ package com.cn.ctbri.common;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IOrderService;
@@ -75,8 +77,8 @@ public class Scheduler4Result {
 			String sessionId = ArnhemWorker.getSessionId();
 			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(task.getTaskId()));
 			String status = this.getStatusByResult(resultStr);
-			List<Alarm> aList;
-			if ("finish".equals(status)) {// 任务执行完毕
+            List<Alarm> aList;
+			if ("finish".equals(status)||"running".equals(status)) {// 任务执行完毕
 				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析结果......");
 				/**
 				 * 获取任务结果信息并入库
@@ -84,7 +86,12 @@ public class Scheduler4Result {
 				// 获取任务引擎
 				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId()),
 						getProductByTask(task), 0, 500);   //获取全部告警
-				aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID);
+				try {
+				    aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID);
+                } catch (Exception e) {
+                    aList = new ArrayList<Alarm>();
+                    continue;
+                }
 				//更新订单告警状态
 				List<Order> oList = orderService.findOrderByTask(task);
 				if(oList.size() > 0){
@@ -101,8 +108,28 @@ public class Scheduler4Result {
 					alarmService.saveAlarm(a);
 				}
 				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]入库告警数为" + aList.size() + "个!");
-				task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
-				taskService.update(task);
+				
+				//获取订单类型
+//				OrderAsset orderAsset = taskService.getTypeByAssetId(task.getOrder_asset_Id());
+//				List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
+//				if(orderList.get(0).getServiceId()!=1){
+//				    if(orderList.get(0).getType()==1){
+//				    	Date endTime = orderList.get(0).getEnd_date();
+//				    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//				    	Date date = new Date();//获得系统时间.
+//					    String nowTime = sdf.format(date);//将时间格式转换成符合Timestamp要求的格式.
+//				    	if(sdf.parse(nowTime).compareTo(endTime)>=0){
+				    		task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
+							taskService.update(task);
+//							ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId()));
+//				    	}
+//				    }
+//				}
+				
+								//删除任务   add by txr 2015-03-27
+//				if(oList.get(0).getServiceId()==2){
+				ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId()));
+//				}
 				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]告警结果已完成入库，已修改此任务为完成状态!");
 			} else {
 				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，等待下次拉取结果~");
@@ -171,6 +198,55 @@ public class Scheduler4Result {
 			throw new RuntimeException("[获取结果调度]:解析任务状态发生异常,远程没有此任务!");
 		}
 	}
+	
+	
+	/**
+     * 根据任务解析任务进度
+     * 
+     * @param task
+     * @param progressStr
+     * @return
+     */
+    private Task getProgressByRes(Task t, String progressStr) {
+        Task aList = new Task();
+        String decode;
+        try {
+            decode = URLDecoder.decode(progressStr, "UTF-8");
+            Document document = DocumentHelper.parseText(decode);
+            Element task = document.getRootElement();
+            Attribute attribute  = task.attribute("value");
+            String resultValue = attribute.getStringValue();
+            if("Success".equals(resultValue)){
+                String taskState = task.element("TaskState").getTextTrim();
+                String engineIP = task.element("EngineIP").getTextTrim();
+                String taskProgress = task.element("TaskProgress").getTextTrim();
+                String currentUrl = task.element("CurrentUrl").getTextTrim();
+                String issueCount = task.element("IssueCount").getTextTrim();
+                String requestCount = task.element("RequestCount").getTextTrim();
+                String urlCount = task.element("UrlCount").getTextTrim();
+                String averResponse = task.element("AverResponse").getTextTrim();
+                String averSendCount = task.element("AverSendCount").getTextTrim();
+                String sendBytes = task.element("SendBytes").getTextTrim();
+                String receiveBytes = task.element("ReceiveBytes").getTextTrim();
+                Task taskInfo = new Task();
+                taskInfo.setTaskId(t.getTaskId());
+                taskInfo.setBegin_time(null);
+                taskInfo.setEnd_time(null);
+                taskInfo.setScanTime(null);
+                taskInfo.setIssueCount(issueCount);
+                taskInfo.setRequestCount(requestCount);
+                taskInfo.setUrlCount(urlCount);
+                taskInfo.setAverResponse(averResponse);
+                taskInfo.setAverSendCount(averSendCount);
+                taskInfo.setSendBytes(sendBytes);
+                taskInfo.setReceiveBytes(receiveBytes);
+            }
+        } catch (Exception e) {
+            logger.info("[获取结果调度]:任务-[" + String.valueOf(t.getTaskId()) + "]解析任务进度发生异常!");
+            throw new RuntimeException("[获取结果调度]:任务-[" + String.valueOf(t.getTaskId()) + "]解析任务进度发生异常!");
+        }
+        return aList;
+    }
 
 	/**
 	 * 根据任务结果解析漏洞告警信息
@@ -259,7 +335,7 @@ public class Scheduler4Result {
 		String productId = "";
 		List<HashMap<String, Object>> sList = servService.findByTask(task);
 		if(sList != null && sList.size() > 0){
-			String SName = (String) sList.get(0).get("name");
+			String SName = (String) sList.get(0).get("module_name");
 			if (Constants.SERVICE_LDSMFW.equals(SName)) {
 				productId = Constants.PRODUCT_LD;
 			} else if (Constants.SERVICE_EYDMJCFW.equals(SName)) {

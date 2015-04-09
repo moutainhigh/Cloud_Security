@@ -89,19 +89,19 @@ public class Constants {
 	 * 漏洞扫描服务<br>
 	 *对应保存在服务表中
 	 */
-	public static final String SERVICE_LDSMFW = "漏洞扫描服务"; 
+	public static final String SERVICE_LDSMFW = "漏洞扫描模板";//"漏洞扫描服务"; 
 	
 	/**
 	 * 恶意代码检测服务<br>
 	 * 对应保存在服务表中
 	 */
-	public static final String SERVICE_EYDMJCFW = "恶意代码监测服务"; 
+	public static final String SERVICE_EYDMJCFW = "木马检测模板";//"恶意代码监测服务"; 
 	
 	/**
 	 * 关键字监测服务<br>
 	 * 对应保存在服务表中
 	 */
-	public static final String SERVICE_GJZJCFW = "关键字监测服务"; 
+	public static final String SERVICE_GJZJCFW = "敏感关键字模板";//"关键字监测服务"; 
 	
 	/**
 	 * 关键字监测服务<br>
@@ -113,7 +113,7 @@ public class Constants {
 	 * 关键字监测服务<br>
 	 * 对应保存在服务表中
 	 */
-	public static final String SERVICE_WYCGJCFW = "网页篡改监测服务"; 
+	public static final String SERVICE_WYCGJCFW = "篡改监测模板";//"网页篡改监测服务"; 
 	
 	
 	
