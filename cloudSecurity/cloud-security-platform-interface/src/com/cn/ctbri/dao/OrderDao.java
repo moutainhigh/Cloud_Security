@@ -47,7 +47,7 @@ public interface OrderDao {
      *       @time 2015-2-2
      * 返回值    ：  Order
      */
-    List findByOrderId(String orderId);
+    List<Order> findByOrderId(String orderId);
     
     /**
      * 功能描述： 根据任务查询订单

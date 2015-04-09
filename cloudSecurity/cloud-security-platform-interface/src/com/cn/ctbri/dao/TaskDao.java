@@ -1,8 +1,11 @@
 package com.cn.ctbri.dao;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Task;
 /**
  * 任务信息dao接口
@@ -30,4 +33,18 @@ public interface TaskDao {
 	 * @param task
 	 */
 	public void update(Task task);
+
+	/**
+     * 根据资产获取订单类型
+     * @param order_asset_Id
+     */
+    public OrderAsset getTypeByAssetId(int order_asset_Id);
+
+    /**
+     * 下一次扫描时间
+     * @param paramMap
+     */
+    public Date getNextScanTime(Map<String, Object> paramMap);
+
+    public void updateTask(Task task);
 }
