@@ -69,5 +69,6 @@ public interface IAlarmService {
      *       返回值    ：List<Alarm>
      */
 	List<Alarm> findAlarmByParamAlarm_typeAndLevel(Map<String, Object> paramMap);
+	List<Alarm> findAlarmByOrderIdAndExecute_time(Map<String, Object> paramMap);
 
 }

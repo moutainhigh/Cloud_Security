@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>订单跟踪-告警详情</title>
+<title>订单跟踪-告警详情-历史详情</title>
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
@@ -41,29 +41,6 @@ function getData(){
         });
 }
 //加载模板下拉框选项 
-$(document).ready(function() {
-	var orderId = $("#orderId").val();
-	$.ajax({ 
-		type: "POST",
-		url: "/cloud-security-platform/getExecuteTime.html",
-        data: {"orderId":orderId},
-        dataType:"text",
-		success : function(result){
-			$("#execute_Time").append(result); 
-		} 
-	});
-}); 
-function historicalDetails(){
-	var orderId = $("#orderId").val();
-	var execute_Time = $("#execute_Time").val();
-	var type = $("#type").val();
-//	window.location.href = "${ctx}/historyInit.html?execute_Time="
-	//							+ execute_Time+"&orderId="+orderId;
-	window.open("${ctx}/historyInit.html?execute_Time="
-								+ execute_Time+"&orderId="+orderId+"&type="+type); 
-	
-
-}
 </script>
 </head>
 
@@ -109,7 +86,7 @@ function historicalDetails(){
     <!-- 告警详情-->
      <div class="user_right" style="margin:auto;float:none;">
         <div class="gj_top">
-            <a href="#" class="aelse">订单跟踪</a>　>　<a href="#" class="acur">告警详情</a>
+            <a href="#" class="aelse">订单跟踪</a>　>　<a href="#" class="acur">告警详情</a>>　历史详情
         </div>
        <c:forEach var="order" items="${orderList}" varStatus="status">
         <div class="gj_title">
@@ -117,7 +94,7 @@ function historicalDetails(){
             <input type="hidden" value="${order.type }" id="type"/>
             <p><span class="bigfont">${order.name }</span>
             <span>(  订单编号：${order.id }  )</span>
-            <c:if test="${order.type==1 }">
+          <!--  <c:if test="${order.type==1 }">
             	<p><span class="bigfont historyde">历史详情</span>
             		<select class="historyse" id=execute_Time name="execute_Time" onchange="historicalDetails()">
             			<option>请选择</option>
@@ -125,7 +102,7 @@ function historicalDetails(){
             	</p>
                 <a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank"><span style="float:right; margin-right:30px; dispiay:inline-block;color:#999; ">历史记录</span></a>
              	
-            </c:if>
+            </c:if>-->  
             </p>            
             <p>资产：<span>
             <c:forEach var="asset" items="${assetList}" varStatus="status">${asset.name }&nbsp;&nbsp;</c:forEach>
@@ -133,10 +110,10 @@ function historicalDetails(){
         </div>
         <div class="process">
        	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span>
-       	  <c:if test="${order.begin_date>temp }">
+       	  <c:if test="${order.status==1 }">
        	  	<span class="scan">未开始</span><span class="scan scancur">扫描中</span><span class="scan">完成</span>
        	  </c:if>
-       	  <c:if test="${order.status==2 ||order.status==1}">
+       	  <c:if test="${order.status==2 }">
        	  	<span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan scancur">完成</span>
        	  </c:if>
        	  <c:if test="${order.status==3 }">

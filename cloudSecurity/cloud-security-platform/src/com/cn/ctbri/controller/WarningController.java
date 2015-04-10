@@ -1,8 +1,10 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,7 +94,31 @@ public class WarningController {
         }
     }
     
-    
+    /**
+     * 功能描述： 历史记录  dyy查询所有时间
+     * 参数描述：  无
+     *     @time 2015-4-10
+     */
+    @RequestMapping(value="getExecuteTime.html")
+    @ResponseBody
+    public void getExecuteTime(HttpServletRequest request,HttpServletResponse response){
+    	String orderId = request.getParameter("orderId");
+    	List<Task> taskTime = taskService.findScanTimeByOrderId(orderId);
+        StringBuffer rsOption = new StringBuffer(); 
+        for(Task t : taskTime){
+        	String str = DateUtils.dateToString(t.getExecute_time());
+        	rsOption.append("<option value='"+str+"'>"+str+"</option>"); 
+        }
+        PrintWriter pout;
+		try {
+			pout = response.getWriter();
+			pout.write(rsOption.toString()); 
+	        pout.flush(); 
+	        pout.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+    }
     /**
      * 功能描述： 获取仪表图数据
      * 参数描述：  无
@@ -269,22 +295,67 @@ public class WarningController {
      * 功能描述： 用户中心-订单跟踪-历史记录查询
      * 参数描述：  无
      *     @time 2015-3-12
+     *     dyy
      */
     @RequestMapping(value="historyInit.html")
     public String historyInit(HttpServletRequest request){
         String orderId = request.getParameter("orderId");
+        String type = request.getParameter("type");
+        String execute_Time = request.getParameter("execute_Time");
         //获取订单信息
         List orderList = orderService.findByOrderId(orderId);
+        //获取对应资产
+        List assetList = orderAssetService.findAssetNameByOrderId(orderId);
+        //获取对应IP
+        List IPList = orderService.findIPByOrderId(orderId);
         //获取对应告警信息
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("orderId", orderId);
-        List<Alarm> alarmList = alarmService.getAlarmByOrderId(paramMap);
-        //获取检测次数
-        List checkTime = orderAssetService.findLastTimeByOrderId(paramMap);
+        paramMap.put("type", type);
+        paramMap.put("execute_Time", execute_Time);
+        List<Alarm> alarmList = alarmService.findAlarmByOrderIdAndExecute_time(paramMap);
+        int serviceId=0 ;
         request.setAttribute("orderList", orderList);
-        request.setAttribute("alarmList", alarmList);
-        request.setAttribute("checkTime", checkTime);
-        return "/source/page/order/historyDetail";
+        /** 基本信息   dyy*/
+        Task task = taskService.findBasicInfoByOrderId(orderId);
+        task.setBeginTime( DateUtils.dateToString(task.getBegin_time()));
+        task.setEndTime(DateUtils.dateToString(task.getEnd_time()));
+        request.setAttribute("task", task);
+        HashMap<String, Object> order=new HashMap<String, Object>();
+        for(int i=0;i<orderList.size();i++){
+        	 order=(HashMap) orderList.get(i);
+        	 serviceId=(Integer) order.get("serviceId");
+        }
+        if(serviceId==6||serviceId==7||serviceId==8){//DDOS
+        	 List<AlarmDDOS> alarmDDosList = alarmService.getAlarmDdosByOrderId(paramMap);
+        	request.setAttribute("ipList", IPList);
+        	request.setAttribute("serviceId", serviceId);
+            request.setAttribute("alarmList", alarmDDosList);
+            return "/source/page/order/history_waring";
+        	
+        }else{
+        	request.setAttribute("assetList", assetList);
+            request.setAttribute("alarmList", alarmList);
+            return "/source/page/order/history_waring";
+        }
+    
+    	
+    	
+    	/**
+    	 * 
+	        String orderId = request.getParameter("orderId");
+	        //获取订单信息
+	        List orderList = orderService.findByOrderId(orderId);
+	        //获取对应告警信息
+	        Map<String, Object> paramMap = new HashMap<String, Object>();
+	        paramMap.put("orderId", orderId);
+	        List<Alarm> alarmList = alarmService.getAlarmByOrderId(paramMap);
+	        //获取检测次数
+	        List checkTime = orderAssetService.findLastTimeByOrderId(paramMap);
+	        request.setAttribute("orderList", orderList);
+	        request.setAttribute("alarmList", alarmList);
+	        request.setAttribute("checkTime", checkTime);
+        */
     }
     /**
      * 功能描述：扫描进度

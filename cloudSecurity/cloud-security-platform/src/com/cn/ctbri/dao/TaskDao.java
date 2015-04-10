@@ -37,4 +37,5 @@ public interface TaskDao {
 	public int findProgressByOrderId(String orderId);
 
 	public Task findBasicInfoByOrderId(String orderId);
+	public List<Task> findScanTimeByOrderId(String orderId);
 }

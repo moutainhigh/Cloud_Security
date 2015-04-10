@@ -28,4 +28,6 @@ public interface ITaskService {
 
 	Task findBasicInfoByOrderId(String orderId);
 
+	List<Task> findScanTimeByOrderId(String orderId);
+
 }

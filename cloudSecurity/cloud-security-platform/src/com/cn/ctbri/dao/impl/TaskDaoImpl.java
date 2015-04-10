@@ -62,5 +62,9 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 	public Task findBasicInfoByOrderId(String orderId) {
 		return this.getSqlSession().selectOne(ns+"findBasicInfoByOrderId",orderId);
 	}
+
+	public List<Task> findScanTimeByOrderId(String orderId) {
+		return this.getSqlSession().selectList(ns+"findScanTimeByOrderId",orderId);
+	}
 	
 }

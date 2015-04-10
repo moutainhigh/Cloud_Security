@@ -65,7 +65,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>
         order by a.level desc
     </select>
-    
+    <!-- 根据orderid和execute_time查询告警数,告警信息  dyy-->
+    <select id="findAlarmByOrderIdAndExecute_time" resultMap="Alarm" parameterType="hashmap">	
+        select * from cs_alarm a,
+		  (select t.taskId from cs_order_asset oa,cs_task t 
+		    where oa.id = t.order_asset_id 
+		    and oa.orderId=#{orderId}
+		    and t.status = 3
+		    and t.execute_time = #{execute_time}
+		    <if test="type==1">
+             limit 0,1
+            </if>) b
+		where a.taskId = b.taskId 
+		<if test="level!=null">
+            and a.level=#{level}
+        </if>
+        order by a.level desc
+    </select>
     	<!-- 根据orderid查询告警数,最近告警信息  -->
     <select id="findAlarmDdosByOrderId" resultType="com.cn.ctbri.entity.AlarmDDOS" parameterType="hashmap">
     select * from cs_alarmhuawei a

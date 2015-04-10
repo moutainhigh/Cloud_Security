@@ -49,6 +49,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			SELECT oa.id 
 			FROM cs_order_asset oa
 			WHERE oa.orderId=#{orderId})
+			 <if test="execute_time!=null">
+			 
+            </if>
 		ORDER BY t.begin_time DESC 	
 	</select>
+	<!-- 根据orderId查询历史详情时间 -->
+	<select id="findScanTimeByOrderId" parameterType="String" resultMap="TaskRM">
+		SELECT t.execute_time 
+		FROM cs_task t
+		WHERE t.order_asset_Id IN (
+			SELECT oa.id 
+			FROM cs_order_asset oa
+			WHERE oa.orderId=#{orderId})
+		ORDER BY t.begin_time DESC 	
+	</select>	
 </mapper>

@@ -116,4 +116,11 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
 			Map<String, Object> paramMap) {
 		return getSqlSession().selectList(ns+"findAlarmByParamAlarm_typeAndLevel",paramMap);
 	}
+	/**
+	 * 功能描述：历史详情
+	 */
+	public List<Alarm> findAlarmByOrderIdAndExecute_time(
+			Map<String, Object> paramMap) {
+		return getSqlSession().selectList(ns+"findAlarmByOrderIdAndExecute_time",paramMap);
+	}
 }

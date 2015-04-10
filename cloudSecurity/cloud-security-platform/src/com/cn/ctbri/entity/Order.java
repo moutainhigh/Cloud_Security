@@ -21,7 +21,7 @@ public class Order {
 	private int userId;//用户ID
 	private int contactId;//联系人Id
 	private String remarks;//备注
-	private int status;//订单状态
+	private int status;//订单状态  1:服务中  2:已结束 3:已下单 
 	private String servName;//服务名称vo
 	private String begin_datevo;//begin_date vo
 	private String end_datevo;//end_date vo备注

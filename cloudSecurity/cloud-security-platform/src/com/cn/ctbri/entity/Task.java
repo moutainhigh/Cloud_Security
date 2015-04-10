@@ -29,6 +29,14 @@ public class Task{
     private String receiveBytes;//接收字节
     private String beginTime;//vo开始时间
     private String endTime;//vo结束时间
+    private String executeTime;//vo执行时间
+    
+	public String getExecuteTime() {
+		return executeTime;
+	}
+	public void setExecuteTime(String executeTime) {
+		this.executeTime = executeTime;
+	}
 	public String getBeginTime() {
 		return beginTime;
 	}

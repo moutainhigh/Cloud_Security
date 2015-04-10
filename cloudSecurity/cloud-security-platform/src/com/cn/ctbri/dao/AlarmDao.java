@@ -82,4 +82,6 @@ public interface AlarmDao {
      */
 	public List<Alarm> findAlarmByParamAlarm_typeAndLevel(
 			Map<String, Object> paramMap);
+	public List<Alarm> findAlarmByOrderIdAndExecute_time(
+			Map<String, Object> paramMap);
 }
