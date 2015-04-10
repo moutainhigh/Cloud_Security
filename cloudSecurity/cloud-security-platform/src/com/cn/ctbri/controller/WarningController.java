@@ -378,4 +378,28 @@ public class WarningController {
             e.printStackTrace();
         }
     }
+    /**
+     * 功能描述：告警2扫描中状态
+     * 邓元元
+     * 		@time 2015-4-8
+     */   
+    @RequestMapping(value="warningTwoInit.html")
+    public String warningTwoInit(HttpServletRequest request){
+        String orderId = request.getParameter("orderId");
+        String type = request.getParameter("type");
+        //获取订单信息
+        List orderList = orderService.findByOrderId(orderId);
+        //获取对应资产
+        List assetList = orderAssetService.findAssetNameByOrderId(orderId);
+        //获取对应IP
+       // List IPList = orderService.findIPByOrderId(orderId);
+        request.setAttribute("assetList", assetList);
+        request.setAttribute("orderList", orderList);
+       
+        Task task = taskService.findBasicInfoByOrderId(orderId);
+        task.setBeginTime( DateUtils.dateToString(task.getBegin_time()));
+        task.setEndTime(DateUtils.dateToString(task.getEnd_time()));
+        request.setAttribute("task", task);
+        return "/source/page/order/warningtwo";
+    }
 }

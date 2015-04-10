@@ -49,9 +49,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			SELECT oa.id 
 			FROM cs_order_asset oa
 			WHERE oa.orderId=#{orderId})
-			 <if test="execute_time!=null">
-			 
-            </if>
 		ORDER BY t.begin_time DESC 	
 	</select>
 	<!-- 根据orderId查询历史详情时间 -->
