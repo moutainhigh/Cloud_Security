@@ -30,7 +30,13 @@ public class Task{
     private String beginTime;//vo开始时间
     private String endTime;//vo结束时间
     private String executeTime;//vo执行时间
-    
+    private int progress;//执行进度vo
+	public int getProgress() {
+		return progress;
+	}
+	public void setProgress(int progress) {
+		this.progress = progress;
+	}
 	public String getExecuteTime() {
 		return executeTime;
 	}

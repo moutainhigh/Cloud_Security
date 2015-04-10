@@ -366,9 +366,10 @@ public class WarningController {
     @ResponseBody
     public void scaning(HttpServletRequest request,HttpServletResponse response){
         String orderId = request.getParameter("orderId");
-        int progress = taskService.findProgressByOrderId(orderId);
+        Task task = taskService.findProgressByOrderId(orderId);
         Map<String, Object> m = new HashMap<String, Object>();
-        m.put("progress", progress);
+        m.put("progress", task.getProgress());
+        m.put("currentUrl", task.getCurrentUrl());
         //object转化为Json格式
         JSONObject JSON = CommonUtil.objectToJson(response, m);
         try {

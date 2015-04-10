@@ -24,6 +24,7 @@
 $(function () {
 	getData();
 	window.setInterval(getData,30000);
+	
 });
 function getData(){
 	var orderId = $("#orderId").val();
@@ -37,6 +38,7 @@ function getData(){
            		$("#bar1").html(progress+"%");
            		$("#bar2").css("width", progress+"%");
            		$("#bar2").html(progress+"%");
+           		$("#url").html("当前URL:"+data.currentUrl);
            }
         });
 }
@@ -122,8 +124,8 @@ function historicalDetails(){
             			<option>请选择</option>
             		</select>
             	</p>
-                <a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank"><span style="float:right; margin-right:30px; dispiay:inline-block;color:#999; ">历史记录</span></a>
-             	
+              <!--   <a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank"><span style="float:right; margin-right:30px; dispiay:inline-block;color:#999; ">历史记录</span></a>
+             	 -->
             </c:if>
             </p>            
             <p>资产：<span>
@@ -140,7 +142,7 @@ function historicalDetails(){
             	<span class="progress">
                     <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"  id="bar2">1%</span>
 				</span>
-            <span class="prourl">当前URL:http://www.sofpgipgospfops.cpm/</span>
+            <span class="prourl" id="url"></span>
             </span></p>
         </div>
         

@@ -32,14 +32,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		GROUP BY a.id HAVING a.id={id}
 	</select>
 	
-		<!-- 根据orderId查询扫描进度 -->
-	<select id="findProgressByOrderId" parameterType="String" resultType="int">
-		SELECT AVG(t.taskProgress)/101*100 AS COUNT
-		FROM cs_task t
-		WHERE t.order_asset_Id IN (
-			SELECT oa.id
-			FROM cs_order_asset oa
-			WHERE oa.orderId =#{orderId})
+		<!-- 根据orderId查询扫描进度和最近的url-->
+	<select id="findProgressByOrderId" parameterType="String" resultMap="TaskRM">
+		<!-- SELECT AVG(t.taskProgress)/101*100 AS COUNT
+				FROM cs_task t
+				WHERE t.order_asset_Id IN (
+					SELECT oa.id
+					FROM cs_order_asset oa
+					WHERE oa.orderId =#{orderId}) -->
+			
+			SELECT a.count,b.currentUrl
+			FROM
+					(SELECT AVG(t.taskProgress)/101*100 AS COUNT
+					FROM cs_task t
+					WHERE t.order_asset_Id IN (
+						SELECT oa.id
+						FROM cs_order_asset oa
+						WHERE oa.orderId =#{orderId})) a
+			CROSS JOIN
+					(SELECT t.currentUrl
+					FROM cs_task t
+					WHERE t.order_asset_Id IN (
+						SELECT oa.id
+						FROM cs_order_asset oa
+						WHERE oa.orderId =#{orderId})
+					ORDER BY t.execute_time DESC LIMIT 0,1) b
 	</select>
 	<!-- 根据orderId查询基本信息 -->
 	<select id="findBasicInfoByOrderId" parameterType="String" resultMap="TaskRM">

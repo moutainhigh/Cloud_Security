@@ -24,7 +24,7 @@ public interface ITaskService {
 
     int insert(Task task);
 
-	int findProgressByOrderId(String orderId);
+	Task findProgressByOrderId(String orderId);
 
 	Task findBasicInfoByOrderId(String orderId);
 
