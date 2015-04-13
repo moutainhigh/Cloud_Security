@@ -144,10 +144,10 @@ function historicalDetails(){
        	  	<span class="scan scancur">未开始</span><span class="scan">扫描中</span><span class="scan">完成</span>
        	  </c:if>
        	  </p>
-            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>1%</span>
+            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1></span>
             <span class="processingbox">
             	<span class="progress">
-                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"  id="bar2">1%</span>
+                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"  id="bar2"></span>
 				</span>
             <span class="prourl" id="url">当前URL:http://www.sofpgipgospfops.cpm/</span>
             </span></p>
