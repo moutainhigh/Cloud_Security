@@ -71,9 +71,22 @@ public class WarningController {
         int serviceId=0 ;
         request.setAttribute("orderList", orderList);
         /** 基本信息   dyy*/
-        Task task = taskService.findBasicInfoByOrderId(orderId);
-        task.setBeginTime( DateUtils.dateToString(task.getBegin_time()));
-        task.setEndTime(DateUtils.dateToString(task.getEnd_time()));
+        Task task = new Task();
+        if(Integer.parseInt(type)==1){
+            //长期查找最近的任务
+            task = taskService.findNearlyTask(orderId);
+        }else{
+            task = taskService.findBasicInfoByOrderId(orderId);
+        }
+        if(task.getBegin_time()!=null){
+            task.setBeginTime( DateUtils.dateToString(task.getBegin_time()));
+        }
+        if(task.getEnd_time()!=null){
+            task.setEndTime(DateUtils.dateToString(task.getEnd_time())); 
+        }
+        if(task.getExecute_time()!=null){
+            task.setExecuteTime(DateUtils.dateToString(task.getExecute_time())); 
+        }
         request.setAttribute("task", task);
         HashMap<String, Object> order=new HashMap<String, Object>();
         for(int i=0;i<orderList.size();i++){
@@ -107,7 +120,7 @@ public class WarningController {
         StringBuffer rsOption = new StringBuffer(); 
         for(Task t : taskTime){
         	String str = DateUtils.dateToString(t.getExecute_time());
-        	rsOption.append("<option value='"+str+"'>"+str+"</option>"); 
+        	rsOption.append("<option value='"+t.getTaskId()+"'>"+str+"</option>"); 
         }
         PrintWriter pout;
 		try {
@@ -301,7 +314,7 @@ public class WarningController {
     public String historyInit(HttpServletRequest request){
         String orderId = request.getParameter("orderId");
         String type = request.getParameter("type");
-        String execute_Time = request.getParameter("execute_Time");
+        String taskId = request.getParameter("taskId");
         //获取订单信息
         List orderList = orderService.findByOrderId(orderId);
         //获取对应资产
@@ -310,16 +323,23 @@ public class WarningController {
         List IPList = orderService.findIPByOrderId(orderId);
         //获取对应告警信息
         Map<String, Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("orderId", orderId);
-        paramMap.put("type", type);
-        paramMap.put("execute_Time", execute_Time);
-        List<Alarm> alarmList = alarmService.findAlarmByOrderIdAndExecute_time(paramMap);
+//        paramMap.put("orderId", orderId);
+//        paramMap.put("type", type);
+        paramMap.put("taskId", taskId);
+        List<Alarm> alarmList = alarmService.findAlarm(paramMap);
         int serviceId=0 ;
         request.setAttribute("orderList", orderList);
         /** 基本信息   dyy*/
-        Task task = taskService.findBasicInfoByOrderId(orderId);
-        task.setBeginTime( DateUtils.dateToString(task.getBegin_time()));
-        task.setEndTime(DateUtils.dateToString(task.getEnd_time()));
+        Task task = taskService.findByTaskId(taskId);
+        if(task.getBegin_time()!=null){
+            task.setBeginTime( DateUtils.dateToString(task.getBegin_time()));
+        }
+        if(task.getEnd_time()!=null){
+            task.setEndTime(DateUtils.dateToString(task.getEnd_time())); 
+        }
+        if(task.getExecute_time()!=null){
+            task.setExecuteTime(DateUtils.dateToString(task.getExecute_time())); 
+        }
         request.setAttribute("task", task);
         HashMap<String, Object> order=new HashMap<String, Object>();
         for(int i=0;i<orderList.size();i++){
@@ -368,6 +388,9 @@ public class WarningController {
         String orderId = request.getParameter("orderId");
         Task task = taskService.findProgressByOrderId(orderId);
         Map<String, Object> m = new HashMap<String, Object>();
+//        if(task.getProgress){
+//            
+//        }
         m.put("progress", task.getProgress());
         m.put("currentUrl", task.getCurrentUrl());
         //object转化为Json格式
@@ -398,8 +421,14 @@ public class WarningController {
         request.setAttribute("orderList", orderList);
        
         Task task = taskService.findBasicInfoByOrderId(orderId);
-        task.setBeginTime( DateUtils.dateToString(task.getBegin_time()));
-        task.setEndTime(DateUtils.dateToString(task.getEnd_time()));
+        if(task.getExecute_time()!=null){
+            task.setExecuteTime( DateUtils.dateToString(task.getExecute_time()));
+        }
+        
+        if(task.getEnd_time()!=null){
+            task.setEndTime(DateUtils.dateToString(task.getEnd_time()));
+        }
+        
         request.setAttribute("task", task);
         return "/source/page/order/warningtwo";
     }
