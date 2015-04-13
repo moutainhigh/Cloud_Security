@@ -30,4 +30,8 @@ public interface ITaskService {
 
 	List<Task> findScanTimeByOrderId(String orderId);
 
+    Task findNearlyTask(String orderId);
+
+    Task findByTaskId(String taskId);
+
 }

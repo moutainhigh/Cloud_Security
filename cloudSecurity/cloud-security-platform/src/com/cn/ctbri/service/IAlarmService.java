@@ -70,5 +70,6 @@ public interface IAlarmService {
      */
 	List<Alarm> findAlarmByParamAlarm_typeAndLevel(Map<String, Object> paramMap);
 	List<Alarm> findAlarmByOrderIdAndExecute_time(Map<String, Object> paramMap);
+    List<Alarm> findAlarm(Map<String, Object> paramMap);
 
 }
