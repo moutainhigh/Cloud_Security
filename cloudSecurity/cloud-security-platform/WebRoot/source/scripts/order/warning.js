@@ -307,7 +307,7 @@ $(function(){
                             trigger: 'axis'
                         },
                         legend: {
-                            data:['低','中','高']
+                            data:['低危漏洞个数','中危漏洞个数','高危漏洞个数']
 //                        	data:testX()
                         },
                         toolbox: {
@@ -335,7 +335,7 @@ $(function(){
                         ],
                         series : [
                             {
-                                name:'低',
+                                name:'低危漏洞个数',
                                 type:'line',
 //                                stack: '总量',
                                 smooth: true,
@@ -344,7 +344,7 @@ $(function(){
                                 data: testLineData()
                             },
                             {
-                                name:'中',
+                                name:'中危漏洞个数',
                                 type:'line',
 //                                stack: '总量',
                                 smooth: true,
@@ -353,7 +353,7 @@ $(function(){
                                 data: testLineData2()
                             },
                             {
-                                name:'高',
+                                name:'高危漏洞个数',
                                 type:'line',
 //                                stack: '总量',
                                 smooth: true,
