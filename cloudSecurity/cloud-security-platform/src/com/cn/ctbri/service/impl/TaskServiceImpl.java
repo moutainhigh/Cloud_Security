@@ -46,5 +46,11 @@ public class TaskServiceImpl implements ITaskService{
 	public List<Task> findScanTimeByOrderId(String orderId) {
 		return taskDao.findScanTimeByOrderId(orderId);
 	}
+    public Task findNearlyTask(String orderId) {
+        return taskDao.findNearlyTask(orderId);
+    }
+    public Task findByTaskId(String taskId) {
+        return taskDao.findByTaskId(taskId);
+    }
 
 }

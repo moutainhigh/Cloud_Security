@@ -100,4 +100,7 @@ public class AlarmServiceImpl implements IAlarmService{
 			Map<String, Object> paramMap) {
 		return  alarmDao.findAlarmByOrderIdAndExecute_time(paramMap);
 	}
+    public List<Alarm> findAlarm(Map<String, Object> paramMap) {
+        return alarmDao.findAlarm(paramMap);
+    }
 }
