@@ -41,9 +41,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					FROM cs_order_asset oa
 					WHERE oa.orderId =#{orderId}) -->
 			
-			SELECT a.count,b.currentUrl
+			SELECT a.progress,b.currentUrl
 			FROM
-					(SELECT AVG(t.taskProgress)/101*100 AS COUNT
+					(SELECT AVG(t.taskProgress)/101*100 AS progress
 					FROM cs_task t
 					WHERE t.order_asset_Id IN (
 						SELECT oa.id
