@@ -66,7 +66,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by a.level desc
     </select>
     
-    	<!-- 根据orderid查询告警数,最近告警信息  -->
+    
+    <!-- 根据orderid查询告警数,最近告警信息  -->
     <select id="findAlarmDdosByOrderId" resultType="com.cn.ctbri.entity.AlarmDDOS" parameterType="hashmap">
     select * from cs_alarmhuawei a
 	where a.taskId =(select t.taskId from cs_order_ip op,cs_taskhuawei t 

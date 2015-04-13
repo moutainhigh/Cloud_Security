@@ -18,6 +18,8 @@ public class Alarm implements Serializable{
 	private String name;
 	//告警时间
 	private Date alarm_time;
+	//得分
+    private String score;
 	//告警等级
 	private int level;
 	//告警建议
@@ -108,7 +110,14 @@ public class Alarm implements Serializable{
 	public void setAlarm_time(Date alarm_time) {
 		this.alarm_time = alarm_time;
 	}
-	/**
+	
+	public String getScore() {
+        return score;
+    }
+    public void setScore(String score) {
+        this.score = score;
+    }
+    /**
 	 * 功能描述：取报警等级
 	 *		 @time 2015-01-07
 	 */
