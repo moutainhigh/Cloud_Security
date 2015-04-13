@@ -38,4 +38,8 @@ public interface TaskDao {
 
 	public Task findBasicInfoByOrderId(String orderId);
 	public List<Task> findScanTimeByOrderId(String orderId);
+
+    public Task findNearlyTask(String orderId);
+
+    public Task findByTaskId(String taskId);
 }
