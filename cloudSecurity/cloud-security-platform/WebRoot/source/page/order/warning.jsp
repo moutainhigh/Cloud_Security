@@ -56,12 +56,12 @@ $(document).ready(function() {
 }); 
 function historicalDetails(){
 	var orderId = $("#orderId").val();
-	var execute_Time = $("#execute_Time").val();
+	var taskId = $("#execute_Time").val();
 	var type = $("#type").val();
 //	window.location.href = "${ctx}/historyInit.html?execute_Time="
 	//							+ execute_Time+"&orderId="+orderId;
-	window.open("${ctx}/historyInit.html?execute_Time="
-								+ execute_Time+"&orderId="+orderId+"&type="+type); 
+	window.open("${ctx}/historyInit.html?taskId="
+								+ taskId+"&orderId="+orderId+"&type="+type); 
 	
 
 }
@@ -129,7 +129,9 @@ function historicalDetails(){
             </c:if>
             </p>            
             <p>资产：<span>
-            <c:forEach var="asset" items="${assetList}" varStatus="status">${asset.name }&nbsp;&nbsp;</c:forEach>
+            <c:forEach var="asset" items="${assetList}" varStatus="status">
+            <span style="display:block; width:600px;line-height:30px; ">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
+            </c:forEach>
             </span></p>
         </div>
         <div class="process">
@@ -167,7 +169,7 @@ function historicalDetails(){
             </div>
             <div class="fl">
             	<div class="detail_title">基本信息</div>
-                <P class="formalinfo"><span class="infotitle">开始时间</span><span>${task.beginTime}</span></P>
+                <P class="formalinfo"><span class="infotitle">开始时间</span><span>${task.executeTime}</span></P>
                 <P class="formalinfo"><span class="infotitle">结束时间</span><span>${task.endTime}</span></P>
                 <P class="formalinfo"><span class="infotitle">扫描时长</span><span>${task.scanTime}分钟</span></P>
                 <P class="formalinfo"><span class="infotitle2">已经发现弱点数</span><span>${task.issueCount}个</span></P>

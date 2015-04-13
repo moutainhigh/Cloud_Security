@@ -110,7 +110,7 @@ function historicalDetails(){
     <!-- 告警详情-->
      <div class="user_right" >
     	<div class="gj_top">
-        	<a href="#" class="aelse">订单跟踪</a>　>　<a href="#" class="acur">告警详情2</a>
+        	<a href="#" class="aelse">订单跟踪</a>　>　<a href="#" class="acur">告警详情</a>
      </div>
         <c:forEach var="order" items="${orderList}" varStatus="status">
    		<div class="gj_title">
@@ -129,7 +129,7 @@ function historicalDetails(){
             </c:if>
             </p>            
             <p>资产：<span>
-            <c:forEach var="asset" items="${assetList}" varStatus="status">${asset.name }&nbsp;&nbsp;</c:forEach>
+            <c:forEach var="asset" items="${assetList}" varStatus="status">${asset.name }&nbsp;&nbsp;(${asset.addr })</c:forEach>
             </span></p>
         </div>
         <div class="process">
@@ -164,9 +164,9 @@ function historicalDetails(){
             <td  style="width:%;">接收字节</td>
           </tr>
           <tr>                                            
-            <td style="line-height:20px;">${task.beginTime}</td>
-            <td style="line-height:20px;">${task.endTime}</td>
-            <td>${task.scanTime}分钟</td>
+            <td style="line-height:20px;">${task.executeTime}</td>
+            <td style="line-height:20px;">--</td>
+            <td>--</td>
             <td>${task.issueCount}个</td>
             <td>${task.requestCount}次</td>
             <td>${task.urlCount}个</td>            
