@@ -147,4 +147,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		GROUP BY b.name
 		ORDER BY  COUNT(b.name) DESC LIMIT 10
     </select>
+    <!-- 结果报表页敏感词曲线图 -->
+    <select id="">
+    	SELECT a.url,oa.scan_type,COUNT(a.url) AS COUNT
+		FROM cs_alarm a ,cs_order_asset oa,cs_task t 
+		WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=a.taskId AND a.alarm_time=${alarm_time}
+		GROUP BY a.url
+    </select>
+    
 </mapper>
