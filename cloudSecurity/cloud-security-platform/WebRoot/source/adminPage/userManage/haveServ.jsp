@@ -21,7 +21,7 @@
     		var index = select.selectedIndex;//选中的option的下标
     		var option = select.options[index];//通过下标得到option元素对象
     		var value = option.value;//通过option元素对象得到value值
-    		location="<c:url value='/haveServ.html?query&pageCode='/>" + value;
+    		location="<c:url value='/adminHaveServ.html?query&pageCode='/>" + value;
     	}
 </script>
 <style>
@@ -50,9 +50,9 @@
 <!-- pagerBegin -->
  
 第${pb.pageCode }页/共${pb.totalPage }页　　　
-<a href="<c:url value='/haveServ.html'/>">首页</a>
+<a href="<c:url value='/adminHaveServ.html'/>">首页</a>
 <c:if test="${pb.pageCode > 1 }">
-<a href="<c:url value='/haveServ.html?pageCode=${pb.pageCode-1 }'/>">上一页</a>
+<a href="<c:url value='/adminHaveServ.html?pageCode=${pb.pageCode-1 }'/>">上一页</a>
 </c:if>
 
 
@@ -90,16 +90,16 @@
   <c:choose>
   	<c:when test="${pb.pageCode eq i }">${i }</c:when>
   	<c:otherwise>
-  		<a href="<c:url value='/CustomerServlet?method=query&pageCode=${i}'/>">[${i}]</a>
+  		<a href="<c:url value='/adminHaveServ.html?pageCode=${i}'/>">[${i}]</a>
   	</c:otherwise>
   </c:choose>
 </c:forEach>
 
 
 <c:if test="${pb.pageCode < pb.totalPage }">
-<a href="<c:url value='/haveServ.html?pageCode=${pb.pageCode+1 }'/>">下一页</a>
+<a href="<c:url value='/adminHaveServ.html?pageCode=${pb.pageCode+1 }'/>">下一页</a>
 </c:if>
-<a href="<c:url value='/haveServ.html?pageCode=${pb.totalPage }'/>">尾页</a>
+<a href="<c:url value='/adminHaveServ.html?pageCode=${pb.totalPage }'/>">尾页</a>
 
 <%-- 下拉列表 --%>
 跳到<select name="pageCode" onchange="_go(this)">
