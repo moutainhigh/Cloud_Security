@@ -54,6 +54,6 @@ public interface OrderAssetDao {
      * 功能描述：根据orderid查询ip名称
      *       @time 2015-2-2
      */
-    List findIpByOrderId(String orderId);
+    List<OrderIP> findIpByOrderId(String orderId);
 
 }
