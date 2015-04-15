@@ -35,6 +35,7 @@ import com.cn.ctbri.entity.OrderIP;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskHW;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.scheduler.Scheduler4Task;
 import com.cn.ctbri.service.IAssetService;
@@ -42,6 +43,7 @@ import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
+import com.cn.ctbri.service.ITaskHWService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
@@ -68,6 +70,8 @@ public class OrderMgrController {
     IServService servService;
     @Autowired
     ITaskService taskService;
+    @Autowired
+    ITaskHWService taskhwService;
     
 	 /**
 	 * 功能描述： 用户中心-自助下单
@@ -194,6 +198,7 @@ public class OrderMgrController {
                 orderAsset.setScan_date(scan_date);
             }
             orderAsset.setUserId(userId);
+            //获取有同类服务中的资产
             list = assetService.findorderAssetByServId(orderAsset);
         }
         Map<String, Object> m = new HashMap<String, Object>();
@@ -427,6 +432,17 @@ public class OrderMgrController {
                     task.setOrder_asset_Id(oa.getId());
                     //插入一条任务数据  获取任务id
                     int taskId = taskService.insert(task);
+                }
+            }else{
+                List<OrderIP> ipList = orderAssetService.findIpByOrderId(orderId);
+                for(OrderIP oip : ipList){
+                    TaskHW taskhw = new TaskHW(); 
+                    taskhw.setExecute_time(begin_date);
+                    taskhw.setStatus(Integer.parseInt(Constants.TASK_START));
+                    //设置订单详情id
+                    taskhw.setOrder_ip_Id(oip.getId());
+                    //插入一条任务数据  获取任务id
+                    int taskId = taskhwService.insert(taskhw);
                 }
             }
             
