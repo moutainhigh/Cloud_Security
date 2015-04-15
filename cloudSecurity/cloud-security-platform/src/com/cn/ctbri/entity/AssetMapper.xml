@@ -64,14 +64,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 按服务id查询订单资产 -->
     <select id="findorderAssetByServId" parameterType="com.cn.ctbri.entity.OrderAsset" resultMap="AssetRM">
-        select * from cs_asset a 
-        where a.id in(select oa.assetId from cs_order_asset oa where oa.serviceid = #{serviceId}
+        select a.id,a.name,a.addr from cs_asset a,
+        (select distinct oa.assetId from cs_order o left join 
+        cs_order_asset oa on 
+        o.id = oa.orderId 
+        where oa.serviceid = #{serviceId}
         <if test="scan_type!=0">
             and oa.scan_type=#{scan_type}
         </if>
         <if test="scan_date!=null">
             and oa.scan_date=#{scan_date}
-        </if>) and a.userId = #{userId}
+        </if>
+        and o.status=0 
+        and o.userId = #{userId}) b 
+        where a.id = b.assetId 
     </select>
     
     <!-- 按服务id查询订单IP段 -->
