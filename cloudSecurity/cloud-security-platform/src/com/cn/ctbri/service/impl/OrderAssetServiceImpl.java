@@ -72,8 +72,8 @@ public class OrderAssetServiceImpl implements IOrderAssetService{
      * 功能描述：根据orderid查询ip名称
      *       @time 2015-2-2
      */
-    public List findIpByOrderId(String orderId) {
-        List list = orderAssetDao.findIpByOrderId(orderId);
+    public List<OrderIP> findIpByOrderId(String orderId) {
+        List<OrderIP> list = orderAssetDao.findIpByOrderId(orderId);
         return list;
     }
 	
