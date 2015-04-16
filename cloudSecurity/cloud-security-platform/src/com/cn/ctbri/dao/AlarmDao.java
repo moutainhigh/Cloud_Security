@@ -84,4 +84,11 @@ public interface AlarmDao {
 			Map<String, Object> paramMap);
 	public List<Alarm> findAlarmByOrderIdAndExecute_time(
 			Map<String, Object> paramMap);
+	
+	/**
+	 * 功能描述：根据任务id查询告警信息
+	 * 参数描述：int taskid
+	 * 返回值    ：List<Alarm>
+	 */
+	public List<Alarm> findAlarmByTaskId(int taskid);
 }
