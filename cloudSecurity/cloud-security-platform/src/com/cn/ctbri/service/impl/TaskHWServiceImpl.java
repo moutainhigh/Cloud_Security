@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.TaskDao;
 import com.cn.ctbri.dao.TaskHWDao;
+import com.cn.ctbri.entity.OrderIP;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskHW;
 import com.cn.ctbri.service.ITaskHWService;
@@ -36,6 +37,14 @@ public class TaskHWServiceImpl implements ITaskHWService{
     public void update(TaskHW t) {
         taskhwDao.update(t);
     }
+
+    public OrderIP getIpByTaskId(int order_ip_id) {
+        return taskhwDao.getIpByTaskId(order_ip_id);
+    }
+
+	public List findAlarmbyTaskhw(Map<String, Object> map) {
+		return this.taskhwDao.findAlarmbyTaskhw(map);
+	}
 
 	
 
