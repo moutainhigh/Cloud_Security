@@ -131,4 +131,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 WHERE uo.type=2 AND  uo.serviceId IS NOT NULL) a  
 		GROUP BY a.name ORDER BY COUNT(a.name) DESC LIMIT #{pageNow},#{pageSize}
 	</select>
+	<!-- 查询用户信息 -->
+	<select id="findUserById" resultMap="UserRM" parameterType="int">
+	select * from cs_user where id=#{id} 
+	</select>
 </mapper>
