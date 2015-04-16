@@ -65,6 +65,20 @@ function historicalDetails(){
 	
 
 }
+function seedetail1(e) {
+	var uservalue=$(e).attr('value');
+    if(uservalue==0)
+	{
+      $(e).parents().next('.detailbox').show();
+      $(e).attr('value',1);
+     }
+	  else if(uservalue==1)
+	  {
+        $(e).parents().next('.detailbox').hide();
+        $(e).attr('value','0');
+      }
+
+};
 </script>
 </head>
 
@@ -171,14 +185,14 @@ function historicalDetails(){
             	<div class="detail_title">基本信息</div>
                 <P class="formalinfo"><span class="infotitle">开始时间</span><span>${task.executeTime}</span></P>
                 <P class="formalinfo"><span class="infotitle">结束时间</span><span>${task.endTime}</span></P>
-                <P class="formalinfo"><span class="infotitle">扫描时长</span><span>${task.scanTime}分钟</span></P>
+                <P class="formalinfo"><span class="infotitle">扫描时长</span><span>${task.scanTime}</span></P>
                 <P class="formalinfo"><span class="infotitle2">已经发现弱点数</span><span>${task.issueCount}个</span></P>
                 <P class="formalinfo"><span class="infotitle2">请求次数</span><span>${task.requestCount}次</span></P>
                 <P class="formalinfo"><span class="infotitle2">URL个数</span><span>${task.urlCount}个</span></P>
                 <P class="formalinfo"><span class="infotitle2">平均响应时间</span><span>${task.averResponse}毫秒</span></P>
                 <P class="formalinfo"><span class="infotitle2">每秒访问个数</span><span>${task.averSendCount}个</span></P>
-                <P class="formalinfo"><span class="infotitle2">发送字节</span><span>${task.sendBytes}MB</span></P>
-                <P class="formalinfo"><span class="infotitle2">接收字节</span><span>${task.receiveBytes}MB</span></P>                  
+                <P class="formalinfo"><span class="infotitle2">发送字节</span><span>${task.sendBytes}</span></P>
+                <P class="formalinfo"><span class="infotitle2">接收字节</span><span>${task.receiveBytes}</span></P>                  
             </div>
         </div>
         <c:if test="${order.type==1}"><!-- 单次订单不显示趋势图 -->
@@ -211,8 +225,14 @@ function historicalDetails(){
                    <c:if test="${alarm.level==2}">高</c:if> 
 	            </td>
 	            <td>${alarm.alarm_content }</td>
-	            <td>${alarm.advice }</td>
-	          </tr>
+	           <!--  <td>${alarm.advice }</td> -->
+	            <td class="seedetail" value="0" name="${order.id}" onclick="seedetail1(this)"><span>查看建议</span></td>
+	            </tr>
+	            
+	          <tr  class="detailbox">
+                <td colspan="6"><div  class="zhangd_div">${alarm.advice } </div>
+                 </td>
+              </tr>
           </c:forEach>
           
           
