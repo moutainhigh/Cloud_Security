@@ -1,4 +1,9 @@
 package com.cn.ctbri.dao;
+
+import java.util.List;
+
+import com.cn.ctbri.entity.AlarmDDOS;
+
 /**
  * 创 建 人  ：  邓元元
  * 创建日期：  2015-4-16
@@ -6,5 +11,7 @@ package com.cn.ctbri.dao;
  * 版        本：  1.0
  */
 public interface AlarmDDOSDao {
+
+	List<AlarmDDOS> findAlarmDDOSByOrderId(String orderId);
 
 }

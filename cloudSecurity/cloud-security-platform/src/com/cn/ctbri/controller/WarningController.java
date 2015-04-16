@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,10 +23,13 @@ import com.cn.ctbri.constant.WarnType;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.AlarmDDOS;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskWarn;
+import com.cn.ctbri.service.IAlarmDDOSService;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ITaskService;
+import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
 
@@ -48,6 +50,10 @@ public class WarningController {
     IAlarmService alarmService;
     @Autowired
     ITaskService taskService;
+    @Autowired
+    ITaskWarnService taskWarnService;
+    @Autowired
+    IAlarmDDOSService alarmDDOSService;
 	/**
      * 功能描述： 用户中心-订单跟踪-告警提示
      * 参数描述：  无
@@ -431,5 +437,74 @@ public class WarningController {
         
         request.setAttribute("task", task);
         return "/source/page/order/warningtwo";
+    }
+    /**
+     * 功能描述：结果报表页--安恒 
+     * 邓元元
+     * 		@time 2015-4-14
+     */
+    @RequestMapping(value="warningTwoAnHeng.html")
+    public String warningTwoAnHeng(HttpServletRequest request){
+    	String orderId = request.getParameter("orderId");
+    	String type = request.getParameter("type");
+    	//获取订单信息
+        List orderList = orderService.findByOrderId(orderId);
+        //获取对应IP
+        List IPList = orderService.findIPByOrderId(orderId);
+        //获取安恒服务的告警信息
+        List<AlarmDDOS> alarmDDOSsList = alarmDDOSService.findAlarmDDOSByOrderId(orderId);
+        AlarmDDOS alarmDDOS = null;
+        if(alarmDDOSsList!=null &&alarmDDOSsList.size()>0){
+        	alarmDDOS = alarmDDOSsList.get(0);
+        	alarmDDOS.setAlarmTime(DateUtils.dateToString(alarmDDOS.getAlarm_time()));
+        	alarmDDOS.setStartTime(DateUtils.dateToString(alarmDDOS.getStart_time()));
+        }
+        request.setAttribute("orderList", orderList);
+        request.setAttribute("IPList", IPList);
+        request.setAttribute("alarmDDOS", alarmDDOS);
+        
+    	return "/source/page/order/order_warning";
+    }
+    
+    
+    /**
+     * 功能描述：结果报表页--篡改
+     * 邓元元
+     * 		@time 2015-4-14
+     */
+    @RequestMapping(value="doctortInit.html")
+    public String doctort(HttpServletRequest request){
+    	String orderId = request.getParameter("orderId");
+    	String type = request.getParameter("type");
+    	//获取折线图信息
+    	
+    	//获取告警信息
+    	List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(orderId);
+    	request.setAttribute("taskWarnList", taskWarnList);
+    	//获取订单信息
+        List orderList = orderService.findByOrderId(orderId);
+        request.setAttribute("orderList", orderList);
+        //获取对应资产
+        List assetList = orderAssetService.findAssetNameByOrderId(orderId);
+        request.setAttribute("assetList", assetList);
+        //基本信息（取的是平均值）
+        Task task = new Task();
+        if(Integer.parseInt(type)==1){
+            //长期查找最近的任务
+            task = taskService.findNearlyTask(orderId);
+        }else{
+            task = taskService.findBasicInfoByOrderId(orderId);
+        }
+        if(task.getBegin_time()!=null){
+            task.setBeginTime( DateUtils.dateToString(task.getBegin_time()));
+        }
+        if(task.getEnd_time()!=null){
+            task.setEndTime(DateUtils.dateToString(task.getEnd_time())); 
+        }
+        if(task.getExecute_time()!=null){
+            task.setExecuteTime(DateUtils.dateToString(task.getExecute_time())); 
+        }
+        request.setAttribute("task", task);
+    	return "/source/page/order/warning_doctort";
     }
 }
