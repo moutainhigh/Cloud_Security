@@ -86,6 +86,49 @@ public class SMSUtils {
 		System.out.println(inputline);
 	}
 	
+	public void sendAlarm(String phoneNumber,String content) throws IOException{
+		
+		//创建StringBuffer对象用来操作字符串
+		StringBuffer sb = new StringBuffer(Configuration.getStringBuffer());
+		
+		//APIKEY
+		sb.append("apikey="+Configuration.getApikey());
+		
+		//用户名
+		sb.append("&username="+Configuration.getUsername());
+
+		// 向StringBuffer追加密码
+		sb.append("&password="+Configuration.getPasswordMobile());
+
+		// 向StringBuffer追加手机号码
+		sb.append("&mobile="+phoneNumber);
+
+		// 向StringBuffer追加消息内容转URL标准码
+		try {
+			sb.append("&content="+URLEncoder.encode(content,"GBK"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// 创建url对象
+		URL url = new URL(sb.toString());
+
+		// 打开url连接
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+		// 设置url请求方式 ‘get’ 或者 ‘post’
+		connection.setRequestMethod("POST");
+
+		// 发送
+		BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+		
+		// 返回发送结果
+		String inputline = in.readLine();
+
+		// 输出结果
+		System.out.println(inputline);
+	}
 	
 	/**
 	 * @param args
