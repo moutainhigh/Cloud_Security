@@ -441,6 +441,7 @@ public class OrderMgrController {
                     taskhw.setStatus(Integer.parseInt(Constants.TASK_START));
                     //设置订单详情id
                     taskhw.setOrder_ip_Id(oip.getId());
+                    taskhw.setEnd_time(end_date);
                     //插入一条任务数据  获取任务id
                     int taskId = taskhwService.insert(taskhw);
                 }
