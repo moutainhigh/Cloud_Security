@@ -238,4 +238,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findIPByOrderId" parameterType="String" resultType="hashmap">
     	select a.ip from cs_order_ip  a  where a.orderId=#{orderId}
     </select>
+    <!-- 查询有告警的订单-->
+    <select id="findOrder" parameterType="int" resultMap="OrderRM">
+    	select * from cs_order where id=( select orderId from cs_order_ip where id=#{order_ip_Id})
+    </select>
+    
+    <!-- 修改订单 -->
+	<update id="update" parameterType="com.cn.ctbri.entity.Order">
+		update cs_order
+		<set>
+			<if test="message!=null">
+				message=#{message}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
 </mapper>
