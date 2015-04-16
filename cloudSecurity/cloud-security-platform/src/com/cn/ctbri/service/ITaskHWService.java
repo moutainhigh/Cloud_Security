@@ -3,6 +3,7 @@ package com.cn.ctbri.service;
 import java.util.List;
 import java.util.Map;
 
+import com.cn.ctbri.entity.OrderIP;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskHW;
 
@@ -20,5 +21,12 @@ public interface ITaskHWService {
     List<TaskHW> findTaskhw(Map<String, Object> map);
 
     void update(TaskHW t);
+
+    OrderIP getIpByTaskId(int order_ip_id);
+
+	List findAlarmbyTaskhw(Map<String, Object> map);
+
+
+
 
 }
