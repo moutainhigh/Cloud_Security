@@ -41,7 +41,7 @@
            </div>
         </div>
     </div>
-<Form name="form1" method="POST">
+<form name="form1" method="post">
 <table border="0" width="100%" id="table1" height="100%" cellspacing="0" cellpadding="0">
 	<tr>
 		<td align="center">
@@ -61,5 +61,5 @@
 		</td>
 	</tr>
 </table>
-</Form>
+</form>
 </BODY>
