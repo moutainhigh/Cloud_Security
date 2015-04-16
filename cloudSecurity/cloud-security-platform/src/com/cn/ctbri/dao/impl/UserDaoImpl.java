@@ -113,4 +113,13 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
         List<DataAnalysis> list = getSqlSession().selectList(ns +"queryByPage",paramMap);
 		return list;
 	}
+
+	/**
+     * 功能描述：根据id查询用户
+     * 参数描述：int id
+     * 返回值    ：  List
+     */
+	public List<User> findUserById(int id){
+		return getSqlSession().selectList(ns+"findUserById", id);
+	}
 }
