@@ -25,8 +25,7 @@ public class AlarmDDOSServiceImpl implements IAlarmDDOSService{
 	@Autowired
 	AlarmDDOSDao AlarmDDOSDao;
 	public List<AlarmDDOS> findAlarmDDOSByOrderId(String orderId) {
-	
-		return null;
+		return AlarmDDOSDao.findAlarmDDOSByOrderId(orderId);
 	}
 	
 }
