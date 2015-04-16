@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.TaskDao;
 import com.cn.ctbri.dao.TaskHWDao;
+import com.cn.ctbri.entity.OrderIP;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskHW;
 /**
@@ -42,6 +43,16 @@ public class TaskHWDaoImpl extends DaoCommon implements TaskHWDao {
     public void update(TaskHW t) {
         getSqlSession().update(ns+"update", t);
     }
+
+
+    public OrderIP getIpByTaskId(int order_ip_id) {
+        return getSqlSession().selectOne(ns+"getIpByTaskId", order_ip_id);
+    }
+
+
+	public List findAlarmbyTaskhw(Map<String, Object> map) {
+		return getSqlSession().selectList(ns+"findAlarmbyTaskhw", map);
+	}
 
 
 }
