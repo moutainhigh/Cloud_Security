@@ -67,4 +67,31 @@
     <bean id="orderAssetDao" lazy-init="true" class="com.cn.ctbri.dao.impl.OrderAssetDaoImpl">
        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
     </bean>
+    
+    <!-- Timer schedule -->
+    <!--要调度的对象-->
+    <bean id="taskHWJobBean" class="com.cn.ctbri.scheduler.HuaweiScheduler4Task" />
+    <bean id="taskHWJobDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="taskHWJobBean" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="taskHWTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="taskHWJobDetail" />
+        <property name="cronExpression" value="0 0/1 * * * ?" />
+    </bean>
+    
+    
+    <!-- 将lazy-init='false'那么容器启动就会执行调度程序   -->
+    <bean id="startQuertz"
+        class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
+        lazy-init="false">
+        <property name="triggers">
+            <list>
+                <ref bean="taskHWTrigger" />
+            </list>
+        </property>
+    </bean>
 </beans>  
