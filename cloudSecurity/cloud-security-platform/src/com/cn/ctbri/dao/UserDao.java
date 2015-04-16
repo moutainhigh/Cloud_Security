@@ -85,5 +85,9 @@ public interface UserDao {
 	List<DataAnalysis> findHaveServSum();
 
 	List<DataAnalysis> queryByPage(DataAnalysis criteria, int i, int pageSize);
+	/**
+	 * 功能描述：根据id查询用户信息
+	 */
+	List<User> findUserById(int id);
 
 }
