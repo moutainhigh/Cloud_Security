@@ -154,5 +154,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=a.taskId AND a.alarm_time=${alarm_time}
 		GROUP BY a.url
     </select>
-    
+    <!-- 根据任务id查询告警 -->
+	<select id="findAlarmByTaskId1" parameterType="int" resultMap="Alarm">
+		select * from cs_alarmhuawei
+		where taskId = #{taskId}
+	</select>
 </mapper>
