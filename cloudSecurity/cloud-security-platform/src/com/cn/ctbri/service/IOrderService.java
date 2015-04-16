@@ -85,6 +85,22 @@ public interface IOrderService {
      * 返回值    ：  List<DataAnalysis>
      */
 	int findScanCountByOrderId(String orderId);
-
+	
+	/**
+     * 功能描述：根据order_ip_Id查询订单
+     * 参数描述：int order_ip_Id
+     * 返回值    ：  List
+     */
+    List<Order> findOrder(int order_ip_Id);
+    
+	
+	/**
+     * 功能描述：更新发送状态
+     * 参数描述：int id
+     * 返回值    ：  void
+     */
+    void update(Order order);
+    
+    
 
 }

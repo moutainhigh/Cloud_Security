@@ -71,5 +71,12 @@ public interface IAlarmService {
 	List<Alarm> findAlarmByParamAlarm_typeAndLevel(Map<String, Object> paramMap);
 	List<Alarm> findAlarmByOrderIdAndExecute_time(Map<String, Object> paramMap);
     List<Alarm> findAlarm(Map<String, Object> paramMap);
-
+    
+	/**
+	 * 功能描述：根据任务id查询告警信息
+	 * 参数描述：int taskid
+	 *       @time 2015-1-30
+	 * 返回值    ：List<Alarm>
+	 */
+	List<Alarm> findAlarmByTaskId(int TaskId);
 }

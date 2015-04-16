@@ -93,6 +93,6 @@ public interface IUserService {
 	 */
 	PageBean<DataAnalysis> queryByPage(DataAnalysis criteria, int pageCode);
 
-
+    List<User> findUserById(int id);
 	
 }
