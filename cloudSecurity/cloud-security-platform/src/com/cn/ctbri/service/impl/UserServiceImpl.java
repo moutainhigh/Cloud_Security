@@ -1,6 +1,5 @@
 package com.cn.ctbri.service.impl;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,5 +135,10 @@ public class UserServiceImpl implements IUserService{
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	public List<User> findUserById(int id){
+		
+		return userDao.findUserById(id);
+		
 	}
 }
