@@ -29,5 +29,6 @@
 		<mapper resource="com/cn/ctbri/entity/NoticeMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/TaskWarnMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/TaskHWMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/AlarmDDOSMapper.xml"/>
 	</mappers>
 </configuration>  
