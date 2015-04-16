@@ -30,12 +30,27 @@ public class AlarmDDOS implements Serializable{
 	private Date alarm_time;
 	//任务Id
     private long taskId;
+    private String alarmTime;//告警上报时间vo
+    private String startTime;//告警上报时间vo
+    
 	/**
 	 * 功能描述：取报警信息ID
 	 *		 @time 2015-01-07
 	 */
 	public long getId() {
 		return id;
+	}
+	public String getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	public String getAlarmTime() {
+		return alarmTime;
+	}
+	public void setAlarmTime(String alarmTime) {
+		this.alarmTime = alarmTime;
 	}
 	/**
 	 * 功能描述：设置报警信息主键
