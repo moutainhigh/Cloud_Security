@@ -1,6 +1,6 @@
 package com.cn.ctbri.scheduler;
 
-import java.net.URLDecoder;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,32 +8,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import javax.mail.Session;
 
 import org.apache.log4j.Logger;
-import org.dom4j.Attribute;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import com.cn.ctbri.cfg.Configuration;
 import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.common.HuaweiWorker;
 import com.cn.ctbri.entity.Alarm;
-import com.cn.ctbri.entity.AlarmDDOS;
-import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Order;
-import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderIP;
-import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskHW;
+import com.cn.ctbri.entity.User;
+import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskHWService;
-import com.cn.ctbri.service.ITaskService;
+import com.cn.ctbri.service.IUserService;
+import com.cn.ctbri.util.Mail;
+import com.cn.ctbri.util.MailUtils;
+import com.cn.ctbri.util.SMSUtils;
 
 /**
  * 扫描任务表的华为调度类
@@ -57,6 +53,10 @@ public class HuaweiScheduler4Task {
     
     @Autowired
     IServService servService;
+    @Autowired
+    IAlarmService alarmService;
+    @Autowired
+    IUserService userService;
     
     @Autowired
     IOrderService orderService;
@@ -102,6 +102,51 @@ public class HuaweiScheduler4Task {
                     	//创建引流任务
                         HuaweiWorker.lssuedCreateDivertTask(ip.getIp());
                     }
+                    
+               	List<Alarm> alarmList = alarmService.findAlarmByTaskId(t.getTaskId());//是否有告警信息
+               	if(alarmList!=null && alarmList.size()>0){//如果有告警发邮件和短信通知
+               		List<Order> orderlist=orderService.findOrder(t.getOrder_ip_Id());
+                   	Order order=null;
+                   	if(orderlist!=null && orderlist.size()>0){
+                   		order=orderlist.get(0);
+                   		List<User> userlist= userService.findUserById(order.getUserId());
+                   		User user=userlist.get(0);
+                   		Session session = MailUtils.createSession(Configuration.getServer(),
+       			                Configuration.getName(), Configuration.getPassword());
+       			        String from = Configuration.getEmailFrom();
+                        String to = user.getEmail();//邮箱
+                        String phoneNumber = user.getMobile();//联系方式
+                   		int sendFlag=order.getMessage();//是否下发短信或邮件
+                   		if(sendFlag!=1){
+                   			if(!to.equals("") && to!=null){//发邮件
+                               	String subject = "这是来自云安全平台的安全警告";
+                                String content = "【云安全平台】您好，订单号为：" + order.getId()+"的有安全警告，请及时查看！";
+               			        Mail mail = new Mail(from, to, subject, content);
+               			        try {
+               			            MailUtils.send(session, mail);
+               			            order.setMessage(1);
+               			            orderService.update(order);
+               			        } catch (Exception e) {
+               			        	e.printStackTrace();
+               			        }
+                               }
+                               
+                               if(!phoneNumber.equals("") && phoneNumber!=null){
+                               	//发短信给家长
+               		   	        SMSUtils smsUtils = new SMSUtils();
+                                   String content = "【云安全平台】您好，订单号为：" + order.getId()+"的有安全警告，请及时查看！";
+               		   	        try {
+               		   	        	smsUtils.sendAlarm(user.getMobile(), content);
+               		   	 		    order.setMessage(1);
+           			                orderService.update(order);
+               		   	 		} catch (IOException e1) {
+               		   	 			e1.printStackTrace();
+               		   	 		}
+                               }
+                   		}
+                   	}
+               	}
+                    
                     
                 } catch (Exception e) {
                     logger.info("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
