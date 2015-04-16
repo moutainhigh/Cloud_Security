@@ -16,13 +16,13 @@ public class Constants {
 	 * 任务状态<br>
 	 * finish:已结束
 	 */
-	public static final String TASK_FINISH = "2"; 
+	public static final String TASK_FINISH = "3"; 
 	
 	/**
 	 * 任务状态<br>
 	 * running :执行中
 	 */
-	public static final String TASK_RUNNING = "3"; 
+	public static final String TASK_RUNNING = "2"; 
 	
 	/**
 	 * 引擎功能<br>
