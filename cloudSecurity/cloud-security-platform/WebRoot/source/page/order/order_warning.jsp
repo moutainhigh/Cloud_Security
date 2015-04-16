@@ -18,6 +18,10 @@
 <script src="${ctx}/source/scripts/echarts/esl.js"></script>
 <script src="${ctx}/source/scripts/echarts/echarts.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/warning.js"></script>
+<style>
+.table-c table{border-right:1px solid #000;border-bottom:1px solid #000}
+.table-c table td{border-left:1px solid #000;border-top:1px solid #000}
+</style>
 </head>
 
 <body>
@@ -70,72 +74,30 @@
             <input type="hidden" value="${order.type }" id="type"/>
             <p><span class="bigfont">${order.name }</span>
             <span>(  订单编号：${order.id }  )</span>
-            <c:if test="${order.type==1 }">
-                <a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank"><span style="float:right; margin-right:30px; dispiay:inline-block;color:#999; ">历史记录</span></a>
-            </c:if>
             </p>  
             <p>监控IP：<span>
-            <c:forEach var="ip" items="${ipList}" varStatus="status">${ip.ip }&nbsp;&nbsp;</c:forEach>
+            <c:forEach var="ip" items="${IPList}" varStatus="status">${ip.ip }&nbsp;&nbsp;</c:forEach>
             </span></p>          
         </div>
        </c:forEach>
-       
-    <div class="zhangd_table" style="margin-left: -63px;">
-      <table class="ld_table" style="width: 1004px; border-left:1px solid #888;border-right:1px solid #888;border-bottom:1px solid #888;border-top:1px solid #888;height: auto;">
-        <tbody>                                                                                   
-          <tr style="background:#e0e0e0; height:30px; line-height:0px;">
-            <td style="width:5%;">序号</td>
-            <td  style="width:23%;">告警上报时间</td>
-            <c:if test="${serviceId==6 }">
-                <td  style="width:7%;">漏洞级别</td>
-            	<td  style="width:24%;">攻击开始时间</td>
-            	<td>攻击源IP</td>
-            	<td  style="width:33%;">攻击流量信息</td>
-            </c:if>
-            <c:if test="${serviceId==7 || serviceId==8}">
-            <td>攻击源IP</td>
-            <td>攻击类型</td>
-            <td>攻击流量</td>
-            <td style="width:23%;">攻击开始时间</td>
-            <td>攻击结束时间</td>
-            <td>攻击持续时间</td>
-            </c:if>
-          </tr>
-          <c:forEach var="alarm" items="${alarmList}" varStatus="status">
-	          <tr>                                            
-	            <td>${alarm.id }</td>
-	            <td><fmt:formatDate value="${alarm.alarm_time}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-	            <c:if test="${serviceId==6 }">
-	            <td>
-	               <c:if test="${alarm.attack_type==0}">低</c:if>
-                   <c:if test="${alarm.attack_type==1}">中</c:if>
-                   <c:if test="${alarm.attack_type==2}">高</c:if> 
-	            </td>
-	            <td><fmt:formatDate value="${alarm.start_time}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-	            <td>${alarm.addr_ip }</td>
-	            <td>${alarm.attack_flow }</td>
-	            </c:if>
-			<c:if test="${serviceId==7 || serviceId==8}">
-			<td>${alarm.addr_ip }</td>
-			<td>${alarm.attack_type }</td>
-			<td>${alarm.attack_flow }</td>
-			<td><fmt:formatDate value="${alarm.start_time}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-			<td><fmt:formatDate value="${alarm.end_time}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-			<td><fmt:formatDate value="${alarm.attack_time}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-			
-			
-			
-			
-			
-			</c:if>
-	          </tr>
-          </c:forEach>
-          
-        </tbody>
-      </table>
-    </div>
+       <div class="table-c">
+	  <table  border="0" cellspacing="0" cellpadding="0" align="center" width="80%">
+	 	<tr>
+	        <td>告警上报时间</th>
+	        <td>攻击开始时间</th>
+	        <td>攻击源IP</th>
+	        <td>攻击流量信息</th>
+	    </tr>
+	      	<tr>
+	           <td>${alarmDDOS.alarmTime}</td>
+	           <td>${alarmDDOS.startTime}</td>
+	           <td>${alarmDDOS.addr_ip}</td>
+	           <td>${alarmDDOS.attack_flow}</td>
+	     	</tr>
+	  </table>
   </div>
-  
+  </div>
+    
 </div>
 <!-- 尾部代码开始-->
 <div class="bottom_bj">
