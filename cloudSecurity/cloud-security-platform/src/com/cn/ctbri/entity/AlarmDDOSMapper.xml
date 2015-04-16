@@ -21,6 +21,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT ahw.*
 		FROM cs_order_ip oi,cs_taskhuawei thw,cs_alarmhuawei ahw
 		WHERE oi.orderId=#{orderId} AND thw.order_ip_Id=oi.id AND ahw.taskId=thw.taskId
+		ORDER BY ahw.alarm_time DESC
+		LIMIT 0,1
 	</select>
 	
 </mapper>
