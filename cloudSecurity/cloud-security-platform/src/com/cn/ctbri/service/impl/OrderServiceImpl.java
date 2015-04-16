@@ -127,4 +127,25 @@ public class OrderServiceImpl implements IOrderService{
 		
 		return orderDao.findScanCountByOrderId(orderId);
 	}
+	
+	/**
+     * 功能描述：根据order_ip_Id查询订单
+     * 参数描述：int order_ip_Id
+     * 返回值    ：  List
+     */
+	public List<Order> findOrder(int order_ip_Id){
+		List<Order> list = orderDao.findOrder(order_ip_Id);
+		return list;
+	}
+	
+	/**
+	 * 功能描述：修改用户
+	 * 参数描述：User globle_user
+	 *		 @time 2015-1-5
+	 */
+	public void update(Order order) {
+		orderDao.update(order);
+	}
+	
+	
 }
