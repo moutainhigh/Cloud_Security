@@ -25,6 +25,7 @@ public class Order {
 	private String servName;//服务名称vo
 	private String begin_datevo;//begin_date vo
 	private String end_datevo;//end_date vo备注
+	private int message;//是否发送告警信息
 	public String getBegin_datevo() {
 		return begin_datevo;
 	}
@@ -116,5 +117,11 @@ public class Order {
     public void setStatus(int status) {
         this.status = status;
     }
+	public int getMessage() {
+		return message;
+	}
+	public void setMessage(int message) {
+		this.message = message;
+	}
 	
 }
