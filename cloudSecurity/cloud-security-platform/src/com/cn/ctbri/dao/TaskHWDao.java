@@ -2,6 +2,7 @@ package com.cn.ctbri.dao;
 
 import java.util.List;
 
+import com.cn.ctbri.entity.OrderIP;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskHW;
 
@@ -24,5 +25,9 @@ public interface TaskHWDao {
     public List<TaskHW> findTask(Map<String, Object> map);
 
     public void update(TaskHW t);
+
+    public OrderIP getIpByTaskId(int order_ip_id);
+
+	public List findAlarmbyTaskhw(Map<String, Object> map);
 
 }
