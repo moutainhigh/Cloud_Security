@@ -81,7 +81,7 @@
         </div>
        </c:forEach>
        <div class="table-c">
-	  <table  border="0" cellspacing="0" cellpadding="0" align="center" width="80%">
+	  <table  border="0" cellspacing="0" cellpadding="0" align="center" width="100%">
 	 	<tr>
 	        <td>告警上报时间</th>
 	        <td>攻击开始时间</th>
