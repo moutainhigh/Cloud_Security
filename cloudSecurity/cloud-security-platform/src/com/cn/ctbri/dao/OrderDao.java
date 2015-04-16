@@ -84,5 +84,18 @@ public interface OrderDao {
      * 返回值    ：  List<DataAnalysis>
      */
 	int findScanCountByOrderId(String orderId);
-
+	
+	/**
+	 * 功能描述：根据order_ip_Id查询订单
+	 * 参数描述：无
+	 *		 @time 2015-1-15
+	 * 返回值    ：  List<Order>
+	 */
+	List<Order> findOrder(int order_ip_Id);
+	
+	/**
+	 * 功能描述：修改有告警的订单
+	 * 参数描述：Order order
+	 */
+	void update(Order order);
 }
