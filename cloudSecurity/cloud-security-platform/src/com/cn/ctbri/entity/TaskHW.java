@@ -14,6 +14,7 @@ public class TaskHW{
 	private Date execute_time;//执行时间
 	private int status;//任务状态（1：未执行 ，2：进行中，3：已完成）
 	private String remarks;//描述
+	private Date end_time;//结束时间
     public int getTaskId() {
         return taskId;
     }
@@ -44,6 +45,12 @@ public class TaskHW{
     public void setRemarks(String remarks) {
         this.remarks = remarks;
     }
+	public Date getEnd_time() {
+		return end_time;
+	}
+	public void setEnd_time(Date end_time) {
+		this.end_time = end_time;
+	}
 	
 	
 	

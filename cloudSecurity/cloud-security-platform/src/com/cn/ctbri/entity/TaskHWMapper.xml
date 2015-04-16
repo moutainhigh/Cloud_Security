@@ -15,8 +15,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入任务信息 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.TaskHW" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO cs_taskhuawei
-		(order_ip_Id,execute_time,status,remarks) 
-		VALUES( #{order_ip_Id} , #{execute_time},#{status},#{remarks})
+		(order_ip_Id,execute_time,status,remarks,end_time) 
+		VALUES( #{order_ip_Id} , #{execute_time},#{status},#{remarks}, #{end_time})
 	</insert>
 	
 	<!-- 根据条件查询任务表 -->
@@ -26,7 +26,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test="status==1">
           and t.execute_time between date_add(now(),interval -1 minute) and now()
         </if>
+        <if test="status==2">
+          and t.end_time between date_add(now(),interval -1 minute) and now()
+        </if>
     </select>
+    
     
     <!-- 更新任务信息 -->
     <update id="update"  parameterType="com.cn.ctbri.entity.TaskHW">
@@ -41,4 +45,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </set>
         where taskId = #{taskId}
     </update>
+    
+    <!-- 根据taskId查询OrderIP表 -->
+    <select id="getIpByTaskId" parameterType="int" resultType="com.cn.ctbri.entity.OrderIP">
+        select * from cs_order_ip oi
+        where oi.id = #{order_ip_id}
+    </select>
+    
+    <!-- 根据任务查询攻击日志 -->
+    <select id="findAlarmbyTaskhw" parameterType="hashmap" resultType="com.cn.ctbri.entity.AlarmDDOS">
+        select t.* from cs_taskhuawei t,cs_alarmhuawei a
+        where t.taskId = a.taskId and t.status = #{status} order by a.alarm_time limit 1
+    </select>
 </mapper>
