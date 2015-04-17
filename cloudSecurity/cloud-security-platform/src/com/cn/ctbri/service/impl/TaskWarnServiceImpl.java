@@ -23,5 +23,9 @@ public class TaskWarnServiceImpl implements ITaskWarnService{
 	public List<TaskWarn> findTaskWarnByOrderId(String orderId) {
 		return taskWarnDao.findTaskWarnByOrderId(orderId);
 	}
+
+	public TaskWarn findTaskWarnCountByOrderId(String orderId) {
+		return taskWarnDao.findTaskWarnCountByOrderId(orderId);
+	}
 	
 }

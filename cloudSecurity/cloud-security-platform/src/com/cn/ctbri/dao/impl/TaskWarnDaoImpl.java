@@ -24,6 +24,10 @@ public class TaskWarnDaoImpl extends DaoCommon implements TaskWarnDao {
 	//根据订单id获取告警信息
 	public List<TaskWarn> findTaskWarnByOrderId(String orderId) {
 		return getSqlSession().selectList(ns+"findTaskWarnByOrderId", orderId);
+	}
+	//根据订单id获取告警次数
+	public TaskWarn findTaskWarnCountByOrderId(String orderId) {
+		return getSqlSession().selectOne(ns+"findTaskWarnCountByOrderId", orderId);
 	}		
 	
 }

@@ -34,49 +34,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 		<!-- 根据orderId查询扫描进度和最近的url-->
 	<select id="findProgressByOrderId" parameterType="String" resultMap="TaskRM">
-		<!-- SELECT AVG(t.taskProgress)/101*100 AS COUNT
-				FROM cs_task t
-				WHERE t.order_asset_Id IN (
-					SELECT oa.id
-					FROM cs_order_asset oa
-					WHERE oa.orderId =#{orderId}) -->
-			
 			SELECT a.progress,b.currentUrl
 			FROM
 					(SELECT AVG(t.taskProgress)/101*100 AS progress
-					FROM cs_task t
-					WHERE t.order_asset_Id IN (
-						SELECT oa.id
-						FROM cs_order_asset oa
-						WHERE oa.orderId =#{orderId})) a
+					FROM cs_task t ,cs_order_asset oa
+					WHERE t.order_asset_Id =oa.id AND oa.orderId =#{orderId}) a
 			CROSS JOIN
 					(SELECT t.currentUrl
-					FROM cs_task t
-					WHERE t.order_asset_Id IN (
-						SELECT oa.id
-						FROM cs_order_asset oa
-						WHERE oa.orderId =#{orderId})
+					FROM cs_task t ,cs_order_asset oa 
+					WHERE t.order_asset_Id=oa.id AND oa.orderId =#{orderId}
 					ORDER BY t.execute_time DESC LIMIT 0,1) b
 	</select>
 	<!-- 根据orderId查询基本信息 -->
 	<select id="findBasicInfoByOrderId" parameterType="String" resultMap="TaskRM">
 		SELECT MIN(t.execute_time) AS execute_time,MAX(t.end_time) AS end_time,AVG(t.scanTime) AS scanTime,AVG(t.issueCount) AS issueCount,AVG(t.requestCount) AS requestCount,AVG(t.urlCount) AS urlCount,AVG(t.averResponse) AS averResponse,AVG(t.averSendCount) AS averSendCount,AVG(t.sendBytes) AS sendBytes,AVG(t.receiveBytes) AS receiveBytes
-		FROM cs_task t
-		WHERE t.order_asset_Id IN (
-			SELECT oa.id 
-			FROM cs_order_asset oa
-			WHERE oa.orderId=#{orderId})
+		FROM cs_task t,cs_order_asset oa
+		WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId}
 		ORDER BY t.execute_time DESC 	
 	</select>
 	
 	<!-- 根据orderId查询基本信息 -->
     <select id="findNearlyTask" parameterType="String" resultMap="TaskRM">
         SELECT *
-        FROM cs_task t
-        WHERE t.order_asset_Id IN (
-            SELECT oa.id 
-            FROM cs_order_asset oa
-            WHERE oa.orderId=#{orderId})
+        FROM cs_task t,cs_order_asset oa
+        WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId}
         ORDER BY t.execute_time DESC limit 1  
     </select>
     
@@ -89,11 +70,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 根据orderId查询历史详情时间 -->
 	<select id="findScanTimeByOrderId" parameterType="String" resultMap="TaskRM">
 		SELECT t.taskid,t.execute_time 
-		FROM cs_task t
-		WHERE t.order_asset_Id IN (
-			SELECT oa.id 
-			FROM cs_order_asset oa
-			WHERE oa.orderId=#{orderId})
+		FROM cs_task t,cs_order_asset oa
+		WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId}
 		ORDER BY t.execute_time DESC 	
 	</select>	
 </mapper>

@@ -14,4 +14,6 @@ public interface TaskWarnDao {
 
 	List<TaskWarn> findTaskWarnByOrderId(String orderId);
 
+	TaskWarn findTaskWarnCountByOrderId(String orderId);
+
 }

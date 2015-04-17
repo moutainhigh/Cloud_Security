@@ -55,6 +55,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 根据任务查询攻击日志 -->
     <select id="findAlarmbyTaskhw" parameterType="hashmap" resultType="com.cn.ctbri.entity.AlarmDDOS">
         select t.* from cs_taskhuawei t,cs_alarmhuawei a
-        where t.taskId = a.taskId and t.status = #{status} order by a.alarm_time limit 1
+        where t.taskId = a.taskId and t.status = #{status} order by a.start_time_alert limit 1
     </select>
 </mapper>

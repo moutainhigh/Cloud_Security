@@ -14,5 +14,7 @@ public interface ITaskWarnService {
 
 	//根据订单id获取告警信息
 	List<TaskWarn> findTaskWarnByOrderId(String orderId);
+	//根据订单id获取告警次数
+	TaskWarn findTaskWarnCountByOrderId(String orderId);
 
 }

@@ -22,7 +22,28 @@ public class TaskWarn{
     private String msg;//事件内容详细信息
     private String task_id;//
     private Date warn_time;
-    public int getId() {
+    private int count;//告警次数vo
+    private String warnTime;//VO
+    private String level;//描述 告警等级高中低
+    public String getLevel() {
+		return level;
+	}
+	public void setLevel(String level) {
+		this.level = level;
+	}
+	public String getWarnTime() {
+		return warnTime;
+	}
+	public void setWarnTime(String warnTime) {
+		this.warnTime = warnTime;
+	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	public int getId() {
         return id;
     }
     public void setId(int id) {
