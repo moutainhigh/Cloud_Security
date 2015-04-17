@@ -3,6 +3,7 @@ package com.cn.ctbri.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -54,11 +55,6 @@ public class WarningController {
     ITaskWarnService taskWarnService;
     @Autowired
     IAlarmDDOSService alarmDDOSService;
-	/**
-     * 功能描述： 用户中心-订单跟踪-告警提示
-     * 参数描述：  无
-     *     @time 2015-2-2
-     */
     @RequestMapping(value="warningInit.html")
     public String warningInit(HttpServletRequest request){
         String orderId = request.getParameter("orderId");
@@ -76,6 +72,9 @@ public class WarningController {
         List<Alarm> alarmList = alarmService.getAlarmByOrderId(paramMap);
         int serviceId=0 ;
         request.setAttribute("orderList", orderList);
+        /** 获取告警次数  dyy*/
+        TaskWarn taskCount = taskWarnService.findTaskWarnCountByOrderId(orderId);
+        request.setAttribute("count", taskCount.getCount());
         /** 基本信息   dyy*/
         Task task = new Task();
         if(Integer.parseInt(type)==1){
@@ -99,6 +98,7 @@ public class WarningController {
         	 order=(HashMap) orderList.get(i);
         	 serviceId=(Integer) order.get("serviceId");
         }
+     
         if(serviceId==6||serviceId==7||serviceId==8){//DDOS
         	 List<AlarmDDOS> alarmDDosList = alarmService.getAlarmDdosByOrderId(paramMap);
         	request.setAttribute("ipList", IPList);
@@ -106,10 +106,26 @@ public class WarningController {
             request.setAttribute("alarmList", alarmDDosList);
             return "/source/page/order/order_warning";
         	
-        }else{
-        	request.setAttribute("assetList", assetList);
-            request.setAttribute("alarmList", alarmList);
-            return "/source/page/order/warning";
+        }else{//华为的服务
+        	if(serviceId==3){/**篡改  dyy*/
+            	//获取告警信息
+            	List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(orderId);
+            	//处理时间Thu Apr 16 09:47:38 CST 2015=》年月日时分秒
+            	if(taskWarnList!=null){
+            		for(TaskWarn t : taskWarnList){
+            			t.setWarnTime(DateUtils.dateToString(t.getWarn_time()));
+            		}
+            		
+            	}
+            	request.setAttribute("taskWarnList", taskWarnList);
+        		request.setAttribute("assetList", assetList);
+                request.setAttribute("alarmList", alarmList);
+        		return "/source/page/order/warning_doctort"	;
+        	}else{
+	        	request.setAttribute("assetList", assetList);
+	            request.setAttribute("alarmList", alarmList);
+	            return "/source/page/order/warning";
+        	}
         }
     }
     
