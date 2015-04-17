@@ -25,3 +25,28 @@
 .progress-bar-striped{background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent); background-size: 40px 40px;}
 .progress.active .progress-bar,.progress-bar.active{-webkit-animation:progress-bar-stripes 2s linear infinite;-o-animation:progress-bar-stripes 2s linear infinite;animation:progress-bar-stripes 2s linear infinite}
 @-webkit-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@-o-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}
+/*网页篡改告警*/
+.gj_fl{float:left;margin-right:84px;}
+.webgj_title{clear:both;overflow: hidden;padding-left:268px;}
+.gj_fr{float:left;padding-top:30px;}
+.gj_fl p{line-height:34px;}
+.web_num{font-size:20px; color:#fd0202; text-align:center;font-weight:bold;}
+.scrg{padding:30px 96px 0;}
+.scrg_sp{width:230px; background:url(../images/greencircle.jpg) no-repeat left center;padding-left:20px;display:inline-block;font-size:14px;color:#666;line-height:34px;}
+.scrg_ti{margin-right:32px;}
+.web_detail_title{padding: 4px 10px;margin: 20px 0px 28px 30px;background:#E0E0E0;color: #666;font-size: 16px;display:inline-block;}
+.web_data{margin:0 35px;overflow:hidden;}
+.web_datal{width:238px;float:left;padding-top:130px;padding-left:50px;padding-bottom:190px;}
+.web_datal p{ font-size:15px;color:#666666;line-height: 24px;}
+.web_datac{width:492px;float:left;height:20px;}
+.web_datar{width:210px;float:left;height:20px;}
+.web_scan{width:56px;border-left:1px solid #e0e0e0;border-right:1px solid #e0e0e0;float:left;line-height:16px;cursor:pointer;}
+.web_scancur{background:#2DA039;color: #FFF;border-left:1px solid #fff;border-right:1px solid #fff;}
+.webway_span{width:136px;float:left;display:inline-block;text-align:right;font-size:14px;color:#666;line-height:16px;}
+.web_way{clear:both;overflow:hidden;}
+.web_box{width:470px;height:340px;border:1px solid #e0e0e0;}
+.pxtitle{width:208px;height:32px;background:#ffcc00;font-size:18px;color:#fff;text-align:center;line-height:32px;margin-bottom:4px;}
+.pxbox{width:166px;border:1px solid #e0e0e0;padding:4px 20px;}
+.pxbox p{color:#666;fontsize:14px;line-height:21px;}
+.pxboxL{display:inline-block;width:38px;}
+.web_topbox{border-bottom:1px solid #e0e0e0;overflow:hidden;margin-bottom:26px;}
