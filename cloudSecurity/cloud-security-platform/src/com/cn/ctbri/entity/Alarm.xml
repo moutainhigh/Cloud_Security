@@ -155,8 +155,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		GROUP BY a.url
     </select>
     <!-- 根据任务id查询告警 -->
-	<select id="findAlarmByTaskId1" parameterType="int" resultMap="Alarm">
+	<select id="findAlarmByTaskId1" parameterType="int" resultType="com.cn.ctbri.entity.AlarmDDOS">
 		select * from cs_alarmhuawei
 		where taskId = #{taskId}
 	</select>
+	
+	<!-- 根据任务id查询告警 -->
+    <select id="findEndAlarmByTaskId" parameterType="int" resultType="com.cn.ctbri.entity.AlarmDDOS">
+        select * from cs_alarmhuawei a
+        where a.taskId = #{taskId} order by a.end_time desc limit 1
+    </select>
 </mapper>

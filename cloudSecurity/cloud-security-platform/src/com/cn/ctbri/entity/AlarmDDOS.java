@@ -13,76 +13,59 @@ public class AlarmDDOS implements Serializable{
 	/***/
 	private static final long serialVersionUID = 1L;
 	//主键Id
-	private long id;
-	//攻击类型
-	private String attack_type;
-	//攻击开始时间
-	private Date start_time;
-	//攻击源IP
-	private String addr_ip;
-	//攻击持续时间（处理已结束）
-	private Date attack_time;
-	//攻击流量（处理已结束）
-	private String attack_flow;
-	//攻击结束时间（处理已结束）
-	private Date end_time;
-	//告警上报时间
-	private Date alarm_time;
+    private long id;
+    //攻击类型
+    private String attack_type;
+    //攻击开始时间
+    private Date start_time_attack;
+    //攻击源IP
+    private String attacker;
+    //攻击持续时间（处理已结束）
+    private String duration;
+    //攻击流量（处理已结束）
+    private String attack_flow;
+    //攻击结束时间（处理已结束）
+    private Date end_time;
+    //告警上报时间
+    private Date start_time_alert;
 	//任务Id
     private long taskId;
     private String alarmTime;//告警上报时间vo
     private String startTime;//告警上报时间vo
     
-	/**
-	 * 功能描述：取报警信息ID
-	 *		 @time 2015-01-07
-	 */
-	public long getId() {
-		return id;
-	}
-	public String getStartTime() {
-		return startTime;
-	}
-	public void setStartTime(String startTime) {
-		this.startTime = startTime;
-	}
-	public String getAlarmTime() {
-		return alarmTime;
-	}
-	public void setAlarmTime(String alarmTime) {
-		this.alarmTime = alarmTime;
-	}
-	/**
-	 * 功能描述：设置报警信息主键
-	 * 参数描述： long id 报警信息要设置的主键值
-	 *		 @time 2015-01-07
-	 */
-	public void setId(long id) {
-		this.id = id;
-	}
+    /**
+     * 功能描述：取报警信息ID
+     *       @time 2015-01-07
+     */
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
     public String getAttack_type() {
         return attack_type;
     }
     public void setAttack_type(String attack_type) {
         this.attack_type = attack_type;
     }
-    public Date getStart_time() {
-        return start_time;
+    public Date getStart_time_attack() {
+        return start_time_attack;
     }
-    public void setStart_time(Date start_time) {
-        this.start_time = start_time;
+    public void setStart_time_attack(Date start_time_attack) {
+        this.start_time_attack = start_time_attack;
     }
-    public String getAddr_ip() {
-        return addr_ip;
+    public String getAttacker() {
+        return attacker;
     }
-    public void setAddr_ip(String addr_ip) {
-        this.addr_ip = addr_ip;
+    public void setAttacker(String attacker) {
+        this.attacker = attacker;
     }
-    public Date getAttack_time() {
-        return attack_time;
+    public String getDuration() {
+        return duration;
     }
-    public void setAttack_time(Date attack_time) {
-        this.attack_time = attack_time;
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
     public String getAttack_flow() {
         return attack_flow;
@@ -96,11 +79,11 @@ public class AlarmDDOS implements Serializable{
     public void setEnd_time(Date end_time) {
         this.end_time = end_time;
     }
-    public Date getAlarm_time() {
-        return alarm_time;
+    public Date getStart_time_alert() {
+        return start_time_alert;
     }
-    public void setAlarm_time(Date alarm_time) {
-        this.alarm_time = alarm_time;
+    public void setStart_time_alert(Date start_time_alert) {
+        this.start_time_alert = start_time_alert;
     }
     public long getTaskId() {
         return taskId;
@@ -108,6 +91,20 @@ public class AlarmDDOS implements Serializable{
     public void setTaskId(long taskId) {
         this.taskId = taskId;
     }
+    public String getAlarmTime() {
+        return alarmTime;
+    }
+    public void setAlarmTime(String alarmTime) {
+        this.alarmTime = alarmTime;
+    }
+    public String getStartTime() {
+        return startTime;
+    }
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+    
+	
 	
 
 }
