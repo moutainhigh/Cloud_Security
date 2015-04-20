@@ -15,6 +15,7 @@ public class TaskHW{
 	private int status;//任务状态（1：未执行 ，2：进行中，3：已完成）
 	private String remarks;//描述
 	private Date end_time;//结束时间
+	private int drainage;//是否创建引流
     public int getTaskId() {
         return taskId;
     }
@@ -51,6 +52,12 @@ public class TaskHW{
 	public void setEnd_time(Date end_time) {
 		this.end_time = end_time;
 	}
+    public int getDrainage() {
+        return drainage;
+    }
+    public void setDrainage(int drainage) {
+        this.drainage = drainage;
+    }
 	
 	
 	
