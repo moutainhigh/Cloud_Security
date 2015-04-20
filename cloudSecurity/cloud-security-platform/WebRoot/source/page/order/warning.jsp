@@ -126,8 +126,15 @@ function seedetail1(e) {
         <div class="gj_top">
             <a href="#" class="aelse">订单跟踪</a>　>　<a href="#" class="acur">告警详情</a>
         </div>
+        
        <c:forEach var="order" items="${orderList}" varStatus="status">
-        <div class="gj_title">
+        <div class="gj_title webgj_title">
+        <div class="gj_fl">
+                <img src="${ctx}/source/images/icon_cg.jpg" width="85" height="85" />
+                <p>${order.name }</p>
+                <p class="web_num">${aList}个</p>
+          </div>
+        <div class="gj_fr">
             <input type="hidden" value="${order.id }" id="orderId"/>
             <input type="hidden" value="${order.type }" id="type"/>
             <p><span class="bigfont">${order.name }</span>
@@ -142,11 +149,12 @@ function seedetail1(e) {
              	-->
             </c:if>
             </p>            
-            <p>资产：<span>
+            <p>资产：<span class="asset">
             <c:forEach var="asset" items="${assetList}" varStatus="status">
-            <span style="display:block; width:600px;line-height:30px; ">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
+            <span class="assets">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
             </c:forEach>
             </span></p>
+        </div>
         </div>
         <div class="process">
        	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span>

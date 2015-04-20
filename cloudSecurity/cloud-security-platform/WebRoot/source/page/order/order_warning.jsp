@@ -91,7 +91,7 @@
 	      	<tr>
 	           <td>${alarmDDOS.alarmTime}</td>
 	           <td>${alarmDDOS.startTime}</td>
-	           <td>${alarmDDOS.addr_ip}</td>
+	           <td>${alarmDDOS.attacker}</td>
 	           <td>${alarmDDOS.attack_flow}</td>
 	     	</tr>
 	  </table>
