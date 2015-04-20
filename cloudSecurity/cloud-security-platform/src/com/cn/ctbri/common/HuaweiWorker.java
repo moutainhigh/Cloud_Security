@@ -56,10 +56,12 @@ public class HuaweiWorker {
 	 */
 	private static String DELETE_BLACKHOLE;
 	
+	private static String SERVER_WEB_ROOT;
+	
 	static{
 		try {
 			Properties p = new Properties();
-			p.load(ArnhemWorker.class.getClassLoader().getResourceAsStream("arnhem.properties"));
+			p.load(ArnhemWorker.class.getClassLoader().getResourceAsStream("huawei.properties"));
 			CREATE_ZONE = p.getProperty("create_zone");
 			UPDATE_ZONE = p.getProperty("update_zone");
 			DELETE_ZONE = p.getProperty("delete_zone");
@@ -67,6 +69,7 @@ public class HuaweiWorker {
 			DELETE_DIVERT = p.getProperty("delete_divert");
 			CREATE_BLACKHOLE = p.getProperty("create_blackhole");
 			DELETE_BLACKHOLE = p.getProperty("delete_blackhole");
+			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -127,12 +130,14 @@ public class HuaweiWorker {
         return response;
 	}
 	
+	
+	
 	/**
 	 * 描    述：下发更新Zone任务
 	 * 创建人：于永波
 	 * 日    期：2015-3-17
 	 */
-	public static String lssuedUpdateZoneTask(String zone_ip){
+	public static String lssuedUpdateZoneTask(String zone_ip,String zone_name){
 		//组织发送内容XML
 		JSONObject json = new JSONObject();
 		json.accumulate("zone_ip", zone_ip);
@@ -144,7 +149,7 @@ public class HuaweiWorker {
 	    //创建Jersery客户端对象
         Client client = Client.create(config);
         //连接服务器
-        WebResource service = client.resource(UPDATE_ZONE);
+        WebResource service = client.resource(UPDATE_ZONE+zone_name);
         //获取响应结果
         String response = service.type(MediaType.APPLICATION_JSON).put(String.class, json);
         return response;
@@ -164,7 +169,7 @@ public class HuaweiWorker {
 	    //创建Jersery客户端对象
         Client client = Client.create(config);
         //连接服务器
-        WebResource service = client.resource(DELETE_ZONE);
+        WebResource service = client.resource(DELETE_ZONE+zone_name);
         //获取响应结果
         service.type(MediaType.APPLICATION_JSON).delete();
         return "SUCCESS";
@@ -203,11 +208,13 @@ public class HuaweiWorker {
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
-	    buildConfig(DELETE_DIVERT+File.separator+zone_ip,config);
+	    buildConfig(DELETE_DIVERT+zone_ip,config);
+	    String conf = DELETE_DIVERT+zone_ip;
+	    System.err.println(conf);
 	    //创建Jersery客户端对象
         Client client = Client.create(config);
         //连接服务器
-        WebResource service = client.resource(DELETE_DIVERT);
+        WebResource service = client.resource(DELETE_DIVERT+zone_ip);
         //获取响应结果
         service.type(MediaType.APPLICATION_JSON).delete();
         return "SUCCESS";
@@ -281,7 +288,5 @@ public class HuaweiWorker {
         }
 	}
 	
-	public static void main(String[] args) throws UnsupportedEncodingException {
-		
-	}
+	
 }
