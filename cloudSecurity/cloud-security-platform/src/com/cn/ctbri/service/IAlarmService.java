@@ -78,5 +78,6 @@ public interface IAlarmService {
 	 *       @time 2015-1-30
 	 * 返回值    ：List<Alarm>
 	 */
-	List<Alarm> findAlarmByTaskId(int TaskId);
+	List<AlarmDDOS> findAlarmByTaskId(int TaskId);
+    List<AlarmDDOS> findEndAlarmByTaskId(int taskId);
 }

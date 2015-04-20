@@ -23,7 +23,7 @@ public interface ITaskHWService {
 
     OrderIP getIpByTaskId(int order_ip_id);
 
-	List findAlarmbyTaskhw(Map<String, Object> map);
+	List<TaskHW> findAlarmbyTaskhw(Map<String, Object> map);
 
 
 
