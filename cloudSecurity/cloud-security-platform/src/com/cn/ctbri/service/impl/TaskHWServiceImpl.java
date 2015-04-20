@@ -42,7 +42,7 @@ public class TaskHWServiceImpl implements ITaskHWService{
         return taskhwDao.getIpByTaskId(order_ip_id);
     }
 
-	public List findAlarmbyTaskhw(Map<String, Object> map) {
+	public List<TaskHW> findAlarmbyTaskhw(Map<String, Object> map) {
 		return this.taskhwDao.findAlarmbyTaskhw(map);
 	}
 
