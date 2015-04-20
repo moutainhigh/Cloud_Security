@@ -90,5 +90,6 @@ public interface AlarmDao {
 	 * 参数描述：int taskid
 	 * 返回值    ：List<Alarm>
 	 */
-	public List<Alarm> findAlarmByTaskId(int taskid);
+	public List<AlarmDDOS> findAlarmByTaskId(int taskid);
+    public List<AlarmDDOS> findEndAlarmByTaskId(int taskId);
 }
