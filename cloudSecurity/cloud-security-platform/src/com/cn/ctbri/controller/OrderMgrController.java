@@ -403,10 +403,37 @@ public class OrderMgrController {
             request.setAttribute("isSuccess", true);
             //modify by txr 2015-03-27
             if(serviceId.equals("1")&&orderType.equals("1")){
-                Scheduler4Task task = new Scheduler4Task();
-                WebApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
-                task.setAc(ac);
-                task.setTaskByOrder(order); 
+//                Scheduler4Task task = new Scheduler4Task();
+//                WebApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
+//                task.setAc(ac);
+//                task.setTaskByOrder(order); 
+              //根据orderid 获取要扫描的订单详情集合
+                List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
+                //获取订单定制的服务信息
+                //Service s = orderDao.getTPLByServiceId();
+                //遍历订单详情  创建任务
+                for(OrderAsset oa : oaList){
+                    Task task = new Task();
+                    if(scanType.equals("1")){
+                        String hour = beginDate.substring(11, 13);
+                        String minute = beginDate.substring(14, 16);
+                        if(hour.equals("00")&&minute.compareTo("10")<0){
+                            String executeTime = beginDate.substring(0, 10).concat(" 00:10:00");
+                            task.setExecute_time(sdf.parse(executeTime));
+                        }else{
+                            String executeDay = beginDate.substring(0, 10).concat(" 00:10:00");
+                            SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
+                            Date executeTime = getAfterDate(sdf.parse(executeDay));
+                            task.setExecute_time(executeTime);
+                        }
+                    }
+                    
+                    task.setStatus(Integer.parseInt(Constants.TASK_START));
+                    //设置订单详情id
+                    task.setOrder_asset_Id(oa.getId());
+                    //插入一条任务数据  获取任务id
+                    int taskId = taskService.insert(task);
+                }
             }else if(serviceId.equals("3")||serviceId.equals("5")||orderType.equals("2")){//add by txr 2015-03-26
               //根据orderid 获取要扫描的订单详情集合
                 List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
@@ -460,6 +487,20 @@ public class OrderMgrController {
             e.printStackTrace();
         }
         //return "/source/page/order/order";
+    }
+    
+    /**
+     * 得到某个日期的后一天日期
+     * @param d
+     * @return
+     */
+    public Date getAfterDate(Date d){
+         Date date = d;
+         Calendar calendar = Calendar.getInstance();  
+         calendar.setTime(date);  
+         calendar.add(Calendar.DAY_OF_MONTH,1);  
+         date = calendar.getTime();  
+         return date;
     }
 	
 	/**

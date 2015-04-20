@@ -70,6 +70,7 @@ public class WarningController {
         paramMap.put("orderId", orderId);
         paramMap.put("type", type);
         List<Alarm> alarmList = alarmService.getAlarmByOrderId(paramMap);
+        request.setAttribute("aList", alarmList.size());
         int serviceId=0 ;
         request.setAttribute("orderList", orderList);
         /** 获取告警次数  dyy*/
@@ -472,8 +473,13 @@ public class WarningController {
         AlarmDDOS alarmDDOS = null;
         if(alarmDDOSsList!=null &&alarmDDOSsList.size()>0){
         	alarmDDOS = alarmDDOSsList.get(0);
-        	alarmDDOS.setAlarmTime(DateUtils.dateToString(alarmDDOS.getAlarm_time()));
-        	alarmDDOS.setStartTime(DateUtils.dateToString(alarmDDOS.getStart_time()));
+        	if(alarmDDOS.getStart_time_alert()!=null){
+        	    alarmDDOS.setAlarmTime(DateUtils.dateToString(alarmDDOS.getStart_time_alert()));
+        	}
+        	if(alarmDDOS.getStart_time_attack()!=null){
+        	    alarmDDOS.setStartTime(DateUtils.dateToString(alarmDDOS.getStart_time_attack()));
+        	}
+        	
         }
         request.setAttribute("orderList", orderList);
         request.setAttribute("IPList", IPList);
