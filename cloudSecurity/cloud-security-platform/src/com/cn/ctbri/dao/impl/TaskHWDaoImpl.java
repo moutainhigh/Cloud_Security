@@ -50,7 +50,7 @@ public class TaskHWDaoImpl extends DaoCommon implements TaskHWDao {
     }
 
 
-	public List findAlarmbyTaskhw(Map<String, Object> map) {
+	public List<TaskHW> findAlarmbyTaskhw(Map<String, Object> map) {
 		return getSqlSession().selectList(ns+"findAlarmbyTaskhw", map);
 	}
 

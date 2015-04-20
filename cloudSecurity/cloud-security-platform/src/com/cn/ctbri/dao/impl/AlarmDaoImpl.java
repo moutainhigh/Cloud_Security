@@ -129,7 +129,15 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
 	 * 参数描述：int taskid
 	 * 返回值    ：List<Alarm>
 	 */
-	public List<Alarm> findAlarmByTaskId(int taskId) {
+	public List<AlarmDDOS> findAlarmByTaskId(int taskId) {
 		return getSqlSession().selectList(ns+"findAlarmByTaskId1", taskId);
 	}
+	/**
+     * 功能描述：根据任务id查询有结束时间的任务告警信息
+     * 参数描述：int taskid
+     * 返回值    ：List<Alarm>
+     */
+    public List<AlarmDDOS> findEndAlarmByTaskId(int taskId) {
+        return getSqlSession().selectList(ns+"findEndAlarmByTaskId", taskId);
+    }
 }
