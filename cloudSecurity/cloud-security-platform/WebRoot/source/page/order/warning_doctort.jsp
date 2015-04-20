@@ -176,16 +176,23 @@ function historicalDetails(){
 	            <td>${taskWarn.msg}</td>
 	          </tr>
           </c:forEach>
+          
         </tbody>
       </table>
     </div>
     <div class="web_data">
     	<div class="web_detail_title">敏感词告警统计</div>
+    <c:forEach var="a" items="${alarm}" >
        <div class="web_topbox">
            <div class="web_datal">
-            	<p>监测URL：<span>www.testfire.net</span></p>
-                <p>监测频率：<span>15min</span></p>
-                <p>得分：<span>18分</span></p>
+            	<p>监测URL：<span>${a.url}</span></p>
+                <p>监测频率：<span>
+                			<c:if test="${a.scan_type==1}">每天</c:if>
+                			<c:if test="${a.scan_type==2}">每周</c:if>
+                			<c:if test="${a.scan_type==3}">每月</c:if>
+                		  </span>
+                </p>
+                <p>得分：<span>${a.score}分</span></p>
             </div>
             <div class="web_datac">
            	  <div class="web_way">
@@ -222,47 +229,7 @@ function historicalDetails(){
                 </div>
             </div>
         </div>
-        <div>
-           <div class="web_datal">
-            	<p>监测URL：<span>www.testfire.net</span></p>
-                <p>监测频率：<span>15min</span></p>
-                <p>得分：<span>18分</span></p>
-            </div>
-            <div class="web_datac">
-           	  <div class="web_way">
-                	<input type="button" value="今日" class="scan web_scan" />
-                    <input type="button" value="昨日" class="scan web_scan web_scancur" />
-                    <input type="button" value="全部" class="scan web_scan" />
-                    <span class="webway_span">排列方式：</span>
-                    <input type="button" value="小时" class="scan web_scan" />
-                    <input type="button" value="天" class="scan web_scan web_scancur" />
-                    <input type="button" value="周" class="scan web_scan" />
-                </div>
-                <div class="web_box">
-           	    	<img src="${ctx}/source/images/mgdata.jpg" width="428" height="254" style="margin: 48px 0 0 20px;" />
-                </div>
-         </div>
-            <div class="web_datar">
-            	<p class="pxtitle">敏感词排行榜</p>
-                <div class="pxbox">
-                	<p><span class="pxboxL">111</span>专业删帖服务</p>
-                    <p><span class="pxboxL">102</span>水军军团招人</p>
-                    <p><span class="pxboxL">93</span>专业投票服务</p>
-                    <p><span class="pxboxL">84</span>删帖公司</p>
-                    <p><span class="pxboxL">75</span>招聘网络水军</p>
-                    <p><span class="pxboxL">66</span>水军兼职</p>
-                    <p><span class="pxboxL">57</span>清除网络负面信息</p>
-                    <p><span class="pxboxL">48</span>公关删除百度信息</p>
-                    <p><span class="pxboxL">39</span>水军招聘</p>
-                    <p><span class="pxboxL">15</span>公关负面信息处理</p>
-                    <p><span class="pxboxL">14</span>负面新闻信息删除</p>
-                    <p><span class="pxboxL">13</span>专业消除负面信息</p>
-                    <p><span class="pxboxL">12</span>专业负面信息处理</p>
-                    <p><span class="pxboxL">11</span>收费删帖</p>
-                    <p><span class="pxboxL">10</span>负面信息删除</p>
-                </div>
-            </div>
-        </div>
+        </c:forEach>
     </div>
   </div>
   

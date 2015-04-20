@@ -32,11 +32,13 @@ public class Alarm implements Serializable{
 	private long taskId;
 	//用户id
 	private int userId;
+	//检测频率vo
+	private int scan_type;//扫描类型(1：每天，2：每周，3：每月)
 	//告警统计分析VO字段
 	private int count;
-	//统计开始时间
+	//统计开始时间VO
 	private Date begin_datevo;
-	//统计结束时间
+	//统计结束时间VO
 	private Date end_datevo;
 	
 	public Date getBegin_datevo() {
@@ -207,6 +209,11 @@ public class Alarm implements Serializable{
 	public void setAlarm_type(String alarm_type) {
 		this.alarm_type = alarm_type;
 	}
-	
+	public int getScan_type() {
+		return scan_type;
+	}
+	public void setScan_type(int scan_type) {
+		this.scan_type = scan_type;
+	}
 
 }

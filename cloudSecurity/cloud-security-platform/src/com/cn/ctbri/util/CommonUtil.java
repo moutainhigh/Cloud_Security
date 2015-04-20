@@ -48,6 +48,14 @@ public class CommonUtil {
 		return (User) request.getSession().getAttribute("globle_user");
 	}
 	/**
+	 * 获取后台登录用户
+	 * @param request
+	 * @return
+	 */
+	public static User getAdmin_user(HttpServletRequest request){
+		return (User) request.getSession().getAttribute("admin_user");
+	}
+	/**
 	 * 创建一个bean，把数据封装到bean中返回
 	 * @param datas
 	 * @param clazz

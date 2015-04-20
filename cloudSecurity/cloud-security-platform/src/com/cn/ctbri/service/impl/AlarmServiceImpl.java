@@ -108,6 +108,10 @@ public class AlarmServiceImpl implements IAlarmService{
     	return alarmDao.findAlarmByTaskId(TaskId);
     	
     }
+
+	public List<Alarm> findSensitiveWordByOrderId(String orderId) {
+		return alarmDao.findSensitiveWordByOrderId(orderId);
+	}
     public List<AlarmDDOS> findEndAlarmByTaskId(int taskId) {
         return alarmDao.findEndAlarmByTaskId(taskId);
     }

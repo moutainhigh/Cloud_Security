@@ -118,6 +118,9 @@ public class WarningController {
             		}
             		
             	}
+            	//获取折线图信息
+            	List<Alarm> alarm = alarmService.findSensitiveWordByOrderId(orderId);
+            	request.setAttribute("alarm", alarm);
             	request.setAttribute("taskWarnList", taskWarnList);
         		request.setAttribute("assetList", assetList);
                 request.setAttribute("alarmList", alarmList);
@@ -444,12 +447,13 @@ public class WarningController {
         request.setAttribute("orderList", orderList);
        
         Task task = taskService.findBasicInfoByOrderId(orderId);
-        if(task.getExecute_time()!=null){
-            task.setExecuteTime( DateUtils.dateToString(task.getExecute_time()));
-        }
-        
-        if(task.getEnd_time()!=null){
-            task.setEndTime(DateUtils.dateToString(task.getEnd_time()));
+        if(task!=null){
+        	if(task.getExecute_time()!=null){
+        		task.setExecuteTime( DateUtils.dateToString(task.getExecute_time()));
+        	}
+        	if(task.getEnd_time()!=null){
+        		task.setEndTime(DateUtils.dateToString(task.getEnd_time()));
+        	}
         }
         
         request.setAttribute("task", task);
