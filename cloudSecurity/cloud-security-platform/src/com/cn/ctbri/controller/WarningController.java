@@ -457,7 +457,31 @@ public class WarningController {
         }
         
         request.setAttribute("task", task);
-        return "/source/page/order/warningtwo";
+        /**可用性 begin dyy*/
+        //获取告警信息
+    	List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(orderId);
+    	//处理时间Thu Apr 16 09:47:38 CST 2015=》年月日时分秒
+    	if(taskWarnList!=null){
+    		for(TaskWarn t : taskWarnList){
+    			t.setWarnTime(DateUtils.dateToString(t.getWarn_time()));
+    		}
+    	}
+    	request.setAttribute("taskWarnList", taskWarnList);
+        //可用率统计
+    	List<TaskWarn> listUseable = taskWarnService.findUseableByOrderId(orderId);
+    	request.setAttribute("listUseable", listUseable);
+        int serviceId=0 ;
+        HashMap<String, Object> order=new HashMap<String, Object>();
+        for(int i=0;i<orderList.size();i++){
+        	 order=(HashMap) orderList.get(i);
+        	 serviceId=(Integer) order.get("serviceId");
+        }
+        if(serviceId==5){
+        	return "/source/page/order/order_usable";
+        	/**end*/
+        }else{
+        	return "/source/page/order/warningtwo";
+        }
     }
     /**
      * 功能描述：结果报表页--安恒 
@@ -492,45 +516,4 @@ public class WarningController {
     	return "/source/page/order/order_warning";
     }
     
-    
-    /**
-     * 功能描述：结果报表页--篡改
-     * 邓元元
-     * 		@time 2015-4-14
-     */
-    @RequestMapping(value="doctortInit.html")
-    public String doctort(HttpServletRequest request){
-    	String orderId = request.getParameter("orderId");
-    	String type = request.getParameter("type");
-    	//获取折线图信息
-    	
-    	//获取告警信息
-    	List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(orderId);
-    	request.setAttribute("taskWarnList", taskWarnList);
-    	//获取订单信息
-        List orderList = orderService.findByOrderId(orderId);
-        request.setAttribute("orderList", orderList);
-        //获取对应资产
-        List assetList = orderAssetService.findAssetNameByOrderId(orderId);
-        request.setAttribute("assetList", assetList);
-        //基本信息（取的是平均值）
-        Task task = new Task();
-        if(Integer.parseInt(type)==1){
-            //长期查找最近的任务
-            task = taskService.findNearlyTask(orderId);
-        }else{
-            task = taskService.findBasicInfoByOrderId(orderId);
-        }
-        if(task.getBegin_time()!=null){
-            task.setBeginTime( DateUtils.dateToString(task.getBegin_time()));
-        }
-        if(task.getEnd_time()!=null){
-            task.setEndTime(DateUtils.dateToString(task.getEnd_time())); 
-        }
-        if(task.getExecute_time()!=null){
-            task.setExecuteTime(DateUtils.dateToString(task.getExecute_time())); 
-        }
-        request.setAttribute("task", task);
-    	return "/source/page/order/warning_doctort";
-    }
 }
