@@ -84,6 +84,49 @@ public class WarningController {
         }else{
             task = taskService.findBasicInfoByOrderId(orderId);
         }
+        //扫描时间
+        long diff= Long.parseLong(task.getScanTime());
+        long day=diff/(24*60*60*1000);
+        long hour=(diff/(60*60*1000)-day*24);
+        long min=((diff/(60*1000))-day*24*60-hour*60);
+        long s=(diff/1000-day*24*60*60-hour*60*60-min*60);
+        System.out.println(""+day+"天"+hour+"小时"+min+"分"+s+"秒");
+        String scanTime="";
+        if(day!=0l){
+            scanTime = scanTime + day+"天";
+        }
+        if(hour!=0l){
+            scanTime = scanTime + hour+"小时";
+        }
+        if(min!=0l){
+            scanTime = scanTime + min+"分";
+        }
+        if(s!=0l){
+            scanTime = scanTime + s+"秒";
+        }
+        request.setAttribute("scanTime", scanTime);
+        //sendBytes
+        long sendBytes= Long.parseLong(task.getSendBytes());
+        long MB=sendBytes/1024;
+        System.out.println(""+sendBytes+"MB");
+        String send="";
+        if(MB!=0l){
+            send = send + MB +"MB";
+        }else{
+            send = task.getSendBytes();
+        }
+        request.setAttribute("send", send);
+        //ReceiveBytes
+        long receiveBytes= Long.parseLong(task.getReceiveBytes());
+        long RMB=receiveBytes/1024;
+        System.out.println(""+receiveBytes+"MB");
+        String receive="";
+        if(RMB!=0l){
+            receive = receive + RMB +"MB";
+        }else{
+            receive = task.getReceiveBytes();
+        }
+        request.setAttribute("receive", receive);
         if(task.getBegin_time()!=null){
             task.setBeginTime( DateUtils.dateToString(task.getBegin_time()));
         }
