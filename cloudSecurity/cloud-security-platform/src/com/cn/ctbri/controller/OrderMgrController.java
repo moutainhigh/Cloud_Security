@@ -434,14 +434,14 @@ public class OrderMgrController {
                     //插入一条任务数据  获取任务id
                     int taskId = taskService.insert(task);
                 }
-            }else if(serviceId.equals("3")||serviceId.equals("5")||orderType.equals("2")){//add by txr 2015-03-26
+            }else if(serviceId.equals("3")||serviceId.equals("5")||serviceId.equals("4")||orderType.equals("2")){//add by txr 2015-03-26
               //根据orderid 获取要扫描的订单详情集合
                 List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
                 //获取订单定制的服务信息
                 //Service s = orderDao.getTPLByServiceId();
                 //遍历订单详情  创建任务
                 for(OrderAsset oa : oaList){
-                    Task task = new Task(); 
+                    Task task = new Task();
                     task.setExecute_time(begin_date);
                     task.setStatus(Integer.parseInt(Constants.TASK_START));
                     //设置订单详情id
@@ -449,7 +449,7 @@ public class OrderMgrController {
                     //插入一条任务数据  获取任务id
                     int taskId = taskService.insert(task);
                 }
-            }else if((serviceId.equals("2")||serviceId.equals("4"))&&orderType.equals("1")){
+            }else if(serviceId.equals("2")&&orderType.equals("1")){
                 List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
                 for(OrderAsset oa : oaList){
                     Task task = new Task(); 
