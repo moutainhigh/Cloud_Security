@@ -70,7 +70,7 @@
     
     <!-- Timer schedule -->
     <!--要调度的对象-->
-    <bean id="taskHWJobBean" class="com.cn.ctbri.scheduler.HuaweiScheduler4Task" />
+    <!-- <bean id="taskHWJobBean" class="com.cn.ctbri.scheduler.HuaweiScheduler4Task" />
     <bean id="taskHWJobDetail"
         class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="taskHWJobBean" />
@@ -81,11 +81,11 @@
         class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="taskHWJobDetail" />
         <property name="cronExpression" value="0 0/1 * * * ?" />
-    </bean>
+    </bean> -->
     
     
     <!-- 将lazy-init='false'那么容器启动就会执行调度程序   -->
-    <bean id="startQuertz"
+    <!-- <bean id="startQuertz"
         class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
         lazy-init="false">
         <property name="triggers">
@@ -93,5 +93,5 @@
                 <ref bean="taskHWTrigger" />
             </list>
         </property>
-    </bean>
+    </bean> -->
 </beans>  
