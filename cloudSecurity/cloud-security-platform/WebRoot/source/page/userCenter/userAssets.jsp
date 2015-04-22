@@ -103,7 +103,7 @@ $(document).ready(function(){
               <c:if test="${asset.status==1}">
             <td><div class="zican_wei">已验证</div></td>
               </c:if>
-            <td><div class="zc_edit" id="${asset.id}" name="${asset.name}" addr="${asset.addr}">修改</div>
+            <td><div class="zc_edit" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" >修改</div>
               <div class="zican_bottom"><a href="javascript:void(0)" onclick="deleteAsset('${asset.id}')" >删除</a></div></td>
           </tr>
           </c:forEach>

@@ -7,7 +7,7 @@
 .brtop {border-top: 1px solid #1d7ad9;}
 .left_nav_box {border: 1px solid #4593fd;background:#4593fd;}
 .whitebg .lntitle,.whitebg .lndetail a,.whitebg .lndetail{color:#4593fd;}
-.lndetailtitle,.aider_top h1,.aider_bang a,.login_title li.cur,.forget_pass,.user_left h2,.user_name a,.center_bottom_number,.center_bottom_txt a,.zhangd_table table tr td span,.zhangd_div,.zican_top,.zican_bottom,.txt_1 p a,.ding_nav ul li.ding_active a,.user_wanc,.acur,.bigfont,.propercent{color: #4593fd;}
+.lndetailtitle,.aider_top h1,.aider_bang a,.login_title li.cur,.forget_pass,.user_left h2,.user_name a,.center_bottom_number,.center_bottom_txt a,.zhangd_table table tr td span,.zhangd_div,.zican_top,.zican_bottom,.txt_1 p a,.ding_nav ul li.ding_active a,.user_wanc,.acur,.bigfont,.propercent,.zican_top, .zc_edit,.zican_bottom a{color: #4593fd;}
 .web_fuwu h1,.anti_fuwu h1{color: #666;}
 .subnav ol li.active {background: url("../images/dian_1.jpg") no-repeat scroll 0% 0% transparent;}
 .web_input input,.pei_ul_1 li.pei_active {border: 2px solid #4593fd;}

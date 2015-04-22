@@ -64,7 +64,7 @@ select.ser_input{height:38px;line-height:38px;width:262px;color:#888888;font-siz
 .data_choose label{font-size:16px;color:#888;padding-right:6px;line-height:28px;}
 .data_choose select{height:28px;line-height:28px;margin-right:10px;border:1px solid #e0e0e0;}
 .se_big{width:138px;  display: inline-block;  margin-right: 15px; width: 138px}
-.se_small{width:108px;}
+.se_small{width:145px;}
 .data_choose .se_last{margin-right:24px;}
 .dd_select{background:url(../adminImages/b_search_bg.jpg);width:82px;height:32px;cursor:pointer;}
 .data_detail{border:1px solid #e0e0e0;width:1098px;height:352px;margin-bottom:30px;}
