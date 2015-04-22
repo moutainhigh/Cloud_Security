@@ -25,7 +25,14 @@ public class TaskWarn{
     private int count;//告警次数vo
     private String warnTime;//VO
     private String level;//描述 告警等级高中低
-    public String getLevel() {
+    private int scan_type;//检测频率VO
+    public int getScan_type() {
+		return scan_type;
+	}
+	public void setScan_type(int scan_type) {
+		this.scan_type = scan_type;
+	}
+	public String getLevel() {
 		return level;
 	}
 	public void setLevel(String level) {

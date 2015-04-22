@@ -33,7 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 		<!-- 根据订单id查询可用率统计 -->
 	<select id="findUseableByOrderId" parameterType="String" resultMap="TaskWarnRM">
-		SELECT tw.* 
+		SELECT tw.*,oa.scan_type
 		FROM cs_order_asset oa,cs_task t,cs_taskwarn tw
 		WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND tw.task_id=t.taskId
 		GROUP BY tw.url

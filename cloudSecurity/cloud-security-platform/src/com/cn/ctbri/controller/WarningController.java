@@ -15,14 +15,19 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import se.akerfeldt.com.google.gson.Gson;
 
 import com.cn.ctbri.constant.WarnType;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.AlarmDDOS;
+import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.service.IAlarmDDOSService;
@@ -73,6 +78,7 @@ public class WarningController {
         request.setAttribute("aList", alarmList.size());
         int serviceId=0 ;
         request.setAttribute("orderList", orderList);
+        request.setAttribute("assetList", assetList);
         /** 获取告警次数  dyy*/
         TaskWarn taskCount = taskWarnService.findTaskWarnCountByOrderId(orderId);
         request.setAttribute("count", taskCount.getCount());
@@ -151,31 +157,83 @@ public class WarningController {
             return "/source/page/order/order_warning";
         	
         }else{//华为的服务
-        	if(serviceId==3){/**篡改  dyy*/
-            	//获取告警信息
-            	List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(orderId);
-            	//处理时间Thu Apr 16 09:47:38 CST 2015=》年月日时分秒
-            	if(taskWarnList!=null){
-            		for(TaskWarn t : taskWarnList){
-            			t.setWarnTime(DateUtils.dateToString(t.getWarn_time()));
-            		}
-            		
-            	}
-            	//获取折线图信息
-            	List<Alarm> alarm = alarmService.findSensitiveWordByOrderId(orderId);
-            	request.setAttribute("alarm", alarm);
-            	request.setAttribute("taskWarnList", taskWarnList);
-        		request.setAttribute("assetList", assetList);
-                request.setAttribute("alarmList", alarmList);
-        		return "/source/page/order/warning_doctort"	;
+        	if(serviceId==1||serviceId==2||serviceId==3||serviceId==4||serviceId==5){
+        		switch (serviceId) {
+        		case 1:
+        		case 2:
+				case 3:/**篡改  dyy*/
+	        		//获取告警信息
+	            	List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(orderId);
+	            	//处理时间Thu Apr 16 09:47:38 CST 2015=》年月日时分秒
+	            	if(taskWarnList!=null){
+	            		for(TaskWarn t : taskWarnList){
+	            			t.setWarnTime(DateUtils.dateToString(t.getWarn_time()));
+	            		}
+	            	}
+	            	//获取：敏感词  折线图信息
+	            	List<Alarm> alarm = alarmService.findSensitiveWordByOrderId(orderId);
+	            	request.setAttribute("alarm", alarm);
+	            	request.setAttribute("taskWarnList", taskWarnList);
+	                request.setAttribute("alarmList", alarmList);
+	        		return "/source/page/order/warning_doctort"	;
+				case 4:/**关键字监测服务 dyy*/
+					//关键字告警信息
+					List<Alarm> keywordList = alarmService.findKeywordWarningByOrderId(orderId);
+					if(keywordList!=null){
+						for(Alarm a :keywordList){
+							a.setAlarmTime(DateUtils.dateToString(a.getAlarm_time()));
+						}
+					}
+					request.setAttribute("keywordList", keywordList);
+					//关键字 折线图 左侧信息
+					List<Alarm> alarmKeyWordList = alarmService.findSensitiveWordByOrderId(orderId);
+	            	request.setAttribute("alarmKeyWordList", alarmKeyWordList);
+					return "/source/page/order/warning_keyword"	;
+				default:
+					break;
+				}
         	}else{
 	        	request.setAttribute("assetList", assetList);
 	            request.setAttribute("alarmList", alarmList);
 	            return "/source/page/order/warning";
         	}
         }
+		return "";
     }
-    
+    /**
+	 * 功能描述：获取折线图信息
+	 *		 @time 2015-3-9
+	 */
+	@RequestMapping(value="getData.html" ,method = RequestMethod.POST)
+	@ResponseBody
+	public void getData(HttpServletRequest request,HttpServletResponse response,String orderId){
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("application/json;charset=UTF-8");
+		//获取带有关键字告警的url
+		List<Alarm> alarmKeyWordList = alarmService.findSensitiveWordByOrderId(orderId);
+    	//根据url查询折线图和orderId
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	List<Alarm> listRight = null;
+    	map.put("orderId", orderId);
+    	if(alarmKeyWordList!=null){
+    		for(Alarm a : alarmKeyWordList){
+    			String url = a.getUrl();
+    			map.put("url", url); 
+    			listRight = alarmService.findRightByOrderIdAndUrl(map);
+    		}
+    	}
+		Gson gson= new Gson();          
+		String resultGson = gson.toJson(listRight);//转成json数据
+		PrintWriter out;
+		try {
+			out = response.getWriter();
+			out.write(resultGson); 
+			out.flush(); 
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+	}
     /**
      * 功能描述： 历史记录  dyy查询所有时间
      * 参数描述：  无
@@ -471,6 +529,8 @@ public class WarningController {
             e.printStackTrace();
         }
     }
+    //获取折线图数据
+    
     /**
      * 功能描述：告警2扫描中状态
      * 邓元元

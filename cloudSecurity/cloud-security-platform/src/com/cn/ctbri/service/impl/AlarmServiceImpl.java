@@ -115,4 +115,10 @@ public class AlarmServiceImpl implements IAlarmService{
     public List<AlarmDDOS> findEndAlarmByTaskId(int taskId) {
         return alarmDao.findEndAlarmByTaskId(taskId);
     }
+	public List<Alarm> findKeywordWarningByOrderId(String orderId) {
+		return alarmDao.findKeywordWarningByOrderId(orderId);
+	}
+	public List<Alarm> findRightByOrderIdAndUrl(Map<String, Object> map) {
+		return alarmDao.findRightByOrderIdAndUrl(map);
+	}
 }

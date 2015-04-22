@@ -147,12 +147,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		GROUP BY b.name
 		ORDER BY  COUNT(b.name) DESC LIMIT 10
     </select>
-    <!-- 曲线图 -->
-    <select id="findSensitiveWordByOrderId" parameterType="String" resultMap="Alarm">
-    	SELECT a.url,a.score, oa.scan_type AS scan_type,COUNT(a.url) AS count
+    <!-- 曲线图左侧信息 -->
+    <select id="findLeftByOrderId" parameterType="String" resultMap="Alarm">
+    	SELECT a.url,a.score, oa.scan_type AS scan_type
 		FROM cs_alarm a ,cs_order_asset oa,cs_task t 
 		WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=a.taskId
 		GROUP BY a.url
+		ORDER BY a.alarm_time
+    </select>
+    <!-- 曲线图信息 
+    	SELECT a.alarm_time,COUNT(a.alarm_time) AS COUNT
+		FROM cs_alarm a ,cs_order_asset oa,cs_task t 
+		WHERE a.url='http://www.sinosoft.com.cn:80/' AND oa.orderId=3878547788 AND oa.id=t.order_asset_Id AND t.taskId=a.taskId
+		GROUP BY a.alarm_time
+		ORDER BY a.alarm_time
+    -->
+    <select id="findRightByOrderIdAndUrl" parameterType="hashmap" resultMap="Alarm">
+		SELECT a.alarm_time,COUNT(a.alarm_time) AS count
+		FROM cs_alarm a ,cs_order_asset oa,cs_task t 
+		WHERE a.url=#{url} AND oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=a.taskId
+		GROUP BY a.alarm_time
+		ORDER BY a.alarm_time
     </select>
     <!-- 根据任务id查询告警 -->
 	<select id="findAlarmByTaskId1" parameterType="int" resultType="com.cn.ctbri.entity.AlarmDDOS">
@@ -164,5 +179,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findEndAlarmByTaskId" parameterType="int" resultType="com.cn.ctbri.entity.AlarmDDOS">
         select * from cs_alarmhuawei a
         where a.taskId = #{taskId} order by a.end_time desc limit 1
+    </select>
+    <!-- 根据orderid查询关键字告警信息 -->
+    <select id="findKeywordWarningByOrderId" parameterType="String" resultMap="Alarm">
+    	SELECT a.*
+		FROM cs_order_asset oa ,cs_task t,cs_alarm a
+		WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=a.taskId
     </select>
 </mapper>

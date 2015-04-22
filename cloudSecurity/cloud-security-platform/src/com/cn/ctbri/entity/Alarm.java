@@ -32,6 +32,8 @@ public class Alarm implements Serializable{
 	private long taskId;
 	//用户id
 	private int userId;
+	//关键字
+	private String keyword;
 	//检测频率vo
 	private int scan_type;//扫描类型(1：每天，2：每周，3：每月)
 	//告警统计分析VO字段
@@ -40,7 +42,21 @@ public class Alarm implements Serializable{
 	private Date begin_datevo;
 	//统计结束时间VO
 	private Date end_datevo;
+	//告警时间VO
+	private String alarmTime;
 	
+	public String getAlarmTime() {
+		return alarmTime;
+	}
+	public void setAlarmTime(String alarmTime) {
+		this.alarmTime = alarmTime;
+	}
+	public String getKeyword() {
+		return keyword;
+	}
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
 	public Date getBegin_datevo() {
 		return begin_datevo;
 	}

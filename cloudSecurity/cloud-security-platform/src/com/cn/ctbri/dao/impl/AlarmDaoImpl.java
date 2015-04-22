@@ -134,7 +134,7 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
 	}
 	//敏感词折线图统计
 	public List<Alarm> findSensitiveWordByOrderId(String orderId) {
-		return getSqlSession().selectList(ns+"findSensitiveWordByOrderId", orderId);
+		return getSqlSession().selectList(ns+"findLeftByOrderId", orderId);
 	}
 	/**
      * 功能描述：根据任务id查询有结束时间的任务告警信息
@@ -144,4 +144,15 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
     public List<AlarmDDOS> findEndAlarmByTaskId(int taskId) {
         return getSqlSession().selectList(ns+"findEndAlarmByTaskId", taskId);
     }
+    /**
+     * 功能描述：根据orderid查询告警信息
+     * 参数描述：String orderId
+     * 返回值    ：List<Alarm>
+     */
+	public List<Alarm> findKeywordWarningByOrderId(String orderId) {
+		return getSqlSession().selectList(ns+"findKeywordWarningByOrderId", orderId);
+	}
+	public List<Alarm> findRightByOrderIdAndUrl(Map<String, Object> map) {
+		return getSqlSession().selectList(ns+"findRightByOrderIdAndUrl", map);
+	}
 }

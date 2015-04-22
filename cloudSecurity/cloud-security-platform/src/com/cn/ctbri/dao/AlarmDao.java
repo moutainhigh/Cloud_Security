@@ -94,4 +94,6 @@ public interface AlarmDao {
     public List<AlarmDDOS> findEndAlarmByTaskId(int taskId);
 	//敏感词统计折线图
 	public List<Alarm> findSensitiveWordByOrderId(String orderId);
+	public List<Alarm> findKeywordWarningByOrderId(String orderId);
+	public List<Alarm> findRightByOrderIdAndUrl(Map<String, Object> map);
 }
