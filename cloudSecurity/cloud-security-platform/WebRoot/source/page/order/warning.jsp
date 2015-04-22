@@ -193,14 +193,14 @@ function seedetail1(e) {
             	<div class="detail_title">基本信息</div>
                 <P class="formalinfo"><span class="infotitle">开始时间</span><span>${task.executeTime}</span></P>
                 <P class="formalinfo"><span class="infotitle">结束时间</span><span>${task.endTime}</span></P>
-                <P class="formalinfo"><span class="infotitle">扫描时长</span><span>${task.scanTime}</span></P>
+                <P class="formalinfo"><span class="infotitle">扫描时长</span><span>${scanTime}</span></P>
                 <P class="formalinfo"><span class="infotitle2">已经发现弱点数</span><span>${task.issueCount}个</span></P>
                 <P class="formalinfo"><span class="infotitle2">请求次数</span><span>${task.requestCount}次</span></P>
                 <P class="formalinfo"><span class="infotitle2">URL个数</span><span>${task.urlCount}个</span></P>
                 <P class="formalinfo"><span class="infotitle2">平均响应时间</span><span>${task.averResponse}毫秒</span></P>
                 <P class="formalinfo"><span class="infotitle2">每秒访问个数</span><span>${task.averSendCount}个</span></P>
-                <P class="formalinfo"><span class="infotitle2">发送字节</span><span>${task.sendBytes}</span></P>
-                <P class="formalinfo"><span class="infotitle2">接收字节</span><span>${task.receiveBytes}</span></P>                  
+                <P class="formalinfo"><span class="infotitle2">发送字节</span><span>${send}</span></P>
+                <P class="formalinfo"><span class="infotitle2">接收字节</span><span>${receive}</span></P>                  
             </div>
         </div>
         <c:if test="${order.type==1}"><!-- 单次订单不显示趋势图 -->
