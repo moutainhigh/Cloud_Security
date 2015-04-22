@@ -152,7 +152,8 @@ $(function(){
     		$(".network").hide();
     	}
     	var index = serviceId-1;
-    	if(serviceId==2 || serviceId ==4){
+//    	if(serviceId==2 || serviceId ==4){
+    	if(serviceId==2){
     		var scanDate=$('input[name="scanType'+index+'"]').val();
     	}else{
     		var scanType=$('input:radio[name="scanType'+index+'"]:checked').val();
@@ -170,7 +171,8 @@ $(function(){
     		typeName="长期";
     	}
     	var scanName=null;
-    	if(serviceId==2 || serviceId ==4){
+//    	if(serviceId==2 || serviceId ==4){
+    	if(serviceId==2){
     		scanName=scanDate;
     	}else if(serviceId==1){
     		if(scanType==1){
@@ -304,7 +306,8 @@ $(function(){
     	var endDate=$('#endDate').val();
     	var serviceId=$('.peiz_active').attr("id");
     	var index = serviceId-1;
-    	if(serviceId==2 || serviceId ==4){
+//    	if(serviceId==2 || serviceId ==4){
+        if(serviceId==2){
     		var scanDate=$('input[name="scanType'+index+'"]').val();
     	}else{
     		var scanType=$('input:radio[name="scanType'+index+'"]:checked').val();
@@ -433,7 +436,8 @@ $(function(){
    		$(".leftTr"+index+" input:checkbox[name='serviceAssetId']:checked").each(function(){
    			assetIds = assetIds + $(this).parent().siblings('input').attr("value") + ",";
 		});
-   		if(serviceId==2 || serviceId ==4){
+//   		if(serviceId==2 || serviceId ==4){
+   		if(serviceId==2){
     		var scanDate=$('input[name="scanType'+index+'"]').val();
     	}else{
     		var scanType=$('input:radio[name="scanType'+index+'"]:checked').val();
