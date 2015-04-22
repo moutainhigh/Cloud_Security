@@ -20,6 +20,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/warning.js"></script>
+<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript">
 $(function () {
 	getData();
@@ -112,7 +113,7 @@ function seedetail1(e) {
                    <li><a href="${ctx}/index.html">首页</a></li>
                    <li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
                    <li><a href="aider.html">在线帮助</a></li>
-                   <li style="border-right:1px solid #11871d;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
+                   <li class="list_active" style="border-right:1px solid #11871d;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
                </ul>
            </div>
         </div>
@@ -238,7 +239,7 @@ function seedetail1(e) {
 	            </tr>
 	            
 	          <tr  class="detailbox">
-                <td colspan="6"><div  class="zhangd_div">${alarm.advice } </div>
+                <td colspan="6"><div  class="zhangd_div2">${alarm.advice } </div>
                  </td>
               </tr>
           </c:forEach>

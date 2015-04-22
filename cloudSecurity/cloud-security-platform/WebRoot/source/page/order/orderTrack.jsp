@@ -20,6 +20,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/tableDetail.js"></script>
+<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript">
 $.ajaxSetup({
     cache: false //关闭AJAX相应的缓存
@@ -65,7 +66,7 @@ $(document).ready(function(){
 <div class="user_center clear">
   <div class="user_left">
     <ul class="user_1">
-      <li style="font-size:16px; font-weight:500; line-height:28px; text-align:center;"><a  style="color:#45b62b; " href="${ctx}/userCenterUI.html">用户中心</a></li>
+      <li style="font-size:16px; font-weight:500; line-height:28px; text-align:center;"><a  style="color:#4593fd; " href="${ctx}/userCenterUI.html">用户中心</a></li>
       <li><a href="${ctx}/userDataUI.html">基本资料</a></li>
       <li><a href="${ctx}/userBillUI.html">我的账单</a></li>
       <li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>

@@ -12,6 +12,7 @@
 <link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/filter.js"></script>
+<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript">
 $(document).ready(function(){
 	var serviceId = ${serviceId};

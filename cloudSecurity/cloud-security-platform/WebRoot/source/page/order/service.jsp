@@ -13,6 +13,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/order.js"></script>
+<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 </head>
       <!-- 漏洞扫描服务-->
       <div class="peiz_cont" style="display:block;">
