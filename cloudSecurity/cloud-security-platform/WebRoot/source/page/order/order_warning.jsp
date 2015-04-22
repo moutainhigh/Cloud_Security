@@ -55,7 +55,7 @@
                    <li><a href="${ctx}/index.html">首页</a></li>
                    <li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
                    <li><a href="aider.html">在线帮助</a></li>
-                   <li style="border-right:1px solid #11871d;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
+                   <li style="border-right:1px solid #1369C0;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
                </ul>
            </div>
         </div>

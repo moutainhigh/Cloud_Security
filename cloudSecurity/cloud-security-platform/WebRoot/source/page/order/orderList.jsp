@@ -9,7 +9,7 @@
 %>
         <c:forEach var="list" items="${orderList}" varStatus="status">
            <tr>
-             <td><a href="${ctx}/orderDetails.html?orderId=${list.id }" target="_blank">${list.id }</a></td>
+             <td><a class="listnumber" href="${ctx}/orderDetails.html?orderId=${list.id }" target="_blank">${list.id }</a></td>
              <td>
                  <c:if test="${list.type==1}">长期</c:if>
                  <c:if test="${list.type==2}">单次</c:if> 

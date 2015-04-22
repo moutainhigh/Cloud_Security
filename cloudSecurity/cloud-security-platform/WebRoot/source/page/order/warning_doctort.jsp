@@ -101,7 +101,7 @@ function historicalDetails(){
                    <li><a href="${ctx}/index.html">首页</a></li>
                    <li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
                    <li><a href="aider.html">在线帮助</a></li>
-                   <li style="border-right:1px solid #11871d;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
+                   <li style="border-right:1px solid #1369C0;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
                </ul>
            </div>
         </div>
@@ -126,12 +126,14 @@ function historicalDetails(){
 		            <input type="hidden" value="${order.type }" id="type"/>
 		            <p><span class="bigfont">${order.name }</span>
 		            <span>(  订单编号：${order.id }  )</span>
-		            </p>            
-		            <p>资产：<span class="asset">
+		            </p>  
+		            <div style="overflow:hidden;">
+		            <div style="float:left">资产：</div>
+		            <div style="float:left">
 		            <c:forEach var="asset" items="${assetList}" varStatus="status">
-		            <span class="assets">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
+		            <span class="asset" style="display:block">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
 		            </c:forEach>
-		            </span></p>
+		            </div></div>          
 		        </div>
           </c:forEach>
         </div>

@@ -99,7 +99,7 @@ function historicalDetails(){
                    <li><a href="${ctx}/index.html">首页</a></li>
                    <li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
                    <li><a href="aider.html">在线帮助</a></li>
-                   <li class="list_active" style="border-right:1px solid #11871d;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
+                   <li class="list_active" style="border-right:1px solid #1369C0;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
                </ul>
            </div>
         </div>
@@ -108,8 +108,8 @@ function historicalDetails(){
 <!-- 头部代码结束-->
 <div class="user_center clear">
     <!-- 告警详情-->
-     <div class="user_right" >
-    	<div class="gj_top">
+     <div class="user_right" style="width:1106px;">
+    	<div class="gj_top" style="width:1054px">
         	<a href="#" class="aelse">订单跟踪</a>　>　<a href="#" class="acur">告警详情</a>
      </div>
         <c:forEach var="order" items="${orderList}" varStatus="status">
@@ -127,10 +127,15 @@ function historicalDetails(){
               <!--   <a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank"><span style="float:right; margin-right:30px; dispiay:inline-block;color:#999; ">历史记录</span></a>
              	 -->
             </c:if>
-            </p>            
-            <p>资产：<span>
-            <c:forEach var="asset" items="${assetList}" varStatus="status">${asset.name }&nbsp;&nbsp;(${asset.addr })</c:forEach>
-            </span></p>
+            </p>
+            <div style="overflow:hidden;">
+            <div style="float:left">资产：</div>
+            <div style="float:left">
+            <c:forEach var="asset" items="${assetList}" varStatus="status">
+            <span class="asset" style="display:block">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
+            </c:forEach>
+            </div></div>  
+               
         </div>
         <div class="process">
        	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span>
@@ -180,7 +185,6 @@ function historicalDetails(){
       </table>
     </div>
   </div>
-  
 </div>
 <!-- 尾部代码开始-->
 <div class="bottom_bj">
@@ -218,7 +222,6 @@ function historicalDetails(){
 <li>如未经授权用作他处，将保留追究侵权者法律责任的权利。<br />
   京ICP备11111111号-4 / 京ICP证1111111号<br />
   北京市公安局朝阳分局备案编号:110105000501</li>
-</div>
 </div>
 </div>
 </div>

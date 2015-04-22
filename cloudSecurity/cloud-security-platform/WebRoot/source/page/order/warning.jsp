@@ -113,7 +113,7 @@ function seedetail1(e) {
                    <li><a href="${ctx}/index.html">首页</a></li>
                    <li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
                    <li><a href="aider.html">在线帮助</a></li>
-                   <li class="list_active" style="border-right:1px solid #11871d;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
+                   <li class="list_active" style="border-right:1px solid #1369C0;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
                </ul>
            </div>
         </div>
@@ -215,7 +215,7 @@ function seedetail1(e) {
        </c:forEach>
     <div class="zhangd_table">
         <div class="detail_title">漏洞说明</div>
-      <table class="ld_table">
+      <table class="ld_table" style="margin-bottom:0;width: 876px;">
         <tbody>                                                                                   
           <tr style="background:#e0e0e0; height:30px; line-height:30px;">
             <td style="width:8%;">编号</td>
@@ -224,18 +224,23 @@ function seedetail1(e) {
             <td  style="width:35%;">漏洞详情描述</td>
             <td  style="width:25%;">修复建议</td>
           </tr>
+        </tbody>
+      </table>
+      <div style="overflow:auto;height:400px;width:947px">
+      <table class="ld_table">
+        <tbody>           
           <c:forEach var="alarm" items="${alarmList}" varStatus="status">
 	          <tr>                                            
-	            <td>${status.index+1 }</td>
-	            <td>${alarm.name }</td>
-	            <td>
+	            <td style="width:8%;">${status.index+1 }</td>
+	            <td  style="width:22%;">${alarm.name }</td>
+	            <td  style="width:10%;">
 	               <c:if test="${alarm.level==0}">低</c:if>
                    <c:if test="${alarm.level==1}">中</c:if>
                    <c:if test="${alarm.level==2}">高</c:if> 
 	            </td>
-	            <td>${alarm.alarm_content }</td>
+	            <td  style="width:35%;">${alarm.alarm_content }</td>
 	           <!--  <td>${alarm.advice }</td> -->
-	            <td class="seedetail" value="0" name="${order.id}" onclick="seedetail1(this)"><span>查看建议</span></td>
+	            <td  style="width:25%;" class="seedetail" value="0" name="${order.id}" onclick="seedetail1(this)"><span>查看建议</span></td>
 	            </tr>
 	            
 	          <tr  class="detailbox">
@@ -247,6 +252,7 @@ function seedetail1(e) {
           
         </tbody>
       </table>
+      </div>
     </div>
   </div>
   

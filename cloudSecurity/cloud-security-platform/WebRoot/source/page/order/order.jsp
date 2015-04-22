@@ -34,7 +34,7 @@
           <li><a href="${ctx}/index.html">首页</a></li>
           <li><a href="###">我的订单</a></li>
           <li><a href="aider.html">在线帮助</a></li>
-          <li class="list_active" style="border-right:1px solid #11871d;">
+          <li class="list_active" style="border-right:1px solid #1369C0;">
      		<a href="${ctx}/userCenterUI.html">用户中心</a></li>
         </ul>
       </ul>
@@ -333,11 +333,27 @@
         <div><font class="assets_msg" style="color:red;float:right"></font></div>
         <div class="pinv">
           <h3>扫描频率</h3>
-          <div class="pinv_subnav">
+          <!-- <div class="pinv_subnav">
             <ul class="pinv_sub_nav">
               <li class="pinv_active">
                 <input style="background: url(${ctx}/source/images/user_ico_8.jpg) no-repeat; width:176px; height:30px;padding-left:4px;" type="text" value="" name="scanType3" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
               </li>
+            </ul>
+          </div> -->
+          <div class="pinv_subnav">
+            <ul class="pinv_sub_nav">
+              <li class="pinv_active">
+                <input type="radio" name="scanType3" value="1" id="30分钟" checked/>
+                &nbsp;&nbsp;30分钟</li>
+              <!-- <li>
+                <input type="radio" name="scanType2" value="2" id="1小时"/>
+                &nbsp;&nbsp;1小时</li>
+              <li>
+                <input type="radio" name="scanType2" value="3" id="2小时"/>
+                &nbsp;&nbsp;2小时</li>
+              <li>
+                <input type="radio" name="scanType2" value="4" id="1天"/>
+                &nbsp;&nbsp;1天</li> -->
             </ul>
           </div>
         </div>
