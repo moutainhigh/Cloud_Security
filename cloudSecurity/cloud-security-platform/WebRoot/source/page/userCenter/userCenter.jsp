@@ -10,6 +10,7 @@
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
+<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 </head>
 
 <body>
@@ -40,7 +41,7 @@
   <div class="user_left">
     <ul class="user_1">
       <li style="font-size:16px; font-weight:500; line-height:28px; text-align:center;">
-      	<a  style="color:#45b62b;" href="${ctx}/userCenterUI.html">用户中心</a>
+      	<a  style="color:#4593fd;" href="${ctx}/userCenterUI.html">用户中心</a>
       </li>
       <li><a href="${ctx}/userDataUI.html">基本资料</a></li>
       <li><a href="${ctx}/userBillUI.html">我的账单</a></li>

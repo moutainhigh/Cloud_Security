@@ -22,7 +22,7 @@
                 <td class="seedetail" value="0" name="${order.id}" onclick="seedetail(this)"><span>查看详情</span></td>
               </tr>
               <tr  class="detailbox">
-                <td colspan="6"><div  class="zhangd_div">
+                <td colspan="6"><div  class="zhangd_div2">
                     <div class="zhangd_ding"></div>
                                     服务对象资产个数&nbsp;&nbsp; &nbsp; <span id="${order.id}"></span> &nbsp;&nbsp; &nbsp; 
                           <c:if test="${order.type!=2}">         
