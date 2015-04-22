@@ -14,6 +14,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.metadata.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/login.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/regist.js"></script>
+<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript">
 $(document).ready(function(){
  var flag = '<%= request.getAttribute("flag") %>';
