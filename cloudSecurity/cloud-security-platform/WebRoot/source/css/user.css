@@ -10,7 +10,7 @@
 .user_2 li a{ color:#888;}
 
 
-.user_right{ float:left; width:1004px; border:1px solid #e0e0e0; min-height:500px;}
+.user_right{ float:left; width:1004px; border:1px solid #e0e0e0; min-height:500px;padding-bottom:20px;overflow:hidden;}
 .user_right_1{ float:left; width:1004px; border:1px solid #e0e0e0; min-height:500px; display:none;}
 
 .user_name{ width:300px; height:35px; position:absolute; left:450px; top:120px; line-height:35px;}
@@ -36,7 +36,7 @@
 /*基本资料代码*/
 /*我的账单代码*/
 .zhangd_table{ width:945px; color:9a9a9a; margin-left:35px;}
-.zhangd_table table{ width:945px; text-align:center;word-break: break-all; word-wrap: break-word; border-collapse:collapse; border:0;}
+.zhangd_table table{ width:945px; text-align:center;word-break: break-all; word-wrap: break-word; border-collapse:collapse; border:0;color:#666;}
 .zhangd_table table tr{ height:50px; line-height:50px; font-size:14px; border-bottom:1px solid #e0e0e0;}
 .zhangd_table table tr td span{ color:#49ad53; cursor:pointer;}
 .detailbox{display:none;}
