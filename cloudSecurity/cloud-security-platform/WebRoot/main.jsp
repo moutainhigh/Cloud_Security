@@ -13,6 +13,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/index.js"></script>
 <link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript">
     //首页广告页数据定时刷新,数据不去重
     function showUnreadNews()
@@ -121,7 +122,7 @@
                             <span class="ln_more">></span>
                             <p class="lndetail"></p>
                             <div class="lndetails">
-                               <div style="color:#666; font-size:28px; line-height:48px; margin-left:20px;"><font color="#399a34">建设中....</font></div>   
+                               <div style="color:#666; font-size:28px; line-height:48px; margin-left:20px;"><font color="#4593fd">建设中....</font></div>   
                                <!-- <div class="lndetails_line">
                                     <div class="fl lndetailtitle">热门厂商：</div>
                                     <div class="fl lndetaillist"><a href="#">中国电信</a><a href="#">奇虎360</a>     <a href="#">安恒</a></div>
@@ -139,7 +140,7 @@
                             <span class="ln_more">></span>
                             <p class="lndetail"></p>
                             <div class="lndetails" style="bottom:0;top:auto;">
-                                <div style="color:#666; font-size:28px; line-height:48px; margin-left:20px;"><font color="#399a34">建设中....</font></div>
+                                <div style="color:#666; font-size:28px; line-height:48px; margin-left:20px;"><font color="#4593fd">建设中....</font></div>
                                 <!--<div class="lndetails_line">
                                     <div class="fl lndetailtitle">热门厂商：</div>
                                     <div class="fl lndetaillist"><a href="#">中国电信</a><a href="#">奇虎360</a>     <a href="#">安恒</a></div>
