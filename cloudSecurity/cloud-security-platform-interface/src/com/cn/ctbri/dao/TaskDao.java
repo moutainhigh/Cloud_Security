@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskWarn;
 /**
  * 任务信息dao接口
  * @author googe
@@ -47,4 +49,8 @@ public interface TaskDao {
     public Date getNextScanTime(Map<String, Object> paramMap);
 
     public void updateTask(Task task);
+
+    public void insertTaskWarn(TaskWarn taskwarn);
+
+    public List<Task> getTaskStatus(Order order);
 }
