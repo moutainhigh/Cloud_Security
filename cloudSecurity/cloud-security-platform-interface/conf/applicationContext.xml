@@ -30,10 +30,13 @@
 		implementor="com.cn.ctbri.webservice.impl.GreetingServiceImpl" 
 		address="/GreetingService" />
      -->
+     
     <!-- 数据库配置文件位置 -->  
     <context:property-placeholder location="classpath:/jdbc.properties" /> 
     
-    <context:component-scan base-package="com.cn.ctbri" /> 
+    <context:component-scan base-package="com.cn.ctbri" />
+    
+    <bean id="taskService" class="com.cn.ctbri.service.impl.TaskServiceImpl" />
     
     <!-- 配置dbcp数据源 -->  
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
@@ -63,6 +66,7 @@
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">  
         <constructor-arg index="0" ref="sqlSessionFactory" />  
     </bean>
+    
 
     <!-- Timer schedule -->
     <!--要调度的对象-->
