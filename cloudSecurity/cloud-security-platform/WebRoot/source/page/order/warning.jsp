@@ -215,19 +215,19 @@ function seedetail1(e) {
        </c:forEach>
     <div class="zhangd_table">
         <div class="detail_title">漏洞说明</div>
-      <table class="ld_table" style="margin-bottom:0;width: 876px;">
+      <table class="ld_table" style="margin-bottom:0;width: 938px;margin-left: 0px;">
         <tbody>                                                                                   
           <tr style="background:#e0e0e0; height:30px; line-height:30px;">
             <td style="width:8%;">编号</td>
             <td  style="width:22%;">漏洞名称</td>
             <td  style="width:10%;">漏洞级别</td>
             <td  style="width:35%;">漏洞详情描述</td>
-            <td  style="width:25%;">修复建议</td>
+            <td  style="width:25%;">修复建议&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           </tr>
         </tbody>
       </table>
-      <div style="overflow:auto;height:400px;width:947px">
-      <table class="ld_table">
+      <div style="overflow:auto;height:400px;width:938px">
+      <table class="ld_table" style="width:921px;margin-left:0;">
         <tbody>           
           <c:forEach var="alarm" items="${alarmList}" varStatus="status">
 	          <tr>                                            
