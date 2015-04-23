@@ -186,4 +186,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM cs_order_asset oa ,cs_task t,cs_alarm a
 		WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=a.taskId
     </select>
+    <!-- 敏感词排行榜 -->
+    <select id="findKeywordByUrlAndOrderId" parameterType="hashmap" resultMap="Alarm">
+	    SELECT a.keyword 
+		FROM cs_order_asset oa,cs_task t, cs_alarm a
+		WHERE oa.orderId=#{orderId} AND a.url=#{url} AND oa.id=t.order_asset_Id AND t.taskId=a.taskId
+    </select>
 </mapper>

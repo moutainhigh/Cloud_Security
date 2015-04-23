@@ -85,5 +85,7 @@ public interface IAlarmService {
 	//告警统计--关键字
 	List<Alarm> findKeywordWarningByOrderId(String orderId);
 	List<Alarm> findRightByOrderIdAndUrl(Map<String, Object> map);
+	//敏感词排行榜
+	List<Alarm> findKeywordByUrlAndOrderId(Map<String, Object> map);
 	
 }

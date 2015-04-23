@@ -26,52 +26,6 @@
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/warning.js"></script>
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
-<script type="text/javascript">
-$(function () {
-	getData();
-	window.setInterval(getData,30000);
-});
-function getData(){
-	var orderId = $("#orderId").val();
- 		$.ajax({
-           type: "POST",
-           url: "/cloud-security-platform/scaning.html",
-           data: {"orderId":orderId},
-           dataType:"json",
-           success: function(data){
-          		var progress = data.progress;
-           		$("#bar1").html(progress+"%");
-           		$("#bar2").css("width", progress+"%");
-           		$("#bar2").html(progress+"%");
-           		$("#url").html("当前URL:"+data.currentUrl);
-           }
-        });
-}
-//加载模板下拉框选项 
-$(document).ready(function() {
-	var orderId = $("#orderId").val();
-	$.ajax({ 
-		type: "POST",
-		url: "/cloud-security-platform/getExecuteTime.html",
-        data: {"orderId":orderId},
-        dataType:"text",
-		success : function(result){
-			$("#execute_Time").append(result); 
-		} 
-	});
-}); 
-function historicalDetails(){
-	var orderId = $("#orderId").val();
-	var execute_Time = $("#execute_Time").val();
-	var type = $("#type").val();
-//	window.location.href = "${ctx}/historyInit.html?execute_Time="
-	//							+ execute_Time+"&orderId="+orderId;
-	window.open("${ctx}/historyInit.html?execute_Time="
-								+ execute_Time+"&orderId="+orderId+"&type="+type); 
-	
-
-}
-</script>
 </head>
 
 <body> 
@@ -214,21 +168,9 @@ function historicalDetails(){
             <div class="web_datar">
             	<p class="pxtitle">敏感词排行榜</p>
                 <div class="pxbox">
-                	<p><span class="pxboxL">111</span>专业删帖服务</p>
-                    <p><span class="pxboxL">102</span>水军军团招人</p>
-                    <p><span class="pxboxL">93</span>专业投票服务</p>
-                    <p><span class="pxboxL">84</span>删帖公司</p>
-                    <p><span class="pxboxL">75</span>招聘网络水军</p>
-                    <p><span class="pxboxL">66</span>水军兼职</p>
-                    <p><span class="pxboxL">57</span>清除网络负面信息</p>
-                    <p><span class="pxboxL">48</span>公关删除百度信息</p>
-                    <p><span class="pxboxL">39</span>水军招聘</p>
-                    <p><span class="pxboxL">15</span>公关负面信息处理</p>
-                    <p><span class="pxboxL">14</span>负面新闻信息删除</p>
-                    <p><span class="pxboxL">13</span>专业消除负面信息</p>
-                    <p><span class="pxboxL">12</span>专业负面信息处理</p>
-                    <p><span class="pxboxL">11</span>收费删帖</p>
-                    <p><span class="pxboxL">10</span>负面信息删除</p>
+                    <c:forEach items="${mapSortData}" var="keyword">
+                		<p><span class="pxboxL">${keyword.count}</span>${keyword.keyword}</p>
+                	</c:forEach>
                 </div>
             </div>
         </div>

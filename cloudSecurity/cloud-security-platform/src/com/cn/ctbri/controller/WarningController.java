@@ -5,9 +5,12 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +29,6 @@ import se.akerfeldt.com.google.gson.Gson;
 import com.cn.ctbri.constant.WarnType;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.AlarmDDOS;
-import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.service.IAlarmDDOSService;
@@ -38,7 +39,6 @@ import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
-
 /**
  * 创 建 人  ：  txr
  * 创建日期：  2015-2-2
@@ -146,7 +146,8 @@ public class WarningController {
         	 order=(HashMap) orderList.get(i);
         	 serviceId=(Integer) order.get("serviceId");
         }
-     
+        //获取关键字信息
+        
         if(serviceId==6||serviceId==7||serviceId==8){//DDOS
         	 List<AlarmDDOS> alarmDDosList = alarmService.getAlarmDdosByOrderId(paramMap);
         	request.setAttribute("ipList", IPList);
@@ -183,7 +184,19 @@ public class WarningController {
 				//关键字 折线图 左侧信息
 				List<Alarm> alarmKeyWordList = alarmService.findSensitiveWordByOrderId(orderId);
             	request.setAttribute("alarmKeyWordList", alarmKeyWordList);
-				return "/source/page/order/warning_keyword"	;
+				//敏感词排行榜(只适合一个资产)
+            	Map<String,Object> map = new HashMap<String, Object>();
+            	map.put("orderId", orderId);
+            	if(alarmKeyWordList!=null){
+            		for(Alarm a : alarmKeyWordList){
+            			String url = a.getUrl();
+            			map.put("url", url);
+            			List<Alarm> list = alarmService.findKeywordByUrlAndOrderId(map);
+            			List<Alarm> mapSortData = getSortData(list);
+            			request.setAttribute("mapSortData", mapSortData);
+            		}
+            	}
+            	return "/source/page/order/warning_keyword"	;
 			default: //1,2
 				request.setAttribute("assetList", assetList);
 	            request.setAttribute("alarmList", alarmList);
@@ -191,6 +204,70 @@ public class WarningController {
 			}
         }
     }
+    /**
+     * 格式转换
+     * @param list
+     * @return 
+     */
+	private List<Alarm> getSortData(List<Alarm> list) {
+		Map<String,Integer> map = new HashMap<String, Integer>();
+		if(list!=null){
+			for(Alarm ala : list){
+				//去掉[]
+				String keyword = ala.getKeyword().substring(1, ala.getKeyword().length()-1);
+				if(keyword.contains(",")){
+					String str[] = keyword.split(",");
+					int i;
+					for(i=0;i<str.length;i++){
+						String str1 = str[i].trim();
+						if(map.containsKey(str1)){
+							 int count=map.get(str1);
+							 map.put(str1, count+1);
+						}else{
+							map.put(str1, 1);
+						}
+					}
+				}else{
+					if(map.containsKey(keyword)){
+						 int count=map.get(keyword);
+						 map.put(keyword, count+1);
+					}else{
+						map.put(keyword, 1);
+					}
+				}
+			}
+		}
+		return sort(map);
+	}
+	public static List<Alarm> sort(Map<String,Integer> map){ 
+		List<Alarm> result = new ArrayList<Alarm>();
+	    List<Map.Entry<String, Integer>> infoIds = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());  
+	    Collections.sort(infoIds, new Comparator<Map.Entry<String, Integer>>() {    
+	        public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {    
+	            return (o2.getValue() - o1.getValue());    
+	        }    
+	    }); //排序 
+	    if(infoIds.size()<15){ //取前15个返回
+		    for (int i = 0; i < infoIds.size(); i++) {  
+		        Entry<String, Integer> entry = infoIds.get(i); 
+		        Alarm alarm = new Alarm();
+		        alarm.setKeyword(entry.getKey());
+		        alarm.setCount(entry.getValue());
+		        result.add(alarm);
+		        System.out.println(entry.getKey()+":"+entry.getValue()); 
+		        }
+		    }else{
+		    	for (int i = 0; i <15; i++) {   //输出 
+			        Entry<String, Integer> entry = infoIds.get(i); 
+			        Alarm alarm = new Alarm();
+			        alarm.setKeyword(entry.getKey());
+			        alarm.setCount(entry.getValue());
+			        result.add(alarm);
+			        System.out.println(entry.getKey()+":"+entry.getValue()); 
+			        }
+		    }
+		return result; 
+	} 
     /**
 	 * 功能描述：获取折线图信息
 	 *		 @time 2015-3-9

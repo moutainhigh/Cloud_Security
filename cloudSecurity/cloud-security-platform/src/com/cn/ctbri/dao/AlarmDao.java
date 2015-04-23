@@ -96,4 +96,5 @@ public interface AlarmDao {
 	public List<Alarm> findSensitiveWordByOrderId(String orderId);
 	public List<Alarm> findKeywordWarningByOrderId(String orderId);
 	public List<Alarm> findRightByOrderIdAndUrl(Map<String, Object> map);
+	public List<Alarm> findKeywordByUrlAndOrderId(Map<String, Object> map);
 }

@@ -121,4 +121,7 @@ public class AlarmServiceImpl implements IAlarmService{
 	public List<Alarm> findRightByOrderIdAndUrl(Map<String, Object> map) {
 		return alarmDao.findRightByOrderIdAndUrl(map);
 	}
+	public List<Alarm> findKeywordByUrlAndOrderId(Map<String, Object> map) {
+		return alarmDao.findKeywordByUrlAndOrderId(map);
+	}
 }

@@ -155,4 +155,7 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
 	public List<Alarm> findRightByOrderIdAndUrl(Map<String, Object> map) {
 		return getSqlSession().selectList(ns+"findRightByOrderIdAndUrl", map);
 	}
+	public List<Alarm> findKeywordByUrlAndOrderId(Map<String, Object> map) {
+		return getSqlSession().selectList(ns+"findKeywordByUrlAndOrderId", map);
+	}
 }

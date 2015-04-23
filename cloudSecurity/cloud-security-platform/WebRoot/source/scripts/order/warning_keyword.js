@@ -79,4 +79,46 @@ $(function() {
         	}
         },
     });
+    getData();
+	window.setInterval(getData,30000);
 }); 
+function getData(){
+	var orderId = $("#orderId").val();
+ 		$.ajax({
+           type: "POST",
+           url: "/cloud-security-platform/scaning.html",
+           data: {"orderId":orderId},
+           dataType:"json",
+           success: function(data){
+          		var progress = data.progress;
+           		$("#bar1").html(progress+"%");
+           		$("#bar2").css("width", progress+"%");
+           		$("#bar2").html(progress+"%");
+           		$("#url").html("当前URL:"+data.currentUrl);
+           }
+        });
+}
+//加载模板下拉框选项 
+$(document).ready(function() {
+	var orderId = $("#orderId").val();
+	$.ajax({ 
+		type: "POST",
+		url: "/cloud-security-platform/getExecuteTime.html",
+        data: {"orderId":orderId},
+        dataType:"text",
+		success : function(result){
+			$("#execute_Time").append(result); 
+		} 
+	});
+}); 
+function historicalDetails(){
+	var orderId = $("#orderId").val();
+	var execute_Time = $("#execute_Time").val();
+	var type = $("#type").val();
+//	window.location.href = "${ctx}/historyInit.html?execute_Time="
+	//							+ execute_Time+"&orderId="+orderId;
+	window.open("${ctx}/historyInit.html?execute_Time="
+								+ execute_Time+"&orderId="+orderId+"&type="+type); 
+	
+
+}
