@@ -21,8 +21,8 @@ public class CspContextListener implements ServletContextListener{
 	public void contextInitialized(ServletContextEvent sce) {
 		//启动华为设置UDP监听接口
 		WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(sce.getServletContext());
-		UdpServerSocket server = context.getBean("serverNetty", UdpServerSocket.class);
-		server.start();
+//		UdpServerSocket server = context.getBean("serverNetty", UdpServerSocket.class);
+//		server.start();
 		
 	}
 
