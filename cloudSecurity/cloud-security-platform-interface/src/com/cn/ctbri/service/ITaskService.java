@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskWarn;
 
 public interface ITaskService {
 	/**
@@ -37,4 +39,8 @@ public interface ITaskService {
     Date getNextScanTime(Map<String, Object> paramMap);
 
     void updateTask(Task task);
+
+    void insertTaskWarn(TaskWarn taskwarn);
+
+    List<Task> getTaskStatus(Order order);
 }
