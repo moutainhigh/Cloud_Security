@@ -41,5 +41,5 @@ public interface TaskDao {
 
     public Task findNearlyTask(String orderId);
 
-    public Task findByTaskId(String taskId);
+    public Task findTaskList(Map<String, Object> hisMap);
 }

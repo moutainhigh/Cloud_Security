@@ -317,7 +317,8 @@ public class WarningController {
         StringBuffer rsOption = new StringBuffer(); 
         for(Task t : taskTime){
         	String str = DateUtils.dateToString(t.getExecute_time());
-        	rsOption.append("<option value='"+t.getTaskId()+"'>"+str+"</option>"); 
+        	String str1=DateUtils.dateToString(t.getGroup_flag());
+        	rsOption.append("<option value='"+str1+"'>"+str+"</option>"); 
         }
         PrintWriter pout;
 		try {
@@ -512,6 +513,7 @@ public class WarningController {
         String orderId = request.getParameter("orderId");
         String type = request.getParameter("type");
         String taskId = request.getParameter("taskId");
+        String groupId=request.getParameter("groupId");
         //获取订单信息
         List orderList = orderService.findByOrderId(orderId);
         //获取对应资产
@@ -527,7 +529,10 @@ public class WarningController {
         int serviceId=0 ;
         request.setAttribute("orderList", orderList);
         /** 基本信息   dyy*/
-        Task task = taskService.findByTaskId(taskId);
+        Map<String, Object> hisMap = new HashMap<String, Object>();
+        hisMap.put("orderId", orderId);
+        hisMap.put("group_flag", groupId);
+        Task task = taskService.findTaskList(hisMap);
         if(task.getBegin_time()!=null){
             task.setBeginTime( DateUtils.dateToString(task.getBegin_time()));
         }

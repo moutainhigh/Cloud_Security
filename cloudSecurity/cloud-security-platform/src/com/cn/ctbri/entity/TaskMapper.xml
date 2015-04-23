@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="execute_time" column="execute_time"/>
 		<result property="status" column="status"/>
 		<result property="remarks" column="remarks"/>
+		<result property="group_flag" column="group_flag"/>
 	</resultMap> 
 	<!-- 根据订单资产id查询任务表 -->
 	<select id="findTaskByOrderAssetId" parameterType="int" resultMap="TaskRM">
@@ -68,14 +69,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select count(*) FROM cs_order_asset oa	WHERE oa.orderId=#{orderId}
     </select>
     <!-- 根据orderId查询基本信息 -->
-    <select id="findByTaskId" parameterType="String" resultMap="TaskRM">
-        SELECT *
-        FROM cs_task t
-        WHERE t.taskId=#{taskId}
+    <select id="findTaskList" parameterType="map" resultMap="TaskRM">
+    SELECT MIN(t.execute_time) AS execute_time,MAX(t.end_time) AS end_time,AVG(t.scanTime) AS scanTime,AVG(t.issueCount) AS issueCount,AVG(t.requestCount) AS requestCount,AVG(t.urlCount) AS urlCount,AVG(t.averResponse) AS averResponse,AVG(t.averSendCount) AS averSendCount,AVG(t.sendBytes) AS sendBytes,AVG(t.receiveBytes) AS receiveBytes
+		FROM cs_task t,cs_order_asset oa
+					WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} and t.group_flag=#{group_flag}
+					ORDER BY t.execute_time DESC 
     </select>
 	<!-- 根据orderId查询历史详情时间 -->
 	<select id="findScanTimeByOrderId" parameterType="String" resultMap="TaskRM">
-		SELECT t.taskid,t.execute_time 
+		SELECT t.taskid,t.execute_time,t.group_flag
 		FROM cs_task t,cs_order_asset oa
 		WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId}
 		ORDER BY t.execute_time DESC 	

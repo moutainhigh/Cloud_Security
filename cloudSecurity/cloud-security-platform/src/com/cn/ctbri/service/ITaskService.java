@@ -1,6 +1,7 @@
 package com.cn.ctbri.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cn.ctbri.entity.Task;
 
@@ -32,6 +33,6 @@ public interface ITaskService {
 
     Task findNearlyTask(String orderId);
 
-    Task findByTaskId(String taskId);
+    Task findTaskList(Map<String, Object> hisMap);
 
 }
