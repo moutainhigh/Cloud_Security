@@ -29,8 +29,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				status=#{status} , 
 			</if>
 			<if test="execute_time!=null">
-				execute_time=#{execute_time}
+				execute_time=#{execute_time},
 			</if>
+			<if test="end_time!=null">
+                end_time=#{end_time},
+            </if>
+            <if test="scanTime!=null">
+                scanTime=#{scanTime}
+            </if>
 		</set>
 		where taskId = #{taskId}
 	</update>
@@ -90,11 +96,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
     
     <select id="getTypeByAssetId" parameterType="Integer" resultType="com.cn.ctbri.entity.OrderAsset">
-        select oa.scan_type,oa.orderId from cs_task t,cs_order_asset oa where t.order_asset_id = oa.id and t.order_asset_id = #{order_asset_Id} and t.status = 1<!--  -->
+        select distinct oa.scan_type,oa.orderId from cs_task t,cs_order_asset oa where t.order_asset_id = oa.id and t.order_asset_id = #{order_asset_Id}
     </select>
     
     <select id="getNextScanTime" parameterType="java.util.HashMap" resultType="java.util.Date">
         select date_add(#{executeTime},interval #{scantime} minute)   
+    </select>
+    
+    <!-- 插入任务告警信息 -->
+    <insert id="insertTaskWarn" parameterType="com.cn.ctbri.entity.TaskWarn" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cs_taskwarn
+        (cat1,cat2,name,severity,rule,ct,app_p,tran_p,url,msg,task_id,warn_time) 
+        VALUES( #{cat1} , #{cat2},#{name},#{severity},#{rule},#{ct},#{app_p},#{tran_p},#{url},#{msg},#{task_id},#{warn_time})
+    </insert>
+    
+    <!-- 获取订单还在执行的任务 -->
+    <select id="getTaskStatus" parameterType="com.cn.ctbri.entity.Order" resultType="com.cn.ctbri.entity.Task">
+        select t.taskId from cs_task t,cs_order_asset oa where t.order_asset_Id=oa.id and oa.orderId = #{id} and t.status in(1,2)
     </select>
     
 </mapper>
