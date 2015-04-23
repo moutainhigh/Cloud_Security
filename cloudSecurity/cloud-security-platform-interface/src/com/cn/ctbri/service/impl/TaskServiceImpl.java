@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.TaskDao;
+import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.service.ITaskService;
 @Service
 public class TaskServiceImpl implements ITaskService{
@@ -49,6 +51,14 @@ public class TaskServiceImpl implements ITaskService{
 
     public void updateTask(Task task) {
         this.taskDao.updateTask(task);
+    }
+
+    public void insertTaskWarn(TaskWarn taskwarn) {
+        this.taskDao.insertTaskWarn(taskwarn);
+    }
+
+    public List<Task> getTaskStatus(Order order) {
+        return taskDao.getTaskStatus(order);
     }
 	
 }
