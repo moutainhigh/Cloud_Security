@@ -46,11 +46,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					ORDER BY t.execute_time DESC LIMIT 0,1) b
 	</select>
 	<!-- 根据orderId查询基本信息 -->
-	<select id="findBasicInfoByOrderId" parameterType="String" resultMap="TaskRM">
+	<select id="findBasicInfoByOrderId" parameterType="map" resultMap="TaskRM">
 		SELECT MIN(t.execute_time) AS execute_time,MAX(t.end_time) AS end_time,AVG(t.scanTime) AS scanTime,AVG(t.issueCount) AS issueCount,AVG(t.requestCount) AS requestCount,AVG(t.urlCount) AS urlCount,AVG(t.averResponse) AS averResponse,AVG(t.averSendCount) AS averSendCount,AVG(t.sendBytes) AS sendBytes,AVG(t.receiveBytes) AS receiveBytes
-		FROM cs_task t,cs_order_asset oa
-		WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId}
-		ORDER BY t.execute_time DESC 	
+		from ( select  t.*	FROM cs_task t,cs_order_asset oa
+					WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId}
+					ORDER BY t.execute_time DESC 
+			limit #{count}
+			)	t
 	</select>
 	
 	<!-- 根据orderId查询基本信息 -->
@@ -61,6 +63,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         ORDER BY t.execute_time DESC limit 1  
     </select>
     
+    <!-- 根据orderId查询资产数 -->
+    <select id="getCountByOrderId" parameterType="String" resultType="int">
+        select count(*) FROM cs_order_asset oa	WHERE oa.orderId=#{orderId}
+    </select>
     <!-- 根据orderId查询基本信息 -->
     <select id="findByTaskId" parameterType="String" resultMap="TaskRM">
         SELECT *

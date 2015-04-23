@@ -1,5 +1,6 @@
 package com.cn.ctbri.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,7 +61,12 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 	}
 
 	public Task findBasicInfoByOrderId(String orderId) {
-		return this.getSqlSession().selectOne(ns+"findBasicInfoByOrderId",orderId);
+		  int count=this.getSqlSession().selectOne(ns+"getCountByOrderId",orderId);  
+		  Map<String, Object> paramMap = new HashMap<String, Object>();
+		  paramMap.put("orderId", orderId);
+	      paramMap.put("count", count);
+		  
+		return this.getSqlSession().selectOne(ns+"findBasicInfoByOrderId",paramMap);
 	}
 
 	public List<Task> findScanTimeByOrderId(String orderId) {
