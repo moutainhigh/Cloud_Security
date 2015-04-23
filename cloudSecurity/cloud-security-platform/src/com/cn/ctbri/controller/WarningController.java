@@ -157,48 +157,41 @@ public class WarningController {
             return "/source/page/order/order_warning";
         	
         }else{//华为的服务
-        	if(serviceId==1||serviceId==2||serviceId==3||serviceId==4||serviceId==5){
-        		switch (serviceId) {
-        		case 1:
-        		case 2:
-				case 3:/**篡改  dyy*/
-	        		//获取告警信息
-	            	List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(orderId);
-	            	//处理时间Thu Apr 16 09:47:38 CST 2015=》年月日时分秒
-	            	if(taskWarnList!=null){
-	            		for(TaskWarn t : taskWarnList){
-	            			t.setWarnTime(DateUtils.dateToString(t.getWarn_time()));
-	            		}
-	            	}
-	            	//获取：敏感词  折线图信息
-	            	List<Alarm> alarm = alarmService.findSensitiveWordByOrderId(orderId);
-	            	request.setAttribute("alarm", alarm);
-	            	request.setAttribute("taskWarnList", taskWarnList);
-	                request.setAttribute("alarmList", alarmList);
-	        		return "/source/page/order/warning_doctort"	;
-				case 4:/**关键字监测服务 dyy*/
-					//关键字告警信息
-					List<Alarm> keywordList = alarmService.findKeywordWarningByOrderId(orderId);
-					if(keywordList!=null){
-						for(Alarm a :keywordList){
-							a.setAlarmTime(DateUtils.dateToString(a.getAlarm_time()));
-						}
+    		switch (serviceId) {
+			case 3:/**篡改  dyy*/
+        		//获取告警信息
+            	List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(orderId);
+            	//处理时间Thu Apr 16 09:47:38 CST 2015=》年月日时分秒
+            	if(taskWarnList!=null){
+            		for(TaskWarn t : taskWarnList){
+            			t.setWarnTime(DateUtils.dateToString(t.getWarn_time()));
+            		}
+            	}
+            	//获取：敏感词  折线图信息
+            	List<Alarm> alarm = alarmService.findSensitiveWordByOrderId(orderId);
+            	request.setAttribute("alarm", alarm);
+            	request.setAttribute("taskWarnList", taskWarnList);
+                request.setAttribute("alarmList", alarmList);
+        		return "/source/page/order/warning_doctort"	;
+			case 4:/**关键字监测服务 dyy*/
+				//关键字告警信息
+				List<Alarm> keywordList = alarmService.findKeywordWarningByOrderId(orderId);
+				if(keywordList!=null){
+					for(Alarm a :keywordList){
+						a.setAlarmTime(DateUtils.dateToString(a.getAlarm_time()));
 					}
-					request.setAttribute("keywordList", keywordList);
-					//关键字 折线图 左侧信息
-					List<Alarm> alarmKeyWordList = alarmService.findSensitiveWordByOrderId(orderId);
-	            	request.setAttribute("alarmKeyWordList", alarmKeyWordList);
-					return "/source/page/order/warning_keyword"	;
-				default:
-					break;
 				}
-        	}else{
-	        	request.setAttribute("assetList", assetList);
+				request.setAttribute("keywordList", keywordList);
+				//关键字 折线图 左侧信息
+				List<Alarm> alarmKeyWordList = alarmService.findSensitiveWordByOrderId(orderId);
+            	request.setAttribute("alarmKeyWordList", alarmKeyWordList);
+				return "/source/page/order/warning_keyword"	;
+			default: //1,2
+				request.setAttribute("assetList", assetList);
 	            request.setAttribute("alarmList", alarmList);
 	            return "/source/page/order/warning";
-        	}
+			}
         }
-		return "";
     }
     /**
 	 * 功能描述：获取折线图信息
@@ -210,20 +203,22 @@ public class WarningController {
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("application/json;charset=UTF-8");
 		//获取带有关键字告警的url
+//一个订单里面有多个资产的情况待解决
+//页面循环div的id 资产Url和曲线图匹配问题
 		List<Alarm> alarmKeyWordList = alarmService.findSensitiveWordByOrderId(orderId);
     	//根据url查询折线图和orderId
     	Map<String, Object> map = new HashMap<String, Object>();
-    	List<Alarm> listRight = null;
     	map.put("orderId", orderId);
+    	Gson gson= new Gson();
+    	String resultGson=null;
     	if(alarmKeyWordList!=null){
     		for(Alarm a : alarmKeyWordList){
     			String url = a.getUrl();
     			map.put("url", url); 
-    			listRight = alarmService.findRightByOrderIdAndUrl(map);
+    			List<Alarm> listRight = alarmService.findRightByOrderIdAndUrl(map);
+    			resultGson = gson.toJson(listRight);//转成json数据
     		}
     	}
-		Gson gson= new Gson();          
-		String resultGson = gson.toJson(listRight);//转成json数据
 		PrintWriter out;
 		try {
 			out = response.getWriter();
