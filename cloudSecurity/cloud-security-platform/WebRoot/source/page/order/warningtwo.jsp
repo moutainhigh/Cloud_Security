@@ -58,12 +58,12 @@ $(document).ready(function() {
 }); 
 function historicalDetails(){
 	var orderId = $("#orderId").val();
-	var execute_Time = $("#execute_Time").val();
+	var groupId = $("#execute_Time").val();
 	var type = $("#type").val();
 //	window.location.href = "${ctx}/historyInit.html?execute_Time="
 	//							+ execute_Time+"&orderId="+orderId;
-	window.open("${ctx}/historyInit.html?execute_Time="
-								+ execute_Time+"&orderId="+orderId+"&type="+type); 
+	window.open("${ctx}/historyInit.html?groupId="
+								+ groupId+"&orderId="+orderId+"&type="+type); 
 	
 
 }
