@@ -2,6 +2,7 @@ package com.cn.ctbri.common;
 
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -100,7 +101,7 @@ public class Scheduler4Task {
 					OrderAsset orderAsset = taskService.getTypeByAssetId(t.getOrder_asset_Id());
 					List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
 //					if(!Constants.SERVICE_LDSMFW.equals(this.tplName)){
-					if(orderList.get(0).getServiceId()==3||orderList.get(0).getServiceId()==5){
+					if(orderList.get(0).getServiceId()==3||orderList.get(0).getServiceId()==5||orderList.get(0).getServiceId()==4){
 					    if(orderList.get(0).getType()==1){
 					        //下一次扫描时间
 					        Date endTime = orderList.get(0).getEnd_date();
@@ -120,6 +121,28 @@ public class Scheduler4Task {
 					        }
 					    }
 					}
+					if(orderList.get(0).getServiceId()==1){
+                        if(orderList.get(0).getType()==1){
+                            //下一次扫描时间
+                            Date endTime = orderList.get(0).getEnd_date();
+                            Map<String, Object> paramMap = new HashMap<String, Object>();
+//                            paramMap.put("executeTime", t.getExecute_time());
+//                            paramMap.put("scantime", this.scantime);
+//                            Date nextTime = taskService.getNextScanTime(paramMap);
+                            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
+                            Date nextTime = getAfterDate(t.getExecute_time());
+                            if(nextTime.compareTo(endTime)<=0){
+                                //创建任务
+                                Task task = new Task(); 
+                                task.setExecute_time(nextTime);
+                                task.setStatus(Integer.parseInt(Constants.TASK_START));
+                                //设置订单详情id
+                                task.setOrder_asset_Id(t.getOrder_asset_Id());
+                                //插入一条任务数据  获取任务id
+                                int taskId = taskService.insert(task);
+                            }
+                        }
+                    }
 				} catch (Exception e) {
 					logger.info("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
 					throw new RuntimeException("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
@@ -217,7 +240,13 @@ public class Scheduler4Task {
 					this.scantime = 1440;
 					break;
 				}
-			}
+			}else if(Constants.SERVICE_GJZJCFW.equals(this.tplName)){
+                switch (rate) {
+                case 1:
+                    this.scantime = 30;
+                    break;
+                }
+            }
 			
 		}else{
 			this.tplName = Constants.TPL_SYKSSM;
@@ -304,4 +333,18 @@ public class Scheduler4Task {
 //		//启动调度
 //		//scheduler.start();
 	}
+	
+    /**
+     * 得到某个日期的后一天日期
+     * @param d
+     * @return
+     */
+    public Date getAfterDate(Date d){
+         Date date = d;
+         Calendar calendar = Calendar.getInstance();  
+         calendar.setTime(date);  
+         calendar.add(Calendar.DAY_OF_MONTH,1);  
+         date = calendar.getTime();  
+         return date;
+    }
 }

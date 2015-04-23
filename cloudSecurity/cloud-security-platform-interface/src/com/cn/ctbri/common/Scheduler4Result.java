@@ -3,6 +3,7 @@ package com.cn.ctbri.common;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -78,7 +79,7 @@ public class Scheduler4Result {
 			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(task.getTaskId()));
 			String status = this.getStatusByResult(resultStr);
             List<Alarm> aList;
-			if ("finish".equals(status)||"running".equals(status)) {// 任务执行完毕
+			if ("finish".equals(status)) {// 任务执行完毕
 				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析结果......");
 				/**
 				 * 获取任务结果信息并入库
@@ -92,17 +93,7 @@ public class Scheduler4Result {
                     aList = new ArrayList<Alarm>();
                     continue;
                 }
-				//更新订单告警状态
-				List<Order> oList = orderService.findOrderByTask(task);
-				if(oList.size() > 0){
-					Order o = oList.get(0);
-					if(aList.size() > 0){
-						o.setStatus(Integer.parseInt(Constants.ORDERALARM_YES));
-					}else{
-						o.setStatus(Integer.parseInt(Constants.ORDERALARM_NO));
-					}
-					orderService.update(o);
-				}
+				
 				// 插入报警表
 				for (Alarm a : aList) {
 					alarmService.saveAlarm(a);
@@ -120,15 +111,53 @@ public class Scheduler4Result {
 //					    String nowTime = sdf.format(date);//将时间格式转换成符合Timestamp要求的格式.
 //				    	if(sdf.parse(nowTime).compareTo(endTime)>=0){
 				    		task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
+				    		//获取当前时间
+				            SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				            String temp = setDateFormat.format(Calendar.getInstance().getTime());
+				    		task.setEnd_time(setDateFormat.parse(temp));
+				    		long executeTime = task.getExecute_time().getTime();
+				    		long endTime = setDateFormat.parse(temp).getTime();
+				    		long diff = endTime-executeTime;
+//				    		long day=diff/(24*60*60*1000);
+//				    		long hour=(diff/(60*60*1000)-day*24);
+//				    		long min=((diff/(60*1000))-day*24*60-hour*60);
+//				    		long s=(diff/1000-day*24*60*60-hour*60*60-min*60);
+//				    		System.out.println(""+day+"天"+hour+"小时"+min+"分"+s+"秒");
+//				    		String scanTime="";
+//				    		if(day!=0l){
+//				    		    scanTime = scanTime + day+"天";
+//				    		}
+//				    		if(hour!=0l){
+//				    		    scanTime = scanTime + hour+"小时";
+//				    		}
+//				    		if(min!=0l){
+//				    		    scanTime = scanTime + min+"分";
+//				    		}
+//				    		if(s!=0l){
+//                                scanTime = scanTime + s+"秒";
+//                            }
+				    		task.setScanTime(String.valueOf(diff));
 							taskService.update(task);
 //							ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId()));
 //				    	}
 //				    }
 //				}
-				
-								//删除任务   add by txr 2015-03-27
+				//更新订单告警状态
+                List<Order> oList = orderService.findOrderByTask(task);
+                //获取订单还在执行的任务
+                List<Task> tList = taskService.getTaskStatus(oList.get(0));
+                if(tList.size()==0 && oList.size() > 0){
+                    Order o = oList.get(0);
+                    if(aList.size() > 0){
+                        o.setStatus(Integer.parseInt(Constants.ORDERALARM_YES));
+                    }else{
+                        o.setStatus(Integer.parseInt(Constants.ORDERALARM_NO));
+                    }
+                    orderService.update(o);
+                }
+				//删除任务   add by txr 2015-03-27
 //				if(oList.get(0).getServiceId()==2){
-				ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId()));
+//				ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId()));
 //				}
 				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]告警结果已完成入库，已修改此任务为完成状态!");
 			} else {
@@ -256,7 +285,10 @@ public class Scheduler4Result {
 	 */
 	private List<Alarm> getAlarmByRerult(String taskId, String taskStr) {
 		List<Alarm> aList = new ArrayList<Alarm>();
+		String decode;
 		try {
+//		    decode = URLDecoder.decode(taskStr, "UTF-8");
+//            Document document = DocumentHelper.parseText(decode);
 			Document document = DocumentHelper.parseText(taskStr);
 			Element task = document.getRootElement();
 			// 任务ID节点
@@ -280,6 +312,8 @@ public class Scheduler4Result {
 				// 时间
 				String time = siteNode.attribute("time").getStringValue();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				// 得分
+                String score = siteNode.attribute("score").getStringValue();
 				// 一个漏洞对应一个issuetype
 				List<Element> issuetypes = siteNode.elements("issuetype");
 				for (Element issuetype : issuetypes) {
@@ -299,6 +333,7 @@ public class Scheduler4Result {
 						alarm.setUrl(URLDecoder.decode(url, "UTF-8"));
 						alarm.setAlarm_type(URLDecoder.decode(alarm_type, "UTF-8"));
 						alarm.setName(URLDecoder.decode(name, "UTF-8"));
+						alarm.setScore(score);
 						alarm.setAdvice(URLDecoder.decode(advice, "UTF-8"));
 						if ("信息".equals(level)) {
 							alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_LOW));
@@ -312,7 +347,9 @@ public class Scheduler4Result {
 							alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_HIGH));
 						}
 						String content = issuedata.attribute("url").getStringValue();
+						String keyword = issuedata.attribute("value").getStringValue();
 						alarm.setAlarm_content(URLDecoder.decode(content, "UTF-8"));
+						alarm.setKeyword(URLDecoder.decode(keyword, "UTF-8"));
 						aList.add(alarm);
 					}
 
@@ -320,6 +357,7 @@ public class Scheduler4Result {
 
 			}
 		} catch (Exception e) {
+		    e.printStackTrace();
 			logger.info("[获取结果调度]:任务-[" + taskId + "]解析任务结果发生异常!");
 			throw new RuntimeException("[获取结果调度]:任务-[" + taskId + "]解析任务结果发生异常!");
 		}

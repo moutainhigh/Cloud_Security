@@ -74,10 +74,7 @@ public class Scheduler4Progress {
 				 */
 				// 获取任务进度引擎
 				String progressStr = ArnhemWorker.getProgressByTaskId(sessionId, String.valueOf(task.getTaskId()),String.valueOf(order.getServiceId()));
-				Task t = this.getProgressByRes(task.getTaskId(),progressStr);
-				
-				// 插入任务进度信息表
-				taskService.updateTask(t);
+				this.getProgressByRes(task.getTaskId(),progressStr);
 				
 				logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]进度信息结果已完成入库!");
 			} else {
@@ -131,35 +128,56 @@ public class Scheduler4Progress {
             String resultValue = attribute.getStringValue();
             if("Success".equals(resultValue)){
                 String taskState = task.element("TaskState").getTextTrim();
-                String engineIP = task.element("EngineIP").getTextTrim();
-                String taskProgress = task.element("TaskProgress").getTextTrim();
-                String currentUrl = task.element("CurrentUrl").getTextTrim();
-                String issueCount = task.element("IssueCount").getTextTrim();
-                String requestCount = task.element("RequestCount").getTextTrim();
-                String urlCount = task.element("UrlCount").getTextTrim();
-                String averResponse = task.element("AverResponse").getTextTrim();
-                String averSendCount = task.element("AverSendCount").getTextTrim();
-                String sendBytes = task.element("SendBytes").getTextTrim();
-                String receiveBytes = task.element("ReceiveBytes").getTextTrim();
-                t.setTaskId(taskId);
-                t.setBegin_time(null);
-                t.setEnd_time(null);
-                t.setScanTime(null);
-                t.setEngineIP(engineIP);
-                t.setTaskProgress(taskProgress);
-                t.setCurrentUrl(currentUrl);
-                t.setIssueCount(issueCount);
-                t.setRequestCount(requestCount);
-                t.setUrlCount(urlCount);
-                t.setAverResponse(averResponse);
-                t.setAverSendCount(averSendCount);
-                t.setSendBytes(sendBytes);
-                t.setReceiveBytes(receiveBytes);
+                if(!"other".equals(taskState)){
+                    String engineIP = task.element("EngineIP").getTextTrim();
+                    String taskProgress = task.element("TaskProgress").getTextTrim();
+                    String currentUrl = task.element("CurrentUrl").getTextTrim();
+                    String issueCount = task.element("IssueCount").getTextTrim();
+                    String requestCount = task.element("RequestCount").getTextTrim();
+                    String urlCount = task.element("UrlCount").getTextTrim();
+                    String averResponse = task.element("AverResponse").getTextTrim();
+                    String averSendCount = task.element("AverSendCount").getTextTrim();
+                    String sendBytes = task.element("SendBytes").getTextTrim();
+                    String receiveBytes = task.element("ReceiveBytes").getTextTrim();
+                    t.setTaskId(taskId);
+                    t.setEngineIP(engineIP);
+                    t.setTaskProgress(taskProgress);
+                    t.setCurrentUrl(currentUrl);
+                    t.setIssueCount(issueCount);
+                    t.setRequestCount(requestCount);
+                    t.setUrlCount(urlCount);
+                    t.setAverResponse(averResponse);
+                    t.setAverSendCount(averSendCount);
+                    if(sendBytes!=null&&!sendBytes.equals("")){
+                        String bytes = sendBytes.substring(sendBytes.length()-2,sendBytes.length());
+                        String send = sendBytes.substring(0,sendBytes.length()-2);
+                        if(bytes.equals("KB")){
+                            t.setSendBytes(send);
+                        }else if(bytes.equals("MB")){
+                            t.setSendBytes(String.valueOf(Long.parseLong(send)*1024));
+                        }
+                    }
+                    
+                    if(receiveBytes!=null&&!receiveBytes.equals("")){
+                        String re = receiveBytes.substring(receiveBytes.length()-2,receiveBytes.length());
+                        String receive = receiveBytes.substring(0,receiveBytes.length()-2);
+                        if(re.equals("KB")){
+                            t.setReceiveBytes(receive);
+                        }else if(re.equals("MB")){
+                            t.setReceiveBytes(String.valueOf(Long.parseLong(receive)*1024));
+                        }
+                    }
+                    
+//                    t.setSendBytes(sendBytes);
+//                    t.setReceiveBytes(receiveBytes);
+                    // 插入任务进度信息表
+                    taskService.updateTask(t);
+                }
             }
         } catch (Exception e) {
-            logger.info("[获取结果调度]:任务-[" + String.valueOf(t.getTaskId()) + "]解析任务进度发生异常!");
+            logger.info("[获取结果调度]:任务-[" + String.valueOf(taskId) + "]解析任务进度发生异常!");
             e.printStackTrace();
-            throw new RuntimeException("[获取结果调度]:任务-[" + String.valueOf(t.getTaskId()) + "]解析任务进度发生异常!");
+            throw new RuntimeException("[获取结果调度]:任务-[" + String.valueOf(taskId) + "]解析任务进度发生异常!");
         }
         return t;
     }

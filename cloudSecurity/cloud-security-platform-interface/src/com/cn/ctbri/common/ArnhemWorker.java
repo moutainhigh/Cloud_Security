@@ -13,7 +13,10 @@ import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.io.IOUtils;
+import org.codehaus.jettison.json.JSONException;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -116,7 +119,7 @@ public class ArnhemWorker {
     	}};
     	try {
     		//创建安全传输层对象
-    	    SSLContext sc = SSLContext.getInstance("TLS");
+    	    SSLContext sc = SSLContext.getInstance("SSL");
     	    //初始化参数
     	    sc.init(null, trustAllCerts, new SecureRandom());
     	    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
@@ -305,33 +308,24 @@ public class ArnhemWorker {
         return response;
     }
     
-    public static String arnhemGetWarn() {
-        String decode="111";
-        System.err.println(decode);
-        try {
-//            decode = URLDecoder.decode(str, "UTF-8");
-//            Document document = DocumentHelper.parseText(decode);
-//            Element task = document.getRootElement();
-//            String cat1 = task.element("CAT1").getTextTrim();
-//            String cat2 = task.element("CAT2").getTextTrim();
-//            String name = task.element("NAME").getTextTrim();
-//            String severity = task.element("SEVERITY").getTextTrim();
-//            String rule = task.element("RULE").getTextTrim();
-//            String ct = task.element("CT").getTextTrim();
-//            String app_p = task.element("APP_P").getTextTrim();
-//            String tran_p = task.element("TRAN_P").getTextTrim();
-//            String url = task.element("URL").getTextTrim();
-//            String msg = task.element("MSG").getTextTrim();
-//            String task_id = task.element("TASK_ID").getTextTrim();
-        } catch (Exception e) {
-            e.printStackTrace();
-//            log.info("[获取结果调度]:任务-[" + String.valueOf(t.getTaskId()) + "]解析任务进度发生异常!");
-//            throw new RuntimeException("[获取结果调度]:任务-[" + String.valueOf(t.getTaskId()) + "]解析任务进度发生异常!");
-        }
-        return null;
+    public static void main(String[] args) throws UnsupportedEncodingException, JSONException {
+//        JSONObject json = new JSONObject();
+//        org.codehaus.jettison.json.JSONObject jsonObject = new org.codehaus.jettison.json.JSONObject();
+//        jsonObject.accumulate("zone_name", "M6");
+//        jsonObject.accumulate("zone_ip", "[\"12.12.12.12/32\",\"33.33.33.33/24\"]");
+        //创建任务发送路径
+        //创建jersery客户端配置对象
+        ClientConfig config = new DefaultClientConfig();
+        //检查安全传输协议设置
+        buildConfig("https://128.18.74.170:443/rest/openapi/ddos/zone",config);
+        //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource("https://128.18.74.170:443/rest/openapi/ddos/zone");
+        //获取响应结果
+        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, "{\"zone_name\":\"M6\"," +
+        		"                                                                         \"zone_ip\":" +
+        		"                                                                              \"[\"12.12.12.12/32\"," +
+        		"                                                                                 \"33.33.33.33/24\"]\"}");
     }
-    
-	public static void main(String[] args) throws UnsupportedEncodingException {
-		
-	}
 }
