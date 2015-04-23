@@ -114,23 +114,21 @@ public class WarningController {
         //sendBytes
         long sendBytes= Long.parseLong(task.getSendBytes());
         long MB=sendBytes/1024;
-        System.out.println(""+sendBytes+"MB");
         String send="";
         if(MB!=0l){
             send = send + MB +"MB";
         }else{
-            send = task.getSendBytes();
+            send = task.getSendBytes()+"KB";
         }
         request.setAttribute("send", send);
         //ReceiveBytes
         long receiveBytes= Long.parseLong(task.getReceiveBytes());
         long RMB=receiveBytes/1024;
-        System.out.println(""+receiveBytes+"MB");
         String receive="";
         if(RMB!=0l){
             receive = receive + RMB +"MB";
         }else{
-            receive = task.getReceiveBytes();
+            receive = task.getReceiveBytes()+"KB";
         }
         request.setAttribute("receive", receive);
         if(task.getBegin_time()!=null){
