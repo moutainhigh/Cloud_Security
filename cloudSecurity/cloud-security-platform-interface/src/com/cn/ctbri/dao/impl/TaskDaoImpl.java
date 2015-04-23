@@ -13,8 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.TaskDao;
+import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskWarn;
 /**
  * 任务信息dao实现类
  * @author googe
@@ -68,6 +70,15 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 
     public void updateTask(Task task) {
         getSqlSession().update(ns+"updateTask", task);
+    }
+
+    public void insertTaskWarn(TaskWarn taskwarn) {
+        getSqlSession().insert(ns+"insertTaskWarn", taskwarn);
+    }
+
+    public List<Task> getTaskStatus(Order order) {
+        List list = this.getSqlSession().selectList(ns+"getTaskStatus", order);
+        return list;
     }
 	
 	
