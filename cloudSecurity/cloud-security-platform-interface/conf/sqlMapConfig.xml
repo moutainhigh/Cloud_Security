@@ -15,5 +15,6 @@
         <mapper resource="com/cn/ctbri/entity/AssetMapper.xml" /> 
         <mapper resource="com/cn/ctbri/entity/ServMapper.xml" /> 
         <mapper resource="com/cn/ctbri/entity/OrderMapper.xml" /> 
+        <mapper resource="com/cn/ctbri/entity/AlarmDDOSMapper.xml" />  
     </mappers> 
 </configuration>  
