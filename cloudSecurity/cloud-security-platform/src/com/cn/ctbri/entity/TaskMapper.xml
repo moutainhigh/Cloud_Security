@@ -77,9 +77,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 	<!-- 根据orderId查询历史详情时间 -->
 	<select id="findScanTimeByOrderId" parameterType="String" resultMap="TaskRM">
-		SELECT t.taskid,t.execute_time,t.group_flag
+		SELECT distinct t.group_flag
 		FROM cs_task t,cs_order_asset oa
 		WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId}
-		ORDER BY t.execute_time DESC 	
+		ORDER BY t.execute_time 	
 	</select>	
 </mapper>
