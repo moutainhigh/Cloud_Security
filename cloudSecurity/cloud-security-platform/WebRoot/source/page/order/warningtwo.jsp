@@ -8,6 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <title>订单跟踪-告警详情</title>
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
@@ -142,10 +143,10 @@ function historicalDetails(){
        	  	<span class="scan">未开始</span><span class="scan scancur">扫描中</span><span class="scan">完成</span>
        	  
        	  </p>
-            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1></span>
+            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>100%</span>
             <span class="processingbox">
             	<span class="progress">
-                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"  id="bar2"></span>
+                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="bar2">100%</span>
 				</span>
             <span class="prourl" id="url"></span>
             </span></p>
