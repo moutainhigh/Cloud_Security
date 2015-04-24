@@ -315,10 +315,11 @@ public class WarningController {
     	String orderId = request.getParameter("orderId");
     	List<Task> taskTime = taskService.findScanTimeByOrderId(orderId);
         StringBuffer rsOption = new StringBuffer(); 
-        for(Task t : taskTime){
-        	String str = DateUtils.dateToString(t.getExecute_time());
+        for(int i=0;i<taskTime.size()-1;i++){
+        	Task t = taskTime.get(i);
+//        	String str = DateUtils.dateToString(t.getExecute_time());
         	String str1=DateUtils.dateToString(t.getGroup_flag());
-        	rsOption.append("<option value='"+str1+"'>"+str+"</option>"); 
+        	rsOption.append("<option value='"+str1+"'>"+str1+"</option>"); 
         }
         PrintWriter pout;
 		try {
