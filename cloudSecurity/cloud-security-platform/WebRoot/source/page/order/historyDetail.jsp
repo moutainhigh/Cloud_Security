@@ -16,6 +16,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 </head>
 
 <body>

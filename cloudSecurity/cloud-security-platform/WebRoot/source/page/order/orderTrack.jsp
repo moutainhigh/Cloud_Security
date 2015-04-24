@@ -21,6 +21,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/tableDetail.js"></script>
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
 $.ajaxSetup({
     cache: false //关闭AJAX相应的缓存
