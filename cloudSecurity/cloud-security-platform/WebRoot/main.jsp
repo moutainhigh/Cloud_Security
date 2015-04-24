@@ -14,6 +14,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/index.js"></script>
 <link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
     //首页广告页数据定时刷新,数据不去重
     function showUnreadNews()
