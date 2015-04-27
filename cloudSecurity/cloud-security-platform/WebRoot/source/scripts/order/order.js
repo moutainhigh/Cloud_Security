@@ -252,23 +252,26 @@ $(function(){
     
     //联系信息点击"下一步"进入确认订单
     $("#threeStep").click(function(){
+    var pattern = /^1[3|5|8|7][0-9]{9}$/;
+	
     	var linkname=$('#linkname').val();
     	var phone=$('#phone').val();
+    	var flag = pattern.test(phone);
     	var email=$('#email').val();
     	var company=$('#company').val();
     	var address=$('#address').val();
-    	if(linkname==""||linkname==null||phone==""||phone==null){
+   
     		if(linkname==""||linkname==null){
         		$("#linkname_msg").html("联系人不能为空");
         	}else{
            		$("#linkname_msg").html("");
         	}
         	if(phone==""||phone==null){
-        		$("#phone_msg").html("电话不能为空");
+        		$("#phone_msg").html("手机号码不能为空");
+        	}else if(flag==false){
+        		$("#phone_msg").html("手机号码格式不对");
         	}else{
-           		$("#phone_msg").html("");
-        	}
-    	}else{
+
     		$("#linkname_msg").html("");
     		$("#phone_msg").html("");
     		$.ajax({ type: "POST",
@@ -284,12 +287,13 @@ $(function(){
    		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
    		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
     		});
-    	}
+ 
     	$('td[name="linkname"]').html(linkname);
     	$('td[name="phone"]').html(phone);
     	$('td[name="email"]').html(email);
     	$('td[name="company"]').html(company);
     	$('td[name="address"]').html(address);
+    	}
     });
     
     //确认订单界面点击"上一步"返回到联系信息
