@@ -24,8 +24,8 @@
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript">
 $(function () {
-	getData();
-	window.setInterval(getData,30000);
+	//getData();
+	//window.setInterval(getData,30000);
 });
 function getData(){
 	var orderId = $("#orderId").val();
@@ -134,12 +134,13 @@ function seedetail1(e) {
         <div class="gj_title webgj_title">
         <div class="gj_fl">
                 <img src="${ctx}/source/images/icon_cg.jpg" width="85" height="85" />
-                <p>${order.name }</p>
+                <p>发现漏洞个数</p>
                 <p class="web_num">${aList}个</p>
           </div>
         <div class="gj_fr">
             <input type="hidden" value="${order.id }" id="orderId"/>
             <input type="hidden" value="${order.type }" id="type"/>
+            <input type="hidden" value="${group_flag }" id="group_flag"/>
             <p><span class="bigfont">${order.name }</span>
             <span>(  订单编号：${order.id }  )</span>
             <c:if test="${order.type==1 }">
@@ -152,29 +153,23 @@ function seedetail1(e) {
              	-->
             </c:if>
             </p>            
-            <p>资产：<span class="asset">
+            <p>
+            <div style="overflow:hidden;"><div style="float:left">资产：</div>
+            <div style="float:left">
             <c:forEach var="asset" items="${assetList}" varStatus="status">
-            <span class="assets">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
+            <span class="assets" style="display:block">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
             </c:forEach>
-            </span></p>
+            </div></div></p>
         </div>
         </div>
         <div class="process">
        	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span>
-       	  <c:if test="${order.begin_date>temp }">
-       	  	<span class="scan">未开始</span><span class="scan scancur">扫描中</span><span class="scan">完成</span>
-       	  </c:if>
-       	  <c:if test="${order.status==2 ||order.status==1}">
-       	  	<span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan scancur">完成</span>
-       	  </c:if>
-       	  <c:if test="${order.status==3 }">
-       	  	<span class="scan scancur">未开始</span><span class="scan">扫描中</span><span class="scan">完成</span>
-       	  </c:if>
+       	  	<span class="scan ">未开始</span><span class="scan">扫描中</span><span class="scan scancur">完成</span>
        	  </p>
-            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1></span>
+            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>100%</span>
             <span class="processingbox">
             	<span class="progress">
-                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"  id="bar2"></span>
+                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="bar2">100%</span>
 				</span>
             <span class="prourl" id="url">当前URL:http://www.sofpgipgospfops.cpm/</span>
             </span></p>
@@ -188,9 +183,16 @@ function seedetail1(e) {
             </div>
             <div class="fl numbox gj_left">
                 <div class="detail_title">漏洞个数</div>
-                <div class="ldgs" id="ldgs">
-                    <!-- <img src="${ctx}/source/images/ldgs.jpg" width="368" height="269" />  -->
-                </div>
+                <c:if test="${aList==0}">
+                    <div class="ldgs">
+                        <img src="${ctx}/source/images/nodata1.png" width="148" height="146" />  
+                    </div>
+                </c:if>
+                <c:if test="${aList!=0}">
+	                <div class="ldgs" id="ldgs">
+	                    
+	                </div>
+                </c:if>
             </div>
             <div class="fl">
             	<div class="detail_title">基本信息</div>

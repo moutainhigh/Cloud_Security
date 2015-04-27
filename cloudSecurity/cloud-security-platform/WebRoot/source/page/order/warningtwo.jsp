@@ -178,8 +178,8 @@ function historicalDetails(){
             <td>${task.urlCount}个</td>            
             <td>${task.averResponse}毫秒</td>
             <td>${task.averSendCount}个</td>
-            <td>${task.sendBytes}MB</td>
-            <td>${task.receiveBytes}MB</td>
+            <td>${send}</td>
+            <td>${receive}</td>
           </tr>
             </c:forEach>
         </tbody>

@@ -24,8 +24,8 @@
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript">
 $(function () {
-	getData();
-	window.setInterval(getData,30000);
+	//getData();
+	//window.setInterval(getData,30000);
 });
 function getData(){
 	var orderId = $("#orderId").val();
@@ -140,12 +140,12 @@ function historicalDetails(){
         </div>
         <div class="process">
        	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span><span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan scancur">完成</span></p>
-            <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1"></span>
+            <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1">100%</span>
             <span class="processingbox">
             	<span class="progress">
-                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" id="bar2"></span>
+                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="bar2">100%</span>
 				</span>
-            <span class="prourl" id="url">当前URL:http://www.sofpgipgospfops.cpm/</span>
+            <span class="prourl" id="url"></span>
             </span></p>
             <div class="scrg">
             	<span class="scrg_sp"><span class="scrg_ti">请求次数</span><span class="scrg_de">${task.requestCount}次</span></span>
@@ -164,20 +164,20 @@ function historicalDetails(){
             <td style="width:8%;">编号</td>
             <td  style="width:22%;">告警时间</td>
             <td  style="width:10%;">告警级别</td>
-            <td  style="width:25%;">告警地址</td>
-            <td  style="width:35%;">告警内容</td>
+            <td  style="width:25%;">篡改页面</td>
+            <td  style="width:35%;">篡改内容</td>
           </tr>
-          <c:forEach var="taskWarn" items="${taskWarnList}" varStatus="status">
+          <c:forEach var="alarm" items="${alarm}" varStatus="status">
 	          <tr>                                            
 	            <td>${status.index+1}</td>
-	            <td>${taskWarn.warnTime}</td>
+	            <td>${alarm.alarmTime}</td>
 	            <td>
-	            	<c:if test="${taskWarn.severity==1}">低</c:if>
-	            	<c:if test="${taskWarn.severity==2}">中</c:if>
-	            	<c:if test="${taskWarn.severity==3}">高</c:if>
+	            	<c:if test="${alarm.level==0}">低</c:if>
+	            	<c:if test="${alarm.level==1}">中</c:if>
+	            	<c:if test="${alarm.level==2}">高</c:if>
 	            </td>
-	            <td>${taskWarn.url}</td>
-	            <td>${taskWarn.msg}</td>
+	            <td>${alarm.url}</td>
+	            <td>${alarm.alarm_content}</td>
 	          </tr>
           </c:forEach>
           
@@ -185,7 +185,7 @@ function historicalDetails(){
       </table>
     </div>
     <div class="web_data">
-    	<div class="web_detail_title">敏感词告警统计</div>
+    	<div class="web_detail_title">篡改告警统计</div>
     <c:forEach var="a" items="${alarm}" >
        <div class="web_topbox">
            <div class="web_datal">

@@ -77,8 +77,8 @@
         <div class="gj_title webgj_title">
         	<div class="gj_fl">
             	<img src="${ctx}/source/images/icon_cg.jpg" width="85" height="85" />
-				<p>网页篡改告警</p>
-              	<p class="web_num">${count}次</p>
+				<p>关键字告警个数</p>
+              	<p class="web_num">${keyList}次</p>
           </div>
            <c:forEach var="order" items="${orderList}" varStatus="status">
        			<div class="gj_fr">
@@ -97,12 +97,12 @@
         </div>
         <div class="process">
        	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span><span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan scancur">完成</span></p>
-            <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1"></span>
+            <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1">100%</span>
             <span class="processingbox">
             	<span class="progress">
-                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" id="bar2"></span>
+                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="bar2">100%</span>
 				</span>
-            <span class="prourl" id="url">当前URL:http://www.sofpgipgospfops.cpm/</span>
+            <span class="prourl" id="url"></span>
             </span></p>
             <div class="scrg">
             	<span class="scrg_sp"><span class="scrg_ti">请求次数</span><span class="scrg_de">${task.requestCount}次</span></span>
@@ -124,17 +124,23 @@
             <td  style="width:25%;">告警地址</td>
             <td  style="width:35%;">关键字</td>
           </tr>
+        </tbody>
+      </table>
+      <div style="overflow:auto;height:400px;width:938px">
+      <table class="ld_table" style="width:921px;margin-left:0;">
+        <tbody> 
           <c:forEach var="list" items="${keywordList}" varStatus="status">
 	          <tr>                                            
-	            <td>${status.index+1}</td>
-	            <td>${list.alarmTime}</td>
-	            <td>${list.level}</td>
-	            <td>${list.url}</td>
-	            <td>${list.keyword}</td>
+	            <td style="width:8%;">${status.index+1}</td>
+	            <td style="width:22%;">${list.alarmTime}</td>
+	            <td style="width:10%;">${list.level}</td>
+	            <td style="width:25%;">${list.url}</td>
+	            <td style="width:35%;">${list.keyword}</td>
 	          </tr>
           </c:forEach>
         </tbody>
       </table>
+      </div>
     </div>
     <div class="web_data">
     	<div class="web_detail_title">关键字告警统计</div>

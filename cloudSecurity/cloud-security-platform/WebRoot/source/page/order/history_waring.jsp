@@ -25,8 +25,8 @@
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
 $(function () {
-	getData();
-	window.setInterval(getData,30000);
+	//getData();
+	//window.setInterval(getData,30000);
 });
 function getData(){
 	var orderId = $("#orderId").val();
@@ -43,6 +43,20 @@ function getData(){
            }
         });
 }
+function seedetail1(e) {
+    var uservalue=$(e).attr('value');
+    if(uservalue==0)
+    {
+      $(e).parents().next('.detailbox').show();
+      $(e).attr('value',1);
+     }
+      else if(uservalue==1)
+      {
+        $(e).parents().next('.detailbox').hide();
+        $(e).attr('value','0');
+      }
+
+};
 //加载模板下拉框选项 
 </script>
 </head>
@@ -92,9 +106,16 @@ function getData(){
             <a href="#" class="aelse">订单跟踪</a>　>　<a href="#" class="acur">告警详情</a>>　历史详情
         </div>
        <c:forEach var="order" items="${orderList}" varStatus="status">
-        <div class="gj_title">
+        <div class="gj_title webgj_title">
+        <div class="gj_fl">
+                <img src="${ctx}/source/images/icon_cg.jpg" width="85" height="85" />
+                <p>发现漏洞个数</p>
+                <p class="web_num">${aList}个</p>
+          </div>
+        <div class="gj_fr">
             <input type="hidden" value="${order.id }" id="orderId"/>
             <input type="hidden" value="${order.type }" id="type"/>
+            <input type="hidden" value="${group_flag }" id="group_flag"/>
             <p><span class="bigfont">${order.name }</span>
             <span>(  订单编号：${order.id }  )</span>
           <!--  <c:if test="${order.type==1 }">
@@ -107,26 +128,21 @@ function getData(){
              	
             </c:if>-->  
             </p>            
-            <p>资产：<span>
-            <c:forEach var="asset" items="${assetList}" varStatus="status">${asset.name }&nbsp;&nbsp;</c:forEach>
+            <p>资产：<span class="asset">
+            <c:forEach var="asset" items="${assetList}" varStatus="status">
+            <span class="assets">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
+            </c:forEach>
             </span></p>
+        </div>
         </div>
         <div class="process">
        	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span>
-       	  <c:if test="${order.status==1 }">
-       	  	<span class="scan">未开始</span><span class="scan scancur">扫描中</span><span class="scan">完成</span>
-       	  </c:if>
-       	  <c:if test="${order.status==2 }">
        	  	<span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan scancur">完成</span>
-       	  </c:if>
-       	  <c:if test="${order.status==3 }">
-       	  	<span class="scan scancur">未开始</span><span class="scan">扫描中</span><span class="scan">完成</span>
-       	  </c:if>
        	  </p>
-            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>1%</span>
+            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>100%</span>
             <span class="processingbox">
             	<span class="progress">
-                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"  id="bar2">1%</span>
+                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="bar2">100%</span>
 				</span>
             <span class="prourl">当前URL:http://www.sofpgipgospfops.cpm/</span>
             </span></p>
@@ -148,14 +164,14 @@ function getData(){
             	<div class="detail_title">基本信息</div>
                 <P class="formalinfo"><span class="infotitle">开始时间</span><span>${task.executeTime}</span></P>
                 <P class="formalinfo"><span class="infotitle">结束时间</span><span>${task.endTime}</span></P>
-                <P class="formalinfo"><span class="infotitle">扫描时长</span><span>${task.scanTime}分钟</span></P>
+                <P class="formalinfo"><span class="infotitle">扫描时长</span><span>${scanTime}</span></P>
                 <P class="formalinfo"><span class="infotitle2">已经发现弱点数</span><span>${task.issueCount}个</span></P>
                 <P class="formalinfo"><span class="infotitle2">请求次数</span><span>${task.requestCount}次</span></P>
                 <P class="formalinfo"><span class="infotitle2">URL个数</span><span>${task.urlCount}个</span></P>
                 <P class="formalinfo"><span class="infotitle2">平均响应时间</span><span>${task.averResponse}毫秒</span></P>
                 <P class="formalinfo"><span class="infotitle2">每秒访问个数</span><span>${task.averSendCount}个</span></P>
-                <P class="formalinfo"><span class="infotitle2">发送字节</span><span>${task.sendBytes}MB</span></P>
-                <P class="formalinfo"><span class="infotitle2">接收字节</span><span>${task.receiveBytes}MB</span></P>                  
+                <P class="formalinfo"><span class="infotitle2">发送字节</span><span>${send}</span></P>
+                <P class="formalinfo"><span class="infotitle2">接收字节</span><span>${receive}</span></P>                  
             </div>
         </div>
         <c:if test="${order.type==1}"><!-- 单次订单不显示趋势图 -->
@@ -169,27 +185,38 @@ function getData(){
        </c:forEach>
     <div class="zhangd_table">
         <div class="detail_title">漏洞说明</div>
-      <table class="ld_table">
+      <table class="ld_table" style="margin-bottom:0;width: 938px;margin-left: 0px;">
         <tbody>                                                                                   
           <tr style="background:#e0e0e0; height:30px; line-height:30px;">
             <td style="width:8%;">编号</td>
             <td  style="width:22%;">漏洞名称</td>
             <td  style="width:10%;">漏洞级别</td>
             <td  style="width:35%;">漏洞详情描述</td>
-            <td  style="width:25%;">修复建议</td>
+            <td  style="width:25%;">修复建议&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           </tr>
+        </tbody>
+      </table>
+      <div style="overflow:auto;height:400px;width:938px">
+      <table class="ld_table" style="width:921px;margin-left:0;">
+        <tbody>           
           <c:forEach var="alarm" items="${alarmList}" varStatus="status">
-	          <tr>                                            
-	            <td>${status.index+1 }</td>
-	            <td>${alarm.name }</td>
-	            <td>
-	               <c:if test="${alarm.level==0}">低</c:if>
+              <tr>                                            
+                <td style="width:8%;">${status.index+1 }</td>
+                <td  style="width:22%;">${alarm.name }</td>
+                <td  style="width:10%;">
+                   <c:if test="${alarm.level==0}">低</c:if>
                    <c:if test="${alarm.level==1}">中</c:if>
                    <c:if test="${alarm.level==2}">高</c:if> 
-	            </td>
-	            <td>${alarm.alarm_content }</td>
-	            <td>${alarm.advice }</td>
-	          </tr>
+                </td>
+                <td  style="width:35%;">${alarm.alarm_content }</td>
+               <!--  <td>${alarm.advice }</td> -->
+                <td  style="width:25%;" class="seedetail" value="0" name="${order.id}" onclick="seedetail1(this)"><span>查看建议</span></td>
+                </tr>
+                
+              <tr  class="detailbox">
+                <td colspan="6"><div  class="zhangd_div2">${alarm.advice } </div>
+                 </td>
+              </tr>
           </c:forEach>
           
           
@@ -197,7 +224,7 @@ function getData(){
       </table>
     </div>
   </div>
-  
+  </div>
 </div>
 <!-- 尾部代码开始-->
 <div class="bottom_bj">
