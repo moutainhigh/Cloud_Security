@@ -122,12 +122,12 @@
             <td  style="width:22%;">告警时间</td>
             <td  style="width:10%;">告警级别</td>
             <td  style="width:25%;">告警地址</td>
-            <td  style="width:35%;">关键字</td>
+            <td  style="width:35%;">关键字&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           </tr>
         </tbody>
       </table>
       <div style="overflow:auto;height:400px;width:938px">
-      <table class="ld_table" style="width:921px;margin-left:0;">
+      <table class="ld_table" style="width:921px;">
         <tbody> 
           <c:forEach var="list" items="${keywordList}" varStatus="status">
 	          <tr>                                            

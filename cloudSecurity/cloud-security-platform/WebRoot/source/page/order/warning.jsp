@@ -208,7 +208,7 @@ function seedetail1(e) {
                 <P class="formalinfo"><span class="infotitle2">接收字节</span><span>${receive}</span></P>                  
             </div>
         </div>
-        <c:if test="${order.type==1}"><!-- 单次订单不显示趋势图 -->
+        <c:if test="${order.type==1}||${!empty alarmList}"><!-- 单次订单不显示趋势图 -->
         <div class="gj_boxs">
             <div class="detail_title">安全评分</div>
             <div class="aqpf" id="aqpf">
@@ -217,6 +217,7 @@ function seedetail1(e) {
         </div>
         </c:if>
        </c:forEach>
+      <c:if test="${!empty alarmList}">
     <div class="zhangd_table">
         <div class="detail_title">漏洞说明</div>
       <table class="ld_table" style="margin-bottom:0;width: 938px;margin-left: 0px;">
@@ -225,8 +226,8 @@ function seedetail1(e) {
             <td style="width:8%;">编号</td>
             <td  style="width:22%;">漏洞名称</td>
             <td  style="width:10%;">漏洞级别</td>
-            <td  style="width:35%;">漏洞详情描述</td>
-            <td  style="width:25%;">修复建议&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td  style="width:45%;">漏洞详情描述</td>
+            <td  style="width:20%;">修复建议&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           </tr>
         </tbody>
       </table>
@@ -242,9 +243,9 @@ function seedetail1(e) {
                    <c:if test="${alarm.level==1}">中</c:if>
                    <c:if test="${alarm.level==2}">高</c:if> 
 	            </td>
-	            <td  style="width:35%;">${alarm.alarm_content }<br/>${alarm.keyword}</td>
+	            <td  style="width:45%;">URL:&nbsp;&nbsp;${alarm.alarm_content }<br/>弱点：&nbsp;&nbsp;${alarm.keyword}</td>
 	           <!--  <td>${alarm.advice }</td> -->
-	            <td  style="width:25%;" class="seedetail" value="0" name="${order.id}" onclick="seedetail1(this)"><span>查看建议</span></td>
+	            <td  style="width:20%;" class="seedetail" value="0" name="${order.id}" onclick="seedetail1(this)"><span>查看建议</span></td>
 	            </tr>
 	            
 	          <tr  class="detailbox">
@@ -259,8 +260,8 @@ function seedetail1(e) {
       </div>
     </div>
   </div>
-  
 </div>
+</c:if>
 <!-- 尾部代码开始-->
 <div class="bottom_bj">
 <div class="bottom">
