@@ -20,8 +20,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入任务信息 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO cs_task
-		(order_asset_Id,execute_time,status,remarks) 
-		VALUES( #{order_asset_Id} , #{execute_time},#{status},#{remarks})
+		(order_asset_Id,execute_time,status,group_flag,remarks) 
+		VALUES( #{order_asset_Id} , #{execute_time},#{status},#{group_flag},#{remarks})
 	</insert>
 	<!-- 根据orderId查询扫描次数 -->
 	<select id="findByOrderId" parameterType="int" resultType="Object">
@@ -39,11 +39,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			FROM
 					(SELECT AVG(t.taskProgress)/101*100 AS progress
 					FROM cs_task t ,cs_order_asset oa
-					WHERE t.order_asset_Id =oa.id AND oa.orderId =#{orderId}) a
+					WHERE t.order_asset_Id =oa.id AND oa.orderId =#{orderId} and t.status=2) a
 			CROSS JOIN
 					(SELECT t.currentUrl
 					FROM cs_task t ,cs_order_asset oa 
-					WHERE t.order_asset_Id=oa.id AND oa.orderId =#{orderId}
+					WHERE t.order_asset_Id=oa.id AND oa.orderId =#{orderId} and t.status=2
 					ORDER BY t.execute_time DESC LIMIT 0,1) b
 	</select>
 	<!-- 根据orderId查询基本信息 -->
