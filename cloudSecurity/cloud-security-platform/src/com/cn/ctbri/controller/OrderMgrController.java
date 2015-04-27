@@ -420,17 +420,20 @@ public class OrderMgrController {
                         if(hour.equals("00")&&minute.compareTo("10")<0){
                             String executeTime = beginDate.substring(0, 10).concat(" 00:10:00");
                             task.setExecute_time(sdf.parse(executeTime));
+                            task.setGroup_flag(sdf.parse(executeTime));
                         }else{
                             String executeDay = beginDate.substring(0, 10).concat(" 00:10:00");
                             SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
                             Date executeTime = getAfterDate(sdf.parse(executeDay));
                             task.setExecute_time(executeTime);
+                            task.setGroup_flag(executeTime);
                         }
                     }
-                    
                     task.setStatus(Integer.parseInt(Constants.TASK_START));
                     //设置订单详情id
                     task.setOrder_asset_Id(oa.getId());
+                    //资产任务组
+                    
                     //插入一条任务数据  获取任务id
                     int taskId = taskService.insert(task);
                 }
@@ -446,6 +449,8 @@ public class OrderMgrController {
                     task.setStatus(Integer.parseInt(Constants.TASK_START));
                     //设置订单详情id
                     task.setOrder_asset_Id(oa.getId());
+                    //资产任务组
+                    task.setGroup_flag(begin_date);
                     //插入一条任务数据  获取任务id
                     int taskId = taskService.insert(task);
                 }
@@ -457,6 +462,8 @@ public class OrderMgrController {
                     task.setStatus(Integer.parseInt(Constants.TASK_START));
                     //设置订单详情id
                     task.setOrder_asset_Id(oa.getId());
+                    //资产任务组
+                    task.setGroup_flag(begin_date);
                     //插入一条任务数据  获取任务id
                     int taskId = taskService.insert(task);
                 }
