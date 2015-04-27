@@ -612,13 +612,39 @@ public class WarningController {
     
     /**
      * 功能描述：告警2扫描中状态
+     */   
+    @RequestMapping(value="warningTask.html")
+    public void warningTask(HttpServletRequest request,HttpServletResponse response){
+        String orderId = request.getParameter("orderId");
+       
+        Task task = taskService.findBasicInfoByOrderId(orderId);
+        Map<String, Object> m = new HashMap<String, Object>();
+        m.put("executeTime", task.getExecute_time());
+        m.put("issueCount", task.getIssueCount());
+        m.put("requestCount", task.getRequestCount());
+        m.put("urlCount", task.getUrlCount());
+        m.put("averResponse", task.getAverResponse());
+        m.put("averSendCount", task.getAverSendCount());
+        m.put("sendBytes", task.getSendBytes());
+        m.put("receiveBytes", task.getReceiveBytes());
+        //object转化为Json格式
+        JSONObject JSON = CommonUtil.objectToJson(response, m);
+        try {
+            // 把数据返回到页面
+            CommonUtil.writeToJsp(response, JSON);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * 功能描述：告警2扫描中状态
      * 邓元元
      * 		@time 2015-4-8
      */   
     @RequestMapping(value="warningTwoInit.html")
     public String warningTwoInit(HttpServletRequest request){
         String orderId = request.getParameter("orderId");
-        String type = request.getParameter("type");
         //获取订单信息
         List orderList = orderService.findByOrderId(orderId);
         //获取对应资产
