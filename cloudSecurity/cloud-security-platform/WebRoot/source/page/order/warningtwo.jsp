@@ -26,6 +26,8 @@
 $(function () {
 	getData();
 	window.setInterval(getData,30000);
+	warningTask();
+	window.setInterval(warningTask,60000);
 	
 });
 function getData(){
@@ -41,6 +43,19 @@ function getData(){
            		$("#bar2").css("width", progress+"%");
            		$("#bar2").html(progress+"%");
            		$("#url").html("当前URL:"+data.currentUrl);
+           }
+        });
+}
+//实时刷新
+function warningTask(){
+	var orderId = $("#orderId").val();
+ 		$.ajax({
+           type: "POST",
+           url: "/cloud-security-platform/warningTask.html",
+           data: {"orderId":orderId},
+           dataType:"json",
+           success: function(data){
+                updateTable(data);
            }
         });
 }
@@ -65,8 +80,32 @@ function historicalDetails(){
 	//							+ execute_Time+"&orderId="+orderId;
 	window.open("${ctx}/historyInit.html?groupId="
 								+ groupId+"&orderId="+orderId+"&type="+type); 
-	
+}
 
+//更新table的内容
+function updateTable(data){ 
+       //清除表格
+    clearTable();
+    var executeTime  =  data.execute_time;//取结点里的数据 
+    var issueCount =  data.issueCount; 
+    var requestCount  =  data.requestCount;
+    var urlCount    =  data.urlCount;
+    var averResponse   =  data.averResponse;  
+    var averSendCount   =  data.averSendCount;
+    var sendBytes   =  data.sendBytes;
+    var receiveBytes   =  data.receiveBytes; 
+    
+       $("#confTable").append("<tr><td style='line-height:20px;'>"+executeTime+"</td>"+
+       "<td style='line-height:20px;'>--</td><td>--</td><td>"+issueCount+"个</td><td>"+requestCount+"次</td>"+
+       "<td>"+urlCount+"个</td><td>"+averResponse+"毫秒</td><td>"+averSendCount+"个</td><td>"+sendBytes+"MB</td><td>"+receiveBytes+"MB</td></tr>");    
+}
+          
+//清除表格内容
+function clearTable(){
+   var cit= $("#confTable");
+   if(cit.size()>0) {
+        cit.find("tr:not(:first)").remove();
+    }
 }
 </script>
 </head>
@@ -143,10 +182,10 @@ function historicalDetails(){
        	  	<span class="scan">未开始</span><span class="scan scancur">扫描中</span><span class="scan">完成</span>
        	  
        	  </p>
-            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>100%</span>
+            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1></span>
             <span class="processingbox">
             	<span class="progress">
-                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="bar2">100%</span>
+                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" id="bar2"></span>
 				</span>
             <span class="prourl" id="url"></span>
             </span></p>
@@ -155,8 +194,8 @@ function historicalDetails(){
         
     <div class="zhangd_table">
     	<div class="detail_title">基本信息</div>
-      <table class="ld_table" style="width:930px;margin-left:0;">
-        <tbody>                                                                                   
+      <table class="ld_table" style="width:930px;margin-left:0;" id="confTable">
+        <tboby>
           <tr style="background:#e0e0e0; height:30px; line-height:30px;text-align:center;">
             <td style="width:;">开始时间</td>
             <td  style="width:%;">结束时间</td>
@@ -182,7 +221,7 @@ function historicalDetails(){
             <td>${receive}</td>
           </tr>
             </c:forEach>
-        </tbody>
+        </tboby>
       </table>
     </div>
   </div>
