@@ -10,8 +10,9 @@
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
+<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 </head>
-<BODY bgcolor="#FFFFFF"> 
+<body bgcolor="#FFFFFF"> 
 <div class="head_bj">
         <div class="head">
            <div class="logo"><img src="${ctx}/source/images/logo.png" /></div>
@@ -62,4 +63,4 @@
 	</tr>
 </table>
 </form>
-</BODY>
+</body>

@@ -12,6 +12,7 @@
 <link href="${ctx}/source/adminCss/backstage.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/adminJs/adminLogin.js"></script>
+<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
 function checkNumberImage(){
 	var imageNumber = document.getElementById("imageNumber");
