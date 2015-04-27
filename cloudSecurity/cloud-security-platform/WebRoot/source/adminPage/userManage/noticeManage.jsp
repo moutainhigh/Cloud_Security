@@ -129,10 +129,7 @@ function deleteNotice(id){
 </div>
 <div  class="bottom_main" style="width:380px;">
 <h3><a href="###">版权信息</a></h3>
-<ul>
-<li>如未经授权用作他处，将保留追究侵权者法律责任的权利。<br />
-  京ICP备11111111号-4 / 京ICP证1111111号<br />
-  北京市公安局朝阳分局备案编号:110105000501</li>
+
 </div>
 </div>
 </div>
