@@ -147,4 +147,14 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
     public void update(Order order) {
 		this.getSqlSession().update(ns + "update",order);
 	}
+
+    /**
+     * 功能描述：根据orderId查询正在执行的任务
+     * 参数描述：String orderId
+     */
+    public List findTaskRunning(String orderId) {
+        List list =this.getSqlSession().selectList(ns + "findTaskRunning",orderId);
+        return list;
+        
+    }
 }
