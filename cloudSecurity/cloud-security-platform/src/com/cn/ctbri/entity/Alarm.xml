@@ -55,9 +55,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    where oa.id = t.order_asset_id 
 		    and oa.orderId=#{orderId}
 		    and t.status = 3
+		    <if test="group_flag!=null and group_flag!=''">
+            and t.group_flag=#{group_flag}
+            </if>
 		    order by t.execute_time desc
-		    <if test="type==1">
-             limit 0,1
+		    <if test="type==1 and group_flag==null or group_flag==''">
+             limit #{count}
             </if>) b
 		where a.taskId = b.taskId 
 		<if test="level!=null">
@@ -84,7 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findTaskByOrderId" resultType="com.cn.ctbri.entity.Task" parameterType="hashmap">
 		select * from
 	   (select * from cs_task t,cs_order_asset oa where oa.id = t.order_asset_id 
-	    and oa.orderId=#{orderId} and t.status = 3 order by t.execute_time desc limit 0,7) a order by a.execute_time
+	    and oa.orderId=#{orderId} and t.status = 3 group by t.group_flag order by t.execute_time desc limit 0,7) a order by a.execute_time
     </select>
     
     <!-- 根据taskid查询告警数  -->
