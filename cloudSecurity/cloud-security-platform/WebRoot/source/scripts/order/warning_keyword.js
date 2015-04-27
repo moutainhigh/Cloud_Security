@@ -79,8 +79,8 @@ $(function() {
         	}
         },
     });
-    getData();
-	window.setInterval(getData,30000);
+    //getData();
+	//window.setInterval(getData,30000);
 }); 
 function getData(){
 	var orderId = $("#orderId").val();

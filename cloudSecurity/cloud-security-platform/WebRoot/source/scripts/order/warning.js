@@ -30,7 +30,7 @@ $(function(){
             var myChart = ec.init(document.getElementById('aqfx'));
             //后台获取数据
             $.ajax({
-            	url:"getGaugeData.html?orderId="+$('#orderId').val()+"&type="+$('#type').val(),
+            	url:"getGaugeData.html?orderId="+$('#orderId').val()+"&type="+$('#type').val()+"&group_flag="+$('#group_flag').val(),
                 dataType:"json",
                 success:function(data){
                     $.each(data,function(i,p){
@@ -160,7 +160,7 @@ $(function(){
             //后台获取数据
             $.ajax({
             	type : "post",
-            	url:"getPieData.html?orderId="+$('#orderId').val()+"&type="+$('#type').val(),
+            	url:"getPieData.html?orderId="+$('#orderId').val()+"&type="+$('#type').val()+"&group_flag="+$('#group_flag').val(),
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
@@ -278,7 +278,7 @@ $(function(){
           //后台获取数据
             $.ajax({
             	type : "post",
-            	url:"getLineData.html?orderId="+$('#orderId').val()+"&type="+$('#type').val(),
+            	url:"getLineData.html?orderId="+$('#orderId').val()+"&type="+$('#type').val()+"&group_flag="+$('#group_flag').val(),
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
