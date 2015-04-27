@@ -133,9 +133,16 @@ function seedetail1(e) {
        <c:forEach var="order" items="${orderList}" varStatus="status">
         <div class="gj_title webgj_title">
         <div class="gj_fl">
+        
+            <c:if test="${alist==0}">
+               <img src="${ctx}/source/images/icon_cg-green.jpg" width="85" height="85" />
+               <p>漏洞告警正常</p>
+            </c:if>
+            <c:if test="${alist!=0}">
                 <img src="${ctx}/source/images/icon_cg.jpg" width="85" height="85" />
                 <p>发现漏洞个数</p>
-                <p class="web_num">${aList}个</p>
+                <p class="web_num">${alist}次</p>
+            </c:if>
           </div>
         <div class="gj_fr">
             <input type="hidden" value="${order.id }" id="orderId"/>
