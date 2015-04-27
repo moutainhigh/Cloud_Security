@@ -13,6 +13,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/backstage.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.JPlaceholder.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/adminJs/authority.js"></script>
+<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
 $(document).ready(function(){
 	var list = ${list};

@@ -16,6 +16,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/highcharts/js/highcharts.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/highcharts/js/modules/exporting.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/highcharts/js/highcharts-3d.js"></script>
+<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 </head>
 
 <body>

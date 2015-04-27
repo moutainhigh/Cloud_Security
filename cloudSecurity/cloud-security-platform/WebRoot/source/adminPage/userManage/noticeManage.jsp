@@ -15,6 +15,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/backstage.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/noticebox.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/query.JPlaceholder.js"></script>
+<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
 //提交
 function add(){

@@ -16,6 +16,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/query.JPlaceholder.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/adminJs/userManage.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/adminJs/editUserManage.js"></script>
+<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#searchName").val("${name}");
