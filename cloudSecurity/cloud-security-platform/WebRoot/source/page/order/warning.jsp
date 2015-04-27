@@ -240,7 +240,7 @@ function seedetail1(e) {
                    <c:if test="${alarm.level==1}">中</c:if>
                    <c:if test="${alarm.level==2}">高</c:if> 
 	            </td>
-	            <td  style="width:35%;">${alarm.alarm_content }</td>
+	            <td  style="width:35%;">${alarm.alarm_content }<br/>${alarm.keyword}</td>
 	           <!--  <td>${alarm.advice }</td> -->
 	            <td  style="width:25%;" class="seedetail" value="0" name="${order.id}" onclick="seedetail1(this)"><span>查看建议</span></td>
 	            </tr>
