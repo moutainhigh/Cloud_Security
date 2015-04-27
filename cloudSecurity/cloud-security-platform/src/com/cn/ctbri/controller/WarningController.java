@@ -138,6 +138,7 @@ public class WarningController {
                 	//获取：敏感词  折线图信息
                 	List<Alarm> alarm = alarmService.findSensitiveWordByOrderId(orderId);
                 	request.setAttribute("alarm", alarm);
+                	request.setAttribute("alist", alarm.size());
                 	request.setAttribute("taskWarnList", taskWarnList);
                     request.setAttribute("alarmList", alarmList);
             		return "/source/page/order/warning_doctort"	;
@@ -186,27 +187,29 @@ public class WarningController {
 		if(list!=null){
 			for(Alarm ala : list){
 				//去掉[]
-				String keyword = ala.getKeyword().substring(1, ala.getKeyword().length()-1);
-				if(keyword.contains(",")){
-					String str[] = keyword.split(",");
-					int i;
-					for(i=0;i<str.length;i++){
-						String str1 = str[i].trim();
-						if(map.containsKey(str1)){
-							 int count=map.get(str1);
-							 map.put(str1, count+1);
-						}else{
-							map.put(str1, 1);
-						}
-					}
-				}else{
-					if(map.containsKey(keyword)){
-						 int count=map.get(keyword);
-						 map.put(keyword, count+1);
-					}else{
-						map.put(keyword, 1);
-					}
-				}
+			    if(ala!=null){
+    				String keyword = ala.getKeyword().substring(1, ala.getKeyword().length()-1);
+    				if(keyword.contains(",")){
+    					String str[] = keyword.split(",");
+    					int i;
+    					for(i=0;i<str.length;i++){
+    						String str1 = str[i].trim();
+    						if(map.containsKey(str1)){
+    							 int count=map.get(str1);
+    							 map.put(str1, count+1);
+    						}else{
+    							map.put(str1, 1);
+    						}
+    					}
+    				}else{
+    					if(map.containsKey(keyword)){
+    						 int count=map.get(keyword);
+    						 map.put(keyword, count+1);
+    					}else{
+    						map.put(keyword, 1);
+    					}
+    				}
+			    }
 			}
 		}
 		return sort(map);
@@ -824,8 +827,8 @@ public class WarningController {
         }
         if(task.getSendBytes()!=null&&!task.getSendBytes().equals("")){
             //sendBytes
-            long sendBytes= Long.parseLong(task.getSendBytes());
-            long MB=sendBytes/1024;
+            float sendBytes= Float.parseFloat(task.getSendBytes());
+            float MB=sendBytes/1024;
             String send="";
             if(MB!=0l){
                 send = send + MB +"MB";
