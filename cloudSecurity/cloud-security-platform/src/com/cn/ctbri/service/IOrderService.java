@@ -100,6 +100,11 @@ public interface IOrderService {
      * 返回值    ：  void
      */
     void update(Order order);
+    /**
+     * 功能描述：根据orderId查询正在执行的任务
+     * 参数描述：String orderId
+     */
+    List findTaskRunning(String orderId);
     
     
 
