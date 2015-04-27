@@ -44,8 +44,7 @@ public class Installer{
 	}
 	//初始化权限
 	private void initAuthority(){
-		authorityService.saveAuthority(new Authority("用户注册", "/regist.html"));
-		authorityService.saveAuthority(new Authority("用户登录", "/login.html"));
+		//登录注册不要添加权限，因为还有没有登录，所以不知道用户的权限是什么
 		authorityService.saveAuthority(new Authority("资产维护", "/userAssetsUI.html"));
 		authorityService.saveAuthority(new Authority("资产验证", "/verificationAsset.html"));
 		authorityService.saveAuthority(new Authority("自助下单", "/selfHelpOrderInit.html"));
