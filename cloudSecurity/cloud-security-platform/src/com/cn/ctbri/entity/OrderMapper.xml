@@ -256,4 +256,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</set>
 		where id=#{id}
 	</update>
+	 <!-- 根据orderId查询正在执行的任务-->
+    <select id="findTaskRunning" parameterType="String" resultType="hashmap">
+        SELECT t.*
+        FROM cs_task t,cs_order_asset oa
+        WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} and t.status = 2
+    </select>
 </mapper>
