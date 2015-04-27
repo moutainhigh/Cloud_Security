@@ -146,6 +146,13 @@ public class OrderServiceImpl implements IOrderService{
 	public void update(Order order) {
 		orderDao.update(order);
 	}
+	/**
+     * 功能描述：根据orderId查询正在执行的任务
+     * 参数描述：String orderId
+     */
+    public List findTaskRunning(String orderId) {
+        return orderDao.findTaskRunning(orderId);
+    }
 	
 	
 }
