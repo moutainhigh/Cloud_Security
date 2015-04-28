@@ -1,4 +1,4 @@
-var chart; 
+/*var chart; 
 var time = [];
 $(function() { 
 	var orderId = $("#orderId").val();
@@ -14,18 +14,8 @@ $(function() {
         title: { 
             text: '告警统计' //图表标题 
         }, 
-//        subtitle: { 
-//            text: ''  //副标题 
-//        }, 
         xAxis: {
-        	//type: 'datetime',//x轴 
         	categories: time
-        //  tickWidth:2000
-//            categories: ['01:00:00', '02:00:00', '03:00:00', '04:00:00', '05:00:00', '06:00:00', '07:00:00', '8:00:00', '09:00:00', '10:00:00', 
-// '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00', '21:00:00', '22:00:00', '23:00:00'], //x轴标签名称 
-//            gridLineWidth: 1, //设置网格宽度为1 
-//            lineWidth: 2,  //基线宽度 
-//            labels:{y:26}  //x轴标签位置：距X轴下方26像素 
         }, 
         yAxis: {  //y轴 
             title: {text: '告警个数'}, //标题 
@@ -39,16 +29,6 @@ $(function() {
                 enableMouseTracking: false //取消鼠标滑向触发提示框 
             } 
         }, 
-//        legend: {  //图例 
-//            layout: 'horizontal',  //图例显示的样式：水平（horizontal）/垂直（vertical） 
-//            backgroundColor: '#ffc', //图例背景色 
-//            align: 'left',  //图例水平对齐方式 
-//            verticalAlign: 'top',  //图例垂直对齐方式 
-//            x: 100,  //相对X位移 
-//            y: 70,   //相对Y位移 
-//            floating: true, //设置可浮动 
-//            shadow: true  //设置阴影 
-//        }, 
         exporting: { 
             enabled: false  //设置导出按钮不可用 
         }, 
@@ -121,4 +101,127 @@ function historicalDetails(){
 								+ execute_Time+"&orderId="+orderId+"&type="+type); 
 	
 
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$(function(){
+	//为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
+    require.config({
+        paths:{ 
+            echarts:'../echarts/echarts',
+            'echarts/chart/line': '../echarts/echarts-map',
+        }
+    });
+	
+    // 定义数组
+    var label = [];
+    var value = [];
+    var valueGauge = [];
+    var time = [];
+    var lineData = [];
+    var lineData2 = [];
+    var lineData3 = [];
+    var high = null;
+    
+    // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
+    function testLineData(){
+    	return lineData;
+    }
+    
+    function testLineData2(){
+    	return lineData2;
+    }
+    function testLineX(){
+    	return time;
+    }
+    
+    // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
+    require(
+        [
+            'echarts',
+            'echarts/chart/line'
+        ],
+        function (ec) {//回调函数
+            //--- 趋势图 ---
+        		var myChart = ec.init(document.getElementById('pic'));
+          //后台获取数据
+            $.ajax({
+            	type : "post",
+            	url:"getData.html?orderId="+$('#orderId').val(),
+                dataType:"json",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success:function(data){
+                    $.each(data,function(i,p){
+	                   	lineData[i]=p['url'];
+	                   	alert(p['count']);
+	                   	lineData2[i]=p['count'];
+	                   	time[i]=p['alarm_time'];
+                    });
+                    myChart.setOption({//图形
+                    	tooltip : {
+                            trigger: 'axis'
+                        },
+                        
+                        toolbox: {
+                            show : true,
+                            feature : {
+                                mark : true,
+                                restore : true,
+                                saveAsImage : true
+                            }
+                        },
+                        calculable : true,
+                        xAxis : [
+                                 {
+                                     type : 'category',
+                                     boundaryGap : false,
+                                     data : testLineX()
+                                 }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'value'
+                            }
+                        ],
+                        series : [
+                            {
+                                name:'低危漏洞个数',
+                                type:'line',
+                                data: testLineData()
+                            },
+                            {
+                                name:'中危漏洞个数',
+                                type:'line',
+                                data: testLineData2()
+                            }
+                        ]
+                    },true);//图形展示
+                }//ajax执行后台
+            }); 
+        }
+    );
+    
+});
+// 事件的参数中包括：数据在序列中的下标dataIndex，数据的值value，x轴上的名称name
+function eConsole(param) {
+	if (typeof param.seriesIndex == 'undefined') {
+		return;
+	}
+	if (param.type == 'click') {
+		var mes = param.name + ':' + param.value;
+		document.getElementById('info').innerHTML = mes;
+	}
 }
