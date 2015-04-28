@@ -143,7 +143,7 @@ function checkNumberImage(){
     
     
     <div class="regist_form">
-      <form  id="form_regist" action="${ctx}/registToLogin.html" name="form_regist" method="post">
+      <form  id="form_regist" action="${ctx}/loginUI.html" name="form_regist" method="post">
         <table>
           <tr class="register_tr">
             <td class="regist_title">用户名</td>
