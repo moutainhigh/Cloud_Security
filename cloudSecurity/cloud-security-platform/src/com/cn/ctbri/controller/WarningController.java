@@ -249,7 +249,7 @@ public class WarningController {
 	 */
 	@RequestMapping(value="getData.html" ,method = RequestMethod.POST)
 	@ResponseBody
-	public void getData(HttpServletRequest request,HttpServletResponse response,String orderId){
+	public String getData(HttpServletRequest request,HttpServletResponse response,String orderId){
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("application/json;charset=UTF-8");
 		//获取带有关键字告警的url
@@ -259,25 +259,27 @@ public class WarningController {
     	//根据url查询折线图和orderId
     	Map<String, Object> map = new HashMap<String, Object>();
     	map.put("orderId", orderId);
-    	Gson gson= new Gson();
-    	String resultGson=null;
+    	JSONArray json = new JSONArray();
     	if(alarmKeyWordList!=null){
     		for(Alarm a : alarmKeyWordList){
     			String url = a.getUrl();
     			map.put("url", url); 
     			List<Alarm> listRight = alarmService.findRightByOrderIdAndUrl(map);
-    			resultGson = gson.toJson(listRight);//转成json数据
+    			JSONObject jo = new JSONObject();
+    			SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String time = setDateFormat.format(listRight.get(0).getAlarm_time());
+                jo.put("url", url);
+                jo.put("alarm_time", time);
+                for(Alarm b : listRight){
+                	String time1 = setDateFormat.format(b.getAlarm_time());
+                	jo.put("alarm_time", time1);
+                	jo.put("count", b.getCount());
+                }
+                
+                json.add(jo);
     		}
     	}
-		PrintWriter out;
-		try {
-			out = response.getWriter();
-			out.write(resultGson); 
-			out.flush(); 
-			out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} 
+        return json.toString();
 	}
     /**
      * 功能描述： 历史记录  dyy查询所有时间
