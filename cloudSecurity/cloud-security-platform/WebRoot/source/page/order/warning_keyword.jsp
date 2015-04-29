@@ -29,7 +29,6 @@
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 </head>
 
-<body> 
 <body>
 <div>
 <div class="head_bj">
@@ -155,6 +154,7 @@
     <div class="web_data">
     	<div class="web_detail_title">关键字告警统计</div>
     <c:forEach var="a" items="${alarmKeyWordList}" >
+     <input type="hidden" value="${a.url }" id="url"/>
        <div class="web_topbox">
            <div class="web_datal">
             	<p>监测URL：<span>${a.url}</span></p>
@@ -184,7 +184,7 @@
          </div>
             <div class="web_datar">
             	<p class="pxtitle">敏感词排行榜</p>
-                <div class="pxbox">
+                <div class="pxbox" id="pxbox">
                     <c:forEach items="${mapSortData}" var="keyword">
                 		<p><span class="pxboxL">${keyword.count}</span>${keyword.keyword}</p>
                 	</c:forEach>
