@@ -25,7 +25,7 @@ public interface ITaskService {
 
     int insert(Task task);
 
-	Task findProgressByOrderId(String orderId);
+	Task findProgressByOrderId(Map<String, Object> paramMap);
 
 	Task findBasicInfoByOrderId(String orderId);
 

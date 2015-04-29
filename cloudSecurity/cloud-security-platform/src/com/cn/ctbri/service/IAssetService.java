@@ -76,7 +76,7 @@ public interface IAssetService {
      * 参数描述：String addr
      *       @time 2015-3-9
      */
-	List<Asset> findByAssetAddr(String addr);
+	List<Asset> findByAssetAddr(Map<String, Object> paramMap);
 	 /**
      * 功能描述： 查询所有资产
      *       @time 2015-3-9
