@@ -20,8 +20,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入任务信息 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO cs_task
-		(order_asset_Id,execute_time,status,group_flag,remarks) 
-		VALUES( #{order_asset_Id} , #{execute_time},#{status},#{group_flag},#{remarks})
+		(order_asset_Id,execute_time,status,group_flag,end_time,remarks) 
+		VALUES( #{order_asset_Id} , #{execute_time},#{status},#{group_flag},#{end_time},#{remarks})
 	</insert>
 	<!-- 根据orderId查询扫描次数 -->
 	<select id="findByOrderId" parameterType="int" resultType="Object">
@@ -34,23 +34,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 		<!-- 根据orderId查询扫描进度和最近的url-->
-	<select id="findProgressByOrderId" parameterType="String" resultMap="TaskRM">
+	<select id="findProgressByOrderId" parameterType="hashmap" resultMap="TaskRM">
 			SELECT a.progress,b.currentUrl
 			FROM
 					(SELECT AVG(t.taskProgress)/101*100 AS progress
 					FROM cs_task t ,cs_order_asset oa
-					WHERE t.order_asset_Id =oa.id AND oa.orderId =#{orderId} and t.status=2) a
+					WHERE t.order_asset_Id =oa.id AND oa.orderId =#{orderId} 
+					<if test="status!=null and status!=''">
+						and t.status=#{status}
+					</if>
+					<if test="group_flag!=null and group_flag!=''">
+		            	and t.group_flag=#{group_flag}
+		            </if>
+		            <if test="group_flag==null or group_flag==''">
+		             ORDER BY t.execute_time DESC limit #{count}
+		            </if>
+					) a
 			CROSS JOIN
 					(SELECT t.currentUrl
 					FROM cs_task t ,cs_order_asset oa 
-					WHERE t.order_asset_Id=oa.id AND oa.orderId =#{orderId} and t.status=2
+					WHERE t.order_asset_Id=oa.id AND oa.orderId =#{orderId} 
+					<if test="status!=null and status!=''">
+						and t.status=#{status}
+					</if>
+					<if test="group_flag!=null and group_flag!=''">
+		            	and t.group_flag=#{group_flag}
+		            </if>
 					ORDER BY t.execute_time DESC LIMIT 0,1) b
 	</select>
 	<!-- 根据orderId查询基本信息 -->
 	<select id="findBasicInfoByOrderId" parameterType="map" resultMap="TaskRM">
 		SELECT MIN(t.execute_time) AS execute_time,MAX(t.end_time) AS end_time,AVG(t.scanTime) AS scanTime,AVG(t.issueCount) AS issueCount,AVG(t.requestCount) AS requestCount,AVG(t.urlCount) AS urlCount,AVG(t.averResponse) AS averResponse,AVG(t.averSendCount) AS averSendCount,AVG(t.sendBytes) AS sendBytes,AVG(t.receiveBytes) AS receiveBytes
 		from ( select  t.*	FROM cs_task t,cs_order_asset oa
-					WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId}
+					WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} and t.status !=1
 					ORDER BY t.execute_time DESC 
 			limit #{count}
 			)	t
@@ -80,6 +96,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT distinct t.group_flag
 		FROM cs_task t,cs_order_asset oa
 		WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId}
-		ORDER BY t.execute_time 	
+		ORDER BY t.execute_time
 	</select>	
 </mapper>
