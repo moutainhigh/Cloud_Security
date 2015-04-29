@@ -196,8 +196,17 @@
                 </c:forEach>
                 </ul>
             </div>
+            <div class="wechatebox">
+		   	  	<img src="${ctx}/source/images/wechateer.jpg"/>
+		      	<p class="wechatenam">anquanbang</p>
+		        <p class="wechatep">扫一扫关注微信</p>
+		      </div>
+		    	<img src="${ctx}/source/images/wechatsmall.png" width="27" height="27" class="wechateicon" />
             <!-- <div><a href="#"><img src="${ctx}/source/images/indexsmall.jpg" width="152" height="202" /></a></div> -->
          </div>
+         <script>
+    	$('.wechateicon').hover(function(){$('.wechatebox').show();},function(){$('.wechatebox').hide();});
+    	</script>
          </div>
          <!-- <div class="web_input">
                     <input type="text"  value="http://"/>
