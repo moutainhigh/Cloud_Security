@@ -149,6 +149,8 @@ public class WarningController {
                 	request.setAttribute("alist", alarm.size());
                 	request.setAttribute("taskWarnList", taskWarnList);
                     request.setAttribute("alarmList", alarmList);
+                    request.setAttribute("status", status);
+                    request.setAttribute("group_flag", null);
             		return "/source/page/order/warning_doctort"	;
     			case 4:/**关键字监测服务 dyy*/
     				//关键字告警信息
@@ -894,6 +896,7 @@ public class WarningController {
             }
         }
         request.setAttribute("taskWarnList", taskWarnList);
+        
         //可用率统计
         List<TaskWarn> listUseable = taskWarnService.findUseableByOrderId(orderId);
         request.setAttribute("listUseable", listUseable);
@@ -904,6 +907,7 @@ public class WarningController {
              serviceId=(Integer) order.get("serviceId");
         }
         if(serviceId==5){
+            request.setAttribute("wlist", taskWarnList.size());
             return "/source/page/order/order_usable";
             /**end*/
         }else if(serviceId==3){
