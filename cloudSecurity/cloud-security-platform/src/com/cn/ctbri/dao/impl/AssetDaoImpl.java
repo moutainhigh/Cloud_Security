@@ -105,8 +105,8 @@ public class AssetDaoImpl extends DaoCommon implements AssetDao{
      * 参数描述： String addr
      *       @time 2015-3-9
      */
-	public List<Asset> findByAssetAddr(String addr) {
-		return this.getSqlSession().selectList(ns+"findByAssetAddr", addr);
+	public List<Asset> findByAssetAddr(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"findByAssetAddr", paramMap);
 	}
 	 /**
      * 功能描述： 查询所有资产
