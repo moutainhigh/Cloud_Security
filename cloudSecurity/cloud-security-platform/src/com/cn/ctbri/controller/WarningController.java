@@ -85,6 +85,8 @@ public class WarningController {
         	}
             return this.service(request,orderId,type,status);
         }else{
+            //获取告警信息
+            List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(orderId);
         	int status = status = Integer.parseInt(Constants.TASK_FINISH);
             //获取对应IP
             List IPList = orderService.findIPByOrderId(orderId);
@@ -135,8 +137,6 @@ public class WarningController {
             }else{//华为的服务
         		switch (serviceId) {
     			case 3:/**篡改  dyy*/
-            		//获取告警信息
-                	List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(orderId);
                 	//处理时间Thu Apr 16 09:47:38 CST 2015=》年月日时分秒
                 	if(taskWarnList!=null){
                 		for(TaskWarn t : taskWarnList){
@@ -178,6 +178,9 @@ public class WarningController {
                 		}
                 	}
                 	return "/source/page/order/warning_keyword"	;
+    			case 5:/**可用性监测服务 dyy*/
+    			    request.setAttribute("wlist", taskWarnList.size());
+    	            return "/source/page/order/order_usable";
     			default: //1,2
     				request.setAttribute("assetList", assetList);
     	            request.setAttribute("alarmList", alarmList);
@@ -362,7 +365,7 @@ public class WarningController {
     	String orderId = request.getParameter("orderId");
     	List<Task> taskTime = taskService.findScanTimeByOrderId(orderId);
         StringBuffer rsOption = new StringBuffer(); 
-        for(int i=0;i<taskTime.size()-1;i++){
+        for(int i=0;i<taskTime.size();i++){
         	Task t = taskTime.get(i);
 //        	String str = DateUtils.dateToString(t.getExecute_time());
         	String str1=DateUtils.dateToString(t.getGroup_flag());
@@ -862,7 +865,7 @@ public class WarningController {
         //获取对应资产
         List assetList = orderAssetService.findAssetNameByOrderId(orderId);
         //获取对应IP
-       // List IPList = orderService.findIPByOrderId(orderId);
+        // List IPList = orderService.findIPByOrderId(orderId);
         request.setAttribute("assetList", assetList);
         request.setAttribute("orderList", orderList);
        
