@@ -24,15 +24,17 @@
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript">
 $(function () {
-	//getData();
-	//window.setInterval(getData,30000);
+	getData();
+	window.setInterval(getData,30000);
+	warningTask();
+    window.setInterval(warningTask,60000);
 });
 function getData(){
 	var orderId = $("#orderId").val();
  		$.ajax({
            type: "POST",
            url: "/cloud-security-platform/scaning.html",
-           data: {"orderId":orderId},
+           data: {"orderId":orderId,"status":${status},"group_flag":$("#group_flag").val()},
            dataType:"json",
            success: function(data){
           		var progress = data.progress;
@@ -40,6 +42,27 @@ function getData(){
            		$("#bar2").css("width", progress+"%");
            		$("#bar2").html(progress+"%");
            		$("#url").html("当前URL:"+data.currentUrl);
+           		if(${status}==2){
+           			$('.scan').removeClass('scancur');
+           			$('.scan').eq(1).addClass('scancur');
+           		}
+           		if(${status}==3){
+           			$('.scan').removeClass('scancur');
+           			$('.scan').eq(2).addClass('scancur');
+           		}
+           }
+        });
+}
+//实时刷新
+function warningTask(){
+    var orderId = $("#orderId").val();
+        $.ajax({
+           type: "POST",
+           url: "/cloud-security-platform/warningTask.html",
+           data: {"orderId":orderId},
+           dataType:"json",
+           success: function(data){
+                updateTable(data);
            }
         });
 }
@@ -58,14 +81,38 @@ $(document).ready(function() {
 }); 
 function historicalDetails(){
 	var orderId = $("#orderId").val();
-	var execute_Time = $("#execute_Time").val();
+	var groupId = $("#execute_Time").val();
 	var type = $("#type").val();
 //	window.location.href = "${ctx}/historyInit.html?execute_Time="
 	//							+ execute_Time+"&orderId="+orderId;
-	window.open("${ctx}/historyInit.html?execute_Time="
-								+ execute_Time+"&orderId="+orderId+"&type="+type); 
-	
+	window.open("${ctx}/historyInit.html?groupId="
+								+ groupId+"&orderId="+orderId+"&type="+type); 
+}
 
+//更新table的内容
+function updateTable(data){ 
+       //清除表格
+    clearTable();
+    var executeTime  =  data.executeTime;//取结点里的数据 
+    var issueCount =  data.issueCount; 
+    var requestCount  =  data.requestCount;
+    var urlCount    =  data.urlCount;
+    var averResponse   =  data.averResponse;  
+    var averSendCount   =  data.averSendCount;
+    var sendBytes   =  data.sendBytes;
+    var receiveBytes   =  data.receiveBytes; 
+    
+       $("#confTable").append("<tr><td style='line-height:20px;'>"+executeTime+"</td>"+
+       "<td style='line-height:20px;'>--</td><td>--</td><td>"+issueCount+"个</td><td>"+requestCount+"次</td>"+
+       "<td>"+urlCount+"个</td><td>"+averResponse+"毫秒</td><td>"+averSendCount+"个</td><td>"+sendBytes+"</td><td>"+receiveBytes+"</td></tr>");    
+}
+
+//清除表格内容
+function clearTable(){
+   var cit= $("#confTable");
+   if(cit.size()>0) {
+        cit.find("tr:not(:first)").remove();
+    }
 }
 </script>
 </head>
@@ -131,8 +178,19 @@ function historicalDetails(){
        			<div class="gj_fr">
 		            <input type="hidden" value="${order.id }" id="orderId"/>
 		            <input type="hidden" value="${order.type }" id="type"/>
+		            <input type="hidden" value="${group_flag }" id="group_flag"/>
+		            
 		            <p><span class="bigfont">${order.name }</span>
 		            <span>(  订单编号：${order.id }  )</span>
+		            <c:if test="${order.type==1 && group_flag==null}">
+		            	<p><span class="bigfont historyde">历史详情</span>
+		            		<select class="historyse" id="execute_Time" name="execute_Time" onchange="historicalDetails()">
+		            			<option>请选择</option>
+		            		</select>
+		            	</p>
+		                <!--  <a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank"><span style="float:right; margin-right:30px; dispiay:inline-block;color:#999; ">历史记录</span></a>
+		             	-->
+		            </c:if>
 		            </p>  
 		            <div style="overflow:hidden;">
 		            <div style="float:left">资产：</div>
@@ -145,21 +203,21 @@ function historicalDetails(){
           </c:forEach>
         </div>
         <div class="process">
-       	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span><span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan scancur">完成</span></p>
-            <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1">100%</span>
+       	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span><span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan">完成</span></p>
+            <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1">0%</span>
             <span class="processingbox">
             	<span class="progress">
-                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="bar2">100%</span>
+                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="bar2">0%</span>
 				</span>
             <span class="prourl" id="url"></span>
             </span></p>
             <div class="scrg">
             	<span class="scrg_sp"><span class="scrg_ti">请求次数</span><span class="scrg_de">${task.requestCount}次</span></span>
                 <span class="scrg_sp"><span class="scrg_ti">平均响应时间</span><span class="scrg_de">${task.averResponse}毫秒</span></span>
-                <span class="scrg_sp"><span class="scrg_ti">发送字节</span><span class="scrg_de">${task.sendBytes}</span></span>
+                <span class="scrg_sp"><span class="scrg_ti">发送字节</span><span class="scrg_de">${send}</span></span>
                 <span class="scrg_sp"><span class="scrg_ti">URL个数</span><span class="scrg_de">${task.urlCount}个</span></span>
                 <span class="scrg_sp"><span class="scrg_ti">每秒访问个数</span><span class="scrg_de">${task.averSendCount}个</span></span>
-                <span class="scrg_sp"><span class="scrg_ti">接收字节</span><span class="scrg_de">${task.receiveBytes}</span></span>
+                <span class="scrg_sp"><span class="scrg_ti">接收字节</span><span class="scrg_de">${receive}</span></span>
             </div>
         </div>
     <div class="zhangd_table" style="border-bottom:1px solid #e0e0e0;width: 1068px;margin-left:0;padding-left: 35px;">

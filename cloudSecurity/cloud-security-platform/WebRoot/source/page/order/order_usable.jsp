@@ -9,7 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<title>订单跟踪-告警详情-篡改</title>
+<title>订单跟踪-告警详情-可用性</title>
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
@@ -18,9 +18,11 @@
 <link href="${ctx}/source/css/prompt.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
+  
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/warning.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/order/warning_usable.js"></script>
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <style>
 .table-c table{border-right:1px solid #000;border-bottom:1px solid #000}
@@ -75,9 +77,15 @@
         </div>
         <div class="gj_title webgj_title">
         	<div class="gj_fl">
-            	<img src="${ctx}/source/images/icon_cg.jpg" width="85" height="85" />
-				<p>网页篡改告警</p>
-              	<p class="web_num">${count}次</p>
+              <c:if test="${wlist==0}">
+               <img src="${ctx}/source/images/icon_cg-green.jpg" width="85" height="85" />
+	               <p>可用性告警正常</p>
+	            </c:if>
+	            <c:if test="${wlist!=0}">
+	                <img src="${ctx}/source/images/icon_cg.jpg" width="85" height="85" />
+	                <p>可用性告警次数</p>
+	                <p class="web_num">${wlist}次</p>
+	           </c:if>
           </div>
            <c:forEach var="order" items="${orderList}" varStatus="status">
        			<div class="gj_fr">
@@ -144,8 +152,8 @@
                     <input type="button" value="天" class="scan web_scan web_scancur" />
                     <input type="button" value="周" class="scan web_scan" />
                 </div>
-                <div class="web_box">
-           	    	<img src="${ctx}/source/images/mgdata.jpg" width="428" height="254" style="margin: 48px 0 0 20px;" />
+                <div class="web_box" id="pic">
+           	    	<!-- <img src="${ctx}/source/images/mgdata.jpg" width="428" height="254" style="margin: 48px 0 0 20px;" /> -->
                 </div>
          </div>
         </div>

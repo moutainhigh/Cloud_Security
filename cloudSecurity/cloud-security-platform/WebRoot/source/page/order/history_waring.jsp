@@ -25,21 +25,29 @@
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
 $(function () {
-	//getData();
-	//window.setInterval(getData,30000);
+	getData();
+	window.setInterval(getData,30000);
 });
 function getData(){
 	var orderId = $("#orderId").val();
  		$.ajax({
            type: "POST",
            url: "/cloud-security-platform/scaning.html",
-           data: {"orderId":orderId},
+           data: {"orderId":orderId,"status":${status}},
            dataType:"json",
            success: function(data){
           		var progress = data.progress;
            		$("#bar1").html(progress+"%");
            		$("#bar2").css("width", progress+"%");
            		$("#bar2").html(progress+"%");
+           		if(${status}==2){
+           			$('.scan').removeClass('scancur');
+           			$('.scan').eq(1).addClass('scancur');
+           		}
+           		if(${status}==3){
+           			$('.scan').removeClass('scancur');
+           			$('.scan').eq(2).addClass('scancur');
+           		}
            }
         });
 }
@@ -108,9 +116,15 @@ function seedetail1(e) {
        <c:forEach var="order" items="${orderList}" varStatus="status">
         <div class="gj_title webgj_title">
         <div class="gj_fl">
+        	<c:if test="${alist==0}">
+        	   <img src="${ctx}/source/images/icon_cg-green.jpg" width="85" height="85" />
+        	   <p>漏洞告警正常</p>
+        	</c:if>
+        	<c:if test="${alist!=0}">
                 <img src="${ctx}/source/images/icon_cg.jpg" width="85" height="85" />
                 <p>发现漏洞个数</p>
-                <p class="web_num">${aList}个</p>
+                <p class="web_num">${alist}个</p>
+            </c:if>
           </div>
         <div class="gj_fr">
             <input type="hidden" value="${order.id }" id="orderId"/>
@@ -128,23 +142,25 @@ function seedetail1(e) {
              	
             </c:if>-->  
             </p>            
-            <p>资产：<span class="asset">
+            <p><p>
+            <div style="overflow:hidden;"><div style="float:left">资产：</div>
+            <div style="float:left">
             <c:forEach var="asset" items="${assetList}" varStatus="status">
-            <span class="assets">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
+            <span class="assets" style="display:block">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
             </c:forEach>
-            </span></p>
+            </div></div></p></p>
         </div>
         </div>
         <div class="process">
        	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span>
-       	  	<span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan scancur">完成</span>
+       	  	<span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan">完成</span>
        	  </p>
-            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>100%</span>
+            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>0%</span>
             <span class="processingbox">
             	<span class="progress">
-                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="bar2">100%</span>
+                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:0%" id="bar2">0%</span>
 				</span>
-            <span class="prourl">当前URL:http://www.sofpgipgospfops.cpm/</span>
+            <span class="prourl"></span>
             </span></p>
         </div>
         <div class="gj_box">

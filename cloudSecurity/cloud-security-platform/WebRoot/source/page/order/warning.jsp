@@ -24,15 +24,15 @@
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript">
 $(function () {
-	//getData();
-	//window.setInterval(getData,30000);
+	getData();
+	window.setInterval(getData,30000);
 });
 function getData(){
 	var orderId = $("#orderId").val();
  		$.ajax({
            type: "POST",
            url: "/cloud-security-platform/scaning.html",
-           data: {"orderId":orderId},
+           data: {"orderId":orderId,"status":${status}},
            dataType:"json",
            success: function(data){
           		var progress = data.progress;
@@ -40,6 +40,14 @@ function getData(){
            		$("#bar2").css("width", progress+"%");
            		$("#bar2").html(progress+"%");
            		$("#url").html("当前URL:"+data.currentUrl);
+           		if(${status}==2){
+           			$('.scan').removeClass('scancur');
+           			$('.scan').eq(1).addClass('scancur');
+           		}
+           		if(${status}==3){
+           			$('.scan').removeClass('scancur');
+           			$('.scan').eq(2).addClass('scancur');
+           		}
            }
         });
 }
@@ -141,7 +149,7 @@ function seedetail1(e) {
             <c:if test="${alist!=0}">
                 <img src="${ctx}/source/images/icon_cg.jpg" width="85" height="85" />
                 <p>发现漏洞个数</p>
-                <p class="web_num">${alist}次</p>
+                <p class="web_num">${alist}个</p>
             </c:if>
           </div>
         <div class="gj_fr">
@@ -171,14 +179,14 @@ function seedetail1(e) {
         </div>
         <div class="process">
        	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span>
-       	  	<span class="scan ">未开始</span><span class="scan">扫描中</span><span class="scan scancur">完成</span>
+       	  	<span class="scan ">未开始</span><span class="scan">扫描中</span><span class="scan">完成</span>
        	  </p>
-            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>100%</span>
+            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>0%</span>
             <span class="processingbox">
             	<span class="progress">
-                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="bar2">100%</span>
+                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="bar2">0%</span>
 				</span>
-            <span class="prourl" id="url">当前URL:http://www.sofpgipgospfops.cpm/</span>
+            <span class="prourl" id="url"></span>
             </span></p>
         </div>
         <div class="gj_box">
@@ -215,7 +223,7 @@ function seedetail1(e) {
                 <P class="formalinfo"><span class="infotitle2">接收字节</span><span>${receive}</span></P>                  
             </div>
         </div>
-        <c:if test="${order.type==1}||${!empty alarmList}"><!-- 单次订单不显示趋势图 -->
+        <c:if test="${order.type==1 && !empty alarmList}"><!-- 单次订单不显示趋势图 -->
         <div class="gj_boxs">
             <div class="detail_title">安全评分</div>
             <div class="aqpf" id="aqpf">

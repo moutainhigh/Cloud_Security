@@ -76,9 +76,17 @@
         </div>
         <div class="gj_title webgj_title">
         	<div class="gj_fl">
-            	<img src="${ctx}/source/images/icon_cg.jpg" width="85" height="85" />
-				<p>关键字告警个数</p>
-              	<p class="web_num">${keyList}次</p>
+        	
+        	<c:if test="${keyList==0}">
+               <img src="${ctx}/source/images/icon_cg-green.jpg" width="85" height="85" />
+               <p>关键字告警正常</p>
+            </c:if>
+            <c:if test="${keyList!=0}">
+                <img src="${ctx}/source/images/icon_cg.jpg" width="85" height="85" />
+                <p>关键字告警个数</p>
+                <p class="web_num">${keyList}次</p>
+            </c:if>
+            
           </div>
            <c:forEach var="order" items="${orderList}" varStatus="status">
        			<div class="gj_fr">
@@ -87,11 +95,13 @@
 		            <p><span class="bigfont">${order.name }</span>
 		            <span>(  订单编号：${order.id }  )</span>
 		            </p>            
-		            <p>资产：<span class="asset">
-		            <c:forEach var="asset" items="${assetList}" varStatus="status">
-		            <span class="assets">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
-		            </c:forEach>
-		            </span></p>
+		            <p>
+			           <div style="overflow:hidden;"><div style="float:left">资产：</div>
+			           <div style="float:left">
+			           <c:forEach var="asset" items="${assetList}" varStatus="status">
+			           <span class="assets" style="display:block">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
+			           </c:forEach>
+			           </div></div></p>
 		        </div>
           </c:forEach>
         </div>
@@ -107,10 +117,10 @@
             <div class="scrg">
             	<span class="scrg_sp"><span class="scrg_ti">请求次数</span><span class="scrg_de">${task.requestCount}次</span></span>
                 <span class="scrg_sp"><span class="scrg_ti">平均响应时间</span><span class="scrg_de">${task.averResponse}毫秒</span></span>
-                <span class="scrg_sp"><span class="scrg_ti">发送字节</span><span class="scrg_de">${task.sendBytes}</span></span>
+                <span class="scrg_sp"><span class="scrg_ti">发送字节</span><span class="scrg_de">${send}</span></span>
                 <span class="scrg_sp"><span class="scrg_ti">URL个数</span><span class="scrg_de">${task.urlCount}个</span></span>
                 <span class="scrg_sp"><span class="scrg_ti">每秒访问个数</span><span class="scrg_de">${task.averSendCount}个</span></span>
-                <span class="scrg_sp"><span class="scrg_ti">接收字节</span><span class="scrg_de">${task.receiveBytes}</span></span>
+                <span class="scrg_sp"><span class="scrg_ti">接收字节</span><span class="scrg_de">${receive}</span></span>
             </div>
         </div>
     <div class="zhangd_table" style="border-bottom:1px solid #e0e0e0;width: 1068px;margin-left:0;padding-left: 35px;">
