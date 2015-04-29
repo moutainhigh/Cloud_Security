@@ -51,6 +51,7 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/registToLogin.html");
 		list.add("/noticeDescUI.html");
 		list.add("/getNum.html");
+		list.add("/aider.html");
 		//获取访问的url路径
 		String path = request.getServletPath();
 		forwordIndexPage(path,request,response);
