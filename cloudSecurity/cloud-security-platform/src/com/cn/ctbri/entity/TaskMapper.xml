@@ -95,7 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findScanTimeByOrderId" parameterType="String" resultMap="TaskRM">
 		SELECT distinct t.group_flag
 		FROM cs_task t,cs_order_asset oa
-		WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId}
+		WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} and t.status = 3
 		ORDER BY t.execute_time
 	</select>	
 </mapper>
