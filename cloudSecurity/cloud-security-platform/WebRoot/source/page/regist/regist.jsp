@@ -78,7 +78,7 @@ function checkNumberImage(){
       <ul>
         <li><a href="${ctx}/index.html">首页</a></li>
         <li><a href="###">我的订单</a></li>
-        <li><a href="aider.html">在线帮助</a></li>
+        <li><a href="${ctx}/aider.html">在线帮助</a></li>
         <li style="border-right:1px solid #11871d;">
         	<c:if test="${sessionScope.globle_user==null }">
         		<a href="${ctx}/toLoginUI.html">用户中心</a>
