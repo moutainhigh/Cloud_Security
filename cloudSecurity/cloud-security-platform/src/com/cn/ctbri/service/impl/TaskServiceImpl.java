@@ -38,8 +38,8 @@ public class TaskServiceImpl implements ITaskService{
         int taskId = taskDao.insert(task);
         return taskId;
     }
-	public Task findProgressByOrderId(String orderId) {
-		return taskDao.findProgressByOrderId(orderId);
+	public Task findProgressByOrderId(Map<String, Object> paramMap) {
+		return taskDao.findProgressByOrderId(paramMap);
 	}
 	public Task findBasicInfoByOrderId(String orderId) {
 		return taskDao.findBasicInfoByOrderId(orderId);

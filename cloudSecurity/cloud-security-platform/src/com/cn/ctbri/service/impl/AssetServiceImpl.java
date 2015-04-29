@@ -102,8 +102,8 @@ public class AssetServiceImpl implements IAssetService{
      * 参数描述： String addr
      *       @time 2015-3-9
      */
-	public List<Asset> findByAssetAddr(String addr) {
-		return assetDao.findByAssetAddr(addr);
+	public List<Asset> findByAssetAddr(Map<String, Object> paramMap) {
+		return assetDao.findByAssetAddr(paramMap);
 	}
 	 /**
      * 功能描述： 查询所有资产
