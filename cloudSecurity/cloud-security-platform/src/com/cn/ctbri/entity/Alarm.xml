@@ -45,8 +45,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<!-- 根据用户id查询告警数  -->
 	<select id="findAlarmByUserId" parameterType="int" resultMap="Alarm">
-		select * from cs_alarm
-		where userId = #{userId}
+	select    a.*  from cs_alarm a ,cs_order_asset oa,cs_task t ,cs_order o
+		WHERE oa.orderId= o.id AND oa.id=t.order_asset_Id AND t.taskId=a.taskId and o.userid=#{userId}
 	</select>
 	<!-- 根据orderid查询告警数,最近告警信息  -->
     <select id="findAlarmByOrderId" resultMap="Alarm" parameterType="hashmap">
