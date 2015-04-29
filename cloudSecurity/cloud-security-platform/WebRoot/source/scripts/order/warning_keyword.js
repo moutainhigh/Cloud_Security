@@ -166,23 +166,25 @@ $(function(){
                 success:function(data){
                     $.each(data,function(i,p){
 	                   	lineData[i]=p['url'];
-	                   	alert(p['count']);
 	                   	lineData2[i]=p['count'];
 	                   	time[i]=p['alarm_time'];
+	                   	alert(time[i]);
                     });
                     myChart.setOption({//图形
                     	tooltip : {
                             trigger: 'axis'
                         },
-                        
                         toolbox: {
                             show : true,
                             feature : {
-                                mark : true,
-                                restore : true,
-                                saveAsImage : true
+                               /* mark : {show: true},
+                                dataView : {show: true, readOnly: false},
+                               // magicType : {show: true, type: ['line', 'bar']},
+                                restore : {show: true},
+                                saveAsImage : {show: true}*/
                             }
                         },
+                        
                         calculable : true,
                         xAxis : [
                                  {
@@ -196,18 +198,25 @@ $(function(){
                                 type : 'value'
                             }
                         ],
-                        series : [
-                            {
-                                name:'低危漏洞个数',
-                                type:'line',
-                                data: testLineData()
-                            },
+                        series:function(){
+                        	 var serie=[];
+                        	 for( var i=0;i < data.length;i++){
+	                        	 var item={
+		                        	 name:data[i].url,
+		                        	 type:'line',
+		                        	 data:data[i].count
+	                        	 };
+	                        	 serie.push(item);
+                        	 };
+                        	 return serie;
+                        	 }()
+                        /*series : [
                             {
                                 name:'中危漏洞个数',
                                 type:'line',
                                 data: testLineData2()
                             }
-                        ]
+                        ]*/
                     },true);//图形展示
                 }//ajax执行后台
             }); 
