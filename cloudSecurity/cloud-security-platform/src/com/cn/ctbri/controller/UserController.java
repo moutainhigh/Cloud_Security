@@ -485,5 +485,60 @@ public class UserController {
 			}
     	}
 	}
+	/**
+	 * 功能描述： 在线帮助
+	 * 参数描述：  User user
+	 *		 @time 2014-12-31
+	 */
+	@RequestMapping(value="aider.html")
+	public String OnlineHelp(){
+		
+		return "/source/page/onLineHelp/onLineHelp";
+		//return "redirect:/loginUI.html";
+	}
+	/**
+	 * 功能描述： 在线帮助
+	 * 参数描述：  User user
+	 *		 @time 2014-12-31
+	 */
+	@RequestMapping(value="loginHelp.html")
+	public String loginHelp(){
+		
+		return "/source/page/onLineHelp/loginHelp";
+		//return "redirect:/loginUI.html";
+	}
+	/**
+	 * 功能描述： 在线帮助
+	 * 参数描述：  User user
+	 *		 @time 2014-12-31
+	 */
+	@RequestMapping(value="userCenterHelp.html")
+	public String userCenterHelp(){
+		
+		return "/source/page/onLineHelp/userCenterHelp";
+		//return "redirect:/loginUI.html";
+	}
+	/**
+	 * 功能描述： 在线帮助
+	 * 参数描述：  User user
+	 *		 @time 2014-12-31
+	 */
+	@RequestMapping(value="OrderHelp.html")
+	public String OrderHelp(){
+		
+		return "/source/page/onLineHelp/OrderHelp";
+		//return "redirect:/loginUI.html";
+	}
+	/**
+	 * 功能描述： 在线帮助
+	 * 参数描述：  User user
+	 *		 @time 2014-12-31
+	 */
+	@RequestMapping(value="webQuestions.html")
+	public String webQuestions(){
+		
+		return "/source/page/onLineHelp/webQuestions";
+		//return "redirect:/loginUI.html";
+	}
 	
 }
