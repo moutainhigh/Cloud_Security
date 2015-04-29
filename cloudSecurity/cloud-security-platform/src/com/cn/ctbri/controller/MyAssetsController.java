@@ -74,9 +74,13 @@ public class MyAssetsController {
 	 */
 	@RequestMapping("/asset_addrIsExist.html")
 	 @ResponseBody
-	public void addrIsExist(Model model,Asset asset,HttpServletResponse response){
-		String addr = asset.getAddr();
-		List<Asset> list = assetService.findByAssetAddr(addr);
+	public void addrIsExist(Model model,Asset asset,HttpServletResponse response,HttpServletRequest request){
+	    User globle_user = (User) request.getSession().getAttribute("globle_user");
+	    Map<String, Object> paramMap = new HashMap<String, Object>();
+	    String addr = asset.getAddr();
+        paramMap.put("userId", globle_user.getId());
+        paramMap.put("addr", addr);
+		List<Asset> list = assetService.findByAssetAddr(paramMap);
 		Map<String, Object> m = new HashMap<String, Object>();
 		if(list != null && list.size()>0){
 			m.put("msg", true);//1：表示资产已经存在

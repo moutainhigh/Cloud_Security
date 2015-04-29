@@ -451,6 +451,9 @@ public class OrderMgrController {
                     task.setOrder_asset_Id(oa.getId());
                     //资产任务组
                     task.setGroup_flag(begin_date);
+                    if(serviceId.equals("5")){
+                        task.setEnd_time(end_date);
+                    }
                     //插入一条任务数据  获取任务id
                     int taskId = taskService.insert(task);
                 }
