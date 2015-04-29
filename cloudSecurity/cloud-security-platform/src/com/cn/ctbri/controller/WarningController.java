@@ -279,15 +279,17 @@ public class WarningController {
     			JSONObject jo = new JSONObject();
     			SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String time = setDateFormat.format(listRight.get(0).getAlarm_time());
-                jo.put("url", url);
-                jo.put("alarm_time", time);
-                for(Alarm b : listRight){
-                	String time1 = setDateFormat.format(b.getAlarm_time());
+//                jo.put("alarm_time", time);
+                String temp="";
+                for(int i =0 ;i< listRight.size();i++){
+                	jo.put("url", url);
+                	String time1 = setDateFormat.format(listRight.get(i).getAlarm_time());
                 	jo.put("alarm_time", time1);
-                	jo.put("count", b.getCount());
+                	temp+=listRight.get(i).getCount()+",";
                 }
-                
-                json.add(jo);
+                temp=temp.substring(0, temp.length()-1);  
+                jo.put("count", temp);
+            	json.add(jo);
     		}
     	}
         return json.toString();
