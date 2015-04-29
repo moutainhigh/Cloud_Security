@@ -34,7 +34,7 @@ public interface TaskDao {
 	public List<Task> findTaskByOrderAssetId(int orderAssetId);
 
 	public Object findByOrderId(String orderId);
-	public Task findProgressByOrderId(String orderId);
+	public Task findProgressByOrderId(Map<String, Object> paramMap);
 
 	public Task findBasicInfoByOrderId(String orderId);
 	public List<Task> findScanTimeByOrderId(String orderId);
