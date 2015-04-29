@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import se.akerfeldt.com.google.gson.Gson;
 
 import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.constant.WarnType;
@@ -283,21 +282,22 @@ public class WarningController {
     			SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String time = setDateFormat.format(listRight.get(0).getAlarm_time());
 //                jo.put("alarm_time", time);
-                String temp="";
+                List result = new ArrayList();
+                List result1 = new ArrayList();
+                jo.put("url", url);
                 for(int i =0 ;i< listRight.size();i++){
-                	jo.put("url", url);
                 	String time1 = setDateFormat.format(listRight.get(i).getAlarm_time());
-                	jo.put("alarm_time", time1);
-                	temp+=listRight.get(i).getCount()+",";
+                	jo.put("time", time1);
+                	result1.add(time1);
+                	result.add(listRight.get(i).getCount());
                 }
-                temp=temp.substring(0, temp.length()-1);  
-                jo.put("count", temp);
+                jo.put("alarm_time", result1);
+                jo.put("count", result);
             	json.add(jo);
     		}
     	}
         return json.toString();
 	}
-	
 	
 	/**
      * 功能描述：获取折线图信息
@@ -766,6 +766,24 @@ public class WarningController {
         }
     }
     
+    /**
+     * 功能描述：告警2扫描中状态
+     */   
+    @RequestMapping(value="keyWord.html" ,method = RequestMethod.POST)
+    public String keyWord(HttpServletRequest request,HttpServletResponse response,String orderId,String url){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("orderId", orderId);
+		map.put("url", url);
+		List<Alarm> list = alarmService.findKeywordByUrlAndOrderId(map);
+		List<Alarm> mapSortData = getSortData(list);
+		request.setAttribute("mapSortData", mapSortData);
+
+        
+        //object转化为Json格式
+		JSONArray json = new JSONArray();
+		json.fromObject(mapSortData).toString(); 
+        return json.toString();
+    }
     /**
      * 功能描述：告警2扫描中状态
      * 邓元元
