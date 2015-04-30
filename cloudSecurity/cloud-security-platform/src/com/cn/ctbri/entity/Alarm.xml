@@ -151,10 +151,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER BY  COUNT(b.name) DESC LIMIT 10
     </select>
     <!-- 曲线图左侧信息 -->
-    <select id="findLeftByOrderId" parameterType="String" resultMap="Alarm">
+    <select id="findLeftByOrderId" parameterType="hashmap" resultMap="Alarm">
     	SELECT a.url,a.score, oa.scan_type AS scan_type,a.name
 		FROM cs_alarm a ,cs_order_asset oa,cs_task t 
 		WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=a.taskId
+		<if test="url!=null">
+			and a.url=#{url}
+		</if>
 		GROUP BY a.url
 		ORDER BY a.alarm_time
     </select>
