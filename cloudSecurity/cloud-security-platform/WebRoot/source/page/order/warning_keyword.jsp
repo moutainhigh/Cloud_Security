@@ -153,7 +153,8 @@
     </div>
     <div class="web_data">
     	<div class="web_detail_title">关键字告警统计</div>
-    <c:forEach var="a" items="${alarmKeyWordList}" >
+    <c:forEach var="a" items="${alarmKeyWordList}" varStatus="stus">
+    <c:if test="${stus.first }">
      <input type="hidden" value="${a.url }" id="url"/>
        <div class="web_topbox">
            <div class="web_datal" id="web_datal" style="width: 271px; padding-left: 0px">
@@ -176,7 +177,7 @@
                     <input type="button" value="小时" class="scan web_scan" />
                     <input type="button" value="天" class="scan web_scan web_scancur" />
                     <input type="button" value="周" class="scan web_scan" />
-                </div>
+                </div> 
                 <div class="web_box" id="pic">
            	    	<!-- <img src="${ctx}/source/images/mgdata.jpg" width="428" height="254" style="margin: 48px 0 0 20px;" />
                  -->
@@ -191,6 +192,7 @@
                 </div>
             </div>
         </div>
+        </c:if>
         </c:forEach>
     </div>
   </div>
