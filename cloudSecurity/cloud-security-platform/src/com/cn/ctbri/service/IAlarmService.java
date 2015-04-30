@@ -81,7 +81,7 @@ public interface IAlarmService {
 	List<AlarmDDOS> findAlarmByTaskId(int TaskId);
     List<AlarmDDOS> findEndAlarmByTaskId(int taskId);
 	//告警统计--篡改（折线图信息）
-	List<Alarm> findSensitiveWordByOrderId(String orderId);
+	List<Alarm> findSensitiveWordByOrderId(Map<String, Object> paramMap);
 	//告警统计--关键字
 	List<Alarm> findKeywordWarningByOrderId(String orderId);
 	List<Alarm> findRightByOrderIdAndUrl(Map<String, Object> map);
