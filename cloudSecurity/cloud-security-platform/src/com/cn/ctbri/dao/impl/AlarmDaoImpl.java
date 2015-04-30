@@ -133,8 +133,8 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
 		return getSqlSession().selectList(ns+"findAlarmByTaskId1", taskId);
 	}
 	//敏感词折线图统计
-	public List<Alarm> findSensitiveWordByOrderId(String orderId) {
-		return getSqlSession().selectList(ns+"findLeftByOrderId", orderId);
+	public List<Alarm> findSensitiveWordByOrderId(Map<String, Object> paramMap) {
+		return getSqlSession().selectList(ns+"findLeftByOrderId", paramMap);
 	}
 	/**
      * 功能描述：根据任务id查询有结束时间的任务告警信息
