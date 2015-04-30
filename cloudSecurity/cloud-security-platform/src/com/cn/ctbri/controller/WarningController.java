@@ -176,12 +176,14 @@ public class WarningController {
                 	Map<String,Object> map = new HashMap<String, Object>();
                 	map.put("orderId", orderId);
                 	if(alarmKeyWordList!=null){
-                		for(Alarm a : alarmKeyWordList){
-                			String url = a.getUrl();
-                			map.put("url", url);
-                			List<Alarm> list = alarmService.findKeywordByUrlAndOrderId(map);
-                			List<Alarm> mapSortData = getSortData(list);
-                			request.setAttribute("mapSortData", mapSortData);
+                		for(int a=0;a<alarmKeyWordList.size();a++){
+                			if(a==0){
+                				String url = alarmKeyWordList.get(0).getUrl();
+                    			map.put("url", url);
+                    			List<Alarm> list = alarmService.findKeywordByUrlAndOrderId(map);
+                    			List<Alarm> mapSortData = getSortData(list);
+                    			request.setAttribute("mapSortData", mapSortData);
+                			}
                 		}
                 	}
                 	return "/source/page/order/warning_keyword"	;
