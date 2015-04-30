@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import se.akerfeldt.com.google.gson.Gson;
+
 
 import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.constant.WarnType;
@@ -143,7 +145,10 @@ public class WarningController {
                 		}
                 	}
                 	//获取：敏感词  折线图信息
-                	List<Alarm> alarm = alarmService.findSensitiveWordByOrderId(orderId);
+                	Map<String,Object> m = new HashMap<String, Object>();
+    				m.put("orderId", orderId);
+    				m.put("url", null);
+                	List<Alarm> alarm = alarmService.findSensitiveWordByOrderId(m);
                 	request.setAttribute("alarm", alarm);
                 	request.setAttribute("alist", alarm.size());
                 	request.setAttribute("taskWarnList", taskWarnList);
@@ -162,7 +167,10 @@ public class WarningController {
     				request.setAttribute("keywordList", keywordList);
     				request.setAttribute("keyList", keywordList.size());
     				//关键字 折线图 左侧信息
-    				List<Alarm> alarmKeyWordList = alarmService.findSensitiveWordByOrderId(orderId);
+    				Map<String,Object> m1 = new HashMap<String, Object>();
+    				m1.put("orderId", orderId);
+    				m1.put("url", null);
+    				List<Alarm> alarmKeyWordList = alarmService.findSensitiveWordByOrderId(m1);
                 	request.setAttribute("alarmKeyWordList", alarmKeyWordList);
     				//敏感词排行榜(只适合一个资产)
                 	Map<String,Object> map = new HashMap<String, Object>();
@@ -266,9 +274,11 @@ public class WarningController {
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("application/json;charset=UTF-8");
 		//获取带有关键字告警的url
-//一个订单里面有多个资产的情况待解决
-//页面循环div的id 资产Url和曲线图匹配问题
-		List<Alarm> alarmKeyWordList = alarmService.findSensitiveWordByOrderId(orderId);
+		//页面循环div的id 资产Url和曲线图匹配问题
+		Map<String,Object> m = new HashMap<String, Object>();
+		m.put("orderId", orderId);
+		m.put("url", null);
+		List<Alarm> alarmKeyWordList = alarmService.findSensitiveWordByOrderId(m);
     	//根据url查询折线图和orderId
     	Map<String, Object> map = new HashMap<String, Object>();
     	map.put("orderId", orderId);
@@ -279,9 +289,7 @@ public class WarningController {
     			map.put("url", url); 
     			List<Alarm> listRight = alarmService.findRightByOrderIdAndUrl(map);
     			JSONObject jo = new JSONObject();
-    			SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String time = setDateFormat.format(listRight.get(0).getAlarm_time());
-//                jo.put("alarm_time", time);
+    			SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                 List result = new ArrayList();
                 List result1 = new ArrayList();
                 jo.put("url", url);
@@ -767,23 +775,59 @@ public class WarningController {
     }
     
     /**
-     * 功能描述：告警2扫描中状态
+     * 功能描述：敏感词
      */   
     @RequestMapping(value="keyWord.html" ,method = RequestMethod.POST)
-    public String keyWord(HttpServletRequest request,HttpServletResponse response,String orderId,String url){
+    public void keyWord(HttpServletRequest request,HttpServletResponse response,String orderId,String url){
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("application/json;charset=UTF-8");
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("orderId", orderId);
 		map.put("url", url);
 		List<Alarm> list = alarmService.findKeywordByUrlAndOrderId(map);
 		List<Alarm> mapSortData = getSortData(list);
-		request.setAttribute("mapSortData", mapSortData);
-
         
-        //object转化为Json格式
-		JSONArray json = new JSONArray();
-		json.fromObject(mapSortData).toString(); 
-        return json.toString();
+        Gson gson= new Gson(); 
+        String resultGson = gson.toJson(mapSortData);//转成json数据
+		PrintWriter out;
+		try {
+			out = response.getWriter();
+			out.write(resultGson); 
+			out.flush(); 
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+        
+        
     }
+    
+    /**
+     * 功能描述：详情
+     */   
+    @RequestMapping(value="details.html" ,method = RequestMethod.POST)
+    public void details(HttpServletRequest request,HttpServletResponse response,String orderId,String url){
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("application/json;charset=UTF-8");
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("orderId", orderId);
+		map.put("url", url);
+		List<Alarm> alarm = alarmService.findSensitiveWordByOrderId(map);
+        Gson gson= new Gson(); 
+        String resultGson = gson.toJson(alarm);//转成json数据
+		PrintWriter out;
+		try {
+			out = response.getWriter();
+			out.write(resultGson); 
+			out.flush(); 
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+        
+        
+    }
+    
     /**
      * 功能描述：告警2扫描中状态
      * 邓元元
