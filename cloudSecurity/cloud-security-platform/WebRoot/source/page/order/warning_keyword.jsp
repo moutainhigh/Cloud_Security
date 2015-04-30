@@ -156,7 +156,7 @@
     <c:forEach var="a" items="${alarmKeyWordList}" >
      <input type="hidden" value="${a.url }" id="url"/>
        <div class="web_topbox">
-           <div class="web_datal">
+           <div class="web_datal" id="web_datal" style="width: 271px; padding-left: 0px">
             	<p>监测URL：<span>${a.url}</span></p>
                 <p>监测频率：<span>
                 			<c:if test="${a.scan_type==1}">10分钟</c:if>
@@ -185,7 +185,7 @@
             <div class="web_datar">
             	<p class="pxtitle">敏感词排行榜</p>
                 <div class="pxbox" id="pxbox">
-                    <c:forEach items="${mapSortData}" var="keyword">
+                	<c:forEach items="${mapSortData}" var="keyword">
                 		<p><span class="pxboxL">${keyword.count}</span>${keyword.keyword}</p>
                 	</c:forEach>
                 </div>
