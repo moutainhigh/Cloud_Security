@@ -45,14 +45,10 @@ $(function(){
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
                     $.each(data,function(i,p){
-	                   	lineData[i]=p['url'];
 	                   	lineData2[i]=p['count'];
 	                   	time[i]=p['alarm_time'];
                     });
                     myChart.setOption({//图形
-                    	tooltip : {
-                            trigger: 'axis'
-                        },
                         calculable : true,
                         xAxis : [
                                  {
@@ -73,12 +69,7 @@ $(function(){
 		                        	 name:data[i].url,
 		                        	 type:'line',
 		                        	 data:data[i].count,
-		                        	 markPoint : {
-		                                 clickable :true,
-		                                   data : [
-		                                       {type : 'min', name: data[i].url}
-		                                   ]
-		                               }
+		                        	 clickable :true
 	                        	 };
 	                        	 serie.push(item);
                         	 };
@@ -90,13 +81,12 @@ $(function(){
             var ecConfig = require('echarts/config');
             var zrEvent = require('zrender/tool/event');
             myChart.on(ecConfig.EVENT.CLICK,function (param) {
-            	var temp=param.data.name;
+            	var temp=myChart.getSeries()[param.seriesIndex].name;;
             	var orderId = $("#orderId").val();
+            	//敏感词
          		$.ajax({
                    type: "POST",
-//                   getData.html?orderId="+$('#orderId').val(),
                    url: "keyWord.html?orderId="+orderId+"&url="+temp,
-//                   data: {"orderId":orderId,"url":temp},
                    dataType:"json",
                    success: function(data){
                 	   $("#pxbox").empty();//
@@ -107,7 +97,35 @@ $(function(){
                 	   $("#pxbox").append(str);   
                    }
                 });
-            	alert(temp);
+         		
+         		//详情
+         		$.ajax({
+                    type: "POST",
+                    url: "details.html?orderId="+orderId+"&url="+temp,
+                    dataType:"json",
+                    success: function(data){
+                 	   $("#web_datal").empty();//
+                 	   var str="";
+                 	   for(var i=0;i<data.length;i++){
+                 		   var str1="";
+                 		   if(data[i].scan_type==1){
+                 			   str1="10分钟";
+                 		   }
+                 		   if(data[i].scan_type==2){
+                			   str1="30分钟";
+                		   }
+                 		   if(data[i].scan_type==3){
+	               			   str1="1小时";
+	               		   }
+	                 	   if(data[i].scan_type==4){
+	              			   str1="2小时";
+	              		   }
+                 		   str+="<p>监测URL：<span>"+data[i].url+"</span></p><p>监测频率：<span>"+str1+"</span></p>"+
+                          			"<p>得分：<span>"+data[i].score+"分</span></p>";
+                 	   }
+                 	   $("#web_datal").append(str);   
+                    }
+                 });
             });
         }
     );
