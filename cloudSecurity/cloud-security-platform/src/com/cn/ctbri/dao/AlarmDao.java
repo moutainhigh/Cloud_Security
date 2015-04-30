@@ -93,7 +93,7 @@ public interface AlarmDao {
 	public List<AlarmDDOS> findAlarmByTaskId(int taskid);
     public List<AlarmDDOS> findEndAlarmByTaskId(int taskId);
 	//敏感词统计折线图
-	public List<Alarm> findSensitiveWordByOrderId(String orderId);
+	public List<Alarm> findSensitiveWordByOrderId(Map<String, Object> paramMap);
 	public List<Alarm> findKeywordWarningByOrderId(String orderId);
 	public List<Alarm> findRightByOrderIdAndUrl(Map<String, Object> map);
 	public List<Alarm> findKeywordByUrlAndOrderId(Map<String, Object> map);
