@@ -288,8 +288,8 @@ public class UserController {
 				userService.insert(user);
 			}
 		}
-		return "/source/page/regist/registToLogin";
-		//return "redirect:/loginUI.html";
+		//return "/source/page/regist/registToLogin";
+		return "redirect:/loginUI.html";
 	}
 	
 	/**
