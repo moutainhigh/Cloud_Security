@@ -271,15 +271,15 @@
              <div class="bottom_main">
                  <h3><a href="###">新手入门</a></h3>
                  <ul>
-                      <li><a href="###">新用户注册</a></li>
-                      <li><a href="###">用户登录</a></li>
+                      <li><a href="${ctx}/registUI.html">新用户注册</a></li>
+                       <li><a href="${ctx}/loginUI.html">用户登录</a></li>
                       <li><a href="###">找回密码</a></li>
                  </ul>
              </div>
               <div  class="bottom_main">
-              <h3><a href="###">    帮助</a></h3>
+               <h3><a href="###"> 帮助</a></h3>
                  <ul>
-                      <li><a href="###">常见问题</a></li>
+                        <li><a href="${ctx}/aider.html">常见问题</a></li>
                     
                  </ul>
              </div>
