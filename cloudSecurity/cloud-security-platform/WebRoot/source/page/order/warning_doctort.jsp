@@ -18,16 +18,21 @@
 <link href="${ctx}/source/css/prompt.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
+
+<script type="text/javascript" src="${ctx}/source/scripts/order/warning_keyword.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/warning.js"></script>
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript">
 $(function () {
-	getData();
+	//getData();
 	window.setInterval(getData,30000);
-	warningTask();
-    window.setInterval(warningTask,60000);
+	if($("#group_flag").val()==null){
+		//warningTask();
+	    window.setInterval(warningTask,60000);
+	}
+	
 });
 function getData(){
 	var orderId = $("#orderId").val();
@@ -55,11 +60,12 @@ function getData(){
 }
 //实时刷新
 function warningTask(){
-    var orderId = $("#orderId").val();
-        $.ajax({
+	var orderId = $("#orderId").val();
+	var type = $("#type").val();
+ 		$.ajax({
            type: "POST",
            url: "/cloud-security-platform/warningTask.html",
-           data: {"orderId":orderId},
+           data: {"orderId":orderId,"group_flag":$("#group_flag").val(),"type":type},
            dataType:"json",
            success: function(data){
                 updateTable(data);
@@ -67,25 +73,25 @@ function warningTask(){
         });
 }
 //加载模板下拉框选项 
-$(document).ready(function() {
+/*$(document).ready(function() {
 	var orderId = $("#orderId").val();
 	$.ajax({ 
 		type: "POST",
 		url: "/cloud-security-platform/getExecuteTime.html",
-        data: {"orderId":orderId},
+        data: {"orderId":orderId,"status":${state}},
         dataType:"text",
 		success : function(result){
 			$("#execute_Time").append(result); 
 		} 
 	});
-}); 
+}); */
 function historicalDetails(){
 	var orderId = $("#orderId").val();
 	var groupId = $("#execute_Time").val();
 	var type = $("#type").val();
 //	window.location.href = "${ctx}/historyInit.html?execute_Time="
 	//							+ execute_Time+"&orderId="+orderId;
-	window.open("${ctx}/historyInit.html?groupId="
+	window.open("${ctx}/warningInit.html?groupId="
 								+ groupId+"&orderId="+orderId+"&type="+type); 
 }
 
@@ -100,18 +106,23 @@ function updateTable(data){
     var averResponse   =  data.averResponse;  
     var averSendCount   =  data.averSendCount;
     var sendBytes   =  data.sendBytes;
+    var endTime = data.endTime;
     var receiveBytes   =  data.receiveBytes; 
-    
-       $("#confTable").append("<tr><td style='line-height:20px;'>"+executeTime+"</td>"+
-       "<td style='line-height:20px;'>--</td><td>--</td><td>"+issueCount+"个</td><td>"+requestCount+"次</td>"+
-       "<td>"+urlCount+"个</td><td>"+averResponse+"毫秒</td><td>"+averSendCount+"个</td><td>"+sendBytes+"</td><td>"+receiveBytes+"</td></tr>");    
+       $("#confTable").append("<span class='scrg_sp'><span class='scrg_ti'>开始时间</span><span class='scrg_de'>"+executeTime+"</span></span>"+
+       "<span class='scrg_sp'><span class='scrg_ti'>请求次数</span><span class='scrg_de'>"+requestCount+"次</span></span>"+
+       "<span class='scrg_sp'><span class='scrg_ti'>平均响应时间</span><span class='scrg_de'>"+averResponse+"毫秒</span></span>"+
+       "<span class='scrg_sp'><span class='scrg_ti'>发送字节</span><span class='scrg_de'>"+sendBytes+"</span></span>"+
+       "<span class='scrg_sp'><span class='scrg_ti'>结束时间</span><span class='scrg_de'>"+endTime+"</span></span>"+
+       "<span class='scrg_sp'><span class='scrg_ti'>URL个数</span><span class='scrg_de'>"+urlCount+"个</span></span>"+
+       "<span class='scrg_sp'><span class='scrg_ti'>每秒访问个数</span><span class='scrg_de'>"+averSendCount+"个</span></span>"+
+       "<span class='scrg_sp'><span class='scrg_ti'>接收字节</span><span class='scrg_de'>"+receiveBytes+"</span></span>");    
 }
 
 //清除表格内容
 function clearTable(){
    var cit= $("#confTable");
    if(cit.size()>0) {
-        cit.find("tr:not(:first)").remove();
+        cit.find("span").remove();
     }
 }
 </script>
@@ -179,13 +190,22 @@ function clearTable(){
 		            <input type="hidden" value="${order.id }" id="orderId"/>
 		            <input type="hidden" value="${order.type }" id="type"/>
 		            <input type="hidden" value="${group_flag }" id="group_flag"/>
-		            
 		            <p><span class="bigfont">${order.name }</span>
 		            <span>(  订单编号：${order.id }  )</span>
 		            <c:if test="${order.type==1 && group_flag==null}">
 		            	<p><span class="bigfont historyde">历史详情</span>
 		            		<select class="historyse" id="execute_Time" name="execute_Time" onchange="historicalDetails()">
 		            			<option>请选择</option>
+		            			<c:forEach var="time" items="${taskTime}" varStatus="status">
+		            			   <c:if test="${timeSize!=0}">
+			            			   <c:if test="${not status.last}">
+			            			   <option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>
+			            			   </c:if>
+		            			   </c:if>
+		            			   <c:if test="${timeSize==0}">
+			            			   <option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>
+		            			   </c:if>
+		            			</c:forEach>
 		            		</select>
 		            	</p>
 		                <!--  <a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank"><span style="float:right; margin-right:30px; dispiay:inline-block;color:#999; ">历史记录</span></a>
@@ -203,18 +223,27 @@ function clearTable(){
           </c:forEach>
         </div>
         <div class="process">
-       	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span><span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan">完成</span></p>
-            <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1">0%</span>
+       	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span>
+       	  <c:if test="${status==3}">
+       	  <span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan scancur">完成</span>
+       	  </c:if>
+       	  <c:if test="${status==2}">
+       	  <span class="scan">未开始</span><span class="scan scancur">扫描中</span><span class="scan ">完成</span>
+       	  </c:if>
+       	  </p>
+            <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1">${progress }%</span>
             <span class="processingbox">
             	<span class="progress">
-                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="bar2">0%</span>
+                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: ${progress }%" id="bar2">${progress }%</span>
 				</span>
-            <span class="prourl" id="url"></span>
+            <span class="prourl" id="url">当前URL:${currentUrl }</span>
             </span></p>
-            <div class="scrg">
+            <div class="scrg" id="confTable">
+            	<span class="scrg_sp"><span class="scrg_ti">开始时间</span><span class="scrg_de">${task.executeTime}</span></span>
             	<span class="scrg_sp"><span class="scrg_ti">请求次数</span><span class="scrg_de">${task.requestCount}次</span></span>
                 <span class="scrg_sp"><span class="scrg_ti">平均响应时间</span><span class="scrg_de">${task.averResponse}毫秒</span></span>
                 <span class="scrg_sp"><span class="scrg_ti">发送字节</span><span class="scrg_de">${send}</span></span>
+                <span class="scrg_sp"><span class="scrg_ti">结束时间</span><span class="scrg_de"><c:if test="${task.endTime==null}">--</c:if><c:if test="${task.endTime!=null}">${task.endTime}</c:if></span></span>
                 <span class="scrg_sp"><span class="scrg_ti">URL个数</span><span class="scrg_de">${task.urlCount}个</span></span>
                 <span class="scrg_sp"><span class="scrg_ti">每秒访问个数</span><span class="scrg_de">${task.averSendCount}个</span></span>
                 <span class="scrg_sp"><span class="scrg_ti">接收字节</span><span class="scrg_de">${receive}</span></span>
@@ -250,9 +279,11 @@ function clearTable(){
     </div>
     <div class="web_data">
     	<div class="web_detail_title">篡改告警统计</div>
-    <c:forEach var="a" items="${alarm}" >
+    <c:forEach var="a" items="${alarm}" varStatus="stus">
+    <c:if test="${stus.first }">
+     <input type="hidden" value="${a.url }" id="url"/>
        <div class="web_topbox">
-           <div class="web_datal">
+       	   <div class="web_datal" id="web_datal" style="width: 271px; padding-left: 0px">
             	<p>监测URL：<span>${a.url}</span></p>
                 <p>监测频率：<span>
                 			<c:if test="${a.scan_type==1}">每天</c:if>
@@ -272,11 +303,11 @@ function clearTable(){
                     <input type="button" value="天" class="scan web_scan web_scancur" />
                     <input type="button" value="周" class="scan web_scan" />
                 </div>
-                <div class="web_box">
-           	    	<img src="${ctx}/source/images/mgdata.jpg" width="428" height="254" style="margin: 48px 0 0 20px;" />
+                <div class="web_box" id="pic">
+           	    	<!-- <img src="${ctx}/source/images/mgdata.jpg" width="428" height="254" style="margin: 48px 0 0 20px;" /> -->
                 </div>
          </div>
-            <div class="web_datar">
+           <!--  <div class="web_datar">
             	<p class="pxtitle">敏感词排行榜</p>
                 <div class="pxbox">
                 	<p><span class="pxboxL">111</span>专业删帖服务</p>
@@ -295,8 +326,9 @@ function clearTable(){
                     <p><span class="pxboxL">11</span>收费删帖</p>
                     <p><span class="pxboxL">10</span>负面信息删除</p>
                 </div>
-            </div>
+            </div> -->
         </div>
+        </c:if>
         </c:forEach>
     </div>
   </div>

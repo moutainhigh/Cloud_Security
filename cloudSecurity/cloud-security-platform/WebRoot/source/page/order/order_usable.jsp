@@ -21,7 +21,6 @@
   
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/order/warning.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/warning_usable.js"></script>
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <style>
@@ -30,7 +29,6 @@
 </style>
 </head>
 
-<body> 
 <body>
 <div>
 <div class="head_bj">
@@ -91,25 +89,26 @@
        			<div class="gj_fr">
 		            <input type="hidden" value="${order.id }" id="orderId"/>
 		            <input type="hidden" value="${order.type }" id="type"/>
+		            <input type="hidden" value="${status }" id="status"/>
 		            <p><span class="bigfont">${order.name }</span>
 		            <span>(  订单编号：${order.id }  )</span>
-		            </p>            
-		            <div style="overflow:hidden;">
-                    <div style="float:left">资产：</div>
-                    <div style="float:left">
-                    <c:forEach var="asset" items="${assetList}" varStatus="status">
-                    <span class="asset" style="display:block">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
-                    </c:forEach>
-                    </div></div> 
+		            </p>
+		            <p>         
+			            <div style="overflow:hidden;">
+	                    <div style="float:left">资产：</div>
+	                    <div style="float:left">
+	                    <c:forEach var="asset" items="${assetList}" varStatus="status">
+	                    <span class="asset" style="display:block">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
+	                    </c:forEach>
+	                    </div></div></p>
 		        </div>
           </c:forEach>
         </div>
 
     <div class="zhangd_table" style="border-bottom:1px solid #e0e0e0;width: 1068px;margin-left:0;padding-left: 35px;">
     	<div class="web_detail_title">告警信息</div>
-    	  <div class="table-c">
-			  <table  border="0" cellspacing="0" cellpadding="0" align="center" width="80%">
-			 	<tr>
+    	  <table class="ld_table">
+			 	<tr style="background:#e0e0e0; height:30px; line-height:30px;">
 			    	<td>序号</td>
 			        <td>告警时间</th>
 			        <td>告警级别</th>
@@ -130,17 +129,23 @@
 		          </tr>
 	          </c:forEach>
 			  </table>
-		  </div>
 		  <br/>
     </div>
     <div class="web_data">
     	<div class="web_detail_title">可用率统计</div>
-        <c:forEach var="a" items="${listUseable}" >
+        <c:forEach var="a" items="${listUseable}" varStatus="stus">
+        <c:if test="${stus.first }">
+     <input type="hidden" value="${a.url }" id="url"/>
         <div class="web_topbox">
-           <div class="web_datal">
+           <div class="web_datal" id="web_datal" style="width: 271px; padding-left: 0px">
             	<p>监测URL：<span>${a.url}</span></p>
-                <p>监测频率：<span></span></p>
-                <p>平均可用率：<span></span></p>
+                <p>监测频率：<span>
+                			<c:if test="${a.scan_type==1}">10分钟</c:if>
+                			<c:if test="${a.scan_type==2}">30分钟</c:if>
+                			<c:if test="${a.scan_type==3}">1小时</c:if>
+                			<c:if test="${a.scan_type==4}">2小时</c:if>
+                		  </span></p>
+                <p>平均可用率：<span>${usabling}</span></p>
             </div>
             <div class="web_datac">
            	  <div class="web_way">
@@ -157,6 +162,7 @@
                 </div>
          </div>
         </div>
+        </c:if>
         </c:forEach>
     </div>
   </div>

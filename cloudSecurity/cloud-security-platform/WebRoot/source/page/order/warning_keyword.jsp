@@ -27,6 +27,105 @@
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/warning.js"></script>
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript">
+$(function () {
+	//getData();
+	window.setInterval(getData,30000);
+	//warningTask();
+    window.setInterval(warningTask,60000);
+});
+function getData(){
+	var orderId = $("#orderId").val();
+ 		$.ajax({
+           type: "POST",
+           url: "/cloud-security-platform/scaning.html",
+           data: {"orderId":orderId,"status":${status},"group_flag":$("#group_flag").val()},
+           dataType:"json",
+           success: function(data){
+          		var progress = data.progress;
+           		$("#bar1").html(progress+"%");
+           		$("#bar2").css("width", progress+"%");
+           		$("#bar2").html(progress+"%");
+           		$("#url").html("当前URL:"+data.currentUrl);
+           		if(${status}==2){
+           			$('.scan').removeClass('scancur');
+           			$('.scan').eq(1).addClass('scancur');
+           		}
+           		if(${status}==3){
+           			$('.scan').removeClass('scancur');
+           			$('.scan').eq(2).addClass('scancur');
+           		}
+           }
+        });
+}
+//实时刷新
+function warningTask(){
+	var orderId = $("#orderId").val();
+	var type = $("#type").val();
+ 		$.ajax({
+           type: "POST",
+           url: "/cloud-security-platform/warningTask.html",
+           data: {"orderId":orderId,"group_flag":$("#group_flag").val(),"type":type},
+           dataType:"json",
+           success: function(data){
+                updateTable(data);
+           }
+        });
+}
+//加载模板下拉框选项 
+/*$(document).ready(function() {
+	var orderId = $("#orderId").val();
+	$.ajax({ 
+		type: "POST",
+		url: "/cloud-security-platform/getExecuteTime.html",
+        data: {"orderId":orderId,"status":${status}},
+        dataType:"text",
+		success : function(result){
+			$("#execute_Time").append(result); 
+		} 
+	});
+}); */
+function historicalDetails(){
+	var orderId = $("#orderId").val();
+	var groupId = $("#execute_Time").val();
+	var type = $("#type").val();
+//	window.location.href = "${ctx}/historyInit.html?execute_Time="
+	//							+ execute_Time+"&orderId="+orderId;
+	window.open("${ctx}/warningInit.html?groupId="
+								+ groupId+"&orderId="+orderId+"&type="+type); 
+}
+
+//更新table的内容
+function updateTable(data){ 
+       //清除表格
+    clearTable();
+    var executeTime  =  data.executeTime;//取结点里的数据 
+    var issueCount =  data.issueCount; 
+    var requestCount  =  data.requestCount;
+    var urlCount    =  data.urlCount;
+    var averResponse   =  data.averResponse;  
+    var averSendCount   =  data.averSendCount;
+    var sendBytes   =  data.sendBytes;
+    var receiveBytes   =  data.receiveBytes; 
+    var endTime = data.endTime;
+       $("#confTable").append("<span class='scrg_sp'><span class='scrg_ti'>开始时间</span><span class='scrg_de'>"+executeTime+"</span></span>"+
+       "<span class='scrg_sp'><span class='scrg_ti'>请求次数</span><span class='scrg_de'>"+requestCount+"次</span></span>"+
+       "<span class='scrg_sp'><span class='scrg_ti'>平均响应时间</span><span class='scrg_de'>"+averResponse+"毫秒</span></span>"+
+       "<span class='scrg_sp'><span class='scrg_ti'>发送字节</span><span class='scrg_de'>"+sendBytes+"</span></span>"+
+       "<span class='scrg_sp'><span class='scrg_ti'>结束时间</span><span class='scrg_de'>"+endTime+"</span></span>"+
+       "<span class='scrg_sp'><span class='scrg_ti'>URL个数</span><span class='scrg_de'>"+urlCount+"个</span></span>"+
+       "<span class='scrg_sp'><span class='scrg_ti'>每秒访问个数</span><span class='scrg_de'>"+averSendCount+"个</span></span>"+
+       "<span class='scrg_sp'><span class='scrg_ti'>接收字节</span><span class='scrg_de'>"+receiveBytes+"</span></span>");    
+}
+
+//清除表格内容
+function clearTable(){
+   var cit= $("#confTable");
+   if(cit.size()>0) {
+        cit.find("span").remove();
+    }
+}
+</script>
 </head>
 
 <body>
@@ -91,6 +190,7 @@
        			<div class="gj_fr">
 		            <input type="hidden" value="${order.id }" id="orderId"/>
 		            <input type="hidden" value="${order.type }" id="type"/>
+		            <input type="hidden" value="${group_flag }" id="group_flag"/>
 		            <p><span class="bigfont">${order.name }</span>
 		            <span>(  订单编号：${order.id }  )</span>
 		            </p>            
@@ -105,18 +205,27 @@
           </c:forEach>
         </div>
         <div class="process">
-       	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span><span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan scancur">完成</span></p>
-            <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1">100%</span>
+       	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span>
+       	  <c:if test="${status==3}">
+       	  <span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan scancur">完成</span>
+       	  </c:if>
+       	  <c:if test="${status==2}">
+       	  <span class="scan">未开始</span><span class="scan scancur">扫描中</span><span class="scan ">完成</span>
+       	  </c:if>
+       	  </p>
+            <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1">${progress }%</span>
             <span class="processingbox">
             	<span class="progress">
-                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="bar2">100%</span>
+                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: ${progress }%" id="bar2">${progress }%</span>
 				</span>
-            <span class="prourl" id="url"></span>
+            <span class="prourl" id="url">当前URL:${currentUrl }</span>
             </span></p>
-            <div class="scrg">
+            <div class="scrg" id="confTable">
+            	<span class="scrg_sp"><span class="scrg_ti">开始时间</span><span class="scrg_de">${task.executeTime}</span></span>
             	<span class="scrg_sp"><span class="scrg_ti">请求次数</span><span class="scrg_de">${task.requestCount}次</span></span>
                 <span class="scrg_sp"><span class="scrg_ti">平均响应时间</span><span class="scrg_de">${task.averResponse}毫秒</span></span>
                 <span class="scrg_sp"><span class="scrg_ti">发送字节</span><span class="scrg_de">${send}</span></span>
+                <span class="scrg_sp"><span class="scrg_ti">结束时间</span><span class="scrg_de"><c:if test="${task.endTime==null}">--</c:if><c:if test="${task.endTime!=null}">${task.endTime}</c:if></span></span>
                 <span class="scrg_sp"><span class="scrg_ti">URL个数</span><span class="scrg_de">${task.urlCount}个</span></span>
                 <span class="scrg_sp"><span class="scrg_ti">每秒访问个数</span><span class="scrg_de">${task.averSendCount}个</span></span>
                 <span class="scrg_sp"><span class="scrg_ti">接收字节</span><span class="scrg_de">${receive}</span></span>
@@ -133,14 +242,16 @@
             <td  style="width:25%;">告警地址</td>
             <td  style="width:35%;">关键字&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
           </tr>
+      <c:if test="${status==3 && keyList!=0}">
         </tbody>
       </table>
       <div style="overflow:auto;height:400px;width:938px">
       <table class="ld_table" style="width:921px;">
         <tbody> 
-          <c:forEach var="list" items="${keywordList}" varStatus="status">
+      </c:if>
+          <c:forEach var="list" items="${keywordList}" varStatus="statu">
 	          <tr>                                            
-	            <td style="width:8%;">${status.index+1}</td>
+	            <td style="width:8%;">${statu.index+1}</td>
 	            <td style="width:22%;">${list.alarmTime}</td>
 	            <td style="width:10%;">${list.level}</td>
 	            <td style="width:25%;">${list.url}</td>
@@ -149,7 +260,9 @@
           </c:forEach>
         </tbody>
       </table>
+      <c:if test="${status==3 && keyList!=0}">
       </div>
+      </c:if>
     </div>
     <div class="web_data">
     	<div class="web_detail_title">关键字告警统计</div>

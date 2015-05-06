@@ -24,9 +24,9 @@
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript">
 $(function () {
-	getData();
+	//getData();
 	window.setInterval(getData,30000);
-	warningTask();
+	//warningTask();
 	window.setInterval(warningTask,60000);
 	
 });
@@ -35,7 +35,7 @@ function getData(){
  		$.ajax({
            type: "POST",
            url: "/cloud-security-platform/scaning.html",
-           data: {"orderId":orderId},
+           data: {"orderId":orderId,"status":${status},"group_flag":$("#group_flag").val()},
            dataType:"json",
            success: function(data){
           		var progress = data.progress;
@@ -49,10 +49,11 @@ function getData(){
 //实时刷新
 function warningTask(){
 	var orderId = $("#orderId").val();
+	var type = $("#type").val();
  		$.ajax({
            type: "POST",
            url: "/cloud-security-platform/warningTask.html",
-           data: {"orderId":orderId},
+           data: {"orderId":orderId,"group_flag":$("#group_flag").val(),"type":type},
            dataType:"json",
            success: function(data){
                 updateTable(data);
@@ -60,25 +61,25 @@ function warningTask(){
         });
 }
 //加载模板下拉框选项 
-$(document).ready(function() {
+/*$(document).ready(function() {
 	var orderId = $("#orderId").val();
 	$.ajax({ 
 		type: "POST",
 		url: "/cloud-security-platform/getExecuteTime.html",
-        data: {"orderId":orderId},
+        data: {"orderId":orderId,"status":${status}},
         dataType:"text",
 		success : function(result){
 			$("#execute_Time").append(result); 
 		} 
 	});
-}); 
+}); */
 function historicalDetails(){
 	var orderId = $("#orderId").val();
 	var groupId = $("#execute_Time").val();
 	var type = $("#type").val();
 //	window.location.href = "${ctx}/historyInit.html?execute_Time="
 	//							+ execute_Time+"&orderId="+orderId;
-	window.open("${ctx}/historyInit.html?groupId="
+	window.open("${ctx}/warningInit.html?groupId="
 								+ groupId+"&orderId="+orderId+"&type="+type); 
 }
 
@@ -156,12 +157,23 @@ function clearTable(){
    		<div class="gj_title">
             <input type="hidden" value="${order.id }" id="orderId"/>
             <input type="hidden" value="${order.type }" id="type"/>
+            <input type="hidden" value="${group_flag }" id="group_flag"/>
             <p><span class="bigfont">${order.name }</span>
             <span>(  订单编号：${order.id }  )</span>
-            <c:if test="${order.type==1 }">
+            <c:if test="${order.type==1 && group_flag==null}">
             	<p><span class="bigfont historyde">历史详情</span>
             		<select class="historyse" id=execute_Time name="execute_Time" onchange="historicalDetails()">
             			<option>请选择</option>
+            			<c:forEach var="time" items="${taskTime}" varStatus="status">
+            			   <c:if test="${timeSize!=0}">
+	            			   <c:if test="${not status.last}">
+	            			   <option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>
+	            			   </c:if>
+            			   </c:if>
+            			   <c:if test="${timeSize==0}">
+	            			   <option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>
+            			   </c:if>
+            			</c:forEach>
             		</select>
             	</p>
               <!--   <a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank"><span style="float:right; margin-right:30px; dispiay:inline-block;color:#999; ">历史记录</span></a>
@@ -182,12 +194,12 @@ function clearTable(){
        	  	<span class="scan">未开始</span><span class="scan scancur">扫描中</span><span class="scan">完成</span>
        	  
        	  </p>
-            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>0%</span>
+            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>${progress }%</span>
             <span class="processingbox">
             	<span class="progress">
-                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="bar2">0%</span>
+                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: ${progress }%" id="bar2">${progress }%</span>
 				</span>
-            <span class="prourl" id="url"></span>
+            <span class="prourl" id="url">当前URL:${currentUrl }</span>
             </span></p>
         </div>
         

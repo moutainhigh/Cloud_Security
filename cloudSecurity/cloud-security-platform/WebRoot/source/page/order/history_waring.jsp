@@ -40,14 +40,14 @@ function getData(){
            		$("#bar1").html(progress+"%");
            		$("#bar2").css("width", progress+"%");
            		$("#bar2").html(progress+"%");
-           		if(${status}==2){
+           		/*if(${status}==2){
            			$('.scan').removeClass('scancur');
            			$('.scan').eq(1).addClass('scancur');
            		}
            		if(${status}==3){
            			$('.scan').removeClass('scancur');
            			$('.scan').eq(2).addClass('scancur');
-           		}
+           		}*/
            }
         });
 }
@@ -118,11 +118,21 @@ function seedetail1(e) {
         <div class="gj_fl">
         	<c:if test="${alist==0}">
         	   <img src="${ctx}/source/images/icon_cg-green.jpg" width="85" height="85" />
-        	   <p>漏洞告警正常</p>
+        	   <c:if test="${order.serviceId==1 }">
+                <p>漏洞告警正常</p>
+               </c:if>
+               <c:if test="${order.serviceId==2 }">
+                <p>木马检测正常</p>
+               </c:if>
         	</c:if>
         	<c:if test="${alist!=0}">
                 <img src="${ctx}/source/images/icon_cg.jpg" width="85" height="85" />
+                <c:if test="${order.serviceId==1 }">
                 <p>发现漏洞个数</p>
+               </c:if>
+               <c:if test="${order.serviceId==2 }">
+                <p>木马检测个数</p>
+               </c:if>
                 <p class="web_num">${alist}个</p>
             </c:if>
           </div>
@@ -153,14 +163,14 @@ function seedetail1(e) {
         </div>
         <div class="process">
        	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span>
-       	  	<span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan">完成</span>
+       	  	<span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan scancur">完成</span>
        	  </p>
-            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>0%</span>
+            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>${progress }%</span>
             <span class="processingbox">
             	<span class="progress">
-                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:0%" id="bar2">0%</span>
+                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:${progress }%" id="bar2">${progress }%</span>
 				</span>
-            <span class="prourl"></span>
+            <span class="prourl">当前URL${currentUrl }</span>
             </span></p>
         </div>
         <div class="gj_box">
