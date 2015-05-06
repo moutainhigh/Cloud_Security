@@ -198,10 +198,12 @@ public class WarningController {
                     request.setAttribute("alarmList", alarmList);
             		return "/source/page/order/warning_doctort"	;
     			case 4:/**关键字监测服务 dyy*/    				
+    				String flag=request.getParameter("flag");
     				//关键字 折线图 左侧信息
     				Map<String,Object> m1 = new HashMap<String, Object>();
     				m1.put("orderId", orderId);
     				m1.put("url", null);
+    				m1.put("flag",flag);
     				List<Alarm> alarmKeyWordList = alarmService.findSensitiveWordByOrderId(m1);
                 	request.setAttribute("alarmKeyWordList", alarmKeyWordList);
     				//敏感词排行榜(只适合一个资产)
@@ -338,30 +340,43 @@ public class WarningController {
     	Map<String, Object> map = new HashMap<String, Object>();
     	map.put("orderId", orderId);
     	JSONArray json = new JSONArray();
+    	List result1 = new ArrayList();
+    	JSONObject jo1 = new JSONObject();
+    	int total=0;
     	if(alarmKeyWordList!=null){
-    		for(Alarm a : alarmKeyWordList){
-    			String url = a.getUrl();
+    		for(int i=0;i<alarmKeyWordList.size();i++){
+    			String url = alarmKeyWordList.get(i).getUrl();
     			map.put("url", url); 
     			List<Alarm> listRight = alarmService.findRightByOrderIdAndUrl(map);
     			JSONObject jo = new JSONObject();
-    			SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    			SimpleDateFormat setDateFormat = new SimpleDateFormat("HH:mm:ss");
                 List result = new ArrayList();
-                List result1 = new ArrayList();
                 jo.put("url", url);
-                for(int i =0 ;i< listRight.size();i++){
-                	String time1 = setDateFormat.format(listRight.get(i).getAlarm_time());
-                	jo.put("time", time1);
+                for(int j =0 ;j< listRight.size();j++){
+                	String time1 = setDateFormat.format(listRight.get(j).getAlarm_time());
                 	result1.add(time1);
-                	result.add(listRight.get(i).getCount());
+                	if(i!=0&&j==0){
+                		for(int a=0;a<total;a++){
+                			result.add("");
+                		}
+                		result.add(listRight.get(j).getCount());
+                	}else{
+                		result.add(listRight.get(j).getCount());
+                	}
                 }
-                jo.put("alarm_time", result1);
+                jo.put("total", listRight.size());
                 jo.put("count", result);
             	json.add(jo);
+            	total+=listRight.size();//数据条数
     		}
+    		
     	}
+    	jo1.put("time", result1);
+    	json.add(jo1);
+    	
+    	System.out.println(json);
         return json.toString();
 	}
-	
 	/**
      * 功能描述：获取折线图信息
      *       @time 2015-3-9
