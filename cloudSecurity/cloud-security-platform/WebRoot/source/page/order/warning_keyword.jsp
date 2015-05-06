@@ -28,6 +28,41 @@
 <script type="text/javascript" src="${ctx}/source/scripts/order/warning.js"></script>
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript">
+/* today yesterday all hours day week */
+$(function() {
+    //今天的攻击
+	$("#today").click( function() {
+	 	var orderId = $("#orderId").val();
+	 	var type=$("#type").val();
+ 		window.location.href="${ctx}/warningInit.html?orderId="+orderId+"&type="+type+"&flag=1";
+	 	$("#today").addClass("web_scancur");
+		$("#yesterday").removeClass("web_scancur"); 
+		$("#all").removeClass("web_scancur");
+		$("#week").attr("disabled", true);
+ });
+ //昨天的攻击
+ $("#yesterday").click( function() {
+	var orderId = $("#orderId").val();
+	 	var type=$("#type").val();
+ 		window.location.href="${ctx}/warningInit.html?orderId="+orderId+"&type="+type+"&flag=2";
+	 	$("#yesterday").addClass("web_scancur");
+		$("#toady").removeClass("web_scancur"); 
+		$("#all").removeClass("web_scancur");
+		$("#week").attr("disabled", true);
+ });
+ //所有的攻击
+ 	$("#all").click( function() {
+	 	var orderId = $("#orderId").val();
+	 	var type=$("#type").val();
+ 		window.location.href="${ctx}/warningInit.html?orderId="+orderId+"&type="+type;
+	 	$("#all").addClass("web_scancur");
+		$("#today").removeClass("web_scancur");
+		$("#yesterday").removeClass("web_scancur"); 
+		$("#week").attr("disabled", true);
+ });
+ 
+ 
+});
 $(function () {
 	//getData();
 	window.setInterval(getData,30000);
@@ -283,14 +318,14 @@ function clearTable(){
             </div>
             <div class="web_datac">
            	  <div class="web_way">
-                	<input type="button" value="今日" class="scan web_scan" />
-                    <input type="button" value="昨日" class="scan web_scan web_scancur" />
-                    <input type="button" value="全部" class="scan web_scan" />
+                	<input type="button" value="今日" class="scan web_scan"  id="today" name="today"/>
+                    <input type="button" value="昨日" class="scan web_scan web_scancur" id="yesterday"/>
+                    <input type="button" value="全部" class="scan web_scan"  id="all"/>
                     <span class="webway_span">排列方式：</span>
-                    <input type="button" value="小时" class="scan web_scan" />
-                    <input type="button" value="天" class="scan web_scan web_scancur" />
-                    <input type="button" value="周" class="scan web_scan" />
-                </div> 
+                    <input type="button" value="小时" class="scan web_scan" id="hours"/>
+                    <input type="button" value="天" class="scan web_scan web_scancur" id="day"/>
+                    <input type="button" value="周" class="scan web_scan" id="week"/>
+                </div>  
                 <div class="web_box" id="pic">
            	    	<!-- <img src="${ctx}/source/images/mgdata.jpg" width="428" height="254" style="margin: 48px 0 0 20px;" />
                  -->
