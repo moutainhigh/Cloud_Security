@@ -64,13 +64,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<!-- 根据orderId查询基本信息 -->
 	<select id="findBasicInfoByOrderId" parameterType="map" resultMap="TaskRM">
-		SELECT MIN(t.execute_time) AS execute_time,MAX(t.end_time) AS end_time,AVG(t.scanTime) AS scanTime,AVG(t.issueCount) AS issueCount,AVG(t.requestCount) AS requestCount,AVG(t.urlCount) AS urlCount,AVG(t.averResponse) AS averResponse,AVG(t.averSendCount) AS averSendCount,AVG(t.sendBytes) AS sendBytes,AVG(t.receiveBytes) AS receiveBytes
+		SELECT MIN(t.execute_time) AS execute_time,MAX(t.end_time) AS end_time,SUM(t.scanTime) AS scanTime,SUM(t.issueCount) AS issueCount,SUM(t.requestCount) AS requestCount,SUM(t.urlCount) AS urlCount,AVG(t.averResponse) AS averResponse,AVG(t.averSendCount) AS averSendCount,SUM(t.sendBytes) AS sendBytes,SUM(t.receiveBytes) AS receiveBytes
 		from ( select  t.*	FROM cs_task t,cs_order_asset oa
 					WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} and t.status !=1
+					<if test="group_flag!=null and group_flag!=''">
+		            and t.group_flag=#{group_flag}
+		            </if>
 					ORDER BY t.execute_time DESC 
-			limit #{count}
+					<if test="type==1 and group_flag==null or group_flag==''">
+		             limit #{count}
+		            </if>
 			)	t
 	</select>
+	
+	
+	<!-- 根据orderId查询基本信息 -->
+    <select id="findTaskList" parameterType="map" resultMap="TaskRM">
+    SELECT MIN(t.execute_time) AS execute_time,MAX(t.end_time) AS end_time,AVG(t.scanTime) AS scanTime,AVG(t.issueCount) AS issueCount,AVG(t.requestCount) AS requestCount,AVG(t.urlCount) AS urlCount,AVG(t.averResponse) AS averResponse,AVG(t.averSendCount) AS averSendCount,AVG(t.sendBytes) AS sendBytes,AVG(t.receiveBytes) AS receiveBytes
+		FROM cs_task t,cs_order_asset oa
+					WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} and t.group_flag=#{group_flag}
+					ORDER BY t.execute_time DESC 
+    </select>
 	
 	<!-- 根据orderId查询基本信息 -->
     <select id="findNearlyTask" parameterType="String" resultMap="TaskRM">
@@ -84,18 +98,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="getCountByOrderId" parameterType="String" resultType="int">
         select count(*) FROM cs_order_asset oa	WHERE oa.orderId=#{orderId}
     </select>
-    <!-- 根据orderId查询基本信息 -->
-    <select id="findTaskList" parameterType="map" resultMap="TaskRM">
-    SELECT MIN(t.execute_time) AS execute_time,MAX(t.end_time) AS end_time,AVG(t.scanTime) AS scanTime,AVG(t.issueCount) AS issueCount,AVG(t.requestCount) AS requestCount,AVG(t.urlCount) AS urlCount,AVG(t.averResponse) AS averResponse,AVG(t.averSendCount) AS averSendCount,AVG(t.sendBytes) AS sendBytes,AVG(t.receiveBytes) AS receiveBytes
-		FROM cs_task t,cs_order_asset oa
-					WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} and t.group_flag=#{group_flag}
-					ORDER BY t.execute_time DESC 
-    </select>
+    
 	<!-- 根据orderId查询历史详情时间 -->
 	<select id="findScanTimeByOrderId" parameterType="String" resultMap="TaskRM">
-		SELECT distinct t.group_flag
+		<!-- SELECT distinct t.group_flag
 		FROM cs_task t,cs_order_asset oa
 		WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} and t.status = 3
-		ORDER BY t.execute_time
+		ORDER BY t.execute_time -->
+		
+		SELECT distinct t.group_flag
+		FROM cs_task t,cs_order_asset oa
+		WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} and t.status = 3 and t.group_flag not in(
+              SELECT distinct t.group_flag
+        		FROM cs_task t,cs_order_asset oa
+        		WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} and t.status = 2
+        		ORDER BY t.execute_time
+        )
+	    ORDER BY t.execute_time
 	</select>	
 </mapper>
