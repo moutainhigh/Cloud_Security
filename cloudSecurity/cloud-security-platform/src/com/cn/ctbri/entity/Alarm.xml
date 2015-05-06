@@ -158,6 +158,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="url!=null">
 			and a.url=#{url}
 		</if>
+	    <if test="flag==1">
+	     and to_days(a.alarm_time) = to_days(now()) 
+		</if>
+		<if test="flag==2">
+	     and to_days(now()) - to_days(a.alarm_time) &lt;= 1
+		</if>
 		GROUP BY a.url
 		ORDER BY a.alarm_time
     </select>
