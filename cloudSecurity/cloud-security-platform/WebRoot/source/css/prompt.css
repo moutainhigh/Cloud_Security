@@ -31,9 +31,9 @@
 .gj_fr{float:left;padding-top:30px;}
 .gj_fl p{line-height:34px;}
 .web_num{font-size:20px; color:#fd0202; text-align:center;font-weight:bold;}
-.scrg{padding:30px 96px 0;}
-.scrg_sp{width:230px; background:url(../images/greencircle.jpg) no-repeat left center;padding-left:20px;display:inline-block;font-size:14px;color:#666;line-height:34px;}
-.scrg_ti{margin-right:32px;}
+.scrg{padding:30px 0px 0;}
+.scrg_sp{width:233px; background:url(../images/greencircle.jpg) no-repeat left center;padding-left:20px;display:inline-block;font-size:14px;color:#666;line-height:34px;}
+.scrg_ti{margin-right:24px;}
 .web_detail_title{padding: 4px 10px;margin: 20px 0px 28px 30px;background:#E0E0E0;color: #666;font-size: 16px;display:inline-block;}
 .web_data{margin:0 35px;overflow:hidden;}
 .web_datal{width:238px;float:left;padding-top:130px;padding-left:50px;padding-bottom:190px;}
