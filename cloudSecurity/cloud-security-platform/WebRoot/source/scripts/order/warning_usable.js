@@ -1,179 +1,144 @@
-var chart; 
-var time = [];
-$(function() { 
-	var orderId = $("#orderId").val();
+$(function(){
+	//为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
+    require.config({
+        paths:{ 
+            echarts:'../echarts/echarts',
+            'echarts/chart/line': '../echarts/echarts-map',
+        }
+    });
 	
+    // 定义数组
+    var label = [];
+    var value = [];
+    var valueGauge = [];
+    var time = [];
+    var lineData = [];
+    var lineData2 = [];
+    var lineData3 = [];
+    var high = null;
+    
+    // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
+    function testLineData(){
+    	return lineData;
+    }
+    
+    function testLineData2(){
+    	return lineData2;
+    }
+    function testLineX(){
+    	return time;
+    }
+    
     // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
     require(
         [
             'echarts',
-            'echarts/chart/bar',
             'echarts/chart/line'
         ],
         function (ec) {//回调函数
-            //--- 趋势图 ---
-        	if($('#type').val()==1){
-        		var myChart = ec.init(document.getElementById('pic'));
-        	}
+         var myChart = ec.init(document.getElementById('pic'));
           //后台获取数据
             $.ajax({
             	type : "post",
-            	url:"getDataUsable.html?orderId="+$('#orderId').val()+"&type="+$('#type').val(),
+            	url:"getDataUsable.html?orderId="+$('#orderId').val(),
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
                     $.each(data,function(i,p){
-	                   	var temp = null;
-	                   	if(p['label']==0){
-	                   		temp="低";
-	                   	}
-	                   	if(p['label']==1){
-	                   		temp="中";
-	                   	}
-	                   	if(p['label']==2){
-	                   		temp="高";
-	                   	}
-//	                   	label[i]=temp;
-	                   	lineData[i]=p['value'];
-	                   	lineData2[i]=p['value2'];
-	                   	lineData3[i]=p['value3'];
+	                   	//lineData2[i]=p['count'];
 	                   	time[i]=p['time'];
-//	                   	label[i]=p['label'];
-//	                   	value[i]={'name':p['label'],'value':p['value']};
                     });
-                    
                     myChart.setOption({//图形
-                    	tooltip : {
-                            trigger: 'axis'
-                        },
-                        legend: {
-                            data:['低危漏洞个数','中危漏洞个数','高危漏洞个数']
-//                        	data:testX()
-                        },
-                        toolbox: {
-                            show : true,
-                            feature : {
-                                mark : true,
-                                //magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
-                                restore : true,
-                                saveAsImage : true
-                            }
-                        },
                         calculable : true,
                         xAxis : [
-                            {
-                                type : 'category',
-                                boundaryGap : false,
-//                                data : ['周一','周二','周三','周四','周五','周六','周日']
-                                data : testLineX()
-                            }
+                                 {
+                                     type : 'value',
+                                     axisLabel : {
+                                         formatter: '{value}'
+                                     }
+//                                     boundaryGap : false,
+//                                     data : testLineX()
+                                 }
                         ],
                         yAxis : [
                             {
-                                type : 'value'
+                            	type : 'category',
+                                axisLine : {onZero: false},
+                                axisLabel : {
+                                    formatter: '{value} %'
+                                },
+                                boundaryGap : false,
+                                data : ['0', '10', '20', '30', '40', '50', '60', '70', '80']
                             }
                         ],
-                        series : [
-                            {
-                                name:'低危漏洞个数',
-                                type:'line',
-//                                stack: '总量',
-                                smooth: true,
-                                itemStyle: {normal: {areaStyle: {type: 'default'}}},
-//                                data:[120, 132, 101, 134, 90, 230, 210]
-                                data: testLineData()
-                            },
-                            {
-                                name:'中危漏洞个数',
-                                type:'line',
-//                                stack: '总量',
-                                smooth: true,
-                                itemStyle: {normal: {areaStyle: {type: 'default'}}},
-//                                data:[220, 182, 191, 234, 290, 330, 310]
-                                data: testLineData2()
-                            },
-                            {
-                                name:'高危漏洞个数',
-                                type:'line',
-//                                stack: '总量',
-                                smooth: true,
-                                itemStyle: {normal: {areaStyle: {type: 'default'}}},
-//                                data:[150, 232, 201, 154, 190, 330, 410]
-                                data: testLineData3()
-                            }
-                        ]
+                        series:function(){
+                        	 var serie=[];
+                        	 for( var i=0;i < data.length;i++){
+	                        	 var item={
+		                        	 name:data[i].url,
+		                        	 type:'line',
+		                        	 smooth:true,
+		                        	 data:data[i].time,
+		                        	 clickable :true
+	                        	 };
+	                        	 serie.push(item);
+                        	 };
+                        	 return serie;
+                        	 }()
                     },true);//图形展示
-//                    window.onresize = myChart.resize;
                 }//ajax执行后台
             }); 
+            var ecConfig = require('echarts/config');
+            var zrEvent = require('zrender/tool/event');
+            myChart.on(ecConfig.EVENT.CLICK,function (param) {
+            	var temp=myChart.getSeries()[param.seriesIndex].name;;
+            	var orderId = $("#orderId").val();
+            	//敏感词
+         		$.ajax({
+                   type: "POST",
+                   url: "keyWord.html?orderId="+orderId+"&url="+temp,
+                   dataType:"json",
+                   success: function(data){
+                	   $("#pxbox").empty();//
+                	   var str="";
+                	   for(var i=0;i<data.length;i++){
+                		   str+="<p><span class='pxboxL'>"+data[i].count+"</span>"+data[i].keyword+"</p>";
+                	   }
+                	   $("#pxbox").append(str);   
+                   }
+                });
+         		
+         		//详情
+         		$.ajax({
+                    type: "POST",
+                    url: "details.html?orderId="+orderId+"&url="+temp,
+                    dataType:"json",
+                    success: function(data){
+                 	   $("#web_datal").empty();//
+                 	   var str="";
+                 	   for(var i=0;i<data.length;i++){
+                 		   var str1="";
+                 		   if(data[i].scan_type==1){
+                 			   str1="10分钟";
+                 		   }
+                 		   if(data[i].scan_type==2){
+                			   str1="30分钟";
+                		   }
+                 		   if(data[i].scan_type==3){
+	               			   str1="1小时";
+	               		   }
+	                 	   if(data[i].scan_type==4){
+	              			   str1="2小时";
+	              		   }
+                 		   str+="<p>监测URL：<span>"+data[i].url+"</span></p><p>监测频率：<span>"+str1+"</span></p>"+
+                          			"<p>得分：<span>"+data[i].score+"分</span></p>";
+                 	   }
+                 	   $("#web_datal").append(str);   
+                    }
+                 });
+            });
         }
     );
-	
-	
-	
-  //异步请求数据
-    $.ajax({
-    	url:"getDataUsable.html",
-    	data: {"orderId":orderId},
-    	dataType:"json",
-    	contentType: "application/x-www-form-urlencoded; charset=utf-8",
-    	type: "post",
-        success:function(data){
-            //定义一个数组
-        	datas = [],
-            //迭代，把异步获取的数据放到数组中
-            $.each(data,function(i,d){
-            	datas.push([d.alarm_time,d.count]);
-            	time.push(d.alarm_time);
-            });
-        	//设置数据
-        	if(datas.length==0){
-        		alert("没有相关结果");
-        	}else{
-        		 chart.series[0].setData(datas); 
-        	}
-        },
-    });
-    //getData();
-	//window.setInterval(getData,30000);
-}); 
-function getData(){
-	var orderId = $("#orderId").val();
- 		$.ajax({
-           type: "POST",
-           url: "/cloud-security-platform/scaning.html",
-           data: {"orderId":orderId},
-           dataType:"json",
-           success: function(data){
-          		var progress = data.progress;
-           		$("#bar1").html(progress+"%");
-           		$("#bar2").css("width", progress+"%");
-           		$("#bar2").html(progress+"%");
-           		$("#url").html("当前URL:"+data.currentUrl);
-           }
-        });
-}
-//加载模板下拉框选项 
-$(document).ready(function() {
-	var orderId = $("#orderId").val();
-	$.ajax({ 
-		type: "POST",
-		url: "/cloud-security-platform/getExecuteTime.html",
-        data: {"orderId":orderId},
-        dataType:"text",
-		success : function(result){
-			$("#execute_Time").append(result); 
-		} 
-	});
-}); 
-function historicalDetails(){
-	var orderId = $("#orderId").val();
-	var execute_Time = $("#execute_Time").val();
-	var type = $("#type").val();
-//	window.location.href = "${ctx}/historyInit.html?execute_Time="
-	//							+ execute_Time+"&orderId="+orderId;
-	window.open("${ctx}/historyInit.html?execute_Time="
-								+ execute_Time+"&orderId="+orderId+"&type="+type); 
-	
-
-}
+    
+    
+});
