@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <title>在线帮助</title>
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
@@ -15,21 +16,15 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript">
 $(function(){
-	$(".dd").hide();
-    $("#f1").show();
     
 	$('.user_left ul li').click(function (){
 		var index = $(".user_left ul li").index(this); //获取当前点击按钮
 		if(index!=0){
 			$(".user_left ul li").removeClass('active');
 	        $(".user_left ul li").eq(index).addClass('active');
-	        $(".dd").hide();
-	        $("#f"+index).show();
 		}else{
 			$(".user_left ul li").removeClass('active');
 			$(".user_left ul li").eq(1).addClass('active');
-            $(".dd").hide();
-            $("#f1").show();
 		}
 		
 	});
@@ -39,62 +34,62 @@ $(function(){
 
 function view(){
     $(".user_left ul li").removeClass('active');
-    $(".dd").hide();
-    $("#f5").show();
 }
 </script>
 </head>
 <body>
 <div>
 <!--头部代码-->
-<div class="head_bj">
-  <div class="head">
-    <div class="logo"><img src="${ctx}/source/images/logo.png" /></div>
-    <div class="list">
-      <ul>
-        <li><a href="${ctx}/index.html">首页</a></li>
-        <li><a href="###">我的订单</a></li>
-        <li><a href="${ctx}/aider.html">在线帮助</a></li>
-        <li style="border-right:1px solid #11871d;">
-            <c:if test="${sessionScope.globle_user==null }">
-                <a href="${ctx}/toLoginUI.html">用户中心</a>
-            </c:if>
-            <c:if test="${sessionScope.globle_user!=null }">
-                <a href="${ctx}/userCenterUI.html">用户中心</a>
-            </c:if>
-        </li>
-      </ul>
+    <div class="head_bj">
+        <div class="head">
+           <div class="logo"><img src="${ctx}/source/images/logo.png" /></div>
+           <div class="lagst">
+               <div class="lagst-left">
+                <c:if test="${sessionScope.globle_user!=null }">
+                   <a href="${ctx}/userDataUI.html"><img src="${ctx}/source/images/ren.png" /></a>
+                </c:if>
+                 <c:if test="${sessionScope.globle_user==null }">
+                    <a href="${ctx}/toLoginUI.html"><img src="${ctx}/source/images/ren.png" /></a>
+                 </c:if>
+               </div>
+               <div class="lagst-right">
+               <!-- 如果已经登录则显示用户名，否则需要登录 -->
+               <c:if test="${sessionScope.globle_user!=null }">
+                <p><a href="${ctx}/userDataUI.html" style="color: #fff">${sessionScope.globle_user.name }</a></p>
+                <p><a href="${ctx}/exit.html">退出</a></p>
+               </c:if>
+               <c:if test="${sessionScope.globle_user==null }">
+                     <p><a href="${pageContext.request.contextPath}/loginUI.html">登录</a></p>
+                     <p><a href="${pageContext.request.contextPath}/registUI.html">注册</a></p>
+               </c:if>
+               </div>
+           </div>
+            <div class="list">
+               <ul>
+                   <li><a href="${ctx}/index.html">首页</a></li>
+                   <li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
+                   <li class="list_active"><a href="${ctx}/aider.html">在线帮助</a></li>
+                   <li style="border-right:1px solid #1369C0;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
+               </ul>
+           </div>
+        </div>
     </div>
-    <div class="lagst">
-      <div class="lagst-left"> 
-          <c:if test="${sessionScope.globle_user!=null }">
-              <a href="${ctx}/userDataUI.html"><img src="${ctx}/source/images/ren.png" /></a>
-          </c:if>
-          <c:if test="${sessionScope.globle_user==null }">
-            <a href="${ctx}/loginUI.html"><img src="${ctx}/source/images/ren.png" /></a>
-          </c:if>
-      </div>
-      <div class="lagst-right">
-        <p><a href="${ctx}/loginUI.html">登录</a></p>
-        <p><a href="${ctx}/registUI.html">注册</a></p>
-      </div>
-    </div>
-  </div>
-</div>
 <!-- 头部代码结束-->
 <div class="user_center clear">
   <div class="user_left" style="width:160px;">
     <ul class="user_1">
-      <li style="font-size:16px; font-weight:500; line-height:28px; text-align:center; width:160px;"><a  style="color:#4593fd; " href="#">用户使用说明</a></li>
-      <li  class="active"  style="width:160px;"><a href="#">用户注册</a></li>
-      <li style="width:160px;"><a href="#">用户登录</a></li>
-      <li style="width:160px;"><a href="#">用户中心</a></li>
-      <li  style="width:160px;"><a href="#">订购中心</a></li>
-       <h2><a href="#" onclick="view()">网站安全帮常见问题</a></h2>
+      <li style="font-size:16px; font-weight:500; line-height:28px; text-align:center; width:160px;"><a  style="color:#4593fd; " href="#1F">用户使用说明</a></li>
+      <li  class="active"  style="width:160px;"><a href="#1F" >用户注册</a></li>
+      <li style="width:160px;"><a href="#2F" >用户登录</a></li>
+      <li style="width:160px;"><a href="#3F" >用户中心</a></li>
+      <li  style="width:160px;"><a href="#4F" >订购中心</a></li>
+      <li style="font-size:16px; font-weight:500; line-height:28px; text-align:center; width:160px;"><a  style="color:#4593fd; " href="#5F">网站安全帮常见问题</a></li>
+      <!-- <h2><a href="#5F" onclick="view()">网站安全帮常见问题</a></h2> -->
     </ul>
   </div>
   <!-- 用户注册-->
   <div class="user_right" style="width: 942px;">
+  	  <a name="1F">
 	  <div id="f1" class="dd">
 	    <h3 class="helph">1 引言</h3>
 	    <p class="help_detail">中国电信网站安全帮助是为用户提供“购买、服务、售后”一站式WEB安全服务的自助电子交易平台，免费注册成为安全帮用户后即可享受专家级服务</p>
@@ -105,14 +100,17 @@ function view(){
 	   	 <p class="help_detail">用户账号需通过手机号码或者邮箱地址激活。</p>
 	   	<div class="help_right"><img src="${ctx}/source/images/help02.png"/></div>
 	  </div>
-	  
-	  <div id="f2" class="dd">
+	  </a>
+	  <a name="2F">
+	  <div id="f2" class="dd" >
 	    <h4 class="helph">2.1.2 用户登录</h4>
 	    <p class="help_detail">用户注册成功后即可使用已注册的用户名密码登录网站安全帮。</p>
 	    <div class="help_right"><img src="${ctx}/source/images/help03.jpg" /></div>
       </div>
+      </a>
       
-      <div id="f3" class="dd">
+      <a name="3F">
+      <div id="f3" class="dd" >
 	    <h4 class="helph">2.1.3 用户中心</h4>
 	    <p class="help_detail">用户登录成功后定位到用户中心界面。用户在用户中心可进行基本资料管理，账单查看并管理用户资产。</p>
 	    <div class="help_right"><img src="${ctx}/source/images/help04.jpg" /></div>
@@ -139,7 +137,9 @@ function view(){
         <p class="help_detail">资产验证</p>
         <div class="help_right"><img src="${ctx}/source/images/help10.jpg" width=""/></div>
       </div>
+      </a>
 	  
+	  <a name="4F">
 	  <div id="f4" class="dd">
 	    <h3 class="helph">2.1.4 订购中心</h3>
 	    <p class="help_detail">用户订购服务及后续订单跟踪都在订购中心来完成。</p>
@@ -170,8 +170,10 @@ function view(){
 	    <div class="help_right"><img src="${ctx}/source/images/help16.jpg" /></div>
 	    <div class="help_right"><img src="${ctx}/source/images/help17.jpg" /></div>
 	  </div>
+	  </a>
   
-      <div id="f5" class="dd">
+  	  <a name="5F">
+      <div id="f5" class="dd" >
         <h3 class="helph"> 1、网站安全帮能为网站提供什么帮助？</h3>
 	    <p class="help_detail">网站安全帮是中国电信打造的自助式网站安全体检中心，集漏洞扫描、恶意代码监测、页面篡改监测、关键字监测与可用性监测能力于一身，7*24的贴身管家服务让您第一时间洞察网站安全态势。</p>
 	    <h3 class="helph">2、网站安全帮收费吗？</h3>
@@ -190,6 +192,7 @@ function view(){
 	    <h3 class="helph">6、网站安全帮通过什么途径进行告警</h3>
 	    <p class="help_detail">网站安全帮会在安全风险发生的第一时间将告警信息通知到用户预留的手机号码或电子邮箱。</p>
       </div>
+      </a>
   
   
   </div>
