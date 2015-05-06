@@ -1,8 +1,13 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="java.sql.*,java.io.*,java.util.*,java.text.*"  %>
-
+<% 
+    request.setAttribute("vEnter", "\n");   
+    //奇怪的是这一行我用 <c:set var="vEnter" value="\n" scope="request"/>
+    //都没用,估计是set标签里对value值处理了一下,没jstl的源码,不清楚JSTL是怎么处理的. 
+%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -285,13 +290,13 @@ function seedetail1(e) {
                    <c:if test="${alarm.level==1}">中</c:if>
                    <c:if test="${alarm.level==2}">高</c:if> 
 	            </td>
-	            <td  style="width:45%;">URL:&nbsp;&nbsp;${alarm.alarm_content }<br/>弱点：&nbsp;&nbsp;${alarm.keyword}</td>
+	            <td  style="width:45%;">URL:&nbsp;&nbsp;${alarm.alarm_content }<br/>弱点：&nbsp;&nbsp;${fn:replace(alarm.keyword,"<", "&lt;")}</td>
 	           <!--  <td>${alarm.advice }</td> -->
 	            <td  style="width:20%;" class="seedetail" value="0" name="${order.id}" onclick="seedetail1(this)"><span>查看建议</span></td>
 	            </tr>
 	            
 	          <tr  class="detailbox">
-                <td colspan="6"><div  class="zhangd_div2">${alarm.advice } </div>
+                <td colspan="6"><div  class="zhangd_div2">${fn:replace(alarm.advice,vEnter, "<br />")} </div>
                  </td>
               </tr>
           </c:forEach>
