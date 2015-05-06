@@ -30,9 +30,9 @@ $(document).ready(function(){
 		$('.user_login').addClass('cur');
 		$('.login_form').show();
 		$('.regist_form').hide();
-		$("#login_name").attr("value",'');
-		$("#login_password").attr("value",'');
-		$("#remeberMe").attr("checked",false);
+		//$("#login_name").attr("value",'');
+		//$("#login_password").attr("value",'');
+		//$("#remeberMe").attr("checked",false);
 	}
 });
 
@@ -67,6 +67,12 @@ function checkNumberImage(){
 	imageNumber.src = "${pageContext.request.contextPath}/image.jsp?timestamp="+new Date().getTime();
 }
 
+</script>
+
+<script language="javascript"> 
+	window.load = function(){ 
+	document.getElementById('login_password').value=''; 
+	}; 
 </script>
 </head>
 <body>
@@ -117,11 +123,12 @@ function checkNumberImage(){
     <div class="login_form">
       <form  id="form_login" name="form_login" action="${ctx}/login.html" method="post">
         <div class="login_list">
-          <input type="text" class="login_txt required" id="login_name" name="name" value="${requestScope.name }"/>
+          <input type="text" class="login_txt required" id="login_name" name="name" value="${requestScope.name }" autocomplete="off"/>
        	  <span id="login_name_msg" style="color:red;float:left"></span>
         </div>
         <div class="login_list">
-          <input type="password" class="login_txt login_pass" id="login_password" name="password" value="${requestScope.password }"/>
+          <input type="hidden" name="val"/>
+          <input type="password" class="login_txt login_pass" id="login_password" name="password" value="${requestScope.password }" onfocus="this.type='password'" autocomplete="off"/>
           <span id="login_password_msg" style="color:red;float:left"></span>
         </div>
         <div class="login_list">
