@@ -27,7 +27,7 @@ public interface ITaskService {
 
 	Task findProgressByOrderId(Map<String, Object> paramMap);
 
-	Task findBasicInfoByOrderId(String orderId);
+	Task findBasicInfoByOrderId(Map<String, Object> paramMap);
 
 	List<Task> findScanTimeByOrderId(String orderId);
 
