@@ -41,8 +41,8 @@ public class TaskServiceImpl implements ITaskService{
 	public Task findProgressByOrderId(Map<String, Object> paramMap) {
 		return taskDao.findProgressByOrderId(paramMap);
 	}
-	public Task findBasicInfoByOrderId(String orderId) {
-		return taskDao.findBasicInfoByOrderId(orderId);
+	public Task findBasicInfoByOrderId(Map<String, Object> paramMap) {
+		return taskDao.findBasicInfoByOrderId(paramMap);
 	}
 	public List<Task> findScanTimeByOrderId(String orderId) {
 		return taskDao.findScanTimeByOrderId(orderId);
