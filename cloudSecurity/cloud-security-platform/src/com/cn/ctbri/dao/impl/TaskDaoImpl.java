@@ -60,11 +60,11 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 		return this.getSqlSession().selectOne(ns+"findProgressByOrderId",paramMap);
 	}
 
-	public Task findBasicInfoByOrderId(String orderId) {
-		  int count=this.getSqlSession().selectOne(ns+"getCountByOrderId",orderId);  
-		  Map<String, Object> paramMap = new HashMap<String, Object>();
-		  paramMap.put("orderId", orderId);
-	      paramMap.put("count", count);
+	public Task findBasicInfoByOrderId(Map<String, Object> paramMap) {
+//		  int count=this.getSqlSession().selectOne(ns+"getCountByOrderId",orderId);  
+//		  Map<String, Object> paramMap = new HashMap<String, Object>();
+//		  paramMap.put("orderId", orderId);
+//	      paramMap.put("count", count);
 		  
 		return this.getSqlSession().selectOne(ns+"findBasicInfoByOrderId",paramMap);
 	}
