@@ -10,12 +10,10 @@ $(function(){
     // 定义数组
     var label = [];
     var value = [];
-    var valueGauge = [];
     var time = [];
     var lineData = [];
     var lineData2 = [];
     var lineData3 = [];
-    var high = null;
     
     // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
     function testLineData(){
@@ -45,26 +43,32 @@ $(function(){
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
                     $.each(data,function(i,p){
-	                   	lineData2[i]=p['count'];
-	                   	time[i]=p['alarm_time'];
+	                   	if(typeof(p['time']) == "object"){
+	                   		var str=eval(p['time']);
+	                   		for(var i=0;i<str.length;i++){
+	                   			time[i]=str[i];
+	                   		}
+	                   	}else{
+	                   		lineData2[i]=p['count'];
+	                   	}
                     });
                     myChart.setOption({//图形
                         calculable : true,
                         xAxis : [
-                                 {
-                                     type : 'category',
-                                     boundaryGap : false,
-                                     data : testLineX()
-                                 }
+							{
+								type : 'category',
+							    boundaryGap : false,
+							    data : testLineX()
+							}
                         ],
                         yAxis : [
-                            {
-                                type : 'value'
-                            }
+							{
+								 type : 'value'
+							}
                         ],
                         series:function(){
                         	 var serie=[];
-                        	 for( var i=0;i < data.length;i++){
+                        	 for( var i=0;i < data.length-1;i++){
 	                        	 var item={
 		                        	 name:data[i].url,
 		                        	 type:'line',
