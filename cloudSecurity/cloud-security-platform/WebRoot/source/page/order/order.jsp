@@ -586,7 +586,7 @@
           </tr>
           <tr>
             <td></td>
-            <td>电话</td>
+            <td>手机号</td>
             <td colspan="2"><input class="xin_input" type="text" name="phone" id="phone"/>
               &nbsp;<span  style="width:30px;">*</span>
               <span><font id="phone_msg" style="color:red;float:right"></font></span></td>
@@ -663,7 +663,7 @@
           </tr>
           <tr>
             <td></td>
-            <td>电话</td>
+            <td>手机号</td>
             <td colspan="2" name="phone"></td>
           </tr>
           <tr>
@@ -740,7 +740,7 @@
           </tr>
           <tr>
             <td></td>
-            <td>电话</td>
+            <td>手机号</td>
             <td colspan="2" name="phone"></td>
           </tr>
           <tr>
