@@ -260,6 +260,10 @@ function submitForm(){
 		}else{
 			$("#regist_confirm_password_msg").html("");
 		}
+		
+		if(name==p1){
+			       $("#regist_password_msg").html("用户名和密码一致，请重新修改密码！");
+		}
 		if((email==""||email==null)&&(mobile==""||mobile==null)){
 			$("#regist_mobile_email_msg").html("手机号码或邮箱不能为空");
 		}else{
@@ -270,14 +274,19 @@ function submitForm(){
 		}else{
 			$("#regist_mobile_email_msg").html("");
 		}
+		
 	}else{
 	    if(checkMobile1==0&&checkEmail1==0){
 	    }else{
 	    	if(document.getElementById("ck").checked){
 	    		$("#ck_msg").html("");
 			    if(checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1&&(checkSendEmail1==1||checkSendMobile1==1)&&checkEmailActivationCode1==1){
-					$("#form_regist").submit();
-			    }
+				 if(name==p1){
+			       $("#regist_password_msg").html("用户名和密码一致，请重新修改密码！");
+		          }else{
+					$("#form_regist").submit();}
+					}    	
+				
 		    }else{
 			    $("#ck_msg").html("请阅读《云平台用户注册协议》");
 		    }

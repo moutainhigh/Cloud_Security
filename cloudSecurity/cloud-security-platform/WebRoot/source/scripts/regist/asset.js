@@ -4,8 +4,11 @@ function saveAsset() {
 	//获取选中的radio的值
 	if(assetName == null || assetName == ""){
 		$("#assetName_msg").html("请输入资产名称");
-	}else{
-		if(assetAddr==null || assetAddr == ""){
+	}
+	else if(assetName.length>25){
+			$("#assetName_msg").html("资产名称长度不能超过25个字符！");
+	}
+	else if(assetAddr==null || assetAddr == ""){
 			$("#assetAddr_msg").html("请输入资产地址");
 		}else{
 			//验证资产是否重复
@@ -24,7 +27,7 @@ function saveAsset() {
 		        },
 		     }); 
 		}
-	}
+	
 }
 function searchAssetCombine(){
 	$("#searchAssetForm").submit();
