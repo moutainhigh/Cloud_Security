@@ -10,12 +10,14 @@ function saveAsset() {
 	}
 	else if(assetAddr==null || assetAddr == ""){
 			$("#assetAddr_msg").html("请输入资产地址");
-		}else{
+		}else if(assetAddr.indexOf("gov.cn")!=-1){
+		   $("#assetAddr_msg").html("输入资产地址不能包含'gov.cn'！");
+	}else{
 			//验证资产是否重复
 			$.ajax({
 		        type: "POST",
 		        url: "/cloud-security-platform/asset_addrIsExist.html",
-		        data: {"addr":assetAddr},
+		        data: {"addr":assetAddr,"name":assetName},
 		        dataType:"json",
 		        success: function(data){
 		            if(data.msg){
