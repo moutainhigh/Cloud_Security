@@ -8,18 +8,10 @@ $(function(){
     });
 	
     // 定义数组
-    var label = [];
-    var value = [];
     var time = [];
-    var lineData = [];
     var lineData2 = [];
-    var lineData3 = [];
     
     // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
-    function testLineData(){
-    	return lineData;
-    }
-    
     function testLineData2(){
     	return lineData2;
     }
@@ -38,7 +30,8 @@ $(function(){
           //后台获取数据
             $.ajax({
             	type : "post",
-            	url:"getData.html?orderId="+$('#orderId').val(),
+            	url:"/cloud-security-platform/getData.html",
+            	data: {"orderId":$("#orderId").val()},
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
@@ -133,6 +126,4 @@ $(function(){
             });
         }
     );
-    
-    
 });
