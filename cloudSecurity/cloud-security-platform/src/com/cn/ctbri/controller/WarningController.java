@@ -11,22 +11,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import se.akerfeldt.com.google.gson.Gson;
-
-
 import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.constant.WarnType;
 import com.cn.ctbri.entity.Alarm;
@@ -327,9 +321,10 @@ public class WarningController {
 	 */
 	@RequestMapping(value="getData.html" ,method = RequestMethod.POST)
 	@ResponseBody
-	public String getData(HttpServletRequest request,HttpServletResponse response,String orderId){
+	public String getData(HttpServletRequest request,HttpServletResponse response){
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("application/json;charset=UTF-8");
+	    String orderId = request.getParameter("orderId");
 		//获取带有关键字告警的url
 		//页面循环div的id 资产Url和曲线图匹配问题
 		Map<String,Object> m = new HashMap<String, Object>();
@@ -373,8 +368,6 @@ public class WarningController {
     	}
     	jo1.put("time", result1);
     	json.add(jo1);
-    	
-    	System.out.println(json);
         return json.toString();
 	}
 	/**
