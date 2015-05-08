@@ -1,6 +1,7 @@
 function saveAsset() {
 	var assetName = $("#assetName").val();
 	var assetAddr = $("#assetAddr").val();
+     var addrType = $('input:radio[name="addrType"]:checked').val();
 	//获取选中的radio的值
 	if(assetName == null || assetName == ""){
 		$("#assetName_msg").html("请输入资产名称");
@@ -17,7 +18,7 @@ function saveAsset() {
 			$.ajax({
 		        type: "POST",
 		        url: "/cloud-security-platform/asset_addrIsExist.html",
-		        data: {"addr":assetAddr,"name":assetName},
+		        data: {"addr":assetAddr,"name":assetName,"addrType":addrType},
 		        dataType:"json",
 		        success: function(data){
 		            if(data.msg){
