@@ -78,8 +78,10 @@ public class MyAssetsController {
 	    User globle_user = (User) request.getSession().getAttribute("globle_user");
 	    Map<String, Object> paramMap = new HashMap<String, Object>();
 	    String addr = asset.getAddr();
+	    String assetName = asset.getName();
         paramMap.put("userId", globle_user.getId());
         paramMap.put("addr", addr);
+        paramMap.put("name", assetName);
 		List<Asset> list = assetService.findByAssetAddr(paramMap);
 		Map<String, Object> m = new HashMap<String, Object>();
 		if(list != null && list.size()>0){
