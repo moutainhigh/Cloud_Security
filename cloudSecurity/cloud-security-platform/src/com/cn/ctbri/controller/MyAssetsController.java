@@ -80,7 +80,8 @@ public class MyAssetsController {
 	    String addr = asset.getAddr();
 	    String assetName = asset.getName();
         paramMap.put("userId", globle_user.getId());
-        paramMap.put("addr", addr);
+    	String addrType = request.getParameter("addrType");
+        paramMap.put("addr", addrType+ "://" +addr.trim());
         paramMap.put("name", assetName);
 		List<Asset> list = assetService.findByAssetAddr(paramMap);
 		Map<String, Object> m = new HashMap<String, Object>();
