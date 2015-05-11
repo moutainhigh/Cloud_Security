@@ -106,6 +106,7 @@ function showUnreadNews()
       <div class="right_list">
         <ul>
            <c:forEach var="list" items="${noticeList}" varStatus="status">
+             <c:if test="${status.index<5 }">
                <li><a href="${ctx}/noticeDescUI.html?id=${list.id}" title="${list.noticeName }">
                    <c:if test="${fn:length(list.noticeName)<=9}">
                                ${list.noticeName }
@@ -114,6 +115,7 @@ function showUnreadNews()
                            ${fn:substring(list.noticeName, 0, 9)}...
                    </c:if>
                </a></li>
+              </c:if>
            </c:forEach>
         </ul>
       </div>
@@ -164,6 +166,8 @@ function showUnreadNews()
          <c:choose>
             <c:when test="${status.index==5||status.index==6}">
 		      <div class="anti_main bor_right">
+		        <div class="web_model"></div>
+                <div class="web_modelp">即将上线...</div>
 		        <div class="anti_main_pic"><img src="${ctx}/source/images/iconin${status.index+1 }.jpg" /></div>
 		        <div class="anti_main_right">
 		          <h2><a href="###">${list.name }</a></h2>
@@ -177,6 +181,8 @@ function showUnreadNews()
             </c:when>
             <c:when test="${status.last}">
 		      <div class="anti_main" style="margin-right:0px;">
+		        <div class="web_model"></div>
+                <div class="web_modelp">即将上线...</div>
 		        <div class="anti_main_pic"><img src="${ctx}/source/images/iconin${status.index+1 }.jpg" /></div>
 		        <div class="anti_main_right">
 		          <h2><a href="###">${list.name }</a></h2>
