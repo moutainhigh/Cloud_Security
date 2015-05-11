@@ -132,6 +132,16 @@ function doMove(target)
         clearInterval(timer); timer = null;
     }
 }
+$(function(){
+	$('.anti_main').hover(
+		function(){
+			$(this).children(".web_model").css('height','134px').stop().slideDown();
+			$(this).children(".web_modelp").css('height','134px').stop().slideDown();},
+		function(){
+			$(this).children(".web_model").stop().slideUp().css('height','134px');
+			$(this).children(".web_modelp").stop().slideUp().css('height','134px');
+			});
+});
 //首页左侧导航
 $(function(){
 $('.lncenter').hover(function(){
