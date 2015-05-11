@@ -1,6 +1,7 @@
 package com.cn.ctbri.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cn.ctbri.entity.TaskWarn;
 
@@ -18,5 +19,9 @@ public interface ITaskWarnService {
 	TaskWarn findTaskWarnCountByOrderId(String orderId);
 	//可用率统计
 	List<TaskWarn> findUseableByOrderId(String orderId);
+	//查找告警的url资产
+	List<TaskWarn> findWarnUrlByOrderId(Map<String, Object> m);
+	//根据url和orderID查找告警
+	List<TaskWarn> findWarnByOrderIdAndUrl(Map<String, Object> map);
 
 }
