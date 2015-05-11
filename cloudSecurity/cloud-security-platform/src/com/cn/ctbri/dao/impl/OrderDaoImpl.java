@@ -82,7 +82,7 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
      *       @time 2015-3-4
      * 返回值    ：  Order
      */
-    public List findByUserIdAndPage(int id, int pageIndex) {
+    public List findByUserIdAndPage(int id, int pageIndex,String state) {
         Map<String,Object> paramMap = new HashMap<String,Object>();
         //当前页
         int pageSize = 10;
@@ -90,6 +90,7 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
         paramMap.put("userId", id);
         paramMap.put("pageNow", pageNow);
         paramMap.put("pageSize", pageSize);
+        paramMap.put("state", state);
         List list = this.getSqlSession().selectList(ns + "getOderByPage",paramMap);
         return list;
     }
