@@ -59,7 +59,7 @@ public interface IOrderService {
      * 功能描述： 根据pageIndex和用户id查询记录
      *       @time 2015-3-4
      */
-    List findByUserIdAndPage(int id, int pageIndex);
+    List findByUserIdAndPage(int id, int pageIndex,String state);
     /**
      * 功能描述：组合查询订单追踪-分页
      *       @time 2015-1-15
