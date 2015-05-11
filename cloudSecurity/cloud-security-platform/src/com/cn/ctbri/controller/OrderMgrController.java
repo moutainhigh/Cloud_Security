@@ -520,12 +520,12 @@ public class OrderMgrController {
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         String state=request.getParameter("state");
         //获取订单信息
-        List orderList = orderService.findByUserId(globle_user.getId());
+        //List orderList = orderService.findByUserId(globle_user.getId());
         //获取当前时间
         SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String temp = setDateFormat.format(Calendar.getInstance().getTime());
         request.setAttribute("nowDate",temp); 
-        request.setAttribute("orderList", orderList);
+        //request.setAttribute("orderList", orderList);
         request.setAttribute("mark","1");
         request.setAttribute("state", state);
         return "/source/page/order/orderTrack";
