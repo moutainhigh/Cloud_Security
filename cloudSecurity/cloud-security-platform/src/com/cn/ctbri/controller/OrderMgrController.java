@@ -21,8 +21,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cn.ctbri.common.Constants;
@@ -37,7 +35,6 @@ import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskHW;
 import com.cn.ctbri.entity.User;
-import com.cn.ctbri.scheduler.Scheduler4Task;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
@@ -521,6 +518,7 @@ public class OrderMgrController {
     @RequestMapping(value="orderTrackInit.html")
     public String orderTrackInit(HttpServletRequest request){
         User globle_user = (User) request.getSession().getAttribute("globle_user");
+        String state=request.getParameter("state");
         //获取订单信息
         List orderList = orderService.findByUserId(globle_user.getId());
         //获取当前时间
@@ -529,6 +527,7 @@ public class OrderMgrController {
         request.setAttribute("nowDate",temp); 
         request.setAttribute("orderList", orderList);
         request.setAttribute("mark","1");
+        request.setAttribute("state", state);
         return "/source/page/order/orderTrack";
     }
     
@@ -542,13 +541,15 @@ public class OrderMgrController {
         //获取pageIndex
         int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
         User globle_user = (User) request.getSession().getAttribute("globle_user");
+        String state=request.getParameter("state");
         //根据pageIndex获取每页order条数,获取订单信息
-        List orderList = orderService.findByUserIdAndPage(globle_user.getId(),pageIndex);
+        List orderList = orderService.findByUserIdAndPage(globle_user.getId(),pageIndex,state);
         //获取当前时间
         SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String temp = setDateFormat.format(Calendar.getInstance().getTime());
         ModelAndView mv = new ModelAndView("/source/page/order/orderList");
         mv.addObject("orderList", orderList);
+        mv.addObject("state", state);
         mv.addObject("nowDate", temp);
         return mv;
     }
