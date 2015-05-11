@@ -38,4 +38,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND tw.task_id=t.taskId
 		GROUP BY tw.url
 	</select>
+	
+	<!-- 查找告警的url资产 -->
+    <select id="findWarnUrlByOrderId" parameterType="hashmap" resultMap="TaskWarnRM">
+    	SELECT a.url, oa.scan_type AS scan_type
+		FROM cs_taskwarn a ,cs_order_asset oa,cs_task t 
+		WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=a.task_id
+		GROUP BY a.url
+		ORDER BY a.warn_time
+    </select>
+    
+    <select id="findWarnByOrderIdAndUrl" parameterType="hashmap" resultMap="TaskWarnRM">
+		SELECT a.*
+		FROM cs_taskwarn a ,cs_order_asset oa,cs_task t 
+		WHERE a.url=#{url} AND oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=a.task_id
+		GROUP BY a.warn_time
+		ORDER BY a.warn_time
+    </select>
 </mapper>
