@@ -232,7 +232,7 @@ public class WarningController {
     			    		if(i==0){
     			    			usable = usable + taskWarnList.get(i).getWarn_time().getTime()-task.getExecute_time().getTime();
     			    		}else{
-    			    			usable = usable + taskWarnList.get(i).getWarn_time().getTime()-huifu;
+    			    			usable = usable + (taskWarnList.get(i).getWarn_time().getTime()-huifu);
     			    		}
     			    		
     			    	}else{
@@ -384,28 +384,94 @@ public class WarningController {
 		Map<String,Object> m = new HashMap<String, Object>();
 		m.put("orderId", orderId);
 		m.put("url", null);
-		List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(orderId);
+		List<TaskWarn> urlWarnList=taskWarnService.findWarnUrlByOrderId(m);
         //处理时间Thu Apr 16 09:47:38 CST 2015=》年月日时分秒
-    	if(taskWarnList!=null){
-    		for(TaskWarn t : taskWarnList){
-    			t.setWarnTime(DateUtils.dateToString(t.getWarn_time()));
-    		}
-    	}
+//    	if(taskWarnList!=null){
+//    		for(TaskWarn t : taskWarnList){
+//    			t.setWarnTime(DateUtils.dateToString(t.getWarn_time()));
+//    		}
+//    	}
     	//根据url查询折线图和orderId
     	Map<String, Object> map = new HashMap<String, Object>();
     	map.put("orderId", orderId);
     	JSONArray json = new JSONArray();
-    	if(taskWarnList!=null){
-    		for(TaskWarn a : taskWarnList){
-    			String url = a.getUrl();
+    	List result1 = new ArrayList();
+    	JSONObject jo1 = new JSONObject();
+    	int total=0;
+    	if(urlWarnList!=null){
+    		for(int i=0;i<urlWarnList.size();i++){
+    			String url = urlWarnList.get(i).getUrl();
+    			map.put("url", url); 
+    			List<TaskWarn> listRight = taskWarnService.findWarnByOrderIdAndUrl(map);
     			JSONObject jo = new JSONObject();
-    			SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    			SimpleDateFormat setDateFormat = new SimpleDateFormat("HH:mm:ss");
+                List result = new ArrayList();
                 jo.put("url", url);
-            	String time1 = setDateFormat.format(a.getWarn_time());
-            	jo.put("time", time1);
+                Task task = taskService.findBasicInfoByOrderId(map);
+                long usable = 0l;
+			    long huifu = 0l;
+                for(int j =0 ;j< listRight.size();j++){
+                	String name = listRight.get(j).getName();
+                	if(name.equals("断网")){
+                		String time1 = setDateFormat.format(listRight.get(j).getWarn_time());
+                    	result1.add(time1);
+                		if(j==0){
+			    			usable = usable + listRight.get(j).getWarn_time().getTime()-task.getExecute_time().getTime();
+			    			result.add(100);
+                		}else{
+			    			usable = usable + (listRight.get(j).getWarn_time().getTime()-huifu);
+			    			float usabling = Float.parseFloat(String.valueOf(usable))/Float.parseFloat(String.valueOf((listRight.get(j).getWarn_time().getTime())));
+			    			result.add(usabling*100);
+			    		}
+			    		
+                	}else{
+                		huifu = listRight.get(j).getWarn_time().getTime();
+                		String time1 = setDateFormat.format(listRight.get(j).getWarn_time());
+                    	result1.add(time1);
+                    	float usabling = Float.parseFloat(String.valueOf(usable))/Float.parseFloat(String.valueOf((huifu)));
+                    	result.add(usabling*100);
+                	}
+                	
+//                	if(i!=0&&j==0){
+//                		for(int a=0;a<total;a++){
+//                			result.add("");
+//                		}
+//                		result.add(listRight.get(j).getCount());
+//                	}else{
+//                		result.add(listRight.get(j).getCount());
+//                	}
+                }
+                
+                //可用率计算
+                long usable1 = 0l;
+                long huifu1 = 0l;
+                for (int n = 0; n < listRight.size(); n++) {
+                    if(listRight.get(n).getName().equals("断网")){
+                        if(n==0){
+                            usable1 = usable1 + listRight.get(n).getWarn_time().getTime()-task.getExecute_time().getTime();
+                        }else{
+                            usable1 = usable1 + (listRight.get(n).getWarn_time().getTime()-huifu1);
+                        }
+                    }else{
+                        huifu1 = listRight.get(n).getWarn_time().getTime();
+                    }
+                }
+                float usabling1 = Float.parseFloat(String.valueOf(usable1))/Float.parseFloat(String.valueOf((task.getEnd_time().getTime()-task.getExecute_time().getTime())));
+                result1.add(setDateFormat.format(task.getEnd_time()));
+                result.add(usabling1*100);
+                
+                
+                jo.put("total", listRight.size());
+                jo.put("count", result);
             	json.add(jo);
+            	total+=listRight.size();//数据条数
     		}
+    		
     	}
+    	jo1.put("time", result1);
+    	json.add(jo1);
+    	
+    	System.out.println(json);
         return json.toString();
     }
     

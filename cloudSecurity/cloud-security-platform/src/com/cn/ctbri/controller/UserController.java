@@ -101,10 +101,16 @@ public class UserController {
     @ResponseBody
     public void getNum(HttpServletResponse response,HttpServletRequest request){
         Map<String, Object> m = new HashMap<String, Object>();
+        //查询网页篡改个数 
+        int whorseNum = selfHelpOrderService.findLeakNum(3);
+        //查询木马检测个数 
+        int pageTamperNum = selfHelpOrderService.findLeakNum(2);
         //查询漏洞个数 
         int leakNum = selfHelpOrderService.findLeakNum(1);
         //查询网页数
         int webPageNum = selfHelpOrderService.findWebPageNum();
+        m.put("whorseNum", whorseNum);
+        m.put("pageTamperNum", pageTamperNum);
         m.put("leakNum", leakNum);
         m.put("webPageNum", webPageNum);
         //object转化为Json格式
@@ -128,10 +134,16 @@ public class UserController {
 	    List<Notice> list = noticeService.findAllNotice();
 	    //获取服务类型
         List<Serv> servList = selfHelpOrderService.findService();
+        //查询网页篡改个数 
+        int whorseNum = selfHelpOrderService.findLeakNum(3);
+        //查询木马检测个数 
+        int pageTamperNum = selfHelpOrderService.findLeakNum(2);
         //查询漏洞个数
         int leakNum = selfHelpOrderService.findLeakNum(1);
         //查询网页数
         int webPageNum = selfHelpOrderService.findWebPageNum();
+        m.addAttribute("whorseNum", whorseNum);
+        m.addAttribute("pageTamperNum", pageTamperNum);
         m.addAttribute("leakNum", leakNum);
         m.addAttribute("webPageNum", webPageNum);
         m.addAttribute("servList", servList);
