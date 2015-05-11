@@ -1,6 +1,7 @@
 package com.cn.ctbri.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,14 @@ public class TaskWarnServiceImpl implements ITaskWarnService{
 
 	public List<TaskWarn> findUseableByOrderId(String orderId) {
 		return taskWarnDao.findUseableByOrderId(orderId);
+	}
+
+	public List<TaskWarn> findWarnUrlByOrderId(Map<String, Object> m) {
+		return taskWarnDao.findWarnUrlByOrderId(m);
+	}
+
+	public List<TaskWarn> findWarnByOrderIdAndUrl(Map<String, Object> map) {
+		return taskWarnDao.findWarnByOrderIdAndUrl(map);
 	}
 	
 }
