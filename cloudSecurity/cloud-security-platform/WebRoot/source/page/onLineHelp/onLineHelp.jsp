@@ -16,15 +16,22 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript">
 $(function(){
-    
+	$("#f5").hide();
 	$('.user_left ul li').click(function (){
+		$(".dd").show();
+	    $("#f5").hide();
 		var index = $(".user_left ul li").index(this); //获取当前点击按钮
-		if(index!=0){
+		if(index==5){
 			$(".user_left ul li").removeClass('active');
-	        $(".user_left ul li").eq(index).addClass('active');
-		}else{
+            $(".user_left ul li").eq(index).addClass('active');
+            $(".dd").hide();
+            $("#f5").show();
+		}else if(index==0){
 			$(".user_left ul li").removeClass('active');
 			$(".user_left ul li").eq(1).addClass('active');
+		}else{
+			$(".user_left ul li").removeClass('active');
+            $(".user_left ul li").eq(index).addClass('active');
 		}
 		
 	});
@@ -34,6 +41,8 @@ $(function(){
 
 function view(){
     $(".user_left ul li").removeClass('active');
+    $(".dd").hide();
+    $("#f5").show();
 }
 </script>
 </head>
@@ -83,7 +92,7 @@ function view(){
       <li style="width:160px;"><a href="#2F" >用户登录</a></li>
       <li style="width:160px;"><a href="#3F" >用户中心</a></li>
       <li  style="width:160px;"><a href="#4F" >订购中心</a></li>
-      <li style="font-size:16px; font-weight:500; line-height:28px; text-align:center; width:160px;"><a  style="color:#4593fd; " href="#5F">网站安全帮常见问题</a></li>
+      <li style="font-size:16px; font-weight:500; line-height:28px; text-align:center; width:160px;"><a  style="color:#4593fd; " href="#" >网站安全帮常见问题</a></li>
       <!-- <h2><a href="#5F" onclick="view()">网站安全帮常见问题</a></h2> -->
     </ul>
   </div>
