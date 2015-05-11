@@ -108,7 +108,13 @@
           <div class="pei_ul_txt"><a href="###">厂商</a></div>
           <li class="pei_active"><a href="###">全部</a></li>
           <c:forEach var="list" items="${factoryList}" varStatus="status">
-              <li name="${list.factory}"><a href="###">${list.factory }</a></li>
+            <c:if test="${status.first}">
+                <li name="${list.factory}"><a href="###">${list.factory }</a></li>
+            </c:if>
+            <c:if test="${not status.first}">
+                <div style="float:left; width:75px; height:22px;  margin-left:35px; text-align:center; font-size:14px; line-height:22px;" name="${list.factory}"><a href="###" style="color:#999;">${list.factory }</a></div>
+            </c:if>
+              
           </c:forEach>
         </ul>
         <ul class="pei_ul_3">
