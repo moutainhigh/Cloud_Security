@@ -520,7 +520,8 @@ $(function(){
    $('.pei_ul_2 li').click(function (){
 	   var orderType=$('input:radio[name="orderType"]:checked').val();
 	   var _index = $(".pei_ul_2 li").index(this);
-	   factory = $(this).attr("name");
+	   //factory = $(this).attr("name");
+	   factory = null;
 	   if((_index==0 && orderType ==2)||(_index==0 && orderType ==1)){
 		   $('.pei_ul_2 li').removeClass('pei_active');
 		   $(this).addClass('pei_active');
