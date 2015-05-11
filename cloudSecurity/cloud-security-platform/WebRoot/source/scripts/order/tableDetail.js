@@ -36,7 +36,7 @@ function loadData(){
     if(mark!=1){
     	url = "/cloud-security-platform/searchCombineByPage.html?type="+type+"&servName="+servName+"&state="+state+"&begin_date="+begin_date+"&end_date="+end_date;
     }else{
-    	url = "/cloud-security-platform/getOrderList.html";
+    	url = "/cloud-security-platform/getOrderList.html?state="+state;
     }
     $.get(url, data, function(result){
         pageIndex++;
