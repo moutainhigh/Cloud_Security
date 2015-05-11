@@ -67,11 +67,11 @@
       </div>
       <div class="center_bottom_div">
         <div class="center_bottom_number">${servNum}</div>
-        <div class="center_bottom_txt"><a href="###">服务中订单总数 </a></div>
+        <div class="center_bottom_txt"><a href="${ctx}/orderTrackInit.html?state=1">服务中订单总数 </a></div>
       </div>
       <div class="center_bottom_div" style="border-right:0px;">
         <div class="center_bottom_number">${alarmSum}</div>
-        <div class="center_bottom_txt"><a href="###">总告警数</a></div>
+        <div class="center_bottom_txt"><a href="${ctx}/orderTrackInit.html?state=2">总告警数</a></div>
       </div>
     </div>
   </div>
