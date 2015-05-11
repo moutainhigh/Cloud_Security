@@ -157,7 +157,7 @@
                     <input type="button" value="天" class="scan web_scan web_scancur" />
                     <input type="button" value="周" class="scan web_scan" />
                 </div>
-                <div class="web_box" id="pic">
+                <div class="web_box" id="pic" style="width:750px">
            	    	<!-- <img src="${ctx}/source/images/mgdata.jpg" width="428" height="254" style="margin: 48px 0 0 20px;" /> -->
                 </div>
          </div>

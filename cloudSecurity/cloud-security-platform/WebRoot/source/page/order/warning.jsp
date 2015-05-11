@@ -175,25 +175,7 @@ function seedetail1(e) {
             <input type="hidden" value="${group_flag }" id="group_flag"/>
             <p><span class="bigfont">${order.name }</span>
             <span>(  订单编号：${order.id }  )</span>
-            <c:if test="${order.type==1 && group_flag==null}">
-            	<p><span class="bigfont historyde">历史详情</span>
-            		<select class="historyse" id=execute_Time name="execute_Time" onchange="historicalDetails()">
-            			<option>请选择</option>
-            			<c:forEach var="time" items="${taskTime}" varStatus="status">
-            			   <c:if test="${timeSize!=0}">
-	            			   <c:if test="${not status.last}">
-	            			   <option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>
-	            			   </c:if>
-            			   </c:if>
-            			   <c:if test="${timeSize==0}">
-	            			   <option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>
-            			   </c:if>
-            			</c:forEach>
-            		</select>
-            	</p>
-                <!--  <a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank"><span style="float:right; margin-right:30px; dispiay:inline-block;color:#999; ">历史记录</span></a>
-             	-->
-            </c:if>
+            
             </p>            
             <p>
             <div style="overflow:hidden;"><div style="float:left">资产：</div>
@@ -202,6 +184,25 @@ function seedetail1(e) {
             <span class="assets" style="display:block">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
             </c:forEach>
             </div></div></p>
+            <c:if test="${order.type==1 && group_flag==null}">
+                <p><span class="bigfont historyde">历史详情</span>
+                    <select class="historyse" id=execute_Time name="execute_Time" onchange="historicalDetails()">
+                        <option>请选择</option>
+                        <c:forEach var="time" items="${taskTime}" varStatus="status">
+                           <c:if test="${timeSize!=0}">
+                               <c:if test="${not status.last}">
+                               <option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>
+                               </c:if>
+                           </c:if>
+                           <c:if test="${timeSize==0}">
+                               <option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>
+                           </c:if>
+                        </c:forEach>
+                    </select>
+                </p>
+                <!--  <a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank"><span style="float:right; margin-right:30px; dispiay:inline-block;color:#999; ">历史记录</span></a>
+                -->
+            </c:if>
         </div>
         </div>
         <div class="process">
@@ -296,7 +297,7 @@ function seedetail1(e) {
 	            </tr>
 	            
 	          <tr  class="detailbox">
-                <td colspan="6"><div  class="zhangd_div2">${fn:replace(alarm.advice,vEnter, "<br />")} </div>
+                <td colspan="5"><div  class="zhangd_div2">${fn:replace(alarm.advice,vEnter, "<br />")} </div>
                  </td>
               </tr>
           </c:forEach>

@@ -42,6 +42,7 @@
                 </c:if>
                 <!-- 安恒的服务 -->
                 <c:if test="${list.begin_date<=temp&&list.status==0}"><a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}" target="_blank"><img src="${ctx}/source/images/status_4.jpg" title="服务中"/></a></c:if>
+                <c:if test="${list.begin_date<=temp&&list.status==3}"><a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}" target="_blank"><img src="${ctx}/source/images/status_1.jpg" title="服务中有告警"/></a></c:if>
              </c:if>
                 
                 <!-- 华为的服务 -->

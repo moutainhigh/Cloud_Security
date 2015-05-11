@@ -153,14 +153,21 @@
                 <td style="width:60%;">资产地址 </td>
                 <td style="width:15%;"><input type="checkbox" class="checkItems"/></td>
               </tr>
-              <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
-	              <tr>
-	                <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
-	                <td>${list.name }</td>
-	                <td>${list.addr}</td>
-	                <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
-	              </tr>
-              </c:forEach>
+              <c:if test="${empty serviceAssetList}">
+                <tr>
+                  <td colspan="3">没有可选资产,请到"我的资产"菜单新增资产,并通过验证!</td>
+                </tr>
+              </c:if>
+              <c:if test="${not empty serviceAssetList}">
+	              <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
+		              <tr>
+		                <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
+		                <td>${list.name }</td>
+		                <td>${list.addr}</td>
+		                <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
+		              </tr>
+	              </c:forEach>
+              </c:if>
                             
             </table>
           </div>

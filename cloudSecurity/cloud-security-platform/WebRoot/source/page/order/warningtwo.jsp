@@ -160,25 +160,6 @@ function clearTable(){
             <input type="hidden" value="${group_flag }" id="group_flag"/>
             <p><span class="bigfont">${order.name }</span>
             <span>(  订单编号：${order.id }  )</span>
-            <c:if test="${order.type==1 && group_flag==null}">
-            	<p><span class="bigfont historyde">历史详情</span>
-            		<select class="historyse" id=execute_Time name="execute_Time" onchange="historicalDetails()">
-            			<option>请选择</option>
-            			<c:forEach var="time" items="${taskTime}" varStatus="status">
-            			   <c:if test="${timeSize!=0}">
-	            			   <c:if test="${not status.last}">
-	            			   <option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>
-	            			   </c:if>
-            			   </c:if>
-            			   <c:if test="${timeSize==0}">
-	            			   <option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>
-            			   </c:if>
-            			</c:forEach>
-            		</select>
-            	</p>
-              <!--   <a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank"><span style="float:right; margin-right:30px; dispiay:inline-block;color:#999; ">历史记录</span></a>
-             	 -->
-            </c:if>
             </p>
             <div style="overflow:hidden;">
             <div style="float:left">资产：</div>
@@ -186,7 +167,26 @@ function clearTable(){
             <c:forEach var="asset" items="${assetList}" varStatus="status">
             <span class="asset" style="display:block">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
             </c:forEach>
-            </div></div>  
+            </div></div>
+            <c:if test="${order.type==1 && group_flag==null}">
+                <p><span class="bigfont historyde">历史详情</span>
+                    <select class="historyse" id=execute_Time name="execute_Time" onchange="historicalDetails()">
+                        <option>请选择</option>
+                        <c:forEach var="time" items="${taskTime}" varStatus="status">
+                           <c:if test="${timeSize!=0}">
+                               <c:if test="${not status.last}">
+                               <option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>
+                               </c:if>
+                           </c:if>
+                           <c:if test="${timeSize==0}">
+                               <option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>
+                           </c:if>
+                        </c:forEach>
+                    </select>
+                </p>
+              <!--   <a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank"><span style="float:right; margin-right:30px; dispiay:inline-block;color:#999; ">历史记录</span></a>
+                 -->
+            </c:if>
                
         </div>
         <div class="process">
