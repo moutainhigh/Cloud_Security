@@ -29,3 +29,44 @@ h4.helph{font-size:15px;padding-top:0;}
 .help_detail{margin: 10px 0 0 20px;color: #888;font-size: 14px; text-indent:2em;line-height:24px;}
 .help_right{padding:10px 20px;}
 .help_right img{width:62%;margin-left:19%;height:50%;}
+.lb_font_w{font-size:20px;}
+.subnav_box,.right_nav{height:302px;}
+.subnav ul li,.subnav{height:306px;width:913px}
+.lb_font{font-size:14px;}
+.lb_third{top: 45px;right: 249px;}
+.lb_forth {top: 38px;}
+.lb_first {bottom: 43px;}
+.lb_second {bottom: 13px;right: 86px;}
+.right_nav{border:0;background:0;width: 190px;}
+.right_list,.right_title{border: 1px solid #DEDEDE;background:#f7f7f7;}
+.right_list{border-top:0;height: 115px;}
+.right_wechate{border:1px solid #dedede;margin-top:2px;padding:1px 35px 3px;}
+.subnav ol li.active{background: url("../images/dian_11.png") no-repeat;}
+.subnav ol {left: 424px;bottom: 22px;}
+.web_main{padding:0;width: 220px;}
+.web_box{width:182px;height: 35px;padding: 2px 15px;}
+.web_main {padding: 0px;width: 212px;margin-right:8px;border-right:1px solid #dedede;height: 208px;}
+.web_main_pic{margin-top:0;}
+.web_main h2{font-weight:normal;line-height: 36px;}
+.web_left{width:50%;float:left;color:#999999;font-size:13px;line-height:18px;word-wrap:break-word; word-break:break-all;}
+.web_right{width:50%;float:left;}
+.web_left p{padding-top: 10px;color:#ff4200;font-size:16px;}
+.web_money{font-size:28px;}
+.index_buy{width:72px;height:29px;display:block; background:url(../images/buyicon.jpg) no-repeat;margin:10px auto 0;}
+.anti_main{padding:0;width:361px;height:134px;margin-right:6px;border-right:1px solid #dedede;}
+.anti_main_pic{margin-top:0;width:145px;height:134px;margin-right:20px;}
+.anti_main_right{margin-top:0;}
+.anti_main_right h2{font-weight:normal;padding-top: 10px;padding-bottom: 6px;}
+.anti_main_right a{color: #666;}
+.anti_box{height:42px;overflow: hidden;padding-top: 10px;}
+.anti_box p{float:left;margin-top:6px;color:#ff4200;font-size:16px;}
+.anti_box a{float:right;margin-top:2px;margin-right:16px;}
+.head_bj {height: 60px;}
+.lagst-left a{margin-top:7px;}
+.lagst-right {padding-top: 7px;}
+.list ul li {line-height: 60px;}
+.lagst {height: 60px;}
+.subnav ul{height:302px;}
+.web_main .web_txt{padding:0 15px;font-size:12px;line-height:20px;color: #C2C2C2;}
+.anti_main_right p {font-size: 12px;line-height: 20px;}
+.right_wechate img{width:120px;height:120px;}

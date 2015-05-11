@@ -10,8 +10,8 @@
 .gj_left{border-right:1px solid #e0e0e0;height:100%;width:502px;}
 .fl{float:left;}
 .detail_title{padding:4px 10px;margin:20px 0 28px 30px; background:#e0e0e0;color:#666;font-size:16px;width:64px;}
-.aqfx{height:312px;width:100%;padding-left:32px;}
-.ldgs{height:312px;width:420px;padding-left:42px;}
+.aqfx{height:312px;width:100%;padding-left:80px;}
+.ldgs{height:312px;width:420px;padding-left:80px;}
 .gj_boxs{border-bottom:1px solid #e0e0e0;height:330px;}
 .aqpf{height:250px;padding-left:88px;}
 .zhangd_table .ld_table{margin-left:70px;width:860px;margin-bottom:36px;color:#888;}
@@ -43,7 +43,7 @@
 .lndetaillist{width:400px;}
 .right_nav{background:#f7f7f7;height:444px;width:154px;margin-left:2px;border:1px solid #dedede;}
 .right_title{font-size:16px;color:#666;height:32px;border-bottom:1px solid #dedede;text-align:center;line-height:32px;}
-.right_list{padding:12px 0 12px 14px;}
+.right_list{padding:12px 0 12px 14px;border-bottom:1px solid #dedede;}
 .right_list a{color:#999;font-size:14px;line-height:23px;}
 .lb_font{position:absolute;font-size:21px;text-align:center;color:#c6e72b;}
 .lb_first{bottom:100px;right:294px;}
