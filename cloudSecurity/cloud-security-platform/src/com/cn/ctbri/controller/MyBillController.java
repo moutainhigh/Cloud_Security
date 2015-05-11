@@ -2,8 +2,6 @@ package com.cn.ctbri.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.OrderAsset;
-import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
@@ -76,7 +72,7 @@ public class MyBillController {
         int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         //根据pageIndex获取每页账单条数,获取账单信息
-        List list = orderService.findByUserIdAndPage(globle_user.getId(),pageIndex);
+        List list = orderService.findByUserIdAndPage(globle_user.getId(),pageIndex,null);
         ModelAndView mv = new ModelAndView("/source/page/userCenter/billorderList");
         mv.addObject("list", list);
         return mv;
