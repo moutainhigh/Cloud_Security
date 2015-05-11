@@ -182,9 +182,15 @@ $(document).ready(function(){
           <td><input class="boz_inout_1" type="text" name="addr" id="assetAddr"/></td>
           <td style="color:#e32929;text-align:left"><div id="assetAddr_msg"></div></td>
         </tr>
+        <tr>
+	        <td>示例</td>
+	        <td style="color:#999;text-align: left; line-height: 18px; padding-top: 4px; padding-left: 10px;">http://xxx.xxx.xxx.xxx<br>https://xxx.xxx.xxx.xxx:1234<br>http://xxx.xxx.xxx.xxx:8080/home<br>www.xxx.com
+            </td>
+        </tr> 
       </table>
+                  
     </div>
-    <div style="margin-top:35px;"><a href="javascript:void(0)"><img src="${ctx}/source/images/user_submit_3.jpg" onclick="saveAsset()"/></a></div>
+    <div style="margin-top:26px;"><a href="javascript:void(0)"><img src="${ctx}/source/images/user_submit_3.jpg" onclick="saveAsset()"/></a></div>
   </div>
   </form>
 </div>
