@@ -88,7 +88,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<!-- 根据资产地址查询资产 -->
 	<select id="findByAssetAddr" parameterType="hashmap" resultMap="AssetRM">
 		select * from cs_asset
-		where name=#{name} and  addr=#{addr} and userid=#{userId} 
+		where userid=#{userId} and (name=#{name} or  addr=#{addr})
+	
+		 
 	</select>
 	<!-- 检测网站 -->
 	<select id="findAllAssetAddr" resultMap="AssetRM">
