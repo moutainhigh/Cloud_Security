@@ -81,7 +81,10 @@ public class MyAssetsController {
 	    String assetName = asset.getName();
         paramMap.put("userId", globle_user.getId());
     	String addrType = request.getParameter("addrType");
-        paramMap.put("addr", addrType+ "://" +addr.trim());
+    	if(!(addr.startsWith(addrType))){
+            addr = addrType + "://" + addr.trim();
+        }
+        paramMap.put("addr", addr);
         paramMap.put("name", assetName);
 		List<Asset> list = assetService.findByAssetAddr(paramMap);
 		Map<String, Object> m = new HashMap<String, Object>();
