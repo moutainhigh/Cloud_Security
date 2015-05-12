@@ -71,5 +71,5 @@ h4.helph{font-size:15px;padding-top:0;}
 .anti_main_right p {font-size: 12px;line-height: 20px;}
 .right_wechate img{width:120px;height:120px;}
 .anti_main{position:relative;}
-.web_model{width: 361px;height: 134px;background:#fff;opacity:0.9;position:absolute;bottom:0;left:0;display:none;}
+.web_model{width: 361px;height: 134px;background:#fff;opacity:0.9;position:absolute;bottom:0;left:0;display:none;filter:alpha(opacity=90);}
 .web_modelp{width: 361px;height: 134px;position:absolute;bottom:0;left:0;color:#00F;line-height:134px;text-align:center;display:none;}
