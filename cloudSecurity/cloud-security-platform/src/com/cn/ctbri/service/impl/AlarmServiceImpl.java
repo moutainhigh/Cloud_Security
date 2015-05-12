@@ -29,7 +29,7 @@ public class AlarmServiceImpl implements IAlarmService{
 	 *       @time 2015-1-30
 	 * 返回值    ：List<Alarm>
 	 */
-	public List<Alarm> findAlarmByUserId(int id) {
+	public List findAlarmByUserId(int id) {
 		return alarmDao.findAlarmByUserId(id);
 	}
 	/**
