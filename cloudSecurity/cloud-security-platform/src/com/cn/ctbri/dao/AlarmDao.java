@@ -34,7 +34,7 @@ public interface AlarmDao {
 	 *       @time 2015-1-30
 	 * 返回值    ：List<Alarm>
 	 */
-	public List<Alarm> findAlarmByUserId(int id);
+	public List findAlarmByUserId(int id);
 	/**
      * 功能描述：根据orderId查询告警信息
      *       @time 2015-2-4
