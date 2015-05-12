@@ -21,7 +21,7 @@ public interface IAlarmService {
 	 *       @time 2015-1-30
 	 * 返回值    ：List<Alarm>
 	 */
-	List<Alarm> findAlarmByUserId(int id);
+	List findAlarmByUserId(int id);
 	/**
      * 功能描述：根据orderId查询告警信息
      *       @time 2015-2-4
