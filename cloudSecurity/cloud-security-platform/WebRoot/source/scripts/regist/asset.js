@@ -1,5 +1,5 @@
 function saveAsset() {
-	var assetName = $("#assetName").val();
+	var assetName =$("#assetName").val();
 	var assetAddr = $("#assetAddr").val();
      var addrType = $('input:radio[name="addrType"]:checked').val();
 	//获取选中的radio的值
@@ -11,6 +11,8 @@ function saveAsset() {
 	}
 	else if(assetAddr==null || assetAddr == ""){
 			$("#assetAddr_msg").html("请输入资产地址");
+		}else if(assetAddr.length>80){
+			 $("#assetAddr_msg").html("资产地址长度不能超过80个字符！");
 		}else if(assetAddr.indexOf("gov.cn")!=-1){
 		   $("#assetAddr_msg").html("输入资产地址不能包含'gov.cn'！");
 	}else{
@@ -18,7 +20,7 @@ function saveAsset() {
 			$.ajax({
 		        type: "POST",
 		        url: "/cloud-security-platform/asset_addrIsExist.html",
-		        data: {"addr":assetAddr,"name":assetName,"addrType":addrType},
+		        data: {"addr":assetAddr,"name": encodeURI(assetName),"addrType":addrType},
 		        dataType:"json",
 		        success: function(data){
 		            if(data.msg){
