@@ -1,5 +1,6 @@
 package com.cn.ctbri.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,8 +50,10 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
 	 *       @time 2015-1-30
 	 * 返回值    ：List<Alarm>
 	 */
-	public List<Alarm> findAlarmByUserId(int id) {
-		return getSqlSession().selectList(ns+"findAlarmByUserId", id);
+	public List findAlarmByUserId(int id) {
+		   Map<String,Object> paramMap = new HashMap<String,Object>();
+	        paramMap.put("userId", id);
+		return getSqlSession().selectList(ns+"findAlarmByUserId", paramMap);
 	}
 	/**
      * 功能描述：根据orderId查询告警信息
