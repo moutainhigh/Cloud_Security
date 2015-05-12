@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.cfg.Configuration;
-import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Notice;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
@@ -245,7 +244,7 @@ public class UserController {
 			request.setAttribute("orderNum", orderNum);//订单总数
 			request.setAttribute("servNum",servNum);//服务中
 			//总告警数
-			List<Alarm> alarmList = alarmService.findAlarmByUserId(globle_user.getId());
+			List alarmList = alarmService.findAlarmByUserId(globle_user.getId());
 			int alarmSum = 0;
 			if(alarmList.size()>0&&alarmList!=null){
 				alarmSum = alarmList.size();
