@@ -22,7 +22,7 @@ function saveAsset() {
 		        dataType:"json",
 		        success: function(data){
 		            if(data.msg){
-		            	$("#assetAddr_msg").html("地址已经存在!");
+		            	$("#assetAddr_msg").html("资产目录已经存在!");
 		            }else{
 		            	$("#assetAddr_msg").html("");
 		            	$("#saveAsset").submit();
