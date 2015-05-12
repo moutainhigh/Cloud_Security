@@ -212,9 +212,9 @@ $(document).ready(function(){
         <tr>
        	  <td>资产地址类型</td>
           <td style="text-align:left">
-		        &nbsp;&nbsp;<input type="radio" name="addrType" id="editAssetAddrType1" value="http"/>
+		        &nbsp;&nbsp;<input type="radio" name="addrType"  value="http" checked="checked"/>
 		        &nbsp;http
-		        &nbsp;&nbsp;<input type="radio" name="addrType" id="editAssetAddrType2" value="https"/>
+		        &nbsp;&nbsp;<input type="radio" name="addrType"  value="https"/>
 		        &nbsp;https
 		  </td>
         </tr>
@@ -243,7 +243,7 @@ $(document).ready(function(){
 	        <input type="radio" name="verification_msg" checked="checked" id="codeVerification" value="codeVerification" onclick="showAndHiddenRadio()"/>
 	        &nbsp;&nbsp;代码验证(推荐)</div>
 	      <div class="txt_yz_right">
-	        <input type="radio" name="verification_msg" id="fileVerification" value="fileVerification" onclick="showAndHiddenRadio()"/>
+	        <input type="radio" name="verification_msg" id="fileVerification" value="fileVerification" onclick="showAndHiddenRadio()" />
 	        &nbsp;&nbsp;上传文件验证</div>
 	    </div>
 	    <div class="txt_1" id="codeVerificationID" style="display:block;">
