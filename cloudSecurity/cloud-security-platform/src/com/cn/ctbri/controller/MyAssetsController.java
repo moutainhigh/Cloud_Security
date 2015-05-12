@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -70,22 +71,23 @@ public class MyAssetsController {
 	/**
 	 * 功能描述： 添加资产
 	 * 参数描述： Model model
+	 * @throws Exception 
 	 *		 @time 2015-1-16
 	 */
 	@RequestMapping("/asset_addrIsExist.html")
 	 @ResponseBody
-	public void addrIsExist(Model model,Asset asset,HttpServletResponse response,HttpServletRequest request){
+	public void addrIsExist(Model model,Asset asset,HttpServletResponse response,HttpServletRequest request) throws Exception{
 	    User globle_user = (User) request.getSession().getAttribute("globle_user");
 	    Map<String, Object> paramMap = new HashMap<String, Object>();
 	    String addr = asset.getAddr();
-	    String assetName = asset.getName();
+	    String assetName =URLDecoder.decode(asset.getName(),"utf-8"); ;
         paramMap.put("userId", globle_user.getId());
     	String addrType = request.getParameter("addrType");
     	if(!(addr.startsWith(addrType))){
             addr = addrType + "://" + addr.trim();
         }
-        paramMap.put("addr", addr);
-        paramMap.put("name", assetName);
+        paramMap.put("addr", addr.trim());
+        paramMap.put("name", assetName.trim());
 		List<Asset> list = assetService.findByAssetAddr(paramMap);
 		Map<String, Object> m = new HashMap<String, Object>();
 		if(list != null && list.size()>0){
