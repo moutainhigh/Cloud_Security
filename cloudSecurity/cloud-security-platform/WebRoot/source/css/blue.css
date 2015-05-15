@@ -39,12 +39,12 @@ h4.helph{font-size:15px;padding-top:0;}
 .lb_second {bottom: 13px;right: 86px;}
 .right_nav{border:0;background:0;width: 190px;}
 .right_list,.right_title{border: 1px solid #DEDEDE;background:#f7f7f7;}
-.right_list{border-top:0;height: 115px;}
-.right_wechate{border:1px solid #dedede;margin-top:2px;padding:1px 35px 3px;}
+.right_list{border-top:0;height: 90px;}
+.right_wechate{border:1px solid #dedede;margin-top:2px;padding-top: 4px;}
 .subnav ol li.active{background: url("../images/dian_11.png") no-repeat;}
 .subnav ol {left: 424px;bottom: 22px;}
 .web_main{padding:0;width: 220px;}
-.web_box{width:182px;height: 35px;padding: 2px 15px;}
+.in_web_box{width:182px;height: 35px;padding: 2px 15px;}
 .web_main {padding: 0px;width: 212px;margin-right:8px;border-right:1px solid #dedede;height: 208px;}
 .web_main_pic{margin-top:0;}
 .web_main h2{font-weight:normal;line-height: 36px;}
@@ -69,7 +69,8 @@ h4.helph{font-size:15px;padding-top:0;}
 .subnav ul{height:302px;}
 .web_main .web_txt{padding:0 15px;font-size:12px;line-height:20px;color: #C2C2C2;}
 .anti_main_right p {font-size: 12px;line-height: 20px;}
-.right_wechate img{width:120px;height:120px;}
 .anti_main{position:relative;}
 .web_model{width: 361px;height: 134px;background:#fff;opacity:0.9;position:absolute;bottom:0;left:0;display:none;filter:alpha(opacity=90);}
 .web_modelp{width: 361px;height: 134px;position:absolute;bottom:0;left:0;color:#00F;line-height:134px;text-align:center;display:none;}
+.right_wechate img{width: 102px;margin: 5px 43px 6px;}
+.right_wechate p{text-align: center;font-size: 12px;}
