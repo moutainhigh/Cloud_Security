@@ -51,6 +51,35 @@ $(function(){
 	                   	}else{
 	                   		lineData2[i]=p['count'];
 	                   	}
+	                   	
+	                   	/*if(p['value'] == 1){//今天
+	                	 	$("#today").addClass("web_scancur");//今天
+	                		$("#yesterday").removeClass("web_scancur");//昨天 
+	                		$("#all").removeClass("web_scancur");//全部
+	                		
+	                		$("#hours").addClass("web_scancur");//小时
+	                		$("#day").removeClass("web_scancur"); //天
+	                		$("#week").removeClass("web_scancur");//周
+	                   	}
+	                   	if(p['value'] == 2){
+	                	 	$("#yesterday").addClass("web_scancur");//昨天
+	                		$("#today").removeClass("web_scancur");//今天 
+	                		$("#all").removeClass("web_scancur");//全部
+	                		
+	                		$("#hours").addClass("web_scancur");//小时
+	                		$("#day").removeClass("web_scancur"); //天
+	                		$("#week").removeClass("web_scancur");//周
+	                   	}
+	                   	if(p['value'] == 3){
+	                	 	$("#yesterday").removeClass("web_scancur");//昨天
+	                		$("#today").removeClass("web_scancur");//今天 
+	                		$("#all").addClass("web_scancur");//全部
+	                		
+	                		$("#hours").removeClass("web_scancur");//小时
+	                		$("#day").removeClass("web_scancur"); //天
+	                		$("#week").addClass("web_scancur");//周
+	                   	}*/
+	                   	
                     });
                     myChart.setOption({//图形
                         calculable : true,
@@ -63,7 +92,10 @@ $(function(){
 							{
 								type : 'category',
 							    boundaryGap : false,
-							    data : testLineX()
+							    data : testLineX(),
+							    axisLabel : {
+					                 rotate: 60
+					            }
 							}
                         ],
                         yAxis : [
