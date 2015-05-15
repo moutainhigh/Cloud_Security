@@ -160,6 +160,40 @@ function clearTable(){
         cit.find("span").remove();
     }
 }
+//今天、昨天、全部的判定
+$(document).ready(function() {
+	var flag = ${value};
+	if(flag == 1){//今天
+	 	$("#today").addClass("web_scancur");//今天
+		$("#yesterday").removeClass("web_scancur");//昨天 
+		$("#all").removeClass("web_scancur");//全部
+		
+		$("#hours").addClass("web_scancur");//小时
+		$("#day").removeClass("web_scancur"); //天
+		$("#week").removeClass("web_scancur");//周
+   	}
+   	if(flag == 2){//昨天
+	 	$("#yesterday").addClass("web_scancur");//昨天
+		$("#today").removeClass("web_scancur");//今天 
+		$("#all").removeClass("web_scancur");//全部
+		
+		$("#hours").addClass("web_scancur");//小时
+		$("#day").removeClass("web_scancur"); //天
+		$("#week").removeClass("web_scancur");//周
+   	}
+   	if(flag == 3){//全部
+	 	$("#yesterday").removeClass("web_scancur");//昨天
+		$("#today").removeClass("web_scancur");//今天 
+		$("#all").addClass("web_scancur");//全部
+		
+		$("#hours").removeClass("web_scancur");//小时
+		$("#day").removeClass("web_scancur"); //天
+		$("#week").addClass("web_scancur");//周
+   	}
+});
+
+
+
 </script>
 </head>
 
