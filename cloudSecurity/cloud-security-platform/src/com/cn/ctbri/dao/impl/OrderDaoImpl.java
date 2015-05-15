@@ -90,7 +90,11 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
         paramMap.put("userId", id);
         paramMap.put("pageNow", pageNow);
         paramMap.put("pageSize", pageSize);
-        paramMap.put("state", state);
+        if("2".equals(state)){
+        	 paramMap.put("state", Integer.parseInt(state)+1);
+        }else{
+        	 paramMap.put("state", state);
+        }
         List list = this.getSqlSession().selectList(ns + "getOderByPage",paramMap);
         return list;
     }
