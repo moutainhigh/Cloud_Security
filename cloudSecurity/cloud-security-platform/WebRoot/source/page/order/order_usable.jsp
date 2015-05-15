@@ -27,6 +27,39 @@
 .table-c table{border-right:1px solid #000;border-bottom:1px solid #000}
 .table-c table td{border-left:1px solid #000;border-top:1px solid #000}
 </style>
+<script type="text/javascript">
+//今天、昨天、全部的判定
+$(document).ready(function() {
+	var flag = ${value};
+	if(flag == 1){//今天
+	 	$("#today").addClass("web_scancur");//今天
+		$("#yesterday").removeClass("web_scancur");//昨天 
+		$("#all").removeClass("web_scancur");//全部
+		
+		$("#hours").addClass("web_scancur");//小时
+		$("#day").removeClass("web_scancur"); //天
+		$("#week").removeClass("web_scancur");//周
+   	}
+   	if(flag == 2){
+	 	$("#yesterday").addClass("web_scancur");//昨天
+		$("#today").removeClass("web_scancur");//今天 
+		$("#all").removeClass("web_scancur");//全部
+		
+		$("#hours").addClass("web_scancur");//小时
+		$("#day").removeClass("web_scancur"); //天
+		$("#week").removeClass("web_scancur");//周
+   	}
+   	if(flag == 3){
+	 	$("#yesterday").removeClass("web_scancur");//昨天
+		$("#today").removeClass("web_scancur");//今天 
+		$("#all").addClass("web_scancur");//全部
+		
+		$("#hours").removeClass("web_scancur");//小时
+		$("#day").removeClass("web_scancur"); //天
+		$("#week").addClass("web_scancur");//周
+   	}
+});
+</script>
 </head>
 
 <body>
@@ -149,13 +182,13 @@
             </div>
             <div class="web_datac">
            	  <div class="web_way">
-                	<input type="button" value="今日" class="scan web_scan" />
-                    <input type="button" value="昨日" class="scan web_scan web_scancur" />
-                    <input type="button" value="全部" class="scan web_scan" />
+                	<input type="button" value="今日" class="scan web_scan"  id="today" name="today"/>
+                    <input type="button" value="昨日" class="scan web_scan web_scancur" id="yesterday"/>
+                    <input type="button" value="全部" class="scan web_scan"  id="all"/>
                     <span class="webway_span">排列方式：</span>
-                    <input type="button" value="小时" class="scan web_scan" />
-                    <input type="button" value="天" class="scan web_scan web_scancur" />
-                    <input type="button" value="周" class="scan web_scan" />
+                    <input type="button" value="小时" class="scan web_scan" id="hours"/>
+                    <input type="button" value="天" class="scan web_scan web_scancur" id="day"/>
+                    <input type="button" value="周" class="scan web_scan" id="week"/>
                 </div>
                 <div class="web_box" id="pic" style="width:750px">
            	    	<!-- <img src="${ctx}/source/images/mgdata.jpg" width="428" height="254" style="margin: 48px 0 0 20px;" /> -->
