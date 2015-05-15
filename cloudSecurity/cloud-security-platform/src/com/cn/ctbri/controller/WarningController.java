@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class WarningController {
     public String warningInit(HttpServletRequest request,HttpServletResponse response){
         String orderId = request.getParameter("orderId");
         String type = request.getParameter("type");
-        String taskId = request.getParameter("taskId");
+//        String taskId = request.getParameter("taskId");
         String groupId=request.getParameter("groupId");
         //时间分组标志
         request.setAttribute("group_flag", groupId);
@@ -203,6 +204,7 @@ public class WarningController {
     				//敏感词排行榜(只适合一个资产)
                 	Map<String,Object> map = new HashMap<String, Object>();
                 	map.put("orderId", orderId);
+                	int flagalarm=0;
                 	if(alarmKeyWordList!=null){
                 		for(int a=0;a<alarmKeyWordList.size();a++){
                 			if(a==0){
@@ -211,6 +213,21 @@ public class WarningController {
                     			List<Alarm> list = alarmService.findKeywordByUrlAndOrderId(map);
                     			List<Alarm> mapSortData = getSortData(list);
                     			request.setAttribute("mapSortData", mapSortData);
+                    			
+		                		Date tempTime=alarmKeyWordList.get(0).getAlarm_time();
+		                		Date d2 = new Date(); //当前时间
+		                		SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd"); //格式化为 yyyymmdd
+		                		int d1Number = Integer.parseInt(f.format(tempTime).toString()); //将取出数据格式化后转为int
+		                		int d2Number = Integer.parseInt(f.format(d2).toString()); //将当前时间格式化后转为int
+		                		int value=d2Number-d1Number;
+		                		if(value==0){
+		                			flagalarm=1;
+		                		}else if(value==1){
+		                			flagalarm=2;
+		                		}else{
+		                			flagalarm=3;
+		                		}
+		                		 request.setAttribute("value", flagalarm);
                 			}
                 		}
                 	}
@@ -224,6 +241,35 @@ public class WarningController {
     		    	List<TaskWarn> listUseable = taskWarnService.findUseableByOrderId(orderId);
     		    	request.setAttribute("listUseable", listUseable);
     			    request.setAttribute("wlist", taskWarnList.size());
+    			  
+    			    //根据url查询折线图和orderId
+    		    	Map<String, Object> m22 = new HashMap<String, Object>();
+    		    	m22.put("orderId", orderId);
+    		    	int flag1=0;
+    		    	if(listUseable!=null){
+    		    		String url = listUseable.get(0).getUrl();
+		    			m22.put("url", url); 
+		    			List<TaskWarn> listRight = taskWarnService.findWarnByOrderIdAndUrl(m22);
+		                for(int j =0 ;j< listRight.size();j++){
+		                	if(j==listRight.size()-1){
+		                		Date tempTime=listRight.get(j).getWarn_time();
+		                		Date d2 = new Date(); //当前时间
+		                		SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd"); //格式化为 yyyymmdd
+		                		int d1Number = Integer.parseInt(f.format(tempTime).toString()); //将取出数据格式化后转为int
+		                		int d2Number = Integer.parseInt(f.format(d2).toString()); //将当前时间格式化后转为int
+		                		int value=d2Number-d1Number;
+		                		if(value==0){
+		                			flag1=1;
+		                		}else if(value==1){
+		                			flag1=2;
+		                		}else{
+		                			flag1=3;
+		                		}
+		                	}
+		                }
+		    		}
+		    		
+    		    		
     			    //可用率计算
     			    long usable = 0l;
     			    long huifu = 0l;
@@ -241,6 +287,7 @@ public class WarningController {
 					}
     			    float usabling = Float.parseFloat(String.valueOf(usable))/Float.parseFloat(String.valueOf((task.getEnd_time().getTime()-task.getExecute_time().getTime())));
     			    request.setAttribute("usabling", usabling*100+"%");
+    			    request.setAttribute("value", flag1);
     			    return "/source/page/order/order_usable";
     			default: //漏洞和木马
     	            request.setAttribute("alarmList", alarmList);
@@ -344,7 +391,7 @@ public class WarningController {
     			map.put("url", url); 
     			List<Alarm> listRight = alarmService.findRightByOrderIdAndUrl(map);
     			JSONObject jo = new JSONObject();
-    			SimpleDateFormat setDateFormat = new SimpleDateFormat("HH:mm:ss");
+    			SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                 List result = new ArrayList();
                 jo.put("url", url);
                 for(int j =0 ;j< listRight.size();j++){
@@ -385,26 +432,20 @@ public class WarningController {
 		m.put("orderId", orderId);
 		m.put("url", null);
 		List<TaskWarn> urlWarnList=taskWarnService.findWarnUrlByOrderId(m);
-        //处理时间Thu Apr 16 09:47:38 CST 2015=》年月日时分秒
-//    	if(taskWarnList!=null){
-//    		for(TaskWarn t : taskWarnList){
-//    			t.setWarnTime(DateUtils.dateToString(t.getWarn_time()));
-//    		}
-//    	}
     	//根据url查询折线图和orderId
     	Map<String, Object> map = new HashMap<String, Object>();
     	map.put("orderId", orderId);
     	JSONArray json = new JSONArray();
     	List result1 = new ArrayList();
     	JSONObject jo1 = new JSONObject();
-    	int total=0;
+    	int flag=0;
     	if(urlWarnList!=null){
     		for(int i=0;i<urlWarnList.size();i++){
     			String url = urlWarnList.get(i).getUrl();
     			map.put("url", url); 
     			List<TaskWarn> listRight = taskWarnService.findWarnByOrderIdAndUrl(map);
     			JSONObject jo = new JSONObject();
-    			SimpleDateFormat setDateFormat = new SimpleDateFormat("HH:mm:ss");
+    			SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                 List result = new ArrayList();
                 jo.put("url", url);
                 Task task = taskService.findBasicInfoByOrderId(map);
@@ -412,6 +453,27 @@ public class WarningController {
 			    long huifu = 0l;
                 for(int j =0 ;j< listRight.size();j++){
                 	String name = listRight.get(j).getName();
+                	if(j==listRight.size()-1){
+                		Date tempTime=listRight.get(j).getWarn_time();
+                		Date d2 = new Date(); //当前时间
+                		SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd"); //格式化为 yyyymmdd
+                		int d1Number = Integer.parseInt(f.format(tempTime).toString()); //将取出数据格式化后转为int
+                		int d2Number = Integer.parseInt(f.format(d2).toString()); //将当前时间格式化后转为int
+                		int value=d2Number-d1Number;
+                		if(value==0){
+                			System.out.println("时间为今天");
+                			System.out.println(d1Number); 
+                			flag=1;
+                		}else if(value==1){
+                			System.out.println("时间为昨天");
+                			flag=2;
+                			System.out.println(d2Number);
+                		}else{
+                			System.out.println("时间至少为两天前");
+                			flag=3;
+                			System.out.println(d1Number);
+                		}
+                	}
                 	if(name.equals("断网")){
                 		String time1 = setDateFormat.format(listRight.get(j).getWarn_time());
                     	result1.add(time1);
@@ -464,11 +526,11 @@ public class WarningController {
                 jo.put("total", listRight.size());
                 jo.put("count", result);
             	json.add(jo);
-            	total+=listRight.size();//数据条数
     		}
     		
     	}
     	jo1.put("time", result1);
+    	jo1.put("value", flag);
     	json.add(jo1);
     	
     	System.out.println(json);
