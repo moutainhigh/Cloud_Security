@@ -2,6 +2,7 @@ package com.cn.ctbri.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,7 +59,7 @@ public class WarningController {
     @Autowired
     IAlarmDDOSService alarmDDOSService;
     @RequestMapping(value="warningInit.html")
-    public String warningInit(HttpServletRequest request,HttpServletResponse response){
+    public String warningInit(HttpServletRequest request,HttpServletResponse response) throws Exception{
         String orderId = request.getParameter("orderId");
         String type = request.getParameter("type");
 //        String taskId = request.getParameter("taskId");
@@ -449,6 +450,9 @@ public class WarningController {
                 List result = new ArrayList();
                 jo.put("url", url);
                 Task task = taskService.findBasicInfoByOrderId(map);
+                //任务开始断网率
+                result1.add(setDateFormat.format(task.getExecute_time()));
+                result.add(100);
                 long usable = 0l;
 			    long huifu = 0l;
                 for(int j =0 ;j< listRight.size();j++){
@@ -504,23 +508,27 @@ public class WarningController {
 //                	}
                 }
                 
+                //根据orderId查询正在执行的任务
+                List runList = orderService.findTaskRunning(orderId);
                 //可用率计算
-                long usable1 = 0l;
-                long huifu1 = 0l;
-                for (int n = 0; n < listRight.size(); n++) {
-                    if(listRight.get(n).getName().equals("断网")){
-                        if(n==0){
-                            usable1 = usable1 + listRight.get(n).getWarn_time().getTime()-task.getExecute_time().getTime();
+                if(runList.size()==0){
+                    long usable1 = 0l;
+                    long huifu1 = 0l;
+                    for (int n = 0; n < listRight.size(); n++) {
+                        if(listRight.get(n).getName().equals("断网")){
+                            if(n==0){
+                                usable1 = usable1 + listRight.get(n).getWarn_time().getTime()-task.getExecute_time().getTime();
+                            }else{
+                                usable1 = usable1 + (listRight.get(n).getWarn_time().getTime()-huifu1);
+                            }
                         }else{
-                            usable1 = usable1 + (listRight.get(n).getWarn_time().getTime()-huifu1);
+                            huifu1 = listRight.get(n).getWarn_time().getTime();
                         }
-                    }else{
-                        huifu1 = listRight.get(n).getWarn_time().getTime();
                     }
+                    float usabling1 = Float.parseFloat(String.valueOf(usable1))/Float.parseFloat(String.valueOf((task.getEnd_time().getTime()-task.getExecute_time().getTime())));
+                    result1.add(setDateFormat.format(task.getEnd_time()));
+                    result.add(usabling1*100);
                 }
-                float usabling1 = Float.parseFloat(String.valueOf(usable1))/Float.parseFloat(String.valueOf((task.getEnd_time().getTime()-task.getExecute_time().getTime())));
-                result1.add(setDateFormat.format(task.getEnd_time()));
-                result.add(usabling1*100);
                 
                 
                 jo.put("total", listRight.size());
@@ -1151,7 +1159,7 @@ public class WarningController {
     }
     
     //服务ing
-    public String service(HttpServletRequest request,Map<String, Object> paramMap,int status,List<HashMap<String, Object>> orderList){
+    public String service(HttpServletRequest request,Map<String, Object> paramMap,int status,List<HashMap<String, Object>> orderList) throws Exception{
         //获取对应IP
         // List IPList = orderService.findIPByOrderId(orderId);
         request.setAttribute("status", status);
@@ -1223,7 +1231,10 @@ public class WarningController {
                     huifu = taskWarnList.get(i).getWarn_time().getTime();
                 }
             }
-            float usabling = Float.parseFloat(String.valueOf(usable))/Float.parseFloat(String.valueOf((task.getEnd_time().getTime()-task.getExecute_time().getTime())));
+          //获取当前时间
+            SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String temp = setDateFormat.format(Calendar.getInstance().getTime());
+            float usabling = Float.parseFloat(String.valueOf(usable))/Float.parseFloat(String.valueOf((setDateFormat.parse(temp).getTime()-task.getExecute_time().getTime())));
             request.setAttribute("usabling", usabling*100+"%");
             return "/source/page/order/order_usable";
             /**end*/
