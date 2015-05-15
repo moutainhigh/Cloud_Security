@@ -51,7 +51,10 @@ $(function(){
 							{
 								type : 'category',
 							    boundaryGap : false,
-							    data : testLineX()
+							    data : testLineX(),
+							    axisLabel : {
+					                 rotate: 60
+					            }
 							}
                         ],
                         yAxis : [
