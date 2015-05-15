@@ -92,8 +92,8 @@ function showUnreadNews()
                 <span class="lb_font lb_forth">发现<span class="lb_font_w" id="num1">${leakNum }</span>个漏洞</span>
             </a>
         </li>
-        <li><a href="###"><img src="${ctx}/source/images/banner1.jpg" /></a></li>
-        <li><a href="###"><img src="${ctx}/source/images/banner1.jpg" /></a></li>
+        <li><a href="###"><img src="${ctx}/source/images/cloudsecurity3.jpg" /></a></li>
+        <li><a href="###"><img src="${ctx}/source/images/cloudsecurity1.jpg" /></a></li>
       </ul>
       <ol>
         <li  class="active"></li>
@@ -106,7 +106,7 @@ function showUnreadNews()
       <div class="right_list">
         <ul>
            <c:forEach var="list" items="${noticeList}" varStatus="status">
-             <c:if test="${status.index<5 }">
+             <c:if test="${status.index<4 }">
                <li><a href="${ctx}/noticeDescUI.html?id=${list.id}" title="${list.noticeName }">
                    <c:if test="${fn:length(list.noticeName)<=9}">
                                ${list.noticeName }
@@ -120,7 +120,9 @@ function showUnreadNews()
         </ul>
       </div>
       <div class="right_wechate">
-        <img src="${ctx}/source/images/wechateer.jpg"/>
+        <p>最新的WEB安全资讯</p>
+        <P>尽在网站安全帮</P>
+        <img src="${ctx}/source/images/wedetil.png"/>
       </div>
     </div>
   </div>
@@ -134,7 +136,7 @@ function showUnreadNews()
 		        <div class="web_main_pic"><img src="${ctx}/source/images/iconin${status.index+1 }.jpg" /></div>
 		        <h2><a href="###">${list.name }</a></h2>
 		        <p class="web_txt">${list.remarks }</p>
-		        <div class="web_box">
+		        <div class="in_web_box">
 		            <div class="web_left"><p>￥<span class="web_money">0</span></p></div>
 		            <div class="web_right">
 		                <a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1" class="index_buy"></a>
@@ -147,7 +149,7 @@ function showUnreadNews()
                 <div class="web_main_pic"><img src="${ctx}/source/images/iconin${status.index+1 }.jpg" /></div>
                 <h2><a href="###">${list.name }</a></h2>
                 <p class="web_txt">${list.remarks }</p>
-                <div class="web_box">
+                <div class="in_web_box">
                     <div class="web_left"><p>￥<span class="web_money">0</span></p></div>
                     <div class="web_right">
                         <a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1" class="index_buy"></a>
