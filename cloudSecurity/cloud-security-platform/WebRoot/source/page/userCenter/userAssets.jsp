@@ -161,11 +161,11 @@ $(document).ready(function(){
     <div class="text_top">新增资产</div>
     <div class="text_bottm">
   
-      <table style="margin-top:56px;">
+      <table style="margin-top:56px;width:630px">
         <tr>
-          <td style="width:30%;">资产名称</td>
-          <td style="width:45%;"><input class="boz_inout_1" type="text" name="name" id="assetName"/></td>
-          <td style="width:25%; text-align:left; color:#e32929;"><div id="assetName_msg"></div></td>
+          <td style="width:25%;">资产名称</td>
+          <td style="width:37%;"><input class="boz_inout_1" type="text" name="name" id="assetName"/></td>
+          <td style="width:30%; text-align:left; color:#e32929;font-size:12px"><div id="assetName_msg"></div></td>
         </tr>
         <tr>
        	  <td>资产地址类型</td>
@@ -184,7 +184,7 @@ $(document).ready(function(){
         </tr>
         <tr>
 	        <td>示例</td>
-	        <td style="color:#999;text-align: left; line-height: 18px; padding-top: 4px; padding-left: 10px;">http://xxx.xxx.xxx.xxx<br>https://xxx.xxx.xxx.xxx:1234<br>http://xxx.xxx.xxx.xxx:8080/home<br>www.xxx.com
+	        <td style="color:#999;text-align: left; line-height: 18px; padding-top: 4px; padding-left: 10px;">http://xxx.xxx.xxx.xxx<br>https://xxx.xxx.xxx.xxx:1234<br>http://xxx.xxx.xxx.xxx:8080/home
             </td>
         </tr> 
       </table>
@@ -203,11 +203,11 @@ $(document).ready(function(){
   	<input type="hidden" name="id" id="hiddenEditAssetid"/>
   	<input type="hidden" name="hiddenEditAssetName" id="hiddenEditAssetName"/>
   	<input type="hidden" name="hiddenEditAssetAddr" id="hiddenEditAssetAddr"/>
-      <table style="margin-top:56px;">
+      <table style="margin-top:56px;width:630px">
         <tr>
-          <td style="width:30%;">资产名称</td>
-          <td style="width:45%;"><input class="boz_inout_1" type="text" name="name" id="editAssetName"/></td>
-          <td style="width:25%; text-align:left; color:#e32929;"><div id="editAssetName_msg"></div></td>
+          <td style="width:25%;">资产名称</td>
+          <td style="width:37%;"><input class="boz_inout_1" type="text" name="name" id="editAssetName"/></td>
+          <td style="width:30%; text-align:left; color:#e32929;font-size:12px"><div id="editAssetName_msg"></div></td>
         </tr>
         <tr>
        	  <td>资产地址类型</td>
