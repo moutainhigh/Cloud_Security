@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="execute_time" column="execute_time"/>
 		<result property="status" column="status"/>
 		<result property="remarks" column="remarks"/>
+		<result property="group_flag" column="group_flag"/>
 	</resultMap> 
 	<!-- 根据条件查询任务表 -->
 	<select id="findTask" parameterType="hashmap" resultMap="TaskRM">
@@ -21,6 +22,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		limit #{page}
 	</select>
 	
+	<!-- 根据条件查询任务表 -->
+    <select id="findDelTask" parameterType="hashmap" resultMap="TaskRM">
+        select * from cs_task t
+        where t.status = #{status} 
+        <if test="status==2">
+          and t.end_time between date_add(now(),interval -1 minute) and now()
+        </if>
+        limit #{page}
+    </select>
 	<!-- 更新任务信息 -->
 	<update id="update"  parameterType="com.cn.ctbri.entity.Task">
 		update cs_task
@@ -91,8 +101,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入任务信息 -->
     <insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO cs_task
-        (order_asset_Id,execute_time,status,remarks) 
-        VALUES( #{order_asset_Id} , #{execute_time},#{status},#{remarks})
+        (order_asset_Id,execute_time,status,group_flag,end_time,remarks) 
+        VALUES( #{order_asset_Id} , #{execute_time},#{status},#{group_flag},#{end_time},#{remarks})
     </insert>
     
     <select id="getTypeByAssetId" parameterType="Integer" resultType="com.cn.ctbri.entity.OrderAsset">

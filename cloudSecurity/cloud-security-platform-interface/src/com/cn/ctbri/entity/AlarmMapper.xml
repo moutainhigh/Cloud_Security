@@ -45,4 +45,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 	</select>
 	
+	<!-- 根据orderid查询告警信息 -->
+    <select id="findAlarmByOrderId" parameterType="String" resultMap="Alarm">
+        SELECT a.*
+        FROM cs_order_asset oa ,cs_task t,cs_alarm a
+        WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=a.taskId
+    </select>
+	
 </mapper>

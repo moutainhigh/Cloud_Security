@@ -140,10 +140,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="update"  parameterType="com.cn.ctbri.entity.Order">
 		update cs_order
 		<set>
+			<if test="message!=null">
+				message=#{message},
+			</if>
 			<if test="status!=null">
 				status = #{status}
 			</if>
 		</set>
 		where id = #{id}
 	</update>
+	
+	<!-- 查询联系人 -->
+    <select id="findLinkmanById" resultType="com.cn.ctbri.entity.Linkman" parameterType="int">
+        select * from cs_linkman l where l.id=#{contactId}
+    </select>
 </mapper>

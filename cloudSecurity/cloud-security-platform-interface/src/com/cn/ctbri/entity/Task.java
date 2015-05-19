@@ -13,6 +13,7 @@ public class Task{
 	private int order_asset_Id;//
 	private Date execute_time;//执行时间
 	private int status;//任务状态（1：已执行，未执行）
+	private Date group_flag;//分组标记
 	private String remarks;//描述
 	private String engineIP;//引擎ip
 	private String taskProgress;//进度
@@ -51,7 +52,13 @@ public class Task{
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	public String getRemarks() {
+	public Date getGroup_flag() {
+        return group_flag;
+    }
+    public void setGroup_flag(Date group_flag) {
+        this.group_flag = group_flag;
+    }
+    public String getRemarks() {
 		return remarks;
 	}
 	public void setRemarks(String remarks) {
