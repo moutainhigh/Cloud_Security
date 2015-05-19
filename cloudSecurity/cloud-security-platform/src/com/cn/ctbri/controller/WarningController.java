@@ -106,7 +106,9 @@ public class WarningController {
             return this.service(request,paramMap,status,orderList);
         }else {
             //获取推送告警信息
-            List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(orderId);
+        	String flag_able=request.getParameter("flag");
+        	paramMap.put("flag", flag_able);
+            List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(paramMap);
             //处理时间Thu Apr 16 09:47:38 CST 2015=》年月日时分秒
         	if(taskWarnList!=null){
         		for(TaskWarn t : taskWarnList){
@@ -1095,7 +1097,9 @@ public class WarningController {
         request.setAttribute("task", task);
         /**可用性 begin dyy*/
         //获取告警信息
-    	List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(orderId);
+        String flag_able=request.getParameter("flag");
+    	paramMap.put("flag", flag_able);
+    	List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(paramMap);
     	//处理时间Thu Apr 16 09:47:38 CST 2015=》年月日时分秒
     	if(taskWarnList!=null){
     		for(TaskWarn t : taskWarnList){
@@ -1196,7 +1200,9 @@ public class WarningController {
         request.setAttribute("task", task);
         /**可用性 begin dyy*/
         //获取告警信息
-        List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(String.valueOf(paramMap.get("orderId")));
+        String flag_able=request.getParameter("flag");
+    	paramMap.put("flag", flag_able);
+        List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(paramMap);
         //处理时间Thu Apr 16 09:47:38 CST 2015=》年月日时分秒
         if(taskWarnList!=null){
             for(TaskWarn t : taskWarnList){

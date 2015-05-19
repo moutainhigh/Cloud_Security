@@ -1,6 +1,7 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -434,12 +435,13 @@ public class UserController {
 	/**
 	 * 功能描述： 发送手机验证码
 	 * 参数描述：  User user,HttpServletResponse response
+	 * @throws URISyntaxException 
 	 * @throws Exception 
 	 *		 @time 2015-1-4
 	 */
 	@RequestMapping(value="regist_checkSendMobile.html", method = RequestMethod.POST)
 	@ResponseBody
-    public void sendMobile(User user,HttpServletRequest request,HttpServletResponse response) {
+    public void sendMobile(User user,HttpServletRequest request,HttpServletResponse response) throws URISyntaxException {
 		activationCode = Random.code();//生成激活码
     	 //将验证码保存到session中
         request.getSession().setAttribute("activationCode", activationCode);
