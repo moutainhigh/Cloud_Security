@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.OrderDao;
+import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Task;
 /**
@@ -94,7 +95,12 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 	public void update(Order o) {
 		this.getSqlSession().update(ns + "update" , o);
 		
-	}  
+	}
+
+    public List<Linkman> findLinkmanById(int contactId) {
+        List<Linkman> linkman = this.getSqlSession().selectList(ns + "findLinkmanById",contactId);
+        return linkman;
+    }  
 	
 	
 }

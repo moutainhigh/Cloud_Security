@@ -41,5 +41,15 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
 	public List<Alarm> findAlarm(Map<String, Object> map) {
 		return getSqlSession().selectList(ns+"findAlarm", map);
 	}
+	/**
+     * 功能描述：根据orderid查询告警信息
+     * 参数描述：String orderId 查询参数
+     * @return 
+     *       @time 2015-01-07
+     * 返回值    ：  List<Alarm> 报警对象集合
+     */
+    public List<Alarm> findAlarmByOrderId(String orderId) {
+        return getSqlSession().selectList(ns+"findAlarmByOrderId", orderId);
+    }
 
 }

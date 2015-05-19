@@ -80,6 +80,14 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
         List list = this.getSqlSession().selectList(ns+"getTaskStatus", order);
         return list;
     }
+
+    public List<Task> findDelTask(Map<String, Object> delmap) {
+        String taskpage = String.valueOf(delmap.get("page"));
+        if(taskpage == null || "".equals(taskpage)){
+            taskpage = "20";
+        }
+        return getSqlSession().selectList(ns+"findDelTask", delmap);
+    }
 	
 	
 
