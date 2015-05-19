@@ -161,7 +161,7 @@
               </tr>
               <c:if test="${empty serviceAssetList}">
                 <tr>
-                  <td colspan="3">没有可选资产,请到"我的资产"菜单新增资产,并通过验证!</td>
+                  <td colspan="3" style="color:#4593fd;">没有可选资产,请到"<a href="${ctx}/userAssetsUI.html" style="color:#4593fd;font-weight:bold;text-decoration:underline;">用户中心-我的资产</a>"菜单新增资产,并通过验证!</td>
                 </tr>
               </c:if>
               <c:if test="${not empty serviceAssetList}">

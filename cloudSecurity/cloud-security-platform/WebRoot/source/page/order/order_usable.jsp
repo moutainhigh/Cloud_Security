@@ -59,6 +59,42 @@ $(document).ready(function() {
 		$("#week").addClass("web_scancur");//周
    	}
 });
+
+/* today yesterday all hours day week */
+$(function() {
+    //今天的攻击
+	$("#today").click( function() {
+	 	var orderId = $("#orderId").val();
+	 	var type=$("#type").val();
+ 		window.location.href="${ctx}/warningInit.html?orderId="+orderId+"&type="+type+"&flag=1";
+	 	$("#today").addClass("web_scancur");
+		$("#yesterday").removeClass("web_scancur"); 
+		$("#all").removeClass("web_scancur");
+		$("#week").attr("disabled", true);
+ });
+ //昨天的攻击
+ $("#yesterday").click( function() {
+	var orderId = $("#orderId").val();
+	 	var type=$("#type").val();
+ 		window.location.href="${ctx}/warningInit.html?orderId="+orderId+"&type="+type+"&flag=2";
+	 	$("#yesterday").addClass("web_scancur");
+		$("#toady").removeClass("web_scancur"); 
+		$("#all").removeClass("web_scancur");
+		$("#week").attr("disabled", true);
+ });
+ //所有的攻击
+ 	$("#all").click( function() {
+	 	var orderId = $("#orderId").val();
+	 	var type=$("#type").val();
+ 		window.location.href="${ctx}/warningInit.html?orderId="+orderId+"&type="+type;
+	 	$("#all").addClass("web_scancur");
+		$("#today").removeClass("web_scancur");
+		$("#yesterday").removeClass("web_scancur"); 
+		$("#week").attr("disabled", true);
+ });
+ 
+ 
+});
 </script>
 </head>
 
