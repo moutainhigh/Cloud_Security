@@ -97,12 +97,21 @@ public class HuaweiScheduler4Task {
                     //根据任务id获取ip
                     OrderIP ip = taskhwService.getIpByTaskId(t.getOrder_ip_Id());
                     String ips[] = {ip.getIp()};
+                    //获取token
+                    String token = HuaweiWorker.auth();
                     //创建监控任务
-                    String value = HuaweiWorker.lssuedCreateZoneTask(String.valueOf("M"+t.getTaskId()), ips);
+                    String value = HuaweiWorker.lssuedCreateZoneTask(token, String.valueOf("DDOS_"+t.getTaskId()), ips);
+                    if(value=="201"){
+                    	logger.info(new Date()+"[在华为设备创建监控任务]:任务-[DDOS_" + t.getTaskId() + "]创建成功!");
+                    }else if(value=="409"){
+                    	logger.info(new Date()+"[在华为设备创建监控任务]:任务-[DDOS_" + t.getTaskId() + "]创建失败，名称或IP地址有冲突!");
+                    }else if(value=="412"){
+                    	logger.info(new Date()+"[在华为设备创建监控任务]:任务-[DDOS_" + t.getTaskId() + "]创建失败，token有误!");
+                    }
                     System.err.println(value);
                     if(ip.getServiceId()==8){
                     	//创建引流任务
-                        HuaweiWorker.lssuedCreateDivertTask(ip.getIp());
+                        HuaweiWorker.lssuedCreateDivertTask(token,ips);
                         //更新任务引流状态为1
                         t.setDrainage(1);
                         taskhwService.update(t);
@@ -193,9 +202,12 @@ public class HuaweiScheduler4Task {
                     
                     //根据任务id获取ip
                     OrderIP ip = taskhwService.getIpByTaskId(t.getOrder_ip_Id());
+                    String ips[] = {ip.getIp()};
                     if(ip.getServiceId()==7){//日常流量监控服务不创建引流
+                        //获取token
+                        String token = HuaweiWorker.auth();
                     	//创建引流任务
-                        HuaweiWorker.lssuedCreateDivertTask(ip.getIp());
+                        HuaweiWorker.lssuedCreateDivertTask(token,ips);
                         //更新任务引流状态为1
                         t.setDrainage(1);
                         taskhwService.update(t);
@@ -269,8 +281,10 @@ public class HuaweiScheduler4Task {
         for (TaskHW t : deltaskhwList) {
                 logger.info(new Date()+"[删除监控任务调度]:任务-[" + t.getTaskId() + "]开始下发!");
                 try {
+                    //获取token
+                    String token = HuaweiWorker.auth();
                     //删除监控任务
-                    HuaweiWorker.lssuedDeleteZoneTask(String.valueOf(t.getTaskId()));
+                    HuaweiWorker.lssuedDeleteZoneTask(token,String.valueOf(t.getTaskId()));
                 } catch (Exception e) {
                     logger.info("[删除监控任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
                     continue;
