@@ -60,5 +60,9 @@ public class TaskServiceImpl implements ITaskService{
     public List<Task> getTaskStatus(Order order) {
         return taskDao.getTaskStatus(order);
     }
+
+    public List<Task> findDelTask(Map<String, Object> delmap) {
+        return this.taskDao.findDelTask(delmap);
+    }
 	
 }

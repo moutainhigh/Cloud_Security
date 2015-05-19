@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.OrderDao;
+import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IOrderService;
@@ -93,4 +94,8 @@ public class OrderServiceImpl implements IOrderService{
 	public void update(Order o) {
 		orderDao.update(o);
 	}
+    public List<Linkman> findLinkmanById(int contactId) {
+        List<Linkman> linkman = orderDao.findLinkmanById(contactId);
+        return linkman;
+    }
 }
