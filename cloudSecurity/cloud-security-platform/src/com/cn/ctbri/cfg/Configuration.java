@@ -24,6 +24,8 @@ public class Configuration {
 	private static String apikey;//APIKEY
 	private static String username;//用户名
 	private static String passwordMobile;//向StringBuffer追加密码
+	private static String register_model;//注册模板
+	private static String warn_model;//告警模板
 	private static String fileContent;//资产验证时的文件内容
 	static {
 		InputStream inputStream = Configuration.class.getClassLoader().getResourceAsStream("default.properties");
@@ -42,6 +44,8 @@ public class Configuration {
 		server=(String)prop.get("server");//服务器
 		name=(String)prop.get("name");//名称
 		password=(String)prop.get("password");//密码
+		register_model=(String)prop.get("register_model");
+		warn_model=(String)prop.get("warn_model");
 	}
 	public static String getFileContent() {
 		return fileContent;
@@ -97,4 +101,18 @@ public class Configuration {
 	public static void setUsername(String username) {
 		Configuration.username = username;
 	}
+    public static String getRegister_model() {
+        return register_model;
+    }
+    public static void setRegister_model(String register_model) {
+        Configuration.register_model = register_model;
+    }
+    public static String getWarn_model() {
+        return warn_model;
+    }
+    public static void setWarn_model(String warn_model) {
+        Configuration.warn_model = warn_model;
+    }
+    
+	
 }
