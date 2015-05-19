@@ -154,7 +154,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     <!-- 曲线图左侧信息 -->
     <select id="findLeftByOrderId" parameterType="hashmap" resultMap="Alarm">
-    	SELECT a.url,a.score, oa.scan_type AS scan_type,a.name
+    	SELECT a.url,a.score, oa.scan_type AS scan_type,a.name,a.alarm_time
 		FROM cs_alarm a ,cs_order_asset oa,cs_task t 
 		WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=a.taskId
 		<if test="url!=null">
