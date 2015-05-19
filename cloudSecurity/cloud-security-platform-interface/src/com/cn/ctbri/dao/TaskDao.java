@@ -53,4 +53,6 @@ public interface TaskDao {
     public void insertTaskWarn(TaskWarn taskwarn);
 
     public List<Task> getTaskStatus(Order order);
+
+    public List<Task> findDelTask(Map<String, Object> delmap);
 }

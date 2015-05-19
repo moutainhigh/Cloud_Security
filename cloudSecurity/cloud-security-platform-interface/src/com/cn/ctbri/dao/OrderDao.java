@@ -3,6 +3,7 @@ package com.cn.ctbri.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Task;
 
@@ -62,5 +63,7 @@ public interface OrderDao {
      * 返回值    ：  无
      */
 	void update(Order o);
+	//查找联系人
+    List<Linkman> findLinkmanById(int contactId);
 	
 }

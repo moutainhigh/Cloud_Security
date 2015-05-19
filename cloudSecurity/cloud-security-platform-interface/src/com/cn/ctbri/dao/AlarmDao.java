@@ -26,4 +26,12 @@ public interface AlarmDao {
 	 * 返回值    ：  List<Alarm> 报警日志对象集合
 	 */
 	public List<Alarm> findAlarm(Map<String,Object> map);
+	/**
+     * 功能描述：根据orderid查询告警信息
+     * 参数描述：String orderId 查询参数
+	 * @return 
+     *       @time 2015-01-07
+     * 返回值    ：  List<Alarm> 报警对象集合
+     */
+    public List<Alarm> findAlarmByOrderId(String orderId);
 }
