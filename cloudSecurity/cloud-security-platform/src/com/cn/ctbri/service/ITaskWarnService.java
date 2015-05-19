@@ -14,7 +14,7 @@ import com.cn.ctbri.entity.TaskWarn;
 public interface ITaskWarnService {
 
 	//根据订单id获取告警信息
-	List<TaskWarn> findTaskWarnByOrderId(String orderId);
+	List<TaskWarn> findTaskWarnByOrderId(Map<String, Object> paramMap);
 	//根据订单id获取告警次数
 	TaskWarn findTaskWarnCountByOrderId(String orderId);
 	//可用率统计
