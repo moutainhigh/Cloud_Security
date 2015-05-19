@@ -65,20 +65,24 @@ public class Scheduler4Progress {
 			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(task.getTaskId()));
 			String status = this.getStatusByResult(resultStr);
 			List<Order> orderList = orderService.findOrderByTask(task);
-			Order order = orderList.get(0);
-            
-			if ("running".equals(status)||"finish".equals(status)) {// 任务执行完毕
-				logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析任务进度......");
-				/**
-				 * 获取任务进度信息并入库
-				 */
-				// 获取任务进度引擎
-				String progressStr = ArnhemWorker.getProgressByTaskId(sessionId, String.valueOf(task.getTaskId()),String.valueOf(order.getServiceId()));
-				this.getProgressByRes(task.getTaskId(),progressStr);
-				
-				logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]进度信息结果已完成入库!");
-			} else {
-				logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]进度信息结果未完成，等待下次拉取结果~");
+			if(orderList!=null&&!orderList.equals("")){
+    			Order order = orderList.get(0);
+    			if ("running".equals(status)) {// 任务执行完毕
+    				logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析任务进度......");
+    				/**
+    				 * 获取任务进度信息并入库
+    				 */
+    				// 获取任务进度引擎
+    				String progressStr = ArnhemWorker.getProgressByTaskId(sessionId, String.valueOf(task.getTaskId()),String.valueOf(order.getServiceId()));
+    				this.getProgressByRes(task.getTaskId(),progressStr);
+    				
+    				logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]进度信息结果已完成入库!");
+    			} else if("finish".equals(status)){
+    			    task.setTaskProgress("101");
+    			    taskService.updateTask(task);
+    			} else {
+    				logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]进度信息结果未完成，等待下次拉取结果~");
+    			}
 			}
 		}
 		logger.info("[获取任务进度调度]:任务进度扫描结束....");

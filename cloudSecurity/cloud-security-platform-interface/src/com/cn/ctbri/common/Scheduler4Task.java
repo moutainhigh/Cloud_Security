@@ -25,10 +25,12 @@ import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskService;
+import com.cn.ctbri.service.ITaskWarnService;
 
 /**
  * 扫描任务表的调度类
@@ -55,6 +57,9 @@ public class Scheduler4Task {
 	
 	@Autowired
     IOrderService orderService;
+	
+	@Autowired
+    ITaskWarnService taskWarnService;
 
 	private String destURL = "";
 
@@ -101,12 +106,13 @@ public class Scheduler4Task {
 					OrderAsset orderAsset = taskService.getTypeByAssetId(t.getOrder_asset_Id());
 					List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
 //					if(!Constants.SERVICE_LDSMFW.equals(this.tplName)){
-					if(orderList.get(0).getServiceId()==3||orderList.get(0).getServiceId()==5||orderList.get(0).getServiceId()==4){
+					if(orderList.get(0).getServiceId()==3||orderList.get(0).getServiceId()==4){
 					    if(orderList.get(0).getType()==1){
 					        //下一次扫描时间
 					        Date endTime = orderList.get(0).getEnd_date();
 					        Map<String, Object> paramMap = new HashMap<String, Object>();
-					        paramMap.put("executeTime", t.getExecute_time());
+//					        paramMap.put("executeTime", t.getExecute_time());
+					        paramMap.put("executeTime", t.getGroup_flag());
 					        paramMap.put("scantime", this.scantime);
 					        Date nextTime = taskService.getNextScanTime(paramMap);
 					        if(nextTime.compareTo(endTime)<=0){
@@ -116,6 +122,7 @@ public class Scheduler4Task {
 	                            task.setStatus(Integer.parseInt(Constants.TASK_START));
 	                            //设置订单详情id
 	                            task.setOrder_asset_Id(t.getOrder_asset_Id());
+	                            task.setGroup_flag(nextTime);
 	                            //插入一条任务数据  获取任务id
 	                            int taskId = taskService.insert(task);
 					        }
@@ -130,7 +137,8 @@ public class Scheduler4Task {
 //                            paramMap.put("scantime", this.scantime);
 //                            Date nextTime = taskService.getNextScanTime(paramMap);
                             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
-                            Date nextTime = getAfterDate(t.getExecute_time());
+//                            Date nextTime = getAfterDate(t.getExecute_time());
+                            Date nextTime = getAfterDate(t.getGroup_flag());
                             if(nextTime.compareTo(endTime)<=0){
                                 //创建任务
                                 Task task = new Task(); 
@@ -138,6 +146,7 @@ public class Scheduler4Task {
                                 task.setStatus(Integer.parseInt(Constants.TASK_START));
                                 //设置订单详情id
                                 task.setOrder_asset_Id(t.getOrder_asset_Id());
+                                task.setGroup_flag(nextTime);
                                 //插入一条任务数据  获取任务id
                                 int taskId = taskService.insert(task);
                             }
@@ -145,7 +154,8 @@ public class Scheduler4Task {
                     }
 				} catch (Exception e) {
 					logger.info("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
-					throw new RuntimeException("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
+//					throw new RuntimeException("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
+					continue;
 				}
 				//为此任务创建调度，定时获取任务结果
 				//getResultByTask(t);
@@ -166,6 +176,59 @@ public class Scheduler4Task {
 
 		}
 		logger.info("[下发任务调度]:任务表扫描结束......");
+		
+		
+		
+		/**
+         * 定时要job任务删除的逻辑
+         */
+        Map<String, Object> delmap = new HashMap<String, Object>();
+        delmap.put("page", Integer.parseInt(taskpage));
+        delmap.put("status", Integer.parseInt(Constants.TASK_RUNNING));
+        // 获取任务表前n条未完成的记录
+        List<Task> taskDelList = taskService.findDelTask(delmap);
+        // 调用接口删除任务
+        for (Task t : taskDelList) {
+            logger.info("[删除任务调度]:任务-[" + t.getTaskId() + "]获取状态!");
+            String sessionId = ArnhemWorker.getSessionId();
+            String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId()));
+            String status = this.getStatusByResult(resultStr);
+            if("running".equals(status)){
+                logger.info("[删除任务调度]:任务-[" + t.getTaskId() + "]开始下发!");
+                try {
+                    //获取订单类型
+                    OrderAsset orderAsset = taskService.getTypeByAssetId(t.getOrder_asset_Id());
+                    List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
+                    if(orderList.get(0).getServiceId()==5){
+                        ArnhemWorker.removeTask(sessionId, String.valueOf(t.getTaskId()));
+                        if(orderList.size() > 0){
+                            Order o = orderList.get(0);
+                            //获取告警信息
+                            List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(orderList.get(0).getId());
+                            if(taskWarnList.size() > 0){
+                                o.setStatus(Integer.parseInt(Constants.ORDERALARM_YES));
+                            }else{
+                                o.setStatus(Integer.parseInt(Constants.ORDERALARM_NO));
+                            }
+                            orderService.update(o);
+                        }
+                    }
+                } catch (Exception e) {
+                    logger.info("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
+//                    throw new RuntimeException("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
+                    continue;
+                }
+                //更新任务状态为finish
+                t.setStatus(Integer.parseInt(Constants.TASK_FINISH));
+                
+                taskService.update(t);
+                logger.info("[删除任务调度]:任务-[" + t.getTaskId() + "]完成下发!");
+            }else{
+                logger.info("[删除任务调度]: 任务-[" + t.getTaskId() + "]下发失败!，远程存在同名任务请先删除或重新下订单!");
+            }
+
+        }
+        logger.info("[删除任务调度]:任务表扫描结束......");
 
 	}
 

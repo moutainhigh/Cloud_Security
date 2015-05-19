@@ -4,7 +4,6 @@ import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,13 +17,17 @@ import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
-import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskService;
+import com.cn.ctbri.service.ITaskWarnService;
+import com.cn.ctbri.util.Random;
+import com.cn.ctbri.util.SMSUtils;
 
 /**
  * 根据任务获取结果的调度类
@@ -49,6 +52,9 @@ public class Scheduler4Result {
 	
 	@Autowired
 	private IOrderService orderService;
+	
+	@Autowired
+    ITaskWarnService taskWarnService;
 	
 
 	static {
@@ -79,6 +85,12 @@ public class Scheduler4Result {
 			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(task.getTaskId()));
 			String status = this.getStatusByResult(resultStr);
             List<Alarm> aList;
+            //更新订单告警状态
+            List<Order> oList = orderService.findOrderByTask(task);
+            Order o = oList.get(0);
+            //获取当前时间
+            SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String temp = setDateFormat.format(Calendar.getInstance().getTime());
 			if ("finish".equals(status)) {// 任务执行完毕
 				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析结果......");
 				/**
@@ -111,56 +123,97 @@ public class Scheduler4Result {
 //					    String nowTime = sdf.format(date);//将时间格式转换成符合Timestamp要求的格式.
 //				    	if(sdf.parse(nowTime).compareTo(endTime)>=0){
 				    		task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
-				    		//获取当前时间
-				            SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				            String temp = setDateFormat.format(Calendar.getInstance().getTime());
+				    		
 				    		task.setEnd_time(setDateFormat.parse(temp));
 				    		long executeTime = task.getExecute_time().getTime();
 				    		long endTime = setDateFormat.parse(temp).getTime();
 				    		long diff = endTime-executeTime;
-//				    		long day=diff/(24*60*60*1000);
-//				    		long hour=(diff/(60*60*1000)-day*24);
-//				    		long min=((diff/(60*1000))-day*24*60-hour*60);
-//				    		long s=(diff/1000-day*24*60*60-hour*60*60-min*60);
-//				    		System.out.println(""+day+"天"+hour+"小时"+min+"分"+s+"秒");
-//				    		String scanTime="";
-//				    		if(day!=0l){
-//				    		    scanTime = scanTime + day+"天";
-//				    		}
-//				    		if(hour!=0l){
-//				    		    scanTime = scanTime + hour+"小时";
-//				    		}
-//				    		if(min!=0l){
-//				    		    scanTime = scanTime + min+"分";
-//				    		}
-//				    		if(s!=0l){
-//                                scanTime = scanTime + s+"秒";
-//                            }
 				    		task.setScanTime(String.valueOf(diff));
 							taskService.update(task);
 //							ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId()));
 //				    	}
 //				    }
 //				}
-				//更新订单告警状态
-                List<Order> oList = orderService.findOrderByTask(task);
+				
                 //获取订单还在执行的任务
                 List<Task> tList = taskService.getTaskStatus(oList.get(0));
+                //告警
+                List<Alarm> allAlarm = alarmService.findAlarmByOrderId(oList.get(0).getId());
                 if(tList.size()==0 && oList.size() > 0){
-                    Order o = oList.get(0);
-                    if(aList.size() > 0){
+                    if(allAlarm.size() > 0){
                         o.setStatus(Integer.parseInt(Constants.ORDERALARM_YES));
                     }else{
                         o.setStatus(Integer.parseInt(Constants.ORDERALARM_NO));
                     }
                     orderService.update(o);
+                }else{
+                    if(allAlarm.size() > 0){
+                        o.setStatus(Integer.parseInt(Constants.ORDERALARM_YES_RUNNING));
+                    }
+                    orderService.update(o);
                 }
+                
+                
+                
+                //是否有告警信息
+                if(allAlarm!=null && allAlarm.size()>0){//如果有告警发邮件和短信通知
+                    Order order=null;
+                    if(oList!=null && oList.size()>0){
+                        order=oList.get(0);
+                        List<Linkman> mlist= orderService.findLinkmanById(order.getContactId());
+                        Linkman linkman=mlist.get(0);
+                        String phoneNumber = linkman.getMobile();//联系方式
+                        int sendFlag=order.getMessage();//是否下发短信或邮件
+                        if(sendFlag!=1){
+                           if(!phoneNumber.equals("") && phoneNumber!=null){
+                            //发短信
+                              SMSUtils smsUtils = new SMSUtils();
+                              smsUtils.sendMessage_warn(phoneNumber,order.getId());
+                              order.setMessage(1);
+                              orderService.update(order);
+                           }
+                        }
+                    }
+                }
+                
+                
 				//删除任务   add by txr 2015-03-27
 //				if(oList.get(0).getServiceId()==2){
-//				ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId()));
+				ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId()));
 //				}
 				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]告警结果已完成入库，已修改此任务为完成状态!");
-			} else {
+			//可用性
+			}else if("running".equals(status) && o.getServiceId()==5 && o.getEnd_date().compareTo(setDateFormat.parse(temp))>0){
+			    //获取告警信息
+                List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(oList.get(0).getId());
+                if(taskWarnList.size() > 0){
+                    o.setStatus(Integer.parseInt(Constants.ORDERALARM_YES_RUNNING));
+                }else{
+                    o.setStatus(Integer.parseInt(Constants.ORDERALARM_NO));
+                }
+                orderService.update(o);
+                
+                //是否有告警信息
+                if(taskWarnList!=null && taskWarnList.size()>0){//如果有告警发邮件和短信通知
+                    Order order=null;
+                    if(oList!=null && oList.size()>0){
+                        order=oList.get(0);
+                        List<Linkman> mlist= orderService.findLinkmanById(order.getContactId());
+                        Linkman linkman=mlist.get(0);
+                        String phoneNumber = linkman.getMobile();//联系方式
+                        int sendFlag=order.getMessage();//是否下发短信或邮件
+                        if(sendFlag!=1){
+                           if(!phoneNumber.equals("") && phoneNumber!=null){
+                            //发短信
+                              SMSUtils smsUtils = new SMSUtils();
+                              smsUtils.sendMessage_warn(phoneNumber,order.getId());
+                              order.setMessage(1);
+                              orderService.update(order);
+                           }
+                        }
+                    }
+                }
+			}else {
 				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，等待下次拉取结果~");
 			}
 		}

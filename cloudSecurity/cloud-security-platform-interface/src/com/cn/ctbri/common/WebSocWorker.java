@@ -3,6 +3,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -13,12 +14,15 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.NewCookie;
+
 import net.sf.json.JSONObject;
 
 import org.codehaus.jettison.json.JSONException;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
@@ -67,7 +71,7 @@ public class WebSocWorker {
 
 			
 //			String jsonContent = "parameter=%7B%22username%22%3A+%22dianxin%22%2C+%22password%22%3A+%22Dxyjy@123%22%7D";
-			String jsonContent = "parameter="+java.net.URLEncoder.encode(jsonObj.toString());
+			String jsonContent = "parameter="+jsonObj.toString();
 	    	 // 登陆服务器地址
 	         String url = SERVER_WEB_ROOT + "api/v2/login_auth/";         
 	         // 创建客户端配置对象
@@ -87,16 +91,24 @@ public class WebSocWorker {
 	         // 连接服务器
 	         WebResource service = client.resource(url); 
 	         // 发送请求，接收返回数据
-	         String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, jsonContent);
+	         ClientResponse response = service.type("application/x-www-form-urlencoded").post(ClientResponse.class, jsonContent);
+	         String textEntity = response.getEntity(String.class);
 	         System.out.print(response);
-	         JSONObject jsStr = JSONObject.fromObject(response); //将字符串{“id”：1}
+	         JSONObject jsStr = JSONObject.fromObject(textEntity);
 	         
 	         String jsID = jsStr.getString("code");//获取id的值
+	         String sessionid = null;
+	         if(jsID.equals("0")){
+	             List<String> headers = response.getHeaders().get("Set-Cookie");
+	             for (int i = 0; i < headers.size(); i++) {
+	                if(headers.get(i).indexOf("sessionid")!=-1){
+	                    sessionid = headers.get(i).substring(headers.get(i).indexOf("=")+1,headers.get(i).indexOf(";"));
+	                    System.out.println(headers.get(i));
+	                }
+                }
+	         }
 
-//	         //解析且获取回话ID
-//	         Element ele = dataJson.getRootElement();
-//	         Element s = ele.element("SessionId");
-	         return jsID;
+	         return sessionid;
 	   	}catch(Exception e) {
 	   		e.printStackTrace();
 	   	}
@@ -136,13 +148,12 @@ public class WebSocWorker {
 	 *        destPort  监测目标PORT,taskSLA   任务模板名称
 	 *		 @time 2015-01-05
 	 */
-	public static String lssuedTask(String sessionId, String taskId, String destURL, 
-    		String destIP, String destPort, String taskSLA){
+	public static String lssuedTask(String sessionid){
 		//组织发送内容json
-		Map map = new HashMap();
-		map.put("name", "test-vgroup-name");
-		map.put("site_list", new String[] { "http://www.a.com/", "http://www.b.com" });
-		JSONObject json = JSONObject.fromObject(map);
+	    JSONObject jsonObj = new JSONObject();
+        jsonObj.put("name", "test051505");
+        jsonObj.put("site_list", new String[] { "http://www.sinosoft.com.cn/"});
+		String jsonContent = "parameter="+jsonObj.toString();
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + "api/v2/vgroup/create_temp/";
     	//创建jersery客户端配置对象
@@ -154,8 +165,11 @@ public class WebSocWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //获取响应结果
-        String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_JSON).post(String.class, json.toString());
-        return response;
+        String response = service.cookie(new NewCookie("sessionid",sessionid)).type(MediaType.APPLICATION_FORM_URLENCODED).post(String.class, jsonContent);
+        System.out.print(response);
+        String jsStr = JSONObject.fromObject(response).getString("result");
+        String virtual_group_id = JSONObject.fromObject(jsStr).getString("virtual_group_id");
+        return virtual_group_id;
 	}
 	/**
 	 * 功能描述：安全通信配置设置
@@ -202,9 +216,10 @@ public class WebSocWorker {
      * @param taskId 任务id
      * @return 任务状态代码
      */
-    public static String getProgressByTaskId(String sessionId, String taskId) {
+    public static String getProgressByTaskId(String sessionid,String virtual_group_id) {
     	JSONObject jsonObj = new JSONObject();
-		jsonObj.put("virtual_group_id", taskId);
+		jsonObj.put("virtual_group_id", virtual_group_id);
+		String jsonContent = "parameter="+jsonObj.toString();
 		//创建路径
 		String url = SERVER_WEB_ROOT + "api/v2/vgroup/progress_temp/";
 		//创建配置
@@ -215,12 +230,15 @@ public class WebSocWorker {
         Client client = Client.create(config);
         WebResource service = client.resource(url);
         //连接服务器，返回结果
-        String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON_TYPE).post(String.class, jsonObj.toString());;
+        String response = service.cookie(new NewCookie("sessionid",sessionid)).type(MediaType.APPLICATION_FORM_URLENCODED).post(String.class, jsonContent);
+        System.out.print(response);
         return response;
     }
     
     public static void main(String[] args) throws UnsupportedEncodingException, JSONException {
-    	getSessionId();
+        String sessionid = getSessionId();
+        String virtual_group_id = lssuedTask(sessionid);
+        getProgressByTaskId(sessionid,virtual_group_id);
 //    	getProgressByTaskId("e4a715a1ff93fa89e84c6f059a15e4bc", "50a091825de23a5ef0ee99f3");
     }
 }

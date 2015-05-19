@@ -200,5 +200,12 @@ public class Constants {
 	 * 2 :任务完成 存在漏洞
 	 */
 	public static final String ORDERALARM_YES = "2"; 
+	
+	/**
+     * 订单告警状态<br>
+     * 3 :任务未完成 存在漏洞
+     */
+    public static final String ORDERALARM_YES_RUNNING = "3"; 
+
 
 }
