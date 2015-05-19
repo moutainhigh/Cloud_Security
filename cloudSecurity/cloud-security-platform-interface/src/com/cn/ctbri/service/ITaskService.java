@@ -43,4 +43,7 @@ public interface ITaskService {
     void insertTaskWarn(TaskWarn taskwarn);
 
     List<Task> getTaskStatus(Order order);
+
+    //定时删除的任务
+    List<Task> findDelTask(Map<String, Object> delmap);
 }

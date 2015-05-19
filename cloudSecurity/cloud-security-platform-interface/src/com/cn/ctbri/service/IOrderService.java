@@ -3,6 +3,7 @@ package com.cn.ctbri.service;
 import java.util.List;
 import java.util.Map;
 
+import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Task;
 
@@ -58,4 +59,6 @@ public interface IOrderService {
     List<Order> findOrderByTask(Task task);
     
 	void update(Order o);
+	//查找联系人
+    List<Linkman> findLinkmanById(int contactId);
 }
