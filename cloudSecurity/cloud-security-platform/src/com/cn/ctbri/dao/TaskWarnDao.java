@@ -13,7 +13,7 @@ import com.cn.ctbri.entity.TaskWarn;
  */
 public interface TaskWarnDao {
 
-	List<TaskWarn> findTaskWarnByOrderId(String orderId);
+	List<TaskWarn> findTaskWarnByOrderId(Map<String, Object> paramMap);
 
 	TaskWarn findTaskWarnCountByOrderId(String orderId);
 
