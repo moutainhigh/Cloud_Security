@@ -20,10 +20,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="warn_time" column="warn_time"/>
 	</resultMap> 
 	<!-- 根据订单id查询告警信息 -->
-	<select id="findTaskWarnByOrderId" parameterType="String" resultMap="TaskWarnRM">
+	<select id="findTaskWarnByOrderId" parameterType="hashmap" resultMap="TaskWarnRM">
 		SELECT tw.* 
 		FROM cs_order_asset oa ,cs_task t,cs_taskwarn tw
-		WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=tw.task_id;
+		WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=tw.task_id
 	</select>
 		<!-- 根据订单id查询告警次数 -->
 	<select id="findTaskWarnCountByOrderId" parameterType="String" resultMap="TaskWarnRM">
@@ -52,6 +52,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT a.*
 		FROM cs_taskwarn a ,cs_order_asset oa,cs_task t 
 		WHERE a.url=#{url} AND oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=a.task_id
+		<if test="flag==1">
+	     and to_days(tw.warn_time) = to_days(now()) 
+		</if>
+		<if test="flag==2">
+	     and to_days(now()) - to_days(tw.warn_time) &lt;= 1
+		</if>
 		GROUP BY a.warn_time
 		ORDER BY a.warn_time
     </select>
