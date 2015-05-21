@@ -36,19 +36,19 @@ function checkName(){
 //校验密码	
 function checkPassword(){
 	var p1 = $("#regist_password").val();
-	var	pattern	= /^[a-zA-Z0-9_]{6,16}$/;
-	var flag = pattern.test(p1);
+	
 	if(p1==""||p1==null){
 		$("#regist_password_msg").html("密码不能为空");
 		checkPassword1 = 0;
 	}else{
-		if(flag){
+		if(p1.length<6||p1.length>20){
+			$("#regist_password_msg").html("请6-20位，支持中英文，数字，字符组");
+			checkPassword1 = 0;
+		}else{
 			$("#regist_password_msg").html("");
 			checkPassword1 = 1;
-		}else{
-			$("#regist_password_msg").html("请输入6-16位仅包含字母和数字的密码");
-			checkPassword1 = 0;
 		}
+		
 	}
 }
 //校验确认密码	
