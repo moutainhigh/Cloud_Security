@@ -29,6 +29,7 @@ import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.AlarmDDOS;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskWarn;
+import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmDDOSService;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IOrderAssetService;
@@ -64,6 +65,7 @@ public class WarningController {
         String type = request.getParameter("type");
 //        String taskId = request.getParameter("taskId");
         String groupId=request.getParameter("groupId");
+        User user = (User)request.getSession().getAttribute("globle_user");
         //时间分组标志
         request.setAttribute("group_flag", groupId);
         //获取订单信息
@@ -76,6 +78,11 @@ public class WarningController {
         request.setAttribute("assetList", assetList);
         //获取对应告警信息
         Map<String, Object> paramMap = new HashMap<String, Object>();
+        String id = orderService.getOrderById(orderId, type, user.getId());
+        if(id=="null"||"".equals(id)){
+        	request.setAttribute("errorMsg", "订单信息不存在!");
+        	return "/source/error/errorMsg";
+        }else{
         paramMap.put("orderId", orderId);
         paramMap.put("type", type);
         paramMap.put("group_flag", groupId);
@@ -84,6 +91,7 @@ public class WarningController {
         request.setAttribute("alist", alarmList.size());
         //关键字告警信息
 		List<Alarm> keywordList = alarmService.findKeywordWarningByOrderId(orderId);
+		
 		if(keywordList!=null){
 			for(Alarm a :keywordList){
 				a.setAlarmTime(DateUtils.dateToString(a.getAlarm_time()));
@@ -298,6 +306,9 @@ public class WarningController {
     			}
             }
         }
+      
+        }
+    
     }
     /**
      * 格式转换
