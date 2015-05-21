@@ -157,6 +157,9 @@ public class AdminUserController {
 		if(user.getName()!=null){
 			model.addAttribute("name",user.getName());//回显用户名
 		}
+		if(user.getPassword()!=null){
+			model.addAttribute("password",user.getPassword());//回显用户名
+		}
 		return "/source/adminPage/userManage/userManage";
 	}
 	/**
@@ -209,6 +212,9 @@ public class AdminUserController {
 		String realName = "";
 		try {//中文乱码
 			realName = new String(user.getRealName().getBytes("ISO-8859-1"), "UTF-8");
+			String password = user.getPassword();
+			String md5password = DigestUtils.md5Hex(password);//密码加密
+			user.setPassword(md5password);
 			user.setRealName(realName);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
