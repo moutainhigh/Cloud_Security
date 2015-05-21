@@ -160,7 +160,7 @@ function checkNumberImage(){
           <tr class="register_tr">
             <td class="regist_title">设置密码</td>
             <td class="regist_input"><input type="password" class="regist_txt required" name="password" id="regist_password" onblur="checkPassword()"/><span id="regist_password_msg" style="color:red;float:left"></td>
-            <td class="regist_prompt">6-20位，可使用字母、数字和下划线的组合，不建议纯字母、纯数字</td>
+            <td class="regist_prompt">请输入6-20位，支持中英文，数字，字符组合</td>
           </tr>
           <tr class="register_tr">
             <td class="regist_title">确认密码</td>
