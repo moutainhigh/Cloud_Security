@@ -18,6 +18,8 @@ import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
+
 import net.sf.json.JSONObject;
 
 import com.sun.jersey.api.client.Client;
@@ -156,6 +158,7 @@ public class HuaweiWorker {
     	String url = SERVER_WEB_ROOT + AUTH;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
+	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -192,6 +195,7 @@ public class HuaweiWorker {
     	String url = SERVER_WEB_ROOT + CREATE_ZONE;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
+	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -199,12 +203,15 @@ public class HuaweiWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //设置报文头
-        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
-        
+//        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
+//        service.getRequestBuilder().header("X-Auth-Token", token);
+//        service.header("X-Auth-Token", token);
         //获取响应结果
 //        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, json);
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).header("X-Auth-Token", token).post(ClientResponse.class, json);
         int status = response.getStatus();
+        String textEntity = response.getEntity(String.class);
+        System.out.println(textEntity);
         return status+"";
 	}
 	
@@ -223,6 +230,7 @@ public class HuaweiWorker {
     	String url = SERVER_WEB_ROOT + UPDATE_ZONE + zone_name;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
+	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -234,8 +242,10 @@ public class HuaweiWorker {
         
         //获取响应结果
 //        String response = service.type(MediaType.APPLICATION_JSON).put(String.class, json);
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, json);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).header("X-Auth-Token",token).put(ClientResponse.class, json);
         int status = response.getStatus();
+        String textEntity = response.getEntity(String.class);
+        System.out.println(textEntity);
         return status+"";
 	}
 	
@@ -250,6 +260,7 @@ public class HuaweiWorker {
     	String url = SERVER_WEB_ROOT + QUERY_ZONE;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
+	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -257,11 +268,13 @@ public class HuaweiWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //设置报文头
-        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
+//        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
         
         //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).header("X-Auth-Token", token).get(ClientResponse.class);
         int status = response.getStatus();
+        String textEntity = response.getEntity(String.class);
+        System.out.println(textEntity);
         return status+"";
 	}
 	
@@ -279,6 +292,7 @@ public class HuaweiWorker {
     	String url = SERVER_WEB_ROOT + UPDATE_ZONE + zone_name;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
+	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -286,11 +300,13 @@ public class HuaweiWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //设置报文头
-        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
+//        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
         
         //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).header("X-Auth-Token", token).get(ClientResponse.class);
         int status = response.getStatus();
+        String textEntity = response.getEntity(String.class);
+        System.out.println(textEntity);
         return status+"";
 	}
 	
@@ -300,14 +316,16 @@ public class HuaweiWorker {
 	 * 创建人：txr
 	 * 日    期：2015-5-13
 	 */
-	public static String lssuedAddZoneIP(String token,String[] zone_ips){
+	public static String lssuedAddZoneIP(String token,String zoneName,String[] zone_ips){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
+		json.accumulate("zone_name", zoneName);
 		json.accumulate("zone_ip", zone_ips);
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + ZONE_IP;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
+	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -315,12 +333,14 @@ public class HuaweiWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //设置报文头
-        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
+//        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
         
         //获取响应结果
 //        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, json);
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).header("X-Auth-Token",token).post(ClientResponse.class, json);
         int status = response.getStatus();
+        String textEntity = response.getEntity(String.class);
+        System.out.println(textEntity);
         return status+"";
 	}
 	
@@ -338,6 +358,7 @@ public class HuaweiWorker {
     	String url = SERVER_WEB_ROOT + ZONE_IP + "/" + zone_ip;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
+	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -345,12 +366,14 @@ public class HuaweiWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //设置报文头
-        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
+//        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
         
         //获取响应结果
 //        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, json);
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).delete(ClientResponse.class, json);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).header("X-Auth-Token",token).delete(ClientResponse.class, json);
         int status = response.getStatus();
+        String textEntity = response.getEntity(String.class);
+        System.out.println(textEntity);
         return status+"";
 	}
 	
@@ -367,6 +390,7 @@ public class HuaweiWorker {
     	String url = SERVER_WEB_ROOT + UPDATE_ZONE + zone_name;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
+	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -374,12 +398,14 @@ public class HuaweiWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //设置报文头
-        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
+//        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
         
         //获取响应结果
 //        service.type(MediaType.APPLICATION_JSON).delete();
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).delete(ClientResponse.class);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).header("X-Auth-Token",token).delete(ClientResponse.class);
         int status = response.getStatus();
+        String textEntity = response.getEntity(String.class);
+        System.out.println(textEntity);
         return status+"";
 	}
 	
@@ -396,6 +422,7 @@ public class HuaweiWorker {
     	String url = SERVER_WEB_ROOT + CREATE_DIVERT;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
+	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -403,11 +430,13 @@ public class HuaweiWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //设置报文头
-        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
+//        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
         
         //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).header("X-Auth-Token",token).post(ClientResponse.class, json);
         int status = response.getStatus();
+        String textEntity = response.getEntity(String.class);
+        System.out.println(textEntity);
         return status+"";
 	}
 	
@@ -424,6 +453,7 @@ public class HuaweiWorker {
     	String url = SERVER_WEB_ROOT + DELETE_DIVERT + zone_ip;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
+	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -431,12 +461,14 @@ public class HuaweiWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //设置报文头
-        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
+//        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
         
         //获取响应结果
 //        service.type(MediaType.APPLICATION_JSON).delete();
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).delete(ClientResponse.class,json);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).header("X-Auth-Token",token).delete(ClientResponse.class,json);
         int status = response.getStatus();
+        String textEntity = response.getEntity(String.class);
+        System.out.println(textEntity);
         return status+"";
 	}
 	
@@ -452,6 +484,7 @@ public class HuaweiWorker {
     	String url = SERVER_WEB_ROOT + CREATE_BLACKHOLE;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
+	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -459,12 +492,14 @@ public class HuaweiWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //设置报文头
-        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
+//        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
         
         //获取响应结果
 //        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, json);
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).header("X-Auth-Token",token).post(ClientResponse.class, json);
         int status = response.getStatus();
+        String textEntity = response.getEntity(String.class);
+        System.out.println(textEntity);
         return status+"";
 	}
 	
@@ -481,6 +516,7 @@ public class HuaweiWorker {
     	String url = SERVER_WEB_ROOT + DELETE_BLACKHOLE + zone_ip;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
+	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -488,12 +524,14 @@ public class HuaweiWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //设置报文头
-        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
+//        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
         
         //获取响应结果
 //        service.type(MediaType.APPLICATION_JSON).delete();
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).delete(ClientResponse.class,json);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).header("X-Auth-Token",token).delete(ClientResponse.class,json);
         int status = response.getStatus();
+        String textEntity = response.getEntity(String.class);
+        System.out.println(textEntity);
         return status+"";
 	}
 	
@@ -522,5 +560,39 @@ public class HuaweiWorker {
         		 ));
         }
 	}
-	
+	public static void main(String[] args) {
+		String token = "c349ef0af469448b49d86feba8c2ae2e293b41bb5d7d0150cd850d2028bc92d7";
+		System.err.println(token);
+		//创建
+//		System.out.println(lssuedCreateZoneTask(token, "test0002", new String[]{"117.12.12.13/32","139.33.34.0/24"}));
+		//查询
+//		System.err.println(lssuedQueryZoneTask(token));;
+//		//添加IP
+//		System.out.println(lssuedAddZoneIP(token,"test0001", new String[]{"114.12.12.13/32","135.33.34.0/24"}));
+//		//查询
+//		System.err.println(lssuedQueryZoneTask(token, "test0001"));;
+		//删除
+		//更新
+//		System.err.println(lssuedUpdateZoneTask(token, new String[]{"1.1.1.13/32","1.3.3.0/24"}, "test0002"));
+//		System.err.println(lssuedQueryZoneTask(token, "test0002"));;
+		//删除IP
+//		System.err.println(lssuedDeleteZoneIP(token, "1.3.3.0"));
+//		System.err.println(lssuedQueryZoneTask(token, "test0002"));;
+		//删除ZONE
+//		System.err.println(lssuedDeleteZoneTask(token, "test0002"));
+//		System.err.println(lssuedQueryZoneTask(token, "test0002"));;
+		
+		//创建引流
+		//System.out.println(lssuedCreateDivertTask(token, new String[]{"139.33.34.0/24"}));//133.33.34.0/32
+		//删除引流
+//		System.out.printl(lssuedDeleteDivertTask(token, "133.33.34.0"));
+		
+		//创建黑洞
+//		System.out.println(lssuedCreateBlackHoleTask(token, new String[]{"133.33.34.0"}));//133.33.34.0/32
+//		//删除黑洞
+//		System.out.println(lssuedDeleteBlackHoleTask(token, "133.33.34.0"));
+		
+		
+		
+	}
 }
