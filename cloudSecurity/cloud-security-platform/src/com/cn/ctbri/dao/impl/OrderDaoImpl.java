@@ -1,5 +1,6 @@
 package com.cn.ctbri.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -162,4 +163,16 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
         return list;
         
     }
+
+	public String getOrderById(String orderId, String type, int userId) {
+		BigDecimal bd = new BigDecimal(orderId);
+		Map map = new HashMap();
+		map.put("orderId", bd.toPlainString());
+		map.put("type", type);
+		map.put("userId", userId);
+		// TODO Auto-generated method stub
+	   String id = this.getSqlSession().selectOne(ns +"getOrderById",map);
+	   System.out.println("aa=="+id);
+		return String.valueOf(id);
+	}
 }
