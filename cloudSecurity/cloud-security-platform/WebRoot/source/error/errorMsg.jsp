@@ -9,6 +9,8 @@
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 </head>
@@ -53,6 +55,9 @@
 						<b>
 							<c:if test="${requestScope.errorMsg!=null}">   
 							   ${requestScope.errorMsg}
+							</c:if>
+								<c:if test="${errorMsg!=null}">   
+							   ${errorMsg}
 							</c:if>   
 						</b>
                 	</font>
