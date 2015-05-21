@@ -105,7 +105,7 @@ public interface IOrderService {
      * 参数描述：String orderId
      */
     List findTaskRunning(String orderId);
-    
-    
+    //判断订单id是否存在
+  public  String getOrderById(String orderId,String type,int userId);
 
 }
