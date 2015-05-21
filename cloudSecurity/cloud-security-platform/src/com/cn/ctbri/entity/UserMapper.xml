@@ -36,6 +36,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="type!=null">
 				type=#{type},
 			</if>
+			<if test="password!=null">
+				password=#{password},
+			</if>
 		</set>
 		where id=#{id}
 	</update>
