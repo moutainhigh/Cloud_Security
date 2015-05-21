@@ -42,7 +42,7 @@ function checkPassword(){
 		checkPassword1 = 0;
 	}else{
 		if(p1.length<6||p1.length>20){
-			$("#regist_password_msg").html("请6-20位，支持中英文，数字，字符组");
+			$("#regist_password_msg").html("请输入6-20位，支持中英文，数字，字符组合");
 			checkPassword1 = 0;
 		}else{
 			$("#regist_password_msg").html("");
