@@ -103,4 +103,6 @@ public interface OrderDao {
      * 参数描述：String orderId
      */
     List findTaskRunning(String orderId);
+    //判断订单id是否存在
+    String getOrderById(String orderId,String type,int userId);
 }
