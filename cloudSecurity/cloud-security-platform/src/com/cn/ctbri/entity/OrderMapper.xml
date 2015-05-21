@@ -271,4 +271,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM cs_task t,cs_order_asset oa
         WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} and t.status = 2
     </select>
+    
+    <select id="getOrderById" resultType="String" parameterType="hashmap">
+    SELECT c.id FROM cs_order  c WHERE c.userId=#{userId}  AND c.id=#{orderId} AND c.type =#{type}
+    </select>
 </mapper>
