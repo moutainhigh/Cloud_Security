@@ -225,7 +225,7 @@ $(document).ready(function(){
            <tr class="register_tr">
             <td class="regist_title">设置密码</td>
             <td class="regist_input"><input type="password" class="regist_txt" name="password" id="regist_password" onblur="checkPassword()"/><span id="regist_password_msg" style="color:red;float:left"></td>
-            <td class="regist_prompt" style="text-align:left;">6-20位，可使用字母、数字和下划线的组合，不建议纯字母、纯数字</td>
+            <td class="regist_prompt" style="text-align:left;">6-20位，支持中英文，数字，字符组合</td>
           </tr>
            <tr class="register_tr">
             <td class="regist_title">确认密码</td>
@@ -286,6 +286,16 @@ $(document).ready(function(){
                 </select>
             </td>
             <td class="regist_prompt"></td>
+          </tr>
+             <tr class="register_tr">
+            <td class="regist_title">设置密码</td>
+            <td class="regist_input"><input type="password" class="regist_txt" name="password" id="update_password" /><span id="update_password_msg" style="color:red;float:left"></td>
+            <td class="regist_prompt" style="text-align:left;">6-20位，支持中英文，数字，字符组合</td>
+          </tr>
+           <tr class="register_tr">
+            <td class="regist_title">确认密码</td>
+            <td class="regist_input"><input type="password" class="regist_txt required" name="confirm_Updatepassword" id="update_confirm_password" /><span id="update_confirm_password_msg" style="color:red;float:left;"></td>
+            <td class="regist_prompt red_prompt"></td>
           </tr>
           <tr>
             <td colspan="3"><input type="button" class="ser_btn" onclick="edit()" value="立即修改"/></td>
