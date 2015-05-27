@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cn.ctbri.entity.UserMapper">
-	<sql id="cols">id,createTime,name,password,mobile,email,status,type,remarks,realName</sql>
+	<sql id="cols">id,createTime,name,password,mobile,email,status,type,remarks,realName,ip</sql>
 	
 	<resultMap type="com.cn.ctbri.entity.User" id="UserRM">
 		<id property="id" column="id"/>
@@ -16,6 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="type" column="type"/>
 		<result property="remarks" column="remarks"/>
 		<result property="realName" column="realName"/>
+		<result property="ip" column="ip"/>
 	</resultMap>
 	<!-- 修改用户 -->
 	<update id="update" parameterType="com.cn.ctbri.entity.User">
@@ -54,7 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入用户 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.User">
 		insert into cs_user 
-		(name,password,mobile,email,status,type,remarks,createTime,realName) values(#{name},#{password},#{mobile},#{email},#{status},#{type},#{remarks},#{createTime},#{realName})
+		(name,password,mobile,email,status,type,remarks,createTime,realName,ip) values(#{name},#{password},#{mobile},#{email},#{status},#{type},#{remarks},#{createTime},#{realName},#{ip})
 	</insert>
 	
 	<!-- 按用户名查询用户 -->

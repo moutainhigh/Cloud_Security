@@ -37,6 +37,8 @@ public class User implements java.io.Serializable{
 	private int servSum;
 	//服务个数vo
 	private int AssetSum;
+	//注册IP
+	private String ip;
 	//构造方法
 	public User(){}
 	public User(String name, String password, int status, int type) {
@@ -213,5 +215,11 @@ public class User implements java.io.Serializable{
 	public void setRealName(String realName) {
 		this.realName = realName;
 	}
+    public String getIp() {
+        return ip;
+    }
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
 	
 }

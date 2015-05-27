@@ -62,6 +62,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		            </if>
 					ORDER BY t.execute_time DESC LIMIT 0,1) b
 	</select>
+	
+	<select id="getNewStatus" parameterType="hashmap" resultMap="TaskRM">
+		SELECT t.status,t.currentUrl
+			FROM cs_task t ,cs_order_asset oa
+			WHERE t.order_asset_Id =oa.id AND oa.orderId = #{orderId}
+			<if test="group_flag!=null and group_flag!=''">
+            	and t.group_flag=#{group_flag}
+            </if>
+	</select>
+	
 	<!-- 根据orderId查询基本信息 -->
 	<select id="findBasicInfoByOrderId" parameterType="map" resultMap="TaskRM">
 		SELECT MIN(t.execute_time) AS execute_time,MAX(t.end_time) AS end_time,SUM(t.scanTime) AS scanTime,SUM(t.issueCount) AS issueCount,SUM(t.requestCount) AS requestCount,SUM(t.urlCount) AS urlCount,AVG(t.averResponse) AS averResponse,AVG(t.averSendCount) AS averSendCount,SUM(t.sendBytes) AS sendBytes,SUM(t.receiveBytes) AS receiveBytes
