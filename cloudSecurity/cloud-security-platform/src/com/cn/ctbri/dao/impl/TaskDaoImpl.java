@@ -80,5 +80,9 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
     public Task findTaskList(Map<String, Object> hisMap) {
         return this.getSqlSession().selectOne(ns+"findTaskList",hisMap);
     }
+
+	public Task getNewStatus(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectOne(ns+"getNewStatus",paramMap);
+	}
 	
 }

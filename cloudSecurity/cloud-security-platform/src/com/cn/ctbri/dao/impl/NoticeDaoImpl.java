@@ -64,8 +64,8 @@ public class NoticeDaoImpl extends DaoCommon implements NoticeDao{
      * 功能描述：查询公告
      *       @time 2015-3-11
      */
-    public Notice findNoticeById(User user) {
-        return getSqlSession().selectOne(ns + "list",user);
+    public Notice findNoticeById(Notice notice) {
+        return getSqlSession().selectOne(ns + "list",notice);
     }
 
 }

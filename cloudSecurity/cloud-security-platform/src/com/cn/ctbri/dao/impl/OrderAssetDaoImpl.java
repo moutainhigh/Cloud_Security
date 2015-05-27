@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.OrderAssetDao;
+import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderIP;
 /**
@@ -61,8 +62,8 @@ public class OrderAssetDaoImpl extends DaoCommon implements OrderAssetDao{
      * 功能描述：根据orderid查询Asset名称
      *       @time 2015-2-2
      */
-    public List findAssetNameByOrderId(String orderId) {
-        List list = this.getSqlSession().selectList(ns+"findAssetNameByOrderId",orderId);
+    public List<Asset> findAssetNameByOrderId(String orderId) {
+        List<Asset> list = this.getSqlSession().selectList(ns+"findAssetNameByOrderId",orderId);
         return list;
     }
     /**
