@@ -76,11 +76,11 @@ public class AdminUserController {
 			//从页面上获取密码和User对象中存放的密码，进行匹配，如果不一致，提示【密码输入有误】
 			String md5password = DigestUtils.md5Hex(password);
 			if(!md5password.equals(_user.getPassword())){
-				request.setAttribute("msg", "密码输入有误");
+				request.setAttribute("msg", "用户名或密码错误");
 				return "/source/adminPage/adminLogin/adminLogin";//跳转到登录页面
 			}
 		}else{
-			request.setAttribute("msg", "用户名输入有误");
+			request.setAttribute("msg", "用户名或密码错误");
 			return "/source/adminPage/adminLogin/adminLogin";//跳转到登录页面
 		}
 //		//判断是不是后台可以登录的用户0：超级管理员，1：管理员

@@ -99,9 +99,14 @@ public class NoticeController {
      *       @time 2015-3-11
      */
     @RequestMapping("/noticeDescUI.html")
-    public String noticeDesc(Model model,HttpServletRequest request,User user){
-        Notice notice = noticeService.findNoticeById(user);
-        model.addAttribute("notice",notice);
-        return "/source/adminPage/userManage/noticeShow";
+    public String noticeDesc(Model model,HttpServletRequest request,Notice notice){
+        if(notice.getId()==0||"".equals(notice)){
+            request.setAttribute("errorMsg", "页面不存在!");
+            return "/source/error/errorMsg";
+        }else{
+            Notice no = noticeService.findNoticeById(notice);
+            model.addAttribute("notice",no);
+            return "/source/adminPage/userManage/noticeShow";
+        }
     }
 }

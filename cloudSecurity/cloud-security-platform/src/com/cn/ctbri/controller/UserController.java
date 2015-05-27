@@ -194,7 +194,7 @@ public class UserController {
 			//从页面上获取密码和User对象中存放的密码，进行匹配，如果不一致，提示【密码输入有误】
 			String md5password = DigestUtils.md5Hex(password);
 			if(!md5password.equals(_user.getPassword())){
-				request.setAttribute("msg", "密码输入有误");
+				request.setAttribute("msg", "用户名或密码错误");
 				return "/source/page/regist/regist";//跳转到登录页面
 			}
 			if(_user.getStatus()!=1){
@@ -202,7 +202,7 @@ public class UserController {
 				return "/source/page/regist/regist";//跳转到登录页面
 			}
 		}else{
-			request.setAttribute("msg", "用户名输入有误");
+			request.setAttribute("msg", "用户名或密码错误");
 			return "/source/page/regist/regist";//跳转到登录页面
 		}
 		/**记住密码功能*/
@@ -285,7 +285,7 @@ public class UserController {
 	 *		 @time 2014-12-31
 	 */
 	@RequestMapping(value="registToLogin.html")
-	public String regist(User user){
+	public String regist(User user,HttpServletRequest request){
 		String name = user.getName();
 		String password = user.getPassword();
 		if(name!=null&&!"".equals(name)&&password!=null&&!"".equals(password)){
@@ -297,6 +297,7 @@ public class UserController {
 				user.setStatus(1);  //用户状态(1：正常，0：停用)
 				user.setType(2);	//用户类型（0：超级管理员，1：管理员，2：用户）
 				user.setCreateTime(new Date());//创建时间
+				user.setIp(request.getRemoteAddr());
 				userService.insert(user);
 			}
 		}
