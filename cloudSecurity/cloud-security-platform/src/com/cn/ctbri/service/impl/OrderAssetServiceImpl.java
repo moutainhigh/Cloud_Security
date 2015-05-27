@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cn.ctbri.dao.OrderAssetDao;
+import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderIP;
 import com.cn.ctbri.service.IOrderAssetService;
@@ -54,8 +55,8 @@ public class OrderAssetServiceImpl implements IOrderAssetService{
      * 功能描述：根据orderid查询Asset名称
      *       @time 2015-2-2
      */
-    public List findAssetNameByOrderId(String orderId) {
-        List list = orderAssetDao.findAssetNameByOrderId(orderId);
+    public List<Asset> findAssetNameByOrderId(String orderId) {
+        List<Asset> list = orderAssetDao.findAssetNameByOrderId(orderId);
         return list;
     }
 

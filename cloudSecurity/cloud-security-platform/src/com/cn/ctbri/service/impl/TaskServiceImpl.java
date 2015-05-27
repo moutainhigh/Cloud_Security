@@ -53,5 +53,8 @@ public class TaskServiceImpl implements ITaskService{
     public Task findTaskList(Map<String, Object> hisMap) {
         return taskDao.findTaskList(hisMap);
     }
+	public Task getNewStatus(Map<String, Object> paramMap) {
+		return taskDao.getNewStatus(paramMap);
+	}
 
 }

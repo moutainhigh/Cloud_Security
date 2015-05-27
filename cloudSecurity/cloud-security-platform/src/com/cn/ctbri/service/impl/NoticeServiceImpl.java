@@ -54,8 +54,8 @@ public class NoticeServiceImpl implements INoticeService{
      * 功能描述：查询公告
      *       @time 2015-3-11
      */
-    public Notice findNoticeById(User user) {
-        return noticeDao.findNoticeById(user);
+    public Notice findNoticeById(Notice notice) {
+        return noticeDao.findNoticeById(notice);
     }
 
 }
