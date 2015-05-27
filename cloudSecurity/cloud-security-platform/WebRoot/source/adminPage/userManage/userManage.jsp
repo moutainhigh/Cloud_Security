@@ -229,7 +229,7 @@ $(document).ready(function(){
           </tr>
            <tr class="register_tr">
             <td class="regist_title">确认密码</td>
-            <td class="regist_input"><input type="password" class="regist_txt required" name="confirm_password" id="regist_confirm_password" onblur="checkConfirmPassword()"/><span id="regist_confirm_password_msg" style="color:red;float:left;"></td>
+            <td class="regist_input"><input type="password" class="regist_txt required" name="confirm_password" id="regist_confirm_password" onblur="checkConfirmPassword()" autocomplete="off"/><span id="regist_confirm_password_msg" style="color:red;float:left;"></td>
             <td class="regist_prompt red_prompt"></td>
           </tr>
           <tr class="register_tr">
