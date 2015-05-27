@@ -41,7 +41,7 @@ function checkName(){
 //校验密码	
 function checkPassword(){
 	var p1 = $("#regist_password").val();
-alert(p1.length);
+//alert(p1.length);
 	if(p1==""){
 		$("#regist_password_msg").html("密码不能为空");
 		checkPassword1 = 0;
