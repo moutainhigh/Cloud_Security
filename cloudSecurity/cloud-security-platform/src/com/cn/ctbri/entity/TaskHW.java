@@ -16,6 +16,7 @@ public class TaskHW{
 	private String remarks;//描述
 	private Date end_time;//结束时间
 	private int drainage;//是否创建引流
+	private String zone_id;
     public int getTaskId() {
         return taskId;
     }
@@ -58,7 +59,12 @@ public class TaskHW{
     public void setDrainage(int drainage) {
         this.drainage = drainage;
     }
-	
+    public String getZone_id() {
+        return zone_id;
+    }
+    public void setZone_id(String zone_id) {
+        this.zone_id = zone_id;
+    }
 	
 	
 }

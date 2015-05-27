@@ -185,14 +185,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     <!-- 根据任务id查询告警 -->
 	<select id="findAlarmByTaskId1" parameterType="int" resultType="com.cn.ctbri.entity.AlarmDDOS">
-		select * from cs_alarmhuawei
-		where taskId = #{taskId}
+		select a.* from cs_alarmhuawei a,cs_taskhuawei t
+        where t.zone_id = a.taskid and t.taskId = #{taskId}
 	</select>
 	
 	<!-- 根据任务id查询告警 -->
     <select id="findEndAlarmByTaskId" parameterType="int" resultType="com.cn.ctbri.entity.AlarmDDOS">
-        select * from cs_alarmhuawei a
-        where a.taskId = #{taskId} order by a.end_time desc limit 1
+        select a.* from cs_alarmhuawei a,cs_taskhuawei t
+        where t.zone_id = a.taskid and t.taskId = #{taskId} order by a.end_time desc limit 1
     </select>
     <!-- 根据orderid查询关键字告警信息 -->
     <select id="findKeywordWarningByOrderId" parameterType="String" resultMap="Alarm">
