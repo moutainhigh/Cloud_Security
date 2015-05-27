@@ -42,4 +42,6 @@ public interface TaskDao {
     public Task findNearlyTask(String orderId);
 
     public Task findTaskList(Map<String, Object> hisMap);
+
+	public Task getNewStatus(Map<String, Object> paramMap);
 }
