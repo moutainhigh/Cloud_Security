@@ -1,12 +1,6 @@
 package com.cn.ctbri.common;
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
-import java.util.List;
 import java.util.Properties;
 
 import javax.net.ssl.HostnameVerifier;
@@ -16,11 +10,10 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
-
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 import net.sf.json.JSONObject;
+
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -238,7 +231,7 @@ public class HuaweiWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //设置报文头
-        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
+//        service.getRequestBuilder().header("User-Agent", "Mozilla/4.0 (X-Auth-Token "+ token+";compatible; MSIE 6.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727)");
         
         //获取响应结果
 //        String response = service.type(MediaType.APPLICATION_JSON).put(String.class, json);
@@ -305,6 +298,15 @@ public class HuaweiWorker {
         //获取响应结果
         ClientResponse response = service.type(MediaType.APPLICATION_JSON).header("X-Auth-Token", token).get(ClientResponse.class);
         int status = response.getStatus();
+
+        //获取token
+//        String zone_id = null;
+//        if(status==200){
+//            String textEntity = response.getEntity(String.class);
+//            JSONObject jsStr = JSONObject.fromObject(textEntity);
+//            token = jsStr.getString("zone_id");//获取id的值
+//        }
+//        return zone_id;
         String textEntity = response.getEntity(String.class);
         System.out.println(textEntity);
         return status+"";
@@ -595,4 +597,6 @@ public class HuaweiWorker {
 		
 		
 	}
+	
+	
 }

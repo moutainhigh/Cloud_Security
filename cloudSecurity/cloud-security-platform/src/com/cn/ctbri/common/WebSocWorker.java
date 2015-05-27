@@ -149,8 +149,8 @@ public class WebSocWorker {
 	public static String lssuedTask(String sessionid){
 		//组织发送内容json
 	    JSONObject jsonObj = new JSONObject();
-        jsonObj.put("name", "test051505");
-        jsonObj.put("site_list", new String[] { "http://www.sinosoft.com.cn/"});
+        jsonObj.put("name", "test052701");
+        jsonObj.put("site_list", new String[] {"http://www.testfire.com/"});
 		String jsonContent = "parameter="+jsonObj.toString();
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + "api/v2/vgroup/create_temp/";
