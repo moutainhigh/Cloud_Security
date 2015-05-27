@@ -71,7 +71,7 @@
       </div>
       <div class="center_bottom_div" style="border-right:0px;">
         <div class="center_bottom_number">${alarmSum}</div>
-        <div class="center_bottom_txt"><a href="${ctx}/orderTrackInit.html?state=2">总告警数</a></div>
+        <div class="center_bottom_txt"><a href="${ctx}/orderTrackInit.html?state=2">告警订单总数</a></div>
       </div>
     </div>
   </div>
