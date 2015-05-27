@@ -36,6 +36,6 @@ public interface INoticeService {
      * 功能描述：查询公告
      *       @time 2015-3-11
      */
-    Notice findNoticeById(User user);
+    Notice findNoticeById(Notice notice);
 	
 }

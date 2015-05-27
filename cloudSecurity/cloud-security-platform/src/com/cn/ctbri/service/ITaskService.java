@@ -35,4 +35,6 @@ public interface ITaskService {
 
     Task findTaskList(Map<String, Object> hisMap);
 
+	Task getNewStatus(Map<String, Object> paramMap);
+
 }

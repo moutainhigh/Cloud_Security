@@ -3,6 +3,7 @@ package com.cn.ctbri.service;
 import java.util.List;
 import java.util.Map;
 
+import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderIP;
 
@@ -42,7 +43,7 @@ public interface IOrderAssetService {
      * 功能描述：根据orderid查询Asset名称
      *       @time 2015-2-2
      */
-    List findAssetNameByOrderId(String orderId);
+    List<Asset> findAssetNameByOrderId(String orderId);
 
     /**
      * 功能描述：根据orderid查询最近检测时间
