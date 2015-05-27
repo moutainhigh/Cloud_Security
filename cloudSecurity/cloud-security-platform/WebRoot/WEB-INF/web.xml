@@ -43,6 +43,7 @@
 	    <url-pattern>*.txt</url-pattern>
 	    <url-pattern>*.gif</url-pattern>
 	</servlet-mapping>
+	
 	<!-- <session-config>   
 	<session-timeout>1</session-timeout>   
 	</session-config> -->
