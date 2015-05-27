@@ -10,7 +10,7 @@
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/loginregist.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
-<script type="text/javascript" src="${ctx}/source/scripts/common/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.validate.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.metadata.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/login.js"></script>
