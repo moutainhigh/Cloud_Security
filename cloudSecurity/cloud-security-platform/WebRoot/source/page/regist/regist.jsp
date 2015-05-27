@@ -127,7 +127,7 @@ function checkNumberImage(){
        	  <span id="login_name_msg" style="color:red;float:left"></span>
         </div>
         <div class="login_list">
-          <input type="hidden" name="val"/>
+          <!-- <input type="hidden" name="val"/> -->
           <input type="password" class="login_txt login_pass" id="login_password" name="password" value="${requestScope.password }" onfocus="this.type='password'" autocomplete="off"/>
           <span id="login_password_msg" style="color:red;float:left"></span>
         </div>
