@@ -64,15 +64,10 @@
     <c:forEach var="order" items="${orderList}" varStatus="status">
 	    <p style="margin:0 0 38px 286px;"><span class="bigfont">订单编号</span><span class="bigfont" style="margin-right:20px;">${order.id }</span><span class="bigfont">下单时间</span><span class="bigfont"><fmt:formatDate value="${order.create_date }" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
 	    <p class="dd_detail"><span class="detail_l fl">订单状态</span><span class="detail_r fl">
-	       <c:set var="temp" value="${nowDate }"/>
-           <c:if test="${order.type==1}">
-               <c:if test="${order.end_date>=temp}">服务中</c:if>
-               <c:if test="${order.end_date<temp}">已结束</c:if>
-           </c:if>
-           <c:if test="${order.type==2}">
-               <c:if test="${order.begin_date>=temp}">服务中</c:if>
-               <c:if test="${order.begin_date<temp}">已结束</c:if>
-           </c:if>
+           <c:set var="temp" value="${nowDate }"/>
+           <c:if test="${order.begin_date>temp}">已下单</c:if>
+           <c:if test="${order.begin_date<=temp&&order.status==0}">服务中</c:if>
+           <c:if test="${order.status==1||order.status==2}">已结束</c:if>
 	    </span></p>
 	    <p class="dd_detail"><span class="detail_l fl">订单类型</span><span class="detail_r fl">
 	       <c:if test="${order.type==1}">长期</c:if>

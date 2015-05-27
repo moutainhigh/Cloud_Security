@@ -38,6 +38,13 @@ $(document).ready(function(){
      $("#searchForm").submit();
      
 }
+function overfind(orderId){
+        var obj = {'orderId':orderId};
+        $.post("/cloud-security-platform/getAssetName.html", obj, function(data){
+        	var assetName = data.assetName;
+        	$('#'+orderId).attr("title", assetName);//设置title属性的值
+        });
+}
 </script>
 </head>
 
@@ -133,7 +140,7 @@ $(document).ready(function(){
       <table id="orderTab">
       
               <tr style="background:#e0e0e0; height:30px; line-height:30px;">
-                <td style="width:10%;">订单编号</td>
+                <td style="width:10%;" onclick="overfind('1245504423')">订单编号</td>
                 <td  style="width:8%;">订单类型</td>
                 <td  style="width:9%;">订单状态</td>
                 <td  style="width:17%;">订单服务</td>

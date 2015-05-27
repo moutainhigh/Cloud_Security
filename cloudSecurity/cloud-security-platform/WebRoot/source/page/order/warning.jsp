@@ -96,6 +96,7 @@ function seedetail1(e) {
 
 };
 </script>
+</script>
 </head>
 
 <body> 
@@ -132,7 +133,7 @@ function seedetail1(e) {
                </ul>
            </div>
         </div>
-    </div>
+</div>
 <div>
 <!-- 头部代码结束-->
 <div class="user_center clear">
@@ -170,7 +171,7 @@ function seedetail1(e) {
             </c:if>
           </div>
         <div class="gj_fr">
-            <input type="hidden" value="${order.id }" id="orderId"/>
+            <input type="hidden" value="${order.id }" id="orderId" />
             <input type="hidden" value="${order.type }" id="type"/>
             <input type="hidden" value="${group_flag }" id="group_flag"/>
             <p><span class="bigfont">${order.name }</span>
@@ -231,12 +232,12 @@ function seedetail1(e) {
             </div>
             <div class="fl numbox gj_left">
                 <div class="detail_title">漏洞个数</div>
-                <c:if test="${aList==0}">
+                <c:if test="${alist==0}">
                     <div class="ldgs">
                         <img src="${ctx}/source/images/nodata1.png" width="148" height="146" />  
                     </div>
                 </c:if>
-                <c:if test="${aList!=0}">
+                <c:if test="${alist!=0}">
 	                <div class="ldgs" id="ldgs">
 	                    
 	                </div>
@@ -316,15 +317,15 @@ function seedetail1(e) {
 <div class="bottom_main">
   <h3><a href="###">新手入门</a></h3>
   <ul>
-     <li><a href="${ctx}/registUI.html">新用户注册</a></li>
+       <li><a href="${ctx}/registUI.html">新用户注册</a></li>
     <li><a href="${ctx}/loginUI.html">用户登录</a></li>
     <li><a href="###">找回密码</a></li>
   </ul>
 </div>
 <div  class="bottom_main">
- <h3><a href="###"> 帮助</a></h3>
+  <h3><a href="###"> 帮助</a></h3>
   <ul>
-  <li><a href="${ctx}/aider.html">常见问题</a></li>
+      <li><a href="${ctx}/aider.html">常见问题</a></li>
   </ul>
 </div>
 <div  class="bottom_main">
