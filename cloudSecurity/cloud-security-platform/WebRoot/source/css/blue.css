@@ -40,7 +40,7 @@ h4.helph{font-size:15px;padding-top:0;}
 .right_nav{border:0;background:0;width: 190px;}
 .right_list,.right_title{border: 1px solid #DEDEDE;background:#f7f7f7;}
 .right_list{border-top:0;height: 90px;}
-.right_wechate{border:1px solid #dedede;margin-top:2px;padding-top: 4px;}
+.right_wechate{border:1px solid #dedede;margin-top:2px;padding-top: 2px;}
 .subnav ol li.active{background: url("../images/dian_11.png") no-repeat;}
 .subnav ol {left: 424px;bottom: 22px;}
 .web_main{padding:0;width: 220px;}
