@@ -23,6 +23,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.util.Configuration;
 
 /**
@@ -92,7 +93,7 @@ public class SMSUtils {
 	}
 	
 	
-	public void sendMessage_warn(String phoneNumber,String orderId) throws IOException,URISyntaxException{
+	public void sendMessage_warn(String phoneNumber,Order order,String assetName,String num) throws IOException,URISyntaxException{
 		//修改为您的apikey.apikey可在官网（http://www.yuanpian.com)登录后用户中心首页看到
         String apikey = Configuration.getApikey();
         //修改为您要发送的手机号
@@ -104,12 +105,29 @@ public class SMSUtils {
 //        System.out.println(sendSms(apikey, text, mobile));
         
         //设置模板ID，如使用1号模板:【#company#】您的验证码是#code#
-        long tpl_id = Long.parseLong(Configuration.getWarn_model());
+        long tpl_id = 0l;
+        if(order.getServiceId()==1){
+            tpl_id = Long.parseLong(Configuration.getWarn1_model());
+        }else if(order.getServiceId()==2){
+            tpl_id = Long.parseLong(Configuration.getWarn2_model());
+        }else if(order.getServiceId()==3){
+            tpl_id = Long.parseLong(Configuration.getWarn3_model());
+        }else if(order.getServiceId()==4){
+            tpl_id = Long.parseLong(Configuration.getWarn4_model());
+        }else if(order.getServiceId()==5){
+            tpl_id = Long.parseLong(Configuration.getWarn5_model());
+        }
+        
         //设置对应的模板变量值
         //如果变量名或者变量值中带有#&=%中的任意一个特殊符号，需要先分别进行urlencode编码
         //如code值是#1234#,需作如下编码转换
-        String codeValue = URLEncoder.encode(orderId, ENCODING);
-        String tpl_value = "#code#=" + codeValue;
+        String codeValue = URLEncoder.encode(order.getId(), ENCODING);
+        String tpl_value = "";
+        if(order.getServiceId()==5){
+            tpl_value = "#code#=" + codeValue + "&#name#=" + assetName;
+        }else{
+            tpl_value = "#code#=" + codeValue + "&#name#=" + assetName + "&#num#=" + num;
+        }
         //模板发送的调用示例
         System.out.println(tplSendSms(apikey, tpl_id, tpl_value, mobile));
 
@@ -126,7 +144,10 @@ public class SMSUtils {
         //设置您要发送的内容(内容必须和某个模板匹配。以下例子匹配的是系统提供的1号模板）
         String text = "【云片网】您的验证码是1234";
         //发短信调用示例
-        System.out.println(sendSms(apikey, text, mobile));
+        long tpl_id = Long.parseLong(Configuration.getWarn1_model());
+        String tpl_value = "#code#=" + "2336528014" + "&#name#=" + "www.qq.com" + "&#num#=" + 67;
+        System.out.println(tplSendSms(apikey, tpl_id, tpl_value, mobile));
+//        System.out.println(sendSms(apikey, text, mobile));
 
 	}
 	
