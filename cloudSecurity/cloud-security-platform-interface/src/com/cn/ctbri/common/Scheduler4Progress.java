@@ -73,9 +73,12 @@ public class Scheduler4Progress {
     				 * 获取任务进度信息并入库
     				 */
     				// 获取任务进度引擎
-    				String progressStr = ArnhemWorker.getProgressByTaskId(sessionId, String.valueOf(task.getTaskId()),String.valueOf(order.getServiceId()));
-    				this.getProgressByRes(task.getTaskId(),progressStr);
-    				
+    				try {
+	    				String progressStr = ArnhemWorker.getProgressByTaskId(sessionId, String.valueOf(task.getTaskId()),String.valueOf(order.getServiceId()));
+	    				this.getProgressByRes(task.getTaskId(),progressStr);
+    				} catch (Exception e) {
+    					continue;
+    				}
     				logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]进度信息结果已完成入库!");
     			} else if("finish".equals(status)){
     			    task.setTaskProgress("101");
@@ -132,7 +135,7 @@ public class Scheduler4Progress {
             String resultValue = attribute.getStringValue();
             if("Success".equals(resultValue)){
                 String taskState = task.element("TaskState").getTextTrim();
-                if(!"other".equals(taskState)){
+                if(!"other".equals(taskState)||!"wait".equals(taskState)){
                     String engineIP = task.element("EngineIP").getTextTrim();
                     String taskProgress = task.element("TaskProgress").getTextTrim();
                     String currentUrl = task.element("CurrentUrl").getTextTrim();
