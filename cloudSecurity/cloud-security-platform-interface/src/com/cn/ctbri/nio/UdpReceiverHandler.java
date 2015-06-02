@@ -1,5 +1,6 @@
 package com.cn.ctbri.nio;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -90,35 +91,102 @@ public class UdpReceiverHandler extends SimpleChannelHandler
          String one = recMsg.substring(0, recMsgNum+1);
          String two = recMsg.substring(recMsgNum+2);
          String arrays[] = two.split(" ");
-         for(int i=0;i<arrays.length;i++){
-             logger.info("server received1:"+arrays[i]);
+         if(two.indexOf("ip_attack")!=-1 || two.indexOf("ip_drop")!=-1){
+             //日志类型
+             String log_type = null;
+             if(two.indexOf("log_type")!=-1){
+                 log_type = two.substring(two.indexOf("log_type") + "log_type".length(), two.length() - 1);
+                 log_type = log_type.substring(1, log_type.indexOf(" "));
+    
+             }
+             //攻击类型
+             String attack_type = null;
+             if(two.indexOf("attack_type")!=-1){
+                 attack_type = two.substring(two.indexOf("attack_type") + "attack_type".length(), two.length() - 1);
+                 attack_type = attack_type.substring(1, attack_type.indexOf(" "));
+             }
+             
+             //攻击开始时间
+             String start_time_attack = null;
+             if(two.indexOf("start_time_attack")!=-1){
+                 start_time_attack = two.substring(two.indexOf("start_time_attack") + "start_time_attack".length(), two.length() - 1);
+                 start_time_attack = start_time_attack.substring(2, 21);
+             }
+             
+             //攻击源IP
+             String attacker = null;
+             if(two.indexOf("attacker")!=-1){
+                 attacker = two.substring(two.indexOf("attacker") + "attacker".length(), two.length() - 1);
+                 if(attacker.length()!=1){
+                     attacker = attacker.substring(1, attacker.indexOf(" "));
+                 }else{
+                     attacker = null;
+                 }
+                 
+             }
+             
+             //攻击持续时间(秒)（处理已结束）
+             String duration = null;
+             if(two.indexOf("duration")!=-1){
+                 duration = two.substring(two.indexOf("duration") + "duration".length(), two.length() - 1);
+                 duration = duration.substring(1, duration.indexOf(" "));
+             }
+             
+             //攻击结束时间（处理已结束）
+             String end_time = null;
+             boolean isEndTime = false;
+             if(two.indexOf("end_time")!=-1){
+                 end_time = two.substring(two.indexOf("end_time") + "end_time".length(), two.length() - 1);
+                 end_time = end_time.substring(2, 21);
+                 isEndTime = isTimeLegal(end_time);
+             }
+             
+             //告警上报时间
+             String start_time_alert = null;
+             boolean isAlertTime = false;
+             if(two.indexOf("start_time_alert")!=-1){
+                 start_time_alert = two.substring(two.indexOf("start_time_alert") + "start_time_alert".length(), two.length() - 1);
+                 start_time_alert = start_time_alert.substring(2, 21);
+                 isAlertTime = isTimeLegal(start_time_alert);
+             }
+             
+             //zone_id
+             String zone_id = null;
+             if(two.indexOf("zone_id")!=-1){
+                 zone_id = two.substring(two.indexOf("zone_id") + "zone_id".length(), two.length() - 1);
+                 zone_id = zone_id.substring(1, zone_id.indexOf(" "));
+             }
+             //total_kbps
+             String total_kbps = null;
+             if(two.indexOf("total_kbps")!=-1){
+                 total_kbps = two.substring(two.indexOf("total_kbps") + "total_kbps".length(), two.length() - 1);
+                 total_kbps = total_kbps.substring(1, total_kbps.indexOf(" "));
+             }
+             
+             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+             AlarmDDOS ddos = new AlarmDDOS();
+             ddos.setAttack_type(attack_type);
+             if(start_time_attack!=null){
+                 ddos.setStart_time_attack(sdf.parse(start_time_attack));
+             }
+             ddos.setAttacker(attacker);
+             ddos.setDuration(duration);
+             ddos.setAttack_flow(null);
+             if(isEndTime==true&&end_time!=null){
+                 ddos.setEnd_time(sdf.parse(end_time));
+             }
+             if(isAlertTime==true&&start_time_alert!=null){
+                 ddos.setStart_time_alert(sdf.parse(start_time_alert));
+             }
+             if(zone_id!=null){
+                 ddos.setTaskId(Integer.parseInt(zone_id));
+             }
+             ddos.setTotal_kbps(Long.parseLong(total_kbps));
+             alarmDDOSService.saveAlarmDDOS(ddos);
+             logger.info(new Date()+"[接收]来自[华为设备]消息[成功][接收" + zone_id + "攻击日志]!");
+
          }
-         //日志类型
-         String log_type = two.substring(two.indexOf("log_type") + "log_type".length(), two.length() - two.indexOf("log_type") - "log_type".length());
-         log_type = log_type.substring(1, log_type.indexOf(" "));
-         //攻击类型
-         String attack_type = two.substring(two.indexOf("attack_type") + "attack_type".length(), two.length() - two.indexOf("attack_type") - "attack_type".length());
-         attack_type = attack_type.substring(1, attack_type.indexOf(" "));
-         //攻击开始时间
-         String start_time_attack = two.substring(two.indexOf("start_time_attack") + "start_time_attack".length(), two.length() - two.indexOf("start_time_attack") - "start_time_attack".length());
-         start_time_attack = start_time_attack.substring(2, 21);
-         //攻击源IP
-         String attacker = two.substring(two.indexOf("attacker") + "attacker".length(), two.length() - two.indexOf("attacker") - "attacker".length());
-         attacker = attacker.substring(1, attacker.indexOf(" "));
-         //攻击持续时间(秒)（处理已结束）
-         String duration = two.substring(two.indexOf("duration") + "duration".length(), two.length() - two.indexOf("duration") - "duration".length());
-         duration = duration.substring(1, duration.indexOf(" "));
-         //攻击结束时间（处理已结束）
-         String end_time = two.substring(two.indexOf("end_time") + "end_time".length(), two.length() - two.indexOf("end_time") - "end_time".length());
-         end_time = end_time.substring(2, 21);
-         boolean isEndTime = isTimeLegal(end_time);
-         //告警上报时间
-         String start_time_alert = two.substring(two.indexOf("start_time_alert") + "start_time_alert".length(), two.length() - two.indexOf("start_time_alert") - "start_time_alert".length());
-         start_time_alert = start_time_alert.substring(2, 21);
-         boolean isAlertTime = isTimeLegal(start_time_alert);
-         //zone_id
-         String zone_id = two.substring(two.indexOf("zone_id") + "zone_id".length(), two.length() - two.indexOf("zone_id") - "zone_id".length());
-         zone_id = zone_id.substring(1, zone_id.indexOf(" "));
+         
          
          
 //         //前导符
@@ -127,22 +195,6 @@ public class UdpReceiverHandler extends SimpleChannelHandler
 //         String timestamp = recMsg.substring(5,24);
 //         String ii = recMsg.substring(5,24);
 //         logger.info("server received1:"+timestamp);
-         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-         AlarmDDOS ddos = new AlarmDDOS();
-         ddos.setAttack_type(attack_type);
-         ddos.setStart_time_attack(sdf.parse(start_time_attack));
-         ddos.setAttacker(attacker);
-         ddos.setDuration(duration);
-         ddos.setAttack_flow(null);
-         if(isEndTime==true){
-             ddos.setEnd_time(sdf.parse(end_time));
-         }
-         if(isAlertTime==true){
-             ddos.setStart_time_alert(sdf.parse(start_time_alert));
-         }
-         ddos.setTaskId(Integer.parseInt(zone_id));
-         alarmDDOSService.saveAlarmDDOS(ddos);
-         logger.info(new Date()+"[接收]来自[华为设备]消息[成功][接收" + zone_id + "攻击日志]!");
 //         alarmDDOSService.updeteAlarmDDOS(ddos);
                  
      } catch (Exception e) {
