@@ -153,11 +153,11 @@ $(function(){
     	}
     	var index = serviceId-1;
 //    	if(serviceId==2 || serviceId ==4){
-    	if(serviceId==2){
-    		var scanDate=$('input[name="scanType'+index+'"]').val();
-    	}else{
+//    	if(serviceId==2){
+//    		var scanDate=$('input[name="scanType'+index+'"]').val();
+//    	}else{
     		var scanType=$('input:radio[name="scanType'+index+'"]:checked').val();
-    	}
+//    	}
     	
     	var servName=$('.peiz_active').attr("name");
     	var servRemark=$('.peiz_active input[name="remarks"]').val();
@@ -172,9 +172,10 @@ $(function(){
     	}
     	var scanName=null;
 //    	if(serviceId==2 || serviceId ==4){
-    	if(serviceId==2){
-    		scanName=scanDate;
-    	}else if(serviceId==1){
+//    	if(serviceId==2){
+//    		scanName=scanDate;
+//    	}else 
+    	if(serviceId==1){
     		if(scanType==1){
         		scanName="每天0:0:10开始";
         	}else if(scanType==2){
@@ -205,7 +206,7 @@ $(function(){
     	}
     	if(orderType==2){
     		scanType=null;
-    		scanDate=beginDate;
+    		var scanDate=beginDate;
     	}
    		var assetIds = "";
    		$(".leftTr"+index+" input:checkbox[name='serviceAssetId']:checked").each(function(){
@@ -214,7 +215,7 @@ $(function(){
 		var obj = {'serviceId':serviceId,
 				   'assetIds':assetIds,
 				   'scanType':scanType,
-				   'scanDate':scanDate,
+//				   'scanDate':scanDate,
 				   'beginDate':beginDate,
 				   'endDate':endDate,
 				   'ip':ip,
@@ -311,11 +312,11 @@ $(function(){
     	var serviceId=$('.peiz_active').attr("id");
     	var index = serviceId-1;
 //    	if(serviceId==2 || serviceId ==4){
-        if(serviceId==2){
-    		var scanDate=$('input[name="scanType'+index+'"]').val();
-    	}else{
+//        if(serviceId==2){
+//    		var scanDate=$('input[name="scanType'+index+'"]').val();
+//    	}else{
     		var scanType=$('input:radio[name="scanType'+index+'"]:checked').val();
-    	}
+//    	}
     	
     	var linkname=$('#linkname').val();
     	var phone=$('#phone').val();
@@ -339,7 +340,7 @@ $(function(){
 	    			   'endDate':endDate,
 	    			   'createDate':createDate,
 	    			   'scanType':scanType,
-	    			   'scanDate':scanDate,
+//	    			   'scanDate':scanDate,
 	    			   'serviceId':serviceId,
 	    			   'linkname':linkname,
 	    			   'phone':phone,
@@ -364,7 +365,7 @@ $(function(){
 			    			   	"endDate":endDate,
 			    			   	"createDate":createDate,
 			    			   	"scanType":scanType,
-			    			   	"scanDate":scanDate,
+//			    			   	"scanDate":scanDate,
 			    			   	"serviceId":serviceId,
 			    			   	"linkname":linkname,
 			    			   	"phone":phone,
@@ -441,15 +442,18 @@ $(function(){
    			assetIds = assetIds + $(this).parent().siblings('input').attr("value") + ",";
 		});
 //   		if(serviceId==2 || serviceId ==4){
-   		if(serviceId==2){
-    		var scanDate=$('input[name="scanType'+index+'"]').val();
-    	}else{
+//   		if(serviceId==2){
+//    		var scanDate=$('input[name="scanType'+index+'"]').val();
+//    	}else{
     		var scanType=$('input:radio[name="scanType'+index+'"]:checked').val();
-    	}
+//    	}
+//		var obj = {'serviceId':serviceId,
+//				   'assetIds':assetIds,
+//				   'scanType':scanType,
+//				   'scanDate':scanDate};
 		var obj = {'serviceId':serviceId,
 				   'assetIds':assetIds,
-				   'scanType':scanType,
-				   'scanDate':scanDate};
+				   'scanType':scanType};
     	$.post("/cloud-security-platform/checkOrderAsset.html", obj, function(data){
     		if(data.assetNames!=null){
     			$(".assets_msg").eq(index).html(data.assetNames + "不能用,请重新选择!");
