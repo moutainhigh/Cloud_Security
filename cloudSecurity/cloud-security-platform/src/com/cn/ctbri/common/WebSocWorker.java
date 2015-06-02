@@ -149,8 +149,8 @@ public class WebSocWorker {
 	public static String lssuedTask(String sessionid){
 		//组织发送内容json
 	    JSONObject jsonObj = new JSONObject();
-        jsonObj.put("name", "test052701");
-        jsonObj.put("site_list", new String[] {"http://www.testfire.com/"});
+        jsonObj.put("name", "test060102");
+        jsonObj.put("site_list", new String[] {"http://www.testfire.net/","http://www.sinosoft.com.cn/"});
 		String jsonContent = "parameter="+jsonObj.toString();
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + "api/v2/vgroup/create_temp/";
@@ -237,6 +237,6 @@ public class WebSocWorker {
         String sessionid = getSessionId();
         String virtual_group_id = lssuedTask(sessionid);
         getProgressByTaskId(sessionid,virtual_group_id);
-//    	getProgressByTaskId("e4a715a1ff93fa89e84c6f059a15e4bc", "50a091825de23a5ef0ee99f3");
+//    	getProgressByTaskId("o6ez69b4gzkikyvhm7ce9t16dk8g7y0n", "5566b16c43b9090323057cbf");
     }
 }
