@@ -117,7 +117,7 @@ function verificationAsset(){
         data: {"code1":code1,"id":id,"codeStyle":codeStyle},
         dataType:"json",
         success: function(data){
-            if(data.msg=="1"){
+            if(data.msg=="1"&&data.status=="0"){
             	alert("验证成功");
             	$("#verificationAssetForm").submit();
             }else{
