@@ -266,7 +266,7 @@ function seedetail1(e) {
         </div>
         </c:if>
        </c:forEach>
-      <c:if test="${!empty alarmList}">
+    <c:if test="${!empty alarmList}">
     <div class="zhangd_table">
         <div class="detail_title">漏洞说明</div>
       <table class="ld_table" style="margin-bottom:0;width: 938px;margin-left: 0px;">
@@ -308,9 +308,10 @@ function seedetail1(e) {
       </table>
       </div>
     </div>
+    </c:if>
   </div>
 </div>
-</c:if>
+
 <!-- 尾部代码开始-->
 <div class="bottom_bj">
 <div class="bottom">
@@ -333,7 +334,7 @@ function seedetail1(e) {
   <ul>
     <li><a href="###">华为</a></li>
     <li><a href="###">安恒</a></li>
-    <li><a href="###">360</a></li>
+    <li><a href="###">知道创宇</a></li>
   </ul>
 </div>
 <div  class="bottom_main">

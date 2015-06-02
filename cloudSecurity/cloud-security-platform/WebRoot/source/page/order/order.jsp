@@ -11,7 +11,7 @@
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
-<script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/jquery-1.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/order.js"></script>
@@ -219,15 +219,22 @@
                 <td style="width:60%;">资产地址 </td>
                 <td style="width:15%;"><input type="checkbox" class="checkItems"/></td>
               </tr>
-              <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
-                  <tr>
-                    <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
-                    <td>${list.name }</td>
-                    <td>${list.addr}</td>
-                    <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
-                  </tr>
-              </c:forEach>
-                            
+              
+              <c:if test="${empty serviceAssetList}">
+                <tr>
+                  <td colspan="3" style="color:#4593fd;">没有可选资产,请到"<a href="${ctx}/userAssetsUI.html" style="color:#4593fd;font-weight:bold;text-decoration:underline;">用户中心-我的资产</a>"菜单新增资产,并通过验证!</td>
+                </tr>
+              </c:if>
+              <c:if test="${not empty serviceAssetList}">
+	              <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
+		              <tr>
+		                <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
+		                <td>${list.name }</td>
+		                <td>${list.addr}</td>
+		                <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
+		              </tr>
+	              </c:forEach>
+              </c:if>
             </table>
           </div>
           <!--<div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
@@ -245,11 +252,28 @@
         <div><font class="assets_msg" style="color:red;float:right"></font></div>
         <div class="pinv">
           <h3>扫描频率</h3>
-          <div class="pinv_subnav">
+          <!-- <div class="pinv_subnav">
             <ul class="pinv_sub_nav" style="height:30px;">
               <li class="pinv_active">
                 <input style="background: url(${ctx}/source/images/user_ico_8.jpg) no-repeat; width:176px; height:30px;padding-left:4px;" type="text" value="" name="scanType1" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
               </li>
+            </ul>
+          </div> -->
+          
+          <div class="pinv_subnav">
+            <ul class="pinv_sub_nav">
+              <li class="pinv_active">
+                <input type="radio" name="scanType1" value="1" id="30分钟" checked/>
+                &nbsp;&nbsp;30分钟</li>
+              <!-- <li>
+                <input type="radio" name="scanType1" value="2" id="1小时"/>
+                &nbsp;&nbsp;1小时</li>
+              <li>
+                <input type="radio" name="scanType1" value="3" id="2小时"/>
+                &nbsp;&nbsp;2小时</li>
+              <li>
+                <input type="radio" name="scanType1" value="4" id="1天"/>
+                &nbsp;&nbsp;1天</li> -->
             </ul>
           </div>
         </div>
@@ -266,15 +290,21 @@
                 <td style="width:60%;">资产地址 </td>
                 <td style="width:15%;"><input type="checkbox" class="checkItems"/></td>
               </tr>
-              <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
-                  <tr>
-                    <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
-                    <td>${list.name }</td>
-                    <td>${list.addr}</td>
-                    <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
-                  </tr>
-              </c:forEach>
-                            
+              <c:if test="${empty serviceAssetList}">
+                <tr>
+                  <td colspan="3" style="color:#4593fd;">没有可选资产,请到"<a href="${ctx}/userAssetsUI.html" style="color:#4593fd;font-weight:bold;text-decoration:underline;">用户中心-我的资产</a>"菜单新增资产,并通过验证!</td>
+                </tr>
+              </c:if>
+              <c:if test="${not empty serviceAssetList}">
+	              <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
+		              <tr>
+		                <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
+		                <td>${list.name }</td>
+		                <td>${list.addr}</td>
+		                <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
+		              </tr>
+	              </c:forEach>
+              </c:if>
             </table>
           </div>
           <!--<div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
@@ -322,15 +352,21 @@
                 <td style="width:60%;">资产地址 </td>
                 <td style="width:15%;"><input type="checkbox" class="checkItems"/></td>
               </tr>
-              <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
-                  <tr>
-                    <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
-                    <td>${list.name }</td>
-                    <td>${list.addr}</td>
-                    <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
-                  </tr>
-              </c:forEach>
-                            
+              <c:if test="${empty serviceAssetList}">
+                <tr>
+                  <td colspan="3" style="color:#4593fd;">没有可选资产,请到"<a href="${ctx}/userAssetsUI.html" style="color:#4593fd;font-weight:bold;text-decoration:underline;">用户中心-我的资产</a>"菜单新增资产,并通过验证!</td>
+                </tr>
+              </c:if>
+              <c:if test="${not empty serviceAssetList}">
+	              <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
+		              <tr>
+		                <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
+		                <td>${list.name }</td>
+		                <td>${list.addr}</td>
+		                <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
+		              </tr>
+	              </c:forEach>
+              </c:if>
             </table>
           </div>
           <!--<div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
@@ -385,15 +421,21 @@
                 <td style="width:60%;">资产地址 </td>
                 <td style="width:15%;"><input type="checkbox" class="checkItems"/></td>
               </tr>
-              <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
-                  <tr>
-                    <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
-                    <td>${list.name }</td>
-                    <td>${list.addr}</td>
-                    <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
-                  </tr>
-              </c:forEach>
-                            
+              <c:if test="${empty serviceAssetList}">
+                <tr>
+                  <td colspan="3" style="color:#4593fd;">没有可选资产,请到"<a href="${ctx}/userAssetsUI.html" style="color:#4593fd;font-weight:bold;text-decoration:underline;">用户中心-我的资产</a>"菜单新增资产,并通过验证!</td>
+                </tr>
+              </c:if>
+              <c:if test="${not empty serviceAssetList}">
+	              <c:forEach var="list" items="${serviceAssetList}" varStatus="status">
+		              <tr>
+		                <input type="hidden" value="${list.id }" id="assetId" name="assetId"/>
+		                <td>${list.name }</td>
+		                <td>${list.addr}</td>
+		                <td><input type="checkbox" name="serviceAssetId" value="${list.id }"/></td>
+		              </tr>
+	              </c:forEach>
+              </c:if>
             </table>
           </div>
           <!--<div class="peiz_ico"><img src="${ctx}/source/images/peiz_ico.jpg" class="to_right"/></div>
@@ -798,7 +840,7 @@
   <ul>
     <li><a href="###">华为</a></li>
     <li><a href="###">安恒</a></li>
-    <li><a href="###">360</a></li>
+    <li><a href="###">知道创宇</a></li>
   </ul>
 </div>
 <div  class="bottom_main">

@@ -402,7 +402,7 @@ $(document).ready(function() {
   <ul>
     <li><a href="###">华为</a></li>
     <li><a href="###">安恒</a></li>
-    <li><a href="###">360</a></li>
+    <li><a href="###">知道创宇</a></li>
   </ul>
 </div>
 <div  class="bottom_main">
