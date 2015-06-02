@@ -185,7 +185,7 @@ public class OrderMgrController {
         }else{//web
             OrderAsset orderAsset = new OrderAsset();
             orderAsset.setServiceId(serviceId);
-            if(scanType!=null && !scanType.equals("null")){
+            if(scanType!="" && !scanType.equals("null")){
                 orderAsset.setScan_type(Integer.parseInt(scanType));
             }
             Date scan_date = null;
@@ -434,7 +434,7 @@ public class OrderMgrController {
                     //插入一条任务数据  获取任务id
                     int taskId = taskService.insert(task);
                 }
-            }else if(serviceId.equals("3")||serviceId.equals("5")||serviceId.equals("4")||orderType.equals("2")){//add by txr 2015-03-26
+            }else if(serviceId.equals("2")||serviceId.equals("3")||serviceId.equals("5")||serviceId.equals("4")||orderType.equals("2")){//add by txr 2015-03-26
               //根据orderid 获取要扫描的订单详情集合
                 List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
                 //获取订单定制的服务信息
@@ -454,20 +454,22 @@ public class OrderMgrController {
                     //插入一条任务数据  获取任务id
                     int taskId = taskService.insert(task);
                 }
-            }else if(serviceId.equals("2")&&orderType.equals("1")){
-                List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
-                for(OrderAsset oa : oaList){
-                    Task task = new Task(); 
-                    task.setExecute_time(sdf.parse(scanDate));
-                    task.setStatus(Integer.parseInt(Constants.TASK_START));
-                    //设置订单详情id
-                    task.setOrder_asset_Id(oa.getId());
-                    //资产任务组
-                    task.setGroup_flag(begin_date);
-                    //插入一条任务数据  获取任务id
-                    int taskId = taskService.insert(task);
-                }
-            }else{
+            }
+//            else if(serviceId.equals("2")&&orderType.equals("1")){
+//                List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
+//                for(OrderAsset oa : oaList){
+//                    Task task = new Task(); 
+//                    task.setExecute_time(sdf.parse(scanDate));
+//                    task.setStatus(Integer.parseInt(Constants.TASK_START));
+//                    //设置订单详情id
+//                    task.setOrder_asset_Id(oa.getId());
+//                    //资产任务组
+//                    task.setGroup_flag(begin_date);
+//                    //插入一条任务数据  获取任务id
+//                    int taskId = taskService.insert(task);
+//                }
+//            }
+            else{
                 List<OrderIP> ipList = orderAssetService.findIpByOrderId(orderId);
                 for(OrderIP oip : ipList){
                     TaskHW taskhw = new TaskHW(); 

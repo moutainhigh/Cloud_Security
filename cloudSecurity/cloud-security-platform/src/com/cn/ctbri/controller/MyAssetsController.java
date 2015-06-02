@@ -226,9 +226,11 @@ public class MyAssetsController {
 		int id = Integer.valueOf(request.getParameter("id"));
 		Asset _asset = assetService.findById(id);
 		String path = _asset.getAddr();
+		int status = _asset.getStatus();
 		//获取验证方式:代码验证 ;上传文件验证
 		String verification_msg;
 		Map<String, Object> m = new HashMap<String, Object>();
+		m.put("status", status);//返回验证状态
 		try {
 //			URL url =new URL(path);
 //			HttpClient httpClient = HttpClient.New(url);

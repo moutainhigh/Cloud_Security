@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
@@ -288,7 +290,30 @@ public class UserController {
 	public String regist(User user,HttpServletRequest request){
 		String name = user.getName();
 		String password = user.getPassword();
-		if(name!=null&&!"".equals(name)&&password!=null&&!"".equals(password)){
+		//验证用户名
+		String pattern = "^[a-zA-Z0-9_]{4,20}$";
+	    Pattern pat = Pattern.compile(pattern);
+	    Matcher m = null;
+	    if(name!=null&&!"".equals(name)){
+	        m = pat.matcher(name);
+	    }
+	    
+	    //验证手机号
+	    String patternM = "^1[3|5|8|7][0-9]{9}$";
+	    Pattern patM = Pattern.compile(patternM);
+	    Matcher mMobile = null;
+	    if(user.getMobile()!=null&&!"".equals(user.getMobile())){
+	        mMobile = patM.matcher(user.getMobile());
+	    }
+	    //验证邮箱
+	    String patternE = "^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.[a-zA-Z0-9_-])+";
+	    Pattern patE = Pattern.compile(patternE);
+	    Matcher mEmail = null;
+	    if(user.getEmail()!=null&&!"".equals(user.getEmail())){
+	        mEmail = patE.matcher(user.getEmail());
+	    }
+	    
+		if(name!=null&&!"".equals(name)&&m.matches()&&password!=null&&!"".equals(password)&&password.length()>=6&&password.length()<=20&&(mMobile.matches()||mEmail.matches())&&user.getVerification_code()!=null&&!"".equals(user.getVerification_code())){
 			//按用用户名、邮箱、手机号码组合查询用户,防止刷页面
 			List<User> users = userService.findUserByCombine(user);
 			if(!(users.size()>0)){
@@ -300,9 +325,13 @@ public class UserController {
 				user.setIp(request.getRemoteAddr());
 				userService.insert(user);
 			}
+			//return "/source/page/regist/registToLogin";
+			return "redirect:/loginUI.html";
+		}else{
+			request.setAttribute("errorMsg", "注册异常!");
+        	return "/source/error/errorMsg";
 		}
-		//return "/source/page/regist/registToLogin";
-		return "redirect:/loginUI.html";
+		
 	}
 	
 	/**
