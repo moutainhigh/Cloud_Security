@@ -17,11 +17,13 @@ import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.service.IAlarmService;
+import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskService;
@@ -56,6 +58,9 @@ public class Scheduler4Result {
 	@Autowired
     ITaskWarnService taskWarnService;
 	
+	@Autowired
+    private IAssetService assetService;
+    
 
 	static {
 		try {
@@ -155,64 +160,65 @@ public class Scheduler4Result {
                 
                 
                 
-                //是否有告警信息
-                if(allAlarm!=null && allAlarm.size()>0){//如果有告警发邮件和短信通知
+                //任务是否有告警信息
+                if(aList!=null && aList.size()>0){//如果有告警发短信通知
                     Order order=null;
                     if(oList!=null && oList.size()>0){
                         order=oList.get(0);
                         List<Linkman> mlist= orderService.findLinkmanById(order.getContactId());
                         Linkman linkman=mlist.get(0);
                         String phoneNumber = linkman.getMobile();//联系方式
-                        int sendFlag=order.getMessage();//是否下发短信或邮件
-                        if(sendFlag!=1){
+                        List<Asset> asset = assetService.findByTask(task);
+                        String assetName = asset.get(0).getName();
+//                        int sendFlag=order.getMessage();//是否下发短信
+//                        if(sendFlag!=1){
                            if(!phoneNumber.equals("") && phoneNumber!=null){
                             //发短信
                               SMSUtils smsUtils = new SMSUtils();
-                              smsUtils.sendMessage_warn(phoneNumber,order.getId());
+                              smsUtils.sendMessage_warn(phoneNumber,order,assetName,String.valueOf(aList.size()));
                               order.setMessage(1);
                               orderService.update(order);
                            }
-                        }
+//                        }
                     }
                 }
-                
                 
 				//删除任务   add by txr 2015-03-27
-//				if(oList.get(0).getServiceId()==2){
 				ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId()));
-//				}
 				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]告警结果已完成入库，已修改此任务为完成状态!");
 			//可用性
-			}else if("running".equals(status) && o.getServiceId()==5 && o.getEnd_date().compareTo(setDateFormat.parse(temp))>0){
-			    //获取告警信息
-                List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(oList.get(0).getId());
-                if(taskWarnList.size() > 0){
-                    o.setStatus(Integer.parseInt(Constants.ORDERALARM_YES_RUNNING));
-                }else{
-                    o.setStatus(Integer.parseInt(Constants.ORDERALARM_NO));
-                }
-                orderService.update(o);
-                
-                //是否有告警信息
-                if(taskWarnList!=null && taskWarnList.size()>0){//如果有告警发邮件和短信通知
-                    Order order=null;
-                    if(oList!=null && oList.size()>0){
-                        order=oList.get(0);
-                        List<Linkman> mlist= orderService.findLinkmanById(order.getContactId());
-                        Linkman linkman=mlist.get(0);
-                        String phoneNumber = linkman.getMobile();//联系方式
-                        int sendFlag=order.getMessage();//是否下发短信或邮件
-                        if(sendFlag!=1){
-                           if(!phoneNumber.equals("") && phoneNumber!=null){
-                            //发短信
-                              SMSUtils smsUtils = new SMSUtils();
-                              smsUtils.sendMessage_warn(phoneNumber,order.getId());
-                              order.setMessage(1);
-                              orderService.update(order);
-                           }
-                        }
-                    }
-                }
+//			}else if("running".equals(status) && o.getServiceId()==5 && o.getEnd_date().compareTo(setDateFormat.parse(temp))>0){
+//			    //获取告警信息
+//                List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(oList.get(0).getId());
+//                if(taskWarnList.size() > 0){
+//                    o.setStatus(Integer.parseInt(Constants.ORDERALARM_YES_RUNNING));
+//                }else{
+//                    o.setStatus(Integer.parseInt(Constants.ORDERALARM_NO));
+//                }
+//                orderService.update(o);
+//                
+//                //是否有告警信息
+//                if(taskWarnList!=null && taskWarnList.size()>0){//如果有告警发邮件和短信通知
+//                    Order order=null;
+//                    if(oList!=null && oList.size()>0){
+//                        order=oList.get(0);
+//                        List<Linkman> mlist= orderService.findLinkmanById(order.getContactId());
+//                        Linkman linkman=mlist.get(0);
+//                        String phoneNumber = linkman.getMobile();//联系方式
+//                        List<Asset> asset = assetService.findByTask(task);
+//                        String assetName = asset.get(0).getName();
+////                        int sendFlag=order.getMessage();//是否下发短信或邮件
+////                        if(sendFlag!=1){
+//                           if(!phoneNumber.equals("") && phoneNumber!=null){
+//                            //发短信
+//                              SMSUtils smsUtils = new SMSUtils();
+//                              smsUtils.sendMessage_warn(phoneNumber,order,assetName,null);
+//                              order.setMessage(1);
+//                              orderService.update(order);
+//                           }
+////                        }
+//                    }
+//                }
 			}else {
 				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，等待下次拉取结果~");
 			}

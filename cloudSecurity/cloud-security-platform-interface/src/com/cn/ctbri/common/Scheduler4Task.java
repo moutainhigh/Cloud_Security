@@ -106,7 +106,7 @@ public class Scheduler4Task {
 					OrderAsset orderAsset = taskService.getTypeByAssetId(t.getOrder_asset_Id());
 					List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
 //					if(!Constants.SERVICE_LDSMFW.equals(this.tplName)){
-					if(orderList.get(0).getServiceId()==3||orderList.get(0).getServiceId()==4){
+					if(orderList.get(0).getServiceId()==2||orderList.get(0).getServiceId()==3||orderList.get(0).getServiceId()==4){
 					    if(orderList.get(0).getType()==1){
 					        //下一次扫描时间
 					        Date endTime = orderList.get(0).getEnd_date();
@@ -304,6 +304,12 @@ public class Scheduler4Task {
 					break;
 				}
 			}else if(Constants.SERVICE_GJZJCFW.equals(this.tplName)){
+                switch (rate) {
+                case 1:
+                    this.scantime = 30;
+                    break;
+                }
+            }else if(Constants.SERVICE_EYDMJCFW.equals(this.tplName)){
                 switch (rate) {
                 case 1:
                     this.scantime = 30;
