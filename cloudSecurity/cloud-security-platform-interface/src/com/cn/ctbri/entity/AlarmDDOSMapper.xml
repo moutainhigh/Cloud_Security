@@ -16,13 +16,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="end_time" column="end_time"/>
 		<result property="start_time_alert" column="start_time_alert"/>
 		<result property="taskId" column="taskId"/>
+		<result property="total_kbps" column="total_kbps"/>
 	</resultMap>
 	
 	<!-- 插入报警信息 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.AlarmDDOS" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO cs_alarmhuawei 
-		(attack_type,start_time_attack,attacker,duration,attack_flow,end_time,start_time_alert,taskId) 
-		VALUES(#{attack_type},#{start_time_attack},#{attacker},#{duration},#{attack_flow},#{end_time},#{start_time_alert},#{taskId})
+		(attack_type,start_time_attack,attacker,duration,attack_flow,end_time,start_time_alert,taskId,total_kbps) 
+		VALUES(#{attack_type},#{start_time_attack},#{attacker},#{duration},#{attack_flow},#{end_time},#{start_time_alert},#{taskId},#{total_kbps})
 	</insert>
 	
 	<update id="update"  parameterType="com.cn.ctbri.entity.AlarmDDOS">

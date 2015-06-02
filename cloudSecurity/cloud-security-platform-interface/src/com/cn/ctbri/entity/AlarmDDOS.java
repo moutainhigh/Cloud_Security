@@ -30,6 +30,8 @@ public class AlarmDDOS implements Serializable{
 	private Date start_time_alert;
 	//任务Id
     private long taskId;
+    //total_kbps
+    private long total_kbps;
 	/**
 	 * 功能描述：取报警信息ID
 	 *		 @time 2015-01-07
@@ -93,6 +95,12 @@ public class AlarmDDOS implements Serializable{
     }
     public void setTaskId(long taskId) {
         this.taskId = taskId;
+    }
+    public long getTotal_kbps() {
+        return total_kbps;
+    }
+    public void setTotal_kbps(long total_kbps) {
+        this.total_kbps = total_kbps;
     }
 	
 
