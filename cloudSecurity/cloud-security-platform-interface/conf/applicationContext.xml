@@ -37,6 +37,7 @@
     <context:component-scan base-package="com.cn.ctbri" />
     
     <bean id="taskService" class="com.cn.ctbri.service.impl.TaskServiceImpl" />
+    <bean id="orderService" class="com.cn.ctbri.service.impl.OrderServiceImpl" />
     
     <!-- 配置dbcp数据源 -->  
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
@@ -117,9 +118,9 @@
     	lazy-init="false">
     	<property name="triggers">
     		<list>
-    			<!-- <ref bean="taskTrigger" />
+    			<ref bean="taskTrigger" />
     			<ref bean="resultTrigger" />
-    			<ref bean="progressTrigger" /> -->
+    			<ref bean="progressTrigger" />
     		</list>
     	</property>
     </bean>
