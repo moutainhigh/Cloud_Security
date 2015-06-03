@@ -290,6 +290,7 @@ public class UserController {
 	public String regist(User user,HttpServletRequest request){
 		String name = user.getName();
 		String password = user.getPassword();
+		//add by tang 2015-06-01
 		//验证用户名
 		String pattern = "^[a-zA-Z0-9_]{4,20}$";
 	    Pattern pat = Pattern.compile(pattern);
