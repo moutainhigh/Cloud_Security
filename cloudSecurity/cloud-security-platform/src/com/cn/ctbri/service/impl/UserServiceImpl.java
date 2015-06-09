@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cn.ctbri.dao.UserDao;
 import com.cn.ctbri.entity.DataAnalysis;
+import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.pager.PageBean;
 import com.cn.ctbri.service.IUserService;
@@ -140,5 +141,20 @@ public class UserServiceImpl implements IUserService{
 		
 		return userDao.findUserById(id);
 		
+	}
+
+	public void addMobile(MobileInfo mobileInfo) {
+		// TODO Auto-generated method stub
+		userDao.addMobile(mobileInfo);
+	}
+
+	public void updateMobile(int times) {
+		// TODO Auto-generated method stub
+		userDao.updateMobile(times);
+	}
+
+	public MobileInfo getMobileById(String MobileNumber) {
+		// TODO Auto-generated method stub
+		return userDao.getMobileById(MobileNumber);
 	}
 }
