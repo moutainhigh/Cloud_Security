@@ -184,6 +184,13 @@ function checkNumberImage(){
             
             <td class="regist_prompt"></td>
           </tr>
+         <tr class="register_tr">
+         <td class="regist_title"><span class="yzfs">图片验证码</span></td>
+          <td class="regist_input"> <input type="text" class="login_txt lgoin_yzm required" name="checkNumber" id="checkNumber1"/>
+          <span><img src="${ctx}/image.jsp" width="65" height="38" id="imageRegisterNumber" title="点击换一张" onclick="checkRegisterImage()"/></img></span>
+          <span id="verification_Image_msg" style="color:red"></span>
+          </td>
+         </tr>
           <tr class="register_tr">
             <td class="regist_title"></td>
             <td><input type="checkbox"  class="login_checkbox" id="ck"/>
