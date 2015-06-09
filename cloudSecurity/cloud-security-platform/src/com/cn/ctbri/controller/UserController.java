@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.cfg.Configuration;
+import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.Notice;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
@@ -479,13 +480,39 @@ public class UserController {
         Map<String, Object> m = new HashMap<String, Object>();
         SMSUtils smsUtils = new SMSUtils();
         try {
-        	//发送短信
-			smsUtils.sendMessage(user.getMobile(), String.valueOf(activationCode));
-			m.put("msg", "1");//1：验证码发送成功
-			 //object转化为Json格式
-    		JSONObject JSON = CommonUtil.objectToJson(response, m);
-    		// 把数据返回到页面
-    		CommonUtil.writeToJsp(response, JSON);
+        	boolean flag = false;
+        	//判断当前手机号是否已经发送过短信
+        	MobileInfo mobile = userService.getMobileById(user.getMobile());
+        	if(mobile==null){
+        		MobileInfo mobileInfo = new MobileInfo();
+        		mobileInfo.setMobileNumber(user.getMobile());
+        		mobileInfo.setTimes(1);
+        		Date date = new Date();
+        		SimpleDateFormat ds = new SimpleDateFormat("yyyy-MM-dd");
+        		mobileInfo.setSendDate(ds.format(date));
+        		userService.addMobile(mobileInfo);
+        		flag = true;
+        	}else if(mobile.getTimes()<3){
+        		int times = mobile.getTimes()+1;
+        		mobile.setTimes(times);
+        		userService.updateMobile(times);
+        		flag = true;
+        	}
+        	if(flag){
+        		//发送短信
+    			smsUtils.sendMessage(user.getMobile(), String.valueOf(activationCode));
+    			m.put("msg", "1");//1：验证码发送成功
+    			 //object转化为Json格式
+        		JSONObject JSON = CommonUtil.objectToJson(response, m);
+        		// 把数据返回到页面
+        		CommonUtil.writeToJsp(response, JSON);
+        	}else{
+        		m.put("msg", "2");//1：验证码发送成功
+        		JSONObject JSON = CommonUtil.objectToJson(response, m);
+        		// 把数据返回到页面
+        		CommonUtil.writeToJsp(response, JSON);
+        	}
+        
 		} catch (IOException e) {
 			m.put("msg", "0");//0：验证码发送失败
 			e.printStackTrace();
