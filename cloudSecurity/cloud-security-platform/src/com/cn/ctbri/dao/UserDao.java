@@ -3,6 +3,7 @@ package com.cn.ctbri.dao;
 import java.util.List;
 
 import com.cn.ctbri.entity.DataAnalysis;
+import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.User;
 /**
  * 创 建 人  ：  邓元元
@@ -89,5 +90,14 @@ public interface UserDao {
 	 * 功能描述：根据id查询用户信息
 	 */
 	List<User> findUserById(int id);
-
+	/**
+     * 添加注册发送手机信息
+     */
+    void addMobile(MobileInfo mobileInfo);
+    /**
+     * 修改注册发送手机信息
+     */
+    void updateMobile(int times);
+    
+    MobileInfo getMobileById(String MobileNumber);
 }
