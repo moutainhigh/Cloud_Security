@@ -7,7 +7,7 @@ var checkEmail1 = 0;
 var checkSendEmail1 = 0;
 var checkSendMobile1 = 0;
 var checkEmailActivationCode1 = 0;
-var wait=30;
+var wait=60;
 function checkName(){
 	var name = $("#regist_name").val();
 	var	pattern	= /^[a-zA-Z0-9_]{4,20}$/;
@@ -160,7 +160,12 @@ function checkSendEmail(){
 //检测手机验证码是否发送成功
 function checkSendMobile(){
  	var phone = $("#regist_phone").val();
- 	if(checkMobile1==1){
+ 	var checkNumber1 = $("#checkNumber1").val();
+ 	 if(checkNumber1==""){
+ 		$("#verification_Image_msg").html("图片验证码不能为空!"); 
+ 	 }else{
+ 		 if(checkMobile1==1){
+ 			 $("#verification_Image_msg").html(""); 
  		$.ajax({
            type: "POST",
            url: "/cloud-security-platform/regist_checkSendMobile.html",
@@ -170,22 +175,27 @@ function checkSendMobile(){
            		if(data.msg=="0"){
                		$("#verification_code_msg").html("短信发送失败");
                		checkSendMobile1 = 0;
-           		}else{
+           		}else if(data.msg=="1"){
            			timeMobile();
            			$("#verification_code_msg").html("<font color='green'>验证码发送成功，请查收短信</font>");
            			checkSendMobile1 = 1;
+           		}else{
+           			$("#verification_code_msg").html("一个手机号码只能发送3次短信，请通过邮箱注册!");
+               		checkSendMobile1 = 0;
            		}
            }
         });
       
- 	}
+ 	    }
+ 	 }
+ 	
 }
 //发邮件按钮显示倒计时的效果	
 function time() {
 	if (wait == 0) { 
 		document.getElementById("email_yzm").disabled=false;
 		document.getElementById("email_yzm").value="点击发送验证码";
-		wait = 30;
+		wait = 60;
 	} else { 
 		document.getElementById("email_yzm").value=wait + "秒后重新获取验证码";
 		document.getElementById("email_yzm").disabled=true;
@@ -200,7 +210,7 @@ function timeMobile() {
 	if (wait == 0) { 
 		document.getElementById("phone_yzm").disabled=false;
 		document.getElementById("phone_yzm").value="点击发送验证码";
-		wait = 30;
+		wait = 60;
 	} else { 
 		document.getElementById("phone_yzm").value=wait + "秒后重新获取验证码";
 		document.getElementById("phone_yzm").disabled=true;
@@ -291,4 +301,11 @@ function submitForm(){
 	    }
 	}
 }
+
+//跟换验证码
+function checkRegisterImage(){
+	var imageNumber = document.getElementById("imageRegisterNumber");
+	imageNumber.src = "image.jsp?timestamp="+new Date().getTime();
+};
+ $('#imageRegisterNumber').click(function(){checkRegisterImage()});
 	
