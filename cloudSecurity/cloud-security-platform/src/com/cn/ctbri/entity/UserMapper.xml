@@ -18,6 +18,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="realName" column="realName"/>
 		<result property="ip" column="ip"/>
 	</resultMap>
+	
+	<resultMap type="com.cn.ctbri.entity.MobileInfo" id="MobileInfo">
+	
+		<result property="MobileNumber" column="MobileNumber"/>
+		<result property="Times" column="Times"/>
+		<result property="sendDate" column="sendDate"/>
+		
+	</resultMap>
 	<!-- 修改用户 -->
 	<update id="update" parameterType="com.cn.ctbri.entity.User">
 		update cs_user
@@ -138,5 +146,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 查询用户信息 -->
 	<select id="findUserById" resultMap="UserRM" parameterType="int">
 	select * from cs_user where id=#{id} 
+	</select>
+	
+	<!-- 插入手机信息-->
+	<insert id="addMobile" parameterType="com.cn.ctbri.entity.MobileInfo">
+		insert into cs_mobile
+		(MobileNumber,Times,sendDate) values(#{MobileNumber},#{Times},#{sendDate})
+	</insert>
+	<!-- 修改手机信息 -->
+	<update id="updateMobile" parameterType="int">
+	    update cs_mobile set Times=#{Times}
+	</update>
+	
+	<!-- 根据手机号查询信息 -->
+	<select id="getMobileById" resultMap="MobileInfo" parameterType="String">
+	select * from cs_mobile where MobileNumber=#{MobileNumber} 
 	</select>
 </mapper>

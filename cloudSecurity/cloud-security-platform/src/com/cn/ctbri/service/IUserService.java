@@ -3,6 +3,7 @@ package com.cn.ctbri.service;
 import java.util.List;
 
 import com.cn.ctbri.entity.DataAnalysis;
+import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.pager.PageBean;
 /**
@@ -95,4 +96,14 @@ public interface IUserService {
 
     List<User> findUserById(int id);
 	
+    /**
+     * 添加注册发送手机信息
+     */
+    void addMobile(MobileInfo mobileInfo);
+    /**
+     * 修改注册发送手机信息
+     */
+    void updateMobile(int times);
+    
+    MobileInfo getMobileById(String MobileNumber);
 }
