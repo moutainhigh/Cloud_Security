@@ -20,8 +20,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入任务信息 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO cs_task
-		(order_asset_Id,execute_time,status,group_flag,end_time,remarks) 
-		VALUES( #{order_asset_Id} , #{execute_time},#{status},#{group_flag},#{end_time},#{remarks})
+		(order_asset_Id,execute_time,status,group_flag,end_time,remarks,websoc) 
+		VALUES( #{order_asset_Id} , #{execute_time},#{status},#{group_flag},#{end_time},#{remarks},#{websoc})
 	</insert>
 	<!-- 根据orderId查询扫描次数 -->
 	<select id="findByOrderId" parameterType="int" resultType="Object">

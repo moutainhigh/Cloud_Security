@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class Task{
 	private int taskId;//任务Id(主键)
-	private int order_asset_Id;//
+	private String order_asset_Id;//
 	private Date execute_time;//执行时间
 	private int status;//任务状态（1：已执行，未执行）
 	private Date group_flag;//分组标记
@@ -32,6 +32,7 @@ public class Task{
     private String endTime;//vo结束时间
     private String executeTime;//vo执行时间
     private int progress;//执行进度vo
+    private int websoc;//创宇
 	public int getProgress() {
 		return progress;
 	}
@@ -59,10 +60,10 @@ public class Task{
 	public int getTaskId() {
 		return taskId;
 	}
-	public int getOrder_asset_Id() {
+	public String getOrder_asset_Id() {
 		return order_asset_Id;
 	}
-	public void setOrder_asset_Id(int order_asset_Id) {
+	public void setOrder_asset_Id(String order_asset_Id) {
 		this.order_asset_Id = order_asset_Id;
 	}
 	public void setTaskId(int taskId) {
@@ -169,6 +170,12 @@ public class Task{
 	}
 	public void setGroup_flag(Date group_flag) {
 		this.group_flag = group_flag;
+	}
+	public int getWebsoc() {
+		return websoc;
+	}
+	public void setWebsoc(int websoc) {
+		this.websoc = websoc;
 	}
 	
 }

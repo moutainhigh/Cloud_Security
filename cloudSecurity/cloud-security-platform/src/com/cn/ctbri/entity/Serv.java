@@ -16,6 +16,7 @@ public class Serv {
 	private String remarks;//备注
     private int orderType;	//订单类型(0:单次和长期,1:长期,2:单次)
     private int parentC;//服务大类
+    private int websoc;//创宇标志
 	public int getId() {
 		return id;
 	}
@@ -69,6 +70,12 @@ public class Serv {
     }
     public void setParentC(int parentC) {
         this.parentC = parentC;
+    }
+    public int getWebsoc() {
+        return websoc;
+    }
+    public void setWebsoc(int websoc) {
+        this.websoc = websoc;
     }
 	
 }
