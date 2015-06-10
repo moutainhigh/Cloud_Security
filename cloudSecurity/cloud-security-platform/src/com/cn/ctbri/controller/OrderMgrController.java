@@ -255,6 +255,7 @@ public class OrderMgrController {
         String factory = new String(request.getParameter("factory").getBytes("ISO-8859-1"),"UTF-8");
         String parentC = request.getParameter("parentC");
         String orderType = request.getParameter("orderType");
+        String websoc = request.getParameter("websoc");
         Serv service = new Serv();
         service.setOrderType(Integer.parseInt(orderType));
         if(!type.equals("null")){
@@ -265,6 +266,9 @@ public class OrderMgrController {
         }
         if(!parentC.equals("null")){
             service.setParentC(Integer.parseInt(parentC));
+        }
+        if(!websoc.equals("null")){
+            service.setWebsoc(Integer.parseInt(websoc));
         }
         List<Serv> list = servService.findServiceByParam(service);
         int count = 0;
@@ -300,6 +304,31 @@ public class OrderMgrController {
     public void saveOrder(HttpServletResponse response,HttpServletRequest request) throws Exception{
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         String assetIds = request.getParameter("assetIds");
+        Map<String, Object> m = new HashMap<String, Object>();
+        //后台判断资产是否可用
+        String[] assetArrayAble = null;   
+        assetArrayAble = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+        boolean assetsStatus = false;
+        for(int i=0;i<assetArrayAble.length;i++){
+            Asset _asset = assetService.findById(Integer.parseInt(assetArrayAble[i]));
+            int status = _asset.getStatus();
+            if(status==0){
+                assetsStatus = true;
+                break;
+            }
+        }
+        m.put("assetsStatus", assetsStatus);
+        if(assetsStatus){
+            //object转化为Json格式
+            JSONObject JSON = CommonUtil.objectToJson(response, m);
+            try {
+                // 把数据返回到页面
+                CommonUtil.writeToJsp(response, JSON);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
         //String orderId = request.getParameter("orderId");
         String orderId = String.valueOf(Random.tencode());
         String orderType = request.getParameter("orderType");
@@ -322,7 +351,7 @@ public class OrderMgrController {
         String address = new String(request.getParameter("address").getBytes("ISO-8859-1"),"UTF-8");
         String ip = request.getParameter("ip");
         String bandwidth = request.getParameter("bandwidth");
-        Map<String, Object> m = new HashMap<String, Object>();
+        String websoc = request.getParameter("websoc");
         //订单开始时间不能早于当前订单提交时间,add by txr,2015-3-3
         if(beginDate.compareTo(createDate)>0){
             m.put("timeCompare", true);
@@ -366,6 +395,9 @@ public class OrderMgrController {
             order.setUserId(globle_user.getId());
             order.setContactId(linkmanId);
             order.setStatus(0);
+            if(!websoc.equals("null")){
+            	order.setWebsoc(Integer.parseInt(websoc));
+            }
             selfHelpOrderService.insertOrder(order);
             
             if(serviceId.equals("6")||serviceId.equals("7")||serviceId.equals("8")){
@@ -409,7 +441,11 @@ public class OrderMgrController {
                 //获取订单定制的服务信息
                 //Service s = orderDao.getTPLByServiceId();
                 //遍历订单详情  创建任务
-                for(OrderAsset oa : oaList){
+                if(!websoc.equals("null")){//创宇任务
+                    String ids = "";
+                    for(OrderAsset oa : oaList){
+                        ids = ids + oa.getId()+",";
+                    }
                     Task task = new Task();
                     if(scanType.equals("1")){
                         String hour = beginDate.substring(11, 13);
@@ -428,11 +464,34 @@ public class OrderMgrController {
                     }
                     task.setStatus(Integer.parseInt(Constants.TASK_START));
                     //设置订单详情id
-                    task.setOrder_asset_Id(oa.getId());
-                    //资产任务组
-                    
+                    task.setOrder_asset_Id(ids.substring(0,ids.length()-1));
+                    task.setWebsoc(Integer.parseInt(websoc));
                     //插入一条任务数据  获取任务id
                     int taskId = taskService.insert(task);
+                }else{//安恒任务
+                    for(OrderAsset oa : oaList){
+                        Task task = new Task();
+                        if(scanType.equals("1")){
+                            String hour = beginDate.substring(11, 13);
+                            String minute = beginDate.substring(14, 16);
+                            if(hour.equals("00")&&minute.compareTo("10")<0){
+                                String executeTime = beginDate.substring(0, 10).concat(" 00:10:00");
+                                task.setExecute_time(sdf.parse(executeTime));
+                                task.setGroup_flag(sdf.parse(executeTime));
+                            }else{
+                                String executeDay = beginDate.substring(0, 10).concat(" 00:10:00");
+                                SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
+                                Date executeTime = getAfterDate(sdf.parse(executeDay));
+                                task.setExecute_time(executeTime);
+                                task.setGroup_flag(executeTime);
+                            }
+                        }
+                        task.setStatus(Integer.parseInt(Constants.TASK_START));
+                        //设置订单详情id
+                        task.setOrder_asset_Id(String.valueOf(oa.getId()));
+                        //插入一条任务数据  获取任务id
+                        int taskId = taskService.insert(task);
+                    }
                 }
             }else if(serviceId.equals("2")||serviceId.equals("3")||serviceId.equals("5")||serviceId.equals("4")||orderType.equals("2")){//add by txr 2015-03-26
               //根据orderid 获取要扫描的订单详情集合
@@ -440,20 +499,44 @@ public class OrderMgrController {
                 //获取订单定制的服务信息
                 //Service s = orderDao.getTPLByServiceId();
                 //遍历订单详情  创建任务
-                for(OrderAsset oa : oaList){
+                if(!websoc.equals("null")){
+                    String ids = "";
+                    for(OrderAsset oa : oaList){
+                        ids = ids + oa.getId()+",";
+                    }
                     Task task = new Task();
                     task.setExecute_time(begin_date);
                     task.setStatus(Integer.parseInt(Constants.TASK_START));
                     //设置订单详情id
-                    task.setOrder_asset_Id(oa.getId());
+                    task.setOrder_asset_Id(ids.substring(0,ids.length()-1));
                     //资产任务组
                     task.setGroup_flag(begin_date);
                     if(serviceId.equals("5")){
                         task.setEnd_time(end_date);
                     }
+                    //创宇
+                    if(!websoc.equals("null")){
+                        task.setWebsoc(Integer.parseInt(websoc));
+                    }
                     //插入一条任务数据  获取任务id
                     int taskId = taskService.insert(task);
+                }else{
+                    for(OrderAsset oa : oaList){
+                        Task task = new Task();
+                        task.setExecute_time(begin_date);
+                        task.setStatus(Integer.parseInt(Constants.TASK_START));
+                        //设置订单详情id
+                        task.setOrder_asset_Id(String.valueOf(oa.getId()));
+                        //资产任务组
+                        task.setGroup_flag(begin_date);
+                        if(serviceId.equals("5")){
+                            task.setEnd_time(end_date);
+                        }
+                        //插入一条任务数据  获取任务id
+                        int taskId = taskService.insert(task);
+                    }
                 }
+                
             }
 //            else if(serviceId.equals("2")&&orderType.equals("1")){
 //                List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);

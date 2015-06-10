@@ -64,9 +64,12 @@ public class WarningController {
     public String warningInit(HttpServletRequest request,HttpServletResponse response) throws Exception{
         String orderId = request.getParameter("orderId");
         String type = request.getParameter("type");
+        String websoc = request.getParameter("websoc");
 //        String taskId = request.getParameter("taskId");
         String groupId=request.getParameter("groupId");
         User user = (User)request.getSession().getAttribute("globle_user");
+        //创宇标志
+        request.setAttribute("websoc", websoc);
         //时间分组标志
         request.setAttribute("group_flag", groupId);
         //获取订单信息
@@ -89,6 +92,7 @@ public class WarningController {
 	        paramMap.put("type", type);
 	        paramMap.put("group_flag", groupId);
 	        paramMap.put("count", assetList.size());
+	        paramMap.put("websoc", websoc);
 	        List<Alarm> alarmList = alarmService.getAlarmByOrderId(paramMap);
 	        request.setAttribute("alist", alarmList.size());
 	        //关键字告警信息
@@ -607,6 +611,7 @@ public class WarningController {
         String orderId = request.getParameter("orderId");
         String type = request.getParameter("type");
         String group_flag = request.getParameter("group_flag");
+        String websoc = request.getParameter("websoc");
         //获取对应资产
         List assetList = orderAssetService.findAssetNameByOrderId(orderId);
         Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -614,6 +619,7 @@ public class WarningController {
         paramMap.put("type", type);
         paramMap.put("count", assetList.size());
         paramMap.put("group_flag", group_flag);
+        paramMap.put("websoc", websoc);
         //低
         paramMap.put("level", WarnType.LOWLEVEL.ordinal());
         List<Alarm> lowList = alarmService.getAlarmByOrderId(paramMap);
@@ -652,6 +658,7 @@ public class WarningController {
         String orderId = request.getParameter("orderId");
         String type = request.getParameter("type");
         String group_flag = request.getParameter("group_flag");
+        String websoc = request.getParameter("websoc");
         //获取对应资产
         List assetList = orderAssetService.findAssetNameByOrderId(orderId);
         Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -659,6 +666,7 @@ public class WarningController {
         paramMap.put("type", type);
         paramMap.put("count", assetList.size());
         paramMap.put("group_flag", group_flag);
+        paramMap.put("websoc", websoc);
         //低
         paramMap.put("level", WarnType.LOWLEVEL.ordinal());
         List<Alarm> lowList = alarmService.getAlarmByOrderId(paramMap);
@@ -702,6 +710,7 @@ public class WarningController {
         String orderId = request.getParameter("orderId");
         String type = request.getParameter("type");
         String group_flag = request.getParameter("group_flag");
+        String websoc = request.getParameter("websoc");
         //获取对应资产
         List assetList = orderAssetService.findAssetNameByOrderId(orderId);
         Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -709,6 +718,7 @@ public class WarningController {
         paramMap.put("type", type);
         paramMap.put("count", assetList.size());
         paramMap.put("group_flag", group_flag);
+        paramMap.put("websoc", websoc);
         
         List<Task> taskList = alarmService.getTaskByOrderId(paramMap);
         JSONArray json = new JSONArray();
