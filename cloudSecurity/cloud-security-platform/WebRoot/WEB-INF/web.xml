@@ -43,14 +43,6 @@
 	    <url-pattern>*.txt</url-pattern>
 	    <url-pattern>*.gif</url-pattern>
 	</servlet-mapping>
-	<servlet>
-        <servlet-name>receive</servlet-name>
-        <servlet-class>com.cn.ctbri.servlet.ReceiveServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>receive</servlet-name>
-        <url-pattern>/receive</url-pattern>
-    </servlet-mapping>
 	
 	<!-- <session-config>   
 	<session-timeout>1</session-timeout>   
