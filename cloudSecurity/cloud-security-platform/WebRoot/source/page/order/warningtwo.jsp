@@ -199,7 +199,7 @@ function clearTable(){
             	<span class="progress">
                     <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: ${progress }%" id="bar2">${progress }%</span>
 				</span>
-            <span class="prourl" id="url">当前URL:${currentUrl }</span>
+            <c:if test="${websoc!=1}"><span class="prourl" id="url">当前URL:${currentUrl }</span></c:if>
             </span></p>
         </div>
         
@@ -212,25 +212,29 @@ function clearTable(){
             <td style="width:;">开始时间</td>
             <td  style="width:%;">结束时间</td>
             <td  style="width:%;">扫描时长</td>
-            <td  style="width:%;">已经发现弱点数</td>
-            <td  style="width:%;">请求次数</td>
-            <td  style="width:%;">URL个数</td>
-            <td  style="width:%;">平均响应时间</td>
-            <td  style="width:%;">每秒访问个数</td>
-            <td  style="width:%;">发送字节</td>
-            <td  style="width:%;">接收字节</td>
+            <c:if test="${websoc!=1}">
+	            <td  style="width:%;">已经发现弱点数</td>
+	            <td  style="width:%;">请求次数</td>
+	            <td  style="width:%;">URL个数</td>
+	            <td  style="width:%;">平均响应时间</td>
+	            <td  style="width:%;">每秒访问个数</td>
+	            <td  style="width:%;">发送字节</td>
+	            <td  style="width:%;">接收字节</td>
+            </c:if>
           </tr>
           <tr>                                            
             <td style="line-height:20px;">${task.executeTime}</td>
             <td style="line-height:20px;">--</td>
             <td>--</td>
-            <td>${task.issueCount}个</td>
-            <td>${task.requestCount}次</td>
-            <td>${task.urlCount}个</td>            
-            <td>${task.averResponse}毫秒</td>
-            <td>${task.averSendCount}个</td>
-            <td>${send}</td>
-            <td>${receive}</td>
+            <c:if test="${websoc!=1}">
+	            <td>${task.issueCount}个</td>
+	            <td>${task.requestCount}次</td>
+	            <td>${task.urlCount}个</td>            
+	            <td>${task.averResponse}毫秒</td>
+	            <td>${task.averSendCount}个</td>
+	            <td>${send}</td>
+	            <td>${receive}</td>
+            </c:if>
           </tr>
             </c:forEach>
         </tboby>

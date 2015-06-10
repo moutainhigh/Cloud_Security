@@ -174,6 +174,7 @@ function seedetail1(e) {
             <input type="hidden" value="${order.id }" id="orderId" />
             <input type="hidden" value="${order.type }" id="type"/>
             <input type="hidden" value="${group_flag }" id="group_flag"/>
+            <input type="hidden" value="${order.websoc }" id="websoc"/>
             <p><span class="bigfont">${order.name }</span>
             <span>(  订单编号：${order.id }  )</span>
             
@@ -220,7 +221,7 @@ function seedetail1(e) {
             	<span class="progress">
                     <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: ${progress }%" id="bar2">${progress }%</span>
 				</span>
-            <span class="prourl" id="url">当前URL:${currentUrl }</span>
+            <c:if test="${websoc!=1}"><span class="prourl" id="url">当前URL:${currentUrl }</span></c:if>
             </span></p>
         </div>
         <div class="gj_box">
@@ -248,13 +249,15 @@ function seedetail1(e) {
                 <P class="formalinfo"><span class="infotitle">开始时间</span><span>${task.executeTime}</span></P>
                 <P class="formalinfo"><span class="infotitle">结束时间</span><span>${task.endTime}</span></P>
                 <P class="formalinfo"><span class="infotitle">扫描时长</span><span>${scanTime}</span></P>
-                <P class="formalinfo"><span class="infotitle2">已经发现弱点数</span><span>${task.issueCount}个</span></P>
-                <P class="formalinfo"><span class="infotitle2">请求次数</span><span>${task.requestCount}次</span></P>
-                <P class="formalinfo"><span class="infotitle2">URL个数</span><span>${task.urlCount}个</span></P>
-                <P class="formalinfo"><span class="infotitle2">平均响应时间</span><span>${task.averResponse}毫秒</span></P>
-                <P class="formalinfo"><span class="infotitle2">每秒访问个数</span><span>${task.averSendCount}个</span></P>
-                <P class="formalinfo"><span class="infotitle2">发送字节</span><span>${send}</span></P>
-                <P class="formalinfo"><span class="infotitle2">接收字节</span><span>${receive}</span></P>                  
+                <P class="formalinfo"><span class="infotitle2">已经发现弱点数</span><span>${alist}个</span></P>
+                <c:if test="${websoc!=1}">
+	                <P class="formalinfo"><span class="infotitle2">请求次数</span><span>${task.requestCount}次</span></P>
+	                <P class="formalinfo"><span class="infotitle2">URL个数</span><span>${task.urlCount}个</span></P>
+	                <P class="formalinfo"><span class="infotitle2">平均响应时间</span><span>${task.averResponse}毫秒</span></P>
+	                <P class="formalinfo"><span class="infotitle2">每秒访问个数</span><span>${task.averSendCount}个</span></P>
+	                <P class="formalinfo"><span class="infotitle2">发送字节</span><span>${send}</span></P>
+	                <P class="formalinfo"><span class="infotitle2">接收字节</span><span>${receive}</span></P>                  
+                </c:if>
             </div>
         </div>
         <c:if test="${order.type==1 && !empty alarmList}"><!-- 单次订单不显示趋势图 -->

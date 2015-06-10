@@ -32,18 +32,18 @@
              
              <c:if test="${list.serviceId==1||list.serviceId==2||list.serviceId==3||list.serviceId==4||list.serviceId==5}">
                 <c:if test="${list.status==2}">
-                 <a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}" target="_blank">
+                 <a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank">
                  <img src="${ctx}/source/images/status_1.jpg" title="已完成有告警"/>
                  </a>
                 </c:if>
                 <c:if test="${list.status==1}">
-                 <a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}" target="_blank">
+                 <a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank">
                  <img src="${ctx}/source/images/status_2.jpg" title="已完成无异常"/>
                  </a>
                 </c:if>
                 <!-- 安恒的服务 -->
-                <c:if test="${list.begin_date<=temp&&list.status==0}"><a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}" target="_blank"><img src="${ctx}/source/images/status_4.jpg" title="服务中"/></a></c:if>
-                <c:if test="${list.begin_date<=temp&&list.status==3}"><a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}" target="_blank"><img src="${ctx}/source/images/status_1.jpg" title="服务中有告警"/></a></c:if>
+                <c:if test="${list.begin_date<=temp&&list.status==0}"><a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank"><img src="${ctx}/source/images/status_4.jpg" title="服务中"/></a></c:if>
+                <c:if test="${list.begin_date<=temp&&list.status==3}"><a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank"><img src="${ctx}/source/images/status_1.jpg" title="服务中有告警"/></a></c:if>
              </c:if>
                 
                 <!-- 华为的服务 -->
