@@ -92,11 +92,16 @@ function showUnreadNews()
                 <span class="lb_font lb_forth">发现<span class="lb_font_w" id="num1">${leakNum }</span>个漏洞</span>
             </a>
         </li>
-        <li><a href="###"><img src="${ctx}/source/images/cloudsecurity3.jpg" /></a></li>
+       
         <li><a href="###"><img src="${ctx}/source/images/cloudsecurity1.jpg" /></a></li>
+        <li><a href="###"><img src="${ctx}/source/images/cloudsecurity4.png" /></a></li>
+        <li><a href="###"><img src="${ctx}/source/images/cloudsecurity5.png" /></a></li>
+        <li><a href="###"><img src="${ctx}/source/images/cloudsecurity6.png" /></a></li>
       </ul>
       <ol>
         <li  class="active"></li>
+        <li></li>
+        <li></li>
         <li></li>
         <li></li>
       </ol>
