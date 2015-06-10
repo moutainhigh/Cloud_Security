@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>用户管理</title>
+<title>公告管理</title>
 <link href="${ctx}/source/adminCss/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/adminCss/head_bottom.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/adminCss/backstage.css" type="text/css" rel="stylesheet" />
@@ -48,13 +48,13 @@ function deleteNotice(id){
         <li><a href="${ctx}/adminServUI.html" class="white">服务管理</a></li>
         <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">数据分析</a></li>
         <li><a href="${ctx}/adminSystemManageUI.html" class="white">系统管理</a></li>
-        <li style="border-right:1px solid #1f8db4;" class="b_current"><a href="${ctx}/adminNoticeManageUI.html" class="white">公告管理</a></li>
+        <li class="b_current" style="border-right:1px solid #1f8db4;"><a href="${ctx}/adminNoticeManageUI.html" class="white">公告管理</a></li>
       </ul>
     </div>
     <div class="lagst">
       <div class="lagst-left b_lagst_left"> <a href="#"><img src="${ctx}/source/adminImages/b_photo.jpg" width="43" height="42"></a> </div>
       <div class="lagst-right">
-        <p ><a href="###" class="white">${sessionScope.globle_user.name }</a></p>
+        <p ><a href="###" class="white">${sessionScope.admin_user.name }</a></p>
         <p> <a href="${ctx}/adminExit.html" class="white">退出</a></p>
       </div>
     </div>
