@@ -72,7 +72,7 @@ public class Scheduler4Task implements Job{
 			task.setExecute_time(new Date());
 			task.setStatus(Integer.parseInt(Constants.TASK_START));
 			//设置订单详情id
-			task.setOrder_asset_Id(oa.getId());
+			task.setOrder_asset_Id(String.valueOf(oa.getId()));
 			//插入一条任务数据  获取任务id
 			int taskId = taskDao.insert(task);
 			///*******************************
