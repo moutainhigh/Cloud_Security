@@ -93,10 +93,10 @@ function showUnreadNews()
             </a>
         </li>
        
-        <li><a href="###"><img src="${ctx}/source/images/cloudsecurity1.jpg" /></a></li>
         <li><a href="###"><img src="${ctx}/source/images/cloudsecurity4.png" /></a></li>
         <li><a href="###"><img src="${ctx}/source/images/cloudsecurity5.png" /></a></li>
         <li><a href="###"><img src="${ctx}/source/images/cloudsecurity6.png" /></a></li>
+        <li><a href="###"><img src="${ctx}/source/images/cloudsecurity1.jpg" /></a></li>
       </ul>
       <ol>
         <li  class="active"></li>
