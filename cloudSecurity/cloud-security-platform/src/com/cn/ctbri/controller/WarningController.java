@@ -255,7 +255,7 @@ public class WarningController {
 	    				m2.put("orderId", orderId);
 	    				m2.put("url", null);
 	    				//可用率统计
-	    		    	List<TaskWarn> listUseable = taskWarnService.findUseableByOrderId(orderId);
+	    		    	List<TaskWarn> listUseable = taskWarnService.findUseableByOrderId(paramMap);
 	    		    	request.setAttribute("listUseable", listUseable);
 	    			    request.setAttribute("wlist", taskWarnList.size());
 	    			  
@@ -263,7 +263,7 @@ public class WarningController {
 	    		    	Map<String, Object> m22 = new HashMap<String, Object>();
 	    		    	m22.put("orderId", orderId);
 	    		    	int flag1=0;
-	    		    	if(listUseable!=null){
+	    		    	if(listUseable!=null&&listUseable.size()>0){
 	    		    		String url = listUseable.get(0).getUrl();
 			    			m22.put("url", url); 
 			    			List<TaskWarn> listRight = taskWarnService.findWarnByOrderIdAndUrl(m22);
@@ -1172,8 +1172,8 @@ public class WarningController {
     	}
     	request.setAttribute("taskWarnList", taskWarnList);
         //可用率统计
-    	List<TaskWarn> listUseable = taskWarnService.findUseableByOrderId(orderId);
-    	request.setAttribute("listUseable", listUseable);
+//    	List<TaskWarn> listUseable = taskWarnService.findUseableByOrderId(orderId);
+//    	request.setAttribute("listUseable", listUseable);
         int serviceId=0 ;
         HashMap<String, Object> order=new HashMap<String, Object>();
         for(int i=0;i<orderList.size();i++){
@@ -1276,7 +1276,7 @@ public class WarningController {
         request.setAttribute("taskWarnList", taskWarnList);
         
         //可用率统计
-        List<TaskWarn> listUseable = taskWarnService.findUseableByOrderId(String.valueOf(paramMap.get("orderId")));
+        List<TaskWarn> listUseable = taskWarnService.findUseableByOrderId(paramMap);
         request.setAttribute("listUseable", listUseable);
         int serviceId=0 ;
         HashMap<String, Object> order=new HashMap<String, Object>();
@@ -1289,23 +1289,26 @@ public class WarningController {
             //可用率计算
             long usable = 0l;
             long huifu = 0l;
-            for (int i = 0; i < taskWarnList.size(); i++) {
-                if(taskWarnList.get(i).getName().equals("断网")){
-                    if(i==0){
-                        usable = usable + taskWarnList.get(i).getWarn_time().getTime()-task.getExecute_time().getTime();
-                    }else{
-                        usable = usable + taskWarnList.get(i).getWarn_time().getTime()-huifu;
-                    }
-                    
-                }else{
-                    huifu = taskWarnList.get(i).getWarn_time().getTime();
-                }
+            float usabling = 0;
+            if(task!=null){
+	            for (int i = 0; i < taskWarnList.size(); i++) {
+	                if(taskWarnList.get(i).getName().equals("断网")){
+	                    if(i==0){
+	                        usable = usable + taskWarnList.get(i).getWarn_time().getTime()-task.getExecute_time().getTime();
+	                    }else{
+	                        usable = usable + taskWarnList.get(i).getWarn_time().getTime()-huifu;
+	                    }
+	                    
+	                }else{
+	                    huifu = taskWarnList.get(i).getWarn_time().getTime();
+	                }
+	            }
+	          //获取当前时间
+	            SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	            String temp = setDateFormat.format(Calendar.getInstance().getTime());
+	            usabling = Float.parseFloat(String.valueOf(usable))/Float.parseFloat(String.valueOf((setDateFormat.parse(temp).getTime()-task.getExecute_time().getTime())));
+	            request.setAttribute("usabling", usabling*100+"%");
             }
-          //获取当前时间
-            SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String temp = setDateFormat.format(Calendar.getInstance().getTime());
-            float usabling = Float.parseFloat(String.valueOf(usable))/Float.parseFloat(String.valueOf((setDateFormat.parse(temp).getTime()-task.getExecute_time().getTime())));
-            request.setAttribute("usabling", usabling*100+"%");
             return "/source/page/order/order_usable";
             /**end*/
         }else if(serviceId==3){
