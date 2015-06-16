@@ -18,7 +18,7 @@ public interface ITaskWarnService {
 	//根据订单id获取告警次数
 	TaskWarn findTaskWarnCountByOrderId(String orderId);
 	//可用率统计
-	List<TaskWarn> findUseableByOrderId(String orderId);
+	List<TaskWarn> findUseableByOrderId(Map<String, Object> paramMap);
 	//查找告警的url资产
 	List<TaskWarn> findWarnUrlByOrderId(Map<String, Object> m);
 	//根据url和orderID查找告警
