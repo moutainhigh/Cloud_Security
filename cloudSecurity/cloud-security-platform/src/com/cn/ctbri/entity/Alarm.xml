@@ -72,7 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        order by a.level desc
         </if>
         <if test="websoc==1">
-            select * from cs_alarm a,
+            select a.id,a.name,a.alarm_time,a.score,a.level,a.alarm_content,a.url,a.keyword,a.taskId,a.alarm_type,a.userId,a.group_id,l.advice from cs_alarm a,
               (select t.taskId,t.group_id from cs_order_asset oa,cs_task t 
                 where oa.id in (t.order_asset_id)
                 and oa.orderId=#{orderId}
@@ -83,8 +83,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 order by t.execute_time desc
                 <if test="type==1 and group_flag==null or group_flag==''">
                  limit #{count}
-                </if>) b
+                </if>) b,cs_leakinfo l
             where a.group_id = b.group_id
+            and a.name = l.name
             <if test="level!=null">
                 and a.level=#{level}
             </if>
