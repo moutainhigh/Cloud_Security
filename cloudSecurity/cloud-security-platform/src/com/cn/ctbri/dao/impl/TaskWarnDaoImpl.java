@@ -31,8 +31,8 @@ public class TaskWarnDaoImpl extends DaoCommon implements TaskWarnDao {
 		return getSqlSession().selectOne(ns+"findTaskWarnCountByOrderId", orderId);
 	}
 	//可用率统计
-	public List<TaskWarn> findUseableByOrderId(String orderId) {
-		return getSqlSession().selectList(ns+"findUseableByOrderId", orderId);
+	public List<TaskWarn> findUseableByOrderId(Map<String, Object> paramMap) {
+		return getSqlSession().selectList(ns+"findUseableByOrderId", paramMap);
 	}
 	//查找告警的url资产
 	public List<TaskWarn> findWarnUrlByOrderId(Map<String, Object> m) {
