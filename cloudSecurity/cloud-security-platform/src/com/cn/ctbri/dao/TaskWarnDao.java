@@ -17,7 +17,7 @@ public interface TaskWarnDao {
 
 	TaskWarn findTaskWarnCountByOrderId(String orderId);
 
-	List<TaskWarn> findUseableByOrderId(String orderId);
+	List<TaskWarn> findUseableByOrderId(Map<String, Object> paramMap);
 
 	List<TaskWarn> findWarnUrlByOrderId(Map<String, Object> m);
 
