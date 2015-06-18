@@ -32,3 +32,6 @@
 /*错误信息*/
 label.error{color:#F00;line-height:38px;padding-left:10px;font-size:12px;background:#fff;}
 .regist_form label.error{left:394px;position:absolute;}
+/*忘记密码*/
+
+.forget_form{width:800px;margin:auto;padding:40px 0;}
