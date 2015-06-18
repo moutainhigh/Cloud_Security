@@ -140,7 +140,7 @@ function checkNumberImage(){
         <div class="login_list">
           <input type="checkbox" class="login_checkbox" name="remeberMe" id="remeberMe" value="yes" ${requestScope.checked }/>
           <span class="auto_login">记住密码</span>
-          <a href="#" class="forget_pass">忘记密码</a> 
+          <a href="${ctx}/forgetPass.html">忘记密码</a> 
         </div>
         <input type="button" class="login_btn" id="login_btn" onclick="loginSubmit()" value="登　　录"/>
       </form>
