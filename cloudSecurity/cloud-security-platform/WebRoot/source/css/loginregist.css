@@ -35,3 +35,4 @@ label.error{color:#F00;line-height:38px;padding-left:10px;font-size:12px;backgro
 /*忘记密码*/
 
 .forget_form{width:800px;margin:auto;padding:40px 0;}
+.pass_box{width:1100px;margin:12px auto 15px;height:380px;background:#fff;}
