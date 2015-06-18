@@ -106,4 +106,6 @@ public interface IUserService {
     void updateMobile(int times);
     
     MobileInfo getMobileById(String MobileNumber);
+    
+    void updatePass(User user);
 }

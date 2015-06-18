@@ -162,4 +162,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getMobileById" resultMap="MobileInfo" parameterType="String">
 	select * from cs_mobile where MobileNumber=#{MobileNumber} 
 	</select>
+	
+	<!-- 修改用户 -->
+	<update id="updatePass" parameterType="com.cn.ctbri.entity.User">
+		update cs_user set password=#{password}
+		
+		 where  
+		<if test="mobile!=null and mobile!=''">
+				  mobile=#{mobile}
+		</if>
+		<if test="email!=null and email!=''">
+			   email=#{email}
+		</if>
+	</update>
 </mapper>

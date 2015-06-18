@@ -157,4 +157,9 @@ public class UserServiceImpl implements IUserService{
 		// TODO Auto-generated method stub
 		return userDao.getMobileById(MobileNumber);
 	}
+
+	public void updatePass(User user) {
+		// TODO Auto-generated method stub
+		userDao.updatePass(user);
+	}
 }
