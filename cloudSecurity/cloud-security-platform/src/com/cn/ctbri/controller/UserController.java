@@ -611,5 +611,118 @@ public class UserController {
 		return "/source/page/onLineHelp/webQuestions";
 		//return "redirect:/loginUI.html";
 	}
+	/**
+	 * 功能描述： 忘记密码
+	 * 参数描述： Model m
+	 *		 @time 2015-1-8
+	 */
+	@RequestMapping(value="forgetPass.html")
+	public String forgetPass(Model m){
+		return "/forgetPass";
+	}
+	/**
+	 * 功能描述： 忘记密码
+	 * 参数描述： Model m
+	 *		 @time 2015-1-8
+	 */
+	@RequestMapping(value="updatePass.html")
+	public String updatePass(User user,HttpServletRequest request,Model m){
+		String email = request.getParameter("eamil_ecode");
+		String mobile = request.getParameter("phone_code");
+		if(email!=null&&!"".equals(email)){
+			user.setEmail(email);
+		}
+		if(mobile!=null&&!"".equals(mobile)){
+			user.setMobile(mobile);
+		}
+		m.addAttribute("User", user);
+		return "/updatePass";
+	}
 	
+	
+	/** 功能描述： 忘记密码
+	 * 参数描述： Model m
+	 *		 @time 2015-1-8
+	 */
+	@RequestMapping(value="/confirmPass.html")
+	public String confirmPass(User user){
+		String password = user.getPassword();
+		String passwdMD5 = DigestUtils.md5Hex(password);
+		user.setPassword(passwdMD5);
+		userService.updatePass(user);
+	
+	return "redirect:/loginUI.html";
+	}
+	
+	/**
+	 * 功能描述：判断邮箱是否已经注册
+	 * 参数描述：  
+	 * @throws Exception 
+	 *		 @time 2015-1-4
+	 */
+	@RequestMapping(value="isExitEmail.html", method = RequestMethod.POST)
+	@ResponseBody
+    public void isExitEmail(User user,HttpServletRequest request,HttpServletResponse response) {
+
+    	String email = user.getEmail();
+    	 List list = userService.findUserByEmail(email);
+    	Map<String, Object> m = new HashMap<String, Object>();
+    	if(list!=null&&list.size()>0){
+    		m.put("isExit", "1");//用户填写验证码正确
+    		//object转化为Json格式
+    		JSONObject JSON = CommonUtil.objectToJson(response, m);
+    		try {
+    			// 把数据返回到页面
+    			CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}else{
+    		m.put("isExit", "0");//用户填写验证码错误
+    		//object转化为Json格式
+    		JSONObject JSON = CommonUtil.objectToJson(response, m);
+    		try {
+    			// 把数据返回到页面
+    			CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
+	}
+	
+	/**
+	 * 功能描述：判断邮箱是否已经注册
+	 * 参数描述：  
+	 * @throws Exception 
+	 *		 @time 2015-1-4
+	 */
+	@RequestMapping(value="isExitPhone.html", method = RequestMethod.POST)
+	@ResponseBody
+    public void isExitPhone(User user,HttpServletRequest request,HttpServletResponse response) {
+
+    	String mobile = user.getMobile();
+    	 List list = userService.findUserByMobile(mobile);
+    	Map<String, Object> m = new HashMap<String, Object>();
+    	if(list!=null&&list.size()>0){
+    		m.put("isExit", "1");//用户填写验证码正确
+    		//object转化为Json格式
+    		JSONObject JSON = CommonUtil.objectToJson(response, m);
+    		try {
+    			// 把数据返回到页面
+    			CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}else{
+    		m.put("isExit", "0");//用户填写验证码错误
+    		//object转化为Json格式
+    		JSONObject JSON = CommonUtil.objectToJson(response, m);
+    		try {
+    			// 把数据返回到页面
+    			CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}
+	}
 }
