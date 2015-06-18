@@ -65,7 +65,7 @@ function forgetPass(type){
 </div>
 <!--头部代码结束-->
 <div class="login_wrap">
-  <div class="login_box">
+  <div class="pass_box">
     
     <div class="forget_form">
         <div class="login_list">
@@ -125,6 +125,7 @@ function forgetPass(type){
           </form>
           </div>
       </form>
+    </div>
     </div>
 <!--尾部部分代码-->
 <div class="bottom_bj">

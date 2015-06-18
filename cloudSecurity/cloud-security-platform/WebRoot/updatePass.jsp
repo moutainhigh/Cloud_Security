@@ -70,13 +70,17 @@
 </div>
 <!--头部代码结束-->
  <div class="login_wrap">
-  <div class="login_box">
+  <div class="pass_box">
  
         <form id="passForm" action="${ctx}/confirmPass.html">
         <table align="center">
+        <tr>
+          <td>&nbsp;</td>
+        </tr>
         <tr class="register_tr">
           <input type="hidden" name="email" value="${user.email}"/>
            <input type="hidden" name="mobile" value="${user.mobile}"/>
+          
             <td class="regist_title">设置密码</td>
             <td class="regist_input"><input type="password" class="regist_txt required" name="password" id="regist_password" onblur="checkPassword()"/><span id="regist_password_msg" style="color:red;float:left"></td>
             <td class="regist_prompt">请输入6-20位，支持中英文，数字，字符组合</td>
