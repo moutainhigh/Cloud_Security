@@ -68,14 +68,14 @@ function forgetPass(type){
   <div class="pass_box">
     
     <div class="forget_form">
-        <div class="login_list">
+        <div class="pass_list">
          
-          <span class="auto_login"><img src="${ctx}/source/images/forgetEmail.png" width="143" height="40" id="imageNumber" title="邮箱找回密码"  onclick="forgetPass('1');"/></img></span>
-         <span class="auto_login"><img src="${ctx}/source/images/forgetPhone.png" width="143" height="40" id="imageNumber" title="手机找回密码" onclick="forgetPass('2');"/></img></span>
+          <span class="pass_login"><img src="${ctx}/source/images/forgetEmail.png" width="143" height="40" id="imageNumber" title="邮箱找回密码"  onclick="forgetPass('1');"/></img></span>
+         <span class="pass_login"><img src="${ctx}/source/images/forgetPhone.png" width="143" height="40" id="imageNumber" title="手机找回密码" onclick="forgetPass('2');"/></img></span>
         </div>
       <div  id="phoneDiv" style="display:none">
       <form id="phoneForm" action="${ctx}/updatePass.html">
-       <table>
+       <table align="center">
         <tr class="register_tr">
             <td class="regist_title"><span class="yzfs">验证手机</span></td>
             <td class="regist_input" id="yzbox">
@@ -101,7 +101,7 @@ function forgetPass(type){
        
         <div id="eamilDiv" style="display:none">
         <form id="passForm" action="${ctx}/updatePass.html">
-        <table>
+        <table align="center">
         <tr class="register_tr">
             <td class="regist_title"><span class="yzfs">验证邮箱</span></td>
             <td class="regist_input" id="yzbox">

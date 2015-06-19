@@ -73,7 +73,7 @@
   <div class="pass_box">
  
         <form id="passForm" action="${ctx}/confirmPass.html">
-        <table align="center">
+        <table style="margin: 0 auto">
         <tr>
           <td>&nbsp;</td>
         </tr>
