@@ -85,7 +85,7 @@ public class HuaweiWorker {
 	static{
 		try {
 			Properties p = new Properties();
-			p.load(ArnhemWorker.class.getClassLoader().getResourceAsStream("huawei.properties"));
+			p.load(HuaweiWorker.class.getClassLoader().getResourceAsStream("huawei.properties"));
 			
 			AUTH = p.getProperty("auth");
 			CREATE_ZONE = p.getProperty("create_zone");
