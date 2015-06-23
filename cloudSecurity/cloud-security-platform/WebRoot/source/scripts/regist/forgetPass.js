@@ -44,10 +44,14 @@ function checkSendEmail(){
 //检测手机验证码是否发送成功
 function checkSendMobile(){
  	var phone = $("#phone_code").val();
+ 	var checkNumber1 = $("#checkNumber1").val();
+ 	alert(checkNumber1);
  	if(phone==""||phone==null){
 		$("#forget_phone_msg").html("手机号码不能为空");
-	}else{
-		
+	}else if(checkNumber1==null||checkNumber1==""){
+	 	$("#verification_Image_msg").html("图片验证码不能为空!");
+	 }else{
+		$("#forget_phone_msg").html("");
 		$.ajax({
            type: "POST",
            url: "/cloud-security-platform/isExitPhone.html",
@@ -141,7 +145,7 @@ function checkEmailActivationCode(){
 //检测验证码填写是否正确
 function checkPhoneActivationCode(){
 	 var verification_code = $("#verification_phone").val();
-	 if(verification_code!=null&&verification_code!=""){
+	 	if(verification_code!=null&&verification_code!=""){
 		 $.ajax({
            type: "POST",
            url: "/cloud-security-platform/regist_checkEmailActivationCode.html",
@@ -149,7 +153,7 @@ function checkPhoneActivationCode(){
            dataType:"json",
            success: function(data){
            		if(data.msg=="0"){
-	               	$("#verification_phone_msg").html("验证码填写错误");
+	               	$("#verification_phone_msg").html("验证码填写错误!");
 	               
            		}else{
            			
@@ -159,8 +163,14 @@ function checkPhoneActivationCode(){
            },
         });  
 	 }else{
-	 	$("#verification_phone_msg").html("请填写验证码");
+	 	$("#verification_phone_msg").html("请填写验证码!");
 		
 	 }
 }
 
+//跟换验证码
+function checkRegisterImage(){
+	var imageNumber = document.getElementById("imageRegisterNumber");
+	imageNumber.src = "image.jsp?timestamp="+new Date().getTime();
+};
+ $('#imageRegisterNumber').click(function(){checkRegisterImage()});
