@@ -43,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 查询网页数 -->
     <select id="findWebPageNum" resultType="hashmap">
-        select * from cs_alarm a
+        select sum(t.urlCount) url from cs_task t
         <!-- select * from cs_alarm a,
         (select t.taskId from cs_task t,
         (select oa.id from cs_order o,cs_service s,cs_order_asset oa 
