@@ -1,5 +1,6 @@
 package com.cn.ctbri.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -103,8 +104,9 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
      *       @time 2015-3-9
      */
     public int findWebPageNum() {
-        List webPageList = this.getSqlSession().selectList(ns + "findWebPageNum");
-        return webPageList.size();
+        List<HashMap<String, Object>> webPageList = this.getSqlSession().selectList(ns + "findWebPageNum");
+        double i = (Double) webPageList.get(0).get("url");
+        return (int)i;
     }
 
 
