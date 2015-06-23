@@ -96,6 +96,22 @@ public class UserController {
 	}
 	
 	/**
+	 * 功能描述： 保存修改后的密码
+	 * 参数描述：User user,Model model,HttpServletRequest request
+	 *		 @time 2015-6-18
+	 */
+	@RequestMapping("/saveUserPassword.html")
+	public String saveUserPassword(User user,Model model,HttpServletRequest request){
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		//密码
+		String password = user.getPassword();
+		String passwdMD5 = DigestUtils.md5Hex(password);
+		globle_user.setPassword(passwdMD5);
+		userService.update(globle_user);
+		return "redirect:/userDataUI.html";
+	}
+	
+	/**
      * 功能描述： 首页数据查询
      * 参数描述：  无
      *     @time 2015-3-9
@@ -359,6 +375,39 @@ public class UserController {
 		int count = 0;
 		if(users.size()>0){
 			count = users.size();
+		}
+		Map<String, Object> m = new HashMap<String, Object>();
+		m.put("count", count);
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 功能描述： 检验用户名密码是否正确
+	 * 参数描述：  String name,HttpServletResponse response
+	 * @throws Exception 
+	 *		 @time 2014-12-31
+	 */
+	@RequestMapping(value="regist_checkPwd.html", method = RequestMethod.POST)
+	@ResponseBody
+	public void regist_checkPwd(String name,String opassword,HttpServletResponse response){
+		List<User> users = userService.findUserByName(name);
+		boolean count = false;
+		//判断用户名密码输入是否正确
+		User _user = null;
+		if(users.size()>0){
+			_user = users.get(0);
+			//从页面上获取密码和User对象中存放的密码，进行匹配，如果不一致，提示【密码输入有误】
+			String md5password = DigestUtils.md5Hex(opassword);
+			if(!md5password.equals(_user.getPassword())){
+				count = true;
+			}
 		}
 		Map<String, Object> m = new HashMap<String, Object>();
 		m.put("count", count);
