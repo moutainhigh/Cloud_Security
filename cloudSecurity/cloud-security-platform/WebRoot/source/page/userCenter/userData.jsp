@@ -11,6 +11,8 @@
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/regist/regist.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/userzezao.js"></script>
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
@@ -144,6 +146,91 @@ function checkUserData(){
 		}
 	}
 }
+
+function checkName(){
+	var name = $("#regist_name").val();
+	var	pattern	= /^[a-zA-Z0-9_]{4,20}$/;
+	var flag = pattern.test(name);
+	if(name==""||name==null){
+		$("#regist_name_msg").html("用户名不能为空");
+		checkName1=0;
+	}else{
+		if(flag){
+			$.ajax({
+               type: "POST",
+               url: "/cloud-security-platform/regist_checkName.html",
+               data: {"name":name},
+               dataType:"json",
+               success: function(data){
+                   if(data.count>0){
+                   		$("#regist_name_msg").html("用户名已经存在");
+                   		checkName1=0;
+                   }else{
+                   		$("#regist_name_msg").html("");
+                   		checkName1=1;
+                   }
+               },
+            }); 
+		}else{
+			$("#regist_name_msg").html("请输入4-20位字符");
+			checkName1=0;
+		}
+	}
+}
+
+function checkPwd(){
+	var opassword =$("#opassword").val();
+	var name = $("#originalName").val();
+	$.ajax({
+             type: "POST",
+             url: "/cloud-security-platform/regist_checkPwd.html",
+             data: {"name":name,"opassword":opassword},
+             dataType:"json",
+             success: function(data){
+                 if(data.count==true){
+                 		$("#editPassword_msg").html("原密码不正确");
+                 }else{
+                 		$("#editPassword_msg").html("");
+                 }
+             },
+          }); 
+}
+
+
+function editPassword(){
+	checkPwd();
+	var opassword =$("#opassword").val();
+	var p1 = $("#regist_password").val();
+	var p2 = $("#regist_confirm_password").val();
+	if(opassword==""||opassword==null||p1==""||p1==null||p2==""||p2==null){
+		if(null==opassword||""==opassword){
+			$("#editPassword_msg").html("<font color='red'>原密码不能为空</font>");
+		}else{
+			$("#editPassword_msg").html("");
+		}
+	    if(null==p1||""==p1){
+			$("#regist_password_msg").html("密码不能为空");
+		}else{
+			$("#regist_password_msg").html("");
+		}
+		if(null==p2||""==p2){
+			$("#regist_confirm_password_msg").html("<font color='red'>确认密码不能为空</font>");
+		}else{
+			$("#regist_confirm_password_msg").html("");
+		}
+	}else{
+		if(p1.length<6||p1.length>20){
+	        $("#regist_password_msg").html("请输入6-20位，支持中英文，数字，字符组合");
+	    }else if(p1!=p2) {
+	   		$("#regist_confirm_password_msg").html("<font color='red'>两次输入密码不一致，请重新输入</font>");
+		}else{
+		    $("#regist_confirm_password_msg").html("");
+		    $("#editPassword").submit();
+		}
+		
+	}
+	
+}
 </script> 
 </head>
 
@@ -201,13 +288,13 @@ function checkUserData(){
             </td>
           </tr>
           <tr class="register_tr">
-            <td class="regist_title">手&nbsp;&nbsp;&nbsp;机</td>
+            <td class="regist_title">密&nbsp;&nbsp;&nbsp;码</td>
             <td class="regist_input">
-            	<input type="hidden" id="originalMobile"  value="${user.mobile}"/>
-            	<input type="text" name="mobile" value="${user.mobile}" id="regist_phone" class="regist_txt required" />
-           		<span id="regist_mobile_msg" style="color:red;float:left"></span>
+                <input type="hidden" id="originalPassword" value="${user.password}"/>
+                <input type="password" value="******" disabled="true" id="regist_pwd" class="regist_txt required"/>
+                <span id="regist_mobile_password_msg" style="color:red;float:left"></span>
             </td>
-            <td class="regist_prompt"></td>
+            <td class="regist_title"><div class="zc_edit" id="${user.id}" name="${user.name}" pwd="${user.password}" >修改</div></td>
           </tr>
           <tr class="register_tr">
             <td class="regist_title">邮&nbsp;&nbsp;&nbsp;箱</td>
@@ -216,6 +303,15 @@ function checkUserData(){
             	<input type="text" name="email" value="${user.email}" id="regist_email" class="regist_txt required"/>
             	<span id="regist_mobile_email_msg" style="color:red;float:left"></span>
             </td>
+          </tr>
+          <tr class="register_tr">
+            <td class="regist_title">手&nbsp;&nbsp;&nbsp;机</td>
+            <td class="regist_input">
+                <input type="hidden" id="originalMobile"  value="${user.mobile}"/>
+                <input type="text" name="mobile" value="${user.mobile}" id="regist_phone" class="regist_txt required" />
+                <span id="regist_mobile_msg" style="color:red;float:left"></span>
+            </td>
+            <td class="regist_prompt"></td>
           </tr>
         </table>
       <div class="user_sub"><a href="javascript:void(0)" onclick="checkUserData()"><img src="${ctx}/source/images/user_sub.png" /></a></div>
@@ -260,5 +356,38 @@ function checkUserData(){
 </div>
 </div>
 </div>
+
+<div id="box_mark"></div>
+<div id="box_logoIn_edit">
+  <div id="close_edit"></div>  <div class="text_1">
+    <form id="editPassword" action="${ctx}/saveUserPassword.html" method="post">
+    <div class="text_top">修改密码</div>
+    <div class="text_bottm">
+    <input type="hidden" name="id" id="hiddenEditUserid"/>
+    <input type="hidden" name="hiddenEditUserName" id="hiddenEditUserName"/>
+    <input type="hidden" name="hiddenEditUserPwd" id="hiddenEditUserPwd"/>
+      <table style="margin-top:56px;width:630px">
+        <tr>
+          <td style="width:25%;">当前密码</td>
+          <td style="width:37%;"><input class="boz_inout_1" style="height:30px;line-height:30px" type="password" name="opassword" id="opassword" onblur="checkPwd()"/></td>
+          <td style="width:30%; text-align:left; color:#e32929;font-size:12px"><div id="editPassword_msg"></div></td>
+        </tr>
+        <tr>
+          <td>新密码</td>
+          <td style="width:37%;"><input class="boz_inout_1" style="height:30px;line-height:30px" type="password" name="password" id="regist_password" onblur="checkPassword()"/></td>
+          <td style="width:30%; text-align:left; color:#e32929;font-size:12px"><div id="regist_password_msg"></div></td>
+        </tr>
+        <tr>
+          <td>确认密码</td>
+          <td><input class="boz_inout_1" style="height:30px;line-height:30px" type="password" name="confirm_password" id="regist_confirm_password" onblur="checkConfirmPassword()"/></td>
+          <td style="color:#e32929;text-align:left"><div id="regist_confirm_password_msg"></div></td>
+        </tr>
+      </table>
+    </div>
+    <div style="margin-top:35px;"><a href="javascript:void(0)"><img src="${ctx}/source/images/user_submit_3.jpg" onclick="editPassword()"/></a></div>
+  </div>
+  </form>
+</div>
+
 </body>
 </html>
