@@ -78,5 +78,7 @@ public interface IAssetService {
      * @return
      */
     List<Asset> findByTask(Task task);
+    
+    Asset findAssetById(int id);
 	
 }

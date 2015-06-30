@@ -46,4 +46,13 @@ public interface ITaskService {
 
     //定时删除的任务
     List<Task> findDelTask(Map<String, Object> delmap);
+    //根据创宇group_id查询任务
+    List<Task> findTaskByGroupId(String group_id);
+
+    //查找引擎异常为下发的任务
+    List<Task> findExpTask(Map<String, Object> map);
+
+    List getArnhemTask();
+
+    List getWebsocTask();
 }

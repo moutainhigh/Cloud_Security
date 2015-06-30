@@ -1,6 +1,7 @@
 package com.cn.ctbri.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cn.ctbri.entity.TaskWarn;
 
@@ -13,7 +14,7 @@ import com.cn.ctbri.entity.TaskWarn;
 public interface ITaskWarnService {
 
 	//根据订单id获取告警信息
-	List<TaskWarn> findTaskWarnByOrderId(String orderId);
+	List<TaskWarn> findTaskWarnByOrderId(Map<String, Object> hashmap);
 	//根据订单id获取告警次数
 	TaskWarn findTaskWarnCountByOrderId(String orderId);
 	//可用率统计
