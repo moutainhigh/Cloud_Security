@@ -29,10 +29,10 @@ function showUnreadNews()
         url: "${ctx}/getNum.html",
         dataType: "json",
         success: function(data) {
-        	$("#num3").html(data.pageTamperNum);
-        	$("#num2").html(data.whorseNum);
-            $("#num1").html(data.leakNum);
-            $("#num").html(data.webPageNum);
+        	$("#num3").html(data.brokenNetwork);
+        	$("#num2").html(data.leakNum);
+            $("#num1").html(data.webPageNum);
+            $("#num").html(data.webSite);
         }
     });
 }
@@ -86,10 +86,14 @@ function showUnreadNews()
         <li style="position:relative">
             <a href="###">
                 <img src="${ctx}/source/images/banner1.jpg" />
-                <span class="lb_font lb_first">发现篡改<span class="lb_font_w" id="num3">${pageTamperNum }</span>次</span>
+                <!-- <span class="lb_font lb_first">发现篡改<span class="lb_font_w" id="num3">${pageTamperNum }</span>次</span>
                 <span class="lb_font lb_second">发现<span class="lb_font_w" id="num2">${whorseNum }</span>个木马</span>
                 <span class="lb_font lb_third">累计检测<span class="lb_font_w" id="num">${webPageNum }</span>个网页</span>
-                <span class="lb_font lb_forth">发现<span class="lb_font_w" id="num1">${leakNum }</span>个漏洞</span>
+                <span class="lb_font lb_forth">发现<span class="lb_font_w" id="num1">${leakNum }</span>个漏洞</span>-->
+                <span class="lb_font lb_first">发现断网<span class="lb_font_w" id="num3">${brokenNetwork }</span>次</span>
+                <span class="lb_font lb_second">发现漏洞<span class="lb_font_w" id="num2">${leakNum }</span>个</span>
+                <span class="lb_font lb_third">已监测网站<span class="lb_font_w" id="num">${webSite }</span>个</span>
+                <span class="lb_font lb_forth">检测页面<span class="lb_font_w" id="num1">${webPageNum }</span>个</span>
             </a>
         </li>
        
