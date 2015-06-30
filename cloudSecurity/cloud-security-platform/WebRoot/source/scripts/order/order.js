@@ -2,7 +2,7 @@ $(function(){
 	var type=null;//服务类型
 	var factory=null;//服务厂商
 	var parentC=null//服务大类
-	var websoc=null//创宇标志
+	var websoc=2//创宇标志
 	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
 	$(".dan_2").eq(1).hide();//隐藏结束下拉框时间
 	$(".hideEnddate").hide();//隐藏联系信息下的结束时间
@@ -328,10 +328,12 @@ $(function(){
     		scanType="";
     	}
     	//add by tang 2015-06-09
-    	var _index = $(".pei_ul_2 li").index(this);
-    	if(_index==2){
-    		websoc=1;
-    	}
+//    	var _index = $(".pei_ul_2 pei_active").index();
+//    	if(_index==3){
+//    		websoc=1;
+//    	}else if(_index==1||_index==0){
+//	    	websoc=2;
+//	    }
     	//if(beginDate>createDate){
     		//获得服务资产
 	    	var assetIds = "";
@@ -498,7 +500,7 @@ $(function(){
 		   $('.pei_ul_1 li').removeClass('pei_active');
 		   $(this).addClass('pei_active');
 		   type=null;
-		   websoc = null;
+		   websoc = 2;
 		   var obj = {'type':type,
 				      'factory':factory,
 				      'parentC':parentC,
@@ -543,12 +545,12 @@ $(function(){
 	   //factory = $(this).attr("name");
 	   factory = null;
 	   //创宇
-	   websoc = null;
+	   websoc = 2;
 	   if((_index==0 && orderType ==2)||(_index==0 && orderType ==1)){
 		   $('.pei_ul_2 li').removeClass('pei_active');
 		   $(this).addClass('pei_active');
 		   factory=null;
-		   websoc = null;
+		   websoc = 2;
 		   var obj = {'type':type,
 				      'factory':factory,
 				      'parentC':parentC,
@@ -569,8 +571,17 @@ $(function(){
 		   $('.pei_ul_2 li').removeClass('pei_active');
 		   $(this).addClass('pei_active');
 		   //创宇
-		   if(_index==2){
+		   if(_index==3){
 			   websoc = 1;
+		   }
+		   //安恒
+		   if(_index==2){
+			   factory = 1;
+			   websoc = null;
+		   }
+		   //电信
+		   if(_index==0||_index==1){
+			   websoc = 2;
 		   }
 		   var obj = {'type':type,
 				      'factory':factory,
@@ -604,7 +615,7 @@ $(function(){
 		   $('.pei_ul_3 li').removeClass('pei_active');
 		   $(this).addClass('pei_active');
 		   parentC=null;
-		   websoc = null;
+		   websoc = 2;
 		   var obj = {'type':type,
 				      'factory':factory,
 				      'parentC':parentC,
