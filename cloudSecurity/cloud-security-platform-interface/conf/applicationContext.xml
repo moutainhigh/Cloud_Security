@@ -32,14 +32,16 @@
      -->
      
     <!-- 数据库配置文件位置 -->  
-    <context:property-placeholder location="classpath:/jdbc.properties" /> 
+    <context:property-placeholder location="classpath:/jdbc.properties" />
     
     <context:component-scan base-package="com.cn.ctbri" />
     
     <bean id="taskService" class="com.cn.ctbri.service.impl.TaskServiceImpl" />
     <bean id="orderService" class="com.cn.ctbri.service.impl.OrderServiceImpl" />
+    <bean id="alarmService" class="com.cn.ctbri.service.impl.AlarmServiceImpl" />
+    <bean id="engineService" class="com.cn.ctbri.service.impl.EngineServiceImpl" />
     
-    <!-- 配置dbcp数据源 -->  
+    <!-- 配置dbcp数据源 -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
 		<property name="url" value="${jdbc.url}" />
@@ -70,7 +72,7 @@
     
 
     <!-- Timer schedule -->
-    <!--要调度的对象-->
+    <!--要调度的对象，任务下发-->
     <bean id="taskJobBean" class="com.cn.ctbri.common.Scheduler4Task" />
     <bean id="taskJobDetail"
     	class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -84,7 +86,7 @@
     	<property name="cronExpression" value="0 0/1 * * * ?" />
     </bean>
     
-	 <!--要调度的对象-->
+	 <!--要调度的对象，结果获取-->
     <bean id="resultJobBean" class="com.cn.ctbri.common.Scheduler4Result" />
     <bean id="resultJobDetail"
     	class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -98,7 +100,7 @@
     	<property name="cronExpression" value="0 0/3 * * * ?" />
     </bean>
     
-    <!--要调度的对象-->
+    <!--要调度的对象，任务进度-->
     <bean id="progressJobBean" class="com.cn.ctbri.common.Scheduler4Progress" />
     <bean id="progressJobDetail"
         class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -112,6 +114,20 @@
         <property name="cronExpression" value="0/30 * * * * ?" />
     </bean>
     
+    <!--要调度的对象，引擎异常-->
+    <bean id="exceptionJobBean" class="com.cn.ctbri.common.Scheduler4Exception" />
+    <bean id="exceptionJobDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="exceptionJobBean" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="exceptionTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="exceptionJobDetail" />
+        <property name="cronExpression" value="0 0/3 * * * ?" />
+    </bean>
+    
         <!-- 将lazy-init='false'那么容器启动就会执行调度程序   -->
     <bean id="startQuertz"
     	class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
@@ -121,6 +137,7 @@
     			<ref bean="taskTrigger" />
     			<ref bean="resultTrigger" />
     			<ref bean="progressTrigger" />
+    			<ref bean="exceptionTrigger" />
     		</list>
     	</property>
     </bean>
