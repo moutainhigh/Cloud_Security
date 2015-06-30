@@ -4,6 +4,7 @@ import java.net.URLDecoder;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletInputStream;
@@ -19,6 +20,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 
+import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
@@ -31,9 +34,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import com.cn.ctbri.common.ArnhemWorker;
+import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.Linkman;
+import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskWarn;
+import com.cn.ctbri.service.IAssetService;
+import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ITaskService;
+import com.cn.ctbri.util.SMSUtils;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -53,6 +62,10 @@ public class ArnhemWebService {
 	private Logger log = Logger.getLogger(this.getClass());
 	@Autowired
     private ITaskService taskService;
+	@Autowired
+    private IOrderService orderService;
+	@Autowired
+    private IAssetService assetService;
 	/**
 	 * 功能描述： 接收任务状态
 	 * 参数描述：  request 请求对象
@@ -165,6 +178,25 @@ public class ArnhemWebService {
 		return map;
 	}
 	
+	//websoc推送
+    @POST
+    @Path("websocGetWarn")
+    @Consumes(MediaType.APPLICATION_JSON)
+    //@Produces(MediaType.TEXT_HTML)
+    public String websocGetWarn(@Context HttpServletRequest request,@Context HttpServletResponse response) {
+        try {
+            log.info("[任务推送]:任务推送-解析任务推送告警发生异常!");
+            JSONObject jsStr = JSONObject.fromObject(response);
+            System.out.println(jsStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("[任务推送]:任务推送-解析任务推送告警发生异常!");
+            throw new RuntimeException("[任务推送]:任务推送-解析任务推送告警发生异常!");
+        }
+        return "<Result value=\"Success\"></Result>";
+    }
+	
+	
 	//主动告警
 	@POST
     @Path("arnhemGetWarn")
@@ -180,11 +212,12 @@ public class ArnhemWebService {
                 SAXReader reader = new SAXReader();
                 //读取流封装为文档对象
                 Document document = reader.read(io);
-                System.err.println(document);
+                System.err.println(document.asXML());
 //              String str = request.getParameter("xmlstr");
 //              decode = URLDecoder.decode(str, "UTF-8");
 //              Document document = DocumentHelper.parseText(decode);
                 Element task = document.getRootElement();
+                String ss = task.getTextTrim();
                 String cat1 = URLDecoder.decode(task.element("CAT1").getTextTrim(),"UTF-8");
                 String cat2 = URLDecoder.decode(task.element("CAT2").getTextTrim(),"UTF-8");
                 String name = URLDecoder.decode(task.element("NAME").getTextTrim(),"UTF-8");
@@ -196,6 +229,7 @@ public class ArnhemWebService {
                 String url = URLDecoder.decode(task.element("URL").getTextTrim(),"UTF-8");
                 String msg = URLDecoder.decode(task.element("MSG").getTextTrim(),"UTF-8");
                 String task_id = task.element("TASK_ID").getTextTrim();
+                System.out.println("cat1:"+cat1+";name:"+name+";severity:"+severity);
                 TaskWarn taskwarn = new TaskWarn();
                 taskwarn.setCat1(cat1);
                 taskwarn.setCat2(cat2);
@@ -214,6 +248,26 @@ public class ArnhemWebService {
                 taskService.insertTaskWarn(taskwarn);
                 System.out.println("999999");
                 log.info("[任务主动告警]:任务-[" + task_id + "]完成入库!");
+                //发短信
+                if(cat2.equals("断网")){
+                    Task t = new Task();
+                    t.setTaskId(Integer.parseInt(task_id));
+                    List<Order> oList = orderService.findOrderByTask(t);
+                    Order order=oList.get(0);
+                    List<Linkman> mlist= orderService.findLinkmanById(order.getContactId());
+                    Linkman linkman=mlist.get(0);
+                    String phoneNumber = linkman.getMobile();//联系方式
+                    List<Asset> asset = assetService.findByTask(t);
+                    String assetName = asset.get(0).getName();
+                    if(!phoneNumber.equals("") && phoneNumber!=null){
+                      //发短信
+                        SMSUtils smsUtils = new SMSUtils();
+                        smsUtils.sendMessage_warn(phoneNumber,order,assetName,null);
+                        order.setMessage(1);
+                        orderService.update(order);
+                    }
+                }
+                
             }
 
         } catch (Exception e) {
@@ -252,6 +306,7 @@ public class ArnhemWebService {
         return "<Result value=\"Success\"></Result>";
     }
 	
+	
 	public static void main(String[] args) {
 	    String xmlstr="<?xml version='1.0' encoding='UTF-8'?>"
 	    		        +"<SecEvent>"
@@ -265,16 +320,41 @@ public class ArnhemWebService {
                         +"<TRAN_P/>"
                         +"<URL>http://pangh.com:9080/malware/</URL>"
                         +"<MSG>网络异常</MSG>"
-                        +"<TASK_ID>123</TASK_ID>"
+                        +"<TASK_ID>96</TASK_ID>"
                         +"</SecEvent>";
+	    
+	    String str="[{"
+                    +"\"url\": \"http://www.example.com/documentation/06_test_design_considerations.html\","
+                    +"\"type\": \"keyword\","
+                    +"\"created_at\": \"2011-12-21 19:39:02\","
+                    +"\"value\": {"
+                        +"\"keywords\": [{"
+                            +"\"type\": 1,"
+                            +"\"keyword\": \"selenium\","
+                            +"\"level\": 3"
+                        +"}],"
+                    +"}"
+                +"}, {"
+                    +"\"url\": \"http://www.example.com/documentation/remote-control/02_selenium_ide.html\","
+                    +"\"type\": \"keyword\","
+                    +"\"created_at\": \"2011-12-21 19:39:02\","
+                    +"\"value\": {"
+                        +"\"keywords\": [{"
+                            +"\"type\": 1,"
+                            +"\"keyword\": \"selenium\","
+                            +"\"level\": 3"
+                        +"}],"
+                    +"}"
+                +"}]";
 	    ClientConfig config = new DefaultClientConfig();
         //检查安全传输协议设置
         Client client = Client.create(config);
         //连接服务器
-        WebResource service = client.resource("http://10.9.60.219/cspi/ws/arnhem/arnhemGetWarn");
+        WebResource service = client.resource("http://alice270706212.eicp.net/cspi/ws/arnhem/websocGetWarn");
         //获取响应结果
 //        service.header("Content-Type", "Application/xml");
         String response = service.type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xmlstr);
+//          String response = service.type(MediaType.APPLICATION_JSON).post(String.class, str);
 //        String post = service.accept(MediaType.APPLICATION_XML).post(String.class, xmlstr);
 	}
 }
