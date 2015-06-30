@@ -34,6 +34,8 @@ public class Alarm implements Serializable{
 	private long taskId;
 	//告警服务类型
 	private String alarm_type;
+	//创宇返回组id
+	private String group_id;
 	/**
 	 * 功能描述：取报警信息ID
 	 *		 @time 2015-01-07
@@ -181,6 +183,12 @@ public class Alarm implements Serializable{
     }
     public void setKeyword(String keyword) {
         this.keyword = keyword;
+    }
+    public String getGroup_id() {
+        return group_id;
+    }
+    public void setGroup_id(String group_id) {
+        this.group_id = group_id;
     }
 	
 

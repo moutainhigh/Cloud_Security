@@ -31,6 +31,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>
         limit #{page}
     </select>
+    
+    <!-- 根据条件查询引擎异常任务表 -->
+    <select id="findExpTask" parameterType="hashmap" resultMap="TaskRM">
+        select * from cs_task t
+        where t.status = #{status} 
+        <if test="status==1">
+          and t.engine = -1
+        </if>
+        order by t.execute_time
+        limit #{page}
+    </select>
+    
 	<!-- 更新任务信息 -->
 	<update id="update"  parameterType="com.cn.ctbri.entity.Task">
 		update cs_task
@@ -45,7 +57,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 end_time=#{end_time},
             </if>
             <if test="scanTime!=null">
-                scanTime=#{scanTime}
+                scanTime=#{scanTime},
+            </if>
+            <if test="group_id!=null">
+                group_id=#{group_id},
+            </if>
+            <if test="taskProgress!=null">
+                taskProgress=#{taskProgress},
+            </if>
+            <if test="engine!=null">
+                engine=#{engine},
+            </if>
+            <if test="websoc!=null">
+                websoc=#{websoc}
             </if>
 		</set>
 		where taskId = #{taskId}
@@ -94,6 +118,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="receiveBytes!=null">
                 receiveBytes=#{receiveBytes}
             </if>
+            <!-- <if test="dns!=null">
+                dns=#{dns}
+            </if> -->
         </set>
         where taskId = #{taskId}
     </update>
@@ -101,8 +128,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入任务信息 -->
     <insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO cs_task
-        (order_asset_Id,execute_time,status,group_flag,end_time,remarks) 
-        VALUES( #{order_asset_Id} , #{execute_time},#{status},#{group_flag},#{end_time},#{remarks})
+        (order_asset_Id,execute_time,status,group_flag,end_time,remarks,websoc) 
+        VALUES( #{order_asset_Id} , #{execute_time},#{status},#{group_flag},#{end_time},#{remarks},#{websoc})
     </insert>
     
     <select id="getTypeByAssetId" parameterType="Integer" resultType="com.cn.ctbri.entity.OrderAsset">
@@ -116,13 +143,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 插入任务告警信息 -->
     <insert id="insertTaskWarn" parameterType="com.cn.ctbri.entity.TaskWarn" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO cs_taskwarn
-        (cat1,cat2,name,severity,rule,ct,app_p,tran_p,url,msg,task_id,warn_time) 
-        VALUES( #{cat1} , #{cat2},#{name},#{severity},#{rule},#{ct},#{app_p},#{tran_p},#{url},#{msg},#{task_id},#{warn_time})
+        (cat1,cat2,name,severity,rule,ct,app_p,tran_p,url,msg,task_id,warn_time,group_id) 
+        VALUES( #{cat1} , #{cat2},#{name},#{severity},#{rule},#{ct},#{app_p},#{tran_p},#{url},#{msg},#{task_id},#{warn_time},#{group_id})
     </insert>
     
     <!-- 获取订单还在执行的任务 -->
     <select id="getTaskStatus" parameterType="com.cn.ctbri.entity.Order" resultType="com.cn.ctbri.entity.Task">
         select t.taskId from cs_task t,cs_order_asset oa where t.order_asset_Id=oa.id and oa.orderId = #{id} and t.status in(1,2)
     </select>
+    
+    <!-- 根据创宇group_id获取任务 -->
+    <select id="findTaskByGroupId" parameterType="String" resultType="com.cn.ctbri.entity.Task">
+        select t.taskId from cs_task t where t.group_id = #{group_id} and t.status in(2)
+    </select>
+    
+    <!-- 获取安恒在执行的任务 -->
+    <select id="getArnhemTask" resultType="com.cn.ctbri.entity.Task">
+        select * from cs_task t where t.status = 2 and (t.websoc = 0 or t.websoc is null)
+    </select>
+    
+    <!-- 获取创宇在执行的任务 -->
+    <select id="getWebsocTask" resultType="com.cn.ctbri.entity.Task">
+        select * from cs_task t where t.status = 2 and t.websoc = 1
+    </select>
+    
     
 </mapper>

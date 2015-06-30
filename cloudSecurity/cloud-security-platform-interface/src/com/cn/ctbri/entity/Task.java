@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class Task{
 	private int taskId;//任务Id(主键)
-	private int order_asset_Id;//
+	private String order_asset_Id;//
 	private Date execute_time;//执行时间
 	private int status;//任务状态（1：已执行，未执行）
 	private Date group_flag;//分组标记
@@ -28,13 +28,17 @@ public class Task{
     private String averSendCount;//每秒访问个数
     private String sendBytes;//发送字节
     private String receiveBytes;//接收字节
+    private int websoc;//创宇标志
+    private String group_id;//创宇返回组id
+    private int engine;
+    
 	public int getTaskId() {
 		return taskId;
 	}
-	public int getOrder_asset_Id() {
+	public String getOrder_asset_Id() {
 		return order_asset_Id;
 	}
-	public void setOrder_asset_Id(int order_asset_Id) {
+	public void setOrder_asset_Id(String order_asset_Id) {
 		this.order_asset_Id = order_asset_Id;
 	}
 	public void setTaskId(int taskId) {
@@ -142,5 +146,23 @@ public class Task{
     public void setReceiveBytes(String receiveBytes) {
         this.receiveBytes = receiveBytes;
     }
-	
+    public int getWebsoc() {
+        return websoc;
+    }
+    public void setWebsoc(int websoc) {
+        this.websoc = websoc;
+    }
+    public String getGroup_id() {
+        return group_id;
+    }
+    public void setGroup_id(String group_id) {
+        this.group_id = group_id;
+    }
+    public int getEngine() {
+        return engine;
+    }
+    public void setEngine(int engine) {
+        this.engine = engine;
+    }
+    
 }

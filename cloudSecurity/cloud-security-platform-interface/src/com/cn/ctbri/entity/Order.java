@@ -26,6 +26,7 @@ public class Order {
 	private String begin_datevo;//begin_date vo
 	private String end_datevo;//end_date vo备注
 	private int message;//是否发送告警信息
+	private int websoc;//创宇标志
 	public String getBegin_datevo() {
 		return begin_datevo;
 	}
@@ -123,5 +124,11 @@ public class Order {
 	public void setMessage(int message) {
 		this.message = message;
 	}
+    public int getWebsoc() {
+        return websoc;
+    }
+    public void setWebsoc(int websoc) {
+        this.websoc = websoc;
+    }
 	
 }

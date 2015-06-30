@@ -23,8 +23,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入报警信息 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.Alarm" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO cs_alarm 
-		(name,alarm_time,score,level,advice,alarm_content,url,keyword,taskId,alarm_type) 
-		VALUES(#{name},#{alarm_time},#{score},#{level},#{advice},#{alarm_content},#{url},#{keyword},#{taskId},#{alarm_type})
+		(name,alarm_time,score,level,advice,alarm_content,url,keyword,taskId,alarm_type,group_id) 
+		VALUES(#{name},#{alarm_time},#{score},#{level},#{advice},#{alarm_content},#{url},#{keyword},#{taskId},#{alarm_type},#{group_id})
 	</insert>
 	
 	<!-- 查询报警信息  -->
@@ -47,9 +47,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 根据orderid查询告警信息 -->
     <select id="findAlarmByOrderId" parameterType="String" resultMap="Alarm">
-        SELECT a.*
-        FROM cs_order_asset oa ,cs_task t,cs_alarm a
-        WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=a.taskId
+        <if test="websoc!=1">
+	        SELECT a.*
+	        FROM cs_order_asset oa ,cs_task t,cs_alarm a
+	        WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND t.taskId=a.taskId
+        </if>
+        <if test="websoc==1">
+	        SELECT a.*
+	        FROM cs_order_asset oa ,cs_task t,cs_alarm a
+	        WHERE oa.orderId=#{orderId} AND oa.id in(t.order_asset_Id) AND t.group_id=a.group_id
+	    </if>
     </select>
 	
 </mapper>

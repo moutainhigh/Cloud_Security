@@ -22,6 +22,7 @@ public class TaskWarn{
     private String msg;//事件内容详细信息
     private String task_id;//
     private Date warn_time;
+    private String group_id;//创宇组id
     public int getId() {
         return id;
     }
@@ -99,6 +100,12 @@ public class TaskWarn{
     }
     public void setWarn_time(Date warn_time) {
         this.warn_time = warn_time;
+    }
+    public String getGroup_id() {
+        return group_id;
+    }
+    public void setGroup_id(String group_id) {
+        this.group_id = group_id;
     }
     
 }
