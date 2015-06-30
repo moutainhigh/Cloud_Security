@@ -53,4 +53,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             ) asset
         where t.order_asset_id = asset.id) task where a.taskId = task.taskId -->
     </select>
+    
+    <!-- 检测网页数 -->
+    <select id="findWebSite" resultType="hashmap">
+        select * from cs_order_asset
+    </select>
+    
+    <!-- 断网次数 -->
+    <select id="findBrokenNetwork" resultType="hashmap">
+        select * from cs_taskwarn tw where tw.name = '断网'
+    </select>
 </mapper>
