@@ -100,6 +100,48 @@ public class ArnhemWorker {
 	   	}
 		return "";
 	}
+	
+	/**
+     * 功能描述： 获取SessionId
+     *       @time 2015-01-05
+     */
+    public static String getSessionId(String engine_api,String username,String password){
+        try {
+             // 登陆信息
+             String xmlContent = "<Login><Name>" + username + "</Name><Password>" + password + "</Password></Login>";
+             // 登陆服务器地址
+             String url = engine_api + "/rest/login";         
+             // 创建客户端配置对象
+             ClientConfig config = new DefaultClientConfig(); 
+             if(url.startsWith("https")) {
+                SSLContext ctx = getSSLContext();
+                config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
+                         new HostnameVerifier() {
+                             public boolean verify( String s, SSLSession sslSession ) {
+                                 return true;
+                             }
+                         }, ctx
+                     ));
+             }
+             // 建立客户端
+             Client client = Client.create(config);
+             // 连接服务器
+             WebResource service = client.resource(url); 
+             // 发送请求，接收返回数据
+             String response = service.type(MediaType.APPLICATION_XML).post(String.class, xmlContent);
+             // 创建XML解析对象
+             SAXReader reader = new SAXReader();
+             // 加载XML
+             Document doc = reader.read(IOUtils.toInputStream(response));
+             //解析且获取回话ID
+             Element ele = doc.getRootElement();
+             Element s = ele.element("SessionId");
+             return s.getText();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 	/**
 	 * 功能描述： 获取安全套接层上下文对象
 	 *		 @time 2015-01-05
@@ -308,6 +350,28 @@ public class ArnhemWorker {
         return response;
     }
     
+    
+    /**
+     * 获取引擎的存活状态
+     * @param sessionId 会话id
+     * @param taskId 任务id
+     * @return 任务状态代码
+     */
+    public static String getEngineState(String sessionId,String engine_api) {
+        //创建路径
+        String url = engine_api + "/rest/control/GetEngineState";
+        //创建配置
+        ClientConfig config = new DefaultClientConfig();
+        //绑定配置
+        buildConfig(url,config);
+        //创建客户端
+        Client client = Client.create(config);
+        WebResource service = client.resource(url);
+        //连接服务器，返回结果
+        String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
+        return response;
+    }
+    
     public static void main(String[] args) throws UnsupportedEncodingException, JSONException {
 //        JSONObject json = new JSONObject();
 //        org.codehaus.jettison.json.JSONObject jsonObject = new org.codehaus.jettison.json.JSONObject();
@@ -315,17 +379,20 @@ public class ArnhemWorker {
 //        jsonObject.accumulate("zone_ip", "[\"12.12.12.12/32\",\"33.33.33.33/24\"]");
         //创建任务发送路径
         //创建jersery客户端配置对象
-        ClientConfig config = new DefaultClientConfig();
-        //检查安全传输协议设置
-        buildConfig("https://128.18.74.170:443/rest/openapi/ddos/zone",config);
-        //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource("https://128.18.74.170:443/rest/openapi/ddos/zone");
-        //获取响应结果
-        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, "{\"zone_name\":\"M6\"," +
-        		"                                                                         \"zone_ip\":" +
-        		"                                                                              \"[\"12.12.12.12/32\"," +
-        		"                                                                                 \"33.33.33.33/24\"]\"}");
+//        ClientConfig config = new DefaultClientConfig();
+//        //检查安全传输协议设置
+//        buildConfig("https://128.18.74.170:443/rest/openapi/ddos/zone",config);
+//        //创建Jersery客户端对象
+//        Client client = Client.create(config);
+//        //连接服务器
+//        WebResource service = client.resource("https://128.18.74.170:443/rest/openapi/ddos/zone");
+//        //获取响应结果
+//        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, "{\"zone_name\":\"M6\"," +
+//        		"                                                                         \"zone_ip\":" +
+//        		"                                                                              \"[\"12.12.12.12/32\"," +
+//        		"                                                                                 \"33.33.33.33/24\"]\"}");
+        String sessionId = getSessionId();
+        String s = getEngineState(sessionId,"https://124.127.117.188:60443");
+        System.out.println(s);
     }
 }

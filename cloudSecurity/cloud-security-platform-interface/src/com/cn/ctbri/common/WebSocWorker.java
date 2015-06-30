@@ -19,8 +19,6 @@ import javax.ws.rs.core.NewCookie;
 
 import net.sf.json.JSONObject;
 
-import org.codehaus.jettison.json.JSONException;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -148,12 +146,24 @@ public class WebSocWorker {
 	 *        destPort  监测目标PORT,taskSLA   任务模板名称
 	 *		 @time 2015-01-05
 	 */
-	public static String lssuedTask(String sessionid){
+	public static String lssuedTask(String sessionid,String name,String[] assets,int serviceId){
 		//组织发送内容json
 	    JSONObject jsonObj = new JSONObject();
-        jsonObj.put("name", "test051505");
-        jsonObj.put("site_list", new String[] { "http://www.sinosoft.com.cn/"});
-		String jsonContent = "parameter="+jsonObj.toString();
+        jsonObj.put("name", name);
+//        jsonObj.put("site_list", new String[] {"http://www.testfire.net/","http://www.sinosoft.com.cn/"});
+        jsonObj.put("site_list", assets);
+        if(serviceId==5){
+            jsonObj.put("plugin", "{\"dns\": {\"enabled\": true},\"dns_hijack\": {\"enabled\": true},\"ping\": {\"enabled\": true},\"http_get\": {\"enabled\": true},\"http_get_full_time\": {\"enabled\": true},\"black_links\": {\"enabled\": false},\"malscan\": {\"enabled\": false},\"keyword\": {\"enabled\": false},\"sql\": {\"enabled\": false},\"xss\": {\"enabled\": false},\"webvul\": {\"enabled\": false},\"info_leak\": {\"enabled\": false,\"items\": []},\"cgi\": {\"enabled\": false},\"csrf\": {\"enabled\": false},\"form_crack\": {\"enabled\": false}}");
+        }else if(serviceId==4){
+            jsonObj.put("plugin", "{\"dns\": {\"enabled\": false},\"dns_hijack\": {\"enabled\": false},\"ping\": {\"enabled\": false},\"http_get\": {\"enabled\": false},\"http_get_full_time\": {\"enabled\": false},\"black_links\": {\"enabled\": false},\"malscan\": {\"enabled\": false},\"keyword\": {\"enabled\": true},\"sql\": {\"enabled\": false},\"xss\": {\"enabled\": false},\"webvul\": {\"enabled\": false},\"info_leak\": {\"enabled\": false,\"items\": []},\"cgi\": {\"enabled\": false},\"csrf\": {\"enabled\": false},\"form_crack\": {\"enabled\": false}}");
+        }else if(serviceId==3){
+            jsonObj.put("plugin", "{\"dns\": {\"enabled\": false},\"dns_hijack\": {\"enabled\": false},\"ping\": {\"enabled\": false},\"http_get\": {\"enabled\": false},\"http_get_full_time\": {\"enabled\": false},\"black_links\": {\"enabled\": true},\"malscan\": {\"enabled\": false},\"keyword\": {\"enabled\": false},\"sql\": {\"enabled\": false},\"xss\": {\"enabled\": false},\"webvul\": {\"enabled\": false},\"info_leak\": {\"enabled\": false,\"items\": []},\"cgi\": {\"enabled\": false},\"csrf\": {\"enabled\": false},\"form_crack\": {\"enabled\": false}}");
+        }else if(serviceId==2){
+            jsonObj.put("plugin", "{\"dns\": {\"enabled\": false},\"dns_hijack\": {\"enabled\": false},\"ping\": {\"enabled\": false},\"http_get\": {\"enabled\": false},\"http_get_full_time\": {\"enabled\": false},\"black_links\": {\"enabled\": false},\"malscan\": {\"enabled\": true},\"keyword\": {\"enabled\": false},\"sql\": {\"enabled\": false},\"xss\": {\"enabled\": false},\"webvul\": {\"enabled\": false},\"info_leak\": {\"enabled\": false,\"items\": []},\"cgi\": {\"enabled\": false},\"csrf\": {\"enabled\": false},\"form_crack\": {\"enabled\": false}}");
+        }else if(serviceId==1){
+            jsonObj.put("plugin", "{\"dns\": {\"enabled\": false},\"dns_hijack\": {\"enabled\": false},\"ping\": {\"enabled\": false},\"http_get\": {\"enabled\": false},\"http_get_full_time\": {\"enabled\": false},\"black_links\": {\"enabled\": false},\"malscan\": {\"enabled\": false},\"keyword\": {\"enabled\": false},\"sql\": {\"enabled\": true},\"xss\": {\"enabled\": true},\"webvul\": {\"enabled\": true},\"info_leak\": {\"enabled\": true,\"items\": []},\"cgi\": {\"enabled\": true},\"csrf\": {\"enabled\": true},\"form_crack\": {\"enabled\": true}}");
+        }
+        String jsonContent = "parameter="+jsonObj.toString();
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + "api/v2/vgroup/create_temp/";
     	//创建jersery客户端配置对象
@@ -190,33 +200,12 @@ public class WebSocWorker {
 	}
 	
 	/**
-	 * 根据任务id获取任务当前状态
-	 * @param sessionId 会话id
-	 * @param taskId 任务id
-	 * @return 任务状态代码
-	 */
-	public static String getStatusByTaskId(String sessionId, String taskId) {
-		//创建路径
-		String url = SERVER_WEB_ROOT + "/rest/task/Test/" + taskId;
-		//创建配置
-		ClientConfig config = new DefaultClientConfig();
-		//绑定配置
-    	buildConfig(url,config);
-    	//创建客户端
-        Client client = Client.create(config);
-        WebResource service = client.resource(url);
-        //连接服务器，返回结果
-        String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class);
-		return response;
-	}
-	
-	/**
      * 获取临时组检测进度
      * @param sessionId 会话id
      * @param taskId 任务id
      * @return 任务状态代码
      */
-    public static String getProgressByTaskId(String sessionid,String virtual_group_id) {
+    public static boolean getProgressByTaskId(String sessionid,String virtual_group_id) {
     	JSONObject jsonObj = new JSONObject();
 		jsonObj.put("virtual_group_id", virtual_group_id);
 		String jsonContent = "parameter="+jsonObj.toString();
@@ -232,13 +221,20 @@ public class WebSocWorker {
         //连接服务器，返回结果
         String response = service.cookie(new NewCookie("sessionid",sessionid)).type(MediaType.APPLICATION_FORM_URLENCODED).post(String.class, jsonContent);
         System.out.print(response);
-        return response;
+        String jsStr = JSONObject.fromObject(response).getString("result");
+        String sites_count = JSONObject.fromObject(jsStr).getString("sites_count");
+        String sites_done_count = JSONObject.fromObject(jsStr).getString("sites_done_count");
+        boolean flag = false;
+        if(Integer.parseInt(sites_count)==Integer.parseInt(sites_done_count)){
+            flag = true;
+        }
+        return flag;
     }
     
-    public static void main(String[] args) throws UnsupportedEncodingException, JSONException {
-        String sessionid = getSessionId();
-        String virtual_group_id = lssuedTask(sessionid);
-        getProgressByTaskId(sessionid,virtual_group_id);
-//    	getProgressByTaskId("e4a715a1ff93fa89e84c6f059a15e4bc", "50a091825de23a5ef0ee99f3");
+    public static void main(String[] args) throws UnsupportedEncodingException {
+//        String sessionid = getSessionId();
+//        String virtual_group_id = lssuedTask(sessionid);
+//        getProgressByTaskId(sessionid,virtual_group_id);
+//    	getProgressByTaskId("o6ez69b4gzkikyvhm7ce9t16dk8g7y0n", "5566b16c43b9090323057cbf");
     }
 }

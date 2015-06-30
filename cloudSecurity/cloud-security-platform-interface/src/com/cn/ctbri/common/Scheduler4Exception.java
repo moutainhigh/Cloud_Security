@@ -21,13 +21,11 @@ import org.dom4j.Element;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.EngineCfg;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Task;
-import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IEngineService;
 import com.cn.ctbri.service.IOrderService;
@@ -36,16 +34,14 @@ import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
 
 /**
- * 扫描任务表的调度类
+ * 引擎异常的调度类
  * 
- * @author googe
+ * @author tang
  * 
  */
+public class Scheduler4Exception {
 
-@SuppressWarnings("deprecation")
-public class Scheduler4Task {
-
-	static Logger logger = Logger.getLogger(Scheduler4Task.class.getName());
+	static Logger logger = Logger.getLogger(Scheduler4Exception.class.getName());
 
 	private static String taskpage;
 
@@ -74,6 +70,7 @@ public class Scheduler4Task {
 	private String tplName ="";
 	
 	private int scantime = 0;
+	
 
 	static {
 		try {
@@ -86,19 +83,18 @@ public class Scheduler4Task {
 	}
 
 	public void execute() throws Exception {
-		logger.info("[下发任务调度]:任务表扫描开始......");
+		logger.info("[获取引擎状态调度]:任务表扫描开始....");
 		/**
-		 * 定时要job任务执行的逻辑
+		 * 定时获取引擎的状态
 		 */
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("page", Integer.parseInt(taskpage));
-		map.put("status", Integer.parseInt(Constants.TASK_START));   //设置为 已开始？
-		// 获取任务表前n条未下发的记录
-		List<Task> taskList = taskService.findTask(map);
-		logger.info("[下发任务调度]:当前等待下发的任务有 " + taskList.size() + " 个!");
-		// 调用接口下发任务
+		map.put("status", Integer.parseInt(Constants.TASK_START));
+		// 获取任务表前n条未完成的记录
+		List<Task> taskList = taskService.findExpTask(map);
+		logger.info("[获取任务进度调度]:当前等待获取进度的任务有 " + taskList.size() + " 个!");
 		for (Task t : taskList) {
-		    //获取订单类型
+			//获取订单类型
             OrderAsset orderAsset = taskService.getTypeByAssetId(Integer.parseInt(t.getOrder_asset_Id()));
             List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
             Map<String, Object> engineMap = new HashMap<String, Object>();
@@ -108,27 +104,27 @@ public class Scheduler4Task {
             //获取任务下发引擎 add by tang 2015-06-11
 //            List<EngineCfg> engines = getUsableEngine(engineMap);
             try{
-    		    //创宇任务下发
-    		    if(t.getWebsoc()==1){
-    		        getWebsoc(t,orderAsset,orderList,serviceId);
-    		    }else if(t.getWebsoc()==2){//引擎调度
-    		        List arn = taskService.getArnhemTask();
-    		        List websoc = taskService.getWebsocTask();
-    		        if(arn.size()>10&&websoc.size()>30){
-    		            t.setEngine(-1);
-    		            taskService.update(t);
-    		        }else{
-    		            //创建sessionId
-    		            String websessionid = "";
-    		            boolean engineStatus = false;
-    		            for(int i=0;i<3;i++){
-    		                websessionid = WebSocWorker.getSessionId();
-    		                if(websessionid!=null){
-    		                    engineStatus = true;
-    		                    break;
-    		                }
-    		            }
-    		            String arnsessionid = "";
+                //创宇任务下发
+                if(t.getWebsoc()==1){
+                    getWebsoc(t,orderAsset,orderList,serviceId);
+                }else if(t.getWebsoc()==2){//引擎调度
+                    List arn = taskService.getArnhemTask();
+                    List websoc = taskService.getWebsocTask();
+                    if(arn.size()>10&&websoc.size()>30){
+                        t.setEngine(-1);
+                        taskService.update(t);
+                    }else{
+                        //创建sessionId
+                        String websessionid = "";
+                        boolean engineStatus = false;
+                        for(int i=0;i<3;i++){
+                            websessionid = WebSocWorker.getSessionId();
+                            if(websessionid!=null){
+                                engineStatus = true;
+                                break;
+                            }
+                        }
+                        String arnsessionid = "";
                         boolean arnengineStatus = false;
                         for(int i=0;i<3;i++){
                             arnsessionid = ArnhemWorker.getSessionId();
@@ -137,130 +133,59 @@ public class Scheduler4Task {
                                 break;
                             }
                         }
-    		            if(arn.size()/10.0 <= websoc.size()/30.0){
-    		                if(arnengineStatus){
-    		                    getArnhem(t,orderAsset,orderList,serviceId);
+                        if(arn.size()/10.0 <= websoc.size()/30.0){
+                            if(arnengineStatus){
+                                getArnhem(t,orderAsset,orderList,serviceId);
                                 t.setWebsoc(0);
                                 taskService.update(t);
                                 Order o = orderList.get(0);
                                 o.setWebsoc(0);
                                 orderService.update(o);
-    		                }else{
-    		                    getWebsoc(t,orderAsset,orderList,serviceId);
-                                t.setWebsoc(1);
-                                taskService.update(t); 
-                                Order o = orderList.get(0);
-                                o.setWebsoc(1);
-                                orderService.update(o);
-    		                }
-    		                
-    		            }else if(arn.size()/10.0 > websoc.size()/30.0){
-    		                if(engineStatus){
-    		                    getWebsoc(t,orderAsset,orderList,serviceId);
+                            }else{
+                                getWebsoc(t,orderAsset,orderList,serviceId);
                                 t.setWebsoc(1);
                                 taskService.update(t);
                                 Order o = orderList.get(0);
                                 o.setWebsoc(1);
                                 orderService.update(o);
-    		                }else{
-    		                    getArnhem(t,orderAsset,orderList,serviceId);
+                            }
+                            
+                        }else if(arn.size()/10.0 > websoc.size()/30.0){
+                            if(engineStatus){
+                                getWebsoc(t,orderAsset,orderList,serviceId);
+                                t.setWebsoc(1);
+                                taskService.update(t);
+                                Order o = orderList.get(0);
+                                o.setWebsoc(1);
+                                orderService.update(o);
+                            }else{
+                                getArnhem(t,orderAsset,orderList,serviceId);
                                 t.setWebsoc(0);
                                 taskService.update(t);
                                 Order o = orderList.get(0);
                                 o.setWebsoc(0);
                                 orderService.update(o);
-    		                }   		                
-    		            }else{
-    		                t.setEngine(-1);
+                            }                           
+                        }else{
+                            t.setEngine(-1);
                             taskService.update(t);
-    		            }
-    		        }
+                        }
+                    }
                 }else{
-        			getArnhem(t,orderAsset,orderList,serviceId);
-    		    }
+                    getArnhem(t,orderAsset,orderList,serviceId);
+                }
             } catch (Exception e) {
                 logger.info("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
 //              throw new RuntimeException("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
                 continue;
             }
 		}
-		logger.info("[下发任务调度]:任务表扫描结束......");
-		
-		
-		
-		/**
-         * 定时要job任务删除的逻辑
-         */
-        Map<String, Object> delmap = new HashMap<String, Object>();
-        delmap.put("page", Integer.parseInt(taskpage));
-        delmap.put("status", Integer.parseInt(Constants.TASK_RUNNING));
-        // 获取任务表前n条未完成的记录
-        List<Task> taskDelList = taskService.findDelTask(delmap);
-        // 调用接口删除任务
-        for (Task t : taskDelList) {
-//            EngineCfg engine = engineService.findEngineIdbyIP(String.valueOf(t.getEngine()));
-            logger.info("[删除任务调度]:任务-[" + t.getTaskId() + "]获取状态!");
-            String sessionId = ArnhemWorker.getSessionId();
-            String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId()));
-            String status = this.getStatusByResult(resultStr);
-            if("running".equals(status)){
-                logger.info("[删除任务调度]:任务-[" + t.getTaskId() + "]开始下发!");
-                try {
-                    //获取订单类型
-                    OrderAsset orderAsset = taskService.getTypeByAssetId(Integer.parseInt(t.getOrder_asset_Id()));
-                    List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
-                    Map<String, Object> hashmap = new HashMap<String, Object>();
-                    hashmap.put("orderId", orderList.get(0).getId());
-                    hashmap.put("websoc", orderList.get(0).getWebsoc());
-                    if(orderList.get(0).getServiceId()==5&&orderList.get(0).getWebsoc()!=1){
-                        ArnhemWorker.removeTask(sessionId, String.valueOf(t.getTaskId()));
-                        //任务完成后,引擎活跃数减1
-//                        engine.setActivity(engine.getActivity()-1);
-//                        engineService.update(engine);
-                        if(orderList.size() > 0){
-                            Order o = orderList.get(0);
-                            //获取告警信息
-                            List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(hashmap);
-                            if(taskWarnList.size() > 0){
-                                o.setStatus(Integer.parseInt(Constants.ORDERALARM_YES));
-                            }else{
-                                o.setStatus(Integer.parseInt(Constants.ORDERALARM_NO));
-                            }
-                            orderService.update(o);
-                        }
-                    }else if(orderList.get(0).getServiceId()==5&&orderList.get(0).getWebsoc()==1){
-                        if(orderList.size() > 0){
-                            Order o = orderList.get(0);
-                            //获取告警信息
-                            List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(hashmap);
-                            if(taskWarnList.size() > 0){
-                                o.setStatus(Integer.parseInt(Constants.ORDERALARM_YES));
-                            }else{
-                                o.setStatus(Integer.parseInt(Constants.ORDERALARM_NO));
-                            }
-                            orderService.update(o);
-                        }
-                    }
-                    //更新任务状态为finish
-                    t.setStatus(Integer.parseInt(Constants.TASK_FINISH));
-                    taskService.update(t);
-                } catch (Exception e) {
-                    logger.info("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
-//                    throw new RuntimeException("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
-                    continue;
-                }
-                logger.info("[删除任务调度]:任务-[" + t.getTaskId() + "]完成删除!");
-            }else{
-                logger.info("[删除任务调度]: 任务-[" + t.getTaskId() + "]下发失败!，远程存在同名任务请先删除或重新下订单!");
-            }
-
-        }
-        logger.info("[删除任务调度]:任务表扫描结束......");
-
+		logger.info("[获取任务进度调度]:任务进度扫描结束....");
 	}
-
+	
+	
 	private void getArnhem(Task t, OrderAsset orderAsset, List<Order> orderList, int serviceId) {
-	    logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]获取状态!");
+        logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]获取状态!");
         //创建sessionId
         String sessionId = "";
         boolean engineStatus = false;
@@ -295,7 +220,7 @@ public class Scheduler4Task {
                         Date date = new Date();//获得系统时间.
                         String nowTime = sdf.format(date);//将时间格式转换成符合Timestamp要求的格式.
                         t.setExecute_time(sdf.parse(nowTime));
-//                        t.setEngine(engine.getId());
+                        t.setEngine(0);
                         taskService.update(t);
                         logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]完成下发!");
                     }
@@ -361,7 +286,7 @@ public class Scheduler4Task {
     }
 
     private void getWebsoc(Task t, OrderAsset orderAsset, List<Order> orderList, int serviceId) {
-	    String[] assetArray = null;   
+        String[] assetArray = null;   
         assetArray = t.getOrder_asset_Id().split(",");  
         String[] assets = new String[assetArray.length];
         for(int i=0;i<assetArray.length;i++){
@@ -399,7 +324,7 @@ public class Scheduler4Task {
                 String nowTime = sdf.format(date);//将时间格式转换成符合Timestamp要求的格式.
                 t.setExecute_time(sdf.parse(nowTime));
                 t.setGroup_id(virtual_group_id);
-//              t.setEngine(engine.getId());
+                t.setEngine(0);
                 taskService.update(t);
                 logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]完成下发!");
             
@@ -463,8 +388,8 @@ public class Scheduler4Task {
 //            continue;
         }
     }
-
-    /**
+	
+	/**
 	 * 根据任务信息设置接口参数
 	 * 
 	 * @param task
@@ -486,6 +411,7 @@ public class Scheduler4Task {
 				this.destIP = task.getRemarks();
 			}
 		}
+		
 		// 获取此任务的服务模版名称及扫描频率集合
 		List<HashMap<String, Object>> servList = servService.findByTask(task);
 		if(servList != null && servList.size() > 0 ){
@@ -551,10 +477,9 @@ public class Scheduler4Task {
             	this.tplName = Constants.SERVICE_LDSMFW;
             }
 			
+		}else{
+			this.tplName = Constants.TPL_SYKSSM;
 		}
-//		else{
-//			this.tplName = Constants.TPL_SYKSSM;
-//		}
 		
 	}
 	
@@ -613,50 +538,6 @@ public class Scheduler4Task {
         
     }
 	
-	/**
-	 * 
-	 * @param task
-	 * @throws SchedulerException 
-	 */
-	public void getResultByTask(Task task) throws SchedulerException{
-		//获取引擎名称
-//		servService = new ServServiceImpl();
-//		List<Serv> sList = servService.findByTask(task);
-//		String SName = sList.get(0).getName();
-//		if("漏洞扫描服务".equals(SName)){
-//			this.productId = Constants.PRODUCT_LD;
-//		}else if("恶意代码监测服务".equals(SName)){
-//			this.productId = Constants.PRODUCT_MM;
-//		}else if("网页篡改监测服务".equals(SName)){
-//			this.productId = Constants.PRODUCT_CG;
-//		}else if("关键字监测服务".equals(SName)){
-//			this.productId = Constants.PRODUCT_GJZ;
-//		}else if("可用性监测服务".equals(SName)){
-//			this.productId = Constants.PRODUCT_KYX;
-//		}
-		
-		//获取任务id
-		//this.taskId = String.valueOf(task.getTaskId());
-		/**
-		 * 为任务创建一个调度
-		 */
-//		SchedulerFactory schedFact = new StdSchedulerFactory();
-//		Scheduler scheduler = schedFact.getScheduler();
-//		// 创建一个JobDetail，指明name，groupname，以及具体的Job类名，
-//		//该Job负责定义需要执行任务
-//		JobDetail jobDetail = new JobDetail("job"+task.getTaskId(), Scheduler.DEFAULT_GROUP,Scheduler4Result.class);
-//		jobDetail.getJobDataMap().put("task", task);
-//		//jobDetail.getJobDataMap().put("task", task);
-//		//根据任务信息创建触发器  设置调度策略
-//		SimpleTrigger trigger = new SimpleTrigger("SimpleTrigger" , Scheduler.DEFAULT_GROUP);
-//		trigger.setStartTime(new Date());  //立即执行
-//		trigger.setEndTime(null);
-//		trigger.setRepeatCount(0);
-//		trigger.setRepeatInterval(60*1000);   //   每隔1分钟执行一次
-//		scheduler.scheduleJob(jobDetail, trigger);
-//		//启动调度
-//		//scheduler.start();
-	}
 	
     /**
      * 得到某个日期的后一天日期
@@ -782,10 +663,9 @@ public class Scheduler4Task {
                 List<Element> EngineList = result.elements("EngineList");
                 for (Element engine : EngineList) {
                     String ip = engine.element("IP").getTextTrim();
-                    String cpuOccupancy = engine.element("CpuOccupancy").getTextTrim();
                     Element eng = engine.element("Engine");
                     String engineState = eng.element("EngineState").getTextTrim();
-                    if (!cpuOccupancy.equals("")){
+                    if (engineState!=null){
                         //可用ip
                         ableList.add(ip);
                     }else{
@@ -802,4 +682,5 @@ public class Scheduler4Task {
         }
         
     }
+
 }

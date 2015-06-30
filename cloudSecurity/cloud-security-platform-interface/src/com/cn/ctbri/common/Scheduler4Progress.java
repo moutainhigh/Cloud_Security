@@ -1,6 +1,8 @@
 package com.cn.ctbri.common;
 
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,8 +15,11 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.cn.ctbri.entity.EngineCfg;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.service.IEngineService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ITaskService;
 
@@ -35,6 +40,9 @@ public class Scheduler4Progress {
 	
 	@Autowired
 	private IOrderService orderService;
+	
+	@Autowired
+    private IEngineService engineService;
 	
 
 	static {
@@ -59,34 +67,63 @@ public class Scheduler4Progress {
 		List<Task> taskList = taskService.findTask(map);
 		logger.info("[获取任务进度调度]:当前等待获取进度的任务有 " + taskList.size() + " 个!");
 		for (Task task : taskList) {
-			logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]开始获取进度状态!");
-			// 根据任务id获取任务状态
-			String sessionId = ArnhemWorker.getSessionId();
-			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(task.getTaskId()));
-			String status = this.getStatusByResult(resultStr);
-			List<Order> orderList = orderService.findOrderByTask(task);
-			if(orderList!=null&&!orderList.equals("")){
-    			Order order = orderList.get(0);
-    			if ("running".equals(status)) {// 任务执行完毕
-    				logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析任务进度......");
-    				/**
-    				 * 获取任务进度信息并入库
-    				 */
-    				// 获取任务进度引擎
-    				try {
-	    				String progressStr = ArnhemWorker.getProgressByTaskId(sessionId, String.valueOf(task.getTaskId()),String.valueOf(order.getServiceId()));
-	    				this.getProgressByRes(task.getTaskId(),progressStr);
-    				} catch (Exception e) {
-    					continue;
-    				}
-    				logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]进度信息结果已完成入库!");
-    			} else if("finish".equals(status)){
-    			    task.setTaskProgress("101");
-    			    taskService.updateTask(task);
-    			} else {
-    				logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]进度信息结果未完成，等待下次拉取结果~");
-    			}
-			}
+		    if(task.getWebsoc()==1){
+		        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String temp = setDateFormat.format(Calendar.getInstance().getTime());
+                long executeTime = task.getExecute_time().getTime();
+                long endTime = setDateFormat.parse(temp).getTime();
+                long diff = endTime-executeTime;
+                if(task.getStatus()==Integer.parseInt(Constants.TASK_RUNNING)){
+                    if(diff/1000<=32){
+                        task.setTaskProgress("20");
+                    }else if(diff/1000<=63){
+                        task.setTaskProgress("40");
+                    }else if(diff/1000<=93){
+                        task.setTaskProgress("60");
+                    }else if(diff/1000<=123){
+                        task.setTaskProgress("80");
+                    }else if(diff/1000<=153){
+                        task.setTaskProgress("90");
+                    }else if(diff/1000<=183){
+                        task.setTaskProgress("100");
+                    }
+                    taskService.updateTask(task);
+                }
+                
+		    }else{
+		        try {
+        			logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]开始获取进度状态!");
+        			// 根据任务id获取任务状态
+        			String sessionId = ArnhemWorker.getSessionId();
+        			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(task.getTaskId()));
+        			String status = this.getStatusByResult(resultStr);
+        			List<Order> orderList = orderService.findOrderByTask(task);
+        			if(orderList!=null&&!orderList.equals("")){
+            			Order order = orderList.get(0);
+            			if ("running".equals(status)) {// 任务执行完毕
+            				logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析任务进度......");
+            				/**
+            				 * 获取任务进度信息并入库
+            				 */
+            				// 获取任务进度引擎
+            				try {
+        	    				String progressStr = ArnhemWorker.getProgressByTaskId(sessionId, String.valueOf(task.getTaskId()),String.valueOf(order.getServiceId()));
+        	    				this.getProgressByRes(task.getTaskId(),progressStr);
+            				} catch (Exception e) {
+            					continue;
+            				}
+            				logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]进度信息结果已完成入库!");
+            			} else if("finish".equals(status)){
+            			    task.setTaskProgress("101");
+            			    taskService.updateTask(task);
+            			} else {
+            				logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]进度信息结果未完成，等待下次拉取结果~");
+            			}
+        			}
+		        } catch (Exception e) {
+	                  continue;
+	            }
+    		}
 		}
 		logger.info("[获取任务进度调度]:任务进度扫描结束....");
 	}
