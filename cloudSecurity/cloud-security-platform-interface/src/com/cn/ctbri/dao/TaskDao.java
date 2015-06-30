@@ -55,4 +55,12 @@ public interface TaskDao {
     public List<Task> getTaskStatus(Order order);
 
     public List<Task> findDelTask(Map<String, Object> delmap);
+
+    public List<Task> findTaskByGroupId(String group_id);
+
+    public List<Task> findExpTask(Map<String, Object> map);
+
+    public List getArnhemTask();
+
+    public List getWebsocTask();
 }

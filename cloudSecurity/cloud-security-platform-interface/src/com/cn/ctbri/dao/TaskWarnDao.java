@@ -1,6 +1,7 @@
 package com.cn.ctbri.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cn.ctbri.entity.TaskWarn;
 
@@ -12,7 +13,7 @@ import com.cn.ctbri.entity.TaskWarn;
  */
 public interface TaskWarnDao {
 
-	List<TaskWarn> findTaskWarnByOrderId(String orderId);
+	List<TaskWarn> findTaskWarnByOrderId(Map<String, Object> hashmap);
 
 	TaskWarn findTaskWarnCountByOrderId(String orderId);
 

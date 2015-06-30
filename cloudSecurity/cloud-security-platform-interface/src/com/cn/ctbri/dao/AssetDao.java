@@ -85,5 +85,7 @@ public interface AssetDao {
      * @return 资产集合
      */
     List<Asset> getAssetByTask(Task task);
+    
+    Asset findAssetById(int id);
 
 }

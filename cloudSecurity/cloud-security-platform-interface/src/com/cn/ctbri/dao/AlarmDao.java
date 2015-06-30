@@ -33,5 +33,5 @@ public interface AlarmDao {
      *       @time 2015-01-07
      * 返回值    ：  List<Alarm> 报警对象集合
      */
-    public List<Alarm> findAlarmByOrderId(String orderId);
+    public List<Alarm> findAlarmByOrderId(Map<String, Object> paramMap);
 }
