@@ -12,6 +12,7 @@ $(function(){
     // 定义数组
     var label = [];
     var value = [];
+    var colorData = [];
     var valueGauge = [];
     var time = [];
     var lineData = [];
@@ -178,6 +179,7 @@ $(function(){
 	                   	}
 	                   	label[i]=temp;
 	                   	value[i]={'name':temp,'value':p['value']};
+	                   	colorData[i]=p['color'];
 //	                   	label[i]=p['label'];
 //	                   	value[i]={'name':p['label'],'value':p['value']};
                     });
@@ -192,7 +194,8 @@ $(function(){
 //                            data:['低','中','高']
                             data:testX()
                         },
-                        color:['lightgreen', 'orange','red'],
+//                        color:['lightgreen', 'orange','red'],
+                        color:colorData,
                         toolbox: {
                             show : true,
                             feature : {
@@ -240,6 +243,10 @@ $(function(){
     
     function testY(){
     	return value;
+    }
+    
+    function colorData(){
+    	return colorData;
     }
     
     function testGauge(){
