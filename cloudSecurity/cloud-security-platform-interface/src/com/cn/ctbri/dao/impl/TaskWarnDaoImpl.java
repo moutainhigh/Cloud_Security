@@ -1,5 +1,6 @@
 package com.cn.ctbri.dao.impl;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +23,8 @@ public class TaskWarnDaoImpl extends DaoCommon implements TaskWarnDao {
 	private String ns = "com.cn.ctbri.entity.TaskWarnMapper.";
 	
 	//根据订单id获取告警信息
-	public List<TaskWarn> findTaskWarnByOrderId(String orderId) {
-		return getSqlSession().selectList(ns+"findTaskWarnByOrderId", orderId);
+	public List<TaskWarn> findTaskWarnByOrderId(Map<String, Object> hashmap) {
+		return getSqlSession().selectList(ns+"findTaskWarnByOrderId", hashmap);
 	}
 	//根据订单id获取告警次数
 	public TaskWarn findTaskWarnCountByOrderId(String orderId) {

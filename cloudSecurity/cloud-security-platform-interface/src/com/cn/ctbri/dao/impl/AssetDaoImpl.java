@@ -119,4 +119,8 @@ public class AssetDaoImpl extends SqlSessionDaoSupport implements AssetDao{
         List list = this.getSqlSession().selectList(ns+"getAssetByTask", task);
         return list;
 	}
+    public Asset findAssetById(int id) {
+        Asset asset = this.getSqlSession().selectOne(ns+"findAssetById", id);
+        return asset;
+    }
 }

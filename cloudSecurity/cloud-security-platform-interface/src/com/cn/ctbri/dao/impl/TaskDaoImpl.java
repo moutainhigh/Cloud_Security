@@ -88,6 +88,29 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
         }
         return getSqlSession().selectList(ns+"findDelTask", delmap);
     }
+
+    public List<Task> findTaskByGroupId(String group_id) {
+        List<Task> list = this.getSqlSession().selectList(ns+"findTaskByGroupId", group_id);
+        return list;
+    }
+
+    public List<Task> findExpTask(Map<String, Object> map) {
+        String taskpage = String.valueOf(map.get("page"));
+        if(taskpage == null || "".equals(taskpage)){
+            taskpage = "20";
+        }
+        return getSqlSession().selectList(ns+"findExpTask", map);
+    }
+
+    public List getArnhemTask() {
+        List list = this.getSqlSession().selectList(ns+"getArnhemTask");
+        return list;
+    }
+
+    public List getWebsocTask() {
+        List list = this.getSqlSession().selectList(ns+"getWebsocTask");
+        return list;
+    }
 	
 	
 
