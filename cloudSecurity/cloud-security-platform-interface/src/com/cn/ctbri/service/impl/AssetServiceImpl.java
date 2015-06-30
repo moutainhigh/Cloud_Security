@@ -105,5 +105,8 @@ public class AssetServiceImpl implements IAssetService{
 	public List<Asset> findByTask(Task task) {
 		return assetDao.getAssetByTask(task);
 	}
+    public Asset findAssetById(int id) {
+        return assetDao.findAssetById(id);
+    }
 	
 }
