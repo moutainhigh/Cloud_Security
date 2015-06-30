@@ -128,10 +128,16 @@ public class UserController {
         int leakNum = selfHelpOrderService.findLeakNum(1);
         //查询网页数
         int webPageNum = selfHelpOrderService.findWebPageNum();
+        //检测网页数
+        int webSite = selfHelpOrderService.findWebSite();
+        //断网次数
+        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
         m.put("whorseNum", whorseNum);
         m.put("pageTamperNum", pageTamperNum);
         m.put("leakNum", leakNum);
         m.put("webPageNum", webPageNum);
+        m.put("webSite", webSite);
+        m.put("brokenNetwork", brokenNetwork);
         //object转化为Json格式
         JSONObject JSON = CommonUtil.objectToJson(response, m);
         try {
@@ -161,10 +167,16 @@ public class UserController {
         int leakNum = selfHelpOrderService.findLeakNum(1);
         //查询网页数
         int webPageNum = selfHelpOrderService.findWebPageNum();
+        //检测网页数
+        int webSite = selfHelpOrderService.findWebSite();
+        //断网次数
+        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
         m.addAttribute("whorseNum", whorseNum);
         m.addAttribute("pageTamperNum", pageTamperNum);
         m.addAttribute("leakNum", leakNum);
         m.addAttribute("webPageNum", webPageNum);
+        m.addAttribute("webSite", webSite);
+        m.addAttribute("brokenNetwork", brokenNetwork);
         m.addAttribute("servList", servList);
         m.addAttribute("noticeList", list);
 		return "/main";
