@@ -682,18 +682,21 @@ public class WarningController {
             JSONObject jo = new JSONObject();
             jo.put("label", "0");
             jo.put("value", lowList.size());
+            jo.put("color", "lightgreen");
             json.add(jo);
         }
         if(middleList.size()>0&&middleList!=null){
             JSONObject jo = new JSONObject();
             jo.put("label", "1");
             jo.put("value", middleList.size());
+            jo.put("color", "orange");
             json.add(jo);
         }
         if(highList.size()>0&&highList!=null){
             JSONObject jo = new JSONObject();
             jo.put("label", "2");
             jo.put("value", highList.size());
+            jo.put("color", "red");
             json.add(jo);
         }
         return json.toString();
