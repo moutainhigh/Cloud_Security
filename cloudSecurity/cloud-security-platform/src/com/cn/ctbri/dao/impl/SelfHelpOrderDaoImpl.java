@@ -109,6 +109,24 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
         return (int)i;
     }
 
+    /**
+     * 功能描述：检测网页数
+     *       @time 2015-6-29
+     */
+    public int findWebSite() {
+        List webSiteList = this.getSqlSession().selectList(ns + "findWebSite");
+        return webSiteList.size();
+    }
+
+    /**
+     * 功能描述：断网次数
+     *       @time 2015-6-29
+     */
+    public int findBrokenNetwork() {
+        List brokenNetworkList = this.getSqlSession().selectList(ns + "findBrokenNetwork");
+        return brokenNetworkList.size();
+    }
+
 
 	
 }
