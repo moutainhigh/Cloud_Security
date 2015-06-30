@@ -28,7 +28,7 @@
              <td><fmt:formatDate value="${list.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>~<fmt:formatDate value="${list.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
              <td><fmt:formatDate value="${list.create_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
              <td>
-             <c:if test="${list.begin_date>temp}"><img src="${ctx}/source/images/status_3.jpg" title="等待"/></c:if>
+             <c:if test="${list.begin_date>temp||list.websoc==2}"><img src="${ctx}/source/images/status_3.jpg" title="等待"/></c:if>
              
              <c:if test="${list.serviceId==1||list.serviceId==2||list.serviceId==3||list.serviceId==4||list.serviceId==5}">
                 <c:if test="${list.status==2}">
@@ -42,7 +42,7 @@
                  </a>
                 </c:if>
                 <!-- 安恒的服务 -->
-                <c:if test="${list.begin_date<=temp&&list.status==0}"><a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank"><img src="${ctx}/source/images/status_4.jpg" title="服务中"/></a></c:if>
+                <c:if test="${list.begin_date<=temp&&list.status==0&&list.websoc!=2}"><a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank"><img src="${ctx}/source/images/status_4.jpg" title="服务中"/></a></c:if>
                 <c:if test="${list.begin_date<=temp&&list.status==3}"><a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank"><img src="${ctx}/source/images/status_1.jpg" title="服务中有告警"/></a></c:if>
              </c:if>
                 
