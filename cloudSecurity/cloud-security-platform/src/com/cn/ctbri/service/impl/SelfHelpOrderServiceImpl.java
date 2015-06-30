@@ -93,5 +93,21 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
         return selfHelpOrderDao.findWebPageNum();
     }
 
+    /**
+     * 功能描述：检测网页数
+     *       @time 2015-6-29
+     */
+    public int findWebSite() {
+        return selfHelpOrderDao.findWebSite();
+    }
+
+    /**
+     * 功能描述：断网次数
+     *       @time 2015-6-29
+     */
+    public int findBrokenNetwork() {
+        return selfHelpOrderDao.findBrokenNetwork();
+    }
+
 
 }
