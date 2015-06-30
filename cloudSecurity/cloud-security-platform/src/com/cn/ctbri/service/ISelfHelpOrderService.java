@@ -69,6 +69,18 @@ public interface ISelfHelpOrderService {
      */
     int findWebPageNum();
 
+    /**
+     * 功能描述：检测网页数
+     *       @time 2015-6-29
+     */
+    int findWebSite();
+
+    /**
+     * 功能描述：断网次数
+     *       @time 2015-6-29
+     */
+    int findBrokenNetwork();
+
 
 	
 }
