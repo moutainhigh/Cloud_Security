@@ -28,6 +28,7 @@ import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderService;
+import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
@@ -50,6 +51,8 @@ public class DataAnalysisController {
 	IOrderService orderService;
 	@Autowired
 	IAlarmService alarmService;
+	@Autowired
+    ISelfHelpOrderService selfHelpOrderService;
 	/**
 	 * 功能描述：数据分析页面
 	 *		 @time 2015-2-3
@@ -70,18 +73,20 @@ public class DataAnalysisController {
 		}
 		request.setAttribute("haveServCount", haveServCount);//活跃用户数
 		
-		List<Asset> listAsset = assetService.findAllAssetAddr();
-		int asserAddrCount = 0;
-		if(listAsset!=null && listAsset.size()>0){
-			asserAddrCount = listAsset.size();
-		}
+//		List<Asset> listAsset = assetService.findAllAssetAddr();
+//		int asserAddrCount = 0;
+//		if(listAsset!=null && listAsset.size()>0){
+//			asserAddrCount = listAsset.size();
+//		}
+		int asserAddrCount = selfHelpOrderService.findWebSite();
 		request.setAttribute("asserAddrCount", asserAddrCount);//检测网站
 		
-		List<Alarm> listAlarmCount = alarmService.findAll();
-		int alarmCount = 0;
-		if(listAlarmCount!=null && listAlarmCount.size()>0){
-			alarmCount = listAlarmCount.size();
-		}
+//		List<Alarm> listAlarmCount = alarmService.findAll();
+//		int alarmCount = 0;
+//		if(listAlarmCount!=null && listAlarmCount.size()>0){
+//			alarmCount = listAlarmCount.size();
+//		}
+		int alarmCount = selfHelpOrderService.findWebPageNum();
 		request.setAttribute("alarmCount", alarmCount);//扫描页面数
 		return "/source/adminPage/userManage/dataAnalysis";
 	}
