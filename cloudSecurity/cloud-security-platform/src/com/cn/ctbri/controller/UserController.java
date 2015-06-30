@@ -128,7 +128,7 @@ public class UserController {
         int leakNum = selfHelpOrderService.findLeakNum(1);
         //查询网页数
         int webPageNum = selfHelpOrderService.findWebPageNum();
-        //检测网页数
+        //检测网站数
         int webSite = selfHelpOrderService.findWebSite();
         //断网次数
         int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
