@@ -1,6 +1,7 @@
 package com.cn.ctbri.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,8 @@ public class AlarmServiceImpl implements IAlarmService{
 	}
 
 	//根据orderid查询告警信息
-    public List<Alarm> findAlarmByOrderId(String orderId) {
-        return alarmDao.findAlarmByOrderId(orderId);
+    public List<Alarm> findAlarmByOrderId(Map<String, Object> paramMap) {
+        return alarmDao.findAlarmByOrderId(paramMap);
     }
 	
 }
