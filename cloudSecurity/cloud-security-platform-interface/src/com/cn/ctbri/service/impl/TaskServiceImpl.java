@@ -64,5 +64,21 @@ public class TaskServiceImpl implements ITaskService{
     public List<Task> findDelTask(Map<String, Object> delmap) {
         return this.taskDao.findDelTask(delmap);
     }
+
+    public List<Task> findTaskByGroupId(String group_id) {
+        return this.taskDao.findTaskByGroupId(group_id);
+    }
+
+    public List<Task> findExpTask(Map<String, Object> map) {
+        return this.taskDao.findExpTask(map);
+    }
+
+    public List getArnhemTask() {
+        return this.taskDao.getArnhemTask();
+    }
+
+    public List getWebsocTask() {
+        return this.taskDao.getWebsocTask();
+    }
 	
 }
