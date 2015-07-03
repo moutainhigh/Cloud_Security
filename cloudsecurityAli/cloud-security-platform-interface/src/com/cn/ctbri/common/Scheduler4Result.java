@@ -176,6 +176,7 @@ public class Scheduler4Result {
         				    		long endTime = setDateFormat.parse(temp).getTime();
         				    		long diff = endTime-executeTime;
         				    		task.setScanTime(String.valueOf(diff));
+        				    		task.setTaskProgress("101");
         							taskService.update(task);
         //							ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId()));
         //				    	}
