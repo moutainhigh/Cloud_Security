@@ -284,7 +284,9 @@ function seedetail1(e) {
 </div>
 <div  class="bottom_main" style="width:380px;">
 <h3><a href="###">版权信息</a></h3>
-
+ <ul>
+ <li>Copyright&nbsp;©&nbsp;2015 中国电信股份有限公司北京研究院<br />
+京ICP备12019458号－10</li>
 </div>
 </div>
 </div>
