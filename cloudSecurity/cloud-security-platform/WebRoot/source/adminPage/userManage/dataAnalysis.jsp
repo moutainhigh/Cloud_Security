@@ -149,6 +149,14 @@
 			      		<option value="日常流量监测" >日常流量监测服务</option>
 			      		<option value="日常攻击防护" >日常攻击防护服务</option>
 			      		<option value="突发异常流量清洗" >突发异常流量清洗服务</option>
+			      		<!-- <option value="1" >漏洞扫描服务</option>
+                        <option value="2" >恶意代码监测服务</option>
+                        <option value="3" >网页篡改监测服务</option>
+                        <option value="4" >关键字监测服务</option>
+                        <option value="5" >可用性监测服务</option>
+                        <option value="6" >日常流量监测服务</option>
+                        <option value="7" >日常攻击防护服务</option>
+                        <option value="8" >突发异常流量清洗服务</option>-->
 			    	</select>
               		<select class="se_small fl se_last" id="level" name="level">
               			<option selected="selected" value="">请选择告警级别</option>
@@ -198,6 +206,9 @@
 </div>
 <div  class="bottom_main" style="width:380px;">
 <h3><a href="###">版权信息</a></h3>
+ <ul>
+ <li>Copyright&nbsp;©&nbsp;2015 中国电信股份有限公司北京研究院<br />
+京ICP备12019458号－10</li>
 </div>
 </div>
 </div>
