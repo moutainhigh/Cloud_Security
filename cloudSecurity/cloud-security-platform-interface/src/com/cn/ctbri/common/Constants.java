@@ -4,7 +4,7 @@ package com.cn.ctbri.common;
  * @author googe
  *
  */
-		
+
 public class Constants {
 	/**
 	 * 任务状态<br>
