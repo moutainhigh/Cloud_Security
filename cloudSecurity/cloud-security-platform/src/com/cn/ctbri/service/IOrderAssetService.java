@@ -57,5 +57,8 @@ public interface IOrderAssetService {
      */
     List<OrderIP> findIpByOrderId(String orderId);
 
+    //根据orderId删除订单资产
+    void deleteOaByOrderId(String orderId);
+
 	
 }

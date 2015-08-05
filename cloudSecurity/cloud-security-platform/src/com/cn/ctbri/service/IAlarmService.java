@@ -87,5 +87,9 @@ public interface IAlarmService {
 	List<Alarm> findRightByOrderIdAndUrl(Map<String, Object> map);
 	//敏感词排行榜
 	List<Alarm> findKeywordByUrlAndOrderId(Map<String, Object> map);
+	//删除告警
+    void deleteAlarmByTaskId(Map<String, Object> paramMap);
+    //根据orderid查询告警分类数,报表导出用
+    List findAlarmByOrderIdorGroupId(Map<String, Object> paramMap);
 	
 }

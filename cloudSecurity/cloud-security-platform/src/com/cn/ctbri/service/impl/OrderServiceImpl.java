@@ -160,5 +160,14 @@ public class OrderServiceImpl implements IOrderService{
 		return a ;
 	}
 	
+	//删除订单
+    public void deleteOrderById(String orderId) {
+        orderDao.deleteOrderById(orderId);
+    }
+    //查找订单
+    public Order findOrderById(String orderId) {
+        return orderDao.findOrderById(orderId);
+    }
+	
 	
 }

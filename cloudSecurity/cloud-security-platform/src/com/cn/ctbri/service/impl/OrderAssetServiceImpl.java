@@ -77,5 +77,10 @@ public class OrderAssetServiceImpl implements IOrderAssetService{
         List<OrderIP> list = orderAssetDao.findIpByOrderId(orderId);
         return list;
     }
+
+    //根据orderId删除订单资产
+    public void deleteOaByOrderId(String orderId) {
+        orderAssetDao.deleteOaByOrderId(orderId);
+    }
 	
 }
