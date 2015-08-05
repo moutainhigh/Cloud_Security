@@ -122,10 +122,10 @@ function searchCombine(){
       <table id="billTab">
         <tbody>
 	          <tr style="background:#e0e0e0; height:30px; line-height:30px;">
-	            <td style="width:10%;">订单编号</td>
-	            <td  style="width:10%;">订单类型</td>
-	            <td  style="width:15%;">订单服务</td>
-	            <td  style="width:40%;">服务起止时间</td>
+	            <td style="width:16%;">订单编号</td>
+	            <td  style="width:7%;">订单类型</td>
+	            <td  style="width:13%;">订单服务</td>
+	            <td  style="width:36%;">服务起止时间</td>
 	            <td  style="width:15%;">下单时间</td>
 	            <td  style="width:10%;"></td>
 	          </tr>
