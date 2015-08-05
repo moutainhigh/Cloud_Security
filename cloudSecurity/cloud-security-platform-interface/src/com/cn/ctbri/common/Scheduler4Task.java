@@ -200,20 +200,20 @@ public class Scheduler4Task {
         for (Task t : taskDelList) {
 //            EngineCfg engine = engineService.findEngineIdbyIP(String.valueOf(t.getEngine()));
             logger.info("[删除任务调度]:任务-[" + t.getTaskId() + "]获取状态!");
+            //获取订单类型
+            OrderAsset orderAsset = taskService.getTypeByAssetId(Integer.parseInt(t.getOrder_asset_Id()));
+            List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
             String sessionId = ArnhemWorker.getSessionId();
-            String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId()));
+            String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId());
             String status = this.getStatusByResult(resultStr);
             if("running".equals(status)){
                 logger.info("[删除任务调度]:任务-[" + t.getTaskId() + "]开始下发!");
                 try {
-                    //获取订单类型
-                    OrderAsset orderAsset = taskService.getTypeByAssetId(Integer.parseInt(t.getOrder_asset_Id()));
-                    List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
                     Map<String, Object> hashmap = new HashMap<String, Object>();
                     hashmap.put("orderId", orderList.get(0).getId());
                     hashmap.put("websoc", orderList.get(0).getWebsoc());
                     if(orderList.get(0).getServiceId()==5&&orderList.get(0).getWebsoc()!=1){
-                        ArnhemWorker.removeTask(sessionId, String.valueOf(t.getTaskId()));
+                        ArnhemWorker.removeTask(sessionId, String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId());
                         //任务完成后,引擎活跃数减1
 //                        engine.setActivity(engine.getActivity()-1);
 //                        engineService.update(engine);
@@ -273,13 +273,13 @@ public class Scheduler4Task {
             }
         }
         if(engineStatus){
-            String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId()));
+            String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId());
             String status = this.getStatusByResult(resultStr);
             if("".equals(status)){
                 logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]开始下发!");
                 preTaskData(t);
                 try {
-                    String lssued = ArnhemWorker.lssuedTask(sessionId, String.valueOf(t.getTaskId()), this.destURL, this.destIP, "80",
+                    String lssued = ArnhemWorker.lssuedTask(sessionId, String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId(), this.destURL, this.destIP, "80",
                             this.tplName);
                     boolean state = this.getStatusBylssued(lssued);
                     if(state){
@@ -386,7 +386,7 @@ public class Scheduler4Task {
             String virtual_group_id = "";
             if(engineStatus){
                 //下发任务
-                virtual_group_id = WebSocWorker.lssuedTask(sessionid,String.valueOf(t.getTaskId()),assets,orderList.get(0).getServiceId());
+                virtual_group_id = WebSocWorker.lssuedTask(sessionid,String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId(),assets,orderList.get(0).getServiceId());
                 //任务下发后,引擎活跃数加1
 //              engine.setActivity(engine.getActivity()+1);
 //              engineService.update(engine);

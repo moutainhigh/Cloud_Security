@@ -132,14 +132,14 @@ public class Scheduler4Result {
 		    }else{
 		        try {
         			logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]开始获取状态!");
-        			// 根据任务id获取任务状态
-        			String sessionId = ArnhemWorker.getSessionId();
-        			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId,String.valueOf(task.getTaskId()));
-        			String status = this.getStatusByResult(resultStr);
-                    List<Alarm> aList;
-                    //更新订单告警状态
+        			//更新订单告警状态
                     List<Order> oList = orderService.findOrderByTask(task);
                     Order o = oList.get(0);
+        			// 根据任务id获取任务状态
+        			String sessionId = ArnhemWorker.getSessionId();
+        			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId,String.valueOf(task.getTaskId())+"_"+o.getId());
+        			String status = this.getStatusByResult(resultStr);
+                    List<Alarm> aList;
                     //获取当前时间
                     SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String temp = setDateFormat.format(Calendar.getInstance().getTime());
@@ -149,7 +149,7 @@ public class Scheduler4Result {
         				 * 获取任务结果信息并入库
         				 */
         				// 获取任务引擎
-        				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId()),
+        				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId())+"_"+o.getId(),
         						getProductByTask(task), 0, 500);   //获取全部告警
         				try {
         				    aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID);
@@ -183,7 +183,7 @@ public class Scheduler4Result {
         				    		task.setScanTime(String.valueOf(diff));
         				    		task.setTaskProgress("101");
         							taskService.update(task);
-        //							ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId()));
+        //							ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId())+"_"+orderList.get(0).getId());
         //				    	}
         //				    }
         //				}
@@ -235,7 +235,7 @@ public class Scheduler4Result {
                         }
                         
         				//删除任务   add by txr 2015-03-27
-        				ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId()));
+        				ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId())+"_"+o.getId());
         				//任务完成后,引擎活跃数减1
 //                        engine.setActivity(engine.getActivity()-1);
 //                        engineService.update(engine);
