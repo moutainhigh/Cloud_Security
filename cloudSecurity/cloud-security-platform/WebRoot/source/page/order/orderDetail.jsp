@@ -107,7 +107,7 @@
            </span></p>
            <p class="dd_detail"><span class="detail_l fl">检测次数</span>
            <span class="detail_r fl">
-           <c:if test="${checkTime>0 }"><a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank">${checkTime }次</a></c:if>
+           <c:if test="${checkTime>0 }"><a href="${ctx}/warningInit.html?orderId=${order.id }&type=${order.type}&websoc=${order.websoc}" target="_blank">${checkTime }次</a></c:if>
            <c:if test="${checkTime==0 }">${checkTime }次</c:if>
            </span></p>
         </c:if>
