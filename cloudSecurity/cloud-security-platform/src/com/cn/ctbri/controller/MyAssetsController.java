@@ -240,10 +240,11 @@ public class MyAssetsController {
 			if(verification_msg.equals("codeVerification")){
 				 //获取已知代码
 				 String code1 = String.valueOf(request.getParameter("code1"));
-				 //String code1 = new String(String.valueOf(request.getParameter("code1")).getBytes("ISO-8859-1"),"UTF-8");
+//				 String code1 = new String(String.valueOf(request.getParameter("code1")).getBytes("ISO-8859-1"),"UTF-8");
 				 
-				 NodeList rt= GetNetContent.getNodeList(path);
-				 String str= rt.toString();
+				 String str = GetNetContent.getNodeList(path);
+//				 String str= rt.toString();
+//				 String str= rt.toHtml();
 				 if(str.contains(code1)){
 					 m.put("msg", 1);//验证成功
 				 }else{
@@ -255,9 +256,9 @@ public class MyAssetsController {
 				try{
 					String newPath = "";
 					if(path.endsWith("/")){
-						newPath = path+"key.txt";
+						newPath = path+"key.html";
 					}else{
-						newPath =  path+"/key.txt";
+						newPath =  path+"/key.html";
 					}
 					URL fileUrl = new URL(newPath);//http://localhost:8080/cloud-security-platform/key.txt
 					//sun.net.www.protocol.http.HttpURLConnection:http://localhost:8080/cloud-security-platform/key.txt
@@ -271,7 +272,7 @@ public class MyAssetsController {
 					}
 					String toStringSb = sb.toString();
 					input.close();
-					if(toStringSb!=null&&toStringSb.equals(Configuration.getFileContent())){
+					if(toStringSb!=null&&toStringSb.contains(Configuration.getFileContent())){
 						m.put("msg", 1);//验证成功
 					}else{
 						m.put("msg", 0);//验证失败
