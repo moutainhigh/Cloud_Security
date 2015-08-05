@@ -76,11 +76,12 @@ function historicalDetails(){
 	var type = $("#type").val();
 //	window.location.href = "${ctx}/historyInit.html?execute_Time="
 	//							+ execute_Time+"&orderId="+orderId;
-	window.open("${ctx}/warningInit.html?groupId="
-								+ groupId+"&orderId="+orderId+"&type="+type); 
-	
-
+	if($("#execute_Time").val()!=1){
+		window.open("${ctx}/warningInit.html?groupId="
+                + groupId+"&orderId="+orderId+"&type="+type); 
+	}
 }
+
 function seedetail1(e) {
 	var uservalue=$(e).attr('value');
     if(uservalue==0)
@@ -95,6 +96,7 @@ function seedetail1(e) {
       }
 
 };
+
 </script>
 </script>
 </head>
@@ -137,7 +139,7 @@ function seedetail1(e) {
 <div>
 <!-- 头部代码结束-->
 <div class="user_center clear">
-  
+  <form id="exportForm" action="${ctx}/export.html" method="post">
     <!-- 告警详情-->
      <div class="user_right" style="margin:auto;float:none;">
         <div class="gj_top">
@@ -171,7 +173,7 @@ function seedetail1(e) {
             </c:if>
           </div>
         <div class="gj_fr">
-            <input type="hidden" value="${order.id }" id="orderId" />
+            <input type="hidden" value="${order.id }" id="orderId" name="orderId"/>
             <input type="hidden" value="${order.type }" id="type"/>
             <input type="hidden" value="${group_flag }" id="group_flag"/>
             <input type="hidden" value="${order.websoc }" id="websoc"/>
@@ -186,10 +188,10 @@ function seedetail1(e) {
             <span class="assets" style="display:block">${asset.name }&nbsp;&nbsp;(${asset.addr })</span>
             </c:forEach>
             </div></div></p>
-            <c:if test="${order.type==1 && group_flag==null}">
+            <c:if test="${order.type==1}"><!-- test="${order.type==1 && group_flag==null}" -->
                 <p><span class="bigfont historyde">历史详情</span>
                     <select class="historyse" id=execute_Time name="execute_Time" onchange="historicalDetails()">
-                        <option>请选择</option>
+                        <option value="1">请选择</option>
                         <c:forEach var="time" items="${taskTime}" varStatus="status">
                            <c:if test="${timeSize!=0}">
                                <c:if test="${not status.last}">
@@ -205,6 +207,11 @@ function seedetail1(e) {
                 <!--  <a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank"><span style="float:right; margin-right:30px; dispiay:inline-block;color:#999; ">历史记录</span></a>
                 -->
             </c:if>
+            <c:if test="${alist!=0}">
+            <p >
+             <span>下载Word报表&nbsp;</span>
+             <span><a href="javascript:void(0)" onclick="exportImg('${order.id }')" ><img src="${ctx}/source/images/export.png" width="22" height="23"/>
+            </a></span></p></c:if>
         </div>
         </div>
         <div class="process">
@@ -240,10 +247,14 @@ function seedetail1(e) {
                 </c:if>
                 <c:if test="${alist!=0}">
 	                <div class="ldgs" id="ldgs">
-	                    
 	                </div>
                 </c:if>
             </div>
+            
+			<input type="hidden" name="imgPie" id="imgPie" />
+			<input type="hidden" name="imgBar" id="imgBar" />
+			<input type="hidden" name="imgLine" id="imgLine" />
+
             <div class="fl">
             	<div class="detail_title">基本信息</div>
                 <P class="formalinfo"><span class="infotitle">开始时间</span><span>${task.executeTime}</span></P>
@@ -264,6 +275,14 @@ function seedetail1(e) {
         <div class="gj_boxs">
             <div class="detail_title">安全评分</div>
             <div class="aqpf" id="aqpf">
+                <!-- <img src="${ctx}/source/images/aqpf.jpg" width="870" height="235" /> -->
+            </div>
+        </div>
+        </c:if>
+        <c:if test="${!empty alarmList}">
+        <div class="gj_boxs" >
+            <div style="padding:4px 10px;margin:20px 0 28px 30px; font-size:16px;width:64px;"></div>
+            <div class="aqpf" id="aqpf1" >
                 <!-- <img src="${ctx}/source/images/aqpf.jpg" width="870" height="235" /> -->
             </div>
         </div>
@@ -313,6 +332,7 @@ function seedetail1(e) {
     </div>
     </c:if>
   </div>
+  </form>
 </div>
 
 <!-- 尾部代码开始-->
