@@ -252,6 +252,7 @@ function submitForm(){
 	var email = $("#regist_email").val();
 	var mobile = $("#regist_phone").val();
 	var verification_code = $("#verification_code").val();
+	var agreeId = $("#agreeId").val();//同意协议
 	if(null==name||""==name||p1==""||p1==null||p2==""||p2==null||((email==""||email==null)&&(mobile==""||mobile==null))||verification_code==""||verification_code==null){
 		if(null==name||""==name){
 			$("#regist_name_msg").html("用户名不能为空");
@@ -286,7 +287,7 @@ function submitForm(){
 	}else{
 	    if(checkMobile1==0&&checkEmail1==0){
 	    }else{
-	    	if(document.getElementById("ck").checked){
+	    	if(document.getElementById("ck").checked && agreeId==1){
 	    		$("#ck_msg").html("");
 			    if(checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1&&(checkSendEmail1==1||checkSendMobile1==1)&&checkEmailActivationCode1==1){
 				 if(name==p1){
