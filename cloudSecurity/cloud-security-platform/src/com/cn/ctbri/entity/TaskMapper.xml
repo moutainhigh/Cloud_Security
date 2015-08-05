@@ -126,4 +126,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         )
 	    ORDER BY t.execute_time
 	</select>	
+	
+	<!-- 删除任务 -->
+    <delete id="deleteTaskByOaId" parameterType="String">
+        delete from cs_task where order_asset_Id = #{order_asset_Id}
+    </delete>
 </mapper>

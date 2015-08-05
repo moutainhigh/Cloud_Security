@@ -297,4 +297,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="getOrderById" resultType="String" parameterType="hashmap">
     SELECT c.id FROM cs_order  c WHERE c.userId=#{userId}  AND c.id=#{orderId} AND c.type =#{type}
     </select>
+    
+    <!-- 删除订单 -->
+    <delete id="deleteOrderById" parameterType="String">
+        delete from cs_order where id = #{orderId}
+    </delete>
+    
+    <!-- 查找订单 -->
+    <select id="findOrderById" resultMap="OrderRM" parameterType="String">
+        SELECT * FROM cs_order c WHERE c.id=#{orderId}
+    </select>
+    
+    
 </mapper>

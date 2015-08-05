@@ -63,4 +63,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findBrokenNetwork" resultType="hashmap">
         select * from cs_taskwarn tw where tw.name = '断网'
     </select>
+    
+    <!-- 删除联系人 -->
+    <delete id="deleteLinkman" parameterType="int">
+        delete from cs_linkman where id = #{contactId}
+    </delete>
 </mapper>

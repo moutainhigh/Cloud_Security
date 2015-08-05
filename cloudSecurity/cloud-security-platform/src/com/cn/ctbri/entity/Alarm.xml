@@ -69,6 +69,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="level!=null">
 	            and a.level=#{level}
 	        </if>
+	        <if test="name!=null">
+                and a.name=#{name}
+            </if>
 	        order by a.level desc
         </if>
         <if test="websoc==1">
@@ -88,6 +91,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             and a.name = l.name
             <if test="level!=null">
                 and a.level=#{level}
+            </if>
+            <if test="name!=null">
+                and a.name=#{name}
             </if>
             order by a.level desc
         </if>
@@ -228,4 +234,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM cs_order_asset oa,cs_task t, cs_alarm a
 		WHERE oa.orderId=#{orderId} AND a.url=#{url} AND oa.id=t.order_asset_Id AND t.taskId=a.taskId
     </select>
+    
+    <!-- 删除告警 -->
+    <delete id="deleteAlarmByTaskId" parameterType="hashmap">
+        delete from cs_alarm where 
+        <if test="websoc!=1">
+         taskId = #{taskId}
+        </if>
+        <if test="websoc==1">
+         group_id = #{group_id}
+        </if>
+    </delete>
+    
+    <!-- 根据orderid查询告警分类数,报表导出用  -->
+    <select id="findAlarmByOrderIdorGroupId" resultType="Alarm" parameterType="hashmap">
+        <if test="websoc!=1">
+            select a.name,a.level,count(*) as num from cs_alarm a,
+                (select t.taskId,t.group_id from cs_order_asset oa,cs_task t 
+                where oa.id = t.order_asset_id
+                and oa.orderId=#{orderId}
+                and t.status = 3) b  where a.taskId = b.taskId group by a.name order by a.level desc
+        </if>
+        <if test="websoc==1">
+            select a.name,a.level,count(*) as num from cs_alarm a,
+                (select t.taskId,t.group_id from cs_order_asset oa,cs_task t 
+                where oa.id in (t.order_asset_id)
+                and oa.orderId=#{orderId}
+                and t.status = 3) b  where a.group_id = b.group_id group by a.name order by a.level desc
+        </if>
+    </select>
+    
 </mapper>
