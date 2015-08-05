@@ -9,12 +9,14 @@
 <title>登录-注册</title>
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/loginregist.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.validate.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.metadata.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/login.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/regist.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/registzezao.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript">
@@ -67,6 +69,9 @@ function checkNumberImage(){
 	imageNumber.src = "${pageContext.request.contextPath}/image.jsp?timestamp="+new Date().getTime();
 }
 
+function notagree(){
+    window.location.href = "${pageContext.request.contextPath}/loginUI.html";
+}
 </script>
 
 <script language="javascript"> 
@@ -74,8 +79,17 @@ function checkNumberImage(){
 	document.getElementById('login_password').value=''; 
 	}; 
 </script>
+<script type="text/javascript">
+        function on_return(){
+          if(window.event.keyCode == 13){
+           if ($("#login_btn")!=null){
+        	   $("#login_btn").click();
+              }
+          }
+         }
+</script>
 </head>
-<body>
+<body onkeydown="on_return();">
 <!--头部代码-->
 <div class="head_bj">
   <div class="head">
@@ -195,7 +209,7 @@ function checkNumberImage(){
           <tr class="register_tr">
             <td class="regist_title"></td>
             <td><input type="checkbox"  class="login_checkbox" id="ck"/>
-              <span class="regist_yes">我已阅读并同意</span><a href="#" class="forget_pass">《云平台用户注册协议》</a>
+              <span class="regist_yes">我已阅读并同意</span><a href="javascript:void(0)" class="forget_pass" id="zc_regist">《云平台用户注册协议》</a>
               <span id="ck_msg" style="color:red">
              </td>
           </tr>
@@ -249,6 +263,53 @@ function checkNumberImage(){
 </div>
 </div>
 <!--尾部部分代码结束-->
+
+
+<div id="box_mark"></div>
+<div id="box_logoIn_regist">
+  <div id="close_edit"></div>  <div class="text_1">
+    <form id="" action="${ctx}/saveUserPassword.html" method="post">
+    <div class="text_top" style="text-align:center;">云安全服务平台用户协议</div>
+      <div id="f1" class="dd" style="overflow:auto;height:430px;width:870px;margin-top:15px;">
+        <p class="help_detail">中国电信股份有限公司北京研究院（以下简称"电信北研院"）同意按照本服务条款的规定基于云安全服务平台（以下简称“平台”）提供“WEB网站云安全服务”。为获得“WEB网站云安全服务”，服务使用人（以下称"用户"）应当同意本协议，才能完成申请程序并通过平台的审核。用户在向平台提交审核申请时，首先签订了该用户协议后才可提交申请。</p>
+        <h3 class="helph">1. 服务内容</h3>
+        <p class="help_detail">1.1 云安全服务平台是电信北研院为网站提供主动保护的服务平台，所提供的服务包括但不限于：漏洞扫描、恶意代码监测、网页篡改监测、关键字监测、可用性监测。</p>
+        <p class="help_detail">1.2 云安全服务平台所提供的服务不得对用户的网站造成任何破坏。</p>
+        <h3 class="helph">2. 服务规则</h4>
+        <p class="help_detail">2.1 网站管理员权限验证</p>
+        <p class="help_detail">2.1.1 用户在申请“WEB网站云安全服务”时，应提供网站管理员真实、完整和准确的信息及证明材料。如因故意或过失未向电信北研院提供真实、完整和准确的信息，导致电信北研院验证错误，造成相关各方损失的，由用户承担一切责任。</p>
+        <p class="help_detail">2.1.2 用户通过了管理员权限验证，意味着默认确认了此条款。</p>
+        <p class="help_detail">2.2 WEB网站云安全服务</p>
+        <p class="help_detail">2.2.1 WEB网站云安全服务标准以不损害用户网站正常使用为准则，由电信北研院拟定</p>
+        <p class="help_detail">2.2.2用户在使用" WEB网站云安全服务"过程中，用户会收到云安全服务平台的检测结果邮件或短信通知。</p>
+        <p class="help_detail">2.2.3 由于涉及到对网站的安全情况的监控，因此电信北研院有权在用户提交验证申请后，自动将用户申请的网站进行挂马，篡改和漏洞扫描的监控。用户通过了管理员权限验证，就表明确认了此条款。</p>
+        <h3 class="helph">3. 用户信息保护</h4>
+        <p class="help_detail">3.1平台不得泄露用户的保密信息（不包括查询页面需要公布的信息），更不得以任何缘由对用户的隐私信息进行公布。</p>
+        <p class="help_detail">3.2 电信北研院制定了以下四项隐私权保护原则：</p>
+        <p class="help_detail">3.2.1 利用我们收集的信息为用户提供有价值的产品和服务。</p>
+        <p class="help_detail">3.2.2 开发符合隐私权标准和隐私权惯例的产品。</p>
+        <p class="help_detail">3.2.3 将个人信息的收集透明化，并由权威第三方监督。</p>
+        <p class="help_detail">3.2.4 尽最大的努力保护我们掌握的信息。</p>
+        <h3 class="helph">4. 版权声明</h4>
+        <p class="help_detail">4.1 电信北研院对其所提供的验证服务内容，包括但不限于文字、软件、数据库、声音、图片、录像、图表等，拥有所有权和使用权。所有这些内容受版权、商标、专利和其它财产所有权法律的保护。</p>
+        <p class="help_detail">4.2 任何人不得擅自以非法的方式传播、修改和使用本网站所提供的内容。</p>
+        <h3 class="helph">5. 免责声明</h4>
+        <p class="help_detail">5.1 用户知悉并理解，“WEB网站云安全服务”经过详细的测试，但不能保证与所有的软硬件系统完全兼容，不能保证本服务完全没有错误，如果出现不兼容及服务错误的情况，用户可寻求技术支持以解决问题。电信北研院就此情形不承担任何责任。</p>
+        <p class="help_detail">5.2 用户明确同意其免费使用"“WEB网站云安全服务"所存在的风险将完全由其自己承担；在适用法律允许的最大范围内，对因使用或不能使用"“WEB网站云安全服务"所产生的损害及风险，包括但不限于直接或间接的个人损害、商业赢利的丧失、贸易中断、商业信息的丢失或任何其它经济损失，电信北研院不承担任何责任。</p>
+        <p class="help_detail">5.3电信北研院不担保提供的功能及服务一定能满足用户的要求，也不担保服务不会中断，对服务的及时性、安全性、真实性、准确性都不作担保。</p>
+        <p class="help_detail">5.4对于因运营商系统或互联网网络故障、计算机故障或病毒、信息损坏或丢失、计算机系统问题或其它任何不可抗力原因而产生损失，电信北研院不承担任何责任。</p>
+        <p class="help_detail">5.5用户违反本协议规定，对电信北研院造成损害的，电信北研院有权采取包括但不限于中断使用许可、停止提供服务、限制使用、法律追究等措施。</p>
+        <h3 class="helph">6. 条款修改</h4>
+        <p class="help_detail">6.1 电信北研院将有权随时修改本条款的有关内容，一旦本条款的内容发生变动，平台将通过适当方式作解释说明。</p>
+        <p class="help_detail">6.2 如果用户不同意电信北研院对本条款相关内容所做的修改，有权停止使用"“WEB网站云安全服务"。如果用户继续使用"“WEB网站云安全服务"，则视为接受电信北研院对本协议相关内容所做的修改。</p>
+        <p class="help_detail" style="text-align:center;">本条款的更新修改及最终解释权归中国电信股份有限公司北京研究院所有。</p>
+      </div>
+      <input type="hidden" name="agreeId" id="agreeId"/>
+    <div style="margin-top:35px;text-align:center;"><a href="javascript:void(0)"><img src="${ctx}/source/images/agree.png" id="agree"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="${ctx}/source/images/notagree.png" onclick="notagree()"/></a></div>
+  </div>
+  </form>
+</div>
+
 </body>
 </html>
 
