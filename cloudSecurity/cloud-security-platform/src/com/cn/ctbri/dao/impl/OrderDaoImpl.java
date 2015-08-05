@@ -175,4 +175,13 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 	   System.out.println("aa=="+id);
 		return String.valueOf(id);
 	}
+
+	//删除订单
+    public void deleteOrderById(String orderId) {
+        this.getSqlSession().delete(ns + "deleteOrderById",orderId);
+    }
+
+    public Order findOrderById(String orderId) {
+        return this.getSqlSession().selectOne(ns + "findOrderById",orderId);
+    }
 }

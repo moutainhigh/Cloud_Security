@@ -127,6 +127,10 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
         return brokenNetworkList.size();
     }
 
+    public void deleteLinkman(int contactId) {
+        this.getSqlSession().delete(ns + "deleteLinkman",contactId);
+    }
+
 
 	
 }

@@ -84,5 +84,9 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 	public Task getNewStatus(Map<String, Object> paramMap) {
 		return this.getSqlSession().selectOne(ns+"getNewStatus",paramMap);
 	}
+
+    public void deleteTaskByOaId(String order_asset_Id) {
+        this.getSqlSession().delete(ns + "deleteTaskByOaId",order_asset_Id);
+    }
 	
 }

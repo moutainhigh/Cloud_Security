@@ -41,6 +41,10 @@ public class TaskWarnDaoImpl extends DaoCommon implements TaskWarnDao {
 	//根据url和orderID查找告警
 	public List<TaskWarn> findWarnByOrderIdAndUrl(Map<String, Object> map) {
 		return getSqlSession().selectList(ns+"findWarnByOrderIdAndUrl", map);
-	}		
+	}
+	
+    public void deleteTaskWarnByTaskId(Map<String, Object> paramMap) {
+        this.getSqlSession().delete(ns + "deleteTaskWarnByTaskId",paramMap);
+    }		
 	
 }

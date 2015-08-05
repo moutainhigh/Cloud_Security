@@ -82,5 +82,10 @@ public class OrderAssetDaoImpl extends DaoCommon implements OrderAssetDao{
         List<OrderIP> list = this.getSqlSession().selectList(ns+"findIpByOrderId",orderId);
         return list;
     }
+    
+    //根据orderId删除订单资产
+    public void deleteOaByOrderId(String orderId) {
+        this.getSqlSession().delete(ns + "deleteOaByOrderId",orderId);
+    }
 		
 }
