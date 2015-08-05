@@ -57,7 +57,7 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/isExitEmail.html");
 		list.add("/confirmPass.html");
 		list.add("/isExitPhone.html");
-
+		list.add("/key.html");
 		//获取访问的url路径
 		String path = request.getServletPath();
 		forwordIndexPage(path,request,response);
