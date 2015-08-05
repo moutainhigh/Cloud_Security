@@ -1,31 +1,48 @@
 package com.cn.ctbri.util;
+import java.net.URL;
+import java.net.URLConnection;
+
+import org.htmlparser.Node;
 import org.htmlparser.Parser;
 
+import org.htmlparser.util.NodeIterator;
 import org.htmlparser.util.NodeList;
 
 import org.htmlparser.util.ParserException;
 import org.htmlparser.visitors.HtmlPage;
+import org.htmlparser.visitors.TextExtractingVisitor;
 
 //http://blog.sina.com.cn/s/blog_7f95d0c40100xxsl.html
 public class GetNetContent {
 	public static void main(String[] args){    
-    NodeList rt= getNodeList("http://localhost:8080/cloud-security-platform/"); 
-    System.out.println(rt.toHtml());
+//    NodeList rt= getNodeList("http://localhost:80/cloud-security-platform/"); 
+//    System.out.println(rt.toHtml());
  }   
 
- public static NodeList getNodeList(String url){
+ public static String getNodeList(String url){
 	 
     Parser parser = null;
-    HtmlPage visitor = null;
+    TextExtractingVisitor visitor = null;
     try {
          parser = new Parser(url);
-         parser.setEncoding("GBK");
-         visitor = new HtmlPage(parser);
+//         parser.setEncoding("GBK");
+//         parser.setEncoding(parser.getLexer().getPage().getQICHAODEFAULT_CHARSET());
+         visitor = new TextExtractingVisitor();
          parser.visitAllNodesWith(visitor);
-    } catch (ParserException e) {
-         e.printStackTrace();
+         
+//         visitor = new HtmlPage(parser);
+//         parser.visitAllNodesWith(visitor);
+    } catch (Exception e) {
+        try {
+            parser.setEncoding("UTF-8");
+            parser.reset();
+            parser.visitAllNodesWith(visitor);
+        } catch (ParserException e1) {
+            e1.printStackTrace();
+        }
     }
-    NodeList nodeList = visitor.getBody();
+    String nodeList = visitor.getExtractedText();
+    
     return nodeList;
  }
 }

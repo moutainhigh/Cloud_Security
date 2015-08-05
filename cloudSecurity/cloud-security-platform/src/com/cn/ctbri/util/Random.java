@@ -39,8 +39,8 @@ public class Random {
      */
     public static long tencode() {
         long n = 0 ;
-        while(n < 1000000000){
-                 n = (long)(Math.random()*100000000*100);
+        while(n < 10000){
+                 n = (long)(Math.random()*1000*100);
         }
         return n;
     }
