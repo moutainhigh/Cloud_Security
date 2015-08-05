@@ -332,18 +332,22 @@ public class UserController {
 	    String patternM = "^1[3|5|8|7][0-9]{9}$";
 	    Pattern patM = Pattern.compile(patternM);
 	    Matcher mMobile = null;
+	    boolean mb = false;
 	    if(user.getMobile()!=null&&!"".equals(user.getMobile())){
 	        mMobile = patM.matcher(user.getMobile());
+	        mb = mMobile.matches();
 	    }
 	    //验证邮箱
-	    String patternE = "^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.[a-zA-Z0-9_-])+";
+	    String patternE = "^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.[a-zA-Z0-9_-])$";
 	    Pattern patE = Pattern.compile(patternE);
 	    Matcher mEmail = null;
+	    boolean me = false;
 	    if(user.getEmail()!=null&&!"".equals(user.getEmail())){
 	        mEmail = patE.matcher(user.getEmail());
+	        me = mEmail.matches();
 	    }
 	    
-		if(name!=null&&!"".equals(name)&&m.matches()&&password!=null&&!"".equals(password)&&password.length()>=6&&password.length()<=20&&(mMobile.matches()||mEmail.matches())&&user.getVerification_code()!=null&&!"".equals(user.getVerification_code())){
+		if(name!=null&&!"".equals(name)&&m.matches()&&password!=null&&!"".equals(password)&&password.length()>=6&&password.length()<=20&&(mb||me)&&user.getVerification_code()!=null&&!"".equals(user.getVerification_code())){
 			//按用用户名、邮箱、手机号码组合查询用户,防止刷页面
 			List<User> users = userService.findUserByCombine(user);
 			if(!(users.size()>0)){
