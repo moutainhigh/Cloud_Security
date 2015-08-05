@@ -45,6 +45,29 @@ function overfind(orderId){
         	$('#'+orderId).attr("title", assetName);//设置title属性的值
         });
 }
+//删除
+function deleteOrder(orderId){
+    if (window.confirm("确实要删除吗?")==true) {
+    	/*$.ajax({
+            type: "POST",
+            url: "/cloud-security-platform/deleteOrder.html",
+            data: {"orderId":orderId},
+            dataType:"json",
+            success: function(data){
+                if(data.msg=="1"&&data.status=="0"){
+                    alert("删除成功");
+                    $("#verificationAssetForm").submit();
+                }else{
+                    alert("删除失败");
+                    return;
+                }
+            },
+         }); */
+        window.location.href="/cloud-security-platform/deleteOrder.html?orderId="+orderId;
+    } else {
+        return;
+    }
+}
 </script>
 </head>
 
@@ -140,11 +163,11 @@ function overfind(orderId){
       <table id="orderTab">
       
               <tr style="background:#e0e0e0; height:30px; line-height:30px;">
-                <td style="width:10%;" onclick="overfind('1245504423')">订单编号</td>
-                <td  style="width:8%;">订单类型</td>
-                <td  style="width:9%;">订单状态</td>
-                <td  style="width:17%;">订单服务</td>
-                <td  style="width:38%;">服务起止时间</td>
+                <td style="width:16%;" onclick="overfind('1245504423')">订单编号</td>
+                <td  style="width:7%;">订单类型</td>
+                <td  style="width:8%;">订单状态</td>
+                <td  style="width:13%;">订单服务</td>
+                <td  style="width:34%;">服务起止时间</td>
                 <td  style="width:15%;">下单时间</td>
                 <td  style="width:11%;"></td>
               </tr>
