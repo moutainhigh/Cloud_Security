@@ -1,4 +1,8 @@
-$(function(){
+var myChartPie = null;
+var myChartBar = null;
+var myChartLine = null;
+$(function(){	
+	
 	//为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
     require.config({
         paths:{ 
@@ -8,6 +12,8 @@ $(function(){
             'echarts/chart/pie' : '../echarts/echarts-map'
         }
     });
+    
+    
 	
     // 定义数组
     var label = [];
@@ -157,7 +163,7 @@ $(function(){
         ],
         function (ec) {//回调函数
             //--- 饼图 ---
-            var myChart = ec.init(document.getElementById('ldgs'));
+            myChartPie = ec.init(document.getElementById('ldgs'));
             //后台获取数据
             $.ajax({
             	type : "post",
@@ -177,23 +183,23 @@ $(function(){
 	                   	if(p['label']==2){
 	                   		temp="高";
 	                   	}
-	                   	label[i]=temp;
-	                   	value[i]={'name':temp,'value':p['value']};
+	                   	label[i]=temp+p['ratio'];
+	                   	value[i]={'name':temp+p['ratio'],'value':p['value']};
 	                   	colorData[i]=p['color'];
 //	                   	label[i]=p['label'];
 //	                   	value[i]={'name':p['label'],'value':p['value']};
                     });
-                    myChart.setOption({//图形
+                    myChartPie.setOption({//图形
                         tooltip : {
                             trigger: 'item',
                             formatter: "{a} <br/>{b} : {c} ({d}%)"
                         },
-                        legend: {
-                            orient : 'vertical',
-                            x : 'right',
-//                            data:['低','中','高']
-                            data:testX()
-                        },
+//                        legend: {
+//                            orient : 'vertical',
+//                            x : 'right',
+////                            data:['低','中','高']
+//                            data:testX()
+//                        },
 //                        color:['lightgreen', 'orange','red'],
                         color:colorData,
                         toolbox: {
@@ -232,7 +238,7 @@ $(function(){
                             }
                         ]
                     },true);//图形展示
-                    window.onresize = myChart.resize;
+                    window.onresize = myChartPie.resize;
                 }//ajax执行后台
             }); 
         }
@@ -280,7 +286,7 @@ $(function(){
         function (ec) {//回调函数
             //--- 趋势图 ---
         	if($('#type').val()==1){
-        		var myChart = ec.init(document.getElementById('aqpf'));
+        		myChartLine = ec.init(document.getElementById('aqpf'));
         	}
           //后台获取数据
             $.ajax({
@@ -309,7 +315,7 @@ $(function(){
 //	                   	value[i]={'name':p['label'],'value':p['value']};
                     });
                     
-                    myChart.setOption({//图形
+                    myChartLine.setOption({//图形
                     	tooltip : {
                             trigger: 'axis'
                         },
@@ -370,10 +376,169 @@ $(function(){
                             }
                         ]
                     },true);//图形展示
-//                    window.onresize = myChart.resize;
+//                    window.onresize = myChartLine.resize;
                 }//ajax执行后台
             }); 
         }
     );
     
+    
+    // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
+    require(
+        [
+            'echarts',
+            'echarts/chart/bar'
+        ],
+        function (ec) {//回调函数
+            //--- 柱形图 ---
+        	myChartBar = ec.init(document.getElementById('aqpf1'));
+          //后台获取数据
+            $.ajax({
+            	type: "post",
+            	url:"getBarData.html?orderId="+$('#orderId').val()+"&type="+$('#type').val()+"&group_flag="+$('#group_flag').val()+"&websoc="+$('#websoc').val(),
+                dataType:"json",
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                success:function(data){
+                    $.each(data,function(i,p){
+	                   	lineData[i]=p['name'];
+                    });
+                    
+                    myChartBar.setOption({//图形
+                    	title: {
+                            text: '弱点类型统计图'
+                        },
+                    	tooltip : {
+                            trigger: 'axis',
+                            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                            }
+                        },
+                        legend: {
+                            y : 'bottom',
+                            data:testLineData()
+                        },
+                        toolbox: {
+                            show : true,
+                            orient: 'vertical',
+                            x: 'right',
+                            y: 'center',
+	                        feature : {
+	                            mark : true,
+	                            //magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+	                            restore : true,
+	                            saveAsImage : true
+	                        }
+                        },
+                        calculable : false,
+                        xAxis : [
+                            {
+                                type : 'category',
+                                data : ['']
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'value'
+                            }
+                        ],
+                        series :
+                        	function(){
+	                       	 var serie=[];
+	                       	 
+	                    	 for( var i=0;i < data.length;i++){
+	                    		 var num=[];
+	                    		 num[0]=data[i].num;
+	                        	 var item={
+		                        	 name:data[i].name,
+		                        	 type:'bar',
+//		                        	 barWidth : 25,
+		                        	 itemStyle: {
+	                                     normal: {
+	                                         label: {
+	                                             show: true,
+	                                             textStyle: {
+	                                                 color: '#800080'
+	                                             }
+	                                         }
+	                                     }
+		                        	 },
+		                        	 data:num
+	                        	 };
+	                        	 serie.push(item);
+	                    	 };
+	                    	 return serie;
+	                    	 }()
+//                        	[
+//                            {
+//                                name:'直接访问',
+//                                type:'bar',
+//                                itemStyle: {
+//                                     normal: {
+//                                         label: {
+//                                             show: true,
+//                                             textStyle: {
+//                                                 color: '#800080'
+//                                             }
+//                                         }
+//                                     }
+//                                },
+//                                data:[320]
+//                            },
+//                            {
+//                                name:'邮件营销',
+//                                type:'bar',
+//                                data:[120]
+//                            },
+//                            {
+//                                name:'联盟广告',
+//                                type:'bar',
+//                                data:[220]
+//                            },
+//                            {
+//                                name:'视频广告',
+//                                type:'bar',
+//                                data:[150]
+//                            },
+//                            {
+//                                name:'百度',
+//                                type:'bar',
+//                                data:[620]
+//                            },
+//                            {
+//                                name:'谷歌',
+//                                type:'bar',
+//                                data:[120]
+//                            },
+//                            {
+//                                name:'必应',
+//                                type:'bar',
+//                                data:[60]
+//                            },
+//                            {
+//                                name:'其他',
+//                                type:'bar',
+//                                data:[62]
+//                            }
+//                        ]
+                    },true);//图形展示
+//                    window.onresize = myChartBar.resize;
+                }//ajax执行后台
+            }); 
+        }
+    );
+    
+    
+    
 });
+
+function exportImg(orderId){
+    var dataPie = myChartPie.getDataURL("png");   
+    var dataBar = myChartBar.getDataURL("png");
+    if(myChartLine!=null){
+    	var dataLine = myChartLine.getDataURL("png"); 
+    	$("#imgLine").val(dataLine);
+    }
+    $("#imgPie").val(dataPie);
+    $("#imgBar").val(dataBar);
+	$("#exportForm").submit();
+}
