@@ -2,6 +2,12 @@ function saveAsset() {
 	var assetName =$("#assetName").val();
 	var assetAddr = $("#assetAddr").val();
      var addrType = $('input:radio[name="addrType"]:checked').val();
+     
+     var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
+     if(patrn.test(assetAddr)){  
+         alert("提示信息：您输入的数据含有非法字符！");  
+         return false;     
+     }
 	//获取选中的radio的值
 	if(assetName == null || assetName == ""){
 		$("#assetName_msg").html("请输入资产名称");
@@ -45,6 +51,13 @@ function editAsset(){
 	var assetAddr = $("#editAssetAddr").val();
      var addrType = $('input:radio[name="addrType"]:checked').val();
     
+//     var patrn=/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im; 
+     var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
+     if(patrn.test(assetAddr)){  
+         alert("提示信息：您输入的数据含有非法字符！");  
+         return false;     
+     }     
+     
 	//获取选中的radio的值
 	if(assetName == null || assetName == ""){
 		$("#editAssetName_msg").html("请输入资产名称");
@@ -53,11 +66,11 @@ function editAsset(){
 			$("#editAssetName_msg").html("资产名称长度不能超过25个字符！");
 	}
 	else if(assetAddr==null || assetAddr == ""){
-			$("#editAssetAddr_msg").html("请输入资产地址");
-		}else if(assetAddr.length>50){
-			 $("#editAssetAddr_msg").html("资产地址长度不能超过50个字符！");
-		}else if(assetAddr.indexOf("gov.cn")!=-1){
-		   $("#editAssetAddr_msg").html("输入资产地址不能包含'gov.cn'！");
+		$("#editAssetAddr_msg").html("请输入资产地址");
+	}else if(assetAddr.length>50){
+		 $("#editAssetAddr_msg").html("资产地址长度不能超过50个字符！");
+	}else if(assetAddr.indexOf("gov.cn")!=-1){
+	   $("#editAssetAddr_msg").html("输入资产地址不能包含'gov.cn'！");
 	}else{
 		  $("#editAssetAddr_msg").html("");
 		$("#editAsset").submit();
@@ -110,7 +123,8 @@ function verificationAsset(){
 				codeStyle = zt[i].value;
 			} 
 		}
-	var code1 = document.getElementById('code').innerHTML;
+//	var code1 = document.getElementById('code').innerHTML;
+	var code1 = $("#code").val();
 	$.ajax({
         type: "POST",
         url: "/cloud-security-platform/asset_verification.html",
