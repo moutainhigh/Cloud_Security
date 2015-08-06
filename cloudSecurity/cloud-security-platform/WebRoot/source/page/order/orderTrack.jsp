@@ -46,24 +46,21 @@ function overfind(orderId){
         });
 }
 //删除
-function deleteOrder(orderId){
+function deleteOrder(orderId,begin_date){
     if (window.confirm("确实要删除吗?")==true) {
-    	/*$.ajax({
+    	$.ajax({
             type: "POST",
-            url: "/cloud-security-platform/deleteOrder.html",
-            data: {"orderId":orderId},
+            url: "/cloud-security-platform/checkOrderStatus.html",
+            data: {"orderId":orderId,"begin_date":begin_date},
             dataType:"json",
             success: function(data){
-                if(data.msg=="1"&&data.status=="0"){
-                    alert("删除成功");
-                    $("#verificationAssetForm").submit();
+                if(!data.status){
+                    alert("订单正在执行,不可用删订单!");
                 }else{
-                    alert("删除失败");
-                    return;
+                	window.location.href="/cloud-security-platform/deleteOrder.html?orderId="+orderId;
                 }
             },
-         }); */
-        window.location.href="/cloud-security-platform/deleteOrder.html?orderId="+orderId;
+         });
     } else {
         return;
     }
