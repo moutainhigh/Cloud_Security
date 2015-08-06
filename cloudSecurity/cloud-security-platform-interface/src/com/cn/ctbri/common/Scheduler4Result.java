@@ -128,6 +128,25 @@ public class Scheduler4Result {
                         }
                         orderService.update(o);
                     }
+                    //任务是否有告警信息
+                    /*if(allAlarm!=null && allAlarm.size()>0){//如果有告警发短信通知
+                        Order order=null;
+                        if(oList!=null && oList.size()>0){
+                            order=oList.get(0);
+                            List<Linkman> mlist= orderService.findLinkmanById(order.getContactId());
+                            Linkman linkman=mlist.get(0);
+                            String phoneNumber = linkman.getMobile();//联系方式
+                            List<Asset> asset = assetService.findByTask(task);
+                            String assetName = asset.get(0).getName();
+                            if(!phoneNumber.equals("") && phoneNumber!=null){
+                            //发短信
+                              SMSUtils smsUtils = new SMSUtils();
+                              smsUtils.sendMessage_warn(phoneNumber,order,assetName,String.valueOf(allAlarm.size()));
+                              order.setMessage(1);
+                              orderService.update(order);
+                            }
+                        }
+                    }*/
 		        }
 		    }else{
 		        try {
