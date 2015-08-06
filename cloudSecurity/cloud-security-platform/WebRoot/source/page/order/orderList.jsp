@@ -60,7 +60,8 @@
                  </a>
                 </c:if>
              </c:if>
-                
+             <!-- 订单删除操作 -->
+             <a href="javascript:void(0)" onclick="deleteOrder('${list.id}','${list.begin_date}')"><img src="${ctx}/source/images/del.png" title="删除"/></a>   
              </td>
            </tr>
        </c:forEach>
