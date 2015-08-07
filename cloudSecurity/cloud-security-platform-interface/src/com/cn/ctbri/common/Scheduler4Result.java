@@ -129,7 +129,7 @@ public class Scheduler4Result {
                         orderService.update(o);
                     }
                     //任务是否有告警信息
-                    /*if(allAlarm!=null && allAlarm.size()>0){//如果有告警发短信通知
+                    if(allAlarm!=null && allAlarm.size()>0){//如果有告警发短信通知
                         Order order=null;
                         if(oList!=null && oList.size()>0){
                             order=oList.get(0);
@@ -146,7 +146,7 @@ public class Scheduler4Result {
                               orderService.update(order);
                             }
                         }
-                    }*/
+                    }
 		        }
 		    }else{
 		        try {
