@@ -408,7 +408,7 @@ $(function(){
                             text: '弱点类型统计图'
                         },
                     	tooltip : {
-                            trigger: 'axis',
+//                            trigger: 'axis',
                             axisPointer : {            // 坐标轴指示器，坐标轴触发有效
                                 type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                             }
