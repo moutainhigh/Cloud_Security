@@ -141,22 +141,22 @@
 			      </div>
 		             <select id="alarm_type" name="alarm_type" class="se_small fl se_last">
 			        	<option selected="selected" value="">请选择服务类型</option>
-			      		<option value="漏洞扫描" >漏洞扫描服务</option>
+			      		<!-- <option value="漏洞扫描" >漏洞扫描服务</option>
 			      		<option value="恶意代码监测" >恶意代码监测服务</option>
 			      		<option value="网页篡改监测" >网页篡改监测服务</option>
 			      		<option value="关键字监测" >关键字监测服务</option>
 			      		<option value="可用性监测" >可用性监测服务</option>
 			      		<option value="日常流量监测" >日常流量监测服务</option>
 			      		<option value="日常攻击防护" >日常攻击防护服务</option>
-			      		<option value="突发异常流量清洗" >突发异常流量清洗服务</option>
-			      		<!-- <option value="1" >漏洞扫描服务</option>
+			      		<option value="突发异常流量清洗" >突发异常流量清洗服务</option>-->
+			      		<option value="1" >漏洞扫描服务</option>
                         <option value="2" >恶意代码监测服务</option>
                         <option value="3" >网页篡改监测服务</option>
                         <option value="4" >关键字监测服务</option>
                         <option value="5" >可用性监测服务</option>
                         <option value="6" >日常流量监测服务</option>
                         <option value="7" >日常攻击防护服务</option>
-                        <option value="8" >突发异常流量清洗服务</option>-->
+                        <option value="8" >突发异常流量清洗服务</option>
 			    	</select>
               		<select class="se_small fl se_last" id="level" name="level">
               			<option selected="selected" value="">请选择告警级别</option>
