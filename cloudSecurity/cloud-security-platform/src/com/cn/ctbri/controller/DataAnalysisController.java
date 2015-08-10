@@ -190,6 +190,30 @@ public class DataAnalysisController {
 		List<Alarm> result = null;
 		if(alarm_type==""){
 			result = alarmService.findAlarmByParam(paramMap);
+			if(result.size()>0&&result!=null){
+				for(Alarm alarm : result){
+					String serviceName = alarm.getAlarm_type();
+					switch (Integer.parseInt(serviceName)) {
+					case 1:
+						alarm.setAlarm_type("漏洞扫描服务");
+						break;
+					case 2:
+						alarm.setAlarm_type("恶意代码监测服务");
+						break;
+					case 3:
+						alarm.setAlarm_type("网页篡改监测服务");
+						break;
+					case 4:
+						alarm.setAlarm_type("关键字监测服务");
+						break;
+					case 5:
+						alarm.setAlarm_type("可用性监测服务");
+						break;
+					default:
+						break;
+					}
+				}
+			}
 		}
 		/**
 		 * 统计时段内同一服务类型不同级别告警的分布情况；
