@@ -241,7 +241,7 @@ function seedetail1(e) {
             <div class="fl numbox gj_left">
                 <div class="detail_title">漏洞个数</div>
                 <c:if test="${alist==0}">
-                    <div class="ldgs">
+                    <div class="ldgs" style="padding-left: 105px;margin-top: 55px;">
                         <img src="${ctx}/source/images/nodata1.png" width="148" height="146" />  
                     </div>
                 </c:if>
