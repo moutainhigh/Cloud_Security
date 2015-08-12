@@ -107,6 +107,7 @@ public class ExportController {
     public void export(HttpServletRequest request,HttpServletResponse response) throws Exception{
         try {
             String orderId = request.getParameter("orderId");
+            String group_flag = request.getParameter("group_flag");
             String imgPie = request.getParameter("imgPie");
             String imgBar = request.getParameter("imgBar");
             String imgLine = request.getParameter("imgLine");
@@ -119,6 +120,7 @@ public class ExportController {
             paramMap.put("type", order.getType());
             paramMap.put("count", assetList.size());
             paramMap.put("websoc", order.getWebsoc());
+            paramMap.put("group_flag", group_flag);
             
 //            for (Asset asset : assetList) {
                 //预备导出数据
