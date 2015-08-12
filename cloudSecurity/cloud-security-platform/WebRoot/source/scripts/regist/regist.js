@@ -105,7 +105,8 @@ function checkMobile(){
 //校验邮箱是否出现重复
 function checkEmail(){
 	var email = $("#regist_email").val();
-	var pattern = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
+//	var pattern = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
+	var pattern = /^([a-z0-9A-Z]+[-|_|\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\.)+[a-zA-Z]{2,}$/;
 	var flag = pattern.test(email);
 	if(email==""||email==null){
 		$("#regist_mobile_email_msg").html("邮箱不能为空");
