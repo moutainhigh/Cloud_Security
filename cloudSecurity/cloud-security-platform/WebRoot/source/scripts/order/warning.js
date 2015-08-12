@@ -531,7 +531,7 @@ $(function(){
     
 });
 
-function exportImg(orderId){
+function exportImg(){
     var dataPie = myChartPie.getDataURL("png");   
     var dataBar = myChartBar.getDataURL("png");
     if(myChartLine!=null){
