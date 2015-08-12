@@ -8,7 +8,19 @@ var isInit = true;
 $(document).ready(function(){
     loadData();
     $(window).scroll(function(){
-        loadQueryData();
+    	$.ajax({ type: "POST",
+		     async: false, 
+		     url: "/cloud-security-platform/getSession.html", 
+		     dataType: "json", 
+//		     contentType: "application/json; charset=utf-8", 
+		     success: function(data) {
+		    	 loadQueryData();
+		    	 }, 
+		     error: function(data){ 
+		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
+		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
+		});
     });
 });
 // 滚动条到底加载
