@@ -36,7 +36,7 @@ function getData(){
 	var orderId = $("#orderId").val();
  		$.ajax({
            type: "POST",
-           url: "/cloud-security-platform/scaning.html",
+           url: "${ctx}/scaning.html",
            data: {"orderId":orderId,"status":${status},"group_flag":$("#group_flag").val()},
            dataType:"json",
            success: function(data){
@@ -61,7 +61,7 @@ function getData(){
 	var orderId = $("#orderId").val();
 	$.ajax({ 
 		type: "POST",
-		url: "/cloud-security-platform/getExecuteTime.html",
+		url: "${ctx}/getExecuteTime.html",
         data: {"orderId":orderId,"status":${status}},
         dataType:"text",
 		success : function(result){
@@ -175,7 +175,7 @@ function seedetail1(e) {
         <div class="gj_fr">
             <input type="hidden" value="${order.id }" id="orderId" name="orderId"/>
             <input type="hidden" value="${order.type }" id="type"/>
-            <input type="hidden" value="${group_flag }" id="group_flag"/>
+            <input type="hidden" value="${group_flag }" id="group_flag" name="group_flag"/>
             <input type="hidden" value="${order.websoc }" id="websoc"/>
             <p><span class="bigfont">${order.name }</span>
             <span>(  订单编号：${order.id }  )</span>
@@ -210,7 +210,7 @@ function seedetail1(e) {
             <c:if test="${alist!=0}">
             <p >
              <span>下载Word报表&nbsp;</span>
-             <span><a href="javascript:void(0)" onclick="exportImg('${order.id }')" ><img src="${ctx}/source/images/export.png" width="22" height="23"/>
+             <span><a href="javascript:void(0)" onclick="exportImg()" ><img src="${ctx}/source/images/export.png" width="22" height="23"/>
             </a></span></p></c:if>
         </div>
         </div>
@@ -273,7 +273,7 @@ function seedetail1(e) {
         </div>
         <c:if test="${order.type==1 && !empty alarmList}"><!-- 单次订单不显示趋势图 -->
         <div class="gj_boxs">
-            <div class="detail_title">安全评分</div>
+            <div class="detail_title">安全趋势</div>
             <div class="aqpf" id="aqpf">
                 <!-- <img src="${ctx}/source/images/aqpf.jpg" width="870" height="235" /> -->
             </div>
