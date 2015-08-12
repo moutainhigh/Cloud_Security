@@ -154,15 +154,21 @@ public class WarningController {
 	            pMap.put("count", assetList.size());
 	            Task taskpro = taskService.findProgressByOrderId(pMap);
 	            if(taskpro!=null){
-	                request.setAttribute("progress", taskpro.getProgress());
+	                request.setAttribute("progress", 100);
 	                if(taskpro.getCurrentUrl()!=null && !taskpro.getCurrentUrl().equals("")){
 	                    request.setAttribute("currentUrl", taskpro.getCurrentUrl());
 	                }else{
 	                    request.setAttribute("currentUrl", "无");
 	                }
 	            }else{
-	                request.setAttribute("progress", 0);
-	                request.setAttribute("currentUrl", "暂无");
+	                if(status==3){
+	                    request.setAttribute("progress", 100);
+	                    request.setAttribute("currentUrl", "无");
+	                }else{
+	                    request.setAttribute("progress", 0);
+	                    request.setAttribute("currentUrl", "暂无");
+	                }
+	                
 	            }
 	            //获取对应IP
 	            List IPList = orderService.findIPByOrderId(orderId);
@@ -1013,9 +1019,16 @@ public class WarningController {
             }
         }else{
         	Task  t = taskService.getNewStatus(paramMap);
-        	if(t.getStatus()==3){
-        		m.put("progress", 100);
-                m.put("currentUrl", t.getCurrentUrl());
+//        	if(t.getStatus()==3){
+//        		m.put("progress", 100);
+//        		if(t.getCurrentUrl()!=null && !t.getCurrentUrl().equals("")){
+//                    m.put("currentUrl", t.getCurrentUrl());
+//                }else{
+//                    m.put("currentUrl", "无");
+//                }
+        	if(Integer.parseInt(status)==3){
+        	    m.put("progress", 100);
+        	    m.put("currentUrl", "无");
         	}else{
         		m.put("progress", 0);
                 m.put("currentUrl", "暂无");
