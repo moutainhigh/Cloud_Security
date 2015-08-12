@@ -45,7 +45,6 @@ function checkSendEmail(){
 function checkSendMobile(){
  	var phone = $("#phone_code").val();
  	var checkNumber1 = $("#checkNumber1").val();
- 	alert(checkNumber1);
  	if(phone==""||phone==null){
 		$("#forget_phone_msg").html("手机号码不能为空");
 	}else if(checkNumber1==null||checkNumber1==""){
