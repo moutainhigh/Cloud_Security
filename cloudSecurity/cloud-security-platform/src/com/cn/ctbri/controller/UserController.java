@@ -338,7 +338,8 @@ public class UserController {
 	        mb = mMobile.matches();
 	    }
 	    //验证邮箱
-	    String patternE = "^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.[a-zA-Z0-9_-])$";
+//	    String patternE = "^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.[a-zA-Z0-9_-])$";
+	    String patternE = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
 	    Pattern patE = Pattern.compile(patternE);
 	    Matcher mEmail = null;
 	    boolean me = false;
