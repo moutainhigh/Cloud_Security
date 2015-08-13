@@ -20,6 +20,13 @@ $(function (){
 			$(this).addClass('peiz_active');
 			
 			$('.peiz_cont').hide();
+			//清空checkbox
+			var items = $('input:checkbox');
+			for(var i=0;i<items.length;i++){
+				var item = items[i];
+				item.checked = false;
+			}
+			
 			$('.peiz_cont').eq($(this).index()).show();
 		}
 	});
