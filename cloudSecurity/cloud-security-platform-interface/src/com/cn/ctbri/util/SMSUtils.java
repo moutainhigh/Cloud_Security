@@ -222,7 +222,6 @@ public class SMSUtils {
                 method.setEntity(new UrlEncodedFormEntity(paramList, ENCODING));
             }
             response = client.execute(method);
-            client.execute(method);
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 responseText = EntityUtils.toString(entity);
