@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import se.akerfeldt.com.google.gson.Gson;
 
 import com.cn.ctbri.common.Constants;
+import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.District;
 import com.cn.ctbri.entity.Factory;
@@ -82,4 +83,24 @@ public class DistrictDataController {
         response.getWriter().print(resultGson);
         return null;
     }
+    
+    /**
+     * 地图各省份数据
+     * 
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value="getDistrictData.html")
+    @ResponseBody
+    public String getDistrictData(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Gson gson= new Gson();
+        String districtId = request.getParameter("id");
+        List result = districtDataService.getDistrictDataById(districtId);
+        String resultGson = gson.toJson(result);//转成json数据
+        response.setContentType("textml;charset=UTF-8");
+        response.getWriter().print(resultGson);
+        return null;
+    }
+    
+
 }
