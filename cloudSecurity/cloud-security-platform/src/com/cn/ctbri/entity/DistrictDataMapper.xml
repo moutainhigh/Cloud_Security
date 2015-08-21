@@ -5,8 +5,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.cn.ctbri.entity.DistrictDataMapper">
 	<sql id="cols">id,name,longitude,latitude</sql>
 
+	<resultMap type="com.cn.ctbri.entity.District" id="DistrictRM">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="longitude" column="longitude"/>
+		<result property="latitude" column="latitude"/>
+		<result property="count" column="count"/>
+	</resultMap>
 	<!-- 查询省份 -->
-    <select id="findDistrictList" resultMap="district">
+    <select id="findDistrictList" resultMap="DistrictRM">
          select d.id,d.name,d.longitude,d.latitude, d.id+7 as count from cs_district d
     </select>
 </mapper>
