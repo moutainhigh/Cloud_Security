@@ -15,4 +15,6 @@ public interface DistrictDataDao {
 
     List<District> getDistrictByAll();
 
+    List getDistrictDataById(String districtId);
+
 }
