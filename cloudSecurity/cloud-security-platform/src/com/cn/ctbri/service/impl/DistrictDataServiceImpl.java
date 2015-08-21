@@ -28,6 +28,10 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
         return districtDataDao.getDistrictByAll();
     }
 
+    public List getDistrictDataById(String districtId) {
+        return districtDataDao.getDistrictDataById(districtId);
+    }
+
 
 
 }
