@@ -791,4 +791,13 @@ public class UserController {
 			}
     	}
 	}
+	/**
+	 * 功能描述： 忘记密码
+	 * 参数描述： Model m
+	 *		 @time 2015-1-8
+	 */
+	@RequestMapping(value="/chinas.html")
+	public String chians(Model m){
+		return "/china";
+	}
 }

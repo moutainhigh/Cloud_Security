@@ -72,7 +72,7 @@ public class DistrictDataController {
      * @return
      * @throws IOException
      */
-    @RequestMapping("/initDistrictList")
+    @RequestMapping(value="initDistrictList.html")
     @ResponseBody
     public String initDistrictList( HttpServletRequest request, HttpServletResponse response) throws IOException {
         Gson gson= new Gson();
