@@ -15,6 +15,8 @@
 <script src="${ctx}/source/scripts/common/jquery-1.7.1.min.js" type="text/javascript"></script>
 <script src="${ctx}/source/scripts/common/echarts-all.js" type="text/javascript"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/china.js"></script>
+<link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript">
 $(function(){
 	$('.tab .tabList li').click(function(){
@@ -36,26 +38,40 @@ $(function(){
 </head>
 <body>
 <div class="head_bj">
-  <div class="head clearfix">
-    <div class="logo"><img src="${ctx}/source/img/blogo.png" alt=""></div>
-    <div class="lagst">
-      <div class="lagst-left"> <a href="###"><img src="${ctx}/source/img/ren.png" /></a> </div>
-      <div class="lagst-right">
-        <p ><a href="###">登录</a></p>
-        <p> <a href="###">注册</a></p>
-      </div>
+        <div class="head">
+           <div class="logo"><img src="${ctx}/source/images/logo.png" /></div>
+           <div class="lagst">
+               <div class="lagst-left">
+                <c:if test="${sessionScope.globle_user!=null }">
+                   <a href="${ctx}/userDataUI.html"><img src="${ctx}/source/images/ren.png" /></a>
+                </c:if>
+                 <c:if test="${sessionScope.globle_user==null }">
+                    <a href="${ctx}/toLoginUI.html"><img src="${ctx}/source/images/ren.png" /></a>
+                 </c:if>
+               </div>
+               <div class="lagst-right">
+               <!-- 如果已经登录则显示用户名，否则需要登录 -->
+               <c:if test="${sessionScope.globle_user!=null }">
+                <p><a href="${ctx}/userDataUI.html" style="color: #fff">${sessionScope.globle_user.name }</a></p>
+                <p><a href="${ctx}/exit.html">退出</a></p>
+               </c:if>
+               <c:if test="${sessionScope.globle_user==null }">
+                     <p><a href="${pageContext.request.contextPath}/loginUI.html">登录</a></p>
+                     <p><a href="${pageContext.request.contextPath}/registUI.html">注册</a></p>
+               </c:if>
+               </div>
+           </div>
+            <div class="list">
+               <ul>
+                   <li><a href="${ctx}/index.html">首页</a></li>
+                   <li class="list_active"><a href="${ctx}/chinas.html">安全态势</a></li>
+                   <li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
+                   <li><a href="${ctx}/aider.html">在线帮助</a></li>
+                   <li style="border-right:1px solid #1369C0;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
+               </ul>
+           </div>
+        </div>
     </div>
-    <div class="list">
-      <ul>
-        <li class="list_active"><a  href="###">首页</a></li>
-        <li><a href="###">我的资产</a></li>
-        <li><a href="###">服务下单</a></li>
-        <li><a href="###">订单追踪</a></li>
-        <li style="border-right:1px solid #1369c0;"><a href="###">我的账单</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
 <!-- 头部代码结束-->
 <div class="user_center safe clear">
   <div class="safe_middle tab">
