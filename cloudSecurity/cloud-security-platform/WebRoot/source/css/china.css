@@ -91,7 +91,7 @@ a{text-decoration:none;}
 .safe .safe_cent .safe_left li{ margin-bottom:39px;}
 .safe .safe_cent .safe_left li p{ font-size:14px; color:#00b7ee; padding-bottom:10px;}
 .safe .safe_cent .safe_left li h2{ font-size:36px; color:#ffffff;}
-.safe .safe_cent .safe_map{ width:740px; position:absolute; height:400px; top:32px; left:222px;}
+.safe .safe_cent .safe_map{ width:740px; position:absolute; height:500px; top:32px; left:222px;}
 .safe .safe_cent .safe_right{ width:418px; height:400px; position:absolute; right:0px; top:26px;}
 .safe .safe_cent .safe_right .warn{ width:334px; height:280px; margin-left:80px;}
 .safe .safe_cent .safe_right .leak{ width:420px; height:198px; margin-top:16px;}
