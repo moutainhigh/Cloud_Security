@@ -14,6 +14,8 @@ public interface IDistrictDataService {
 
     List getDistrictByAll();
 
+    List getDistrictDataById(String districtId);
+
 	
 
 }
