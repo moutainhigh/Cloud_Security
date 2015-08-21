@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.DistrictDataMapper">
+	<sql id="cols">id,name,longitude,latitude</sql>
+
+	<!-- 查询省份 -->
+    <select id="findDistrictList" resultMap="district">
+         select d.id,d.name,d.longitude,d.latitude, d.id+7 as count from cs_district d
+    </select>
+</mapper>

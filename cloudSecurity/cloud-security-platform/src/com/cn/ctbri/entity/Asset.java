@@ -22,6 +22,9 @@ public class Asset {
 	private String verification_msg;//VO :代码验证
 	private String addrType;//VO :资产地址类型
 	
+	private String ip;//ip地址
+	private int districtId;//地区id
+	
 	public String getAddrType() {
 		return addrType;
 	}
@@ -83,5 +86,17 @@ public class Asset {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
+    public String getIp() {
+        return ip;
+    }
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+    public int getDistrictId() {
+        return districtId;
+    }
+    public void setDistrictId(int districtId) {
+        this.districtId = districtId;
+    }
 	
 }
