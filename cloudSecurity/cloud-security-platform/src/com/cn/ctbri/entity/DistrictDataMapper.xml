@@ -14,6 +14,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	<!-- 查询省份 -->
     <select id="findDistrictList" resultMap="DistrictRM">
-         select d.id,d.name,d.longitude,d.latitude, d.id+7 as count from cs_district d
+         select dis.id,dis.name,dis.longitude,dis.latitude,d.count from cs_district dis,
+(select s.districtId, COUNT(s.districtId) AS count from cs_asset s,
+(select a.id,b.assetId from cs_alarm a,
+(select t.taskId,t.group_Id,a.assetId from cs_task t,                                   
+(select oa.id,oa.assetId from cs_order o,cs_order_asset oa where o.id = oa.orderId and o.serviceId = 1) a
+where t.order_asset_Id = a.id) b
+where a.taskId=b.taskId or a.group_Id = b.group_Id) c
+where s.id = c.assetId
+GROUP BY s.districtId) d
+where dis.id = d.districtId
     </select>
 </mapper>
