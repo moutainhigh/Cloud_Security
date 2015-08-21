@@ -32,6 +32,10 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
 
     public List<District> getDistrictByAll() {
         return getSqlSession().selectList(ns + "findDistrictList");
+    }
+
+    public List getDistrictDataById(String districtId) {
+        return getSqlSession().selectList(ns + "getDistrictDataById",districtId);
     }		
 	
 	
