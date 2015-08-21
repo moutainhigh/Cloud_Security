@@ -8,15 +8,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <title>云安全服务平台</title>
-<link type="text/css" rel="stylesheet" href="${ctx}/source/css/china.css">
+<link type="text/css" rel="stylesheet" href="${ctx}/source/css/china.css"/>
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/index.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
+
 <script src="${ctx}/source/scripts/common/jquery-1.7.1.min.js" type="text/javascript"></script>
 <script src="${ctx}/source/scripts/common/echarts-all.js" type="text/javascript"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/china.js"></script>
-<link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript">
 $(function(){
 	$('.tab .tabList li').click(function(){
