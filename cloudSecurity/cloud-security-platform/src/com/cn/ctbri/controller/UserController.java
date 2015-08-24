@@ -798,6 +798,18 @@ public class UserController {
 	 */
 	@RequestMapping(value="/chinas.html")
 	public String chians(Model m){
+	    //查询漏洞个数
+        int leakNum = selfHelpOrderService.findLeakNum(1);
+        //查询网页数
+        int webPageNum = selfHelpOrderService.findWebPageNum();
+        //检测网页数
+        int webSite = selfHelpOrderService.findWebSite();
+        //断网次数
+        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
+        m.addAttribute("leakNum", leakNum);
+        m.addAttribute("webPageNum", webPageNum);
+        m.addAttribute("webSite", webSite);
+        m.addAttribute("brokenNetwork", brokenNetwork);
 		return "/china";
 	}
 }

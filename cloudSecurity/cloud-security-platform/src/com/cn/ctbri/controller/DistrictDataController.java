@@ -68,7 +68,7 @@ public class DistrictDataController {
 
 	 
     /**
-     * 查询所有身份下的漏洞
+     * 查询所有省份下的漏洞
      * 
      * @return
      * @throws IOException
@@ -85,7 +85,7 @@ public class DistrictDataController {
     }
     
     /**
-     * 地图各省份数据
+     * 根据省份id查询对应省份top5的数据
      * 
      * @return
      * @throws IOException
@@ -102,5 +102,56 @@ public class DistrictDataController {
         return null;
     }
     
+    /**
+     * 地域告警top5
+     * 
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value="getDistrictAlarmTop5.html")
+    @ResponseBody
+    public String getDistrictAlarmTop5(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Gson gson= new Gson();
+        List<District> result = districtDataService.getDistrictAlarmTop5();
+        String resultGson = gson.toJson(result);//转成json数据
+        response.setContentType("textml;charset=UTF-8");
+        response.getWriter().print(resultGson);
+        return null;
+    }
+    
+    /**
+     * 服务能力告警top5
+     * 
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value="getServiceAlarmTop5.html")
+    @ResponseBody
+    public String getServiceAlarmTop5(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Gson gson= new Gson();
+        List result = districtDataService.getServiceAlarmTop5();
+        String resultGson = gson.toJson(result);//转成json数据
+        response.setContentType("textml;charset=UTF-8");
+        response.getWriter().print(resultGson);
+        return null;
+    }
+    
+    
+    /**
+     * 服务能力告警近5个月数量统计
+     * 
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value="getServiceAlarmMonth5.html")
+    @ResponseBody
+    public String getServiceAlarmMonth5(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Gson gson= new Gson();
+        List result = districtDataService.getServiceAlarmMonth5();
+        String resultGson = gson.toJson(result);//转成json数据
+        response.setContentType("textml;charset=UTF-8");
+        response.getWriter().print(resultGson);
+        return null;
+    }
 
 }
