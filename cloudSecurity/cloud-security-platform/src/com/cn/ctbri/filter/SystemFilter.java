@@ -60,6 +60,10 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/key.html");
 		list.add("/chinas.html");
 		list.add("/initDistrictList.html");
+		list.add("/getDistrictData.html");
+		list.add("/getDistrictAlarmTop5.html");
+		list.add("/getServiceAlarmTop5.html");
+		list.add("/getServiceAlarmMonth5.html");
 		//获取访问的url路径
 		String path = request.getServletPath();
 		forwordIndexPage(path,request,response);
