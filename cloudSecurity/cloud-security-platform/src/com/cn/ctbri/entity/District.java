@@ -14,6 +14,7 @@ public class District {
 	private String longitude;//地图坐标-经度
 	private String latitude;//地图坐标-纬度
 	private String count;
+	private String limit;
     public int getId() {
         return id;
     }
@@ -43,6 +44,12 @@ public class District {
     }
     public void setCount(String count) {
         this.count = count;
+    }
+    public String getLimit() {
+        return limit;
+    }
+    public void setLimit(String limit) {
+        this.limit = limit;
     }
 
     
