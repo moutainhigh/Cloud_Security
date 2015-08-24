@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and s.districtId = dis.id
 			and o.serviceId = 1
 			GROUP BY s.districtId
-			<if test="#{limit} != null">
+			<if test="limit != null">
 			 order by count desc limit 5     
 			</if>
     </select>
