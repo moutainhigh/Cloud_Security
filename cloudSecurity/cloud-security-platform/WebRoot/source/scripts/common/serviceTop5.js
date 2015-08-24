@@ -14,7 +14,7 @@ function redrawServiceList(eventnamelist, eventcountlist) {
 		textStyle : {
 			color : "white",
 			align : 'right',
-			fontFamily : 'LTH',
+			fontFamily : '微软雅黑',
 			fontWeight : 'bold'
 		},
 
@@ -24,7 +24,7 @@ function redrawServiceList(eventnamelist, eventcountlist) {
 			type : 'value',
 			textStyle : {
 				color : 'white',
-				fontFamily : 'LTH',
+				fontFamily : '微软雅黑',
 				fontSize : 10,
 				//fontStyle : 'normal',
 			// fontWeight : 'bold'
@@ -43,7 +43,7 @@ function redrawServiceList(eventnamelist, eventcountlist) {
 				show : true,
 				textStyle : {
 					color : 'white',
-					fontFamily : 'LTH',
+					fontFamily : '微软雅黑',
 					fontSize : 12,
 					//fontStyle : 'normal',
 					//fontWeight : 'bold'
@@ -90,7 +90,7 @@ function redrawServiceList(eventnamelist, eventcountlist) {
 			stack : '总量',
 			itemStyle : {
 				normal : {
-					color : "rgb(214, 69, 41)",
+					color : "rgb(251,132,4)",
 					/*color:function(params){
 						var colorList = ['rgb(231, 255, 251)','rgb(231, 255, 251)','rgb(231, 255, 251)','rgb(231, 255, 251)','rgb(231, 255, 251)'];
 						return colorList[params.dataIndex];

@@ -8,9 +8,9 @@ function redrawTotalLevel(months,counts) {
 		        text: '漏洞个数',
 		        subtext: '',
 				textStyle : {
-					color : "blue",
+					color : "#00b7ee",
 					align : 'right',
-					fontFamily : 'Arial',
+					fontFamily : '微软雅黑',
 					fontSize: 14,
 					fontWeight : 'normal'
 				} 
@@ -19,23 +19,24 @@ function redrawTotalLevel(months,counts) {
 		    tooltip : {
 		        trigger: 'axis'
 		    },
-		   
 		    calculable : true,
 		    xAxis : [
 		        {
 		            type : 'category',
 		            boundaryGap : false,
 		            data : months,
+		            
 		            axisLabel : {
 						show : true,
 						margin: 2,
 						textStyle : {
 							color : 'white',
-							fontFamily: 'Arial',
+							fontFamily: '微软雅黑',
 							//fontSize: 11,
 							fontStyle: 'normal',
 						}
 					},
+					
 		            splitLine: {
 						show: false,
 						lineStyle: {
@@ -49,15 +50,16 @@ function redrawTotalLevel(months,counts) {
 		    yAxis : [
 		        {
 		            type : 'value',
+		            
 		            axisLabel : {
 		                formatter: '{value}',
 		                
 						textStyle : {
 							color : "white",
 							align : 'right',
-							fontFamily : 'Arial',
+							fontFamily : '微软雅黑',
 							fontWeight : 'normal'
-						} 
+						}
 		            },
 					splitLine: {
 						show: false,
@@ -74,6 +76,15 @@ function redrawTotalLevel(months,counts) {
 		            name:'漏洞个数',
 		            type:'line',
 		            data:counts,
+		            itemStyle: {
+		                normal: {
+		                	lineStyle: {
+							    color: ['rgba(131,135,22,1)'],//131 135 22
+							    width: 3,
+							    type: 'solid'
+							}
+		                }
+		            },
 		            markPoint : {
 		                data : []
 		            },
