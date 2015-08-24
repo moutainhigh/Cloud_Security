@@ -16,6 +16,12 @@ public interface IDistrictDataService {
 
     List getDistrictDataById(String districtId);
 
+    List getDistrictAlarmTop5();
+
+    List getServiceAlarmTop5();
+
+    List getServiceAlarmMonth5();
+
 	
 
 }
