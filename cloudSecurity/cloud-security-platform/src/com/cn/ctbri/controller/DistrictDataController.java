@@ -93,6 +93,8 @@ public class DistrictDataController {
     @RequestMapping(value="getDistrictData.html")
     @ResponseBody
     public String getDistrictData(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset=UTF-8");
         Gson gson= new Gson();
         String districtId = request.getParameter("id");
         List result = districtDataService.getDistrictDataById(districtId);
@@ -111,6 +113,8 @@ public class DistrictDataController {
     @RequestMapping(value="getDistrictAlarmTop5.html")
     @ResponseBody
     public String getDistrictAlarmTop5(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset=UTF-8");
         Gson gson= new Gson();
         List<District> result = districtDataService.getDistrictAlarmTop5();
         String resultGson = gson.toJson(result);//转成json数据
@@ -128,6 +132,8 @@ public class DistrictDataController {
     @RequestMapping(value="getServiceAlarmTop5.html")
     @ResponseBody
     public String getServiceAlarmTop5(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset=UTF-8");
         Gson gson= new Gson();
         List result = districtDataService.getServiceAlarmTop5();
         String resultGson = gson.toJson(result);//转成json数据
@@ -146,6 +152,8 @@ public class DistrictDataController {
     @RequestMapping(value="getServiceAlarmMonth5.html")
     @ResponseBody
     public String getServiceAlarmMonth5(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset=UTF-8");
         Gson gson= new Gson();
         List result = districtDataService.getServiceAlarmMonth5();
         String resultGson = gson.toJson(result);//转成json数据
