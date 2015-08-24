@@ -32,6 +32,18 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
         return districtDataDao.getDistrictDataById(districtId);
     }
 
+    public List getDistrictAlarmTop5() {
+        return districtDataDao.getDistrictAlarmTop5();
+    }
+
+    public List getServiceAlarmTop5() {
+        return districtDataDao.getServiceAlarmTop5();
+    }
+
+    public List getServiceAlarmMonth5() {
+        return districtDataDao.getServiceAlarmMonth5();
+    }
+
 
 
 }
