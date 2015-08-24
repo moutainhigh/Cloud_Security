@@ -148,41 +148,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		GROUP BY b.alarm_type    -->
 		SELECT d.serviceId as alarm_type,COUNT(d.serviceId) AS count
 		from (select e.id,e.alarm_time,e.level,e.serviceId from
-		      <!-- 安恒 -->
-		    (select a.id,a.alarm_time,a.level,c.serviceId from
-		            (select t.taskId,b.serviceId from
-		            (select oa.id,o.serviceId
-		            from cs_order_asset oa right join cs_order o 
-		            on oa.orderId = o.id where oa.id is not null) b left join cs_task t 
-		            on t.order_asset_Id = b.id where t.taskId is not null) c left join cs_alarm a              
-		            on a.taskId = c.taskId where a.id is not null
-		        union
-		        <!-- 知道创宇 -->
-		        select a.id,a.alarm_time,a.level,c.serviceId from
-		                (select t.group_id,b.serviceId from
-		                (select oa.id,o.serviceId
-		                from cs_order_asset oa right join cs_order o 
-		                on oa.orderId = o.id where oa.id is not null) b left join cs_task t 
-		                on t.order_asset_Id = b.id where t.taskId is not null) c left join cs_alarm a              
-		                on a.group_id = c.group_id where a.id is not null            
-		        union
-		        <!-- 安恒可用性告警 -->
-		        select a.id,a.warn_time as alarm_time,0 as level,c.serviceId from
-		                (select t.group_id,b.serviceId from
-		                (select oa.id,o.serviceId
-		                from cs_order_asset oa right join cs_order o 
-		                on oa.orderId = o.id where oa.id is not null) b left join cs_task t 
-		                on t.order_asset_Id = b.id where t.taskId is not null) c left join cs_taskwarn a             
-		                on a.group_id = c.group_id where a.id is not null              
-		        union
-		        <!-- 知道创宇可用性告警 -->
-		        select a.id,a.warn_time as alarm_time,0 as level,c.serviceId from
-		                (select t.taskId,b.serviceId from
-		                (select oa.id,o.serviceId
-		                from cs_order_asset oa right join cs_order o 
-		                on oa.orderId = o.id where oa.id is not null) b left join cs_task t 
-		                on t.order_asset_Id = b.id where t.taskId is not null) c left join cs_taskwarn a             
-		                on a.task_id = c.taskId where a.id is not null) e                
+		    (select a.id,a.alarm_time,a.level,o.serviceId 
+                from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a
+                where o.id = oa.orderId 
+                and t.order_asset_Id = oa.id 
+                and (a.taskId=t.taskId or a.group_Id = t.group_Id)
+	        union
+	        select a.id,a.warn_time as alarm_time,0 as level,o.serviceId 
+	                    from cs_order o,cs_order_asset oa,cs_task t,cs_taskwarn a
+	                    where o.id = oa.orderId 
+	                    and t.order_asset_Id = oa.id 
+	                    and (a.task_id=t.taskId or a.group_Id = t.group_Id)) e                
 		                where 1=1                
 		                <if test="begin_datevo!=null">
 							AND e.alarm_time &gt;= #{begin_datevo}
@@ -213,37 +189,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			GROUP BY b.level  --> 
 			SELECT d.level,COUNT(d.level) AS count
 				from (select e.id,e.alarm_time,e.level,e.serviceId from
-				    (select a.id,a.alarm_time,a.level,c.serviceId from
-				            (select t.taskId,b.serviceId from
-				            (select oa.id,o.serviceId
-				            from cs_order_asset oa right join cs_order o 
-				            on oa.orderId = o.id where oa.id is not null) b left join cs_task t 
-				            on t.order_asset_Id = b.id where t.taskId is not null) c left join cs_alarm a              
-				            on a.taskId = c.taskId where a.id is not null
-				        union
-				        select a.id,a.alarm_time,a.level,c.serviceId from
-				                (select t.group_id,b.serviceId from
-				                (select oa.id,o.serviceId
-				                from cs_order_asset oa right join cs_order o 
-				                on oa.orderId = o.id where oa.id is not null) b left join cs_task t 
-				                on t.order_asset_Id = b.id where t.taskId is not null) c left join cs_alarm a              
-				                on a.group_id = c.group_id where a.id is not null            
-				        union
-				        select a.id,a.warn_time as alarm_time,0 as level,c.serviceId from
-				                (select t.group_id,b.serviceId from
-				                (select oa.id,o.serviceId
-				                from cs_order_asset oa right join cs_order o 
-				                on oa.orderId = o.id where oa.id is not null) b left join cs_task t 
-				                on t.order_asset_Id = b.id where t.taskId is not null) c left join cs_taskwarn a             
-				                on a.group_id = c.group_id where a.id is not null              
-				        union
-				        select a.id,a.warn_time as alarm_time,0 as level,c.serviceId from
-				                (select t.taskId,b.serviceId from
-				                (select oa.id,o.serviceId
-				                from cs_order_asset oa right join cs_order o 
-				                on oa.orderId = o.id where oa.id is not null) b left join cs_task t 
-				                on t.order_asset_Id = b.id where t.taskId is not null) c left join cs_taskwarn a             
-				                on a.task_id = c.taskId where a.id is not null) e                
+				    (select a.id,a.alarm_time,a.level,o.serviceId 
+		                from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a
+		                where o.id = oa.orderId 
+		                and t.order_asset_Id = oa.id 
+		                and (a.taskId=t.taskId or a.group_Id = t.group_Id)
+			        union
+			        select a.id,a.warn_time as alarm_time,0 as level,o.serviceId 
+		                    from cs_order o,cs_order_asset oa,cs_task t,cs_taskwarn a
+		                    where o.id = oa.orderId 
+		                    and t.order_asset_Id = oa.id 
+		                    and (a.task_id=t.taskId or a.group_Id = t.group_Id)) e                
 				                WHERE 1=1 
 				                and e.serviceId = #{alarm_type}
 								<if test="begin_datevo!=null">
@@ -274,37 +230,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 		SELECT d.name as alarm_type, COUNT(d.name) AS count
 				from (select e.id,e.alarm_time,e.level,e.name,e.serviceId from
-				    (select a.id,a.alarm_time,a.level,a.name,c.serviceId from
-				            (select t.taskId,b.serviceId from
-				            (select oa.id,o.serviceId
-				            from cs_order_asset oa right join cs_order o 
-				            on oa.orderId = o.id where oa.id is not null) b left join cs_task t 
-				            on t.order_asset_Id = b.id where t.taskId is not null) c left join cs_alarm a              
-				            on a.taskId = c.taskId where a.id is not null
-				        union
-				        select a.id,a.alarm_time,a.level,a.name,c.serviceId from
-				                (select t.group_id,b.serviceId from
-				                (select oa.id,o.serviceId
-				                from cs_order_asset oa right join cs_order o 
-				                on oa.orderId = o.id where oa.id is not null) b left join cs_task t 
-				                on t.order_asset_Id = b.id where t.taskId is not null) c left join cs_alarm a              
-				                on a.group_id = c.group_id where a.id is not null            
-				        union
-				        select a.id,a.warn_time as alarm_time,0 as level,a.name,c.serviceId from
-				                (select t.group_id,b.serviceId from
-				                (select oa.id,o.serviceId
-				                from cs_order_asset oa right join cs_order o 
-				                on oa.orderId = o.id where oa.id is not null) b left join cs_task t 
-				                on t.order_asset_Id = b.id where t.taskId is not null) c left join cs_taskwarn a             
-				                on a.group_id = c.group_id where a.id is not null              
-				        union
-				        select a.id,a.warn_time as alarm_time,0 as level,a.name,c.serviceId from
-				                (select t.taskId,b.serviceId from
-				                (select oa.id,o.serviceId
-				                from cs_order_asset oa right join cs_order o 
-				                on oa.orderId = o.id where oa.id is not null) b left join cs_task t 
-				                on t.order_asset_Id = b.id where t.taskId is not null) c left join cs_taskwarn a             
-				                on a.task_id = c.taskId where a.id is not null) e                
+				    (select a.id,a.alarm_time,a.level,a.name,o.serviceId 
+		                from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a
+		                where o.id = oa.orderId 
+		                and t.order_asset_Id = oa.id 
+		                and (a.taskId=t.taskId or a.group_Id = t.group_Id)
+			        union
+			        select a.id,a.warn_time as alarm_time,0 as level,a.name,o.serviceId 
+		                    from cs_order o,cs_order_asset oa,cs_task t,cs_taskwarn a
+		                    where o.id = oa.orderId 
+		                    and t.order_asset_Id = oa.id 
+		                    and (a.task_id=t.taskId or a.group_Id = t.group_Id)) e                
 				                WHERE 1=1 
 				                and e.serviceId = #{alarm_type} 
 								and e.level = #{level}
