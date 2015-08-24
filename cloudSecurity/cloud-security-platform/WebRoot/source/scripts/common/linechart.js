@@ -17,7 +17,7 @@ function redrawTotalLevel(months,counts) {
 		    },
 			
 		    tooltip : {
-		        trigger: 'axis'
+		        trigger: 'item'
 		    },
 		    calculable : true,
 		    xAxis : [
@@ -28,12 +28,13 @@ function redrawTotalLevel(months,counts) {
 		            
 		            axisLabel : {
 						show : true,
-						margin: 2,
+						margin: 10,
 						textStyle : {
 							color : 'white',
 							fontFamily: '微软雅黑',
 							//fontSize: 11,
 							fontStyle: 'normal',
+							baseline : 'top'
 						}
 					},
 					
