@@ -87,23 +87,23 @@ $(function(){
     	<div class="safe_cent tabItem" style="display:block">
         	<ul class="safe_left ">
             	<li>
-                	<p>发现漏洞</p>
-                	<h2>222,222</h2>
+                    <p>发现漏洞</p>
+                    <h2>${leakNum }</h2>
                 </li>
                 <li>
-                	<p>检测页面</p>
-                	<h2>222,222</h2>
+                    <p>检测页面</p>
+                    <h2>${webPageNum }</h2>
                 </li>
                 <li>
-                	<p>监测网站</p>
-                	<h2>222,222</h2>
+                    <p>监测网站</p>
+                    <h2>${webSite }</h2>
                 </li>
                 <li>
-                	<p>断网警告</p>
-                	<h2>222,222</h2>
+                    <p>断网警告</p>
+                    <h2>${brokenNetwork }</h2>
                 </li>
             </ul>
-        	<div class="safe_map" id="safe-map">
+        	<div style="margin-left: -100px;" class="safe_map" id="safe-map">
         	
         	</div>
             <div class="safe_right">
@@ -145,19 +145,19 @@ $(function(){
         	<ul class="safe_left ">
             	<li>
                 	<p>发现漏洞</p>
-                	<h2>222,222</h2>
+                	<h2>${leakNum }</h2>
                 </li>
                 <li>
                 	<p>检测页面</p>
-                	<h2>222,222</h2>
+                	<h2>${webPageNum }</h2>
                 </li>
                 <li>
                 	<p>监测网站</p>
-                	<h2>222,222</h2>
+                	<h2>${webSite }</h2>
                 </li>
                 <li>
                 	<p>断网警告</p>
-                	<h2>222,222</h2>
+                	<h2>${brokenNetwork }</h2>
                 </li>
             </ul>
         	<div class="safe_map" id="safe-map">
