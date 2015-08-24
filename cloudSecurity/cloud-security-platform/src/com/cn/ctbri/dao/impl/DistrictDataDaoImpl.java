@@ -36,6 +36,19 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
 
     public List getDistrictDataById(String districtId) {
         return getSqlSession().selectList(ns + "getDistrictDataById",districtId);
+    }
+
+    public List getDistrictAlarmTop5() {
+        String limit = "true";
+        return getSqlSession().selectList(ns + "findDistrictList",limit);
+    }
+
+    public List getServiceAlarmTop5() {
+        return getSqlSession().selectList(ns + "getServiceAlarmTop5");
+    }
+
+    public List getServiceAlarmMonth5() {
+        return getSqlSession().selectList(ns + "getServiceAlarmMonth5");
     }		
 	
 	
