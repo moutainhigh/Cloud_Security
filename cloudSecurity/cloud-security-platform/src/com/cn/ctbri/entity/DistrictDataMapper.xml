@@ -30,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 根据省份id查询对应省份top5的数据 -->
     <select id="getDistrictDataById" parameterType="String" resultType="hashmap">
-         select dis.name,a.name,COUNT(a.name) AS count
+         select dis.name,a.name as leakName,COUNT(a.name) AS count
 			from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a,cs_asset s,cs_district dis
 			where o.id = oa.orderId 
 			and t.order_asset_Id = oa.id 
