@@ -62,16 +62,15 @@ function redrawBranch(obj) {
 			//borderWidth : 1,
 			enterable : false,
 			formatter : function(param){
-				
-				//getOrgData(time, param);
-				return param;
+				getOrgData(param);
+				return orgnames;
 		 }
 		},
 
 		dataRange : {
 			show : false,
 			min : 0,
-			max : 50,
+			max : 500,
 			calculable : false,
 			color : [ '#D64529', 'orange', 'yellow', '#81BA77', '#5688C1' ]
 		},
@@ -118,7 +117,7 @@ function redrawBranch(obj) {
 				symbol : 'circle',
 				//symbolSize : 5, // 标注大小，半宽（半径）参数，当图形为方向或菱形则总宽度为symbolSize * 2
 				symbolSize : function(v){
-					return v/10+3;
+					return v/100+3;
 				},
 				// 图形样式
 				itemStyle : {
@@ -178,9 +177,12 @@ function redrawBranch(obj) {
 
 $(window).ready(function(){
 	getBranchInfo();
+	getRegionTOP();
+	getServiceTOP();
+	getLineChart();
 }); 
 
-//得到分院信息，用于在地图上显示。 
+//得各省信息，用于在地图上显示。 
 function getBranchInfo(){
 	 $.ajax({
 	        type: "POST",
@@ -189,12 +191,113 @@ function getBranchInfo(){
 	        url: "initDistrictList.html", 
 	        success: function(obj){
 	        	// 从后台得到返回的值，是一个json对象。 
-	        	console.log(obj);
-	        	//console.log("研究院信息："+url);
+	        	//console.log(obj);
 	        	redrawBranch(obj);
 	     	}
 		});
 }
+/*地域告警TOP5*/
+function getRegionTOP(){
+	var nameArray = [];
+	var countArray = [];
+	$.ajax({
+        type: "POST",
+        cache: false,
+        dataType: "json",
+        url: "getDistrictAlarmTop5.html", 
+        success: function(obj){
+        	// 从后台得到返回的值，是一个json对象。 
+        	//console.log(obj.length);
+        	
+        	for (var i = (obj.length-1); i >= 0; i--) {
+        		nameArray.push(obj[i].name);
+        		countArray.push(obj[i].count);
+			}
+        	
+        	redrawEventList(nameArray,countArray);
+     	}
+	});
+}
+/*漏洞告警TOP5*/
+function getServiceTOP(){
+	var nameArray = [];
+	var countArray = [];
+	$.ajax({
+        type: "POST",
+        cache: false,
+        dataType: "json",
+        url: "getServiceAlarmTop5.html", 
+        success: function(obj){
+        	// 从后台得到返回的值，是一个json对象。 
+        	//console.log(obj);
+        	
+        	for (var i = (obj.length-1); i >= 0; i--) {
+        		nameArray.push(obj[i].name);
+        		countArray.push(obj[i].count);
+			}
+        	
+        	redrawServiceList(nameArray,countArray);
+     	}
+	});
+}
+/*漏洞个数折线图*/
+function getLineChart(){
+	var monthsArray = [];
+	var countArray = [];
+	$.ajax({
+        type: "POST",
+        cache: false,
+        dataType: "json",
+        url: "getServiceAlarmMonth5.html", 
+        success: function(obj){
+        	// 从后台得到返回的值，是一个json对象。 
+        	console.log(obj);
+        	
+        	for (var i = 0; i<obj.length; i++) {
+        		monthsArray.push(obj[i].months);
+        		countArray.push(obj[i].count);
+			}
+        	redrawTotalLevel(monthsArray,countArray);
+     	}
+	});
+}
 
-
-
+/*鼠标悬浮*/
+function getOrgData(param){
+	var reg = /^\+?[1-9][0-9]*$/;
+	if (param.name != null && "" != param.name) {
+		//console.log(param);
+		var oname = param.name;
+		var count = param.percent;
+		var re = reg.test(oname);
+		if (re) {
+			$.ajax({
+				type : "POST",
+				cache : false,
+				dataType : "json",
+				url : "getDistrictData.html?id=" + oname,
+				success : function(obj) {
+					console.log(obj);
+					var sname=obj[0].name;
+					var leaks = "";
+					
+					for (var i=0; i< obj.length;i++) {
+						leaks += "<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;.&nbsp;&nbsp;"+obj[i].leakName+"</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'>"+obj[i].count+"</td></tr>"
+					}
+					orgnames = "<div>"
+						+"<table style='font-family: 'LTH';'>"
+							+"<tr><th style='height: 24px;line-height: 24px;text-align: left;font-size: 12px; font-weight: bold;margin: 0;'>"+sname+"</th></tr>"
+							+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;漏洞总数</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'>"+count+"</td></tr>"
+							+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;漏洞类型TOP5：</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'></td></tr>"
+							+leaks
+						+"</table>"
+					+"</div>";
+					
+				}
+			});
+		}else {
+			orgnames="";
+		}
+	}
+	
+}
