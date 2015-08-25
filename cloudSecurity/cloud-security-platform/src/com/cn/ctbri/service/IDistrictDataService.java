@@ -1,6 +1,7 @@
 package com.cn.ctbri.service;
 
 import java.util.List;
+import java.util.Map;
 
 
 
@@ -12,15 +13,15 @@ import java.util.List;
  */
 public interface IDistrictDataService {
 
-    List getDistrictByAll();
+    List getDistrictByAll(Map<String, Object> paramMap);
 
     List getDistrictDataById(String districtId);
 
-    List getDistrictAlarmTop5();
+    List getDistrictAlarmTop5(Map<String, Object> paramMap);
 
-    List getServiceAlarmTop5();
+    List getServiceAlarmTop5(String serviceId);
 
-    List getServiceAlarmMonth5();
+    List getServiceAlarmMonth5(String serviceId);
 
 	
 
