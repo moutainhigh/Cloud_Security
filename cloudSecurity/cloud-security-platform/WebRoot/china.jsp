@@ -129,7 +129,7 @@ $(function(){
                     </ul>
                     <div class="warnBox tabCont">
                     	<div class="warn_b tabItem" id="regionTOP" style="display:block">asda</div>
-                        <div class="warn_b tabItem" id="serviceTOP">123123</div>
+                        <div class="warn_b tabItem" id="serviceTOP" style="width:330px; height:230px;">123123</div>
                     </div>
                 </div>
             	<!--漏洞-->
