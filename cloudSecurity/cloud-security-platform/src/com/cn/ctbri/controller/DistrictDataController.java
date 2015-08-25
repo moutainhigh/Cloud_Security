@@ -145,10 +145,10 @@ public class DistrictDataController {
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=UTF-8");
         String serviceId = request.getParameter("serviceId");
-//        Map<String, Object> paramMap = new HashMap<String, Object>();
-//        paramMap.put("serviceId", serviceId);
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("serviceId", serviceId);
         Gson gson= new Gson();
-        List result = districtDataService.getServiceAlarmTop5(serviceId);
+        List result = districtDataService.getServiceAlarmTop5(paramMap);
         String resultGson = gson.toJson(result);//转成json数据
         response.setContentType("textml;charset=UTF-8");
         response.getWriter().print(resultGson);
@@ -168,10 +168,10 @@ public class DistrictDataController {
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=UTF-8");
         String serviceId = request.getParameter("serviceId");
-//        Map<String, Object> paramMap = new HashMap<String, Object>();
-//        paramMap.put("serviceId", serviceId);
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("serviceId", serviceId);
         Gson gson= new Gson();
-        List result = districtDataService.getServiceAlarmMonth5(serviceId);
+        List result = districtDataService.getServiceAlarmMonth5(paramMap);
         String resultGson = gson.toJson(result);//转成json数据
         response.setContentType("textml;charset=UTF-8");
         response.getWriter().print(resultGson);
