@@ -28,8 +28,8 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
         return districtDataDao.getDistrictByAll(paramMap);
     }
 
-    public List getDistrictDataById(String districtId) {
-        return districtDataDao.getDistrictDataById(districtId);
+    public List getDistrictDataById(Map<String, Object> paramMap) {
+        return districtDataDao.getDistrictDataById(paramMap);
     }
 
     public List getDistrictAlarmTop5(Map<String, Object> paramMap) {
