@@ -1,6 +1,7 @@
 package com.cn.ctbri.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cn.ctbri.entity.District;
 
@@ -13,14 +14,14 @@ import com.cn.ctbri.entity.District;
  */
 public interface DistrictDataDao {
 
-    List<District> getDistrictByAll();
+    List<District> getDistrictByAll(Map<String, Object> paramMap);
 
     List getDistrictDataById(String districtId);
 
-    List getDistrictAlarmTop5();
+    List getDistrictAlarmTop5(Map<String, Object> paramMap);
 
-    List getServiceAlarmTop5();
+    List getServiceAlarmTop5(String serviceId);
 
-    List getServiceAlarmMonth5();
+    List getServiceAlarmMonth5(String serviceId);
 
 }
