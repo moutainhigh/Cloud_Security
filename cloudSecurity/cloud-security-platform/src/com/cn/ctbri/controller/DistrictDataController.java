@@ -99,12 +99,12 @@ public class DistrictDataController {
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=UTF-8");
         String districtId = request.getParameter("id");
-//        String serviceId = request.getParameter("serviceId");
-//        Map<String, Object> paramMap = new HashMap<String, Object>();
-//        paramMap.put("serviceId", serviceId);
-//        paramMap.put("districtId", districtId);
+        String serviceId = request.getParameter("serviceId");
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("serviceId", serviceId);
+        paramMap.put("districtId", districtId);
         Gson gson= new Gson();
-        List result = districtDataService.getDistrictDataById(districtId);
+        List result = districtDataService.getDistrictDataById(paramMap);
         String resultGson = gson.toJson(result);//转成json数据
         response.setContentType("textml;charset=UTF-8");
         response.getWriter().print(resultGson);
