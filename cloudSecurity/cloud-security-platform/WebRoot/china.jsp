@@ -25,8 +25,13 @@
 $(function(){
 	$('.tab .tabList li').click(function(){
 		var index=$(this).index();
+		var serviceId=$(this).index()+1;
 		$(this).addClass('this').siblings('li').removeClass('this');
 		$(this).parents('.tab').find('.tabCont').children('.tabItem:eq('+index+')').show().siblings().hide();
+		getBranchInfo(serviceId);
+	    getRegionTOP(serviceId);
+	    getServiceTOP(serviceId);
+	    getLineChart(serviceId);
 	});	
 	
 	$('.tab .tabList li').mouseover(function(){
@@ -80,11 +85,11 @@ $(function(){
 <div class="user_center safe clear">
   <div class="safe_middle tab">
   	<ul class="safe_list tabList clearfix">
-    	<li>漏洞扫描</li>
+    	<li class="this">漏洞扫描</li>
         <li>木马检测</li>
         <li>页面篡改</li>
         <li>可用性</li>
-        <li class="this">关键字检测</li>
+        <li>关键字检测</li>
     </ul>
     <div class="safe_Box tabCont">
     	<div class="safe_cent tabItem" style="display:block">
