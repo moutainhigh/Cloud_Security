@@ -15,10 +15,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 查询省份 -->
     <select id="findDistrictList" parameterType="hashmap" resultMap="DistrictRM">
          select dis.id,dis.name,dis.longitude,dis.latitude,COUNT(s.districtId) AS count 
+         <if test="serviceId != 5">
 			from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a,cs_asset s,cs_district dis
 			where o.id = oa.orderId 
 			and t.order_asset_Id = oa.id 
 			and (a.taskId=t.taskId or a.group_Id = t.group_Id)
+		</if>
+		<if test="serviceId == 5">
+            from cs_order o,cs_order_asset oa,cs_task t,cs_taskwarn a,cs_asset s,cs_district dis
+            where o.id = oa.orderId 
+            and t.order_asset_Id = oa.id 
+            and (a.task_Id=t.taskId or a.group_Id = t.group_Id)
+         </if>
 			and s.id = oa.assetId
 			and s.districtId = dis.id
 			and o.serviceId = #{serviceId}
@@ -31,10 +39,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 根据省份id查询对应省份top5的数据 -->
     <select id="getDistrictDataById" parameterType="hashmap" resultType="hashmap">
          select dis.name,a.name as leakName,COUNT(a.name) AS count
+         <if test="serviceId != 5">
 			from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a,cs_asset s,cs_district dis
 			where o.id = oa.orderId 
 			and t.order_asset_Id = oa.id 
 			and (a.taskId=t.taskId or a.group_Id = t.group_Id)
+		</if>
+		<if test="serviceId == 5">
+		    from cs_order o,cs_order_asset oa,cs_task t,cs_taskwarn a,cs_asset s,cs_district dis
+            where o.id = oa.orderId 
+            and t.order_asset_Id = oa.id 
+            and (a.task_Id=t.taskId or a.group_Id = t.group_Id)
+		</if>
 			and s.id = oa.assetId
 			and s.districtId = dis.id
 			and o.serviceId = #{serviceId}
@@ -46,10 +62,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 服务能力告警top5的数据 -->
     <select id="getServiceAlarmTop5" parameterType="String" resultType="hashmap">
          select a.name,COUNT(a.name) AS count
+         <if test="serviceId != 5">
             from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a
             where o.id = oa.orderId 
             and t.order_asset_Id = oa.id 
             and (a.taskId=t.taskId or a.group_Id = t.group_Id)
+         </if>
+         <if test="serviceId == 5">
+            from cs_order o,cs_order_asset oa,cs_task t,cs_taskwarn a
+            where o.id = oa.orderId 
+            and t.order_asset_Id = oa.id 
+            and (a.task_Id=t.taskId or a.group_Id = t.group_Id)
+         </if>
             and o.serviceId = #{serviceId}
             group by a.name
             order by count desc limit 5
@@ -57,11 +81,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 服务能力告警近5个月数量统计 -->
     <select id="getServiceAlarmMonth5" parameterType="String" resultType="hashmap">
+         
+         <if test="serviceId != 5">
          select DATE_FORMAT(a.alarm_time,'%Y.%c') months,count(a.id) count
             from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a
             where o.id = oa.orderId 
             and t.order_asset_Id = oa.id 
             and (a.taskId=t.taskId or a.group_Id = t.group_Id)
+         </if>
+         <if test="serviceId == 5">
+         select DATE_FORMAT(a.warn_time,'%Y.%c') months,count(a.id) count
+            from cs_order o,cs_order_asset oa,cs_task t,cs_taskwarn a
+            where o.id = oa.orderId 
+            and t.order_asset_Id = oa.id 
+            and (a.task_Id=t.taskId or a.group_Id = t.group_Id)
+         </if>
             and o.serviceId = #{serviceId}
             group by months
             order by months limit 5
