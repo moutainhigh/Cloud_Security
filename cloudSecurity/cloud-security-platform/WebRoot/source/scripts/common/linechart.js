@@ -39,9 +39,9 @@ function redrawTotalLevel(months,counts) {
 					},
 					
 		            splitLine: {
-						show: false,
+						show: true,
 						lineStyle: {
-						    color: ['rgba(255,255,255,0.2)'],
+						    color: ['rgba(255,255,255,0.1)'],
 						    width: 1,
 						    type: 'dashed'
 						}
@@ -63,9 +63,9 @@ function redrawTotalLevel(months,counts) {
 						}
 		            },
 					splitLine: {
-						show: false,
+						show: true,
 						lineStyle: {
-						    color: ['rgba(255,255,255,0.2)'],
+						    color: ['rgba(255,255,255,0.1)'],
 						    width: 1,
 						    type: 'dashed'
 						} 
