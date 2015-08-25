@@ -4,7 +4,7 @@
 "use strict";
 var fox = 0;
 var orgnames="";
-var serviceId=1;
+var serviceId ="";
 function redrawBranch(obj) {
 	//var list = obj.data.flawList;
 	var list = obj;
@@ -178,14 +178,19 @@ function redrawBranch(obj) {
  }
 
 $(window).ready(function(){
-	getBranchInfo(serviceId);
-	getRegionTOP(serviceId);
-	getServiceTOP(serviceId);
-	getLineChart(serviceId);
+	getServiceData();
 }); 
 
+//获取服务数据
+function getServiceData(){
+	serviceId = $("#serviceId").val();
+	getBranchInfo();
+	getRegionTOP();
+	getServiceTOP();
+	getLineChart();
+}
 //得各省信息，用于在地图上显示。 
-function getBranchInfo(serviceId){
+function getBranchInfo(){
 	 $.ajax({
 	        type: "POST",
 	        cache: false,
@@ -199,7 +204,7 @@ function getBranchInfo(serviceId){
 		});
 }
 /*地域告警TOP5*/
-function getRegionTOP(serviceId){
+function getRegionTOP(){
 	var nameArray = [];
 	var countArray = [];
 	$.ajax({
@@ -221,7 +226,7 @@ function getRegionTOP(serviceId){
 	});
 }
 /*漏洞告警TOP5*/
-function getServiceTOP(serviceId){
+function getServiceTOP(){
 	var nameArray = [];
 	var countArray = [];
 	$.ajax({
@@ -243,7 +248,7 @@ function getServiceTOP(serviceId){
 	});
 }
 /*漏洞个数折线图*/
-function getLineChart(serviceId){
+function getLineChart(){
 	var monthsArray = [];
 	var countArray = [];
 	$.ajax({
@@ -277,7 +282,7 @@ function getOrgData(param){
 				type : "POST",
 				cache : false,
 				dataType : "json",
-				url : "getDistrictData.html?id=" + oname,
+				url : "getDistrictData.html?id=" + oname + "&serviceId=" + serviceId,
 				success : function(obj) {
 					console.log(obj);
 					var sname=obj[0].name;
