@@ -23,16 +23,23 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/serviceTop5.js"></script>
 <script type="text/javascript">
 $(function(){
-	$('.tab .tabList li').click(function(){
+	$('.safe_list li').click(function(){
 		var index=$(this).index();
 		var serviceId=$(this).index()+1;
 		$(this).addClass('this').siblings('li').removeClass('this');
 		$(this).parents('.tab').find('.tabCont').children('.tabItem:eq('+index+')').show().siblings().hide();
-		getBranchInfo(serviceId);
-	    getRegionTOP(serviceId);
-	    getServiceTOP(serviceId);
-	    getLineChart(serviceId);
+		$("#serviceId").val(serviceId);
+		//获取服务数据
+		getServiceData();
+	    
 	});	
+	
+	$('.warn_tab li').click(function(){
+        var index=$(this).index();
+        $(this).addClass('this').siblings('li').removeClass('this');
+        $(this).parents('.tab').find('.tabCont').children('.tabItem:eq('+index+')').show().siblings().hide();
+        
+    });
 	
 	$('.tab .tabList li').mouseover(function(){
 		$(this)	.addClass('hover').siblings('li').removeClass('hover');
@@ -90,6 +97,7 @@ $(function(){
         <li>页面篡改</li>
         <li>可用性</li>
         <li>关键字检测</li>
+        <input type="hidden" id="serviceId" value="1"/>
     </ul>
     <div class="safe_Box tabCont">
     	<div class="safe_cent tabItem" style="display:block">
