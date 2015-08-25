@@ -27,7 +27,7 @@ $(function(){
 		var index=$(this).index();
 		var serviceId=$(this).index()+1;
 		$(this).addClass('this').siblings('li').removeClass('this');
-		$(this).parents('.tab').find('.tabCont').children('.tabItem:eq('+index+')').show().siblings().hide();
+		//$(this).parents('.tab').find('.tabCont').children('.tabItem:eq('+index+')').show().siblings().hide();
 		$("#serviceId").val(serviceId);
 		//获取服务数据
 		getServiceData();
@@ -95,8 +95,8 @@ $(function(){
     	<li class="this">漏洞扫描</li>
         <li>木马检测</li>
         <li>页面篡改</li>
-        <li>可用性</li>
         <li>关键字检测</li>
+        <li>可用性</li>
         <input type="hidden" id="serviceId" value="1"/>
     </ul>
     <div class="safe_Box tabCont">
@@ -146,7 +146,7 @@ $(function(){
             </div>	
             
         </div>
-        <div class="safe_cent tabItem">
+        <!-- <div class="safe_cent tabItem">
         	
             
         </div>
@@ -180,7 +180,7 @@ $(function(){
         	
         	</div>
             <div class="safe_right">
-            	<!--警告-->
+            	
             	<div class="warn tab">
                 	<ul class="warn_tab tabList clearfix">
                     	<li class="this">
@@ -201,10 +201,10 @@ $(function(){
                         </div>
                     </div>
                 </div>
-            	<!--漏洞-->
+            	
                 <div class="leak"><img src="${ctx}/source/img/b.jpg" alt=""></div>
             
-            </div>	
+            </div>	 -->
             
         </div>
     
