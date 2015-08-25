@@ -94,7 +94,7 @@ a{text-decoration:none;}
 .safe .safe_cent .safe_map{ width:850px; position:absolute; height:550px; top:32px; left:160px;}
 .safe .safe_cent .safe_right{ width:418px; height:400px; position:absolute; right:0px; top:26px;}
 .safe .safe_cent .safe_right .warn{ width:334px; height:280px; margin-left:80px;}
-.safe .safe_cent .safe_right .leak{ width:490px; height:240px; margin-top:16px;}
+.safe .safe_cent .safe_right .leak{ width:480px; height:240px; margin-top:16px;}
 .safe .safe_cent .safe_right .warn .warn_tab{ width:332px; height:38px; border-radius:10px 10px 0 0;}
 .safe .safe_cent .safe_right .warn .warn_tab li{ cursor:pointer; float:left; width:166px;height:38px; line-height:38px; text-align:center; position:relative; }
 .warnBox .warn_b{ display:none;}
