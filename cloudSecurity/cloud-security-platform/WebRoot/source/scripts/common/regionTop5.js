@@ -51,7 +51,7 @@ function redrawEventList(eventnamelist, eventcountlist) {
 			},
 			type : 'category',
 			//data : eventnamelist
-			data:[
+			data:eventnamelist/*[
 	                {
 	                    value:eventnamelist[0],
 	                    textStyle: {
@@ -82,7 +82,7 @@ function redrawEventList(eventnamelist, eventcountlist) {
 	                        color: 'rgb(231, 255, 251)',
 	                    }
 	                }
-			      ]
+			      ]*/
 		} ],
 		series : [ {
 			name : '',
