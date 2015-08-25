@@ -24,24 +24,24 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
 	@Autowired
 	DistrictDataDao districtDataDao;
 
-    public List<District> getDistrictByAll() {
-        return districtDataDao.getDistrictByAll();
+    public List<District> getDistrictByAll(Map<String, Object> paramMap) {
+        return districtDataDao.getDistrictByAll(paramMap);
     }
 
     public List getDistrictDataById(String districtId) {
         return districtDataDao.getDistrictDataById(districtId);
     }
 
-    public List getDistrictAlarmTop5() {
-        return districtDataDao.getDistrictAlarmTop5();
+    public List getDistrictAlarmTop5(Map<String, Object> paramMap) {
+        return districtDataDao.getDistrictAlarmTop5(paramMap);
     }
 
-    public List getServiceAlarmTop5() {
-        return districtDataDao.getServiceAlarmTop5();
+    public List getServiceAlarmTop5(String serviceId) {
+        return districtDataDao.getServiceAlarmTop5(serviceId);
     }
 
-    public List getServiceAlarmMonth5() {
-        return districtDataDao.getServiceAlarmMonth5();
+    public List getServiceAlarmMonth5(String serviceId) {
+        return districtDataDao.getServiceAlarmMonth5(serviceId);
     }
 
 
