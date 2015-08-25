@@ -31,6 +31,17 @@ $(function(){
 		$("#serviceId").val(serviceId);
 		//获取服务数据
 		getServiceData();
+		if(serviceId==1){
+			$('strong[name="service"]').html("漏洞告警TOP5");
+		}else if(serviceId==2){
+            $('strong[name="service"]').html("木马检测TOP5");
+		}else if(serviceId==3){
+            $('strong[name="service"]').html("页面篡改TOP5");
+        }else if(serviceId==4){
+            $('strong[name="service"]').html("关键字检测TOP5");
+        }else if(serviceId==5){
+            $('strong[name="service"]').html("可用性告警TOP5");
+        }
 	    
 	});	
 	
@@ -127,11 +138,11 @@ $(function(){
             	<div class="warn tab">
                 	<ul class="warn_tab tabList clearfix">
                     	<li class="this">
-                        	<strong>地域告警TOP5</strong>
+                        	<strong name="region">地域告警TOP5</strong>
                         	<p class="l"></p>
                          </li>
                         <li>
-                        	<strong>漏洞告警TOP5</strong>
+                        	<strong name="service">漏洞告警TOP5</strong>
                         	<p class="r"></p>
                         </li>
                     </ul>
