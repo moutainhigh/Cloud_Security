@@ -20,8 +20,8 @@ public interface DistrictDataDao {
 
     List getDistrictAlarmTop5(Map<String, Object> paramMap);
 
-    List getServiceAlarmTop5(String serviceId);
+    List getServiceAlarmTop5(Map<String, Object> paramMap);
 
-    List getServiceAlarmMonth5(String serviceId);
+    List getServiceAlarmMonth5(Map<String, Object> paramMap);
 
 }
