@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <!-- 根据省份id查询对应省份top5的数据 -->
-    <select id="getDistrictDataById" parameterType="String" resultType="hashmap">
+    <select id="getDistrictDataById" parameterType="hashmap" resultType="hashmap">
          select dis.name,a.name as leakName,COUNT(a.name) AS count
 			from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a,cs_asset s,cs_district dis
 			where o.id = oa.orderId 
@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and (a.taskId=t.taskId or a.group_Id = t.group_Id)
 			and s.id = oa.assetId
 			and s.districtId = dis.id
-			and o.serviceId = 1
+			and o.serviceId = #{serviceId}
 			and dis.id = #{districtId}
 			group by a.name
 			order by count desc limit 5
