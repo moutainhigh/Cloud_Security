@@ -90,11 +90,11 @@ function redrawServiceList(eventnamelist, eventcountlist) {
 			stack : '总量',
 			itemStyle : {
 				normal : {
-					color : "rgb(251,132,4)",
-					/*color:function(params){
-						var colorList = ['rgb(231, 255, 251)','rgb(231, 255, 251)','rgb(231, 255, 251)','rgb(231, 255, 251)','rgb(231, 255, 251)'];
+					//color : "rgb(251,132,4)",
+					color:function(params){
+						var colorList = ["#f4b4b7" , "#f4b4b7", "#ee878c","#e9505d","#e40027"];
 						return colorList[params.dataIndex];
-					},*/
+					},
 					label : {
 						show : true,
 						position : 'insideLeft'
