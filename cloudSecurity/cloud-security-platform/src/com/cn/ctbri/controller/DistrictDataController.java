@@ -76,8 +76,11 @@ public class DistrictDataController {
     @RequestMapping(value="initDistrictList.html")
     @ResponseBody
     public String initDistrictList( HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String serviceId = request.getParameter("serviceId");
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("serviceId", serviceId);
         Gson gson= new Gson();
-        List<District> districtList = districtDataService.getDistrictByAll();
+        List<District> districtList = districtDataService.getDistrictByAll(paramMap);
         String resultGson = gson.toJson(districtList);//转成json数据
         response.setContentType("textml;charset=UTF-8");
         response.getWriter().print(resultGson);
@@ -95,8 +98,12 @@ public class DistrictDataController {
     public String getDistrictData(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=UTF-8");
-        Gson gson= new Gson();
         String districtId = request.getParameter("id");
+//        String serviceId = request.getParameter("serviceId");
+//        Map<String, Object> paramMap = new HashMap<String, Object>();
+//        paramMap.put("serviceId", serviceId);
+//        paramMap.put("districtId", districtId);
+        Gson gson= new Gson();
         List result = districtDataService.getDistrictDataById(districtId);
         String resultGson = gson.toJson(result);//转成json数据
         response.setContentType("textml;charset=UTF-8");
@@ -115,8 +122,11 @@ public class DistrictDataController {
     public String getDistrictAlarmTop5(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=UTF-8");
+        String serviceId = request.getParameter("serviceId");
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("serviceId", serviceId);
         Gson gson= new Gson();
-        List<District> result = districtDataService.getDistrictAlarmTop5();
+        List<District> result = districtDataService.getDistrictAlarmTop5(paramMap);
         String resultGson = gson.toJson(result);//转成json数据
         response.setContentType("textml;charset=UTF-8");
         response.getWriter().print(resultGson);
@@ -134,8 +144,11 @@ public class DistrictDataController {
     public String getServiceAlarmTop5(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=UTF-8");
+        String serviceId = request.getParameter("serviceId");
+//        Map<String, Object> paramMap = new HashMap<String, Object>();
+//        paramMap.put("serviceId", serviceId);
         Gson gson= new Gson();
-        List result = districtDataService.getServiceAlarmTop5();
+        List result = districtDataService.getServiceAlarmTop5(serviceId);
         String resultGson = gson.toJson(result);//转成json数据
         response.setContentType("textml;charset=UTF-8");
         response.getWriter().print(resultGson);
@@ -154,8 +167,11 @@ public class DistrictDataController {
     public String getServiceAlarmMonth5(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=UTF-8");
+        String serviceId = request.getParameter("serviceId");
+//        Map<String, Object> paramMap = new HashMap<String, Object>();
+//        paramMap.put("serviceId", serviceId);
         Gson gson= new Gson();
-        List result = districtDataService.getServiceAlarmMonth5();
+        List result = districtDataService.getServiceAlarmMonth5(serviceId);
         String resultGson = gson.toJson(result);//转成json数据
         response.setContentType("textml;charset=UTF-8");
         response.getWriter().print(resultGson);
