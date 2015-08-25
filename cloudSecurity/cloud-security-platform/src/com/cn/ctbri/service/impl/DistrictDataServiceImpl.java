@@ -36,12 +36,12 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
         return districtDataDao.getDistrictAlarmTop5(paramMap);
     }
 
-    public List getServiceAlarmTop5(String serviceId) {
-        return districtDataDao.getServiceAlarmTop5(serviceId);
+    public List getServiceAlarmTop5(Map<String, Object> paramMap) {
+        return districtDataDao.getServiceAlarmTop5(paramMap);
     }
 
-    public List getServiceAlarmMonth5(String serviceId) {
-        return districtDataDao.getServiceAlarmMonth5(serviceId);
+    public List getServiceAlarmMonth5(Map<String, Object> paramMap) {
+        return districtDataDao.getServiceAlarmMonth5(paramMap);
     }
 
 
