@@ -15,7 +15,7 @@ public interface IDistrictDataService {
 
     List getDistrictByAll(Map<String, Object> paramMap);
 
-    List getDistrictDataById(String districtId);
+    List getDistrictDataById(Map<String, Object> paramMap);
 
     List getDistrictAlarmTop5(Map<String, Object> paramMap);
 
