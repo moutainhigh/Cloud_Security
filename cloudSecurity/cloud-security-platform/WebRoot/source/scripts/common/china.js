@@ -48,6 +48,7 @@ function redrawBranch(obj) {
 		 * title : { text : '', subtext : '', sublink : '', x : 'center' },
 		 */
 		// itemStyle.normal.areaStyle.color : 'rgba(0,0,0,0)',
+	
 		// 气泡提示框，用于展现浮动窗口用
 		tooltip : {
 			show : true, // 触发展示浮动窗口的事件类型，此处为数据触发，
@@ -206,8 +207,10 @@ function getBranchInfo(){
 }
 /*地域告警TOP5*/
 function getRegionTOP(){
-	var nameArray = [];
-	var countArray = [];
+	var narray =[];
+	var carray =[];
+	var nameArray = ['','','','',''];
+	var countArray = ['','','','',''];
 	$.ajax({
         type: "POST",
         cache: false,
@@ -217,19 +220,25 @@ function getRegionTOP(){
         	// 从后台得到返回的值，是一个json对象。 
         	//console.log(obj.length);
         	
-        	for (var i = (obj.length-1); i >= 0; i--) {
-        		nameArray.push(obj[i].name);
-        		countArray.push(obj[i].count);
+        	for (var i = 0;i<obj.length; i++) {
+        		nameArray[i]=obj[i].name;
+        		countArray[i]=obj[i].count;
 			}
+        	for (var j =countArray.length; j>0;j--) {
+        		narray.push(nameArray[j-1]);
+        		carray.push(countArray[j-1]);
+        	}
         	
-        	redrawEventList(nameArray,countArray);
+        	redrawEventList(narray,carray);
      	}
 	});
 }
 /*漏洞告警TOP5*/
 function getServiceTOP(){
-	var nameArray = [];
-	var countArray = [];
+	var narray =[];
+	var carray =[];
+	var nameArray = ['','','','',''];
+	var countArray = ['','','','',''];
 	$.ajax({
         type: "POST",
         cache: false,
@@ -239,12 +248,16 @@ function getServiceTOP(){
         	// 从后台得到返回的值，是一个json对象。 
         	//console.log(obj);
         	
-        	for (var i = (obj.length-1); i >= 0; i--) {
-        		nameArray.push(obj[i].name);
-        		countArray.push(obj[i].count);
+        	for (var i = 0;i<obj.length; i++) {
+        		nameArray[i]=obj[i].name;
+        		countArray[i]=obj[i].count;
 			}
+        	for (var j =countArray.length; j>0;j--) {
+        		narray.push(nameArray[j-1]);
+        		carray.push(countArray[j-1]);
+        	}
         	
-        	redrawServiceList(nameArray,countArray);
+        	redrawServiceList(narray,carray);
      	}
 	});
 }
