@@ -30,26 +30,27 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
 	 */
 	private String ns = "com.cn.ctbri.entity.DistrictDataMapper.";
 
-    public List<District> getDistrictByAll() {
-        return getSqlSession().selectList(ns + "findDistrictList");
+    public List<District> getDistrictByAll(Map<String, Object> paramMap) {
+        return getSqlSession().selectList(ns + "findDistrictList",paramMap);
     }
 
     public List getDistrictDataById(String districtId) {
         return getSqlSession().selectList(ns + "getDistrictDataById",districtId);
     }
 
-    public List getDistrictAlarmTop5() {
+    public List getDistrictAlarmTop5(Map<String, Object> paramMap) {
     	District d = new District();
         d.setLimit("true");
-        return getSqlSession().selectList(ns + "findDistrictList",d);
+        paramMap.put("limit", "true");
+        return getSqlSession().selectList(ns + "findDistrictList",paramMap);
     }
 
-    public List getServiceAlarmTop5() {
-        return getSqlSession().selectList(ns + "getServiceAlarmTop5");
+    public List getServiceAlarmTop5(String serviceId) {
+        return getSqlSession().selectList(ns + "getServiceAlarmTop5", serviceId);
     }
 
-    public List getServiceAlarmMonth5() {
-        return getSqlSession().selectList(ns + "getServiceAlarmMonth5");
+    public List getServiceAlarmMonth5(String serviceId) {
+        return getSqlSession().selectList(ns + "getServiceAlarmMonth5", serviceId);
     }		
 	
 	
