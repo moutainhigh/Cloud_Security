@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="count" column="count"/>
 	</resultMap>
 	<!-- 查询省份 -->
-    <select id="findDistrictList" parameterType="String" resultMap="DistrictRM">
+    <select id="findDistrictList" parameterType="hashmap" resultMap="DistrictRM">
          select dis.id,dis.name,dis.longitude,dis.latitude,COUNT(s.districtId) AS count 
 			from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a,cs_asset s,cs_district dis
 			where o.id = oa.orderId 
@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and (a.taskId=t.taskId or a.group_Id = t.group_Id)
 			and s.id = oa.assetId
 			and s.districtId = dis.id
-			and o.serviceId = 1
+			and o.serviceId = #{serviceId}
 			GROUP BY s.districtId
 			<if test='limit =="true"'>
 			 order by count desc limit 5     
@@ -44,25 +44,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <!-- 服务能力告警top5的数据 -->
-    <select id="getServiceAlarmTop5" resultType="hashmap">
+    <select id="getServiceAlarmTop5" parameterType="String" resultType="hashmap">
          select a.name,COUNT(a.name) AS count
             from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a
             where o.id = oa.orderId 
             and t.order_asset_Id = oa.id 
             and (a.taskId=t.taskId or a.group_Id = t.group_Id)
-            and o.serviceId = 1
+            and o.serviceId = #{serviceId}
             group by a.name
             order by count desc limit 5
     </select>
     
     <!-- 服务能力告警近5个月数量统计 -->
-    <select id="getServiceAlarmMonth5" resultType="hashmap">
+    <select id="getServiceAlarmMonth5" parameterType="String" resultType="hashmap">
          select DATE_FORMAT(a.alarm_time,'%Y.%c') months,count(a.id) count
             from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a
             where o.id = oa.orderId 
             and t.order_asset_Id = oa.id 
             and (a.taskId=t.taskId or a.group_Id = t.group_Id)
-            and o.serviceId = 1
+            and o.serviceId = #{serviceId}
             group by months
             order by months limit 5
     </select>
