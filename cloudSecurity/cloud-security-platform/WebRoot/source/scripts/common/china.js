@@ -4,6 +4,7 @@
 "use strict";
 var fox = 0;
 var orgnames="";
+var serviceId=1;
 function redrawBranch(obj) {
 	//var list = obj.data.flawList;
 	var list = obj;
@@ -115,10 +116,10 @@ function redrawBranch(obj) {
 			markPoint : {
 				// 闪烁的点的样式为圆形的点
 				symbol : 'circle',
-				//symbolSize : 5, // 标注大小，半宽（半径）参数，当图形为方向或菱形则总宽度为symbolSize * 2
-				symbolSize : function(v){
-					return v/100+3;
-				},
+				symbolSize : 5, // 标注大小，半宽（半径）参数，当图形为方向或菱形则总宽度为symbolSize * 2
+//				symbolSize : function(v){
+//					return v/100+3;
+//				},
 				// 图形样式
 				itemStyle : {
 					normal : {
@@ -154,9 +155,10 @@ function redrawBranch(obj) {
 			data : [],
 			markPoint : {
 				symbol : 'emptyCircle',
-				symbolSize : function(v) {
-					return 10 + v / 100
-				},
+				symbolSize : 10,
+//				symbolSize : function(v) {
+//					return 10 + v / 100
+//				},
 				effect : {
 					show : true,
 					shadowBlur : 0
@@ -176,19 +178,19 @@ function redrawBranch(obj) {
  }
 
 $(window).ready(function(){
-	getBranchInfo();
-	getRegionTOP();
-	getServiceTOP();
-	getLineChart();
+	getBranchInfo(serviceId);
+	getRegionTOP(serviceId);
+	getServiceTOP(serviceId);
+	getLineChart(serviceId);
 }); 
 
 //得各省信息，用于在地图上显示。 
-function getBranchInfo(){
+function getBranchInfo(serviceId){
 	 $.ajax({
 	        type: "POST",
 	        cache: false,
 	        dataType: "json",
-	        url: "initDistrictList.html", 
+	        url: "initDistrictList.html?serviceId="+serviceId, 
 	        success: function(obj){
 	        	// 从后台得到返回的值，是一个json对象。 
 	        	//console.log(obj);
@@ -197,14 +199,14 @@ function getBranchInfo(){
 		});
 }
 /*地域告警TOP5*/
-function getRegionTOP(){
+function getRegionTOP(serviceId){
 	var nameArray = [];
 	var countArray = [];
 	$.ajax({
         type: "POST",
         cache: false,
         dataType: "json",
-        url: "getDistrictAlarmTop5.html", 
+        url: "getDistrictAlarmTop5.html?serviceId="+serviceId, 
         success: function(obj){
         	// 从后台得到返回的值，是一个json对象。 
         	//console.log(obj.length);
@@ -219,14 +221,14 @@ function getRegionTOP(){
 	});
 }
 /*漏洞告警TOP5*/
-function getServiceTOP(){
+function getServiceTOP(serviceId){
 	var nameArray = [];
 	var countArray = [];
 	$.ajax({
         type: "POST",
         cache: false,
         dataType: "json",
-        url: "getServiceAlarmTop5.html", 
+        url: "getServiceAlarmTop5.html?serviceId="+serviceId, 
         success: function(obj){
         	// 从后台得到返回的值，是一个json对象。 
         	//console.log(obj);
@@ -241,14 +243,14 @@ function getServiceTOP(){
 	});
 }
 /*漏洞个数折线图*/
-function getLineChart(){
+function getLineChart(serviceId){
 	var monthsArray = [];
 	var countArray = [];
 	$.ajax({
         type: "POST",
         cache: false,
         dataType: "json",
-        url: "getServiceAlarmMonth5.html", 
+        url: "getServiceAlarmMonth5.html?serviceId="+serviceId, 
         success: function(obj){
         	// 从后台得到返回的值，是一个json对象。 
         	console.log(obj);
