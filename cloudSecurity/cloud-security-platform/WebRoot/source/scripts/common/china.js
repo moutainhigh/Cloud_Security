@@ -184,6 +184,7 @@ $(window).ready(function(){
 //获取服务数据
 function getServiceData(){
 	serviceId = $("#serviceId").val();
+//	alert("999"+serviceId);
 	getBranchInfo();
 	getRegionTOP();
 	getServiceTOP();
@@ -198,7 +199,7 @@ function getBranchInfo(){
 	        url: "initDistrictList.html?serviceId="+serviceId, 
 	        success: function(obj){
 	        	// 从后台得到返回的值，是一个json对象。 
-	        	//console.log(obj);
+//	        	console.log(obj);
 	        	redrawBranch(obj);
 	     	}
 		});
