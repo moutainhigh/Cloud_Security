@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.DistrictDataDao;
 import com.cn.ctbri.dao.TaskDao;
+import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.District;
 import com.cn.ctbri.entity.Task;
 /**
@@ -51,6 +52,15 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
 
     public List getServiceAlarmMonth5(Map<String, Object> paramMap) {
         return getSqlSession().selectList(ns + "getServiceAlarmMonth5", paramMap);
+    }
+
+    public int getMax(Map<String, Object> paramMap) {
+        List<Alarm> max = this.getSqlSession().selectList(ns + "getMax",paramMap);
+        int maxValue = 0;
+        if(max.size()>0){
+            maxValue = max.get(0).getCount();
+        }
+        return maxValue;
     }		
 	
 	
