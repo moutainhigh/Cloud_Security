@@ -105,6 +105,12 @@ a{text-decoration:none;}
 .safe .safe_cent .safe_right .warn .warn_tab .this p{background-color:#1763b8;opacity:1;filter:Alpha(opacity=100);}
 .safe .safe_cent .safe_right .warn .warn_tab .this strong{ color:#fff;}
 .safe .safe_cent .safe_right .warn .warn_b{ position:relative; width:312px; height:214px; background:url(../images/op.png) repeat-x; padding:10px;}
-
+.cue {
+    bottom: 1%;
+    height: 96px;
+    left: 26%;
+    position: absolute;
+    width: 504px;
+}
 
 
