@@ -82,7 +82,9 @@ function redrawTotalLevel(months,counts) {
 		                	lineStyle: {
 							    color: ['rgba(131,135,22,1)'],//131 135 22
 							    width: 3,
-							    type: 'solid'
+							    type: 'solid',
+							    shadowOffsetY:20,
+							    shadowOffsetX:20
 							}
 		                }
 		            },
