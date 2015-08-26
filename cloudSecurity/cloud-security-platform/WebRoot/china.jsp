@@ -17,6 +17,7 @@
 
 <script src="${ctx}/source/scripts/common/jquery-1.7.1.min.js" type="text/javascript"></script>
 <script src="${ctx}/source/scripts/common/echarts-all.js" type="text/javascript"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/highcharts/js/highcharts.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/linechart.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/d3.min.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/china.js"></script>
@@ -30,19 +31,33 @@ $(function(){
 		$(this).addClass('this').siblings('li').removeClass('this');
 		//$(this).parents('.tab').find('.tabCont').children('.tabItem:eq('+index+')').show().siblings().hide();
 		$("#serviceId").val(serviceId);
-		//获取服务数据
-		getServiceData();
+		//清空
+		$("#safe_map").empty();
+		
+		
 		if(serviceId==1){
 			$('strong[name="service"]').html("漏洞告警TOP5");
+			$("#numMsg").val("漏洞总数");
+			$("#typeMsg").val("漏洞类型");
 		}else if(serviceId==2){
             $('strong[name="service"]').html("木马检测TOP5");
+            $("#numMsg").val("木马检测总数");
+            $("#typeMsg").val("木马检测类型");
 		}else if(serviceId==3){
             $('strong[name="service"]').html("页面篡改TOP5");
+            $("#numMsg").val("页面篡改总数");
+            $("#typeMsg").val("页面篡改类型");
         }else if(serviceId==4){
             $('strong[name="service"]').html("关键字检测TOP5");
+            $("#numMsg").val("关键字检测总数");
+            $("#typeMsg").val("关键字检测类型");
         }else if(serviceId==5){
             $('strong[name="service"]').html("可用性告警TOP5");
+            $("#numMsg").val("可用性告警总数");
+            $("#typeMsg").val("可用性告警类型");
         }
+		//获取服务数据
+        getServiceData();
 	    
 	});	
 	
@@ -110,6 +125,8 @@ $(function(){
         <li>关键字检测</li>
         <li>可用性</li>
         <input type="hidden" id="serviceId" value="1"/>
+        <input type="hidden" id="numMsg" value="漏洞总数"/>
+        <input type="hidden" id="typeMsg" value="漏洞类型"/>
     </ul>
     <div class="safe_Box tabCont">
     	<div class="safe_cent tabItem" style="display:block">
@@ -160,7 +177,7 @@ $(function(){
             </div>	
             
         </div>
-        <div class="cue"> 需要填写的内容 </div>
+        <div class="cue">  </div>
         <!-- <div class="safe_cent tabItem">
         	
             
