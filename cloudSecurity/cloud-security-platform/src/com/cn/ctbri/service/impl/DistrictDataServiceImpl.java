@@ -44,6 +44,10 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
         return districtDataDao.getServiceAlarmMonth5(paramMap);
     }
 
+    public int getMax(Map<String, Object> paramMap) {
+        return districtDataDao.getMax(paramMap);
+    }
+
 
 
 }
