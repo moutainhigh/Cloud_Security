@@ -11,7 +11,7 @@ var max = "";
 function redrawBranch(obj) {
 	//var list = obj.data.flawList;
 	var list = obj;
-	//console.log(list[0]);
+	console.log(list);
 	var branchData = [];
 	var coorStr = "";
 	var coorData;
@@ -19,15 +19,15 @@ function redrawBranch(obj) {
 	// 取得分院的信息。 
 	// 取得json的值重新转化为我们需要的json对象。 
 	for (var i = 0; i < list.length; i++) {
-		// 得到分院的名称和安全等级。 
+		// 漏洞的名称和数量。 
 		// console.log(list[i].orgName +":"+list[i].level);
 		var str = "{name:'" + list[i].id + "',value:" + list[i].count + "}"
 		var obj = eval('(' + str + ')');
 		// console.log(obj);
 		branchData.push(obj);
 
-		// 得到分院的坐标。 
-		// 将所有分院的坐标组成一个字符串。 
+		// 得到各省会的坐标。 
+		// 将所有省会的坐标组成一个字符串。 
 		coorStr += ("'" + list[i].id + "'" + ":[" + list[i].longitude + ","
 				+ list[i].latitude + "],");
 		console.log(coorStr);
@@ -56,7 +56,7 @@ function redrawBranch(obj) {
 		tooltip : {
 			show : true, // 触发展示浮动窗口的事件类型，此处为数据触发，
 			//trigger : 'item', //
-			backgroundColor : 'rgba(20, 94, 181)',
+			backgroundColor : 'rgba(20, 94, 181,0.8)',
 			textStyle : {
 				color : 'white',
 				// fontFamily : 'verdana',
