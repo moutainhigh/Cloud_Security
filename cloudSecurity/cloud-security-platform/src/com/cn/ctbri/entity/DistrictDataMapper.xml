@@ -100,4 +100,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             group by months
             order by months limit 5
     </select>
+    
+    <!-- 查询省份最大数值 -->
+    <select id="getMax" parameterType="hashmap" resultType="com.cn.ctbri.entity.Alarm">
+         select COUNT(s.districtId) AS count 
+         <if test="serviceId != 5">
+            from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a,cs_asset s,cs_district dis
+            where o.id = oa.orderId 
+            and t.order_asset_Id = oa.id 
+            and (a.taskId=t.taskId or a.group_Id = t.group_Id)
+        </if>
+        <if test="serviceId == 5">
+            from cs_order o,cs_order_asset oa,cs_task t,cs_taskwarn a,cs_asset s,cs_district dis
+            where o.id = oa.orderId 
+            and t.order_asset_Id = oa.id 
+            and (a.task_Id=t.taskId or a.group_Id = t.group_Id)
+         </if>
+            and s.id = oa.assetId
+            and s.districtId = dis.id
+            and o.serviceId = #{serviceId}
+            GROUP BY s.districtId
+            order by count desc limit 1
+
+    </select>
 </mapper>
