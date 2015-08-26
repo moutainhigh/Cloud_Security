@@ -5,6 +5,9 @@
 var fox = 0;
 var orgnames="";
 var serviceId ="";
+var numMsg = "";
+var typeMsg = "";
+var max = "";
 function redrawBranch(obj) {
 	//var list = obj.data.flawList;
 	var list = obj;
@@ -53,7 +56,7 @@ function redrawBranch(obj) {
 		tooltip : {
 			show : true, // 触发展示浮动窗口的事件类型，此处为数据触发，
 			//trigger : 'item', //
-			backgroundColor : 'rgba(255,255,255,0.1)',
+			backgroundColor : 'rgba(20, 94, 181)',
 			textStyle : {
 				color : 'white',
 				// fontFamily : 'verdana',
@@ -72,9 +75,10 @@ function redrawBranch(obj) {
 		dataRange : {
 			show : false,
 			min : 0,
-			max : 500,
+			max : 0,
 			calculable : false,
-			color : [ '#D64529', 'orange', 'yellow', '#81BA77', '#5688C1' ]
+		    color : [ '#E6E8FA' ]
+//			color : [ '#D64529', 'orange', 'yellow', '#81BA77', '#5688C1' ]
 		},
 		map : {
 			// mapType : 'china', // 各省的mapType暂时都用中文
@@ -117,10 +121,10 @@ function redrawBranch(obj) {
 			markPoint : {
 				// 闪烁的点的样式为圆形的点
 				symbol : 'circle',
-				symbolSize : 5, // 标注大小，半宽（半径）参数，当图形为方向或菱形则总宽度为symbolSize * 2
-//				symbolSize : function(v){
-//					return v/100+3;
-//				},
+//				symbolSize : 5, // 标注大小，半宽（半径）参数，当图形为方向或菱形则总宽度为symbolSize * 2
+				symbolSize : function(v){
+					return v/max*10+3;
+				},
 				// 图形样式
 				itemStyle : {
 					normal : {
@@ -156,10 +160,10 @@ function redrawBranch(obj) {
 			data : [],
 			markPoint : {
 				symbol : 'emptyCircle',
-				symbolSize : 10,
-//				symbolSize : function(v) {
-//					return 10 + v / 100
-//				},
+				//symbolSize : 10,
+				symbolSize : function(v) {
+					return 10 + v / max *10
+				},
 				effect : {
 					show : true,
 					shadowBlur : 0
@@ -185,7 +189,9 @@ $(window).ready(function(){
 //获取服务数据
 function getServiceData(){
 	serviceId = $("#serviceId").val();
-//	alert("999"+serviceId);
+	numMsg = $("#numMsg").val();
+	typeMsg = $("#numMsg").val();
+//	alert("999"+numMsg);
 	getBranchInfo();
 	getRegionTOP();
 	getServiceTOP();
@@ -200,8 +206,10 @@ function getBranchInfo(){
 	        url: "initDistrictList.html?serviceId="+serviceId, 
 	        success: function(obj){
 	        	// 从后台得到返回的值，是一个json对象。 
-//	        	console.log(obj);
-	        	redrawBranch(obj);
+//	        	console.log(obj.max);
+	        	max = obj.max;
+	        	redrawBranch(obj.districtList);
+	        	
 	     	}
 		});
 }
@@ -273,7 +281,7 @@ function getLineChart(){
         url: "getServiceAlarmMonth5.html?serviceId="+serviceId, 
         success: function(obj){
         	// 从后台得到返回的值，是一个json对象。 
-        	console.log(obj);
+//        	console.log(obj);
         	if(obj.length>0){
         		for (var i = 0; i<obj.length; i++) {
             		monthsArray.push(obj[i].months);
@@ -310,53 +318,14 @@ function getOrgData(param){
 					for (var i=0; i< obj.length;i++) {
 						leaks += "<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;.&nbsp;&nbsp;"+obj[i].leakName+"</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'>"+obj[i].count+"</td></tr>"
 					}
-					if(serviceId==1){
-						orgnames = "<div>"
-							+"<table style='font-family: 'LTH';'>"
-								+"<tr><th style='height: 24px;line-height: 24px;text-align: left;font-size: 12px; font-weight: bold;margin: 0;'>"+sname+"</th></tr>"
-								+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;漏洞总数</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'>"+count+"</td></tr>"
-								+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;漏洞类型TOP5：</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'></td></tr>"
-								+leaks
-							+"</table>"
-						+"</div>";
-					}else if(serviceId==2){
-						orgnames = "<div>"
-							+"<table style='font-family: 'LTH';'>"
-								+"<tr><th style='height: 24px;line-height: 24px;text-align: left;font-size: 12px; font-weight: bold;margin: 0;'>"+sname+"</th></tr>"
-								+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;木马检测总数</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'>"+count+"</td></tr>"
-								+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;木马检测类型TOP5：</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'></td></tr>"
-								+leaks
-							+"</table>"
-						+"</div>";
-					}else if(serviceId==3){
-						orgnames = "<div>"
-							+"<table style='font-family: 'LTH';'>"
-								+"<tr><th style='height: 24px;line-height: 24px;text-align: left;font-size: 12px; font-weight: bold;margin: 0;'>"+sname+"</th></tr>"
-								+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;页面篡改总数</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'>"+count+"</td></tr>"
-								+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;页面篡改类型TOP5：</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'></td></tr>"
-								+leaks
-							+"</table>"
-						+"</div>";
-					}else if(serviceId==4){
-						orgnames = "<div>"
-							+"<table style='font-family: 'LTH';'>"
-								+"<tr><th style='height: 24px;line-height: 24px;text-align: left;font-size: 12px; font-weight: bold;margin: 0;'>"+sname+"</th></tr>"
-								+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;关键字检测总数</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'>"+count+"</td></tr>"
-								+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;关键字检测类型TOP5：</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'></td></tr>"
-								+leaks
-							+"</table>"
-						+"</div>";
-					}else if(serviceId==5){
-						orgnames = "<div>"
-							+"<table style='font-family: 'LTH';'>"
-								+"<tr><th style='height: 24px;line-height: 24px;text-align: left;font-size: 12px; font-weight: bold;margin: 0;'>"+sname+"</th></tr>"
-								+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;可用性告警总数</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'>"+count+"</td></tr>"
-								+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;可用性告警类型TOP5：</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'></td></tr>"
-								+leaks
-							+"</table>"
-						+"</div>";
-					}
-					
+					orgnames = "<div>"
+						+"<table style='font-family: 'LTH';'>"
+							+"<tr><th style='height: 24px;line-height: 24px;text-align: left;font-size: 12px; font-weight: bold;margin: 0;'>"+sname+"</th></tr>"
+							+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;"+numMsg+"</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'>"+count+"</td></tr>"
+							+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;"+typeMsg+"TOP5：</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'></td></tr>"
+							+leaks
+						+"</table>"
+					+"</div>";
 					
 				}
 			});

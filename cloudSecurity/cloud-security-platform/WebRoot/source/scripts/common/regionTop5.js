@@ -159,7 +159,7 @@ function redrawLevelList(sllist){
   	   var val=parseInt(d.value);
          return [
 					"<span title='" + d.key + "' style='float:right; color:white;'>" + d.key+ "</span>",
-					"<div  class='bar' style='width:"+barwidth(d.value) +"px; color:"+colorizer[i]+";background-color:"+colorizer[i]+";' ><span class='bartext'>" + d.value + "&nbsp;&nbsp;</span></div>"]; });
+					"<div  class='bar' style='width:"+barwidth(d.value) +"px; color:"+colorizer[i]+";background-color:"+colorizer[i]+";' ></div><span class='bartext'>" + d.value + "&nbsp;&nbsp;</span>"]; });
 					         
  cols.enter().append("td");
  cols.html(function(d) { return d; });

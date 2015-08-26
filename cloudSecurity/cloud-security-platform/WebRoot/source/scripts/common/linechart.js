@@ -1,5 +1,5 @@
 // 总体风险趋势表绘制。
-function redrawTotalLevel(months,counts) {
+/*function redrawTotalLevel(months,counts) {
 	
 	// 基于准备好的dom，初始化echarts图表
 	var myChart = echarts.init(document.getElementById('total-level-list'));
@@ -100,4 +100,66 @@ function redrawTotalLevel(months,counts) {
 
 	// 为echarts对象加载数据
 	myChart.setOption(option);
+}*/
+
+function redrawTotalLevel(months,counts) {
+	$('#total-level-list').highcharts({ 
+		chart: {
+            backgroundColor: 'rgba(0,0,0,0)',
+            type: 'line',
+            height: 240,
+			width: 430
+        },
+        credits: {
+            enabled: false
+        },
+		title: { 
+			text: '漏洞个数', 
+			style : {
+				color : "#00b7ee",
+//				align : 'left',
+				fontFamily : '微软雅黑',
+				fontSize: 14,
+				fontWeight : 'normal'
+			},
+			x: -20 //center 
+		}, 
+		subtitle: { 
+			text: '', 
+			x: -20 
+		}, 
+		xAxis: { 
+			categories: months,
+			gridLineColor: 'rgba(255,255,255,0.1)',//纵向网格线颜色
+			gridLineDashStyle: 'longdash',//横向网格线样式
+			gridLineWidth: 1 //纵向网格线宽度
+		}, 
+		yAxis: { 
+			min: 0,
+			gridLineColor: 'rgba(255,255,255,0.1)',//横向网格线颜色
+			gridLineDashStyle: 'longdash',//横向网格线样式
+			gridLineWidth: 1,//横向网格线宽度
+			title: { 
+				text: '' 
+			}, 
+			plotLines: [{ 
+				value: 0, 
+				width: 1, 
+				color: '#808080' 
+			}] }, 
+			tooltip: { 
+				
+			}, 
+			legend: { 
+				layout: 'vertical', 
+				align: 'right', 
+				verticalAlign: 'middle', 
+				borderWidth: 0,
+				enabled: false
+			}, 
+			series: [{ 
+				name: '漏洞个数', 
+				data: counts
+			}] 
+	});
 }
