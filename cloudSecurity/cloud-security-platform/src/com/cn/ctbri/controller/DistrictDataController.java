@@ -79,9 +79,12 @@ public class DistrictDataController {
         String serviceId = request.getParameter("serviceId");
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("serviceId", serviceId);
-        Gson gson= new Gson();
+        JSONObject jo = new JSONObject();
         List<District> districtList = districtDataService.getDistrictByAll(paramMap);
-        String resultGson = gson.toJson(districtList);//转成json数据
+        int max = districtDataService.getMax(paramMap);
+        jo.put("districtList", districtList);
+        jo.put("max", max);
+        String resultGson = jo.toString();//转成json数据
         response.setContentType("textml;charset=UTF-8");
         response.getWriter().print(resultGson);
         return null;
