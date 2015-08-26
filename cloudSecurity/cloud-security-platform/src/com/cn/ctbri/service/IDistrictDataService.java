@@ -23,6 +23,8 @@ public interface IDistrictDataService {
 
     List getServiceAlarmMonth5(Map<String, Object> paramMap);
 
+    int getMax(Map<String, Object> paramMap);
+
 	
 
 }
