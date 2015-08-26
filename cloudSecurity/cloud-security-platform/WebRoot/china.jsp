@@ -157,6 +157,7 @@ $(function(){
             </div>	
             
         </div>
+        <div class="cue"> 需要填写的内容 </div>
         <!-- <div class="safe_cent tabItem">
         	
             
