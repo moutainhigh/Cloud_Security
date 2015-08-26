@@ -101,13 +101,13 @@ function redrawBranch(obj) {
 			// 设定地图的颜色
 			itemStyle : {
 				normal : {
-					borderWidth : 1,
+					borderWidth : 2,
 					//borderWidth : "",
 					// 设置地图边框的颜色
-					borderColor : 'rgb(85,85,85)',
+					borderColor : 'rgb(110,117,145)',//"white",//'rgb(85,85,85)',
 					// 设置地图内的填充色
 					areaStyle : {
-						color : 'rgba(0,0,0,0.5)'
+						color : 'rgba(0,0,0,0.1)'
 						//color : 'rgba(255,255,255,0.1)'
 					}
 				}
@@ -220,7 +220,7 @@ function getRegionTOP(){
         	// 从后台得到返回的值，是一个json对象。 
         	//console.log(obj.length);
         	
-        	for (var i = 0;i<obj.length; i++) {
+        	/*for (var i = 0;i<obj.length; i++) {
         		nameArray[i]=obj[i].name;
         		countArray[i]=obj[i].count;
 			}
@@ -229,7 +229,8 @@ function getRegionTOP(){
         		carray.push(countArray[j-1]);
         	}
         	
-        	redrawEventList(narray,carray);
+        	redrawEventList(narray,carray);*/
+        	redrawLevelList(obj);
      	}
 	});
 }
