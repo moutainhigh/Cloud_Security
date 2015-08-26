@@ -18,6 +18,7 @@
 <script src="${ctx}/source/scripts/common/jquery-1.7.1.min.js" type="text/javascript"></script>
 <script src="${ctx}/source/scripts/common/echarts-all.js" type="text/javascript"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/linechart.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/d3.min.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/china.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/regionTop5.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/serviceTop5.js"></script>
@@ -147,8 +148,10 @@ $(function(){
                         </li>
                     </ul>
                     <div class="warnBox tabCont">
-                    	<div class="warn_b tabItem" id="regionTOP" style="display:block">asda</div>
-                        <div class="warn_b tabItem" id="serviceTOP" style="width:330px; height:230px;">123123</div>
+                    	<div class="warn_b tabItem" id="regionTOP" style="display:block">
+                    	<table id="left-data"></table>
+                    	</div>
+                        <div class="warn_b tabItem" id="serviceTOP" >123123</div>
                     </div>
                 </div>
             	<!--漏洞-->
