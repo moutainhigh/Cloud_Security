@@ -254,7 +254,7 @@ public class Scheduler4Result {
                         }
                         
         				//删除任务   add by txr 2015-03-27
-        				ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId())+"_"+o.getId());
+        				//ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId())+"_"+o.getId());
         				//任务完成后,引擎活跃数减1
 //                        engine.setActivity(engine.getActivity()-1);
 //                        engineService.update(engine);
@@ -461,6 +461,10 @@ public class Scheduler4Result {
 					level = URLDecoder.decode(level, "UTF-8");
 					// 建议
 					String advice = issuetype.attribute("advice").getStringValue();
+					advice = URLDecoder.decode(advice, "UTF-8");
+					if(advice.equals("Web Service SQL盲注")){
+					    advice = "SQL";
+					}
 					// issuedata
 					List<Element> issuedatas = issuetype.elements("issuedata");
 					for (Element issuedata : issuedatas) {
@@ -471,7 +475,7 @@ public class Scheduler4Result {
 						alarm.setAlarm_type(URLDecoder.decode(alarm_type, "UTF-8"));
 						alarm.setName(URLDecoder.decode(name, "UTF-8"));
 						alarm.setScore(score);
-						alarm.setAdvice(URLDecoder.decode(advice, "UTF-8"));
+						alarm.setAdvice(advice);
 						if ("信息".equals(level)) {
 							alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_LOW));
 						} else if ("低危".equals(level)) {
