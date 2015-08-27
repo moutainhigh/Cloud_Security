@@ -13,6 +13,7 @@
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/index.js"></script>
+<SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
 <link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
@@ -238,7 +239,7 @@ function showUnreadNews()
 <div  class="bottom_main">
 <h3><a href="###">联系我们</a></h3>
 <ul>
-<li><a href="###">客户电话</a></li>
+<li><a href="###">QQ交流群470899318</a></li>
 </div>
 <div  class="bottom_main" style="width:380px;">
 <h3><a href="###">版权信息</a></h3>

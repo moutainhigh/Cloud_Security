@@ -249,47 +249,7 @@ $(function(){
   
   </div>
 </div>
-<!-- 尾部代码开始-->
-<div class="bottom_bj">
-<div class="bottom clearfix">
-    <div class="bottom_main">
-      <h3><a href="###">新手入门</a></h3>
-      <ul>
-        <li><a href="###">新用户注册</a></li>
-        <li><a href="###">用户登录</a></li>
-        <li><a href="###">找回密码</a></li>
-      </ul>
-    </div>
-    <div  class="bottom_main">
-      <h3><a href="###"> 帮助</a></h3>
-      <ul>
-        <li><a href="###">常见问题</a></li>
-      </ul>
-    </div>
-    <div  class="bottom_main">
-      <h3><a href="###">厂商合作</a></h3>
-      <ul>
-        <li><a href="###">华为</a></li>
-        <li><a href="###">安恒</a></li>
-        <li><a href="###">360</a></li>
-      </ul>
-    </div>
-    <div class="bottom_main">
-        <h3><a href="###">联系我们</a></h3>
-        <ul>
-            <li><a href="###">客户电话</a></li>
-        </ul>
-   </div>
-   	<div class="bottom_main" style="width:auto;">
-        <h3><a href="###">版权信息</a></h3>
-        <ul>
-        <li>如未经授权用作他处，将保留追究侵权者法律责任的权利。<br />
-          京ICP备11111111号-4 / 京ICP证1111111号<br />
-          北京市公安局朝阳分局备案编号:110105000501</li>
-        </ul>
-    </div>
-</div>
-</div>
+
 </div>
 </div>
 </body>
