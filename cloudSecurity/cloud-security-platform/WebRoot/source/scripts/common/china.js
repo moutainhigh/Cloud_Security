@@ -79,6 +79,7 @@ function redrawBranch(obj) {
 			calculable : false,
 //		    color : [ '#E6E8FA' ]
 			color : [ '#D64529', 'orange', 'yellow', '#81BA77', '#5688C1', '#E6E8FA']
+//			color : [ '#ec8589', '#ed8ab1', '#3ed2de', '#67d777', '#e3de8e', '#ffffff']
 		},
 		map : {
 			// mapType : 'china', // 各省的mapType暂时都用中文
