@@ -34,7 +34,9 @@ $(function(){
 		//清空
 		$("#safe_map").empty();
 		
-		
+        $("#server").show();
+        $('.warn_tab li').eq(0).addClass('this').siblings('li').removeClass('this');
+        $('.warn_tab li').eq(0).parents('.tab').find('.tabCont').children('.tabItem:eq(0)').show().siblings().hide();
 		if(serviceId==1){
 			$('strong[name="service"]').html("漏洞告警TOP5");
 			$("#numMsg").val("漏洞总数");
@@ -52,6 +54,7 @@ $(function(){
             $("#numMsg").val("关键字检测总数");
             $("#typeMsg").val("关键字检测类型");
         }else if(serviceId==5){
+        	$("#server").hide();
             $('strong[name="service"]').html("可用性告警TOP5");
             $("#numMsg").val("可用性告警总数");
             $("#typeMsg").val("可用性告警类型");
@@ -159,7 +162,7 @@ $(function(){
                         	<strong name="region">地域告警TOP5</strong>
                         	<p class="l"></p>
                          </li>
-                        <li>
+                        <li id="server">
                         	<strong name="service">漏洞告警TOP5</strong>
                         	<p class="r"></p>
                         </li>
