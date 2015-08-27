@@ -16,8 +16,21 @@
 $(function (){
 	$('.peiz_center ul li').click(function (){
 		if(!$(this).hasClass("opacity")){
+			var index = $(this).index()+1;
 			$('.peiz_center ul li').removeClass('peiz_active');
+			$('.peiz_center ul li a').removeClass('peiz_w');
+			$('.peiz_center ul li a').addClass('peiz_b');
+			$('.peiz_center ul li img').attr("src","");
+			var imgs = $('.peiz_center ul li img');
+			for(var i=0;i<imgs.length;i++){
+				var img = imgs[i];
+				var imgIndex = i+1;
+				img.src="/cloud-security-platform/source/images/user_"+imgIndex+".jpg"; 
+			}
+			
 			$(this).addClass('peiz_active');
+			$(this).find('a').addClass('peiz_w');
+			$(this).find('img').attr("src","/cloud-security-platform/source/images/user_"+index+".png");
 			
 			$('.peiz_cont').hide();
 			//清空checkbox
