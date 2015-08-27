@@ -21,7 +21,7 @@ function saveAsset() {
 			 $("#assetAddr_msg").html("资产地址长度不能超过50个字符！");
 	}else if(assetAddr.indexOf("gov.cn")!=-1){
 		   $("#assetAddr_msg").html("输入资产地址不能包含'gov.cn'！");
-	}else if((addrType.length==4 && assetAddr.substring(0,5)=='https') || (addrType.length==5 && assetAddr.substring(0,4)=='http')){
+	}else if((addrType.length==4 && assetAddr.substring(0,5)=='https') || (addrType.length==5 && assetAddr.substring(0,5)=='http:')){
 		$("#assetAddr_msg").html("资产类型与资产地址填写不一致!");
 	}else{
 			//验证资产是否重复
@@ -71,8 +71,10 @@ function editAsset(){
 		 $("#editAssetAddr_msg").html("资产地址长度不能超过50个字符！");
 	}else if(assetAddr.indexOf("gov.cn")!=-1){
 	   $("#editAssetAddr_msg").html("输入资产地址不能包含'gov.cn'！");
+	}else if((addrType.length==4 && assetAddr.substring(0,5)=='https') || (addrType.length==5 && assetAddr.substring(0,5)=='http:')){
+		$("#editAssetAddr_msg").html("资产类型与资产地址填写不一致!");
 	}else{
-		  $("#editAssetAddr_msg").html("");
+		$("#editAssetAddr_msg").html("");
 		$("#editAsset").submit();
 	}
 	
