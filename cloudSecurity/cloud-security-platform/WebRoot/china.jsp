@@ -168,7 +168,9 @@ $(function(){
                     	<div class="warn_b tabItem" id="regionTOP" style="display:block">
                     	<table id="left-data"></table>
                     	</div>
-                        <div class="warn_b tabItem" id="serviceTOP" >123123</div>
+                        <div class="warn_b tabItem" id="serviceTOP" >
+                        <table id="left-data2"></table>
+                        </div>
                     </div>
                 </div>
             	<!--漏洞-->
