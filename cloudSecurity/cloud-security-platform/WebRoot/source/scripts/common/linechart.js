@@ -129,10 +129,12 @@ function redrawTotalLevel(months,counts) {
 			x: -20 
 		}, 
 		xAxis: { 
+//			type: 'category',
 			categories: months,
 			gridLineColor: 'rgba(255,255,255,0.1)',//纵向网格线颜色
 			gridLineDashStyle: 'longdash',//横向网格线样式
 			gridLineWidth: 1 //纵向网格线宽度
+			
 		}, 
 		yAxis: { 
 			min: 0,
