@@ -215,10 +215,10 @@ function getBranchInfo(){
 }
 /*地域告警TOP5*/
 function getRegionTOP(){
-	var narray =[];
+	/*var narray =[];
 	var carray =[];
 	var nameArray = ['','','','',''];
-	var countArray = ['','','','',''];
+	var countArray = ['','','','',''];*/
 	$.ajax({
         type: "POST",
         cache: false,
@@ -244,10 +244,10 @@ function getRegionTOP(){
 }
 /*漏洞告警TOP5*/
 function getServiceTOP(){
-	var narray =[];
+	/*var narray =[];
 	var carray =[];
 	var nameArray = ['','','','',''];
-	var countArray = ['','','','',''];
+	var countArray = ['','','','',''];*/
 	$.ajax({
         type: "POST",
         cache: false,
@@ -257,16 +257,16 @@ function getServiceTOP(){
         	// 从后台得到返回的值，是一个json对象。 
         	//console.log(obj);
         	
-        	for (var i = 0;i<obj.length; i++) {
+        	/*for (var i = 0;i<obj.length; i++) {
         		nameArray[i]=obj[i].name;
         		countArray[i]=obj[i].count;
 			}
         	for (var j =countArray.length; j>0;j--) {
         		narray.push(nameArray[j-1]);
         		carray.push(countArray[j-1]);
-        	}
+        	}*/
         	
-        	redrawServiceList(narray,carray);
+        	redrawServiceList(obj);
      	}
 	});
 }
