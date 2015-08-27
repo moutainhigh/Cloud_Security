@@ -114,7 +114,7 @@ function redrawTotalLevel(months,counts) {
             enabled: false
         },
 		title: { 
-			text: '漏洞个数', 
+			text: '漏洞发展趋势', 
 			style : {
 				color : "#00b7ee",
 //				align : 'left',
