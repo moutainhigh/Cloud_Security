@@ -124,10 +124,6 @@ else{
 	triwidth = "8px";
 }*/
 
-var barwidth = d3.scale.linear()
-					.domain([1, 100])
-					.range([1, 160])
-					.clamp(true);
 //alert(testlinear(78));
 var colorizer =["#e40027", "#e9505d", "#ee878c","#f4b4b7","#fadcde"];
 var colorizer1 =["#00a1e9", "#52c3f1", "#52c3f1","#9ed8f6", "#9ed8f6","#d3edfb", "#d3edfb","#d3edfb","#ffffff","#ffffff"];
@@ -159,7 +155,7 @@ function redrawLevelList(sllist){
   	   var val=parseInt(d.value);
          return [
 					"<span title='" + d.key + "' style='float:right; color:white; padding-bottom:6px; padding-top: 6px;'>" + d.key+ "</span>",
-					"<div class='newbar' style='width:"+(barwidth(d.value)+30)+"px;'><div  class='bar' style='width:"+barwidth(d.value) +"px; color:"+colorizer[i]+";background-color:"+colorizer[i]+";' ></div><div class='bartext'>&nbsp;" + d.value + "</div></div>"]; });
+					"<div class='newbar' style='width:"+(barwidth(d.value)+40)+"px;'><div  class='bar' style='width:"+barwidth(d.value) +"px; color:"+colorizer[i]+";background-color:"+colorizer[i]+";' ></div><div class='bartext'>&nbsp;" + d.value + "</div></div>"]; });
 					         
  cols.enter().append("td");
  cols.html(function(d) { return d; });
