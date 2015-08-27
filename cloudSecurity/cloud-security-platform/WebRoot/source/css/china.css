@@ -112,7 +112,7 @@ a{text-decoration:none;}
     position: absolute;
     width: 504px;
 }
-#regionTOP table .bar {
+.bar {
     position: absolute;
     height: 18px;
     margin-top: 1px;
@@ -127,13 +127,13 @@ a{text-decoration:none;}
     line-height: 12px;
     font-size: 10px;
     color:#ffffff;
-    width: 30px;
+    width: 40px;
     
 }
-#regionTOP table .newbar {
+.newbar {
     position: absolute;
     height: 18px;
     margin-top: -9px;
     z-index: 1;
-    max-width: 98%;
+    max-width: 100%;
 }
