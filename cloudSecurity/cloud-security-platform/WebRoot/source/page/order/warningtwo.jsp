@@ -95,10 +95,15 @@ function updateTable(data){
     var averSendCount   =  data.averSendCount;
     var sendBytes   =  data.sendBytes;
     var receiveBytes   =  data.receiveBytes; 
-    
-       $("#confTable").append("<tr><td style='line-height:20px;'>"+executeTime+"</td>"+
-       "<td style='line-height:20px;'>--</td><td>--</td><td>"+issueCount+"个</td><td>"+requestCount+"次</td>"+
-       "<td>"+urlCount+"个</td><td>"+averResponse+"毫秒</td><td>"+averSendCount+"个</td><td>"+sendBytes+"</td><td>"+receiveBytes+"</td></tr>");    
+    if(${websoc}!=1){
+    	$("#confTable").append("<tr><td style='line-height:20px;'>"+executeTime+"</td>"+
+    		       "<td style='line-height:20px;'>--</td><td>--</td><td>"+issueCount+"个</td><td>"+requestCount+"次</td>"+
+    		       "<td>"+urlCount+"个</td><td>"+averResponse+"毫秒</td><td>"+averSendCount+"个</td><td>"+sendBytes+"</td><td>"+receiveBytes+"</td></tr>");    
+    }else{
+    	$("#confTable").append("<tr><td style='line-height:20px;'>"+executeTime+"</td>"+
+    		       "<td style='line-height:20px;'>--</td><td>--</td></tr>");    
+    }
+       
 }
           
 //清除表格内容
@@ -138,6 +143,7 @@ function clearTable(){
             <div class="list">
                <ul>
                    <li><a href="${ctx}/index.html">首页</a></li>
+                   <li><a href="${ctx}/chinas.html">安全态势</a></li>
                    <li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
                    <li><a href="${ctx}/aider.html">在线帮助</a></li>
                    <li class="list_active" style="border-right:1px solid #1369C0;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
