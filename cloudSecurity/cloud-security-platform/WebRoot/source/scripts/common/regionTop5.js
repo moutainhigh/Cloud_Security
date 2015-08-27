@@ -158,7 +158,7 @@ function redrawLevelList(sllist){
      .data(function(d,i) {
   	   var val=parseInt(d.value);
          return [
-					"<span title='" + d.key + "' style='float:right; color:white;'>" + d.key+ "</span>",
+					"<span title='" + d.key + "' style='float:right; color:white; padding-bottom:6px; padding-top: 6px;'>" + d.key+ "</span>",
 					"<div class='newbar' style='width:"+(barwidth(d.value)+30)+"px;'><div  class='bar' style='width:"+barwidth(d.value) +"px; color:"+colorizer[i]+";background-color:"+colorizer[i]+";' ></div><div class='bartext'>&nbsp;" + d.value + "</div></div>"]; });
 					         
  cols.enter().append("td");
