@@ -1,4 +1,4 @@
-function redrawServiceList(eventnamelist, eventcountlist) {
+function redrawServiceList2(eventnamelist, eventcountlist) {
 
 	var myChart = echarts.init(document.getElementById('serviceTOP'));
 
@@ -108,5 +108,41 @@ function redrawServiceList(eventnamelist, eventcountlist) {
 
 	// 为echarts对象加载数据
 	myChart.setOption(option);
-
 }
+
+var colorizer =["#e40027", "#e9505d", "#ee878c","#f4b4b7","#fadcde"];
+var colorizer1 =["#00a1e9", "#52c3f1", "#52c3f1","#9ed8f6", "#9ed8f6","#d3edfb", "#d3edfb","#d3edfb","#ffffff","#ffffff"];
+
+
+function redrawServiceList(sllist){
+	  $("#left-data2 tr").remove();
+	   var originstate = d3.map();
+	   for(var i=0;i<sllist.length; i++){
+	   	originstate.set($.trim(sllist[i].name), sllist[i].count); 
+	   }
+	   //console.log(originstate);
+	   var data = originstate.entries()
+	       .sort(function(d1, d2) { return d2.value - d1.value; })
+	       .slice(0, 10);
+	   var barwidth = d3.scale.linear()
+		.domain([1, data[0].value])
+		.range([1, 180])
+		.clamp(true);
+	   
+	   var rows = d3.select("#left-data2").selectAll("tr.row")
+	   		.data(data, function(d) { return d.key; });
+     rows.enter()
+         .append("tr")
+         .attr("class", "row")
+         .style("color", "red");
+     var cols = rows.selectAll("td")
+     .data(function(d,i) {
+    	 var val=d.key;
+         return [
+					"<span title='" + d.key + "' style='float:right; color:white; padding-bottom:6px; padding-top: 6px;'>" + val.substr(0,6)+ "</span>",
+					"<div class='newbar' style='width:"+(barwidth(d.value)+40)+"px;'><div  class='bar' style='width:"+barwidth(d.value) +"px; color:"+colorizer[i]+";background-color:"+colorizer[i]+";' ></div><div class='bartext'>&nbsp;" + d.value + "</div></div>"]; });
+					         
+ cols.enter().append("td");
+ cols.html(function(d) { return d; });
+	
+ }
