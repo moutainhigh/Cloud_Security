@@ -78,8 +78,9 @@ function redrawBranch(obj) {
 			max : 5000,
 			calculable : false,
 //		    color : [ '#E6E8FA' ]
-			color : [ '#D64529', 'orange', 'yellow', '#81BA77', '#5688C1', '#E6E8FA']
+//			color : [ '#D64529', 'orange', 'yellow', '#81BA77', '#5688C1','#E6E8FA' ]
 //			color : [ '#ec8589', '#ed8ab1', '#3ed2de', '#67d777', '#e3de8e', '#ffffff']
+			color : [ '#D64529', '#ec8589','orange', '#ed8ab1','yellow','#3ed2de', '#81BA77','#67d777', '#5688C1','#e3de8e','#E6E8FA' ]
 		},
 		map : {
 			// mapType : 'china', // 各省的mapType暂时都用中文
