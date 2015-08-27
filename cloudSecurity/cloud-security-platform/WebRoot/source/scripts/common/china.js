@@ -75,10 +75,10 @@ function redrawBranch(obj) {
 		dataRange : {
 			show : false,
 			min : 0,
-			max : 0,
+			max : 5000,
 			calculable : false,
-		    color : [ '#E6E8FA' ]
-//			color : [ '#D64529', 'orange', 'yellow', '#81BA77', '#5688C1' ]
+//		    color : [ '#E6E8FA' ]
+			color : [ '#D64529', 'orange', 'yellow', '#81BA77', '#5688C1', '#E6E8FA']
 		},
 		map : {
 			// mapType : 'china', // 各省的mapType暂时都用中文
