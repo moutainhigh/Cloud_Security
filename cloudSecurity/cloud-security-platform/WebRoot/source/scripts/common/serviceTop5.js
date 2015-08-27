@@ -140,7 +140,7 @@ function redrawServiceList(sllist){
     	 var val=d.key;
          return [
 					"<span title='" + d.key + "' style='float:right; color:white; padding-bottom:6px; padding-top: 6px;'>" + val.substr(0,6)+ "</span>",
-					"<div class='newbar' style='width:"+(barwidth(d.value)+40)+"px;'><div  class='bar' style='width:"+barwidth(d.value) +"px; color:"+colorizer[i]+";background-color:"+colorizer[i]+";' ></div><div class='bartext'>&nbsp;" + d.value + "</div></div>"]; });
+					"<div class='newbar' style='width:"+(barwidth(d.value)+60)+"px;'><div  class='bar' style='width:"+barwidth(d.value) +"px; color:"+colorizer[i]+";background-color:"+colorizer[i]+";' ></div><div class='bartext'>&nbsp;" + d.value + "</div></div>"]; });
 					         
  cols.enter().append("td");
  cols.html(function(d) { return d; });
