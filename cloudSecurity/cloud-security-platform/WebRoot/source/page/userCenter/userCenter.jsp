@@ -106,7 +106,7 @@
 <div  class="bottom_main">
 <h3><a href="###">联系我们</a></h3>
 <ul>
-<li><a href="###">客户电话</a></li>
+<li><a href="###">QQ交流群470899318</a></li>
 </div>
 <div  class="bottom_main" style="width:380px;">
 <h3><a href="###">版权信息</a></h3>
