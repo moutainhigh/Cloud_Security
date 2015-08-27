@@ -132,15 +132,15 @@
                    <li class="peiz_active" id="${list.id }" name="${list.name }" value="${list.parentC }">
                    <input type="hidden" value="${list.remarks }" name="remarks"/>
                    <input type="hidden" value="${list.orderType }" name="typeOrder"/>
-	               <div><img src="${ctx}/source/images/user_${status.index+1 }.jpg" /></div>
-	               <a href="###">${list.name }</a> </li>
+	               <div><img src="${ctx}/source/images/user_${status.index+1 }.png" /></div>
+	               <a href="###" class="peiz_w">${list.name }</a> </li>
                </c:when>
                <c:otherwise>
                    <li id="${list.id }" name="${list.name }" value="${list.parentC }">
                    <input type="hidden" value="${list.remarks }" name="remarks"/>
                    <input type="hidden" value="${list.orderType }" name="typeOrder"/>
                    <div><img src="${ctx}/source/images/user_${status.index+1 }.jpg" /></div>
-                   <a href="###">${list.name }</a> </li>
+                   <a href="###" class="peiz_b">${list.name }</a> </li>
                </c:otherwise>
             </c:choose>
           </c:forEach>
