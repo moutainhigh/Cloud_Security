@@ -115,17 +115,25 @@ a{text-decoration:none;}
 #regionTOP table .bar {
     position: absolute;
     height: 18px;
-    margin-top: -9px;
+    margin-top: 1px;
     background-color: rgb( 0, 191, 243 );
     z-index: 1;
     max-width: 98%;
 }
 .bartext{
 	margin-top: 3px;
-	position: absolute;
+	/* position: absolute; */
+	float:right;
     line-height: 12px;
     font-size: 10px;
     color:#ffffff;
+    width: 30px;
+    
 }
-
-
+#regionTOP table .newbar {
+    position: absolute;
+    height: 18px;
+    margin-top: -9px;
+    z-index: 1;
+    max-width: 98%;
+}
