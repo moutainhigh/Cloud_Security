@@ -1019,16 +1019,16 @@ public class WarningController {
             }
         }else{
         	Task  t = taskService.getNewStatus(paramMap);
-//        	if(t.getStatus()==3){
-//        		m.put("progress", 100);
-//        		if(t.getCurrentUrl()!=null && !t.getCurrentUrl().equals("")){
-//                    m.put("currentUrl", t.getCurrentUrl());
-//                }else{
-//                    m.put("currentUrl", "无");
-//                }
-        	if(Integer.parseInt(status)==3){
-        	    m.put("progress", 100);
-        	    m.put("currentUrl", "无");
+        	if(t.getStatus()==3){
+        		m.put("progress", 100);
+        		if(t.getCurrentUrl()!=null && !t.getCurrentUrl().equals("")){
+                    m.put("currentUrl", t.getCurrentUrl());
+                }else{
+                    m.put("currentUrl", "无");
+                }
+//        	if(Integer.parseInt(status)==3){
+//        	    m.put("progress", 100);
+//        	    m.put("currentUrl", "无");
         	}else{
         		m.put("progress", 0);
                 m.put("currentUrl", "暂无");
