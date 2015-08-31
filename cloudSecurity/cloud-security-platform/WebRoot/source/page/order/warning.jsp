@@ -316,7 +316,6 @@ function seedetail1(e) {
                    <c:if test="${alarm.level==2}">高</c:if> 
 	            </td>
 	            <td  style="width:45%;">URL:&nbsp;&nbsp;${alarm.alarm_content }<br/>弱点：&nbsp;&nbsp;${fn:replace(alarm.keyword,"<", "&lt;")}</td>
-	           <!--  <td>${alarm.advice }</td> -->
 	            <td  style="width:20%;" class="seedetail" value="0" name="${order.id}" onclick="seedetail1(this)"><span>查看建议</span></td>
 	            </tr>
 	            
