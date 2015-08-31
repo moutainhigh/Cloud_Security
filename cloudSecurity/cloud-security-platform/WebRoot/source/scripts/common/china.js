@@ -18,19 +18,21 @@ function redrawBranch(obj) {
 
 	// 取得分院的信息。 
 	// 取得json的值重新转化为我们需要的json对象。 
-	for (var i = 0; i < list.length; i++) {
-		// 漏洞的名称和数量。 
-		// console.log(list[i].orgName +":"+list[i].level);
-		var str = "{name:'" + list[i].id + "',value:" + list[i].count + "}"
-		var obj = eval('(' + str + ')');
-		// console.log(obj);
-		branchData.push(obj);
-
-		// 得到各省会的坐标。 
-		// 将所有省会的坐标组成一个字符串。 
-		coorStr += ("'" + list[i].id + "'" + ":[" + list[i].longitude + ","
-				+ list[i].latitude + "],");
-		console.log(coorStr);
+	if(null!=list && list.length>0){
+		for (var i = 0; i < list.length; i++) {
+			// 漏洞的名称和数量。 
+			// console.log(list[i].orgName +":"+list[i].level);
+			var str = "{name:'" + list[i].id + "',value:" + list[i].count + "}"
+			var obj = eval('(' + str + ')');
+			// console.log(obj);
+			branchData.push(obj);
+	
+			// 得到各省会的坐标。 
+			// 将所有省会的坐标组成一个字符串。 
+			coorStr += ("'" + list[i].id + "'" + ":[" + list[i].longitude + ","
+					+ list[i].latitude + "],");
+			console.log(coorStr);
+		}
 	}
 
 	// 给坐标字符串套上大括号。 
@@ -186,6 +188,7 @@ function redrawBranch(obj) {
  }
 
 $(window).ready(function(){
+	redrawBranch(null);
 	getServiceData();
 }); 
 
