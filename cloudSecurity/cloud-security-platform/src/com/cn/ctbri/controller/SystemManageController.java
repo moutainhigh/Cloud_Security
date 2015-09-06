@@ -19,12 +19,14 @@ import org.hyperic.sigar.FileSystem;
 import org.hyperic.sigar.FileSystemUsage;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.entity.ServerParamConfiguration;
+import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.sun.management.OperatingSystemMXBean;
 
 
@@ -37,6 +39,8 @@ import com.sun.management.OperatingSystemMXBean;
  */
 @Controller
 public class SystemManageController {
+	@Autowired
+    ISelfHelpOrderService selfHelpOrderService;
 	/**
 	 * 功能描述： 系统管理页面
 	 *		 @time 2015-2-3
@@ -211,5 +215,22 @@ public class SystemManageController {
 		}
 		return "redirect:/adminSystemManageUI.html";
 
+	}
+	
+	@RequestMapping(value="/adminchinas.html")
+	public String adminchians(Model m){
+	    //查询漏洞个数
+        int leakNum = selfHelpOrderService.findLeakNum(1);
+        //查询网页数
+        int webPageNum = selfHelpOrderService.findWebPageNum();
+        //检测网页数
+        int webSite = selfHelpOrderService.findWebSite();
+        //断网次数
+        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
+        m.addAttribute("leakNum", leakNum);
+        m.addAttribute("webPageNum", webPageNum);
+        m.addAttribute("webSite", webSite);
+        m.addAttribute("brokenNetwork", brokenNetwork);
+		return "/source/adminPage/userManage/china";
 	}
 }
