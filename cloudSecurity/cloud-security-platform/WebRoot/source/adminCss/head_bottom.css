@@ -7,7 +7,7 @@
 
 .logo{ width:352px; float:left;}
 .list{ float:right;}
-.list ul li{ float:left; padding:0px 20px; font-size:18px; line-height:70px; border-left:1px solid #11871d; cursor:pointer; }
+.list ul li{ float:left; padding:0px 10px; font-size:18px; line-height:70px; border-left:1px solid #11871d; cursor:pointer; }
 .list ul li a{ color:#fff;}
 .list ul li:hover{ background:#45b62b;}
 
