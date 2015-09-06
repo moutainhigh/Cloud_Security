@@ -126,7 +126,7 @@ public class ExportController {
                 //预备导出数据
                 Map<String, String> map = this.getExportData(orderId,paramMap);
                 
-                String fileDir = new File(base.getFile(), "../../../../../../doc/").getCanonicalPath();
+                String fileDir = new File(base.getFile(), "../../../../../../doc/").getCanonicalPath().replaceAll("%20", " ");
                 
                 System.out.println(fileDir+"        111111111"+base.getFile());
                 //获取模板文件
