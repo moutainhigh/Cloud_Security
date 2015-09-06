@@ -14,6 +14,7 @@
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 
 <script src="${ctx}/source/scripts/common/jquery-1.7.1.min.js" type="text/javascript"></script>
 <script src="${ctx}/source/scripts/common/echarts-all.js" type="text/javascript"></script>
@@ -32,7 +33,7 @@ $(function(){
 		//$(this).parents('.tab').find('.tabCont').children('.tabItem:eq('+index+')').show().siblings().hide();
 		$("#serviceId").val(serviceId);
 		//清空
-		$("#safe_map").empty();
+		//$("#safe_map").empty();
 		
         $("#server").show();
         $('.warn_tab li').eq(0).addClass('this').siblings('li').removeClass('this');
@@ -60,6 +61,7 @@ $(function(){
             $("#typeMsg").val("可用性告警类型");
         }
 		//获取服务数据
+		redrawBranch(null);
         getServiceData();
 	    
 	});	
@@ -143,8 +145,9 @@ $(function(){
                     <h2>${webPageNum }</h2>
                 </li>
                 <li>
+                <a target="_blank" href="${ctx}/adminAssetAddr.html">
                     <p>监测网站</p>
-                    <h2>${webSite }</h2>
+                    <h2>${webSite }</h2></a>
                 </li>
                 <li>
                     <p>断网警告</p>
