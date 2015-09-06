@@ -94,12 +94,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<!-- 检测网站 -->
 	<select id="findAllAssetAddr" resultMap="AssetRM">
-		 SELECT DISTINCT a.addr
-		 FROM cs_asset a
+		 <!-- SELECT DISTINCT a.addr
+		 FROM cs_asset a -->
+		 SELECT a.id,a.addr,a.name,dis.name
+		 FROM cs_asset a,cs_district dis where a.districtId = dis.id and a.status = 1 order by a.create_date desc
 	</select>
 	<!-- 分页查询 -->
 	<select id="queryByPage" resultMap="AssetRM">
-		 SELECT DISTINCT a.addr
-		 FROM cs_asset a LIMIT #{pageNow},#{pageSize}
+		 <!-- SELECT DISTINCT a.addr
+		 FROM cs_asset a LIMIT #{pageNow},#{pageSize} -->
+		 SELECT a.id,a.addr,a.name,dis.name as disName
+		 FROM cs_asset a,cs_district dis where a.districtId = dis.id and a.status = 1 order by a.create_date desc LIMIT #{pageNow},#{pageSize} 
 	</select>
 </mapper>
