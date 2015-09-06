@@ -36,12 +36,18 @@
   <div class="table-c">
 	  <table  border="0" cellspacing="0" cellpadding="0" align="center" width="80%">
 	  <!-- <table  border="1" align="center" width="80%"> -->
-	 	<tr>
+	 	<tr> 
+	 	    <td>序号</td>
+	 		<td>资产名称</td>
 	    	<td>网址</td>
+	    	<td>地域</td>
 	    </tr>
-	  	<c:forEach items="${pb.datas }" var="asset">
+	  	<c:forEach items="${pb.datas }" var="asset" varStatus="status">
 	       	<tr>
-	       	   <td>${asset.addr}</td>
+	       	   <td>${status.index+1 }</td>
+	       	   <td>${asset.name}</td>
+	       	   <td><a href="${ctx}/admingetOrdersByAsset.html?assetId=${asset.id }" target="_blank" >${asset.addr}</a></td>
+	       	   <td>${asset.disName}</td>
 	     	</tr>
 	      </c:forEach>
 	      </table>

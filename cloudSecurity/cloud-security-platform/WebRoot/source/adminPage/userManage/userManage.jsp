@@ -32,6 +32,7 @@ $(document).ready(function(){
     <div class="list b_list">
       <ul>
         <li class="b_current"><a href="${ctx}/adminUserManageUI.html" class="white">用户管理</a></li>
+        <li><a href="${ctx}/adminchinas.html" target="_blank" class="white">安全态势</a></li>
         <li><a href="${ctx}/adminServUI.html" class="white">服务管理</a></li>
         <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">数据分析</a></li>
         <li><a href="${ctx}/adminSystemManageUI.html" class="white">系统管理</a></li>
