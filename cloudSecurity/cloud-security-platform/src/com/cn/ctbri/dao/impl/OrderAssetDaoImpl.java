@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.OrderAssetDao;
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderIP;
 /**
@@ -87,5 +88,9 @@ public class OrderAssetDaoImpl extends DaoCommon implements OrderAssetDao{
     public void deleteOaByOrderId(String orderId) {
         this.getSqlSession().delete(ns + "deleteOaByOrderId",orderId);
     }
+	public List getOrdersByAsset(int assetId) {
+		List list = this.getSqlSession().selectList(ns+"getOrdersByAsset", assetId);
+		return list;
+	}
 		
 }
