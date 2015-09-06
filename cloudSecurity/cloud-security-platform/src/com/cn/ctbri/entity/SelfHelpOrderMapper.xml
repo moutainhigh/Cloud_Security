@@ -38,7 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <!-- select * from cs_alarm a,
 		(select t.taskId from cs_task t,
 		(select oa.id from cs_order o,cs_service s,cs_order_asset oa where o.serviceId = s.id and o.id = oa.orderId and s.parentC = 1 and s.id=#{i}) asset
-		where t.order_asset_id = asset.id) task where a.taskId = task.taskId -->
+		where t.order_asset_id = asset.id) task where a.taskId = task.taskId 
 		
 		select count(a.id) as count
 			from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a,cs_asset s
@@ -46,7 +46,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and t.order_asset_Id = oa.id 
 			and (a.taskId=t.taskId or a.group_Id = t.group_Id)
 			and s.id = oa.assetId
-			and o.serviceId = #{i}
+			and o.serviceId = #{i} -->
+		select sum(dis.count#{i}) as count from cs_district dis
     </select>
     
     <!-- 查询网页数 -->
