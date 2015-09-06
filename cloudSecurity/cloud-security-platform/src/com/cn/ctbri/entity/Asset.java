@@ -24,6 +24,7 @@ public class Asset {
 	
 	private String ip;//ip地址
 	private int districtId;//地区id
+	private String disName;//地区名称
 	
 	public String getAddrType() {
 		return addrType;
@@ -98,5 +99,11 @@ public class Asset {
     public void setDistrictId(int districtId) {
         this.districtId = districtId;
     }
+	public String getDisName() {
+		return disName;
+	}
+	public void setDisName(String disName) {
+		this.disName = disName;
+	}
 	
 }
