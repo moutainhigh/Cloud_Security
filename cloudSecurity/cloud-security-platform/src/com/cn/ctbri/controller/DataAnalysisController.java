@@ -2,14 +2,23 @@ package com.cn.ctbri.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +30,25 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import se.akerfeldt.com.google.gson.Gson;
 
+import com.cn.ctbri.common.Constants;
+import com.cn.ctbri.constant.WarnType;
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.AlarmDDOS;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.DataAnalysis;
+import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.entity.User;
+import com.cn.ctbri.service.IAlarmDDOSService;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
+import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
+import com.cn.ctbri.service.ITaskService;
+import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
@@ -53,6 +73,14 @@ public class DataAnalysisController {
 	IAlarmService alarmService;
 	@Autowired
     ISelfHelpOrderService selfHelpOrderService;
+	@Autowired
+	IOrderAssetService orderAssetService;
+	@Autowired
+    ITaskService taskService;
+    @Autowired
+    ITaskWarnService taskWarnService;
+    @Autowired
+    IAlarmDDOSService alarmDDOSService;
 	/**
 	 * 功能描述：数据分析页面
 	 *		 @time 2015-2-3
@@ -259,5 +287,21 @@ public class DataAnalysisController {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+     * 功能描述： 资产的所有订单
+     * 参数描述：  无
+     *     @time 2015-09-03
+     */
+    @RequestMapping(value="/admingetOrdersByAsset.html")
+    public String getOrdersByAsset(HttpServletRequest request){
+        String assetId = request.getParameter("assetId");
+        //获取订单信息
+        List list = orderAssetService.getOrdersByAsset(Integer.parseInt(assetId));
+        Asset asset = assetService.findById(Integer.parseInt(assetId));
+        request.setAttribute("list",list);
+        request.setAttribute("asset",asset);
+        return "/source/adminPage/userManage/assetOrderList";
+    }
 	
 }
