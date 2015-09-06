@@ -26,6 +26,7 @@ public class TaskWarn{
     private String warnTime;//VO
     private String level;//描述 告警等级高中低
     private int scan_type;//检测频率VO
+    private int serviceId;
     public int getScan_type() {
 		return scan_type;
 	}
@@ -128,5 +129,11 @@ public class TaskWarn{
     public void setWarn_time(Date warn_time) {
         this.warn_time = warn_time;
     }
+	public int getServiceId() {
+		return serviceId;
+	}
+	public void setServiceId(int serviceId) {
+		this.serviceId = serviceId;
+	}
     
 }
