@@ -78,7 +78,7 @@ public class DistrictDataController {
     public String initDistrictList( HttpServletRequest request, HttpServletResponse response) throws IOException {
         String serviceId = request.getParameter("serviceId");
         Map<String, Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("serviceId", serviceId);
+        paramMap.put("serviceId", Integer.parseInt(serviceId));
         JSONObject jo = new JSONObject();
         List<District> districtList = districtDataService.getDistrictByAll(paramMap);
         int max = districtDataService.getMax(paramMap);
@@ -127,7 +127,7 @@ public class DistrictDataController {
         response.setContentType("application/json;charset=UTF-8");
         String serviceId = request.getParameter("serviceId");
         Map<String, Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("serviceId", serviceId);
+        paramMap.put("serviceId", Integer.parseInt(serviceId));
         Gson gson= new Gson();
         List<District> result = districtDataService.getDistrictAlarmTop5(paramMap);
         String resultGson = gson.toJson(result);//转成json数据
