@@ -65,7 +65,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 检测网页数 -->
     <select id="findWebSite" resultType="hashmap">
-        select * from cs_order_asset
+        <!-- select * from cs_order_asset -->
+        select * from cs_order_asset oa, cs_asset a where oa.assetId = a.id
     </select>
     
     <!-- 断网次数 -->
