@@ -125,8 +125,12 @@ public class MyBillController {
      */
     @SuppressWarnings("rawtypes")
     @RequestMapping("/searchCombByPage.html")
-    public String searchCombineByPage(Model model,Integer type,String servName,String begin_datevo,String end_datevo,HttpServletRequest request){
+    public ModelAndView searchCombineByPage(HttpServletRequest request){
         int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
+        String type = request.getParameter("type");
+        String servName = request.getParameter("servName");
+        String begin_datevo = request.getParameter("begin_date");
+        String end_datevo = request.getParameter("end_date");
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         //组织条件查询
         String name=null;
@@ -155,13 +159,14 @@ public class MyBillController {
         paramMap.put("pageNow", pageNow);
         paramMap.put("pageSize", pageSize);
         List result = orderService.findByCombineByPage(paramMap);
-        model.addAttribute("list",result);      //传对象到页面
+        ModelAndView mv = new ModelAndView("/source/page/userCenter/billorderList");
+        mv.addObject("list",result);      //传对象到页面
         
-        model.addAttribute("type",type);//回显类型  
-        model.addAttribute("servName",name);//回显服务名称
-        model.addAttribute("begin_date",begin_datevo);//回显服务开始时间    
-        model.addAttribute("end_date",end_datevo);  //回显结束时间
-        return "/source/page/userCenter/billorderList";
+        mv.addObject("type",type);//回显类型  
+        mv.addObject("servName",name);//回显服务名称
+        mv.addObject("begin_date",begin_datevo);//回显服务开始时间    
+        mv.addObject("end_date",end_datevo);  //回显结束时间
+        return mv;
     }
 	
 	/**
