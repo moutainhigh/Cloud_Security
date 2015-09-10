@@ -68,117 +68,29 @@
             </ul>
         </div>
         <div class="ser_list">
-        	<ul>
-            	<li>
-                   	<dl>
-                       <dt></dt>
-                         <dd>
-                            <p class="ser_type">突发异常流量清洗服务</p>
-                            <p>厂商：360</p>
-                            <p>（扫描类）</p>
-                         </dd>
-                     </dl>
-                    <div class="ser_change"><a href="#">修改</a><a href="#">删除</a></div>
-                </li>
-                <li>
-                   	<dl>
-                       <dt></dt>
-                         <dd>
-                            <p class="ser_type">突发异常流量清洗服务</p>
-                            <p>厂商：360</p>
-                            <p>（扫描类）</p>
-                         </dd>
-                     </dl>
-                    <div class="ser_change"><a href="#">修改</a><a href="#">删除</a></div>
-                </li>
-                <li>
-                   	<dl>
-                       <dt></dt>
-                         <dd>
-                            <p class="ser_type">突发异常流量清洗服务</p>
-                            <p>厂商：360</p>
-                            <p>（扫描类）</p>
-                         </dd>
-                     </dl>
-                    <div class="ser_change"><a href="#">修改</a><a href="#">删除</a></div>
-                </li>
-                <li>
-                   	<dl>
-                       <dt></dt>
-                         <dd>
-                            <p class="ser_type">突发异常流量清洗服务</p>
-                            <p>厂商：360</p>
-                            <p>（扫描类）</p>
-                         </dd>
-                     </dl>
-                    <div class="ser_change"><a href="#">修改</a><a href="#">删除</a></div>
-                </li>
+        	<ul>          
+                
+              <c:forEach var="list" items="${servList}" varStatus="status">
                 <li class="nomr">
                    	<dl>
                        <dt></dt>
                          <dd>
-                            <p class="ser_type">突发异常流量清洗服务</p>
-                            <p>厂商：360</p>
-                            <p>（扫描类）</p>
+                            <p class="ser_type">${list.name }</p>
+                            <p>厂商：
+                            <c:if test="${list.factory==1}">安恒</c:if>
+                            <c:if test="${list.factory==2}">华为</c:if>
+                            </p>
+                            <p>
+							<c:if test="${list.type==1}">扫描类</c:if>
+							<c:if test="${list.type==2}">监控类</c:if>
+							<c:if test="${list.type==3}">防护类</c:if>
+							<c:if test="${list.type==4}">其他</c:if>
+							</p>
                          </dd>
                      </dl>
                     <div class="ser_change"><a href="#">修改</a><a href="#">删除</a></div>
                 </li>
-                <li>
-                   	<dl>
-                       <dt></dt>
-                         <dd>
-                            <p class="ser_type">突发异常流量清洗服务</p>
-                            <p>厂商：360</p>
-                            <p>（扫描类）</p>
-                         </dd>
-                     </dl>
-                    <div class="ser_change"><a href="#">修改</a><a href="#">删除</a></div>
-                </li>
-                 <li>
-                   	<dl>
-                       <dt></dt>
-                         <dd>
-                            <p class="ser_type">突发异常流量清洗服务</p>
-                            <p>厂商：360</p>
-                            <p>（扫描类）</p>
-                         </dd>
-                     </dl>
-                    <div class="ser_change"><a href="#">修改</a><a href="#">删除</a></div>
-                </li>
-                 <li>
-                   	<dl>
-                       <dt></dt>
-                         <dd>
-                            <p class="ser_type">突发异常流量清洗服务</p>
-                            <p>厂商：360</p>
-                            <p>（扫描类）</p>
-                         </dd>
-                     </dl>
-                    <div class="ser_change"><a href="#">修改</a><a href="#">删除</a></div>
-                </li>
-                 <li>
-                   	<dl>
-                       <dt></dt>
-                         <dd>
-                            <p class="ser_type">突发异常流量清洗服务</p>
-                            <p>厂商：360</p>
-                            <p>（扫描类）</p>
-                         </dd>
-                     </dl>
-                    <div class="ser_change"><a href="#">修改</a><a href="#">删除</a></div>
-                </li>
-                 <li class="nomr">
-                   	<dl>
-                       <dt></dt>
-                         <dd>
-                            <p class="ser_type">突发异常流量清洗服务</p>
-                            <p>厂商：360</p>
-                            <p>（扫描类）</p>
-                         </dd>
-                     </dl>
-                    <div class="ser_change"><a href="#">修改</a><a href="#">删除</a></div>
-                </li>
+              </c:forEach>  
             </ul>
         </div>
     </div>
