@@ -42,23 +42,28 @@ $(function(){
 			$('strong[name="service"]').html("漏洞告警TOP5");
 			$("#numMsg").val("漏洞总数");
 			$("#typeMsg").val("漏洞类型");
+			$("#lineMsg").val("漏洞发展趋势");
 		}else if(serviceId==2){
             $('strong[name="service"]').html("木马检测TOP5");
             $("#numMsg").val("木马检测总数");
             $("#typeMsg").val("木马检测类型");
+            $("#lineMsg").val("木马检测发展趋势");
 		}else if(serviceId==3){
             $('strong[name="service"]').html("页面篡改TOP5");
             $("#numMsg").val("页面篡改总数");
             $("#typeMsg").val("页面篡改类型");
+            $("#lineMsg").val("页面篡改发展趋势");
         }else if(serviceId==4){
             $('strong[name="service"]').html("关键字检测TOP5");
             $("#numMsg").val("关键字检测总数");
             $("#typeMsg").val("关键字检测类型");
+            $("#lineMsg").val("关键字检测发展趋势");
         }else if(serviceId==5){
         	$("#server").hide();
             $('strong[name="service"]').html("可用性告警TOP5");
             $("#numMsg").val("可用性告警总数");
             $("#typeMsg").val("可用性告警类型");
+            $("#lineMsg").val("可用性告警发展趋势");
         }
 		//获取服务数据
 		redrawBranch(null);
@@ -132,6 +137,7 @@ $(function(){
         <input type="hidden" id="serviceId" value="1"/>
         <input type="hidden" id="numMsg" value="漏洞总数"/>
         <input type="hidden" id="typeMsg" value="漏洞类型"/>
+        <input type="hidden" id="lineMsg" value="漏洞发展趋势"/>
     </ul>
     <div class="safe_Box tabCont">
     	<div class="safe_cent tabItem" style="display:block">
