@@ -109,10 +109,10 @@
           <div class="pei_ul_txt"><a href="###">厂商</a></div>
           <li class="pei_active"><a href="###">全部</a></li>
           <c:forEach var="list" items="${factoryList}" varStatus="status">
-            <c:if test="${status.index ==0 || status.index ==1 || status.index ==3}">
+            <c:if test="${status.index ==0 || status.index ==3}">
                 <li name="${list.factory}"><a href="###">${list.factory }</a></li>
             </c:if>
-            <c:if test="${status.index ==2}">
+            <c:if test="${status.index ==1 || status.index ==2}">
                 <div style="float:left; width:75px; height:22px;  margin-left:35px; text-align:center; font-size:14px; line-height:22px;" name="${list.factory}"><a href="###" style="color:#999;">${list.factory }</a></div>
             </c:if>
               
@@ -133,15 +133,15 @@
                    <li class="peiz_active" id="${list.id }" name="${list.name }" value="${list.parentC }">
                    <input type="hidden" value="${list.remarks }" name="remarks"/>
                    <input type="hidden" value="${list.orderType }" name="typeOrder"/>
-                   <div><img src="${ctx}/source/images/user_${status.index+1 }.png" /></div>
-                   <a class="peiz_w" href="###">${list.name }</a> </li>
+	               <div><img src="${ctx}/source/images/user_${status.index+1 }.png" /></div>
+	               <a href="###" class="peiz_w">${list.name }</a> </li>
                </c:when>
                <c:otherwise>
                    <li id="${list.id }" name="${list.name }" value="${list.parentC }">
                    <input type="hidden" value="${list.remarks }" name="remarks"/>
                    <input type="hidden" value="${list.orderType }" name="typeOrder"/>
                    <div><img src="${ctx}/source/images/user_${status.index+1 }.jpg" /></div>
-                   <a class="peiz_b" href="###">${list.name }</a> </li>
+                   <a href="###" class="peiz_b">${list.name }</a> </li>
                </c:otherwise>
             </c:choose>
           </c:forEach>
