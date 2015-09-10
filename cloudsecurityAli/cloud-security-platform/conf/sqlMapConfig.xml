@@ -12,6 +12,7 @@
         <typeAlias type="com.cn.ctbri.entity.Linkman" alias="linkman"/>
         <typeAlias type="com.cn.ctbri.entity.Alarm" alias="alarm"/>
         <typeAlias type="com.cn.ctbri.entity.Task" alias="task"/>
+        <typeAlias type="com.cn.ctbri.entity.District" alias="district"/>
     </typeAliases>  
     
     <!-- 指定映射文件 -->
@@ -30,5 +31,6 @@
 		<mapper resource="com/cn/ctbri/entity/TaskWarnMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/TaskHWMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/AlarmDDOSMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/DistrictDataMapper.xml"/>
 	</mappers>
 </configuration>  
