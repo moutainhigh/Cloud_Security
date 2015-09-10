@@ -132,19 +132,18 @@ function checkMobileAndEmail(){
 function checkUserData(){
 	var mobile = $("#regist_phone").val();
 	var email = $("#regist_email").val();
-	checkName();
 	checkMobileAndEmail();
-	if(mobile!=null&&mobile!=""&&email!=null&&email!=""){
-		if(checkName1==1&&checkMobile1==1&&checkEmail1==1){
-			alert("保存成功！");
+	//if(mobile!=null&&mobile!=""&&email!=null&&email!=""){		
+	//	if(checkMobile1==1&&checkEmail1==1){
+	//		$("#userdata").submit();
+	//		alert("保存成功！");
+	//	}
+	//}else {
+		if(checkMobile1==1||checkEmail1==1){			
 			$("#userdata").submit();
-		}
-	}else {
-		if(checkName1==1&&(checkMobile1==1||checkEmail1==1)){
 			alert("保存成功！");
-			$("#userdata").submit();
 		}
-	}
+	//}
 }
 
 function checkName(){
@@ -284,7 +283,7 @@ function editPassword(){
             <td class="regist_title">用户名</td>
             <td class="regist_input">
              	<input type="hidden" id="originalName" value="${user.name}">
-            	<input type="text" name="name" value="${user.name}" id="regist_name" class="regist_txt required"/>
+            	<input type="text" name="name" disabled="true" value="${user.name}" id="regist_name" class="regist_txt required"/>
             	<span id="regist_name_msg" style="color:red;float:left"></span>
             </td>
           </tr>
