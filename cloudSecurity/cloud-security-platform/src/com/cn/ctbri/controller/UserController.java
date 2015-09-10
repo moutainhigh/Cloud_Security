@@ -83,8 +83,8 @@ public class UserController {
 	public String saveUserData(User user,Model model,HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		//用户名
-		String userName = user.getName();
-		globle_user.setName(userName);
+//		String userName = user.getName();
+//		globle_user.setName(userName);
 		//手机号码
 		String mobile = user.getMobile();
 		globle_user.setMobile(mobile);
