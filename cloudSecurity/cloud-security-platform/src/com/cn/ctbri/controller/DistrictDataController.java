@@ -64,6 +64,8 @@ public class DistrictDataController {
 	
     @Autowired
     IDistrictDataService districtDataService;
+    @Autowired
+    IAssetService assetService;
 
 
 	 
@@ -176,6 +178,25 @@ public class DistrictDataController {
         Gson gson= new Gson();
         List result = districtDataService.getServiceAlarmMonth5(paramMap);
         String resultGson = gson.toJson(result);//转成json数据
+        response.setContentType("textml;charset=UTF-8");
+        response.getWriter().print(resultGson);
+        return null;
+    }
+    
+    /**
+     * 正在使用网站安全帮的资产
+     * 
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value="findUseAssetAddr.html")
+    @ResponseBody
+    public String findUseAssetAddr(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset=UTF-8");
+        Gson gson= new Gson();
+        List<Asset> listAsset = assetService.findAllAssetAddr();
+        String resultGson = gson.toJson(listAsset);//转成json数据
         response.setContentType("textml;charset=UTF-8");
         response.getWriter().print(resultGson);
         return null;
