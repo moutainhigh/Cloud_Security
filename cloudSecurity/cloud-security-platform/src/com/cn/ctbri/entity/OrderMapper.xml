@@ -70,16 +70,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		      WHERE o.userId = #{userId} AND o.serviceId = s.id order by o.create_date desc) c 
 		WHERE
 			1=1  
-			<if test="type!=null">
+			<if test="type!=null and type!=''">
 				AND c.type = #{type}
 			</if>
 			<if test="servName!=null and servName!=''">	
 				AND c.name = #{servName} 
 			</if>	 
-			<if test="begin_date!=null">
+			<if test="begin_date!=null and begin_date!=''">
 				AND c.begin_date &gt;= #{begin_date}
 			</if>	 
-			<if test="end_date!=null">
+			<if test="end_date!=null and end_date!=''">
 				AND c.end_date &lt;=#{end_date}
 			</if>	  
 	</select>
@@ -91,16 +91,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
               WHERE o.userId = #{userId} AND o.serviceId = s.id order by o.create_date desc) c 
         WHERE
             1=1  
-            <if test="type!=null">
+            <if test="type!=null and type!=''">
                 AND c.type = #{type}
             </if>
             <if test="servName!=null and servName!=''"> 
                 AND c.sid = #{servName} 
             </if>    
-            <if test="begin_date!=null">
+            <if test="begin_date!=null and begin_date!=''">
                 AND c.begin_date &gt;= #{begin_date}
             </if>    
-            <if test="end_date!=null">
+            <if test="end_date!=null and end_date!=''">
                 AND c.end_date &lt;=#{end_date}
             </if>
             limit #{pageNow},#{pageSize}    
