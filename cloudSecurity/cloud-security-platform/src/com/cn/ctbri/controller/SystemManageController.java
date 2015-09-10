@@ -197,16 +197,18 @@ public class SystemManageController {
 		// 加载配置文件
 		Properties pro = new Properties();
 		///D:/tomcat7-32/webapps/cloud-security-platform/WEB-INF/classes/default.properties
-		String path = this.getClass().getClassLoader().getResource("").getPath()+"default.properties";
+//		String path = this.getClass().getClassLoader().getResource("").getPath()+"default.properties";
+        String path = request.getSession().getServletContext().getRealPath("/WEB-INF/classes")+"\\default.properties";
 //		String path=request.getSession().getServletContext().getRealPath("");
 		//String path = "conf/default.properties";
+		path = path.replaceAll("%20", " ");
 		BufferedInputStream in;
 		try {
 			in = new BufferedInputStream(new FileInputStream(path));
 			pro.load(in);
 			// 重新写入配置文件
 			FileOutputStream file = new FileOutputStream(path);
-			pro.put("server",serverParamConfiguration.getServerEmailAdd());
+			pro.put("emailFrom",serverParamConfiguration.getServerEmailAdd());
 			pro.put("name",serverParamConfiguration.getServerEmailName());
 			pro.put("password",serverParamConfiguration.getServerEmailPassword());
 			pro.store(file, path); // 这句话表示重新写入配置文件
