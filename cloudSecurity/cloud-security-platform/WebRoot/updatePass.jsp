@@ -24,7 +24,9 @@
 		  if (p1!=p2) {
 		   	$("#regist_confirm_password_msg").html("<font color='red'>两次输入密码不一致，请重新输入</font>");
 		   
-		  }else{
+		  }else if(p1.length<6||p1.length>20){
+			$("#regist_password_msg").html("请输入6-20位，支持中英文，数字，字符组合");
+		}else{
 		    $("#regist_confirm_password_msg").html("");
 		   $("#passForm").submit();
 		  }
