@@ -69,6 +69,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="level!=null">
 	            and a.level=#{level}
 	        </if>
+	        <if test="name!=null">
+                and a.name=#{name}
+            </if>
 	        order by a.level desc
         </if>
         <if test="websoc==1">
@@ -88,6 +91,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             and a.name = l.name
             <if test="level!=null">
                 and a.level=#{level}
+            </if>
+            <if test="name!=null">
+                and a.name=#{name}
             </if>
             order by a.level desc
         </if>
@@ -124,7 +130,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>		
 	    <!-- 告警统计分析 -->	
 	<select id="findAlarmByParam" resultMap="Alarm" parameterType="hashmap">
-		SELECT b.alarm_type,COUNT(b.alarm_type) AS count
+		<!-- SELECT b.alarm_type,COUNT(b.alarm_type) AS count
 		FROM (
 	      	SELECT a.alarm_type 
 			FROM cs_alarm a 
@@ -139,11 +145,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				AND a.level=#{level}
 			</if>
 			) b
-		GROUP BY b.alarm_type    
+		GROUP BY b.alarm_type    -->
+		SELECT d.serviceId as alarm_type,COUNT(d.serviceId) AS count
+		from (select e.id,e.alarm_time,e.level,e.serviceId from
+		    (select a.id,a.alarm_time,a.level,o.serviceId 
+                from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a
+                where o.id = oa.orderId 
+                and t.order_asset_Id = oa.id 
+                and (a.taskId=t.taskId or a.group_Id = t.group_Id)
+	        union
+	        select a.id,a.warn_time as alarm_time,0 as level,o.serviceId 
+	                    from cs_order o,cs_order_asset oa,cs_task t,cs_taskwarn a
+	                    where o.id = oa.orderId 
+	                    and t.order_asset_Id = oa.id 
+	                    and (a.task_id=t.taskId or a.group_Id = t.group_Id)) e                
+		                where 1=1                
+		                <if test="begin_datevo!=null">
+							AND e.alarm_time &gt;= #{begin_datevo}
+						</if>	 
+						<if test="end_datevo!=null">
+							AND e.alarm_time &lt;=#{end_datevo}
+						</if>
+						<if test="level!=null">
+							AND e.level=#{level}
+						</if>
+		            ) d        
+		GROUP BY d.serviceId
     </select>	
     <!-- 告警统计分析 ：alarm_type不为空，levle为空-->	
     	<select id="findAlarmByParamAlarm_type" resultMap="Alarm" parameterType="hashmap">
-			SELECT b.level, COUNT(b.level) as count
+			<!-- SELECT b.level, COUNT(b.level) as count
 			FROM (
 				SELECT a.alarm_type,a.level
 				FROM cs_alarm a
@@ -155,11 +186,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					AND a.alarm_time &lt;=#{end_datevo}
 				</if>
 				) b
-			GROUP BY b.level   
+			GROUP BY b.level  --> 
+			SELECT d.level,COUNT(d.level) AS count
+				from (select e.id,e.alarm_time,e.level,e.serviceId from
+				    (select a.id,a.alarm_time,a.level,o.serviceId 
+		                from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a
+		                where o.id = oa.orderId 
+		                and t.order_asset_Id = oa.id 
+		                and (a.taskId=t.taskId or a.group_Id = t.group_Id)
+			        union
+			        select a.id,a.warn_time as alarm_time,0 as level,o.serviceId 
+		                    from cs_order o,cs_order_asset oa,cs_task t,cs_taskwarn a
+		                    where o.id = oa.orderId 
+		                    and t.order_asset_Id = oa.id 
+		                    and (a.task_id=t.taskId or a.group_Id = t.group_Id)) e                
+				                WHERE 1=1 
+				                and e.serviceId = #{alarm_type}
+								<if test="begin_datevo!=null">
+									AND e.alarm_time &gt;= #{begin_datevo}
+								</if>	 
+								<if test="end_datevo!=null">
+									AND e.alarm_time &lt;=#{end_datevo}
+								</if>
+				            ) d        
+				GROUP BY d.level
     </select>	
     <!-- 告警统计分析 ：alarm_type不为空，levle不为空-->		
     <select id="findAlarmByParamAlarm_typeAndLevel" resultMap="Alarm" parameterType="hashmap">
-    	SELECT b.name as alarm_type, COUNT(b.name) AS count
+    	<!-- SELECT b.name as alarm_type, COUNT(b.name) AS count
 		FROM (
 			SELECT a.alarm_type ,a.level,a.name 
 			FROM cs_alarm a
@@ -172,7 +226,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 			) b
 		GROUP BY b.name
-		ORDER BY  COUNT(b.name) DESC LIMIT 10
+		ORDER BY  COUNT(b.name) DESC LIMIT 10   -->
+		
+		SELECT d.name as alarm_type, COUNT(d.name) AS count
+				from (select e.id,e.alarm_time,e.level,e.name,e.serviceId from
+				    (select a.id,a.alarm_time,a.level,a.name,o.serviceId 
+		                from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a
+		                where o.id = oa.orderId 
+		                and t.order_asset_Id = oa.id 
+		                and (a.taskId=t.taskId or a.group_Id = t.group_Id)
+			        union
+			        select a.id,a.warn_time as alarm_time,0 as level,a.name,o.serviceId 
+		                    from cs_order o,cs_order_asset oa,cs_task t,cs_taskwarn a
+		                    where o.id = oa.orderId 
+		                    and t.order_asset_Id = oa.id 
+		                    and (a.task_id=t.taskId or a.group_Id = t.group_Id)) e                
+				                WHERE 1=1 
+				                and e.serviceId = #{alarm_type} 
+								and e.level = #{level}
+								<if test="begin_datevo!=null">
+									AND e.alarm_time &gt;= #{begin_datevo}
+								</if>	 
+								<if test="end_datevo!=null">
+									AND e.alarm_time &lt;=#{end_datevo}
+								</if>
+				            ) d        
+				GROUP BY d.name
+				ORDER BY COUNT(d.name) DESC LIMIT 10
     </select>
     <!-- 曲线图左侧信息 -->
     <select id="findLeftByOrderId" parameterType="hashmap" resultMap="Alarm">
@@ -228,4 +308,50 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM cs_order_asset oa,cs_task t, cs_alarm a
 		WHERE oa.orderId=#{orderId} AND a.url=#{url} AND oa.id=t.order_asset_Id AND t.taskId=a.taskId
     </select>
+    
+    <!-- 删除告警 -->
+    <delete id="deleteAlarmByTaskId" parameterType="hashmap">
+        delete from cs_alarm where 
+        <if test="websoc!=1">
+         taskId = #{taskId}
+        </if>
+        <if test="websoc==1">
+         group_id = #{group_id}
+        </if>
+    </delete>
+    
+    <!-- 根据orderid查询告警分类数,报表导出用  -->
+    <select id="findAlarmByOrderIdorGroupId" resultType="Alarm" parameterType="hashmap">
+        <if test="websoc!=1">
+            select a.name,a.level,count(*) as num from cs_alarm a,
+                (select t.taskId,t.group_id from cs_order_asset oa,cs_task t 
+                where oa.id = t.order_asset_id
+                and oa.orderId=#{orderId}
+                and t.status = 3
+                <if test="group_flag!=null and group_flag!=''">
+                and t.group_flag=#{group_flag}
+                </if>
+                order by t.execute_time desc
+                <if test="type==1 and group_flag==null or group_flag==''">
+                 limit #{count}
+                </if>
+                ) b  where a.taskId = b.taskId group by a.name order by a.level desc
+        </if>
+        <if test="websoc==1">
+            select a.name,a.level,count(*) as num from cs_alarm a,
+                (select t.taskId,t.group_id from cs_order_asset oa,cs_task t 
+                where oa.id in (t.order_asset_id)
+                and oa.orderId=#{orderId}
+                and t.status = 3
+                <if test="group_flag!=null and group_flag!=''">
+                and t.group_flag=#{group_flag}
+                </if>
+                order by t.execute_time desc
+                <if test="type==1 and group_flag==null or group_flag==''">
+                 limit #{count}
+                </if>
+                ) b  where a.group_id = b.group_id group by a.name order by a.level desc
+        </if>
+    </select>
+
 </mapper>

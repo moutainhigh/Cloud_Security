@@ -76,4 +76,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		GROUP BY a.warn_time
 		ORDER BY a.warn_time
     </select>
+    
+    <!-- 删除可用性告警 -->
+    <delete id="deleteTaskWarnByTaskId" parameterType="hashmap">
+        delete from cs_taskwarn where 
+        <if test="websoc!=1">
+         task_id = #{taskId}
+        </if>
+        <if test="websoc==1">
+         group_id = #{group_id}
+        </if>
+    </delete>
 </mapper>

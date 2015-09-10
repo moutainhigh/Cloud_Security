@@ -109,5 +109,10 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
         return selfHelpOrderDao.findBrokenNetwork();
     }
 
+   //删除联系人
+    public void deleteLinkman(int contactId) {
+        selfHelpOrderDao.deleteLinkman(contactId);
+    }
+
 
 }

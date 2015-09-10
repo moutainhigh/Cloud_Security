@@ -59,6 +59,7 @@ function forgetPass(type){
     <div class="list">
         <ul>
             <li><a href="${ctx}/index.html">首页</a></li>
+            <li><a href="${ctx}/chinas.html">安全态势</a></li>
             <li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
             <li><a href="${ctx}/aider.html">在线帮助</a></li>
             <li style="border-right:1px solid #1369C0;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
@@ -165,7 +166,7 @@ function forgetPass(type){
 <div  class="bottom_main">
 <h3><a href="###">联系我们</a></h3>
 <ul>
-<li><a href="###">客户电话</a></li>
+<li><a href="###">QQ交流群470899318</a></li>
 </div>
 <div  class="bottom_main" style="width:380px;">
 <h3><a href="###">版权信息</a></h3>

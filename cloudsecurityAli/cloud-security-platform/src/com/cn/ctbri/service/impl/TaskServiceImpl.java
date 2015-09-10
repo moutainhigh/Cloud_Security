@@ -56,5 +56,8 @@ public class TaskServiceImpl implements ITaskService{
 	public Task getNewStatus(Map<String, Object> paramMap) {
 		return taskDao.getNewStatus(paramMap);
 	}
+    public void deleteTaskByOaId(String order_asset_Id) {
+        taskDao.deleteTaskByOaId(order_asset_Id);
+    }
 
 }

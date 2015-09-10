@@ -82,5 +82,8 @@ public interface SelfHelpOrderDao {
      */
     int findBrokenNetwork();
 
+    //删除联系人
+    void deleteLinkman(int contactId);
+
 
 }

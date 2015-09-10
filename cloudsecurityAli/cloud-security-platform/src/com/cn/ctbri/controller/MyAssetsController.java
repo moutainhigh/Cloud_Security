@@ -12,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang.StringUtils;
 import org.htmlparser.util.NodeList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -189,8 +191,10 @@ public class MyAssetsController {
 	 *		 @time 2015-1-19
 	 */
 	@RequestMapping("/deleteAsset.html")
-	public String delete(Asset asset){
-		assetService.delete(asset.getId());
+	public String delete(Asset asset,HttpServletRequest request){
+	    if(validate(request)){
+	        assetService.delete(asset.getId());
+	    }
 		return "redirect:/userAssetsUI.html";
 	}
 	/**
@@ -240,10 +244,11 @@ public class MyAssetsController {
 			if(verification_msg.equals("codeVerification")){
 				 //获取已知代码
 				 String code1 = String.valueOf(request.getParameter("code1"));
-				 //String code1 = new String(String.valueOf(request.getParameter("code1")).getBytes("ISO-8859-1"),"UTF-8");
+//				 String code1 = new String(String.valueOf(request.getParameter("code1")).getBytes("ISO-8859-1"),"UTF-8");
 				 
-				 NodeList rt= GetNetContent.getNodeList(path);
-				 String str= rt.toString();
+				 String str = GetNetContent.getNodeList(path);
+//				 String str= rt.toString();
+//				 String str= rt.toHtml();
 				 if(str.contains(code1)){
 					 m.put("msg", 1);//验证成功
 				 }else{
@@ -255,9 +260,9 @@ public class MyAssetsController {
 				try{
 					String newPath = "";
 					if(path.endsWith("/")){
-						newPath = path+"key.txt";
+						newPath = path+"key.html";
 					}else{
-						newPath =  path+"/key.txt";
+						newPath =  path+"/key.html";
 					}
 					URL fileUrl = new URL(newPath);//http://localhost:8080/cloud-security-platform/key.txt
 					//sun.net.www.protocol.http.HttpURLConnection:http://localhost:8080/cloud-security-platform/key.txt
@@ -271,7 +276,7 @@ public class MyAssetsController {
 					}
 					String toStringSb = sb.toString();
 					input.close();
-					if(toStringSb!=null&&toStringSb.equals(Configuration.getFileContent())){
+					if(toStringSb!=null&&toStringSb.contains(Configuration.getFileContent())){
 						m.put("msg", 1);//验证成功
 					}else{
 						m.put("msg", 0);//验证失败
@@ -348,4 +353,42 @@ public class MyAssetsController {
 		os.close();
 		return;
 	}
+	
+	/**
+     * 功能描述：防止跨域操作
+     * 参数描述：HttpServletRequest request
+     *       @time 2015-8-6
+     */
+	public static boolean validate(HttpServletRequest request){
+        String Referer = "";
+        boolean referer_sign = true; // true 站内提交，验证通过 //false 站外提交，验证失败
+        Enumeration headerValues = request.getHeaders("Referer");
+        while (headerValues.hasMoreElements())
+            Referer = (String) headerValues.nextElement();
+        // 判断是否存在请求页面
+        if (Referer == null || Referer.length() < 1)
+            referer_sign = false;
+        else {
+            // 判断请求页面和getRequestURI是否相同
+            String servername_str = request.getServerName();
+            if (servername_str != null || servername_str.length() > 0) {
+                int index = 0;
+                if (StringUtils.indexOf(Referer, "https://") == 0) {
+                    index = 8;
+                } else if (StringUtils.indexOf(Referer, "http://") == 0) {
+                    index = 7;
+                }
+                if (Referer.length() - index < servername_str.length()) // 长度不够
+                    referer_sign = false;
+                else { // 比较字符串（主机名称）是否相同
+                    String referer_str = Referer.substring(index, index
+                            + servername_str.length());
+                    if (!servername_str.equalsIgnoreCase(referer_str))
+                        referer_sign = false;
+                }
+            } else
+                referer_sign = false;
+        }
+        return referer_sign;
+	    }
 }

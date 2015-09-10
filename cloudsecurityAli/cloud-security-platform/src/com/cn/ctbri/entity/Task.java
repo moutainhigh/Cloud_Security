@@ -33,6 +33,7 @@ public class Task{
     private String executeTime;//vo执行时间
     private int progress;//执行进度vo
     private int websoc;//创宇
+    private String group_id;//创宇返回组id
 	public int getProgress() {
 		return progress;
 	}
@@ -177,5 +178,11 @@ public class Task{
 	public void setWebsoc(int websoc) {
 		this.websoc = websoc;
 	}
+    public String getGroup_id() {
+        return group_id;
+    }
+    public void setGroup_id(String group_id) {
+        this.group_id = group_id;
+    }
 	
 }

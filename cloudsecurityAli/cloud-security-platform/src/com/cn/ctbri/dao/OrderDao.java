@@ -105,4 +105,9 @@ public interface OrderDao {
     List findTaskRunning(String orderId);
     //判断订单id是否存在
     String getOrderById(String orderId,String type,int userId);
+    
+    //删除订单
+    void deleteOrderById(String orderId);
+    //查找订单
+    Order findOrderById(String orderId);
 }

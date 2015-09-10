@@ -40,5 +40,10 @@ public class TaskWarnServiceImpl implements ITaskWarnService{
 	public List<TaskWarn> findWarnByOrderIdAndUrl(Map<String, Object> map) {
 		return taskWarnDao.findWarnByOrderIdAndUrl(map);
 	}
+
+	//删除可用性告警
+    public void deleteTaskWarnByTaskId(Map<String, Object> paramMap) {
+        taskWarnDao.deleteTaskWarnByTaskId(paramMap);
+    }
 	
 }

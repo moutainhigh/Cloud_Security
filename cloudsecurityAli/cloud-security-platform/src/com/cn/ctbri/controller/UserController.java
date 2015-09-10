@@ -83,8 +83,8 @@ public class UserController {
 	public String saveUserData(User user,Model model,HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		//用户名
-		String userName = user.getName();
-		globle_user.setName(userName);
+//		String userName = user.getName();
+//		globle_user.setName(userName);
 		//手机号码
 		String mobile = user.getMobile();
 		globle_user.setMobile(mobile);
@@ -121,9 +121,9 @@ public class UserController {
     public void getNum(HttpServletResponse response,HttpServletRequest request){
         Map<String, Object> m = new HashMap<String, Object>();
         //查询网页篡改个数 
-        int whorseNum = selfHelpOrderService.findLeakNum(3);
+//        int whorseNum = selfHelpOrderService.findLeakNum(3);
         //查询木马检测个数 
-        int pageTamperNum = selfHelpOrderService.findLeakNum(2);
+//        int pageTamperNum = selfHelpOrderService.findLeakNum(2);
         //查询漏洞个数 
         int leakNum = selfHelpOrderService.findLeakNum(1);
         //查询网页数
@@ -132,8 +132,8 @@ public class UserController {
         int webSite = selfHelpOrderService.findWebSite();
         //断网次数
         int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
-        m.put("whorseNum", whorseNum);
-        m.put("pageTamperNum", pageTamperNum);
+//        m.put("whorseNum", whorseNum);
+//        m.put("pageTamperNum", pageTamperNum);
         m.put("leakNum", leakNum);
         m.put("webPageNum", webPageNum);
         m.put("webSite", webSite);
@@ -160,9 +160,9 @@ public class UserController {
 	    //获取服务类型
         List<Serv> servList = selfHelpOrderService.findService();
         //查询网页篡改个数 
-        int whorseNum = selfHelpOrderService.findLeakNum(3);
+//        int whorseNum = selfHelpOrderService.findLeakNum(3);
         //查询木马检测个数 
-        int pageTamperNum = selfHelpOrderService.findLeakNum(2);
+//        int pageTamperNum = selfHelpOrderService.findLeakNum(2);
         //查询漏洞个数
         int leakNum = selfHelpOrderService.findLeakNum(1);
         //查询网页数
@@ -171,8 +171,8 @@ public class UserController {
         int webSite = selfHelpOrderService.findWebSite();
         //断网次数
         int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
-        m.addAttribute("whorseNum", whorseNum);
-        m.addAttribute("pageTamperNum", pageTamperNum);
+//        m.addAttribute("whorseNum", whorseNum);
+//        m.addAttribute("pageTamperNum", pageTamperNum);
         m.addAttribute("leakNum", leakNum);
         m.addAttribute("webPageNum", webPageNum);
         m.addAttribute("webSite", webSite);
@@ -332,18 +332,23 @@ public class UserController {
 	    String patternM = "^1[3|5|8|7][0-9]{9}$";
 	    Pattern patM = Pattern.compile(patternM);
 	    Matcher mMobile = null;
+	    boolean mb = false;
 	    if(user.getMobile()!=null&&!"".equals(user.getMobile())){
 	        mMobile = patM.matcher(user.getMobile());
+	        mb = mMobile.matches();
 	    }
 	    //验证邮箱
-	    String patternE = "^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.[a-zA-Z0-9_-])+";
+//	    String patternE = "^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.[a-zA-Z0-9_-])$";
+	    String patternE = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
 	    Pattern patE = Pattern.compile(patternE);
 	    Matcher mEmail = null;
+	    boolean me = false;
 	    if(user.getEmail()!=null&&!"".equals(user.getEmail())){
 	        mEmail = patE.matcher(user.getEmail());
+	        me = mEmail.matches();
 	    }
 	    
-		if(name!=null&&!"".equals(name)&&m.matches()&&password!=null&&!"".equals(password)&&password.length()>=6&&password.length()<=20&&(mMobile.matches()||mEmail.matches())&&user.getVerification_code()!=null&&!"".equals(user.getVerification_code())){
+		if(name!=null&&!"".equals(name)&&m.matches()&&password!=null&&!"".equals(password)&&password.length()>=6&&password.length()<=20&&(mb||me)&&user.getVerification_code()!=null&&!"".equals(user.getVerification_code())){
 			//按用用户名、邮箱、手机号码组合查询用户,防止刷页面
 			List<User> users = userService.findUserByCombine(user);
 			if(!(users.size()>0)){
@@ -785,5 +790,26 @@ public class UserController {
 				e.printStackTrace();
 			}
     	}
+	}
+	/**
+	 * 功能描述： 忘记密码
+	 * 参数描述： Model m
+	 *		 @time 2015-1-8
+	 */
+	@RequestMapping(value="/chinas.html")
+	public String chians(Model m){
+	    //查询漏洞个数
+        int leakNum = selfHelpOrderService.findLeakNum(1);
+        //查询网页数
+        int webPageNum = selfHelpOrderService.findWebPageNum();
+        //检测网页数
+        int webSite = selfHelpOrderService.findWebSite();
+        //断网次数
+        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
+        m.addAttribute("leakNum", leakNum);
+        m.addAttribute("webPageNum", webPageNum);
+        m.addAttribute("webSite", webSite);
+        m.addAttribute("brokenNetwork", brokenNetwork);
+		return "/china";
 	}
 }

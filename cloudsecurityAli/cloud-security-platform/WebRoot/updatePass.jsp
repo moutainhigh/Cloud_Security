@@ -24,7 +24,9 @@
 		  if (p1!=p2) {
 		   	$("#regist_confirm_password_msg").html("<font color='red'>两次输入密码不一致，请重新输入</font>");
 		   
-		  }else{
+		  }else if(p1.length<6||p1.length>20){
+			$("#regist_password_msg").html("请输入6-20位，支持中英文，数字，字符组合");
+		}else{
 		    $("#regist_confirm_password_msg").html("");
 		   $("#passForm").submit();
 		  }
@@ -64,6 +66,7 @@
     <div class="list">
         <ul>
             <li><a href="${ctx}/index.html">首页</a></li>
+            <li><a href="${ctx}/chinas.html">安全态势</a></li>
             <li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
             <li><a href="${ctx}/aider.html">在线帮助</a></li>
             <li style="border-right:1px solid #1369C0;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
@@ -133,7 +136,7 @@
 <div  class="bottom_main">
 <h3><a href="###">联系我们</a></h3>
 <ul>
-<li><a href="###">客户电话</a></li>
+<li><a href="###">QQ交流群470899318</a></li>
 </div>
 <div  class="bottom_main" style="width:380px;">
 <h3><a href="###">版权信息</a></h3>

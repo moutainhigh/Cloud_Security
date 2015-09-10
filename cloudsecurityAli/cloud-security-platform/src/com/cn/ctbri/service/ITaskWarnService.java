@@ -23,5 +23,7 @@ public interface ITaskWarnService {
 	List<TaskWarn> findWarnUrlByOrderId(Map<String, Object> m);
 	//根据url和orderID查找告警
 	List<TaskWarn> findWarnByOrderIdAndUrl(Map<String, Object> map);
+	//删除可用性告警
+    void deleteTaskWarnByTaskId(Map<String, Object> paramMap);
 
 }

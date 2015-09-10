@@ -56,4 +56,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findIpByOrderId" parameterType="String" resultType="com.cn.ctbri.entity.OrderIP">
         select * from cs_order_ip where orderId=#{orderId}
     </select>
+    
+    <!-- 删除订单资产 -->
+    <delete id="deleteOaByOrderId" parameterType="String">
+        delete from cs_order_asset where orderId = #{orderId}
+    </delete>
+    
+    <!-- 按资产id查询订单信息 -->
+	<select id="getOrdersByAsset" parameterType="int" resultType="hashmap">
+        select o.id,o.type,o.websoc,o.create_date,s.name,o.status
+		from cs_order o,cs_order_asset oa,cs_service s
+		where o.id = oa.orderId
+        and o.serviceId = s.id
+        and oa.assetId = #{assetId}
+        and o.status != 0
+        order by o.create_date desc 
+	</select>
 </mapper>

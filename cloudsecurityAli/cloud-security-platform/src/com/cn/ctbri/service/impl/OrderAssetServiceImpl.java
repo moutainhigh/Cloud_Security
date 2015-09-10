@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cn.ctbri.dao.OrderAssetDao;
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderIP;
 import com.cn.ctbri.service.IOrderAssetService;
@@ -77,5 +78,14 @@ public class OrderAssetServiceImpl implements IOrderAssetService{
         List<OrderIP> list = orderAssetDao.findIpByOrderId(orderId);
         return list;
     }
+
+    //根据orderId删除订单资产
+    public void deleteOaByOrderId(String orderId) {
+        orderAssetDao.deleteOaByOrderId(orderId);
+    }
+
+	public List getOrdersByAsset(int assetId) {
+		return orderAssetDao.getOrdersByAsset(assetId);
+	}
 	
 }

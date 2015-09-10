@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.SelfHelpOrderDao;
 import com.cn.ctbri.dao.UserDao;
+import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Linkman;
@@ -95,8 +96,8 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
      *       @time 2015-3-9
      */
     public int findLeakNum(int i) {
-        List leakList = this.getSqlSession().selectList(ns + "findLeakNum",i);
-        return leakList.size();
+        List<Alarm> leakList = this.getSqlSession().selectList(ns + "findLeakNum",i);
+        return leakList.get(0).getCount();
     }
 
     /**
@@ -125,6 +126,10 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
     public int findBrokenNetwork() {
         List brokenNetworkList = this.getSqlSession().selectList(ns + "findBrokenNetwork");
         return brokenNetworkList.size();
+    }
+
+    public void deleteLinkman(int contactId) {
+        this.getSqlSession().delete(ns + "deleteLinkman",contactId);
     }
 
 

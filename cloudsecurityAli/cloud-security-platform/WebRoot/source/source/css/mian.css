@@ -1,0 +1,13 @@
+@charset "utf-8";
+/* CSS Document */
+
+* { margin:0px; padding:0px; font-family: "Microsoft YaHei" ! important;}
+body{ overflow-x:hidden;}
+input{border:0px none;}
+img{ border:0px none;}
+*:focus {outline: none;}  
+a{ text-decoration:none;}
+li{ list-style:none;}
+.clear{ clear:both; overflow:hidden; }
+.table{border-collapse:collapse;}
+

@@ -44,6 +44,8 @@ public class Alarm implements Serializable{
 	private Date end_datevo;
 	//告警时间VO
 	private String alarmTime;
+	//告警分类个数
+	private int num;
 	
 	public String getAlarmTime() {
 		return alarmTime;
@@ -231,5 +233,11 @@ public class Alarm implements Serializable{
 	public void setScan_type(int scan_type) {
 		this.scan_type = scan_type;
 	}
+    public int getNum() {
+        return num;
+    }
+    public void setNum(int num) {
+        this.num = num;
+    }
 
 }

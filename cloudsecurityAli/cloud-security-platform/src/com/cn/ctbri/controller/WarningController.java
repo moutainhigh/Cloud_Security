@@ -1,7 +1,14 @@
 package com.cn.ctbri.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,10 +20,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import org.apache.poi.poifs.filesystem.DirectoryEntry;
+import org.apache.poi.poifs.filesystem.DocumentEntry;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -141,15 +154,21 @@ public class WarningController {
 	            pMap.put("count", assetList.size());
 	            Task taskpro = taskService.findProgressByOrderId(pMap);
 	            if(taskpro!=null){
-	                request.setAttribute("progress", taskpro.getProgress());
+	                request.setAttribute("progress", 100);
 	                if(taskpro.getCurrentUrl()!=null && !taskpro.getCurrentUrl().equals("")){
 	                    request.setAttribute("currentUrl", taskpro.getCurrentUrl());
 	                }else{
 	                    request.setAttribute("currentUrl", "无");
 	                }
 	            }else{
-	                request.setAttribute("progress", 0);
-	                request.setAttribute("currentUrl", "暂无");
+	                if(status==3){
+	                    request.setAttribute("progress", 100);
+	                    request.setAttribute("currentUrl", "无");
+	                }else{
+	                    request.setAttribute("progress", 0);
+	                    request.setAttribute("currentUrl", "暂无");
+	                }
+	                
 	            }
 	            //获取对应IP
 	            List IPList = orderService.findIPByOrderId(orderId);
@@ -676,13 +695,18 @@ public class WarningController {
         //高
         paramMap.put("level", WarnType.HIGHLEVEL.ordinal());
         List<Alarm> highList = alarmService.getAlarmByOrderId(paramMap);
+        //总数
+        paramMap.put("level", null);
+        List<Alarm> alarmList = alarmService.getAlarmByOrderId(paramMap);
         
+        DecimalFormat df = new DecimalFormat("0.00");//格式化小数，不足的补0
         JSONArray json = new JSONArray();
         if(lowList.size()>0&&lowList!=null){
             JSONObject jo = new JSONObject();
             jo.put("label", "0");
             jo.put("value", lowList.size());
             jo.put("color", "lightgreen");
+            jo.put("ratio", df.format((float)lowList.size()/alarmList.size()*100)+"%");
             json.add(jo);
         }
         if(middleList.size()>0&&middleList!=null){
@@ -690,6 +714,7 @@ public class WarningController {
             jo.put("label", "1");
             jo.put("value", middleList.size());
             jo.put("color", "orange");
+            jo.put("ratio", df.format((float)middleList.size()/alarmList.size()*100)+"%");
             json.add(jo);
         }
         if(highList.size()>0&&highList!=null){
@@ -697,9 +722,58 @@ public class WarningController {
             jo.put("label", "2");
             jo.put("value", highList.size());
             jo.put("color", "red");
+            jo.put("ratio", df.format((float)highList.size()/alarmList.size()*100)+"%");
             json.add(jo);
         }
         return json.toString();
+    }
+    
+    
+    /**
+     * 功能描述： 获取柱形数据
+     * 参数描述：  无
+     *     @time 2015-7-23
+     */
+    @RequestMapping(value="getBarData.html",method = RequestMethod.POST)
+    @ResponseBody
+    public void getBarData(HttpServletRequest request,HttpServletResponse response){
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset=UTF-8");
+        String orderId = request.getParameter("orderId");
+        String type = request.getParameter("type");
+        String group_flag = request.getParameter("group_flag");
+        String websoc = request.getParameter("websoc");
+        //获取对应资产
+        List assetList = orderAssetService.findAssetNameByOrderId(orderId);
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("orderId", orderId);
+        paramMap.put("type", type);
+        paramMap.put("count", assetList.size());
+        paramMap.put("group_flag", group_flag);
+        paramMap.put("websoc", websoc);
+        
+        List<Alarm> result = alarmService.findAlarmByOrderIdorGroupId(paramMap);
+        JSONArray json = new JSONArray();
+        if(result!=null){
+            for(int i=0;i<result.size();i++){
+                String name = result.get(i).getName();
+                int num = result.get(i).getNum();
+                JSONObject jo = new JSONObject();
+                jo.put("name", name);
+                jo.put("num", num);
+                json.add(jo);
+            }
+        }
+        PrintWriter out;
+        try {
+            out = response.getWriter();
+            out.write(json.toString()); 
+            out.flush(); 
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        return json.toString();
     }
     
     /**
@@ -947,7 +1021,14 @@ public class WarningController {
         	Task  t = taskService.getNewStatus(paramMap);
         	if(t.getStatus()==3){
         		m.put("progress", 100);
-                m.put("currentUrl", t.getCurrentUrl());
+        		if(t.getCurrentUrl()!=null && !t.getCurrentUrl().equals("")){
+                    m.put("currentUrl", t.getCurrentUrl());
+                }else{
+                    m.put("currentUrl", "无");
+                }
+//        	if(Integer.parseInt(status)==3){
+//        	    m.put("progress", 100);
+//        	    m.put("currentUrl", "无");
         	}else{
         		m.put("progress", 0);
                 m.put("currentUrl", "暂无");

@@ -23,4 +23,7 @@ public interface TaskWarnDao {
 
 	List<TaskWarn> findWarnByOrderIdAndUrl(Map<String, Object> map);
 
+	//删除可用性告警
+    void deleteTaskWarnByTaskId(Map<String, Object> paramMap);
+
 }

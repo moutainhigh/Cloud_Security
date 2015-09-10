@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderIP;
 
@@ -56,5 +57,10 @@ public interface OrderAssetDao {
      *       @time 2015-2-2
      */
     List<OrderIP> findIpByOrderId(String orderId);
+
+    //根据orderId删除订单资产
+    void deleteOaByOrderId(String orderId);
+
+	List getOrdersByAsset(int assetId);
 
 }

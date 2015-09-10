@@ -81,6 +81,9 @@ public interface ISelfHelpOrderService {
      */
     int findBrokenNetwork();
 
+    //删除联系人
+    void deleteLinkman(int contactId);
+
 
 	
 }

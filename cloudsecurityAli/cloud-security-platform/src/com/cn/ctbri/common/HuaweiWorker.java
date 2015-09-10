@@ -563,19 +563,20 @@ public class HuaweiWorker {
         }
 	}
 	public static void main(String[] args) {
-		String token = "c349ef0af469448b49d86feba8c2ae2e293b41bb5d7d0150cd850d2028bc92d7";
-		System.err.println(token);
+		String token = "e44777805d06f5d664438b9c097d8096087b7c572f00b174904869ea1870b0af";
+//		System.err.println(auth());
 		//创建
-//		System.out.println(lssuedCreateZoneTask(token, "test0002", new String[]{"117.12.12.13/32","139.33.34.0/24"}));
+//		System.out.println(lssuedCreateZoneTask(token, "test999", new String[]{"117.12.12.14/32","139.33.30.0/24"}));
+		
 		//查询
 //		System.err.println(lssuedQueryZoneTask(token));;
 //		//添加IP
 //		System.out.println(lssuedAddZoneIP(token,"test0001", new String[]{"114.12.12.13/32","135.33.34.0/24"}));
 //		//查询
-//		System.err.println(lssuedQueryZoneTask(token, "test0001"));;
+//		System.err.println(lssuedQueryZoneTask(token, "test999"));;
 		//删除
 		//更新
-//		System.err.println(lssuedUpdateZoneTask(token, new String[]{"1.1.1.13/32","1.3.3.0/24"}, "test0002"));
+//		System.err.println(lssuedUpdateZoneTask(token, new String[]{"1.1.1.12/32","1.3.3.6/24"}, "test999"));
 //		System.err.println(lssuedQueryZoneTask(token, "test0002"));;
 		//删除IP
 //		System.err.println(lssuedDeleteZoneIP(token, "1.3.3.0"));
@@ -585,9 +586,9 @@ public class HuaweiWorker {
 //		System.err.println(lssuedQueryZoneTask(token, "test0002"));;
 		
 		//创建引流
-		//System.out.println(lssuedCreateDivertTask(token, new String[]{"139.33.34.0/24"}));//133.33.34.0/32
+//		System.out.println(lssuedCreateDivertTask(token, new String[]{"135.33.34.200/32"}));//133.33.34.0/32
 		//删除引流
-//		System.out.printl(lssuedDeleteDivertTask(token, "133.33.34.0"));
+		System.out.println(lssuedDeleteDivertTask(token, "135.33.34.200"));
 		
 		//创建黑洞
 //		System.out.println(lssuedCreateBlackHoleTask(token, new String[]{"133.33.34.0"}));//133.33.34.0/32
