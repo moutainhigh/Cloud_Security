@@ -196,7 +196,7 @@ $(window).ready(function(){
 function getServiceData(){
 	serviceId = $("#serviceId").val();
 	numMsg = $("#numMsg").val();
-	typeMsg = $("#numMsg").val();
+	typeMsg = $("#typeMsg").val();
 //	alert("999"+numMsg);
 	getBranchInfo();
 	getRegionTOP();
