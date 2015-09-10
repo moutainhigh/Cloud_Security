@@ -101,8 +101,9 @@
 	// 为echarts对象加载数据
 	myChart.setOption(option);
 }*/
-
+var lineMsg = "";
 function redrawTotalLevel(months,counts) {
+	lineMsg = $("#lineMsg").val();
 	$('#total-level-list').highcharts({ 
 		chart: {
             backgroundColor: 'rgba(0,0,0,0)',
@@ -114,7 +115,7 @@ function redrawTotalLevel(months,counts) {
             enabled: false
         },
 		title: { 
-			text: '漏洞发展趋势', 
+			text: lineMsg, 
 			style : {
 				color : "#00b7ee",
 //				align : 'left',
