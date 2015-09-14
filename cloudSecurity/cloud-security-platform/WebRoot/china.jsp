@@ -275,10 +275,6 @@ $(function(){
 </div>
 <script>
 var oMarquee = document.getElementById("piece"); //滚动对象
-//alert(oMarquee);
-var iLineHeight = 14; //单行高度，像素
-var iLineCount = 6; //实际行数
-var iScrollAmount = 2; //每次滚动高度，像素
 function run() {
 oMarquee.scrollTop += iScrollAmount;
 if ( oMarquee.scrollTop == iLineCount * iLineHeight )
