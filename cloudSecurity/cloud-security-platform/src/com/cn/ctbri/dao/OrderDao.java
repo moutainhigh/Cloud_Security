@@ -58,7 +58,7 @@ public interface OrderDao {
      *       @time 2015-3-4
      * 返回值    ：  Order
      */
-    List findByUserIdAndPage(int id, int pageIndex,String state);
+    List findByUserIdAndPage(int id, int pageIndex,String state,String type);
     /**
      * 功能描述：组合查询订单追踪-分页
      *       @time 2015-1-15
