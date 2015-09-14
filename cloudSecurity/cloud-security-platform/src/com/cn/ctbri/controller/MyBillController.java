@@ -2,6 +2,7 @@ package com.cn.ctbri.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +73,7 @@ public class MyBillController {
         int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         //根据pageIndex获取每页账单条数,获取账单信息
-        List list = orderService.findByUserIdAndPage(globle_user.getId(),pageIndex,null);
+        List list = orderService.findByUserIdAndPage(globle_user.getId(),pageIndex,null,"0");
         ModelAndView mv = new ModelAndView("/source/page/userCenter/billorderList");
         mv.addObject("list", list);
         return mv;
@@ -99,12 +100,12 @@ public class MyBillController {
 		paramMap.put("type", type);
 		paramMap.put("servName", name);
 		if(StringUtils.isNotEmpty(begin_datevo)){
-			paramMap.put("begin_date", DateUtils.stringToDate(begin_datevo));
+			paramMap.put("begin_date", DateUtils.stringToDateNYRSFM(begin_datevo));
 		}else{
 			paramMap.put("begin_date", null);
 		}
 		if(StringUtils.isNotEmpty(end_datevo)){
-			paramMap.put("end_date", DateUtils.stringToDate(end_datevo));
+			paramMap.put("end_date", DateUtils.stringToDateNYRSFM(end_datevo));
 		}else{
 			paramMap.put("end_date", null);
 		}
@@ -144,12 +145,12 @@ public class MyBillController {
         paramMap.put("type", type);
         paramMap.put("servName", name);
         if(StringUtils.isNotEmpty(begin_datevo)){
-            paramMap.put("begin_date", DateUtils.stringToDate(begin_datevo));
+            paramMap.put("begin_date", DateUtils.stringToDateNYRSFM(begin_datevo));
         }else{
             paramMap.put("begin_date", null);
         }
         if(StringUtils.isNotEmpty(end_datevo)){
-            paramMap.put("end_date", DateUtils.stringToDate(end_datevo));
+            paramMap.put("end_date", DateUtils.stringToDateNYRSFM(end_datevo));
         }else{
             paramMap.put("end_date", null);
         }

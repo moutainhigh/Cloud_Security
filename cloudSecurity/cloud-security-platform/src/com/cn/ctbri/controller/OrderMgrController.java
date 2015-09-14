@@ -686,7 +686,7 @@ public class OrderMgrController {
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         String state=request.getParameter("state");
         //根据pageIndex获取每页order条数,获取订单信息
-        List orderList = orderService.findByUserIdAndPage(globle_user.getId(),pageIndex,state);
+        List orderList = orderService.findByUserIdAndPage(globle_user.getId(),pageIndex,state,null);
         //获取当前时间
         SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String temp = setDateFormat.format(Calendar.getInstance().getTime());
@@ -720,12 +720,12 @@ public class OrderMgrController {
         paramMap.put("servName", name);
         paramMap.put("state", state);
         if(StringUtils.isNotEmpty(begin_datevo)){
-            paramMap.put("begin_date", DateUtils.stringToDate(begin_datevo));
+            paramMap.put("begin_date", DateUtils.stringToDateNYRSFM(begin_datevo));
         }else{
             paramMap.put("begin_date", null);
         }
         if(StringUtils.isNotEmpty(end_datevo)){
-            paramMap.put("end_date", DateUtils.stringToDate(end_datevo));
+            paramMap.put("end_date", DateUtils.stringToDateNYRSFM(end_datevo));
         }else{
             paramMap.put("end_date", null);
         }
@@ -776,12 +776,12 @@ public class OrderMgrController {
         paramMap.put("servName", name);
         paramMap.put("state", state);
         if(StringUtils.isNotEmpty(begin_datevo)){
-            paramMap.put("begin_date", DateUtils.stringToDate(begin_datevo));
+            paramMap.put("begin_date", DateUtils.stringToDateNYRSFM(begin_datevo));
         }else{
             paramMap.put("begin_date", null);
         }
         if(StringUtils.isNotEmpty(end_datevo)){
-            paramMap.put("end_date", DateUtils.stringToDate(end_datevo));
+            paramMap.put("end_date", DateUtils.stringToDateNYRSFM(end_datevo));
         }else{
             paramMap.put("end_date", null);
         }
