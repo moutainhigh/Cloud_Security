@@ -360,8 +360,8 @@ function getAddressAll(){
          for (var i=0; i< obj.length;i++) {
         	 var sname=obj[i].addr;
         	 //alert(name.length);
-        	 if(sname.length>45){
-        		sname=sname.substr(0,45);
+        	 if(sname.length>50){
+        		sname=sname.substr(0,50);
         	 }
         	 divs += "<tr><td><div title='"+obj[i].addr+"'>"+sname+"</div></td></tr>";
 			}
