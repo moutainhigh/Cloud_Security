@@ -280,13 +280,13 @@ oMarquee.scrollTop += iScrollAmount;
 if ( oMarquee.scrollTop == iLineCount * iLineHeight )
 oMarquee.scrollTop = 0;
 if ( oMarquee.scrollTop % iLineHeight == 0 ) {
-window.setTimeout( "run()", 500 );
+window.setTimeout( "run()", 300 );
 } else {
 window.setTimeout( "run()", 50 );
 }
 }
 oMarquee.innerHTML += oMarquee.innerHTML;
-window.setTimeout( "run()", 500 );
+window.setTimeout( "run()", 300 );
 </script>
 </body>
 </html>
