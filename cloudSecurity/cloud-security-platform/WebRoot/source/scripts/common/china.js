@@ -8,6 +8,7 @@ var serviceId ="";
 var numMsg = "";
 var typeMsg = "";
 var max = "";
+
 function redrawBranch(obj) {
 	//var list = obj.data.flawList;
 	var list = obj;
@@ -354,13 +355,29 @@ function getAddressAll(){
         url: "findUseAssetAddr.html", 
         success: function(obj){
         	// 从后台得到返回的值，是一个json对象。 
-         console.log(obj);
+        // console.log(obj);
          var divs="<table>";
          for (var i=0; i< obj.length;i++) {
-        	 divs += "<tr><td>"+obj[i].addr+"</td></tr>";
+        	 var sname=obj[i].addr;
+        	 //alert(name.length);
+        	 if(sname.length>45){
+        		sname=sname.substr(0,45);
+        	 }
+        	 divs += "<tr><td><div title='"+obj[i].addr+"'>"+sname+"</div></td></tr>";
 			}
           divs += "</table>";
          $("#piece").html(divs);
+         getLen(obj.length);
      	}
 	});
 }
+var oMarquee = document.getElementById("piece"); //滚动对象
+var iLineHeight = 10; //单行高度，像素
+var iLineCount = 6; //实际行数
+var iScrollAmount = 2; //每次滚动高度，像素
+function getLen(len){
+  //alert(len);
+  iLineCount =len; //实际行数
+ }
+
+
