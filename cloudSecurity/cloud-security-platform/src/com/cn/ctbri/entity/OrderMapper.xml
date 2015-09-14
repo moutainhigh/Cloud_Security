@@ -34,23 +34,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="list" resultType="hashmap" parameterType="int">
 		select o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc
 		from cs_order o,cs_service s
-		where o.userId = #{id} and o.serviceId = s.id and o.scan_type=0
+		where o.userId = #{id} and o.serviceId = s.id and o.status in (1,2)
 		order by o.create_date desc
 	</select>
-	<!-- 根据page查询记录 -->
-    <select id="getOderBillByPage" resultType="hashmap" parameterType="hashmap">
-        select o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc
-        from cs_order o,cs_service s
-        where o.userId = #{userId} and o.serviceId = s.id  and o.scan_type=0
-       
-        <if test="state==2"><!-- 已结束 -->
-               AND o.status in (1,2)
-        </if>
-        <if test="state==3"><!--有警告的  -->
-               AND o.status =2
-        </if>
-        order by o.create_date desc limit #{pageNow},#{pageSize}
-    </select>
+
     	<!-- 根据page查询记录 -->
     <select id="getOderByPage" resultType="hashmap" parameterType="hashmap">
         select o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc
@@ -64,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                AND o.status =2
         </if>
          <if test="type!=null"><!--有警告的  -->
-              and o.scan_type=0
+              and o.status in (1,2)
         </if>
         order by o.create_date desc limit #{pageNow},#{pageSize}
     </select>
