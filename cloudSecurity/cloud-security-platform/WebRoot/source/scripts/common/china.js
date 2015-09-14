@@ -11,7 +11,7 @@ var max = "";
 function redrawBranch(obj) {
 	//var list = obj.data.flawList;
 	var list = obj;
-	console.log(list);
+	//console.log(list);
 	var branchData = [];
 	var coorStr = "";
 	var coorData;
@@ -190,6 +190,7 @@ function redrawBranch(obj) {
 $(window).ready(function(){
 	redrawBranch(null);
 	getServiceData();
+	getAddressAll();
 }); 
 
 //获取服务数据
@@ -340,4 +341,26 @@ function getOrgData(param){
 		}
 	}
 	
+}
+
+/*动态地址栏*/
+function getAddressAll(){
+	//alert("ddddddddddddd");
+	//alert($("#piece").html());
+	$.ajax({
+        type: "POST",
+        cache: false,
+        dataType: "json",
+        url: "findUseAssetAddr.html", 
+        success: function(obj){
+        	// 从后台得到返回的值，是一个json对象。 
+         console.log(obj);
+         var divs="<table>";
+         for (var i=0; i< obj.length;i++) {
+        	 divs += "<tr><td>"+obj[i].addr+"</td></tr>";
+			}
+          divs += "</table>";
+         $("#piece").html(divs);
+     	}
+	});
 }
