@@ -138,5 +138,5 @@ a{text-decoration:none;}
     max-width: 100%;
 }
 .piece{ position:absolute; width:404px; height:100px; top:448px; left:10px;}
-.piece .warn .warn_tab li{ width:320px; height:38px;background:#1865bb;border-radius:10px 10px 0 0; line-height:38px; text-align:center; font-size:14px; color:#fff; font-weight:bold;}
-.piece .warn .warnBox{ width:320px; height:135px; background:url(../img/op.png) repeat-x; overflow:hidden;font-size:12px; color:#fff;}
+.piece .warn .warn_tab li{ width:320px; height:38px;border-radius:10px 10px 0 0; line-height:38px; text-align:left; font-size:14px; color:#00b7ee; font-weight:bold;}
+.piece .warn .warnBox{ width:320px; height:135px;  overflow:hidden;font-size:12px; color:#fff;}
