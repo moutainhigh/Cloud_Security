@@ -163,7 +163,7 @@ $(function(){
             <div class="warn">
                     <ul class="warn_tab">
                         <li>
-                                                                              正在使用网站安全帮的有：
+                                                                              正在使用网站安全帮的有
                          </li>
                        
                     </ul>
