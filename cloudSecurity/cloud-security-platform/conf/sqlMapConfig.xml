@@ -3,7 +3,9 @@
     "-//mybatis.org//DTD Config 3.0//EN"  
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>  
-	 
+	 <settings>
+		<setting name="logImpl" value="LOG4J" />
+	</settings>
     <typeAliases>  
         <typeAlias type="com.cn.ctbri.entity.ServiceType" alias="serviceType"/>
         <typeAlias type="com.cn.ctbri.entity.Factory" alias="factory"/>
