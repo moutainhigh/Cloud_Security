@@ -119,6 +119,7 @@ public class ReceiveServlet extends HttpServlet {
                     taskwarn.setUrl(site);
                     taskwarn.setGroup_id(group_id);
                     taskwarn.setWarn_time(sdf.parse(start_at));
+                    taskwarn.setServiceId(5);
                     taskService.insertTaskWarn(taskwarn);
                 }else{
                     String level = "";
@@ -137,6 +138,7 @@ public class ReceiveServlet extends HttpServlet {
                     if(type.equals("black_links")){//暗链
                         alarm.setName("暗链");
                         alarm.setLevel(2);
+                        alarm.setServiceId(3);
                     }else if(type.equals("malscan")){//挂马
                         alarm.setName("挂马");
                         if(level.equals("mal")){
@@ -146,15 +148,19 @@ public class ReceiveServlet extends HttpServlet {
                         }else if(level.equals("anomalous")){
                             alarm.setLevel(0);
                         }
+                        alarm.setServiceId(2);
                     }else if(type.equals("keyword")){
                         alarm.setName("关键词");
                         alarm.setLevel(0);
+                        alarm.setServiceId(4);
                     }else if(type.equals("sql")){
                         alarm.setName("SQL注入漏洞");
                         alarm.setLevel(2);
+                        alarm.setServiceId(1);
                     }else if(type.equals("xss")){
                         alarm.setName("XSS跨站脚本漏洞");
                         alarm.setLevel(2);
+                        alarm.setServiceId(1);
                     }else if(type.equals("webvul")){
                         alarm.setName("应用漏洞");
                         if(level.equals("8")||level.equals("9")||level.equals("10")){
@@ -164,9 +170,11 @@ public class ReceiveServlet extends HttpServlet {
                         }else if(level.equals("1")||level.equals("2")||level.equals("3")||level.equals("4")){
                             alarm.setLevel(0);
                         }
+                        alarm.setServiceId(1);
                     }else if(type.equals("info_leak")){
                         alarm.setName("信息泄露");
                         alarm.setLevel(0);
+                        alarm.setServiceId(1);
                     }else if(type.equals("cgi")){
                         alarm.setName("CGI漏洞");
                         if(level.equals("8")||level.equals("9")||level.equals("10")){
@@ -176,6 +184,7 @@ public class ReceiveServlet extends HttpServlet {
                         }else if(level.equals("1")||level.equals("2")||level.equals("3")||level.equals("4")){
                             alarm.setLevel(0);
                         }
+                        alarm.setServiceId(1);
                     }else if(type.equals("csrf")){
                         alarm.setName("CSRF跨站请求伪造漏洞");
                         if(data.containsKey("crossdomain")){
@@ -183,9 +192,11 @@ public class ReceiveServlet extends HttpServlet {
                         }else{
                             alarm.setLevel(0);
                         }
+                        alarm.setServiceId(1);
                     }else if(type.equals("form_crack")){
                         alarm.setName("表单破解漏洞");
                         alarm.setLevel(2);
+                        alarm.setServiceId(1);
                     }
                     if(!type.equals("siteinfo")){
                         alarmService.saveAlarm(alarm);
