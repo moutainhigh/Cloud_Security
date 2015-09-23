@@ -18,13 +18,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="keyword" column="keyword"/>
 		<result property="taskId" column="taskId"/>
 		<result property="alarm_type" column="alarm_type"/>
+		<result property="serviceId" column="serviceId"/>
 	</resultMap>
 	
 	<!-- 插入报警信息 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.Alarm" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO cs_alarm 
-		(name,alarm_time,score,level,advice,alarm_content,url,keyword,taskId,alarm_type,group_id) 
-		VALUES(#{name},#{alarm_time},#{score},#{level},#{advice},#{alarm_content},#{url},#{keyword},#{taskId},#{alarm_type},#{group_id})
+		(name,alarm_time,score,level,advice,alarm_content,url,keyword,taskId,alarm_type,group_id,serviceId) 
+		VALUES(#{name},#{alarm_time},#{score},#{level},#{advice},#{alarm_content},#{url},#{keyword},#{taskId},#{alarm_type},#{group_id},#{serviceId})
 	</insert>
 	
 	<!-- 查询报警信息  -->
@@ -58,5 +59,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        WHERE oa.orderId=#{orderId} AND oa.id in(t.order_asset_Id) AND t.group_id=a.group_id
 	    </if>
     </select>
+    
+    <!-- 查询本次告警信息 -->
+    <select id="findAlarmBygroupId" parameterType="String" resultMap="Alarm">
+        <if test="serviceId!=5">
+	        select * from cs_alarm a where a.group_id = #{group_id}
+	    </if>
+	    <if test="serviceId==5">
+	        select * from cs_taskwarn a where a.group_id = #{group_id}
+	    </if>
+    </select>
+    
+    <!-- 更新地域告警数 -->
+	<update id="updateDistrict"  parameterType="java.util.HashMap">
+		update cs_district 
+		<set>
+			count#{serviceId}=#{count} + count#{serviceId}
+		</set>
+		where id = #{id}
+	</update>
 	
 </mapper>

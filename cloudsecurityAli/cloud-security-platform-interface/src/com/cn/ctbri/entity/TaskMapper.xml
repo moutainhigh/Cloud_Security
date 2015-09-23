@@ -143,8 +143,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 插入任务告警信息 -->
     <insert id="insertTaskWarn" parameterType="com.cn.ctbri.entity.TaskWarn" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO cs_taskwarn
-        (cat1,cat2,name,severity,rule,ct,app_p,tran_p,url,msg,task_id,warn_time,group_id) 
-        VALUES( #{cat1} , #{cat2},#{name},#{severity},#{rule},#{ct},#{app_p},#{tran_p},#{url},#{msg},#{task_id},#{warn_time},#{group_id})
+        (cat1,cat2,name,severity,rule,ct,app_p,tran_p,url,msg,task_id,warn_time,group_id,serviceId) 
+        VALUES( #{cat1} , #{cat2},#{name},#{severity},#{rule},#{ct},#{app_p},#{tran_p},#{url},#{msg},#{task_id},#{warn_time},#{group_id},#{serviceId})
     </insert>
     
     <!-- 获取订单还在执行的任务 -->
