@@ -110,7 +110,7 @@ public class Scheduler4Task {
 		            OrderAsset orderAsset = taskService.getTypeByAssetId(Integer.parseInt(assetArray[0]));
                     List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
                     //下发任务
-    		        virtual_group_id = WebSocWorker.lssuedTask(sessionid,String.valueOf(t.getTaskId()),assets,orderList.get(0).getServiceId());
+    		        virtual_group_id = WebSocWorker.lssuedTask(sessionid,String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId(),assets,orderList.get(0).getServiceId());
                     if(orderList.get(0).getServiceId()==2||orderList.get(0).getServiceId()==3||orderList.get(0).getServiceId()==4||orderList.get(0).getServiceId()==5){
                         if(orderList.get(0).getType()==1){
                             //下一次扫描时间
@@ -177,12 +177,14 @@ public class Scheduler4Task {
                 logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]完成下发!");
 		    }else{
     			logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]获取状态!");
-    			String sessionId = ArnhemWorker.getSessionId();
-    			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId()));
-    			String status = this.getStatusByResult(resultStr);
+    			
     			//获取订单类型
-				OrderAsset orderAsset = taskService.getTypeByAssetId(Integer.parseInt(t.getOrder_asset_Id()));
-				List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
+                OrderAsset orderAsset = taskService.getTypeByAssetId(Integer.parseInt(t.getOrder_asset_Id()));
+                List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
+    			String sessionId = ArnhemWorker.getSessionId();
+    			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId());
+    			String status = this.getStatusByResult(resultStr);
+    			
 				int serviceId = orderList.get(0).getServiceId();
     			//获取可用引擎 add by tang 2015-06-11
 //    			EngineWorker.getUsableEngine(serviceId);
@@ -191,7 +193,7 @@ public class Scheduler4Task {
     				logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]开始下发!");
     				preTaskData(t);
     				try {
-    					ArnhemWorker.lssuedTask(ArnhemWorker.getSessionId(), String.valueOf(t.getTaskId()), this.destURL, this.destIP, "80",
+    					ArnhemWorker.lssuedTask(ArnhemWorker.getSessionId(), String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId(), this.destURL, this.destIP, "80",
     							this.tplName);
     //					if(!Constants.SERVICE_LDSMFW.equals(this.tplName)){
     					if(serviceId==2||serviceId==3||serviceId==4){
@@ -278,20 +280,20 @@ public class Scheduler4Task {
         // 调用接口删除任务
         for (Task t : taskDelList) {
             logger.info("[删除任务调度]:任务-[" + t.getTaskId() + "]获取状态!");
+            //获取订单类型
+            OrderAsset orderAsset = taskService.getTypeByAssetId(Integer.parseInt(t.getOrder_asset_Id()));
+            List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
             String sessionId = ArnhemWorker.getSessionId();
-            String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId()));
+            String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId());
             String status = this.getStatusByResult(resultStr);
             if("running".equals(status)){
                 logger.info("[删除任务调度]:任务-[" + t.getTaskId() + "]开始下发!");
                 try {
-                    //获取订单类型
-                    OrderAsset orderAsset = taskService.getTypeByAssetId(Integer.parseInt(t.getOrder_asset_Id()));
-                    List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
                     Map<String, Object> hashmap = new HashMap<String, Object>();
                     hashmap.put("orderId", orderList.get(0).getId());
                     hashmap.put("websoc", orderList.get(0).getWebsoc());
                     if(orderList.get(0).getServiceId()==5&&orderList.get(0).getWebsoc()!=1){
-                        //ArnhemWorker.removeTask(sessionId, String.valueOf(t.getTaskId()));
+                        //ArnhemWorker.removeTask(sessionId, String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId());
                         if(orderList.size() > 0){
                             Order o = orderList.get(0);
                             //获取告警信息

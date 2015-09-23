@@ -109,6 +109,9 @@ public class Scheduler4Result {
                     Map<String, Object> paramMap = new HashMap<String, Object>();
                     paramMap.put("websoc", task.getWebsoc());
                     paramMap.put("orderId", oList.get(0).getId());
+                    paramMap.put("group_id", task.getGroup_id());
+                    paramMap.put("serviceId", oList.get(0).getServiceId());
+                    //所有告警包括长期
                     List<Alarm> allAlarm = alarmService.findAlarmByOrderId(paramMap);
                     if(tList.size()==0 && oList.size() > 0){
                         if(allAlarm.size() > 0){
@@ -123,18 +126,47 @@ public class Scheduler4Result {
                         }
                         orderService.update(o);
                     }
+                    
+                    //本次告警
+                    List<Alarm> thisAlarm = alarmService.findAlarmBygroupId(paramMap);
+                    //更新地域告警数
+    				List<Asset> asset = assetService.findByTask(task);
+    				Map<String, Object> disMap = new HashMap<String, Object>();
+    				disMap.put("id", asset.get(0).getId());
+    				disMap.put("count", thisAlarm.size());
+    				disMap.put("serviceId", oList.get(0).getServiceId());
+    				alarmService.updateDistrict(disMap);
+                    //任务是否有告警信息
+                    if(thisAlarm!=null && thisAlarm.size()>0){//如果有告警发短信通知
+                        Order order=null;
+                        if(oList!=null && oList.size()>0){
+                            order=oList.get(0);
+                            List<Linkman> mlist= orderService.findLinkmanById(order.getContactId());
+                            Linkman linkman=mlist.get(0);
+                            String phoneNumber = linkman.getMobile();//联系方式
+//                            List<Asset> asset = assetService.findByTask(task);
+                            String assetName = asset.get(0).getName();
+                               if(!phoneNumber.equals("") && phoneNumber!=null){
+                                //发短信
+                                  SMSUtils smsUtils = new SMSUtils();
+                                  smsUtils.sendMessage_warn(phoneNumber,order,assetName,String.valueOf(thisAlarm.size()));
+                                  order.setMessage(1);
+                                  orderService.update(order);
+                               }
+                        }
+                    }
 		        }
 		    }else{
 		        try {
         			logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]开始获取状态!");
-        			// 根据任务id获取任务状态
-        			String sessionId = ArnhemWorker.getSessionId();
-        			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(task.getTaskId()));
-        			String status = this.getStatusByResult(resultStr);
-                    List<Alarm> aList;
-                    //更新订单告警状态
+        			//更新订单告警状态
                     List<Order> oList = orderService.findOrderByTask(task);
                     Order o = oList.get(0);
+        			// 根据任务id获取任务状态
+        			String sessionId = ArnhemWorker.getSessionId();
+        			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId,String.valueOf(task.getTaskId())+"_"+o.getId());
+        			String status = this.getStatusByResult(resultStr);
+                    List<Alarm> aList;
                     //获取当前时间
                     SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String temp = setDateFormat.format(Calendar.getInstance().getTime());
@@ -144,10 +176,10 @@ public class Scheduler4Result {
         				 * 获取任务结果信息并入库
         				 */
         				// 获取任务引擎
-        				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId()),
+        				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId()+"_"+o.getId()),
         						getProductByTask(task), 0, 500);   //获取全部告警
         				try {
-        				    aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID);
+        				    aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID,oList.get(0).getServiceId());
                         } catch (Exception e) {
                             aList = new ArrayList<Alarm>();
                             continue;
@@ -158,6 +190,13 @@ public class Scheduler4Result {
         					alarmService.saveAlarm(a);
         				}
         				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]入库告警数为" + aList.size() + "个!");
+        				//更新地域告警数
+        				List<Asset> asset = assetService.findByTask(task);
+        				Map<String, Object> disMap = new HashMap<String, Object>();
+        				disMap.put("id", asset.get(0).getId());
+        				disMap.put("count", aList.size());
+        				disMap.put("serviceId", oList.get(0).getServiceId());
+        				alarmService.updateDistrict(disMap);
         				
         				//获取订单类型
         //				OrderAsset orderAsset = taskService.getTypeByAssetId(task.getOrder_asset_Id());
@@ -178,7 +217,7 @@ public class Scheduler4Result {
         				    		task.setScanTime(String.valueOf(diff));
         				    		task.setTaskProgress("101");
         							taskService.update(task);
-        //							ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId()));
+//        							ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId())+"_"+o.getId());
         //				    	}
         //				    }
         //				}
@@ -214,7 +253,7 @@ public class Scheduler4Result {
                                 List<Linkman> mlist= orderService.findLinkmanById(order.getContactId());
                                 Linkman linkman=mlist.get(0);
                                 String phoneNumber = linkman.getMobile();//联系方式
-                                List<Asset> asset = assetService.findByTask(task);
+//                                List<Asset> asset = assetService.findByTask(task);
                                 String assetName = asset.get(0).getName();
         //                        int sendFlag=order.getMessage();//是否下发短信
         //                        if(sendFlag!=1){
@@ -230,7 +269,7 @@ public class Scheduler4Result {
                         }
                         
         				//删除任务   add by txr 2015-03-27
-        				//ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId()));
+        				//ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId())+"_"+o.getId());
         				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]告警结果已完成入库，已修改此任务为完成状态!");
         			//可用性
         //			}else if("running".equals(status) && o.getServiceId()==5 && o.getEnd_date().compareTo(setDateFormat.parse(temp))>0){
@@ -393,7 +432,7 @@ public class Scheduler4Result {
 	 * @param taskStr
 	 * @return
 	 */
-	private List<Alarm> getAlarmByRerult(String taskId, String taskStr) {
+	private List<Alarm> getAlarmByRerult(String taskId, String taskStr, int serviceId) {
 		List<Alarm> aList = new ArrayList<Alarm>();
 		String decode;
 		try {
@@ -460,6 +499,7 @@ public class Scheduler4Result {
 						String keyword = issuedata.attribute("value").getStringValue();
 						alarm.setAlarm_content(URLDecoder.decode(content, "UTF-8"));
 						alarm.setKeyword(URLDecoder.decode(keyword, "UTF-8"));
+						alarm.setServiceId(serviceId);
 						aList.add(alarm);
 					}
 

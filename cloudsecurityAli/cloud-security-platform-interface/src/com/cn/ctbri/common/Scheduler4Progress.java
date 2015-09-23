@@ -87,11 +87,11 @@ public class Scheduler4Progress {
 		    }else{
 		        try {
         			logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]开始获取进度状态!");
+        			List<Order> orderList = orderService.findOrderByTask(task);
         			// 根据任务id获取任务状态
         			String sessionId = ArnhemWorker.getSessionId();
-        			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(task.getTaskId()));
+        			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(task.getTaskId())+"_"+orderList.get(0).getId());
         			String status = this.getStatusByResult(resultStr);
-        			List<Order> orderList = orderService.findOrderByTask(task);
         			if(orderList!=null&&!orderList.equals("")){
             			Order order = orderList.get(0);
             			if ("running".equals(status)) {// 任务执行完毕
@@ -101,7 +101,7 @@ public class Scheduler4Progress {
             				 */
             				// 获取任务进度引擎
             				try {
-        	    				String progressStr = ArnhemWorker.getProgressByTaskId(sessionId, String.valueOf(task.getTaskId()),String.valueOf(order.getServiceId()));
+        	    				String progressStr = ArnhemWorker.getProgressByTaskId(sessionId, String.valueOf(task.getTaskId())+"_"+orderList.get(0).getId(),String.valueOf(order.getServiceId()));
         	    				this.getProgressByRes(task.getTaskId(),progressStr);
             				} catch (Exception e) {
             					continue;
