@@ -36,6 +36,15 @@ public class Alarm implements Serializable{
 	private String alarm_type;
 	//创宇返回组id
 	private String group_id;
+	//服务类型
+	private int serviceId;
+	
+	public int getServiceId() {
+		return serviceId;
+	}
+	public void setServiceId(int serviceId) {
+		this.serviceId = serviceId;
+	}
 	/**
 	 * 功能描述：取报警信息ID
 	 *		 @time 2015-01-07
