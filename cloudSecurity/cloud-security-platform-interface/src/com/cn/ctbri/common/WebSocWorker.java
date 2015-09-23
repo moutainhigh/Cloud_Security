@@ -222,19 +222,23 @@ public class WebSocWorker {
         String response = service.cookie(new NewCookie("sessionid",sessionid)).type(MediaType.APPLICATION_FORM_URLENCODED).post(String.class, jsonContent);
         System.out.print(response);
         String jsStr = JSONObject.fromObject(response).getString("result");
-        String sites_count = JSONObject.fromObject(jsStr).getString("sites_count");
-        String sites_done_count = JSONObject.fromObject(jsStr).getString("sites_done_count");
+        String sites_count = "";
+        String sites_done_count = "";
         boolean flag = false;
-        if(Integer.parseInt(sites_count)==Integer.parseInt(sites_done_count)){
-            flag = true;
+        if(JSONObject.fromObject(jsStr).size()>0){
+            sites_count = JSONObject.fromObject(jsStr).getString("sites_count");
+            sites_done_count = JSONObject.fromObject(jsStr).getString("sites_done_count");
+            if(Integer.parseInt(sites_count)==Integer.parseInt(sites_done_count)){
+                flag = true;
+            }
         }
         return flag;
     }
     
     public static void main(String[] args) throws UnsupportedEncodingException {
-//        String sessionid = getSessionId();
-//        String virtual_group_id = lssuedTask(sessionid);
-//        getProgressByTaskId(sessionid,virtual_group_id);
+        String sessionid = getSessionId();
+//        String virtual_group_id = lssuedTask(sessionid,"test0909",new String[] {"http://tiny-nut.aliapp.com/"},1);
+        getProgressByTaskId(sessionid,"55ef981743b9095b10bac674");
 //    	getProgressByTaskId("o6ez69b4gzkikyvhm7ce9t16dk8g7y0n", "5566b16c43b9090323057cbf");
     }
 }
