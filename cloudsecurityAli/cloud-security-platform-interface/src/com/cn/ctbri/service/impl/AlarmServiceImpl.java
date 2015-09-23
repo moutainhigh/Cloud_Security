@@ -23,5 +23,13 @@ public class AlarmServiceImpl implements IAlarmService{
     public List<Alarm> findAlarmByOrderId(Map<String, Object> paramMap) {
         return alarmDao.findAlarmByOrderId(paramMap);
     }
+
+	public void updateDistrict(Map<String, Object> disMap) {
+		alarmDao.updateDistrict(disMap);
+	}
+
+	public List<Alarm> findAlarmBygroupId(Map<String, Object> paramMap) {
+		return alarmDao.findAlarmBygroupId(paramMap);
+	}
 	
 }
