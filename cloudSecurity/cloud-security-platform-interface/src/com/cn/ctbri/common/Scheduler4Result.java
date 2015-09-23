@@ -114,6 +114,9 @@ public class Scheduler4Result {
                     Map<String, Object> paramMap = new HashMap<String, Object>();
                     paramMap.put("websoc", task.getWebsoc());
                     paramMap.put("orderId", oList.get(0).getId());
+                    paramMap.put("group_id", task.getGroup_id());
+                    paramMap.put("serviceId", oList.get(0).getServiceId());
+                    //所有告警包括长期
                     List<Alarm> allAlarm = alarmService.findAlarmByOrderId(paramMap);
                     if(tList.size()==0 && oList.size() > 0){
                         if(allAlarm.size() > 0){
@@ -128,20 +131,30 @@ public class Scheduler4Result {
                         }
                         orderService.update(o);
                     }
+                    
+                    //本次告警
+                    List<Alarm> thisAlarm = alarmService.findAlarmBygroupId(paramMap);
+                    //更新地域告警数
+    				List<Asset> asset = assetService.findByTask(task);
+    				Map<String, Object> disMap = new HashMap<String, Object>();
+    				disMap.put("id", asset.get(0).getId());
+    				disMap.put("count", thisAlarm.size());
+    				disMap.put("serviceId", oList.get(0).getServiceId());
+    				alarmService.updateDistrict(disMap);
                     //任务是否有告警信息
-                    if(allAlarm!=null && allAlarm.size()>0){//如果有告警发短信通知
+                    if(thisAlarm!=null && thisAlarm.size()>0){//如果有告警发短信通知
                         Order order=null;
                         if(oList!=null && oList.size()>0){
                             order=oList.get(0);
                             List<Linkman> mlist= orderService.findLinkmanById(order.getContactId());
                             Linkman linkman=mlist.get(0);
                             String phoneNumber = linkman.getMobile();//联系方式
-                            List<Asset> asset = assetService.findByTask(task);
+//                            List<Asset> asset = assetService.findByTask(task);
                             String assetName = asset.get(0).getName();
                             if(!phoneNumber.equals("") && phoneNumber!=null){
                             //发短信
                               SMSUtils smsUtils = new SMSUtils();
-                              smsUtils.sendMessage_warn(phoneNumber,order,assetName,String.valueOf(allAlarm.size()));
+                              smsUtils.sendMessage_warn(phoneNumber,order,assetName,String.valueOf(thisAlarm.size()));
                               order.setMessage(1);
                               orderService.update(order);
                             }
@@ -171,7 +184,7 @@ public class Scheduler4Result {
         				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId())+"_"+o.getId(),
         						getProductByTask(task), 0, 500);   //获取全部告警
         				try {
-        				    aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID);
+        				    aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID,oList.get(0).getServiceId());
                         } catch (Exception e) {
                             aList = new ArrayList<Alarm>();
                             continue;
@@ -183,6 +196,13 @@ public class Scheduler4Result {
         				}
         				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]入库告警数为" + aList.size() + "个!");
         				
+        				//更新地域告警数
+        				List<Asset> asset = assetService.findByTask(task);
+        				Map<String, Object> disMap = new HashMap<String, Object>();
+        				disMap.put("id", asset.get(0).getId());
+        				disMap.put("count", aList.size());
+        				disMap.put("serviceId", oList.get(0).getServiceId());
+        				alarmService.updateDistrict(disMap);
         				//获取订单类型
         //				OrderAsset orderAsset = taskService.getTypeByAssetId(task.getOrder_asset_Id());
         //				List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
@@ -238,7 +258,7 @@ public class Scheduler4Result {
                                 List<Linkman> mlist= orderService.findLinkmanById(order.getContactId());
                                 Linkman linkman=mlist.get(0);
                                 String phoneNumber = linkman.getMobile();//联系方式
-                                List<Asset> asset = assetService.findByTask(task);
+//                                List<Asset> asset = assetService.findByTask(task);
                                 String assetName = asset.get(0).getName();
         //                        int sendFlag=order.getMessage();//是否下发短信
         //                        if(sendFlag!=1){
@@ -420,7 +440,7 @@ public class Scheduler4Result {
 	 * @param taskStr
 	 * @return
 	 */
-	private List<Alarm> getAlarmByRerult(String taskId, String taskStr) {
+	private List<Alarm> getAlarmByRerult(String taskId, String taskStr, int serviceId) {
 		List<Alarm> aList = new ArrayList<Alarm>();
 		String decode;
 		try {
@@ -491,6 +511,7 @@ public class Scheduler4Result {
 						String keyword = issuedata.attribute("value").getStringValue();
 						alarm.setAlarm_content(URLDecoder.decode(content, "UTF-8"));
 						alarm.setKeyword(URLDecoder.decode(keyword, "UTF-8"));
+						alarm.setServiceId(serviceId);
 						aList.add(alarm);
 					}
 
