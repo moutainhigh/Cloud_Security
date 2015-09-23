@@ -40,6 +40,7 @@
     <bean id="orderService" class="com.cn.ctbri.service.impl.OrderServiceImpl" />
     <bean id="alarmService" class="com.cn.ctbri.service.impl.AlarmServiceImpl" />
     <bean id="engineService" class="com.cn.ctbri.service.impl.EngineServiceImpl" />
+    <bean id="assetService" class="com.cn.ctbri.service.impl.AssetServiceImpl" />
     
     <!-- 配置dbcp数据源 -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
