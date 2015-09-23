@@ -39,6 +39,7 @@ import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskWarn;
+import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ITaskService;
@@ -66,6 +67,9 @@ public class ArnhemWebService {
     private IOrderService orderService;
 	@Autowired
     private IAssetService assetService;
+	@Autowired
+    private IAlarmService alarmService;
+	
 	/**
 	 * 功能描述： 接收任务状态
 	 * 参数描述：  request 请求对象
@@ -243,21 +247,29 @@ public class ArnhemWebService {
                 taskwarn.setMsg(msg);
                 taskwarn.setTask_id(task_id);
                 taskwarn.setWarn_time(new Date());
+                taskwarn.setServiceId(5);
 //                ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 //              taskService = (ITaskService)context.getBean("taskService");
                 taskService.insertTaskWarn(taskwarn);
+                
+                Task t = new Task();
+                t.setTaskId(Integer.parseInt(task_id));
+                List<Asset> asset = assetService.findByTask(t);
+                //更新地域告警数
+                Map<String, Object> disMap = new HashMap<String, Object>();
+				disMap.put("id", asset.get(0).getId());
+				disMap.put("count", 1);
+				disMap.put("serviceId", 5);
+                alarmService.updateDistrict(disMap);
                 System.out.println("999999");
                 log.info("[任务主动告警]:任务-[" + task_id + "]完成入库!");
                 //发短信
                 if(cat2.equals("断网")){
-                    Task t = new Task();
-                    t.setTaskId(Integer.parseInt(task_id));
                     List<Order> oList = orderService.findOrderByTask(t);
                     Order order=oList.get(0);
                     List<Linkman> mlist= orderService.findLinkmanById(order.getContactId());
                     Linkman linkman=mlist.get(0);
                     String phoneNumber = linkman.getMobile();//联系方式
-                    List<Asset> asset = assetService.findByTask(t);
                     String assetName = asset.get(0).getName();
                     if(!phoneNumber.equals("") && phoneNumber!=null){
                       //发短信
