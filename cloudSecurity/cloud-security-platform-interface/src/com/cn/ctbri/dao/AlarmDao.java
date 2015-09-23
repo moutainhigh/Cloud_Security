@@ -34,4 +34,8 @@ public interface AlarmDao {
      * 返回值    ：  List<Alarm> 报警对象集合
      */
     public List<Alarm> findAlarmByOrderId(Map<String, Object> paramMap);
+    
+	public void updateDistrict(Map<String, Object> disMap);
+	
+	public List<Alarm> findAlarmBygroupId(Map<String, Object> paramMap);
 }
