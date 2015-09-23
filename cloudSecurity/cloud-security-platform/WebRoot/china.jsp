@@ -20,6 +20,7 @@
 <script src="${ctx}/source/scripts/common/echarts-all.js" type="text/javascript"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/highcharts/js/highcharts.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/linechart.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/d3.min.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/china.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/regionTop5.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/serviceTop5.js"></script>
