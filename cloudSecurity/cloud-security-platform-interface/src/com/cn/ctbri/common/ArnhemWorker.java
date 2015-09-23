@@ -392,7 +392,16 @@ public class ArnhemWorker {
 //        		"                                                                              \"[\"12.12.12.12/32\"," +
 //        		"                                                                                 \"33.33.33.33/24\"]\"}");
         String sessionId = getSessionId();
-        String s = getEngineState(sessionId,"https://124.127.117.188:60443");
-        System.out.println(s);
+//        String s = getEngineState(sessionId,"https://219.141.189.187:60443");
+        
+//    	String s = lssuedTask(sessionId, "test88", "http://www.testfire.net", 
+//        		"", "80", "漏洞扫描模板");
+    	
+//    	String p = getProgressByTaskId(sessionId, "test88", "1");
+    	
+//    	String g = getStatusByTaskId(sessionId, "test88");
+        
+        String result = getReportByTaskID(sessionId, "test88", "1",0, 500);
+    	System.out.println(result);
     }
 }
