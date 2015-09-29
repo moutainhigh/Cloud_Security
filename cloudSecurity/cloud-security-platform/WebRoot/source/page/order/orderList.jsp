@@ -18,7 +18,7 @@
              <td>
                  <c:set var="temp" value="${nowDate }"/>
                  <c:if test="${list.begin_date>temp}">已下单</c:if>
-                 <c:if test="${list.begin_date<=temp&&list.status==0}">服务中</c:if>
+                 <c:if test="${list.begin_date<=temp&&(list.status==0||list.status==3)}">服务中</c:if>
                  <c:if test="${list.status==1||list.status==2}">已结束</c:if>
                  
              </td>
