@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 根据省份id查询对应省份top5的数据 -->
     <select id="getDistrictDataById" parameterType="hashmap" resultType="hashmap">
-		<if test="serviceId != 5">	
+		<!-- <if test="serviceId != 5">	
 			select dis.name,a1.name as leakName,COUNT(a1.name) AS count from cs_asset s,cs_district dis,
 			(select a.name,t1.assetId from cs_alarm a,
 			(select t.taskId,t.group_Id,oa1.assetId from cs_task t,
@@ -46,6 +46,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and s.districtId = dis.id
 			and dis.id = #{districtId}
 			group by a1.name
+			order by count desc limit 5 -->
+			
+		<if test="serviceId != 5">	
+			select dis.name,a.name as leakName,COUNT(a.name) AS count from cs_alarm a,cs_district dis 
+		</if>
+		<if test="serviceId == 5">
+			select dis.name,a.name as leakName,COUNT(a.name) AS count from cs_taskwarn a,cs_district dis 
+		</if>
+			where a.districtId = dis.id 
+			and a.districtId = #{districtId}
+			and a.serviceId = #{serviceId}
+			group by a.name 
 			order by count desc limit 5
     </select>
     
