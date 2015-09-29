@@ -1058,15 +1058,14 @@ public class WarningController {
         String orderId = request.getParameter("orderId");
         //获取对应资产
         List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
-        
         Map<String, Object> m = new HashMap<String, Object>();
         String assetName = "";
-        if(assetList!=null){
+        if(assetList!=null&&assetList.size()!=0){
             for (Asset asset : assetList) {
             	assetName = assetName + asset.getName()+",";
 			}
+            assetName = assetName.substring(0, assetName.length()-1);
         }
-        assetName = assetName.substring(0, assetName.length()-1);
         m.put("assetName", assetName);
         //object转化为Json格式
         JSONObject JSON = CommonUtil.objectToJson(response, m);
