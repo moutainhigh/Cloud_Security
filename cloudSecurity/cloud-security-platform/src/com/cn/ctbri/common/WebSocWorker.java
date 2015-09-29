@@ -235,8 +235,8 @@ public class WebSocWorker {
     
     public static void main(String[] args) throws UnsupportedEncodingException {
         String sessionid = getSessionId();
-        String virtual_group_id = lssuedTask(sessionid);
-        getProgressByTaskId(sessionid,virtual_group_id);
+//        String virtual_group_id = lssuedTask(sessionid);
+//        getProgressByTaskId(sessionid,virtual_group_id);
 //    	getProgressByTaskId("o6ez69b4gzkikyvhm7ce9t16dk8g7y0n", "5566b16c43b9090323057cbf");
     }
 }
