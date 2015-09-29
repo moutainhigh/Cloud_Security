@@ -313,16 +313,18 @@ public class OrderMgrController {
         String assetIds = request.getParameter("assetIds");
         Map<String, Object> m = new HashMap<String, Object>();
         //后台判断资产是否可用
-        String[] assetArrayAble = null;   
-        assetArrayAble = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+        String[] assetArrayAble = null;  
         boolean assetsStatus = false;
-        for(int i=0;i<assetArrayAble.length;i++){
-            Asset _asset = assetService.findById(Integer.parseInt(assetArrayAble[i]));
-            int status = _asset.getStatus();
-            if(status==0){
-                assetsStatus = true;
-                break;
-            }
+        if(assetIds!=null&&assetIds!=""){
+	        assetArrayAble = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+	        for(int i=0;i<assetArrayAble.length;i++){
+	            Asset _asset = assetService.findById(Integer.parseInt(assetArrayAble[i]));
+	            int status = _asset.getStatus();
+	            if(status==0){
+	                assetsStatus = true;
+	                break;
+	            }
+	        }
         }
         m.put("assetsStatus", assetsStatus);
         if(assetsStatus){
@@ -404,8 +406,12 @@ public class OrderMgrController {
             order.setUserId(globle_user.getId());
             order.setContactId(linkmanId);
             order.setStatus(0);
-            if(!websoc.equals("null")){
-            	order.setWebsoc(Integer.parseInt(websoc));
+            if(serviceId.equals("6")||serviceId.equals("7")||serviceId.equals("8")){
+            	order.setWebsoc(0);
+            }else{
+            	if(!websoc.equals("null")){
+                	order.setWebsoc(Integer.parseInt(websoc));
+                }
             }
             selfHelpOrderService.insertOrder(order);
             
@@ -852,7 +858,8 @@ public class OrderMgrController {
         orderAssetService.deleteOaByOrderId(orderId);
         //删除联系人信息
         selfHelpOrderService.deleteLinkman(order.getContactId());
-        return "/source/page/order/orderTrack";
+//        return "/source/page/order/orderTrack";
+        return "redirect:/orderTrackInit.html";
     }
     
     /**
