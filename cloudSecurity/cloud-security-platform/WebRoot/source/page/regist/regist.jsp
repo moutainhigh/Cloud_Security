@@ -184,29 +184,32 @@ function notagree(){
             <td class="regist_prompt"></td>
           </tr>
           <tr class="register_tr">
-            <td class="regist_title"><span class="yzfs">验证手机</span></td>
+            <td class="regist_title"><span class="yzfs">手机号码</span></td>
             <td class="regist_input" id="yzbox">
             <input type="text" class="regist_txt required" name="mobile" id="regist_phone" onblur="checkMobile()" style="margin-right:20px"/>
             <span id="regist_mobile_email_msg" style="color:red;float:left;display:block;"></td>
             <td class="regist_prompt">或<a class="forget_pass" id="get_email_yzm">验证邮箱</a><a class="forget_pass" id="get_phone_yzm">验证手机</a></td>
           </tr>
-          <tr class="register_tr">
-            <td class="regist_title">验证码</td>
-            <td class="regist_input"><input type="text" class="regist_txt regist_yzm required" name="verification_code" id="verification_code" onblur="checkEmailActivationCode()"/>
-              <input class="regist_yzm_btn" type="button" id="phone_yzm" value="获取短信验证码" onclick="checkSendMobile()"/>
-              <input class="regist_yzm_btn" type="button" id="email_yzm" value="获取邮箱验证码" onclick="checkSendEmail()"/>
-           	  <span id="verification_code_msg" style="color:red;float:left">
-            </td>
-            
-            <td class="regist_prompt"></td>
-          </tr>
          <tr class="register_tr">
-         <td class="regist_title"><span class="yzfs">图片验证码</span></td>
+         <td class="regist_title"><span>验证码</span></td>
           <td class="regist_input"> <input type="text" class="login_txt lgoin_yzm required" name="checkNumber" id="checkNumber1"/>
           <span><img src="${ctx}/image.jsp" width="65" height="38" id="imageRegisterNumber" title="点击换一张" onclick="checkRegisterImage()"/></img></span>
           <span id="verification_Image_msg" style="color:red"></span>
           </td>
          </tr>
+         <tr class="register_tr">
+            <td class="regist_title"><span class="yzfsadd">手机验证码</span></td>
+            <td class="regist_input"><input type="text" class="regist_txt regist_yzm required" name="verification_code" id="verification_code" onblur="checkEmailActivationCode()"/>
+              
+           	  <span id="verification_code_msg" style="color:red;float:left">
+            </td>
+            <td>
+              <input class="regist_yzm_btn" type="button" id="phone_yzm" value="获取短信验证码" onclick="checkSendMobile()"/>
+              <input class="regist_yzm_btn" type="button" id="email_yzm" value="获取邮箱验证码" onclick="checkSendEmail()"/>
+            </td>
+            
+            <td class="regist_prompt"></td>
+          </tr>
           <tr class="register_tr">
             <td class="regist_title"></td>
             <td><input type="checkbox"  class="login_checkbox" id="ck"/>
