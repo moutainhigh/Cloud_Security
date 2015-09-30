@@ -20,7 +20,8 @@ window.onload =function(){
 		$('#phone_yzm').hide();
 		$('#get_phone_yzm').show();
 		$('#email_yzm').show();
-		$('.yzfs').text('验证邮箱');
+		$('.yzfs').text('邮箱');
+		$('.yzfsadd').text('邮箱验证码');
 		$('#regist_phone').remove();
 		$('#yzbox').html('<input type="text" class="regist_txt required email" name="email" id="regist_email" onblur="checkEmail()" style="margin-right:20px" /><span id="regist_mobile_email_msg" style="color:red">');
 	});
@@ -30,7 +31,8 @@ window.onload =function(){
 		$('#email_yzm').hide();
 		$('#get_email_yzm').show();
 		$('#phone_yzm').show();
-		$('.yzfs').text('验证手机');
+		$('.yzfs').text('手机号码');
+		$('.yzfsadd').text('手机验证码');
 		$('#regist_email').remove();
 		$('#yzbox').html('<input type="text" class="regist_txt required" name="phone" id="regist_phone" onblur="checkMobile()" style="margin-right:20px" /><span id="regist_mobile_email_msg" style="color:red">');
 	});
