@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="cloud-security-platform"
+  id="myeclipse.1419928899928"
+  context-root="/csp"
+  j2ee-spec="5.0"
+  archive="cloud-security-platform.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
