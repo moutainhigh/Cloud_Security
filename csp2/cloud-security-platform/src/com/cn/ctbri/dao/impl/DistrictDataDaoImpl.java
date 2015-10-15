@@ -61,7 +61,16 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
             maxValue = max.get(0).getCount();
         }
         return maxValue;
-    }		
+    }
+
+	public String getMonth(int i) {
+		String months = this.getSqlSession().selectOne(ns + "getMonth",i);
+		return String.valueOf(months);
+	}
+
+	public Alarm getServiceAlarmByMonth(Map<String, Object> paramMap) {
+		return getSqlSession().selectOne(ns + "getServiceAlarmByMonth", paramMap);
+	}		
 	
 	
 }

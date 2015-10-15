@@ -3,6 +3,7 @@ package com.cn.ctbri.controller;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -173,10 +174,23 @@ public class DistrictDataController {
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=UTF-8");
         String serviceId = request.getParameter("serviceId");
-        Map<String, Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("serviceId", serviceId);
+        
         Gson gson= new Gson();
-        List result = districtDataService.getServiceAlarmMonth5(paramMap);
+        //获取月份，近5个月
+        List result = new ArrayList();
+        for (int i = 4; i >= 0; i--) {
+        	String month = districtDataService.getMonth(i);
+        	Map<String, Object> paramMap = new HashMap<String, Object>();
+            paramMap.put("serviceId", serviceId);
+            paramMap.put("month", month);
+            Alarm alarm = districtDataService.getServiceAlarmByMonth(paramMap);
+            Map<String, Object> param = new HashMap<String, Object>();
+            param.put("count", alarm.getCount());
+            param.put("months", month);
+            result.add(param);
+		}
+        
+//        List result = districtDataService.getServiceAlarmMonth5(paramMap);
         String resultGson = gson.toJson(result);//转成json数据
         response.setContentType("textml;charset=UTF-8");
         response.getWriter().print(resultGson);
