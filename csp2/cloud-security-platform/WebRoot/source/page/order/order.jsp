@@ -325,7 +325,7 @@
           <h3>扫描频率</h3>
           <div class="pinv_subnav">
             <ul class="pinv_sub_nav">
-              <li class="pinv_active">
+              <!-- <li class="pinv_active">
                 <input type="radio" name="scanType2" value="1" id="30分钟" checked/>
                 &nbsp;&nbsp;30分钟</li>
               <li>
@@ -333,9 +333,9 @@
                 &nbsp;&nbsp;1小时</li>
               <li>
                 <input type="radio" name="scanType2" value="3" id="2小时"/>
-                &nbsp;&nbsp;2小时</li>
+                &nbsp;&nbsp;2小时</li> -->
               <li>
-                <input type="radio" name="scanType2" value="4" id="1天"/>
+                <input type="radio" name="scanType2" value="4" id="1天" checked/>
                 &nbsp;&nbsp;1天</li>
             </ul>
           </div>
@@ -394,18 +394,18 @@
           </div> -->
           <div class="pinv_subnav">
             <ul class="pinv_sub_nav">
-              <li class="pinv_active">
+              <!--<li class="pinv_active">
                 <input type="radio" name="scanType3" value="1" id="30分钟" checked/>
                 &nbsp;&nbsp;30分钟</li>
-              <!-- <li>
-                <input type="radio" name="scanType2" value="2" id="1小时"/>
+               <li>
+                <input type="radio" name="scanType3" value="2" id="1小时"/>
                 &nbsp;&nbsp;1小时</li>
               <li>
-                <input type="radio" name="scanType2" value="3" id="2小时"/>
-                &nbsp;&nbsp;2小时</li>
+                <input type="radio" name="scanType3" value="3" id="2小时"/>
+                &nbsp;&nbsp;2小时</li>-->
               <li>
-                <input type="radio" name="scanType2" value="4" id="1天"/>
-                &nbsp;&nbsp;1天</li> -->
+                <input type="radio" name="scanType3" value="4" id="1天" checked/>
+                &nbsp;&nbsp;1天</li> 
             </ul>
           </div>
         </div>
@@ -456,14 +456,14 @@
           <h3>扫描频率</h3>
           <div class="pinv_subnav">
             <ul class="pinv_sub_nav">
-              <li class="pinv_active">
+              <!-- <li class="pinv_active">
                 <input type="radio" name="scanType4" value="1" id="10分钟" checked/>
                 &nbsp;&nbsp;10分钟</li>
               <li>
                 <input type="radio" name="scanType4" value="2" id="30分钟" />
-                &nbsp;&nbsp;30分钟</li>
+                &nbsp;&nbsp;30分钟</li> -->
               <li>
-                <input type="radio" name="scanType4" value="3" id="1小时" />
+                <input type="radio" name="scanType4" value="3" id="1小时" checked/>
                 &nbsp;&nbsp;1小时</li>
               <li>
                 <input type="radio" name="scanType4" value="4" id="2小时" />
