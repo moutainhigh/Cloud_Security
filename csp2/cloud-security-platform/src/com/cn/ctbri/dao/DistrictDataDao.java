@@ -3,6 +3,7 @@ package com.cn.ctbri.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.cn.ctbri.entity.City;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.District;
 
@@ -26,6 +27,12 @@ public interface DistrictDataDao {
     List getServiceAlarmMonth5(Map<String, Object> paramMap);
 
     int getMax(Map<String, Object> paramMap);
+    
+    List<District> getDistrictList();
+
+    public List<City> getCityListByProv(Map<String, Object> paramMap);
+    	
+	String getProvNameById(Map<String, Object> paramMap);
 
 	String getMonth(int i);
 

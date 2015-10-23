@@ -136,4 +136,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 </if>
 		 	
     </select>
+    
+    <!-- 查询所有省份 -->
+    <select id="findDistrictListAll" resultMap="DistrictRM">
+		select dis.id,dis.name from cs_district dis 
+    </select>
+    
+    <!-- 根据ID查询名称 -->
+    <select id="findProvName" parameterType="hashmap" resultType="String">
+		select name from cs_district where id=#{provId}
+    </select>
 </mapper>

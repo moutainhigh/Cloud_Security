@@ -184,6 +184,49 @@ function notagree(){
             <td class="regist_prompt"></td>
           </tr>
           <tr class="register_tr">
+          	<td class="regist_title">所在行业</td>
+ 			<td class="regist_input">
+                <select class="regist_sel" id="industry" name="industry" >
+                	<option selected="selected" value="-1">请选择行业</option>
+                	<option value=" 农、林、牧、渔业" > 农、林、牧、渔业</option>
+         			<option value=" 采矿业" > 采矿业</option>
+         			<option value="电力、热力、燃气及水生产和供应业" >电力、热力、燃气及水生产和供应业</option>
+         			<option value="建筑业" >建筑业</option>
+         			<option value="批发和零售业" >批发和零售业</option>
+         			<option value="交通运输、仓储和邮政业" >交通运输、仓储和邮政业</option>
+         			<option value="住宿和餐饮业" >住宿和餐饮业</option>
+         			<option value="信息传输、软件和信息技术服务业" >信息传输、软件和信息技术服务业</option>
+         			<option value="金融业" >金融业</option>
+         			<option value="房地产业" >房地产业</option>
+         			<option value="租赁和商务服务业" >租赁和商务服务业</option>
+         			<option value="科学研究和技术服务业" >科学研究和技术服务业</option>         			
+                </select>
+            </td>
+            <td class="regist_prompt"></td>
+          </tr>
+          <tr class="register_tr">
+          	<td class="regist_title">职业</td>
+ 			<td class="regist_input">
+                <select class="regist_sel" id="job" name="job" >
+                	<option selected="selected" value="-1">请选择职业</option>
+                	<option value="党的机关、国家机关、群众团体和社会组织、企事业单位负责人" >党的机关、国家机关、群众团体和社会组织、企事业单位负责人</option>
+         			<option value="专业技术人员" >专业技术人员</option>
+         			<option value="办事人员和有关人员" >办事人员和有关人员</option>
+         			<option value="社会生产服务和生活服务人员" >社会生产服务和生活服务人员</option>
+         			<option value="农、林、牧、渔业生产及辅助人员" >农、林、牧、渔业生产及辅助人员</option>
+         			<option value="生产制造及有关人员" >生产制造及有关人员</option>
+         			<option value="军人" >军人</option>
+         			<option value="不便分类的其他从业人员" >不便分类的其他从业人员</option>
+                </select>
+            </td>
+            <td class="regist_prompt"></td>
+          </tr>
+          <tr class="register_tr">
+          	<td class="regist_title">公司名称</td>
+          	<td class="regist_input"><input type="text" name="company" id="company" class="regist_txt"/></td>
+            <td class="regist_prompt"></td>
+          </tr>
+          <tr class="register_tr">
             <td class="regist_title"><span class="yzfs">手机号码</span></td>
             <td class="regist_input" id="yzbox">
             <input type="text" class="regist_txt required" name="mobile" id="regist_phone" onblur="checkMobile()" style="margin-right:20px"/>

@@ -185,4 +185,10 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
     public Order findOrderById(String orderId) {
         return this.getSqlSession().selectOne(ns + "findOrderById",orderId);
     }
+
+	public Object findTaskNumsByUserId(int userId) {
+		return this.getSqlSession().selectOne(ns + "findTaskNumsByUserId", userId);
+	}
+    
+    
 }

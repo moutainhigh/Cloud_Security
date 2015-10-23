@@ -14,6 +14,7 @@ import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.DistrictDataDao;
 import com.cn.ctbri.dao.TaskDao;
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.City;
 import com.cn.ctbri.entity.District;
 import com.cn.ctbri.entity.Task;
 /**
@@ -30,6 +31,7 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
 	 * 功        能： DistrictDataMapper命名空间
 	 */
 	private String ns = "com.cn.ctbri.entity.DistrictDataMapper.";
+	private String nsCity = "com.cn.ctbri.entity.CityMapper.";
 
     public List<District> getDistrictByAll(Map<String, Object> paramMap) {
         return getSqlSession().selectList(ns + "findDistrictList",paramMap);
@@ -62,6 +64,18 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
         }
         return maxValue;
     }
+
+	public List<District> getDistrictList() {
+		return getSqlSession().selectList(ns + "findDistrictListAll");
+	}
+
+	public List<City> getCityListByProv(Map<String, Object> paramMap) {
+		return getSqlSession().selectList(nsCity + "findCityList",paramMap);
+	}
+
+	public String getProvNameById(Map<String, Object> paramMap) {
+		return getSqlSession().selectOne(ns + "findProvName", paramMap);
+	}		
 
 	public String getMonth(int i) {
 		String months = this.getSqlSession().selectOne(ns + "getMonth",i);

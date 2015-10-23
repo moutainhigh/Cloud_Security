@@ -58,6 +58,7 @@ function showUnreadNews()
       <div class="lagst-right">
          <!-- 如果已经登录则显示用户名，否则需要登录 -->
          <c:if test="${sessionScope.globle_user!=null }">
+         <input type="hidden" name="id" value= "${sessionScope.globle_user.id }"/>
           <p><a href="${ctx}/userDataUI.html" style="color: #fff">${sessionScope.globle_user.name }</a></p>
           <p><a href="${ctx}/exit.html">退出</a></p>
          </c:if>

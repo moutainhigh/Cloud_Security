@@ -168,6 +168,7 @@ public class OrderServiceImpl implements IOrderService{
     public Order findOrderById(String orderId) {
         return orderDao.findOrderById(orderId);
     }
-	
-	
+	public Object findTaskNumsByUserId(int userId) {
+		return orderDao.findTaskNumsByUserId(userId);
+	}
 }

@@ -16,6 +16,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findTaskByOrderAssetId" parameterType="int" resultMap="TaskRM">
 		 select * from cs_task where order_asset_Id=#{order_asset_Id}
 	</select>
+
+	
 	
 	<!-- 插入任务信息 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
@@ -32,7 +34,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			WHERE o.id={id} AND oa.id=t.order_asset_Id)a
 		GROUP BY a.id HAVING a.id={id}
 	</select>
-	
+	<!-- 根据userId查询扫描次数 -->
+	<select id="findTaskByUserId" parameterType="int" resultType="int">
+		SELECT COUNT(a.t1)
+		 from 
+			(SELECT o.userId o1,t.taskId t1
+			FROM cs_order o, cs_order_asset oa, cs_task t
+			WHERE oa.id=t.order_asset_Id and oa.orderId=o.id AND  o.userId=#{userId})a
+
+	</select>	
 		<!-- 根据orderId查询扫描进度和最近的url-->
 	<select id="findProgressByOrderId" parameterType="hashmap" resultMap="TaskRM">
 			SELECT a.progress,b.currentUrl

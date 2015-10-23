@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.DistrictDataDao;
 import com.cn.ctbri.dao.TaskDao;
+import com.cn.ctbri.entity.City;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.District;
 import com.cn.ctbri.entity.Task;
@@ -49,14 +50,23 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
         return districtDataDao.getMax(paramMap);
     }
 
+	public List<District> getDistrictList() {
+		return districtDataDao.getDistrictList();
+	}
 	public String getMonth(int i) {
 		return districtDataDao.getMonth(i);
 	}
 
+	public List<City> getCityListByProv(Map<String, Object> paramMap) {
+		return districtDataDao.getCityListByProv(paramMap);
+	}
 	public Alarm getServiceAlarmByMonth(Map<String, Object> paramMap) {
 		return districtDataDao.getServiceAlarmByMonth(paramMap);
 	}
 
+	public String getProvNameById(Map<String, Object> paramMap) {
+		return districtDataDao.getProvNameById(paramMap);
+	}
 
 
 }

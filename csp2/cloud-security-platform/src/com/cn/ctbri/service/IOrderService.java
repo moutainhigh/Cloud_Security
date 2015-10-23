@@ -114,4 +114,6 @@ public interface IOrderService {
     //查找订单
     Order findOrderById(String orderId);
 
+    //根据用户查询所有任务数
+    Object findTaskNumsByUserId(int userId);
 }

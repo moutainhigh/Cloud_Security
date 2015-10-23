@@ -29,6 +29,7 @@ import se.akerfeldt.com.google.gson.Gson;
 import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.City;
 import com.cn.ctbri.entity.District;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Linkman;
@@ -215,5 +216,47 @@ public class DistrictDataController {
         response.getWriter().print(resultGson);
         return null;
     }
+    
+    /**
+     * 查询所有省份数据
+     * 
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value="getDistrictListAll.html")
+    @ResponseBody
+    public String getDistrictListAll(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset=UTF-8");
+
+        Gson gson= new Gson();
+        List<District> result = districtDataService.getDistrictList();
+        String resultGson = gson.toJson(result);//转成json数据
+        response.setContentType("textml;charset=UTF-8");
+        response.getWriter().print(resultGson);
+        return null;
+    }
+    
+    /**
+     * 根据省 查询省下所有市
+     * 
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value="getCityList.html")
+    @ResponseBody
+    public String getCityList(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset=UTF-8");
+        String provId = request.getParameter("provId");
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("provId", provId);
+        Gson gson= new Gson();
+        List<City> result = districtDataService.getCityListByProv(paramMap);
+        String resultGson = gson.toJson(result);//转成json数据
+        response.setContentType("textml;charset=UTF-8");
+        response.getWriter().print(resultGson);
+        return null;
+    }    
 
 }

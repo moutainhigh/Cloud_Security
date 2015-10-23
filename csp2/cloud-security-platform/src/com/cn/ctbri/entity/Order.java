@@ -28,6 +28,7 @@ public class Order {
 	private String task_datevo;//end_date vo备注
 	private int message;//是否发送告警信息
 	private int websoc;//创宇标志
+	private int tasknum;//订单对应的任务数
 	public String getBegin_datevo() {
 		return begin_datevo;
 	}
@@ -137,5 +138,11 @@ public class Order {
     public void setTask_datevo(String task_datevo) {
         this.task_datevo = task_datevo;
     }
+	public int getTasknum() {
+		return tasknum;
+	}
+	public void setTasknum(int tasknum) {
+		this.tasknum = tasknum;
+	}
 	
 }

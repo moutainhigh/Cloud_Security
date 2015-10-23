@@ -1,6 +1,7 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,6 +38,7 @@ import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.CommonUtil;
+import com.cn.ctbri.util.IPCheck;
 import com.cn.ctbri.util.LogonUtils;
 import com.cn.ctbri.util.Mail;
 import com.cn.ctbri.util.MailUtils;
@@ -50,7 +52,7 @@ import com.cn.ctbri.util.SMSUtils;
  * 版        本：  1.0
  */
 @Controller
-public class UserController {
+public class UserController{
 	
 	@Autowired
 	IUserService userService;
@@ -62,6 +64,7 @@ public class UserController {
 	IOrderService orderService;
 	@Autowired
     INoticeService noticeService;
+
 	/**
 	 * 功能描述： 基本资料
 	 * 参数描述： Model model,HttpServletRequest request
@@ -209,38 +212,69 @@ public class UserController {
 	@RequestMapping(value="login.html")
 	public String login(User user,HttpServletRequest request,HttpServletResponse response){
 		//添加验证码，判断验证码输入是否正确
-		boolean flag = LogonUtils.checkNumber(request);
-		if(!flag){
-			request.setAttribute("msg", "验证码输入有误");//向前台页面传值
-			return "/source/page/regist/regist";
-		}
-		
-		//判断用户名密码输入是否正确
-		User _user = null;
-		String name = user.getName().trim();
-		String password = user.getPassword().trim();
-		List<User> users = userService.findUserByName(name);
-		if(users.size()>0){
-			_user = users.get(0);
-			//从页面上获取密码和User对象中存放的密码，进行匹配，如果不一致，提示【密码输入有误】
-			String md5password = DigestUtils.md5Hex(password);
-			if(!md5password.equals(_user.getPassword())){
+		try {
+			boolean flag = LogonUtils.checkNumber(request);
+			if(!flag){
+				request.setAttribute("msg", "验证码输入有误");//向前台页面传值
+				return "/source/page/regist/regist";
+			}
+			
+			//判断用户名密码输入是否正确
+			User _user = null;
+			String name = user.getName().trim();
+			String password = user.getPassword().trim();
+			List<User> users = userService.findUserByName(name);
+			if(users.size()>0){
+				_user = users.get(0);
+				//从页面上获取密码和User对象中存放的密码，进行匹配，如果不一致，提示【密码输入有误】
+				String md5password = DigestUtils.md5Hex(password);
+				if(!md5password.equals(_user.getPassword())){
+					request.setAttribute("msg", "用户名或密码错误");
+					return "/source/page/regist/regist";//跳转到登录页面
+				}
+				if(_user.getStatus()!=1 && _user.getStatus()!=2 && _user.getStatus()!=0){
+					request.setAttribute("msg", "对不起，您的帐号已停用");
+					return "/source/page/regist/regist";//跳转到登录页面
+				}
+				//如果是企业用户判断IP是否在库存地址段内
+				if(_user.getType()==3){
+					String ip = "";
+					if (request.getHeader("x-forwarded-for") == null) {
+						ip = request.getRemoteAddr();
+					}else{
+						ip = request.getHeader("x-forwarded-for");
+					}
+					String ipStart = _user.getStartIP();
+					String ipEnd = _user.getEndIP();
+					if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
+						request.setAttribute("msg", "登录的IP不在IP地址段范围内");
+						return "/source/page/regist/regist";//跳转到登录页面
+					}
+				}
+			}else{
 				request.setAttribute("msg", "用户名或密码错误");
 				return "/source/page/regist/regist";//跳转到登录页面
 			}
-			if(_user.getStatus()!=1){
-				request.setAttribute("msg", "对不起，您的帐号已停用");
-				return "/source/page/regist/regist";//跳转到登录页面
-			}
-		}else{
-			request.setAttribute("msg", "用户名或密码错误");
-			return "/source/page/regist/regist";//跳转到登录页面
+			/**记住密码功能*/
+			LogonUtils.remeberMe(request,response,name,password);
+			
+			_user.setLastLoginTime(new Date());
+			//设置登录状态：2
+			_user.setStatus(2);
+			userService.update(_user);
+			
+			//将User放置到Session中，用于这个系统的操作
+			request.getSession().setAttribute("globle_user", _user);
+			
+/*			Timer timer = new Timer();
+			timer.schedule(new UserController(request),5000);*/
+			return "redirect:/userCenterUI.html";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "redirect:/loginUI.html";
 		}
-		/**记住密码功能*/
-		LogonUtils.remeberMe(request,response,name,password);
-		//将User放置到Session中，用于这个系统的操作
-		request.getSession().setAttribute("globle_user", _user);
-		return "redirect:/userCenterUI.html";
+
 	}
 	
 	 /**
@@ -294,6 +328,11 @@ public class UserController {
 	@RequestMapping(value="exit.html")
 	public String exit(HttpServletRequest request){
 		//request.getSession().removeAttribute("globle_user");
+		User user = (User)request.getSession().getAttribute("globle_user");
+		//设置退出状态：-1
+		user.setStatus(0);
+		userService.update(user);
+
    		request.getSession().invalidate();
    		return "redirect:/loginUI.html";
 	}
@@ -347,7 +386,26 @@ public class UserController {
 	        mEmail = patE.matcher(user.getEmail());
 	        me = mEmail.matches();
 	    }
-	    
+	    //行业
+		String industry = "";
+		//职业
+		String job = "";
+		//公司名称
+		String company = "";
+		try {
+			industry = new String(user.getIndustry().getBytes("ISO-8859-1"), "UTF-8");
+			job = new String(user.getJob().getBytes("ISO-8859-1"),"UTF-8");
+			company = new String(user.getCompany().getBytes("ISO-8859-1"),"UTF-8");
+			user.setCompany(company);
+			if(!industry.equals("-1")){
+				user.setIndustry(industry);
+			}
+			if(!job.equals("-1")){
+				user.setJob(job);
+			}
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		if(name!=null&&!"".equals(name)&&m.matches()&&password!=null&&!"".equals(password)&&password.length()>=6&&password.length()<=20&&(mb||me)&&user.getVerification_code()!=null&&!"".equals(user.getVerification_code())){
 			//按用用户名、邮箱、手机号码组合查询用户,防止刷页面
 			List<User> users = userService.findUserByCombine(user);
@@ -812,4 +870,5 @@ public class UserController {
         m.addAttribute("brokenNetwork", brokenNetwork);
 		return "/china";
 	}
+
 }

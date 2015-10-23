@@ -88,5 +88,9 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
     public void deleteTaskByOaId(String order_asset_Id) {
         this.getSqlSession().delete(ns + "deleteTaskByOaId",order_asset_Id);
     }
+
+	public int findTaskByUserId(int userId) {
+		return this.getSqlSession().selectOne(ns+"findTaskByUserId",userId);
+	}
 	
 }

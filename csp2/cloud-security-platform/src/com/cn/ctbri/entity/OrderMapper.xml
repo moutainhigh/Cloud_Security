@@ -17,6 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="contactId" column="contactId"/>
 		<result property="remarks" column="remarks"/>
 		<result property="status" column="status"/>
+		<result property="tasknum" column="tasknum"/>
 	</resultMap>
 	
 	<!-- 根据订单Id查询记录 -->
@@ -312,6 +313,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findOrderById" resultMap="OrderRM" parameterType="String">
         SELECT * FROM cs_order c WHERE c.id=#{orderId}
     </select>
-    
+    <!-- 根据用户查询所有任务数 -->
+    <select id="findTaskNumsByUserId" resultType="Object" parameterType="Integer">
+        select sum(tasknum) from cs_order
+        where userId = #{userId}
+    </select>
     
 </mapper>

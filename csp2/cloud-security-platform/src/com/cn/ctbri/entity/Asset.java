@@ -26,6 +26,10 @@ public class Asset {
 	private int districtId;//地区id
 	private String disName;//地区名称
 	
+	private String prov;//物理位置：省
+	private String city;//物理位置：市
+	private String purpose;//资产用途
+	
 	public String getAddrType() {
 		return addrType;
 	}
@@ -104,6 +108,24 @@ public class Asset {
 	}
 	public void setDisName(String disName) {
 		this.disName = disName;
+	}
+	public String getProv() {
+		return prov;
+	}
+	public void setProv(String prov) {
+		this.prov = prov;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getPurpose() {
+		return purpose;
+	}
+	public void setPurpose(String purpose) {
+		this.purpose = purpose;
 	}
 	
 }

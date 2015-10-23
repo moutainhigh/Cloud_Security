@@ -32,6 +32,7 @@
 .regist_prompt{width:292px;color:#888;font-size:14px;}
 .regist_txt{width:286px;height:22px;border:1px solid #cbc9c9;padding:7px 8px;float:left; color:#888;}
 .register_tr{height:58px;}
+.regist_sel{width:302px;border:1px solid #cbc9c9;padding:7px 8px;float:left;overflow:hidden;height:36px;}
 .user_sub{ margin-top:45px; margin-left:33px;}
 /*基本资料代码*/
 /*我的账单代码*/
@@ -148,7 +149,7 @@
 
 
 #box_mark{  width:100%; height:100%; display:none; position:absolute; top:0; left:0;  background:#000;  filter:alpha(opacity=50); opacity:0.5; z-index:1;  }
-#box_logoIn1,#box_logoIn_edit{ display:none;  padding:20px; position:fixed; top:50%; left:0px; z-index:99; text-align:center; background:#fff; border-radius:10px; width:670px; height:350px;}
+#box_logoIn1,#box_logoIn_edit{ display:none;  padding:20px; position:fixed; top:50%; left:0px; z-index:99; text-align:center; background:#fff; border-radius:10px; width:670px; height:400px;}
 #box_logoIn_regist{ display:none;  padding:20px; position:fixed; top:50%; left:0px; z-index:99; background:#fff; border-radius:10px; width:870px; height:550px;}
 #close1,#close_edit{ width:25px;  height:26px; position: absolute; top:19px; right:17px; z-index:101;cursor:pointer; background:url(../images/user_ico_4.jpg) no-repeat; }
 .text_top{ height:30px; border-bottom:1px solid #e0e0e0; color:#666666; font-size:18px; line-height:30px; padding-bottom:10px;}

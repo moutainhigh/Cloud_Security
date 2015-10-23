@@ -36,7 +36,9 @@ import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAssetService;
+import com.cn.ctbri.service.IDistrictDataService;
 import com.cn.ctbri.service.IOrderAssetService;
+import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.GetNetContent;
 /**
@@ -51,6 +53,10 @@ public class MyAssetsController {
 	IAssetService assetService;
 	@Autowired
 	IOrderAssetService orderAssetService;
+	@Autowired
+	IDistrictDataService districtService;
+	@Autowired
+	IUserService userService;
 	/**
 	 * 功能描述： 我的资产页面
 	 * 参数描述： Model model,HttpServletRequest request
@@ -111,16 +117,31 @@ public class MyAssetsController {
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		asset.setUserid(globle_user.getId());//用户ID
 		asset.setCreate_date(new Date());//创建日期
-		asset.setStatus(0);//资产状态(1：已验证，0：未验证)
+		if(globle_user.getType()==2){
+			asset.setStatus(0);//资产状态(1：已验证，0：未验证)
+		}else if(globle_user.getType()==3){
+			asset.setStatus(1);//资产状态(1：已验证，0：未验证)
+		}
+
 		String name = "";//资产名称
 		String addr = "";//资产地址
 		String addrType = asset.getAddrType();
+		String prov = "";//省
+		String city = "";//市
+		String purpose = "";//用途
 		//处理页面输入中文乱码的问题
 		try {
 			//name = URLDecoder.decode(asset.getName(), "UTF-8");
 			name=new String(asset.getName().getBytes("ISO-8859-1"), "UTF-8");
 			addr=new String(asset.getAddr().getBytes("ISO-8859-1"), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+	        paramMap.put("provId", asset.getProv());
+			prov = districtService.getProvNameById(paramMap);
+			if(asset.getCity()!=null && !asset.getCity().equals("")){
+				city=new String(asset.getCity().getBytes("ISO-8859-1"), "UTF-8");
+			}
+			purpose=new String(asset.getPurpose().getBytes("ISO-8859-1"), "UTF-8");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		if(!(addr.startsWith(addrType))){
@@ -128,6 +149,9 @@ public class MyAssetsController {
 		}
 		asset.setName(name);
 		asset.setAddr(addr);
+		asset.setProv(prov);
+		asset.setCity(city);
+		asset.setPurpose(purpose);
 		assetService.saveAsset(asset);
 		return "redirect:/userAssetsUI.html";
 	}
@@ -391,4 +415,47 @@ public class MyAssetsController {
         }
         return referer_sign;
 	    }
+	
+	@RequestMapping("/asset_CountOver.html")
+	@ResponseBody
+	public void isAssetCountOver(HttpServletResponse response,HttpServletRequest request) throws Exception{
+	    User globle_user = (User) request.getSession().getAttribute("globle_user");
+	    
+	    //根据用户id查询
+	    List<User> userList = userService.findUserById(globle_user.getId());
+	    User _user = userList.get(0);
+	    
+        //根据用户判断资产数是否超过预定
+		List<Asset> list = assetService.findByUserId(globle_user.getId());
+		Map<String, Object> m = new HashMap<String, Object>();
+		
+		//个人用户
+		if(_user.getType()==2){
+			if(list != null && list.size() >= 5){
+				m.put("msg", true);//表示添加的资产数已经为5，不能再进行添加
+				m.put("allowCount", "5");
+			}else{
+				m.put("msg", false);
+			}
+		}else if(_user.getType()==3){
+			//企业用户
+			if(list != null && list.size() >= 10){
+				m.put("msg", true);//表示添加的资产数已经为10，不能再进行添加
+				m.put("allowCount", "10");
+			}else{
+				m.put("msg", false);
+			}
+		}
+
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+
 }

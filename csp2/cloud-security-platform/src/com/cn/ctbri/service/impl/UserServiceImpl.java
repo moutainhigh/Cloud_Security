@@ -78,6 +78,7 @@ public class UserServiceImpl implements IUserService{
 	public void update(User globle_user) {
 		userDao.update(globle_user);
 	}
+	
 	/**
 	 * 功能描述：根据用户类型
 	 * 参数描述：int type
@@ -162,4 +163,5 @@ public class UserServiceImpl implements IUserService{
 		// TODO Auto-generated method stub
 		userDao.updatePass(user);
 	}
+
 }

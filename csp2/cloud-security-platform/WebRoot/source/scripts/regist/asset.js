@@ -2,7 +2,8 @@ function saveAsset() {
 	var assetName =$("#assetName").val();
 	var assetAddr = $("#assetAddr").val();
      var addrType = $('input:radio[name="addrType"]:checked').val();
-     
+     var purpose = $("#purpose").val();
+     var prov = $("#prov").val();
      var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
      if(patrn.test(assetAddr)){  
          alert("提示信息：您输入的数据含有非法字符！");  
@@ -14,20 +15,36 @@ function saveAsset() {
 	}
 	else if(assetName.length>25){
 			$("#assetName_msg").html("资产名称长度不能超过25个字符！");
-	}
-	else if(assetAddr==null || assetAddr == ""){
+	}else if(assetAddr==null || assetAddr == ""){
+			$("#assetName_msg").html("");
 			$("#assetAddr_msg").html("请输入资产地址");
 	}else if(assetAddr.length>50){
+			 $("#assetName_msg").html("");
 			 $("#assetAddr_msg").html("资产地址长度不能超过50个字符！");
 	}else if(assetAddr.indexOf("gov.cn")!=-1){
+		   $("#assetName_msg").html("");
 		   $("#assetAddr_msg").html("输入资产地址不能包含'gov.cn'！");
 	}else if((addrType.length==4 && assetAddr.substring(0,5)=='https') || (addrType.length==5 && assetAddr.substring(0,5)=='http:')){
+		$("#assetName_msg").html("");
 		$("#assetAddr_msg").html("资产类型与资产地址填写不一致!");
+	}else if(prov == -1){
+		$("#assetName_msg").html("");
+		$("#assetAddr_msg").html("");
+		$("#location_msg").html("请选择资产所在物理地址！");
+	}else if(purpose==-1){
+		$("#assetName_msg").html("");
+		$("#assetAddr_msg").html("");
+		$("#location_msg").html("");
+		$("#assetUsage_msg").html("请选择资产用途！");
 	}else{
+		$("#assetName_msg").html("");
+		$("#assetAddr_msg").html("");
+		$("#location_msg").html("");
+		$("#assetUsage_msg").html("");
 			//验证资产是否重复
 			$.ajax({
 		        type: "POST",
-		        url: "/cloud-security-platform/asset_addrIsExist.html",
+		        url: "asset_addrIsExist.html",
 		        data: {"addr":assetAddr,"name": encodeURI(assetName),"addrType":addrType},
 		        dataType:"json",
 		        success: function(data){
@@ -35,7 +52,20 @@ function saveAsset() {
 		            	$("#assetAddr_msg").html("资产名称或地址重复!");
 		            }else{
 		            	$("#assetAddr_msg").html("");
-		            	$("#saveAsset").submit();
+		            	//资产数验证
+		            	$.ajax({
+		    		        type: "POST",
+		    		        url: "asset_CountOver.html",
+		    		        data: {},
+		    		        dataType:"json",
+		    		        success: function(data){
+		    		            if(data.msg){
+		    		            	alert("管理的资产数不能大于" + data.allowCount);
+		    		            }else{
+		    		            	$("#saveAsset").submit();
+		    		            }
+		    		        },
+		    		     }); 
 		            }
 		        },
 		     }); 

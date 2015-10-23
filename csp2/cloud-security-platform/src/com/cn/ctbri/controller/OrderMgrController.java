@@ -2,6 +2,7 @@ package com.cn.ctbri.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,6 +45,7 @@ import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskHWService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
+import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Random;
@@ -75,6 +77,8 @@ public class OrderMgrController {
     IAlarmService alarmService;
     @Autowired
     ITaskWarnService taskWarnService;
+    @Autowired
+    IUserService userService;
     
 	 /**
 	 * 功能描述： 用户中心-自助下单
@@ -363,6 +367,7 @@ public class OrderMgrController {
         String ip = request.getParameter("ip");
         String bandwidth = request.getParameter("bandwidth");
         String websoc = request.getParameter("websoc");
+        String tasknum = request.getParameter("tasknum");
         //订单开始时间不能早于当前订单提交时间,add by txr,2015-3-3
         if(beginDate.compareTo(createDate)>0){
             m.put("timeCompare", true);
@@ -413,6 +418,7 @@ public class OrderMgrController {
                 	order.setWebsoc(Integer.parseInt(websoc));
                 }
             }
+            order.setTasknum(Integer.parseInt(tasknum));
             selfHelpOrderService.insertOrder(order);
             
             if(serviceId.equals("6")||serviceId.equals("7")||serviceId.equals("8")){
@@ -896,4 +902,320 @@ public class OrderMgrController {
         }
     }
 	
+	/**
+	 * 自助下单时判断订单数量
+	 * @param response
+	 * @param request
+	 * @throws Exception
+	 */
+	@RequestMapping("/verificateTaskNum.html")
+	@ResponseBody
+	public void verificateTasknum(HttpServletResponse response,HttpServletRequest request) throws Exception{
+	    User globle_user = (User) request.getSession().getAttribute("globle_user");
+	    
+	    //根据用户id查询
+	    List<User> userList = userService.findUserById(globle_user.getId());
+	    User _user = userList.get(0);
+
+		Map<String, Object> m = new HashMap<String, Object>();
+		
+		//二期：查询order表
+		int oldCount = 0;
+		Object object = orderService.findTaskNumsByUserId(globle_user.getId());
+		if(object != null){
+			oldCount = Integer.parseInt(String.valueOf(object));
+		}
+		//个人用户
+		if(_user.getType()==2){
+			if(oldCount >= 20){
+				m.put("msg", true);//表示添加的任务数已经为20
+			}else{
+				m.put("msg", false);
+			}
+		}else{
+			m.put("msg", false);
+		}
+
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 提交订单时判断订单数量
+	 * @param response
+	 * @param request
+	 * @throws Exception
+	 */
+	@RequestMapping("/verificateSubmitTaskNum.html")
+	@ResponseBody
+	public void verificateSubmitTaskNum(HttpServletResponse response,HttpServletRequest request) throws Exception{
+	    User globle_user = (User) request.getSession().getAttribute("globle_user");
+	    int nowCount = 0;//定义所有任务的和
+	    //根据用户id查询
+	    List<User> userList = userService.findUserById(globle_user.getId());
+	    User _user = userList.get(0);
+
+		Map<String, Object> m = new HashMap<String, Object>();
+
+		//二期：查询order表
+		int oldCount = 0;
+		Object object = orderService.findTaskNumsByUserId(globle_user.getId());
+		if(object != null){
+			oldCount = Integer.parseInt(String.valueOf(object));
+		}
+		
+		//计算新增的任务数
+		int newCount = 0;
+
+		int serviceIdInt = Integer.parseInt(request.getParameter("serviceId"));
+		int assetCountInt = Integer.parseInt(request.getParameter("assetCount"));
+		//下单类型：1：长期；2：单次
+		String type = request.getParameter("type");
+		//开始时间
+		String beginDate = request.getParameter("beginDate");
+		//结束时间
+		String endDate = request.getParameter("endDate");
+		//扫描类型
+		String scanType = request.getParameter("scanType");
+		//判断此次下单的任务数
+		if(type.equals("2")){
+			//单次:新增的任务数等于资产数
+			newCount = assetCountInt;
+			nowCount = oldCount + newCount;
+			m.put("tasknum", newCount);
+			
+		}else{
+			//长期：根据服务类型、扫描类型、开始时间、结束时间判断
+			Date begin_date = null;
+			Date end_date = null;
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟 
+			begin_date = sdf.parse(beginDate);
+			end_date = sdf.parse(endDate);
+			
+	        Calendar calBegin = Calendar.getInstance();
+	        Calendar calEnd = Calendar.getInstance();
+	        calBegin.setTime(begin_date);  
+	        calEnd.setTime(end_date);
+
+            long time1 = calBegin.getTimeInMillis();                     
+            long time2 = calEnd.getTimeInMillis();  
+			switch(serviceIdInt){
+				case 1:
+					newCount = getOrderPeriods(beginDate, endDate, scanType);
+					newCount = newCount * assetCountInt;
+					break;
+				case 2:							       
+		            long between_min30=(time2-time1)/(1000*60*30);
+		            newCount = (int)between_min30 * assetCountInt;
+					break;
+				case 3:
+					long between_day = (time2-time1)/(1000*3600*24);
+					newCount = (int)between_day * assetCountInt;
+					break;
+				case 4:
+		            long between_day1=(time2-time1)/(1000*3600*24);
+		            newCount = (int)between_day1 * assetCountInt;
+					break;
+				case 5:
+					if(scanType.equals("3")){//每1小时
+						long between_hour1 = (time2-time1)/(1000*3600);
+						newCount = (int)between_hour1 * assetCountInt;
+					}else{//每2小时
+						long between_hour2 = (time2-time1)/(1000*3600*2);
+						newCount = (int)between_hour2 * assetCountInt;
+					}
+					break;
+				case 6:
+					break;
+				case 7:
+					break;
+				case 8:
+					break;
+				
+			}
+			
+			nowCount = oldCount + newCount;
+		}
+		//个人用户
+		if(_user.getType()==2){
+			if(nowCount > 20){
+				m.put("msg", true);
+			}else{
+				m.put("tasknum", newCount);
+				m.put("msg", false);
+			}
+		}else{//企业用户
+			m.put("tasknum", newCount);
+			m.put("msg", false);
+		}
+
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 获取周期数
+	 * @param beginDate 开始时间
+	 * @param endDate	结束时间
+	 * @param scanType	扫描类型
+	 * @return
+	 */
+	int getOrderPeriods(String beginDate, String endDate, String scanType){
+		//初始化
+		int count = 0;
+		Date begin_date = null;
+		Date end_date = null;
+		
+        String beginHour = beginDate.substring(11, 13);
+        String beginMinute = beginDate.substring(14, 16);
+
+        String endHour = endDate.substring(11, 13);
+        String endMinute = endDate.substring(14, 16);
+        
+        Calendar calBegin = Calendar.getInstance();
+        Calendar calEnd = Calendar.getInstance();
+		try {
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟 
+			begin_date = sdf.parse(beginDate);
+			end_date = sdf.parse(endDate);
+			
+	        calBegin.setTime(begin_date);  
+	        calEnd.setTime(end_date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		//周期为每天（00:10:00）
+		if(scanType.equals("1")){  
+            long time1 = calBegin.getTimeInMillis();                     
+            long time2 = calEnd.getTimeInMillis();         
+            long between_days=(time2-time1)/(1000*3600*24);
+            //天数大于等于1
+            if(between_days >= 1){
+            	   if(beginHour.equals("00")&&beginMinute.compareTo("10")<=0){
+                       //当天开始执行
+                   	if(endHour.equals("00")&&endMinute.compareTo("10")<0){
+                   		count = (int)between_days + 1;
+                   	}else{
+                   		count = (int)between_days + 1;
+                   	}
+                   }else{
+                       //第二天开始执行
+                   	if(endHour.equals("00")&&endMinute.compareTo("10")<0){
+                   		count = (int)between_days - 1;
+                   	}else{
+                   		count = (int)between_days;
+                   	}
+                   }
+            }else{//天数小于1
+            	if(beginHour.equals("00")&&beginMinute.compareTo("10")<=0){
+            		count = 1;
+            	}else{
+            		count = 0;
+            	}
+            }
+         
+		}else if(scanType.equals("2")){ //周期为每周（每周一00:10:00）
+			 int dayForWeekBegin = 0;//开始时间星期几 
+			 if(calBegin.get(Calendar.DAY_OF_WEEK) == 1){  
+				 dayForWeekBegin = 7;  
+			 }else{  
+				 dayForWeekBegin = calBegin.get(Calendar.DAY_OF_WEEK) - 1;  
+			 }  
+			 int dayForWeekEnd = 0;//结束时间星期几 
+			 if(calEnd.get(Calendar.DAY_OF_WEEK) == 1){  
+				 dayForWeekEnd = 7;  
+			 }else{  
+				 dayForWeekEnd = calEnd.get(Calendar.DAY_OF_WEEK) - 1;  
+			 }
+			 
+			 long time1 = calBegin.getTimeInMillis();                   
+	         long time2 = calEnd.getTimeInMillis();         
+	         long between_weeks=(time2-time1)/(1000*3600*24*7);
+	         //开始时间为周一；结束时间也是周一
+	         if(dayForWeekBegin==1 && dayForWeekEnd==1){
+	        	 if(beginHour.equals("00")&&beginMinute.compareTo("10")<=0){
+	                 //当天开始执行
+	             	if(endHour.equals("00")&&endMinute.compareTo("10")<0){
+	             		count = (int)between_weeks - 1;
+	             	}else{
+	             		count = (int)between_weeks;
+	             	}
+	             }
+	         }else if(dayForWeekBegin!=1 && dayForWeekEnd==1){//开始时间大于周一，从下周开始执行
+	        	 if(endHour.equals("00")&&endMinute.compareTo("10")<0){
+	        		 count = (int)between_weeks;
+	        	 }else{
+	        		 count = (int)between_weeks + 1;
+	        	 }
+	         }else if(dayForWeekBegin==1 && dayForWeekEnd!=1){//开始时间为周一，结束时间不为周一
+	        	 if(beginHour.equals("00")&&beginMinute.compareTo("10")<=0){
+	        		 count = (int)between_weeks + 1;
+	        	 }else{
+	        		 count = (int)between_weeks;
+	        	 }
+	         }else{//开始时间，结束时间都不为周一
+	        	 if(dayForWeekBegin != dayForWeekEnd && dayForWeekEnd != 7){
+	        		 count = (int)between_weeks+1;
+	        	 }else{
+		        	 count = (int)between_weeks;
+	        	 }
+
+	         }
+		}else{//周期为每月（1日00:10:00）
+			int between_month = 0;     
+			int flag = 0;  
+			//月份第几天
+			int beginDay = calBegin.get(Calendar.DAY_OF_MONTH);
+			int endDay = calEnd.get(Calendar.DAY_OF_MONTH);
+
+			between_month = (calEnd.get(Calendar.YEAR) - calBegin.get(Calendar.YEAR))*12 + 
+			calEnd.get(Calendar.MONTH)  - calBegin.get(Calendar.MONTH);
+
+			//开始日期、结束日期都是1日
+			if(beginDay==1 && endDay==1){
+	        	 if(beginHour.equals("00")&&beginMinute.compareTo("10")<=0){
+	                 //当天开始执行
+	             	if(endHour.equals("00")&&endMinute.compareTo("10")<0){
+	             		count = (int)between_month - 1;
+	             	}else{
+	             		count = (int)between_month;
+	             	}
+	             }else{
+	                 //当天开始执行
+		             	if(endHour.equals("00")&&endMinute.compareTo("10")<0){
+		             		count = (int)between_month - 1-1;
+		             	}else{
+		             		count = (int)between_month-1;
+		             	} 
+	             }
+			}else if(beginDay!=1 && endDay==1){
+             	if(endHour.equals("00")&&endMinute.compareTo("10")<0){
+             		count = (int)between_month - 1;
+             	}else{
+             		count = (int)between_month;
+             	}
+			}else if(beginDay==1 && endDay!=1){
+				 if(beginHour.equals("00")&&beginMinute.compareTo("10")<=0){
+	        		 count = (int)between_month + 1;
+	        	 }else{
+	        		 count = (int)between_month;
+	        	 }
+			}else{
+				count = (int)between_month;
+			}
+		}
+		return count;
+	}
 }

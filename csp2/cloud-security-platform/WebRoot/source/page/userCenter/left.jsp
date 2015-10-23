@@ -13,6 +13,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/order/order.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 </head>
@@ -24,7 +25,7 @@
       <li><a href="${ctx}/userBillUI.html">我的账单</a></li>
       <li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
       <h2>订购中心</h2>
-      <li><a href="${ctx}/selfHelpOrderInit.html">自助下单</a></li>
+      <li><a onclick="tasknum_verification()" href="javascript:void(0)">自助下单</a></li>
       <li><a href="${ctx}/orderTrackInit.html">订单跟踪</a></li>
     </ul>
 </div>

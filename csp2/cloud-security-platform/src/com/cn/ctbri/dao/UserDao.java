@@ -101,4 +101,5 @@ public interface UserDao {
     
     MobileInfo getMobileById(String MobileNumber);
     void updatePass(User user);
+
 }

@@ -14,6 +14,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/asset.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/order/order.js"></script>
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
@@ -58,7 +59,7 @@ $(document).ready(function(){
       <li><a href="${ctx}/userBillUI.html">我的账单</a></li>
       <li class="active"><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
       <h2>订购中心</h2>
-      <li><a href="${ctx}/selfHelpOrderInit.html">自助下单</a></li>
+      <li><a onclick="tasknum_verification()" href="javascript:void(0)">自助下单</a></li>
       <li><a href="${ctx}/orderTrackInit.html">订单跟踪</a></li>
     </ul>
   </div>
@@ -190,6 +191,29 @@ $(document).ready(function(){
 	        <td style="color:#999;text-align: left; line-height: 18px; padding-top: 4px; padding-left: 10px;">http://xxx.xxx.xxx.xxx<br>https://xxx.xxx.xxx.xxx:1234<br>http://xxx.xxx.xxx.xxx:8080/home
             </td>
         </tr> 
+        <tr>
+          <td>物理位置</td>
+          <td>
+  				<select class="user_secta spiclesel" id="prov" name="prov"  onchange="getCitys(this.value)">
+  					<option selected="selected" value="-1">请选择省份</option>
+  				</select> 
+    			<select class="user_secta spiclesel" id="city" name="city" disabled="disabled">
+    			</select>
+		  </td>
+		  <td style="color:#e32929;text-align:left;"><div id="location_msg"></div></td>
+        </tr>
+        <tr>
+        <td>资产用途</td>
+         <td>
+   			<select class="user_secta spiclesel" id="purpose" name="purpose">
+   				<option selected="selected" value="-1">请选择资产用途</option>
+   				<option value="公共服务">公共服务</option>
+   				<option value="信息发布">信息发布</option>
+   				<option value="其他">其他</option>
+   			</select>
+	   </td>
+		  <td style="color:#e32929;text-align:left"><div id="assetUsage_msg"></div></td>
+        </tr>
       </table>
                   
     </div>
@@ -224,7 +248,7 @@ $(document).ready(function(){
         <tr>
           <td>资产地址</td>
           <td><input class="boz_inout_1" type="text" name="addr" id="editAssetAddr"/></td>
-          <td style="color:#e32929;text-align:left"><div id="editAssetAddr_msg"></div></td>
+          <td style="color:#e32929;text-align:left">-1<div id="editAssetAddr_msg"></div></td>
         </tr>
       </table>
     </div>

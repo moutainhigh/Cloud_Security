@@ -71,7 +71,7 @@ $(function(){
         		
         		$.ajax({ type: "POST",
 	    		     async: false, 
-	    		     url: "/cloud-security-platform/getSession.html", 
+	    		     url: "getSession.html", 
 	    		     dataType: "json", 
 //	    		     contentType: "application/json; charset=utf-8", 
 	    		     success: function(data) {
@@ -80,8 +80,8 @@ $(function(){
 	    		    	 }, 
 	    		     error: function(data){ 
 	    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-	    		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
-	    		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
+	    		    		 window.location.href = "loginUI.html"; } 
+	    		    	 else { window.location.href = "loginUI.html"; } } 
         		});
         	}
     	}else{
@@ -111,7 +111,7 @@ $(function(){
         		$('input:radio[name="scanType"]:eq(0)').attr("checked",'checked');
         		$.ajax({ type: "POST",
 	    		     async: false, 
-	    		     url: "/cloud-security-platform/getSession.html", 
+	    		     url: "getSession.html", 
 	    		     dataType: "json", 
 //	    		     contentType: "application/json; charset=utf-8", 
 	    		     success: function(data) {
@@ -119,8 +119,8 @@ $(function(){
 	    		    	 }, 
 	    		     error: function(data){ 
 	    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-	    		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
-	    		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
+	    		    		 window.location.href = "loginUI.html"; } 
+	    		    	 else { window.location.href = "loginUI.html"; } } 
        		});
         	}
     	}
@@ -197,11 +197,15 @@ $(function(){
     	$('p[name="servRemark"]').html(servRemark);
     	$('td[name="IPAddressName"]').html(ip);
     	$('td[name="networkName"]').html(bandwidth);
-    	$('img[name="servImg"]').attr("src","/cloud-security-platform/source/images/center_"+serviceId+".png");
+    	$('img[name="servImg"]').attr("src","source/images/center_"+serviceId+".png");
 //    	if(serviceId!=6&&serviceId!=7&&serviceId!=8){
     	if(parentC!=2){
     		if($(".leftTr"+index+" input:checkbox[name='serviceAssetId']:checked").length==0){
     			alert("在资产列表中选择服务对象资产!");
+    			return;
+    		}
+    		if($(".leftTr"+index+" input:checkbox[name='serviceAssetId']:checked").length>3){
+	            $(".assets_msg").eq(index).html('同一订单中关联资产不能大于3个,请重新设置!');
     			return;
     		}
     	}
@@ -221,7 +225,7 @@ $(function(){
 				   'endDate':endDate,
 				   'ip':ip,
 				   'parentC':parentC};
-    	$.post("/cloud-security-platform/checkOrderAsset.html", obj, function(data){
+    	$.post("checkOrderAsset.html", obj, function(data){
     		if(data.assetNames!=null){
     			$(".assets_msg").eq(index).html('资产('+data.assetNames+')针对该资产有同类任务，请重新设置!');
     		}else if(data.ipText){
@@ -230,7 +234,7 @@ $(function(){
     			$(".assets_msg").eq(index).html("");
     			$.ajax({ type: "POST",
 	    		     async: false, 
-	    		     url: "/cloud-security-platform/getSession.html", 
+	    		     url: "getSession.html", 
 	    		     dataType: "json", 
 //	    		     contentType: "application/json; charset=utf-8", 
 	    		     success: function(data) {
@@ -238,8 +242,8 @@ $(function(){
 	    		    	 }, 
 	    		     error: function(data){ 
 	    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-	    		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
-	    		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
+	    		    		 window.location.href = "loginUI.html"; } 
+	    		    	 else { window.location.href = "loginUI.html"; } } 
     			});
     		}
         });
@@ -278,7 +282,7 @@ $(function(){
     		$("#phone_msg").html("");
     		$.ajax({ type: "POST",
    		     async: false, 
-   		     url: "/cloud-security-platform/getSession.html", 
+   		     url: "getSession.html", 
    		     dataType: "json", 
 //   		     contentType: "application/json; charset=utf-8", 
    		     success: function(data) {
@@ -286,8 +290,8 @@ $(function(){
    		    	 }, 
    		     error: function(data){ 
    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-   		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
-   		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
+   		    		 window.location.href = "loginUI.html"; } 
+   		    	 else { window.location.href = "loginUI.html"; } } 
     		});
  
     	$('td[name="linkname"]').html(linkname);
@@ -318,7 +322,7 @@ $(function(){
 //    	}else{
     		var scanType=$('input:radio[name="scanType'+index+'"]:checked').val();
 //    	}
-    	
+    	var assetCount=$(".leftTr"+index+" input:checkbox[name='serviceAssetId']:checked").length;
     	var linkname=$('#linkname').val();
     	var phone=$('#phone').val();
     	var email=$('#email').val();
@@ -365,47 +369,67 @@ $(function(){
 //		    		$("#orderId").html(data.orderId);
 //		    		getActive(4);
 //		        });
+    			//提交时确认订单数量
+ 	    		$.ajax({
+ 	    	        type: "POST",
+ 	    	        url: "verificateSubmitTaskNum.html",
+ 	    	        data: {"type":orderType,"beginDate":beginDate,"endDate":endDate,"serviceId":serviceId,"scanType":scanType,"assetCount":assetCount},
+ 	    	        dataType:"json",
+ 	    	        success: function(data){
+ 	    	            if(data.msg){
+ 	    	            	alert("个人用户累计下单不能超过20次，如欲继续下单，需升级为企业用户！");  
+ 	    	            }else{
+ 	    	            	var tasknum = data.tasknum;
+ 	    			    	$.ajax({ type: "POST",
+ 	  		    		     async: false, 
+ 	  		    		     url: "saveOrder.html", 
+ 	  		    		     data: {"orderType":orderType,//'orderId':orderId,
+ 	  			    			   	"beginDate": beginDate,
+ 	  			    			   	"endDate":endDate,
+ 	  			    			   	"createDate":createDate,
+ 	  			    			   	"scanType":scanType,
+// 	  			    			   	"scanDate":scanDate,
+ 	  			    			   	"serviceId":serviceId,
+ 	  			    			   	"linkname":linkname,
+ 	  			    			   	"phone":phone,
+ 	  			    			   	"email":email,
+ 	  			    			   	"company":company,
+ 	  			    			   	"address":address,
+ 	  			    			   	"assetIds":assetIds,
+ 	  			    			   	"ip":ip,
+ 	  			    			   	"bandwidth":bandwidth,
+ 	  				    			"websoc":websoc,
+ 	  				    			"tasknum":tasknum},  
+ 	  		    		     dataType: "json", 
+// 	  		    		     contentType: "application/json; charset=utf-8", 
+ 	  		    		     success: function(data) {
+ 	  		    		    	 if(data.assetsStatus == false){
+ 	  		    		    		 if(data.timeCompare == true){
+ 	   		 	    	            	$("#orderId").html(data.orderId);
+ 	  					    		    getActive(4); 
+ 	  			    		    	 }else{
+ 	  			    		    		 alert("订单开始时间不能早于当前订单提交时间!");
+ 	  			    		     		 return;
+ 	  			    		    	 }
+ 	  		    		    	 }else{
+ 	  		    		    		 alert("订单有异常,请重新下单!");
+ 	  		    		     		 return;
+ 	  		    		    	 }
+ 	  		    		    	 }, 
+ 	  		    		     error: function(data){ 
+ 	  		    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+ 	  		    		    		 window.location.href = "loginUI.html"; } 
+ 	  		    		    	 else { window.location.href = "loginUI.html"; } } 
+ 	    			    	});
+ 	    	            }
+ 	    	        },
+	    		     error: function(data){ 
+	    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+	    		    		 window.location.href = "loginUI.html"; } 
+	    		    	 else { window.location.href = "loginUI.html"; } } 
+ 	    	     });
 		    	
-		    	$.ajax({ type: "POST",
-		    		     async: false, 
-		    		     url: "/cloud-security-platform/saveOrder.html", 
-		    		     data: {"orderType":orderType,//'orderId':orderId,
-			    			   	"beginDate": beginDate,
-			    			   	"endDate":endDate,
-			    			   	"createDate":createDate,
-			    			   	"scanType":scanType,
-//			    			   	"scanDate":scanDate,
-			    			   	"serviceId":serviceId,
-			    			   	"linkname":linkname,
-			    			   	"phone":phone,
-			    			   	"email":email,
-			    			   	"company":company,
-			    			   	"address":address,
-			    			   	"assetIds":assetIds,
-			    			   	"ip":ip,
-			    			   	"bandwidth":bandwidth,
-				    			"websoc":websoc},  
-		    		     dataType: "json", 
-//		    		     contentType: "application/json; charset=utf-8", 
-		    		     success: function(data) {
-		    		    	 if(data.assetsStatus == false){
-		    		    		 if(data.timeCompare == true){
-			    		    		 $("#orderId").html(data.orderId);
-						    		 getActive(4); 
-			    		    	 }else{
-			    		    		 alert("订单开始时间不能早于当前订单提交时间!");
-			    		     		 return;
-			    		    	 }
-		    		    	 }else{
-		    		    		 alert("订单有异常,请重新下单!");
-		    		     		 return;
-		    		    	 }
-		    		    	 }, 
-		    		     error: function(data){ 
-		    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-		    		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
-		    		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
-		    	});
+
 	    	}
 //    	}else{
 //    		alert("订单开始时间不能早于当前订单提交时间!");
@@ -469,7 +493,7 @@ $(function(){
 		var obj = {'serviceId':serviceId,
 				   'assetIds':assetIds,
 				   'scanType':scanType};
-    	$.post("/cloud-security-platform/checkOrderAsset.html", obj, function(data){
+    	$.post("checkOrderAsset.html", obj, function(data){
     		if(data.assetNames!=null){
     			$(".assets_msg").eq(index).html(data.assetNames + "不能用,请重新选择!");
     		}else{
@@ -506,7 +530,7 @@ $(function(){
 				      'parentC':parentC,
 				      'orderType':orderType,
 				      'websoc':websoc};
-		   $.post("/cloud-security-platform/select.html", obj, function(data){
+		   $.post("select.html", obj, function(data){
 			   if(data.servs!=null){
 				   var temp = data.servs;
 				   var res = temp.split(",");
@@ -525,7 +549,7 @@ $(function(){
 				      'parentC':parentC,
 				      'orderType':orderType,
 				      'websoc':websoc};
-		   $.post("/cloud-security-platform/select.html", obj, function(data){
+		   $.post("select.html", obj, function(data){
 			   if(data.servs!=null){
 				   var temp = data.servs;
 				   var res = temp.split(",");
@@ -556,7 +580,7 @@ $(function(){
 				      'parentC':parentC,
 				      'orderType':orderType,
 				      'websoc':websoc};
-		   $.post("/cloud-security-platform/select.html", obj, function(data){
+		   $.post("select.html", obj, function(data){
 			   if(data.servs!=null){
 				   var temp = data.servs;
 				   var res = temp.split(",");
@@ -588,7 +612,7 @@ $(function(){
 				      'parentC':parentC,
 				      'orderType':orderType,
 				      'websoc':websoc};
-		   $.post("/cloud-security-platform/select.html", obj, function(data){
+		   $.post("select.html", obj, function(data){
 			   if(data.servs!=null){
 				   var temp = data.servs;
 				   var res = temp.split(",");
@@ -621,7 +645,7 @@ $(function(){
 				      'parentC':parentC,
 				      'orderType':orderType,
 				      'websoc':websoc};
-		   $.post("/cloud-security-platform/select.html", obj, function(data){
+		   $.post("select.html", obj, function(data){
 			   if(data.servs!=null){
 				   var temp = data.servs;
 				   var res = temp.split(",");
@@ -640,7 +664,7 @@ $(function(){
 				      'parentC':parentC,
 				      'orderType':orderType,
 				      'websoc':websoc};
-		   $.post("/cloud-security-platform/select.html", obj, function(data){
+		   $.post("select.html", obj, function(data){
 			   if(data.servs!=null){
 				   var temp = data.servs;
 				   var res = temp.split(",");
@@ -674,7 +698,25 @@ $(function(){
    	   return createDate;
    }
    
-   
 
-    
 });
+
+function tasknum_verification(){
+		$.ajax({
+	        type: "POST",
+	        url: "verificateTaskNum.html",
+	        data: {},
+	        dataType:"json",
+	        success: function(data){
+	            if(data.msg){
+	            	alert("个人用户累计下单不能超过20次，如欲继续下单，需升级为企业用户！");           	
+	            }else{
+	            	 window.location.href = "selfHelpOrderInit.html";
+	            }
+	        },
+  		    error: function(data){ 
+  		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+  		    		 window.location.href = "loginUI.html"; } 
+  		    	 else { window.location.href = "loginUI.html"; } } 
+	     });
+}

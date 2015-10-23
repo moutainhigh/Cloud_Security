@@ -13,6 +13,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="userid" column="userid"/>
 		<result property="create_date" column="create_date"/>
 		<result property="remarks" column="remarks"/>
+		<result property="prov" column="prov"/>
+		<result property="city" column="city"/>
+		<result property="purpose" column="purpose"/>
 	</resultMap> 
 	<!-- 按用户id查询资产 -->
 	<select id="findByUserId" parameterType="int" resultMap="AssetRM">
@@ -23,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 新增资产 -->
 	<insert id="saveAsset" parameterType="com.cn.ctbri.entity.Asset">
 		insert into cs_asset 
-		(name,type,addr,status,userid,create_date,remarks) values(#{name},#{type},#{addr},#{status},#{userid},#{create_date},#{remarks})
+		(name,type,addr,status,userid,create_date,remarks,prov,city,purpose) values(#{name},#{type},#{addr},#{status},#{userid},#{create_date},#{remarks},#{prov},#{city},#{purpose})
 	</insert>
 	<!-- 删除资产 -->
 	<delete id="delete">

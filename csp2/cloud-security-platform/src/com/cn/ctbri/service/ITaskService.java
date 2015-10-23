@@ -39,5 +39,6 @@ public interface ITaskService {
 
 	//根据订单资产id,删除任务
     void deleteTaskByOaId(String order_asset_Id);
+    int findTaskByUserId(int userId);
 
 }

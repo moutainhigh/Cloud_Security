@@ -77,7 +77,7 @@ public class SystemFilter extends OncePerRequestFilter  {
 			//说明当前操作存在Session，需要放行
 //			if(!path.contains("admin")){
 				//如果访问路径包含admin说明是访问的后台，检验是否有权限访问，只有超级管理员和系统管理员才可以访问
-				if(user!=null&&user.getType()==2){
+				if(user!=null&&(user.getType()==2||user.getType()==3)){
 					//放行
 					try{
 						filterChain.doFilter(request, response);
