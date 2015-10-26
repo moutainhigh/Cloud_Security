@@ -41,15 +41,24 @@ $(function(){
 			$('.supper_table').show();
 			$('.system_table').hide();
 			$('.users_table').hide();
+			$('.online_table').hide();
 		});
 		$('#system').click(function(){
 			$('.system_table').show();
 			$('.supper_table').hide();
 			$('.users_table').hide();
+			$('.online_table').hide();
 		});
 		$('#users').click(function(){
 			$('.users_table').show();
 			$('.system_table').hide();
 			$('.supper_table').hide();
+			$('.online_table').hide();
 		});
+		$('#online').click(function(){
+			$('.online_table').show();
+			$('.users_table').hide();
+			$('.system_table').hide();
+			$('.supper_table').hide();
+		});		
 });

@@ -108,4 +108,11 @@ public interface IUserService {
     MobileInfo getMobileById(String MobileNumber);
     
     void updatePass(User user);
+    
+    /**
+     * 根据状态查询用户列表
+     * @param status
+     * @return
+     */
+    List<User> findUserByStatus(int status);
 }

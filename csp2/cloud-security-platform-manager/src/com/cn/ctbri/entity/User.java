@@ -39,6 +39,17 @@ public class User implements java.io.Serializable{
 	private int AssetSum;
 	//注册IP
 	private String ip;
+	//行业
+	private String industry;
+	//职业
+	private String job;
+	//公司名称
+	private String company;
+	//企业用户起始IP
+	private String startIP;
+	private String endIP;
+	//用户最后一次登录时间
+	private Date lastLoginTime;
 	//构造方法
 	public User(){}
 	public User(String name, String password, int status, int type) {
@@ -221,5 +232,41 @@ public class User implements java.io.Serializable{
     public void setIp(String ip) {
         this.ip = ip;
     }
+	public String getStartIP() {
+		return startIP;
+	}
+	public void setStartIP(String startIP) {
+		this.startIP = startIP;
+	}
+	public String getIndustry() {
+		return industry;
+	}
+	public void setIndustry(String industry) {
+		this.industry = industry;
+	}
+	public String getJob() {
+		return job;
+	}
+	public void setJob(String job) {
+		this.job = job;
+	}
+	public String getCompany() {
+		return company;
+	}
+	public void setCompany(String company) {
+		this.company = company;
+	}
+	public Date getLastLoginTime() {
+		return lastLoginTime;
+	}
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
+	public String getEndIP() {
+		return endIP;
+	}
+	public void setEndIP(String endIP) {
+		this.endIP = endIP;
+	}
 	
 }

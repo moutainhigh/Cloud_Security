@@ -1,7 +1,18 @@
 function edit(){
-	
-	 var p1=$("#update_password").val();//获取密码框的值
-	  var p2=$("#update_confirm_password").val();//获取重新输入的密码值
+	 var type=$("#editType").val();//获取用户类型
+	 var ipStart=$("#editStartIP").val();
+	 var ipEnd=$("#editEndIP").val();
+	 if(type=="3"){
+		 //判断IP地址段
+		 if(ipStart==""||ipEnd==""){
+			 $("#edit_ip_msg").html("<font color='red'>起始IP或终止IP不能为空!</font>");
+			 return;
+		 }else if(!ipCheck(ipStart,ipEnd)){
+			 return;			 
+		 }
+	 }
+		 var p1=$("#update_password").val();//获取密码框的值
+		 var p2=$("#update_confirm_password").val();//获取重新输入的密码值
 	  if(p1==""){
 		    	$("#update_password_msg").html("<font color='red'>密码不能为空!</font>");
 	   }else if(p1.length<6||p1.length>20){
@@ -25,4 +36,105 @@ function edit(){
 		   	$("#editUserForm").submit();
 		  }
 	  }
+
+}
+
+//验证IP
+function ipCheck(ipStart,ipEnd){
+	var reg=/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;//正则表达式
+	if(reg.test(ipStart))     
+    {     
+       if( !(RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256)){   
+    	   $("#edit_ip_msg").html("<font color='red'>起始IP格式不正确!</font>");
+    	   return false;
+       }
+    }else{
+       $("#edit_ip_msg").html("<font color='red'>起始IP格式不正确!</font>");
+  	   return false;
+    }
+	if(reg.test(ipEnd))     
+    {     
+       if( !(RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256)){   
+    	   $("#edit_ip_msg").html("<font color='red'>终止IP格式不正确!</font>");
+    	   return false;
+       }
+    }else{
+ 	   $("#edit_ip_msg").html("<font color='red'>终止IP格式不正确!</font>");
+	   return false;
+    }
+
+	var temp1 = ipStart.split(".");  
+    var temp2 = ipEnd.split(".");   
+    var ips = 0;
+    var ipe = 0;
+    for (var i = 0; i < 4; ++i)  
+    {  
+    	alert("i"+i);
+        ips = ips << 8 | parseInt(temp1[i]);   
+        ipe = ipe << 8 | parseInt(temp2[i]);  
+    }
+    if (ips > ipe) {
+    	$("#edit_ip_msg").html("<font color='red'>起始IP大于终止IP!</font>");
+    	return false;
+    }
+    return true;
+}
+//校验手机号码是否出现重复
+function editCheckMobile(){
+	var mobile = $("#editPhone").val();
+	var pattern = /^1[3|5|8|7][0-9]{9}$/;
+	var flag = pattern.test(mobile);
+	if(mobile==""||mobile==null){
+		$("#edit_mobile_msg").html("手机号码不能为空");
+	}else{
+		if(flag){
+			$.ajax({
+               type: "POST",
+               url: "regist_checkMobile.html",
+               data: {"mobile":mobile},
+               dataType:"json",
+               success: function(data){
+                    if(data.count>0){
+                        $("#edit_mobile_msg").html("您填写的手机号码已使用");//将发送验证码的button锁住，此时不能点击发送验证码
+                    }else{
+                   		$("#edit_mobile_msg").html("");
+                    }
+               }
+            });
+		}else{
+			$("#edit_mobile_msg").html("手机号码格式不对");
+		}
+	}
+}
+
+function checkIPStartEdit(){
+	var ipStart=$("#editStartIP").val();
+	var reg=/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;//正则表达式
+	if(ipStart==""){
+		$("#edit_ip_msg").html("起始IP不能为空!");
+	}else if(reg.test(ipStart)) {    
+	    if( !(RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256)){   
+	    	   $("#edit_ip_msg").html("起始IP格式不正确!");
+	    }else{
+	    	$("#edit_ip_msg").html("");
+	    }
+	}else{
+		$("#edit_ip_msg").html("起始IP格式不正确!");
+	}
+}
+
+function checkIPEndEdit(){
+	var ipEnd=$("#editEndIP").val();
+	var reg=/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;//正则表达式
+	if(ipEnd==""){
+		$("#edit_ip_msg").html("<font color='red'>终止IP不能为空!</font>");
+	}else if(reg.test(ipEnd)) {    
+	    if( !(RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256)){   
+	    	   $("#edit_ip_msg").html("<font color='red'>终止IP格式不正确!</font>");
+	    }else{
+	       $("#edit_ip_msg").html("");
+	    }
+	}else{
+		$("#edit_ip_msg").html("<font color='red'>终止IP格式不正确!</font>");
+	}
 }

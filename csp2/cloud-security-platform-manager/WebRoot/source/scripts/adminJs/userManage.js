@@ -70,7 +70,44 @@ function checkConfirmPassword(){
 }
 //提交
 function add(){
-	$("#form_regist").submit();
+	 var type=$("#type").val();//获取用户类型
+	 var ipStart=$("#addStartIP").val();
+	 var ipEnd=$("#addEndIP").val();
+	 if(type=="-1"){
+		 $("#regist_type_msg").html("<font color='red'>请选择用户分组!</font>");
+		 return;
+	 }else{
+		 if(type=="3"){
+			if(!ipCheck(ipStart,ipEnd)){
+				 return;			 
+			 }
+		 }
+			 var p1=$("#regist_password").val();//获取密码框的值
+			 var p2=$("#regist_confirm_password").val();//获取重新输入的密码值
+		  if(p1==""){
+			    	$("#regist_password_msg").html("<font color='red'>密码不能为空!</font>");
+		   }else if(p1.length<6||p1.length>20){
+			   $("#regist_password_msg").html("请输入6-20位，支持中英文，数字，字符组合");
+		   }else{
+			   	$("#regist_password_msg").html("");
+		   }
+		  if(p2==""){
+			   	$("#regist_confirm_password_msg").html("<font color='red'>确认密码不能为空!</font>");
+		  }else if(p2.length<6||p2.length>20){
+			   $("#regist_confirm_password_msg").html("请输入6-20位，支持中英文，数字，字符组合");
+		   }else{
+			   	$("#regist_confirm_password_msg").html("");
+		   }
+		  if(p2!=null&&p2!=""){
+			  if (p1!=p2) {
+			   	$("#regist_confirm_password_msg").html("<font color='red'>两次输入密码不一致，请重新输入</font>");
+			
+			  }else{
+			    $("#regist_confirm_password_msg").html("");
+			   	$("#form_regist").submit();
+			  }
+		  }		 
+	 }
 }
 //删除
 function deleteUser(id){
@@ -93,3 +130,122 @@ function deleteUser(id){
 function adminSearch(){
 	$("#searchForm").submit();
 }
+
+//修改时显示IP段输入框
+function show(index){
+	if(index=="3"){
+		$("#ipRange").show();
+	}else{
+		$("#ipRange").hide();
+	}
+}
+//添加用户时显示IP段输入框
+function addShow(index){
+	if(index=="3"){
+		$("#ipAddRange").show();
+	}else{
+		$("#ipAddRange").hide();
+	}
+}
+
+//验证IP
+function ipCheck(ipStart,ipEnd){
+	var reg=/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;//正则表达式
+/*	if(reg.test(ipStart))     
+    {     
+       if( !(RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256)){   
+    	   $("#edit_ip_msg").html("<font color='red'>起始IP格式不正确!</font>");
+    	   return false;
+       }
+    }else{
+       $("#edit_ip_msg").html("<font color='red'>起始IP格式不正确!</font>");
+  	   return false;
+    }
+	if(reg.test(ipEnd))     
+    {     
+       if( !(RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256)){   
+    	   $("#edit_ip_msg").html("<font color='red'>终止IP格式不正确!</font>");
+    	   return false;
+       }
+    }else{
+ 	   $("#edit_ip_msg").html("<font color='red'>终止IP格式不正确!</font>");
+	   return false;
+    }*/
+
+	var temp1 = ipStart.split(".");  
+    var temp2 = ipEnd.split(".");   
+    var ips = 0;
+    var ipe = 0;
+    for (var i = 0; i < 4; ++i)  
+    {  
+    	alert("i"+i);
+        ips = ips << 8 | parseInt(temp1[i]);   
+        ipe = ipe << 8 | parseInt(temp2[i]);  
+    }
+    if (ips > ipe) {
+    	$("#edit_ip_msg").html("<font color='red'>起始IP大于终止IP!</font>");
+    	return false;
+    }
+    return true;
+}
+
+function checkIPStart(){
+	var ipStart=$("#addStartIP").val();
+	var reg=/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;//正则表达式
+	if(ipStart==""){
+		$("#add_ip_msg").html("起始IP不能为空!");
+	}else if(reg.test(ipStart)) {    
+	    if( !(RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256)){   
+	    	   $("#add_ip_msg").html("起始IP格式不正确!");
+	    }else{
+	    	$("#add_ip_msg").html("");
+	    }
+	}else{
+		$("#add_ip_msg").html("起始IP格式不正确!");
+	}
+}
+
+function checkIPEnd(){
+	var ipEnd=$("#addEndIP").val();
+	var reg=/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;//正则表达式
+	if(ipEnd==""){
+		$("#add_ip_msg").html("<font color='red'>终止IP不能为空!</font>");
+	}else if(reg.test(ipEnd)) {    
+	    if( !(RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256)){   
+	    	   $("#add_ip_msg").html("<font color='red'>终止IP格式不正确!</font>");
+	    }else{
+	       $("#add_ip_msg").html("");
+	    }
+	}else{
+		$("#add_ip_msg").html("<font color='red'>终止IP格式不正确!</font>");
+	}
+}
+
+//校验手机号码是否出现重复
+function checkMobile(){
+	var mobile = $("#addPhone").val();
+	var pattern = /^1[3|5|8|7][0-9]{9}$/;
+	var flag = pattern.test(mobile);
+	if(mobile==""||mobile==null){
+		$("#add_mobile_msg").html("手机号码不能为空");
+	}else{
+		if(flag){
+			$.ajax({
+               type: "POST",
+               url: "regist_checkMobile.html",
+               data: {"mobile":mobile},
+               dataType:"json",
+               success: function(data){
+                    if(data.count>0){
+                        $("#add_mobile_msg").html("您填写的手机号码已使用");//将发送验证码的button锁住，此时不能点击发送验证码
+                    }else{
+                   		$("#add_mobile_msg").html("");
+                    }
+               }
+            });
+		}else{
+			$("#add_mobile_msg").html("手机号码格式不对");
+			checkMobile1 = 0;
+		}
+	}
+}	

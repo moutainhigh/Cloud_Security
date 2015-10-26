@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cn.ctbri.entity.UserMapper">
-	<sql id="cols">id,createTime,name,password,mobile,email,status,type,remarks,realName,ip</sql>
+	<sql id="cols">id,createTime,name,password,mobile,email,status,type,remarks,realName,ip,industry,job,company,startIP,endIP,lastLoginTime</sql>
 	
 	<resultMap type="com.cn.ctbri.entity.User" id="UserRM">
 		<id property="id" column="id"/>
@@ -17,6 +17,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="remarks" column="remarks"/>
 		<result property="realName" column="realName"/>
 		<result property="ip" column="ip"/>
+		<result property="industry" column="industry"/>
+		<result property="job" column="job"/>
+		<result property="company" column="company"/>
+		<result property="startIP" column="startIP"/>
+		<result property="endIP" column="endIP"/>
+		<result property="lastLoginTime" column="lastLoginTime"/>
 	</resultMap>
 	
 	<resultMap type="com.cn.ctbri.entity.MobileInfo" id="MobileInfo">
@@ -48,6 +54,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="password!=null">
 				password=#{password},
 			</if>
+			<if test="startIP!=null">
+				startIP=#{startIP},
+			</if>
+			<if test="endIP!=null">
+				endIP=#{endIP},
+			</if>
 		</set>
 		where id=#{id}
 	</update>
@@ -63,7 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入用户 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.User">
 		insert into cs_user 
-		(name,password,mobile,email,status,type,remarks,createTime,realName,ip) values(#{name},#{password},#{mobile},#{email},#{status},#{type},#{remarks},#{createTime},#{realName},#{ip})
+		(name,password,mobile,email,status,type,remarks,createTime,realName,industry,job,company,startIP,endIP) values(#{name},#{password},#{mobile},#{email},#{status},#{type},#{remarks},#{createTime},#{realName},#{industry},#{job},#{company},#{startIP},#{endIP})
 	</insert>
 	
 	<!-- 按用户名查询用户 -->
@@ -175,4 +187,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   email=#{email}
 		</if>
 	</update>
+	
+	<!-- 根据状态查询用户信息 -->
+	<select id="findUserByStatus" resultMap="UserRM" parameterType="int">
+	select * from cs_user where status=#{status} 
+	</select>
 </mapper>

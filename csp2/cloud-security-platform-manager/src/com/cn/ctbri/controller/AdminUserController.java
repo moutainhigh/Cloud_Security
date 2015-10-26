@@ -88,7 +88,7 @@ public class AdminUserController {
 //			request.setAttribute("msg", "对不起，您没有登录后台的权限！");
 //			return "/source/adminPage/adminLogin/adminLogin";
 //		}
-		if(_user.getStatus()!=1){
+		if(_user.getStatus()!=1 && _user.getStatus()!=2 && _user.getStatus()!=-1){
 			request.setAttribute("msg", "对不起，您的帐号已停用");
 			return "/source/page/regist/regist";//跳转到登录页面
 		}
@@ -110,6 +110,7 @@ public class AdminUserController {
 		List<User> newSupList = new ArrayList<User>();
 		List<User> newSysList = new ArrayList<User>();
 		List<User> newRegList = new ArrayList<User>();
+		List<User> newOnlineList = new ArrayList<User>();
 		if(list!=null && list.size()>0){
 			for(User u :list){
 				//查询服务个数,一个订单一个服务
@@ -122,21 +123,24 @@ public class AdminUserController {
 				if(assetList.size()>0&&assetList!=null){
 					u.setAssetSum(assetList.size());
 				}
-				//用户类型（0：超级管理员，1：管理员，2：用户）
+				//用户类型（0：超级管理员，1：管理员，2：用户(注册用户和企业用户)）
 				if(u.getType()==0){
 					newSupList.add(u);	
 				}
 				if(u.getType()==1){
 					newSysList.add(u);	
 				}
-				if(u.getType()==2){
+				if(u.getType()==2 || u.getType()==3){
 					newRegList.add(u);	
 				}
+				//查询在线用户（status:2）
+				newOnlineList = userService.findUserByStatus(2);
 			}
 		}
 		model.addAttribute("list",newSupList);//超级管理员列表
 		model.addAttribute("sysList", newSysList);//系统管理员列表
 		model.addAttribute("regList", newRegList);//注册用户列表
+		model.addAttribute("onLineList", newOnlineList);//在线用户列表
 		int supSum = 0;//超级管理员个数
 		if(newSupList.size()>0&&newSupList!=null){
 			supSum = newSupList.size();
@@ -154,12 +158,40 @@ public class AdminUserController {
 			regSum = newRegList.size();
 		}
 		request.setAttribute("regSum", regSum);
+		
+		int onLineSum = 0;//在线用户个数
+		if(newOnlineList.size()>0 && newOnlineList!=null){
+			onLineSum = newOnlineList.size();
+		}
+		request.setAttribute("onLineSum", onLineSum);
+		
 		if(user.getName()!=null){
 			model.addAttribute("name",user.getName());//回显用户名
 		}
 		if(user.getPassword()!=null){
 			model.addAttribute("password",user.getPassword());//回显用户名
 		}
+		if(user.getMobile()!=null){
+			model.addAttribute("mobile",user.getMobile());//回显电话
+		}
+		if(user.getIndustry()!=null && !user.getIndustry().equals("")){
+			model.addAttribute("industry",user.getIndustry());//回显行业
+		}
+		if(user.getJob()!=null && !user.getJob().equals("")){
+			model.addAttribute("job",user.getJob());//回显职业
+		}
+		if(user.getCompany()!=null){
+			model.addAttribute("company",user.getCompany());//回显公司
+		}
+		if(user.getType()!=-1){
+			model.addAttribute("type",user.getType());//回显类型
+		}
+		if(user.getStartIP() != null && !user.getStartIP().equals("")){
+			model.addAttribute("startIP",user.getStartIP());//回显起始IP
+		}
+		if(user.getEndIP() != null && !user.getEndIP().equals("")){
+			model.addAttribute("endIP",user.getEndIP());//回显终止IP
+		}		
 		return "/source/adminPage/userManage/userManage";
 	}
 	/**
@@ -189,9 +221,25 @@ public class AdminUserController {
 	@RequestMapping("/adminAddUser.html")
 	public String add(User user){
 		String realName = "";
+	    //行业
+		String industry = "";
+		//职业
+		String job = "";
+		//公司名称
+		String company = "";
 		try {//中文乱码
 			realName = new String(user.getRealName().getBytes("ISO-8859-1"), "UTF-8");
 			user.setRealName(realName);
+			industry = new String(user.getIndustry().getBytes("ISO-8859-1"), "UTF-8");
+			job = new String(user.getJob().getBytes("ISO-8859-1"),"UTF-8");
+			company = new String(user.getCompany().getBytes("ISO-8859-1"),"UTF-8");
+			user.setCompany(company);
+			if(!industry.equals("-1")){
+				user.setIndustry(industry);
+			}
+			if(!job.equals("-1")){
+				user.setJob(job);
+			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -210,12 +258,28 @@ public class AdminUserController {
 	@RequestMapping("/adminEditUser.html")
 	public String edit(User user){
 		String realName = "";
+	    //行业
+		String industry = "";
+		//职业
+		String job = "";
+		//公司名称
+		String company = "";
 		try {//中文乱码
 			realName = new String(user.getRealName().getBytes("ISO-8859-1"), "UTF-8");
 			String password = user.getPassword();
 			String md5password = DigestUtils.md5Hex(password);//密码加密
 			user.setPassword(md5password);
 			user.setRealName(realName);
+			industry = new String(user.getIndustry().getBytes("ISO-8859-1"), "UTF-8");
+			job = new String(user.getJob().getBytes("ISO-8859-1"),"UTF-8");
+			company = new String(user.getCompany().getBytes("ISO-8859-1"),"UTF-8");
+			user.setCompany(company);
+			if(!industry.equals("-1")){
+				user.setIndustry(industry);
+			}
+			if(!job.equals("-1")){
+				user.setJob(job);
+			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

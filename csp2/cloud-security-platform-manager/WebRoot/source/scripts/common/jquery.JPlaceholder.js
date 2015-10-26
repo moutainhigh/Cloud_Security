@@ -26,7 +26,7 @@ var JPlaceHolder = {
     fix : function(){
         jQuery(':input[placeholder]').each(function(index, element) {
             var self = $(this), txt = self.attr('placeholder');
-console.log(txt);
+//console.log(txt);
             self.wrap($('<div></div>').css({position:'relative', zoom:'1', border:'none', background:'none', padding:'none', margin:'none'}));
             var pos = self.position(), h = self.outerHeight(true), paddingleft = self.css('padding-left') , paddingtop = self.css('padding-top');
             var holder = $('<span></span>').text(txt).css({position:'absolute', left:pos.left, top:pos.top, height:h, lienHeight:h, paddingLeft:paddingleft, paddingTop:paddingtop, color:'#999'}).appendTo(self.parent());

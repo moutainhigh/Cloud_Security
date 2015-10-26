@@ -144,4 +144,8 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
 		// TODO Auto-generated method stub
 		this.getSqlSession().update(ns+"updatePass",user);
 	}
+
+	public List<User> findUserByStatus(int status) {
+		return getSqlSession().selectList(ns+"findUserByStatus", status);
+	}
 }

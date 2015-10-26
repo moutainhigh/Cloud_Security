@@ -162,4 +162,14 @@ public class UserServiceImpl implements IUserService{
 		// TODO Auto-generated method stub
 		userDao.updatePass(user);
 	}
+
+    /**
+     * 根据状态查询用户列表
+     * @param status
+     * @return
+     */
+	public List<User> findUserByStatus(int status) {
+		// TODO Auto-generated method stub
+		return userDao.findUserByStatus(status);
+	}
 }

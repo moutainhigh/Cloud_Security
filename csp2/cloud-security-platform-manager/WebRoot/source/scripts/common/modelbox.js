@@ -10,10 +10,31 @@ $(function(){
 		var name= $(".add_change").eq(_index).attr("name");
 		var realName= $(".add_change").eq(_index).attr("realName");
 		var type= $(".add_change").eq(_index).attr("type");
+		var mobile= $(".add_change").eq(_index).attr("mobile");
+		var industry = $(".add_change").eq(_index).attr("industry");
+		var job = $(".add_change").eq(_index).attr("job");
+		var company = $(".add_change").eq(_index).attr("company");
+		var type = $(".add_change").eq(_index).attr("type");
+		if(type==3){
+			var startIP = $(".add_change").eq(_index).attr("startIP");
+			var endIP = $(".add_change").eq(_index).attr("endIP");
+			$("#ipRange").show();
+			$("#editStartIP").val(startIP);
+			$("#editEndIP").val(endIP);
+		}else{
+			$("#ipRange").hide();
+		}
+
 		$("#hiddenEditUserid").val(id);
 		$("#editUseName").val(name);
 		$("#editRealName").val(realName);
 		$("#editType").val(type);
+		$("#editPhone").val(mobile);
+		$("#editIndustry").val(industry);
+		$("#editJob").val(job);
+		$("#editCompany").val(company);
+		$("#editType").val(type);
+
 		//var image=$(this).parent().find("a img");
 		//$(".box_logoIn").empty()
 		oMark2.style.display ="block";
@@ -49,7 +70,7 @@ $(function(){
 	
 	}
 });
-//修改
+//添加
 $(function(){
 	var oMark =document.getElementById('modelbox');
 	var oLogin =document.getElementById('box_logoIn');
