@@ -14,6 +14,8 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/assetJs/backstage.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/assetJs/jquery.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/assetJs/jquery.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
 <script>
 </script>
 </head>
@@ -62,25 +64,25 @@
                         <div class="analyse_tabItem" style="display:block">
                        
                             <!--资产地理位置统计分析-->
-                            <form class="clearfix analysecent">
-                                
-                                
+                            <form class="clearfix analysecent" name="assetForm"  id="assetForm" action="${ctx}/adminDataAssetUI.html" method="post">
                                  <div class="analyse_lable fl">
                                     <label>资产所属用户</label>
-                                    <select class="text">
-                                        <option>aaa</option>
+                                    <select class="text" name="assetUserType">
+                                        <option value="0">请选择</option>
+                                        <option value="3">企业用户</option>
+                                        <option value="2">个人用户</option>
                                     </select>
                                 </div>
                                  <div class="analyse_lable fl">
                                     <label>资产所在省</label>
-                                    <select class="text">
-                                        <option>aaa</option>
+                                    <select class="text" id="prov" name="prov" onchange="getCitys(this.value)">
+                                        <option value="" >请选择</option>
                                     </select>
                                 </div>
                                 <div class="analyse_lable fl">
                                     <label>资产所在市</label>
-                                    <select class="text">
-                                        <option>aaa</option>
+                                    <select class="text" id="city" name="city" >
+                                        <option value="" >请选择</option>
                                     </select>
                                 </div>
                                 <input type="submit" class="sub" value="">
@@ -168,7 +170,9 @@
                                  <div class="analyse_lable fl">
                                     <label>资产用途</label>
                                     <select class="text">
-                                        <option>aaa</option>
+                                        <option>公共服务</option>
+                                        <option>信息发布</option>
+                                        <option>其他</option>
                                     </select>
                                 </div>
                                 
