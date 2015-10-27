@@ -35,7 +35,7 @@ $(document).ready(function(){
         <li class="b_current"><a href="${ctx}/adminUserManageUI.html" class="white">用户管理</a></li><!--
         <li><a href="${ctx}/adminchinas.html" target="_blank" class="white">安全态势</a></li>
         --><li><a href="${ctx}/adminServUI.html" class="white">服务管理</a></li>
-        <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">资产分析</a></li>
+        <li><a href="${ctx}/adminDataAssetUI.html" class="white">资产分析</a></li>
         <li><a href="${ctx}/adminUserManageUI.html" class="white">用户分析</a></li>
         <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">订单分析</a></li>
         <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">告警分析</a></li>
