@@ -7,7 +7,7 @@ function putOption(obj){
 }
 
 function getCitys(provId){
-	//查询省对应的市
+	//查询省对应的市  
 	 $.ajax({
 		 	data: {"provId":provId},
 	        type: "POST",
@@ -16,6 +16,7 @@ function getCitys(provId){
 	        url: "getCityList.html", 
 	        success: function(obj){
 	        	putCityOption(obj);
+	        	
 	     	}
 		});
 }
