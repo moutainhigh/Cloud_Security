@@ -165,7 +165,7 @@ $(document).ready(function(){
     <div class="text_top">新增资产</div>
     <div class="text_bottm">
   
-      <table style="margin-top:56px;width:630px">
+      <table style="margin-top:26px;width:630px">
         <tr>
           <td style="width:25%;">资产名称</td>
           <td style="width:37%;"><input class="boz_inout_1" type="text" name="name" id="assetName"/></td>
@@ -194,10 +194,11 @@ $(document).ready(function(){
         <tr>
           <td>物理位置</td>
           <td>
-  				<select class="user_secta spiclesel" id="prov" name="prov"  onchange="getCitys(this.value)">
+  				<select class="user_secta_count spiclesel" id="prov" name="prov"  onchange="getCitys(this.value)" style="width:119px;height: 35px;">
   					<option selected="selected" value="-1">请选择省份</option>
   				</select> 
-    			<select class="user_secta spiclesel" id="city" name="city" disabled="disabled">
+    			<select class="user_secta_count spiclesel" id="city" name="city" disabled="disabled" style="width:119px;height: 35px;">
+    			<option selected="selected" value="-1">请选择城市</option>
     			</select>
 		  </td>
 		  <td style="color:#e32929;text-align:left;"><div id="location_msg"></div></td>
@@ -205,7 +206,7 @@ $(document).ready(function(){
         <tr>
         <td>资产用途</td>
          <td>
-   			<select class="user_secta spiclesel" id="purpose" name="purpose">
+   			<select class="user_secta_count spiclesel" id="purpose" name="purpose" style="width:242px;height: 35px;">
    				<option selected="selected" value="-1">请选择资产用途</option>
    				<option value="公共服务">公共服务</option>
    				<option value="信息发布">信息发布</option>
