@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.City;
+import com.cn.ctbri.entity.District;
 
 
 
@@ -30,6 +32,10 @@ public interface IDistrictDataService {
 	String getMonth(int i);
 
 	Alarm getServiceAlarmByMonth(Map<String, Object> paramMap);
+	
+	List<District> getDistrictList();
+	
+	List<City> getCityListByProv(Map<String, Object> paramMap);
 
 	
 
