@@ -24,6 +24,7 @@ public class TaskWarn{
     private Date warn_time;
     private String group_id;//创宇组id
     private int serviceId;
+    private int districtId;
     public int getId() {
         return id;
     }
@@ -113,6 +114,12 @@ public class TaskWarn{
 	}
 	public void setServiceId(int serviceId) {
 		this.serviceId = serviceId;
+	}
+	public int getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(int districtId) {
+		this.districtId = districtId;
 	}
     
 }
