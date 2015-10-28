@@ -19,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="status==1">
 		  and t.execute_time between date_add(now(),interval -1 minute) and now()
 		</if>
-		limit #{page}
+		<!-- limit #{page} -->
 	</select>
 	
 	<!-- 根据条件查询任务表 -->
@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test="status==2">
           and t.end_time between date_add(now(),interval -1 minute) and now()
         </if>
-        limit #{page}
+        <!-- limit #{page} -->
     </select>
     
     <!-- 根据条件查询引擎异常任务表 -->
@@ -40,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
           and t.engine = -1
         </if>
         order by t.execute_time
-        limit #{page}
+        <!-- limit #{page} -->
     </select>
     
 	<!-- 更新任务信息 -->
@@ -143,8 +143,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 插入任务告警信息 -->
     <insert id="insertTaskWarn" parameterType="com.cn.ctbri.entity.TaskWarn" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO cs_taskwarn
-        (cat1,cat2,name,severity,rule,ct,app_p,tran_p,url,msg,task_id,warn_time,group_id,serviceId) 
-        VALUES( #{cat1} , #{cat2},#{name},#{severity},#{rule},#{ct},#{app_p},#{tran_p},#{url},#{msg},#{task_id},#{warn_time},#{group_id},#{serviceId})
+        (cat1,cat2,name,severity,rule,ct,app_p,tran_p,url,msg,task_id,warn_time,group_id,serviceId,districtId) 
+        VALUES( #{cat1} , #{cat2},#{name},#{severity},#{rule},#{ct},#{app_p},#{tran_p},#{url},#{msg},#{task_id},#{warn_time},#{group_id},#{serviceId},#{districtId})
     </insert>
     
     <!-- 获取订单还在执行的任务 -->
@@ -165,6 +165,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 获取创宇在执行的任务 -->
     <select id="getWebsocTask" resultType="com.cn.ctbri.entity.Task">
         select * from cs_task t where t.status = 2 and t.websoc = 1
+    </select>
+    
+    <!-- 获取创宇在执行的任务 -->
+    <select id="findDistrictIdByTaskId" parameterType="String" resultType="Integer">
+        select IFNULL(a.districtId,35) districtId from cs_task t,cs_order_asset oa,cs_asset a
+     	where  t.order_asset_Id = oa.id and oa.assetId = a.id and t.taskId = #{taskId}
     </select>
     
     
