@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sinosoft.dao.CsAssetMapper">
+	<resultMap id="BaseResultMap" type="com.sinosoft.vo.CsAsset">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="BIT" />
+		<result column="addr" property="addr" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="userid" property="userid" jdbcType="INTEGER" />
+		<result column="create_date" property="createDate"
+			jdbcType="DATE" />
+		<result column="remarks" property="remarks" jdbcType="VARCHAR" />
+		<result column="ip" property="ip" jdbcType="VARCHAR" />
+		<result column="districtId" property="districtid"
+			jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, name, type, addr, status, userid, create_date, remarks, ip,
+		districtId
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from cs_asset where status=1 and id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectByUserId" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from cs_asset where userid = #{userid,jdbcType=INTEGER}
+		<if test="pageNow!=null and pageSize!=null">
+			limit #{pageNow},#{pageSize}
+		</if>
+	</select>
+
+	<select id="selectByUserIdAndStatus" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from cs_asset where userid = #{userid,jdbcType=INTEGER} and
+		status = #{status,jdbcType=INTEGER} 
+		<if test="pageNow!=null and pageSize!=null">
+			limit #{pageNow},#{pageSize}
+		</if>
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from cs_asset where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.sinosoft.vo.CsAsset">
+		insert into cs_asset (id, name, type, addr, status, userid,
+		create_date, remarks, ip, districtId ) values
+		(#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+		#{type,jdbcType=BIT}, #{addr,jdbcType=VARCHAR},
+		#{status,jdbcType=BIT}, #{userid,jdbcType=INTEGER},
+		#{createDate,jdbcType=DATE}, #{remarks,jdbcType=VARCHAR},
+		#{ip,jdbcType=VARCHAR}, #{districtid,jdbcType=INTEGER} )
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.sinosoft.vo.CsAsset">
+		insert into cs_asset
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="name != null">name,</if>
+			<if test="type != null">type,</if>
+			<if test="addr != null">addr,</if>
+			<if test="status != null">status,</if>
+			<if test="userid != null">userid,</if>
+			<if test="createDate != null">create_date,</if>
+			<if test="remarks != null">remarks,</if>
+			<if test="ip != null">ip,</if>
+			<if test="districtid != null">districtId,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=INTEGER},</if>
+			<if test="name != null">#{name,jdbcType=VARCHAR},</if>
+			<if test="type != null">#{type,jdbcType=BIT},</if>
+			<if test="addr != null">#{addr,jdbcType=VARCHAR},</if>
+			<if test="status != null">#{status,jdbcType=BIT},</if>
+			<if test="userid != null">#{userid,jdbcType=INTEGER},</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=DATE},
+			</if>
+			<if test="remarks != null">#{remarks,jdbcType=VARCHAR},</if>
+			<if test="ip != null">#{ip,jdbcType=VARCHAR},</if>
+			<if test="districtid != null">
+				#{districtid,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.sinosoft.vo.CsAsset">
+		update cs_asset
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">type = #{type,jdbcType=BIT},</if>
+			<if test="addr != null">
+				addr = #{addr,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=BIT},
+			</if>
+			<if test="userid != null">
+				userid = #{userid,jdbcType=INTEGER},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=DATE},
+			</if>
+			<if test="remarks != null">
+				remarks = #{remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="ip != null">ip = #{ip,jdbcType=VARCHAR},</if>
+			<if test="districtid != null">
+				districtId = #{districtid,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.sinosoft.vo.CsAsset">
+		update cs_asset set name = #{name,jdbcType=VARCHAR}, type =
+		#{type,jdbcType=BIT}, addr = #{addr,jdbcType=VARCHAR}, status =
+		#{status,jdbcType=BIT}, userid = #{userid,jdbcType=INTEGER},
+		create_date = #{createDate,jdbcType=DATE}, remarks =
+		#{remarks,jdbcType=VARCHAR}, ip = #{ip,jdbcType=VARCHAR},
+		districtId = #{districtid,jdbcType=INTEGER} where id =
+		#{id,jdbcType=INTEGER}
+	</update>
+</mapper>
