@@ -2,15 +2,7 @@ function edit(){
 	 var type=$("#editType").val();//获取用户类型
 	 var ipStart=$("#editStartIP").val();
 	 var ipEnd=$("#editEndIP").val();
-	 if(type=="3"){
-		 //判断IP地址段
-		 if(ipStart==""||ipEnd==""){
-			 $("#edit_ip_msg").html("<font color='red'>起始IP或终止IP不能为空!</font>");
-			 return;
-		 }else if(!ipCheck(ipStart,ipEnd)){
-			 return;			 
-		 }
-	 }
+	 
 		 var p1=$("#update_password").val();//获取密码框的值
 		 var p2=$("#update_confirm_password").val();//获取重新输入的密码值
 	  if(p1==""){
@@ -33,15 +25,63 @@ function edit(){
 		
 		  }else{
 		    $("#update_confirm_password_msg").html("");
-		   	$("#editUserForm").submit();
+			 if(type=="-1"){
+				 $("#edit_type_msg").html("<font color='red'>请选择用户分组!</font>");
+			 }else{
+				 if(type=="3"){
+					 var mobile = $("#editPhone").val();
+					 if(mobile=="" || mobile==null){
+						 $("#edit_mobile_msg").html("企业用户手机号码不能为空!");
+					 }else{
+						 $("#edit_mobile_msg").html("");
+						 if(CheckIPEdit(ipStart,ipEnd)){
+							 $("#editUserForm").submit();
+						 }
+					 }
+				 }else{
+					 $("#edit_mobile_msg").html("");
+					 $("#editUserForm").submit();
+				 }
+				 
+			}
 		  }
 	  }
 
 }
 
 //验证IP
-function ipCheck(ipStart,ipEnd){
+function CheckIPEdit(ipStart,ipEnd){
 	var reg=/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;//正则表达式
+	if(ipStart==""){
+		$("#edit_ip_msg").html("起始IP不能为空!");
+		return false;
+	}else if(reg.test(ipStart)) {    
+	    if( !(RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256)){   
+	    	   $("#edit_ip_msg").html("起始IP格式不正确!");
+	    	   return false;
+	    }else{
+	    	$("#edit_ip_msg").html("");
+	    }
+	}else{
+		$("#edit_ip_msg").html("起始IP格式不正确!");
+		return false;
+	}
+	
+	if(ipEnd==""){
+		$("#edit_ip_msg").html("<font color='red'>终止IP不能为空!</font>");
+		return false;
+	}else if(reg.test(ipEnd)) {    
+	    if( !(RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256)){   
+	    	   $("#edit_ip_msg").html("<font color='red'>终止IP格式不正确!</font>");
+	    	   return false;
+	    }else{
+	       $("#edit_ip_msg").html("");
+	    }
+	}else{
+		$("#edit_ip_msg").html("<font color='red'>终止IP格式不正确!</font>");
+		return false;
+	}
+	
 	if(reg.test(ipStart))     
     {     
        if( !(RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256)){   
@@ -69,7 +109,6 @@ function ipCheck(ipStart,ipEnd){
     var ipe = 0;
     for (var i = 0; i < 4; ++i)  
     {  
-    	alert("i"+i);
         ips = ips << 8 | parseInt(temp1[i]);   
         ipe = ipe << 8 | parseInt(temp2[i]);  
     }
@@ -84,9 +123,7 @@ function editCheckMobile(){
 	var mobile = $("#editPhone").val();
 	var pattern = /^1[3|5|8|7][0-9]{9}$/;
 	var flag = pattern.test(mobile);
-	if(mobile==""||mobile==null){
-		$("#edit_mobile_msg").html("手机号码不能为空");
-	}else{
+	if(mobile!="" && mobile!=null){
 		if(flag){
 			$.ajax({
                type: "POST",
@@ -107,34 +144,14 @@ function editCheckMobile(){
 	}
 }
 
-function checkIPStartEdit(){
-	var ipStart=$("#editStartIP").val();
-	var reg=/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;//正则表达式
-	if(ipStart==""){
-		$("#edit_ip_msg").html("起始IP不能为空!");
-	}else if(reg.test(ipStart)) {    
-	    if( !(RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256)){   
-	    	   $("#edit_ip_msg").html("起始IP格式不正确!");
-	    }else{
-	    	$("#edit_ip_msg").html("");
-	    }
-	}else{
-		$("#edit_ip_msg").html("起始IP格式不正确!");
-	}
-}
-
-function checkIPEndEdit(){
-	var ipEnd=$("#editEndIP").val();
-	var reg=/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;//正则表达式
-	if(ipEnd==""){
-		$("#edit_ip_msg").html("<font color='red'>终止IP不能为空!</font>");
-	}else if(reg.test(ipEnd)) {    
-	    if( !(RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256)){   
-	    	   $("#edit_ip_msg").html("<font color='red'>终止IP格式不正确!</font>");
-	    }else{
-	       $("#edit_ip_msg").html("");
-	    }
-	}else{
-		$("#edit_ip_msg").html("<font color='red'>终止IP格式不正确!</font>");
+//修改时显示IP段输入框
+function editShow(index){
+	if(index != "-1"){
+		 $("#edit_type_msg").html("");
+		if(index=="3"){
+			$("#ipRange").show();
+		}else{
+			$("#ipRange").hide();
+		}
 	}
 }

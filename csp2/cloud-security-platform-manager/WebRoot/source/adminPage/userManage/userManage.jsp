@@ -210,7 +210,7 @@ $(document).ready(function(){
 	                        <td class="t_service">${user.servSum}</td>
 	                        <td class="t_operation">
 	                        	<a href="#" class="ope_a add_change" id="${user.id}" name="${user.name}" realName="${user.realName}" mobile="${user.mobile}" industry="${user.industry}" 
-	                        	job="${user.job}" company="${user.company}" type="${user.type}">修改</a>
+	                        	job="${user.job}" company="${user.company}" startIP="${user.startIP}" endIP="${user.endIP}" type="${user.type}">修改</a>
 	                        	<a href="javascript:void(0)" onclick="deleteUser('${user.id}')" class="ope_a ml20">删除</a>
 	                        </td>
                    		</tr>
@@ -311,7 +311,7 @@ $(document).ready(function(){
 
           <tr class="register_tr" id="ipAddRange" style="display:none">
             <td class="regist_title">IP地址段</td>
-            <td class="regist_input"><input type="text" name="startIP" id="addStartIP" class="regist_txt" onblur="checkIPStart()" style="width:100px;"/><i class="fl">-</i><input type="text" name="endIP" id="addEndIP" class="regist_txt" onblur="checkIPEnd()" style="width:100px;"></span></td>
+            <td class="regist_input"><input type="text" name="startIP" id="addStartIP" class="regist_txt" style="width:100px;"/><i class="fl">-</i><input type="text" name="endIP" id="addEndIP" class="regist_txt" style="width:100px;"></span></td>
             <td class="regist_prompt"><span id="add_ip_msg" style="color:red;float:left"></td>    
           </tr>
           <tr class="register_tr">
@@ -402,20 +402,21 @@ $(document).ready(function(){
           <tr class="register_tr">
             <td class="regist_title">用户分组</td>
             <td class="regist_input">
-                <select class="regist_sel" id="editType" name="type"  onchange="show(this.value)">
+                <select class="regist_sel" id="editType" name="type"  onchange="editShow(this.value)">
                 	<option selected="selected" value="-1">请选择分组</option>
                 	<option value="0" >超级管理员</option>
          			<option value="1" >系统管理员</option>
          			<option value="2" >个人用户</option>
          			<option value="3" >企业用户</option>
                 </select>
+                <span id="edit_type_msg" style="color:red;float:left;">
             </td>
             <td class="regist_prompt"></td>
           </tr>
 
           <tr class="register_tr" id="ipRange" style="display:none">
             <td class="regist_title">IP地址段</td>
-            <td class="regist_input"><input type="text" name="startIP" id="editStartIP" class="regist_txt" onblur="checkIPStartEdit()"style="width:100px;"/><i class="fl">-</i><input type="text" name="endIP" id="editEndIP" class="regist_txt" onblur="checkIPEndEdit()" style="width:100px;"></td>
+            <td class="regist_input"><input type="text" name="startIP" id="editStartIP" class="regist_txt" style="width:100px;"/><i class="fl">-</i><input type="text" name="endIP" id="editEndIP" class="regist_txt"  style="width:100px;"></td>
              <td class="regist_prompt"><span id="edit_ip_msg" style="color:red;float:left"></span></td>    
           </tr>
           <tr class="register_tr">

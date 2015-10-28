@@ -77,8 +77,19 @@ $(function(){
 	
 	$("#add_ser").click(function(){
 		var _index =$(".add_ser").index(this);  //获取当前点击按钮
-		//var image=$(this).parent().find("a img");
-		//$(".box_logoIn").empty()
+		
+		$("#regist_name").val("");
+		$("#regist_password").val("");
+		$("#regist_confirm_password").val("");
+		$("#realName").val("");
+		$("#addPhone").val("");
+		$("#addType").val("-1");
+		//IP不显示
+		$("#ipAddRange").css("display", "none");
+		$("#addIndustry").val("-1");
+		$("#addJob").val("-1");
+		$("#addCompany").val("");
+		
 		oMark.style.display ="block";
 		oLogin.style.display ="block";
 		oMark.style.width = viewWidth() + 'px';

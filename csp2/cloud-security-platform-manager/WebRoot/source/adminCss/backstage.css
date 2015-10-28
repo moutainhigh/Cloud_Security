@@ -107,7 +107,7 @@ select.ser_input{height:38px;line-height:38px;width:262px;color:#888888;font-siz
 .user_title{padding-top:38px;color:#999;font-size:18px;display:block;float:left;}
 .user_num{color:#f1a31a;font-size:36px;padding:26px 0 0 10px;display:block;float:left;}
 .supper_table{width:100%;overflow:hidden;padding-bottom:36px;}
-.system_table,.users_table{width:100%;overflow:hidden;padding-bottom:36px;display:none;}
+.system_table,.users_table,.online_table{width:100%;overflow:hidden;padding-bottom:36px;display:none;}
 .user_table{width:100%;}
 .user_table th{height:40px;background:#e0e0e0;font-size:16px;color:#888;font-weight:normal;}
 .user_table td{border-bottom:1px solid #e0e0e0;height:42px;text-align:center;color:#888;font-size:14px;}
