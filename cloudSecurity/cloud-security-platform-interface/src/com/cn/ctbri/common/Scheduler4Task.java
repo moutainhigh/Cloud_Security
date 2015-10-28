@@ -213,7 +213,7 @@ public class Scheduler4Task {
                     hashmap.put("orderId", orderList.get(0).getId());
                     hashmap.put("websoc", orderList.get(0).getWebsoc());
                     if(orderList.get(0).getServiceId()==5&&orderList.get(0).getWebsoc()!=1){
-                        ArnhemWorker.removeTask(sessionId, String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId());
+//                        ArnhemWorker.removeTask(sessionId, String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId());
                         //任务完成后,引擎活跃数减1
 //                        engine.setActivity(engine.getActivity()-1);
 //                        engineService.update(engine);
