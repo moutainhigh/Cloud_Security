@@ -194,7 +194,7 @@ $(document).ready(function(){
         <tr>
           <td>物理位置</td>
           <td>
-  				<select class="user_secta_count spiclesel" id="prov" name="prov"  onchange="getCitys(this.value)" style="width:119px;height: 35px;">
+  				<select class="user_secta_count spiclesel" id="districtId" name="districtId"  onchange="getCitys(this.value)" style="width:119px;height: 35px;">
   					<option selected="selected" value="-1">请选择省份</option>
   				</select> 
     			<select class="user_secta_count spiclesel" id="city" name="city" disabled="disabled" style="width:119px;height: 35px;">

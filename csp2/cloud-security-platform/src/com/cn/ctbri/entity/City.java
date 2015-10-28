@@ -5,7 +5,7 @@ public class City {
 	private String code; //城市编码
 	private String name; //城市中文名称
 	private int type;	 //城市类别：南方分为1、2、3、4类；北方分为1、2类
-	private int provId;  //所属省ID
+	private int districtId;  //所属省ID
 	private String provCode; //所属省份编码
 	private String provName; //省份名称
 	private String area;	 //城市所属区域：0南方、1北方
@@ -33,11 +33,12 @@ public class City {
 	public void setType(int type) {
 		this.type = type;
 	}
-	public int getProvId() {
-		return provId;
+
+	public int getDistrictId() {
+		return districtId;
 	}
-	public void setProvId(int provId) {
-		this.provId = provId;
+	public void setDistrictId(int districtId) {
+		this.districtId = districtId;
 	}
 	public String getProvCode() {
 		return provCode;

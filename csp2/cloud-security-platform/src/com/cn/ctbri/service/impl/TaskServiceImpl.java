@@ -44,7 +44,7 @@ public class TaskServiceImpl implements ITaskService{
 	public Task findBasicInfoByOrderId(Map<String, Object> paramMap) {
 		return taskDao.findBasicInfoByOrderId(paramMap);
 	}
-	public List<Task> findScanTimeByOrderId(String orderId) {
+	public List findScanTimeByOrderId(String orderId) {
 		return taskDao.findScanTimeByOrderId(orderId);
 	}
     public Task findNearlyTask(String orderId) {
@@ -61,6 +61,13 @@ public class TaskServiceImpl implements ITaskService{
     }
 	public int findTaskByUserId(int userId) {
 		return taskDao.findTaskByUserId(userId);
+	}
+	public void update(Map<String, Object> hisMap) {
+		taskDao.update(hisMap);
+		
+	}
+	public List<Task> findAllByOrderId(Map<String, Object> hisMap) {
+		return taskDao.findAllByOrderId(hisMap);
 	}
 
 }

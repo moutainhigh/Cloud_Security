@@ -220,7 +220,7 @@ public class DistrictDataController {
     /**
      * 查询所有省份数据
      * 
-     * @return
+     * @return 省份列表
      * @throws IOException
      */
     @RequestMapping(value="getDistrictListAll.html")
@@ -248,9 +248,9 @@ public class DistrictDataController {
     public String getCityList(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=UTF-8");
-        String provId = request.getParameter("provId");
+        String districtId = request.getParameter("districtId");
         Map<String, Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("provId", provId);
+        paramMap.put("districtId", districtId);
         Gson gson= new Gson();
         List<City> result = districtDataService.getCityListByProv(paramMap);
         String resultGson = gson.toJson(result);//转成json数据

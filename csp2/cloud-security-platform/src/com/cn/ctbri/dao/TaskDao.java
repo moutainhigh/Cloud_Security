@@ -37,7 +37,7 @@ public interface TaskDao {
 	public Task findProgressByOrderId(Map<String, Object> paramMap);
 
 	public Task findBasicInfoByOrderId(Map<String, Object> paramMap);
-	public List<Task> findScanTimeByOrderId(String orderId);
+	public List findScanTimeByOrderId(String orderId);
 
     public Task findNearlyTask(String orderId);
 
@@ -47,4 +47,9 @@ public interface TaskDao {
 
     public void deleteTaskByOaId(String order_asset_Id);
     int findTaskByUserId(int userId);
+    
+    public void update(Map<String, Object> paramMap);
+    
+    //根据订单id查询任务列表
+    List<Task> findAllByOrderId(Map<String, Object> hisMap);
 }

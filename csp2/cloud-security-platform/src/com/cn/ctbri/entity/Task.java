@@ -33,6 +33,7 @@ public class Task{
     private String executeTime;//vo执行时间
     private int progress;//执行进度vo
     private int websoc;//创宇
+    private int alarm_view_flag;//告警是否查看过标识
     private String group_id;//创宇返回组id
 	public int getProgress() {
 		return progress;
@@ -184,5 +185,12 @@ public class Task{
     public void setGroup_id(String group_id) {
         this.group_id = group_id;
     }
+	public int getAlarm_view_flag() {
+		return alarm_view_flag;
+	}
+	public void setAlarm_view_flag(int alarmViewFlag) {
+		alarm_view_flag = alarmViewFlag;
+	}
+
 	
 }

@@ -126,20 +126,11 @@ public class MyAssetsController {
 		String name = "";//资产名称
 		String addr = "";//资产地址
 		String addrType = asset.getAddrType();
-		String prov = "";//省
-		String city = "";//市
 		String purpose = "";//用途
 		//处理页面输入中文乱码的问题
 		try {
-			//name = URLDecoder.decode(asset.getName(), "UTF-8");
 			name=new String(asset.getName().getBytes("ISO-8859-1"), "UTF-8");
 			addr=new String(asset.getAddr().getBytes("ISO-8859-1"), "UTF-8");
-			Map<String, Object> paramMap = new HashMap<String, Object>();
-	        paramMap.put("provId", asset.getProv());
-			prov = districtService.getProvNameById(paramMap);
-			if(asset.getCity()!=null && !asset.getCity().equals("")){
-				city=new String(asset.getCity().getBytes("ISO-8859-1"), "UTF-8");
-			}
 			purpose=new String(asset.getPurpose().getBytes("ISO-8859-1"), "UTF-8");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -149,8 +140,6 @@ public class MyAssetsController {
 		}
 		asset.setName(name);
 		asset.setAddr(addr);
-		asset.setProv(prov);
-		asset.setCity(city);
 		asset.setPurpose(purpose);
 		assetService.saveAsset(asset);
 		return "redirect:/userAssetsUI.html";

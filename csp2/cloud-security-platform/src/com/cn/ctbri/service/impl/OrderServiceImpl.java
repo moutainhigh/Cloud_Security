@@ -88,8 +88,7 @@ public class OrderServiceImpl implements IOrderService{
      * 返回值    ：  Order
      */
     public List findByUserIdAndPage(int id, int pageIndex,String state,String type) {
-        List list = orderDao.findByUserIdAndPage(id,pageIndex,state,type);
-        return list;
+        return orderDao.findByUserIdAndPage(id,pageIndex,state,type);
     }
     /**
      * 功能描述：组合查询订单追踪-分页

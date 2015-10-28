@@ -29,7 +29,7 @@ public interface ITaskService {
 
 	Task findBasicInfoByOrderId(Map<String, Object> paramMap);
 
-	List<Task> findScanTimeByOrderId(String orderId);
+	List findScanTimeByOrderId(String orderId);
 
     Task findNearlyTask(String orderId);
 
@@ -40,5 +40,8 @@ public interface ITaskService {
 	//根据订单资产id,删除任务
     void deleteTaskByOaId(String order_asset_Id);
     int findTaskByUserId(int userId);
-
+    //根据orderId,修改task表是否查看告警标识为1
+    void update(Map<String, Object> hisMap);
+    //根据订单id查询任务列表
+    List<Task> findAllByOrderId(Map<String, Object> paramMap);
 }

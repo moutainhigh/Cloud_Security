@@ -23,10 +23,9 @@ public class Asset {
 	private String addrType;//VO :资产地址类型
 	
 	private String ip;//ip地址
-	private int districtId;//地区id
+	private int districtId;//地区id,省
 	private String disName;//地区名称
 	
-	private String prov;//物理位置：省
 	private String city;//物理位置：市
 	private String purpose;//资产用途
 	
@@ -108,12 +107,6 @@ public class Asset {
 	}
 	public void setDisName(String disName) {
 		this.disName = disName;
-	}
-	public String getProv() {
-		return prov;
-	}
-	public void setProv(String prov) {
-		this.prov = prov;
 	}
 	public String getCity() {
 		return city;

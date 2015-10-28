@@ -101,6 +101,24 @@ public class WarningController {
 //        	return "/source/error/errorMsg";
         	return "redirect:/orderTrackInit.html";
         }else{
+        	
+        	//有告警：修改task表是否查看告警标识为1
+        	if(orderList.get(0).get("status").equals(2) || orderList.get(0).get("status").equals(3)){
+            	Map<String, Object> paramMap1 = new HashMap<String, Object>();
+            	if(type.equals("2")){
+            		paramMap1.put("orderId", orderId);
+            		taskService.update(paramMap1);
+            	}else{
+            		if(groupId != null){
+                		paramMap1.put("orderId", orderId);
+                		paramMap1.put("groupId", groupId);
+                		taskService.update(paramMap1);
+            		}
+            	}
+
+        	}
+
+    		
 	        paramMap.put("orderId", orderId);
 	        paramMap.put("type", type);
 	        paramMap.put("group_flag", groupId);
@@ -119,7 +137,7 @@ public class WarningController {
 			request.setAttribute("keywordList", keywordList);
 			request.setAttribute("keyList", keywordList.size());
 	        //获取历史时间
-	        List<Task> taskTime = taskService.findScanTimeByOrderId(orderId);
+	        List taskTime = taskService.findScanTimeByOrderId(orderId);
 	        request.setAttribute("taskTime", taskTime);
 	        if(runList.size()>0){
 	        	request.setAttribute("timeSize", 0);
@@ -593,7 +611,7 @@ public class WarningController {
     public void getExecuteTime(HttpServletRequest request,HttpServletResponse response){
     	String orderId = request.getParameter("orderId");
     	String status = request.getParameter("status");
-    	List<Task> taskTime = taskService.findScanTimeByOrderId(orderId);
+    	List taskTime = taskService.findScanTimeByOrderId(orderId);
         StringBuffer rsOption = new StringBuffer(); 
         int leng = 0;
         if(status.equals("2")){
@@ -602,9 +620,9 @@ public class WarningController {
             leng = taskTime.size()-1;
         }
         for(int i=0;i<leng;i++){
-        	Task t = taskTime.get(i);
+        	HashMap map = (HashMap)taskTime.get(i);
 //        	String str = DateUtils.dateToString(t.getExecute_time());
-        	String str1=DateUtils.dateToString(t.getGroup_flag());
+        	String str1=DateUtils.dateToString((Date)map.get("group_flag"));
         	rsOption.append("<option value='"+str1+"'>"+str1+"</option>"); 
         }
         PrintWriter pout;

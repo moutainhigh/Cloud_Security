@@ -697,8 +697,31 @@ public class OrderMgrController {
         int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         String state=request.getParameter("state");
-        //根据pageIndex获取每页order条数,获取订单信息
+        //根据pageIndex获取每页order条数,获取订单信息（逻辑删除订单不显示）
         List orderList = orderService.findByUserIdAndPage(globle_user.getId(),pageIndex,state,null);
+        
+        //根据orderId查询task表判断告警是否查看过
+        if(orderList != null && orderList.size() > 0){
+	        for(int i = 0; i < orderList.size(); i++){
+	        	int alarmViewedFlag = 1;
+	        	HashMap<String,Object>  map = (HashMap<String,Object>)orderList.get(i);
+	        	Map<String,Object> paramMap = new HashMap<String,Object>();
+	        	String orderId = (String)map.get("id");
+	        	String type = map.get("type").toString();
+	        	paramMap.put("orderId", orderId);
+	        	paramMap.put("type", type);
+	        	List<Task> taskList = taskService.findAllByOrderId(paramMap);
+				if(taskList != null && taskList.size() > 0){
+					for (Task task : taskList) {
+						if(task.getAlarm_view_flag() != 1 && task.getIssueCount()!=0){
+							alarmViewedFlag = 0;
+						}
+					}
+				}
+				map.put("alarmViewedFlag", alarmViewedFlag);
+	        }
+        }
+        
         //获取当前时间
         SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String temp = setDateFormat.format(Calendar.getInstance().getTime());
@@ -749,6 +772,28 @@ public class OrderMgrController {
         String temp = setDateFormat.format(Calendar.getInstance().getTime());
         paramMap.put("currentDate", temp);
         List result = orderService.findByCombineOrderTrack(paramMap);
+       
+        //根据orderId查询task表判断告警是否查看过
+        if(result != null && result.size() > 0){
+	        for(int i = 0; i < result.size(); i++){
+	        	int alarmViewedFlag = 1;
+	        	HashMap<String,Object>  map = (HashMap<String,Object>)result.get(i);
+	        	Map<String,Object> paramMap1 = new HashMap<String,Object>();
+	        	String orderId = (String)map.get("id");
+	        	String type1 = map.get("type").toString();
+	        	paramMap.put("orderId", orderId);
+	        	paramMap.put("type", type1);
+	        	List<Task> taskList = taskService.findAllByOrderId(paramMap1);
+				if(taskList != null && taskList.size() > 0){
+					for (Task task : taskList) {
+						if(task.getAlarm_view_flag() != 1 && task.getIssueCount()!=0){
+							alarmViewedFlag = 0;
+						}
+					}
+				}
+				map.put("alarmViewedFlag", alarmViewedFlag);
+	        }
+        }
         
         model.addAttribute("nowDate",temp); 
         model.addAttribute("orderList",result);      //传对象到页面
@@ -810,6 +855,29 @@ public class OrderMgrController {
         paramMap.put("pageNow", pageNow);
         paramMap.put("pageSize", pageSize);
         List result = orderService.findByCombineOrderTrackByPage(paramMap);
+
+        //根据orderId查询task表判断告警是否查看过
+        if(result != null && result.size() > 0){
+	        for(int i = 0; i < result.size(); i++){
+	        	int alarmViewedFlag = 1;
+	        	HashMap<String,Object>  map = (HashMap<String,Object>)result.get(i);
+	        	Map<String,Object> paramMap1 = new HashMap<String,Object>();
+	        	String orderId = (String)map.get("id");
+	        	String type1 = map.get("type").toString();
+	        	paramMap.put("orderId", orderId);
+	        	paramMap.put("type", type1);
+	        	List<Task> taskList = taskService.findAllByOrderId(paramMap1);
+				if(taskList != null && taskList.size() > 0){
+					for (Task task : taskList) {
+						if(task.getAlarm_view_flag() != 1 && task.getIssueCount()!=0){
+							alarmViewedFlag = 0;
+						}
+					}
+				}
+				map.put("alarmViewedFlag", alarmViewedFlag);
+	        }
+        }
+        
         ModelAndView mv = new ModelAndView("/source/page/order/orderList");
         mv.addObject("nowDate",temp); 
         mv.addObject("orderList",result);      //传对象到页面
@@ -833,37 +901,45 @@ public class OrderMgrController {
         String orderId = request.getParameter("orderId");
         //查找订单
         Order order = orderService.findOrderById(orderId);
-        //获取订单资产
-        List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
-        //删除任务
-        for (OrderAsset orderAsset : oaList) {
-            String order_asset_Id = String.valueOf(orderAsset.getId());
-            List<Task> tlist = taskService.findTaskByOrderAssetId(orderAsset.getId());
-            for (Task task : tlist) {
-                //删除告警
-                Map<String,Object> paramMap = new HashMap<String,Object>();
-                paramMap.put("taskId", task.getTaskId());
-                paramMap.put("group_id",task.getGroup_id());
-                paramMap.put("websoc",order.getWebsoc());
-                if(order.getServiceId()==5){
-                    taskWarnService.deleteTaskWarnByTaskId(paramMap);
-                }else{
-                    alarmService.deleteAlarmByTaskId(paramMap);
+        //已完成订单则逻辑删除
+        if(order.getStatus()==1 || order.getStatus() == 2){
+        	//更新删除标记
+        	order.setDelFlag(1);
+        	orderService.update(order);
+        }else{
+            //获取订单资产
+            List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
+            //删除任务
+            for (OrderAsset orderAsset : oaList) {
+                String order_asset_Id = String.valueOf(orderAsset.getId());
+                List<Task> tlist = taskService.findTaskByOrderAssetId(orderAsset.getId());
+                for (Task task : tlist) {
+                    //删除告警
+                    Map<String,Object> paramMap = new HashMap<String,Object>();
+                    paramMap.put("taskId", task.getTaskId());
+                    paramMap.put("group_id",task.getGroup_id());
+                    paramMap.put("websoc",order.getWebsoc());
+                    if(order.getServiceId()==5){
+                        taskWarnService.deleteTaskWarnByTaskId(paramMap);
+                    }else{
+                        alarmService.deleteAlarmByTaskId(paramMap);
+                    }
+                    if(order.getWebsoc()!=1&&order.getWebsoc()!=2){
+//                        String sessionId = ArnhemWorker.getSessionId();
+//                        ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId())+"_"+orderId);
+                    }
                 }
-                if(order.getWebsoc()!=1&&order.getWebsoc()!=2){
-//                    String sessionId = ArnhemWorker.getSessionId();
-//                    ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId())+"_"+orderId);
-                }
+                taskService.deleteTaskByOaId(order_asset_Id);
+                
             }
-            taskService.deleteTaskByOaId(order_asset_Id);
-            
+            //删除订单
+            orderService.deleteOrderById(orderId);
+            //删除订单资产
+            orderAssetService.deleteOaByOrderId(orderId);
+            //删除联系人信息
+            selfHelpOrderService.deleteLinkman(order.getContactId());        	
         }
-        //删除订单
-        orderService.deleteOrderById(orderId);
-        //删除订单资产
-        orderAssetService.deleteOaByOrderId(orderId);
-        //删除联系人信息
-        selfHelpOrderService.deleteLinkman(order.getContactId());
+        
 //        return "/source/page/order/orderTrack";
         return "redirect:/orderTrackInit.html";
     }

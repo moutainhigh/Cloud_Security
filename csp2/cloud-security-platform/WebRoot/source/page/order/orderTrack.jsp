@@ -56,7 +56,7 @@ function deleteOrder(orderId,begin_date){
             dataType:"json",
             success: function(data){
                 if(!data.status){
-                    alert("订单正在执行,不可用删订单!");
+                    alert("订单正在执行,不可以删订单!");
                 }else{
                 	window.location.href="/cloud-security-platform/deleteOrder.html?orderId="+orderId;
                 }

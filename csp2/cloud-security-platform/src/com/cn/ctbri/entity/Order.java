@@ -29,6 +29,7 @@ public class Order {
 	private int message;//是否发送告警信息
 	private int websoc;//创宇标志
 	private int tasknum;//订单对应的任务数
+	private int delFlag;//是否逻辑删除（1：逻辑删除）
 	public String getBegin_datevo() {
 		return begin_datevo;
 	}
@@ -143,6 +144,12 @@ public class Order {
 	}
 	public void setTasknum(int tasknum) {
 		this.tasknum = tasknum;
+	}
+	public int getDelFlag() {
+		return delFlag;
+	}
+	public void setDelFlag(int delFlag) {
+		this.delFlag = delFlag;
 	}
 	
 }

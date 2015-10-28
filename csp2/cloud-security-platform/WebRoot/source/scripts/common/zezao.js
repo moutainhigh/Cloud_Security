@@ -2,14 +2,14 @@
 function putOption(obj){
 	var list = obj;
 	for (var i = 0; i < list.length; i++){
-		$("#prov").append( "<option value=\""+ (i+1) +"\">"+list[i].name+"</option>" );
+		$("#districtId").append( "<option value=\""+ (i+1) +"\">"+list[i].name+"</option>" );
 	}
 }
 
-function getCitys(provId){
+function getCitys(districtId){
 	//查询省对应的市  
 	 $.ajax({
-		 	data: {"provId":provId},
+		 	data: {"districtId":districtId},
 	        type: "POST",
 	        cache: false,
 	        dataType: "json",
@@ -29,7 +29,7 @@ function putCityOption(obj){
 	if(list != null && list.length > 0){
 			
 		for (var i = 0; i < list.length; i++){
-			$("#city").append( "<option value=\""+list[i].name+"\">"+list[i].name+"</option>" );
+			$("#city").append( "<option value=\""+list[i].id+"\">"+list[i].name+"</option>" );
 		}
 		$("#city").removeAttr("disabled");
 	}
