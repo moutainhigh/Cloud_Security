@@ -330,9 +330,10 @@ public class UserController{
 		//request.getSession().removeAttribute("globle_user");
 		User user = (User)request.getSession().getAttribute("globle_user");
 		//设置退出状态：-1
-		user.setStatus(0);
-		userService.update(user);
-
+		if(user != null){
+			user.setStatus(0);
+			userService.update(user);
+		}
    		request.getSession().invalidate();
    		return "redirect:/loginUI.html";
 	}

@@ -7,6 +7,13 @@ function putOption(obj){
 }
 
 function getCitys(districtId){
+	if(districtId=="-1"){
+		$("#city").empty();
+		var i = -1;
+		$("#city").append( "<option value=\""+i+"\">"+"请选择城市"+"</option>" );
+		$("#city").attr('disabled','disabled');
+	}else{
+		
 	//查询省对应的市  
 	 $.ajax({
 		 	data: {"districtId":districtId},
@@ -19,6 +26,7 @@ function getCitys(districtId){
 	        	
 	     	}
 		});
+	}
 }
 
 //添加市下拉框

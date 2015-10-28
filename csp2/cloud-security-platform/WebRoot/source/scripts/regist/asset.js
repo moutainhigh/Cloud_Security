@@ -3,7 +3,7 @@ function saveAsset() {
 	var assetAddr = $("#assetAddr").val();
      var addrType = $('input:radio[name="addrType"]:checked').val();
      var purpose = $("#purpose").val();
-     var prov = $("#prov").val();
+     var prov = $("#districtId").val();
      var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
      if(patrn.test(assetAddr)){  
          alert("提示信息：您输入的数据含有非法字符！");  

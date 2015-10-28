@@ -249,7 +249,7 @@ $(document).ready(function(){
         <tr>
           <td>资产地址</td>
           <td><input class="boz_inout_1" type="text" name="addr" id="editAssetAddr"/></td>
-          <td style="color:#e32929;text-align:left">-1<div id="editAssetAddr_msg"></div></td>
+          <td style="color:#e32929;text-align:left"><div id="editAssetAddr_msg"></div></td>
         </tr>
       </table>
     </div>
