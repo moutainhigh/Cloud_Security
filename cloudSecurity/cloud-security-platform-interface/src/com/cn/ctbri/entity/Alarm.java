@@ -38,13 +38,11 @@ public class Alarm implements Serializable{
 	private String group_id;
 	//服务类型
 	private int serviceId;
+	//地区id
+	private int districtId;
 	
-	public int getServiceId() {
-		return serviceId;
-	}
-	public void setServiceId(int serviceId) {
-		this.serviceId = serviceId;
-	}
+	
+	
 	/**
 	 * 功能描述：取报警信息ID
 	 *		 @time 2015-01-07
@@ -199,6 +197,18 @@ public class Alarm implements Serializable{
     public void setGroup_id(String group_id) {
         this.group_id = group_id;
     }
-	
+    public int getServiceId() {
+		return serviceId;
+	}
+	public void setServiceId(int serviceId) {
+		this.serviceId = serviceId;
+	}
+	public int getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(int districtId) {
+		this.districtId = districtId;
+	}
 
+	
 }
