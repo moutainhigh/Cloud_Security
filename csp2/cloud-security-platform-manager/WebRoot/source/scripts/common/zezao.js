@@ -1,7 +1,52 @@
+//添加省下拉框
+function putOption(obj){
+	var list = obj;
+	for (var i = 0; i < list.length; i++){
+		$("#prov").append( "<option value="+list[i].id+">"+list[i].name+"</option>" );
+	}
+}
+
+function getCitys(provId){
+	//查询省对应的市  
+	 $.ajax({
+		 	data: {"provId":provId},
+	        type: "POST",
+	        cache: false,
+	        dataType: "json",
+	        url: "getCityList.html", 
+	        success: function(obj){
+	        	putCityOption(obj);
+	        	
+	     	}
+		});
+}
+
+//添加市下拉框
+function putCityOption(obj){
+	//清空城市下拉框
+	$("#city").empty();
+	var list = obj;
+	if(list != null && list.length > 0){
+			
+		for (var i = 0; i < list.length; i++){
+			$("#city").append( "<option value="+list[i].id+">"+list[i].name+"</option>" );
+		}
+		$("#city").removeAttr("disabled");
+	}
+}
 $(function(){
 	var oMark=document.getElementById('box_mark');
 	var oLogin =document.getElementById('box_logoIn1');
-	
+	//查询省
+	 $.ajax({
+	        type: "POST",
+	        cache: false,
+	        dataType: "json",
+	        url: "getDistrictListAll.html", 
+	        success: function(obj){
+	        	putOption(obj);
+	     	}
+		});
 	$(".user_ctive").click(function(){
 		var _index =$(".user_ctive").index(this);  //获取当前点击按钮
 		oMark.style.display ="block";

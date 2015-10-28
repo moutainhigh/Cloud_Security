@@ -81,7 +81,7 @@
                                 </div>
                                 <div class="analyse_lable fl">
                                     <label>资产所在市</label>
-                                    <select class="text" id="city" name="city" >
+                                    <select class="text" id="city" name="city" disabled="disabled">
                                         <option value="" >请选择</option>
                                     </select>
                                 </div>
@@ -102,55 +102,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <c:forEach items="${list}" var="list">
                                         <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            
+                                            <td>${list.name}</td>
+                                            <td>${list.disName}</td>
+                                            <td>${list.cityName}</td>
+                                            <td>${list.num}</td>
                                         </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                           
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                           
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                           
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            
-                                        </tr>
+                                        </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
