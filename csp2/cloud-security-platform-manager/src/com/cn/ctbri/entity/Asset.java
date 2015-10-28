@@ -26,6 +26,10 @@ public class Asset {
 	private int districtId;//地区id
 	private String disName;//地区名称
 	
+	private int city;//城市id
+	private String cityName;//城市名称
+	
+	private int num;
 	public String getAddrType() {
 		return addrType;
 	}
@@ -105,5 +109,24 @@ public class Asset {
 	public void setDisName(String disName) {
 		this.disName = disName;
 	}
+	public int getCity() {
+		return city;
+	}
+	public void setCity(int city) {
+		this.city = city;
+	}
+	public String getCityName() {
+		return cityName;
+	}
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
+	
 	
 }

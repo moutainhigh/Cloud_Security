@@ -87,5 +87,13 @@ public interface AssetDao {
 	 * @return
 	 */
 	List<Asset> queryByPage(Asset criteria, int i, int pageSize);
+	
+    /**
+     * 功能描述：资产地理位置统计分析
+     * @param paramMap 
+     * @return
+     */
+	List<Asset> findByAssetProAndCity(Map<String, Object> paramMap);
+	
 
 }

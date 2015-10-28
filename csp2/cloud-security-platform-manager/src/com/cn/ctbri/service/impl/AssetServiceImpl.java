@@ -134,4 +134,10 @@ public class AssetServiceImpl implements IAssetService{
 			throw new RuntimeException(e);
 		}
 	}
+	/* (non-Javadoc)
+	 * @see com.cn.ctbri.service.IAssetService#findByAssetProAndCity(java.util.Map)
+	 */
+	public List<Asset> findByAssetProAndCity(Map<String, Object> paramMap) {
+		return assetDao.findByAssetProAndCity(paramMap);
+	}
 }

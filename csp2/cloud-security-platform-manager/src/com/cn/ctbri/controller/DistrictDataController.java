@@ -220,7 +220,7 @@ public class DistrictDataController {
         response.setContentType("application/json;charset=UTF-8");
         String provId = request.getParameter("provId");
         Map<String, Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("provId", provId);
+        paramMap.put("districtId", provId);
         Gson gson= new Gson();
         List<City> result = districtDataService.getCityListByProv(paramMap);
         String resultGson = gson.toJson(result);//转成json数据

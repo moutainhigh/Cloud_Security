@@ -87,6 +87,11 @@ public interface IAssetService {
      *       @time 2015-3-16
      */
 	PageBean<Asset> queryByPage(Asset criteria, int pageCode);
+	/**
+	 * 功能描述：资产地理位置统计分析
+	 *      @time 2015-10-28
+	 */
+	List<Asset> findByAssetProAndCity(Map<String, Object> paramMap);
 
 	
 }

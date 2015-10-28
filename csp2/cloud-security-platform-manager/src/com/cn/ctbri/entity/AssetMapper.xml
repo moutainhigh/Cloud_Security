@@ -14,6 +14,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="create_date" column="create_date"/>
 		<result property="remarks" column="remarks"/>
 	</resultMap> 
+	<resultMap type="com.cn.ctbri.entity.Asset" id="AssetRM1">
+		<result property="name" column="name"/>
+		<result property="disName" column="disName"/>
+		<result property="cityName" column="cityName"/>
+		<result property="num" column="num"/>
+	</resultMap>
 	<!-- 按用户id查询资产 -->
 	<select id="findByUserId" parameterType="int" resultMap="AssetRM">
 		select a.id,a.name,a.type,a.addr,a.status,a.userid,a.create_date,a.remarks
@@ -105,5 +111,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 FROM cs_asset a LIMIT #{pageNow},#{pageSize} -->
 		 SELECT a.id,a.addr,a.name,dis.name as disName
 		 FROM cs_asset a,cs_district dis where a.districtId = dis.id and a.status = 1 order by a.create_date desc LIMIT #{pageNow},#{pageSize} 
+	</select>
+	<select id="findAssetByProviceAndCity" parameterType="hashmap" resultMap="AssetRM1">
+	  	select (case when cu.type=2 then '个人用户' else '企业用户' end)  name,
+      		cd.name disName,cc.name cityName, ca.num 
+     	from (select a.districtId,a.city,a.userid,count(1) num 
+           		from cs_asset a where a.districtId=#{province}
+           		 <if test="city!=null">
+           		  and a.city=#{city}
+           		 </if>  
+           		group by a.districtId,a.city,a.userid ) ca,
+		cs_district cd,cs_city cc,cs_user cu 
+		where ca.districtId=cd.id and ca.city=cc.id and ca.userid=cu.id
+		and cu.type=#{assetUserType}
 	</select>
 </mapper>

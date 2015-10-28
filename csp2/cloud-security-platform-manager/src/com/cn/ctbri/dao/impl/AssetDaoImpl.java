@@ -4,11 +4,14 @@ package com.cn.ctbri.dao.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.AssetDao;
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.City;
+import com.cn.ctbri.entity.District;
 import com.cn.ctbri.entity.OrderAsset;
 /**
  * 创 建 人  ：  邓元元
@@ -125,4 +128,11 @@ public class AssetDaoImpl extends DaoCommon implements AssetDao{
         List<Asset> list = getSqlSession().selectList(ns +"queryByPage",paramMap);
 		return list;
 	}
+	/**
+	 * 功能描述：资产地理位置统计分析
+	 */
+	public List<Asset> findByAssetProAndCity(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"findAssetByProviceAndCity", paramMap);
+	}
+	
 }
