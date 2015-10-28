@@ -13,6 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="userid" column="userid"/>
 		<result property="create_date" column="create_date"/>
 		<result property="remarks" column="remarks"/>
+		<result property="districtId" column="districtId"/>
 	</resultMap> 
 	<!-- 按用户id查询资产 -->
 	<select id="findByUserId" parameterType="int" resultMap="AssetRM">
