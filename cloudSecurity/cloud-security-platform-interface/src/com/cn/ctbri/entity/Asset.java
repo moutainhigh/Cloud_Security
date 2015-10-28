@@ -18,6 +18,7 @@ public class Asset {
 	private int userid;//用户ID
 	private Date create_date;//创建日期
 	private String remarks;//备注
+	private int districtId;//地区id
 	
 	private String verification_msg;//VO :代码验证
 	public int getId() {
@@ -74,6 +75,12 @@ public class Asset {
 	}
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+	public int getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(int districtId) {
+		this.districtId = districtId;
 	}
 	
 }
