@@ -80,5 +80,9 @@ public class TaskServiceImpl implements ITaskService{
     public List getWebsocTask() {
         return this.taskDao.getWebsocTask();
     }
+
+	public int findDistrictIdByTaskId(String taskId) {
+		return this.taskDao.findDistrictIdByTaskId(taskId);
+	}
 	
 }
