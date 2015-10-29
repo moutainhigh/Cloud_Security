@@ -1,7 +1,13 @@
 $(function(){
-	//选项卡
+	$('.tabList').children().eq(tablList).addClass('active').siblings('li').removeClass('active');
+	$('.tabCont .tabItem:eq('+tablList+')').show().siblings().hide();
+    $('.anlist:eq('+tablList+')').children().eq(anList).addClass('active').siblings('li').removeClass('active');
+    //alert($('.analyse_tabCont:eq('+tablList+')').children().eq(anList).html());
+    $('.analyse_tabCont:eq('+tablList+')').children().eq(anList).show().siblings().hide();
+    //选项卡
 $('.tabList li').click(function(){
 	var index=$(this).index();
+	//alert("tabList"+index);
 	$(this).addClass('active').siblings('li').removeClass('active');
 	$('.tabCont .tabItem:eq('+index+')').show().siblings().hide();
 });
@@ -10,6 +16,7 @@ $('.tabList li').click(function(){
 	
 $('.anlist li').click(function(){
 	var index=$(this).index();
+	//alert("anlist"+index);
 	$(this).addClass('active').siblings('li').removeClass('active');
 	
 	$(this).parent('.anlist').siblings('.analyse_tabCont').children('.analyse_tabItem:eq('+index+')').show().siblings().hide();
