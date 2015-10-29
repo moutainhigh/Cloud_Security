@@ -17,6 +17,8 @@
 <script type="text/javascript" src="${ctx}/source/scripts/assetJs/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
 <script>
+var  tablList=${tablList};
+var  anList=${anList};
 </script>
 </head>
 <body>
@@ -64,7 +66,7 @@
                         <div class="analyse_tabItem" style="display:block">
                        
                             <!--资产地理位置统计分析-->
-                            <form class="clearfix analysecent" name="assetForm"  id="assetForm" action="${ctx}/adminDataAssetUI.html" method="post">
+                            <form class="clearfix analysecent" name="assetForm"  id="assetForm" action="${ctx}/adminDataAssetUI.html?tablList=0&anList=0" method="post">
                                  <div class="analyse_lable fl">
                                     <label>资产所属用户</label>
                                     <select class="text" name="assetUserType">
@@ -117,21 +119,21 @@
                         </div>
                         <div class="analyse_tabItem">
                  			 <!--资产用途统计分析-->
-                            <form class="clearfix analysecent">
-                                
-                                
-                                 <div class="analyse_lable fl">
+                            <form class="clearfix analysecent" name="purposeForm"  id="purposeForm" action="${ctx}/adminPurposeAssetUI.html?tablList=0&anList=1" method="post">
+                 
+                                 <div class="analyse_lable fl" >
                                     <label>资产所属用户</label>
-                                    <select class="text">
-                                        <option>aaa</option>
+                                    <select class="text" name="assetUserType1">
+                                       <option value="3">企业用户</option>
+                                       <option value="2">个人用户</option>
                                     </select>
                                 </div>
                                  <div class="analyse_lable fl">
                                     <label>资产用途</label>
-                                    <select class="text">
-                                        <option>公共服务</option>
-                                        <option>信息发布</option>
-                                        <option>其他</option>
+                                    <select class="text" name="purpose">   
+                                        <option value="1">公共服务</option>
+                                        <option value="2">信息发布</option>
+                                        <option value="3">其他</option>
                                     </select>
                                 </div>
                                 
@@ -151,41 +153,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                         <c:forEach items="${porlist}" var="porlist">
                                         <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td><c:if test="${porlist.name==2}">个人用户</c:if>
+                                             <c:if test="${porlist.name==3}">企业用户</c:if></td>
+                                            <td>${porlist.disName}</td>
+                                            <td>${porlist.num}</td>
                                         </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+                                        </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
@@ -532,7 +507,7 @@
                             </form>
                             <div class="tableBox">
                                 <div class="chart">
-                                	<img src="images/chart.jpg" alt="">
+                                	<img src="${ctx}/source/images/chart.jpg" alt="">
                                 </div>
                             </div>
                     
