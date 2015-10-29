@@ -112,6 +112,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 SELECT a.id,a.addr,a.name,dis.name as disName
 		 FROM cs_asset a,cs_district dis where a.districtId = dis.id and a.status = 1 order by a.create_date desc LIMIT #{pageNow},#{pageSize} 
 	</select>
+	<!-- 资产地理位置统计分析 -->
 	<select id="findAssetByProviceAndCity" parameterType="hashmap" resultMap="AssetRM1">
 	  	select (case when cu.type=2 then '个人用户' else '企业用户' end)  name,
       		cd.name disName,cc.name cityName, ca.num 
@@ -124,5 +125,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		cs_district cd,cs_city cc,cs_user cu 
 		where ca.districtId=cd.id and ca.city=cc.id and ca.userid=cu.id
 		and cu.type=#{assetUserType}
+	</select>
+	<!-- 资产用途统计分析 -->
+ 	<select id="findAssertPurpose" parameterType="hashmap" resultMap="AssetRM1">
+		 select cu.type name ,
+		    (case when IFNULL(ca.purpose,0) not in('公共服务','信息发布') then '其他' else ca.purpose end) disName,
+		   '' cityName,count(1) num 
+           from cs_asset ca,cs_user cu 
+           where ca.userid=cu.id 
+           and cu.type=#{assetUserType}
+            <if test="purpose==1">
+              and ca.purpose='公共服务'
+           </if>
+           <if test="purpose==2">
+              and ca.purpose='信息发布'
+           </if>
+           <if test="purpose==3">
+              and IFNULL(ca.purpose,0) not in('公共服务','信息发布')
+           </if>
+           group by cu.type,(case when IFNULL(ca.purpose,0) not in('公共服务','信息发布') then '其他' else ca.purpose end)
 	</select>
 </mapper>

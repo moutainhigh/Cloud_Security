@@ -71,8 +71,16 @@ public class AdminAssetController {
 	 *		 @time 2015-10-26
 	 */
 	@RequestMapping("/adminDataAssetUI.html")
-	public String dataAnalysisUI(HttpServletRequest request,HttpServletResponse response){
+	public String dataAssertUI(HttpServletRequest request,HttpServletResponse response){
 		
+		String tablList = request.getParameter("tablList");
+		if(tablList==null||"".equals(tablList)){
+			tablList="0";
+		}
+		String anList = request.getParameter("anList");
+		if(anList==null||"".equals(anList)){
+			anList="0";
+		}
 		String assetUserType = request.getParameter("assetUserType");
 		String prov = request.getParameter("prov");
 		String city = request.getParameter("city");
@@ -85,8 +93,36 @@ public class AdminAssetController {
         	 List<Asset> list=assetService.findByAssetProAndCity(paramMap);
         	 request.setAttribute("list", list);
         }
-       
+        request.setAttribute("tablList", tablList);
+        request.setAttribute("anList", anList);
 		return "/source/adminPage/userManage/dataAsset";
 	}
-	
+	/**
+	 * 功能描述：资产用途统计分析
+	 *		 @time 2015-10-29
+	 */
+	@RequestMapping("/adminPurposeAssetUI.html")
+	public String dataPurposeUI(HttpServletRequest request,HttpServletResponse response){
+		
+		String tablList = request.getParameter("tablList");
+		if(tablList==null||"".equals(tablList)){
+			tablList="0";
+		}
+		String anList = request.getParameter("anList");
+		if(anList==null||"".equals(anList)){
+			anList="0";
+		}
+		String assetUserType = request.getParameter("assetUserType1");
+		String purpose = request.getParameter("purpose");
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("assetUserType", assetUserType);
+        paramMap.put("purpose", purpose);
+        if(assetUserType!=null&&!"".equals(assetUserType)){
+       	 List<Asset> list=assetService.findByAssetPurposeList(paramMap);
+       	 request.setAttribute("porlist", list);
+        }
+        request.setAttribute("tablList", tablList);
+        request.setAttribute("anList", anList);
+		return "/source/adminPage/userManage/dataAsset";
+	}
 }

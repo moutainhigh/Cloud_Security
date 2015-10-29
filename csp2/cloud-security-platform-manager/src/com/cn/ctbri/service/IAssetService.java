@@ -92,6 +92,11 @@ public interface IAssetService {
 	 *      @time 2015-10-28
 	 */
 	List<Asset> findByAssetProAndCity(Map<String, Object> paramMap);
+	/**
+	 * 功能描述：资产用途统计分析
+	 *      @time 2015-10-29
+	 */
+	List<Asset> findByAssetPurposeList(Map<String, Object> paramMap);
 
 	
 }

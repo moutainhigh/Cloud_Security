@@ -134,10 +134,19 @@ public class AssetServiceImpl implements IAssetService{
 			throw new RuntimeException(e);
 		}
 	}
-	/* (non-Javadoc)
-	 * @see com.cn.ctbri.service.IAssetService#findByAssetProAndCity(java.util.Map)
+	/**
+	 * 功能描述：资产地理位置统计分析
+	 *      @time 2015-10-28
 	 */
 	public List<Asset> findByAssetProAndCity(Map<String, Object> paramMap) {
 		return assetDao.findByAssetProAndCity(paramMap);
+	}
+	/**
+	 * 功能描述：资产用途统计分析
+	 *      @time 2015-10-29
+	 */
+	public List<Asset> findByAssetPurposeList(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return assetDao.findByAssetPurposeList(paramMap);
 	}
 }

@@ -134,5 +134,11 @@ public class AssetDaoImpl extends DaoCommon implements AssetDao{
 	public List<Asset> findByAssetProAndCity(Map<String, Object> paramMap) {
 		return this.getSqlSession().selectList(ns+"findAssetByProviceAndCity", paramMap);
 	}
+	/**
+	 * 功能描述：资产用途统计分析
+	 */
+	public List<Asset> findByAssetPurposeList(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"findAssertPurpose", paramMap);
+	}
 	
 }
