@@ -16,6 +16,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/assetJs/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/assetJs/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script>
 var  tablList=${tablList};
 var  anList=${anList};
@@ -167,26 +168,29 @@ var  anList=${anList};
                         </div>
                         <div class="analyse_tabItem">
                         	 <!--资产服务情况统计-->
-                            <form class="clearfix analysecent">
+                            <form class="clearfix analysecent" name="serverForm"  id="serverForm" action="${ctx}/adminPurposeAssetUI.html?tablList=0&anList=2" method="post">
                                 
                                 
                                  <div class="analyse_lable fl">
                                     <label>资产所属用户</label>
-                                    <select class="text">
-                                        <option>aaa</option>
+                                       <select class="text" name="assetUserType1">
+                                       <option value="3">企业用户</option>
+                                       <option value="2">个人用户</option>
                                     </select>
                                 </div>
                                  <div class="analyse_lable fl">
                                     <label>资产用途</label>
-                                    <select class="text">
-                                        <option>aaa</option>
+                                     <select class="text" name="purpose">   
+                                        <option value="1">公共服务</option>
+                                        <option value="2">信息发布</option>
+                                        <option value="3">其他</option>
                                     </select>
                                 </div>
                                 <div class="analyse_lable fl">
                                     <label>统计开始时间</label>
-                                    <input type="text" class="text" value="2012-02-02" style="width:133px;">
+                                    <input type="text" class="text"  value="" id="begin_date" name="begin_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
                                     <label>-结束时间</label>
-                                    <input type="text" class="text" value="2012-02-02" style="width:133px;">
+                                    <input type="text" class="text"  value="" id="end_date" name="end_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
                                 </div>
                                 <input type="submit" class="sub" value="">
                             </form>
@@ -204,41 +208,14 @@ var  anList=${anList};
                                         </tr>
                                     </thead>
                                     <tbody>
+                                         <c:forEach items="${servlist}" var="servlist">
                                         <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td><c:if test="${servlist.name==2}">个人用户</c:if>
+                                             <c:if test="${servlist.name==3}">企业用户</c:if></td>
+                                            <td>${servlist.disName}</td>
+                                            <td>${servlist.num}</td>
                                         </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+                                        </c:forEach>     
                                     </tbody>
                                 </table>
                             </div>
