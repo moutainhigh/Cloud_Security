@@ -1,6 +1,7 @@
 package com.cn.ctbri.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.MobileInfo;
@@ -107,4 +108,27 @@ public interface UserDao {
      * @return
      */
     List<User> findUserByStatus(int status);
+    /**
+     * 查询时间范围内登录的注册用户数量(企业用户，个人用户)
+     * @param paramMap
+     * @return
+     */
+    int findRegisterCountByDates(Map<String, Object> paramMap);
+    /**
+     * 查询所有注册用户数量
+     * @return
+     */
+    int findRegisterCount();
+    /**
+     * 查询时间范围内登录次数TOP10
+     * @param paramMap
+     * @return
+     */
+    List findLoginTop10(Map<String, Object> paramMap);
+    /**
+     * 查询时间范围内登录最集中时间段TOP5
+     * @param paramMap
+     * @return
+     */
+    List findTimesTop5(Map<String, Object> paramMap);
 }

@@ -113,5 +113,8 @@ public interface IOrderService {
     void deleteOrderById(String orderId);
     //查找订单
     Order findOrderById(String orderId);
-
+    //查找用户下单最集中时间段top5
+    List findOrderTimesTop5(Map<String, Object> paramMap);
+    //根据行业查询下单用户数量
+    List findUserCountByIndus(Map<String, Object> paramMap);
 }

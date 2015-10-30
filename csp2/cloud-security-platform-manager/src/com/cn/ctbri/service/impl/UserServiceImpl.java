@@ -1,6 +1,7 @@
 package com.cn.ctbri.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -171,5 +172,21 @@ public class UserServiceImpl implements IUserService{
 	public List<User> findUserByStatus(int status) {
 		// TODO Auto-generated method stub
 		return userDao.findUserByStatus(status);
+	}
+
+	public int findRegisterCount() {
+		return userDao.findRegisterCount();
+	}
+
+	public int findRegisterCountByDates(Map<String, Object> paramMap) {
+		return userDao.findRegisterCountByDates(paramMap);
+	}
+
+	public List findLoginTop10(Map<String, Object> paramMap) {
+		return userDao.findLoginTop10(paramMap);
+	}
+
+	public List findTimesTop5(Map<String, Object> paramMap) {
+		return userDao.findTimesTop5(paramMap);
 	}
 }

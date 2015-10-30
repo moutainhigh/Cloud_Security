@@ -1,7 +1,12 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,6 +16,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -18,6 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import se.akerfeldt.com.google.gson.Gson;
+import se.akerfeldt.com.google.gson.JsonArray;
 
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Order;
@@ -314,4 +325,148 @@ public class AdminUserController {
 		userService.delete(user.getId());
 		return "redirect:/adminUserManageUI.html";
 	}
+	
+	/**
+	 * 功能描述：后台用户分析页面
+	 * 参数描述：无
+	 *		 @time 2015-10-29
+	 */
+	@RequestMapping("/adminUserAnalysisUI.html")
+	public String adminUserAnalysisUI(Model model,HttpServletRequest request){	
+		return "/source/adminPage/userManage/userAnalysis";
+	}
+	
+	/**
+	 * 功能描述：后台用户活跃度统计分析
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/adminUserAnalysis.html")
+	@ResponseBody
+	public void adminUserAnalysis(HttpServletResponse response,HttpServletRequest request){
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("application/json;charset=UTF-8");
+		
+		String begin_date = request.getParameter("begin_date");
+		String end_date = request.getParameter("end_date");
+		String activeSel = request.getParameter("activeSel");
+		
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("begin_date", begin_date);
+		paramMap.put("end_date", end_date);
+
+		try {
+			//登录用户数量统计情况
+			if(activeSel.equals("1")){
+
+				//查询历史登录情况
+				int loginCount = userService.findRegisterCountByDates(paramMap);
+				//查询所有注册用户的数量
+				int allCount = userService.findRegisterCount();
+				double loginParent = ((double)loginCount/(double)allCount)*100;
+				BigDecimal b = new BigDecimal(loginParent); 
+				float f1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue(); 
+				
+				Map<String, Object> m = new HashMap<String, Object>();
+				m.put("loginCount", loginCount);
+				m.put("loginParent", f1+"%");
+
+				//object转化为Json格式
+				JSONObject JSON = CommonUtil.objectToJson(response, m);
+				
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+
+			}else{//用户活跃度排行榜
+				List loginTop10List = userService.findLoginTop10(paramMap);
+				Gson gson= new Gson();  
+				String resultGson = gson.toJson(loginTop10List);
+				PrintWriter out;
+				out = response.getWriter();
+				out.write(resultGson); 
+				out.flush(); 
+				out.close();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 功能描述：后台用户使用习惯统计分析
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/adminUserHabitAnalysis.html")
+	@ResponseBody
+	public void adminUserHabitAnalysis(HttpServletResponse response,HttpServletRequest request){
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("application/json;charset=UTF-8");
+		
+		String begin_date = request.getParameter("begin_date");
+		String end_date = request.getParameter("end_date");
+		String useSel = request.getParameter("useSel");
+		
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("begin_date", begin_date);
+		paramMap.put("end_date", end_date);
+
+		try {
+			Gson gson= new Gson(); 
+			String resultGson = "";
+			//登录最集中时间段top5
+			if(useSel.equals("1")){
+				List timesTop5List = userService.findTimesTop5(paramMap);
+				resultGson = gson.toJson(timesTop5List);
+
+			}else{//下单最集中时间段top5
+				List orderTimesTop5List = orderService.findOrderTimesTop5(paramMap);
+				resultGson = gson.toJson(orderTimesTop5List);
+			}
+			
+			PrintWriter out;
+			out = response.getWriter();
+			out.write(resultGson); 
+			out.flush(); 
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 功能描述：后台用户行业分布统计
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/adminIndusAnalysis.html")
+	@ResponseBody
+	public void adminIndusAnalysis(HttpServletResponse response,HttpServletRequest request){
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("application/json;charset=UTF-8");
+		
+		String begin_date = request.getParameter("begin_date");
+		String end_date = request.getParameter("end_date");
+		
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("begin_date", begin_date);
+		paramMap.put("end_date", end_date);
+
+		try {
+			Gson gson= new Gson(); 
+			
+			//根据行业查询下单用户数量
+			List list = orderService.findUserCountByIndus(paramMap);
+			String resultGson = gson.toJson(list);
+			
+			PrintWriter out;
+			out = response.getWriter();
+			out.write(resultGson); 
+			out.flush(); 
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}	
 }

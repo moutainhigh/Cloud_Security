@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.LoginHistoryMapper">
+	<sql id="cols">id,userId,userType,loginTime</sql>
+
+	<resultMap type="com.cn.ctbri.entity.LoginHistory" id="LHRM">
+		<id property="id" column="id"/>
+		<result property="userId" column="userId"/>
+		<result property="userType" column="userType"/>
+		<result property="loginTime" column="loginTime"/>
+	</resultMap>
+
+	<insert id="insert" parameterType="com.cn.ctbri.entity.LoginHistory">
+		insert into cs_login_history
+		(userId,userType,loginTime) values(#{userId},#{userType},#{loginTime})
+	</insert>
+	
+	<!-- 根据时间段查询注册用户的登录数量 -->
+	<select id="findRegisterCountByDates" resultType="int" parameterType="hashmap">
+	SELECT count(DISTINCT userId) FROM cs_login_history WHERE
+	<![CDATA[
+		loginTime>=#{begin_date} AND loginTime<=#{end_date}
+	]]>	
+	and (userType=2 or userType=3  )
+	</select>
+	
+	<!-- 查询时间范围内登录次数TOP10 -->
+	<select id="findLoginTop10" resultType="hashmap" parameterType="hashmap">
+	SELECT lh.userId, COUNT(lh.userId) count,u.name from cs_login_history lh, cs_user u
+	WHERE u.id=lh.userId AND
+	<![CDATA[
+		lh.loginTime>=#{begin_date} AND lh.loginTime<=#{end_date}
+	]]>	
+	and (lh.userType=2 or lh.userType=3  ) GROUP BY lh.userId ORDER BY count desc LIMIT 10
+	</select>
+	<select id="findTimesTop5" resultType="hashmap" parameterType="hashmap">
+	SELECT DATE_FORMAT(loginTime,'%H:00:00') AS time,DATE_FORMAT(DATE_ADD(loginTime,INTERVAL 1 hour),'%H:00:00')as time1,count(*) as count 
+	FROM cs_login_history
+	<![CDATA[
+ 	WHERE loginTime>=#{begin_date} AND loginTime<=#{end_date}
+ 	]]>	
+	group by HOUR(time) ORDER BY count desc LIMIT 5
+	</select>
+</mapper>
+

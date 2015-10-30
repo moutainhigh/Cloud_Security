@@ -24,7 +24,10 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
 	 * 功        能： UserMapper命名空间
 	 */
 	private String ns = "com.cn.ctbri.entity.UserMapper.";		
-	
+	/**
+	 * 功        能： LoginHistoryMapper命名空间
+	 */
+	private String ns_lh = "com.cn.ctbri.entity.LoginHistoryMapper.";	
 	/**
 	 * 功能描述：插入用户
 	 * 参数描述： User user
@@ -147,5 +150,25 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
 
 	public List<User> findUserByStatus(int status) {
 		return getSqlSession().selectList(ns+"findUserByStatus", status);
+	}
+
+	public int getCountByDates(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectOne(ns+"findCountByDates", paramMap);
+	}
+
+	public int findRegisterCount() {
+		return this.getSqlSession().selectOne(ns+"findRegisterCount");
+	}
+
+	public int findRegisterCountByDates(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectOne(ns_lh+"findRegisterCountByDates", paramMap);
+	}
+
+	public List findLoginTop10(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns_lh+"findLoginTop10", paramMap);
+	}
+
+	public List findTimesTop5(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns_lh+"findTimesTop5", paramMap);
 	}
 }

@@ -312,6 +312,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findOrderById" resultMap="OrderRM" parameterType="String">
         SELECT * FROM cs_order c WHERE c.id=#{orderId}
     </select>
-    
-    
+    <!-- 查找用户下单最集中时间段top5 -->
+    <select id="findOrderTimesTop5" parameterType="hashmap" resultType="hashmap">
+    SELECT DATE_FORMAT(create_date,'%H:00:00') AS time,DATE_FORMAT(DATE_ADD(create_date,INTERVAL 1 hour),'%H:00:00')as time1,count(*) as count
+	FROM cs_order 
+	<![CDATA[
+	WHERE create_date>=#{begin_date} AND create_date<=#{end_date}
+	]]>	
+	group by HOUR(time) ORDER BY count desc LIMIT 5
+    </select>
+    <select id="findUserCountByIndus" parameterType="hashmap" resultType="hashmap">
+    SELECT u.industry,COUNT(DISTINCT u.name) count
+	FROM cs_order o, cs_user u
+	WHERE o.userId=u.id AND
+	<![CDATA[
+	o.create_date>=#{begin_date} AND o.create_date<=#{end_date}
+	]]>	
+	GROUP BY u.industry
+    </select>
 </mapper>

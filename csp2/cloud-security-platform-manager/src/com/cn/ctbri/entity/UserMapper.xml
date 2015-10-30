@@ -192,4 +192,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findUserByStatus" resultMap="UserRM" parameterType="int">
 	select * from cs_user where status=#{status} 
 	</select>
+	
+	<!-- 查询所有注册用户的数量 -->
+	<select id="findRegisterCount" resultType="int">
+	SELECT COUNT(*) FROM cs_user WHERE type=2 or type=3
+	</select>
 </mapper>

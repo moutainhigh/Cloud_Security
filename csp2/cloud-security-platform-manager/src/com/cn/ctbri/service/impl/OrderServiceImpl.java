@@ -168,6 +168,12 @@ public class OrderServiceImpl implements IOrderService{
     public Order findOrderById(String orderId) {
         return orderDao.findOrderById(orderId);
     }
+	public List findOrderTimesTop5(Map<String, Object> paramMap) {
+		return orderDao.findOrderTimesTop5(paramMap);
+	}
+	public List findUserCountByIndus(Map<String, Object> paramMap) {
+		return orderDao.findUserCountByIndus(paramMap);
+	}
 	
 	
 }

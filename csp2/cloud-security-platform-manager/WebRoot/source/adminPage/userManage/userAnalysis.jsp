@@ -16,7 +16,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/adminJs/userAnalysis.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
-<script type="text/javascript"><!--
+<script type="text/javascript">
 $(document).ready(function(){
 	//	用户活跃度统计分析
 	$("#begin_date").val("${begin_date}");
@@ -39,7 +39,8 @@ $(document).ready(function(){
 
 
 });
---></script>
+
+</script>
 </head>
 
 <body>
@@ -50,12 +51,13 @@ $(document).ready(function(){
     <div class="list b_list">
       <ul>
         <li><a href="${ctx}/adminUserManageUI.html" class="white">用户管理</a></li>
-        <li><a href="${ctx}/adminchinas.html" target="_blank" class="white">安全态势</a></li>
         <li><a href="${ctx}/adminServUI.html" class="white">服务管理</a></li>
-        <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">数据分析</a></li>
-        <li class="b_current"><a href="${ctx}/adminUserAnalysisUI.html" class="white">用户分析</a></li>
-        <li><a href="${ctx}/adminSystemManageUI.html" class="white">系统管理</a></li>
-        <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/adminNoticeManageUI.html" class="white">公告管理</a></li>
+        <li><a href="${ctx}/adminDataAssetUI.html" class="white">资产分析</a></li>
+        <li  class="b_current"><a href="${ctx}/adminUserAnalysisUI.html" class="white">用户分析</a></li>
+        <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">订单分析</a></li>
+        <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">告警分析</a></li>
+        <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">设备资源管理</a></li>
+        <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/adminSystemManageUI.html" class="white">系统管理</a></li>
       </ul>
     </div>
     <div class="lagst">
@@ -69,158 +71,262 @@ $(document).ready(function(){
 </div>
 <!--头部代码结束-->
 <div class="main_wrap">
-	<div class="main_center">
-    	<div class="data_title">
-            <button class="dataana_btn datab_cur fl" id="yy_btn" >用户活跃度</button>
-            <div class="bor_t_small fl"></div>
-        	<button class="dataana_btn fl" id="dd_btn" >用户使用习惯</button>
-            <div class="bor_t_small fl"></div>
-            <button class="dataana_btn fl" id="gj_btn" >用户行业分布</button>
-            <div class="bor_t_big fl"></div>
+	<div class="main_center user">
+    	<ul class="main_nav tabList clearfix">
+        	<li class="active">用户活跃度统计分析<i></i></li>
+            <li class="">用户使用习惯统计分析<i></i></li>
+            <li class="">用户行业分布统计<i></i></li>
+        </ul>
+        <div class="tabBox tabCont">
+        	<div class="item clearfix tabItem" style="display:block">
+            	 <!--用户分析-->
+                           <form class="clearfix analysecent user_form" id="activeForm" method="post" action="${ctx}/adminUserAnalysis.html">
+                               
+                                 <div class="analyse_lable fl">
+                                    <label>统计开始时间</label>
+                                    <input type="text" class="text" id="begin_date_active" name="begin_date" value="" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                                    <label>-结束时间</label>
+                                    <input type="text" class="text" id="end_date_active" name="end_date" value="" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                                </div>
+                                <div class="analyse_lable fl">
+                                    <label>统计内容</label>
+                                    <select class="text user_select" id="activeSel" name="activeSel">
+                                        <option value="1">登录用户数量</option>
+                                        <option value="2">用户活跃度排行榜</option>
+                                    </select>
+                                </div>
+                                <input type="button" class="sub" value="" style="right:-130px;" onclick="activeAnalysis()">
+
+                            </form>
+                            <div class="tableBox">
+                            	<style>
+									.tableBox{ margin-top:0px;}
+                                </style>
+                                
+                                <div class="tableUser" style="">
+                                	<table cellpadding="0" cellspacing="0" border="1" width="954" bordercolor="#e0e0e0">
+                                    <thead>
+                                        <tr style="width:100%">
+                                            <th>登录用户数量</th>
+                                            <th>占系统所有用户数的比例</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td id="loginCount"></td>
+                                            <td id="loginParent"></td>
+                                        </tr>                                        
+                                    </tbody>
+                                </table>
+                                
+                                </div>
+                                <div class="tableUsert" style="height:260px; overflow-y:auto; display:none;">
+                                	<table cellpadding="0" cellspacing="0" border="1" width="954" bordercolor="#e0e0e0">
+                                    <thead>
+                                        <tr style="width:100%">
+                                           <th width="180">序号</th>
+                                            <th  colspan="4" width="611">登录最频繁用户TOP10</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tId">
+                                                                            <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                                </div>
+                                
+                            </div>	
+            </div>
+            <div class="item tabItem">
+            		 <form class="clearfix analysecent user_form">
+                               
+                                 <div class="analyse_lable fl">
+                                    <label>统计开始时间</label>
+                                    <input type="text" class="text" id="begin_date_use" name="begin_date" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                                    <label>-结束时间</label>
+                                    <input type="text" class="text" id="end_date_use" name="end_date" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                                </div>
+                                <div class="analyse_lable fl">
+                                    <label>统计内容</label>
+                                    <select class="text user_select" id="useSel">
+                                        <option value="1">用户登录时间段</option>
+                                        <option value="2">用户下单时间段</option>
+                                    </select>
+                                </div>
+                                <input type="button" class="sub" value="" style="right:-130px;" onclick="useAnalysis()">
+                            </form>
+                     <div class="tableBox">
+                            	
+                                <div class="tableUser" style="height:260px; overflow-y:auto;">
+                                	<table cellpadding="0" cellspacing="0" border="1" width="954" bordercolor="#e0e0e0">
+                                    <thead>
+                                        <tr style="width:100%">
+                                            <th width="180">序号</th>
+                                            <th colspan="4" width="611">用户登录最集中的时间段TOP5</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="body1">
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                                </div>
+                                <div class="tableUsert" style="height:260px; overflow-y:auto; display:none;">
+                                	<table cellpadding="0" cellspacing="0" border="1" width="954" bordercolor="#e0e0e0">
+                                    <thead>
+                                        <tr style="width:100%">
+                                            <th width="180">序号</th>
+                                            <th colspan="4" width="611">用户下单最集中的时间段TOP5</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="body2">
+                                     <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                                </div>
+                                
+                            </div>	
+            </div>
+            <div class="item tabItem">
+            		<form class="clearfix analysecent user_form">
+                               
+                         <div class="analyse_lable fl">
+                            <label>统计开始时间</label>
+                            <input type="text" class="text" id="begin_date_industry" name="begin_date" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                            <label>-结束时间</label>
+                            <input type="text" class="text" id="end_date_industry" name="end_date" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                        </div><!--
+                        <div class="analyse_lable fl">
+                            <label>用户所属行业</label>
+                            <select class="text">
+                                <option value="">aaaa</option>
+                                <option value="">bbbb</option>
+                            </select>
+                        </div>
+                        --><input type="button" class="sub" value="" style="right:-130px;" onclick="indusAnalysis()">
+                    </form>	
+                    <div class="tableBox">
+                    				
+                                	<table cellpadding="0" cellspacing="0" border="1" width="954" bordercolor="#e0e0e0">
+                                    <thead>
+                                        <tr style="width:100%">
+                                            <th width="180">序号</th>
+                                            <th colspan="2" width="305">用户所属行业</th>
+                                            <th colspan="2" width="305">下单用户数量</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="body3">
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="2"></td>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                                </div>
+            </div>
+        
         </div>
-		<div class="sj_data_box">
-        	<div class="data_choose">
-            	<form action="${ctx}/adminUserAnalysis.html" method="post" id="searchForm" >
-               	  <label class="fl">统计时段</label>
-               	 	  <div class="se_big fl">
-			        	<input style="border:1px solid #e0e0e0; height: 28px; line-height: 28px;" type="text" id="begin_date" name="begin_datevo" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
-			      </div>
-			      <div style="float:left; width:20xp;margin-right:15px;">--</div>
-                   <div class="se_big fl">
-			     		<input style="border:1px solid #e0e0e0; height: 28px; line-height: 28px;" type="text" id="end_date" name="end_datevo"  onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
-			      </div>
-                  <label class="fl"></label>
-		            <select id="content" name="content" class="se_small fl se_last">
-		         		<option selected="selected" value="-1">请选择统计内容</option>
-		         		<option value="1" >登录用户数量</option>
-		         		<option value="2" >用户活跃度排行榜</option>
-		    		</select>
-		    		<input type="button" class="dd_select fl ml20" value="" onclick="userAnalysis()"/>
-                </form>
-            </div>
-	   <div style=" margin-top:30px; margin-bottom:20px; clear:both; overflow:hidden; height:300px;display:none" id="m_user_num">
-       <div class="m_user_table_box" id="m_supper">
-           <div class="b_user_table_c" >
-                <span class="user_title">登录系统用户数</span>
-                <span class="user_num">${loginUserNum}</span>
-           </div>
-       </div>
-       <div class="m_user_table_box p_user_table" id="n_supper">
-       <div class="b_user_table_c" style="border-right:1px solid #e0e0e0;">
-             <span class="user_title">占所有用户数比例</span>
-            <span class="user_num">${loginUserPercent}%</span>
-       </div>
-
-       </div>
-     
-  	</div>
-  	   <div style="margin-top:30px; margin-bottom:20px; clear:both; overflow:hidden; height:300px;" id="m_user_default">
-       </div>
-    <div class="system_table" style="margin-top:30px; margin-bottom:20px; clear:both; overflow:hidden; height:300px; display:none" id="m_user_percent">
- 	<table class="user_table" cellpadding="0" cellspacing="0">
-
-         	<tr>
-             	<th class="t_username">序号</th>
-                 <th class="t_date">用户名</th>
-             </tr>
-             <tr>
-             	<td class="t_username">1</td>
-	            <td class="t_date">a</td>
-	         </tr>
-             <tr>
-             	<td class="t_username">2</td>
-	            <td class="t_date">b</td>
-	         </tr>
-     </table>
- 	</div>
-       </div>
-		<div class="dd_data_box" style="display:none;">
-        	<div class="data_choose">
-            	<form action="${ctx}/adminUserHabitsAnalysis.html" method="post" id="habitsSearchForm">
-               	  <label class="fl">统计时段</label>
-               	 	  <div class="se_big fl">
-			        	<input style="border:1px solid #e0e0e0; height: 28px; line-height: 28px;" type="text" id="begin_date_habits" name="begin_datevo_habits" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
-			      </div>
-			      <div style="float:left; width:20xp;margin-right:15px;">--</div>
-                   <div class="se_big fl">
-			     		<input style="border:1px solid #e0e0e0; height: 28px; line-height: 28px;" type="text" id="end_date_habits" name="end_datevo_habits"  onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
-			      </div>
-                  <label class="fl"></label>
-		            <select id="content_habits" name="content_habits" class="se_small fl se_last">
-		         		<option selected="selected" value="-1">请选择统计内容</option>
-		         		<option value="1" >用户登录时间段</option>
-		         		<option value="2" >用户下单时间段</option>
-		    		</select>
-		    		<input type="button" class="dd_select fl" value="" onclick="userHabitsAnalysis()"/>
-                </form>
-            </div>
-    <div class="system_table" style="margin-top:30px; margin-bottom:20px; clear:both; overflow:hidden; height:300px; display:none" id="m_login_time">
- 	<table class="user_table" cellpadding="0" cellspacing="0">
-
-         	<tr>
-             	<th class="t_username">序号</th>
-                 <th class="t_date">登录时间段</th>
-             </tr>
-             <tr>
-             	<td class="t_username">1</td>
-	            <td class="t_date">a</td>
-	         </tr>
-             <tr>
-             	<td class="t_username">2</td>
-	            <td class="t_date">b</td>
-	         </tr>
-     </table>
- 	</div>
-    <div class="system_table" style="margin-top:30px; margin-bottom:20px; clear:both; overflow:hidden; height:300px; display:none" id="m_order_time">
- 	<table class="user_table" cellpadding="0" cellspacing="0">
-
-         	<tr>
-             	<th class="t_username">序号</th>
-                 <th class="t_date">下单时间段</th>
-             </tr>
-             <tr>
-             	<td class="t_username">1</td>
-	            <td class="t_date">a</td>
-	         </tr>
-             <tr>
-             	<td class="t_username">2</td>
-	            <td class="t_date">b</td>
-	         </tr>
-     </table>
- 	 </div>
- 	 	<div style="margin-top:30px; margin-bottom:20px; clear:both; overflow:hidden; height:300px;" id="m_habits_default">
-       </div>
-     </div>
-      <div class="gj_data_box">
-       	<div class="data_choose gjchoose">
-           	<form action="${ctx}/adminIndustryAnalysis.html" method="post" id="industryForm">
-              	  <label class="fl">统计时段</label>
-              	  <div class="se_big fl">
-		        	<input style="border:1px solid #e0e0e0; height: 28px; line-height: 28px;" type="text" value="" id="begin_date_industry" name="begin_datevo_industry" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
-		      </div>
-		      <div style="float:left; width:20xp;margin-right:15px;">--</div>
-                  <div class="se_big fl">
-		     		<input style="border:1px solid #e0e0e0; height: 28px; line-height: 28px;" type="text" value="" id="end_date_industry" name="end_datevo_industry"  onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
-		      </div>
-	             <select id="industry" name="industry" class="se_small fl se_last">
-		        	<option selected="selected" value="-1">请选择所属行业</option>
-		      		<option value="1" >漏洞扫描服务</option>
-                       <option value="2" >恶意代码监测服务</option>
-                       <option value="3" >网页篡改监测服务</option>
-                       <option value="4" >关键字监测服务</option>
-                       <option value="5" >可用性监测服务</option>
-                       <option value="6" >日常流量监测服务</option>
-                       <option value="7" >日常攻击防护服务</option>
-                       <option value="8" >突发异常流量清洗服务</option>
-		    	</select>
-                 <input type="button" class="dd_select fl ml20" value="" onclick="industryAnalysis()"/>
-               </form>
-           </div>
-            <div class="data_detail" id="warningDataAnalysis">
-       	    	<!-- <img src="${ctx}/source/adminImages/b_dataanalysis.jpg" width="1097" height="351"> -->
-            </div>
     </div>
- 
 </div>
 <!--尾部部分代码-->
 <div class="bottom_bj">
