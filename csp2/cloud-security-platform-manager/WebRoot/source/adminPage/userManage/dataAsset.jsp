@@ -71,7 +71,6 @@ var  anList=${anList};
                                  <div class="analyse_lable fl">
                                     <label>资产所属用户</label>
                                     <select class="text" name="assetUserType">
-                                        <option value="0">请选择</option>
                                         <option value="3">企业用户</option>
                                         <option value="2">个人用户</option>
                                     </select>
@@ -125,13 +124,14 @@ var  anList=${anList};
                                  <div class="analyse_lable fl" >
                                     <label>资产所属用户</label>
                                     <select class="text" name="assetUserType1">
+                                       <option value=" ">请选择</option>
                                        <option value="3">企业用户</option>
                                        <option value="2">个人用户</option>
                                     </select>
                                 </div>
                                  <div class="analyse_lable fl">
                                     <label>资产用途</label>
-                                    <select class="text" name="purpose">   
+                                    <select class="text" name="purpose">  
                                         <option value="1">公共服务</option>
                                         <option value="2">信息发布</option>
                                         <option value="3">其他</option>
@@ -180,7 +180,7 @@ var  anList=${anList};
                                 </div>
                                  <div class="analyse_lable fl">
                                     <label>资产用途</label>
-                                     <select class="text" name="purpose">   
+                                     <select class="text" name="purpose">
                                         <option value="1">公共服务</option>
                                         <option value="2">信息发布</option>
                                         <option value="3">其他</option>
@@ -232,33 +232,43 @@ var  anList=${anList};
                         <div class="analyse_tabItem" style="display:block">
                     
                             <!--资产告警等级统计分析-->
-                            <form class="clearfix analysecent">
+                            <form class="clearfix analysecent" name="alarmForm"  id="alarmForm" action="${ctx}/admineAssetAlarmUI.html?tablList=1&anList=0" method="post">
                                 <div class="analyse_lable fl">
                                     <label>资产名称</label>
-                                    <input type="text" class="text">
+                                    <input type="text" class="text" name="assertName">
                                 </div>
                                 
                                  <div class="analyse_lable fl">
                                     <label>服务类型</label>
-                                    <select class="text">
-                                        <option>aaa</option>
+                                    <select class="text" name="serverType">
+                                        <option value="1">漏洞扫描服务</option>
+                                        <option value="2">恶意代码监测服务</option>
+                                        <option value="3">网页篡改监测服务</option>
+                                        <option value="4">关键字监测服务</option>
+                                        <option value="5">可用性监测服务</option>
+                                        <option value="6">日常流量监控服务</option>
+                                        <option value="7">日常攻击防护服务</option>
+                                        <option value="8">突发异常流量清洗服务</option>
                                     </select>
                                 </div>
                                  <div class="analyse_lable fl">
                                     <label>订单开始时间</label>
-                                    <input type="text" class="text" value="2012-02-02">
+                                     <input type="text" class="text"  value="" id="begin_date" name="begin_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
                                     <label>-结束时间</label>
-                                    <input type="text" class="text" value="2012-02-02">
+                                     <input type="text" class="text"  value="" id="end_date" name="end_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
                                 </div>
                                 <div class="analyse_lable fl">
                                     <label>订单编号</label>
-                                    <input type="text" class="text">
+                                    <input type="text" class="text" name="orderCode">
                                 </div>
                                 
                                  <div class="analyse_lable fl">
                                     <label>告警等级</label>
-                                    <select class="text">
-                                        <option>aaa</option>
+                                    <select class="text" name="alarmRank">
+                                        <option value=" ">请选择</option>
+                                        <option value="2">高</option>
+                                        <option value="1">中</option>
+                                        <option value="0">低</option>
                                     </select>
                                 </div>
                                 <input type="submit" class="sub" value="">
@@ -351,29 +361,36 @@ var  anList=${anList};
                             <form class="clearfix analysecent">
                                 <div class="analyse_lable fl">
                                     <label>资产名称</label>
-                                    <input type="text" class="text">
+                                    <input type="text" class="text" name="assertName1">
                                 </div>
                                 
                                  <div class="analyse_lable fl">
                                     <label>服务类型</label>
-                                    <select class="text">
-                                        <option>aaa</option>
+                                    <select class="text" name="serverType">
+                                        <option value="1">漏洞扫描服务</option>
+                                        <option value="2">恶意代码监测服务</option>
+                                        <option value="3">网页篡改监测服务</option>
+                                        <option value="4">关键字监测服务</option>
+                                        <option value="5">可用性监测服务</option>
+                                        <option value="6">日常流量监控服务</option>
+                                        <option value="7">日常攻击防护服务</option>
+                                        <option value="8">突发异常流量清洗服务</option>
                                     </select>
                                 </div>
                                  <div class="analyse_lable fl">
                                     <label>订单开始时间</label>
-                                    <input type="text" class="text" value="2012-02-02">
+                                    <input type="text" class="text"  value="" id="begin_date" name="begin_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
                                     <label>-结束时间</label>
-                                    <input type="text" class="text" value="2012-02-02">
+                                    <input type="text" class="text"  value="" id="end_date" name="end_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
                                 </div>
                                 <div class="analyse_lable fl">
                                     <label>订单编号</label>
-                                    <input type="text" class="text">
+                                    <input type="text" class="text" name="orderCode">
                                 </div>
                                 
                                  <div class="analyse_lable fl">
                                     <label>告警名称</label>
-                                    <input type="text" class="text">
+                                    <input type="text" class="text" name="alarmName">
                                 </div>
                                 <input type="submit" class="sub" value="">
                             </form>
