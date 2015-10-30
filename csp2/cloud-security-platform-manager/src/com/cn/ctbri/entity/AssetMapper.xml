@@ -143,6 +143,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
            <if test="purpose==3">
               and IFNULL(ca.purpose,0) not in('公共服务','信息发布')
            </if>
+           <if test="begin_date!=null and begin_date!=''">
+              and ca.create_date &gt;= #{begin_date}
+           </if>
+           <if test="end_date!=null and end_date!=''">
+             and  ca.create_date &lt;= #{end_date}
+           </if>
            group by cu.type,(case when IFNULL(ca.purpose,0) not in('公共服务','信息发布') then '其他' else ca.purpose end)
 	</select>
 </mapper>

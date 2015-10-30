@@ -98,7 +98,7 @@ public class AdminAssetController {
 		return "/source/adminPage/userManage/dataAsset";
 	}
 	/**
-	 * 功能描述：资产用途统计分析
+	 * 功能描述：资产用途统计分析/资产服务情况分析
 	 *		 @time 2015-10-29
 	 */
 	@RequestMapping("/adminPurposeAssetUI.html")
@@ -114,12 +114,20 @@ public class AdminAssetController {
 		}
 		String assetUserType = request.getParameter("assetUserType1");
 		String purpose = request.getParameter("purpose");
+		String begin_date=request.getParameter("begin_datevo");
+		String end_date = request.getParameter("end_datevo");
 		Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("assetUserType", assetUserType);
         paramMap.put("purpose", purpose);
+        paramMap.put("begin_date", begin_date);
+        paramMap.put("end_date", end_date);
         if(assetUserType!=null&&!"".equals(assetUserType)){
-       	 List<Asset> list=assetService.findByAssetPurposeList(paramMap);
-       	 request.setAttribute("porlist", list);
+       	     List<Asset> list=assetService.findByAssetPurposeList(paramMap);
+	       	 if("0".equals(tablList)&&"1".equals(anList)){
+	       		request.setAttribute("porlist", list); 
+	       	 }else if("0".equals(tablList)&&"2".equals(anList)){
+	       		request.setAttribute("servlist", list); 
+	       	 }
         }
         request.setAttribute("tablList", tablList);
         request.setAttribute("anList", anList);
