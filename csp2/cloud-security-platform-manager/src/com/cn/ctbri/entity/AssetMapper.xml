@@ -117,14 +117,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	  	select (case when cu.type=2 then '个人用户' else '企业用户' end)  name,
       		cd.name disName,cc.name cityName, ca.num 
      	from (select a.districtId,a.city,a.userid,count(1) num 
-           		from cs_asset a where a.districtId=#{province}
-           		 <if test="city!=null">
-           		  and a.city=#{city}
+           		from cs_asset a 
+           		 <if test="province!=null and province!=''">
+           		    where  a.districtId=#{province}
+           		 </if> 
+           		 <if test="city!=null and city!=''">
+           		    and a.city=#{city}
            		 </if>  
            		group by a.districtId,a.city,a.userid ) ca,
 		cs_district cd,cs_city cc,cs_user cu 
 		where ca.districtId=cd.id and ca.city=cc.id and ca.userid=cu.id
-		and cu.type=#{assetUserType}
+		<if test="assetUserType!=null and assetUserType!=''">
+            and cu.type=#{assetUserType}
+        </if> 
 	</select>
 	<!-- 资产用途统计分析 -->
  	<select id="findAssertPurpose" parameterType="hashmap" resultMap="AssetRM1">
@@ -133,7 +138,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   '' cityName,count(1) num 
            from cs_asset ca,cs_user cu 
            where ca.userid=cu.id 
-           and cu.type=#{assetUserType}
+           
+           <if test="assetUserType!=null and assetUserType!=''">
+             and cu.type=#{assetUserType}
+           </if>
             <if test="purpose==1">
               and ca.purpose='公共服务'
            </if>

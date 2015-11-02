@@ -74,13 +74,7 @@ public class AdminAssetController {
 	public String dataAssertUI(HttpServletRequest request,HttpServletResponse response){
 		
 		String tablList = request.getParameter("tablList");
-		if(tablList==null||"".equals(tablList)){
-			tablList="0";
-		}
 		String anList = request.getParameter("anList");
-		if(anList==null||"".equals(anList)){
-			anList="0";
-		}
 		String assetUserType = request.getParameter("assetUserType");
 		String prov = request.getParameter("prov");
 		String city = request.getParameter("city");
@@ -88,11 +82,17 @@ public class AdminAssetController {
         paramMap.put("assetUserType", assetUserType);
         paramMap.put("province", prov);
         paramMap.put("city", city);
-       
-        if(assetUserType!=null&&!"".equals(assetUserType)){
-        	 List<Asset> list=assetService.findByAssetProAndCity(paramMap);
-        	 request.setAttribute("list", list);
+        if((request.getParameter("tablList"))!=null){
+           List<Asset> list=assetService.findByAssetProAndCity(paramMap);
+           request.setAttribute("list", list);
         }
+        if(tablList==null||"".equals(tablList)){
+			tablList="0";
+		}
+        if(anList==null||"".equals(anList)){
+			anList="0";
+		}
+        request.setAttribute("paramMap", paramMap);
         request.setAttribute("tablList", tablList);
         request.setAttribute("anList", anList);
 		return "/source/adminPage/userManage/dataAsset";
@@ -124,13 +124,48 @@ public class AdminAssetController {
         if(assetUserType!=null&&!"".equals(assetUserType)){
        	     List<Asset> list=assetService.findByAssetPurposeList(paramMap);
 	       	 if("0".equals(tablList)&&"1".equals(anList)){
-	       		request.setAttribute("porlist", list); 
+	       		request.setAttribute("porlist", list);
+	       		request.setAttribute("porMap", paramMap); 
 	       	 }else if("0".equals(tablList)&&"2".equals(anList)){
 	       		request.setAttribute("servlist", list); 
+	       		request.setAttribute("servMap", paramMap); 
 	       	 }
         }
         request.setAttribute("tablList", tablList);
         request.setAttribute("anList", anList);
 		return "/source/adminPage/userManage/dataAsset";
 	}
+	
+	/**
+	 * 功能描述：资产历史警告分析
+	 *		 @time 2015-10-29
+	 */
+	@RequestMapping("/admineAssetAlarmUI.html")
+	public String dataAssetAlarmUI(HttpServletRequest request,HttpServletResponse response){
+		String tablList = request.getParameter("tablList");
+		String anList = request.getParameter("anList");
+		String assertName = request.getParameter("assertName");
+		String serverType = request.getParameter("serverType");
+		String begin_date=request.getParameter("begin_datevo");
+		String end_date = request.getParameter("end_datevo");
+		String orderCode = request.getParameter("orderCode");
+		String alarmRank = request.getParameter("alarmRank");
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("assertName", assertName);
+        paramMap.put("serverType", serverType);
+        paramMap.put("begin_date", begin_date);
+        paramMap.put("end_date", end_date);
+        paramMap.put("orderCode", orderCode);
+        paramMap.put("alarmRank", alarmRank);     
+        if(tablList!=null&&!"0".equals(tablList)){
+       	     List<Asset> list=assetService.findByAssetPurposeList(paramMap);
+	       		request.setAttribute("porlist", list); 
+	       	 
+        }
+        request.setAttribute("tablList", tablList);
+        request.setAttribute("anList", anList);
+		return "/source/adminPage/userManage/dataAsset";
+	}
+	
 }
