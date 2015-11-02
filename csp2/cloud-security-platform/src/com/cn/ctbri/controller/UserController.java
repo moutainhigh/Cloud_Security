@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.cfg.Configuration;
+import com.cn.ctbri.entity.LoginHistory;
 import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.Notice;
 import com.cn.ctbri.entity.Order;
@@ -263,6 +264,13 @@ public class UserController{
 			_user.setStatus(2);
 			userService.update(_user);
 			
+			//添加到登录历史表中，用于统计分析
+			LoginHistory lh = new LoginHistory();
+			lh.setUserId(_user.getId());
+			lh.setUserType(_user.getType());
+			lh.setLoginTime(_user.getLastLoginTime());
+			userService.insertLoginHistory(lh);
+			
 			//将User放置到Session中，用于这个系统的操作
 			request.getSession().setAttribute("globle_user", _user);
 			
@@ -329,7 +337,7 @@ public class UserController{
 	public String exit(HttpServletRequest request){
 		//request.getSession().removeAttribute("globle_user");
 		User user = (User)request.getSession().getAttribute("globle_user");
-		//设置退出状态：-1
+		//设置退出状态：0
 		if(user != null){
 			user.setStatus(0);
 			userService.update(user);

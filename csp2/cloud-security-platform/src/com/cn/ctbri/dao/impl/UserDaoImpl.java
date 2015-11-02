@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.UserDao;
 import com.cn.ctbri.entity.DataAnalysis;
+import com.cn.ctbri.entity.LoginHistory;
 import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.User;
 /**
@@ -23,7 +24,11 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
 	/**
 	 * 功        能： UserMapper命名空间
 	 */
-	private String ns = "com.cn.ctbri.entity.UserMapper.";		
+	private String ns = "com.cn.ctbri.entity.UserMapper.";
+	/**
+	 * 功        能： LoginHistoryMapper命名空间
+	 */
+	private String ns_lh = "com.cn.ctbri.entity.LoginHistoryMapper.";	
 	
 	/**
 	 * 功能描述：插入用户
@@ -143,5 +148,10 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
 	public void updatePass(User user) {
 		// TODO Auto-generated method stub
 		this.getSqlSession().update(ns+"updatePass",user);
+	}
+
+	public void insertLoginHistory(LoginHistory lh) {
+		this.getSqlSession().insert(ns_lh+"insert", lh);
+		
 	}
 }

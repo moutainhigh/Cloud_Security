@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cn.ctbri.dao.UserDao;
 import com.cn.ctbri.entity.DataAnalysis;
+import com.cn.ctbri.entity.LoginHistory;
 import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.pager.PageBean;
@@ -162,6 +163,11 @@ public class UserServiceImpl implements IUserService{
 	public void updatePass(User user) {
 		// TODO Auto-generated method stub
 		userDao.updatePass(user);
+	}
+
+	public void insertLoginHistory(LoginHistory lh) {
+		userDao.insertLoginHistory(lh);
+		
 	}
 
 }

@@ -3,6 +3,7 @@ package com.cn.ctbri.service;
 import java.util.List;
 
 import com.cn.ctbri.entity.DataAnalysis;
+import com.cn.ctbri.entity.LoginHistory;
 import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.pager.PageBean;
@@ -108,4 +109,7 @@ public interface IUserService {
     MobileInfo getMobileById(String MobileNumber);
     
     void updatePass(User user);
+    
+    //插入用户登录历史
+    void insertLoginHistory(LoginHistory lh);
 }
