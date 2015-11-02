@@ -17,9 +17,15 @@
 <script type="text/javascript" src="${ctx}/source/scripts/assetJs/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
-<script>
+
+<script type="text/javascript">
 var  tablList=${tablList};
 var  anList=${anList};
+var assetUserType='${paramMap.assetUserType}'; 
+var prov='${paramMap.province}';
+var city='${paramMap.city}';
+//alert(prov);
+//alert(assetUserType);
 </script>
 </head>
 <body>
@@ -70,7 +76,8 @@ var  anList=${anList};
                             <form class="clearfix analysecent" name="assetForm"  id="assetForm" action="${ctx}/adminDataAssetUI.html?tablList=0&anList=0" method="post">
                                  <div class="analyse_lable fl">
                                     <label>资产所属用户</label>
-                                    <select class="text" name="assetUserType">
+                                    <select class="text" name="assetUserType" id="assetType1">
+                                        <option value="">请选择</option>
                                         <option value="3">企业用户</option>
                                         <option value="2">个人用户</option>
                                     </select>
@@ -123,8 +130,7 @@ var  anList=${anList};
                  
                                  <div class="analyse_lable fl" >
                                     <label>资产所属用户</label>
-                                    <select class="text" name="assetUserType1">
-                                       <option value=" ">请选择</option>
+                                    <select class="text" name="assetUserType1" id="assetType2">
                                        <option value="3">企业用户</option>
                                        <option value="2">个人用户</option>
                                     </select>
@@ -132,7 +138,7 @@ var  anList=${anList};
                                  <div class="analyse_lable fl">
                                     <label>资产用途</label>
                                     <select class="text" name="purpose">  
-                                        <option value="1">公共服务</option>
+                                        <option value="1">公共服务</option>a
                                         <option value="2">信息发布</option>
                                         <option value="3">其他</option>
                                     </select>
@@ -173,7 +179,7 @@ var  anList=${anList};
                                 
                                  <div class="analyse_lable fl">
                                     <label>资产所属用户</label>
-                                       <select class="text" name="assetUserType1">
+                                       <select class="text" name="assetUserType1" id="assetType3">
                                        <option value="3">企业用户</option>
                                        <option value="2">个人用户</option>
                                     </select>
