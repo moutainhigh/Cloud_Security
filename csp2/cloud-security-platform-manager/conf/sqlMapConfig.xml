@@ -35,5 +35,7 @@
 		<mapper resource="com/cn/ctbri/entity/AlarmDDOSMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/DistrictDataMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/LoginHistoryMapper.xml"/>
+	    <mapper resource="com/cn/ctbri/entity/CityMapper.xml"/>
+		
 	</mappers>
 </configuration>  
