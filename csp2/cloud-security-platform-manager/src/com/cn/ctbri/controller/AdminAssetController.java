@@ -121,16 +121,14 @@ public class AdminAssetController {
         paramMap.put("purpose", purpose);
         paramMap.put("begin_date", begin_date);
         paramMap.put("end_date", end_date);
-        if(assetUserType!=null&&!"".equals(assetUserType)){
-       	     List<Asset> list=assetService.findByAssetPurposeList(paramMap);
-	       	 if("0".equals(tablList)&&"1".equals(anList)){
-	       		request.setAttribute("porlist", list);
-	       		request.setAttribute("porMap", paramMap); 
-	       	 }else if("0".equals(tablList)&&"2".equals(anList)){
-	       		request.setAttribute("servlist", list); 
-	       		request.setAttribute("servMap", paramMap); 
-	       	 }
-        }
+       	List<Asset> list=assetService.findByAssetPurposeList(paramMap);
+       	if("0".equals(tablList)&&"1".equals(anList)){
+       		request.setAttribute("porlist", list);
+       		request.setAttribute("porMap", paramMap); 
+       	 }else if("0".equals(tablList)&&"2".equals(anList)){
+       		request.setAttribute("servlist", list); 
+       		request.setAttribute("servMap", paramMap); 
+       	 }   	 
         request.setAttribute("tablList", tablList);
         request.setAttribute("anList", anList);
 		return "/source/adminPage/userManage/dataAsset";
