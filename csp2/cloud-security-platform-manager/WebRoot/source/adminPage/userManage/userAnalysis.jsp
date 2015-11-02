@@ -273,15 +273,26 @@ $(document).ready(function(){
                             <input type="text" class="text" id="begin_date_industry" name="begin_date" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
                             <label>-结束时间</label>
                             <input type="text" class="text" id="end_date_industry" name="end_date" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
-                        </div><!--
+                        </div>
                         <div class="analyse_lable fl">
                             <label>用户所属行业</label>
-                            <select class="text">
-                                <option value="">aaaa</option>
-                                <option value="">bbbb</option>
+                            <select class="text" id="industry">
+                            	<option selected="selected" value="-1">请选择行业</option>
+								<option value="农、林、牧、渔业" > 农、林、牧、渔业</option>
+			         			<option value="采矿业" > 采矿业</option>
+			         			<option value="电力、热力、燃气及水生产和供应业" >电力、热力、燃气及水生产和供应业</option>
+			         			<option value="建筑业" >建筑业</option>
+			         			<option value="批发和零售业" >批发和零售业</option>
+			         			<option value="交通运输、仓储和邮政业" >交通运输、仓储和邮政业</option>
+			         			<option value="住宿和餐饮业" >住宿和餐饮业</option>
+			         			<option value="信息传输、软件和信息技术服务业" >信息传输、软件和信息技术服务业</option>
+			         			<option value="金融业" >金融业</option>
+			         			<option value="房地产业" >房地产业</option>
+			         			<option value="租赁和商务服务业" >租赁和商务服务业</option>
+			         			<option value="科学研究和技术服务业" >科学研究和技术服务业</option> 
                             </select>
                         </div>
-                        --><input type="button" class="sub" value="" style="right:-130px;" onclick="indusAnalysis()">
+                        <input type="button" class="sub" value="" style="right:-130px;" onclick="indusAnalysis()">
                     </form>	
                     <div class="tableBox">
                     				

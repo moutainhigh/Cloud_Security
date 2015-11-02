@@ -318,9 +318,8 @@ $(document).ready(function(){
             <td class="regist_input">
                 <select class="regist_sel" id="addIndustry" name="industry">
                 	<option selected="selected" value="-1">请选择行业</option>
-                	<option selected="selected" value="-1">请选择行业</option>
-                	<option value=" 农、林、牧、渔业" > 农、林、牧、渔业</option>
-         			<option value=" 采矿业" > 采矿业</option>
+                	<option value="农、林、牧、渔业" > 农、林、牧、渔业</option>
+         			<option value="采矿业" > 采矿业</option>
          			<option value="电力、热力、燃气及水生产和供应业" >电力、热力、燃气及水生产和供应业</option>
          			<option value="建筑业" >建筑业</option>
          			<option value="批发和零售业" >批发和零售业</option>
@@ -423,8 +422,8 @@ $(document).ready(function(){
             <td class="regist_input">
                 <select class="regist_sel" id="editIndustry" name="industry">
                 	<option selected="selected" value="-1">请选择行业</option>
-                	<option value=" 农、林、牧、渔业" > 农、林、牧、渔业</option>
-         			<option value=" 采矿业" > 采矿业</option>
+                	<option value="农、林、牧、渔业" > 农、林、牧、渔业</option>
+         			<option value="采矿业" > 采矿业</option>
          			<option value="电力、热力、燃气及水生产和供应业" >电力、热力、燃气及水生产和供应业</option>
          			<option value="建筑业" >建筑业</option>
          			<option value="批发和零售业" >批发和零售业</option>

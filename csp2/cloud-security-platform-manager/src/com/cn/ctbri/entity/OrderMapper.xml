@@ -328,6 +328,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<![CDATA[
 	o.create_date>=#{begin_date} AND o.create_date<=#{end_date}
 	]]>	
+    <if test="industry!=null and industry!='' and industry!='-1'">
+        AND u.industry like CONCAT(CONCAT('%', #{industry}), '%')
+    </if>
 	GROUP BY u.industry
     </select>
 </mapper>

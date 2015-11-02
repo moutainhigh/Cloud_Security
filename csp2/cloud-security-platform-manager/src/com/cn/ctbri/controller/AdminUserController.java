@@ -145,7 +145,9 @@ public class AdminUserController {
 					newRegList.add(u);	
 				}
 				//查询在线用户（status:2）
-				newOnlineList = userService.findUserByStatus(2);
+				if(u.getStatus()==2){
+					newOnlineList.add(u);
+				}
 			}
 		}
 		model.addAttribute("list",newSupList);//超级管理员列表
@@ -448,6 +450,7 @@ public class AdminUserController {
 		
 		String begin_date = request.getParameter("begin_date");
 		String end_date = request.getParameter("end_date");
+		String industry = request.getParameter("industry");
 		
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("begin_date", begin_date);
@@ -456,6 +459,9 @@ public class AdminUserController {
 		try {
 			Gson gson= new Gson(); 
 			
+			if(!industry.equals("-1")){
+				paramMap.put("industry", industry);
+			}
 			//根据行业查询下单用户数量
 			List list = orderService.findUserCountByIndus(paramMap);
 			String resultGson = gson.toJson(list);

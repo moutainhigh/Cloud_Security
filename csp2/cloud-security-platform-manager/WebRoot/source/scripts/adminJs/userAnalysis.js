@@ -112,6 +112,7 @@ function useAnalysis(){
 function indusAnalysis(){
 	var begin_date = $("#begin_date_industry").val();
 	var end_date = $("#end_date_industry").val();
+	var industry = $("#industry").val();
 	
 	if(begin_date=="" || end_date==""){
         alert("信息提示：统计开始时间和结束时间不能为空！"); 
@@ -127,7 +128,7 @@ function indusAnalysis(){
 	$.ajax({
         type: "POST",
         url: "adminIndusAnalysis.html",
-        data: {"begin_date":begin_date,"end_date":end_date},
+        data: {"begin_date":begin_date,"end_date":end_date,"industry":industry},
         dataType:"json",
         success: function(data){
     		$("#body3").html("");
