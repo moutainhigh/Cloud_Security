@@ -116,7 +116,14 @@ $(document).ready(function(){
 		});
 	
     $("#assetType1").val(assetUserType);
+    
      if(city!=''){
        getCitys(prov);
-     }
+     }   
+    $("#assetType2").val(assetUserType1);
+    $("#purpose1").val(purpose);
+    $("#assetType3").val(assetUserType2);
+    $("#purpose2").val(purpose1);
+    $("#begin_date").val(begin_date);
+    $("#end_date").val(end_date);
 });

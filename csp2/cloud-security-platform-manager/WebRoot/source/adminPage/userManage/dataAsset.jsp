@@ -21,9 +21,32 @@
 <script type="text/javascript">
 var  tablList=${tablList};
 var  anList=${anList};
-var assetUserType='${paramMap.assetUserType}'; 
-var prov='${paramMap.province}';
-var city='${paramMap.city}';
+var assetUserType="";
+var prov="";
+var city="";
+var assetUserType1="";
+var purpose="";
+var assetUserType2="";
+var purpose1="";
+var begin_date="";
+var end_date="";
+if(tablList==0&&anList==0){
+	assetUserType='${paramMap.assetUserType}'; 
+    prov='${paramMap.province}';	
+    city='${paramMap.city}';
+}else if(tablList==0&&anList==1){
+	purpose='${porMap.purpose}'; 
+	assetUserType1='${porMap.assetUserType}'; 
+}else if(tablList==0&&anList==2){
+	purpose1='${servMap.purpose}'; 
+	assetUserType2='${servMap.assetUserType}';
+	begin_date='${servMap.begin_date}';
+	end_date='${servMap.end_date}';
+}
+
+
+
+
 //alert(prov);
 //alert(assetUserType);
 </script>
@@ -131,14 +154,16 @@ var city='${paramMap.city}';
                                  <div class="analyse_lable fl" >
                                     <label>资产所属用户</label>
                                     <select class="text" name="assetUserType1" id="assetType2">
+                                       <option value="">请选择</option>
                                        <option value="3">企业用户</option>
                                        <option value="2">个人用户</option>
                                     </select>
                                 </div>
                                  <div class="analyse_lable fl">
                                     <label>资产用途</label>
-                                    <select class="text" name="purpose">  
-                                        <option value="1">公共服务</option>a
+                                    <select class="text" name="purpose" id="purpose1">  
+                                        <option value="">请选择</option>
+                                        <option value="1">公共服务</option>
                                         <option value="2">信息发布</option>
                                         <option value="3">其他</option>
                                     </select>
@@ -180,13 +205,15 @@ var city='${paramMap.city}';
                                  <div class="analyse_lable fl">
                                     <label>资产所属用户</label>
                                        <select class="text" name="assetUserType1" id="assetType3">
+                                       <option value="">请选择</option>
                                        <option value="3">企业用户</option>
                                        <option value="2">个人用户</option>
                                     </select>
                                 </div>
                                  <div class="analyse_lable fl">
                                     <label>资产用途</label>
-                                     <select class="text" name="purpose">
+                                     <select class="text" name="purpose" id="purpose2">
+                                        <option value="">请选择</option>
                                         <option value="1">公共服务</option>
                                         <option value="2">信息发布</option>
                                         <option value="3">其他</option>
