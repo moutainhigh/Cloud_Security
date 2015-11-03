@@ -30,6 +30,12 @@ var assetUserType2="";
 var purpose1="";
 var begin_date="";
 var end_date="";
+var assertName1="";
+var serverId1="";
+var begin_date1="";
+var end_date1="";
+var alarmRank1="" 
+var orderCode1="";
 if(tablList==0&&anList==0){
 	assetUserType='${paramMap.assetUserType}'; 
     prov='${paramMap.province}';	
@@ -42,6 +48,13 @@ if(tablList==0&&anList==0){
 	assetUserType2='${servMap.assetUserType}';
 	begin_date='${servMap.begin_date}';
 	end_date='${servMap.end_date}';
+}else if(tablList==1&&anList==0){
+	assertName1='${assertAlarmMap.assertName}'; 
+	serverId1='${assertAlarmMap.serverId}';
+	begin_date1='${assertAlarmMap.begin_date}';
+	end_date1='${assertAlarmMap.end_date}';
+	alarmRank1='${assertAlarmMap.alarmRank}';
+	orderCode1='${assertAlarmMap.orderCode}';
 }
 
 
@@ -268,12 +281,13 @@ if(tablList==0&&anList==0){
                             <form class="clearfix analysecent" name="alarmForm"  id="alarmForm" action="${ctx}/admineAssetAlarmUI.html?tablList=1&anList=0" method="post">
                                 <div class="analyse_lable fl">
                                     <label>资产名称</label>
-                                    <input type="text" class="text" name="assertName">
+                                    <input type="text" class="text" name="assertName" id="assertName1">
                                 </div>
                                 
                                  <div class="analyse_lable fl">
                                     <label>服务类型</label>
-                                    <select class="text" name="serverType">
+                                    <select class="text" name="serverId" id="serverId1">
+                                        <option value="">请选择</option>
                                         <option value="1">漏洞扫描服务</option>
                                         <option value="2">恶意代码监测服务</option>
                                         <option value="3">网页篡改监测服务</option>
@@ -286,19 +300,19 @@ if(tablList==0&&anList==0){
                                 </div>
                                  <div class="analyse_lable fl">
                                     <label>订单开始时间</label>
-                                     <input type="text" class="text"  value="" id="begin_date" name="begin_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                                     <input type="text" class="text"  value="" id="begin_date1" name="begin_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
                                     <label>-结束时间</label>
-                                     <input type="text" class="text"  value="" id="end_date" name="end_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                                     <input type="text" class="text"  value="" id="end_date1" name="end_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
                                 </div>
                                 <div class="analyse_lable fl">
                                     <label>订单编号</label>
-                                    <input type="text" class="text" name="orderCode">
+                                    <input type="text" class="text" name="orderCode" id="orderCode1">
                                 </div>
                                 
                                  <div class="analyse_lable fl">
                                     <label>告警等级</label>
-                                    <select class="text" name="alarmRank">
-                                        <option value=" ">请选择</option>
+                                    <select class="text" name="alarmRank" id="alarmRank1">
+                                        <option value="">请选择</option>
                                         <option value="2">高</option>
                                         <option value="1">中</option>
                                         <option value="0">低</option>
@@ -320,69 +334,30 @@ if(tablList==0&&anList==0){
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <c:forEach items="${assertAlarmlist}" var="assertAlarmlist">
                                         <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>${assertAlarmlist.name}</td>
+                                            <td>
+                                            <c:if test="${assertAlarmlist.serviceId==1}">漏洞扫描服务</c:if>
+                                            <c:if test="${assertAlarmlist.serviceId==2}">恶意代码监测服务</c:if>
+                                            <c:if test="${assertAlarmlist.serviceId==3}">网页篡改监测服务</c:if>
+                                            <c:if test="${assertAlarmlist.serviceId==4}">关键字监测服务</c:if>
+                                            <c:if test="${assertAlarmlist.serviceId==5}">可用性监测服务</c:if>
+                                            <c:if test="${assertAlarmlist.serviceId==6}">日常流量监控服务</c:if>
+                                            <c:if test="${assertAlarmlist.serviceId==7}">日常攻击防护服务</c:if>
+                                            <c:if test="${assertAlarmlist.serviceId==8}">突发异常流量清洗服务</c:if>
+                                            </td>
+                                            <td>${assertAlarmlist.begin_date}</td>
+                                            <td>${assertAlarmlist.end_date}</td>
+                                            <td>
+                                            <c:if test="${assertAlarmlist.level==0}">低</c:if>
+                                            <c:if test="${assertAlarmlist.level==1}">中</c:if>
+                                            <c:if test="${assertAlarmlist.level==2}">高</c:if>
+                                            </td>
+                                            <td>${assertAlarmlist.orderId}</td>
+                                            <td>${assertAlarmlist.num}</td>                         
                                         </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+                                     </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
@@ -391,7 +366,7 @@ if(tablList==0&&anList==0){
                         <div class="analyse_tabItem">
                 
                             <!--资产告警类型统计分析-->
-                            <form class="clearfix analysecent">
+                            <form class="clearfix analysecent" name="alarmForm1"  id="alarmForm1" action="${ctx}/admineAssetAlarmUI.html?tablList=1&anList=1" method="post">
                                 <div class="analyse_lable fl">
                                     <label>资产名称</label>
                                     <input type="text" class="text" name="assertName1">
@@ -399,7 +374,8 @@ if(tablList==0&&anList==0){
                                 
                                  <div class="analyse_lable fl">
                                     <label>服务类型</label>
-                                    <select class="text" name="serverType">
+                                    <select class="text" name="serverId" id="serverId2">
+                                        <option value="">请选择</option>
                                         <option value="1">漏洞扫描服务</option>
                                         <option value="2">恶意代码监测服务</option>
                                         <option value="3">网页篡改监测服务</option>
@@ -412,18 +388,18 @@ if(tablList==0&&anList==0){
                                 </div>
                                  <div class="analyse_lable fl">
                                     <label>订单开始时间</label>
-                                    <input type="text" class="text"  value="" id="begin_date" name="begin_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                                    <input type="text" class="text"  value="" id="begin_date2" name="begin_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
                                     <label>-结束时间</label>
-                                    <input type="text" class="text"  value="" id="end_date" name="end_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                                    <input type="text" class="text"  value="" id="end_date2" name="end_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
                                 </div>
                                 <div class="analyse_lable fl">
                                     <label>订单编号</label>
-                                    <input type="text" class="text" name="orderCode">
+                                    <input type="text" class="text" name="orderCode" id="orderCode2">
                                 </div>
                                 
                                  <div class="analyse_lable fl">
                                     <label>告警名称</label>
-                                    <input type="text" class="text" name="alarmName">
+                                    <input type="text" class="text" name="alarmName" id="alarmName1">
                                 </div>
                                 <input type="submit" class="sub" value="">
                             </form>
