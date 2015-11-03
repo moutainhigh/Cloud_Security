@@ -1,57 +1,23 @@
 package com.cn.ctbri.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
+
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import se.akerfeldt.com.google.gson.Gson;
-
-import com.cn.ctbri.common.Constants;
-import com.cn.ctbri.constant.WarnType;
-import com.cn.ctbri.entity.Alarm;
-import com.cn.ctbri.entity.AlarmDDOS;
+import com.cn.ctbri.entity.AssertAlarm;
 import com.cn.ctbri.entity.Asset;
-import com.cn.ctbri.entity.DataAnalysis;
-import com.cn.ctbri.entity.Order;
-import com.cn.ctbri.entity.OrderAsset;
-import com.cn.ctbri.entity.Task;
-import com.cn.ctbri.entity.TaskWarn;
-import com.cn.ctbri.entity.User;
-import com.cn.ctbri.service.IAlarmDDOSService;
-import com.cn.ctbri.service.IAlarmService;
+import com.cn.ctbri.service.IAssertAlarmService;
 import com.cn.ctbri.service.IAssetService;
-import com.cn.ctbri.service.IOrderAssetService;
-import com.cn.ctbri.service.IOrderService;
-import com.cn.ctbri.service.ISelfHelpOrderService;
-import com.cn.ctbri.service.ITaskService;
-import com.cn.ctbri.service.ITaskWarnService;
-import com.cn.ctbri.service.IUserService;
-import com.cn.ctbri.util.CommonUtil;
-import com.cn.ctbri.util.DateUtils;
+
 
 
 /**
@@ -66,6 +32,8 @@ public class AdminAssetController {
 
 	@Autowired
 	IAssetService assetService;
+	@Autowired
+	IAssertAlarmService assetAlarmService;
 	/**
 	 * 功能描述：资产地理位置统计分析
 	 *		 @time 2015-10-26
@@ -136,30 +104,41 @@ public class AdminAssetController {
 	
 	/**
 	 * 功能描述：资产历史警告分析
+	 * @throws Exception 
 	 *		 @time 2015-10-29
 	 */
 	@RequestMapping("/admineAssetAlarmUI.html")
-	public String dataAssetAlarmUI(HttpServletRequest request,HttpServletResponse response){
+	public String dataAssetAlarmUI(HttpServletRequest request,HttpServletResponse response) throws Exception{
 		String tablList = request.getParameter("tablList");
 		String anList = request.getParameter("anList");
-		String assertName = request.getParameter("assertName");
-		String serverType = request.getParameter("serverType");
+		String assertName ="";
+		if(request.getParameter("assertName")!=null&&!"".equals(request.getParameter("assertName"))){
+			assertName=new String(request.getParameter("assertName").getBytes("ISO8859_1"), "UTF-8");
+		}
+		String serverId = request.getParameter("serverId");
 		String begin_date=request.getParameter("begin_datevo");
 		String end_date = request.getParameter("end_datevo");
 		String orderCode = request.getParameter("orderCode");
 		String alarmRank = request.getParameter("alarmRank");
+		String alarmName = request.getParameter("alarmName");
+		
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("assertName", assertName);
-        paramMap.put("serverType", serverType);
+        paramMap.put("serverId", serverId);
         paramMap.put("begin_date", begin_date);
         paramMap.put("end_date", end_date);
         paramMap.put("orderCode", orderCode);
-        paramMap.put("alarmRank", alarmRank);     
-        if(tablList!=null&&!"0".equals(tablList)){
-       	     List<Asset> list=assetService.findByAssetPurposeList(paramMap);
-	       		request.setAttribute("porlist", list); 
-	       	 
+        paramMap.put("alarmRank", alarmRank); 
+        paramMap.put("alarmName", alarmName);     
+        if("1".equals(tablList)&&"0".equals(anList)){
+       	     List<AssertAlarm> list=assetAlarmService.findAssertAlarmByMap(paramMap);
+	       	 request.setAttribute("assertAlarmlist", list);  
+	       	 request.setAttribute("assertAlarmMap", paramMap);
+        }else if("1".equals(tablList)&&"0".equals(anList)){
+      	     List<AssertAlarm> list=assetAlarmService.findAssertAlarmByMap(paramMap);
+	       	 request.setAttribute("AlarmTypelist", list);  
+	       	 request.setAttribute("AlarmTypeMap", paramMap);
         }
         request.setAttribute("tablList", tablList);
         request.setAttribute("anList", anList);
