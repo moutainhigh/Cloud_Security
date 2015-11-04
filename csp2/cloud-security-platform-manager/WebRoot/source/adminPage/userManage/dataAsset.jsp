@@ -121,7 +121,7 @@ if(tablList==0&&anList==0){
                                         <option value="" >请选择</option>
                                     </select>
                                 </div>
-                                <input type="submit" class="sub" value="">
+                                <input type="button" class="sub" value="" onclick="assert(0,0)">
                             </form>
                             <div class="tableBox">
                             	<style>
@@ -173,7 +173,7 @@ if(tablList==0&&anList==0){
                                     </select>
                                 </div>
                                 
-                                <input type="submit" class="sub" value="">
+                                <input type="button" class="sub" value="" onclick="assert(0,1)">
                             </form>
                             <div class="tableBox">
                             	<style>
@@ -229,7 +229,7 @@ if(tablList==0&&anList==0){
                                     <label>-结束时间</label>
                                     <input type="text" class="text"  value="" id="end_date" name="end_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
                                 </div>
-                                <input type="submit" class="sub" value="">
+                                <input type="button" class="sub" value="" onclick="assert(0,2)">
                             </form>
                             <div class="tableBox">
                             	<style>
@@ -309,7 +309,7 @@ if(tablList==0&&anList==0){
                                         <option value="0">低</option>
                                     </select>
                                 </div>
-                                <input type="submit" class="sub" value="">
+                                <input type="button" class="sub" value="" onclick="assert(1,0)">
                             </form>
                             <div class="tableBox">
                                 <table cellpadding="0" cellspacing="0" border="1" bordercolor="#e0e0e0">
@@ -392,7 +392,7 @@ if(tablList==0&&anList==0){
                                     <label>告警名称</label>
                                     <input type="text" class="text" name="alarmName" id="alarmName1">
                                 </div>
-                                <input type="submit" class="sub" value="">
+                                <input type="button" class="sub" value="" onclick="assert(1,1)">
                             </form>
                             <div class="tableBox">
                                 <table cellpadding="0" cellspacing="0" border="1" bordercolor="#e0e0e0">
@@ -462,7 +462,7 @@ if(tablList==0&&anList==0){
                                     <input type="text" class="text" value="" id="end_date3" name="end_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd'})">
                                 </div>
                                 
-                                <input type="submit" class="sub" value="">
+                                <input type="button" class="sub" value="" onclick="assert(1,2)">
                             </form>
                             <div class="tableBox">
                                 <div class="chart">

@@ -149,3 +149,49 @@ $(document).ready(function(){
 	   $("#end_date").val(end_date1);  
   }   
 });
+
+function assert(m,n){
+	if(m==0&&n==0){
+	  	if($("#assetType1").val()!=""||$("#prov").val()!=""||$("#city").val()!=""){
+	  		$("#assetForm").action="${ctx}/adminDataAssetUI.html?tablList=0&anList=0"
+	  		$("#assetForm").submit();
+	  	}else{
+	  		alert("至少输入一个查询条件！");
+	  	} 
+	}else if(m==0&&n==1){
+	  	if($("#assetType2").val()!=""||$("#purpose1").val()!=""){
+	  		$("#purposeForm").action="${ctx}/adminPurposeAssetUI.html?tablList=0&anList=1"
+	  		$("#purposeForm").submit();
+	  	}else{
+	  		alert("至少输入一个查询条件！");
+	  	} 
+	}else if(m==0&&n==2){
+	  	if($("#assetType3").val()!=""||$("#purpose2").val()!=""){
+	  		$("#serverForm").action="${ctx}/adminPurposeAssetUI.html?tablList=0&anList=2"
+	  		$("#serverForm").submit();
+	  	}else{
+	  		alert("在资产所属用户和资产用途中至少选择一个查询条件！");
+	  	} 
+	}else if(m==1&&n==0){
+	  	if($("#serverId1").val()!=""||$("#alarmRank1").val()!=""){
+	  		$("#alarmForm").action="${ctx}/admineAssetAlarmUI.html?tablList=1&anList=0"
+	  		$("#alarmForm").submit();
+	  	}else{
+	  		alert("在服务类型和告警等级中至少选择一个查询条件！");
+	  	} 
+	}else if(m==1&&n==1){
+	  	if($("#serverId2").val()!=""){
+	  		$("#alarmForm1").action="${ctx}/admineAssetAlarmUI.html?tablList=1&anList=1"
+	  		$("#alarmForm1").submit();
+	  	}else{
+	  		alert("服务类型为必选项！");
+	  	} 
+	}else if(m==1&&n==2){
+	  	if($("#serverId3").val()!=""){
+	  		$("#alarmForm2").action="${ctx}/admineAssetAlarmUI.html?tablList=1&anList=2"
+	  		$("#alarmForm2").submit();
+	  	}else{
+	  		alert("服务类型为必选项！");
+	  	} 
+	}
+}
