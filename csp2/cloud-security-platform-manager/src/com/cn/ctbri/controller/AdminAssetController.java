@@ -43,12 +43,7 @@ public class AdminAssetController {
 		
 		String tablList = request.getParameter("tablList");
 		String anList = request.getParameter("anList");
-        if(tablList==null||"".equals(tablList)){
-			tablList="0";
-		}
-        if(anList==null||"".equals(anList)){
-			anList="0";
-		}
+        
 		String assetUserType = request.getParameter("assetUserType");
 		String prov = request.getParameter("prov");
 		String city = request.getParameter("city");
@@ -60,6 +55,12 @@ public class AdminAssetController {
            List<Asset> list=assetService.findByAssetProAndCity(paramMap);
            request.setAttribute("list", list);
         }
+        if(tablList==null||"".equals(tablList)){
+			tablList="0";
+		}
+        if(anList==null||"".equals(anList)){
+			anList="0";
+		}
         request.setAttribute("paramMap", paramMap);
         request.setAttribute("tablList", tablList);
         request.setAttribute("anList", anList);
