@@ -353,5 +353,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 ) b  where a.group_id = b.group_id group by a.name order by a.level desc
         </if>
     </select>
-
+    <!-- 查询系统前5个小时 -->
+	<select id="findHours5" parameterType="int" resultType="String">
+	select DATE_FORMAT(date_sub(now(),interval #{i} HOUR),'%Y-%m-%d %H:00:00') time
+	</select>
+	<!-- 按时间段查询告警列表 -->
+	<select id="findAlarmNumByTime" parameterType="String" resultMap="Alarm">	
+	SELECT * FROM cs_alarm WHERE  
+	<![CDATA[
+	alarm_time>=#{time} AND alarm_time<=(SELECT c.time2 FROM 
+	(SELECT DATE_FORMAT(DATE_ADD(#{time},INTERVAL 1 hour),'%Y-%m-%d %H:00:00') time2) c)
+	]]>
+	</select>
+    <!-- 服务能力告警top5的数据 -->
+    <select id="findAlarmTop5ByService" parameterType="String" resultType="hashmap">
+         <if test="serviceId != 5">  
+         select  a.name,COUNT(a.name) AS count from cs_alarm a,
+			(select t.taskId,t.group_Id from cs_task t,
+			(select oa.id from cs_order_asset oa,
+			(select o.id from cs_order o where  serviceId = #{serviceId}) o1
+			where o1.id = oa.orderId) oa1
+			where t.order_asset_Id = oa1.id) t1
+			where (a.taskId=t1.taskId or a.group_Id = t1.group_Id)
+         </if>
+         <if test="serviceId == 5">  
+         select  a.name,COUNT(a.name) AS count from cs_taskwarn a,
+			(select t.taskId,t.group_Id from cs_task t,
+			(select oa.id from cs_order_asset oa,
+			(select o.id from cs_order o where  serviceId = #{serviceId}) o1
+			where o1.id = oa.orderId) oa1
+			where t.order_asset_Id = oa1.id) t1
+			where (a.task_Id=t1.taskId or a.group_Id = t1.group_Id)
+         </if>
+         group by a.name
+		 order by count desc limit 5            
+    </select>
 </mapper>

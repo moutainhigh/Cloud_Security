@@ -20,6 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.hyperic.sigar.CpuPerc;
+import org.hyperic.sigar.Sigar;
+import org.hyperic.sigar.SigarException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -1455,5 +1458,66 @@ public class AdminWarningController {
         }
         return paramMap;
     }
+    
+	/**
+	 * 功能描述：后台用户活跃度统计分析
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/adminWarnAnalysisUI.html")
+	public String adminUserAnalysis(HttpServletResponse response,HttpServletRequest request)
+	{
+		return "/source/adminPage/userManage/warnAnalysis";
+	}
+	
+	/**
+	 * 实时告警数量
+	 * @return
+	 */
+	@RequestMapping("/getWarnCountRT.html")
+	@ResponseBody
+    public String getWarnCountRT(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset=UTF-8");
+        
+        Gson gson= new Gson();
+        //获取月份，近5个月
+        List result = new ArrayList();
+        for (int i = 5; i >= 0; i--) {
+        	String time = alarmService.getHours5(i);
+            List<Alarm> alarm = alarmService.getAlarmNumByTime(time);
+            Map<String, Object> param = new HashMap<String, Object>();
+            param.put("count", alarm.size());
+            param.put("time", time.substring(11,19));
+            result.add(param);
+		}
+
+        String resultGson = gson.toJson(result);//转成json数据
+        response.setContentType("textml;charset=UTF-8");
+        response.getWriter().print(resultGson);
+        return null;
+    }
+	
+	/**
+	 * 实时告警数量
+	 * @return
+	 */
+	@RequestMapping("/getAlarmTop5.html")
+	@ResponseBody
+    public String getAlarmTop5(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset=UTF-8");
+        String serviceId = request.getParameter("serviceId");
+        
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("serviceId", serviceId);
+        List result = alarmService.getAlarmTop5ByService(paramMap);
+
+        Gson gson= new Gson();
+        String resultGson = gson.toJson(result);//转成json数据
+        response.setContentType("textml;charset=UTF-8");
+        response.getWriter().print(resultGson);
+        return null;
+    }	
     
 }

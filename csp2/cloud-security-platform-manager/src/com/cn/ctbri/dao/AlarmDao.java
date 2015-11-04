@@ -101,4 +101,10 @@ public interface AlarmDao {
     public void deleteAlarmByTaskId(Map<String, Object> paramMap);
     //根据orderid查询告警分类数,报表导出用
     public List findAlarmByOrderIdorGroupId(Map<String, Object> paramMap);
+	//获取系统前5个小时
+    String getHours5(int i);
+    //根据时间获取告警列表
+    List<Alarm> getAlarmNumByTime(String time);
+    //根据服务获取告警TOP5
+    List getAlarmTop5ByService(Map<String, Object> paramMap);
 }

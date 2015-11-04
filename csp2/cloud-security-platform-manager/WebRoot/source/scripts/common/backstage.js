@@ -86,4 +86,5 @@ $(function(){
 				$(this).parents('.user_form').siblings('.tableBox').find('.tableUser').hide();		
 			}
 		})
+		
 });

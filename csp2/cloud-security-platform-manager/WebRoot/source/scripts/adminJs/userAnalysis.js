@@ -4,11 +4,6 @@ function activeAnalysis(){
 	var begin_date = $("#begin_date_active").val();
 	var end_date = $("#end_date_active").val();
 	
-	if(begin_date=="" || end_date==""){
-        alert("信息提示：统计开始时间和结束时间不能为空！"); 
-        return;
-	}
-	
 	var beginDate=new Date(begin_date.replace("-", "/").replace("-", "/"));  
     var endDate=new Date(end_date.replace("-", "/").replace("-", "/"));  
     if(endDate<beginDate){  
@@ -52,11 +47,6 @@ function useAnalysis(){
 	var useSel = $("#useSel").val();
 	var begin_date = $("#begin_date_use").val();
 	var end_date = $("#end_date_use").val();
-	
-	if(begin_date=="" || end_date==""){
-        alert("信息提示：统计开始时间和结束时间不能为空！"); 
-        return;
-	}
 	
 	var beginDate=new Date(begin_date.replace("-", "/").replace("-", "/"));  
     var endDate=new Date(end_date.replace("-", "/").replace("-", "/"));  
@@ -113,11 +103,7 @@ function indusAnalysis(){
 	var begin_date = $("#begin_date_industry").val();
 	var end_date = $("#end_date_industry").val();
 	var industry = $("#industry").val();
-	
-	if(begin_date=="" || end_date==""){
-        alert("信息提示：统计开始时间和结束时间不能为空！"); 
-        return;
-	}
+
 	var beginDate=new Date(begin_date.replace("-", "/").replace("-", "/"));  
     var endDate=new Date(end_date.replace("-", "/").replace("-", "/"));  
     if(endDate<beginDate){  

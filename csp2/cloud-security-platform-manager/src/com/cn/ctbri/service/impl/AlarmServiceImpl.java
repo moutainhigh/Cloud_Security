@@ -131,4 +131,13 @@ public class AlarmServiceImpl implements IAlarmService{
     public List findAlarmByOrderIdorGroupId(Map<String, Object> paramMap) {
         return alarmDao.findAlarmByOrderIdorGroupId(paramMap);
     }
+	public String getHours5(int i) {
+		return alarmDao.getHours5(i);
+	}
+	public List<Alarm> getAlarmNumByTime(String time) {
+		return alarmDao.getAlarmNumByTime(time);
+	}
+	public List getAlarmTop5ByService(Map<String, Object> paramMap) {
+		return alarmDao.getAlarmTop5ByService(paramMap);
+	}
 }

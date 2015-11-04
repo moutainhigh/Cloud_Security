@@ -23,9 +23,9 @@ import com.cn.ctbri.entity.Task;
 public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
 	
 	/**
-	 * 功        能： UserMapper命名空间
+	 * 功        能： AlarmMapper命名空间
 	 */
-	private String ns = "com.cn.ctbri.entity.AssertAlarmMapper.";		
+	private String ns = "com.cn.ctbri.entity.AlarmMapper.";		
 	/**
 	 * 功能描述：插入报警日志
 	 * 参数描述：Alarm alarm 报警日志对象
@@ -168,4 +168,13 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
     public List findAlarmByOrderIdorGroupId(Map<String, Object> paramMap) {
         return getSqlSession().selectList(ns+"findAlarmByOrderIdorGroupId", paramMap);
     }
+	public String getHours5(int i) {
+		return this.getSqlSession().selectOne(ns+"findHours5", i);
+	}
+	public List<Alarm> getAlarmNumByTime(String time) {
+		return this.getSqlSession().selectList(ns+"findAlarmNumByTime", time);
+	}
+	public List getAlarmTop5ByService(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"findAlarmTop5ByService", paramMap);
+	}
 }

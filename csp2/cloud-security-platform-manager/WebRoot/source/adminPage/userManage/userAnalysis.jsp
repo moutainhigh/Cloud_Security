@@ -15,7 +15,6 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/justgage.1.0.1.min.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/adminJs/userAnalysis.js"></script>
-<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
 $(document).ready(function(){
 	//	用户活跃度统计分析
@@ -55,7 +54,7 @@ $(document).ready(function(){
         <li><a href="${ctx}/adminDataAssetUI.html" class="white">资产分析</a></li>
         <li  class="b_current"><a href="${ctx}/adminUserAnalysisUI.html" class="white">用户分析</a></li>
         <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">订单分析</a></li>
-        <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">告警分析</a></li>
+        <li><a href="${ctx}/adminWarnAnalysisUI.html" class="white">告警分析</a></li>
         <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">设备资源管理</a></li>
         <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/adminSystemManageUI.html" class="white">系统管理</a></li>
       </ul>
@@ -129,7 +128,7 @@ $(document).ready(function(){
                                         </tr>
                                     </thead>
                                     <tbody id="tId">
-                                                                            <tr>
+                                     <tr>
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>

@@ -19,28 +19,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 根据时间段查询注册用户的登录数量 -->
 	<select id="findRegisterCountByDates" resultType="int" parameterType="hashmap">
-	SELECT count(DISTINCT userId) FROM cs_login_history WHERE
+	SELECT count(DISTINCT userId) FROM cs_login_history WHERE 1=1
+	<if test="begin_date!=null and begin_date!=''">
 	<![CDATA[
-		loginTime>=#{begin_date} AND loginTime<=#{end_date}
+		AND loginTime>=#{begin_date}
 	]]>	
+	</if>
+	<if test="end_date!=null and end_date!=''">
+	<![CDATA[
+		AND loginTime<=#{end_date}
+	]]>	
+	</if>
 	and (userType=2 or userType=3  )
 	</select>
 	
 	<!-- 查询时间范围内登录次数TOP10 -->
 	<select id="findLoginTop10" resultType="hashmap" parameterType="hashmap">
 	SELECT lh.userId, COUNT(lh.userId) count,u.name from cs_login_history lh, cs_user u
-	WHERE u.id=lh.userId AND
+	WHERE u.id=lh.userId 
+	<if test="begin_date!=null and begin_date!=''">
 	<![CDATA[
-		lh.loginTime>=#{begin_date} AND lh.loginTime<=#{end_date}
+		AND lh.loginTime>=#{begin_date}
 	]]>	
+	</if>
+	<if test="end_date!=null and end_date!=''">
+	<![CDATA[
+		AND lh.loginTime<=#{end_date}
+	]]>	
+	</if>	
 	and (lh.userType=2 or lh.userType=3  ) GROUP BY lh.userId ORDER BY count desc LIMIT 10
 	</select>
 	<select id="findTimesTop5" resultType="hashmap" parameterType="hashmap">
 	SELECT DATE_FORMAT(loginTime,'%H:00:00') AS time,DATE_FORMAT(DATE_ADD(loginTime,INTERVAL 1 hour),'%H:00:00')as time1,count(*) as count 
-	FROM cs_login_history
+	FROM cs_login_history WHERE 1=1
+	<if test="begin_date!=null and begin_date!=''">
 	<![CDATA[
- 	WHERE loginTime>=#{begin_date} AND loginTime<=#{end_date}
- 	]]>	
+		AND loginTime>=#{begin_date}
+	]]>	
+	</if>
+	<if test="end_date!=null and end_date!=''">
+	<![CDATA[
+		AND loginTime<=#{end_date}
+	]]>	
+	</if>
 	group by HOUR(time) ORDER BY count desc LIMIT 5
 	</select>
 </mapper>
