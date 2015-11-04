@@ -114,9 +114,7 @@ $(document).ready(function(){
 	        	putOption(obj);
 	     	}
 		});
-	    
-
-    $("#assetType1").val(assetUserType);
+   
    if(tablList==1&&anList==0){
 	    $("#assertName1").val(assertName1);
 	    $("#serverId1").val(serverId1);
@@ -136,17 +134,18 @@ $(document).ready(function(){
 		$("#serverId3").val(serverId1);
 		$("#begin_date3").val(begin_date1);
 	   $("#end_date3").val(end_date1);
-   }
-
-  
-     if(city!=''){
-       getCitys(prov);
-     }   
-    $("#assetType2").val(assetUserType1);
-    $("#purpose1").val(purpose);
-    $("#assetType3").val(assetUserType2);
-    $("#purpose2").val(purpose1);
-    $("#begin_date").val(begin_date);
-    $("#end_date").val(end_date);  
-    
+   }else if(tablList==0&&anList==0){
+	   $("#assetType1").val(assetUserType); 
+	    if(city!=''){
+	       getCitys(prov);
+	     }  
+   }else if(tablList==0&&anList==1){
+	   $("#assetType2").val(assetUserType);
+	    $("#purpose1").val(purpose);  
+   }else if(tablList==0&&anList==2){
+	   $("#assetType3").val(assetUserType);
+	   $("#purpose2").val(purpose);
+	   $("#begin_date").val(begin_date1);
+	   $("#end_date").val(end_date1);  
+  }   
 });

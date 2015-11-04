@@ -23,13 +23,7 @@ var  anList=${anList};
 var assetUserType="";
 var prov="";
 var city="";
-var assetUserType1="";
 var purpose="";
-var assetUserType2="";
-var purpose1="";
-var begin_date="";
-var end_date="";
-
 var assertName1="";
 var serverId1="";
 var begin_date1="";
@@ -43,12 +37,12 @@ if(tablList==0&&anList==0){
     city='${paramMap.city}';
 }else if(tablList==0&&anList==1){
 	purpose='${porMap.purpose}'; 
-	assetUserType1='${porMap.assetUserType}'; 
+	assetUserType='${porMap.assetUserType}'; 
 }else if(tablList==0&&anList==2){
-	purpose1='${servMap.purpose}'; 
-	assetUserType2='${servMap.assetUserType}';
-	begin_date='${servMap.begin_date}';
-	end_date='${servMap.end_date}';
+	purpose='${servMap.purpose}'; 
+	assetUserType='${servMap.assetUserType}';
+	begin_date1='${servMap.begin_date}';
+	end_date1='${servMap.end_date}';
 }else{
 	assertName1='${assertAlarmMap.assertName}'; 
 	 serverId1='${assertAlarmMap.serverId}';
