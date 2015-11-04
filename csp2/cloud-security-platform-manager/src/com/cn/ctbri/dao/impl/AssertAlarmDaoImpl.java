@@ -36,6 +36,16 @@ public class AssertAlarmDaoImpl extends DaoCommon implements AssertAlarmDao {
 	 */
 	public List<AssertAlarm> findAssertAlarmByMap(Map<String, Object> paramMap) {
 		return this.getSqlSession().selectList(ns+"findAssertAlarmByParam", paramMap);
+	}
+
+	/**
+	 * 功能描述：获取资产告警类型统计分析数据
+	 * @param paramMap
+	 * @return
+	 */
+	public List<AssertAlarm> findAssertAlarmTypeByMap(
+			Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"findAssertAlarmTypeByParam", paramMap);
 	}		
 	
 }

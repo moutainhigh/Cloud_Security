@@ -19,5 +19,13 @@ public interface AssertAlarmDao {
 	 * @return
 	 */
 	List<AssertAlarm> findAssertAlarmByMap(Map<String, Object> paramMap);
+	
+	
+	/**
+	 * 功能描述：获取资产告警类型统计分析数据
+	 * @param paramMap
+	 * @return
+	 */
+	List<AssertAlarm> findAssertAlarmTypeByMap(Map<String, Object> paramMap);
 
 }

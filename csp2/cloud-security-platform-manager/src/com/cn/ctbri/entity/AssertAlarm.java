@@ -29,7 +29,7 @@ public class AssertAlarm implements Serializable{
 	//服务ID
 	private String serviceId;
 	//告警等级
-	private int level;
+	private String level;
 	public String getName() {
 		return name;
 	}
@@ -54,10 +54,10 @@ public class AssertAlarm implements Serializable{
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
-	public int getLevel() {
+	public String getLevel() {
 		return level;
 	}
-	public void setLevel(int level) {
+	public void setLevel(String level) {
 		this.level = level;
 	}
 	public String getServiceId() {

@@ -36,6 +36,16 @@ public class AssertAlarmServiceImpl implements IAssertAlarmService{
 		// TODO Auto-generated method stub
 		return assertAlarmDao.findAssertAlarmByMap(paramMap);
 	}
+
+	/**
+	 * 功能描述：获取资产告警类型统计分析数据
+	 * @param paramMap
+	 * @return
+	 */
+	public List<AssertAlarm> findAssertAlarmTypeByMap(
+			Map<String, Object> paramMap) {
+		return assertAlarmDao.findAssertAlarmTypeByMap(paramMap);
+	}
 	
 	
 }

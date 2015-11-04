@@ -111,8 +111,9 @@ public class AdminAssetController {
 	public String dataAssetAlarmUI(HttpServletRequest request,HttpServletResponse response) throws Exception{
 		String tablList = request.getParameter("tablList");
 		String anList = request.getParameter("anList");
-		String assertName ="";
-		if(request.getParameter("assertName")!=null&&!"".equals(request.getParameter("assertName"))){
+		String assertName =request.getParameter("assertName");
+		String alarmName=request.getParameter("alarmName");
+		if(assertName!=null&&!"".equals(assertName)){
 			assertName=new String(request.getParameter("assertName").getBytes("ISO8859_1"), "UTF-8");
 		}
 		String serverId = request.getParameter("serverId");
@@ -120,9 +121,9 @@ public class AdminAssetController {
 		String end_date = request.getParameter("end_datevo");
 		String orderCode = request.getParameter("orderCode");
 		String alarmRank = request.getParameter("alarmRank");
-		String alarmName = request.getParameter("alarmName");
-		
-		
+		if(alarmName!=null&&!"".equals(alarmName)){
+			alarmName=new String(request.getParameter("alarmName").getBytes("ISO8859_1"), "UTF-8");
+		}
 		Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("assertName", assertName);
         paramMap.put("serverId", serverId);
@@ -134,12 +135,17 @@ public class AdminAssetController {
         if("1".equals(tablList)&&"0".equals(anList)){
        	     List<AssertAlarm> list=assetAlarmService.findAssertAlarmByMap(paramMap);
 	       	 request.setAttribute("assertAlarmlist", list);  
-	       	 request.setAttribute("assertAlarmMap", paramMap);
-        }else if("1".equals(tablList)&&"0".equals(anList)){
-      	     List<AssertAlarm> list=assetAlarmService.findAssertAlarmByMap(paramMap);
+	       	// request.setAttribute("assertAlarmMap", paramMap);
+        }else if("1".equals(tablList)&&"1".equals(anList)){
+      	     List<AssertAlarm> list=assetAlarmService.findAssertAlarmTypeByMap(paramMap);
 	       	 request.setAttribute("AlarmTypelist", list);  
-	       	 request.setAttribute("AlarmTypeMap", paramMap);
-        }
+	       	// request.setAttribute("AlarmTypeMap", paramMap);
+        }else if("1".equals(tablList)&&"2".equals(anList)){
+     	     List<AssertAlarm> list=assetAlarmService.findAssertAlarmTypeByMap(paramMap);
+	       	 request.setAttribute("AlarmTrendlist", list);  
+	       	 //request.setAttribute("AlarmTrendMap", paramMap);
+       }
+        request.setAttribute("assertAlarmMap", paramMap);
         request.setAttribute("tablList", tablList);
         request.setAttribute("anList", anList);
 		return "/source/adminPage/userManage/dataAsset";
