@@ -42,23 +42,28 @@ $(function(){
 			$('strong[name="service"]').html("漏洞告警TOP5");
 			$("#numMsg").val("漏洞总数");
 			$("#typeMsg").val("漏洞类型");
+			$("#lineMsg").val("漏洞发展趋势");
 		}else if(serviceId==2){
             $('strong[name="service"]').html("木马检测TOP5");
             $("#numMsg").val("木马检测总数");
             $("#typeMsg").val("木马检测类型");
+            $("#lineMsg").val("木马检测发展趋势");
 		}else if(serviceId==3){
             $('strong[name="service"]').html("页面篡改TOP5");
             $("#numMsg").val("页面篡改总数");
             $("#typeMsg").val("页面篡改类型");
+            $("#lineMsg").val("页面篡改发展趋势");
         }else if(serviceId==4){
             $('strong[name="service"]').html("关键字检测TOP5");
             $("#numMsg").val("关键字检测总数");
             $("#typeMsg").val("关键字检测类型");
+            $("#lineMsg").val("关键字检测发展趋势");
         }else if(serviceId==5){
         	$("#server").hide();
             $('strong[name="service"]').html("可用性告警TOP5");
             $("#numMsg").val("可用性告警总数");
             $("#typeMsg").val("可用性告警类型");
+            $("#lineMsg").val("可用性告警发展趋势");
         }
 		//获取服务数据
 		redrawBranch(null);
@@ -97,6 +102,7 @@ $(function(){
         <input type="hidden" id="serviceId" value="1"/>
         <input type="hidden" id="numMsg" value="漏洞总数"/>
         <input type="hidden" id="typeMsg" value="漏洞类型"/>
+        <input type="hidden" id="lineMsg" value="漏洞发展趋势"/>
     </ul>
     <div class="safe_Box tabCont">
     	<div class="safe_cent tabItem" style="display:block">
@@ -119,6 +125,19 @@ $(function(){
                     <h2>${brokenNetwork }</h2>
                 </li>
             </ul>
+            <div class="piece"  style="width:320px; top:450px; left:0" >
+            <div class="warn">
+                    <ul class="warn_tab">
+                        <li>
+                                                                              正在使用网站安全帮的有
+                         </li>
+                       
+                    </ul>
+                    <div class="warnBox" id="piece" onmouseover="iScrollAmount=0" onmouseout="iScrollAmount=1">
+                        
+                    </div>
+              </div>
+            </div>
         	<div style="margin-left: -100px;" class="safe_map" id="safe-map">
         	
         	</div>
@@ -220,5 +239,20 @@ $(function(){
 
 </div>
 </div>
+<script>
+var oMarquee = document.getElementById("piece"); //滚动对象
+function run() {
+oMarquee.scrollTop += iScrollAmount;
+if ( oMarquee.scrollTop == iLineCount * iLineHeight )
+oMarquee.scrollTop = 0;
+if ( oMarquee.scrollTop % iLineHeight == 0 ) {
+window.setTimeout( "run()", 300 );
+} else {
+window.setTimeout( "run()", 50 );
+}
+}
+oMarquee.innerHTML += oMarquee.innerHTML;
+window.setTimeout( "run()", 300 );
+</script>
 </body>
 </html>
