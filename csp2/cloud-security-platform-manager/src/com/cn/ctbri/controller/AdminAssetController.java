@@ -43,6 +43,12 @@ public class AdminAssetController {
 		
 		String tablList = request.getParameter("tablList");
 		String anList = request.getParameter("anList");
+        if(tablList==null||"".equals(tablList)){
+			tablList="0";
+		}
+        if(anList==null||"".equals(anList)){
+			anList="0";
+		}
 		String assetUserType = request.getParameter("assetUserType");
 		String prov = request.getParameter("prov");
 		String city = request.getParameter("city");
@@ -50,16 +56,10 @@ public class AdminAssetController {
         paramMap.put("assetUserType", assetUserType);
         paramMap.put("province", prov);
         paramMap.put("city", city);
-        if((request.getParameter("tablList"))!=null){
+        if("0".equals(tablList)&&"0".equals(anList)){
            List<Asset> list=assetService.findByAssetProAndCity(paramMap);
            request.setAttribute("list", list);
         }
-        if(tablList==null||"".equals(tablList)){
-			tablList="0";
-		}
-        if(anList==null||"".equals(anList)){
-			anList="0";
-		}
         request.setAttribute("paramMap", paramMap);
         request.setAttribute("tablList", tablList);
         request.setAttribute("anList", anList);
@@ -135,15 +135,12 @@ public class AdminAssetController {
         if("1".equals(tablList)&&"0".equals(anList)){
        	     List<AssertAlarm> list=assetAlarmService.findAssertAlarmByMap(paramMap);
 	       	 request.setAttribute("assertAlarmlist", list);  
-	       	// request.setAttribute("assertAlarmMap", paramMap);
         }else if("1".equals(tablList)&&"1".equals(anList)){
       	     List<AssertAlarm> list=assetAlarmService.findAssertAlarmTypeByMap(paramMap);
 	       	 request.setAttribute("AlarmTypelist", list);  
-	       	// request.setAttribute("AlarmTypeMap", paramMap);
         }else if("1".equals(tablList)&&"2".equals(anList)){
      	     List<AssertAlarm> list=assetAlarmService.findAssertAlarmTypeByMap(paramMap);
 	       	 request.setAttribute("AlarmTrendlist", list);  
-	       	 //request.setAttribute("AlarmTrendMap", paramMap);
        }
         request.setAttribute("assertAlarmMap", paramMap);
         request.setAttribute("tablList", tablList);
