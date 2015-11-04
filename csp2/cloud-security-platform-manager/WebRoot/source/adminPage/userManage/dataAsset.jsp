@@ -15,7 +15,6 @@
 <script type="text/javascript" src="${ctx}/source/scripts/assetJs/backstage.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/assetJs/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/assetJs/jquery.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 
 <script type="text/javascript">
@@ -30,12 +29,14 @@ var assetUserType2="";
 var purpose1="";
 var begin_date="";
 var end_date="";
+
 var assertName1="";
 var serverId1="";
 var begin_date1="";
 var end_date1="";
 var alarmRank1="" 
 var orderCode1="";
+var alarmName1=""; 
 if(tablList==0&&anList==0){
 	assetUserType='${paramMap.assetUserType}'; 
     prov='${paramMap.province}';	
@@ -48,20 +49,16 @@ if(tablList==0&&anList==0){
 	assetUserType2='${servMap.assetUserType}';
 	begin_date='${servMap.begin_date}';
 	end_date='${servMap.end_date}';
-}else if(tablList==1&&anList==0){
+}else{
 	assertName1='${assertAlarmMap.assertName}'; 
-	serverId1='${assertAlarmMap.serverId}';
+	 serverId1='${assertAlarmMap.serverId}';
 	begin_date1='${assertAlarmMap.begin_date}';
 	end_date1='${assertAlarmMap.end_date}';
 	alarmRank1='${assertAlarmMap.alarmRank}';
 	orderCode1='${assertAlarmMap.orderCode}';
+	alarmName1='${assertAlarmMap.alarmName}';
 }
 
-
-
-
-//alert(prov);
-//alert(assetUserType);
 </script>
 </head>
 <body>
@@ -369,7 +366,7 @@ if(tablList==0&&anList==0){
                             <form class="clearfix analysecent" name="alarmForm1"  id="alarmForm1" action="${ctx}/admineAssetAlarmUI.html?tablList=1&anList=1" method="post">
                                 <div class="analyse_lable fl">
                                     <label>资产名称</label>
-                                    <input type="text" class="text" name="assertName1">
+                                    <input type="text" class="text" name="assertName" id="assertName2">
                                 </div>
                                 
                                  <div class="analyse_lable fl">
@@ -417,69 +414,26 @@ if(tablList==0&&anList==0){
                                         </tr>
                                     </thead>
                                     <tbody>
+                                     <c:forEach items="${AlarmTypelist}" var="AlarmTypelist">
                                         <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>${AlarmTypelist.name}</td>
+                                            <td>
+                                            <c:if test="${AlarmTypelist.serviceId==1}">漏洞扫描服务</c:if>
+                                            <c:if test="${AlarmTypelist.serviceId==2}">恶意代码监测服务</c:if>
+                                            <c:if test="${AlarmTypelist.serviceId==3}">网页篡改监测服务</c:if>
+                                            <c:if test="${AlarmTypelist.serviceId==4}">关键字监测服务</c:if>
+                                            <c:if test="${AlarmTypelist.serviceId==5}">可用性监测服务</c:if>
+                                            <c:if test="${AlarmTypelist.serviceId==6}">日常流量监控服务</c:if>
+                                            <c:if test="${AlarmTypelist.serviceId==7}">日常攻击防护服务</c:if>
+                                            <c:if test="${AlarmTypelist.serviceId==8}">突发异常流量清洗服务</c:if>
+                                            </td>
+                                            <td>${AlarmTypelist.begin_date}</td>
+                                            <td>${AlarmTypelist.end_date}</td>
+                                            <td>${AlarmTypelist.orderId}</td>
+                                            <td>${AlarmTypelist.level}</td>
+                                            <td>${AlarmTypelist.num}</td>                         
                                         </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+                                     </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
@@ -487,23 +441,31 @@ if(tablList==0&&anList==0){
                         </div>
                     <div class="analyse_tabItem">
                     	<!--资产警告趋势分析-->
-                            <form class="clearfix analysecent">
+                            <form class="clearfix analysecent" name="alarmForm2"  id="alarmForm2" action="${ctx}/admineAssetAlarmUI.html?tablList=1&anList=2" method="post">
                                 <div class="analyse_lable fl">
                                     <label>资产名称</label>
-                                    <input type="text" class="text">
+                                    <input type="text" class="text" name="assertName" id="assertName3">
                                 </div>
                                 
                                  <div class="analyse_lable fl">
                                     <label>服务类型</label>
-                                    <select class="text">
-                                        <option>aaa</option>
+                                    <select class="text" name="serverId" id="serverId3">
+                                        <option value="">请选择</option>
+                                        <option value="1">漏洞扫描服务</option>
+                                        <option value="2">恶意代码监测服务</option>
+                                        <option value="3">网页篡改监测服务</option>
+                                        <option value="4">关键字监测服务</option>
+                                        <option value="5">可用性监测服务</option>
+                                        <option value="6">日常流量监控服务</option>
+                                        <option value="7">日常攻击防护服务</option>
+                                        <option value="8">突发异常流量清洗服务</option>
                                     </select>
                                 </div>
                                  <div class="analyse_lable fl">
                                     <label>订单开始时间</label>
-                                    <input type="text" class="text" value="2012-02-02">
+                                    <input type="text" class="text" value="" id="begin_date3" name="begin_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd'})">
                                     <label>-结束时间</label>
-                                    <input type="text" class="text" value="2012-02-02">
+                                    <input type="text" class="text" value="" id="end_date3" name="end_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd'})">
                                 </div>
                                 
                                 <input type="submit" class="sub" value="">

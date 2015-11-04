@@ -98,7 +98,7 @@ function putCityOption(obj){
 	}
 }
 
-$(document).ready(function(){
+$(document).ready(function(){ 
 	$('.tabList').children().eq(tablList).addClass('active').siblings('li').removeClass('active');
 	$('.tabCont .tabItem:eq('+tablList+')').show().siblings().hide();
     $('.anlist:eq('+tablList+')').children().eq(anList).addClass('active').siblings('li').removeClass('active');
@@ -114,16 +114,31 @@ $(document).ready(function(){
 	        	putOption(obj);
 	     	}
 		});
-	
-    $("#assetType1").val(assetUserType);
-    
-    $("#assertName1").val(assertName1);
-    $("#serverId1").val(serverId1);
-    $("#begin_date1").val(begin_date1);
-    $("#end_date1").val(end_date1);
-    $("#alarmRank1").val(alarmRank1);
-    $("#orderCode1").val(orderCode1);
+	    
 
+    $("#assetType1").val(assetUserType);
+   if(tablList==1&&anList==0){
+	    $("#assertName1").val(assertName1);
+	    $("#serverId1").val(serverId1);
+	    $("#begin_date1").val(begin_date1);
+	    $("#end_date1").val(end_date1);
+	    $("#alarmRank1").val(alarmRank1);
+	    $("#orderCode1").val(orderCode1);	   
+   }else if(tablList==1&&anList==1){
+	    $("#assertName2").val(assertName1);
+	    $("#serverId2").val(serverId1);
+	    $("#begin_date2").val(begin_date1);
+	    $("#end_date2").val(end_date1);
+	    $("#alarmName1").val(alarmName1);
+	    $("#orderCode2").val(orderCode1);  
+   }else if(tablList==1&&anList==2){
+		$("#assertName3").val(assertName1);
+		$("#serverId3").val(serverId1);
+		$("#begin_date3").val(begin_date1);
+	   $("#end_date3").val(end_date1);
+   }
+
+  
      if(city!=''){
        getCitys(prov);
      }   
@@ -132,7 +147,6 @@ $(document).ready(function(){
     $("#assetType3").val(assetUserType2);
     $("#purpose2").val(purpose1);
     $("#begin_date").val(begin_date);
-    $("#end_date").val(end_date);
-    
+    $("#end_date").val(end_date);  
     
 });
