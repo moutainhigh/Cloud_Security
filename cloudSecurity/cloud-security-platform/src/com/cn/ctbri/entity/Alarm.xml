@@ -50,8 +50,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where o.userId = #{userId} and o.serviceId = s.id
                AND o.status =2
 	</select>
-	<!-- 根据orderid查询告警数,最近告警信息  -->
-    <select id="findAlarmByOrderId" resultMap="Alarm" parameterType="hashmap">
+	<!-- 根据orderid查询告警数,最近告警信息  modify by tang 2015/11/3-->
+    <!-- <select id="findAlarmByOrderId" resultMap="Alarm" parameterType="hashmap">
         <if test="websoc!=1">
 	        select * from cs_alarm a,
 			  (select t.taskId from cs_order_asset oa,cs_task t 
@@ -97,6 +97,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
             order by a.level desc
         </if>
+    </select>-->
+    
+    <select id="findAlarmByOrderId" resultMap="Alarm" parameterType="hashmap">
+	        select a.id,a.name,a.alarm_time,a.score,a.level,a.alarm_content,a.url,a.keyword,a.taskId,a.alarm_type,a.userId,a.group_id,a.advice from cs_alarm a,
+			  (select t.taskId,t.group_id from cs_order_asset oa,cs_task t 
+			    where oa.id = t.order_asset_id 
+			    and oa.orderId=#{orderId}
+			    and t.status = 3
+			    <if test="group_flag!=null and group_flag!=''">
+	            and t.group_flag=#{group_flag}
+	            </if>
+			    order by t.execute_time desc
+			    <if test="type==1 and group_flag==null or group_flag==''">
+	             limit #{count}
+	            </if>) b
+			where (a.taskId = b.taskId or a.group_id = b.group_id)
+			<if test="level!=null">
+	            and a.level=#{level}
+	        </if>
+	        <if test="name!=null">
+                and a.name=#{name}
+            </if>
+	        order by a.level desc
     </select>
     
     
@@ -320,8 +343,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>
     </delete>
     
-    <!-- 根据orderid查询告警分类数,报表导出用  -->
-    <select id="findAlarmByOrderIdorGroupId" resultType="Alarm" parameterType="hashmap">
+    <!-- 根据orderid查询告警分类数,报表导出用  modify by tang 2015/11/3-->
+    <!-- <select id="findAlarmByOrderIdorGroupId" resultType="Alarm" parameterType="hashmap">
         <if test="websoc!=1">
             select a.name,a.level,count(*) as num from cs_alarm a,
                 (select t.taskId,t.group_id from cs_order_asset oa,cs_task t 
@@ -352,6 +375,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 </if>
                 ) b  where a.group_id = b.group_id group by a.name order by a.level desc
         </if>
+    </select> -->
+    
+    <select id="findAlarmByOrderIdorGroupId" resultType="Alarm" parameterType="hashmap">
+            select a.name,a.level,count(*) as num from cs_alarm a,
+                (select t.taskId,t.group_id from cs_order_asset oa,cs_task t 
+                where oa.id = t.order_asset_id
+                and oa.orderId=#{orderId}
+                and t.status = 3
+                <if test="group_flag!=null and group_flag!=''">
+                and t.group_flag=#{group_flag}
+                </if>
+                order by t.execute_time desc
+                <if test="type==1 and group_flag==null or group_flag==''">
+                 limit #{count}
+                </if>
+                ) b  where (a.taskId = b.taskId or a.group_id = b.group_id) group by a.name order by a.level desc
     </select>
 
 </mapper>
