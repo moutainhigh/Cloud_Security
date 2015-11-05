@@ -14,25 +14,25 @@ public class TaskTest {
 	
 	@Before
 	public void preData(){
-		sessionId = ArnhemWorker.getSessionId();
+		sessionId = ArnhemWorker.getSessionId(2);
 	}
 	
 	@Test
 	public void testLssuedTask(){
 		//String lssuedTask = ArnhemWorker.lssuedTask(sessionId, "test007", "", "65.61.137.117", "80", "可用性监测服务-周期10分钟");
-		String lssuedTask = ArnhemWorker.lssuedTask(sessionId, "test008", "", "65.61.137.117", "80", "漏洞扫描服务");
+		String lssuedTask = ArnhemWorker.lssuedTask(sessionId, "test008", "", "65.61.137.117", "80", "漏洞扫描服务",2);
 		System.out.println(lssuedTask);
 	}
 	
 	@Test
 	public void testGetResultCount(){
-		String  resultCountByTaskID= ArnhemWorker.getResultCountByTaskID(sessionId, "test");
+		String  resultCountByTaskID= ArnhemWorker.getResultCountByTaskID(sessionId, "test",2);
 		System.out.println(resultCountByTaskID);
 	}
 	
 	@Test
 	public void testGetReportPage(){
-		String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, "1", "1", 0, 500);
+		String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, "1", "1", 0, 500,2);
 		try {
 			System.out.println(URLDecoder.decode(reportByTaskID, "UTF-8"));
 		} catch (Exception e) {
@@ -42,13 +42,13 @@ public class TaskTest {
 	
 	@Test
 	public void testGetStatus(){
-		String result = ArnhemWorker.getStatusByTaskId(sessionId, "2");
+		String result = ArnhemWorker.getStatusByTaskId(sessionId, "2",2);
 		System.out.println(result);
 	}
 	
 	@Test
 	public void testRemoveTask(){
-		String result = ArnhemWorker.removeTask(sessionId, "test007");
+		String result = ArnhemWorker.removeTask(sessionId, "test007",2);
 		System.out.println(result);
 	}
 	

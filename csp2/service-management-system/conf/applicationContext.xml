@@ -139,7 +139,6 @@
     			<ref bean="resultTrigger" />
     			<ref bean="progressTrigger" />
     			<ref bean="exceptionTrigger" /> -->
-    			<ref bean="progressTrigger" />
     		</list>
     	</property>
     </bean>

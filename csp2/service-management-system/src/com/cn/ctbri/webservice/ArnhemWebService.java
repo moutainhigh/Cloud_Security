@@ -106,7 +106,7 @@ public class ArnhemWebService {
 					taskId = taskIDNode.getTextTrim();
 				}
 				//登陆服务器
-				String sessionId = ArnhemWorker.getSessionId();
+				String sessionId = ArnhemWorker.getSessionId(2);
 				//根据taskId查询任务执行结果数
 				Map<String, String> resultMap = getResultNumByTaskId(taskId, sessionId);
 				//获取总数
@@ -115,7 +115,7 @@ public class ArnhemWebService {
 				String productId = resultMap.get("ProductId");
 				//当总数不为0的时候，获取扫描记录，并保存到本地库
 				if(total != null && !"0".equals(total.trim())){
-					String reportXml = ArnhemWorker.getReportByTaskID(sessionId, taskId, productId, 0, Integer.parseInt(total));
+					String reportXml = ArnhemWorker.getReportByTaskID(sessionId, taskId, productId, 0, Integer.parseInt(total),2);
 					parseReportToDB(reportXml);
 				}
 			}
@@ -146,7 +146,7 @@ public class ArnhemWebService {
 			throws DocumentException {
 		Map<String, String> map = new HashMap<String, String>();
 		//获取结果数XML
-		String resultNumXml = ArnhemWorker.getResultCountByTaskID(sessionId, taskId);
+		String resultNumXml = ArnhemWorker.getResultCountByTaskID(sessionId, taskId,2);
 		//解析XML为文档对象
 		Document resultNumDocument = DocumentHelper.parseText(resultNumXml);
 		/**

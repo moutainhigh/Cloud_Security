@@ -102,81 +102,109 @@ public class Scheduler4Task {
             OrderAsset orderAsset = taskService.getTypeByAssetId(Integer.parseInt(t.getOrder_asset_Id()));
             List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
             Map<String, Object> engineMap = new HashMap<String, Object>();
-            int serviceId = orderList.get(0).getServiceId();
-            engineMap.put("serviceId", serviceId);
-            engineMap.put("factory", t.getWebsoc());
-            //获取任务下发引擎 add by tang 2015-06-11
+            EngineCfg engine = new EngineCfg();
+            int serviceId = 0;
+            if(orderList!=null&&orderList.size()>0){
+				serviceId = orderList.get(0).getServiceId();
+	            engineMap.put("serviceId", serviceId);
+//	            engineMap.put("factory", t.getWebsoc());
+	            engineMap.put("websoc", t.getWebsoc());
+	            engine = engineService.findEngineByParam(engineMap);
+			}
+            
+            //获取任务下发引擎 modify by tang 2015-10-29
 //            List<EngineCfg> engines = getUsableEngine(engineMap);
+            //获取可用设备
+//            List<EngineCfg> usableEngine = engineService.getUsableEngine(engineMap);
             try{
     		    //创宇任务下发
     		    if(t.getWebsoc()==1){
     		        getWebsoc(t,orderAsset,orderList,serviceId);
     		    }else if(t.getWebsoc()==2){//引擎调度
+    		    	double arn0 = 0;
+    		    	double arn1 = 0;
+    		    	double arn2 = 0;
+    		    	
     		        List arn = taskService.getArnhemTask();
     		        List websoc = taskService.getWebsocTask();
-    		        if(arn.size()>10&&websoc.size()>30){
-    		            t.setEngine(-1);
-    		            taskService.update(t);
-    		        }else{
+//    		        if(arn.size()>10&&websoc.size()>30){
+//    		            t.setEngine(-1);
+//    		            taskService.update(t);
+//    		        }else{
     		            //创建sessionId
-    		            String websessionid = "";
-    		            boolean engineStatus = false;
-    		            for(int i=0;i<3;i++){
-    		                websessionid = WebSocWorker.getSessionId();
-    		                if(websessionid!=null){
-    		                    engineStatus = true;
-    		                    break;
-    		                }
-    		            }
-    		            String arnsessionid = "";
-                        boolean arnengineStatus = false;
-                        for(int i=0;i<3;i++){
-                            arnsessionid = ArnhemWorker.getSessionId();
-                            if(arnsessionid!=null){
-                                arnengineStatus = true;
-                                break;
-                            }
+//    		            String websessionid = "";
+//    		            boolean engineStatus = false;
+//    		            for(int i=0;i<3;i++){
+//    		                websessionid = WebSocWorker.getSessionId();
+//    		                if(websessionid!=null){
+//    		                    engineStatus = true;
+//    		                    break;
+//    		                }
+//    		            }
+//    		            String arnsessionid = "";
+//                        boolean arnengineStatus = false;
+//                        for(int i=0;i<3;i++){
+//                            arnsessionid = ArnhemWorker.getSessionId(engine.getEngine());
+//                            if(arnsessionid!=null){
+//                                arnengineStatus = true;
+//                                break;
+//                            }
+//                        }
+                        if(engine.getEngine()==3){//创宇
+                        	getWebsoc(t,orderAsset,orderList,serviceId);
+	                        t.setWebsoc(1);
+	                        taskService.update(t); 
+	                        Order o = orderList.get(0);
+	                        o.setWebsoc(1);
+	                        orderService.update(o);
+                        }else{//安恒
+                        	 getArnhem(t,orderAsset,orderList,serviceId,engine);
+                             t.setWebsoc(0);
+                             taskService.update(t);
+                             Order o = orderList.get(0);
+                             o.setWebsoc(0);
+                             orderService.update(o);
                         }
-    		            if(arn.size()/10.0 <= websoc.size()/30.0){
-    		                if(arnengineStatus){
-    		                    getArnhem(t,orderAsset,orderList,serviceId);
-                                t.setWebsoc(0);
-                                taskService.update(t);
-                                Order o = orderList.get(0);
-                                o.setWebsoc(0);
-                                orderService.update(o);
-    		                }else{
-    		                    getWebsoc(t,orderAsset,orderList,serviceId);
-                                t.setWebsoc(1);
-                                taskService.update(t); 
-                                Order o = orderList.get(0);
-                                o.setWebsoc(1);
-                                orderService.update(o);
-    		                }
-    		                
-    		            }else if(arn.size()/10.0 > websoc.size()/30.0){
-    		                if(engineStatus){
-    		                    getWebsoc(t,orderAsset,orderList,serviceId);
-                                t.setWebsoc(1);
-                                taskService.update(t);
-                                Order o = orderList.get(0);
-                                o.setWebsoc(1);
-                                orderService.update(o);
-    		                }else{
-    		                    getArnhem(t,orderAsset,orderList,serviceId);
-                                t.setWebsoc(0);
-                                taskService.update(t);
-                                Order o = orderList.get(0);
-                                o.setWebsoc(0);
-                                orderService.update(o);
-    		                }   		                
-    		            }else{
-    		                t.setEngine(-1);
-                            taskService.update(t);
-    		            }
-    		        }
+//    		            if(arn.size()/10.0 <= websoc.size()/30.0){
+//    		                if(arnengineStatus){
+//    		                    getArnhem(t,orderAsset,orderList,serviceId);
+//                                t.setWebsoc(0);
+//                                taskService.update(t);
+//                                Order o = orderList.get(0);
+//                                o.setWebsoc(0);
+//                                orderService.update(o);
+//    		                }else{
+//    		                    getWebsoc(t,orderAsset,orderList,serviceId);
+//                                t.setWebsoc(1);
+//                                taskService.update(t); 
+//                                Order o = orderList.get(0);
+//                                o.setWebsoc(1);
+//                                orderService.update(o);
+//    		                }
+//    		                
+//    		            }else if(arn.size()/10.0 > websoc.size()/30.0){
+//    		                if(engineStatus){
+//    		                    getWebsoc(t,orderAsset,orderList,serviceId);
+//                                t.setWebsoc(1);
+//                                taskService.update(t);
+//                                Order o = orderList.get(0);
+//                                o.setWebsoc(1);
+//                                orderService.update(o);
+//    		                }else{
+//    		                    getArnhem(t,orderAsset,orderList,serviceId);
+//                                t.setWebsoc(0);
+//                                taskService.update(t);
+//                                Order o = orderList.get(0);
+//                                o.setWebsoc(0);
+//                                orderService.update(o);
+//    		                }   		                
+//    		            }else{
+//    		                t.setEngine(-1);
+//                            taskService.update(t);
+//    		            }
+//    		        }
                 }else{
-        			getArnhem(t,orderAsset,orderList,serviceId);
+        			getArnhem(t,orderAsset,orderList,serviceId,engine);
     		    }
             } catch (Exception e) {
                 logger.info("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
@@ -199,12 +227,19 @@ public class Scheduler4Task {
         // 调用接口删除任务
         for (Task t : taskDelList) {
 //            EngineCfg engine = engineService.findEngineIdbyIP(String.valueOf(t.getEngine()));
+        	int engine = 0;
+			EngineCfg en = engineService.getEngineById(t.getEngine());
+			if(t.getEngine()!=0){
+				engine = en.getEngine();
+			}else{
+				engine = 2;
+			}
             logger.info("[删除任务调度]:任务-[" + t.getTaskId() + "]获取状态!");
             //获取订单类型
             OrderAsset orderAsset = taskService.getTypeByAssetId(Integer.parseInt(t.getOrder_asset_Id()));
             List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
-            String sessionId = ArnhemWorker.getSessionId();
-            String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId());
+            String sessionId = ArnhemWorker.getSessionId(engine);
+            String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId(), engine);
             String status = this.getStatusByResult(resultStr);
             if("running".equals(status)){
                 logger.info("[删除任务调度]:任务-[" + t.getTaskId() + "]开始下发!");
@@ -212,11 +247,8 @@ public class Scheduler4Task {
                     Map<String, Object> hashmap = new HashMap<String, Object>();
                     hashmap.put("orderId", orderList.get(0).getId());
                     hashmap.put("websoc", orderList.get(0).getWebsoc());
-                    if(orderList.get(0).getServiceId()==5&&orderList.get(0).getWebsoc()!=1){
-                        ArnhemWorker.removeTask(sessionId, String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId());
-                        //任务完成后,引擎活跃数减1
-//                        engine.setActivity(engine.getActivity()-1);
-//                        engineService.update(engine);
+//                    if(orderList.get(0).getServiceId()==5&&orderList.get(0).getWebsoc()!=1){
+//                        ArnhemWorker.removeTask(sessionId, String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId());
                         if(orderList.size() > 0){
                             Order o = orderList.get(0);
                             //获取告警信息
@@ -228,19 +260,22 @@ public class Scheduler4Task {
                             }
                             orderService.update(o);
                         }
-                    }else if(orderList.get(0).getServiceId()==5&&orderList.get(0).getWebsoc()==1){
-                        if(orderList.size() > 0){
-                            Order o = orderList.get(0);
-                            //获取告警信息
-                            List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(hashmap);
-                            if(taskWarnList.size() > 0){
-                                o.setStatus(Integer.parseInt(Constants.ORDERALARM_YES));
-                            }else{
-                                o.setStatus(Integer.parseInt(Constants.ORDERALARM_NO));
-                            }
-                            orderService.update(o);
-                        }
-                    }
+//                    }else if(orderList.get(0).getServiceId()==5&&orderList.get(0).getWebsoc()==1){
+//                        if(orderList.size() > 0){
+//                            Order o = orderList.get(0);
+//                            //获取告警信息
+//                            List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(hashmap);
+//                            if(taskWarnList.size() > 0){
+//                                o.setStatus(Integer.parseInt(Constants.ORDERALARM_YES));
+//                            }else{
+//                                o.setStatus(Integer.parseInt(Constants.ORDERALARM_NO));
+//                            }
+//                            orderService.update(o);
+//                        }
+//                    }
+                    //任务完成后,引擎活跃数减1
+                    en.setId(t.getEngine());
+                    engineService.updatedown(en);
                     //更新任务状态为finish
                     t.setStatus(Integer.parseInt(Constants.TASK_FINISH));
                     taskService.update(t);
@@ -256,36 +291,37 @@ public class Scheduler4Task {
 
         }
         logger.info("[删除任务调度]:任务表扫描结束......");
-
+		
 	}
 
-	private void getArnhem(Task t, OrderAsset orderAsset, List<Order> orderList, int serviceId) {
+	private void getArnhem(Task t, OrderAsset orderAsset, List<Order> orderList, int serviceId, EngineCfg engine) {
 	    logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]获取状态!");
         //创建sessionId
         String sessionId = "";
         boolean engineStatus = false;
 //        EngineCfg engine = new EngineCfg();
         for(int i=0;i<3;i++){
-            sessionId = ArnhemWorker.getSessionId();
+            sessionId = ArnhemWorker.getSessionId(engine.getEngine());
             if(sessionId!=null){
                 engineStatus = true;
                 break;
             }
         }
         if(engineStatus){
-            String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId());
+            String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId(), engine.getEngine());
             String status = this.getStatusByResult(resultStr);
             if("".equals(status)){
                 logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]开始下发!");
-                preTaskData(t);
+                preTaskData(t,engine);
                 try {
                     String lssued = ArnhemWorker.lssuedTask(sessionId, String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId(), this.destURL, this.destIP, "80",
-                            this.tplName);
+                            this.tplName, engine.getEngine());
                     boolean state = this.getStatusBylssued(lssued);
                     if(state){
                         //任务下发后,引擎活跃数加1
 //                        engine.setActivity(engine.getActivity()+1);
-//                        engineService.update(engine);
+                        engine.setId(engine.getId());
+                        engineService.update(engine);
                         
                         //更新任务状态为running
                         t.setStatus(Integer.parseInt(Constants.TASK_RUNNING));
@@ -295,7 +331,7 @@ public class Scheduler4Task {
                         Date date = new Date();//获得系统时间.
                         String nowTime = sdf.format(date);//将时间格式转换成符合Timestamp要求的格式.
                         t.setExecute_time(sdf.parse(nowTime));
-//                        t.setEngine(engine.getId());
+                        t.setEngine(engine.getId());
                         taskService.update(t);
                         logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]完成下发!");
                     }
@@ -317,6 +353,11 @@ public class Scheduler4Task {
                                 //设置订单详情id
                                 task.setOrder_asset_Id(t.getOrder_asset_Id());
                                 task.setGroup_flag(nextTime);
+                                if(t.getWebsoc()==0){
+                                	task.setWebsoc(0);
+                                }else{
+                                	task.setWebsoc(2);
+                                }
                                 //插入一条任务数据  获取任务id
                                 int taskId = taskService.insert(task);
                             }
@@ -341,6 +382,11 @@ public class Scheduler4Task {
                                 //设置订单详情id
                                 task.setOrder_asset_Id(t.getOrder_asset_Id());
                                 task.setGroup_flag(nextTime);
+                                if(t.getWebsoc()==0){
+                                	task.setWebsoc(0);
+                                }else{
+                                	task.setWebsoc(2);
+                                }
                                 //插入一条任务数据  获取任务id
                                 int taskId = taskService.insert(task);
                             }
@@ -374,7 +420,8 @@ public class Scheduler4Task {
             //创建sessionId
             String sessionid = "";
             boolean engineStatus = false;
-//          EngineCfg engine = new EngineCfg();
+            //获取创宇引擎
+            EngineCfg engine = engineService.getEngine();
             for(int i=0;i<3;i++){
                 sessionid = WebSocWorker.getSessionId();
                 if(sessionid!=null){
@@ -388,8 +435,9 @@ public class Scheduler4Task {
                 //下发任务
                 virtual_group_id = WebSocWorker.lssuedTask(sessionid,String.valueOf(t.getTaskId())+"_"+orderList.get(0).getId(),assets,orderList.get(0).getServiceId());
                 //任务下发后,引擎活跃数加1
-//              engine.setActivity(engine.getActivity()+1);
-//              engineService.update(engine);
+//                engine.setActivity(engine.getActivity()+1);
+                engine.setId(engine.getId());
+                engineService.update(engine);
                 //更新任务状态为running
                 t.setStatus(Integer.parseInt(Constants.TASK_RUNNING));
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -399,7 +447,8 @@ public class Scheduler4Task {
                 String nowTime = sdf.format(date);//将时间格式转换成符合Timestamp要求的格式.
                 t.setExecute_time(sdf.parse(nowTime));
                 t.setGroup_id(virtual_group_id);
-//              t.setEngine(engine.getId());
+                //下发到创宇引擎，7
+                t.setEngine(engine.getId());
                 taskService.update(t);
                 logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]完成下发!");
             
@@ -422,7 +471,12 @@ public class Scheduler4Task {
                             //设置订单详情id
                             task.setOrder_asset_Id(t.getOrder_asset_Id());
                             task.setGroup_flag(nextTime);
-                            task.setWebsoc(1);
+                            if(t.getWebsoc()==1){
+                            	task.setWebsoc(1);
+                            }else{
+                            	task.setWebsoc(2);
+                            }
+//                            task.setWebsoc(1);
                             //插入一条任务数据  获取任务id
                             int taskId = taskService.insert(task);
                         }
@@ -447,7 +501,11 @@ public class Scheduler4Task {
                             //设置订单详情id
                             task.setOrder_asset_Id(t.getOrder_asset_Id());
                             task.setGroup_flag(nextTime);
-                            task.setWebsoc(1);
+                            if(t.getWebsoc()==1){
+                            	task.setWebsoc(1);
+                            }else{
+                            	task.setWebsoc(2);
+                            }
                             //插入一条任务数据  获取任务id
                             int taskId = taskService.insert(task);
                         }
@@ -468,8 +526,9 @@ public class Scheduler4Task {
 	 * 根据任务信息设置接口参数
 	 * 
 	 * @param task
+     * @param engine 
 	 */
-	private void preTaskData(Task task) {
+	private void preTaskData(Task task, EngineCfg engine) {
 		// 获取此任务的资产信息
 		List<Asset> taskList = assetService.findByTask(task);
 		if(taskList != null && taskList.size() > 0 ){
@@ -499,19 +558,19 @@ public class Scheduler4Task {
 				
 				switch (rate) {
 				case 1:
-					this.tplName = Constants.TPL_KYXJCFU_10M ;
+					this.tplName = Constants.TPL_KYXJCFU_10M +engine.getEngine_name();
 					this.scantime = 10;
 					break;
 				case 2:
-					this.tplName = Constants.TPL_KYXJCFU_30M ;
+					this.tplName = Constants.TPL_KYXJCFU_30M +engine.getEngine_name();
 					this.scantime = 30;
 					break;
 				case 3:
-					this.tplName = Constants.TPL_KYXJCFU_1H ;
+					this.tplName = Constants.TPL_KYXJCFU_1H +engine.getEngine_name();
 					this.scantime = 60;
 					break;
 				case 4:
-					this.tplName = Constants.TPL_KYXJCFU_2H ;
+					this.tplName = Constants.TPL_KYXJCFU_2H +engine.getEngine_name();
 					this.scantime = 120;
 					break;
 				}
@@ -519,36 +578,38 @@ public class Scheduler4Task {
 			}else if(Constants.SERVICE_WYCGJCFW.equals(this.tplName)){
 				switch (rate) {
 				case 1:
-					this.tplName = Constants.TPL_WYCGJCFW_30M2;
+					this.tplName = Constants.TPL_WYCGJCFW_30M2+engine.getEngine_name();
 					this.scantime = 30;
 					break;
 				case 2:
-					this.tplName = Constants.TPL_WYCGJCFW_1H2;
+					this.tplName = Constants.TPL_WYCGJCFW_1H2+engine.getEngine_name();
 					this.scantime = 60;
 					break;
 				case 3:
-					this.tplName = Constants.TPL_WYCGJCFW_2H2;
+					this.tplName = Constants.TPL_WYCGJCFW_2H2+engine.getEngine_name();
 					this.scantime = 120;
 					break;
 				case 4:
-					this.tplName = Constants.TPL_WYCGJCFW_1D2;
+					this.tplName = Constants.TPL_WYCGJCFW+engine.getEngine_name();
 					this.scantime = 1440;
 					break;
 				}
 			}else if(Constants.SERVICE_GJZJCFW.equals(this.tplName)){
                 switch (rate) {
                 case 4:
+                	this.tplName = Constants.SERVICE_GJZJCFW+engine.getEngine_name();
                     this.scantime = 1440;
                     break;
                 }
             }else if(Constants.SERVICE_EYDMJCFW.equals(this.tplName)){
                 switch (rate) {
                 case 1:
+                	this.tplName = Constants.SERVICE_EYDMJCFW+engine.getEngine_name();
                     this.scantime = 30;
                     break;
                 }
             }else if(Constants.SERVICE_LDSMFW.equals(this.tplName)){
-            	this.tplName = Constants.SERVICE_LDSMFW;
+            	this.tplName = Constants.SERVICE_LDSMFW+engine.getEngine_name();
             }
 			
 		}
@@ -733,7 +794,7 @@ public class Scheduler4Task {
         }
     }
     
-  //获取服务支持的引擎
+    //获取服务支持的引擎
     public List<EngineCfg> getUsableEngine(Map<String, Object> engineMap) {
         String ableIds = "";
         //获取可用设备
@@ -743,7 +804,8 @@ public class Scheduler4Task {
             if(String.valueOf(engineMap.get("factory"))=="1"){
                 ableIds = ableIds + engineCfg.getId() + ",";
             }else{
-                String sessionId = ArnhemWorker.getSessionId(engineCfg.getEngine_api(),engineCfg.getUsername(),engineCfg.getPassword());
+            	String sessionId = null;
+//                String sessionId = ArnhemWorker.getSessionId(engineCfg.getEngine_api(),engineCfg.getUsername(),engineCfg.getPassword());
                 //获取引擎状态
                 String resultStr = ArnhemWorker.getEngineState(sessionId,engineCfg.getEngine_api());
                 //解析引擎状态,返回可用引擎ip

@@ -67,6 +67,21 @@ public class Scheduler4Progress {
 		List<Task> taskList = taskService.findTask(map);
 		logger.info("[获取任务进度调度]:当前等待获取进度的任务有 " + taskList.size() + " 个!");
 		for (Task task : taskList) {
+			List<Order> orderList = orderService.findOrderByTask(task);
+			Map<String, Object> engineMap = new HashMap<String, Object>();
+//			EngineCfg engine = new EngineCfg();
+//			if(orderList!=null&&orderList.size()>0){
+//	            int serviceId = orderList.get(0).getServiceId();
+//				engineMap.put("serviceId", serviceId);
+//	            engine = engineService.findEngineByParam(engineMap);
+//			}
+			int engine = 0;
+			EngineCfg en = engineService.getEngineById(task.getEngine());
+			if(task.getEngine()!=0){
+				engine = en.getEngine();
+			}else{
+				engine = 2;
+			}
 		    if(task.getWebsoc()==1){
 		        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String temp = setDateFormat.format(Calendar.getInstance().getTime());
@@ -93,10 +108,10 @@ public class Scheduler4Progress {
 		    }else{
 		        try {
         			logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]开始获取进度状态!");
-        			List<Order> orderList = orderService.findOrderByTask(task);
+        			
         			// 根据任务id获取任务状态
-        			String sessionId = ArnhemWorker.getSessionId();
-        			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(task.getTaskId())+"_"+orderList.get(0).getId());
+        			String sessionId = ArnhemWorker.getSessionId(engine);
+        			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(task.getTaskId())+"_"+orderList.get(0).getId(),engine);
         			String status = this.getStatusByResult(resultStr);
         			if(orderList!=null&&!orderList.equals("")){
             			Order order = orderList.get(0);
@@ -107,7 +122,7 @@ public class Scheduler4Progress {
             				 */
             				// 获取任务进度引擎
             				try {
-        	    				String progressStr = ArnhemWorker.getProgressByTaskId(sessionId, String.valueOf(task.getTaskId())+"_"+orderList.get(0).getId(),String.valueOf(order.getServiceId()));
+        	    				String progressStr = ArnhemWorker.getProgressByTaskId(sessionId, String.valueOf(task.getTaskId())+"_"+orderList.get(0).getId(),String.valueOf(order.getServiceId()),engine);
         	    				this.getProgressByRes(task.getTaskId(),progressStr);
             				} catch (Exception e) {
             					continue;

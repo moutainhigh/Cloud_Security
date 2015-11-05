@@ -59,7 +59,8 @@ public class EngineWorker {
 		    if((String)engineMap.get("factory")=="1"){
 		        ableIds = ableIds + engineCfg.getId() + ",";
 		    }else{
-		        String sessionId = ArnhemWorker.getSessionId(engineCfg.getEngine_api(),engineCfg.getUsername(),engineCfg.getPassword());
+		    	String sessionId = null;
+//		        String sessionId = ArnhemWorker.getSessionId(engineCfg.getEngine_api(),engineCfg.getUsername(),engineCfg.getPassword());
 	            //获取引擎状态
 	            String resultStr = ArnhemWorker.getEngineState(sessionId,engineCfg.getEngine_api());
 	            //解析引擎状态,返回可用引擎ip

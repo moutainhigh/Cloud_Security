@@ -27,8 +27,8 @@ public class TestController {
 	private AlarmDao alarmDao;
 	@RequestMapping(value="test.html",method=RequestMethod.GET)
 	public ModelAndView test() throws UnsupportedEncodingException, DocumentException, ParseException{
-		String sessionId = ArnhemWorker.getSessionId();
-		String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, "test008", "1", 0, 200);
+		String sessionId = ArnhemWorker.getSessionId(2);
+		String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, "test008", "1", 0, 200,2);
 		String decode = URLDecoder.decode(reportByTaskID, "UTF-8");
 //		decode = decode.replace("<bold>", "");
 //		decode = decode.replace("</bold>", "");

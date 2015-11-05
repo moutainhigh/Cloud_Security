@@ -23,13 +23,22 @@ public interface IEngineService {
     //获取任务下发的引擎
     EngineCfg findMinActivity(String ableIds);
 
-    //更新活跃度
+    //更新活跃度+1
     void update(EngineCfg engine);
     //获取可用引擎
     List<EngineCfg> findAbleActivity(String ableIds);
 
     //根据id查询引擎
     EngineCfg findEngineById(int id);
+
+    //查找最佳引擎
+	EngineCfg findEngineByParam(Map<String, Object> engineMap);
+
+	EngineCfg getEngine();
+	//更新活跃度-1
+	void updatedown(EngineCfg en);
+
+	EngineCfg getEngineById(int id);
 
 
 }

@@ -36,6 +36,10 @@ public class EngineCfg implements Serializable{
 	private int maxTask;
 	//引擎活跃度
 	private int activity;
+	//是否可用
+	private int status;
+	
+	private int engine;
 	public int getId() {
 		return id;
 	}
@@ -111,5 +115,17 @@ public class EngineCfg implements Serializable{
     public void setActivity(int activity) {
         this.activity = activity;
     }
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	public int getEngine() {
+		return engine;
+	}
+	public void setEngine(int engine) {
+		this.engine = engine;
+	}
 	
 }
