@@ -28,6 +28,28 @@ console.log(alarmlist);
 
 var myChart = echarts.init(document.getElementById('charts_map'));
 var option = {
+	    title : {
+	    	show: false,
+	        text: '资产警告趋势',
+	        subtext: '警告数量'
+	    },
+	    tooltip : {
+	        trigger: 'axis'
+	    },
+	    legend: {
+	    	show: false,
+	        data:['按时间排序']
+	    },
+	    toolbox: {
+	        show : false,
+	        feature : {
+	            mark : {show: true},
+	            dataView : {show: true, readOnly: false},
+	            magicType : {show: true, type: ['line', 'bar']},
+	            restore : {show: true},
+	            saveAsImage : {show: true}
+	        }
+	    },
 	    calculable : true,
 	    xAxis : [
 	        {
@@ -41,7 +63,9 @@ var option = {
 	    yAxis : [
 	        {
 	            type : 'value',
-	            splitLine: {show: false}
+	            axisLine: true,
+	            splitLine: false,
+	            data : alarmlist
 	        }
 	    ],
 	    series : [
@@ -60,7 +84,7 @@ var option = {
 	            		}
 	            	}
 	            },
-	            data:alarmlist
+	            data: alarmlist
 	        }
 	    ]
 	};
