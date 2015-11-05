@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="distribute-schedule-system"
+  id="myeclipse.1444464088609"
+  context-root="/dss"
+  j2ee-spec="5.0"
+  archive="distribute-schedule-system.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
