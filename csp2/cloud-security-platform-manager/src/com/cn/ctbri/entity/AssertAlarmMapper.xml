@@ -12,6 +12,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="orderId" column="orderId"/>
 		<result property="num" column="num"/>
 	</resultMap>
+	<resultMap type="com.cn.ctbri.entity.AssertAlarm" id="AaRM1">
+		<result property="begin_date" column="begin_date"/>
+		<result property="num" column="num"/>
+	</resultMap>
 	
  	<select id="findAssertAlarmByParam" resultMap="AaRM" parameterType="hashmap">
 	   select s.name,s.serviceId, date_format(s.begin_date,'%Y-%m-%d %H:%i:%s') begin_date,date_format(s.end_date,'%Y-%m-%d %H:%i:%s') end_date,as1.level,s.orderId,count(1) num from 
@@ -74,10 +78,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			group by s.name,s.serviceId,s.begin_date ,s.end_date,as1.level,s.orderId
 			ORDER BY num desc 
 	</select>
-	<select id="findAssertAlarmTrendByParam" resultMap="AaRM" parameterType="hashmap">
-		select s.orderId,count(1) num from 
+	<select id="findAssertAlarmTrendByParam" resultMap="AaRM1" parameterType="hashmap">
+		 select date_format(s.begin_date,'${timeTtype}') begin_date,count(1) num from 
 		    (select a.group_id,a.taskId,a.id,a.name level from cs_alarm a)as1,
-			(select t.group_id,t.taskId, orderId
+			(select t.group_id,t.taskId,o.begin_date
 					from cs_task t,cs_order_asset oa,cs_order o, cs_asset ast
 					where t.order_asset_Id=oa.id and oa.orderId=o.id 
 					and oa.assetId=ast.id 
@@ -97,7 +101,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
            			<if test="orderCode!=null and orderCode!=''">
              	   	    and o.id=#{orderCode}
            			</if>
-			) s where (as1.taskid=s.taskId or as1.group_id=s.taskId)
-			group by s.orderId  
+    		) s where (as1.taskid=s.taskId or as1.group_id=s.taskId)
+			group by date_format(s.begin_date,'${timeTtype}')
+			order by begin_date
 	</select>
 </mapper>

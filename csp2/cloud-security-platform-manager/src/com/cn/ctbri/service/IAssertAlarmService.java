@@ -31,4 +31,12 @@ public interface IAssertAlarmService {
 	List<AssertAlarm> findAssertAlarmTypeByMap(Map<String, Object> paramMap);
 	
 	
+	/**
+	 * 功能描述：获取资产告警趋势分析数据
+	 * @param paramMap
+	 * @return
+	 */
+	List<AssertAlarm> findAssertAlarmTrendByMap(Map<String, Object> paramMap);
+	
+	
 }

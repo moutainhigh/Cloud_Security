@@ -46,6 +46,14 @@ public class AssertAlarmDaoImpl extends DaoCommon implements AssertAlarmDao {
 	public List<AssertAlarm> findAssertAlarmTypeByMap(
 			Map<String, Object> paramMap) {
 		return this.getSqlSession().selectList(ns+"findAssertAlarmTypeByParam", paramMap);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cn.ctbri.dao.AssertAlarmDao#findAssertAlarmTrendByMap(java.util.Map)
+	 */
+	public List<AssertAlarm> findAssertAlarmTrendByMap(
+			Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"findAssertAlarmTrendByParam", paramMap);
 	}		
 	
 }

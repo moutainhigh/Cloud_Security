@@ -46,6 +46,16 @@ public class AssertAlarmServiceImpl implements IAssertAlarmService{
 			Map<String, Object> paramMap) {
 		return assertAlarmDao.findAssertAlarmTypeByMap(paramMap);
 	}
+
+	/**
+	 * 功能描述：获取资产告警趋势分析数据
+	 * @param paramMap
+	 * @return
+	 */
+	public List<AssertAlarm> findAssertAlarmTrendByMap(
+			Map<String, Object> paramMap) {
+		return assertAlarmDao.findAssertAlarmTrendByMap(paramMap);
+	}
 	
 	
 }
