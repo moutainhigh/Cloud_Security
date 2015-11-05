@@ -37,7 +37,7 @@ li{ list-style:none;}
 .tableBox thead th{ background-color:#3cacd4; border:#e0e0e0 solid 1px; width:134px; text-align:center; vertical-align:middle; font-size:16px; color:#fff;}
 .tableBox tr{ height:32px; line-height:32px;}
 .tableBox tbody tr td{width:134px; border:#e0e0e0 solid 1px;text-align:center; vertical-align:middle;}
-.chart{ width:506px; height:282px; margin:0 auto;}
+.chart{ width:700px; height:400px; margin:0 auto;}
 
 /*告警分析*/
 .analysis{ margin:20px 0; border:#e0e0e0 solid 1px; padding:72px 34px 40px 88px;}

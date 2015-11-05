@@ -14,8 +14,11 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/assetJs/backstage.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/assetJs/jquery.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/assetJs/jquery.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/assetJs/alarmtrend.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="${ctx}/source/scripts/common/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="${ctx}/source/scripts/common/echarts-all.js" type="text/javascript"></script>
+
 
 <script type="text/javascript">
 var  tablList=${tablList};
@@ -461,12 +464,20 @@ if(tablList==0&&anList==0){
                                     <label>-结束时间</label>
                                     <input type="text" class="text" value="" id="end_date3" name="end_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd'})">
                                 </div>
-                                
+                                <div class="analyse_lable fl">
+                                    <label>时间类型</label>
+                                    <select class="text" name="timeTtype" id="timeTtype">
+                                        <option value="">请选择</option>
+                                        <option value="1">时</option>
+                                        <option value="2">天</option>
+                                        <option value="3">月</option>
+                                    </select>
+                                </div>
                                 <input type="button" class="sub" value="" onclick="assert(1,2)">
                             </form>
                             <div class="tableBox">
-                                <div class="chart">
-                                	<img src="${ctx}/source/images/chart.jpg" alt="">
+                                <div class="chart" id="charts_map">
+                                
                                 </div>
                             </div>
                     
