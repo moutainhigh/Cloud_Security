@@ -187,11 +187,31 @@ function assert(m,n){
 	  		alert("服务类型为必选项！");
 	  	} 
 	}else if(m==1&&n==2){
-	  	if($("#serverId3").val()!=""){
-	  		$("#alarmForm2").action="${ctx}/admineAssetAlarmUI.html?tablList=1&anList=2"
-	  		$("#alarmForm2").submit();
+	  	if($("#serverId3").val()!=""||$("#timeTtype").val()!=""){
+	  		getAlarmTrend();
 	  	}else{
-	  		alert("服务类型为必选项！");
+	  		alert("在服务类型和时间类型中至少选择一个查询条件！");
 	  	} 
 	}
+}
+
+function getAlarmTrend(){
+	//alert("ddddddddddddddddd");
+	 var assert=$("#assertName3").val();
+	 var service=$("#serverId3").val();
+	 var bdate=$("#begin_date3").val();
+	 var edate=$("#end_date3").val();;
+	 var timet=$("#timeTtype").val();
+	 $.ajax({
+		 	data: {"assertName":assert,"serverId":service,"begin_date":bdate,"end_date":edate,"timeTtype":timet},
+	        type: "POST",
+	        cache: false,
+	        dataType: "json",
+	        url: "admineAssetAlarmTrendUI.html", 
+	        success: function(obj){
+	        	var list=obj.AlarmTrendlist;
+	        		assertAlarm(list,timet);	
+	        	
+	     	}
+		});
 }
