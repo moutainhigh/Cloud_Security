@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 查找最佳引擎 -->
     <select id="findEngineByParam" parameterType="hashmap" resultMap="EngineRM">
        select * from cs_enginecfg en 
-        where en.maxTask!=en.activity and #{serviceId} in(en.engine_capacity) and en.status = 1 
+        where en.maxTask!=en.activity and en.engine_capacity like CONCAT(CONCAT('%', #{serviceId}), '%') and en.status = 1 
         <if test="websoc==0">
           and en.engine!=3
         </if>
