@@ -600,6 +600,9 @@ public class Scheduler4Task {
                 	this.tplName = Constants.SERVICE_GJZJCFW+engine.getEngine_name();
                     this.scantime = 1440;
                     break;
+                default:
+                	this.tplName = Constants.SERVICE_GJZJCFW+engine.getEngine_name();
+                	break;
                 }
             }else if(Constants.SERVICE_EYDMJCFW.equals(this.tplName)){
                 switch (rate) {
@@ -607,6 +610,9 @@ public class Scheduler4Task {
                 	this.tplName = Constants.SERVICE_EYDMJCFW+engine.getEngine_name();
                     this.scantime = 30;
                     break;
+                default:
+                	this.tplName = Constants.SERVICE_EYDMJCFW+engine.getEngine_name();
+                	break;
                 }
             }else if(Constants.SERVICE_LDSMFW.equals(this.tplName)){
             	this.tplName = Constants.SERVICE_LDSMFW+engine.getEngine_name();
