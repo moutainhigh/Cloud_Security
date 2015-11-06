@@ -73,6 +73,10 @@ public class WarningController {
     ITaskWarnService taskWarnService;
     @Autowired
     IAlarmDDOSService alarmDDOSService;
+    
+    /**
+     * 功能描述：告警详情
+     */
     @RequestMapping(value="warningInit.html")
     public String warningInit(HttpServletRequest request,HttpServletResponse response) throws Exception{
         String orderId = request.getParameter("orderId");
@@ -130,7 +134,8 @@ public class WarningController {
 	        	if(runList.size()>0){
 	        		status = Integer.parseInt(Constants.TASK_RUNNING);
 	        	}
-	            return this.service(request,paramMap,status,orderList);
+	        	//服务中跳转
+	            return this.serviceing(request,paramMap,status,orderList);
 	        }else {
 	            //获取推送告警信息
 	        	String flag_able=request.getParameter("flag");
@@ -1310,7 +1315,7 @@ public class WarningController {
     }
     
     //服务ing
-    public String service(HttpServletRequest request,Map<String, Object> paramMap,int status,List<HashMap<String, Object>> orderList) throws Exception{
+    public String serviceing(HttpServletRequest request,Map<String, Object> paramMap,int status,List<HashMap<String, Object>> orderList) throws Exception{
         //获取对应IP
         // List IPList = orderService.findIPByOrderId(orderId);
         request.setAttribute("status", status);
