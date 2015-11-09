@@ -101,7 +101,7 @@ public class Scheduler4Exception {
             int serviceId = orderList.get(0).getServiceId();
             engineMap.put("serviceId", serviceId);
 //            engineMap.put("factory", t.getWebsoc());
-            EngineCfg engine = engineService.findEngineByParam(engineMap);
+            EngineCfg engine = (EngineCfg) engineService.findEngineByParam(engineMap);
             //获取任务下发引擎 add by tang 2015-06-11
 //            List<EngineCfg> engines = getUsableEngine(engineMap);
             try{
