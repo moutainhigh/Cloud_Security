@@ -63,7 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test="websoc==0">
           and en.engine!=3
         </if>
-        order by en.activity/en.maxTask limit 1
+        order by en.activity/en.maxTask limit 3
     </select>
     
     <!-- 查找引擎 -->
