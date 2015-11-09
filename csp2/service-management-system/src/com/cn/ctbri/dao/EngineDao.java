@@ -26,7 +26,7 @@ public interface EngineDao {
 
     EngineCfg findEngineById(int id);
 
-	EngineCfg findEngineByParam(Map<String, Object> engineMap);
+	List<EngineCfg> findEngineByParam(Map<String, Object> engineMap);
 
 	EngineCfg getEngine();
 
