@@ -5,7 +5,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+
 import org.apache.log4j.Logger;
+
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -53,7 +55,10 @@ public class NorthWebService {
 		String StartTime = dataJson.getString("StartTime");
 		String EndTime = dataJson.getString("EndTime");
 		String ScanPeriod = dataJson.getString("ScanPeriod");
-		String array = dataJson.getString("TargetURL");
+		JSONArray array = dataJson.getJSONArray("TargetURL");
+		for (int i = 0; i < array.length(); i++) {
+            System.out.println("array:" + array.get(i));
+		}
 		Respones r = new Respones();
 		r.setState("201");
 		net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
