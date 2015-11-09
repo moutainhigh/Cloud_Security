@@ -47,7 +47,7 @@ public class EngineServiceImpl implements IEngineService{
         return engineDao.findEngineById(id);
     }
 
-	public EngineCfg findEngineByParam(Map<String, Object> engineMap) {
+	public List<EngineCfg> findEngineByParam(Map<String, Object> engineMap) {
 		return engineDao.findEngineByParam(engineMap);
 	}
 

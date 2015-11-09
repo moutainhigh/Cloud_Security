@@ -32,7 +32,7 @@ public interface IEngineService {
     EngineCfg findEngineById(int id);
 
     //查找最佳引擎
-	EngineCfg findEngineByParam(Map<String, Object> engineMap);
+	List<EngineCfg> findEngineByParam(Map<String, Object> engineMap);
 
 	EngineCfg getEngine();
 	//更新活跃度-1
