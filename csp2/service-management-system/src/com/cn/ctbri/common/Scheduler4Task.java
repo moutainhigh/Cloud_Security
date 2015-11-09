@@ -103,13 +103,53 @@ public class Scheduler4Task {
             List<Order> orderList = orderService.findByOrderId(orderAsset.getOrderId());
             Map<String, Object> engineMap = new HashMap<String, Object>();
             EngineCfg engine = new EngineCfg();
+
             int serviceId = 0;
             if(orderList!=null&&orderList.size()>0){
 				serviceId = orderList.get(0).getServiceId();
 	            engineMap.put("serviceId", serviceId);
 //	            engineMap.put("factory", t.getWebsoc());
 	            engineMap.put("websoc", t.getWebsoc());
-	            engine = engineService.findEngineByParam(engineMap);
+//	            engine = engineService.findEngineByParam(engineMap);
+	            List<EngineCfg> engineList = engineService.findEngineByParam(engineMap);
+	            for (EngineCfg engineCfg : engineList) {
+					engine = engineCfg;
+					String sessionid = "";
+		            boolean engineStatus = false;
+					if(engine.getEngine()==3){
+						for(int i=0;i<3;i++){
+			                sessionid = WebSocWorker.getSessionId();
+			                if(sessionid!=null&&sessionid!=""){
+			                    engineStatus = true;
+			                    break;
+			                }
+			                if(!engineStatus){
+			                	continue;
+			                }
+			            }
+						if(!engineStatus){
+							continue;
+		                }else{
+		                	break;
+		                }
+					}else{
+						for(int i=0;i<3;i++){
+				            sessionid = ArnhemWorker.getSessionId(engine.getEngine());
+				            if(sessionid!=null&&sessionid!=""){
+				                engineStatus = true;
+				                break;
+				            }
+				            if(!engineStatus){
+			                	continue;
+			                }
+				        }
+						if(!engineStatus){
+							continue;
+		                }else{
+		                	break;
+		                }
+					}
+				}
 			}
             
             //获取任务下发引擎 modify by tang 2015-10-29
