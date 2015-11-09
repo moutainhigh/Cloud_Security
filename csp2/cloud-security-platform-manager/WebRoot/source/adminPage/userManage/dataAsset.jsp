@@ -72,7 +72,7 @@ if(tablList==0&&anList==0){
         <li><a href="${ctx}/adminUserManageUI.html" class="white">用户分析</a></li>
         <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">订单分析</a></li>
         <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">告警分析</a></li>
-        <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">设备资源管理</a></li>
+        <li><a href="${ctx}/equResourceUI.html" class="white">设备资源管理</a></li>
         <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/adminSystemManageUI.html" class="white">系统管理</a></li>
       </ul>
     </div>
