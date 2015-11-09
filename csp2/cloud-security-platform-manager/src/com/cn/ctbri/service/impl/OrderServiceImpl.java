@@ -174,6 +174,14 @@ public class OrderServiceImpl implements IOrderService{
 	public List findUserCountByIndus(Map<String, Object> paramMap) {
 		return orderDao.findUserCountByIndus(paramMap);
 	}
-	
+	public List findOrderTimesLine(Map<String, Object> paramMap) {
+		return orderDao.findOrderTimesLine(paramMap);
+	}
+	public List findOrderTimesPie(Map<String, Object> paramMap) {
+		return orderDao.findOrderTimesPie(paramMap);
+	}
+	public List findOrderWithServiceId(Map<String, Object> paramMap) {
+		return orderDao.findOrderWithServiceId(paramMap);
+	}
 	
 }

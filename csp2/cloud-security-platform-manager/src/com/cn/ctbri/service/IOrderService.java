@@ -117,4 +117,10 @@ public interface IOrderService {
     List findOrderTimesTop5(Map<String, Object> paramMap);
     //根据行业查询下单用户数量
     List findUserCountByIndus(Map<String, Object> paramMap);
+  //查询当前时间到前5小时内的数据统计
+    List findOrderTimesLine(Map<String, Object> paramMap);
+    //查询当前时间到前5小时内的服务数据统计
+    List findOrderTimesPie(Map<String, Object> paramMap);
+    ////查询订单时间段分布统计
+    List findOrderWithServiceId(Map<String, Object> paramMap);
 }

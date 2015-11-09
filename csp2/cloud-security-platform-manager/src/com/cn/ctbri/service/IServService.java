@@ -27,6 +27,7 @@ public interface IServService {
      *  返回值 ：Serv
      */
     List<Serv> findServiceByParam(Serv service);
-
+    //查询全部服务
+    List<Serv> findAllService();
 
 }

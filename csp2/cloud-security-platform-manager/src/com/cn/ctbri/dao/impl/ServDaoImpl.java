@@ -41,6 +41,8 @@ public class ServDaoImpl extends DaoCommon implements ServDao{
         return this.getSqlSession().selectList(ns + "findServiceByParam",service);
     }
 	
-	
+    public List<Serv> findAllService() {
+		return this.getSqlSession().selectList(ns+"list");
+	}
 	
 }

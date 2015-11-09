@@ -29,7 +29,8 @@ public interface ServDao {
      *  返回值 ：Serv
      */
     List<Serv> getServiceByParam(Serv service);
-
+    //获取所有服务
+    List<Serv> findAllService();
 
 	
 }

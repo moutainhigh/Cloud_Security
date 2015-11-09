@@ -38,5 +38,7 @@ public class ServServiceImpl implements IServService{
     public List<Serv> findServiceByParam(Serv service) {
         return servDao.getServiceByParam(service);
     }
-	
+    public List<Serv> findAllService() {
+		return servDao.findAllService();
+	}
 }
