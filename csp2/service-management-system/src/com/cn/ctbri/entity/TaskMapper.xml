@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 根据条件查询任务表 -->
 	<select id="findTask" parameterType="hashmap" resultMap="TaskRM">
 		select * from cs_task t
-		where t.status = #{status} and t.taskid = 922
+		where t.status = #{status}
 		<if test="status==1">
 		  and t.execute_time between date_add(now(),interval -1 minute) and now()
 		</if>
