@@ -100,7 +100,15 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
     public List<Linkman> findLinkmanById(int contactId) {
         List<Linkman> linkman = this.getSqlSession().selectList(ns + "findLinkmanById",contactId);
         return linkman;
-    }  
+    }
+
+    /**
+     * 功能描述：保存订单
+     *       @time 2015-11-10
+     */
+	public void save(Order order) {
+		this.getSqlSession().insert(ns + "insert", order);
+	}  
 	
 	
 }
