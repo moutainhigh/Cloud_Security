@@ -178,11 +178,11 @@ $(function(){
 //    	}else 
     	if(serviceId==1){
     		if(scanType==1){
-        		scanName="每天0:0:10开始";
+        		scanName="每天00:10:00开始";
         	}else if(scanType==2){
-        		scanName="每周一0:0:10开始";
+        		scanName="每周一00:10:00开始";
         	}else if(scanType==3){
-        		scanName="每月1日0:0:10开始";
+        		scanName="每月1日00:10:00开始";
         	}
     	}else{
     		scanName=$('input:radio[name="scanType'+index+'"]:checked').attr("id");
