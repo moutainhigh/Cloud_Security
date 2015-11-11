@@ -87,7 +87,19 @@
                     <c:if test="${order.scan_type==2}">每周</c:if>
                     <c:if test="${order.scan_type==3}">每月</c:if>
                 </c:if>
+                <c:if test="${order.serviceId==2}">
+                    <c:if test="${order.scan_type==1}">30分钟</c:if>
+                    <c:if test="${order.scan_type==2}">1小时</c:if>
+                    <c:if test="${order.scan_type==3}">2小时</c:if>
+                    <c:if test="${order.scan_type==4}">1天</c:if>
+                </c:if>
                 <c:if test="${order.serviceId==3}">
+                    <c:if test="${order.scan_type==1}">30分钟</c:if>
+                    <c:if test="${order.scan_type==2}">1小时</c:if>
+                    <c:if test="${order.scan_type==3}">2小时</c:if>
+                    <c:if test="${order.scan_type==4}">1天</c:if>
+                </c:if>
+                <c:if test="${order.serviceId==4}">
                     <c:if test="${order.scan_type==1}">30分钟</c:if>
                     <c:if test="${order.scan_type==2}">1小时</c:if>
                     <c:if test="${order.scan_type==3}">2小时</c:if>
@@ -102,7 +114,7 @@
            </span></p>
            <p class="dd_detail"><span class="detail_l fl">最近检测时间</span><span class="detail_r fl">
            <c:if test="${checkTime>0 }">
-                <fmt:formatDate value="${lastTime.execute_time }" pattern="yyyy-MM-dd HH:mm:ss"/>
+                <fmt:formatDate value="${lastTime.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/>
            </c:if>
            <c:if test="${checkTime==0 }">暂无</c:if>
            </span></p>
