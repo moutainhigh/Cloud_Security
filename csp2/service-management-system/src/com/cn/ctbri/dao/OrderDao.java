@@ -65,5 +65,10 @@ public interface OrderDao {
 	void update(Order o);
 	//查找联系人
     List<Linkman> findLinkmanById(int contactId);
+    /**
+     * 功能描述：保存订单
+     *       @time 2015-11-10
+     */
+	void save(Order order);
 	
 }
