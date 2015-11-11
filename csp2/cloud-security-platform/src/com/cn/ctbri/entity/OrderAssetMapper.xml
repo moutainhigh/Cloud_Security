@@ -42,11 +42,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select a.name,a.addr from cs_order_asset oa,cs_asset a where oa.orderId=#{orderId} and oa.assetid = a.id
     </select>
     <select id="findLastTimeByOrderId" parameterType="hashmap" resultType="hashmap">
-        select t.execute_time from cs_order_asset oa,cs_task t 
+        select t.group_flag from cs_order_asset oa,cs_task t 
             where oa.id = t.order_asset_id 
             and oa.orderId=#{orderId}
             and t.status=3
-            order by t.execute_time desc 
+            group by t.group_flag order by t.group_flag desc
             <if test="limitNum!=null">
                 limit #{limitNum}
             </if>
