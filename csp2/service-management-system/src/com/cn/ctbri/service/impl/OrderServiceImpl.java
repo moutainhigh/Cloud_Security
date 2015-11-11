@@ -98,4 +98,11 @@ public class OrderServiceImpl implements IOrderService{
         List<Linkman> linkman = orderDao.findLinkmanById(contactId);
         return linkman;
     }
+    /**
+     * 功能描述：保存订单
+     *       @time 2015-11-10
+     */
+	public void insertOrder(Order order) {
+		orderDao.save(order);
+	}
 }
