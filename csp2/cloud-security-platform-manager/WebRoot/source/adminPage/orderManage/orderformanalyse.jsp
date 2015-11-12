@@ -8,9 +8,9 @@
 <head>
 <meta charset="utf-8" />
 <title>订单分析图</title>
-<link href="${ctx}/source/orderCss/mian.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/orderCss/head_bottom.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/orderCss/backstage.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/manageCss/mian.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/manageCss/head_bottom.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/manageCss/backstage.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/order/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>

@@ -40,7 +40,20 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/getServiceAlarmTop5.html");
 		list.add("/getServiceAlarmMonth5.html");
 		list.add("/findUseAssetAddr.html");
-
+		//------------------
+		list.add("/equResourceUI.html");
+		list.add("/findAllFactory.html");
+		list.add("/equFindAll.html");
+		list.add("/addEqu.html");
+		list.add("/updEqu.html");
+		list.add("/findEquById.html");
+		list.add("/delEquById.html");
+		list.add("/getPageSize.html");
+		list.add("/getDiskUsage.html");
+		list.add("/getSysCpuUsage.html");
+		list.add("/getSysMemoryUsage.html");
+		list.add("/getCountRuning.html");
+				
 		//获取访问的url路径
 		String path = request.getServletPath();
 		forwordIndexPage(path,request,response);

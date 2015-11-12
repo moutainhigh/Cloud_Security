@@ -135,4 +135,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <delete id="deleteTaskByOaId" parameterType="String">
         delete from cs_task where order_asset_Id = #{order_asset_Id}
     </delete>
+    
+    <select id="countTestRunning" parameterType="int" resultType="int" >
+    	select count(*) count from cs_task where status=2 and engine=#{engine}
+    </select>
 </mapper>

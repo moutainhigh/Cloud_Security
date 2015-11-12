@@ -142,8 +142,8 @@ public class SystemManageController {
 		double total=0;//总内存
 		double kb=1024;
 		OperatingSystemMXBean osmb = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-		total = osmb.getTotalPhysicalMemorySize()/kb/kb/kb;
-		free = osmb.getFreePhysicalMemorySize()/kb/kb/kb;
+		total = osmb.getTotalPhysicalMemorySize()/kb;
+		free = osmb.getFreePhysicalMemorySize()/kb;
 		use=total-free; 
 		BigDecimal total1 = new BigDecimal(total);
 		double total2 = total1.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();

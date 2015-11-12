@@ -59,5 +59,8 @@ public class TaskServiceImpl implements ITaskService{
     public void deleteTaskByOaId(String order_asset_Id) {
         taskDao.deleteTaskByOaId(order_asset_Id);
     }
+	public int getCount(int engine) {
+		return taskDao.getCount(engine);
+	}
 
 }
