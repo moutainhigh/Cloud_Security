@@ -67,7 +67,7 @@ public class InternalWorker {
 	/**
 	 * 获得订单/任务当前执行状态
 	 */
-	private static String VulnScan_Get_OrderStatus;
+	private static String VulnScan_Get_orderTaskStatus;
 	
 	static{
 		try {
@@ -81,7 +81,7 @@ public class InternalWorker {
 			VulnScan_Opt_Order = p.getProperty("VulnScan_Opt_Order");
 			VulnScan_Get_OrderReport = p.getProperty("VulnScan_Get_OrderReport");
 			VulnScan_Get_OrderResult = p.getProperty("VulnScan_Get_OrderResult");
-			VulnScan_Get_OrderStatus = p.getProperty("VulnScan_Get_OrderStatus");
+			VulnScan_Get_orderTaskStatus = p.getProperty("VulnScan_Get_orderTaskStatus");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -317,7 +317,7 @@ public class InternalWorker {
 		json.put("OrderId", OrderId);
 		json.put("Taskid", Taskid);
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Get_OrderStatus + OrderId + "/" +Taskid;
+    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskStatus + OrderId + "/" +Taskid;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
