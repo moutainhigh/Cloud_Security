@@ -135,8 +135,8 @@
     	lazy-init="false">
     	<property name="triggers">
     		<list>
-    			<!-- <ref bean="taskTrigger" />
-    			<ref bean="resultTrigger" />
+    			<ref bean="taskTrigger" />
+    			<!-- <ref bean="resultTrigger" />
     			<ref bean="progressTrigger" />
     			<ref bean="exceptionTrigger" /> -->
     		</list>
