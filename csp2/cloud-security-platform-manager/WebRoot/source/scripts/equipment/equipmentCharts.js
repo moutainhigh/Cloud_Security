@@ -228,7 +228,6 @@ var getRam = function(id, engine, ip) {
 					total = p['total'];
 					//                    	valueGauge[i]=[p['ratio'], temp];
 				});
-				$("#rawNum").text(data[0].totals+" GB");
 				option = {
 					tooltip : {
 						formatter : "{a} <br/>{b} : {c}"
@@ -290,6 +289,7 @@ var getRam = function(id, engine, ip) {
 				//图形展示
 				myChart.setOption(option);
 				window.onresize = myChart.resize;
+				$("#rawNum").text(data[0].totals+" GB");
 			}//ajax执行后台
 		});
 	});

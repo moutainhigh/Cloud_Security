@@ -225,7 +225,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from cs_enginecfg en
 		where en.id = #{id}
 	</select>
-	<select id="findAllEnginecfgByPage" resultType="hashmap"
+	<select id="findAllEnginecfg" resultType="hashmap"
 		parameterType="hashmap">
 		select id, engine_number, engine_name, equipment_factory,
 		engine_addr, engine_api, username,
@@ -242,7 +242,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="factory!=null and factory!=''">
 			and equipment_factory = #{factory} 
 		</if>
-		ORDER BY id limit #{pageNow},#{pageSize}
+		ORDER BY id 
 	</select>
 	<select id="count" resultType="java.lang.Integer" parameterType="hashmap">
 		select count(*) from cs_enginecfg where status = 1 

@@ -1,37 +1,7 @@
 $(function() {
-	getAllEngine(1);
-	getPage();
+	getAllEngine();
 });
-var getPage = function() {
-	var engineName = $("#engineName").val();
-	var engineAddr = $("#engineAddr").val();
-	var factory = $("#factory").val();
-	$.ajax({
-		type : "POST",
-		url : "getPageSize.html",
-		dataType : "json",
-		data : {
-			engineName : engineName,
-			engineAddr : engineAddr,
-			factory : factory
-		},
-		success : function(data) {
-			$("#page").createPage({
-				pageCount : data.total,
-				current : 1,
-				backFn : function(p) {
-					if(p<=data.total){
-						alert(p);
-						getAllEngine(p);
-						console.log(p);
-					}
-				}
-			});
-		}
-	});
-}
-var getAllEngine = function(pageIndex) {
-	pageIndex = pageIndex - 1;
+var getAllEngine = function() {
 	var tbody = $("#tbody");
 	var engineName = $("#engineName").val();
 	var engineAddr = $("#engineAddr").val();
@@ -41,7 +11,6 @@ var getAllEngine = function(pageIndex) {
 		url : "equFindAll.html",
 		dataType : "json",
 		data : {
-			pageIndex : pageIndex,
 			engineName : engineName,
 			engineAddr : engineAddr,
 			factory : factory
@@ -56,13 +25,13 @@ var getAllEngine = function(pageIndex) {
 					factory = "创宇";
 				}
 				tbody.append("<tr height='40'>" + "<td style='display: none;'>" + p['id'] + "</td>"
-						+ "<td width='250'><span onclick='openNamePopBox("+p['id']+","+p['engine']+", " +
+						+ "<td width='250'><a href='javascript:void(0)'><span onclick='openNamePopBox("+p['id']+","+p['engine']+", " +
 								"\""+p['engine_addr']+"\")'>" + p['engine_name']
-						+ "</span></td>" + "<td width='336'>"
+						+ "</span></a></td>" + "<td width='336'>"
 						+ p['engine_addr'] + "</td>" + "<td width='250'>"
 						+ factory + "</td>"
-						+ "<td width='260'><a href='#' onclick='upd(" + p['id']
-						+ ")' >修改</a><a href='#' onclick='del(" + p['id']
+						+ "<td width='260'><a href='javascript:void(0)' onclick='upd(" + p['id']
+						+ ")' >修改</a><a href='javascript:void(0)' onclick='del(" + p['id']
 						+ ")'>删除</a></td>" + "</tr>");
 			});
 		}
@@ -87,10 +56,10 @@ var getAllEngine = function(pageIndex) {
 	});
 	$("#butType").empty();
 	$("#butType").append(
-			"<input type='submit' value='立即修改' class='submit' id='upd' />");
+			"<input type='button' value='立即修改' class='submit' onclick='addAndUpdate()' id='upd' />");
 	$("#popBox").dialog("open");
 	return false;
-}, serAction = function() {
+}, vaildata = function() {
 	var id = $("#id").val();
 	if (id != '') {
 		$("#addAndUpd").attr("action", "updEqu.html");
@@ -112,10 +81,27 @@ var getAllEngine = function(pageIndex) {
 		});
 	}
 },openNamePopBox=function(id,engine,ip){
-	getDisk(id,engine,ip);
+	$( "#namePopBox" ).dialog( "open" );
 	getCpu(id,engine,ip);
 	getRam(id,engine,ip);
+	getDisk(id,engine,ip);
 	getCount(id);
-	$( "#namePopBox" ).dialog( "open" );
 	return false;
+},addAndUpdate=function(){
+	var engineName = $("#equName").val();
+	var engineAddr = $("#equIP").val();
+	if(engineName==null||engineName==''){
+		alert("设备引擎名称不能为空！");
+		return false;
+	}
+	if(engineAddr==null||engineAddr==''){
+		alert("设备引擎IP地址不能为空！");
+		return false;
+	}
+	var pattern = /\d+\.\d+\.\d+\.\d+/;
+	if(!pattern.test(engineAddr)){
+		alert("IP地址输入有误！");
+		return false;
+	}
+	$("#addAndUpd").submit();
 }

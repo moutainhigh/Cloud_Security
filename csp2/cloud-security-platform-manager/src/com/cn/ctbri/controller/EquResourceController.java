@@ -59,7 +59,6 @@ public class EquResourceController {
 	@Autowired
 	IFactoryService factoryService;
 	
-	private int pageSize = 3;
 	/**
 	 * 功能描述：资产地理位置统计分析
 	 *		 @time 2015-10-26
@@ -83,40 +82,6 @@ public class EquResourceController {
 	}
 	/**
 	 * 
-	* @Title: getPageSize 
-	* @Description: 获取分页数据
-	* @param @param request
-	* @param @param response
-	* @param @throws IOException    设定文件 
-	* @return void    返回类型 
-	* @throws
-	 */
-	@RequestMapping("/getPageSize.html")
-	public void getPageSize(HttpServletRequest request,HttpServletResponse response) throws IOException{
-		Map paramMap = new HashMap();
-		paramMap.put("engineName", request.getParameter("engineName"));
-		paramMap.put("engineAddr", request.getParameter("engineAddr"));
-		paramMap.put("factory", request.getParameter("factory"));
-		int count = enginecfgService.countEnginecfig(paramMap);
-		Map map = new HashMap();
-		map.put("count", count);
-		map.put("pageSize", pageSize);
-		int total=count/pageSize;
-		if(count%pageSize!=0){
-			total=total+1;
-		}
-		map.put("total", total);
-		Gson gson= new Gson(); 
-		response.setContentType("text/html;charset=utf-8");
-		String resultGson = gson.toJson(map);
-		PrintWriter out;
-		out = response.getWriter();
-		out.write(resultGson); 
-		out.flush(); 
-		out.close();
-	}
-	/**
-	 * 
 	* @Title: findAll 
 	* @Description: 分页方式获取全部数据
 	* @param @param request
@@ -128,13 +93,9 @@ public class EquResourceController {
 	@RequestMapping("/equFindAll.html")
 	public void findAll(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		Map paramMap = new HashMap();
-		int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
-		int pageNow = pageIndex*pageSize;
 		paramMap.put("engineName", request.getParameter("engineName"));
 		paramMap.put("engineAddr", request.getParameter("engineAddr"));
 		paramMap.put("factory", request.getParameter("factory"));
-		paramMap.put("pageSize", pageSize);
-		paramMap.put("pageNow", pageNow);
 		List<Map> list = enginecfgService.findAllEnginecfg(paramMap);
 		Gson gson= new Gson(); 
 		response.setContentType("text/html;charset=utf-8");

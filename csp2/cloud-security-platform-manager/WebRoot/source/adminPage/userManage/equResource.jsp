@@ -19,7 +19,6 @@
 <script src="${ctx}/source/scripts/common/jquery-1.7.1.min.js" type="text/javascript"></script>
 <script src="${ctx}/source/scripts/common/echarts-all.js" type="text/javascript"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery-ui.min.js"></script>
-<script src="${ctx}/source/scripts/equipment/jquery.page.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/raphael.2.1.0.min.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/justgage.1.0.1.min.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
@@ -45,8 +44,9 @@ $(function(){
 	$('.new').click(function(){
 		 $( "#popBox" ).dialog( "open" );
 		 $('#popBox').dialog({title:'添加设备引擎信息'});	
+		 $(':input','#addAndUpd').val('');
 		 $("#butType").empty();
-		 $("#butType").append("<input type='submit' class='submit' id='add' value='立即添加' >");
+		 $("#butType").append("<input type='button' class='submit' id='add' onclick='addAndUpdate()' value='立即添加' >");
 		  return false;
 		
 	});
@@ -69,14 +69,27 @@ $(function(){
 </script>
 <style type="text/css">
 #factory{
-background: rgba(0, 0, 0, 0) url("../images/b_safes_icon.jpg") no-repeat scroll 0 0;
+background: rgba(0, 0, 0, 0) url("${ctx}/source/images/b_safes_icon.jpg") no-repeat scroll 0 0;
     float: right;
     height: 36px;
     line-height: 36px;
     margin-left: 15px;
     padding-left: 10px;
     width: 178px;
+    border:none; 
 }
+.submit{ 
+width:183px; 
+height:42px; 
+font-size:18px; 
+color:#fff; 
+background:url(${ctx}/source/images/b_btn_bg2.jpg) no-repeat; 
+border:none; 
+text-align:center; 
+margin-top:20px; 
+cursor:pointer; 
+}
+
 </style>
 </head>
 <body>
@@ -118,10 +131,10 @@ background: rgba(0, 0, 0, 0) url("../images/b_safes_icon.jpg") no-repeat scroll 
             	<option value="0">安恒</option>
             	<option value="1">创宇</option>
             </select>                            
-            <input type="button" onclick="getAllEngine(1);getPage();" class="sub" value="" style="right:-130px; top:16px;">
+            <input type="button" onclick="getAllEngine();" class="sub" value="" style="right:-130px; top:16px;">
         </form>
         
-        <div class="table">
+        <div class="table" id="div">
         	<style>
             	.table table th,.table table td{ text-align:center;}
 				.table{ margin-bottom:40px;}
@@ -143,7 +156,6 @@ background: rgba(0, 0, 0, 0) url("../images/b_safes_icon.jpg") no-repeat scroll 
                 <tbody id="tbody">
                 </tbody>
             </table>
-        	<div id="page" class="tcdPageCode"></div>
         </div>
     </div>
 </div>
@@ -195,7 +207,7 @@ background: rgba(0, 0, 0, 0) url("../images/b_safes_icon.jpg") no-repeat scroll 
                     	<div class="zy_top_l fl" id="system1">
                         	<!--<img src="${ctx}/source/adminImages/system1.jpg" width="249" height="164">  -->
                         </div>
-                        <div class="zy_top_r fl" id="system2" style="width:65%;height:164px;">
+                        <div class="zy_top_r fl" id="system2" style="width:300px;height:164px;">
                         	<!-- <img src="${ctx}/source/adminImages/system2.jpg"> -->
                         </div>
                     </div>
@@ -208,11 +220,11 @@ background: rgba(0, 0, 0, 0) url("../images/b_safes_icon.jpg") no-repeat scroll 
                         		<!-- <img src="${ctx}/source/adminImages/system3.jpg"> -->
                         	</div>
                             <div class="nc_font">
-                            	<p><span class="nc_p">总内存</span><span class="nc_num" id="rawNum"></span>GB</p>
+                            	<p><span class="nc_p">总内存</span><span class="nc_num" id="rawNum"></span></p>
                                 <!-- <p><span class="nc_p">已使用内存</span><span class="nc_num_r">${use}MB</span></p> -->
                             </div>
                         </div>
-                        <div class="zy_top_r fl" id="system4" style="width:65%;height:164px;">
+                        <div class="zy_top_r fl" id="system4" style="width:300px;height:164px;">
                         	<!-- <img src="${ctx}/source/adminImages/system4.jpg"> -->
                         </div>
                     </div>
@@ -221,7 +233,7 @@ background: rgba(0, 0, 0, 0) url("../images/b_safes_icon.jpg") no-repeat scroll 
                     </div>
                 </div>
                 <div class="zy_right fl" style="width:30%;">
-                	<div class="zy_rtop1" id="system5" style="width:100%;">
+                	<div class="zy_rtop1" id="system5" style="width:249px;">
                     	<!-- <img src="${ctx}/source/adminImages/system5.jpg"> -->
                     </div>
                     <div class="zy_rtop2" style="height:20px;">
@@ -245,7 +257,7 @@ background: rgba(0, 0, 0, 0) url("../images/b_safes_icon.jpg") no-repeat scroll 
 <!--弹框-->
  <div id="popBox" class="popBox" > 
  	<div class="item">
- 		<form id="addAndUpd" method="post" name="addAndUpd" onsubmit="serAction();">
+ 		<form id="addAndUpd" method="post" name="addAndUpd" onsubmit="vaildata();">
  		<input type="text" id="id" name="id" style="display:none;" />
     	<div class="clearfix">
         	<label>设备引擎名称</label>
@@ -260,7 +272,7 @@ background: rgba(0, 0, 0, 0) url("../images/b_safes_icon.jpg") no-repeat scroll 
         <div class="clearfix">
         	<label>设备厂家</label>
            <!--  <input type="text"> -->
-            <select id="factoryName" name="factoryName">
+            <select id="factoryName" name="factoryName" style="width:260px;">
             	<option value="0">安恒</option>
             	<option value="1">创宇</option>
             </select>

@@ -30,7 +30,7 @@ public class EnginecfgDaoImpl extends DaoCommon implements EnginecfgDao {
 	}
 
 	public List<Map> findAllEnginecfg(Map map) {
-		return this.getSqlSession().selectList(ed+"findAllEnginecfgByPage", map);
+		return this.getSqlSession().selectList(ed+"findAllEnginecfg", map);
 	}
 
 	public int countEnginecfig(Map map) {
