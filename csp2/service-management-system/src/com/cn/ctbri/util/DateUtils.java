@@ -12,7 +12,11 @@ public class DateUtils {
 	/**将日期类型转换成String类型*/
 	public static String dateToString(Date date) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		return dateFormat.format(date);
+		String sDate = "";
+		if(date!=null && !date.equals("")){
+			sDate = dateFormat.format(date);
+		}
+		return sDate;
 	}
 	
 	/**将日期转换成年月日格式*/
@@ -36,7 +40,9 @@ public class DateUtils {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = null;
 		try {
-			date = dateFormat.parse(sDate);
+			if(sDate!=null && !sDate.equals("")){
+				date = dateFormat.parse(sDate);
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
