@@ -22,7 +22,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>Jersey</servlet-name>
-    <url-pattern>/ws/*</url-pattern>
+    <url-pattern>/rest/*</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>springMVC</servlet-name>
