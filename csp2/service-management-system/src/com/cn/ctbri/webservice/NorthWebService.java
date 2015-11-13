@@ -128,22 +128,17 @@ public class NorthWebService {
         order.setId(orderId);
 		order.setServiceId(Integer.parseInt(serviceId));
         order.setType(Integer.parseInt(scanMode));
-        Date begin_date = null;
-        Date end_date = null;
         Date create_date = null;
         int scan_type = 0;
-        if(startTime!=null && !startTime.equals("")){
-            begin_date=DateUtils.stringToDateNYRSFM(startTime);
-        }
-        if(endTime!=null && !endTime.equals("")){
-        	end_date=DateUtils.stringToDateNYRSFM(endTime);
-        }
-
-        order.setBegin_date(begin_date);
-        order.setEnd_date(end_date);
         if(scanPeriod!=null && !scanPeriod.equals("")){
         	scan_type = Integer.parseInt(scanPeriod);
         }
+        Date begin_date = DateUtils.stringToDateNYRSFM(startTime);
+        Date end_date = DateUtils.stringToDateNYRSFM(endTime);
+
+        order.setBegin_date(begin_date);
+        order.setEnd_date(end_date);
+        
         order.setScan_type(scan_type);
         order.setTask_date(begin_date);
         order.setStatus(0);
@@ -158,7 +153,9 @@ public class NorthWebService {
 			orderTask.setEnd_date(end_date);
 			orderTask.setScan_type(scan_type);
 			orderTask.setStatus(0);
+			orderTask.setWebsoc(Integer.parseInt(websoc));
 			orderTask.setUrl(targetArray.get(i).toString());
+			orderTask.setTask_status(1);
 			
 			if (serviceId.equals("1") && scanMode.equals("1")) {
 				Date executeTime = getOrderPeriods(startTime, endTime, scanPeriod);
