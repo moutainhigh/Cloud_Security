@@ -29,6 +29,7 @@ public class OrderTask {
 	private int message;//是否发送告警信息
 	private int websoc;//创宇标志
 	private String url;//资产url
+	private int task_status;//任务状态
 	public String getBegin_datevo() {
 		return begin_datevo;
 	}
@@ -144,6 +145,12 @@ public class OrderTask {
 	}
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	public int getTask_status() {
+		return task_status;
+	}
+	public void setTask_status(int task_status) {
+		this.task_status = task_status;
 	}
 	
 }

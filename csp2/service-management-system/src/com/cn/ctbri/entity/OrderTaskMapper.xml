@@ -21,10 +21,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	
-    <!-- 插入订单 -->
+    <!-- 插入订单任务 -->
     <insert id="insert" parameterType="com.cn.ctbri.entity.OrderTask">
         insert into cs_order_task
-        (orderId, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, contactId, remarks, status, websoc, url) 
-        values(#{orderId}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks}, #{status}, #{websoc}, #{url})
+        (orderId, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, contactId, remarks, status, websoc, url, task_status) 
+        values(#{orderId}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks}, #{status}, #{websoc}, #{url}, #{task_status})
     </insert>
+    
+    <!-- 根据条件查询任务表 -->
+	<select id="findOrderTask" parameterType="hashmap" resultMap="OrderTaskRM">
+		select * from cs_order_task ot
+		where ot.task_status = #{task_status}
+		<if test="task_status==1">
+		  and ot.task_date between date_add(now(),interval -1 minute) and now()
+		</if>
+		<!-- limit #{page} -->
+	</select>
+	
+	
+    
 </mapper>

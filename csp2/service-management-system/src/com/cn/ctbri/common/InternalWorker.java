@@ -16,7 +16,9 @@ import javax.ws.rs.core.NewCookie;
 import net.sf.json.JSONObject;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
+import org.codehaus.jettison.json.JSONException;
 
+import com.cn.ctbri.entity.Order;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -43,9 +45,13 @@ public class InternalWorker {
 	 */
 	private static String PASSWORD;
 	/**
+	 * 创建订单（任务）
+	 */
+	private static String Create_Order;
+	/**
 	 * 创建漏洞扫描订单（任务）
 	 */
-	private static String VulnScan_Create_orderTask;
+	private static String VulnScan_Create_orderTask;     
 	/**
 	 * 对漏洞扫描订单进行操作，暂停，重启，停止
 	 */
@@ -66,10 +72,11 @@ public class InternalWorker {
 	static{
 		try {
 			Properties p = new Properties();
-			p.load(InternalWorker.class.getClassLoader().getResourceAsStream("north.properties"));
+			p.load(InternalWorker.class.getClassLoader().getResourceAsStream("internal.properties"));
 			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
 			USERNAME = p.getProperty("USERNAME");
 			PASSWORD = p.getProperty("PASSWORD");
+			Create_Order = p.getProperty("Create_Order");
 			VulnScan_Create_orderTask = p.getProperty("VulnScan_Create_orderTask");
 			VulnScan_Opt_Order = p.getProperty("VulnScan_Opt_Order");
 			VulnScan_Get_OrderReport = p.getProperty("VulnScan_Get_OrderReport");
@@ -111,11 +118,11 @@ public class InternalWorker {
     	}
     	return null;
     }
+	
 	/**
 	 * 功能描述：创建漏洞扫描订单（任务）
-	 * 参数描述： orderTaskId 订单任务编号,
-	 * 		   ScanMode 单次、长期,
-	 * 		   TargetURL 目标地址，可以多个，以逗号区分,
+	 * 参数描述： ScanMode 单次、长期,
+	 * 		   TargetURL 目标地址，只有一个
 	 * 		   ScanType 扫描方式（正常、快速、全量）,
 	 * 		   StartTime 计划开始时间,
 	 * 		   EndTime 单次扫描此项为空,
@@ -125,25 +132,72 @@ public class InternalWorker {
 	 *         Stategy     策略,
 	 *         CustomManu  指定厂家，可以多个，以逗号区分,
 	 *         Reserve     保留字段
+	 * @param targetURL 
+	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String vulnScanCreate(String orderTaskId, String ScanMode, String[] TargetURL, String ScanType, 
-    		String StartTime, String EndTime, String ScanPeriod, String ScanDepth, 
-    		String MaxPages, String Stategy, String CustomManu[], String Reserve){
+	public static String createOrder(Order order, String[] targetURL) throws JSONException{
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
-		json.accumulate("orderTaskId", orderTaskId);
-		json.accumulate("ScanMode", ScanMode);
-		json.accumulate("TargetURL", TargetURL);
-		json.accumulate("ScanType", ScanType);
-		json.accumulate("StartTime", StartTime);
-		json.accumulate("EndTime", EndTime);
-		json.accumulate("ScanPeriod", ScanPeriod);
-		json.accumulate("ScanDepth", ScanDepth);
-		json.accumulate("MaxPages", MaxPages);
-		json.accumulate("Stategy", Stategy);
-		json.accumulate("CustomManu", CustomManu);
-		json.accumulate("Reserve", Reserve);
+		net.sf.json.JSONObject orderObj = net.sf.json.JSONObject.fromObject(order);
+		json.put("orderObj", orderObj);
+		net.sf.json.JSONArray targetURLs = net.sf.json.JSONArray.fromObject(targetURL);
+		json.put("targetURLs", targetURLs);
+		//创建任务发送路径
+    	String url = SERVER_WEB_ROOT + Create_Order;
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    config.getClasses().add(JacksonJsonProvider.class);
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
+        int status = response.getStatus();
+        String textEntity = response.getEntity(String.class);
+        System.out.println(textEntity);
+        return status+"";
+	}
+	
+	
+	/**
+	 * 功能描述：创建漏洞扫描订单（任务）
+	 * 参数描述： ScanMode 单次、长期,
+	 * 		   TargetURL 目标地址，只有一个,
+	 * 		   ScanType 扫描方式（正常、快速、全量）,
+	 * 		   StartTime 计划开始时间,
+	 * 		   EndTime 单次扫描此项为空,
+	 *         ScanPeriod  周期,
+	 *         ScanDepth   检测深度,
+	 *         MaxPages    最大页面数,
+	 *         Stategy     策略,
+	 *         CustomManu  指定厂家，可以多个，以逗号区分,
+	 *         Reserve     保留字段
+	 * @throws JSONException 
+	 *		 @time 2015-10-16
+	 */
+	public static String vulnScanCreate(String scanMode, String targetURL, String scanType, 
+    		String startTime, String endTime, String scanPeriod, String scanDepth, 
+    		String maxPages, String stategy, String CustomManu[], String orderId, String serviceId, String websoc, String taskTime) throws JSONException{
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("ScanMode", scanMode);
+		json.put("targetURL", targetURL);
+		json.put("ScanType", scanType);
+		json.put("StartTime", startTime);
+		json.put("EndTime", endTime);
+		json.put("ScanPeriod", scanPeriod);
+		json.put("ScanDepth", scanDepth);
+		json.put("MaxPages", maxPages);
+		json.put("Stategy", stategy);
+		json.put("CustomManu", CustomManu);
+		json.put("orderId", orderId);
+		json.put("serviceId", serviceId);
+		json.put("websoc", websoc);
+		json.put("taskTime", taskTime);
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Create_orderTask;
     	//创建jersery客户端配置对象
@@ -166,12 +220,13 @@ public class InternalWorker {
 	/**
 	 * 功能描述：对漏洞扫描订单进行操作，暂停，重启，停止
 	 * 参数描述： OrderId 订单编号
+	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String lssuedTask(String OrderId){
+	public static String lssuedTask(String OrderId) throws JSONException{
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
-		json.accumulate("OrderId", OrderId);
+		json.put("OrderId", OrderId);
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Opt_Order + OrderId;
     	//创建jersery客户端配置对象
@@ -194,12 +249,13 @@ public class InternalWorker {
 	/**
 	 * 功能描述：获得订单检测结果报告
 	 * 参数描述： OrderId 订单编号
+	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String lssuedTaskGetReport(String OrderId){
+	public static String lssuedTaskGetReport(String OrderId) throws JSONException{
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
-		json.accumulate("OrderId", OrderId);
+		json.put("OrderId", OrderId);
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Get_OrderReport + OrderId;
     	//创建jersery客户端配置对象
@@ -222,13 +278,14 @@ public class InternalWorker {
 	/**
 	 * 功能描述：获得订单/任务检测结果
 	 * 参数描述： OrderId 订单编号
+	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String lssuedTaskGetResult(String OrderId, String Taskid){
+	public static String lssuedTaskGetResult(String OrderId, String Taskid) throws JSONException{
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
-		json.accumulate("OrderId", OrderId);
-		json.accumulate("Taskid", Taskid);
+		json.put("OrderId", OrderId);
+		json.put("Taskid", Taskid);
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Get_OrderResult + OrderId + "/" +Taskid;
     	//创建jersery客户端配置对象
@@ -251,13 +308,14 @@ public class InternalWorker {
 	/**
 	 * 功能描述：获得订单/任务当前执行状态
 	 * 参数描述： OrderId 订单编号
+	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String lssuedTaskGetStatus(String OrderId, String Taskid){
+	public static String lssuedTaskGetStatus(String OrderId, String Taskid) throws JSONException{
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
-		json.accumulate("OrderId", OrderId);
-		json.accumulate("Taskid", Taskid);
+		json.put("OrderId", OrderId);
+		json.put("Taskid", Taskid);
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Get_OrderStatus + OrderId + "/" +Taskid;
     	//创建jersery客户端配置对象
@@ -341,28 +399,9 @@ public class InternalWorker {
         }
 	}
 
-    
-    public static void main(String[] args) throws UnsupportedEncodingException {
-//        JSONObject json = new JSONObject();
-//        org.codehaus.jettison.json.JSONObject jsonObject = new org.codehaus.jettison.json.JSONObject();
-//        jsonObject.accumulate("zone_name", "M6");
-//        jsonObject.accumulate("zone_ip", "[\"12.12.12.12/32\",\"33.33.33.33/24\"]");
-        //创建任务发送路径
-        //创建jersery客户端配置对象
-//        ClientConfig config = new DefaultClientConfig();
-//        //检查安全传输协议设置
-//        buildConfig("https://128.18.74.170:443/rest/openapi/ddos/zone",config);
-//        //创建Jersery客户端对象
-//        Client client = Client.create(config);
-//        //连接服务器
-//        WebResource service = client.resource("https://128.18.74.170:443/rest/openapi/ddos/zone");
-//        //获取响应结果
-//        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, "{\"zone_name\":\"M6\"," +
-//        		"                                                                         \"zone_ip\":" +
-//        		"                                                                              \"[\"12.12.12.12/32\"," +
-//        		"                                                                                 \"33.33.33.33/24\"]\"}");
-//        String sessionId = getSessionId();
-//        String s = getEngineState(sessionId,"https://124.127.117.188:60443");
-//        System.out.println(s);
+
+    public static void main(String[] args) throws UnsupportedEncodingException, JSONException {
+        String create = vulnScanCreate("2", "", "", "2015-10-20 16:10:01", "", "0", "", "", "", new String[0], "","", "","");
+        System.out.println(create);
     }
 }
