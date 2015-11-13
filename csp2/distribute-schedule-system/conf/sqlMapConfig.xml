@@ -18,5 +18,8 @@
         <mapper resource="com/cn/ctbri/entity/AlarmDDOSMapper.xml" />  
         <mapper resource="com/cn/ctbri/entity/TaskWarnMapper.xml"/>
         <mapper resource="com/cn/ctbri/entity/EngineMapper.xml"/>
+        <!-- add by tangxr 2015-11-10 -->
+        <mapper resource="com/cn/ctbri/entity/OrderTaskMapper.xml" /> 
+        <!-- end -->
     </mappers> 
 </configuration>  
