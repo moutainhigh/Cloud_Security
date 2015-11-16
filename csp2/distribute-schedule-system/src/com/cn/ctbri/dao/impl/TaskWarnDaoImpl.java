@@ -33,6 +33,12 @@ public class TaskWarnDaoImpl extends DaoCommon implements TaskWarnDao {
 	//可用率统计
 	public List<TaskWarn> findUseableByOrderId(String orderId) {
 		return getSqlSession().selectList(ns+"findUseableByOrderId", orderId);
+	}
+	//根据group_id查询
+	public List<TaskWarn> findTaskWarnByGroupId(String groupId) {
+		return getSqlSession().selectList(ns+"findTaskWarnByGroupId", groupId);
 	}		
+	
+
 	
 }

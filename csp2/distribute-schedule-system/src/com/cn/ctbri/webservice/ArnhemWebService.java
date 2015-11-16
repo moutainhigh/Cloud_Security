@@ -79,7 +79,7 @@ public class ArnhemWebService {
 	@POST
 	@Produces(MediaType.APPLICATION_XML)
 	public String receiveTaskStatus(@Context HttpServletRequest request){
-		try {
+/*		try {
 			//从请求中获取输入流
 			ServletInputStream io = request.getInputStream();
 			//判断流对象是否存在
@@ -88,14 +88,14 @@ public class ArnhemWebService {
 				SAXReader reader = new SAXReader();
 				//读取流封装为文档对象
 				Document document = reader.read(io);
-				/**
+				*//**
 				 * 获取文档的格式
 				 * <Task>
 				 * 		<TaskID></TaskID>
 				 * 		<CustomID></CustomID>
 				 *      <ReportID></ReportID>
 				 * </Task>
-				 * */
+				 * *//*
 				//解析XML，获取任务状态
 				Element task = document.getRootElement();
 				//获取任务ID
@@ -121,7 +121,7 @@ public class ArnhemWebService {
 			}
 		} catch (Exception e) {
 			log.error("WebService流解析异常!", e);
-		}
+		}*/
 		return "<Result value=\"Success\"></Result>";
 	}
 	/**
@@ -145,11 +145,11 @@ public class ArnhemWebService {
 	private Map<String, String> getResultNumByTaskId(String taskId, String sessionId)
 			throws DocumentException {
 		Map<String, String> map = new HashMap<String, String>();
-		//获取结果数XML
+/*		//获取结果数XML
 		String resultNumXml = ArnhemWorker.getResultCountByTaskID(sessionId, taskId);
 		//解析XML为文档对象
 		Document resultNumDocument = DocumentHelper.parseText(resultNumXml);
-		/**
+		*//**
 		 *  <Result value="Success" allNumber="4000">
 		 *		<Funcs>
 		 *			<Func>
@@ -166,7 +166,7 @@ public class ArnhemWebService {
 		 *	ProductId =2 木马检测
 		 *	ProductId =3 篡改检测
 		 *	ProductId =4 敏感关键字
-		 * */
+		 * *//*
 		//由于只有一种服务，所以得到的Func只有一个
 		Element result = resultNumDocument.getRootElement();
 		//Funcs
@@ -178,7 +178,7 @@ public class ArnhemWebService {
 		//ProductId
 		Element productId = funcs.element("ProductId");
 		map.put("Total",total.getTextTrim());
-		map.put("ProductId",productId.getTextTrim());
+		map.put("ProductId",productId.getTextTrim());*/
 		return map;
 	}
 	

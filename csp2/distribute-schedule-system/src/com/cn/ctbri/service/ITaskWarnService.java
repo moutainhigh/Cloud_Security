@@ -19,5 +19,6 @@ public interface ITaskWarnService {
 	TaskWarn findTaskWarnCountByOrderId(String orderId);
 	//可用率统计
 	List<TaskWarn> findUseableByOrderId(String orderId);
-
+	//根据group_id查询
+	List<TaskWarn> findTaskWarnByGroupId(String groupId);
 }

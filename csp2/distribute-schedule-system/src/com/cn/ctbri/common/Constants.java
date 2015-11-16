@@ -142,7 +142,8 @@ public class Constants {
 	public static final String TPL_KYXJCFU_10M = "可用性监测服务-周期10分钟"; 
 	
 	
-	
+	//add by 2015-10-30
+	public static final String TPL_WYCGJCFW = "网页篡改监测服务"; 
 	/**
 	 * 任务模版<br>
 	 * 网页篡改监测服务-周期2小时深度2

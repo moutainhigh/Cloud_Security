@@ -1,12 +1,15 @@
 package com.cn.ctbri.webservice;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import javax.jms.Destination;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -14,15 +17,17 @@ import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.cn.ctbri.entity.Order;
-import com.cn.ctbri.entity.OrderTask;
+import com.cn.ctbri.common.SchedulerResult;
+import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.service.IAlarmService;
-import com.cn.ctbri.service.IAssetService;
-import com.cn.ctbri.service.IOrderService;
-import com.cn.ctbri.service.IOrderTaskService;
+import com.cn.ctbri.service.IProducerService;
 import com.cn.ctbri.service.ITaskService;
+import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Respones;
 import com.sun.jersey.api.client.Client;
@@ -43,68 +48,104 @@ public class InternalWebService {
 	private Logger log = Logger.getLogger(this.getClass());
 	@Autowired
     private ITaskService taskService;
+	@Autowired  
+    private IProducerService producerService;  
 	@Autowired
-    private IOrderService orderService;
+    ITaskWarnService taskWarnService;
 	@Autowired
-    private IAssetService assetService;
-	@Autowired
-    private IAlarmService alarmService;
-	@Autowired
-    private IOrderTaskService orderTaskService;
-	
-	
+    IAlarmService alarmService;	
+    @Autowired  
+    @Qualifier("taskQueueDestination")   
+    private Destination taskDestination; 
+    @Autowired  
+    @Qualifier("resultQueueDestination")   
+    private Destination resultDestination;	
 	//主动告警
 	@POST
     @Path("/vulnscan/orderTask")
 	@Produces(MediaType.APPLICATION_JSON) 
-    public String vulnScanCreate(JSONObject dataJson) throws JSONException {
-		//单次，长期
-		String scanMode = dataJson.getString("ScanMode");
-		//开始时间
-		String startTime = dataJson.getString("StartTime");
-		//结束时间
-		String endTime = dataJson.getString("EndTime");
-	    //周期
-		String scanPeriod = dataJson.getString("ScanPeriod");
-		//订单id
-		String orderId = dataJson.getString("orderId");
-		//服务id
-		String serviceId = dataJson.getString("serviceId");
-		//创宇标识
-		String websoc = dataJson.getString("websoc");
-		//任务执行时间
-		String taskTime = dataJson.getString("taskTime");
-		//目标地址，只有一个
-		String url = dataJson.getString("targetURL");
-        int scan_type = 0;
-        if(scanPeriod!=null && !scanPeriod.equals("")){
-        	scan_type = Integer.parseInt(scanPeriod);
-        }
-        Date begin_date = DateUtils.stringToDateNYRSFM(startTime);
-    	Date end_date = DateUtils.stringToDateNYRSFM(endTime);
-    	Date task_date = DateUtils.stringToDateNYRSFM(taskTime);
-    	
-//        OrderTask orderTask = new OrderTask();
-//        orderTask.setOrderId(orderId);
-//        orderTask.setServiceId(Integer.parseInt(serviceId));
-//        orderTask.setType(Integer.parseInt(scanMode));       
-//        orderTask.setBegin_date(begin_date);
-//		orderTask.setEnd_date(end_date);
-//		orderTask.setScan_type(scan_type);
-//		orderTask.setStatus(0);
-//		orderTask.setUrl(url);
-//		orderTask.setTask_status(1);
-//		orderTask.setTask_date(task_date);
-//		orderTaskService.insertOrderTask(orderTask);
-    	
-		
+    public String VulnScan_Create_orderTask(JSONObject dataJson) throws JSONException {
+		try {
+			//单次，长期
+			int scanMode = Integer.parseInt(dataJson.getString("ScanMode"));
+			//开始时间
+			String startTime = dataJson.getString("StartTime");
+			//结束时间
+			String endTime = dataJson.getString("EndTime");
+			//周期
+			String scanPeriod = dataJson.getString("ScanPeriod");
+			//订单id
+			String orderId = dataJson.getString("orderId");
+			//服务id
+			int serviceId = Integer.parseInt(dataJson.getString("serviceId"));
+			//创宇标识
+			int websoc = Integer.parseInt(dataJson.getString("websoc"));
+			//任务执行时间
+			String taskTime = dataJson.getString("taskTime");
+			//目标地址，只有一个
+			String assetAddr = dataJson.getString("targetURL");
+			int scanType = 0;
+			if(scanPeriod!=null && !scanPeriod.equals("")){
+				scanType = Integer.parseInt(scanPeriod);
+			}
+			Date begin_date = DateUtils.stringToDateNYRSFM(startTime);
+			Date end_date = DateUtils.stringToDateNYRSFM(endTime);
+			Date task_date = DateUtils.stringToDateNYRSFM(taskTime);
+			
+			Task task = new Task();
+			task.setScanMode(scanMode);
+			task.setBegin_time(begin_date);
+			task.setEnd_time(end_date);
+			task.setScanType(scanType);
+			task.setOrder_id(orderId);
+			task.setService_id(serviceId);
+			task.setWebsoc(websoc);
+			task.setEnd_time(task_date);
+			task.setAssetAddr(assetAddr);
+			
+			//插入数据库
+			taskService.insert(task);
+			//将任务放到消息队列里	
+			producerService.sendMessage(taskDestination, task);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+	    	
+			Respones r = new Respones();
+			r.setState("404");
+			net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
+	        return json.toString();
+		}
+    	    	
 		Respones r = new Respones();
 		r.setState("201");
 		net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
         return json.toString();
     }
 	
-	 
+	//获取结果
+	@GET
+    @Path("/vulnscan/orderTask/orderTaskid/{taskid}")
+	@Produces(MediaType.TEXT_XML) 
+    public String VulnScan_Get_orderTaskResult(@PathParam("taskid") String taskid) throws JSONException {
+		
+		try {
+			//将任务放到消息队列里	
+			producerService.sendMessageTaskId(resultDestination, taskid);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			Respones r = new Respones();
+			r.setState("404");
+			net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
+	        return json.toString();
+		}
+
+		Respones r = new Respones();
+		r.setState("201");
+		net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
+        return json.toString();
+    }
+	
 	public static void main(String[] args) throws JSONException {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();

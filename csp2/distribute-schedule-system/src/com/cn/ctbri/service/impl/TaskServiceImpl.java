@@ -84,5 +84,9 @@ public class TaskServiceImpl implements ITaskService{
 	public int findDistrictIdByTaskId(String taskId) {
 		return this.taskDao.findDistrictIdByTaskId(taskId);
 	}
+
+	public Task findTaskById(int taskId) {
+		return this.taskDao.findTaskById(taskId);
+	}
 	
 }

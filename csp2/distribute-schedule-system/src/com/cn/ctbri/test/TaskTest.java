@@ -10,7 +10,7 @@ import com.cn.ctbri.common.ArnhemWorker;
 
 public class TaskTest {
 	
-	private String sessionId ;
+/*	private String sessionId ;
 	
 	@Before
 	public void preData(){
@@ -50,6 +50,6 @@ public class TaskTest {
 	public void testRemoveTask(){
 		String result = ArnhemWorker.removeTask(sessionId, "test007");
 		System.out.println(result);
-	}
+	}*/
 	
 }

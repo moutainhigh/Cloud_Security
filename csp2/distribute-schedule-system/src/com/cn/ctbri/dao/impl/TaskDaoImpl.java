@@ -115,6 +115,10 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 	public int findDistrictIdByTaskId(String taskId) {
 		return (Integer) getSqlSession().selectList(ns+"findDistrictIdByTaskId", taskId).get(0);
 	}
+
+	public Task findTaskById(int taskId) {
+		return this.getSqlSession().selectOne(ns+"findTaskById",taskId);
+	}
 	
 	
 

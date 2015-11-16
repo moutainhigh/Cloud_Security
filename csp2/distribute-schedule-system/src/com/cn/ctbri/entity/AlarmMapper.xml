@@ -63,12 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 查询本次告警信息 -->
     <select id="findAlarmBygroupId" parameterType="String" resultMap="Alarm">
-        <if test="serviceId!=5">
 	        select * from cs_alarm a where a.group_id = #{group_id}
-	    </if>
-	    <if test="serviceId==5">
-	        select * from cs_taskwarn a where a.group_id = #{group_id}
-	    </if>
     </select>
     
     <!-- 更新地域告警数 -->

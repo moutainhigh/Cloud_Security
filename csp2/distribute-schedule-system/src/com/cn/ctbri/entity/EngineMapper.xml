@@ -17,11 +17,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="engine_capacity_model" column="engine_capacity_model"/>
 		<result property="maxTask" column="maxTask"/>
 		<result property="activity" column="activity"/>
+		<result property="status" column="status"/>
+		<result property="engine" column="engine"/>
 	</resultMap> 
 	
 	<!-- 获取服务支持的引擎 -->
 	<select id="getUsableEngine" parameterType="hashmap" resultMap="EngineRM">
-	   select distinct(en.engine_api),en.username,en.password from cs_enginecfg en where #{serviceId} in(en.engine_capacity) and en.equipment_factory = #{factory}
+	   select * from cs_enginecfg en where #{serviceId} in(en.engine_capacity) and en.status = 1
 	</select>
 	
 	<!-- 根据ip查找引擎EngineCfg -->
@@ -44,16 +46,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        select en.activity/en.maxTask ableEngine,en.id,en.engine_addr,en.engine_api,en.engine_capacity,en.engine_capacity_model,en.username,en.password from cs_enginecfg en where en.maxTask!=en.activity and en.id in(#{ableIds}) order by ableEngine
     </select>
     
-    <!-- 更新任务信息 -->
+    <!-- 更新任务信息+1 -->
     <update id="update"  parameterType="com.cn.ctbri.entity.EngineCfg">
-        update cs_enginecfg
-        <set>
-            <if test="activity!=null">
-                activity=#{activity}
-            </if>
-        </set>
-        where id = #{id}
+        update cs_enginecfg set activity=activity+1 where id = #{id}
     </update>
+    
+    <!-- 更新任务信息-1 -->
+    <update id="updatedown"  parameterType="com.cn.ctbri.entity.EngineCfg">
+        update cs_enginecfg set activity=activity-1 where id = #{id}
+    </update>
+    
+    <!-- 查找最佳引擎 -->
+    <select id="findEngineByParam" parameterType="hashmap" resultMap="EngineRM">
+       select * from cs_enginecfg en 
+        where en.maxTask!=en.activity and #{serviceId} in(en.engine_capacity) and en.status = 1 
+        <if test="websoc==0">
+          and en.engine!=3
+        </if>
+        order by en.activity/en.maxTask limit 3
+    </select>
+    
+    <!-- 查找引擎 -->
+    <select id="getEngine" resultMap="EngineRM">
+       select * from cs_enginecfg en 
+        where en.engine = 3
+    </select>
+    
+    <!-- 查找引擎by ID -->
+    <select id="getEngineById" resultMap="EngineRM">
+       select * from cs_enginecfg en 
+        where en.id = #{id}
+    </select>
+    
 	
 	
 

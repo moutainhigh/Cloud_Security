@@ -65,4 +65,5 @@ public interface TaskDao {
     public List getWebsocTask();
 
 	public int findDistrictIdByTaskId(String taskId);
+	public Task findTaskById(int taskId);
 }

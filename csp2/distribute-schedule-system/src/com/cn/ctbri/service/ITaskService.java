@@ -57,4 +57,6 @@ public interface ITaskService {
     List getWebsocTask();
     //根据taskId查询地区
 	int findDistrictIdByTaskId(String taskId);
+	//根据ID查询task
+	Task findTaskById(int taskId);
 }

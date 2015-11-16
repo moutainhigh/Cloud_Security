@@ -1,5 +1,6 @@
 package com.cn.ctbri.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +9,11 @@ import java.util.Date;
  * 描        述：  任务实体类
  * 版        本：  1.0
  */
-public class Task{
+public class Task implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int taskId;//任务Id(主键)
 	private String order_asset_Id;//
 	private Date execute_time;//执行时间
@@ -31,7 +36,12 @@ public class Task{
     private int websoc;//创宇标志
     private String group_id;//创宇返回组id
     private int engine;
-    
+	private int service_id;//服务ID
+	private String order_id;//订单id
+	private String assetAddr;//资产地址
+	private String moduleName;//模板名称
+	private int scanMode;//订单类型（1：长期；2：单次）
+	private int scanType;//扫描周期
 	public int getTaskId() {
 		return taskId;
 	}
@@ -164,5 +174,44 @@ public class Task{
     public void setEngine(int engine) {
         this.engine = engine;
     }
+	public int getService_id() {
+		return service_id;
+	}
+	public void setService_id(int serviceId) {
+		service_id = serviceId;
+	}
+	public String getOrder_id() {
+		return order_id;
+	}
+	public void setOrder_id(String orderId) {
+		order_id = orderId;
+	}
+	public String getAssetAddr() {
+		return assetAddr;
+	}
+	public void setAssetAddr(String assetAddr) {
+		this.assetAddr = assetAddr;
+	}
+	public String getModuleName() {
+		return moduleName;
+	}
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
+	public int getScanMode() {
+		return scanMode;
+	}
+	public void setScanMode(int scanMode) {
+		this.scanMode = scanMode;
+	}
+	public int getScanType() {
+		return scanType;
+	}
+	public void setScanType(int scanType) {
+		this.scanType = scanType;
+	}
+
+
+
     
 }

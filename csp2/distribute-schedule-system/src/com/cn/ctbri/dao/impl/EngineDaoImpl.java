@@ -54,6 +54,22 @@ public class EngineDaoImpl extends DaoCommon implements EngineDao {
     public EngineCfg findEngineById(int id) {
         return getSqlSession().selectOne(ns+"findEngineById", id);
     }
+
+	public List<EngineCfg> findEngineByParam(Map<String, Object> engineMap) {
+		return getSqlSession().selectOne(ns+"findEngineByParam", engineMap);
+	}
+
+	public EngineCfg getEngine() {
+		return getSqlSession().selectOne(ns+"getEngine");
+	}
+
+	public void updatedown(EngineCfg en) {
+		getSqlSession().update(ns+"updatedown", en);
+	}
+
+	public EngineCfg getEngineById(int id) {
+		return getSqlSession().selectOne(ns+"getEngineById",id);
+	}
 		
 	
 }
