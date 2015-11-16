@@ -311,7 +311,7 @@ public class InternalWorker {
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String lssuedTaskGetStatus(String OrderId, String Taskid) throws JSONException{
+	public static String vulnScanGetOrderTaskStatus(String OrderId, String Taskid) throws JSONException{
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("OrderId", OrderId);
