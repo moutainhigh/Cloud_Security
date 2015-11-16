@@ -25,12 +25,12 @@ $(function (){
 			for(var i=0;i<imgs.length;i++){
 				var img = imgs[i];
 				var imgIndex = i+1;
-				img.src="/cloud-security-platform/source/images/user_"+imgIndex+".jpg"; 
+				img.src="source/images/user_"+imgIndex+".jpg"; 
 			}
 			
 			$(this).addClass('peiz_active');
 			$(this).find('a').addClass('peiz_w');
-			$(this).find('img').attr("src","/cloud-security-platform/source/images/user_"+index+".png");
+			$(this).find('img').attr("src","source/images/user_"+index+".png");
 			
 			$('.peiz_cont').hide();
 			//清空checkbox
@@ -61,7 +61,7 @@ function seedetail(e) {
 	//资产个数
 	$.ajax({
 		type: "POST",
-		url: "/cloud-security-platform/orderDetail.html",
+		url: "orderDetail.html",
 		data: {"orderId" : orderId},
 		dataType:"json",
 		success: function(data){
