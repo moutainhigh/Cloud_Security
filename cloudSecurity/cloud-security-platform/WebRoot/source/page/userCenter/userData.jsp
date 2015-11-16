@@ -33,7 +33,7 @@ function checkName(){
 			if(flag){
 				$.ajax({
 	               type: "POST",
-	               url: "/cloud-security-platform/regist_checkName.html",
+	               url: "regist_checkName.html",
 	               data: {"name":name},
 	               dataType:"json",
 	               success: function(data){
@@ -69,7 +69,7 @@ function checkMobileAndEmail(){
 				if(flag){
 					$.ajax({
 			               type: "POST",
-			               url: "/cloud-security-platform/regist_checkMobile.html",
+			               url: "regist_checkMobile.html",
 			               data: {"mobile":mobile},
 			               dataType:"json",
 			               success: function(data){
@@ -99,7 +99,7 @@ function checkMobileAndEmail(){
 					if(flag){
 						$.ajax({
 				               type: "POST",
-				               url: "/cloud-security-platform/regist_checkEmail.html",
+				               url: "regist_checkEmail.html",
 				               data: {"email":email},
 				               dataType:"json",
 				               success: function(data){
@@ -157,7 +157,7 @@ function checkName(){
 		if(flag){
 			$.ajax({
                type: "POST",
-               url: "/cloud-security-platform/regist_checkName.html",
+               url: "regist_checkName.html",
                data: {"name":name},
                dataType:"json",
                success: function(data){
@@ -182,7 +182,7 @@ function checkPwd(){
 	var name = $("#originalName").val();
 	$.ajax({
              type: "POST",
-             url: "/cloud-security-platform/regist_checkPwd.html",
+             url: "regist_checkPwd.html",
              data: {"name":name,"opassword":opassword},
              dataType:"json",
              success: function(data){
@@ -328,7 +328,7 @@ function editPassword(){
   <ul>
       <li><a href="${ctx}/registUI.html">新用户注册</a></li>
     <li><a href="${ctx}/loginUI.html">用户登录</a></li>
-    <li><a href="###">找回密码</a></li>
+    <li><a href="${ctx}/forgetPass.html">找回密码</a></li>
   </ul>
 </div>
 <div  class="bottom_main">
