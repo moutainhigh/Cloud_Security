@@ -32,7 +32,7 @@ function getData(){
 	var orderId = $("#orderId").val();
  		$.ajax({
            type: "POST",
-           url: "/cloud-security-platform/adminscaning.html",
+           url: "adminscaning.html",
            data: {"orderId":orderId,"status":${status}},
            dataType:"json",
            success: function(data){
@@ -261,7 +261,7 @@ function seedetail1(e) {
   <ul>
      <li><a href="${ctx}/registUI.html">新用户注册</a></li>
     <li><a href="${ctx}/loginUI.html">用户登录</a></li>
-    <li><a href="###">找回密码</a></li>
+    <li><a href="${ctx}/forgetPass.html">找回密码</a></li>
   </ul>
 </div>
 <div  class="bottom_main">

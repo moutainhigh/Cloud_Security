@@ -103,7 +103,7 @@
   <ul>
     <li><a href="${ctx}/registUI.html">新用户注册</a></li>
     <li><a href="${ctx}/loginUI.html">用户登录</a></li>
-    <li><a href="###">找回密码</a></li>
+    <li><a href="${ctx}/forgetPass.html">找回密码</a></li>
   </ul>
 </div>
 <div  class="bottom_main">

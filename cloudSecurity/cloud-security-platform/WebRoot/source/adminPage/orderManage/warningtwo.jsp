@@ -34,7 +34,7 @@ function getData(){
 	var orderId = $("#orderId").val();
  		$.ajax({
            type: "POST",
-           url: "/cloud-security-platform/adminscaning.html",
+           url: "adminscaning.html",
            data: {"orderId":orderId,"status":${status},"group_flag":$("#group_flag").val()},
            dataType:"json",
            success: function(data){
@@ -52,7 +52,7 @@ function warningTask(){
 	var type = $("#type").val();
  		$.ajax({
            type: "POST",
-           url: "/cloud-security-platform/adminwarningTask.html",
+           url: "adminwarningTask.html",
            data: {"orderId":orderId,"group_flag":$("#group_flag").val(),"type":type},
            dataType:"json",
            success: function(data){
@@ -65,7 +65,7 @@ function warningTask(){
 	var orderId = $("#orderId").val();
 	$.ajax({ 
 		type: "POST",
-		url: "/cloud-security-platform/getExecuteTime.html",
+		url: "getExecuteTime.html",
         data: {"orderId":orderId,"status":${status}},
         dataType:"text",
 		success : function(result){
@@ -256,7 +256,7 @@ function clearTable(){
   <ul>
      <li><a href="${ctx}/registUI.html">新用户注册</a></li>
     <li><a href="${ctx}/loginUI.html">用户登录</a></li>
-    <li><a href="###">找回密码</a></li>
+    <li><a href="${ctx}/forgetPass.html">找回密码</a></li>
   </ul>
 </div>
 <div  class="bottom_main">
