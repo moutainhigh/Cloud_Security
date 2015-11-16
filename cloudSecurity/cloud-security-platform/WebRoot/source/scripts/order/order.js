@@ -71,7 +71,7 @@ $(function(){
         		
         		$.ajax({ type: "POST",
 	    		     async: false, 
-	    		     url: "/cloud-security-platform/getSession.html", 
+	    		     url: "getSession.html", 
 	    		     dataType: "json", 
 //	    		     contentType: "application/json; charset=utf-8", 
 	    		     success: function(data) {
@@ -80,8 +80,8 @@ $(function(){
 	    		    	 }, 
 	    		     error: function(data){ 
 	    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-	    		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
-	    		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
+	    		    		 window.location.href = "loginUI.html"; } 
+	    		    	 else { window.location.href = "loginUI.html"; } } 
         		});
         	}
     	}else{
@@ -111,7 +111,7 @@ $(function(){
         		$('input:radio[name="scanType"]:eq(0)').attr("checked",'checked');
         		$.ajax({ type: "POST",
 	    		     async: false, 
-	    		     url: "/cloud-security-platform/getSession.html", 
+	    		     url: "getSession.html", 
 	    		     dataType: "json", 
 //	    		     contentType: "application/json; charset=utf-8", 
 	    		     success: function(data) {
@@ -119,8 +119,8 @@ $(function(){
 	    		    	 }, 
 	    		     error: function(data){ 
 	    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-	    		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
-	    		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
+	    		    		 window.location.href = "loginUI.html"; } 
+	    		    	 else { window.location.href = "loginUI.html"; } } 
        		});
         	}
     	}
@@ -197,7 +197,7 @@ $(function(){
     	$('p[name="servRemark"]').html(servRemark);
     	$('td[name="IPAddressName"]').html(ip);
     	$('td[name="networkName"]').html(bandwidth);
-    	$('img[name="servImg"]').attr("src","/cloud-security-platform/source/images/center_"+serviceId+".png");
+    	$('img[name="servImg"]').attr("src","source/images/center_"+serviceId+".png");
 //    	if(serviceId!=6&&serviceId!=7&&serviceId!=8){
     	if(parentC!=2){
     		if($(".leftTr"+index+" input:checkbox[name='serviceAssetId']:checked").length==0){
@@ -221,7 +221,7 @@ $(function(){
 				   'endDate':endDate,
 				   'ip':ip,
 				   'parentC':parentC};
-    	$.post("/cloud-security-platform/checkOrderAsset.html", obj, function(data){
+    	$.post("checkOrderAsset.html", obj, function(data){
     		if(data.assetNames!=null){
     			$(".assets_msg").eq(index).html('资产('+data.assetNames+')针对该资产有同类任务，请重新设置!');
     		}else if(data.ipText){
@@ -230,7 +230,7 @@ $(function(){
     			$(".assets_msg").eq(index).html("");
     			$.ajax({ type: "POST",
 	    		     async: false, 
-	    		     url: "/cloud-security-platform/getSession.html", 
+	    		     url: "getSession.html", 
 	    		     dataType: "json", 
 //	    		     contentType: "application/json; charset=utf-8", 
 	    		     success: function(data) {
@@ -238,8 +238,8 @@ $(function(){
 	    		    	 }, 
 	    		     error: function(data){ 
 	    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-	    		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
-	    		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
+	    		    		 window.location.href = "loginUI.html"; } 
+	    		    	 else { window.location.href = "loginUI.html"; } } 
     			});
     		}
         });
@@ -278,7 +278,7 @@ $(function(){
     		$("#phone_msg").html("");
     		$.ajax({ type: "POST",
    		     async: false, 
-   		     url: "/cloud-security-platform/getSession.html", 
+   		     url: "getSession.html", 
    		     dataType: "json", 
 //   		     contentType: "application/json; charset=utf-8", 
    		     success: function(data) {
@@ -286,8 +286,8 @@ $(function(){
    		    	 }, 
    		     error: function(data){ 
    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-   		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
-   		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
+   		    		 window.location.href = "loginUI.html"; } 
+   		    	 else { window.location.href = "loginUI.html"; } } 
     		});
  
     	$('td[name="linkname"]').html(linkname);
@@ -361,14 +361,14 @@ $(function(){
 	    			   'websoc':websoc};
 	    	var result = window.confirm("确定要提交订单吗？");
 	    	if(result){
-//		    	$.post("/cloud-security-platform/saveOrder.html", obj, function(data){
+//		    	$.post("saveOrder.html", obj, function(data){
 //		    		$("#orderId").html(data.orderId);
 //		    		getActive(4);
 //		        });
 		    	
 		    	$.ajax({ type: "POST",
 		    		     async: false, 
-		    		     url: "/cloud-security-platform/saveOrder.html", 
+		    		     url: "saveOrder.html", 
 		    		     data: {"orderType":orderType,//'orderId':orderId,
 			    			   	"beginDate": beginDate,
 			    			   	"endDate":endDate,
@@ -403,8 +403,8 @@ $(function(){
 		    		    	 }, 
 		    		     error: function(data){ 
 		    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-		    		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
-		    		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
+		    		    		 window.location.href = "loginUI.html"; } 
+		    		    	 else { window.location.href = "loginUI.html"; } } 
 		    	});
 	    	}
 //    	}else{
@@ -469,7 +469,7 @@ $(function(){
 		var obj = {'serviceId':serviceId,
 				   'assetIds':assetIds,
 				   'scanType':scanType};
-    	$.post("/cloud-security-platform/checkOrderAsset.html", obj, function(data){
+    	$.post("checkOrderAsset.html", obj, function(data){
     		if(data.assetNames!=null){
     			$(".assets_msg").eq(index).html(data.assetNames + "不能用,请重新选择!");
     		}else{
@@ -506,7 +506,7 @@ $(function(){
 				      'parentC':parentC,
 				      'orderType':orderType,
 				      'websoc':websoc};
-		   $.post("/cloud-security-platform/select.html", obj, function(data){
+		   $.post("select.html", obj, function(data){
 			   if(data.servs!=null){
 				   var temp = data.servs;
 				   var res = temp.split(",");
@@ -525,7 +525,7 @@ $(function(){
 				      'parentC':parentC,
 				      'orderType':orderType,
 				      'websoc':websoc};
-		   $.post("/cloud-security-platform/select.html", obj, function(data){
+		   $.post("select.html", obj, function(data){
 			   if(data.servs!=null){
 				   var temp = data.servs;
 				   var res = temp.split(",");
@@ -556,7 +556,7 @@ $(function(){
 				      'parentC':parentC,
 				      'orderType':orderType,
 				      'websoc':websoc};
-		   $.post("/cloud-security-platform/select.html", obj, function(data){
+		   $.post("select.html", obj, function(data){
 			   if(data.servs!=null){
 				   var temp = data.servs;
 				   var res = temp.split(",");
@@ -588,7 +588,7 @@ $(function(){
 				      'parentC':parentC,
 				      'orderType':orderType,
 				      'websoc':websoc};
-		   $.post("/cloud-security-platform/select.html", obj, function(data){
+		   $.post("select.html", obj, function(data){
 			   if(data.servs!=null){
 				   var temp = data.servs;
 				   var res = temp.split(",");
@@ -621,7 +621,7 @@ $(function(){
 				      'parentC':parentC,
 				      'orderType':orderType,
 				      'websoc':websoc};
-		   $.post("/cloud-security-platform/select.html", obj, function(data){
+		   $.post("select.html", obj, function(data){
 			   if(data.servs!=null){
 				   var temp = data.servs;
 				   var res = temp.split(",");
@@ -640,7 +640,7 @@ $(function(){
 				      'parentC':parentC,
 				      'orderType':orderType,
 				      'websoc':websoc};
-		   $.post("/cloud-security-platform/select.html", obj, function(data){
+		   $.post("select.html", obj, function(data){
 			   if(data.servs!=null){
 				   var temp = data.servs;
 				   var res = temp.split(",");
