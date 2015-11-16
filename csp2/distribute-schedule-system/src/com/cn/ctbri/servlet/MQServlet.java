@@ -29,7 +29,7 @@ public class MQServlet extends HttpServlet{
     }
  
     public void init()  throws ServletException{
-        try {
+/*        try {
 			if (checkMQRoot()) {
 			    System.out.println("Starting ActiveMQ...");
 			    Runtime runtime = Runtime.getRuntime();
@@ -56,7 +56,7 @@ public class MQServlet extends HttpServlet{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
     }
  
     /**

@@ -21,6 +21,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.EngineCfg;
@@ -45,7 +46,7 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
  * @author googe
  * 
  */
-
+@Controller
 public class SchedulerTask {
 
 	static Logger logger = Logger.getLogger(SchedulerTask.class.getName());
@@ -87,7 +88,7 @@ public class SchedulerTask {
         //检查安全传输协议设置
         Client client = Client.create(config);
         //连接服务器
-        WebResource service = client.resource("http://localhost:8080/dss/rest/internalapi//vulnscan/re_orderTask");
+        WebResource service = client.resource("http://192.168.42.121:8080/dss/rest/internalapi//vulnscan/re_orderTask");
 
 		try {
 			//查询最优的引擎top3

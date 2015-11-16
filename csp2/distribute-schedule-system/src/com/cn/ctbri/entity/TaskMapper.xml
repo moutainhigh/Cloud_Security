@@ -130,7 +130,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO cs_task
         (execute_time,begin_time,end_time,websoc,serviceId,order_id,assetAddr,scanMode,scanType) 
-        VALUES( #{execute_time} , #{begin_time},#{end_time},#{websoc},#{serviceId},#{order_id},#{assetAddr},#{scanMode},#{scanType})
+        VALUES( #{execute_time} , #{begin_time},#{end_time},#{websoc},#{service_id},#{order_id},#{assetAddr},#{scanMode},#{scanType})
     </insert>
     
     <select id="getTypeByAssetId" parameterType="Integer" resultType="com.cn.ctbri.entity.OrderAsset">
