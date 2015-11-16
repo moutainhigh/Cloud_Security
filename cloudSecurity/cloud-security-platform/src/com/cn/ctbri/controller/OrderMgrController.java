@@ -2,6 +2,7 @@ package com.cn.ctbri.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -463,21 +464,24 @@ public class OrderMgrController {
 //                    }
                     for(OrderAsset oa : oaList){
                         Task task = new Task();
-                        if(scanType.equals("1")){
-                            String hour = beginDate.substring(11, 13);
-                            String minute = beginDate.substring(14, 16);
-                            if(hour.equals("00")&&minute.compareTo("10")<0){
-                                String executeTime = beginDate.substring(0, 10).concat(" 00:10:00");
-                                task.setExecute_time(sdf.parse(executeTime));
-                                task.setGroup_flag(sdf.parse(executeTime));
-                            }else{
-                                String executeDay = beginDate.substring(0, 10).concat(" 00:10:00");
-                                SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
-                                Date executeTime = getAfterDate(sdf.parse(executeDay));
-                                task.setExecute_time(executeTime);
-                                task.setGroup_flag(executeTime);
-                            }
-                        }
+//                        if(scanType.equals("1")){
+//                            String hour = beginDate.substring(11, 13);
+//                            String minute = beginDate.substring(14, 16);
+//                            if(hour.equals("00")&&minute.compareTo("10")<0){
+//                                String executeTime = beginDate.substring(0, 10).concat(" 00:10:00");
+//                                task.setExecute_time(sdf.parse(executeTime));
+//                                task.setGroup_flag(sdf.parse(executeTime));
+//                            }else{
+//                                String executeDay = beginDate.substring(0, 10).concat(" 00:10:00");
+//                                SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
+//                                Date executeTime = getAfterDate(sdf.parse(executeDay));
+//                                task.setExecute_time(executeTime);
+//                                task.setGroup_flag(executeTime);
+//                            }
+//                        }
+                        Date executeTime = DateUtils.getOrderPeriods(beginDate,endDate,scanType);
+                        task.setExecute_time(executeTime);
+                        task.setGroup_flag(executeTime);
                         task.setStatus(Integer.parseInt(Constants.TASK_START));
                         //设置订单详情id
 //                        task.setOrder_asset_Id(ids.substring(0,ids.length()-1));
@@ -489,21 +493,24 @@ public class OrderMgrController {
                 }else if(!websoc.equals("null")&&Integer.parseInt(websoc)==2){
                 	for(OrderAsset oa : oaList){
                         Task task = new Task();
-                        if(scanType.equals("1")){
-                            String hour = beginDate.substring(11, 13);
-                            String minute = beginDate.substring(14, 16);
-                            if(hour.equals("00")&&minute.compareTo("10")<0){
-                                String executeTime = beginDate.substring(0, 10).concat(" 00:10:00");
-                                task.setExecute_time(sdf.parse(executeTime));
-                                task.setGroup_flag(sdf.parse(executeTime));
-                            }else{
-                                String executeDay = beginDate.substring(0, 10).concat(" 00:10:00");
-                                SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
-                                Date executeTime = getAfterDate(sdf.parse(executeDay));
-                                task.setExecute_time(executeTime);
-                                task.setGroup_flag(executeTime);
-                            }
-                        }
+//                        if(scanType.equals("1")){
+//                            String hour = beginDate.substring(11, 13);
+//                            String minute = beginDate.substring(14, 16);
+//                            if(hour.equals("00")&&minute.compareTo("10")<0){
+//                                String executeTime = beginDate.substring(0, 10).concat(" 00:10:00");
+//                                task.setExecute_time(sdf.parse(executeTime));
+//                                task.setGroup_flag(sdf.parse(executeTime));
+//                            }else{
+//                                String executeDay = beginDate.substring(0, 10).concat(" 00:10:00");
+//                                SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
+//                                Date executeTime = getAfterDate(sdf.parse(executeDay));
+//                                task.setExecute_time(executeTime);
+//                                task.setGroup_flag(executeTime);
+//                            }
+//                        }
+                        Date executeTime = DateUtils.getOrderPeriods(beginDate,endDate,scanType);
+                        task.setExecute_time(executeTime);
+                        task.setGroup_flag(executeTime);
                         task.setStatus(Integer.parseInt(Constants.TASK_START));
                         //设置订单详情id
                         task.setOrder_asset_Id(String.valueOf(oa.getId()));
@@ -514,21 +521,24 @@ public class OrderMgrController {
                 }else{//安恒任务
                     for(OrderAsset oa : oaList){
                         Task task = new Task();
-                        if(scanType.equals("1")){
-                            String hour = beginDate.substring(11, 13);
-                            String minute = beginDate.substring(14, 16);
-                            if(hour.equals("00")&&minute.compareTo("10")<0){
-                                String executeTime = beginDate.substring(0, 10).concat(" 00:10:00");
-                                task.setExecute_time(sdf.parse(executeTime));
-                                task.setGroup_flag(sdf.parse(executeTime));
-                            }else{
-                                String executeDay = beginDate.substring(0, 10).concat(" 00:10:00");
-                                SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
-                                Date executeTime = getAfterDate(sdf.parse(executeDay));
-                                task.setExecute_time(executeTime);
-                                task.setGroup_flag(executeTime);
-                            }
-                        }
+//                        if(scanType.equals("1")){
+//                            String hour = beginDate.substring(11, 13);
+//                            String minute = beginDate.substring(14, 16);
+//                            if(hour.equals("00")&&minute.compareTo("10")<0){
+//                                String executeTime = beginDate.substring(0, 10).concat(" 00:10:00");
+//                                task.setExecute_time(sdf.parse(executeTime));
+//                                task.setGroup_flag(sdf.parse(executeTime));
+//                            }else{
+//                                String executeDay = beginDate.substring(0, 10).concat(" 00:10:00");
+//                                SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
+//                                Date executeTime = getAfterDate(sdf.parse(executeDay));
+//                                task.setExecute_time(executeTime);
+//                                task.setGroup_flag(executeTime);
+//                            }
+//                        }
+                        Date executeTime = DateUtils.getOrderPeriods(beginDate,endDate,scanType);
+                        task.setExecute_time(executeTime);
+                        task.setGroup_flag(executeTime);
                         task.setStatus(Integer.parseInt(Constants.TASK_START));
                         //设置订单详情id
                         task.setOrder_asset_Id(String.valueOf(oa.getId()));
@@ -895,5 +905,7 @@ public class OrderMgrController {
             e.printStackTrace();
         }
     }
+    
+
 	
 }
