@@ -9,7 +9,7 @@ function checkSendEmail(){
 	}else{
 		$.ajax({
            type: "POST",
-           url: "/cloud-security-platform/isExitEmail.html",
+           url: "isExitEmail.html",
            data: {"email":email},
            dataType:"json",
            success: function(data){
@@ -20,7 +20,7 @@ function checkSendEmail(){
            			
            			$.ajax({
 			           type: "POST",
-			           url: "/cloud-security-platform/regist_checkSendEmail.html",
+			           url: "regist_checkSendEmail.html",
 			           data: {"email":email},
 			           dataType:"json",
 			           success: function(data){
@@ -53,7 +53,7 @@ function checkSendMobile(){
 		$("#forget_phone_msg").html("");
 		$.ajax({
            type: "POST",
-           url: "/cloud-security-platform/isExitPhone.html",
+           url: "isExitPhone.html",
            data: {"mobile":phone},
            dataType:"json",
            success: function(data){
@@ -61,7 +61,7 @@ function checkSendMobile(){
                		$("#forget_phone_msg").html("");
 		               $.ajax({
 					           type: "POST",
-					           url: "/cloud-security-platform/regist_checkSendMobile.html",
+					           url: "regist_checkSendMobile.html",
 					           data: {"mobile":phone},
 					           dataType:"json",
 					           success: function(data){
@@ -121,7 +121,7 @@ function checkEmailActivationCode(){
 	 if(verification_code!=null&&verification_code!=""){
 		 $.ajax({
            type: "POST",
-           url: "/cloud-security-platform/regist_checkEmailActivationCode.html",
+           url: "regist_checkEmailActivationCode.html",
            data: {"verification_code":verification_code},
            dataType:"json",
            success: function(data){
@@ -147,7 +147,7 @@ function checkPhoneActivationCode(){
 	 	if(verification_code!=null&&verification_code!=""){
 		 $.ajax({
            type: "POST",
-           url: "/cloud-security-platform/regist_checkEmailActivationCode.html",
+           url: "regist_checkEmailActivationCode.html",
            data: {"verification_code":verification_code},
            dataType:"json",
            success: function(data){

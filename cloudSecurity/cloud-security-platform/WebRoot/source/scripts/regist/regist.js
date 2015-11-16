@@ -19,7 +19,7 @@ function checkName(){
 		if(flag){
 			$.ajax({
                type: "POST",
-               url: "/cloud-security-platform/regist_checkName.html",
+               url: "regist_checkName.html",
                data: {"name":name},
                dataType:"json",
                success: function(data){
@@ -83,7 +83,7 @@ function checkMobile(){
 		if(flag){
 			$.ajax({
                type: "POST",
-               url: "/cloud-security-platform/regist_checkMobile.html",
+               url: "regist_checkMobile.html",
                data: {"mobile":mobile},
                dataType:"json",
                success: function(data){
@@ -115,7 +115,7 @@ function checkEmail(){
 		if(flag){
 			$.ajax({
                type: "POST",
-               url: "/cloud-security-platform/regist_checkEmail.html",
+               url: "regist_checkEmail.html",
                data: {"email":email},
                dataType:"json",
                success: function(data){
@@ -141,7 +141,7 @@ function checkSendEmail(){
  	if(checkEmail1==1){
  		$.ajax({
            type: "POST",
-           url: "/cloud-security-platform/regist_checkSendEmail.html",
+           url: "regist_checkSendEmail.html",
            data: {"email":email},
            dataType:"json",
            success: function(data){
@@ -169,7 +169,7 @@ function checkSendMobile(){
  			 $("#verification_Image_msg").html(""); 
  		$.ajax({
            type: "POST",
-           url: "/cloud-security-platform/regist_checkSendMobile.html",
+           url: "regist_checkSendMobile.html",
            data: {"mobile":phone},
            dataType:"json",
            success: function(data){
@@ -227,7 +227,7 @@ function checkEmailActivationCode(){
 	 if(verification_code!=null&&verification_code!=""){
 		 $.ajax({
            type: "POST",
-           url: "/cloud-security-platform/regist_checkEmailActivationCode.html",
+           url: "regist_checkEmailActivationCode.html",
            data: {"verification_code":verification_code},
            dataType:"json",
            success: function(data){
