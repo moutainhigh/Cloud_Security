@@ -30,7 +30,7 @@ $(function(){
           //后台获取数据
             $.ajax({
             	type : "post",
-            	url:"/cloud-security-platform/admingetData.html",
+            	url:"admingetData.html",
             	data: {"orderId":$("#orderId").val()},
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",

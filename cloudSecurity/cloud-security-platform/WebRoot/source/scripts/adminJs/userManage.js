@@ -14,7 +14,7 @@ function checkName(){
 		if(flag){
 			$.ajax({
                type: "POST",
-               url: "/cloud-security-platform/regist_checkName.html",
+               url: "regist_checkName.html",
                data: {"name":name},
                dataType:"json",
                success: function(data){
@@ -76,13 +76,13 @@ function add(){
 function deleteUser(id){
 	var userId = id;
 	//检查订单  资产表是否有此用户的 资产和订单，若有：则提示不能删除，若无：则可以删除
-	$.post("/cloud-security-platform/adminDeleteCheck.html", {"id" : userId}, function(data, textStatus) {
+	$.post("adminDeleteCheck.html", {"id" : userId}, function(data, textStatus) {
 		if (data.count>0){
 			alert("您要删除的用户下有订单或资产，不能删除！");
 			return false;
 		}else{
 			if (window.confirm("确实要删除吗?")==true) {
-				window.location.href="/cloud-security-platform/adminDeleteUser.html?id="+userId;
+				window.location.href="adminDeleteUser.html?id="+userId;
 			} else {
 				return;
 			}
