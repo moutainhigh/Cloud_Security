@@ -195,11 +195,11 @@
           <h3>扫描频率</h3>
           <div class="pinv_subnav">
             <ul class="pinv_sub_nav">
-              <li class="pinv_active">
+              <!-- <li class="pinv_active">
                 <input type="radio" name="scanType0" value="1" checked/>
-                &nbsp;&nbsp;每天</li>
+                &nbsp;&nbsp;每天</li> -->
               <li>
-                <input type="radio" name="scanType0" value="2"/>
+                <input type="radio" name="scanType0" value="2" checked/>
                 &nbsp;&nbsp;每周</li>
               <li>
                 <input type="radio" name="scanType0" value="3"/>
@@ -827,7 +827,7 @@
   <ul>
      <li><a href="${ctx}/registUI.html">新用户注册</a></li>
     <li><a href="${ctx}/loginUI.html">用户登录</a></li>
-    <li><a href="###">找回密码</a></li>
+    <li><a href="${ctx}/forgetPass.html">找回密码</a></li>
   </ul>
 </div>
 <div  class="bottom_main">

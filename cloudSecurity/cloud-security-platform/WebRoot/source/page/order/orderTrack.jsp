@@ -40,7 +40,7 @@ $(document).ready(function(){
 }
 function overfind(orderId){
         var obj = {'orderId':orderId};
-        $.post("/cloud-security-platform/getAssetName.html", obj, function(data){
+        $.post("getAssetName.html", obj, function(data){
         	var assetName = data.assetName;
         	$('#'+orderId).attr("title", assetName);//设置title属性的值
         });
@@ -50,14 +50,14 @@ function deleteOrder(orderId,begin_date){
     if (window.confirm("确实要删除吗?")==true) {
     	$.ajax({
             type: "POST",
-            url: "/cloud-security-platform/checkOrderStatus.html",
+            url: "checkOrderStatus.html",
             data: {"orderId":orderId,"begin_date":begin_date},
             dataType:"json",
             success: function(data){
                 if(!data.status){
                     alert("订单正在执行,不可用删订单!");
                 }else{
-                	window.location.href="/cloud-security-platform/deleteOrder.html?orderId="+orderId;
+                	window.location.href="deleteOrder.html?orderId="+orderId;
                 }
             },
          });
@@ -181,7 +181,7 @@ function deleteOrder(orderId,begin_date){
   <ul>
      <li><a href="${ctx}/registUI.html">新用户注册</a></li>
     <li><a href="${ctx}/loginUI.html">用户登录</a></li>
-    <li><a href="###">找回密码</a></li>
+    <li><a href="${ctx}/forgetPass.html">找回密码</a></li>
   </ul>
 </div>
 <div  class="bottom_main">
