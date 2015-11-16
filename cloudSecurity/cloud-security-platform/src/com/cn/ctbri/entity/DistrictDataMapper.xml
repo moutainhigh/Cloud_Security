@@ -57,6 +57,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			where a.districtId = dis.id 
 			and a.districtId = #{districtId}
 			and a.serviceId = #{serviceId}
+			<if test="serviceId != 5">
+			and a.level = 2
+			</if>
 			group by a.name 
 			order by count desc limit 5
     </select>
@@ -71,6 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			where o1.id = oa.orderId) oa1
 			where t.order_asset_Id = oa1.id) t1
 			where (a.taskId=t1.taskId or a.group_Id = t1.group_Id)
+			and a.level = 2
          </if>
          <if test="serviceId == 5">  
          select  a.name,COUNT(a.name) AS count from cs_taskwarn a,
