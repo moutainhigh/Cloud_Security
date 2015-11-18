@@ -27,6 +27,9 @@ public class TaskWarn{
     private String level;//描述 告警等级高中低
     private int scan_type;//检测频率VO
     private int serviceId;
+    
+    private String group_id;
+    private int districtId; 
     public int getScan_type() {
 		return scan_type;
 	}
@@ -134,6 +137,18 @@ public class TaskWarn{
 	}
 	public void setServiceId(int serviceId) {
 		this.serviceId = serviceId;
+	}
+	public String getGroup_id() {
+		return group_id;
+	}
+	public void setGroup_id(String group_id) {
+		this.group_id = group_id;
+	}
+	public int getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(int districtId) {
+		this.districtId = districtId;
 	}
     
 }

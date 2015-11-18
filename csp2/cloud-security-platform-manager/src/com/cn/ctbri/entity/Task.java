@@ -34,6 +34,8 @@ public class Task{
     private int progress;//执行进度vo
     private int websoc;//创宇
     private String group_id;//创宇返回组id
+    
+    private int engine;
 	public int getProgress() {
 		return progress;
 	}
@@ -184,5 +186,11 @@ public class Task{
     public void setGroup_id(String group_id) {
         this.group_id = group_id;
     }
+	public int getEngine() {
+		return engine;
+	}
+	public void setEngine(int engine) {
+		this.engine = engine;
+	}
 	
 }

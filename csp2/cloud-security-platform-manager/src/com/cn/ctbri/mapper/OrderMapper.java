@@ -1,0 +1,36 @@
+package com.cn.ctbri.mapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+
+import com.cn.ctbri.entity.Order;
+
+@Component("orderMapper")
+@Scope("prototype")
+public class OrderMapper implements RowMapper {
+
+	public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+		Order order = new Order();
+		
+		order.setId(rs.getString("id"));
+		order.setType(rs.getInt("type"));
+		order.setBegin_date(rs.getDate("begin_date"));
+		order.setEnd_date(rs.getDate("end_date"));
+		order.setServiceId(rs.getInt("serviceId"));
+		order.setCreate_date(rs.getDate("create_date"));
+		order.setTask_date(rs.getDate("task_date"));
+		order.setScan_type(rs.getInt("scan_type"));
+		order.setUserId(rs.getInt("userId"));
+		order.setContactId(rs.getInt("contactId"));
+		order.setRemarks(rs.getString("remarks"));
+		order.setStatus(rs.getInt("status"));
+		order.setMessage(rs.getInt("message"));
+		order.setWebsoc(rs.getInt("websoc"));
+		return order;
+	}
+
+}

@@ -9,6 +9,10 @@ public class Service {
 	private int type;//类型(1：扫描类，2：监控类，3：防护类，4：其他)
 	private int status;//服务状态(1：可用，0：不可用)
 	private String remarks;//备注
+	
+	private int ordertype;
+	private int parentC;
+	private int websoc; 
 	public int getId() {
 		return id;
 	}
@@ -50,6 +54,25 @@ public class Service {
 	}
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+	
+	public int getOrdertype() {
+		return ordertype;
+	}
+	public void setOrdertype(int ordertype) {
+		this.ordertype = ordertype;
+	}
+	public int getParentC() {
+		return parentC;
+	}
+	public void setParentC(int parentC) {
+		this.parentC = parentC;
+	}
+	public int getWebsoc() {
+		return websoc;
+	}
+	public void setWebsoc(int websoc) {
+		this.websoc = websoc;
 	}
 	
 	
