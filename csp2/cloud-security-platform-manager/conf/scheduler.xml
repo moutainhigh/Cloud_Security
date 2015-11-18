@@ -10,7 +10,7 @@
 	<bean id="quartzLedgerJob" class="com.cn.ctbri.scheduler.QuartzLedgerJob">
 		<property name="exceRun">
 			<!-- 是否执行调度，TRUE为执行，FALSE为不执行 -->
-			<value>true</value>
+			<value>false</value>
 		</property>
 	</bean>
 	<!-- 定时任务开始 -->  
