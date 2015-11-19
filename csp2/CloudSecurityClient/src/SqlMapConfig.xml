@@ -22,11 +22,11 @@
  		<!-- 驱动类路径 -->
  		<property name="driver" value="com.mysql.jdbc.Driver"/>
  		<!-- 数据服务器地址 -->	
- 		<property name="url" value="jdbc:mysql://localhost:3306/mydb?useUnicode=true&amp;characterEncoding=UTF-8"/>
+ 		<property name="url" value="jdbc:mysql:///cloudsecurity?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"/>
  		<!-- 用户名 -->
  		<property name="username" value="root"/>
  		<!-- 密码 -->
- 		<property name="password" value="root"/>
+ 		<property name="password" value="mssp@ctbri&amp;"/>
  	</dataSource>   
        </environment>   
     </environments>   
