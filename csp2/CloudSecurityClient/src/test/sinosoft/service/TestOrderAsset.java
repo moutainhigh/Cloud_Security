@@ -6,10 +6,7 @@ import junit.framework.Assert;
 import net.sf.json.JSONObject;
 
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.sinosoft.service.OrderAssetService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.representation.Form;

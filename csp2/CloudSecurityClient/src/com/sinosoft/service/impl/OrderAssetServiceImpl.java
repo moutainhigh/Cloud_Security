@@ -27,24 +27,8 @@ import com.sun.jersey.spi.resource.Singleton;
 @Singleton
 @Path("OrderAssetService")
 @Component
-public class OrderAssetServiceImpl implements
+public class OrderAssetServiceImpl extends ServiceCommon implements
 		com.sinosoft.service.OrderAssetService {
-	private final static SqlSessionFactory sqlSessionFactory;
-	static {
-		String resource = "SqlMapConfig.xml";
-		Reader reader = null;
-		try {
-			reader = Resources.getResourceAsReader(resource);
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-
-		}
-		sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-	}
-
-	public static SqlSessionFactory getSqlSessionFactory() {
-		return sqlSessionFactory;
-	}
 
 	@POST
 	@Path("{findAssetNameByOrderId}")
@@ -52,7 +36,7 @@ public class OrderAssetServiceImpl implements
 	@Produces(MediaType.APPLICATION_JSON)
 	public String findAssetNameByOrderId(@FormParam("orderId")
 	String orderId) {
-		SqlSession sqlSession = sqlSessionFactory.openSession();
+		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
 		CsOrderAssetMapper csOrderAssetMapper = sqlSession
 				.getMapper(CsOrderAssetMapper.class);
 		CsAsset csAsset = csOrderAssetMapper.findAssetNameByOrderId(orderId);

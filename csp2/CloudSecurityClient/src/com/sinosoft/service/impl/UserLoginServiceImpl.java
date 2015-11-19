@@ -32,23 +32,7 @@ import com.sun.jersey.spi.resource.Singleton;
 @Singleton
 @Path("LoginService")
 @Component
-public class UserLoginServiceImpl implements UserLoginService {
-	private final static SqlSessionFactory sqlSessionFactory;
-	static {
-		String resource = "SqlMapConfig.xml";
-		Reader reader = null;
-		try {
-			reader = Resources.getResourceAsReader(resource);
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-
-		}
-		sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-	}
-
-	public static SqlSessionFactory getSqlSessionFactory() {
-		return sqlSessionFactory;
-	}
+public class UserLoginServiceImpl extends ServiceCommon implements UserLoginService {
 
 	/**
 	 * 用户登陆
@@ -66,7 +50,7 @@ public class UserLoginServiceImpl implements UserLoginService {
 	public String login(@FormParam("account")
 	String account, @FormParam("password")
 	String password) {
-		SqlSession sqlSession = sqlSessionFactory.openSession();
+		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
 		CsUserMapper csUserMapper = sqlSession.getMapper(CsUserMapper.class);
 		CsUser user = csUserMapper.selectByUserName(account);
 		if (user == null) {

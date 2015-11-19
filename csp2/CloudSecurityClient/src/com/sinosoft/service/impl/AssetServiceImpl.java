@@ -37,31 +37,15 @@ import com.sun.jersey.spi.resource.Singleton;
 @Singleton
 @Path("AssetService")
 @Component
-public class AssetServiceImpl implements AssetService {
-	private final static SqlSessionFactory sqlSessionFactory;
-	static {
-		String resource = "SqlMapConfig.xml";
-		Reader reader = null;
-		try {
-			reader = Resources.getResourceAsReader(resource);
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-
-		}
-		sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-	}
-
-	public static SqlSessionFactory getSqlSessionFactory() {
-		return sqlSessionFactory;
-	}
-
+public class AssetServiceImpl extends ServiceCommon implements AssetService {
+	
 	@POST
 	@Path("selectByPrimaryKey")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String selectByPrimaryKey(@FormParam("id")
 	Integer id) {
-		SqlSession sqlSession = sqlSessionFactory.openSession();
+		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
 		CsAssetMapper csAssetMapper = sqlSession.getMapper(CsAssetMapper.class);
 		CsAsset csAsset = csAssetMapper.selectByPrimaryKey(id);
 		return JsonUtil.encodeObject2Json(csAsset);
@@ -73,7 +57,7 @@ public class AssetServiceImpl implements AssetService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String selectByUserId(@FormParam("userid")
 	Integer userid,@FormParam("pageNow")Integer pageNow,@FormParam("pageSize")Integer pageSize) throws CloudException {
-		SqlSession sqlSession = sqlSessionFactory.openSession();
+		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
 		CsAssetMapper csAssetMapper = sqlSession.getMapper(CsAssetMapper.class);
 		if(pageNow==-1||pageSize==-1){
 			pageNow=null;
@@ -100,7 +84,7 @@ public class AssetServiceImpl implements AssetService {
 			Integer userid,@FormParam("pageNow")Integer pageNow,
 			@FormParam("pageSize")Integer pageSize,
 			@FormParam("status")Integer status) throws CloudException {
-		SqlSession sqlSession = sqlSessionFactory.openSession();
+		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
 		CsAssetMapper csAssetMapper = sqlSession.getMapper(CsAssetMapper.class);
 		if(pageNow==-1||pageSize==-1){
 			pageNow=null;

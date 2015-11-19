@@ -31,24 +31,7 @@ import com.sun.jersey.spi.resource.Singleton;
 @Singleton
 @Path("OrderService")
 @Component
-public class OrderServiceImpl implements OrderService {
-
-	private final static SqlSessionFactory sqlSessionFactory;
-	static {
-		String resource = "SqlMapConfig.xml";
-		Reader reader = null;
-		try {
-			reader = Resources.getResourceAsReader(resource);
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-
-		}
-		sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-	}
-
-	public static SqlSessionFactory getSqlSessionFactory() {
-		return sqlSessionFactory;
-	}
+public class OrderServiceImpl extends ServiceCommon implements OrderService {
 
 	JSONObject jsonObject = null;
 
@@ -59,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
 	public String countOrder(@FormParam("userId")
 	Integer userId) {
 		jsonObject = new JSONObject();
-		SqlSession sqlSession = sqlSessionFactory.openSession();
+		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
 		CsOrderMapper csOrderMapper = sqlSession.getMapper(CsOrderMapper.class);
 		List<CsOrder> csOrderList = csOrderMapper.findOrderByUserId(userId);
 		return jsonObject.element("count", csOrderList.size()).toString();
@@ -76,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
 		map.put("userId", userId);
 		map.put("state", state);
 		map.put("currentDate", currentDate);
-		SqlSession sqlSession = sqlSessionFactory.openSession();
+		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
 		CsOrderMapper csOrderMapper = sqlSession.getMapper(CsOrderMapper.class);
 		List<Map> csOrderMaps = csOrderMapper.findByCombineOrderTrack(map);
 		return jsonObject.element("count", csOrderMaps.size()).toString();
@@ -88,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String findOrderByOrderId(@FormParam("id")
 	String id) {
-		SqlSession sqlSession = sqlSessionFactory.openSession();
+		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
 		CsOrderMapper csOrderMapper = sqlSession.getMapper(CsOrderMapper.class);
 		Map csOrder = csOrderMapper.findOrderByOrderId(id);
 		return JsonUtil.encodeObject2Json(csOrder);
@@ -101,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
 	public String findOrderByUserIdAndState(@FormParam("userId")Integer userId,
 			@FormParam("state")String state,@FormParam("currentDate")Date currentDate,
 			@FormParam("pageNow")Integer pageNow,@FormParam("pageSize")Integer pageSize) {
-		SqlSession sqlSession = sqlSessionFactory.openSession();
+		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
 		CsOrderMapper csOrderMapper = sqlSession.getMapper(CsOrderMapper.class);
 		if(pageNow==-1||pageSize==-1){
 			pageNow=null;
@@ -124,7 +107,7 @@ public class OrderServiceImpl implements OrderService {
 	public String findOrderMessage(@FormParam("userId")
 	Integer userId, @FormParam("id")
 	String id) {
-		SqlSession sqlSession = sqlSessionFactory.openSession();
+		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
 		CsOrderMapper csOrderMapper = sqlSession.getMapper(CsOrderMapper.class);
 		Map map = new HashMap();
 		map.put("userId", userId);
@@ -139,7 +122,7 @@ public class OrderServiceImpl implements OrderService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String findOrderByUserId(@FormParam("userId")
 	Integer userId) {
-		SqlSession sqlSession = sqlSessionFactory.openSession();
+		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
 		CsOrderMapper csOrderMapper = sqlSession.getMapper(CsOrderMapper.class);
 		List<CsOrder> csOrderList = csOrderMapper.findOrderByUserId(userId);
 		return JsonUtil.encodeObject2Json(csOrderList);
@@ -167,7 +150,7 @@ public class OrderServiceImpl implements OrderService {
 		map.put("sid", sid);
 		map.put("begin_date", begin_date);
 		map.put("end_date", end_date);
-		SqlSession sqlSession = sqlSessionFactory.openSession();
+		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
 		CsOrderMapper csOrderMapper = sqlSession.getMapper(CsOrderMapper.class);
 		List<Map> csOrderList = csOrderMapper.findByCombineOrderTrack(map);
 		return JsonUtil.encodeObject2Json(csOrderList);
