@@ -1,9 +1,6 @@
 package com.cn.ctbri.webservice;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.jms.Destination;
 import javax.ws.rs.GET;
@@ -20,11 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.cn.ctbri.common.SchedulerResult;
-import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Task;
-import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.service.IAlarmService;
+import com.cn.ctbri.service.IAssetService;
+import com.cn.ctbri.service.IOrderService;
+import com.cn.ctbri.service.IOrderTaskService;
 import com.cn.ctbri.service.IProducerService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
@@ -59,12 +56,13 @@ public class InternalWebService {
     private Destination taskDestination; 
     @Autowired  
     @Qualifier("resultQueueDestination")   
-    private Destination resultDestination;	
+    private Destination resultDestination;
+	
 	//主动告警
 	@POST
     @Path("/vulnscan/orderTask")
 	@Produces(MediaType.APPLICATION_JSON) 
-    public String VulnScan_Create_orderTask(JSONObject dataJson) throws JSONException {
+	public String VulnScan_Create_orderTask(JSONObject dataJson) throws JSONException {
 		try {
 			//单次，长期
 			int scanMode = Integer.parseInt(dataJson.getString("ScanMode"));
@@ -123,29 +121,30 @@ public class InternalWebService {
     }
 	
 	//获取结果
-	@GET
-    @Path("/vulnscan/orderTask/orderTaskid/{taskid}")
-	@Produces(MediaType.TEXT_XML) 
-    public String VulnScan_Get_orderTaskResult(@PathParam("taskid") String taskid) throws JSONException {
-		
-		try {
-			//将任务放到消息队列里	
-			producerService.sendMessageTaskId(resultDestination, taskid);
-		} catch (Exception e) {
+		@GET
+	    @Path("/vulnscan/orderTask/orderTaskid/{taskid}")
+		@Produces(MediaType.TEXT_XML) 
+	    public String VulnScan_Get_orderTaskResult(@PathParam("taskid") String taskid) throws JSONException {
 			
-			e.printStackTrace();
+			try {
+				//将任务放到消息队列里	
+				producerService.sendMessageTaskId(resultDestination, taskid);
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+				Respones r = new Respones();
+				r.setState("404");
+				net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
+		        return json.toString();
+			}
+
 			Respones r = new Respones();
-			r.setState("404");
+			r.setState("201");
 			net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
 	        return json.toString();
-		}
-
-		Respones r = new Respones();
-		r.setState("201");
-		net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
-        return json.toString();
-    }
+	    }
 	
+	 
 	public static void main(String[] args) throws JSONException {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
@@ -172,7 +171,7 @@ public class InternalWebService {
 
 	    ClientConfig config = new DefaultClientConfig();
 //	    config.getClasses().add(JacksonJsonProvider.class);
-        //检查安全传输协议设置
+	    //检查安全传输协议设置
         Client client = Client.create(config);
         //连接服务器
         WebResource service = client.resource("http://localhost:8080/dss/rest/internalapi/vulnscan/orderTask");
