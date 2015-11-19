@@ -21,7 +21,7 @@ public class AssetMapper implements RowMapper {
 		asset.setAddr(rs.getString("addr"));
 		asset.setStatus(rs.getInt("status"));
 		asset.setUserid(rs.getInt("userid"));
-		asset.setCreate_date(rs.getDate("create_date"));
+		asset.setCreate_date(rs.getTimestamp("create_date"));
 		asset.setRemarks(rs.getString("remarks"));
 		asset.setIp(rs.getString("ip"));
 		asset.setDistrictId(rs.getInt("districtId"));

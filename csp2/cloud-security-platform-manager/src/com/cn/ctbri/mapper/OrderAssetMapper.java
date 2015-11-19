@@ -21,7 +21,7 @@ public class OrderAssetMapper implements RowMapper {
 		orderAsset.setAssetId(rs.getInt("assetId"));
 		orderAsset.setServiceId(rs.getInt("serviceId"));
 		orderAsset.setScan_type(rs.getInt("scan_type"));
-		orderAsset.setScan_date(rs.getDate("scan_date"));
+		orderAsset.setScan_date(rs.getTimestamp("scan_date"));
 		return orderAsset;
 	}
 

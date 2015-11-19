@@ -17,10 +17,10 @@ public class TaskHWMapper implements RowMapper {
 		TaskHW taskHW = new TaskHW();
 		taskHW.setTaskId(rs.getInt("taskId"));
 		taskHW.setOrder_ip_Id(rs.getInt("order_ip_Id"));
-		taskHW.setExecute_time(rs.getDate("execute_time"));
+		taskHW.setExecute_time(rs.getTimestamp("execute_time"));
 		taskHW.setStatus(rs.getInt("status"));
 		taskHW.setRemarks(rs.getString("remarks"));
-		taskHW.setEnd_time(rs.getDate("end_time"));
+		taskHW.setEnd_time(rs.getTimestamp("end_time"));
 		taskHW.setDrainage(rs.getInt("drainage"));
 		return taskHW;
 	}

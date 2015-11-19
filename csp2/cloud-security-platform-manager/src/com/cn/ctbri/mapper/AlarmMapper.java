@@ -17,7 +17,7 @@ public class AlarmMapper implements RowMapper {
 		Alarm alarm = new Alarm();
 		alarm.setId(rs.getInt("id"));
 		alarm.setName(rs.getString("name"));
-		alarm.setAlarm_time(rs.getDate("alarm_time"));
+		alarm.setAlarm_time(rs.getTimestamp("alarm_time"));
 		alarm.setScore(rs.getString("score"));
 		alarm.setLevel(rs.getInt("level"));
 		alarm.setAdvice(rs.getString("advice"));

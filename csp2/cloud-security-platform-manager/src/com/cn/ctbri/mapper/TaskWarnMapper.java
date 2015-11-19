@@ -27,7 +27,7 @@ public class TaskWarnMapper implements RowMapper {
 		taskWarn.setUrl(rs.getString("url"));
 		taskWarn.setMsg(rs.getString("msg"));
 		taskWarn.setTask_id(rs.getString("task_id"));
-		taskWarn.setWarn_time(rs.getDate("warn_time"));
+		taskWarn.setWarn_time(rs.getTimestamp("warn_time"));
 		taskWarn.setServiceId(rs.getInt("serviceId"));
 		taskWarn.setGroup_id(rs.getString("group_id"));
 		taskWarn.setDistrictId(rs.getInt("districtId"));

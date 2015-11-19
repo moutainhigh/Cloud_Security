@@ -19,7 +19,7 @@ public class NoticeMapper implements RowMapper {
 		notice.setId(rs.getInt("id"));
 		notice.setNoticeName(rs.getString("noticeName"));
 		notice.setNoticeDesc(rs.getString("noticeDesc"));
-		notice.setCreateDate(rs.getDate("createDate"));
+		notice.setCreateDate(rs.getTimestamp("createDate"));
 		return notice;
 	}
 

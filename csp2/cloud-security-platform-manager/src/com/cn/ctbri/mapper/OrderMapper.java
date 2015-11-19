@@ -18,11 +18,11 @@ public class OrderMapper implements RowMapper {
 		
 		order.setId(rs.getString("id"));
 		order.setType(rs.getInt("type"));
-		order.setBegin_date(rs.getDate("begin_date"));
-		order.setEnd_date(rs.getDate("end_date"));
+		order.setBegin_date(rs.getTimestamp("begin_date"));
+		order.setEnd_date(rs.getTimestamp("end_date"));
 		order.setServiceId(rs.getInt("serviceId"));
-		order.setCreate_date(rs.getDate("create_date"));
-		order.setTask_date(rs.getDate("task_date"));
+		order.setCreate_date(rs.getTimestamp("create_date"));
+		order.setTask_date(rs.getTimestamp("task_date"));
 		order.setScan_type(rs.getInt("scan_type"));
 		order.setUserId(rs.getInt("userId"));
 		order.setContactId(rs.getInt("contactId"));
