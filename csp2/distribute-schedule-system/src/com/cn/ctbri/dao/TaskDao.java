@@ -66,4 +66,6 @@ public interface TaskDao {
 
 	public int findDistrictIdByTaskId(String taskId);
 	public Task findTaskById(int taskId);
+
+	public Task findTaskByOrderIdAndUrl(Task task);
 }

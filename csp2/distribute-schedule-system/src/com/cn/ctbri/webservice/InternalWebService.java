@@ -91,18 +91,21 @@ public class InternalWebService {
 			Date task_date = DateUtils.stringToDateNYRSFM(taskTime);
 			
 			Task task = new Task();
-			task.setScanMode(scanMode);
+			task.setExecute_time(task_date);
+			task.setGroup_flag(begin_date);
 			task.setBegin_time(begin_date);
 			task.setEnd_time(end_date);
-			task.setScanType(scanType);
-			task.setOrder_id(orderId);
-			task.setService_id(serviceId);
 			task.setWebsoc(websoc);
-			task.setEnd_time(task_date);
+			task.setServiceId(serviceId);
+			task.setOrder_id(orderId);
 			task.setAssetAddr(assetAddr);
+			task.setScanMode(scanMode);
+			task.setScanType(scanType);
 			
 			//插入数据库
 			taskService.insert(task);
+			
+			task = taskService.findTaskByOrderIdAndUrl(task);
 			//将任务放到消息队列里	
 			producerService.sendMessage(taskDestination, task);
 		} catch (NumberFormatException e) {

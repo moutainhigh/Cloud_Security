@@ -59,4 +59,7 @@ public interface ITaskService {
 	int findDistrictIdByTaskId(String taskId);
 	//根据ID查询task
 	Task findTaskById(int taskId);
+	//add by tangxr 2015-11-20
+	//根据订单Id和url查询任务
+	Task findTaskByOrderIdAndUrl(Task task);
 }

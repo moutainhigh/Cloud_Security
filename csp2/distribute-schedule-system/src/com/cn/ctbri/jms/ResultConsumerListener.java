@@ -89,7 +89,7 @@ public class ResultConsumerListener  implements MessageListener{
 					Task task = taskService.findTaskById(taskId);
 					//如果是创宇需查数据库获取结果
 					if(task.getWebsoc()==1){
-						if(task.getService_id()==5){//可用性检测
+						if(task.getServiceId()==5){//可用性检测
 							//根据groupId查询alarm表及taskwarn表
 							List<TaskWarn> taskwarnList = taskWarnService.findTaskWarnByGroupId(task.getGroup_id());
 							if(taskwarnList!=null && taskwarnList.size()>0){
@@ -221,7 +221,7 @@ public class ResultConsumerListener  implements MessageListener{
         						getProductByTask(task), j, 30, engine);   //获取全部告警
         				
         				try {
-        				    aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID,task.getService_id(),districtId);
+        				    aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID,task.getServiceId(),districtId);
                         } catch (Exception e) {
                             aList = new ArrayList<Alarm>();
                             continue;
@@ -247,7 +247,7 @@ public class ResultConsumerListener  implements MessageListener{
     			}else if("running".equals(status)){
                     
                     // 获取任务进度引擎
-                    String progressStr = ArnhemWorker.getProgressByTaskId(sessionId, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),String.valueOf(task.getService_id()),engine);
+                    String progressStr = ArnhemWorker.getProgressByTaskId(sessionId, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),String.valueOf(task.getServiceId()),engine);
     				getProgressByRes(task.getTaskId(),progressStr);
 	                logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，扫描进度["+task.getTaskProgress()+"]");
 

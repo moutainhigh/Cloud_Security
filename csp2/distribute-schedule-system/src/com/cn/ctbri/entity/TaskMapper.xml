@@ -129,8 +129,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入任务信息 -->
     <insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO cs_task
-        (execute_time,begin_time,end_time,websoc,serviceId,order_id,assetAddr,scanMode,scanType) 
-        VALUES( #{execute_time} , #{begin_time},#{end_time},#{websoc},#{service_id},#{order_id},#{assetAddr},#{scanMode},#{scanType})
+        (execute_time,begin_time,end_time,websoc,serviceId,order_id,assetAddr,scanMode,scanType,group_flag) 
+        VALUES( #{execute_time} , #{begin_time},#{end_time},#{websoc},#{serviceId},#{order_id},#{assetAddr},#{scanMode},#{scanType},#{group_flag})
     </insert>
     
     <select id="getTypeByAssetId" parameterType="Integer" resultType="com.cn.ctbri.entity.OrderAsset">
@@ -177,5 +177,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 根据id查询task -->
     <select id="findTaskById" parameterType="int" resultType="com.cn.ctbri.entity.Task">
     	select * from cs_task where taskId=#{taskId}
+    </select>
+    
+    <!-- 二期 -->
+    <!-- 根据订单Id和url查询任务 -->
+    <select id="findTaskByOrderIdAndUrl" parameterType="com.cn.ctbri.entity.Task" resultType="com.cn.ctbri.entity.Task">
+    	select * from cs_task t where t.order_id = #{order_id} and t.assetAddr = #{assetAddr} and t.group_flag = #{group_flag}
     </select>
 </mapper>

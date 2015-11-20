@@ -36,7 +36,7 @@ public class Task implements Serializable{
     private int websoc;//创宇标志
     private String group_id;//创宇返回组id
     private int engine;
-	private int service_id;//服务ID
+	private int serviceId;//服务ID
 	private String order_id;//订单id
 	private String assetAddr;//资产地址
 	private String moduleName;//模板名称
@@ -174,11 +174,12 @@ public class Task implements Serializable{
     public void setEngine(int engine) {
         this.engine = engine;
     }
-	public int getService_id() {
-		return service_id;
+	
+	public int getServiceId() {
+		return serviceId;
 	}
-	public void setService_id(int serviceId) {
-		service_id = serviceId;
+	public void setServiceId(int serviceId) {
+		this.serviceId = serviceId;
 	}
 	public String getOrder_id() {
 		return order_id;
