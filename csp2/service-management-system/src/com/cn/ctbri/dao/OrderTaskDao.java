@@ -43,7 +43,7 @@ public interface OrderTaskDao {
 	 * 更新任务信息
 	 * @param task
 	 */
-	public void update(Task task);
+	public void update(OrderTask orderTask);
 
 	/**
      * 根据资产获取订单类型

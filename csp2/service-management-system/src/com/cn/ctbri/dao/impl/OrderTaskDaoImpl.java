@@ -56,8 +56,8 @@ public class OrderTaskDaoImpl extends DaoCommon implements OrderTaskDao{
 		return getSqlSession().insert(ns+"insert", task);
 	}
 
-	public void update(Task task) {
-		getSqlSession().update(ns+"update", task);
+	public void update(OrderTask orderTask) {
+		getSqlSession().update(ns+"update", orderTask);
 	}
 
 	/**

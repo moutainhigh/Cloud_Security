@@ -37,8 +37,8 @@ public class OrderTaskServiceImpl implements IOrderTaskService{
 		return this.orderTaskDao.findOrderTask(paramMap);
 	}
 
-	public void update(Task task) {
-		this.orderTaskDao.update(task);
+	public void update(OrderTask orderTask) {
+		this.orderTaskDao.update(orderTask);
 	}
 
     public int insert(Task task) {

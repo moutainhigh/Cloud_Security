@@ -34,9 +34,9 @@ public interface IOrderTaskService {
 	
 	/**
 	 * 更新任务信息
-	 * @param task
+	 * @param OrderTask
 	 */
-	void update(Task task);
+	void update(OrderTask orderTask);
 
     int insert(Task task);
 

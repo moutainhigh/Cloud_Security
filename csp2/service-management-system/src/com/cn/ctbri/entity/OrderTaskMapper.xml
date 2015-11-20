@@ -38,6 +38,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<!-- limit #{page} -->
 	</select>
 	
-	
+	<!-- 更新任务信息 -->
+	<update id="update"  parameterType="com.cn.ctbri.entity.OrderTask">
+		update cs_order_task
+		<set>
+			<if test="task_status!=null">
+				task_status=#{task_status}, 
+			</if>
+            <if test="websoc!=null">
+                websoc=#{websoc},
+            </if>
+		</set>
+		where orderId = #{orderId}
+	</update>
     
 </mapper>
