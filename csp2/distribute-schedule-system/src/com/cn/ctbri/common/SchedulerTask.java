@@ -93,7 +93,7 @@ public class SchedulerTask {
 		try {
 			//查询最优的引擎top3
 			Map<String, Object> engineMap = new HashMap<String, Object>();
-			engineMap.put("serviceId", t.getService_id());
+			engineMap.put("serviceId", t.getServiceId());
 			engineMap.put("websoc", t.getWebsoc());
 			List<EngineCfg> engineList = engineService.findEngineByParam(engineMap);
 			
@@ -202,7 +202,7 @@ public class SchedulerTask {
             String virtual_group_id = "";
 
             //下发任务
-            virtual_group_id = WebSocWorker.lssuedTask(sessionId,String.valueOf(t.getTaskId())+"_"+t.getOrder_id(),assets,t.getService_id());
+            virtual_group_id = WebSocWorker.lssuedTask(sessionId,String.valueOf(t.getTaskId())+"_"+t.getOrder_id(),assets,t.getServiceId());
             
             //任务下发后,引擎活跃数加1
             engine.setActivity(engine.getActivity()+1);
@@ -243,7 +243,7 @@ public class SchedulerTask {
 		}
 		
 		// 获取此任务的服务模版名称
-		Serv service = servService.findById(t.getService_id());
+		Serv service = servService.findById(t.getServiceId());
 		if(service.getModule_name()!=null && !service.getModule_name().equals("")){
 			this.tplName = service.getModule_name();
 		}
