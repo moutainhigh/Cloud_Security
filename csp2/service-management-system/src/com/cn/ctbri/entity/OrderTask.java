@@ -30,6 +30,7 @@ public class OrderTask {
 	private int websoc;//创宇标志
 	private String url;//资产url
 	private int task_status;//任务状态
+	private String orderTaskId;//订单任务ID
 	public String getBegin_datevo() {
 		return begin_datevo;
 	}
@@ -151,6 +152,12 @@ public class OrderTask {
 	}
 	public void setTask_status(int task_status) {
 		this.task_status = task_status;
+	}
+	public String getOrderTaskId() {
+		return orderTaskId;
+	}
+	public void setOrderTaskId(String orderTaskId) {
+		this.orderTaskId = orderTaskId;
 	}
 	
 }

@@ -24,8 +24,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 插入订单任务 -->
     <insert id="insert" parameterType="com.cn.ctbri.entity.OrderTask">
         insert into cs_order_task
-        (orderId, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, contactId, remarks, status, websoc, url, task_status) 
-        values(#{orderId}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks}, #{status}, #{websoc}, #{url}, #{task_status})
+        (orderId, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, contactId, remarks, status, websoc, url, task_status, orderTaskId) 
+        values(#{orderId}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks}, #{status}, #{websoc}, #{url}, #{task_status}, #{orderTaskId})
     </insert>
     
     <!-- 根据条件查询任务表 -->
