@@ -60,7 +60,7 @@ public class Scheduler4Task {
         	//任务执行时间
         	String task_date=DateUtils.dateToString(o.getTask_date());
         	
-			String result = InternalWorker.vulnScanCreate(String.valueOf(o.getType()), o.getUrl(), "", begin_date, end_date,  String.valueOf(o.getScan_type()), "", "", "", CustomManu, o.getOrderId(), String.valueOf(o.getServiceId()),  String.valueOf(o.getWebsoc()), task_date);
+			String result = InternalWorker.vulnScanCreate(String.valueOf(o.getType()), o.getUrl(), "", begin_date, end_date,  String.valueOf(o.getScan_type()), "", "", "", CustomManu, o.getOrderId(), String.valueOf(o.getServiceId()),  String.valueOf(o.getWebsoc()), task_date, o.getOrderTaskId());
         	System.out.println(result);
             
 		}
