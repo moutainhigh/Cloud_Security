@@ -58,6 +58,8 @@ public class ReInternalWebService {
 		try {
 			//订单id
 			String orderId = dataJson.getString("orderId");
+			//订单任务id
+			String orderTaskId = dataJson.getString("orderTaskId");
 			//是否成功下发
 			String result = dataJson.getString("result");
 			//websoc
@@ -81,6 +83,44 @@ public class ReInternalWebService {
 			Respones r = new Respones();
 			r.setState("404");
 			net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
+	        return json.toString();
+		}
+    	    	
+		
+    }
+	
+	
+	//主动告警
+	@POST
+    @Path("/vulnscan/re_orderTask/{orderTaskId}")
+	@Produces(MediaType.APPLICATION_JSON) 
+	public String VulnScan_Get_OrderTaskStatus(JSONObject json) throws JSONException {
+		try {
+			JSONObject taskObj = json.getJSONObject("taskObj");
+			String OrderId = taskObj.getString("OrderId");
+			String orderTaskId = taskObj.getString("orderTaskId");
+			
+			//是否成功下发
+			String result = json.getString("result");
+			Respones r = new Respones();
+			if(result.equals("success")){
+				OrderTask orderTask = new OrderTask();
+//		        orderTask.setOrderId(orderId);
+//		        orderTask.setWebsoc(websoc);
+		        orderTask.setTask_status(2);
+		        //更新数据库
+		        orderTaskService.update(orderTask);
+				r.setState("201");
+			}else{
+				r.setState("404");
+			}
+//			net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
+	        return json.toString();
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			Respones r = new Respones();
+			r.setState("404");
+//			net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
 	        return json.toString();
 		}
     	    	

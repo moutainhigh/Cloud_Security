@@ -27,6 +27,7 @@ import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IOrderTaskService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.util.DateUtils;
+import com.cn.ctbri.util.Random;
 import com.cn.ctbri.util.Respones;
 
 import com.sun.jersey.api.client.Client;
@@ -156,6 +157,7 @@ public class NorthWebService {
 			orderTask.setWebsoc(Integer.parseInt(websoc));
 			orderTask.setUrl(targetArray.get(i).toString());
 			orderTask.setTask_status(1);
+			orderTask.setOrderTaskId(String.valueOf(Random.eightcode()));
 			
 			if (serviceId.equals("1") && scanMode.equals("1")) {
 				Date executeTime = getOrderPeriods(startTime, endTime, scanPeriod);
