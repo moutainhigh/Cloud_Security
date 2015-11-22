@@ -72,7 +72,7 @@ public class Scheduler4Progress {
 		List<OrderTask> oTaskList = orderTaskService.findOrderTask(map);
 		logger.info("[获取任务进度调度]:当前等待获取进度的任务有 " + oTaskList.size() + " 个!");
 		for (OrderTask o : oTaskList) {
-			String result = InternalWorker.vulnScanGetOrderTaskStatus(o.getOrderId(), String.valueOf(o.getId()));
+			String result = InternalWorker.vulnScanGetOrderTaskStatus(o.getOrderId(), o.getOrderTaskId());
         	System.out.println(result);
 		}
 		logger.info("[获取任务进度调度]:任务进度扫描结束....");
