@@ -181,7 +181,8 @@ public class InternalWorker {
 	 */
 	public static String vulnScanCreate(String scanMode, String targetURL, String scanType, 
     		String startTime, String endTime, String scanPeriod, String scanDepth, 
-    		String maxPages, String stategy, String CustomManu[], String orderId, String serviceId, String websoc, String taskTime) throws JSONException{
+    		String maxPages, String stategy, String CustomManu[], String orderId, 
+    		String serviceId, String websoc, String taskTime, String orderTaskId) throws JSONException{
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("ScanMode", scanMode);
@@ -198,6 +199,7 @@ public class InternalWorker {
 		json.put("serviceId", serviceId);
 		json.put("websoc", websoc);
 		json.put("taskTime", taskTime);
+		json.put("orderTaskId", orderTaskId);
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Create_orderTask;
     	//创建jersery客户端配置对象
@@ -311,13 +313,13 @@ public class InternalWorker {
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String vulnScanGetOrderTaskStatus(String OrderId, String Taskid) throws JSONException{
+	public static String vulnScanGetOrderTaskStatus(String OrderId, String orderTaskId) throws JSONException{
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("OrderId", OrderId);
-		json.put("Taskid", Taskid);
+		json.put("orderTaskId", orderTaskId);
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskStatus + OrderId + "/" +Taskid;
+    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskStatus + orderTaskId;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
@@ -401,7 +403,7 @@ public class InternalWorker {
 
 
     public static void main(String[] args) throws UnsupportedEncodingException, JSONException {
-        String create = vulnScanCreate("2", "", "", "2015-10-20 16:10:01", "", "0", "", "", "", new String[0], "","", "","");
+        String create = vulnScanCreate("2", "", "", "2015-10-20 16:10:01", "", "0", "", "", "", new String[0], "","", "","","");
         System.out.println(create);
     }
 }
