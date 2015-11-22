@@ -55,6 +55,9 @@ public class InternalWebService {
     @Qualifier("taskQueueDestination")   
     private Destination taskDestination; 
     @Autowired  
+    @Qualifier("progressQueueDestination")   
+    private Destination progressDestination;
+    @Autowired  
     @Qualifier("resultQueueDestination")   
     private Destination resultDestination;
 	
@@ -80,6 +83,8 @@ public class InternalWebService {
 			int websoc = Integer.parseInt(dataJson.getString("websoc"));
 			//任务执行时间
 			String taskTime = dataJson.getString("taskTime");
+			//订单任务ID
+			String orderTaskId = dataJson.getString("orderTaskId");
 			//目标地址，只有一个
 			String assetAddr = dataJson.getString("targetURL");
 			int scanType = 0;
@@ -98,6 +103,7 @@ public class InternalWebService {
 			task.setWebsoc(websoc);
 			task.setServiceId(serviceId);
 			task.setOrder_id(orderId);
+			task.setOrderTaskId(orderTaskId);
 			task.setAssetAddr(assetAddr);
 			task.setScanMode(scanMode);
 			task.setScanType(scanType);
@@ -105,7 +111,7 @@ public class InternalWebService {
 			//插入数据库
 			taskService.insert(task);
 			
-			task = taskService.findTaskByOrderIdAndUrl(task);
+			task = taskService.findTaskByOrderIdAndTaskId(task);
 			//将任务放到消息队列里	
 			producerService.sendMessage(taskDestination, task);
 		} catch (NumberFormatException e) {
@@ -124,28 +130,37 @@ public class InternalWebService {
     }
 	
 	//获取结果
-		@GET
-	    @Path("/vulnscan/orderTask/orderTaskid/{taskid}")
-		@Produces(MediaType.TEXT_XML) 
-	    public String VulnScan_Get_orderTaskResult(@PathParam("taskid") String taskid) throws JSONException {
+	@GET
+    @Path("/vulnscan/orderTask/{orderTaskid}")
+	@Produces(MediaType.TEXT_XML) 
+//    public String VulnScan_Get_orderTaskStatus(@PathParam("orderTaskid") String orderTaskid) throws JSONException {
+	public String VulnScan_Get_orderTaskStatus(JSONObject dataJson) throws JSONException {
+		try {
+			//订单id
+			String orderId = dataJson.getString("orderId");
+			//订单任务ID
+			String orderTaskId = dataJson.getString("orderTaskId");
+			Task task = new Task();
+			task.setOrder_id(orderId);
+			task.setOrderTaskId(orderTaskId);
+			task = taskService.findTaskByOrderIdAndTaskId(task);
+			//将任务放到消息队列里	
+			producerService.sendMessage(progressDestination, task);
+//			producerService.sendMessageTaskId(progressDestination, orderTaskid);
+		} catch (Exception e) {
 			
-			try {
-				//将任务放到消息队列里	
-				producerService.sendMessageTaskId(resultDestination, taskid);
-			} catch (Exception e) {
-				
-				e.printStackTrace();
-				Respones r = new Respones();
-				r.setState("404");
-				net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
-		        return json.toString();
-			}
-
+			e.printStackTrace();
 			Respones r = new Respones();
-			r.setState("201");
+			r.setState("404");
 			net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
 	        return json.toString();
-	    }
+		}
+
+		Respones r = new Respones();
+		r.setState("201");
+		net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
+        return json.toString();
+    }
 	
 	 
 	public static void main(String[] args) throws JSONException {

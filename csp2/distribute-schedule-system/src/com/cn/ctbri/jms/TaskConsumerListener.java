@@ -178,6 +178,7 @@ public class TaskConsumerListener implements MessageListener{
 		//推送结果
 		try {
 			json.put("orderId", t.getOrder_id());
+			json.put("orderTaskId", t.getOrderTaskId());
 			json.put("websoc", t.getWebsoc());
 			ReInternalWorker.vulnScanCreate(json);
 		} catch (JSONException e) {

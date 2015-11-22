@@ -38,6 +38,7 @@ public class Task implements Serializable{
     private int engine;
 	private int serviceId;//服务ID
 	private String order_id;//订单id
+	private String orderTaskId;//订单任务id
 	private String assetAddr;//资产地址
 	private String moduleName;//模板名称
 	private int scanMode;//订单类型（1：长期；2：单次）
@@ -186,6 +187,12 @@ public class Task implements Serializable{
 	}
 	public void setOrder_id(String orderId) {
 		order_id = orderId;
+	}
+	public String getOrderTaskId() {
+		return orderTaskId;
+	}
+	public void setOrderTaskId(String orderTaskId) {
+		this.orderTaskId = orderTaskId;
 	}
 	public String getAssetAddr() {
 		return assetAddr;

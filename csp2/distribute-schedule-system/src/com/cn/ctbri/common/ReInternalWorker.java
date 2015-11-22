@@ -266,13 +266,17 @@ public class ReInternalWorker {
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String vulnScanGetOrderTaskStatus(String OrderId, String Taskid) throws JSONException{
+	public static String vulnScanGetOrderTaskStatus(JSONObject json) throws JSONException{
 		//组织发送内容JSON
-		JSONObject json = new JSONObject();
-		json.put("OrderId", OrderId);
-		json.put("Taskid", Taskid);
+//		JSONObject json = new JSONObject();
+//		json.put("OrderId", OrderId);
+//		json.put("Taskid", Taskid);
+		JSONObject taskObj = json.getJSONObject("taskObj");
+		String OrderId = taskObj.getString("OrderId");
+		String orderTaskId = taskObj.getString("orderTaskId");
+		
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskStatus + OrderId + "/" +Taskid;
+    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskStatus + orderTaskId;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
