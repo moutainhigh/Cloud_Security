@@ -63,6 +63,7 @@ public class SerialThread {
 		jobParametersBuilder.addString("readSql", find);
 		jobParametersBuilder.addString("writeSql", add);
 		jobParametersBuilder.addString("mapper", mapper);
+		jobParametersBuilder.addDate("time", new Date());
 		long startTime = System.currentTimeMillis();
 		JobExecution result = jobLauncher.run(job, jobParametersBuilder.toJobParameters());
 		long endTime = System.currentTimeMillis();
