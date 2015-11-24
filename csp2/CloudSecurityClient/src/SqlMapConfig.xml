@@ -9,11 +9,11 @@
         <setting name="defaultExecutorType" value="REUSE" />   
     </settings>   
     <typeAliases>   
-       <typeAlias alias="CsUser" type="com.sinosoft.vo.CsUser"/>   
-       <typeAlias alias="CsAlarm" type="com.sinosoft.vo.CsAlarm"/>   
-       <typeAlias alias="CsAsset" type="com.sinosoft.vo.CsAsset"/>   
-       <typeAlias alias="CsOrder" type="com.sinosoft.vo.CsOrder"/>   
-       <typeAlias alias="CsOrderAsset" type="com.sinosoft.vo.CsOrderAsset"/>   
+       <typeAlias alias="CsUser" type="com.ctbri.vo.CsUser"/>   
+       <typeAlias alias="CsAlarm" type="com.ctbri.vo.CsAlarm"/>   
+       <typeAlias alias="CsAsset" type="com.ctbri.vo.CsAsset"/>   
+       <typeAlias alias="CsOrder" type="com.ctbri.vo.CsOrder"/>   
+       <typeAlias alias="CsOrderAsset" type="com.ctbri.vo.CsOrderAsset"/>   
     </typeAliases>
     <environments default="development">   
        <environment id="development">   
@@ -31,10 +31,10 @@
        </environment>   
     </environments>   
     <mappers>   
-      <mapper resource="com/sinosoft/sqlmap/CsUserMapper.xml"/> 
-	  <mapper resource="com/sinosoft/sqlmap/CsAlarmMapper.xml"/> 
-	  <mapper resource="com/sinosoft/sqlmap/CsAssetMapper.xml"/>
-	  <mapper resource="com/sinosoft/sqlmap/CsOrderAssetMapper.xml"/>
-	  <mapper resource="com/sinosoft/sqlmap/CsOrderMapper.xml"/>
+      <mapper resource="com/ctbri/sqlmap/CsUserMapper.xml"/> 
+	  <mapper resource="com/ctbri/sqlmap/CsAlarmMapper.xml"/> 
+	  <mapper resource="com/ctbri/sqlmap/CsAssetMapper.xml"/>
+	  <mapper resource="com/ctbri/sqlmap/CsOrderAssetMapper.xml"/>
+	  <mapper resource="com/ctbri/sqlmap/CsOrderMapper.xml"/>
     </mappers>   
 </configuration>  

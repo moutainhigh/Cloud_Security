@@ -23,7 +23,7 @@
 	<filter>
 		<filter-name>ContentTypeFilter</filter-name>
 		<filter-class>
-			com.sinosoft.filter.ContentTypeFilter
+			com.ctbri.filter.ContentTypeFilter
 		</filter-class>
 	</filter>
 	<filter-mapping>
