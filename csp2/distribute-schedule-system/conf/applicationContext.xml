@@ -87,11 +87,11 @@
 	        <value>TASKQUEUE</value>  
 	    </constructor-arg>  
 	</bean>
-	<!-- <bean id="resultQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">  
+	<bean id="resultQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">  
 	    <constructor-arg>  
 	        <value>RESULTQUEUE</value>  
 	    </constructor-arg>  
-	</bean> -->
+	</bean>
 	<bean id="progressQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">  
 	    <constructor-arg>  
 	        <value>PROGRESSQUEUE</value>  
@@ -99,7 +99,7 @@
 	</bean>
 	<!-- 消息监听器    -->    
 	<bean id="taskConsumerListener" class="com.cn.ctbri.jms.TaskConsumerListener"/>
-    <!-- <bean id="resultConsumerListener" class="com.cn.ctbri.jms.ResultConsumerListener"/> -->
+    <bean id="resultConsumerListener" class="com.cn.ctbri.jms.ResultConsumerListener"/>
     <bean id="progressConsumerListener" class="com.cn.ctbri.jms.ProgressConsumerListener"/>
 	<!--这个是主题目的地，一对多的   --><!--    
 	<bean id="topicDestination" class="org.apache.activemq.command.ActiveMQTopic">  
@@ -113,11 +113,11 @@
 	    <property name="destination" ref="taskQueueDestination" />  
 	    <property name="messageListener" ref="taskConsumerListener" />  
 	</bean>
-	<!-- <bean id="jmsResultContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">  
+	<bean id="jmsResultContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">  
 	    <property name="connectionFactory" ref="connectionFactory" />  
 	    <property name="destination" ref="resultQueueDestination" />  
 	    <property name="messageListener" ref="resultConsumerListener" />  
-	</bean> -->
+	</bean>
 	
 	<bean id="jmsProgressContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">  
 	    <property name="connectionFactory" ref="connectionFactory" />  
