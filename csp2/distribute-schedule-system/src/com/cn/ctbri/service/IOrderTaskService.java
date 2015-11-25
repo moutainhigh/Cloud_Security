@@ -4,9 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.cn.ctbri.entity.Linkman;
-import com.cn.ctbri.entity.Order;
-import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderTask;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskWarn;
@@ -41,12 +38,6 @@ public interface IOrderTaskService {
     int insert(Task task);
 
     /**
-     * 根据资产获取订单类型
-     * @param order_asset_Id
-     */
-    OrderAsset getTypeByAssetId(int order_asset_Id);
-
-    /**
      * 下一次扫描时间
      * @param paramMap
      */
@@ -55,8 +46,6 @@ public interface IOrderTaskService {
     void updateTask(Task task);
 
     void insertTaskWarn(TaskWarn taskwarn);
-
-    List<Task> getTaskStatus(Order order);
 
     //定时删除的任务
     List<Task> findDelTask(Map<String, Object> delmap);

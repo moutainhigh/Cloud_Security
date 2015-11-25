@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.TaskDao;
-import com.cn.ctbri.entity.Order;
-import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.service.ITaskService;
@@ -34,14 +32,6 @@ public class TaskServiceImpl implements ITaskService{
     }
 
     /**
-     * 根据资产获取订单类型
-     * @param order_asset_Id
-     */
-    public OrderAsset getTypeByAssetId(int order_asset_Id) {
-        return taskDao.getTypeByAssetId(order_asset_Id);
-    }
-
-    /**
      * 下一次扫描时间
      * @param paramMap
      */
@@ -55,10 +45,6 @@ public class TaskServiceImpl implements ITaskService{
 
     public void insertTaskWarn(TaskWarn taskwarn) {
         this.taskDao.insertTaskWarn(taskwarn);
-    }
-
-    public List<Task> getTaskStatus(Order order) {
-        return taskDao.getTaskStatus(order);
     }
 
     public List<Task> findDelTask(Map<String, Object> delmap) {

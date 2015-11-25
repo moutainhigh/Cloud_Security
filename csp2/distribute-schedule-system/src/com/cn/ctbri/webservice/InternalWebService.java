@@ -19,8 +19,6 @@ import org.springframework.stereotype.Component;
 
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IAlarmService;
-import com.cn.ctbri.service.IAssetService;
-import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IOrderTaskService;
 import com.cn.ctbri.service.IProducerService;
 import com.cn.ctbri.service.ITaskService;

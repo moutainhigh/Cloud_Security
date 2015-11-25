@@ -2,7 +2,6 @@ package com.cn.ctbri.common;
 
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,14 +22,10 @@ import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.EngineCfg;
 import com.cn.ctbri.entity.Serv;
-import com.cn.ctbri.entity.Service;
 import com.cn.ctbri.entity.Task;
-import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IEngineService;
-import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
@@ -53,9 +48,6 @@ public class SchedulerTask {
 
 	@Autowired
 	ITaskService taskService;
-	
-	@Autowired
-	IAssetService assetService;
 	
 	@Autowired
 	IServService servService;
@@ -137,7 +129,6 @@ public class SchedulerTask {
 			try {
 				json.put("result", "fail");
 			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}

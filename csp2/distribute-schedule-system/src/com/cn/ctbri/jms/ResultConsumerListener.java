@@ -8,11 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.jms.Destination;
-import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import javax.jms.ObjectMessage;
 import javax.jms.TextMessage;
 import javax.ws.rs.core.MediaType;
 
@@ -24,12 +21,11 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.cn.ctbri.common.ArnhemWorker;
 import com.cn.ctbri.common.Constants;
+import com.cn.ctbri.common.ReInternalWorker;
 import com.cn.ctbri.common.SchedulerResult;
-import com.cn.ctbri.common.SchedulerTask;
 import com.cn.ctbri.common.WebSocWorker;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.EngineCfg;
@@ -37,18 +33,11 @@ import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IEngineService;
-import com.cn.ctbri.service.IProducerService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
-import com.cn.ctbri.util.Respones;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
 
-public class ResultConsumerListener  implements MessageListener{
+public class ResultConsumerListener  implements MessageListener,Runnable{
 	//日志对象
 	private Logger logger = Logger.getLogger(ResultConsumerListener.class.getName());
 	@Autowired
@@ -65,20 +54,31 @@ public class ResultConsumerListener  implements MessageListener{
 	
 	@Autowired
     private IEngineService engineService;
-    
-	public void onMessage(Message message) {
-		JSONObject json = new JSONObject();
-	    ClientConfig config = new DefaultClientConfig();
-        //检查安全传输协议设置
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource("http://192.168.42.121:8080/dss/rest/internalapi/vulnscan/re_orderTaskid");
 
+    private TextMessage tm;
+    
+	public ResultConsumerListener(TextMessage tm) {
+		this.tm = tm;
+	}
+
+
+	public void onMessage(Message message) {  
+    	//接收到object消息
+    	if(message instanceof TextMessage){
+    		TextMessage tm = (TextMessage) message;
+    		ResultConsumerListener resultConsumer = new ResultConsumerListener(tm);
+    		Thread thread = new Thread(resultConsumer);
+    		thread.start();
+    	}  		
+	}
+
+
+	public void run() {
+		JSONObject json = new JSONObject();
         try {  
-        	//接收到object消息
-        	if(message instanceof TextMessage){
-        		TextMessage tm = (TextMessage) message;
         		String taskid = tm.toString();
+        		Thread thread = new Thread(this);
+        		thread.start();
         	    if(taskid!=null && !taskid.equals("")){
     				//taskId
     				int taskId = Integer.parseInt(taskid);
@@ -117,27 +117,22 @@ public class ResultConsumerListener  implements MessageListener{
 							}
 						}
 					} 
+					ReInternalWorker.vulnScanGetOrderTaskStatus(json);
         	    }
-        	}  
         } catch (Exception e) {   
             e.printStackTrace();
             
 	        try {
 				json.put("result", "fail");
+				ReInternalWorker.vulnScanGetOrderTaskStatus(json);
 			} catch (JSONException e1) {
 				e1.printStackTrace();
 			}
 
         } 
-        //推送结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json);        
-        System.out.println(response.toString());
-
-        String addresses = response.getEntity(String.class);
-        System.out.println(addresses); 
 		
 	}
-
+	
 	public void getscanResult(int taskId) throws Exception {
 		logger.info("[获取结果调度]:任务表扫描开始....");
         
@@ -501,4 +496,5 @@ public class ResultConsumerListener  implements MessageListener{
         }
         return t;
     }
+
 }

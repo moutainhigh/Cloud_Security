@@ -18,7 +18,6 @@ import org.codehaus.jettison.json.JSONObject;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jettison.json.JSONException;
 
-import com.cn.ctbri.entity.Order;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;

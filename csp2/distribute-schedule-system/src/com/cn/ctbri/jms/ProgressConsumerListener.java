@@ -2,19 +2,11 @@ package com.cn.ctbri.jms;
 
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import javax.jms.Destination;
-import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
-import javax.jms.TextMessage;
-import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
@@ -24,65 +16,46 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.cn.ctbri.common.ArnhemWorker;
 import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.common.ReInternalWorker;
-import com.cn.ctbri.common.SchedulerResult;
-import com.cn.ctbri.common.SchedulerTask;
-import com.cn.ctbri.common.WebSocWorker;
-import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.EngineCfg;
 import com.cn.ctbri.entity.Task;
-import com.cn.ctbri.entity.TaskWarn;
-import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IEngineService;
-import com.cn.ctbri.service.IProducerService;
-import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
-import com.cn.ctbri.util.Respones;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
 
-public class ProgressConsumerListener  implements MessageListener{
+public class ProgressConsumerListener  implements MessageListener,Runnable{
 	//日志对象
 	private Logger logger = Logger.getLogger(ProgressConsumerListener.class.getName());
 	@Autowired
     ITaskWarnService taskWarnService;
-	
-	@Autowired
-	private IAlarmService alarmService;
-
-	@Autowired
-	private IServService servService;
 
 	@Autowired
 	private ITaskService taskService;
 	
 	@Autowired
     private IEngineService engineService;
+	
+	private Task task;
     
+	public ProgressConsumerListener(Task task) {
+		this.task = task;
+	}
+
 	public void onMessage(Message message) {
 		JSONObject json = new JSONObject();
 
         try {  
-        	//接收到object消息
-//        	if(message instanceof TextMessage){
-//        		TextMessage tm = (TextMessage) message;
-//        		String orderTaskid = tm.toString();
-//        	    if(orderTaskid!=null && !orderTaskid.equals("")){
-
         	if(message instanceof ObjectMessage){
         		ObjectMessage om = (ObjectMessage) message;
         	    Task taskRe = (Task) om.getObject();
         	    //任务进度获取
         	    if(taskRe != null){
-					getscanProgress(taskRe);
+        	    	ProgressConsumerListener progressConsumer = new ProgressConsumerListener(taskRe);
+        	    	Thread thread = new Thread(progressConsumer);
+        	    	thread.start();
         	    }
         	}  
         } catch (Exception e) {   
@@ -97,6 +70,15 @@ public class ProgressConsumerListener  implements MessageListener{
         } 
         //推送结果
 		
+	}
+	
+
+	public void run() {
+		try {
+			getscanProgress(task);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
 	}
 
 	/**
@@ -183,7 +165,6 @@ public class ProgressConsumerListener  implements MessageListener{
   			json.put("taskObj", taskObject);
   			ReInternalWorker.vulnScanGetOrderTaskStatus(json);
   		} catch (JSONException e) {
-  			// TODO Auto-generated catch block
   			e.printStackTrace();
   		}
 		logger.info("[获取任务进度调度]:任务进度扫描结束....");
@@ -288,4 +269,5 @@ public class ProgressConsumerListener  implements MessageListener{
         }
         return t;
     }
+
 }

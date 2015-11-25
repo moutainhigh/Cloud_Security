@@ -14,7 +14,6 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.jms.JMSException; 
-import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
@@ -32,27 +31,17 @@ import com.cn.ctbri.common.WebSocWorker;
 import com.cn.ctbri.entity.EngineCfg;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.Task;
-import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IEngineService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.DateUtils;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
 
-
-public class TaskConsumerListener implements MessageListener{
+public class TaskConsumerListener implements MessageListener,Runnable{
 	static Logger logger = Logger.getLogger(TaskConsumerListener.class.getName());
 
 	@Autowired
 	ITaskService taskService;
-	
-	@Autowired
-	IAssetService assetService;
 	
 	@Autowired
 	IServService servService;
@@ -70,6 +59,12 @@ public class TaskConsumerListener implements MessageListener{
 	private String tplName ="";
 	
 	private int scantime = 0;
+	
+	private Task task;
+
+	public TaskConsumerListener(Task task) {
+		this.task = task;
+	}
 
 	public void onMessage(Message message) {  
         try {  
@@ -79,7 +74,9 @@ public class TaskConsumerListener implements MessageListener{
         	    Task taskRe = (Task) om.getObject();
         	    //引擎调度,任务分发
         	    if(taskRe != null){
-        	    	schedule(taskRe);
+        	    	TaskConsumerListener taskConsumer = new TaskConsumerListener(taskRe);
+        	    	Thread thread = new Thread(taskConsumer);
+    				thread.start();
         	    }
 
         	}  
@@ -88,6 +85,12 @@ public class TaskConsumerListener implements MessageListener{
         }   
 		
 	}
+	
+
+	public void run() {
+		//开始调度
+    	schedule(task);		
+	} 
 	
 	/**
 	 * 引擎调度
@@ -171,7 +174,6 @@ public class TaskConsumerListener implements MessageListener{
 			try {
 				json.put("result", "fail");
 			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
@@ -182,7 +184,6 @@ public class TaskConsumerListener implements MessageListener{
 			json.put("websoc", t.getWebsoc());
 			ReInternalWorker.vulnScanCreate(json);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		logger.info("[引擎调度]: 引擎调度结束!");
@@ -600,6 +601,6 @@ public class TaskConsumerListener implements MessageListener{
             return state;
         }
         
-    } 
+    }
 
 }
