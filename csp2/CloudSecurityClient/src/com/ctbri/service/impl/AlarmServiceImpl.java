@@ -57,8 +57,7 @@ public class AlarmServiceImpl extends ServiceCommon implements AlarmService {
 	@Path("findAlarmByOrderId")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String findAlarmByOrderId(@FormParam("websoc")
-	Integer websoc, @FormParam("orderId")
+	public String findAlarmByOrderId(@FormParam("orderId")
 	String orderId, @FormParam("group_flag")
 	Date group_flag, @FormParam("type")
 	Integer type, @FormParam("count")
@@ -72,7 +71,6 @@ public class AlarmServiceImpl extends ServiceCommon implements AlarmService {
 			level=null;
 		}
 		Map map = new HashMap();
-		map.put("websoc", websoc);
 		map.put("orderId", orderId);
 		map.put("group_flag", group_flag);
 		map.put("type", type);

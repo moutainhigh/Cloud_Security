@@ -42,8 +42,7 @@ public interface AlarmService {
 	 * @return String 返回类型
 	 * @throws
 	 */
-	String findAlarmByOrderId(@FormParam("websoc")
-			Integer websoc, @FormParam("orderId")
+	String findAlarmByOrderId(@FormParam("orderId")
 			String orderId, @FormParam("group_flag")
 			Date group_flag, @FormParam("type")
 			Integer type, @FormParam("count")

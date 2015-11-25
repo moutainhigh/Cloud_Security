@@ -46,7 +46,6 @@ public class TestAlarm {
 		Client client = new Client();
 		WebResource webResource = client.resource(domin);
 		Form form = new Form();
-		form.add("websoc", 1);
 		form.add("orderId", "15080711024680645");
 		form.add("group_flag", "");
 		form.add("type", 0);

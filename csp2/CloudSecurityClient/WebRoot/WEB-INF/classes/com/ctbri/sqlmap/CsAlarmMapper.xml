@@ -4,8 +4,7 @@
 	<resultMap id="BaseResultMap" type="com.ctbri.vo.CsAlarm">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
-		<result column="alarm_time" property="alarmTime"
-			jdbcType="TIMESTAMP" />
+		<result column="alarm_time" property="alarmTime" jdbcType="TIMESTAMP" />
 		<result column="score" property="score" jdbcType="VARCHAR" />
 		<result column="level" property="level" jdbcType="INTEGER" />
 		<result column="advice" property="advice" jdbcType="VARCHAR" />
@@ -14,17 +13,15 @@
 		<result column="url" property="url" jdbcType="VARCHAR" />
 		<result column="keyword" property="keyword" jdbcType="VARCHAR" />
 		<result column="taskId" property="taskid" jdbcType="INTEGER" />
-		<result column="alarm_type" property="alarmType"
-			jdbcType="CHAR" />
+		<result column="alarm_type" property="alarmType" jdbcType="CHAR" />
 		<result column="userId" property="userid" jdbcType="INTEGER" />
 		<result column="group_id" property="groupId" jdbcType="VARCHAR" />
-		<result column="serviceId" property="serviceid"
-			jdbcType="INTEGER" />
-		<result column="districtId" property="districtid"
-			jdbcType="INTEGER" />
+		<result column="serviceId" property="serviceid" jdbcType="INTEGER" />
+		<result column="districtId" property="districtid" jdbcType="INTEGER" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, name, alarm_time, score, level, advice, alarm_content, url,
+		id, name, alarm_time, score, level, advice, alarm_content,
+		url,
 		keyword, taskId, alarm_type, userId, group_id, serviceId,
 		districtId
 	</sql>
@@ -41,52 +38,40 @@
 		from cs_order o,cs_service s where o.userId = #{userId} and
 		o.serviceId = s.id AND o.status =2
 	</select>
-	<!-- 根据orderid查询告警数,最近告警信息  -->
-	<select id="findAlarmByOrderId" resultMap="BaseResultMap"
-		parameterType="hashmap">
-		<if test="websoc!=1">
-			select * from cs_alarm a, (select t.taskId from
-			cs_order_asset oa,cs_task t where oa.id = t.order_asset_id
-			and oa.orderId=#{orderId} and t.status = 3
-			<if test="group_flag!=null and group_flag!=''">
-				and t.group_flag=#{group_flag}
-			</if>
-			order by t.execute_time desc
-			<if test="type==1 and group_flag==null or group_flag==''">
-				limit #{count}
-			</if>
-			) b where a.taskId = b.taskId
-			<if test="level!=null">and a.level=#{level}</if>
-			<if test="name!=null">and a.name=#{name}</if>
-			order by a.level desc
+	<!-- 根据orderid查询告警数,最近告警信息 -->
+	<select id="findAlarmByOrderId" resultMap="BaseResultMap" parameterType="hashmap">
+		select
+		a.id,a.name,a.alarm_time,a.score,a.level,a.alarm_content,a.url,a.keyword,a.taskId,a.alarm_type,a.userId,a.group_id,a.advice
+		from cs_alarm a,
+		(select t.taskId,t.group_id from cs_order_asset oa,cs_task t
+		where oa.id = t.order_asset_id
+		and oa.orderId=#{orderId}
+		and t.status = 3
+		<if test="group_flag!=null and group_flag!=''">
+			and t.group_flag=#{group_flag}
 		</if>
-		<if test="websoc==1">
-			select
-			a.id,a.name,a.alarm_time,a.score,a.level,a.alarm_content,a.url,a.keyword,a.taskId,a.alarm_type,a.userId,a.group_id,l.advice
-			from cs_alarm a, (select t.taskId,t.group_id from
-			cs_order_asset oa,cs_task t where oa.id in
-			(t.order_asset_id) and oa.orderId=#{orderId} and t.status =
-			3
-			<if test="group_flag!=null and group_flag!=''">
-				and t.group_flag=#{group_flag}
-			</if>
-			order by t.execute_time desc
-			<if test="type==1 and group_flag==null or group_flag==''">
-				limit #{count}
-			</if>
-			) b,cs_leakinfo l where a.group_id = b.group_id and a.name =
-			l.name
-			<if test="level!=null">and a.level=#{level}</if>
-			<if test="name!=null">and a.name=#{name}</if>
-			order by a.level desc
+		order by t.execute_time desc
+		<if test="type==1 and group_flag==null or group_flag==''">
+			limit #{count}
 		</if>
+		) b
+		where (a.taskId = b.taskId or a.group_id = b.group_id)
+		<if test="level!=null">
+			and a.level=#{level}
+		</if>
+		<if test="name!=null">
+			and a.name=#{name}
+		</if>
+		order by a.level desc
 	</select>
-	<!-- 根据alarmid查询告警数,最近告警信息  -->
+
+	<!-- 根据alarmid查询告警数,最近告警信息 -->
 	<select id="findAlarmByAlarmId" resultMap="BaseResultMap"
 		parameterType="hashmap">
 		<if test="websoc!=1">
 			select * from cs_alarm a, (select t.taskId from
-			cs_order_asset oa,cs_task t where oa.id = t.order_asset_id
+			cs_order_asset
+			oa,cs_task t where oa.id = t.order_asset_id
 			and t.status = 3
 			<if test="group_flag!=null and group_flag!=''">
 				and t.group_flag=#{group_flag}
@@ -95,7 +80,7 @@
 			<if test="type==1 and group_flag==null or group_flag==''">
 				limit #{count}
 			</if>
-			)  b where a.taskId = b.taskId and a.id=#{id} 
+			) b where a.taskId = b.taskId and a.id=#{id}
 			<if test="level!=null">and a.level=#{level}</if>
 			<if test="name!=null">and a.name=#{name}</if>
 			order by a.level desc
@@ -104,7 +89,8 @@
 			select
 			a.id,a.name,a.alarm_time,a.score,a.level,a.alarm_content,a.url,a.keyword,a.taskId,a.alarm_type,a.userId,a.group_id,l.advice
 			from cs_alarm a, (select t.taskId,t.group_id from
-			cs_order_asset oa,cs_task t where oa.id in
+			cs_order_asset
+			oa,cs_task t where oa.id in
 			(t.order_asset_id) and t.status =
 			3
 			<if test="group_flag!=null and group_flag!=''">
@@ -114,7 +100,8 @@
 			<if test="type==1 and group_flag==null or group_flag==''">
 				limit #{count}
 			</if>
-			) b,cs_leakinfo l where a.group_id = b.group_id and a.id=#{id} and a.name =
+			) b,cs_leakinfo l where a.group_id = b.group_id and a.id=#{id} and
+			a.name =
 			l.name
 			<if test="level!=null">and a.level=#{level}</if>
 			<if test="name!=null">and a.name=#{name}</if>
@@ -122,22 +109,32 @@
 		</if>
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from cs_alarm where id = #{id,jdbcType=INTEGER}
+		delete from
+		cs_alarm where id = #{id,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="com.ctbri.vo.CsAlarm">
-		insert into cs_alarm (id, name, alarm_time, score, level,
-		advice, alarm_content, url, keyword, taskId, alarm_type, userId,
-		group_id, serviceId, districtId) values (#{id,jdbcType=INTEGER},
-		#{name,jdbcType=VARCHAR}, #{alarmTime,jdbcType=TIMESTAMP},
-		#{score,jdbcType=VARCHAR}, #{level,jdbcType=BIT},
-		#{advice,jdbcType=VARCHAR}, #{alarmContent,jdbcType=VARCHAR},
-		#{url,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR},
-		#{taskid,jdbcType=INTEGER}, #{alarmType,jdbcType=CHAR},
-		#{userid,jdbcType=INTEGER}, #{groupId,jdbcType=VARCHAR},
-		#{serviceid,jdbcType=INTEGER}, #{districtid,jdbcType=INTEGER})
+		insert into cs_alarm (id,
+		name, alarm_time, score, level,
+		advice, alarm_content, url, keyword,
+		taskId, alarm_type, userId,
+		group_id, serviceId, districtId) values
+		(#{id,jdbcType=INTEGER},
+		#{name,jdbcType=VARCHAR},
+		#{alarmTime,jdbcType=TIMESTAMP},
+		#{score,jdbcType=VARCHAR},
+		#{level,jdbcType=BIT},
+		#{advice,jdbcType=VARCHAR},
+		#{alarmContent,jdbcType=VARCHAR},
+		#{url,jdbcType=VARCHAR},
+		#{keyword,jdbcType=VARCHAR},
+		#{taskid,jdbcType=INTEGER},
+		#{alarmType,jdbcType=CHAR},
+		#{userid,jdbcType=INTEGER},
+		#{groupId,jdbcType=VARCHAR},
+		#{serviceid,jdbcType=INTEGER},
+		#{districtid,jdbcType=INTEGER})
 	</insert>
-	<insert id="insertSelective"
-		parameterType="com.ctbri.vo.CsAlarm">
+	<insert id="insertSelective" parameterType="com.ctbri.vo.CsAlarm">
 		insert into cs_alarm
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">id,</if>
@@ -184,8 +181,7 @@
 			</if>
 		</trim>
 	</insert>
-	<update id="updateByPrimaryKeySelective"
-		parameterType="com.ctbri.vo.CsAlarm">
+	<update id="updateByPrimaryKeySelective" parameterType="com.ctbri.vo.CsAlarm">
 		update cs_alarm
 		<set>
 			<if test="name != null">
@@ -229,17 +225,24 @@
 		</set>
 		where id = #{id,jdbcType=INTEGER}
 	</update>
-	<update id="updateByPrimaryKey"
-		parameterType="com.ctbri.vo.CsAlarm">
-		update cs_alarm set name = #{name,jdbcType=VARCHAR}, alarm_time
-		= #{alarmTime,jdbcType=TIMESTAMP}, score =
-		#{score,jdbcType=VARCHAR}, level = #{level,jdbcType=BIT}, advice
-		= #{advice,jdbcType=VARCHAR}, alarm_content =
-		#{alarmContent,jdbcType=VARCHAR}, url = #{url,jdbcType=VARCHAR},
-		keyword = #{keyword,jdbcType=VARCHAR}, taskId =
+	<update id="updateByPrimaryKey" parameterType="com.ctbri.vo.CsAlarm">
+		update cs_alarm
+		set name = #{name,jdbcType=VARCHAR}, alarm_time
+		=
+		#{alarmTime,jdbcType=TIMESTAMP}, score =
+		#{score,jdbcType=VARCHAR},
+		level = #{level,jdbcType=BIT}, advice
+		= #{advice,jdbcType=VARCHAR},
+		alarm_content =
+		#{alarmContent,jdbcType=VARCHAR}, url =
+		#{url,jdbcType=VARCHAR},
+		keyword = #{keyword,jdbcType=VARCHAR}, taskId
+		=
 		#{taskid,jdbcType=INTEGER}, alarm_type =
-		#{alarmType,jdbcType=CHAR}, userId = #{userid,jdbcType=INTEGER},
-		group_id = #{groupId,jdbcType=VARCHAR}, serviceId =
+		#{alarmType,jdbcType=CHAR},
+		userId = #{userid,jdbcType=INTEGER},
+		group_id =
+		#{groupId,jdbcType=VARCHAR}, serviceId =
 		#{serviceid,jdbcType=INTEGER}, districtId =
 		#{districtid,jdbcType=INTEGER} where id = #{id,jdbcType=INTEGER}
 	</update>
