@@ -50,4 +50,38 @@ public interface AlarmService {
 			Integer count, @FormParam("level")
 			Integer level, @FormParam("name")
 			String name);
+	
+	/**
+	 * 
+	 * @Title: findAlarmByOrderId
+	 * @Description: 根据orderid查询告警数,最近告警信息
+	 * @param websoc
+	 * @param orderId
+	 * @param group_flag
+	 * @param type
+	 * @param count
+	 * @param level
+	 * @param name
+	 * @return 设定文件
+	 * @return String 返回类型
+	 * @throws
+	 */
+	String findAlarm(@FormParam("websoc")
+			Integer websoc, @FormParam("alarmId")
+			String alarmId, @FormParam("group_flag")
+			Date group_flag, @FormParam("type")
+			Integer type, @FormParam("count")
+			Integer count, @FormParam("level")
+			Integer level, @FormParam("name")
+			String name);
+	/**
+	 * 
+	* @Title: findAlarmByAlarmId 
+	* @Description: TODO(这里用一句话描述这个方法的作用) 
+	* @param @param alarmId
+	* @param @return    设定文件 
+	* @return String    返回类型 
+	* @throws
+	 */
+	String findAlarmByAlarmId(@FormParam("alarmId")Integer alarmId);
 }

@@ -58,5 +58,35 @@ public class TestAlarm {
 		JSONArray jsonArray = JSONArray.fromObject(asAlarm);
 		Assert.assertEquals(1065088, jsonArray.getJSONObject(0).get("id"));
 	}
+	@Test
+	public void testFindAlarmByParams() {
+		String domin = "http://localhost:8080/CloudSecurityClient/rs/AlarmService/findAlarm";
+		Client client = new Client();
+		WebResource webResource = client.resource(domin);
+		Form form = new Form();
+		form.add("websoc", 1);
+		form.add("alarmId", 1065088);
+		form.add("group_flag", "");
+		form.add("type", 0);
+		form.add("count", 10);
+		form.add("level", 1);
+		form.add("name", "CSRF跨站请求伪造漏洞");
+		String asAlarm = webResource.accept(MediaType.APPLICATION_JSON_TYPE)
+				.post(String.class, form);
+		JSONArray jsonArray = JSONArray.fromObject(asAlarm);
+		Assert.assertEquals(1065088, jsonArray.getJSONObject(0).get("id"));
+	}
+	@Test
+	public void testFindAlarmByAlarmId() {
+		String domin = "http://localhost:8080/CloudSecurityClient/rs/AlarmService/findAlarmByAlarmId";
+		Client client = new Client();
+		WebResource webResource = client.resource(domin);
+		Form form = new Form();
+		form.add("alarmId", 998335);
+		String asAlarm = webResource.accept(MediaType.APPLICATION_JSON_TYPE)
+				.post(String.class, form);
+		JSONObject jsonObject = JSONObject.fromObject(asAlarm);
+		Assert.assertEquals(998335, jsonObject.getInt("id"));
+	}
 
 }

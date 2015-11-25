@@ -21,4 +21,6 @@ public interface CsAlarmMapper {
 	List<Map> findAlarmByUserId(Integer userId);
 
 	List<CsAlarm> findAlarmByOrderId(Map map);
+	
+	List<CsAlarm> findAlarmByAlarmId(Map map);
 }

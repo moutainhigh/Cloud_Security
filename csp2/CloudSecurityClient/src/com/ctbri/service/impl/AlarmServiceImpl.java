@@ -84,5 +84,46 @@ public class AlarmServiceImpl extends ServiceCommon implements AlarmService {
 		List<CsAlarm> csAlam = csAlarmMapper.findAlarmByOrderId(map);
 		return JsonUtil.encodeObject2Json(csAlam);
 	}
-
+	
+	@POST
+	@Path("findAlarm")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String findAlarm(@FormParam("websoc")
+		Integer websoc, @FormParam("alarmId")
+		String alarmId, @FormParam("group_flag")
+		Date group_flag, @FormParam("type")
+		Integer type, @FormParam("count")
+		Integer count, @FormParam("level")
+		Integer level, @FormParam("name")
+		String name) {
+		if(type==-1){
+			type=null;
+		}
+		if(level==-1){
+			level=null;
+		}
+		Map map = new HashMap();
+		map.put("websoc", websoc);
+		map.put("id", alarmId);
+		map.put("group_flag", group_flag);
+		map.put("type", type);
+		map.put("count", count);
+		map.put("level", level);
+		map.put("name", name);
+		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
+		CsAlarmMapper csAlarmMapper = sqlSession.getMapper(CsAlarmMapper.class);
+		List<CsAlarm> csAlam = csAlarmMapper.findAlarmByAlarmId(map);
+		return JsonUtil.encodeObject2Json(csAlam);
+	}
+	@POST
+	@Path("findAlarmByAlarmId")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String findAlarmByAlarmId( @FormParam("alarmId")Integer alarmId) {
+		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
+		CsAlarmMapper csAlarmMapper = sqlSession.getMapper(CsAlarmMapper.class);
+		CsAlarm csAlam = csAlarmMapper.selectByPrimaryKey(alarmId);
+		return JsonUtil.encodeObject2Json(csAlam);
+	}
 }
