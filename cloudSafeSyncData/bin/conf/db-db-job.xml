@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+	<!-- Import our beans -->
+	<import resource="classpath:/applicationContextBatch.xml" />
+	<import resource="classpath:/readDataSource.xml" />
+   	<import resource="classpath:/wirteDataSource.xml" />
+	<import resource="classpath:/scheduler.xml" />
+
+	<bean id="abstractCursorReader" abstract="true"
+		class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="readDataSource" />
+	</bean>
+	<job id="execJob" xmlns="http://www.springframework.org/schema/batch">
+		<step id="DB2DB">
+			<tasklet transaction-manager="transactionManager">
+				<chunk reader="execReader" writer="execWriter" commit-interval="10000" />
+			</tasklet>
+		</step>
+	</job>
+	<bean id="getJobBean" class="com.cn.ctbri.scheduler.GetJobBean">
+		<property name="jobLauncher" ref="jobLauncher"></property>
+		<property name="execJob" ref="execJob"></property>
+	</bean>
+	<bean id="execReader" parent="abstractCursorReader" scope="step">
+        <property name="sql" value="#{jobParameters['readSql']}" />
+        <property name="rowMapper" ref="#{jobParameters['mapper']}" />
+    </bean>
+	<bean id="execWriter"
+		class="org.springframework.batch.item.database.JdbcBatchItemWriter" scope="step">
+		<property name="dataSource" ref="wirteDataSource" />
+		<property name="sql" value="#{jobParameters['writeSql']}"  />
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
+		</property>
+	</bean>
+</beans>

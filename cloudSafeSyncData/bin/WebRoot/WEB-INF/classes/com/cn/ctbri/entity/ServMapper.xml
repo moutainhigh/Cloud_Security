@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.ServMapper">
+	<sql id="cols">id,name,factory,module_name,type,status,remarks,ordertype,parentC,websoc</sql>
+	<resultMap type="com.cn.ctbri.entity.Serv" id="ServRM">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="factory" column="factory"/>
+		<result property="module_name" column="module_name"/>
+		<result property="type" column="type"/>
+		<result property="status" column="status"/>
+		<result property="remarks" column="remarks"/>
+		<result property="orderType" column="ordertype"/>
+		<result property="parentC" column="parentC"/>
+		<result property="websoc" column="websoc"/>
+	</resultMap>
+	<!-- 查询所有记录 -->
+	<select id="list" resultMap="ServRM">
+		select<include refid="cols"/>from cs_service
+	</select>
+	<select id="findById" resultMap="ServRM" parameterType="int">
+		select * from cs_service
+		where id=#{id}
+	</select>
+	
+	<select id="findServiceByParam" resultMap="ServRM" parameterType="com.cn.ctbri.entity.Serv">
+        select * from cs_service s
+        <where>
+            <if test="type!=0">
+            and s.type=#{type}
+            </if>
+            <if test="orderType!=null">
+            and s.orderType in(0,#{orderType})
+            </if>
+            <if test="factory!=null">
+            and s.factory=#{factory}
+            </if>
+            <if test="parentC!=0">
+            and s.parentC=#{parentC}
+            </if>
+            <if test="websoc==1">
+            and s.websoc=#{websoc}
+            </if>
+        </where>
+    </select>
+</mapper>
