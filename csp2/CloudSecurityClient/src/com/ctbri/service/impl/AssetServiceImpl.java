@@ -65,9 +65,25 @@ public class AssetServiceImpl extends ServiceCommon implements AssetService {
 		if (assetList == null || assetList.size() == 0) {
 			throw new CloudException("ASSET.QUERY.NOT.EXIST");
 		} else {
+			JsonMapper jsonMapper = new JsonMapper();
+			return jsonMapper.toJson(assetList);
+		}
+	}
+	@POST
+	@Path("getCountByUserId")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getCountByUserId(@FormParam("userId")Integer userId) throws CloudException {
+		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
+		CsAssetMapper csAssetMapper = sqlSession.getMapper(CsAssetMapper.class);
+		Map map = new HashMap();
+		map.put("userId", userId);
+		List<CsAsset> assetList = csAssetMapper.selectByUserId(map);
+		if (assetList == null || assetList.size() == 0) {
+			throw new CloudException("ASSET.QUERY.NOT.EXIST");
+		} else {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.element("count", assetList.size());
-			jsonObject.element("assetList", assetList);
 			return jsonObject.toString();
 		}
 	}

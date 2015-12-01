@@ -38,10 +38,21 @@ public class TestAsset {
 		System.out.println(form);
 		String assetObject = webResource.accept(MediaType.APPLICATION_JSON_TYPE)
 		.post(String.class, form);
-		JSONObject jsonObject = JSONObject.fromObject(assetObject);
-		JSONArray jsonArray = JSONArray.fromObject(jsonObject.get("assetList"));
-		Assert.assertEquals(5, jsonObject.get("count"));
+		JSONArray jsonArray = JSONArray.fromObject(assetObject);
 		Assert.assertEquals(20, jsonArray.getJSONObject(0).get("id"));
+	}
+	
+	@Test
+	public void testAssetCount() throws CloudException{
+		String domin = "http://localhost:8080/CloudSecurityClient/rs/AssetService/getCountByUserId";
+		Client client = new Client();
+		WebResource webResource = client.resource(domin);
+		Form form = new Form();
+		form.add("userId", 105);
+		String assetObject = webResource.accept(MediaType.APPLICATION_JSON_TYPE)
+				.post(String.class, form);
+		JSONObject jsonObject = JSONObject.fromObject(assetObject);
+		Assert.assertEquals(5, jsonObject.get("count"));
 	}
 	
 	@Test
