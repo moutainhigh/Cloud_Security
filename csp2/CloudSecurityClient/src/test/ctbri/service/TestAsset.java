@@ -33,13 +33,15 @@ public class TestAsset {
 		WebResource webResource = client.resource(domin);
 		Form form = new Form();
 		form.add("userId", 105);
-		form.add("pageNow", 1);
-		form.add("pageSize", 3);
+		form.add("pageNow", -1);
+		form.add("pageSize", -1);
 		System.out.println(form);
-		String assetList = webResource.accept(MediaType.APPLICATION_JSON_TYPE)
+		String assetObject = webResource.accept(MediaType.APPLICATION_JSON_TYPE)
 		.post(String.class, form);
-		JSONArray jsonArray = JSONArray.fromObject(assetList);
-		Assert.assertEquals(21, jsonArray.getJSONObject(0).get("id"));
+		JSONObject jsonObject = JSONObject.fromObject(assetObject);
+		JSONArray jsonArray = JSONArray.fromObject(jsonObject.get("assetList"));
+		Assert.assertEquals(5, jsonObject.get("count"));
+		Assert.assertEquals(20, jsonArray.getJSONObject(0).get("id"));
 	}
 	
 	@Test
@@ -55,6 +57,6 @@ public class TestAsset {
 		String assetList = webResource.accept(MediaType.APPLICATION_JSON_TYPE)
 		.post(String.class, form);
 		JSONArray jsonArray = JSONArray.fromObject(assetList);
-		Assert.assertEquals(21, jsonArray.getJSONObject(0).get("id"));
+		Assert.assertEquals(35, jsonArray.getJSONObject(0).get("id"));
 	}
 }

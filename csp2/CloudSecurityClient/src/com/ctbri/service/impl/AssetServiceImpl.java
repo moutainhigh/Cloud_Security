@@ -11,6 +11,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import net.sf.json.JSONObject;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
 
@@ -63,8 +65,10 @@ public class AssetServiceImpl extends ServiceCommon implements AssetService {
 		if (assetList == null || assetList.size() == 0) {
 			throw new CloudException("ASSET.QUERY.NOT.EXIST");
 		} else {
-			JsonMapper jsonMapper = new JsonMapper();
-			return jsonMapper.toJson(assetList);
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.element("count", assetList.size());
+			jsonObject.element("assetList", assetList);
+			return jsonObject.toString();
 		}
 	}
 
