@@ -1,5 +1,7 @@
 package com.ctbri.dao;
 
+import java.util.List;
+
 import com.ctbri.vo.CsAsset;
 import com.ctbri.vo.CsOrderAsset;
 
@@ -16,5 +18,5 @@ public interface CsOrderAssetMapper {
 
     int updateByPrimaryKey(CsOrderAsset record);
     
-    CsAsset findAssetNameByOrderId(String orderId);
+    List<CsAsset> findAssetNameByOrderId(String orderId);
 }

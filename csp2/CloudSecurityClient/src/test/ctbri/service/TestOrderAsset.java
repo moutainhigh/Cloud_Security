@@ -20,7 +20,7 @@ public class TestOrderAsset {
 
 		WebResource webResource = client.resource(domin);
 		Form form = new Form();
-		form.add("orderId", "15080518412335087");
+		form.add("orderId", "1405875832");
 		String csAsset = webResource.accept(MediaType.APPLICATION_JSON_TYPE)
 				.post(String.class, form);
 		JSONObject jsonObject = JSONObject.fromObject(csAsset);

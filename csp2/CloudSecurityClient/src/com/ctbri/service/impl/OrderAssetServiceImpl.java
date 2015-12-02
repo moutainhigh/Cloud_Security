@@ -1,5 +1,7 @@
 package com.ctbri.service.impl;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -30,7 +32,11 @@ public class OrderAssetServiceImpl extends ServiceCommon implements
 		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
 		CsOrderAssetMapper csOrderAssetMapper = sqlSession
 				.getMapper(CsOrderAssetMapper.class);
-		CsAsset csAsset = csOrderAssetMapper.findAssetNameByOrderId(orderId);
+		List<CsAsset> csAsset = csOrderAssetMapper.findAssetNameByOrderId(orderId);
+		System.out.println(csAsset.size());
+		for(int i=0;i<csAsset.size();i++){
+			System.out.println(csAsset.get(i));
+		}
 		return JsonUtil.encodeObject2Json(csAsset);
 	}
 
