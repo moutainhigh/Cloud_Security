@@ -46,9 +46,8 @@
 	<!-- 根据orderid查询告警数,最近告警信息 -->
 	<select id="findAlarmByOrderId" resultMap="BaseResultMap" parameterType="hashmap">
 		select
-		a.id,a.name,DATE_FORMAT(a.alarm_time,'%Y-%m-%d %H:%i:%S') alarm_time,
+		a.id,a.name,
 		a.score,a.level,a.url,a.alarm_type,
-		a.userId,a.group_id 
 		from cs_alarm a,
 		(select t.taskId,t.group_id from cs_order_asset oa,cs_task t
 		where oa.id = t.order_asset_id
