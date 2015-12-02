@@ -39,7 +39,7 @@
 		select
 		o.id,o.type,s.name,o.serviceId,DATE_FORMAT(o.begin_date,'%Y-%m-%d %H:%i:%S') begin_date,
 		DATE_FORMAT(o.end_date,'%Y-%m-%d %H:%i:%S') end_date,
-		DATE_FORMAT(o.create_date,'%Y-%m-%d %H:%i:%S') create_date,o.scan_type,o.status
+		DATE_FORMAT(o.create_date,'%Y-%m-%d %H:%i:%S') create_date,o.scan_type,o.status 
 		from cs_order o,cs_service s where o.userId = #{userId} and
 		o.serviceId = s.id AND o.status =2
 	</select>
@@ -47,7 +47,7 @@
 	<select id="findAlarmByOrderId" resultMap="BaseResultMap" parameterType="hashmap">
 		select
 		a.id,a.name,
-		a.score,a.level,a.url,a.alarm_type,
+		a.score,a.level,a.url,a.alarm_type 
 		from cs_alarm a,
 		(select t.taskId,t.group_id from cs_order_asset oa,cs_task t
 		where oa.id = t.order_asset_id
