@@ -22,15 +22,19 @@
     contactId, remarks, status, message, websoc
   </sql>
   <select id="findOrderByOrderId" resultType="java.util.Map" parameterType="java.lang.String" >
-    select o.id,o.serviceId,o.type,s.name,s.parentC,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc
+    select o.id,o.serviceId,o.type,s.name,s.parentC,DATE_FORMAT(o.begin_date,'%Y-%m-%d %H:%i:%S') begin_date,
+    DATE_FORMAT(o.end_date,'%Y-%m-%d %H:%i:%S') end_date,
+    DATE_FORMAT(o.create_date,'%Y-%m-%d %H:%i:%S') create_date,o.scan_type,o.status,o.websoc
         from cs_order o,cs_service s
         where o.id = #{id} and o.serviceId = s.id
   </select>
   <select id="findOrderByUserIdAndState" resultType="java.util.Map" parameterType="java.util.Map" >
-   select b.id,b.type,b.sid,b.name,b.serviceId,b.begin_date,b.end_date,b.create_date,b.scan_type,b.status from
+   select b.id,b.type,b.sid,b.name,b.serviceId,DATE_FORMAT(b.begin_date,'%Y-%m-%d %H:%i:%S') begin_date
+   ,DATE_FORMAT(b.end_date,'%Y-%m-%d %H:%i:%S') end_date,
+   DATE_FORMAT(b.create_date,'%Y-%m-%d %H:%i:%S') create_date,b.scan_type,b.status,b.websoc from
         (
-        SELECT c.id,c.type,c.sid,c.name,c.serviceId,c.begin_date,c.end_date,c.create_date,c.scan_type,c.status
-        FROM (SELECT o.id,o.type,s.id as sid,s.name,o.serviceId,o.scan_type,o.begin_date,o.end_date,o.create_date,o.status
+        SELECT c.id,c.type,c.sid,c.name,c.serviceId,c.begin_date,c.end_date,c.create_date,c.scan_type,c.status,c.websoc 
+        FROM (SELECT o.id,o.type,s.id as sid,s.name,o.serviceId,o.scan_type,o.begin_date,o.end_date,o.create_date,o.status,o.websoc 
               FROM cs_order o,cs_service s
               WHERE o.userId = #{userId} AND o.serviceId = s.id) c 
         WHERE

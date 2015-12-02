@@ -27,21 +27,28 @@
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
-		select
-		<include refid="Base_Column_List" />
+		select 
+		id, name, DATE_FORMAT(alarm_time,'%Y-%m-%d %H:%i:%S') alarm_time, score, level, advice, alarm_content,
+		url,
+		keyword, taskId, alarm_type, userId, group_id, serviceId,
+		districtId 
 		from cs_alarm where id = #{id,jdbcType=INTEGER}
 	</select>
 	<select id="findAlarmByUserId" parameterType="hashmap"
 		resultType="hashmap">
 		select
-		o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status
+		o.id,o.type,s.name,o.serviceId,DATE_FORMAT(o.begin_date,'%Y-%m-%d %H:%i:%S') begin_date,
+		DATE_FORMAT(o.end_date,'%Y-%m-%d %H:%i:%S') end_date,
+		DATE_FORMAT(o.create_date,'%Y-%m-%d %H:%i:%S') create_date,o.scan_type,o.status
 		from cs_order o,cs_service s where o.userId = #{userId} and
 		o.serviceId = s.id AND o.status =2
 	</select>
 	<!-- 根据orderid查询告警数,最近告警信息 -->
 	<select id="findAlarmByOrderId" resultMap="BaseResultMap" parameterType="hashmap">
 		select
-		a.id,a.name,a.alarm_time,a.score,a.level,a.alarm_content,a.url,a.keyword,a.taskId,a.alarm_type,a.userId,a.group_id,a.advice
+		a.id,a.name,DATE_FORMAT(a.alarm_time,'%Y-%m-%d %H:%i:%S') alarm_time,
+		a.score,a.level,a.alarm_content,a.url,a.keyword,a.taskId,a.alarm_type,
+		a.userId,a.group_id,a.advice
 		from cs_alarm a,
 		(select t.taskId,t.group_id from cs_order_asset oa,cs_task t
 		where oa.id = t.order_asset_id
@@ -69,7 +76,9 @@
 	<select id="findAlarmByAlarmId" resultMap="BaseResultMap"
 		parameterType="hashmap">
 		<if test="websoc!=1">
-			select * from cs_alarm a, (select t.taskId from
+			select id,name,DATE_FORMAT(alarm_time,'%Y-%m-%d %H:%i:%S') alarm_time,
+			score,level,advice,alarm_content,url,keyword,a.taskid,alarm_type,
+userid,group_id,serviceid,districtid from cs_alarm a, (select t.taskId from
 			cs_order_asset
 			oa,cs_task t where oa.id = t.order_asset_id
 			and t.status = 3
@@ -87,7 +96,9 @@
 		</if>
 		<if test="websoc==1">
 			select
-			a.id,a.name,a.alarm_time,a.score,a.level,a.alarm_content,a.url,a.keyword,a.taskId,a.alarm_type,a.userId,a.group_id,l.advice
+			a.id,a.name,DATE_FORMAT(a.alarm_time,'%Y-%m-%d %H:%i:%S') alarm_time,
+			a.score,a.level,a.alarm_content,a.url,a.keyword,a.taskId,
+			a.alarm_type,a.userId,a.group_id,l.advice
 			from cs_alarm a, (select t.taskId,t.group_id from
 			cs_order_asset
 			oa,cs_task t where oa.id in

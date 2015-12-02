@@ -21,14 +21,16 @@
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
-		select
-		<include refid="Base_Column_List" />
+		select 
+		id, name, type, addr, status, userId, DATE_FORMAT(create_date,'%Y-%m-%d %H:%i:%S') create_date, remarks, ip,
+		districtId 
 		from cs_asset where status=1 and id = #{id,jdbcType=INTEGER}
 	</select>
 	<select id="selectByUserId" resultMap="BaseResultMap"
 		parameterType="java.util.Map">
-		select
-		<include refid="Base_Column_List" />
+		select 
+		id, name, type, addr, status, userId, DATE_FORMAT(create_date,'%Y-%m-%d %H:%i:%S') create_date, remarks, ip,
+		districtId 
 		from cs_asset where userId = #{userId,jdbcType=INTEGER}
 		<if test="pageNow!=null and pageSize!=null">
 			limit #{pageNow},#{pageSize}
@@ -37,8 +39,9 @@
 
 	<select id="selectByUserIdAndStatus" resultMap="BaseResultMap"
 		parameterType="java.util.Map">
-		select
-		<include refid="Base_Column_List" />
+		select 
+		id, name, type, addr, status, userId, DATE_FORMAT(create_date,'%Y-%m-%d %H:%i:%S') create_date, remarks, ip,
+		districtId 
 		from cs_asset where userId = #{userId,jdbcType=INTEGER} and
 		status = #{status,jdbcType=INTEGER} 
 		<if test="pageNow!=null and pageSize!=null">
