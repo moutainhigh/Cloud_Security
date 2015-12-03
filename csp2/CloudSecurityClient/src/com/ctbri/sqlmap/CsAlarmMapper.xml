@@ -47,7 +47,7 @@
 	<select id="findAlarmByOrderId" resultMap="BaseResultMap" parameterType="hashmap">
 		select
 		a.id,a.name,
-		a.score,a.level,a.alarm_content,a.alarm_type 
+		a.level,a.alarm_content,a.alarm_type 
 		from cs_alarm a,
 		(select t.taskId,t.group_id from cs_order_asset oa,cs_task t
 		where oa.id = t.order_asset_id
@@ -70,7 +70,6 @@
 		</if>
 		order by a.level desc
 	</select>
-
 	<!-- 根据alarmid查询告警数,最近告警信息 -->
 	<select id="findAlarmByAlarmId" resultMap="BaseResultMap"
 		parameterType="hashmap">

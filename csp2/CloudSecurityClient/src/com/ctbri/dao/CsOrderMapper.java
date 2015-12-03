@@ -25,4 +25,6 @@ public interface CsOrderMapper {
     List<Map> findByCombineOrderTrack(Map map);
     
     List<CsOrder> findOrderByUserId(Integer userId);
+    
+    List<Map> findScoreByOrderId(String orderId);
 }

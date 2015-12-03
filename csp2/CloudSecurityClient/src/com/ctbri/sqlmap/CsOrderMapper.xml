@@ -28,6 +28,16 @@
         from cs_order o,cs_service s
         where o.id = #{id} and o.serviceId = s.id
   </select>
+  <select id="findScoreByOrderId" resultType="Map" parameterType="String" >
+		select
+		a.score 
+		from cs_alarm a,
+		(select t.taskId,t.group_id from cs_order_asset oa,cs_task t
+		where oa.id = t.order_asset_id
+		and oa.orderId=#{orderId}
+		) b
+		where (a.taskId = b.taskId or a.group_id = b.group_id)
+	</select>
   <select id="findOrderByUserIdAndState" resultType="java.util.Map" parameterType="java.util.Map" >
    select b.id,b.type,b.sid,b.name,b.serviceId,DATE_FORMAT(b.begin_date,'%Y-%m-%d %H:%i:%S') begin_date
    ,DATE_FORMAT(b.end_date,'%Y-%m-%d %H:%i:%S') end_date,

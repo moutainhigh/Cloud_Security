@@ -69,6 +69,8 @@ public class OrderServiceImpl extends ServiceCommon implements OrderService {
 		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
 		CsOrderMapper csOrderMapper = sqlSession.getMapper(CsOrderMapper.class);
 		Map csOrder = csOrderMapper.findOrderByOrderId(id);
+		List<Map> score = csOrderMapper.findScoreByOrderId(id);
+		csOrder.put("score", score.get(0).get("score"));
 		return JsonUtil.encodeObject2Json(csOrder);
 	}
 
