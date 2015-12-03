@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import com.ctbri.dao.CsAlarmMapper;
 import com.ctbri.service.AlarmService;
+import com.ctbri.util.JsonMapper;
 import com.ctbri.util.JsonUtil;
 import com.ctbri.vo.CsAlarm;
 import com.sun.jersey.spi.resource.Singleton;
@@ -121,7 +122,7 @@ public class AlarmServiceImpl extends ServiceCommon implements AlarmService {
 	public String findAlarmByAlarmId( @FormParam("alarmId")Integer alarmId) {
 		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
 		CsAlarmMapper csAlarmMapper = sqlSession.getMapper(CsAlarmMapper.class);
-		CsAlarm csAlam = csAlarmMapper.selectByPrimaryKey(alarmId);
+		Map csAlam = csAlarmMapper.selectByPrimaryKey(alarmId);
 		return JsonUtil.encodeObject2Json(csAlam);
 	}
 }

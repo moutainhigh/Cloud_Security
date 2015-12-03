@@ -31,6 +31,7 @@ public class TestOrder {
 		String orderList = webResource.accept(MediaType.APPLICATION_JSON_TYPE)
 				.post(String.class, form);
 		JSONArray jsonArray = JSONArray.fromObject(orderList);
+		System.out.println(jsonArray.getJSONObject(0));
 		String id = jsonArray.getJSONObject(0).getString("id");
 		Assert.assertEquals("15092516172565713", id);
 	}

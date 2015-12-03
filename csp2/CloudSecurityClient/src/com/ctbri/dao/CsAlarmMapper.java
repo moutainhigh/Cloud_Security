@@ -12,7 +12,7 @@ public interface CsAlarmMapper {
 
 	int insertSelective(CsAlarm record);
 
-	CsAlarm selectByPrimaryKey(Integer id);
+	Map selectByPrimaryKey(Integer id);
 
 	int updateByPrimaryKeySelective(CsAlarm record);
 

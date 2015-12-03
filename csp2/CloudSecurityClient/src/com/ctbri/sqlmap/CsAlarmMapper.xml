@@ -25,11 +25,11 @@
 		keyword, taskId, alarm_type, userId, group_id, serviceId,
 		districtId
 	</sql>
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+	<select id="selectByPrimaryKey" resultType="map"
 		parameterType="java.lang.Integer">
 		select 
 		id, name, DATE_FORMAT(alarm_time,'%Y-%m-%d %H:%i:%S') alarm_time, level, advice, alarm_content,
-		url,
+		url,	 
 		keyword, serviceId,
 		districtId 
 		from cs_alarm where id = #{id,jdbcType=INTEGER}
@@ -47,7 +47,7 @@
 	<select id="findAlarmByOrderId" resultMap="BaseResultMap" parameterType="hashmap">
 		select
 		a.id,a.name,
-		a.score,a.level,a.url,a.alarm_type 
+		a.score,a.level,a.alarm_content,a.alarm_type 
 		from cs_alarm a,
 		(select t.taskId,t.group_id from cs_order_asset oa,cs_task t
 		where oa.id = t.order_asset_id
