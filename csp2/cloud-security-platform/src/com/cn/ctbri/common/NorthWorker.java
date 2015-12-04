@@ -310,13 +310,13 @@ public class NorthWorker {
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String lssuedTaskGetStatus(String OrderId, String Taskid) throws JSONException{
+	public static String vulnScanGetStatus(String orderId) throws JSONException{
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
-		json.put("OrderId", OrderId);
-		json.put("Taskid", Taskid);
+		json.put("orderId", orderId);
+//		json.put("Taskid", Taskid);
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Get_OrderStatus + OrderId + "/" +Taskid;
+    	String url = SERVER_WEB_ROOT + VulnScan_Get_OrderStatus + orderId;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
