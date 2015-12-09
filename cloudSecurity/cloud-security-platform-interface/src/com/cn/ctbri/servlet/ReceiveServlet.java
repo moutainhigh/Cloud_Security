@@ -85,9 +85,11 @@ public class ReceiveServlet extends HttpServlet {
                 String type = (String) array.getJSONObject(i).get("type");
                 Object value = array.getJSONObject(i).get("value");
                 JSONObject data = JSONObject.fromObject(value);
+                List<Task> taskList = taskService.findTaskByGroupId(group_id);
+                //根据taskId查询地区
+        		int districtId = taskService.findDistrictIdByTaskId(String.valueOf(taskList.get(0).getTaskId()));
                 if(type.equals("siteinfo")){
                     String ip = data.getString("ip");
-                    List<Task> taskList = taskService.findTaskByGroupId(group_id);
                     if(taskList.size()>0){
                         Task task = new Task();
 //                        task.setDns(ip);
@@ -120,6 +122,7 @@ public class ReceiveServlet extends HttpServlet {
                     taskwarn.setGroup_id(group_id);
                     taskwarn.setWarn_time(sdf.parse(start_at));
                     taskwarn.setServiceId(5);
+                    taskwarn.setDistrictId(districtId);
                     taskService.insertTaskWarn(taskwarn);
                 }else{
                     String level = "";
@@ -134,6 +137,7 @@ public class ReceiveServlet extends HttpServlet {
                     alarm.setUrl(site);
                     alarm.setAlarm_type(type);
                     alarm.setKeyword(value.toString());
+                    alarm.setDistrictId(districtId);
                     //等级判断
                     if(type.equals("black_links")){//暗链
                         alarm.setName("暗链");
@@ -200,6 +204,10 @@ public class ReceiveServlet extends HttpServlet {
                     }
                     if(!type.equals("siteinfo")){
                         alarmService.saveAlarm(alarm);
+                        //add by tang 2015/11/3
+                        String advice = alarmService.findAdvice(alarm.getName());
+                        alarm.setAdvice(advice);
+                        alarmService.updateAlarm(alarm);
                     }
                 }
             }
