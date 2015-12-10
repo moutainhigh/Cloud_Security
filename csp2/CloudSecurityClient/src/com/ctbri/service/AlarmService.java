@@ -48,7 +48,8 @@ public interface AlarmService {
 			Integer type, @FormParam("count")
 			Integer count, @FormParam("level")
 			Integer level, @FormParam("name")
-			String name);
+			String name, @FormParam("serviceId")
+			Integer serviceId);
 	
 	/**
 	 * 
