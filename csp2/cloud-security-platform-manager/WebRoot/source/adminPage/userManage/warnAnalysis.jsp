@@ -25,14 +25,16 @@
     <div class="logo"><img src="${ctx}/source/adminImages/b_logo2.jpg"/></div>
     <div class="list b_list">
       <ul>
-        <li><a href="${ctx}/adminUserManageUI.html" class="white">用户管理</a></li>
+      	<li><a href="${ctx}/adminUserManageUI.html" class="white">用户管理</a></li>
+		<li><a href="${ctx}/adminchinas.html" target="_blank" class="white">安全态势</a></li>
         <li><a href="${ctx}/adminServUI.html" class="white">服务管理</a></li>
         <li><a href="${ctx}/adminDataAssetUI.html" class="white">资产分析</a></li>
         <li><a href="${ctx}/adminUserAnalysisUI.html" class="white">用户分析</a></li>
         <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">订单分析</a></li>
         <li class="b_current"><a href="${ctx}/adminWarnAnalysisUI.html" class="white">告警分析</a></li>
-        <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">设备资源管理</a></li>
-        <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/adminSystemManageUI.html" class="white">系统管理</a></li>
+        <li><a href="${ctx}/equResourceUI.html" class="white">设备资源管理</a></li>
+        <li><a href="${ctx}/adminSystemManageUI.html" class="white">系统管理</a></li>
+        <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/adminNoticeManageUI.html" class="white">公告管理</a></li>
       </ul>
     </div>
     <div class="lagst">
