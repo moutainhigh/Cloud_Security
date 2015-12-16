@@ -69,12 +69,18 @@
 		<if test="name!=null">
 			and a.name=#{name}
 		</if>
-		order by a.level desc
+		order by a.level desc 
+		<if test="pageNow!=null and pageSize!=null">
+             limit #{pageNow},#{pageSize}
+        </if> 
 		</if>
 		<if test="serviceId==5">
 		SELECT tw.* 
 			FROM cs_order_asset oa ,cs_task t,cs_taskwarn tw
-			WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND (t.taskId=tw.task_id or t.group_id=tw.group_id)
+			WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND (t.taskId=tw.task_id or t.group_id=tw.group_id) 
+			<if test="pageNow!=null and pageSize!=null">
+             limit #{pageNow},#{pageSize}
+            </if> 
 		</if>
 		
 	</select>

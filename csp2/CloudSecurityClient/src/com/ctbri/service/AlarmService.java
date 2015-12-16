@@ -49,7 +49,8 @@ public interface AlarmService {
 			Integer count, @FormParam("level")
 			Integer level, @FormParam("name")
 			String name, @FormParam("serviceId")
-			Integer serviceId);
+			Integer serviceId,@FormParam("pageNow")Integer pageNow,
+			@FormParam("pageSize") Integer pageSize);
 	
 	/**
 	 * 

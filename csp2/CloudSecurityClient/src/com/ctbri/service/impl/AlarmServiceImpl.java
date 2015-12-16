@@ -65,7 +65,8 @@ public class AlarmServiceImpl extends ServiceCommon implements AlarmService {
 	Integer count, @FormParam("level")
 	Integer level, @FormParam("name")
 	String name, @FormParam("serviceId")
-	Integer serviceId) {
+	Integer serviceId,@FormParam("pageNow")Integer pageNow,
+	@FormParam("pageSize") Integer pageSize) {
 		if(type==-1){
 			type=null;
 		}
@@ -80,6 +81,8 @@ public class AlarmServiceImpl extends ServiceCommon implements AlarmService {
 		map.put("level", level);
 		map.put("name", name);
 		map.put("serviceId", serviceId);
+		map.put("pageNow", pageNow);
+		map.put("pageSize", pageSize);
 		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
 		CsAlarmMapper csAlarmMapper = sqlSession.getMapper(CsAlarmMapper.class);
 		List<CsAlarm> csAlam = csAlarmMapper.findAlarmByOrderId(map);
