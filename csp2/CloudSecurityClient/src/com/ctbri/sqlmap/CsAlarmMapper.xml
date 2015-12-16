@@ -44,7 +44,7 @@
 		o.serviceId = s.id AND o.status =2
 	</select>
 	<!-- 根据orderid查询告警数,最近告警信息 -->
-	<select id="findAlarmByOrderId" resultMap="BaseResultMap" parameterType="hashmap">
+	<select id="findAlarmByOrderId" resultType="map" parameterType="hashmap">
 		<if test="serviceId!=5">
 		select
 		a.id,a.name,

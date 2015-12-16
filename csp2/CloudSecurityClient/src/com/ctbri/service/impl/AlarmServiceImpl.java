@@ -89,7 +89,7 @@ public class AlarmServiceImpl extends ServiceCommon implements AlarmService {
 		map.put("pageSize", pageSize);
 		SqlSession sqlSession = this.getSqlSessionFactory().openSession();
 		CsAlarmMapper csAlarmMapper = sqlSession.getMapper(CsAlarmMapper.class);
-		List<CsAlarm> csAlam = csAlarmMapper.findAlarmByOrderId(map);
+		List<Map> csAlam = csAlarmMapper.findAlarmByOrderId(map);
 		return JsonUtil.encodeObject2Json(csAlam);
 	}
 	
