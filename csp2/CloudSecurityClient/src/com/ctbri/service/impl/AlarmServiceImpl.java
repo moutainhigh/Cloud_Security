@@ -73,6 +73,10 @@ public class AlarmServiceImpl extends ServiceCommon implements AlarmService {
 		if(level==-1){
 			level=null;
 		}
+		if(pageNow==-1||pageSize==-1){
+			pageNow=null;
+			pageSize=null;
+		}
 		Map map = new HashMap();
 		map.put("orderId", orderId);
 		map.put("group_flag", group_flag);
