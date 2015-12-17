@@ -177,5 +177,12 @@ public class DateUtils {
          date = calendar.getTime();  
          return date;
     }
+    
+    public static String nowDate(){
+    	//获取当前时间
+        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String temp = setDateFormat.format(Calendar.getInstance().getTime());
+        return temp;
+    }
 	
 }
