@@ -37,10 +37,10 @@
     <context:component-scan base-package="com.cn.ctbri" />
     
     <bean id="taskService" class="com.cn.ctbri.service.impl.TaskServiceImpl" />
-    <bean id="orderService" class="com.cn.ctbri.service.impl.OrderServiceImpl" />
+    <!-- <bean id="orderService" class="com.cn.ctbri.service.impl.OrderServiceImpl" /> -->
     <bean id="alarmService" class="com.cn.ctbri.service.impl.AlarmServiceImpl" />
     <bean id="engineService" class="com.cn.ctbri.service.impl.EngineServiceImpl" />
-    <bean id="assetService" class="com.cn.ctbri.service.impl.AssetServiceImpl" />
+    <!-- <bean id="assetService" class="com.cn.ctbri.service.impl.AssetServiceImpl" /> -->
     
     <!-- 配置dbcp数据源 -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
@@ -97,10 +97,17 @@
 	        <value>PROGRESSQUEUE</value>  
 	    </constructor-arg>  
 	</bean>
+	
+	<!-- <bean id="optQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">  
+	    <constructor-arg>  
+	        <value>OPTQUEUE</value>  
+	    </constructor-arg>  
+	</bean> -->
 	<!-- 消息监听器    -->    
 	<bean id="taskConsumerListener" class="com.cn.ctbri.jms.TaskConsumerListener"/>
     <bean id="resultConsumerListener" class="com.cn.ctbri.jms.ResultConsumerListener"/>
     <bean id="progressConsumerListener" class="com.cn.ctbri.jms.ProgressConsumerListener"/>
+    <!-- <bean id="optConsumerListener" class="com.cn.ctbri.jms.OptConsumerListener"/>  -->
 	<!--这个是主题目的地，一对多的   --><!--    
 	<bean id="topicDestination" class="org.apache.activemq.command.ActiveMQTopic">  
 	    <constructor-arg value="topic"/>  
@@ -124,6 +131,12 @@
 	    <property name="destination" ref="progressQueueDestination" />  
 	    <property name="messageListener" ref="progressConsumerListener" />  
 	</bean>
+	
+	<!-- <bean id="jmsOptContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">  
+	    <property name="connectionFactory" ref="connectionFactory" />  
+	    <property name="destination" ref="optQueueDestination" />  
+	    <property name="messageListener" ref="optConsumerListener" />  
+	</bean> -->
 	 <!--Spring提供的JMS工具类，它可以进行消息发送、接收等 --> 
 	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">  
 	     <!-- 这个connectionFactory对应的是我们定义的Spring提供的那个ConnectionFactory对象 -->    
