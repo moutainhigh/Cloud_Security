@@ -31,6 +31,7 @@ public class Task{
     private int websoc;//创宇标志
     private String group_id;//创宇返回组id
     private int engine;
+    private String orderTaskId;//订单任务ID
     
 	public int getTaskId() {
 		return taskId;
@@ -164,5 +165,11 @@ public class Task{
     public void setEngine(int engine) {
         this.engine = engine;
     }
+	public String getOrderTaskId() {
+		return orderTaskId;
+	}
+	public void setOrderTaskId(String orderTaskId) {
+		this.orderTaskId = orderTaskId;
+	}
     
 }

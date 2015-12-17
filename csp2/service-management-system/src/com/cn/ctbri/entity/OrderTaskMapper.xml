@@ -48,8 +48,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="websoc!=null">
                 websoc=#{websoc},
             </if>
+            <if test="status!=null">
+                status=#{status},
+            </if>
 		</set>
 		where orderId = #{orderId}
 	</update>
     
+    
+    <!-- 根据用户查询所有记录 -->
+    <select id="findByOrderId" resultMap="OrderTaskRM" parameterType="String">
+        select * from cs_order_task ot
+		where ot.orderId = #{orderId}
+    </select>
 </mapper>

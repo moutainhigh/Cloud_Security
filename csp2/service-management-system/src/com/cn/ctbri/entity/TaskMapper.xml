@@ -122,15 +122,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 dns=#{dns}
             </if> -->
         </set>
-        where taskId = #{taskId}
+        <!-- where taskId = #{taskId} -->
+        where orderTaskId = #{orderTaskId}
     </update>
 	
 	<!-- 插入任务信息 -->
     <insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO cs_task
-        (order_asset_Id,execute_time,status,group_flag,end_time,remarks,websoc) 
-        VALUES( #{order_asset_Id} , #{execute_time},#{status},#{group_flag},#{end_time},#{remarks},#{websoc})
-    </insert>
+	INSERT INTO cs_task
+	(order_asset_Id,execute_time,status,group_flag,end_time,remarks,websoc,begin_time,scanTime,engineIP,taskProgress,currentUrl,issueCount,requestCount,urlCount,averResponse,averSendCount,sendBytes,receiveBytes,orderTaskId)
+	VALUES(#{order_asset_Id},#{execute_time},#{status},#{group_flag},#{end_time},#{remarks},#{websoc},#{begin_time},#{scanTime},#{engineIP},#{taskProgress},#{currentUrl},#{issueCount},#{requestCount},#{urlCount},#{averResponse},#{averSendCount},#{sendBytes},#{receiveBytes},#{orderTaskId})
+	</insert>
     
     <select id="getTypeByAssetId" parameterType="Integer" resultType="com.cn.ctbri.entity.OrderAsset">
         select distinct oa.scan_type,oa.orderId from cs_task t,cs_order_asset oa where t.order_asset_id = oa.id and t.order_asset_id = #{order_asset_Id}
@@ -181,6 +182,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 根据引擎IP获取安恒在执行的任务 -->
     <select id="getDels" resultType="com.cn.ctbri.entity.Task">
         select * from cs_task t where t.execute_time &lt;='2015-07-01 00:00:00' order by t.execute_time desc
+    </select>
+    
+    <!-- 根据orderTaskId获取任务 -->
+    <select id="findByOrderTaskId" parameterType="String" resultType="com.cn.ctbri.entity.Task">
+        select * from cs_task t where t.orderTaskId = #{orderTaskId}
+    </select>
+    
+    <!-- 根据orderId获取任务 -->
+    <select id="findTaskByOrderId" parameterType="String" resultType="com.cn.ctbri.entity.Task">
+         select * from cs_task t,cs_order_task ot where t.orderTaskId = ot.orderTaskId and ot.orderId = #{orderId}
     </select>
     
 </mapper>
