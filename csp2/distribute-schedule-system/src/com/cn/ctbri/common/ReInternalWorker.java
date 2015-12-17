@@ -62,7 +62,7 @@ public class ReInternalWorker {
 	/**
 	 * 获得订单/任务检测结果
 	 */
-	private static String VulnScan_Get_OrderResult;
+	private static String VulnScan_Get_orderTaskResult;
 	/**
 	 * 获得订单/任务当前执行状态
 	 */
@@ -79,7 +79,7 @@ public class ReInternalWorker {
 			VulnScan_Create_orderTask = p.getProperty("VulnScan_Create_orderTask");
 			VulnScan_Opt_Order = p.getProperty("VulnScan_Opt_Order");
 			VulnScan_Get_OrderReport = p.getProperty("VulnScan_Get_OrderReport");
-			VulnScan_Get_OrderResult = p.getProperty("VulnScan_Get_OrderResult");
+			VulnScan_Get_orderTaskResult = p.getProperty("VulnScan_Get_orderTaskResult");
 			VulnScan_Get_orderTaskStatus = p.getProperty("VulnScan_Get_orderTaskStatus");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -235,13 +235,17 @@ public class ReInternalWorker {
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String lssuedTaskGetResult(String OrderId, String Taskid) throws JSONException{
+	public static String vulnScanGetOrderTaskResult(JSONObject json) throws JSONException{
 		//组织发送内容JSON
-		JSONObject json = new JSONObject();
-		json.put("OrderId", OrderId);
-		json.put("Taskid", Taskid);
+//		JSONObject json = new JSONObject();
+//		json.put("OrderId", OrderId);
+//		json.put("Taskid", Taskid);
+		JSONObject taskObj = json.getJSONObject("taskObj");
+		String OrderId = taskObj.getString("order_id");
+		String orderTaskId = taskObj.getString("orderTaskId");
+		
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Get_OrderResult + OrderId + "/" +Taskid;
+    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskResult + "/" + orderTaskId;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
@@ -252,12 +256,13 @@ public class ReInternalWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class,json);
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
         System.out.println(textEntity);
         return status+"";
 	}
+	
 	
 	/**
 	 * 功能描述：获得订单/任务当前执行状态
@@ -271,11 +276,11 @@ public class ReInternalWorker {
 //		json.put("OrderId", OrderId);
 //		json.put("Taskid", Taskid);
 		JSONObject taskObj = json.getJSONObject("taskObj");
-		String OrderId = taskObj.getString("OrderId");
+		String OrderId = taskObj.getString("order_id");
 		String orderTaskId = taskObj.getString("orderTaskId");
 		
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskStatus + orderTaskId;
+    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskStatus + "/" + orderTaskId;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
@@ -286,7 +291,7 @@ public class ReInternalWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class,json);
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
         System.out.println(textEntity);
@@ -362,4 +367,6 @@ public class ReInternalWorker {
 //        String create = vulnScanCreate("2", "", "", "2015-10-20 16:10:01", "", "0", "", "", "", new String[0], "","", "","");
 //        System.out.println(create);
     }
+
+
 }

@@ -420,6 +420,42 @@ public class ArnhemWorker {
         String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
         return response;
 	}
+	
+	// 开始停止的任务
+	public static String startTask(String sessionId, String taskId, int engine) {
+		
+		String url = "";
+	   	if(engine==1){
+	   		// 创建路径
+	   		url = SERVER_WEB_ROOT1 + "/rest/task/Start/" + taskId;
+	   	}else{
+	   		url = SERVER_WEB_ROOT2 + "/rest/task/Start/" + taskId;
+	   	} 
+	   	ClientConfig config = new DefaultClientConfig();
+		buildConfig(url, config);
+		Client client = Client.create(config);
+		WebResource service = client.resource(url);
+		String response = service.cookie(new NewCookie("sessionid", sessionId)).type(MediaType.APPLICATION_XML).post(String.class);
+		return response;
+	}
+
+	// 停止任务
+	public static String stopTask(String sessionId, String taskId, int engine) {
+		String url = "";
+	   	if(engine==1){
+	   		// 创建路径
+	   		url = SERVER_WEB_ROOT1 + "/rest/task/Stop/" + taskId;
+	   	}else{
+	   		url = SERVER_WEB_ROOT2 + "/rest/task/Stop/" + taskId;
+	   	} 
+	   	ClientConfig config = new DefaultClientConfig();
+		buildConfig(url, config);
+		Client client = Client.create(config);
+		WebResource service = client.resource(url);
+		String response = service.cookie(new NewCookie("sessionid", sessionId)).type(MediaType.APPLICATION_XML).post(String.class);
+		return response;
+	}
+
     
     public static void main(String[] args) throws UnsupportedEncodingException, JSONException {
 //        JSONObject json = new JSONObject();
@@ -444,24 +480,26 @@ public class ArnhemWorker {
 //        String s = getEngineState(sessionId,"https://219.141.189.187:61443");
         
 //        String sessionId1 = getSessionId("https://219.141.189.187:60443","developer","developer111111");
-        String s1 = getEngineState(sessionId,"https://219.141.189.187:61443");
+//        String s1 = getEngineState(sessionId,"https://219.141.189.187:61443");
         
         
 //    	String s = lssuedTask(sessionId, "test88", "http://www.testfire.net", 
 //        		"", "80", "漏洞扫描模板");
     	
-    	String p = getProgressByTaskId(sessionId, "922_15101511393080584", "1",2);
-    	String p1 = getStatusByTaskId(sessionId, "922_15101511393080584",2);
+//    	String p = getProgressByTaskId(sessionId, "922_15101511393080584", "1",2);
+    	String p1 = getStatusByTaskId(sessionId, "45_15120117145433875",2);
     	
-    	System.out.println(s1);
-    	System.out.println("ok");
+//    	System.out.println(s1);
+//    	System.out.println("ok");
     	
 //    	String g = getStatusByTaskId(sessionId, "test88");
         
-        String result = getReportByTaskID(sessionId, "3981_15102316092858295", "1",340, 30,2);
+//        String result = getReportByTaskID(sessionId, "3981_15102316092858295", "1",340, 30,2);
 //        String result = getReportByTaskID(sessionId, "922_15101511393080584", "1",0, 500,2);
-    	String count = getResultCount(sessionId, "3981_15102316092858295",2);
-//    	System.out.println(result);
-//    	System.out.println(count);
+//    	String count = getResultCount(sessionId, "3981_15102316092858295",2);
+//    	String stop = startTask(sessionId, "45_15120117145433875", 2);
+//    	System.out.println(sessionId);
+    	System.out.println(p1);
+//    	System.out.println(sessionId);
     }
 }
