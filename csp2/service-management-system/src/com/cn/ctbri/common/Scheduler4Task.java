@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.cn.ctbri.entity.OrderTask;
 import com.cn.ctbri.service.IOrderTaskService;
 import com.cn.ctbri.util.DateUtils;
+import com.cn.ctbri.util.GetPath;
 
 /**
  * 扫描订单任务表的调度类
@@ -53,6 +54,9 @@ public class Scheduler4Task {
 		// 调用接口下发任务
 		String[] CustomManu = new String[0];//指定厂家
 		for (OrderTask o : oTaskList) {
+			//爬取
+//			GetPath.getUrl(o);
+			
 			//开始时间
             String begin_date=DateUtils.dateToString(o.getBegin_date());
             //结束时间

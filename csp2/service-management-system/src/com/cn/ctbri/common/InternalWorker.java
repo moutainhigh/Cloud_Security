@@ -32,6 +32,7 @@ import com.sun.jersey.client.urlconnection.HTTPSProperties;
  * 版        本：  1.0
  */
 public class InternalWorker {
+	
 	/**
 	 * 服务能力管理服务器根路径
 	 */
@@ -63,7 +64,7 @@ public class InternalWorker {
 	/**
 	 * 获得订单/任务检测结果
 	 */
-	private static String VulnScan_Get_OrderResult;
+	private static String VulnScan_Get_orderTaskResult;
 	/**
 	 * 获得订单/任务当前执行状态
 	 */
@@ -80,7 +81,7 @@ public class InternalWorker {
 			VulnScan_Create_orderTask = p.getProperty("VulnScan_Create_orderTask");
 			VulnScan_Opt_Order = p.getProperty("VulnScan_Opt_Order");
 			VulnScan_Get_OrderReport = p.getProperty("VulnScan_Get_OrderReport");
-			VulnScan_Get_OrderResult = p.getProperty("VulnScan_Get_OrderResult");
+			VulnScan_Get_orderTaskResult = p.getProperty("VulnScan_Get_orderTaskResult");
 			VulnScan_Get_orderTaskStatus = p.getProperty("VulnScan_Get_orderTaskStatus");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -225,12 +226,12 @@ public class InternalWorker {
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String lssuedTask(String OrderId) throws JSONException{
+	public static String vulnScanOptOrderTask(String orderId) throws JSONException{
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
-		json.put("OrderId", OrderId);
+		json.put("orderId", orderId);
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Opt_Order + OrderId;
+    	String url = SERVER_WEB_ROOT + VulnScan_Opt_Order + "/" + orderId;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
@@ -241,7 +242,7 @@ public class InternalWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, json);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).put(ClientResponse.class);
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
         System.out.println(textEntity);
@@ -283,13 +284,13 @@ public class InternalWorker {
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String lssuedTaskGetResult(String OrderId, String Taskid) throws JSONException{
+	public static String vulnScanGetOrderTaskResult(String orderId, String orderTaskId) throws JSONException{
 		//组织发送内容JSON
-		JSONObject json = new JSONObject();
-		json.put("OrderId", OrderId);
-		json.put("Taskid", Taskid);
+//		JSONObject json = new JSONObject();
+//		json.put("orderId", orderId);
+//		json.put("orderTaskId", orderTaskId);
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Get_OrderResult + OrderId + "/" +Taskid;
+    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskResult + "/" + orderTaskId + "/" + orderId;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
@@ -313,13 +314,13 @@ public class InternalWorker {
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String vulnScanGetOrderTaskStatus(String OrderId, String orderTaskId) throws JSONException{
+	public static String vulnScanGetOrderTaskStatus(String orderId, String orderTaskId) throws JSONException{
 		//组织发送内容JSON
-		JSONObject json = new JSONObject();
-		json.put("OrderId", OrderId);
-		json.put("orderTaskId", orderTaskId);
+//		JSONObject json = new JSONObject();
+//		json.put("orderId", orderId);
+//		json.put("orderTaskId", orderTaskId);
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskStatus + orderTaskId;
+    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskStatus + "/" + orderTaskId + "/" + orderId;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
@@ -403,7 +404,8 @@ public class InternalWorker {
 
 
     public static void main(String[] args) throws UnsupportedEncodingException, JSONException {
-        String create = vulnScanCreate("2", "", "", "2015-10-20 16:10:01", "", "0", "", "", "", new String[0], "","", "","","");
-        System.out.println(create);
+//        String create = vulnScanCreate("2", "", "", "2015-10-20 16:10:01", "", "0", "", "", "", new String[0], "","", "","","");
+    	String o = vulnScanGetOrderTaskStatus("1","4");
+    	System.out.println(o);
     }
 }
