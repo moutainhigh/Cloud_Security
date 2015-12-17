@@ -52,4 +52,6 @@ public interface ITaskService {
 	//add by tangxr 2015-11-20
 	//根据订单Id和url查询任务
 	Task findTaskByOrderIdAndTaskId(Task task);
+
+	List<Task> findTaskByOrderId(String orderId);
 }

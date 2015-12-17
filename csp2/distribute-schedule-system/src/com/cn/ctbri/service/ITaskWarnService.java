@@ -21,4 +21,6 @@ public interface ITaskWarnService {
 	List<TaskWarn> findUseableByOrderId(String orderId);
 	//根据group_id查询
 	List<TaskWarn> findTaskWarnByGroupId(String groupId);
+	//根据task_id查询
+	List<TaskWarn> findTaskWarnByTaskId(int taskId);
 }
