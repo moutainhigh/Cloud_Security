@@ -39,6 +39,16 @@ public class ProducerServiceImpl implements IProducerService{
         }); 
 	}
 
+	//发送orderId
+	public void sendMessageOrderId(Destination destination, final String orderId) {
+		System.out.println("---------------生产者发了一个orderId：" + orderId);   
+        jmsTemplate.send(destination, new MessageCreator() {   
+            public Message createMessage(Session session) throws JMSException {   
+            	return session.createTextMessage(orderId);
+            }   
+        });
+	}
+	
 	public JmsTemplate getJmsTemplate() {
 		return jmsTemplate;
 	}
@@ -47,6 +57,8 @@ public class ProducerServiceImpl implements IProducerService{
 	public void setJmsTemplate(JmsTemplate jmsTemplate) {
 		this.jmsTemplate = jmsTemplate;
 	}
+
+	
 
 	
 
