@@ -38,4 +38,6 @@ public interface AlarmDao {
 	public void updateDistrict(Map<String, Object> disMap);
 	
 	public List<Alarm> findAlarmBygroupId(Map<String, Object> paramMap);
+	
+	public List<Alarm> findAlarmByTaskId(Map<String, Object> paramMap);
 }

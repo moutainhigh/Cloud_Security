@@ -57,4 +57,6 @@ public interface TaskDao {
 	public Task findTaskById(int taskId);
 
 	public Task findTaskByOrderIdAndTaskId(Task task);
+
+	public List<Task> findTaskByOrderId(String orderId);
 }

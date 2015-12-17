@@ -21,4 +21,6 @@ public interface TaskWarnDao {
 	
 	List<TaskWarn> findTaskWarnByGroupId(String groupId);
 
+	List<TaskWarn> findTaskWarnBytaskId(int taskId);
+
 }
