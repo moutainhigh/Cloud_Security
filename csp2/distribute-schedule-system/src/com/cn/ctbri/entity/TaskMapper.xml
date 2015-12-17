@@ -184,4 +184,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findTaskByOrderIdAndTaskId" parameterType="com.cn.ctbri.entity.Task" resultType="com.cn.ctbri.entity.Task">
     	select * from cs_task t where t.order_id = #{order_id} and t.orderTaskId = #{orderTaskId}
     </select>
+    
+    <!-- 根据订单Id查询任务 -->
+    <select id="findTaskByOrderId" parameterType="String" resultType="com.cn.ctbri.entity.Task">
+    	select * from cs_task t where t.order_id = #{orderId}
+    </select>
 </mapper>

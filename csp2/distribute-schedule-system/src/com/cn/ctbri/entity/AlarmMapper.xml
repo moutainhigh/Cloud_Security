@@ -66,6 +66,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        select * from cs_alarm a where a.group_id = #{group_id}
     </select>
     
+    <select id="findAlarmByTaskId" parameterType="String" resultMap="Alarm">
+	        select * from cs_alarm a where a.taskId = #{taskId}
+    </select>
+    
     <!-- 更新地域告警数 -->
 	<update id="updateDistrict"  parameterType="java.util.HashMap">
 		update cs_district 
