@@ -1,9 +1,7 @@
 package com.cn.ctbri.webservice;
 
-import java.util.Date;
+import java.net.URLDecoder;
 
-import javax.jms.Destination;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -14,18 +12,16 @@ import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import com.cn.ctbri.common.Constants;
+import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.OrderTask;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IAlarmService;
-import com.cn.ctbri.service.IAssetService;
-import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IOrderTaskService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
-import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Respones;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -49,6 +45,8 @@ public class ReInternalWebService {
     IAlarmService alarmService;	
 	@Autowired
     private IOrderTaskService orderTaskService;
+	@Autowired
+    private ITaskService taskService;
 	
 	//主动告警
 	@POST
@@ -92,24 +90,55 @@ public class ReInternalWebService {
 	
 	//主动告警
 	@POST
-    @Path("/vulnscan/re_orderTask/{orderTaskId}")
+    @Path("/vulnscan/re_orderTask_status/{orderTaskId}")
 	@Produces(MediaType.APPLICATION_JSON) 
-	public String VulnScan_Get_OrderTaskStatus(JSONObject json) throws JSONException {
+	public String VulnScan_Get_OrderTaskStatus(@PathParam("orderTaskId") String orderTaskId,JSONObject json) throws JSONException {
 		try {
 			JSONObject taskObj = json.getJSONObject("taskObj");
-			String OrderId = taskObj.getString("OrderId");
-			String orderTaskId = taskObj.getString("orderTaskId");
+//			String OrderId = taskObj.getString("OrderId");
 			
-			//是否成功下发
+			 String engineIP = taskObj.getString("engineIP");
+             String taskProgress = taskObj.getString("taskProgress");
+             String currentUrl = taskObj.getString("currentUrl");
+             String issueCount = taskObj.getString("issueCount");
+             String requestCount = taskObj.getString("requestCount");
+             String urlCount = taskObj.getString("urlCount");
+             String averResponse = taskObj.getString("averResponse");
+             String averSendCount = taskObj.getString("averSendCount");
+             String sendBytes = taskObj.getString("sendBytes");
+             String receiveBytes = taskObj.getString("receiveBytes");
+			
+			//获取进度是否成功
 			String result = json.getString("result");
 			Respones r = new Respones();
 			if(result.equals("success")){
-				OrderTask orderTask = new OrderTask();
-//		        orderTask.setOrderId(orderId);
-//		        orderTask.setWebsoc(websoc);
-		        orderTask.setTask_status(2);
-		        //更新数据库
-		        orderTaskService.update(orderTask);
+				Task t = taskService.findByOrderTaskId(orderTaskId);
+				if(t!=null){
+					//更新数据库
+					t.setOrderTaskId(orderTaskId);
+	                t.setEngineIP(engineIP);
+	                t.setTaskProgress(taskProgress);
+	                t.setCurrentUrl(currentUrl);
+	                t.setIssueCount(issueCount);
+	                t.setRequestCount(requestCount);
+	                t.setUrlCount(urlCount);
+	                t.setAverResponse(averResponse);
+	                t.setAverSendCount(averSendCount);
+			        taskService.updateTask(t);
+				}else{
+					t = new Task();
+					t.setOrderTaskId(orderTaskId);
+	                t.setEngineIP(engineIP);
+	                t.setTaskProgress(taskProgress);
+	                t.setCurrentUrl(currentUrl);
+	                t.setIssueCount(issueCount);
+	                t.setRequestCount(requestCount);
+	                t.setUrlCount(urlCount);
+	                t.setAverResponse(averResponse);
+	                t.setAverSendCount(averSendCount);
+					taskService.insert(t);
+				}	
+		        
 				r.setState("201");
 			}else{
 				r.setState("404");
@@ -123,8 +152,60 @@ public class ReInternalWebService {
 //			net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
 	        return json.toString();
 		}
-    	    	
-		
+    }
+	
+	
+	@POST
+    @Path("/vulnscan/re_orderTask_result/{orderTaskId}")
+	@Produces(MediaType.APPLICATION_JSON) 
+	public String VulnScan_Get_OrderTaskResult(@PathParam("orderTaskId") String orderTaskId,JSONObject json) throws JSONException {
+		try {
+			JSONObject alarmObj = json.getJSONObject("alarmObj");
+//			String OrderId = taskObj.getString("OrderId");
+			
+			 String taskId = alarmObj.getString("taskId");
+             String alarm_time = alarmObj.getString("alarm_time");
+             String url = alarmObj.getString("url");
+             String alarm_type = alarmObj.getString("alarm_type");
+             String name = alarmObj.getString("name");
+             String score = alarmObj.getString("score");
+             String advice = alarmObj.getString("advice");
+             String alarm_content = alarmObj.getString("alarm_content");
+             String keyword = alarmObj.getString("keyword");
+             String serviceId = alarmObj.getString("serviceId");
+             String level = alarmObj.getString("level");
+			
+			//获取进度是否成功
+			String result = json.getString("result");
+			Respones r = new Respones();
+			if(result.equals("success")){
+				Alarm alarm = new Alarm();
+				alarm.setTaskId(Long.parseLong(taskId));
+//				alarm.setAlarm_time(alarm_time);
+				alarm.setUrl(url);
+				alarm.setAlarm_type(alarm_type);
+				alarm.setName(name);
+				alarm.setScore(score);
+				alarm.setAdvice(advice);
+				alarm.setLevel(Integer.parseInt(level));
+				alarm.setAlarm_content(alarm_content);
+				alarm.setKeyword(keyword);
+				alarm.setServiceId(Integer.parseInt(serviceId));
+				alarmService.saveAlarm(alarm);
+
+				r.setState("201");
+			}else{
+				r.setState("404");
+			}
+//			net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
+	        return json.toString();
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			Respones r = new Respones();
+			r.setState("404");
+//			net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
+	        return json.toString();
+		}
     }
 	 
 	public static void main(String[] args) throws JSONException {
@@ -156,7 +237,8 @@ public class ReInternalWebService {
 	    //检查安全传输协议设置
         Client client = Client.create(config);
         //连接服务器
-        WebResource service = client.resource("http://localhost:8080/dss/rest/internalapi/vulnscan/orderTask");
+//        WebResource service = client.resource("http://localhost:8080/dss/rest/internalapi/vulnscan/orderTask");
+        WebResource service = client.resource("http://localhost:8080/cspi/rest/internalapi/vulnscan/re_orderTask/93103991");
         
 //        WebResource service = client.resource("http://localhost:8080/cspi/rest/openapi/createOrder");
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json);        

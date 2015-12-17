@@ -5,8 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -19,8 +22,10 @@ import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cn.ctbri.common.InternalWorker;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderTask;
+import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderService;
@@ -159,8 +164,9 @@ public class NorthWebService {
 			orderTask.setTask_status(1);
 			orderTask.setOrderTaskId(String.valueOf(Random.eightcode()));
 			
-			if (serviceId.equals("1") && scanMode.equals("1")) {
-				Date executeTime = getOrderPeriods(startTime, endTime, scanPeriod);
+			if (serviceId.equals("1") && scanMode.equals("1")) {//漏洞长期
+				Date executeTime = DateUtils.getOrderPeriods(startTime,endTime,scanPeriod);
+//				Date executeTime = getOrderPeriods(startTime, endTime, scanPeriod);
 				orderTask.setTask_date(executeTime);
 			}else{
 				orderTask.setTask_date(begin_date);
@@ -173,6 +179,77 @@ public class NorthWebService {
         return json.toString();
     }
 	
+	
+	//获取进度
+	@GET
+    @Path("/vulnscan/order/{orderId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public JSONObject VulnScan_Get_orderTaskStatus(@PathParam("orderId") String orderId) throws JSONException {
+		JSONObject json = new JSONObject();
+		try {
+			Task task = new Task();
+			task = taskService.findTaskByOrderId(orderId);
+			OrderTask o = orderTaskService.findByOrderId(orderId);
+			if(task!=null){
+				net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
+				json.put("taskObj", taskObject);
+				json.put("result", "success");
+				Respones r = new Respones();
+				r.setState("200");//成功获取
+				net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
+				json.put("state", state);
+				json.put("status", o.getStatus());
+		        return json;
+			}else{
+				Respones r = new Respones();
+				r.setState("421");//订单不存在
+				net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
+				json.put("state", state);
+				json.put("status", o.getStatus());
+		        return json;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Respones r = new Respones();
+			r.setState("404");//获取状态失败
+			net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
+			json.put("state", state);
+	        return json;
+		}
+    }
+	
+	
+	//订单操作
+	@PUT
+    @Path("/vulnscan/order/{orderId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public JSONObject VulnScan_opt_orderTask(@PathParam("orderId") String orderId) throws JSONException {
+		JSONObject json = new JSONObject();
+		try {
+			OrderTask o = orderTaskService.findByOrderId(orderId);
+			String result = InternalWorker.vulnScanOptOrderTask(orderId);
+	        if(result.equals("200")){
+	        	if(o.getStatus()==4){
+	        		o.setStatus(5);//stop
+	        	}else if(o.getStatus()==5){
+	        		o.setStatus(4);//start
+	        	}
+	        	orderTaskService.update(o);
+	        	json.put("result", "success");
+	        }else{
+	        	json.put("result", "fail");
+	        }			
+	        return json;
+		} catch (Exception e) {
+			e.printStackTrace();
+			Respones r = new Respones();
+			r.setState("404");//获取状态失败
+			net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
+			json.put("state", state);
+	        return json;
+		}
+    }
+		
 	
 	/**
 	 * 获取周期时间
@@ -339,14 +416,28 @@ public class NorthWebService {
         //检查安全传输协议设置
         Client client = Client.create(config);
         //连接服务器
-//        WebResource service = client.resource("http://localhost:8080/cspi/rest/openapi/vulnscan/order");
+        WebResource service = client.resource("http://localhost:8080/cspi/rest/openapi/vulnscan/order/15120117145433875");
         
-        WebResource service = client.resource("http://localhost:8080/cspi/rest/openapi/createOrder");
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json);        
-        System.out.println(response.toString());
+//        WebResource service = client.resource("http://localhost:8080/cspi/rest/openapi/createOrder");
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);        
+//        System.out.println(response.toString());
 
         String addresses = response.getEntity(String.class);
-        System.out.println(addresses); 
+        net.sf.json.JSONObject obj = net.sf.json.JSONObject.fromObject(addresses);
+        
+        net.sf.json.JSONObject taskObj = obj.getJSONObject("taskObj");
+        String engineIP = taskObj.getString("engineIP");
+        String taskProgress = taskObj.getString("taskProgress");
+        String currentUrl = taskObj.getString("currentUrl");
+        String issueCount = taskObj.getString("issueCount");
+        String requestCount = taskObj.getString("requestCount");
+        String urlCount = taskObj.getString("urlCount");
+        String averResponse = taskObj.getString("averResponse");
+        String averSendCount = taskObj.getString("averSendCount");
+        String sendBytes = taskObj.getString("sendBytes");
+        String receiveBytes = taskObj.getString("receiveBytes");
+        System.out.println(obj);
+        System.out.println(taskObj); 
 
 	}
 }
