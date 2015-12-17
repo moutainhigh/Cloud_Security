@@ -69,4 +69,8 @@ public interface TaskDao {
 	public List getArnhemTaskByEngine(String engine_addr);
 
 	public List<Task> getDels();
+
+	public Task findByOrderTaskId(String orderTaskId);
+
+	public Task findTaskByOrderId(String orderId);
 }

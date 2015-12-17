@@ -78,4 +78,6 @@ public interface OrderTaskDao {
 	public List getArnhemTaskByEngine(String engine_addr);
 
 	public List<Task> getDels();
+
+	OrderTask findByOrderId(String orderId);
 }
