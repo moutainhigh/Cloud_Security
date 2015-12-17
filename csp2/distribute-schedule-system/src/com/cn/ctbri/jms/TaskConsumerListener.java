@@ -10,12 +10,11 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
-import javax.jms.JMSException; 
 
-import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.dom4j.Attribute;
@@ -29,16 +28,21 @@ import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.common.ReInternalWorker;
 import com.cn.ctbri.common.WebSocWorker;
 import com.cn.ctbri.entity.EngineCfg;
+import com.cn.ctbri.entity.Logger;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.logger.CSPLoggerAdapter;
+import com.cn.ctbri.logger.CSPLoggerConstant;
 import com.cn.ctbri.service.IEngineService;
+import com.cn.ctbri.service.ILoggerService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.DateUtils;
+import com.cn.ctbri.util.LoggerUtil;
 
 public class TaskConsumerListener implements MessageListener,Runnable{
-	static Logger logger = Logger.getLogger(TaskConsumerListener.class.getName());
+//	static Logger logger = Logger.getLogger(TaskConsumerListener.class.getName());
 
 	@Autowired
 	ITaskService taskService;
@@ -51,6 +55,9 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	
 	@Autowired
     IEngineService engineService;
+	
+	@Autowired
+    ILoggerService loggerService;
 
 	private String destURL = "";
 
@@ -62,8 +69,15 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	
 	private Task task;
 
-	public TaskConsumerListener(Task task) {
+	public TaskConsumerListener() {
+	}
+	
+	public TaskConsumerListener(Task task, ITaskService taskService, IServService servService, ITaskWarnService taskWarnService,IEngineService engineService) {
 		this.task = task;
+		this.taskService = taskService;
+		this.servService = servService;
+		this.taskWarnService = taskWarnService;
+		this.engineService = engineService;
 	}
 
 	public void onMessage(Message message) {  
@@ -74,7 +88,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
         	    Task taskRe = (Task) om.getObject();
         	    //引擎调度,任务分发
         	    if(taskRe != null){
-        	    	TaskConsumerListener taskConsumer = new TaskConsumerListener(taskRe);
+        	    	TaskConsumerListener taskConsumer = new TaskConsumerListener(taskRe,taskService,servService,taskWarnService,engineService);
         	    	Thread thread = new Thread(taskConsumer);
     				thread.start();
         	    }
@@ -97,7 +111,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	 * @param t 任务
 	 */
 	public void schedule(Task t){
-		logger.info("[引擎调度]: 引擎调度开始!");
+		CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[引擎调度]: 引擎调度开始!;User="+null);
 		
 		JSONObject json = new JSONObject();
 
@@ -164,12 +178,12 @@ public class TaskConsumerListener implements MessageListener,Runnable{
         	}else {
 				t.setEngine(-1);
 				taskService.update(t);
-				logger.info("[引擎调度]: 引擎状态不可用!");
+				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[引擎调度]: 引擎状态不可用!;User="+null);
 				json.put("result", "fail");
 			}
         	
 		} catch (Exception e) {
-			logger.info("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
+			CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!;User="+null);
 			e.printStackTrace();
 			try {
 				json.put("result", "fail");
@@ -186,7 +200,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		logger.info("[引擎调度]: 引擎调度结束!");
+		CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[引擎调度]: 引擎调度结束!;User="+null);
 	}
 
 	/**
@@ -196,13 +210,13 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	 * @return 
 	 */
 	private Task getArnhem(Task t, String sessionId, EngineCfg engine) {
-	    logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]获取状态!");
+	    CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]:任务-[" + t.getTaskId() + "]获取状态;User="+null);
         
 	    if(engine!=null){
 	    	String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId())+"_"+t.getOrder_id(), engine.getEngine());
 	        String status = this.getStatusByResult(resultStr);
 	        if("".equals(status)){
-	            logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]开始下发!");
+	            CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]:任务-[" + t.getTaskId() + "]开始下发!;User="+null);
 	            preTaskData(t,engine);
 	            try {
 	                String lssued = ArnhemWorker.lssuedTask(sessionId, String.valueOf(t.getTaskId())+"_"+t.getOrder_id(), this.destURL, this.destIP, "80",
@@ -224,7 +238,10 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	                    t.setEngine(engine.getId());
 	                    t.setWebsoc(0);
 	                    taskService.update(t);
-	                    logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]完成下发!");
+	                    CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]:任务-[" + t.getTaskId() + "]完成下发!;User="+null);
+	                    
+	                    Logger loginf = LoggerUtil.addLoginfo(null, null, new Date(), null,null,"getArnhem",LoggerUtil.TASK_SUCCESS);
+	                    loggerService.insert(loginf);
 	                }
 	                int serviceId = t.getServiceId();
 	                if(serviceId==2||serviceId==3||serviceId==4){
@@ -260,7 +277,9 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	                        Map<String, Object> paramMap = new HashMap<String, Object>();
 	                        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
 	                        Date nextTime = null;
-	                        if(t.getScanType()==2){
+	                        if(t.getScanType()==1){
+	                        	nextTime = DateUtils.getAfterDate(t.getGroup_flag(),1);
+	                        }else if(t.getScanType()==2){
 	                        	nextTime = DateUtils.getAfterDate(t.getGroup_flag(),7);
 	                        }else if(t.getScanType()==3){
 	                        	nextTime = DateUtils.getAfterMonth(t.getGroup_flag());
@@ -284,10 +303,10 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	                    }
 	                }
 	            } catch (Exception e) {
-	                logger.info("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
+	            	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!;User="+null);
 	            }
 	        }else{
-	            logger.info("[下发任务调度]: 任务-[" + t.getTaskId() + "]下发失败!，远程存在同名任务请先删除或重新下订单!");
+	        	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!;User="+null);
 	        }
 	    }else{
             t.setEngine(-1);
@@ -324,7 +343,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
                 t.setEngine(engine.getId());
                 t.setWebsoc(1);
                 taskService.update(t);
-                logger.info("[下发任务调度]:任务-[" + t.getTaskId() + "]完成下发!");
+                CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]:任务-[" + t.getTaskId() + "]完成下发!;User="+null);
             
                 int serviceId = t.getServiceId();
                 if(serviceId==2||serviceId==3||serviceId==4||serviceId==5){
@@ -360,7 +379,9 @@ public class TaskConsumerListener implements MessageListener,Runnable{
                         Date endTime = t.getEnd_time();
                         Map<String, Object> paramMap = new HashMap<String, Object>();
                         Date nextTime = null;
-                        if(t.getScanType()==2){
+                        if(t.getScanType()==1){
+                        	nextTime = DateUtils.getAfterDate(t.getGroup_flag(),1);
+                        }else if(t.getScanType()==2){
                         	nextTime = DateUtils.getAfterDate(t.getGroup_flag(),7);
                         }else if(t.getScanType()==3){
                         	nextTime = DateUtils.getAfterMonth(t.getGroup_flag());
@@ -388,7 +409,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
                 taskService.update(t);
             }
         } catch (Exception e) {
-            logger.info("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
+            CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!;User="+null);
         }
         return t;
     }
@@ -573,11 +594,11 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 				Element StateNode = result.element("State");
 				state = StateNode.getTextTrim();
 			}else{
-				logger.info("[下发任务调度]:远程没有此任务，可以下发!");
+				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]:远程没有此任务，可以下发!;User="+null);
 			}
 			return state;
 		} catch (Exception e) {
-			logger.info("[下发任务调度]:解析任务状态失败,远程没有此任务，可以下发!");
+			CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]:解析任务状态失败,远程没有此任务，可以下发!;User="+null);
 			return "";
 		}
 		
@@ -597,7 +618,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
             }
             return state;
         } catch (Exception e) {
-            logger.info("[下发任务调度]:解析任务状态失败,远程没有此任务，可以下发!");
+        	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]:解析任务状态失败!;User="+null);
             return state;
         }
         

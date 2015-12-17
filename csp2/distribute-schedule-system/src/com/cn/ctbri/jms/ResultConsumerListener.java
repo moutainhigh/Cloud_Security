@@ -10,10 +10,8 @@ import java.util.Map;
 
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import javax.jms.TextMessage;
-import javax.ws.rs.core.MediaType;
+import javax.jms.ObjectMessage;
 
-import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.dom4j.Attribute;
@@ -25,119 +23,184 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.cn.ctbri.common.ArnhemWorker;
 import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.common.ReInternalWorker;
-import com.cn.ctbri.common.SchedulerResult;
 import com.cn.ctbri.common.WebSocWorker;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.EngineCfg;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskWarn;
+import com.cn.ctbri.logger.CSPLoggerAdapter;
+import com.cn.ctbri.logger.CSPLoggerConstant;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IEngineService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
+import com.cn.ctbri.util.DateUtils;
 
 public class ResultConsumerListener  implements MessageListener,Runnable{
 	//日志对象
-	private Logger logger = Logger.getLogger(ResultConsumerListener.class.getName());
-	@Autowired
-    ITaskWarnService taskWarnService;
+//	private Logger logger = Logger.getLogger(ResultConsumerListener.class.getName());
 	
 	@Autowired
 	private IAlarmService alarmService;
 
 	@Autowired
-	private IServService servService;
+    ITaskWarnService taskWarnService;
 
 	@Autowired
 	private ITaskService taskService;
 	
 	@Autowired
     private IEngineService engineService;
-
-    private TextMessage tm;
+	
+	@Autowired
+    private IServService servService;
+	
+	private Task task;
     
-	public ResultConsumerListener(TextMessage tm) {
-		this.tm = tm;
+	public ResultConsumerListener() {
 	}
 
+	public ResultConsumerListener(Task task, IAlarmService alarmService, ITaskService taskService, ITaskWarnService taskWarnService,IEngineService engineService) {
+		this.task = task;
+		this.alarmService = alarmService;
+		this.taskService = taskService;
+		this.taskWarnService = taskWarnService;
+		this.engineService = engineService;
+	}
 
 	public void onMessage(Message message) {  
+		JSONObject json = new JSONObject();
     	//接收到object消息
-    	if(message instanceof TextMessage){
-    		TextMessage tm = (TextMessage) message;
-    		ResultConsumerListener resultConsumer = new ResultConsumerListener(tm);
-    		Thread thread = new Thread(resultConsumer);
-    		thread.start();
-    	}  		
+		try {  
+        	if(message instanceof ObjectMessage){
+        		ObjectMessage om = (ObjectMessage) message;
+        	    Task taskRe = (Task) om.getObject();
+        	    //任务进度获取
+        	    if(taskRe != null){
+        	    	ResultConsumerListener resultConsumer = new ResultConsumerListener(taskRe,alarmService,taskService,taskWarnService,engineService);
+        	    	Thread thread = new Thread(resultConsumer);
+        	    	thread.start();
+        	    }
+        	}  
+        } catch (Exception e) {   
+            e.printStackTrace();
+	        try {
+				json.put("result", "fail");
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+        } 
+		
+//    	if(message instanceof TextMessage){
+//    		TextMessage tmessage = (TextMessage) message;
+//    		ResultConsumerListener resultConsumer = new ResultConsumerListener();
+//    		tm = tmessage;
+//    		Thread thread = new Thread(resultConsumer);
+//    		thread.start();
+//    	}  		
 	}
 
 
 	public void run() {
 		JSONObject json = new JSONObject();
         try {  
-        		String taskid = tm.toString();
-        		Thread thread = new Thread(this);
-        		thread.start();
-        	    if(taskid!=null && !taskid.equals("")){
-    				//taskId
-    				int taskId = Integer.parseInt(taskid);
-    				SchedulerResult rst = new SchedulerResult();
-
-					rst.getscanResult(taskId);
-					//根据taskId查询task
-					Task task = taskService.findTaskById(taskId);
-					//如果是创宇需查数据库获取结果
-					if(task.getWebsoc()==1){
-						if(task.getServiceId()==5){//可用性检测
-							//根据groupId查询alarm表及taskwarn表
-							List<TaskWarn> taskwarnList = taskWarnService.findTaskWarnByGroupId(task.getGroup_id());
-							if(taskwarnList!=null && taskwarnList.size()>0){
-								//返回结果
-
-								net.sf.json.JSONObject taskwarnObject = new net.sf.json.JSONObject().fromObject(taskwarnList.get(0));
-								net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
-								json.put("taskwarnObj", taskwarnObject);
-								json.put("taskObj", taskObject);
-								json.put("alarmObj", "");
-								json.put("result", "success");
-							}
-						}else{//其他
-							Map<String,Object> paramMap = new HashMap<String,Object>();
-							paramMap.put("group_id", task.getGroup_id());
-							List<Alarm> alarmList = alarmService.findAlarmBygroupId(paramMap);
-							if(alarmList!=null && alarmList.size()>0){
-								//返回结果
-								net.sf.json.JSONObject alarmObject = new net.sf.json.JSONObject().fromObject(alarmList.get(0));
-								net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
-								json.put("alarmObj", alarmObject);
-								json.put("taskObj", taskObject);
-								json.put("taskwarnObj", "");
-								json.put("result", "success");
-							}
+    	    if(task!=null){
+				getscanResult(task);
+				//根据taskId查询task
+//					Task task = taskService.findTaskById(taskId);
+				//如果是创宇需查数据库获取结果
+				task.setOrder_id(task.getOrder_id());
+				task.setOrderTaskId(task.getOrderTaskId());
+				task = taskService.findTaskByOrderIdAndTaskId(task);
+				if(task.getWebsoc()==1){
+					if(task.getServiceId()==5){//可用性检测
+						//根据groupId查询alarm表及taskwarn表
+						List<TaskWarn> taskwarnList = taskWarnService.findTaskWarnByGroupId(task.getGroup_id());
+						if(taskwarnList!=null && taskwarnList.size()>0){
+							//返回结果
+							net.sf.json.JSONObject taskwarnObject = new net.sf.json.JSONObject().fromObject(taskwarnList);
+							json.put("taskwarnObj", taskwarnObject);
+							json.put("alarmObj", "");
+							json.put("result", "success");
+							ReInternalWorker.vulnScanGetOrderTaskResult(json);
+						}else{
+							net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
+							json.put("taskObj", taskObject);
+							json.put("result", "success");
+							ReInternalWorker.vulnScanGetOrderTaskStatus(json);
 						}
-					} 
-					ReInternalWorker.vulnScanGetOrderTaskStatus(json);
-        	    }
+					}else{//其他
+						Map<String,Object> paramMap = new HashMap<String,Object>();
+						paramMap.put("group_id", task.getGroup_id());
+						List<Alarm> alarmList = alarmService.findAlarmBygroupId(paramMap);
+						if(alarmList!=null && alarmList.size()>0){
+							//返回结果
+							net.sf.json.JSONObject alarmObject = new net.sf.json.JSONObject().fromObject(alarmList);
+							json.put("alarmObj", alarmObject);
+							json.put("taskwarnObj", "");
+							json.put("result", "success");
+							ReInternalWorker.vulnScanGetOrderTaskResult(json);
+						}else{
+							net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
+							json.put("taskObj", taskObject);
+							json.put("result", "success");
+							ReInternalWorker.vulnScanGetOrderTaskStatus(json);
+						}
+					}
+				}else{//安恒
+					if(task.getServiceId()==5){//可用性检测
+						//根据groupId查询alarm表及taskwarn表
+						List<TaskWarn> taskwarnList = taskWarnService.findTaskWarnByTaskId(task.getTaskId());
+						if(taskwarnList!=null && taskwarnList.size()>0){
+							//返回结果
+							net.sf.json.JSONObject taskwarnObject = new net.sf.json.JSONObject().fromObject(taskwarnList);
+							json.put("taskwarnObj", taskwarnObject);
+							json.put("alarmObj", "");
+							json.put("result", "success");
+							ReInternalWorker.vulnScanGetOrderTaskResult(json);
+						}else{
+							net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
+							json.put("taskObj", taskObject);
+							json.put("result", "success");
+							ReInternalWorker.vulnScanGetOrderTaskStatus(json);
+						}
+					}else{//其他
+						Map<String,Object> paramMap = new HashMap<String,Object>();
+						paramMap.put("taskId", task.getTaskId());
+						List<Alarm> alarmList = alarmService.findAlarmByTaskId(paramMap);
+						if(alarmList!=null && alarmList.size()>0){
+							//返回结果
+							net.sf.json.JSONObject alarmObject = new net.sf.json.JSONObject().fromObject(alarmList);
+							json.put("alarmObj", alarmObject);
+							json.put("taskwarnObj", "");
+							json.put("result", "success");
+							ReInternalWorker.vulnScanGetOrderTaskResult(json);
+						}else{
+							net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
+							json.put("taskObj", taskObject);
+							json.put("result", "success");
+							ReInternalWorker.vulnScanGetOrderTaskStatus(json);
+						}
+					}
+				}
+    	    }
         } catch (Exception e) {   
             e.printStackTrace();
-            
 	        try {
 				json.put("result", "fail");
 				ReInternalWorker.vulnScanGetOrderTaskStatus(json);
 			} catch (JSONException e1) {
 				e1.printStackTrace();
 			}
-
         } 
-		
 	}
 	
-	public void getscanResult(int taskId) throws Exception {
-		logger.info("[获取结果调度]:任务表扫描开始....");
+	public void getscanResult(Task task) throws Exception {
+		CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务表扫描开始....;User="+null);
         
 		//根据taskId查询task
-		Task task = taskService.findTaskById(taskId);
+//		Task task = taskService.findTaskById(taskId);
 		
         //获取当前时间
         SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -146,29 +209,34 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
         long endTime = setDateFormat.parse(temp).getTime();
         long diff = endTime-executeTime;
         
+//		int engine = 0;
+//		EngineCfg en = engineService.getEngineById(task.getEngine());
+//		if(task.getEngine()!=-1){
+//			engine = en.getEngine();
+//		}else{
+//			logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]由于引擎调度失败无法获取结果!");
+//			return;
+//		}
+		
 		int engine = 0;
 		EngineCfg en = engineService.getEngineById(task.getEngine());
-		if(task.getEngine()!=-1){
+		if(task.getEngine()!=0){
 			engine = en.getEngine();
 		}else{
-			logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]由于引擎调度失败无法获取结果!");
-			return;
+			engine = 2;
 		}
                         
 	    if(task.getWebsoc()==1){//创宇
-            
 	        String sessionid = WebSocWorker.getSessionId();
 	        boolean flag = WebSocWorker.getProgressByTaskId(sessionid,task.getGroup_id());
 	        //检测完成
 	        if(flag){
-	        	logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析结果......");
-
+	        	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析结果......;User="+null);
 	            task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
 	            task.setEnd_time(setDateFormat.parse(temp));
                 task.setScanTime(String.valueOf(diff));
                 task.setTaskProgress("101");
                 taskService.update(task);
-                
 				//任务完成后,引擎活跃数减1
                 en.setId(task.getEngine());
                 engineService.updatedown(en);
@@ -187,7 +255,7 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
                     }else if(diff/1000<=183){
                         task.setTaskProgress("100");
                     }
-                    logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，扫描进度[" + task.getTaskProgress()+"]");
+                    CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，扫描进度[" + task.getTaskProgress()+"];User="+null);
                     taskService.updateTask(task);
                 }
 	        }
@@ -200,7 +268,7 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
                 List<Alarm> aList = new ArrayList<Alarm>();
 
     			if ("finish".equals(status)) {// 任务执行完毕
-    				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析结果......");
+    				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析结果......;User="+null);
     				/**
     				 * 获取任务结果信息并入库
     				 */
@@ -212,8 +280,10 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
     				for (int i = 0; i <= count/30; i++) {
     					int j = i*30;
     					// 获取任务引擎
+//        				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),
+//        						getProductByTask(task), j, 30, engine);   //获取全部告警
         				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),
-        						getProductByTask(task), j, 30, engine);   //获取全部告警
+        						String.valueOf(task.getServiceId()), j, 30, engine);   //获取全部告警
         				
         				try {
         				    aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID,task.getServiceId(),districtId);
@@ -226,7 +296,7 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
         				for (Alarm a : aList) {
         					alarmService.saveAlarm(a);
         				}
-        				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]入库告警数为" + aList.size() + "个!");
+        				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]入库告警数为" + aList.size() + "个!;User="+null);
 					}
     				    				
 		    		task.setStatus(Integer.parseInt(Constants.TASK_FINISH));		    		
@@ -244,15 +314,19 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
                     // 获取任务进度引擎
                     String progressStr = ArnhemWorker.getProgressByTaskId(sessionId, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),String.valueOf(task.getServiceId()),engine);
     				getProgressByRes(task.getTaskId(),progressStr);
-	                logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，扫描进度["+task.getTaskProgress()+"]");
+    				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，扫描进度["+task.getTaskProgress()+"];User="+null);
 
-    			}
+    			}else if(status.contains("not found")){
+    				task.setTaskProgress("101");
+    				task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
+    				taskService.update(task);
+    			} 
 	        }catch (Exception e) {
-		    	logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]异常!");
+	        	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]异常!;User="+null);
 		    }
     	}	    
 
-		logger.info("[获取结果调度]:任务表扫描结束....");
+	    CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务表扫描结束....;User="+null);
 	}
 
 	/**
@@ -276,7 +350,7 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 			}
 			return state;
 		} catch (Exception e) {
-			logger.info("[获取结果调度]:解析任务状态发生异常,远程没有此任务!");
+			CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:解析任务状态发生异常,远程没有此任务!;User="+null);
 			throw new RuntimeException("[获取结果调度]:解析任务状态发生异常,远程没有此任务!");
 		}
 	}
@@ -365,7 +439,7 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 			}
 		} catch (Exception e) {
 		    e.printStackTrace();
-			logger.info("[获取结果调度]:任务-[" + taskId + "]解析任务结果发生异常!");
+		    CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + taskId + "]解析任务结果发生异常!;User="+null);
 			throw new RuntimeException("[获取结果调度]:任务-[" + taskId + "]解析任务结果发生异常!");
 		}
 		return aList;
@@ -420,7 +494,7 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 			}
 			return count;
 		} catch (Exception e) {
-			logger.info("[获取结果调度]:解析任务状态发生异常,远程没有此任务!");
+			CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:解析任务状态发生异常,远程没有此任务!;User="+null);
 			throw new RuntimeException("[获取结果调度]:解析任务状态发生异常,远程没有此任务!");
 		}
 	}
@@ -490,7 +564,7 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
                 }
             }
         } catch (Exception e) {
-            logger.info("[获取结果调度]:任务-[" + String.valueOf(taskId) + "]解析任务进度发生异常!");
+        	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + String.valueOf(taskId) + "]解析任务进度发生异常!;User="+null);
             e.printStackTrace();
             throw new RuntimeException("[获取结果调度]:任务-[" + String.valueOf(taskId) + "]解析任务进度发生异常!");
         }

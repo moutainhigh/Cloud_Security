@@ -23,6 +23,7 @@ import com.cn.ctbri.common.ReInternalWorker;
 import com.cn.ctbri.entity.EngineCfg;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IEngineService;
+import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
 
@@ -40,8 +41,14 @@ public class ProgressConsumerListener  implements MessageListener,Runnable{
 	
 	private Task task;
     
-	public ProgressConsumerListener(Task task) {
+	public ProgressConsumerListener() {
+	}
+	
+	public ProgressConsumerListener(Task task, ITaskService taskService, ITaskWarnService taskWarnService,IEngineService engineService) {
 		this.task = task;
+		this.taskService = taskService;
+		this.taskWarnService = taskWarnService;
+		this.engineService = engineService;
 	}
 
 	public void onMessage(Message message) {
@@ -53,7 +60,7 @@ public class ProgressConsumerListener  implements MessageListener,Runnable{
         	    Task taskRe = (Task) om.getObject();
         	    //任务进度获取
         	    if(taskRe != null){
-        	    	ProgressConsumerListener progressConsumer = new ProgressConsumerListener(taskRe);
+        	    	ProgressConsumerListener progressConsumer = new ProgressConsumerListener(taskRe,taskService,taskWarnService,engineService);
         	    	Thread thread = new Thread(progressConsumer);
         	    	thread.start();
         	    }
@@ -147,9 +154,15 @@ public class ProgressConsumerListener  implements MessageListener,Runnable{
     			} else if("finish".equals(status)){
     			    task.setTaskProgress("101");
     			    taskService.updateTask(task);
+    			    json.put("result", "success");
     			} else if(status.contains("not found")){
+    				task.setTaskProgress("101");
     				task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
     				taskService.update(task);
+    				json.put("result", "success");
+    				//更新order
+//    				order.setStatus(Integer.parseInt(Constants.ORDERALARM_NO));
+//    				orderService.update(order);
     			} else {
     				logger.info("[获取任务进度调度]:任务-[" + task.getTaskId() + "]进度信息结果未完成，等待下次拉取结果~");
     			}
@@ -161,6 +174,9 @@ public class ProgressConsumerListener  implements MessageListener,Runnable{
 		}
 	    //推送结果
   		try {
+  			task.setOrder_id(task.getOrder_id());
+			task.setOrderTaskId(task.getOrderTaskId());
+			task = taskService.findTaskByOrderIdAndTaskId(task);
   			net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
   			json.put("taskObj", taskObject);
   			ReInternalWorker.vulnScanGetOrderTaskStatus(json);
