@@ -92,5 +92,13 @@ public class TaskServiceImpl implements ITaskService{
 	public List<Task> getDels() {
 		return this.taskDao.getDels();
 	}
+
+	public Task findByOrderTaskId(String orderTaskId) {
+		return this.taskDao.findByOrderTaskId(orderTaskId);
+	}
+
+	public Task findTaskByOrderId(String orderId) {
+		return this.taskDao.findTaskByOrderId(orderId);
+	}
 	
 }
