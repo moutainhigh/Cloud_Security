@@ -75,4 +75,7 @@ public interface IOrderTaskService {
 	List getArnhemTaskByEngine(String engine_addr);
 
 	List<Task> getDels();
+
+	//add 2015-12-9
+	OrderTask findByOrderId(String orderId);
 }

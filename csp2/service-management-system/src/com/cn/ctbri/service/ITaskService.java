@@ -61,4 +61,9 @@ public interface ITaskService {
 	List getArnhemTaskByEngine(String engine_addr);
 
 	List<Task> getDels();
+
+	//二期新增 2015-12-1 by tangxr
+	Task findByOrderTaskId(String orderTaskId);
+
+	Task findTaskByOrderId(String orderId);
 }
