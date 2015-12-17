@@ -45,10 +45,6 @@ public class OrderTaskDaoImpl extends DaoCommon implements OrderTaskDao{
 	
 	
 	public List<OrderTask> findOrderTask(Map<String, Object> map) {
-		String taskpage = String.valueOf(map.get("page"));
-		if(taskpage == null || "".equals(taskpage)){
-			taskpage = "20";
-		}
 		return getSqlSession().selectList(ns+"findOrderTask", map);
 	}
 	
@@ -90,10 +86,6 @@ public class OrderTaskDaoImpl extends DaoCommon implements OrderTaskDao{
     }
 
     public List<Task> findDelTask(Map<String, Object> delmap) {
-        String taskpage = String.valueOf(delmap.get("page"));
-        if(taskpage == null || "".equals(taskpage)){
-            taskpage = "20";
-        }
         return getSqlSession().selectList(ns+"findDelTask", delmap);
     }
 
@@ -103,10 +95,6 @@ public class OrderTaskDaoImpl extends DaoCommon implements OrderTaskDao{
     }
 
     public List<Task> findExpTask(Map<String, Object> map) {
-        String taskpage = String.valueOf(map.get("page"));
-        if(taskpage == null || "".equals(taskpage)){
-            taskpage = "20";
-        }
         return getSqlSession().selectList(ns+"findExpTask", map);
     }
 
@@ -133,6 +121,10 @@ public class OrderTaskDaoImpl extends DaoCommon implements OrderTaskDao{
 		List list = this.getSqlSession().selectList(ns+"getDels");
         return list;
 	}
-	
+
+
+	public OrderTask findByOrderId(String orderId) {
+		return getSqlSession().selectOne(ns+"findByOrderId", orderId);
+    }
 	
 }
