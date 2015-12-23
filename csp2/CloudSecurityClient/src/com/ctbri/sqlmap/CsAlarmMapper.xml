@@ -75,7 +75,21 @@
         </if> 
 		</if>
 		<if test="serviceId==5">
-		SELECT tw.* 
+		 SELECT tw.id,
+				tw.cat1,
+				tw.cat2,
+				tw.name,
+				tw.severity,
+				tw.rule,
+				tw.ct,
+				tw.tran_p,
+				tw.app_p,
+				tw.url,
+				tw.msg,
+				tw.task_id,
+				DATE_FORMAT(tw.warn_time,'%Y-%m-%d %H:%i:%S') warn_time,
+				tw.group_id,
+				tw.districtId 
 			FROM cs_order_asset oa ,cs_task t,cs_taskwarn tw
 			WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND (t.taskId=tw.task_id or t.group_id=tw.group_id) 
 			<if test="pageNow!=null and pageSize!=null">
