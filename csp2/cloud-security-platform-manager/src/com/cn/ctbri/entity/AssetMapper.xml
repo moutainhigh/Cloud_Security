@@ -116,7 +116,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findAssetByProviceAndCity" parameterType="hashmap" resultMap="AssetRM1">
 	  	select (case when cu.type=2 then '个人用户' else '企业用户' end)  name,
       		cd.name disName,cc.name cityName, ca.num 
-     	from (select a.districtId,a.city,a.userid,count(1) num 
+     	from (select a.districtId,ifnull(a.city,0) city,a.userid,count(1) num 
            		from cs_asset a 
            		 <if test="province!=null and province!=''">
            		    where  a.districtId=#{province}
