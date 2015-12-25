@@ -51,7 +51,7 @@ function checkNumberImage(){
        <div class="login_list pb0">
           <input type="checkbox" class="login_checkbox" name="remeberMe" id="remeberMe" value="yes" ${requestScope.checked }/>
           <span class="b_auto_login">自动登录</span>
-          <a href="#" class="b_forget_pass">忘记密码</a> 
+          <!-- <a href="#" class="b_forget_pass">忘记密码</a>  -->
         </div>
         <button class="b_login_btn" id="b_login_btn">登　　录</button>
       </form>
