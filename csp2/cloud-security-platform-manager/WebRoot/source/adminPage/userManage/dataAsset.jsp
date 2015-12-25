@@ -108,9 +108,9 @@ if(tablList==0&&anList==0){
                                  <div class="analyse_lable fl">
                                     <label>资产所属用户</label>
                                     <select class="text" name="assetUserType" id="assetType1">
-                                        <option value="">请选择</option>
-                                        <option value="3">企业用户</option>
+                                        <!-- <option value="">请选择</option> -->
                                         <option value="2">个人用户</option>
+                                        <option value="3">企业用户</option>
                                     </select>
                                 </div>
                                  <div class="analyse_lable fl">

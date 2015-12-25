@@ -66,7 +66,7 @@ $(document).ready(function(){
 	<div class="main_center">
     	<div class="add_service">
         	<a href="#" class="add_ser fl" id="add_ser">添加用户</a>
-            <a href="${ctx}/adminAuthorityUI.html" class="add_ser fl ml20 b_juris_btn">用户权限</a>
+            <!-- <a href="${ctx}/adminAuthorityUI.html" class="add_ser fl ml20 b_juris_btn">用户权限</a> -->
         </div>
         <div class="b_user_table">
         	<div class="b_user_table_box userbox_cur" id="supper">
