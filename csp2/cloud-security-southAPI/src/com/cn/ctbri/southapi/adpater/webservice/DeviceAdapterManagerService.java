@@ -67,6 +67,33 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.removeTask(deviceId, scannerTaskUniParam);
 	}
 	@POST
+	@Path("/startTask")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String startTask(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
+		String deviceId = jsonObject.get("deviceId").toString();
+		return deviceAdpaterManager.startTask(deviceId, scannerTaskUniParam);
+	}
+	@POST
+	@Path("/pauseTask")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String pauseTask(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
+		String deviceId = jsonObject.get("deviceId").toString();
+		return deviceAdpaterManager.pauseTask(deviceId, scannerTaskUniParam);
+	}
+	@POST
+	@Path("/stopTask")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String stopTask(String dataJson){
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
+		String deviceId = jsonObject.get("deviceId").toString();
+		return deviceAdpaterManager.stopTask(deviceId, scannerTaskUniParam);
+	}
+	@POST
 	@Path("/getStatusByTaskId")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getStatusByTaskId(String dataJson){
