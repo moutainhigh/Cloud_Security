@@ -1,4 +1,4 @@
-package com.cn.ctbri.test;
+package com.cn.ctbri.southapi.adpater.manager;
 
 import java.util.HashMap;
 
@@ -10,7 +10,6 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import com.cn.ctbri.southapi.adpater.config.EngineStatInfo;
-import com.cn.ctbri.southapi.adpater.manager.DeviceAdpaterManager;
 
 public class MyJob implements Job {
 	private HashMap<String, EngineStatInfo> mapEngineStat = new HashMap<String, EngineStatInfo>();

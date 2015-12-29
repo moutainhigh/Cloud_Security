@@ -1,4 +1,4 @@
-package com.cn.ctbri.test;
+package com.cn.ctbri.southapi.adpater.manager;
 
 
 import org.quartz.JobBuilder;
