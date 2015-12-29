@@ -14,6 +14,11 @@
     	<servlet-name>Jersey</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>initLoad</servlet-name>
+		<servlet-class>com.cn.ctbri.southapi.adpater.manager.InitServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
 	<!-- 超时设置 -->
 	<!-- <session-config>   
 	<session-timeout>30</session-timeout>   
