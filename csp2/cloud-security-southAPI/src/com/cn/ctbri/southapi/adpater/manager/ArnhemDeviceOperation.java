@@ -535,7 +535,7 @@ public class ArnhemDeviceOperation {
     public  String getEngineState(String engine_api) {
         //创建路径
         String url = engine_api + "/rest/control/GetEngineState";
-        return getMethod(url);
+        return responseToJSON(getMethod(url)).toString();
     }
     /**
      * id:4.4.14
