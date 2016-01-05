@@ -374,20 +374,7 @@ public class ArnhemDeviceOperation {
         //创建路径
         String url = arnhemServerWebrootUrl + "/rest/task/getTaskProgress";
         String responseString = postMethod(url, xml);
-    	JSONObject jsonObj = new JSONObject();
-    	try {
-			SAXReader reader = new SAXReader();
-			Document doc = reader.read(IOUtils.toInputStream(responseString));
-			Element ele = doc.getRootElement();
-			String s = ele.attributeValue("value");
-			jsonObj.put("status", s);
-			if("Fail".equalsIgnoreCase(s)){
-				jsonObj.put("message",ele.element("ErrorMsg").getText());
-			}
-			return jsonObj.toString();
-		} catch (DocumentException e) {
-		}
-    	String jsonString = new XMLSerializer().read(responseString).toString();
+    	String jsonString = responseToJSON(responseString).toString();
     	return jsonString;
     }
 
@@ -453,7 +440,7 @@ public class ArnhemDeviceOperation {
      */
     public  String getWebsiteCount() {
 		String url = arnhemServerWebrootUrl + "/rest/report/GetWebsiteCount";
-		return getMethod(url);
+		return responseToJSON(getMethod(url)).toString();
 	}
 
 	/**
@@ -465,7 +452,7 @@ public class ArnhemDeviceOperation {
     public  String getWebsiteList(ScannerTaskUniParam scannerTaskUniParam){
     	String url = arnhemServerWebrootUrl+ "/rest/report/GetWebsiteList/";
     	String xml = "<PageParam><StartNum>"+scannerTaskUniParam.getStartNum()+"</StartNum><Size>"+scannerTaskUniParam.getSize()+"</Size></PageParam>";
-    	return postMethod(url, xml);
+    	return responseToJSON(postMethod(url, xml)).toString();
     }
     /**
 	 * 4.4.7
@@ -548,7 +535,7 @@ public class ArnhemDeviceOperation {
     public  String getEngineState(String engine_api) {
         //创建路径
         String url = engine_api + "/rest/control/GetEngineState";
-        return responseToJSON(getMethod(url)).toString();
+        return getMethod(url);
     }
     /**
      * id:4.4.14
