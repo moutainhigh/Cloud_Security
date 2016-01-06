@@ -89,6 +89,24 @@ public class Scheduler4Result {
 		List<Task> taskList = taskService.findTask(map);
 		logger.info("[获取结果调度]:当前等待获取结果的任务有 " + taskList.size() + " 个!");
 		for (Task task : taskList) {
+			List<Order> oList = orderService.findOrderByTask(task);
+//			Map<String, Object> engineMap = new HashMap<String, Object>();
+//			EngineCfg en = new EngineCfg();
+//            int serviceId = 0;
+//            if(oList!=null&&oList.size()>0){
+//				serviceId = oList.get(0).getServiceId();
+//				engineMap.put("serviceId", serviceId);
+//	            engine = engineService.findEngineByParam(engineMap);
+//			}
+			int engine = 0;
+			EngineCfg en = engineService.getEngineById(task.getEngine());
+			if(task.getEngine()!=0){
+				engine = en.getEngine();
+			}else{
+				engine = 2;
+			}
+            
+            
 		    if(task.getWebsoc()==1){
 		        String sessionid = WebSocWorker.getSessionId();
 		        boolean flag = WebSocWorker.getProgressByTaskId(sessionid,task.getGroup_id());
@@ -106,7 +124,7 @@ public class Scheduler4Result {
                     taskService.update(task);
                     
                     //更新订单告警状态
-                    List<Order> oList = orderService.findOrderByTask(task);
+//                    List<Order> oList = orderService.findOrderByTask(task);
                     Order o = oList.get(0);
                     //获取订单还在执行的任务
                     List<Task> tList = taskService.getTaskStatus(oList.get(0));
@@ -137,7 +155,7 @@ public class Scheduler4Result {
                     //更新地域告警数
     				List<Asset> asset = assetService.findByTask(task);
     				Map<String, Object> disMap = new HashMap<String, Object>();
-    				disMap.put("id", asset.get(0).getId());
+    				disMap.put("id", asset.get(0).getDistrictId());
     				disMap.put("count", thisAlarm.size());
     				disMap.put("serviceId", oList.get(0).getServiceId());
     				alarmService.updateDistrict(disMap);
@@ -165,11 +183,11 @@ public class Scheduler4Result {
 		        try {
         			logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]开始获取状态!");
         			//更新订单告警状态
-                    List<Order> oList = orderService.findOrderByTask(task);
+//                    List<Order> oList = orderService.findOrderByTask(task);
                     Order o = oList.get(0);
         			// 根据任务id获取任务状态
-        			String sessionId = ArnhemWorker.getSessionId();
-        			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId,String.valueOf(task.getTaskId())+"_"+o.getId());
+        			String sessionId = ArnhemWorker.getSessionId(engine);
+        			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId,String.valueOf(task.getTaskId())+"_"+o.getId(),engine);
         			String status = this.getStatusByResult(resultStr);
                     List<Alarm> aList;
                     //获取当前时间
@@ -180,27 +198,37 @@ public class Scheduler4Result {
         				/**
         				 * 获取任务结果信息并入库
         				 */
-        				// 获取任务引擎
-        				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId())+"_"+o.getId(),
-        						getProductByTask(task), 0, 500);   //获取全部告警
-        				try {
-        				    aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID,oList.get(0).getServiceId());
-                        } catch (Exception e) {
-                            aList = new ArrayList<Alarm>();
-                            continue;
-                        }
+        				//根据taskId查询地区
+        				int districtId = taskService.findDistrictIdByTaskId(String.valueOf(task.getTaskId()));
+        				// 获取弱点总数
+        				String resultCount = ArnhemWorker.getResultCount(sessionId, String.valueOf(task.getTaskId())+"_"+o.getId(),engine);
+        				int count = this.getCountByResult(resultCount);
+        				for (int i = 0; i <= count/30; i++) {
+        					int j = i*30;
+        					// 获取任务引擎
+            				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId())+"_"+o.getId(),
+            						getProductByTask(task), j, 30, engine);   //获取全部告警
+            				
+            				try {
+            				    aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID,oList.get(0).getServiceId(),districtId);
+                            } catch (Exception e) {
+                                aList = new ArrayList<Alarm>();
+                                continue;
+                            }
+            				
+            				// 插入报警表
+            				for (Alarm a : aList) {
+            					alarmService.saveAlarm(a);
+            				}
+            				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]入库告警数为" + aList.size() + "个!");
+						}
         				
-        				// 插入报警表
-        				for (Alarm a : aList) {
-        					alarmService.saveAlarm(a);
-        				}
-        				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]入库告警数为" + aList.size() + "个!");
         				
         				//更新地域告警数
         				List<Asset> asset = assetService.findByTask(task);
         				Map<String, Object> disMap = new HashMap<String, Object>();
-        				disMap.put("id", asset.get(0).getId());
-        				disMap.put("count", aList.size());
+        				disMap.put("id", districtId);
+        				disMap.put("count", count);
         				disMap.put("serviceId", oList.get(0).getServiceId());
         				alarmService.updateDistrict(disMap);
         				//获取订单类型
@@ -251,7 +279,8 @@ public class Scheduler4Result {
                         
                         
                         //任务是否有告警信息
-                        if(aList!=null && aList.size()>0){//如果有告警发短信通知
+//                        if(aList!=null && aList.size()>0){//如果有告警发短信通知
+                        if(count>0){
                             Order order=null;
                             if(oList!=null && oList.size()>0){
                                 order=oList.get(0);
@@ -265,7 +294,7 @@ public class Scheduler4Result {
                                    if(!phoneNumber.equals("") && phoneNumber!=null){
                                     //发短信
                                       SMSUtils smsUtils = new SMSUtils();
-                                      smsUtils.sendMessage_warn(phoneNumber,order,assetName,String.valueOf(aList.size()));
+                                      smsUtils.sendMessage_warn(phoneNumber,order,assetName,String.valueOf(count));
                                       order.setMessage(1);
                                       orderService.update(order);
                                    }
@@ -276,8 +305,8 @@ public class Scheduler4Result {
         				//删除任务   add by txr 2015-03-27
         				//ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId())+"_"+o.getId());
         				//任务完成后,引擎活跃数减1
-//                        engine.setActivity(engine.getActivity()-1);
-//                        engineService.update(engine);
+                        en.setId(task.getEngine());
+                        engineService.updatedown(en);
         				logger.info("[获取结果调度]:任务-[" + task.getTaskId() + "]告警结果已完成入库，已修改此任务为完成状态!");
         			//可用性
         //			}else if("running".equals(status) && o.getServiceId()==5 && o.getEnd_date().compareTo(setDateFormat.parse(temp))>0){
@@ -440,7 +469,7 @@ public class Scheduler4Result {
 	 * @param taskStr
 	 * @return
 	 */
-	private List<Alarm> getAlarmByRerult(String taskId, String taskStr, int serviceId) {
+	private List<Alarm> getAlarmByRerult(String taskId, String taskStr, int serviceId,int districtId) {
 		List<Alarm> aList = new ArrayList<Alarm>();
 		String decode;
 		try {
@@ -512,6 +541,7 @@ public class Scheduler4Result {
 						alarm.setAlarm_content(URLDecoder.decode(content, "UTF-8"));
 						alarm.setKeyword(URLDecoder.decode(keyword, "UTF-8"));
 						alarm.setServiceId(serviceId);
+						alarm.setDistrictId(districtId);
 						aList.add(alarm);
 					}
 
@@ -552,6 +582,32 @@ public class Scheduler4Result {
 			productId = Constants.PRODUCT_LD;
 		}
 		return productId;
+	}
+	
+	/**
+	 * 解析弱点数
+	 * 
+	 * @param resultStr
+	 * @return
+	 */
+	private int getCountByResult(String resultCount) {
+		String decode;
+		int count = 0;
+		try {
+			decode = URLDecoder.decode(resultCount, "UTF-8");
+			Document document = DocumentHelper.parseText(decode);
+			Element result = document.getRootElement();
+			Attribute attribute  = result.attribute("value");
+			String resultValue = attribute.getStringValue();
+			if("Success".equals(resultValue)){
+				Attribute allNumber  = result.attribute("allNumber");
+				count = Integer.parseInt(allNumber.getStringValue());
+			}
+			return count;
+		} catch (Exception e) {
+			logger.info("[获取结果调度]:解析任务状态发生异常,远程没有此任务!");
+			throw new RuntimeException("[获取结果调度]:解析任务状态发生异常,远程没有此任务!");
+		}
 	}
 
 }

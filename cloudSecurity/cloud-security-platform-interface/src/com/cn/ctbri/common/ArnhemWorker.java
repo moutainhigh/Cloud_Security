@@ -36,23 +36,34 @@ public class ArnhemWorker {
 	/**
 	 * 安恒服务器根路径
 	 */
-	private static String SERVER_WEB_ROOT;
+	
+	private static String SERVER_WEB_ROOT1;
+	
+	private static String SERVER_WEB_ROOT2;
 	/**
 	 * 用户名
 	 */
-	private static String USERNAME;
+	private static String USERNAME1;
+	private static String USERNAME2;
 	/**
 	 * 密码
 	 */
-	private static String PASSWORD;
+	private static String PASSWORD1;
+	private static String PASSWORD2;
 	
 	static{
 		try {
 			Properties p = new Properties();
-			p.load(ArnhemWorker.class.getClassLoader().getResourceAsStream("arnhem.properties"));
-			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
-			USERNAME = p.getProperty("USERNAME");
-			PASSWORD = p.getProperty("PASSWORD");
+			p.load(ArnhemWorker.class.getClassLoader().getResourceAsStream("engineConfig.properties"));
+//			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
+//			USERNAME = p.getProperty("USERNAME");
+//			PASSWORD = p.getProperty("PASSWORD");
+			SERVER_WEB_ROOT1 = p.getProperty("engine_addr");
+			SERVER_WEB_ROOT2 = p.getProperty("engine_addr1");
+			USERNAME1 = p.getProperty("username");
+			PASSWORD1 = p.getProperty("password");
+			USERNAME2 = p.getProperty("username1");
+			PASSWORD2 = p.getProperty("password1");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -61,14 +72,22 @@ public class ArnhemWorker {
 	}
 	/**
 	 * 功能描述： 获取SessionId
+	 * @param i 
 	 *		 @time 2015-01-05
 	 */
-	public static String getSessionId(){
+	public static String getSessionId(int engine){
 		try {
-			 // 登陆信息
-	    	 String xmlContent = "<Login><Name>" + USERNAME + "</Name><Password>" + PASSWORD + "</Password></Login>";
-	    	 // 登陆服务器地址
-	         String url = SERVER_WEB_ROOT + "/rest/login";         
+			 String xmlContent = "";
+			 String url = "";
+	    	 if(engine==1){
+	    		// 登陆信息
+	    		 xmlContent = "<Login><Name>" + USERNAME1 + "</Name><Password>" + PASSWORD1 + "</Password></Login>";
+	    		// 登陆服务器地址
+	    		 url = SERVER_WEB_ROOT1 + "/rest/login";    
+	    	 }else{
+	    		 xmlContent = "<Login><Name>" + USERNAME2 + "</Name><Password>" + PASSWORD2 + "</Password></Login>";
+	    		 url = SERVER_WEB_ROOT2 + "/rest/login";    
+	    	 }        
 	         // 创建客户端配置对象
 	         ClientConfig config = new DefaultClientConfig(); 
 	         if(url.startsWith("https")) {
@@ -101,47 +120,7 @@ public class ArnhemWorker {
 		return "";
 	}
 	
-	/**
-     * 功能描述： 获取SessionId
-     *       @time 2015-01-05
-     */
-    public static String getSessionId(String engine_api,String username,String password){
-        try {
-             // 登陆信息
-             String xmlContent = "<Login><Name>" + username + "</Name><Password>" + password + "</Password></Login>";
-             // 登陆服务器地址
-             String url = engine_api + "/rest/login";         
-             // 创建客户端配置对象
-             ClientConfig config = new DefaultClientConfig(); 
-             if(url.startsWith("https")) {
-                SSLContext ctx = getSSLContext();
-                config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
-                         new HostnameVerifier() {
-                             public boolean verify( String s, SSLSession sslSession ) {
-                                 return true;
-                             }
-                         }, ctx
-                     ));
-             }
-             // 建立客户端
-             Client client = Client.create(config);
-             // 连接服务器
-             WebResource service = client.resource(url); 
-             // 发送请求，接收返回数据
-             String response = service.type(MediaType.APPLICATION_XML).post(String.class, xmlContent);
-             // 创建XML解析对象
-             SAXReader reader = new SAXReader();
-             // 加载XML
-             Document doc = reader.read(IOUtils.toInputStream(response));
-             //解析且获取回话ID
-             Element ele = doc.getRootElement();
-             Element s = ele.element("SessionId");
-             return s.getText();
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
+	
 	/**
 	 * 功能描述： 获取安全套接层上下文对象
 	 *		 @time 2015-01-05
@@ -175,16 +154,25 @@ public class ArnhemWorker {
 	 * 功能描述：下发任务
 	 * 参数描述：sessionId 回话Id,taskId 任务ID,destURL 监测目标URL,destIP 监测目标IP
 	 *        destPort  监测目标PORT,taskSLA   任务模板名称
+	 * @param  
 	 *		 @time 2015-01-05
 	 */
 	public static String lssuedTask(String sessionId, String taskId, String destURL, 
-    		String destIP, String destPort, String taskSLA){
+    		String destIP, String destPort, String taskSLA, int engine){
 		//组织发送内容XML
 		String xml = "<Task><TaskID>" + taskId + "</TaskID><CustomID>123123</CustomID><TaskInfo><DestURL>" +
     			destURL + "</DestURL><DestIP>" + nullFilter(destIP) + "</DestIP><DestPort>" +
     			nullFilter(destPort) + "</DestPort></TaskInfo><TaskSLA>" + taskSLA + "</TaskSLA></Task>";
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + "/rest/task";
+//    	String url = SERVER_WEB_ROOT + "/rest/task";
+    	String url = "";
+	   	if(engine==1){
+	   		// 创建路径
+	   		url = SERVER_WEB_ROOT1 + "/rest/task"; 
+	   	}else{
+	   		url = SERVER_WEB_ROOT2 + "/rest/task";
+	   	} 
+    	
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
@@ -202,9 +190,16 @@ public class ArnhemWorker {
 	 * 参数描述:String sessionId, String taskId
 	 *		 @time 2015-01-08
 	 */
-	public static String removeTask(String sessionId, String taskId){
+	public static String removeTask(String sessionId, String taskId, int engine){
 		//创建路径
-		String url = SERVER_WEB_ROOT + "/rest/task/Remove/" + taskId;
+//		String url = SERVER_WEB_ROOT + "/rest/task/Remove/" + taskId;
+		String url = "";
+	   	if(engine==1){
+	   		// 创建路径
+	   		url = SERVER_WEB_ROOT1 + "/rest/task/Remove/" + taskId;
+	   	}else{
+	   		url = SERVER_WEB_ROOT2 + "/rest/task/Remove/" + taskId;
+	   	} 
 		//创建配置
 		ClientConfig config = new DefaultClientConfig();
 		//绑定配置
@@ -230,9 +225,16 @@ public class ArnhemWorker {
 	 * 参数描述:String sessionId 回话ID, String taskId任务ID
 	 *		 @time 2015-01-05
 	 */
-	public static String getResultCountByTaskID(String sessionId, String taskId) {
+	public static String getResultCountByTaskID(String sessionId, String taskId, int engine) {
 		//创建Url
-    	String url = SERVER_WEB_ROOT + "/rest/report/ResultCount/TaskID/" + taskId;
+//    	String url = SERVER_WEB_ROOT + "/rest/report/ResultCount/TaskID/" + taskId;
+		String url = "";
+	   	if(engine==1){
+	   		// 创建路径
+	   		url = SERVER_WEB_ROOT1 + "/rest/report/ResultCount/TaskID/" + taskId;
+	   	}else{
+	   		url = SERVER_WEB_ROOT2 + "/rest/report/ResultCount/TaskID/" + taskId;
+	   	}
     	return getMethod(url, sessionId);
     }
 	/**
@@ -242,9 +244,16 @@ public class ArnhemWorker {
 	 *		 @time 2015-01-05
 	 */
     public static String getReportByTaskID(String sessionId, String taskId, String productId,
-    		int startNum, int size) {
+    		int startNum, int size, int engine) {
     	//创建请求路径
-    	String url = SERVER_WEB_ROOT + "/rest/report/TaskID";
+//    	String url = SERVER_WEB_ROOT + "/rest/report/TaskID";
+    	String url = "";
+	   	if(engine==1){
+	   		// 创建路径
+	   		url = SERVER_WEB_ROOT1 + "/rest/report/TaskID";
+	   	}else{
+	   		url = SERVER_WEB_ROOT2 + "/rest/report/TaskID";
+	   	}
     	//组织请求内容XML
     	String xml = "<ResultParam><TaskID>" + taskId + "</TaskID>" +
     			"<ProductID>" + productId + "</ProductID><StartNum>" + 
@@ -310,11 +319,17 @@ public class ArnhemWorker {
 	 * 根据任务id获取任务当前状态
 	 * @param sessionId 会话id
 	 * @param taskId 任务id
+	 * @param engine 
 	 * @return 任务状态代码
 	 */
-	public static String getStatusByTaskId(String sessionId, String taskId) {
-		//创建路径
-		String url = SERVER_WEB_ROOT + "/rest/task/Test/" + taskId;
+	public static String getStatusByTaskId(String sessionId, String taskId, int engine) {
+		String url = "";
+	   	if(engine==1){
+	   		// 创建路径
+	   		url = SERVER_WEB_ROOT1 + "/rest/task/Test/" + taskId;   
+	   	}else{
+	   		url = SERVER_WEB_ROOT2 + "/rest/task/Test/" + taskId;
+	   	}  
 		//创建配置
 		ClientConfig config = new DefaultClientConfig();
 		//绑定配置
@@ -333,11 +348,18 @@ public class ArnhemWorker {
      * @param taskId 任务id
      * @return 任务状态代码
      */
-    public static String getProgressByTaskId(String sessionId, String taskId, String ServiceId) {
+    public static String getProgressByTaskId(String sessionId, String taskId, String ServiceId, int engine) {
         //组织发送内容XML
         String xml = "<Task><TaskID>" + taskId + "</TaskID><ProductID>" + ServiceId +"</ProductID ></Task>";
         //创建路径
-        String url = SERVER_WEB_ROOT + "/rest/task/getTaskProgress";
+//        String url = SERVER_WEB_ROOT + "/rest/task/getTaskProgress";
+        String url = "";
+	   	if(engine==1){
+	   		// 创建路径
+	   		url = SERVER_WEB_ROOT1 + "/rest/task/getTaskProgress"; 
+	   	}else{
+	   		url = SERVER_WEB_ROOT2 + "/rest/task/getTaskProgress";
+	   	}  
         //创建配置
         ClientConfig config = new DefaultClientConfig();
         //绑定配置
@@ -372,6 +394,33 @@ public class ArnhemWorker {
         return response;
     }
     
+    /**
+	 * 根据任务ID获取弱点记录总数
+	 * @param sessionId 会话id
+	 * @param taskId 任务id
+	 * @param engine 
+	 * @return 任务状态代码
+	 */
+	public static String getResultCount(String sessionId, String taskId, int engine) {
+		String url = "";
+	   	if(engine==1){
+	   		// 创建路径
+	   		url = SERVER_WEB_ROOT1 + "/rest/report/ResultCount/TaskID/" + taskId;   
+	   	}else{
+	   		url = SERVER_WEB_ROOT2 + "/rest/report/ResultCount/TaskID/" + taskId;
+	   	}  
+		//创建配置
+		ClientConfig config = new DefaultClientConfig();
+		//绑定配置
+    	buildConfig(url,config);
+    	//创建客户端
+        Client client = Client.create(config);
+        WebResource service = client.resource(url);
+        //连接服务器，返回结果
+        String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
+        return response;
+	}
+    
     public static void main(String[] args) throws UnsupportedEncodingException, JSONException {
 //        JSONObject json = new JSONObject();
 //        org.codehaus.jettison.json.JSONObject jsonObject = new org.codehaus.jettison.json.JSONObject();
@@ -391,17 +440,28 @@ public class ArnhemWorker {
 //        		"                                                                         \"zone_ip\":" +
 //        		"                                                                              \"[\"12.12.12.12/32\"," +
 //        		"                                                                                 \"33.33.33.33/24\"]\"}");
-        String sessionId = getSessionId();
-//        String s = getEngineState(sessionId,"https://219.141.189.187:60443");
+        String sessionId = getSessionId(2);
+//        String s = getEngineState(sessionId,"https://219.141.189.187:61443");
+        
+//        String sessionId1 = getSessionId("https://219.141.189.187:60443","developer","developer111111");
+        String s1 = getEngineState(sessionId,"https://219.141.189.187:61443");
+        
         
 //    	String s = lssuedTask(sessionId, "test88", "http://www.testfire.net", 
 //        		"", "80", "漏洞扫描模板");
     	
-//    	String p = getProgressByTaskId(sessionId, "test88", "1");
+    	String p = getProgressByTaskId(sessionId, "922_15101511393080584", "1",2);
+    	String p1 = getStatusByTaskId(sessionId, "922_15101511393080584",2);
+    	
+    	System.out.println(s1);
+    	System.out.println("ok");
     	
 //    	String g = getStatusByTaskId(sessionId, "test88");
         
-        String result = getReportByTaskID(sessionId, "test88", "1",0, 500);
-    	System.out.println(result);
+        String result = getReportByTaskID(sessionId, "3981_15102316092858295", "1",340, 30,2);
+//        String result = getReportByTaskID(sessionId, "922_15101511393080584", "1",0, 500,2);
+    	String count = getResultCount(sessionId, "3981_15102316092858295",2);
+//    	System.out.println(result);
+//    	System.out.println(count);
     }
 }
