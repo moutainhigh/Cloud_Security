@@ -19,8 +19,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="task_id" column="task_id"/>
 		<result property="warn_time" column="warn_time"/>
 	</resultMap> 
-	<!-- 根据订单id查询告警信息 -->
-	<select id="findTaskWarnByOrderId" parameterType="hashmap" resultMap="TaskWarnRM">
+	<!-- 根据订单id查询告警信息 modify by tang 2015/11/3-->
+	<!-- <select id="findTaskWarnByOrderId" parameterType="hashmap" resultMap="TaskWarnRM">
 	    <if test="websoc!=1">
             SELECT tw.* 
             FROM cs_order_asset oa ,cs_task t,cs_taskwarn tw
@@ -31,7 +31,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             FROM cs_order_asset oa ,cs_task t,cs_taskwarn tw
             WHERE oa.orderId=#{orderId} AND oa.id in(t.order_asset_Id) AND t.group_id=tw.group_id
        </if>
+	</select> -->
+	
+	<select id="findTaskWarnByOrderId" parameterType="hashmap" resultMap="TaskWarnRM">
+            SELECT tw.* 
+            FROM cs_order_asset oa ,cs_task t,cs_taskwarn tw
+            WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND (t.taskId=tw.task_id or t.group_id=tw.group_id)
 	</select>
+	
 		<!-- 根据订单id查询告警次数 -->
 	<select id="findTaskWarnCountByOrderId" parameterType="String" resultMap="TaskWarnRM">
 		SELECT COUNT(*) AS count 

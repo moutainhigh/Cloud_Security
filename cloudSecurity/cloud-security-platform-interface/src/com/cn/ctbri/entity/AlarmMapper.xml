@@ -47,8 +47,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 	</select>
 	
-	<!-- 根据orderid查询告警信息 -->
-    <select id="findAlarmByOrderId" parameterType="String" resultMap="Alarm">
+	<!-- 根据orderid查询告警信息 modify by tang 2015/11/3-->
+    <!-- <select id="findAlarmByOrderId" parameterType="String" resultMap="Alarm">
         <if test="websoc!=1">
 	        SELECT a.*
 	        FROM cs_order_asset oa ,cs_task t,cs_alarm a
@@ -59,7 +59,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        FROM cs_order_asset oa ,cs_task t,cs_alarm a
 	        WHERE oa.orderId=#{orderId} AND oa.id in(t.order_asset_Id) AND t.group_id=a.group_id
 	    </if>
-    </select>
+    </select> -->
+    
+    <select id="findAlarmByOrderId" parameterType="String" resultMap="Alarm">
+	        SELECT a.*
+	        FROM cs_order_asset oa ,cs_task t,cs_alarm a
+	        WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND (t.taskId=a.taskId or t.group_id=a.group_id)
+    </select> 
     
     <!-- 查询本次告警信息 -->
     <select id="findAlarmBygroupId" parameterType="String" resultMap="Alarm">
@@ -80,4 +86,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where id = #{id}
 	</update>
 	
+	
+	<!-- 查询本次告警信息 -->
+    <select id="findAdvice" parameterType="String" resultType="String">
+        select l.advice from cs_leakinfo l where l.name = #{name}
+    </select>
+    
+    <!-- 更新告警 -->
+    <update id="updateAlarm" parameterType="com.cn.ctbri.entity.Alarm">
+		update cs_alarm 
+		<set>
+			advice = #{advice}
+		</set>
+		where id = #{id}
+	</update>
 </mapper>

@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 根据条件查询任务表 -->
 	<select id="findTask" parameterType="hashmap" resultMap="TaskRM">
 		select * from cs_task t
-		where t.status = #{status} 
+		where t.status = #{status}
 		<if test="status==1">
 		  and t.execute_time between date_add(now(),interval -1 minute) and now()
 		</if>
@@ -173,5 +173,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
      	where  t.order_asset_Id = oa.id and oa.assetId = a.id and t.taskId = #{taskId}
     </select>
     
+    <!-- 根据引擎IP获取安恒在执行的任务 -->
+    <select id="getArnhemTaskByEngine" parameterType="String" resultType="com.cn.ctbri.entity.Task">
+        select * from cs_task t where t.status = 2 and t.engineIP = #{engine_addr}
+    </select>
+    
+    <!-- 根据引擎IP获取安恒在执行的任务 -->
+    <select id="getDels" resultType="com.cn.ctbri.entity.Task">
+        select * from cs_task t where t.execute_time &lt;='2015-07-01 00:00:00' order by t.execute_time desc
+    </select>
     
 </mapper>
