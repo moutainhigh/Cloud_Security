@@ -25,6 +25,14 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.loadDeviceAdpater();
 	}
 	@POST
+	@Path("/loadDeviceAdapter")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String loadDeviceAdapter(String dataJson){
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		String deviceId = jsonObject.get("deviceId").toString();
+		return deviceAdpaterManager.loadDeviceAdapter(deviceId);
+	}
+	@POST
 	@Path("/disposeScanTask")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String disposeScanTask(String dataJson)throws JSONException{
@@ -50,7 +58,6 @@ public class DeviceAdapterManagerService {
 	public String getTemplate(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		String deviceId = jsonObject.get("deviceId").toString();
-		deviceAdpaterManager.loadDeviceAdpater();
 		return deviceAdpaterManager.getTemplate(deviceId);
 	}
 	@POST

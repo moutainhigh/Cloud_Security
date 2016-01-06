@@ -19,16 +19,16 @@ public class DeviceAdapterConstant {
 	 * 
 	 */
 	public static final String FILE_DEVICE_CONFIG = DeviceAdapterConstant.class.getResource("/DeviceConfig.xml").toString();
+	/**
+	 * 安恒扫描设备名
+	 */
+	public static final String DEVICE_SCANNER_ARNHEM = "Arnhem";
+	/**
+	 * 知道创宇扫描设备名
+	 */
+	public static final String DEVICE_SCANNER_WEBSOC = "Websoc";
 	public static String DEFALUT_DEVICE_TYPE_SCANNER = "SCANNER" ;
 	public static String DEFALUT_DEVICE_TYPE_DDOS = "DDOS" ;	
-	/**
-	 * 安恒 
-	 */
-	public static String DEVICE_ADAPTER_ARNHEM_SCANNER;
-	/**
-	 * 知道创宇
-	 */
-	public static String DEVICE_ADAPTER_WEBSOC_SCANNER;
 	/**
 	 * 华为
 	 */

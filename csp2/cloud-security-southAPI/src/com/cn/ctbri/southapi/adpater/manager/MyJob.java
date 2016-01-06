@@ -9,6 +9,7 @@ import net.sf.json.JSONObject;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.quartz.Job;
@@ -16,6 +17,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import com.cn.ctbri.southapi.adpater.config.DeviceConfigInfo;
+import com.cn.ctbri.southapi.adpater.config.Engine;
 import com.cn.ctbri.southapi.adpater.config.EngineStatList;
 import com.cn.ctbri.southapi.adpater.manager.DeviceAdapterConstant;
 
@@ -44,16 +46,33 @@ public class MyJob implements Job {
 				}else if ("Arnhem".equalsIgnoreCase(factoryString)) {
 		        	String deviceId = elementDeviceScanner.attributeValue("id");
 		        	System.out.println("while"+deviceId);
-		        	deviceAdpaterManager.getEngineStat(deviceId);
-		        	
+		        	Document engineStatDocument = DocumentHelper.parseText(deviceAdpaterManager.getEngineStat(deviceId));
+		        	Element engineStatRoot= engineStatDocument.getRootElement();
+		        	List nodes = engineStatRoot.elements("EngineList");
+		            for(Iterator it=nodes.iterator();it.hasNext();){
+		            	Engine engine = new Engine();
+		                Element engineStatElement = (Element) it.next();
+		                engineStatList.setIP(engineStatElement.elementTextTrim("IP"));
+		                engineStatList.setMemoryTotal(engineStatElement.elementTextTrim("MemoryTotal"));
+		                engineStatList.setMemoryFree(engineStatElement.elementTextTrim("MemoryFree"));
+		                engineStatList.setDiskTotal(engineStatElement.elementTextTrim("DiskTotal"));
+		                engineStatList.setDiskFree(engineStatElement.elementTextTrim("DiskFree"));
+		                engineStatList.setCpuOccupancy(engineStatElement.elementTextTrim("CpuOccupancy"));
+		                Element engineElement = engineStatElement.element("Engine");
+		                engine.setEngineName(engineElement.elementTextTrim("EngineName"));
+		                engine.setEngineState(engineElement.elementTextTrim("EngineStat"));
+		                engine.setEUpTime(engineElement.elementTextTrim("EUpTime"));
+		                engine.setEversion(engineElement.elementTextTrim("Eversion"));
+		                engine.setPUpTime(engineElement.elementTextTrim("PUpTime"));
+		                engine.setPversion(engineElement.elementTextTrim("Pversion"));
+		                engineStatList.setEngine(engine);
+		                // do something
+		            }
 		        	mapDeviceStat.put(deviceId,engineStatList);
 				}
 	        }
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		}
-		JSONObject engineStatObject = JSONObject.fromObject(deviceAdpaterManager.getEngineStat("10001"));
-		System.out.println(engineStatObject.get("EngineList").toString());
-		JSONArray array = JSONArray.fromObject(deviceAdpaterManager.getEngineStat("10001"));
 	}
 }

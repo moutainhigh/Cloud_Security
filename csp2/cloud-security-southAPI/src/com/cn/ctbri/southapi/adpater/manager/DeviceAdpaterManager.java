@@ -24,6 +24,9 @@ import com.cn.ctbri.southapi.adpater.config.ScannerTaskUniParam;
  */
 
 public class DeviceAdpaterManager {
+	private static final String LOAD_DEVICE_ERROR = "{\"status\":\"fail\",\"message\":\"Load DeviceConfig failed!!\"}";
+	private static final String INIT_DEVICE_ERROR = "{\"status\":\"fail\",\"message\":\"Init DeviceAdapter failed!!\"}";
+	private static final String DEVICE_OPERATION_ERROR = "{\"status\":\"fail\",\"message\":\"This device does not support the operation\"}";
 	
 	public static HashMap<String, DeviceConfigInfo> mapDeviceConfigInfoHashMap = new HashMap<String, DeviceConfigInfo>();
 	public static ArnhemDeviceAdpater arnhemDeviceAdpater = new ArnhemDeviceAdpater();
@@ -32,8 +35,12 @@ public class DeviceAdpaterManager {
 	{
 		return mapDeviceConfigInfoHashMap.get(deviceId);
 	}
-	public DeviceAdpaterManager(){
-		loadDeviceAdpater();
+//	public DeviceAdpaterManager(){
+//		loadDeviceAdpater();
+//	}
+	
+	private String errorDevieInfo(String deviceId) {
+		return "{\"status\":\"fail\",\"message\":\"Can not find device: "+deviceId+"\"}";
 	}
 	/*
 	 * 初始化
@@ -41,15 +48,25 @@ public class DeviceAdpaterManager {
 	public String loadDeviceAdpater()
 	{
 		if (!loadDeviceConfig(DeviceAdapterConstant.FILE_DEVICE_CONFIG)){
-			return "{\"status\":\"fail\",\"message\":\"Load DeviceConfig failed!!\"}";
+			return LOAD_DEVICE_ERROR;
 		}
 		if (!initAllDeviceAdapter()){
-			return "{\"status\":\"fail\",\"message\":\"Init DeviceAdapter failed!!\"}";
+			return INIT_DEVICE_ERROR;
 		}
 		//加载各个适配器
 		//安恒适配器
 		return "{\"status\":\"success\"}";
 	}	
+	public String loadDeviceAdapter(String deviceId){
+		if (!loadDeviceConfig(DeviceAdapterConstant.FILE_DEVICE_CONFIG)){
+			return LOAD_DEVICE_ERROR;
+		}
+		if (!initDeviceAdapter(deviceId)){
+			return INIT_DEVICE_ERROR;
+		}
+		return "{\"status\":\"success\"}";
+		
+	}
 	
 	private boolean initAllDeviceAdapter()
 	{
@@ -82,6 +99,18 @@ public class DeviceAdpaterManager {
 	
 		return true;
 	}
+	private boolean initDeviceAdapter(String deviceId) {
+		HashMap<String, DeviceConfigInfo> map = new HashMap<String, DeviceConfigInfo>();
+		map.put(deviceId, getDeviceAdapterAttrInfo(deviceId));
+		if ("".equals(deviceId) ||getDeviceAdapterAttrInfo(deviceId)==null ){
+			return false;
+		}else if (DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim())){
+			return arnhemDeviceAdpater.initDeviceAdpater(map);
+		}else if (DeviceAdapterConstant.DEVICE_SCANNER_WEBSOC.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim())) {
+			return websocDeviceAdapter.initDeviceAdpater(map);
+		}
+		return false;
+	}
 	
 	private boolean loadDeviceConfig(String configFileName)
 	{
@@ -93,6 +122,7 @@ public class DeviceAdpaterManager {
 	        //加载SCANNER设备
 	        List<?> list = doc.selectNodes(DeviceAdapterConstant.DEVICE_SCANNER_ROOT);	
 	        Iterator<?> iter = list.iterator();
+	        mapDeviceConfigInfoHashMap.clear();
 	        while (iter.hasNext()) {
 	        	  Element elementDeviceScanner = (Element) iter.next();   
 	        	  DeviceConfigInfo daaInfo = new DeviceConfigInfo();
@@ -101,23 +131,66 @@ public class DeviceAdpaterManager {
 	                  Element element = (Element) it.next();   
 	                 // do something    
 	                  daaInfo.setDeviceType(DeviceAdapterConstant.DEFALUT_DEVICE_TYPE_SCANNER);
-	                  if ( "DeviceID".equalsIgnoreCase(element.getName())) 
-	                	  if ( null == element.getText() || "".equals(element.getText())) 
-	                		  { 	
-	                		  	System.out.println("Config Error: xxxxxxxx");
+	                  if ( "DeviceID".equalsIgnoreCase(element.getName())) {
+	                	  if ( null == element.getTextTrim() || "".equals(element.getTextTrim())){ 	
+	                		  	System.out.println("Config Error: DeviceID is null!!!");
 	                		  	continue;
-	                		  }
-	                	  else
-	                		  daaInfo.setDeviceID(element.getText());
-	                  if ( "ScannerFactory".equalsIgnoreCase(element.getName()) ) daaInfo.setScannerFactory(element.getText());
-	                  if ( "ScannerFactoryName".equalsIgnoreCase(element.getName()) ) daaInfo.setScannerFactoryName(element.getText());
-	                  if ( "ScannerWebUrl".equalsIgnoreCase(element.getName()) ) daaInfo.setScannerWebUrl(element.getText());
-	                  if ( "ScannerEngineAPI".equalsIgnoreCase(element.getName()) ) daaInfo.setScannerEngineAPI(element.getText());
-	                  if ( "ScannerUserName".equalsIgnoreCase(element.getName()) ) daaInfo.setScannerUserName(element.getText());
-	                  if ( "ScannerPassword".equalsIgnoreCase(element.getName()) ) daaInfo.setScannerPassword(element.getText());
+	                	  }else{
+	                		  daaInfo.setDeviceID(element.getTextTrim());  
+	                	  }
+	                  }
+	                  if ( "ScannerFactory".equalsIgnoreCase(element.getName()) ){
+	                	  if( null == element.getTextTrim() || "".equals(element.getTextTrim()) ){
+	                		  System.out.println("Config Error: ScannerFactory is null!!!");
+	                		  continue;
+	                	  }else{
+	                		  daaInfo.setScannerFactory(element.getText());
+	                	  }
+	                  }
+	                  if ( "ScannerFactoryName".equalsIgnoreCase(element.getName()) ){
+	                	  if(null == element.getTextTrim() || "".equals(element.getTextTrim())){
+	                		  System.out.println("Config Error: ScannerFactoryName is null!!!");
+	                		  continue;
+	                	  }else{	                		  
+	                		  daaInfo.setScannerFactoryName(element.getText());
+	                	  }
+	                  }
+	                  if ( "ScannerWebUrl".equalsIgnoreCase(element.getName()) ){
+	                	  if (null == element.getTextTrim() || "".equals(element.getTextTrim())) {
+	                		  System.out.println("Config error: ScannerWebUrl is null!!!");
+	                		  continue;
+	                	  } else {
+	                		  daaInfo.setScannerWebUrl(element.getText());
+	                	  }
+	                  }
+	                  if ( "ScannerEngineAPI".equalsIgnoreCase(element.getName()) ){
+	                	  if (null == element.getTextTrim() || "".equals(element.getTextTrim())) {							
+	                		  System.out.println("Config error: ScannerEngineAPI is null!!!");
+	                		  continue;
+	                	  }else{	                		  
+	                		  daaInfo.setScannerEngineAPI(element.getText());
+	                	  }
+	                  }
+	                  if ( "ScannerUserName".equalsIgnoreCase(element.getName()) ){
+	                	  if (null == element.getTextTrim() || "".equals(element.getTextTrim())) {
+							System.out.println("Config error: ScannerUserName is null!!!");
+							continue;
+	                	  } else {
+	                		  daaInfo.setScannerUserName(element.getText());	                		
+	                	  }
+	                  }
+	                  if ( "ScannerPassword".equalsIgnoreCase(element.getName()) ){ 
+	                	 if (null == element.getTextTrim() || "".equals(element.getTextTrim())) {
+							System.out.println("Config error:ScannerPassword is null!!!");
+							continue;
+	                	 }else{
+	                		 daaInfo.setScannerPassword(element.getText());							
+	                	 }
+	                  }
 	              }
 	        	  mapDeviceConfigInfoHashMap.put(daaInfo.getDeviceID(), daaInfo);
 	        }
+	        System.out.println(mapDeviceConfigInfoHashMap.entrySet());
 	        return true;
 		} catch (DocumentException e) {
 			e.printStackTrace();
@@ -126,27 +199,25 @@ public class DeviceAdpaterManager {
 	}	
 	public String getState(String deviceId) {
 		if ("".equals(deviceId)||getDeviceAdapterAttrInfo(deviceId) == null){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+			return errorDevieInfo(deviceId);
 		}
-		if ("安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName())){
+		if (DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim())){
 			return arnhemDeviceAdpater.getState(deviceId);
 		}
-		return "";
+		return DEVICE_OPERATION_ERROR;
 	}
 	public String disposeScanTask(String deviceId,ScannerTaskUniParam scannerTaskUniParam)
 	{	
 		if ("".equals(deviceId) ||getDeviceAdapterAttrInfo(deviceId)==null ){
-			return "{\"code\":\"404\",\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+			return errorDevieInfo(deviceId);
 		}
-		if ("安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()))
+		if (DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()))
 		{
-			String s = arnhemDeviceAdpater.disposeScanTask(deviceId,scannerTaskUniParam);
-			System.out.println(s);
-			return s;
-		}else if ("知道创宇".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName())) {
+			return arnhemDeviceAdpater.disposeScanTask(deviceId,scannerTaskUniParam);
+		}else if (DeviceAdapterConstant.DEVICE_SCANNER_WEBSOC.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim())) {
 			return websocDeviceAdapter.disposeScanTask(deviceId,scannerTaskUniParam);
 		}
-		return "{\"code\":\"404\",\"status\":\"fail\",\"message\":\"Can not find device\"}";
+		return DEVICE_OPERATION_ERROR;
 	}
 	/**
 	 * 获取任务配置模板
@@ -154,18 +225,14 @@ public class DeviceAdpaterManager {
 	 * @return
 	 */
 	public String  getTemplate(String deviceId) {
-		if ("".equals(deviceId)||getDeviceAdapterAttrInfo(deviceId) == null){
-			return "{\"status\":\"fail\",\"message\":\"Can not find device: "+deviceId+"\"}";
+		if (null==deviceId||"".equals(deviceId)||getDeviceAdapterAttrInfo(deviceId) == null){
+			return errorDevieInfo(deviceId);
 		}
-		if ("安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if (DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
-			String s = arnhemDeviceAdpater.getTemplate(deviceId);
-			System.out.println(s);
-			return s;
-		} else if ("知道创宇".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName())) {
-			return "{\"status\":\"fail\",\"message\":\"This device does not support the operation\"}";
+			return arnhemDeviceAdpater.getTemplate(deviceId);
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;
+		return DEVICE_OPERATION_ERROR;
 	}
 
 	/**
@@ -174,54 +241,54 @@ public class DeviceAdpaterManager {
 	 * @return
 	 */
 	public String getEngineStat(String deviceId){
-		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+		if (null==deviceId|| "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
 			return arnhemDeviceAdpater.getEngineState(deviceId);		
 		}
-		return  DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;
+		return DEVICE_OPERATION_ERROR;
 	}
 	public String removeTask(String deviceId,ScannerTaskUniParam scannerTaskUniParam){
-		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+		if ( null==deviceId||"".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
 			return arnhemDeviceAdpater.removeTask(deviceId,scannerTaskUniParam);		
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;
+		return DEVICE_OPERATION_ERROR;
 	}
 	public String startTask(String deviceId,ScannerTaskUniParam scannerTaskUniParam) {
-		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+		if ( null==deviceId||"".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()))
 		{
 			return arnhemDeviceAdpater.startTask(deviceId, scannerTaskUniParam);	
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;
+		return DEVICE_OPERATION_ERROR;
 	}
 	public String pauseTask(String deviceId, ScannerTaskUniParam scannerTaskUniParam){
-		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+		if ( null == deviceId||"".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()))
 		{
 			return arnhemDeviceAdpater.pauseTask(deviceId, scannerTaskUniParam);	
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;
+		return DEVICE_OPERATION_ERROR;
 	}
 	public String stopTask(String deviceId,ScannerTaskUniParam scannerTaskUniParam){
-		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+		if ( null == deviceId||"".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
 			return arnhemDeviceAdpater.stopTask(deviceId, scannerTaskUniParam);	
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;
+		return DEVICE_OPERATION_ERROR;
 	}
 	/**
 	 * 根据任务Id获取当前状态
@@ -230,14 +297,14 @@ public class DeviceAdpaterManager {
 	 * @return
 	 */
 	public String getStatusByTaskId(String deviceId,ScannerTaskUniParam scannerTaskUniParam){
-		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+		if ( null==deviceId||"".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
 			return arnhemDeviceAdpater.getStatusByTaskId(deviceId, scannerTaskUniParam);
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;
+		return DEVICE_OPERATION_ERROR;
 	}
 	/**
 	 * 获取任务进度
@@ -247,16 +314,16 @@ public class DeviceAdpaterManager {
 	 */
 	public String getProgressById(String deviceId,ScannerTaskUniParam scannerTaskUniParam) {
 		if ( null == deviceId || "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName() == null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
 			return arnhemDeviceAdpater.getProgressByTaskId(deviceId,scannerTaskUniParam);
 			
-		} else if ("知道创宇".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName())) {
+		} else if (DeviceAdapterConstant.DEVICE_SCANNER_WEBSOC.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim())) {
 			return websocDeviceAdapter.getProgressByVirtualGroupId(deviceId, scannerTaskUniParam);
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;		
+		return DEVICE_OPERATION_ERROR;		
 	}
 	/**
 	 * 任务负载查询
@@ -264,14 +331,14 @@ public class DeviceAdpaterManager {
 	 * @return 任务负载信息 xml
 	 */
 	public String getTaskLoadInfo(String deviceId){
-		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName() == null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+		if (null==deviceId|| "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName() == null ){
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
 			return arnhemDeviceAdpater.getTaskLoadInfo(deviceId);
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;		
+		return DEVICE_OPERATION_ERROR;		
 	}
 	/**
 	 * 根据任务Id获取任务执行结果数 填充taskId
@@ -280,14 +347,14 @@ public class DeviceAdpaterManager {
 	 * @return
 	 */
 	public  String getResultCountByTaskID(String deviceId, ScannerTaskUniParam scannerTaskUniParam){
-		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+		if (null==deviceId|| "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()))
 		{
 			return arnhemDeviceAdpater.getResultCountByTaskID(deviceId, scannerTaskUniParam);
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;
+		return DEVICE_OPERATION_ERROR;
 	}
 	/**
 	 * 根据任务Id分页获取扫描结果
@@ -298,14 +365,14 @@ public class DeviceAdpaterManager {
 	 * @return
 	 */
 	public String getReportByTaskID(String deviceId, ScannerTaskUniParam scannerTaskUniParam){
-		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+		if (null==deviceId|| "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
 			return arnhemDeviceAdpater.getReportByTaskID(deviceId,scannerTaskUniParam);
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;
+		return DEVICE_OPERATION_ERROR;
 	}
 	/**
 	 * 获取监测网站总数
@@ -313,14 +380,13 @@ public class DeviceAdpaterManager {
 	 * @return
 	 */
 	public String getWebsiteCount(String deviceId){
-		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+		if (null==deviceId|| "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
-		{
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) ){
 			return arnhemDeviceAdpater.getWebsiteCount(deviceId);
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;
+		return DEVICE_OPERATION_ERROR;
 	}
 	/**
 	 * 
@@ -330,14 +396,14 @@ public class DeviceAdpaterManager {
 	 * @return
 	 */
 	public  String getWebsiteList(String deviceId,ScannerTaskUniParam scannerTaskUniParam){
-		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+		if (null==deviceId|| "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()))
 		{
 			return arnhemDeviceAdpater.getWebsiteList(deviceId,scannerTaskUniParam);
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;
+		return DEVICE_OPERATION_ERROR;
 	}
 	/**
 	 * 根据网站id获取report总数
@@ -346,24 +412,24 @@ public class DeviceAdpaterManager {
 	 * @return
 	 */
 	public String GetReportCountByWebID(String deviceId, ScannerTaskUniParam scannerTaskUniParam){
-		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+		if (null==deviceId|| "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null){
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
 			return arnhemDeviceAdpater.GetReportCountByWebID(deviceId, scannerTaskUniParam);
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;
+		return DEVICE_OPERATION_ERROR;
 	}
 	public String GetReportIDListByWebId(String deviceId, ScannerTaskUniParam scannerTaskUniParam,int StartNum,int Size){
 		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
 			return arnhemDeviceAdpater.GetReportIDListByWebId(deviceId, scannerTaskUniParam, StartNum, Size);
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;
+		return DEVICE_OPERATION_ERROR;
 	}
 	/**
 	 * 根据汇总结果id获取记录总数
@@ -372,13 +438,13 @@ public class DeviceAdpaterManager {
 	 */
 	public String getResultCountByReportID(String deviceId, ScannerTaskUniParam scannerTaskUniParam){
 		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
 			return arnhemDeviceAdpater.getResultCountByReportID(deviceId, scannerTaskUniParam);
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;		
+		return DEVICE_OPERATION_ERROR;		
 	}
 	/**
 	 * 根据reportId分页获取信息
@@ -390,13 +456,13 @@ public class DeviceAdpaterManager {
 	 */
 	public String getReportByReportIdInP(String deviceId, ScannerTaskUniParam scannerTaskUniParam,int startNum,int size){
 		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
 			return arnhemDeviceAdpater.getReportByReportIdInP(deviceId, scannerTaskUniParam, startNum, size);
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;	
+		return DEVICE_OPERATION_ERROR;	
 	}
 	/**
 	 * 获取report总数
@@ -404,14 +470,14 @@ public class DeviceAdpaterManager {
 	 * @return
 	 */
 	public String getReportCount(String deviceId){
-		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+		if (null==deviceId|| "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()))
 		{
 			return arnhemDeviceAdpater.getReportCount(deviceId);
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;	
+		return DEVICE_OPERATION_ERROR;	
 	}
 	/**
 	 * 获取report id列表
@@ -422,14 +488,14 @@ public class DeviceAdpaterManager {
 	 * @return
 	 */
 	public String getReportIDList(String deviceId, ScannerTaskUniParam scannerTaskUniParam, int startNum, int size){
-		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+		if (null==deviceId|| "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
 			return arnhemDeviceAdpater.getReportIDList(deviceId, scannerTaskUniParam, startNum, size);
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;			
+		return DEVICE_OPERATION_ERROR;			
 	}
 	/**
 	 * 获取漏洞库信息
@@ -437,13 +503,13 @@ public class DeviceAdpaterManager {
 	 * @return
 	 */
 	public String  getIssueRepositoryList(String deviceId){
-		if ( "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
-			return "{\"status\":\"fail\",\"message\":\"can not find device: "+deviceId+"\"}";
+		if (null==deviceId|| "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
+			return errorDevieInfo(deviceId);
 		}
-		if ( "安恒".equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
 			return arnhemDeviceAdpater.getIssueRepositoryList(deviceId);
 		}
-		return DeviceAdapterConstant.ERROR_DEVICEINFO_NOCONTENT;	
+		return DEVICE_OPERATION_ERROR;	
 	}
 }

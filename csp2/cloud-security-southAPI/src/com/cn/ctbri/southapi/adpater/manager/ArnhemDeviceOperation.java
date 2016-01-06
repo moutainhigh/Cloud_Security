@@ -32,6 +32,8 @@ import com.sun.jersey.client.urlconnection.HTTPSProperties;
 
 public class ArnhemDeviceOperation {
 	private String arnhemServerWebrootUrl = "";
+	private String arnhemServerUsername = "";
+	private String arnhemServerPassword = "";
 	private String connectSessionId = "";
 	public ArnhemDeviceOperation() {
 	}
@@ -76,6 +78,9 @@ public class ArnhemDeviceOperation {
 	public boolean createSessionId(String username, String password, String serverWebRoot){
 		try {
 			 // 登陆信息
+			arnhemServerUsername=username;
+			arnhemServerPassword=password;
+			arnhemServerWebrootUrl=serverWebRoot;
 	    	 String xmlContent = "<Login><Name>" + username+ "</Name><Password>" + password + "</Password></Login>";
 	    	 // 登陆服务器地址
 	         String url = serverWebRoot + "/rest/login";
@@ -171,6 +176,7 @@ public class ArnhemDeviceOperation {
 		WebResource service = client.resource(url);
 		//获取响应结果
 		String response = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xml);
+		
 		return response;
 	}
 	
@@ -269,6 +275,7 @@ public class ArnhemDeviceOperation {
     public  String getTemplate(String engine_api) {
         //创建路径
         String url = engine_api + "/rest/control/SLA";
+        System.out.println(getMethod(url));
         return responseToJSON(getMethod(url)).toString();
     }
 	/**
@@ -535,7 +542,7 @@ public class ArnhemDeviceOperation {
     public  String getEngineState(String engine_api) {
         //创建路径
         String url = engine_api + "/rest/control/GetEngineState";
-        return responseToJSON(getMethod(url)).toString();
+        return getMethod(url);
     }
     /**
      * id:4.4.14
