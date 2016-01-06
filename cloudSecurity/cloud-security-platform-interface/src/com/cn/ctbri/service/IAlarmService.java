@@ -13,4 +13,8 @@ public interface IAlarmService {
 	void updateDistrict(Map<String, Object> disMap);
 	//查询本次告警数
 	List<Alarm> findAlarmBygroupId(Map<String, Object> paramMap);
+	//查询advice
+	String findAdvice(String name);
+	//更新
+	void updateAlarm(Alarm alarm);
 }

@@ -84,5 +84,13 @@ public class TaskServiceImpl implements ITaskService{
 	public int findDistrictIdByTaskId(String taskId) {
 		return this.taskDao.findDistrictIdByTaskId(taskId);
 	}
+
+	public List getArnhemTaskByEngine(String engine_addr) {
+		return this.taskDao.getArnhemTaskByEngine(engine_addr);
+	}
+
+	public List<Task> getDels() {
+		return this.taskDao.getDels();
+	}
 	
 }

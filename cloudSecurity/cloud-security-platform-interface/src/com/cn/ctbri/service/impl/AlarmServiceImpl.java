@@ -31,5 +31,13 @@ public class AlarmServiceImpl implements IAlarmService{
 	public List<Alarm> findAlarmBygroupId(Map<String, Object> paramMap) {
 		return alarmDao.findAlarmBygroupId(paramMap);
 	}
+
+	public String findAdvice(String name) {
+		return alarmDao.findAdvice(name);
+	}
+
+	public void updateAlarm(Alarm alarm) {
+		alarmDao.update(alarm);
+	}
 	
 }
