@@ -57,5 +57,16 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
 	public List<Alarm> findAlarmBygroupId(Map<String, Object> paramMap) {
 		return getSqlSession().selectList(ns+"findAlarmBygroupId", paramMap);
 	}
+	public String findAdvice(String name) {
+		List advices = getSqlSession().selectList(ns+"findAdvice", name);
+		if(advices!=null&&advices.size()>0){
+			return (String) advices.get(0);
+		}else{
+			return null;
+		}
+	}
+	public void update(Alarm alarm) {
+		getSqlSession().update(ns+"updateAlarm", alarm);
+	}
 
 }

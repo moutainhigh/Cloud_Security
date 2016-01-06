@@ -65,4 +65,8 @@ public interface TaskDao {
     public List getWebsocTask();
 
 	public int findDistrictIdByTaskId(String taskId);
+
+	public List getArnhemTaskByEngine(String engine_addr);
+
+	public List<Task> getDels();
 }
