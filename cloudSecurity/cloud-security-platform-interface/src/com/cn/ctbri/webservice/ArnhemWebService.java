@@ -106,7 +106,7 @@ public class ArnhemWebService {
 					taskId = taskIDNode.getTextTrim();
 				}
 				//登陆服务器
-				String sessionId = ArnhemWorker.getSessionId();
+				String sessionId = ArnhemWorker.getSessionId(1);
 				//根据taskId查询任务执行结果数
 				Map<String, String> resultMap = getResultNumByTaskId(taskId, sessionId);
 				//获取总数
@@ -115,7 +115,7 @@ public class ArnhemWebService {
 				String productId = resultMap.get("ProductId");
 				//当总数不为0的时候，获取扫描记录，并保存到本地库
 				if(total != null && !"0".equals(total.trim())){
-					String reportXml = ArnhemWorker.getReportByTaskID(sessionId, taskId, productId, 0, Integer.parseInt(total));
+					String reportXml = ArnhemWorker.getReportByTaskID(sessionId, taskId, productId, 0, Integer.parseInt(total),1);
 					parseReportToDB(reportXml);
 				}
 			}
@@ -146,7 +146,7 @@ public class ArnhemWebService {
 			throws DocumentException {
 		Map<String, String> map = new HashMap<String, String>();
 		//获取结果数XML
-		String resultNumXml = ArnhemWorker.getResultCountByTaskID(sessionId, taskId);
+		String resultNumXml = ArnhemWorker.getResultCountByTaskID(sessionId, taskId,1);
 		//解析XML为文档对象
 		Document resultNumDocument = DocumentHelper.parseText(resultNumXml);
 		/**
@@ -234,6 +234,8 @@ public class ArnhemWebService {
                 String msg = URLDecoder.decode(task.element("MSG").getTextTrim(),"UTF-8");
                 String task_id = task.element("TASK_ID").getTextTrim();
                 System.out.println("cat1:"+cat1+";name:"+name+";severity:"+severity);
+                //根据taskId查询地区
+        		int districtId = taskService.findDistrictIdByTaskId(task_id);
                 TaskWarn taskwarn = new TaskWarn();
                 taskwarn.setCat1(cat1);
                 taskwarn.setCat2(cat2);
@@ -248,6 +250,7 @@ public class ArnhemWebService {
                 taskwarn.setTask_id(task_id);
                 taskwarn.setWarn_time(new Date());
                 taskwarn.setServiceId(5);
+                taskwarn.setDistrictId(districtId);
 //                ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 //              taskService = (ITaskService)context.getBean("taskService");
                 taskService.insertTaskWarn(taskwarn);
@@ -257,7 +260,7 @@ public class ArnhemWebService {
                 List<Asset> asset = assetService.findByTask(t);
                 //更新地域告警数
                 Map<String, Object> disMap = new HashMap<String, Object>();
-				disMap.put("id", asset.get(0).getId());
+				disMap.put("id", asset.get(0).getDistrictId());
 				disMap.put("count", 1);
 				disMap.put("serviceId", 5);
                 alarmService.updateDistrict(disMap);
