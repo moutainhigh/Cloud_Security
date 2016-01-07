@@ -174,10 +174,28 @@ public class ArnhemDeviceOperation {
 		Client client = Client.create(config);
 		//连接服务器
 		WebResource service = client.resource(url);
+		
 		//获取响应结果
 		String response = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xml);
 		
-		return response;
+		//For 2
+
+		try {
+			SAXReader reader = new SAXReader();
+			Document document = reader.read(IOUtils.toInputStream(response));
+			Element rootElement = document.getRootElement();
+			String value = rootElement.attributeValue("value");
+			if ("AuthErr"==value) {
+				String redirectResponse = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xml);				
+				return redirectResponse;
+			} else {
+				return response;
+			}
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return response;
+		}
 	}
 	
 	
@@ -205,6 +223,7 @@ public class ArnhemDeviceOperation {
         //连接服务器，返回结果
         //String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).delete(String.class);
         String response = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class);
+        
         return response;
 	}
 

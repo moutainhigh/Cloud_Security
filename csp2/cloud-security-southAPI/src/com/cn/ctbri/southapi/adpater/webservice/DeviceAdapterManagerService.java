@@ -21,7 +21,6 @@ public class DeviceAdapterManagerService {
 	@Path("/loadDeviceAdapter")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String loadDeviceAdapter(){
-		deviceAdpaterManager.loadDeviceAdpater();
 		return deviceAdpaterManager.loadDeviceAdpater();
 	}
 	@POST
@@ -39,7 +38,6 @@ public class DeviceAdapterManagerService {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		String deviceId = jsonObject.get("deviceId").toString();
-		deviceAdpaterManager.loadDeviceAdpater();
 		return deviceAdpaterManager.disposeScanTask(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -49,7 +47,6 @@ public class DeviceAdapterManagerService {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		String deviceId = jsonObject.get("deviceId").toString();
-		deviceAdpaterManager.loadDeviceAdpater();
 		return deviceAdpaterManager.getProgressById(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -66,7 +63,7 @@ public class DeviceAdapterManagerService {
 	public String getEngineStat(String dataJson){
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		String deviceId = jsonObject.get("deviceId").toString();
-		deviceAdpaterManager.loadDeviceAdpater();
+		
 		return deviceAdpaterManager.getEngineStat(deviceId);
 	}
 	@POST
@@ -76,7 +73,7 @@ public class DeviceAdapterManagerService {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		String deviceId = jsonObject.get("deviceId").toString();
-		deviceAdpaterManager.loadDeviceAdpater();
+		
 		return deviceAdpaterManager.removeTask(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -86,7 +83,7 @@ public class DeviceAdapterManagerService {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		String deviceId = jsonObject.get("deviceId").toString();
-		deviceAdpaterManager.loadDeviceAdpater();
+		
 		return deviceAdpaterManager.startTask(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -96,7 +93,7 @@ public class DeviceAdapterManagerService {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		String deviceId = jsonObject.get("deviceId").toString();
-		deviceAdpaterManager.loadDeviceAdpater();
+		
 		return deviceAdpaterManager.pauseTask(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -106,7 +103,7 @@ public class DeviceAdapterManagerService {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		String deviceId = jsonObject.get("deviceId").toString();
-		deviceAdpaterManager.loadDeviceAdpater();
+		
 		return deviceAdpaterManager.stopTask(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -116,7 +113,7 @@ public class DeviceAdapterManagerService {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		String deviceId = jsonObject.get("deviceId").toString();
-		deviceAdpaterManager.loadDeviceAdpater();
+		
 		return deviceAdpaterManager.getStatusByTaskId(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -125,7 +122,7 @@ public class DeviceAdapterManagerService {
 	public String getTaskLoadInfo(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		String deviceId = jsonObject.get("deviceId").toString();
-		deviceAdpaterManager.loadDeviceAdpater();
+		
 		return deviceAdpaterManager.getTaskLoadInfo(deviceId);
 	}
 	@POST
@@ -135,7 +132,7 @@ public class DeviceAdapterManagerService {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		String deviceId = jsonObject.get("deviceId").toString();
-		deviceAdpaterManager.loadDeviceAdpater();
+		
 		return deviceAdpaterManager.getResultCountByTaskID(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -145,7 +142,6 @@ public class DeviceAdapterManagerService {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		String deviceId = jsonObject.get("deviceId").toString();
-		deviceAdpaterManager.loadDeviceAdpater();
 		return deviceAdpaterManager.getReportByTaskID(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -154,7 +150,6 @@ public class DeviceAdapterManagerService {
 	public String getWebsiteCount(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		String deviceId = jsonObject.get("deviceId").toString();
-		deviceAdpaterManager.loadDeviceAdpater();
 		return deviceAdpaterManager.getWebsiteCount(deviceId); 	
 	}
 	@POST
@@ -164,7 +159,6 @@ public class DeviceAdapterManagerService {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		String deviceId = jsonObject.get("deviceId").toString();
 		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
-		deviceAdpaterManager.loadDeviceAdpater();
 		return deviceAdpaterManager.getWebsiteList(deviceId, scannerTaskUniParam);
 	}
 
