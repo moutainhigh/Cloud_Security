@@ -32,8 +32,8 @@ import com.sun.jersey.client.urlconnection.HTTPSProperties;
 
 public class ArnhemDeviceOperation {
 	private String arnhemServerWebrootUrl = "";
-	private String arnhemServerUsername = "";
-	private String arnhemServerPassword = "";
+	private String username = "";
+	private String password = "";
 	private String connectSessionId = "";
 	public ArnhemDeviceOperation() {
 	}
@@ -78,8 +78,8 @@ public class ArnhemDeviceOperation {
 	public boolean createSessionId(String username, String password, String serverWebRoot){
 		try {
 			 // 登陆信息
-			arnhemServerUsername=username;
-			arnhemServerPassword=password;
+			this.username=username;
+			this.password=password;
 			arnhemServerWebrootUrl=serverWebRoot;
 	    	 String xmlContent = "<Login><Name>" + username+ "</Name><Password>" + password + "</Password></Login>";
 	    	 // 登陆服务器地址
@@ -185,7 +185,7 @@ public class ArnhemDeviceOperation {
 			Document document = reader.read(IOUtils.toInputStream(response));
 			Element rootElement = document.getRootElement();
 			String value = rootElement.attributeValue("value");
-			if ("AuthErr"==value) {
+			if ("AuthErr"==value&&createSessionId(username, password, arnhemServerWebrootUrl)) {
 				String redirectResponse = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xml);				
 				return redirectResponse;
 			} else {
@@ -223,8 +223,22 @@ public class ArnhemDeviceOperation {
         //连接服务器，返回结果
         //String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).delete(String.class);
         String response = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class);
-        
-        return response;
+		try {
+			SAXReader reader = new SAXReader();
+			Document document = reader.read(IOUtils.toInputStream(response));
+			Element rootElement = document.getRootElement();
+			String value = rootElement.attributeValue("value");
+			if ("AuthErr"==value&&createSessionId(username, password, arnhemServerWebrootUrl)) {
+				String redirectResponse = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class);
+				return redirectResponse;
+			} else {
+				return response;
+			}
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return response;
+		}
 	}
 
 	/**

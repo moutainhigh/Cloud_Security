@@ -26,7 +26,6 @@ public class MyJob implements Job {
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		DeviceAdpaterManager deviceAdpaterManager = new DeviceAdpaterManager();
-		deviceAdpaterManager.loadDeviceAdpater();	
 		// TODO Auto-generated method stub
 		SAXReader reader = new SAXReader();
         // 加载XML

@@ -27,6 +27,8 @@ import com.sun.jersey.client.urlconnection.HTTPSProperties;
 public class WebsocDeviceOperation {
 	private String connectSessionId = null;
 	private String serverWebRoot = null;
+	private String username = null;
+	private String password = null;
 	public WebsocDeviceOperation(){
 	}
 	/**
@@ -85,8 +87,15 @@ public class WebsocDeviceOperation {
         //连接服务器
         WebResource service = client.resource(url);
         //获取响应结果
-        String response = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_FORM_URLENCODED).post(String.class, jsonContent);
-        return response;
+        String response = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_FORM_URLENCODED).post(String.class, jsonContent);      
+        String code = JSONObject.fromObject(response).getString("code");
+        if(null==code||"".equalsIgnoreCase(code)||"101".equalsIgnoreCase(code)){
+        	createSessionId(username, password, serverWebRoot);
+        	String redirectResponse = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_FORM_URLENCODED).post(String.class, jsonContent); 
+        	return redirectResponse;
+        }else {
+        	return response;			
+		}
 	}
 	
 	/**
@@ -96,11 +105,13 @@ public class WebsocDeviceOperation {
 	public boolean createSessionId(String username, String password,String serverWebRoot){
 		try {
 			this.serverWebRoot = serverWebRoot;
+			this.username = username;
+			this.password = password;
 			System.out.println(serverWebRoot);
 			 // 登陆信息
 			JSONObject jsonObj = new JSONObject();
-			jsonObj.put("username", username);
-			jsonObj.put("password", password);
+			jsonObj.put("username", this.username);
+			jsonObj.put("password", this.password);
 			String jsonContent = "parameter="+jsonObj.toString();
 	         String url = this.serverWebRoot + "/api/v2/login_auth/";         
 	         // 创建客户端配置对象
@@ -165,7 +176,6 @@ public class WebsocDeviceOperation {
 		}else {
 			responseObject.put("status", "Fail");
 		}
-        responseObject.remove("code");
         System.out.println(responseObject.toString());
 		return	responseObject.toString();
 /*    	System.out.println(response);
@@ -202,7 +212,6 @@ public class WebsocDeviceOperation {
 		}else {
 			responseObject.put("status", "Fail");
 		}
-        responseObject.remove("code");
         System.out.println(responseObject.toString());
 		return	responseObject.toString();
     }
