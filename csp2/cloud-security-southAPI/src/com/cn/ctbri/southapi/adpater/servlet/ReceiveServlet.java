@@ -45,11 +45,11 @@ public class ReceiveServlet extends HttpServlet {
 		WebsocDeviceOperation websocDeviceOperation = new WebsocDeviceOperation();
 		String parameter = request.getParameter("parameter");
 		System.out.println("parameter"+parameter);  // �������parameterJSON�ַ�
-		websocDeviceOperation.postDetectResult("", parameter);
+		String responseString = websocDeviceOperation.postDetectResult("", parameter);
 		if (true) { // �����ӿ���ԶΪ�棬���ʵ���������
 			response.setContentType("text/html");
 			PrintWriter pw = response.getWriter();
-			pw.println("{\"code\": 0, \"message\": \"success\", \"result\": {\"id\": 1}}");
+			pw.println(responseString);
 		}
 	}
 
