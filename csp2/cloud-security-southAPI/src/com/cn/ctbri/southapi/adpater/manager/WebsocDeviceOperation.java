@@ -216,6 +216,19 @@ public class WebsocDeviceOperation {
 		return	responseObject.toString();
     }
     
+    public String postDetectResult(String url, String jsonContent) {
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, jsonContent);  
+    	return response;
+	}
+    
     public String getTemplate() {
 		return "";
 	}

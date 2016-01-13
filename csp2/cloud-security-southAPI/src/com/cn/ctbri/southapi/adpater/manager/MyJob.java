@@ -23,12 +23,14 @@ import com.cn.ctbri.southapi.adpater.manager.DeviceAdapterConstant;
 
 public class MyJob implements Job {
 	private HashMap<String, EngineStatList> mapDeviceStat = new HashMap<String, EngineStatList>();
+	
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		DeviceAdpaterManager deviceAdpaterManager = new DeviceAdpaterManager();
-		// TODO Auto-generated method stub
 		SAXReader reader = new SAXReader();
         // 加载XML
+		
+		
         Document doc;
 		try {
 			mapDeviceStat.clear();
@@ -57,6 +59,7 @@ public class MyJob implements Job {
 		                engineStatList.setDiskTotal(engineStatElement.elementTextTrim("DiskTotal"));
 		                engineStatList.setDiskFree(engineStatElement.elementTextTrim("DiskFree"));
 		                engineStatList.setCpuOccupancy(engineStatElement.elementTextTrim("CpuOccupancy"));
+		                
 		                Element engineElement = engineStatElement.element("Engine");
 		                engine.setEngineName(engineElement.elementTextTrim("EngineName"));
 		                engine.setEngineState(engineElement.elementTextTrim("EngineStat"));
