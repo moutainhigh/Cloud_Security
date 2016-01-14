@@ -20,6 +20,7 @@
         <mapper resource="com/cn/ctbri/entity/EngineMapper.xml"/>
         <!-- add by tangxr 2015-11-10 -->
         <mapper resource="com/cn/ctbri/entity/OrderTaskMapper.xml" /> 
+        <mapper resource="com/cn/ctbri/entity/LoggerMapper.xml" />
         <!-- end -->
     </mappers> 
 </configuration>  
