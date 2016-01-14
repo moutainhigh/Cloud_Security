@@ -105,4 +105,8 @@ public class OrderServiceImpl implements IOrderService{
 	public void insertOrder(Order order) {
 		orderDao.save(order);
 	}
+	public Order findOrderByOrderId(String orderId) {
+		Order order = orderDao.findOrderByOrderId(orderId);
+		return order;
+	}
 }

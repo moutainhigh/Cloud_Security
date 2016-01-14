@@ -28,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         values(#{orderId}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks}, #{status}, #{websoc}, #{url}, #{task_status}, #{orderTaskId})
     </insert>
     
-    <!-- 根据条件查询任务表 -->
+    <!-- 根据条件查询订单任务表 -->
 	<select id="findOrderTask" parameterType="hashmap" resultMap="OrderTaskRM">
 		select * from cs_order_task ot
 		where ot.task_status = #{task_status}

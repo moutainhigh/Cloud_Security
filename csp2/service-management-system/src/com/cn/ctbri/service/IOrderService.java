@@ -67,4 +67,6 @@ public interface IOrderService {
      *       @time 2015-11-10
      */
     void insertOrder(Order order);
+    
+	Order findOrderByOrderId(String orderId);
 }

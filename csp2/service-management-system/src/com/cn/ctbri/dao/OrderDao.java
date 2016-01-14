@@ -71,4 +71,6 @@ public interface OrderDao {
      */
 	void save(Order order);
 	
+	Order findOrderByOrderId(String orderId);
+	
 }

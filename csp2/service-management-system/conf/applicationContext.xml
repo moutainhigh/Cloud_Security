@@ -98,7 +98,7 @@
     <bean id="resultTrigger"
     	class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="resultJobDetail" />
-    	<property name="cronExpression" value="0 0/3 * * * ?" />
+    	<property name="cronExpression" value="0 0/1 * * * ?" />
     </bean>
     
     <!--要调度的对象，任务进度-->
@@ -135,10 +135,13 @@
     	lazy-init="false">
     	<property name="triggers">
     		<list>
-    			<ref bean="taskTrigger" />
+    			
     			<!-- <ref bean="resultTrigger" />
+    			<ref bean="taskTrigger" />
     			<ref bean="progressTrigger" />
     			<ref bean="exceptionTrigger" /> -->
+    			<ref bean="resultTrigger" />
+    			<ref bean="taskTrigger" />
     		</list>
     	</property>
     </bean>

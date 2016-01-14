@@ -39,5 +39,9 @@ public class AlarmServiceImpl implements IAlarmService{
 	public void updateAlarm(Alarm alarm) {
 		alarmDao.update(alarm);
 	}
+
+	public List<Alarm> findAlarmByTaskId(String taskId) {
+		return alarmDao.findAlarmByTaskId(taskId);
+	}
 	
 }

@@ -68,5 +68,8 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
 	public void update(Alarm alarm) {
 		getSqlSession().update(ns+"updateAlarm", alarm);
 	}
+	public List<Alarm> findAlarmByTaskId(String taskId) {
+		return getSqlSession().selectList(ns+"findAlarmByTaskId", taskId);
+	}
 
 }

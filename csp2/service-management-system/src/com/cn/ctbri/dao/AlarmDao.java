@@ -42,4 +42,6 @@ public interface AlarmDao {
 	public String findAdvice(String name);
 	
 	public void update(Alarm alarm);
+	
+	public List<Alarm> findAlarmByTaskId(String taskId);
 }

@@ -100,4 +100,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</set>
 		where id = #{id}
 	</update>
+	
+	<!-- 根据taskid查询告警数  -->
+    <select id="findAlarmByTaskId" resultMap="Alarm" parameterType="String">
+        select * from cs_alarm a where a.taskId = #{taskId}
+    </select>
 </mapper>

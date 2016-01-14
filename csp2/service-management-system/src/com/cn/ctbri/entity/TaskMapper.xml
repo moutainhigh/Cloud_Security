@@ -127,10 +127,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 	
 	<!-- 插入任务信息 -->
-    <insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.cn.ctbri.entity.Task">
 	INSERT INTO cs_task
-	(order_asset_Id,execute_time,status,group_flag,end_time,remarks,websoc,begin_time,scanTime,engineIP,taskProgress,currentUrl,issueCount,requestCount,urlCount,averResponse,averSendCount,sendBytes,receiveBytes,orderTaskId)
-	VALUES(#{order_asset_Id},#{execute_time},#{status},#{group_flag},#{end_time},#{remarks},#{websoc},#{begin_time},#{scanTime},#{engineIP},#{taskProgress},#{currentUrl},#{issueCount},#{requestCount},#{urlCount},#{averResponse},#{averSendCount},#{sendBytes},#{receiveBytes},#{orderTaskId})
+	(taskId,order_asset_Id,execute_time,status,group_flag,end_time,remarks,websoc,begin_time,scanTime,engineIP,taskProgress,currentUrl,issueCount,requestCount,urlCount,averResponse,averSendCount,sendBytes,receiveBytes,orderTaskId)
+	VALUES(#{taskId},#{order_asset_Id},#{execute_time},#{status},#{group_flag},#{end_time},#{remarks},#{websoc},#{begin_time},#{scanTime},#{engineIP},#{taskProgress},#{currentUrl},#{issueCount},#{requestCount},#{urlCount},#{averResponse},#{averSendCount},#{sendBytes},#{receiveBytes},#{orderTaskId})
 	</insert>
     
     <select id="getTypeByAssetId" parameterType="Integer" resultType="com.cn.ctbri.entity.OrderAsset">
@@ -191,7 +191,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 根据orderId获取任务 -->
     <select id="findTaskByOrderId" parameterType="String" resultType="com.cn.ctbri.entity.Task">
-         select * from cs_task t,cs_order_task ot where t.orderTaskId = ot.orderTaskId and ot.orderId = #{orderId}
+         select t.* from cs_task t,cs_order_task ot where t.orderTaskId = ot.orderTaskId and ot.orderId = #{orderId}
+    </select>
+    
+    <!-- 根据taskId获取任务 -->
+    <select id="findTaskByTaskId" parameterType="String" resultType="com.cn.ctbri.entity.Task">
+         select * from cs_task t where t.taskId = #{taskId}
     </select>
     
 </mapper>

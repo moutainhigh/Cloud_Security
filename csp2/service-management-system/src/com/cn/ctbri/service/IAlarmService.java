@@ -17,4 +17,6 @@ public interface IAlarmService {
 	String findAdvice(String name);
 	//更新
 	void updateAlarm(Alarm alarm);
+	//taskId查询
+	List<Alarm> findAlarmByTaskId(String taskId);
 }

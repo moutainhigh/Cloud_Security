@@ -66,4 +66,6 @@ public interface ITaskService {
 	Task findByOrderTaskId(String orderTaskId);
 
 	Task findTaskByOrderId(String orderId);
+
+	Task findTaskByTaskId(String taskId);
 }

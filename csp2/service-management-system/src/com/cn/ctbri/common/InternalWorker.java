@@ -1,4 +1,5 @@
 package com.cn.ctbri.common;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
@@ -15,12 +16,16 @@ import javax.ws.rs.core.NewCookie;
 
 import net.sf.json.JSONObject;
 
+import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONException;
 
 import com.cn.ctbri.entity.Order;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
@@ -37,18 +42,6 @@ public class InternalWorker {
 	 * 服务能力管理服务器根路径
 	 */
 	private static String SERVER_WEB_ROOT;
-	/**
-	 * 用户名
-	 */
-	private static String USERNAME;
-	/**
-	 * 密码
-	 */
-	private static String PASSWORD;
-	/**
-	 * 创建订单（任务）
-	 */
-	private static String Create_Order;
 	/**
 	 * 创建漏洞扫描订单（任务）
 	 */
@@ -75,9 +68,6 @@ public class InternalWorker {
 			Properties p = new Properties();
 			p.load(InternalWorker.class.getClassLoader().getResourceAsStream("internal.properties"));
 			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
-			USERNAME = p.getProperty("USERNAME");
-			PASSWORD = p.getProperty("PASSWORD");
-			Create_Order = p.getProperty("Create_Order");
 			VulnScan_Create_orderTask = p.getProperty("VulnScan_Create_orderTask");
 			VulnScan_Opt_Order = p.getProperty("VulnScan_Opt_Order");
 			VulnScan_Get_OrderReport = p.getProperty("VulnScan_Get_OrderReport");
@@ -137,7 +127,7 @@ public class InternalWorker {
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String createOrder(Order order, String[] targetURL) throws JSONException{
+	/*public static String createOrder(Order order, String[] targetURL) throws JSONException{
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		net.sf.json.JSONObject orderObj = net.sf.json.JSONObject.fromObject(order);
@@ -161,7 +151,7 @@ public class InternalWorker {
         String textEntity = response.getEntity(String.class);
         System.out.println(textEntity);
         return status+"";
-	}
+	}*/
 	
 	
 	/**
@@ -177,13 +167,17 @@ public class InternalWorker {
 	 *         Stategy     策略,
 	 *         CustomManu  指定厂家，可以多个，以逗号区分,
 	 *         Reserve     保留字段
+	 * @throws IOException 
+	 * @throws UniformInterfaceException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
 	public static String vulnScanCreate(String scanMode, String targetURL, String scanType, 
     		String startTime, String endTime, String scanPeriod, String scanDepth, 
     		String maxPages, String stategy, String CustomManu[], String orderId, 
-    		String serviceId, String websoc, String taskTime, String orderTaskId) throws JSONException{
+    		String serviceId, String websoc, String taskTime, String orderTaskId) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("ScanMode", scanMode);
@@ -213,7 +207,7 @@ public class InternalWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
         System.out.println(textEntity);
@@ -280,15 +274,12 @@ public class InternalWorker {
 	
 	/**
 	 * 功能描述：获得订单/任务检测结果
-	 * 参数描述： OrderId 订单编号
+	 * 参数描述： orderId 订单编号
+	 * 	       orderTaskId 订单任务编号
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String vulnScanGetOrderTaskResult(String orderId, String orderTaskId) throws JSONException{
-		//组织发送内容JSON
-//		JSONObject json = new JSONObject();
-//		json.put("orderId", orderId);
-//		json.put("orderTaskId", orderTaskId);
+	public static String vulnScanGetOrderTaskResult(String orderId, String orderTaskId){
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskResult + "/" + orderTaskId + "/" + orderId;
     	//创建jersery客户端配置对象
@@ -310,15 +301,12 @@ public class InternalWorker {
 	
 	/**
 	 * 功能描述：获得订单/任务当前执行状态
-	 * 参数描述： OrderId 订单编号
+	 * 参数描述： orderId 订单编号
+	 * 		   orderTaskId 订单任务编号
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String vulnScanGetOrderTaskStatus(String orderId, String orderTaskId) throws JSONException{
-		//组织发送内容JSON
-//		JSONObject json = new JSONObject();
-//		json.put("orderId", orderId);
-//		json.put("orderTaskId", orderTaskId);
+	public static String vulnScanGetOrderTaskStatus(String orderId, String orderTaskId){
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskStatus + "/" + orderTaskId + "/" + orderId;
     	//创建jersery客户端配置对象

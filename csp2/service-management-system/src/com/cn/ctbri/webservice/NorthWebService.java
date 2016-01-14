@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -14,15 +15,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
 
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.cn.ctbri.common.InternalWorker;
+import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderTask;
 import com.cn.ctbri.entity.Task;
@@ -66,7 +68,7 @@ public class NorthWebService {
 	@POST
     @Path("/createOrder")
 	@Produces(MediaType.APPLICATION_JSON) 
-    public String createOrder(JSONObject dataJson) throws JSONException {
+    public String createOrder(JSONObject dataJson) {
 		//order 对象
 		JSONObject orderObj = dataJson.getJSONObject("orderObj");
 		//url 数组
@@ -85,7 +87,9 @@ public class NorthWebService {
 		order.setWebsoc(orderObj.getInt("websoc"));
         orderService.insertOrder(order);
         
-        for (int i = 0; i < targetArray.length(); i++) {
+        for (int i = 0; i < targetArray.size(); i++) {
+//        	JSONObject issueObj = (JSONObject) targetArray.get(i);
+        	
 	        OrderTask orderTask = new OrderTask();
 	        orderTask.setOrderId(orderObj.getString("id"));
 	        orderTask.setServiceId(orderObj.getInt("serviceId"));
@@ -112,23 +116,24 @@ public class NorthWebService {
 	@POST
     @Path("/vulnscan/order")
 	@Produces(MediaType.APPLICATION_JSON) 
-    public String vulnScanCreate(JSONObject dataJson) throws JSONException, ParseException {
+    public String vulnScanCreate(String dataJson) {
+		JSONObject jsonObj = new JSONObject().fromObject(dataJson);
 		//单次，长期
-		String scanMode = dataJson.getString("ScanMode");
+		String scanMode = jsonObj.getString("ScanMode");
 		//开始时间
-		String startTime = dataJson.getString("StartTime");
+		String startTime = jsonObj.getString("StartTime");
 		//结束时间
-		String endTime = dataJson.getString("EndTime");
+		String endTime = jsonObj.getString("EndTime");
 	    //周期
-		String scanPeriod = dataJson.getString("ScanPeriod");
+		String scanPeriod = jsonObj.getString("ScanPeriod");
 		//订单id
-		String orderId = dataJson.getString("orderId");
+		String orderId = jsonObj.getString("orderId");
 		//服务id
-		String serviceId = dataJson.getString("serviceId");
+		String serviceId = jsonObj.getString("serviceId");
 		//创宇标识
-		String websoc = dataJson.getString("websoc");
+		String websoc = jsonObj.getString("websoc");
 		//目标地址，可以多个
-		JSONArray targetArray = dataJson.getJSONArray("targetURLs");
+		JSONArray targetArray = jsonObj.getJSONArray("targetURLs");
 		//新增订单
         Order order = new Order();
         order.setId(orderId);
@@ -150,7 +155,7 @@ public class NorthWebService {
         order.setStatus(0);
         orderService.insertOrder(order);
         
-        for (int i = 0; i < targetArray.length(); i++) {
+        for (int i = 0; i < targetArray.size(); i++) {
 	        OrderTask orderTask = new OrderTask();
 	        orderTask.setOrderId(orderId);
 	        orderTask.setServiceId(Integer.parseInt(serviceId));
@@ -175,7 +180,7 @@ public class NorthWebService {
         }
 		Respones r = new Respones();
 		r.setState("201");
-		net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
+		net.sf.json.JSONObject json = new net.sf.json.JSONObject().fromObject(r);
         return json.toString();
     }
 	
@@ -184,29 +189,37 @@ public class NorthWebService {
 	@GET
     @Path("/vulnscan/order/{orderId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public JSONObject VulnScan_Get_orderTaskStatus(@PathParam("orderId") String orderId) throws JSONException {
+	public String VulnScan_Get_orderStatus(@PathParam("orderId") String orderId, @PathParam("taskId") String taskId) {
 		JSONObject json = new JSONObject();
 		try {
-			Task task = new Task();
-			task = taskService.findTaskByOrderId(orderId);
-			OrderTask o = orderTaskService.findByOrderId(orderId);
-			if(task!=null){
-				net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
-				json.put("taskObj", taskObject);
-				json.put("result", "success");
-				Respones r = new Respones();
-				r.setState("200");//成功获取
-				net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
-				json.put("state", state);
-				json.put("status", o.getStatus());
-		        return json;
+			//taskId 不空取任务信息，为空取订单状态
+			if(taskId!=null && taskId!=""){
+				Task task = new Task();
+				task = taskService.findTaskByTaskId(taskId);
+				if(task!=null){
+					net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
+					json.put("taskObj", taskObject);
+					json.put("result", "success");
+					Respones r = new Respones();
+					r.setState("200");//成功获取
+					net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
+					json.put("state", state);
+			        return json.toString();
+				}else{
+					Respones r = new Respones();
+					r.setState("421");//订单不存在
+					net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
+					json.put("state", state);
+			        return json.toString();
+				}
 			}else{
-				Respones r = new Respones();
-				r.setState("421");//订单不存在
-				net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
-				json.put("state", state);
+				Order o = orderService.findOrderByOrderId(orderId);
+				Task t= taskService.findTaskByOrderId(orderId);
+				JSONObject taskObject = new JSONObject().fromObject(t);
+				json.put("taskObj", taskObject);
 				json.put("status", o.getStatus());
-		        return json;
+				json.put("websoc", o.getWebsoc());
+				return json.toString();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -214,27 +227,55 @@ public class NorthWebService {
 			r.setState("404");//获取状态失败
 			net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
 			json.put("state", state);
-	        return json;
+	        return json.toString();
 		}
     }
 	
+	
+	//获取进度
+	@GET
+    @Path("/vulnscan/orderResult/{orderId}/{taskId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String VulnScan_Get_orderResult(@PathParam("orderId") String orderId, @PathParam("taskId") String taskId) {
+		JSONObject json = new JSONObject();
+		try {
+			//taskId 不空取任务信息，为空取订单状态
+			if(taskId!=null && taskId!=""){
+				List<Alarm> alist = alarmService.findAlarmByTaskId(taskId);
+				JSONArray alarmObject = new JSONArray().fromObject(alist);
+				json.put("alarmObj", alarmObject);
+				return json.toString();
+			}else{
+				return json.toString();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Respones r = new Respones();
+			r.setState("404");//获取状态失败
+			net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
+			json.put("state", state);
+	        return json.toString();
+		}
+    }
+		
 	
 	//订单操作
 	@PUT
     @Path("/vulnscan/order/{orderId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public JSONObject VulnScan_opt_orderTask(@PathParam("orderId") String orderId) throws JSONException {
+	public JSONObject VulnScan_opt_orderTask(@PathParam("orderId") String orderId) {
 		JSONObject json = new JSONObject();
 		try {
-			OrderTask o = orderTaskService.findByOrderId(orderId);
+			Order o = orderService.findOrderByOrderId(orderId);
+			OrderTask ot = orderTaskService.findByOrderId(orderId);
 			String result = InternalWorker.vulnScanOptOrderTask(orderId);
 	        if(result.equals("200")){
-	        	if(o.getStatus()==4){
-	        		o.setStatus(5);//stop
-	        	}else if(o.getStatus()==5){
-	        		o.setStatus(4);//start
+	        	if(ot.getStatus()==4){
+	        		ot.setStatus(5);//stop
+	        	}else if(ot.getStatus()==5){
+	        		ot.setStatus(4);//start
 	        	}
-	        	orderTaskService.update(o);
+	        	orderTaskService.update(ot);
 	        	json.put("result", "success");
 	        }else{
 	        	json.put("result", "fail");
@@ -402,7 +443,7 @@ public class NorthWebService {
          return date;
     }
 	 
-	public static void main(String[] args) throws JSONException {
+	public static void main(String[] args) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		Order order = new Order();
@@ -416,14 +457,14 @@ public class NorthWebService {
         //检查安全传输协议设置
         Client client = Client.create(config);
         //连接服务器
-        WebResource service = client.resource("http://localhost:8080/cspi/rest/openapi/vulnscan/order/15120117145433875");
+        WebResource service = client.resource("http://localhost:8080/cspi/rest/openapi/vulnscan/order/15123016431657620");
         
 //        WebResource service = client.resource("http://localhost:8080/cspi/rest/openapi/createOrder");
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);        
 //        System.out.println(response.toString());
 
         String addresses = response.getEntity(String.class);
-        net.sf.json.JSONObject obj = net.sf.json.JSONObject.fromObject(addresses);
+        JSONObject obj = new JSONObject().fromObject(addresses);
         
         net.sf.json.JSONObject taskObj = obj.getJSONObject("taskObj");
         String engineIP = taskObj.getString("engineIP");
