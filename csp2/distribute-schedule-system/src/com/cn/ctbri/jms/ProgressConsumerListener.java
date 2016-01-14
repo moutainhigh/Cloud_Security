@@ -8,9 +8,10 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -179,7 +180,7 @@ public class ProgressConsumerListener  implements MessageListener,Runnable{
 			task = taskService.findTaskByOrderIdAndTaskId(task);
   			net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
   			json.put("taskObj", taskObject);
-  			ReInternalWorker.vulnScanGetOrderTaskStatus(json);
+  			ReInternalWorker.vulnScanGetOrderTaskStatus(json.toString());
   		} catch (JSONException e) {
   			e.printStackTrace();
   		}

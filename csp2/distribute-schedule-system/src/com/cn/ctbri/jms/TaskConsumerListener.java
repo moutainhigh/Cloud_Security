@@ -1,6 +1,5 @@
 package com.cn.ctbri.jms;
 
-import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,18 +14,14 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-import org.dom4j.Attribute;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.cn.ctbri.common.ArnhemWorker;
 import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.common.ReInternalWorker;
-import com.cn.ctbri.common.WebSocWorker;
+import com.cn.ctbri.common.SouthAPIWorker;
 import com.cn.ctbri.entity.EngineCfg;
 import com.cn.ctbri.entity.Logger;
 import com.cn.ctbri.entity.Serv;
@@ -72,12 +67,13 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	public TaskConsumerListener() {
 	}
 	
-	public TaskConsumerListener(Task task, ITaskService taskService, IServService servService, ITaskWarnService taskWarnService,IEngineService engineService) {
+	public TaskConsumerListener(Task task, ITaskService taskService, IServService servService, ITaskWarnService taskWarnService,IEngineService engineService,ILoggerService loggerService) {
 		this.task = task;
 		this.taskService = taskService;
 		this.servService = servService;
 		this.taskWarnService = taskWarnService;
 		this.engineService = engineService;
+		this.loggerService = loggerService;
 	}
 
 	public void onMessage(Message message) {  
@@ -88,7 +84,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
         	    Task taskRe = (Task) om.getObject();
         	    //引擎调度,任务分发
         	    if(taskRe != null){
-        	    	TaskConsumerListener taskConsumer = new TaskConsumerListener(taskRe,taskService,servService,taskWarnService,engineService);
+        	    	TaskConsumerListener taskConsumer = new TaskConsumerListener(taskRe,taskService,servService,taskWarnService,engineService,loggerService);
         	    	Thread thread = new Thread(taskConsumer);
     				thread.start();
         	    }
@@ -123,42 +119,25 @@ public class TaskConsumerListener implements MessageListener,Runnable{
             List<EngineCfg> engineList = engineService.findEngineByParam(engineMap);
             EngineCfg engineSel = new EngineCfg();
             boolean engineStatus = false;
-            String sessionid = "";	
+            String sessionid = "";
+            String status = "";
             for (EngineCfg engineCfg : engineList) {
             	engineSel = engineCfg;
-				if(engineSel.getEngine()==3){
-					for(int i=0;i<3;i++){
-		                sessionid = WebSocWorker.getSessionId();
-		                if(sessionid!=null&&sessionid!=""){
-		                    engineStatus = true;
-		                    break;
-		                }
-		                if(!engineStatus){
-		                	continue;
-		                }
-		            }
-					if(!engineStatus){
-						continue;
-	                }else{
-	                	break;
+				for(int i=0;i<3;i++){
+					status = SouthAPIWorker.getSessionId(engineSel.getEngine_number());
+	                if(status.equals("success")){
+	                    engineStatus = true;
+	                    break;
 	                }
-				}else{
-					for(int i=0;i<3;i++){
-			            sessionid = ArnhemWorker.getSessionId(engineSel.getEngine());
-			            if(sessionid!=null&&sessionid!=""){
-			                engineStatus = true;
-			                break;
-			            }
-			            if(!engineStatus){
-		                	continue;
-		                }
-			        }
-					if(!engineStatus){
-						continue;
-	                }else{
-	                	break;
+	                if(!engineStatus){
+	                	continue;
 	                }
-				}
+	            }
+				if(!engineStatus){
+					continue;
+                }else{
+                	break;
+                }
 			}
             
 		    //创宇任务下发
@@ -196,7 +175,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 			json.put("orderId", t.getOrder_id());
 			json.put("orderTaskId", t.getOrderTaskId());
 			json.put("websoc", t.getWebsoc());
-			ReInternalWorker.vulnScanCreate(json);
+			ReInternalWorker.vulnScanCreate(json.toString());
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -213,14 +192,13 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	    CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]:任务-[" + t.getTaskId() + "]获取状态;User="+null);
         
 	    if(engine!=null){
-	    	String resultStr = ArnhemWorker.getStatusByTaskId(sessionId, String.valueOf(t.getTaskId())+"_"+t.getOrder_id(), engine.getEngine());
+	    	String resultStr = SouthAPIWorker.getStatusByTaskId(engine.getEngine_number(), String.valueOf(t.getTaskId())+"_"+t.getOrder_id());
 	        String status = this.getStatusByResult(resultStr);
 	        if("".equals(status)){
 	            CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]:任务-[" + t.getTaskId() + "]开始下发!;User="+null);
 	            preTaskData(t,engine);
 	            try {
-	                String lssued = ArnhemWorker.lssuedTask(sessionId, String.valueOf(t.getTaskId())+"_"+t.getOrder_id(), this.destURL, this.destIP, "80",
-	                        this.tplName, engine.getEngine());
+	            	String lssued = SouthAPIWorker.disposeScanTask(engine.getEngine_number(), String.valueOf(t.getTaskId())+"_"+t.getOrder_id(), this.destURL, this.destIP, "80", this.tplName);
 	                boolean state = this.getStatusBylssued(lssued);
 	                if(state){
 	                    //任务下发后,引擎活跃数加1
@@ -240,8 +218,8 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	                    taskService.update(t);
 	                    CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]:任务-[" + t.getTaskId() + "]完成下发!;User="+null);
 	                    
-	                    Logger loginf = LoggerUtil.addLoginfo(null, null, new Date(), null,null,"getArnhem",LoggerUtil.TASK_SUCCESS);
-	                    loggerService.insert(loginf);
+	                    Logger logInf = LoggerUtil.addLoginfo("", "", new Date(), "","getArnhem","",LoggerUtil.TASK_SUCCESS);
+	                    loggerService.insert(logInf);
 	                }
 	                int serviceId = t.getServiceId();
 	                if(serviceId==2||serviceId==3||serviceId==4){
@@ -303,6 +281,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	                    }
 	                }
 	            } catch (Exception e) {
+	            	e.printStackTrace();
 	            	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!;User="+null);
 	            }
 	        }else{
@@ -326,7 +305,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
             String virtual_group_id = "";
             if(engine!=null){
                 //下发任务
-                virtual_group_id = WebSocWorker.lssuedTask(sessionId,String.valueOf(t.getTaskId())+"_"+t.getOrder_id(),assets,t.getServiceId());
+            	virtual_group_id = SouthAPIWorker.disposeScanTask(engine.getEngine_number(), String.valueOf(t.getTaskId())+"_"+t.getOrder_id(), t.getAssetAddr(), "", "", this.tplName);
                 //任务下发后,引擎活跃数加1
                 engine.setId(engine.getId());
                 engineService.update(engine);
@@ -525,6 +504,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
     	int rate = t.getScanType();
     	int serviceId = t.getScanType();
         if(serviceId == 5){
+        	this.tplName = "可用性监测模板";
             switch (rate) {
             case 1:
                 this.scantime = 10;
@@ -540,6 +520,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
                 break;
             }
         }else if(serviceId == 3){
+        	this.tplName = "网页篡改监测模板";
             switch (rate) {
             case 1:
                 this.scantime = 30;
@@ -555,17 +536,21 @@ public class TaskConsumerListener implements MessageListener,Runnable{
                 break;
             }
         }else if(serviceId == 4){
+        	this.tplName = "关键字监测模板";
             switch (rate) {
             case 4:
                 this.scantime = 1440;
                 break;
             }
         }else if(serviceId == 2){
+        	this.tplName = "恶意代码监测模板";
             switch (rate) {
             case 1:
                 this.scantime = 30;
                 break;
             }
+        }else{
+        	this.tplName = "漏洞扫描模板";
         }
     }
 	
@@ -582,18 +567,16 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	}  
 	
 	private String getStatusByResult(String resultStr) {
-		String decode;
 		String state = "";
 		try {
-			decode = URLDecoder.decode(resultStr, "UTF-8");
-			Document document = DocumentHelper.parseText(decode);
-			Element result = document.getRootElement();
-			Attribute attribute  = result.attribute("value");
-			String resultValue = attribute.getStringValue();
-			if("Success".equals(resultValue)){
-				Element StateNode = result.element("State");
-				state = StateNode.getTextTrim();
-			}else{
+			String status = JSONObject.fromObject(resultStr).getString("status");
+			if("Success".equals(status)){
+				state = JSONObject.fromObject(resultStr).getString("State");
+			}else if("Fail".equals(status)){
+				String errorMsg = JSONObject.fromObject(resultStr).getString("ErrorMsg");
+				if(errorMsg.contains("not found")){
+					state = "";
+				}
 				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]:远程没有此任务，可以下发!;User="+null);
 			}
 			return state;
@@ -605,15 +588,10 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	}
 	
 	private boolean getStatusBylssued(String lssued) {
-        String decode;
         boolean state = false;
         try {
-            decode = URLDecoder.decode(lssued, "UTF-8");
-            Document document = DocumentHelper.parseText(decode);
-            Element result = document.getRootElement();
-            Attribute attribute  = result.attribute("value");
-            String resultValue = attribute.getStringValue();
-            if("Success".equals(resultValue)){
+        	String status = JSONObject.fromObject(lssued).getString("status");
+            if("Success".equals(status)){
                 state = true;
             }
             return state;

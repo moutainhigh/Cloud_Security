@@ -12,17 +12,16 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-import org.dom4j.Attribute;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
+
+import org.apache.http.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.cn.ctbri.common.ArnhemWorker;
 import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.common.ReInternalWorker;
+import com.cn.ctbri.common.SouthAPIWorker;
 import com.cn.ctbri.common.WebSocWorker;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.EngineCfg;
@@ -38,8 +37,6 @@ import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.DateUtils;
 
 public class ResultConsumerListener  implements MessageListener,Runnable{
-	//日志对象
-//	private Logger logger = Logger.getLogger(ResultConsumerListener.class.getName());
 	
 	@Autowired
 	private IAlarmService alarmService;
@@ -91,14 +88,6 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 				e1.printStackTrace();
 			}
         } 
-		
-//    	if(message instanceof TextMessage){
-//    		TextMessage tmessage = (TextMessage) message;
-//    		ResultConsumerListener resultConsumer = new ResultConsumerListener();
-//    		tm = tmessage;
-//    		Thread thread = new Thread(resultConsumer);
-//    		thread.start();
-//    	}  		
 	}
 
 
@@ -117,70 +106,75 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 					if(task.getServiceId()==5){//可用性检测
 						//根据groupId查询alarm表及taskwarn表
 						List<TaskWarn> taskwarnList = taskWarnService.findTaskWarnByGroupId(task.getGroup_id());
-						if(taskwarnList!=null && taskwarnList.size()>0){
+//						if(taskwarnList!=null && taskwarnList.size()>0){
+						if(task.getStatus()==3){
 							//返回结果
-							net.sf.json.JSONObject taskwarnObject = new net.sf.json.JSONObject().fromObject(taskwarnList);
+							JSONArray taskwarnObject = new JSONArray().fromObject(taskwarnList);
 							json.put("taskwarnObj", taskwarnObject);
 							json.put("alarmObj", "");
-							json.put("result", "success");
-							ReInternalWorker.vulnScanGetOrderTaskResult(json);
+							json.put("status", "success");
+							ReInternalWorker.vulnScanGetOrderTaskResult(json.toString());
 						}else{
-							net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
+							JSONObject taskObject = new JSONObject().fromObject(task);
 							json.put("taskObj", taskObject);
-							json.put("result", "success");
-							ReInternalWorker.vulnScanGetOrderTaskStatus(json);
+							json.put("status", "success");
+							ReInternalWorker.vulnScanGetOrderTaskStatus(json.toString());
 						}
 					}else{//其他
 						Map<String,Object> paramMap = new HashMap<String,Object>();
 						paramMap.put("group_id", task.getGroup_id());
 						List<Alarm> alarmList = alarmService.findAlarmBygroupId(paramMap);
-						if(alarmList!=null && alarmList.size()>0){
+//						if(alarmList!=null && alarmList.size()>0){
+						if(task.getStatus()==3){
 							//返回结果
-							net.sf.json.JSONObject alarmObject = new net.sf.json.JSONObject().fromObject(alarmList);
+							JSONArray alarmObject = new JSONArray().fromObject(alarmList);
 							json.put("alarmObj", alarmObject);
 							json.put("taskwarnObj", "");
-							json.put("result", "success");
-							ReInternalWorker.vulnScanGetOrderTaskResult(json);
+							json.put("status", "success");
+							ReInternalWorker.vulnScanGetOrderTaskResult(json.toString());
 						}else{
-							net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
+							JSONObject taskObject = new JSONObject().fromObject(task);
 							json.put("taskObj", taskObject);
-							json.put("result", "success");
-							ReInternalWorker.vulnScanGetOrderTaskStatus(json);
+							json.put("status", "success");
+							ReInternalWorker.vulnScanGetOrderTaskStatus(json.toString());
 						}
 					}
 				}else{//安恒
 					if(task.getServiceId()==5){//可用性检测
 						//根据groupId查询alarm表及taskwarn表
 						List<TaskWarn> taskwarnList = taskWarnService.findTaskWarnByTaskId(task.getTaskId());
-						if(taskwarnList!=null && taskwarnList.size()>0){
+//						if(taskwarnList!=null && taskwarnList.size()>0){
+						if(task.getStatus()==3){
 							//返回结果
-							net.sf.json.JSONObject taskwarnObject = new net.sf.json.JSONObject().fromObject(taskwarnList);
+							JSONArray taskwarnObject = new JSONArray().fromObject(taskwarnList);
 							json.put("taskwarnObj", taskwarnObject);
 							json.put("alarmObj", "");
-							json.put("result", "success");
-							ReInternalWorker.vulnScanGetOrderTaskResult(json);
+							json.put("status", "success");
+							ReInternalWorker.vulnScanGetOrderTaskResult(json.toString());
 						}else{
-							net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
+							JSONObject taskObject = new JSONObject().fromObject(task);
 							json.put("taskObj", taskObject);
-							json.put("result", "success");
-							ReInternalWorker.vulnScanGetOrderTaskStatus(json);
+							json.put("status", "success");
+							ReInternalWorker.vulnScanGetOrderTaskStatus(json.toString());
 						}
 					}else{//其他
 						Map<String,Object> paramMap = new HashMap<String,Object>();
 						paramMap.put("taskId", task.getTaskId());
 						List<Alarm> alarmList = alarmService.findAlarmByTaskId(paramMap);
-						if(alarmList!=null && alarmList.size()>0){
+//						if(alarmList!=null && alarmList.size()>0){
+						if(task.getStatus()==3){
 							//返回结果
-							net.sf.json.JSONObject alarmObject = new net.sf.json.JSONObject().fromObject(alarmList);
-							json.put("alarmObj", alarmObject);
+							JSONArray alarmObject = new JSONArray().fromObject(alarmList);
+							json.put("status", "success");
+							json.put("taskObj", task);
 							json.put("taskwarnObj", "");
-							json.put("result", "success");
-							ReInternalWorker.vulnScanGetOrderTaskResult(json);
+							json.put("alarmObj", alarmObject);
+							ReInternalWorker.vulnScanGetOrderTaskResult(json.toString());
 						}else{
-							net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
+							JSONObject taskObject = new JSONObject().fromObject(task);
 							json.put("taskObj", taskObject);
-							json.put("result", "success");
-							ReInternalWorker.vulnScanGetOrderTaskStatus(json);
+							json.put("status", "success");
+							ReInternalWorker.vulnScanGetOrderTaskStatus(json.toString());
 						}
 					}
 				}
@@ -188,8 +182,13 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
         } catch (Exception e) {   
             e.printStackTrace();
 	        try {
-				json.put("result", "fail");
-				ReInternalWorker.vulnScanGetOrderTaskStatus(json);
+//	        	JSONObject taskObject = new JSONObject().fromObject(task);
+//				json.put("status", "fail");
+//				json.put("code", "404");
+//				json.put("message", "获取结果失败");
+//				json.put("taskObj", taskObject);
+//				ReInternalWorker.vulnScanGetOrderTaskStatus(json.toString());
+	        	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + String.valueOf(task.getTaskId()) + "]获取结果发生异常!;User="+null);
 			} catch (JSONException e1) {
 				e1.printStackTrace();
 			}
@@ -205,9 +204,15 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
         //获取当前时间
         SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String temp = setDateFormat.format(Calendar.getInstance().getTime());
-        long executeTime = task.getExecute_time().getTime();
-        long endTime = setDateFormat.parse(temp).getTime();
-        long diff = endTime-executeTime;
+        long executeTime = 0;
+        long endTime = 0;
+        long diff = 0;
+        if(task.getExecute_time()!=null){
+        	executeTime = task.getExecute_time().getTime();
+            endTime = setDateFormat.parse(temp).getTime();
+            diff = endTime-executeTime;
+        }
+        
         
 //		int engine = 0;
 //		EngineCfg en = engineService.getEngineById(task.getEngine());
@@ -218,12 +223,12 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 //			return;
 //		}
 		
-		int engine = 0;
+		String engine = "";
 		EngineCfg en = engineService.getEngineById(task.getEngine());
 		if(task.getEngine()!=0){
-			engine = en.getEngine();
+			engine = en.getEngine_number();
 		}else{
-			engine = 2;
+			engine = "10001";
 		}
                         
 	    if(task.getWebsoc()==1){//创宇
@@ -262,8 +267,7 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 	    }else{//安恒
 	        try {
     			// 根据任务id获取任务状态
-    			String sessionId = ArnhemWorker.getSessionId(engine);
-    			String resultStr = ArnhemWorker.getStatusByTaskId(sessionId,String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),engine);
+    			String resultStr = SouthAPIWorker.getStatusByTaskId(engine,String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
     			String status = this.getStatusByResult(resultStr);
                 List<Alarm> aList = new ArrayList<Alarm>();
 
@@ -273,20 +277,20 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
     				 * 获取任务结果信息并入库
     				 */
     				//根据taskId查询地区
-    				int districtId = taskService.findDistrictIdByTaskId(String.valueOf(task.getTaskId()));
+//    				int districtId = taskService.findDistrictIdByTaskId(String.valueOf(task.getTaskId()));
     				// 获取弱点总数
-    				String resultCount = ArnhemWorker.getResultCount(sessionId, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),engine);
+    				String resultCount = SouthAPIWorker.getResultCountByTaskID(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
     				int count = this.getCountByResult(resultCount);
     				for (int i = 0; i <= count/30; i++) {
     					int j = i*30;
     					// 获取任务引擎
 //        				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),
 //        						getProductByTask(task), j, 30, engine);   //获取全部告警
-        				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),
-        						String.valueOf(task.getServiceId()), j, 30, engine);   //获取全部告警
+        				String reportByTaskID = SouthAPIWorker.getReportByTaskID(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),
+        						String.valueOf(task.getServiceId()), j, 30);   //获取全部告警
         				
         				try {
-        				    aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID,task.getServiceId(),districtId);
+        				    aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID,task.getServiceId());
                         } catch (Exception e) {
                             aList = new ArrayList<Alarm>();
                             continue;
@@ -312,11 +316,12 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
     			}else if("running".equals(status)){
                     
                     // 获取任务进度引擎
-                    String progressStr = ArnhemWorker.getProgressByTaskId(sessionId, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),String.valueOf(task.getServiceId()),engine);
+                    String progressStr = SouthAPIWorker.getProgressByTaskId(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),String.valueOf(task.getServiceId()));
     				getProgressByRes(task.getTaskId(),progressStr);
     				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，扫描进度["+task.getTaskProgress()+"];User="+null);
 
-    			}else if(status.contains("not found")){
+//    			}else if(status.contains("not found")){
+    			}else if(status.equals("")){
     				task.setTaskProgress("101");
     				task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
     				taskService.update(task);
@@ -336,17 +341,17 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 	 * @return
 	 */
 	private String getStatusByResult(String resultStr) {
-		String decode;
 		String state = "";
 		try {
-			decode = URLDecoder.decode(resultStr, "UTF-8");
-			Document document = DocumentHelper.parseText(decode);
-			Element result = document.getRootElement();
-			Attribute attribute  = result.attribute("value");
-			String resultValue = attribute.getStringValue();
-			if("Success".equals(resultValue)){
-				Element StateNode = result.element("State");
-				state = StateNode.getTextTrim();
+			String status = JSONObject.fromObject(resultStr).getString("status");
+			if("Success".equals(status)){
+				state = JSONObject.fromObject(resultStr).getString("State");
+			}else if("Fail".equals(status)){
+				String errorMsg = JSONObject.fromObject(resultStr).getString("ErrorMsg");
+				if(errorMsg.contains("not found")){
+					state = "";
+				}
+				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]:远程没有此任务，可以下发!;User="+null);
 			}
 			return state;
 		} catch (Exception e) {
@@ -361,88 +366,116 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 	 * @param taskStr
 	 * @return
 	 */
-	private List<Alarm> getAlarmByRerult(String taskId, String taskStr, int serviceId,int districtId) {
+	private List<Alarm> getAlarmByRerult(String taskId, String taskStr, int serviceId) {
 		List<Alarm> aList = new ArrayList<Alarm>();
 		try {
-			Document document = DocumentHelper.parseText(taskStr);
-			Element task = document.getRootElement();
-			// 任务ID节点
-			Element taskIDNode = task.element("TaskID");
-			// 任务ID值
-			// String taskId = taskIDNode.getTextTrim();
-			// 获取报表节点
-			Element reportNode = task.element("Report");
-			// 获取所有的Funcs
-			Element funcs = reportNode.element("Funcs");
-			// 获取所有的Func集合
-			List<Element> funcList = funcs.elements("Func");
-			for (Element func : funcList) {
-				// 报警服务类型
-				String alarm_type = func.element("name").getTextTrim();
-				// 站点
-				Element siteNode = func.element("site");
-				// 资源地址
-				Attribute urlAb = siteNode.attribute("name");
-				String url = urlAb.getStringValue();
-				// 时间
-				String time = siteNode.attribute("time").getStringValue();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				// 得分
-                String score = siteNode.attribute("score").getStringValue();
-				// 一个漏洞对应一个issuetype
-				List<Element> issuetypes = siteNode.elements("issuetype");
-				for (Element issuetype : issuetypes) {
-					// 名称
-					String name = issuetype.attribute("name").getStringValue();
-					// 等级
-					String level = issuetype.attribute("level").getStringValue();
-					level = URLDecoder.decode(level, "UTF-8");
-					// 建议
-					String advice = issuetype.attribute("advice").getStringValue();
-					advice = URLDecoder.decode(advice, "UTF-8");
-					if(advice.equals("Web Service SQL盲注")){
+			JSONObject obj = new JSONObject().fromObject(taskStr);
+	        String report = obj.getString("Report");
+	        JSONObject reportObj = new JSONObject().fromObject(report);
+	        String funcs = reportObj.getString("Funcs");
+	        JSONObject funcsObj = new JSONObject().fromObject(funcs);
+	        String func = funcsObj.getString("Func");
+	        JSONObject funcObj = new JSONObject().fromObject(func);
+	        String alarm_type = URLDecoder.decode(funcObj.getString("name"), "UTF-8");
+	        String site = funcObj.getString("site");
+	        JSONObject siteObj = new JSONObject().fromObject(site);
+	        String urlAb = URLDecoder.decode(siteObj.getString("@name"), "UTF-8");
+	        String time = URLDecoder.decode(siteObj.getString("@time"), "UTF-8");
+	        String score = URLDecoder.decode(siteObj.getString("@score"), "UTF-8");
+	        String issuetype = siteObj.getString("issuetype");
+	        if(getJSONType(issuetype) == JSON_TYPE.JSON_TYPE_OBJECT){
+	        	JSONObject issuetypeObj = new JSONObject().fromObject(issuetype);
+	        	String name = URLDecoder.decode(issuetypeObj.getString("@name"), "UTF-8");
+	        	String level = URLDecoder.decode(issuetypeObj.getString("@level"), "UTF-8");
+	        	String advice = URLDecoder.decode(issuetypeObj.getString("@advice"), "UTF-8");
+	        	if(advice.equals("Web Service SQL盲注")){
+				    advice = "SQL";
+				}
+	        	String issuedata = issuetypeObj.getString("issuedata");
+	        	if(getJSONType(issuedata) == JSON_TYPE.JSON_TYPE_OBJECT){
+	        		JSONObject issuedataObj = new JSONObject().fromObject(issuedata);
+	        		String url = URLDecoder.decode(issuedataObj.getString("@url"), "UTF-8");
+	            	String value = URLDecoder.decode(issuedataObj.getString("@value"), "UTF-8");
+	            	//放入alarm中
+	            	aList.add(addAlarm(taskId, time, urlAb, alarm_type,
+							name, score, advice, level, url, value,
+							serviceId));
+	        	}else if(getJSONType(issuedata) == JSON_TYPE.JSON_TYPE_ARRAY){
+	        		JSONArray issuesArray = issuetypeObj.getJSONArray("issuedata");
+	            	for (int j=0;j<issuesArray.size();j++) {
+	            		JSONObject issueObj = (JSONObject) issuesArray.get(j);
+	                	String url = URLDecoder.decode(issueObj.getString("@url"), "UTF-8");
+	                	String value = URLDecoder.decode(issueObj.getString("@value"), "UTF-8");
+	                	aList.add(addAlarm(taskId, time, urlAb, alarm_type,
+								name, score, advice, level, url, value,
+								serviceId));
+	            	}
+	        	}
+	        }else if(getJSONType(issuetype) == JSON_TYPE.JSON_TYPE_ARRAY){
+	        	JSONArray issuetypesArray = siteObj.getJSONArray("issuetype");
+	        	for (int i=0;i<issuetypesArray.size();i++) {
+	            	JSONObject issuetypeObj = (JSONObject) issuetypesArray.get(i);
+	            	String name = URLDecoder.decode(issuetypeObj.getString("@name"), "UTF-8");
+	            	String level = URLDecoder.decode(issuetypeObj.getString("@level"), "UTF-8");
+	            	String advice = URLDecoder.decode(issuetypeObj.getString("@advice"), "UTF-8");
+	            	if(advice.equals("Web Service SQL盲注")){
 					    advice = "SQL";
 					}
-					// issuedata
-					List<Element> issuedatas = issuetype.elements("issuedata");
-					for (Element issuedata : issuedatas) {
-						Alarm alarm = new Alarm();
-						alarm.setTaskId(Long.parseLong(taskId));
-						alarm.setAlarm_time(sdf.parse(URLDecoder.decode(time, "UTF-8")));
-						alarm.setUrl(URLDecoder.decode(url, "UTF-8"));
-						alarm.setAlarm_type(URLDecoder.decode(alarm_type, "UTF-8"));
-						alarm.setName(URLDecoder.decode(name, "UTF-8"));
-						alarm.setScore(score);
-						alarm.setAdvice(advice);
-						if ("信息".equals(level)) {
-							alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_LOW));
-						} else if ("低危".equals(level)) {
-							alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_LOW));
-						} else if ("中危".equals(level)) {
-							alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_MIDDLE));
-						} else if ("高危".equals(level)) {
-							alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_HIGH));
-						} else if ("紧急".equals(level)) {
-							alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_HIGH));
-						}
-						String content = issuedata.attribute("url").getStringValue();
-						String keyword = issuedata.attribute("value").getStringValue();
-						alarm.setAlarm_content(URLDecoder.decode(content, "UTF-8"));
-						alarm.setKeyword(URLDecoder.decode(keyword, "UTF-8"));
-						alarm.setServiceId(serviceId);
-						alarm.setDistrictId(districtId);
-						aList.add(alarm);
-					}
-
-				}
-
-			}
+	            	String issuedata = issuetypeObj.getString("issuedata");
+	            	if(getJSONType(issuedata) == JSON_TYPE.JSON_TYPE_OBJECT){
+	            		JSONObject issuedataObj = new JSONObject().fromObject(issuedata);
+	            		String url = URLDecoder.decode(issuedataObj.getString("@url"), "UTF-8");
+	                	String value = URLDecoder.decode(issuedataObj.getString("@value"), "UTF-8");
+	                	aList.add(addAlarm(taskId, time, urlAb, alarm_type,
+								name, score, advice, level, url, value,
+								serviceId));
+	            	}else if(getJSONType(issuedata) == JSON_TYPE.JSON_TYPE_ARRAY){
+	            		JSONArray issuesArray = issuetypeObj.getJSONArray("issuedata");
+	                	for (int j=0;j<issuesArray.size();j++) {
+	                		JSONObject issueObj = (JSONObject) issuesArray.get(j);
+	                    	String url = URLDecoder.decode(issueObj.getString("@url"), "UTF-8");
+	                    	String value = URLDecoder.decode(issueObj.getString("@value"), "UTF-8");
+							aList.add(addAlarm(taskId, time, urlAb, alarm_type,
+									name, score, advice, level, url, value,
+									serviceId));
+	                	}
+	            	}
+	    		}
+	        }
 		} catch (Exception e) {
 		    e.printStackTrace();
 		    CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + taskId + "]解析任务结果发生异常!;User="+null);
 			throw new RuntimeException("[获取结果调度]:任务-[" + taskId + "]解析任务结果发生异常!");
 		}
 		return aList;
+	}
+	
+	public Alarm addAlarm(String taskId, String time, String urlAb, 
+			String alarm_type, String name, String score, String advice, 
+			String level, String url, String value, int serviceId) {
+		Alarm alarm = new Alarm();
+		alarm.setTaskId(Long.parseLong(taskId));
+		alarm.setAlarm_time(DateUtils.stringToDateNYRSFM(time));
+		alarm.setUrl(urlAb);
+		alarm.setAlarm_type(alarm_type);
+		alarm.setName(name);
+		alarm.setScore(score);
+		alarm.setAdvice(advice);
+		if ("信息".equals(level)) {
+			alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_LOW));
+		} else if ("低危".equals(level)) {
+			alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_LOW));
+		} else if ("中危".equals(level)) {
+			alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_MIDDLE));
+		} else if ("高危".equals(level)) {
+			alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_HIGH));
+		} else if ("紧急".equals(level)) {
+			alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_HIGH));
+		}
+		alarm.setAlarm_content(url);
+		alarm.setKeyword(value);
+		alarm.setServiceId(serviceId);
+		return alarm;
 	}
 
 	/**
@@ -480,17 +513,11 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 	 * @return
 	 */
 	private int getCountByResult(String resultCount) {
-		String decode;
 		int count = 0;
 		try {
-			decode = URLDecoder.decode(resultCount, "UTF-8");
-			Document document = DocumentHelper.parseText(decode);
-			Element result = document.getRootElement();
-			Attribute attribute  = result.attribute("value");
-			String resultValue = attribute.getStringValue();
-			if("Success".equals(resultValue)){
-				Attribute allNumber  = result.attribute("allNumber");
-				count = Integer.parseInt(allNumber.getStringValue());
+			String status = JSONObject.fromObject(resultCount).getString("status");
+			if("Success".equals(status)){
+				count = Integer.parseInt(JSONObject.fromObject(resultCount).getString("allNumber"));
 			}
 			return count;
 		} catch (Exception e) {
@@ -508,26 +535,22 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
      */
     private Task getProgressByRes(int taskId, String progressStr) {
         Task t = new Task();
-        String decode;
         try {
-            decode = URLDecoder.decode(progressStr, "UTF-8");
-            Document document = DocumentHelper.parseText(decode);
-            Element task = document.getRootElement();
-            Attribute attribute  = task.attribute("value");
-            String resultValue = attribute.getStringValue();
-            if("Success".equals(resultValue)){
-                String taskState = task.element("TaskState").getTextTrim();
+        	JSONObject obj = JSONObject.fromObject(progressStr);
+        	String status = obj.getString("status");
+            if("Success".equals(status)){
+            	String taskState = obj.getString("TaskState");
                 if(!"other".equals(taskState)||!"wait".equals(taskState)){
-                    String engineIP = task.element("EngineIP").getTextTrim();
-                    String taskProgress = task.element("TaskProgress").getTextTrim();
-                    String currentUrl = task.element("CurrentUrl").getTextTrim();
-                    String issueCount = task.element("IssueCount").getTextTrim();
-                    String requestCount = task.element("RequestCount").getTextTrim();
-                    String urlCount = task.element("UrlCount").getTextTrim();
-                    String averResponse = task.element("AverResponse").getTextTrim();
-                    String averSendCount = task.element("AverSendCount").getTextTrim();
-                    String sendBytes = task.element("SendBytes").getTextTrim();
-                    String receiveBytes = task.element("ReceiveBytes").getTextTrim();
+                    String engineIP = obj.getString("EngineIP");
+                    String taskProgress = obj.getString("TaskProgress");
+                    String currentUrl = URLDecoder.decode(obj.getString("CurrentUrl"), "UTF-8");
+                    String issueCount = obj.getString("IssueCount");
+                    String requestCount = obj.getString("RequestCount");
+                    String urlCount = obj.getString("UrlCount");
+                    String averResponse = obj.getString("AverResponse");
+                    String averSendCount = obj.getString("AverSendCount");
+                    String sendBytes = obj.getString("SendBytes");
+                    String receiveBytes = obj.getString("ReceiveBytes");
                     t.setTaskId(taskId);
                     t.setEngineIP(engineIP);
                     t.setTaskProgress(taskProgress);
@@ -569,6 +592,40 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
             throw new RuntimeException("[获取结果调度]:任务-[" + String.valueOf(taskId) + "]解析任务进度发生异常!");
         }
         return t;
+    }
+    
+    
+	public enum JSON_TYPE{
+        /**JSONObject*/    
+        JSON_TYPE_OBJECT,
+        /**JSONArray*/
+        JSON_TYPE_ARRAY,
+        /**不是JSON格式的字符串*/
+        JSON_TYPE_ERROR
+    }
+	/***
+     * 
+     * 获取JSON类型
+     * 判断规则
+     * 判断第一个字母是否为{或[ 如果都不是则不是一个JSON格式的文本
+     * @param str
+     * @return
+     */
+    public static JSON_TYPE getJSONType(String str){
+        if(TextUtils.isEmpty(str)){
+            return JSON_TYPE.JSON_TYPE_ERROR;
+        }
+        
+        final char[] strChar = str.substring(0, 1).toCharArray();
+        final char firstChar = strChar[0];
+                
+        if(firstChar == '{'){
+            return JSON_TYPE.JSON_TYPE_OBJECT;
+        }else if(firstChar == '['){
+            return JSON_TYPE.JSON_TYPE_ARRAY;
+        }else{
+            return JSON_TYPE.JSON_TYPE_ERROR;
+        }
     }
 
 }
