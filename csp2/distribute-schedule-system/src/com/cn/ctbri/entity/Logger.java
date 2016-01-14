@@ -13,7 +13,7 @@ public class Logger implements Serializable{
 	/***/
 	private static final long serialVersionUID = 1L;
 	//主键Id
-	private long log_id;
+	private int log_id;
 	//登陆id
 	private String loginId;
 	//用户名
@@ -28,10 +28,10 @@ public class Logger implements Serializable{
 	private String logLevel;
 	//日志信息
 	private String logMessage;
-	public long getLog_id() {
+	public int getLog_id() {
 		return log_id;
 	}
-	public void setLog_id(long log_id) {
+	public void setLog_id(int log_id) {
 		this.log_id = log_id;
 	}
 	public String getLoginId() {

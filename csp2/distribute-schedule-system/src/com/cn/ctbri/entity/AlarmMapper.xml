@@ -66,7 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        select * from cs_alarm a where a.group_id = #{group_id}
     </select>
     
-    <select id="findAlarmByTaskId" parameterType="String" resultMap="Alarm">
+    <select id="findAlarmByTaskId" parameterType="Integer" resultMap="Alarm">
 	        select * from cs_alarm a where a.taskId = #{taskId}
     </select>
     
