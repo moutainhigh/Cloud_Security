@@ -52,4 +52,8 @@ public interface TaskDao {
     
     //根据订单id查询任务列表
     List<Task> findAllByOrderId(Map<String, Object> hisMap);
+
+	public List<Task> findTaskByOrderId(String orderId);
+
+	public void updateTask(Task t);
 }

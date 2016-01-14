@@ -13,11 +13,14 @@ import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
+
 
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.Task;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -135,7 +138,7 @@ public class NorthWorker {
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String createOrder(Order order, String[] targetURL) throws JSONException{
+	public static String createOrder(Order order, String[] targetURL) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		net.sf.json.JSONObject orderObj = net.sf.json.JSONObject.fromObject(order);
@@ -180,11 +183,11 @@ public class NorthWorker {
 	 */
 	public static String vulnScanCreate(String ScanMode, String[] targetURL, String ScanType, 
     		String StartTime, String EndTime, String ScanPeriod, String ScanDepth, 
-    		String MaxPages, String Stategy, String CustomManu[], String orderId, String serviceId, String websoc) throws JSONException{
+    		String MaxPages, String Stategy, String CustomManu[], String orderId, String serviceId, String websoc) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("ScanMode", ScanMode);
-		net.sf.json.JSONArray targetURLs = net.sf.json.JSONArray.fromObject(targetURL);
+		JSONArray targetURLs = JSONArray.fromObject(targetURL);
 		json.put("targetURLs", targetURLs);
 		json.put("ScanType", ScanType);
 		json.put("StartTime", StartTime);
@@ -209,11 +212,12 @@ public class NorthWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json.toString());
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
-        System.out.println(textEntity);
-        return status+"";
+        net.sf.json.JSONObject obj = net.sf.json.JSONObject.fromObject(textEntity);
+		String state = obj.getString("state");
+        return state;
 	}
 	
 	/**
@@ -222,12 +226,12 @@ public class NorthWorker {
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String lssuedTask(String OrderId) throws JSONException{
+	public static String vulnScanOptOrder(String orderId) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
-		json.put("OrderId", OrderId);
+		json.put("orderId", orderId);
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Opt_Order + OrderId;
+    	String url = SERVER_WEB_ROOT + VulnScan_Opt_Order + orderId;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
@@ -238,7 +242,7 @@ public class NorthWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, json);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).put(ClientResponse.class);
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
         System.out.println(textEntity);
@@ -251,7 +255,7 @@ public class NorthWorker {
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String lssuedTaskGetReport(String OrderId) throws JSONException{
+	public static String lssuedTaskGetReport(String OrderId) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("OrderId", OrderId);
@@ -280,7 +284,7 @@ public class NorthWorker {
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String lssuedTaskGetResult(String OrderId, String Taskid) throws JSONException{
+	public static String lssuedTaskGetResult(String OrderId, String Taskid) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("OrderId", OrderId);
@@ -306,17 +310,14 @@ public class NorthWorker {
 	
 	/**
 	 * 功能描述：获得订单/任务当前执行状态
-	 * 参数描述： OrderId 订单编号
+	 * 参数描述： orderId 订单编号
+	 * 		   taskId  任务编号
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String vulnScanGetStatus(String orderId) throws JSONException{
-		//组织发送内容JSON
-		JSONObject json = new JSONObject();
-		json.put("orderId", orderId);
-//		json.put("Taskid", Taskid);
+	public static String vulnScanGetStatus(String orderId,String taskId) {
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Get_OrderStatus + orderId;
+    	String url = SERVER_WEB_ROOT + VulnScan_Get_OrderStatus + orderId + "/" + taskId;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
@@ -327,11 +328,37 @@ public class NorthWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-        int status = response.getStatus();
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);   
         String textEntity = response.getEntity(String.class);
         System.out.println(textEntity);
-        return status+"";
+        return textEntity;
+	}
+	
+	
+	/**
+	 * 功能描述：获得订单/任务当前执行结果
+	 * 参数描述： orderId 订单编号
+	 * 		   taskId  任务编号
+	 * @throws JSONException 
+	 *		 @time 2015-10-16
+	 */
+	public static String vulnScanGetResult(String orderId,String taskId) {
+		//创建任务发送路径
+    	String url = SERVER_WEB_ROOT + VulnScan_Get_OrderResult + orderId + "/" + taskId;
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    config.getClasses().add(JacksonJsonProvider.class);
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);   
+        String textEntity = response.getEntity(String.class);
+        System.out.println(textEntity);
+        return textEntity;
 	}
 	
 	/**
@@ -399,8 +426,9 @@ public class NorthWorker {
 	}
 
 
-    public static void main(String[] args) throws UnsupportedEncodingException, JSONException {
-        String create = vulnScanCreate("2", new String[]{"27","31"}, "", "2015-10-20 16:10:01", "", "0", "", "", "", new String[0], "","", "");
-        System.out.println(create);
+    public static void main(String[] args) {
+//        String create = vulnScanCreate("2", new String[]{"27","31"}, "", "2015-10-20 16:10:01", "", "0", "", "", "", new String[0], "","", "");
+        String t = vulnScanGetStatus("15120117145433875","");
+        System.out.println(t);
     }
 }

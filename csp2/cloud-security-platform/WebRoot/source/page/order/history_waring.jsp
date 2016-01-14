@@ -32,7 +32,7 @@ function getData(){
 	var orderId = $("#orderId").val();
  		$.ajax({
            type: "POST",
-           url: "/cloud-security-platform/scaning.html",
+           url: "scaning.html",
            data: {"orderId":orderId,"status":${status}},
            dataType:"json",
            success: function(data){

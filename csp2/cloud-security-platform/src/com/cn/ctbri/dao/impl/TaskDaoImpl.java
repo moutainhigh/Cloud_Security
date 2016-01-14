@@ -23,7 +23,7 @@ import com.cn.ctbri.entity.Task;
 public class TaskDaoImpl extends DaoCommon implements TaskDao {
 	
 	/**
-	 * 功        能： UserMapper命名空间
+	 * 功        能： TaskMapper命名空间
 	 */
 	private String ns = "com.cn.ctbri.entity.TaskMapper.";		
 	
@@ -100,6 +100,10 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 
 	public List<Task> findAllByOrderId(Map<String, Object> hisMap) {
 		return this.getSqlSession().selectList(ns+"findAllByOrderId",hisMap);		
+	}
+
+	public void updateTask(Task t) {
+		this.getSqlSession().update(ns+"updateTask", t);
 	}
 	
 }

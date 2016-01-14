@@ -54,7 +54,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          <if test="type!=null"><!--有警告的  -->
               and o.status in (1,2)
         </if>
-        and ISNULL(o.delFlag)
+        <!-- and ISNULL(o.delFlag)  -->
+        and o.delFlag != 1
         order by o.create_date desc limit #{pageNow},#{pageSize}
     </select>
 	<!-- 条件查询 -->
@@ -321,6 +322,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findTaskNumsByUserId" resultType="Object" parameterType="Integer">
         select sum(tasknum) from cs_order
         where userId = #{userId}
+    </select>
+    
+    <!-- 根据任务查询订单信息 -->
+    <select id="findOrderByTask" resultMap="OrderRM" parameterType="com.cn.ctbri.entity.Task">
+        select o.*
+        from cs_task t join cs_order_asset oa 
+        on t.order_asset_Id = oa.id join cs_order o 
+        on oa.orderId = o.id 
+        where t.taskId = #{taskId}
+    </select>
+    
+    
+    <!-- 根据条件查询订单信息 -->
+    <select id="findOrderByMap" resultMap="OrderRM" parameterType="hashmap">
+        select * from cs_order o
+		where o.status not in (1,2) and o.create_date &gt;='2016-01-01 00:00:00'
+		
     </select>
     
 </mapper>

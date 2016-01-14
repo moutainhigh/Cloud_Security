@@ -168,4 +168,7 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
     public List findAlarmByOrderIdorGroupId(Map<String, Object> paramMap) {
         return getSqlSession().selectList(ns+"findAlarmByOrderIdorGroupId", paramMap);
     }
+	public void saveAlarm(Alarm alarm) {
+		getSqlSession().insert(ns+"insert", alarm);
+	}
 }

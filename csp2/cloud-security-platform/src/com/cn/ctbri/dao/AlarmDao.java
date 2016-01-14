@@ -101,4 +101,6 @@ public interface AlarmDao {
     public void deleteAlarmByTaskId(Map<String, Object> paramMap);
     //根据orderid查询告警分类数,报表导出用
     public List findAlarmByOrderIdorGroupId(Map<String, Object> paramMap);
+    
+	public void saveAlarm(Alarm alarm);
 }

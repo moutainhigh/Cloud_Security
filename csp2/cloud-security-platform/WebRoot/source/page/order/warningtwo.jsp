@@ -34,7 +34,7 @@ function getData(){
 	var orderId = $("#orderId").val();
  		$.ajax({
            type: "POST",
-           url: "/cloud-security-platform/scaning.html",
+           url: "scaning.html",
            data: {"orderId":orderId,"status":${status},"group_flag":$("#group_flag").val()},
            dataType:"json",
            success: function(data){
@@ -52,7 +52,7 @@ function warningTask(){
 	var type = $("#type").val();
  		$.ajax({
            type: "POST",
-           url: "/cloud-security-platform/warningTask.html",
+           url: "warningTask.html",
            data: {"orderId":orderId,"group_flag":$("#group_flag").val(),"type":type},
            dataType:"json",
            success: function(data){
@@ -65,7 +65,7 @@ function warningTask(){
 	var orderId = $("#orderId").val();
 	$.ajax({ 
 		type: "POST",
-		url: "/cloud-security-platform/getExecuteTime.html",
+		url: "getExecuteTime.html",
         data: {"orderId":orderId,"status":${status}},
         dataType:"text",
 		success : function(result){

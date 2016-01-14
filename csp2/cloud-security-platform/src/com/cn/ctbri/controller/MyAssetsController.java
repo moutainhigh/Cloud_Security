@@ -69,21 +69,14 @@ public class MyAssetsController {
 		model.addAttribute("list",list);
 		return "/source/page/userCenter/userAssets";
 	}
+	
 	/**
 	 * 功能描述： 检查资产地址是否已经存在
 	 * 参数描述： Model model
 	 *		 @time 2015-3-9
 	 */
-	
-	
-	/**
-	 * 功能描述： 添加资产
-	 * 参数描述： Model model
-	 * @throws Exception 
-	 *		 @time 2015-1-16
-	 */
 	@RequestMapping("/asset_addrIsExist.html")
-	 @ResponseBody
+	@ResponseBody
 	public void addrIsExist(Model model,Asset asset,HttpServletResponse response,HttpServletRequest request) throws Exception{
 	    User globle_user = (User) request.getSession().getAttribute("globle_user");
 	    Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -112,6 +105,13 @@ public class MyAssetsController {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * 功能描述： 添加资产
+	 * 参数描述： Model model
+	 * @throws Exception 
+	 *		 @time 2015-1-16
+	 */
 	@RequestMapping("/addAsset.html")
 	public String addAsset(Model model,Asset asset,HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");

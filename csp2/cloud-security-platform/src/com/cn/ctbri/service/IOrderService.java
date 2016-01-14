@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.Task;
 
 /**
  * 创 建 人  ：  邓元元
@@ -116,5 +117,9 @@ public interface IOrderService {
 
     //根据用户查询所有任务数
     Object findTaskNumsByUserId(int userId);
+    //根据任务查询订单
+	List<Order> findOrderByTask(Task task);
+	//根据条件查询订单
+	List<Order> findOrderByMap(Map<String, Object> map);
     
 }

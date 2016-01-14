@@ -11,6 +11,7 @@ import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.OrderDao;
 import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.Task;
 /**
  * 创 建 人  ：  邓元元
  * 创建日期：  2015-1-14
@@ -187,6 +188,14 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 
 	public Object findTaskNumsByUserId(int userId) {
 		return this.getSqlSession().selectOne(ns + "findTaskNumsByUserId", userId);
+	}
+
+	public List<Order> findOrderByTask(Task task) {
+		return this.getSqlSession().selectList(ns + "findOrderByTask",task);
+	}
+
+	public List<Order> findOrderByMap(Map<String, Object> map) {
+		return this.getSqlSession().selectList(ns + "findOrderByMap",map);
 	}
     
     

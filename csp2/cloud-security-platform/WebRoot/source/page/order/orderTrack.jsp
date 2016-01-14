@@ -41,7 +41,7 @@ $(document).ready(function(){
 }
 function overfind(orderId){
         var obj = {'orderId':orderId};
-        $.post("/cloud-security-platform/getAssetName.html", obj, function(data){
+        $.post("getAssetName.html", obj, function(data){
         	var assetName = data.assetName;
         	$('#'+orderId).attr("title", assetName);//设置title属性的值
         });
@@ -51,17 +51,40 @@ function deleteOrder(orderId,begin_date){
     if (window.confirm("确实要删除吗?")==true) {
     	$.ajax({
             type: "POST",
-            url: "/cloud-security-platform/checkOrderStatus.html",
+            url: "checkOrderStatus.html",
             data: {"orderId":orderId,"begin_date":begin_date},
             dataType:"json",
             success: function(data){
                 if(!data.status){
                     alert("订单正在执行,不可以删订单!");
                 }else{
-                	window.location.href="/cloud-security-platform/deleteOrder.html?orderId="+orderId;
+                	window.location.href="deleteOrder.html?orderId="+orderId;
                 }
             },
          });
+    } else {
+        return;
+    }
+}
+
+
+//订单操作
+function optOrder(orderId,status){
+	var meg = "";
+	if(status==4){
+		meg = "确实要暂停吗?";
+	}else{
+		meg = "确实要启动吗?";
+	}
+    if (window.confirm(meg)==true) {
+    	var obj = {'orderId':orderId, 'status':status};
+        $.post("optOrder.html", obj, function(data){
+        	if (!data.status){
+				alert("系统异常，暂停失败！");
+			}else{
+				window.location.href="orderTrackInit.html";
+			}
+        });
     } else {
         return;
     }

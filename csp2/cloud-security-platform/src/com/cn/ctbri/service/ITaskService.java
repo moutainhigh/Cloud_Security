@@ -44,4 +44,13 @@ public interface ITaskService {
     void update(Map<String, Object> hisMap);
     //根据订单id查询任务列表
     List<Task> findAllByOrderId(Map<String, Object> paramMap);
+
+    //二期
+    //查找任务
+	List<Task> findTask(Map<String, Object> map);
+
+	//根据orderid 查任务
+	List<Task> findTaskByOrderId(String orderId);
+
+	void updateTask(Task t);
 }

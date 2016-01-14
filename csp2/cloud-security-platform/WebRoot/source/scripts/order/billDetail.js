@@ -10,7 +10,7 @@ $(document).ready(function(){
     $(window).scroll(function(){
     	$.ajax({ type: "POST",
 		     async: false, 
-		     url: "/cloud-security-platform/getSession.html", 
+		     url: "getSession.html", 
 		     dataType: "json", 
 //		     contentType: "application/json; charset=utf-8", 
 		     success: function(data) {
@@ -18,8 +18,8 @@ $(document).ready(function(){
 		    	 }, 
 		     error: function(data){ 
 		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-		    		 window.location.href = "/cloud-security-platform/loginUI.html"; } 
-		    	 else { window.location.href = "/cloud-security-platform/loginUI.html"; } } 
+		    		 window.location.href = "loginUI.html"; } 
+		    	 else { window.location.href = "loginUI.html"; } } 
 		});
     });
 });
@@ -45,9 +45,9 @@ function loadData(){
     var data = "&pageIndex=" + pageIndex;
     var url = "";
     if(mark!=1){
-    	url = "/cloud-security-platform/searchCombByPage.html?type="+type+"&servName="+servName+"&begin_date="+begin_date+"&end_date="+end_date;
+    	url = "searchCombByPage.html?type="+type+"&servName="+servName+"&begin_date="+begin_date+"&end_date="+end_date;
     }else{
-    	url = "/cloud-security-platform/getBillList.html";
+    	url = "getBillList.html";
     }
     $.get(url, data, function(result){
         pageIndex++;

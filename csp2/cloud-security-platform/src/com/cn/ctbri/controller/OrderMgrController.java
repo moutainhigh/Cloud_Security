@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cn.ctbri.common.Constants;
+import com.cn.ctbri.common.NorthWorker;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Linkman;
@@ -308,6 +310,7 @@ public class OrderMgrController {
      * 功能描述： 保存订单
      * 参数描述：  
 	 * @throws Exception 
+	 * @throws Exception 
      *       @time 2015-01-16
      */
     @RequestMapping(value="saveOrder.html")
@@ -316,19 +319,31 @@ public class OrderMgrController {
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         String assetIds = request.getParameter("assetIds");
         Map<String, Object> m = new HashMap<String, Object>();
+        //定义变量
+        String[] assetArrayAble = null;
+        String urls = "";
+        String[] targetURL = null;
+        String[] CustomManu = new String[0];//指定厂家
+        String scanType = "";//扫描方式（正常、快速、全量）
+        String scanDepth = "";//检测深度
+        String maxPages = "";//最大页面数
+        String stategy = "";//策略
+        
+        
         //后台判断资产是否可用
-        String[] assetArrayAble = null;  
         boolean assetsStatus = false;
         if(assetIds!=null&&assetIds!=""){
 	        assetArrayAble = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
 	        for(int i=0;i<assetArrayAble.length;i++){
 	            Asset _asset = assetService.findById(Integer.parseInt(assetArrayAble[i]));
+	            urls = urls + _asset.getAddr() + ",";
 	            int status = _asset.getStatus();
 	            if(status==0){
 	                assetsStatus = true;
 	                break;
 	            }
 	        }
+	        targetURL = urls.split(",");
         }
         m.put("assetsStatus", assetsStatus);
         if(assetsStatus){
@@ -342,7 +357,8 @@ public class OrderMgrController {
             }
             return;
         }
-        //String orderId = request.getParameter("orderId");
+        
+        
         SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
         String orderDate = odf.format(new Date());
         String orderId = orderDate+String.valueOf(Random.tencode());
@@ -353,10 +369,7 @@ public class OrderMgrController {
         String createDate = df.format(new Date());
         System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
         
-//        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        String temp = setDateFormat.format(Calendar.getInstance().getTime());
-//        String createDate = request.getParameter("createDate");
-        String scanType = request.getParameter("scanType");
+        String scanPeriod = request.getParameter("scanType");
         String scanDate = request.getParameter("scanDate");
         String serviceId = request.getParameter("serviceId");
         String linkname = new String(request.getParameter("linkname").getBytes("ISO-8859-1"),"UTF-8");
@@ -372,101 +385,107 @@ public class OrderMgrController {
         if(beginDate.compareTo(createDate)>0){
             m.put("timeCompare", true);
             m.put("orderId", orderId);
-            //新增联系人
-            Linkman linkObj = new Linkman();
-            int linkmanId = Random.eightcode();
-            linkObj.setId(linkmanId);
-            linkObj.setName(linkname);
-            linkObj.setMobile(phone);
-            linkObj.setEmail(email);
-            linkObj.setAddress(address);
-            linkObj.setCompany(company);
-            linkObj.setUserId(globle_user.getId());
-            selfHelpOrderService.insertLinkman(linkObj);
-            //新增订单
-            Order order = new Order();
-            order.setId(orderId);
-            order.setType(Integer.parseInt(orderType));
-            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
-            Date begin_date = null;
-            Date end_date = null;
-            Date create_date = null;
-            if(beginDate!=null && !beginDate.equals("")){
-                begin_date=sdf.parse(beginDate); 
+         	//创建漏洞扫描订单（任务），调北向api，modify by tangxr 2015-12-21
+            if(serviceId.equals("1")){
+            	String state = NorthWorker.vulnScanCreate(orderType, targetURL, scanType, beginDate, endDate, scanPeriod, scanDepth, maxPages, stategy, CustomManu, orderId, serviceId, websoc);
+    			if(state.equals("201")){
+    				//新增联系人
+    	            Linkman linkObj = new Linkman();
+    	            int linkmanId = Random.eightcode();
+    	            linkObj.setId(linkmanId);
+    	            linkObj.setName(linkname);
+    	            linkObj.setMobile(phone);
+    	            linkObj.setEmail(email);
+    	            linkObj.setAddress(address);
+    	            linkObj.setCompany(company);
+    	            linkObj.setUserId(globle_user.getId());
+    	            selfHelpOrderService.insertLinkman(linkObj);
+    	            //新增订单
+    	            Order order = new Order();
+    	            order.setId(orderId);
+    	            order.setType(Integer.parseInt(orderType));
+    	            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
+    	            Date begin_date = null;
+    	            Date end_date = null;
+    	            Date create_date = null;
+    	            if(beginDate!=null && !beginDate.equals("")){
+    	                begin_date=sdf.parse(beginDate); 
+    	            }
+    	            if(endDate!=null && !endDate.equals("")){
+    	                end_date=sdf.parse(endDate); 
+    	            }
+    	            if(createDate!=null && !createDate.equals("")){
+    	                create_date=sdf.parse(createDate); 
+    	            }
+    	            order.setBegin_datevo(beginDate);
+    	            order.setEnd_datevo(endDate);
+    	            order.setBegin_date(begin_date);
+    	            order.setEnd_date(end_date);
+    	            order.setCreate_date(create_date);
+    	            if(scanPeriod!=null && !scanPeriod.equals("")){
+    	                order.setScan_type(Integer.parseInt(scanPeriod));
+    	            }
+    	            order.setServiceId(Integer.parseInt(serviceId));
+    	            
+    	            if (serviceId.equals("1") && orderType.equals("1")) {//漏洞长期
+    					Date executeTime = DateUtils.getOrderPeriods(beginDate,endDate,scanPeriod);
+    					order.setTask_date(executeTime);
+    				}else{
+    					order.setTask_date(begin_date);
+    				}
+    	            
+    	            order.setUserId(globle_user.getId());
+    	            order.setContactId(linkmanId);
+    	            order.setStatus(0);
+    	            if(serviceId.equals("6")||serviceId.equals("7")||serviceId.equals("8")){
+    	            	order.setWebsoc(0);
+    	            }else{
+    	            	if(!websoc.equals("null")){
+    	                	order.setWebsoc(Integer.parseInt(websoc));
+    	                }
+    	            }
+    	            order.setTasknum(Integer.parseInt(tasknum));
+    	            selfHelpOrderService.insertOrder(order);
+    	            
+    	            
+    	            if(serviceId.equals("6")||serviceId.equals("7")||serviceId.equals("8")){
+    	                //新增ip段
+    	                OrderIP orderIP = new OrderIP();
+    	                orderIP.setOrderId(orderId);
+    	                orderIP.setIp(ip);
+    	                orderIP.setBandwidth(Integer.parseInt(bandwidth));
+    	                orderIP.setServiceId(Integer.parseInt(serviceId));
+    	                orderAssetService.insertOrderIP(orderIP);
+    	            }else{
+    	                //新增服务资产
+    	                for(int i=0;i<assetArrayAble.length;i++){
+    	                    OrderAsset orderAsset = new OrderAsset();
+    	                    orderAsset.setOrderId(orderId);
+    	                    orderAsset.setAssetId(Integer.parseInt(assetArrayAble[i]));
+    	                    orderAsset.setServiceId(Integer.parseInt(serviceId));
+    	                    if(scanPeriod!=null && !scanPeriod.equals("")){
+    	                        orderAsset.setScan_type(Integer.parseInt(scanPeriod));
+    	                    }
+    	                    Date scan_date = null;
+    	                    if(scanDate!=null && !scanDate.equals("")){
+    	                        scan_date=sdf.parse(scanDate);
+    	                        orderAsset.setScan_date(scan_date);
+    	                    }
+    	                    orderAssetService.insertOrderAsset(orderAsset);
+    	                }
+    	            }
+    	            m.put("orderStatus", true);
+    			}else{
+    				m.put("orderStatus", false);
+    			}
             }
-            if(endDate!=null && !endDate.equals("")){
-                end_date=sdf.parse(endDate); 
-            }
-            if(createDate!=null && !createDate.equals("")){
-                create_date=sdf.parse(createDate); 
-            }
-            order.setBegin_date(begin_date);
-            order.setEnd_date(end_date);
-            order.setCreate_date(create_date);
-            if(scanType!=null && !scanType.equals("")){
-                order.setScan_type(Integer.parseInt(scanType));
-            }
-            order.setServiceId(Integer.parseInt(serviceId));
-            order.setTask_date(begin_date);
-            order.setUserId(globle_user.getId());
-            order.setContactId(linkmanId);
-            order.setStatus(0);
-            if(serviceId.equals("6")||serviceId.equals("7")||serviceId.equals("8")){
-            	order.setWebsoc(0);
-            }else{
-            	if(!websoc.equals("null")){
-                	order.setWebsoc(Integer.parseInt(websoc));
-                }
-            }
-            order.setTasknum(Integer.parseInt(tasknum));
-            selfHelpOrderService.insertOrder(order);
             
-            if(serviceId.equals("6")||serviceId.equals("7")||serviceId.equals("8")){
-                //新增ip段
-                OrderIP orderIP = new OrderIP();
-                orderIP.setOrderId(orderId);
-                orderIP.setIp(ip);
-                orderIP.setBandwidth(Integer.parseInt(bandwidth));
-                orderIP.setServiceId(Integer.parseInt(serviceId));
-                orderAssetService.insertOrderIP(orderIP);
-            }else{
-                //新增服务资产
-                String[] assetArray = null;   
-                assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
-                for(int i=0;i<assetArray.length;i++){
-                    OrderAsset orderAsset = new OrderAsset();
-                    orderAsset.setOrderId(orderId);
-                    orderAsset.setAssetId(Integer.parseInt(assetArray[i]));
-                    orderAsset.setServiceId(Integer.parseInt(serviceId));
-                    if(scanType!=null && !scanType.equals("")){
-                        orderAsset.setScan_type(Integer.parseInt(scanType));
-                    }
-                    Date scan_date = null;
-                    if(scanDate!=null && !scanDate.equals("")){
-                        scan_date=sdf.parse(scanDate);
-                        orderAsset.setScan_date(scan_date);
-                    }
-                    orderAssetService.insertOrderAsset(orderAsset);
-                }
-            }
-            
-            request.setAttribute("isSuccess", true);
-            //modify by txr 2015-03-27
+            /*
             if(serviceId.equals("1")&&orderType.equals("1")){
-//                Scheduler4Task task = new Scheduler4Task();
-//                WebApplicationContext ac = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
-//                task.setAc(ac);
-//                task.setTaskByOrder(order); 
-              //根据orderid 获取要扫描的订单详情集合
+            	//根据orderid 获取要扫描的订单详情集合
                 List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
-                //获取订单定制的服务信息
-                //Service s = orderDao.getTPLByServiceId();
                 //遍历订单详情  创建任务
                 if(!websoc.equals("null")&&Integer.parseInt(websoc)==1){//创宇任务
-//                    String ids = "";
-//                    for(OrderAsset oa : oaList){
-//                        ids = ids + oa.getId()+",";
-//                    }
                     for(OrderAsset oa : oaList){
                         Task task = new Task();
                         if(scanType.equals("1")){
@@ -545,8 +564,6 @@ public class OrderMgrController {
             }else if(serviceId.equals("2")||serviceId.equals("3")||serviceId.equals("5")||serviceId.equals("4")||orderType.equals("2")){//add by txr 2015-03-26
               //根据orderid 获取要扫描的订单详情集合
                 List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
-                //获取订单定制的服务信息
-                //Service s = orderDao.getTPLByServiceId();
                 //遍历订单详情  创建任务
                 if(!websoc.equals("null")&&Integer.parseInt(websoc)==1){
 //                    String ids = "";
@@ -607,22 +624,7 @@ public class OrderMgrController {
                     }
                 }
                 
-            }
-//            else if(serviceId.equals("2")&&orderType.equals("1")){
-//                List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
-//                for(OrderAsset oa : oaList){
-//                    Task task = new Task(); 
-//                    task.setExecute_time(sdf.parse(scanDate));
-//                    task.setStatus(Integer.parseInt(Constants.TASK_START));
-//                    //设置订单详情id
-//                    task.setOrder_asset_Id(oa.getId());
-//                    //资产任务组
-//                    task.setGroup_flag(begin_date);
-//                    //插入一条任务数据  获取任务id
-//                    int taskId = taskService.insert(task);
-//                }
-//            }
-            else{
+            }else{
                 List<OrderIP> ipList = orderAssetService.findIpByOrderId(orderId);
                 for(OrderIP oip : ipList){
                     TaskHW taskhw = new TaskHW(); 
@@ -634,7 +636,7 @@ public class OrderMgrController {
                     //插入一条任务数据  获取任务id
                     int taskId = taskhwService.insert(taskhw);
                 }
-            }
+            }*/
             
         }else{
             m.put("timeCompare", false);
@@ -1294,4 +1296,41 @@ public class OrderMgrController {
 		}
 		return count;
 	}
+	
+	
+	/**
+     * 功能描述： 订单操作
+     * 参数描述：  无
+	 * @throws JSONException 
+     *     @time 2015-12-10
+     */
+    @RequestMapping(value="optOrder.html")
+    @ResponseBody
+    public void optOrder(HttpServletResponse response,HttpServletRequest request) throws JSONException{
+        String orderId = request.getParameter("orderId");
+        int status = Integer.parseInt(request.getParameter("status"));
+        //查找订单
+        Order order = orderService.findOrderById(orderId);
+        String opt = NorthWorker.vulnScanOptOrder(orderId);
+        Map<String, Object> m = new HashMap<String, Object>();
+        if(opt.equals("201")){
+        	if(status==4){
+        		order.setStatus(5);
+        	}else if(status==5){
+        		order.setStatus(4);
+        	}
+        	orderService.update(order);
+        	m.put("status", true);
+        }else{
+        	m.put("status", false);
+        }
+        //object转化为Json格式
+        JSONObject JSON = CommonUtil.objectToJson(response, m);
+        try {
+            // 把数据返回到页面
+            CommonUtil.writeToJsp(response, JSON);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

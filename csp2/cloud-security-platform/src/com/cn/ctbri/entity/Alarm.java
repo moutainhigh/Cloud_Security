@@ -46,6 +46,8 @@ public class Alarm implements Serializable{
 	private String alarmTime;
 	//告警分类个数
 	private int num;
+	//
+	private int serviceId;
 	
 	public String getAlarmTime() {
 		return alarmTime;
@@ -239,5 +241,12 @@ public class Alarm implements Serializable{
     public void setNum(int num) {
         this.num = num;
     }
+	public int getServiceId() {
+		return serviceId;
+	}
+	public void setServiceId(int serviceId) {
+		this.serviceId = serviceId;
+	}
 
+    
 }

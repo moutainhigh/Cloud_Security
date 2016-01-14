@@ -365,7 +365,7 @@ $(function(){
 	    			   'websoc':websoc};
 	    	var result = window.confirm("确定要提交订单吗？");
 	    	if(result){
-//		    	$.post("/cloud-security-platform/saveOrder.html", obj, function(data){
+//		    	$.post("saveOrder.html", obj, function(data){
 //		    		$("#orderId").html(data.orderId);
 //		    		getActive(4);
 //		        });
@@ -403,7 +403,7 @@ $(function(){
  	  		    		     dataType: "json", 
 // 	  		    		     contentType: "application/json; charset=utf-8", 
  	  		    		     success: function(data) {
- 	  		    		    	 if(data.assetsStatus == false){
+ 	  		    		    	 if(data.assetsStatus == false && data.orderStatus == true){
  	  		    		    		 if(data.timeCompare == true){
  	   		 	    	            	$("#orderId").html(data.orderId);
  	  					    		    getActive(4); 

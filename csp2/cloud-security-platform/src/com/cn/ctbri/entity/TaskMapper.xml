@@ -17,14 +17,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findTaskByOrderAssetId" parameterType="int" resultMap="TaskRM">
 		 select * from cs_task where order_asset_Id=#{order_asset_Id}
 	</select>
-
 	
 	
 	<!-- 插入任务信息 -->
-	<insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO cs_task
-		(order_asset_Id,execute_time,status,group_flag,end_time,remarks,websoc) 
-		VALUES( #{order_asset_Id} , #{execute_time},#{status},#{group_flag},#{end_time},#{remarks},#{websoc})
+	<insert id="insert" parameterType="com.cn.ctbri.entity.Task" >	
+        INSERT INTO cs_task
+		(taskId,order_asset_Id,execute_time,status,group_flag,remarks,
+		engineIP,taskProgress,currentUrl,begin_time,end_time,scanTime,
+		issueCount,requestCount,urlCount,averResponse,
+		averSendCount,sendBytes,receiveBytes,websoc) 
+		VALUES(#{taskId}, #{order_asset_Id} , #{execute_time},#{status},#{group_flag},
+		#{remarks},#{engineIP},#{taskProgress},#{currentUrl},#{begin_time},#{end_time},#{scanTime},
+		#{issueCount},#{requestCount},#{urlCount},#{averResponse},#{averSendCount},#{sendBytes},#{receiveBytes},#{websoc})
+		ON DUPLICATE KEY UPDATE 
+				status=#{status},
+				engineIP=#{engineIP},
+				taskProgress=#{taskProgress},
+                currentUrl=#{currentUrl},
+                begin_time=#{begin_time},
+                end_time=#{end_time},
+                scanTime=#{scanTime},
+                issueCount=#{issueCount},
+                requestCount=#{requestCount},
+                urlCount=#{urlCount},
+                averResponse=#{averResponse},
+                averSendCount=#{averSendCount},
+                sendBytes=#{sendBytes},
+                receiveBytes=#{receiveBytes}
 	</insert>
 	<!-- 根据orderId查询扫描次数 -->
 	<select id="findByOrderId" parameterType="int" resultType="Object">
@@ -156,7 +175,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
     <select id="findAllByOrderId" parameterType="hashmap" resultMap="TaskRM">				
 	select *  from cs_task where taskId in
-		(SELECT a.id FROM
 		(select t.taskId id
 		from cs_task t,cs_order_asset oa
 		WHERE
@@ -167,7 +185,70 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test="type!=null and type='2'">
         	and (t.status=3 or t.status=2)
         </if>
-		) a)
-		
+		)
     </select>
+    
+    <!-- 根据条件查询任务表 -->
+	<select id="findTask" parameterType="hashmap" resultMap="TaskRM">
+		select * from cs_task t
+		where t.status ! = 3
+	</select>
+	
+	<!-- 根据订单id条件查询任务表 -->
+	<select id="findTaskByOrderId" parameterType="String" resultMap="TaskRM">
+		SELECT t.*
+        FROM cs_task t,cs_order_asset oa
+        WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} AND t.status = 2
+        ORDER BY t.execute_time
+	</select>
+	
+	<!-- 更新任务信息 -->
+    <update id="updateTask"  parameterType="com.cn.ctbri.entity.Task">
+        update cs_task
+        <set>
+            <if test="begin_time!=null">
+                begin_time=#{begin_time},
+            </if>
+            <if test="end_time!=null">
+                end_time=#{end_time},
+            </if>
+            <if test="scanTime!=null">
+                scanTime=#{scanTime},
+            </if>
+            <if test="engineIP!=null">
+                engineIP=#{engineIP},
+            </if>
+            <if test="taskProgress!=null">
+                taskProgress=#{taskProgress},
+            </if>
+            <if test="currentUrl!=null">
+                currentUrl=#{currentUrl},
+            </if>
+            <if test="issueCount!=null">
+                issueCount=#{issueCount},
+            </if>
+            <if test="requestCount!=null">
+                requestCount=#{requestCount},
+            </if>
+            <if test="urlCount!=null">
+                urlCount=#{urlCount},
+            </if>
+            <if test="averResponse!=null">
+                averResponse=#{averResponse},
+            </if>
+            <if test="averSendCount!=null">
+                averSendCount=#{averSendCount},
+            </if>
+            <if test="sendBytes!=null">
+                sendBytes=#{sendBytes},
+            </if>
+            <if test="receiveBytes!=null">
+                receiveBytes=#{receiveBytes}
+            </if>
+            <!-- <if test="dns!=null">
+                dns=#{dns}
+            </if> -->
+        </set>
+        where taskId = #{taskId}
+    </update>
 </mapper>

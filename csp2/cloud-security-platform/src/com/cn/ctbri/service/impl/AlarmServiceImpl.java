@@ -131,4 +131,7 @@ public class AlarmServiceImpl implements IAlarmService{
     public List findAlarmByOrderIdorGroupId(Map<String, Object> paramMap) {
         return alarmDao.findAlarmByOrderIdorGroupId(paramMap);
     }
+	public void saveAlarm(Alarm alarm) {
+		alarmDao.saveAlarm(alarm);
+	}
 }

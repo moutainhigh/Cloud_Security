@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.Task;
 
 /**
  * 创 建 人  ：  邓元元
@@ -112,4 +113,7 @@ public interface OrderDao {
     Order findOrderById(String orderId);
     //根据用户查询任务数
     Object findTaskNumsByUserId(int userId);
+    //二期新增
+	List<Order> findOrderByTask(Task task);
+	List<Order> findOrderByMap(Map<String, Object> map);
 }
