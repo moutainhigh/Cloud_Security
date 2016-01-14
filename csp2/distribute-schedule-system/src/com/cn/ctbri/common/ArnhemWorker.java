@@ -1,5 +1,6 @@
 package com.cn.ctbri.common;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.util.Properties;
@@ -17,7 +18,10 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jettison.json.JSONException;
+import org.dom4j.Attribute;
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
@@ -476,7 +480,7 @@ public class ArnhemWorker {
 //        		"                                                                         \"zone_ip\":" +
 //        		"                                                                              \"[\"12.12.12.12/32\"," +
 //        		"                                                                                 \"33.33.33.33/24\"]\"}");
-        String sessionId = getSessionId(2);
+        String sessionId = getSessionId(1);
 //        String s = getEngineState(sessionId,"https://219.141.189.187:61443");
         
 //        String sessionId1 = getSessionId("https://219.141.189.187:60443","developer","developer111111");
@@ -487,7 +491,26 @@ public class ArnhemWorker {
 //        		"", "80", "漏洞扫描模板");
     	
 //    	String p = getProgressByTaskId(sessionId, "922_15101511393080584", "1",2);
-    	String p1 = getStatusByTaskId(sessionId, "45_15120117145433875",2);
+    	String p1 = getStatusByTaskId(sessionId, "test2016010511",1);
+    	
+    	String state = "";
+    	String decode = URLDecoder.decode(p1, "UTF-8");
+		Document document;
+		try {
+			document = DocumentHelper.parseText(decode);
+			Element result = document.getRootElement();
+			Attribute attribute  = result.attribute("value");
+			String resultValue = attribute.getStringValue();
+			if("Success".equals(resultValue)){
+				Element StateNode = result.element("State");
+				state = StateNode.getTextTrim();
+			}
+			System.out.println("00"+state);
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
     	
 //    	System.out.println(s1);
 //    	System.out.println("ok");

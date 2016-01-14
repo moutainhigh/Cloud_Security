@@ -13,10 +13,10 @@ import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 
-import org.codehaus.jettison.json.JSONObject;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
-import org.codehaus.jettison.json.JSONException;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -135,7 +135,7 @@ public class ReInternalWorker {
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String vulnScanCreate(JSONObject json) throws JSONException{
+	public static String vulnScanCreate(String jsondata) {
 		//组织发送内容JSON
 //		JSONObject json = new JSONObject();
 //		json.put("ScanMode", scanMode);
@@ -164,7 +164,7 @@ public class ReInternalWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, jsondata);
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
         System.out.println(textEntity);
@@ -235,17 +235,9 @@ public class ReInternalWorker {
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String vulnScanGetOrderTaskResult(JSONObject json) throws JSONException{
-		//组织发送内容JSON
-//		JSONObject json = new JSONObject();
-//		json.put("OrderId", OrderId);
-//		json.put("Taskid", Taskid);
-		JSONObject taskObj = json.getJSONObject("taskObj");
-		String OrderId = taskObj.getString("order_id");
-		String orderTaskId = taskObj.getString("orderTaskId");
-		
+	public static String vulnScanGetOrderTaskResult(String jsonObj) {
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskResult + "/" + orderTaskId;
+    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskResult;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
@@ -256,11 +248,10 @@ public class ReInternalWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class,json);
-        int status = response.getStatus();
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class,jsonObj);
         String textEntity = response.getEntity(String.class);
         System.out.println(textEntity);
-        return status+"";
+        return textEntity;
 	}
 	
 	
@@ -270,17 +261,9 @@ public class ReInternalWorker {
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String vulnScanGetOrderTaskStatus(JSONObject json) throws JSONException{
-		//组织发送内容JSON
-//		JSONObject json = new JSONObject();
-//		json.put("OrderId", OrderId);
-//		json.put("Taskid", Taskid);
-		JSONObject taskObj = json.getJSONObject("taskObj");
-		String OrderId = taskObj.getString("order_id");
-		String orderTaskId = taskObj.getString("orderTaskId");
-		
+	public static String vulnScanGetOrderTaskStatus(String jsonObj) {
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskStatus + "/" + orderTaskId;
+    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskStatus;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
@@ -291,11 +274,10 @@ public class ReInternalWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class,json);
-        int status = response.getStatus();
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class,jsonObj);
         String textEntity = response.getEntity(String.class);
         System.out.println(textEntity);
-        return status+"";
+        return textEntity;
 	}
 	
 	/**
@@ -363,9 +345,10 @@ public class ReInternalWorker {
 	}
 
 
-    public static void main(String[] args) throws UnsupportedEncodingException, JSONException {
-//        String create = vulnScanCreate("2", "", "", "2015-10-20 16:10:01", "", "0", "", "", "", new String[0], "","", "","");
-//        System.out.println(create);
+    public static void main(String[] args) {
+    	JSONObject json = new JSONObject();
+    	json.put("status", "success");
+        String o = vulnScanGetOrderTaskResult(json.toString());
     }
 
 
