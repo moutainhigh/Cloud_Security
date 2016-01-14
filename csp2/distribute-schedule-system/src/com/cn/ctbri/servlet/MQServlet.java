@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,8 +15,19 @@ public class MQServlet extends HttpServlet{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	static final String DEFAULT_ACTIVEMQ_ROOT = "e:/apache-activemq-5.5.1";
-    String mActiveMQRoot = DEFAULT_ACTIVEMQ_ROOT;
+	private static String DEFAULT_ACTIVEMQ_ROOT;
+    
+	static{
+		try {
+			Properties p = new Properties();
+			p.load(MQServlet.class.getClassLoader().getResourceAsStream("default.properties"));
+			DEFAULT_ACTIVEMQ_ROOT = p.getProperty("DEFAULT_ACTIVEMQ_ROOT");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	String mActiveMQRoot = "e:/apache-activemq-5.5.1/bin/activemq.bat";
     private Process startProcess;
  
     
@@ -34,7 +46,7 @@ public class MQServlet extends HttpServlet{
 			    System.out.println("Starting ActiveMQ...");
 			    Runtime runtime = Runtime.getRuntime();
  
-			    startProcess = runtime.exec(mActiveMQRoot + "/bin/activemq.bat");
+			    startProcess = runtime.exec(mActiveMQRoot);
  
 			    // following are message when start activeMQ
 			    BufferedReader bufferedReader = null;
@@ -43,7 +55,7 @@ public class MQServlet extends HttpServlet{
 			                startProcess.getInputStream()));
 			        String line;
 			        while ((line = bufferedReader.readLine()) != null) {
-			            System.out.println(line);
+//			            System.out.println(line);
 			        }
 			    } catch (IOException e) {
 			    	System.out.println("ActiveMQ has started!");
