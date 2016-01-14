@@ -4,14 +4,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Respones {
-	private String state;
+	private String code;
 
-	public String getState() {
-		return state;
+	public String getCode() {
+		return code;
 	}
 
-	public void setState(String state) {
-		this.state = state;
+	public void setCode(String code) {
+		this.code = code;
 	}
 	
 }
