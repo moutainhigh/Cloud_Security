@@ -19,6 +19,15 @@
 		<servlet-class>com.cn.ctbri.southapi.adpater.servlet.InitServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	
+	<servlet>
+	<servlet-name>receive</servlet-name>
+	<servlet-class>com.cn.ctbri.southapi.adpater.servlet.ReceiveServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>receive</servlet-name>
+	<url-pattern>/receive</url-pattern>
+	</servlet-mapping>
 	<!-- 超时设置 -->
 	<!-- <session-config>   
 	<session-timeout>30</session-timeout>   

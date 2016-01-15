@@ -123,19 +123,7 @@ public class ArnhemDeviceOperation {
 	private  String nullFilter(String str) {
     	return str==null ? "" : str;
     }
-	/**
-	 * 功能描述：统一状态参数的方法，替换掉原本转换后的默认参数
-	 * @param xml
-	 * @return
-	 */
-	private JSONObject responseToJSON(String xml){
-		JSON json = new XMLSerializer().read(xml);
-        JSONObject responseObject = new JSONObject().fromObject(json.toString());
-        String status = responseObject.getString("@value");
-        responseObject.remove("@value");
-        responseObject.put("status", status);
-		return responseObject;
-	}
+
 	
 	/**
 	 * 功能描述：安全通信配置设置
@@ -192,7 +180,6 @@ public class ArnhemDeviceOperation {
 				return response;
 			}
 		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return response;
 		}
@@ -235,7 +222,6 @@ public class ArnhemDeviceOperation {
 				return response;
 			}
 		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return response;
 		}
@@ -273,7 +259,7 @@ public class ArnhemDeviceOperation {
      */
     public  String getState(String engine_api){
     	String url = engine_api + "/rest/control/GetState";
-    	return responseToJSON(getMethod(url)).toString();
+    	return getMethod(url);
     }
 
 	/**
@@ -309,7 +295,7 @@ public class ArnhemDeviceOperation {
         //创建路径
         String url = engine_api + "/rest/control/SLA";
         System.out.println(getMethod(url));
-        return responseToJSON(getMethod(url)).toString();
+        return getMethod(url);
     }
 	/**
 	 * 序号:4.3.1
@@ -352,7 +338,7 @@ public class ArnhemDeviceOperation {
 		String url = arnhemServerWebrootUrl + "/rest/task/Remove/" + scannerTaskUniParam.getTaskId();
 		JSON json = new XMLSerializer().read(postMethod(url));
 		JSONObject responseObject = new JSONObject().fromObject(json.toString());
-        return responseToJSON(postMethod(url)).toString();
+        return postMethod(url);
 	}
 	/**
 	 * 序号:4.3.3
@@ -363,7 +349,7 @@ public class ArnhemDeviceOperation {
 	public  String startTask(ScannerTaskUniParam scannerTaskUniParam){
 		//创建路径
 		String url = arnhemServerWebrootUrl + "/rest/task/Start/" + scannerTaskUniParam.getTaskId();
-		return responseToJSON(postMethod(url)).toString();
+		return postMethod(url);
 	}
 	/**
 	 * 序号:4.3.3
@@ -374,7 +360,7 @@ public class ArnhemDeviceOperation {
 	public  String pauseTask(ScannerTaskUniParam scannerTaskUniParam){
 		//创建路径
 		String url = arnhemServerWebrootUrl + "/rest/task/Pause/" + scannerTaskUniParam.getTaskId();
-		return responseToJSON(postMethod(url)).toString();	
+		return postMethod(url);	
 	}
 	/**
 	 * 序号:4.3.3
@@ -385,7 +371,7 @@ public class ArnhemDeviceOperation {
 	public  String stopTask(ScannerTaskUniParam scannerTaskUniParam){
 		//创建路径
 		String url = arnhemServerWebrootUrl+ "/rest/task/Stop/" + scannerTaskUniParam.getTaskId();
-		return responseToJSON(postMethod(url)).toString();
+		return postMethod(url);
 	}
 	/**
 	 * 4.3.4
@@ -397,7 +383,7 @@ public class ArnhemDeviceOperation {
 	public  String getStatusByTaskId(ScannerTaskUniParam scannerTaskUniParam) {
 		//创建路径
 		String url = arnhemServerWebrootUrl + "/rest/task/Test/" + scannerTaskUniParam.getTaskId();
-		return responseToJSON(postMethod(url)).toString();		
+		return postMethod(url);		
 	}
 	
 	/**
@@ -413,9 +399,8 @@ public class ArnhemDeviceOperation {
         String xml = "<Task><TaskID>" + scannerTaskUniParam.getTaskId() + "</TaskID><ProductID>" + scannerTaskUniParam.getProductId() +"</ProductID ></Task>";
         //创建路径
         String url = arnhemServerWebrootUrl + "/rest/task/getTaskProgress";
-        String responseString = postMethod(url, xml);
-    	String jsonString = responseToJSON(responseString).toString();
-    	return jsonString;
+        return postMethod(url, xml);
+
     }
 
     /**
@@ -428,7 +413,7 @@ public class ArnhemDeviceOperation {
     public  String getTaskLoadInfo() {
         //创建路径
         String url = arnhemServerWebrootUrl + "/rest/task/GetTaskLoadInfo";
-		return responseToJSON(getMethod(url)).toString();		
+		return getMethod(url);		
 	}
     public  String distortChangeActive(ScannerTaskUniParam scannerTaskUniParam){
     	String url=arnhemServerWebrootUrl+"/rest/task/distortChangeActive/"+scannerTaskUniParam.getDestIP();
@@ -480,7 +465,7 @@ public class ArnhemDeviceOperation {
      */
     public  String getWebsiteCount() {
 		String url = arnhemServerWebrootUrl + "/rest/report/GetWebsiteCount";
-		return responseToJSON(getMethod(url)).toString();
+		return getMethod(url);
 	}
 
 	/**
@@ -492,7 +477,7 @@ public class ArnhemDeviceOperation {
     public  String getWebsiteList(ScannerTaskUniParam scannerTaskUniParam){
     	String url = arnhemServerWebrootUrl+ "/rest/report/GetWebsiteList/";
     	String xml = "<PageParam><StartNum>"+scannerTaskUniParam.getStartNum()+"</StartNum><Size>"+scannerTaskUniParam.getSize()+"</Size></PageParam>";
-    	return responseToJSON(postMethod(url, xml)).toString();
+    	return postMethod(url, xml);
     }
     /**
 	 * 4.4.7
@@ -585,7 +570,7 @@ public class ArnhemDeviceOperation {
      */
     public  String getIssueRepositoryList() {
 		String url = arnhemServerWebrootUrl + "/rest/control/GetIssueRepositoryList";
-		return responseToJSON(getMethod(url)).toString();
+		return getMethod(url);
 	}
     /**
      * id:4.4.15

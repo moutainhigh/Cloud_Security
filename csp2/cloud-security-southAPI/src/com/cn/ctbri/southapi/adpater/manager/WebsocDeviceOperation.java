@@ -176,7 +176,6 @@ public class WebsocDeviceOperation {
 		}else {
 			responseObject.put("status", "Fail");
 		}
-        System.out.println(responseObject.toString());
 		return	responseObject.toString();
 /*    	System.out.println(response);
         String jsStr = JSONObject.fromObject(response).getString("result");
@@ -206,14 +205,7 @@ public class WebsocDeviceOperation {
 		//创建路径
 		String url = serverWebRoot + "/api/v2/vgroup/progress_temp/";
         String response = postmethod(url, jsonContent);
-		JSONObject responseObject = new JSONObject().fromObject(response);
-        if ("0".equalsIgnoreCase(responseObject.getString("code"))) {
-			responseObject.put("status", "Success");
-		}else {
-			responseObject.put("status", "Fail");
-		}
-        System.out.println(responseObject.toString());
-		return	responseObject.toString();
+		return	response;
     }
     
     public String postDetectResult(String url, String jsonContent) {

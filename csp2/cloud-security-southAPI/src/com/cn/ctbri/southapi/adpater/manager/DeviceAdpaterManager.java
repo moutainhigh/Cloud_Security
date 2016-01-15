@@ -1,14 +1,34 @@
 package com.cn.ctbri.southapi.adpater.manager;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 
+
+
+
+
+
+import java.util.Map;
+
+import net.sf.json.JSON;
+import net.sf.json.JSONObject;
+import net.sf.json.xml.XMLSerializer;
+
+import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+
+
+
+
+
+
 
 
 import com.cn.ctbri.southapi.adpater.config.DeviceConfigInfo;
@@ -42,6 +62,22 @@ public class DeviceAdpaterManager {
 	private String errorDevieInfo(String deviceId) {
 		return "{\"status\":\"fail\",\"message\":\"Can not find device: "+deviceId+"\"}";
 	}
+	
+	/**
+	 * 功能描述：统一状态参数的方法，替换掉原本转换后的默认参数
+	 * @param xml
+	 * @return
+	 */
+	private JSONObject responseToJSON(String xml){
+		JSON json = new XMLSerializer().read(xml);
+        JSONObject responseObject = new JSONObject().fromObject(json.toString());
+        String status = responseObject.getString("@value");
+        responseObject.remove("@value");
+        responseObject.put("status", status);
+		return responseObject;
+	}
+	
+	
 	/*
 	 * 初始化
 	 */
@@ -202,7 +238,7 @@ public class DeviceAdpaterManager {
 			return errorDevieInfo(deviceId);
 		}
 		if (DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim())){
-			return arnhemDeviceAdpater.getState(deviceId);
+			return responseToJSON(arnhemDeviceAdpater.getState(deviceId)).toString();
 		}
 		return DEVICE_OPERATION_ERROR;
 	}
@@ -230,7 +266,7 @@ public class DeviceAdpaterManager {
 		}
 		if (DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
-			return arnhemDeviceAdpater.getTemplate(deviceId);
+			return responseToJSON(arnhemDeviceAdpater.getTemplate(deviceId)).toString();
 		}
 		return DEVICE_OPERATION_ERROR;
 	}
@@ -250,13 +286,58 @@ public class DeviceAdpaterManager {
 		}
 		return DEVICE_OPERATION_ERROR;
 	}
+	
+	public String getEngineStatRate(String deviceId) {
+		if (null==deviceId|| "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
+			return errorDevieInfo(deviceId);
+		}
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
+		{
+			String responseString = arnhemDeviceAdpater.getEngineState(deviceId);	
+			
+			try {
+				SAXReader saxReader = new SAXReader();
+				Document document = saxReader.read(IOUtils.toInputStream(responseString));
+				Element rootElement = document.getRootElement();
+				List nodes = rootElement.elements("EngineList");
+				List<HashMap> engineList = new ArrayList<HashMap>();
+	            for(Iterator it=nodes.iterator();it.hasNext();){
+	            	Element engineStatElement = (Element) it.next();
+	            	HashMap engineRateMap = new HashMap();
+	            	
+	            	String cpuUsage = engineStatElement.elementTextTrim("CpuOccupancy");
+	            	engineRateMap.put("cpuUsage", cpuUsage);
+	            	
+	            	float memoryFree = Float.parseFloat(engineStatElement.elementTextTrim("MemoryFree"));
+	            	float memoryTotal = Float.parseFloat(engineStatElement.elementTextTrim("MemoryTotal"));
+	            	float memoryUsage = memoryFree/memoryTotal;
+	            	engineRateMap.put("memoryUsage", memoryUsage);
+	            
+	            	float diskFree = Float.parseFloat(engineStatElement.elementTextTrim("DiskFree"));
+	            	float diskTotal = Float.parseFloat(engineStatElement.elementTextTrim("DiskTotal"));
+	            	float diskUsage = diskFree/diskTotal;
+	            	engineRateMap.put("diskUsage", diskUsage);
+	            	
+	            	engineList.add(engineRateMap);
+	            	
+	            }
+			} catch (DocumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+				
+		}
+		return DEVICE_OPERATION_ERROR;
+	}
+	
 	public String removeTask(String deviceId,ScannerTaskUniParam scannerTaskUniParam){
 		if ( null==deviceId||"".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
 			return errorDevieInfo(deviceId);
 		}
 		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
-			return arnhemDeviceAdpater.removeTask(deviceId,scannerTaskUniParam);		
+			return responseToJSON(arnhemDeviceAdpater.removeTask(deviceId,scannerTaskUniParam)).toString();		
 		}
 		return DEVICE_OPERATION_ERROR;
 	}
@@ -266,7 +347,7 @@ public class DeviceAdpaterManager {
 		}
 		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()))
 		{
-			return arnhemDeviceAdpater.startTask(deviceId, scannerTaskUniParam);	
+			return responseToJSON(arnhemDeviceAdpater.startTask(deviceId, scannerTaskUniParam)).toString();	
 		}
 		return DEVICE_OPERATION_ERROR;
 	}
@@ -276,7 +357,7 @@ public class DeviceAdpaterManager {
 		}
 		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()))
 		{
-			return arnhemDeviceAdpater.pauseTask(deviceId, scannerTaskUniParam);	
+			return responseToJSON(arnhemDeviceAdpater.pauseTask(deviceId, scannerTaskUniParam)).toString();	
 		}
 		return DEVICE_OPERATION_ERROR;
 	}
@@ -286,7 +367,7 @@ public class DeviceAdpaterManager {
 		}
 		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
-			return arnhemDeviceAdpater.stopTask(deviceId, scannerTaskUniParam);	
+			return responseToJSON(arnhemDeviceAdpater.stopTask(deviceId, scannerTaskUniParam)).toString();	
 		}
 		return DEVICE_OPERATION_ERROR;
 	}
@@ -302,7 +383,7 @@ public class DeviceAdpaterManager {
 		}
 		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
-			return arnhemDeviceAdpater.getStatusByTaskId(deviceId, scannerTaskUniParam);
+			return responseToJSON(arnhemDeviceAdpater.getStatusByTaskId(deviceId, scannerTaskUniParam)).toString();
 		}
 		return DEVICE_OPERATION_ERROR;
 	}
@@ -318,12 +399,57 @@ public class DeviceAdpaterManager {
 		}
 		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
-			return arnhemDeviceAdpater.getProgressByTaskId(deviceId,scannerTaskUniParam);
+			return responseToJSON(arnhemDeviceAdpater.getProgressByTaskId(deviceId,scannerTaskUniParam)).toString();
 			
 		} else if (DeviceAdapterConstant.DEVICE_SCANNER_WEBSOC.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim())) {
-			return websocDeviceAdapter.getProgressByVirtualGroupId(deviceId, scannerTaskUniParam);
+			String response = websocDeviceAdapter.getProgressByVirtualGroupId(deviceId, scannerTaskUniParam);
+	        JSONObject responseObject = new JSONObject().fromObject(response);
+			if ("0".equalsIgnoreCase(responseObject.getString("code"))) {
+				responseObject.put("status", "Success");
+			}else {
+				responseObject.put("status", "Fail");
+			}
+	        System.out.println(responseObject.toString());
+	        return response.toString();
 		}
 		return DEVICE_OPERATION_ERROR;		
+	}
+	public String getTaskPercentById(String deviceId, ScannerTaskUniParam scannerTaskUniParam) {
+		if ( null == deviceId || "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName() == null ){
+			return errorDevieInfo(deviceId);
+		}
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
+		{
+			String percentProgress = "0";
+			String progressArnhem =  arnhemDeviceAdpater.getProgressByTaskId(deviceId,scannerTaskUniParam);
+			try {
+				 SAXReader reader = new SAXReader();
+				 Document document = reader.read(IOUtils.toInputStream(progressArnhem));
+				 Element rootElement = document.getRootElement();
+				 percentProgress = rootElement.element("TaskProgress").getTextTrim();
+			} catch (DocumentException e) {
+				e.printStackTrace();
+			}
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("TaskProgress", percentProgress);
+			return jsonObject.toString();
+		} else if (DeviceAdapterConstant.DEVICE_SCANNER_WEBSOC.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim())) {
+			String progressWebsoc = websocDeviceAdapter.getProgressByVirtualGroupId(deviceId, scannerTaskUniParam);
+			JSONObject responseObject = new JSONObject().fromObject(progressWebsoc);
+	        JSONObject resultObject = responseObject.getJSONObject("result");
+			if ("0".equalsIgnoreCase(responseObject.getString("code"))) {
+				float floatProgress = ((float)resultObject.getInt("sites_done_count"))/(float)resultObject.getInt("sites_count");
+				DecimalFormat decimalFormat=new DecimalFormat(".00");
+				String percentPrograss = decimalFormat.format(floatProgress);
+				responseObject.clear();
+				responseObject.put("status", "success");
+				responseObject.put("percentPrograss", percentPrograss);
+			}else {
+				responseObject.clear();
+				responseObject.put("status", "fail");
+			}
+		}
+		return DEVICE_OPERATION_ERROR;			
 	}
 	/**
 	 * 任务负载查询
@@ -336,7 +462,7 @@ public class DeviceAdpaterManager {
 		}
 		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
-			return arnhemDeviceAdpater.getTaskLoadInfo(deviceId);
+			return responseToJSON(arnhemDeviceAdpater.getTaskLoadInfo(deviceId)).toString();
 		}
 		return DEVICE_OPERATION_ERROR;		
 	}
@@ -384,7 +510,7 @@ public class DeviceAdpaterManager {
 			return errorDevieInfo(deviceId);
 		}
 		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) ){
-			return arnhemDeviceAdpater.getWebsiteCount(deviceId);
+			return responseToJSON(arnhemDeviceAdpater.getWebsiteCount(deviceId)).toString();
 		}
 		return DEVICE_OPERATION_ERROR;
 	}
@@ -401,7 +527,7 @@ public class DeviceAdpaterManager {
 		}
 		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()))
 		{
-			return arnhemDeviceAdpater.getWebsiteList(deviceId,scannerTaskUniParam);
+			return responseToJSON(arnhemDeviceAdpater.getWebsiteList(deviceId,scannerTaskUniParam)).toString();
 		}
 		return DEVICE_OPERATION_ERROR;
 	}

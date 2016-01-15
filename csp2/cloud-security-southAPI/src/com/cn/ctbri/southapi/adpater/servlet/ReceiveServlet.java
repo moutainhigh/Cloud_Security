@@ -44,9 +44,9 @@ public class ReceiveServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		WebsocDeviceOperation websocDeviceOperation = new WebsocDeviceOperation();
 		String parameter = request.getParameter("parameter");
-		System.out.println("parameter"+parameter);  // �������parameterJSON�ַ�
+		System.out.println("parameter"+parameter);
 		String responseString = websocDeviceOperation.postDetectResult("", parameter);
-		if (true) { // �����ӿ���ԶΪ�棬���ʵ���������
+		if (true) {
 			response.setContentType("text/html");
 			PrintWriter pw = response.getWriter();
 			pw.println(responseString);
