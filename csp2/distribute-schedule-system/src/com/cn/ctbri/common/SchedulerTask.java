@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.cn.ctbri.entity.EngineCfg;
+import com.cn.ctbri.entity.FirstSelOut;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IEngineService;
@@ -86,12 +87,14 @@ public class SchedulerTask {
 			//查询最优的引擎top3
 			Map<String, Object> engineMap = new HashMap<String, Object>();
 			engineMap.put("serviceId", t.getServiceId());
-			engineMap.put("websoc", t.getWebsoc());
-			List<EngineCfg> engineList = engineService.findEngineByParam(engineMap);
+			
+			//获取引擎top3
+			List<EngineCfg> engineList = EngineWorker.getArnhemUsableEngine(engineMap);
 			
 			//引擎状态
 			boolean engineStatus = false;
 			String sessionId = "";
+			
 			//被选引擎
 			EngineCfg engineSel = new EngineCfg();
 			if(engineList != null && engineList.size() > 0){
@@ -104,6 +107,8 @@ public class SchedulerTask {
 			        }
 				}
 			}
+			
+			
 			if(engineStatus)
 			{
 				 //创宇任务下发
@@ -345,6 +350,46 @@ public class SchedulerTask {
         }
         
     } 
+	
+	/**
+	 * 获取资源初筛结果
+	 * @return
+	 */
+	@SuppressWarnings("null")
+	public FirstSelOut getFirstSelOut(Task t){
+		FirstSelOut out = new FirstSelOut();
+		
+		Map<String, Object> engineMap = new HashMap<String, Object>();
+		engineMap.put("serviceId", t.getServiceId());
+		engineMap.put("websoc", t.getWebsoc());
+		//可用引擎列表
+		List<EngineCfg> engineList = engineService.findEngineList(engineMap);
+		
+		//备选引擎列表
+		List<EngineCfg> selEngineList = null;
+		
+		//引擎状态
+		String sessionId = "";
+		if(engineList != null && engineList.size() > 0){
+			for (EngineCfg engineCfg : engineList) {
+				sessionId = ArnhemWorker.getSessionId(engineCfg.getEngine());
+		        if(sessionId!=null){
+		        	selEngineList.add(engineCfg);
+		        }
+			}
+		}
+		out.setEngineList(selEngineList);
+		out.setTaskId(t.getTaskId());
+		return out;
+	}
+	
+	/**
+	 * 资源适配，获取load最小的三个引擎列表
+	 */
+	public void getEngineList(){
+		//enginecapacityj值最小的三个引擎
+		
+	}
     
 }
 
