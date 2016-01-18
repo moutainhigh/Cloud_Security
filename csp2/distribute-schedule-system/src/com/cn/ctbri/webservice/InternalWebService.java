@@ -116,13 +116,13 @@ public class InternalWebService {
 			e.printStackTrace();
 	    	
 			Respones r = new Respones();
-			r.setState("404");
+			r.setCode("404");
 			net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
 	        return json.toString();
 		}
     	    	
 		Respones r = new Respones();
-		r.setState("201");
+		r.setCode("201");
 		net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
         return json.toString();
     }
@@ -149,13 +149,13 @@ public class InternalWebService {
 			
 			e.printStackTrace();
 			Respones r = new Respones();
-			r.setState("404");
+			r.setCode("404");
 			net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
 	        return json.toString();
 		}
 
 		Respones r = new Respones();
-		r.setState("201");
+		r.setCode("201");
 		net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
         return json.toString();
     }
