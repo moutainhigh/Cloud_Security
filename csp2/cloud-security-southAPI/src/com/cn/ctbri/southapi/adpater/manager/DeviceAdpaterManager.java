@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.sf.json.JSON;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.xml.XMLSerializer;
 
@@ -23,6 +24,8 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+
+
 
 
 
@@ -286,7 +289,15 @@ public class DeviceAdpaterManager {
 		}
 		return DEVICE_OPERATION_ERROR;
 	}
-	
+	/**
+	 * 获取性能数据（百分比）
+	 * @param deviceId
+	 * @return	IP
+	 * 			cpuUsage
+	 *         	memoryUsage
+	 *         	diskUsage
+	 *         
+	 */
 	public String getEngineStatRate(String deviceId) {
 		if (null==deviceId|| "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
 			return errorDevieInfo(deviceId);
@@ -294,33 +305,67 @@ public class DeviceAdpaterManager {
 		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
 			String responseString = arnhemDeviceAdpater.getEngineState(deviceId);	
-			
+			System.out.println(responseString);
 			try {
 				SAXReader saxReader = new SAXReader();
 				Document document = saxReader.read(IOUtils.toInputStream(responseString));
 				Element rootElement = document.getRootElement();
-				List nodes = rootElement.elements("EngineList");
+				List<?> nodes = rootElement.elements("EngineList");
 				List<HashMap> engineList = new ArrayList<HashMap>();
 	            for(Iterator it=nodes.iterator();it.hasNext();){
 	            	Element engineStatElement = (Element) it.next();
 	            	HashMap engineRateMap = new HashMap();
 	            	
-	            	String cpuUsage = engineStatElement.elementTextTrim("CpuOccupancy");
-	            	engineRateMap.put("cpuUsage", cpuUsage);
+	            	if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("IP"))||engineStatElement.elementTextTrim("IP")==null) {
+						engineRateMap.put("ip", null);
+					}else {
+						String IP = engineStatElement.elementTextTrim("IP");
+						engineRateMap.put("ip", IP);
+					}
 	            	
-	            	float memoryFree = Float.parseFloat(engineStatElement.elementTextTrim("MemoryFree"));
-	            	float memoryTotal = Float.parseFloat(engineStatElement.elementTextTrim("MemoryTotal"));
-	            	float memoryUsage = memoryFree/memoryTotal;
-	            	engineRateMap.put("memoryUsage", memoryUsage);
-	            
-	            	float diskFree = Float.parseFloat(engineStatElement.elementTextTrim("DiskFree"));
-	            	float diskTotal = Float.parseFloat(engineStatElement.elementTextTrim("DiskTotal"));
-	            	float diskUsage = diskFree/diskTotal;
-	            	engineRateMap.put("diskUsage", diskUsage);
+	            	if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("CpuOccupancy"))
+	            	||engineStatElement.elementTextTrim("CpuOccupancy")==null) {
+	            		engineRateMap.put("cpuUsage", null);
+					}else {
+		            	String cpuUsage = engineStatElement.elementTextTrim("CpuOccupancy");
+		            	engineRateMap.put("cpuUsage", cpuUsage);
+		            	System.out.println("cpu"+cpuUsage);
+					}
+	            	
+	            	if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("MemoryFree"))
+	            	||engineStatElement.elementTextTrim("MemoryFree")==null
+	            	||"".equalsIgnoreCase(engineStatElement.elementTextTrim("MemoryTotal"))
+	            	||engineStatElement.elementTextTrim("MemoryTotal")==null) {
+	            		engineRateMap.put("memoryUsage", null);
+					} else {
+		            	float memoryFree = Float.parseFloat(engineStatElement.elementTextTrim("MemoryFree"));
+		            	float memoryTotal = Float.parseFloat(engineStatElement.elementTextTrim("MemoryTotal"));
+		            	float memoryUsage = memoryFree/memoryTotal;
+		            	engineRateMap.put("memoryUsage", memoryUsage);
+					}
+
+	            	if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("DiskFree"))
+	    	        ||engineStatElement.elementTextTrim("DiskFree")==null
+	    	        ||"".equalsIgnoreCase(engineStatElement.elementTextTrim("DiskTotal"))
+	    	        ||engineStatElement.elementTextTrim("DiskTotal")==null) {
+	            		engineRateMap.put("diskUsage", null);
+					} else {
+		            	float diskFree = Float.parseFloat(engineStatElement.elementTextTrim("DiskFree"));
+		            	float diskTotal = Float.parseFloat(engineStatElement.elementTextTrim("DiskTotal"));
+		            	float diskUsage = diskFree/diskTotal;
+		            	engineRateMap.put("diskUsage", diskUsage);
+					}	            	
+	            	engineRateMap.put("getSpeed", 0);
+	            	engineRateMap.put("sendSpeed", 0);
 	            	
 	            	engineList.add(engineRateMap);
 	            	
 	            }
+	            JSONArray jsonArray = JSONArray.fromObject(engineList);
+	            JSONObject jsonObject = new JSONObject();
+	            jsonObject.put("status", "success");
+	            jsonObject.put("StatRateList", jsonArray);
+	            return jsonObject.toString();
 			} catch (DocumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -418,15 +463,17 @@ public class DeviceAdpaterManager {
 		if ( null == deviceId || "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId).getScannerFactoryName() == null ){
 			return errorDevieInfo(deviceId);
 		}
-		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
-		{
-			String percentProgress = "0";
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) ){
+			String percentProgress = null;
 			String progressArnhem =  arnhemDeviceAdpater.getProgressByTaskId(deviceId,scannerTaskUniParam);
+			System.out.println("progress"+progressArnhem);
 			try {
 				 SAXReader reader = new SAXReader();
 				 Document document = reader.read(IOUtils.toInputStream(progressArnhem));
 				 Element rootElement = document.getRootElement();
-				 percentProgress = rootElement.element("TaskProgress").getTextTrim();
+				 float floatProgress = Float.parseFloat(rootElement.element("TaskProgress").getTextTrim());
+				 DecimalFormat decimalFormat = new DecimalFormat(".00");
+				 percentProgress = decimalFormat.format(floatProgress);
 			} catch (DocumentException e) {
 				e.printStackTrace();
 			}
@@ -448,6 +495,7 @@ public class DeviceAdpaterManager {
 				responseObject.clear();
 				responseObject.put("status", "fail");
 			}
+			return responseObject.toString();
 		}
 		return DEVICE_OPERATION_ERROR;			
 	}

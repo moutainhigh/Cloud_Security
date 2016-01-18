@@ -66,6 +66,14 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.getEngineStat(deviceId);
 	}
 	@POST
+	@Path("/getEngineStatRate")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getEngineStatRate(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		String deviceId = jsonObject.get("deviceId").toString();
+		return deviceAdpaterManager.getEngineStatRate(deviceId);
+	}
+	@POST
 	@Path("/removeTask")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String removeTask(String dataJson) {
@@ -109,6 +117,15 @@ public class DeviceAdapterManagerService {
 		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		String deviceId = jsonObject.get("deviceId").toString();
 		return deviceAdpaterManager.getStatusByTaskId(deviceId, scannerTaskUniParam);
+	}
+	@POST
+	@Path("/getTaskPercentById")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTaskPercentById(String dataJson){
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
+		String deviceId = jsonObject.get("deviceId").toString();
+		return deviceAdpaterManager.getTaskPercentById(deviceId, scannerTaskUniParam);
 	}
 	@POST
 	@Path("/getTaskLoadInfo")
