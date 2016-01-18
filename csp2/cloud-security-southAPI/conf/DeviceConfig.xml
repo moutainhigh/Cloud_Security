@@ -9,8 +9,8 @@
 				<ScannerFactoryName>安恒</ScannerFactoryName>
 				<ScannerWebUrl>https://219.141.189.187:61443</ScannerWebUrl>
 				<ScannerEngineAPI>https://219.141.189.187:61443</ScannerEngineAPI>
-			 	<ScannerUserName>admin</ScannerUserName>
-				<ScannerPassword>admin123456</ScannerPassword>
+			 	<ScannerUserName>ltb</ScannerUserName>
+				<ScannerPassword>qwer1234</ScannerPassword>
 			</DeviceScanner>
 			<DeviceScanner id="10002">
 				<DeviceID>10002</DeviceID>
@@ -18,8 +18,8 @@
 				<ScannerFactoryName>安恒</ScannerFactoryName>
 				<ScannerWebUrl>https://219.141.189.187:60443</ScannerWebUrl>
 				<ScannerEngineAPI>https://219.141.189.187:60443</ScannerEngineAPI>
-				<ScannerUserName>admin</ScannerUserName>
-				<ScannerPassword>admin123456</ScannerPassword>
+				<ScannerUserName>ltb123</ScannerUserName>
+				<ScannerPassword>qwer1234</ScannerPassword>
 			</DeviceScanner>
 			<DeviceScanner id="11001">
 				<DeviceID>11001</DeviceID>
