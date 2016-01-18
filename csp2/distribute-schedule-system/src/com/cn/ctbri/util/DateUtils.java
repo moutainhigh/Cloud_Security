@@ -2,8 +2,14 @@ package com.cn.ctbri.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 /**
  * 日期转换
  * 邓元元
@@ -185,4 +191,47 @@ public class DateUtils {
         return temp;
     }
 	
+    public static void sort(){
+		//排序
+    	Map<String, Double> map = new HashMap<String, Double>();
+    	map.put("d", 0.2);
+    	map.put("c", 0.1);
+    	map.put("b", 0.1);
+    	map.put("a", 0.3);
+    	
+    	List<Map.Entry<String, Double>> infoIds =
+    	    new ArrayList<Map.Entry<String, Double>>(map.entrySet());
+		
+    	//排序前
+    	for (int i = 0; i < infoIds.size(); i++) {
+    	    String id = infoIds.get(i).toString();
+    	    System.out.println(id);
+    	}
+    	//d 2
+    	//c 1
+    	//b 1
+    	//a 3
+
+    	//排序
+    	Collections.sort(infoIds, new Comparator<Map.Entry<String, Double>>() {   
+		    public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {      
+		    	if ((o1.getValue() - o2.getValue())>0)  
+		            return 1;  
+		          else if((o1.getValue() - o2.getValue())==0)  
+		            return 0;  
+		          else   
+		            return -1;
+		    }
+		}); 
+
+    	//排序后
+    	for (int i = 0; i < infoIds.size(); i++) {
+    	    String id = infoIds.get(i).toString();
+    	    System.out.println(id);
+    	}
+    }
+    
+    public static void main(String[] args){
+    	sort();
+    }
 }
