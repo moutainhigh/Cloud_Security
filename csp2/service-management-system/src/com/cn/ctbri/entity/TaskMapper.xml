@@ -116,7 +116,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 sendBytes=#{sendBytes},
             </if>
             <if test="receiveBytes!=null">
-                receiveBytes=#{receiveBytes}
+                receiveBytes=#{receiveBytes},
+            </if>
+            <if test="status!=null">
+                status=#{status}
             </if>
             <!-- <if test="dns!=null">
                 dns=#{dns}
