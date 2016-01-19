@@ -464,22 +464,31 @@ public class DeviceAdpaterManager {
 			return errorDevieInfo(deviceId);
 		}
 		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) ){
-			String percentProgress = null;
+			float percentProgress = 0;
+			JSONObject jsonObject = new JSONObject();
 			String progressArnhem =  arnhemDeviceAdpater.getProgressByTaskId(deviceId,scannerTaskUniParam);
 			System.out.println("progress"+progressArnhem);
 			try {
 				 SAXReader reader = new SAXReader();
 				 Document document = reader.read(IOUtils.toInputStream(progressArnhem));
 				 Element rootElement = document.getRootElement();
-				 float floatProgress = Float.parseFloat(rootElement.element("TaskProgress").getTextTrim());
-				 DecimalFormat decimalFormat = new DecimalFormat(".00");
-				 percentProgress = decimalFormat.format(floatProgress);
+				 //System.out.println(rootElement.asXML());
+				 System.out.println(rootElement.attributeValue("value").toString());
+				 if("success".equalsIgnoreCase(rootElement.attributeValue("value").toString())){
+					 
+					 float floatProgress = Float.parseFloat(rootElement.element("TaskProgress").getTextTrim())/101;
+					 System.out.println(floatProgress);
+					 percentProgress = (float)(Math.round(floatProgress*100))/100;
+					 System.out.println(percentProgress);
+					 jsonObject.put("status", "success");
+					 jsonObject.put("TaskPercent", percentProgress);
+					 return jsonObject.toString();
+				 }else{
+					 return responseToJSON(progressArnhem).toString();
+				 }
 			} catch (DocumentException e) {
 				e.printStackTrace();
 			}
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("TaskProgress", percentProgress);
-			return jsonObject.toString();
 		} else if (DeviceAdapterConstant.DEVICE_SCANNER_WEBSOC.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim())) {
 			String progressWebsoc = websocDeviceAdapter.getProgressByVirtualGroupId(deviceId, scannerTaskUniParam);
 			JSONObject responseObject = new JSONObject().fromObject(progressWebsoc);
