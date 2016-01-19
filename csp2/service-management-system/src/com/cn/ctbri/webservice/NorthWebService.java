@@ -62,57 +62,9 @@ public class NorthWebService {
 	@Autowired
     private IAlarmService alarmService;
 	@Autowired
-    private IOrderTaskService orderTaskService;
+    private IOrderTaskService orderTaskService;	
 	
-	//创建订单
-	@POST
-    @Path("/createOrder")
-	@Produces(MediaType.APPLICATION_JSON) 
-    public String createOrder(JSONObject dataJson) {
-		//order 对象
-		JSONObject orderObj = dataJson.getJSONObject("orderObj");
-		//url 数组
-		JSONArray targetArray = dataJson.getJSONArray("targetURLs");
-		Order order = new Order();
-		order.setId(orderObj.getString("id"));
-		order.setServiceId(orderObj.getInt("serviceId"));
-		order.setType(orderObj.getInt("type"));
-		order.setBegin_date(DateUtils.stringToDateNYRSFM(orderObj.getString("begin_datevo")));
-		String end_date = orderObj.getString("end_datevo");
-		if(end_date!=null&&!end_date.equals("")){
-			order.setEnd_date(DateUtils.stringToDateNYRSFM(end_date));
-		}
-		order.setScan_type(orderObj.getInt("scan_type"));
-		order.setStatus(orderObj.getInt("status"));
-		order.setWebsoc(orderObj.getInt("websoc"));
-        orderService.insertOrder(order);
-        
-        for (int i = 0; i < targetArray.size(); i++) {
-//        	JSONObject issueObj = (JSONObject) targetArray.get(i);
-        	
-	        OrderTask orderTask = new OrderTask();
-	        orderTask.setOrderId(orderObj.getString("id"));
-	        orderTask.setServiceId(orderObj.getInt("serviceId"));
-	        orderTask.setType(orderObj.getInt("type"));
-	        orderTask.setBegin_date(DateUtils.stringToDateNYRSFM(orderObj.getString("begin_datevo")));
-			String endDate = orderObj.getString("end_datevo");
-			if(endDate!=null&&!endDate.equals("")){
-				orderTask.setEnd_date(DateUtils.stringToDateNYRSFM(endDate));
-			}
-			orderTask.setScan_type(orderObj.getInt("scan_type"));
-			orderTask.setStatus(orderObj.getInt("status"));
-			orderTask.setWebsoc(orderObj.getInt("websoc"));
-			orderTask.setUrl(targetArray.get(i).toString());
-			orderTaskService.insertOrderTask(orderTask);
-        }
-		Respones r = new Respones();
-		r.setState("201");
-		net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
-        return json.toString();
-    }
-	
-	
-	//主动告警
+	//创建漏洞扫描订单（任务）
 	@POST
     @Path("/vulnscan/order")
 	@Produces(MediaType.APPLICATION_JSON) 
@@ -132,6 +84,8 @@ public class NorthWebService {
 		String serviceId = jsonObj.getString("serviceId");
 		//创宇标识
 		String websoc = jsonObj.getString("websoc");
+		//userId
+		int userId = jsonObj.getInt("userId");
 		//目标地址，可以多个
 		JSONArray targetArray = jsonObj.getJSONArray("targetURLs");
 		//新增订单
@@ -152,6 +106,7 @@ public class NorthWebService {
         
         order.setScan_type(scan_type);
         order.setTask_date(begin_date);
+        order.setUserId(userId);
         order.setStatus(0);
         orderService.insertOrder(order);
         
@@ -167,11 +122,11 @@ public class NorthWebService {
 			orderTask.setWebsoc(Integer.parseInt(websoc));
 			orderTask.setUrl(targetArray.get(i).toString());
 			orderTask.setTask_status(1);
+			orderTask.setUserId(userId);
 			orderTask.setOrderTaskId(String.valueOf(Random.eightcode()));
 			
 			if (serviceId.equals("1") && scanMode.equals("1")) {//漏洞长期
 				Date executeTime = DateUtils.getOrderPeriods(startTime,endTime,scanPeriod);
-//				Date executeTime = getOrderPeriods(startTime, endTime, scanPeriod);
 				orderTask.setTask_date(executeTime);
 			}else{
 				orderTask.setTask_date(begin_date);

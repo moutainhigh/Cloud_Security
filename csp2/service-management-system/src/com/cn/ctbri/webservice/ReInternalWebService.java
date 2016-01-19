@@ -76,23 +76,25 @@ public class ReInternalWebService {
 		        Task t = new Task();
 				t.setOrderTaskId(orderTaskId);
 				taskService.insert(t);
-				r.setState("201");
+				
 				//add by tangxr 2016-01-13
 				Order order = new Order();
 				order.setId(orderId);
 				order.setStatus(4);
 				order.setWebsoc(websoc);
 				orderService.update(order);
+				
+				r.setState("201");
 			}else{
 				r.setState("404");
 			}
-			net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
+			JSONObject json = new JSONObject().fromObject(r);
 	        return json.toString();
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			Respones r = new Respones();
 			r.setState("404");
-			net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
+			JSONObject json = new JSONObject().fromObject(r);
 	        return json.toString();
 		}
     	    	
@@ -128,6 +130,7 @@ public class ReInternalWebService {
 				Task t = taskService.findByOrderTaskId(orderTaskId);
 				if(t!=null){
 					//更新数据库
+					t.setStatus(2);
 					t.setOrderTaskId(orderTaskId);
 	                t.setEngineIP(engineIP);
 	                t.setTaskProgress(taskProgress);
