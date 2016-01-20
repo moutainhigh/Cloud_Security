@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 获取服务支持的引擎 -->
 	<select id="getUsableEngine" parameterType="hashmap" resultMap="EngineRM">
-	   select * from cs_enginecfg en where #{serviceId} in(en.engine_capacity) and en.status = 1
+	   select * from cs_enginecfg en where #{serviceId} in(en.engine_capacity) and en.status = 1 and en.equipment_factory = 0
 	</select>
 	
 	<!-- 根据ip查找引擎EngineCfg -->
@@ -60,10 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findEngineByParam" parameterType="hashmap" resultMap="EngineRM">
        select * from cs_enginecfg en 
         where en.maxTask!=en.activity and en.engine_capacity like CONCAT(CONCAT('%', #{serviceId}), '%') and en.status = 1 
-        <if test="websoc==0">
-          and en.engine!=3
-        </if>
-        order by en.activity/en.maxTask limit 3
+        and en.equipment_factory=0 GROUP BY en.engine_number
     </select>
     
     <!-- 查找引擎 -->
