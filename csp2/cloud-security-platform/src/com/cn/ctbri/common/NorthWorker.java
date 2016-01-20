@@ -39,14 +39,6 @@ public class NorthWorker {
 	 */
 	private static String SERVER_WEB_ROOT;
 	/**
-	 * 用户名
-	 */
-	private static String USERNAME;
-	/**
-	 * 密码
-	 */
-	private static String PASSWORD;
-	/**
 	 * 创建订单（任务）
 	 */
 	private static String Create_Order;
@@ -76,8 +68,6 @@ public class NorthWorker {
 			Properties p = new Properties();
 			p.load(NorthWorker.class.getClassLoader().getResourceAsStream("north.properties"));
 			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
-			USERNAME = p.getProperty("USERNAME");
-			PASSWORD = p.getProperty("PASSWORD");
 			Create_Order = p.getProperty("Create_Order");
 			VulnScan_Create_Order = p.getProperty("VulnScan_Create_Order");
 			VulnScan_Opt_Order = p.getProperty("VulnScan_Opt_Order");
@@ -134,56 +124,13 @@ public class NorthWorker {
 	 *         Stategy     策略,
 	 *         CustomManu  指定厂家，可以多个，以逗号区分,
 	 *         Reserve     保留字段
-	 * @param targetURL 
-	 * @throws JSONException 
-	 *		 @time 2015-10-16
-	 */
-	public static String createOrder(Order order, String[] targetURL) {
-		//组织发送内容JSON
-		JSONObject json = new JSONObject();
-		net.sf.json.JSONObject orderObj = net.sf.json.JSONObject.fromObject(order);
-		json.put("orderObj", orderObj);
-		net.sf.json.JSONArray targetURLs = net.sf.json.JSONArray.fromObject(targetURL);
-		json.put("targetURLs", targetURLs);
-		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + Create_Order;
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    config.getClasses().add(JacksonJsonProvider.class);
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
-        int status = response.getStatus();
-        String textEntity = response.getEntity(String.class);
-        System.out.println(textEntity);
-        return status+"";
-	}
-	
-	
-	/**
-	 * 功能描述：创建漏洞扫描订单（任务）
-	 * 参数描述： ScanMode 单次、长期,
-	 * 		   TargetURL 目标地址，可以多个，以逗号区分,
-	 * 		   ScanType 扫描方式（正常、快速、全量）,
-	 * 		   StartTime 计划开始时间,
-	 * 		   EndTime 单次扫描此项为空,
-	 *         ScanPeriod  周期,
-	 *         ScanDepth   检测深度,
-	 *         MaxPages    最大页面数,
-	 *         Stategy     策略,
-	 *         CustomManu  指定厂家，可以多个，以逗号区分,
-	 *         Reserve     保留字段
+	 * @param userId 
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
 	public static String vulnScanCreate(String ScanMode, String[] targetURL, String ScanType, 
     		String StartTime, String EndTime, String ScanPeriod, String ScanDepth, 
-    		String MaxPages, String Stategy, String CustomManu[], String orderId, String serviceId, String websoc) {
+    		String MaxPages, String Stategy, String CustomManu[], String orderId, String serviceId, String websoc, int userId) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("ScanMode", ScanMode);
@@ -200,6 +147,7 @@ public class NorthWorker {
 		json.put("orderId", orderId);
 		json.put("serviceId", serviceId);
 		json.put("websoc", websoc);
+		json.put("userId", userId);
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Create_Order;
     	//创建jersery客户端配置对象
@@ -212,10 +160,10 @@ public class NorthWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json.toString());
-        int status = response.getStatus();
-        String textEntity = response.getEntity(String.class);
-        net.sf.json.JSONObject obj = net.sf.json.JSONObject.fromObject(textEntity);
+        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, json.toString());
+//        int status = response.getStatus();
+//        String textEntity = response.getEntity(String.class);
+        JSONObject obj = JSONObject.fromObject(response);
 		String state = obj.getString("state");
         return state;
 	}
