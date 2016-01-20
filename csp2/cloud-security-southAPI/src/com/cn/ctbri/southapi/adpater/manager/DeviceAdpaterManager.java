@@ -304,69 +304,77 @@ public class DeviceAdpaterManager {
 		}
 		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
+			JSONObject jsonObject = new JSONObject();
 			String responseString = arnhemDeviceAdpater.getEngineState(deviceId);	
 			System.out.println(responseString);
+			
 			try {
 				SAXReader saxReader = new SAXReader();
 				Document document = saxReader.read(IOUtils.toInputStream(responseString));
 				Element rootElement = document.getRootElement();
-				List<?> nodes = rootElement.elements("EngineList");
-				List<HashMap> engineList = new ArrayList<HashMap>();
-	            for(Iterator it=nodes.iterator();it.hasNext();){
-	            	Element engineStatElement = (Element) it.next();
-	            	HashMap engineRateMap = new HashMap();
-	            	
-	            	if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("IP"))||engineStatElement.elementTextTrim("IP")==null) {
-						engineRateMap.put("ip", null);
-					}else {
-						String IP = engineStatElement.elementTextTrim("IP");
-						engineRateMap.put("ip", IP);
+				if ("Success".equalsIgnoreCase(rootElement.attributeValue("value"))) {
+					
+					List<?> nodes = rootElement.elements("EngineList");
+					List<HashMap> engineList = new ArrayList<HashMap>();
+					for(Iterator it=nodes.iterator();it.hasNext();){
+						Element engineStatElement = (Element) it.next();
+						HashMap engineRateMap = new HashMap();
+						
+						if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("IP"))||engineStatElement.elementTextTrim("IP")==null) {
+							engineRateMap.put("ip", null);
+						}else {
+							String IP = engineStatElement.elementTextTrim("IP");
+							engineRateMap.put("ip", IP);
+						}
+						
+						if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("CpuOccupancy"))
+								||engineStatElement.elementTextTrim("CpuOccupancy")==null) {
+							engineRateMap.put("cpuUsage", null);
+						}else {
+							String CpuOccupancy = engineStatElement.elementTextTrim("CpuOccupancy");
+							float cpuUsage = 100.00f-Float.parseFloat(CpuOccupancy);
+							engineRateMap.put("cpuUsage", cpuUsage);
+							System.out.println("cpu"+cpuUsage);
+						}
+						
+						if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("MemoryFree"))
+								||engineStatElement.elementTextTrim("MemoryFree")==null
+								||"".equalsIgnoreCase(engineStatElement.elementTextTrim("MemoryTotal"))
+								||engineStatElement.elementTextTrim("MemoryTotal")==null) {
+							engineRateMap.put("memoryUsage", null);
+						} else {
+							float memoryFree = Float.parseFloat(engineStatElement.elementTextTrim("MemoryFree"));
+							float memoryTotal = Float.parseFloat(engineStatElement.elementTextTrim("MemoryTotal"));
+							float memoryUsage = (100.00f*memoryFree)/memoryTotal;
+							engineRateMap.put("memoryUsage", memoryUsage);
+						}
+						
+						if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("DiskFree"))
+								||engineStatElement.elementTextTrim("DiskFree")==null
+								||"".equalsIgnoreCase(engineStatElement.elementTextTrim("DiskTotal"))
+								||engineStatElement.elementTextTrim("DiskTotal")==null) {
+							engineRateMap.put("diskUsage", null);
+						} else {
+							float diskFree = Float.parseFloat(engineStatElement.elementTextTrim("DiskFree"));
+							float diskTotal = Float.parseFloat(engineStatElement.elementTextTrim("DiskTotal"));
+							float diskUsage = (100.00f*diskFree)/diskTotal;
+							engineRateMap.put("diskUsage", diskUsage);
+						}	            	
+						engineRateMap.put("getSpeed", 0);
+						engineRateMap.put("sendSpeed", 0);
+						
+						engineList.add(engineRateMap);
+						
 					}
-	            	
-	            	if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("CpuOccupancy"))
-	            	||engineStatElement.elementTextTrim("CpuOccupancy")==null) {
-	            		engineRateMap.put("cpuUsage", null);
-					}else {
-		            	String CpuOccupancy = engineStatElement.elementTextTrim("CpuOccupancy");
-		            	float cpuUsage = 100.00f-Float.parseFloat(CpuOccupancy);
-		            	engineRateMap.put("cpuUsage", cpuUsage);
-		            	System.out.println("cpu"+cpuUsage);
-					}
-	            	
-	            	if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("MemoryFree"))
-	            	||engineStatElement.elementTextTrim("MemoryFree")==null
-	            	||"".equalsIgnoreCase(engineStatElement.elementTextTrim("MemoryTotal"))
-	            	||engineStatElement.elementTextTrim("MemoryTotal")==null) {
-	            		engineRateMap.put("memoryUsage", null);
-					} else {
-		            	float memoryFree = Float.parseFloat(engineStatElement.elementTextTrim("MemoryFree"));
-		            	float memoryTotal = Float.parseFloat(engineStatElement.elementTextTrim("MemoryTotal"));
-		            	float memoryUsage = (100.00f*memoryFree)/memoryTotal;
-		            	engineRateMap.put("memoryUsage", memoryUsage);
-					}
+					JSONArray jsonArray = JSONArray.fromObject(engineList);
+					
+					jsonObject.put("status", "success");
+					jsonObject.put("StatRateList", jsonArray);
+					return jsonObject.toString();
+				} else {
+					return responseToJSON(responseString).toString();
+				}
 
-	            	if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("DiskFree"))
-	    	        ||engineStatElement.elementTextTrim("DiskFree")==null
-	    	        ||"".equalsIgnoreCase(engineStatElement.elementTextTrim("DiskTotal"))
-	    	        ||engineStatElement.elementTextTrim("DiskTotal")==null) {
-	            		engineRateMap.put("diskUsage", null);
-					} else {
-		            	float diskFree = Float.parseFloat(engineStatElement.elementTextTrim("DiskFree"));
-		            	float diskTotal = Float.parseFloat(engineStatElement.elementTextTrim("DiskTotal"));
-		            	float diskUsage = (100.00f*diskFree)/diskTotal;
-		            	engineRateMap.put("diskUsage", diskUsage);
-					}	            	
-	            	engineRateMap.put("getSpeed", 0);
-	            	engineRateMap.put("sendSpeed", 0);
-	            	
-	            	engineList.add(engineRateMap);
-	            	
-	            }
-	            JSONArray jsonArray = JSONArray.fromObject(engineList);
-	            JSONObject jsonObject = new JSONObject();
-	            jsonObject.put("status", "success");
-	            jsonObject.put("StatRateList", jsonArray);
-	            return jsonObject.toString();
 			} catch (DocumentException e) {
 				e.printStackTrace();
 			}
