@@ -387,7 +387,8 @@ public class OrderMgrController {
             m.put("orderId", orderId);
          	//创建漏洞扫描订单（任务），调北向api，modify by tangxr 2015-12-21
             if(serviceId.equals("1")){
-            	String state = NorthWorker.vulnScanCreate(orderType, targetURL, scanType, beginDate, endDate, scanPeriod, scanDepth, maxPages, stategy, CustomManu, orderId, serviceId, websoc);
+            	String state = NorthWorker.vulnScanCreate(orderType, targetURL, scanType, beginDate, endDate, scanPeriod,
+            			scanDepth, maxPages, stategy, CustomManu, orderId, serviceId, websoc, globle_user.getId());
     			if(state.equals("201")){
     				//新增联系人
     	            Linkman linkObj = new Linkman();
