@@ -106,7 +106,10 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
      */
     public int findWebPageNum() {
         List<HashMap<String, Object>> webPageList = this.getSqlSession().selectList(ns + "findWebPageNum");
-        double i = (Double) webPageList.get(0).get("url");
+        double i = 0;
+        if(webPageList.get(0)!=null){
+        	i = (Double) webPageList.get(0).get("url");
+        }
         return (int)i;
     }
 
