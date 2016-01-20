@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
@@ -17,7 +20,10 @@ import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cn.ctbri.entity.EngineCfg;
+import com.cn.ctbri.logger.CSPLoggerAdapter;
+import com.cn.ctbri.logger.CSPLoggerConstant;
 import com.cn.ctbri.service.IEngineService;
+import com.cn.ctbri.util.DateUtils;
 
 /**
  * 引擎调度类
@@ -72,26 +78,19 @@ public class EngineWorker {
 	}
 	
 	//获取Arnhem支持的引擎top3
-	public static List<EngineCfg> getArnhemUsableEngine(Map<String, Object> engineMap) {
+	public static List<EngineCfg> getArnhemUsableEngine(List<EngineCfg> engineList,int sessionId) {
 		//最优引擎top3
 		List<EngineCfg> engineTop3 = new ArrayList<EngineCfg>();
 		
 	    Map<String, Double> arnhemEngineMap = new HashMap<String,Double>();
-	    //获取可用设备
-		List<EngineCfg> usableEngine = engineService.getUsableEngine(engineMap);
-		
-		for (int i = 0; i < usableEngine.size(); i++) {		    
-	    	String sessionId = null;
-
-    		//获取引擎状态
-            String resultStr = ArnhemWorker.getEngineState(sessionId,usableEngine.get(i).getEngine_api());
+	    
+		for (int i = 0; i < engineList.size(); i++) {		    
+    		//获取引擎状态json串
+            String resultStr = SouthAPIWorker.getEngineStatRate(engineList.get(i).getEngine_number());
 
             //解析引擎设备参数，返回负载值
-            double load = getLoadForEngine(resultStr);
-            if(load!=0){
-	            arnhemEngineMap.put(usableEngine.get(i).getEngine_api(), load);
-            }
-
+            arnhemEngineMap = getLoadForEngine(resultStr);
+          
     	}
 
 		
@@ -113,10 +112,10 @@ public class EngineWorker {
 		
 		//获取任务下发的引擎
 		for(int i = 0; i < loads.size(); i++){
-			if(i < 3){//top3
-				String engineAPI = loads.get(i).getKey();
-				//根据api获取引擎
-				EngineCfg engine = engineService.findEngineIdbyIP(engineAPI);
+			String engineIP = loads.get(i).getKey();
+			//根据ip获取引擎
+			EngineCfg engine = engineService.findEngineIdbyIP(engineIP);
+			if(engine.getEngine_capacity().contains(String.valueOf(sessionId)) && engineTop3.size()<3){
 				engineTop3.add(engine);
 			}
 		}
@@ -128,59 +127,50 @@ public class EngineWorker {
 	 * @param resultStr
 	 * @return
 	 */
-	private static float getLoadForEngine(String resultStr){
-		float load = 0;
-		String decode;
+	private static Map<String,Double> getLoadForEngine(String resultStr){
+		Map<String,Double> loadMap = new HashMap<String,Double>();
+		double load = 0;
         try {
-            decode = URLDecoder.decode(resultStr, "UTF-8");
-            Document document = DocumentHelper.parseText(decode);
-            Element result = document.getRootElement();
-            Attribute attribute  = result.attribute("value");
-            String resultValue = attribute.getStringValue();
-            if("Success".equals(resultValue)){
-                List<Element> EngineList = result.elements("EngineList");
-                for (Element engine : EngineList) {
-                    String ip = engine.element("IP").getTextTrim();
-                    Element eng = engine.element("Engine");
-                    String engineState = eng.element("EngineState").getTextTrim();
-                    if (engineState!=null){
-                    	//获取设备性能数据
-                        //CpuOccupancy
-                        String cpuOccupancy = engine.element("CpuOccupancy").getTextTrim();
-                        //MemoryTotal
-                        String memoryTotal = engine.element("MemoryTotal").getTextTrim();
-                        //MemoryFree
-                        String memoryFree = engine.element("MemoryFree").getTextTrim();
-                        //DiskTotal
-                        String diskTotal = engine.element("DiskTotal").getTextTrim();
-                        //DiskFree
-                        String diskFree = engine.element("DiskFree").getTextTrim();
-                        
-                        float cpu_usage = Float.parseFloat(cpuOccupancy);
-                        float memory_usage = (Integer.parseInt(memoryTotal)-Integer.parseInt(memoryFree))/(Integer.parseInt(memoryTotal));
-                        float disk_usage = (Integer.parseInt(diskTotal)-Integer.parseInt(diskFree))/(Integer.parseInt(diskTotal));
-                        float cpu_usageWeightF = Float.parseFloat(cpu_usageWeight);
-                        float memory_usageWeightF = Float.parseFloat(memory_usageWeight);
-                        float disk_usageWeightF = Float.parseFloat(disk_usageWeight);
-                        float get_speed_usageWeightF = Float.parseFloat(get_speed_usageWeight);
-                        float send_speed_usageWeightF = Float.parseFloat(send_speed_usageWeight);
-                        float get_speedF = Float.parseFloat(get_speed);
-                        float get_speedmaxF = Float.parseFloat(get_speedmax);
-                        float send_speedF = Float.parseFloat(send_speed);
-                        float send_speedmaxF = Float.parseFloat(send_speedmax);
-                        load = (cpu_usageWeightF*cpu_usage + memory_usageWeightF*memory_usage + disk_usageWeightF*disk_usage + get_speed_usageWeightF*(get_speedF/get_speedmaxF) +
-                        		send_speed_usageWeightF*(send_speedF/send_speedmaxF))/(cpu_usageWeightF+memory_usageWeightF+disk_usageWeightF+get_speed_usageWeightF+send_speed_usageWeightF);
-                    }else{
-                    	logger.info("当前引擎处于停止或者异常的状态!");
-                    }
-                }
-            }
-            
+            String status = JSONObject.fromObject(resultStr).getString("status");
+            if("Success".equals(status)){
+            	//解析引擎list
+				JSONArray jsonList= JSONObject.fromObject(resultStr).getJSONArray("StatRateList"); 
+				for (int i = 0; i < jsonList.size(); i++) {
+					JSONObject jsonObject = jsonList.getJSONObject(i); 
+					String ip = jsonObject.getString("ip");
+
+					if(jsonObject.get("memoryUsage")!=null && jsonObject.get("cpuUsage") != null && jsonObject.get("diskUsage") != null){
+						double memory_usage = jsonObject.getDouble("memoryUsage");
+						double cpu_usage = jsonObject.getDouble("cpuUsage");
+						double disk_usage = jsonObject.getDouble("diskUsage");
+						double get_speed = jsonObject.getDouble("getSpeed");
+						double send_speed = jsonObject.getDouble("sendSpeed");
+						
+						double cpu_usageWeightD = Double.parseDouble(cpu_usageWeight);
+						double memory_usageWeightD = Double.parseDouble(memory_usageWeight);
+						double disk_usageWeightD = Double.parseDouble(disk_usageWeight);
+						double get_speed_usageWeightD = Double.parseDouble(get_speed_usageWeight);
+						double send_speed_usageWeightD = Double.parseDouble(send_speed_usageWeight);
+						double get_speedmaxD = Double.parseDouble(get_speedmax);
+	                    double send_speedmaxD = Double.parseDouble(send_speedmax);
+	                    
+	                    load = (cpu_usageWeightD*cpu_usage + memory_usageWeightD*memory_usage + disk_usageWeightD*disk_usage + get_speed_usageWeightD*(get_speed/get_speedmaxD) +
+	                    		send_speed_usageWeightD*(send_speed/send_speedmaxD))/(cpu_usageWeightD+memory_usageWeightD+disk_usageWeightD+get_speed_usageWeightD+send_speed_usageWeightD);
+	                    if(load!=0){
+	                    	loadMap.put(ip, load);
+	                    }
+					}else{
+						logger.info(ip+"引擎处于停止或者异常的状态!");
+					}
+				}
+			}else{
+				logger.info("当前设备处于停止或者异常的状态!");
+			}
         } catch (Exception e) {
             logger.info("解析引擎状态失败!");
             
         }
-		return load;
+		return loadMap;
 	}
 	
 	private static List getStatusByResult(String resultStr) {
