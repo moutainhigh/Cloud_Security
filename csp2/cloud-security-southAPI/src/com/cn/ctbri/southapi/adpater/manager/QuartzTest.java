@@ -15,7 +15,7 @@ public class QuartzTest{
 	public static void runJob() throws SchedulerException{
 		JobDetail jobDetail = JobBuilder.newJob(MyJob.class).withIdentity("myjob","group").build();
 		Trigger trigger = TriggerBuilder.newTrigger().withIdentity("myjob", "group").startNow()
-				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(30).repeatForever())
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(60).repeatForever())
 				.build();
 		SchedulerFactory sf = new StdSchedulerFactory();
 		Scheduler scheduler = sf.getScheduler();

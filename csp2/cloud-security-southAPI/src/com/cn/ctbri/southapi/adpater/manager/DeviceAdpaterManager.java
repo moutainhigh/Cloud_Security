@@ -327,7 +327,8 @@ public class DeviceAdpaterManager {
 	            	||engineStatElement.elementTextTrim("CpuOccupancy")==null) {
 	            		engineRateMap.put("cpuUsage", null);
 					}else {
-		            	String cpuUsage = engineStatElement.elementTextTrim("CpuOccupancy");
+		            	String CpuOccupancy = engineStatElement.elementTextTrim("CpuOccupancy");
+		            	float cpuUsage = 100.00f-Float.parseFloat(CpuOccupancy);
 		            	engineRateMap.put("cpuUsage", cpuUsage);
 		            	System.out.println("cpu"+cpuUsage);
 					}
@@ -340,7 +341,7 @@ public class DeviceAdpaterManager {
 					} else {
 		            	float memoryFree = Float.parseFloat(engineStatElement.elementTextTrim("MemoryFree"));
 		            	float memoryTotal = Float.parseFloat(engineStatElement.elementTextTrim("MemoryTotal"));
-		            	float memoryUsage = memoryFree/memoryTotal;
+		            	float memoryUsage = (100.00f*memoryFree)/memoryTotal;
 		            	engineRateMap.put("memoryUsage", memoryUsage);
 					}
 
@@ -352,7 +353,7 @@ public class DeviceAdpaterManager {
 					} else {
 		            	float diskFree = Float.parseFloat(engineStatElement.elementTextTrim("DiskFree"));
 		            	float diskTotal = Float.parseFloat(engineStatElement.elementTextTrim("DiskTotal"));
-		            	float diskUsage = diskFree/diskTotal;
+		            	float diskUsage = (100.00f*diskFree)/diskTotal;
 		            	engineRateMap.put("diskUsage", diskUsage);
 					}	            	
 	            	engineRateMap.put("getSpeed", 0);
@@ -367,7 +368,6 @@ public class DeviceAdpaterManager {
 	            jsonObject.put("StatRateList", jsonArray);
 	            return jsonObject.toString();
 			} catch (DocumentException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
