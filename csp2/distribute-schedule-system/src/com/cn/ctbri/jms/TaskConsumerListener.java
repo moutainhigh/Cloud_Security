@@ -20,6 +20,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cn.ctbri.common.Constants;
+import com.cn.ctbri.common.EngineWorker;
 import com.cn.ctbri.common.ReInternalWorker;
 import com.cn.ctbri.common.SouthAPIWorker;
 import com.cn.ctbri.entity.EngineCfg;
@@ -115,13 +116,17 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 			//查询最优的引擎top3
 			Map<String, Object> engineMap = new HashMap<String, Object>();
             engineMap.put("serviceId", t.getServiceId());
-            engineMap.put("websoc", t.getWebsoc());
+            
+            //查询引擎编号
             List<EngineCfg> engineList = engineService.findEngineByParam(engineMap);
+            
+            List<EngineCfg> engineTop3 = EngineWorker.getArnhemUsableEngine(engineList, t.getServiceId());
+            
             EngineCfg engineSel = new EngineCfg();
             boolean engineStatus = false;
             String sessionid = "";
             String status = "";
-            for (EngineCfg engineCfg : engineList) {
+            for (EngineCfg engineCfg : engineTop3) {
             	engineSel = engineCfg;
 				for(int i=0;i<3;i++){
 					status = SouthAPIWorker.getSessionId(engineSel.getEngine_number());
