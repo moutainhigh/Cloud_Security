@@ -332,7 +332,7 @@ public class DeviceAdpaterManager {
 							engineRateMap.put("cpuUsage", null);
 						}else {
 							String CpuOccupancy = engineStatElement.elementTextTrim("CpuOccupancy");
-							float cpuUsage = 100.00f-Float.parseFloat(CpuOccupancy);
+							float cpuUsage = Float.parseFloat(CpuOccupancy);
 							engineRateMap.put("cpuUsage", cpuUsage);
 							System.out.println("cpu"+cpuUsage);
 						}
@@ -345,7 +345,7 @@ public class DeviceAdpaterManager {
 						} else {
 							float memoryFree = Float.parseFloat(engineStatElement.elementTextTrim("MemoryFree"));
 							float memoryTotal = Float.parseFloat(engineStatElement.elementTextTrim("MemoryTotal"));
-							float memoryUsage = (100.00f*memoryFree)/memoryTotal;
+							float memoryUsage = 100.00f*(1f-memoryFree/memoryTotal);
 							engineRateMap.put("memoryUsage", memoryUsage);
 						}
 						
@@ -357,7 +357,7 @@ public class DeviceAdpaterManager {
 						} else {
 							float diskFree = Float.parseFloat(engineStatElement.elementTextTrim("DiskFree"));
 							float diskTotal = Float.parseFloat(engineStatElement.elementTextTrim("DiskTotal"));
-							float diskUsage = (100.00f*diskFree)/diskTotal;
+							float diskUsage = 100.00f*(1f-diskFree/diskTotal);
 							engineRateMap.put("diskUsage", diskUsage);
 						}	            	
 						engineRateMap.put("getSpeed", 0);
