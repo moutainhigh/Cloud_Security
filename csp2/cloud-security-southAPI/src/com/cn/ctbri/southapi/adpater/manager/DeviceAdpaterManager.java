@@ -172,7 +172,7 @@ public class DeviceAdpaterManager {
 	                  daaInfo.setDeviceType(DeviceAdapterConstant.DEFALUT_DEVICE_TYPE_SCANNER);
 	                  if ( "DeviceID".equalsIgnoreCase(element.getName())) {
 	                	  if ( null == element.getTextTrim() || "".equals(element.getTextTrim())){ 	
-	                		  	System.out.println("Config Error: DeviceID is null!!!");
+	                		  	System.err.println("Config Error: DeviceID is null!!!");
 	                		  	continue;
 	                	  }else{
 	                		  daaInfo.setDeviceID(element.getTextTrim());  
@@ -180,7 +180,7 @@ public class DeviceAdpaterManager {
 	                  }
 	                  if ( "ScannerFactory".equalsIgnoreCase(element.getName()) ){
 	                	  if( null == element.getTextTrim() || "".equals(element.getTextTrim()) ){
-	                		  System.out.println("Config Error: ScannerFactory is null!!!");
+	                		  System.err.println("Config Error: ScannerFactory is null!!!");
 	                		  continue;
 	                	  }else{
 	                		  daaInfo.setScannerFactory(element.getText());
@@ -188,7 +188,7 @@ public class DeviceAdpaterManager {
 	                  }
 	                  if ( "ScannerFactoryName".equalsIgnoreCase(element.getName()) ){
 	                	  if(null == element.getTextTrim() || "".equals(element.getTextTrim())){
-	                		  System.out.println("Config Error: ScannerFactoryName is null!!!");
+	                		  System.err.println("Config Error: ScannerFactoryName is null!!!");
 	                		  continue;
 	                	  }else{	                		  
 	                		  daaInfo.setScannerFactoryName(element.getText());
@@ -196,7 +196,7 @@ public class DeviceAdpaterManager {
 	                  }
 	                  if ( "ScannerWebUrl".equalsIgnoreCase(element.getName()) ){
 	                	  if (null == element.getTextTrim() || "".equals(element.getTextTrim())) {
-	                		  System.out.println("Config error: ScannerWebUrl is null!!!");
+	                		  System.err.println("Config error: ScannerWebUrl is null!!!");
 	                		  continue;
 	                	  } else {
 	                		  daaInfo.setScannerWebUrl(element.getText());
@@ -204,7 +204,7 @@ public class DeviceAdpaterManager {
 	                  }
 	                  if ( "ScannerEngineAPI".equalsIgnoreCase(element.getName()) ){
 	                	  if (null == element.getTextTrim() || "".equals(element.getTextTrim())) {							
-	                		  System.out.println("Config error: ScannerEngineAPI is null!!!");
+	                		  System.err.println("Config error: ScannerEngineAPI is null!!!");
 	                		  continue;
 	                	  }else{	                		  
 	                		  daaInfo.setScannerEngineAPI(element.getText());
@@ -212,7 +212,7 @@ public class DeviceAdpaterManager {
 	                  }
 	                  if ( "ScannerUserName".equalsIgnoreCase(element.getName()) ){
 	                	  if (null == element.getTextTrim() || "".equals(element.getTextTrim())) {
-							System.out.println("Config error: ScannerUserName is null!!!");
+							System.err.println("Config error: ScannerUserName is null!!!");
 							continue;
 	                	  } else {
 	                		  daaInfo.setScannerUserName(element.getText());	                		
@@ -220,7 +220,7 @@ public class DeviceAdpaterManager {
 	                  }
 	                  if ( "ScannerPassword".equalsIgnoreCase(element.getName()) ){ 
 	                	 if (null == element.getTextTrim() || "".equals(element.getTextTrim())) {
-							System.out.println("Config error:ScannerPassword is null!!!");
+							System.err.println("Config error:ScannerPassword is null!!!");
 							continue;
 	                	 }else{
 	                		 daaInfo.setScannerPassword(element.getText());							
