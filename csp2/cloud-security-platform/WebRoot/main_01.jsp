@@ -214,7 +214,7 @@
          </div>  -->
          <div class="center clear">
              <div class="web_fuwu clear">
-                 <h1>WEB云安全服务</h1>
+                 <h1>监测及预警服务</h1>
                  <c:forEach var="list" items="${servList}" varStatus="status">
                     <c:choose>
                        <c:when test="${status.index<4}">
@@ -238,7 +238,7 @@
              </div>
              
              <div class="anti_fuwu clear">
-                  <h1>Anti-DDOS云安全服务</h1>
+                  <h1>防护及加固服务</h1>
                   <c:forEach var="list" items="${servList}" varStatus="status">
                     <c:choose>
                        <c:when test="${status.index==5||status.index==6}">
