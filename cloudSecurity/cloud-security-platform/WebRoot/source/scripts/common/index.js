@@ -141,6 +141,14 @@ $(function(){
 			$(this).children(".web_model").stop().slideUp().css('height','134px');
 			$(this).children(".web_modelp").stop().slideUp().css('height','134px');
 			});
+	$('.web_main').hover(
+			function(){
+				$(this).children(".web_model").css('height','208px').stop().slideDown();
+				$(this).children(".web_modelp").css('height','208px').stop().slideDown();},
+			function(){
+				$(this).children(".web_model").stop().slideUp().css('height','208px');
+				$(this).children(".web_modelp").stop().slideUp().css('height','208px');
+				});
 });
 //首页左侧导航
 $(function(){

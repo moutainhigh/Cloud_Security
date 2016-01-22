@@ -45,13 +45,15 @@ h4.helph{font-size:15px;padding-top:0;}
 .subnav ol {left: 424px;bottom: 22px;}
 .web_main{padding:0;width: 220px;}
 .in_web_box{width:182px;height: 35px;padding: 2px 15px;}
-.web_main {padding: 0px;width: 212px;margin-right:8px;border-right:1px solid #dedede;height: 208px;}
+.web_main {padding: 0px;width: 212px;margin-right:8px;border-right:1px solid #dedede;height: 208px;position: relative;}
 .web_main_pic{margin-top:0;}
+.web_main .web_model{width:100%;}
+.web_main .web_modelp{width:100%;}
 .web_main h2{font-weight:normal;line-height: 36px;}
 .web_left{width:50%;float:left;color:#999999;font-size:13px;line-height:18px;word-wrap:break-word; word-break:break-all;}
 .web_right{width:50%;float:left;}
 .web_left p{padding-top: 10px;color:#ff4200;font-size:16px;}
-.web_money{font-size:28px;}
+.web_money{font-size:20px;}
 .index_buy{width:72px;height:29px;display:block; background:url(../images/buyicon.jpg) no-repeat;margin:10px auto 0;}
 .anti_main{padding:0;width:361px;height:134px;margin-right:6px;border-right:1px solid #dedede;}
 .anti_main_pic{margin-top:0;width:145px;height:134px;margin-right:20px;}
@@ -60,7 +62,7 @@ h4.helph{font-size:15px;padding-top:0;}
 .anti_main_right a{color: #666;}
 .anti_box{height:42px;overflow: hidden;padding-top: 10px;}
 .anti_box p{float:left;margin-top:6px;color:#ff4200;font-size:16px;}
-.anti_box a{float:right;margin-top:2px;margin-right:16px;}
+.anti_box a{float:right;margin-top:-32px;margin-right:16px;}
 .head_bj {height: 60px;}
 .lagst-left a{margin-top:7px;}
 .lagst-right {padding-top: 7px;}
@@ -70,7 +72,7 @@ h4.helph{font-size:15px;padding-top:0;}
 .web_main .web_txt{padding:0 15px;font-size:12px;line-height:20px;color: #C2C2C2;}
 .anti_main_right p {font-size: 12px;line-height: 20px;}
 .anti_main{position:relative;}
-.web_model{width: 361px;height: 134px;background:#fff;opacity:0.9;position:absolute;bottom:0;left:0;display:none;filter:alpha(opacity=90);}
-.web_modelp{width: 361px;height: 134px;position:absolute;bottom:0;left:0;color:#00F;line-height:134px;text-align:center;display:none;}
+.web_model{width: 361px;height: 134px;background:#fff;opacity:0.9;position:absolute; z-index:10;bottom:0;left:0;display:none;filter:alpha(opacity=90);}
+.web_modelp{width: 361px;height: 134px;position:absolute;bottom:0;left:0; z-index:10; color:#00F;line-height:134px;text-align:center;display:none;}
 .right_wechate img{width: 102px;margin: 5px 43px 6px;}
 .right_wechate p{text-align: center;font-size: 12px;}
