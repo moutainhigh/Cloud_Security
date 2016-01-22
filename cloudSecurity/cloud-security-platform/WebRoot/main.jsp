@@ -144,16 +144,13 @@ function showUnreadNews()
         <c:choose>
             <c:when test="${status.index<4}">
 		      <div class="web_main bor_right">
-		      	<div class="web_model"></div>
-				<div class="web_modelp">即将上线...</div>
-		      
-		        <div class="web_main_pic"><img src="${ctx}/source/images/iconin${status.index+1 }.jpg" /></div>
+		      <div class="web_main_pic"><img src="${ctx}/source/images/iconin${status.index+1 }.jpg" /></div>
 		        <h2><a href="###">${list.name }</a></h2>
 		        <p class="web_txt">${list.remarks }</p>
 		        <div class="in_web_box">
 		            <div class="web_left">
-		            <p style=" position: relative;top: -18px; left:8px; z-index:2; color:#ccc">￥<span class="web_money">99</span></p>
-		            <p style=" position: relative;top: -30px; z-index:2; left:10px"><span class="web_money">推广价</span>￥<span class="web_money">0</span></p>
+		            <p style=" position: relative;top: -18px; left:0px; z-index:2; color:#ccc">￥<span class="web_money">99</span></p>
+		            <p style=" position: relative;top: -30px; z-index:2; left:2px"><span class="web_money">推广价</span>￥<span class="web_money">0</span></p>
 		            </div>
 		            <div class="web_right">
 		                <a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1" class="index_buy"></a>
@@ -163,15 +160,13 @@ function showUnreadNews()
 		    </c:when>
 		    <c:when test="${status.index==4}">
               <div class="web_main" style="margin-right:0">
-              	<div class="web_model"></div>
-				<div class="web_modelp">即将上线...</div>
                 <div class="web_main_pic"><img src="${ctx}/source/images/iconin${status.index+1 }.jpg" /></div>
                 <h2><a href="###">${list.name }</a></h2>
                 <p class="web_txt">${list.remarks }</p>
                 <div class="in_web_box">
                     <div class="web_left">
-                    <p style=" position: relative;top: -18px; left:8px; z-index:2; color:#ccc">￥<span class="web_money">99</span></p>
-		            <p style=" position: relative;top: -30px; z-index:2; left:10px"><span class="web_money">推广价</span>￥<span class="web_money">0</span></p>
+                    <p style=" position: relative;top: -18px; left:0px; z-index:2; color:#ccc">￥<span class="web_money">99</span></p>
+		            <p style=" position: relative;top: -30px; z-index:2; left:2px"><span class="web_money">推广价</span>￥<span class="web_money">0</span></p>
                     </div>
                     <div class="web_right">
                         <a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1" class="index_buy"></a>
@@ -197,8 +192,8 @@ function showUnreadNews()
 		          <h2><a href="###">${list.name }</a></h2>
 		          <p>${list.remarks }</p>
 		          <div class="anti_box">
-		                <p style=" position: relative;top: -18px; left:8px; z-index:2; color:#ccc">￥<span class="web_money">99</span></p>
-		            <p style=" position: relative;top: 5px; z-index:2; left:-26px"><span class="web_money">推广价</span>￥<span class="web_money">0</span></p>
+		                <p style=" position: relative;top: -18px; left:0px; z-index:2; color:#ccc">￥<span class="web_money">99</span></p>
+		            <p style=" position: relative;top: 5px; z-index:2; left:-36px"><span class="web_money">推广价</span>￥<span class="web_money">0</span></p>
 		                <a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1" class="index_buy"></a>
 		            </div>
 		        </div>
