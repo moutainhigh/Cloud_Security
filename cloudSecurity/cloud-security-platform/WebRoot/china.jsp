@@ -151,9 +151,8 @@ $(function(){
                     <h2>${webPageNum }</h2>
                 </li>
                 <li>
-                <a target="_blank" href="${ctx}/adminAssetAddr.html">
                     <p>监测网站</p>
-                    <h2>${webSite }</h2></a>
+                    <h2>${webSite }</h2>
                 </li>
                 <li>
                     <p>断网警告</p>
