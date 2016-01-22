@@ -4,11 +4,13 @@ package com.cn.ctbri.southapi.adpater.manager;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+
 import com.cn.ctbri.southapi.adpater.config.DeviceConfigInfo;
 import com.cn.ctbri.southapi.adpater.config.ScannerTaskUniParam;
 import com.cn.ctbri.southapi.adpater.manager.IDeviceAdpater;
 
 public class ArnhemDeviceAdpater implements IDeviceAdpater {
+	
 	protected static String FILE_DEVICE_CONFIG = "./conf/DeviceConfig.xml";
 	protected static String ARNHEM_FACTORY = "Arnhem";
 	public HashMap<String, DeviceConfigInfo> mapDeviceConfigInfoHashMap = new HashMap<String, DeviceConfigInfo>();
@@ -42,7 +44,8 @@ public class ArnhemDeviceAdpater implements IDeviceAdpater {
 	 */
 	private  ArnhemDeviceOperation getDeviceById(String deviceId)
 	{
-		return mapArnhemDeviceOperation.get(deviceId);
+		ArnhemDeviceOperation operation = mapArnhemDeviceOperation.get(deviceId);
+		return operation;
 	}
 	private DeviceConfigInfo getDeviceConfigById(String deviceId){
 		return mapDeviceConfigInfoHashMap.get(deviceId);	
@@ -240,9 +243,20 @@ public class ArnhemDeviceAdpater implements IDeviceAdpater {
      */
     public  String getEngineState(String deviceId) {
         //创建路径
-    	String scannerEngineAPI = getDeviceConfigById(deviceId).getScannerEngineAPI();
-    	ArnhemDeviceOperation adpater = getDeviceById(deviceId);
-    	return adpater.getEngineState(scannerEngineAPI);
+    	String scannerEngineAPI = null;
+		ArnhemDeviceOperation operation = null;
+		try {
+			scannerEngineAPI = getDeviceConfigById(deviceId).getScannerEngineAPI();
+			operation = getDeviceById(deviceId);
+
+		} catch (NullPointerException e) {
+			System.err.println("scannerEngineAPI="+scannerEngineAPI);
+			System.err.println("operation="+operation);
+			e.printStackTrace();
+
+		}
+		return operation.getEngineState(scannerEngineAPI);
+    	
     }
     /**
      * id:4.4.14
