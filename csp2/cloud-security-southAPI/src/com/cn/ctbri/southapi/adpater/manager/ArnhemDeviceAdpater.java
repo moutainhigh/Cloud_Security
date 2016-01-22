@@ -240,7 +240,9 @@ public class ArnhemDeviceAdpater implements IDeviceAdpater {
      */
     public  String getEngineState(String deviceId) {
         //创建路径
-    	return getDeviceById(deviceId).getEngineState(getDeviceConfigById(deviceId).getScannerEngineAPI());
+    	String scannerEngineAPI = getDeviceConfigById(deviceId).getScannerEngineAPI();
+    	ArnhemDeviceOperation adpater = getDeviceById(deviceId);
+    	return adpater.getEngineState(scannerEngineAPI);
     }
     /**
      * id:4.4.14
