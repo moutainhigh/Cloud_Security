@@ -334,7 +334,6 @@ public class DeviceAdpaterManager {
 							String CpuOccupancy = engineStatElement.elementTextTrim("CpuOccupancy");
 							float cpuUsage = Float.parseFloat(CpuOccupancy);
 							engineRateMap.put("cpuUsage", cpuUsage);
-							System.out.println("cpu"+cpuUsage);
 						}
 						
 						if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("MemoryFree"))
