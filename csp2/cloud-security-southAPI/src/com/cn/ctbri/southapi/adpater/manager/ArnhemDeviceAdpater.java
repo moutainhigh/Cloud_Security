@@ -30,7 +30,9 @@ public class ArnhemDeviceAdpater implements IDeviceAdpater {
 			DeviceConfigInfo deviceConfigInfo = deviceConfigInfoIterator.next().getValue();
 			if("Arnhem".equalsIgnoreCase(deviceConfigInfo.getScannerFactory())){
 			    arnhemDeviceOperation = new ArnhemDeviceOperation();
-			    if(!arnhemDeviceOperation.createSessionId(deviceConfigInfo.getScannerUserName(),deviceConfigInfo.getScannerPassword(),deviceConfigInfo.getScannerWebUrl())) return false;
+			    if(!arnhemDeviceOperation.createSessionId(deviceConfigInfo.getScannerUserName(),deviceConfigInfo.getScannerPassword(),deviceConfigInfo.getScannerWebUrl())){
+			    	return false;
+			    }
 			    mapArnhemDeviceOperation.put(deviceConfigInfo.getDeviceID(), arnhemDeviceOperation);
 			}
 		}
@@ -241,7 +243,7 @@ public class ArnhemDeviceAdpater implements IDeviceAdpater {
      * @param taskId 任务id
      * @return 任务状态代码
      */
-    public  String getEngineState(String deviceId) {
+	public  String getEngineState(String deviceId) {
         //创建路径
     	String scannerEngineAPI = null;
 		ArnhemDeviceOperation operation = null;

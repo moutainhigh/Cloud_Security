@@ -161,7 +161,6 @@ public class DeviceAdpaterManager {
 	        //加载SCANNER设备
 	        List<?> list = doc.selectNodes(DeviceAdapterConstant.DEVICE_SCANNER_ROOT);	
 	        Iterator<?> iter = list.iterator();
-	        mapDeviceConfigInfoHashMap.clear();
 	        while (iter.hasNext()) {
 	        	  Element elementDeviceScanner = (Element) iter.next();   
 	        	  DeviceConfigInfo daaInfo = new DeviceConfigInfo();
