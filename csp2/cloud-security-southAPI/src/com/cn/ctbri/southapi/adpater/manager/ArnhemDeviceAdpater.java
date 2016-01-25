@@ -13,9 +13,9 @@ public class ArnhemDeviceAdpater implements IDeviceAdpater {
 	
 	protected static String FILE_DEVICE_CONFIG = "./conf/DeviceConfig.xml";
 	protected static String ARNHEM_FACTORY = "Arnhem";
-	public HashMap<String, DeviceConfigInfo> mapDeviceConfigInfoHashMap = new HashMap<String, DeviceConfigInfo>();
+	public static HashMap<String, DeviceConfigInfo> mapDeviceConfigInfoHashMap = new HashMap<String, DeviceConfigInfo>();
 	public ArnhemDeviceOperation arnhemDeviceOperation = null;
-	public  HashMap<String, ArnhemDeviceOperation> mapArnhemDeviceOperation = new HashMap<String, ArnhemDeviceOperation>();
+	public static HashMap<String, ArnhemDeviceOperation> mapArnhemDeviceOperation = new HashMap<String, ArnhemDeviceOperation>();
 
 	
 	public ArnhemDeviceAdpater() {
@@ -23,9 +23,9 @@ public class ArnhemDeviceAdpater implements IDeviceAdpater {
 	}
 	public boolean initDeviceAdpater(HashMap<String, DeviceConfigInfo> mapDeviceConfigInfoHashMap)
 	{
-		//首次连接服务器获取Session
-		this.mapDeviceConfigInfoHashMap = mapDeviceConfigInfoHashMap;		
-		Iterator<Entry<String, DeviceConfigInfo>> deviceConfigInfoIterator = this.mapDeviceConfigInfoHashMap.entrySet().iterator();
+		//首次连接服务器获取Session	
+		ArnhemDeviceAdpater.mapDeviceConfigInfoHashMap.putAll(mapDeviceConfigInfoHashMap);
+		Iterator<Entry<String, DeviceConfigInfo>> deviceConfigInfoIterator = mapDeviceConfigInfoHashMap.entrySet().iterator();
 		while (deviceConfigInfoIterator.hasNext()) {
 			DeviceConfigInfo deviceConfigInfo = deviceConfigInfoIterator.next().getValue();
 			if("Arnhem".equalsIgnoreCase(deviceConfigInfo.getScannerFactory())){
@@ -34,8 +34,10 @@ public class ArnhemDeviceAdpater implements IDeviceAdpater {
 			    	return false;
 			    }
 			    mapArnhemDeviceOperation.put(deviceConfigInfo.getDeviceID(), arnhemDeviceOperation);
+			    System.out.println("mapOperation="+mapArnhemDeviceOperation.entrySet());
 			}
 		}
+		System.out.println("mapConfigInfoHashMap="+ArnhemDeviceAdpater.mapDeviceConfigInfoHashMap);
 		return true;
 	}
 
