@@ -13,10 +13,12 @@ public class ArnhemDeviceAdpater implements IDeviceAdpater {
 	
 	protected static String FILE_DEVICE_CONFIG = "./conf/DeviceConfig.xml";
 	protected static String ARNHEM_FACTORY = "Arnhem";
+	
 	public static HashMap<String, DeviceConfigInfo> mapDeviceConfigInfoHashMap = new HashMap<String, DeviceConfigInfo>();
-	public ArnhemDeviceOperation arnhemDeviceOperation = null;
 	public static HashMap<String, ArnhemDeviceOperation> mapArnhemDeviceOperation = new HashMap<String, ArnhemDeviceOperation>();
 
+	public ArnhemDeviceOperation arnhemDeviceOperation = null;
+	
 	
 	public ArnhemDeviceAdpater() {
 		//return null;
@@ -34,10 +36,8 @@ public class ArnhemDeviceAdpater implements IDeviceAdpater {
 			    	return false;
 			    }
 			    mapArnhemDeviceOperation.put(deviceConfigInfo.getDeviceID(), arnhemDeviceOperation);
-			    System.out.println("mapOperation="+mapArnhemDeviceOperation.entrySet());
 			}
 		}
-		System.out.println("mapConfigInfoHashMap="+ArnhemDeviceAdpater.mapDeviceConfigInfoHashMap);
 		return true;
 	}
 

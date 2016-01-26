@@ -6,14 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-
-
-
-
-
-
-import java.util.Map;
-
 import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -24,15 +16,6 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-
-
-
-
-
-
-
-
-
 
 import com.cn.ctbri.southapi.adpater.config.DeviceConfigInfo;
 import com.cn.ctbri.southapi.adpater.config.ScannerTaskUniParam;
@@ -54,13 +37,16 @@ public class DeviceAdpaterManager {
 	public static HashMap<String, DeviceConfigInfo> mapDeviceConfigInfoHashMap = new HashMap<String, DeviceConfigInfo>();
 	public static ArnhemDeviceAdpater arnhemDeviceAdpater = new ArnhemDeviceAdpater();
 	public static WebsocDeviceAdapter websocDeviceAdapter = new WebsocDeviceAdapter();
+	
+	/**
+	 * 获取设备配置信息
+	 * @param deviceId
+	 * @return DeviceConfigInfo
+	 */
 	public static DeviceConfigInfo getDeviceAdapterAttrInfo(String deviceId)
 	{
 		return mapDeviceConfigInfoHashMap.get(deviceId);
 	}
-//	public DeviceAdpaterManager(){
-//		loadDeviceAdpater();
-//	}
 	
 	private String errorDevieInfo(String deviceId) {
 		return "{\"status\":\"fail\",\"message\":\"Can not find device: "+deviceId+"\"}";
@@ -315,9 +301,9 @@ public class DeviceAdpaterManager {
 					
 					List<?> nodes = rootElement.elements("EngineList");
 					List<HashMap> engineList = new ArrayList<HashMap>();
-					for(Iterator it=nodes.iterator();it.hasNext();){
+					for(Iterator<?> it=nodes.iterator();it.hasNext();){
 						Element engineStatElement = (Element) it.next();
-						HashMap engineRateMap = new HashMap();
+						HashMap<String, Comparable> engineRateMap = new HashMap<String, Comparable>();
 						
 						if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("IP"))||engineStatElement.elementTextTrim("IP")==null) {
 							engineRateMap.put("ip", null);
@@ -460,7 +446,6 @@ public class DeviceAdpaterManager {
 			}else {
 				responseObject.put("status", "Fail");
 			}
-	        System.out.println(responseObject.toString());
 	        return response.toString();
 		}
 		return DEVICE_OPERATION_ERROR;		
@@ -478,14 +463,10 @@ public class DeviceAdpaterManager {
 				 SAXReader reader = new SAXReader();
 				 Document document = reader.read(IOUtils.toInputStream(progressArnhem));
 				 Element rootElement = document.getRootElement();
-				 //System.out.println(rootElement.asXML());
-				 System.out.println(rootElement.attributeValue("value").toString());
 				 if("success".equalsIgnoreCase(rootElement.attributeValue("value").toString())){
 					 
 					 float floatProgress = Float.parseFloat(rootElement.element("TaskProgress").getTextTrim())/101;
-					 System.out.println(floatProgress);
 					 percentProgress = (float)(Math.round(floatProgress*100))/100;
-					 System.out.println(percentProgress);
 					 jsonObject.put("status", "success");
 					 jsonObject.put("TaskPercent", percentProgress);
 					 return jsonObject.toString();
