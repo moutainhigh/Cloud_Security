@@ -24,7 +24,7 @@
 	    <bean class="com.cn.ctbri.interceptor.AuthInterceptor"></bean>
 	</mvc:interceptors>
 	<!-- 如果当前请求为“/”时，则转发到“/helloworld/index" -->
-	<mvc:view-controller path="/" view-name="forward:/helloworld/index"/>
+	<!-- <mvc:view-controller path="/" view-name="forward:/helloworld/index"/>  -->
 
 	<bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
 	<!--  annotation默认的方法映射适配器-->
