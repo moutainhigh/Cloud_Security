@@ -32,6 +32,9 @@ public class Task{
     private String group_id;//创宇返回组id
     private int engine;
     private String orderTaskId;//订单任务ID
+    private String beginTime;//vo开始时间
+    private String endTime;//vo结束时间
+    private String executeTime;//vo执行时间
     
 	public int getTaskId() {
 		return taskId;
@@ -170,6 +173,24 @@ public class Task{
 	}
 	public void setOrderTaskId(String orderTaskId) {
 		this.orderTaskId = orderTaskId;
+	}
+	public String getBeginTime() {
+		return beginTime;
+	}
+	public void setBeginTime(String beginTime) {
+		this.beginTime = beginTime;
+	}
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+	public String getExecuteTime() {
+		return executeTime;
+	}
+	public void setExecuteTime(String executeTime) {
+		this.executeTime = executeTime;
 	}
     
 }

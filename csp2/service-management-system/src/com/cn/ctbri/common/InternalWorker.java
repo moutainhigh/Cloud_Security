@@ -167,6 +167,7 @@ public class InternalWorker {
 	 *         Stategy     策略,
 	 *         CustomManu  指定厂家，可以多个，以逗号区分,
 	 *         Reserve     保留字段
+	 * @param userId 
 	 * @throws IOException 
 	 * @throws UniformInterfaceException 
 	 * @throws JsonMappingException 
@@ -177,7 +178,7 @@ public class InternalWorker {
 	public static String vulnScanCreate(String scanMode, String targetURL, String scanType, 
     		String startTime, String endTime, String scanPeriod, String scanDepth, 
     		String maxPages, String stategy, String CustomManu[], String orderId, 
-    		String serviceId, String websoc, String taskTime, String orderTaskId) {
+    		String serviceId, String websoc, String taskTime, String orderTaskId, int userId) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("ScanMode", scanMode);
@@ -195,6 +196,7 @@ public class InternalWorker {
 		json.put("websoc", websoc);
 		json.put("taskTime", taskTime);
 		json.put("orderTaskId", orderTaskId);
+		json.put("userId", userId);
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Create_orderTask;
     	//创建jersery客户端配置对象
@@ -207,11 +209,11 @@ public class InternalWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        int status = response.getStatus();
-        String textEntity = response.getEntity(String.class);
-        System.out.println(textEntity);
-        return status+"";
+        String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, json.toString());
+//        int status = response.getStatus();
+//        String textEntity = response.getEntity(String.class);
+//        System.out.println(textEntity);
+        return response;
 	}
 	
 	/**

@@ -47,7 +47,7 @@ public class GetPath extends BreadthCrawler {
 			String task_date = DateUtils.dateToString(o.getTask_date());
 
 			String result = null;
-			result = InternalWorker.vulnScanCreate(String.valueOf(o.getType()), page.getUrl(), "", begin_date,end_date, String.valueOf(o.getScan_type()), "", "", "",CustomManu, o.getOrderId(),String.valueOf(o.getServiceId()),String.valueOf(o.getWebsoc()), task_date,o.getOrderTaskId());
+			result = InternalWorker.vulnScanCreate(String.valueOf(o.getType()), page.getUrl(), "", begin_date,end_date, String.valueOf(o.getScan_type()), "", "", "",CustomManu, o.getOrderId(),String.valueOf(o.getServiceId()),String.valueOf(o.getWebsoc()), task_date,o.getOrderTaskId(), o.getUserId());
 			System.out.println(result);
         }
 		

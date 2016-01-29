@@ -72,13 +72,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 websoc=#{websoc}
             </if>
 		</set>
-		where taskId = #{taskId}
+		<!-- where taskId = #{taskId} -->
+        where orderTaskId = #{orderTaskId}
 	</update>
 	
 	<!-- 更新任务信息 -->
     <update id="updateTask"  parameterType="com.cn.ctbri.entity.Task">
         update cs_task
         <set>
+        	<if test="execute_time!=null">
+                execute_time=#{execute_time},
+            </if>
             <if test="begin_time!=null">
                 begin_time=#{begin_time},
             </if>

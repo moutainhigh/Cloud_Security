@@ -70,8 +70,10 @@ public class Scheduler4Task {
         	String task_date = DateUtils.dateToString(o.getTask_date());
         	//订单任务Id
         	String orderTaskId = o.getOrderTaskId();
+        	//userId
+        	int userId = o.getUserId();
         	
-			String result = InternalWorker.vulnScanCreate(scanMode, targetUrl, scanType, begin_date, end_date, scanPeriod, scanDepth, maxPages, stategy, CustomManu, orderId, serviceId, websoc, task_date, orderTaskId);
+			String result = InternalWorker.vulnScanCreate(scanMode, targetUrl, scanType, begin_date, end_date, scanPeriod, scanDepth, maxPages, stategy, CustomManu, orderId, serviceId, websoc, task_date, orderTaskId, userId);
         	
 			System.out.println(result);
             

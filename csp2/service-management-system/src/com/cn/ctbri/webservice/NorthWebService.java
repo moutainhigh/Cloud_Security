@@ -135,7 +135,7 @@ public class NorthWebService {
         }
 		Respones r = new Respones();
 		r.setState("201");
-		net.sf.json.JSONObject json = new net.sf.json.JSONObject().fromObject(r);
+		JSONObject json = new JSONObject().fromObject(r);
         return json.toString();
     }
 	
@@ -151,6 +151,9 @@ public class NorthWebService {
 			if(taskId!=null && taskId!=""){
 				Task task = new Task();
 				task = taskService.findTaskByTaskId(taskId);
+				task.setExecuteTime(DateUtils.dateToString(task.getExecute_time()));
+				task.setBeginTime(DateUtils.dateToString(task.getBegin_time()));
+				task.setEndTime(DateUtils.dateToString(task.getEnd_time()));
 				if(task!=null){
 					net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
 					json.put("taskObj", taskObject);
@@ -170,6 +173,11 @@ public class NorthWebService {
 			}else{
 				Order o = orderService.findOrderByOrderId(orderId);
 				Task t= taskService.findTaskByOrderId(orderId);
+				if(t!=null){
+					t.setExecuteTime(DateUtils.dateToString(t.getExecute_time()));
+					t.setBeginTime(DateUtils.dateToString(t.getBegin_time()));
+					t.setEndTime(DateUtils.dateToString(t.getEnd_time()));
+				}
 				JSONObject taskObject = new JSONObject().fromObject(t);
 				json.put("taskObj", taskObject);
 				json.put("status", o.getStatus());
