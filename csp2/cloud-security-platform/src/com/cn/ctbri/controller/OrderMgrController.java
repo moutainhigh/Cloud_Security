@@ -716,7 +716,7 @@ public class OrderMgrController {
 	        	List<Task> taskList = taskService.findAllByOrderId(paramMap);
 				if(taskList != null && taskList.size() > 0){
 					for (Task task : taskList) {
-						if(task.getAlarm_view_flag() != 1 && task.getIssueCount()!=0){
+						if(task.getAlarm_view_flag() != 1 && !task.getIssueCount().equals("0")){
 							alarmViewedFlag = 0;
 						}
 					}
@@ -789,7 +789,7 @@ public class OrderMgrController {
 	        	List<Task> taskList = taskService.findAllByOrderId(paramMap1);
 				if(taskList != null && taskList.size() > 0){
 					for (Task task : taskList) {
-						if(task.getAlarm_view_flag() != 1 && task.getIssueCount()!=0){
+						if(task.getAlarm_view_flag() != 1 && !task.getIssueCount().equals("0")){
 							alarmViewedFlag = 0;
 						}
 					}
@@ -872,7 +872,7 @@ public class OrderMgrController {
 	        	List<Task> taskList = taskService.findAllByOrderId(paramMap1);
 				if(taskList != null && taskList.size() > 0){
 					for (Task task : taskList) {
-						if(task.getAlarm_view_flag() != 1 && task.getIssueCount()!=0){
+						if(task.getAlarm_view_flag() != 1 && !task.getIssueCount().equals("0")){
 							alarmViewedFlag = 0;
 						}
 					}

@@ -66,8 +66,8 @@ public class TaskServiceImpl implements ITaskService{
 		taskDao.update(hisMap);
 		
 	}
-	public List<Task> findAllByOrderId(Map<String, Object> hisMap) {
-		return taskDao.findAllByOrderId(hisMap);
+	public List<Task> findAllByOrderId(Map<String, Object> paramMap) {
+		return taskDao.findAllByOrderId(paramMap);
 	}
 	public List<Task> findTask(Map<String, Object> map) {
 		return taskDao.findTask(map);

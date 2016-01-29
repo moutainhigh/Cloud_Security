@@ -98,8 +98,8 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 		
 	}
 
-	public List<Task> findAllByOrderId(Map<String, Object> hisMap) {
-		return this.getSqlSession().selectList(ns+"findAllByOrderId",hisMap);		
+	public List<Task> findAllByOrderId(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"findAllByOrderId",paramMap);		
 	}
 
 	public void updateTask(Task t) {

@@ -21,16 +21,20 @@ public class Task{
     private Date begin_time;//开始时间
     private Date end_time;//结束时间
     private String scanTime;//扫描时长
-    private int issueCount;//已经发现弱点个数
-    private int requestCount;//请求次数
-    private int urlCount;//url个数
-    private int averResponse;//平均响应时间
-    private int averSendCount;//每秒访问个数
+
+
+    private String issueCount;//已经发现弱点个数
+    private String requestCount;//请求次数
+    private String urlCount;//url个数
+    private String averResponse;//平均响应时间
+    private String averSendCount;//每秒访问个数
     private String sendBytes;//发送字节
     private String receiveBytes;//接收字节
+    
     private String beginTime;//vo开始时间
     private String endTime;//vo结束时间
     private String executeTime;//vo执行时间
+    
     private int progress;//执行进度vo
     private int websoc;//创宇
     private int alarm_view_flag;//告警是否查看过标识
@@ -125,37 +129,38 @@ public class Task{
     public void setScanTime(String scanTime) {
         this.scanTime = scanTime;
     }
-    public int getIssueCount() {
-        return issueCount;
-    }
-    public void setIssueCount(int issueCount) {
-        this.issueCount = issueCount;
-    }
-    public int getRequestCount() {
-        return requestCount;
-    }
-    public void setRequestCount(int requestCount) {
-        this.requestCount = requestCount;
-    }
-    public int getUrlCount() {
-        return urlCount;
-    }
-    public void setUrlCount(int urlCount) {
-        this.urlCount = urlCount;
-    }
-    public int getAverResponse() {
-        return averResponse;
-    }
-    public void setAverResponse(int averResponse) {
-        this.averResponse = averResponse;
-    }
-    public int getAverSendCount() {
-        return averSendCount;
-    }
-    public void setAverSendCount(int averSendCount) {
-        this.averSendCount = averSendCount;
-    }
-    public String getSendBytes() {
+
+    public String getIssueCount() {
+		return issueCount;
+	}
+	public void setIssueCount(String issueCount) {
+		this.issueCount = issueCount;
+	}
+	public String getRequestCount() {
+		return requestCount;
+	}
+	public void setRequestCount(String requestCount) {
+		this.requestCount = requestCount;
+	}
+	public String getUrlCount() {
+		return urlCount;
+	}
+	public void setUrlCount(String urlCount) {
+		this.urlCount = urlCount;
+	}
+	public String getAverResponse() {
+		return averResponse;
+	}
+	public void setAverResponse(String averResponse) {
+		this.averResponse = averResponse;
+	}
+	public String getAverSendCount() {
+		return averSendCount;
+	}
+	public void setAverSendCount(String averSendCount) {
+		this.averSendCount = averSendCount;
+	}
+	public String getSendBytes() {
         return sendBytes;
     }
     public void setSendBytes(String sendBytes) {

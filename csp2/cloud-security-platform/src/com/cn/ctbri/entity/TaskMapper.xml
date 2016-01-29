@@ -34,6 +34,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				engineIP=#{engineIP},
 				taskProgress=#{taskProgress},
                 currentUrl=#{currentUrl},
+                execute_time=#{execute_time},
+                group_flag=#{group_flag},
                 begin_time=#{begin_time},
                 end_time=#{end_time},
                 scanTime=#{scanTime},
@@ -173,18 +175,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>
 		) a)
     </update>
-    <select id="findAllByOrderId" parameterType="hashmap" resultMap="TaskRM">				
+    <select id="findAllByOrderId" parameterType="hashmap" resultType="com.cn.ctbri.entity.Task">				
 	select *  from cs_task where taskId in
 		(select t.taskId id
 		from cs_task t,cs_order_asset oa
 		WHERE
 		t.order_asset_Id=oa.id AND oa.orderId=#{orderId}
-		<if test="type!=null and type='1'">
+		<!-- <if test="type!=null and type='1'">
         	and t.status=3
         </if>
         <if test="type!=null and type='2'">
         	and (t.status=3 or t.status=2)
-        </if>
+        </if> -->
 		)
     </select>
     

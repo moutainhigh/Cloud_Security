@@ -295,6 +295,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="delFlag!=null">
                 delFlag=#{delFlag},
             </if>
+            <if test="websoc!=null">
+                websoc=#{websoc}
+            </if>
 		</set>
 		where id=#{id}
 	</update>
