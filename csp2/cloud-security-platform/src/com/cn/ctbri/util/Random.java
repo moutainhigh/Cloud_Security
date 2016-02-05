@@ -33,11 +33,11 @@ public class Random {
     }
     
     /**
-     * 功能描述：获取10位随机数
+     * 功能描述：获取5位随机数
      * 参数描述： 无
      *       @time 2014-12-31
      */
-    public static long tencode() {
+    public static long fivecode() {
         long n = 0 ;
         while(n < 10000){
                  n = (long)(Math.random()*1000*100);
