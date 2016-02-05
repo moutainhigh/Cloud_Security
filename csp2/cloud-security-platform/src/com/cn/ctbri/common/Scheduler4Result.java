@@ -71,7 +71,7 @@ public class Scheduler4Result {
 				List<Task> tlist = taskService.findAllByOrderId(paramMap);
 				for (Task task : tlist) {
 					if(task.getStatus()==3){//任务结束
-						String result = NorthWorker.vulnScanGetResult(order.getId(),String.valueOf(task.getTaskId()));
+						String result = NorthAPIWorker.vulnScanGetResult(order.getId(),String.valueOf(task.getTaskId()));
 						JSONObject jsonObj = new JSONObject().fromObject(result);
 						JSONArray alarmArray = jsonObj.getJSONArray("alarmObj");
 						if(alarmArray.size()>0){
@@ -110,7 +110,7 @@ public class Scheduler4Result {
 							orderService.update(order);
 						}
 					}else{
-						String result = NorthWorker.vulnScanGetStatus(order.getId(),"");
+						String result = NorthAPIWorker.vulnScanGetStatus(order.getId(),"");
 						JSONObject obj = new JSONObject().fromObject(result);
 						int status = obj.getInt("status");
 						int websoc = obj.getInt("websoc");
@@ -208,7 +208,7 @@ public class Scheduler4Result {
 
 				
 			}else if(order.getStatus()==0){
-				String result = NorthWorker.vulnScanGetStatus(order.getId(),"");
+				String result = NorthAPIWorker.vulnScanGetStatus(order.getId(),"");
 				JSONObject obj = new JSONObject().fromObject(result);
 				int status = obj.getInt("status");
 				int websoc = obj.getInt("websoc");

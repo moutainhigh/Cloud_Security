@@ -66,7 +66,7 @@ public class Scheduler4ResultAlarm {
 				List<Task> tlist = taskService.findAllByOrderId(paramMap);
 				for (Task task : tlist) {
 					if(task.getStatus()==3){
-						String result = NorthWorker.vulnScanGetResult(order.getId(),String.valueOf(task.getTaskId()));
+						String result = NorthAPIWorker.vulnScanGetResult(order.getId(),String.valueOf(task.getTaskId()));
 						JSONObject jsonObj = new JSONObject().fromObject(result);
 						String alarmStr = jsonObj.getString("alarmObj");
 						if(alarmStr!=null && !alarmStr.equals("")){

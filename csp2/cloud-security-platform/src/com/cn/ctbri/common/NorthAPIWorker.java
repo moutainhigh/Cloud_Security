@@ -1,5 +1,4 @@
 package com.cn.ctbri.common;
-import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.util.Properties;
@@ -16,11 +15,6 @@ import javax.ws.rs.core.NewCookie;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
-
-
-import com.cn.ctbri.entity.Order;
-import com.cn.ctbri.entity.Task;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -33,15 +27,11 @@ import com.sun.jersey.client.urlconnection.HTTPSProperties;
  * 描        述：  北向接口本地Worker
  * 版        本：  1.0
  */
-public class NorthWorker {
+public class NorthAPIWorker {
 	/**
 	 * 服务能力管理服务器根路径
 	 */
 	private static String SERVER_WEB_ROOT;
-	/**
-	 * 创建订单（任务）
-	 */
-	private static String Create_Order;
 	/**
 	 * 创建漏洞扫描订单（任务）
 	 */
@@ -66,9 +56,8 @@ public class NorthWorker {
 	static{
 		try {
 			Properties p = new Properties();
-			p.load(NorthWorker.class.getClassLoader().getResourceAsStream("north.properties"));
+			p.load(NorthAPIWorker.class.getClassLoader().getResourceAsStream("north.properties"));
 			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
-			Create_Order = p.getProperty("Create_Order");
 			VulnScan_Create_Order = p.getProperty("VulnScan_Create_Order");
 			VulnScan_Opt_Order = p.getProperty("VulnScan_Opt_Order");
 			VulnScan_Get_OrderReport = p.getProperty("VulnScan_Get_OrderReport");
@@ -78,7 +67,7 @@ public class NorthWorker {
 			e.printStackTrace();
 		}
 	}
-	public NorthWorker() {
+	public NorthAPIWorker() {
 	}
 	
 	/**
@@ -124,35 +113,29 @@ public class NorthWorker {
 	 *         Stategy     策略,
 	 *         CustomManu  指定厂家，可以多个，以逗号区分,
 	 *         Reserve     保留字段
-	 * @param userId 
-	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String vulnScanCreate(String ScanMode, String[] targetURL, String ScanType, 
-    		String StartTime, String EndTime, String ScanPeriod, String ScanDepth, 
-    		String MaxPages, String Stategy, String CustomManu[], String orderId, String serviceId, String websoc, int userId) {
+	public static String vulnScanCreate(String scanMode, String[] targetURL, String scanType, 
+    		String startTime, String endTime, String scanPeriod, String scanDepth, 
+    		String maxPages, String stategy, String customManu[]) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
-		json.put("ScanMode", ScanMode);
+		json.put("scanMode", scanMode);
 		JSONArray targetURLs = JSONArray.fromObject(targetURL);
 		json.put("targetURLs", targetURLs);
-		json.put("ScanType", ScanType);
-		json.put("StartTime", StartTime);
-		json.put("EndTime", EndTime);
-		json.put("ScanPeriod", ScanPeriod);
-		json.put("ScanDepth", ScanDepth);
-		json.put("MaxPages", MaxPages);
-		json.put("Stategy", Stategy);
-		json.put("CustomManu", CustomManu);
-		json.put("orderId", orderId);
-		json.put("serviceId", serviceId);
-		json.put("websoc", websoc);
-		json.put("userId", userId);
+		json.put("scanType", scanType);
+		json.put("startTime", startTime);
+		json.put("endTime", endTime);
+		json.put("scanPeriod", scanPeriod);
+		json.put("scanDepth", scanDepth);
+		json.put("maxPages", maxPages);
+		json.put("stategy", stategy);
+		JSONArray customManus = JSONArray.fromObject(customManu);
+		json.put("customManus", customManus);
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Create_Order;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
-	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -161,11 +144,14 @@ public class NorthWorker {
         WebResource service = client.resource(url);
         //获取响应结果
         String response = service.type(MediaType.APPLICATION_JSON).post(String.class, json.toString());
-//        int status = response.getStatus();
-//        String textEntity = response.getEntity(String.class);
         JSONObject obj = JSONObject.fromObject(response);
-		String state = obj.getString("state");
-        return state;
+		String stateCode = obj.getString("code");
+		if(stateCode.equals("201")){
+			String orderId = obj.getString("orderId");
+			return orderId;
+		}else{
+			return "error";
+		}
 	}
 	
 	/**
@@ -182,7 +168,7 @@ public class NorthWorker {
     	String url = SERVER_WEB_ROOT + VulnScan_Opt_Order + orderId;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
-	    config.getClasses().add(JacksonJsonProvider.class);
+//	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -211,7 +197,7 @@ public class NorthWorker {
     	String url = SERVER_WEB_ROOT + VulnScan_Get_OrderReport + OrderId;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
-	    config.getClasses().add(JacksonJsonProvider.class);
+//	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -241,7 +227,7 @@ public class NorthWorker {
     	String url = SERVER_WEB_ROOT + VulnScan_Get_OrderResult + OrderId + "/" +Taskid;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
-	    config.getClasses().add(JacksonJsonProvider.class);
+//	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -268,7 +254,7 @@ public class NorthWorker {
     	String url = SERVER_WEB_ROOT + VulnScan_Get_OrderStatus + orderId + "/" + taskId;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
-	    config.getClasses().add(JacksonJsonProvider.class);
+//	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -295,7 +281,7 @@ public class NorthWorker {
     	String url = SERVER_WEB_ROOT + VulnScan_Get_OrderResult + orderId + "/" + taskId;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
-	    config.getClasses().add(JacksonJsonProvider.class);
+//	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -326,7 +312,7 @@ public class NorthWorker {
 	private static ClientResponse postMethod(String url, JSONObject json) {
 		//创建客户端配置对象
     	ClientConfig config = new DefaultClientConfig();
-	    config.getClasses().add(JacksonJsonProvider.class);
+//	    config.getClasses().add(JacksonJsonProvider.class);
     	//通信层配置设定
 		buildConfig(url,config);
 		//创建客户端
@@ -375,8 +361,8 @@ public class NorthWorker {
 
 
     public static void main(String[] args) {
-//        String create = vulnScanCreate("2", new String[]{"27","31"}, "", "2015-10-20 16:10:01", "", "0", "", "", "", new String[0], "","", "");
-        String t = vulnScanGetStatus("15120117145433875","");
-        System.out.println(t);
+        String create = vulnScanCreate("2", new String[]{"http://www.testfire.net"}, "", "2016-02-04 17:55:35", "", "", "", "", "", new String[]{"2"});
+//    	String t = vulnScanGetStatus("15120117145433875","");
+        System.out.println(create);
     }
 }
