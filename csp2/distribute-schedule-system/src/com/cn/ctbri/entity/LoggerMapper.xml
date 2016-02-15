@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.LoggerMapper">
+	<!-- 列集合 -->
+	<sql id="cols">log_id,loginId,userName,logTime,optClass,optMethod,logLevel,logMessage</sql>
+	<!-- 结果对象 -->
+	<resultMap type="com.cn.ctbri.entity.LogInfo" id="Logger">
+		<id property="log_id" column="log_id"/>
+		<result property="loginId" column="loginId"/>
+		<result property="userName" column="userName"/>
+		<result property="logTime" column="logTime"/>
+		<result property="optClass" column="optClass"/>
+		<result property="optMethod" column="optMethod"/>
+		<result property="logLevel" column="logLevel"/>
+		<result property="logMessage" column="logMessage"/>
+	</resultMap>
+	
+	<!-- 插入报警信息 -->
+	<insert id="insert" parameterType="com.cn.ctbri.entity.LogInfo" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_audit_log 
+		(loginId,userName,logTime,optClass,optMethod,logLevel,logMessage) 
+		VALUES(#{loginId},#{userName},#{logTime},#{optClass},#{optMethod},#{logLevel},#{logMessage})
+	</insert>
+	
+</mapper>
