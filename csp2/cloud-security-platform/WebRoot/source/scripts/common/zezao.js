@@ -3,6 +3,7 @@ function putOption(obj){
 	var list = obj;
 	for (var i = 0; i < list.length; i++){
 		$("#districtId").append( "<option value=\""+ (i+1) +"\">"+list[i].name+"</option>" );
+		$("#editDistrictId").append( "<option value=\""+ (i+1) +"\">"+list[i].name+"</option>" );
 	}
 }
 
@@ -29,6 +30,29 @@ function getCitys(districtId){
 	}
 }
 
+function getEditCitys(districtId){
+	if(districtId=="-1"){
+		$("#editCity").empty();
+		var i = -1;
+		$("#editCity").append( "<option value=\""+i+"\">"+"请选择城市"+"</option>" );
+		$("#editCity").attr('disabled','disabled');
+	}else{
+		
+	//查询省对应的市  
+	 $.ajax({
+		 	data: {"districtId":districtId},
+	        type: "POST",
+	        cache: false,
+	        dataType: "json",
+	        url: "getCityList.html", 
+	        success: function(obj){
+	        	putEditCityOption(obj);
+	        	
+	     	}
+		});
+	}
+}
+
 //添加市下拉框
 function putCityOption(obj){
 	//清空城市下拉框
@@ -40,6 +64,20 @@ function putCityOption(obj){
 			$("#city").append( "<option value=\""+list[i].id+"\">"+list[i].name+"</option>" );
 		}
 		$("#city").removeAttr("disabled");
+	}
+}
+
+//添加市下拉框
+function putEditCityOption(obj){
+	//清空城市下拉框
+	$("#editCity").empty();
+	var list = obj;
+	if(list != null && list.length > 0){
+			
+		for (var i = 0; i < list.length; i++){
+			$("#editCity").append( "<option value=\""+list[i].id+"\">"+list[i].name+"</option>" );
+		}
+		$("#editCity").removeAttr("disabled");
 	}
 }
 
@@ -69,7 +107,7 @@ $(function(){
 		//image.clone(true).appendTo(".box_logoIn");
 	
 	});
-	//修该
+	//修改
 	
 	var oMark2=document.getElementById('box_mark');
 	var oLogin2 =document.getElementById('box_logoIn_edit');
@@ -79,6 +117,11 @@ $(function(){
 		var id= $(".zc_edit").eq(_index).attr("id");
 		var name= $(".zc_edit").eq(_index).attr("name");
 		var addr = $(".zc_edit").eq(_index).attr("addr");
+		//add by tangxr 2016-3-3
+		var districtId = $(".zc_edit").eq(_index).attr("districtId");
+		var city = $(".zc_edit").eq(_index).attr("city");
+		var purpose = $(".zc_edit").eq(_index).attr("purpose");
+		//end
 		var arr = new Array();
 		arr=addr.split(":"); //字符分割
 	    $('[name="addrType"]:radio').each(function() {
@@ -91,8 +134,19 @@ $(function(){
 		$("#hiddenEditAssetid").val(id);
 		$("#hiddenEditAssetName").val(name);
 		$("#hiddenEditAssetAddr").val(address[1]);//设置不带   http://  的地址
+		//add by tangxr 2016-3-3
+		$("#hiddenEditDistrictId").val(districtId);
+		$("#hiddenEditCity").val(city);
+		$("#hiddenEditPurpose").val(purpose);
+		//end
 		$("#editAssetName").val(name);
 		$("#editAssetAddr").val(address[1]);
+		//add by tangxr 2016-3-3
+//		 $("#editPurpose option[value='"+purpose+"']").attr("selected", true);
+		$("#editDistrictId").val(districtId);
+		getEditCitys(districtId)
+		$("#editPurpose").val(purpose);
+		//end
 		oMark2.style.display ="block";
 		oLogin2.style.display ="block";
 		oMark2.style.width = viewWidth() + 'px';
@@ -113,8 +167,13 @@ $(function(){
 				//$(".box_logoIn").empty()
 				$("#assetName").val("");
 				$("#assetAddr").val("");
+				$("#districtId").val(-1);
+				getCitys(-1);
+				$("#purpose").val("");
 				$("#assetName_msg").html("");
 				$("#assetAddr_msg").html("");
+				$("#location_msg").html("");
+				$("#assetUsage_msg").html("");
 			};
 		}
 		function toCloseedit(){
