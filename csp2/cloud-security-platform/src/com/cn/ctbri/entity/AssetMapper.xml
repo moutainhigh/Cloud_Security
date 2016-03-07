@@ -19,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap> 
 	<!-- 按用户id查询资产 -->
 	<select id="findByUserId" parameterType="int" resultMap="AssetRM">
-		select a.id,a.name,a.type,a.addr,a.status,a.userid,a.create_date,a.remarks
+		select a.id,a.name,a.type,a.addr,a.status,a.userid,a.create_date,a.remarks,a.districtId,a.city,a.purpose
 		from cs_asset a
 		where a.userid = #{userid}
 	</select>
@@ -59,6 +59,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 			<if test="addr!=null">
 				addr=#{addr},
+			</if>
+			<if test="districtId!=null">
+				districtId=#{districtId},
+			</if>
+			<if test="city!=null">
+				city=#{city},
+			</if>
+			<if test="purpose!=null">
+				purpose=#{purpose},
 			</if>
 				status=#{status}
 		</set>
@@ -109,4 +118,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 SELECT a.id,a.addr,a.name,dis.name as disName
 		 FROM cs_asset a,cs_district dis where a.districtId = dis.id and a.status = 1 order by a.create_date desc LIMIT #{pageNow},#{pageSize} 
 	</select>
+	
+	<!-- 根据任务查询资产集合 -->
+    <select id="getAssetByTask" parameterType="com.cn.ctbri.entity.Task" resultType="com.cn.ctbri.entity.Asset">
+        select a.* 
+        from cs_order_asset oa left join cs_asset a 
+        on oa.assetId = a.id  right join cs_task t 
+        on t.order_asset_Id = oa.id
+        where t.taskId = #{taskId}
+    </select>
 </mapper>

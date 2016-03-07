@@ -190,6 +190,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		)
     </select>
     
+    <select id="findFinishByOrderId" parameterType="hashmap" resultType="com.cn.ctbri.entity.Task">				
+	select *  from cs_task where taskId in
+		(select t.taskId id
+		from cs_task t,cs_order_asset oa
+		WHERE
+		t.order_asset_Id=oa.id 
+		and oa.orderId=#{orderId}
+        and t.status=3
+        and t.isAlarm=1
+		)
+    </select>
+    
     <!-- 根据条件查询任务表 -->
 	<select id="findTask" parameterType="hashmap" resultMap="TaskRM">
 		select * from cs_task t
@@ -245,12 +257,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 sendBytes=#{sendBytes},
             </if>
             <if test="receiveBytes!=null">
-                receiveBytes=#{receiveBytes}
+                receiveBytes=#{receiveBytes},
             </if>
             <!-- <if test="dns!=null">
                 dns=#{dns}
             </if> -->
+            <if test="isAlarm!=null">
+                isAlarm=#{isAlarm}
+            </if>
         </set>
         where taskId = #{taskId}
     </update>
+    
+    <!-- 查询弱点数 -->
+    <select id="findissueCount" parameterType="String" resultType="Integer">
+        SELECT ifnull(sum(t.issueCount),0) count
+        FROM cs_task t,cs_order_asset oa
+        WHERE t.order_asset_Id = oa.id AND oa.orderId = #{orderId}
+    </select>
 </mapper>

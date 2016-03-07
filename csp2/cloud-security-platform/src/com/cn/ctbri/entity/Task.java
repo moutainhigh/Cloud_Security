@@ -39,6 +39,7 @@ public class Task{
     private int websoc;//创宇
     private int alarm_view_flag;//告警是否查看过标识
     private String group_id;//创宇返回组id
+    private int isAlarm;
 	public int getProgress() {
 		return progress;
 	}
@@ -195,6 +196,12 @@ public class Task{
 	}
 	public void setAlarm_view_flag(int alarmViewFlag) {
 		alarm_view_flag = alarmViewFlag;
+	}
+	public int getIsAlarm() {
+		return isAlarm;
+	}
+	public void setIsAlarm(int isAlarm) {
+		this.isAlarm = isAlarm;
 	}
 
 	

@@ -72,4 +72,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         and o.status != 0
         order by o.create_date desc 
 	</select>
+	
+	<select id="findOrderAssetId" parameterType="hashmap" resultType="com.cn.ctbri.entity.OrderAsset">
+		select oa.id from cs_order_asset oa,cs_asset a
+        where oa.assetId = a.id 
+        and a.addr = #{url} 
+        and oa.orderid = #{orderId}
+    </select>
+	
 </mapper>

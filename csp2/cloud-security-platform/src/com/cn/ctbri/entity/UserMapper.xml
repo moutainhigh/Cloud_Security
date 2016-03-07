@@ -60,6 +60,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="status!=null">
 				status=#{status},
 			</if>	
+			<if test="job!=null">
+				job=#{job},
+			</if>
+			<if test="industry!=null">
+				industry=#{industry},
+			</if>
+			<if test="company!=null">
+				company=#{company},
+			</if>
 		</set>
 		where id=#{id}
 	</update>
@@ -75,7 +84,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入用户 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.User">
 		insert into cs_user 
-		(name,password,mobile,email,status,type,remarks,createTime,realName,ip,industry,job,company) values(#{name},#{password},#{mobile},#{email},#{status},#{type},#{remarks},#{createTime},#{realName},#{ip},#{industry},#{job},#{company})
+		(name,password,mobile,email,status,type,remarks,createTime,realName,ip,industry,job,company) 
+		values(#{name},#{password},#{mobile},#{email},#{status},#{type},#{remarks},#{createTime},#{realName},#{ip},#{industry},#{job},#{company})
 	</insert>
 	
 	<!-- 按用户名查询用户 -->

@@ -340,8 +340,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 根据条件查询订单信息 -->
     <select id="findOrderByMap" resultMap="OrderRM" parameterType="hashmap">
         select * from cs_order o
-		where o.status not in (1,2) and o.create_date &gt;='2016-01-01 00:00:00'
+		where o.status not in (1,2) and o.delFlag !=1 and o.create_date &gt;='2016-01-01 00:00:00'
 		
+    </select>
+    
+    <!-- 查询联系人 -->
+    <select id="findLinkmanById" resultType="com.cn.ctbri.entity.Linkman" parameterType="int">
+        select * from cs_linkman l where l.id=#{contactId}
     </select>
     
 </mapper>
