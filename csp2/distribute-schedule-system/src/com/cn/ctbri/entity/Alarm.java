@@ -17,7 +17,7 @@ public class Alarm implements Serializable{
 	//告警名称
 	private String name;
 	//告警时间
-	private Date alarm_time;
+	private String alarm_time;
 	//得分
     private String score;
 	//告警等级
@@ -77,7 +77,7 @@ public class Alarm implements Serializable{
 	 * 功能描述：取报警时间
 	 *		 @time 2015-01-07
 	 */
-	public Date getAlarm_time() {
+	public String getAlarm_time() {
 		return alarm_time;
 	}
 	/**
@@ -85,7 +85,7 @@ public class Alarm implements Serializable{
 	 * 参数描述：Date alarm_time 报警要设置的时间值
 	 *		 @time 2015-01-07
 	 */
-	public void setAlarm_time(Date alarm_time) {
+	public void setAlarm_time(String alarm_time) {
 		this.alarm_time = alarm_time;
 	}
 	

@@ -185,7 +185,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 二期 -->
     <!-- 根据订单Id和url查询任务 -->
     <select id="findTaskByOrderTaskId" parameterType="com.cn.ctbri.entity.Task" resultType="com.cn.ctbri.entity.Task">
-    	select * from cs_task t where t.orderTaskId = #{orderTaskId}
+    	select * from cs_task t 
+    	where t.orderTaskId = #{orderTaskId} 
+    	<if test="status != 0">
+          and t.status != #{status} 
+        </if>
     </select>
     
     <select id="findTaskByTaskObj" parameterType="com.cn.ctbri.entity.Task" resultType="com.cn.ctbri.entity.Task">
@@ -194,6 +198,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 根据订单Id查询任务 -->
     <select id="findTaskByOrderId" parameterType="String" resultType="com.cn.ctbri.entity.Task">
-    	select * from cs_task t where t.order_id = #{orderId}
+    	select * from cs_task t where t.order_id = #{orderId} and t.status != 1
     </select>
 </mapper>

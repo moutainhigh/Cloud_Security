@@ -47,6 +47,8 @@ public class Task implements Serializable{
 	private String beginTime;//vo开始时间
     private String endTime;//vo结束时间
     private String executeTime;//vo执行时间
+    private String groupFlag;//vo执行时间
+	private int isNextTask;//是否下一次扫描任务
     
 	public int getTaskId() {
 		return taskId;
@@ -247,5 +249,16 @@ public class Task implements Serializable{
 	public void setExecuteTime(String executeTime) {
 		this.executeTime = executeTime;
 	}
-    
+    public String getGroupFlag() {
+		return groupFlag;
+	}
+	public void setGroupFlag(String groupFlag) {
+		this.groupFlag = groupFlag;
+	}
+	public int getIsNextTask() {
+		return isNextTask;
+	}
+	public void setIsNextTask(int isNextTask) {
+		this.isNextTask = isNextTask;
+	}
 }
