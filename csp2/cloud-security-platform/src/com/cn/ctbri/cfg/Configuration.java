@@ -25,7 +25,11 @@ public class Configuration {
 	private static String username;//用户名
 	private static String passwordMobile;//向StringBuffer追加密码
 	private static String register_model;//注册模板
-	private static String warn_model;//告警模板
+	private static String warn1_model;//告警模板
+	private static String warn2_model;//告警模板
+	private static String warn3_model;//告警模板
+	private static String warn4_model;//告警模板
+	private static String warn5_model;//告警模板
 	private static String fileContent;//资产验证时的文件内容
 	static {
 		InputStream inputStream = Configuration.class.getClassLoader().getResourceAsStream("default.properties");
@@ -45,7 +49,11 @@ public class Configuration {
 		name=(String)prop.get("name");//名称
 		password=(String)prop.get("password");//密码
 		register_model=(String)prop.get("register_model");
-		warn_model=(String)prop.get("warn_model");
+		warn1_model=(String)prop.get("warn1_model");
+		warn2_model=(String)prop.get("warn2_model");
+		warn3_model=(String)prop.get("warn3_model");
+		warn4_model=(String)prop.get("warn4_model");
+		warn5_model=(String)prop.get("warn5_model");
 	}
 	public static String getFileContent() {
 		return fileContent;
@@ -107,12 +115,37 @@ public class Configuration {
     public static void setRegister_model(String register_model) {
         Configuration.register_model = register_model;
     }
-    public static String getWarn_model() {
-        return warn_model;
+    public static String getWarn1_model() {
+        return warn1_model;
     }
-    public static void setWarn_model(String warn_model) {
-        Configuration.warn_model = warn_model;
+    public static void setWarn1_model(String warn1_model) {
+        Configuration.warn1_model = warn1_model;
     }
+    public static String getWarn2_model() {
+        return warn2_model;
+    }
+    public static void setWarn2_model(String warn2_model) {
+        Configuration.warn2_model = warn2_model;
+    }
+    public static String getWarn3_model() {
+        return warn3_model;
+    }
+    public static void setWarn3_model(String warn3_model) {
+        Configuration.warn3_model = warn3_model;
+    }
+    public static String getWarn4_model() {
+        return warn4_model;
+    }
+    public static void setWarn4_model(String warn4_model) {
+        Configuration.warn4_model = warn4_model;
+    }
+    public static String getWarn5_model() {
+        return warn5_model;
+    }
+    public static void setWarn5_model(String warn5_model) {
+        Configuration.warn5_model = warn5_model;
+    }
+    
     
 	
 }
