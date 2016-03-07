@@ -31,6 +31,7 @@ public class OrderTask {
 	private String url;//资产url
 	private int task_status;//任务状态
 	private String orderTaskId;//订单任务ID
+	private int warn;
 	public String getBegin_datevo() {
 		return begin_datevo;
 	}
@@ -158,6 +159,12 @@ public class OrderTask {
 	}
 	public void setOrderTaskId(String orderTaskId) {
 		this.orderTaskId = orderTaskId;
+	}
+	public int getWarn() {
+		return warn;
+	}
+	public void setWarn(int warn) {
+		this.warn = warn;
 	}
 	
 }

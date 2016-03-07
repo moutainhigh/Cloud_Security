@@ -24,8 +24,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 插入订单任务 -->
     <insert id="insert" parameterType="com.cn.ctbri.entity.OrderTask">
         insert into cs_order_task
-        (orderId, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, contactId, remarks, status, websoc, url, task_status, orderTaskId) 
-        values(#{orderId}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks}, #{status}, #{websoc}, #{url}, #{task_status}, #{orderTaskId})
+        (orderId, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, remarks, status, websoc, url, task_status, orderTaskId) 
+        values(#{orderId}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{remarks}, #{status}, #{websoc}, #{url}, #{task_status}, #{orderTaskId})
     </insert>
     
     <!-- 根据条件查询订单任务表 -->
@@ -51,8 +51,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status!=null">
                 status=#{status},
             </if>
+            <if test="orderTaskId!=null">
+                orderTaskId=#{orderTaskId},
+            </if>
+            <if test="warn!=null">
+                warn=#{warn},
+            </if>
 		</set>
-		where orderId = #{orderId}
+		where id = #{id}
 	</update>
     
     

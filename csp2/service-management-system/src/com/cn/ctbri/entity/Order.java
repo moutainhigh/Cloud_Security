@@ -25,6 +25,7 @@ public class Order {
 	private String servName;//服务名称vo
 	private String begin_datevo;//begin_date vo
 	private String end_datevo;//end_date vo备注
+	private String task_datevo;//end_date vo备注
 	private int message;//是否发送告警信息
 	private int websoc;//创宇标志
 	public String getBegin_datevo() {
@@ -39,7 +40,12 @@ public class Order {
 	public void setEnd_datevo(String end_datevo) {
 		this.end_datevo = end_datevo;
 	}
-	
+	public String getTask_datevo() {
+		return task_datevo;
+	}
+	public void setTask_datevo(String task_datevo) {
+		this.task_datevo = task_datevo;
+	}
 	public String getServName() {
 		return servName;
 	}

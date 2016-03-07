@@ -35,6 +35,7 @@ public class Task{
     private String beginTime;//vo开始时间
     private String endTime;//vo结束时间
     private String executeTime;//vo执行时间
+    private String groupFlag;//vo执行时间
     
 	public int getTaskId() {
 		return taskId;
@@ -191,6 +192,12 @@ public class Task{
 	}
 	public void setExecuteTime(String executeTime) {
 		this.executeTime = executeTime;
+	}
+	public String getGroupFlag() {
+		return groupFlag;
+	}
+	public void setGroupFlag(String groupFlag) {
+		this.groupFlag = groupFlag;
 	}
     
 }

@@ -47,9 +47,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="update"  parameterType="com.cn.ctbri.entity.Order">
 		update cs_order
 		<set>
-			<if test="message!=null">
-				message=#{message},
-			</if>
 			<if test="status!=null">
 				status = #{status},
 			</if>
@@ -69,7 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 根据订单Id查询记录 -->
     <select id="findOrderByOrderId" resultType="com.cn.ctbri.entity.Order" parameterType="String">
-        select o.id,o.type,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status
+        select o.id,o.type,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc
         from cs_order o
         where o.id = #{orderId}
     </select>

@@ -62,9 +62,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select> -->
     
     <select id="findAlarmByOrderId" parameterType="String" resultMap="Alarm">
-	        SELECT a.*
+	       <!--   SELECT a.*
 	        FROM cs_order_asset oa ,cs_task t,cs_alarm a
-	        WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND (t.taskId=a.taskId or t.group_id=a.group_id)
+	        WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND (t.taskId=a.taskId or t.group_id=a.group_id)-->
+    	 
+    	 select a.id,a.name,a.alarm_time,a.score,a.level,a.alarm_content,a.url,a.keyword,a.taskId,a.alarm_type,a.userId,a.group_id,a.advice from cs_alarm a,
+			  (select t.taskId,t.group_id from cs_order_task ot,cs_task t 
+			    where ot.orderTaskId = t.orderTaskId
+			    and ot.orderTaskId  like CONCAT(CONCAT('%', #{orderId}), '%')
+			    and t.status = 3
+			    <if test="group_flag!=null and group_flag!=''">
+	            and t.group_flag=#{group_flag}
+	            </if>
+			    order by t.execute_time desc
+			    <if test="type==1 and group_flag==null or group_flag==''">
+	             limit #{count}
+	            </if>) b
+			where (a.taskId = b.taskId or a.group_id = b.group_id)
+			<if test="level!=null">
+	            and a.level=#{level}
+	        </if>
+	        <if test="name!=null">
+                and a.name=#{name}
+            </if>
+	        order by a.level desc
     </select> 
     
     <!-- 查询本次告警信息 -->
@@ -104,5 +125,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 根据taskid查询告警数  -->
     <select id="findAlarmByTaskId" resultMap="Alarm" parameterType="String">
         select * from cs_alarm a where a.taskId = #{taskId}
+    </select>
+    
+    <select id="findAlarmByOrderIdorGroupId" resultMap="Alarm" parameterType="hashmap">
+        select a.name,a.level,count(*) as num from cs_alarm a,
+            (select t.taskId,t.group_id from cs_order_task ot,cs_task t
+            where ot.orderTaskId = t.orderTaskId
+            and ot.orderTaskId  like CONCAT(CONCAT('%', #{orderId}), '%')
+            and t.status = 3
+            <if test="group_flag!=null and group_flag!=''">
+            and t.group_flag=#{group_flag}
+            </if>
+            order by t.execute_time desc
+            <if test="type==1 and group_flag==null or group_flag==''">
+             limit #{count}
+            </if>
+            ) b  where (a.taskId = b.taskId or a.group_id = b.group_id) group by a.name order by a.level desc
     </select>
 </mapper>

@@ -135,9 +135,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 插入任务信息 -->
     <insert id="insert" parameterType="com.cn.ctbri.entity.Task">
-	INSERT INTO cs_task
-	(taskId,order_asset_Id,execute_time,status,group_flag,end_time,remarks,websoc,begin_time,scanTime,engineIP,taskProgress,currentUrl,issueCount,requestCount,urlCount,averResponse,averSendCount,sendBytes,receiveBytes,orderTaskId)
-	VALUES(#{taskId},#{order_asset_Id},#{execute_time},#{status},#{group_flag},#{end_time},#{remarks},#{websoc},#{begin_time},#{scanTime},#{engineIP},#{taskProgress},#{currentUrl},#{issueCount},#{requestCount},#{urlCount},#{averResponse},#{averSendCount},#{sendBytes},#{receiveBytes},#{orderTaskId})
+		INSERT INTO cs_task
+			(taskId,order_asset_Id,execute_time,status,group_flag,remarks,
+			engineIP,taskProgress,currentUrl,begin_time,end_time,scanTime,
+			issueCount,requestCount,urlCount,averResponse,
+			averSendCount,sendBytes,receiveBytes,websoc,orderTaskId) 
+			VALUES(#{taskId}, #{order_asset_Id} , #{execute_time},#{status},#{group_flag},
+			#{remarks},#{engineIP},#{taskProgress},#{currentUrl},#{begin_time},#{end_time},#{scanTime},
+			#{issueCount},#{requestCount},#{urlCount},#{averResponse},#{averSendCount},#{sendBytes},#{receiveBytes},#{websoc},#{orderTaskId})
+			ON DUPLICATE KEY UPDATE 
+				status=#{status},
+				engineIP=#{engineIP},
+				taskProgress=#{taskProgress},
+                currentUrl=#{currentUrl},
+                execute_time=#{execute_time},
+                group_flag=#{group_flag},
+                begin_time=#{begin_time},
+                end_time=#{end_time},
+                scanTime=#{scanTime},
+                issueCount=#{issueCount},
+                requestCount=#{requestCount},
+                urlCount=#{urlCount},
+                averResponse=#{averResponse},
+                averSendCount=#{averSendCount},
+                sendBytes=#{sendBytes},
+                receiveBytes=#{receiveBytes}
 	</insert>
     
     <select id="getTypeByAssetId" parameterType="Integer" resultType="com.cn.ctbri.entity.OrderAsset">
@@ -197,13 +219,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <!-- 根据orderId获取任务 -->
-    <select id="findTaskByOrderId" parameterType="String" resultType="com.cn.ctbri.entity.Task">
-         select t.* from cs_task t,cs_order_task ot where t.orderTaskId = ot.orderTaskId and ot.orderId = #{orderId}
+    <select id="findTaskByOrderId" parameterType="String" resultType="map">
+         select t.taskId, t.status,
+	         date_format(t.execute_time,'%Y-%m-%d %H:%i:%S') executeTime,
+	         date_format(t.begin_time,'%Y-%m-%d %H:%i:%S') beginTime,
+	         ifnull(date_format(t.end_time,'%Y-%m-%d %H:%i:%S'),'') endTime,
+	         date_format(t.group_flag,'%Y-%m-%d %H:%i:%S') groupFlag,
+	         t.engineIP, t.taskProgress, t.currentUrl,
+	         t.scanTime, t.issueCount, t.requestCount,
+	         t.urlCount, t.averResponse, t.averSendCount,
+	         t.sendBytes, t.receiveBytes, t.group_id, ot.url
+         from cs_task t,cs_order_task ot 
+         where t.orderTaskId = ot.orderTaskId 
+         and ot.orderId = #{orderId}
     </select>
     
     <!-- 根据taskId获取任务 -->
     <select id="findTaskByTaskId" parameterType="String" resultType="com.cn.ctbri.entity.Task">
          select * from cs_task t where t.taskId = #{taskId}
+    </select>
+    
+    <!-- 查找运行task -->
+    <select id="findRunningTask" parameterType="String" resultType="com.cn.ctbri.entity.Task">
+        SELECT t.*
+        FROM cs_task t
+        WHERE t.orderTaskId  like CONCAT(CONCAT('%', #{orderId}), '%') and t.status = 2
+    </select>
+    
+    <!-- 查询弱点数 -->
+    <select id="findissueCount" parameterType="String" resultType="Integer">
+        SELECT ifnull(sum(t.issueCount),0) issueCount
+        FROM cs_task t
+        WHERE t.orderTaskId  like CONCAT(CONCAT('%', #{orderId}), '%')
     </select>
     
 </mapper>
