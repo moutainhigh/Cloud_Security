@@ -35,10 +35,10 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 	}  
 	
 	public List<Task> findTask(Map<String, Object> map) {
-		String taskpage = String.valueOf(map.get("page"));
-		if(taskpage == null || "".equals(taskpage)){
-			taskpage = "20";
-		}
+//		String taskpage = String.valueOf(map.get("page"));
+//		if(taskpage == null || "".equals(taskpage)){
+//			taskpage = "20";
+//		}
 		return getSqlSession().selectList(ns+"findTask", map);
 	}
 	
@@ -105,8 +105,8 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 		return this.getSqlSession().selectOne(ns+"findTaskById",taskId);
 	}
 
-	public Task findTaskByOrderTaskId(Task task) {
-		return this.getSqlSession().selectOne(ns+"findTaskByOrderTaskId",task);
+	public List<Task> findTaskByOrderTaskId(Task task) {
+		return this.getSqlSession().selectList(ns+"findTaskByOrderTaskId",task);
 	}
 
 	public List<Task> findTaskByOrderId(String orderId) {
