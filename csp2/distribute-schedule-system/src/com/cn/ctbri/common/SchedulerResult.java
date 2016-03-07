@@ -245,7 +245,7 @@ public class SchedulerResult {
 					for (Element issuedata : issuedatas) {
 						Alarm alarm = new Alarm();
 						alarm.setTaskId(Long.parseLong(taskId));
-						alarm.setAlarm_time(sdf.parse(URLDecoder.decode(time, "UTF-8")));
+//						alarm.setAlarm_time(sdf.parse(URLDecoder.decode(time, "UTF-8")));
 						alarm.setUrl(URLDecoder.decode(url, "UTF-8"));
 						alarm.setAlarm_type(URLDecoder.decode(alarm_type, "UTF-8"));
 						alarm.setName(URLDecoder.decode(name, "UTF-8"));
