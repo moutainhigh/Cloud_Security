@@ -18,7 +18,7 @@
              <td>
                  <c:set var="temp" value="${nowDate }"/>
                  <c:if test="${list.begin_date>temp}">已下单</c:if>
-                 <c:if test="${list.begin_date<=temp&&(list.status==0||list.status==3)}">服务中</c:if>
+                 <c:if test="${list.begin_date<=temp&&(list.status==0||list.status==3||list.status==4||list.status==5)}">服务中</c:if>
                  <c:if test="${list.status==1||list.status==2}">已结束</c:if>
                  
              </td>
@@ -28,7 +28,7 @@
              <td><fmt:formatDate value="${list.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>~<fmt:formatDate value="${list.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
              <td><fmt:formatDate value="${list.create_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
              <td>
-             <c:if test="${list.begin_date>temp||list.websoc==2}"><img src="${ctx}/source/images/status_3.jpg" title="等待"/></c:if>
+             <c:if test="${list.begin_date>temp||list.status==0}"><img src="${ctx}/source/images/status_3.jpg" title="等待"/></c:if>
              
              <c:if test="${list.serviceId==1||list.serviceId==2||list.serviceId==3||list.serviceId==4||list.serviceId==5}">
                 <c:if test="${list.status==2}">
@@ -47,7 +47,7 @@
                  </a>
                 </c:if>
                 <!-- 安恒的服务 -->
-                <c:if test="${list.begin_date<=temp&&list.status==4&&list.websoc!=2}"><a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank"><img src="${ctx}/source/images/status_4.jpg" title="服务中"/></a></c:if>
+                <c:if test="${list.begin_date<=temp&&(list.status==4||list.status==5)&&list.websoc!=2}"><a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank"><img src="${ctx}/source/images/status_4.jpg" title="服务中"/></a></c:if>
                 <c:if test="${list.begin_date<=temp&&list.status==3}"><a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank">
                  <c:if test="${list.alarmViewedFlag==0}">
                 <img src="${ctx}/source/images/status_1.jpg" title="服务中有告警"/>
@@ -78,9 +78,9 @@
                 </c:if>
              </c:if>
              <!-- 订单删除操作 -->
-             <a href="javascript:void(0)" onclick="deleteOrder('${list.id}','${list.begin_date}')"><img src="${ctx}/source/images/del.png" title="删除"/></a>   
-             <!-- <c:if test="${list.status==4}"><a href="javascript:void(0)" onclick="optOrder('${list.id}','${list.status}')">暂</a></c:if>
-             <c:if test="${list.status==5}"><a href="javascript:void(0)" onclick="optOrder('${list.id}','${list.status}')">启</a></c:if> -->
+             <c:if test="${list.status==1||list.status==2||list.status==0}"><a href="javascript:void(0)" onclick="deleteOrder('${list.id}','${list.begin_date}')"><img src="${ctx}/source/images/del.png" title="删除"/></a></c:if>
+             <c:if test="${list.status==4}"><a href="javascript:void(0)" onclick="optOrder('${list.id}','${list.status}')"><img src="${ctx}/source/images/stop.png" title="暂停"/></a></c:if>
+             <c:if test="${list.status==5}"><a href="javascript:void(0)" onclick="optOrder('${list.id}','${list.status}')"><img src="${ctx}/source/images/resume.png" title="启动"/></a></c:if>
              </td>
            </tr>
        </c:forEach>

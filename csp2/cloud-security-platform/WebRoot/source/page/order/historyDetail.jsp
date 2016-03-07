@@ -16,8 +16,16 @@
 <link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
+<SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
+<!-- add by 2016-02 -->
+<link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
+<link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="${ctx}/source/scripts/common/portalindex.js"></script>
+<script src="${ctx}/source/scripts/common/popBox.js"></script>
+<link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
+<script src="${ctx}/source/scripts/common/slidelf.js"></script>
 </head>
 
 <body>
@@ -38,43 +46,71 @@
    </div>
 </div>
 <!-- 尾部代码开始-->
-<div class="bottom_bj">
-<div class="bottom">
-<div class="bottom_main">
-  <h3><a href="###">新手入门</a></h3>
-  <ul>
-       <li><a href="${ctx}/registUI.html">新用户注册</a></li>
-    <li><a href="${ctx}/loginUI.html">用户登录</a></li>
-    <li><a href="###">找回密码</a></li>
-  </ul>
+<div class="safeBox">
+		<div class="safe04">
+			<div class="imgBox clearfix">
+				<div class="footL fl">
+					<a href="#"><img src="${ctx}/source/images/portal/footlogo.png" alt=""></a>
+				</div>
+				<ol class="footr clearfix fr">
+					<li>
+                    	<h2>帮助中心</h2>
+                        <dl>
+                        	<dd><a href="#">购买指南</a></dd>
+                            <dd><a href="#">在线帮助</a></dd>
+                            <dd><a href="#">常见问题</a></dd>
+                       </dl>
+                    </li>
+                    <li>
+                    	<h2>关于安全帮</h2>
+                        <dl>
+                        	<dd><a href="${ctx}/knowUs.html">了解安全帮</a></dd>
+                            <dd><a href="${ctx}/joinUs.html">加入安全帮</a></dd>
+                            <dd><a href="#">联系我们</a></dd>
+                       </dl>
+                    </li>
+                    <li>
+                    	<h2>关注我们</h2>
+                        <dl>
+                        	<dd><a href="#">QQ交流群</br>470899318</a></dd>
+                            <dd class="weixin"><a href="#">官方微信</a></dd>
+                       </dl>
+                    </li>
+                     <li>
+                    	<h2>特色服务</h2>
+                        <dl>
+                        	<dd><a href="#">优惠劵通道</a></dd>
+                            <dd><a href="#">专家服务通道</a></dd>
+                       </dl>
+                    </li>
+					
+				</ol>
+				
+			</div>
+		</div>
+		<div class="foot">
+			<p>版权所有Copyright © 2015 中国电信股份有限公司北京研究院京ICP备12019458号-10</p>
+		</div>
+		<!---执行效果-->
+<div class="weixinshow popBoxhide" id="weixin">
+	<i class="close chide"></i>
+    <div class="Pophead">
+    	<h1 class="heaf">安全帮微信二维码</h1>
+    </div>
+	<div class="popBox">
+    	 <p>打开微信，点击右上角的“+”，选择“扫一扫”功能，<br>
+对准下方二维码即可。
+		</p>
+           <div class="weinImg" style="text-align:center;">
+           	<img src="${ctx}/source/images/portal/weixin.png" alt="">
+           </div> 
+    </div>
+
 </div>
-<div  class="bottom_main">
-   <h3><a href="###"> 帮助</a></h3>
-  <ul>
-    <li><a href="${ctx}/aider.html">常见问题</a></li>
-  </ul>
+	
+<div class="shade"></div>
 </div>
-<div  class="bottom_main">
-  <h3><a href="###">厂商合作</a></h3>
-  <ul>
-    <li><a href="###">华为</a></li>
-    <li><a href="###">安恒</a></li>
-    <li><a href="###">知道创宇</a></li>
-  </ul>
-</div>
-<div  class="bottom_main">
-<h3><a href="###">联系我们</a></h3>
-<ul>
-<li><a href="###">QQ交流群470899318</a></li>
-</div>
-<div  class="bottom_main" style="width:380px;">
-<h3><a href="###">版权信息</a></h3>
- <ul>
- <li>Copyright&nbsp;©&nbsp;2015 中国电信股份有限公司北京研究院<br />
-京ICP备12019458号－10</li>
-</div>
-</div>
-</div>
+<!-- 尾部代码结束 -->
 </div>
 </body>
 </html>
