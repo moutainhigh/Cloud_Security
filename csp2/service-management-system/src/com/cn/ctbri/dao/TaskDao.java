@@ -72,7 +72,11 @@ public interface TaskDao {
 
 	public Task findByOrderTaskId(String orderTaskId);
 
-	public Task findTaskByOrderId(String orderId);
+	public List findTaskByOrderId(String orderId);
 
 	public Task findTaskByTaskId(String taskId);
+
+	public List<Task> findRunningTask(String orderId);
+
+	public int findissueCount(String orderId);
 }

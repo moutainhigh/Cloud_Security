@@ -44,4 +44,6 @@ public interface AlarmDao {
 	public void update(Alarm alarm);
 	
 	public List<Alarm> findAlarmByTaskId(String taskId);
+	
+	public List findAlarmByOrderIdorGroupId(Map<String, Object> paramMap);
 }

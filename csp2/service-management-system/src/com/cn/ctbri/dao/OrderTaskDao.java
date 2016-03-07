@@ -79,5 +79,5 @@ public interface OrderTaskDao {
 
 	public List<Task> getDels();
 
-	OrderTask findByOrderId(String orderId);
+	List<OrderTask> findByOrderId(String orderId);
 }

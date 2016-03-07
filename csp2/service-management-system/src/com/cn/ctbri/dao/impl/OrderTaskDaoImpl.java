@@ -45,6 +45,10 @@ public class OrderTaskDaoImpl extends DaoCommon implements OrderTaskDao{
 	
 	
 	public List<OrderTask> findOrderTask(Map<String, Object> map) {
+		String taskpage = String.valueOf(map.get("page"));
+		if(taskpage == null || "".equals(taskpage)){
+			taskpage = "20";
+		}
 		return getSqlSession().selectList(ns+"findOrderTask", map);
 	}
 	
@@ -123,8 +127,8 @@ public class OrderTaskDaoImpl extends DaoCommon implements OrderTaskDao{
 	}
 
 
-	public OrderTask findByOrderId(String orderId) {
-		return getSqlSession().selectOne(ns+"findByOrderId", orderId);
+	public List<OrderTask> findByOrderId(String orderId) {
+		return getSqlSession().selectList(ns+"findByOrderId", orderId);
     }
 	
 }
