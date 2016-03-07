@@ -15,8 +15,30 @@
 <script src="${ctx}/source/scripts/common/portalindex.js"></script>
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
-<script src="${ctx}/source/scripts/common/main.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
+<script src="${ctx}/source/scripts/common/popBox.js"></script>
+<link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
+<script src="${ctx}/source/scripts/common/slidelf.js"></script>
+<style>
+body,html{
+	height: 100%;
+	width: 100%;
+}
+.helph{height:30px;font-size:18x;line-height:30px;padding-left:20px;color:#666;padding-top:20px;
+	width: 70%;
+margin: 10px 10%;
+}
+.helphn{
+	height:30px;font-size:20px !important;line-height:30px;padding-left:20px;color:#4593fd;padding:20px 0 10px 0;
+	text-align: center;
+	margin-bottom:0 !important;
+}
+.help_detail{margin: 10px 0 0 20px;color: #888;font-size: 16px; text-indent:2em;line-height:30px;
+	width: 70%;
+margin: 0 18%;
+}
+
+</style>
 </head>
 
 <body>
@@ -58,94 +80,48 @@
 					</div>
 				</div>
 			</div>
-			<div class="bannerBox vBox">
-	            <div class="v_show">
-					<div class="bannerB v_cont">
-						<ul class="bannerHeight banner_img clearfix">
-							<li style="background-color: #0f2f50; display: list-item;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/bigpic.png" alt=""></a></div></li>
-							<li style="background-color: #0f2f50;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/bigpic.png" alt=""></a></div></li>
-							<li style="background-color: #0f2f50;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/bigpic.png" alt=""></a></div></li>
-						</ul>
-					</div>
-		         </div>
-				<ol class="bannerbtn circle clearfix">
-                    <li class="active"></li>
-                    <li></li>
-                    <li></li>
-				</ol>
-			</div>
 
 		</div>
+		
+		
 		<div class="safe02">
 			
 			<div class="imgBox">
-				<h2><i></i>热门服务<i></i></h2>
-				<ul class="imgBoxList clearfix">
-					<li>
-						<a href="${ctx}/web_anquanbang.html">
-							<span>
-								<img src="${ctx}/source/images/portal/ico04.png" alt="" />
-							</span>
-							<h3>网站安全帮</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/ico01.png" alt="" />
-							</span>
-							<h3>数据库安全帮</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/ico05.png" alt="" />
-							</span>
-							<h3>系统安全帮</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/ico03.png" alt="" />
-							</span>
-							<h3>网络安全帮</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/ico06.png" alt="" />
-							</span>
-							<h3>移动安全帮</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/API.png" alt="" />
-							</span>
-							<h3>安全能力API</h3>
-						</a>
-					</li>
-					<li>
-						<a href="${ctx}/sa_anquanbang.html" target="_blank">
-							<span>
-								<img src="${ctx}/source/images/portal/ico02.png" alt="" />
-							</span>
-							<h3>安全态势感知</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/X.png" alt="" />
-							</span>
-							<h3>X专区</h3>
-						</a>
-					</li>
-				</ul>
+				  <div class="user_right" style="width: 942px;border:1px solid #e0e0e0; margin:0 auto;">
+			  	  <a name="1F">
+				  <div id="f1" class="dd">
+				    <h2 class="helphn">一、平台开发工程师</h2>
+				    <h3 class="helph">（一）工作职责：</h3>
+				    <p class="help_detail">从事安全帮平台开发和测试工作。</p>
+				    <h3 class="helph">（二）任职条件：</h3>
+				    <p class="help_detail">1、1-3年以上Java web开发经验；</p>
+				    <p class="help_detail">2、精通三大框架struts、spring、hibernate；</p>
+				    <p class="help_detail">3、熟悉Java web开发相关技术，html/css/javascript，有linux下开发布署经验者优先；</p>
+				    <p class="help_detail">4、熟悉Web Service并深刻理解RESTFUL Stateless的概念，了解JSON API的设计和具有实现经验；</p>
+				    <p class="help_detail">5、掌握关系数据库mysql，了解noSql、mongoDB、redis等技术；</p>
+				    <p class="help_detail">6、具备良好的编码风格及文档编写能力；</p>
+				    <p class="help_detail">7、具有较强的学习能力、沟通能力和团队合作精神。</p>
+				    
+				  </div>
+				  </a>
+				  <a name="2F">
+				  <div id="f2" class="dd" >
+				    <h2 class="helphn">二、WEB前端开发工程师</h2>
+				    <h3 class="helph">（一）工作职责：</h3>
+				    <p class="help_detail">从事安全帮web前端开发和测试工作。</p>
+				    <h3 class="helph">（二）任职条件：</h3>
+				    <p class="help_detail">1、1-3年以上Java web开发经验；</p>
+				    <p class="help_detail">2、熟悉Html/CSS/JS/JQuery/Bootstrap/echarts等常见的WEB前端技术；</p>
+				    <p class="help_detail">3、熟悉页面架构及布局，对Web标准和标签语义有深入理解；</p>
+				    <p class="help_detail">4、有良好的学习能力、沟通能力和合作精神；</p>
+				    <p class="help_detail">5、有WEB前端开发经验者优先。</p>
+			        <h2 class="helphn"> 简历请发送至 hr@anquanbang.net</h3>
+			     
+			      </div>
+			      </a>
+			      
+			  
+			  </div>
 			</div>
 		</div>
 		
@@ -157,11 +133,11 @@
                     <div class="left-arrow"><a href="javascript:;"><img src="${ctx}/source/images/portal/left.png"></a></div>
                     <div class="fl-pic">
                       <ul class="imgist clearfix">
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico14.png" alt=""></a></li>
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico12.png" alt=""></a></li>
                         <li><a href="#"><img src="${ctx}/source/images/portal/ico11.png" alt=""></a></li>
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico15.png" alt=""></a></li>
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico12.png" alt=""></a></li>
                         <li><a href="#"><img src="${ctx}/source/images/portal/ico13.png" alt=""></a></li>
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico14.png" alt=""></a></li>
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico15.png" alt=""></a></li>
                         <!--<li><a href="#"><img src="imges/ico13.png" alt=""></a></li>
                         <li><a href="#"><img src="imges/ico14.png" alt=""></a></li>
                         <li><a href="#"><img src="imges/ico15.png" alt=""></a></li>-->
@@ -235,6 +211,7 @@
 	
 <div class="shade"></div>
 	</div>
+	
 
 </body>
 <script>

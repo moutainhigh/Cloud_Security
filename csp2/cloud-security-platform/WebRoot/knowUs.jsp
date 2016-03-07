@@ -15,8 +15,31 @@
 <script src="${ctx}/source/scripts/common/portalindex.js"></script>
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
-<script src="${ctx}/source/scripts/common/main.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
+<script src="${ctx}/source/scripts/common/popBox.js"></script>
+<link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
+<script src="${ctx}/source/scripts/common/slidelf.js"></script>
+<style>
+body,html{
+	height: 100%;
+	width: 100%;
+}
+.helph{height:30px;font-size:18x;line-height:30px;padding-left:20px;color:#666;padding-top:20px;
+	width: 70%;
+margin: 10px 26%;
+}
+.helphn{
+	height:30px;font-size:20px !important;line-height:30px;padding-left:20px;color:#666;padding:20px 0 10px 0;
+	text-align: center;
+	margin-bottom:0 !important;
+}
+.help_detail{margin: 10px 0 0 20px;color: #888;font-size: 16px; text-indent:2em;line-height:30px;
+	width: 70%;
+margin: 0 26%;
+}
+.hr{width:70%;height:1px;background:#666;margin:0 auto;margin-bottom:20px;overflow: hidden; }
+
+</style>
 </head>
 
 <body>
@@ -58,94 +81,65 @@
 					</div>
 				</div>
 			</div>
-			<div class="bannerBox vBox">
-	            <div class="v_show">
-					<div class="bannerB v_cont">
-						<ul class="bannerHeight banner_img clearfix">
-							<li style="background-color: #0f2f50; display: list-item;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/bigpic.png" alt=""></a></div></li>
-							<li style="background-color: #0f2f50;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/bigpic.png" alt=""></a></div></li>
-							<li style="background-color: #0f2f50;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/bigpic.png" alt=""></a></div></li>
-						</ul>
-					</div>
-		         </div>
-				<ol class="bannerbtn circle clearfix">
-                    <li class="active"></li>
-                    <li></li>
-                    <li></li>
-				</ol>
-			</div>
 
 		</div>
+		
+		
 		<div class="safe02">
 			
 			<div class="imgBox">
-				<h2><i></i>热门服务<i></i></h2>
-				<ul class="imgBoxList clearfix">
-					<li>
-						<a href="${ctx}/web_anquanbang.html">
-							<span>
-								<img src="${ctx}/source/images/portal/ico04.png" alt="" />
-							</span>
-							<h3>网站安全帮</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/ico01.png" alt="" />
-							</span>
-							<h3>数据库安全帮</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/ico05.png" alt="" />
-							</span>
-							<h3>系统安全帮</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/ico03.png" alt="" />
-							</span>
-							<h3>网络安全帮</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/ico06.png" alt="" />
-							</span>
-							<h3>移动安全帮</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/API.png" alt="" />
-							</span>
-							<h3>安全能力API</h3>
-						</a>
-					</li>
-					<li>
-						<a href="${ctx}/sa_anquanbang.html" target="_blank">
-							<span>
-								<img src="${ctx}/source/images/portal/ico02.png" alt="" />
-							</span>
-							<h3>安全态势感知</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/X.png" alt="" />
-							</span>
-							<h3>X专区</h3>
-						</a>
-					</li>
-				</ul>
+				  <div class="user_right" style="width: 942px;border:1px solid #e0e0e0; margin:0 auto;">
+			  	  <a name="1F">
+				  <div id="f1" class="dd">
+				    <p class="help_detail">安全帮，</p>
+				    <p class="help_detail">是一个全自助式安全服务电子商城，</p>
+				    <p class="help_detail">2015年诞生于中国电信北京研究院安全技术与应用产品线。</p><br/>
+				    
+				    <p class="help_detail">在这里，</p>
+				    <p class="help_detail">你可以像在线购买普通商品那样，</p>
+				    <p class="help_detail">购买和使用及时生效的安全服务。</p>
+				    <p class="help_detail">这样，</p>
+				    <p class="help_detail">你不用再购买昂贵的安全设备，</p>
+				    <p class="help_detail">不用再部署高大上的安全设备，</p>
+				    <p class="help_detail">不用再熬夜看使用手册，</p>
+				    <p class="help_detail">你要做的，就是：</p>
+				    <p class="help_detail">轻点鼠标，立享服务，</p>
+				    <p class="help_detail">晴空万里，一切都好！</p><br/>
+				    
+				    <p class="help_detail">这是一个美好的理想，</p>
+				    <p class="help_detail">也是我们的梦想。</p>
+				    <p class="help_detail">梦想是远大的，如何实现呢？</p>
+				    <p class="help_detail">我们决定先上线“网站安全帮”：</p>
+				    <p class="help_detail">为370万个网站提供7*24小时的安全监测及预警服务。</p>
+				    <p class="help_detail">我们的梦想，</p>
+				    <p class="help_detail">为了让那些苦逼的网管不再那么疲倦，</p>
+				    <p class="help_detail">让他们可以睡一次安稳觉。</p><br/>
+				    
+				    <p class="help_detail">也许，我们的梦想就是：</p>
+				    <p class="help_detail">我们希望可以让网管不再那么苦逼，</p>
+				    <p class="help_detail">我们希望可以让企业不再那么花钱，</p>
+				    <p class="help_detail">我们希望可以让安全不再那么遥远…….</p><br/>
+				    
+				    <p class="help_detail">我们刚开始，</p>
+				    <p class="help_detail">做的还很不好，</p>
+				    <p class="help_detail">我们在路上，</p>
+				    <p class="help_detail">为了梦想努力的向前走，</p>
+				    <p class="help_detail">我们相信：我们会做得更好，</p>
+				    <p class="help_detail">因为我们的梦想，</p>
+				    <p class="help_detail">因为我们的坚持，</p>
+				    <p class="help_detail">因为我们的专业。</p><br/>
+				    <div class="hr"></div>
+				    <p class="help_detail">“安全帮”——全自助式安全服务在线商城，是中国电信基于<br/>
+				                                               专业安全能力自主研发的云安全服务平台，旨在解决企业面临的安<br/>
+				                                               全厂商多、安全产品繁、安全投资大、安全人才缺等四大问题，为<br/>
+				                                               用户提供一站式安全服务。 用户通过在线注册购买，即可享受及时、<br/>
+				                                               在线、智能、便捷的安全服务，全面保障业务安全。</p><br/>
+				                                               
+				  </div>
+				  </a>
+			      
+			  
+			  </div>
 			</div>
 		</div>
 		
@@ -157,11 +151,11 @@
                     <div class="left-arrow"><a href="javascript:;"><img src="${ctx}/source/images/portal/left.png"></a></div>
                     <div class="fl-pic">
                       <ul class="imgist clearfix">
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico14.png" alt=""></a></li>
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico12.png" alt=""></a></li>
                         <li><a href="#"><img src="${ctx}/source/images/portal/ico11.png" alt=""></a></li>
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico15.png" alt=""></a></li>
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico12.png" alt=""></a></li>
                         <li><a href="#"><img src="${ctx}/source/images/portal/ico13.png" alt=""></a></li>
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico14.png" alt=""></a></li>
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico15.png" alt=""></a></li>
                         <!--<li><a href="#"><img src="imges/ico13.png" alt=""></a></li>
                         <li><a href="#"><img src="imges/ico14.png" alt=""></a></li>
                         <li><a href="#"><img src="imges/ico15.png" alt=""></a></li>-->
@@ -235,6 +229,7 @@
 	
 <div class="shade"></div>
 	</div>
+	
 
 </body>
 <script>
