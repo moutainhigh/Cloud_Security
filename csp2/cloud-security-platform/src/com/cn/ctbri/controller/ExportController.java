@@ -29,12 +29,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.POIXMLDocument;
-import org.apache.poi.hpsf.DocumentSummaryInformation;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.Document;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFNum;
-import org.apache.poi.xwpf.usermodel.XWPFNumbering;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -62,6 +59,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import sun.misc.BASE64Decoder;
 
+import com.cn.ctbri.common.NorthAPIWorker;
 import com.cn.ctbri.constant.WarnType;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Asset;
@@ -98,6 +96,12 @@ public class ExportController {
     
     private URL base = this.getClass().getResource("");
     
+    
+    @RequestMapping(value="/exportnew.html")
+    public void exportnew(HttpServletRequest request,HttpServletResponse response) throws Exception{
+    	String orderId = request.getParameter("orderId");
+    	String iofile = NorthAPIWorker.vulnScanGetReport(orderId);
+    }
     /**
      * 功能描述：下载导入模板
      * 参数描述：HttpServletRequest request,HttpServletResponse response

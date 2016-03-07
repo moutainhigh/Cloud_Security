@@ -385,21 +385,14 @@ public class OrderMgrController {
         String tasknum = request.getParameter("tasknum");
         //订单开始时间不能早于当前订单提交时间,add by tangxr,2015-3-3
         if(beginDate.compareTo(createDate)>0){
-         	//创建漏洞扫描订单（任务），调北向api，modify by tangxr 2015-12-21
-            switch (Integer.parseInt(serviceId)) {
-	            case 1:
-	            	orderId = NorthAPIWorker.vulnScanCreate(orderType, targetURL, scanType, beginDate, endDate, scanPeriod,
-	            			scanDepth, maxPages, stategy, customManu);
-	                break;
-	            case 2:
-	                break;
-	            case 3:
-	                break;
-	            case 4:
-	                break;
-	            case 5:
-	                break;
-            }
+         	//创建订单（任务），调北向api，modify by tangxr 2015-12-21
+        	try {
+        		orderId = NorthAPIWorker.vulnScanCreate(orderType, targetURL, scanType, beginDate, endDate, scanPeriod,
+            			scanDepth, maxPages, stategy, customManu, serviceId);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+        	
             //北向API返回orderId，创建用户订单
         	if(!orderId.equals("") && orderId != null){
 				//新增联系人
@@ -1163,11 +1156,17 @@ public class OrderMgrController {
     public void optOrder(HttpServletResponse response,HttpServletRequest request) throws JSONException{
         String orderId = request.getParameter("orderId");
         int status = Integer.parseInt(request.getParameter("status"));
+        String opt = "";
+        if(status == 4){
+        	opt = "stop";
+        }else if(status == 5){
+        	opt = "resume";
+        }
         //查找订单
         Order order = orderService.findOrderById(orderId);
-        String opt = NorthAPIWorker.vulnScanOptOrder(orderId);
+        String optCode = NorthAPIWorker.vulnScanOptOrder(orderId,opt);
         Map<String, Object> m = new HashMap<String, Object>();
-        if(opt.equals("201")){
+        if(optCode.equals("201")){
         	if(status==4){
         		order.setStatus(5);
         	}else if(status==5){

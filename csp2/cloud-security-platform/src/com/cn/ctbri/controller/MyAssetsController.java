@@ -177,15 +177,32 @@ public class MyAssetsController {
 	@RequestMapping("/editAsset.html")
 	public String editAsset(Asset asset){
 		int id = asset.getId();
-		Asset newAsset = assetService.findById(id);
+		Asset oldAsset = assetService.findById(id);
 		String name = "";//资产名称
 		String addrType = asset.getAddrType();
+		//add by tangxr 2016-3-3
+		int districtId = asset.getDistrictId();
+		String city = "";
+		String purpose = "";//用途
 		try {
-			name=new String(asset.getName().getBytes("ISO-8859-1"), "UTF-8");
+			name = new String(asset.getName().getBytes("ISO-8859-1"), "UTF-8");
+			purpose = new String(asset.getPurpose().getBytes("ISO-8859-1"), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		if(!(name.equals(newAsset.getName())&&(addrType+"://"+asset.getAddr()).equals(newAsset.getAddr()))){
+		String oldCity = "";
+		if(oldAsset.getCity()!=null){
+			oldCity = oldAsset.getCity();
+		}
+		if(asset.getCity()!=null){
+			city = asset.getCity();
+		}
+		if(!(name.equals(oldAsset.getName())&&
+			(addrType+"://"+asset.getAddr()).equals(oldAsset.getAddr())&&
+			purpose.equals(oldAsset.getPurpose())&&
+			districtId==oldAsset.getDistrictId()&&
+			oldCity.equals(city))){
+			
 			asset.setName(name);
 			
 			String addr = asset.getAddr();
@@ -194,6 +211,9 @@ public class MyAssetsController {
 			}
 			asset.setAddr(addr);
 			asset.setStatus(0);
+			asset.setDistrictId(districtId);
+			asset.setCity(city);
+			asset.setPurpose(purpose);
 			assetService.updateAsset(asset);
 		}
 		return "redirect:/userAssetsUI.html";
