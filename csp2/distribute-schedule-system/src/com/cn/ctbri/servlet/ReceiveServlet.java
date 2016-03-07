@@ -131,7 +131,8 @@ public class ReceiveServlet extends HttpServlet {
                     
                     Alarm alarm = new Alarm();
                     alarm.setGroup_id(group_id);
-                    alarm.setAlarm_time(sdf.parse(start_at));
+//                    alarm.setAlarm_time(sdf.parse(start_at));
+                    alarm.setAlarm_time(start_at);
                     alarm.setAlarm_content(url);
                     alarm.setUrl(site);
                     alarm.setAlarm_type(type);
