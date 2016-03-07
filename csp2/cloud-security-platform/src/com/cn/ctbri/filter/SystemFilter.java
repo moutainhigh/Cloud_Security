@@ -55,13 +55,18 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/confirmPass.html");
 		list.add("/isExitPhone.html");
 		list.add("/key.html");
-		list.add("/chinas.html");
+//		list.add("/chinas.html");
 		list.add("/initDistrictList.html");
 		list.add("/getDistrictData.html");
 		list.add("/getDistrictAlarmTop5.html");
 		list.add("/getServiceAlarmTop5.html");
 		list.add("/getServiceAlarmMonth5.html");
 		list.add("/findUseAssetAddr.html");
+		//add by tangxr 2016-1-23
+		list.add("/web_anquanbang.html");//网络安全帮 
+		list.add("/sa_anquanbang.html");//安全动态感知
+		list.add("/joinUs.html");//加入我们
+		list.add("/knowUs.html");//了解我们
 
 		//获取访问的url路径
 		String path = request.getServletPath();
