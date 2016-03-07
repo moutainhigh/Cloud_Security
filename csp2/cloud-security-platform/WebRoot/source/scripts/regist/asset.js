@@ -77,10 +77,11 @@ function searchAssetCombine(){
 }
 //修改资产
 function editAsset(){
-		var assetName =$("#editAssetName").val();
+	var assetName =$("#editAssetName").val();
 	var assetAddr = $("#editAssetAddr").val();
-     var addrType = $('input:radio[name="addrType"]:checked').val();
-    
+    var addrType = $('input:radio[name="addrType"]:checked').val();
+    var purpose = $("#editPurpose").val();
+    var prov = $("#editDistrictId").val();
 //     var patrn=/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im; 
      var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
      if(patrn.test(assetAddr)){  
@@ -103,8 +104,20 @@ function editAsset(){
 	   $("#editAssetAddr_msg").html("输入资产地址不能包含'gov.cn'！");
 	}else if((addrType.length==4 && assetAddr.substring(0,5)=='https') || (addrType.length==5 && assetAddr.substring(0,5)=='http:')){
 		$("#editAssetAddr_msg").html("资产类型与资产地址填写不一致!");
-	}else{
+	}else if(prov == -1){
+		$("#editAssetName_msg").html("");
 		$("#editAssetAddr_msg").html("");
+		$("#editLocation_msg").html("请选择资产所在物理地址！");
+	}else if(purpose==-1){
+		$("#editAssetName_msg").html("");
+		$("#editAssetAddr_msg").html("");
+		$("#editLocation_msg").html("");
+		$("#editAssetUsage_msg").html("请选择资产用途！");
+	}else{
+		$("#editAssetName_msg").html("");
+		$("#editAssetAddr_msg").html("");
+		$("#editLocation_msg").html("");
+		$("#editAssetUsage_msg").html("");
 		$("#editAsset").submit();
 	}
 	
