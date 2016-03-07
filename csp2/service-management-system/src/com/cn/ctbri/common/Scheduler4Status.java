@@ -20,9 +20,9 @@ import com.cn.ctbri.service.ITaskService;
  * @author txr
  * 
  */
-public class Scheduler4Progress {
+public class Scheduler4Status {
 
-	static Logger logger = Logger.getLogger(Scheduler4Progress.class.getName());
+	static Logger logger = Logger.getLogger(Scheduler4Status.class.getName());
 
 	@Autowired
 	private ITaskService taskService;

@@ -35,8 +35,10 @@ public class Scheduler4Result {
 		List<OrderTask> oTaskList = orderTaskService.findOrderTask(map);
 		logger.info("[获取结果调度]:当前等待获取结果的任务有 " + oTaskList.size() + " 个!");
 		for (OrderTask o : oTaskList) {
-			String result = InternalWorker.vulnScanGetOrderTaskResult(o.getOrderId(), o.getOrderTaskId());
-        	System.out.println(result);
+			String result = InternalWorker.vulnScanGetOrderTaskResult(o.getOrderId(), o.getId() + "_" + o.getOrderId());
+//        	if(result.equals("success")){
+//        		
+//        	}
 		}
 		logger.info("[获取结果调度]:任务表扫描结束....");
 	}

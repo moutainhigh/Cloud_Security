@@ -14,6 +14,7 @@ import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.codehaus.jackson.JsonGenerationException;
@@ -167,41 +168,30 @@ public class InternalWorker {
 	 *         Stategy     策略,
 	 *         CustomManu  指定厂家，可以多个，以逗号区分,
 	 *         Reserve     保留字段
-	 * @param userId 
-	 * @throws IOException 
-	 * @throws UniformInterfaceException 
-	 * @throws JsonMappingException 
-	 * @throws JsonGenerationException 
-	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
 	public static String vulnScanCreate(String scanMode, String targetURL, String scanType, 
     		String startTime, String endTime, String scanPeriod, String scanDepth, 
-    		String maxPages, String stategy, String CustomManu[], String orderId, 
-    		String serviceId, String websoc, String taskTime, String orderTaskId, int userId) {
+    		String maxPages, String stategy, String customManu[], String orderTaskId, String serviceId) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
-		json.put("ScanMode", scanMode);
+		json.put("scanMode", scanMode);
 		json.put("targetURL", targetURL);
-		json.put("ScanType", scanType);
-		json.put("StartTime", startTime);
-		json.put("EndTime", endTime);
-		json.put("ScanPeriod", scanPeriod);
-		json.put("ScanDepth", scanDepth);
-		json.put("MaxPages", maxPages);
-		json.put("Stategy", stategy);
-		json.put("CustomManu", CustomManu);
-		json.put("orderId", orderId);
-		json.put("serviceId", serviceId);
-		json.put("websoc", websoc);
-		json.put("taskTime", taskTime);
+		json.put("scanType", scanType);
+		json.put("startTime", startTime);
+		json.put("endTime", endTime);
+		json.put("scanPeriod", scanPeriod);
+		json.put("scanDepth", scanDepth);
+		json.put("maxPages", maxPages);
+		json.put("stategy", stategy);
+		JSONArray customManus = JSONArray.fromObject(customManu);
+		json.put("customManus", customManus);
 		json.put("orderTaskId", orderTaskId);
-		json.put("userId", userId);
+		json.put("serviceId", serviceId);
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Create_orderTask;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
-	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -210,22 +200,24 @@ public class InternalWorker {
         WebResource service = client.resource(url);
         //获取响应结果
         String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, json.toString());
-//        int status = response.getStatus();
-//        String textEntity = response.getEntity(String.class);
-//        System.out.println(textEntity);
-        return response;
+        JSONObject obj = JSONObject.fromObject(response);
+		String stateCode = obj.getString("code");
+		if(stateCode.equals("201")){
+			return "success";
+		}else{
+			return "error";
+		}
 	}
 	
 	/**
 	 * 功能描述：对漏洞扫描订单进行操作，暂停，重启，停止
 	 * 参数描述： OrderId 订单编号
-	 * @throws JSONException 
 	 *		 @time 2015-10-16
 	 */
-	public static String vulnScanOptOrderTask(String orderId) throws JSONException{
+	public static String vulnScanOptOrderTask(String orderId, String opt) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
-		json.put("orderId", orderId);
+		json.put("opt", opt);
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Opt_Order + "/" + orderId;
     	//创建jersery客户端配置对象
@@ -238,11 +230,14 @@ public class InternalWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).put(ClientResponse.class);
-        int status = response.getStatus();
-        String textEntity = response.getEntity(String.class);
-        System.out.println(textEntity);
-        return status+"";
+        String response = service.type(MediaType.APPLICATION_JSON).put(String.class, json.toString());
+        JSONObject obj = JSONObject.fromObject(response);
+		String stateCode = obj.getString("code");
+		if(stateCode.equals("200")){
+			return "success";
+		}else{
+			return "error";
+		}
 	}
 	
 	/**
@@ -393,9 +388,9 @@ public class InternalWorker {
 	}
 
 
-    public static void main(String[] args) throws UnsupportedEncodingException, JSONException {
-//        String create = vulnScanCreate("2", "", "", "2015-10-20 16:10:01", "", "0", "", "", "", new String[0], "","", "","","");
-    	String o = vulnScanGetOrderTaskStatus("1","4");
-    	System.out.println(o);
+    public static void main(String[] args) {
+    	String create = vulnScanCreate("2", "http://www.testfire.net", "", "2016-02-04 17:55:35", "", "", "", "", "", new String[]{"2"},"35_16020515441179849", "1");
+//    	String o = vulnScanGetOrderTaskStatus("1","4");
+    	System.out.println(create);
     }
 }
