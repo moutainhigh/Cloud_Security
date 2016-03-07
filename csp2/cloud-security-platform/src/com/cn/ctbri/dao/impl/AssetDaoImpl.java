@@ -10,6 +10,7 @@ import com.cn.ctbri.dao.AssetDao;
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.Task;
 /**
  * 创 建 人  ：  邓元元
  * 创建日期：  2015-1-16
@@ -124,5 +125,9 @@ public class AssetDaoImpl extends DaoCommon implements AssetDao{
         paramMap.put("pageSize", pageSize);
         List<Asset> list = getSqlSession().selectList(ns +"queryByPage",paramMap);
 		return list;
+	}
+	public List<Asset> getAssetByTask(Task task) {
+		List list = this.getSqlSession().selectList(ns+"getAssetByTask", task);
+        return list;
 	}
 }

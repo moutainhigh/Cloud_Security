@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.OrderDao;
 import com.cn.ctbri.entity.DataAnalysis;
+import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Task;
 /**
@@ -196,6 +197,11 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 
 	public List<Order> findOrderByMap(Map<String, Object> map) {
 		return this.getSqlSession().selectList(ns + "findOrderByMap",map);
+	}
+
+	public List<Linkman> findLinkmanById(int contactId) {
+		List<Linkman> linkman = this.getSqlSession().selectList(ns + "findLinkmanById",contactId);
+        return linkman;
 	}
     
     
