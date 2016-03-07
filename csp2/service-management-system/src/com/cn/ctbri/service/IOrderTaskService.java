@@ -77,5 +77,5 @@ public interface IOrderTaskService {
 	List<Task> getDels();
 
 	//add 2015-12-9
-	OrderTask findByOrderId(String orderId);
+	List<OrderTask> findByOrderId(String orderId);
 }

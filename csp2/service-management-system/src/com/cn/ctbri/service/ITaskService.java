@@ -65,7 +65,12 @@ public interface ITaskService {
 	//二期新增 2015-12-1 by tangxr
 	Task findByOrderTaskId(String orderTaskId);
 
-	Task findTaskByOrderId(String orderId);
+	List findTaskByOrderId(String orderId);
 
 	Task findTaskByTaskId(String taskId);
+
+	//查找运行的task
+	List<Task> findRunningTask(String orderId);
+
+	int findissueCount(String orderId);
 }

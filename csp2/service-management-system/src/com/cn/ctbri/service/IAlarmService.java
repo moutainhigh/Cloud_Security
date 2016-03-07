@@ -19,4 +19,6 @@ public interface IAlarmService {
 	void updateAlarm(Alarm alarm);
 	//taskId查询
 	List<Alarm> findAlarmByTaskId(String taskId);
+	//add by 2016-2-23
+	List findAlarmByOrderIdorGroupId(Map<String, Object> paramMap);
 }
