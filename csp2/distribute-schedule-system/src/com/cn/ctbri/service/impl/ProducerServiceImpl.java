@@ -1,5 +1,7 @@
 package com.cn.ctbri.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.jms.Destination;
 import javax.jms.Message;
@@ -56,6 +58,20 @@ public class ProducerServiceImpl implements IProducerService{
 	@Resource
 	public void setJmsTemplate(JmsTemplate jmsTemplate) {
 		this.jmsTemplate = jmsTemplate;
+	}
+
+	//发送taskList
+	public void sendMessage(Destination resultDestination, final List<Task> taskList) {
+		for (final Task task : taskList) {
+			System.out.println("---------------生产者发了一个task：taskId=" + task.getTaskId());   
+	        jmsTemplate.send(resultDestination, new MessageCreator() {   
+	            public Message createMessage(Session session) throws JMSException {   
+	                //return session.createTextMessage(task);
+	            	return session.createObjectMessage(task);
+	            }   
+	        }); 
+		}
+		
 	}
 
 	
