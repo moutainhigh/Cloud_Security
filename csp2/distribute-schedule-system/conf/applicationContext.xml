@@ -142,4 +142,31 @@
 	     <!-- 这个connectionFactory对应的是我们定义的Spring提供的那个ConnectionFactory对象 -->    
 	    <property name="connectionFactory" ref="connectionFactory"/>  
 	</bean>   
+	
+	
+	<!-- Timer schedule -->
+    <!--要调度的对象，任务下发-->
+    <bean id="taskJobBean" class="com.cn.ctbri.common.Scheduler4Task" />
+    <bean id="taskJobDetail"
+    	class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    	<property name="targetObject" ref="taskJobBean" />
+    	<property name="targetMethod" value="execute" />
+    	<property name="concurrent" value="false" />
+    </bean>
+    <bean id="taskTrigger"
+    	class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="taskJobDetail" />
+    	<property name="cronExpression" value="0 0/1 * * * ?" />
+    </bean>
+    
+    <!-- 将lazy-init='false'那么容器启动就会执行调度程序   -->
+    <bean id="startQuertz"
+    	class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
+    	lazy-init="false">
+    	<property name="triggers">
+    		<list>
+    			<ref bean="taskTrigger" />
+    		</list>
+    	</property>
+    </bean>
 </beans>  
