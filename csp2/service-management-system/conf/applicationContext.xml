@@ -102,16 +102,16 @@
     </bean>
     
     <!--要调度的对象，任务进度-->
-    <bean id="progressJobBean" class="com.cn.ctbri.common.Scheduler4Progress" />
-    <bean id="progressJobDetail"
+    <bean id="statusJobBean" class="com.cn.ctbri.common.Scheduler4Status" />
+    <bean id="statusJobDetail"
         class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="progressJobBean" />
+        <property name="targetObject" ref="statusJobBean" />
         <property name="targetMethod" value="execute" />
         <property name="concurrent" value="false" />
     </bean>
-    <bean id="progressTrigger"
+    <bean id="statusTrigger"
         class="org.springframework.scheduling.quartz.CronTriggerBean">
-        <property name="jobDetail" ref="progressJobDetail" />
+        <property name="jobDetail" ref="statusJobDetail" />
         <property name="cronExpression" value="0/30 * * * * ?" />
     </bean>
     
@@ -138,7 +138,7 @@
     			
     			<!-- <ref bean="resultTrigger" />
     			<ref bean="taskTrigger" />
-    			<ref bean="progressTrigger" />
+    			<ref bean="statusTrigger" />
     			<ref bean="exceptionTrigger" /> -->
     			<ref bean="resultTrigger" />
     			<ref bean="taskTrigger" />
