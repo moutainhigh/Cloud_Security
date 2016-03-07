@@ -6,6 +6,7 @@ import java.util.Map;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.Task;
 
 /**
  * 创 建 人  ：  邓元元
@@ -87,5 +88,7 @@ public interface AssetDao {
 	 * @return
 	 */
 	List<Asset> queryByPage(Asset criteria, int i, int pageSize);
+	
+	List<Asset> getAssetByTask(Task task);
 
 }

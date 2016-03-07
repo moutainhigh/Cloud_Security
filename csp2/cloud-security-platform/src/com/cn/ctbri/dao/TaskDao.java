@@ -56,4 +56,8 @@ public interface TaskDao {
 	public List<Task> findTaskByOrderId(String orderId);
 
 	public void updateTask(Task t);
+
+	public List<Task> findFinishByOrderId(Map<String, Object> paramMap);
+
+	public int findissueCount(String orderId);
 }

@@ -63,4 +63,6 @@ public interface OrderAssetDao {
 
 	List getOrdersByAsset(int assetId);
 
+	List<OrderAsset> findOrderAssetId(Map<String, Object> param);
+
 }

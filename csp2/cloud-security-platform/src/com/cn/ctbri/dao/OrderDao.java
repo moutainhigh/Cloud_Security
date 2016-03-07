@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cn.ctbri.entity.DataAnalysis;
+import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Task;
 
@@ -116,4 +117,6 @@ public interface OrderDao {
     //二期新增
 	List<Order> findOrderByTask(Task task);
 	List<Order> findOrderByMap(Map<String, Object> map);
+	//查找联系人信息
+	List<Linkman> findLinkmanById(int contactId);
 }
