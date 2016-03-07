@@ -43,5 +43,9 @@ public class AlarmServiceImpl implements IAlarmService{
 	public List<Alarm> findAlarmByTaskId(String taskId) {
 		return alarmDao.findAlarmByTaskId(taskId);
 	}
+
+	public List findAlarmByOrderIdorGroupId(Map<String, Object> paramMap) {
+		return alarmDao.findAlarmByOrderIdorGroupId(paramMap);
+	}
 	
 }

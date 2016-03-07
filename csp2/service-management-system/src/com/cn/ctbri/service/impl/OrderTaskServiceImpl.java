@@ -106,7 +106,7 @@ public class OrderTaskServiceImpl implements IOrderTaskService{
 		return this.orderTaskDao.getDels();
 	}
 
-	public OrderTask findByOrderId(String orderId) {
+	public List<OrderTask> findByOrderId(String orderId) {
 		return this.orderTaskDao.findByOrderId(orderId);
 	}
 }
