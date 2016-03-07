@@ -23,7 +23,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.cn.ctbri.common.ArnhemWorker;
-import com.cn.ctbri.common.Scheduler4Progress;
+import com.cn.ctbri.common.Scheduler4Status;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskWarn;
@@ -42,7 +42,7 @@ import net.sf.json.JSONObject;
 public class DelServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	static Logger logger = Logger.getLogger(Scheduler4Progress.class.getName());
+	static Logger logger = Logger.getLogger(Scheduler4Status.class.getName());
 	/**
 	 * Default constructor.
 	 */
