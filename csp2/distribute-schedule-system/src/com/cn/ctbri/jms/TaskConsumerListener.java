@@ -258,10 +258,11 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	            try {
 	            	String lssued = SouthAPIWorker.disposeScanTask(engine.getEngine_number(), String.valueOf(t.getTaskId())+"_"+t.getOrder_id(), this.destURL, this.destIP, "80", this.tplName);
 	                boolean state = this.getStatusBylssued(lssued);
-	                if(state){
+	            	if(state){
+//	            	if(true){
 	                    //任务下发后,引擎活跃数加1
-//	                    engine.setId(engine.getId());
-//	                    engineService.update(engine);
+	                    engine.setId(engine.getId());
+	                    engineService.update(engine);
 	                    
 	                    //更新任务状态为running
 	                    t.setStatus(Integer.parseInt(Constants.TASK_RUNNING));
@@ -271,7 +272,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	                    Date date = new Date();//获得系统时间.
 	                    String nowTime = sdf.format(date);//将时间格式转换成符合Timestamp要求的格式.
 	                    t.setExecute_time(sdf.parse(nowTime));
-//	                    t.setEngine(engine.getId());
+	                    t.setEngine(engine.getId());
 	                    t.setWebsoc(0);
 	                    taskService.update(t);
 	                    CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]:任务-[" + t.getTaskId() + "]完成下发!;User="+null);

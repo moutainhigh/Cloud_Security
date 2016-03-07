@@ -177,7 +177,7 @@ public class ProgressConsumerListener  implements MessageListener,Runnable{
   		try {
   			task.setOrder_id(task.getOrder_id());
 			task.setOrderTaskId(task.getOrderTaskId());
-			task = taskService.findTaskByOrderTaskId(task);
+//			task = taskService.findTaskByOrderTaskId(task);
   			net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
   			json.put("taskObj", taskObject);
   			ReInternalWorker.vulnScanGetOrderTaskStatus(json.toString());

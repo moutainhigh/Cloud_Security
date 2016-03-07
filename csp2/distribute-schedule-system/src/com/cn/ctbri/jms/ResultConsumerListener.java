@@ -101,11 +101,21 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 				//如果是创宇需查数据库获取结果
 				task.setOrder_id(task.getOrder_id());
 				task.setOrderTaskId(task.getOrderTaskId());
-				task = taskService.findTaskByOrderTaskId(task);
+				task.setStatus(3);
+				task = taskService.findTaskById(task.getTaskId());
+				
+				List<Task> taskList = taskService.findTaskByOrderTaskId(task);
+				if(taskList.size()>0){
+					json.put("taskStatus", "running");
+				}else{
+					json.put("taskStatus", "finish");
+				}
+				
 				//时间vo
 				task.setExecuteTime(DateUtils.dateToString(task.getExecute_time()));
 				task.setBeginTime(DateUtils.dateToString(task.getBegin_time()));
 				task.setEndTime(DateUtils.dateToString(task.getEnd_time()));
+				task.setGroupFlag(DateUtils.dateToString(task.getGroup_flag()));
 				if(task.getWebsoc()==1){
 					if(task.getServiceId()==5){//可用性检测
 						//根据groupId查询alarm表及taskwarn表
@@ -275,7 +285,7 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
     			String status = this.getStatusByResult(resultStr);
                 List<Alarm> aList = new ArrayList<Alarm>();
 
-    			if ("finish".equals(status)) {// 任务执行完毕
+    			if ("finish".equals(status) && task.getStatus()!=Integer.parseInt(Constants.TASK_FINISH)) {// 任务执行完毕
     				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析结果......;User="+null);
     				/**
     				 * 获取任务结果信息并入库
@@ -461,7 +471,8 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 			String level, String url, String value, int serviceId) {
 		Alarm alarm = new Alarm();
 		alarm.setTaskId(Long.parseLong(taskId));
-		alarm.setAlarm_time(DateUtils.stringToDateNYRSFM(time));
+//		alarm.setAlarm_time(DateUtils.stringToDateNYRSFM(time));
+		alarm.setAlarm_time(time);
 		alarm.setUrl(urlAb);
 		alarm.setAlarm_type(alarm_type);
 		alarm.setName(name);
