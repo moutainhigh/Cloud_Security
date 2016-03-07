@@ -87,5 +87,10 @@ public class OrderAssetServiceImpl implements IOrderAssetService{
 	public List getOrdersByAsset(int assetId) {
 		return orderAssetDao.getOrdersByAsset(assetId);
 	}
+
+	public List<OrderAsset> findOrderAssetId(Map<String, Object> param) {
+		List<OrderAsset> list = orderAssetDao.findOrderAssetId(param);
+        return list;
+	}
 	
 }

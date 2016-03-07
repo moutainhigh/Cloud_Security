@@ -78,5 +78,11 @@ public class TaskServiceImpl implements ITaskService{
 	public void updateTask(Task t) {
 		taskDao.updateTask(t);
 	}
+	public List<Task> findFinishByOrderId(Map<String, Object> paramMap) {
+		return taskDao.findFinishByOrderId(paramMap);
+	}
+	public int findissueCount(String orderId) {
+		return this.taskDao.findissueCount(orderId);
+	}
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.OrderDao;
 import com.cn.ctbri.entity.DataAnalysis;
+import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IOrderService;
@@ -176,5 +177,8 @@ public class OrderServiceImpl implements IOrderService{
 	}
 	public List<Order> findOrderByMap(Map<String, Object> map) {
 		return orderDao.findOrderByMap(map);
+	}
+	public List<Linkman> findLinkmanById(int contactId) {
+		return orderDao.findLinkmanById(contactId);
 	}
 }

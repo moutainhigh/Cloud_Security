@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.cn.ctbri.dao.AssetDao;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.pager.PageBean;
 import com.cn.ctbri.service.IAssetService;
 /**
@@ -133,5 +134,8 @@ public class AssetServiceImpl implements IAssetService{
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	public List<Asset> findByTask(Task task) {
+		return assetDao.getAssetByTask(task);
 	}
 }
