@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.pager.PageBean;
 
 
@@ -87,6 +88,8 @@ public interface IAssetService {
      *       @time 2015-3-16
      */
 	PageBean<Asset> queryByPage(Asset criteria, int pageCode);
+	
+	List<Asset> findByTask(Task task);
 
 	
 }

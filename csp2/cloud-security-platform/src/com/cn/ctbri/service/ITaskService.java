@@ -53,4 +53,9 @@ public interface ITaskService {
 	List<Task> findTaskByOrderId(String orderId);
 
 	void updateTask(Task t);
+
+	//完成并入库的任务
+	List<Task> findFinishByOrderId(Map<String, Object> paramMap);
+
+	int findissueCount(String orderId);
 }

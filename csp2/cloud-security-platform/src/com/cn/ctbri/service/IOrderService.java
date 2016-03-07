@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cn.ctbri.entity.DataAnalysis;
+import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Task;
 
@@ -121,5 +122,7 @@ public interface IOrderService {
 	List<Order> findOrderByTask(Task task);
 	//根据条件查询订单
 	List<Order> findOrderByMap(Map<String, Object> map);
+	//查找联系人信息
+	List<Linkman> findLinkmanById(int contactId);
     
 }

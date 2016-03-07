@@ -63,5 +63,7 @@ public interface IOrderAssetService {
 
 	List getOrdersByAsset(int assetId);
 
+	List<OrderAsset> findOrderAssetId(Map<String, Object> param);
+
 	
 }
