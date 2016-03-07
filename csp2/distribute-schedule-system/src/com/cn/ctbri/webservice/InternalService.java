@@ -44,7 +44,7 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
  */
 @Component
 @Path("internalapi/vulnscan")
-public class Internal_VulnscanService {
+public class InternalService {
 	@Autowired
     private ITaskService taskService;
 	@Autowired
@@ -95,6 +95,11 @@ public class Internal_VulnscanService {
 			JSONArray customArray = jsonObj.getJSONArray("customManus");
 			//订单任务ID
 			String orderTaskId = jsonObj.getString("orderTaskId");
+			//serviceId
+			String serviceId = jsonObj.getString("serviceId");
+			
+			String[] strs = orderTaskId.split("_");  	
+			String orderId = strs[1];
 			
 			int period = 0;
 			if(scanPeriod!=null && !scanPeriod.equals("")){
@@ -110,8 +115,8 @@ public class Internal_VulnscanService {
 				task.setBegin_time(begin_date);
 				task.setEnd_time(end_date);
 				task.setWebsoc(Integer.parseInt(customArray.get(i).toString()));
-				task.setServiceId(1);
-//				task.setOrder_id(orderId);
+				task.setServiceId(Integer.parseInt(serviceId));
+				task.setOrder_id(orderId);
 				task.setOrderTaskId(orderTaskId);
 				task.setAssetAddr(assetAddr);
 				task.setScanMode(scanMode);
@@ -134,6 +139,78 @@ public class Internal_VulnscanService {
         return json.toString();
     }
 	
+	
+	//订单操作,暂停、启动
+	@PUT
+    @Path("/orderTask_opt/{orderId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String VulnScan_Opt_orderTask(@PathParam("orderId") String orderId, String dataJson) {
+		JSONObject json = new JSONObject();
+		try {
+			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
+			String opt = jsonObj.getString("opt");
+			List<Task> tlist = taskService.findTaskByOrderId(orderId);
+			//循环订单下的任务，操作任务
+			for (Task task : tlist) {
+				String engine = "";
+				EngineCfg en = engineService.getEngineById(task.getEngine());
+				if(task.getEngine()!=0){
+					engine = en.getEngine_number();
+				}else{
+					engine = "10001";
+				}
+				if(task.getWebsoc()==1){//创宇暂时不能操作
+					json.put("result", "websoc");
+			    }else{
+		        	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "[订单操作]:任务-[" + task.getTaskId() + "]开始操作状态!");
+		        	// 根据任务id获取任务状态
+	    			String sessionId = SouthAPIWorker.getSessionId(engine);
+	    			String resultStr = SouthAPIWorker.getStatusByTaskId(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
+	    			String status = this.getStatusByResult(resultStr);
+//	    			if ("stop".equals(opt)) {
+	    			if ("running".equals(status)) {// 任务执行中
+	    				// 订单操作
+	    				String optStr = SouthAPIWorker.stopTask(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
+	    				boolean res = this.getOptByRes(task.getTaskId(),optStr);
+	    				if(res){
+	    					json.put("code", "200");//成功
+		    				//更新task的状态
+		    				task.setStatus(3);
+		    				taskService.update(task);
+	    				}else{
+	    					json.put("code", "404");//失败
+	    					json.put("message", "获取结果失败");
+	    				}
+	    			}else if("stop".equals(status)){//任务暂停中
+//	    			}else if("resume".equals(opt)){
+	    				String optStr = SouthAPIWorker.startTask(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
+	    				boolean res = this.getOptByRes(task.getTaskId(),optStr);
+	    				if(res){
+	    					json.put("code", "200");//成功
+		    				//更新task的状态
+		    				task.setStatus(2);
+		    				taskService.update(task);
+	    				}else{
+	    					json.put("code", "404");//失败
+	    					json.put("message", "获取结果失败");
+	    				}
+	    			}else {
+	    				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "[进度获取]: 失败!");
+	    				json.put("code", 404);//返回404表示失败
+	    				json.put("message", "获取结果失败");
+	    			}
+				}
+			}
+			//将orderId放到消息队列里	
+//				producerService.sendMessageOrderId(optDestination, orderId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("code", 404);//返回404表示失败
+			json.put("message", "获取结果失败");
+		}
+		return json.toString();
+    }
+
 	//获取进度
 	@GET
     @Path("/orderTask_status/{orderTaskId}/{orderId}")
@@ -143,10 +220,11 @@ public class Internal_VulnscanService {
 			Task task = new Task();
 			task.setOrder_id(orderId);
 			task.setOrderTaskId(orderTaskId);
-			task = taskService.findTaskByOrderTaskId(task);
+			task.setStatus(1);
+			List<Task> taskList = taskService.findTaskByOrderTaskId(task);
 			//将任务放到消息队列里	
 //			producerService.sendMessage(progressDestination, task);
-			producerService.sendMessage(resultDestination, task);
+			producerService.sendMessage(resultDestination, taskList);
 //				producerService.sendMessageTaskId(progressDestination, orderTaskid);
 		} catch (Exception e) {
 			
@@ -174,11 +252,12 @@ public class Internal_VulnscanService {
 			Task task = new Task();
 			task.setOrder_id(orderId);
 			task.setOrderTaskId(orderTaskId);
-			task = taskService.findTaskByOrderTaskId(task);
+			task.setStatus(1);
+			List<Task> taskList = taskService.findTaskByOrderTaskId(task);
 			//将任务放到消息队列里	
-			producerService.sendMessage(resultDestination, task);
+			producerService.sendMessage(resultDestination, taskList);
 			
-			json.put("code", 200);//返回201表示成功
+			json.put("code", 200);//返回200表示成功
 		} catch (Exception e) {
 			e.printStackTrace();
 			json.put("code", 404);//返回404表示失败
@@ -187,68 +266,7 @@ public class Internal_VulnscanService {
         return json.toString();
     }
 		
-	//订单操作,暂停、启动
-	@PUT
-    @Path("/orderTask_opt/{orderId}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String VulnScan_Opt_orderTask(@PathParam("orderId") String orderId) {
-		try {
-			JSONObject json = new JSONObject();
-			List<Task> tlist = taskService.findTaskByOrderId(orderId);
-			//循环订单下的任务，操作任务
-			for (Task task : tlist) {
-				String engine = "";
-				EngineCfg en = engineService.getEngineById(task.getEngine());
-				if(task.getEngine()!=0){
-					engine = en.getEngine_number();
-				}else{
-					engine = "10001";
-				}
-				if(task.getWebsoc()==1){//创宇暂时不能操作
-					json.put("result", "websoc");
-			    }else{
-		        	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "[订单操作]:任务-[" + task.getTaskId() + "]开始操作状态!");
-		        	// 根据任务id获取任务状态
-	    			String sessionId = SouthAPIWorker.getSessionId(engine);
-	    			String resultStr = SouthAPIWorker.getStatusByTaskId(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
-	    			String status = this.getStatusByResult(resultStr);
-	    			if ("running".equals(status)) {// 任务执行中
-	    				// 订单操作
-	    				String optStr = SouthAPIWorker.stopTask(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
-	    				boolean res = this.getOptByRes(task.getTaskId(),optStr);
-	    				if(res){
-	    					json.put("result", "success");
-		    				//更新task的状态
-		    				task.setStatus(3);
-		    				taskService.update(task);
-	    				}
-	    			}else if("stop".equals(status)){//任务暂停中
-	    				String optStr = SouthAPIWorker.startTask(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
-	    				boolean res = this.getOptByRes(task.getTaskId(),optStr);
-	    				if(res){
-	    					json.put("result", "success");
-		    				//更新task的状态
-		    				task.setStatus(2);
-		    				taskService.update(task);
-	    				}
-	    			}else {
-	    				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "[进度获取]: 失败!");
-	    				json.put("result", "fail");
-	    			}
-				}
-			}
-			return json.toString();
-			//将orderId放到消息队列里	
-//			producerService.sendMessageOrderId(optDestination, orderId);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Respones r = new Respones();
-			r.setCode("404");
-			net.sf.json.JSONArray json = new net.sf.json.JSONArray().fromObject(r);
-	        return json.toString();
-		}
-		
-    }
+	
 	
 	
 	/**
