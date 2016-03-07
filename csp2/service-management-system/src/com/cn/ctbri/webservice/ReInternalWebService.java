@@ -1,5 +1,7 @@
 package com.cn.ctbri.webservice;
 
+import java.util.List;
+
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -58,25 +60,31 @@ public class ReInternalWebService {
 		try {
 			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
 			//订单id
-			String orderId = jsonObj.getString("orderId");
+//			String orderId = jsonObj.getString("orderId");
 			//订单任务id
 			String orderTaskId = jsonObj.getString("orderTaskId");
 			//是否成功下发
 			String result = jsonObj.getString("result");
 			//websoc
-			int websoc = Integer.parseInt(jsonObj.getString("websoc"));
+			int websoc = Integer.parseInt(jsonObj.getString("websoc"));			
+			String[] strs = orderTaskId.split("_");  	
+			int id = Integer.parseInt(strs[0]);
+			String orderId = strs[1];
+			
 			Respones r = new Respones();
 			if(result.equals("success")){
 				OrderTask orderTask = new OrderTask();
-		        orderTask.setOrderId(orderId);
+				orderTask.setId(id);
+//		        orderTask.setOrderId(orderId);
 		        orderTask.setWebsoc(websoc);
 		        orderTask.setTask_status(2);
+		        orderTask.setOrderTaskId(orderTaskId);
 		        //更新orderTask数据库
 		        orderTaskService.update(orderTask);
 		        //创建任务信息
-		        Task t = new Task();
-				t.setOrderTaskId(orderTaskId);
-				taskService.insert(t);
+//		        Task t = new Task();
+//				t.setOrderTaskId(orderTaskId);
+//				taskService.insert(t);
 				
 				//add by tangxr 2016-01-13
 				Order order = new Order();
@@ -120,6 +128,7 @@ public class ReInternalWebService {
 				String executeTime = taskObj.getString("executeTime");
 				String beginTime = taskObj.getString("beginTime");
 				String endTime = taskObj.getString("endTime");
+				String groupFlag = taskObj.getString("groupFlag");
 				String engineIP = taskObj.getString("engineIP");
 	            String taskProgress = taskObj.getString("taskProgress");
 	            String currentUrl = taskObj.getString("currentUrl");
@@ -132,48 +141,26 @@ public class ReInternalWebService {
 	            String sendBytes = taskObj.getString("sendBytes");
 	            String receiveBytes = taskObj.getString("receiveBytes");
 				
-				Task t = taskService.findByOrderTaskId(orderTaskId);
-				if(t!=null){
-					//更新数据库
-					t.setStatus(2);
-					t.setOrderTaskId(orderTaskId);
-					t.setExecute_time(DateUtils.stringToDateNYRSFM(executeTime));
-					t.setBegin_time(DateUtils.stringToDateNYRSFM(beginTime));
-					t.setEnd_time(DateUtils.stringToDateNYRSFM(endTime));
-	                t.setEngineIP(engineIP);
-	                t.setTaskProgress(taskProgress);
-	                t.setCurrentUrl(currentUrl);
-	                t.setScanTime(scanTime);
-	                t.setIssueCount(issueCount);
-	                t.setRequestCount(requestCount);
-	                t.setUrlCount(urlCount);
-	                t.setAverResponse(averResponse);
-	                t.setAverSendCount(averSendCount);
-	                t.setSendBytes(sendBytes);
-	                t.setReceiveBytes(receiveBytes);
-			        taskService.updateTask(t);
-				}else{
-					t = new Task();
-					t.setTaskId(taskId);
-					t.setOrderTaskId(orderTaskId);
-					t.setStatus(2);
-					t.setExecute_time(DateUtils.stringToDateNYRSFM(executeTime));
-					t.setBegin_time(DateUtils.stringToDateNYRSFM(beginTime));
-					t.setEnd_time(DateUtils.stringToDateNYRSFM(endTime));
-	                t.setEngineIP(engineIP);
-	                t.setTaskProgress(taskProgress);
-	                t.setCurrentUrl(currentUrl);
-	                t.setScanTime(scanTime);
-	                t.setIssueCount(issueCount);
-	                t.setRequestCount(requestCount);
-	                t.setUrlCount(urlCount);
-	                t.setAverResponse(averResponse);
-	                t.setAverSendCount(averSendCount);
-	                t.setSendBytes(sendBytes);
-	                t.setReceiveBytes(receiveBytes);
-	                
-					taskService.insert(t);
-				}	
+				Task t = new Task();
+				t.setTaskId(taskId);
+				t.setOrderTaskId(orderTaskId);
+				t.setStatus(2);
+				t.setExecute_time(DateUtils.stringToDateNYRSFM(executeTime));
+				t.setBegin_time(DateUtils.stringToDateNYRSFM(beginTime));
+				t.setEnd_time(DateUtils.stringToDateNYRSFM(endTime));
+				t.setGroup_flag(DateUtils.stringToDateNYRSFM(groupFlag));
+                t.setEngineIP(engineIP);
+                t.setTaskProgress(taskProgress);
+                t.setCurrentUrl(currentUrl);
+                t.setScanTime(scanTime);
+                t.setIssueCount(issueCount);
+                t.setRequestCount(requestCount);
+                t.setUrlCount(urlCount);
+                t.setAverResponse(averResponse);
+                t.setAverSendCount(averSendCount);
+                t.setSendBytes(sendBytes);
+                t.setReceiveBytes(receiveBytes);
+				taskService.insert(t);
 			}
 			r.setState("201");
 			JSONObject json = new JSONObject().fromObject(r);
@@ -195,25 +182,66 @@ public class ReInternalWebService {
 		try {
 			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
 			String status = jsonObj.getString("status");
+			String taskStatus = jsonObj.getString("taskStatus");
 			if(status.equals("success")){
 				JSONObject taskObj = jsonObj.getJSONObject("taskObj");
 				String alarmStr = jsonObj.getString("alarmObj");
 				String taskwarnStr = jsonObj.getString("taskwarnObj");
 				//订单id
-				String orderId = taskObj.getString("order_id");
+//				String orderId = taskObj.getString("order_id");
 				//订单id
 				String task_status = taskObj.getString("status");
 				//任务id
-//				int taskId = taskObj.getInt("taskId");
+				int taskId = taskObj.getInt("taskId");
 				String orderTaskId = taskObj.getString("orderTaskId");
+				String[] strs = orderTaskId.split("_");  	
+				int id = Integer.parseInt(strs[0]);
+				String orderId = strs[1];
+				String executeTime = taskObj.getString("executeTime");
+				String beginTime = taskObj.getString("beginTime");
+				String endTime = taskObj.getString("endTime");
+				String groupFlag = taskObj.getString("groupFlag");
+				String engineIP = taskObj.getString("engineIP");
+	            String taskProgress = taskObj.getString("taskProgress");
+	            String currentUrl = taskObj.getString("currentUrl");
+	            String scanTime = taskObj.getString("scanTime");
+	            String issueCount = taskObj.getString("issueCount");
+	            String requestCount = taskObj.getString("requestCount");
+	            String urlCount = taskObj.getString("urlCount");
+	            String averResponse = taskObj.getString("averResponse");
+	            String averSendCount = taskObj.getString("averSendCount");
+	            String sendBytes = taskObj.getString("sendBytes");
+	            String receiveBytes = taskObj.getString("receiveBytes");
+				
+				Task t = new Task();
+				t.setTaskId(taskId);
+				t.setOrderTaskId(orderTaskId);
+				t.setStatus(2);
+				t.setExecute_time(DateUtils.stringToDateNYRSFM(executeTime));
+				t.setBegin_time(DateUtils.stringToDateNYRSFM(beginTime));
+				t.setEnd_time(DateUtils.stringToDateNYRSFM(endTime));
+				t.setGroup_flag(DateUtils.stringToDateNYRSFM(groupFlag));
+                t.setEngineIP(engineIP);
+                t.setTaskProgress(taskProgress);
+                t.setCurrentUrl(currentUrl);
+                t.setScanTime(scanTime);
+                t.setIssueCount(issueCount);
+                t.setRequestCount(requestCount);
+                t.setUrlCount(urlCount);
+                t.setAverResponse(averResponse);
+                t.setAverSendCount(averSendCount);
+                t.setSendBytes(sendBytes);
+                t.setReceiveBytes(receiveBytes);
+				taskService.insert(t);
+				
+				
 				//add by tangxr 2016-01-23
-				Task t = taskService.findByOrderTaskId(orderTaskId);
-				int taskId = t.getTaskId();
+//				Task t = taskService.findByOrderTaskId(orderTaskId);
 				if(alarmStr!=null && !alarmStr.equals("")){
 					JSONArray alarmArray = jsonObj.getJSONArray("alarmObj");
 					for (Object aObj : alarmArray) {
 						JSONObject alarmObj = (JSONObject) aObj;
-//						String taskId = alarmObj.getString("taskId");
+						taskId = Integer.parseInt(alarmObj.getString("taskId"));
 			            String alarm_time = alarmObj.getString("alarm_time");
 			            String url = alarmObj.getString("url");
 			            String alarm_type = alarmObj.getString("alarm_type");
@@ -228,6 +256,7 @@ public class ReInternalWebService {
 			            Alarm alarm = new Alarm();
 						alarm.setTaskId(taskId);
 //						alarm.setAlarm_time(DateUtils.stringToDateNYRSFM(alarm_time));
+						alarm.setAlarm_time(alarm_time);
 						alarm.setUrl(url);
 						alarm.setAlarm_type(alarm_type);
 						alarm.setName(name);
@@ -246,6 +275,7 @@ public class ReInternalWebService {
 				
 				OrderTask orderTask = new OrderTask();
 		        orderTask.setOrderId(orderId);
+		        orderTask.setId(id);
 		        orderTask.setTask_status(3);
 		        //更新orderTask数据库
 		        orderTaskService.update(orderTask);
@@ -257,6 +287,26 @@ public class ReInternalWebService {
 		        task.setTaskProgress("101");
 		        //更新orderTask数据库
 		        taskService.update(task);
+		        
+		        //add by tangxr 2016-2-25
+		        //查找运行的task
+		        List<Task> runs = taskService.findRunningTask(orderId);
+		        //查询弱点数
+		        int count = taskService.findissueCount(orderId);
+		        //更新订单状态
+		        if(taskStatus.equals("finish")){
+		        	if(runs.size()==0 && count>0){
+			        	Order order = new Order();
+						order.setId(orderId);
+						order.setStatus(2);//订单完成有告警
+						orderService.update(order);
+			        }else if(runs.size()==0 && count==0){
+			        	Order order = new Order();
+						order.setId(orderId);
+						order.setStatus(1);//订单完成无告警
+						orderService.update(order);
+			        }
+		        }
 			}
 
 			r.setState("201");
