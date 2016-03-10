@@ -779,14 +779,15 @@ public class OrderMgrController {
                     }
                 }
                 taskService.deleteTaskByOaId(order_asset_Id);
-                
             }
             //删除订单
             orderService.deleteOrderById(orderId);
             //删除订单资产
             orderAssetService.deleteOaByOrderId(orderId);
             //删除联系人信息
-            selfHelpOrderService.deleteLinkman(order.getContactId());        	
+            selfHelpOrderService.deleteLinkman(order.getContactId());
+            //删除服务系统相关
+            NorthAPIWorker.deleteOrder(orderId);
         }
         
 //        return "/source/page/order/orderTrack";
@@ -1166,7 +1167,7 @@ public class OrderMgrController {
         Order order = orderService.findOrderById(orderId);
         String optCode = NorthAPIWorker.vulnScanOptOrder(orderId,opt);
         Map<String, Object> m = new HashMap<String, Object>();
-        if(optCode.equals("201")){
+        if(optCode.equals("200")){
         	if(status==4){
         		order.setStatus(5);
         	}else if(status==5){
