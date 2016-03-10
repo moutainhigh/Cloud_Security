@@ -403,16 +403,16 @@ $(function(){
  	  		    		     dataType: "json", 
 // 	  		    		     contentType: "application/json; charset=utf-8", 
  	  		    		     success: function(data) {
- 	  		    		    	 if(data.assetsStatus == false && data.orderStatus == true){
- 	  		    		    		 if(data.timeCompare == true){
+ 	  		    		    	 if(data.timeCompare == true){
+ 	  		    		    		 if(data.assetsStatus == false && data.orderStatus == true){
  	   		 	    	            	$("#orderId").html(data.orderId);
  	  					    		    getActive(4); 
  	  			    		    	 }else{
- 	  			    		    		 alert("订单开始时间不能早于当前订单提交时间!");
+ 	  			    		    		alert("订单有异常,请重新下单!");
  	  			    		     		 return;
  	  			    		    	 }
  	  		    		    	 }else{
- 	  		    		    		 alert("订单有异常,请重新下单!");
+ 	  		    		    		 alert("订单开始时间不能早于当前订单提交时间!");
  	  		    		     		 return;
  	  		    		    	 }
  	  		    		    	 }, 
