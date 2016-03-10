@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<title>安全帮，云安全服务在线商城</title>
+<title>安全帮-中国电信云安全服务在线商城</title>
 <link type="text/css" rel="stylesheet" href="${ctx}/source/css/china.css"/>
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/index.css" type="text/css" rel="stylesheet" />
