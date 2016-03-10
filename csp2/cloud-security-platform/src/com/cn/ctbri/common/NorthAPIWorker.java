@@ -56,6 +56,10 @@ public class NorthAPIWorker {
 	 * 获得订单/任务当前执行状态
 	 */
 	private static String North_Get_OrderStatus;
+	/**
+	 * 订单删除
+	 */
+	private static String North_Del_Order;
 	
 	static{
 		try {
@@ -68,6 +72,7 @@ public class NorthAPIWorker {
 			North_Get_OrderReport = p.getProperty("North_Get_OrderReport");
 			North_Get_OrderResult = p.getProperty("North_Get_OrderResult");
 			North_Get_OrderStatus = p.getProperty("North_Get_OrderStatus");
+			North_Del_Order = p.getProperty("North_Del_Order");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -107,7 +112,7 @@ public class NorthAPIWorker {
     }
 	
 	
-	public static boolean getSession() {
+	public static boolean getNorthSession() {
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + Session;
     	//创建jersery客户端配置对象
@@ -205,7 +210,9 @@ public class NorthAPIWorker {
         WebResource service = client.resource(url);
         //获取响应结果
         String response = service.type(MediaType.APPLICATION_JSON).put(String.class,json.toString());
-        return response;
+        JSONObject obj = JSONObject.fromObject(response);
+		String stateCode = obj.getString("code");
+        return stateCode;
 	}
 	
 	
@@ -290,6 +297,25 @@ public class NorthAPIWorker {
 		}
 	}
 	
+	/**
+	 * 功能描述：删除订单
+	 * 参数描述： OrderId 订单编号
+	 *		 @time 2016-03-01
+	 */
+	public static void deleteOrder(String orderId) {
+		//创建任务发送路径
+    	String url = SERVER_WEB_ROOT + North_Del_Order + orderId;
+		//创建配置
+		ClientConfig config = new DefaultClientConfig();
+		//绑定配置
+    	buildConfig(url,config);
+    	//创建客户端
+        Client client = Client.create(config);
+        WebResource service = client.resource(url);
+        //获取响应结果
+        String response = service.type(MediaType.APPLICATION_JSON_TYPE).get(String.class); 
+	}
+	
 	
 	/**
 	 * 功能描述：空字符串转化方法
@@ -363,6 +389,8 @@ public class NorthAPIWorker {
     	String report = vulnScanGetReport("16021615033414544");
         System.out.println(report);
     }
+
+
 
 	
 }

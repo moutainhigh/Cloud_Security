@@ -77,7 +77,7 @@ public class Scheduler4Result {
 			//获取订单状态
 			boolean session = false;
 	    	try {
-	    		session = NorthAPIWorker.getSession();
+	    		session = NorthAPIWorker.getNorthSession();
 			} catch (Exception e) {
 //				e.printStackTrace();
 			}
