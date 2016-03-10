@@ -90,7 +90,7 @@ function optOrder(orderId,status){
     	var obj = {'orderId':orderId, 'status':status};
         $.post("optOrder.html", obj, function(data){
         	if (!data.status){
-				alert("系统异常，暂停失败！");
+				alert("系统异常，暂停或启动失败！");
 			}else{
 				window.location.href="orderTrackInit.html";
 			}
