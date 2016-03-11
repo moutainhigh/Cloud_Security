@@ -93,7 +93,7 @@ public class OrderMgrController {
 	    //是否从首页进入
 	    String indexPage = request.getParameter("indexPage");
 	    //获取服务类型
-        List<Serv> servList = selfHelpOrderService.findService();
+       List<Serv> servList = selfHelpOrderService.findService();
 	    //获取服务类型
 	    List<ServiceType> typeList = selfHelpOrderService.findServiceType();
 	    //获取厂商
@@ -106,15 +106,56 @@ public class OrderMgrController {
 //	    }
 	    request.setAttribute("servList", servList);
 	    request.setAttribute("typeList", typeList);
-        request.setAttribute("factoryList", factoryList);
-        request.setAttribute("serviceAssetList", serviceAssetList);
-        request.setAttribute("type", type);
-        request.setAttribute("serviceId", serviceId);
-        request.setAttribute("indexPage", indexPage);
-//        request.setAttribute("orderId", orderId);
-//        request.setAttribute("order", order);
-        String result = "/source/page/order/order";
-        return result;
+       request.setAttribute("factoryList", factoryList);
+       request.setAttribute("serviceAssetList", serviceAssetList);
+       request.setAttribute("type", type);
+       request.setAttribute("serviceId", serviceId);
+       request.setAttribute("indexPage", indexPage);
+//       request.setAttribute("orderId", orderId);
+//       request.setAttribute("order", order);
+//       String result = "/source/page/order/order";
+       String result = "/source/page/details/vulnScanDetails";
+       return result;
+	}
+	
+	
+	 /**
+	 * 功能描述： 结算
+	 * 参数描述：  无
+	 *     @time 2016-3-10
+	 */
+	@RequestMapping(value="settlement.html")
+	public String settlement(HttpServletRequest request){
+		//资产ids
+       String assetIds = request.getParameter("assetIds");
+		String orderType = request.getParameter("orderType");
+       String beginDate = request.getParameter("beginDate");
+       String endDate = request.getParameter("endDate");
+//       String createDate = DateUtils.dateToString(new Date());
+       String scanPeriod = request.getParameter("scanType");
+       String serviceId = request.getParameter("serviceId");
+       //联系人信息
+//       String linkname = new String(request.getParameter("linkname").getBytes("ISO-8859-1"),"UTF-8");
+//       String phone = request.getParameter("phone");
+//       String email = request.getParameter("email");
+//       String company = new String(request.getParameter("company").getBytes("ISO-8859-1"),"UTF-8");
+//       String address = new String(request.getParameter("address").getBytes("ISO-8859-1"),"UTF-8");
+       //华为参数
+//       String ip = request.getParameter("ip");
+//       String bandwidth = request.getParameter("bandwidth");
+       //厂商
+//       String websoc = request.getParameter("websoc");
+       //任务数
+//       String tasknum = request.getParameter("tasknum");
+       
+	    request.setAttribute("assetIds", assetIds);
+	    request.setAttribute("orderType", orderType);
+       request.setAttribute("beginDate", beginDate);
+       request.setAttribute("endDate", endDate);
+       request.setAttribute("scanType", scanPeriod);
+       request.setAttribute("serviceId", serviceId);
+       String result = "/source/page/details/settlement";
+       return result;
 	}
 	
 	/**
@@ -355,7 +396,8 @@ public class OrderMgrController {
 //        String createDate = request.getParameter("createDate");
         String scanType = request.getParameter("scanType");
         String scanDate = request.getParameter("scanDate");
-        String serviceId = request.getParameter("serviceId");
+//        String serviceId = request.getParameter("serviceId");
+        String serviceId = "1";
         String linkname = new String(request.getParameter("linkname").getBytes("ISO-8859-1"),"UTF-8");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
@@ -363,7 +405,8 @@ public class OrderMgrController {
         String address = new String(request.getParameter("address").getBytes("ISO-8859-1"),"UTF-8");
         String ip = request.getParameter("ip");
         String bandwidth = request.getParameter("bandwidth");
-        String websoc = request.getParameter("websoc");
+//        String websoc = request.getParameter("websoc");
+        String websoc = "0";
         //订单开始时间不能早于当前订单提交时间,add by txr,2015-3-3
         if(beginDate.compareTo(createDate)>0){
             m.put("timeCompare", true);

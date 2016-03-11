@@ -156,29 +156,29 @@ public class UserController {
 	@RequestMapping(value="index.html")
 	public String index(Model m){
 	    //获取公告
-	    List<Notice> list = noticeService.findAllNotice();
+//	    List<Notice> list = noticeService.findAllNotice();
 	    //获取服务类型
-        List<Serv> servList = selfHelpOrderService.findService();
+//        List<Serv> servList = selfHelpOrderService.findService();
         //查询网页篡改个数 
 //        int whorseNum = selfHelpOrderService.findLeakNum(3);
         //查询木马检测个数 
 //        int pageTamperNum = selfHelpOrderService.findLeakNum(2);
         //查询漏洞个数
-        int leakNum = selfHelpOrderService.findLeakNum(1);
+//        int leakNum = selfHelpOrderService.findLeakNum(1);
         //查询网页数
-        int webPageNum = selfHelpOrderService.findWebPageNum();
+//        int webPageNum = selfHelpOrderService.findWebPageNum();
         //检测网页数
-        int webSite = selfHelpOrderService.findWebSite();
+//        int webSite = selfHelpOrderService.findWebSite();
         //断网次数
-        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
+//        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
 //        m.addAttribute("whorseNum", whorseNum);
 //        m.addAttribute("pageTamperNum", pageTamperNum);
-        m.addAttribute("leakNum", leakNum);
-        m.addAttribute("webPageNum", webPageNum);
-        m.addAttribute("webSite", webSite);
-        m.addAttribute("brokenNetwork", brokenNetwork);
-        m.addAttribute("servList", servList);
-        m.addAttribute("noticeList", list);
+//        m.addAttribute("leakNum", leakNum);
+//        m.addAttribute("webPageNum", webPageNum);
+//        m.addAttribute("webSite", webSite);
+//        m.addAttribute("brokenNetwork", brokenNetwork);
+//        m.addAttribute("servList", servList);
+//        m.addAttribute("noticeList", list);
 		return "/main";
 	}
 	/**
@@ -792,12 +792,12 @@ public class UserController {
     	}
 	}
 	/**
-	 * 功能描述： 忘记密码
+	 * 功能描述： 跳转动态感知
 	 * 参数描述： Model m
 	 *		 @time 2015-1-8
 	 */
-	@RequestMapping(value="/chinas.html")
-	public String chians(Model m){
+	@RequestMapping(value="/sa_anquanbang.html")
+	public String saAnquanbang(Model m){
 	    //查询漏洞个数
         int leakNum = selfHelpOrderService.findLeakNum(1);
         //查询网页数
@@ -810,6 +810,55 @@ public class UserController {
         m.addAttribute("webPageNum", webPageNum);
         m.addAttribute("webSite", webSite);
         m.addAttribute("brokenNetwork", brokenNetwork);
-		return "/china";
+		return "/source/page/anquanbang/sa_anquanbang";
+	}
+	
+	
+	/**
+	 * 功能描述： 跳转网站安全帮
+	 *		 @time 2016-1-23
+	 */
+	@RequestMapping(value="/web_anquanbang.html")
+	public String webAnquanbang(Model m){
+	    //获取公告
+	    List<Notice> list = noticeService.findAllNotice();
+	    //获取服务类型
+        List<Serv> servList = selfHelpOrderService.findService();
+        //查询漏洞个数
+        int leakNum = selfHelpOrderService.findLeakNum(1);
+        //查询网页数
+        int webPageNum = selfHelpOrderService.findWebPageNum();
+        //检测网页数
+        int webSite = selfHelpOrderService.findWebSite();
+        //断网次数
+        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
+        m.addAttribute("leakNum", leakNum);
+        m.addAttribute("webPageNum", webPageNum);
+        m.addAttribute("webSite", webSite);
+        m.addAttribute("brokenNetwork", brokenNetwork);
+        m.addAttribute("servList", servList);
+        m.addAttribute("noticeList", list);
+		return "/source/page/child/web_anquanbang";
+	}
+	
+	
+	/**
+	 * 功能描述： 加入我们
+	 * 参数描述： Model m
+	 *		 @time 2016-1-25
+	 */
+	@RequestMapping(value="joinUs.html")
+	public String joinUs(Model m){
+		return "/joinUs";
+	}
+	
+	/**
+	 * 功能描述： 了解安全帮
+	 * 参数描述： Model m
+	 *		 @time 2016-2-25
+	 */
+	@RequestMapping(value="knowUs.html")
+	public String knowUs(Model m){
+		return "/knowUs";
 	}
 }
