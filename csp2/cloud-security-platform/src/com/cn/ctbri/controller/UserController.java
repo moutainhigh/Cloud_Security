@@ -930,7 +930,7 @@ public class UserController{
         m.addAttribute("brokenNetwork", brokenNetwork);
         m.addAttribute("servList", servList);
         m.addAttribute("noticeList", list);
-		return "/source/page/anquanbang/web_anquanbang";
+		return "/source/page/child/web_anquanbang";
 	}
 	
 	/**

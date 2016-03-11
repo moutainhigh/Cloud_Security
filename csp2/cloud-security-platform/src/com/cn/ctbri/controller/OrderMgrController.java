@@ -118,7 +118,48 @@ public class OrderMgrController {
         request.setAttribute("indexPage", indexPage);
 //        request.setAttribute("orderId", orderId);
 //        request.setAttribute("order", order);
-        String result = "/source/page/order/order";
+//        String result = "/source/page/order/order";
+        String result = "/source/page/details/vulnScanDetails";
+        return result;
+	}
+	
+	
+	 /**
+	 * 功能描述： 结算
+	 * 参数描述：  无
+	 *     @time 2016-3-10
+	 */
+	@RequestMapping(value="settlement.html")
+	public String settlement(HttpServletRequest request){
+		//资产ids
+        String assetIds = request.getParameter("assetIds");
+		String orderType = request.getParameter("orderType");
+        String beginDate = request.getParameter("beginDate");
+        String endDate = request.getParameter("endDate");
+//        String createDate = DateUtils.dateToString(new Date());
+        String scanPeriod = request.getParameter("scanType");
+        String serviceId = request.getParameter("serviceId");
+        //联系人信息
+//        String linkname = new String(request.getParameter("linkname").getBytes("ISO-8859-1"),"UTF-8");
+//        String phone = request.getParameter("phone");
+//        String email = request.getParameter("email");
+//        String company = new String(request.getParameter("company").getBytes("ISO-8859-1"),"UTF-8");
+//        String address = new String(request.getParameter("address").getBytes("ISO-8859-1"),"UTF-8");
+        //华为参数
+//        String ip = request.getParameter("ip");
+//        String bandwidth = request.getParameter("bandwidth");
+        //厂商
+//        String websoc = request.getParameter("websoc");
+        //任务数
+//        String tasknum = request.getParameter("tasknum");
+        
+	    request.setAttribute("assetIds", assetIds);
+	    request.setAttribute("orderType", orderType);
+        request.setAttribute("beginDate", beginDate);
+        request.setAttribute("endDate", endDate);
+        request.setAttribute("scanType", scanPeriod);
+        request.setAttribute("serviceId", serviceId);
+        String result = "/source/page/details/settlement";
         return result;
 	}
 	
@@ -447,10 +488,10 @@ public class OrderMgrController {
 	            	order.setWebsoc(0);
 	            }else{
 	            	if(!websoc.equals("null")){
-	                	order.setWebsoc(Integer.parseInt(websoc));
+//	                	order.setWebsoc(Integer.parseInt(websoc));
 	                }
 	            }
-	            order.setTasknum(Integer.parseInt(tasknum));
+//	            order.setTasknum(Integer.parseInt(tasknum));
 	            selfHelpOrderService.insertOrder(order);
 	            
 	            
