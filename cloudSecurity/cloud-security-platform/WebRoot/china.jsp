@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<title>云安全服务平台</title>
+<title>安全帮-中国电信云安全服务在线商城</title>
 <link type="text/css" rel="stylesheet" href="${ctx}/source/css/china.css"/>
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/index.css" type="text/css" rel="stylesheet" />
@@ -24,6 +24,13 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/china.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/regionTop5.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/serviceTop5.js"></script>
+
+<link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
+<link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="${ctx}/source/scripts/common/portalindex.js"></script>
+<script src="${ctx}/source/scripts/common/popBox.js"></script>
+<link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
+<script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script type="text/javascript">
 $(function(){
 	$('.safe_list li').click(function(){
@@ -90,41 +97,49 @@ $(function(){
 </script>
 </head>
 <body>
-<div class="head_bj">
-        <div class="head">
-           <div class="logo"><img src="${ctx}/source/images/logo.png" /></div>
-           <div class="lagst">
-               <div class="lagst-left">
-                <c:if test="${sessionScope.globle_user!=null }">
-                   <a href="${ctx}/userDataUI.html"><img src="${ctx}/source/images/ren.png" /></a>
-                </c:if>
-                 <c:if test="${sessionScope.globle_user==null }">
-                    <a href="${ctx}/toLoginUI.html"><img src="${ctx}/source/images/ren.png" /></a>
-                 </c:if>
-               </div>
-               <div class="lagst-right">
-               <!-- 如果已经登录则显示用户名，否则需要登录 -->
-               <c:if test="${sessionScope.globle_user!=null }">
-                <p><a href="${ctx}/userDataUI.html" style="color: #fff">${sessionScope.globle_user.name }</a></p>
-                <p><a href="${ctx}/exit.html">退出</a></p>
-               </c:if>
-               <c:if test="${sessionScope.globle_user==null }">
-                     <p><a href="${pageContext.request.contextPath}/loginUI.html">登录</a></p>
-                     <p><a href="${pageContext.request.contextPath}/registUI.html">注册</a></p>
-               </c:if>
-               </div>
-           </div>
-            <div class="list">
-               <ul>
-                   <li><a href="${ctx}/index.html">首页</a></li>
-                   <li class="list_active"><a href="${ctx}/chinas.html">安全态势</a></li>
-                   <li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
-                   <li><a href="${ctx}/aider.html">在线帮助</a></li>
-                   <li style="border-right:1px solid #1369C0;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
-               </ul>
-           </div>
-        </div>
-    </div>
+
+<!--头部-->
+<div class="head">
+	<div class="headBox" style="width: 1098px;">
+		<div class="safeL fl" style="margin-right: 20%">
+			<div class="logo">
+			<img src="${ctx}/source/images/portal/logo.png" alt=""/><b></b><span>网站安全帮</span>
+			</div>
+		</div>
+		
+		<div class="safem fl">
+			<span class="fl"><a href="${ctx}/index.html">首页</a></span>
+			<span class="fl"><a href="${ctx}/chinas.html">安全态势</a></span>
+			<div class="Divlist listJs fl">
+				<a href="#">我的安全帮<i></i></a>
+				<ul class="list listl">
+					<li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
+					<li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
+					<li style="border: none;"><a href="${ctx}/userDataUI.html">个人信息</a></li>
+				</ul>
+			</div>
+			<span class="fl"><a href="#">手机APP</a></span>
+			<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
+			
+		</div>
+		<div class="safer fr">
+			<!-- 如果已经登录则显示用户名，否则需要登录 -->
+	         <c:if test="${sessionScope.globle_user!=null }">
+		        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
+		        <em>|</em>
+		        <a href="${ctx}/exit.html">退出</a>
+	         </c:if>
+	         <c:if test="${sessionScope.globle_user==null }">
+	            <a href="${ctx}/loginUI.html">登录</a>
+				<em>|</em>
+				<a href="${ctx}/registUI.html">注册</a>
+	         </c:if>
+		
+		
+			
+		</div>
+	</div>
+</div>
 <!-- 头部代码结束-->
 <div class="user_center safe clear">
   <div class="safe_middle tab">

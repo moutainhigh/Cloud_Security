@@ -5,257 +5,311 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<title>云安全服务平台</title>
-<link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/css/index.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
-<script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/common/index.js"></script>
+<meta charset="utf-8">
+<title>安全帮-中国电信云安全服务在线商城</title>
+<link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
+<link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
+<link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
 <SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
-<link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
+<script src="${ctx}/source/scripts/common/jquery.js"></script>
+<script src="${ctx}/source/scripts/common/portalindex.js"></script>
+<script src="${ctx}/source/scripts/common/popBox.js"></script>
+<script src="${ctx}/source/scripts/common/slidelf.js"></script>
+<script src="${ctx}/source/scripts/common/main.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
-<script type="text/javascript">
-    //首页广告页数据定时刷新,数据不去重
-$(function () {
-    //showUnreadNews();
-    window.setInterval(showUnreadNews,30000);
-});
-function showUnreadNews()
-{
-    $.ajax({
-        type: "GET",
-        url: "${ctx}/getNum.html",
-        dataType: "json",
-        success: function(data) {
-        	$("#num3").html(data.brokenNetwork);
-        	$("#num2").html(data.leakNum);
-            $("#num1").html(data.webPageNum);
-            $("#num").html(data.webSite);
-        }
-    });
-}
-    //定时30s刷新一次
-    //setInterval('showUnreadNews()',20000);
-</script>
 </head>
+
+<style>
+html, body{height: 100%; min-height: 100%; position: relative;}
+.banner_img{text-align: center; display: table; width: 100%; height: 100%;}
+.banner_img li {display: table-cell; vertical-align: middle;}
+</style>
+</head>
+
 <body>
-<div>
-<div class="head_bj">
-  <div class="head">
-    <div class="logo"><img src="${ctx}/source/images/logo.png" /></div>
-    <div class="lagst">
-      <div class="lagst-left">
-       <c:if test="${sessionScope.globle_user!=null }">
-          <a href="${ctx}/userDataUI.html"><img src="${ctx}/source/images/ren.png" /></a>
-       </c:if>
-        <c:if test="${sessionScope.globle_user==null }">
-           <a href="${ctx}/toLoginUI.html"><img src="${ctx}/source/images/ren.png" /></a>
-        </c:if>
-      </div>
-      <div class="lagst-right">
-         <!-- 如果已经登录则显示用户名，否则需要登录 -->
-         <c:if test="${sessionScope.globle_user!=null }">
-          <p><a href="${ctx}/userDataUI.html" style="color: #fff">${sessionScope.globle_user.name }</a></p>
-          <p><a href="${ctx}/exit.html">退出</a></p>
-         </c:if>
-         <c:if test="${sessionScope.globle_user==null }">
-               <p><a href="${pageContext.request.contextPath}/loginUI.html">登录</a></p>
-               <p><a href="${pageContext.request.contextPath}/registUI.html">注册</a></p>
-         </c:if>
-      </div>
-    </div>
-    <div class="list">
-        <ul>
-            <li class="list_active"><a href="${ctx}/index.html">首页</a></li>
-            <li><a href="${ctx}/chinas.html">安全态势</a></li>
-            <li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
-            <li><a href="${ctx}/aider.html">在线帮助</a></li>            
-            <li style="border-right:1px solid #1369C0;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
-        </ul>
-    </div>
-  </div>
-</div>
-<div class="nav">
-  <div class="subnav_box">
-      <div class="subnav fl" id="play" >
-      <div class=""> </div>
-      <!--<p class="prev">&laquo;</p>
-          <p class="next">&raquo;</p>-->
-      <ul>
-        <li style="position:relative">
-            <a href="###">
-                <img src="${ctx}/source/images/banner1.jpg" />
-                <!-- <span class="lb_font lb_first">发现篡改<span class="lb_font_w" id="num3">${pageTamperNum }</span>次</span>
-                <span class="lb_font lb_second">发现<span class="lb_font_w" id="num2">${whorseNum }</span>个木马</span>
-                <span class="lb_font lb_third">累计检测<span class="lb_font_w" id="num">${webPageNum }</span>个网页</span>
-                <span class="lb_font lb_forth">发现<span class="lb_font_w" id="num1">${leakNum }</span>个漏洞</span>-->
-                <span class="lb_font lb_first">发现断网<span class="lb_font_w" id="num3">${brokenNetwork }</span>次</span>
-                <span class="lb_font lb_second">发现漏洞<span class="lb_font_w" id="num2">${leakNum }</span>个</span>
-                <span class="lb_font lb_third">已监测网站<span class="lb_font_w" id="num">${webSite }</span>个</span>
-                <span class="lb_font lb_forth">检测页面<span class="lb_font_w" id="num1">${webPageNum }</span>个</span>
-            </a>
-        </li>
-       
-        <li><a href="###"><img src="${ctx}/source/images/cloudsecurity4.png" /></a></li>
-        <li><a href="###"><img src="${ctx}/source/images/cloudsecurity5.png" /></a></li>
-        <li><a href="###"><img src="${ctx}/source/images/cloudsecurity6.png" /></a></li>
-        <li><a href="###"><img src="${ctx}/source/images/cloudsecurity1.jpg" /></a></li>
-      </ul>
-      <ol>
-        <li  class="active"></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-      </ol>
-    </div>
-    <div class="fl right_nav">
-      <div class="right_title">系统公告</div>
-      <div class="right_list">
-        <ul>
-           <c:forEach var="list" items="${noticeList}" varStatus="status">
-             <c:if test="${status.index<4 }">
-               <li><a href="${ctx}/noticeDescUI.html?id=${list.id}" title="${list.noticeName }">
-                   <c:if test="${fn:length(list.noticeName)<=9}">
-                               ${list.noticeName }
-                   </c:if>
-                   <c:if test="${fn:length(list.noticeName)>9}">
-                           ${fn:substring(list.noticeName, 0, 9)}...
-                   </c:if>
-               </a></li>
-              </c:if>
-           </c:forEach>
-        </ul>
-      </div>
-      <div class="right_wechate">
-        <p>最新的WEB安全资讯</p>
-        <P>尽在网站安全帮</P>
-        <img src="${ctx}/source/images/wedetil.png"/>
-      </div>
-    </div>
-  </div>
-  <div class="center clear">
-    <div class="web_fuwu clear">
-      <h1>监测及预警服务</h1>
-      <c:forEach var="list" items="${servList}" varStatus="status">
-        <c:choose>
-            <c:when test="${status.index<4}">
-		      <div class="web_main bor_right">
-		      <div class="web_main_pic"><img src="${ctx}/source/images/iconin${status.index+1 }.jpg" /></div>
-		        <h2><a href="###">${list.name }</a></h2>
-		        <p class="web_txt">${list.remarks }</p>
-		        <div class="in_web_box">
-		            <div class="web_left">
-		            <p style=" position: relative;top: -18px; left:0px; z-index:2; color:#ccc">￥<span class="web_money">99</span></p>
-		            <p style=" position: relative;top: -30px; z-index:2; left:2px"><span class="web_money">推广价</span>￥<span class="web_money">0</span></p>
-		            </div>
-		            <div class="web_right">
-		                <a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1" class="index_buy"></a>
-		            </div>
-		        </div>
-		      </div>
-		    </c:when>
-		    <c:when test="${status.index==4}">
-              <div class="web_main" style="margin-right:0">
-                <div class="web_main_pic"><img src="${ctx}/source/images/iconin${status.index+1 }.jpg" /></div>
-                <h2><a href="###">${list.name }</a></h2>
-                <p class="web_txt">${list.remarks }</p>
-                <div class="in_web_box">
-                    <div class="web_left">
-                    <p style=" position: relative;top: -18px; left:0px; z-index:2; color:#ccc">￥<span class="web_money">99</span></p>
-		            <p style=" position: relative;top: -30px; z-index:2; left:2px"><span class="web_money">推广价</span>￥<span class="web_money">0</span></p>
+	<div class="safeBox">
+		
+		<div class="safe01">
+			<!--头部-->
+			<div class="head">
+				<div class="headBox">
+					<div class="safeL fl">
+						<img src="${ctx}/source/images/portal/logo.png" alt=""/>
+					</div>
+					<div class="safem fl">
+						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
+						<div class="Divlist listJs fl">
+							<a href="#">我的安全帮<i></i></a>
+							<ul class="list listl">
+								<li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
+								<li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
+								<li style="border: none;"><a href="${ctx}/userDataUI.html">个人信息</a></li>
+							</ul>
+						</div>
+						<span class="fl"><a href="#">手机APP</a></span>
+						<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
+						
+					</div>
+					<div class="safer fr">
+						<!-- 如果已经登录则显示用户名，否则需要登录 -->
+				         <c:if test="${sessionScope.globle_user!=null }">
+					        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
+					        <em>|</em>
+					        <a href="${ctx}/exit.html">退出</a>
+				         </c:if>
+				         <c:if test="${sessionScope.globle_user==null }">
+				            <a href="${ctx}/loginUI.html">登录</a>
+							<em>|</em>
+							<a href="${ctx}/registUI.html">注册</a>
+				         </c:if>
+					</div>
+				</div>
+			</div>
+			<div class="bannerBox vBox">
+            <div class="v_show">
+            	
+				<div class="bannerB v_cont">
+					<ul class="bannerHeight banner_img clearfix">
+						<li style="background-color: #085fac; display: list-item;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/new_big-pic-1400.jpg" alt=""></a></div></li>
+						<li style="background-color: #085fac;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/new_big-pic-1400.jpg" alt=""></a></div></li>
+                        <li style="background-color: #085fac;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/new_big-pic-1400.jpg" alt=""></a></div></li>
+					</ul>
+				</div>
+             </div>
+				<ol class="bannerbtn circle clearfix">
+                    <li class="active"></li>
+                    <li></li>
+                    <li></li>
+				</ol>
+			</div>
+
+		</div>
+		<div class="safe02">
+			
+			<div class="imgBox" style="width: 1130px;">
+				<h2><i></i>热门服务<i></i></h2>
+                <div class="listBox clearfix">
+                	<div class="listL fl">
+                    	<div class="">
+                        	<p><img src="${ctx}/source/images/portal/web.png" alt=""></p>
+                        </div>
                     </div>
-                    <div class="web_right">
-                        <a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1" class="index_buy"></a>
+                	<div class="listR fl">
+                    	<div class="new-title clearfix">
+                        	<h3 class="fl">网站安全帮</h3>
+                            <a href="${ctx}/web_anquanbang.html" class="fr">查看更多<b></b></a>
+                        </div>
+                    	<ul class="newlist newlist-top fl">
+                            <li class="fl">
+                                <a href="#">
+                                    <i><img src="${ctx}/source/images/portal/HOT.png" alt=""></i>
+                                    <p><img src="${ctx}/source/images/portal/vulnScan.png" alt=""></p>
+                                    <h4>漏洞扫描服务</h4>
+                                    <h5>￥99.00</h5> 
+                                </a>
+                            </li>
+                            <li class="fl">
+                                <a href="#">
+                                    <i><img src="${ctx}/source/images/portal/free.png" alt=""></i>
+                                    <p><img src="${ctx}/source/images/portal/trojanDetect.png" alt=""></p>
+                                    <h4>木马检测服务</h4>
+                                    <h5>￥99.00</h5> 
+                                </a>
+                            </li>
+                            <li class="fl">
+                                <a href="#">
+                                    <i style="display:none"><img src="${ctx}/source/images/portal/free.png" alt=""></i>
+                                    <p><img src="${ctx}/source/images/portal/sensitiveWord.png" alt=""></p>
+                                    <h4>关键字检测服务</h4>
+                                    <h5>￥99.00</h5> 
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-              </div>
-            </c:when>
-	    </c:choose>
-      </c:forEach>
-
-
+                <div class="listBox clearfix">
+                	<div class="listL fl">
+                    	<div class="">
+                        	<p><img src="${ctx}/source/images/portal/API262-330.png" alt=""></p>
+                        </div>
+                    </div>
+                	<div class="listR fl">
+                    	<div class="new-title clearfix">
+                        	<h3 class="fl">安全能力API</h3>
+                            <a href="#" class="fr">查看更多<b></b></a>
+                        </div>
+                    	<ul class="newlist newlist-top fl">
+                            <li class="fl">
+                                <a href="#">
+                                    <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
+                                    <p><img src="${ctx}/source/images/portal/webPageTamper.png" alt=""></p>
+                                    <h4>网页篡改监测</h4>
+                                    <h5>￥99.00</h5> 
+                                </a>
+                            </li>
+                            <li class="fl">
+                                <a href="#">
+                                    <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
+                                    <p><img src="${ctx}/source/images/portal/sensitiveWord.png" alt=""></p>
+                                    <h4>敏感词监测</h4>
+                                    <h5>￥99.00</h5> 
+                                </a>
+                            </li>
+                            <li class="fl">
+                                <a href="#">
+                                    <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
+                                    <p><img src="${ctx}/source/images/portal/availability.png" alt=""></p>
+                                    <h4>可用性监测</h4>
+                                    <h5>￥99.00</h5> 
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+				
+			</div>
+		</div>
+		<div class="safe05 special">
+			<div class="specialblock">
+            	<h3>专题模块</h3>
+                <dl class="clearfix">
+                	<dd class="fl frn">
+                    	<div class="introduce">
+                        	<a href="#">
+                        		
+                        		<h4>安全态势感知</h4>
+                                <p>安全大数据分析</p>
+								<p>可视化地域告警统计分析</p>
+								<p>实时安全趋势预测</p>
+                        	</a>
+                        </div>
+                    </dd>
+                    <dd class="fl frn">
+                    	<div class="introduce">
+                    	<a href="#">
+                        	<h4>X专区</h4>
+                            <p>独特极客安全工具</p>
+				            <p>特定漏洞专用检测工具</p>
+                            </a>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+		</div>
+		<div class="safe03">
+			<div class="imgBox" id="carrousel" style="width: 1190px;">
+				<h2><i></i>合作伙伴<i></i></h2>
+                
+                <div class="friend-Link ">
+                    <div class="left-arrow"><a href="javascript:;"><img src="${ctx}/source/images/portal/left.png"></a></div>
+                    <div class="fl-pic">
+                      <ul class="imgist clearfix">
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico14.png" alt=""></a></li>
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico12.png" alt=""></a></li>
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico11.png" alt=""></a></li>
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico15.png" alt=""></a></li>
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico13.png" alt=""></a></li>
+                        <!--<li><a href="#"><img src="${ctx}/source/images/portal/ico13.png" alt=""></a></li>
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico14.png" alt=""></a></li>
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico15.png" alt=""></a></li>-->
+                      </ul>
+                    </div>
+                    <div class="right-arrow"><a href="javascript:;"><img src="${ctx}/source/images/portal/right.png"></a></div>
+                  </div>
+        
+			</div>
+		</div>
+		<div class="safe04">
+			<div class="imgBox clearfix">
+				<div class="footL fl">
+					<a href="#"><img src="${ctx}/source/images/portal/footlogo.png" alt=""></a>
+				</div>
+				<ol class="footr clearfix fr">
+					<li>
+                    	<h2>帮助中心</h2>
+                        <dl>
+                        	<dd><a href="#">购物指南</a></dd>
+                            <dd><a href="#">在线帮助</a></dd>
+                            <dd><a href="#">常见问题</a></dd>
+                       </dl>
+                    </li>
+                    <li>
+                    	<h2>关于安全帮</h2>
+                        <dl>
+                        	<dd><a href="${ctx}/knowUs.html">了解安全帮</a></dd>
+                            <dd><a href="${ctx}/joinUs.html">加入安全帮</a></dd>
+                            <dd><a href="#">联系我们</a></dd>
+                       </dl>
+                    </li>
+                    <li>
+                    	<h2>关注我们</h2>
+                        <dl>
+                        	<dd><a href="#">QQ交流群</br>470899318</a></dd>
+                            <dd class="weixin"><a href="#">官方微信</a></dd>
+                       </dl>
+                    </li>
+                     <li>
+                    	<h2>特色服务</h2>
+                        <dl>
+                        	<dd><a href="#">优惠劵通道</a></dd>
+                            <dd><a href="#">专家服务通道</a></dd>
+                       </dl>
+                    </li>
+					
+				</ol>
+				
+			</div>
+		</div>
+		<div class="foot">
+			<p>版权所有Copyright © 2015 中国电信股份有限公司北京研究院京ICP备12019458号-10</p>
+		</div>
+	</div>
+<!---执行效果-->
+<div class="weixinshow popBoxhide" id="weixin">
+	<i class="close chide"></i>
+    <div class="Pophead">
+    	<h1 class="heaf">安全帮微信二维码</h1>
     </div>
-    <div class="anti_fuwu clear">
-      <h1>防护及加固服务</h1>
-      <c:forEach var="list" items="${servList}" varStatus="status">
-         <c:choose>
-            <c:when test="${status.index==5||status.index==6}">
-		      <div class="anti_main bor_right">
-		        <div class="web_model"></div>
-                <div class="web_modelp">即将上线...</div>
-		        <div class="anti_main_pic"><img src="${ctx}/source/images/iconin${status.index+1 }.jpg" /></div>
-		        <div class="anti_main_right">
-		          <h2><a href="###">${list.name }</a></h2>
-		          <p>${list.remarks }</p>
-		          <div class="anti_box">
-		                <p style=" position: relative;top: -18px; left:0px; z-index:2; color:#ccc">￥<span class="web_money">99</span></p>
-		            <p style=" position: relative;top: 5px; z-index:2; left:-36px"><span class="web_money">推广价</span>￥<span class="web_money">0</span></p>
-		                <a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1" class="index_buy"></a>
-		            </div>
-		        </div>
-		      </div>
-            </c:when>
-            <c:when test="${status.last}">
-		      <div class="anti_main" style="margin-right:0px;">
-		        <div class="web_model"></div>
-                <div class="web_modelp">即将上线...</div>
-		        <div class="anti_main_pic"><img src="${ctx}/source/images/iconin${status.index+1 }.jpg" /></div>
-		        <div class="anti_main_right">
-		          <h2><a href="###">${list.name }</a></h2>
-		          <p>${list.remarks }</p>
-		          <div class="anti_box">
-		                <p>￥<span class="web_money">99推广价￥0</span></p>
-		                <a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1" class="index_buy"></a>
-		            </div>
-		        </div>
-		      </div>
-		    </c:when>
-           </c:choose>
-        </c:forEach>
+	<div class="popBox">
+    	 <p>打开微信，点击右上角的“+”，选择“扫一扫”功能，<br>
+对准下方二维码即可。
+		</p>
+           <div class="weinImg" style="text-align:center;">
+           	<img src="${ctx}/source/images/portal/weixin.png" alt="">
+           </div> 
     </div>
-  </div>
+
 </div>
-<div class="bottom_bj">
-<div class="bottom">
-<div class="bottom_main">
-  <h3><a href="###">新手入门</a></h3>
-  <ul>
-    <li><a href="${ctx}/registUI.html">新用户注册</a></li>
-    <li><a href="${ctx}/loginUI.html">用户登录</a></li>
-    <li><a href="${ctx}/forgetPass.html">找回密码</a></li>
-  </ul>
-</div>
-<div  class="bottom_main">
-  <h3><a href="###"> 帮助</a></h3>
-  <ul>
-    <li><a href="${ctx}/aider.html">常见问题</a></li>
-  </ul>
-</div>
-<div  class="bottom_main">
-  <h3><a href="###">厂商合作</a></h3>
-  <ul>
-    <li><a href="###">绿盟</a></li>
-    <li><a href="###">安恒</a></li>
-    <li><a href="###">华为</a></li>
-  </ul>
-</div>
-<div  class="bottom_main">
-<h3><a href="###">联系我们</a></h3>
-<ul>
-<li><a href="###">QQ交流群470899318</a></li>
-</div>
-<div  class="bottom_main" style="width:380px;">
-<h3><a href="###">版权信息</a></h3>
- <ul>
- <li>Copyright&nbsp;©&nbsp;2015 中国电信股份有限公司北京研究院<br />
-京ICP备12019458号－10</li>
-</div>
-</div>
-</div>
-</div>
+	
+<div class="shade"></div>
 </body>
+<script>
+$(function(){	
+	$('#carrousel').hover(function(){
+			$('.left-arrow').fadeIn();
+			$('.right-arrow').fadeIn();
+		},function(){
+			$('.right-arrow').fadeOut();
+			$('.left-arrow').fadeOut();
+		})
+	
+	$(".fl-pic").slidelf({
+			"prev":"left-arrow",
+			"next":"right-arrow",
+			"speed":300 //时间可以任意调动  以毫秒为单位
+		});
+		
+	})
+	
+</script>
+<script>
+	var w=$(document).width();
+	$('.bannerHeight').width(w);
+	//$('.banner_img li').width(w);
+	//$('.banner_img li img').width(w);
+	
+            	
+</script>
+
 </html>
