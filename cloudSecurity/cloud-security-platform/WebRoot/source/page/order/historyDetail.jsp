@@ -14,10 +14,14 @@
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
+<SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
+<link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
+<link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="${ctx}/source/scripts/common/portalindex.js"></script>
 </head>
 
 <body>
@@ -38,41 +42,30 @@
    </div>
 </div>
 <!-- 尾部代码开始-->
-<div class="bottom_bj">
-<div class="bottom">
-<div class="bottom_main">
-  <h3><a href="###">新手入门</a></h3>
-  <ul>
-       <li><a href="${ctx}/registUI.html">新用户注册</a></li>
-    <li><a href="${ctx}/loginUI.html">用户登录</a></li>
-    <li><a href="${ctx}/forgetPass.html">找回密码</a></li>
-  </ul>
+<div class="safeBox">
+<div class="safe04">
+	<div class="imgBox clearfix">
+		<div class="footL fl">
+			<a href="#"><img src="${ctx}/source/images/portal/footlogo.png" alt=""></a>
+		</div>
+		<ol class="footr clearfix fr">
+			<li><a href="#">关于我们</a></li>
+			<li><a href="${ctx}/joinUs.html" target="_blank">加入我们</a></li>
+			<li>
+				<a href="#">关于安全帮</a>
+				<em>QQ 470899318</em>
+			</li>
+			<li class="weixn weishow">
+				<em>微信</em>
+				<span style="display:none"><img src="${ctx}/source/images/portal/weixin.jpg" alt=""></span>
+			</li>
+			
+		</ol>
+		
+	</div>
 </div>
-<div  class="bottom_main">
-   <h3><a href="###"> 帮助</a></h3>
-  <ul>
-    <li><a href="${ctx}/aider.html">常见问题</a></li>
-  </ul>
-</div>
-<div  class="bottom_main">
-  <h3><a href="###">厂商合作</a></h3>
-  <ul>
-    <li><a href="###">绿盟</a></li>
-    <li><a href="###">安恒</a></li>
-    <li><a href="###">华为</a></li>
-  </ul>
-</div>
-<div  class="bottom_main">
-<h3><a href="###">联系我们</a></h3>
-<ul>
-<li><a href="###">QQ交流群470899318</a></li>
-</div>
-<div  class="bottom_main" style="width:380px;">
-<h3><a href="###">版权信息</a></h3>
- <ul>
- <li>Copyright&nbsp;©&nbsp;2015 中国电信股份有限公司北京研究院<br />
-京ICP备12019458号－10</li>
-</div>
+<div class="foot">
+	<p>版权所有Copyright © 2015 中国电信股份有限公司北京研究院京ICP备12019458号-10</p>
 </div>
 </div>
 </div>
