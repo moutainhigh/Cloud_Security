@@ -69,7 +69,7 @@
 .ding_nav{ height:110px; position:relative;}
 
 .ding_nav ul li{ position:absolute; width:137px; height:65px;  background: url(../images/user_ico_14.jpg) no-repeat; cursor:pointer;}
-.ding_nav ul li a{ color:#888888; display:block; position:absolute; z-index:20; right:-20px;}
+.ding_nav ul li a{ color:#888888; display:block; position:absolute; z-index:10; right:-20px;}
 .ding_nav ul li.ding_active a{color:#2da039;}
 .ding_nav ul li.ding_active{background:url(../images/user_ico_13.jpg) no-repeat;}
 .ding_nav ul li.ding_active_1{background:url(../images/user_ico_15.jpg) no-repeat;}
