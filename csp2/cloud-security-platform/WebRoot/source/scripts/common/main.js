@@ -23,7 +23,7 @@ $(document).ready(function(){
 	function bannerMoveks(){
 		timer_banner=setInterval(function(){
 			move_banner()
-		},5000)
+		},500000)
 	};
 	bannerMoveks();//开始自动播放
 
