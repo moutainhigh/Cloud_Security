@@ -14,7 +14,10 @@ $(function(){
     		scanType="";
     	}
     	//获得服务资产
-    	var assetIds = "38";
+    	var assetIds = "";
+   		$('.btnNew i').each(function(){
+   			assetIds = assetIds + $(this).attr("id") + ",";
+		});
     	var ip="";
 		var bandwidth="";
 		if(orderType==2){
@@ -38,6 +41,10 @@ $(function(){
             		return;
             	}
         	}
+		}
+		if(assetIds==""||assetIds==null){
+			alert("请选择资产!");
+    		return;
 		}
 
 		$.ajax({ type: "POST",
