@@ -19,6 +19,13 @@
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 </head>
 
+<style>
+html, body{height: 100%; min-height: 100%; position: relative;}
+.banner_img{text-align: center; display: table; width: 100%; height: 100%;}
+.banner_img li {display: table-cell; vertical-align: middle;}
+</style>
+</head>
+
 <body>
 	<div class="safeBox">
 		
@@ -59,15 +66,16 @@
 				</div>
 			</div>
 			<div class="bannerBox vBox">
-	            <div class="v_show">
-					<div class="bannerB v_cont">
-						<ul class="bannerHeight banner_img clearfix">
-							<li style="background-color: #0f2f50; display: list-item;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/bigpic.png" alt=""></a></div></li>
-							<li style="background-color: #0f2f50;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/bigpic.png" alt=""></a></div></li>
-							<li style="background-color: #0f2f50;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/bigpic.png" alt=""></a></div></li>
-						</ul>
-					</div>
-		         </div>
+            <div class="v_show">
+            	
+				<div class="bannerB v_cont">
+					<ul class="bannerHeight banner_img clearfix">
+						<li style="background-color: #085fac; display: list-item;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/new_big-pic-1400.jpg" alt=""></a></div></li>
+						<li style="background-color: #085fac;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/new_big-pic-1400.jpg" alt=""></a></div></li>
+                        <li style="background-color: #085fac;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/new_big-pic-1400.jpg" alt=""></a></div></li>
+					</ul>
+				</div>
+             </div>
 				<ol class="bannerbtn circle clearfix">
                     <li class="active"></li>
                     <li></li>
@@ -78,77 +86,117 @@
 		</div>
 		<div class="safe02">
 			
-			<div class="imgBox">
+			<div class="imgBox" style="width: 1130px;">
 				<h2><i></i>热门服务<i></i></h2>
-				<ul class="imgBoxList clearfix">
-					<li>
-						<a href="${ctx}/web_anquanbang.html">
-							<span>
-								<img src="${ctx}/source/images/portal/ico04.png" alt="" />
-							</span>
-							<h3>网站安全帮</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/ico01.png" alt="" />
-							</span>
-							<h3>数据库安全帮</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/ico05.png" alt="" />
-							</span>
-							<h3>系统安全帮</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/ico03.png" alt="" />
-							</span>
-							<h3>网络安全帮</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/ico06.png" alt="" />
-							</span>
-							<h3>移动安全帮</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/API.png" alt="" />
-							</span>
-							<h3>安全能力API</h3>
-						</a>
-					</li>
-					<li>
-						<a href="${ctx}/sa_anquanbang.html" target="_blank">
-							<span>
-								<img src="${ctx}/source/images/portal/ico02.png" alt="" />
-							</span>
-							<h3>安全态势感知</h3>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span>
-								<img src="${ctx}/source/images/portal/X.png" alt="" />
-							</span>
-							<h3>X专区</h3>
-						</a>
-					</li>
-				</ul>
+                <div class="listBox clearfix">
+                	<div class="listL fl">
+                    	<div class="">
+                        	<p><img src="${ctx}/source/images/portal/web.png" alt=""></p>
+                        </div>
+                    </div>
+                	<div class="listR fl">
+                    	<div class="new-title clearfix">
+                        	<h3 class="fl">网站安全帮</h3>
+                            <a href="${ctx}/web_anquanbang.html" class="fr">查看更多<b></b></a>
+                        </div>
+                    	<ul class="newlist newlist-top fl">
+                            <li class="fl">
+                                <a href="#">
+                                    <i><img src="${ctx}/source/images/portal/HOT.png" alt=""></i>
+                                    <p><img src="${ctx}/source/images/portal/vulnScan.png" alt=""></p>
+                                    <h4>漏洞扫描服务</h4>
+                                    <h5>￥99.00</h5> 
+                                </a>
+                            </li>
+                            <li class="fl">
+                                <a href="#">
+                                    <i><img src="${ctx}/source/images/portal/free.png" alt=""></i>
+                                    <p><img src="${ctx}/source/images/portal/trojanDetect.png" alt=""></p>
+                                    <h4>木马检测服务</h4>
+                                    <h5>￥99.00</h5> 
+                                </a>
+                            </li>
+                            <li class="fl">
+                                <a href="#">
+                                    <i style="display:none"><img src="${ctx}/source/images/portal/free.png" alt=""></i>
+                                    <p><img src="${ctx}/source/images/portal/sensitiveWord.png" alt=""></p>
+                                    <h4>关键字检测服务</h4>
+                                    <h5>￥99.00</h5> 
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="listBox clearfix">
+                	<div class="listL fl">
+                    	<div class="">
+                        	<p><img src="${ctx}/source/images/portal/API262-330.png" alt=""></p>
+                        </div>
+                    </div>
+                	<div class="listR fl">
+                    	<div class="new-title clearfix">
+                        	<h3 class="fl">安全能力API</h3>
+                            <a href="#" class="fr">查看更多<b></b></a>
+                        </div>
+                    	<ul class="newlist newlist-top fl">
+                            <li class="fl">
+                                <a href="#">
+                                    <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
+                                    <p><img src="${ctx}/source/images/portal/webPageTamper.png" alt=""></p>
+                                    <h4>网页篡改监测</h4>
+                                    <h5>￥99.00</h5> 
+                                </a>
+                            </li>
+                            <li class="fl">
+                                <a href="#">
+                                    <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
+                                    <p><img src="${ctx}/source/images/portal/sensitiveWord.png" alt=""></p>
+                                    <h4>敏感词监测</h4>
+                                    <h5>￥99.00</h5> 
+                                </a>
+                            </li>
+                            <li class="fl">
+                                <a href="#">
+                                    <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
+                                    <p><img src="${ctx}/source/images/portal/availability.png" alt=""></p>
+                                    <h4>可用性监测</h4>
+                                    <h5>￥99.00</h5> 
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+				
 			</div>
 		</div>
-		
+		<div class="safe05 special">
+			<div class="specialblock">
+            	<h3>专题模块</h3>
+                <dl class="clearfix">
+                	<dd class="fl frn">
+                    	<div class="introduce">
+                        	<a href="#">
+                        		
+                        		<h4>安全态势感知</h4>
+                                <p>安全大数据分析</p>
+								<p>可视化地域告警统计分析</p>
+								<p>实时安全趋势预测</p>
+                        	</a>
+                        </div>
+                    </dd>
+                    <dd class="fl frn">
+                    	<div class="introduce">
+                    	<a href="#">
+                        	<h4>X专区</h4>
+                            <p>独特极客安全工具</p>
+				            <p>特定漏洞专用检测工具</p>
+                            </a>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+		</div>
 		<div class="safe03">
 			<div class="imgBox" id="carrousel" style="width: 1190px;">
 				<h2><i></i>合作伙伴<i></i></h2>
@@ -162,9 +210,9 @@
                         <li><a href="#"><img src="${ctx}/source/images/portal/ico11.png" alt=""></a></li>
                         <li><a href="#"><img src="${ctx}/source/images/portal/ico15.png" alt=""></a></li>
                         <li><a href="#"><img src="${ctx}/source/images/portal/ico13.png" alt=""></a></li>
-                        <!--<li><a href="#"><img src="imges/ico13.png" alt=""></a></li>
-                        <li><a href="#"><img src="imges/ico14.png" alt=""></a></li>
-                        <li><a href="#"><img src="imges/ico15.png" alt=""></a></li>-->
+                        <!--<li><a href="#"><img src="${ctx}/source/images/portal/ico13.png" alt=""></a></li>
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico14.png" alt=""></a></li>
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico15.png" alt=""></a></li>-->
                       </ul>
                     </div>
                     <div class="right-arrow"><a href="javascript:;"><img src="${ctx}/source/images/portal/right.png"></a></div>
@@ -181,7 +229,7 @@
 					<li>
                     	<h2>帮助中心</h2>
                         <dl>
-                        	<dd><a href="#">购买指南</a></dd>
+                        	<dd><a href="#">购物指南</a></dd>
                             <dd><a href="#">在线帮助</a></dd>
                             <dd><a href="#">常见问题</a></dd>
                        </dl>
@@ -216,7 +264,8 @@
 		<div class="foot">
 			<p>版权所有Copyright © 2015 中国电信股份有限公司北京研究院京ICP备12019458号-10</p>
 		</div>
-		<!---执行效果-->
+	</div>
+<!---执行效果-->
 <div class="weixinshow popBoxhide" id="weixin">
 	<i class="close chide"></i>
     <div class="Pophead">
@@ -234,8 +283,6 @@
 </div>
 	
 <div class="shade"></div>
-	</div>
-
 </body>
 <script>
 $(function(){	
@@ -255,6 +302,14 @@ $(function(){
 		
 	})
 	
+</script>
+<script>
+	var w=$(document).width();
+	$('.bannerHeight').width(w);
+	//$('.banner_img li').width(w);
+	//$('.banner_img li img').width(w);
+	
+            	
 </script>
 
 </html>
