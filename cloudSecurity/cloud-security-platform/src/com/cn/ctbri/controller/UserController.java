@@ -240,7 +240,19 @@ public class UserController {
 		LogonUtils.remeberMe(request,response,name,password);
 		//将User放置到Session中，用于这个系统的操作
 		request.getSession().setAttribute("globle_user", _user);
-		return "redirect:/userCenterUI.html";
+		
+		//add by tangxr 2016-3-14
+		if(request.getSession().getAttribute("indexPage")!=null){
+			int indexPage = (Integer) request.getSession().getAttribute("indexPage");
+			if(indexPage == 1 ){
+				int serviceId = (Integer) request.getSession().getAttribute("serviceId");
+				return "redirect:/selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
+			}else{
+				return "redirect:/userCenterUI.html";
+			}
+		}else{
+			return "redirect:/userCenterUI.html";
+		}
 	}
 	
 	 /**
