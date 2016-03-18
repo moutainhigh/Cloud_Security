@@ -18,11 +18,6 @@
 <script src="${ctx}/source/scripts/common/main.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 
-<style>
-html, body{height: 100%; min-height: 100%; position: relative;}
-.banner_img{text-align: center; display: table; width: 100%; height: 100%;}
-.banner_img li {display: table-cell; vertical-align: middle;}
-</style>
 </head>
 
 <body>
@@ -32,8 +27,13 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 			<!--头部-->
 			<div class="head">
 				<div class="headBox">
-					<div class="safeL fl">
+					<!-- <div class="safeL fl">
 						<img src="${ctx}/source/images/portal/logo.png" alt=""/>
+					</div> -->
+					<div class="safeL fl" style="width:270px; margin-right:18%">
+						<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:4px;"/>
+                          <span style="font-size: 20px;
+    color: #4a4a4a; padding-left:20px;position:relative; top:-10px;">网站安全帮</span>
 					</div>
 					<div class="safem fl">
 						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
@@ -69,9 +69,11 @@ html, body{height: 100%; min-height: 100%; position: relative;}
             	
 				<div class="bannerB v_cont">
 					<ul class="bannerHeight banner_img clearfix">
-						<li style="background-color: #085fac; display: list-item;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/new_big-pic-1400.jpg" alt=""></a></div></li>
-						<li style="background-color: #085fac;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/new_big-pic-1400.jpg" alt=""></a></div></li>
-                        <li style="background-color: #085fac;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/new_big-pic-1400.jpg" alt=""></a></div></li>
+						<li style="display: list-item;"><div class="vb"><a href="#"><img src="${ctx}/source/images/banner-datu3.jpg" alt=""></a></div></li>
+						<li style="background-color: #085fac;"><div class="vb"><a href="#"><img src="${ctx}/source/images/banner-datu2.jpg" alt=""></a></div></li>
+                        <li style="background-color: #085fac;"><div class="vb"><a href="#"><img src="${ctx}/source/images/banner-datu1.jpg" alt=""></a></div></li>
+                        <li style="background-color: #085fac;"><div class="vb"><a href="#"><img src="${ctx}/source/images/banner-datu4.jpg" alt=""></a></div></li>
+                        <li style="background-color: #085fac;"><div class="vb"><a href="#"><img src="${ctx}/source/images/banner-datu5.jpg" alt=""></a></div></li>
 					</ul>
 				</div>
              </div>
@@ -83,36 +85,95 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 			</div>
 
 		</div>
-		<div class="safe02">
-			<div class="imgBox index_child" style="width: 1148px;">
+		<div class="safe02" style="padding-bottom:30px;">
+        
+        	<div class="imgBox index_child">
 				<h2>网站安全监测及预警服务</h2>
                 <div class="listBox" style="width: 100%;">
-                	<div class="listR">
-                    	<ul class="newlist row newlist-top child-newlist clearfix">
+                	<div class="listR" style="width:1108px; margin:0 auto;">
+                    	<ul class="newlist row newlist-top child-newlist clearfix" style="margin-right:-38px;">
                             <c:forEach var="list" items="${servList}" varStatus="status">
 	                          <c:choose>
                                <c:when test="${status.index<5}">
-		                          <li class="fl col-md-4">
-	                                  <p><img src="${ctx}/source/images/portal/child${status.index+1 }.png" alt=""></p>
-	                                  <h4>${list.name }</h4>
-	                                  <span>
-	                                  	${list.remarks }
-	                                  </span>
-	                                  <div class="purchase">
-	                                  	<strong>￥0</strong>
-	                                  	<strong><em>￥99</em></strong>
-	                                  	<a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1" class="btn">购买</a>
-	                                  </div>
-		                             
-		                          </li>
-		                        </c:when>
+		                            <li class="fl col-md-4">
+		                                    <!--<i><img src="imges/HOT.png" alt=""></i>-->
+		                                    <p><img src="${ctx}/source/images/portal/child${status.index+1 }.png" alt=""></p>
+		                                    <h4>${list.name }</h4>
+		                                    <span>
+		                                    	${list.remarks }
+		                                    </span>
+		                                    <div class="purchase">
+		                                    	<strong>￥0</strong>
+		                                    	<strong><em>￥99</em></strong>
+		                                    	<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1" class="btn">购买</a>
+		                                    </div>
+		                               
+		                            </li>
+		                         </c:when>
 		                       </c:choose>
                             </c:forEach>
                         </ul>
                     </div>
                 </div>
-			</div>
+        </div>
+			
 		</div>
+		
+		        <div class="safe02 service">
+        	<div class="imgBox index_child">
+				<h2>网站安全防护及加固服务</h2>
+                
+                <div class="listBox" style="width: 100%;">
+                	<div class="listR" style="width:1108px; margin:0 auto;">
+                    	<ul class="newlist child-newlist clearfix" style="margin-right:-40px;">
+                            <li class="fl">
+                                    <p class="fl"><img src="${ctx}/source/images/portal/fanghu.png" alt=""></p>
+                                    <div class="servicelistR fl">
+                                    	<h4>网站防护</h4>
+                                        <span>
+                                            	全天候网站保镖，<br>一站式管家服务
+                                        </span>
+                                        <div class="purchase">
+                                           
+                                            <strong style="display:block"><em style="font-size:20px;">￥199.00</em></strong>
+                                             <strong style="display:block; font-size:30px;">￥100.00</strong>
+                                            <a href="#" class="btn" style="width:80px;">购买</a>
+                                        </div>
+                                    </div>
+                               	<div class="mask">
+                                	<h6>即将上线</h6>
+                                </div>
+                                
+                               
+                            </li>
+                            <li class="fl">
+                                    <p class="fl"><img src="${ctx}/source/images/portal/jiagu.png" alt=""></p>
+                                    <div class="servicelistR fl">
+                                    	<h4>网站加固</h4>
+                                        <span>
+                                            	不只是打补丁，<br>让网站完美如新
+                                        </span>
+                                        <div class="purchase">
+                                           
+                                            <strong style="display:block"><em style="font-size:20px;">￥199.00</em></strong>
+                                             <strong style="display:block; font-size:30px;">￥100.00</strong>
+                                            <a href="#" class="btn" style="width:80px;">购买</a>
+                                        </div>
+                                    </div>
+                                <div class="mask">
+                                	<h6>即将上线</h6>
+                                </div>
+                               
+                            </li>
+                           </ul>
+                        </div>
+                   </div>
+                
+                
+             </div>
+        
+        </div>
+		
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
@@ -130,8 +191,8 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                     <li>
                     	<h2>关于安全帮</h2>
                         <dl>
-                        	<dd><a href="#">了解安全帮</a></dd>
-                            <dd><a href="#">加入安全帮</a></dd>
+                        	<dd><a href="${ctx}/knowUs.html">了解安全帮</a></dd>
+                            <dd><a href="${ctx}/joinUs.html">加入安全帮</a></dd>
                             <dd><a href="#">联系我们</a></dd>
                        </dl>
                     </li>
@@ -196,12 +257,6 @@ $(function(){
 	})
 	
 </script>
-<script>
-	var w=$(document).width();
-	$('.bannerHeight').width(w);
-	
-	
-            	
-</script>
+
 
 </html>
