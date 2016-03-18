@@ -17,12 +17,10 @@
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
-</head>
 
 <style>
 html, body{height: 100%; min-height: 100%; position: relative;}
-.banner_img{text-align: center; display: table; width: 100%; height: 100%;}
-.banner_img li {display: table-cell; vertical-align: middle;}
+
 </style>
 </head>
 
@@ -70,9 +68,9 @@ html, body{height: 100%; min-height: 100%; position: relative;}
             	
 				<div class="bannerB v_cont">
 					<ul class="bannerHeight banner_img clearfix">
-						<li style="background-color: #085fac; display: list-item;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/new_big-pic-1400.jpg" alt=""></a></div></li>
-						<li style="background-color: #085fac;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/new_big-pic-1400.jpg" alt=""></a></div></li>
-                        <li style="background-color: #085fac;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/new_big-pic-1400.jpg" alt=""></a></div></li>
+						<li style=" display: list-item;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t1.png" alt=""></a></div></li>
+						<li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t1.png" alt=""></a></div></li>
+                        <li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t1.png" alt=""></a></div></li>
 					</ul>
 				</div>
              </div>
@@ -84,9 +82,9 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 			</div>
 
 		</div>
-		<div class="safe02">
+		<div class="safe02" style="padding-bottom:120px;">
 			
-			<div class="imgBox" style="width: 1130px;">
+			<div class="imgBox" style="width:1108px; margin:0 auto">
 				<h2><i></i>热门服务<i></i></h2>
                 <div class="listBox clearfix">
                 	<div class="listL fl">
@@ -101,33 +99,45 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                         </div>
                     	<ul class="newlist newlist-top fl">
                             <li class="fl">
-                                <a href="#">
+                                <a href="${ctx}/selfHelpOrderInit.html?serviceId=1&indexPage=1">
                                     <i><img src="${ctx}/source/images/portal/HOT.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/vulnScan.png" alt=""></p>
                                     <h4>漏洞扫描服务</h4>
-                                    <h5>￥99.00</h5> 
+                                    <div class="purchase">
+                                    	<span>￥0</span>
+                                    	<span><em>￥99</em></span>
+                                    	
+                                    </div>
                                 </a>
                             </li>
                             <li class="fl">
-                                <a href="#">
+                                <a href="${ctx}/selfHelpOrderInit.html?serviceId=2&indexPage=1">
                                     <i><img src="${ctx}/source/images/portal/free.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/trojanDetect.png" alt=""></p>
                                     <h4>木马检测服务</h4>
-                                    <h5>￥99.00</h5> 
+                                    <div class="purchase">
+                                    	<span>￥0</span>
+                                    	<span><em>￥99</em></span>
+                                    	
+                                    </div>
                                 </a>
                             </li>
                             <li class="fl">
-                                <a href="#">
+                                <a href="${ctx}/selfHelpOrderInit.html?serviceId=4&indexPage=1">
                                     <i style="display:none"><img src="${ctx}/source/images/portal/free.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/sensitiveWord.png" alt=""></p>
-                                    <h4>关键字检测服务</h4>
-                                    <h5>￥99.00</h5> 
+                                    <h4>关键字监测服务</h4>
+                                    <div class="purchase">
+                                    	<span>￥0</span>
+                                    	<span><em>￥99</em></span>
+                                    	
+                                    </div>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <div class="listBox clearfix">
+                <div class="listBox clearfix" style="margin:0 auto">
                 	<div class="listL fl">
                     	<div class="">
                         	<p><img src="${ctx}/source/images/portal/API262-330.png" alt=""></p>
@@ -144,7 +154,11 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                     <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/webPageTamper.png" alt=""></p>
                                     <h4>网页篡改监测</h4>
-                                    <h5>￥99.00</h5> 
+                                    <div class="purchase">
+                                    	<span>￥0</span>
+                                    	<span><em>￥99</em></span>
+                                    	
+                                    </div> 
                                 </a>
                             </li>
                             <li class="fl">
@@ -152,7 +166,11 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                     <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/sensitiveWord.png" alt=""></p>
                                     <h4>敏感词监测</h4>
-                                    <h5>￥99.00</h5> 
+                                    <div class="purchase">
+                                    	<span>￥0</span>
+                                    	<span><em>￥99</em></span>
+                                    	
+                                    </div> 
                                 </a>
                             </li>
                             <li class="fl">
@@ -160,7 +178,11 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                     <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/availability.png" alt=""></p>
                                     <h4>可用性监测</h4>
-                                    <h5>￥99.00</h5> 
+                                    <div class="purchase">
+                                    	<span>￥0</span>
+                                    	<span><em>￥99</em></span>
+                                    	
+                                    </div>
                                 </a>
                             </li>
                         </ul>
@@ -173,11 +195,10 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 		<div class="safe05 special">
 			<div class="specialblock">
             	<h3>专题模块</h3>
-                <dl class="clearfix">
+                <dl class="clearfix" style="margin-right:-20px;">
                 	<dd class="fl frn">
                     	<div class="introduce">
-                        	<a href="#">
-                        		
+                        	<a href="${ctx}/sa_anquanbang.html" target="_blank">
                         		<h4>安全态势感知</h4>
                                 <p>安全大数据分析</p>
 								<p>可视化地域告警统计分析</p>
@@ -185,7 +206,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                         	</a>
                         </div>
                     </dd>
-                    <dd class="fl frn">
+                    <dd class="fl frn frn2">
                     	<div class="introduce">
                     	<a href="#">
                         	<h4>X专区</h4>
@@ -197,22 +218,22 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                 </dl>
             </div>
 		</div>
-		<div class="safe03">
-			<div class="imgBox" id="carrousel" style="width: 1190px;">
+		<div class="safe03" style=" background:#efefef">
+			<div class="imgBox" id="carrousel" style="width: 1180px;">
 				<h2><i></i>合作伙伴<i></i></h2>
                 
                 <div class="friend-Link ">
                     <div class="left-arrow"><a href="javascript:;"><img src="${ctx}/source/images/portal/left.png"></a></div>
                     <div class="fl-pic">
                       <ul class="imgist clearfix">
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico14.png" alt=""></a></li>
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico12.png" alt=""></a></li>
                         <li><a href="#"><img src="${ctx}/source/images/portal/ico11.png" alt=""></a></li>
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico15.png" alt=""></a></li>
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico12.png" alt=""></a></li>
                         <li><a href="#"><img src="${ctx}/source/images/portal/ico13.png" alt=""></a></li>
-                        <!--<li><a href="#"><img src="${ctx}/source/images/portal/ico13.png" alt=""></a></li>
                         <li><a href="#"><img src="${ctx}/source/images/portal/ico14.png" alt=""></a></li>
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico15.png" alt=""></a></li>-->
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico15.png" alt=""></a></li>
+                        <!--<li><a href="#"><img src="imges/ico13.png" alt=""></a></li>
+                        <li><a href="#"><img src="imges/ico14.png" alt=""></a></li>
+                        <li><a href="#"><img src="imges/ico15.png" alt=""></a></li>-->
                       </ul>
                     </div>
                     <div class="right-arrow"><a href="javascript:;"><img src="${ctx}/source/images/portal/right.png"></a></div>
@@ -237,7 +258,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                     <li>
                     	<h2>关于安全帮</h2>
                         <dl>
-                        	<dd><a href="${ctx}/knowUs.html">了解安全帮</a></dd>
+                            <dd><a href="${ctx}/knowUs.html">了解安全帮</a></dd>
                             <dd><a href="${ctx}/joinUs.html">加入安全帮</a></dd>
                             <dd><a href="#">联系我们</a></dd>
                        </dl>
@@ -245,7 +266,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                     <li>
                     	<h2>关注我们</h2>
                         <dl>
-                        	<dd><a href="#">QQ交流群</br>470899318</a></dd>
+                        	<dd><a href="#">QQ交流群<br>470899318</a></dd>
                             <dd class="weixin"><a href="#">官方微信</a></dd>
                        </dl>
                     </li>
@@ -304,8 +325,9 @@ $(function(){
 	
 </script>
 <script>
-	var w=$(document).width();
-	$('.bannerHeight').width(w);
+	//var w=$(document).width();
+	//$('.bannerHeight').width(w);
+	//$('.vBox').width(w);
 	//$('.banner_img li').width(w);
 	//$('.banner_img li img').width(w);
 	

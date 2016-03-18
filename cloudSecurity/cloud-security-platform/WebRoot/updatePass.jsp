@@ -45,12 +45,12 @@
 </script>
 </head>
 <body>
-<!--头部代码-->
-<div class="head">
+<!--头部-->
+<div class="head new-head">
 	<div class="headBox">
 		<div class="safeL fl">
 			<div class="logo">
-			<img src="${ctx}/source/images/portal/logo.png" alt=""/><b></b><span>网站安全帮</span>
+			<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
 			</div>
 		</div>
 		
@@ -80,13 +80,10 @@
 				<em>|</em>
 				<a href="${ctx}/registUI.html">注册</a>
 	         </c:if>
-		
-		
-			
 		</div>
 	</div>
 </div>
-<!--头部代码结束-->
+<!-- 头部代码结束-->
  <div class="login_wrap">
   <div class="pass_box">
  
