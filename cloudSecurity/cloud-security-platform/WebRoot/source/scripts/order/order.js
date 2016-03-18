@@ -3,7 +3,8 @@ $(function(){
 	var factory=null;//服务厂商
 	var parentC=null//服务大类
 	var websoc=2//创宇标志
-	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
+//	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
+	var indexPage = "";
 	$(".dan_2").eq(1).hide();//隐藏结束下拉框时间
 	$(".hideEnddate").hide();//隐藏联系信息下的结束时间
 	$(".scan").hide(); //隐藏联系信息下的扫描频率
@@ -20,9 +21,9 @@ $(function(){
 		$('input:radio[name="orderType"]:eq(1)').attr("disabled", true);
 	}
 	//根据serviceId,设置自助下单-服务配置中各服务显隐
-	if(serviceId!=null && serviceId!=""){
-		getServicePage(serviceId);
-	}
+//	if(serviceId!=null && serviceId!=""){
+//		getServicePage(serviceId);
+//	}
 	
 	function getServicePage(serviceId){
 		var index = serviceId - 1;
