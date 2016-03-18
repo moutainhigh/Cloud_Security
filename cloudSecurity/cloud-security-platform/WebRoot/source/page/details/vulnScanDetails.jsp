@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<title>漏洞扫描订单</title>
+<title>${service.name }订单</title>
 <link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
@@ -30,9 +30,9 @@
 			<!--头部-->
 			<div class="head">
 				<div class="headBox">
-					<div class="safeL fl" style="width:285px; margin-right:20%">
+					<div class="safeL fl" style="width:270px; margin-right:18%">
 						<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
-                        <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px;">网络安全帮</strong>
+                        <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px;">网站安全帮</strong>
 					</div>
 					<div class="safem fl">
 						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
@@ -66,13 +66,12 @@
 			
 
 		</div>
-		
-		<input type="hidden" id="type" value="${type }"/>
 		<input type="hidden" id="serviceId" value="${serviceId }"/>
 		<input type="hidden" id="indexPage" value="${indexPage }"/>
+		<input type="hidden" id="orderType" value="${service.orderType }"/>
 		<div class="dataCent">
 			<div class="data-crumbs">
-				<a href="#" style="font-size: 20px;">安全帮</a><i>&gt;</i><a href="#">网络安全帮</a><i>&gt;</i><a href="javascript:;">漏洞扫描服务</a>
+				<a href="${ctx}/index.html" style="font-size: 20px;">安全帮</a><i>&gt;</i><a href="${ctx}/web_anquanbang.html">网站安全帮</a><i>&gt;</i><a href="javascript:;">${service.name }</a>
 			</div>
 			<div class="dataBox clearfix">
 				<div class="dataL fl">
@@ -81,36 +80,50 @@
 					</div>
 				</div>
 				<div class="dataR fl">
-					<h2>漏洞监测服务</h2>
-                  <button class="buttoncar"><i></i>我的购物车</button>
+					<h2>${service.name }</h2>
+                  <!-- <button class="buttoncar"><i></i>我的购物车</button>-->
 					<ul>
 						<li class="clearfix">
 							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
-                            <div class="fl"><strong>￥0</strong><strong><em>￥99</em></strong></div> 
+                            <div class="fl"><strong>￥0</strong><strong></strong></div> 
 						</li>
-                        <li class="clearfix">
+						 <li class="clearfix type">
 							<label class="fl">选 择 型</label>
                             <div class="fl clickBox" id="clickBox">
 	                            <button class="click Single" value="2">单次</button>
-                            	<button class="long" value="1">长期</button>
+	                            <button class="long" value="1">长期</button>
                             </div> 
 						</li>
-                        <li class="clearfix">
+						<li class="clearfix">
 							<label class="fl">服务时间</label>
-                            <div class="fl">
+                            <div class="fl" style="top:2px;">
                             	<span class="start">开始时间 <input type="text" class="text" value="" id="beginDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></span>
-                                <span class="end" style="display:none">结束时间 <input type="text" class="text" value="" id="endDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></span>
+                                <span class="end">结束时间 <input type="text" class="text" value="" id="endDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></span>
                             </div> 
 						</li>
-                        <li class="clearfix">
+						<li class="clearfix time">
 							<label class="fl">服务频率</label>
                             <div class="fl clickBox" id="time">
-	                            <button class="clickTime" value="2">每周</button>
-	                            <button value="3">每月</button>
-	                            
+                            	<c:if test="${service.id == 1}">
+	                             <button class="clickTime" value="2">每周</button>
+	                             <button value="3">每月</button>
+	                            </c:if>
+	                            <c:if test="${service.id == 2}">
+	                             <button class="clickTime" value="1">30分钟</button>
+	                            </c:if>
+	                            <c:if test="${service.id == 3}">
+	                             <button class="clickTime" value="4">1天</button>
+	                            </c:if>
+	                            <c:if test="${service.id == 4}">
+	                             <button class="clickTime" value="4">1天</button>
+	                            </c:if>
+	                            <c:if test="${service.id == 5}">
+	                             <button class="clickTime" value="3">1小时</button>
+	                             <button value="4">2小时</button>
+	                            </c:if>
                             </div> 
-						</li>
-                         <li class="clearfix">
+					   </li>
+						<li class="clearfix">
 							<label class="fl">资&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;产</label>
                             <div class="fl">
                             	<div class="select">
@@ -131,8 +144,8 @@
                             </div> 
 						</li>
 					</ul>
-                    <div class="btnBox">
-                    	<button style="background:#d00000; width:146px;">添加到购物车</button>
+                    <div class="btnBox" style="text-align:left; margin-left:0px;">
+                    	<!-- <button style="background:#d00000; width:146px;" id="addCar">添加到购物车</button> -->
                         <button style="background:#5aba5f; width:126px" id="buyNow">立即购买</button>
                     </div>
 				</div>
@@ -142,11 +155,11 @@
 		</div>
         <div class="commodity">
         	<div class="imgBox clearfix">
-            	<h4>商品名称</h4>
-                <div class="commoditys">
+            	<h4>商品信息</h4>
+                <div class="commoditys" style="margin-bottom:16px;">
                 	<img src="${ctx}/source/images/portal/product1.png" alt="">
                 </div>
-                <div class="commoditys">
+                <div class="commoditys"style="margin-bottom:16px;">
                 	<img src="${ctx}/source/images/portal/product2.png" alt="">
                 </div>
                 <div class="commoditys">
@@ -174,8 +187,8 @@
                     <li>
                     	<h2>关于安全帮</h2>
                         <dl>
-                        	<dd><a href="#">了解安全帮</a></dd>
-                            <dd><a href="#">加入安全帮</a></dd>
+                        	<dd><a href="${ctx}/knowUs.html">了解安全帮</a></dd>
+                            <dd><a href="${ctx}/joinUs.html">加入安全帮</a></dd>
                             <dd><a href="#">联系我们</a></dd>
                        </dl>
                     </li>
@@ -221,32 +234,6 @@
 	
 <div class="shade"></div>
 </body>
-<script>
-$(function(){	
-	$('#carrousel').hover(function(){
-			$('.left-arrow').fadeIn();
-			$('.right-arrow').fadeIn();
-		},function(){
-			$('.right-arrow').fadeOut();
-			$('.left-arrow').fadeOut();
-		})
-	
-	$(".fl-pic").slidelf({
-			"prev":"left-arrow",
-			"next":"right-arrow",
-			"speed":300 //时间可以任意调动  以毫秒为单位
-		});
-		
-	})
-	
-</script>
-<script>
-	var w=$(document).width();
-	$('.bannerHeight').width(w);
-	
-	
-            	
-</script>
+
 
 </html>
-

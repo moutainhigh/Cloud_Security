@@ -28,7 +28,7 @@
 			<!--头部-->
 			<div class="head">
 				<div class="headBox">
-					<div class="safeL fl" style="width:285px; margin-right:20%">
+					<div class="safeL fl" style="width:270px; margin-right:18%">
 						<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
                         <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px;">结算页</strong>
 					</div>
@@ -47,15 +47,22 @@
 						
 					</div>
 					<div class="safer fr">
-						<a href="#">登录</a>
-						<em>|</em>
-						<a href="#">注册</a>
+						<!-- 如果已经登录则显示用户名，否则需要登录 -->
+				         <c:if test="${sessionScope.globle_user!=null }">
+					        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
+					        <em>|</em>
+					        <a href="${ctx}/exit.html">退出</a>
+				         </c:if>
+				         <c:if test="${sessionScope.globle_user==null }">
+				            <a href="${ctx}/loginUI.html">登录</a>
+							<em>|</em>
+							<a href="${ctx}/registUI.html">注册</a>
+				         </c:if>
 					</div>
 				</div>
 			</div>
-			
-
 		</div>
+		
 		<input type="hidden" id="assetIds" value="${assetIds }"/>
 		<input type="hidden" id="serviceId" value="${serviceId }"/>
 		<input type="hidden" id="orderType" value="${orderType }"/>
@@ -66,7 +73,7 @@
 			<div class="seetT">
 				<h2>填写并核对订单信息</h2>
 				<div class="step">
-					<p class="step_top">
+					<!--<p class="step_top">
 						<span class="sl">
 							<i></i>
 						</span>
@@ -79,7 +86,7 @@
                     	<em class="sone">1购物车</em>
                         <em class="stwo">2填写核对信息</em>
                         <em class="sthree">3成功提交订单</em>
-                    </p>
+                    </p> -->
 
 				</div>
 			</div>
@@ -91,16 +98,16 @@
                         	<table class="test-table">
                         	<tbody>
                             	 <tr height="40">
-                                 	<td width="20%">
-                                    	姓名：<i>张三</i>
+                                 	<td width="18%">
+                                    	姓名：<i>${user.name }</i>
                                     </td>
-                                    <td width="20%">
-                                    	电话：<i>138888888888</i>
+                                    <td width="24%">
+                                    	电话：<i>${user.mobile }</i>
                                     </td>
                                     <td width="40%">
-                                    	邮箱：<i>12312312@qq.com</i>
+                                    	邮箱：<i>${user.email }</i>
                                     </td>
-                                    <td width="20%"><span><b></b>新增联系人</span></td>
+                                    <!-- <td width="20%"><span><b></b>新增联系人</span></td> -->
                                  </tr>
                                  
                             </tbody>
@@ -111,49 +118,31 @@
                     </li>
                     <li class="listone">
                     	<h3>支付方式</h3>
-                       <div class="clickBox" style="margin-top:20px; margin-left:40px;" id="clickBox">
+                       <div class="clickBox" style="margin-top:20px; margin-left:50px;" id="clickBox">
                        	<button type="button" class="click">在线支付</button>
                         <button type="button">邮局汇款</button>
                         <button type="button">公司转账</button>
                        </div>
                         <div class="hr"></div>
                     </li>
-                    <li class="listone">
-                    	<h3>订单详情</h3>
-                        <div class="tabox" style="margin-bottom:10px;">
+                    <li class="listone ">
+                    <div class="clearfix">
+                    	<h3 class="fl">订单详情</h3>
+                    	<a class="fr" style="color:#2499fb;padding-right:54px" href="javascript:history.go(-1);">返回修改订单信息</a>
+                    </div>
+                    	
+                        <div class="tabox" style="margin:20px 0 20px 50px;">
                         	<table class="test-table">
                         	<tbody>
                             	 <tr height="40">
-                                 	<td width="20%">
-                                    	漏斗扫描服务
+                                 	<td width="14%">
+                                    	${service.name }
                                     </td>
-                                    <td width="20%">
-                                    	电话：<i>138888888888</i>
+                                   
+                                    <td width="52%">
+                                    	${assetAddr }
                                     </td>
-                                    <td width="40%">
-                                    	www.anquanbang.net
-                                    </td>
-                                    <td width="20%">199.00</td>
-                                 </tr>
-                                 
-                            </tbody>
-                        </table>
-                        
-                        </div>
-                        <div class="tabox" style="margin-bottom:10px;">
-                        	<table class="test-table">
-                        	<tbody>
-                            	 <tr height="40">
-                                 	<td width="20%">
-                                    	漏斗扫描服务
-                                    </td>
-                                    <td width="20%">
-                                    	电话：<i>138888888888</i>
-                                    </td>
-                                    <td width="40%">
-                                    	www.anquanbang.net
-                                    </td>
-                                    <td width="20%">199.00</td>
+                                    <td width="34%">0.00</td>
                                  </tr>
                                  
                             </tbody>
@@ -164,33 +153,33 @@
                     </li>
                      <li class="listone">
                     	<h3>发票信息</h3>
-                       <div class="clickBox" style="margin-top:20px; margin-left:40px;">
+                       <div class="clickBox" style="margin-top:20px; margin-left:50px;">
                        	<button type="button" class="click">索要发票</button>
                         
                        </div>
-                       <div class="invoiceshow" style="margin-top:20px; margin-left:40px;">
-                       		<span class="invoice-one">普通发票（纸质）</span>
+                       <div class="invoiceshow" style="margin-top:20px; margin-left:50px;">
+                       		<span class="invoice-one" style="margin-right:16px;">普通发票（纸质）</span>
                             <span class="introduce-two">中国电信股份有限公司北京研究院</span>
-                            <span class="introduce-three">技术服务</span>
-                            <a href="javascript:;" style="margin-left:45px; color:#2499fb;">修改</a>
+                            <span class="introduce-three"style="margin-left:22px;">技术服务</span>
+                            <a href="javascript:;" class="modify" style="margin-left:45px; color:#2499fb;">修改</a>
                        </div>
-                     	<div class="invoicehide"  style="display:none;">
+                     	<div class="invoicehide modifyBox"  style="display:none;">
                         	<div class="invoiclist">
                             	<label>发票抬头</label>
-                                <input type="text" class="text" style="width:280px;">
+                                <input type="text" class="text textvalue" style="width:278px;">
                             </div>
                             <div class="invoiclist">
                             	<label>发票类型</label>
-                                <select style="width:198px; height:36px;">
-                                	<option>请选择</option>
-                                    <option>11212</option>
-                                    <option>3453534</option>
+                                <select class="select" style="width:198px; height:36px;">
+                                	<option value="请选择">请选择</option>
+                                    <option value="纸质">纸质</option>
+                                    <option value="电子">电子</option>
                                 </select>
                             </div>
                             
-                            <div class="btnBox">
-                            	<button type="button" class="btn b">保存发票信息</button>
-                                <button type="button" class="btn q">取消</button>
+                            <div class="btnBox" style="text-align:left">
+                            	<button type="button" class="btn preservation" style=" width:120px;">保存发票信息</button>
+                                <button type="button" class="btn cancel" style="width:80px;">取消</button>
                             </div>
                         </div> 
                         <div class="hr"></div>
@@ -241,8 +230,8 @@
                     <li>
                     	<h2>关于安全帮</h2>
                         <dl>
-                        	<dd><a href="#">了解安全帮</a></dd>
-                            <dd><a href="#">加入安全帮</a></dd>
+                        	<dd><a href="${ctx}/knowUs.html">了解安全帮</a></dd>
+                            <dd><a href="${ctx}/joinUs.html">加入安全帮</a></dd>
                             <dd><a href="#">联系我们</a></dd>
                        </dl>
                     </li>
