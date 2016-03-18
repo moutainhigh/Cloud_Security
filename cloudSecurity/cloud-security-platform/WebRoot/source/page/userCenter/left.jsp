@@ -24,7 +24,7 @@
       <li><a href="${ctx}/userBillUI.html">我的账单</a></li>
       <li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
       <h2>订购中心</h2>
-      <li><a href="${ctx}/selfHelpOrderInit.html">自助下单</a></li>
+      <li><a href="${ctx}/selfHelpOrderInit1.html">自助下单</a></li>
       <li><a href="${ctx}/orderTrackInit.html">订单跟踪</a></li>
     </ul>
 </div>
