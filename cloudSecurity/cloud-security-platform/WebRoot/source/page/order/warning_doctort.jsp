@@ -135,14 +135,14 @@ function clearTable(){
 </script>
 </head>
 
-<body> 
 <body>
 <div>
-<div class="head">
+<!--头部-->
+<div class="head new-head">
 	<div class="headBox">
 		<div class="safeL fl">
 			<div class="logo">
-			<img src="${ctx}/source/images/portal/logo.png" alt=""/><b></b><span>网站安全帮</span>
+			<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
 			</div>
 		</div>
 		
@@ -172,7 +172,6 @@ function clearTable(){
 				<em>|</em>
 				<a href="${ctx}/registUI.html">注册</a>
 	         </c:if>
-		
 		</div>
 	</div>
 </div>
