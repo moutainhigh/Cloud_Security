@@ -69,6 +69,7 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/web_anquanbang.html");//网络安全帮 
 		list.add("/joinUs.html");//加入我们
 		list.add("/knowUs.html");//加入我们
+		list.add("/app.html");//加入我们
 
 		//获取访问的url路径
 		String path = request.getServletPath();
@@ -114,13 +115,16 @@ public class SystemFilter extends OncePerRequestFilter  {
 					}
 //					request.setAttribute("msg", "对不起，您可能存在的问题:没有权限登录前台、未登录、登录超时");
 					request.getSession().removeAttribute("globle_user");
-//					request.getSession().removeAttribute("indexPage");
-//					request.getSession().removeAttribute("serviceId");
 					//add by tangxr 2016-3-14
 					String indexPage = request.getParameter("indexPage");
 					if(indexPage!=null){
-						request.getSession().setAttribute("indexPage", Integer.parseInt(request.getParameter("indexPage")));
-						request.getSession().setAttribute("serviceId", Integer.parseInt(request.getParameter("serviceId")));
+						int index = Integer.parseInt(request.getParameter("indexPage"));
+						if(index == 1){
+							request.getSession().setAttribute("serviceId", Integer.parseInt(request.getParameter("serviceId")));
+						}else if(index == 2){
+							request.getSession().setAttribute("apiId", Integer.parseInt(request.getParameter("apiId")));
+						}
+						request.getSession().setAttribute("indexPage", index);
 					}else{
 						request.getSession().setAttribute("indexPage", 0);
 					}
