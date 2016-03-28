@@ -3,7 +3,7 @@ package com.cn.ctbri.service;
 import java.util.List;
 
 import com.cn.ctbri.entity.Serv;
-import com.cn.ctbri.entity.Service;
+import com.cn.ctbri.entity.ServiceAPI;
 
 /**
  * 创 建 人  ：  邓元元
