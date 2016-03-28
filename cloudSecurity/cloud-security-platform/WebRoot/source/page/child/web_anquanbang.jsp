@@ -17,7 +17,29 @@
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
-
+<script type="text/javascript">
+    //首页广告页数据定时刷新,数据不去重
+$(function () {
+    //showUnreadNews();
+    window.setInterval(showUnreadNews,30000);
+});
+function showUnreadNews()
+{
+    $.ajax({
+        type: "GET",
+        url: "${ctx}/getNum.html",
+        dataType: "json",
+        success: function(data) {
+        	$("#num3").html(data.brokenNetwork);
+        	$("#num2").html(data.leakNum);
+            $("#num1").html(data.webPageNum);
+            $("#num").html(data.webSite);
+        }
+    });
+}
+    //定时30s刷新一次
+    //setInterval('showUnreadNews()',20000);
+</script>
 </head>
 
 <body>
@@ -64,21 +86,39 @@
 					</div>
 				</div>
 			</div>
-			<div class="bannerBox vBox">
+			<div class="bannerBox chlid-index">
             <div class="v_show">
-            	
+            	<!-- <style>
+            		.bannerB .bannerHeight li{
+            			width:1400px;
+            			margin-left: -700px;
+            		}
+            	</style>-->
 				<div class="bannerB v_cont">
 					<ul class="bannerHeight banner_img clearfix">
-						<li style="display: list-item;"><div class="vb"><a href="#"><img src="${ctx}/source/images/banner-datu3.jpg" alt=""></a></div></li>
-						<li style="background-color: #085fac;"><div class="vb"><a href="#"><img src="${ctx}/source/images/banner-datu2.jpg" alt=""></a></div></li>
-                        <li style="background-color: #085fac;"><div class="vb"><a href="#"><img src="${ctx}/source/images/banner-datu1.jpg" alt=""></a></div></li>
-                        <li style="background-color: #085fac;"><div class="vb"><a href="#"><img src="${ctx}/source/images/banner-datu4.jpg" alt=""></a></div></li>
-                        <li style="background-color: #085fac;"><div class="vb"><a href="#"><img src="${ctx}/source/images/banner-datu5.jpg" alt=""></a></div></li>
+						<li style="display: list-item;">
+							<div class="vb">
+							<a href="#"><img src="${ctx}/source/images/banner_web1.jpg" alt="">
+							
+							<span class="lb_font lb_first">已监测网站<strong class="lb_font_w" id="num">${webSite }</strong>个</span>
+			                <span class="lb_font lb_second">检测页面<strong class="lb_font_w" id="num1">${webPageNum }</strong>个</span>
+			                <span class="lb_font lb_third">发现断网<strong class="lb_font_w" id="num3">${brokenNetwork }</strong>次</span>
+			                <span class="lb_font lb_forth">发现漏洞<strong class="lb_font_w" id="num2">${leakNum }</strong>个</span>
+							
+							
+							</a>
+							</div></li>
+						<li><div class="vb"><a href="#"><img src="${ctx}/source/images/banner_web2.jpg" alt=""></a></div></li>
+                        <li><div class="vb"><a href="#"><img src="${ctx}/source/images/banner_web3.jpg" alt=""></a></div></li>
+                        <li><div class="vb"><a href="#"><img src="${ctx}/source/images/banner_web4.jpg" alt=""></a></div></li>
+                        <li><div class="vb"><a href="#"><img src="${ctx}/source/images/banner_web5.jpg" alt=""></a></div></li>
 					</ul>
 				</div>
              </div>
 				<ol class="bannerbtn circle clearfix">
                     <li class="active"></li>
+                    <li></li>
+                    <li></li>
                     <li></li>
                     <li></li>
 				</ol>
