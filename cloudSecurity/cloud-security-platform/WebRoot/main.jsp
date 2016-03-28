@@ -44,7 +44,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 								<li style="border: none;"><a href="${ctx}/userDataUI.html">个人信息</a></li>
 							</ul>
 						</div>
-						<span class="fl"><a href="#">手机APP</a></span>
+						<span class="fl"><a href="${ctx}/app.html">手机APP</a></span>
 						<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
 						
 					</div>
@@ -94,7 +94,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                     </div>
                 	<div class="listR fl">
                     	<div class="new-title clearfix">
-                        	<h3 class="fl">网站安全帮</h3>
+                        	<h3 class="fl"><a href="${ctx}/web_anquanbang.html" class="fr">网站安全帮</a></h3>
                             <a href="${ctx}/web_anquanbang.html" class="fr">查看更多<b></b></a>
                         </div>
                     	<ul class="newlist newlist-top fl">
@@ -150,7 +150,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                         </div>
                     	<ul class="newlist newlist-top fl">
                             <li class="fl">
-                                <a href="#">
+                                <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=3&indexPage=2">
                                     <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/webPageTamper.png" alt=""></p>
                                     <h4>网页篡改监测</h4>
@@ -162,7 +162,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                 </a>
                             </li>
                             <li class="fl">
-                                <a href="#">
+                                <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=4&indexPage=2">
                                     <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/sensitiveWord.png" alt=""></p>
                                     <h4>敏感词监测</h4>
@@ -174,7 +174,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                 </a>
                             </li>
                             <li class="fl">
-                                <a href="#">
+                                <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=5&indexPage=2">
                                     <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/availability.png" alt=""></p>
                                     <h4>可用性监测</h4>
