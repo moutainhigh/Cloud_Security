@@ -44,7 +44,7 @@
 								<li style="border: none;"><a href="#">个人信息</a></li>
 							</ul>-->
 						</div>
-						<span class="fl"><a href="#">手机APP</a></span>
+						<span class="fl"><a href="${ctx}/app.html">手机APP</a></span>
 						<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
 						
 					</div>
