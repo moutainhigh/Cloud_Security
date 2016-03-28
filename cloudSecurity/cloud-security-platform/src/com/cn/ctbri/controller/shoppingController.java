@@ -32,6 +32,7 @@ import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderIP;
 import com.cn.ctbri.entity.Serv;
+import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskHW;
@@ -42,6 +43,7 @@ import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
+import com.cn.ctbri.service.IServiceAPIService;
 import com.cn.ctbri.service.ITaskHWService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
@@ -76,11 +78,13 @@ public class shoppingController {
     IAlarmService alarmService;
     @Autowired
     ITaskWarnService taskWarnService;
+    @Autowired
+    IServiceAPIService serviceAPIService;
     
 	 /**
-	 * 功能描述： 用户中心-自助下单
+	 * 功能描述： 购买检测服务
 	 * 参数描述：  无
-	 *     @time 2015-1-12
+	 *     @time 2016-3-12
 	 */
 	@RequestMapping(value="selfHelpOrderInit.html")
 	public String selfHelpOrderInit(HttpServletRequest request){
@@ -96,8 +100,29 @@ public class shoppingController {
         request.setAttribute("serviceId", serviceId);
         request.setAttribute("indexPage", indexPage);
         request.setAttribute("service", service);
-       String result = "/source/page/details/vulnScanDetails";
-       return result;
+        String result = "/source/page/details/vulnScanDetails";
+        return result;
+	}
+	
+	
+	/**
+	 * 功能描述： 购买API检测服务
+	 * 参数描述：  无
+	 *     @time 2016-3-28
+	 */
+	@RequestMapping(value="selfHelpOrderAPIInit.html")
+	public String selfHelpOrderAPIInit(HttpServletRequest request){
+	    User globle_user = (User) request.getSession().getAttribute("globle_user");
+	    int apiId = Integer.parseInt(request.getParameter("apiId"));
+	    //是否从首页进入
+	    String indexPage = request.getParameter("indexPage");
+	    //根据id查询serviceAPI, add by tangxr 2016-3-28
+	    ServiceAPI serviceAPI = serviceAPIService.findById(apiId);
+        request.setAttribute("apiId", apiId);
+        request.setAttribute("indexPage", indexPage);
+        request.setAttribute("serviceAPI", serviceAPI);
+        String result = "/source/page/details/apiDetails";
+        return result;
 	}
 	
 	
