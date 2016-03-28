@@ -34,5 +34,6 @@
 		<mapper resource="com/cn/ctbri/entity/TaskHWMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/AlarmDDOSMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/DistrictDataMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/ServiceAPIMapper.xml"/>
 	</mappers>
 </configuration>  
