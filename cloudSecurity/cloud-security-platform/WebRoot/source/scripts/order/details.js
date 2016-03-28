@@ -174,6 +174,7 @@ $(function(){
 	    		    	 if(data.assetsStatus == false){
 	    		    		 if(data.timeCompare == true){
 	    		    			 alert("完成下单，去订单跟踪查看吧~~");  
+	    		    			 window.location.href = "orderTrackInit.html";
 		    		    	 }else{
 		    		    		 alert("订单开始时间不能早于当前订单提交时间!");
 		    		     		 return;
