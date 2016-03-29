@@ -78,4 +78,6 @@ public interface IOrderTaskService {
 
 	//add 2015-12-9
 	List<OrderTask> findByOrderId(String orderId);
+
+	void deleteByOrderId(String orderId);
 }

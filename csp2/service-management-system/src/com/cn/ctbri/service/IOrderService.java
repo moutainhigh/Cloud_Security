@@ -69,4 +69,6 @@ public interface IOrderService {
     void insertOrder(Order order);
     
 	Order findOrderByOrderId(String orderId);
+	//删除订单
+	void deleteOrderById(String orderId);
 }
