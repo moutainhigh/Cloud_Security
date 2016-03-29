@@ -109,4 +109,7 @@ public class OrderServiceImpl implements IOrderService{
 		Order order = orderDao.findOrderByOrderId(orderId);
 		return order;
 	}
+	public void deleteOrderById(String orderId) {
+		orderDao.delete(orderId);
+	}
 }
