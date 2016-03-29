@@ -329,14 +329,14 @@ public class NorthAPIWorker {
 
 
     public static void main(String[] args) {
-//        String create = vulnScanCreate("2", new String[]{"http://www.testfire.net"}, "", "2016-02-16 17:55:35", "", "", "", "", "", new String[]{"2"} ,"1");
-//    	String status = vulnScanGetStatus("16021615033414544");
+//        String create = vulnScanCreate("2", new String[]{"http://www.testfire.net","http://www.sinosoft.com.cn/"}, "", "2016-03-21 15:12:35", "", "", "", "", "", new String[]{"2"} ,"1");
+//    	String status = vulnScanGetStatus("16032115111572197");
 //    	String opt = vulnScanOptOrder("16021615033414544","stop");//resume/stop
-//    	String result = vulnScanGetResult("16021615033414544","1");
-//    	String report = vulnScanGetReport("16021615033414544");
-    	boolean report = false;
+//    	String result = vulnScanGetResult("16032114234741129","31");
+    	String report = vulnScanGetReport("16032114234741129");
+//    	boolean report = false;
     	try {
-    		report = getSession();
+//    		report = getSession();
 		} catch (Exception e) {
 //			e.printStackTrace();
 		}
