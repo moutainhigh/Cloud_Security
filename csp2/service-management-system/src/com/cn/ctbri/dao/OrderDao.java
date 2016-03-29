@@ -73,4 +73,6 @@ public interface OrderDao {
 	
 	Order findOrderByOrderId(String orderId);
 	
+	void delete(String orderId);
+	
 }

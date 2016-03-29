@@ -80,4 +80,6 @@ public interface OrderTaskDao {
 	public List<Task> getDels();
 
 	List<OrderTask> findByOrderId(String orderId);
+
+	void delete(String orderId);
 }
