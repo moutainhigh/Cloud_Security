@@ -101,8 +101,8 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
  * 版        本：  1.0
  */
 @Component
-@Path("openapi/vulnscan")
-public class N_VulnscanService {
+@Path("openapi/trojanDetect")
+public class N_TrojanDetectService {
 	@Autowired
     private ITaskService taskService;
 	@Autowired
@@ -111,6 +111,7 @@ public class N_VulnscanService {
     private IAlarmService alarmService;
 	@Autowired
     private IOrderTaskService orderTaskService;	
+	
 	
 	//创建漏洞扫描订单（任务）
 	@POST

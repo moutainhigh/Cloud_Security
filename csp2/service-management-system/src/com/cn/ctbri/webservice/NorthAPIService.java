@@ -136,17 +136,17 @@ public class NorthAPIService {
 					orderTask.setEnd_date(end_date);
 					orderTask.setScan_type(scan_type);
 					orderTask.setStatus(0);
-					orderTask.setWebsoc(Integer.parseInt(customArray.get(j).toString()));
+//					orderTask.setWebsoc(Integer.parseInt(customArray.get(j).toString()));
 					orderTask.setUrl(targetArray.get(i).toString());
 					orderTask.setTask_status(1);//设置订单任务状态为：1未执行
 //					orderTask.setOrderTaskId(String.valueOf(Random.eightcode()));
 					
-					if (scanMode.equals("1")) {//漏洞长期
-						Date executeTime = DateUtils.getOrderPeriods(startTime,endTime,scanPeriod);
-						orderTask.setTask_date(executeTime);
-					}else{
+//					if (scanMode.equals("1")&&serviceId.equals("1")) {//漏洞长期
+//						Date executeTime = DateUtils.getOrderPeriods(startTime,endTime,scanPeriod);
+//						orderTask.setTask_date(executeTime);
+//					}else{
 						orderTask.setTask_date(begin_date);
-					}
+//					}
 					orderTaskService.insertOrderTask(orderTask);
 					
 	        	}
@@ -165,7 +165,7 @@ public class NorthAPIService {
 	@PUT
     @Path("/order/{orderId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String VulnScan_opt_orderTask(@PathParam("orderId") String orderId, String dataJson) {
+	public String VulnScan_opt_order(@PathParam("orderId") String orderId, String dataJson) {
 		JSONObject json = new JSONObject();
 		try {
 			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
@@ -267,6 +267,7 @@ public class NorthAPIService {
 				if(taskId!=null && taskId!=""){
 					List<Alarm> alist = alarmService.findAlarmByTaskId(taskId);
 					JSONArray alarmObject = new JSONArray().fromObject(alist);
+					json.put("code", 200);
 					json.put("alarmObj", alarmObject);
 					return json.toString();
 				}else{
@@ -281,6 +282,34 @@ public class NorthAPIService {
 			e.printStackTrace();
 			json.put("code", 404);//返回404表示失败
 			json.put("message", "获取结果失败");
+		}
+		return json.toString();
+    }
+	
+	//删除订单
+	@GET
+    @Path("/deleteOrder/{orderId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String VulnScan_Del_Order(@PathParam("orderId") String orderId) {
+		JSONObject json = new JSONObject();
+		try {
+			Order order = orderService.findOrderByOrderId(orderId);
+			if(order!=null){
+				//删除订单
+	            orderService.deleteOrderById(orderId);
+	            //删除订单任务
+	            orderTaskService.deleteByOrderId(orderId);
+	            json.put("code", 200);
+				json.put("message", "删除订单成功");
+			}else{
+				json.put("code", 421);
+				json.put("message", "订单不存在");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("code", 404);//返回404表示失败
+			json.put("message", "删除订单失败");
 		}
 		return json.toString();
     }

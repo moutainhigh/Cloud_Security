@@ -101,8 +101,8 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
  * 版        本：  1.0
  */
 @Component
-@Path("openapi/vulnscan")
-public class N_VulnscanService {
+@Path("openapi/webPageTamper")
+public class N_WebPageTamperService {
 	@Autowired
     private ITaskService taskService;
 	@Autowired
