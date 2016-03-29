@@ -113,6 +113,10 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 	public Order findOrderByOrderId(String orderId) {
 		Order order = this.getSqlSession().selectOne(ns + "findOrderByOrderId",orderId);
         return order;
+	}
+
+	public void delete(String orderId) {
+		this.getSqlSession().delete(ns + "delete", orderId);
 	}  
 	
 	

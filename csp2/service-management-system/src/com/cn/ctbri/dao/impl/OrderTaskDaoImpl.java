@@ -130,5 +130,10 @@ public class OrderTaskDaoImpl extends DaoCommon implements OrderTaskDao{
 	public List<OrderTask> findByOrderId(String orderId) {
 		return getSqlSession().selectList(ns+"findByOrderId", orderId);
     }
+
+
+	public void delete(String orderId) {
+		this.getSqlSession().delete(ns + "delete", orderId);
+	}
 	
 }
