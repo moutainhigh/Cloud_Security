@@ -38,6 +38,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<!-- limit #{page} -->
 	</select>
 	
+	<!-- 根据条件查询订单任务表 （异常） -->
+	<select id="findExpOrderTask" parameterType="hashmap" resultMap="OrderTaskRM">
+		select * from cs_order_task ot
+		where ot.task_status = #{task_status}
+        <if test="status==1">
+          and t.engine = -1
+        </if>
+        order by t.execute_time
+        <!-- limit #{page} -->
+	</select>
+	
 	<!-- 更新任务信息 -->
 	<update id="update"  parameterType="com.cn.ctbri.entity.OrderTask">
 		update cs_order_task
@@ -67,4 +78,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from cs_order_task ot
 		where ot.orderId = #{orderId}
     </select>
+    
+    <!-- 删除订单任务 -->
+    <delete id="delete" parameterType="String">
+        delete from cs_order_task where orderId = #{orderId}
+    </delete>
 </mapper>
