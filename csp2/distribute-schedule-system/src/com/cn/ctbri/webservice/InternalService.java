@@ -175,7 +175,7 @@ public class InternalService {
 	    				if(res){
 	    					json.put("code", "200");//成功
 		    				//更新task的状态
-		    				task.setStatus(3);
+		    				task.setStatus(0);//暂停
 		    				taskService.update(task);
 	    				}else{
 	    					json.put("code", "404");//失败
