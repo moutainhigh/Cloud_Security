@@ -135,7 +135,7 @@ if(tablList==0&&anList==0){
                                 <table cellpadding="0" cellspacing="0" border="1" bordercolor="#e0e0e0">
                                     <thead>
                                         <tr>
-                                            <th>资产所属用户</th>
+                                            <th>资产用户名</th>
                                             <th>资产所在省</th>
                                             <th>资产所在市</th>
                                             <th>资产数量</th>
@@ -344,12 +344,12 @@ if(tablList==0&&anList==0){
                                             </td>
                                             <td>${assertAlarmlist.begin_date}</td>
                                             <td>${assertAlarmlist.end_date}</td>
+                                            <td>${assertAlarmlist.orderId}</td>
                                             <td>
                                             <c:if test="${assertAlarmlist.level==0}">低</c:if>
                                             <c:if test="${assertAlarmlist.level==1}">中</c:if>
                                             <c:if test="${assertAlarmlist.level==2}">高</c:if>
                                             </td>
-                                            <td>${assertAlarmlist.orderId}</td>
                                             <td>${assertAlarmlist.num}</td>                         
                                         </tr>
                                      </c:forEach>

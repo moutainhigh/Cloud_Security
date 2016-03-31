@@ -7,6 +7,12 @@ function orderData(){
 
 	var begin_datevo = $("#begin_date").val();
 	var end_datevo = $("#end_date").val();
+	var beginDate=new Date(begin_datevo.replace("-", "/").replace("-", "/"));  
+    var endDate=new Date(end_datevo.replace("-", "/").replace("-", "/"));  
+    if(endDate<beginDate){  
+        alert("信息提示：统计结束时间不能小于统计开始时间！"); 
+        return;
+    } 
 	var state = $("#state").val();
 	var type = $("#type").val();
 	var servName = $("#servName").val();
@@ -89,6 +95,14 @@ function orderData(){
 function warningData(){
 	var begin_datevo = $("#begin_dateW").val();
 	var end_datevo = $("#end_dateW").val();
+	
+	var beginDate=new Date(begin_datevo.replace("-", "/").replace("-", "/"));  
+    var endDate=new Date(end_datevo.replace("-", "/").replace("-", "/"));  
+    if(endDate<beginDate){  
+        alert("信息提示：统计结束时间不能小于统计开始时间！"); 
+        return;
+    } 
+    
 	var level = $("#level").val();
 	var alarm_type = $("#alarm_type").val();
 	var datas = [];

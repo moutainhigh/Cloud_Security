@@ -19,18 +19,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 根据时间段查询注册用户的登录数量 -->
 	<select id="findRegisterCountByDates" resultType="int" parameterType="hashmap">
-	SELECT count(DISTINCT userId) FROM cs_login_history WHERE 1=1
+	SELECT count(DISTINCT user.id) FROM cs_login_history history, cs_user user WHERE 1=1
 	<if test="begin_date!=null and begin_date!=''">
 	<![CDATA[
-		AND loginTime>=#{begin_date}
+		AND history.loginTime>=#{begin_date}
 	]]>	
 	</if>
 	<if test="end_date!=null and end_date!=''">
 	<![CDATA[
-		AND loginTime<=#{end_date}
+		AND history.loginTime<=#{end_date}
 	]]>	
 	</if>
-	and (userType=2 or userType=3  )
+	and (history.userType=2 or history.userType=3  ) and user.status=2 and user.id=history.userId
 	</select>
 	
 	<!-- 查询时间范围内登录次数TOP10 -->

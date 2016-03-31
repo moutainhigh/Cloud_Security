@@ -129,7 +129,12 @@ function indusAnalysis(){
     			}
     			
     			$("#"+trid).append( "<td>" + index + "</td>");
-    			$("#"+trid).append( "<td colspan='2'>" + list[i].industry + "</td>");
+    			if(list[i].industry!=null && list[i].industry!=''){
+        			$("#"+trid).append( "<td colspan='2'>" + list[i].industry + "</td>");
+    			}else{
+    				$("#"+trid).append( "<td colspan='2'></td>");
+    			}
+
     			$("#"+trid).append( "<td colspan='2'>" + list[i].count + "</td>");
     			$("#body3").append( "</tr>" );
     		}        		     	

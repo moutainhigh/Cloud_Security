@@ -167,6 +167,17 @@ function assert(m,n){
 	  	} 
 	}else if(m==0&&n==2){
 	  	if($("#assetType3").val()!=""||$("#purpose2").val()!=""){
+	  		var begin_date = $("#begin_date").val();
+	  		var end_date = $("#end_date").val();
+	  		if(begin_date!=null&&begin_date!=''&&end_date!=null&&end_date!=''){
+		  		var beginDate=new Date(begin_date.replace("-", "/").replace("-", "/"));  
+		  	    var endDate=new Date(end_date.replace("-", "/").replace("-", "/"));  
+		  	    if(endDate<beginDate){  
+		  	        alert("信息提示：统计结束时间不能小于统计开始时间！"); 
+		  	        return;
+		  	    }
+	  		}
+ 
 	  		$("#serverForm").action="${ctx}/adminPurposeAssetUI.html?tablList=0&anList=2"
 	  		$("#serverForm").submit();
 	  	}else{
@@ -174,6 +185,16 @@ function assert(m,n){
 	  	} 
 	}else if(m==1&&n==0){
 	  	if($("#serverId1").val()!=""||$("#alarmRank1").val()!=""){
+	  		var begin_date = $("#begin_date1").val();
+	  		var end_date = $("#end_date1").val();
+	  		if(begin_date!=null&&begin_date!=''&&end_date!=null&&end_date!=''){
+		  		var beginDate=new Date(begin_date.replace("-", "/").replace("-", "/"));  
+		  	    var endDate=new Date(end_date.replace("-", "/").replace("-", "/"));  
+		  	    if(endDate<beginDate){  
+		  	        alert("信息提示：统计结束时间不能小于统计开始时间！"); 
+		  	        return;
+		  	    }
+	  		}
 	  		$("#alarmForm").action="${ctx}/admineAssetAlarmUI.html?tablList=1&anList=0"
 	  		$("#alarmForm").submit();
 	  	}else{
@@ -181,6 +202,16 @@ function assert(m,n){
 	  	} 
 	}else if(m==1&&n==1){
 	  	if($("#serverId2").val()!=""){
+	  		var begin_date = $("#begin_date2").val();
+	  		var end_date = $("#end_date2").val();
+	  		if(begin_date!=null&&begin_date!=''&&end_date!=null&&end_date!=''){
+		  		var beginDate=new Date(begin_date.replace("-", "/").replace("-", "/"));  
+		  	    var endDate=new Date(end_date.replace("-", "/").replace("-", "/"));  
+		  	    if(endDate<beginDate){  
+		  	        alert("信息提示：统计结束时间不能小于统计开始时间！"); 
+		  	        return;
+		  	    }
+	  		}
 	  		$("#alarmForm1").action="${ctx}/admineAssetAlarmUI.html?tablList=1&anList=1"
 	  		$("#alarmForm1").submit();
 	  	}else{
@@ -188,6 +219,16 @@ function assert(m,n){
 	  	} 
 	}else if(m==1&&n==2){
 	  	if($("#serverId3").val()!=""||$("#timeTtype").val()!=""){
+	  		var begin_date = $("#begin_date3").val();
+	  		var end_date = $("#end_date3").val();
+	  		if(begin_date!=null&&begin_date!=''&&end_date!=null&&end_date!=''){
+		  		var beginDate=new Date(begin_date.replace("-", "/").replace("-", "/"));  
+		  	    var endDate=new Date(end_date.replace("-", "/").replace("-", "/"));  
+		  	    if(endDate<beginDate){  
+		  	        alert("信息提示：统计结束时间不能小于统计开始时间！"); 
+		  	        return;
+		  	    }
+	  		}
 	  		getAlarmTrend();
 	  	}else{
 	  		alert("在服务类型和时间类型中至少选择一个查询条件！");
@@ -196,12 +237,12 @@ function assert(m,n){
 }
 
 function getAlarmTrend(){
-	//alert("ddddddddddddddddd");
 	 var assert=$("#assertName3").val();
 	 var service=$("#serverId3").val();
 	 var bdate=$("#begin_date3").val();
 	 var edate=$("#end_date3").val();;
 	 var timet=$("#timeTtype").val();
+	 getAll('2012-06-24','2013-02-25');
 	 $.ajax({
 		 	data: {"assertName":assert,"serverId":service,"begin_date":bdate,"end_date":edate,"timeTtype":timet},
 	        type: "POST",
@@ -210,8 +251,9 @@ function getAlarmTrend(){
 	        url: "admineAssetAlarmTrendUI.html", 
 	        success: function(obj){
 	        	var list=obj.AlarmTrendlist;
-	        		assertAlarm(list,timet);	
+	        	assertAlarm(list,timet);	
 	        	
 	     	}
 		});
 }
+

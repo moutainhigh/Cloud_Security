@@ -129,6 +129,13 @@ var getServiceDate=function(repeat){
 	  	    begindate =  $("#begin_date2").val();
 	  	    enddate =  $("#end_date2").val();
 	    }
+	    
+	    var beginDate=new Date(begindate.replace("-", "/").replace("-", "/"));  
+	    var endDate=new Date(enddate.replace("-", "/").replace("-", "/"));  
+	    if(endDate<beginDate){  
+	        alert("信息提示：统计结束时间不能小于统计开始时间！"); 
+	        return;
+	    } 
 		$.ajax({
 			type : "POST",
 			url : "getServiceDate.html",

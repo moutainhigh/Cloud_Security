@@ -13,17 +13,20 @@ if(timet=="2"){
 	timetypeList=['1时','2时','3时','4时','5时','6时','7时','8时','9时','10时','11时','12时','13时','14时','15时','16时','17时','18时','19时','20时','21时','22时','23时','24时'];
 	timeIntList=['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24'];
 }
-for(var j=0;j<timeIntList.length;j++){
-	var timety=timeIntList[j];
-	var tmp=0;
-  for (var i = 0; i < list.length; i++) {
-	var timep=list[i].begin_date;
-    if(timep==timety){
-		tmp=list[i].num;
-	  }
+if(list!=null&&list.length>0){
+	for(var j=0;j<timeIntList.length;j++){
+		var timety=timeIntList[j];
+		var tmp=0;
+	  for (var i = 0; i < list.length; i++) {
+		var timep=list[i].begin_date;
+	    if(timep==timety){
+			tmp=list[i].num;
+		  }
+		}
+		alarmlist.push(tmp);
 	}
-	alarmlist.push(tmp);
 }
+
 console.log(alarmlist);
 
 var myChart = echarts.init(document.getElementById('charts_map'));
