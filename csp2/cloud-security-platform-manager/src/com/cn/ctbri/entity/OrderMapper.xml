@@ -360,7 +360,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	group by HOUR(time) ORDER BY time limit 6
     </select>
     <select id="findOrderTimesPie" parameterType="hashmap" resultType="hashmap">
-    SELECT o.serviceId serviceid,count(o.serviceId) count,s.name name FROM cs_order o,mydb.cs_service s 
+    SELECT o.serviceId serviceid,count(o.serviceId) count,s.name name FROM cs_order o,cs_service s 
     WHERE 1=1 
     <if test="begin_date!=null">
     <![CDATA[
@@ -377,7 +377,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     <!-- 查询订单时间段分布统计	-->
     <select id="findOrderWithServiceId" parameterType="hashmap" resultType="hashmap">
-    SELECT o.serviceId serviceid,DATE_FORMAT(o.create_date,'%H:00:00') AS time,DATE_FORMAT(DATE_ADD(o.create_date,INTERVAL 1 hour),'%H:00:00')as time1,count(*) count,s.name name FROM mydb.cs_order o,mydb.cs_service s 
+    SELECT o.serviceId serviceid,DATE_FORMAT(o.create_date,'%H:00:00') AS time,DATE_FORMAT(DATE_ADD(o.create_date,INTERVAL 1 hour),'%H:00:00')as time1,count(*) count,s.name name FROM cs_order o,cs_service s 
 	<![CDATA[
 	WHERE 1=1 
 	]]>	
