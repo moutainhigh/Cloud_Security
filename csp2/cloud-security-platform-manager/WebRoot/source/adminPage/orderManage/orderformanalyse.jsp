@@ -8,22 +8,23 @@
 <head>
 <meta charset="utf-8" />
 <title>订单分析图</title>
-<link href="${ctx}/source/manageCss/mian.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/manageCss/head_bottom.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/manageCss/backstage.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/adminCss/mian.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/adminCss/head_bottom.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/source/adminCss/backstage.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/order/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/backstage.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/orderformanalyse.js"></script>
+<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 </head>
 
 <body>
 <!--头部代码-->
 <div class="head_bj b_head">
-  <div class="head clear">
-    <div class="logo"><img src="${ctx}/source/images/b_logo2.jpg"/></div>
+  <div class="head">
+    <div class="logo"><img src="${ctx}/source/adminImages/b_logo2.jpg"/></div>
     <div class="list b_list">
       <ul>
       	<li><a href="${ctx}/adminUserManageUI.html" class="white">用户管理</a></li>
