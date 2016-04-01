@@ -30,7 +30,8 @@
         <li><a href="${ctx}/adminServUI.html" class="white">服务管理</a></li>
         <li><a href="${ctx}/adminDataAssetUI.html" class="white">资产分析</a></li>
         <li><a href="${ctx}/adminUserAnalysisUI.html" class="white">用户分析</a></li>
-        <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">订单分析</a></li>
+        <!-- <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">订单分析</a></li>-->
+        <li><a href="${ctx}/orderformanalyse.html" class="white">订单分析</a></li>
         <li class="b_current"><a href="${ctx}/adminWarnAnalysisUI.html" class="white">告警分析</a></li>
         <li><a href="${ctx}/equResourceUI.html" class="white">设备资源管理</a></li>
         <li><a href="${ctx}/adminSystemManageUI.html" class="white">系统管理</a></li>
