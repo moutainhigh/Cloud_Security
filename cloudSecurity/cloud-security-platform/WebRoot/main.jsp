@@ -31,21 +31,24 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 			<!--头部-->
 			<div class="head">
 				<div class="headBox">
-					<div class="safeL fl">
-						<img src="${ctx}/source/images/portal/logo.png" alt=""/>
+					<div class="safeL fl" style="width:285px; margin-right:19%">
+						<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:12px;"/>
 					</div>
 					<div class="safem fl">
-						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
+						<span class="fl"><a href="${ctx}/index.html" class="hbule this">首页</a></span>
 						<div class="Divlist listJs fl">
-							<a href="#">我的安全帮<i></i></a>
+							<a href="#" class="hbule">我的安全帮<i></i></a>
 							<ul class="list listl">
 								<li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
 								<li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
 								<li style="border: none;"><a href="${ctx}/userDataUI.html">个人信息</a></li>
 							</ul>
 						</div>
-						<span class="fl"><a href="${ctx}/app.html">手机APP</a></span>
-						<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
+						<span class="fl ask">
+							<a href="#" class="hbule">手机APP</a>
+							<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
+						</span>
+						<span class="fl"><a href="${ctx}/aider.html" class="hbule">帮助</a></span>
 						
 					</div>
 					<div class="safer fr">
@@ -70,7 +73,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 					<ul class="bannerHeight banner_img clearfix">
 						<li style=" display: list-item;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t1.png" alt=""></a></div></li>
 						<li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t1.png" alt=""></a></div></li>
-                        <li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t1.png" alt=""></a></div></li>
+                                                <li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t1.png" alt=""></a></div></li>
 					</ul>
 				</div>
              </div>
@@ -85,16 +88,18 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 		<div class="safe02" style="padding-bottom:120px;">
 			
 			<div class="imgBox" style="width:1108px; margin:0 auto">
-				<h2><i></i>热门服务<i></i></h2>
+				<h2>热门服务</h2>
                 <div class="listBox clearfix">
                 	<div class="listL fl">
                     	<div class="">
+                    		<a href="${ctx}/web_anquanbang.html">
                         	<p><img src="${ctx}/source/images/portal/web.png" alt=""></p>
+                        	</a>
                         </div>
                     </div>
                 	<div class="listR fl">
                     	<div class="new-title clearfix">
-                        	<h3 class="fl"><a href="${ctx}/web_anquanbang.html" class="fr">网站安全帮</a></h3>
+                        	<a href="${ctx}/web_anquanbang.html"><h3 class="fl">网站安全帮</h3></a>
                             <a href="${ctx}/web_anquanbang.html" class="fr">查看更多<b></b></a>
                         </div>
                     	<ul class="newlist newlist-top fl">
@@ -104,8 +109,8 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                     <p><img src="${ctx}/source/images/portal/vulnScan.png" alt=""></p>
                                     <h4>漏洞扫描服务</h4>
                                     <div class="purchase">
-                                    	<span>￥0</span>
-                                    	<span><em>￥99</em></span>
+                                    	<span>¥0</span>
+                                    	<span><em>¥99</em></span>
                                     	
                                     </div>
                                 </a>
@@ -116,8 +121,8 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                     <p><img src="${ctx}/source/images/portal/trojanDetect.png" alt=""></p>
                                     <h4>木马检测服务</h4>
                                     <div class="purchase">
-                                    	<span>￥0</span>
-                                    	<span><em>￥99</em></span>
+                                    	<span>¥0</span>
+                                    	<span><em>¥99</em></span>
                                     	
                                     </div>
                                 </a>
@@ -128,8 +133,8 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                     <p><img src="${ctx}/source/images/portal/sensitiveWord.png" alt=""></p>
                                     <h4>关键字监测服务</h4>
                                     <div class="purchase">
-                                    	<span>￥0</span>
-                                    	<span><em>￥99</em></span>
+                                    	<span>¥0</span>
+                                    	<span><em>¥99</em></span>
                                     	
                                     </div>
                                 </a>
@@ -155,8 +160,8 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                     <p><img src="${ctx}/source/images/portal/webPageTamper.png" alt=""></p>
                                     <h4>网页篡改监测</h4>
                                     <div class="purchase">
-                                    	<span>￥0</span>
-                                    	<span><em>￥99</em></span>
+                                    	<span>¥0</span>
+                                    	<span><em>¥99</em></span>
                                     	
                                     </div> 
                                 </a>
@@ -167,8 +172,8 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                     <p><img src="${ctx}/source/images/portal/sensitiveWord.png" alt=""></p>
                                     <h4>敏感词监测</h4>
                                     <div class="purchase">
-                                    	<span>￥0</span>
-                                    	<span><em>￥99</em></span>
+                                    	<span>¥0</span>
+                                    	<span><em>¥99</em></span>
                                     	
                                     </div> 
                                 </a>
@@ -179,8 +184,8 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                     <p><img src="${ctx}/source/images/portal/availability.png" alt=""></p>
                                     <h4>可用性监测</h4>
                                     <div class="purchase">
-                                    	<span>￥0</span>
-                                    	<span><em>￥99</em></span>
+                                    	<span>¥0</span>
+                                    	<span><em>¥99</em></span>
                                     	
                                     </div>
                                 </a>
@@ -193,7 +198,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 			</div>
 		</div>
 		<div class="safe05 special">
-			<div class="specialblock">
+			<div class="specialblock" style="position:relative">
             	<h3>专题模块</h3>
                 <dl class="clearfix" style="margin-right:-20px;">
                 	<dd class="fl frn">
@@ -220,7 +225,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 		</div>
 		<div class="safe03" style=" background:#efefef">
 			<div class="imgBox" id="carrousel" style="width: 1180px;">
-				<h2><i></i>合作伙伴<i></i></h2>
+				<h2>合作伙伴</h2>
                 
                 <div class="friend-Link ">
                     <div class="left-arrow"><a href="javascript:;"><img src="${ctx}/source/images/portal/left.png"></a></div>
@@ -244,7 +249,13 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
-					<a href="#"><img src="${ctx}/source/images/portal/footlogo.png" alt=""></a>
+				<!--修改-->
+				   <a href="#">
+	               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
+                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
+	               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+                   </a>
+                <!--修改-->  
 				</div>
 				<ol class="footr clearfix fr">
 					<li>
