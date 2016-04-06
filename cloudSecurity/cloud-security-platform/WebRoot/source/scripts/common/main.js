@@ -1,5 +1,3 @@
-
-
 $(document).ready(function(){
 	var num=$('.circle li').length;
 	var i_mun=0;
@@ -9,12 +7,9 @@ $(document).ready(function(){
 	
 //底下小图标点击切换
 	$('.circle li').click(function(){
-		$(this).addClass('active')
-			   .siblings('li').removeClass('active');
+		$(this).addClass('active').siblings('li').removeClass('active');
 		var i_mun1=$('.circle li').index(this);
-		$('.banner_img li').eq(i_mun1).fadeIn('slow')
-			                   .siblings('li').fadeOut('slow');
-
+		$('.banner_img li').eq(i_mun1).fadeIn('slow').siblings('li').fadeOut('slow');
 		i_mun=i_mun1;
 	});
 	
@@ -23,7 +18,7 @@ $(document).ready(function(){
 	function bannerMoveks(){
 		timer_banner=setInterval(function(){
 			move_banner()
-		},500000)
+		},5000)
 	};
 	bannerMoveks();//开始自动播放
 

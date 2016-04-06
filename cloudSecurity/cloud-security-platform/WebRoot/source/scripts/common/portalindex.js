@@ -8,6 +8,24 @@ sck();
 //结算
 deck();
 
+//
+/*$('.hbule').hover(function(){
+	$('.hbule').css('color','#4a4a4a');
+	$(this).css('color','#2499fb');
+},function(){
+	$('.hbule').css('color','#4a4a4a');
+	$(this).css('color','#4a4a4a');
+})
+
+$('.listl').mouseover(function(){
+	$('.listJs').children('a').css('color','#2499fb');	
+})
+$('.listl').mouseout(function(){
+	$('.listJs').children('a').css('color','#4a4a4a');	
+})
+*/
+//
+
 //菜单下拉效果	
 $('.listJs').hover(function(){
 	$(this).children('a').find('i').addClass('active');
@@ -16,8 +34,10 @@ $('.listJs').hover(function(){
 	$(this).children('a').find('i').removeClass('active');
 	$('.listl').stop().slideUp("slow");
 })
+
 //列表悬停效果
 topshow();
+topshow2();
 //修改发票
 tab();
 //改变个数
@@ -25,8 +45,8 @@ minsum();
 
 //遮罩层
 showout();
-
-
+//二维码
+ask();
 
 onclick('clickBox');
 onclickTime('time');
@@ -88,16 +108,34 @@ $('.dropdown-menu li').hover(function(){
 }); 
 function topshow(){
 	$('.newlist-top li').hover(function(){
+		$(this).addClass('showdow');
 		$(this).stop().animate({
-			top:'-6px'
+			top:'-6px',
 		},500)
 	},function(){
-$(this).stop().animate({
+		$(this).removeClass('showdow');
+		$(this).stop().animate({
 			top:'0'
-		},500)
-	})
+			},500)
+		})
 
 }
+
+function topshow2(){
+	$('.fl-pic .imgist li').hover(function(){
+		$(this).addClass('showdow');
+		$(this).stop().animate({
+			top:'-6px',
+		},500)
+	},function(){
+		$(this).removeClass('showdow');
+		$(this).stop().animate({
+			top:'0'
+			},500)
+		})
+
+}
+
 
 function onclick(id){
 	var cass=document.getElementById(id);
@@ -216,6 +254,18 @@ function sck(){
 	})
 
 }
+
+
+//二维码
+function ask(){
+	alert("888");
+	$('.ask').hover(function(){
+		$(this).children('b').show();
+	},function(){
+		$(this).children('b').hide();
+	})	
+}
+
 
 function deck(){
 		// $('.pab ul li').children('i').remove();
