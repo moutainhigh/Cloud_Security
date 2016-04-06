@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <%
 	response.setHeader("Pragma","No-cache"); 
@@ -23,7 +24,12 @@
                  
              </td>
              <td>
-                ${list.name}                         
+             	<c:if test="${list.isAPI==1}">
+             	 ${fn:replace(list.name, "服务", "API")}  
+                </c:if> 
+                <c:if test="${list.isAPI!=1}">
+                 ${list.name}   
+                </c:if>                      
              </td>
              <td><fmt:formatDate value="${list.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>~<fmt:formatDate value="${list.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
              <td><fmt:formatDate value="${list.create_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
@@ -36,9 +42,13 @@
                  <img src="${ctx}/source/images/status_1.jpg" title="已完成有告警"/>
                  </a>
                 </c:if>
-                <c:if test="${list.status==1}">
+                <c:if test="${list.status==1&&list.isAPI!=1}">
                  <a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank">
                  <img src="${ctx}/source/images/status_2.jpg" title="已完成无异常"/>
+                 </a>
+                </c:if>
+                <c:if test="${list.status==1&&list.isAPI==1}">
+                 <img src="${ctx}/source/images/status_2.jpg" title="已完成"/>
                  </a>
                 </c:if>
                 <!-- 安恒的服务 -->
