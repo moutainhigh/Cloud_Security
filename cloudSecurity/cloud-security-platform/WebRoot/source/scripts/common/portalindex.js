@@ -258,7 +258,6 @@ function sck(){
 
 //二维码
 function ask(){
-	alert("888");
 	$('.ask').hover(function(){
 		$(this).children('b').show();
 	},function(){
