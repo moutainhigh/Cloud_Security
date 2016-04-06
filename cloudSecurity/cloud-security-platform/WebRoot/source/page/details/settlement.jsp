@@ -69,6 +69,10 @@
 		<input type="hidden" id="beginDate" value="${beginDate }"/>
 		<input type="hidden" id="endDate" value="${endDate }"/>
 		<input type="hidden" id="scanType" value="${scanType }"/>
+		
+		<input type="hidden" id="time" value="${time }"/>
+		<input type="hidden" id="num" value="${num }"/>
+		<input type="hidden" id="apiId" value="${apiId }"/>
 		<div class="dataCent seetlentBox">
 			<div class="seetT">
 				<h2>填写并核对订单信息</h2>
@@ -133,19 +137,37 @@
                     	
                         <div class="tabox" style="margin:20px 0 20px 50px;">
                         	<table class="test-table">
-                        	<tbody>
-                            	 <tr height="40">
-                                 	<td width="14%">
-                                    	${service.name }
-                                    </td>
-                                   
-                                    <td width="52%">
-                                    	${assetAddr }
-                                    </td>
-                                    <td width="34%">0.00</td>
-                                 </tr>
-                                 
-                            </tbody>
+                        	<c:if test="${mark eq 'web' }">
+	                        	<tbody>
+	                            	 <tr height="40">
+	                                 	<td width="14%">
+	                                    	${service.name }
+	                                    </td>
+	                                   
+	                                    <td width="52%">
+	                                    	${assetAddr }
+	                                    </td>
+	                                    <td width="34%">0.00￥</td>
+	                                 </tr>
+	                            </tbody>
+                            </c:if>
+                            <c:if test="${mark eq 'api' }">
+	                        	<tbody>
+	                            	 <tr height="40">
+	                                 	<td width="14%">
+	                                    	${serviceAPI.name }
+	                                    </td>
+	                                   
+	                                    <td width="52%">
+	                                    	<c:if test="${n==1}">套餐一</c:if>&nbsp;&nbsp;&nbsp;
+	                                    	<c:if test="${n==2}">套餐二</c:if>&nbsp;&nbsp;&nbsp;
+	                                    	<c:if test="${n==3}">套餐三</c:if>&nbsp;&nbsp;&nbsp;
+	                                    	${time }次 * ${num }
+	                                    </td>
+	                                    <td width="34%">0.00￥</td>
+	                                 </tr>
+	                            </tbody>
+                            </c:if>
                         </table>
                         
                         </div>
@@ -209,7 +231,14 @@
                 </li>
             </ul>
 			<div class="SubmitBox">
-            	<p>应付总额：<span>￥0.00</span><input id="settlement" class="submit" type="submit" value="提交订单"></p>
+            	<p>应付总额：<span>￥0.00</span>
+            	<c:if test="${mark eq 'web' }">
+            		<input id="settlement" class="submit" type="submit" value="提交订单"/>
+            	</c:if>
+            	<c:if test="${mark eq 'api' }">
+            		<input id="settlementAPI" class="submit" type="submit" value="提交订单"/>
+            	</c:if>
+            	</p>
             </div>
 		</div>
         
