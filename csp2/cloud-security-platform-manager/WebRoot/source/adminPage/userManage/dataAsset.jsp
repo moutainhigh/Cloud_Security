@@ -468,7 +468,7 @@ if(tablList==0&&anList==0){
                                     </select>
                                     <span id="timetype_msg"></span>
                                 </div>
-                                <div class="analyse_lable fl">
+                                <div class="analyse_lable fl" style="position: relative; left: -233px;top:10px">
                                     <label>订单开始时间</label>
                                     <input type="text" class="text" value="" id="begin_date3" name="begin_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})" disabled>
                                     <label>-结束时间</label>

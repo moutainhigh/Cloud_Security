@@ -248,33 +248,34 @@ function assert(m,n){
 	  			var beginDate=beginTimes[1]+'-'+beginTimes[2]+'-'+beginTimes[0]+' '+begin_date.substring(10,19);  
 	  			var endDate=endTimes[1]+'-'+endTimes[2]+'-'+endTimes[0]+' '+end_date.substring(10,19);  
 
-		  	    if(endDate<beginDate){  
+	  			var TotalMilliseconds = dateDiff(beginDate,endDate);
+		  	    if(TotalMilliseconds<0){  
 		  	        alert("信息提示：统计结束时间不能小于统计开始时间！"); 
 		  	        return;
 		  	    }
 		  	    var timet=$("#timeTtype").val();
 		  		if(timet=="1"){
-		  			var TotalMilliseconds = dateDiff(beginDate,endDate);
-		  			if(parseInt(TotalMilliseconds / 1000 / 60 / 60 /24)>1){
+		  			if(parseFloat(TotalMilliseconds / 1000 / 60 / 60 /24)>1){
 		  				alert("时间差不能超过一天");
 		  				return;
 		  			}
 		  		}else if(timet=="2"){
-		  			var TotalMilliseconds = dateDiff(beginDate,endDate);
-		  			if(parseInt(TotalMilliseconds / 1000 / 60 / 60 /24)>7){
+		  			if(parseFloat(TotalMilliseconds / 1000 / 60 / 60 /24)>7){
 		  				alert("时间差不能超过7天");
 		  				return;
 		  			}
 		  		}else if(timet=="3"){
-		  			var TotalMilliseconds = dateDiff(beginDate,endDate);
-		  			if(parseInt(TotalMilliseconds / 1000 / 60 / 60 /24/365)>1){
+		  			if(parseFloat(TotalMilliseconds / 1000 / 60 / 60 /24/365)>1){
 		  				alert("时间差不能超过1年");
 		  				return;
 		  			}
 		  		}
+		  		
+		  		getAlarmTrend();
+	  		}else{
+	  			alert("请选择统计的开始时间和结束时间!");
 	  		}
-	  		
-	  		getAlarmTrend();
+
 	  	}else{
 	  		alert("服务类型和时间类型为必选项!");
 	  	} 
@@ -282,13 +283,14 @@ function assert(m,n){
 }
 
 function stringToTime(string) {
-    var f = string.split(' ', 2);
-    var d = (f[0] ? f[0] : '').split('-', 3);
-    var t = (f[1] ? f[1] : '').split(':', 3);
+    var f = string.split(' ');
+    var d = (f[0] ? f[0] : '').split('-');
+    var t = (f[2] ? f[2] : '').split(':');
+
     return (new Date(
-   parseInt(d[0], 10) || null,
-   (parseInt(d[1], 10) || 1) - 1,
-   	parseInt(d[2], 10) || null,
+   parseInt(d[2], 10) || null,
+   (parseInt(d[0], 10) || null) - 1,
+   	parseInt(d[1], 10) || null,
    	parseInt(t[0], 10) || null,
    	parseInt(t[1], 10) || null,
    	parseInt(t[2], 10) || null
@@ -297,6 +299,7 @@ function stringToTime(string) {
 
 function dateDiff(date1, date2) {
     var type1 = typeof date1, type2 = typeof date2;
+
     if (type1 == 'string')
         date1 = stringToTime(date1);
     else if (date1.getTime)
