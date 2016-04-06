@@ -93,7 +93,7 @@ public class OrderMgrController {
 	    //是否从首页进入
 	    String indexPage = request.getParameter("indexPage");
 	    //获取服务类型
-       List<Serv> servList = selfHelpOrderService.findService();
+        List<Serv> servList = selfHelpOrderService.findService();
 	    //获取服务类型
 	    List<ServiceType> typeList = selfHelpOrderService.findServiceType();
 	    //获取厂商
@@ -412,6 +412,8 @@ public class OrderMgrController {
             order.setUserId(globle_user.getId());
             order.setContactId(linkmanId);
             order.setStatus(0);
+            order.setPayFlag(1);
+            order.setIsAPI(2);
             if(serviceId.equals("6")||serviceId.equals("7")||serviceId.equals("8")){
             	order.setWebsoc(0);
             }else{

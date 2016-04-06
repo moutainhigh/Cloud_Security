@@ -1,41 +1,15 @@
 package com.cn.ctbri.controller;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
-
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.entity.Asset;
-import com.cn.ctbri.entity.Factory;
-import com.cn.ctbri.entity.Linkman;
-import com.cn.ctbri.entity.Order;
-import com.cn.ctbri.entity.OrderAsset;
-import com.cn.ctbri.entity.OrderIP;
 import com.cn.ctbri.entity.Serv;
-import com.cn.ctbri.entity.ServiceAPI;
-import com.cn.ctbri.entity.ServiceType;
-import com.cn.ctbri.entity.Task;
-import com.cn.ctbri.entity.TaskHW;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
@@ -47,13 +21,10 @@ import com.cn.ctbri.service.IServiceAPIService;
 import com.cn.ctbri.service.ITaskHWService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
-import com.cn.ctbri.util.CommonUtil;
-import com.cn.ctbri.util.DateUtils;
-import com.cn.ctbri.util.Random;
 
 /**
- * 创 建 人  ：  txr
- * 创建日期：  2015-1-12
+ * 创 建 人  ：  tang
+ * 创建日期：  2016-3-10
  * 描        述：  订单管理控制层
  * 版        本：  1.0
  */
@@ -103,28 +74,6 @@ public class shoppingController {
         String result = "/source/page/details/vulnScanDetails";
         return result;
 	}
-	
-	
-	/**
-	 * 功能描述： 购买API检测服务
-	 * 参数描述：  无
-	 *     @time 2016-3-28
-	 */
-	@RequestMapping(value="selfHelpOrderAPIInit.html")
-	public String selfHelpOrderAPIInit(HttpServletRequest request){
-	    User globle_user = (User) request.getSession().getAttribute("globle_user");
-	    int apiId = Integer.parseInt(request.getParameter("apiId"));
-	    //是否从首页进入
-	    String indexPage = request.getParameter("indexPage");
-	    //根据id查询serviceAPI, add by tangxr 2016-3-28
-	    ServiceAPI serviceAPI = serviceAPIService.findById(apiId);
-        request.setAttribute("apiId", apiId);
-        request.setAttribute("indexPage", indexPage);
-        request.setAttribute("serviceAPI", serviceAPI);
-        String result = "/source/page/details/apiDetails";
-        return result;
-	}
-	
 	
 	 /**
 	 * 功能描述： 结算
@@ -176,6 +125,7 @@ public class shoppingController {
         request.setAttribute("scanType", scanPeriod);
         request.setAttribute("serviceId", serviceId);
         request.setAttribute("service", service);
+        request.setAttribute("mark", "web");//web服务标记
         String result = "/source/page/details/settlement";
         return result;
 	}

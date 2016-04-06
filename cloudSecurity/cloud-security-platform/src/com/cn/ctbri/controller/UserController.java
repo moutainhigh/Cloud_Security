@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -238,6 +239,14 @@ public class UserController {
 		}
 		/**记住密码功能*/
 		LogonUtils.remeberMe(request,response,name,password);
+		
+		//登入key如果为空，则新增key值  add by tangxr 2016-03-31
+		if(_user.getApikey()==null||_user.getApikey().equals("")){
+			UUID uuid = UUID.randomUUID();
+			String apikey = uuid.toString().replace("-", "");
+			_user.setApikey(apikey);
+			userService.update(_user);
+		}
 		//将User放置到Session中，用于这个系统的操作
 		request.getSession().setAttribute("globle_user", _user);
 		
@@ -247,6 +256,9 @@ public class UserController {
 			if(indexPage == 1 ){
 				int serviceId = (Integer) request.getSession().getAttribute("serviceId");
 				return "redirect:/selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
+			}else if(indexPage == 2){
+				int apiId = (Integer) request.getSession().getAttribute("apiId");
+				return "redirect:/selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
 			}else{
 				return "redirect:/userCenterUI.html";
 			}
@@ -872,5 +884,15 @@ public class UserController {
 	@RequestMapping(value="knowUs.html")
 	public String knowUs(Model m){
 		return "/knowUs";
+	}
+	
+	/**
+	 * 功能描述： 手机app
+	 * 参数描述： Model m
+	 *		 @time 2016-3-25
+	 */
+	@RequestMapping(value="app.html")
+	public String app(Model m){
+		return "/app";
 	}
 }
