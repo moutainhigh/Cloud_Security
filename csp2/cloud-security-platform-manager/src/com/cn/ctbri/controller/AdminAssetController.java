@@ -166,8 +166,8 @@ public class AdminAssetController {
 			assertName=new String(request.getParameter("assertName").getBytes("ISO8859_1"), "UTF-8");
 		}
 		String serverId = request.getParameter("serverId");
-		String begin_date=request.getParameter("begin_datevo");
-		String end_date = request.getParameter("end_datevo");
+		String begin_date=request.getParameter("begin_date");
+		String end_date = request.getParameter("end_date");
 		String timeTtype = request.getParameter("timeTtype");
 		if(timeTtype!=null&&"1".equals(timeTtype)){
 			timeTtype="%H";

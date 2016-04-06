@@ -188,7 +188,7 @@ if(tablList==0&&anList==0){
                                 <table cellpadding="0" cellspacing="0" border="1" bordercolor="#e0e0e0">
                                     <thead>
                                         <tr>
-                                            <th>资产所属用户</th>
+                                            <th>资产用户名</th>
                                             <th>资产用途</th>
                                             <th>资产数量</th>
                                         </tr>
@@ -196,8 +196,7 @@ if(tablList==0&&anList==0){
                                     <tbody>
                                          <c:forEach items="${porlist}" var="porlist">
                                         <tr>
-                                            <td><c:if test="${porlist.name==2}">个人用户</c:if>
-                                             <c:if test="${porlist.name==3}">企业用户</c:if></td>
+                                            <td>${porlist.name}</td>
                                             <td>${porlist.disName}</td>
                                             <td>${porlist.num}</td>
                                         </tr>
@@ -244,7 +243,7 @@ if(tablList==0&&anList==0){
                                 <table cellpadding="0" cellspacing="0" border="1" bordercolor="#e0e0e0">
                                     <thead>
                                         <tr>
-                                            <th>资产所属用户</th>
+                                            <th>资产用户名</th>
                                             <th>资产用途</th>
                                             <th>订单数量</th>
                                         </tr>
@@ -252,8 +251,7 @@ if(tablList==0&&anList==0){
                                     <tbody>
                                          <c:forEach items="${servlist}" var="servlist">
                                         <tr>
-                                            <td><c:if test="${servlist.name==2}">个人用户</c:if>
-                                             <c:if test="${servlist.name==3}">企业用户</c:if></td>
+                                            <td>${servlist.name }</td>
                                             <td>${servlist.disName}</td>
                                             <td>${servlist.num}</td>
                                         </tr>
@@ -460,12 +458,6 @@ if(tablList==0&&anList==0){
                                         <option value="8">突发异常流量清洗服务</option>
                                     </select>
                                 </div>
-                                 <div class="analyse_lable fl">
-                                    <label>订单开始时间</label>
-                                    <input type="text" class="text" value="" id="begin_date3" name="begin_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd'})">
-                                    <label>-结束时间</label>
-                                    <input type="text" class="text" value="" id="end_date3" name="end_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd'})">
-                                </div>
                                 <div class="analyse_lable fl">
                                     <label>时间类型</label>
                                     <select class="text" name="timeTtype" id="timeTtype">
@@ -474,6 +466,13 @@ if(tablList==0&&anList==0){
                                         <option value="2">天</option>
                                         <option value="3">月</option>
                                     </select>
+                                    <span id="timetype_msg"></span>
+                                </div>
+                                <div class="analyse_lable fl">
+                                    <label>订单开始时间</label>
+                                    <input type="text" class="text" value="" id="begin_date3" name="begin_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})" disabled>
+                                    <label>-结束时间</label>
+                                    <input type="text" class="text" value="" id="end_date3" name="end_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})" disabled>
                                 </div>
                                 <input type="button" class="sub" value="" onclick="assert(1,2)">
                             </form>

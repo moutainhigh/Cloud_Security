@@ -19,7 +19,27 @@ $('.anlist li').click(function(){
 	
 });
 
+$('#timeTtype').change(function(){
 
+	 var timet=$("#timeTtype").val();
+	 if(timet=="1"){
+		 $("#timetype_msg").html("(时间范围限定在一天之内)");
+		 $("#begin_date3").attr("disabled",false);
+		 $("#end_date3").attr("disabled",false);
+	 }else if(timet=="2"){
+		 $("#timetype_msg").html("(时间范围限定在7天之内)");
+		 $("#begin_date3").attr("disabled",false);
+		 $("#end_date3").attr("disabled",false);
+	 }else if(timet=="3"){
+		 $("#timetype_msg").html("(时间范围限定在一年之内)");
+		 $("#begin_date3").attr("disabled",false);
+		 $("#end_date3").attr("disabled",false);
+	 }else{
+		 $("#timetype_msg").html("");
+		 $("#begin_date3").attr("disabled",true);
+		 $("#end_date3").attr("disabled",true);
+	 }
+});
 
 $('.tableBox tbody tr:even').css('background','#fafafa')	
 
@@ -218,31 +238,83 @@ function assert(m,n){
 	  		alert("服务类型为必选项！");
 	  	} 
 	}else if(m==1&&n==2){
-	  	if($("#serverId3").val()!=""||$("#timeTtype").val()!=""){
+	  	if(($("#serverId3").val()!="")&&($("#timeTtype").val()!="")){
 	  		var begin_date = $("#begin_date3").val();
 	  		var end_date = $("#end_date3").val();
-	  		if(begin_date!=null&&begin_date!=''&&end_date!=null&&end_date!=''){
-		  		var beginDate=new Date(begin_date.replace("-", "/").replace("-", "/"));  
-		  	    var endDate=new Date(end_date.replace("-", "/").replace("-", "/"));  
+	  		if(begin_date!=null&&begin_date!=''&&end_date!=null&&end_date!=''){ 	    
+		  	    
+	  			var beginTimes=begin_date.substring(0,10).split('-');  
+	  			var endTimes=end_date.substring(0,10).split('-');  
+	  			var beginDate=beginTimes[1]+'-'+beginTimes[2]+'-'+beginTimes[0]+' '+begin_date.substring(10,19);  
+	  			var endDate=endTimes[1]+'-'+endTimes[2]+'-'+endTimes[0]+' '+end_date.substring(10,19);  
+
 		  	    if(endDate<beginDate){  
 		  	        alert("信息提示：统计结束时间不能小于统计开始时间！"); 
 		  	        return;
 		  	    }
+		  	    var timet=$("#timeTtype").val();
+		  		if(timet=="1"){
+		  			var TotalMilliseconds = dateDiff(beginDate,endDate);
+		  			if(parseInt(TotalMilliseconds / 1000 / 60 / 60 /24)>1){
+		  				alert("时间差不能超过一天");
+		  				return;
+		  			}
+		  		}else if(timet=="2"){
+		  			var TotalMilliseconds = dateDiff(beginDate,endDate);
+		  			if(parseInt(TotalMilliseconds / 1000 / 60 / 60 /24)>7){
+		  				alert("时间差不能超过7天");
+		  				return;
+		  			}
+		  		}else if(timet=="3"){
+		  			var TotalMilliseconds = dateDiff(beginDate,endDate);
+		  			if(parseInt(TotalMilliseconds / 1000 / 60 / 60 /24/365)>1){
+		  				alert("时间差不能超过1年");
+		  				return;
+		  			}
+		  		}
 	  		}
+	  		
 	  		getAlarmTrend();
 	  	}else{
-	  		alert("在服务类型和时间类型中至少选择一个查询条件！");
+	  		alert("服务类型和时间类型为必选项!");
 	  	} 
 	}
+}
+
+function stringToTime(string) {
+    var f = string.split(' ', 2);
+    var d = (f[0] ? f[0] : '').split('-', 3);
+    var t = (f[1] ? f[1] : '').split(':', 3);
+    return (new Date(
+   parseInt(d[0], 10) || null,
+   (parseInt(d[1], 10) || 1) - 1,
+   	parseInt(d[2], 10) || null,
+   	parseInt(t[0], 10) || null,
+   	parseInt(t[1], 10) || null,
+   	parseInt(t[2], 10) || null
+)).getTime();
+}
+
+function dateDiff(date1, date2) {
+    var type1 = typeof date1, type2 = typeof date2;
+    if (type1 == 'string')
+        date1 = stringToTime(date1);
+    else if (date1.getTime)
+        date1 = date1.getTime();
+    if (type2 == 'string')
+        date2 = stringToTime(date2);
+    else if (date2.getTime)
+        date2 = date2.getTime();
+    return (date2 - date1); //结果是秒
 }
 
 function getAlarmTrend(){
 	 var assert=$("#assertName3").val();
 	 var service=$("#serverId3").val();
 	 var bdate=$("#begin_date3").val();
-	 var edate=$("#end_date3").val();;
+	 var edate=$("#end_date3").val();
 	 var timet=$("#timeTtype").val();
-	 getAll('2012-06-24','2013-02-25');
+	 
 	 $.ajax({
 		 	data: {"assertName":assert,"serverId":service,"begin_date":bdate,"end_date":edate,"timeTtype":timet},
 	        type: "POST",
@@ -251,9 +323,11 @@ function getAlarmTrend(){
 	        url: "admineAssetAlarmTrendUI.html", 
 	        success: function(obj){
 	        	var list=obj.AlarmTrendlist;
-	        	assertAlarm(list,timet);	
+	        	assertAlarm(list,timet,bdate,edate);	
 	        	
 	     	}
 		});
+
 }
+
 

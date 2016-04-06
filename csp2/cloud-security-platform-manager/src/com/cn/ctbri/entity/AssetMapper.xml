@@ -133,7 +133,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<!-- 资产用途统计分析 -->
  	<select id="findAssertPurpose" parameterType="hashmap" resultMap="AssetRM1">
-		 select cu.type name ,
+		 select cu.name name ,
 		    (case when IFNULL(ca.purpose,0) not in('公共服务','信息发布') then '其他' else ca.purpose end) disName,
 		   '' cityName,count(1) num 
            from cs_asset ca,cs_user cu 

@@ -1,33 +1,47 @@
 "use strict";
-function assertAlarm(list,timet){
-var alarmlist = [];
-var timetypeList;
-var timeIntList;
-if(timet=="2"){
-	timetypeList=['1日','2日','3日','4日','5日','6日','7日','8日','9日','10日','11日','12日','13日','14日','15日','16日','17日','18日','19日','20日','21日','22日','23日','24日','25日','26日','27日','28日','29日','30日','31日'];
-	timeIntList=['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
-}else if(timet=="3"){
-	timetypeList=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-	timeIntList=['01','02','03','04','05','06','07','08','09','10','11','12'];
-}else{
-	timetypeList=['1时','2时','3时','4时','5时','6时','7时','8时','9时','10时','11时','12时','13时','14时','15时','16时','17时','18时','19时','20时','21时','22时','23时','24时'];
-	timeIntList=['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24'];
-}
-if(list!=null&&list.length>0){
-	for(var j=0;j<timeIntList.length;j++){
-		var timety=timeIntList[j];
-		var tmp=0;
-	  for (var i = 0; i < list.length; i++) {
-		var timep=list[i].begin_date;
-	    if(timep==timety){
-			tmp=list[i].num;
-		  }
-		}
-		alarmlist.push(tmp);
-	}
-}
+function assertAlarm(list,timet,bdate,edate){
 
-console.log(alarmlist);
+var alarmlist = [];
+
+//获得选取的时间数组
+var dateArray = getAll(bdate,edate,timet);
+/*$.each(dateArray,function(n,value) {
+	alert(value);
+});*/
+
+
+  if(dateArray!=null && dateArray.length>0){
+	  for(var j = 0; j < dateArray.length;j++){
+		  if(list!=null&&list.length>0){
+			  for (var i = 0; i < list.length; i++) {
+				  var flag = 0;
+				  if(timet!="2"){
+					  if(list[i].begin_date==dateArray[j]){
+						  var tmp = list[i].num;
+						  alarmlist.push(tmp);
+						  flag = 1;
+						  break;
+					  }
+				  }else {
+					  if(dateArray[j].substr(dateArray[j].lastIndexOf('-')+1)==list[i].begin_date){
+						  var tmp = list[i].num;
+						  alarmlist.push(tmp);
+						  flag = 1;
+						  break;
+					  }
+				  }
+
+			  }
+			  if(flag==0){
+				  alarmlist.push(0);
+			  }
+		  }
+		 
+		
+	  }
+  }
+
+
 
 var myChart = echarts.init(document.getElementById('charts_map'));
 var option = {
@@ -60,7 +74,7 @@ var option = {
 	            boundaryGap : false,
 	            axisLine: true,
 	            splitLine: false,
-	            data : timetypeList
+	            data : dateArray
 	        }
 	    ],
 	    yAxis : [
@@ -94,3 +108,89 @@ var option = {
 	                    
 myChart.setOption(option); 
 }
+
+
+function getAll(begin,end,timet){
+
+	var abs = new Array();
+	var abs1 = new Array();
+	var aes = new Array();
+	var aes1 = new Array();
+	var dateArray = new Array();
+
+/*	var ab = begin.split("-");
+	var ae = end.split("-");*/
+	
+	var abs=begin.substring(0,10).split('-');
+	var abs1 = begin.substring(10,19).split(':');
+	var aes=end.substring(0,10).split('-');
+	var aes1=end.substring(10,19).split(':');
+	
+	var db = new Date();
+	db.setUTCFullYear(abs[0], abs[1]-1, abs[2]);
+	db.setHours(abs1[0], abs1[1], abs1[2]);
+	var de = new Date();
+	de.setUTCFullYear(aes[0], aes[1]-1, aes[2]);
+	de.setHours(aes1[0], aes1[1], aes1[2]);
+	var unixDb=db.getTime();
+	var unixDe=de.getTime();
+	for(var k=unixDb;k<=unixDe;){
+		var tmp = (new Date(parseInt(k))).format(timet);
+		if(timet=="1"){
+			//判断是否存在
+			if(jQuery.inArray(tmp, dateArray)==-1){
+				dateArray.push(tmp);
+			}
+			k=k+60*60*1000;
+		}else if(timet=="2"){
+			dateArray.push(tmp);
+			k=k+24*60*60*1000;
+		}else if(timet=="3"){
+			//判断是否存在
+			if(jQuery.inArray(tmp, dateArray)==-1){
+				dateArray.push(tmp);
+			}
+			k=k+24*60*60*1000;
+		}
+
+	}
+	if(timet!="2"){
+/*		dateArray = dateArray.sort(function(a,b){
+			return a-b;
+		});*/
+		dateArray.sort();
+	}
+
+	return dateArray;
+/*	$.each(dateArray,function(n,value) {
+	    //do something here
+	    alert(value);
+	   });*/
+}
+
+Date.prototype.format=function (timet){
+	var s='';
+	if(timet=="2"){//日
+		s+= this.getFullYear()+"-";
+		s+=(this.getMonth()+1) +"-";
+		if(this.getDate().toString().length<2){
+			s+= "0"+this.getDate();
+		}else{
+			s+= this.getDate();
+		}
+	}else if(timet=="3"){//月
+		if((this.getMonth()+1).toString().length<2){
+			s+= "0"+(this.getMonth()+1);
+		}else{
+			s+= (this.getMonth()+1);
+		}
+	}else if(timet=="1"){//时
+		if(this.getHours().toString().length<2){
+			s+= "0"+this.getHours();
+		}else{
+			s+= this.getHours();
+		}
+	}
+
+	return(s);// 返回日期。
+};
