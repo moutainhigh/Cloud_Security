@@ -2,63 +2,44 @@ $(function(){
 //	alert("fff");
     
     //确认订单界面点击"确认订单"进入完成
-    $("#buyNow").click(function(){
+    $("#buyAPI").click(function(){
     	var createDate = getCreateDate();
-    	var orderType = $('.click').val();
-    	var beginDate=$('#beginDate').val();
-    	var endDate=$('#endDate').val();
-    	var scanType = $('.clickTime').val();
+    	var time = $('.click').val();//次数
+    	var num = $('#num').val();//数量
     	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
-    	var serviceId = $("#serviceId").val();
-    	if(orderType==2){
-    		scanType="";
-    	}
-    	//获得服务资产
-    	var assetIds = "";
-   		$('.btnNew i').each(function(){
-   			assetIds = assetIds + $(this).attr("id") + ",";
-		});
-    	var ip="";
-		var bandwidth="";
-		if(orderType==2){
-			if(beginDate==""||beginDate==null){
-        		alert("开始时间不能为空");
+    	var apiId = $("#apiId").val();
+    	
+    	var n = $('.click').attr("name");//获取第几个套餐
+    	
+    	//判断选择免费数量不能大于1
+    	var f = $('.click').attr("id");
+    	if(f=='free'){
+    		if(num>1){
+    			alert("免费使用数量不能大于1");
         		return;
-			}
-		}else{
-			if(beginDate==""||beginDate==null||endDate==""||endDate==null){
-        		if(beginDate==""||beginDate==null){
-            		alert("开始时间不能为空");
-            		return;
-            	}
-            	if(endDate==""||endDate==null){
-            		alert("结束时间不能为空");
-            		return;
-            	}
-        	}else{
-        		if(beginDate>=endDate){
-            		alert("开始时间不能大于结束时间!");
-            		return;
-            	}
-        	}
-		}
-//		var createDate = getCreateDate();
-//		alert();
-//		if(beginDate>=createDate){
-//			alert("订单开始时间不能早于当前订单提交时间!");
-//    		return;
-//		}
-		if(assetIds==""||assetIds==null){
-			alert("请选择资产!");
+    		}
+    	}
+    	if(num<=0){
+    		alert("数量不能小于0");
     		return;
-		}
-
+    	}
 		$.ajax({ type: "POST",
 		     async: false, 
-		     url: "getSession.html", 
+		     url: "checkAPI.html", 
+		     data: {"apiId":apiId,
+ 			   	    "time":time,
+ 			   	    "num":num,
+ 			   	    "n":n},  
 		     dataType: "json", 
 		     success: function(data) {
-		    	 window.location.href="settlement.html?orderType="+orderType+"&beginDate="+beginDate+"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds;
+			    	 if(data.message == true){
+			    		 window.location.href="settlementAPI.html?apiId="+apiId+"&time="+time+"&num="+num+"&n="+n;
+			    		 
+			    	 
+			    	 }else{
+			    		 alert(data.message);
+			     		 return;
+			    	 }
 		    	 }, 
 		     error: function(data){ 
 		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
@@ -190,38 +171,6 @@ $(function(){
 	    		    	 else { window.location.href = "loginUI.html"; } } 
 		    	});
 
-    	}
-    });
-    
-    
-    $("#settlementAPI").click(function(){
-    	var apiId = $("#apiId").val();
-    	var time = $('#time').val();//次数
-    	var num = $('#num').val();//数量
-		var result = window.confirm("确定要提交订单吗？");
-    	if(result){
-    		$.ajax({ type: "POST",
-	    		     async: false, 
-	    		     url: "saveOrderAPI.html", 
-	    		     data: {"apiId":apiId,
-		    			   	"time":time,
-		    			   	"num":num},  
-	    		     dataType: "json",
-	    		     success: function(data) {
-	    		    	 if(data.message == true){
-	    		    		 alert("完成下单，去订单跟踪查看订单吧~~");  
-    		    			 window.location.href = "orderTrackInit.html";
-				    	 }else{
-				    		 alert(data.message);
-				     		 return;
-				    	 }
-	    		    		 
-	    		    	 }, 
-	    		     error: function(data){ 
-	    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-	    		    		 window.location.href = "loginUI.html"; } 
-	    		    	 else { window.location.href = "loginUI.html"; } } 
-		    	});
     	}
     });
    
