@@ -39,6 +39,8 @@ public class User implements java.io.Serializable{
 	private int AssetSum;
 	//注册IP
 	private String ip;
+	//用户key add by 2016-3-29
+	private String apikey;
 	//构造方法
 	public User(){}
 	public User(String name, String password, int status, int type) {
@@ -221,5 +223,12 @@ public class User implements java.io.Serializable{
     public void setIp(String ip) {
         this.ip = ip;
     }
+	public String getApikey() {
+		return apikey;
+	}
+	public void setApikey(String apikey) {
+		this.apikey = apikey;
+	}
+	
 	
 }

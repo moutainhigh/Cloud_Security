@@ -28,6 +28,8 @@ public class Order {
 	private String task_datevo;//end_date vo备注
 	private int message;//是否发送告警信息
 	private int websoc;//创宇标志
+	private int payFlag;//是否结算
+	private int isAPI;
 	public String getBegin_datevo() {
 		return begin_datevo;
 	}
@@ -137,5 +139,18 @@ public class Order {
     public void setTask_datevo(String task_datevo) {
         this.task_datevo = task_datevo;
     }
+	public int getPayFlag() {
+		return payFlag;
+	}
+	public void setPayFlag(int payFlag) {
+		this.payFlag = payFlag;
+	}
+	public int getIsAPI() {
+		return isAPI;
+	}
+	public void setIsAPI(int isAPI) {
+		this.isAPI = isAPI;
+	}
+	
 	
 }
