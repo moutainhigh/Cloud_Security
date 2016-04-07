@@ -81,8 +81,8 @@ $(function(){
 				//设置数据
 				var option = {
 					      title : {
-					        text: 'ECharts实例',
-					        subtext: '饼图（Pie Chart）',
+					        text: '订单分析饼图',
+					        subtext: '',
 					        x:'center'
 					      },
 					      tooltip : {
@@ -158,8 +158,8 @@ var getServiceDate=function(repeat){
 					//设置数据
 					var option = {
 						      title : {
-						        text: 'ECharts实例',
-						        subtext: '饼图（Pie Chart）',
+						        text: '',
+						        subtext: '',
 						        x:'center'
 						      },
 						      tooltip : {
