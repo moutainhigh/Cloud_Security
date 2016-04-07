@@ -37,42 +37,48 @@
 
 <body>
 <!--头部-->
-<div class="head new-head">
-	<div class="headBox">
-		<div class="safeL fl">
-			<div class="logo">
-			<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+<div class="safe01 detalis-head">
+	<!--头部-->
+	<div class="head" style="width:100%">
+		<div class="headBox">
+			<div class="safeL fl" style="width:275px; margin-right:18%">
+				<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
+                      <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px;">网站安全帮</strong>
 			</div>
-		</div>
-		
-		<div class="safem fl">
-			<span class="fl"><a href="${ctx}/index.html">首页</a></span>
-			<div class="Divlist listJs fl">
-				<a href="#">我的安全帮<i></i></a>
-				<ul class="list listl">
-					<li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
-					<li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
-					<li style="border: none;"><a href="${ctx}/userDataUI.html">个人信息</a></li>
-				</ul>
+			<div class="safem fl">
+				<span class="fl"><a href="${ctx}/index.html">首页</a></span>
+				<div class="Divlist listJs fl">
+					<a href="${ctx}/orderTrackInit.html">我的安全帮<!--<i></i>--></a>
+					<!--<ul class="list listl">
+						<li><a href="#">我的订单</a></li>
+						<li><a href="#">我的资产</a></li>
+						<li style="border: none;"><a href="#">个人信息</a></li>
+					</ul>-->
+				</div>
+				<span class="fl ask">
+					<a href="#" class="hbule">手机APP</a>
+					<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
+				</span>
+				<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
+				
 			</div>
-			<span class="fl"><a href="#">手机APP</a></span>
-			<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
-			
-		</div>
-		<div class="safer fr">
-			<!-- 如果已经登录则显示用户名，否则需要登录 -->
-	         <c:if test="${sessionScope.globle_user!=null }">
-		        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
-		        <em>|</em>
-		        <a href="${ctx}/exit.html">退出</a>
-	         </c:if>
-	         <c:if test="${sessionScope.globle_user==null }">
-	            <a href="${ctx}/loginUI.html">登录</a>
-				<em>|</em>
-				<a href="${ctx}/registUI.html">注册</a>
-	         </c:if>
+			<div class="safer fr">
+				<!-- 如果已经登录则显示用户名，否则需要登录 -->
+		         <c:if test="${sessionScope.globle_user!=null }">
+			        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
+			        <em>|</em>
+			        <a href="${ctx}/exit.html">退出</a>
+		         </c:if>
+		         <c:if test="${sessionScope.globle_user==null }">
+		            <a href="${ctx}/loginUI.html">登录</a>
+					<em>|</em>
+					<a href="${ctx}/registUI.html">注册</a>
+		         </c:if>
+			</div>
 		</div>
 	</div>
+	
+
 </div>
 <!-- 头部代码结束-->
 <div class="user_center clear">
