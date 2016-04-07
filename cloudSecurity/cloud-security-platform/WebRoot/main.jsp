@@ -31,8 +31,8 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 			<!--头部-->
 			<div class="head">
 				<div class="headBox">
-					<div class="safeL fl" style="width:285px; margin-right:19%">
-						<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:12px;"/>
+					<div class="safeL fl" style="width:275px; margin-right:18%">
+						<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:10px;"/>
 					</div>
 					<div class="safem fl">
 						<span class="fl"><a href="${ctx}/index.html" class="hbule this">首页</a></span>
@@ -73,7 +73,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 					<ul class="bannerHeight banner_img clearfix">
 						<li style=" display: list-item;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t1.png" alt=""></a></div></li>
 						<li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t1.png" alt=""></a></div></li>
-                        <li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t1.png" alt=""></a></div></li>
+                                                <li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t1.png" alt=""></a></div></li>
 					</ul>
 				</div>
              </div>
