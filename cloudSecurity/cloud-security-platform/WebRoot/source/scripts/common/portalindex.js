@@ -7,7 +7,8 @@ $(document).bind("mousedown",function(e){var target=$(e.target);if(target.closes
 sck();
 //结算
 deck();
-
+//API切换
+tabApi();
 //
 /*$('.hbule').hover(function(){
 	$('.hbule').css('color','#4a4a4a');
@@ -27,13 +28,14 @@ $('.listl').mouseout(function(){
 //
 
 //菜单下拉效果	
-$('.listJs').hover(function(){
+/*$('.listJs').hover(function(){
 	$(this).children('a').find('i').addClass('active');
-	$('.listl').slideDown();
+	$('.listl').stop().slideDown();
 },function(){
 	$(this).children('a').find('i').removeClass('active');
 	$('.listl').stop().slideUp("slow");
 })
+*/
 
 //列表悬停效果
 topshow();
@@ -330,3 +332,12 @@ function showout(){
 		},500);	
 	})
 }
+
+//API切换
+ function tabApi(){
+   $('.apitab dd').click(function(){
+		$(this).addClass('active').siblings('dd').removeClass();
+		$(".listtab").eq($(this).index()-1).show().siblings().hide();	
+	})	
+   
+  }
