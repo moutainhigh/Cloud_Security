@@ -73,7 +73,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 					<ul class="bannerHeight banner_img clearfix">
 						<li style=" display: list-item;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t1.png" alt=""></a></div></li>
 						<li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t1.png" alt=""></a></div></li>
-                                                <li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t1.png" alt=""></a></div></li>
+                        <li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t1.png" alt=""></a></div></li>
 					</ul>
 				</div>
              </div>
