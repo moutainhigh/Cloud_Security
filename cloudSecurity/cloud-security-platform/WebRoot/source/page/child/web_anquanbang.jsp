@@ -52,10 +52,10 @@ function showUnreadNews()
 					<!-- <div class="safeL fl">
 						<img src="${ctx}/source/images/portal/logo.png" alt=""/>
 					</div> -->
-					<div class="safeL fl" style="width:270px; margin-right:18%">
-						<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:4px;"/>
+					<div class="safeL fl" style="width:275px; margin-right:18%">
+						<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:10px;"/>
                           <span style="font-size: 20px;
-    color: #4a4a4a; padding-left:20px;position:relative; top:-10px;">网站安全帮</span>
+    color: #4a4a4a; padding-left:20px;position:relative; top:-6px;">网站安全帮</span>
 					</div>
 					<div class="safem fl">
 						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
@@ -67,7 +67,10 @@ function showUnreadNews()
 								<li style="border: none;"><a href="${ctx}/userDataUI.html">个人信息</a></li>
 							</ul>
 						</div>
-						<span class="fl"><a href="#">手机APP</a></span>
+						<span class="fl ask">
+							<a href="#" class="hbule">手机APP</a>
+							<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
+						</span>
 						<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
 						
 					</div>
@@ -87,37 +90,26 @@ function showUnreadNews()
 				</div>
 			</div>
 			<div class="bannerBox chlid-index">
-            <div class="v_show">
-            	<!-- <style>
-            		.bannerB .bannerHeight li{
-            			width:1400px;
-            			margin-left: -700px;
-            		}
-            	</style>-->
-				<div class="bannerB v_cont">
+            <div class="v_show vBox">
+				<div class="bannerB">
 					<ul class="bannerHeight banner_img clearfix">
 						<li style="display: list-item;">
-							<div class="vb">
-							<a href="#"><img src="${ctx}/source/images/banner_web1.jpg" alt="">
-							
-							<span class="lb_font lb_first">已监测网站<strong class="lb_font_w" id="num">${webSite }</strong>个</span>
-			                <span class="lb_font lb_second">检测页面<strong class="lb_font_w" id="num1">${webPageNum }</strong>个</span>
-			                <span class="lb_font lb_third">发现断网<strong class="lb_font_w" id="num3">${brokenNetwork }</strong>次</span>
-			                <span class="lb_font lb_forth">发现漏洞<strong class="lb_font_w" id="num2">${leakNum }</strong>个</span>
-							
-							
+							<div class="vb data">
+							<a href="#"><img src="${ctx}/source/images/portal/banner4.png" alt="">
+								<span class="lt">已监测网站<em id="num">${webSite }</em>个</span>
+		                        <span class="rt">发现断网<em id="num3">${brokenNetwork }</em>次</span>
+		                        <span class="rm">发现<em id="num2">${leakNum }</em>个漏洞</span>
+		                        <span class="lm">检测页面<em id="num1">${webPageNum }</em>个</span>
 							</a>
 							</div></li>
-						<li><div class="vb"><a href="#"><img src="${ctx}/source/images/banner_web2.jpg" alt=""></a></div></li>
-                        <li><div class="vb"><a href="#"><img src="${ctx}/source/images/banner_web3.jpg" alt=""></a></div></li>
-                        <li><div class="vb"><a href="#"><img src="${ctx}/source/images/banner_web4.jpg" alt=""></a></div></li>
-                        <li><div class="vb"><a href="#"><img src="${ctx}/source/images/banner_web5.jpg" alt=""></a></div></li>
+						<li><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/banner2.png" alt=""></a></div></li>
+                        <li><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/banner3.png" alt=""></a></div></li>
+                        <li><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/banner1.png" alt=""></a></div></li>
 					</ul>
 				</div>
              </div>
 				<ol class="bannerbtn circle clearfix">
                     <li class="active"></li>
-                    <li></li>
                     <li></li>
                     <li></li>
                     <li></li>
@@ -143,8 +135,8 @@ function showUnreadNews()
 		                                    	${list.remarks }
 		                                    </span>
 		                                    <div class="purchase">
-		                                    	<strong>￥0</strong>
-		                                    	<strong><em>￥99</em></strong>
+		                                    	<strong>¥0</strong>
+		                                    	<strong><em style="font-family:Arial Regular;font-size:22px;">¥99</em></strong>
 		                                    	<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1" class="btn">购买</a>
 		                                    </div>
 		                               
@@ -175,8 +167,8 @@ function showUnreadNews()
                                         </span>
                                         <div class="purchase">
                                            
-                                            <strong style="display:block"><em style="font-size:20px;">￥199.00</em></strong>
-                                             <strong style="display:block; font-size:30px;">￥100.00</strong>
+                                            <strong style="display:block"><em style="font-size:20px;font-family: Arial Regular;">¥199.00</em></strong>
+                                             <strong style="display:block; font-size:30px;">¥100.00</strong>
                                             <a href="#" class="btn" style="width:80px;">购买</a>
                                         </div>
                                     </div>
@@ -195,8 +187,8 @@ function showUnreadNews()
                                         </span>
                                         <div class="purchase">
                                            
-                                            <strong style="display:block"><em style="font-size:20px;">￥199.00</em></strong>
-                                             <strong style="display:block; font-size:30px;">￥100.00</strong>
+                                            <strong style="display:block"><em style="font-size:20px;font-family: Arial Regular;">¥199.00</em></strong>
+                                             <strong style="display:block; font-size:30px;">¥100.00</strong>
                                             <a href="#" class="btn" style="width:80px;">购买</a>
                                         </div>
                                     </div>
@@ -217,7 +209,13 @@ function showUnreadNews()
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
-					<a href="#"><img src="${ctx}/source/images/portal/footlogo.png" alt=""></a>
+		    	<!--修改-->
+				   <a href="#">
+		               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
+	                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
+		               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+                   </a>
+                <!--修改--> 
 				</div>
 				<ol class="footr clearfix fr">
 					<li>
@@ -278,25 +276,6 @@ function showUnreadNews()
 	
 <div class="shade"></div>
 </body>
-<script>
-$(function(){	
-	$('#carrousel').hover(function(){
-			$('.left-arrow').fadeIn();
-			$('.right-arrow').fadeIn();
-		},function(){
-			$('.right-arrow').fadeOut();
-			$('.left-arrow').fadeOut();
-		})
-	
-	$(".fl-pic").slidelf({
-			"prev":"left-arrow",
-			"next":"right-arrow",
-			"speed":300 //时间可以任意调动  以毫秒为单位
-		});
-		
-	})
-	
-</script>
 
 
 </html>
