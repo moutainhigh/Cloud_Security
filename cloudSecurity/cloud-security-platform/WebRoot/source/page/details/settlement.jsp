@@ -42,7 +42,10 @@
 								<li style="border: none;"><a href="#">个人信息</a></li>
 							</ul> -->
 						</div>
-						<span class="fl"><a href="#">手机APP</a></span>
+						<span class="fl ask">
+							<a href="#" class="hbule">手机APP</a>
+							<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
+						</span>
 						<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
 						
 					</div>
@@ -102,16 +105,16 @@
                         	<table class="test-table">
                         	<tbody>
                             	 <tr height="40">
-                                 	<td width="18%">
+                                 	<td width="18%" style="font-size:14px;">
                                     	姓名：<i>${user.name }</i>
                                     </td>
-                                    <td width="24%">
+                                    <td width="24%" style="font-size:14px;">
                                     	电话：<i>${user.mobile }</i>
                                     </td>
-                                    <td width="40%">
+                                    <td width="40%" style="font-size:14px;">
                                     	邮箱：<i>${user.email }</i>
                                     </td>
-                                    <!-- <td width="20%"><span><b></b>新增联系人</span></td> -->
+                                    <!-- <td width="20%" style="font-size:14px;"><span><b></b>新增联系人</span></td> -->
                                  </tr>
                                  
                             </tbody>
@@ -135,36 +138,36 @@
                     	<a class="fr" style="color:#2499fb;padding-right:54px" href="javascript:history.go(-1);">返回修改订单信息</a>
                     </div>
                     	
-                        <div class="tabox" style="margin:20px 0 20px 50px;">
-                        	<table class="test-table">
+                        <div class="tabox zfize" style="margin-top:20px;">
+                        	<table class="test-table" style="width:966px;">
                         	<c:if test="${mark eq 'web' }">
 	                        	<tbody>
 	                            	 <tr height="40">
-	                                 	<td width="14%">
+	                                 	<td width="16%" style="font-size:14px;">
 	                                    	${service.name }
 	                                    </td>
 	                                   
-	                                    <td width="52%">
+	                                    <td width="56%" style="font-size:14px;">
 	                                    	${assetAddr }
 	                                    </td>
-	                                    <td width="34%">0.00￥</td>
+	                                    <td width="38%" style="font-size:14px;">199.00</td>
 	                                 </tr>
 	                            </tbody>
                             </c:if>
                             <c:if test="${mark eq 'api' }">
 	                        	<tbody>
 	                            	 <tr height="40">
-	                                 	<td width="14%">
+	                                 	<td width="16%" style="font-size:14px;">
 	                                    	${serviceAPI.name }
 	                                    </td>
 	                                   
-	                                    <td width="52%">
+	                                    <td width="56%" style="font-size:14px;">
 	                                    	<c:if test="${n==1}">套餐一</c:if>&nbsp;&nbsp;&nbsp;
 	                                    	<c:if test="${n==2}">套餐二</c:if>&nbsp;&nbsp;&nbsp;
 	                                    	<c:if test="${n==3}">套餐三</c:if>&nbsp;&nbsp;&nbsp;
 	                                    	${time }次 * ${num }
 	                                    </td>
-	                                    <td width="34%">0.00￥</td>
+	                                    <td width="38%" style="font-size:14px;">199.00</td>
 	                                 </tr>
 	                            </tbody>
                             </c:if>
@@ -199,9 +202,9 @@
                                 </select>
                             </div>
                             
-                            <div class="btnBox" style="text-align:left">
-                            	<button type="button" class="btn preservation" style=" width:120px;">保存发票信息</button>
-                                <button type="button" class="btn cancel" style="width:80px;">取消</button>
+                            <div class="btnBox clearfix" style="text-align:left">
+                            	<button type="button fl" class="btn preservation" style=" width:120px; margin-right:20px;">保存发票信息</button>
+                                <button type="button fl" class="btn cancel" style="width:80px;">取消</button>
                             </div>
                         </div> 
                         <div class="hr"></div>
@@ -245,7 +248,13 @@
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
-					<a href="#"><img src="${ctx}/source/images/portal/footlogo.png" alt=""></a>
+					<!--修改-->
+				   <a href="#">
+		               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
+	                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
+		               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+                   </a>
+                	<!--修改-->
 				</div>
 				<ol class="footr clearfix fr">
 					<li>

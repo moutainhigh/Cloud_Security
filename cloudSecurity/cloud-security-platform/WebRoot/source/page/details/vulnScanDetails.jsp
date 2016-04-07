@@ -30,7 +30,7 @@
 			<!--头部-->
 			<div class="head">
 				<div class="headBox">
-					<div class="safeL fl" style="width:270px; margin-right:18%">
+					<div class="safeL fl" style="width:275px; margin-right:18%">
 						<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
                         <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px;">网站安全帮</strong>
 					</div>
@@ -44,7 +44,10 @@
 								<li style="border: none;"><a href="#">个人信息</a></li>
 							</ul>-->
 						</div>
-						<span class="fl"><a href="${ctx}/app.html">手机APP</a></span>
+						<span class="fl ask">
+							<a href="#" class="hbule">手机APP</a>
+							<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
+						</span>
 						<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
 						
 					</div>
@@ -79,13 +82,13 @@
 						<img src="${ctx}/source/images/portal/product.png" alt="" />
 					</div>
 				</div>
-				<div class="dataR fl">
+				<div class="dataR fl" style="width:640px;">
 					<h2>${service.name }</h2>
-                  <!-- <button class="buttoncar"><i></i>我的购物车</button>-->
+                  <!-- <button class="buttoncar" style="right:3px;"><i style="position:relative;top:-7px;"></i>我的购物车</button>-->
 					<ul>
 						<li class="clearfix">
 							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
-                            <div class="fl"><strong>￥0</strong><strong></strong></div> 
+                            <div class="fl"><strong>¥0</strong><strong></strong></div> 
 						</li>
 						 <li class="clearfix type">
 							<label class="fl">选 择 型</label>
@@ -96,9 +99,9 @@
 						</li>
 						<li class="clearfix">
 							<label class="fl">服务时间</label>
-                            <div class="fl" style="top:2px;">
-                            	<span class="start">开始时间 <input type="text" class="text" value="" id="beginDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></span>
-                                <span class="end">结束时间 <input type="text" class="text" value="" id="endDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></span>
+                            <div class="fl" style="top:3px;">
+                            	<span class="start">开始时间 <input type="text" style="width:156px;" class="text" value="" id="beginDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></span>
+                                <span class="end" style="display:none; margin-right:0px;">结束时间 <input type="text" style="width:156px;" class="text" value="" id="endDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></span>
                             </div> 
 						</li>
 						<li class="clearfix time">
@@ -127,7 +130,7 @@
 							<label class="fl">资&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;产</label>
                             <div class="fl">
                             	<div class="select">
-                                    <div class="dropdown form-control line" style="width:355px;">
+                                    <div class="dropdown form-control line" style="width:170px;">
                                       <button class="btnNew" id="dLabel" type="button" style="width:100%">
                                         <em></em>
                                         <span class="caret"></span>
@@ -156,13 +159,13 @@
         <div class="commodity">
         	<div class="imgBox clearfix">
             	<h4>商品信息</h4>
-                <div class="commoditys" style="margin-bottom:16px;">
+                <div class="commoditys" style="height:618px; overflow:hidden">
                 	<img src="${ctx}/source/images/portal/product1.png" alt="">
                 </div>
-                <div class="commoditys"style="margin-bottom:16px;">
+                <div class="commoditys" style="height:440px; overflow:hidden">
                 	<img src="${ctx}/source/images/portal/product2.png" alt="">
                 </div>
-                <div class="commoditys">
+                <div class="commoditys" style="height:600px; overflow:hidden">
                 	<img src="${ctx}/source/images/portal/product3.png" alt="">
                 </div>
                 <div class="commoditys">
@@ -173,7 +176,13 @@
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
-					<a href="#"><img src="${ctx}/source/images/portal/footlogo.png" alt=""></a>
+				<!--修改-->
+				   <a href="#">
+		               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
+	                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
+		               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+                   </a>
+                <!--修改--> 
 				</div>
 				<ol class="footr clearfix fr">
 					<li>
