@@ -110,6 +110,10 @@ function indusAnalysis(){
         alert("信息提示：统计结束时间不能小于统计开始时间！"); 
         return;
     } 
+    if(industry==-1){  
+        alert("信息提示：请选择行业！"); 
+        return;
+    }
 
 	$.ajax({
         type: "POST",
