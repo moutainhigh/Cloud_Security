@@ -37,12 +37,12 @@
 					<div class="safem fl">
 						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
 						<div class="Divlist listJs fl">
-							<a href="${ctx}/orderTrackInit.html">我的安全帮<!--<i></i>--></a>
-							<!--<ul class="list listl">
-								<li><a href="#">我的订单</a></li>
-								<li><a href="#">我的资产</a></li>
+							<a href="#" class="hbule">我的安全帮<i></i></a>
+							<ul class="list listl">
+								<li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
+								<li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
 								<li style="border: none;"><a href="#">个人信息</a></li>
-							</ul>-->
+							</ul>
 						</div>
 						<span class="fl ask">
 							<a href="#" class="hbule">手机APP</a>
@@ -91,7 +91,7 @@
                             <div class="fl"><strong>¥0</strong><strong></strong></div> 
 						</li>
 						 <li class="clearfix type">
-							<label class="fl">选 择 型</label>
+							<label class="fl">选 类型</label>
                             <div class="fl clickBox" id="clickBox">
 	                            <button class="click Single" value="2">单次</button>
 	                            <button class="long" value="1">长期</button>
@@ -126,17 +126,18 @@
 	                            </c:if>
                             </div> 
 					   </li>
-						<li class="clearfix">
+						
+						 <li class="clearfix">
 							<label class="fl">资&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;产</label>
                             <div class="fl">
                             	<div class="select">
-                                    <div class="dropdown form-control line" style="width:170px;">
-                                      <button class="btnNew" id="dLabel" type="button" style="width:100%">
+                                    <div class="dropdown form-control line" style="width:360px;">
+                                      <button class="btnNew" id="dLabel" type="button" style="width:360px; padding:0">
                                         <em></em>
                                         <span class="caret"></span>
                                       </button>
-                                      <ul class="dropdown-menu pop">
-	                                     <c:if test="${not empty serviceAssetList}">
+                                      <ul class="dropdown-menu pop" style="width:358px">
+                                       <c:if test="${not empty serviceAssetList}">
 	                                     	<c:forEach var="list" items="${serviceAssetList}" varStatus="status">
 	                                       		<li><label name="a"><input type="checkbox"  id="${list.id }" >${list.addr}</label></li>
 	                                     	</c:forEach>
