@@ -131,8 +131,8 @@
 							<label class="fl">资&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;产</label>
                             <div class="fl">
                             	<div class="select">
-                                    <div class="dropdown form-control line" style="width:360px;">
-                                      <button class="btnNew" id="dLabel" type="button" style="width:360px; padding:0">
+                                    <div class="dropdown form-control line" style="width:360px;position:absolute; left:0px;top:3px;">
+                                      <button class="btnNew" id="dLabel" type="button" style="width:360px; padding:0; padding-right:20px; overflow:hidden">
                                         <em></em>
                                         <span class="caret"></span>
                                       </button>
