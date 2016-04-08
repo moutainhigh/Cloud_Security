@@ -7,6 +7,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <title>登录-注册</title>
+<link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
+<link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
+<link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
+<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/loginregist.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
@@ -19,12 +23,10 @@
 <script type="text/javascript" src="${ctx}/source/scripts/regist/regist.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/registzezao.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
-<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
-<link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
+
 <script type="text/javascript" src="${ctx}/source/scripts/common/portalindex.js"></script>
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
-<link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
+<script type="text/javascript" src="${ctx}/source/scripts/common/main.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -107,17 +109,16 @@ function notagree(){
 		<div class="headBox">
 			<div class="safeL fl" style="width:275px; margin-right:18%">
 				<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
-                      <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px;">网站安全帮</strong>
 			</div>
 			<div class="safem fl">
 				<span class="fl"><a href="${ctx}/index.html">首页</a></span>
 				<div class="Divlist listJs fl">
-					<a href="${ctx}/orderTrackInit.html">我的安全帮<!--<i></i>--></a>
-					<!--<ul class="list listl">
-						<li><a href="#">我的订单</a></li>
-						<li><a href="#">我的资产</a></li>
-						<li style="border: none;"><a href="#">个人信息</a></li>
-					</ul>-->
+				<a href="#" class="hbule">我的安全帮<i></i></a>
+							<ul class="list listl">
+								<li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
+								<li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
+								<li style="border: none;"><a href="${ctx}/userDataUI.html">个人信息</a></li>
+							</ul>
 				</div>
 				<span class="fl ask">
 					<a href="#" class="hbule">手机APP</a>
