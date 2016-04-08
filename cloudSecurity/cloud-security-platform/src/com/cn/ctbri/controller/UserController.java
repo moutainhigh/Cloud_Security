@@ -268,46 +268,46 @@ public class UserController {
 	}
 	
 	 /**
-		 * 功能描述： 用户中心页面
-		 * 参数描述：  无
-		 *     @time 2015-1-12
-		 */
-		@RequestMapping(value="userCenterUI.html")
-		public String userCenterUI(HttpServletRequest request){
-			User globle_user = (User) request.getSession().getAttribute("globle_user");
-			//根据用户id查询订单表
-			List<Order> orderList = orderService.findOrderByUserId(globle_user.getId());
-			int orderNum = 0;
-			if(orderList.size()>0&&orderList!=null){
-				orderNum = orderList.size();
-			}
-			//根据用户id查询服务中订单表在开始时间和结束时间中间
-	        Map<String, Object> m = new HashMap<String, Object>();
-	        m.put("userId", globle_user.getId());
-	        m.put("state", 1);
-	        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	        /* 時：分：秒  HH:mm:ss  HH : 23小時制 (0-23)
-	                                 kk : 24小時制 (1-24)
-	                                 hh : 12小時制 (1-12)
-	                                 KK : 11小時制 (0-11)*/
-	        String temp = setDateFormat.format(Calendar.getInstance().getTime());
-	        m.put("currentDate", temp);
-	        List servList = orderService.findByCombineOrderTrack(m);
-			int servNum = 0;
-			if(servList.size()>0&&servList!=null){
-				servNum = servList.size();
-			}
-			request.setAttribute("orderNum", orderNum);//订单总数
-			request.setAttribute("servNum",servNum);//服务中
-			//总告警数
-			List alarmList = alarmService.findAlarmByUserId(globle_user.getId());
-			int alarmSum = 0;
-			if(alarmList.size()>0&&alarmList!=null){
-				alarmSum = alarmList.size();
-			}
-			request.setAttribute("alarmSum",alarmSum);
-			return "/source/page/userCenter/userCenter";
+	 * 功能描述： 用户中心页面
+	 * 参数描述：  无
+	 *     @time 2015-1-12
+	 */
+	@RequestMapping(value="userCenterUI.html")
+	public String userCenterUI(HttpServletRequest request){
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		//根据用户id查询订单表
+		List<Order> orderList = orderService.findOrderByUserId(globle_user.getId());
+		int orderNum = 0;
+		if(orderList.size()>0&&orderList!=null){
+			orderNum = orderList.size();
 		}
+		//根据用户id查询服务中订单表在开始时间和结束时间中间
+        Map<String, Object> m = new HashMap<String, Object>();
+        m.put("userId", globle_user.getId());
+        m.put("state", 1);
+        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        /* 時：分：秒  HH:mm:ss  HH : 23小時制 (0-23)
+                                 kk : 24小時制 (1-24)
+                                 hh : 12小時制 (1-12)
+                                 KK : 11小時制 (0-11)*/
+        String temp = setDateFormat.format(Calendar.getInstance().getTime());
+        m.put("currentDate", temp);
+        List servList = orderService.findByCombineOrderTrack(m);
+		int servNum = 0;
+		if(servList.size()>0&&servList!=null){
+			servNum = servList.size();
+		}
+		request.setAttribute("orderNum", orderNum);//订单总数
+		request.setAttribute("servNum",servNum);//服务中
+		//总告警数
+		List alarmList = alarmService.findAlarmByUserId(globle_user.getId());
+		int alarmSum = 0;
+		if(alarmList.size()>0&&alarmList!=null){
+			alarmSum = alarmList.size();
+		}
+		request.setAttribute("alarmSum",alarmSum);
+		return "/source/page/userCenter/userCenter";
+	}
 	
 	
 	/**
