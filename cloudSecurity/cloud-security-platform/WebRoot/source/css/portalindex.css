@@ -872,7 +872,7 @@ font-weight:normal;
 		width: 100%;
 	}
 	.select .dropdown-menu{
-		width: 99%;
+			width: 262px;
 		display: none;
 		position:absolute;
 		left: 0px;
@@ -881,6 +881,7 @@ font-weight:normal;
 		border: #e5e5e5 solid 1px;
 		border-top:none;
 		 padding-bottom:10px;
+		 overflow: hidden;
 	}
 	.select .dropdown-menu li{
 		line-height: 24px;
@@ -891,8 +892,16 @@ font-weight:normal;
 		top:0;
 		left: 10%;
 	}
+	
+.dataBox .dataR .select .dropdown-menu li label{
+		width: 88%;
+		top:0;
+		left: 10%;
+	}
+	
 	.btnNew em{ width:90%; height:30px; display:block;}
-	.btnNew .caret{ position:absolute; right:-16%; top:50%}
+	
+  .btnNew .caret{ position:absolute; right:-20px; top:50%}
 	.select .dropdown-menu label{ width:100%; display:block}
 	.dropdown-menu .active{
 		background-color:#4AAFD1;
