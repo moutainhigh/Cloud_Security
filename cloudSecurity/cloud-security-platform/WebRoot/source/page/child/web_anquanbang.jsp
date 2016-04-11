@@ -53,7 +53,7 @@ function showUnreadNews()
 						<img src="${ctx}/source/images/portal/logo.png" alt=""/>
 					</div> -->
 					<div class="safeL fl" style="width:275px; margin-right:18%">
-						<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:10px;"/>
+						<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:5px;"/>
                           <span style="font-size: 20px;
     color: #4a4a4a; padding-left:20px;position:relative; top:-6px;">网站安全帮</span>
 					</div>
