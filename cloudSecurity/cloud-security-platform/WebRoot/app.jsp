@@ -49,7 +49,7 @@ margin: 0 18%;
 			<div class="head">
 				<div class="headBox">
 					<div class="safeL fl">
-						<img src="${ctx}/source/images/portal/logo.png" alt=""/>
+						<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:5px;"/>
 					</div>
 					<div class="safem fl">
 						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
