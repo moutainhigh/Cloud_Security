@@ -72,7 +72,7 @@
 .safe01 .Divlist{
 	position: relative;
 	/*line-height: 60px;*/
-	line-height:50px;
+	line-height:52px;
 	z-index:12;
 }
 .safe01 .Divlist a i{
@@ -86,8 +86,8 @@
 	*left:6px;
 }
 .safe01 .Divlist a .active{
-	background: url(../images/portal/upnew.png) no-repeat;
-	/*background: url(../images/portal/up.png) no-repeat;*/
+	/*background: url(../images/portal/upnew.png) no-repeat;*/
+	background: url(../images/portal/up.png) no-repeat;
 }
 
 .safe01 .Divlist .this i{
@@ -518,7 +518,10 @@ background:url(../images/portal/Xzq.png) no-repeat #fff;
 
 }
 
-
+.listBox .purchase em{
+	color: #6e6e6e;
+	font-family:Arial Regular;
+	}
 
 
 
