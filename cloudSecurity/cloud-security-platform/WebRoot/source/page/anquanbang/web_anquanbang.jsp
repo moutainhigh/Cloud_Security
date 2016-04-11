@@ -55,7 +55,7 @@ function showUnreadNews()
 	<div class="headBox">
 		<div class="safeL fl">
 			<div class="logo">
-			<img src="${ctx}/source/images/portal/logo.png" alt=""/><b></b><span>网站安全帮</span>
+			<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:5px;"/><b></b><span>网站安全帮</span>
 			</div>
 		</div>
 		
