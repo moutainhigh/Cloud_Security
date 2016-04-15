@@ -24,6 +24,7 @@
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <!-- end -->
+<script type="text/javascript" src="${ctx}/source/scripts/common/main.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/order.js"></script>
 <script type="text/javascript">
 function selected(){
@@ -154,6 +155,10 @@ function checkMobileAndEmail(){
 function checkUserData(){
 	var mobile = $("#regist_phone").val();
 	var email = $("#regist_email").val();
+	var urlAddr = $("#urlAddr").val();
+	var industry = $("#industry").val();
+	var job = $("#job").val();
+	var company = $("#company").val();
 	checkMobileAndEmail();
 	//if(mobile!=null&&mobile!=""&&email!=null&&email!=""){		
 	//	if(checkMobile1==1&&checkEmail1==1){
@@ -161,9 +166,35 @@ function checkUserData(){
 	//		alert("保存成功！");
 	//	}
 	//}else {
-		if(checkMobile1==1||checkEmail1==1){			
-			$("#userdata").submit();
-			alert("保存成功！");
+		if(checkMobile1==1&&checkEmail1==1){
+			//modify by tangxr 2016-4-10			
+			//$("#userdata").submit();
+			//alert("保存成功！");
+			
+			$.ajax({ type: "POST",
+	    		     async: false, 
+	    		     url: "saveUserDataBate.html", 
+	    		     data: {"mobile":mobile,
+		    			   	"email":email,
+		    			   	"urlAddr":urlAddr,
+		    			   	"industry":industry,
+		    			   	"job":job,
+		    			   	"company":company},  
+	    		     dataType: "json",
+	    		     success: function(data) {
+	    		    	 if(data.message == true){
+	    		    		 alert("设置成功");  
+				    	 }else{
+				    		 alert(data.message);
+				     		// return;
+				    	 }
+				    	 window.location.href = "userDataUI.html";
+	    		    	 }, 
+	    		     error: function(data){ 
+	    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+	    		    		 window.location.href = "loginUI.html"; } 
+	    		    	 else { window.location.href = "loginUI.html"; } } 
+	    	});
 		}
 	//}
 }
@@ -261,42 +292,47 @@ function editPassword(){
 
 <body onload="selected()">
 <!--头部-->
-<div class="head">
-	<div class="headBox">
-		<div class="safeL fl">
-			<div class="logo">
-			<img src="${ctx}/source/images/portal/logo.png" alt=""/><b></b><span>网站安全帮</span>
+<div class="safe01 detalis-head">
+	<!--头部-->
+	<div class="head" style="width:100%">
+		<div class="headBox">
+			<div class="safeL fl" style="width:260px; margin-right:13%">
+				<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
 			</div>
-		</div>
-		
-		<div class="safem fl">
-			<span class="fl"><a href="${ctx}/index.html">首页</a></span>
-			<div class="Divlist listJs fl">
-				<a href="#">我的安全帮<i></i></a>
-				<ul class="list listl">
-					<li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
-					<li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
-					<li style="border: none;"><a href="${ctx}/userDataUI.html">个人信息</a></li>
-				</ul>
+			<div class="safem fl">
+				<span class="fl"><a href="${ctx}/index.html">首页</a></span>
+				<div class="Divlist listJs fl">
+					<a href="#" class="this">我的安全帮<i></i></a>
+							<ul class="list listl">
+								<li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
+								<li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
+								<li style="border: none;"><a href="${ctx}/userDataUI.html">个人信息</a></li>
+							</ul>
+				</div>
+				<span class="fl ask">
+					<a href="#" class="hbule">手机APP</a>
+					<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
+				</span>
+				<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
+				
 			</div>
-			<span class="fl"><a href="#">手机APP</a></span>
-			<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
-			
-		</div>
-		<div class="safer fr">
-			<!-- 如果已经登录则显示用户名，否则需要登录 -->
-	         <c:if test="${sessionScope.globle_user!=null }">
-		        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
-		        <em>|</em>
-		        <a href="${ctx}/exit.html">退出</a>
-	         </c:if>
-	         <c:if test="${sessionScope.globle_user==null }">
-	            <a href="${ctx}/loginUI.html">登录</a>
-				<em>|</em>
-				<a href="${ctx}/registUI.html">注册</a>
-	         </c:if>
+			<div class="safer fr">
+				<!-- 如果已经登录则显示用户名，否则需要登录 -->
+		         <c:if test="${sessionScope.globle_user!=null }">
+			        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
+			        <em>|</em>
+			        <a href="${ctx}/exit.html">退出</a>
+		         </c:if>
+		         <c:if test="${sessionScope.globle_user==null }">
+		            <a href="${ctx}/loginUI.html">登录</a>
+					<em>|</em>
+					<a href="${ctx}/registUI.html">注册</a>
+		         </c:if>
+			</div>
 		</div>
 	</div>
+	
+
 </div>
 <!-- 头部代码结束-->
 <div class="user_center clear">
@@ -402,6 +438,13 @@ function editPassword(){
           	</td>
             <td class="regist_prompt"></td>
           </tr>
+          <tr class="register_tr">
+          	<td class="regist_title">推送URL</td>
+          	<td class="regist_input">
+          		<input type="text" name="urlAddr" value="${user.urlAddr}" id="urlAddr" class="regist_txt"/>
+          	</td>
+            <td class="regist_prompt"></td>
+          </tr>
         </table>
       <div class="user_sub"><a href="javascript:void(0)" onclick="checkUserData()"><img src="${ctx}/source/images/user_sub.png" /></a></div>
       </form>
@@ -409,19 +452,24 @@ function editPassword(){
   </div>
 </div>
 <!--基本资料--> 
-
 <!-- 尾部代码开始-->
-<div class="safeBox">
-		<div class="safe04">
+
+<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
-					<a href="#"><img src="${ctx}/source/images/portal/footlogo.png" alt=""></a>
+				<!--修改-->
+				   <a href="#">
+		               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
+	                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
+		               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+                   </a>
+                <!--修改--> 
 				</div>
 				<ol class="footr clearfix fr">
 					<li>
                     	<h2>帮助中心</h2>
                         <dl>
-                        	<dd><a href="#">购买指南</a></dd>
+                        	<dd><a href="#">购物指南</a></dd>
                             <dd><a href="#">在线帮助</a></dd>
                             <dd><a href="#">常见问题</a></dd>
                        </dl>
@@ -437,7 +485,7 @@ function editPassword(){
                     <li>
                     	<h2>关注我们</h2>
                         <dl>
-                        	<dd><a href="#">QQ交流群</br>470899318</a></dd>
+                        	<dd><a href="#">QQ交流群<br>470899318</a></dd>
                             <dd class="weixin"><a href="#">官方微信</a></dd>
                        </dl>
                     </li>
@@ -456,7 +504,8 @@ function editPassword(){
 		<div class="foot">
 			<p>版权所有Copyright © 2015 中国电信股份有限公司北京研究院京ICP备12019458号-10</p>
 		</div>
-		<!---执行效果-->
+	</div>
+<!---执行效果-->
 <div class="weixinshow popBoxhide" id="weixin">
 	<i class="close chide"></i>
     <div class="Pophead">
@@ -475,7 +524,6 @@ function editPassword(){
 	
 <div class="shade"></div>
 </div>
-<!-- 尾部代码结束 -->
 
 <div id="box_mark"></div>
 <div id="box_logoIn_edit">
