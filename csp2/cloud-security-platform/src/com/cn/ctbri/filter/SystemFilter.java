@@ -94,6 +94,21 @@ public class SystemFilter extends OncePerRequestFilter  {
 				}
 //					request.setAttribute("msg", "对不起，您可能存在的问题:没有权限登录前台、未登录、登录超时");
 				request.getSession().removeAttribute("globle_user");
+				
+				//add by tangxr 2016-3-14
+				String indexPage = request.getParameter("indexPage");
+				if(indexPage!=null){
+					int index = Integer.parseInt(request.getParameter("indexPage"));
+					if(index == 1){
+						request.getSession().setAttribute("serviceId", Integer.parseInt(request.getParameter("serviceId")));
+					}else if(index == 2){
+						request.getSession().setAttribute("apiId", Integer.parseInt(request.getParameter("apiId")));
+					}
+					request.getSession().setAttribute("indexPage", index);
+				}else{
+					request.getSession().setAttribute("indexPage", 0);
+				}
+				//end
 				request.getRequestDispatcher("/loginUI.html").forward(request,response);
 				return;
 //			}
