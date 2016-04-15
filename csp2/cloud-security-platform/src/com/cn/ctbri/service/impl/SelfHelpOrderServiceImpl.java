@@ -114,5 +114,9 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
         selfHelpOrderDao.deleteLinkman(contactId);
     }
 
+	public Serv findServiceById(int serviceId) {
+		return selfHelpOrderDao.findServiceById(serviceId);
+	}
+
 
 }
