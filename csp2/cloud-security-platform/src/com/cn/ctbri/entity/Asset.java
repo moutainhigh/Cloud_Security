@@ -23,7 +23,7 @@ public class Asset {
 	private String addrType;//VO :资产地址类型
 	
 	private String ip;//ip地址
-	private int districtId;//地区id,省
+	private String districtId;//地区id,省
 	private String disName;//地区名称
 	
 	private String city;//物理位置：市
@@ -96,10 +96,10 @@ public class Asset {
     public void setIp(String ip) {
         this.ip = ip;
     }
-    public int getDistrictId() {
+    public String getDistrictId() {
         return districtId;
     }
-    public void setDistrictId(int districtId) {
+    public void setDistrictId(String districtId) {
         this.districtId = districtId;
     }
 	public String getDisName() {

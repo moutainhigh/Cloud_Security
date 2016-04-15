@@ -51,6 +51,10 @@ public class User implements java.io.Serializable{
 	private String endIP;
 	//用户最后一次登录时间
 	private Date lastLoginTime;
+	//用户key add by 2016-3-29
+	private String apikey;
+	//推送url add by 2016-4-8
+	private String urlAddr;
 	//构造方法
 	public User(){}
 	public User(String name, String password, int status, int type) {
@@ -269,6 +273,18 @@ public class User implements java.io.Serializable{
 	public void setLastLoginTime(Date lastLoginTime) {
 		this.lastLoginTime = lastLoginTime;
 	}
-    
+	public String getApikey() {
+		return apikey;
+	}
+	public void setApikey(String apikey) {
+		this.apikey = apikey;
+	}
+	public String getUrlAddr() {
+		return urlAddr;
+	}
+	public void setUrlAddr(String urlAddr) {
+		this.urlAddr = urlAddr;
+	}
+
 	
 }
