@@ -17,7 +17,6 @@
 <link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
-<!-- add by 2016-02 -->
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
 <link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
 <script type="text/javascript" src="${ctx}/source/scripts/common/portalindex.js"></script>
