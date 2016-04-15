@@ -84,16 +84,17 @@ public class Scheduler4Result {
 	    	//true成功连接服务管理系统
 	    	if(session){
 	    		if(order.getStatus()==4){
-	    			if(order.getType()==1){
-	    				getTask(order);
-	    			}
+	    			int s = 0;
+//	    			if(order.getType()==1){
+	    				s = getTask(order);
+//	    			}
 					Map<String,Object> paramMap = new HashMap<String,Object>();
 					paramMap.put("orderId", order.getId());
 		        	paramMap.put("type", String.valueOf(order.getType()));
 					List<Task> tlist = taskService.findAllByOrderId(paramMap);
 					//add by tangxr 2016-2-25
 					List<Task> finistlist = taskService.findFinishByOrderId(paramMap);
-					if(tlist.size() == finistlist.size()){
+					if(tlist.size() == finistlist.size()&&(s==1||s==2)){
 						int count = taskService.findissueCount(order.getId());
 						if(count>0){
 							order.setStatus(2);
@@ -232,7 +233,7 @@ public class Scheduler4Result {
 	}
 	
 	
-	void getTask(Order order){
+	int getTask(Order order){
 		String result = NorthAPIWorker.vulnScanGetStatus(order.getId());
 		JSONObject obj = new JSONObject().fromObject(result);
 		int status = obj.getInt("status");
@@ -290,5 +291,6 @@ public class Scheduler4Result {
 			order.setWebsoc(websoc);
 			orderService.update(order);
 		}
+		return status;
 	}
 }
