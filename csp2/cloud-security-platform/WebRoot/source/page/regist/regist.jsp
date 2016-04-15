@@ -7,25 +7,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <title>登录-注册</title>
+<link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
+<link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
+<link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
+<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/loginregist.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
+<SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.validate.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.metadata.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/login.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/regist.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/registzezao.js"></script>
-<SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
-<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
-<!-- add by 2016-02 -->
-<link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
-<link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
+
 <script type="text/javascript" src="${ctx}/source/scripts/common/portalindex.js"></script>
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
-<link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
+<script type="text/javascript" src="${ctx}/source/scripts/common/main.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -46,6 +47,9 @@ $(document).ready(function(){
 	}
 });
 
+$(document).ready(function(){
+	$(".footer").load("footer.html");
+});
 function loginSubmit(){
 	var name = $("#login_name").val();
 	var password = $("#login_password").val();
@@ -99,47 +103,49 @@ function notagree(){
 </head>
 <body onkeydown="on_return();">
 <!--头部-->
-<div class="head">
-	<div class="headBox">
-		<div class="safeL fl">
-			<div class="logo">
-			<img src="${ctx}/source/images/portal/logo.png" alt=""/><b></b><span>网站安全帮</span>
+<div class="safe01 detalis-head">
+	<!--头部-->
+	<div class="head" style="width:100%">
+		<div class="headBox">
+			<div class="safeL fl" style="width:260px; margin-right:13%">
+				<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
 			</div>
-		</div>
-		
-		<div class="safem fl">
-			<span class="fl"><a href="${ctx}/index.html">首页</a></span>
-			<div class="Divlist listJs fl">
-				<a href="#">我的安全帮<i></i></a>
-				<ul class="list listl">
-					<li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
-					<li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
-					<li style="border: none;"><a href="${ctx}/userDataUI.html">个人信息</a></li>
-				</ul>
+			<div class="safem fl">
+				<span class="fl"><a href="${ctx}/index.html">首页</a></span>
+				<div class="Divlist listJs fl">
+				<a href="#" class="hbule">我的安全帮<i></i></a>
+							<ul class="list listl">
+								<li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
+								<li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
+								<li style="border: none;"><a href="${ctx}/userDataUI.html">个人信息</a></li>
+							</ul>
+				</div>
+				<span class="fl ask">
+					<a href="#" class="hbule">手机APP</a>
+					<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
+				</span>
+				<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
+				
 			</div>
-			<span class="fl"><a href="#">手机APP</a></span>
-			<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
-			
-		</div>
-		<div class="safer fr">
-			<!-- 如果已经登录则显示用户名，否则需要登录 -->
-	         <c:if test="${sessionScope.globle_user!=null }">
-		        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
-		        <em>|</em>
-		        <a href="${ctx}/exit.html">退出</a>
-	         </c:if>
-	         <c:if test="${sessionScope.globle_user==null }">
-	            <a href="${ctx}/loginUI.html">登录</a>
-				<em>|</em>
-				<a href="${ctx}/registUI.html">注册</a>
-	         </c:if>
-		
-		
-			
+			<div class="safer fr">
+				<!-- 如果已经登录则显示用户名，否则需要登录 -->
+		         <c:if test="${sessionScope.globle_user!=null }">
+			        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
+			        <em>|</em>
+			        <a href="${ctx}/exit.html">退出</a>
+		         </c:if>
+		         <c:if test="${sessionScope.globle_user==null }">
+		            <a href="${ctx}/loginUI.html">登录</a>
+					<em>|</em>
+					<a href="${ctx}/registUI.html">注册</a>
+		         </c:if>
+			</div>
 		</div>
 	</div>
+	
+
 </div>
-<!--头部代码结束-->
+<!-- 头部代码结束-->
 <div class="login_wrap">
   <div class="login_box">
     <div class="login_title">
@@ -183,7 +189,7 @@ function notagree(){
           <tr class="register_tr">
             <td class="regist_title">用户名</td>
             <td class="regist_input"><input type="text" class="regist_txt required" name="name" id="regist_name" onblur="checkName()" /><span id="regist_name_msg" style="color:red;float:left"></span></td>
-            <td class="regist_prompt">支持4-20位字母、数字、下划线及其组合</td>
+            <td class="regist_prompt">支持4-12位字母、数字、下划线及其组合</td>
           </tr>
           <tr class="register_tr">
             <td class="regist_title">设置密码</td>
@@ -246,13 +252,6 @@ function notagree(){
             <td class="regist_prompt">或<a class="forget_pass" id="get_email_yzm">验证邮箱</a><a class="forget_pass" id="get_phone_yzm">验证手机</a></td>
           </tr>
          <tr class="register_tr">
-         <td class="regist_title"><span>验证码</span></td>
-          <td class="regist_input"> <input type="text" class="login_txt lgoin_yzm required" name="checkNumber" id="checkNumber1"/>
-          <span><img src="${ctx}/image.jsp" width="65" height="38" id="imageRegisterNumber" title="点击换一张" onclick="checkRegisterImage()"/></img></span>
-          <span id="verification_Image_msg" style="color:red"></span>
-          </td>
-         </tr>
-         <tr class="register_tr">
             <td class="regist_title"><span class="yzfsadd">手机验证码</span></td>
             <td class="regist_input"><input type="text" class="regist_txt regist_yzm required" name="verification_code" id="verification_code" onblur="checkEmailActivationCode()"/>
               
@@ -265,6 +264,13 @@ function notagree(){
             
             <td class="regist_prompt"></td>
           </tr>
+        <tr class="register_tr">
+         <td class="regist_title"><span>验证码</span></td>
+          <td class="regist_input"> <input type="text" class="login_txt lgoin_yzm required" name="checkNumber" id="checkNumber1"/>
+          <span><img src="${ctx}/image.jsp" width="65" height="38" id="imageRegisterNumber" title="点击换一张" onclick="checkRegisterImage()"/></img></span>
+          <span id="verification_Image_msg" style="color:red"></span>
+          </td>
+         </tr>
           <tr class="register_tr">
             <td class="regist_title"></td>
             <td><input type="checkbox"  class="login_checkbox" id="ck"/>
@@ -288,7 +294,13 @@ function notagree(){
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
-					<a href="#"><img src="${ctx}/source/images/portal/footlogo.png" alt=""></a>
+					<!--修改-->
+				   <a href="#">
+		               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
+	                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
+		               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+                   </a>
+                	<!--修改-->
 				</div>
 				<ol class="footr clearfix fr">
 					<li>
