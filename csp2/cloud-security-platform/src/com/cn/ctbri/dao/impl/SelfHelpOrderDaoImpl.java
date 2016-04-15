@@ -135,6 +135,10 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
         this.getSqlSession().delete(ns + "deleteLinkman",contactId);
     }
 
+	public Serv findServiceById(int serviceId) {
+		return this.getSqlSession().selectOne(nv + "findById", serviceId);
+	}
+
 
 	
 }
