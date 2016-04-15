@@ -5,16 +5,15 @@ function saveAsset() {
      var purpose = $("#purpose").val();
      var prov = $("#districtId").val();
      var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
-     if(patrn.test(assetAddr)){  
-         alert("提示信息：您输入的数据含有非法字符！");  
-         return false;     
-     }
 	//获取选中的radio的值
 	if(assetName == null || assetName == ""){
 		$("#assetName_msg").html("请输入资产名称");
-	}
-	else if(assetName.length>25){
-			$("#assetName_msg").html("资产名称长度不能超过25个字符！");
+	}else if(patrn.test(assetName)){
+		$("#assetName_msg").html("您输入的资产名称含有非法字符");
+	}else if(assetName.length>25){
+		$("#assetName_msg").html("资产名称长度不能超过25个字符！");
+	}else if(patrn.test(assetAddr)){
+		$("#assetAddr_msg").html("您输入的资产地址含有非法字符");
 	}else if(assetAddr==null || assetAddr == ""){
 			$("#assetName_msg").html("");
 			$("#assetAddr_msg").html("请输入资产地址");
@@ -84,19 +83,20 @@ function editAsset(){
     var prov = $("#editDistrictId").val();
 //     var patrn=/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im; 
      var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
-     if(patrn.test(assetAddr)){  
-         alert("提示信息：您输入的数据含有非法字符！");  
-         return false;     
-     }     
-     
+//     if(patrn.test(assetAddr)){  
+//         alert("提示信息：您输入的资产地址含有非法字符！");  
+//         return false;     
+//     }     
 	//获取选中的radio的值
 	if(assetName == null || assetName == ""){
 		$("#editAssetName_msg").html("请输入资产名称");
-	}
-	else if(assetName.length>25){
-			$("#editAssetName_msg").html("资产名称长度不能超过25个字符！");
-	}
-	else if(assetAddr==null || assetAddr == ""){
+	}else if(patrn.test(assetName)){
+		$("#editAssetName_msg").html("您输入的资产名称含有非法字符");
+	}else if(assetName.length>25){
+		$("#editAssetName_msg").html("资产名称长度不能超过25个字符！");
+	}else if(patrn.test(assetAddr)){
+		$("#editAssetAddr_msg").html("您输入的资产地址含有非法字符");
+	}else if(assetAddr==null || assetAddr == ""){
 		$("#editAssetAddr_msg").html("请输入资产地址");
 	}else if(assetAddr.length>50){
 		 $("#editAssetAddr_msg").html("资产地址长度不能超过50个字符！");

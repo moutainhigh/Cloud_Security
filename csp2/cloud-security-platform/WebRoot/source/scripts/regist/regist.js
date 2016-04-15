@@ -7,10 +7,10 @@ var checkEmail1 = 0;
 var checkSendEmail1 = 0;
 var checkSendMobile1 = 0;
 var checkEmailActivationCode1 = 0;
-var wait=60;
+var wait=120;
 function checkName(){
 	var name = $("#regist_name").val();
-	var	pattern	= /^[a-zA-Z0-9_]{4,20}$/;
+	var	pattern	= /^[a-zA-Z0-9_]{4,12}$/;
 	var flag = pattern.test(name);
 	if(name==""||name==null){
 		$("#regist_name_msg").html("用户名不能为空");
@@ -33,7 +33,7 @@ function checkName(){
                },
             }); 
 		}else{
-			$("#regist_name_msg").html("请输入4-20位字符");
+			$("#regist_name_msg").html("请输入4-12位字符");
 			checkName1=0;
 		}
 	}
@@ -138,25 +138,32 @@ function checkEmail(){
 //检测邮箱验证码是否发送成功
 function checkSendEmail(){
  	var email = $("#regist_email").val();
- 	if(checkEmail1==1){
- 		$.ajax({
-           type: "POST",
-           url: "regist_checkSendEmail.html",
-           data: {"email":email},
-           dataType:"json",
-           success: function(data){
-           		if(data.msg=="0"){
-               		$("#verification_code_msg").html("邮件发送失败");
-               		checkSendEmail1 = 0;
-           		}else{
-           			time();
-           			$("#verification_code_msg").html("<font color='green'>验证码发送成功，请到邮箱查收</font>");
-           			checkSendEmail1 = 1;
-           		}
-           }
-        });
-      
- 	}
+ 	var checkNumber1 = $("#checkNumber1").val();
+ 	if(checkNumber1==""){
+ 		$("#verification_Image_msg").html("图片验证码不能为空!"); 
+ 	 }else{
+ 	 	if(checkEmail1==1){
+ 	 		$("#verification_Image_msg").html(""); 
+ 	 		$.ajax({
+ 	           type: "POST",
+ 	           url: "regist_checkSendEmail.html",
+ 	           data: {"email":email},
+ 	           dataType:"json",
+ 	           success: function(data){
+ 	           		if(data.msg=="0"){
+ 	               		$("#verification_code_msg").html("邮件发送失败");
+ 	               		checkSendEmail1 = 0;
+ 	           		}else{
+ 	           			time();
+ 	           			$("#verification_code_msg").html("<font color='green'>验证码发送成功，请到邮箱查收</font>");
+ 	           			checkSendEmail1 = 1;
+ 	           		}
+ 	           }
+ 	        });
+ 	      
+ 	 	}
+ 	 }
+
 }
 //检测手机验证码是否发送成功
 function checkSendMobile(){
@@ -166,26 +173,26 @@ function checkSendMobile(){
  		$("#verification_Image_msg").html("图片验证码不能为空!"); 
  	 }else{
  		 if(checkMobile1==1){
- 			 $("#verification_Image_msg").html(""); 
- 		$.ajax({
-           type: "POST",
-           url: "regist_checkSendMobile.html",
-           data: {"mobile":phone},
-           dataType:"json",
-           success: function(data){
-           		if(data.msg=="0"){
-               		$("#verification_code_msg").html("短信发送失败");
-               		checkSendMobile1 = 0;
-           		}else if(data.msg=="1"){
-           			timeMobile();
-           			$("#verification_code_msg").html("<font color='green'>验证码发送成功，请查收短信</font>");
-           			checkSendMobile1 = 1;
-           		}else{
-           			$("#verification_code_msg").html("一个手机号码只能发送3次短信，请通过邮箱注册!");
-               		checkSendMobile1 = 0;
-           		}
-           }
-        });
+ 			$("#verification_Image_msg").html(""); 
+	 		$.ajax({
+	           type: "POST",
+	           url: "regist_checkSendMobile.html",
+	           data: {"mobile":phone},
+	           dataType:"json",
+	           success: function(data){
+	           		if(data.msg=="0"){
+	               		$("#verification_code_msg").html("短信发送失败");
+	               		checkSendMobile1 = 0;
+	           		}else if(data.msg=="1"){
+	           			timeMobile();
+	           			$("#verification_code_msg").html("<font color='green'>验证码发送成功，请查收短信</font>");
+	           			checkSendMobile1 = 1;
+	           		}else{
+	           			$("#verification_code_msg").html("一个手机号码只能发送3次短信，请通过邮箱注册!");
+	               		checkSendMobile1 = 0;
+	           		}
+	           }
+	        });
       
  	    }
  	 }
@@ -196,7 +203,7 @@ function time() {
 	if (wait == 0) { 
 		document.getElementById("email_yzm").disabled=false;
 		document.getElementById("email_yzm").value="点击发送验证码";
-		wait = 60;
+		wait = 120;
 	} else { 
 		document.getElementById("email_yzm").value=wait + "秒后重新获取验证码";
 		document.getElementById("email_yzm").disabled=true;
@@ -211,7 +218,7 @@ function timeMobile() {
 	if (wait == 0) { 
 		document.getElementById("phone_yzm").disabled=false;
 		document.getElementById("phone_yzm").value="点击发送验证码";
-		wait = 60;
+		wait = 120;
 	} else { 
 		document.getElementById("phone_yzm").value=wait + "秒后重新获取验证码";
 		document.getElementById("phone_yzm").disabled=true;
@@ -291,12 +298,13 @@ function submitForm(){
 	    	if(document.getElementById("ck").checked && agreeId==1){
 	    		$("#ck_msg").html("");
 			    if(checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1&&(checkSendEmail1==1||checkSendMobile1==1)&&checkEmailActivationCode1==1){
-				 if(name==p1){
-			       $("#regist_password_msg").html("用户名和密码一致，请重新修改密码！");
+				  if(name==p1){
+			        $("#regist_password_msg").html("用户名和密码一致，请重新修改密码！");
 		          }else{
-					$("#form_regist").submit();}
-					}    	
-				
+					$("#form_regist").submit();
+					alert("注册成功！");
+				  }
+				}    	
 		    }else{
 			    $("#ck_msg").html("请阅读《云平台用户注册协议》");
 		    }

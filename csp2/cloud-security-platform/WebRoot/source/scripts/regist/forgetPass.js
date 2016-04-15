@@ -1,5 +1,5 @@
 
-var wait=60;
+var wait=120;
 
 //检测邮箱验证码是否发送成功
 function checkSendEmail(){
@@ -90,7 +90,7 @@ function time() {
 	if (wait == 0) { 
 		document.getElementById("email_yzm").disabled=false;
 		document.getElementById("email_yzm").value="点击发送验证码";
-		wait = 60;
+		wait = 120;
 	} else { 
 		document.getElementById("email_yzm").value=wait + "秒后重新获取验证码";
 		document.getElementById("email_yzm").disabled=true;
@@ -105,7 +105,7 @@ function timeMobile() {
 	if (wait == 0) { 
 		document.getElementById("phone_yzm").disabled=false;
 		document.getElementById("phone_yzm").value="点击发送验证码";
-		wait = 60;
+		wait = 120;
 	} else { 
 		document.getElementById("phone_yzm").value=wait + "秒后重新获取验证码";
 		document.getElementById("phone_yzm").disabled=true;
