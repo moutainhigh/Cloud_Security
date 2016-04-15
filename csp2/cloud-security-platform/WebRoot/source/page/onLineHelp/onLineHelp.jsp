@@ -11,17 +11,17 @@
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
+<SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
 <link rel="shortcut icon" href="${ctx}/source/images/chinatelecom.ico" />
 <link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
-<SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
-<!-- add by 2016-02 -->
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
 <link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
 <script type="text/javascript" src="${ctx}/source/scripts/common/portalindex.js"></script>
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/main.js"></script>
 <script type="text/javascript">
 $(function(){
 	$("#f5").hide();
@@ -57,45 +57,48 @@ function view(){
 <body>
 <div>
 <!--头部-->
-<div class="head">
-	<div class="headBox">
-		<div class="safeL fl">
-			<div class="logo">
-			<img src="${ctx}/source/images/portal/logo.png" alt=""/><b></b><span>网站安全帮</span>
+<div class="safe01 detalis-head">
+	<!--头部-->
+	<div class="head" style="width:100%">
+		<div class="headBox">
+			<div class="safeL fl" style="width:260px; margin-right:13%">
+				<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
+                      <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px;">网站安全帮</strong>
 			</div>
-		</div>
-		
-		<div class="safem fl">
-			<span class="fl"><a href="${ctx}/index.html">首页</a></span>
-			<div class="Divlist listJs fl">
-				<a href="#">我的安全帮<i></i></a>
-				<ul class="list listl">
-					<li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
-					<li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
-					<li style="border: none;"><a href="${ctx}/userDataUI.html">个人信息</a></li>
-				</ul>
+			<div class="safem fl">
+				<span class="fl"><a href="${ctx}/index.html">首页</a></span>
+				<div class="Divlist listJs fl">
+					<a href="${ctx}/orderTrackInit.html">我的安全帮<!--<i></i>--></a>
+					<!--<ul class="list listl">
+						<li><a href="#">我的订单</a></li>
+						<li><a href="#">我的资产</a></li>
+						<li style="border: none;"><a href="#">个人信息</a></li>
+					</ul>-->
+				</div>
+				<span class="fl ask">
+					<a href="#" class="hbule">手机APP</a>
+					<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
+				</span>
+				<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
+				
 			</div>
-			<span class="fl"><a href="#">手机APP</a></span>
-			<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
-			
-		</div>
-		<div class="safer fr">
-			<!-- 如果已经登录则显示用户名，否则需要登录 -->
-	         <c:if test="${sessionScope.globle_user!=null }">
-		        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
-		        <em>|</em>
-		        <a href="${ctx}/exit.html">退出</a>
-	         </c:if>
-	         <c:if test="${sessionScope.globle_user==null }">
-	            <a href="${ctx}/loginUI.html">登录</a>
-				<em>|</em>
-				<a href="${ctx}/registUI.html">注册</a>
-	         </c:if>
-		
-		
-			
+			<div class="safer fr">
+				<!-- 如果已经登录则显示用户名，否则需要登录 -->
+		         <c:if test="${sessionScope.globle_user!=null }">
+			        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
+			        <em>|</em>
+			        <a href="${ctx}/exit.html">退出</a>
+		         </c:if>
+		         <c:if test="${sessionScope.globle_user==null }">
+		            <a href="${ctx}/loginUI.html">登录</a>
+					<em>|</em>
+					<a href="${ctx}/registUI.html">注册</a>
+		         </c:if>
+			</div>
 		</div>
 	</div>
+	
+
 </div>
 <!-- 头部代码结束-->
 <div class="user_center clear">
@@ -285,7 +288,6 @@ function view(){
 	
 <div class="shade"></div>
 </div>
-<!--尾部部分代码结束-->
 </div>
 </body>
 </html>
