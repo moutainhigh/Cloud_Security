@@ -85,5 +85,7 @@ public interface SelfHelpOrderDao {
     //删除联系人
     void deleteLinkman(int contactId);
 
+	Serv findServiceById(int serviceId);
+
 
 }
