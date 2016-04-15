@@ -161,7 +161,7 @@
 
 #box_logoIn2{ display:none;  padding:20px; position:fixed; top:50%; left:0px; z-index:99; text-align:center; background:#fff; border-radius:10px; width:600px; height:350px;}
 #close2{ width:25px;  height:26px; position: absolute; top:19px; right:17px; z-index:101;cursor:pointer; background:url(../images/user_ico_4.jpg) no-repeat; }
-.txt_1{ width:545px; height:170px; border:1px solid #e0e0e0;}
+.txt_1{ width:545px; height:190px; border:1px solid #e0e0e0;}
 .txt_2{ width:445px; height:55px; border:1px solid #e0e0e0; margin-top:15px; margin-left:45px; padding:10px; font-size:14px; line-height:22px; color:#343333;}
 .txt_1 p{ margin-left:45px; font-size:14px; line-height:28px; text-align:left; margin-top:2px;}
 .txt_1 p span{ color:#e75959;}
