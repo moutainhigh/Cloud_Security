@@ -1,6 +1,58 @@
-
-
 $(document).ready(function(){
+		//菜单下拉效果	
+	$('.listJs').hover(function(){
+		$(this).children('a').find('i').addClass('active');
+		$('.listl').slideDown();
+	},function(){
+		$(this).children('a').find('i').removeClass('active');
+		$('.listl').stop().slideUp("slow");
+	})
+
+	
+	//二维码
+function ask(){
+	$('.ask').hover(function(){
+		$(this).children('b').show();
+	},function(){
+		$(this).children('b').hide();
+	})	
+}
+	ask();
+	
+	
+	function topshow(){
+	$('.newlist-top li').hover(function(){
+		$(this).addClass('showdow');
+		$(this).stop().animate({
+			top:'-6px',
+		},500)
+	},function(){
+		$(this).removeClass('showdow');
+		$(this).stop().animate({
+			top:'0'
+			},500)
+		})
+
+}
+topshow();
+function topshow2(){
+	$('.fl-pic .imgist li').hover(function(){
+		$(this).addClass('showdow');
+		$(this).stop().animate({
+			top:'-6px',
+		},500)
+	},function(){
+		$(this).removeClass('showdow');
+		$(this).stop().animate({
+			top:'0'
+			},500)
+		})
+
+}
+topshow2();	
+	
+	
+	
 	var num=$('.circle li').length;
 	var i_mun=0;
 	var timer_banner=null;
@@ -9,12 +61,9 @@ $(document).ready(function(){
 	
 //底下小图标点击切换
 	$('.circle li').click(function(){
-		$(this).addClass('active')
-			   .siblings('li').removeClass('active');
+		$(this).addClass('active').siblings('li').removeClass('active');
 		var i_mun1=$('.circle li').index(this);
-		$('.banner_img li').eq(i_mun1).fadeIn('slow')
-			                   .siblings('li').fadeOut('slow');
-
+		$('.banner_img li').eq(i_mun1).fadeIn('slow').siblings('li').fadeOut('slow');
 		i_mun=i_mun1;
 	});
 	

@@ -182,7 +182,10 @@ $(function(){
 				oMark2.style.display ="none";
 				oLogin2.style.display ="none";
 				//$(".box_logoIn").empty()
-				
+				$("#editAssetName_msg").html("");
+				$("#editAssetAddr_msg").html("");
+				$("#editLocation_msg").html("");
+				$("#editAssetUsage_msg").html("");
 			};
 		}
 		
