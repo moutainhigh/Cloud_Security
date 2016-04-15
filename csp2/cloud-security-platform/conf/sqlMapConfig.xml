@@ -36,5 +36,10 @@
 		<mapper resource="com/cn/ctbri/entity/DistrictDataMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/CityMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/LoginHistoryMapper.xml"/>
+		
+		<!-- add by tangxr 2016-3-28 -->
+		<mapper resource="com/cn/ctbri/entity/ServiceAPIMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/OrderListMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/OrderAPIMapper.xml"/>
 	</mappers>
 </configuration>  
