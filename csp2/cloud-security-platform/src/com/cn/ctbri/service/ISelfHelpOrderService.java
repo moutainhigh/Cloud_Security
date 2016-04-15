@@ -84,6 +84,9 @@ public interface ISelfHelpOrderService {
     //删除联系人
     void deleteLinkman(int contactId);
 
+    //根据id查询服务
+	Serv findServiceById(int serviceId);
+
 
 	
 }
