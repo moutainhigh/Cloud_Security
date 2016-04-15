@@ -118,8 +118,8 @@ public class OrderMgrController {
         request.setAttribute("indexPage", indexPage);
 //        request.setAttribute("orderId", orderId);
 //        request.setAttribute("order", order);
-//        String result = "/source/page/order/order";
-        String result = "/source/page/details/vulnScanDetails";
+        String result = "/source/page/order/order";
+//        String result = "/source/page/details/vulnScanDetails";
         return result;
 	}
 	
@@ -488,10 +488,10 @@ public class OrderMgrController {
 	            	order.setWebsoc(0);
 	            }else{
 	            	if(!websoc.equals("null")){
-//	                	order.setWebsoc(Integer.parseInt(websoc));
+	                	order.setWebsoc(Integer.parseInt(websoc));
 	                }
 	            }
-//	            order.setTasknum(Integer.parseInt(tasknum));
+	            order.setTasknum(Integer.parseInt(tasknum));
 	            selfHelpOrderService.insertOrder(order);
 	            
 	            
@@ -796,7 +796,8 @@ public class OrderMgrController {
         	//更新删除标记
         	order.setDelFlag(1);
         	orderService.update(order);
-        }else{
+//        }else{
+        }else if(order.getStatus()==0){
             //获取订单资产
             List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
             //删除任务
@@ -854,7 +855,8 @@ public class OrderMgrController {
         //订单状态
         int status = order.getStatus();
         Map<String, Object> m = new HashMap<String, Object>();
-        if((status==0&&beginDate.compareTo(nowDate)>0)||status!=0){
+//        if((status==0&&beginDate.compareTo(nowDate)>0)||status!=0){
+        if(status==1||status==2||status==0){
             m.put("status", true);
         }else{
             m.put("status", false);

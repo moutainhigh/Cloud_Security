@@ -181,7 +181,7 @@ public class MyAssetsController {
 		String name = "";//资产名称
 		String addrType = asset.getAddrType();
 		//add by tangxr 2016-3-3
-		int districtId = asset.getDistrictId();
+		String districtId = asset.getDistrictId();
 		String city = "";
 		String purpose = "";//用途
 		try {

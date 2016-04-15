@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.cfg.Configuration;
+import com.cn.ctbri.common.NorthAPIWorker;
 import com.cn.ctbri.entity.LoginHistory;
 import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.Notice;
@@ -120,9 +122,93 @@ public class UserController{
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
+		//推送地址 add by tangxr 2016-4-9
+		String urlAddr = user.getUrlAddr();
+		globle_user.setUrlAddr(urlAddr);
+		
 		userService.update(globle_user);
 		return "redirect:/userDataUI.html";
 	}
+	
+	
+	/**
+	 * 功能描述： 保存修改后的基本资料
+	 * 参数描述：HttpServletResponse response,HttpServletRequest request
+	 *		 @time 2016-4-10
+	 */
+	@RequestMapping("/saveUserDataBate.html")
+	@ResponseBody
+	public void saveUserDataBate(HttpServletResponse response,HttpServletRequest request){
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		String mobile = request.getParameter("mobile");
+		String email = request.getParameter("email");
+		String urlAddr = request.getParameter("urlAddr");
+		String industry = request.getParameter("industry");
+		String job = request.getParameter("job");
+		String company = request.getParameter("company");
+		//手机号码
+		globle_user.setMobile(mobile);
+		//邮箱
+		globle_user.setEmail(email);
+		
+		try {
+			//公司名称
+			globle_user.setCompany(company);
+			//行业
+			if(!industry.equals("-1")){
+				globle_user.setIndustry(industry);
+			}else{
+				globle_user.setIndustry(null);
+			}
+			//行业
+			if(!job.equals("-1")){
+				globle_user.setJob(job);
+			}else{
+				globle_user.setJob(null);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		Map<String, Object> m = new HashMap<String, Object>();
+		//add by tangxr 2016-4-10 将推送url存入服务能力系统
+//		if(!urlAddr.equals("") && urlAddr != null){
+			UUID uuid = UUID.randomUUID();
+			String userID = String.valueOf(globle_user.getId());
+			String apikey = globle_user.getApikey();
+			String randomChar = uuid.toString().replace("-", "");
+			String token = "";
+			try {
+				token = NorthAPIWorker.login(userID, apikey, randomChar);
+			} catch (Exception e) {
+				m.put("message", "推送url设置失败,请稍后设置~~");
+			}
+			
+			if(!token.equals("") && token != null){
+				//推送地址 add by tangxr 2016-4-9
+				globle_user.setUrlAddr(urlAddr);
+				NorthAPIWorker.setCallbackAddr(urlAddr, token);
+				m.put("message", true);
+			}else{
+				m.put("message","推送url设置失败,请稍后设置~~");	
+			}
+//		}else{
+//			globle_user.setUrlAddr(urlAddr);
+//			m.put("message", true);
+//		}
+		
+		userService.update(globle_user);
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	
 	/**
 	 * 功能描述： 保存修改后的密码
@@ -185,29 +271,29 @@ public class UserController{
 	@RequestMapping(value="index.html")
 	public String index(Model m){
 	    //获取公告
-	    List<Notice> list = noticeService.findAllNotice();
+//	    List<Notice> list = noticeService.findAllNotice();
 	    //获取服务类型
-        List<Serv> servList = selfHelpOrderService.findService();
+//        List<Serv> servList = selfHelpOrderService.findService();
         //查询网页篡改个数 
 //        int whorseNum = selfHelpOrderService.findLeakNum(3);
         //查询木马检测个数 
 //        int pageTamperNum = selfHelpOrderService.findLeakNum(2);
         //查询漏洞个数
-        int leakNum = selfHelpOrderService.findLeakNum(1);
+//        int leakNum = selfHelpOrderService.findLeakNum(1);
         //查询网页数
-        int webPageNum = selfHelpOrderService.findWebPageNum();
+//        int webPageNum = selfHelpOrderService.findWebPageNum();
         //检测网页数
-        int webSite = selfHelpOrderService.findWebSite();
+//        int webSite = selfHelpOrderService.findWebSite();
         //断网次数
-        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
+//        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
 //        m.addAttribute("whorseNum", whorseNum);
 //        m.addAttribute("pageTamperNum", pageTamperNum);
-        m.addAttribute("leakNum", leakNum);
-        m.addAttribute("webPageNum", webPageNum);
-        m.addAttribute("webSite", webSite);
-        m.addAttribute("brokenNetwork", brokenNetwork);
-        m.addAttribute("servList", servList);
-        m.addAttribute("noticeList", list);
+//        m.addAttribute("leakNum", leakNum);
+//        m.addAttribute("webPageNum", webPageNum);
+//        m.addAttribute("webSite", webSite);
+//        m.addAttribute("brokenNetwork", brokenNetwork);
+//        m.addAttribute("servList", servList);
+//        m.addAttribute("noticeList", list);
 		return "/main";
 	}
 	/**
@@ -296,12 +382,35 @@ public class UserController{
 			lh.setLoginTime(_user.getLastLoginTime());
 			userService.insertLoginHistory(lh);
 			
+			//登入key如果为空，则新增key值  add by tangxr 2016-03-31
+			if(_user.getApikey()==null||_user.getApikey().equals("")){
+				UUID uuid = UUID.randomUUID();
+				String apikey = uuid.toString().replace("-", "");
+				_user.setApikey(apikey);
+				userService.update(_user);
+			}
+			
 			//将User放置到Session中，用于这个系统的操作
 			request.getSession().setAttribute("globle_user", _user);
 			
 /*			Timer timer = new Timer();
 			timer.schedule(new UserController(request),5000);*/
-			return "redirect:/userCenterUI.html";
+			//add by tangxr 2016-3-14
+			if(request.getSession().getAttribute("indexPage")!=null){
+				int indexPage = (Integer) request.getSession().getAttribute("indexPage");
+				if(indexPage == 1 ){
+					int serviceId = (Integer) request.getSession().getAttribute("serviceId");
+//					return "redirect:/selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
+					return "redirect:/selfHelpOrderInit.html";
+				}else if(indexPage == 2){
+					int apiId = (Integer) request.getSession().getAttribute("apiId");
+					return "redirect:/selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
+				}else{
+					return "redirect:/userCenterUI.html";
+				}
+			}else{
+				return "redirect:/userCenterUI.html";
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -450,6 +559,8 @@ public class UserController{
 				user.setType(2);	//用户类型（0：超级管理员，1：管理员，2：用户）
 				user.setCreateTime(new Date());//创建时间
 				user.setIp(request.getRemoteAddr());
+				//生成apikey add by tangxr 2016-4-9
+				user.setApikey(UUID.randomUUID().toString().replace("-", ""));
 				userService.insert(user);
 			}
 			//return "/source/page/regist/registToLogin";
