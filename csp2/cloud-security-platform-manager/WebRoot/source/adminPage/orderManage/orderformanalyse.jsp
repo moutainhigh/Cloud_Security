@@ -108,7 +108,7 @@
                                     <select class="servicetext" id="servicetype2">
                                     </select>
                                 </div>
-                                <input type="button" class="sub" value="" style="right:-70px;" onclick="getServiceDate(1)">
+                                <input type="button" class="sub" value="" style="right:-70px;" onclick="getServiceDateReBuy(1)">
                             </form>
                             <div class="tableBox">
                                 <div class="">
