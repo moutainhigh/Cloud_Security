@@ -30,6 +30,10 @@ public class OrderMapper implements RowMapper {
 		order.setStatus(rs.getInt("status"));
 		order.setMessage(rs.getInt("message"));
 		order.setWebsoc(rs.getInt("websoc"));
+		order.setTasknum(rs.getInt("tasknum"));
+		order.setDelFlag(rs.getInt("delFlag"));
+		order.setPayFlag(rs.getInt("payFlag"));
+		order.setIsAPI(rs.getInt("isAPI"));
 		return order;
 	}
 

@@ -28,11 +28,11 @@ public class TaskMapper implements RowMapper {
 		task.setBegin_time(rs.getTimestamp("begin_time"));
 		task.setEnd_time(rs.getTimestamp("end_time"));
 		task.setScanTime(rs.getString("scanTime"));
-		task.setIssueCount(rs.getInt("issueCount"));
-		task.setRequestCount(rs.getInt("requestCount"));
-		task.setUrlCount(rs.getInt("urlCount"));
-		task.setAverResponse(rs.getInt("averResponse"));
-		task.setAverSendCount(rs.getInt("averSendCount"));
+		task.setIssueCount(rs.getString("issueCount"));
+		task.setRequestCount(rs.getString("requestCount"));
+		task.setUrlCount(rs.getString("urlCount"));
+		task.setAverResponse(rs.getString("averResponse"));
+		task.setAverSendCount(rs.getString("averSendCount"));
 		task.setSendBytes(rs.getString("sendBytes"));
 		task.setReceiveBytes(rs.getString("receiveBytes"));
 		task.setWebsoc(rs.getInt("websoc"));

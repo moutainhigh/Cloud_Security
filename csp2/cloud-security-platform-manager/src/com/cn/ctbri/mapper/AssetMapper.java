@@ -12,9 +12,9 @@ import com.cn.ctbri.entity.Asset;
 @Component("assetMapper")
 @Scope("prototype")
 public class AssetMapper implements RowMapper {
-	Asset asset = new Asset();
 
 	public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+		Asset asset = new Asset();
 		asset.setId(rs.getInt("id"));
 		asset.setName(rs.getString("name"));
 		asset.setType(rs.getInt("type"));
@@ -25,6 +25,8 @@ public class AssetMapper implements RowMapper {
 		asset.setRemarks(rs.getString("remarks"));
 		asset.setIp(rs.getString("ip"));
 		asset.setDistrictId(rs.getInt("districtId"));
+		asset.setCity(rs.getString("city"));
+		asset.setPurpose(rs.getString("purpose"));
 		return asset;
 	}
 }
