@@ -102,7 +102,7 @@ public interface UserDao {
     void updateMobile(Map<String, Object> map);
     
     MobileInfo getMobileById(String MobileNumber);
-    void updatePass(User user);
+    int updatePass(User user);
     //插入用户登录历史
     void insertLoginHistory(LoginHistory lh);
 

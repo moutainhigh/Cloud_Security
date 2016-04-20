@@ -145,9 +145,9 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
 		return mobileInfo;
 	}
 
-	public void updatePass(User user) {
+	public int updatePass(User user) {
 		// TODO Auto-generated method stub
-		this.getSqlSession().update(ns+"updatePass",user);
+		return this.getSqlSession().update(ns+"updatePass",user);
 	}
 
 	public void insertLoginHistory(LoginHistory lh) {

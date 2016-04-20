@@ -95,7 +95,7 @@ function checkSendMobile(){
 					           			$("#phone_code_prompt").html("<b></b>验证码发送成功，请查收短信!");
 					           			$("#phone_code_prompt").fadeIn();
 					           		}else{
-					           			$("#phone_code_prompt").html("<b></b>一个手机号码只能发送3次短信，请通过邮箱找回密码!");
+					           			$("#phone_code_prompt").html("<b></b>一个手机号码只能发送3次短信!");
 					           			$("#phone_code_prompt").fadeIn();
 					               		
 					           		}

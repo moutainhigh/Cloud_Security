@@ -161,9 +161,9 @@ public class UserServiceImpl implements IUserService{
 		return userDao.getMobileById(MobileNumber);
 	}
 
-	public void updatePass(User user) {
+	public int updatePass(User user) {
 		// TODO Auto-generated method stub
-		userDao.updatePass(user);
+		return userDao.updatePass(user);
 	}
 
 	public void insertLoginHistory(LoginHistory lh) {

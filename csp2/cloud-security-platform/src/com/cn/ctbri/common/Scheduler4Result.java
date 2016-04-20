@@ -48,18 +48,18 @@ public class Scheduler4Result {
 	private IAssetService assetService;
 
 	public void execute() throws Exception {
-		logger.info("[获取结果调度]:任务表扫描开始....");
-		/**
+/*		logger.info("[获取结果调度]:任务表扫描开始....");
+		*//**
 		 * 定时要job任务执行的逻辑
-		 */
+		 *//*
 		Map<String, Object> map = new HashMap<String, Object>();
-		/*订单状态
+		订单状态
 		 * 1：完成无告警
 		 * 2：完成有告警
 		 * 3：扫描中有告警
 		 * 4：开始扫描
 		 * 5：暂停
-		 */
+		 
 //		map.put("status", 0);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();//获得系统时间.
@@ -229,7 +229,7 @@ public class Scheduler4Result {
     		}
 				
 		}
-		logger.info("[获取结果调度]:任务表扫描结束....");
+		logger.info("[获取结果调度]:任务表扫描结束....");*/
 	}
 	
 	

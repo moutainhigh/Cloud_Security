@@ -316,63 +316,123 @@ public class UserController{
 		m.addAttribute("flag", "dl");
 		return "/source/page/regist/login";
 	}
+	
+	/**
+	 * 功能描述：  登录时检验用户名是否已经存在
+	 * 参数描述：  String name,HttpServletResponse response
+	 * @throws Exception 
+	 *		 @time 2014-12-31
+	 */
+	@RequestMapping(value="login_checkName.html", method = RequestMethod.POST)
+	@ResponseBody
+	public void login_checkName(String name,HttpServletResponse response){
+		List<User> users = userService.findUserByName(name);
+		int count = 0;
+		if(users.size()>0){
+			count = users.size();
+		}else{
+			users = userService.findUserByMobile(name);
+			count = users.size();
+		}
+		Map<String, Object> m = new HashMap<String, Object>();
+		m.put("count", count);
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	/**
 	 * 功能描述： 登录
 	 * 参数描述：  User user,HttpServletRequest request,HttpServletResponse response
 	 *		 @time 2015-1-8
 	 */
 	@RequestMapping(value="login.html")
-	public String login(User user,HttpServletRequest request,HttpServletResponse response){
-		//添加验证码，判断验证码输入是否正确
+	@ResponseBody
+	public void login(HttpServletRequest request,HttpServletResponse response){
+		String name = request.getParameter("name");
+		String password = request.getParameter("password");
+		String checkNumber = request.getParameter("checkNumber");
+		Map<String, Object> map = new HashMap<String, Object>();
+		
 		try {
-			boolean flag = LogonUtils.checkNumber(request);
-			if(!flag){
-				request.setAttribute("msg", "验证码输入有误");//向前台页面传值
-				return "/source/page/regist/login";
-			}
-			
-			//判断用户名密码输入是否正确
 			User _user = null;
-			String name = user.getName().trim();
-			String password = user.getPassword().trim();
 			List<User> users = userService.findUserByName(name);
 			if(users.size()==0){
-				//判断是否手机号登录
-				String phone = user.getName().trim();
-				users = userService.findUserByMobile(phone);
+				users = userService.findUserByMobile(name);
 			}
 			
-			if(users.size()>0){
-				_user = users.get(0);
-				//从页面上获取密码和User对象中存放的密码，进行匹配，如果不一致，提示【密码输入有误】
-				String md5password = DigestUtils.md5Hex(password);
-				if(!md5password.equals(_user.getPassword())){
-					request.setAttribute("msg", "用户名或密码错误");
-					return "/source/page/regist/login";//跳转到登录页面
+			_user = users.get(0);
+			if(_user.getStatus()!=1 && _user.getStatus()!=2 && _user.getStatus()!=0){
+				//对不起，您的帐号已停用
+				map.put("result", 1);
+				JSONObject JSON = CommonUtil.objectToJson(response, map);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				if(_user.getStatus()!=1 && _user.getStatus()!=2 && _user.getStatus()!=0){
-					request.setAttribute("msg", "对不起，您的帐号已停用");
-					return "/source/page/regist/login";//跳转到登录页面
-				}
-				//如果是企业用户判断IP是否在库存地址段内
-				if(_user.getType()==3){
-					String ip = "";
-					if (request.getHeader("x-forwarded-for") == null) {
-						ip = request.getRemoteAddr();
-					}else{
-						ip = request.getHeader("x-forwarded-for");
-					}
-					String ipStart = _user.getStartIP();
-					String ipEnd = _user.getEndIP();
-					if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
-						request.setAttribute("msg", "登录的IP不在IP地址段范围内");
-						return "/source/page/regist/login";//跳转到登录页面
-					}
-				}
-			}else{
-				request.setAttribute("msg", "用户名或密码错误");
-				return "/source/page/regist/login";//跳转到登录页面
+				return;
 			}
+			//从页面上获取密码和User对象中存放的密码，进行匹配，如果不一致，提示【密码输入有误】
+			String md5password = DigestUtils.md5Hex(password);
+			if(!md5password.equals(_user.getPassword())){
+				//密码错误
+				map.put("result", 2);
+				JSONObject JSON = CommonUtil.objectToJson(response, map);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+			}
+
+			//添加验证码，判断验证码输入是否正确
+			boolean flag = LogonUtils.checkNumber(request);
+			if(!flag){
+				//验证码输入有误
+				map.put("result",3);
+				JSONObject JSON = CommonUtil.objectToJson(response, map);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+			}
+			//如果是企业用户判断IP是否在库存地址段内
+			if(_user.getType()==3){
+				String ip = "";
+				if (request.getHeader("x-forwarded-for") == null) {
+					ip = request.getRemoteAddr();
+				}else{
+					ip = request.getHeader("x-forwarded-for");
+				}
+				String ipStart = _user.getStartIP();
+				String ipEnd = _user.getEndIP();
+				if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
+					//登录的IP不在IP地址段范围内
+					map.put("result", 4);
+					JSONObject JSON = CommonUtil.objectToJson(response, map);
+					try {
+						// 把数据返回到页面
+						CommonUtil.writeToJsp(response, JSON);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					return;
+				}
+			}
+
 			/**记住密码功能*/
 			LogonUtils.remeberMe(request,response,name,password);
 			
@@ -407,20 +467,67 @@ public class UserController{
 				if(indexPage == 1 ){
 					int serviceId = (Integer) request.getSession().getAttribute("serviceId");
 //					return "redirect:/selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
-					return "redirect:/selfHelpOrderInit.html";
+					//return "redirect:/selfHelpOrderInit.html";
+					map.put("result", 5);
+					JSONObject JSON = CommonUtil.objectToJson(response, map);
+					try {
+						// 把数据返回到页面
+						CommonUtil.writeToJsp(response, JSON);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					return;
 				}else if(indexPage == 2){
 					int apiId = (Integer) request.getSession().getAttribute("apiId");
-					return "redirect:/selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
+					//return "redirect:/selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
+					map.put("result", 6);
+					map.put("apiId", apiId);
+					map.put("indexPage", indexPage);
+					JSONObject JSON = CommonUtil.objectToJson(response, map);
+					try {
+						// 把数据返回到页面
+						CommonUtil.writeToJsp(response, JSON);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					return;
 				}else{
-					return "redirect:/userCenterUI.html";
+					//return "redirect:/userCenterUI.html";
+					map.put("result", 7);
+					JSONObject JSON = CommonUtil.objectToJson(response, map);
+					try {
+						// 把数据返回到页面
+						CommonUtil.writeToJsp(response, JSON);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					return;
 				}
 			}else{
-				return "redirect:/userCenterUI.html";
+				//返回"redirect:/userCenterUI.html"
+				map.put("result", 7);
+				JSONObject JSON = CommonUtil.objectToJson(response, map);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return ;
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return "redirect:/loginUI.html";
+			//登录异常，返回登录页面
+			map.put("result", 8);
+			JSONObject JSON = CommonUtil.objectToJson(response, map);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			return ;
 		}
 
 	}
@@ -950,9 +1057,13 @@ public class UserController{
 		String password = user.getPassword();
 		String passwdMD5 = DigestUtils.md5Hex(password);
 		user.setPassword(passwdMD5);
-		userService.updatePass(user);
-	
-	return "/updatePassSuccess";
+		int result = userService.updatePass(user);
+		if(result==1){
+			return "/updatePassSuccess";
+		}else{
+			return "/updatePassfail";
+		}
+
 	}
 	
 	/**

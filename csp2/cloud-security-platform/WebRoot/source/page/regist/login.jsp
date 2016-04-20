@@ -11,22 +11,37 @@
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="${ctx}/source/css/login.css">
-<script src="${ctx}/source/common/js/jquery-1.7.1.min.js"></script>
+<script src="${ctx}/source/scripts/common/js/jquery-1.7.1.min.js"></script>
 <script src="${ctx}/source/scripts/common/jquery.js"></script>
-<script src="${ctx}/source/common/js/index.js"></script>
-<script src="${ctx}/source/common/js/popBox.js"></script>
-<script src="${ctx}/source/common/js/slidelf.js"></script>
-<script src="${ctx}/source/common/js/main.js"></script>
+<script src="${ctx}/source/scripts/common/js/index.js"></script>
+<script src="${ctx}/source/scripts/common/js/popBox.js"></script>
+<script src="${ctx}/source/scripts/common/js/slidelf.js"></script>
+<script src="${ctx}/source/scripts/common/js/main.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/login.js"></script>
+<script src="${ctx}/source/scripts/common/js/jquery.form.js" type="text/javascript"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-	
-})	
-
-window.onload=function(){
+	window.onload=function(){
 		//页面加载时清空所有的val值，如需要请取消注释；
+		/*var val=$('.name').val();
+		if(val==''){
+			$('.name').siblings('p').show();	
+		}else
+		{
+			$('.name').val(val);
+		}*/
 		$('.prompttext').val('');
+		/*
+		var pass=$('.password').val();
+		if(pass==''){
+			$('.password').siblings('p').show();	
+		}else
+		{
+			$('.password').val(pass);
+		}
+		*/
+		
 }
+
 </script>
 </head>
 
@@ -37,9 +52,8 @@ window.onload=function(){
                 <img src="${ctx}/source/images/logonew.png" alt="">
             </a>
             <div class="cent">
-            	<form class="form" id="form_login" name="form_login" action="${ctx}/login.html" method="post">
+            	<form class="form" id="form_login" name="form_login" method="post">
                 	<h2>登录安全帮账号</h2>
-                	<span style="color:red;margin-right: 300px;" >${msg}</span>
                 	<ul>
                     	<li class="clearfix">
                         	<div class="list fl">
@@ -51,8 +65,8 @@ window.onload=function(){
                         </li>
                         <li class="clearfix">
                         	<div class="list fl">
-                            	 <input type="password" class="text prompttext" id="login_password" name="password" value="${requestScope.password }" onblur="checkPassword();" />
-                                <p class="promp">密码</p>
+                            	 <input type="password" class="text prompttext password" id="login_password" name="password" placeholder="密码" style="color: #929292;" value="${requestScope.password }" onblur="checkPassword();" />
+
                                 <i id="login_password_flag" class="right" style="display:none"></i>
                             </div>
                             <div class="prompt fl" id="login_password_prompt"><b></b></div>
@@ -165,7 +179,6 @@ $(function(){
 			$(this).siblings('.prompttext').focus();
 		})
 		$('.prompttext').focus(function(){
-			
 			$(this).siblings('p').hide();	
 		})
 		$('.prompttext').blur(function(){
@@ -179,6 +192,7 @@ $(function(){
 			}
 			
 		})
+
 		
 })
 
