@@ -6,67 +6,50 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<title>忘记密码</title>
-<link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/css/loginregist.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
-<SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
-<script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/common/jquery.validate.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/common/jquery.metadata.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/regist/forgetPass.js"></script>
-<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
-<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
-<!-- add by 2016-02 -->
-<link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
+<title>个人中心-修改密码</title>
 <link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
-<script type="text/javascript" src="${ctx}/source/scripts/common/portalindex.js"></script>
-<script src="${ctx}/source/scripts/common/popBox.js"></script>
-<script src="${ctx}/source/scripts/common/slidelf.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/common/main.js"></script>
-<script type="text/javaScript">
-function forgetPass(type){
-  if(type=='1'){
-   $("#eamilDiv").show();
-      $("#phoneDiv").hide();
-     $('#email_yzm').show();
-  }else{
-    $("#phoneDiv").show();
-    $("#eamilDiv").hide();
-  }
-}
-
-</script>
+<link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
+<link href="${ctx}/source/css/core.css" type="text/css" rel="stylesheet">
+<script src="${ctx}/source/common/js/jquery-1.7.1.min.js"></script>
+<script src="${ctx}/source/scripts/common/jquery.js"></script>
+<script src="${ctx}/source/common/js/index.js"></script>
+<script src="${ctx}/source/common/js/popBox.js"></script>
+<script src="${ctx}/source/common/js/slidelf.js"></script>
+<script src="${ctx}/source/common/js/main.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/regist/forgetPass.js"></script>
 </head>
+
 <body>
-<!--头部-->
-<div class="safe01 detalis-head">
-	<!--头部-->
-	<div class="head" style="width:100%">
-		<div class="headBox">
-			<div class="safeL fl" style="width:260px; margin-right:13%">
-				<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
-			</div>
-			<div class="safem fl">
-				<span class="fl"><a href="${ctx}/index.html">首页</a></span>
-				<div class="Divlist listJs fl">
-				<a href="#" class="hbule">我的安全帮<i></i></a>
+	<div class="safeBox">
+		
+		<div class="safe01 detalis-head">
+			<!--头部-->
+			<div class="head">
+				<div class="headBox">
+					<div class="safeL fl" style="width:285px; margin-right:20%">
+						<img src="${ctx }/source/images/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
+                        <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px; font-weight:normal;">个人中心</strong>
+					</div>
+					<div class="safem fl">
+						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
+						<div class="Divlist listJs fl">
+							<a href="#" class="this">我的安全帮<i></i></a>
 							<ul class="list listl">
 								<li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
 								<li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
 								<li style="border: none;"><a href="${ctx}/userDataUI.html">个人信息</a></li>
 							</ul>
-				</div>
-				<span class="fl ask">
-					<a href="#" class="hbule">手机APP</a>
-					<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
-				</span>
-				<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
-				
-			</div>
-			<div class="safer fr">
-				<!-- 如果已经登录则显示用户名，否则需要登录 -->
+						</div>
+						<span class="fl ask">
+                        	<a href="#">手机APP</a>
+							<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
+                        </span>
+						<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
+						
+					</div>
+					<div class="safer fr">
+						<!-- 如果已经登录则显示用户名，否则需要登录 -->
 		         <c:if test="${sessionScope.globle_user!=null }">
 			        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
 			        <em>|</em>
@@ -77,101 +60,96 @@ function forgetPass(type){
 					<em>|</em>
 					<a href="${ctx}/registUI.html">注册</a>
 		         </c:if>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
-	
+		<div class="core clearfix" style="margin-bottom:524px;">
+        	<div class="coreLeft fl">
+            	<h3><i></i>个人中心</h3>
+                <dl>
+                	<dt>交易管理</dt>
+                    <dd><a href="${ctx}/userBillUI.html" class="active">我的订单</a></dd>
+                    <dd><a href="#">我的优惠劵</a></dd>
+                    <dt>个人信息管理</dt>
+                    <dd><a href="${ctx}/userDataUI.html">个人资料</a></dd>
+                    <dd style="border-bottom:none;"><a href="${ctx}/userAssetsUI.html">我的资产</a></dd>
+                </dl>
+            </div>
+        	<div class="coreRight fl">
+            	<div class="dataBox">
+                	<div class="data">
+                    	<h2>修改密码</h2>
+                    </div>
+                    <div class="passwordform">
+                    	<div class="step">
+                        <!--修改-->
+                            <p class="step_top">
+                                <span class="sl">
+                                    <i style=" background-color:#2499fb"></i>
+                                </span>
+                                <span class="sr" style="border-top:1px solid #929292">
+                                    <i class="r0" style=""></i>
+                                    <i class="r1" style="left:538px;"></i>
+                                </span>
+                            </p>
+                            <p class="step_bottom">
+                                <em class="sone" style="color:#2499fb">1验证身份</em>
+                                <em class="sone" style="left:238px">2修改登录密码</em>
+                                <em class="stwo" style="left:526px">3完成</em>
+                            </p>
+        
+                        </div>
+                       <form id="phoneForm" action="${ctx}/updatePass.html">
+                        <ul class="passwordlist" style="padding-bottom:136px; width:458px; margin:0 auto">
+                        	<li class="clearfix">
+                            	<label class="fl">已验证的手机号码</label>
+                                <div class="fl passwordr">
+                                	 <input type="text"  class="text" name="phone_code" id="phone_code" onblur="checkPhone()"/>
+                                     <i id="phone_code_flag" class="rigth"></i>
+                                </div>
+                                <div class="prompt fl" id="phone_code_prompt"><b></b></div>
+                            </li>
+                            <li class="clearfix">
+                            	<label class="fl">验&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;证&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 码</label>
+                                <div class="fl passwordr">
+                                	<input type="text" class="text fl" style="width:168px;" name="verification_phone" id="verification_phone">
+                                	<i id="verification_phone_flag" style="margin-right:130px"></i>
+                                    <a href="#" class="btn fl" id="phone_yzm" onclick="checkSendMobile()">获取验证码</a>
+                                </div>
 
-</div>
-<!-- 头部代码结束-->
-<div class="login_wrap">
-  <div class="pass_box">
-    
-    <div class="forget_form">
-        <div class="pass_list">
-         
-          <span class="pass_login"><img src="${ctx}/source/images/forgetEmail.png" width="143" height="40" id="imageNumber" title="邮箱找回密码"  onclick="forgetPass('1');"/></img></span>
-         <span class="pass_login"><img src="${ctx}/source/images/forgetPhone.png" width="143" height="40" id="imageNumber" title="手机找回密码" onclick="forgetPass('2');"/></img></span>
+                                <div class="prompt fl" id="verification_phone_prompt"><b></b></div>
+                            </li>
+                            <li class="clearfix" style="margin-top:30px;">
+                            	<label></label>
+                                <div class="fl passwordr" style="margin-left:135px;">
+                                	<input type="button" class="submit" value="提&nbsp;&nbsp;交" onclick="checkPhoneActivationCode()">
+                                </div>
+                            </li>
+                            
+                        
+                        </ul>
+                        </form>
+                    </div>
+                </div>
+            
+            </div>
         </div>
-      <div  id="phoneDiv" style="display:none">
-      <form id="phoneForm" action="${ctx}/updatePass.html">
-       <table align="center">
-        <tr class="register_tr">
-            <td class="regist_title"><span class="yzfs">验证手机</span></td>
-            <td class="regist_input" id="yzbox">
-            <input type="text" class="regist_txt required" name="phone_code" id="phone_code"  style="margin-right:20px"/>
-            <span id="forget_phone_msg" style="color:red;float:left;display:block;"></td>
-          </tr>
-          <tr class="register_tr">
-            <td class="regist_title">验证码</td>
-            <td class="regist_input"><input type="text" class="regist_txt regist_yzm required" name="verification_phone" id="verification_phone" />
-            <input class="regist_yzm_btn" type="button" id="phone_yzm" value="获取短信验证码"  onclick="checkSendMobile()"/>
-           	  <span id="verification_phone_msg" style="color:red;float:left">
-            </td>
-          </tr>
-        <tr class="register_tr">
-         <td class="regist_title"><span class="yzfs">图片验证码</span></td>
-          <td class="regist_input"> <input type="text" class="login_txt lgoin_yzm required" name="checkNumber" id="checkNumber1"/>
-          <span><img src="${ctx}/image.jsp" width="65" height="38" id="imageRegisterNumber" title="点击换一张" onclick="checkRegisterImage()"/></img></span>
-          <span id="verification_Image_msg" style="color:red"></span>
-          </td>
-         </tr>
-           <tr>
-            <td class="regist_title"></td>
-            <td>
-            	<input type="button" class="login_btn" onclick="checkPhoneActivationCode()" value="下一步"/>
-            </td>
-          </tr>
-          </table>
-          </form>
-       </div>
-       
-        <div id="eamilDiv" style="display:none">
-        <form id="passForm" action="${ctx}/updatePass.html">
-        <table align="center">
-        <tr class="register_tr">
-            <td class="regist_title"><span class="yzfs">验证邮箱</span></td>
-            <td class="regist_input" id="yzbox">
-            <input type="text" class="regist_txt required" name="eamil_ecode" id="eamil_ecode"  style="margin-right:20px"/>
-            <span id="forget_email_msg" style="color:red;float:left;display:block;"></td>
-          </tr>
-          <tr class="register_tr">
-            <td class="regist_title">验证码</td>
-            <td class="regist_input"><input type="text" class="regist_txt regist_yzm required" name="verification_email" id="verification_email" />
-              <input class="regist_yzm_btn" type="button" id="email_yzm" value="获取邮箱验证码" onclick="checkSendEmail()"/>
-           	  <span id="verification_email_msg" style="color:red;float:left">
-            </td>
-         </tr>
-         <tr>
-            <td class="regist_title"></td>
-            <td>
-            	<input type="button" class="login_btn" onclick="checkEmailActivationCode()" value="下一步"/>
-            </td>
-          </tr>
-          </table>
-          </form>
-          </div>
-      </form>
-    </div>
-    </div>
-<!--尾部部分代码-->
-<div class="safeBox">
+        
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
-					<!--修改-->
-				   <a href="#">
-	               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
-                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
-	               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
-                   </a>
-                <!--修改-->  
+					<a href="#">
+                    	<img src="${ctx }/source/images/dianxin_logo footer.png" alt="">
+                        <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
+                    	<img src="${ctx }/source/images/newlogo-footer.png" alt="">
+                    </a>
 				</div>
 				<ol class="footr clearfix fr">
 					<li>
                     	<h2>帮助中心</h2>
                         <dl>
-                        	<dd><a href="#">购买指南</a></dd>
+                        	<dd><a href="#">购物指南</a></dd>
                             <dd><a href="#">在线帮助</a></dd>
                             <dd><a href="#">常见问题</a></dd>
                        </dl>
@@ -179,15 +157,15 @@ function forgetPass(type){
                     <li>
                     	<h2>关于安全帮</h2>
                         <dl>
-                        	<dd><a href="${ctx}/knowUs.html">了解安全帮</a></dd>
-                            <dd><a href="${ctx}/joinUs.html">加入安全帮</a></dd>
+                        	<dd><a href="#">了解安全帮</a></dd>
+                            <dd><a href="#">加入安全帮</a></dd>
                             <dd><a href="#">联系我们</a></dd>
                        </dl>
                     </li>
                     <li>
                     	<h2>关注我们</h2>
                         <dl>
-                        	<dd><a href="#">QQ交流群</br>470899318</a></dd>
+                        	<dd><a href="#">QQ交流群<br>470899318</a></dd>
                             <dd class="weixin"><a href="#">官方微信</a></dd>
                        </dl>
                     </li>
@@ -204,9 +182,12 @@ function forgetPass(type){
 			</div>
 		</div>
 		<div class="foot">
-			<p>版权所有Copyright © 2015 中国电信股份有限公司北京研究院京ICP备12019458号-10</p>
+			<p>Label@1234567890北京电信研究院<br>
+				www.anquanbang.net
+			</p>
 		</div>
-		<!---执行效果-->
+	</div>
+<!---执行效果-->
 <div class="weixinshow popBoxhide" id="weixin">
 	<i class="close chide"></i>
     <div class="Pophead">
@@ -217,15 +198,14 @@ function forgetPass(type){
 对准下方二维码即可。
 		</p>
            <div class="weinImg" style="text-align:center;">
-           	<img src="${ctx}/source/images/portal/weixin.png" alt="">
+           	<img src="${ctx }/source/images/weixin.png" alt="">
            </div> 
     </div>
 
 </div>
 	
 <div class="shade"></div>
-</div>
-<!--尾部部分代码结束-->
 </body>
-</html>
 
+
+</html>

@@ -134,9 +134,9 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
 		this.getSqlSession().insert(ns + "addMobile", mobileInfo);
 	}
 
-	public void updateMobile(int times) {
+	public void updateMobile(Map<String, Object> map) {
 		// TODO Auto-generated method stub
-		this.getSqlSession().update(ns + "updateMobile", times);
+		this.getSqlSession().update(ns + "updateMobile", map);
 	}
 
 	public MobileInfo getMobileById(String MobileNumber) {

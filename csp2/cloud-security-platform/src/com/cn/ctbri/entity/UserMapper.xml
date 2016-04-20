@@ -184,8 +184,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(MobileNumber,Times,sendDate) values(#{MobileNumber},#{Times},#{sendDate})
 	</insert>
 	<!-- 修改手机信息 -->
-	<update id="updateMobile" parameterType="int">
-	    update cs_mobile set Times=#{Times}
+	<update id="updateMobile" parameterType="map">
+	    update cs_mobile set Times=#{times} where MobileNumber=#{mobileNumber}
 	</update>
 	
 	<!-- 根据手机号查询信息 -->

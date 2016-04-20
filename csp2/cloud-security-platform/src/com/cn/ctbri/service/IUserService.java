@@ -1,6 +1,7 @@
 package com.cn.ctbri.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.LoginHistory;
@@ -104,7 +105,7 @@ public interface IUserService {
     /**
      * 修改注册发送手机信息
      */
-    void updateMobile(int times);
+    void updateMobile(Map<String, Object> map);
     
     MobileInfo getMobileById(String MobileNumber);
     

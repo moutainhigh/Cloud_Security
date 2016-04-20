@@ -314,7 +314,7 @@ public class UserController{
 	@RequestMapping(value="loginUI.html")
 	public String loginUI(Model m){
 		m.addAttribute("flag", "dl");
-		return "/source/page/regist/regist";
+		return "/source/page/regist/login";
 	}
 	/**
 	 * 功能描述： 登录
@@ -328,7 +328,7 @@ public class UserController{
 			boolean flag = LogonUtils.checkNumber(request);
 			if(!flag){
 				request.setAttribute("msg", "验证码输入有误");//向前台页面传值
-				return "/source/page/regist/regist";
+				return "/source/page/regist/login";
 			}
 			
 			//判断用户名密码输入是否正确
@@ -336,17 +336,23 @@ public class UserController{
 			String name = user.getName().trim();
 			String password = user.getPassword().trim();
 			List<User> users = userService.findUserByName(name);
+			if(users.size()==0){
+				//判断是否手机号登录
+				String phone = user.getName().trim();
+				users = userService.findUserByMobile(phone);
+			}
+			
 			if(users.size()>0){
 				_user = users.get(0);
 				//从页面上获取密码和User对象中存放的密码，进行匹配，如果不一致，提示【密码输入有误】
 				String md5password = DigestUtils.md5Hex(password);
 				if(!md5password.equals(_user.getPassword())){
 					request.setAttribute("msg", "用户名或密码错误");
-					return "/source/page/regist/regist";//跳转到登录页面
+					return "/source/page/regist/login";//跳转到登录页面
 				}
 				if(_user.getStatus()!=1 && _user.getStatus()!=2 && _user.getStatus()!=0){
 					request.setAttribute("msg", "对不起，您的帐号已停用");
-					return "/source/page/regist/regist";//跳转到登录页面
+					return "/source/page/regist/login";//跳转到登录页面
 				}
 				//如果是企业用户判断IP是否在库存地址段内
 				if(_user.getType()==3){
@@ -360,12 +366,12 @@ public class UserController{
 					String ipEnd = _user.getEndIP();
 					if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
 						request.setAttribute("msg", "登录的IP不在IP地址段范围内");
-						return "/source/page/regist/regist";//跳转到登录页面
+						return "/source/page/regist/login";//跳转到登录页面
 					}
 				}
 			}else{
 				request.setAttribute("msg", "用户名或密码错误");
-				return "/source/page/regist/regist";//跳转到登录页面
+				return "/source/page/regist/login";//跳转到登录页面
 			}
 			/**记住密码功能*/
 			LogonUtils.remeberMe(request,response,name,password);
@@ -488,7 +494,7 @@ public class UserController{
 	@RequestMapping(value="registUI.html")
 	public String registUI(Model m){
 		m.addAttribute("flag", "zc");
-		return "/source/page/regist/regist";
+		return "/source/page/regist/register";
 	}
 	
 	
@@ -499,6 +505,7 @@ public class UserController{
 	 */
 	@RequestMapping(value="registToLogin.html")
 	public String regist(User user,HttpServletRequest request){
+
 		String name = user.getName();
 		String password = user.getPassword();
 		//add by tang 2015-06-01
@@ -521,14 +528,14 @@ public class UserController{
 	    }
 	    //验证邮箱
 //	    String patternE = "^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.[a-zA-Z0-9_-])$";
-	    String patternE = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+/*	    String patternE = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
 	    Pattern patE = Pattern.compile(patternE);
 	    Matcher mEmail = null;
 	    boolean me = false;
 	    if(user.getEmail()!=null&&!"".equals(user.getEmail())){
 	        mEmail = patE.matcher(user.getEmail());
 	        me = mEmail.matches();
-	    }
+	    }*/
 	    //行业
 		String industry = "";
 		//职业
@@ -549,7 +556,7 @@ public class UserController{
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		if(name!=null&&!"".equals(name)&&m.matches()&&password!=null&&!"".equals(password)&&password.length()>=6&&password.length()<=20&&(mb||me)&&user.getVerification_code()!=null&&!"".equals(user.getVerification_code())){
+		if(name!=null&&!"".equals(name)&&m.matches()&&password!=null&&!"".equals(password)&&password.length()>=6&&password.length()<=20&&(mb)&&user.getVerification_code()!=null&&!"".equals(user.getVerification_code())){
 			//按用用户名、邮箱、手机号码组合查询用户,防止刷页面
 			List<User> users = userService.findUserByCombine(user);
 			if(!(users.size()>0)){
@@ -694,6 +701,29 @@ public class UserController{
 	}
 	
 	/**
+	 * 功能描述：  注册时检验邮箱是否已经存在
+	 * 参数描述：  String name,HttpServletResponse response
+	 * @throws Exception 
+	 *		 @time 2015-1-4
+	 */
+	@RequestMapping(value="regist_checkNumber.html", method = RequestMethod.POST)
+	@ResponseBody
+	public void regist_checkNumber(HttpServletRequest request,HttpServletResponse response){
+		boolean flag = LogonUtils.checkNumber(request);
+		Map<String, Object> m = new HashMap<String, Object>();
+		m.put("flag", flag);
+
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * 功能描述： 发送邮箱验证码
 	 * 参数描述：  User user,HttpServletResponse response
 	 * @throws Exception 
@@ -762,9 +792,11 @@ public class UserController{
         		userService.addMobile(mobileInfo);
         		flag = true;
         	}else if(mobile.getTimes()<3){
+        		Map<String, Object> m1 = new HashMap<String, Object>();
         		int times = mobile.getTimes()+1;
-        		mobile.setTimes(times);
-        		userService.updateMobile(times);
+        		m1.put("mobileNumber", mobile.getMobileNumber());
+        		m1.put("times", times);
+        		userService.updateMobile(m1);
         		flag = true;
         	}
         	if(flag){
@@ -920,7 +952,7 @@ public class UserController{
 		user.setPassword(passwdMD5);
 		userService.updatePass(user);
 	
-	return "redirect:/loginUI.html";
+	return "/updatePassSuccess";
 	}
 	
 	/**

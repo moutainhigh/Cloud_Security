@@ -1,6 +1,7 @@
 package com.cn.ctbri.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -150,9 +151,9 @@ public class UserServiceImpl implements IUserService{
 		userDao.addMobile(mobileInfo);
 	}
 
-	public void updateMobile(int times) {
+	public void updateMobile(Map<String, Object> map) {
 		// TODO Auto-generated method stub
-		userDao.updateMobile(times);
+		userDao.updateMobile(map);
 	}
 
 	public MobileInfo getMobileById(String MobileNumber) {

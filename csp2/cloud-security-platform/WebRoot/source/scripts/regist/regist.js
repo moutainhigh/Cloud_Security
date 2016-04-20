@@ -13,7 +13,8 @@ function checkName(){
 	var	pattern	= /^[a-zA-Z0-9_]{4,12}$/;
 	var flag = pattern.test(name);
 	if(name==""||name==null){
-		$("#regist_name_msg").html("用户名不能为空");
+		$("#regist_name_flag").attr("class","error");
+		$("#regist_name_flag").show();
 		checkName1=0;
 	}else{
 		if(flag){
@@ -24,16 +25,22 @@ function checkName(){
                dataType:"json",
                success: function(data){
                    if(data.count>0){
-                   		$("#regist_name_msg").html("用户名已经存在");
+               			$("#regist_name_flag").attr("class","error");
+               			$("#regist_name_flag").show();
+               			$("#regist_name_prompt").html("<b></b>用户名已经存在");
+               			$("#regist_name_prompt").fadeIn();
                    		checkName1=0;
                    }else{
-                   		$("#regist_name_msg").html("");
+           				$("#regist_name_flag").attr("class","right");
+           				$("#regist_name_flag").show();
+           				$("#regist_name_prompt").fadeOut();	
                    		checkName1=1;
                    }
                },
             }); 
 		}else{
-			$("#regist_name_msg").html("请输入4-12位字符");
+			$("#regist_name_flag").attr("class","error");
+			$("#regist_name_flag").show();
 			checkName1=0;
 		}
 	}
@@ -41,15 +48,18 @@ function checkName(){
 //校验密码	
 function checkPassword(){
 	var p1 = $("#regist_password").val();
-//alert(p1.length);
+
 	if(p1==""){
-		$("#regist_password_msg").html("密码不能为空");
+		$("#regist_password_flag").attr("class","error");
+		$("#regist_password_flag").show();
 		checkPassword1 = 0;
 	}else if(p1.length<6||p1.length>20){
-		$("#regist_password_msg").html("请输入6-20位，支持中英文，数字，字符组合");
+			$("#regist_password_flag").attr("class","error");
+			$("#regist_password_flag").show();
 			checkPassword1 = 0;
 		}else{
-			$("#regist_password_msg").html("");
+			$("#regist_password_flag").attr("class","right");
+			$("#regist_password_flag").show();
 			checkPassword1 = 1;
 		}
 	}
@@ -58,18 +68,28 @@ function checkPassword(){
 function checkConfirmPassword(){
 	  var p1=$("#regist_password").val();//获取密码框的值
 	  var p2=$("#regist_confirm_password").val();//获取重新输入的密码值
-	  if(p2!=null&&p2!=""){
+	  if(p2!=null && p2!=""){
 		  if (p1!=p2) {
-		   	$("#regist_confirm_password_msg").html("<font color='red'>两次输入密码不一致，请重新输入</font>");
+		   	$("#regist_confirm_password_flag").attr("class","error");
+		   	$("#regist_confirm_password_flag").show();
+		   	$("#regist_confirm_password_prompt").html("<b></b>两次输入密码不一致");
+		   	$("#regist_confirm_password_prompt").fadeIn();
 		    checkConfirmPassword1 = 0;
 		  }else{
-		    $("#regist_confirm_password_msg").html("");
+			$("#regist_confirm_password_flag").attr("class","right");
+			$("#regist_confirm_password_flag").show();
+			$("#regist_confirm_password_prompt").fadeOut();
+			$("#regist_confirm_password_prompt").html("<b></b>");
+			$("#regist_confirm_password_prompt").hide();
 		    checkConfirmPassword1 = 1;
 		  }
 	  }else{
-		  $("#regist_confirm_password_msg").html("<font color='red'>确认密码不能为空</font>");
-		  checkConfirmPassword1 = 0;
+		   	$("#regist_confirm_password_flag").attr("class","error");
+		   	$("#regist_confirm_password_flag").show();
+		   	$("#regist_confirm_password_prompt").html("<b></b>确认密码不能为空");
+		   	$("#regist_confirm_password_prompt").fadeIn();
 	  }
+
 }
 //校验手机号码是否出现重复
 function checkMobile(){
@@ -77,7 +97,8 @@ function checkMobile(){
 	var pattern = /^1[3|5|8|7][0-9]{9}$/;
 	var flag = pattern.test(mobile);
 	if(mobile==""||mobile==null){
-		$("#regist_mobile_email_msg").html("手机号码不能为空");
+		$("#regist_phone_flag").attr("class","error");
+		$("#regist_phone_flag").show();
 		 checkMobile1 = 0;
 	}else{
 		if(flag){
@@ -88,20 +109,30 @@ function checkMobile(){
                dataType:"json",
                success: function(data){
                     if(data.count>0){
-                        $("#regist_mobile_email_msg").html("您填写的手机号码已使用");//将发送验证码的button锁住，此时不能点击发送验证码
+                		$("#regist_phone_flag").attr("class","error");
+                		$("#regist_phone_flag").show();
+                        $("#regist_phone_prompt").html("<b></b>该手机号码已使用");
+                        $("#regist_phone_prompt").fadeIn();
                         checkMobile1 = 0;
                     }else{
-                   		$("#regist_mobile_email_msg").html("");
+                		$("#regist_phone_flag").attr("class","right");
+                		$("#regist_phone_flag").show();
+                		 $("#regist_phone_prompt").html("<b></b>");
+                		$("#regist_phone_prompt").fadeOut();
                    		checkMobile1=1;
                     }
                }
             });
 		}else{
-			$("#regist_mobile_email_msg").html("手机号码格式不对");
+    		$("#regist_phone_flag").attr("class","error");
+    		$("#regist_phone_flag").show();
+    		$("#regist_phone_prompt").fadeOut();
+   		 	$("#regist_phone_prompt").html("<b></b>");
 			checkMobile1 = 0;
 		}
 	}
-}	
+}
+/*
 //校验邮箱是否出现重复
 function checkEmail(){
 	var email = $("#regist_email").val();
@@ -165,40 +196,40 @@ function checkSendEmail(){
  	 }
 
 }
+*/
 //检测手机验证码是否发送成功
 function checkSendMobile(){
  	var phone = $("#regist_phone").val();
- 	var checkNumber1 = $("#checkNumber1").val();
- 	 if(checkNumber1==""){
- 		$("#verification_Image_msg").html("图片验证码不能为空!"); 
- 	 }else{
- 		 if(checkMobile1==1){
- 			$("#verification_Image_msg").html(""); 
-	 		$.ajax({
-	           type: "POST",
-	           url: "regist_checkSendMobile.html",
-	           data: {"mobile":phone},
-	           dataType:"json",
-	           success: function(data){
-	           		if(data.msg=="0"){
-	               		$("#verification_code_msg").html("短信发送失败");
-	               		checkSendMobile1 = 0;
-	           		}else if(data.msg=="1"){
-	           			timeMobile();
-	           			$("#verification_code_msg").html("<font color='green'>验证码发送成功，请查收短信</font>");
-	           			checkSendMobile1 = 1;
-	           		}else{
-	           			$("#verification_code_msg").html("一个手机号码只能发送3次短信，请通过邮箱注册!");
-	               		checkSendMobile1 = 0;
-	           		}
-	           }
-	        });
-      
- 	    }
- 	 }
+
+
+	 if(checkMobile1==1){
+ 		$.ajax({
+           type: "POST",
+           url: "regist_checkSendMobile.html",
+           data: {"mobile":phone},
+           dataType:"json",
+           success: function(data){
+           		if(data.msg=="0"){
+               		$("#verification_code_prompt").html("<b></b>短信发送失败");
+               		$("#verification_code_prompt").fadeIn();
+               		checkSendMobile1 = 0;
+           		}else if(data.msg=="1"){
+           			timeMobile();
+               		$("#verification_code_prompt").html("<b></b>验证码发送成功，请查收短信");
+               		$("#verification_code_prompt").fadeIn();
+           			checkSendMobile1 = 1;
+           		}else{
+               		$("#verification_code_prompt").html("<b></b>一个手机号码只能发送3次短信");
+               		$("#verification_code_prompt").fadeIn();
+               		checkSendMobile1 = 0;
+           		}
+           }
+        });
+  
+    }
  	
 }
-//发邮件按钮显示倒计时的效果	
+/*//发邮件按钮显示倒计时的效果	
 function time() {
 	if (wait == 0) { 
 		document.getElementById("email_yzm").disabled=false;
@@ -212,7 +243,7 @@ function time() {
 			time();
 		}, 1000); 
 	} 
-} 	
+}*/ 	
 //发短信按钮显示倒计时的效果	
 function timeMobile() {
 	if (wait == 0) { 
@@ -229,7 +260,7 @@ function timeMobile() {
 	} 
 } 	
 //检测验证码填写是否正确
-function checkEmailActivationCode(){
+function checkActivationCode(){
 	 var verification_code = $("#verification_code").val();
 	 if(verification_code!=null&&verification_code!=""){
 		 $.ajax({
@@ -239,16 +270,25 @@ function checkEmailActivationCode(){
            dataType:"json",
            success: function(data){
            		if(data.msg=="0"){
-	               	$("#verification_code_msg").html("验证码填写错误");
+           			$("#verification_code_flag").attr("class","error");
+           			$("#verification_code_flag").show();
+               		$("#verification_code_prompt").html("<b></b>验证码填写错误");
+               		$("#verification_code_prompt").fadeIn();
 	               	checkEmailActivationCode1 = 0;
            		}else{
-           			$("#verification_code_msg").html("");
+           			$("#verification_code_flag").attr("class","right");
+           			$("#verification_code_flag").show();
+               		$("#verification_code_prompt").html("<b></b>");
+               		$("#verification_code_prompt").fadeOut();
            			checkEmailActivationCode1 = 1;
            		}
            },
         });  
 	 }else{
-	 	$("#verification_code_msg").html("请填写验证码");
+			$("#verification_code_flag").attr("class","error");
+   			$("#verification_code_flag").show();
+       		$("#verification_code_prompt").html("<b></b>请填写验证码");
+       		$("#verification_code_prompt").fadeIn();
 		checkEmailActivationCode1 = 0;
 	 }
 }
@@ -257,65 +297,137 @@ function submitForm(){
 	var name = $("#regist_name").val();
 	var p1 = $("#regist_password").val();
 	var p2=$("#regist_confirm_password").val();
-	var email = $("#regist_email").val();
 	var mobile = $("#regist_phone").val();
 	var verification_code = $("#verification_code").val();
+	var checkNumber = $("#checkNumber1").val();
 	var agreeId = $("#agreeId").val();//同意协议
-	if(null==name||""==name||p1==""||p1==null||p2==""||p2==null||((email==""||email==null)&&(mobile==""||mobile==null))||verification_code==""||verification_code==null){
+	if(null==name||""==name||p1==""||p1==null||p2==""||p2==null||mobile==""||mobile==null||verification_code==""||verification_code==null||checkNumber==""||checkNumber==null){
 		if(null==name||""==name){
-			$("#regist_name_msg").html("用户名不能为空");
+			$("#regist_name_flag").attr("class","error");
+			$("#regist_name_flag").show();
 		}else{
-			$("#regist_name_msg").html("");
+			$("#regist_name_flag").attr("class","right");
+			$("#regist_name_flag").show();
 		}
 		if(null==p1||""==p1){
-			$("#regist_password_msg").html("密码不能为空");
+			$("#regist_password_flag").attr("class","error");
+			$("#regist_password_flag").show();
 		}else{
-			$("#regist_password_msg").html("");
+			$("#regist_password_flag").attr("class","right");
+			$("#regist_password_flag").show();
+		}
+		if(name!=null&&name!=''&&p1!=null&&p1!='')
+		{
+			if(name==p1){
+				$("#regist_password_flag").attr("class","error");
+				$("#regist_password_flag").show();
+				$("#regist_password_prompt").html("<b></b>用户名和密码一致，请重新修改密码!");
+				$("#regist_password_prompt").fadeIn();
+			}else{
+				$("#regist_password_flag").attr("class","right");
+				$("#regist_password_flag").show();
+				$("#regist_password_prompt").html("<b></b>");
+				$("#regist_password_prompt").fadeOut();
+			}
 		}
 		if(null==p2||""==p2){
-			$("#regist_confirm_password_msg").html("<font color='red'>确认密码不能为空</font>");
+		   	$("#regist_confirm_password_flag").attr("class","error");
+		   	$("#regist_confirm_password_flag").show();
 		}else{
-			$("#regist_confirm_password_msg").html("");
+		   	$("#regist_confirm_password_flag").attr("class","right");
+		   	$("#regist_confirm_password_flag").show();
 		}
 		
-		if(name==p1){
-			       $("#regist_password_msg").html("用户名和密码一致，请重新修改密码！");
-		}
-		if((email==""||email==null)&&(mobile==""||mobile==null)){
-			$("#regist_mobile_email_msg").html("手机号码或邮箱不能为空");
+		if(mobile==""||mobile==null){
+    		$("#regist_phone_flag").attr("class","error");
+    		$("#regist_phone_flag").show();
 		}else{
-			$("#regist_mobile_email_msg").html("");
+    		$("#regist_phone_flag").attr("class","right");
+    		$("#regist_phone_flag").show();
 		}
-		if((email==""||email==null)&&(mobile==""||mobile==null)){
-			$("#verification_code_msg").html("验证码不能为空");
+		if(verification_code==""||verification_code==null){
+			$("#verification_code_flag").attr("class","error");
+			$("#verification_code_flag").show();
 		}else{
-			$("#regist_mobile_email_msg").html("");
+			$("#verification_code_flag").attr("class","right");
+			$("#verification_code_flag").show();
+		}
+		if(checkNumber==""||checkNumber==null){
+			$("#checkNumber1_flag").attr("class","error");
+			$("#checkNumber1_flag").show();
+		}else{
+			$("#checkNumber1_flag").attr("class","right");
+			$("#checkNumber1_flag").show();
 		}
 		
 	}else{
-	    if(checkMobile1==0&&checkEmail1==0){
+	    if(checkMobile1==0){
 	    }else{
 	    	if(document.getElementById("ck").checked && agreeId==1){
-	    		$("#ck_msg").html("");
-			    if(checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1&&(checkSendEmail1==1||checkSendMobile1==1)&&checkEmailActivationCode1==1){
-				  if(name==p1){
-			        $("#regist_password_msg").html("用户名和密码一致，请重新修改密码！");
+	    		$("#ck_flag").html("<b></b>");
+				$("#ck_flag").fadeOut();
+			    if(checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1&&checkSendMobile1==1&&checkEmailActivationCode1==1){
+			    	if(name==p1){
+			    		$("#regist_password_flag").attr("class","error");
+						$("#regist_password_flag").show();
+						$("#regist_password_prompt").html("<b></b>用户名和密码一致，请重新修改密码!");
+						$("#regist_password_prompt").fadeIn();
 		          }else{
-					$("#form_regist").submit();
-					alert("注册成功！");
+						$("#regist_password_flag").attr("class","right");
+						$("#regist_password_flag").show();
+						$("#regist_password_prompt").html("<b></b>");
+						$("#regist_password_prompt").fadeOut();
+						$.ajax({
+							   type: "POST",
+							   url:'regist_checkNumber.html',
+							   data:{"checkNumber":checkNumber},
+							   dataType:"json",
+							   success: function(data) {
+								   if(data.flag){
+										$("#checkNumber1_flag").attr("class","right");
+										$("#checkNumber1_flag").show();
+										$("#checkNumber1_prompt").html("<b></b>");
+										$("#checkNumber1_prompt").fadeOut();
+										$("#form_regist").submit();
+										alert("注册成功！");
+								   }else{
+										$("#checkNumber1_flag").attr("class","error");
+										$("#checkNumber1_flag").show();
+										$("#checkNumber1_prompt").html("<b></b>验证码输入有误");
+										$("#checkNumber1_prompt").fadeIn();
+								   }
+							   }
+						});
+
 				  }
 				}    	
 		    }else{
-			    $("#ck_msg").html("请阅读《云平台用户注册协议》");
+	    		$("#ck_prompt").html("<b></b>请阅读《云平台用户注册协议》");
+				$("#ck_prompt").fadeIn();
 		    }
 	    }
 	}
 }
 
+
+
 //跟换验证码
 function checkRegisterImage(){
 	var imageNumber = document.getElementById("imageRegisterNumber");
-	imageNumber.src = "image.jsp?timestamp="+new Date().getTime();
+	imageNumber.src = getRootPath()+"image.jsp?timestamp="+new Date().getTime();
 };
  $('#imageRegisterNumber').click(function(){checkRegisterImage()});
+ 
+ function getRootPath(){
+	    //获取当前网址，如： http://localhost:8083/uimcardprj/share/meun.jsp
+	    var curWwwPath=window.document.location.href;
+	    //获取主机地址之后的目录，如： uimcardprj/share/meun.jsp
+	    var pathName=window.document.location.pathname;
+	    var pos=curWwwPath.indexOf(pathName);
+	    //获取主机地址，如： http://localhost:8083
+	    var localhostPaht=curWwwPath.substring(0,pos);
+	    //获取带"/"的项目名，如：/uimcardprj
+	    var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+	    return(localhostPaht+projectName);
+	}
 	

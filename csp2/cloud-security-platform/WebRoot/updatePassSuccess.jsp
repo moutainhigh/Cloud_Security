@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<title>个人中心-修改密码-2</title>
+<title>个人中心-修改密码-3</title>
 <link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
@@ -17,13 +17,14 @@
 <script src="${ctx}/source/common/js/popBox.js"></script>
 <script src="${ctx}/source/common/js/slidelf.js"></script>
 <script src="${ctx}/source/common/js/main.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/regist/updatePass.js"></script>
 </head>
 
 <body>
 	<div class="safeBox">
 		
 		<div class="safe01 detalis-head">
+			<!--头部-->
+			<div class="safe01 detalis-head">
 			<!--头部-->
 			<div class="head">
 				<div class="headBox">
@@ -100,46 +101,9 @@
                             </p>
         
                         </div>
-                        <form id="passForm" action="${ctx}/confirmPass.html">
-                         <input type="hidden" name="mobile" value="${user.mobile}"/>
-                        <ul class="passwordlist passwordtwo" style="padding-bottom:30px; width:416px; margin:0 auto">
-                        	<li class="clearfix">
-                            	<label class="fl">输入新密码</label>
-                                <div class="fl passwordr">
-                                	<input type="password" class="text" name="password" id="regist_password" onblur="checkPassword()"/>
-                                    <i id="regist_password_flag"></i>
-                                </div>
-                                <div class="prompt fl" id="regist_password_prompt" style="margin-left:90px"><b></b>支持6-20位，支持中英文/数字/字符组合</div>
-                            </li>
-                            <li class="clearfix">
-                            	<label class="fl">确认新密码</label>
-                                <div class="fl passwordr">
-                                	<input type="password" class="text" name="confirm_password" id="regist_confirm_password" onblur="checkConfirmPassword()"/>
-                                	<i id="regist_confirm_password_flag"></i>
-                                </div>
-                                <div class="prompt fl" id="regist_confirm_password_prompt" style="margin-left:90px"><b></b>支持6-20位，支持中英文/数字/字符组合</div>
-                            </li>
-                            <li class="clearfix">
-                            	<label class="fl">验&nbsp;&nbsp;&nbsp;证&nbsp;&nbsp;&nbsp; 码</label>
-                                <div class="fl passwordr">
-                                	<input type="text" class="text fl" style="width:168px;" name="checkNumber" id="checkNumber1" />
-                                    <i id="checkNumber1_flag" style="margin-right:130px"></i>
-                                    <span class="img fl">
-                                    <img src="${ctx}/image.jsp" alt="" width="108" height="42" id="imageNumber" title="点击换一张" onclick="checkNumberImage()"></img>
-                                    </span>
-                                </div>
-                                <div class="prompt fl" id="checkNumber1_prompt" style="margin-left:90px"><b></b></div>
-                            </li>
-                            <li class="clearfix" style="margin-top:20px;">
-                            	<label></label>
-                                <div class="fl passwordr" style="margin-left:92px;">
-                                	<input type="button" class="submit" value="提&nbsp;&nbsp;交" onclick="confimPass()">
-                                </div>
-                            </li>
-                            
-                        
-                        </ul>
-                        </form>
+                        <div class="complete">
+                        	<h2><i></i>恭喜您，密码修改成功！</h2>
+                        </div>
                     </div>
                 </div>
             
@@ -149,17 +113,19 @@
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
-					<a href="#">
-                    	<img src="${ctx }/source/images/dianxin_logo footer.png" alt="">
-                        <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
-                    	<img src="${ctx }/source/images/newlogo-footer.png" alt="">
-                    </a>
+					<!--修改-->
+				   <a href="#">
+	               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
+                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
+	               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+                   </a>
+                <!--修改-->  
 				</div>
 				<ol class="footr clearfix fr">
 					<li>
                     	<h2>帮助中心</h2>
                         <dl>
-                        	<dd><a href="#">购物指南</a></dd>
+                        	<dd><a href="#">购买指南</a></dd>
                             <dd><a href="#">在线帮助</a></dd>
                             <dd><a href="#">常见问题</a></dd>
                        </dl>
@@ -167,15 +133,15 @@
                     <li>
                     	<h2>关于安全帮</h2>
                         <dl>
-                        	<dd><a href="#">了解安全帮</a></dd>
-                            <dd><a href="#">加入安全帮</a></dd>
+                        	<dd><a href="${ctx}/knowUs.html">了解安全帮</a></dd>
+                            <dd><a href="${ctx}/joinUs.html">加入安全帮</a></dd>
                             <dd><a href="#">联系我们</a></dd>
                        </dl>
                     </li>
                     <li>
                     	<h2>关注我们</h2>
                         <dl>
-                        	<dd><a href="#">QQ交流群<br>470899318</a></dd>
+                        	<dd><a href="#">QQ交流群</br>470899318</a></dd>
                             <dd class="weixin"><a href="#">官方微信</a></dd>
                        </dl>
                     </li>
@@ -192,12 +158,9 @@
 			</div>
 		</div>
 		<div class="foot">
-			<p>Label@1234567890北京电信研究院<br>
-				www.anquanbang.net
-			</p>
+			<p>版权所有Copyright © 2015 中国电信股份有限公司北京研究院京ICP备12019458号-10</p>
 		</div>
-	</div>
-<!---执行效果-->
+		<!---执行效果-->
 <div class="weixinshow popBoxhide" id="weixin">
 	<i class="close chide"></i>
     <div class="Pophead">
@@ -208,7 +171,7 @@
 对准下方二维码即可。
 		</p>
            <div class="weinImg" style="text-align:center;">
-           	<img src="${ctx }/source/images/weixin.png" alt="">
+           	<img src="${ctx}/source/images/portal/weixin.png" alt="">
            </div> 
     </div>
 
@@ -217,26 +180,5 @@
 <div class="shade"></div>
 </body>
 
-<script>
-$(function(){
-		$('.text').focus(function(){
-		
-			var tempId = $(this).parents('li').children('.prompt').attr("id");
-			if(tempId!='checkNumber1_prompt'){
-				$(this).parents('li').children('.prompt').fadeIn();	
-			}
 
-		})
-		$('.text').blur(function(){
-			var tempId = $(this).parents('li').children('.prompt').attr("id");
-			if(tempId!='checkNumber1_prompt'){
-				$(this).parents('li').children('.prompt').fadeOut();	
-			}
-			
-		})
-
-		
-})
-
-</script>
 </html>
