@@ -242,6 +242,9 @@ public class MyAssetsController {
 		String name = "";
 		try {
 			name = new String(asset.getName().getBytes("ISO-8859-1"), "UTF-8");
+			if(name.equals("请输入关键字")){
+				name = "";
+			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

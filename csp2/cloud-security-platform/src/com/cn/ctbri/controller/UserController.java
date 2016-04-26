@@ -1,7 +1,6 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -29,19 +28,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.cfg.Configuration;
 import com.cn.ctbri.common.NorthAPIWorker;
-import com.cn.ctbri.entity.LoginHistory;
 import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.Notice;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
+import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.INoticeService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
+import com.cn.ctbri.service.IServiceAPIService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.CommonUtil;
-import com.cn.ctbri.util.IPCheck;
 import com.cn.ctbri.util.LogonUtils;
 import com.cn.ctbri.util.Mail;
 import com.cn.ctbri.util.MailUtils;
@@ -55,7 +54,7 @@ import com.cn.ctbri.util.SMSUtils;
  * 版        本：  1.0
  */
 @Controller
-public class UserController{
+public class UserController {
 	
 	@Autowired
 	IUserService userService;
@@ -67,7 +66,8 @@ public class UserController{
 	IOrderService orderService;
 	@Autowired
     INoticeService noticeService;
-
+	@Autowired
+    IServiceAPIService serviceAPIService;
 	/**
 	 * 功能描述： 基本资料
 	 * 参数描述： Model model,HttpServletRequest request
@@ -119,7 +119,7 @@ public class UserController{
 			}else{
 				globle_user.setJob(null);
 			}
-		} catch (UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		//推送地址 add by tangxr 2016-4-9
@@ -129,7 +129,6 @@ public class UserController{
 		userService.update(globle_user);
 		return "redirect:/userDataUI.html";
 	}
-	
 	
 	/**
 	 * 功能描述： 保存修改后的基本资料
@@ -314,265 +313,114 @@ public class UserController{
 	@RequestMapping(value="loginUI.html")
 	public String loginUI(Model m){
 		m.addAttribute("flag", "dl");
-		return "/source/page/regist/login";
+		return "/source/page/regist/regist";
 	}
-	
-	/**
-	 * 功能描述：  登录时检验用户名是否已经存在
-	 * 参数描述：  String name,HttpServletResponse response
-	 * @throws Exception 
-	 *		 @time 2014-12-31
-	 */
-	@RequestMapping(value="login_checkName.html", method = RequestMethod.POST)
-	@ResponseBody
-	public void login_checkName(String name,HttpServletResponse response){
-		List<User> users = userService.findUserByName(name);
-		int count = 0;
-		if(users.size()>0){
-			count = users.size();
-		}else{
-			users = userService.findUserByMobile(name);
-			count = users.size();
-		}
-		Map<String, Object> m = new HashMap<String, Object>();
-		m.put("count", count);
-		//object转化为Json格式
-		JSONObject JSON = CommonUtil.objectToJson(response, m);
-		try {
-			// 把数据返回到页面
-			CommonUtil.writeToJsp(response, JSON);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
 	/**
 	 * 功能描述： 登录
 	 * 参数描述：  User user,HttpServletRequest request,HttpServletResponse response
 	 *		 @time 2015-1-8
 	 */
 	@RequestMapping(value="login.html")
-	@ResponseBody
-	public void login(HttpServletRequest request,HttpServletResponse response){
-		String name = request.getParameter("name");
-		String password = request.getParameter("password");
-		String checkNumber = request.getParameter("checkNumber");
-		Map<String, Object> map = new HashMap<String, Object>();
+	public String login(User user,HttpServletRequest request,HttpServletResponse response){
+		//添加验证码，判断验证码输入是否正确
+		boolean flag = LogonUtils.checkNumber(request);
+		if(!flag){
+			request.setAttribute("msg", "验证码输入有误");//向前台页面传值
+			return "/source/page/regist/regist";
+		}
 		
-		try {
-			User _user = null;
-			List<User> users = userService.findUserByName(name);
-			if(users.size()==0){
-				users = userService.findUserByMobile(name);
-			}
-			
+		//判断用户名密码输入是否正确
+		User _user = null;
+		String name = user.getName().trim();
+		String password = user.getPassword().trim();
+		List<User> users = userService.findUserByName(name);
+		if(users.size()>0){
 			_user = users.get(0);
-			if(_user.getStatus()!=1 && _user.getStatus()!=2 && _user.getStatus()!=0){
-				//对不起，您的帐号已停用
-				map.put("result", 1);
-				JSONObject JSON = CommonUtil.objectToJson(response, map);
-				try {
-					// 把数据返回到页面
-					CommonUtil.writeToJsp(response, JSON);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				return;
-			}
 			//从页面上获取密码和User对象中存放的密码，进行匹配，如果不一致，提示【密码输入有误】
 			String md5password = DigestUtils.md5Hex(password);
 			if(!md5password.equals(_user.getPassword())){
-				//密码错误
-				map.put("result", 2);
-				JSONObject JSON = CommonUtil.objectToJson(response, map);
-				try {
-					// 把数据返回到页面
-					CommonUtil.writeToJsp(response, JSON);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				return;
+				request.setAttribute("msg", "用户名或密码错误");
+				return "/source/page/regist/regist";//跳转到登录页面
 			}
-
-			//添加验证码，判断验证码输入是否正确
-			boolean flag = LogonUtils.checkNumber(request);
-			if(!flag){
-				//验证码输入有误
-				map.put("result",3);
-				JSONObject JSON = CommonUtil.objectToJson(response, map);
-				try {
-					// 把数据返回到页面
-					CommonUtil.writeToJsp(response, JSON);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				return;
+			if(_user.getStatus()!=1){
+				request.setAttribute("msg", "对不起，您的帐号已停用");
+				return "/source/page/regist/regist";//跳转到登录页面
 			}
-			//如果是企业用户判断IP是否在库存地址段内
-			if(_user.getType()==3){
-				String ip = "";
-				if (request.getHeader("x-forwarded-for") == null) {
-					ip = request.getRemoteAddr();
-				}else{
-					ip = request.getHeader("x-forwarded-for");
-				}
-				String ipStart = _user.getStartIP();
-				String ipEnd = _user.getEndIP();
-				if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
-					//登录的IP不在IP地址段范围内
-					map.put("result", 4);
-					JSONObject JSON = CommonUtil.objectToJson(response, map);
-					try {
-						// 把数据返回到页面
-						CommonUtil.writeToJsp(response, JSON);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					return;
-				}
-			}
-
-			/**记住密码功能*/
-			LogonUtils.remeberMe(request,response,name,password);
-			
-			_user.setLastLoginTime(new Date());
-			//设置登录状态：2
-			_user.setStatus(2);
-			userService.update(_user);
-			
-			//添加到登录历史表中，用于统计分析
-			LoginHistory lh = new LoginHistory();
-			lh.setUserId(_user.getId());
-			lh.setUserType(_user.getType());
-			lh.setLoginTime(_user.getLastLoginTime());
-			userService.insertLoginHistory(lh);
-			
-			//登入key如果为空，则新增key值  add by tangxr 2016-03-31
-			if(_user.getApikey()==null||_user.getApikey().equals("")){
-				UUID uuid = UUID.randomUUID();
-				String apikey = uuid.toString().replace("-", "");
-				_user.setApikey(apikey);
-				userService.update(_user);
-			}
-			
-			//将User放置到Session中，用于这个系统的操作
-			request.getSession().setAttribute("globle_user", _user);
-			
-/*			Timer timer = new Timer();
-			timer.schedule(new UserController(request),5000);*/
-			//add by tangxr 2016-3-14
-			if(request.getSession().getAttribute("indexPage")!=null){
-				int indexPage = (Integer) request.getSession().getAttribute("indexPage");
-				if(indexPage == 1 ){
-					int serviceId = (Integer) request.getSession().getAttribute("serviceId");
-//					return "redirect:/selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
-					//return "redirect:/selfHelpOrderInit.html";
-					map.put("result", 5);
-					JSONObject JSON = CommonUtil.objectToJson(response, map);
-					try {
-						// 把数据返回到页面
-						CommonUtil.writeToJsp(response, JSON);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					return;
-				}else if(indexPage == 2){
-					int apiId = (Integer) request.getSession().getAttribute("apiId");
-					//return "redirect:/selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
-					map.put("result", 6);
-					map.put("apiId", apiId);
-					map.put("indexPage", indexPage);
-					JSONObject JSON = CommonUtil.objectToJson(response, map);
-					try {
-						// 把数据返回到页面
-						CommonUtil.writeToJsp(response, JSON);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					return;
-				}else{
-					//return "redirect:/userCenterUI.html";
-					map.put("result", 7);
-					JSONObject JSON = CommonUtil.objectToJson(response, map);
-					try {
-						// 把数据返回到页面
-						CommonUtil.writeToJsp(response, JSON);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					return;
-				}
-			}else{
-				//返回"redirect:/userCenterUI.html"
-				map.put("result", 7);
-				JSONObject JSON = CommonUtil.objectToJson(response, map);
-				try {
-					// 把数据返回到页面
-					CommonUtil.writeToJsp(response, JSON);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				return ;
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			//登录异常，返回登录页面
-			map.put("result", 8);
-			JSONObject JSON = CommonUtil.objectToJson(response, map);
-			try {
-				// 把数据返回到页面
-				CommonUtil.writeToJsp(response, JSON);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			return ;
+		}else{
+			request.setAttribute("msg", "用户名或密码错误");
+			return "/source/page/regist/regist";//跳转到登录页面
 		}
-
+		/**记住密码功能*/
+		LogonUtils.remeberMe(request,response,name,password);
+		
+		//登入key如果为空，则新增key值  add by tangxr 2016-03-31
+		if(_user.getApikey()==null||_user.getApikey().equals("")){
+			UUID uuid = UUID.randomUUID();
+			String apikey = uuid.toString().replace("-", "");
+			_user.setApikey(apikey);
+			userService.update(_user);
+		}
+		//将User放置到Session中，用于这个系统的操作
+		request.getSession().setAttribute("globle_user", _user);
+		
+		//add by tangxr 2016-3-14
+		if(request.getSession().getAttribute("indexPage")!=null){
+			int indexPage = (Integer) request.getSession().getAttribute("indexPage");
+			if(indexPage == 1 ){
+				int serviceId = (Integer) request.getSession().getAttribute("serviceId");
+				return "redirect:/selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
+			}else if(indexPage == 2){
+				int apiId = (Integer) request.getSession().getAttribute("apiId");
+				return "redirect:/selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
+			}else{
+				return "redirect:/userCenterUI.html";
+			}
+		}else{
+			return "redirect:/userCenterUI.html";
+		}
 	}
 	
 	 /**
-		 * 功能描述： 用户中心页面
-		 * 参数描述：  无
-		 *     @time 2015-1-12
-		 */
-		@RequestMapping(value="userCenterUI.html")
-		public String userCenterUI(HttpServletRequest request){
-			User globle_user = (User) request.getSession().getAttribute("globle_user");
-			//根据用户id查询订单表
-			List<Order> orderList = orderService.findOrderByUserId(globle_user.getId());
-			int orderNum = 0;
-			if(orderList.size()>0&&orderList!=null){
-				orderNum = orderList.size();
-			}
-			//根据用户id查询服务中订单表在开始时间和结束时间中间
-	        Map<String, Object> m = new HashMap<String, Object>();
-	        m.put("userId", globle_user.getId());
-	        m.put("state", 1);
-	        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	        /* 時：分：秒  HH:mm:ss  HH : 23小時制 (0-23)
-	                                 kk : 24小時制 (1-24)
-	                                 hh : 12小時制 (1-12)
-	                                 KK : 11小時制 (0-11)*/
-	        String temp = setDateFormat.format(Calendar.getInstance().getTime());
-	        m.put("currentDate", temp);
-	        List servList = orderService.findByCombineOrderTrack(m);
-			int servNum = 0;
-			if(servList.size()>0&&servList!=null){
-				servNum = servList.size();
-			}
-			request.setAttribute("orderNum", orderNum);//订单总数
-			request.setAttribute("servNum",servNum);//服务中
-			//总告警数
-			List alarmList = alarmService.findAlarmByUserId(globle_user.getId());
-			int alarmSum = 0;
-			if(alarmList.size()>0&&alarmList!=null){
-				alarmSum = alarmList.size();
-			}
-			request.setAttribute("alarmSum",alarmSum);
-			return "/source/page/userCenter/userCenter";
+	 * 功能描述： 用户中心页面
+	 * 参数描述：  无
+	 *     @time 2015-1-12
+	 */
+	@RequestMapping(value="userCenterUI.html")
+	public String userCenterUI(HttpServletRequest request){
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		//根据用户id查询订单表
+		List<Order> orderList = orderService.findOrderByUserId(globle_user.getId());
+		int orderNum = 0;
+		if(orderList.size()>0&&orderList!=null){
+			orderNum = orderList.size();
 		}
+		//根据用户id查询服务中订单表在开始时间和结束时间中间
+        Map<String, Object> m = new HashMap<String, Object>();
+        m.put("userId", globle_user.getId());
+        m.put("state", 1);
+        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        /* 時：分：秒  HH:mm:ss  HH : 23小時制 (0-23)
+                                 kk : 24小時制 (1-24)
+                                 hh : 12小時制 (1-12)
+                                 KK : 11小時制 (0-11)*/
+        String temp = setDateFormat.format(Calendar.getInstance().getTime());
+        m.put("currentDate", temp);
+        List servList = orderService.findByCombineOrderTrack(m);
+		int servNum = 0;
+		if(servList.size()>0&&servList!=null){
+			servNum = servList.size();
+		}
+		request.setAttribute("orderNum", orderNum);//订单总数
+		request.setAttribute("servNum",servNum);//服务中
+		//总告警数
+		List alarmList = alarmService.findAlarmByUserId(globle_user.getId());
+		int alarmSum = 0;
+		if(alarmList.size()>0&&alarmList!=null){
+			alarmSum = alarmList.size();
+		}
+		request.setAttribute("alarmSum",alarmSum);
+		return "/source/page/userCenter/userCenter";
+	}
 	
 	
 	/**
@@ -583,12 +431,6 @@ public class UserController{
 	@RequestMapping(value="exit.html")
 	public String exit(HttpServletRequest request){
 		//request.getSession().removeAttribute("globle_user");
-		User user = (User)request.getSession().getAttribute("globle_user");
-		//设置退出状态：0
-		if(user != null){
-			user.setStatus(0);
-			userService.update(user);
-		}
    		request.getSession().invalidate();
    		return "redirect:/loginUI.html";
 	}
@@ -601,7 +443,7 @@ public class UserController{
 	@RequestMapping(value="registUI.html")
 	public String registUI(Model m){
 		m.addAttribute("flag", "zc");
-		return "/source/page/regist/register";
+		return "/source/page/regist/regist";
 	}
 	
 	
@@ -612,7 +454,6 @@ public class UserController{
 	 */
 	@RequestMapping(value="registToLogin.html")
 	public String regist(User user,HttpServletRequest request){
-
 		String name = user.getName();
 		String password = user.getPassword();
 		//add by tang 2015-06-01
@@ -635,15 +476,15 @@ public class UserController{
 	    }
 	    //验证邮箱
 //	    String patternE = "^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.[a-zA-Z0-9_-])$";
-/*	    String patternE = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+	    String patternE = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
 	    Pattern patE = Pattern.compile(patternE);
 	    Matcher mEmail = null;
 	    boolean me = false;
 	    if(user.getEmail()!=null&&!"".equals(user.getEmail())){
 	        mEmail = patE.matcher(user.getEmail());
 	        me = mEmail.matches();
-	    }*/
-	    //行业
+	    }
+		//行业
 		String industry = "";
 		//职业
 		String job = "";
@@ -660,10 +501,11 @@ public class UserController{
 			if(!job.equals("-1")){
 				user.setJob(job);
 			}
-		} catch (UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if(name!=null&&!"".equals(name)&&m.matches()&&password!=null&&!"".equals(password)&&password.length()>=6&&password.length()<=20&&(mb)&&user.getVerification_code()!=null&&!"".equals(user.getVerification_code())){
+	    
+		if(name!=null&&!"".equals(name)&&m.matches()&&password!=null&&!"".equals(password)&&password.length()>=6&&password.length()<=20&&(mb||me)&&user.getVerification_code()!=null&&!"".equals(user.getVerification_code())){
 			//按用用户名、邮箱、手机号码组合查询用户,防止刷页面
 			List<User> users = userService.findUserByCombine(user);
 			if(!(users.size()>0)){
@@ -677,6 +519,7 @@ public class UserController{
 				user.setApikey(UUID.randomUUID().toString().replace("-", ""));
 				userService.insert(user);
 			}
+			
 			//return "/source/page/regist/registToLogin";
 			return "redirect:/loginUI.html";
 		}else{
@@ -808,29 +651,6 @@ public class UserController{
 	}
 	
 	/**
-	 * 功能描述：  注册时检验邮箱是否已经存在
-	 * 参数描述：  String name,HttpServletResponse response
-	 * @throws Exception 
-	 *		 @time 2015-1-4
-	 */
-	@RequestMapping(value="regist_checkNumber.html", method = RequestMethod.POST)
-	@ResponseBody
-	public void regist_checkNumber(HttpServletRequest request,HttpServletResponse response){
-		boolean flag = LogonUtils.checkNumber(request);
-		Map<String, Object> m = new HashMap<String, Object>();
-		m.put("flag", flag);
-
-		//object转化为Json格式
-		JSONObject JSON = CommonUtil.objectToJson(response, m);
-		try {
-			// 把数据返回到页面
-			CommonUtil.writeToJsp(response, JSON);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
 	 * 功能描述： 发送邮箱验证码
 	 * 参数描述：  User user,HttpServletResponse response
 	 * @throws Exception 
@@ -899,11 +719,9 @@ public class UserController{
         		userService.addMobile(mobileInfo);
         		flag = true;
         	}else if(mobile.getTimes()<3){
-        		Map<String, Object> m1 = new HashMap<String, Object>();
         		int times = mobile.getTimes()+1;
-        		m1.put("mobileNumber", mobile.getMobileNumber());
-        		m1.put("times", times);
-        		userService.updateMobile(m1);
+        		mobile.setTimes(times);
+//        		userService.updateMobile(times);
         		flag = true;
         	}
         	if(flag){
@@ -1057,13 +875,9 @@ public class UserController{
 		String password = user.getPassword();
 		String passwdMD5 = DigestUtils.md5Hex(password);
 		user.setPassword(passwdMD5);
-		int result = userService.updatePass(user);
-		if(result==1){
-			return "/updatePassSuccess";
-		}else{
-			return "/updatePassfail";
-		}
-
+		userService.updatePass(user);
+	
+	return "redirect:/loginUI.html";
 	}
 	
 	/**
@@ -1187,6 +1001,7 @@ public class UserController{
 		return "/source/page/child/web_anquanbang";
 	}
 	
+	
 	/**
 	 * 功能描述： 加入我们
 	 * 参数描述： Model m
@@ -1206,5 +1021,31 @@ public class UserController{
 	public String knowUs(Model m){
 		return "/knowUs";
 	}
-
+	
+	/**
+	 * 功能描述： 跳转网站安全帮
+	 *		 @time 2016-4-18
+	 */
+	@RequestMapping(value="/api_anquanbang.html")
+	public String apiAnquanbang(Model m){
+	    //获取公告
+	    List<Notice> list = noticeService.findAllNotice();
+	    //获取服务类型
+        List<ServiceAPI> servList = serviceAPIService.findServiceAPI();
+        //查询漏洞个数
+        int leakNum = selfHelpOrderService.findLeakNum(1);
+        //查询网页数
+        int webPageNum = selfHelpOrderService.findWebPageNum();
+        //检测网页数
+        int webSite = selfHelpOrderService.findWebSite();
+        //断网次数
+        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
+        m.addAttribute("leakNum", leakNum);
+        m.addAttribute("webPageNum", webPageNum);
+        m.addAttribute("webSite", webSite);
+        m.addAttribute("brokenNetwork", brokenNetwork);
+        m.addAttribute("servList", servList);
+        m.addAttribute("noticeList", list);
+		return "/source/page/child/api_anquanbang";
+	}
 }

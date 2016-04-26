@@ -57,7 +57,7 @@ public class shoppingController {
 	 * 参数描述：  无
 	 *     @time 2016-3-12
 	 */
-	@RequestMapping(value="selfHelpOrderInit1.html")
+	@RequestMapping(value="selfHelpOrderInit.html")
 	public String selfHelpOrderInit(HttpServletRequest request){
 	    User globle_user = (User) request.getSession().getAttribute("globle_user");
 	    int serviceId = Integer.parseInt(request.getParameter("serviceId"));
@@ -80,7 +80,7 @@ public class shoppingController {
 	 * 参数描述：  无
 	 *     @time 2016-3-10
 	 */
-	@RequestMapping(value="settlement1.html")
+	@RequestMapping(value="settlement.html")
 	public String settlement(HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		//资产ids
@@ -136,7 +136,7 @@ public class shoppingController {
 	 * 参数描述：  无
 	 *     @time 2016-3-15
 	 */
-	@RequestMapping(value="shoppingCar1.html")
+	@RequestMapping(value="shoppingCar.html")
 	public String shoppingCar(HttpServletRequest request){
 		//资产ids
         String assetIds = request.getParameter("assetIds");

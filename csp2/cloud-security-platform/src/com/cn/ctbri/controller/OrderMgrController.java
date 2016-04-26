@@ -87,7 +87,7 @@ public class OrderMgrController {
 	 * 参数描述：  无
 	 *     @time 2015-1-12
 	 */
-	@RequestMapping(value="selfHelpOrderInit.html")
+	@RequestMapping(value="selfHelpOrderInit1.html")
 	public String selfHelpOrderInit(HttpServletRequest request){
 	    User globle_user = (User) request.getSession().getAttribute("globle_user");
 //	    String orderId = request.getParameter("orderId");
@@ -129,7 +129,7 @@ public class OrderMgrController {
 	 * 参数描述：  无
 	 *     @time 2016-3-10
 	 */
-	@RequestMapping(value="settlement.html")
+	@RequestMapping(value="settlement1.html")
 	public String settlement(HttpServletRequest request){
 		//资产ids
         String assetIds = request.getParameter("assetIds");
@@ -418,7 +418,8 @@ public class OrderMgrController {
         String ip = request.getParameter("ip");
         String bandwidth = request.getParameter("bandwidth");
         //厂商
-        String websoc = request.getParameter("websoc");
+//        String websoc = request.getParameter("websoc");
+        String websoc = "0";
         if(websoc != null && websoc != ""){
         	customManu = websoc.split(","); //拆分字符为"," ,然后把结果交给数组customManu 
         }
@@ -491,7 +492,10 @@ public class OrderMgrController {
 	                	order.setWebsoc(Integer.parseInt(websoc));
 	                }
 	            }
-	            order.setTasknum(Integer.parseInt(tasknum));
+	            if(tasknum!=null && !tasknum.equals("")){
+	            	order.setTasknum(Integer.parseInt(tasknum));
+	            }
+	            
 	            selfHelpOrderService.insertOrder(order);
 	            
 	            
@@ -560,7 +564,7 @@ public class OrderMgrController {
      * 参数描述：  无
      *     @time 2015-1-12
      */
-    @RequestMapping(value="orderTrackInit.html")
+    @RequestMapping(value="orderTrackInit1.html")
     public String orderTrackInit(HttpServletRequest request){
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         String state=request.getParameter("state");
@@ -603,7 +607,8 @@ public class OrderMgrController {
 	        	List<Task> taskList = taskService.findAllByOrderId(paramMap);
 				if(taskList != null && taskList.size() > 0){
 					for (Task task : taskList) {
-						if(task.getAlarm_view_flag() != 1 && !task.getIssueCount().equals("0")){
+//						if(task.getAlarm_view_flag() != 1 && !task.getIssueCount().equals("0")){
+						if(task.getAlarm_view_flag() != 1 ){
 							alarmViewedFlag = 0;
 						}
 					}
