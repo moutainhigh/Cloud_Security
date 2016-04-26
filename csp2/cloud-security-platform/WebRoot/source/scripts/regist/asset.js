@@ -59,7 +59,7 @@ function saveAsset() {
 		    		        dataType:"json",
 		    		        success: function(data){
 		    		            if(data.msg){
-		    		            	alert("管理的资产数不能大于" + data.allowCount);
+		    		            	alert("免费用户管理资产数不能大于" + data.allowCount);
 		    		            }else{
 		    		            	$("#saveAsset").submit();
 		    		            }
@@ -78,7 +78,7 @@ function searchAssetCombine(){
 function editAsset(){
 	var assetName =$("#editAssetName").val();
 	var assetAddr = $("#editAssetAddr").val();
-    var addrType = $('input:radio[name="addrType"]:checked').val();
+    var addrType = $('input:radio[id="editAddrType"]:checked').val();
     var purpose = $("#editPurpose").val();
     var prov = $("#editDistrictId").val();
 //     var patrn=/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im; 
