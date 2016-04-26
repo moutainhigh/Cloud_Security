@@ -1,5 +1,8 @@
 package com.cn.ctbri.dao;
 
+import java.util.List;
+
+import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceAPI;
 
 
@@ -19,6 +22,8 @@ public interface ServiceAPIDao {
 	 *	返回值 ：ServiceAPI
 	 */
 	ServiceAPI findById(int apiId);
+
+	List<ServiceAPI> findServiceAPI();
 
 	
 }

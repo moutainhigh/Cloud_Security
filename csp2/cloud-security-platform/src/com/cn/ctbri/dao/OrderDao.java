@@ -119,4 +119,10 @@ public interface OrderDao {
 	List<Order> findOrderByMap(Map<String, Object> map);
 	//查找联系人信息
 	List<Linkman> findLinkmanById(int contactId);
+	/**
+     * 功能描述：组合查询订单追踪-分页
+     *       @time 2016-4-25
+     * 返回值    ：  List<Order>
+     */
+	List findByCombineOrderTrackByPageAsset(Map<String, Object> paramMap);
 }
