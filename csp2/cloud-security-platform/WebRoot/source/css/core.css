@@ -3,8 +3,12 @@
 input[type="text"]::-ms-clear{
     display:none;
 }
-input::-ms-reveal{
+input[type="password"]::-ms-reveal{
      display:none;
+ }
+
+ .submit{
+ 	font-family: "微软雅黑";
  }
 .core{
 	width: 1110px;
@@ -26,7 +30,7 @@ input::-ms-reveal{
 	width: 22px;
 	height: 22px;
 	display: inline-block;
-	background:url(../imges/PersonalCenter/centerico.png) no-repeat;
+	background:url(../images/personalCenter/centerico.png) no-repeat;
 	vertical-align:middle;
 	margin-right: 10px;
 }
@@ -106,8 +110,8 @@ input::-ms-reveal{
 	top:8px;	
 	
 }
-.core .my-order .coreList .contj:hover span .initial{
-	background:url(../imges/PersonalCenter/up.png) no-repeat;
+.core .my-order .coreList .contj span .nitial{
+	background:url(../images/personalCenter/down.png) no-repeat;
 }
 .core .my-order .coreList .contj span{
 	color: #343434; 
@@ -131,30 +135,39 @@ input::-ms-reveal{
     left: 20px;
   }
 .core .my-order .coreList .contj span .initial{
-	background:url(../imges/PersonalCenter/down.png) no-repeat;
+	background:url(../images/personalCenter/up.png) no-repeat;
+	
 }
 
 .coreList .container select{
 	width: 210px;
 	height: 36px;
+	line-height: 36px;
 	border: #e5e5e5 solid 1px; 
 	padding-left: 20px;
 	color: #929292;
 	margin-right: 30px;
 	appearance:none;
-	
   -moz-appearance:none;
   -o-appearance:none;	
   -webkit-appearance:none;
   -ms-appearance:none;
-    background: url(../imges/PersonalCenter/downl.png) no-repeat scroll 190px center transparent;
+    background: url(../images/personalCenter/downl.png) no-repeat scroll 190px center transparent;
+	
+}
+.coreList .container select{
+	
 }
 .coreList .container .text{
 	width: 188px;
-	height: 34px;
+	height: 16px;
+	padding: 9px 0;
+	font-size: 14px;
+	line-height: 16px;
 	border: #e5e5e5 solid 1px; 
 	padding-left: 20px;
 	color: #343434;
+	
 }
 .coreList .container em{
 	width: 28px;
@@ -162,6 +175,7 @@ input::-ms-reveal{
 	color: #343434;
 	text-align: center;
 	padding-top: 6px;
+
 }
 
 .my-orderTabBox .TabBoxtitle{
@@ -250,19 +264,19 @@ input::-ms-reveal{
 }
 /*等待*/
 .stylep .wait{
-	background:url(../imges/PersonalCenter/d.png) no-repeat center;
+	background:url(../images/personalCenter/d.png) no-repeat center;
 }
 /*服务中*/
 .stylep .ing{
-	background:url(../imges/PersonalCenter/ing.png) no-repeat center;
+	background:url(../images/personalCenter/ing.png) no-repeat center;
 }
 /*已结束*/
 .stylep .end{
-	background:url(../imges/PersonalCenter/end.png) no-repeat center;
+	background:url(../images/personalCenter/end.png) no-repeat center;
 }
 /*已结束2*/
 .stylep .endend{
-	background:url(../imges/PersonalCenter/end2.png) no-repeat center;
+	background:url(../images/personalCenter/end2.png) no-repeat center;
 }
 .listul li em{
 	color: #929292;
@@ -295,7 +309,7 @@ input::-ms-reveal{
 }
 .dataBox .dataList li .dataListR .text{
 	width: 336px;
-	padding: 12px 0;
+	padding: 13px 0;
 	height: 16px;
 	line-height: 16px;
 	font-size: 14px;
@@ -322,7 +336,7 @@ input::-ms-reveal{
 select::-ms-expand { display: none; }
 .dataBox .dataList li .dataListR .scelt{
 	width: 360px;
-    height: 40px;
+    height: 44px;
     padding-left: 20px;
     border: #e5e5e5 solid 1px;
     color: #929292;
@@ -332,7 +346,7 @@ select::-ms-expand { display: none; }
     -webkit-appearance: none;
     -ms-appearance: none;
 
-    background: url(../imges/PersonalCenter/scb.png) no-repeat scroll 330px center transparent;
+    background: url(../images/personalCenter/scb.png) no-repeat scroll 330px center transparent;
 
 }
 .dataBox .dataList li .dataListR b{
@@ -349,6 +363,7 @@ select::-ms-expand { display: none; }
 	background: #5aba5f;
 	border: none;
 	cursor: pointer;
+
 }
 .passwordform{
 	width: 550px;
@@ -420,43 +435,20 @@ select::-ms-expand { display: none; }
 .passwordlist li .passwordr i{
 	width: 18px;
 	height: 18px;
+	background: url(../images/personalCenter/end.png);
 	position: absolute;
 	top:13px;
 	right: 16px;
 }
 .passwordlist li .passwordr .text{
 	width: 298px;
-	height: 42px;
+	height: 16px;
+	line-height: 16px;
+	padding: 13px 0;
 	border: #e5e5e5 solid 1px;
 	font-size: 14px;
 	color: #343434;
-	line-height: 42px;
 	padding-left: 20px;
-}
-.passwordlist li .passwordr .error{
-		background:url(../images/error.png) no-repeat;
-}
-.passwordlist li .passwordr .right{
-		background:url(../images/right.png) no-repeat;
-}
-.passwordlist .prompt{
-	width: 100%;
-	padding: 10px 0px 0px 0px;
-	vertical-align: middle;
-	text-align: left;
-	color: #929292;
-	font-size: 14px;
-	display:none;
-	margin-left:130px;
-}
-.passwordlist .prompt b{
-	width: 18px;
-	height: 18px;
-	background:url(../images/warn.png) no-repeat;
-	display:inline-block;
-	margin-right: 10px;
-	vertical-align: middle;
-
 }
 .passwordlist li .passwordr .btn{
 	width: 110px;
@@ -476,6 +468,7 @@ select::-ms-expand { display: none; }
 	color: #fff;
 	background-color: #5aba5f;
 	border: none;
+	
 }
 .passwordtwo li label{
 	width: 72px;
@@ -502,7 +495,7 @@ select::-ms-expand { display: none; }
 	display: inline-block;
 	vertical-align: middle;
 	margin-right: 14px;
-	background: url(../imges/PersonalCenter/right.png);
+	background: url(../images/personalCenter/right.png);
 }
 .coupon h1{
 	font-size: 22px;
@@ -577,7 +570,7 @@ select::-ms-expand { display: none; }
 }
 .coupon .coupontab .centlist li{
 	
-	background-image: url(../imges/PersonalCenter/bg.png);
+	background-image: url(../images/personalCenter/bg.png);
 	background-repeat:no-repeat;
 	background-position: center right;
 }
@@ -591,7 +584,7 @@ select::-ms-expand { display: none; }
 
 }
 .coupon .coupontab .centlist .bg{
-	background-image: url(../imges/PersonalCenter/bg.png);
+	background-image: url(../images/personalCenter/bg.png);
 	background-repeat:no-repeat;
 	background-position: center right;
 }
@@ -606,7 +599,7 @@ select::-ms-expand { display: none; }
 .assetstitle .assetstitlel em{
 	width: 18px; 
 	height: 18px;
-	background: url(../imges/PersonalCenter/add.png) no-repeat left center;
+	background: url(../images/personalCenter/add.png) no-repeat left center;
 	display: inline-block;
 	vertical-align: middle;
 	margin-right: 10px;
