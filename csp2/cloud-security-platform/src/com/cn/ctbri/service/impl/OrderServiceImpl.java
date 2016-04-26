@@ -181,4 +181,8 @@ public class OrderServiceImpl implements IOrderService{
 	public List<Linkman> findLinkmanById(int contactId) {
 		return orderDao.findLinkmanById(contactId);
 	}
+	public List findByCombineOrderTrackByPageAsset(Map<String, Object> paramMap) {
+		List list = orderDao.findByCombineOrderTrackByPageAsset(paramMap);
+        return list;
+	}
 }

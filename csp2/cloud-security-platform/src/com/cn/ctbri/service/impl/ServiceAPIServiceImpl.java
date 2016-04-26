@@ -1,9 +1,12 @@
 package com.cn.ctbri.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.ServiceAPIDao;
+import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.service.IServiceAPIService;
 /**
@@ -25,6 +28,9 @@ public class ServiceAPIServiceImpl implements IServiceAPIService{
 	public ServiceAPI findById(int apiId) {
 		ServiceAPI serviceAPI = serviceAPIDao.findById(apiId);
 		return serviceAPI;
+	}
+	public List<ServiceAPI> findServiceAPI() {
+		return serviceAPIDao.findServiceAPI();
 	}
 	
 }
