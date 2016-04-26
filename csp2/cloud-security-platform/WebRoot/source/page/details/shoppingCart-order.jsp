@@ -29,7 +29,7 @@
 			<div class="head">
 				<div class="headBox">
 					<div class="safeL fl" style="width:270px; margin-right:18%">
-						<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
+						<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/></a>
                         <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px;">购物车</strong>
 					</div>
 					<div class="safem fl">
@@ -122,7 +122,11 @@
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
-					<a href="#"><img src="${ctx}/source/images/portal/footlogo.png" alt=""></a>
+					<a href="${ctx}/index.html">
+		               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
+	                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
+		               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+                   </a>
 				</div>
 				<ol class="footr clearfix fr">
 					<li>

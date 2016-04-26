@@ -31,8 +31,8 @@
 			<div class="head">
 				<div class="headBox">
 					<div class="safeL fl" style="width:260px; margin-right:13%">
-						<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
-                        <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px;">网站安全帮</strong>
+						<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/></a>
+                        <a href="${ctx}/web_anquanbang.html"><strong style="font-size:20px; color:#fff; padding-left:10px;position:relative; top:-10px;font-weight:normal;">网站安全帮</strong></a>
 					</div>
 					<div class="safem fl">
 						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
@@ -161,16 +161,30 @@
         	<div class="imgBox clearfix">
             	<h4>商品信息</h4>
                 <div class="commoditys" style="height:618px; overflow:hidden">
-                	<img src="${ctx}/source/images/portal/product1.png" alt="">
+                	<c:if test="${service.id == 1}">
+                		<img src="${ctx}/source/images/portal/servicePic1.png" alt=""/>
+                	</c:if>
+                	<c:if test="${service.id == 2}">
+                		<img src="${ctx}/source/images/portal/servicePic2.png" alt=""/>
+                	</c:if>
+                	<c:if test="${service.id == 3}">
+                		<img src="${ctx}/source/images/portal/servicePic3.png" alt=""/>
+                	</c:if>
+                	<c:if test="${service.id == 4}">
+                		<img src="${ctx}/source/images/portal/servicePic4.png" alt=""/>
+                	</c:if>
+                	<c:if test="${service.id == 5}">
+                		<img src="${ctx}/source/images/portal/servicePic5.png" alt=""/>
+                	</c:if>
                 </div>
                 <div class="commoditys" style="height:440px; overflow:hidden">
-                	<img src="${ctx}/source/images/portal/product2.png" alt="">
+                	<img src="${ctx}/source/images/portal/product2.png" alt=""/>
                 </div>
                 <div class="commoditys" style="height:600px; overflow:hidden">
-                	<img src="${ctx}/source/images/portal/product3.png" alt="">
+                	<img src="${ctx}/source/images/portal/product3.png" alt=""/>
                 </div>
                 <div class="commoditys">
-                	<img src="${ctx}/source/images/portal/product4.png" alt="">
+                	<img src="${ctx}/source/images/portal/product4.png" alt=""/>
                 </div>
             </div>
         </div>
@@ -178,7 +192,7 @@
 			<div class="imgBox clearfix">
 				<div class="footL fl">
 				<!--修改-->
-				   <a href="#">
+				   <a href="${ctx}/index.html">
 		               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
 	                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
 		               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
