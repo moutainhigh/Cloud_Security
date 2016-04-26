@@ -106,6 +106,7 @@ $(function(){
 	    		    	 if(data.timeCompare == true){
 	    		    		 if(data.assetsStatus == false && data.orderStatus == true){
 	    		    			 alert("完成下单，去订单跟踪查看吧~~"); 
+	    		    			 window.location.href = "orderTrackInit.html";
 		    		    	 }else{
 		    		    		alert("订单有异常,请重新下单!");
 		    		     		 return;
