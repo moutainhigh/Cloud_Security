@@ -12,6 +12,12 @@
 <link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
 <SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#status").val("${status}");
+	$("#searchAssetName").val("${name}");
+});
+</script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/asset.js"></script>
@@ -27,12 +33,7 @@
 <!-- end -->
 <script type="text/javascript" src="${ctx}/source/scripts/common/main.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/order.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	$("#status").val("${status}");
-	$("#searchAssetName").val("${name}");
-});
-</script>
+
 </head>
 
 <body>
@@ -43,7 +44,7 @@ $(document).ready(function(){
 	<div class="head" style="width:100%">
 		<div class="headBox">
 			<div class="safeL fl" style="width:260px; margin-right:13%">
-				<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
+				<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/></a>
 			</div>
 			<div class="safem fl">
 				<span class="fl"><a href="${ctx}/index.html">首页</a></span>
@@ -89,7 +90,7 @@ $(document).ready(function(){
       <li><a href="${ctx}/userBillUI.html">我的账单</a></li>
       <li class="active"><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
       <h2>订购中心</h2>
-      <li><a onclick="tasknum_verification()" href="javascript:void(0)">自助下单</a></li>
+      <!-- <li><a onclick="tasknum_verification()" href="javascript:void(0)">自助下单</a></li>-->
       <li><a href="${ctx}/orderTrackInit.html">订单跟踪</a></li>
     </ul>
   </div>
@@ -151,13 +152,17 @@ $(document).ready(function(){
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
-					<a href="#"><img src="${ctx}/source/images/portal/footlogo.png" alt=""></a>
+					<a href="${ctx}/index.html">
+	               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
+                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
+	               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+                   </a>
 				</div>
 				<ol class="footr clearfix fr">
 					<li>
                     	<h2>帮助中心</h2>
                         <dl>
-                        	<dd><a href="#">购买指南</a></dd>
+                        	<dd><a href="#">购物指南</a></dd>
                             <dd><a href="#">在线帮助</a></dd>
                             <dd><a href="#">常见问题</a></dd>
                        </dl>
@@ -300,9 +305,9 @@ $(document).ready(function(){
         <tr>
        	  <td>资产地址类型</td>
           <td style="text-align:left">
-		        &nbsp;&nbsp;<input type="radio" name="addrType"  value="http" checked="checked"/>
+		        &nbsp;&nbsp;<input type="radio" name="addrType" id="editAddrType" value="http" checked="checked"/>
 		        &nbsp;http
-		        &nbsp;&nbsp;<input type="radio" name="addrType"  value="https"/>
+		        &nbsp;&nbsp;<input type="radio" name="addrType" id="editAddrType" value="https"/>
 		        &nbsp;https
 		  </td>
         </tr>

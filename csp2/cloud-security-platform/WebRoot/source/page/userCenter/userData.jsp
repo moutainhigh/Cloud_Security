@@ -297,7 +297,7 @@ function editPassword(){
 	<div class="head" style="width:100%">
 		<div class="headBox">
 			<div class="safeL fl" style="width:260px; margin-right:13%">
-				<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
+				<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/></a>
 			</div>
 			<div class="safem fl">
 				<span class="fl"><a href="${ctx}/index.html">首页</a></span>
@@ -343,7 +343,7 @@ function editPassword(){
       <li><a href="${ctx}/userBillUI.html">我的账单</a></li>
       <li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
       <h2>订购中心</h2>
-      <li><a onclick="tasknum_verification()" href="javascript:void(0)">自助下单</a></li>
+      <!-- <li><a onclick="tasknum_verification()" href="javascript:void(0)">自助下单</a></li> -->
       <li><a href="${ctx}/orderTrackInit.html">订单跟踪</a></li>
     </ul>
   </div>
@@ -458,7 +458,7 @@ function editPassword(){
 			<div class="imgBox clearfix">
 				<div class="footL fl">
 				<!--修改-->
-				   <a href="#">
+				   <a href="${ctx}/index.html">
 		               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
 	                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
 		               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
