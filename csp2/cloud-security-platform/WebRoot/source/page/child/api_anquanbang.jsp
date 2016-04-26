@@ -52,10 +52,10 @@ function showUnreadNews()
 					<!-- <div class="safeL fl">
 						<img src="${ctx}/source/images/portal/logo.png" alt=""/>
 					</div> -->
-					<div class="safeL fl" style="width:260px; margin-right:13%">
+					<div class="safeL fl" style="width:272px; margin-right:12%">
 						<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:10px;"/></a>
                           <span style="font-size: 20px;
-    color: #4a4a4a; padding-left:10px;position:relative; top:-6px;">网站安全帮</span>
+    color: #4a4a4a; padding-left:10px;position:relative; top:-6px;">安全能力API</span>
 					</div>
 					<div class="safem fl">
 						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
@@ -120,7 +120,7 @@ function showUnreadNews()
 		<div class="safe02" style="padding-bottom:30px;">
         
         	<div class="imgBox index_child">
-				<h2>网站安全监测及预警服务</h2>
+				<h2>网站安全监测能力API</h2>
                 <div class="listBox" style="width: 100%;">
                 	<div class="listR" style="width:1108px; margin:0 auto;">
                     	<ul class="newlist row newlist-top child-newlist clearfix" style="margin-right:-38px;">
@@ -128,16 +128,16 @@ function showUnreadNews()
 	                          <c:choose>
                                <c:when test="${status.index<5}">
 		                            <li class="fl col-md-4">
-		                                    <!--<i><img src="imges/HOT.png" alt=""></i>-->
+		                                    <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
 		                                    <p><img src="${ctx}/source/images/portal/child${status.index+1 }.png" alt=""></p>
 		                                    <h4>${list.name }</h4>
-		                                    <span>
+		                                    <span style="padding-right: 30px">
 		                                    	${list.remarks }
 		                                    </span>
 		                                    <div class="purchase">
 		                                    	<strong>¥0</strong>
 		                                    	<strong><em style="font-family:Arial Regular;font-size:22px;">¥99</em></strong>
-		                                    	<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1" class="btn">购买</a>
+		                                    	<a style="left:112px" href="${ctx}/selfHelpOrderAPIInit.html?apiId=${list.id }&indexPage=2" class="btn">购买</a>
 		                                    </div>
 		                               
 		                            </li>
@@ -150,61 +150,6 @@ function showUnreadNews()
         </div>
 			
 		</div>
-		
-		        <div class="safe02 service">
-        	<div class="imgBox index_child">
-				<h2>网站安全防护及加固服务</h2>
-                
-                <div class="listBox" style="width: 100%;">
-                	<div class="listR" style="width:1108px; margin:0 auto;">
-                    	<ul class="newlist child-newlist clearfix" style="margin-right:-40px;">
-                            <li class="fl">
-                                    <p class="fl"><img src="${ctx}/source/images/portal/fanghu.png" alt=""></p>
-                                    <div class="servicelistR fl">
-                                    	<h4>网站防护</h4>
-                                        <span>
-                                            	全天候网站保镖，<br>一站式管家服务
-                                        </span>
-                                        <div class="purchase">
-                                           
-                                            <strong style="display:block"><em style="font-size:20px;font-family: Arial Regular;">¥199.00</em></strong>
-                                             <strong style="display:block; font-size:30px;">¥100.00</strong>
-                                            <a href="#" class="btn" style="width:80px;">购买</a>
-                                        </div>
-                                    </div>
-                               	<div class="mask">
-                                	<h6>即将上线</h6>
-                                </div>
-                                
-                               
-                            </li>
-                            <li class="fl">
-                                    <p class="fl"><img src="${ctx}/source/images/portal/jiagu.png" alt=""></p>
-                                    <div class="servicelistR fl">
-                                    	<h4>网站加固</h4>
-                                        <span>
-                                            	不只是打补丁，<br>让网站完美如新
-                                        </span>
-                                        <div class="purchase">
-                                           
-                                            <strong style="display:block"><em style="font-size:20px;font-family: Arial Regular;">¥199.00</em></strong>
-                                             <strong style="display:block; font-size:30px;">¥100.00</strong>
-                                            <a href="#" class="btn" style="width:80px;">购买</a>
-                                        </div>
-                                    </div>
-                                <div class="mask">
-                                	<h6>即将上线</h6>
-                                </div>
-                               
-                            </li>
-                           </ul>
-                        </div>
-                   </div>
-                
-                
-             </div>
-        
-        </div>
 		
 		<div class="safe04">
 			<div class="imgBox clearfix">
