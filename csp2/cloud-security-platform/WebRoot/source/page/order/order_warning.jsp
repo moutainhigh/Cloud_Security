@@ -29,6 +29,7 @@
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/main.js"></script>
 <style>
 .table-c table{border-right:1px solid #000;border-bottom:1px solid #000}
 .table-c table td{border-left:1px solid #000;border-top:1px solid #000}
@@ -42,7 +43,7 @@
 	<div class="head" style="width:100%">
 		<div class="headBox">
 			<div class="safeL fl" style="width:260px; margin-right:13%">
-				<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
+				<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/></a>
 			</div>
 			<div class="safem fl">
 				<span class="fl"><a href="${ctx}/index.html">首页</a></span>
@@ -123,13 +124,17 @@
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
-					<a href="#"><img src="${ctx}/source/images/portal/footlogo.png" alt=""></a>
+					<a href="${ctx}/index.html">
+		               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
+	                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
+		               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+                   </a>
 				</div>
 				<ol class="footr clearfix fr">
 					<li>
                     	<h2>帮助中心</h2>
                         <dl>
-                        	<dd><a href="#">购买指南</a></dd>
+                        	<dd><a href="#">购物指南</a></dd>
                             <dd><a href="#">在线帮助</a></dd>
                             <dd><a href="#">常见问题</a></dd>
                        </dl>

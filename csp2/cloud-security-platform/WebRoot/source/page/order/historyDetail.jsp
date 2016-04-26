@@ -26,6 +26,7 @@
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/main.js"></script>
 </head>
 
 <body>
