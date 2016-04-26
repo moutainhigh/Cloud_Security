@@ -113,77 +113,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             limit #{pageNow},#{pageSize}    
     </select>
 	
-	
-	<select id="findByCombineOrderTrack" resultType="hashmap" parameterType="hashmap">
-        select b.id,b.type,b.sid,b.name,b.serviceId,b.begin_date,b.end_date,b.create_date,b.scan_type,b.status from
-        (
-        SELECT c.id,c.type,c.sid,c.name,c.serviceId,c.begin_date,c.end_date,c.create_date,c.scan_type,c.status
-        FROM (SELECT o.id,o.type,s.id as sid,s.name,o.serviceId,o.scan_type,o.begin_date,o.end_date,o.create_date,o.status
-              FROM cs_order o,cs_service s
-              WHERE o.userId = #{userId} AND o.serviceId = s.id) c 
-        WHERE
-            1=1  
-            <if test="type!=null">
-                AND c.type = #{type}
-            </if>
-            <if test="servName!=null and servName!=''"> 
-                AND c.sid = #{servName} 
-            </if>    
-            <if test="begin_date!=null">
-                AND c.begin_date &gt;= #{begin_date}
-            </if>    
-            <if test="end_date!=null">
-            AND ((c.end_date &lt;=#{end_date} AND c.type= 1) OR (c.begin_date &lt;=#{end_date} AND type=2))
-           
-            </if>
-            <if test="state==3"><!-- 已下单 -->
-                AND c.begin_date &gt; #{currentDate}
-            </if>
-            <if test="state==1"><!-- 服务中 -->
-                AND c.begin_date &lt;= #{currentDate}
-                AND c.status in (0,3)
-            </if>
-            <if test="state==2"><!-- 已结束 -->
-                <!-- AND c.end_date &lt; #{currentDate} -->
-                AND c.status in (1,2)
-            </if>
-            ) b order by b.create_date desc
-    </select>
-    
-    <select id="findByCombineOrderTrackByPage" resultType="hashmap" parameterType="hashmap">
-        select b.id,b.type,b.sid,b.name,b.serviceId,b.begin_date,b.end_date,b.create_date,b.scan_type,b.status from
-        (
-        SELECT c.id,c.type,c.sid,c.name,c.serviceId,c.begin_date,c.end_date,c.create_date,c.scan_type,c.status
-        FROM (SELECT o.id,o.type,s.id as sid,s.name,o.serviceId,o.scan_type,o.begin_date,o.end_date,o.create_date,o.status
-              FROM cs_order o,cs_service s
-              WHERE o.userId = #{userId} AND o.serviceId = s.id) c 
-        WHERE
-            1=1  
-            <if test="type!=null and type!=''">
-                AND c.type = #{type}
-            </if>
-            <if test="servName!=null and servName!=''"> 
-                AND c.sid = #{servName} 
-            </if>    
-            <if test="begin_date!=null and begin_date!=''">
-                AND c.begin_date &gt;= #{begin_date}
-            </if>    
-            <if test="end_date!=null and end_date!=''">
-              AND ((c.end_date &lt;=#{end_date} AND c.type= 1) OR (c.begin_date &lt;=#{end_date} AND type=2))
-            </if>
-            <if test="state==3"><!-- 已下单 -->
-                AND c.begin_date &gt; #{currentDate}
-            </if>
-            <if test="state==1"><!-- 服务中 -->
-                AND c.begin_date &lt;= #{currentDate}
-                AND c.status in (0,3)
-            </if>
-            <if test="state==2"><!-- 已结束 -->
-                <!-- AND c.end_date &lt; #{currentDate} -->
-                AND c.status in (1,2)
-            </if>
-            ) b order by b.create_date desc limit #{pageNow},#{pageSize}
-    </select>
       <select id="findByCombineDataAnalysis" resultType="hashmap" parameterType="hashmap">
         		SELECT DISTINCT b.name as name ,SUM(b.count) as count 
         		FROM(
@@ -340,7 +269,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 根据条件查询订单信息 -->
     <select id="findOrderByMap" resultMap="OrderRM" parameterType="hashmap">
         select * from cs_order o
-		where o.status not in (1,2) and o.delFlag !=1 and o.create_date &gt;='2016-01-01 00:00:00'
+		where o.status not in (1,2) and o.delFlag !=1 and o.create_date &gt;='2016-04-17 00:00:00'
 		
     </select>
     
