@@ -69,6 +69,8 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/sa_anquanbang.html");//安全动态感知
 		list.add("/joinUs.html");//加入我们
 		list.add("/knowUs.html");//了解我们
+		//add by tangxr 2016-4-18
+		list.add("/api_anquanbang.html");//安全动态感知
 
 		//获取访问的url路径
 		String path = request.getServletPath();
