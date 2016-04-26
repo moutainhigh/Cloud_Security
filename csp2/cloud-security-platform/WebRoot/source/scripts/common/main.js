@@ -72,7 +72,7 @@ topshow2();
 	function bannerMoveks(){
 		timer_banner=setInterval(function(){
 			move_banner()
-		},500000)
+		},5000)
 	};
 	bannerMoveks();//开始自动播放
 

@@ -34,9 +34,28 @@ $('.listl').mouseout(function(){
 },function(){
 	$(this).children('a').find('i').removeClass('active');
 	$('.listl').stop().slideUp("slow");
-})
-*/
+})*/
 
+//高级搜索切换
+$('.words').click(function(){
+		var _this=$(this).children('em').hasClass('add');
+		if(_this==true)
+		{	
+			$(this).find('.nitial').removeClass('initial')
+			$(this).children('em').removeClass('add');
+			$(this).children('em').text('精简筛选条件');
+			$('.coreshow').hide();	
+			
+		}else{
+			$(this).find('.nitial').addClass('initial');
+			$(this).children('em').addClass('add');
+			$(this).children('em').text('高级筛选条件');
+			
+			$('.coreshow').show();	
+		}
+		
+		
+	})	
 //列表悬停效果
 topshow();
 topshow2();
@@ -52,6 +71,9 @@ ask();
 
 onclick('clickBox');
 onclickTime('time');
+//复选框
+chck();
+
 $('.dropdown').click(function(){
 	$('.dropdown-menu').fadeIn();
 
@@ -107,7 +129,16 @@ $('.dropdown-menu li').hover(function(){
 		if(orderType == 1){
 			$('.type').hide();	
 		}
-}); 
+		
+		
+//选项卡切换
+	tablist();
+})
+///这里是结尾
+
+
+
+
 function topshow(){
 	$('.newlist-top li').hover(function(){
 		$(this).addClass('showdow');
@@ -319,6 +350,7 @@ function minsum(){
 	
 	
 }
+
 	
 //遮罩层
 function showout(){
@@ -341,3 +373,34 @@ function showout(){
 	})	
    
   }
+  
+  //复选框
+ function chck(){
+	$('.password label').click(function(){
+		var is=$(this).children('em').hasClass('right');
+		if(is==false)
+		{
+			$(this).children('em').addClass('right');
+			
+		}else{
+			$(this).children('em').removeClass('right');
+		}	
+	})
+		 
+} 
+
+
+//选项卡
+function tablist(){
+	$('.navlist li:last').css('background-image','none');
+	$('.navlist li').click(function(){
+		var zindex=$(this).index();
+		
+		$('.navlist li').removeClass('none');
+		$(this).addClass('this');
+		$(this).prev('li').addClass('none');
+		$(this).addClass('active').siblings('li').removeClass('active');
+		$(".tabBox .not-used").eq($(this).index()).show().siblings().hide();		
+	})
+	
+}
