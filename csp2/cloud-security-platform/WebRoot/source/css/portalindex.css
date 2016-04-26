@@ -38,6 +38,7 @@
 .safe01 .safem{
 		/*line-height: 60px;*/
 		line-height: 50px;
+		height:100%;
 }
 .safe01 .safem a{
 	 font-size:20px;
@@ -69,11 +70,13 @@
 	color: #c6c6c6;
 	margin:0 8px;
 }
+/*4--8*/
 .safe01 .Divlist{
 	position: relative;
 	/*line-height: 60px;*/
 	line-height:52px;
 	z-index:12;
+	height: 100%;
 }
 .safe01 .Divlist a i{
 	margin-left: 10px;
@@ -520,8 +523,10 @@ background:url(../images/portal/Xzq.png) no-repeat #fff;
 
 .listBox .purchase em{
 	color: #6e6e6e;
-	font-family:Arial Regular;
-	}
+    font-family: Arial Regular;
+}
+
+
 
 
 
@@ -626,6 +631,7 @@ background:url(../images/portal/Xzq.png) no-repeat #fff;
 	background-color: #2499fb;
 	border-bottom:#e2e2e2 solid 1px;
 }
+/*4-8*/
 .detalis-head .safem, .detalis-head .Divlist , .detalis-head .safer{
 	line-height: 53px;
 }
@@ -762,7 +768,8 @@ background:url(../images/portal/Xzq.png) no-repeat #fff;
 	margin-right:16px;
 	border-radius:2px; 
 	position: relative;
-	font-family:"微软雅黑"
+	font-family:"微软雅黑";
+	overflow: hidden;
 }
 
 .dataR ul li strong{
@@ -874,8 +881,10 @@ font-weight:normal;
 		border: none;
 		width: 100%;
 	}
+
+	/*4.8*/
 	.select .dropdown-menu{
-			width: 262px;
+		width: 262px;
 		display: none;
 		position:absolute;
 		left: 0px;
@@ -886,6 +895,8 @@ font-weight:normal;
 		 padding-bottom:10px;
 		 overflow: hidden;
 	}
+
+
 	.select .dropdown-menu li{
 		line-height: 24px;
 		height: 24px;
@@ -901,10 +912,13 @@ font-weight:normal;
 		top:0;
 		left: 10%;
 	}
-	
+
+
+
 	.btnNew em{ width:90%; height:30px; display:block;}
-	
-  .btnNew .caret{ position:absolute; right:-20px; top:50%}
+
+/*4.8*/
+	.btnNew .caret{ position:absolute; right:-20px; top:50%}
 	.select .dropdown-menu label{ width:100%; display:block}
 	.dropdown-menu .active{
 		background-color:#4AAFD1;
@@ -1512,13 +1526,8 @@ padding: 20px 30px 0px 0px;
 	display: block;
 	cursor:pointer;
 	height: 16px;
-	line-height: 16px;
+	line-height: 17px;
 	*line-height: 16px;
-}
-.detailsAPI .btnBoxs span em img{
-	position: relative;
-	*position: relative;
-	*top:-6px;
 }
 .detailsAPI .btnBox button{
 	border-radius: 2px;
