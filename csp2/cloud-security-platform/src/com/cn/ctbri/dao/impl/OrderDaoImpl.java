@@ -27,6 +27,10 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 	 */
 	private String ns = "com.cn.ctbri.entity.OrderMapper.";
 	/**
+	 * 功        能： OrderSearchMapper命名空间
+	 */
+	private String nv = "com.cn.ctbri.entity.OrderSearchMapper.";
+	/**
 	 * 功能描述：查询所有订单
 	 * 参数描述：int id
 	 *		 @time 2015-1-15
@@ -58,7 +62,7 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
      * 返回值    ：  List<Order>
      */
     public List findByCombineOrderTrack(Map<String, Object> paramMap) {
-        List list = this.getSqlSession().selectList(ns + "findByCombineOrderTrack",paramMap);
+        List list = this.getSqlSession().selectList(nv + "findByCombineOrderTrack",paramMap);
         return list;
     }
 
@@ -108,7 +112,7 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
      * 返回值    ：  List<Order>
      */
     public List findByCombineOrderTrackByPage(Map<String, Object> paramMap) {
-        List list = this.getSqlSession().selectList(ns + "findByCombineOrderTrackByPage",paramMap);
+        List list = this.getSqlSession().selectList(nv + "findByCombineOrderTrackByPage",paramMap);
         return list;
     }  
     /**
@@ -202,6 +206,16 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 	public List<Linkman> findLinkmanById(int contactId) {
 		List<Linkman> linkman = this.getSqlSession().selectList(ns + "findLinkmanById",contactId);
         return linkman;
+	}
+
+	/**
+     * 功能描述：组合查询订单追踪-分页
+     *       @time 2016-4-25
+     * 返回值    ：  List<Order>
+     */
+	public List findByCombineOrderTrackByPageAsset(Map<String, Object> paramMap) {
+		List list = this.getSqlSession().selectList(nv + "findByCombineOrderTrackByPageAsset",paramMap);
+        return list;
 	}
     
     

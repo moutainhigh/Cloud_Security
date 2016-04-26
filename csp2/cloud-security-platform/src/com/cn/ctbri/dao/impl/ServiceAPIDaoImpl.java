@@ -1,5 +1,7 @@
 package com.cn.ctbri.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.DaoCommon;
@@ -24,6 +26,11 @@ public class ServiceAPIDaoImpl extends DaoCommon implements ServiceAPIDao{
 
 	public ServiceAPI findById(int apiId) {
 		return this.getSqlSession().selectOne(ns + "findById",apiId);
+	}
+
+
+	public List<ServiceAPI> findServiceAPI() {
+		return this.getSqlSession().selectList(ns + "list");
 	}
 	
 }
