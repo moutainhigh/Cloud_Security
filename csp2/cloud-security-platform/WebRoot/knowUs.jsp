@@ -13,185 +13,192 @@
 <SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
 <script src="${ctx}/source/scripts/common/jquery.js"></script>
 <script src="${ctx}/source/scripts/common/portalindex.js"></script>
-<script src="${ctx}/source/scripts/common/popBox.js"></script>
-<script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
-<link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
+<script src="${ctx}/source/scripts/common/main.js"></script>
 <style>
-body,html{
-	height: 100%;
-	width: 100%;
+.rich_media_meta_list{
+	height:40px;
+	line-height:40px;
 }
-.helph{height:30px;font-size:18x;line-height:30px;padding-left:20px;color:#666;padding-top:20px;
-	width: 70%;
-margin: 10px 26%;
+.rich_media_meta_nickname{
+	color: #607fa6;
+    text-decoration: none;
 }
-.helphn{
-	height:30px;font-size:20px !important;line-height:30px;padding-left:20px;color:#666;padding:20px 0 10px 0;
-	text-align: center;
-	margin-bottom:0 !important;
+.rich_media_content p{
+    line-height: 24px;
+    font-size: 14px;
+    color: #343434;
+	
 }
-.help_detail{margin: 10px 0 0 20px;color: #888;font-size: 16px; text-indent:2em;line-height:30px;
-	width: 70%;
-margin: 0 26%;
+.rich_media_inner{
+	padding:0px;
 }
-.hr{width:70%;height:1px;background:#666;margin:0 auto;margin-bottom:20px;overflow: hidden; }
-
+.understand img{
+    padding: 20px 0;
+}
 </style>
+<script>
+$(function(){
+	$('.understand p').css('text-align','left');	
+})
+
+</script>
 </head>
 
 <body>
 	<div class="safeBox">
 		
-		<div class="safe01">
+		<div class="safe01 detalis-head">
 			<!--头部-->
-<div class="safe01 detalis-head">
-	<!--头部-->
-	<div class="head" style="width:100%">
-		<div class="headBox">
-			<div class="safeL fl" style="width:260px; margin-right:13%">
-				<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
-                      <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px;">网站安全帮</strong>
-			</div>
-			<div class="safem fl">
-				<span class="fl"><a href="${ctx}/index.html">首页</a></span>
-				<div class="Divlist listJs fl">
-					<a href="${ctx}/orderTrackInit.html">我的安全帮<!--<i></i>--></a>
-					<!--<ul class="list listl">
-						<li><a href="#">我的订单</a></li>
-						<li><a href="#">我的资产</a></li>
-						<li style="border: none;"><a href="#">个人信息</a></li>
-					</ul>-->
+			<div class="head">
+				<div class="headBox">
+					<div class="safeL fl" style="width:260px; margin-right:13%">
+						<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/></a>
+					</div>
+					<div class="safem fl">
+						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
+						<div class="Divlist listJs fl">
+							<a href="#" class="hbule">我的安全帮<i></i></a>
+							<ul class="list listl">
+								<li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
+								<li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
+								<li style="border: none;"><a href="#">个人信息</a></li>
+							</ul>
+						</div>
+						<span class="fl ask">
+							<a href="#" class="hbule">手机APP</a>
+							<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
+						</span>
+						<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
+						
+					</div>
+					<div class="safer fr">
+						<!-- 如果已经登录则显示用户名，否则需要登录 -->
+				         <c:if test="${sessionScope.globle_user!=null }">
+					        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
+					        <em>|</em>
+					        <a href="${ctx}/exit.html">退出</a>
+				         </c:if>
+				         <c:if test="${sessionScope.globle_user==null }">
+				            <a href="${ctx}/loginUI.html">登录</a>
+							<em>|</em>
+							<a href="${ctx}/registUI.html">注册</a>
+				         </c:if>
+					</div>
 				</div>
-				<span class="fl ask">
-					<a href="#" class="hbule">手机APP</a>
-					<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
-				</span>
-				<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
-				
 			</div>
-			<div class="safer fr">
-				<!-- 如果已经登录则显示用户名，否则需要登录 -->
-		         <c:if test="${sessionScope.globle_user!=null }">
-			        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
-			        <em>|</em>
-			        <a href="${ctx}/exit.html">退出</a>
-		         </c:if>
-		         <c:if test="${sessionScope.globle_user==null }">
-		            <a href="${ctx}/loginUI.html">登录</a>
-					<em>|</em>
-					<a href="${ctx}/registUI.html">注册</a>
-		         </c:if>
-			</div>
-		</div>
-	</div>
-	
-
-</div>
-<!-- 头部代码结束-->
-
-		</div>
-		
-		
-		<div class="safe02">
 			
-			<div class="imgBox">
-				  <div class="user_right" style="width: 942px;border:1px solid #e0e0e0; margin:0 auto;">
-			  	  <a name="1F">
-				  <div id="f1" class="dd">
-				    <p class="help_detail">安全帮，</p>
-				    <p class="help_detail">是一个全自助式安全服务电子商城，</p>
-				    <p class="help_detail">2015年诞生于中国电信北京研究院安全技术与应用产品线。</p><br/>
-				    
-				    <p class="help_detail">在这里，</p>
-				    <p class="help_detail">你可以像在线购买普通商品那样，</p>
-				    <p class="help_detail">购买和使用及时生效的安全服务。</p>
-				    <p class="help_detail">这样，</p>
-				    <p class="help_detail">你不用再购买昂贵的安全设备，</p>
-				    <p class="help_detail">不用再部署高大上的安全设备，</p>
-				    <p class="help_detail">不用再熬夜看使用手册，</p>
-				    <p class="help_detail">你要做的，就是：</p>
-				    <p class="help_detail">轻点鼠标，立享服务，</p>
-				    <p class="help_detail">晴空万里，一切都好！</p><br/>
-				    
-				    <p class="help_detail">这是一个美好的理想，</p>
-				    <p class="help_detail">也是我们的梦想。</p>
-				    <p class="help_detail">梦想是远大的，如何实现呢？</p>
-				    <p class="help_detail">我们决定先上线“网站安全帮”：</p>
-				    <p class="help_detail">为370万个网站提供7*24小时的安全监测及预警服务。</p>
-				    <p class="help_detail">我们的梦想，</p>
-				    <p class="help_detail">为了让那些苦逼的网管不再那么疲倦，</p>
-				    <p class="help_detail">让他们可以睡一次安稳觉。</p><br/>
-				    
-				    <p class="help_detail">也许，我们的梦想就是：</p>
-				    <p class="help_detail">我们希望可以让网管不再那么苦逼，</p>
-				    <p class="help_detail">我们希望可以让企业不再那么花钱，</p>
-				    <p class="help_detail">我们希望可以让安全不再那么遥远…….</p><br/>
-				    
-				    <p class="help_detail">我们刚开始，</p>
-				    <p class="help_detail">做的还很不好，</p>
-				    <p class="help_detail">我们在路上，</p>
-				    <p class="help_detail">为了梦想努力的向前走，</p>
-				    <p class="help_detail">我们相信：我们会做得更好，</p>
-				    <p class="help_detail">因为我们的梦想，</p>
-				    <p class="help_detail">因为我们的坚持，</p>
-				    <p class="help_detail">因为我们的专业。</p><br/>
-				    <div class="hr"></div>
-				    <p class="help_detail">“安全帮”——全自助式安全服务在线商城，是中国电信基于<br/>
-				                                               专业安全能力自主研发的云安全服务平台，旨在解决企业面临的安<br/>
-				                                               全厂商多、安全产品繁、安全投资大、安全人才缺等四大问题，为<br/>
-				                                               用户提供一站式安全服务。 用户通过在线注册购买，即可享受及时、<br/>
-				                                               在线、智能、便捷的安全服务，全面保障业务安全。</p><br/>
-				                                               
-				  </div>
-				  </a>
-			      
-			  
-			  </div>
-			</div>
+
 		</div>
-		
-		<div class="safe03">
-			<div class="imgBox" id="carrousel" style="width: 1190px;">
-				<h2><i></i>合作伙伴<i></i></h2>
-                
-                <div class="friend-Link ">
-                    <div class="left-arrow"><a href="javascript:;"><img src="${ctx}/source/images/portal/left.png"></a></div>
-                    <div class="fl-pic">
-                      <ul class="imgist clearfix">
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico11.png" alt=""></a></li>
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico12.png" alt=""></a></li>
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico13.png" alt=""></a></li>
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico14.png" alt=""></a></li>
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico15.png" alt=""></a></li>
-                        <!--<li><a href="#"><img src="imges/ico13.png" alt=""></a></li>
-                        <li><a href="#"><img src="imges/ico14.png" alt=""></a></li>
-                        <li><a href="#"><img src="imges/ico15.png" alt=""></a></li>-->
-                      </ul>
+        <!--主题内容-->
+		<div class="understand" style="width:740px; margin:0 auto">
+        	<div class="rich_media_inner">
+            <div id="page-content">
+                <div id="img-content" class="rich_media_area_primary">
+                    <!-- <h2 class="rich_media_title" id="activity-name">
+                        	安全帮，帮一下就好了！ 
+                    </h2>
+                    <div class="rich_media_meta_list">
+					   <em id="post-date" class="rich_media_meta rich_media_meta_text">2016-04-12</em>
+
+                       <em class="rich_media_meta rich_media_meta_text">安全帮团队</em>
+                       <a class="rich_media_meta rich_media_meta_link rich_media_meta_nickname" href="javascript:void(0);" id="post-user">安全帮</a>
+                       <span class="rich_media_meta rich_media_meta_text rich_media_meta_nickname">安全帮</span> -->
+
+                        <div id="js_profile_qrcode" class="profile_container" style="display:none;">
+                            <div class="profile_inner">
+                                <strong class="profile_nickname">安全帮</strong>
+                                <img class="profile_avatar" id="js_profile_qrcode_img" src="" alt="">
+
+                                <p class="profile_meta">
+                                <label class="profile_meta_label">微信号</label>
+                                <span class="profile_meta_value">anquanbang_123456</span>
+                                </p>
+
+                                <p class="profile_meta">
+                                <label class="profile_meta_label">功能介绍</label>
+                                <span class="profile_meta_value">安全帮，全自助式安全服务在线商城，是中国电信基于专业安全能力自主研发的云安全服务平台，旨在解决企业面临的安全厂商多、安全产品繁、安全投资大、安全人才缺等四大问题，为用户提供一站式安全服务。</span>
+                                </p>
+                                
+                            </div>
+                            <span class="profile_arrow_wrp" id="js_profile_arrow_wrp">
+                                <i class="profile_arrow arrow_out"></i>
+                                <i class="profile_arrow arrow_in"></i>
+                            </span>
+                        </div>
                     </div>
-                    <div class="right-arrow"><a href="javascript:;"><img src="${ctx}/source/images/portal/right.png"></a></div>
-                  </div>
+                    
+                    
+                    
+                    
+                                                            
+                                        <div class="rich_media_thumb_wrp" id="media">
+                        
+                                               <img class="rich_media_thumb" id="js_cover" onerror="this.parentNode.removeChild(this)" data-backsrc="http://mmbiz.qpic.cn/mmbiz/fPY475147RiaQaS0G2DOHr7kZN9FBcfqa3ia3Nnx8ib38rRELAsic6CserTCqkzoS2QGfhPXxwSR5SJ8a8OmqlHmIA/0?wx_fmt=jpeg" data-s="300,640" src="${ctx}/source/images/knowUs/1.jpg" alt="">
+                                            </div>
+                                        
+                    
+                    <div class="rich_media_content " id="js_content">
+                        
+                        <p>安全帮，</p><p>www.anquanbang.net</p><p>是一个全自助式安全服务云商城，</p><p>诞生于中国电信北京研究院安全技术与应用产品线。<img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/2.jpg" style="width: auto !important; visibility: visible !important; height: auto !important;"><br></p><p>在安全帮，</p><p>你可以像在线购买普通商品那样，</p><p>购买和使用及时生效的安全服务。</p><p>这样，</p><p>你不用再购买昂贵的安全设备，</p><p>不用再部署高大上的安全设备，</p><p>不用再熬夜看使用手册，</p><p>你要做的，就是：</p><p>轻点鼠标，立享服务，</p><p>晴空万里，一切都好！</p><p style="text-align: center;"><img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/7.jpg" style="width: auto !important; visibility: visible !important; height: auto !important;"><br></p><p style="text-align: center;"><img data-s="300,640" src="${ctx}/source/images/knowUs/3.jpg" style="width: auto !important; visibility: visible !important; height: auto !important;"><br></p><p>这是一个美好的理想，</p><p>也是我们的梦想。</p><p>梦想是远大的，如何实现呢？</p><p>我们决定先上线“网站安全帮”：</p><p>为370万个网站提供7*24小时的安全监测及预警服务。</p><p>我们的梦想，</p><p>为了让那些苦逼的网管不再那么疲倦，</p><p>让他们可以睡一次安稳觉。</p><p style="text-align: center;"><img data-s="300,640"  src="${ctx}/source/images/knowUs/6.jpg" style="width: auto !important; visibility: visible !important; height: auto !important;"><br></p><p>也许，我们的梦想就是：</p><p>我们希望可以让网管不再那么苦逼，</p><p>我们希望可以让企业不再那么花钱，</p><p>我们希望可以让安全不再那么遥远…….</p><p style="text-align: center;"><img data-s="300,640"  src="${ctx}/source/images/knowUs/5.jpg" style="width: auto !important; visibility: visible !important; height: auto !important;"><br></p><p>我们刚开始，</p><p>做的还很不好，</p><p>我们在路上，</p><p>为了梦想努力的向前走，</p><p>我们相信：我们会做得更好，</p><p>因为我们的梦想，</p><p>因为我们的坚持，</p><p>因为我们的专业。</p><p style="text-align: left;"><img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/4.jpg" style="width: auto !important; visibility: visible !important; height: auto !important;"><br><span style="color: rgb(61, 170, 214);"><strong>关于安全帮</strong></span></p><section class="pEditor" data-id="1660"><section style="padding-right: 5px; padding-left: 5px; line-height: 10px; color: inherit; border: 1px solid rgb(30, 154, 225);"><section style="color: inherit; height: 8px; margin-top: -8px; margin-left: 140px; width: 50%; background-color: rgb(254, 254, 254);"><section style="width: 8px; height: 8px; border-radius: 100%; line-height: 1; box-sizing: border-box; font-size: 18px; text-decoration: inherit; border-color: rgb(135, 190, 222); display: inline-block; color: rgb(255, 255, 238); background-color: rgb(30, 154, 225);"></section></section><section class="pBrush" style="line-height: 2em; color: rgb(62, 62, 62); font-size: 14px; margin: 15px;"><p>www.anquanbang.net</p><p>安全帮，全自助式安全服务云商城。</p><p><span style="line-height: 2em;">是中国电信基于专业安全能力打造的云安全服务平台，是安全服务与产品集结的一个云平台。用户通过在线自助注册购买，即可享受及时、在线、智能、便捷的安全服务。</span><br></p><p>旨在解决企业面临的安全厂商多、安全产品繁、安全投资大、安全人才缺等四大问题，省时省力省钱。</p><p><span style="line-height: 2em;"><br></span></p><p><span style="line-height: 2em;">“安全帮”v1.0之“网站安全帮”已上线公测，首推5大网站安全监测及预警服务：WEB漏洞扫描、网页挂马监测、网页篡改监测、敏感内容监测、可用性监测。安全帮进行7*24小时监测，一旦发现问题，及时短信和邮件通知用户。</span><br></p><p>网络安全帮、数据库安全帮、系统安全帮、移动安全帮的相关服务会陆续上线提供。</p></section><section style="color: inherit; text-align: right; height: 10px; margin-bottom: -4px; margin-left: 25px; width: 65%; background-color: rgb(254, 254, 254);"><section style="margin-right: auto; margin-bottom: 1px; margin-left: auto; border-radius: 100%; line-height: 1; box-sizing: border-box; text-decoration: inherit; border-color: rgb(135, 190, 222); display: inline-block; height: 8px; width: 8px; color: rgb(255, 255, 238); background-color: rgb(30, 154, 225);"></section></section></section></section>
+                    </div>
+                    
+                    <link rel="stylesheet" type="text/css" href="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/style/page/appmsg/page_mp_article_improve_combo2d1390.css">
+                    
+                    
+                                        
+                                        
+                                        <div class="rich_media_tool" id="js_toobar3">
+                                                                    <div id="js_read_area3" class="media_tool_meta tips_global meta_primary" style="display:none;">阅读 <span id="readNum3"></span></div>
+
+                        <span style="display:none;" class="media_tool_meta meta_primary tips_global meta_praise" id="like3">
+                            <i class="icon_praise_gray"></i><span class="praise_num" id="likeNum3"></span>
+                        </span>
+
+                        <a id="js_report_article3" style="display:none;" class="media_tool_meta tips_global meta_extra" href="javascript:void(0);">投诉</a>
+
+                    </div>
+
+
+
+                                    </div>
+
+                <div class="rich_media_area_primary sougou" id="sg_tj" style="display:none">
+
+                </div>
+
+                <div class="rich_media_area_extra">
+
+                    
+                                        <div class="mpda_bottom_container" id="js_bottom_ad_area">
+                        
+                    </div>
+                                        
+                    <div id="js_iframetest" style="display:none;"></div>
+                                        
+                                    </div>
+               
+            </div>
+           
+        </div>
+        </div>
         
-			</div>
-		</div>
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
-					<!--修改-->
-				   <a href="#">
+					<a href="${ctx}/index.html">
 	               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
                    <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
 	               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
                    </a>
-                <!--修改-->  
 				</div>
 				<ol class="footr clearfix fr">
 					<li>
                     	<h2>帮助中心</h2>
                         <dl>
-                        	<dd><a href="#">购买指南</a></dd>
+                        	<dd><a href="#">购物指南</a></dd>
                             <dd><a href="#">在线帮助</a></dd>
                             <dd><a href="#">常见问题</a></dd>
                        </dl>
@@ -207,7 +214,7 @@ margin: 0 26%;
                     <li>
                     	<h2>关注我们</h2>
                         <dl>
-                        	<dd><a href="#">QQ交流群</br>470899318</a></dd>
+                        	<dd><a href="#">QQ交流群<br>470899318</a></dd>
                             <dd class="weixin"><a href="#">官方微信</a></dd>
                        </dl>
                     </li>
@@ -226,7 +233,8 @@ margin: 0 26%;
 		<div class="foot">
 			<p>版权所有Copyright © 2015 中国电信股份有限公司北京研究院京ICP备12019458号-10</p>
 		</div>
-		<!---执行效果-->
+	</div>
+<!---执行效果-->
 <div class="weixinshow popBoxhide" id="weixin">
 	<i class="close chide"></i>
     <div class="Pophead">
@@ -244,28 +252,6 @@ margin: 0 26%;
 </div>
 	
 <div class="shade"></div>
-	</div>
-	
-
-</body>
-<script>
-$(function(){	
-	$('#carrousel').hover(function(){
-			$('.left-arrow').fadeIn();
-			$('.right-arrow').fadeIn();
-		},function(){
-			$('.right-arrow').fadeOut();
-			$('.left-arrow').fadeOut();
-		})
-	
-	$(".fl-pic").slidelf({
-			"prev":"left-arrow",
-			"next":"right-arrow",
-			"speed":300 //时间可以任意调动  以毫秒为单位
-		});
-		
-	})
-	
-</script>
+</body> 
 
 </html>

@@ -13,12 +13,10 @@
 <SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
 <script src="${ctx}/source/scripts/common/jquery.js"></script>
 <script src="${ctx}/source/scripts/common/portalindex.js"></script>
-<script src="${ctx}/source/scripts/common/popBox.js"></script>
-<script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
-<link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
+<script src="${ctx}/source/scripts/common/main.js"></script>
 <style>
 body,html{
 	height: 100%;
@@ -44,54 +42,49 @@ margin: 0 18%;
 <body>
 	<div class="safeBox">
 		
-		<div class="safe01">
-			<!--头部-->
 <div class="safe01 detalis-head">
-	<!--头部-->
-	<div class="head" style="width:100%">
-		<div class="headBox">
-			<div class="safeL fl" style="width:260px; margin-right:13%">
-				<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
-                      <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px;">网站安全帮</strong>
-			</div>
-			<div class="safem fl">
-				<span class="fl"><a href="${ctx}/index.html">首页</a></span>
-				<div class="Divlist listJs fl">
-					<a href="${ctx}/orderTrackInit.html">我的安全帮<!--<i></i>--></a>
-					<!--<ul class="list listl">
-						<li><a href="#">我的订单</a></li>
-						<li><a href="#">我的资产</a></li>
-						<li style="border: none;"><a href="#">个人信息</a></li>
-					</ul>-->
+			<!--头部-->
+			<div class="head">
+				<div class="headBox">
+					<div class="safeL fl" style="width:260px; margin-right:13%">
+						<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/></a>
+					</div>
+					<div class="safem fl">
+						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
+						<div class="Divlist listJs fl">
+							<a href="#" class="hbule">我的安全帮<i></i></a>
+							<ul class="list listl">
+								<li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
+								<li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
+								<li style="border: none;"><a href="#">个人信息</a></li>
+							</ul>
+						</div>
+						<span class="fl ask">
+							<a href="#" class="hbule">手机APP</a>
+							<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
+						</span>
+						<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
+						
+					</div>
+					<div class="safer fr">
+						<!-- 如果已经登录则显示用户名，否则需要登录 -->
+				         <c:if test="${sessionScope.globle_user!=null }">
+					        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
+					        <em>|</em>
+					        <a href="${ctx}/exit.html">退出</a>
+				         </c:if>
+				         <c:if test="${sessionScope.globle_user==null }">
+				            <a href="${ctx}/loginUI.html">登录</a>
+							<em>|</em>
+							<a href="${ctx}/registUI.html">注册</a>
+				         </c:if>
+					</div>
 				</div>
-				<span class="fl ask">
-					<a href="#" class="hbule">手机APP</a>
-					<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
-				</span>
-				<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
-				
 			</div>
-			<div class="safer fr">
-				<!-- 如果已经登录则显示用户名，否则需要登录 -->
-		         <c:if test="${sessionScope.globle_user!=null }">
-			        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
-			        <em>|</em>
-			        <a href="${ctx}/exit.html">退出</a>
-		         </c:if>
-		         <c:if test="${sessionScope.globle_user==null }">
-		            <a href="${ctx}/loginUI.html">登录</a>
-					<em>|</em>
-					<a href="${ctx}/registUI.html">注册</a>
-		         </c:if>
-			</div>
-		</div>
-	</div>
-	
+			
 
-</div>
+		</div>
 <!-- 头部代码结束-->
-
-		</div>
 		
 		
 		<div class="safe02">
@@ -162,7 +155,7 @@ margin: 0 18%;
 			<div class="imgBox clearfix">
 				<div class="footL fl">
 					<!--修改-->
-				   <a href="#">
+				   <a href="${ctx}/index.html">
 	               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
                    <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
 	               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
@@ -173,7 +166,7 @@ margin: 0 18%;
 					<li>
                     	<h2>帮助中心</h2>
                         <dl>
-                        	<dd><a href="#">购买指南</a></dd>
+                        	<dd><a href="#">购物指南</a></dd>
                             <dd><a href="#">在线帮助</a></dd>
                             <dd><a href="#">常见问题</a></dd>
                        </dl>
@@ -208,6 +201,7 @@ margin: 0 18%;
 		<div class="foot">
 			<p>版权所有Copyright © 2015 中国电信股份有限公司北京研究院京ICP备12019458号-10</p>
 		</div>
+		</div>
 		<!---执行效果-->
 <div class="weixinshow popBoxhide" id="weixin">
 	<i class="close chide"></i>
@@ -226,7 +220,6 @@ margin: 0 18%;
 </div>
 	
 <div class="shade"></div>
-	</div>
 	
 
 </body>

@@ -31,7 +31,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 			<div class="head">
 				<div class="headBox">
 					<div class="safeL fl" style="width:260px; margin-right:13%">
-						<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:5px;"/>
+						<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:5px;"/></a>
 					</div>
 					<div class="safem fl">
 						<span class="fl"><a href="${ctx}/index.html" class="hbule this">首页</a></span>
@@ -106,7 +106,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                 <a href="${ctx}/selfHelpOrderInit.html?serviceId=1&indexPage=1">
                                     <i><img src="${ctx}/source/images/portal/HOT.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/vulnScan.png" alt=""></p>
-                                    <h4>漏洞扫描服务</h4>
+                                    <h4>WEB漏洞监测服务</h4>
                                     <div class="purchase">
                                     	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">¥0</strong>
                                     	<strong style="text-decoration:line-through;color: #d00000;"><em style="font-family: Arial Regular;font-size: 16px;">¥99</em></strong>
@@ -117,7 +117,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                 <a href="${ctx}/selfHelpOrderInit.html?serviceId=2&indexPage=1">
                                     <i><img src="${ctx}/source/images/portal/free.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/trojanDetect.png" alt=""></p>
-                                    <h4>木马检测服务</h4>
+                                    <h4>网站挂马监测服务</h4>
                                     <div class="purchase">
                                     	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">¥0</strong>
                                     	<strong style="text-decoration:line-through;color: #d00000;"><em style="font-family: Arial Regular;font-size: 16px;">¥99</em></strong>
@@ -128,7 +128,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                 <a href="${ctx}/selfHelpOrderInit.html?serviceId=4&indexPage=1">
                                     <i style="display:none"><img src="${ctx}/source/images/portal/free.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/sensitiveWord.png" alt=""></p>
-                                    <h4>关键字监测服务</h4>
+                                    <h4>网页敏感内容监测服务</h4>
                                     <div class="purchase">
                                     	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">¥0</strong>
                                     	<strong style="text-decoration:line-through;color: #d00000;"><em style="font-family: Arial Regular;font-size: 16px;">¥99</em></strong>
@@ -141,20 +141,22 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                 <div class="listBox clearfix" style="margin:0 auto">
                 	<div class="listL fl">
                     	<div class="">
+                    		<a href="${ctx}/api_anquanbang.html">
                         	<p><img src="${ctx}/source/images/portal/API262-330.png" alt=""></p>
+                        	</a>
                         </div>
                     </div>
                 	<div class="listR fl">
                     	<div class="new-title clearfix">
-                        	<h3 class="fl">安全能力API</h3>
-                            <a href="#" class="fr">查看更多<b></b></a>
+                        	<a href="${ctx}/api_anquanbang.html"><h3 class="fl">安全能力API</h3></a>
+                            <a href="${ctx}/api_anquanbang.html" class="fr">查看更多<b></b></a>
                         </div>
                     	<ul class="newlist newlist-top fl">
                             <li class="fl">
                                 <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=3&indexPage=2">
                                     <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/webPageTamper.png" alt=""></p>
-                                    <h4>网页篡改监测</h4>
+                                    <h4>网页篡改监测能力API</h4>
                                     <div class="purchase">
                                     	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">¥0</strong>
                                     	<strong style="text-decoration:line-through;color: #d00000;"><em style="font-family: Arial Regular;font-size: 16px;">¥99</em></strong>
@@ -162,10 +164,10 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                 </a>
                             </li>
                             <li class="fl">
-                                <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=1&indexPage=2">
+                                <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=4&indexPage=2">
                                     <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/sensitiveWord.png" alt=""></p>
-                                    <h4>敏感词监测</h4>
+                                    <h4>网页敏感内容监测能力API</h4>
                                     <div class="purchase">
                                     	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">¥0</strong>
                                     	<strong style="text-decoration:line-through;color: #d00000;"><em style="font-family: Arial Regular;font-size: 16px;">¥99</em></strong>
@@ -176,7 +178,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                 <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=5&indexPage=2">
                                     <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/availability.png" alt=""></p>
-                                    <h4>可用性监测</h4>
+                                    <h4>网站可用性监测API</h4>
                                     <div class="purchase">
                                     	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">¥0</strong>
                                     	<strong style="text-decoration:line-through;color: #d00000;"><em style="font-family: Arial Regular;font-size: 16px;">¥99</em></strong>
@@ -224,11 +226,11 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                     <div class="left-arrow"><a href="javascript:;"><img src="${ctx}/source/images/portal/left.png"></a></div>
                     <div class="fl-pic">
                       <ul class="imgist clearfix">
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico14.png" alt=""></a></li>
                         <li><a href="#"><img src="${ctx}/source/images/portal/ico11.png" alt=""></a></li>
                         <li><a href="#"><img src="${ctx}/source/images/portal/ico12.png" alt=""></a></li>
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico13.png" alt=""></a></li>
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico14.png" alt=""></a></li>
                         <li><a href="#"><img src="${ctx}/source/images/portal/ico15.png" alt=""></a></li>
+                        <li><a href="#"><img src="${ctx}/source/images/portal/ico13.png" alt=""></a></li>
                         <!--<li><a href="#"><img src="imges/ico13.png" alt=""></a></li>
                         <li><a href="#"><img src="imges/ico14.png" alt=""></a></li>
                         <li><a href="#"><img src="imges/ico15.png" alt=""></a></li>-->
@@ -243,7 +245,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 			<div class="imgBox clearfix">
 				<div class="footL fl">
 				<!--修改-->
-				   <a href="#">
+				   <a href="${ctx}/index.html">
 	               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
                    <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
 	               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
