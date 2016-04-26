@@ -108,7 +108,7 @@ function notagree(){
 	<div class="head" style="width:100%">
 		<div class="headBox">
 			<div class="safeL fl" style="width:260px; margin-right:13%">
-				<img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
+				<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/></a>
 			</div>
 			<div class="safem fl">
 				<span class="fl"><a href="${ctx}/index.html">首页</a></span>
@@ -295,7 +295,7 @@ function notagree(){
 			<div class="imgBox clearfix">
 				<div class="footL fl">
 					<!--修改-->
-				   <a href="#">
+				   <a href="${ctx}/index.html">
 		               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
 	                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
 		               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
@@ -306,7 +306,7 @@ function notagree(){
 					<li>
                     	<h2>帮助中心</h2>
                         <dl>
-                        	<dd><a href="#">购买指南</a></dd>
+                        	<dd><a href="#">购物指南</a></dd>
                             <dd><a href="#">在线帮助</a></dd>
                             <dd><a href="#">常见问题</a></dd>
                        </dl>
