@@ -209,7 +209,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                     <dd class="fl frn frn2">
                     	<div class="introduce">
                     	<a href="#">
-                        	<h4>X专区</h4>
+                        	<h4><a href="${ctx}/Xpage.html">X专区 </a></h4>
                             <p>独特极客安全工具</p>
 				            <p>特定漏洞专用检测工具</p>
                             </a>
