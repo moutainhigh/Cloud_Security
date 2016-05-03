@@ -177,7 +177,7 @@ function detectionUrl(){
             		<p class="logoimg"><img src="${ctx}/source/images/portal/newlogo-footer.png" alt=""></p>
             		<h2>Struts2 S2-032漏洞在线检测 </h2>
                     <div class="search">
-                    	<input type="text" class="text "placeholder="请输入站点域名或IP" id="urlInfo"><input type="button"  value="开始检测" class="btn"  onclick="detectionUrl();">
+                    	<input type="text" class="text "placeholder="请输入站点域名或IP" id="urlInfo" onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')"><input type="button"  value="开始检测" class="btn"  onclick="detectionUrl();">
                     </div>
                     <!--有漏洞-->
                     <div class="result clearfix" id="haveId" style="display:none" >
