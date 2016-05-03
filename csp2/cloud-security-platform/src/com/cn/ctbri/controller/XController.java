@@ -58,7 +58,7 @@ public class XController {
 	
 	  public boolean PostDetection(String urlInfo) {
 		  
-			 boolean flag =true;
+			 boolean flag =false;
 				try {
 					log.info(urlInfo);
 				
@@ -74,18 +74,19 @@ public class XController {
 						body=post.getResponseBodyAsString();
 					}
 				   if(code==200&&body!=null){
-					  if(body.indexOf("whoami")==-1){
-						  flag=false;
-						  log.info("无....");
-					  }	else{
+					  if(body.indexOf("whoami")!=-1){
 						  flag= true;
 						  log.info("发现漏洞");
+						 
+					  }	else{
+						  flag=false;
+						  log.info("无....");
 					  }
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 					  log.info("访问地址无响应!");
-					flag=true;
+					flag=false;
 				} 
 				return flag;
 			}
@@ -93,7 +94,7 @@ public class XController {
 
 			
 			public boolean GetDetection(String urlInfo) {
-				boolean flag=true;
+				boolean flag=false;
 				try{
 				HttpClient client= new HttpClient();
 				GetMethod gets = new GetMethod(urlInfo);
@@ -103,19 +104,20 @@ public class XController {
 					body=gets.getResponseBodyAsString();
 				}
 				if(code==200&&body!=null){
-					  if(body.indexOf("whoami")==-1){
-						  flag=false;
-						  log.info("无....");
-                     }else{
+					  if(body.indexOf("whoami")!=-1){
 						  flag= true;
 						  log.info("发现漏洞");
+						
+                     }else{
+                    	  flag=false;
+						  log.info("无....");
 					  }	
 				}
 				}catch (Exception e) {
 					e.printStackTrace();
 					  log.info("访问地址无响应!");
 
-					flag=true;
+					flag=false;
 				} 
 				return flag;
 		    }
