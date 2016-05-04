@@ -143,7 +143,8 @@ public class WarningController {
 	        	request.setAttribute("timeSize", 0);
 	        }
 	        
-	        if((orderList.get(0).get("status").equals(0)||runList.size()>0)&&groupId==null){
+//	        if((orderList.get(0).get("status").equals(0)||runList.size()>0)&&groupId==null){
+	        if(!orderList.get(0).get("status").equals(1)||!orderList.get(0).get("status").equals(2) ){
 	        	int status=0;
 	        	if(runList.size()>0){
 	        		status = Integer.parseInt(Constants.TASK_RUNNING);
