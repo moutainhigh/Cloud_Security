@@ -6,6 +6,7 @@ ul,ol,li{list-style:none}
 img{border:none}
 /*common*/
 button,select{cursor:pointer; outline:none;}
+button{border: none;}
 textarea{ resize:none;outline:none;}
 .btn{ border:none; text-align:center; color:#fff;}
 h1,h2,h3,h4,h5,h6{font-weight:normal}
@@ -30,8 +31,8 @@ input{ outline:none; font-size:14px; line-height:14px;}
 .noBorder{border:none 0 !important}
 .noBg{background:none !important}
 a{text-decoration:none;}
-.hide{ display:none !important;}
-.show{display:block !important;}
+.hide{ display:none;}
+.show{display:block;}
 
 
 

@@ -23,9 +23,40 @@
 .shade{ width:100%; height:100%; background:#000;filter:alpha(opacity=30); -moz-opacity:0.3; -khtml-opacity: 0.3; opacity: 0.3; position:fixed; top:0px; left:0px; z-index:98; overflow:hidden; display:none;}
 .hide{ display:none;}
 
-.popBoxhide{ position:absolute; left:50%; top:-80%; z-index:100; background:#FFF; border-radius:4px; overflow:hidden;}
+.popBoxhide{ position:absolute; left:50%; top:-180%; z-index:100; background:#FFF; border-radius:4px;}
 
 
-.popBoxhide .close{ width:22px; height:22px; display:block; position:absolute; right:12px; top:13px; background:url(../images/portal/close.png) no-repeat; cursor:pointer;}
+.popBoxhide .close{ width:26px; height:26px; display:block; position:absolute; right:12px; top:13px; background:url(../images/portal/user_ico_4.jpg) no-repeat; cursor:pointer;}
 
+
+.title h2{
+	height: 30px;
+    color: #666666;
+    font-size: 18px;
+    line-height: 30px;
+	
+}
+.text_bottm {
+    width: 570px;
+    margin-left: 40px;
+}
+.text_bottm table {
+	margin-top: 26px;
+    width: 630px;
+    word-break: break-all;
+    word-wrap: break-word;
+    border-collapse: collapse;
+    text-align: center;
+}
+.text_bottm table tr {
+    font-size: 14px;
+    height: 43px;
+    line-height: 40px;
+}
+.boz_inout_1 {
+    border: 1px solid #e0e0e0;
+    height: 36px;
+    line-height: 36px;
+    width: 240px;
+}
 
