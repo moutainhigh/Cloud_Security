@@ -507,6 +507,13 @@ background:url(../images/portal/Xzq.png) no-repeat #fff;
 	line-height: 24px;
 }
 
+.specialblock dd{ 
+	position:relative; 
+	top:0px;
+}
+.specialblock a{
+	display:block;	
+}
 
 
 
