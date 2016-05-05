@@ -420,7 +420,7 @@
         </tr>
       </table>
     </div>
-    <div style="margin-top:35px;"><a href="javascript:void(0)"><img src="${ctx}/source/images/user_submit_3.jpg" onclick="editAsset()"/></a></div>
+    <div style="margin-top:35px;"><a href="javascript:void(0)"><img src="${ctx}/source/images/portal/user_submit_3.jpg" onclick="editAsset()"/></a></div>
   </div>
   </form>
 </div>
