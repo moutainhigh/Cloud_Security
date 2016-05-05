@@ -163,6 +163,13 @@
                                     <b>(该apikey可以调用平台所有即用服务)</b>
                                 </div>
                              </li>
+                             <li class="clearfix">
+                            	<label class="fl">推送URL</label>
+								<div class="fl dataListR">
+                                	<input type="text" class="text" name="urlAddr" value="${user.urlAddr}" id="urlAddr">
+                                    <b>(用于API接口回调)</b>
+                                </div>
+                             </li>
                         	<li class="clearfix" style="margin-top:40px;">
                             	<label class="fl"></label>
 								<div class="fl dataListR">
