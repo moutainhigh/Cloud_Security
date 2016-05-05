@@ -33,6 +33,7 @@ public class Order {
 	//add by 2016-4-11
 	private int payFlag;//是否结算
 	private int isAPI;
+	private double price;//价格
 	public String getBegin_datevo() {
 		return begin_datevo;
 	}
@@ -165,6 +166,12 @@ public class Order {
 	}
 	public void setIsAPI(int isAPI) {
 		this.isAPI = isAPI;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
 	}
 	
 }

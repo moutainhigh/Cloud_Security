@@ -29,8 +29,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入订单 -->
     <insert id="insert" parameterType="order">
         insert into cs_order
-        (id, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, contactId, remarks, status, websoc, tasknum, payFlag, isAPI) 
-        values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks}, #{status}, #{websoc}, #{tasknum}, #{payFlag}, #{isAPI})
+        (id, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, contactId, remarks, status, websoc, tasknum, payFlag, isAPI,price) 
+        values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks}, #{status}, #{websoc}, #{tasknum}, #{payFlag}, #{isAPI}, #{price})
     </insert>
     
     <!-- 查询漏洞个数 -->
@@ -78,4 +78,66 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <delete id="deleteLinkman" parameterType="int">
         delete from cs_linkman where id = #{contactId}
     </delete>
+      <!-- 查询购物车列表 -->
+    <select id="findShopCarList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
+  SELECT
+  a.id            orderId,
+  a.serverName,
+  b.astName,
+  a.price,
+a.serviceId
+FROM (SELECT
+        co.*,
+        cs.name          serverName
+      FROM cs_order co,
+        cs_service cs
+      WHERE co.serviceId = cs.id
+          AND co.userId = #{userId}
+          AND co.payFlag = #{payFlag}
+          AND co.isAPI = 0) a,
+  (SELECT
+     GROUP_CONCAT(ast.addr) AS astName,
+     cat.orderId
+   FROM cs_asset ast,
+     cs_order_asset cat
+   WHERE ast.id IN(SELECT
+                     cas.assetId
+                   FROM cs_order_asset cas,
+                     cs_order co
+                   WHERE co.userId = #{userId}
+                       AND co.payFlag = #{payFlag}
+                       AND cas.orderId = co.id)
+       AND ast.id = cat.assetId
+   GROUP BY cat.orderId) b
+WHERE a.id = b.orderId
+</select>
+   <!-- 查询购物车列表 -->
+    <select id="findShopCarAPIList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
+    SELECT
+  a.id            orderId,
+  a.serverName,
+  a.price,
+  b.num,
+a.serviceId
+FROM (SELECT
+        co.*,
+        cs.name          serverName
+      FROM cs_order co,
+        cs_service_api cs
+      WHERE co.serviceId = cs.id
+          AND co.userId =#{userId}
+          AND co.payFlag = #{payFlag}
+          AND co.isAPI = 1) a,
+  (SELECT
+     api.id           orderId,
+     api.num
+   FROM cs_order_api api
+   WHERE api.id = (SELECT
+                     co.id
+                   FROM cs_order co
+                   WHERE co.userId =#{userId}
+                       AND co.payFlag =#{payFlag}
+                       AND co.isAPI = 1)) b
+WHERE a.id = b.orderId
+    </select>
 </mapper>
