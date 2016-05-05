@@ -8,6 +8,7 @@ import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
+import com.cn.ctbri.entity.ShopCar;
 /**
  * 创 建 人  ：  txr
  * 创建日期：  2015-1-14
@@ -87,6 +88,9 @@ public interface ISelfHelpOrderService {
     //根据id查询服务
 	Serv findServiceById(int serviceId);
 
-
+   // 查询购物车-网站安全帮列表
+	List<ShopCar> findShopCarList(String userId,int payFlag);
 	
+	  // 查询购物车-网站安全帮列表
+	List<ShopCar> findShopCarAPIList(String userId,int payFlag);
 }
