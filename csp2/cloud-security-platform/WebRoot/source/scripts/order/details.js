@@ -160,7 +160,75 @@ $(function(){
     });
    
    
+//点击“添加购物车”
+    $("#addCar").click(function(){
+    	var createDate = getCreateDate();
+    	var orderType = $('.click').val();
+    	var beginDate=$('#beginDate').val();
+    	var endDate=$('#endDate').val();
+    	var scanType = $('.clickTime').val();
+    	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
+    	var serviceId = $("#serviceId").val();
+    	var price = $('.price').children('strong:first').text();
+    	if(orderType==2){
+    		scanType="";
+    	}
+    	//获得服务资产
+    	var assetIds = "";
+   		$('.btnNew i').each(function(){
+   			assetIds = assetIds + $(this).attr("id") + ",";
+		});
+    	var ip="";
+		var bandwidth="";
+		if(orderType==2){
+			if(beginDate==""||beginDate==null){
+        		alert("开始时间不能为空");
+        		return;
+			}
+		}else{
+			if(beginDate==""||beginDate==null||endDate==""||endDate==null){
+        		if(beginDate==""||beginDate==null){
+            		alert("开始时间不能为空");
+            		return;
+            	}
+            	if(endDate==""||endDate==null){
+            		alert("结束时间不能为空");
+            		return;
+            	}
+        	}else{
+        		if(beginDate>=endDate){
+            		alert("开始时间不能大于结束时间!");
+            		return;
+            	}
+        	}
+		}
+		if(assetIds==""||assetIds==null){
+			alert("请选择资产!");
+    		return;
+		}
 
+		$.ajax({ type: "POST",
+		     async: false, 
+		     url: "shoppingCar.html",
+		     data: {"orderType":orderType,
+    			   	"beginDate": beginDate,
+    			   	"endDate":endDate,
+    			   	"scanType":scanType,
+    			   	"serviceId":serviceId,
+    			   	"assetIds":assetIds,
+    			   	"price":price}, 
+		     dataType: "json", 
+		     success: function(data) {
+		    	 window.location.href="selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
+		    	 }, 
+		     error: function(data){ 
+		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+		    		 window.location.href = "loginUI.html"; } 
+		    	 else { window.location.href = "loginUI.html"; } } 
+		});
+
+    });
+    
    
 
    
@@ -191,4 +259,39 @@ function tasknum_verification(){
   		    		 window.location.href = "loginUI.html"; } 
   		    	 else { window.location.href = "loginUI.html"; } } 
 	     });
+
 }
+  //跳转到购物车页面
+   function showShopCar(){
+		$.ajax({ type: "POST",
+		     async: false, 
+		     url: "getSession.html", 
+		     dataType: "json", 
+		     success: function(data) {
+		    	 window.location.href="showShopCar.html";
+		    	 }, 
+		     error: function(data){ 
+		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+		    		 window.location.href = "loginUI.html"; } 
+		    	 else { window.location.href = "loginUI.html"; } } 
+		});
+
+		}
+   //删除购物车
+    function delShopCar(orderId){
+    var result = window.confirm("确定要删除这个服务吗？");
+    	if(result){
+    		$.ajax({ type: "POST",
+	    		     async: false, 
+	    		     url: "delShopCar.html?orderId="+orderId, 
+	    		     dataType: "json",
+	    		     success: function(data) {
+	    		    	  window.location.href = "showShopCar.html";
+				    	 }, 
+	    		     error: function(data){ 
+	    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+	    		    		 window.location.href = "loginUI.html"; } 
+	    		    	 else { window.location.href = "loginUI.html"; } } 
+		    	});
+    	}
+    }
