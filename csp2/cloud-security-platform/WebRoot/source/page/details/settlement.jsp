@@ -175,8 +175,9 @@
                         </table>
                         
                         </div>
-                        <div class="hr" style="margin-top:30px;"></div>
+                        <!-- <div class="hr" style="margin-top:30px;"></div> -->
                     </li>
+                    <!-- 
                      <li class="listone">
                     	<h3>发票信息</h3>
                        <div class="clickBox" style="margin-top:20px; margin-left:50px;">
@@ -218,7 +219,7 @@
                                 <option>可用优惠劵</option>
                             </select>
                         </div>
-                    </li>
+                    </li> -->
                 </ul>
             
             </div>
@@ -227,9 +228,11 @@
             	<li>
                 	<i>1</i>个订单，总额：<span>￥0.00</span>
                 </li>
+                <!--  
                 <li>
                 	优惠劵：<span>￥0.00</span>
                 </li>
+                -->
                 <li>
                 	应付总额：<span>￥0.00</span>
                 </li>
