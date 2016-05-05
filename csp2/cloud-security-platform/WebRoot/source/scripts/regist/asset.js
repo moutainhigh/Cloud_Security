@@ -1,3 +1,12 @@
+//获取资产列表
+function getUserAssets(){
+	$.post("userAssets.html",{},function(data){
+		$("#assetsTable").html("");
+		$("#assetsTable").append(data);
+		//设置tab的显示
+		setTabShow();
+	});     
+}
 function saveAsset() {
 	var assetName =$("#assetName").val();
 	var assetAddr = $("#assetAddr").val();
@@ -72,15 +81,48 @@ function saveAsset() {
 	
 }
 function searchAssetCombine(){
-	$("#searchAssetForm").submit();
+	//$("#searchAssetForm").submit();
+	var searchAssetName = $("#searchAssetName").val();
+    
+	$.post("searchAssetCombine.html",{searchAssetName:searchAssetName},function(data){
+
+		$("#assetsTable").html("");
+		$("#assetsTable").append(data);
+		//设置tab的显示
+		setTabShow();
+	}); 
+
+}
+//提取修改信息
+function editAssetUI(str){
+
+	var arr = str.split(',');
+
+	$("#editAssetName").val(arr[1]);
+	$("#editAssetAddr").val(arr[2]);
+	$("#editDistrictId").val(arr[3]);
+	getEditCitys(arr[3]);
+	var temp = arr[4];
+
+	$("#editPurpose").val(arr[5]);
+	$("#editAssetid").val(arr[0]);
+	setTimeout(function(){
+		$("#editCity").val(temp);
+	},100);
+
+	$('.shade').show();
+	$('#updateAssest').show();
+	$('html').css({overflow:"hidden"});
 }
 //修改资产
 function editAsset(){
 	var assetName =$("#editAssetName").val();
 	var assetAddr = $("#editAssetAddr").val();
-    var addrType = $('input:radio[id="editAddrType"]:checked').val();
+    var addrType = $('input:radio[name="addrType"]:checked').val();
     var purpose = $("#editPurpose").val();
     var prov = $("#editDistrictId").val();
+    var city = $("#editCity").val();
+    var id = $("#editAssetid").val();
 //     var patrn=/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im; 
      var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
 //     if(patrn.test(assetAddr)){  
@@ -118,7 +160,44 @@ function editAsset(){
 		$("#editAssetAddr_msg").html("");
 		$("#editLocation_msg").html("");
 		$("#editAssetUsage_msg").html("");
-		$("#editAsset").submit();
+		
+		 var options = {
+					url:'editAsset.html',
+					data:{
+			 		'id':id,
+ 	               'assetName':assetName,
+ 	               'assetAddr':assetAddr,
+ 	               'addrType':addrType,
+ 	               'purpose':purpose,
+ 	               'prov':prov,
+ 	               'city':city
+					},
+					//beforeSubmit:showRequest,
+					success: function(data) {
+						if(data.successFlag){
+							alert("修改成功!");
+							$('.popBoxhide').hide();
+							$('.shade').hide();
+							$('html').css({overflow:'auto'})
+
+							//刷新页面
+							$.post("userAssets.html",{},function(data){
+								$("#assetsTable").html("");
+								$("#assetsTable").append(data);
+								//设置tab的显示
+								setTabShow();
+							}); 
+						}else{
+							alert("修改失败!");
+						}
+								
+					},
+					error: function(data){
+						alert("err:"+data);
+					}
+					};
+		 // 将options传给ajaxForm
+		 $('#editAsset').ajaxSubmit(options);
 	}
 	
 }
@@ -132,7 +211,29 @@ function deleteAsset(id){
 			return false;
 		}else{
 			if (window.confirm("确实要删除吗?")==true) {
-				window.location.href="deleteAsset.html?id="+assetId;
+				//window.location.href="deleteAsset.html?id="+assetId;
+				
+			$.ajax({
+		        type: "POST",
+		        url: "deleteAsset.html",
+		        data: {"id":assetId},
+		        dataType:"json",
+		        success: function(data){
+		        	if(data.successFlag){
+		        		//刷新页面
+		        		$.post("userAssets.html",{},function(data){
+							$("#assetsTable").html("");
+							$("#assetsTable").append(data);
+							//设置tab的显示
+							setTabShow();
+						});
+		        	}else{
+		        		alert("删除失败!");
+		        	}
+		        		
+		        },
+		     }); 
+				
 			} else {
 				return;
 			}
@@ -157,6 +258,23 @@ function showAndHiddenRadio(){
 		document.getElementById("codeVerificationID").style.display="none";
 		document.getElementById("fileVerificationID").style.display="block";
 	}
+}
+
+//资产验证界面
+function verificationAssetUI(str){
+	var arr = str.split(',');
+	var id= arr[0];
+	var name= arr[1];
+	var addr = arr[2];
+	$("#verificationName").html("请验证资产"+name+"的权限");
+	$("#hiddenId").val(id);
+	$("#hiddenAddr").val(addr);
+	var ss=document.getElementById("c");
+	ss.href=addr;
+	
+	$('.shade').show();
+	$('#verification').show();
+	$('html').css({overflow:"hidden"});
 }
 //资产验证
 function verificationAsset(){
@@ -224,3 +342,15 @@ function copyToClipBoard(){
     alert("已成功复制！");
     return true;
 	} 
+
+//手动设置tab表格的显示
+function setTabShow(){
+	 $('.navlist li').each(function() {
+	    	var zindex=$(this).index();
+	    	var temp = $(this).attr("class");
+
+	    	if(temp=='this active'){
+	    		$(".tabBox .not-used").eq(zindex).show().siblings().hide();	
+	    	}
+	    });
+}
