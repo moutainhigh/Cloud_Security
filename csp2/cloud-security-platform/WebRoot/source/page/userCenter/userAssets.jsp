@@ -6,157 +6,227 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<title>用户中心-我的资产</title>
-<link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/css/head_bottom.css" type="text/css" rel="stylesheet" />
-<SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
-<script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	$("#status").val("${status}");
-	$("#searchAssetName").val("${name}");
-});
-</script>
-<script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/regist/asset.js"></script>
-<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
-<!-- add by 2016-02 -->
-<link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
+<title>个人中心-我的资产</title>
 <link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
-<script type="text/javascript" src="${ctx}/source/scripts/common/portalindex.js"></script>
-<script src="${ctx}/source/scripts/common/popBox.js"></script>
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
+<link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
+<link href="${ctx}/source/css/core.css" type="text/css" rel="stylesheet">
+<script type="text/javascript"  src="${ctx}/source/scripts/common/jquery-1.7.1.min.js"></script>
+<script src="${ctx}/source/scripts/common/jquery.js"></script>
+<script type="text/javascript"  src="${ctx}/source/scripts/common/jquery.form.js"></script>
+<script src="${ctx}/source/scripts/common/index.js"></script>
+<script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
-<!-- end -->
-<script type="text/javascript" src="${ctx}/source/scripts/common/main.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/order/order.js"></script>
-
+<script src="${ctx}/source/scripts/common/main.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/regist/asset.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
 </head>
 
 <body>
-
-<!--头部-->
-<div class="safe01 detalis-head">
-	<!--头部-->
-	<div class="head" style="width:100%">
-		<div class="headBox">
-			<div class="safeL fl" style="width:260px; margin-right:13%">
-				<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/></a>
-			</div>
-			<div class="safem fl">
-				<span class="fl"><a href="${ctx}/index.html">首页</a></span>
-				<div class="Divlist listJs fl">
-					<a href="#" class="this">我的安全帮<i></i></a>
+	<div class="safeBox">
+		
+		<div class="safe01 detalis-head">
+			<!--头部-->
+			<div class="head">
+				<div class="headBox">
+					<div class="safeL fl" style="width:285px; margin-right:20%">
+						<img src="${ctx}/source/images/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
+                        <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px; font-weight:normal;">个人中心</strong>
+					</div>
+					<div class="safem fl">
+						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
+						<div class="Divlist listJs fl">
+							<a href="#" class="this">我的安全帮<i></i></a>
 							<ul class="list listl">
 								<li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
 								<li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
 								<li style="border: none;"><a href="${ctx}/userDataUI.html">个人信息</a></li>
 							</ul>
+						</div>
+						<span class="fl ask">
+                        	<a href="#">手机APP</a>
+                        	<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
+                        </span>
+						<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
+						
+					</div>
+						<div class="safer fr">
+						<!-- 如果已经登录则显示用户名，否则需要登录 -->
+				         <c:if test="${sessionScope.globle_user!=null }">
+					        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
+					        <em>|</em>
+					        <a href="${ctx}/exit.html">退出</a>
+				         </c:if>
+				         <c:if test="${sessionScope.globle_user==null }">
+				            <a href="${ctx}/loginUI.html">登录</a>
+							<em>|</em>
+							<a href="${ctx}/registUI.html">注册</a>
+				         </c:if>
+					</div>
 				</div>
-				<span class="fl ask">
-					<a href="#" class="hbule">手机APP</a>
-					<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
-				</span>
-				<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
-				
-			</div>
-			<div class="safer fr">
-				<!-- 如果已经登录则显示用户名，否则需要登录 -->
-		         <c:if test="${sessionScope.globle_user!=null }">
-			        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
-			        <em>|</em>
-			        <a href="${ctx}/exit.html">退出</a>
-		         </c:if>
-		         <c:if test="${sessionScope.globle_user==null }">
-		            <a href="${ctx}/loginUI.html">登录</a>
-					<em>|</em>
-					<a href="${ctx}/registUI.html">注册</a>
-		         </c:if>
 			</div>
 		</div>
-	</div>
-	
+		<div class="core clearfix">
+        	<div class="coreLeft fl">
+            	<h3><i></i>个人中心</h3>
+                <dl>
+                	<dt>交易管理</dt>
+                    <dd><a href="${ctx}/userBillUI.html" >我的订单</a></dd>
+                    <dd><a href="#">我的优惠劵</a></dd>
+                    <dt>个人信息管理</dt>
+                    <dd><a href="${ctx}/userDataUI.html">个人资料</a></dd>
+                    <dd style="border-bottom:none;"><a class="active" href="#" onclick="getUserAssets()">我的资产</a></dd>
+                </dl>
+            </div>
+        	<div class="coreRight assetsece coupon fl" style="margin-bottom:400px;">
+            	<div class="assetstitle clearfix">
+            	<form action="${ctx}/searchAssetCombine.html" method="post" id="searchAssetForm">
+                	<span class="fl addass assetstitlel"><em></em>新增资产</span>
+                	<div class="fr assetstitlr">
+                    	<input type="text" class="text promptext" name="name" id="searchAssetName" value="输入资产名称">
+                        <input type="button" id="searchBtn" value="搜索" class="btn" onclick="searchAssetCombine()">
+                    </div>
+                    </form>
+                </div>
+            	<div class="coupontab">
+                	<ol class="navlist centlist assets clearfix">
+                    	<li class="active">全部</li>
+                        <li>已验证</li>
+                        <li>未验证</li>
+                    </ol>
+                    <div class="tabBox" id="assetsTable">
+                    	
+                       <ul class="not-used" style="display:block">
+                    		<li class="head">
+                            	<span style="padding-left:120px;">资产名称</span>
+                                <span style="padding-left:228px;">资产地址</span>
+                                <span style="padding-left:178px;">资产状态</span>
+                                <span style="padding-left:82px;">操作</span>
+                            </li>
+                     <c:forEach items="${list}" var="asset"> 
+                     <li class="trlist">
+                         <table>
+                             <tbody>
+                                 <tr height="100" valign="middle">
+                                 <td><span style=" margin-left:80px; width:144px;">${asset.name}</span></td>
+                                 <td> <span style="padding-left:80px; width:260px;">${asset.addr}</span></td>
+                                 <td>
+                                 <c:if test="${asset.status==0}">
+				            		<span style="padding-left:84px;width:60px;">
+				            		<b>未验证</b>
+				            		<a href="#" class="zican_top" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}">立即验证</a>
+				            		</span>
+				             	 </c:if>
+				             	 <c:if test="${asset.status==1}">
+				            		<span style="padding-left:84px;width:60px;">
+                                                	<b>已验证</b>
+                                                    
+                                     </span>
+				                 </c:if>
+                                 </td>
+                                 <td> 
+                                     <span style="padding-left:80px; width:32px;">
+                                         <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}">修改</a>
+                                         <a href="#" style="color:#2499fb;" onclick="deleteAsset('${asset.id}')">删除</a>
+                                     </span>
+                                 </td>
+                                 
+               					 </tr>
+                             </tbody>
+                         </table>  
+                     </li> 
+                     </c:forEach>                 
+                    	</ul>
+                        <ul class="not-used">
+                    		<li class="head">
+                            	<span style="padding-left:120px;">资产名称</span>
+                                <span style="padding-left:228px;">资产地址</span>
+                                <span style="padding-left:178px;">资产状态</span>
+                                <span style="padding-left:82px;">操作</span>
+                            </li>
+ 						<c:forEach items="${list}" var="asset"> 
+ 						<c:if test="${asset.status==1}">
+                            <li class="trlist">
+                         <table>
+                             <tbody>
+                                 <tr height="100" valign="middle">
+                                 <td><span style=" margin-left:80px; width:144px;">${asset.name}</span></td>
+                                 <td> <span style="padding-left:80px; width:260px;">${asset.addr}</span></td>
+                                 <td>
+				            		<span style="padding-left:84px;width:60px;">
+                                                	<b>已验证</b>
+                                                    
+                                     </span>
+                                 </td>
+                                 <td> 
+                                     <span style="padding-left:80px; width:32px;">
+                                         <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}">修改</a>
+                                         <a href="#" style="color:#2499fb;" onclick="deleteAsset('${asset.id}')">删除</a>
+                                     </span>
+                                 </td>
+                                 
+               					 </tr>
+                             </tbody>
+                         </table>  
+                     </li>
+                      </c:if> 
+                     </c:forEach> 
+                        
+                    
+                    	</ul>
+                        <ul class="not-used">
+                    		<li class="head">
+                            	<span style="padding-left:120px;">资产名称</span>
+                                <span style="padding-left:228px;">资产地址</span>
+                                <span style="padding-left:178px;">资产状态</span>
+                                <span style="padding-left:82px;">操作</span>
+                            </li>
+                           <c:forEach items="${list}" var="asset"> 
+                           <c:if test="${asset.status==0}">
+                           <li class="trlist">
+                         <table>
+                             <tbody>
+                                 <tr height="100" valign="middle">
+                                 <td><span style=" margin-left:80px; width:144px;">${asset.name}</span></td>
+                                 <td> <span style="padding-left:80px; width:260px;">${asset.addr}</span></td>
+                                 <td>
 
-</div>
-<!-- 头部代码结束-->
-<div class="user_center clear">
-  <div class="user_left">
-    <ul class="user_1">
-      <li style="font-size:16px; font-weight:500; line-height:28px; text-align:center;"><a  style="color:#4593fd; " href="${ctx}/userCenterUI.html">用户中心</a></li>
-      <li><a href="${ctx}/userDataUI.html">基本资料</a></li>
-      <li><a href="${ctx}/userBillUI.html">我的账单</a></li>
-      <li class="active"><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
-      <h2>订购中心</h2>
-      <!-- <li><a onclick="tasknum_verification()" href="javascript:void(0)">自助下单</a></li>-->
-      <li><a href="${ctx}/orderTrackInit.html">订单跟踪</a></li>
-    </ul>
-  </div>
-  
-  <!-- <jsp:include page="left.jsp"/> -->
-  
-  <!--我的资产-->
-  <div class="user_right" >
-    <div class="user_top">
-      <div class="user_ctive" style="left:200px;"><a href="###"><img src="${ctx}/source/images/user_ico_3.jpg" /></a></div>
-  <form action="${ctx}/searchAssetCombine.html" method="post" id="searchAssetForm">
-      <div class="user_sec_cont" style=" left:200px; ">
-      </div>
-      <div class="user_sec_cont" style="left:350px;">
-        <select id="status" name="status" class="user_secta spiclesel">
-       		<option select="selected" value="">请选择状态</option>
-       		<option value="0" >未验证</option>
-       		<option value="1" >已验证</option>
-  		</select>
-      </div>
-      <div class="user_sec_txt">
-        <input type="text" name="name" id="searchAssetName" value="请输入关键字"></input>
-      </div>
-      <div class="user_soucuo" style="left:754px;"><img src="${ctx}/source/images/user_submit_2.jpg" onclick="searchAssetCombine()"/></div>
-  </form>
-    </div>
-    
-    <div class="zhangd_table">
-      <table>
-        <tbody>
-          <tr style="background:#e0e0e0; height:30px; line-height:30px;">
-            <td style="width:20%;">资产名称</td>
-            <td  style="width:20%;">资产地址</td>
-            <td  style="width:20%;">资产状态</td>
-            <td  style="width:20%;">操作</td>
-          </tr>
-          <c:forEach items="${list}" var="asset"> 
-          <tr>
-            <td>${asset.name}</td>
-            <td>${asset.addr}</td>
-            <c:if test="${asset.status==0}">
-            <td><div class="zican_wei">未验证</div>
-              <div class="zican_top" id="${asset.id}" name="${asset.name}" addr="${asset.addr}">立即验证</div></td>
-              </c:if>
-              <c:if test="${asset.status==1}">
-            <td><div class="zican_wei">已验证</div></td>
-              </c:if>
-            <td><div class="zc_edit" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}">修改</div>
-              <div class="zican_bottom"><a href="javascript:void(0)" onclick="deleteAsset('${asset.id}')" >删除</a></div></td>
-          </tr>
-          </c:forEach>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-<!-- 尾部代码开始-->
-<div class="safeBox">
+				            		<span style="padding-left:84px;width:60px;">
+				            		<b>未验证</b>
+				            		<a href="#" class="zican_top" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}">立即验证</a>
+				            		</span>
+				             	
+				             	 
+                                 </td>
+                                 <td> 
+                                     <span style="padding-left:80px; width:32px;">
+                                         <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}">修改</a>
+                                         <a href="#" style="color:#2499fb;" onclick="deleteAsset('${asset.id}')">删除</a>
+                                     </span>
+                                 </td>
+                                 
+               					 </tr>
+                             </tbody>
+                         </table>  
+                     </li> 
+                      </c:if>
+                     </c:forEach> 
+                    
+                    	</ul> 
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+        
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
-					<a href="${ctx}/index.html">
-	               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
-                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
-	               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
-                   </a>
+					<a href="#">
+                    	<img src="${ctx }/source/images/dianxin_logo footer.png" alt="">
+                        <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
+                    	<img src="${ctx }/source/images/newlogo-footer.png" alt="">
+                    </a>
 				</div>
 				<ol class="footr clearfix fr">
 					<li>
@@ -170,15 +240,15 @@ $(document).ready(function(){
                     <li>
                     	<h2>关于安全帮</h2>
                         <dl>
-                        	<dd><a href="${ctx}/knowUs.html">了解安全帮</a></dd>
-                            <dd><a href="${ctx}/joinUs.html">加入安全帮</a></dd>
+                        	<dd><a href="#">了解安全帮</a></dd>
+                            <dd><a href="#">加入安全帮</a></dd>
                             <dd><a href="#">联系我们</a></dd>
                        </dl>
                     </li>
                     <li>
                     	<h2>关注我们</h2>
                         <dl>
-                        	<dd><a href="#">QQ交流群</br>470899318</a></dd>
+                        	<dd><a href="#">QQ交流群<br>470899318</a></dd>
                             <dd class="weixin"><a href="#">官方微信</a></dd>
                        </dl>
                     </li>
@@ -195,57 +265,64 @@ $(document).ready(function(){
 			</div>
 		</div>
 		<div class="foot">
-			<p>版权所有Copyright © 2015 中国电信股份有限公司北京研究院京ICP备12019458号-10</p>
+			<p>Label@1234567890北京电信研究院<br>
+				www.anquanbang.net
+			</p>
 		</div>
-		<!---执行效果-->
-<div class="weixinshow popBoxhide" id="weixin">
-	<i class="close chide"></i>
-    <div class="Pophead">
-    	<h1 class="heaf">安全帮微信二维码</h1>
+	</div>
+ 
+    <style>
+    	.assetsaAdd{
+			    display: none;
+				padding: 20px;
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				z-index: 99;
+				text-align: center;
+				background: #fff;
+				border-radius: 10px;
+				width: 670px;
+				height: 400px;
+				margin-left:-355px;
+				margin-top:-220px;
+					
+		}
+		
+		
+    
+    </style>
+    <!---新增增产-->
+<div class="assetsaAdd hide popBoxhide" id="revise">
+	<i class="close closed"></i>
+	 <form id="saveAsset" action="${ctx}/addAsset.html" method="post">
+    <div class="title">
+    	<h2>新增资产</h2>
+        <div class="hr" style=" margin:10px 0px 10px 0px;"></div>
     </div>
 	<div class="popBox">
-    	 <p>打开微信，点击右上角的“+”，选择“扫一扫”功能，<br>
-对准下方二维码即可。
-		</p>
-           <div class="weinImg" style="text-align:center;">
-           	<img src="${ctx}/source/images/portal/weixin.png" alt="">
-           </div> 
-    </div>
-
-</div>
-	
-<div class="shade"></div>
-</div>
-<!-- 尾部代码结束 -->
-
-<!--新增资产遮罩层样式-->
-<div id="box_mark"></div>
-<div id="box_logoIn1">
-  <div id="close1"></div>
-  <div class="text_1">
-    <form id="saveAsset" action="${ctx}/addAsset.html" method="post">
-    <div class="text_top">新增资产</div>
-    <div class="text_bottm">
+    	 
+         <div class="text_bottm">
   
       <table style="margin-top:26px;width:630px">
-        <tr>
+        <tbody><tr>
           <td style="width:25%;">资产名称</td>
-          <td style="width:37%;"><input class="boz_inout_1" type="text" name="name" id="assetName"/></td>
+          <td style="width:37%;"><input class="boz_inout_1" type="text" name="name" id="assetName"></td>
           <td style="width:30%; text-align:left; color:#e32929;font-size:12px"><div id="assetName_msg"></div></td>
         </tr>
         <tr>
        	  <td>资产地址类型</td>
           <td style="text-align:left">
-		        &nbsp;&nbsp;<input type="radio" name="addrType" checked="checked" id="assetAddrType1" value="http"/>
+		        &nbsp;&nbsp;<input type="radio" name="addrType" checked="checked" id="assetAddrType1" value="http">
 		        &nbsp;http&nbsp;&nbsp;
-		        <input type="radio" name="addrType" id="assetAddrType2" value="https"/>
+		        <input type="radio" name="addrType" id="assetAddrType2" value="https">
 		        &nbsp;https
 		  </td>
         </tr>
         
         <tr>
           <td>资产地址</td>
-          <td><input class="boz_inout_1" type="text" name="addr" id="assetAddr"/></td>
+          <td><input class="boz_inout_1" type="text" name="addr" id="assetAddr"></td>
           <td style="color:#e32929;text-align:left"><div id="assetAddr_msg"></div></td>
         </tr>
         <tr>
@@ -256,12 +333,10 @@ $(document).ready(function(){
         <tr>
           <td>物理位置</td>
           <td>
-  				<select class="user_secta_count spiclesel" id="districtId" name="districtId"  onchange="getCitys(this.value)" style="width:119px;height: 35px;">
+  				<select class="user_secta_count spiclesel" id="districtId" name="districtId" onchange="getCitys(this.value)" style="width:119px;height: 35px;">
   					<option selected="selected" value="-1">请选择省份</option>
   				</select> 
-    			<select class="user_secta_count spiclesel" id="city" name="city" disabled="disabled" style="width:119px;height: 35px;">
-    			<option selected="selected" value="-1">请选择城市</option>
-    			</select>
+    			<select class="user_secta_count spiclesel" id="city" name="city" disabled="disabled" style="width:119px;height: 35px;"><option value="-1">请选择城市</option></select>
 		  </td>
 		  <td style="color:#e32929;text-align:left;"><div id="location_msg"></div></td>
         </tr>
@@ -272,30 +347,33 @@ $(document).ready(function(){
    				<option selected="selected" value="-1">请选择资产用途</option>
    				<option value="公共服务">公共服务</option>
    				<option value="信息发布">信息发布</option>
-   				<option value="其他">其他</option>
+   				<option value="其他">其他</option>   				
    			</select>
 	   </td>
 		  <td style="color:#e32929;text-align:left"><div id="assetUsage_msg"></div></td>
         </tr>
-      </table>
+      </tbody></table>
                   
     </div>
-    <div style="margin-top:26px;"><a href="javascript:void(0)"><img src="${ctx}/source/images/user_submit_3.jpg" onclick="saveAsset()"/></a></div>
-  </div>
-  </form>
+        <div style="margin-top:26px;">
+        	<a href="javascript:void(0)"><img src="${ctx }/source/images/portal/user_submit_3.jpg" alt="" onclick="saveAsset()"> </a>
+        </div> 
+         
+         
+    </div>
+</form>
 </div>
 
-<div id="box_logoIn_edit">
-  <div id="close_edit"></div>  <div class="text_1">
-    <form id="editAsset" action="${ctx}/editAsset.html" method="post">
-    <div class="text_top">修改资产</div>
+<!-- 修改 -->
+<div class="assetsaAdd hide popBoxhide" id="updateAssest">
+	<i class="close closed"></i>
+    <form id="editAsset" method="post">
+    <input type="hidden" name="id" id="editAssetid"/>
+    <div class="title">
+    	<h2>修改资产</h2>
+        <div class="hr" style=" margin:10px 0px 10px 0px;"></div>
+    </div>
     <div class="text_bottm">
-  	<input type="hidden" name="id" id="hiddenEditAssetid"/>
-  	<input type="hidden" name="hiddenEditAssetName" id="hiddenEditAssetName"/>
-  	<input type="hidden" name="hiddenEditAssetAddr" id="hiddenEditAssetAddr"/>
-  	<input type="hidden" name="hiddenEditDistrictId" id="hiddenEditDistrictId"/>
-  	<input type="hidden" name="hiddenEditCity" id="hiddenEditCity"/>
-  	<input type="hidden" name="hiddenEditPurpose" id="hiddenEditPurpose"/>
       <table style="margin-top:56px;width:630px">
         <tr>
           <td style="width:25%;">资产名称</td>
@@ -305,9 +383,9 @@ $(document).ready(function(){
         <tr>
        	  <td>资产地址类型</td>
           <td style="text-align:left">
-		        &nbsp;&nbsp;<input type="radio" name="addrType" id="editAddrType" value="http" checked="checked"/>
+		        &nbsp;&nbsp;<input type="radio" name="addrType"  value="http" checked="checked"/>
 		        &nbsp;http
-		        &nbsp;&nbsp;<input type="radio" name="addrType" id="editAddrType" value="https"/>
+		        &nbsp;&nbsp;<input type="radio" name="addrType"  value="https"/>
 		        &nbsp;https
 		  </td>
         </tr>
@@ -346,9 +424,8 @@ $(document).ready(function(){
   </div>
   </form>
 </div>
-
-<div id="box_logoIn2">
-<div  id="close2"></div>
+<div class="assetsaAdd hide popBoxhide" id="verification">
+<i class="close closed"></i>
 <form action="${ctx}/verificationAsset.html" method="post" id="verificationAssetForm">
 <input type="hidden" value="" id="hiddenId" name="id"/>
 <input type="hidden" value="" id="hiddenAddr" name="addr"/>
@@ -369,7 +446,7 @@ $(document).ready(function(){
 	      <pre><a href="http://www.anquanbang.net/userAssetsUI.html">网站安全帮</a></pre>
 	      </div> -->
 	      <input type="hidden" id="code" value="网站安全帮">
-	      <textarea rows="4" cols="70" ><a href="http://www.anquanbang.net/userAssetsUI.html">网站安全帮</a>
+	      <textarea rows="4" cols="60" ><a href="http://www.anquanbang.net/userAssetsUI.html">网站安全帮</a>
 		  </textarea>
 	      <p>请在您的<span><a href="" id="c" target="_blank">网站首页</a></span>中任何位置加入如上代码。<!-- （<a href="javascript:void(0)" onclick="copyToClipBoard()">复制代码</a>） --><br />
 	       </p>
@@ -389,8 +466,37 @@ $(document).ready(function(){
 	    
 	    
 	  </div>
-	  <div style="margin-top:18px;"><a href="javascript:void(0)"><img src="${ctx}/source/images/user_submit_4.jpg" onclick="verificationAsset()"/></a></div>
+	  <div style="margin-top:18px;"><a href="javascript:void(0)"><img src="${ctx }/source/images/portal/user_submit_3.jpg" onclick="verificationAsset()"/></a></div>
 	</div>
-</form>
+</form>	
+</div>
+<div class="shade"></div>
+<script><!--
+	$(function(){
+		/*提示文字效果*/
+		$('.promptext').focus(function(){
+			if($(this).val()=='输入资产名称'){
+				$(this).val('');
+				$(this).css('color','#343434');
+			}else{
+				$(this).css('color','#343434');
+			}
+		});
+		$('.promptext').blur(function(){
+			if($(this).val()==''){
+				$(this).val('输入资产名称');
+				$(this).css('color','#929292');	
+			}
+				
+		})
+		
+
+	})
+	
+	
+</script>
 </body>
+
+
 </html>
+
