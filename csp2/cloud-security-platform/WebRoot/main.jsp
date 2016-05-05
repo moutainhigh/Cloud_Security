@@ -196,25 +196,25 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 			<div class="specialblock" style="position:relative">
             	<h3>专题模块</h3>
                 <dl class="clearfix" style="margin-right:-20px;">
-                	<dd class="fl frn">
-                    	<div class="introduce">
-                        	<a href="${ctx}/sa_anquanbang.html" target="_blank">
-                        		<h4>安全态势感知</h4>
-                                <p>安全大数据分析</p>
-								<p>可视化地域告警统计分析</p>
-								<p>实时安全趋势预测</p>
-                        	</a>
-                        </div>
-                    </dd>
-                    <dd class="fl frn frn2">
-                    	<div class="introduce">
-                    	<a href="#">
-                        	<h4><a href="${ctx}/Xpage.html">X专区 </a></h4>
-                            <p>独特极客安全工具</p>
-				            <p>特定漏洞专用检测工具</p>
-                            </a>
-                        </div>
-                    </dd>
+                    <a href="${ctx}/sa_anquanbang.html" target="_blank">
+	                	<dd class="fl frn">
+	                    	<div class="introduce">
+	                        		<h4>安全态势感知</h4>
+	                                <p>安全大数据分析</p>
+									<p>可视化地域告警统计分析</p>
+									<p>实时安全趋势预测</p>
+	                        </div>
+	                    </dd>
+                    </a>
+                    <a href="${ctx}/Xpage.html">
+	                    <dd class="fl frn frn2">
+	                    	<div class="introduce">
+	                        	<h4>X专区 </h4>
+	                            <p>独特极客安全工具</p>
+					            <p>特定漏洞专用检测工具</p>
+	                        </div>
+	                    </dd>
+                    </a>
                 </dl>
             </div>
 		</div>
