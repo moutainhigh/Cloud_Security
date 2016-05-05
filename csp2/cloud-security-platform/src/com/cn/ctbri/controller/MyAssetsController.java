@@ -30,6 +30,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.cn.ctbri.cfg.Configuration;
 import com.cn.ctbri.entity.Asset;
@@ -70,6 +71,23 @@ public class MyAssetsController {
 		return "/source/page/userCenter/userAssets";
 	}
 	
+	/**
+	 * 异步进入我的资产页面
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/userAssets.html")
+	public ModelAndView userAssets(HttpServletRequest request,HttpServletResponse response){
+		ModelAndView mv = new ModelAndView("source/page/userCenter/assetList");
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		List<Asset> list = assetService.findByUserId(globle_user.getId());
+		if(list!=null && list.size()>0){
+			mv.addObject("list", list);
+		}
+		return mv;
+	}
+
 	/**
 	 * 功能描述： 检查资产地址是否已经存在
 	 * 参数描述： Model model
@@ -175,48 +193,65 @@ public class MyAssetsController {
 	 *		 @time 2015-1-19
 	 */
 	@RequestMapping("/editAsset.html")
-	public String editAsset(Asset asset){
-		int id = asset.getId();
-		Asset oldAsset = assetService.findById(id);
-		String name = "";//资产名称
-		String addrType = asset.getAddrType();
-		//add by tangxr 2016-3-3
-		String districtId = asset.getDistrictId();
-		String city = "";
-		String purpose = "";//用途
-		try {
-			name = new String(asset.getName().getBytes("ISO-8859-1"), "UTF-8");
-			purpose = new String(asset.getPurpose().getBytes("ISO-8859-1"), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
+	public void editAsset(HttpServletResponse response,HttpServletRequest request){
+		Map<String, Object> m = new HashMap<String, Object>();
+        try {
+			int id = Integer.parseInt(request.getParameter("id"));
+			Asset oldAsset = assetService.findById(id);
+			String addrType = request.getParameter("addrType");
+			String districtId = request.getParameter("prov");
+			
+			String name = request.getParameter("assetName");
+			String purpose = request.getParameter("purpose");
+			String city = "";
+			String oldCity = "";
+			if(oldAsset.getCity()!=null){
+				oldCity = oldAsset.getCity();
+			}
+			if(city!=null){
+				city = request.getParameter("city");
+			}
+			if(!(name.equals(oldAsset.getName())&&
+				(addrType+"://"+request.getParameter("assetAddr")).equals(oldAsset.getAddr())&&
+				purpose.equals(oldAsset.getPurpose())&&
+				districtId==oldAsset.getDistrictId()&&
+				oldCity.equals(city))){
+				Asset asset = new Asset();
+				asset.setName(name);
+				asset.setId(id);
+				String addr = request.getParameter("assetAddr");
+				if(!(addr.startsWith(addrType))){
+					addr = addrType+ "://" + addr.trim();
+				}
+				asset.setAddr(addr);
+				asset.setStatus(0);
+				asset.setDistrictId(districtId);
+				asset.setCity(city);
+				asset.setPurpose(purpose);
+				asset.setAddrType(addrType);
+				assetService.updateAsset(asset);
+
+				m.put("successFlag", true);
+				JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (NumberFormatException e) {
+			m.put("successFlag", false);
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
-		String oldCity = "";
-		if(oldAsset.getCity()!=null){
-			oldCity = oldAsset.getCity();
-		}
-		if(asset.getCity()!=null){
-			city = asset.getCity();
-		}
-		if(!(name.equals(oldAsset.getName())&&
-			(addrType+"://"+asset.getAddr()).equals(oldAsset.getAddr())&&
-			purpose.equals(oldAsset.getPurpose())&&
-			districtId==oldAsset.getDistrictId()&&
-			oldCity.equals(city))){
-			
-			asset.setName(name);
-			
-			String addr = asset.getAddr();
-			if(!(addr.startsWith(addrType))){
-				addr = addrType+ "://" + addr.trim();
-			}
-			asset.setAddr(addr);
-			asset.setStatus(0);
-			asset.setDistrictId(districtId);
-			asset.setCity(city);
-			asset.setPurpose(purpose);
-			assetService.updateAsset(asset);
-		}
-		return "redirect:/userAssetsUI.html";
+		
 	}
 	/**
 	 * 功能描述：删除资产
@@ -224,11 +259,33 @@ public class MyAssetsController {
 	 *		 @time 2015-1-19
 	 */
 	@RequestMapping("/deleteAsset.html")
-	public String delete(Asset asset,HttpServletRequest request){
-	    if(validate(request)){
-	        assetService.delete(asset.getId());
-	    }
-		return "redirect:/userAssetsUI.html";
+	public void delete(HttpServletRequest request,HttpServletResponse response){
+		Map<String, Object> m = new HashMap<String, Object>();
+		int id = Integer.parseInt(request.getParameter("id"));
+	    try {
+			if(validate(request)){
+			    assetService.delete(id);
+			    m.put("successFlag", true);
+				JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (Exception e) {
+			m.put("successFlag", false);
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		
 	}
 	/**
 	 * 功能描述：联合搜索
@@ -236,24 +293,24 @@ public class MyAssetsController {
 	 *		 @time 2015-1-19
 	 */
 	@RequestMapping("/searchAssetCombine.html")
-	public String searchAssetsCombine(Model model,Asset asset,HttpServletRequest request){
+	public ModelAndView searchAssetsCombine(HttpServletRequest request,HttpServletResponse response){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		Asset asset = new Asset();
 		asset.setUserid(globle_user.getId());//将用户登录用户的id赋值到asset中
-		String name = "";
-		try {
-			name = new String(asset.getName().getBytes("ISO-8859-1"), "UTF-8");
-			if(name.equals("请输入关键字")){
-				name = "";
-			}
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+		String name = request.getParameter("searchAssetName");
+			
+		if(!name.equals("输入资产名称")){
+			asset.setName(name);
+		}else{
+			asset.setName("");
 		}
-		asset.setName(name);
-		List<Asset> result = assetService.searchAssetsCombine(asset);//根据userid 资产状态 和资产名称联合查询
-		model.addAttribute("list",result);		//传对象到页面
-		model.addAttribute("status",asset.getStatus());//回显资产类型	
-		model.addAttribute("name",name);//回显资产名称
-		return "/source/page/userCenter/userAssets";
+						
+		List<Asset> list = assetService.searchAssetsCombine(asset);//根据userid 资产状态 和资产名称联合查询
+		ModelAndView mv = new ModelAndView("source/page/userCenter/assetList");
+		if(list!=null && list.size()>0){
+			mv.addObject("list", list);
+		}
+		return mv;
 	}
 	/**
 	 * 功能描述：检查资产是否通过验证

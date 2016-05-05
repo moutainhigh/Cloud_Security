@@ -82,7 +82,7 @@ public class UserController{
 	public String userData(Model model,HttpServletRequest request){
 		User user = (User) request.getSession().getAttribute("globle_user");
 		model.addAttribute("user",user);		//传对象到页面
-		return "/source/page/userCenter/userData";
+		return "/source/page/userCenter/personal-data";
 	}
 	
 	/**
