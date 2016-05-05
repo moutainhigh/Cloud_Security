@@ -59,8 +59,8 @@ public class AssetDaoImpl extends DaoCommon implements AssetDao{
 	 *		 @time 2015-1-19
 	 * 返回值    ：List<Asset>
 	 */
-	public List<Asset> searchAssetsCombine(Asset asset) {
-		List<Asset> list = this.getSqlSession().selectList(ns +"searchAssetsCombine",asset);
+	public List<Asset> searchAssetsCombine(Map<String, Object> map) {
+		List<Asset> list = this.getSqlSession().selectList(ns +"searchAssetsCombine",map);
 		return list;
 	}
 	/**

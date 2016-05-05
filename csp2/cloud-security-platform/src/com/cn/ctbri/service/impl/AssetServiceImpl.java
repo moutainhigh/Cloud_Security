@@ -57,8 +57,8 @@ public class AssetServiceImpl implements IAssetService{
 	 *		 @time 2015-1-19
 	 * 返回值    ：List<Asset>
 	 */
-	public List<Asset> searchAssetsCombine(Asset asset) {
-		List<Asset> list = assetDao.searchAssetsCombine(asset);
+	public List<Asset> searchAssetsCombine(Map<String, Object> map) {
+		List<Asset> list = assetDao.searchAssetsCombine(map);
 		return list;
 	}
 	/**

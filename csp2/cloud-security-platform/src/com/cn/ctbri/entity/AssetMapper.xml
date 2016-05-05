@@ -34,15 +34,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where id=#{id}
 	</delete>
 	<!-- 根据资产状态和资产名称搜索资产 -->
-	<select id="searchAssetsCombine" parameterType="com.cn.ctbri.entity.Asset" resultMap="AssetRM">
+	<select id="searchAssetsCombine" parameterType="map" resultMap="AssetRM">
 		select a.id,a.name,a.type,a.addr,a.status,a.userid,a.create_date,a.remarks
 		from cs_asset a
-		where a.userid = #{userid}
+		where a.userid = #{userid} 
 		<if test="status!=null">
 			and a.status=#{status}
 		</if>
-		<if test="name!=null and name!=''">
-			and a.name like CONCAT(CONCAT('%', #{name}), '%')
+		<if test="keyword!=null and keyword!=''">
+			and (a.name like CONCAT(CONCAT('%', #{keyword}), '%') or a.addr like CONCAT(CONCAT('%', #{keyword}), '%'))
 		</if>
 	</select>
 	<!-- 根据资产id查询资产 -->
@@ -106,7 +106,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<!-- 根据资产地址查询资产 -->
 	<select id="findByAssetAddr" parameterType="hashmap" resultMap="AssetRM">
 		select * from cs_asset
-		where userid=#{userId} and (name=#{name} or  addr=#{addr})
+		where userid=#{userId} 
+		<if test="name!=null and name!=''">
+            and name=#{name}
+        </if>
+		<if test="addr!=null and addr!=''">
+            and addr=#{addr}
+        </if>
+		
 	
 		 
 	</select>

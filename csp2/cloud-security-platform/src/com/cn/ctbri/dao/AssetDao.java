@@ -42,7 +42,7 @@ public interface AssetDao {
 	 *		 @time 2015-1-19
 	 * 返回值    ：List<Asset>
 	 */
-	List<Asset> searchAssetsCombine(Asset asset);
+	List<Asset> searchAssetsCombine(Map<String, Object> map);
 	/**
 	 * 功能描述：根据资产id获取资产
 	 * 参数描述：int id
