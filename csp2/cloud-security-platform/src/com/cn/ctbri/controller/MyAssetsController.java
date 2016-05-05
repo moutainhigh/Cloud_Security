@@ -105,15 +105,25 @@ public class MyAssetsController {
     	if(!(addr.startsWith(addrType))){
             addr = addrType + "://" + addr.trim();
         }
-        paramMap.put("addr", addr.trim());
+
         paramMap.put("name", assetName.trim());
-		List<Asset> list = assetService.findByAssetAddr(paramMap);
+		List<Asset> listForName = assetService.findByAssetAddr(paramMap);
 		Map<String, Object> m = new HashMap<String, Object>();
-		if(list != null && list.size()>0){
-			m.put("msg", true);//1：表示资产已经存在
+		if(listForName != null && listForName.size()>0){
+			m.put("msg", '1');//1：表示资产名称已经存在
 		}else{
-			m.put("msg", false);
+			Map<String, Object> paramMap1 = new HashMap<String, Object>();
+			paramMap1.put("userId", globle_user.getId());
+			paramMap1.put("addr", addr.trim());
+			List<Asset> listForAddr = assetService.findByAssetAddr(paramMap1);
+			if(listForAddr != null && listForAddr.size()>0){
+				m.put("msg", '2');//1：表示资产地址已经存在
+			}else{
+				m.put("msg", false);
+			}
 		}
+
+
 		//object转化为Json格式
 		JSONObject JSON = CommonUtil.objectToJson(response, m);
 		try {
@@ -295,21 +305,20 @@ public class MyAssetsController {
 	@RequestMapping("/searchAssetCombine.html")
 	public ModelAndView searchAssetsCombine(HttpServletRequest request,HttpServletResponse response){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
-		Asset asset = new Asset();
-		asset.setUserid(globle_user.getId());//将用户登录用户的id赋值到asset中
+		Map<String, Object> map = new HashMap<String, Object>();
+
 		String name = request.getParameter("searchAssetName");
 			
-		if(!name.equals("输入资产名称")){
-			asset.setName(name);
-		}else{
-			asset.setName("");
+		if(name.equals("输入资产名称或地址")){
+			name="";
 		}
-						
-		List<Asset> list = assetService.searchAssetsCombine(asset);//根据userid 资产状态 和资产名称联合查询
+		map.put("userid", globle_user.getId());
+		map.put("keyword", name);
+		List<Asset> list = assetService.searchAssetsCombine(map);//根据userid 资产状态 和资产名称联合查询
 		ModelAndView mv = new ModelAndView("source/page/userCenter/assetList");
-		if(list!=null && list.size()>0){
-			mv.addObject("list", list);
-		}
+		
+		mv.addObject("list", list);
+		
 		return mv;
 	}
 	/**
