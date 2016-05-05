@@ -8,6 +8,7 @@ import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
+import com.cn.ctbri.entity.ShopCar;
 /**
  * 创 建 人  ：  txr
  * 创建日期：  2015-1-14
@@ -86,6 +87,9 @@ public interface SelfHelpOrderDao {
     void deleteLinkman(int contactId);
 
 	Serv findServiceById(int serviceId);
+	 // 查询购物车列表
+	List<ShopCar> findShopCarList(String userId,int payFlag);
 
-
+	  // 查询购物车-安全能力API列表
+	List<ShopCar> findShopCarAPIList(String userId,int payFlag);
 }
