@@ -1,6 +1,8 @@
 package com.cn.ctbri.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
+import com.cn.ctbri.entity.ShopCar;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 /**
  * 创 建 人  ：  txr
@@ -117,6 +120,21 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 	public Serv findServiceById(int serviceId) {
 		return selfHelpOrderDao.findServiceById(serviceId);
 	}
+  //查询购物车列表
+	@Override
+	public List<ShopCar> findShopCarList(String userId, int payFlag) {
+		// TODO Auto-generated method stub
+		
+		return selfHelpOrderDao.findShopCarList(userId, payFlag);
+	}
+
+	@Override
+	public List<ShopCar> findShopCarAPIList(String userId, int payFlag) {
+		// TODO Auto-generated method stub
+		return selfHelpOrderDao.findShopCarAPIList(userId, payFlag);
+	}
+
+	
 
 
 }
