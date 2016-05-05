@@ -57,6 +57,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="name!=null">
 				name=#{name},
 			</if>
+			<if test="addrType!=null and addrType='http'">
+				type=0,
+			</if>
+			<if test="addrType!=null and addrType='https'">
+				type=1,
+			</if>
 			<if test="addr!=null">
 				addr=#{addr},
 			</if>
