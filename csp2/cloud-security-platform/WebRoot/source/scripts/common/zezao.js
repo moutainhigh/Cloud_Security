@@ -95,7 +95,7 @@ $(function(){
 	     	}
 		});
 	 
-	$(".user_ctive").click(function(){
+/*	$(".user_ctive").click(function(){
 		var _index =$(".user_ctive").index(this);  //获取当前点击按钮
 		oMark.style.display ="block";
 		oLogin.style.display ="block";
@@ -106,9 +106,9 @@ $(function(){
 		
 		//image.clone(true).appendTo(".box_logoIn");
 	
-	});
+	});*/
 	//修改
-	
+/*	
 	var oMark2=document.getElementById('box_mark');
 	var oLogin2 =document.getElementById('box_logoIn_edit');
 	
@@ -156,9 +156,9 @@ $(function(){
 		
 		//image.clone(true).appendTo(".box_logoIn");
 	
-	});
+	});*/
      
-		//关闭按钮
+/*		//关闭按钮
 		function toClose(){
 			var oClose= document.getElementById('close1');
 			oClose.onclick = function(){
@@ -175,8 +175,8 @@ $(function(){
 				$("#location_msg").html("");
 				$("#assetUsage_msg").html("");
 			};
-		}
-		function toCloseedit(){
+		}*/
+/*		function toCloseedit(){
 			var oClose= document.getElementById('close_edit');
 			oClose.onclick = function(){
 				oMark2.style.display ="none";
@@ -190,9 +190,9 @@ $(function(){
 		}
 		
 		toClose();
-		toCloseedit();
+		toCloseedit();*/
 		
-		window.onscroll = window.onresize = function(){
+		/*window.onscroll = window.onresize = function(){
 		
 		var oDiv = document.getElementById('box_logoIn1');
 		var oDiv2 = document.getElementById('box_logoIn1');
@@ -205,14 +205,11 @@ $(function(){
 			oDiv2.style.top = (viewHeight() - oDiv.offsetHeight)/2-25 + 'px';
 		}
 	
-	}
+	}*/
 })
 
 
 $(function(){
-	var oMark1=document.getElementById('box_mark');
-	var oLogin1 =document.getElementById('box_logoIn2');
-	
 	$(".zican_top").click(function(){
 		var _index =$(".zican_top").index(this);  //获取当前点击按钮
 		//将资产的值带到资产验证div中
@@ -224,17 +221,14 @@ $(function(){
 		$("#hiddenAddr").val(addr);
 		var ss=document.getElementById("c");
 		ss.href=addr;
-		oMark1.style.display ="block";
-		oLogin1.style.display ="block";
-		oMark1.style.width = viewWidth() + 'px';
-		oMark1.style.height = documentHeight() + 'px';
-		oLogin1.style.left = (viewWidth() - oLogin1.offsetWidth)/2 + 'px';
-		oLogin1.style.top = (viewHeight() - oLogin1.offsetHeight)/2-25 + 'px';	
-		//image.clone(true).appendTo(".box_logoIn");
+		
+		$('.shade').show();
+		$('#verification').show();
+		$('html').css({overflow:"hidden"});
 	
 	});
      
-		//关闭按钮
+/*		//关闭按钮
 		function toClose(){
 			var oClose1= document.getElementById('close2');
 			oClose1.onclick = function(){
@@ -254,7 +248,7 @@ $(function(){
 			oDiv1.style.top = (viewHeight() - oDiv1.offsetHeight)/2-25 + 'px';
 		}
 	
-	}
+	}*/
 })
 //获取浏览器可视区的宽度和高度
 function viewWidth(){
