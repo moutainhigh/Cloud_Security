@@ -84,11 +84,11 @@
 				</div>
 				<div class="dataR fl" style="width:640px;">
 					<h2>${service.name }</h2>
-                  <!-- <button class="buttoncar" style="right:3px;"><i style="position:relative;top:-7px;"></i>我的购物车</button>-->
+                 	<a href="javaScript:void(0);"  onclick="showShopCar();" class="buttoncar" style="right:0px;"><b>${carnum}</b><i></i>我的购物车&gt;</a>
 					<ul>
 						<li class="clearfix">
 							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
-                            <div class="fl"><strong>¥0</strong><strong></strong></div> 
+                            <div class="fl price"><strong>¥0</strong><strong></strong></div> 
 						</li>
 						 <li class="clearfix type">
 							<label class="fl">选 类型</label>
@@ -149,7 +149,7 @@
 						</li>
 					</ul>
                     <div class="btnBox" style="text-align:left; margin-left:0px;">
-                    	<!-- <button style="background:#d00000; width:146px;" id="addCar">添加到购物车</button> -->
+                    	<button style="background:#d00000; width:146px;" id="addCar">添加到购物车</button>
                         <button style="background:#5aba5f; width:126px" id="buyNow">立即购买</button>
                     </div>
 				</div>
