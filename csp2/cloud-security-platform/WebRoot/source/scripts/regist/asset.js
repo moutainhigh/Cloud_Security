@@ -56,9 +56,13 @@ function saveAsset() {
 		        data: {"addr":assetAddr,"name": encodeURI(assetName),"addrType":addrType},
 		        dataType:"json",
 		        success: function(data){
-		            if(data.msg){
-		            	$("#assetAddr_msg").html("资产名称或地址重复!");
+		            if(data.msg=='1'){
+		            	$("#assetName_msg").html("资产名称重复!");
+		            }else if(data.msg=='2'){
+		            	$("#assetName_msg").html("");
+		            	$("#assetAddr_msg").html("资产地址重复!");
 		            }else{
+		            	$("#assetName_msg").html("");
 		            	$("#assetAddr_msg").html("");
 		            	//资产数验证
 		            	$.ajax({

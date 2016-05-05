@@ -67,6 +67,7 @@ input::-ms-reveal{
 .login .cent ul .list .right{
 	background:url(../images/right.png) no-repeat;
 }
+
 .login .cent ul .list .text{
 	
 	height: 16px;
@@ -233,4 +234,23 @@ select::-ms-expand { display: none; }
 .register ul li .scelt option{
 	padding-left: 20px;
 	
+}
+
+.passwordlist .prompt{
+	width: 100%;
+	padding: 10px 0px 0px 0px;
+	vertical-align: middle;
+	text-align: left;
+	color: #929292;
+	font-size: 14px;
+	display:none;
+	margin-left: 130px;
+}
+.passwordlist .prompt b{
+	width: 18px;
+	height: 18px;
+	background:url(../images/warn.png) no-repeat;
+	display:inline-block;
+	margin-right: 10px;
+	vertical-align: middle;
 }

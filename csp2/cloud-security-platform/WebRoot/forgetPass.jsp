@@ -11,6 +11,7 @@
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
 <link href="${ctx}/source/css/core.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="${ctx}/source/css/login.css">
 <script src="${ctx}/source/common/js/jquery-1.7.1.min.js"></script>
 <script src="${ctx}/source/scripts/common/jquery.js"></script>
 <script src="${ctx}/source/common/js/index.js"></script>
@@ -106,7 +107,7 @@
                             	<label class="fl">已验证的手机号码</label>
                                 <div class="fl passwordr">
                                 	 <input type="text"  class="text" name="phone_code" id="phone_code" onblur="checkPhone()"/>
-                                     <i id="phone_code_flag" class="rigth"></i>
+                                     <i id="phone_code_flag" ></i>
                                 </div>
                                 <div class="prompt fl" id="phone_code_prompt"><b></b></div>
                             </li>
@@ -114,7 +115,7 @@
                             	<label class="fl">验&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;证&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 码</label>
                                 <div class="fl passwordr">
                                 	<input type="text" class="text fl" style="width:168px;" name="verification_phone" id="verification_phone">
-                                	<i id="verification_phone_flag" style="margin-right:130px"></i>
+                                	<i id="verification_phone_flag" style="margin-right:130px;display:none"></i>
                                     <a href="#" class="btn fl" id="phone_yzm" onclick="checkSendMobile()">获取验证码</a>
                                 </div>
 

@@ -194,6 +194,7 @@ function checkPhoneActivationCode(){
 		$("#verification_phone_prompt").fadeIn();
 	 }
 }
+
 /*
 //跟换验证码
 function checkRegisterImage(){

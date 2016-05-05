@@ -435,11 +435,20 @@ select::-ms-expand { display: none; }
 .passwordlist li .passwordr i{
 	width: 18px;
 	height: 18px;
-	background: url(../images/personalCenter/end.png);
+	
 	position: absolute;
 	top:13px;
 	right: 16px;
+	
 }
+
+.passwordlist li .passwordr .error{
+		background:url(../images/error.png) no-repeat;
+}
+.passwordlist li .passwordr .right{
+		background:url(../images/right.png) no-repeat;
+}
+
 .passwordlist li .passwordr .text{
 	width: 298px;
 	height: 16px;

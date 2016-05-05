@@ -57,7 +57,7 @@
                                 <p class="promp">设置密码</p>
                                 <i class="right" style="display:none" id="regist_password_flag"></i>
                             </div>
-                            <div class="prompt fl" id="regist_password_prompt"><b></b>支持6-20位，支持中英文/数字/字符组合</div>
+                            <div class="prompt fl" id="regist_password_prompt"><b></b>支持6-20位,且至少两种字符组合(大小写字母/数字/字符)</div>
                         </li>
                         <li class="clearfix">
                         	<div class="list fl">

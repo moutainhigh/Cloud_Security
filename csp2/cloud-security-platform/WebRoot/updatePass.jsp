@@ -11,6 +11,7 @@
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
 <link href="${ctx}/source/css/core.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="${ctx}/source/css/login.css">
 <script src="${ctx}/source/scripts/common/jquery-1.7.1.min.js"></script>
 <script src="${ctx}/source/scripts/common/jquery.js"></script>
 <script src="${ctx}/source/scripts/common/index.js"></script>
@@ -18,6 +19,7 @@
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/updatePass.js"></script>
+
 </head>
 
 <body>
@@ -107,9 +109,9 @@
                             	<label class="fl">输入新密码</label>
                                 <div class="fl passwordr">
                                 	<input type="password" class="text" name="password" id="regist_password" onblur="checkPassword()"/>
-                                    <i id="regist_password_flag"></i>
+                                    <i id="regist_password_flag" ></i>
                                 </div>
-                                <div class="prompt fl" id="regist_password_prompt" style="margin-left:90px"><b></b>支持6-20位，支持中英文/数字/字符组合</div>
+                                <div class="prompt fl" id="regist_password_prompt" style="margin-left:90px"><b></b>支持6-20位,且至少两种字符组合(大小写字母/数字/字符)</div>
                             </li>
                             <li class="clearfix">
                             	<label class="fl">确认新密码</label>
@@ -117,7 +119,7 @@
                                 	<input type="password" class="text" name="confirm_password" id="regist_confirm_password" onblur="checkConfirmPassword()"/>
                                 	<i id="regist_confirm_password_flag"></i>
                                 </div>
-                                <div class="prompt fl" id="regist_confirm_password_prompt" style="margin-left:90px"><b></b>支持6-20位，支持中英文/数字/字符组合</div>
+                                <div class="prompt fl" id="regist_confirm_password_prompt" style="margin-left:90px"><b></b>支持6-20位,且至少两种字符组合(大小写字母/数字/字符)</div>
                             </li>
                             <li class="clearfix">
                             	<label class="fl">验&nbsp;&nbsp;&nbsp;证&nbsp;&nbsp;&nbsp; 码</label>

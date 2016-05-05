@@ -83,7 +83,7 @@
             	<form action="${ctx}/searchAssetCombine.html" method="post" id="searchAssetForm">
                 	<span class="fl addass assetstitlel"><em></em>新增资产</span>
                 	<div class="fr assetstitlr">
-                    	<input type="text" class="text promptext" name="name" id="searchAssetName" value="输入资产名称">
+                    	<input type="text" class="text promptext" name="name" id="searchAssetName" value="输入资产名称或地址">
                         <input type="button" id="searchBtn" value="搜索" class="btn" onclick="searchAssetCombine()">
                     </div>
                     </form>
@@ -475,7 +475,7 @@
 	$(function(){
 		/*提示文字效果*/
 		$('.promptext').focus(function(){
-			if($(this).val()=='输入资产名称'){
+			if($(this).val()=='输入资产名称或地址'){
 				$(this).val('');
 				$(this).css('color','#343434');
 			}else{
@@ -484,7 +484,7 @@
 		});
 		$('.promptext').blur(function(){
 			if($(this).val()==''){
-				$(this).val('输入资产名称');
+				$(this).val('输入资产名称或地址');
 				$(this).css('color','#929292');	
 			}
 				
