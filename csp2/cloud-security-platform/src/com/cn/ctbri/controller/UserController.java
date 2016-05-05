@@ -416,26 +416,15 @@ public class UserController{
 			}
 			//如果是企业用户判断IP是否在库存地址段内
 			if(_user.getType()==3){
-				String ip = "";
-				if (request.getHeader("x-forwarded-for") == null) {
-					ip = request.getRemoteAddr();
-				}else{
-					ip = request.getHeader("x-forwarded-for");
+				map.put("result", 4);
+				JSONObject JSON = CommonUtil.objectToJson(response, map);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				String ipStart = _user.getStartIP();
-				String ipEnd = _user.getEndIP();
-				if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
-					//登录的IP不在IP地址段范围内
-					map.put("result", 4);
-					JSONObject JSON = CommonUtil.objectToJson(response, map);
-					try {
-						// 把数据返回到页面
-						CommonUtil.writeToJsp(response, JSON);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					return;
-				}
+				return;
 			}
 
 			/**记住密码功能*/
