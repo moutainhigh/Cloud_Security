@@ -2,6 +2,7 @@ package com.cn.ctbri.dao.impl;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -19,6 +20,7 @@ import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
+import com.cn.ctbri.entity.ShopCar;
 import com.cn.ctbri.entity.User;
 /**
  * 创 建 人  ：  txr
@@ -139,6 +141,24 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		return this.getSqlSession().selectOne(nv + "findById", serviceId);
 	}
 
+	@Override
+	public List<ShopCar> findShopCarList(String userId, int payFlag) {
+		Map carMap = new HashMap();
+		 carMap.put("userId", userId);
+		 carMap.put("payFlag", payFlag);
+		 return this.getSqlSession().selectList(ns + "findShopCarList",carMap);
+	}
+
+	@Override
+	public List<ShopCar> findShopCarAPIList(String userId, int payFlag) {
+		// TODO Auto-generated method stub
+		Map carMap = new HashMap();
+		 carMap.put("userId", userId);
+		 carMap.put("payFlag", payFlag);
+		 return this.getSqlSession().selectList(ns + "findShopCarAPIList",carMap);
+	}
+
+	
 
 	
 }
