@@ -64,53 +64,100 @@
 			
 
 		</div>
-		<div class="dataCent seetlentBox order" style="width:1122px; position:relative; left:-2%;">
+		<div class="dataCent seetlentBox order" style="width:1122px; position:relative; left:-1%;">
 			
             <div class="settlement-content">
             	<ul class="settlementList">
                 	<li class="listone">
                     	<h3>全部订单</h3>
-                        <div class="tabox" id="cartTable" style=" margin-left:0px; width:1108px; padding:0">
+                    	  <c:if test="${not empty shopCarList}">
+                        <div class="tabox" style=" margin-left:0px; width:1108px; padding:0;padding-top:10px">
+                       
                         	<table class="ordertab" width="100%">
                             	<tbody>
                                 	<tr>
-                                    	<td width="29%"><i id="check" class="check-all"></i>全选</td>
-                                        <td width="23%">服务名称</td>
-                                        <td width="25%">资产内容</td>
-                                        <td width="14%">价格</td>
-                                        <td width="12%">操作</td>
+                                    	<td width="18%">
+                                        	
+                                            <!--<input type="checkbox" style="display:none">-->
+                                            <i class="check-all"></i>
+                                            网站安全帮
+                                        	
+                                        </td>
+                                       
+                                        <td width="24%">资产内容</td>
+                                        <td width="6%">价格</td>
+                                        <td width="7%">操作</td>
                                     </tr>
                                 </tbody>
                             </table>
                         	<table class="test-table" width="100%">
                         	<tbody>
-                            	 <tr height="40">
-                                 	<td width="29%"><i class="chck"></i>订单1234567890</td>
-                                    <td width="23%">漏洞扫描服务</td>
-                                    <td width="25%">www.anquanbang.net</td>
-                                    <td width="14%"><em class="price">199.00</em></td>
-                                    <td width="12%"><a href="#">删除</a></td>
-                                 </tr>
+                            	
+                                   	<c:forEach var="shopCar" items="${shopCarList}">
+                                     	<tr height="40">
+                                     		<td width="20%"><label >
+                                            <input type="checkbox"class="ck" style="display:none" value="${shopCar.orderId}"><i class="chck"></i>
+                                            </label><a href="${ctx}/selfHelpOrderInit.html?serviceId=${shopCar.serviceId}&indexPage=1">${shopCar.serverName}</a></td>
+                                    <td width="36%"><p style="padding-left:40px;">${shopCar.astName}</p></td>
+                                    <td width="8%"><em class="price">${shopCar.price}</em></td>
+                                    <td width="9%"><a href="#" onclick="delShopCar('${shopCar.orderId}');">删除</a></td>
+                                  </tr>
+                                    </c:forEach>
+                              
                                  
                             </tbody>
                         </table>
-                        <table class="test-table" width="100%">
-                        	<tbody>
-                            	 <tr height="40">
-                                 	<td width="29%"><i class="chck"></i>订单1234567890</td>
-                                    <td width="23%">漏洞扫描服务</td>
-                                    <td width="25%">www.anquanbang.net</td>
-                                    <td width="14%"><em class="price">199.00</em></td>
-                                    <td width="12%"><a href="#">删除</a></td>
-                                 </tr>
-                                 
-                            </tbody>
-                        </table>
-                        	<div class="settle">
-                                <span>已选择<b>0</b>个订单</span><span>总价 <em>¥<i id="priceTotal">00.00</i></em></span><button type="button">去结算</button>
-                            </div>
+                      
                         </div>
+                         </c:if>
+                        <c:if test="${not empty apiList}">
+                        <div class="tabox"  style=" margin-left:0px; width:1108px; padding:0;padding-top:10px">
                         
+                        	<table class="ordertab" width="100%">
+                            	<tbody>
+                                	<tr>
+                                    	<td width="18%">
+                                        	
+                                            <!--<input type="checkbox" style="display:none">-->
+                                            <i id="check" class="check-all"></i>  安全能力API
+                                        	
+                                        </td>
+                                       
+                                        <td width="24%">数量</td>
+                                        <td width="6%">价格</td>
+                                        <td width="7%">操作</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        	<table class="test-table" width="100%">
+                        	<tbody>
+                            	
+                                   	<c:forEach var="shopAPI" items="${apiList}">
+                                     	<tr height="40">
+                                     		<td width="20%"><label >
+                                            <input type="checkbox"class="ck" style="display:none" value="${shopCar.orderId}"><i class="chck"></i>
+                                            </label>${shopAPI.serverName}</td>
+                                    <td width="36%"><p style="padding-left:53px;">${shopAPI.num}</p></td>
+                                    <td width="8%"><em class="price">${shopAPI.price}</em></td>
+                                    <td width="9%"><a href="#" onclick="delShopCar('${shopAPI.orderId}');">删除</a></td>
+                                 </tr>
+                                    </c:forEach>
+                              
+                                 
+                            </tbody>
+                        </table>
+                       
+                        </div>
+                         </c:if>
+                        
+                       
+                        	<div class="settle" style="width:1108px;">
+                                <span>已选择<b>0</b>个订单</span><span>总价 <em style="position:relative; top:-2px;">¥<i id="priceTotal" style="font-size: 26px;
+    font-family: Arial Regular;">00.00</i></em></span><button type="button" style="font-family:'微软雅黑'">去结算</button>
+                            </div>
+                        
+                        
+
                     </li>
                 </ul>
             	
@@ -119,6 +166,7 @@
            
 		</div>
         
+  
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
