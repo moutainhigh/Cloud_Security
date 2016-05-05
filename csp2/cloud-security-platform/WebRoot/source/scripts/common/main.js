@@ -50,6 +50,22 @@ function topshow2(){
 
 }
 topshow2();	
+
+function topshow3(){
+	$('.specialblock dd').hover(function(){
+		//$(this).addClass('showdow');
+		$(this).stop().animate({
+			top:'-6px',
+		},500)
+	},function(){
+		//$(this).removeClass('showdow');
+		$(this).stop().animate({
+			top:'0'
+			},500)
+		})
+
+}
+topshow3();
 	
 	
 	
