@@ -150,6 +150,12 @@ function loginSubmit(){
 							$("#checkNumber_prompt").html("<b></b>验证码输入有误!");
 							$("#checkNumber_prompt").fadeIn();
 							break;
+						case 4:
+							$("#login_name_flag").attr("class","error");
+							$("#login_name_flag").show();
+							$("#login_name_prompt").html("<b></b>对不起，企业用户不允许登录!");
+							$("#login_name_prompt").fadeIn();
+							break;
 						case 5:
 		            		$("#login_name_flag").attr("class","right");
 		            		$("#login_name_flag").show();
