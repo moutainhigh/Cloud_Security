@@ -65,7 +65,7 @@
                                 <p class="promp">确认密码</p>
                                 <i class="right" style="display:none" id="regist_confirm_password_flag"></i>
                             </div>
-                           <div class="prompt fl" id="regist_confirm_password_prompt"><b></b></div>
+                           <div class="prompt fl" id="regist_confirm_password_prompt"><b></b>支持6-20位,且至少两种字符组合(大小写字母/数字/字符)</div>
                         </li>
                          <li class="clearfix">                       	
                             	 <select class="scelt" id="industry" name="industry">
@@ -281,15 +281,15 @@ $(function(){
 		
 		$('.prompttext').focus(function(){
 			$(this).siblings('p').hide();	
-			var tempId = $(this).parents('li').children('.prompt').attr("id");
-			if(tempId=='regist_name_prompt' || tempId=='regist_password_prompt'){
+			//var tempId = $(this).parents('li').children('.prompt').attr("id");
+			//if(tempId=='regist_name_prompt' || tempId=='regist_password_prompt'){
 				$(this).parents('li').children('.prompt').fadeIn();	
-			}
+			//}
 
 		})
 		$('.prompttext').blur(function(){
-			var tempId = $(this).parents('li').children('.prompt').attr("id");
-			if(tempId=='regist_name_prompt' || tempId=='regist_password_prompt'){
+			//var tempId = $(this).parents('li').children('.prompt').attr("id");
+			//if(tempId=='regist_name_prompt' || tempId=='regist_password_prompt'){
 				$(this).parents('li').children('.prompt').fadeOut();	
 				var _this=$(this).val();
 				if(_this=='')
@@ -299,7 +299,7 @@ $(function(){
 				{
 					$(this).siblings('p').hide();	
 				}
-			}
+			//}
 			
 			
 		})
