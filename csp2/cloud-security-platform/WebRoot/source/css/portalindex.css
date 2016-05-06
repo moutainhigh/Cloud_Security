@@ -1767,3 +1767,26 @@ padding: 20px 30px 0px 0px;
 	  color: #d8d8d8;
 	  line-height:24px;
 }
+
+/*修改详情页购物车*/
+.detailsR .buttoncar{
+	font-size: 14px;
+    color: #5e5e5e;
+}
+.detailsR .buttoncar b {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+  	background: url(../images/portal/pop.png) no-repeat;
+    right: 99px;
+    top: -7px;
+    font-size: 11px;
+    color: #fff;
+    z-index: 100;
+}
+.detailsR .buttoncar i{
+	position:relative; 
+	top:-8px;
+	left:2px;
+}
