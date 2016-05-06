@@ -241,61 +241,7 @@ public class shoppingController {
             CommonUtil.writeToJsp(response, JSON);
 	}
 	
-	/**
-	 * 功能描述： 添加购物车API
-	 * 参数描述：  无
-	 * @throws Exception 
-	 *      add by gxy 2016-5-03
-	 */
-	@RequestMapping(value="shoppingCarAPI.html")
-	public void shoppingCarAPI(HttpServletRequest request) throws Exception{
-		 User globle_user = (User) request.getSession().getAttribute("globle_user");
-	        //apiId
-	        int apiId = Integer.parseInt(request.getParameter("apiId"));
-	        //套餐次数
-	        int time = Integer.parseInt(request.getParameter("time"));
-	        //数量
-	        int num = Integer.parseInt(request.getParameter("num"));
-	        //套餐类型
-	        int type = Integer.parseInt(request.getParameter("type"));
-	        SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
-			String orderDate = odf.format(new Date());
-	        String orderId = String.valueOf(Random.fivecode())+orderDate;
-	        Map<String, Object> m = new HashMap<String, Object>();
-	        Order order = new Order();
-            order.setId(orderId);
-            order.setType(1);
-            order.setBegin_date(new Date());
-            order.setEnd_date(getAfterYear(new Date()));
-            order.setServiceId(apiId);
-            order.setCreate_date(new Date());
-            order.setUserId(globle_user.getId());
-        
-            order.setStatus(1);//完成
-            order.setPayFlag(0);
-            order.setIsAPI(1);//api订单
-            selfHelpOrderService.insertOrder(order);
-            
-            //新增API订单
-            OrderAPI oAPI = new OrderAPI();
-            oAPI.setId(orderId);
-            oAPI.setBegin_date(new Date());
-            oAPI.setEnd_date(getAfterYear(new Date()));
-            oAPI.setApiId(apiId);
-            oAPI.setCreate_date(new Date());
-            oAPI.setPackage_type(type);
-            oAPI.setNum(time*num);
-            oAPI.setUserId(globle_user.getId());
-           
-            oAPI.setPayFlag(1);
-            orderAPIService.insert(oAPI);
-            //网站安全帮列表
-            List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0);
-            //查询安全能力API
-   		   List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0);
-   		 int carnum=shopCarList.size()+apiList.hashCode();
-   		 request.setAttribute("carnum", carnum);  
-	}
+	
 	
 	/**
 	 * 功能描述： 查看购物车
@@ -343,18 +289,6 @@ public class shoppingController {
 			e.printStackTrace();
 		}
     }
-    /**
-     * 得到某个日期的后一年日期
-     * @param d
-     * @return
-     */
-    public static Date getAfterYear(Date d){
-         Date date = d;
-         Calendar calendar = Calendar.getInstance();  
-         calendar.setTime(date);  
-         calendar.add(Calendar.YEAR,1); 
-         date = calendar.getTime();  
-         return date;
-    }
+   
 
 }
