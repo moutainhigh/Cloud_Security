@@ -117,7 +117,7 @@ WHERE a.id = b.orderId
   a.id            orderId,
   a.serverName,
   a.price,
-  b.num,
+  b.package_type num,
 a.serviceId
 FROM (SELECT
         co.*,
@@ -130,9 +130,9 @@ FROM (SELECT
           AND co.isAPI = 1) a,
   (SELECT
      api.id           orderId,
-     api.num
+     api.package_type
    FROM cs_order_api api
-   WHERE api.id = (SELECT
+   WHERE api.id in (SELECT
                      co.id
                    FROM cs_order co
                    WHERE co.userId =#{userId}
