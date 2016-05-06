@@ -1,12 +1,21 @@
 //获取资产列表
-function getUserAssets(){
+/*function getUserAssets(){
 	$.post("userAssets.html",{},function(data){
 		$("#assetsTable").html("");
 		$("#assetsTable").append(data);
 		//设置tab的显示
 		setTabShow();
 	});     
-}
+}*/
+//回车键事件
+/* $(function(){
+        $('#searchAssetName').bind('keypress',function(event){
+            if(event.keyCode == "13")    
+            {
+            	searchAssetCombine();
+            }
+        });
+    });*/
 function saveAsset() {
 	var assetName =$("#assetName").val();
 	var assetAddr = $("#assetAddr").val();
@@ -87,15 +96,15 @@ function saveAsset() {
 function searchAssetCombine(){
 	//$("#searchAssetForm").submit();
 	var searchAssetName = $("#searchAssetName").val();
-    
-	$.post("searchAssetCombine.html",{searchAssetName:searchAssetName},function(data){
-
+	$.post("searchAssetCombine.html",{"searchAssetName":searchAssetName},function(data){
 		$("#assetsTable").html("");
 		$("#assetsTable").append(data);
 		//设置tab的显示
 		setTabShow();
 	}); 
 
+	
+	
 }
 //提取修改信息
 function editAssetUI(str){
