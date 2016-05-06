@@ -74,9 +74,10 @@
 .safe01 .Divlist{
 	position: relative;
 	/*line-height: 60px;*/
-	line-height:52px;
+	line-height:53px;
 	z-index:12;
 	height: 100%;
+	top:-1px;
 }
 .safe01 .Divlist a i{
 	margin-left: 10px;
@@ -103,19 +104,36 @@
 	background: #ffffff;
 	position: absolute;
 	padding: 0 4px;
-	left: -20px;
+	left: -16px;
 	top:55px;
-	width: 147px;
-	height: 142px;
+	width: 120px;
+	/*height: 142px;*/
+	border: #e3e3e3 solid 1px;
 	border-top:#fbfbfb solid 1px;
 	display: none;
 	*z-index:300;
 }	
-.safe01 .Divlist .list li{
+.safe01 .Divlist .list > li{
 	text-align: center;
 	height: 46px;
 	border-bottom: #e3e3e3 solid 1px;
 	line-height: 46px;
+	position: relative;
+	margin: 0 4px;
+}
+.safe01 .Divlist .list > li > ol{
+	position: absolute;
+	left: 113px;
+	top:-1px;
+	background-color: #fff;
+	width: 216px;
+	display: none;
+	padding: 0 4px;
+	border-top:#fbfbfb solid 1px;
+}
+.safe01 .Divlist .list > li > ol > li{
+	height: 46px;
+    border-bottom: #e3e3e3 solid 1px;
 }
 .bannerbtn{
 	position:absolute;
