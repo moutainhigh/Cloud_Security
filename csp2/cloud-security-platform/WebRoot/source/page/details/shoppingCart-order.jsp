@@ -131,18 +131,18 @@
                             </table>
                         	<table class="test-table" width="100%">
                         	<tbody>
-                            	
-                                   	<c:forEach var="shopAPI" items="${apiList}">
-                                     	<tr height="40">
-                                     		<td width="20%"><label >
+                        		<c:forEach var="shopAPI" items="${apiList}">
+                            	 <tr height="40">
+                                 	<td width="20%"><label >
                                             <input type="checkbox"class="ck" style="display:none" value="${shopCar.orderId}"><i class="chck"></i>
-                                            </label>${shopAPI.serverName}</td>
-                                    <td width="36%"><p style="padding-left:53px;">${shopAPI.num}</p></td>
+                                            </label>
+                                          <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${shopAPI.serviceId}&indexPage=2">${shopAPI.serverName}</a></td>
+                                    <td width="36%"><p style="padding-left:40px;">${shopAPI.num}</p></td>
                                     <td width="8%"><em class="price">${shopAPI.price}</em></td>
                                     <td width="9%"><a href="#" onclick="delShopCar('${shopAPI.orderId}');">删除</a></td>
                                  </tr>
-                                    </c:forEach>
-                              
+                                  </c:forEach>
+                                   	
                                  
                             </tbody>
                         </table>
