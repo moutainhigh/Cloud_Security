@@ -174,7 +174,7 @@ function detectionUrl(){
 		
         <div class="content">
         	<div class="x">
-            		<p class="logoimg"><img src="${ctx}/source/images/portal/newlogo-footer.png" alt=""></p>
+            		<p class="logoimg"><img src="${ctx}/source/images/anquanbang_white_logo.png" alt=""></p>
             		<h2>Struts2 S2-032漏洞在线检测 </h2>
                     <div class="search">
                     	<input type="text" class="text "placeholder="请输入站点域名或IP" id="urlInfo" onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')"><input type="button"  value="开始检测" class="btn"  onclick="detectionUrl();">
@@ -198,9 +198,7 @@ function detectionUrl(){
 				<div class="footL fl">
 					<!--修改-->
 				   <a href="${ctx}/index.html">
-	               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
-                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
-	               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+	               		<img src="${ctx}/source/images/portal/new-footer-logo.png" alt="" />
                    </a>
 				</div>
 				<ol class="footr clearfix fr">
