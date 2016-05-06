@@ -13,12 +13,12 @@
 <link rel="stylesheet" type="text/css" href="${ctx}/source/css/login.css">
 <script src="${ctx}/source/scripts/common/js/jquery-1.7.1.min.js"></script>
 <script src="${ctx}/source/scripts/common/jquery.js"></script>
-<script src="${ctx}/source/scripts/common/js/index.js"></script>
-<script src="${ctx}/source/scripts/common/js/popBox.js"></script>
-<script src="${ctx}/source/scripts/common/js/slidelf.js"></script>
-<script src="${ctx}/source/scripts/common/js/main.js"></script>
+<script src="${ctx}/source/scripts/common/index.js"></script>
+<script src="${ctx}/source/scripts/common/popBox.js"></script>
+<script src="${ctx}/source/scripts/common/slidelf.js"></script>
+<script src="${ctx}/source/scripts/common/main.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/login.js"></script>
-<script src="${ctx}/source/scripts/common/js/jquery.form.js" type="text/javascript"></script>
+<script src="${ctx}/source/scripts/common/jquery.form.js" type="text/javascript"></script>
 <script type="text/javascript">
 	window.onload=function(){
 		//页面加载时清空所有的val值，如需要请取消注释；

@@ -12,12 +12,12 @@
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="${ctx}/source/css/login.css">
 <link href="${ctx}/source/css/user.css" type="text/css" rel="stylesheet" />
-<script src="${ctx}/source/common/js/jquery-1.7.1.min.js"></script>
+<script src="${ctx}/source/common/jquery-1.7.1.min.js"></script>
 <script src="${ctx}/source/scripts/common/jquery.js"></script>
-<script src="${ctx}/source/common/js/index.js"></script>
-<script src="${ctx}/source/common/js/popBox.js"></script>
-<script src="${ctx}/source/common/js/slidelf.js"></script>
-<script src="${ctx}/source/common/js/main.js"></script>
+<script src="${ctx}/source/common/index.js"></script>
+<script src="${ctx}/source/common/popBox.js"></script>
+<script src="${ctx}/source/common/slidelf.js"></script>
+<script src="${ctx}/source/common/main.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/regist.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/registzezao.js"></script>
 <script>
