@@ -70,10 +70,10 @@
             	<h3><i></i>个人中心</h3>
                 <dl>
                 	<dt>交易管理</dt>
-                    <dd><a href="${ctx}/userBillUI.html" class="active">我的订单</a></dd>
+                    <dd><a href="${ctx}/userBillUI.html">我的订单</a></dd>
                     <dd><a href="#">我的优惠劵</a></dd>
                     <dt>个人信息管理</dt>
-                    <dd><a href="${ctx}/userDataUI.html">个人资料</a></dd>
+                    <dd><a href="${ctx}/userDataUI.html" class="active">个人资料</a></dd>
                     <dd style="border-bottom:none;"><a href="${ctx}/userAssetsUI.html">我的资产</a></dd>
                 </dl>
             </div>
