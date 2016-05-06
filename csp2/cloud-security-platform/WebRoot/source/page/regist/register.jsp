@@ -34,7 +34,7 @@
 	<div class="safeBox login register">
 	<div class="loginBox" style="margin-bottom:370px;">
             <a href="#" class="logo">
-                <img src="${ctx}/source/images/logonew.png" alt="">
+                <img src="${ctx}/source/images/portal/logo.png" alt="">
             </a>
 	
 		 <div class="cent">
@@ -161,9 +161,7 @@
 			<div class="imgBox clearfix">
 				<div class="footL fl">
 					<a href="#">
-                    	<img src="${ctx}/source/images/dianxin_logo footer.png" alt="">
-                        <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
-                    	<img src="${ctx}/source/images/newlogo-footer.png" alt="">
+                    	<img src="${ctx}/source/images/portal/new-footer-logo.png" alt="" />
                     </a>
 				</div>
 				<ol class="footr clearfix fr">
