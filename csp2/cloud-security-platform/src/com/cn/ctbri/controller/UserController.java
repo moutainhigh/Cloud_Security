@@ -1229,5 +1229,21 @@ public class UserController{
         m.addAttribute("noticeList", list);
 		return "/source/page/child/api_anquanbang";
 	}
+	
+	/**
+	 * 功能描述： 头部商品分类的显示
+	 * 参数描述：Model m
+	 *		 @time 2016-5-6
+	 */
+	@RequestMapping("/category.html")
+	public String getCategory(Model m){
+		//获取服务类型
+        List<Serv> servList = selfHelpOrderService.findService();
+        //获取服务API类型
+        List<ServiceAPI> servAPIList = serviceAPIService.findServiceAPI();
+        m.addAttribute("servList", servList);
+        m.addAttribute("servAPIList", servAPIList);
+        return "/category";
+	} 
 
 }
