@@ -34,14 +34,11 @@
 					</div>
 					<div class="safem fl">
 						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
-						<div class="Divlist listJs fl">
-							<a href="${ctx}/orderTrackInit.html">我的安全帮<!--<i></i>--></a>
-							<!-- <ul class="list listl">
-								<li><a href="#">我的订单</a></li>
-								<li><a href="#">我的资产</a></li>
-								<li style="border: none;"><a href="#">个人信息</a></li>
-							</ul> -->
-						</div>
+						
+						<!-- 商品分类 start -->
+						<c:import url="/category.html"></c:import>
+						<!-- 商品分类 end -->
+				
 						<span class="fl"><a href="#">手机APP</a></span>
 						<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
 						
