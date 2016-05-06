@@ -55,9 +55,7 @@ function checkUserData(){
 	var job = $("#job").val();
 	var company = $("#company").val();
 	var flag = checkMobile();
-	alert(flag);
 	if(flag==1){
-		alert("111");
 		$.ajax({ type: "POST",
     		     async: false, 
     		     url: "saveUserDataBate.html", 
