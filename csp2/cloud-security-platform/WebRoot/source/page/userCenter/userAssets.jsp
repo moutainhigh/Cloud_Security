@@ -75,7 +75,7 @@
                     <dd><a href="#">我的优惠劵</a></dd>
                     <dt>个人信息管理</dt>
                     <dd><a href="${ctx}/userDataUI.html">个人资料</a></dd>
-                    <dd style="border-bottom:none;"><a class="active" href="${ctx}/userAssetsUI.html">我的资产</a></dd>
+                    <dd style="border-bottom:none;"><a class="active" href="${ctx }/userAssetsUI.html">我的资产</a></dd>
                 </dl>
             </div>
         	<div class="coreRight assetsece coupon fl" style="margin-bottom:400px;">
@@ -83,7 +83,7 @@
             	<form action="${ctx}/searchAssetCombine.html" method="post" id="searchAssetForm">
                 	<span class="fl addass assetstitlel"><em></em>新增资产</span>
                 	<div class="fr assetstitlr">
-                    	<input type="text" class="text promptext" name="name" id="searchAssetName" value="输入资产名称或地址">
+                    	<input type="text" class="text promptext" name="name" id="searchAssetName" value="输入资产名称或地址" onkeydown="if(event.keyCode==13){return false;}">
                         <input type="button" id="searchBtn" value="搜索" class="btn" onclick="searchAssetCombine()">
                     </div>
                     </form>
