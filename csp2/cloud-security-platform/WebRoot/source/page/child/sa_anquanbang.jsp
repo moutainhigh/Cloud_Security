@@ -262,7 +262,7 @@ $(function(){
 <div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
-					<a href="#"><img src="${ctx}/source/images/portal/footlogo.png" alt=""></a>
+					<a href="#"><img src="${ctx}/source/images/portal/new-footer-logo.png" alt=""></a>
 				</div>
 				<ol class="footr clearfix fr">
 					<li>
