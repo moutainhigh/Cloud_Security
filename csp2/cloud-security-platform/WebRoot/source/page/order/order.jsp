@@ -35,7 +35,7 @@
 	<div class="head" style="width:100%">
 		<div class="headBox">
 			<div class="safeL fl" style="width:260px; margin-right:13%">
-				<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/></a>
+				<a href="${ctx}/index.html"><img src="${ctx}/source/images/anquanbang_white_logo.png" alt="" style="position:relative; top:4px;"/></a>
 			</div>
 			<div class="safem fl">
 				<span class="fl"><a href="${ctx}/index.html">首页</a></span>
@@ -853,9 +853,7 @@
 			<div class="imgBox clearfix">
 				<div class="footL fl">
 					<a href="${ctx}/index.html">
-		               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
-	                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
-		               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+		               <img src="${ctx}/source/images/portal/new-footer-logo.png" alt="" />
                    </a>
 				</div>
 				<ol class="footr clearfix fr">
