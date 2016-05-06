@@ -31,7 +31,7 @@
 			<div class="head">
 				<div class="headBox">
 					<div class="safeL fl" style="width:275px; margin-right:11%">
-						<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/></a>
+						<a href="${ctx}/index.html"><img src="${ctx}/source/images/anquanbang_white_logo.png" alt="" style="position:relative; top:4px;"/></a>
                         <a href="${ctx}/api_anquanbang.html"><strong style="font-size:20px; color:#fff; padding-left:10px;position:relative; top:-10px;font-weight:normal;">安全能力API</strong></a>
 					</div>
 					<div class="safem fl">
@@ -1029,9 +1029,7 @@
 			<div class="imgBox clearfix">
 				<div class="footL fl">
                     <a href="${ctx}/index.html">
-		               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
-	                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
-		               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+		               <img src="${ctx}/source/images/portal/new-footer-logo.png" alt="" />
                     </a>
 				</div>
 				<ol class="footr clearfix fr">
