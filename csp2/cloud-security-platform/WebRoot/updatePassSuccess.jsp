@@ -29,7 +29,7 @@
 			<div class="head">
 				<div class="headBox">
 					<div class="safeL fl" style="width:285px; margin-right:20%">
-						<img src="${ctx}/source/images/newlogo-footer.png" alt="" style="position:relative; top:4px;"/>
+						<img src="${ctx}/source/images/anquanbang_white_logo.png" alt="" style="position:relative; top:4px;"/>
                         <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px; font-weight:normal;">个人中心</strong>
 					</div>
 					<div class="safem fl">
@@ -115,9 +115,7 @@
 				<div class="footL fl">
 					<!--修改-->
 				   <a href="#">
-	               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
-                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
-	               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+	               		<img src="${ctx}/source/images/portal/new-footer-logo.png" alt="" />
                    </a>
                 <!--修改-->  
 				</div>
