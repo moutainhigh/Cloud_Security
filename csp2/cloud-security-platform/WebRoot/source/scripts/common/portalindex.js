@@ -404,3 +404,149 @@ function tablist(){
 	})
 	
 }
+
+//购物车效果
+function sck(){
+	//单个选择
+	$('.chck').delegate(this,'click',function(){
+		//计算价格方法
+		function getTotal() {
+		var seleted = 0;
+		price = 0;
+		var HTMLstr = '';
+		for (var i = 0, len = tr.length; i < len; i++) {
+				price += parseFloat(tr[i].innerHTML);		
+		}	
+		priceTotal.innerHTML = price.toFixed(2);
+		
+	}
+		var is=$(this).hasClass('this');
+		var clength=$('.count');
+		var lenth=$('.chck');
+		var clengthb=clength.length;
+		var lents=lenth.length;
+		
+		if(is==false)
+		{
+			$('.settle b').text();
+			$(this).addClass('this');
+			$(this).addClass('count');
+			var alllength=$('.count').length;
+			var s=$('.settle').find('b').text();;
+			var num2 = parseFloat(alllength);
+			var total =num2;
+			$('.settle').find('b').text(total);
+			
+			//获取当前表格的个数
+			var allth=$(this).parents('.tabox').children('.test-table').find('.count').length;
+			var tablenth=$(this).parents('.tabox').children('.test-table').length;
+			if(tablenth==allth){
+				$(this).parents('.tabox').find('.check-all').addClass('this');
+			}
+			//计算价格
+			$(this).parents('tr').find('.price').addClass('ps');
+			 var tr =$('.ps');
+			 var price;
+			var priceTotal = document.getElementById('priceTotal');
+			//计算方法调用
+			 getTotal(); 
+			 
+			 var sum=Number(price).toFixed(2);
+			 var zsh=$('#priceTotal').text(sum);
+	
+		}else{
+			$(this).removeClass('count');
+			$(this).removeClass('this');
+			//单个取消订单个数更新;
+			var et=$('.count').length;
+			$('.settle b').text(et);
+			//获取当前表格的个数
+			var allth=$(this).parents('.tabox').children('.test-table').find('.count').length;
+			var tablenth=$(this).parents('.tabox').children('.test-table').length;
+			if(tablenth > allth){
+				$(this).parents('.tabox').find('.check-all').removeClass('this');
+			}
+			//计算价格
+			$(this).parents('tr').find('.price').removeClass('ps');
+			 var tr =$('.ps');
+			 var price;
+			var priceTotal = document.getElementById('priceTotal');
+			 //计算方法调用
+			 getTotal(); 
+			 var sum=Number(price).toFixed(2);
+			 var zsh=$('#priceTotal').text(sum);
+			
+		}
+		
+		
+	})
+	//全选算价格
+	$('.check-all').click(function(){
+		//计算价格方法
+		function getTotal() {
+		var seleted = 0;
+		price = 0;
+		var HTMLstr = '';
+		for (var i = 0, len = tr.length; i < len; i++) {
+				price += parseFloat(tr[i].innerHTML);		
+		}	
+		
+		priceTotal.innerHTML = price.toFixed(2);
+		
+	}
+		var is=$(this).hasClass('this');
+		if(is==false)
+		{
+			$(this).parents('.tabox').find('.price').addClass('ps');
+			 var tr =$('.ps');
+			 var price;
+			var priceTotal = document.getElementById('priceTotal')
+			
+			//计算方法调用
+			 getTotal(); 
+			 var sum=Number(price).toFixed(2);
+			 var zsh=$('#priceTotal').text(sum);
+			 
+			 
+			var spt=$(this).parents('tr').find('.price').text();
+			var cent=$('#priceTotal').text();
+			$(this).parents('.tabox').find('.chck').addClass('count');
+			var total=$('.count').length;
+			
+			$(this).parents('.tabox').find('.ck').prop("checked",true);
+			$(this).addClass('this');
+			$(this).parents('.tabox').find('.chck').addClass('this');
+			$('.settle').find('b').text(total);
+			 
+		}else{
+			
+			$(this).parents('.tabox').find('.price').removeClass('ps');
+			var zsh=$('#priceTotal').text();
+			var tab=$(this).parents('.tabox').children('.test-table')
+			 var tr = tab.find('.price');
+			 
+			 var price;
+			var priceTotal = document.getElementById('priceTotal')
+			
+			//计算方法调用
+			 getTotal(); 
+			 var zsb=(Number(zsh).toFixed(2));
+			 /*正在点击的和*/
+			 var ing=(Number(price).toFixed(2));
+			 var nu=Number(ing).toFixed(2);
+			var sum=(Number(zsb)-Number(nu)).toFixed(2);
+			 var zsh=$('#priceTotal').text(sum);
+			$(this).parents('.tabox').find('.chck').removeClass('count');
+			var total=$('.count').length;
+			$(this).parents('.tabox').find('.ck').prop("checked",true);
+			$(this).parents('.tabox').find('.chck').removeClass('this');
+			$(this).removeClass('this');
+			$('.settle').find('b').text(total);
+			$(this).parents('.tabox').find('.ck').attr('checked',false);
+			
+		}
+		
+	})
+
+
+}
