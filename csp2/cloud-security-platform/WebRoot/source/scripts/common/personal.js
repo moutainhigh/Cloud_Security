@@ -44,7 +44,6 @@ function checkMobile(){
 			mobileChecked = 0;
 		}
 	}
-	alert(mobileChecked);
 	return mobileChecked;
 }
 
