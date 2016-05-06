@@ -110,14 +110,11 @@ $(function(){
 		<div class="safem fl">
 			<span class="fl"><a href="${ctx}/index.html">首页</a></span>
 			<span class="fl"><a href="${ctx}/chinas.html">安全态势</a></span>
-			<div class="Divlist listJs fl">
-				<a href="#">我的安全帮<i></i></a>
-				<ul class="list listl">
-					<li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
-					<li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
-					<li style="border: none;"><a href="${ctx}/userDataUI.html">个人信息</a></li>
-				</ul>
-			</div>
+			
+			<!-- 商品分类 start -->
+			<c:import url="/category.html"></c:import>
+			<!-- 商品分类 end -->
+			
 			<span class="fl"><a href="#">手机APP</a></span>
 			<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
 			
