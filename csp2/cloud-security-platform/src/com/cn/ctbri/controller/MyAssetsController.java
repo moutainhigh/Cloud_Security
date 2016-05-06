@@ -304,21 +304,22 @@ public class MyAssetsController {
 	 */
 	@RequestMapping("/searchAssetCombine.html")
 	public ModelAndView searchAssetsCombine(HttpServletRequest request,HttpServletResponse response){
+		ModelAndView mv = new ModelAndView("source/page/userCenter/assetList");
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		String name = request.getParameter("searchAssetName");
-			
-		if(name.equals("输入资产名称或地址")){
+
+		if(name!=null && name.equals("输入资产名称或地址")){
 			name="";
 		}
 		map.put("userid", globle_user.getId());
 		map.put("keyword", name);
 		List<Asset> list = assetService.searchAssetsCombine(map);//根据userid 资产状态 和资产名称联合查询
-		ModelAndView mv = new ModelAndView("source/page/userCenter/assetList");
 		
 		mv.addObject("list", list);
-		
+
+				
 		return mv;
 	}
 	/**
