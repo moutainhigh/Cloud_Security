@@ -47,7 +47,7 @@ margin: 0 18%;
 			<div class="head">
 				<div class="headBox">
 					<div class="safeL fl" style="width:260px; margin-right:13%">
-						<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/newlogo-footer.png" alt="" style="position:relative; top:4px;"/></a>
+						<a href="${ctx}/index.html"><img src="${ctx}/source/images/anquanbang_white_logo.png" alt="" style="position:relative; top:4px;"/></a>
 					</div>
 					<div class="safem fl">
 						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
@@ -156,9 +156,7 @@ margin: 0 18%;
 				<div class="footL fl">
 					<!--修改-->
 				   <a href="${ctx}/index.html">
-	               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
-                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
-	               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+	               		<img src="${ctx}/source/images/portal/new-footer-logo.png" alt="" />
                    </a>
                 <!--修改-->  
 				</div>
