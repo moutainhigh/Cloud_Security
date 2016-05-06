@@ -35,14 +35,11 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 					</div>
 					<div class="safem fl">
 						<span class="fl"><a href="${ctx}/index.html" class="hbule this">首页</a></span>
-						<div class="Divlist listJs fl">
-							<a href="#" class="hbule">我的安全帮<i></i></a>
-							<ul class="list listl">
-								<li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
-								<li><a href="${ctx}/userAssetsUI.html">我的资产</a></li>
-								<li style="border: none;"><a href="${ctx}/userDataUI.html">个人信息</a></li>
-							</ul>
-						</div>
+						
+						<!-- 商品分类 start -->
+						<c:import url="/category.html"></c:import>
+						<!-- 商品分类 end -->
+						
 						<span class="fl ask">
 							<a href="#" class="hbule">手机APP</a>
 							<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
@@ -246,9 +243,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 				<div class="footL fl">
 				<!--修改-->
 				   <a href="${ctx}/index.html">
-	               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
-                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
-	               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+	               		<img src="${ctx}/source/images/portal/new-footer-logo.png" alt="" />
                    </a>
                 <!--修改-->  
 				</div>
