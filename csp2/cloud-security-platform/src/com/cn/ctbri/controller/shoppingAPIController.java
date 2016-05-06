@@ -23,14 +23,12 @@ import com.cn.ctbri.entity.APICount;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAPI;
-import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAPIService;
 import com.cn.ctbri.service.IOrderAssetService;
-import com.cn.ctbri.service.IOrderListService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
@@ -86,9 +84,15 @@ public class shoppingAPIController {
 	    String indexPage = request.getParameter("indexPage");
 	    //根据id查询serviceAPI, add by tangxr 2016-3-28
 	    ServiceAPI serviceAPI = serviceAPIService.findById(apiId);
+	    //网站安全帮列表
+        List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0);
+        //查询安全能力API
+		   List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0);
+		 int carnum=shopCarList.size()+apiList.size();
         request.setAttribute("apiId", apiId);
         request.setAttribute("indexPage", indexPage);
         request.setAttribute("serviceAPI", serviceAPI);
+        request.setAttribute("carnum", carnum);
         String result = "";
         if(apiId==1){
         	result = "/source/page/details/apiDetails";
@@ -289,5 +293,64 @@ public class shoppingAPIController {
          return date;
     }
 
-	
+    /**
+	 * 功能描述： 添加购物车API
+	 * 参数描述：  无
+	 * @throws Exception 
+	 *      add by gxy 2016-5-03
+	 */
+	@RequestMapping(value="shoppingCarAPI.html")
+	public void shoppingCarAPI(HttpServletRequest request,HttpServletResponse response) throws Exception{
+		 User globle_user = (User) request.getSession().getAttribute("globle_user");
+	        //apiId
+	        int apiId = Integer.parseInt(request.getParameter("apiId"));
+	        //套餐次数
+	        int time = Integer.parseInt(request.getParameter("time"));
+	        //数量
+	        int num = Integer.parseInt(request.getParameter("num"));
+	        //套餐类型
+	        int type = Integer.parseInt(request.getParameter("type"));
+	        SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+			String orderDate = odf.format(new Date());
+	        String orderId = String.valueOf(Random.fivecode())+orderDate;
+	        Map<String, Object> m = new HashMap<String, Object>();
+	        Order order = new Order();
+            order.setId(orderId);
+            order.setType(1);
+            order.setBegin_date(new Date());
+            order.setEnd_date(getAfterYear(new Date()));
+            order.setServiceId(apiId);
+            order.setCreate_date(new Date());
+            order.setUserId(globle_user.getId());
+        
+            order.setStatus(1);//完成
+            order.setPayFlag(0);
+            order.setIsAPI(1);//api订单
+            selfHelpOrderService.insertOrder(order);
+            
+            //新增API订单
+            OrderAPI oAPI = new OrderAPI();
+            oAPI.setId(orderId);
+            oAPI.setBegin_date(new Date());
+            oAPI.setEnd_date(getAfterYear(new Date()));
+            oAPI.setApiId(apiId);
+            oAPI.setCreate_date(new Date());
+            oAPI.setPackage_type(type);
+            oAPI.setNum(time*num);
+            oAPI.setUserId(globle_user.getId());
+           
+            oAPI.setPayFlag(0);
+            orderAPIService.insert(oAPI);
+            //网站安全帮列表
+            List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0);
+            //查询安全能力API
+   		   List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0);
+   		 int carnum=shopCarList.size()+apiList.size();
+   		 request.setAttribute("carnum", carnum);  
+	   m.put("sucess", true);
+	//object转化为Json格式
+       JSONObject JSON = CommonUtil.objectToJson(response, m);
+       // 把数据返回到页面
+       CommonUtil.writeToJsp(response, JSON);
+	}
 }
