@@ -108,7 +108,7 @@
 	top:55px;
 	width: 120px;
 	/*height: 142px;*/
-	border: #e3e3e3 solid 1px;
+	/*border: #e3e3e3 solid 1px;*/
 	border-top:#fbfbfb solid 1px;
 	display: none;
 	*z-index:300;
@@ -705,6 +705,13 @@ background:url(../images/portal/Xzq.png) no-repeat #fff;
 	border-bottom-style:solid;
   border-bottom-color:rgba(255,255,255,.5);
   border-bottom-width:1px;
+  background-color:#2499fb;
+  border-top:none;
+}
+/*商品分类 二级分类*/
+.detalis-head .Divlist .list li ol{ 
+	background-color:#2499fb;
+	border-top:none;
 }
 .dataCent{
 	width: 1114px;
