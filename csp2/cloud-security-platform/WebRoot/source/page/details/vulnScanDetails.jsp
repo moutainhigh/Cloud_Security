@@ -82,9 +82,9 @@
 						<img src="${ctx}/source/images/portal/product.png" alt="" />
 					</div>
 				</div>
-				<div class="dataR fl" style="width:640px;">
-					<h2>${service.name }</h2>
-                 	<a href="javaScript:void(0);"  onclick="showShopCar();" class="buttoncar" style="right:0px;"><b>${carnum}</b><i></i>我的购物车&gt;</a>
+				<div class="dataR fl">
+					<h2 style="font-size:20px; margin-bottom:18px;">${serviceAPI.name }</h2>
+                  	<a href="javascript:showShopCar();" class="buttoncar" style="right:0px;"><b>${carnum}</b><i></i>我的购物车&gt;</a>
 					<ul>
 						<li class="clearfix">
 							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
