@@ -55,7 +55,7 @@ function showUnreadNews()
 	<div class="headBox">
 		<div class="safeL fl">
 			<div class="logo">
-			<img src="${ctx}/source/images/portal/logo.png" alt=""/><b></b><span>网站安全帮</span>
+			<img src="${ctx}/source/images/anquanbang_white_logo.png" alt=""/><b></b><span>网站安全帮</span>
 			</div>
 		</div>
 		
@@ -292,7 +292,7 @@ function showUnreadNews()
 <div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
-					<a href="#"><img src="${ctx}/source/images/portal/footlogo.png" alt=""></a>
+					<a href="#"><img src="${ctx}/source/images/portal/new-footer-logo.png" alt=""></a>
 				</div>
 				<ol class="footr clearfix fr">
 					<li>

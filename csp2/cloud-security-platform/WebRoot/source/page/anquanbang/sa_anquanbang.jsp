@@ -261,9 +261,7 @@ $(function(){
 			<div class="imgBox clearfix">
 				<div class="footL fl">
 					<a href="${ctx}/index.html">
-	               <img src="${ctx}/source/images/portal/logo footer.png" alt="">
-                   <i class="" style="height:35px; color:#b3b4b5; width:1px; display:inline-block;">|</i>
-	               <img src="${ctx}/source/images/portal/newlogo-footer.png" alt="">
+						<img src="${ctx}/source/images/portal/new-footer-logo.png" alt="" />
                    </a>
 				</div>
 				<ol class="footr clearfix fr">
