@@ -27,13 +27,10 @@ function checkName(){
                    if(data.count>0){
                			$("#regist_name_flag").attr("class","error");
                			$("#regist_name_flag").show();
-               			$("#regist_name_prompt").html("<b></b>用户名已经存在");
-               			$("#regist_name_prompt").fadeIn();
                    		checkName1=0;
                    }else{
            				$("#regist_name_flag").attr("class","right");
            				$("#regist_name_flag").show();
-           				$("#regist_name_prompt").fadeOut();	
                    		checkName1=1;
                    }
                },
@@ -119,16 +116,13 @@ function checkConfirmPassword(){
 		  }else{
 			$("#regist_confirm_password_flag").attr("class","right");
 			$("#regist_confirm_password_flag").show();
-			$("#regist_confirm_password_prompt").fadeOut();
-			$("#regist_confirm_password_prompt").html("<b></b>");
-			$("#regist_confirm_password_prompt").hide();
+		   	$("#regist_confirm_password_prompt").html("<b></b>支持6-20位,且至少两种字符组合(大小写字母/数字/字符)");
+		   	$("#regist_confirm_password_prompt").fadeIn();
 		    checkConfirmPassword1 = 1;
 		  }
 	  }else{
 		   	$("#regist_confirm_password_flag").attr("class","error");
 		   	$("#regist_confirm_password_flag").show();
-		   	$("#regist_confirm_password_prompt").html("<b></b>确认密码不能为空");
-		   	$("#regist_confirm_password_prompt").fadeIn();
 	  }
 
 }
@@ -140,6 +134,8 @@ function checkMobile(){
 	if(mobile==""||mobile==null){
 		$("#regist_phone_flag").attr("class","error");
 		$("#regist_phone_flag").show();
+        $("#regist_phone_prompt").html("<b></b>手机号码不能为空");
+        $("#regist_phone_prompt").fadeIn();
 		 checkMobile1 = 0;
 	}else{
 		if(flag){
@@ -288,12 +284,12 @@ function time() {
 //发短信按钮显示倒计时的效果	
 function timeMobile() {
 	if (wait == 0) { 
-		document.getElementById("phone_yzm").disabled=false;
-		document.getElementById("phone_yzm").value="点击发送验证码";
+		$("#phone_yzm").html("获取验证码");
+		$("#phone_yzm").attr("onclick","checkSendMobile()");
 		wait = 120;
 	} else { 
-		document.getElementById("phone_yzm").value=wait + "秒后重新获取验证码";
-		document.getElementById("phone_yzm").disabled=true;
+		$("#phone_yzm").html("<font size='2px'>" + wait + "秒后重新获取" + "</font>");
+		$('#phone_yzm').removeAttr('onclick');
 		wait--; 
 		setTimeout(function() { 
 			timeMobile();

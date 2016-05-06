@@ -128,12 +128,12 @@ function checkSendMobile(){
 //发短信按钮显示倒计时的效果	
 function timeMobile() {
 	if (wait == 0) { 
-		document.getElementById("phone_yzm").disabled=false;
-		document.getElementById("phone_yzm").value="点击发送验证码";
+		$("#phone_yzm").html("获取验证码");
+		$("#phone_yzm").attr("onclick","checkSendMobile()");
 		wait = 120;
 	} else { 
-		document.getElementById("phone_yzm").value=wait + "秒后重新获取验证码";
-		document.getElementById("phone_yzm").disabled=true;
+		$("#phone_yzm").html("<font size='2px'>" + wait + "秒后重新获取" + "</font>");
+		$('#phone_yzm').removeAttr('onclick');
 		wait--; 
 		setTimeout(function() { 
 			timeMobile();
