@@ -410,8 +410,6 @@ public class shoppingController {
 	    		 selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "0");
 	    	 }
 	    	 map.put("orderStatus", true);
-	     }else{
-	    	 map.put("orderStatus", false);
 	     }
 	     //更新api订单表
 	     if(shopAPIList!=null&&shopAPIList.size()>0){
@@ -433,8 +431,6 @@ public class shoppingController {
 	    		 selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "1");
 	    	 }
 	    	 map.put("orderStatus", true);
-	     }else{
-	    	 map.put("orderStatus", false);
 	     }
 	
 	     //object转化为Json格式
