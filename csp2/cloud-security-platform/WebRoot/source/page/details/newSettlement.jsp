@@ -18,6 +18,7 @@
 <script src="${ctx}/source/scripts/common/main.js"></script>
 
 <script src="${ctx}/source/scripts/order/details.js"></script>
+<script src="${ctx}/source/scripts/order/shopCart.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 </head>
 
@@ -160,7 +161,8 @@
                                  	<td width="20%"><label >
                                        
                                             </label>
-                                         ${shopCar.serverName}</td>
+                                              <input type="hidden" name="orderId" value="${shopCar.orderId}"/>
+                                         <a href="${ctx}/selfHelpOrderInit.html?serviceId=${shopCar.serviceId}&indexPage=1" target="_blank">${shopCar.serverName}</a></td>
                                     <td width="36%"><p style="padding-left:40px;">${shopCar.astName}</p></td>
                                     <td width="8%"><em class="price">${shopCar.price}</em></td>
                                  
@@ -194,7 +196,9 @@
                                 <c:forEach var="shopAPI" items="${shopAPIList}">
                                      <tr height="40">
                                         <td width="20%"><label >
-                                             </label>${shopAPI.serverName}</td>
+                                          <input type="hidden" name="orderId" value="${shopAPI.orderId}"/>
+                                             </label>
+                                             <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${shopAPI.serviceId}&indexPage=2" target="_blank">${shopAPI.serverName}</a></td>
                                         <td width="36%"><p style="padding-left:53px;">${shopAPI.astName}</p></td>
                                         <td width="8%"><em class="price">${shopAPI.price}</em></td>
                                    
@@ -277,7 +281,7 @@
 			<div class="SubmitBox">
             	<p>应付总额：<span>￥${shopCount}</span>
             	<c:if test="${shop eq '0' }">
-            		<input id="settlement" class="submit" type="submit" value="提交订单"/>
+            		<input id="shopSettlement" class="submit" type="button" value="提交订单" style="cursor: hand"/>
             	</c:if>
             	
             	</p>

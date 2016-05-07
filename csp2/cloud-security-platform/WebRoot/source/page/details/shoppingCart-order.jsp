@@ -95,7 +95,7 @@
                                      	<tr height="40">
                                      		<td width="20%"><label >
                                             <input type="checkbox" class="ck" style="display:none" value="${shopCar.orderId}" isApi="0" name="check_name"><i class="chck"></i>
-                                            </label><a href="${ctx}/selfHelpOrderInit.html?serviceId=${shopCar.serviceId}&indexPage=1">${shopCar.serverName}</a>
+                                            </label><a href="${ctx}/selfHelpOrderInit.html?serviceId=${shopCar.serviceId}&indexPage=1" target="_blank">${shopCar.serverName}</a>
                                             </td>
                                     <td width="36%"><p style="padding-left:40px;">
                                      <input type="hidden" name="isAPI" value="${shopCar.isAPI}"/>
@@ -138,7 +138,7 @@
                                             <input type="checkbox" class="ck" style="display:none" value="${shopAPI.orderId}" isApi="1" name="check_name"><i class="chck"></i>
                                          
                                             </label>
-                                          <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${shopAPI.serviceId}&indexPage=2">${shopAPI.serverName}</a></td>
+                                          <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${shopAPI.serviceId}&indexPage=2" target="_blank">${shopAPI.serverName}</a></td>
                                     <td width="36%"><p style="padding-left:40px;">
                                     ${shopAPI.num}</p></td>
                                     <td width="8%"><em class="price">${shopAPI.price}</em></td>
