@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cn.ctbri.common.NorthAPIWorker;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
@@ -295,7 +296,7 @@ public class shoppingController {
 	 */
 	@RequestMapping(value="shopBuy.html")
 	public String shopBuy(HttpServletRequest request){
-
+		 User globle_user = (User) request.getSession().getAttribute("globle_user");
 		String str = request.getParameter("str");
 		
 		List list = new ArrayList();
@@ -331,10 +332,118 @@ public class shoppingController {
 		request.setAttribute("shopCount", shopCount);
 		request.setAttribute("shopList", shopList);
 		request.setAttribute("shopAPIList", shopAPIList);
+		 request.setAttribute("user", globle_user);
 		//判断显示结算页的按钮
 		request.setAttribute("shop", 0);
 		 String result = "/source/page/details/newSettlement";
 	        return result;
 	}
-  
+	 /**
+	 * 功能描述： 购物车提交订单
+	 * 参数描述：  无
+	 *     @time 2016-05-07
+	 *     add gxy
+	 */
+	@RequestMapping(value="shopSettlement.html")
+	public void shopSettlement(HttpServletResponse response,HttpServletRequest request){
+		 User globle_user = (User) request.getSession().getAttribute("globle_user");
+		 Map<String, Object> map = new HashMap<String, Object>();
+		String str = request.getParameter("orderIds");
+	    String scanType = "";//扫描方式（正常、快速、全量）
+        String scanDepth = "";//检测深度
+        String maxPages = "";//最大页面数
+        String stategy = "";//策略
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
+		List list = new ArrayList();
+		List shopAPIList = new ArrayList();
+		List<ShopCar> shopList = new ArrayList();
+		int orderNum=0;
+		List<String> orderIdList=new ArrayList();
+	      if(str!=null&&!"".equals(str)){
+	    	  String strArray[] = str.substring(0, str.length()-1).split(",");
+	    	  orderNum= strArray.length;
+	    	  for (int m=0;m<strArray.length;m++){
+	    		  orderIdList.add(strArray[m]);
+	    	  }
+	    	  list = selfHelpOrderService.findBuyShopList(orderIdList);
+			}
+	      double shopCount=0.0;
+	     if(list!=null&&list.size()>0){
+	       for(int i=0;i<list.size();i++){
+	    	   ShopCar shopCar = (ShopCar)list.get(i);
+	    	   if(shopCar.getIsAPI()==0){
+	    		   shopList.add(shopCar);
+	    	   }else{
+	    		   
+	    		   shopAPIList.add(shopCar);
+	    	   }
+	    	 
+	       }	 
+	     }
+	   //更新网站安全帮订单id
+	    
+	     if(shopList!=null&&shopList.size()>0){
+	    	 for(int i=0;i<shopList.size();i++){
+	    		 ShopCar shopCar = (ShopCar)shopList.get(i);
+	    		 String targetURL[]=shopCar.getAstName().split(",");
+	    		 String websoc = "0";
+	    		 String[] customManu = null;//指定厂家
+	    	        if(websoc != null && websoc != ""){
+	    	        	customManu = websoc.split(","); //拆分字符为"," ,然后把结果交给数组customManu 
+	    	        }
+	    	      Date  beginDate = shopCar.getBeginDate();
+	    	      Date endDate = shopCar.getEndDate();
+	    	      String begin_date=null;
+	    	      String end_date=null;
+	    	      if(beginDate!=null && !beginDate.equals("")){
+	    	    	  begin_date = sdf.format(beginDate);
+	    	      }
+	    	      if(endDate!=null && !endDate.equals("")){
+	    	    	  end_date = sdf.format(endDate);
+	    	      }
+	    		/* String orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
+	            			scanDepth, maxPages, stategy, customManu, String.valueOf(shopCar.getServiceId()));*/
+	    	      String orderId="1";
+	    		 //更新订单资产表
+	    		 selfHelpOrderService.updateOrderAsset(shopCar.getOrderId(), orderId);
+	    		 //更新订单表
+	    		 selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "0");
+	    	 }
+	    	 map.put("orderStatus", true);
+	     }else{
+	    	 map.put("orderStatus", false);
+	     }
+	     //更新api订单表
+	     if(shopAPIList!=null&&shopAPIList.size()>0){
+	    	 for(int i=0;i<shopAPIList.size();i++){
+	    		 ShopCar shopCar = (ShopCar)shopAPIList.get(i);
+	    		 String targetURL[]=null;
+	    		 String websoc = "0";
+	    		 String[] customManu = null;//指定厂家
+	    	        if(websoc != null && websoc != ""){
+	    	        	customManu = websoc.split(","); //拆分字符为"," ,然后把结果交给数组customManu 
+	    	        }
+	    	      Date  beginDate = shopCar.getBeginDate();
+	    	      Date endDate = shopCar.getEndDate();
+	    		// String orderId =NorthAPIWorker.vulnScanCreateAPI(Integer.parseInt(shopCar.getAstName()), shopCar.getNum(), Integer.parseInt(shopCar.getOrderId()), globle_user.getApikey(), globle_user.getId());
+	    		 //更新订单资产表
+	    	      String orderId="2";
+	    		 selfHelpOrderService.updateOrderAPI(shopCar.getOrderId(), orderId);
+	    		 //更新订单表
+	    		 selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "1");
+	    	 }
+	    	 map.put("orderStatus", true);
+	     }else{
+	    	 map.put("orderStatus", false);
+	     }
+	
+	     //object转化为Json格式
+	        JSONObject JSON = CommonUtil.objectToJson(response, map);
+	        try {
+	            // 把数据返回到页面
+	            CommonUtil.writeToJsp(response, JSON);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	}
 }
