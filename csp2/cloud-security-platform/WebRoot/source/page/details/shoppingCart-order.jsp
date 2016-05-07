@@ -18,6 +18,7 @@
 <script src="${ctx}/source/scripts/common/main.js"></script>
 
 <script src="${ctx}/source/scripts/order/details.js"></script>
+<script src="${ctx}/source/scripts/order/shopCart.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 </head>
 
@@ -93,9 +94,12 @@
                                    	<c:forEach var="shopCar" items="${shopCarList}">
                                      	<tr height="40">
                                      		<td width="20%"><label >
-                                            <input type="checkbox"class="ck" style="display:none" value="${shopCar.orderId}"><i class="chck"></i>
-                                            </label><a href="${ctx}/selfHelpOrderInit.html?serviceId=${shopCar.serviceId}&indexPage=1">${shopCar.serverName}</a></td>
-                                    <td width="36%"><p style="padding-left:40px;">${shopCar.astName}</p></td>
+                                            <input type="checkbox" class="ck" style="display:none" value="${shopCar.orderId}" isApi="0" name="check_name"><i class="chck"></i>
+                                            </label><a href="${ctx}/selfHelpOrderInit.html?serviceId=${shopCar.serviceId}&indexPage=1">${shopCar.serverName}</a>
+                                            </td>
+                                    <td width="36%"><p style="padding-left:40px;">
+                                     <input type="hidden" name="isAPI" value="${shopCar.isAPI}"/>
+                                    ${shopCar.astName}</p></td>
                                     <td width="8%"><em class="price">${shopCar.price}</em></td>
                                     <td width="9%"><a href="#" onclick="delShopCar('${shopCar.orderId}');">删除</a></td>
                                   </tr>
@@ -131,10 +135,12 @@
                         		<c:forEach var="shopAPI" items="${apiList}">
                             	 <tr height="40">
                                  	<td width="20%"><label >
-                                            <input type="checkbox"class="ck" style="display:none" value="${shopCar.orderId}"><i class="chck"></i>
+                                            <input type="checkbox" class="ck" style="display:none" value="${shopAPI.orderId}" isApi="1" name="check_name"><i class="chck"></i>
+                                         
                                             </label>
                                           <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${shopAPI.serviceId}&indexPage=2">${shopAPI.serverName}</a></td>
-                                    <td width="36%"><p style="padding-left:40px;">${shopAPI.num}</p></td>
+                                    <td width="36%"><p style="padding-left:40px;">
+                                    ${shopAPI.num}</p></td>
                                     <td width="8%"><em class="price">${shopAPI.price}</em></td>
                                     <td width="9%"><a href="#" onclick="delShopCar('${shopAPI.orderId}');">删除</a></td>
                                  </tr>
@@ -150,7 +156,7 @@
                        
                         	<div class="settle" style="width:1108px;">
                                 <span>已选择<b>0</b>个订单</span><span>总价 <em style="position:relative; top:-2px;">¥<i id="priceTotal" style="font-size: 26px;
-    font-family: Arial Regular;">00.00</i></em></span><button type="button" style="font-family:'微软雅黑'">去结算</button>
+    font-family: Arial Regular;">00.00</i></em></span><button type="button" style="font-family:'微软雅黑'" id="shopBuy">去结算</button>
                             </div>
                         
                         
