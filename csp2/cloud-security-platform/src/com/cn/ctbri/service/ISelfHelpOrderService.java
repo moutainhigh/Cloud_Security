@@ -95,4 +95,11 @@ public interface ISelfHelpOrderService {
 	List<ShopCar> findShopCarAPIList(String userId,int payFlag,String orderId);
 	//查询结算页的订单列表
 	List<ShopCar> findBuyShopList(List orderId);
+	//更新订单资产表
+	void updateOrderAsset(String orderId,String newOrderId);
+	//更新订单表
+	void updateOrder(String orderId,String newOrderId,String isAPI);
+	//更新订单api表
+	void updateOrderAPI(String orderId,String newOrderId);
+	
 }
