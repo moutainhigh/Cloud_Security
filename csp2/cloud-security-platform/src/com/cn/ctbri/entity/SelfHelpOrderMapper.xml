@@ -85,7 +85,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   a.serverName,
   b.astName,
   a.price,
-a.serviceId
+a.serviceId,
+a.isAPI
 FROM (SELECT
         co.*,
         cs.name          serverName
@@ -110,6 +111,9 @@ FROM (SELECT
        AND ast.id = cat.assetId
    GROUP BY cat.orderId) b
 WHERE a.id = b.orderId
+<if test="orderId!=''">
+    and   a.id=#{orderId}
+</if>
 </select>
    <!-- 查询购物车列表 -->
     <select id="findShopCarAPIList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
@@ -118,7 +122,8 @@ WHERE a.id = b.orderId
   a.serverName,
   a.price,
   b.package_type num,
-a.serviceId
+a.serviceId,
+a.isAPI
 FROM (SELECT
         co.*,
         cs.name          serverName
@@ -139,5 +144,88 @@ FROM (SELECT
                        AND co.payFlag =#{payFlag}
                        AND co.isAPI = 1)) b
 WHERE a.id = b.orderId
+<if test="orderId!=''">
+    and   a.id=#{orderId}
+</if>
     </select>
+    
+    <select id="findBuyShopList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
+    
+   SELECT
+  a.serverName,
+  a.price,
+  a.isAPI,
+  b.astName,
+  a.id
+FROM (SELECT
+        s.name           serverName,
+        r.price,
+        r.id,
+        r.isAPI
+      FROM cs_order r,
+        cs_service s
+      WHERE r.serviceId = s.id
+          AND r.id IN
+             <foreach item="orderId" index="index" collection="orderIds" open="("  
+            separator="," close=")">  
+          #{orderId} 
+        </foreach>  
+          AND r.isAPI = 0) a,
+  (SELECT
+     GROUP_CONCAT(t.addr) AS astName,
+     ca.orderId
+   FROM cs_asset t,
+     cs_order_asset ca
+   WHERE t.id IN(SELECT
+                   a.assetId
+                 FROM cs_order_asset a
+                 WHERE a.orderId IN(SELECT
+                                      o.id
+                                    FROM cs_order o
+                                    WHERE o.id IN
+                                      <foreach item="orderId" index="index" collection="orderIds" open="("  
+						            separator="," close=")">  
+						          #{orderId} 
+						        </foreach>  
+                                    ))
+       AND t.id = ca.assetId
+   GROUP BY ca.orderId) b
+WHERE a.id = b.orderId 
+  UNION
+  
+   SELECT
+       c.serverName,
+       c.price,
+       c.isAPI,
+       d.astName,
+       c.id
+     FROM (SELECT
+	     s.name            serverName,
+	     r.id,
+	     r.isAPI,
+	     r.price
+	   FROM cs_order r,
+	     cs_service_api s
+	   WHERE r.serviceId = s.id
+	       AND r.id IN
+	        <foreach item="orderId" index="index" collection="orderIds" open="("  
+            separator="," close=")">  
+          #{orderId} 
+        </foreach>
+	       AND isAPI = 1) c,
+       (SELECT
+	  i.package_type AS astName,
+	  i.id
+	FROM cs_order_api i
+	WHERE i.id IN(SELECT
+			o.id
+		      FROM cs_order o
+		      WHERE o.id IN
+		    <foreach item="orderId" index="index" collection="orderIds" open="("  
+            separator="," close=")">  
+          #{orderId} 
+        </foreach>  
+		      )) d
+     WHERE c.id = d.id
+ </select>
 </mapper>

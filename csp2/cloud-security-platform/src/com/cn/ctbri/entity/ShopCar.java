@@ -11,6 +11,7 @@ public class ShopCar implements Serializable{
 	private double price;//价格
 	private int num;//数量
 	private int serviceId;//服务id
+	private int isAPI;//是否是api
 	public String getOrderId() {
 		return orderId;
 	}
@@ -49,6 +50,12 @@ public class ShopCar implements Serializable{
 	}
 	public void setServiceId(int serviceId) {
 		this.serviceId = serviceId;
+	}
+	public int getIsAPI() {
+		return isAPI;
+	}
+	public void setIsAPI(int isAPI) {
+		this.isAPI = isAPI;
 	}
 	
 }
