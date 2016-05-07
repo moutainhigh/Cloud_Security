@@ -140,6 +140,24 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 		return selfHelpOrderDao.findBuyShopList(orderId);
 	}
 
+	@Override
+	public void updateOrder(String orderId, String newOrderId,String isAPI) {
+		// TODO Auto-generated method stub
+		selfHelpOrderDao.updateOrder(orderId, newOrderId,isAPI);
+	}
+
+	@Override
+	public void updateOrderAPI(String orderId, String newOrderId) {
+		// TODO Auto-generated method stub
+		selfHelpOrderDao.updateOrderAPI(orderId, newOrderId);
+	}
+
+	@Override
+	public void updateOrderAsset(String orderId, String newOrderId) {
+		// TODO Auto-generated method stub
+		selfHelpOrderDao.updateOrderAsset(orderId, newOrderId);
+	}
+
 	
 
 
