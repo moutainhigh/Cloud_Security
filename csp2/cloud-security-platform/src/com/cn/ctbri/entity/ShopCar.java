@@ -1,6 +1,7 @@
 package com.cn.ctbri.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class ShopCar implements Serializable{
 	/***/
@@ -12,6 +13,11 @@ public class ShopCar implements Serializable{
 	private int num;//数量
 	private int serviceId;//服务id
 	private int isAPI;//是否是api
+	private int orderType;//订单类型(1：长期，2：单次)
+	private Date beginDate;
+	private Date endDate;
+	private int scanPeriod;//扫描类型(1：每天，2：每周，3：每月)
+	private int websoc;//创宇标志
 	public String getOrderId() {
 		return orderId;
 	}
@@ -56,6 +62,36 @@ public class ShopCar implements Serializable{
 	}
 	public void setIsAPI(int isAPI) {
 		this.isAPI = isAPI;
+	}
+	public int getOrderType() {
+		return orderType;
+	}
+	public void setOrderType(int orderType) {
+		this.orderType = orderType;
+	}
+	public Date getBeginDate() {
+		return beginDate;
+	}
+	public void setBeginDate(Date beginDate) {
+		this.beginDate = beginDate;
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+	public int getScanPeriod() {
+		return scanPeriod;
+	}
+	public void setScanPeriod(int scanPeriod) {
+		this.scanPeriod = scanPeriod;
+	}
+	public int getWebsoc() {
+		return websoc;
+	}
+	public void setWebsoc(int websoc) {
+		this.websoc = websoc;
 	}
 	
 }

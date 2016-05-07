@@ -151,17 +151,22 @@ WHERE a.id = b.orderId
     
     <select id="findBuyShopList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
     
-   SELECT
+ SELECT
   a.serverName,
   a.price,
   a.isAPI,
   b.astName,
-  a.id
+  a.id orderId,
+   a.type          orderType,
+  a.begin_date    beginDate,
+  a.end_date endDate,
+  a.serviceId,
+  a.scan_type     scanPeriod,
+  a.websoc,
+  a.num
 FROM (SELECT
         s.name           serverName,
-        r.price,
-        r.id,
-        r.isAPI
+        r.*
       FROM cs_order r,
         cs_service s
       WHERE r.serviceId = s.id
@@ -198,12 +203,17 @@ WHERE a.id = b.orderId
        c.price,
        c.isAPI,
        d.astName,
-       c.id
+       c.id orderId,
+        c.type          orderType,
+	  c.begin_date    beginDate,
+	  c.end_date endDate,
+	  c.serviceId,
+	  c.scan_type     scanPeriod,
+	    c.websoc,
+       d.num 
      FROM (SELECT
 	     s.name            serverName,
-	     r.id,
-	     r.isAPI,
-	     r.price
+	     r.*
 	   FROM cs_order r,
 	     cs_service_api s
 	   WHERE r.serviceId = s.id
@@ -215,7 +225,8 @@ WHERE a.id = b.orderId
 	       AND isAPI = 1) c,
        (SELECT
 	  i.package_type AS astName,
-	  i.id
+	  i.id,
+	  i.num
 	FROM cs_order_api i
 	WHERE i.id IN(SELECT
 			o.id
@@ -228,4 +239,15 @@ WHERE a.id = b.orderId
 		      )) d
      WHERE c.id = d.id
  </select>
+ <update id="updateOrderAsset" parameterType="hashmap">
+ UPDATE cs_order_asset a SET a.orderId=#{newOrderId}  WHERE a.orderId=#{orderId}
+ </update>
+ 
+ <update id="updateOrderAPI" parameterType="hashmap">
+   UPDATE  cs_order_api   api SET api.id=#{newOrderId} WHERE api.id=#{orderId}
+ </update>
+ <update id="updateOrder" parameterType="hashmap">
+ UPDATE  cs_order o  SET o.payFlag=1 AND o.id=#{newOrderId}  WHERE o.isAPI=#{isAPI} AND o.id=#{orderId}
+ 
+ </update>
 </mapper>
