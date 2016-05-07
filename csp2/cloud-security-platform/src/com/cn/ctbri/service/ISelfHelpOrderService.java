@@ -89,8 +89,10 @@ public interface ISelfHelpOrderService {
 	Serv findServiceById(int serviceId);
 
    // 查询购物车-网站安全帮列表
-	List<ShopCar> findShopCarList(String userId,int payFlag);
+	List<ShopCar> findShopCarList(String userId,int payFlag,String orderId);
 	
 	  // 查询购物车-网站安全帮列表
-	List<ShopCar> findShopCarAPIList(String userId,int payFlag);
+	List<ShopCar> findShopCarAPIList(String userId,int payFlag,String orderId);
+	//查询结算页的订单列表
+	List<ShopCar> findBuyShopList(List orderId);
 }
