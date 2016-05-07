@@ -85,9 +85,9 @@ public class shoppingAPIController {
 	    //根据id查询serviceAPI, add by tangxr 2016-3-28
 	    ServiceAPI serviceAPI = serviceAPIService.findById(apiId);
 	    //网站安全帮列表
-        List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0);
+        List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
         //查询安全能力API
-		   List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0);
+		   List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
 		 int carnum=shopCarList.size()+apiList.size();
         request.setAttribute("apiId", apiId);
         request.setAttribute("indexPage", indexPage);
@@ -342,9 +342,9 @@ public class shoppingAPIController {
             oAPI.setPayFlag(0);
             orderAPIService.insert(oAPI);
             //网站安全帮列表
-            List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0);
+            List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
             //查询安全能力API
-   		   List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0);
+   		   List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
    		 int carnum=shopCarList.size()+apiList.size();
    		 request.setAttribute("carnum", carnum);  
 	   m.put("sucess", true);

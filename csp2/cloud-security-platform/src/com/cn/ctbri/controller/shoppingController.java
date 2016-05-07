@@ -1,10 +1,8 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,9 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Order;
-import com.cn.ctbri.entity.OrderAPI;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Serv;
+import com.cn.ctbri.entity.ShopCar;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
@@ -89,9 +87,9 @@ public class shoppingController {
 	    //获取服务对象资产
 	    List<Asset> serviceAssetList = selfHelpOrderService.findServiceAsset(globle_user.getId());
 	    //网站安全帮列表
-        List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0);
+        List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
         //查询安全能力API
-		   List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0);
+		   List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
 		 int carnum=shopCarList.size()+apiList.size();
 		 request.setAttribute("carnum", carnum);  
         request.setAttribute("serviceAssetList", serviceAssetList);
@@ -228,9 +226,9 @@ public class shoppingController {
             orderAssetService.insertOrderAsset(orderAsset);
         }
    	     //网站安全帮列表
-          List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0);
+          List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
        //查询安全能力API
-		 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0);
+		 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
 		 int carnum=shopCarList.size()+apiList.hashCode();
 		 request.setAttribute("carnum", carnum);
 		   Map<String, Object> m = new HashMap<String, Object>();
@@ -254,9 +252,9 @@ public class shoppingController {
 		 //用户
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
     	//查询网站安全帮列表
-		 List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0);
+		 List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
 		 //查询安全能力API
-		 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0);
+		 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
 	        request.setAttribute("shopCarList", shopCarList);
 	        request.setAttribute("apiList", apiList);
 	        String result = "/source/page/details/shoppingCart-order";
@@ -289,6 +287,54 @@ public class shoppingController {
 			e.printStackTrace();
 		}
     }
-   
+	 /**
+	 * 功能描述： 购物车结算
+	 * 参数描述：  无
+	 *     @time 2016-05-07
+	 *     add gxy
+	 */
+	@RequestMapping(value="shopBuy.html")
+	public String shopBuy(HttpServletRequest request){
 
+		String str = request.getParameter("str");
+		
+		List list = new ArrayList();
+		List shopAPIList = new ArrayList();
+		List<ShopCar> shopList = new ArrayList();
+		int orderNum=0;
+		List<String> orderIdList=new ArrayList();
+	      if(str!=null&&!"".equals(str)){
+	    	  String strArray[] = str.substring(0, str.length()-1).split(",");
+	    	  orderNum= strArray.length;
+	    	  for (int m=0;m<strArray.length;m++){
+	    		  orderIdList.add(strArray[m]);
+	    	  }
+	    	  list = selfHelpOrderService.findBuyShopList(orderIdList);
+			}
+	      double shopCount=0.0;
+	     if(list!=null&&list.size()>0){
+	       for(int i=0;i<list.size();i++){
+	    	   ShopCar shopCar = (ShopCar)list.get(i);
+	    	   if(shopCar.getIsAPI()==0){
+	    		   shopList.add(shopCar);
+	    	   }else{
+	    		   
+	    		   shopAPIList.add(shopCar);
+	    	   }
+	    	   shopCount=shopCount+shopCar.getPrice();
+	       }	 
+	     }
+	     
+	     
+	
+		request.setAttribute("orderNum", orderNum);
+		request.setAttribute("shopCount", shopCount);
+		request.setAttribute("shopList", shopList);
+		request.setAttribute("shopAPIList", shopAPIList);
+		//判断显示结算页的按钮
+		request.setAttribute("shop", 0);
+		 String result = "/source/page/details/newSettlement";
+	        return result;
+	}
+  
 }
