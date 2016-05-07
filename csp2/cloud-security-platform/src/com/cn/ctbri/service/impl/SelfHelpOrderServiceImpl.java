@@ -122,16 +122,22 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 	}
   //查询购物车列表
 	@Override
-	public List<ShopCar> findShopCarList(String userId, int payFlag) {
+	public List<ShopCar> findShopCarList(String userId, int payFlag,String orderId) {
 		// TODO Auto-generated method stub
 		
-		return selfHelpOrderDao.findShopCarList(userId, payFlag);
+		return selfHelpOrderDao.findShopCarList(userId, payFlag,orderId);
 	}
 
 	@Override
-	public List<ShopCar> findShopCarAPIList(String userId, int payFlag) {
+	public List<ShopCar> findShopCarAPIList(String userId, int payFlag,String orderId) {
 		// TODO Auto-generated method stub
-		return selfHelpOrderDao.findShopCarAPIList(userId, payFlag);
+		return selfHelpOrderDao.findShopCarAPIList(userId, payFlag,orderId);
+	}
+
+	@Override
+	public List<ShopCar> findBuyShopList(List orderId) {
+		// TODO Auto-generated method stub
+		return selfHelpOrderDao.findBuyShopList(orderId);
 	}
 
 	
