@@ -6,7 +6,6 @@ $(function(){
 		$("input:checkbox[name=check_name]:checked").each(function(obj){
 		   str+=$(this).val()+",";
     	});
-		alert(str);
 	   $.ajax({ type: "POST",
 		     async: false, 
 		     url: "getSession.html",
@@ -20,7 +19,34 @@ $(function(){
 		    	 else { window.location.href = "loginUI.html"; } } 
 		});
     });
-    
+  
+       //购物车点击“结算”
+    $("#shopSettlement").click(function(){
+       var orderIds="";
+       $("input:hidden[name='orderId']").each(function(obj){
+    	    orderIds+=$(this).val()+",";
+       });
+    var result = window.confirm("确定要提交订单吗？");
+    if(result){
+	  $.ajax({ type: "POST",
+		     async: false, 
+		     url: "shopSettlement.html?orderIds="+orderIds,
+		     dataType: "json", 
+		     success: function(data) {
+			    	 if(data.orderStatus == true){
+	    		    			 alert("完成下单，去订单跟踪查看吧~~"); 
+	    		    			 window.location.href = "orderTrackInit.html";
+		    		    	 }else{
+		    		    		alert("订单有异常,请重新下单!");
+		    		     		 return;
+		    		    	 }
+			    }, 
+		     error: function(data){ 
+		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+		    		 window.location.href = "loginUI.html"; } 
+		    	 else { window.location.href = "loginUI.html"; } } 
+		})};
+    })
 });
 
 
