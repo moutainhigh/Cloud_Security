@@ -1797,3 +1797,41 @@ padding: 20px 30px 0px 0px;
 	top:-8px;
 	left:2px;
 }
+
+
+/*订单详情*/
+.detaails .user_right{
+	margin:0 auto;
+    width: 1004px;
+    min-height: 500px;
+}
+.detaails .user_right .gj_top {
+    margin: 20px 20px 24px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    width: 950px;
+    font-size: 14px;
+    padding-bottom: 18px;
+    color: #999;
+}
+.detaails .user_right .aelse {
+    color: #999;
+}
+.detaails .user_right .acur {
+    color: rgb(69, 147, 253);
+}
+.Ordernumber{
+	margin: 20px 20px 24px 20px;
+}
+
+.Ordernumber > p{
+	font-size: 14px;
+	
+}
+.Ordernumber > p > span{
+	color: #000;
+	font-size: 16px;
+}
+.user_right .coupontab{
+	margin: 20px 20px 24px 20px;
+	width: 950px;
+}
