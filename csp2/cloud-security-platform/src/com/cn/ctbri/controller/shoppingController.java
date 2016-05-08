@@ -401,9 +401,9 @@ public class shoppingController {
 	    	      if(endDate!=null && !endDate.equals("")){
 	    	    	  end_date = sdf.format(endDate);
 	    	      }
-	    		/* String orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
-	            			scanDepth, maxPages, stategy, customManu, String.valueOf(shopCar.getServiceId()));*/
-	    	      String orderId="1";
+	    		 String orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
+	            			scanDepth, maxPages, stategy, customManu, String.valueOf(shopCar.getServiceId()));
+	    	     // String orderId="1";
 	    		 //更新订单资产表
 	    		 selfHelpOrderService.updateOrderAsset(shopCar.getOrderId(), orderId);
 	    		 //更新订单表
@@ -423,9 +423,9 @@ public class shoppingController {
 	    	        }
 	    	      Date  beginDate = shopCar.getBeginDate();
 	    	      Date endDate = shopCar.getEndDate();
-	    		// String orderId =NorthAPIWorker.vulnScanCreateAPI(Integer.parseInt(shopCar.getAstName()), shopCar.getNum(), Integer.parseInt(shopCar.getOrderId()), globle_user.getApikey(), globle_user.getId());
+	    		 String orderId =NorthAPIWorker.vulnScanCreateAPI(Integer.parseInt(shopCar.getAstName()), shopCar.getNum(), Integer.parseInt(shopCar.getOrderId()), globle_user.getApikey(), globle_user.getId());
 	    		 //更新订单资产表
-	    	      String orderId="2";
+	    	     // String orderId="2";
 	    		 selfHelpOrderService.updateOrderAPI(shopCar.getOrderId(), orderId);
 	    		 //更新订单表
 	    		 selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "1");
