@@ -141,7 +141,6 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		return this.getSqlSession().selectOne(nv + "findById", serviceId);
 	}
 
-	@Override
 	public List<ShopCar> findShopCarList(String userId, int payFlag,String orderId) {
 		Map carMap = new HashMap();
 		 carMap.put("userId", userId);
@@ -150,7 +149,6 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		 return this.getSqlSession().selectList(ns + "findShopCarList",carMap);
 	}
 
-	@Override
 	public List<ShopCar> findShopCarAPIList(String userId, int payFlag,String orderId) {
 		// TODO Auto-generated method stub
 		Map carMap = new HashMap();
@@ -160,7 +158,6 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		 return this.getSqlSession().selectList(ns + "findShopCarAPIList",carMap);
 	}
 
-	@Override
 	public List<ShopCar> findBuyShopList(List orderIds) {
 		// TODO Auto-generated method stub
 		Map map = new HashMap();
@@ -168,7 +165,6 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		return this.getSqlSession().selectList(ns + "findBuyShopList",map);
 	}
 
-	@Override
 	public void updateOrder(String orderId, String newOrderId,String isAPI) {
 		// TODO Auto-generated method stub
 		Map map = new HashMap();
@@ -178,7 +174,6 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		this.getSqlSession().update(ns+"updateOrder",map);
 	}
 
-	@Override
 	public void updateOrderAPI(String orderId, String newOrderId) {
 		// TODO Auto-generated method stub
 		Map map = new HashMap();
@@ -187,7 +182,6 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		this.getSqlSession().update(ns+"updateOrderAPI",map);
 	}
 
-	@Override
 	public void updateOrderAsset(String orderId, String newOrderId) {
 		// TODO Auto-generated method stub
 		Map map = new HashMap();

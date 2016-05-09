@@ -130,4 +130,7 @@ public class AssetDaoImpl extends DaoCommon implements AssetDao{
 		List list = this.getSqlSession().selectList(ns+"getAssetByTask", task);
         return list;
 	}
+	public Asset findByOrderAssetId(int orderAssetId) {
+		return this.getSqlSession().selectOne(ns+"findByOrderAssetId", orderAssetId);
+	}
 }

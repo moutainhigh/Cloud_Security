@@ -171,4 +171,10 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
 	public void saveAlarm(Alarm alarm) {
 		getSqlSession().insert(ns+"insert", alarm);
 	}
+	
+	//add by tangxr 2016-5-5
+	//资产查询告警
+	public List<Alarm> getAlarmByAsset(Map<String, Object> paramAlarm) {
+		return getSqlSession().selectList(ns+"getAlarmByAsset", paramAlarm);
+	}
 }

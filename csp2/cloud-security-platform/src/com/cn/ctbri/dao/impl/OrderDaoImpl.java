@@ -52,7 +52,7 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
      *       @time 2015-1-21
      * 返回值    ：  List
      */
-    public List<Order> getOrderByUserId(int userId) {
+    public List getOrderByUserId(int userId) {
         return this.getSqlSession().selectList(ns + "findOrderByUserId",userId);
     }
 
