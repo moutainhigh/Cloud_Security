@@ -2,10 +2,11 @@ $(document).ready(function(){
 		//菜单下拉效果	
 	$('.listJs').hover(function(){
 		$(this).children('a').find('i').addClass('active');
-		$('.listl').stop().slideDown();
+		$('.listl').hide();
+		$('.listl').stop().slideDown("fast");
 	},function(){
 		$(this).children('a').find('i').removeClass('active');
-		$('.listl').stop().slideUp("slow");
+		$('.listl').stop().slideUp("fast");
 	})
 
 	$('.listl li').hover(function(){
