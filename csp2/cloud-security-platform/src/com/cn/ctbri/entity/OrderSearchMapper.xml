@@ -119,7 +119,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 AND b.status in (1,2)
             </if>
             <if test="search!=null and search!=''">
-                AND a.name like CONCAT(CONCAT('%', #{search}), '%')
+                and (a.name like CONCAT(CONCAT('%', #{search}), '%') or a.addr like CONCAT(CONCAT('%', #{search}), '%'))
             </if>
             order by b.create_date desc limit #{pageNow},#{pageSize}
       </select>

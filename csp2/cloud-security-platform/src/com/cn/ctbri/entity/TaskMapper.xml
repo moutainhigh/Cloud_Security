@@ -65,13 +65,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			WHERE oa.id=t.order_asset_Id and oa.orderId=o.id AND  o.userId=#{userId})a
 
 	</select>	
-		<!-- 根据orderId查询扫描进度和最近的url-->
+		<!-- 根据orderId查询扫描进度和最近的url--><!-- pass -->
 	<select id="findProgressByOrderId" parameterType="hashmap" resultMap="TaskRM">
 			SELECT a.progress,b.currentUrl
 			FROM
-					(SELECT AVG(t.taskProgress)/101*100 AS progress,t.group_flag
+					(SELECT t.taskProgress/101*100 AS progress,t.group_flag
 					FROM cs_task t ,cs_order_asset oa
-					WHERE t.order_asset_Id =oa.id AND oa.orderId =#{orderId} 
+					WHERE t.order_asset_Id =oa.id 
+					and oa.orderId =#{orderId} 
+					and t.order_asset_id = #{orderAssetId}
 					<if test="status!=null and status!=''">
 						and t.status=#{status}
 					</if>
@@ -85,7 +87,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			CROSS JOIN
 					(SELECT t.currentUrl
 					FROM cs_task t ,cs_order_asset oa 
-					WHERE t.order_asset_Id=oa.id AND oa.orderId =#{orderId} 
+					WHERE t.order_asset_Id=oa.id 
+					and oa.orderId =#{orderId} 
+					and t.order_asset_id = #{orderAssetId}
 					<if test="status!=null and status!=''">
 						and t.status=#{status}
 					</if>
@@ -110,9 +114,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 根据orderId查询基本信息 -->
 	<select id="findBasicInfoByOrderId" parameterType="map" resultMap="TaskRM">
-		SELECT MIN(t.execute_time) AS execute_time,MAX(t.end_time) AS end_time,SUM(t.scanTime) AS scanTime,SUM(t.issueCount) AS issueCount,SUM(t.requestCount) AS requestCount,SUM(t.urlCount) AS urlCount,round(AVG(t.averResponse),2) AS averResponse,round(AVG(t.averSendCount),2) AS averSendCount,SUM(t.sendBytes) AS sendBytes,SUM(t.receiveBytes) AS receiveBytes
+		<!-- SELECT MIN(t.execute_time) AS execute_time,MAX(t.end_time) AS end_time,SUM(t.scanTime) AS scanTime,SUM(t.issueCount) AS issueCount,SUM(t.requestCount) AS requestCount,SUM(t.urlCount) AS urlCount,round(AVG(t.averResponse),2) AS averResponse,round(AVG(t.averSendCount),2) AS averSendCount,SUM(t.sendBytes) AS sendBytes,SUM(t.receiveBytes) AS receiveBytes -->
+		SELECT t.execute_time,t.end_time,t.scanTime,t.issueCount,t.requestCount,t.urlCount,round(t.averResponse,2) AS averResponse,round(t.averSendCount,2) AS averSendCount,t.sendBytes,t.receiveBytes,t.status,t.order_asset_id,t.taskProgress/101*100 AS progress,t.group_flag,t.currentUrl
 		from ( select  t.*	FROM cs_task t,cs_order_asset oa
-					WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} and t.status !=1
+					WHERE t.order_asset_Id = oa.id 
+					and oa.orderId=#{orderId} 
+					and t.order_asset_id = #{orderAssetId}
+					and t.status !=1
 					<if test="group_flag!=null and group_flag!=''">
 		            and t.group_flag=#{group_flag}
 		            </if>
@@ -275,4 +283,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM cs_task t,cs_order_asset oa
         WHERE t.order_asset_Id = oa.id AND oa.orderId = #{orderId}
     </select>
+    
+    <!-- 查询任务进度 -->
+    <select id="findProgssByOrderId" parameterType="hashmap" resultMap="TaskRM">
+			SELECT t.order_asset_id,t.taskProgress/101*100 AS progress,t.group_flag,t.currentUrl
+				FROM cs_task t ,cs_order_asset oa
+				WHERE t.order_asset_Id =oa.id 
+				and oa.orderId =#{orderId} 
+				<if test="orderAssetId!=null and orderAssetId!=''">
+					and t.order_asset_id = #{orderAssetId}
+				</if>
+				<if test="group_flag!=null and group_flag!=''">
+	            	and t.group_flag=#{group_flag}
+	            </if>
+	            <if test="group_flag==null or group_flag==''">
+	             ORDER BY t.execute_time DESC limit #{count}
+	            </if>
+	</select>
 </mapper>

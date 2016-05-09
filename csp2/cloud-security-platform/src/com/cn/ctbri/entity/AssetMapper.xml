@@ -140,4 +140,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         on t.order_asset_Id = oa.id
         where t.taskId = #{taskId}
     </select>
+    
+    <!-- 根据orderAssetId查询资产 -->
+	<select id="findByOrderAssetId" parameterType="int" resultMap="AssetRM">
+		select a.* from cs_asset a,cs_order_asset oa
+		where oa.assetId = a.id
+   		and oa.id = #{orderAssetId}
+	</select>
 </mapper>
