@@ -35,7 +35,7 @@
 					</ol>
 				</li>
 				<li>
-					<a href="#">安全能力API</a>
+					<a href="${ctx}/api_anquanbang.html">安全能力API</a>
 					<ol id="anquanbangAPI_ol">
 						<c:forEach var="apiList" items="${servAPIList}"  varStatus="status">
 							<c:if test="${status.count == 1}">
