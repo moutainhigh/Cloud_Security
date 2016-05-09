@@ -78,7 +78,7 @@
         	<div class="coreRight assetsece coupon fl" style="margin-bottom:400px;">
             	<div class="assetstitle clearfix">
             	<form action="${ctx}/searchAssetCombine.html" method="post" id="searchAssetForm">
-                	<span class="fl addass assetstitlel"><em></em>新增资产</span>
+                	<span class="fl addass assetstitlel" style="cursor: pointer;"><em></em>新增资产</span>
                 	<div class="fr assetstitlr">
                     	<input type="text" class="text promptext" name="name" id="searchAssetName" value="输入资产名称或地址" onkeydown="if(event.keyCode==13){return false;}">
                         <input type="button" id="searchBtn" value="搜索" class="btn" onclick="searchAssetCombine()">
@@ -303,7 +303,7 @@
         <tbody><tr>
           <td style="width:25%;">资产名称</td>
           <td style="width:37%;"><input class="boz_inout_1" type="text" name="name" id="assetName"></td>
-          <td style="width:30%; text-align:left; color:#e32929;font-size:12px"><div id="assetName_msg"></div></td>
+          <td style="width:30%; text-align:left; color:#e32929;font-size:12px"><div class="addMsg" id="assetName_msg"></div></td>
         </tr>
         <tr>
        	  <td>资产地址类型</td>
@@ -318,7 +318,7 @@
         <tr>
           <td>资产地址</td>
           <td><input class="boz_inout_1" type="text" name="addr" id="assetAddr"></td>
-          <td style="color:#e32929;text-align:left"><div id="assetAddr_msg"></div></td>
+          <td style="color:#e32929;text-align:left"><div class="addMsg" id="assetAddr_msg"></div></td>
         </tr>
         <tr>
 	        <td>示例</td>
@@ -333,7 +333,7 @@
   				</select> 
     			<select class="user_secta_count spiclesel" id="city" name="city" disabled="disabled" style="width:119px;height: 35px;"><option value="-1">请选择城市</option></select>
 		  </td>
-		  <td style="color:#e32929;text-align:left;"><div id="location_msg"></div></td>
+		  <td style="color:#e32929;text-align:left;"><div class="addMsg" id="location_msg"></div></td>
         </tr>
         <tr>
         <td>资产用途</td>
@@ -345,7 +345,7 @@
    				<option value="其他">其他</option>   				
    			</select>
 	   </td>
-		  <td style="color:#e32929;text-align:left"><div id="assetUsage_msg"></div></td>
+		  <td style="color:#e32929;text-align:left"><div class="addMsg" id="assetUsage_msg"></div></td>
         </tr>
       </tbody></table>
                   
@@ -364,6 +364,8 @@
 	<i class="close closed"></i>
     <form id="editAsset" method="post">
     <input type="hidden" name="id" id="editAssetid"/>
+    <input type="hidden" name="hiddenEditName" id="hiddenEditName"/>
+    <input type="hidden" name="hiddenEditAddr" id="hiddenEditAddr"/>
     <div class="title">
     	<h2>修改资产</h2>
         <div class="hr" style=" margin:10px 0px 10px 0px;"></div>
@@ -373,7 +375,7 @@
         <tr>
           <td style="width:25%;">资产名称</td>
           <td style="width:37%;"><input class="boz_inout_1" type="text" name="name" id="editAssetName"/></td>
-          <td style="width:30%; text-align:left; color:#e32929;font-size:12px"><div id="editAssetName_msg"></div></td>
+          <td style="width:30%; text-align:left; color:#e32929;font-size:12px"><div class="editMsg" id="editAssetName_msg"></div></td>
         </tr>
         <tr>
        	  <td>资产地址类型</td>
@@ -387,7 +389,7 @@
         <tr>
           <td>资产地址</td>
           <td><input class="boz_inout_1" type="text" name="addr" id="editAssetAddr"/></td>
-          <td style="color:#e32929;text-align:left"><div id="editAssetAddr_msg"></div></td>
+          <td style="color:#e32929;text-align:left"><div class="editMsg" id="editAssetAddr_msg"></div></td>
         </tr>
         <tr>
           <td>物理位置</td>
@@ -399,7 +401,7 @@
     			<option selected="selected" value="-1">请选择城市</option>
     			</select>
 		  </td>
-		  <td style="color:#e32929;text-align:left;"><div id="editLocation_msg"></div></td>
+		  <td style="color:#e32929;text-align:left;"><div class="editMsg" id="editLocation_msg"></div></td>
         </tr>
         <tr>
         <td>资产用途</td>
@@ -411,7 +413,7 @@
    				<option value="其他">其他</option>
    			</select>
 	   </td>
-		  <td style="color:#e32929;text-align:left"><div id="editAssetUsage_msg"></div></td>
+		  <td style="color:#e32929;text-align:left"><div class="editMsg" id="editAssetUsage_msg"></div></td>
         </tr>
       </table>
     </div>

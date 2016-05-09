@@ -108,9 +108,10 @@ function searchAssetCombine(){
 }
 //提取修改信息
 function editAssetUI(str){
-
+	$(".editMsg").html("");
 	var arr = str.split(',');
-
+	$("#hiddenEditName").val(arr[1]);
+	$("#hiddenEditAddr").val(arr[2]);
 	$("#editAssetName").val(arr[1]);
 	$("#editAssetAddr").val(arr[2]);
 	$("#editDistrictId").val(arr[3]);
@@ -129,6 +130,8 @@ function editAssetUI(str){
 }
 //修改资产
 function editAsset(){
+	var oldAssetName = $("#hiddenEditName").val();
+	var oldAssetAddr = $("#hiddenEditAddr").val();
 	var assetName =$("#editAssetName").val();
 	var assetAddr = $("#editAssetAddr").val();
     var addrType = $('input:radio[name="addrType"]:checked').val();
@@ -174,43 +177,64 @@ function editAsset(){
 		$("#editLocation_msg").html("");
 		$("#editAssetUsage_msg").html("");
 		
-		 var options = {
-					url:'editAsset.html',
-					data:{
-			 		'id':id,
- 	               'assetName':assetName,
- 	               'assetAddr':assetAddr,
- 	               'addrType':addrType,
- 	               'purpose':purpose,
- 	               'prov':prov,
- 	               'city':city
-					},
-					//beforeSubmit:showRequest,
-					success: function(data) {
-						if(data.successFlag){
-							alert("修改成功!");
-							$('.popBoxhide').hide();
-							$('.shade').hide();
-							$('html').css({overflow:'auto'})
+		//验证资产是否重复
+		$.ajax({
+	        type: "POST",
+	        url: "asset_addrIsExist.html",
+	        data: {"addr":assetAddr,"name": encodeURI(assetName),"addrType":addrType,"oldName":oldAssetName,"oldAddr":oldAssetAddr},
+	        dataType:"json",
+	        success: function(data){
+	            if(data.msg=='1'){
+	            	$("#editAssetName_msg").html("资产名称重复!");
+	            }else if(data.msg=='2'){
+	            	$("#editAssetName_msg").html("");
+	            	$("#editAssetAddr_msg").html("资产地址重复!");
+	            }else{
+	            	$("#editAssetName_msg").html("");
+	            	$("#editAssetAddr_msg").html("");
 
-							//刷新页面
-							$.post("userAssets.html",{},function(data){
-								$("#assetsTable").html("");
-								$("#assetsTable").append(data);
-								//设置tab的显示
-								setTabShow();
-							}); 
-						}else{
-							alert("修改失败!");
-						}
-								
-					},
-					error: function(data){
-						alert("err:"+data);
-					}
-					};
-		 // 将options传给ajaxForm
-		 $('#editAsset').ajaxSubmit(options);
+	       		 var options = {
+	 					url:'editAsset.html',
+	 					data:{
+	 			 		'id':id,
+	  	               'assetName':assetName,
+	  	               'assetAddr':assetAddr,
+	  	               'addrType':addrType,
+	  	               'purpose':purpose,
+	  	               'prov':prov,
+	  	               'city':city
+	 					},
+	 					//beforeSubmit:showRequest,
+	 					success: function(data) {
+	 						if(data.successFlag){
+	 							alert("修改成功!");
+	 							$('.popBoxhide').hide();
+	 							$('.shade').hide();
+	 							$('html').css({overflow:'auto'})
+
+	 							//刷新页面
+	 							$.post("userAssets.html",{},function(data){
+	 								$("#assetsTable").html("");
+	 								$("#assetsTable").append(data);
+	 								//设置tab的显示
+	 								setTabShow();
+	 							}); 
+	 						}else{
+	 							alert("修改失败!");
+	 						}
+	 								
+	 					},
+	 					error: function(data){
+	 						alert("err:"+data);
+	 					}
+	 				};
+			 		 // 将options传给ajaxForm
+			 		 $('#editAsset').ajaxSubmit(options);
+	            }
+	        },
+	     }); 
+		
+
 	}
 	
 }

@@ -2,13 +2,17 @@
 $(function(){
 	//增加资产
 	$('.addass').delegate(this,'click',function(){	
+		$(".addMsg").html("");
 		$('.shade').show();
 		$('#revise').show();
 		$('html').css({overflow:"hidden"});
 	})
 	
 	//修改资产
-		$('.zc_edit').delegate(this,'click',function(){
+	$('.zc_edit').delegate(this,'click',function(){
+		$(".editMsg").html("");
+		$("#hiddenEditName").val($(this).attr("name"));
+		$("#hiddenEditAddr").val($(this).attr("addr"));
 		$("#editAssetName").val($(this).attr("name"));
 		$("#editAssetAddr").val($(this).attr("addr"));
 		$("#editDistrictId").val($(this).attr("districtId"));
