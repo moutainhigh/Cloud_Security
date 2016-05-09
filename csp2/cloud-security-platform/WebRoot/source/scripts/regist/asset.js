@@ -7,15 +7,7 @@
 		setTabShow();
 	});     
 }*/
-//回车键事件
-/* $(function(){
-        $('#searchAssetName').bind('keypress',function(event){
-            if(event.keyCode == "13")    
-            {
-            	searchAssetCombine();
-            }
-        });
-    });*/
+
 function saveAsset() {
 	var assetName =$("#assetName").val();
 	var assetAddr = $("#assetAddr").val();

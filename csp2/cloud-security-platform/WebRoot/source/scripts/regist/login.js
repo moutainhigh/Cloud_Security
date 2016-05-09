@@ -4,6 +4,15 @@ window.onload =function(){
  $('#imageNumber').click(function(){checkNumberImage()});
 }
 
+$(function(){
+	$("body").keydown(function(e){ 
+		var curKey = e.which; 
+		if(curKey == 13){ 
+		$("#login_btn").click(); 
+		return false; 
+		} 
+	}); 
+});
 //跟换验证码
 function checkNumberImage(){
 	var imageNumber = document.getElementById("imageNumber");
