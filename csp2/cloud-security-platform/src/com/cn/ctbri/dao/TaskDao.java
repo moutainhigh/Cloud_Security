@@ -60,4 +60,6 @@ public interface TaskDao {
 	public List<Task> findFinishByOrderId(Map<String, Object> paramMap);
 
 	public int findissueCount(String orderId);
+
+	public List<Task> findProgssByOrderId(Map<String, Object> pMap);
 }

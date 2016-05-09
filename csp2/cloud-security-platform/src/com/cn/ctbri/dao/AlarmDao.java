@@ -103,4 +103,8 @@ public interface AlarmDao {
     public List findAlarmByOrderIdorGroupId(Map<String, Object> paramMap);
     
 	public void saveAlarm(Alarm alarm);
+	
+	//add by tangxr 2016-5-5
+	//资产查询告警
+	public List<Alarm> getAlarmByAsset(Map<String, Object> paramAlarm);
 }

@@ -90,5 +90,7 @@ public interface AssetDao {
 	List<Asset> queryByPage(Asset criteria, int i, int pageSize);
 	
 	List<Asset> getAssetByTask(Task task);
+	
+	Asset findByOrderAssetId(int orderAssetId);
 
 }
