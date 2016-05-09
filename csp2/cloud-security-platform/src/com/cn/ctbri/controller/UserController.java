@@ -26,19 +26,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.cn.ctbri.cfg.Configuration;
 import com.cn.ctbri.common.NorthAPIWorker;
+import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.LoginHistory;
 import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.Notice;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceAPI;
+import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.INoticeService;
 import com.cn.ctbri.service.IOrderAPIService;
+import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServiceAPIService;
@@ -72,6 +76,8 @@ public class UserController{
     INoticeService noticeService;
 	@Autowired
     IServiceAPIService serviceAPIService;
+	@Autowired
+    IOrderAssetService orderAssetService;
 
 	/**
 	 * 功能描述： 基本资料
@@ -465,6 +471,8 @@ public class UserController{
 //					return "redirect:/selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
 					//return "redirect:/selfHelpOrderInit.html";
 					map.put("result", 5);
+					map.put("serviceId", serviceId);
+					map.put("indexPage", indexPage);
 					JSONObject JSON = CommonUtil.objectToJson(response, map);
 					try {
 						// 把数据返回到页面
@@ -533,8 +541,8 @@ public class UserController{
 		 * 参数描述：  无
 		 *     @time 2015-1-12
 		 */
-		@RequestMapping(value="userCenterUI.html")
-		public String userCenterUI(HttpServletRequest request){
+		@RequestMapping(value="userCenterUI1.html")
+		public String userCenterUI1(HttpServletRequest request){
 			User globle_user = (User) request.getSession().getAttribute("globle_user");
 			//根据用户id查询订单表
 			List<Order> orderList = orderService.findOrderByUserId(globle_user.getId());
@@ -569,6 +577,77 @@ public class UserController{
 			request.setAttribute("alarmSum",alarmSum);
 			return "/source/page/userCenter/userCenter";
 		}
+		
+	/**
+	 * 功能描述： 用户中心页面
+	 * 参数描述：  无
+	 *     @time 2015-1-12
+	 */
+	@RequestMapping(value="userCenterUI.html")
+	public String userCenterUI(HttpServletRequest request){
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		List orderList = orderService.findOrderByUserId(globle_user.getId());
+		int orderNum = 0;
+		if(orderList.size()>0&&orderList!=null){
+			orderNum = orderList.size();
+		}
+		//根据用户id查询服务中订单表在开始时间和结束时间中间
+        Map<String, Object> m = new HashMap<String, Object>();
+        m.put("userId", globle_user.getId());
+        m.put("state", 1);
+        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        /* 時：分：秒  HH:mm:ss  HH : 23小時制 (0-23)
+                                 kk : 24小時制 (1-24)
+                                 hh : 12小時制 (1-12)
+                                 KK : 11小時制 (0-11)*/
+        String temp = setDateFormat.format(Calendar.getInstance().getTime());
+        m.put("currentDate", temp);
+        List servList = orderService.findByCombineOrderTrack(m);
+		int servNum = 0;
+		if(servList.size()>0&&servList!=null){
+			servNum = servList.size();
+		}
+		request.setAttribute("orderNum", orderNum);//订单总数
+		request.setAttribute("servNum",servNum);//服务中
+		//总告警数
+		List alarmList = alarmService.findAlarmByUserId(globle_user.getId());
+		int alarmSum = 0;
+		if(alarmList.size()>0&&alarmList!=null){
+			alarmSum = alarmList.size();
+		}
+		request.setAttribute("alarmSum",alarmSum);
+		return "/source/page/personalCenter/center_index";
+	}
+	
+	
+	/**
+	 * 功能描述： 订单列表
+	 * 参数描述：  无
+	 *     @time 2016-5-8
+	 */
+	@RequestMapping(value="orderList.html")
+	public String orderList(HttpServletRequest request){
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		List orderList = orderService.findOrderByUserId(globle_user.getId()).subList(0, 2);
+        //根据orderId查询task表判断告警是否查看过
+        if(orderList != null && orderList.size() > 0){
+        	//个人中心显示前两条订单信息
+	        for(int i = 0; i < orderList.size(); i++){
+				//获取对应资产 add by tangxr 2016-4-25
+	        	HashMap<String,Object>  map = (HashMap<String,Object>)orderList.get(i);
+	        	String orderId = (String)map.get("id");
+		        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
+		        map.put("assetList", assetList);
+	        }
+        }	
+        
+        //获取当前时间
+        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String temp = setDateFormat.format(Calendar.getInstance().getTime());
+        request.setAttribute("nowDate", temp);
+		request.setAttribute("orderList", orderList);
+		return "/source/page/personalCenter/orderList";
+	}
 	
 	
 	/**

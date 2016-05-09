@@ -66,6 +66,7 @@ import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.service.IAlarmDDOSService;
 import com.cn.ctbri.service.IAlarmService;
+import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ITaskService;
@@ -92,6 +93,8 @@ public class ExportController {
     ITaskWarnService taskWarnService;
     @Autowired
     IAlarmDDOSService alarmDDOSService;
+    @Autowired
+    IAssetService assetService;
 
     
     private URL base = this.getClass().getResource("");
@@ -112,6 +115,7 @@ public class ExportController {
         try {
             String orderId = request.getParameter("orderId");
             String group_flag = request.getParameter("group_flag");
+            String orderAssetId = request.getParameter("orderAssetId");
             String imgPie = request.getParameter("imgPie");
             String imgBar = request.getParameter("imgBar");
             String imgLine = request.getParameter("imgLine");
@@ -125,6 +129,7 @@ public class ExportController {
             paramMap.put("count", assetList.size());
             paramMap.put("websoc", order.getWebsoc());
             paramMap.put("group_flag", group_flag);
+            paramMap.put("orderAssetId", orderAssetId);
             
 //            for (Asset asset : assetList) {
                 //预备导出数据
@@ -974,14 +979,10 @@ public class ExportController {
         Order order = orderService.findOrderById(orderId);
         //获取对应资产
         List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
-        String webSite = "";
-        String webName = "";
-        for (Asset asset : assetList) {
-            webSite = webSite+asset.getAddr()+","+"\r\n";
-            webName = webName+asset.getName()+","+"\r\n";
-        }
-        webSite = webSite.substring(0, webSite.length()-3);
-        webName = webName.substring(0, webName.length()-3);
+        int orderAssetId = Integer.parseInt(paramMap.get("orderAssetId").toString());
+        Asset asset = assetService.findByOrderAssetId(orderAssetId);
+        String webSite = asset.getAddr();
+        String webName = asset.getName();
         
         SimpleDateFormat odf = new SimpleDateFormat("yyyy/MM/dd");//设置日期格式
         String createDate = odf.format(new Date());

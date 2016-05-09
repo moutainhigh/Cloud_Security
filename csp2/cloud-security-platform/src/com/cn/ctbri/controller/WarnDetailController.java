@@ -1,15 +1,8 @@
 package com.cn.ctbri.controller;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,21 +14,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.apache.poi.poifs.filesystem.DirectoryEntry;
-import org.apache.poi.poifs.filesystem.DocumentEntry;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import se.akerfeldt.com.google.gson.Gson;
+
 import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.constant.WarnType;
 import com.cn.ctbri.entity.Alarm;
@@ -53,13 +45,13 @@ import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
 /**
- * 创 建 人  ：  txr
- * 创建日期：  2015-2-2
- * 描        述：  告警管理控制层
+ * 创 建 人  ：  tangxr
+ * 创建日期：  2016-5-5
+ * 描        述：  订单告警管理控制层
  * 版        本：  1.0
  */
 @Controller
-public class WarningController {
+public class WarnDetailController {
 	
     @Autowired
     IOrderService orderService;
@@ -73,7 +65,7 @@ public class WarningController {
     ITaskWarnService taskWarnService;
     @Autowired
     IAlarmDDOSService alarmDDOSService;
-    @RequestMapping(value="warningInit1.html")
+    @RequestMapping(value="warningInit.html")
     public String warningInit(HttpServletRequest request,HttpServletResponse response) throws Exception{
         String orderId = request.getParameter("orderId");
         String type = request.getParameter("type");
@@ -87,11 +79,76 @@ public class WarningController {
         request.setAttribute("group_flag", groupId);
         //获取订单信息
         List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
-        request.setAttribute("orderList", orderList);
+        request.setAttribute("order", orderList.get(0));
         //根据orderId查询正在执行的任务
         List runList = orderService.findTaskRunning(orderId);
-        //获取对应资产
+        
         List assetList = orderAssetService.findAssetNameByOrderId(orderId);
+        
+        //获取服务所对应的资产 ，并根据资产查询告警信息  modify by tangxr 2016-5-5
+        List assets = orderAssetService.findAssetsByOrderId(orderId);
+        if(assets != null && assets.size() > 0){
+        	for(int i = 0; i < assets.size(); i++){
+        		HashMap<String,Object>  map = (HashMap<String,Object>)assets.get(i);
+        		//获取对应告警信息
+                Map<String, Object> paramAlarm = new HashMap<String, Object>();
+                paramAlarm.put("orderId", orderId);
+                paramAlarm.put("type", type);
+                paramAlarm.put("group_flag", groupId);
+                paramAlarm.put("count", assets.size());
+                paramAlarm.put("websoc", websoc);
+                paramAlarm.put("orderAssetId", map.get("orderAssetId"));
+    	        List<Alarm> asset_alarmList = alarmService.getAlarmByAsset(paramAlarm);
+                
+    	        //资产告警数量和告警信息 放入map
+    	        map.put("aNum", asset_alarmList.size());
+		        map.put("asset_alarmList", asset_alarmList);
+		        
+		        //任务基本信息
+		        Task task = new Task();
+                task = taskService.findBasicInfoByOrderId(paramAlarm);
+	            Map<String, Object> taskParam = this.getInfo(task);
+	            map.put("scanTime", taskParam.get("scanTime"));
+	            map.put("send", taskParam.get("send"));
+	            map.put("receive", taskParam.get("receive"));
+	            if(task!=null){
+	                if(task.getBegin_time()!=null){
+	                    task.setBeginTime( DateUtils.dateToString(task.getBegin_time()));
+	                }
+	                if(task.getEnd_time()!=null){
+	                    task.setEndTime(DateUtils.dateToString(task.getEnd_time())); 
+	                }
+	                if(task.getExecute_time()!=null){
+	                    task.setExecuteTime(DateUtils.dateToString(task.getExecute_time())); 
+	                }
+	            }
+	            map.put("task", task);
+	            
+	            if(task!=null){
+	                map.put("progress", 100);
+	                if(task.getCurrentUrl()!=null && !task.getCurrentUrl().equals("")){
+	                	map.put("currentUrl", task.getCurrentUrl());
+	                }else{
+	                	map.put("currentUrl", "无");
+	                }
+	            }else{
+	                if(task.getStatus()==3){
+	                	map.put("progress", 100);
+	                	map.put("currentUrl", "无");
+	                }else{
+	                	map.put("progress", 0);
+	                	map.put("currentUrl", "暂无");
+	                }
+	                
+	            }
+	            
+	            
+        	}
+        	
+        }
+        request.setAttribute("assets", assets);
+        //end 
+        
         request.setAttribute("assetList", assetList);
         //获取对应告警信息
         Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -144,7 +201,7 @@ public class WarningController {
 	        }
 	        
 //	        if((orderList.get(0).get("status").equals(0)||runList.size()>0)&&groupId==null){
-	        if(!orderList.get(0).get("status").equals(1)||!orderList.get(0).get("status").equals(2) ){
+	        if(!orderList.get(0).get("status").equals(1) && !orderList.get(0).get("status").equals(2) ){
 	        	int status=0;
 	        	if(runList.size()>0){
 	        		status = Integer.parseInt(Constants.TASK_RUNNING);
@@ -162,6 +219,7 @@ public class WarningController {
 	        		}
 	        	}
 	            request.setAttribute("taskWarnList", taskWarnList);
+	            /*
 	            //当任务状态为3，完成状态
 	        	int status = Integer.parseInt(Constants.TASK_FINISH);
 	        	request.setAttribute("status", status);
@@ -188,7 +246,7 @@ public class WarningController {
 	                    request.setAttribute("currentUrl", "暂无");
 	                }
 	                
-	            }
+	            }*/
 	            //获取对应IP
 	            List IPList = orderService.findIPByOrderId(orderId);
 	            int serviceId=0 ;
@@ -205,9 +263,9 @@ public class WarningController {
 	                task = taskService.findBasicInfoByOrderId(paramMap);
 	//            }
 	            Map<String, Object> taskParam = this.getInfo(task);
-	            request.setAttribute("scanTime", taskParam.get("scanTime"));
-	            request.setAttribute("send", taskParam.get("send"));
-	            request.setAttribute("receive", taskParam.get("receive"));
+	            //request.setAttribute("scanTime", taskParam.get("scanTime"));
+	            //request.setAttribute("send", taskParam.get("send"));
+	            //request.setAttribute("receive", taskParam.get("receive"));
 	            if(task!=null){
 	                if(task.getBegin_time()!=null){
 	                    task.setBeginTime( DateUtils.dateToString(task.getBegin_time()));
@@ -219,7 +277,7 @@ public class WarningController {
 	                    task.setExecuteTime(DateUtils.dateToString(task.getExecute_time())); 
 	                }
 	            }
-	            request.setAttribute("task", task);
+	            //request.setAttribute("task", task);
 	            HashMap<String, Object> order=new HashMap<String, Object>();
 	            for(int i=0;i<orderList.size();i++){
 	            	 order=(HashMap) orderList.get(i);
@@ -346,7 +404,321 @@ public class WarningController {
 	    			    return "/source/page/order/order_usable";
 	    			default: //漏洞和木马
 	    	            request.setAttribute("alarmList", alarmList);
-	    	            return "/source/page/order/warning";
+	    	            return "/source/page/personalCenter/warnDetail";
+	    			}
+	            }
+	        }
+      
+        }
+    
+    }
+    
+    @RequestMapping(value="taskFinish.html")
+    public String taskFinish(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        String orderId = request.getParameter("orderId");
+        String type = request.getParameter("type");
+        String websoc = request.getParameter("websoc");
+        String groupId=request.getParameter("groupId");
+        String orderAssetId=request.getParameter("orderAssetId");
+        User user = (User)request.getSession().getAttribute("globle_user");
+        
+        //创宇标志
+        request.setAttribute("websoc", websoc);
+        //时间分组标志
+        request.setAttribute("group_flag", groupId);
+        //获取订单信息
+        List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
+        request.setAttribute("order", orderList.get(0));
+        //根据orderId查询正在执行的任务
+        List runList = orderService.findTaskRunning(orderId);
+        
+        List assetList = orderAssetService.findAssetNameByOrderId(orderId);
+        
+        //获取服务所对应的资产 ，并根据资产查询告警信息  modify by tangxr 2016-5-5
+        List assets = orderAssetService.findAssetsByOrderId(orderId);
+		//获取对应告警信息
+        Map<String, Object> paramAlarm = new HashMap<String, Object>();
+        paramAlarm.put("orderId", orderId);
+        paramAlarm.put("type", type);
+        paramAlarm.put("group_flag", groupId);
+        paramAlarm.put("count", assets.size());
+        paramAlarm.put("websoc", websoc);
+        paramAlarm.put("orderAssetId", orderAssetId);
+        List<Alarm> asset_alarmList = alarmService.getAlarmByAsset(paramAlarm);
+        
+        //资产告警数量和告警信息 放入map
+        request.setAttribute("aNum", asset_alarmList.size());
+        request.setAttribute("asset_alarmList", asset_alarmList);
+        
+        //任务基本信息
+        Task task = new Task();
+        task = taskService.findBasicInfoByOrderId(paramAlarm);
+        Map<String, Object> taskParam = this.getInfo(task);
+        request.setAttribute("scanTime", taskParam.get("scanTime"));
+        request.setAttribute("send", taskParam.get("send"));
+        request.setAttribute("receive", taskParam.get("receive"));
+        if(task!=null){
+            if(task.getBegin_time()!=null){
+                task.setBeginTime( DateUtils.dateToString(task.getBegin_time()));
+            }
+            if(task.getEnd_time()!=null){
+                task.setEndTime(DateUtils.dateToString(task.getEnd_time())); 
+            }
+            if(task.getExecute_time()!=null){
+                task.setExecuteTime(DateUtils.dateToString(task.getExecute_time())); 
+            }
+        }
+        request.setAttribute("task", task);
+        
+        if(task!=null){
+        	request.setAttribute("progress", 100);
+            if(task.getCurrentUrl()!=null && !task.getCurrentUrl().equals("")){
+            	request.setAttribute("currentUrl", task.getCurrentUrl());
+            }else{
+            	request.setAttribute("currentUrl", "无");
+            }
+        }else{
+            if(task.getStatus()==3){
+            	request.setAttribute("progress", 100);
+            	request.setAttribute("currentUrl", "无");
+            }else{
+            	request.setAttribute("progress", 0);
+            	request.setAttribute("currentUrl", "暂无");
+            }
+            
+        }
+
+        request.setAttribute("assets", assets);
+        //end 
+        
+        request.setAttribute("assetList", assetList);
+        //获取对应告警信息
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        String id = orderService.getOrderById(orderId, type, user.getId());
+        if(id=="null"||"".equals(id)){
+//        	request.setAttribute("errorMsg", "订单信息不存在!");
+//        	return "/source/error/errorMsg";
+        	return "redirect:/orderTrackInit.html";
+        }else{
+        	
+        	//有告警：修改task表是否查看告警标识为1
+        	if(orderList.get(0).get("status").equals(2) || orderList.get(0).get("status").equals(3)){
+            	Map<String, Object> paramMap1 = new HashMap<String, Object>();
+            	if(type.equals("2")){
+            		paramMap1.put("orderId", orderId);
+            		taskService.update(paramMap1);
+            	}else{
+            		if(groupId != null){
+                		paramMap1.put("orderId", orderId);
+                		paramMap1.put("groupId", groupId);
+                		taskService.update(paramMap1);
+            		}
+            	}
+
+        	}
+
+    		
+	        paramMap.put("orderId", orderId);
+	        paramMap.put("type", type);
+	        paramMap.put("group_flag", groupId);
+	        paramMap.put("count", assetList.size());
+	        paramMap.put("websoc", websoc);
+	        List<Alarm> alarmList = alarmService.getAlarmByOrderId(paramMap);
+	        request.setAttribute("alist", alarmList.size());
+	        //关键字告警信息
+			List<Alarm> keywordList = alarmService.findKeywordWarningByOrderId(orderId);
+			
+			if(keywordList!=null){
+				for(Alarm a :keywordList){
+					a.setAlarmTime(DateUtils.dateToString(a.getAlarm_time()));
+				}
+			}
+			request.setAttribute("keywordList", keywordList);
+			request.setAttribute("keyList", keywordList.size());
+	        //获取历史时间
+	        List taskTime = taskService.findScanTimeByOrderId(orderId);
+	        request.setAttribute("taskTime", taskTime);
+	        if(runList.size()>0){
+	        	request.setAttribute("timeSize", 0);
+	        }
+	        
+//	        if((orderList.get(0).get("status").equals(0)||runList.size()>0)&&groupId==null){
+	        if(!orderList.get(0).get("status").equals(1) && !orderList.get(0).get("status").equals(2) ){
+	        	int status=0;
+	        	if(runList.size()>0){
+	        		status = Integer.parseInt(Constants.TASK_RUNNING);
+	        	}
+	            return this.service(request,paramMap,status,orderList);
+	        }else {
+	            //获取推送告警信息
+	        	String flag_able=request.getParameter("flag");
+	        	paramMap.put("flag", flag_able);
+	            List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(paramMap);
+	            //处理时间Thu Apr 16 09:47:38 CST 2015=》年月日时分秒
+	        	if(taskWarnList!=null){
+	        		for(TaskWarn t : taskWarnList){
+	        			t.setWarnTime(DateUtils.dateToString(t.getWarn_time()));
+	        		}
+	        	}
+	            request.setAttribute("taskWarnList", taskWarnList);
+	            //获取对应IP
+	            List IPList = orderService.findIPByOrderId(orderId);
+	            int serviceId=0 ;
+	            
+	            /** 获取告警次数  dyy*/
+	            TaskWarn taskCount = taskWarnService.findTaskWarnCountByOrderId(orderId);
+	            request.setAttribute("count", taskCount.getCount());
+	            /** 基本信息   dyy*/
+//	            Task task = new Task();
+	//            if(Integer.parseInt(type)==1){
+	//                //长期查找最近的任务
+	//                task = taskService.findNearlyTask(orderId);
+	//            }else{
+	                task = taskService.findBasicInfoByOrderId(paramMap);
+	//            }
+	            Map<String, Object> taskParam1 = this.getInfo(task);
+	            //request.setAttribute("scanTime", taskParam.get("scanTime"));
+	            //request.setAttribute("send", taskParam.get("send"));
+	            //request.setAttribute("receive", taskParam.get("receive"));
+	            if(task!=null){
+	                if(task.getBegin_time()!=null){
+	                    task.setBeginTime( DateUtils.dateToString(task.getBegin_time()));
+	                }
+	                if(task.getEnd_time()!=null){
+	                    task.setEndTime(DateUtils.dateToString(task.getEnd_time())); 
+	                }
+	                if(task.getExecute_time()!=null){
+	                    task.setExecuteTime(DateUtils.dateToString(task.getExecute_time())); 
+	                }
+	            }
+	            //request.setAttribute("task", task);
+	            HashMap<String, Object> order=new HashMap<String, Object>();
+	            for(int i=0;i<orderList.size();i++){
+	            	 order=(HashMap) orderList.get(i);
+	            	 serviceId=(Integer) order.get("serviceId");
+	            }
+	            //获取关键字信息
+	            
+	            if(serviceId==6||serviceId==7||serviceId==8){//DDOS
+	            	 List<AlarmDDOS> alarmDDosList = alarmService.getAlarmDdosByOrderId(paramMap);
+	            	request.setAttribute("ipList", IPList);
+	            	request.setAttribute("serviceId", serviceId);
+	                request.setAttribute("alarmList", alarmDDosList);
+	                return "/source/page/order/order_warning";
+	            	
+	            }else{//安恒的服务
+	        		switch (serviceId) {
+	    			case 3:/**篡改  dyy*/
+	                	//获取：敏感词  折线图信息
+	                	Map<String,Object> m = new HashMap<String, Object>();
+	    				m.put("orderId", orderId);
+	    				m.put("url", null);
+	                	List<Alarm> alarm = alarmService.findSensitiveWordByOrderId(m);
+	                	request.setAttribute("alarm", alarm);
+	                	request.setAttribute("alist", alarm.size());
+	                	
+	                    request.setAttribute("alarmList", alarmList);
+	            		return "/source/page/order/warning_doctort"	;
+	    			case 4:/**关键字监测服务 dyy*/    				
+	    				String flag=request.getParameter("flag");
+	    				//关键字 折线图 左侧信息
+	    				Map<String,Object> m1 = new HashMap<String, Object>();
+	    				m1.put("orderId", orderId);
+	    				m1.put("url", null);
+	    				m1.put("flag",flag);
+	    				List<Alarm> alarmKeyWordList = alarmService.findSensitiveWordByOrderId(m1);
+	                	request.setAttribute("alarmKeyWordList", alarmKeyWordList);
+	    				//敏感词排行榜(只适合一个资产)
+	                	Map<String,Object> map = new HashMap<String, Object>();
+	                	map.put("orderId", orderId);
+	                	int flagalarm=0;
+	                	if(alarmKeyWordList!=null){
+	                		for(int a=0;a<alarmKeyWordList.size();a++){
+	                			if(a==0){
+	                				String url = alarmKeyWordList.get(0).getUrl();
+	                    			map.put("url", url);
+	                    			List<Alarm> list = alarmService.findKeywordByUrlAndOrderId(map);
+	                    			List<Alarm> mapSortData = getSortData(list);
+	                    			request.setAttribute("mapSortData", mapSortData);
+	                    			
+			                		Date tempTime=alarmKeyWordList.get(0).getAlarm_time();
+			                		Date d2 = new Date(); //当前时间
+			                		SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd"); //格式化为 yyyymmdd
+			                		int d1Number = Integer.parseInt(f.format(tempTime).toString()); //将取出数据格式化后转为int
+			                		int d2Number = Integer.parseInt(f.format(d2).toString()); //将当前时间格式化后转为int
+			                		int value=d2Number-d1Number;
+			                		if(value==0){
+			                			flagalarm=1;
+			                		}else if(value==1){
+			                			flagalarm=2;
+			                		}else{
+			                			flagalarm=3;
+			                		}
+			                		 request.setAttribute("value", flagalarm);
+	                			}
+	                		}
+	                	}
+	                	return "/source/page/order/warning_keyword"	;
+	    			case 5:/**可用性监测服务 dyy*/
+	    				//可用性  折线图 左侧信息
+	    				Map<String,Object> m2 = new HashMap<String, Object>();
+	    				m2.put("orderId", orderId);
+	    				m2.put("url", null);
+	    				//可用率统计
+	    		    	List<TaskWarn> listUseable = taskWarnService.findUseableByOrderId(paramMap);
+	    		    	request.setAttribute("listUseable", listUseable);
+	    			    request.setAttribute("wlist", taskWarnList.size());
+	    			  
+	    			    //根据url查询折线图和orderId
+	    		    	Map<String, Object> m22 = new HashMap<String, Object>();
+	    		    	m22.put("orderId", orderId);
+	    		    	int flag1=0;
+	    		    	if(listUseable!=null&&listUseable.size()>0){
+	    		    		String url = listUseable.get(0).getUrl();
+			    			m22.put("url", url); 
+			    			List<TaskWarn> listRight = taskWarnService.findWarnByOrderIdAndUrl(m22);
+			                for(int j =0 ;j< listRight.size();j++){
+			                	if(j==listRight.size()-1){
+			                		Date tempTime=listRight.get(j).getWarn_time();
+			                		Date d2 = new Date(); //当前时间
+			                		SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd"); //格式化为 yyyymmdd
+			                		int d1Number = Integer.parseInt(f.format(tempTime).toString()); //将取出数据格式化后转为int
+			                		int d2Number = Integer.parseInt(f.format(d2).toString()); //将当前时间格式化后转为int
+			                		int value=d2Number-d1Number;
+			                		if(value==0){
+			                			flag1=1;
+			                		}else if(value==1){
+			                			flag1=2;
+			                		}else{
+			                			flag1=3;
+			                		}
+			                	}
+			                }
+			    		}
+			    		
+	    		    		
+	    			    //可用率计算
+	    			    long usable = 0l;
+	    			    long huifu = 0l;
+	    			    for (int i = 0; i < taskWarnList.size(); i++) {
+	    			    	if(taskWarnList.get(i).getName().equals("断网")){
+	    			    		if(i==0){
+	    			    			usable = usable + taskWarnList.get(i).getWarn_time().getTime()-task.getExecute_time().getTime();
+	    			    		}else{
+	    			    			usable = usable + (taskWarnList.get(i).getWarn_time().getTime()-huifu);
+	    			    		}
+	    			    		
+	    			    	}else{
+	    			    		huifu = taskWarnList.get(i).getWarn_time().getTime();
+	    			    	}
+						}
+	    			    float usabling = Float.parseFloat(String.valueOf(usable))/Float.parseFloat(String.valueOf((task.getEnd_time().getTime()-task.getExecute_time().getTime())));
+	    			    request.setAttribute("usabling", usabling*100+"%");
+	    			    request.setAttribute("value", flag1);
+	    			    return "/source/page/order/order_usable";
+	    			default: //漏洞和木马
+	    	            request.setAttribute("alarmList", alarmList);
+	    	            return "/source/page/personalCenter/warnFinishDetail";
 	    			}
 	            }
 	        }
@@ -424,7 +796,7 @@ public class WarningController {
 	 * 功能描述：获取折线图信息
 	 *		 @time 2015-3-9
 	 */
-	@RequestMapping(value="getData1.html" ,method = RequestMethod.POST)
+	@RequestMapping(value="getData.html" ,method = RequestMethod.POST)
 	@ResponseBody
 	public String getData(HttpServletRequest request,HttpServletResponse response){
 		response.setCharacterEncoding("utf-8");
@@ -479,7 +851,7 @@ public class WarningController {
      * 功能描述：获取折线图信息
      *       @time 2015-3-9
      */
-    @RequestMapping(value="getDataUsable1.html" ,method = RequestMethod.POST)
+    @RequestMapping(value="getDataUsable.html" ,method = RequestMethod.POST)
     @ResponseBody
     public String getDataUsable(HttpServletRequest request,HttpServletResponse response,String orderId){
     	response.setCharacterEncoding("utf-8");
@@ -607,7 +979,7 @@ public class WarningController {
      * 参数描述：  无
      *     @time 2015-4-10
      */
-    @RequestMapping(value="getExecuteTime1.html")
+    @RequestMapping(value="getExecuteTime.html")
     @ResponseBody
     public void getExecuteTime(HttpServletRequest request,HttpServletResponse response){
     	String orderId = request.getParameter("orderId");
@@ -643,13 +1015,14 @@ public class WarningController {
      * 参数描述：  无
      *     @time 2015-2-3
      */
-    @RequestMapping(value="getGaugeData1.html")
+    @RequestMapping(value="getGaugeData.html")
     @ResponseBody
     public String getGaugeData(HttpServletRequest request){
         String orderId = request.getParameter("orderId");
         String type = request.getParameter("type");
         String group_flag = request.getParameter("group_flag");
         String websoc = request.getParameter("websoc");
+        String orderAssetId = request.getParameter("orderAssetId");
         //获取对应资产
         List assetList = orderAssetService.findAssetNameByOrderId(orderId);
         Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -658,6 +1031,7 @@ public class WarningController {
         paramMap.put("count", assetList.size());
         paramMap.put("group_flag", group_flag);
         paramMap.put("websoc", websoc);
+        paramMap.put("orderAssetId", orderAssetId);
         //低
         paramMap.put("level", WarnType.LOWLEVEL.ordinal());
         List<Alarm> lowList = alarmService.getAlarmByOrderId(paramMap);
@@ -690,13 +1064,14 @@ public class WarningController {
      * 参数描述：  无
      *     @time 2015-2-3
      */
-    @RequestMapping(value="getPieData1.html")
+    @RequestMapping(value="getPieData.html")
     @ResponseBody
     public String getPieData(HttpServletRequest request){
         String orderId = request.getParameter("orderId");
         String type = request.getParameter("type");
         String group_flag = request.getParameter("group_flag");
         String websoc = request.getParameter("websoc");
+        String orderAssetId = request.getParameter("orderAssetId");
         //获取对应资产
         List assetList = orderAssetService.findAssetNameByOrderId(orderId);
         Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -705,6 +1080,7 @@ public class WarningController {
         paramMap.put("count", assetList.size());
         paramMap.put("group_flag", group_flag);
         paramMap.put("websoc", websoc);
+        paramMap.put("orderAssetId", orderAssetId);
         //低
         paramMap.put("level", WarnType.LOWLEVEL.ordinal());
         List<Alarm> lowList = alarmService.getAlarmByOrderId(paramMap);
@@ -753,7 +1129,7 @@ public class WarningController {
      * 参数描述：  无
      *     @time 2015-7-23
      */
-    @RequestMapping(value="getBarData1.html",method = RequestMethod.POST)
+    @RequestMapping(value="getBarData.html",method = RequestMethod.POST)
     @ResponseBody
     public void getBarData(HttpServletRequest request,HttpServletResponse response){
         response.setCharacterEncoding("utf-8");
@@ -762,6 +1138,7 @@ public class WarningController {
         String type = request.getParameter("type");
         String group_flag = request.getParameter("group_flag");
         String websoc = request.getParameter("websoc");
+        String orderAssetId = request.getParameter("orderAssetId");
         //获取对应资产
         List assetList = orderAssetService.findAssetNameByOrderId(orderId);
         Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -770,6 +1147,7 @@ public class WarningController {
         paramMap.put("count", assetList.size());
         paramMap.put("group_flag", group_flag);
         paramMap.put("websoc", websoc);
+        paramMap.put("orderAssetId", orderAssetId);
         
         List<Alarm> result = alarmService.findAlarmByOrderIdorGroupId(paramMap);
         JSONArray json = new JSONArray();
@@ -800,13 +1178,14 @@ public class WarningController {
      * 参数描述：  无
      *     @time 2015-2-3
      */
-    @RequestMapping(value="getLineData1.html")
+    @RequestMapping(value="getLineData.html")
     @ResponseBody
     public String getLineData(HttpServletRequest request){
         String orderId = request.getParameter("orderId");
         String type = request.getParameter("type");
         String group_flag = request.getParameter("group_flag");
         String websoc = request.getParameter("websoc");
+        String orderAssetId = request.getParameter("orderAssetId");
         //获取对应资产
         List assetList = orderAssetService.findAssetNameByOrderId(orderId);
         Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -815,6 +1194,7 @@ public class WarningController {
         paramMap.put("count", assetList.size());
         paramMap.put("group_flag", group_flag);
         paramMap.put("websoc", websoc);
+        paramMap.put("orderAssetId", orderAssetId);
         
         List<Task> taskList = alarmService.getTaskByOrderId(paramMap);
         JSONArray json = new JSONArray();
@@ -868,7 +1248,7 @@ public class WarningController {
      * 参数描述：  无
      *     @time 2015-2-2
      */
-    @RequestMapping(value="orderDetails1.html")
+    @RequestMapping(value="orderDetails.html")
     public String orderDetails(HttpServletRequest request){
         String orderId = request.getParameter("orderId");
         //获取订单信息
@@ -906,7 +1286,7 @@ public class WarningController {
      *     @time 2015-3-12
      *     dyy
      */
-    @RequestMapping(value="historyInit1.html")
+    @RequestMapping(value="historyInit.html")
     public String historyInit(HttpServletRequest request){
         String orderId = request.getParameter("orderId");
         String type = request.getParameter("type");
@@ -1013,12 +1393,13 @@ public class WarningController {
      * 邓元元
      * 		@time 2015-4-8
      */
-    @RequestMapping(value="/scaning1.html")
+    @RequestMapping(value="/scaning.html")
     @ResponseBody
     public void scaning(HttpServletRequest request,HttpServletResponse response){
-        String orderId = request.getParameter("orderId");
+    	String orderId = request.getParameter("orderId");
         String status = request.getParameter("status");
         String group_flag = request.getParameter("group_flag");
+        String orderAssetId = request.getParameter("orderAssetId");
         //获取对应资产
         List assetList = orderAssetService.findAssetNameByOrderId(orderId);
         
@@ -1027,7 +1408,8 @@ public class WarningController {
         paramMap.put("status", status);
         paramMap.put("group_flag", group_flag);
         paramMap.put("count", assetList.size());
-        Task task = taskService.findProgressByOrderId(paramMap);
+        paramMap.put("orderAssetId", orderAssetId);
+        Task task = taskService.findBasicInfoByOrderId(paramMap);
         Map<String, Object> m = new HashMap<String, Object>();
         if(task!=null){
             m.put("progress", task.getProgress());
@@ -1037,24 +1419,20 @@ public class WarningController {
             	m.put("currentUrl", "无");
             }
         }else{
-        	Task  t = taskService.getNewStatus(paramMap);
-        	if(t.getStatus()==3){
-        		m.put("progress", 100);
-        		if(t.getCurrentUrl()!=null && !t.getCurrentUrl().equals("")){
-                    m.put("currentUrl", t.getCurrentUrl());
-                }else{
-                    m.put("currentUrl", "无");
-                }
-//        	if(Integer.parseInt(status)==3){
-//        	    m.put("progress", 100);
-//        	    m.put("currentUrl", "无");
-        	}else{
+//        	Task  t = taskService.getNewStatus(paramMap);
+//        	if(t.getStatus()==3){
+//        		m.put("progress", 100);
+//        		if(t.getCurrentUrl()!=null && !t.getCurrentUrl().equals("")){
+//                    m.put("currentUrl", t.getCurrentUrl());
+//                }else{
+//                    m.put("currentUrl", "无");
+//                }
+//        	}else{
         		m.put("progress", 0);
                 m.put("currentUrl", "暂无");
-        	}
-        	
-        	
+//        	}
         }
+        
         //object转化为Json格式
         JSONObject JSON = CommonUtil.objectToJson(response, m);
         try {
@@ -1071,7 +1449,7 @@ public class WarningController {
      * 邓元元
      * 		@time 2015-4-8
      */
-    @RequestMapping(value="/getAssetName1.html")
+    @RequestMapping(value="/getAssetName.html")
     @ResponseBody
     public void getAssetName(HttpServletRequest request,HttpServletResponse response){
         String orderId = request.getParameter("orderId");
@@ -1100,11 +1478,12 @@ public class WarningController {
     /**
      * 功能描述：告警2扫描中状态
      */   
-    @RequestMapping(value="warningTask1.html")
+    @RequestMapping(value="warningTask.html")
     public void warningTask(HttpServletRequest request,HttpServletResponse response){
         String orderId = request.getParameter("orderId");
         String group_flag = request.getParameter("group_flag");
         String type = request.getParameter("type");
+        String orderAssetId = request.getParameter("orderAssetId");
         //获取对应资产
         List assetList = orderAssetService.findAssetNameByOrderId(orderId);
         Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -1112,6 +1491,7 @@ public class WarningController {
         paramMap.put("type", type);
         paramMap.put("count", assetList.size());
         paramMap.put("groupId", group_flag);
+        paramMap.put("orderAssetId", orderAssetId);
         Task task = taskService.findBasicInfoByOrderId(paramMap);
         Map<String, Object> m = new HashMap<String, Object>();
         if(task!=null){
@@ -1177,7 +1557,7 @@ public class WarningController {
     /**
      * 功能描述：敏感词
      */   
-    @RequestMapping(value="keyWord1.html" ,method = RequestMethod.POST)
+    @RequestMapping(value="keyWord.html" ,method = RequestMethod.POST)
     public void keyWord(HttpServletRequest request,HttpServletResponse response,String orderId,String url){
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("application/json;charset=UTF-8");
@@ -1205,7 +1585,7 @@ public class WarningController {
     /**
      * 功能描述：详情
      */   
-    @RequestMapping(value="details1.html" ,method = RequestMethod.POST)
+    @RequestMapping(value="details.html" ,method = RequestMethod.POST)
     public void details(HttpServletRequest request,HttpServletResponse response,String orderId,String url){
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("application/json;charset=UTF-8");
@@ -1233,7 +1613,7 @@ public class WarningController {
      * 邓元元
      * 		@time 2015-4-8
      */   
-    @RequestMapping(value="warningTwoInit1.html")
+    @RequestMapping(value="warningTwoInit.html")
     public String warningTwoInit(HttpServletRequest request){
         String orderId = request.getParameter("orderId");
         //获取订单信息
@@ -1300,7 +1680,7 @@ public class WarningController {
      * 邓元元
      * 		@time 2015-4-14
      */
-    @RequestMapping(value="warningTwoAnHeng1.html")
+    @RequestMapping(value="warningTwoAnHeng.html")
     public String warningTwoAnHeng(HttpServletRequest request){
     	String orderId = request.getParameter("orderId");
     	String type = request.getParameter("type");
@@ -1419,6 +1799,117 @@ public class WarningController {
         	return "/source/page/order/warning_keyword";
         }else{
             return "/source/page/order/warningtwo";
+        }
+    }
+    
+    
+    @RequestMapping("/taskRunning.html")
+    public String taskRunning(HttpServletRequest request) throws Exception{
+    	String orderId = request.getParameter("orderId");
+        String type = request.getParameter("type");
+        String groupId=request.getParameter("groupId");
+        String orderAssetId=request.getParameter("orderAssetId");
+    	//获取订单信息
+        List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
+        request.setAttribute("order", orderList.get(0));
+        
+        //获取服务所对应的资产 ，并根据资产查询告警信息  modify by tangxr 2016-5-5
+        List assets = orderAssetService.findAssetsByOrderId(orderId);
+		//获取对应告警信息
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("orderId", orderId);
+        paramMap.put("type", type);
+        paramMap.put("group_flag", groupId);
+        paramMap.put("count", assets.size());
+        paramMap.put("orderAssetId", orderAssetId);
+                
+        request.setAttribute("status", 2);
+       
+        //获取进度
+        paramMap.put("status", 2);
+        /** 基本信息  */
+        Task task = new Task();
+        task = taskService.findBasicInfoByOrderId(paramMap);
+        if(task!=null){
+            request.setAttribute("progress", task.getProgress());
+            if(task.getCurrentUrl()!=null && !task.getCurrentUrl().equals("")){
+                request.setAttribute("currentUrl", task.getCurrentUrl());
+            }else{
+                request.setAttribute("currentUrl", "无");
+            }
+        }else{
+            request.setAttribute("progress", 0);
+            request.setAttribute("currentUrl", "暂无");
+        }
+
+        Map<String, Object> taskParam = this.getInfo(task);
+        request.setAttribute("scanTime", taskParam.get("scanTime"));
+        request.setAttribute("send", taskParam.get("send"));
+        request.setAttribute("receive", taskParam.get("receive"));
+        if(task!=null){
+            if(task.getExecute_time()!=null){
+                task.setExecuteTime( DateUtils.dateToString(task.getExecute_time()));
+            }
+            if(task.getEnd_time()!=null){
+                task.setEndTime(DateUtils.dateToString(task.getEnd_time()));
+            }
+        }
+        request.setAttribute("task", task);
+        /**可用性 begin dyy*/
+        //获取告警信息
+        String flag_able=request.getParameter("flag");
+    	paramMap.put("flag", flag_able);
+        List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(paramMap);
+        //处理时间Thu Apr 16 09:47:38 CST 2015=》年月日时分秒
+        if(taskWarnList!=null){
+            for(TaskWarn t : taskWarnList){
+                t.setWarnTime(DateUtils.dateToString(t.getWarn_time()));
+            }
+        }
+        request.setAttribute("taskWarnList", taskWarnList);
+        
+        //可用率统计
+        List<TaskWarn> listUseable = taskWarnService.findUseableByOrderId(paramMap);
+        request.setAttribute("listUseable", listUseable);
+        int serviceId=0 ;
+        HashMap<String, Object> order=new HashMap<String, Object>();
+        for(int i=0;i<orderList.size();i++){
+             order=(HashMap) orderList.get(i);
+             serviceId=(Integer) order.get("serviceId");
+        }
+        if(serviceId==5){
+            request.setAttribute("wlist", taskWarnList.size());
+            //可用率计算
+            long usable = 0l;
+            long huifu = 0l;
+            float usabling = 0;
+            if(task!=null){
+	            for (int i = 0; i < taskWarnList.size(); i++) {
+	                if(taskWarnList.get(i).getName().equals("断网")){
+	                    if(i==0){
+	                        usable = usable + taskWarnList.get(i).getWarn_time().getTime()-task.getExecute_time().getTime();
+	                    }else{
+	                        usable = usable + taskWarnList.get(i).getWarn_time().getTime()-huifu;
+	                    }
+	                    
+	                }else{
+	                    huifu = taskWarnList.get(i).getWarn_time().getTime();
+	                }
+	            }
+	          //获取当前时间
+	            SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	            String temp = setDateFormat.format(Calendar.getInstance().getTime());
+	            usabling = Float.parseFloat(String.valueOf(usable))/Float.parseFloat(String.valueOf((setDateFormat.parse(temp).getTime()-task.getExecute_time().getTime())));
+	            request.setAttribute("usabling", usabling*100+"%");
+            }
+            return "/source/page/order/order_usable";
+            /**end*/
+        }else if(serviceId==3){
+        	return "/source/page/order/warning_doctort";
+        }else if(serviceId==4){
+        	return "/source/page/order/warning_keyword";
+        }else{
+            return "/source/page/personalCenter/warnRunDetail";
         }
     }
 

@@ -207,12 +207,12 @@ public class MyOrderController {
         paramMap.put("pageNow", pageNow);
         paramMap.put("pageSize", pageSize);
         List result = null;
-        //第一次先根据资产查询
+       //根据资产查询
         result = orderService.findByCombineOrderTrackByPageAsset(paramMap);
-        if(result.size()<=0){
-        	//根据id查
-        	result = orderService.findByCombineOrderTrackByPage(paramMap);
-        }
+//        if(result.size()<=0){
+//        	//根据id查
+//        	result = orderService.findByCombineOrderTrackByPage(paramMap);
+//        }
 
         //根据orderId查询task表判断告警是否查看过
         if(result != null && result.size() > 0){
@@ -267,7 +267,7 @@ public class MyOrderController {
         try {
             name=new String(servName.getBytes("ISO-8859-1"), "UTF-8");
             searchText = new String(search.getBytes("ISO-8859-1"), "UTF-8");
-			if(searchText.equals("输入资产名称或订单号进行搜索")){
+			if(searchText.equals("输入资产名称或者资产地址进行搜索")){
 				searchText = "";
 			}
         } catch (UnsupportedEncodingException e) {
