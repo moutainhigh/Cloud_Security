@@ -103,10 +103,10 @@
 .safe01 .Divlist .list{
 	background: #ffffff;
 	position: absolute;
-	padding: 0 4px;
+	/*padding: 0 4px;*/
 	left: -16px;
 	top:55px;
-	width: 120px;
+	width: 128px;
 	/*height: 142px;*/
 	/*border: #e3e3e3 solid 1px;*/
 	border-top:#fbfbfb solid 1px;
