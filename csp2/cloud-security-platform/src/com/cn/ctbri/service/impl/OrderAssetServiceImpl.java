@@ -92,5 +92,11 @@ public class OrderAssetServiceImpl implements IOrderAssetService{
 		List<OrderAsset> list = orderAssetDao.findOrderAssetId(param);
         return list;
 	}
+
+	//add by tangxr 2016-5-5
+	//查询订单的资产 
+	public List findAssetsByOrderId(String orderId) {
+		return orderAssetDao.findAssetsByOrderId(orderId);
+	}
 	
 }

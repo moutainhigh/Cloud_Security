@@ -84,5 +84,8 @@ public class TaskServiceImpl implements ITaskService{
 	public int findissueCount(String orderId) {
 		return this.taskDao.findissueCount(orderId);
 	}
+	public List<Task> findProgssByOrderId(Map<String, Object> pMap) {
+		return taskDao.findProgssByOrderId(pMap);
+	}
 
 }

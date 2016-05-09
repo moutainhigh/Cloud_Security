@@ -51,7 +51,7 @@ public class OrderServiceImpl implements IOrderService{
      *       @time 2015-1-21
      * 返回值    ：  List
      */
-    public List<Order> findOrderByUserId(int userId) {
+    public List findOrderByUserId(int userId) {
         return orderDao.getOrderByUserId(userId);
     }
     /**

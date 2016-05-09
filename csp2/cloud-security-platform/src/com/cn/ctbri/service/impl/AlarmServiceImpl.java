@@ -134,4 +134,10 @@ public class AlarmServiceImpl implements IAlarmService{
 	public void saveAlarm(Alarm alarm) {
 		alarmDao.saveAlarm(alarm);
 	}
+	
+	//add by tangxr 2016-5-5
+	//资产查询告警
+	public List<Alarm> getAlarmByAsset(Map<String, Object> paramAlarm) {
+		return alarmDao.getAlarmByAsset(paramAlarm);
+	}
 }

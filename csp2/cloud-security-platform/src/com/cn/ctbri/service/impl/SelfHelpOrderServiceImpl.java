@@ -120,39 +120,34 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 	public Serv findServiceById(int serviceId) {
 		return selfHelpOrderDao.findServiceById(serviceId);
 	}
-  //查询购物车列表
-	@Override
+  
+	//查询购物车列表
 	public List<ShopCar> findShopCarList(String userId, int payFlag,String orderId) {
 		// TODO Auto-generated method stub
 		
 		return selfHelpOrderDao.findShopCarList(userId, payFlag,orderId);
 	}
 
-	@Override
 	public List<ShopCar> findShopCarAPIList(String userId, int payFlag,String orderId) {
 		// TODO Auto-generated method stub
 		return selfHelpOrderDao.findShopCarAPIList(userId, payFlag,orderId);
 	}
 
-	@Override
 	public List<ShopCar> findBuyShopList(List orderId) {
 		// TODO Auto-generated method stub
 		return selfHelpOrderDao.findBuyShopList(orderId);
 	}
 
-	@Override
 	public void updateOrder(String orderId, String newOrderId,String isAPI) {
 		// TODO Auto-generated method stub
 		selfHelpOrderDao.updateOrder(orderId, newOrderId,isAPI);
 	}
 
-	@Override
 	public void updateOrderAPI(String orderId, String newOrderId) {
 		// TODO Auto-generated method stub
 		selfHelpOrderDao.updateOrderAPI(orderId, newOrderId);
 	}
 
-	@Override
 	public void updateOrderAsset(String orderId, String newOrderId) {
 		// TODO Auto-generated method stub
 		selfHelpOrderDao.updateOrderAsset(orderId, newOrderId);
