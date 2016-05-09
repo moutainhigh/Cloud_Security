@@ -22,24 +22,7 @@
 <script type="text/javascript">
 	window.onload=function(){
 		//页面加载时清空所有的val值，如需要请取消注释；
-		/*var val=$('.name').val();
-		if(val==''){
-			$('.name').siblings('p').show();	
-		}else
-		{
-			$('.name').val(val);
-		}*/
 		$('.prompttext').val('');
-		/*
-		var pass=$('.password').val();
-		if(pass==''){
-			$('.password').siblings('p').show();	
-		}else
-		{
-			$('.password').val(pass);
-		}
-		*/
-		
 }
 
 </script>
