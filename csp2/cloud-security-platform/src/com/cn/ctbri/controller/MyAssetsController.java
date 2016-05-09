@@ -98,6 +98,9 @@ public class MyAssetsController {
 	public void addrIsExist(Model model,Asset asset,HttpServletResponse response,HttpServletRequest request) throws Exception{
 	    User globle_user = (User) request.getSession().getAttribute("globle_user");
 	    Map<String, Object> paramMap = new HashMap<String, Object>();
+	    String oldName = request.getParameter("oldName");
+	    String oldAddr = request.getParameter("oldAddr");
+
 	    String addr = asset.getAddr();
 	    String assetName =URLDecoder.decode(asset.getName(),"utf-8"); ;
         paramMap.put("userId", globle_user.getId());
@@ -105,25 +108,45 @@ public class MyAssetsController {
     	if(!(addr.startsWith(addrType))){
             addr = addrType + "://" + addr.trim();
         }
-
-        paramMap.put("name", assetName.trim());
-		List<Asset> listForName = assetService.findByAssetAddr(paramMap);
 		Map<String, Object> m = new HashMap<String, Object>();
-		if(listForName != null && listForName.size()>0){
-			m.put("msg", '1');//1：表示资产名称已经存在
-		}else{
-			Map<String, Object> paramMap1 = new HashMap<String, Object>();
-			paramMap1.put("userId", globle_user.getId());
-			paramMap1.put("addr", addr.trim());
-			List<Asset> listForAddr = assetService.findByAssetAddr(paramMap1);
-			if(listForAddr != null && listForAddr.size()>0){
-				m.put("msg", '2');//1：表示资产地址已经存在
+	    if(oldName!=null || oldAddr!=null){
+	    	//修改时判断存在
+	    	if(!assetName.trim().equals(oldName)){
+	            paramMap.put("name", assetName.trim());
+	    		List<Asset> listForName = assetService.findByAssetAddr(paramMap);
+
+	    		if(listForName != null && listForName.size()>0){
+	    			m.put("msg", '1');//1：表示资产名称已经存在
+	    		}
+	    	}else if(!addr.trim().equals(oldAddr)){
+	    		Map<String, Object> paramMap1 = new HashMap<String, Object>();
+				paramMap1.put("userId", globle_user.getId());
+				paramMap1.put("addr", addr.trim());
+				List<Asset> listForAddr = assetService.findByAssetAddr(paramMap1);
+				if(listForAddr != null && listForAddr.size()>0){
+					m.put("msg", '2');//1：表示资产地址已经存在
+				}
+	    	}else{
+	    		m.put("msg", false);
+	    	}
+	    }else{
+	        paramMap.put("name", assetName.trim());
+			List<Asset> listForName = assetService.findByAssetAddr(paramMap);
+			if(listForName != null && listForName.size()>0){
+				m.put("msg", '1');//1：表示资产名称已经存在
 			}else{
-				m.put("msg", false);
+				Map<String, Object> paramMap1 = new HashMap<String, Object>();
+				paramMap1.put("userId", globle_user.getId());
+				paramMap1.put("addr", addr.trim());
+				List<Asset> listForAddr = assetService.findByAssetAddr(paramMap1);
+				if(listForAddr != null && listForAddr.size()>0){
+					m.put("msg", '2');//1：表示资产地址已经存在
+				}else{
+					m.put("msg", false);
+				}
 			}
-		}
-
-
+	    }
+	    
 		//object转化为Json格式
 		JSONObject JSON = CommonUtil.objectToJson(response, m);
 		try {
