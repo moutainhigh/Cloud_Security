@@ -60,7 +60,7 @@ margin: 0 18%;
 							<a href="#" class="hbule">手机APP</a>
 							<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
 						</span>
-						<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
+						<span class="fl"><a href="${ctx}/aider.html">关于我们</a></span>
 						
 					</div>
 					<div class="safer fr">
