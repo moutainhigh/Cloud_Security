@@ -47,7 +47,7 @@
                         </li>
                         <li class="clearfix">
                         	<div class="list fl">
-                            	 <input type="password" class="text prompttext password" id="login_password" name="password" placeholder="密码" style="color: #929292;" value="${requestScope.password }" onblur="checkPassword();" />
+                            	 <input type="password" class="text prompttext password" id="login_password" name="password" placeholder="密码" value="${requestScope.password }" onblur="checkPassword();" />
 
                                 <i id="login_password_flag" class="right" style="display:none"></i>
                             </div>
@@ -55,8 +55,7 @@
                         </li>
                         <li class="clearfix">
                         	<div class="list fl" style="width:218px;">
-								<input type="text" class="text prompttext" style="width:186px" name="checkNumber" id="checkNumber"/>
-                                <p class="promp">验证码</p>
+								<input type="text" class="text prompttext" style="width:186px" placeholder="验证码" name="checkNumber" id="checkNumber"/>
                                 <i id="checkNumber_flag" class="right" style="display:none"></i>
                                <span class="test"><img src="${ctx}/image.jsp" alt="" width="108" height="42" id="imageNumber" title="点击换一张" onclick="checkNumberImage()"></img></span>
                                
