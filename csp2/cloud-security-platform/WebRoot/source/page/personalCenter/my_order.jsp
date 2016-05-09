@@ -192,7 +192,7 @@ function optOrder(orderId,status){
 					<div class="safer fr">
 						<!-- 如果已经登录则显示用户名，否则需要登录 -->
 				         <c:if test="${sessionScope.globle_user!=null }">
-					        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
+					        <a href="${ctx}/userCenterUI.html">${sessionScope.globle_user.name }</a>
 					        <em>|</em>
 					        <a href="${ctx}/exit.html">退出</a>
 				         </c:if>
@@ -207,14 +207,14 @@ function optOrder(orderId,status){
 		</div>
 		<div class="core clearfix" style="margin-bottom:343px;">
         	<div class="coreLeft fl">
-            	<h3><i></i>个人中心</h3>
+            	<a href="${ctx}/userCenterUI.html"><h3><i></i>个人中心</h3></a>
                 <dl>
                 	<dt>交易管理</dt>
                     <dd><a href="${ctx}/orderTrackInit.html" class="active">我的订单</a></dd>
-                    <dd><a href="my-coupon.html">我的优惠劵</a></dd>
+                    <dd><a href="#">我的优惠劵</a></dd>
                     <dt>个人信息管理</dt>
-                    <dd><a href="personal-data.html">个人资料</a></dd>
-                    <dd style="border:none;"><a href="my-assets.html">我的资产</a></dd>
+                    <dd><a href="${ctx}/userDataUI.html">个人资料</a></dd>
+                    <dd style="border:none;"><a href="${ctx }/userAssetsUI.html">我的资产</a></dd>
                 </dl>
             </div>
             
@@ -230,7 +230,7 @@ function optOrder(orderId,status){
 	            	
 	            	<div class="coreList clearfix">
 	                	<label class="container con-order fl">
-	                    	<input type="text" class="text promptext" value="输入资产名称或订单号进行搜索"  placeholder="" id="search" name="search">
+	                    	<input type="text" class="text promptext" value="输入资产名称或者资产地址进行搜索"  placeholder="" id="search" name="search">
 	                        
 	                    	<input type="submit" value="搜索" class="sub fr" >
 	                    </label>
@@ -344,7 +344,7 @@ function optOrder(orderId,status){
         });*/
 		/*提示文字效果*/
 		$('.promptext').focus(function(){
-			if($(this).val()=='输入资产名称或订单号进行搜索'){
+			if($(this).val()=='输入资产名称或者资产地址进行搜索'){
 				$(this).val('');
 				$(this).css('color','#343434');
 			}else{
@@ -353,7 +353,7 @@ function optOrder(orderId,status){
 		});
 		$('.promptext').blur(function(){
 			if($(this).val()==''){
-				$(this).val('输入资产名称或订单号进行搜索');
+				$(this).val('输入资产名称或者资产地址进行搜索');
 				$(this).css('color','#929292');	
 			}
 				

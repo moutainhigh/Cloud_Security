@@ -71,7 +71,7 @@
 						            <c:if test="${list.serviceId==1||list.serviceId==2||list.serviceId==3||list.serviceId==4||list.serviceId==5}">
 						                <c:if test="${list.status==2}">
 						                 
-						                 <c:if test="${list.alarmViewedFlag==0}">
+						                 <!-- <c:if test="${list.alarmViewedFlag==0}">
 						                 <a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank" title="已完成有告警">
 						                 	查看详情
 						                 </a>
@@ -80,7 +80,10 @@
 						                 <a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank" title="已完成有告警(已查看)">
 						                 	查看详情
 						                 </a>
-						                 </c:if>
+						                 </c:if> -->
+						                 <a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank" title="已完成有告警">
+						                 	查看详情
+						                 </a>
 						                 
 						                </c:if>
 						                <!-- modify by 2016-4-13 -->
@@ -102,7 +105,7 @@
 						                	查看详情
 						                </a></c:if>
 						                <c:if test="${list.begin_date<=temp&&list.status==3}">
-							                <c:if test="${list.alarmViewedFlag==0}">
+							                <!-- <c:if test="${list.alarmViewedFlag==0}">
 							                <a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank" title="服务中有告警">
 							                	查看详情
 							                </a>
@@ -112,7 +115,10 @@
 							                <a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank" title="服务中有告警(已查看)">
 							                	查看详情
 							                </a>
-							                </c:if>
+							                </c:if> -->
+							                <a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank" title="服务中有告警">
+							                	查看详情
+							                </a>
 						                </c:if>
 						            </c:if>
 						                
@@ -124,7 +130,7 @@
 						                </a>
 						                </c:if>
 						                <c:if test="${list.status==2}">
-							                <c:if test="${list.alarmViewedFlag==0}"> 
+							                <!-- <c:if test="${list.alarmViewedFlag==0}"> 
 							                  <a href="${ctx}/warningTwoAnHeng.html?orderId=${list.id }&type=${list.type}" target="_blank" title="有告警">              
 							                 	查看详情
 							                  </a>
@@ -133,7 +139,10 @@
 							                  <a href="${ctx}/warningTwoAnHeng.html?orderId=${list.id }&type=${list.type}" target="_blank" title="有告警(已查看)">
 							                   	查看详情
 							                  </a>
-							                </c:if>
+							                </c:if> -->
+							                <a href="${ctx}/warningTwoAnHeng.html?orderId=${list.id }&type=${list.type}" target="_blank" title="有告警">              
+							                 	查看详情
+							                </a>
 						                </c:if>
 						                <c:if test="${list.status==1}">
 						                 <a href="${ctx}/warningTwoAnHeng.html?orderId=${list.id }&type=${list.type}" target="_blank">
