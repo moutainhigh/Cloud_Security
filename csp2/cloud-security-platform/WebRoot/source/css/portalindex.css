@@ -133,7 +133,8 @@
 }
 .safe01 .Divlist .list > li > ol > li{
 	height: 46px;
-    border-bottom: #e3e3e3 solid 1px;
+	border-top: #e3e3e3 solid 1px;
+	border-bottom:none;
 }
 .bannerbtn{
 	position:absolute;
@@ -713,6 +714,16 @@ background:url(../images/portal/Xzq.png) no-repeat #fff;
 	background-color:#2499fb;
 	border-top:none;
 }
+
+.detalis-head .Divlist .list li ol li{ 
+	background-color:#2499fb;
+	border-top: #e3e3e3 solid 1px;
+	/*border-top:none;
+	border-top-color:rgba(255,255,255,.5);
+    border-top-width:1px;*/
+	border-bottom:none;
+}
+
 .dataCent{
 	width: 1114px;
 	margin:0 auto;
