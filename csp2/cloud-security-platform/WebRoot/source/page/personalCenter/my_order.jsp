@@ -186,7 +186,7 @@ function optOrder(orderId,status){
 							<a href="#" class="hbule">手机APP</a>
 							<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
 						</span>
-						<span class="fl"><a href="${ctx}/aider.html">帮助</a></span>
+						<span class="fl"><a href="${ctx}/aider.html">关于我们</a></span>
 						
 					</div>
 					<div class="safer fr">
@@ -211,7 +211,7 @@ function optOrder(orderId,status){
                 <dl>
                 	<dt>交易管理</dt>
                     <dd><a href="${ctx}/orderTrackInit.html" class="active">我的订单</a></dd>
-                    <dd><a href="#">我的优惠劵</a></dd>
+                    <!-- <dd><a href="#">我的优惠劵</a></dd> -->
                     <dt>个人信息管理</dt>
                     <dd><a href="${ctx}/userDataUI.html">个人资料</a></dd>
                     <dd style="border:none;"><a href="${ctx }/userAssetsUI.html">我的资产</a></dd>
