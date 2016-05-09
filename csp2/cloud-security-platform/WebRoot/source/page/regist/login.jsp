@@ -57,8 +57,7 @@
                 	<ul>
                     	<li class="clearfix">
                         	<div class="list fl">
-                            	<input type="text" class="text prompttext" id="login_name" name="name" value="${requestScope.name }" onblur="checkName();"/>
-                                <p class="promp">用户名/手机号</p>
+                            	<input type="text" class="text prompttext" id="login_name" name="name" placeholder="用户名/手机号" value="${requestScope.name }" onblur="checkName();"/>
                                 <i id="login_name_flag" class="error" style="display:none"></i>
                             </div>
                             <div class="prompt fl" id="login_name_prompt"><b></b></div>
