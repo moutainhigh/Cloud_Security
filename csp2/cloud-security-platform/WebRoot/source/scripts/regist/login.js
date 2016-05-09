@@ -169,7 +169,9 @@ function loginSubmit(){
 		            		$("#login_password_flag").show();
 		            		$("#login_password_prompt").html("<b></b>");
 		            		$("#login_password_prompt").fadeOut();
-							window.location.href="selfHelpOrderInit.html";
+							var serviceId = data.serviceId;
+							var indexPage = data.indexPage;
+							window.location.href="selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
 							break;
 						case 6:
 		            		$("#login_name_flag").attr("class","right");
@@ -184,8 +186,8 @@ function loginSubmit(){
 		            		$("#login_password_flag").show();
 		            		$("#login_password_prompt").html("<b></b>");
 		            		$("#login_password_prompt").fadeOut();
-							map.put("apiId", apiId);
-							map.put("indexPage", indexPage);
+//							map.put("apiId", apiId);
+//							map.put("indexPage", indexPage);
 							var  apiId = data.apiId;
 							var indexPage = data.indexPage;
 							window.location.href="selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
