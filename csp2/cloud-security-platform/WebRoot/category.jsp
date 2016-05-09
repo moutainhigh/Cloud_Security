@@ -22,7 +22,12 @@
 					<ol id="anquanbang_ol">
 						<c:forEach var="list" items="${servList}" varStatus="status">
 							<c:if test="${list.factory == 1}">
-								<li>
+							<c:if test="${status.count == 1}">
+							  <li style="border: none;">
+							</c:if>
+							<c:if test="${status.count != 1}">
+							  <li>
+							</c:if>
 									<a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">${list.name }</a>
 								</li>
 							</c:if>
@@ -32,8 +37,13 @@
 				<li>
 					<a href="#">安全能力API</a>
 					<ol id="anquanbangAPI_ol">
-						<c:forEach var="apiList" items="${servAPIList}">
-							<li>
+						<c:forEach var="apiList" items="${servAPIList}"  varStatus="status">
+							<c:if test="${status.count == 1}">
+							  <li style="border: none;">
+							</c:if>
+							<c:if test="${status.count != 1}">
+							  <li>
+							</c:if>
 								<a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${apiList.id }&indexPage=2">${apiList.name }</a>
 							</li>
 						</c:forEach>
