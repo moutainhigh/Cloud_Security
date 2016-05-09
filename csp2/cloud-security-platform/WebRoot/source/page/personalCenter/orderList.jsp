@@ -61,7 +61,7 @@
                             </td>
                             <td class="order" valign="top">
                             	 <p style="width:160px; height:auto; line-height:24px; margin-top:33px;" class="stylep">0.00</p>
-                        		<p style="width:160px;height:auto;"><em>(使用优惠劵999.00)</em></p>
+                        		<!-- <p style="width:160px;height:auto;"><em>(使用优惠劵999.00)</em></p> -->
                             </td>
                              <td class="order" valign="top">
                             	<p style="width:98px; line-height:24px;margin-top:33px; height:auto;" class="stylep">
