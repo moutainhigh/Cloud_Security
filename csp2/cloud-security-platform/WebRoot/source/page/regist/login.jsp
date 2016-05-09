@@ -118,8 +118,8 @@
                     <li>
                     	<h2>关于安全帮</h2>
                         <dl>
-                        	<dd><a href="#">了解安全帮</a></dd>
-                            <dd><a href="#">加入安全帮</a></dd>
+                        	<dd><a href="${ctx}/knowUs.html">了解安全帮</a></dd>
+                            <dd><a href="${ctx}/joinUs.html">加入安全帮</a></dd>
                             <dd><a href="#">联系我们</a></dd>
                        </dl>
                     </li>
@@ -143,12 +143,10 @@
 			</div>
 		</div>
 		<div class="foot">
-			<p>Label@1234567890北京电信研究院<br>
-				www.anquanbang.net
-			</p>
+			<p>版权所有Copyright © 2015 中国电信股份有限公司北京研究院京ICP备12019458号-10</p>
 		</div>
 	</div>
--执行效果
+<!---执行效果-->
 <div class="weixinshow popBoxhide" id="weixin">
 	<i class="close chide"></i>
     <div class="Pophead">
