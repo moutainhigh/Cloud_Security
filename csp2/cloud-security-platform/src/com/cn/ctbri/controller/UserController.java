@@ -628,7 +628,10 @@ public class UserController{
 	@RequestMapping(value="orderList.html")
 	public String orderList(HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
-		List orderList = orderService.findOrderByUserId(globle_user.getId()).subList(0, 2);
+		List orderList = orderService.findOrderByUserId(globle_user.getId());
+		if(orderList.size()>2){
+			orderList = orderList.subList(0, 2);
+		}
         //根据orderId查询task表判断告警是否查看过
         if(orderList != null && orderList.size() > 0){
         	//个人中心显示前两条订单信息
