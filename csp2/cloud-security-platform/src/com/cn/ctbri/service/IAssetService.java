@@ -90,6 +90,9 @@ public interface IAssetService {
 	PageBean<Asset> queryByPage(Asset criteria, int pageCode);
 	
 	List<Asset> findByTask(Task task);
+	
+	Asset findByOrderAssetId(int orderAssetId);
+
 
 	
 }

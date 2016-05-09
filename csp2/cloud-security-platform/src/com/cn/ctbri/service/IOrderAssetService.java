@@ -64,5 +64,9 @@ public interface IOrderAssetService {
 
 	List<OrderAsset> findOrderAssetId(Map<String, Object> param);
 
+	//add by tangxr 2016-5-5
+	//查询订单的资产 
+	List findAssetsByOrderId(String orderId);
+
 	
 }

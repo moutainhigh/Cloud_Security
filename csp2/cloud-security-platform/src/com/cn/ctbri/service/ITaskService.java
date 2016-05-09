@@ -58,4 +58,7 @@ public interface ITaskService {
 	List<Task> findFinishByOrderId(Map<String, Object> paramMap);
 
 	int findissueCount(String orderId);
+
+	//查询任务进度
+	List<Task> findProgssByOrderId(Map<String, Object> pMap);
 }

@@ -36,7 +36,7 @@ public interface IOrderService {
      *       @time 2015-1-21
      * 返回值    ：  List
      */
-    List<Order> findOrderByUserId(int userId);
+    List findOrderByUserId(int userId);
     /**
      * 功能描述：组合查询订单追踪
      *       @time 2015-1-15
