@@ -478,7 +478,7 @@
 			}
 		});
 		$('.promptext').blur(function(){
-			if($(this).val()==''){
+			if($.trim($(this).val())==''){
 				$(this).val('输入资产名称或地址');
 				$(this).css('color','#929292');	
 			}
