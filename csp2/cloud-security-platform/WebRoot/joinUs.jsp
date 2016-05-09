@@ -66,7 +66,7 @@ margin: 0 18%;
 					<div class="safer fr">
 						<!-- 如果已经登录则显示用户名，否则需要登录 -->
 				         <c:if test="${sessionScope.globle_user!=null }">
-					        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
+					        <a href="${ctx}/userCenterUI.html">${sessionScope.globle_user.name }</a>
 					        <em>|</em>
 					        <a href="${ctx}/exit.html">退出</a>
 				         </c:if>

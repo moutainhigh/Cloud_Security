@@ -28,7 +28,7 @@
 			<!--头部-->
 			<div class="head">
 				<div class="headBox">
-					<div class="safeL fl" style="width:285px; margin-right:20%">
+					<div class="safeL fl" style="width:260px; margin-right:13%">
 						<img src="${ctx}/source/images/anquanbang_white_logo.png" alt="" style="position:relative; top:4px;"/>
                         <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px; font-weight:normal;">个人中心</strong>
 					</div>
@@ -49,7 +49,7 @@
 					<div class="safer fr">
 						<!-- 如果已经登录则显示用户名，否则需要登录 -->
 				         <c:if test="${sessionScope.globle_user!=null }">
-					        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
+					        <a href="${ctx}/userCenterUI.html">${sessionScope.globle_user.name }</a>
 					        <em>|</em>
 					        <a href="${ctx}/exit.html">退出</a>
 				         </c:if>
