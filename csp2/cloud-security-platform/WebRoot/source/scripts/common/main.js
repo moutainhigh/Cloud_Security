@@ -2,15 +2,17 @@ $(document).ready(function(){
 		//菜单下拉效果	
 	$('.listJs').hover(function(){
 		$(this).children('a').find('i').addClass('active');
-		$('.listl').hide();
-		$('.listl').stop().slideDown("fast");
+		$('.listl').stop().hide();
+		$('.listl').slideDown("fast");
+		//$('.listl').stop().slideDown("fast");
 	},function(){
 		$(this).children('a').find('i').removeClass('active');
 		$('.listl').stop().slideUp("fast");
 	})
 
 	$('.listl li').hover(function(){
-		$(this).children('ol').stop().show(400);
+		$(this).children('ol').stop().hide();
+		$(this).children('ol').show(400);
 	},function(){
 		$(this).children('ol').stop().hide(400);
 	})
