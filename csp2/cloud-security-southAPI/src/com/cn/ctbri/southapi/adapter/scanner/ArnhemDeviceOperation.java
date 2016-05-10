@@ -1,6 +1,7 @@
-package com.cn.ctbri.southapi.adpater.manager;
+package com.cn.ctbri.southapi.adapter.scanner;
 
 import com.cn.ctbri.southapi.adpater.config.ScannerTaskUniParam;
+import com.cn.ctbri.southapi.adpater.manager.CommonDeviceOperation;
 
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
@@ -28,9 +29,8 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
 
-public class ArnhemDeviceOperation {
+public class ArnhemDeviceOperation extends CommonDeviceOperation {
 	private String arnhemServerWebrootUrl = "";
 	private String username = "";
 	private String password = "";
@@ -39,36 +39,15 @@ public class ArnhemDeviceOperation {
 	}
 	
 
+
 	/**
-	 * 功能描述： 获取安全套接层上下文对象
+	 * 功能描述：空字符串转化方法
+	 * 参数描述:String str 要转化的字符
 	 *		 @time 2015-01-05
 	 */
-	private  SSLContext getSSLContext() {
-		//创建认证管理器
-    	TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
-    	    public java.security.cert.X509Certificate[] getAcceptedIssuers(){return null;}
-			public void checkClientTrusted(
-					java.security.cert.X509Certificate[] arg0, String arg1)
-					throws CertificateException {
-			}
-			public void checkServerTrusted(
-					java.security.cert.X509Certificate[] arg0, String arg1)
-					throws CertificateException {
-			}
-    	}};
-    	try {
-    		//创建安全传输层对象
-    	    SSLContext sc = SSLContext.getInstance("SSL");
-    	    //初始化参数
-    	    sc.init(null, trustAllCerts, new SecureRandom());
-    	    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-    	    return sc;
-    	} catch (Exception e) {
-    	    e.printStackTrace();
-    	}
-    	return null;
+	private  String nullFilter(String str) {
+    	return str==null ? "" : str;
     }
-
     
 	/**
 	 * 序号：4.1
@@ -115,34 +94,6 @@ public class ArnhemDeviceOperation {
 	   	}
 	}
 	
-	/**
-	 * 功能描述：空字符串转化方法
-	 * 参数描述:String str 要转化的字符
-	 *		 @time 2015-01-05
-	 */
-	private  String nullFilter(String str) {
-    	return str==null ? "" : str;
-    }
-
-	
-	/**
-	 * 功能描述：安全通信配置设置
-	 * 参数描述:String url 路径,ClientConfig config 配置对象
-	 *		 @time 2015-01-05
-	 */
-	private  void buildConfig(String url,ClientConfig config) {
-		if(url.startsWith("https")) {
-        	SSLContext ctx = getSSLContext();
-        	config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
-        		     new HostnameVerifier() {
-        		         public boolean verify( String s, SSLSession sslSession ) {
-        		             return true;
-        		         }
-        		     }, ctx
-        		 ));
-        }
-	}
-    
 	
 	/**
 	 * 功能描述：post方法请求(填充xml)

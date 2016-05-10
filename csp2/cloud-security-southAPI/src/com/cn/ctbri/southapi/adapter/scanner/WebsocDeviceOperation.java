@@ -1,4 +1,4 @@
-package com.cn.ctbri.southapi.adpater.manager;
+package com.cn.ctbri.southapi.adapter.scanner;
 
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
