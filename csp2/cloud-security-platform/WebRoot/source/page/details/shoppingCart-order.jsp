@@ -88,13 +88,14 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            
+                                   	<c:forEach var="shopCar" items="${shopCarList}">
                         	<table class="test-table" width="100%">
                         	<tbody>
                             	
-                                   	<c:forEach var="shopCar" items="${shopCarList}">
                                      	<tr height="40">
                                      		<td width="20%"><label >
-                                            <input type="checkbox" class="ck" style="display:none" value="${shopCar.orderId}" isApi="0" name="check_name"><i class="chck"></i>
+                                            <input type="checkbox" class="ck" style="display:none" value="${shopCar.orderId}" isApi="0" name="check_name"><i class="chck" style="margin-right:30px;"></i>
                                             </label><a href="${ctx}/selfHelpOrderInit.html?serviceId=${shopCar.serviceId}&indexPage=1" target="_blank">${shopCar.serverName}</a>
                                             </td>
                                     <td width="36%"><p style="padding-left:40px;">
@@ -103,12 +104,10 @@
                                     <td width="8%"><em class="price">${shopCar.price}</em></td>
                                     <td width="9%"><a href="#" onclick="delShopCar('${shopCar.orderId}');">删除</a></td>
                                   </tr>
-                                    </c:forEach>
-                              
-                                 
+                                  
                             </tbody>
                         </table>
-                      
+                        </c:forEach>
                         </div>
                          </c:if>
                         <c:if test="${not empty apiList}">
@@ -130,12 +129,13 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            	<c:forEach var="shopAPI" items="${apiList}">
                         	<table class="test-table" width="100%">
                         	<tbody>
-                        		<c:forEach var="shopAPI" items="${apiList}">
+                        	
                             	 <tr height="40">
                                  	<td width="20%"><label >
-                                            <input type="checkbox" class="ck" style="display:none" value="${shopAPI.orderId}" isApi="1" name="check_name"><i class="chck"></i>
+                                            <input type="checkbox" class="ck" style="display:none" value="${shopAPI.orderId}" isApi="1" name="check_name"><i class="chck" style="margin-right:30px;"></i>
                                          
                                             </label>
                                           <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${shopAPI.serviceId}&indexPage=2" target="_blank">${shopAPI.serverName}</a></td>
@@ -144,12 +144,10 @@
                                     <td width="8%"><em class="price">${shopAPI.price}</em></td>
                                     <td width="9%"><a href="#" onclick="delShopCar('${shopAPI.orderId}');">删除</a></td>
                                  </tr>
-                                  </c:forEach>
-                                   	
-                                 
+                                
                             </tbody>
                         </table>
-                       
+                         </c:forEach>
                         </div>
                          </c:if>
                         

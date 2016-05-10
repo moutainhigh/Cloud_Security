@@ -20,6 +20,12 @@
 <script src="${ctx}/source/scripts/order/details.js"></script>
 <script src="${ctx}/source/scripts/order/shopCart.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
+<style>
+	.order .settlement-content .listone .test-table td, .order .ordertab td{text-align:center}
+	.order .settlement-content .listone .test-table td{
+		font-size:14px;
+	}
+</style>
 </head>
 
 <body>
@@ -39,16 +45,14 @@
 						<!-- 商品分类 start -->
 						<c:import url="/category.html"></c:import>
 						<!-- 商品分类 end -->
-						
-						<span class="fl ask">
-							<a href="#" class="hbule">手机APP</a>
+						<span class="fl"><a href="#" class="hbule">手机APP</a>
 							<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
 						</span>
-						<span class="fl"><a href="${ctx}/aider.html">关于我们</a></span>
+						<a href="${ctx}/aider.html">关于我们</a></span>
 						
 					</div>
 					<div class="safer fr">
-						<!-- 如果已经登录则显示用户名，否则需要登录 -->
+						  <!-- 如果已经登录则显示用户名，否则需要登录 -->
 				         <c:if test="${sessionScope.globle_user!=null }">
 					        <a href="${ctx}/userCenterUI.html">${sessionScope.globle_user.name }</a>
 					        <em>|</em>
@@ -62,6 +66,8 @@
 					</div>
 				</div>
 			</div>
+			
+
 		</div>
 		
 		<input type="hidden" id="assetIds" value="${assetIds }"/>
@@ -75,11 +81,11 @@
 		<input type="hidden" id="num" value="${num }"/>
 		<input type="hidden" id="apiId" value="${apiId }"/>
 		<input type="hidden" id="type" value="${type }"/>
-		<div class="dataCent seetlentBox">
+		<div class="dataCent seetlentBox order">
 			<div class="seetT">
 				<h2>填写并核对订单信息</h2>
-				<div class="step">
-					<!--<p class="step_top">
+			<div class="step">
+						<!--<p class="step_top">
 						<span class="sl">
 							<i></i>
 						</span>
@@ -92,19 +98,18 @@
                     	<em class="sone">1购物车</em>
                         <em class="stwo">2填写核对信息</em>
                         <em class="sthree">3成功提交订单</em>
-                    </p> -->
-
+                    </p>-->
 				</div>
 			</div>
-            <div class="settlement-content">
+            <div class="settlement-content" style="padding: 20px 2px;">
             	<ul class="settlementList">
                 	<li class="listone">
                     	<h3>联系人信息</h3>
-                        <div class="tabox">
-                        	<table class="test-table">
+                        <div class="tabox" style="margin-left: 0px; width:1108px;">
+                        	<table class="test-table mrn" width="100%">
                         	<tbody>
                             	 <tr height="40">
-                                 	<td width="18%" style="font-size:14px;">
+                                 	<td width="18%" style="font-size:14px; padding-left:30px;">
                                     	姓名：<i>${user.name }</i>
                                     </td>
                                     <td width="24%" style="font-size:14px;">
@@ -113,7 +118,7 @@
                                     <td width="40%" style="font-size:14px;">
                                     	邮箱：<i>${user.email }</i>
                                     </td>
-                                    <!-- <td width="20%" style="font-size:14px;"><span><b></b>新增联系人</span></td> -->
+                                      <!--  <td width="20%" style="font-size:14px;"><span><b></b>新增联系人</span></td>-->
                                  </tr>
                                  
                             </tbody>
@@ -132,90 +137,78 @@
                         <div class="hr"></div>
                     </li>
                     <li class="listone">
-                    	<h3>订单详情</h3>
-                    	 <c:if test="${not empty shopList}">
+                    	<h3>全部订单</h3>
+                    	 	 <c:if test="${not empty shopList}">
                         <div class="tabox" style=" margin-left:0px; width:1108px; padding:0;padding-top:10px">
-                        
+                        <style>
+							.order .settlement-content .listone .test-table td, .order .ordertab td{text-align:center}
+							.order .settlement-content .listone .test-table td{
+								font-size:14px;
+							}
+                        </style>
                         	<table class="ordertab" width="100%">
                             	<tbody>
-                                	<tr>
-                                    	<td width="18%">
-                                        	
-                                            <!--<input type="checkbox" style="display:none">-->
-                                            <i class="check-all"></i> 网站安全帮
-                                      </td>
+                                	<tr align="center">
+                                    	<td width="20%">网站安全帮</td>
+                                        <td width="60%">资产内容</td>
+                                        <td width="20%">价格</td>
                                        
-                                        <td width="24%">资产内容</td>
-                                        <td width="6%">价格</td>
-                                      
                                     </tr>
                                 </tbody>
                             </table>
+                            <c:forEach var="shopCar" items="${shopList}">
                         	<table class="test-table" width="100%">
                         	<tbody>
-                        	 	<c:forEach var="shopCar" items="${shopList}">
                             	 <tr height="40">
-                                 	<td width="20%"><label >
-                                       
-                                            </label>
-                                              <input type="hidden" name="orderId" value="${shopCar.orderId}"/>
-                                         <a href="${ctx}/selfHelpOrderInit.html?serviceId=${shopCar.serviceId}&indexPage=1" target="_blank">${shopCar.serverName}</a></td>
-                                    <td width="36%"><p style="padding-left:40px;">${shopCar.astName}</p></td>
-                                    <td width="8%"><em class="price">${shopCar.price}</em></td>
-                                 
+                                 	<td width="20%" style="padding-left:60px;">
+                                 	  <input type="hidden" name="orderId" value="${shopCar.orderId}"/>
+                                         <a href="${ctx}/selfHelpOrderInit.html?serviceId=${shopCar.serviceId}&indexPage=1" target="_blank">${shopCar.serverName}</a>
+                                         </td>
+                                    <td width="60%"><p>${shopCar.astName}</p></td>
+                                    <td width="20%"><em class="price">${shopCar.price}</em></td>
+                                    
                                  </tr>
-                                 </c:forEach>
+                                 
                             </tbody>
                         </table>
-                          
+                        </c:forEach>
                         </div>
                         </c:if>
-                         <c:if test="${not empty shopAPIList}">
+                       <c:if test="${not empty shopAPIList}">
                         <div class="tabox" style=" margin-left:0px; width:1108px; padding:0;padding-top:10px">
                         
                         	<table class="ordertab" width="100%">
                             	<tbody>
                                 	<tr>
-                                    	<td width="18%">
-                                        	
-                                            <!--<input type="checkbox" style="display:none">-->
-                                            <i id="check" class="check-all"></i>  安全能力API
-                                        </td>
-                                       
-                                        <td width="24%">数量</td>
-                                        <td width="6%">价格</td>
-                                      
+                                    	<td width="20%">安全能力API</td>
+                                        <td width="60%">数量</td>
+                                        <td width="20%">价格</td>
+                                        
                                     </tr>
                                 </tbody>
                             </table>
+                             <c:forEach var="shopAPI" items="${shopAPIList}">
                         	<table class="test-table" width="100%">
                                 <tbody>
-                                <c:forEach var="shopAPI" items="${shopAPIList}">
                                      <tr height="40">
-                                        <td width="20%"><label >
-                                          <input type="hidden" name="orderId" value="${shopAPI.orderId}"/>
-                                             </label>
-                                             <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${shopAPI.serviceId}&indexPage=2" target="_blank">${shopAPI.serverName}</a></td>
-                                        <td width="36%"><p style="padding-left:53px;">${shopAPI.astName}</p></td>
-                                        <td width="8%"><em class="price">${shopAPI.price}</em></td>
-                                   
+                                        <td width="20%" style="padding-left:60px;">
+                                               <input type="hidden" name="orderId" value="${shopAPI.orderId}"/>
+                                       <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${shopAPI.serviceId}&indexPage=2" target="_blank">${shopAPI.serverName}</a>
+                                       </td>
+                                        <td width="60%"><p>${shopAPI.astName}</p></td>
+                                        <td width="20%"><em class="price">${shopAPI.price}</em></td>
+                                        
                                      </tr>
-                                  </c:forEach>   
+                                     
                                 </tbody>
                             </table>
-                           
+                           </c:forEach>
                         </div>
-                        </c:if>
-                        <!--注意一下注释去域切勿删除-->
-                        	<div class="settle" style="display:none">
-                                <span>已选择<b>0</b>个订单</span><span>总价 <em style="position:relative; top:-2px;">¥<i id="priceTotal" style="font-size: 26px;
-    font-family: Arial Regular;">00.00</i></em></span><button type="button" style="font-family:'微软雅黑'">去结算</button>
-                            </div>
-                       <!--注意一上注释去域切勿删除-->
+                      </c:if>   
                         
                         <div class="hr" style="margin-top:30px;"></div>
                     </li>
-                    <!-- 
+                      <!-- 
                      <li class="listone">
                     	<h3>发票信息</h3>
                        <div class="clickBox" style="margin-top:20px; margin-left:50px;">
@@ -266,13 +259,13 @@
             	<li>
                 	<i>${orderNum}</i>个订单，总额：<span>${shopCount}</span>
                 </li>
-                <!--  
+                   <!--  
                 <li>
                 	优惠劵：<span>￥0.00</span>
                 </li>
                 -->
                 <li>
-                	应付总额：<span>￥${shopCount}</span>
+                                          应付总额：<span>¥${shopCount}</span>
                 </li>
             </ul>
 			<div class="SubmitBox">
@@ -292,7 +285,6 @@
 				   <a href="${ctx}/index.html">
 		               <img src="${ctx}/source/images/portal/new-footer-logo.png" alt="" />
                    </a>
-                	<!--修改-->
 				</div>
 				<ol class="footr clearfix fr">
 					<li>
