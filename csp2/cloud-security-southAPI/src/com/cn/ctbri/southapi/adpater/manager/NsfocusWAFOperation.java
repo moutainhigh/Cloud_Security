@@ -349,7 +349,8 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	public static void main(String[] args) {
 		NsfocusWAFOperation operation = new NsfocusWAFOperation();
 		try {
-			operation.getWafConfig();
+			WafConfig wafConf = operation.getWafConfig();
+			System.out.println("haha="+wafConf.getWafDeviceGroups().get(0).getWAFDeviceList().get(0).getAPIAddr());
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
