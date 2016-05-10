@@ -37,7 +37,7 @@
 							                </c:if>   
                                          </h2></div>
                                     	<c:forEach var="asset" items="${list.assetList}" varStatus="status">
-                                        	<div class="listDiv"><p style="text-align: left; margin:0;">资产服务：${asset.name}</p></div>
+                                        	<div class="listDiv"><p style="text-align: left; margin:0;">资产名称：${asset.name}</p></div>
                                         </c:forEach>
                                     </div>
                                 </div>
@@ -93,7 +93,7 @@
 						                 </a>
 						                </c:if>
 						                <c:if test="${list.status==1&&list.isAPI==1}">
-						                 <a href="" title="已完成">
+						                 <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${list.serviceId }&indexPage=2" title="已完成">
 						                 	查看详情
 						                 </a>
 						                </c:if>
