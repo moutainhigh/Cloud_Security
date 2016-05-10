@@ -33,11 +33,11 @@ $(function(){
 		     url: "shopSettlement.html?orderIds="+orderIds,
 		     dataType: "json", 
 		     success: function(data) {
-			    	 if(data.orderStatus == true){
+			    	 if(data.sucess==true&&data.orderStatus == true){
 	    		    			 alert("完成下单，去订单跟踪查看吧~~"); 
 	    		    			 window.location.href = "orderTrackInit.html";
 		    		    	 }else{
-		    		    		alert("订单有异常,请重新下单!");
+		    		    		alert("系统异常，暂时不能购买，请稍后购买~~!");
 		    		     		 return;
 		    		    	 }
 			    }, 
