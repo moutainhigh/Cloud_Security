@@ -1288,6 +1288,13 @@ padding: 20px 30px 0px 0px;
 	background-color: #e4f3ff;
 	margin-top:10px; 
 }
+
+.order .settlement-content .listone .mrn i{ 
+	width:auto; 
+	height:auto; 
+	background:none;
+	
+}
 .settle{
 	height: 50px;
 	border: #f3f3f3 solid 1px;
