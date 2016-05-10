@@ -222,7 +222,7 @@ function searchCombine(){
 对准下方二维码即可。
 		</p>
            <div class="weinImg" style="text-align:center;">
-           	<img src="${ctx}/source/images/portal/weixin.png" alt="">
+           	<img src="${ctx}/source/images/portal/weixin.jpg" alt="">
            </div> 
     </div>
 
