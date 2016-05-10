@@ -1,8 +1,16 @@
 package com.cn.ctbri.southapi.adpater.manager;
 
+import com.cn.ctbri.southapi.adpater.config.waf.nsfocus.Syslog;
+import com.cn.ctbri.southapi.adpater.config.waf.nsfocus.Trans;
+import com.cn.ctbri.southapi.adpater.config.waf.nsfocus.WafConfig;
+import com.cn.ctbri.southapi.adpater.config.waf.nsfocus.WafDevice;
+import com.cn.ctbri.southapi.adpater.config.waf.nsfocus.WafDeviceGroup;
+import com.cn.ctbri.southapi.adpater.config.waf.nsfocus.WafLog;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ws.rs.core.Cookie;
@@ -12,6 +20,7 @@ import javax.ws.rs.core.NewCookie;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import com.sun.jersey.api.client.Client;
@@ -20,6 +29,8 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import com.sun.org.apache.bcel.internal.generic.NEW;
+import com.thoughtworks.xstream.XStream;
 
 
 public class NsfocusWAFOperation extends CommonDeviceOperation {
@@ -75,11 +86,218 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
         String response = service.type(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_JSON).get(String.class);
         return response;
     }
-	public void getWafConfig() throws DocumentException {
+	public WafConfig getWafConfig() throws DocumentException {
+		WafConfig wafConfig = new WafConfig();
 		SAXReader reader = new SAXReader();
-		Document document = reader.read("");
+		Document document = reader.read("./conf/WafConfig.xml");
+		List<?> list = document.selectNodes("/WAF_CONFIG/WAFDeviceManage/WAFDeviceGroup");
+		List<WafDeviceGroup> wafDeviceGroups = new ArrayList<WafDeviceGroup>();
+		Iterator<?> iterator = list.iterator();
+		while (iterator.hasNext()) {
+			Element elementWAFDeviceGroup = (Element) iterator.next();
+			WafDeviceGroup wafDeviceGroup = new WafDeviceGroup();
+			for(Iterator<?> it = elementWAFDeviceGroup.elementIterator();it.hasNext();){
+				Element element = (Element) it.next();
+				if ("ResourceID".equalsIgnoreCase(element.getName())) {
+					if ( null == element.getTextTrim() || "".equals(element.getTextTrim())){ 	
+            		  	System.err.println("Config Error:  is null!!!");
+            		  	continue;
+					}else {
+						wafDeviceGroup.setResourceID(element.getTextTrim());
+						System.out.println(element.getTextTrim());
+					}
+				}
+				if ("ResourceURI".equalsIgnoreCase(element.getName())) {
+					if ( null == element.getTextTrim() || "".equals(element.getTextTrim())) {
+	           		  	System.err.println("Config Error:  is null!!!");
+            		  	continue;
+					} else {
+						wafDeviceGroup.setResourceURI(element.getTextTrim());
+						System.out.println(wafDeviceGroup.getResourceURI());
+					}
+				}
+				if ("DeployMode".equalsIgnoreCase(element.getName())) {
+					if ( null == element.getTextTrim() || "".equals(element.getTextTrim())) {
+	           		  	System.err.println("Config Error:  is null!!!");
+            		  	continue;
+					} else {
+						wafDeviceGroup.setDeployMode(element.getTextTrim());
+						System.out.println(wafDeviceGroup.getDeployMode());
+					}
+				}
+				List<WafDevice> wafDevices = new ArrayList<WafDevice>();
+				if ("WAFDeviceList".equalsIgnoreCase(element.getName())) {
+					WafDevice wafDevice = new WafDevice();
+					Document wafDeviceDocument = DocumentHelper.parseText(element.asXML());	
+					List<?> wafDeviceRootList = wafDeviceDocument.selectNodes("/WAFDeviceList/WAFDevice");
+					Iterator<?> wafDeviceListIterator = wafDeviceRootList.iterator();
+					while (wafDeviceListIterator.hasNext()) {
+						Element wafDeviceElement  = (Element) wafDeviceListIterator.next();
+						for(Iterator<?> wafDeviceIterator = wafDeviceElement.elementIterator();wafDeviceIterator.hasNext();){
+							Element wafDevParam = (Element) wafDeviceIterator.next();
+							if ("WAFDevID".equalsIgnoreCase(wafDevParam.getName())) {
+								if ( null == wafDevParam.getTextTrim() || "".equals(wafDevParam.getTextTrim())) {
+				           		  	System.err.println("Config Error: WAFDevID  is null!!!");
+			            		  	continue;
+								} else {
+									wafDevice.setWAFDevID(wafDevParam.getTextTrim());
+									System.out.println(wafDevParam.getTextTrim());
+								}
+							}
+							if ("WAFFactory".equalsIgnoreCase(wafDevParam.getName())) {
+								if ( null == wafDevParam.getTextTrim() || "".equals(wafDevParam.getTextTrim())) {
+				           		  	System.err.println("Config Error: WAFFactory  is null!!!");
+			            		  	continue;
+								} else {
+									wafDevice.setWAFFactory(wafDevParam.getTextTrim());
+									System.out.println(wafDevParam.getTextTrim());
+								}								
+							}
+							if ("WAFFactoryName".equalsIgnoreCase(wafDevParam.getName())) {
+								if ( null == wafDevParam.getTextTrim() || "".equals(wafDevParam.getTextTrim())) {
+				           		  	System.err.println("Config Error: WAFFactory  is null!!!");
+			            		  	continue;
+								} else {
+									wafDevice.setWAFFactoryName(wafDevParam.getTextTrim());
+									System.out.println(wafDevParam.getTextTrim());
+								}
+							}
+							if ("WAFDevPhyIP".equalsIgnoreCase(wafDevParam.getName())) {
+								if ( null == wafDevParam.getTextTrim() || "".equals(wafDevParam.getTextTrim())) {
+				           		  	System.err.println("Config Error: WAFDevPhyIP  is null!!!");
+			            		  	continue;
+								} else {
+									wafDevice.setWAFDevPhyIP(wafDevParam.getTextTrim());
+									System.out.println(wafDevParam.getTextTrim());
+								}
+							}
+							if ("WAFDevAPI".equalsIgnoreCase(wafDevParam.getName())) {
+								for(Element apiElement:(List<Element>)wafDevParam.elements()){
+									if ("APIAddr".equalsIgnoreCase(apiElement.getName())) {
+										if (null == apiElement.getTextTrim()||"".equals(apiElement.getTextTrim())) {
+											System.err.println("Config Error:APIAddr is null!!!");
+											continue;
+										} else {
+											wafDevice.setAPIAddr(apiElement.getTextTrim());
+											System.out.println(wafDevice.getAPIAddr());
+										}
+									}else if ("APIKey".equalsIgnoreCase(apiElement.getName())) {
+										if (null == apiElement.getTextTrim()||"".equals(apiElement.getTextTrim())) {
+											System.err.println("Config Error:APIKey is null!!!");
+											continue;
+										} else {
+											wafDevice.setAPIKey(apiElement.getTextTrim());
+											System.out.println(wafDevice.getAPIKey());
+										}
+									}else if ("APIValue".equalsIgnoreCase(apiElement.getName())) {
+										if (null == apiElement.getTextTrim()||"".equals(apiElement.getTextTrim())) {
+											System.err.println("Config Error:APIValue is null!!!");
+											continue;
+										} else {
+											wafDevice.setAPIValue(apiElement.getTextTrim());
+											System.out.println(wafDevice.getAPIValue());
+										}
+									}else if ("APIUserName".equalsIgnoreCase(apiElement.getName())) {
+										if (null == apiElement.getTextTrim()||"".equals(apiElement.getTextTrim())) {
+											System.err.println("Config Error:APIValue is null!!!");
+											continue;
+										} else {
+											wafDevice.setAPIUserName(apiElement.getTextTrim());
+											System.out.println(wafDevice.getAPIUserName());
+										}
+									}else if ("APIPwd".equalsIgnoreCase(apiElement.getName())) {
+										if (null == apiElement.getTextTrim()||"".equals(apiElement.getTextTrim())) {
+											System.err.println("Config Error:APIPassword is null!!!");
+											continue;
+										} else {
+											wafDevice.setAPIPwd(apiElement.getTextTrim());
+											System.out.println(wafDevice.getAPIPwd());
+										}
+									}
+									
+								}
+							}else if ("WAFDevSyslog".equalsIgnoreCase(wafDevParam.getName())) {
+								wafDevice.setIdentifyType(wafDevParam.attributeValue("IdentifyType"));
+								wafDevice.setSyslogVer(wafDevParam.attributeValue("SyslogVer"));
+								wafDevice.setSyslogCode(wafDevParam.attributeValue("SyslogCode"));
+								if (null==wafDevParam.element("WAFDevTag")) {
+									System.err.println("Config Error:WAFDevTag is not exist!!!");
+								}else{
+									wafDevice.setWAFDevTag(wafDevParam.elementText("WAFDevTag"));
+									System.out.println(wafDevice.getWAFDevTag());
+								}
+							}
+						}
+					}
+					wafDevices.add(wafDevice);
+					
+				}
+			wafDeviceGroup.setWAFDeviceList(wafDevices);
+			wafDeviceGroups.add(wafDeviceGroup);
+			}
+			wafConfig.setWafDeviceGroups(wafDeviceGroups);
+		}
+		List<?> list2 = document.selectNodes("/WAF_CONFIG/SyslogGroup");
+		Iterator<?> iterator2 = list2.iterator();
+		List<Syslog> syslogList = new ArrayList<Syslog>();
+		while (iterator2.hasNext()) {
+			Element syslogGroupElement = (Element) iterator2.next();
+			for(Iterator<?> syslogGroupIterator = syslogGroupElement.elementIterator();syslogGroupIterator.hasNext();){
+				Element syslogElement =(Element)syslogGroupIterator.next();
+				Syslog syslog = new Syslog();
+				syslog.setSyslogVer(syslogElement.attributeValue("Ver"));
+				syslog.setRegexTag(syslogElement.attributeValue("RegexTag"));
+				List<WafLog> waflogList = new ArrayList<WafLog>();
+				for(Iterator<?> syslogIterator = syslogElement.elementIterator();syslogIterator.hasNext();){
+					Element waflogeElement = (Element) syslogIterator.next();
+					WafLog wafLog =new WafLog();
+					wafLog.setItem(waflogeElement.attributeValue("item"));
+					wafLog.setTag(waflogeElement.attributeValue("tag"));
+					Element dboptElement = waflogeElement.element("dbopt");
+					wafLog.setDboptSql(dboptElement.attributeValue("sql"));
+					Element matchElement = waflogeElement.element("match");
+					wafLog.setMatchReg(matchElement.attributeValue("reg"));
+					List<Trans> transList = new ArrayList<Trans>();
+					for(Iterator<?> matchIterator=matchElement.elementIterator();matchIterator.hasNext();){
+						Trans trans = new Trans();
+						Element transElement = (Element)matchIterator.next();
+						trans.setId(transElement.attributeValue("id"));
+						trans.setName(transElement.attributeValue("name"));
+						trans.setExpress(transElement.attributeValue("express"));
+						transList.add(trans);
+					}
+					wafLog.setTrans(transList);
+					waflogList.add(wafLog);	
+				}
+				syslog.setWafLog(waflogList);
+				syslogList.add(syslog);
+			}
+			wafConfig.setSyslogGroup(syslogList);
+		}
+		return wafConfig;
 	}
-	
+	public static Iterator<?> loadInIterator(String xmlString,String nodes) throws DocumentException {
+		Document document = DocumentHelper.parseText(xmlString);
+		List<?> list = document.selectNodes(nodes);
+		Iterator<?> iterator = list.iterator();
+		return iterator;
+	}
+	/*public static String setParam(String pname,Element element) {
+		Object object = new Object();
+		object.
+		if (pname.equalsIgnoreCase(element.getName())) {
+			
+		} else {
+
+		}
+	}*/
+	public WafConfig getWafConfigStream(){
+		XStream xStream = new XStream();
+		WafConfig wafConfig = (WafConfig)xStream.fromXML("./conf/WafConfig.xml");
+		System.out.println(wafConfig.getWafDeviceGroups().toString());
+		return wafConfig;
+		
+	}
 	
 	public static String getWAFAuth(String apiKey, String apiValue, String method) {
 		long timestamp = System.currentTimeMillis();
@@ -130,7 +348,13 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	
 	public static void main(String[] args) {
 		NsfocusWAFOperation operation = new NsfocusWAFOperation();
-		System.out.println(operation.getText("https://219.141.189.189:58442/rest/v1/sites"));
+		try {
+			operation.getWafConfig();
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//System.out.println(operation.getText("https://219.141.189.189:58442/rest/v1/sites"));
 	}
 	
 }
