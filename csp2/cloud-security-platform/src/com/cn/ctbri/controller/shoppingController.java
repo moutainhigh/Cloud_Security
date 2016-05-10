@@ -354,8 +354,10 @@ public class shoppingController {
 	 */
 	@RequestMapping(value="shopSettlement.html")
 	public void shopSettlement(HttpServletResponse response,HttpServletRequest request){
-		 User globle_user = (User) request.getSession().getAttribute("globle_user");
 		 Map<String, Object> map = new HashMap<String, Object>();
+	try{
+		 User globle_user = (User) request.getSession().getAttribute("globle_user");
+	
 		String str = request.getParameter("orderIds");
 	    String scanType = "";//扫描方式（正常、快速、全量）
         String scanDepth = "";//检测深度
@@ -409,15 +411,16 @@ public class shoppingController {
 	    	      if(endDate!=null && !endDate.equals("")){
 	    	    	  end_date = sdf.format(endDate);
 	    	      }
-	    		 String orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
+	    		String orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
 	            			scanDepth, maxPages, stategy, customManu, String.valueOf(shopCar.getServiceId()));
-	    	     // String orderId="1";
+	    	   // String orderId="1";
 	    		 //更新订单资产表
 	    		 selfHelpOrderService.updateOrderAsset(shopCar.getOrderId(), orderId);
 	    		 //更新订单表
 	    		 selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "0");
 	    	 }
 	    	 map.put("orderStatus", true);
+	    	 map.put("sucess", true);
 	     }
 	     //更新api订单表
 	     if(shopAPIList!=null&&shopAPIList.size()>0){
@@ -431,23 +434,36 @@ public class shoppingController {
 	    	        }
 	    	      Date  beginDate = shopCar.getBeginDate();
 	    	      Date endDate = shopCar.getEndDate();
-	    		 String orderId =NorthAPIWorker.vulnScanCreateAPI(Integer.parseInt(shopCar.getAstName()), shopCar.getNum(), Integer.parseInt(shopCar.getOrderId()), globle_user.getApikey(), globle_user.getId());
-	    		 //更新订单资产表
+	    		String orderId =NorthAPIWorker.vulnScanCreateAPI(Integer.parseInt(shopCar.getAstName()), shopCar.getNum(), Integer.parseInt(shopCar.getOrderId()), globle_user.getApikey(), globle_user.getId());
 	    	     // String orderId="2";
-	    		 selfHelpOrderService.updateOrderAPI(shopCar.getOrderId(), orderId);
-	    		 //更新订单表
-	    		 selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "1");
+	    	      if(orderId!=null&&!"".equals(orderId)){
+	    			  //更新订单资产表
+	 	    	    
+	 	    		 selfHelpOrderService.updateOrderAPI(shopCar.getOrderId(), orderId);
+	 	    		 //更新订单表
+	 	    		 selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "1");
+	 	    		
+	    		  }
+	    		
 	    	 }
 	    	 map.put("orderStatus", true);
+	    	 map.put("sucess", true);
 	     }
 	
-	     //object转化为Json格式
-	        JSONObject JSON = CommonUtil.objectToJson(response, map);
-	        try {
-	            // 把数据返回到页面
-	            CommonUtil.writeToJsp(response, JSON);
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
+	      
+	}catch(Exception e){
+		 map.put("orderStatus", false);
+    	 map.put("sucess", false);
+	}
+
+    //object转化为Json格式
+       JSONObject JSON = CommonUtil.objectToJson(response, map);
+        // 把数据返回到页面
+           try {
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
