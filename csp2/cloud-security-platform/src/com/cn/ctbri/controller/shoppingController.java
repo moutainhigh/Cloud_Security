@@ -164,7 +164,9 @@ public class shoppingController {
 	 *      add by gxy 2016-5-03
 	 */
 	@RequestMapping(value="shoppingCar.html")
-	public void shoppingCar(HttpServletRequest request,HttpServletResponse response) throws Exception{
+	public void shoppingCar(HttpServletRequest request,HttpServletResponse response){
+		  Map<String, Object> m = new HashMap<String, Object>();
+		  try{
 		 //用户
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
 		  SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
@@ -232,12 +234,18 @@ public class shoppingController {
 		 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
 		 int carnum=shopCarList.size()+apiList.hashCode();
 		 request.setAttribute("carnum", carnum);
-		   Map<String, Object> m = new HashMap<String, Object>();
+		 
 		   m.put("sucess", true);
-		//object转化为Json格式
-	        JSONObject JSON = CommonUtil.objectToJson(response, m);
+		   JSONObject JSON = CommonUtil.objectToJson(response, m);
 	        // 把数据返回到页面
-            CommonUtil.writeToJsp(response, JSON);
+        CommonUtil.writeToJsp(response, JSON);
+		 //object转化为Json格式
+	       
+		  }catch(Exception e){
+			  m.put("sucess", false);
+			  
+		  }
+		
 	}
 	
 	
