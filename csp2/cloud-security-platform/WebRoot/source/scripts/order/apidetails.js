@@ -69,7 +69,8 @@ $(function(){
  			   	    "type":type},  
 		     dataType: "json", 
 		     success: function(data) {
-			    	 if(data){
+			    	 if(data.sucess){
+			    		 alert("添加购物车成功!");
 			    		 window.location.href="selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
 			    	 }
 		    	 }, 

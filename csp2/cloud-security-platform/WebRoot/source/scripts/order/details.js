@@ -219,7 +219,12 @@ $(function(){
     			   	"price":price}, 
 		     dataType: "json", 
 		     success: function(data) {
-		    	 window.location.href="selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
+    			   		 if(data.sucess){
+    			   			 alert("添加购物车成功!");
+    			   			 window.location.href="selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
+    			   		 }
+    			   			
+    			   	
 		    	 }, 
 		     error: function(data){ 
 		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
