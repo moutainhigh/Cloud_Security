@@ -205,7 +205,8 @@ public class WarnDetailController {
 	        }
 	        
 //	        if((orderList.get(0).get("status").equals(0)||runList.size()>0)&&groupId==null){
-	        if(!orderList.get(0).get("status").equals(1) && !orderList.get(0).get("status").equals(2) ){
+//	        if(!orderList.get(0).get("status").equals(1) && !orderList.get(0).get("status").equals(2) ){
+	        if(false){
 	        	int status=0;
 	        	if(runList.size()>0){
 	        		status = Integer.parseInt(Constants.TASK_RUNNING);
