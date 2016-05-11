@@ -38,6 +38,7 @@ import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmDDOSService;
 import com.cn.ctbri.service.IAlarmService;
+import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ITaskService;
@@ -65,6 +66,9 @@ public class WarnDetailController {
     ITaskWarnService taskWarnService;
     @Autowired
     IAlarmDDOSService alarmDDOSService;
+    @Autowired
+    IAssetService assetService;
+    
     @RequestMapping(value="warningInit.html")
     public String warningInit(HttpServletRequest request,HttpServletResponse response) throws Exception{
         String orderId = request.getParameter("orderId");
@@ -1809,6 +1813,7 @@ public class WarnDetailController {
         String type = request.getParameter("type");
         String groupId=request.getParameter("groupId");
         String orderAssetId=request.getParameter("orderAssetId");
+        String index=request.getParameter("index");
     	//获取订单信息
         List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
         request.setAttribute("order", orderList.get(0));
@@ -1824,7 +1829,11 @@ public class WarnDetailController {
         paramMap.put("orderAssetId", orderAssetId);
                 
         request.setAttribute("status", 2);
-       
+        request.setAttribute("index", index);
+        
+        Asset asset = assetService.findByOrderAssetId(Integer.parseInt(orderAssetId));
+        request.setAttribute("asset", asset);
+        
         //获取进度
         paramMap.put("status", 2);
         /** 基本信息  */

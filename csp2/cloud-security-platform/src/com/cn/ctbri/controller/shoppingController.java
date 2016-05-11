@@ -404,15 +404,22 @@ public class shoppingController {
 	    	      Date  beginDate = shopCar.getBeginDate();
 	    	      Date endDate = shopCar.getEndDate();
 	    	      String begin_date=null;
-	    	      String end_date=null;
+	    	      String end_date="";
 	    	      if(beginDate!=null && !beginDate.equals("")){
 	    	    	  begin_date = sdf.format(beginDate);
 	    	      }
 	    	      if(endDate!=null && !endDate.equals("")){
 	    	    	  end_date = sdf.format(endDate);
 	    	      }
-	    		String orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
-	            			scanDepth, maxPages, stategy, customManu, String.valueOf(shopCar.getServiceId()));
+	    	      String orderId = "";
+	    	      try{
+	    	    	  orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
+		            			scanDepth, maxPages, stategy, customManu, String.valueOf(shopCar.getServiceId()));
+	    	      } catch (Exception e) {
+	  				e.printStackTrace();
+	  			}
+	    	      
+	    		
 	    	   // String orderId="1";
 	    		 //更新订单资产表
 	    		 selfHelpOrderService.updateOrderAsset(shopCar.getOrderId(), orderId);
@@ -434,7 +441,7 @@ public class shoppingController {
 	    	        }
 	    	      Date  beginDate = shopCar.getBeginDate();
 	    	      Date endDate = shopCar.getEndDate();
-	    		String orderId =NorthAPIWorker.vulnScanCreateAPI(Integer.parseInt(shopCar.getAstName()), shopCar.getNum(), Integer.parseInt(shopCar.getOrderId()), globle_user.getApikey(), globle_user.getId());
+	    		String orderId =NorthAPIWorker.vulnScanCreateAPI(Integer.parseInt(shopCar.getAstName()), shopCar.getNum(), shopCar.getServiceId(), globle_user.getApikey(), globle_user.getId());
 	    	     // String orderId="2";
 	    	      if(orderId!=null&&!"".equals(orderId)){
 	    			  //更新订单资产表
@@ -452,6 +459,7 @@ public class shoppingController {
 	
 	      
 	}catch(Exception e){
+		e.printStackTrace();
 		 map.put("orderStatus", false);
     	 map.put("sucess", false);
 	}
