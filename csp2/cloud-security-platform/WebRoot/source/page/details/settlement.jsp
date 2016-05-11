@@ -166,7 +166,7 @@
 	                                    	<c:if test="${type==3}">套餐三</c:if>&nbsp;&nbsp;&nbsp;
 	                                    	${time }次 * ${num }
 	                                    </td>
-	                                    <td width="38%" style="font-size:14px;">199.00</td>
+	                                    <td width="38%" style="font-size:14px;">0.00</td>
 	                                 </tr>
 	                            </tbody>
                             </c:if>
