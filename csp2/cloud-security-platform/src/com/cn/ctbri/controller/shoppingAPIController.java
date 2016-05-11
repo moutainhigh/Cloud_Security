@@ -153,8 +153,8 @@ public class shoppingAPIController {
         Map<String, Object> m = new HashMap<String, Object>();
         if(globle_user.getApikey()!=null && !globle_user.getApikey().equals("")){
         	//查询用户是否买过服务
-        	List<Order> list = orderService.findByUserId(globle_user.getId());
-        	if(list.size()>0){
+//        	List<Order> list = orderService.findByUserId(globle_user.getId());
+//        	if(list.size()>0){
         		//add by 2016-4-13 免费购买超过一次，提示不能购买
         		if(type==1){
         			Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -170,9 +170,9 @@ public class shoppingAPIController {
         		}else{
         			m.put("message", true);
         		}
-        	}else{
-        		m.put("message", "用户尚未购买过服务");
-        	}
+//        	}else{
+//        		m.put("message", "用户尚未购买过服务");
+//        	}
         }else{
         	m.put("message", "用户无key");
         }
