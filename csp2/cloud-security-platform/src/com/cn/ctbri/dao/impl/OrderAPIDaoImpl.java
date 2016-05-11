@@ -34,5 +34,11 @@ public class OrderAPIDaoImpl extends DaoCommon implements OrderAPIDao{
 	public List<OrderAPI> findOrderAPIByType(Map<String, Object> paramMap) {
 		return getSqlSession().selectList(ns+"findOrderAPIByType", paramMap);
 	}
+
+	@Override
+	public void deleteOrderAPI(String orderId) {
+		// TODO Auto-generated method stub
+		  this.getSqlSession().delete(ns + "deleteOrderAPI",orderId);
+	}
 	
 }
