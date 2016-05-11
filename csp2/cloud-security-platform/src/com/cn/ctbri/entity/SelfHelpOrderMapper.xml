@@ -247,7 +247,7 @@ WHERE a.id = b.orderId
    UPDATE  cs_order_api   api SET api.id=#{newOrderId} WHERE api.id=#{orderId}
  </update>
  <update id="updateOrder" parameterType="hashmap">
- UPDATE  cs_order o  SET o.payFlag=1 AND o.id=#{newOrderId}  WHERE o.isAPI=#{isAPI} AND o.id=#{orderId}
+ UPDATE  cs_order o  SET o.payFlag=1, o.id=#{newOrderId}  WHERE o.isAPI=#{isAPI} AND o.id=#{orderId}
  
  </update>
 </mapper>
