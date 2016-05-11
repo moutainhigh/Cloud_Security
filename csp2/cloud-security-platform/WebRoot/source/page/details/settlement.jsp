@@ -133,7 +133,7 @@
                     <li class="listone ">
                     <div class="clearfix">
                     	<h3 class="fl">订单详情</h3>
-                    	<a class="fr" style="color:#2499fb;padding-right:54px" href="${ctx}/goBack.html">返回修改订单信息</a>
+                    	<!--  <a class="fr" style="color:#2499fb;padding-right:54px" href="${ctx}/goBack.html">返回修改订单信息</a>-->
                     </div>
                     	
                         <div class="tabox zfize" style="margin-top:20px;">
