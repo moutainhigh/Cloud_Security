@@ -45,17 +45,21 @@
 			<c:import url="/category.html"></c:import>
 			<!-- 商品分类 end -->
 				
-			<span class="fl"><a href="#">手机APP</a></span>
 			<span class="fl"><a href="${ctx}/knowUs.html">关于我们</a></span>
+			<span class="fl shopping" style="margin-right:0">
+				<a href="${ctx}/showShopCar.html"><i></i>购物车</a>
+			</span>
 			
 		</div>
-		<div class="safer fr">
+		<div class="safer fr" style="margin-left:0px;">
 			<!-- 如果已经登录则显示用户名，否则需要登录 -->
-	         <c:if test="${sessionScope.globle_user!=null }">
-		        <a href="${ctx}/userDataUI.html">${sessionScope.globle_user.name }</a>
-		        <em>|</em>
-		        <a href="${ctx}/exit.html">退出</a>
-	         </c:if>
+			<c:if test="${sessionScope.globle_user!=null }">
+			<div class="login clearfix">
+				<a href="${ctx}/userCenterUI.html"  class="fl loginname">${sessionScope.globle_user.name }</a>
+				<em class="fl">|</em>
+				<a href="${ctx}/exit.html" class="fl" >退出</a>
+			</div>
+			</c:if>
 	         <c:if test="${sessionScope.globle_user==null }">
 	            <a href="${ctx}/loginUI.html">登录</a>
 				<em>|</em>
