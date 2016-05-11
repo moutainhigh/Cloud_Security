@@ -21,13 +21,11 @@
                <div class="lagst-left">
                    <a href="###"><img src="${ctx}/source/images/ren.png" /></a>
                </div>
-               <div class="lagst-right"  style="margin-left:0px;">
+               <div class="lagst-right">
                <!-- 如果已经登录则显示用户名，否则需要登录 -->
                <c:if test="${sessionScope.globle_user!=null }">
-                <div class="login clearfix">
-	                <p><a href="###" style="color: #fff">${sessionScope.globle_user.name }</a></p>
-	        		<p><a href="${ctx}/exit.html">退出</a></p>
-        		</div>
+	            <p><a href="###" style="color: #fff">${sessionScope.globle_user.name }</a></p>
+	            <p><a href="${ctx}/exit.html">退出</a></p>
                </c:if>
                <c:if test="${sessionScope.globle_user==null }">
                      <p><a href="${pageContext.request.contextPath}/loginUI.html">登录</a></p>
