@@ -43,7 +43,7 @@
 							<a href="#" class="hbule">手机APP</a>
 							<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
 						</span>
-						<span class="fl"><a href="${ctx}/aider.html">关于我们</a></span>
+						<span class="fl"><a href="${ctx}/knowUs.html">关于我们</a></span>
 						
 					</div>
 					<div class="safer fr">
@@ -133,7 +133,7 @@
                     <li class="listone ">
                     <div class="clearfix">
                     	<h3 class="fl">订单详情</h3>
-                    	<a class="fr" style="color:#2499fb;padding-right:54px" href="javascript:history.go(-1);">返回修改订单信息</a>
+                    	<a class="fr" style="color:#2499fb;padding-right:54px" href="${ctx}/goBack.html">返回修改订单信息</a>
                     </div>
                     	
                         <div class="tabox zfize" style="margin-top:20px;">

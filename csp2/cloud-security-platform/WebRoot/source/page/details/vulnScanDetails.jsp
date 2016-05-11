@@ -21,6 +21,13 @@
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script src="${ctx}/source/scripts/order/details.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
+<style>
+.dataBox .dataR .select .dropdown-menu li label{ width:86%;}
+      .select .dropdown-menu li{ height:auto !important}
+       .select .dropdown-menu li label input{ margin-left:-20px;}
+ .select .dropdown-menu li label span{ padding-left:10px; top:-3px;}
+</style>
+
 </head>
 
 <body>
@@ -45,7 +52,7 @@
 							<a href="#" class="hbule">手机APP</a>
 							<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
 						</span>
-						<span class="fl"><a href="${ctx}/aider.html">关于我们</a></span>
+						<span class="fl"><a href="${ctx}/knowUs.html">关于我们</a></span>
 						
 					</div>
 					<div class="safer fr">
@@ -136,7 +143,7 @@
                                       <ul class="dropdown-menu pop" style="width:358px">
                                        <c:if test="${not empty serviceAssetList}">
 	                                     	<c:forEach var="list" items="${serviceAssetList}" varStatus="status">
-	                                       		<li><label name="a"><input type="checkbox"  id="${list.id }" >${list.addr}</label></li>
+	                                       		<li><label name="a"><span><input type="checkbox"  id="${list.id }" >${list.addr}</span></label></li>
 	                                     	</c:forEach>
 	                                     </c:if>
                                       </ul>
