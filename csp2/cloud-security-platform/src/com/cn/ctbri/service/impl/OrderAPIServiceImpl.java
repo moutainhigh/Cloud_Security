@@ -33,5 +33,11 @@ public class OrderAPIServiceImpl implements IOrderAPIService{
 	public List<OrderAPI> findOrderAPIByType(Map<String, Object> paramMap) {
 		return orderAPIDao.findOrderAPIByType(paramMap);
 	}
+
+	@Override
+	public void deleteOrderAPI(String orderId) {
+		// TODO Auto-generated method stub
+		orderAPIDao.deleteOrderAPI(orderId);
+	}
 	
 }
