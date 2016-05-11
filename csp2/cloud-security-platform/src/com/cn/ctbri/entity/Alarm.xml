@@ -49,6 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from cs_order o,cs_service s
         where o.userId = #{userId} and o.serviceId = s.id
                AND o.status =2
+               and o.delFlag != 1
 	</select>
 	<!-- 根据orderid查询告警数,最近告警信息  modify by tang 2015/11/3-->
     <!-- <select id="findAlarmByOrderId" resultMap="Alarm" parameterType="hashmap">
