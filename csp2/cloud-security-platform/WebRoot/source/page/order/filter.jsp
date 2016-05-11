@@ -42,7 +42,7 @@ $(document).ready(function(){
           <li><a href="${ctx}/index.html">首页</a></li>
           <li><a href="${ctx}/chinas.html">安全态势</a></li>
           <li><a href="${ctx}/orderTrackInit.html">我的订单</a></li>
-          <li><a href="${ctx}/aider.html">在线帮助</a></li>
+          <li><a href="${ctx}/knowUs.html">在线帮助</a></li>
           <li style="border-right:1px solid #1369C0;"><a href="${ctx}/userCenterUI.html">用户中心</a></li>
         </ul>
       </ul>
@@ -135,7 +135,7 @@ $(document).ready(function(){
 <div  class="bottom_main">
  <h3><a href="###"> 帮助</a></h3>
   <ul>
-   <li><a href="${ctx}/aider.html">常见问题</a></li>
+   <li><a href="${ctx}/knowUs.html">常见问题</a></li>
   </ul>
 </div>
 <div  class="bottom_main">
