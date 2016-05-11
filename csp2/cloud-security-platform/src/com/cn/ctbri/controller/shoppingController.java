@@ -258,15 +258,20 @@ public class shoppingController {
 	 */
 	@RequestMapping(value="showShopCar.html")
 	public String showShopCar(HttpServletRequest request) throws Exception{
+		boolean flag=false;
 		 //用户
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
     	//查询网站安全帮列表
 		 List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
 		 //查询安全能力API
 		 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
-	        request.setAttribute("shopCarList", shopCarList);
-	        request.setAttribute("apiList", apiList);
-	        String result = "/source/page/details/shoppingCart-order";
+		 if((shopCarList!=null&&shopCarList.size()>0)||(apiList!=null&&apiList.size()>0)){
+			 flag=true;
+		 }
+        request.setAttribute("shopCarList", shopCarList);
+        request.setAttribute("apiList", apiList);
+        request.setAttribute("flag", flag);
+	     String result = "/source/page/details/shoppingCart-order";
 		return result;
 	}
 
