@@ -1,5 +1,4 @@
 $(function(){
-//	alert("fff");
     
     //确认订单界面点击"确认订单"进入完成
     $("#buyAPI").click(function(){
