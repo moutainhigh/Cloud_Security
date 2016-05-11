@@ -1873,3 +1873,6 @@ padding: 20px 30px 0px 0px;
 	font-weight:normal;
 	font-family:"方正兰亭黑-GBK Regular";
 }
+/*购物车为空样式*/
+.emptyBox{width:400px; height:300px; margin:0 auto; margin-top:100px;}
+.emptyBox p{font-size:16px; padding-left:20px; position:relative; top:15px;}
