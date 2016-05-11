@@ -104,6 +104,7 @@ $(function(){
 	<div class="headBox">
 		<div class="safeL fl" style="width:260px; margin-right:13%">
 			<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:10px;"/></a>
+			<span style="font-size: 20px;color: #4a4a4a; padding-left:10px;position:relative; top:-6px;">安全态势感知</span>
 		</div>
 		<div class="safem fl">
 			<span class="fl"><a href="${ctx}/index.html" class="hbule this">首页</a></span>
