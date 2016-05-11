@@ -6,18 +6,22 @@ $(function(){
 		$("input:checkbox[name=check_name]:checked").each(function(obj){
 		   str+=$(this).val()+",";
     	});
-	   $.ajax({ type: "POST",
-		     async: false, 
-		     url: "getSession.html",
-		     dataType: "json", 
-		     success: function(data) {
-			    	 window.location.href="shopBuy.html?str="+str;
-			    }, 
-		     error: function(data){ 
-		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-		    		 window.location.href = "loginUI.html"; } 
-		    	 else { window.location.href = "loginUI.html"; } } 
-		});
+		if(str==""){
+			alert("请至少选择一件商品!");
+		}else{
+		   $.ajax({ type: "POST",
+			     async: false, 
+			     url: "getSession.html",
+			     dataType: "json", 
+			     success: function(data) {
+				    	 window.location.href="shopBuy.html?str="+str;
+				    }, 
+			     error: function(data){ 
+			    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+			    		 window.location.href = "loginUI.html"; } 
+			    	 else { window.location.href = "loginUI.html"; } } 
+			});
+	   }
     });
   
        //购物车点击“结算”
