@@ -290,6 +290,8 @@ public class shoppingController {
         String orderId = request.getParameter("orderId");
         //删除订单资产
         orderAssetService.deleteOaByOrderId(orderId);
+        //删除订单api
+        orderAPIService.deleteOrderAPI(orderId);
          //删除订单
         orderService.deleteOrderById(orderId);
       //object转化为Json格式
