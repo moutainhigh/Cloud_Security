@@ -28,7 +28,7 @@
 			<!--头部-->
 			<div class="head">
 				<div class="headBox">
-					<div class="safeL fl" style="width:270px; margin-right:18%">
+					<div class="safeL fl" style="width:260px; margin-right:13%">
 						<a href="${ctx}/index.html"><img src="${ctx}/source/images/anquanbang_white_logo.png" alt="" style="position:relative; top:4px;"/></a>
                         <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px;">收银台</strong>
 					</div>
