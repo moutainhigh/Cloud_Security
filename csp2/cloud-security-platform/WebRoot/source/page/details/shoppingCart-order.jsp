@@ -173,7 +173,7 @@
                     <!--购物车为空显示-->
 	            <div class="emptyBox clearfix">
 	            	<span class="fl"><img src="${ctx}/source/images/portal/bule-shopping.jpg" alt=""></span>
-	                <p class="fl">购物车空空的哦~,去看看心仪的商品吧~<br><em style="color:#2499fb">去商品分类查看&gt;</em></p>
+	                <p class="fl">购物车空空的哦~,去看看心仪的商品吧~<br><a href="${ctx}/index.html"><em style="color:#2499fb">去商品分类查看&gt;</em></a></p>
 	            </div>
 	           
 	           <!--购物车为空显示-->
