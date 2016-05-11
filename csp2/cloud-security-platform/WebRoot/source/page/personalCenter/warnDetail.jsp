@@ -27,14 +27,16 @@
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
 <script src="${ctx}/source/scripts/common/jquery.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
+
 <script src="${ctx}/source/scripts/common/portalindex.js"></script>
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
 
-<script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
+
 <!-- <script type="text/javascript" src="${ctx}/source/scripts/order/warnDetail.js"></script>-->
 <script type="text/javascript" src="${ctx}/source/scripts/order/warnDetail1.js"></script>
 <script type="text/javascript">
@@ -111,6 +113,13 @@ function seedetail1(e) {
 };
 
 </script>
+<style type="">
+.detailbox{display:none;}
+.zhangd_table{ width:945px; color:9a9a9a; margin-left:35px;}
+.zhangd_table table{ width:945px; text-align:center;word-break: break-all; word-wrap: break-word; border-collapse:collapse; border:0;}
+.zhangd_table table tr{ height:50px; line-height:50px; font-size:14px; border-bottom:1px solid #e0e0e0;}
+.zhangd_table table tr td span{ color:#49ad53; cursor:pointer;}
+</style>
 </head>
 
 <body>
@@ -133,7 +142,7 @@ function seedetail1(e) {
 							<a href="#" class="hbule">手机APP</a>
 							<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
 						</span>
-						<span class="fl"><a href="${ctx}/aider.html">关于我们</a></span>
+						<span class="fl"><a href="${ctx}/knowUs.html">关于我们</a></span>
 						
 					</div>
 					<div class="safer fr">
@@ -153,14 +162,14 @@ function seedetail1(e) {
 			</div>
 		</div>
 		<div class="detaails">
-        	<div class="coreRight user_right coupon" >
-            	<div class="gj_top">
+        	<div class="coreRight user_right coupon" style="width:1154px;">
+            	<div class="gj_top" style="width: 1100px">
             		<a href="${ctx}/orderTrackInit.html" class="aelse">我的订单</a>　&gt;　<a href="#" class="acur">告警详情</a>
        			 </div>
                  <div class="Ordernumber">
                  	<p><span>订单号：</span>${order.id }</p>
                  </div>
-                 <div class="coupontab" style="width:950px;">
+                 <div class="coupontab" style="width:1100px;">
                 	<ol class="navlist centlist assets clearfix">
                 		<c:forEach var="a" items="${assets}" varStatus="status">
 			            	<c:if test="${status.first}">
@@ -405,7 +414,7 @@ function seedetail1(e) {
 							</c:if>
 							<c:if test="${asset.task.status==2}">
 								<!-- 任务运行start -->
-								<c:import url="/taskRunning.html?orderId=${order.id }&type=${order.type}&orderAssetId=${asset.orderAssetId }"></c:import>
+								<c:import url="/taskRunning.html?orderId=${order.id }&type=${order.type}&orderAssetId=${asset.orderAssetId }&index=${status.index+1 }"></c:import>
 								<!-- end -->
 							</c:if>
 			            	

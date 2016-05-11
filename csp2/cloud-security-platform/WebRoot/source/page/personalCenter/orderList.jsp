@@ -29,31 +29,37 @@
                                     <div class="tr fl">
                                         <div class="">
                                          <h2>
-                                        	<c:if test="${list.isAPI==1}">
-							             	 ${fn:replace(list.name, "服务", "API")}  
-							                </c:if> 
-							                <c:if test="${list.isAPI!=1}">
 							                 ${list.name}   
-							                </c:if>   
                                          </h2></div>
                                     	<c:forEach var="asset" items="${list.assetList}" varStatus="status">
-                                        	<div class="listDiv"><p style="text-align: left; margin:0;">资产名称：${asset.name}</p></div>
+                                        	<div class="listDiv"><p style="text-align: left; margin:0; line-height:24px;">资产名称：${asset.name}</p></div>
                                         </c:forEach>
                                     </div>
                                 </div>
                             </td>
                             <td class="order" valign="top">
                             	<p class="stylep" style="width:84px;">
-								<c:if test="${list.type==1}">长期</c:if>
-								<c:if test="${list.type==2}">单次</c:if> 
+                            	<c:if test="${list.isAPI==0}">
+									<c:if test="${list.type==1}">长期</c:if>
+									<c:if test="${list.type==2}">单次</c:if> 
+								</c:if>
+								<c:if test="${list.isAPI==1}">
+									<c:if test="${list.package_type==1}">套餐1</c:if>
+									<c:if test="${list.package_type==2}">套餐2</c:if> 
+									<c:if test="${list.package_type==3}">套餐3</c:if>
+								</c:if>
 								</p>
                             
                             </td>
                             <td class="order" valign="top">
                             	<c:set var="temp" value="${nowDate }"/>
-				                <c:if test="${list.begin_date>temp}"><p class="stylep" style="width:108px;">已下单<b class="wait"></b></p></c:if>
-				                <c:if test="${list.begin_date<=temp&&(list.status==4||list.status==5)&&list.websoc!=2}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
-				                <c:if test="${list.status==1||list.status==2}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
+				                <c:if test="${list.begin_date>temp&&list.status==0}"><p class="stylep" style="width:108px;">已下单<b class="wait"></b></p></c:if>
+				                <c:if test="${list.isAPI==0 && list.begin_date<=temp&&(list.status==4||list.status==5)&&list.websoc!=2}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
+				                <c:if test="${list.isAPI==0 && (list.status==1)}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
+				                <c:if test="${list.isAPI==0 && (list.status==2)}"><p class="stylep" style="width:108px;">已结束<b class="endend"></b></p></c:if>
+				                
+				                <c:if test="${list.isAPI==1 && list.end_date>temp}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
+				                <c:if test="${list.isAPI==1 && list.end_date<=temp}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
                             </td>
                             <td class="order" valign="top">
                             	<p style="width:174px; line-height:24px; margin-top:33px;" class="stylep"><fmt:formatDate value="${list.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/><br><fmt:formatDate value="${list.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
@@ -66,7 +72,7 @@
                              <td class="order" valign="top">
                             	<p style="width:98px; line-height:24px;margin-top:33px; height:auto;" class="stylep">
                             	
-                            		<c:if test="${list.begin_date>temp||list.status==0}"><a href="#" title="等待">查看详情</a></c:if>
+                            		<c:if test="${list.begin_date>temp&&list.status==0}"><a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.serviceId }&indexPage=1" title="等待">查看详情</a></c:if>
              
 						            <c:if test="${list.serviceId==1||list.serviceId==2||list.serviceId==3||list.serviceId==4||list.serviceId==5}">
 						                <c:if test="${list.status==2}">
@@ -93,7 +99,7 @@
 						                 </a>
 						                </c:if>
 						                <c:if test="${list.status==1&&list.isAPI==1}">
-						                 <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${list.serviceId }&indexPage=2" title="已完成">
+						                 <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${list.serviceId }&indexPage=2">
 						                 	查看详情
 						                 </a>
 						                </c:if>

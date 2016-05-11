@@ -16,6 +16,28 @@
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
+<script type="text/javascript">
+//删除
+function deleteOrder(orderId,begin_date){
+    if (window.confirm("确实要删除吗?")==true) {
+    	$.ajax({
+            type: "POST",
+            url: "checkOrderStatus.html",
+            data: {"orderId":orderId,"begin_date":begin_date},
+            dataType:"json",
+            success: function(data){
+                if(!data.status){
+                    alert("订单正在执行,不可以删订单!");
+                }else{
+                	window.location.href="deleteOrder.html?orderId="+orderId;
+                }
+            },
+         });
+    } else {
+        return;
+    }
+}
+</script>
 <style>
 .mnlist .tablist-head{ border:#e5e5e5 solid 1px; border-bottom:none;}
 .mnlist{ border:none;}
@@ -89,7 +111,7 @@
                         	<a href="#">手机APP</a>
                         	<b style="display:none; top:56px;"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
                         </span>
-						<span class="fl"><a href="${ctx}/aider.html">关于我们</a></span>
+						<span class="fl"><a href="${ctx}/knowUs.html">关于我们</a></span>
 						
 					</div>
 					<div class="safer fr">
@@ -128,9 +150,9 @@
                 	<div class="TabBoxtitle">
                      <dl class="clearfix">
                    	  <dt class="fl">消息提示</dt>
-                        <dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderCount.png" alt=""></i><span>订单总数<em>${orderNum}</em></span></dd>
-                        <dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderRuning.png" alt=""></i><span>服务中的订单<em>${servNum}</em></span></dd>
-                        <dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderWarn.png" alt=""></i><span>告警订单<em>${alarmSum}</em></span></dd>
+                        <a href="${ctx}/orderTrackInit.html"><dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderCount.png" alt=""></i><span>订单总数<em>${orderNum}</em></span></dd></a>
+                        <a href="${ctx}/orderTrackInit.html?state=1"><dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderRuning.png" alt=""></i><span>服务中的订单<em>${servNum}</em></span></dd></a>
+                        <a href="${ctx}/orderTrackInit.html?state=2"><dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderWarn.png" alt=""></i><span>告警订单<em>${alarmSum}</em></span></dd></a>
                       </dl>
 
                     </div>
