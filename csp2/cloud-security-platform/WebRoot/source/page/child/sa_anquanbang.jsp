@@ -115,7 +115,7 @@ $(function(){
 			<!-- 商品分类 end -->
 				
 			<span class="fl"><a href="#">手机APP</a></span>
-			<span class="fl"><a href="${ctx}/aider.html">关于我们</a></span>
+			<span class="fl"><a href="${ctx}/knowUs.html">关于我们</a></span>
 			
 		</div>
 		<div class="safer fr">
