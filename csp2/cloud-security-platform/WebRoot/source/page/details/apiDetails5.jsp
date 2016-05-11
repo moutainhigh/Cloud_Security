@@ -124,7 +124,7 @@
                          
 					</ul>
                     <div class="btnBox" style="text-align:left; margin:10px 0 0 0px;">
-                        <button style="background:#d00000; width:146px;">添加到购物车</button>
+                        <button style="background:#d00000; width:146px;" id="shopCarAPI">添加到购物车</button>
                         <button style="background:#5aba5f; width:126px" id="buyAPI">立即购买</button>
                     </div>
 				</div>
