@@ -62,12 +62,15 @@
 			
 
 		</div>
+		<c:if test="${flag==true}">  
 		<div class="dataCent seetlentBox order" style="width:1122px; position:relative; left:-1%;">
 			
             <div class="settlement-content">
             	<ul class="settlementList">
                 	<li class="listone">
                     	<h3>全部订单</h3>
+                    
+                    	
                     	  <c:if test="${not empty shopCarList}">
                         <div class="tabox" style=" margin-left:0px; width:1108px; padding:0;padding-top:10px">
                        
@@ -95,7 +98,8 @@
                             	
                                      	<tr height="40">
                                      		<td width="20%"><label >
-                                            <input type="checkbox" class="ck" style="display:none" value="${shopCar.orderId}" isApi="0" name="check_name"><i class="chck" style="margin-right:30px;"></i>
+                                            <input type="checkbox" class="ck" style="display:none" value="${shopCar.orderId}" isApi="0" name="check_name" >
+                                            <i class="chck" style="margin:0 30px 0 40px;"></i>
                                             </label><a href="${ctx}/selfHelpOrderInit.html?serviceId=${shopCar.serviceId}&indexPage=1" target="_blank">${shopCar.serverName}</a>
                                             </td>
                                     <td width="36%"><p style="padding-left:40px;">
@@ -154,19 +158,22 @@
                        
                         	<div class="settle" style="width:1108px;">
                                 <span>已选择<b>0</b>个订单</span><span>总价 <em style="position:relative; top:-2px;">¥<i id="priceTotal" style="font-size: 26px;
-    font-family: Arial Regular;">00.00</i></em></span><button type="button" style="font-family:'微软雅黑'" id="shopBuy">去结算</button>
+    font-family: Arial Regular;">0.00</i></em></span><button type="button" style="font-family:'微软雅黑'" id="shopBuy">去结算</button>
                             </div>
-                        
-                        
-
-                    </li>
+                     </li>
                 </ul>
-            	
             </div>
-            
-           
-		</div>
-        
+       </div>
+	</c:if>
+                  <c:if test="${flag==false}">
+                    <!--购物车为空显示-->
+	            <div class="emptyBox clearfix">
+	            	<span class="fl"><img src="${ctx}/source/images/portal/bule-shopping.jpg" alt=""></span>
+	                <p class="fl">购物车空空的哦~,去看看心仪的商品吧~<br><em style="color:#2499fb">去商品分类查看&gt;</em></p>
+	            </div>
+	           
+	           <!--购物车为空显示-->
+                    	</c:if>
   
 		<div class="safe04">
 			<div class="imgBox clearfix">
