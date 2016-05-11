@@ -182,7 +182,7 @@
                 		<img src="${ctx}/source/images/portal/servicePic5.png" alt=""/>
                 	</c:if>
                 </div>
-                <div class="commoditys" style="height:440px; overflow:hidden">
+                <div class="commoditys" style="height:750px; overflow:hidden">
                 	<img src="${ctx}/source/images/portal/product2.png" alt=""/>
                 </div>
                 <div class="commoditys" style="height:600px; overflow:hidden">
