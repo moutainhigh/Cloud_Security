@@ -29,7 +29,7 @@ function deleteOrder(orderId,begin_date){
                 if(!data.status){
                     alert("订单正在执行,不可以删订单!");
                 }else{
-                	window.location.href="deleteOrder.html?orderId="+orderId;
+                	window.location.href="userdeleteOrder.html?orderId="+orderId;
                 }
             },
          });
