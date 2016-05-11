@@ -230,7 +230,7 @@ function optOrder(orderId,status){
 	            	
 	            	<div class="coreList clearfix">
 	                	<label class="container con-order fl">
-	                    	<input type="text" class="text promptext" value="输入资产名称或者资产地址进行搜索"   id="search" name="search">
+	                    	<input type="text" class="text promptext" placeholder="输入资产名称或者资产地址进行搜索"    id="search" name="search">
 	                        
 	                    	<input type="submit" value="搜索" class="sub fr" >
 	                    </label>
@@ -348,7 +348,7 @@ function optOrder(orderId,status){
 		   $(this).children('li').height(h);
         });*/
 		/*提示文字效果*/
-		$('.promptext').focus(function(){
+		/*$('.promptext').focus(function(){
 			if($(this).val()=='输入资产名称或者资产地址进行搜索'){
 				$(this).val('');
 				$(this).css('color','#343434');
@@ -362,7 +362,7 @@ function optOrder(orderId,status){
 				$(this).css('color','#929292');	
 			}
 				
-		})
+		})*/
 	})
 	
 	
