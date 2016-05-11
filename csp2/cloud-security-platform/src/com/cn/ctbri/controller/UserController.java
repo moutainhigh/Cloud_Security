@@ -650,7 +650,7 @@ public class UserController{
         String temp = setDateFormat.format(Calendar.getInstance().getTime());
         request.setAttribute("nowDate", temp);
 		request.setAttribute("orderList", orderList);
-		return "/source/page/personalCenter/orderList";
+		return "/source/page/personalCenter/userCenterList";
 	}
 	
 	

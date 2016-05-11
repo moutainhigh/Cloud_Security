@@ -835,11 +835,68 @@ public class OrderMgrController {
             //删除联系人信息
             selfHelpOrderService.deleteLinkman(order.getContactId());
             //删除服务系统相关
-            NorthAPIWorker.deleteOrder(orderId);
+            //NorthAPIWorker.deleteOrder(orderId);
         }
         
 //        return "/source/page/order/orderTrack";
         return "redirect:/orderTrackInit.html";
+    }
+    
+    
+    /**
+     * 功能描述： 用户中心-订单跟踪_订单删除
+     * 参数描述：  无
+     *     @time 2015-7-7
+     */
+    @RequestMapping(value="userdeleteOrder.html")
+    public String userdeleteOrder(HttpServletRequest request){
+        User globle_user = (User) request.getSession().getAttribute("globle_user");
+        String orderId = request.getParameter("orderId");
+        //查找订单
+        Order order = orderService.findOrderById(orderId);
+        //已完成订单则逻辑删除
+        if(order.getStatus()==1 || order.getStatus() == 2){
+        	//更新删除标记
+        	order.setDelFlag(1);
+        	orderService.update(order);
+//        }else{
+        }else if(order.getStatus()==0){
+            //获取订单资产
+            List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
+            //删除任务
+            for (OrderAsset orderAsset : oaList) {
+                String order_asset_Id = String.valueOf(orderAsset.getId());
+                List<Task> tlist = taskService.findTaskByOrderAssetId(orderAsset.getId());
+                for (Task task : tlist) {
+                    //删除告警
+                    Map<String,Object> paramMap = new HashMap<String,Object>();
+                    paramMap.put("taskId", task.getTaskId());
+                    paramMap.put("group_id",task.getGroup_id());
+                    paramMap.put("websoc",order.getWebsoc());
+                    if(order.getServiceId()==5){
+                        taskWarnService.deleteTaskWarnByTaskId(paramMap);
+                    }else{
+                        alarmService.deleteAlarmByTaskId(paramMap);
+                    }
+                    if(order.getWebsoc()!=1&&order.getWebsoc()!=2){
+//                        String sessionId = ArnhemWorker.getSessionId();
+//                        ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId())+"_"+orderId);
+                    }
+                }
+                taskService.deleteTaskByOaId(order_asset_Id);
+            }
+            //删除订单
+            orderService.deleteOrderById(orderId);
+            //删除订单资产
+            orderAssetService.deleteOaByOrderId(orderId);
+            //删除联系人信息
+            selfHelpOrderService.deleteLinkman(order.getContactId());
+            //删除服务系统相关
+            //NorthAPIWorker.deleteOrder(orderId);
+        }
+        
+//        return "/source/page/order/orderTrack";
+        return "redirect:/userCenterUI.html";
     }
     
     /**
@@ -860,9 +917,10 @@ public class OrderMgrController {
         List runList = orderService.findTaskRunning(orderId);
         //订单状态
         int status = order.getStatus();
+        int isAPI = order.getIsAPI();
         Map<String, Object> m = new HashMap<String, Object>();
 //        if((status==0&&beginDate.compareTo(nowDate)>0)||status!=0){
-        if(status==1||status==2||status==0){
+        if(isAPI==0 && (status==1||status==2||status==0)){
             m.put("status", true);
         }else{
             m.put("status", false);
