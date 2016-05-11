@@ -67,7 +67,7 @@ function showUnreadNews()
 			<!-- 商品分类 end -->
 				
 			<span class="fl"><a href="#">手机APP</a></span>
-			<span class="fl"><a href="${ctx}/aider.html">关于我们</a></span>
+			<span class="fl"><a href="${ctx}/knowUs.html">关于我们</a></span>
 			
 		</div>
 		<div class="safer fr">
@@ -261,7 +261,7 @@ function showUnreadNews()
 <div  class="bottom_main">
   <h3><a href="###"> 帮助</a></h3>
   <ul>
-    <li><a href="${ctx}/aider.html">常见问题</a></li>
+    <li><a href="${ctx}/knowUs.html">常见问题</a></li>
   </ul>
 </div>
 <div  class="bottom_main">
