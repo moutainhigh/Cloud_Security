@@ -70,18 +70,21 @@ $(function(){
     		alert("数量不能小于0");
     		return;
     	}
-		$.ajax({ type: "POST",
+    	$.ajax({ type: "POST",
 		     async: false, 
-		     url: "shoppingCarAPI.html", 
+		     url: "checkAPI.html", 
 		     data: {"apiId":apiId,
  			   	    "time":time,
  			   	    "num":num,
  			   	    "type":type},  
 		     dataType: "json", 
 		     success: function(data) {
-			    	 if(data.sucess){
-			    		 alert("添加购物车成功!");
-			    		 window.location.href="selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
+ 			   	    if(data.message == true){
+			    		shopCarAPIVal(apiId,time,num,type);
+			    		 
+			    	 }else{
+			    		 alert(data.message);
+			     		 return;
 			    	 }
 		    	 }, 
 		     error: function(data){ 
@@ -89,6 +92,7 @@ $(function(){
 		    		 window.location.href = "loginUI.html"; } 
 		    	 else { window.location.href = "loginUI.html"; } } 
 		});
+		
 
     });
     
@@ -187,4 +191,25 @@ function tasknum_verification(){
   		    		 window.location.href = "loginUI.html"; } 
   		    	 else { window.location.href = "loginUI.html"; } } 
 	     });
+}
+function shopCarAPIVal(apiId,time,num,type){
+	$.ajax({ type: "POST",
+		     async: false, 
+		     url: "shoppingCarAPI.html", 
+		     data: {"apiId":apiId,
+ 			   	    "time":time,
+ 			   	    "num":num,
+ 			   	    "type":type},  
+		     dataType: "json", 
+		     success: function(data) {
+			    	 if(data.sucess){
+			    		 alert("添加购物车成功!");
+			    		 window.location.href="selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
+			    	 }
+		    	 }, 
+		     error: function(data){ 
+		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+		    		 window.location.href = "loginUI.html"; } 
+		    	 else { window.location.href = "loginUI.html"; } } 
+		});
 }
