@@ -84,7 +84,7 @@
 					<ul>
 						<li class="clearfix" style="height:50px;">
 							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
-                            <div class="fl"><strong style="font-family:'微软雅黑'">¥00.00</strong><strong></strong></div> 
+                            <div class="fl"><strong style="font-family:'微软雅黑'">¥0</strong><strong></strong></div> 
 						</li>
                         <li class="clearfix">
                         	<label class="fl">使用有效期</label>
