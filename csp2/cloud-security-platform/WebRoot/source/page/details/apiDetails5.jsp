@@ -19,6 +19,7 @@
 <script src="${ctx}/source/scripts/common/main.js"></script>
 
 <script src="${ctx}/source/scripts/order/apidetails.js"></script>
+<script src="${ctx}/source/scripts/order/details.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 </head>
 
@@ -79,7 +80,7 @@
 				</div>
 				<div class="dataR fl">
 					<h2 style="font-size:20px; margin-bottom:18px;">${serviceAPI.name }</h2>
-                  	<a href="javascript:;" class="buttoncar" style="right:0px;"><b>1</b><i></i>我的购物车&gt;</a>
+                  <a href="javascript:showShopCar();" class="buttoncar" style="right:0px;"><b>${carnum}</b><i></i>我的购物车&gt;</a>
 					<ul>
 						<li class="clearfix" style="height:50px;">
 							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
