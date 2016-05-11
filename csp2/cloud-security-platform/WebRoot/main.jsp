@@ -31,7 +31,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 			<div class="head">
 				<div class="headBox">
 					<div class="safeL fl" style="width:260px; margin-right:13%">
-						<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:5px;"/></a>
+						<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/main_logo.png" alt="" style="position:relative; top:5px;"/></a>
 					</div>
 					<div class="safem fl">
 						<span class="fl"><a href="${ctx}/index.html" class="hbule this">首页</a></span>
@@ -40,19 +40,20 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 						<c:import url="/category.html"></c:import>
 						<!-- 商品分类 end -->
 						
-						<span class="fl ask">
-							<a href="#" class="hbule">手机APP</a>
-							<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
-						</span>
 						<span class="fl"><a href="${ctx}/knowUs.html" class="hbule">关于我们</a></span>
+						<span class="fl shopping" style="margin-right:0">
+							<a href="${ctx}/showShopCar.html"><i></i>购物车</a>
+						</span>
 						
 					</div>
-					<div class="safer fr">
+					<div class="safer fr" style="margin-left:0px;">
 						<!-- 如果已经登录则显示用户名，否则需要登录 -->
 				         <c:if test="${sessionScope.globle_user!=null }">
-					        <a href="${ctx}/userCenterUI.html">${sessionScope.globle_user.name }</a>
-					        <em>|</em>
-					        <a href="${ctx}/exit.html">退出</a>
+				         <div class="login clearfix">
+					        <a href="${ctx}/userCenterUI.html"  class="fl loginname">${sessionScope.globle_user.name }</a>
+					        <em class="fl">|</em>
+					        <a href="${ctx}/exit.html" class="fl" >退出</a>
+					      </div>
 				         </c:if>
 				         <c:if test="${sessionScope.globle_user==null }">
 				            <a href="${ctx}/loginUI.html">登录</a>
