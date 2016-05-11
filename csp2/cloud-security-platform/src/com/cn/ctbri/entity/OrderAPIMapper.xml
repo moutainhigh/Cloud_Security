@@ -40,4 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from cs_order_api oa
         where oa.userId = #{userId} and oa.package_type = #{type} and oa.apiId = #{apiId}
     </select>
+    <delete id="deleteOrderAPI" parameterType="String">
+       delete from cs_order_api where id=#{orderId}
+    </delete>
 </mapper>
