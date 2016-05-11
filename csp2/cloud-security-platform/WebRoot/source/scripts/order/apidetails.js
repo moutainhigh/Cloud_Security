@@ -22,19 +22,30 @@ $(function(){
     		alert("数量不能小于0");
     		return;
     	}
-		$.ajax({ type: "POST",
+    	$.ajax({ type: "POST",
 		     async: false, 
-		     url: "getSession.html",
+		     url: "checkAPI.html", 
+		     data: {"apiId":apiId,
+			   	    "time":time,
+			   	    "num":num,
+			   	    "type":type},  
 		     dataType: "json", 
 		     success: function(data) {
-			    	 window.location.href="settlementAPI.html?apiId="+apiId+"&time="+time+"&num="+num+"&type="+type;
+			    	 if(data.message == true){
+			    		 window.location.href="settlementAPI.html?apiId="+apiId+"&time="+time+"&num="+num+"&type="+type;
 			    		 
-			    }, 
+			    	 
+			    	 }else{
+			    		 alert(data.message);
+			     		 return;
+			    	 }
+		    	 }, 
 		     error: function(data){ 
 		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
 		    		 window.location.href = "loginUI.html"; } 
 		    	 else { window.location.href = "loginUI.html"; } } 
 		});
+    	
 
     });
    //添加到购物车
