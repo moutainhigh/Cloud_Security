@@ -184,7 +184,11 @@ function seedetail1(e) {
                     	<c:forEach var="asset" items="${assets}" varStatus="status">
 			            	<div class="not-used">
 			            	<!-- 告警开始 -->
-			            	
+			            	<c:if test="${asset.task.status==2}">
+								<!-- 任务运行start -->
+								<c:import url="/taskRunning.html?orderId=${order.id }&type=${order.type}&orderAssetId=${asset.orderAssetId }&index=${status.index+1 }"></c:import>
+								<!-- end -->
+							</c:if>
 			            	<c:if test="${asset.task.status==3}">
 			            		<div class="user_center clear">
 								  <form id="exportForm${status.index+1 }" action="${ctx}/export.html" method="post">
@@ -382,7 +386,7 @@ function seedetail1(e) {
 								      </table>
 								      <div style="overflow:auto;height:400px;width:938px">
 								      <table class="ld_table" style="width:921px;margin-left:0;">
-								        <tbody>           
+								        <tbody>        
 								          <c:forEach var="alarm" items="${asset.asset_alarmList}" varStatus="sta">
 									          <tr>                                            
 									            <td style="width:8%;">${sta.index+1 }</td>
@@ -412,11 +416,7 @@ function seedetail1(e) {
 								  </form>
 								</div>
 							</c:if>
-							<c:if test="${asset.task.status==2}">
-								<!-- 任务运行start -->
-								<c:import url="/taskRunning.html?orderId=${order.id }&type=${order.type}&orderAssetId=${asset.orderAssetId }&index=${status.index+1 }"></c:import>
-								<!-- end -->
-							</c:if>
+							
 			            	
 			            	
 			            	<!-- end -->

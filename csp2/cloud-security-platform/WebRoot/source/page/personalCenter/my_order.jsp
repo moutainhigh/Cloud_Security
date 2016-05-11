@@ -230,7 +230,7 @@ function optOrder(orderId,status){
 	            	
 	            	<div class="coreList clearfix">
 	                	<label class="container con-order fl">
-	                    	<input type="text" class="text promptext" value="输入资产名称或者资产地址进行搜索"  placeholder="" id="search" name="search">
+	                    	<input type="text" class="text promptext" value="输入资产名称或者资产地址进行搜索"   id="search" name="search">
 	                        
 	                    	<input type="submit" value="搜索" class="sub fr" >
 	                    </label>

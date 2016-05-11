@@ -53,7 +53,7 @@
                             </td>
                             <td class="order" valign="top">
                             	<c:set var="temp" value="${nowDate }"/>
-				                <c:if test="${list.begin_date>temp&&list.status==0}"><p class="stylep" style="width:108px;">已下单<b class="wait"></b></p></c:if>
+				                <c:if test="${list.status==0}"><p class="stylep" style="width:108px;">已下单<b class="wait"></b></p></c:if>
 				                <c:if test="${list.isAPI==0 && list.begin_date<=temp&&(list.status==4||list.status==5)&&list.websoc!=2}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
 				                <c:if test="${list.isAPI==0 && (list.status==1)}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
 				                <c:if test="${list.isAPI==0 && (list.status==2)}"><p class="stylep" style="width:108px;">已结束<b class="endend"></b></p></c:if>
@@ -72,7 +72,7 @@
                              <td class="order" valign="top">
                             	<p style="width:98px; line-height:24px;margin-top:33px; height:auto;" class="stylep">
                             	
-                            		<c:if test="${list.begin_date>temp&&list.status==0}"><a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.serviceId }&indexPage=1" title="等待">查看详情</a></c:if>
+                            		<c:if test="${list.status==0}"><a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.serviceId }&indexPage=1" title="等待">查看详情</a></c:if>
              
 						            <c:if test="${list.serviceId==1||list.serviceId==2||list.serviceId==3||list.serviceId==4||list.serviceId==5}">
 						                <c:if test="${list.status==2}">
