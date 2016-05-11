@@ -17,14 +17,47 @@
 	position:relative;
 	z-index:300;
 }
-.safe01 .safeL{
+/*5.11*/
+.safe01 .safem span,.safem .Divlist{
+	margin-right: 48px;
+	position:relative;
+}
+
+.shopping i{
+	width:22px;
+	height:22px;
+	background:url(../images/h-shopping.png) no-repeat center 2px;
+	display:inline-block;
+	vertical-align:middle;
+	margin-right:8px;
+	position:relative; 
+	top:-4px;
+}
+.shopping a:hover i{
+	background:url(../images/shopping.png) no-repeat center 2px
+}
+.detalis-head .shopping i{
+	/*width:22px;
+	height:22px;*/
+	background:url(../images/w-shopping.png) no-repeat center 2px;
+	/*display:inline-block;
+	vertical-align:middle;
+	margin-right:8px;
+	position:relative; 
+	top:-4px;*/
+}
+.detalis-head .shopping a:hover i{
+	background:url(../images/h-shopping.png) no-repeat center 2px
+}
+
+/*.safe01 .safeL{
 	 width: 168px;
 	 margin-right: 29%;
 }
 .safe01 .safem span,.safem .Divlist{
 	margin-right: 40px;
 	position:relative;
-}
+}*/
 
 .ask b{
 	width:220px;
@@ -51,11 +84,14 @@
 .safe01 .safer{
 	/*line-height: 60px;*/
 	line-height: 50px;
+	margin-left: 50px;
+	display: inline;
 }
+/*5-11*/
 .safe01 .safer a{
 	font-size:20px;
 	 font-family: "微软雅黑";
-	 color: #343434;
+	 color: #4a4a4a;
 }
 
 .headBox .this{
@@ -75,12 +111,12 @@
 	position: relative;
 	/*line-height: 60px;*/
 	line-height:53px;
+        height: 100%;
 	z-index:12;
-	height: 100%;
 	top:-1px;
 }
 .safe01 .Divlist a i{
-	margin-left: 10px;
+	margin-left: 8px;
 	width: 8px;
 	height: 8px;
 	display: inline-block;
@@ -272,9 +308,10 @@
 	position:relative;
 	 top:-18px;
 }
+/*5-11*/
 .safe04 .footr li{
 	float: left;
-	margin-right:94px;
+	margin-right:80px;
 }
 .safe04 .footr li a{
 	 	font-family: "微软雅黑";
@@ -294,11 +331,11 @@
 	 	display: inline-block;
 	 	margin-top: 6px;
 }
+/*5-11*/
 .safe04 .footr{
 	position: relative;
-	left: 96px;
+	left: 122px;
 }
-/****/
 .safe04 .footr li h2{
 	margin-bottom:10px;
 	color:#fff;
@@ -1876,3 +1913,13 @@ padding: 20px 30px 0px 0px;
 /*购物车为空样式*/
 .emptyBox{width:400px; height:300px; margin:0 auto; margin-top:100px;}
 .emptyBox p{font-size:16px; padding-left:20px; position:relative; top:15px;}
+
+/*头部 登录用户名 缩写样式*/
+.safer .loginname{
+	width:130px; 
+	white-space:nowrap; 
+	overflow:hidden; 
+	text-overflow:ellipsis; 
+	font-size:20px;
+	text-align:right;
+}
