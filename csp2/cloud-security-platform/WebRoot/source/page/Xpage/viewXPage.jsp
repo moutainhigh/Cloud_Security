@@ -147,7 +147,7 @@ function detectionUrl(){
                         	<a href="#">手机APP</a>
                         	<b style="display:none"><img src="${ctx}/source/images/portal/apk.png" alt=""></b>
                         </span>
-						<span class="fl"><a href="${ctx}/aider.html" class="hbule">关于我们</a></span>
+						<span class="fl"><a href="${ctx}/knowUs.html" class="hbule">关于我们</a></span>
 						
 					</div>
 					<div class="safer fr">
