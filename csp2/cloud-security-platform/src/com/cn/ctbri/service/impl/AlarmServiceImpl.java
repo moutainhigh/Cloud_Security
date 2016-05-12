@@ -140,4 +140,7 @@ public class AlarmServiceImpl implements IAlarmService{
 	public List<Alarm> getAlarmByAsset(Map<String, Object> paramAlarm) {
 		return alarmDao.getAlarmByAsset(paramAlarm);
 	}
+	public List getAlarmByParam(Map<String, Object> paramMap) {
+		return alarmDao.getAlarmByParam(paramMap);
+	}
 }
