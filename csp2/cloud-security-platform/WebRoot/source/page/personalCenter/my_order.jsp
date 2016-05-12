@@ -250,19 +250,19 @@ function optOrder(orderId,status){
 	                     <label class="container fl">
 	                        <select class="fl" id="servName" name="servName">
 					            <option selected="selected " value="">请选择服务</option>
-					            <option value="WEB漏洞监测服务" >WEB漏洞监测服务</option>
-					            <option value="网站挂马监测服务" >网站挂马监测服务</option>
-					            <option value="网页篡改监测服务" >网页篡改监测服务</option>
-					            <option value="网页敏感内容监测服务" >网页敏感内容监测服务</option>
-					            <option value="网站可用性监测服务" >网站可用性监测服务</option>
+					            <option value="10" >WEB漏洞监测服务</option>
+					            <option value="20" >网站挂马监测服务</option>
+					            <option value="30" >网页篡改监测服务</option>
+					            <option value="40" >网页敏感内容监测服务</option>
+					            <option value="50" >网站可用性监测服务</option>
 					            <!-- <option value="6" >日常流量监测服务</option>
 					            <option value="7" >日常攻击防护服务</option>
 					            <option value="8" >突发异常流量清洗服务</option>-->
-					            <option value="WEB漏洞监测能力API" >WEB漏洞监测能力API</option>
-					            <option value="网站挂马监测能力API" >网站挂马监测能力API</option>
-					            <option value="网页篡改监测能力API" >网页篡改监测能力API</option>
-					            <option value="网页敏感内容监测能力API" >网页敏感内容监测能力API</option>
-					            <option value="网站可用性监测API" >网站可用性监测API</option>
+					            <option value="11" >WEB漏洞监测能力API</option>
+					            <option value="21" >网站挂马监测能力API</option>
+					            <option value="31" >网页篡改监测能力API</option>
+					            <option value="41" >网页敏感内容监测能力API</option>
+					            <option value="51" >网站可用性监测API</option>
 					        </select>
 	                       </label>
 	                       <label class="container fl">
