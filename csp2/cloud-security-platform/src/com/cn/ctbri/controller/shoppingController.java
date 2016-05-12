@@ -97,6 +97,7 @@ public class shoppingController {
         request.setAttribute("serviceId", serviceId);
         request.setAttribute("indexPage", indexPage);
         request.setAttribute("service", service);
+        request.setAttribute("orderType", "");
         String result = "/source/page/details/vulnScanDetails";
         return result;
 	}
@@ -480,5 +481,74 @@ public class shoppingController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	/**
+	 * 功能描述：返回修改订单
+	 * 参数描述：  无
+	 * @throws Exception 
+	 *      add by gxy 2016-5-10
+	 */
+	@RequestMapping(value="orderBack.html")
+	public String  orderBack(HttpServletResponse response,HttpServletRequest request) throws Exception{
+		 Map<String, Object> map = new HashMap<String, Object>();
+		 User globle_user = (User) request.getSession().getAttribute("globle_user");
+	   boolean apiFlag=false;
+		String result="";
+		
+		//资产ids
+        String assetIds = request.getParameter("assetIds");
+		String orderType = request.getParameter("orderType");
+        String beginDate = request.getParameter("beginDate");
+        String endDate = request.getParameter("endDate");
+        String scanType = request.getParameter("scanType");
+        String type = request.getParameter("type");
+        String apiVal=request.getParameter("apiId");
+     
+        String serviceId = request.getParameter("serviceId");
+        String[] assetArray = null;
+	    String assetAddr = "";
+        assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+        for(int i=0;i<assetArray.length;i++){
+        	Asset asset = assetService.findById(Integer.parseInt(assetArray[i]));
+        	assetAddr = assetAddr + asset.getAddr()+",";
+        }
+        assetAddr = assetAddr.substring(0, assetAddr.length()-1);
+        if(apiVal!=null&&!"".equals(apiVal)){
+        	   int apiId = Integer.parseInt(apiVal);
+        	   if(apiId==1){
+               	result = "/source/page/details/apiDetails";
+               }else if(apiId==2){
+               	result = "/source/page/details/apiDetails2";
+               }else if(apiId==3){
+               	result = "/source/page/details/apiDetails3";
+               }else if(apiId==4){
+               	result = "/source/page/details/apiDetails4";
+               }else if(apiId==5){
+               	result = "/source/page/details/apiDetails5";
+               }
+           	
+        		
+        }
+        if(serviceId!=null&&!"".equals(serviceId)){
+        	 result = "/source/page/details/vulnScanDetails";	
+        }
+        //获取服务对象资产
+	    List<Asset> serviceAssetList = selfHelpOrderService.findServiceAsset(globle_user.getId());
+	    //网站安全帮列表
+        List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
+        //查询安全能力API
+		   List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
+		 int carnum=shopCarList.size()+apiList.size();
+		 request.setAttribute("carnum", carnum);  
+        request.setAttribute("assetAddr", assetAddr);
+	    request.setAttribute("assetIds", assetIds);
+	    request.setAttribute("orderType", orderType);
+        request.setAttribute("beginDate", beginDate);
+        request.setAttribute("endDate", endDate);
+        request.setAttribute("scanType", scanType);
+        request.setAttribute("type", type);
+        request.setAttribute("serviceId", serviceId);
+        request.setAttribute("serviceAssetList", serviceAssetList);
+        return result;
 	}
 }
