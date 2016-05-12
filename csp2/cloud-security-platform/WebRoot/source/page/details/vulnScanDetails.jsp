@@ -88,12 +88,12 @@
 					</div>
 				</div>
 				<div class="dataR detailsR fl" style="width:640px;">
-					<h2 style="font-size:20px; margin-bottom:18px;">${serviceAPI.name }</h2>
+					<h2 style="font-size:20px; margin-bottom:18px;">${service.name }</h2>
                   <a href="javascript:showShopCar();" class="buttoncar" style="right:0px;"><b>${carnum}</b><i></i>我的购物车&gt;</a>
 					<ul>
 						<li class="clearfix">
 							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
-                            <div class="fl price"><strong>¥0</strong><strong></strong></div> 
+                            <div class="fl price"><strong>¥0</strong><strong></strong></div><span style="position: relative;top: 7px;left:7px">（推广初期价格）</span>
 						</li>
 						 <li class="clearfix type">
 							<label class="fl">选 类型</label>
