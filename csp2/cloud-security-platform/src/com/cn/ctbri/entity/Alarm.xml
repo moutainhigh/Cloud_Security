@@ -420,6 +420,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 and a.name=#{name}
             </if>
 	        order by a.level desc
+    </select> 
+    
+    <!-- add by tangxr 2016-5-11 -->
+    <!-- 查询告警等级-->
+    <select id="getAlarmByParam" parameterType="hashmap" resultType="hashmap">
+	        select COUNT(a.level) AS count,a.level from cs_alarm a,
+			  (select t.taskId,t.group_id from cs_order_asset oa,cs_task t 
+			    where oa.id = t.order_asset_id 
+			    and oa.orderId='16042216562270178'
+			    and t.order_asset_id = 524
+			    and t.status = 3
+			    <if test="group_flag!=null and group_flag!=''">
+	            and t.group_flag=#{group_flag}
+	            </if>
+			    order by t.execute_time desc
+			    <if test="type==1 and group_flag==null or group_flag==''">
+	             limit #{count}
+	            </if>) b
+			where (a.taskId = b.taskId or a.group_id = b.group_id)
+			<if test="level!=null">
+	            and a.level=#{level}
+	        </if>
+	        <if test="name!=null">
+                and a.name=#{name}
+            </if>
+            group by a.level
+	        order by a.level desc
     </select>
 
 </mapper>
