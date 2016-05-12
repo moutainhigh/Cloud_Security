@@ -97,5 +97,7 @@ public interface IAlarmService {
 	//add by tangxr 2016-5-5
 	//资产查询告警
 	List<Alarm> getAlarmByAsset(Map<String, Object> paramAlarm);
+	//查询告警数等级 add by tangxr 2016-5-11
+	List getAlarmByParam(Map<String, Object> paramMap);
 	
 }
