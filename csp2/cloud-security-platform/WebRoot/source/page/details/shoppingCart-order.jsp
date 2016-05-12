@@ -143,7 +143,8 @@
                         	
                             	 <tr height="40">
                                  	<td width="20%"><label >
-                                            <input type="checkbox" class="ck" style="display:none" value="${shopAPI.orderId}" isApi="1" name="check_name"><i class="chck" style="margin-right:30px;"></i>
+                                            <input type="checkbox" class="ck" style="display:none" value="${shopAPI.orderId}" isApi="1" name="check_name">
+                                            <i class="chck" style="margin:0 30px 0 40px;"></i>
                                          
                                             </label>
                                           <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${shopAPI.serviceId}&indexPage=2" target="_blank">${shopAPI.serverName}</a></td>
