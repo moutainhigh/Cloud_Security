@@ -177,4 +177,7 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
 	public List<Alarm> getAlarmByAsset(Map<String, Object> paramAlarm) {
 		return getSqlSession().selectList(ns+"getAlarmByAsset", paramAlarm);
 	}
+	public List getAlarmByParam(Map<String, Object> paramMap) {
+		return getSqlSession().selectList(ns+"getAlarmByParam", paramMap);
+	}
 }
