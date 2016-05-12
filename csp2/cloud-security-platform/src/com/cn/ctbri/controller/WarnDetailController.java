@@ -1037,24 +1037,34 @@ public class WarnDetailController {
         paramMap.put("group_flag", group_flag);
         paramMap.put("websoc", websoc);
         paramMap.put("orderAssetId", orderAssetId);
-        //低
-        paramMap.put("level", WarnType.LOWLEVEL.ordinal());
-        List<Alarm> lowList = alarmService.getAlarmByOrderId(paramMap);
-        //中
-        paramMap.put("level", WarnType.MIDDLELEVEL.ordinal());
-        List<Alarm> middleList = alarmService.getAlarmByOrderId(paramMap);
-        //高
-        paramMap.put("level", WarnType.HIGHLEVEL.ordinal());
-        List<Alarm> highList = alarmService.getAlarmByOrderId(paramMap);
+
         JSONArray json = new JSONArray();
         JSONObject jo = new JSONObject();
-        if(highList.size()==0&&middleList.size()==0&&lowList.size()==0){
+        int high = 0;
+        int middle = 0;
+        int low = 0;
+        List result = alarmService.getAlarmByParam(paramMap);
+        if(result != null && result.size() > 0){
+        	for(int i = 0; i < result.size(); i++){
+        		HashMap<String,Object>  map = (HashMap<String,Object>)result.get(i);
+        		if((Integer)map.get("level")==2){
+        			high = Integer.parseInt(map.get("count").toString());
+        		}
+        		if((Integer)map.get("level")==1){
+        			middle = Integer.parseInt(map.get("count").toString());
+        		}
+        		if((Integer)map.get("level")==0){
+        			low = Integer.parseInt(map.get("count").toString());
+        		}
+        	}
+        }
+        if(result.size()==0){
             jo.put("level", 0);
             json.add(jo);
-        }else if(highList.size()>=2){//高风险
+        }else if(high>=2){//高风险
             jo.put("level", 90);
             json.add(jo);
-        }else if(highList.size()<=0&&middleList.size()<=0){//低风险
+        }else if(high<=0&&middle<=0){//低风险
             jo.put("level", 20);
             json.add(jo);
         }else{//中风险
@@ -1086,43 +1096,49 @@ public class WarnDetailController {
         paramMap.put("group_flag", group_flag);
         paramMap.put("websoc", websoc);
         paramMap.put("orderAssetId", orderAssetId);
-        //低
-        paramMap.put("level", WarnType.LOWLEVEL.ordinal());
-        List<Alarm> lowList = alarmService.getAlarmByOrderId(paramMap);
-        //中
-        paramMap.put("level", WarnType.MIDDLELEVEL.ordinal());
-        List<Alarm> middleList = alarmService.getAlarmByOrderId(paramMap);
-        //高
-        paramMap.put("level", WarnType.HIGHLEVEL.ordinal());
-        List<Alarm> highList = alarmService.getAlarmByOrderId(paramMap);
-        //总数
-        paramMap.put("level", null);
-        List<Alarm> alarmList = alarmService.getAlarmByOrderId(paramMap);
+        int high = 0;
+        int middle = 0;
+        int low = 0;
+        List result = alarmService.getAlarmByParam(paramMap);
+        if(result != null && result.size() > 0){
+        	for(int i = 0; i < result.size(); i++){
+        		HashMap<String,Object>  map = (HashMap<String,Object>)result.get(i);
+        		if((Integer)map.get("level")==2){
+        			high = Integer.parseInt(map.get("count").toString());
+        		}
+        		if((Integer)map.get("level")==1){
+        			middle = Integer.parseInt(map.get("count").toString());
+        		}
+        		if((Integer)map.get("level")==0){
+        			low = Integer.parseInt(map.get("count").toString());
+        		}
+        	}
+        }
         
         DecimalFormat df = new DecimalFormat("0.00");//格式化小数，不足的补0
         JSONArray json = new JSONArray();
-        if(lowList.size()>0&&lowList!=null){
+        if(low>0){
             JSONObject jo = new JSONObject();
             jo.put("label", "0");
-            jo.put("value", lowList.size());
+            jo.put("value", low);
             jo.put("color", "lightgreen");
-            jo.put("ratio", df.format((float)lowList.size()/alarmList.size()*100)+"%");
+            jo.put("ratio", df.format((float)low/result.size()*100)+"%");
             json.add(jo);
         }
-        if(middleList.size()>0&&middleList!=null){
+        if(middle>0){
             JSONObject jo = new JSONObject();
             jo.put("label", "1");
-            jo.put("value", middleList.size());
+            jo.put("value", middle);
             jo.put("color", "orange");
-            jo.put("ratio", df.format((float)middleList.size()/alarmList.size()*100)+"%");
+            jo.put("ratio", df.format((float)middle/result.size()*100)+"%");
             json.add(jo);
         }
-        if(highList.size()>0&&highList!=null){
+        if(high>0){
             JSONObject jo = new JSONObject();
             jo.put("label", "2");
-            jo.put("value", highList.size());
+            jo.put("value", high);
             jo.put("color", "red");
-            jo.put("ratio", df.format((float)highList.size()/alarmList.size()*100)+"%");
+            jo.put("ratio", df.format((float)high/result.size()*100)+"%");
             json.add(jo);
         }
         return json.toString();

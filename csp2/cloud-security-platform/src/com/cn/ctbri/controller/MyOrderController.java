@@ -178,12 +178,15 @@ public class MyOrderController {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        name = servName.substring(0,1);
+        int isAPI = Integer.parseInt(servName.substring(1));
         Map<String,Object> paramMap = new HashMap<String,Object>();
         paramMap.put("userId", globle_user.getId());
         paramMap.put("type", type);
         paramMap.put("servName", name);
         paramMap.put("state", state);
         paramMap.put("search", search);
+        paramMap.put("isAPI", isAPI);
         if(StringUtils.isNotEmpty(begin_datevo)){
             paramMap.put("begin_date", DateUtils.stringToDateNYRSFM(begin_datevo));
         }else{
@@ -273,12 +276,15 @@ public class MyOrderController {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        name = servName.substring(0,1);
+        int isAPI = Integer.parseInt(servName.substring(1));
         Map<String,Object> paramMap = new HashMap<String,Object>();
         paramMap.put("userId", globle_user.getId());
         paramMap.put("type", type);
         paramMap.put("servName", name);
         paramMap.put("state", state);
         paramMap.put("search", searchText);
+        paramMap.put("isAPI", isAPI);
         if(StringUtils.isNotEmpty(begin_datevo)){
             paramMap.put("begin_date", DateUtils.stringToDateNYRSFM(begin_datevo));
         }else{
@@ -326,7 +332,7 @@ public class MyOrderController {
         model.addAttribute("nowDate",temp); 
         model.addAttribute("orderList",result);      //传对象到页面
         model.addAttribute("type",type);//回显类型  
-        model.addAttribute("servName",name);//回显服务名称
+        model.addAttribute("servName",servName);//回显服务名称
         model.addAttribute("state",state);//回显服务状态
         model.addAttribute("begin_date",begin_datevo);//回显服务开始时间    
         model.addAttribute("end_date",end_datevo);  //回显结束时间
