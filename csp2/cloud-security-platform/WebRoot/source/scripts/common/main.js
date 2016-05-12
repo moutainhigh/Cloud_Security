@@ -2,19 +2,16 @@ $(document).ready(function(){
 		//菜单下拉效果	
 	$('.listJs').hover(function(){
 		$(this).children('a').find('i').addClass('active');
-		$('.listl').stop().hide();
-		$('.listl').slideDown("fast");
-		//$('.listl').stop().slideDown("fast");
+		$('.listl').slideDown();
 	},function(){
 		$(this).children('a').find('i').removeClass('active');
-		$('.listl').stop().slideUp("fast");
+		$('.listl').stop(true,true).slideUp("slow");
 	})
 
 	$('.listl li').hover(function(){
-		$(this).children('ol').stop().hide();
 		$(this).children('ol').show(400);
 	},function(){
-		$(this).children('ol').stop().hide(400);
+		$(this).children('ol').stop(true,true).hide(400);
 	})
 	
 	//二维码
