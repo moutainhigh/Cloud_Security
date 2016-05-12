@@ -107,4 +107,6 @@ public interface AlarmDao {
 	//add by tangxr 2016-5-5
 	//资产查询告警
 	public List<Alarm> getAlarmByAsset(Map<String, Object> paramAlarm);
+	
+	public List getAlarmByParam(Map<String, Object> paramMap);
 }
