@@ -300,3 +300,17 @@ function tasknum_verification(){
 		    	});
     	}
     }
+    //返回修改订单信息
+    function orderBack(){
+    	
+    	var assetIds=$("#assetIds").val();
+    	var beginDate=$('#beginDate').val();
+    	var endDate=$('#endDate').val();
+    	var scanType = $('#scanType').val();
+    	var serviceId = $("#serviceId").val();
+    	var orderType = $("#orderType").val();
+    	var apiId =$("#apiId").val();
+    
+     window.location.href="orderBack.html?serviceId="+serviceId+"&indexPage=1&orderType="+orderType+"&beginDate="+beginDate
+		    		                       +"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&apiId="+apiId;	
+    }
