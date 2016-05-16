@@ -318,3 +318,56 @@ function tasknum_verification(){
      window.location.href="orderBack.html?serviceId="+serviceId+"&indexPage=1&orderType="+orderType+"&beginDate="+beginDate
 		    		                       +"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&apiId="+apiId+"&type="+type+"&num="+num;	
     }
+    
+    
+    //计算单次价格
+    function calPrice(serviceId){
+    	$.ajax({ type: "POST",
+		     async: false, 
+		     url: "calPrice.html?serviceId="+serviceId, 
+		     dataType: "json",
+		     success: function(data) {
+    			if(data.success){
+  		    	  var price = data.price;
+  		    	  $("#price").html("¥"+price);
+    			}
+
+		    	 }, 
+		     error: function(data){ 
+		    	  alert("error");
+		    	} 
+    	});
+    }
+    
+    //计算长期价格
+    function calPriceLong(obj){
+    	var serviceId = $("#serviceIdHidden").val();
+    	var type = obj.value;
+    	var beginDate=$('#beginDate').val();
+    	var endDate=$('#endDate').val();
+		if(beginDate==""||beginDate==null){
+    		alert("开始时间不能为空");
+    	}else if(endDate==""||endDate==null){
+    		alert("结束时间不能为空");
+    	}else if(beginDate>=endDate){
+    		alert("开始时间不能大于结束时间!");
+    	}else{
+    		$.ajax({ type: "POST",
+   		     async: false, 
+   		     url: "calPrice.html", 
+   		     data:{"serviceId":serviceId,"type":type,"beginDate":beginDate,"endDate":endDate},
+   		     dataType: "json",
+   		     success: function(data) {
+       			if(data.success){
+     		    	  var price = data.price;
+     		    	  $("#price").html("¥"+price);
+       			}
+
+   		    	 }, 
+   		     error: function(data){ 
+   		    	  alert("error");
+   		    	} 
+       	});
+    	
+    }
+}
