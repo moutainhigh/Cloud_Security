@@ -66,10 +66,13 @@
 		
 		<input type="hidden" id="assetIds" value="${assetIds }"/>
 		<input type="hidden" id="serviceId" value="${serviceId }"/>
-		<input type="hidden" id="orderType" value="${orderType }"/>
+		<input type="hidden" id="orderType" value="${type }"/>
 		<input type="hidden" id="beginDate" value="${beginDate }"/>
 		<input type="hidden" id="endDate" value="${endDate }"/>
 		<input type="hidden" id="scanType" value="${scanType }"/>
+		<input type="hidden" id="assetIds" value="${assetIds }"/>
+		<input type="hidden" id="assetIds" value="${assetIds }"/>
+		<input type="hidden" id="assetAddr" value="${assetAddr }"/>
 		
 		<input type="hidden" id="time" value="${time }"/>
 		<input type="hidden" id="num" value="${num }"/>

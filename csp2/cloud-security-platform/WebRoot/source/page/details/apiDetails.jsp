@@ -21,6 +21,20 @@
 <script src="${ctx}/source/scripts/order/apidetails.js"></script>
 <script src="${ctx}/source/scripts/order/details.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
+<script type="text/javascript">
+$(document).ready(function(){
+    //回显
+    var type = ${type};
+    var num = ${num};
+    $('.clickBox button').each(function(){
+    		if($(this).attr("name")==type){
+    			$(this).addClass('click').siblings().removeClass('click');	
+    		}
+		});
+	$('#num').val(num);
+    
+});
+</script>
 </head>
 
 <body>

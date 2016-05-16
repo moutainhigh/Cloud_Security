@@ -20,6 +20,73 @@
 
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script src="${ctx}/source/scripts/order/details.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    //回显
+	var orderType = ${service.orderType};
+    if(orderType == 0){
+			$('.end').hide();
+			$('.time').hide();
+	}
+	if(orderType == 1){
+		$('.type').hide();	
+		$('.end').show();
+	}
+	var type = ${orderType};
+	if(type==2){
+		$("#endDate").val("");
+    	$("#beginDate").val("${beginDate}");
+	}else if(type==1){
+		var scanType = $("#scanType").val();
+		$('.long').addClass('click').siblings().removeClass('click');	
+		$('.end').show();
+		$('.time').show();	
+    	$("#endDate").val("${endDate}");
+    	$("#beginDate").val("${beginDate}");
+    	$('.time button').each(function(){
+    		if($(this).val()==scanType){
+    			//alert($(this).val());
+    			$(this).addClass('clickTime').siblings().removeClass('clickTime');	
+    		}
+		});
+	}
+	
+	var assetIds = $("#assetIds").val();
+	var assetAddr = $("#assetAddr").val();
+	/*var res = assetIds.split(",");
+	for(var n=0;n<res.length-1;n++){
+	
+	}
+	$('.dropdown-menu li').each(function(){
+		var ck=$(this).find('input');
+		var id=$(this).find('input').attr('id');
+		if($(ck).is(':checked')){
+			var v= $(this).children('label').text();
+			$('.btnNew em').before('<i id='+ id +'>'+ v +',</i>');	
+		}
+		
+	})*/
+	
+	$('.btnNew em').html(assetAddr);
+	var res = assetIds.split(",");
+    for(var n=0;n<res.length-1;n++){	
+    	$('.dropdown-menu li').each(function(){
+			var ck=$(this).find('input');
+			var id=$(this).find('input').attr('id');
+			if(res[n]==id){
+				$(ck).attr("checked",true);
+				$('.btnNew em').before('<i id='+ res[n] +'></i>');
+			}
+			
+		})
+    }
+	
+	
+	
+	
+    
+});
+</script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <style>
 .dataBox .dataR .select .dropdown-menu li label{ width:86%;}
@@ -77,6 +144,9 @@
 		<input type="hidden" id="serviceId" value="${serviceId }"/>
 		<input type="hidden" id="indexPage" value="${indexPage }"/>
 		<input type="hidden" id="orderType" value="${service.orderType }"/>
+		<input type="hidden" id="scanType" value="${scanType }"/>
+		<input type="hidden" id="assetIds" value="${assetIds }"/>
+		<input type="hidden" id="assetAddr" value="${assetAddr }"/>
 		<div class="dataCent">
 			<div class="data-crumbs">
 				<a href="${ctx}/index.html" style="font-size: 20px;">安全帮</a><i>&gt;</i><a href="${ctx}/web_anquanbang.html">网站安全帮</a><i>&gt;</i><a href="javascript:;">${service.name }</a>
@@ -97,52 +167,35 @@
 						</li>
 						 <li class="clearfix type">
 							<label class="fl">选 类型</label>
-                            <c:if test="${orderType==2}">
                             <div class="fl clickBox" id="clickBox">
-                            
 	                            <button class="click Single" value="2">单次</button>
 	                            <button class="long" value="1">长期</button>
                             </div> 
-                             </c:if>
-                             <c:if test="${orderType==1}">
-                            <div class="fl clickBox" id="clickBox">
-                               <button class="long" value="2">单次</button>
-	                            <button class="click Single" value="1">长期</button>
-                            </div> 
-                             </c:if> 
-                                <c:if test="${orderType==''}">
-                            <div class="fl clickBox" id="clickBox">
-                                 <button class="click Single" value="2">单次</button>
-	                            <button class="long" value="1">长期</button>
-                            </div> 
-                             </c:if> 
 						</li>
 						<li class="clearfix">
 							<label class="fl">服务时间</label>
                             <div class="fl" style="top:3px;">
-                            	<span class="start">开始时间 <input type="text" style="width:156px;" class="text"  id="beginDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="${beginDate}"/></span>
-                                
-                                <span class="end" style="display:none; margin-right:0px;">结束时间 <input type="text" style="width:156px;" class="text" value="${endDate}" id="endDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></span>
-                              
+                            	<span class="start">开始时间 <input type="text" style="width:156px;" class="text" value="" id="beginDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></span>
+                                <span class="end" style="display:none; margin-right:0px;">结束时间 <input type="text" style="width:156px;" class="text" value="" id="endDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></span>
                             </div> 
 						</li>
 						<li class="clearfix time">
 							<label class="fl">服务频率</label>
                             <div class="fl clickBox" id="time">
-                            	<c:if test="${service.id == 1||serviceId==1}">
+                            	<c:if test="${service.id == 1}">
 	                             <button class="clickTime" value="2">每周</button>
 	                             <button value="3">每月</button>
 	                            </c:if>
-	                            <c:if test="${service.id == 2||serviceId==2}">
+	                            <c:if test="${service.id == 2}">
 	                             <button class="clickTime" value="1">30分钟</button>
 	                            </c:if>
-	                            <c:if test="${service.id == 3||serviceId==3}">
+	                            <c:if test="${service.id == 3}">
 	                             <button class="clickTime" value="4">1天</button>
 	                            </c:if>
-	                            <c:if test="${service.id == 4||serviceId==4}">
+	                            <c:if test="${service.id == 4}">
 	                             <button class="clickTime" value="4">1天</button>
 	                            </c:if>
-	                            <c:if test="${service.id == 5||serviceId==5}">
+	                            <c:if test="${service.id == 5}">
 	                             <button class="clickTime" value="3">1小时</button>
 	                             <button value="4">2小时</button>
 	                            </c:if>
