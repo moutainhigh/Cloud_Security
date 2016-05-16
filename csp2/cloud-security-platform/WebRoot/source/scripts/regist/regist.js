@@ -256,7 +256,7 @@ function checkSendMobile(){
                		$("#verification_code_prompt").fadeIn();
            			checkSendMobile1 = 1;
            		}else{
-               		$("#verification_code_prompt").html("<b></b>一个手机号码只能发送3次短信");
+               		$("#verification_code_prompt").html("<b></b>一个手机号码只能发送3次短信,且两次间隔大于2分钟");
                		$("#verification_code_prompt").fadeIn();
                		checkSendMobile1 = 0;
            		}
