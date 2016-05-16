@@ -87,7 +87,7 @@
                             </form>
                             <div class="tableBox">
                                 <div class="">
-                                	<div class="order" id="system3" style="width:600px;height:300px"></div>
+                                	<div class="order" id="system3" style="width:800px;height:300px"></div>
                                 </div>
                             </div>
                         
