@@ -332,7 +332,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 根据行业查询下订单用户数量 -->
     <select id="findUserCountByIndus" parameterType="hashmap" resultType="hashmap">
-    SELECT u.industry,COUNT(DISTINCT u.name) count
+    <!-- SELECT u.industry,u.name,COUNT(DISTINCT u.name) count -->
+    SELECT DISTINCT u.name,u.industry
 	FROM cs_order o, cs_user u
 	WHERE o.userId=u.id 
 	<if test="begin_date!=null and begin_date!=''">
@@ -348,7 +349,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <if test="industry!=null and industry!='' and industry!='-1'">
         AND u.industry like CONCAT(CONCAT('%', #{industry}), '%')
     </if>
-	GROUP BY u.industry
+     <!-- GROUP BY u.industry -->
     </select>
      <!-- 当前时间前5小时数据 -->
     <select id="findOrderTimesLine" parameterType="hashmap" resultType="hashmap">
@@ -395,9 +396,58 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<if test="serviceId!=null and serviceId!=''">
 	AND serviceId=#{serviceId} 
 	</if>
-	GROUP BY s.id
+	<!-- GROUP BY s.id  -->
+	AND o.create_date is not null
+	GROUP BY DATE_FORMAT(o.create_date,'%H:00:00')
 	<if test="repeat==1">
 	having count(*)>=2
 	</if>
+    </select>
+    
+    <!-- 查询订单回购率	-->
+    <select id="findOrderWithServiceIdReBuy" parameterType="hashmap" resultType="hashmap">
+    SELECT o.serviceId serviceid,o.userId,count(*) count,s.name name FROM cs_order o,cs_service s 
+	<![CDATA[
+	WHERE 1=1 
+	]]>	
+	<if test="begin_date!=null and begin_date!=''">
+    <![CDATA[
+	AND o.create_date>=#{begin_date}  
+	]]>	
+	</if>
+	<if test="end_date!=null and end_date!=''">
+    <![CDATA[
+	AND o.create_date<=#{end_date}
+	]]>	
+	</if>
+	AND o.serviceId=s.id 
+	<if test="serviceId!=null and serviceId!=''">
+	AND serviceId=#{serviceId} 
+	</if>
+	GROUP BY o.userId
+    having count(*)>=2
+    </select>
+    
+    <!-- 查询订单购买数	-->
+    <select id="findOrderWithServiceIdBuy" parameterType="hashmap" resultType="hashmap">
+    SELECT o.serviceId serviceid,o.userId,count(*) count,s.name name FROM cs_order o,cs_service s 
+	<![CDATA[
+	WHERE 1=1 
+	]]>	
+	<if test="begin_date!=null and begin_date!=''">
+    <![CDATA[
+	AND o.create_date>=#{begin_date}  
+	]]>	
+	</if>
+	<if test="end_date!=null and end_date!=''">
+    <![CDATA[
+	AND o.create_date<=#{end_date}
+	]]>	
+	</if>
+	AND o.serviceId=s.id 
+	<if test="serviceId!=null and serviceId!=''">
+	AND serviceId=#{serviceId} 
+	</if>
+	GROUP BY o.userId
     </select>
 </mapper>
