@@ -164,7 +164,7 @@ public class WarnDetailController {
         }else{
         	
         	//有告警：修改task表是否查看告警标识为1
-        	if(orderList.get(0).get("status").equals(2) || orderList.get(0).get("status").equals(3)){
+            /*if(orderList.get(0).get("status").equals(2) || orderList.get(0).get("status").equals(3)){
             	Map<String, Object> paramMap1 = new HashMap<String, Object>();
             	if(type.equals("2")){
             		paramMap1.put("orderId", orderId);
@@ -177,8 +177,7 @@ public class WarnDetailController {
             		}
             	}
 
-        	}
-
+        	}*/
     		
 	        paramMap.put("orderId", orderId);
 	        paramMap.put("type", type);
@@ -187,16 +186,7 @@ public class WarnDetailController {
 	        paramMap.put("websoc", websoc);
 	        List<Alarm> alarmList = alarmService.getAlarmByOrderId(paramMap);
 	        request.setAttribute("alist", alarmList.size());
-	        //关键字告警信息
-			List<Alarm> keywordList = alarmService.findKeywordWarningByOrderId(orderId);
-			
-			if(keywordList!=null){
-				for(Alarm a :keywordList){
-					a.setAlarmTime(DateUtils.dateToString(a.getAlarm_time()));
-				}
-			}
-			request.setAttribute("keywordList", keywordList);
-			request.setAttribute("keyList", keywordList.size());
+	       
 	        //获取历史时间
 	        List taskTime = taskService.findScanTimeByOrderId(orderId);
 	        request.setAttribute("taskTime", taskTime);
@@ -213,17 +203,7 @@ public class WarnDetailController {
 	        	}
 	            return this.service(request,paramMap,status,orderList);
 	        }else {
-	            //获取推送告警信息
-	        	String flag_able=request.getParameter("flag");
-	        	paramMap.put("flag", flag_able);
-	            List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(paramMap);
-	            //处理时间Thu Apr 16 09:47:38 CST 2015=》年月日时分秒
-	        	if(taskWarnList!=null){
-	        		for(TaskWarn t : taskWarnList){
-	        			t.setWarnTime(DateUtils.dateToString(t.getWarn_time()));
-	        		}
-	        	}
-	            request.setAttribute("taskWarnList", taskWarnList);
+	            
 	            /*
 	            //当任务状态为3，完成状态
 	        	int status = Integer.parseInt(Constants.TASK_FINISH);
@@ -252,13 +232,10 @@ public class WarnDetailController {
 	                }
 	                
 	            }*/
-	            //获取对应IP
-	            List IPList = orderService.findIPByOrderId(orderId);
-	            int serviceId=0 ;
 	            
-	            /** 获取告警次数  dyy*/
-	            TaskWarn taskCount = taskWarnService.findTaskWarnCountByOrderId(orderId);
-	            request.setAttribute("count", taskCount.getCount());
+	            int serviceId=0;
+	            
+	            
 	            /** 基本信息   dyy*/
 	            Task task = new Task();
 	//            if(Integer.parseInt(type)==1){
@@ -284,14 +261,13 @@ public class WarnDetailController {
 	            }
 	            //request.setAttribute("task", task);
 	            HashMap<String, Object> order=new HashMap<String, Object>();
-	            for(int i=0;i<orderList.size();i++){
-	            	 order=(HashMap) orderList.get(i);
-	            	 serviceId=(Integer) order.get("serviceId");
-	            }
-	            //获取关键字信息
+        	    order=(HashMap) orderList.get(0);
+        	    serviceId=(Integer) order.get("serviceId");
 	            
 	            if(serviceId==6||serviceId==7||serviceId==8){//DDOS
-	            	 List<AlarmDDOS> alarmDDosList = alarmService.getAlarmDdosByOrderId(paramMap);
+	            	//获取对应IP
+		            List IPList = orderService.findIPByOrderId(orderId);
+	            	List<AlarmDDOS> alarmDDosList = alarmService.getAlarmDdosByOrderId(paramMap);
 	            	request.setAttribute("ipList", IPList);
 	            	request.setAttribute("serviceId", serviceId);
 	                request.setAttribute("alarmList", alarmDDosList);
@@ -311,6 +287,18 @@ public class WarnDetailController {
 	                    request.setAttribute("alarmList", alarmList);
 	            		return "/source/page/order/warning_doctort"	;
 	    			case 4:/**关键字监测服务 dyy*/    				
+	    				//关键字告警信息
+	    				List<Alarm> keywordList = alarmService.findKeywordWarningByOrderId(orderId);
+	    				
+	    				if(keywordList!=null){
+	    					for(Alarm a :keywordList){
+	    						a.setAlarmTime(DateUtils.dateToString(a.getAlarm_time()));
+	    					}
+	    				}
+	    				request.setAttribute("keywordList", keywordList);
+	    				request.setAttribute("keyList", keywordList.size());
+	    				
+	    				
 	    				String flag=request.getParameter("flag");
 	    				//关键字 折线图 左侧信息
 	    				Map<String,Object> m1 = new HashMap<String, Object>();
@@ -351,6 +339,22 @@ public class WarnDetailController {
 	                	}
 	                	return "/source/page/order/warning_keyword"	;
 	    			case 5:/**可用性监测服务 dyy*/
+	    				//获取推送告警信息
+	    	        	String flag_able=request.getParameter("flag");
+	    	        	paramMap.put("flag", flag_able);
+	    	            List<TaskWarn> taskWarnList=taskWarnService.findTaskWarnByOrderId(paramMap);
+	    	            //处理时间Thu Apr 16 09:47:38 CST 2015=》年月日时分秒
+	    	        	if(taskWarnList!=null){
+	    	        		for(TaskWarn t : taskWarnList){
+	    	        			t.setWarnTime(DateUtils.dateToString(t.getWarn_time()));
+	    	        		}
+	    	        	}
+	    	            request.setAttribute("taskWarnList", taskWarnList);
+	    	            
+	    	            /** 获取告警次数  dyy*/
+	    	            TaskWarn taskCount = taskWarnService.findTaskWarnCountByOrderId(orderId);
+	    	            request.setAttribute("count", taskCount.getCount());
+	    				
 	    				//可用性  折线图 左侧信息
 	    				Map<String,Object> m2 = new HashMap<String, Object>();
 	    				m2.put("orderId", orderId);
@@ -1099,6 +1103,7 @@ public class WarnDetailController {
         int high = 0;
         int middle = 0;
         int low = 0;
+        int count = 0;
         List result = alarmService.getAlarmByParam(paramMap);
         if(result != null && result.size() > 0){
         	for(int i = 0; i < result.size(); i++){
@@ -1114,7 +1119,7 @@ public class WarnDetailController {
         		}
         	}
         }
-        
+        count = high + middle + low;
         DecimalFormat df = new DecimalFormat("0.00");//格式化小数，不足的补0
         JSONArray json = new JSONArray();
         if(low>0){
@@ -1122,7 +1127,7 @@ public class WarnDetailController {
             jo.put("label", "0");
             jo.put("value", low);
             jo.put("color", "lightgreen");
-            jo.put("ratio", df.format((float)low/result.size()*100)+"%");
+            jo.put("ratio", df.format((float)low/count*100)+"%");
             json.add(jo);
         }
         if(middle>0){
@@ -1130,7 +1135,7 @@ public class WarnDetailController {
             jo.put("label", "1");
             jo.put("value", middle);
             jo.put("color", "orange");
-            jo.put("ratio", df.format((float)middle/result.size()*100)+"%");
+            jo.put("ratio", df.format((float)middle/count*100)+"%");
             json.add(jo);
         }
         if(high>0){
@@ -1138,7 +1143,7 @@ public class WarnDetailController {
             jo.put("label", "2");
             jo.put("value", high);
             jo.put("color", "red");
-            jo.put("ratio", df.format((float)high/result.size()*100)+"%");
+            jo.put("ratio", df.format((float)high/count*100)+"%");
             json.add(jo);
         }
         return json.toString();

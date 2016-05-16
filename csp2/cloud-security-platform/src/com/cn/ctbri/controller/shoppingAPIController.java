@@ -162,7 +162,7 @@ public class shoppingAPIController {
     		        paramMap.put("type", type);
     		        paramMap.put("apiId", apiId);
             		List<OrderAPI> oAPIList = orderAPIService.findOrderAPIByType(paramMap);
-            		if(oAPIList.size()==1){
+            		if(oAPIList.size()>=1){
             			m.put("message", "此项服务不能免费购买第二次");
             		}else{
             			m.put("message", true);

@@ -1,42 +1,23 @@
 package com.cn.ctbri.controller;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cn.ctbri.common.Constants;
-import com.cn.ctbri.common.NorthAPIWorker;
 import com.cn.ctbri.entity.Asset;
-import com.cn.ctbri.entity.Factory;
-import com.cn.ctbri.entity.Linkman;
-import com.cn.ctbri.entity.Order;
-import com.cn.ctbri.entity.OrderAsset;
-import com.cn.ctbri.entity.OrderIP;
-import com.cn.ctbri.entity.Serv;
-import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.entity.Task;
-import com.cn.ctbri.entity.TaskHW;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
@@ -48,9 +29,7 @@ import com.cn.ctbri.service.ITaskHWService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.service.IUserService;
-import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
-import com.cn.ctbri.util.Random;
 
 /**
  * 创 建 人  ：  tangxr
@@ -173,19 +152,29 @@ public class MyOrderController {
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         //组织条件查询
         String name=null;
+        String searchText = null;//输入的查询文本
         try {
             name=new String(servName.getBytes("ISO-8859-1"), "UTF-8");
+            if(search!=null){
+            	searchText = new String(search.getBytes("ISO-8859-1"), "UTF-8");
+    			if(searchText.equals("输入资产名称或者资产地址进行搜索")){
+    				searchText = "";
+    			}
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        name = servName.substring(0,1);
-        int isAPI = Integer.parseInt(servName.substring(1));
+        int isAPI = 0;
+        if(servName!=""){
+        	name = servName.substring(0,1);
+            isAPI = Integer.parseInt(servName.substring(1));
+        }
         Map<String,Object> paramMap = new HashMap<String,Object>();
         paramMap.put("userId", globle_user.getId());
         paramMap.put("type", type);
         paramMap.put("servName", name);
         paramMap.put("state", state);
-        paramMap.put("search", search);
+        paramMap.put("search", searchText);
         paramMap.put("isAPI", isAPI);
         if(StringUtils.isNotEmpty(begin_datevo)){
             paramMap.put("begin_date", DateUtils.stringToDateNYRSFM(begin_datevo));
@@ -250,7 +239,8 @@ public class MyOrderController {
         mv.addObject("state",state);//回显服务状态
         mv.addObject("begin_date",begin_datevo);//回显服务开始时间    
         mv.addObject("end_date",end_datevo);  //回显结束时间
-        mv.addObject("search",search);  //回显查询文本
+        mv.addObject("search",searchText);  //回显查询文本
+        mv.addObject("isAPI",isAPI);  //回显查询文本
         return mv;
     }
     
@@ -269,15 +259,21 @@ public class MyOrderController {
         String searchText = null;//输入的查询文本
         try {
             name=new String(servName.getBytes("ISO-8859-1"), "UTF-8");
-            searchText = new String(search.getBytes("ISO-8859-1"), "UTF-8");
-			if(searchText.equals("输入资产名称或者资产地址进行搜索")){
-				searchText = "";
-			}
+            if(search!=null){
+            	searchText = new String(search.getBytes("ISO-8859-1"), "UTF-8");
+    			if(searchText.equals("输入资产名称或者资产地址进行搜索")){
+    				searchText = "";
+    			}
+            }
+            
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        name = servName.substring(0,1);
-        int isAPI = Integer.parseInt(servName.substring(1));
+        int isAPI = 0;
+        if(servName!=""){
+        	name = servName.substring(0,1);
+            isAPI = Integer.parseInt(servName.substring(1));
+        }
         Map<String,Object> paramMap = new HashMap<String,Object>();
         paramMap.put("userId", globle_user.getId());
         paramMap.put("type", type);
@@ -337,6 +333,7 @@ public class MyOrderController {
         model.addAttribute("begin_date",begin_datevo);//回显服务开始时间    
         model.addAttribute("end_date",end_datevo);  //回显结束时间
         model.addAttribute("search",searchText);  //回显查询文本
+        model.addAttribute("isAPI",isAPI);  //回显查询文本
         return "/source/page/personalCenter/my_order";
     }
     
