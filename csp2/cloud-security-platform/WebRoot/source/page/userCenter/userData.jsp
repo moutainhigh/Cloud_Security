@@ -106,7 +106,7 @@
 								<div class="fl dataListR">
 								 	<input type="hidden" id="originalMobile"  value="${user.mobile}"/>
                                 	<input type="text" class="text" name="mobile" value="${user.mobile}" id="regist_phone" onblur="checkMobile()">
-                                	<span id="regist_mobile_msg" style="color:red;float:left"></span>
+                                	<span id="regist_mobile_msg" style="color:red;"></span>
                                 </div>
                              </li>
                              <li class="clearfix">
