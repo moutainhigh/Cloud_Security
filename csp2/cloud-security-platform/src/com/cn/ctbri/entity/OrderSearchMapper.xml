@@ -32,15 +32,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        from cs_order o,cs_service_api s,cs_order_api oa
 	        where o.userId = #{userId} and o.serviceId = s.id and isAPI = 1 and oa.id = o.id) b
 	            where 1=1
-	        <if test="isAPI!=null and isAPI!=''">
-                AND b.isAPI = #{isAPI}
-            </if> 
             <if test="type!=null and type!=''">
                 AND b.type = #{type}
                 AND b.isAPI = 0
             </if>  
             <if test="servName!=null and servName!=''"> 
                 AND b.serviceId = #{servName} 
+                AND b.isAPI = #{isAPI}
             </if> 
             <if test="begin_date!=null and end_date!=null">
                 AND b.begin_date &gt;= #{begin_date}
@@ -56,8 +54,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 AND b.begin_date &gt; #{currentDate}
             </if>
             <if test="state==1"><!-- 服务中 -->
-                AND b.begin_date &lt;= #{currentDate}
-                AND b.status in (0,3)
+                and b.status in (4,5)
+                or (end_date &gt;= now() and b.isAPI = 1)
+                
             </if>
             <if test="state==2"><!-- 已结束 -->
                 <!-- AND c.end_date &lt; #{currentDate} -->
@@ -115,15 +114,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        from cs_order o,cs_service_api s,cs_order_api oa
 	        where o.userId = #{userId} and o.serviceId = s.id and isAPI = 1 and oa.id = o.id) b
 	            where 1=1
-	        <if test="isAPI!=null and isAPI!=''">
-                AND b.isAPI = #{isAPI}
-            </if> 
             <if test="type!=null and type!=''">
                 AND b.type = #{type}
                 AND b.isAPI = 0
             </if>
             <if test="servName!=null and servName!=''"> 
                 AND b.serviceId = #{servName} 
+                AND b.isAPI = #{isAPI}
             </if>    
             <if test="begin_date!=null and end_date!=null">
                 AND b.begin_date &gt;= #{begin_date}
@@ -139,8 +136,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 AND b.begin_date &gt; #{currentDate}
             </if>
             <if test="state==1"><!-- 服务中 -->
-                AND b.begin_date &lt;= #{currentDate}
-                AND b.status in (0,3)
+                and b.status in (4,5)
+                or (end_date &gt;= now() and b.isAPI = 1)
+                
             </if>
             <if test="state==2"><!-- 已结束 -->
                 <!-- AND c.end_date &lt; #{currentDate} -->
