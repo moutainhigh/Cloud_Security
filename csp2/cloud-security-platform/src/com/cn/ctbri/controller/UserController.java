@@ -993,6 +993,21 @@ public class UserController{
 	        		userService.updateMobile(m1);
 	            	flag = true;
 	            }
+        	}else if(mobile.getTimes()==3){
+        		Map<String, Object> m2 = new HashMap<String, Object>();
+        		//判断30分钟以后
+        		String dateLast = mobile.getSendDate();
+        		Date lastDate=DateUtils.stringToDateNYRSFM(dateLast);
+        		Date nowDate=DateUtils.stringToDateNYRSFM(ds.format(date));  
+        		//时间之间的毫秒数
+	            long ms = DateUtils.getMsByDays(lastDate, nowDate);
+	            if(ms>(1000*60*30)){
+	            	m2.put("mobileNumber", mobile.getMobileNumber());
+	        		m2.put("times", 1);
+	        		m2.put("sendDate", ds.format(date));
+	        		userService.updateMobile(m2);
+	            	flag = true;
+	            }
         	}
         	if(flag){
         		//发送短信
