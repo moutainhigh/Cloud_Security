@@ -40,12 +40,11 @@ $(document).ready(function(){
 		var scanType = $("#scanType").val();
 		$('.long').addClass('click').siblings().removeClass('click');	
 		$('.end').show();
-		$('.time').show();	
+		$('.time').show();
     	$("#endDate").val("${endDate}");
     	$("#beginDate").val("${beginDate}");
     	$('.time button').each(function(){
     		if($(this).val()==scanType){
-    			//alert($(this).val());
     			$(this).addClass('clickTime').siblings().removeClass('clickTime');	
     		}
 		});
@@ -53,19 +52,6 @@ $(document).ready(function(){
 	
 	var assetIds = $("#assetIds").val();
 	var assetAddr = $("#assetAddr").val();
-	/*var res = assetIds.split(",");
-	for(var n=0;n<res.length-1;n++){
-	
-	}
-	$('.dropdown-menu li').each(function(){
-		var ck=$(this).find('input');
-		var id=$(this).find('input').attr('id');
-		if($(ck).is(':checked')){
-			var v= $(this).children('label').text();
-			$('.btnNew em').before('<i id='+ id +'>'+ v +',</i>');	
-		}
-		
-	})*/
 	
 	$('.btnNew em').html(assetAddr);
 	var res = assetIds.split(",");
@@ -77,14 +63,8 @@ $(document).ready(function(){
 				$(ck).attr("checked",true);
 				$('.btnNew em').before('<i id='+ res[n] +'></i>');
 			}
-			
 		})
     }
-	
-	
-	
-	
-    
 });
 </script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
