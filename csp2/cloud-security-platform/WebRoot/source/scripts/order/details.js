@@ -4,23 +4,25 @@ $(function(){
     //确认订单界面点击"确认订单"进入完成
     $("#buyNow").click(function(){
     	var createDate = getCreateDate();
-    	var orderType = $('.click').val();
+    	var type = $('.click').val();
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
     	var scanType = $('.clickTime').val();
     	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
     	var serviceId = $("#serviceId").val();
-    	if(orderType==2){
+    	if(type==2){
     		scanType="";
     	}
     	//获得服务资产
+//    	var assetIds = $("#assetIds").val();
+    	
     	var assetIds = "";
    		$('.btnNew i').each(function(){
    			assetIds = assetIds + $(this).attr("id") + ",";
 		});
     	var ip="";
 		var bandwidth="";
-		if(orderType==2){
+		if(type==2){
 			if(beginDate==""||beginDate==null){
         		alert("开始时间不能为空");
         		return;
@@ -52,7 +54,7 @@ $(function(){
 		     url: "getSession.html", 
 		     dataType: "json", 
 		     success: function(data) {
-		    	 window.location.href="settlement.html?orderType="+orderType+"&beginDate="+beginDate+"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds;
+		    	 window.location.href="settlement.html?type="+type+"&beginDate="+beginDate+"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds;
 		    	 }, 
 		     error: function(data){ 
 		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
@@ -310,7 +312,9 @@ function tasknum_verification(){
     	var serviceId = $("#serviceId").val();
     	var orderType = $("#orderType").val();
     	var apiId =$("#apiId").val();
+    	var type =$("#type").val();
+    	var num =$("#num").val();
     
      window.location.href="orderBack.html?serviceId="+serviceId+"&indexPage=1&orderType="+orderType+"&beginDate="+beginDate
-		    		                       +"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&apiId="+apiId;	
+		    		                       +"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&apiId="+apiId+"&type="+type+"&num="+num;	
     }
