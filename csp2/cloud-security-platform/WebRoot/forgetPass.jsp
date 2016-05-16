@@ -47,7 +47,7 @@
 					<div class="safer fr" style="margin-left:0px;">
 						<!-- 如果已经登录则显示用户名，否则需要登录 -->
 				         <c:if test="${sessionScope.globle_user!=null }">
-				         <div class="login clearfix">
+				         <div class="clearfix">
 					        <a href="${ctx}/userCenterUI.html"  class="fl loginname">${sessionScope.globle_user.name }</a>
 					        <em class="fl">|</em>
 					        <a href="${ctx}/exit.html" class="fl" >退出</a>
