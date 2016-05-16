@@ -45,6 +45,7 @@ import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServiceAPIService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.CommonUtil;
+import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.LogonUtils;
 import com.cn.ctbri.util.Mail;
 import com.cn.ctbri.util.MailUtils;
@@ -961,24 +962,37 @@ public class UserController{
         SMSUtils smsUtils = new SMSUtils();
         try {
         	boolean flag = false;
+        	//当前时间
+    		Date date = new Date();
+    		SimpleDateFormat ds = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         	//判断当前手机号是否已经发送过短信
         	MobileInfo mobile = userService.getMobileById(user.getMobile());
         	if(mobile==null){
         		MobileInfo mobileInfo = new MobileInfo();
         		mobileInfo.setMobileNumber(user.getMobile());
         		mobileInfo.setTimes(1);
-        		Date date = new Date();
-        		SimpleDateFormat ds = new SimpleDateFormat("yyyy-MM-dd");
         		mobileInfo.setSendDate(ds.format(date));
         		userService.addMobile(mobileInfo);
         		flag = true;
         	}else if(mobile.getTimes()<3){
         		Map<String, Object> m1 = new HashMap<String, Object>();
         		int times = mobile.getTimes()+1;
-        		m1.put("mobileNumber", mobile.getMobileNumber());
-        		m1.put("times", times);
-        		userService.updateMobile(m1);
-        		flag = true;
+        		
+        		//判断时间间隔
+        		String dateLast = mobile.getSendDate();
+        		Date lastDate=DateUtils.stringToDateNYRSFM(dateLast);
+	            Date nowDate=DateUtils.stringToDateNYRSFM(ds.format(date));  
+	            //时间之间的毫秒数
+	            long ms = DateUtils.getMsByDays(lastDate, nowDate);
+	            //间隔大于2分钟
+	            if(ms>(1000*60*2)){
+
+	        		m1.put("mobileNumber", mobile.getMobileNumber());
+	        		m1.put("times", times);
+	        		m1.put("sendDate", ds.format(date));
+	        		userService.updateMobile(m1);
+	            	flag = true;
+	            }
         	}
         	if(flag){
         		//发送短信
@@ -989,7 +1003,7 @@ public class UserController{
         		// 把数据返回到页面
         		CommonUtil.writeToJsp(response, JSON);
         	}else{
-        		m.put("msg", "2");//1：验证码发送成功
+        		m.put("msg", "2");//1：一个手机只能发送三次短信且时间间隔大于2分钟
         		JSONObject JSON = CommonUtil.objectToJson(response, m);
         		// 把数据返回到页面
         		CommonUtil.writeToJsp(response, JSON);
