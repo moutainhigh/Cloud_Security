@@ -2,6 +2,7 @@ package com.cn.ctbri.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -136,6 +137,45 @@ public class OrderAnalysisController {
 			list.add(map);
 		}
 		String resultGson = gson.toJson(list);
+		PrintWriter out;
+		out = response.getWriter();
+		out.write(resultGson); 
+		out.flush(); 
+		out.close();
+	}
+	
+	/*
+	 * 回购率
+	 * add by tangxr
+	 */
+	@RequestMapping("/getServiceDateReBuy.html")
+	public void orderByServiceIdReBuy(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		String beginDate = request.getParameter("begindate");
+		String endDate = request.getParameter("enddate");
+		String serviceId = request.getParameter("serviceid");
+		String repeat = request.getParameter("repeat");
+		paramMap.put("begin_date", beginDate);
+		paramMap.put("end_date", endDate);
+		paramMap.put("serviceId", serviceId);
+		paramMap.put("repeat", repeat);
+		List<Map> list = orderService.findOrderWithServiceIdReBuy(paramMap);	
+		List<Map> listAll = orderService.findOrderWithServiceIdBuy(paramMap);
+		DecimalFormat df = new DecimalFormat("0.00");//格式化小数，不足的补0
+		Gson gson= new Gson(); 
+		response.setContentType("text/html;charset=utf-8");
+		
+		List<Map> listRebuy = new ArrayList();
+		Map map = new HashMap();
+		map.put("name", "回购率");
+		map.put("count", list.size());
+		Map map1 = new HashMap();
+		map1.put("name", "未回购率");
+		map1.put("count", listAll.size()-list.size());
+		listRebuy.add(map);
+		listRebuy.add(map1);
+		
+		String resultGson = gson.toJson(listRebuy);
 		PrintWriter out;
 		out = response.getWriter();
 		out.write(resultGson); 
