@@ -75,14 +75,14 @@
 <div class="user_center clear">
   <!-- 订单详情-->
   <div class="user_right" style="margin:auto;float:none;">
-    <div class="gj_top"> <a href="#" class="aelse">订单跟踪</a>　>　<a href="#" class="acur">订单详情</a> </div>
+    <div class="gj_top"> <a href="#" class="aelse">我的订单</a>　>　<a href="#" class="acur">订单详情</a> </div>
     <c:forEach var="order" items="${orderList}" varStatus="status">
 	    <p style="margin:0 0 38px 286px;"><span class="bigfont">订单编号</span><span class="bigfont" style="margin-right:20px;">${order.id }</span><span class="bigfont">下单时间</span><span class="bigfont"><fmt:formatDate value="${order.create_date }" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
 	    <p class="dd_detail"><span class="detail_l fl">订单状态</span><span class="detail_r fl">
            <c:set var="temp" value="${nowDate }"/>
-           <c:if test="${order.begin_date>temp}">已下单</c:if>
-           <c:if test="${order.begin_date<=temp&&order.status==0}">服务中</c:if>
-           <c:if test="${order.status==1||order.status==2}">已结束</c:if>
+           <c:if test="${order.status==0}">已下单</c:if>
+           <!-- <c:if test="${order.begin_date<=temp&&order.status==0}">服务中</c:if>
+           <c:if test="${order.status==1||order.status==2}">已结束</c:if> -->
 	    </span></p>
 	    <p class="dd_detail"><span class="detail_l fl">订单类型</span><span class="detail_r fl">
 	       <c:if test="${order.type==1}">长期</c:if>
