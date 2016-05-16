@@ -87,13 +87,15 @@ $('.dropdown-menu li').hover(function(){
 //			$('.dropdown-menu').append('<li><label name="a"><input type="checkbox"  id='+ i +' >1</label></li>');	
 //		}
 
+		var assetIds = $("#assetIds").val();
+		var assetAddr = $("#assetAddr").val();
 		$('.dropdown-menu li').each(function(){
 			$(this).delegate(this,'click',function(){
 				var ck=$(this).find('input');
 				var id=$(this).find('input').attr('id');
 				if($(ck).is(':checked')){
 					var v= $(this).children('label').text();
-					$('.btnNew em').before('<i id='+ id +'>'+ v +',</i>');	
+					$('.btnNew em').before('<i id='+ assetIds + id +'>'+ assetAddr + v +',</i>');	
 				}else
 				{
 					$('.btnNew i').each(function(index, element) {
@@ -113,6 +115,7 @@ $('.dropdown-menu li').hover(function(){
 			$('.start').show();
 			$('.end').hide();
 			$('.time').hide();	
+			$("#endDate").val("");
 		})
 		$('.long').click(function(){
 			$('.start').show();
