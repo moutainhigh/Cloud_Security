@@ -10,7 +10,7 @@ var checkEmailActivationCode1 = 0;
 var wait=120;
 function checkName(){
 	var name = $("#regist_name").val();
-	var	pattern	= /^[a-zA-Z0-9_]{4,12}$/;
+	var	pattern	= /^[a-zA-Z0-9_]{4,20}$/;
 	var flag = pattern.test(name);
 	if(name==""||name==null){
 		$("#regist_name_flag").attr("class","error");
