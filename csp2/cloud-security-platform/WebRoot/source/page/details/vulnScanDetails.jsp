@@ -143,12 +143,12 @@ $(document).ready(function(){
 					<ul>
 						<li class="clearfix">
 							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
-                            <div class="fl price"><strong>¥0</strong><strong></strong></div><span style="position: relative;top: 7px;left:7px">（推广初期价格）</span>
+                            <div class="fl price"><strong id="price">¥0</strong><strong></strong></div><span style="position: relative;top: 7px;left:7px">（推广初期价格）</span>
 						</li>
 						 <li class="clearfix type">
 							<label class="fl">选 类型</label>
                             <div class="fl clickBox" id="clickBox">
-	                            <button class="click Single" value="2">单次</button>
+	                            <button class="click Single" value="2" onclick="calPrice('${service.id}');">单次</button>
 	                            <button class="long" value="1">长期</button>
                             </div> 
 						</li>
@@ -162,22 +162,23 @@ $(document).ready(function(){
 						<li class="clearfix time">
 							<label class="fl">服务频率</label>
                             <div class="fl clickBox" id="time">
+                            <input type="hidden" id="serviceIdHidden" value="${service.id}"/>
                             	<c:if test="${service.id == 1}">
-	                             <button class="clickTime" value="2">每周</button>
-	                             <button value="3">每月</button>
+	                             <button class="clickTime" value="2" onclick="calPriceLong(this)">每周</button>
+	                             <button value="3" onclick="calPriceLong(this)">每月</button>
 	                            </c:if>
 	                            <c:if test="${service.id == 2}">
-	                             <button class="clickTime" value="1">30分钟</button>
+	                             <button class="clickTime" value="1" onclick="calPriceLong(this)">30分钟</button>
 	                            </c:if>
 	                            <c:if test="${service.id == 3}">
-	                             <button class="clickTime" value="4">1天</button>
+	                             <button class="clickTime" value="4" onclick="calPriceLong(this)">1天</button>
 	                            </c:if>
 	                            <c:if test="${service.id == 4}">
-	                             <button class="clickTime" value="4">1天</button>
+	                             <button class="clickTime" value="4" onclick="calPriceLong(this)">1天</button>
 	                            </c:if>
 	                            <c:if test="${service.id == 5}">
-	                             <button class="clickTime" value="3">1小时</button>
-	                             <button value="4">2小时</button>
+	                             <button class="clickTime" value="3" onclick="calPriceLong(this)">1小时</button>
+	                             <button value="4" onclick="calPriceLong(this)">2小时</button>
 	                            </c:if>
                             </div> 
 					   </li>
