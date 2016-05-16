@@ -49,7 +49,14 @@ $(document).ready(function(){
     $("#state").val("${state}");
     $("#begin_date").val("${begin_date}");
     $("#end_date").val("${end_date}");
-    $("#search").val("${search}");
+    if(${isAPI} == 1){
+    	$("#search").attr('placeholder','')
+    	$("#search").attr("disabled","disabled");
+    	$("#type").attr("disabled","disabled");
+    }else{
+    	$("#search").val("${search}");
+    }
+    
 });
 </script>
 <script type="text/javascript">
@@ -57,8 +64,14 @@ $.ajaxSetup({
     cache: false //关闭AJAX相应的缓存
 });
 
-    function searchCombine(){
-     $("#searchForm").submit();
+function searchCombine(){
+	var begin_date = $("#begin_date").val();
+    var end_date = $("#end_date").val();
+	if(end_date<begin_date){  
+        alert("结束时间不能小于开始时间！"); 
+    }else{
+    	$("#searchForm").submit();
+    }
      
 }
 function overfind(orderId){
@@ -110,6 +123,21 @@ function optOrder(orderId,status){
     } else {
         return;
     }
+}
+
+function getServ(c){
+	if(c.slice(-1)=="1"){
+		$("#search").attr('placeholder','')
+		$("#search").val("");
+		$("#search").attr("disabled","disabled");
+		$("#type").val("");
+    	$("#type").attr("disabled","disabled");
+    	
+	}else{
+		$("#search").attr('placeholder','输入资产名称或者资产地址进行搜索')
+		$("#search").attr("disabled",false);
+    	$("#type").attr("disabled",false);
+	}
 }
 </script>
 
@@ -230,9 +258,9 @@ function optOrder(orderId,status){
 	            	
 	            	<div class="coreList clearfix">
 	                	<label class="container con-order fl">
-	                    	<input type="text" class="text promptext" placeholder="输入资产名称或者资产地址进行搜索"    id="search" name="search">
+	                    	<input type="text" class="text promptext" placeholder="输入资产名称或者资产地址进行搜索"  value=""  id="search" name="search">
 	                        
-	                    	<input type="submit" value="搜索" class="sub fr" >
+	                    	<input type="button" value="搜索" class="sub fr" onclick="searchCombine()">
 	                    </label>
 	                   <div class="container fl contj">
 	                   	<span class="words"><em>精简筛选条件</em> <i class="nitial"></i></span>
@@ -248,7 +276,7 @@ function optOrder(orderId,status){
 				            </select>
 	                     </label>
 	                     <label class="container fl">
-	                        <select class="fl" id="servName" name="servName">
+	                        <select class="fl" id="servName" name="servName" onchange="getServ(this.value)">
 					            <option selected="selected " value="">请选择服务</option>
 					            <option value="10" >WEB漏洞监测服务</option>
 					            <option value="20" >网站挂马监测服务</option>
