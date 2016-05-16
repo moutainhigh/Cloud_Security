@@ -120,4 +120,8 @@ public interface OrderDao {
     List findOrderTimesPie(Map<String, Object> paramMap);
     //查询订单时间段分布统计
     List findOrderWithServiceId(Map<String, Object> paramMap);
+    //回购率
+	List<Map> findOrderWithServiceIdReBuy(Map<String, Object> paramMap);
+	//购买数
+	List<Map> findOrderWithServiceIdBuy(Map<String, Object> paramMap);
 }
