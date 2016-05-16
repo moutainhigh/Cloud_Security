@@ -302,8 +302,8 @@ $(document).ready(function(){
                                     <thead>
                                         <tr style="width:100%">
                                             <th width="180">序号</th>
+                                            <th colspan="2" width="305">用户</th>
                                             <th colspan="2" width="305">用户所属行业</th>
-                                            <th colspan="2" width="305">下单用户数量</th>
                                         </tr>
                                     </thead>
                                     <tbody id="body3">
