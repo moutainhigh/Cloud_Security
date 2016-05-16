@@ -204,4 +204,12 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 	public List findOrderWithServiceId(Map<String, Object> paramMap) {
 		return this.getSqlSession().selectList(ns+"findOrderWithServiceId",paramMap);
 	}
+
+	public List<Map> findOrderWithServiceIdReBuy(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"findOrderWithServiceIdReBuy",paramMap);
+	}
+
+	public List<Map> findOrderWithServiceIdBuy(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"findOrderWithServiceIdBuy",paramMap);
+	}
 }
