@@ -10,7 +10,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.MediaType;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,11 @@ import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Random;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 /**
  * 创 建 人  ：  tang
@@ -562,4 +569,134 @@ public class shoppingController {
         request.setAttribute("num", num);
         return result;
 	}
+	
+	
+	/**
+     * 功能描述： 计算商品价格
+     * 参数描述： 
+	 * @throws Exception 
+	 *  add  pengdm
+     *       @time 2016-05-12
+     */
+    @RequestMapping(value="calPrice.html")
+    @ResponseBody
+    public void calPrice(HttpServletResponse response,HttpServletRequest request) throws Exception{
+		Map<String, Object> m = new HashMap<String, Object>();
+		//价格
+		int calPrice = 0;
+    	try {
+			//获得订单id
+			int serviceId = Integer.parseInt(request.getParameter("serviceId"));
+			String type = request.getParameter("type");
+			String beginDate = request.getParameter("beginDate");
+			String endDate = request.getParameter("endDate");
+			
+			ClientConfig config = new DefaultClientConfig();
+			//检查安全传输协议设置
+			Client client = Client.create(config);
+			//连接服务器
+			WebResource service = client.resource("http://localhost:18080/cspm/rest/servermanager/price/vindicatePrice/"+serviceId);
+			ClientResponse clientResponse = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);        
+			System.out.println(clientResponse.toString());
+			String str = clientResponse.getEntity(String.class);
+			System.out.println(str);         
+			//解析json
+			JSONObject jsonObject = JSONObject.fromObject(str);			
+			JSONArray jsonArray = jsonObject.getJSONArray("PriceStr");
+
+			if(jsonArray!=null && jsonArray.size()>0){
+			    for (int i = 0; i < jsonArray.size(); i++) {
+			        String object = jsonArray.getString(i);
+			        JSONObject jsonObject1 = JSONObject.fromObject(object);
+			        int timesBegin = Integer.parseInt(jsonObject1.getString("GTR"));
+			        int timesEnd = Integer.parseInt(jsonObject1.getString("ITE"));
+			        int price = Integer.parseInt(jsonObject1.getString("Price"));
+
+			        //长期
+			        if(type!=null&&beginDate!=null&&endDate!=null){	        	
+			            Date bDate=DateUtils.stringToDateNYRSFM(beginDate);
+			            Date eDate=DateUtils.stringToDateNYRSFM(endDate);  
+			            //时间之间的毫秒数
+			            long ms = DateUtils.getMsByDays(bDate, eDate);
+			            int typeInt = Integer.parseInt(type);
+			            //计算出的次数
+			            int times = 0;
+				        switch(serviceId){
+				        case 1:
+				        	//每周
+				        	if(typeInt==2){
+				        		int perWeekHours = 1000*3600*24*7;
+				        		times = (int)(ms/perWeekHours);
+				        	}else{//每月
+				        		int perMonthHours = 1000*3600*24*30;
+				        		times = (int)(ms/perMonthHours);
+				        	}
+				        	break;
+				        	
+				        case 2://30分钟
+				        	int min_30 = 1000*3600/2;
+				        	times = (int)(ms/min_30);
+				        	break;
+				        	
+				        case 3://一天
+				        case 4:
+				        	int oneDay = 1000*3600*24;
+				        	times = (int)(ms/oneDay);
+				        	break;
+				        	
+				        case 5:
+				        	if(typeInt==3){//一小时
+					        	int oneHour = 1000*3600;
+					        	times = (int)(ms/oneHour);
+				        	}else{//2小时
+				        		int twoHour = 1000*3600*2;
+					        	times = (int)(ms/twoHour);
+				        	}
+				        	break;
+				        }
+				        //在次数范围内
+			    		if(times>=timesBegin&&times<=timesEnd){
+			    			calPrice = times*price;
+			    			break;
+			    		}else if(times<1&&timesBegin==1){//不到一次
+			    			calPrice = price;
+			    			break;
+			    		}
+			    		
+			        }else{//单次
+				        if(timesBegin==1){
+				        	calPrice = price;
+				        }
+			        }
+
+			    }
+			}
+
+			m.put("success", true);
+			m.put("price", calPrice);
+      
+			//object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			m.put("success", false);
+			m.put("price", calPrice);
+      
+			//object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+    }
 }
