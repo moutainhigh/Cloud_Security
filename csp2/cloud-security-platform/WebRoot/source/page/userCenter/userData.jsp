@@ -157,7 +157,7 @@
                             	<label class="fl">API KEY</label>
 								<div class="fl dataListR">
                                 	<input type="text" class="text" name="apikey" value="${user.apikey}" id="urlAddr" disabled="true">
-                                    <b>(该apikey可以调用平台所有即用服务)</b>
+                                    <b>(用于API调用)</b>
                                 </div>
                              </li>
                              <li class="clearfix">
