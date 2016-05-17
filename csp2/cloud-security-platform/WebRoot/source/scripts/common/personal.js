@@ -53,6 +53,15 @@ function checkUserData(){
 	var industry = $("#industry").val();
 	var job = $("#job").val();
 	var company = $("#company").val();
+	var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
+	if(patrn.test(company)){
+		$("#regist_company_msg").html("公司名称含有非法字符");
+		return;
+	}
+	if(company.length>100){
+		$("#regist_company_msg").html("公司名称长度不能超过100个字符");
+		return;
+	}
 	var flag = checkMobile();
 	if(flag==1){
 		$.ajax({ type: "POST",
