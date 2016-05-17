@@ -84,15 +84,23 @@ public class WarnDetailController {
         //获取订单信息
         List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
         request.setAttribute("order", orderList.get(0));
+        //获取服务ID
+        int serviceId=0;
+        HashMap<String, Object> order=new HashMap<String, Object>();
+	    order=(HashMap) orderList.get(0);
+	    serviceId=(Integer) order.get("serviceId");
+        
         //根据orderId查询正在执行的任务
         List runList = orderService.findTaskRunning(orderId);
         
         List assetList = orderAssetService.findAssetNameByOrderId(orderId);
         
         //获取服务所对应的资产 ，并根据资产查询告警信息  modify by tangxr 2016-5-5
+        Task task = null;
         List assets = orderAssetService.findAssetsByOrderId(orderId);
         if(assets != null && assets.size() > 0){
         	for(int i = 0; i < assets.size(); i++){
+        		
         		HashMap<String,Object>  map = (HashMap<String,Object>)assets.get(i);
         		//获取对应告警信息
                 Map<String, Object> paramAlarm = new HashMap<String, Object>();
@@ -102,14 +110,17 @@ public class WarnDetailController {
                 paramAlarm.put("count", assets.size());
                 paramAlarm.put("websoc", websoc);
                 paramAlarm.put("orderAssetId", map.get("orderAssetId"));
-    	        List<Alarm> asset_alarmList = alarmService.getAlarmByAsset(paramAlarm);
                 
-    	        //资产告警数量和告警信息 放入map
-    	        map.put("aNum", asset_alarmList.size());
-		        map.put("asset_alarmList", asset_alarmList);
+                if(serviceId==1){
+                	List<Alarm> asset_alarmList = alarmService.getAlarmByAsset(paramAlarm);
+                    
+        	        //资产告警数量和告警信息 放入map
+        	        map.put("aNum", asset_alarmList.size());
+    		        map.put("asset_alarmList", asset_alarmList);
+        		}
 		        
 		        //任务基本信息
-		        Task task = new Task();
+		        task = new Task();
                 task = taskService.findBasicInfoByOrderId(paramAlarm);
 	            Map<String, Object> taskParam = this.getInfo(task);
 	            map.put("scanTime", taskParam.get("scanTime"));
@@ -143,12 +154,8 @@ public class WarnDetailController {
 	                	map.put("progress", 0);
 	                	map.put("currentUrl", "暂无");
 	                }
-	                
 	            }
-	            
-	            
         	}
-        	
         }
         request.setAttribute("assets", assets);
         //end 
@@ -233,11 +240,10 @@ public class WarnDetailController {
 	                
 	            }*/
 	            
-	            int serviceId=0;
 	            
 	            
 	            /** 基本信息   dyy*/
-	            Task task = new Task();
+	            /*Task task = new Task();
 	//            if(Integer.parseInt(type)==1){
 	//                //长期查找最近的任务
 	//                task = taskService.findNearlyTask(orderId);
@@ -258,11 +264,9 @@ public class WarnDetailController {
 	                if(task.getExecute_time()!=null){
 	                    task.setExecuteTime(DateUtils.dateToString(task.getExecute_time())); 
 	                }
-	            }
+	            }*/
 	            //request.setAttribute("task", task);
-	            HashMap<String, Object> order=new HashMap<String, Object>();
-        	    order=(HashMap) orderList.get(0);
-        	    serviceId=(Integer) order.get("serviceId");
+	            
 	            
 	            if(serviceId==6||serviceId==7||serviceId==8){//DDOS
 	            	//获取对应IP
@@ -285,7 +289,8 @@ public class WarnDetailController {
 	                	request.setAttribute("alist", alarm.size());
 	                	
 	                    request.setAttribute("alarmList", alarmList);
-	            		return "/source/page/order/warning_doctort"	;
+//	            		return "/source/page/order/warning_doctort"	;
+	            		return "/source/page/personalCenter/warnDoctor";
 	    			case 4:/**关键字监测服务 dyy*/    				
 	    				//关键字告警信息
 	    				List<Alarm> keywordList = alarmService.findKeywordWarningByOrderId(orderId);
@@ -337,7 +342,8 @@ public class WarnDetailController {
 	                			}
 	                		}
 	                	}
-	                	return "/source/page/order/warning_keyword"	;
+//	                	return "/source/page/order/warning_keyword"	;
+	                	return "/source/page/personalCenter/warnKeyword";
 	    			case 5:/**可用性监测服务 dyy*/
 	    				//获取推送告警信息
 	    	        	String flag_able=request.getParameter("flag");
@@ -410,9 +416,11 @@ public class WarnDetailController {
 	    			    float usabling = Float.parseFloat(String.valueOf(usable))/Float.parseFloat(String.valueOf((task.getEnd_time().getTime()-task.getExecute_time().getTime())));
 	    			    request.setAttribute("usabling", usabling*100+"%");
 	    			    request.setAttribute("value", flag1);
-	    			    return "/source/page/order/order_usable";
+//	    			    return "/source/page/order/order_usable";
+	    			    return "/source/page/personalCenter/warnUsable";
 	    			default: //漏洞和木马
-	    	            request.setAttribute("alarmList", alarmList);
+	    				
+//	    	            request.setAttribute("alarmList", alarmList);
 	    	            return "/source/page/personalCenter/warnDetail";
 	    			}
 	            }
@@ -862,18 +870,20 @@ public class WarnDetailController {
      */
     @RequestMapping(value="getDataUsable.html" ,method = RequestMethod.POST)
     @ResponseBody
-    public String getDataUsable(HttpServletRequest request,HttpServletResponse response,String orderId){
+    public String getDataUsable(HttpServletRequest request,HttpServletResponse response,String orderId,String orderAssetId){
     	response.setCharacterEncoding("utf-8");
 		response.setContentType("application/json;charset=UTF-8");
 		//获取带有关键字告警的url
 		//页面循环div的id 资产Url和曲线图匹配问题
 		Map<String,Object> m = new HashMap<String, Object>();
 		m.put("orderId", orderId);
+		m.put("orderAssetId", orderAssetId);
 		m.put("url", null);
 		List<TaskWarn> urlWarnList=taskWarnService.findWarnUrlByOrderId(m);
     	//根据url查询折线图和orderId
     	Map<String, Object> map = new HashMap<String, Object>();
     	map.put("orderId", orderId);
+    	map.put("orderAssetId", orderAssetId);
     	JSONArray json = new JSONArray();
     	List result1 = new ArrayList();
     	JSONObject jo1 = new JSONObject();
