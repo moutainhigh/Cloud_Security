@@ -151,6 +151,7 @@
                             	<label class="fl">公司名称</label>
 								<div class="fl dataListR">
                                 	<input type="text" class="text" name="company" value="${user.company}" id="company">
+                                	<span id="regist_company_msg" style="color:red;"></span>
                                 </div>
                              </li>
                              <li class="clearfix">

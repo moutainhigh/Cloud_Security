@@ -429,13 +429,16 @@
 	<div class="text_1">
 	  <div class="text_top" id="verificationName"></div>
 	  <div class="text_bottm">
-	    <div class="txt_yz clear">
+	    <div>
 	      <div class="txt_yz_left">
 	        <input type="radio" name="verification_msg" checked="checked" id="codeVerification" value="codeVerification" onclick="showAndHiddenRadio()"/>
 	        &nbsp;&nbsp;代码验证(推荐)</div>
-	      <div class="txt_yz_right">
+	      <div class="txt_yz_left">
 	        <input type="radio" name="verification_msg" id="fileVerification" value="fileVerification" onclick="showAndHiddenRadio()" />
 	        &nbsp;&nbsp;上传文件验证</div>
+	      <div class="txt_yz_left">
+	        <input type="radio" name="verification_msg" id="manualVerification" value="manualVerification" onclick="showAndHiddenRadio()" />
+	        &nbsp;&nbsp;人工验证</div>
 	    </div>
 	    <div class="txt_1" id="codeVerificationID" style="display:block;">
 	      <p></p>
@@ -461,9 +464,13 @@
 		    <p>提示:上传文件要具有可读权限;验证通过后可删除文件</p>
 	    </div>
 	    
-	    
+	    <div class="txt_1" id="manualVerificationID" style="display:none;">
+		    <div style="height:30px;" class="txt_2" >
+	        	<p>请联系在线客服，并提交相关证明</p>
+	        </div>
+	    </div>
 	  </div>
-	  <div style="margin-top:18px;"><a href="javascript:void(0)"><img src="${ctx }/source/images/portal/user_submit_3.jpg" onclick="verificationAsset()"/></a></div>
+	  <div style="margin-top:18px;" id="submitId"><a href="javascript:void(0)"><img src="${ctx }/source/images/portal/user_submit_3.jpg" onclick="verificationAsset()"/></a></div>
 	</div>
 </form>	
 </div>
