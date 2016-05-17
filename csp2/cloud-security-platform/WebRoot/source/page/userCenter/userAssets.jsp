@@ -428,18 +428,26 @@
 <input type="hidden" value="" id="hiddenAddr" name="addr"/>
 	<div class="text_1">
 	  <div class="text_top" id="verificationName"></div>
+	  <hr class="hr">
 	  <div class="text_bottm">
-	    <div>
+	   <div class="txt_yz clearfix" id="radioDiv">
+	   <label>
 	      <div class="txt_yz_left">
 	        <input type="radio" name="verification_msg" checked="checked" id="codeVerification" value="codeVerification" onclick="showAndHiddenRadio()"/>
 	        &nbsp;&nbsp;代码验证(推荐)</div>
+	   </label>
+	   <label>
 	      <div class="txt_yz_left">
 	        <input type="radio" name="verification_msg" id="fileVerification" value="fileVerification" onclick="showAndHiddenRadio()" />
 	        &nbsp;&nbsp;上传文件验证</div>
+	   </label>
+	   <label>
 	      <div class="txt_yz_left">
 	        <input type="radio" name="verification_msg" id="manualVerification" value="manualVerification" onclick="showAndHiddenRadio()" />
 	        &nbsp;&nbsp;人工验证</div>
-	    </div>
+	   </label>
+	  </div> 
+
 	    <div class="txt_1" id="codeVerificationID" style="display:block;">
 	      <p></p>
 	      <!-- <div class="txt_2" id="code">
@@ -470,12 +478,12 @@
 	        </div>
 	    </div>
 	  </div>
-	  <div style="margin-top:18px;" id="submitId"><a href="javascript:void(0)"><img src="${ctx }/source/images/portal/user_submit_3.jpg" onclick="verificationAsset()"/></a></div>
+	  <div style="margin-top:18px;" id="submitId" class="submit"><a href="javascript:void(0)" onclick="verificationAsset()">开始验证</a></div>
 	</div>
 </form>	
 </div>
 <div class="shade"></div>
-<script><!--
+<script>
 	$(function(){
 		/*提示文字效果*/
 		$('.promptext').focus(function(){
@@ -493,12 +501,54 @@
 			}
 				
 		})
+		//切换效果
+	
 		
 
 	})
 	
 	
 </script>
+<style>
+/*修改弹框样式*/
+.popBoxhide{ z-index:5000;}
+.assetsaAdd .text_top{ height:70px; line-height:70px; font-size:24px; color:#676767;}
+.assetsaAdd .hr{ margin:0;}
+.assetsaAdd .txt_yz{
+	width:700px; margin:0 auto;
+	height:70px;
+	line-height:70px;
+}
+.txt_yz .txt_yz_left , .txt_yz .txt_yz_middle,.txt_yz .txt_yz_right{ 
+	float: left;
+	margin-right:50px;
+	font-size:18px;
+	color:#a9a9a9; 
+}
+.txt_1{ display:none;}
+.txt_1 p{
+	text-align:left;
+	padding-left:35px;
+	color:#000000;
+	font-size:16px;
+	line-height:24px;
+	
+}
+.txt_2{ width:445px; height:55px; border:1px solid #e0e0e0; margin-top:15px; margin-left:45px; padding:10px; font-size:14px; line-height:22px; color:#343333;}
+.submit a{
+	width:170px;
+	height:48px;
+	border:#1468c3 solid 1px;
+	border-radius:10px;
+	display:inline-block;
+	background-color:#4495fe;
+	line-height:48px;
+	text-align:center;
+	font-size:22px;
+	color:#fff;
+}
+.assetsaAdd .text_bottm{ width:614px;}
+
 </body>
 
 
