@@ -280,16 +280,21 @@ function showAndHiddenRadio(){
 		}
 	//隐藏div
 	if(codeStyle==="codeVerification"){
+		 document.getElementById("codeVerificationID").style.display="block";
 		 document.getElementById("fileVerificationID").style.display="none";
 		 document.getElementById("manualVerificationID").style.display="none";
-		 document.getElementById("codeVerificationID").style.display="block";
+		 document.getElementById("radioDiv").style.display="block";
+		 $("#submitId").show();
 	}
 	if(codeStyle==="fileVerification"){
+		 document.getElementById("radioDiv").style.display="block";
 		document.getElementById("codeVerificationID").style.display="none";
 		document.getElementById("manualVerificationID").style.display="none";
 		document.getElementById("fileVerificationID").style.display="block";
+		$("#submitId").show();
 	}
 	if(codeStyle==="manualVerification"){
+		 document.getElementById("radioDiv").style.display="block";
 		document.getElementById("codeVerificationID").style.display="none";
 		document.getElementById("fileVerificationID").style.display="none";
 		document.getElementById("manualVerificationID").style.display="block";
