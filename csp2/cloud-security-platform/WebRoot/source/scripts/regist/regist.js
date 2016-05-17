@@ -7,6 +7,7 @@ var checkEmail1 = 0;
 var checkSendEmail1 = 0;
 var checkSendMobile1 = 0;
 var checkEmailActivationCode1 = 0;
+var checkCompany = 0;
 var wait=120;
 function checkName(){
 	var name = $("#regist_name").val();
@@ -125,6 +126,30 @@ function checkConfirmPassword(){
 		   	$("#regist_confirm_password_flag").show();
 	  }
 
+}
+//校验公司名称
+function checkCompanyFun(){
+	var company = $("#company").val();
+	var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;
+	if(patrn.test(company)){
+	   	$("#company_flag").attr("class","error");
+	   	$("#company_flag").show();
+	   	$("#company_prompt").html("<b></b>公司名称含有非法字符");
+	   	$("#company_prompt").fadeIn();
+	    checkCompany = 0;
+	}else if(company.length>100){
+	   	$("#company_flag").attr("class","error");
+	   	$("#company_flag").show();
+	   	$("#company_prompt").html("<b></b>公司名称长度不能超过100个字符");
+	   	$("#company_prompt").fadeIn();
+	    checkCompany = 0;
+	}else{
+		$("#company_flag").attr("class","right");
+		$("#company_flag").show();
+	   	$("#company_prompt").html("<b></b>");
+	   	$("#company_prompt").fadeOut();
+	   	checkCompany = 1;
+	}
 }
 //校验手机号码是否出现重复
 function checkMobile(){
@@ -329,6 +354,8 @@ function checkActivationCode(){
 		checkEmailActivationCode1 = 0;
 	 }
 }
+
+
 //提交表单及校验
 function submitForm(){
 	var name = $("#regist_name").val();
@@ -398,8 +425,8 @@ function submitForm(){
 		}
 		
 	}else{
-	    if(checkMobile1==0){
-	    }else{
+		checkCompanyFun();
+	    if(checkCompany==1){
 	    	if(document.getElementById("ck").checked && agreeId==1){
 	    		$("#ck_flag").html("<b></b>");
 				$("#ck_flag").fadeOut();

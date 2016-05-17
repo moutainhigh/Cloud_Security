@@ -281,11 +281,19 @@ function showAndHiddenRadio(){
 	//隐藏div
 	if(codeStyle==="codeVerification"){
 		 document.getElementById("fileVerificationID").style.display="none";
+		 document.getElementById("manualVerificationID").style.display="none";
 		 document.getElementById("codeVerificationID").style.display="block";
 	}
 	if(codeStyle==="fileVerification"){
 		document.getElementById("codeVerificationID").style.display="none";
+		document.getElementById("manualVerificationID").style.display="none";
 		document.getElementById("fileVerificationID").style.display="block";
+	}
+	if(codeStyle==="manualVerification"){
+		document.getElementById("codeVerificationID").style.display="none";
+		document.getElementById("fileVerificationID").style.display="none";
+		document.getElementById("manualVerificationID").style.display="block";
+		$("#submitId").hide();
 	}
 }
 
