@@ -359,7 +359,8 @@ var getCharsData=function(repeat){
     require(
         [
             'echarts',
-            'echarts/chart/bar'
+            'echarts/chart/bar',
+            'echarts/chart/line'
         ],
         function (ec) {//回调函数
             //--- 柱形图 ---
@@ -493,7 +494,7 @@ var getCharsData=function(repeat){
 //                            }
 //                        ]
                     },true);//图形展示
-//                    window.onresize = myChartBar.resize;
+                    window.onresize = myChartBar.resize;
                 }//ajax执行后台
             }); 
         }

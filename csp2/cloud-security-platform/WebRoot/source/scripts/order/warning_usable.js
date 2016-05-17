@@ -38,7 +38,7 @@ $(function(){
           //后台获取数据
             $.ajax({
             	type : "post",
-            	url:"getDataUsable.html?orderId="+$('#orderId').val(),
+            	url:"getDataUsable.html?orderId="+$('#orderId').val()+"&orderAssetId="+$('#orderAssetId'+$('#index').val()).val(),
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
