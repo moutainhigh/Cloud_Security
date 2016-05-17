@@ -14,9 +14,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap> 
 	<!-- 按资产id查询订单资产 -->
 	<select id="findAssetById" parameterType="int" resultMap="OrderAssetRM">
-		select o.id,o.orderId,o.assetId,o.serviceId
-		from cs_order_asset o
-		where o.assetId = #{assetId}
+		select asset.id,asset.orderId,asset.assetId,asset.serviceId
+		from cs_order_asset asset,cs_order order1
+		where asset.assetId = #{assetId} and asset.orderId=order1.id 
+		<![CDATA[ and order1.delFlag<>1 ]]>  
+		
 	</select>
 	
 	<!-- 插入服务资产 -->
