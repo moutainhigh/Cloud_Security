@@ -199,12 +199,10 @@
 			</div>
 		</div>
 		<div class="foot">
-			<p>Label@1234567890北京电信研究院<br>
-				www.anquanbang.net
-			</p>
+			<p>版权所有Copyright © 2015 中国电信股份有限公司北京研究院京ICP备12019458号-10</p>
 		</div>
 	</div>
--执行效果
+<!---执行效果-->
 <div class="weixinshow popBoxhide" id="weixin">
 	<i class="close chide"></i>
     <div class="Pophead">
