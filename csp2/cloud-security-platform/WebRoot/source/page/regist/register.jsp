@@ -102,14 +102,12 @@
                         </li>
                         <li class="clearfix">
                         	<div class="list fl">
-                            	<input type="text" placeholder="" class="text prompttext" name="company" id="company">
+                            	<input type="text" placeholder="" class="text prompttext" name="company" id="company" onblur="checkCompanyFun()">
                                 <p class="promp">公司名称</p>
-                                <i class="right" style="display:none"></i>
+                                <i class="right" style="display:none" id="company_flag"></i>
                             </div>
-                           
-                            	
-                            <!--<div class="prompt fl"><b></b>支持6-20位，支持中英文/数字/字符组合</div>
-                        --></li>
+                            <div class="prompt fl" id="company_prompt"><b></b></div>
+                        </li>
                         
                         <li class="clearfix">
                         	<div class="list fl">
