@@ -6,6 +6,7 @@ $(function(){
 		$("input:checkbox[name=check_name]:checked").each(function(obj){
 		   str+=$(this).val()+",";
     	});
+		//alert(str);
 		if(str==""){
 			alert("请至少选择一件商品!");
 		}else{
@@ -14,6 +15,7 @@ $(function(){
 			     url: "getSession.html",
 			     dataType: "json", 
 			     success: function(data) {
+			   	  $("input:checkbox[name=check_name]").attr("checked",false);
 				    	 window.location.href="shopBuy.html?str="+str;
 				    }, 
 			     error: function(data){ 
