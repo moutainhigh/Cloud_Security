@@ -70,54 +70,29 @@ function loginSubmit(){
 	var password = $("#login_password").val();
 	var checkNumber = $("#checkNumber").val();
 
-	if(name==null||name==""){
-		$("#login_name_flag").attr("class","error");
-		$("#login_name_flag").show();
-		$("#login_name_prompt").html("<b></b>用户名不能为空!");
-		$("#login_name_prompt").fadeIn();
+	if(name==null||name==""||password==null||password==""){
+		$("#errMsg").html("用户名或密码不能为空!");
+		$("#errMsgDiv").show();
 		return;
-	}else{
-		$.ajax({
-            type: "POST",
-            url: "login_checkName.html",
-            data: {"name":name},
-            dataType:"json",
-            success: function(data){
-                if(data.count<=0){
-            		$("#login_name_flag").attr("class","error");
-            		$("#login_name_flag").show();
-            		$("#login_name_prompt").html("<b></b>用户名不存在");
-            		$("#login_name_prompt").fadeIn();
-            		return;
-                }else{
-            		$("#login_name_flag").attr("class","right");
-            		$("#login_name_flag").show();
-            		$("#login_name_prompt").html("<b></b>");
-            		$("#login_name_prompt").fadeOut();
-                }
-            },
-         }); 
-	}
-	if(password==null||password==""){
-		$("#login_password_flag").attr("class","error");
-		$("#login_password_flag").show();
-		$("#login_password_prompt").html("<b></b>密码不能为空!");
-		$("#login_password_prompt").fadeIn();
-		return;
-	}else{
-		$("#login_password_flag").attr("class","right");
-		$("#login_password_flag").show();
-		$("#login_password_prompt").html("<b></b>");
-		$("#login_password_prompt").fadeOut();
 	}
 	if(checkNumber==null||checkNumber==""){
-		$("#checkNumber_flag").attr("class","error");
-		$("#checkNumber_flag").show();
-		$("#checkNumber_prompt").html("<b></b>验证码不能为空");
-		$("#checkNumber_prompt").fadeIn();
+    	$("#errMsg").html("验证码不能为空!");
+		$("#errMsgDiv").show();
 		return;
-	}else{
-				$.ajax({
+	}
+
+	$.ajax({
+        type: "POST",
+        url: "login_checkName.html",
+        data: {"name":name},
+        dataType:"json",
+        success: function(data){
+            if(data.count<=0){
+        		$("#errMsg").html("用户名不存在!");
+        		$("#errMsgDiv").show();
+        		return;
+            }else{
+            	$.ajax({
 		            type: "POST",
 					url:'login.html',
 					data:{
@@ -130,93 +105,43 @@ function loginSubmit(){
 					success: function(data) {
 						switch(data.result){
 						case 1:
-							$("#login_name_flag").attr("class","error");
-							$("#login_name_flag").show();
-							$("#login_name_prompt").html("<b></b>对不起，您的帐号已停用!");
-							$("#login_name_prompt").fadeIn();
+					    	$("#errMsg").html("对不起，您的帐号已停用!");
+							$("#errMsgDiv").show();
 							break;
 						case 2:
-		            		$("#login_name_flag").attr("class","right");
-		            		$("#login_name_flag").show();
-		            		$("#login_name_prompt").html("<b></b>");
-		            		$("#login_name_prompt").fadeOut();
-							$("#login_password_flag").attr("class","error");
-							$("#login_password_flag").show();
-							$("#login_password_prompt").html("<b></b>密码输入有误!");
-							$("#login_password_prompt").fadeIn();
+							$("#errMsg").html("密码输入有误!");
+							$("#errMsgDiv").show();
 							break;
 						case 3:
-		            		$("#login_name_flag").attr("class","right");
-		            		$("#login_name_flag").show();
-		            		$("#login_name_prompt").html("<b></b>");
-		            		$("#login_name_prompt").fadeOut();
-		            		$("#login_password_flag").attr("class","right");
-		            		$("#login_password_flag").show();
-		            		$("#login_password_prompt").html("<b></b>");
-		            		$("#login_password_prompt").fadeOut();
-							$("#checkNumber_flag").attr("class","error");
-							$("#checkNumber_flag").show();
-							$("#checkNumber_prompt").html("<b></b>验证码输入有误!");
-							$("#checkNumber_prompt").fadeIn();
+							$("#errMsg").html("验证码输入有误!");
+							$("#errMsgDiv").show();
 							break;
 						case 4:
-							$("#login_name_flag").attr("class","error");
-							$("#login_name_flag").show();
-							$("#login_name_prompt").html("<b></b>对不起，企业用户不允许登录!");
-							$("#login_name_prompt").fadeIn();
+							$("#errMsg").html("对不起，企业用户不允许登录!");
+							$("#errMsgDiv").show();
 							break;
 						case 5:
-		            		$("#login_name_flag").attr("class","right");
-		            		$("#login_name_flag").show();
-		            		$("#login_name_prompt").html("<b></b>");
-		            		$("#login_name_prompt").fadeOut();
-		            		$("#login_name_flag").attr("class","right");
-		            		$("#login_name_flag").show();
-		            		$("#login_name_prompt").html("<b></b>");
-		            		$("#login_name_prompt").fadeOut();
-		            		$("#login_password_flag").attr("class","right");
-		            		$("#login_password_flag").show();
-		            		$("#login_password_prompt").html("<b></b>");
-		            		$("#login_password_prompt").fadeOut();
+							$("#errMsg").html("");
+							$("#errMsgDiv").hide();
 							var serviceId = data.serviceId;
 							var indexPage = data.indexPage;
 							window.location.href="selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
 							break;
 						case 6:
-		            		$("#login_name_flag").attr("class","right");
-		            		$("#login_name_flag").show();
-		            		$("#login_name_prompt").html("<b></b>");
-		            		$("#login_name_prompt").fadeOut();
-		            		$("#login_name_flag").attr("class","right");
-		            		$("#login_name_flag").show();
-		            		$("#login_name_prompt").html("<b></b>");
-		            		$("#login_name_prompt").fadeOut();
-		            		$("#login_password_flag").attr("class","right");
-		            		$("#login_password_flag").show();
-		            		$("#login_password_prompt").html("<b></b>");
-		            		$("#login_password_prompt").fadeOut();
-//							map.put("apiId", apiId);
-//							map.put("indexPage", indexPage);
+							$("#errMsg").html("");
+							$("#errMsgDiv").hide();
 							var  apiId = data.apiId;
 							var indexPage = data.indexPage;
 							window.location.href="selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
 							break;
 						case 7:
-		            		$("#login_name_flag").attr("class","right");
-		            		$("#login_name_flag").show();
-		            		$("#login_name_prompt").html("<b></b>");
-		            		$("#login_name_prompt").fadeOut();
-		            		$("#login_name_flag").attr("class","right");
-		            		$("#login_name_flag").show();
-		            		$("#login_name_prompt").html("<b></b>");
-		            		$("#login_name_prompt").fadeOut();
-		            		$("#login_password_flag").attr("class","right");
-		            		$("#login_password_flag").show();
-		            		$("#login_password_prompt").html("<b></b>");
-		            		$("#login_password_prompt").fadeOut();
+							$("#errMsg").html("");
+							$("#errMsgDiv").hide();
 							window.location.href="userCenterUI.html";
 							break;
 						case 8:
+							$("#errMsg").html("");
+							$("#errMsgDiv").hide();
 							window.location.href="loginUI.html";
 							break;
 						default:
@@ -227,8 +152,9 @@ function loginSubmit(){
 						alert("err:"+data);
 					}
 					});
-
-	}
+            }
+        },
+     }); 
 
 }
 

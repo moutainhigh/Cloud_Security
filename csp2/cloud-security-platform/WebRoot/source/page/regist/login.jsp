@@ -37,17 +37,20 @@
             <div class="cent">
             	<form class="form" id="form_login" name="form_login" method="post">
                 	<h2>登录安全帮账号</h2>
+                	<div id="errMsgDiv" style="text-align:left;display:none">
+                    	<span id="errMsg" style="color:red;"></span>
+                    </div>
                 	<ul>
                     	<li class="clearfix">
                         	<div class="list fl">
-                            	<input type="text" class="text prompttext" id="login_name" name="name" placeholder="用户名/手机号" value="${requestScope.name }" onblur="checkName();"/>
+                            	<input type="text" class="text prompttext" id="login_name" name="name" placeholder="用户名/手机号" value="${requestScope.name }"/>
                                 <i id="login_name_flag" class="error" style="display:none"></i>
                             </div>
                             <div class="prompt fl" id="login_name_prompt"><b></b></div>
                         </li>
                         <li class="clearfix">
                         	<div class="list fl">
-                            	 <input type="password" class="text prompttext password" id="login_password" name="password" placeholder="密码" value="${requestScope.password }" onblur="checkPassword();" />
+                            	 <input type="password" class="text prompttext password" id="login_password" name="password" placeholder="密码" value="${requestScope.password }" />
 
                                 <i id="login_password_flag" class="right" style="display:none"></i>
                             </div>
