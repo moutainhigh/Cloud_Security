@@ -458,6 +458,10 @@ public class ExportController {
                             levelName = "中";
                         }else if(alarmList.get(j).getLevel()==2){
                             levelName = "高";
+                        }else if(alarmList.get(j).getLevel()==-1){
+                            levelName = "信息";
+                        }else if(alarmList.get(j).getLevel()==3){
+                            levelName = "紧急";
                         }
                         XWPFTableCell cell2 = tableOneRowTwo.getCell(0);
                         XWPFParagraph cellP2=cell2.getParagraphs().get(0);
@@ -695,11 +699,15 @@ public class ExportController {
               XWPFTableCell cell = null;
               cell=cells.get(k);
               if(list.get(0).equals("高")){
-                  cells.get(0).setColor("ff0000");
+                  cells.get(0).setColor("ff7e50");
               }else if(list.get(0).equals("中")){
-                  cells.get(0).setColor("ffc100");
-              }if(list.get(0).equals("低")){
-                  cells.get(0).setColor("ffff00");
+                  cells.get(0).setColor("ffa500");
+              }else if(list.get(0).equals("低")){
+                  cells.get(0).setColor("1e91ff");
+              }else if(list.get(0).equals("信息")){
+                  cells.get(0).setColor("40e1d1");
+              }else if(list.get(0).equals("紧急")){
+                  cells.get(0).setColor("cd5c5c");
               }
               tmpCell=tmpCells.get(k);
               setCellText(tmpCell, cell, list.get(k));
@@ -769,11 +777,15 @@ public class ExportController {
                   XWPFTableCell cell = null;
                   cell=cells.get(k);
                   if(list.get(0).equals("高")){
-                      cells.get(0).setColor("ff0000");
+                      cells.get(0).setColor("ff7e50");
                   }else if(list.get(0).equals("中")){
-                      cells.get(0).setColor("ffc100");
-                  }if(list.get(0).equals("低")){
-                      cells.get(0).setColor("ffff00");
+                      cells.get(0).setColor("ffa500");
+                  }else if(list.get(0).equals("低")){
+                      cells.get(0).setColor("1e91ff");
+                  }else if(list.get(0).equals("信息")){
+                      cells.get(0).setColor("40e1d1");
+                  }else if(list.get(0).equals("紧急")){
+                      cells.get(0).setColor("cd5c5c");
                   }
                   tmpCell=tmpCells.get(k);
                   setCellText(tmpCell, cell, list.get(k));
@@ -958,12 +970,16 @@ public class ExportController {
             list.add(String.valueOf(num));
         }else if(tableIndex==2){
             String levelName = "";
-            if(level==0){
+            if(level==-1){
+            	levelName = "信息";
+            }else if(level==0){
                 levelName = "低";
             }else if(level==1){
                 levelName = "中";
             }else if(level==2){
                 levelName = "高";
+            }else if(level==3){
+            	levelName = "紧急";
             }
             list.add(levelName);
             list.add(name);
@@ -1052,7 +1068,7 @@ public class ExportController {
         	ratioMessage = df.format((float)message/count*100)+"%";
         	remark = remark + "信息类漏洞"+ message +"个，占比"+ ratioMessage +"；";
         }
-        
+        //替换结尾句号
         if(remark.endsWith("；")){
         	remark = remark.substring(0, remark.lastIndexOf("；"));
         	remark = remark + "。";
