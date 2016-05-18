@@ -127,6 +127,7 @@ $(document).ready(function(){
 		<input type="hidden" id="scanType" value="${scanType }"/>
 		<input type="hidden" id="assetIds" value="${assetIds }"/>
 		<input type="hidden" id="assetAddr" value="${assetAddr }"/>
+		<input type="hidden" id="timesHidden" value=""/>
 		<div class="dataCent">
 			<div class="data-crumbs">
 				<a href="${ctx}/index.html" style="font-size: 20px;">安全帮</a><i>&gt;</i><a href="${ctx}/web_anquanbang.html">网站安全帮</a><i>&gt;</i><a href="javascript:;">${service.name }</a>
