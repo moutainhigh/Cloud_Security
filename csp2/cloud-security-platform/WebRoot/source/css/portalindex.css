@@ -320,6 +320,13 @@
 	 	display: block;
 	 	line-height: 24px;
 }
+.safe04 .footr dd{
+	 	font-family: "微软雅黑";
+	 	color: #fff;
+	 	font-size: 12px;
+	 	display: block;
+	 	line-height: 24px;
+}
 .safe04 .footr li a:hover{
 	color: #ffa351;
 	
