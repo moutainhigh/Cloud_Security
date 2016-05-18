@@ -1,12 +1,14 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cn.ctbri.common.HuaweiWorker;
 import com.cn.ctbri.common.NorthAPIWorker;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Order;
@@ -79,6 +82,21 @@ public class shoppingController {
     IServiceAPIService serviceAPIService;
     @Autowired
     IOrderAPIService orderAPIService;
+    
+    private static String SERVER_WEB_ROOT;
+    private static String VulnScan_servicePrice;
+    
+	static{
+		try {
+			Properties p = new Properties();
+			p.load(HuaweiWorker.class.getClassLoader().getResourceAsStream("InternalAPI.properties"));
+			
+			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
+			VulnScan_servicePrice = p.getProperty("VulnScan_servicePrice");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
  
 	 /**
 	 * 功能描述： 购买检测服务
@@ -583,7 +601,7 @@ public class shoppingController {
     public void calPrice(HttpServletResponse response,HttpServletRequest request) throws Exception{
 		Map<String, Object> m = new HashMap<String, Object>();
 		//价格
-		int calPrice = 0;
+		double calPrice = 0;
     	try {
 			//获得订单id
 			int serviceId = Integer.parseInt(request.getParameter("serviceId"));
@@ -591,11 +609,13 @@ public class shoppingController {
 			String beginDate = request.getParameter("beginDate");
 			String endDate = request.getParameter("endDate");
 			
+			//远程调用接口
 			ClientConfig config = new DefaultClientConfig();
 			//检查安全传输协议设置
 			Client client = Client.create(config);
 			//连接服务器
-			WebResource service = client.resource("http://localhost:18080/cspm/rest/servermanager/price/vindicatePrice/"+serviceId);
+			String url = SERVER_WEB_ROOT + VulnScan_servicePrice;
+			WebResource service = client.resource(url+serviceId);
 			ClientResponse clientResponse = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);        
 			System.out.println(clientResponse.toString());
 			String str = clientResponse.getEntity(String.class);
@@ -603,75 +623,95 @@ public class shoppingController {
 			//解析json
 			JSONObject jsonObject = JSONObject.fromObject(str);			
 			JSONArray jsonArray = jsonObject.getJSONArray("PriceStr");
-
-			if(jsonArray!=null && jsonArray.size()>0){
-			    for (int i = 0; i < jsonArray.size(); i++) {
-			        String object = jsonArray.getString(i);
-			        JSONObject jsonObject1 = JSONObject.fromObject(object);
-			        int timesBegin = Integer.parseInt(jsonObject1.getString("GTR"));
-			        int timesEnd = Integer.parseInt(jsonObject1.getString("ITE"));
-			        int price = Integer.parseInt(jsonObject1.getString("Price"));
-
-			        //长期
-			        if(type!=null&&beginDate!=null&&endDate!=null){	        	
-			            Date bDate=DateUtils.stringToDateNYRSFM(beginDate);
-			            Date eDate=DateUtils.stringToDateNYRSFM(endDate);  
-			            //时间之间的毫秒数
-			            long ms = DateUtils.getMsByDays(bDate, eDate);
-			            int typeInt = Integer.parseInt(type);
-			            //计算出的次数
-			            int times = 0;
-				        switch(serviceId){
-				        case 1:
-				        	//每周
-				        	if(typeInt==2){
-				        		int perWeekHours = 1000*3600*24*7;
-				        		times = (int)(ms/perWeekHours);
-				        	}else{//每月
-				        		int perMonthHours = 1000*3600*24*30;
-				        		times = (int)(ms/perMonthHours);
-				        	}
-				        	break;
-				        	
-				        case 2://30分钟
-				        	int min_30 = 1000*3600/2;
-				        	times = (int)(ms/min_30);
-				        	break;
-				        	
-				        case 3://一天
-				        case 4:
-				        	int oneDay = 1000*3600*24;
-				        	times = (int)(ms/oneDay);
-				        	break;
-				        	
-				        case 5:
-				        	if(typeInt==3){//一小时
-					        	int oneHour = 1000*3600;
-					        	times = (int)(ms/oneHour);
-				        	}else{//2小时
-				        		int twoHour = 1000*3600*2;
-					        	times = (int)(ms/twoHour);
-				        	}
-				        	break;
+			
+		
+			//进行价格分析
+			
+	        //长期
+	        if(type!=null){	  
+	            Date bDate=DateUtils.stringToDateNYRSFM(beginDate);
+	            Date eDate=DateUtils.stringToDateNYRSFM(endDate);  
+	            //时间之间的毫秒数
+	            long ms = DateUtils.getMsByDays(bDate, eDate);
+	            int typeInt = Integer.parseInt(type);
+	            
+	            //计算出的次数
+	            int times = 0;
+		        switch(serviceId){
+		        case 1:
+		        	//每周
+		        	if(typeInt==2){
+		        		int perWeekHours = 1000*3600*24*7;
+		        		times = (int)(ms/perWeekHours);
+		        	}else{//每月
+		        		int perMonthHours = 1000*3600*24*30;
+		        		times = (int)(ms/perMonthHours);
+		        	}
+		        	break;
+		        	
+		        case 2://30分钟
+		        	int min_30 = 1000*3600/2;
+		        	times = (int)(ms/min_30);
+		        	break;
+		        	
+		        case 3://一天
+		        case 4:
+		        	int oneDay = 1000*3600*24;
+		        	times = (int)(ms/oneDay);
+		        	break;
+		        	
+		        case 5:
+		        	if(typeInt==3){//一小时
+			        	int oneHour = 1000*3600;
+			        	times = (int)(ms/oneHour);
+		        	}else{//2小时
+		        		int twoHour = 1000*3600*2;
+			        	times = (int)(ms/twoHour);
+		        	}
+		        	break;
+		        }
+		        if(jsonArray!=null && jsonArray.size()>0){
+				    for (int i = 0; i < jsonArray.size(); i++) {
+				        String object = jsonArray.getString(i);
+				        JSONObject jsonObject1 = JSONObject.fromObject(object);
+				        double price = Double.parseDouble(jsonObject1.getString("Price"));
+				        int timesG = 0;//大于
+				        int timesLE = 0;//小于等于
+				        if(!jsonObject1.getString("GTR").equals("0") && !jsonObject1.getString("ITE").equals("0")){
+				        	timesG = Integer.parseInt(jsonObject1.getString("GTR"));
+				        	timesLE = Integer.parseInt(jsonObject1.getString("ITE"));
+				        	if((times>=timesG&&times<timesLE)||(times<1&&timesG==1)){
+				    			calPrice = price;
+				    			break;
+				    		}
+				        }else if(!jsonObject1.getString("GTR").equals("0") && jsonObject1.getString("ITE").equals("0")){
+				        	timesG = Integer.parseInt(jsonObject1.getString("GTR"));
+				        	if(times>timesG){
+				        		calPrice = price;
+				        		break;
+				    		}
 				        }
-				        //在次数范围内
-			    		if(times>=timesBegin&&times<=timesEnd){
-			    			calPrice = times*price;
-			    			break;
-			    		}else if(times<1&&timesBegin==1){//不到一次
-			    			calPrice = price;
-			    			break;
-			    		}
-			    		
-			        }else{//单次
-				        if(timesBegin==1){
+
+				    }
+		        }	    		
+	        }else{//单次
+	        	if(jsonArray!=null && jsonArray.size()>0){
+				    for (int i = 0; i < jsonArray.size(); i++) {
+				        String object = jsonArray.getString(i);
+				        JSONObject jsonObject1 = JSONObject.fromObject(object);
+
+				        double price = Double.parseDouble(jsonObject1.getString("Price"));
+				        
+				        if(jsonObject1.getString("GTR").equals("0") && jsonObject1.getString("ITE").equals("0")){
+			        		//单次
 				        	calPrice = price;
-				        }
-			        }
-
-			    }
+				        	break;
+			        	}
+				    }
+	        	}
 			}
-
+			BigDecimal bg = new BigDecimal(calPrice);  
+			calPrice = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			m.put("success", true);
 			m.put("price", calPrice);
       
