@@ -144,6 +144,14 @@ public class shoppingController {
 //       String createDate = DateUtils.dateToString(new Date());
         String scanPeriod = request.getParameter("scanType");
         int serviceId = Integer.parseInt(request.getParameter("serviceId"));
+        String times = request.getParameter("times");
+        String price = request.getParameter("price");
+        String priceVal="";
+        priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
+        String[]  assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+        double priceD = Integer.parseInt(times)*assetArray.length*Double.parseDouble(priceVal);
+        BigDecimal bg = new BigDecimal(priceD);  
+        priceD = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         //联系人信息
 //       String linkname = new String(request.getParameter("linkname").getBytes("ISO-8859-1"),"UTF-8");
 //       String phone = request.getParameter("phone");
@@ -160,9 +168,8 @@ public class shoppingController {
        
         //根据id查询service
 	    Serv service = servService.findById(serviceId);
-	    String[] assetArray = null;
 	    String assetAddr = "";
-        assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+
         for(int i=0;i<assetArray.length;i++){
         	Asset asset = assetService.findById(Integer.parseInt(assetArray[i]));
         	assetAddr = assetAddr + asset.getAddr()+",";
@@ -179,6 +186,7 @@ public class shoppingController {
         request.setAttribute("serviceId", serviceId);
         request.setAttribute("service", service);
         request.setAttribute("mark", "web");//web服务标记
+        request.setAttribute("allPrice", priceD);
         String result = "/source/page/details/settlement";
         return result;
 	}
@@ -208,6 +216,7 @@ public class shoppingController {
         String serviceId = request.getParameter("serviceId");
         String createDate = DateUtils.dateToString(new Date());
         String price = request.getParameter("price");
+        String times = request.getParameter("times");
         String priceVal="";
         priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
         Order order = new Order();
@@ -237,12 +246,16 @@ public class shoppingController {
         if(scanPeriod!=null && !scanPeriod.equals("")){
             order.setScan_type(Integer.parseInt(scanPeriod));
         }
+        
+	    String[]  assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
         order.setUserId(globle_user.getId());
-        order.setPrice(Double.parseDouble(priceVal));
+        double priceD = Integer.parseInt(times)*assetArray.length*Double.parseDouble(priceVal);
+        BigDecimal bg = new BigDecimal(priceD);  
+        priceD = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        order.setPrice(priceD);
         order.setPayFlag(0);//未支付
         selfHelpOrderService.insertOrder(order);
-     
-	    String[]  assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+
         for(int i=0;i<assetArray.length;i++){
         	//插入订单资产表
             OrderAsset orderAsset = new OrderAsset();
@@ -602,6 +615,8 @@ public class shoppingController {
 		Map<String, Object> m = new HashMap<String, Object>();
 		//价格
 		double calPrice = 0;
+        //计算出的次数
+        int times = 0;
     	try {
 			//获得订单id
 			int serviceId = Integer.parseInt(request.getParameter("serviceId"));
@@ -635,8 +650,6 @@ public class shoppingController {
 	            long ms = DateUtils.getMsByDays(bDate, eDate);
 	            int typeInt = Integer.parseInt(type);
 	            
-	            //计算出的次数
-	            int times = 0;
 		        switch(serviceId){
 		        case 1:
 		        	//每周
@@ -695,6 +708,7 @@ public class shoppingController {
 				    }
 		        }	    		
 	        }else{//单次
+	        	times = 1;
 	        	if(jsonArray!=null && jsonArray.size()>0){
 				    for (int i = 0; i < jsonArray.size(); i++) {
 				        String object = jsonArray.getString(i);
@@ -714,6 +728,7 @@ public class shoppingController {
 			calPrice = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			m.put("success", true);
 			m.put("price", calPrice);
+			m.put("times", times);
       
 			//object转化为Json格式
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
@@ -727,8 +742,6 @@ public class shoppingController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			m.put("success", false);
-			m.put("price", calPrice);
-      
 			//object转化为Json格式
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
 			try {
