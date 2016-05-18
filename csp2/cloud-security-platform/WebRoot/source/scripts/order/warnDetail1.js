@@ -447,58 +447,7 @@ var getCharsData=function(repeat){
 	                    	 };
 	                    	 return serie;
 	                    	 }()
-//                        	[
-//                            {
-//                                name:'直接访问',
-//                                type:'bar',
-//                                itemStyle: {
-//                                     normal: {
-//                                         label: {
-//                                             show: true,
-//                                             textStyle: {
-//                                                 color: '#800080'
-//                                             }
-//                                         }
-//                                     }
-//                                },
-//                                data:[320]
-//                            },
-//                            {
-//                                name:'邮件营销',
-//                                type:'bar',
-//                                data:[120]
-//                            },
-//                            {
-//                                name:'联盟广告',
-//                                type:'bar',
-//                                data:[220]
-//                            },
-//                            {
-//                                name:'视频广告',
-//                                type:'bar',
-//                                data:[150]
-//                            },
-//                            {
-//                                name:'百度',
-//                                type:'bar',
-//                                data:[620]
-//                            },
-//                            {
-//                                name:'谷歌',
-//                                type:'bar',
-//                                data:[120]
-//                            },
-//                            {
-//                                name:'必应',
-//                                type:'bar',
-//                                data:[60]
-//                            },
-//                            {
-//                                name:'其他',
-//                                type:'bar',
-//                                data:[62]
-//                            }
-//                        ]
+
                     },true);//图形展示
                     window.onresize = myChartBar.resize;
                 }//ajax执行后台
