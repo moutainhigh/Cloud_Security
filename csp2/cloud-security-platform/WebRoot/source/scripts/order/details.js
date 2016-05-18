@@ -17,6 +17,8 @@ $(function(){
     	var scanType = $('.clickTime').val();
     	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
     	var serviceId = $("#serviceId").val();
+    	var times = $("#timesHidden").val();
+    	var price = $('.price').children('strong:first').text();
     	if(type==2){
     		scanType="";
     	}
@@ -61,7 +63,7 @@ $(function(){
 		     url: "getSession.html", 
 		     dataType: "json", 
 		     success: function(data) {
-		    	 window.location.href="settlement.html?type="+type+"&beginDate="+beginDate+"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds;
+		    	 window.location.href="settlement.html?type="+type+"&beginDate="+beginDate+"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&times="+times+"&price="+price;
 		    	 }, 
 		     error: function(data){ 
 		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
@@ -179,6 +181,7 @@ $(function(){
     	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
     	var serviceId = $("#serviceId").val();
     	var price = $('.price').children('strong:first').text();
+    	var times = $("#timesHidden").val();
     	if(orderType==2){
     		scanType="";
     	}
@@ -225,7 +228,8 @@ $(function(){
     			   	"scanType":scanType,
     			   	"serviceId":serviceId,
     			   	"assetIds":assetIds,
-    			   	"price":price}, 
+    			   	"price":price,
+    			   	"times":times}, 
 		     dataType: "json", 
 		     success: function(data) {
     			   		 if(data.sucess){
@@ -261,10 +265,12 @@ function calDefaultPrice(){
 	case 1://默认单次
 		servType = 2;
 		calPrice(serviceId);
+		$("#timesHidden").val(1);
 		break;
 	case 2://默认单次
 		servType = 1;
 		calPrice(serviceId);
+		$("#timesHidden").val(1);
 		break;
 	case 3://默认长期
 		servType = 4;
@@ -273,6 +279,7 @@ function calDefaultPrice(){
 	case 4://默认单次
 		servType = 4;
 		calPrice(serviceId);
+		$("#timesHidden").val(1);
 		break;
 	case 5://默认长期
 		servType = 3;
@@ -363,6 +370,7 @@ function tasknum_verification(){
        			if(data.success){
      		    	  var price = data.price;
      		    	  $("#price").html("¥"+price);
+     		    	  $("#timesHidden").val(data.times);
        			}
 
 	    	 }, 
@@ -411,6 +419,7 @@ function tasknum_verification(){
        			if(data.success){
      		    	  var price = data.price;
      		    	  $("#price").html("¥"+price);
+     		    	  $("#timesHidden").val(data.times);
        			}
 
    		    	 }, 
