@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -197,14 +198,14 @@ public class ExportController {
                         }  
                     }  
                 }
-                
-                XWPFParagraph paragraph21 = hdt.createParagraph();
+                //modify by tangxr 2016-5-17
+                /*XWPFParagraph paragraph21 = hdt.createParagraph();
                 paragraph21.setStyle("2");  
                 //在段落中新插入一个run,这里的run我理解就是一个word文档需要显示的个体,里面可以放文字,参数0代表在段落的最前面插入  
                 XWPFRun run21 = paragraph21.insertNewRun(0);  
                 //设置run内容   
                 run21.setBold(true); 
-                run21.setText("2.1 漏洞分布");
+                run21.setText("2.1 漏洞分布");*/
                 //插入图片
                 String userName = System.getProperty("user.name");
                 //获取文件路径
@@ -990,26 +991,88 @@ public class ExportController {
         SimpleDateFormat odf1 = new SimpleDateFormat("yyyy年MM月dd日");//设置日期格式
         String createDate1 = odf1.format(new Date());
         
-//        Map<String, Object> paramMap = new HashMap<String, Object>();
-//        paramMap.put("orderId", orderId);
-//        paramMap.put("type", order.getType());
-//        paramMap.put("count", assetList.size());
-//        paramMap.put("websoc", order.getWebsoc());
-        List<Alarm> alarmList = alarmService.getAlarmByOrderId(paramMap);
+        //add by tangxr 2016-5-17
+        int message = 0;
+        int higher = 0;
+        int high = 0;
+        int middle = 0;
+        int low = 0;
+        int count = 0;
+        String ratioHigher = "";
+        String ratioHigh = "";
+        String ratioMiddle = "";
+        String ratioLow = "";
+        String ratioMessage = "";
+        List result = alarmService.getAlarmByParam(paramMap);
+        DecimalFormat df = new DecimalFormat("0.00");//格式化小数，不足的补0
+        if(result != null && result.size() > 0){
+        	for(int i = 0; i < result.size(); i++){
+        		HashMap<String,Object>  map = (HashMap<String,Object>)result.get(i);
+        		if((Integer)map.get("level")==3){
+        			higher = Integer.parseInt(map.get("count").toString());
+        			ratioHigher = df.format((float)higher/count*100)+"%";
+        		}
+        		if((Integer)map.get("level")==2){
+        			high = Integer.parseInt(map.get("count").toString());
+        			ratioHigh = df.format((float)high/count*100)+"%";
+        		}
+        		if((Integer)map.get("level")==1){
+        			middle = Integer.parseInt(map.get("count").toString());
+        			ratioMiddle = df.format((float)middle/count*100)+"%";
+        		}
+        		if((Integer)map.get("level")==0){
+        			low = Integer.parseInt(map.get("count").toString());
+        			ratioLow = df.format((float)low/count*100)+"%";
+        		}
+        		if((Integer)map.get("level")==-1){
+	    			message = Integer.parseInt(map.get("count").toString());
+	    		}
+        	}
+        }
+        count = higher + high + middle + low + message;
+        String remark = "共发现漏洞"+ count +"个，其中，";
+        if(higher>0){
+        	ratioHigher = df.format((float)higher/count*100)+"%";
+        	remark = remark + "紧急漏洞"+ higher +"个，占比"+ ratioHigher +"；";
+        }
+        if(high>0){
+        	ratioHigh = df.format((float)high/count*100)+"%";
+        	remark = remark + "高危漏洞"+ high +"个，占比"+ ratioHigh +"；";
+        }
+        if(middle>0){
+        	ratioMiddle = df.format((float)middle/count*100)+"%";
+        	remark = remark + "中危漏洞"+ middle +"个，占比"+ ratioMiddle +"；";
+        }
+        if(low>0){
+        	ratioLow = df.format((float)low/count*100)+"%";
+        	remark = remark + "低危漏洞"+ low +"个，占比"+ ratioLow +"；";
+        }
         
-        //低
-        paramMap.put("level", WarnType.LOWLEVEL.ordinal());
-        List<Alarm> lowList = alarmService.getAlarmByOrderId(paramMap);
-        //中
-        paramMap.put("level", WarnType.MIDDLELEVEL.ordinal());
-        List<Alarm> middleList = alarmService.getAlarmByOrderId(paramMap);
-        //高
-        paramMap.put("level", WarnType.HIGHLEVEL.ordinal());
-        List<Alarm> highList = alarmService.getAlarmByOrderId(paramMap);
+        if(message>0){
+        	ratioMessage = df.format((float)message/count*100)+"%";
+        	remark = remark + "信息类漏洞"+ message +"个，占比"+ ratioMessage +"；";
+        }
+        
+        if(remark.endsWith("；")){
+        	remark = remark.substring(0, remark.lastIndexOf("；"));
+        	remark = remark + "。";
+        }
+        
+//        List<Alarm> alarmList = alarmService.getAlarmByOrderId(paramMap);
+//        
+//        //低
+//        paramMap.put("level", WarnType.LOWLEVEL.ordinal());
+//        List<Alarm> lowList = alarmService.getAlarmByOrderId(paramMap);
+//        //中
+//        paramMap.put("level", WarnType.MIDDLELEVEL.ordinal());
+//        List<Alarm> middleList = alarmService.getAlarmByOrderId(paramMap);
+//        //高
+//        paramMap.put("level", WarnType.HIGHLEVEL.ordinal());
+//        List<Alarm> highList = alarmService.getAlarmByOrderId(paramMap);
         String risk = "";
-        if(highList.size()>=2){//高风险
+        if(higher+high>=2){//高风险
             risk = "高危";
-        }else if(highList.size()<=0&&middleList.size()<=0){//低风险
+        }else if(higher+high<=0 && middle<=0){//低风险
             risk = "低危";
         }else{//中风险
             risk = "中危";
@@ -1023,14 +1086,18 @@ public class ExportController {
         map.put("$createDate$", createDate);
         map.put("$createDate1$", createDate1);
         map.put("$JCSJ$", order.getTask_datevo());
-        map.put("$LEAKNUM$", String.valueOf(alarmList.size()));
+        map.put("$LEAKNUM$", String.valueOf(count));
         map.put("$RISK$", risk);
-        map.put("$LOWNUM$", String.valueOf(lowList.size()));
-        map.put("$MIDDLENUM$", String.valueOf(middleList.size()));
-        map.put("$HIGHNUM$", String.valueOf(highList.size()));
+        map.put("$MESSAGE$", String.valueOf(message));
+        map.put("$LOWNUM$", String.valueOf(low));
+        map.put("$MIDDLENUM$", String.valueOf(middle));
+        map.put("$HIGHNUM$", String.valueOf(high));
+        map.put("$HIGHERNUM$", String.valueOf(higher));
         map.put("$webSite$", webSite);
         map.put("$webName$", webName);  
         map.put("$catalog$", "3.2.1 对策");
+        
+        map.put("$REMARKS$", remark);
         return map;
 
     }

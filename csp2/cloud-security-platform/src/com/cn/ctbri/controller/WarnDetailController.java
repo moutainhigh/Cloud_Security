@@ -1054,6 +1054,9 @@ public class WarnDetailController {
 
         JSONArray json = new JSONArray();
         JSONObject jo = new JSONObject();
+        //add by tangxr 2016-5-17
+        int message = 0;
+        int higher = 0;
         int high = 0;
         int middle = 0;
         int low = 0;
@@ -1061,24 +1064,30 @@ public class WarnDetailController {
         if(result != null && result.size() > 0){
         	for(int i = 0; i < result.size(); i++){
         		HashMap<String,Object>  map = (HashMap<String,Object>)result.get(i);
+        		if((Integer)map.get("level")==3){
+        			higher = Integer.parseInt(map.get("count").toString());
+        		}
         		if((Integer)map.get("level")==2){
         			high = Integer.parseInt(map.get("count").toString());
         		}
         		if((Integer)map.get("level")==1){
         			middle = Integer.parseInt(map.get("count").toString());
         		}
-        		if((Integer)map.get("level")==0){
-        			low = Integer.parseInt(map.get("count").toString());
-        		}
+//        		if((Integer)map.get("level")==0){
+//        			low = Integer.parseInt(map.get("count").toString());
+//        		}
+//        		if((Integer)map.get("level")==-1){
+//    				message = Integer.parseInt(map.get("count").toString());
+//    			}
         	}
         }
         if(result.size()==0){
             jo.put("level", 0);
             json.add(jo);
-        }else if(high>=2){//高风险
+        }else if(higher+high>=2){//高风险
             jo.put("level", 90);
             json.add(jo);
-        }else if(high<=0&&middle<=0){//低风险
+        }else if(higher+high<=0&&middle<=0){//低风险
             jo.put("level", 20);
             json.add(jo);
         }else{//中风险
@@ -1110,6 +1119,9 @@ public class WarnDetailController {
         paramMap.put("group_flag", group_flag);
         paramMap.put("websoc", websoc);
         paramMap.put("orderAssetId", orderAssetId);
+        //add by tangxr 2016-5-17
+        int message = 0;
+        int higher = 0;
         int high = 0;
         int middle = 0;
         int low = 0;
@@ -1118,6 +1130,9 @@ public class WarnDetailController {
         if(result != null && result.size() > 0){
         	for(int i = 0; i < result.size(); i++){
         		HashMap<String,Object>  map = (HashMap<String,Object>)result.get(i);
+        		if((Integer)map.get("level")==3){
+        			higher = Integer.parseInt(map.get("count").toString());
+        		}
         		if((Integer)map.get("level")==2){
         			high = Integer.parseInt(map.get("count").toString());
         		}
@@ -1127,16 +1142,27 @@ public class WarnDetailController {
         		if((Integer)map.get("level")==0){
         			low = Integer.parseInt(map.get("count").toString());
         		}
+        		if((Integer)map.get("level")==-1){
+	    			message = Integer.parseInt(map.get("count").toString());
+	    		}
         	}
         }
-        count = high + middle + low;
+        count = higher + high + middle + low + message;
         DecimalFormat df = new DecimalFormat("0.00");//格式化小数，不足的补0
         JSONArray json = new JSONArray();
+        if(message>0){
+            JSONObject jo = new JSONObject();
+            jo.put("label", "-1");
+            jo.put("value", message);
+            jo.put("color", "#40e1d1");
+            jo.put("ratio", df.format((float)message/count*100)+"%");
+            json.add(jo);
+        }
         if(low>0){
             JSONObject jo = new JSONObject();
             jo.put("label", "0");
             jo.put("value", low);
-            jo.put("color", "lightgreen");
+            jo.put("color", "#1e91ff");
             jo.put("ratio", df.format((float)low/count*100)+"%");
             json.add(jo);
         }
@@ -1144,7 +1170,7 @@ public class WarnDetailController {
             JSONObject jo = new JSONObject();
             jo.put("label", "1");
             jo.put("value", middle);
-            jo.put("color", "orange");
+            jo.put("color", "#ffa500");
             jo.put("ratio", df.format((float)middle/count*100)+"%");
             json.add(jo);
         }
@@ -1152,8 +1178,16 @@ public class WarnDetailController {
             JSONObject jo = new JSONObject();
             jo.put("label", "2");
             jo.put("value", high);
-            jo.put("color", "red");
+            jo.put("color", "#ff7e50");
             jo.put("ratio", df.format((float)high/count*100)+"%");
+            json.add(jo);
+        }
+        if(higher>0){
+            JSONObject jo = new JSONObject();
+            jo.put("label", "3");
+            jo.put("value", higher);
+            jo.put("color", "#cd5c5c");
+            jo.put("ratio", df.format((float)higher/count*100)+"%");
             json.add(jo);
         }
         return json.toString();
