@@ -415,31 +415,31 @@ function clearTable(){
 					<li>
                     	<h2>帮助中心</h2>
                         <dl>
-                        	<dd><a href="#">购物指南</a></dd>
-                            <dd><a href="#">在线帮助</a></dd>
-                            <dd><a href="#">常见问题</a></dd>
+                        	<dd>购物指南</dd>
+                            <dd>在线帮助</dd>
+                            <dd>常见问题</dd>
                        </dl>
                     </li>
                     <li>
                     	<h2>关于安全帮</h2>
                         <dl>
-                        	<dd><a href="${ctx}/knowUs.html">了解安全帮</a></dd>
+                            <dd><a href="${ctx}/knowUs.html">了解安全帮</a></dd>
                             <dd><a href="${ctx}/joinUs.html">加入安全帮</a></dd>
-                            <dd><a href="#">联系我们</a></dd>
+                            <dd>联系我们</dd>
                        </dl>
                     </li>
                     <li>
                     	<h2>关注我们</h2>
                         <dl>
-                        	<dd><a href="#">QQ交流群<br>470899318</a></dd>
+                        	<dd>QQ交流群<br>470899318</dd>
                             <dd class="weixin"><a href="#">官方微信</a></dd>
                        </dl>
                     </li>
                      <li>
                     	<h2>特色服务</h2>
                         <dl>
-                        	<dd><a href="#">优惠劵通道</a></dd>
-                            <dd><a href="#">专家服务通道</a></dd>
+                        	<dd>优惠劵通道</dd>
+                            <dd>专家服务通道</dd>
                        </dl>
                     </li>
 					
