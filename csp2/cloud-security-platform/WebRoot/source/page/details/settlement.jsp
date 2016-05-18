@@ -152,7 +152,7 @@
 	                                    <td width="56%" style="font-size:14px;">
 	                                    	${assetAddr }
 	                                    </td>
-	                                    <td width="38%" style="font-size:14px;">0.00</td>
+	                                    <td width="38%" style="font-size:14px;">${allPrice}</td>
 	                                 </tr>
 	                            </tbody>
                             </c:if>
@@ -227,7 +227,7 @@
             
             <ul class="Price">
             	<li>
-                	<i>1</i>个订单，总额：<span>￥0.00</span>
+                	<i>1</i>个订单，总额：<span>${allPrice}</span>
                 </li>
                 <!--  
                 <li>
@@ -235,11 +235,11 @@
                 </li>
                 -->
                 <li>
-                	应付总额：<span>￥0.00</span>
+                	应付总额：<span>${allPrice}</span>
                 </li>
             </ul>
 			<div class="SubmitBox">
-            	<p>应付总额：<span>￥0.00</span>
+            	<p>应付总额：<span>${allPrice}</span>
             	<c:if test="${mark eq 'web' }">
             		<input id="settlement" class="submit" type="submit" value="提交订单"/>
             	</c:if>
