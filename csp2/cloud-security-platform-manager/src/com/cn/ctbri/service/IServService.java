@@ -2,6 +2,8 @@ package com.cn.ctbri.service;
 
 import java.util.List;
 
+import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.Service;
 
@@ -28,6 +30,18 @@ public interface IServService {
      */
     List<Serv> findServiceByParam(Serv service);
     //查询全部服务
-    List<Serv> findAllService();
-
+    List<Serv> findAllService();    
+    /**
+     * 功能描述：保存服务价格
+     *       @time 2015-1-16
+     */
+    void insertPrice(Price price);
+    /*
+     * 删除价格
+     */
+    int delPrice(int serviceId);
+    /*
+     * 根据serviceid查询价格列表
+     */
+    List<Price> findPriceByServiceId(int serviceId);
 }

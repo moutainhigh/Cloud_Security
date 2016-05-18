@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.ServDao;
+import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.Serv;
 /**
  * 创 建 人  ：  邓元元
@@ -20,12 +21,14 @@ import com.cn.ctbri.entity.Serv;
 public class ServDaoImpl extends DaoCommon implements ServDao{
 
 
-	
 	/**
 	 * 功        能： OrderMapper命名空间
 	 */
 	private String ns = "com.cn.ctbri.entity.ServMapper.";
-
+	/**
+	 * 功        能：PriceMapper命名空间
+	 */
+	private String np = "com.cn.ctbri.entity.PriceMapper.";
 
 	public Serv findById(int serviceid) {
 		return this.getSqlSession().selectOne(ns + "findById",serviceid);
@@ -43,6 +46,18 @@ public class ServDaoImpl extends DaoCommon implements ServDao{
 	
     public List<Serv> findAllService() {
 		return this.getSqlSession().selectList(ns+"list");
+	}
+
+	public void insertPrice(Price price) {
+		this.getSqlSession().insert(np+"insertPrice",price);		
+	}
+
+	public int delPrice(int serviceId) {
+		return this.getSqlSession().delete(np+"delPrice",serviceId);
+	}
+
+	public List<Price> findPriceByServiceId(int serviceId) {
+		return this.getSqlSession().selectList(np+"findPriceByServiceId", serviceId);
 	}
 	
 }

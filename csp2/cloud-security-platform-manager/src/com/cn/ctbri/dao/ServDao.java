@@ -2,6 +2,7 @@ package com.cn.ctbri.dao;
 
 import java.util.List;
 
+import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.Serv;
 
 
@@ -31,6 +32,17 @@ public interface ServDao {
     List<Serv> getServiceByParam(Serv service);
     //获取所有服务
     List<Serv> findAllService();
-
-	
+    /**
+     * 功能描述：保存服务价格
+     *       @time 2015-1-16
+     */
+    void insertPrice(Price price);
+    /*
+     * 删除价格
+     */
+    int delPrice(int serviceId);
+    /*
+     * 根据serviceid查询价格列表
+     */
+    List<Price> findPriceByServiceId(int serviceId);
 }
