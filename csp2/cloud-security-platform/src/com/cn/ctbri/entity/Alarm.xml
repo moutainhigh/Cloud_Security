@@ -428,8 +428,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        select COUNT(a.level) AS count,a.level from cs_alarm a,
 			  (select t.taskId,t.group_id from cs_order_asset oa,cs_task t 
 			    where oa.id = t.order_asset_id 
-			    and oa.orderId='16042216562270178'
-			    and t.order_asset_id = 524
+			    and oa.orderId=#{orderId}
+			    and t.order_asset_id = #{orderAssetId}
 			    and t.status = 3
 			    <if test="group_flag!=null and group_flag!=''">
 	            and t.group_flag=#{group_flag}
