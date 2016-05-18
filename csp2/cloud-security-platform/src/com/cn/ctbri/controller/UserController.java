@@ -227,10 +227,12 @@ public class UserController{
 	public String saveUserPassword(User user,Model model,HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		//密码
-		String password = user.getPassword();
-		String passwdMD5 = DigestUtils.md5Hex(password);
-		globle_user.setPassword(passwdMD5);
-		userService.update(globle_user);
+		if(user.getPassword() != null){
+			String password = user.getPassword();
+			String passwdMD5 = DigestUtils.md5Hex(password);
+			globle_user.setPassword(passwdMD5);
+			userService.update(globle_user);
+		}
 		return "redirect:/userDataUI.html";
 	}
 	
@@ -688,76 +690,81 @@ public class UserController{
 	@RequestMapping(value="registToLogin.html")
 	public String regist(User user,HttpServletRequest request){
 
-		String name = user.getName();
-		String password = user.getPassword();
-		//add by tang 2015-06-01
-		//验证用户名
-		String pattern = "^[a-zA-Z0-9_]{4,20}$";
-	    Pattern pat = Pattern.compile(pattern);
-	    Matcher m = null;
-	    if(name!=null&&!"".equals(name)){
-	        m = pat.matcher(name);
-	    }
-	    
-	    //验证手机号
-	    String patternM = "^1[3|5|8|7][0-9]{9}$";
-	    Pattern patM = Pattern.compile(patternM);
-	    Matcher mMobile = null;
-	    boolean mb = false;
-	    if(user.getMobile()!=null&&!"".equals(user.getMobile())){
-	        mMobile = patM.matcher(user.getMobile());
-	        mb = mMobile.matches();
-	    }
-	    //验证邮箱
-//	    String patternE = "^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.[a-zA-Z0-9_-])$";
-/*	    String patternE = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
-	    Pattern patE = Pattern.compile(patternE);
-	    Matcher mEmail = null;
-	    boolean me = false;
-	    if(user.getEmail()!=null&&!"".equals(user.getEmail())){
-	        mEmail = patE.matcher(user.getEmail());
-	        me = mEmail.matches();
-	    }*/
-	    //行业
-		String industry = "";
-		//职业
-		String job = "";
-		//公司名称
-		String company = "";
-		try {
-			industry = new String(user.getIndustry().getBytes("ISO-8859-1"), "UTF-8");
-			job = new String(user.getJob().getBytes("ISO-8859-1"),"UTF-8");
-			company = new String(user.getCompany().getBytes("ISO-8859-1"),"UTF-8");
-			user.setCompany(company);
-			if(!industry.equals("-1")){
-				user.setIndustry(industry);
+		if(user.getName() != null){
+			String name = user.getName();
+			String password = user.getPassword();
+			//add by tang 2015-06-01
+			//验证用户名
+			String pattern = "^[a-zA-Z0-9_]{4,20}$";
+		    Pattern pat = Pattern.compile(pattern);
+		    Matcher m = null;
+		    if(name!=null&&!"".equals(name)){
+		        m = pat.matcher(name);
+		    }
+		    
+		    //验证手机号
+		    String patternM = "^1[3|5|8|7][0-9]{9}$";
+		    Pattern patM = Pattern.compile(patternM);
+		    Matcher mMobile = null;
+		    boolean mb = false;
+		    if(user.getMobile()!=null&&!"".equals(user.getMobile())){
+		        mMobile = patM.matcher(user.getMobile());
+		        mb = mMobile.matches();
+		    }
+		    //验证邮箱
+//		    String patternE = "^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.[a-zA-Z0-9_-])$";
+	/*	    String patternE = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+		    Pattern patE = Pattern.compile(patternE);
+		    Matcher mEmail = null;
+		    boolean me = false;
+		    if(user.getEmail()!=null&&!"".equals(user.getEmail())){
+		        mEmail = patE.matcher(user.getEmail());
+		        me = mEmail.matches();
+		    }*/
+		    //行业
+			String industry = "";
+			//职业
+			String job = "";
+			//公司名称
+			String company = "";
+			try {
+				industry = new String(user.getIndustry().getBytes("ISO-8859-1"), "UTF-8");
+				job = new String(user.getJob().getBytes("ISO-8859-1"),"UTF-8");
+				company = new String(user.getCompany().getBytes("ISO-8859-1"),"UTF-8");
+				user.setCompany(company);
+				if(!industry.equals("-1")){
+					user.setIndustry(industry);
+				}
+				if(!job.equals("-1")){
+					user.setJob(job);
+				}
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
 			}
-			if(!job.equals("-1")){
-				user.setJob(job);
+			if(name!=null&&!"".equals(name)&&m.matches()&&password!=null&&!"".equals(password)&&password.length()>=6&&password.length()<=20&&(mb)&&user.getVerification_code()!=null&&!"".equals(user.getVerification_code())){
+				//按用用户名、邮箱、手机号码组合查询用户,防止刷页面
+				List<User> users = userService.findUserByCombine(user);
+				if(!(users.size()>0)){
+					String passwdMD5 = DigestUtils.md5Hex(password);
+					user.setPassword(passwdMD5);
+					user.setStatus(1);  //用户状态(1：正常，0：停用)
+					user.setType(2);	//用户类型（0：超级管理员，1：管理员，2：用户）
+					user.setCreateTime(new Date());//创建时间
+					user.setIp(request.getRemoteAddr());
+					//生成apikey add by tangxr 2016-4-9
+					user.setApikey(UUID.randomUUID().toString().replace("-", ""));
+					userService.insert(user);
+				}
+				//return "/source/page/regist/registToLogin";
+				return "redirect:/loginUI.html";
+			}else{
+				request.setAttribute("errorMsg", "注册异常!");
+	        	return "/source/error/errorMsg";
 			}
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		if(name!=null&&!"".equals(name)&&m.matches()&&password!=null&&!"".equals(password)&&password.length()>=6&&password.length()<=20&&(mb)&&user.getVerification_code()!=null&&!"".equals(user.getVerification_code())){
-			//按用用户名、邮箱、手机号码组合查询用户,防止刷页面
-			List<User> users = userService.findUserByCombine(user);
-			if(!(users.size()>0)){
-				String passwdMD5 = DigestUtils.md5Hex(password);
-				user.setPassword(passwdMD5);
-				user.setStatus(1);  //用户状态(1：正常，0：停用)
-				user.setType(2);	//用户类型（0：超级管理员，1：管理员，2：用户）
-				user.setCreateTime(new Date());//创建时间
-				user.setIp(request.getRemoteAddr());
-				//生成apikey add by tangxr 2016-4-9
-				user.setApikey(UUID.randomUUID().toString().replace("-", ""));
-				userService.insert(user);
-			}
-			//return "/source/page/regist/registToLogin";
-			return "redirect:/loginUI.html";
 		}else{
-			request.setAttribute("errorMsg", "注册异常!");
-        	return "/source/error/errorMsg";
+        	return "redirect:/loginUI.html";
 		}
+		
 		
 	}
 	
