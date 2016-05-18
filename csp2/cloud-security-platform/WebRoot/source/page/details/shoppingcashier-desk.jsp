@@ -140,31 +140,31 @@
 					<li>
                     	<h2>帮助中心</h2>
                         <dl>
-                        	<dd><a href="#">购物指南</a></dd>
-                            <dd><a href="#">在线帮助</a></dd>
-                            <dd><a href="#">常见问题</a></dd>
+                        	<dd>购物指南</dd>
+                            <dd>在线帮助</dd>
+                            <dd>常见问题</dd>
                        </dl>
                     </li>
                     <li>
                     	<h2>关于安全帮</h2>
                         <dl>
-                        	<dd><a href="#">了解安全帮</a></dd>
-                            <dd><a href="#">加入安全帮</a></dd>
-                            <dd><a href="#">联系我们</a></dd>
+                            <dd><a href="${ctx}/knowUs.html">了解安全帮</a></dd>
+                            <dd><a href="${ctx}/joinUs.html">加入安全帮</a></dd>
+                            <dd>联系我们</dd>
                        </dl>
                     </li>
                     <li>
                     	<h2>关注我们</h2>
                         <dl>
-                        	<dd><a href="#">QQ交流群<br>470899318</a></dd>
+                        	<dd>QQ交流群<br>470899318</dd>
                             <dd class="weixin"><a href="#">官方微信</a></dd>
                        </dl>
                     </li>
                      <li>
                     	<h2>特色服务</h2>
                         <dl>
-                        	<dd><a href="#">优惠劵通道</a></dd>
-                            <dd><a href="#">专家服务通道</a></dd>
+                        	<dd>优惠劵通道</dd>
+                            <dd>专家服务通道</dd>
                        </dl>
                     </li>
 					
@@ -173,9 +173,7 @@
 			</div>
 		</div>
 		<div class="foot">
-			<p>Label@1234567890北京电信研究院<br>
-				www.anquanbang.net
-			</p>
+			<p>版权所有Copyright © 2015 中国电信股份有限公司北京研究院京ICP备12019458号-10</p>
 		</div>
 	</div>
 <!---执行效果-->
