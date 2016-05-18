@@ -148,15 +148,15 @@ $(document).ready(function(){
 						 <li class="clearfix type">
 							<label class="fl">选 类型</label>
                             <div class="fl clickBox" id="clickBox">
-	                            <button class="click Single" value="2" onclick="calPrice('${service.id}');">单次</button>
-	                            <button class="long" value="1">长期</button>
+	                            <button class="click Single" value="2" id="singleBtn" onclick="calPrice('${service.id}');">单次</button>
+	                            <button class="long" value="1" id="longBtn">长期</button>
                             </div> 
 						</li>
 						<li class="clearfix">
 							<label class="fl">服务时间</label>
                             <div class="fl" style="top:3px;">
-                            	<span class="start">开始时间 <input type="text" style="width:156px;" class="text" value="" id="beginDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></span>
-                                <span class="end" style="display:none; margin-right:0px;">结束时间 <input type="text" style="width:156px;" class="text" value="" id="endDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></span>
+                            	<span class="start">开始时间 <input type="text" style="width:156px;" class="text" value="" id="beginDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(dp){calPriceLong(null,null,true); }})"/></span>
+                                <span class="end" style="display:none; margin-right:0px;">结束时间 <input type="text" style="width:156px;" class="text" value="" id="endDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(dp){calPriceLong(null,null,true); }})"/></span>
                             </div> 
 						</li>
 						<li class="clearfix time">
@@ -164,21 +164,21 @@ $(document).ready(function(){
                             <div class="fl clickBox" id="time">
                             <input type="hidden" id="serviceIdHidden" value="${service.id}"/>
                             	<c:if test="${service.id == 1}">
-	                             <button class="clickTime" value="2" onclick="calPriceLong(this)">每周</button>
+	                             <button class="clickTime" value="2" onclick="calPriceLong(this,null,false)">每周</button>
 	                             <button value="3" onclick="calPriceLong(this)">每月</button>
 	                            </c:if>
 	                            <c:if test="${service.id == 2}">
-	                             <button class="clickTime" value="1" onclick="calPriceLong(this)">30分钟</button>
+	                             <button class="clickTime" value="1" onclick="calPriceLong(this,null,false)">30分钟</button>
 	                            </c:if>
 	                            <c:if test="${service.id == 3}">
-	                             <button class="clickTime" value="4" onclick="calPriceLong(this)">1天</button>
+	                             <button class="clickTime" value="4" onclick="calPriceLong(this,null,false)">1天</button>
 	                            </c:if>
 	                            <c:if test="${service.id == 4}">
-	                             <button class="clickTime" value="4" onclick="calPriceLong(this)">1天</button>
+	                             <button class="clickTime" value="4" onclick="calPriceLong(this,null,false)">1天</button>
 	                            </c:if>
 	                            <c:if test="${service.id == 5}">
-	                             <button class="clickTime" value="3" onclick="calPriceLong(this)">1小时</button>
-	                             <button value="4" onclick="calPriceLong(this)">2小时</button>
+	                             <button class="clickTime" value="3" onclick="calPriceLong(this,null,false)">1小时</button>
+	                             <button value="4" onclick="calPriceLong(this,null,false)">2小时</button>
 	                            </c:if>
                             </div> 
 					   </li>

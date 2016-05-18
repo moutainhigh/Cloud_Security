@@ -1,6 +1,13 @@
 $(function(){
-//	alert("fff");
-    
+	//默认类型
+	var indexDefault = 2;
+	//默认服务频率
+	var servType = 0;
+
+	//生成默认价格
+	calDefaultPrice();
+	
+	
     //确认订单界面点击"确认订单"进入完成
     $("#buyNow").click(function(){
     	var createDate = getCreateDate();
@@ -247,7 +254,32 @@ $(function(){
    
 
 });
-
+//设置默认价格
+function calDefaultPrice(){
+	var serviceId = $("#serviceIdHidden").val();
+	switch(parseInt(serviceId)){
+	case 1://默认单次
+		servType = 2;
+		calPrice(serviceId);
+		break;
+	case 2://默认单次
+		servType = 1;
+		calPrice(serviceId);
+		break;
+	case 3://默认长期
+		servType = 4;
+		//calPriceLong(null,servType);
+		break;
+	case 4://默认单次
+		servType = 4;
+		calPrice(serviceId);
+		break;
+	case 5://默认长期
+		servType = 3;
+		//calPriceLong(null,servType);
+		break;
+	}
+}
 function tasknum_verification(){
 		$.ajax({
 	        type: "POST",
@@ -320,36 +352,54 @@ function tasknum_verification(){
     }
     
     
-    //计算单次价格
+    //计算价格
     function calPrice(serviceId){
     	$.ajax({ type: "POST",
-		     async: false, 
-		     url: "calPrice.html?serviceId="+serviceId, 
-		     dataType: "json",
-		     success: function(data) {
-    			if(data.success){
-  		    	  var price = data.price;
-  		    	  $("#price").html("¥"+price);
-    			}
+   		     async: false, 
+   		     url: "calPrice.html", 
+   		     data:{"serviceId":serviceId},
+   		     dataType: "json",
+   		     success: function(data) {
+       			if(data.success){
+     		    	  var price = data.price;
+     		    	  $("#price").html("¥"+price);
+       			}
 
-		    	 }, 
-		     error: function(data){ 
-		    	  alert("error");
-		    	} 
+	    	 }, 
+	    	 error: function(data){ 
+	    	  alert("error");
+	    	} 
     	});
-    }
-    
+	}
+   
     //计算长期价格
-    function calPriceLong(obj){
+    function calPriceLong(obj,typeDefault,flag){//flag为1默认计算
     	var serviceId = $("#serviceIdHidden").val();
-    	var type = obj.value;
+    	var type = null;
+    	if(typeDefault!=null){
+    		type = typeDefault;
+    	}else if(obj!=null){
+    		type = obj.value;
+    	}else{
+    		type = servType;
+    	}
+    	
+
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
-		if(beginDate==""||beginDate==null){
-    		alert("开始时间不能为空");
-    	}else if(endDate==""||endDate==null){
-    		alert("结束时间不能为空");
-    	}else if(beginDate>=endDate){
+    	//如果服务是3,5的情况下改变日期可能要计算价格
+    	if(flag){//时间输入框计算
+    		if(beginDate==""||beginDate==null||endDate==""||endDate==null){
+    			return;
+    		}
+    	}else{//服务频率计算
+    		if(beginDate==""||beginDate==null){
+        		alert("开始时间不能为空");
+        	}else if(endDate==""||endDate==null){
+        		alert("结束时间不能为空");
+        	}
+    	}
+	    if(beginDate>=endDate){
     		alert("开始时间不能大于结束时间!");
     	}else{
     		$.ajax({ type: "POST",

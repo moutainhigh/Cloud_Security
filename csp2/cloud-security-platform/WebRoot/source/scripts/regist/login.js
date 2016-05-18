@@ -93,7 +93,7 @@ function loginSubmit(){
         dataType:"json",
         success: function(data){
             if(data.count<=0){
-        		$("#errMsg").html("用户名或密码错误!");
+        		$("#errMsg").html("用户不存在!");
         		$("#errMsgDiv").show();
         		return;
             }else{

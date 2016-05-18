@@ -37,9 +37,7 @@
             <div class="cent">
             	<form class="form" id="form_login" name="form_login" method="post">
                 	<h2>登录安全帮账号</h2>
-                	<div id="errMsgDiv" style="text-align:left;display:none">
-                    	<span id="errMsg" style="color:red;"></span>
-                    </div>
+
                 	<ul>
                     	<li class="clearfix">
                         	<div class="list fl">
@@ -65,6 +63,9 @@
                             </div>
                              <div class="prompt fl" id="checkNumber_prompt"><b></b></div>
                         </li>
+                        <div id="errMsgDiv" style="text-align:left;padding-bottom:10px;display:none">
+                    		<span id="errMsg" style="color:red;"></span>
+                    	</div>
                         <li class="clearfix" style=" position:relative; top:-5px;">
                         	<div class="list password fl" style="width:100%;">
                             	<label class="fl"><input type="checkbox" class="login_checkbox" name="remeberMe" id="remeberMe" value="yes" ${requestScope.checked }/>
