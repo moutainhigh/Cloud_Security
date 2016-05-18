@@ -33,7 +33,7 @@
 <body>
 	<div class="safeBox login register">
 	<div class="loginBox" style="margin-bottom:370px;">
-            <a href="#" class="logo">
+            <a href="${ctx}/index.html" class="logo">
                 <img src="${ctx}/source/images/portal/logo.png" alt="">
             </a>
 	

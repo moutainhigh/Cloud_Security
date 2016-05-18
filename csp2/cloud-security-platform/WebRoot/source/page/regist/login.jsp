@@ -31,7 +31,7 @@
 <body>
 	<div class="safeBox given login">
 		<div class="loginBox" style="margin-bottom:170px;">
-            <a href="#" class="logo">
+            <a href="${ctx}/index.html" class="logo">
                 <img src="${ctx}/source/images/portal/logo.png" alt="">
             </a>
             <div class="cent">
