@@ -178,6 +178,9 @@ var getCharsData=function(repeat){
                     $.each(data,function(i,p){
 	                   	
 	                   	var temp = null;
+	                   	if(p['label']==-1){
+	                   		temp="信息";
+	                   	}
 	                   	if(p['label']==0){
 	                   		temp="低";
 	                   	}
@@ -186,6 +189,9 @@ var getCharsData=function(repeat){
 	                   	}
 	                   	if(p['label']==2){
 	                   		temp="高";
+	                   	}
+	                   	if(p['label']==3){
+	                   		temp="紧急";
 	                   	}
 	                   	label[i]=temp+p['ratio'];
 	                   	value[i]={'name':temp+p['ratio'],'value':p['value']};
