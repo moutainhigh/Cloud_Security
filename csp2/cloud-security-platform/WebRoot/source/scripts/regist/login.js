@@ -70,8 +70,13 @@ function loginSubmit(){
 	var password = $("#login_password").val();
 	var checkNumber = $("#checkNumber").val();
 
-	if(name==null||name==""||password==null||password==""){
-		$("#errMsg").html("用户名或密码不能为空!");
+	if(name==null||name==""){
+		$("#errMsg").html("用户名不能为空!");
+		$("#errMsgDiv").show();
+		return;
+	}
+	if(password==null||password==""){
+		$("#errMsg").html("密码不能为空!");
 		$("#errMsgDiv").show();
 		return;
 	}
@@ -88,7 +93,7 @@ function loginSubmit(){
         dataType:"json",
         success: function(data){
             if(data.count<=0){
-        		$("#errMsg").html("用户名不存在!");
+        		$("#errMsg").html("用户名或密码错误!");
         		$("#errMsgDiv").show();
         		return;
             }else{
@@ -109,7 +114,7 @@ function loginSubmit(){
 							$("#errMsgDiv").show();
 							break;
 						case 2:
-							$("#errMsg").html("密码输入有误!");
+							$("#errMsg").html("用户名或密码错误!");
 							$("#errMsgDiv").show();
 							break;
 						case 3:
