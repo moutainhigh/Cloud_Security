@@ -36,7 +36,10 @@ function savePrice(){
 	var singlePrice = $("#singlePrice").val();
 	var timesMax = $("#timesMax").val();
 	var timesMaxPrice = $("#timesMaxPrice").val();
-
+	if(serviceId==''||serviceId==null){
+		alert("请输入服务id!");
+		return;
+	}
 	if(singlePrice==''||singlePrice==null||timesMax==''||timesMax==null||timesMaxPrice==''||timesMaxPrice==null){
 		alert("单次价格、最大值及最大值价格为必填项!");
 		return;
