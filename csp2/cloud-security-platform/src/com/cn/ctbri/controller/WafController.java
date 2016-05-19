@@ -4,7 +4,10 @@ package com.cn.ctbri.controller;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +22,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAssetService;
+import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.util.CommonUtil;
+import com.cn.ctbri.util.DateUtils;
 
 
 /**
@@ -34,7 +40,9 @@ import com.cn.ctbri.util.CommonUtil;
 public class WafController {
 	@Autowired
 	IAssetService assetService;
-   
+    @Autowired
+    IServService servService;
+    
 	 /**
 	 * 功能描述：购买waf服务
 	 * 参数描述：  无
@@ -80,7 +88,11 @@ public class WafController {
 				}
 			}
 		}
-		  request.setAttribute("assList", assList);
+		int serviceId = Integer.parseInt(request.getParameter("serviceId"));
+		Serv service = servService.findById(serviceId);
+		
+		request.setAttribute("assList", assList);
+		request.setAttribute("service", service);
 	    return  "/source/page/details/wafDetails";
 	}
 	 /**
@@ -120,13 +132,13 @@ public class WafController {
 			IpInfo.add(addr.getHostAddress());
         }
           String array[]=IpInfo.toArray(new String[]{});
-          boolean flag=true;
+          boolean flag=false;
           //页面输入的ip地址
           String ipArr[]= ipStr.split(",");
           for(int i=0;i<ipArr.length;i++){
         	  for(int k=0;k<array.length;k++){
-        		    if(!ipArr[i].equals(array[k])){
-        		    	flag=false;
+        		    if(ipArr[i].equals(array[k])){
+        		    	flag=true;
         		    	break;
         		    }
         	  }
@@ -137,4 +149,72 @@ public class WafController {
             CommonUtil.writeToJsp(response, JSON);
 	}
 	
+	/**
+	 * 功能描述： 添加购物车
+	 * 参数描述：  无
+	 * @throws Exception 
+	 *      add by gxy 2016-5-03
+	 */
+	@RequestMapping(value="buyNowWaf.html")
+	public void shoppingCar(HttpServletRequest request,HttpServletResponse response){
+		
+	}
+
+	 /**
+	 * 功能描述： 跳立即支付頁
+	 * 参数描述：  无
+	 *     @time 2016-3-10
+	 */
+	@RequestMapping(value="buyNowWafUI.html")
+	public String settlement(HttpServletRequest request){
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		//资产ids
+        String domainName = request.getParameter("domainName");
+        String domainId = request.getParameter("domainId");
+		String type = request.getParameter("type");
+        String beginDate = request.getParameter("beginDate");
+        String endDate = request.getParameter("endDate");
+        String scanType = request.getParameter("scanType");
+        int serviceId = Integer.parseInt(request.getParameter("serviceId"));
+        double price = Double.parseDouble(request.getParameter("price"));
+        //根据id查询service
+	    Serv service = servService.findById(serviceId);
+	    
+	   
+	    //日期格式 yyyy-MM
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    Date now = new Date();
+	    String nowDate = dateFormat.format(now);
+	    beginDate = beginDate + nowDate.substring(7);
+	    endDate = endDate + nowDate.substring(7);
+	    
+	    Date bDate=DateUtils.stringToDateNYRSFM(beginDate);
+        Date eDate=DateUtils.stringToDateNYRSFM(endDate);  
+        //时间之间的毫秒数
+        long ms = DateUtils.getMsByDays(bDate, eDate);
+        int count = 0;
+        if(scanType.equals("0")){//包月
+        	if(ms%(1000*3600*24*30)>0){
+        		count = (int)(ms/(1000*3600*24*30)) + 1;
+        	}else{
+        		count = (int)(ms/(1000*3600*24*30));
+        	}
+        	
+        }else{//包年
+        	count = (int)(ms/(1000*3600*24*365));
+        }
+        request.setAttribute("user", globle_user);
+	    request.setAttribute("assetAddr", domainName);
+	    request.setAttribute("assetIds", domainId);
+	    request.setAttribute("type", type);
+        request.setAttribute("beginDate", beginDate);
+        request.setAttribute("endDate", endDate);
+        request.setAttribute("scanType", scanType);
+        request.setAttribute("serviceId", serviceId);
+        request.setAttribute("service", service);
+        request.setAttribute("mark", "web");//web服务标记
+        request.setAttribute("allPrice", price);
+        String result = "/source/page/details/settlement";
+        return result;
+	}
 }
