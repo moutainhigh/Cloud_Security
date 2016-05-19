@@ -1,6 +1,9 @@
 package com.cn.ctbri.controller;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -8,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +35,7 @@ import com.cn.ctbri.service.ITaskHWService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.service.IUserService;
+import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
 
 /**
@@ -335,6 +342,55 @@ public class MyOrderController {
         model.addAttribute("search",searchText);  //回显查询文本
         model.addAttribute("isAPI",isAPI);  //回显查询文本
         return "/source/page/personalCenter/my_order";
+    }
+    
+    /**
+     * 功能描述： 个人中心-设置域名 页面的显示
+     * 参数描述： Model model
+     *       @time 2016-5-18
+     */
+    @RequestMapping(value="domainNameUI.html")
+    public String domainNameUI(Model model){
+    	//TODO
+    	model.addAttribute("domainName", "www.testfire.net"); //当前域名
+    	model.addAttribute("ipAddress", "65.61.137.117"); //当前A记录www值
+    	return "/source/page/personalCenter/domainNameAnalysis";
+    }
+    
+    /**
+     * 功能描述： 检测域名 解析更改是否成功
+     * @param HttpServletRequest request
+     * @param HttpServletResponse response
+     * @time 2016-5-18
+     */
+    @RequestMapping(value="checkDomainName.html")
+    public void checkDomainName(HttpServletRequest request, HttpServletResponse response){
+    	Map<String,Object> m = new HashMap<String,Object>();
+    	try {
+    		String domainName = request.getParameter("domainName");
+    		String ipAddress = request.getParameter("ipAddress");
+    		
+    		//取得域名对应的IP地址
+    		InetAddress inetAddress = InetAddress.getByName(domainName);
+    		//比较IP地址是否一致
+    		if (!ipAddress.equals(inetAddress.getHostAddress())){
+    			m.put("success", false);
+    		}
+    		m.put("success", true);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			m.put("success", false);
+		}  
+		
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+    	
     }
     
 }
