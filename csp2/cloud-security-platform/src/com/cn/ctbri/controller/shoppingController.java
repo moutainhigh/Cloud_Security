@@ -28,6 +28,7 @@ import com.cn.ctbri.common.NorthAPIWorker;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.ShopCar;
@@ -37,6 +38,7 @@ import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAPIService;
 import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
+import com.cn.ctbri.service.IPriceService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.IServiceAPIService;
@@ -83,6 +85,8 @@ public class shoppingController {
     IServiceAPIService serviceAPIService;
     @Autowired
     IOrderAPIService orderAPIService;
+    @Autowired
+    IPriceService priceService;
     
     private static String SERVER_WEB_ROOT;
     private static String VulnScan_servicePrice;
@@ -635,14 +639,39 @@ public class shoppingController {
 			ClientResponse clientResponse = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);        
 			System.out.println(clientResponse.toString());
 			String str = clientResponse.getEntity(String.class);
-			System.out.println(str);         
-			//解析json
+			System.out.println(str);     
+			
+			//解析json,进行数据同步
 			JSONObject jsonObject = JSONObject.fromObject(str);			
 			JSONArray jsonArray = jsonObject.getJSONArray("PriceStr");
-			
+	        if(jsonArray!=null && jsonArray.size()>0){
+		        //删除数据
+		        priceService.delPrice(serviceId);
+			    for (int i = 0; i < jsonArray.size(); i++) {
+			        String object = jsonArray.getString(i);
+			        JSONObject jsonObject1 = JSONObject.fromObject(object);
+			        int idJson = Integer.parseInt(jsonObject1.getString("id"));
+			        int serviceIdJson = Integer.parseInt(jsonObject1.getString("serviceId"));
+			        int typeJson = Integer.parseInt(jsonObject1.getString("type"));
+			        double priceJson = Double.parseDouble(jsonObject1.getString("price"));
+			        int timesGJson = Integer.parseInt(jsonObject1.getString("timesG"));
+			        int timesLEJson = Integer.parseInt(jsonObject1.getString("timesLE"));
+			       
+			        Price newprice = new Price();
+			        newprice.setServiceId(serviceIdJson);
+			        newprice.setType(typeJson);
+			        newprice.setTimesG(timesGJson);
+			        newprice.setTimesLE(timesLEJson);
+			        newprice.setPrice(priceJson);
+			        
+			        priceService.insertPrice(newprice);
+			    }
+	        }
+	        
 		
 			//进行价格分析
-			
+	        //根据serviceid查询价格列表
+			List<Price> priceList = priceService.findPriceByServiceId(serviceId);
 	        //长期
 	        if(type!=null){	  
 	            Date bDate=DateUtils.stringToDateNYRSFM(beginDate);
@@ -684,24 +713,18 @@ public class shoppingController {
 		        	}
 		        	break;
 		        }
-		        if(jsonArray!=null && jsonArray.size()>0){
-				    for (int i = 0; i < jsonArray.size(); i++) {
-				        String object = jsonArray.getString(i);
-				        JSONObject jsonObject1 = JSONObject.fromObject(object);
-				        double price = Double.parseDouble(jsonObject1.getString("Price"));
-				        int timesG = 0;//大于
-				        int timesLE = 0;//小于等于
-				        if(!jsonObject1.getString("GTR").equals("0") && !jsonObject1.getString("ITE").equals("0")){
-				        	timesG = Integer.parseInt(jsonObject1.getString("GTR"));
-				        	timesLE = Integer.parseInt(jsonObject1.getString("ITE"));
-				        	if((times>=timesG&&times<timesLE)||(times<1&&timesG==1)){
-				    			calPrice = price;
+		        if(priceList!=null && priceList.size()>0){
+				    for (int i = 0; i < priceList.size(); i++) {
+				    	Price onePrice = priceList.get(i);
+				        if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()!=0){
+				        	if((times>=onePrice.getTimesG()&&times<onePrice.getTimesLE())||
+				        	   (times<1&&onePrice.getTimesG()==1)){
+				    			calPrice = onePrice.getPrice();
 				    			break;
 				    		}
-				        }else if(!jsonObject1.getString("GTR").equals("0") && jsonObject1.getString("ITE").equals("0")){
-				        	timesG = Integer.parseInt(jsonObject1.getString("GTR"));
-				        	if(times>timesG){
-				        		calPrice = price;
+				        }else if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()==0){
+				        	if(times>onePrice.getTimesG()){
+				        		calPrice = onePrice.getPrice();
 				        		break;
 				    		}
 				        }
@@ -710,16 +733,12 @@ public class shoppingController {
 		        }	    		
 	        }else{//单次
 	        	times = 1;
-	        	if(jsonArray!=null && jsonArray.size()>0){
-				    for (int i = 0; i < jsonArray.size(); i++) {
-				        String object = jsonArray.getString(i);
-				        JSONObject jsonObject1 = JSONObject.fromObject(object);
-
-				        double price = Double.parseDouble(jsonObject1.getString("Price"));
-				        
-				        if(jsonObject1.getString("GTR").equals("0") && jsonObject1.getString("ITE").equals("0")){
+	        	if(priceList!=null && priceList.size()>0){
+				    for (int i = 0; i < priceList.size(); i++) {
+				    	Price onePrice = priceList.get(i);
+				        if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0){
 			        		//单次
-				        	calPrice = price;
+				        	calPrice = onePrice.getPrice();
 				        	break;
 			        	}
 				    }
