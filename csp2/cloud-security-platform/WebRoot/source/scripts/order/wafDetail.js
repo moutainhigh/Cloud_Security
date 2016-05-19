@@ -25,6 +25,7 @@ $(function(){
       var endDate=$('#endDate').val();
       //网站域名
       var domainName = $('#domainName').val();
+      //var addurl = $('#addurl').val();
       var ipAddr ="/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/";
       if(beginDate==""||beginDate==null){
         		alert("开始时间不能为空");
@@ -44,6 +45,7 @@ $(function(){
          Ipval = Ipval+$(this).val()+",";
          
       });
+        alert(Ipval);
       var ipVal = Ipval.substring(0,Ipval.length-1);
       //循环判断ip地址
       var isTrue = ipVal.split(',').every(function(ip){
@@ -53,6 +55,29 @@ $(function(){
         if(!isTrue){
         	alert("IP地址输入无效，请输入正确的IP地址!");
         	return false;
+        }
+        if(isTrue){
+        	$.ajax({ type: "POST",
+		     async: false, 
+		     url: "VerificationIP.html",
+		     data: {"ipVal":ipVal,
+        		    "domainName":domainName}, 
+		     dataType: "json", 
+		     success: function(data) {
+    			   		 if(!data.flag){
+    			   			 alert("输入域名对应IP地址与绑定的域名IP地址不一致!");
+    			   		 }else{
+    			   			 addCart();
+    			   		 }
+    			   			
+    			   	
+		    	 }, 
+		     error: function(data){ 
+		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+		    		 window.location.href = "loginUI.html"; } 
+		    	 else { window.location.href = "loginUI.html"; } } 
+		});
+
         }
       /*  if(isTrue){
         	$.ajax({ type: "POST",
@@ -109,4 +134,9 @@ $(function(){
     	  $("#yearDiv").hide();
     	   $("#monthDiv").show();
       }
+ }
+ 
+ //添加到购物车
+ function addCart(){
+	 
  }
