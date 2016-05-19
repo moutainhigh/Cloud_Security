@@ -16,6 +16,7 @@
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
+<script src="${ctx}/source/scripts/order/wafDetail.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
     //首页广告页数据定时刷新,数据不去重
@@ -167,12 +168,12 @@ function showUnreadNews()
                                            
                                             <strong style="display:block"><em style="font-size:20px;font-family: Arial Regular;">¥199.00</em></strong>
                                              <strong style="display:block; font-size:30px;">¥100.00</strong>
-                                            <a href="#" class="btn" style="width:80px;">购买</a>
+                                            <a href="javaScript:void(0);" class="btn" style="width:80px;" id="wafDetail">购买</a>
                                         </div>
                                     </div>
-                               	<div class="mask">
+                              <!-- <div class="mask">
                                 	<h6>即将上线</h6>
-                                </div>
+                                </div> -->	
                                 
                                
                             </li>
