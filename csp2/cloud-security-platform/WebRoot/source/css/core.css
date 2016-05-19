@@ -79,8 +79,8 @@ input[type="password"]::-ms-reveal{
 }
 .core .my-order .coreList .con-order .text{
 	border: none;
-	height: 14px;
-	padding: 11px 0;
+	height: 18px;
+	padding: 9px 0;
 	line-height: 15px;
 	width: 348px;
 	padding-left: 20px;
@@ -309,8 +309,8 @@ input[type="password"]::-ms-reveal{
 }
 .dataBox .dataList li .dataListR .text{
 	width: 336px;
-	padding: 13px 0;
-	height: 16px;
+	padding: 11px 0;
+	height: 18px;
 	line-height: 16px;
 	font-size: 14px;
 	color: #343434;
@@ -619,9 +619,9 @@ select::-ms-expand { display: none; }
 	border: #e5e5e5 solid 1px;
 }
 .assetstitle .assetstitlr .text{
-	height: 16px;
+	height: 18px;
 	line-height: 16px;
-	padding: 11px 0px 11px 16px;
+	padding: 9px 0px 11px 16px;
 	border: none;
 	width: 354px;
 	color: #929292;

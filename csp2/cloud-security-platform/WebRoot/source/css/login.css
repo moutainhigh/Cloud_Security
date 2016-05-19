@@ -70,16 +70,15 @@ input::-ms-reveal{
 
 .login .cent ul .list .text{
 	
-	height: 16px;
+	height: 20px;
 	width: 318px;
 	border: none;
-	padding:14px 30px 14px 0;
 	color: #343434;
 	font-size: 16px;
 	border-radius: 1px;
 	outline:medium;
 	line-height: 16px;
-	*padding:12px 30px 12px 0;
+	padding:10px 30px 14px 0;
 	
 }
 .login .cent ul .list .test{
