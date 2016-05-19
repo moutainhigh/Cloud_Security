@@ -629,44 +629,54 @@ public class shoppingController {
 			String beginDate = request.getParameter("beginDate");
 			String endDate = request.getParameter("endDate");
 			
-			//远程调用接口
-			ClientConfig config = new DefaultClientConfig();
-			//检查安全传输协议设置
-			Client client = Client.create(config);
-			//连接服务器
-			String url = SERVER_WEB_ROOT + VulnScan_servicePrice;
-			WebResource service = client.resource(url+serviceId);
-			ClientResponse clientResponse = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);        
-			System.out.println(clientResponse.toString());
-			String str = clientResponse.getEntity(String.class);
-			System.out.println(str);     
+			String str;
+			try {
+				//远程调用接口
+				ClientConfig config = new DefaultClientConfig();
+				//检查安全传输协议设置
+				Client client = Client.create(config);
+				//连接服务器
+				String url = SERVER_WEB_ROOT + VulnScan_servicePrice;
+				WebResource service = client.resource(url+serviceId);
+				ClientResponse clientResponse = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);        
+				System.out.println(clientResponse.toString());
+				str = clientResponse.getEntity(String.class);
+				System.out.println(str);
+				
+				//解析json,进行数据同步
+				JSONObject jsonObject = JSONObject.fromObject(str);			
+				JSONArray jsonArray = jsonObject.getJSONArray("PriceStr");
+		        if(jsonArray!=null && jsonArray.size()>0){
+			        //删除数据
+			        priceService.delPrice(serviceId);
+				    for (int i = 0; i < jsonArray.size(); i++) {
+				        String object = jsonArray.getString(i);
+				        JSONObject jsonObject1 = JSONObject.fromObject(object);
+				        int idJson = Integer.parseInt(jsonObject1.getString("id"));
+				        int serviceIdJson = Integer.parseInt(jsonObject1.getString("serviceId"));
+				        int typeJson = Integer.parseInt(jsonObject1.getString("type"));
+				        double priceJson = Double.parseDouble(jsonObject1.getString("price"));
+				        int timesGJson = Integer.parseInt(jsonObject1.getString("timesG"));
+				        int timesLEJson = Integer.parseInt(jsonObject1.getString("timesLE"));
+				       
+				        Price newprice = new Price();
+				        newprice.setServiceId(serviceIdJson);
+				        newprice.setType(typeJson);
+				        newprice.setTimesG(timesGJson);
+				        newprice.setTimesLE(timesLEJson);
+				        newprice.setPrice(priceJson);
+				        
+				        priceService.insertPrice(newprice);
+				    }
+		        }
+		        
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				//e1.printStackTrace();
+				System.out.println("链接服务器失败!");
+			}     
 			
-			//解析json,进行数据同步
-			JSONObject jsonObject = JSONObject.fromObject(str);			
-			JSONArray jsonArray = jsonObject.getJSONArray("PriceStr");
-	        if(jsonArray!=null && jsonArray.size()>0){
-		        //删除数据
-		        priceService.delPrice(serviceId);
-			    for (int i = 0; i < jsonArray.size(); i++) {
-			        String object = jsonArray.getString(i);
-			        JSONObject jsonObject1 = JSONObject.fromObject(object);
-			        int idJson = Integer.parseInt(jsonObject1.getString("id"));
-			        int serviceIdJson = Integer.parseInt(jsonObject1.getString("serviceId"));
-			        int typeJson = Integer.parseInt(jsonObject1.getString("type"));
-			        double priceJson = Double.parseDouble(jsonObject1.getString("price"));
-			        int timesGJson = Integer.parseInt(jsonObject1.getString("timesG"));
-			        int timesLEJson = Integer.parseInt(jsonObject1.getString("timesLE"));
-			       
-			        Price newprice = new Price();
-			        newprice.setServiceId(serviceIdJson);
-			        newprice.setType(typeJson);
-			        newprice.setTimesG(timesGJson);
-			        newprice.setTimesLE(timesLEJson);
-			        newprice.setPrice(priceJson);
-			        
-			        priceService.insertPrice(newprice);
-			    }
-	        }
+
 	        
 		
 			//进行价格分析
