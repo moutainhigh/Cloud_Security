@@ -1930,3 +1930,32 @@ padding: 20px 30px 0px 0px;
 	font-size:20px;
 	text-align:right;
 }
+
+/*waf商品详情页*/
+.dataR .waf_ip_list li > .text{
+	margin-left: 0;
+}
+.dataR .waf_ip_list{
+	height: auto;
+}
+.dataR .waf_ip_list li{
+	position: relative;
+	left: 76px;
+	top:-38px;
+	height: 36px;
+	margin-bottom: 10px;
+}
+.dataR .waf_ip_list li i{
+	position: relative;
+	top:5px;
+	margin-left: 30px;
+	margin-right: 4px;
+	cursor: pointer;
+}
+.dataR .waf_ip_list li span{
+	font-size: 14px;
+	color: #4e4e4e;
+}
+.dataR .waf_ip_list li span em{
+	color: #929292;
+}
