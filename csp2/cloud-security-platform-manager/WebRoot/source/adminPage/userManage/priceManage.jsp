@@ -20,28 +20,21 @@
 <body>
     <div id="base" class="">
     服务id:<input type="text" id="serviceId"/>
-    <div id="td0">
+    <div id="td0"><!--
 
 	 
      <c:if test="${priceList!= null}">
      <c:forEach var="price" items="${priceList}" varStatus="status">
          <div id="td">
-          <div>
-          	<select id="type">
-          		<option value="0">单次</option>
-          		<option value="1">区间</option>
-          		<option value="2">大于</option>
-          	</select>
-	      </div>
 	      <div class="u10">
 	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
-	        <!-- Unnamed () -->
+	         Unnamed () 
 	        <div class="u11" class="text">
 	          <p><span>大于</span></p>
 	        </div>
 	      </div>
 	
-	      <!-- Unnamed (Text Field) -->
+	       Unnamed (Text Field) 
 	      <div class="u12">
 	        <input class="u12_input" type="text" id="timesBegin" value='${price.timesBegin }' 
 	         onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
@@ -50,42 +43,42 @@
 	
 	
 	
-	      <!-- Unnamed (Shape) -->
+	       Unnamed (Shape) 
 	      <div class="u14">
 	        <img class="u14_img" src="${ctx }/source/images/transparent.gif"/>
-	        <!-- Unnamed () -->
+	         Unnamed () 
 	        <div class="u15">
 	          <p><span>小于等于</span></p>
 	        </div>
 	      </div>
 	
-	      <!-- Unnamed (Text Field) -->
+	       Unnamed (Text Field) 
 	      <div class="u16">
 	        <input class="u16_input" type="text" id="timesEnd" value="${price.timesEnd }"
 	        onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
 	        onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
 	      </div>
 	
-	      <!-- Unnamed (Shape) -->
+	       Unnamed (Shape) 
 	      <div class="u17">
 	        <img class="u17_img"  src="${ctx }/source/images/transparent.gif"/>
-	        <!-- Unnamed () -->
+	         Unnamed () 
 	        <div class="u18">
 	          <p><span>价格</span></p>
 	        </div>
 	      </div>
 	
-	      <!-- Unnamed (Text Field) -->
+	       Unnamed (Text Field) 
 	      <div class="u19">
 	        <input class="u19_input" type="text" id="price" value="${price.price }"/>
 	      </div>
 	
-	      <!-- Unnamed (HTML Button) -->
+	       Unnamed (HTML Button) 
 	      <div class="u20">
 	        <input type="button" class="addtd" value="添加行"/>
 	      </div>
 	
-	      <!-- Unnamed (HTML Button) -->
+	       Unnamed (HTML Button) 
 	      <div class="u21">
 	        <input  type="button" class="deltd" value="删除行"/>
 	      </div>
@@ -93,46 +86,75 @@
       </c:forEach>
      </c:if>
    
-     <c:if test="${empty priceList}">
-     	 <div id="td">
-     	 <div>
-          	<select id="type">
-          		<option value="0" selected="selected">单次</option>
-          		<option value="1">区间</option>
-          		<option value="2">大于</option>
-          	</select>
-	      </div>
-	      <!-- Unnamed (Shape) -->
-	      <div class="u17">
-	        <img class="u17_img"  src="${ctx }/source/images/transparent.gif"/>
+     --><c:if test="${empty priceList}">
+
+         <div id="single" style="padding-bottom:38px">
+         <div class="u10" style="left:50px">
+	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
 	        <!-- Unnamed () -->
-	        <div class="u18">
+	        <div class="u11" class="text">
+	          <p><span>单次：</span></p>
+	        </div>
+	      </div>
+	      
+	      <div class="u10">
+	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
+	        <!-- Unnamed () -->
+	        <div class="u11" class="text">
+	          <p><span>价格</span></p>
+	        </div>
+	      </div>
+
+	      <!-- Unnamed (Text Field) -->
+	      <div class="u12">
+	        <input class="u12_input" type="text"  id="singlePrice"/>
+	      </div>
+	      </div>
+	      
+	      <div id="max" style="padding-bottom:38px">
+         <div class="u10" style="left:50px">
+	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
+	        <!-- Unnamed () -->
+	        <div class="u11" class="text">
+	          <p><span>最大限值：</span></p>
+	        </div>
+	      </div>
+	      <div class="u10">
+	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
+	        <!-- Unnamed () -->
+	        <div class="u11" class="text">
+	          <p><span>最大值</span></p>
+	        </div>
+	      </div>
+	
+	      <!-- Unnamed (Text Field) -->
+	      <div class="u12">
+	        <input class="u12_input" type="text" id="timesMax"/>
+	      </div>
+	     	      <!-- Unnamed (Shape) -->
+	      <div class="u14">
+	        <img class="u14_img" src="${ctx }/source/images/transparent.gif"/>
+	        <!-- Unnamed () -->
+	        <div class="u15">
 	          <p><span>价格</span></p>
 	        </div>
 	      </div>
 	
 	      <!-- Unnamed (Text Field) -->
-	      <div class="u19">
-	        <input class="u19_input" type="text" id="price" value="${price.price }"/>
+	      <div class="u16">
+	        <input class="u16_input" type="text" id="timesMaxPrice"/>
 	      </div>
-	      	      <!-- Unnamed (HTML Button) -->
-	      <div class="u20">
-	        <input type="button" class="addtd" value="添加行"/>
 	      </div>
-	
-	      <!-- Unnamed (HTML Button) -->
-	      <div class="u21">
-	        <input  type="button" class="deltd" value="删除行"/>
+	      <div id="td">
+	      <div id="long" style="padding-bottom:38px">
+          <div class="u10" style="left:50px">
+	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
+	        <!-- Unnamed () -->
+	        <div class="u11" class="text">
+	          <p><span>区间：</span></p>
+	        </div>
 	      </div>
-     	 </div>
-         <div id="td">
-          <div>
-          	<select id="type">
-          		<option value="0" >单次</option>
-          		<option value="1" selected="selected">区间</option>
-          		<option value="2">大于</option>
-          	</select>
-	      </div>
+	      
 	      <div class="u10">
 	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
 	        <!-- Unnamed () -->
@@ -143,7 +165,7 @@
 	
 	      <!-- Unnamed (Text Field) -->
 	      <div class="u12">
-	        <input class="u12_input" type="text" id="timesBegin"/>
+	        <input class="u12_input" type="text" id="timesG"/>
 	      </div>
 	
 	
@@ -159,7 +181,7 @@
 	
 	      <!-- Unnamed (Text Field) -->
 	      <div class="u16">
-	        <input class="u16_input" type="text" id="timesEnd"/>
+	        <input class="u16_input" type="text" id="timesLE"/>
 	      </div>
 	
 	      <!-- Unnamed (Shape) -->
@@ -185,7 +207,9 @@
 	      <div class="u21">
 	        <input  type="button" class="deltd" value="删除行"/>
 	      </div>
+	      </div>
       </div>
+      
 	 </c:if>
 
       </div>
@@ -200,14 +224,7 @@
       </div>
 
     </div>
-     <!-- 单次 -->
-     <div class="u17" id="perTime" style>
-       <img class="u17_img"  src="${ctx }/source/images/transparent.gif"/>
-       <!-- Unnamed () -->
-       <div class="u18">
-         <p><span>价格</span></p>
-       </div>
-     </div>
+
   </body>
 </html>
 

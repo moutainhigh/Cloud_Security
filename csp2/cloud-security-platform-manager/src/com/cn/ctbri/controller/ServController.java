@@ -58,7 +58,7 @@ public class ServController {
 	@RequestMapping("/addServicePriceUI.html")
 	public String addServicePriceUI(HttpServletRequest request){
 		//获取服务类型
-		int serviceId = 1;
+		int serviceId = 6;
 		List<Price> priceList = servService.findPriceByServiceId(serviceId);
         request.setAttribute("priceList", priceList);//订单总数
 		return "/source/adminPage/userManage/priceManage";
@@ -75,15 +75,17 @@ public class ServController {
 		Map<String, Object> m = new HashMap<String, Object>();
 		try {
 			int serviceId = Integer.parseInt(request.getParameter("serviceId"));
-			int timesBegin = Integer.parseInt(request.getParameter("timesBegin"));
-			int timesEnd = Integer.parseInt(request.getParameter("timesEnd"));
+			int timesG = Integer.parseInt(request.getParameter("timesG"));
+			int timesLE = Integer.parseInt(request.getParameter("timesLE"));
+			int type = Integer.parseInt(request.getParameter("type"));
 			double price = Double.parseDouble(request.getParameter("price")); 
 			
 			Price newprice = new Price();
 			newprice.setServiceId(serviceId);
-			newprice.setTimesBegin(timesBegin);
-			newprice.setTimesEnd(timesEnd);
+			newprice.setTimesG(timesG);
+			newprice.setTimesLE(timesLE);
 			newprice.setPrice(price);
+			newprice.setType(type);
 			
 			servService.insertPrice(newprice);
 			

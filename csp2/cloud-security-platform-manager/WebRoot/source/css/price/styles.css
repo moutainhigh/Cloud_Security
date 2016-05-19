@@ -387,7 +387,6 @@ body {
 #u22 {
   position:absolute;
   left:236px;
-  top:155px;
   width:100px;
   height:25px;
 }
@@ -408,7 +407,6 @@ body {
 #u23 {
   position:absolute;
   left:452px;
-  top:155px;
   width:100px;
   height:25px;
 }
@@ -426,7 +424,4 @@ body {
   color:#000000;
   text-align:center;
 }
-#td{
-	padding-top:28px;
-	margin-bottom:30px;
-}
+
