@@ -28,7 +28,7 @@
              	<c:if test="${list.isAPI==1}">
              	 ${fn:replace(list.name, "服务", "API")}  
                 </c:if> 
-                <c:if test="${list.isAPI!=1}">
+                <c:if test="${list.isAPI==0}">
                  ${list.name}   
                 </c:if>                      
              </td>
@@ -50,7 +50,7 @@
                  </a>
                 </c:if>
                 <!-- modify by 2016-4-13 -->
-                <c:if test="${list.status==1&&list.isAPI!=1}">
+                <c:if test="${list.status==1&&list.isAPI==0}">
                  <a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank">
                  <img src="${ctx}/source/images/status_2.jpg" title="已完成无异常"/>
                  </a>
