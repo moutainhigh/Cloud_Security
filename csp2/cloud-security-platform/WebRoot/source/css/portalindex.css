@@ -1959,3 +1959,56 @@ padding: 20px 30px 0px 0px;
 .dataR .waf_ip_list li span em{
 	color: #929292;
 }
+/*设置域名名字*/
+.name_domain .coupontab ul li{
+	float: left;
+	font-size: 14px;
+	height: 42px;
+	line-height: 42px;
+	color: #343434;
+
+}
+.name_domain .coupontab ul .explain{
+	color: #838383;
+}
+.name_domain .coupontab ul .explain .btn{
+	margin-left: 20px;
+	width: 180px;
+	height: 42px;
+	line-height:42px;
+	background-color: #2499fb;
+	display: inline-block;
+}
+.name_domain .coupontab dl {
+	background-color: #f6f6f6;
+	height: 150px;
+	width: 828px;
+	margin-top: 20px;
+	padding: 40px 20px;
+	color: #777;
+	font-size: 14px;
+	line-height: 30px;
+}
+.name_domain .coupontab dl dt{
+	color: #777;
+}
+.name_domain h2{
+ margin-bottom: 10px;
+ font-size: 18px;
+}
+.name_domain .coupontab .bz{
+	padding-left: 20px;
+}
+.name_domain .coupontab .bz li{
+	color: #777777;
+	line-height: 30px;
+	height: auto;
+	width: 98%;
+}
+.name_domain .coupontab h3{
+	color: #b4b4b4;
+	margin: 20px 0;
+}
+.open_up{
+	border: #e5e5e5 solid 1px;
+}
