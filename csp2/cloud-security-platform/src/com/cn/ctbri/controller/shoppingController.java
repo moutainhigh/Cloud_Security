@@ -450,70 +450,91 @@ public class shoppingController {
 	    		 String targetURL[]=shopCar.getAstName().split(",");
 	    		 String websoc = "0";
 	    		 String[] customManu = null;//指定厂家
-	    	        if(websoc != null && websoc != ""){
-	    	        	customManu = websoc.split(","); //拆分字符为"," ,然后把结果交给数组customManu 
-	    	        }
-	    	      Date  beginDate = shopCar.getBeginDate();
-	    	      Date endDate = shopCar.getEndDate();
-	    	      String begin_date=null;
-	    	      String end_date="";
-	    	      if(beginDate!=null && !beginDate.equals("")){
-	    	    	  begin_date = sdf.format(beginDate);
-	    	      }
-	    	      if(endDate!=null && !endDate.equals("")){
-	    	    	  end_date = sdf.format(endDate);
-	    	      }
-	    	      String orderId = "";
-	    	      try{
-	    	    	  orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
+    	         if(websoc != null && websoc != ""){
+    	        	customManu = websoc.split(","); //拆分字符为"," ,然后把结果交给数组customManu 
+    	         }
+	    	     Date  beginDate = shopCar.getBeginDate();
+	    	     Date endDate = shopCar.getEndDate();
+	    	     String begin_date=null;
+	    	     String end_date="";
+	    	     if(beginDate!=null && !beginDate.equals("")){
+	    	    	 begin_date = sdf.format(beginDate);
+	    	     }
+	    	     if(endDate!=null && !endDate.equals("")){
+	    	    	 end_date = sdf.format(endDate);
+	    	     }
+	    	     String orderId = "";
+	    	     try{
+	    	    	 orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
 		            			scanDepth, maxPages, stategy, customManu, String.valueOf(shopCar.getServiceId()));
-	    	      } catch (Exception e) {
+	    	     } catch (Exception e) {
 	  				e.printStackTrace();
-	  			}
-	    	      
-	    		
-	    	   // String orderId="1";
-	    		 //更新订单资产表
-	    		 selfHelpOrderService.updateOrderAsset(shopCar.getOrderId(), orderId);
-	    		 //更新订单表
-	    		 selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "0");
-	    	 }
-	    	 map.put("orderStatus", true);
-	    	 map.put("sucess", true);
-	     }
-	     //更新api订单表
-	     if(shopAPIList!=null&&shopAPIList.size()>0){
-	    	 for(int i=0;i<shopAPIList.size();i++){
-	    		 ShopCar shopCar = (ShopCar)shopAPIList.get(i);
-	    		 String targetURL[]=null;
-	    		 String websoc = "0";
-	    		 String[] customManu = null;//指定厂家
-	    	        if(websoc != null && websoc != ""){
-	    	        	customManu = websoc.split(","); //拆分字符为"," ,然后把结果交给数组customManu 
-	    	        }
-	    	      Date  beginDate = shopCar.getBeginDate();
-	    	      Date endDate = shopCar.getEndDate();
-	    		String orderId =NorthAPIWorker.vulnScanCreateAPI(Integer.parseInt(shopCar.getAstName()), shopCar.getNum(), shopCar.getServiceId(), globle_user.getApikey(), globle_user.getId());
-	    	     // String orderId="2";
-	    	      if(orderId!=null&&!"".equals(orderId)){
-	    			  //更新订单资产表
-	 	    	    
-	 	    		 selfHelpOrderService.updateOrderAPI(shopCar.getOrderId(), orderId);
-	 	    		 //更新订单表
-	 	    		 selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "1");
-	 	    		
-	    		  }
+	  			 }
+	    	   //北向API返回orderId，创建用户订单
+	         	if(!orderId.equals("") && orderId != null){
+		    	     // String orderId="1";
+		    		 //更新订单资产表
+		    		 selfHelpOrderService.updateOrderAsset(shopCar.getOrderId(), orderId);
+		    		 //更新订单表
+		    		 selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "0");
+
+		    		 map.put("orderStatus", true);
+			    	 map.put("sucess", true);
+	         	}else{
+	         		 map.put("orderStatus", true);
+			    	 map.put("sucess", false);
+	         	}
 	    		
 	    	 }
-	    	 map.put("orderStatus", true);
-	    	 map.put("sucess", true);
+	    	 
 	     }
+			// 更新api订单表
+			if (shopAPIList != null && shopAPIList.size() > 0) {
+				for (int i = 0; i < shopAPIList.size(); i++) {
+					ShopCar shopCar = (ShopCar) shopAPIList.get(i);
+					String targetURL[] = null;
+					String websoc = "0";
+					String[] customManu = null;// 指定厂家
+					if (websoc != null && websoc != "") {
+						customManu = websoc.split(","); // 拆分字符为","
+														// ,然后把结果交给数组customManu
+					}
+					Date beginDate = shopCar.getBeginDate();
+					Date endDate = shopCar.getEndDate();
+					String orderId = "";
+					try {
+						orderId = NorthAPIWorker.vulnScanCreateAPI(
+								Integer.parseInt(shopCar.getAstName()),
+								shopCar.getNum(), shopCar.getServiceId(),
+								globle_user.getApikey(), globle_user.getId());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					// String orderId="2";
+					if (orderId != null && !"".equals(orderId)) {
+						// 更新订单资产表
+						selfHelpOrderService.updateOrderAPI(
+								shopCar.getOrderId(), orderId);
+						// 更新订单表
+						selfHelpOrderService.updateOrder(shopCar.getOrderId(),
+								orderId, "1");
+
+						map.put("orderStatus", true);
+						map.put("sucess", true);
+					} else {
+						map.put("orderStatus", true);
+						map.put("sucess", true);
+					}
+
+				}
+
+			}
 	
 	      
 	}catch(Exception e){
 		e.printStackTrace();
-		 map.put("orderStatus", false);
-    	 map.put("sucess", false);
+		map.put("orderStatus", false);
+    	map.put("sucess", false);
 	}
 
     //object转化为Json格式
