@@ -93,7 +93,7 @@
 						                 
 						                </c:if>
 						                <!-- modify by 2016-4-13 -->
-						                <c:if test="${list.status==1&&list.isAPI!=1}">
+						                <c:if test="${list.status==1&&list.isAPI==0}">
 						                 <a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank" title="已完成无异常">
 						                 	查看详情
 						                 </a>
