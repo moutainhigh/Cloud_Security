@@ -118,7 +118,8 @@
 	                            
                             	<select class="text select" style="width:248px; margin-left:0; height:36px;" id="domainName">
                             	   <c:forEach var="assInfo" items="${assList}" varStatus="status">
-                                   <option>${assInfo.name}</option> 
+                            	  
+                                   <option value="${assInfo.addr}">${assInfo.name}</option> 
                                     </c:forEach>
                                 </select>
                                
