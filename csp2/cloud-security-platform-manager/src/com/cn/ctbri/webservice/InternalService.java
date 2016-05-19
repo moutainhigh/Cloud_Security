@@ -34,20 +34,20 @@ public class InternalService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String VulnScan_servicePrice(@PathParam("serverid") int serverid) {
 		JSONObject json = new JSONObject();
-		JSONArray jsonArray = new JSONArray();
+		//JSONArray jsonArray = new JSONArray();
 		try {
 			//根据serviceid查询价格列表
 			List<Price> priceList = servService.findPriceByServiceId(serverid);
-			if(priceList!=null&& priceList.size()>0){
-				for(int i = 0; i < priceList.size(); i++){
+/*			if(priceList!=null&& priceList.size()>0){
+				//for(int i = 0; i < priceList.size(); i++){
 					JSONObject newJson = new JSONObject();
 					newJson.put("GTR", priceList.get(i).getTimesG());
 					newJson.put("ITE", priceList.get(i).getTimesLE());
 					newJson.put("Price", priceList.get(i).getPrice());
-					jsonArray.add(newJson);
-				}
-			}
-			//JSONArray jsonArray = new JSONArray().fromObject(priceList);
+					//jsonArray.add(priceList);
+				//}
+			}*/
+			JSONArray jsonArray = new JSONArray().fromObject(priceList);
 			json.put("PriceStr", jsonArray);
 			/*
 			}
