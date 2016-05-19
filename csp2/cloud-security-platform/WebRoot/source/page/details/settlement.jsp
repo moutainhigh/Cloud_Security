@@ -227,7 +227,7 @@
             
             <ul class="Price">
             	<li>
-                	<i>1</i>个订单，总额：<span>${allPrice}</span>
+                	<i>1</i>个订单，总额：<span>￥${allPrice}</span>
                 </li>
                 <!--  
                 <li>
@@ -235,11 +235,11 @@
                 </li>
                 -->
                 <li>
-                	应付总额：<span>${allPrice}</span>
+                	应付总额：<span>￥${allPrice}</span>
                 </li>
             </ul>
 			<div class="SubmitBox">
-            	<p>应付总额：<span>${allPrice}</span>
+            	<p>应付总额：<span>￥${allPrice}</span>
             	<c:if test="${mark eq 'web' }">
             		<input id="settlement" class="submit" type="submit" value="提交订单"/>
             	</c:if>

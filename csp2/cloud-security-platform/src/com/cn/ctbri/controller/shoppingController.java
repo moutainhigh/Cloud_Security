@@ -2,6 +2,7 @@ package com.cn.ctbri.controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -150,8 +151,8 @@ public class shoppingController {
         priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
         String[]  assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
         double priceD = Integer.parseInt(times)*assetArray.length*Double.parseDouble(priceVal);
-        BigDecimal bg = new BigDecimal(priceD);  
-        priceD = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        DecimalFormat df = new DecimalFormat("#.00");
+
         //联系人信息
 //       String linkname = new String(request.getParameter("linkname").getBytes("ISO-8859-1"),"UTF-8");
 //       String phone = request.getParameter("phone");
@@ -186,7 +187,7 @@ public class shoppingController {
         request.setAttribute("serviceId", serviceId);
         request.setAttribute("service", service);
         request.setAttribute("mark", "web");//web服务标记
-        request.setAttribute("allPrice", priceD);
+        request.setAttribute("allPrice", df.format(priceD));
         String result = "/source/page/details/settlement";
         return result;
 	}
@@ -250,9 +251,9 @@ public class shoppingController {
 	    String[]  assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
         order.setUserId(globle_user.getId());
         double priceD = Integer.parseInt(times)*assetArray.length*Double.parseDouble(priceVal);
-        BigDecimal bg = new BigDecimal(priceD);  
-        priceD = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        order.setPrice(priceD);
+        DecimalFormat df = new DecimalFormat("#.00");
+        String temp = df.format(priceD);
+        order.setPrice(Double.parseDouble(temp));
         order.setPayFlag(0);//未支付
         selfHelpOrderService.insertOrder(order);
 
@@ -724,10 +725,10 @@ public class shoppingController {
 				    }
 	        	}
 			}
-			BigDecimal bg = new BigDecimal(calPrice);  
-			calPrice = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+
+			DecimalFormat df = new DecimalFormat("#.00");  
 			m.put("success", true);
-			m.put("price", calPrice);
+			m.put("price", df.format(calPrice));
 			m.put("times", times);
       
 			//object转化为Json格式
