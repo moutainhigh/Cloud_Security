@@ -736,9 +736,7 @@ public class shoppingController {
 		        		while(ms>0){
 		        			bDate = DateUtils.getDayAfterMonth(bDate);
 		        			ms = DateUtils.getMsByDays(bDate, eDate);
-		        			if(ms>=0){
-		        				times++;
-		        			}
+		        			times++;
 		        		}
 /*		        		long perMonth = 1000*3600*24;
 		        		perMonth = perMonth*30;
