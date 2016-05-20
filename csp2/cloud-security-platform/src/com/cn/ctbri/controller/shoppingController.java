@@ -727,32 +727,59 @@ public class shoppingController {
 		        	//每周
 		        	if(typeInt==2){
 		        		int perWeek = 1000*3600*24*7;
-		        		times = (int)(ms/perWeek);
+		        		if(ms%perWeek>0){
+		        			times = (int)(ms/perWeek)+1;
+		        		}else{
+		        			times = (int)(ms/perWeek);
+		        		}		        		
 		        	}else{//每月
-		        		long perMonth = 1000*3600*24;
+		        		while(ms>0){
+		        			bDate = DateUtils.getDayAfterMonth(bDate);
+		        			ms = DateUtils.getMsByDays(bDate, eDate);
+		        			if(ms>=0){
+		        				times++;
+		        			}
+		        		}
+/*		        		long perMonth = 1000*3600*24;
 		        		perMonth = perMonth*30;
-		        		times = (int)(ms/perMonth);
+		        		times = (int)(ms/perMonth);*/
 		        	}
 		        	break;
 		        	
 		        case 2://30分钟
 		        	int min_30 = 1000*3600/2;
-		        	times = (int)(ms/min_30);
+		        	if(ms%min_30 > 0){
+		        		times = (int)(ms/min_30) + 1;
+		        	}else{
+		        		times = (int)(ms/min_30);
+		        	}
 		        	break;
 		        	
 		        case 3://一天
 		        case 4:
 		        	int oneDay = 1000*3600*24;
-		        	times = (int)(ms/oneDay);
+		        	if(ms%oneDay > 0){
+		        		times = (int)(ms/oneDay) + 1;
+		        	}else{
+			        	times = (int)(ms/oneDay);
+		        	}
 		        	break;
 		        	
 		        case 5:
 		        	if(typeInt==3){//一小时
 			        	int oneHour = 1000*3600;
-			        	times = (int)(ms/oneHour);
+			        	if(ms%oneHour > 0){
+			        		times = (int)(ms/oneHour) + 1;
+			        	}else{
+			        		times = (int)(ms/oneHour);
+			        	}
 		        	}else{//2小时
 		        		int twoHour = 1000*3600*2;
-			        	times = (int)(ms/twoHour);
+		        		if(ms%twoHour > 0){
+		        			times = (int)(ms/twoHour) + 1;
+		        		}else{
+		        			times = (int)(ms/twoHour);
+		        		}
 		        	}
 		        	break;
 		        }

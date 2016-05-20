@@ -202,5 +202,19 @@ public class DateUtils {
          date = calendar.getTime();  
          return date;
     }
+    
+    /**
+     * 得到下个月的日期
+     * @param d
+     * @return
+     */
+    public static Date getDayAfterMonth(Date d){
+         Date date = d;
+         Calendar calendar = Calendar.getInstance();  
+         calendar.setTime(date);  
+         calendar.add(Calendar.MONTH,1); 
+         date = calendar.getTime();  
+         return date;
+    }
 	
 }
