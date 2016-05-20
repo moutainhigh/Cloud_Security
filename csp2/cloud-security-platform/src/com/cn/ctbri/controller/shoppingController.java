@@ -260,7 +260,12 @@ public class shoppingController {
         
 	    String[]  assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
         order.setUserId(globle_user.getId());
-        double priceD = Integer.parseInt(times)*assetArray.length*Double.parseDouble(priceVal);
+        double priceD = 0;
+        if(Integer.parseInt(times)!=0){
+        	priceD = Integer.parseInt(times)*assetArray.length*Double.parseDouble(priceVal);
+        }else{
+        	priceD = assetArray.length*Double.parseDouble(priceVal);
+        }
         DecimalFormat df = new DecimalFormat("#.00");
         String temp = df.format(priceD);
         order.setPrice(Double.parseDouble(temp));
