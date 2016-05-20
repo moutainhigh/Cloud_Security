@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 查询服务资产 -->
     <select id="findServiceAsset" resultType="asset" parameterType="Integer">
-        select * from cs_asset where userid = #{userId} and status = 1
+        select * from cs_asset where userid = #{userId} and status = 1 order by addr
     </select>
 	
 	<!-- 插入联系人 -->
