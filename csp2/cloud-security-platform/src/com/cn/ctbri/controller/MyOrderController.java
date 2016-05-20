@@ -163,7 +163,8 @@ public class MyOrderController {
         try {
             name=new String(servName.getBytes("ISO-8859-1"), "UTF-8");
             if(search!=null){
-            	searchText = new String(search.getBytes("ISO-8859-1"), "UTF-8");
+//            	searchText = new String(search.getBytes("ISO-8859-1"), "UTF-8");
+            	searchText = search;
     			if(searchText.equals("输入资产名称或者资产地址进行搜索")){
     				searchText = "";
     			}

@@ -111,7 +111,7 @@ public class WarnDetailController {
                 paramAlarm.put("websoc", websoc);
                 paramAlarm.put("orderAssetId", map.get("orderAssetId"));
                 
-                if(serviceId==1){
+                if(serviceId==1 || serviceId==2){
                 	List<Alarm> asset_alarmList = alarmService.getAlarmByAsset(paramAlarm);
                     
         	        //资产告警数量和告警信息 放入map
