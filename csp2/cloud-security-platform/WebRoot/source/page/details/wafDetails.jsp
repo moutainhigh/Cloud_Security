@@ -100,16 +100,33 @@
                         <li class="clearfix" id="monthDiv" style="display:block;">
 							<label class="fl">服务时间</label>
                             <div class="fl" style="top:3px;">
-                            	<span>开始时间 <input type="text" id="beginDate" class="text" style="width:156px;" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-{%d+1}',maxDate:'#F{$dp.$D(\'endDate\',{d:-31})}',dateFmt:'yyyy-MM'})"></span>
-                                 <span>结束时间 <input type="text"  id="endDate" style="width:156px;" class="text" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-{%d+1}',minDate:'#F{$dp.$D(\'beginDate\',{d:31})}',dateFmt:'yyyy-MM'})"></span>
+                            	<span>开始时间 <input type="text" id="beginDate" class="text" style="width:156px;" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd',onpicked:function(dp){calPriceLong(null,null,true); }})"></span>
+                                 <!-- <span>结束时间 <input type="text"  id="endDate" style="width:156px;" class="text" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-{%d+1}',minDate:'#F{$dp.$D(\'beginDate\',{d:31})}',dateFmt:'yyyy-MM'})"></span> -->
+                              <span>
+                                                                                   服务期限
+                              <select class="text select">
+                                <option value="1">1个月</option>
+                                <option value="2">2个月</option>
+                                <option value="3">3个月</option>
+                                 <option value="4">4个月</option>
+                                  <option value="5">5个月</option>
+                                  <option value="6">6个月</option>
+                                  <option value="7">7个月</option>
+                                   <option value="8">8个月</option>
+                                   <option value="9">9个月</option>
+                                    <option value="10">10个月</option>
+                                    <option value="11">10个月</option>
+                              </select>
+                              
+                              </span>
                            </div> 
                            
 						</li> 
                             <li class="clearfix" id="yearDiv" style="display:none">
 							<label class="fl">服务时间</label>
                               <div class="fl" style="top:3px;" >
-                            	<span>开始时间<input type="text" id="beginDate" class="text" style="width:156px;" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-{%d+1}',maxDate:'#F{$dp.$D(\'endDate\',{d:-365})}',dateFmt:'yyyy-MM'})"></span>
-                                 <span>结束时间 <input type="text"  id="endDate" style="width:156px;" class="text" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-{%d+1}',minDate:'#F{$dp.$D(\'beginDate\',{d:365})}',dateFmt:'yyyy-MM'})"></span>
+                            	<span>开始时间<input type="text" id="beginDate" class="text" style="width:156px;" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd',onpicked:function(dp){calPriceLong(null,null,true); }})"></span>
+                                 <!-- <span>结束时间 <input type="text"  id="endDate" style="width:156px;" class="text" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-{%d+1}',minDate:'#F{$dp.$D(\'beginDate\',{d:365})}',dateFmt:'yyyy-MM'})"></span> -->
                            </div> 
 						</li>
                          <li class="clearfix">
