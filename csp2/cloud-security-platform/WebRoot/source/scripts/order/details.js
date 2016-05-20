@@ -375,7 +375,9 @@ function tasknum_verification(){
 
 	    	 }, 
 	    	 error: function(data){ 
-	    	  alert("error");
+	    		 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+		    		 window.location.href = "loginUI.html"; } 
+		    	 else { window.location.href = "loginUI.html"; } } 
 	    	} 
     	});
 	}
@@ -424,7 +426,9 @@ function tasknum_verification(){
 
    		    	 }, 
    		     error: function(data){ 
-   		    	  alert("error");
+   		    		 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+   			    		 window.location.href = "loginUI.html"; } 
+   			    	 else { window.location.href = "loginUI.html"; } } 
    		    	} 
        	});
     	

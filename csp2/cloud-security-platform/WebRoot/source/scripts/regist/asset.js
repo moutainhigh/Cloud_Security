@@ -217,7 +217,9 @@ function editAsset(){
 	 								
 	 					},
 	 					error: function(data){
-	 						alert("err:"+data);
+	 						 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+	 				    		 window.location.href = "loginUI.html"; } 
+	 				    	 else { window.location.href = "loginUI.html"; } } 
 	 					}
 	 				};
 			 		 // 将options传给ajaxForm
