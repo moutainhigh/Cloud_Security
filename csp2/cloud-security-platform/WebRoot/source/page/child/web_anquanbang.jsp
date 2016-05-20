@@ -54,9 +54,9 @@ function showUnreadNews()
 						<img src="${ctx}/source/images/portal/logo.png" alt=""/>
 					</div> -->
 					<div class="safeL fl" style="width:260px; margin-right:13%">
-						<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:10px;"/></a>
+						<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:4px;"/></a>
                           <span style="font-size: 20px;
-    color: #4a4a4a; padding-left:10px;position:relative; top:-6px;">网站安全帮</span>
+    color: #4a4a4a; padding-left:10px;position:relative; top:-10px;">网站安全帮</span>
 					</div>
 					<div class="safem fl">
 						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
@@ -171,9 +171,9 @@ function showUnreadNews()
                                             <a href="javaScript:void(0);" class="btn" style="width:80px;" id="wafDetail">购买</a>
                                         </div>
                                     </div>
-                              <!-- <div class="mask">
+                               <div class="mask">
                                 	<h6>即将上线</h6>
-                                </div> -->	
+                                </div>	
                                 
                                
                             </li>

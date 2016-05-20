@@ -53,9 +53,9 @@ function showUnreadNews()
 						<img src="${ctx}/source/images/portal/logo.png" alt=""/>
 					</div> -->
 					<div class="safeL fl" style="width:272px; margin-right:12%">
-						<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:10px;"/></a>
+						<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:4px;"/></a>
                           <span style="font-size: 20px;
-    color: #4a4a4a; padding-left:10px;position:relative; top:-6px;">安全能力API</span>
+    color: #4a4a4a; padding-left:10px;position:relative; top:-10px;">安全能力API</span>
 					</div>
 					<div class="safem fl">
 						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
