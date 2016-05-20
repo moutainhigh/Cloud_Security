@@ -391,7 +391,7 @@ function tasknum_verification(){
     	}else if(obj!=null){
     		type = obj.value;
     	}else{
-    		type = servType;
+    		type = $(".clickTime").val();
     	}
     	
 
