@@ -133,8 +133,8 @@ function detectionUrl(){
 			<div class="head">
 				<div class="headBox">
 					<div class="safeL fl" style="width:260px; margin-right:13%">
-						<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:5px;"/>
-						<span style="font-size: 20px;color: #4a4a4a; padding-left:10px;position:relative; top:-6px;">X专区</span>
+						<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:4px;"/>
+						<span style="font-size: 20px;color: #4a4a4a; padding-left:10px;position:relative; top:-10px;">X专区</span>
                         <!-- <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px; font-weight:normal;">X专区</strong>
 						 -->
 					</div>
