@@ -150,7 +150,7 @@ $(document).ready(function(){
 							<label class="fl">选 类型</label>
                             <div class="fl clickBox" id="clickBox">
 	                            <button class="click Single" value="2" id="singleBtn" onclick="calPrice('${service.id}');">单次</button>
-	                            <button class="long" value="1" id="longBtn">长期</button>
+	                            <button class="long" value="1" id="longBtn" onclick="calPriceLong(null,null,true)">长期</button>
                             </div> 
 						</li>
 						<li class="clearfix">
@@ -166,7 +166,7 @@ $(document).ready(function(){
                             <input type="hidden" id="serviceIdHidden" value="${service.id}"/>
                             	<c:if test="${service.id == 1}">
 	                             <button class="clickTime" value="2" onclick="calPriceLong(this,null,false)">每周</button>
-	                             <button value="3" onclick="calPriceLong(this)">每月</button>
+	                             <button value="3" onclick="calPriceLong(this,null,false)">每月</button>
 	                            </c:if>
 	                            <c:if test="${service.id == 2}">
 	                             <button class="clickTime" value="1" onclick="calPriceLong(this,null,false)">30分钟</button>

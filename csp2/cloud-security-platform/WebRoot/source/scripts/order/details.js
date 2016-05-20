@@ -274,7 +274,7 @@ function calDefaultPrice(){
 		break;
 	case 3://默认长期
 		servType = 4;
-		//calPriceLong(null,servType);
+		calPriceLong(null,servType,true);
 		break;
 	case 4://默认单次
 		servType = 4;
@@ -283,7 +283,7 @@ function calDefaultPrice(){
 		break;
 	case 5://默认长期
 		servType = 3;
-		//calPriceLong(null,servType);
+		calPriceLong(null,servType,true);
 		break;
 	}
 }
@@ -400,12 +400,12 @@ function tasknum_verification(){
     		if(beginDate==""||beginDate==null||endDate==""||endDate==null){
     			return;
     		}
-    	}else{//服务频率计算
-    		if(beginDate==""||beginDate==null){
-        		alert("开始时间不能为空");
-        	}else if(endDate==""||endDate==null){
-        		alert("结束时间不能为空");
-        	}
+    	}
+
+		if(beginDate==""||beginDate==null){
+    		alert("开始时间不能为空");
+    	}else if(endDate==""||endDate==null){
+    		alert("结束时间不能为空");
     	}
 	    if(beginDate>=endDate){
     		alert("开始时间不能大于结束时间!");

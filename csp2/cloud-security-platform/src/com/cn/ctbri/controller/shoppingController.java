@@ -154,7 +154,13 @@ public class shoppingController {
         String priceVal="";
         priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
         String[]  assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
-        double priceD = Integer.parseInt(times)*assetArray.length*Double.parseDouble(priceVal);
+        double priceD = 0;
+        if(Integer.parseInt(times)!=0){
+        	priceD = Integer.parseInt(times)*assetArray.length*Double.parseDouble(priceVal);
+        }else{
+        	priceD = assetArray.length*Double.parseDouble(priceVal);
+        }
+
         DecimalFormat df = new DecimalFormat("#.00");
 
         //联系人信息
@@ -715,11 +721,12 @@ public class shoppingController {
 		        case 1:
 		        	//每周
 		        	if(typeInt==2){
-		        		int perWeekHours = 1000*3600*24*7;
-		        		times = (int)(ms/perWeekHours);
+		        		int perWeek = 1000*3600*24*7;
+		        		times = (int)(ms/perWeek);
 		        	}else{//每月
-		        		int perMonthHours = 1000*3600*24*30;
-		        		times = (int)(ms/perMonthHours);
+		        		long perMonth = 1000*3600*24;
+		        		perMonth = perMonth*30;
+		        		times = (int)(ms/perMonth);
 		        	}
 		        	break;
 		        	
