@@ -404,11 +404,10 @@ function tasknum_verification(){
     		}
     	}
 
-		if(beginDate==""||beginDate==null){
-    		alert("开始时间不能为空");
-    	}else if(endDate==""||endDate==null){
-    		alert("结束时间不能为空");
-    	}
+    	if(beginDate==""||beginDate==null||endDate==""||endDate==null){
+    		alert("请选择开始时间及结束时间,以便计算服务价格!");
+			return;
+		}
 	    if(beginDate>=endDate){
     		alert("开始时间不能大于结束时间!");
     	}else{
