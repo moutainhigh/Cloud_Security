@@ -67,7 +67,7 @@ $.ajaxSetup({
 function searchCombine(){
 	var begin_date = $("#begin_date").val();
     var end_date = $("#end_date").val();
-	if(end_date<begin_date){  
+	if(end_date!="" && end_date<begin_date){  
         alert("结束时间不能小于开始时间！"); 
     }else{
     	$("#searchForm").submit();
@@ -294,9 +294,9 @@ function getServ(c){
 					        </select>
 	                       </label>
 	                       <label class="container fl">
-	                        <input class="text fl" type="text" value="" id="begin_date" name="begin_datevo" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+	                        <input class="text fl" type="text" placeholder="服务开始时间" value="" id="begin_date" name="begin_datevo" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
 	                        <em class="fl">到</em>
-	                        <input class="text fl" type="text" value="" id="end_date" name="end_datevo" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+	                        <input class="text fl" type="text" placeholder="服务结束时间" value="" id="end_date" name="end_datevo" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
 	                    </label>
 	                   
 	                </div>
