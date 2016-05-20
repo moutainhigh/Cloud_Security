@@ -787,7 +787,7 @@ public class shoppingController {
 				    for (int i = 0; i < priceList.size(); i++) {
 				    	Price onePrice = priceList.get(i);
 				        if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()!=0){
-				        	if((times>=onePrice.getTimesG()&&times<onePrice.getTimesLE())||
+				        	if((times>onePrice.getTimesG()&&times<=onePrice.getTimesLE())||
 				        	   (times<1&&onePrice.getTimesG()==1)){
 				    			calPrice = onePrice.getPrice();
 				    			break;
