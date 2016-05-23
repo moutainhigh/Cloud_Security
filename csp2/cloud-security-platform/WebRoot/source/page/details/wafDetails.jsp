@@ -104,7 +104,7 @@
                                  <!-- <span>结束时间 <input type="text"  id="endDate" style="width:156px;" class="text" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-{%d+1}',minDate:'#F{$dp.$D(\'beginDate\',{d:31})}',dateFmt:'yyyy-MM'})"></span> -->
                               <span>
                                                                                    服务期限
-                              <select class="text select">
+                              <select class="text select" id="month">
                                 <option value="1">1个月</option>
                                 <option value="2">2个月</option>
                                 <option value="3">3个月</option>
@@ -115,7 +115,7 @@
                                    <option value="8">8个月</option>
                                    <option value="9">9个月</option>
                                     <option value="10">10个月</option>
-                                    <option value="11">10个月</option>
+                                    <option value="11">11个月</option>
                               </select>
                               
                               </span>
