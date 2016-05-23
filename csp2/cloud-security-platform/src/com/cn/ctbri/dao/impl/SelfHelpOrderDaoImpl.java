@@ -4,15 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
 
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.SelfHelpOrderDao;
-import com.cn.ctbri.dao.UserDao;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
@@ -21,7 +17,6 @@ import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.entity.ShopCar;
-import com.cn.ctbri.entity.User;
 /**
  * 创 建 人  ：  txr
  * 创建日期：  2015-1-14
