@@ -171,9 +171,9 @@ function showUnreadNews()
                                             <a href="javaScript:void(0);" class="btn" style="width:80px;" id="wafDetail">购买</a>
                                         </div>
                                     </div>
-                               <div class="mask">
+                               <!-- <div class="mask">
                                 	<h6>即将上线</h6>
-                                </div>	
+                                </div> -->	
                                 
                                
                             </li>
