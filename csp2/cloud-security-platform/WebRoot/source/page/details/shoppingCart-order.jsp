@@ -104,7 +104,13 @@
                                      		<td width="20%"><label >
                                             <input type="checkbox" class="ck" style="display:none" value="${shopCar.orderId}" isApi="0" name="check_name" >
                                             <i class="chck" style="margin:0 30px 0 40px;"></i>
-                                            </label><a href="${ctx}/selfHelpOrderInit.html?serviceId=${shopCar.serviceId}&indexPage=1" target="_blank">${shopCar.serverName}</a>
+                                            </label>
+                                           <c:if test="${shopCar.serviceId!=6}">
+                                            <a href="${ctx}/selfHelpOrderInit.html?serviceId=${shopCar.serviceId}&indexPage=1" target="_blank">${shopCar.serverName}</a>
+                                            </c:if>
+                                             <c:if test="${shopCar.serviceId==6}">
+                                            <a href="${ctx}/wafDetails.html?serviceId=6" target="_blank">${shopCar.serverName}</a>
+                                            </c:if>
                                             </td>
                                     <td width="36%"><p style="padding-left:40px;">
                                      <input type="hidden" name="isAPI" value="${shopCar.isAPI}"/>

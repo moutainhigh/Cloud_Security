@@ -18,6 +18,7 @@
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
 <script src="${ctx}/source/scripts/order/wafDetail.js"></script>
+<script src="${ctx}/source/scripts/order/details.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
@@ -80,9 +81,10 @@
 					<img src="${ctx}/source/images/portal/product.png" alt="" />
 					</div>
 				</div>
-				<div class="dataR detailsR fl" style="width:644px;">
-				<h2>${service.name }</h2>
-                  	
+					<div class="dataR detailsR fl" style="width:640px;">
+					<h2 style="font-size:20px; margin-bottom:18px;">${service.name }</h2>
+                  <a href="javascript:showShopCar();" class="buttoncar" style="right:0px;"><b>${carnum}</b><i></i>我的购物车&gt;</a>
+				
 					<ul>
 						<li class="clearfix">
 							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
@@ -165,34 +167,20 @@
 				
 			</div>
 		</div>
-        <div class="commodity">
+       <div class="commodity">
         	<div class="imgBox clearfix">
             	<h4>商品信息</h4>
-                <div class="commoditys" style="height:618px; overflow:hidden">
-                	<c:if test="${service.id == 1}">
-                		<img src="${ctx}/source/images/portal/servicePic1.png" alt=""/>
-                	</c:if>
-                	<c:if test="${service.id == 2}">
-                		<img src="${ctx}/source/images/portal/servicePic2.png" alt=""/>
-                	</c:if>
-                	<c:if test="${service.id == 3}">
-                		<img src="${ctx}/source/images/portal/servicePic3.png" alt=""/>
-                	</c:if>
-                	<c:if test="${service.id == 4}">
-                		<img src="${ctx}/source/images/portal/servicePic4.png" alt=""/>
-                	</c:if>
-                	<c:if test="${service.id == 5}">
-                		<img src="${ctx}/source/images/portal/servicePic5.png" alt=""/>
-                	</c:if>
+                <div class="commoditys" style="height:620px; overflow:hidden">
+                	<img src="${ctx}/source/images/portal/wafImage1.png" alt="">
                 </div>
-                <div class="commoditys" style="height:750px; overflow:hidden">
-                	<img src="${ctx}/source/images/portal/product2.png" alt=""/>
+                <div class="commoditys"style="height:752px; overflow:hidden">
+                	<img src="${ctx}/source/images/portal/wafImage2.png" alt="">
                 </div>
-                <div class="commoditys" style="height:600px; overflow:hidden">
-                	<img src="${ctx}/source/images/portal/product3.png" alt=""/>
+                <div class="commoditys" style="height:820px; overflow:hidden">
+                	<img src="${ctx}/source/images/portal/wafImage3.png" alt="">
                 </div>
-                <div class="commoditys">
-                	<img src="${ctx}/source/images/portal/product4.png" alt=""/>
+                <div class="commoditys" style="height:464px; overflow:hidden">
+                	<img src="${ctx}/source/images/portal/wafImage4.png" alt="">
                 </div>
             </div>
         </div>
