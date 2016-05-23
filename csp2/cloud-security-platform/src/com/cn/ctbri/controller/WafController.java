@@ -96,7 +96,12 @@ public class WafController {
 		}
 		int serviceId = Integer.parseInt(request.getParameter("serviceId"));
 		Serv service = servService.findById(serviceId);
-		
+		  //网站安全帮列表
+        List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
+        //查询安全能力API
+		   List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
+		 int carnum=shopCarList.size()+apiList.size();
+		 request.setAttribute("carnum", carnum);  
 		request.setAttribute("assList", assList);
 		request.setAttribute("service", service);
 	    return  "/source/page/details/wafDetails";
