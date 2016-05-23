@@ -3,10 +3,9 @@ package com.cn.ctbri.controller;
 
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,12 +21,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAssetService;
+import com.cn.ctbri.service.IOrderAssetService;
+import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
+import com.cn.ctbri.util.Random;
 
 
 /**
@@ -42,7 +46,10 @@ public class WafController {
 	IAssetService assetService;
     @Autowired
     IServService servService;
-    
+    @Autowired
+	IOrderAssetService orderAssetService;
+    @Autowired
+	 ISelfHelpOrderService selfHelpOrderService;
 	 /**
 	 * 功能描述：购买waf服务
 	 * 参数描述：  无
@@ -104,9 +111,32 @@ public class WafController {
 	 */
 	@RequestMapping(value="VerificationIP.html")
 	public void VerificationIP(HttpServletRequest request,HttpServletResponse response) throws Exception{
-		  Map<String, Object> m = new HashMap<String, Object>();
+		Map<String, Object> m = new HashMap<String, Object>();
+		 SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm:ss"); 
+		 Date date= new Date();
+		String value1= sdf1.format(date);
+		  //价格
+		  String price = request.getParameter("price");
+		  //类型
+		 String orderType = request.getParameter("orderType");
+		 //开始时间
+		 String beginDate = request.getParameter("beginDate");
+		 //服务期限
+		 String month ="";
+		Date cd= DateUtils.stringToDate(beginDate);
+		 //包月
+		 if(orderType.equals("0")){
+			month =  request.getParameter("month");
+		 }else{
+			 month="12";
+		 }
+			Date endDate = DateUtils.getDayAfterMonth(cd,Integer.parseInt(month));
+		String endVal =	DateUtils.dateToDate(endDate)+" "+value1;
+		 String beginVal = beginDate+""+value1;   
 		//ip地址
 		String ipStr = request.getParameter("ipVal");
+	   //资产名称
+		String assetName = request.getParameter("assetName");
 		//域名
 		String domainName = request.getParameter("domainName");
 		String addInfo = "";
@@ -130,34 +160,109 @@ public class WafController {
 		for(InetAddress addr:addresses)
 		{
 			IpInfo.add(addr.getHostAddress());
+      }
+        String array[]=IpInfo.toArray(new String[]{});
+        boolean flag=true;
+        //页面输入的ip地址
+        String ipArr[]= ipStr.split(",");
+        for(int i=0;i<ipArr.length;i++){
+      	  for(int k=0;k<array.length;k++){
+      		    if(!ipArr[i].equals(array[k])){
+      		    	flag=false;
+      		    	break;
+      		    }
+      	  }
         }
-          String array[]=IpInfo.toArray(new String[]{});
-          boolean flag=false;
-          //页面输入的ip地址
-          String ipArr[]= ipStr.split(",");
-          for(int i=0;i<ipArr.length;i++){
-        	  for(int k=0;k<array.length;k++){
-        		    if(ipArr[i].equals(array[k])){
-        		    	flag=true;
-        		    	break;
-        		    }
-        	  }
-          }
 	         m.put("flag", flag);
+	         m.put("orderType", orderType);
+	         m.put("beginDate", beginVal);
+	         m.put("endDate", endVal);
+	         m.put("assetName", assetName);
+	         m.put("price", price);
 		   JSONObject JSON = CommonUtil.objectToJson(response, m);
 	        // 把数据返回到页面
-            CommonUtil.writeToJsp(response, JSON);
+          CommonUtil.writeToJsp(response, JSON);
 	}
 	
-	/**
-	 * 功能描述： 添加购物车
+	 /**
+	 * 功能描述：添加到购物车
 	 * 参数描述：  无
-	 * @throws Exception 
-	 *      add by gxy 2016-5-03
+	 * add gxy
+	 *     @time 2016-5-19
 	 */
-	@RequestMapping(value="buyNowWaf.html")
-	public void shoppingCar(HttpServletRequest request,HttpServletResponse response){
-		
+	@RequestMapping(value="shoppingWaf.html")
+	public void shoppingWaf(HttpServletRequest request,HttpServletResponse response){
+		 Map<String, Object> m = new HashMap<String, Object>();
+		  try{
+		//用户
+    	User globle_user = (User) request.getSession().getAttribute("globle_user");
+		  SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
+		  Date begin_date = null;
+          Date end_date = null;
+		//资产ids
+       
+		String orderType = request.getParameter("orderType");
+        String beginDate = request.getParameter("beginDate");
+        String endDate = request.getParameter("endDate");
+        String createDate = DateUtils.dateToString(new Date());
+        String price = request.getParameter("price");
+        String assetName = request.getParameter("assetName");
+        String priceVal="";
+        priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
+        Order order = new Order();
+        
+        SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+		String orderDate = odf.format(new Date());
+        String orderId = String.valueOf(Random.fivecode())+orderDate;
+        Date  create_date=sdf.parse(createDate); 
+        order.setId(orderId);
+        order.setType(Integer.parseInt(orderType));
+        if(beginDate!=null && !beginDate.equals("")){
+            begin_date=sdf.parse(beginDate); 
+        }
+        if(endDate!=null && !endDate.equals("")){
+            end_date=sdf.parse(endDate); 
+        }
+        order.setBegin_date(begin_date);
+        order.setEnd_date(end_date);
+        order.setServiceId(6);
+        order.setCreate_date(create_date);
+        order.setTask_date(begin_date);
+		order.setUserId(globle_user.getId());
+      
+        order.setPayFlag(0);//未支付
+        selfHelpOrderService.insertOrder(order);
+
+       
+        	//插入订单资产表
+        //根据资产名称查询资产信息
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("name", assetName.trim());
+		List<Asset> listForName = assetService.findByAssetAddr(paramMap);
+		Asset assetInfo = listForName.get(0);
+            OrderAsset orderAsset = new OrderAsset();
+            orderAsset.setOrderId(orderId);
+            orderAsset.setAssetId(assetInfo.getId());
+            orderAsset.setServiceId(6);
+           orderAssetService.insertOrderAsset(orderAsset);
+      
+   	     //网站安全帮列表
+          List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
+       //查询安全能力API
+		 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
+		 int carnum=shopCarList.size()+apiList.hashCode();
+		 request.setAttribute("carnum", carnum);
+		 
+		   m.put("sucess", true);
+		   JSONObject JSON = CommonUtil.objectToJson(response, m);
+	        // 把数据返回到页面
+        CommonUtil.writeToJsp(response, JSON);
+		 //object转化为Json格式
+	       
+		  }catch(Exception e){
+			  m.put("sucess", false);
+			  
+		  }
 	}
 
 	 /**
