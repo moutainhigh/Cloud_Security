@@ -5,7 +5,6 @@ package com.cn.ctbri.controller;
 import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -115,6 +114,7 @@ public class WafController {
 		 SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm:ss"); 
 		 Date date= new Date();
 		String value1= sdf1.format(date);
+		String serviceId = request.getParameter("serviceId");
 		  //价格
 		  String price = request.getParameter("price");
 		  //类型
@@ -125,14 +125,14 @@ public class WafController {
 		 String month ="";
 		Date cd= DateUtils.stringToDate(beginDate);
 		 //包月
-		 if(orderType.equals("0")){
+		 if(orderType.equals("8")){
 			month =  request.getParameter("month");
 		 }else{
 			 month="12";
 		 }
 			Date endDate = DateUtils.getDayAfterMonth(cd,Integer.parseInt(month));
 		String endVal =	DateUtils.dateToDate(endDate)+" "+value1;
-		 String beginVal = beginDate+""+value1;   
+		 String beginVal = beginDate+" "+value1;   
 		//ip地址
 		String ipStr = request.getParameter("ipVal");
 	   //资产名称
@@ -174,11 +174,14 @@ public class WafController {
       	  }
         }
 	         m.put("flag", flag);
+	         m.put("serviceId", serviceId);
 	         m.put("orderType", orderType);
 	         m.put("beginDate", beginVal);
 	         m.put("endDate", endVal);
 	         m.put("assetName", assetName);
+	         m.put("ipStr", ipStr);
 	         m.put("price", price);
+	         m.put("month", month);
 		   JSONObject JSON = CommonUtil.objectToJson(response, m);
 	        // 把数据返回到页面
           CommonUtil.writeToJsp(response, JSON);
@@ -200,13 +203,15 @@ public class WafController {
 		  Date begin_date = null;
           Date end_date = null;
 		//资产ids
-       
+       String serviceId = request.getParameter("serviceId");
 		String orderType = request.getParameter("orderType");
         String beginDate = request.getParameter("beginDate");
         String endDate = request.getParameter("endDate");
         String createDate = DateUtils.dateToString(new Date());
         String price = request.getParameter("price");
         String assetName = request.getParameter("assetName");
+        String ipStr = request.getParameter("ipStr");
+        String month = request.getParameter("month");
         String priceVal="";
         priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
         Order order = new Order();
@@ -225,11 +230,11 @@ public class WafController {
         }
         order.setBegin_date(begin_date);
         order.setEnd_date(end_date);
-        order.setServiceId(6);
+        order.setServiceId(Integer.parseInt(serviceId));
         order.setCreate_date(create_date);
         order.setTask_date(begin_date);
 		order.setUserId(globle_user.getId());
-      
+		order.setPrice(Double.parseDouble(priceVal));
         order.setPayFlag(0);//未支付
         selfHelpOrderService.insertOrder(order);
 
@@ -237,13 +242,16 @@ public class WafController {
         	//插入订单资产表
         //根据资产名称查询资产信息
         Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("userId",globle_user.getId());
         paramMap.put("name", assetName.trim());
 		List<Asset> listForName = assetService.findByAssetAddr(paramMap);
 		Asset assetInfo = listForName.get(0);
             OrderAsset orderAsset = new OrderAsset();
             orderAsset.setOrderId(orderId);
             orderAsset.setAssetId(assetInfo.getId());
-            orderAsset.setServiceId(6);
+            orderAsset.setServiceId(Integer.parseInt(serviceId));
+            orderAsset.setIpArray(ipStr);
+            orderAsset.setSermonth(Integer.parseInt(month));
            orderAssetService.insertOrderAsset(orderAsset);
       
    	     //网站安全帮列表
@@ -254,6 +262,7 @@ public class WafController {
 		 request.setAttribute("carnum", carnum);
 		 
 		   m.put("sucess", true);
+		   m.put("serviceId", serviceId);
 		   JSONObject JSON = CommonUtil.objectToJson(response, m);
 	        // 把数据返回到页面
         CommonUtil.writeToJsp(response, JSON);
