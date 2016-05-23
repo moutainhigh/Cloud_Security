@@ -81,7 +81,7 @@
 					</div>
 				</div>
 				<div class="dataR detailsR fl" style="width:644px;">
-					<h2>${service.name }</h2>
+				<h2>${service.name }</h2>
                   	
 					<ul>
 						<li class="clearfix">
@@ -92,8 +92,8 @@
                         <li class="clearfix">
 							<label class="fl">选 择 型</label>
                            <div class="fl clickBox" id="clickBox">
-                            <button class="click Single" value="0" onclick="chanageDiv();">包月</button>
-                            <button class="long" value="1" onclick="chanageDiv();">包年</button>
+                            <button class="click Single" value="8" onclick="chanageDiv();">包月</button>
+                            <button class="long" value="9" onclick="chanageDiv();">包年</button>
                            </div> 
                            
 						</li>
@@ -136,7 +136,7 @@
 	                            
                             	<select class="text select" style="width:248px; margin-left:0; height:36px;" id="domainName">
                             	   <c:forEach var="assInfo" items="${assList}" varStatus="status">
-                                   <option value="${assInfo.addr}" assId="${assInfo.id}">${assInfo.name}</option> 
+                                   <option value="${assInfo.addr}">${assInfo.name}</option> 
                                     </c:forEach>
                                 </select>
                                
