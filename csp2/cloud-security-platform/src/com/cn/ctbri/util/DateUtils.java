@@ -216,5 +216,33 @@ public class DateUtils {
          date = calendar.getTime();  
          return date;
     }
+    
+    /**
+     * 得到当前日期的十分钟后的时间
+     * @param d
+     * @return
+     */
+    public static Date getDateAfter10Mins(Date d){
+         Date date = d;
+         Calendar calendar = Calendar.getInstance();  
+         calendar.setTime(date);  
+         calendar.add(Calendar.MINUTE,10); 
+         date = calendar.getTime();  
+         return date;
+    }
+    
+    /**
+     * 得到当前日期的下一年
+     * @param d
+     * @return
+     */
+    public static Date getDateAfterOneYear(Date d){
+         Date date = d;
+         Calendar calendar = Calendar.getInstance();  
+         calendar.setTime(date);  
+         calendar.add(Calendar.YEAR,1); 
+         date = calendar.getTime();  
+         return date;
+    }
 	
 }

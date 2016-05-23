@@ -274,7 +274,7 @@ function calDefaultPrice(){
 		break;
 	case 3://默认长期
 		servType = 4;
-		calPriceLong(null,servType,true);
+		calPriceLong(null,servType);
 		break;
 	case 4://默认单次
 		servType = 4;
@@ -283,7 +283,7 @@ function calDefaultPrice(){
 		break;
 	case 5://默认长期
 		servType = 3;
-		calPriceLong(null,servType,true);
+		calPriceLong(null,servType);
 		break;
 	}
 }
@@ -383,7 +383,7 @@ function tasknum_verification(){
 	}
    
     //计算长期价格
-    function calPriceLong(obj,typeDefault,flag){//flag为1默认计算
+    function calPriceLong(obj,typeDefault){
     	var serviceId = $("#serviceIdHidden").val();
     	var type = null;
     	if(typeDefault!=null){
@@ -397,15 +397,8 @@ function tasknum_verification(){
 
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
-    	//如果服务是3,5的情况下改变日期可能要计算价格
-    	if(flag){//时间输入框计算
-    		if(beginDate==""||beginDate==null||endDate==""||endDate==null){
-    			return;
-    		}
-    	}
 
     	if(beginDate==""||beginDate==null||endDate==""||endDate==null){
-    		alert("请选择开始时间及结束时间,以便计算服务价格!");
 			return;
 		}
 	    if(beginDate>=endDate){
