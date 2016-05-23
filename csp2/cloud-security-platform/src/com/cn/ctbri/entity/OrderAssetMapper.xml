@@ -24,8 +24,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入服务资产 -->
     <insert id="insert" parameterType="com.cn.ctbri.entity.OrderAsset">
         insert into cs_order_asset
-        (orderId, assetId, serviceId, scan_type, scan_date) 
-        values(#{orderId}, #{assetId}, #{serviceId}, #{scan_type}, #{scan_date})
+        (orderId, assetId, serviceId, scan_type, scan_date,ipArray,Sermonth) 
+        values(#{orderId}, #{assetId}, #{serviceId}, #{scan_type}, #{scan_date}, #{ipArray}, #{Sermonth})
     </insert>
     
     <!-- 插入ip段 -->
