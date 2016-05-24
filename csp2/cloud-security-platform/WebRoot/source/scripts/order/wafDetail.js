@@ -22,13 +22,21 @@ $(function(){
     $("#addCarWaf").click(function(){
     //类型
       var orderType = $('.click').val();
+      
       //开始时间
-      var beginDate=$('#beginDate').val();
+      var beginDate=null;
+      var month=null;
+      if(orderType=='8'){
+    	  beginDate=$('#beginDateForMonth').val();
+    	  month = $('#month').val();
+      }else{
+    	  beginDate=$('#beginDateForYear').val();
+      }
      var serviceId = $('#serviceIdHidden').val();
      //价格
-      var price = $('.price').children('strong:first').text();
+      var price = $('#price').html().substr(1);
       //服务期限
-      var month = $('#month').val();
+    
       //网站域名
       var domainName = $('#domainName').val();
       var assetName = $("#domainName").find("option:selected").text(); 
