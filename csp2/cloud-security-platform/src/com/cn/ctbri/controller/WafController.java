@@ -181,14 +181,19 @@ public class WafController {
 			Date endDate = DateUtils.getDateAfterMonths(cd,Integer.parseInt(month));
 			String endVal =	DateUtils.dateToDate(endDate)+" "+value1;
 			String beginVal = beginDate+" "+value1;   
+			Date end = DateUtils.stringToDateNYRSFM(endVal);
+			Date begin = DateUtils.stringToDateNYRSFM(beginVal);
+			//获得当前日期后十分钟
+			Date afterEnd = DateUtils.getDateAfter10Mins(end);
+			Date afterBegin = DateUtils.getDateAfter10Mins(begin);
 		    //资产名称
 			String assetName = request.getParameter("assetName");
 
 
 	         m.put("serviceId", serviceId);
 	         m.put("orderType", orderType);
-	         m.put("beginDate", beginVal);
-	         m.put("endDate", endVal);
+	         m.put("beginDate", DateUtils.dateToString(afterBegin));
+	         m.put("endDate", DateUtils.dateToString(afterEnd));
 	         m.put("assetName", assetName);
 	         m.put("ipStr", ipStr);
 	         m.put("price", price);
