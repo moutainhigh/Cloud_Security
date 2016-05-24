@@ -66,6 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 and (b.addrName like CONCAT(CONCAT('%', #{search}), '%') or b.addr like CONCAT(CONCAT('%', #{search}), '%'))
             </if>
             and b.delFlag != 1
+            and	b.payFlag = 1
             order by b.create_date desc
     </select>
     
@@ -148,6 +149,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 and (b.addrName like CONCAT(CONCAT('%', #{search}), '%') or b.addr like CONCAT(CONCAT('%', #{search}), '%'))
             </if>
             and b.delFlag != 1
+            and	b.payFlag = 1
             order by b.create_date desc limit #{pageNow},#{pageSize}
       </select>
     

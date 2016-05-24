@@ -38,6 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		        where o.userId = #{userId} and o.serviceId = s.id and isAPI = 1 and oa.id = o.id) o
         where 1=1
         and o.delFlag != 1
+        and	o.payFlag = 1
         order by o.create_date desc
     </select>
 	<!-- 查询所有记录 -->
@@ -46,6 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from cs_order o,cs_service s
 		where o.userId = #{id} and o.serviceId = s.id and o.status in (1,2)
 		and o.delFlag != 1
+		and	o.payFlag = 1
 		order by o.create_date desc
 	</select>
 
@@ -78,6 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>-->
         <!-- and ISNULL(o.delFlag)  -->
         and o.delFlag != 1
+        and	o.payFlag = 1
         order by o.create_date desc limit #{pageNow},#{pageSize}
     </select>
 	<!-- 条件查询 -->
@@ -291,7 +294,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 根据条件查询订单信息 -->
     <select id="findOrderByMap" resultMap="OrderRM" parameterType="hashmap">
         select * from cs_order o
-		where o.status not in (1,2) and o.delFlag !=1 and o.create_date &gt;='2016-04-17 00:00:00'
+		where o.status not in (1,2) 
+		and o.delFlag !=1
+		and	o.payFlag = 1
+		and o.create_date &gt;='2016-04-17 00:00:00'
 		
     </select>
     
