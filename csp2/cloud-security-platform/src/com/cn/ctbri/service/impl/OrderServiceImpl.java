@@ -157,7 +157,6 @@ public class OrderServiceImpl implements IOrderService{
 	public String getOrderById(String orderId, String type, int userId) {
 		// TODO Auto-generated method stub
 		String a = orderDao.getOrderById(orderId, type, userId);
-		System.out.println("a=="+a);
 		return a ;
 	}
 	

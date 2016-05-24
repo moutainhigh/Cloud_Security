@@ -102,8 +102,20 @@
                             	
                                      	<tr height="40">
                                      		<td width="20%"><label >
+                                     		<c:if test="${shopCar.status==-1}">
+                                            <input type="checkbox" class="ck" style="display:none" value="${shopCar.orderId}" isApi="0" name="check_name" disabled="disabled">
+                                            </input>
+                                            </c:if>
+                                            <c:if test="${shopCar.status!=-1}">
                                             <input type="checkbox" class="ck" style="display:none" value="${shopCar.orderId}" isApi="0" name="check_name" >
+                                            </input>
+                                            </c:if>
+                                            <c:if test="${shopCar.status==-1}">
+                                            <i class="chck" style="margin:0 30px 0 40px;display:none"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">已失效</font>
+                                            </c:if>&nbsp;&nbsp;&nbsp;
+                                             <c:if test="${shopCar.status!=-1}">
                                             <i class="chck" style="margin:0 30px 0 40px;"></i>
+                                            </c:if>
                                             </label>
                                            <c:if test="${shopCar.serviceId!=6}">
                                             <a href="${ctx}/selfHelpOrderInit.html?serviceId=${shopCar.serviceId}&indexPage=1" target="_blank">${shopCar.serverName}</a>

@@ -86,7 +86,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   b.astName,
   a.price,
 a.serviceId,
-a.isAPI
+a.isAPI,
+ a.status
 FROM (SELECT
         co.*,
         cs.name          serverName
@@ -123,7 +124,8 @@ WHERE a.id = b.orderId
   a.price,
   b.package_type num,
 a.serviceId,
-a.isAPI
+a.isAPI,
+ a.status
 FROM (SELECT
         co.*,
         cs.name          serverName
@@ -248,6 +250,10 @@ WHERE a.id = b.orderId
  </update>
  <update id="updateOrder" parameterType="hashmap">
  UPDATE  cs_order o  SET o.payFlag=1, o.id=#{newOrderId}  WHERE o.isAPI=#{isAPI} AND o.id=#{orderId}
+ 
+ </update>
+ <update id="updateShopOrder" parameterType="com.cn.ctbri.entity.ShopCar">
+   update cs_order set status=#{status} where id=#{orderId}
  
  </update>
 </mapper>

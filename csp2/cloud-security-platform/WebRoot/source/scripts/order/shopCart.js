@@ -12,12 +12,18 @@ $(function(){
 		}else{
 		   $.ajax({ type: "POST",
 			     async: false, 
-			     url: "getSession.html",
+			     url: "checkShoppOrder.html?str="+str,
 			     dataType: "json", 
 			     success: function(data) {
-			   	  $("input:checkbox[name=check_name]").attr("checked",false);
+			     if(data.flag){
+			    	 $("input:checkbox[name=check_name]").attr("checked",false);
 				    	 window.location.href="shopBuy.html?str="+str;
-				    }, 
+				   
+			     }else{
+			    	 alert("当前时间已经超过下单开始时间，订单已作废请删除订单!");
+			    	 window.location.href="showShopCar.html";
+			       } 
+			     },
 			     error: function(data){ 
 			    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
 			    		 window.location.href = "loginUI.html"; } 

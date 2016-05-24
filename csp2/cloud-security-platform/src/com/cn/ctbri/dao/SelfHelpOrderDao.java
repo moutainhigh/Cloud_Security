@@ -100,4 +100,6 @@ public interface SelfHelpOrderDao {
 	void updateOrder(String orderId,String newOrderId,String isAPI);
 	//更新订单api表
 	void updateOrderAPI(String orderId,String newOrderId);
+	//修改订单状态
+	public void updateShopOrder(ShopCar order);
 }

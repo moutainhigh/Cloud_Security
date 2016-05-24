@@ -186,6 +186,12 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		this.getSqlSession().update(ns+"updateOrderAsset",map);
 	}
 
+	@Override
+	public void updateShopOrder(ShopCar order) {
+		// TODO Auto-generated method stub
+		this.getSqlSession().update(ns+"updateShopOrder",order);
+	}
+
 	
 
 	

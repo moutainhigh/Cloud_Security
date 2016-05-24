@@ -1,8 +1,6 @@
 package com.cn.ctbri.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -151,6 +149,12 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 	public void updateOrderAsset(String orderId, String newOrderId) {
 		// TODO Auto-generated method stub
 		selfHelpOrderDao.updateOrderAsset(orderId, newOrderId);
+	}
+
+	@Override
+	public void updateShopOrder(ShopCar order) {
+		// TODO Auto-generated method stub
+		selfHelpOrderDao.updateShopOrder(order);
 	}
 
 	

@@ -1,7 +1,6 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -840,4 +839,75 @@ public class shoppingController {
 			}
 		}
     }
+	 /**
+	 * 功能描述： 购物车去结算判断当前时间是否超过下单开始时间
+	 * 参数描述：  无
+	 *     @time 2016-05-23
+	 *     add gxy
+	 */
+	@RequestMapping(value="checkShoppOrder.html")
+	public void checkOrderInfo(HttpServletResponse response,HttpServletRequest request){
+		Map<String, Object> m = new HashMap<String, Object>();
+	try{
+		Date date = new Date();
+		 boolean flag = true;
+		String str = request.getParameter("str");
+		
+		List list = new ArrayList();
+		int orderNum=0;
+		List<String> orderIdList=new ArrayList();
+	      if(str!=null&&!"".equals(str)){
+	    	  String strArray[] = str.substring(0, str.length()-1).split(",");
+	    	  orderNum= strArray.length;
+	    	  for (int k=0;k<strArray.length;k++){
+	    		  orderIdList.add(strArray[k]);
+	    	  }
+	    	  list = selfHelpOrderService.findBuyShopList(orderIdList);
+			}
+	     if(list!=null&&list.size()>0){
+	       for(int i=0;i<list.size();i++){
+	    	   ShopCar shopCar = (ShopCar)list.get(i);
+	    	  Date beginDate = shopCar.getBeginDate();
+	    	  //判断当前时间已经查过下单时间
+	    	  if(date.getTime()>beginDate.getTime()){
+	    		  flag=false;
+	    		  break;
+	    	  }
+	       }	 
+	     }
+	     //修改订单状态已作废
+	     if(!flag){
+	    	  if(list!=null&&list.size()>0){
+	   	       for(int i=0;i<list.size();i++){
+	   	    	   ShopCar shopCar = (ShopCar)list.get(i);
+	   	    	  shopCar.setStatus(-1);
+	   	    	 selfHelpOrderService.updateShopOrder(shopCar);
+	   	       }	 
+	   	     } 
+	     }
+	   //object转化为Json格式
+	         m.put("flag", flag);
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			m.put("success", false);
+			//object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+	
+		
+	}
 }

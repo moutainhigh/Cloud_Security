@@ -18,6 +18,7 @@ public class ShopCar implements Serializable{
 	private Date endDate;
 	private int scanPeriod;//扫描类型(1：每天，2：每周，3：每月)
 	private int websoc;//创宇标志
+	private int status;//状态 -1订单已作废
 	public String getOrderId() {
 		return orderId;
 	}
@@ -93,5 +94,12 @@ public class ShopCar implements Serializable{
 	public void setWebsoc(int websoc) {
 		this.websoc = websoc;
 	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
 	
 }
