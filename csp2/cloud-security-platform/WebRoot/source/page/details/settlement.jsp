@@ -18,6 +18,7 @@
 <script src="${ctx}/source/scripts/common/main.js"></script>
 
 <script src="${ctx}/source/scripts/order/details.js"></script>
+<script src="${ctx}/source/scripts/order/wafDetail.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 </head>
 
@@ -64,15 +65,16 @@
 			</div>
 		</div>
 		
-		<input type="hidden" id="assetIds" value="${assetIds }"/>
 		<input type="hidden" id="serviceId" value="${serviceId }"/>
 		<input type="hidden" id="orderType" value="${type }"/>
 		<input type="hidden" id="beginDate" value="${beginDate }"/>
 		<input type="hidden" id="endDate" value="${endDate }"/>
 		<input type="hidden" id="scanType" value="${scanType }"/>
 		<input type="hidden" id="assetIds" value="${assetIds }"/>
-		<input type="hidden" id="assetIds" value="${assetIds }"/>
 		<input type="hidden" id="assetAddr" value="${assetAddr }"/>
+		<input type="hidden" id="priceHidden" value="${allPrice }"/>
+		<input type="hidden" id="ipArrayHidden" value="${ipArray }"/>
+		<input type="hidden" id="timesHidden" value="${times }"/>
 		
 		<input type="hidden" id="time" value="${time }"/>
 		<input type="hidden" id="num" value="${num }"/>
@@ -137,7 +139,12 @@
                     <li class="listone ">
                     <div class="clearfix">
                     	<h3 class="fl">订单详情</h3>
-                    <a class="fr" style="color:#2499fb;padding-right:54px;" href="javaScript:void(0);" onclick="javaScript:orderBack();" style="cursor:hand;">返回修改订单信息</a>
+                    <c:if test="${service.id le 5 }">
+                    	<a class="fr" style="color:#2499fb;padding-right:54px;" href="javaScript:void(0);" onclick="javaScript:orderBack();" style="cursor:hand;">返回修改订单信息</a>
+                    </c:if>
+                    <c:if test="${service.id gt 5 }">
+                    	<a class="fr" style="color:#2499fb;padding-right:54px;" href="javaScript:void(0);" onclick="javaScript:wafOrderBack();" style="cursor:hand;">返回修改订单信息</a>
+                    </c:if>
                     </div>
                     	
                         <div class="tabox zfize" style="margin-top:20px;">
@@ -241,7 +248,12 @@
 			<div class="SubmitBox">
             	<p>应付总额：<span>￥${allPrice}</span>
             	<c:if test="${mark eq 'web' }">
-            		<input id="settlement" class="submit" type="submit" value="提交订单"/>
+            		<c:if test="${service.id gt 5 }">
+            			<input id="settlementWaf" class="submit" type="button" value="提交订单"/>
+            		</c:if>
+            		<c:if test="${service.id le 5 }">            		
+            			<input id="settlement" class="submit" type="submit" value="提交订单"/>
+            		</c:if>
             	</c:if>
             	<c:if test="${mark eq 'api' }">
             		<input id="settlementAPI" class="submit" type="submit" value="提交订单"/>

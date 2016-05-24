@@ -68,7 +68,12 @@
 				</div>
 			</div>
 			
-
+	 <input type="hidden" id="scanTypeHidden" value="${scanType}"/>
+	 <input type="hidden" id="beginDateHidden" value="${beginDate}"/>
+	 <input type="hidden" id="timesHidden" value="${times}"/>
+	 <input type="hidden" id="domainNameHidden" value="${domainName}"/>
+	 <input type="hidden" id="ipArrayHidden" value="${ipArray}"/>
+	 <input type="hidden" id="editFlag" value="${editFlag}"/>
 		</div>
 		<div class="dataCent">
 			<div class="data-crumbs">
