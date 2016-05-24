@@ -73,7 +73,6 @@
 	 <input type="hidden" id="timesHidden" value="${times}"/>
 	 <input type="hidden" id="domainNameHidden" value="${domainName}"/>
 	 <input type="hidden" id="ipArrayHidden" value="${ipArray}"/>
-	 <input type="hidden" id="editFlag" value="${editFlag}"/>
 		</div>
 		<div class="dataCent">
 			<div class="data-crumbs">
@@ -107,7 +106,7 @@
                         <li class="clearfix" id="monthDiv" style="display:block;">
 							<label class="fl">服务时间</label>
                             <div class="fl" style="top:3px;">
-                            	<span>开始时间 <input type="text" id="beginDateForMonth" class="text" style="width:156px;" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd',onpicked:function(dp){calPriceLong(null,null,true); }})"></span>
+                            	<span>开始时间 <input type="text" id="beginDateForMonth" class="text" style="width:156px;" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd',onpicked:function(dp){ }})"></span>
                                  <!-- <span>结束时间 <input type="text"  id="endDate" style="width:156px;" class="text" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-{%d+1}',minDate:'#F{$dp.$D(\'beginDate\',{d:31})}',dateFmt:'yyyy-MM'})"></span> -->
                               <span>
                                                                                    服务期限
@@ -132,7 +131,7 @@
                             <li class="clearfix" id="yearDiv" style="display:none">
 							<label class="fl">服务时间</label>
                               <div class="fl" style="top:3px;" >
-                            	<span>开始时间<input type="text" id="beginDateForYear" class="text" style="width:156px;" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd',onpicked:function(dp){calPriceLong(null,null,true); }})"></span>
+                            	<span>开始时间<input type="text" id="beginDateForYear" class="text" style="width:156px;" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd',onpicked:function(dp){}})"></span>
                                  <!-- <span>结束时间 <input type="text"  id="endDate" style="width:156px;" class="text" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-{%d+1}',minDate:'#F{$dp.$D(\'beginDate\',{d:365})}',dateFmt:'yyyy-MM'})"></span> -->
                            </div> 
 						</li>
