@@ -306,18 +306,25 @@ function getWafInfo(){
 	 var times = $('#timesHidden').val();
 	 var domainName = $('#domainNameHidden').val();
 	 var ipArray = $('#ipArrayHidden').val();
-	 var editFlag = $('#editFlag').val();
-	 if(scanType!=null && scanType!='' && editFlag=='1'){
+	 if(scanType!=null && scanType!=''){
 		 if(scanType=='8'){
 			 $('.Single').addClass("click");
 			 $('.long').removeClass("click");
 			 $('#beginDateForMonth').val(beginDate.substring(0,10));
 			 $('#month').val(times);
+			 $("#price").html("¥100");
+			 $("#yearDiv").hide();
+	    	 $("#monthDiv").show();
+
 			 
 		 }else if(scanType=='9'){
 			 $('.long').addClass("click");
 			 $('.Single').removeClass("click");
 			 $('#beginDateForYear').val(beginDate.substring(0,10));
+			 $("#price").html("¥1000");
+			 $("#yearDiv").show();
+	    	 $("#monthDiv").hide();
+			 
 		 }
 		 $('#domainName').val(domainName);
 		 
@@ -336,7 +343,6 @@ function getWafInfo(){
 	    		  $('#wafbox').children('li:first').after(html);	
 	    	  }
 		 }
-		 $('#editFlag').val("0");
 	 }
 
 
