@@ -447,6 +447,8 @@ public class WafController {
 			    orderAsset.setScan_type(Integer.parseInt(scanType));
 			    if(scanType.equals("8")){//包月
 			    	orderAsset.setSermonth(Integer.parseInt(times));
+			    }else{
+			    	orderAsset.setSermonth(12);
 			    }
 			}
 			orderAsset.setIpArray(ipArray);
