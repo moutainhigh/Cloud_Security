@@ -96,11 +96,13 @@ $(function(){
       var serviceId = $('#serviceIdHidden').val();
       //类型
       var scanType = $('.click').val();//8:包月；9：包年
-      var beginDate = $('#beginDate').val();      //开始时间
+      var beginDate = '';      //开始时间
       var times = 1;//月份数
       if(scanType=='8'){
+    	  beginDate=$('#beginDateForMonth').val();
     	  times = $('#month').val();
       }else{
+    	  beginDate=$('#beginDateForYear').val();
       }
  
       //网站域名
@@ -309,13 +311,13 @@ function getWafInfo(){
 		 if(scanType=='8'){
 			 $('.Single').addClass("click");
 			 $('.long').removeClass("click");
-			 $('#beginDate').val(beginDate.substring(0,10));
+			 $('#beginDateForMonth').val(beginDate.substring(0,10));
 			 $('#month').val(times);
 			 
 		 }else if(scanType=='9'){
 			 $('.long').addClass("click");
 			 $('.Single').removeClass("click");
-			 $('#beginDate').val(beginDate.substring(0,10));
+			 $('#beginDateForYear').val(beginDate.substring(0,10));
 		 }
 		 $('#domainName').val(domainName);
 		 

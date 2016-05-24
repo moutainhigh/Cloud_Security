@@ -107,7 +107,7 @@
                         <li class="clearfix" id="monthDiv" style="display:block;">
 							<label class="fl">服务时间</label>
                             <div class="fl" style="top:3px;">
-                            	<span>开始时间 <input type="text" id="beginDate" class="text" style="width:156px;" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd',onpicked:function(dp){calPriceLong(null,null,true); }})"></span>
+                            	<span>开始时间 <input type="text" id="beginDateForMonth" class="text" style="width:156px;" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd',onpicked:function(dp){calPriceLong(null,null,true); }})"></span>
                                  <!-- <span>结束时间 <input type="text"  id="endDate" style="width:156px;" class="text" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-{%d+1}',minDate:'#F{$dp.$D(\'beginDate\',{d:31})}',dateFmt:'yyyy-MM'})"></span> -->
                               <span>
                                                                                    服务期限
@@ -132,7 +132,7 @@
                             <li class="clearfix" id="yearDiv" style="display:none">
 							<label class="fl">服务时间</label>
                               <div class="fl" style="top:3px;" >
-                            	<span>开始时间<input type="text" id="beginDate" class="text" style="width:156px;" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd',onpicked:function(dp){calPriceLong(null,null,true); }})"></span>
+                            	<span>开始时间<input type="text" id="beginDateForYear" class="text" style="width:156px;" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd',onpicked:function(dp){calPriceLong(null,null,true); }})"></span>
                                  <!-- <span>结束时间 <input type="text"  id="endDate" style="width:156px;" class="text" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-{%d+1}',minDate:'#F{$dp.$D(\'beginDate\',{d:365})}',dateFmt:'yyyy-MM'})"></span> -->
                            </div> 
 						</li>
