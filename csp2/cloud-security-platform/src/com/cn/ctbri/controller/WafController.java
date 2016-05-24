@@ -321,7 +321,7 @@ public class WafController {
 	    //格式化价格
 	    DecimalFormat df = new DecimalFormat("#.00");
 	    
-	    if(scanType.equals("1")){//包年
+	    if(scanType.equals("9")){//包年
 	    	eDate = DateUtils.getDateAfterOneYear(bDate);
 	        request.setAttribute("allPrice", df.format(price));
 	    }else{//包月
@@ -532,11 +532,18 @@ public class WafController {
         request.setAttribute("ipArray", ipArray);
         request.setAttribute("times", times);
         request.setAttribute("serviceId", serviceId);
-        request.setAttribute("editFlag", "1");
 		Serv service = servService.findById(Integer.parseInt(request.getParameter("serviceId")));
 		
 		request.setAttribute("assList", assList);
 		request.setAttribute("service", service);
+		
+  	     //网站安全帮列表
+        List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
+     //查询安全能力API
+		 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
+		 int carnum=shopCarList.size()+apiList.hashCode();
+		 request.setAttribute("carnum", carnum);
+		 
 	    return  "/source/page/details/wafDetails";
 	}
 }
