@@ -19,7 +19,7 @@ $(function(){
 
     });
     //点击“添加购物车”按钮
-    $("#addCar").click(function(){
+    $("#addCarWaf").click(function(){
     //类型
       var orderType = $('.click').val();
       //开始时间
@@ -91,18 +91,16 @@ $(function(){
      });
     
     //立即购买
-    $("#buyNow").click(function(){
+    $("#buyNowWaf").click(function(){
       //服务id
       var serviceId = $('#serviceIdHidden').val();
       //类型
       var scanType = $('.click').val();//8:包月；9：包年
-      var beginDate = '';      //开始时间
+      var beginDate = $('#beginDate').val();      //开始时间
       var times = 1;//月份数
       if(scanType=='8'){
-    	  beginDate=$('#beginDateForMonth').val();
     	  times = $('#month').val();
       }else{
-    	  beginDate=$('#beginDateForYear').val();
       }
  
       //网站域名
@@ -234,7 +232,7 @@ $(function(){
  function chanageDiv(){
   //类型
       var orderType = $('.click').val();
-      if(orderType=='9'){
+      if(orderType=='8'){
     	  $("#yearDiv").show();
     	   $("#monthDiv").hide();
     	   $("#price").html("¥1000");
@@ -311,13 +309,13 @@ function getWafInfo(){
 		 if(scanType=='8'){
 			 $('.Single').addClass("click");
 			 $('.long').removeClass("click");
-			 $('#beginDateForMonth').val(beginDate.substring(0,10));
+			 $('#beginDate').val(beginDate.substring(0,10));
 			 $('#month').val(times);
 			 
 		 }else if(scanType=='9'){
 			 $('.long').addClass("click");
 			 $('.Single').removeClass("click");
-			 $('#beginDateForYear').val(beginDate.substring(0,10));
+			 $('#beginDate').val(beginDate.substring(0,10));
 		 }
 		 $('#domainName').val(domainName);
 		 

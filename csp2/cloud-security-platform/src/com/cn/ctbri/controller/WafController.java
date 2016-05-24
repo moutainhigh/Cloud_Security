@@ -118,32 +118,8 @@ public class WafController {
 	@RequestMapping(value="VerificationIP.html")
 	public void VerificationIP(HttpServletRequest request,HttpServletResponse response) throws Exception{
 		Map<String, Object> m = new HashMap<String, Object>();
-		 SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm:ss"); 
-		 Date date= new Date();
-		String value1= sdf1.format(date);
-		String serviceId = request.getParameter("serviceId");
-		  //价格
-		  String price = request.getParameter("price");
-		  //类型
-		 String orderType = request.getParameter("orderType");
-		 //开始时间
-		 String beginDate = request.getParameter("beginDate");
-		 //服务期限
-		 String month ="";
-		Date cd= DateUtils.stringToDate(beginDate);
-		 //包月
-		 if(orderType.equals("8")){
-			month =  request.getParameter("month");
-		 }else{
-			 month="12";
-		 }
-		Date endDate = DateUtils.getDateAfterMonths(cd,Integer.parseInt(month));
-		String endVal =	DateUtils.dateToDate(endDate)+" "+value1;
-		 String beginVal = beginDate+" "+value1;   
 		//ip地址
 		String ipStr = request.getParameter("ipVal");
-	   //资产名称
-		String assetName = request.getParameter("assetName");
 		//域名
 		String domainName = request.getParameter("domainName");
 		String addInfo = "";
@@ -169,18 +145,46 @@ public class WafController {
 			IpInfo.add(addr.getHostAddress());
       }
         String array[]=IpInfo.toArray(new String[]{});
-        boolean flag=true;
+        boolean flag=false;
         //页面输入的ip地址
         String ipArr[]= ipStr.split(",");
         for(int i=0;i<ipArr.length;i++){
       	  for(int k=0;k<array.length;k++){
-      		    if(!ipArr[i].equals(array[k])){
-      		    	flag=false;
+      		    if(ipArr[i].equals(array[k])){
+      		    	flag=true;
       		    	break;
       		    }
       	  }
         }
-	         m.put("flag", flag);
+        
+        //添加购物车时
+		String serviceId = request.getParameter("serviceId");
+		if(serviceId!=null){
+			 SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm:ss"); 
+			 Date date= new Date();
+			 String value1= sdf1.format(date);
+			 //价格
+			 String price = request.getParameter("price");
+			 //类型
+			 String orderType = request.getParameter("orderType");
+			 //开始时间
+			 String beginDate = request.getParameter("beginDate");
+			 //服务期限
+			 String month ="";
+			 Date cd= DateUtils.stringToDate(beginDate);
+			 //包月
+			 if(orderType.equals("8")){
+				month =  request.getParameter("month");
+			 }else{
+				 month="12";
+			 }
+			Date endDate = DateUtils.getDateAfterMonths(cd,Integer.parseInt(month));
+			String endVal =	DateUtils.dateToDate(endDate)+" "+value1;
+			String beginVal = beginDate+" "+value1;   
+		    //资产名称
+			String assetName = request.getParameter("assetName");
+
+
 	         m.put("serviceId", serviceId);
 	         m.put("orderType", orderType);
 	         m.put("beginDate", beginVal);
@@ -189,9 +193,11 @@ public class WafController {
 	         m.put("ipStr", ipStr);
 	         m.put("price", price);
 	         m.put("month", month);
+		}
+           m.put("flag", flag);
 		   JSONObject JSON = CommonUtil.objectToJson(response, m);
-	        // 把数据返回到页面
-          CommonUtil.writeToJsp(response, JSON);
+	       // 把数据返回到页面
+           CommonUtil.writeToJsp(response, JSON);
 	}
 	
 	 /**

@@ -143,7 +143,7 @@
 	                            
                             	<select class="text select" style="width:248px; margin-left:0; height:36px;" id="domainName">
                             	   <c:forEach var="assInfo" items="${assList}" varStatus="status">
-                                   <option value="${assInfo.addr}">${assInfo.name}</option> 
+                                   <option value="${assInfo.addr}" assId="${assInfo.id}">${assInfo.name}</option> 
                                     </c:forEach>
                                 </select>
                                
@@ -164,8 +164,8 @@
                         
 					</ul>
                     <div class="btnBox" style="text-align:left; margin-left:0px; margin-bottom:0px; position:relative; top:-46px;">
-                    	<button style="background:#d00000; width:146px;" id="addCar">添加到购物车</button>
-                        <button style="background:#5aba5f; width:126px" id="buyNow">立即购买</button>
+                    	<button style="background:#d00000; width:146px;" id="addCarWaf">添加到购物车</button>
+                        <button style="background:#5aba5f; width:126px" id="buyNowWaf">立即购买</button>
                     </div>
 				</div>
                 
