@@ -710,6 +710,16 @@ public class DeviceAdpaterManager {
 		if("".equals(resourceId)||"".equals(deviceId))  return errorWAFDeviceInfo(resourceId, deviceId);
 		return nsfocusWAFAdapter.createSite(resourceId, deviceId, jsonObject);
 	}
+	public String createVSite(int resourceId,int deviceId,JSONObject jsonObject) {
+		if("".equals(resourceId)||"".equals(deviceId))  return errorWAFDeviceInfo(resourceId, deviceId);
+		return nsfocusWAFAdapter.createVSite(resourceId, deviceId, jsonObject);
+	}
+	
+	
+	public String postIpToEth(int resourceId, int deviceId,JSONObject jsonObject) {
+		if("".equals(resourceId)||"".equals(deviceId))  return errorWAFDeviceInfo(resourceId, deviceId);
+		return nsfocusWAFAdapter.postIpToEth(resourceId, deviceId, jsonObject);
+	}
 	
 	public String getWafLogWebsec(String dstIp) {
 		if (null==dstIp||"".equals(dstIp)){

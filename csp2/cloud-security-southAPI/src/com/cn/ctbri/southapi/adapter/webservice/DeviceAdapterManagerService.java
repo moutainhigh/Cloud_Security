@@ -200,6 +200,14 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.getWafLogDDOS(dstIp);
 	}
 	@POST
+	@Path("/getWaflogDefaceByIp")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafLogDefaceByIp(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		String dstIp = jsonObject.getString("dstIp");
+		return deviceAdpaterManager.getWafLogDeface(dstIp);
+	}
+	@POST
 	@Path("/getSites")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getSites(String dataJson){
@@ -209,6 +217,14 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.getSites(resourceId, deviceId);
 	}
 	@POST
+	@Path("/postIpToEth")
+	public String postIpToEth(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		int resourceId = Integer.parseInt(jsonObject.getString("resourceId"));
+		int deviceId = Integer.parseInt(jsonObject.getString("deviceId"));
+		return deviceAdpaterManager.postIpToEth(resourceId, deviceId, jsonObject);
+	}
+	@POST
 	@Path("/createSite")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String createSite(String dataJson) {
@@ -216,6 +232,15 @@ public class DeviceAdapterManagerService {
 		int resourceId = Integer.parseInt(jsonObject.getString("resourceId"));
 		int deviceId = Integer.parseInt(jsonObject.getString("deviceId"));
 		return deviceAdpaterManager.createSite(resourceId, deviceId, jsonObject);
+	}
+	@POST
+	@Path("/createVirtualSite")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String createVirtualSite(String dataJson){
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		int resourceId = Integer.parseInt(jsonObject.getString("resourceId"));
+		int deviceId = Integer.parseInt(jsonObject.getString("deviceId"));
+		return deviceAdpaterManager.createVSite(resourceId, deviceId, jsonObject);
 	}
 
 }

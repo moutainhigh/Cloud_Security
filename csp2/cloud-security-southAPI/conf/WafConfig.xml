@@ -13,7 +13,7 @@
 					<WAFFactoryName>绿盟</WAFFactoryName>
 					<WAFDevPhyIP>127.0.0.1</WAFDevPhyIP>
 					<WAFDevAPI>
-						<APIAddr>https://219.141.189.189:61442</APIAddr>
+						<APIAddr>https://219.141.189.189:58442</APIAddr>
 						<APIKey>vmwaf</APIKey>
 						<APIValue>E34A-44A6-E12B-E1C9</APIValue>
 						<APIUserName>admin</APIUserName>
@@ -29,9 +29,9 @@
 					<WAFFactoryName>绿盟</WAFFactoryName>
 					<WAFDevPhyIP>172.16.200.210</WAFDevPhyIP>
 					<WAFDevAPI>
-						<APIAddr>https://219.141.189.189:61443</APIAddr>
+						<APIAddr>https://219.141.189.189:58443</APIAddr>
 						<APIKey>vmwaf</APIKey>
-						<APIValue>E34A-44A6-E12B-E1C9</APIValue>
+						<APIValue>9E7B-960F-0DA7-4BC0</APIValue>
 						<APIUserName>admin</APIUserName>
 						<APIPwd>nsfocus</APIPwd>
 					</WAFDevAPI>

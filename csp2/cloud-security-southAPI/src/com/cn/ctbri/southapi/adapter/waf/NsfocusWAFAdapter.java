@@ -78,6 +78,14 @@ public class NsfocusWAFAdapter {
 		return getDeviceById(resourceId, deviceId).createSite(jsonObject);
 	}
 	
+	public String createVSite(int resourceId, int deviceId, JSONObject jsonObject) {
+		return getDeviceById(resourceId, deviceId).createVirtSite(jsonObject);
+	}
+	
+	public String postIpToEth(int resourceId, int deviceId,JSONObject jsonObject) {
+		return getDeviceById(resourceId, deviceId).postIpToEth(jsonObject);
+	}
+	
 	private NsfocusWAFOperation getDeviceById(int resourceId, int deviceId) {
 		System.out.println("resourceId="+resourceId);
 		NsfocusWAFOperation nsfocusWAFOperation = mapNsfocusWAFOperationGroup.get(resourceId).get(deviceId);
@@ -139,6 +147,7 @@ public class NsfocusWAFAdapter {
 			xStream.alias("wafLogDeface", TWafLogDeface.class);
 			xStream.alias("wafLogDefaceList", List.class);
 			String xmlString = xStream.toXML(allList);
+			System.out.println(">>>>>"+xmlString);
 			sqlSession.close();
 			return xmlString;
 		} catch (IOException e) {

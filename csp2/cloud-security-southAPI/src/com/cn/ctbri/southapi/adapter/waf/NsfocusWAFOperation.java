@@ -1,7 +1,12 @@
 package com.cn.ctbri.southapi.adapter.waf;
 
+import java.util.Iterator;
+
 import javax.ws.rs.core.MediaType;
 
+import se.akerfeldt.com.google.gson.JsonArray;
+import se.akerfeldt.com.google.gson.JsonElement;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.cn.ctbri.southapi.adapter.manager.CommonDeviceOperation;
@@ -12,6 +17,7 @@ import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 
 public class NsfocusWAFOperation extends CommonDeviceOperation {
@@ -68,10 +74,10 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		Builder builder = service.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 		//获取响应结果
 		ClientResponse response = builder.post(ClientResponse.class, jsonString);
-		String cookie = response.getCookies().toString();
+		//String cookie = response.getCookies().toString();
 		String body = response.getEntity(String.class);
 		//For 2
-		return cookie+"/r/n"+body;
+		return body;
 	}
 	
 	/**
@@ -245,6 +251,58 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		return getVirtSiteString;
 	}
 	
+	public String createVirtSite(JSONObject jsonObject) {
+		if(null==jsonObject.get("parent")||"".equals(jsonObject.getString("parent"))){
+			JSONObject errJsonObject = new JSONObject();
+			errJsonObject.put("status", "failed");
+			errJsonObject.put("reason", "Parent is null");
+			return errJsonObject.toString();
+		}
+		JSONObject tempJsonObject = new JSONObject();
+		tempJsonObject.put("parent", jsonObject.getString("parent"));
+		if(jsonObject.get("name")!=null) tempJsonObject.put("name", jsonObject.getString("name"));
+		if(jsonObject.get("domain")!=null) tempJsonObject.put("domain", jsonObject.getString("domain"));
+		if(jsonObject.get("include")!=null) tempJsonObject.put("include", jsonObject.getString("include"));
+		if(jsonObject.get("exclude")!=null) tempJsonObject.put("exclude", jsonObject.getString("exclude"));
+		if (jsonObject.get("server")!=null) {
+			JSONArray getJsonArray = JSONArray.fromObject(jsonObject.getString("server"));
+			JSONArray putJsonArray = new JSONArray();
+			for (Iterator iterator = getJsonArray.iterator(); iterator.hasNext();) {
+				JSONObject object = (JSONObject) iterator.next();
+				if(null==object.get("ip")||"".equals(object.getString("ip"))
+				||null==object.get("port")||"".equals(object.getString("port"))){
+					continue;
+				}
+				putJsonArray.add(object);
+			}
+			tempJsonObject.put("server", putJsonArray);
+		}
+		JSONObject createVSiteObject = new JSONObject();
+		createVSiteObject.put("0", tempJsonObject);
+		String createVSiteString = postOperation(nsfocusWafUrl+REST_URI_V1+"/sites/protect/virts",createVSiteObject.toString());
+		return createVSiteString;
+	}
+	
+	public String postIpToEth(JSONObject jsonObject) {
+		if (null==jsonObject.get("ip")||"".equals(jsonObject.getString("ip"))
+		||null==jsonObject.get("mask")||"".equals(jsonObject.getString("mask"))) {
+			JSONObject errJsonObject = new JSONObject();
+			errJsonObject.put("status", "failed");
+			errJsonObject.put("reason", "Site ip or mask is null!!!");
+			return errJsonObject.toString();			
+		}
+		JSONObject tempJsonObject = new JSONObject();
+		tempJsonObject.put("ip", jsonObject.getString("ip"));
+		tempJsonObject.put("mask", jsonObject.getString("mask"));
+		
+		JSONObject postIpJsonObject = new JSONObject();
+		JSONArray jsonArray = new JSONArray();
+		jsonArray.add(tempJsonObject);
+		postIpJsonObject.put("ip_address", jsonArray);
+		String postIpString = postOperation(nsfocusWafUrl+REST_URI_V1+"/interfaces/eth2/ip", postIpJsonObject.toString());
+		return postIpString;
+	}
+	
 	public static void main(String[] args) {
 
 		System.out.println(MediaType.APPLICATION_JSON.toString());
@@ -259,7 +317,10 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 				+ "\"name\":\"hello\","
 				+ "\";*/
 		System.out.println(jsonString);
-		System.out.println(operation.postOperation("https://219.141.189.189:58442/rest/v1/interfaces/eth2/ip", jsonString));
+		String responseString = operation.postOperation("https://219.141.189.189:58442/rest/v1/interfaces/eth2/ip", jsonString);
+		System.out.println(">>>>>"+responseString);
+		JSONObject jsonObject = JSONObject.fromObject(responseString);
+		System.out.println("obj="+jsonObject.toString());
 	}
 	
 }

@@ -15,5 +15,8 @@
     </environments>
     <mappers>
     	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogWebsecMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogArpMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogDdosMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogDefaceMapper"/>
     </mappers>
 </configuration>
