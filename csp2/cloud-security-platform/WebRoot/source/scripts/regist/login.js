@@ -122,7 +122,8 @@ function loginSubmit(){
 							$("#errMsgDiv").show();
 							break;
 						case 4:
-							$("#errMsg").html("对不起，企业用户不允许登录!");
+//							$("#errMsg").html("对不起，企业用户不允许登录!");
+							$("#errMsg").html(data.msg);
 							$("#errMsgDiv").show();
 							break;
 						case 5:
