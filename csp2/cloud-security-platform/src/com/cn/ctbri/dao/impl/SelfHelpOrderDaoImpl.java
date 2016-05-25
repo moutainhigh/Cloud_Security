@@ -76,7 +76,7 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
      *       @time 2015-1-19
      * 返回值    ：  List<Serv>
      */
-    public List<Serv> getService() {
+    public List getService() {
         return this.getSqlSession().selectList(nv + "list");
     }
 

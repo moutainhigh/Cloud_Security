@@ -50,7 +50,7 @@ public interface ISelfHelpOrderService {
      *       @time 2015-1-19
      * 返回值    ：  List<Serv>
      */
-    List<Serv> findService();
+    List findService();
 
     /**
      * 功能描述：保存联系人

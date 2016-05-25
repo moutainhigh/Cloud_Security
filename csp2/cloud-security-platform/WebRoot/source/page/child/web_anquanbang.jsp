@@ -134,8 +134,8 @@ function showUnreadNews()
 		                                    	${list.remarks }
 		                                    </span>
 		                                    <div class="purchase">
-		                                    	<strong>¥0</strong>
-		                                    	<strong><em style="font-family:Arial Regular;font-size:22px;">¥99</em></strong>
+		                                    	<strong style="text-decoration:lightblue;">¥${list.price}</strong>
+		                                    	<!--<strong><em style="font-family:Arial Regular;font-size:22px;">¥${list.price}</em></strong>-->
 		                                    	<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1" class="btn">购买</a>
 		                                    </div>
 		                               

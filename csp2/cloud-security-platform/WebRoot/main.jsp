@@ -100,17 +100,23 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                             <a href="${ctx}/web_anquanbang.html" class="fr">查看更多<b></b></a>
                         </div>
                     	<ul class="newlist newlist-top fl">
+                    	<c:forEach var="list" items="${servList}" varStatus="status">
+                    	<c:choose>
+                           <c:when test="${status.index<3}">
                             <li class="fl">
-                                <a href="${ctx}/selfHelpOrderInit.html?serviceId=1&indexPage=1">
+                                <a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1">
                                     <i><img src="${ctx}/source/images/portal/HOT.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/vulnScan.png" alt=""></p>
-                                    <h4>WEB漏洞监测服务</h4>
+                                    <h4>${list.name }</h4>
                                     <div class="purchase">
-                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">¥0</strong>
-                                    	<strong style="text-decoration:line-through;color: #d00000;"><em style="font-family: Arial Regular;font-size: 16px;">¥99</em></strong>
-                                    </div>
+                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">¥${list.price }</strong>
+                                    	<!--<strong style="text-decoration:line-through;color: #d00000;"><em style="font-family: Arial Regular;font-size: 16px;">¥99</em></strong>
+                                    --></div>
                                 </a>
                             </li>
+                            </c:when>
+                            </c:choose>
+                         </c:forEach><!--
                             <li class="fl">
                                 <a href="${ctx}/selfHelpOrderInit.html?serviceId=2&indexPage=1">
                                     <i><img src="${ctx}/source/images/portal/free.png" alt=""></i>
@@ -133,7 +139,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                     </div>
                                 </a>
                             </li>
-                        </ul>
+                        --></ul>
                     </div>
                 </div>
                 <div class="listBox clearfix" style="margin:0 auto">

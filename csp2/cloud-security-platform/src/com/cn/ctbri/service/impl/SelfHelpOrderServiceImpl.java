@@ -66,7 +66,7 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
      *       @time 2015-1-19
      * 返回值    ：  List<Serv>
      */
-    public List<Serv> findService() {
+    public List findService() {
         return selfHelpOrderDao.getService();
     }
 

@@ -17,8 +17,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="websoc" column="websoc"/>
 	</resultMap>
 	<!-- 查询所有记录 -->
-	<select id="list" resultMap="ServRM">
-		select<include refid="cols"/>from cs_service
+	<select id="list" resultType="map">
+		select service.id, service.name, service.factory, service.module_name, service.type,
+		service.status, service.remarks, service.ordertype, service.parentC, service.websoc, price.price
+		from cs_service service,cs_price price where price.serviceId=service.id and 
+		price.type=0
 	</select>
 	<select id="findById" resultMap="ServRM" parameterType="int">
 		select * from cs_service

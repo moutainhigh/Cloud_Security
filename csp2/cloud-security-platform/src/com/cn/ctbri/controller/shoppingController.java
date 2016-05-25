@@ -159,7 +159,12 @@ public class shoppingController {
         String[]  assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
         double priceD = 0;
         if(Integer.parseInt(times)!=0){
-        	priceD = Integer.parseInt(times)*assetArray.length*Double.parseDouble(priceVal);
+        	if(serviceId!=5){
+        		priceD = Integer.parseInt(times)*assetArray.length*Double.parseDouble(priceVal);
+        	}else{
+        		priceD = assetArray.length*Double.parseDouble(priceVal);
+        	}
+        	
         }else{
         	priceD = assetArray.length*Double.parseDouble(priceVal);
         }
@@ -265,7 +270,11 @@ public class shoppingController {
         order.setUserId(globle_user.getId());
         double priceD = 0;
         if(Integer.parseInt(times)!=0){
-        	priceD = Integer.parseInt(times)*assetArray.length*Double.parseDouble(priceVal);
+        	if(Integer.parseInt(serviceId)!=5){
+        		priceD = Integer.parseInt(times)*assetArray.length*Double.parseDouble(priceVal);
+        	}else{
+            	priceD = assetArray.length*Double.parseDouble(priceVal);
+        	}
         }else{
         	priceD = assetArray.length*Double.parseDouble(priceVal);
         }

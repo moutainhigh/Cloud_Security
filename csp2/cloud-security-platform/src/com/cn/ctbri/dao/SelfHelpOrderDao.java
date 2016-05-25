@@ -51,7 +51,7 @@ public interface SelfHelpOrderDao {
      *       @time 2015-1-19
      * 返回值    ：  List<Serv>
      */
-    List<Serv> getService();
+    List getService();
 
     /**
      * 功能描述：保存联系人
