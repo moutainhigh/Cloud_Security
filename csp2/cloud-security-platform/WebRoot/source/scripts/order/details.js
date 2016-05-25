@@ -82,6 +82,7 @@ $(function(){
     	var scanType = $('#scanType').val();
 //    	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
     	var serviceId = $("#serviceId").val();
+    	  var price = $('#priceHidden').val();
     	if(orderType==2){
     		scanType="";
     	}
@@ -101,6 +102,7 @@ $(function(){
 		    			   	"createDate":createDate,
 		    			   	"scanType":scanType,
 		    			   	"serviceId":serviceId,
+		    			   	"price":price,
 		    			   	"linkname":"",
 		    			   	"phone":"",
 		    			   	"email":"",
