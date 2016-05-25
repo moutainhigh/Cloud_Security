@@ -15,6 +15,8 @@ public class OrderList {
 	private int userId;//用户ID
 	private int contactId;//联系人Id
 	private String remarks;//备注
+	private String orderId;//以逗号分隔
+	private double price;//总价
 	public String getId() {
 		return id;
 	}
@@ -44,6 +46,18 @@ public class OrderList {
 	}
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+	public String getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
 	}
 	
 }
