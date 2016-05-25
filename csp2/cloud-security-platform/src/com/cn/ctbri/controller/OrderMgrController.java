@@ -99,7 +99,7 @@ public class OrderMgrController {
 	    //是否从首页进入
 	    String indexPage = request.getParameter("indexPage");
 	    //获取服务类型
-        List<Serv> servList = selfHelpOrderService.findService();
+        List servList = selfHelpOrderService.findService();
 	    //获取服务类型
 	    List<ServiceType> typeList = selfHelpOrderService.findServiceType();
 	    //获取厂商
@@ -196,7 +196,7 @@ public class OrderMgrController {
         String orderType = request.getParameter("type");
         String serviceId = request.getParameter("serviceId");
         //获取服务类型
-        List<Serv> servList = selfHelpOrderService.findService();
+        List servList = selfHelpOrderService.findService();
         request.setAttribute("orderType",orderType); 
         request.setAttribute("serviceId", serviceId);
         request.setAttribute("servList", servList);
