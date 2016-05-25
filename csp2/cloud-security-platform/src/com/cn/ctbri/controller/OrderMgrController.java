@@ -488,7 +488,7 @@ public class OrderMgrController {
 	            order.setUserId(globle_user.getId());
 	            order.setContactId(linkmanId);
 	            order.setStatus(0);
-	            order.setPayFlag(1);
+	            order.setPayFlag(0);
 	            if(serviceId.equals("6")||serviceId.equals("7")||serviceId.equals("8")){
 	            	order.setWebsoc(0);
 	            }else{
