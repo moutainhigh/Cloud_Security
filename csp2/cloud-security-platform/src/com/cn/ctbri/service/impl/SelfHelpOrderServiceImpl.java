@@ -151,7 +151,6 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 		selfHelpOrderDao.updateOrderAsset(orderId, newOrderId);
 	}
 
-	@Override
 	public void updateShopOrder(ShopCar order) {
 		// TODO Auto-generated method stub
 		selfHelpOrderDao.updateShopOrder(order);
