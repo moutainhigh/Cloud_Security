@@ -32,6 +32,7 @@ import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderIP;
+import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.entity.Task;
@@ -39,6 +40,7 @@ import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAssetService;
+import com.cn.ctbri.service.IOrderListService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
@@ -79,7 +81,8 @@ public class OrderMgrController {
     ITaskWarnService taskWarnService;
     @Autowired
     IUserService userService;
-    
+    @Autowired
+    IOrderListService orderListService;
 	 /**
 	 * 功能描述： 用户中心-自助下单
 	 * 参数描述：  无
@@ -358,6 +361,7 @@ public class OrderMgrController {
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
         //资产ids
         String assetIds = request.getParameter("assetIds");
+        String price = request.getParameter("price");
         Map<String, Object> m = new HashMap<String, Object>();
         /*定义变量*/
         String[] assetIdArrayAble = null;//资产id数组
@@ -468,6 +472,7 @@ public class OrderMgrController {
 	            order.setBegin_date(begin_date);
 	            order.setEnd_date(end_date);
 	            order.setCreate_date(create_date);
+	            order.setPrice(Double.parseDouble(price));
 	            if(scanPeriod!=null && !scanPeriod.equals("")){
 	                order.setScan_type(Integer.parseInt(scanPeriod));
 	            }
@@ -534,6 +539,15 @@ public class OrderMgrController {
             m.put("timeCompare", false);
         }
         
+     //插入数据到order_list
+	    OrderList ol = new OrderList();
+	    //生成订单id
+	    String id = String.valueOf(Random.eightcode());
+	    ol.setId(id);
+	    ol.setCreate_date(new Date());
+	    ol.setOrderId(orderId);
+	    ol.setPrice(Double.parseDouble(price));
+	    orderListService.insert(ol);
         //object转化为Json格式
         JSONObject JSON = CommonUtil.objectToJson(response, m);
         try {
