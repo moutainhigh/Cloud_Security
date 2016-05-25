@@ -400,16 +400,7 @@ public class shoppingController {
 	       }	 
 	     }
 	     
-	    //插入数据到order_list
-	    OrderList ol = new OrderList();
-	    //生成订单id
-	    String id = String.valueOf(Random.eightcode());
-//		SimpleDateFormat odf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-//		String orderDate = odf.format(new Date());
-	    ol.setId(id);
-	    ol.setCreate_date(new Date());
-	    ol.setOrderId(str);
-	    orderListService.insert(ol);
+	  
 	
 		request.setAttribute("orderNum", orderNum);
 		request.setAttribute("shopCount", shopCount);
@@ -432,8 +423,12 @@ public class shoppingController {
 		 Map<String, Object> map = new HashMap<String, Object>();
 	try{
 		 User globle_user = (User) request.getSession().getAttribute("globle_user");
-	
+		 Date date = new Date();
+		 boolean flag=true;
+		 String status="";
 		String str = request.getParameter("orderIds");
+		//总价格
+		String price = request.getParameter("countPrice");
 	    String scanType = "";//扫描方式（正常、快速、全量）
         String scanDepth = "";//检测深度
         String maxPages = "";//最大页面数
@@ -480,6 +475,13 @@ public class shoppingController {
 	    	     Date endDate = shopCar.getEndDate();
 	    	     String begin_date=null;
 	    	     String end_date="";
+	    	     
+	    	     if(date.getTime()>beginDate.getTime()){
+	    	    	 flag=false;
+	    	    	 status="-1";
+	    	     }else{
+	    	    	 status = String.valueOf(shopCar.getStatus());
+	    	     }
 	    	     if(beginDate!=null && !beginDate.equals("")){
 	    	    	 begin_date = sdf.format(beginDate);
 	    	     }
@@ -499,13 +501,16 @@ public class shoppingController {
 		    		 //更新订单资产表
 		    		 selfHelpOrderService.updateOrderAsset(shopCar.getOrderId(), orderId);
 		    		 //更新订单表
-		    		 selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "0");
-
+		    		 selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "0",status);
+		    		 map.put("flag", flag);
+		    		 map.put("orderId", orderId);
+		    		 map.put("price", price);
 		    		 map.put("orderStatus", true);
 			    	 map.put("sucess", true);
 	         	}else{
 	         		 map.put("orderStatus", true);
 			    	 map.put("sucess", false);
+			    	 map.put("flag", flag);
 	         	}
 	    		
 	    	 }
@@ -524,6 +529,12 @@ public class shoppingController {
 					}
 					Date beginDate = shopCar.getBeginDate();
 					Date endDate = shopCar.getEndDate();
+					if(date.getTime()>beginDate.getTime()){
+						 flag=false;
+		    	    	 status="-1";
+					}else{
+						status = String.valueOf(shopCar.getStatus());
+					} 
 					String orderId = "";
 					try {
 						orderId = NorthAPIWorker.vulnScanCreateAPI(
@@ -540,19 +551,31 @@ public class shoppingController {
 								shopCar.getOrderId(), orderId);
 						// 更新订单表
 						selfHelpOrderService.updateOrder(shopCar.getOrderId(),
-								orderId, "1");
+								orderId, "1",status);
 
 						map.put("orderStatus", true);
 						map.put("sucess", true);
+						 map.put("flag", flag);
+			    		 map.put("orderId", orderId);
+			    		 map.put("price", price);
 					} else {
 						map.put("orderStatus", true);
 						map.put("sucess", true);
+						map.put("flag", flag);
 					}
 
 				}
 
 			}
-	
+			  //插入数据到order_list
+		    OrderList ol = new OrderList();
+		    //生成订单id
+		    String id = String.valueOf(Random.eightcode());
+		    ol.setId(id);
+		    ol.setCreate_date(new Date());
+		    ol.setOrderId(str);
+		    ol.setPrice(Double.parseDouble(price));
+		    orderListService.insert(ol);
 	      
 	}catch(Exception e){
 		e.printStackTrace();
