@@ -27,6 +27,7 @@ import com.cn.ctbri.common.NorthAPIWorker;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceAPI;
@@ -36,6 +37,7 @@ import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAPIService;
 import com.cn.ctbri.service.IOrderAssetService;
+import com.cn.ctbri.service.IOrderListService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IPriceService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
@@ -86,6 +88,8 @@ public class shoppingController {
     IOrderAPIService orderAPIService;
     @Autowired
     IPriceService priceService;
+    @Autowired
+    IOrderListService orderListService;
     
     private static String SERVER_WEB_ROOT;
     private static String VulnScan_servicePrice;
@@ -396,7 +400,16 @@ public class shoppingController {
 	       }	 
 	     }
 	     
-	     
+	    //插入数据到order_list
+	    OrderList ol = new OrderList();
+	    //生成订单id
+	    String id = String.valueOf(Random.eightcode());
+//		SimpleDateFormat odf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+//		String orderDate = odf.format(new Date());
+	    ol.setId(id);
+	    ol.setCreate_date(new Date());
+	    ol.setOrderId(str);
+	    orderListService.insert(ol);
 	
 		request.setAttribute("orderNum", orderNum);
 		request.setAttribute("shopCount", shopCount);

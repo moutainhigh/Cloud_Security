@@ -46,6 +46,7 @@ import com.cn.ctbri.service.IServiceAPIService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
+import com.cn.ctbri.util.IPCheck;
 import com.cn.ctbri.util.LogonUtils;
 import com.cn.ctbri.util.Mail;
 import com.cn.ctbri.util.MailUtils;
@@ -420,17 +421,26 @@ public class UserController{
 				return;
 			}
 			//如果是企业用户判断IP是否在库存地址段内
-			if(_user.getType()==3){
-				map.put("result", 4);
-				JSONObject JSON = CommonUtil.objectToJson(response, map);
-				try {
-					// 把数据返回到页面
-					CommonUtil.writeToJsp(response, JSON);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				return;
+//			if(_user.getType()==3){
+			String ip = "";
+			if (request.getHeader("x-forwarded-for") == null) {
+				ip = request.getRemoteAddr();
+			}else{
+				ip = request.getHeader("x-forwarded-for");
 			}
+//			ip = "219.142.69.71";
+			String ipStart = _user.getStartIP();
+			String ipEnd = _user.getEndIP();
+				
+//				JSONObject JSON = CommonUtil.objectToJson(response, map);
+//				try {
+//					// 把数据返回到页面
+//					CommonUtil.writeToJsp(response, JSON);
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//				return;
+//			}
 
 			/**记住密码功能*/
 			LogonUtils.remeberMe(request,response,name,password);
@@ -464,14 +474,27 @@ public class UserController{
 			if(request.getSession().getAttribute("indexPage")!=null){
 				int indexPage = (Integer) request.getSession().getAttribute("indexPage");
 				if(indexPage == 1 ){
-					int serviceId = (Integer) request.getSession().getAttribute("serviceId");
-//					return "redirect:/selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
-//					return "redirect:/selfHelpOrderInit.html";
-//					return "redirect:/selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
-					//return "redirect:/selfHelpOrderInit.html";
-					map.put("result", 5);
-					map.put("serviceId", serviceId);
-					map.put("indexPage", indexPage);
+					if(_user.getType()==3){
+						if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
+							map.put("msg", "登录的IP不在IP地址段范围内");
+							map.put("result", 4);
+						}else{
+							int serviceId = (Integer) request.getSession().getAttribute("serviceId");
+							map.put("result", 5);
+							map.put("serviceId", serviceId);
+							map.put("indexPage", indexPage);
+						}
+					}else{
+						int serviceId = (Integer) request.getSession().getAttribute("serviceId");
+//						return "redirect:/selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
+//						return "redirect:/selfHelpOrderInit.html";
+//						return "redirect:/selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
+						//return "redirect:/selfHelpOrderInit.html";
+						map.put("result", 5);
+						map.put("serviceId", serviceId);
+						map.put("indexPage", indexPage);
+					}
+					
 					JSONObject JSON = CommonUtil.objectToJson(response, map);
 					try {
 						// 把数据返回到页面
@@ -481,11 +504,24 @@ public class UserController{
 					}
 					return;
 				}else if(indexPage == 2){
-					int apiId = (Integer) request.getSession().getAttribute("apiId");
-					//return "redirect:/selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
-					map.put("result", 6);
-					map.put("apiId", apiId);
-					map.put("indexPage", indexPage);
+					if(_user.getType()==3){
+						if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
+							map.put("msg", "登录的IP不在IP地址段范围内");
+							map.put("result", 4);
+						}else{
+							int apiId = (Integer) request.getSession().getAttribute("apiId");
+							//return "redirect:/selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
+							map.put("result", 6);
+							map.put("apiId", apiId);
+							map.put("indexPage", indexPage);
+						}
+					}else{
+						int apiId = (Integer) request.getSession().getAttribute("apiId");
+						//return "redirect:/selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
+						map.put("result", 6);
+						map.put("apiId", apiId);
+						map.put("indexPage", indexPage);
+					}
 					JSONObject JSON = CommonUtil.objectToJson(response, map);
 					try {
 						// 把数据返回到页面
@@ -496,7 +532,16 @@ public class UserController{
 					return;
 				}else{
 					//return "redirect:/userCenterUI.html";
-					map.put("result", 7);
+					if(_user.getType()==3){
+						if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
+							map.put("msg", "登录的IP不在IP地址段范围内");
+							map.put("result", 4);
+						}else{
+							map.put("result", 7);
+						}
+					}else{
+						map.put("result", 7);
+					}
 					JSONObject JSON = CommonUtil.objectToJson(response, map);
 					try {
 						// 把数据返回到页面
@@ -508,7 +553,16 @@ public class UserController{
 				}
 			}else{
 				//返回"redirect:/userCenterUI.html"
-				map.put("result", 7);
+				if(_user.getType()==3){
+					if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
+						map.put("msg", "登录的IP不在IP地址段范围内");
+						map.put("result", 4);
+					}else{
+						map.put("result", 7);
+					}
+				}else{
+					map.put("result", 7);
+				}
 				JSONObject JSON = CommonUtil.objectToJson(response, map);
 				try {
 					// 把数据返回到页面

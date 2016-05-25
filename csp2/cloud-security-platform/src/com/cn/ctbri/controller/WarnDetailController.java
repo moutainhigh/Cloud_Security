@@ -147,13 +147,13 @@ public class WarnDetailController {
 	                	map.put("currentUrl", "无");
 	                }
 	            }else{
-	                if(task.getStatus()==3){
-	                	map.put("progress", 100);
-	                	map.put("currentUrl", "无");
-	                }else{
+//	                if(task.getStatus()==3){
+//	                	map.put("progress", 100);
+//	                	map.put("currentUrl", "无");
+//	                }else{
 	                	map.put("progress", 0);
 	                	map.put("currentUrl", "暂无");
-	                }
+//	                }
 	            }
         	}
         }
