@@ -152,7 +152,7 @@ public class shoppingController {
 //       String createDate = DateUtils.dateToString(new Date());
         String scanPeriod = request.getParameter("scanType");
         int serviceId = Integer.parseInt(request.getParameter("serviceId"));
-        String times = request.getParameter("times");
+        String times = request.getParameter("buy_times");
         String price = request.getParameter("price");
         String priceVal="";
         priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
@@ -236,7 +236,7 @@ public class shoppingController {
         String serviceId = request.getParameter("serviceId");
         String createDate = DateUtils.dateToString(new Date());
         String price = request.getParameter("price");
-        String times = request.getParameter("times");
+        String times = request.getParameter("buy_times");
         String priceVal="";
         priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
         Order order = new Order();
