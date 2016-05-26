@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- WAF Config -->
+<WAF_CONFIG>
+	<WAFDeviceManage>
+		<WAFDeviceGroup>
+			<ResourceID>10001</ResourceID>
+			<ResourceURI>/WAF/DEVICE/CTBRI/Group001</ResourceURI>
+			<DeployMode>Single/HA/MUTUAL-HA/BALANCE</DeployMode>
+			<WAFDeviceList>
+				<WAFDevice>			
+					<WAFDevID>30001</WAFDevID>
+					<WAFFactory>nsfocus</WAFFactory>
+					<WAFFactoryName>绿盟</WAFFactoryName>
+					<WAFDevPhyIP>127.0.0.1</WAFDevPhyIP>
+					<WAFDevAPI>
+						<APIAddr>https://219.141.189.189:58442</APIAddr>
+						<APIKey>vmwaf</APIKey>
+						<APIValue>E34A-44A6-E12B-E1C9</APIValue>
+						<APIUserName>admin</APIUserName>
+						<APIPwd>nsfocus</APIPwd>
+					</WAFDevAPI>
+					<WAFDevSyslog identifyType="IP" syslogVer="6.0.5.0" syslogCode="BASE64">
+						<WAFDevTag></WAFDevTag>
+					</WAFDevSyslog>
+				</WAFDevice>
+				<WAFDevice>	
+					<WAFDevID>30002</WAFDevID>
+					<WAFFactory>nsfocus</WAFFactory>
+					<WAFFactoryName>绿盟</WAFFactoryName>
+					<WAFDevPhyIP>172.16.200.210</WAFDevPhyIP>
+					<WAFDevAPI>
+						<APIAddr>https://219.141.189.189:58443</APIAddr>
+						<APIKey>vmwaf</APIKey>
+						<APIValue>9E7B-960F-0DA7-4BC0</APIValue>
+						<APIUserName>admin</APIUserName>
+						<APIPwd>nsfocus</APIPwd>
+					</WAFDevAPI>
+					<WAFDevSyslog identifyType="Tag" syslogVer="6.0.5.0" syslogCode="BASE64">
+						<WAFDevTag>waf_g2</WAFDevTag>
+					</WAFDevSyslog>
+				</WAFDevice>
+			</WAFDeviceList>
+		</WAFDeviceGroup>
+
+	</WAFDeviceManage>
+	<SyslogGroup type="waf" >
+		<Syslog factory="nsfocus" ver="6.0.5.0" regexTag="tag:{1}\S+[ \t]{1}">
+		    <WafLog item="ddos" tag="waf_log_ddos" >
+				<dbopt sql="INSERT INTO t_waf_log_ddos(resource_id,resource_uri,resource_ip,stat_time,alertlevel,event_type,dst_ip,dst_port,action) VALUES(@ResourceID,@ResourceURI,@WAFDevPhyIP,#stat_time,#alertlevel,#event_type,#dst_ip,#dst_port,#action)"/>
+				<match reg="[a-zA-Z_]+:{1}\d{4}-\d{2}-\d{2} {1}\d{2}:\d{2}:\d{2}|[a-zA-Z_]+:{1}\S+">
+					<trans id="1" name="stat_time" express="StringtoDate" />
+				</match>
+            </WafLog>
+ 		    <WafLog item="deface" tag="waf_log_deface" >
+				<dbopt sql="INSERT INTO t_waf_log_deface(resource_id,resource_uri,resource_ip,site_id,protect_id,stat_time,alertlevel,event_type.dst_ip,dst_port,url,reason) VALUES(@ResourceID,@ResourceURI,@WAFDevPhyIP,#site_id,#protect_id,#stat_time,#alertlevel,#event_type.dst_ip,#dst_port,#url,#reason)"/>
+				<match reg="[a-zA-Z_]+:{1}\d{4}-\d{2}-\d{2} {1}\d{2}:\d{2}:\d{2}|[a-zA-Z_]+:{1}\S+">
+					<trans id="1" name="site_id" express="Integer.parseInt" />
+					<trans id="2" name="protect_id" express="Integer.parseInt" />
+					<trans id="3" name="stat_time" express="StringtoDate" />
+				</match>
+			</WafLog>
+		    <WafLog item="arp" tag="waf_log_arp" >
+				<dbopt sql="INSERT INTO t_waf_log_arp(resource_id,resource_uri,resource_ip,stat_time,alertlevel,event_type,attack_type,src_ip,src_mac,dst_ip,dst_mac,status,action,def_ip,def_mac,conflit_mac,count_num) VALUES(@ResourceID,@ResourceURI,@WAFDevPhyIP,#stat_time,#alertlevel,#event_type,#attack_type,#src_ip,#src_mac,#dst_ip,#dst_mac,#status,#action,#def_ip,#def_mac,#conflit_mac,#count_num)"/>
+				<match reg="[a-zA-Z_]+:{1}\d{4}-\d{2}-\d{2} {1}\d{2}:\d{2}:\d{2}|[a-zA-Z_]+:{1}\S+">
+					<trans id="1" name="stat_time" express="StringtoDate" />
+					<trans id="2" name="count_num" express="Integer.parseInt" />
+				</match>
+             </WafLog>
+		    <WafLog item="websec" tag="waf_log_websec" >
+				<dbopt sql="INSERT INTO t_waf_log_websec(resource_id,resource_uri,resource_ip,site_id,protect_id,dst_ip,dst_port,src_ip,src_port,method,domain,uri,alertlevel,event_type,stat_time,policy_id,rule_id,action,block,block_info,http,alertinfo,proxy_info,characters,count_num,protocol_type,wci,wsi) VALUES(@ResourceID,@ResourceURI,@WAFDevPhyIP,#site_id,#protect_id,#dst_ip,#dst_port,#src_ip,#src_port,#method,#domain,#uri,#alertlevel,#event_type,#stat_time,#policy_id,#rule_id,#action,#block,#block_info,#http,#alertinfo,#proxy_info,#characters,#count_num,#protocol_type,#wci,#wsi)"/>
+				<match reg="[a-zA-Z_]+:{1}\d{4}-\d{2}-\d{2} {1}\d{2}:\d{2}:\d{2}|[a-zA-Z_]+:{1}\S+">
+					<trans id="1" name="site_id" express="Integer.parseInt" />
+					<trans id="2" name="protect_id" express="Integer.parseInt" />
+					<trans id="3" name="stat_time" express="StringtoDate" />
+					<trans id="4" name="policy_id" express="Integer.parseInt" />
+					<trans id="5" name="rule_id" express="Integer.parseInt" />
+					<trans id="6" name="http" express="Base64toString" />
+					<trans id="7" name="alertinfo" express="Base64toString" />
+					<trans id="8" name="characters" express="Base64toString" />
+					<trans id="9" name="count_num" express="Integer.parseInt" />
+					<trans id="10" name="wci" express="Base64toString" />
+					<trans id="11" name="wsi" express="Base64toString" />
+				</match>
+			</WafLog>
+		    <WafLog item="webstat" tag="waf_log_wafstat" >
+				<dbopt sql=""/>
+				<match reg="[a-zA-Z_]+:{1}\d{4}-\d{2}-\d{2} {1}\d{2}:\d{2}:\d{2}|[a-zA-Z_]+:{1}\S+">
+				</match>
+            </WafLog>
+		</Syslog>
+	</SyslogGroup>
+	<SyslogServer serverIP="127.0.0.1" port="514" threadPoolSize="10" packetDisposeMode="Store">
+		<Store>
+			<JdbDriver>com.mysql.jdbc.Driver</JdbDriver>
+			<JdbcURL>jdbc:mysql://219.141.189.186:63306/southapi</JdbcURL>
+			<JdbcUser>root</JdbcUser>
+			<JdbcPwd>mssp@ctbri&amp;</JdbcPwd>
+		</Store>
+		<Relay relayServerIP="127.0.0.1" relayPort="514" relayMode="Raw" />
+	</SyslogServer>
+</WAF_CONFIG>
