@@ -368,7 +368,7 @@ public class WafController {
         //用户
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
         Map<String, Object> m = new HashMap<String, Object>();
-        
+        String id ="";
         try {
 			//后台判断资产是否可用，防止恶意篡改资产
 			//资产id
@@ -470,7 +470,7 @@ public class WafController {
 			  //插入数据到order_list
 		    OrderList ol = new OrderList();
 		    //生成订单id
-		    String id = String.valueOf(Random.eightcode());
+		     id = String.valueOf(Random.eightcode());
 		    ol.setId(id);
 		    ol.setCreate_date(new Date());
 		    ol.setOrderId(orderId);
@@ -478,6 +478,7 @@ public class WafController {
 		    orderListService.insert(ol);
 		    
 			m.put("orderStatus", true);
+			m.put("orderId", id);
 			//object转化为Json格式
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
 			try {
