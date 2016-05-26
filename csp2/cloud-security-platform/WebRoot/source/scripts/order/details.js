@@ -18,6 +18,7 @@ $(function(){
     	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
     	var serviceId = $("#serviceId").val();
     	var times = $("#timesHidden").val();
+    	alert("sss"+times);
     	var price = $('.price').children('strong:first').text();
     	if(type==2){
     		scanType="";
@@ -63,7 +64,7 @@ $(function(){
 		     url: "getSession.html", 
 		     dataType: "json", 
 		     success: function(data) {
-		    	 window.location.href="settlement.html?type="+type+"&beginDate="+beginDate+"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&times="+times+"&price="+price;
+		    	 window.location.href="settlement.html?type="+type+"&beginDate="+beginDate+"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&buy_times="+times+"&price="+price;
 		    	 }, 
 		     error: function(data){ 
 		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
@@ -231,7 +232,7 @@ $(function(){
     			   	"serviceId":serviceId,
     			   	"assetIds":assetIds,
     			   	"price":price,
-    			   	"times":times}, 
+    			   	"buy_times":times}, 
 		     dataType: "json", 
 		     success: function(data) {
     			   		 if(data.sucess){

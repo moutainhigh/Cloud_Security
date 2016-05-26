@@ -155,7 +155,7 @@ $(function(){
 	    			   		     url: "getSession.html", 
 	    			   		     dataType: "json", 
 	    			   		     success: function(data) {
-	    			   		    	 window.location.href="buyNowWafUI.html?type="+2+"&beginDate="+beginDate+"&times="+times+"&scanType="+scanType+"&serviceId="+serviceId+
+	    			   		    	 window.location.href="buyNowWafUI.html?type="+2+"&beginDate="+beginDate+"&timeswaf="+times+"&scanType="+scanType+"&serviceId="+serviceId+
 	    			   		    	 "&domainName="+domainName+"&domainId="+domainId+"&price="+price+"&ipArray="+ipVal;
 	    			   		    	 }, 
 	    			   		     error: function(data){ 
@@ -201,7 +201,7 @@ $(function(){
 		    			   	"domainId":domainId,
 			    			"price":price,
 			    			"ipArray":ipArray,
-			    			"times":times},  
+			    			"timeswaf":times},  
 	    		     dataType: "json", 
 	    		     success: function(data) {
 			    				if(data.assetsStatus == true){
