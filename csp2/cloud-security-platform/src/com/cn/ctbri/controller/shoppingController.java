@@ -500,10 +500,19 @@ public class shoppingController {
 	    	    	 end_date = sdf.format(endDate);
 	    	     }
 	    	     String orderId = "";
+	    	     
 	    	     try{
+	    	    	 if(shopCar.getServiceId()!=6){
+		    	    
 	    	    	 orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
 		            			scanDepth, maxPages, stategy, customManu, String.valueOf(shopCar.getServiceId()));
-	    	     } catch (Exception e) {
+	    	    	 
+		    	     }else{
+		    	    	 SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+		     			 String orderDate = odf.format(new Date());
+		     	         orderId = orderDate+String.valueOf(Random.fivecode());
+		    	       }
+	    	    	 } catch (Exception e) {
 	  				e.printStackTrace();
 	  			 }
 	    	   //北向API返回orderId，创建用户订单
@@ -548,10 +557,12 @@ public class shoppingController {
 					} 
 					String orderId = "";
 					try {
-						orderId = NorthAPIWorker.vulnScanCreateAPI(
+					if(shopCar.getServiceId()!=6){
+						  orderId = NorthAPIWorker.vulnScanCreateAPI(
 								Integer.parseInt(shopCar.getAstName()),
 								shopCar.getNum(), shopCar.getServiceId(),
 								globle_user.getApikey(), globle_user.getId());
+						 }
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
