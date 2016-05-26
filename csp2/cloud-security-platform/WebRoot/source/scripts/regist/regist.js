@@ -9,6 +9,10 @@ var checkSendMobile1 = 0;
 var checkEmailActivationCode1 = 0;
 var checkCompany = 0;
 var wait=120;
+window.onload =function(){
+
+	 $('#imageNumber').click(function(){checkNumberImage()});
+}
 function checkName(){
 	var name = $("#regist_name").val();
 	var	pattern	= /^[a-zA-Z0-9_]{4,20}$/;
@@ -477,11 +481,10 @@ function submitForm(){
 
 
 //跟换验证码
-function checkRegisterImage(){
-	var imageNumber = document.getElementById("imageRegisterNumber");
-	imageNumber.src = getRootPath()+"image.jsp?timestamp="+new Date().getTime();
-};
- $('#imageRegisterNumber').click(function(){checkRegisterImage()});
+function checkNumberImage(){
+	var imageNumber = document.getElementById("imageNumber");
+	imageNumber.src = getRootPath()+"/image.jsp?timestamp="+new Date().getTime();
+}
  
  function getRootPath(){
 	    //获取当前网址，如： http://localhost:8083/uimcardprj/share/meun.jsp
