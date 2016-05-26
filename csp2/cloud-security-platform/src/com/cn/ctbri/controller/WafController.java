@@ -65,8 +65,8 @@ public class WafController {
 	@RequestMapping(value="wafDetails.html")
 	public String wafDetails(HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
-		//查找当前用户的资产列表
-		List<Asset> list = assetService.findByUserId(globle_user.getId());
+		//获取服务对象资产
+	    List<Asset> list = selfHelpOrderService.findServiceAsset(globle_user.getId());
 		String hostnameRegex ="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
 		boolean flag=false;
 		List assList = new ArrayList();
