@@ -82,6 +82,10 @@ public class NsfocusWAFAdapter {
 		return getDeviceById(resourceId, deviceId).createVirtSite(jsonObject);
 	}
 	
+	public String alterVSite(int resourceId, int deviceId,JSONObject jsonObject) {
+		return getDeviceById(resourceId, deviceId).alterVirtSite(jsonObject);
+	}
+	
 	public String postIpToEth(int resourceId, int deviceId,JSONObject jsonObject) {
 		return getDeviceById(resourceId, deviceId).postIpToEth(jsonObject);
 	}

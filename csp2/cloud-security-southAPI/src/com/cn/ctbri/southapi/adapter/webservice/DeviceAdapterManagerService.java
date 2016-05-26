@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -241,6 +242,16 @@ public class DeviceAdapterManagerService {
 		int resourceId = Integer.parseInt(jsonObject.getString("resourceId"));
 		int deviceId = Integer.parseInt(jsonObject.getString("deviceId"));
 		return deviceAdpaterManager.createVSite(resourceId, deviceId, jsonObject);
+	}
+	
+	@PUT
+	@Path("/alterVirtualSite")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String alterVirtualSite(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		int resourceId = Integer.parseInt(jsonObject.getString("resourceId"));
+		int deviceId = Integer.parseInt(jsonObject.getString("deviceId"));
+		return deviceAdpaterManager.alterVSite(resourceId, deviceId, jsonObject);
 	}
 
 }

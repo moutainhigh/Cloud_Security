@@ -109,7 +109,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	private String putmethod(String url, String jsonString) {
 		WebResource service = createBasicWebResource(url);
 		Builder builder = service.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
-		String response = builder.put(String.class);
+		String response = builder.put(String.class,jsonString);
 		return response;
 	}
 	
@@ -224,7 +224,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		if (jsonObject.get("port")!=null) tempJsonObject.put("port", jsonObject.getString("port"));
 		if (jsonObject.get("type")!=null){
 			tempJsonObject.put("type", jsonObject.getString("type"));
-			if ("1".equals(jsonObject.getString("type")!=null&&jsonObject.get("cert")!=null)) {
+			if ("1".equals(jsonObject.getString("type"))&&jsonObject.get("cert")!=null) {
 				tempJsonObject.put("cert", jsonObject.getString("cert"));
 			}
 		}
@@ -234,6 +234,25 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		String createSiteString = postOperation(nsfocusWafUrl+REST_URI_V1+"/sites",createSiteJsonObject.toString());
 		return createSiteString;
 	}
+	public String alterVirtSite(JSONObject jsonObject) {
+		if(null==jsonObject.get("vSiteId")||"".equals(jsonObject.getString("vSiteId"))
+		||null==jsonObject.get("parent")||"".equals(jsonObject.getString("parent"))){
+			JSONObject errJsonObject = new JSONObject();
+			errJsonObject.put("status", "failed");
+			errJsonObject.put("reason", "Site ip is null!!!");
+			return errJsonObject.toString();
+		}
+		JSONObject tempJsonObject = new JSONObject();
+		if(jsonObject.get("domain")!=null&&!jsonObject.getString("domain").equals("")) tempJsonObject.put("domain", jsonObject.getString("domain"));
+		if(jsonObject.get("name")!=null&&!jsonObject.getString("name").equals("")) tempJsonObject.put("name", jsonObject.getString("name"));
+		tempJsonObject.put("parent", jsonObject.getString("parent"));
+		JSONObject alterVirtSiteJsonObject = new JSONObject();
+		alterVirtSiteJsonObject.put(jsonObject.getString("vSiteId"), tempJsonObject);
+		System.out.println(">>>>>"+alterVirtSiteJsonObject.toString());
+		String alterString = putOperation(nsfocusWafUrl+REST_URI_V1+"/sites/protect/virts", alterVirtSiteJsonObject.toString());
+		return alterString;
+	}
+	
 	
 	public String alterSite(String siteid, String name, String ip, String port, String cert, String type) {
 		String jsonString = "{\""+siteid+"\":{"+
@@ -267,7 +286,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		if (jsonObject.get("server")!=null) {
 			JSONArray getJsonArray = JSONArray.fromObject(jsonObject.getString("server"));
 			JSONArray putJsonArray = new JSONArray();
-			for (Iterator iterator = getJsonArray.iterator(); iterator.hasNext();) {
+			for (Iterator<?> iterator = getJsonArray.iterator(); iterator.hasNext();) {
 				JSONObject object = (JSONObject) iterator.next();
 				if(null==object.get("ip")||"".equals(object.getString("ip"))
 				||null==object.get("port")||"".equals(object.getString("port"))){

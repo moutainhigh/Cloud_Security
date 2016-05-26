@@ -714,7 +714,10 @@ public class DeviceAdpaterManager {
 		if("".equals(resourceId)||"".equals(deviceId))  return errorWAFDeviceInfo(resourceId, deviceId);
 		return nsfocusWAFAdapter.createVSite(resourceId, deviceId, jsonObject);
 	}
-	
+	public String alterVSite(int resourceId, int deviceId, JSONObject jsonObject) {
+		if("".equals(resourceId)||"".equals(deviceId))  return errorWAFDeviceInfo(resourceId, deviceId);
+		return nsfocusWAFAdapter.alterVSite(resourceId, deviceId, jsonObject);
+	}
 	
 	public String postIpToEth(int resourceId, int deviceId,JSONObject jsonObject) {
 		if("".equals(resourceId)||"".equals(deviceId))  return errorWAFDeviceInfo(resourceId, deviceId);
