@@ -128,7 +128,7 @@ $(document).ready(function(){
                         	<label class="fl" style="top:4px;">数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量</label>
                             <div class="fl" style="width:546px;">
                             	<div class="btnBoxs clearfix">
-                                    <input type="text" value="1" class="text text_box fl" id="num">
+                                    <input type="text" value="1" class="text text_box fl" id="num" onKeyUp="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
                                     <span class="texts fl">
                                     	<em class="add" style="border-bottom:#e5e5e5 solid 1px;"><img src="${ctx}/source/images/portal/-.png" alt=""></em>
                                         <em class="min"><img src="${ctx}/source/images/portal/sum.png" alt=""></em>
