@@ -432,6 +432,7 @@ public class shoppingController {
 	public void shopSettlement(HttpServletResponse response,HttpServletRequest request){
 		 Map<String, Object> map = new HashMap<String, Object>();  
 		 String id ="";
+		 String orderVal="";
 	try{
 		 User globle_user = (User) request.getSession().getAttribute("globle_user");
 		 Date date = new Date();
@@ -507,7 +508,7 @@ public class shoppingController {
 		    	    
 	    	    	 orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
 		            			scanDepth, maxPages, stategy, customManu, String.valueOf(shopCar.getServiceId()));
-	    	    	 
+	    	    	 orderVal=orderVal+",";
 		    	     }else{
 		    	    	 SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
 		     			 String orderDate = odf.format(new Date());
@@ -596,7 +597,7 @@ public class shoppingController {
 		    id = String.valueOf(Random.eightcode());
 		    ol.setId(id);
 		    ol.setCreate_date(new Date());
-		    ol.setOrderId(str);
+		    ol.setOrderId(orderVal.substring(0,orderVal.length()-1));
 		    ol.setPrice(Double.parseDouble(price));
 		    orderListService.insert(ol);
 	      
