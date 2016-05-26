@@ -12,11 +12,11 @@
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
 <link href="${ctx}/source/css/core.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="${ctx}/source/css/login.css">
-<script src="${ctx}/source/common/js/jquery-1.7.1.min.js"></script>
+<script src="${ctx}/source/scripts/common/jquery-1.7.1.min.js"></script>
 <script src="${ctx}/source/scripts/common/jquery.js"></script>
-<script src="${ctx}/source/common/js/index.js"></script>
-<script src="${ctx}/source/common/js/popBox.js"></script>
-<script src="${ctx}/source/common/js/slidelf.js"></script>
+<script src="${ctx}/source/scripts/common/index.js"></script>
+<script src="${ctx}/source/scripts/common/popBox.js"></script>
+<script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/forgetPass.js"></script>
 </head>
