@@ -24,12 +24,14 @@ import com.cn.ctbri.entity.APICount;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAPI;
+import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAPIService;
 import com.cn.ctbri.service.IOrderAssetService;
+import com.cn.ctbri.service.IOrderListService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
@@ -71,7 +73,8 @@ public class shoppingAPIController {
     IServiceAPIService serviceAPIService;
     @Autowired
     IOrderAPIService orderAPIService;
-	
+    @Autowired
+    IOrderListService orderListService;
 	/**
 	 * 功能描述： 购买API检测服务
 	 * 参数描述：  无
@@ -212,7 +215,7 @@ public class shoppingAPIController {
         //套餐类型
         int type = Integer.parseInt(request.getParameter("type"));
         Map<String, Object> m = new HashMap<String, Object>();
-        
+        String price = request.getParameter("price");
         String orderId = "";
         //创建订单（任务），调北向api，modify by tangxr 2015-12-21
     	try {
@@ -245,6 +248,7 @@ public class shoppingAPIController {
             order.setContactId(linkmanId);
             order.setStatus(1);//完成
             order.setPayFlag(1);
+            order.setPrice(Double.parseDouble(price));
             order.setIsAPI(1);//api订单
             selfHelpOrderService.insertOrder(order);
             
@@ -269,6 +273,15 @@ public class shoppingAPIController {
             count.setApiId(apiId);
             orderAPIService.insertOrUpdateCount(count);
             
+            //插入数据到order_list
+		    OrderList ol = new OrderList();
+		    //生成订单id
+		    String  id = String.valueOf(Random.eightcode());
+		    ol.setId(id);
+		    ol.setCreate_date(new Date());
+		    ol.setOrderId(orderId);
+		    ol.setPrice(Double.parseDouble(price));
+		    orderListService.insert(ol);
             m.put("message", true);
     	}else{
     		m.put("message", "系统异常，暂时不能购买api，请稍后购买~~");
@@ -316,6 +329,7 @@ public class shoppingAPIController {
 	        int num = Integer.parseInt(request.getParameter("num"));
 	        //套餐类型
 	        int type = Integer.parseInt(request.getParameter("type"));
+	        String price = request.getParameter("price");
 	        SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
 			String orderDate = odf.format(new Date());
 	        String orderId = String.valueOf(Random.fivecode())+orderDate;
@@ -328,7 +342,7 @@ public class shoppingAPIController {
             order.setServiceId(apiId);
             order.setCreate_date(new Date());
             order.setUserId(globle_user.getId());
-        
+            order.setPrice(Double.parseDouble(price));
             order.setStatus(1);//完成
             order.setPayFlag(0);
             order.setIsAPI(1);//api订单
