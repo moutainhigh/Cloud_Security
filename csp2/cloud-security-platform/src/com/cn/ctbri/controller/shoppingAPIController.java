@@ -1,6 +1,7 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -122,6 +123,10 @@ public class shoppingAPIController {
         int time = Integer.parseInt(request.getParameter("time"));
         int num = Integer.parseInt(request.getParameter("num"));
         int type = Integer.parseInt(request.getParameter("type"));
+        DecimalFormat df = new DecimalFormat("0.00");
+       String price = request.getParameter("price");
+       String priceVal="";
+       priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
         //根据id查询serviceAPI, add by tangxr 2016-3-28
 	    ServiceAPI serviceAPI = serviceAPIService.findById(apiId);
 	    
@@ -129,6 +134,7 @@ public class shoppingAPIController {
 	    request.setAttribute("time", time);
 	    request.setAttribute("num", num);
 	    request.setAttribute("type", type);
+	    request.setAttribute("allPrice", df.format(Double.parseDouble(priceVal)));
         request.setAttribute("apiId", apiId);
         request.setAttribute("serviceAPI", serviceAPI);
         request.setAttribute("mark", "api");//api标记
