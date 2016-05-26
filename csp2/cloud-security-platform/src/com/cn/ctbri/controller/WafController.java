@@ -24,10 +24,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAssetService;
+import com.cn.ctbri.service.IOrderListService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.util.CommonUtil;
@@ -50,7 +52,10 @@ public class WafController {
     @Autowired
 	IOrderAssetService orderAssetService;
     @Autowired
-	 ISelfHelpOrderService selfHelpOrderService;
+	ISelfHelpOrderService selfHelpOrderService;
+    @Autowired
+    IOrderListService orderListService;
+    
 	 /**
 	 * 功能描述：购买waf服务
 	 * 参数描述：  无
@@ -388,9 +393,12 @@ public class WafController {
 			    return;
 			}
 			
-			//随机生成订单编号
-			String orderId = String.valueOf(Random.code());
-			String scanType = request.getParameter("scanType");
+			//生成订单id，当前日期加5位随机数
+			SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+			String orderDate = odf.format(new Date());
+	        String orderId = orderDate+String.valueOf(Random.fivecode());
+
+	        String scanType = request.getParameter("scanType");
 			String beginDate = request.getParameter("beginDate");
 			String endDate = request.getParameter("endDate");
 			String createDate = DateUtils.dateToString(new Date());
@@ -458,6 +466,17 @@ public class WafController {
 			}
 			orderAsset.setIpArray(ipArray);
 			orderAssetService.insertOrderAsset(orderAsset);
+			
+			  //插入数据到order_list
+		    OrderList ol = new OrderList();
+		    //生成订单id
+		    String id = String.valueOf(Random.eightcode());
+		    ol.setId(id);
+		    ol.setCreate_date(new Date());
+		    ol.setOrderId(orderId);
+		    ol.setPrice(Double.parseDouble(price));
+		    orderListService.insert(ol);
+		    
 			m.put("orderStatus", true);
 			//object转化为Json格式
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
