@@ -145,6 +145,7 @@ $(function(){
     	var time = $('#time').val();//次数
     	var num = $('#num').val();//数量
     	var type = $('#type').val();//套餐类型
+    	 var price = $('#priceHidden').val();
 		var result = window.confirm("确定要提交订单吗？");
     	if(result){
     		$.ajax({ type: "POST",
@@ -152,6 +153,7 @@ $(function(){
 	    		     url: "saveOrderAPI.html", 
 	    		     data: {"apiId":apiId,
 		    			   	"time":time,
+		    			   	"price":price,
 		    			   	"num":num,
 		    			   	"type":type},  
 	    		     dataType: "json",
