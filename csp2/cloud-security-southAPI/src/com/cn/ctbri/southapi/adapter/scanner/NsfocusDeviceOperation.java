@@ -311,7 +311,7 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 			taskInfo.setVulCount(vulCount);
 			taskInfo.setRiskpoint(riskpoint);
 			taskInfo.setVulInfos(vulInfos);
-		} catch (DocumentException|ParseException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
