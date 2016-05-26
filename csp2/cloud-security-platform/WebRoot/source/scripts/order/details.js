@@ -387,7 +387,10 @@ function tasknum_verification(){
     //计算长期价格
     function calPriceLong(obj,typeDefault){
     	var serviceId = $("#serviceIdHidden").val();
+    	var beginDate=$('#beginDate').val();
+    	var endDate=$('#endDate').val();
     	var type = null;
+    	
     	if(typeDefault!=null){
     		type = typeDefault;
     	}else if(obj!=null){
@@ -396,35 +399,35 @@ function tasknum_verification(){
     		type = $(".clickTime").val();
     	}
     	
+    	//不是默认进入，需要判断时间
+    	if(!(obj==null&&typeDefault!=null)){
+        	if(beginDate==""||beginDate==null||endDate==""||endDate==null){
+    			return;
+    		}
+        	if(beginDate>=endDate){
+         		alert("开始时间不能大于结束时间!");
+         		return;
+         	}
+    	}
 
-    	var beginDate=$('#beginDate').val();
-    	var endDate=$('#endDate').val();
+		$.ajax({ type: "POST",
+	     async: false, 
+	     url: "calPrice.html", 
+	     data:{"serviceId":serviceId,"type":type,"beginDate":beginDate,"endDate":endDate},
+	     dataType: "json",
+	     success: function(data) {
+   			if(data.success){
+ 		    	  var price = data.price;
+ 		    	  $("#price").html("¥"+price);
+ 		    	  $("#timesHidden").val(data.times);
+   			}
 
-    	if(beginDate==""||beginDate==null||endDate==""||endDate==null){
-			return;
-		}
-	    if(beginDate>=endDate){
-    		alert("开始时间不能大于结束时间!");
-    	}else{
-    		$.ajax({ type: "POST",
-   		     async: false, 
-   		     url: "calPrice.html", 
-   		     data:{"serviceId":serviceId,"type":type,"beginDate":beginDate,"endDate":endDate},
-   		     dataType: "json",
-   		     success: function(data) {
-       			if(data.success){
-     		    	  var price = data.price;
-     		    	  $("#price").html("¥"+price);
-     		    	  $("#timesHidden").val(data.times);
-       			}
+	    	 }, 
+	     error: function(data){ 
+	    		 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+		    		 window.location.href = "loginUI.html"; } 
+		    	 else { window.location.href = "loginUI.html"; } 
+	    	} 
+   	});
 
-   		    	 }, 
-   		     error: function(data){ 
-   		    		 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-   			    		 window.location.href = "loginUI.html"; } 
-   			    	 else { window.location.href = "loginUI.html"; } 
-   		    	} 
-       	});
-    	
-    }
 }

@@ -27,7 +27,12 @@
 							<c:if test="${status.count != 1}">
 							  <li>
 							</c:if>
-									<a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">${list.name }</a>
+							<c:if test="${status.index < 5}">
+								<a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">${list.name }</a>
+							</c:if>
+							<c:if test="${status.index >= 5}">
+								<a href="${ctx}/wafDetails.html?serviceId=${list.id }">${list.name }</a>
+							</c:if>
 								</li>
 						</c:forEach>
 					</ol>

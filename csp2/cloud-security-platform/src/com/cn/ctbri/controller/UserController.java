@@ -1406,7 +1406,7 @@ public class UserController{
 	@RequestMapping("/category.html")
 	public String getCategory(Model m){
 		//获取服务类型
-        List<Serv> servList = selfHelpOrderService.findService();
+        List servList = selfHelpOrderService.findService();
         //获取服务API类型
         List<ServiceAPI> servAPIList = serviceAPIService.findServiceAPI();
         m.addAttribute("servList", servList);

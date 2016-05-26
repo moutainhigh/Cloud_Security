@@ -135,10 +135,15 @@ function showUnreadNews()
 		                                    	${list.remarks }
 		                                    </span>
 		                                    <div class="purchase">
+		                                    <c:if test="${!empty list.price}">
 		                                    	<strong style="text-decoration:lightblue;">
 		                                    	¥<fmt:formatNumber type="number" value="${list.price }" maxFractionDigits="2" minFractionDigits="2"/>
 		                                    	</strong>
-		                                    	<!--<strong><em style="font-family:Arial Regular;font-size:22px;">¥${list.price}</em></strong>-->
+		                                    </c:if>
+		                                    <c:if test="${empty list.price}">
+		                                    	<strong>¥0.00</strong>
+		                                   	 	<strong><em style="font-family:Arial Regular;font-size:22px;">¥99.00</em></strong>
+		                                    </c:if>
 		                                    	<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1" class="btn">购买</a>
 		                                    </div>
 		                               

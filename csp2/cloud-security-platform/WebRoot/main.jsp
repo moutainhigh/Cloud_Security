@@ -110,9 +110,16 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                     <p><img src="${ctx}/source/images/portal/vulnScan.png" alt=""></p>
                                     <h4>${list.name }</h4>
                                     <div class="purchase">
-                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">
-                                    	¥<fmt:formatNumber type="number" value="${list.price }" maxFractionDigits="2" minFractionDigits="2"/>
-                                    	</strong>
+                                    	<c:if test="${empty list.price}">
+	                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">¥0.00</strong>
+	                                    	<strong style="text-decoration:line-through;color: #d00000;"><em style="font-family: Arial Regular;font-size: 16px;">¥99.00</em></strong>
+	                                    </c:if>
+                                    	<c:if test="${!empty list.price}">
+	                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">
+	                                    	¥<fmt:formatNumber type="number" value="${list.price }" maxFractionDigits="2" minFractionDigits="2"/>
+	                                    	</strong>
+                                    	</c:if>
+                                    	
                                     	<!--<strong style="text-decoration:line-through;color: #d00000;"><em style="font-family: Arial Regular;font-size: 16px;">¥99</em></strong>
                                     --></div>
                                 </a>
