@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -134,7 +135,9 @@ function showUnreadNews()
 		                                    	${list.remarks }
 		                                    </span>
 		                                    <div class="purchase">
-		                                    	<strong style="text-decoration:lightblue;">¥${list.price}</strong>
+		                                    	<strong style="text-decoration:lightblue;">
+		                                    	¥<fmt:formatNumber type="number" value="${list.price }" maxFractionDigits="2" minFractionDigits="2"/>
+		                                    	</strong>
 		                                    	<!--<strong><em style="font-family:Arial Regular;font-size:22px;">¥${list.price}</em></strong>-->
 		                                    	<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1" class="btn">购买</a>
 		                                    </div>
