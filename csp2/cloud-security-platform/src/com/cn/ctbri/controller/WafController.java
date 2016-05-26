@@ -316,7 +316,7 @@ public class WafController {
         String scanType = request.getParameter("scanType");
         int serviceId = Integer.parseInt(request.getParameter("serviceId"));
         double price = Double.parseDouble(request.getParameter("price"));
-        int times = Integer.parseInt(request.getParameter("times"));
+        int times = Integer.parseInt(request.getParameter("timeswaf"));
         String ipArray = request.getParameter("ipArray");
         //根据id查询service
 	    Serv service = servService.findById(serviceId);
@@ -407,7 +407,7 @@ public class WafController {
 			String createDate = DateUtils.dateToString(new Date());
 			String serviceId = request.getParameter("serviceId");
 			String ipArray = request.getParameter("ipArray");
-			String times = request.getParameter("times");
+			String times = request.getParameter("timeswaf");
 			String price = request.getParameter("price");
      				
 			//新增订单
