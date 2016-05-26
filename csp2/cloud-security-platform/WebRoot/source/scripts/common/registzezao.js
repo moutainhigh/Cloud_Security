@@ -43,12 +43,17 @@ $(function(){
 		
 		$("#agree").click(function(){
 			$("#agreeId").val(1);
-			$("#ck").attr("checked", true);
+			$("#ck").prop("checked", "checked");
 			oMark2.style.display ="none";
 	        oLogin2.style.display ="none";
 		});
 
-		
+		$("#not_agree").click(function(){
+			$("#agreeId").val(0);
+			$("#ck").prop("checked", false);
+			oMark2.style.display ="none";
+	        oLogin2.style.display ="none";
+		});
 		
 })
 

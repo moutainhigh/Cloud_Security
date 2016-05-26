@@ -369,7 +369,7 @@ function submitForm(){
 	var verification_code = $("#verification_code").val();
 	var checkNumber = $("#checkNumber1").val();
 	var agreeId = $("#agreeId").val();//同意协议
-	alert(agreeId);
+
 	if(null==name||""==name||p1==""||p1==null||p2==""||p2==null||mobile==""||mobile==null||verification_code==""||verification_code==null||checkNumber==""||checkNumber==null){
 		if(null==name||""==name){
 			$("#regist_name_flag").attr("class","error");
@@ -499,7 +499,5 @@ function checkNumberImage(){
 	    return(localhostPaht+projectName);
 	}
  
- function notagree(){
-    window.location.href = "loginUI.html";
-}
+
 	
