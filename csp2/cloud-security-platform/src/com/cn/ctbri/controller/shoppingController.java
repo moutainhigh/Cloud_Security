@@ -396,6 +396,7 @@ public class shoppingController {
 	    	  }
 	    	  list = selfHelpOrderService.findBuyShopList(orderIdList);
 			}
+	      DecimalFormat df = new DecimalFormat("0.00");
 	      double shopCount=0.0;
 	     if(list!=null&&list.size()>0){
 	       for(int i=0;i<list.size();i++){
@@ -413,7 +414,7 @@ public class shoppingController {
 	  
 	
 		request.setAttribute("orderNum", orderNum);
-		request.setAttribute("shopCount", shopCount);
+		request.setAttribute("shopCount", df.format(shopCount));
 		request.setAttribute("shopList", shopList);
 		request.setAttribute("shopAPIList", shopAPIList);
 		 request.setAttribute("user", globle_user);
@@ -439,7 +440,7 @@ public class shoppingController {
 		 boolean flag=true;
 		 String status="";
 		String str = request.getParameter("orderIds");
-		
+		   DecimalFormat df = new DecimalFormat("0.00");
 		//总价格
 		String price = request.getParameter("countPrice");
 	    String scanType = "";//扫描方式（正常、快速、全量）
@@ -526,7 +527,7 @@ public class shoppingController {
 		    		 selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "0",status);
 		    		 map.put("flag", flag);
 		    		 map.put("orderId", orderId);
-		    		 map.put("price", price);
+		    		 map.put("price", df.format(Double.parseDouble(price)));
 		    		 map.put("orderStatus", true);
 			    	 map.put("sucess", true);
 	         	}else{
@@ -581,7 +582,7 @@ public class shoppingController {
 						map.put("sucess", true);
 						 map.put("flag", flag);
 			    		 map.put("orderId", orderId);
-			    		 map.put("price", price);
+			    		 map.put("price", df.format(Double.parseDouble(price)));
 					} else {
 						map.put("orderStatus", true);
 						map.put("sucess", true);
