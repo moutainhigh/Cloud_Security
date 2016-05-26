@@ -260,7 +260,7 @@
         <p class="help_detail" style="text-align:center;">本条款的更新修改及最终解释权归中国电信股份有限公司北京研究院所有。</p>
       </div>
       <input type="hidden" name="agreeId" id="agreeId"/>
-    <div style="margin-top:35px;text-align:center;"><a href="javascript:void(0)"><img src="${ctx}/source/images/agree.png" id="agree"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="${ctx}/source/images/notagree.png" onclick="notagree()"/></a></div>
+    <div style="margin-top:35px;text-align:center;"><a href="javascript:void(0)"><img src="${ctx}/source/images/agree.png" id="agree"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="${ctx}/source/images/notagree.png" id="not_agree"/></a></div>
   </div>
   </form>
 </div>
