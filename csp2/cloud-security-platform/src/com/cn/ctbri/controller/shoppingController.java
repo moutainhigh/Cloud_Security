@@ -429,13 +429,15 @@ public class shoppingController {
 	 */
 	@RequestMapping(value="shopSettlement.html")
 	public void shopSettlement(HttpServletResponse response,HttpServletRequest request){
-		 Map<String, Object> map = new HashMap<String, Object>();
+		 Map<String, Object> map = new HashMap<String, Object>();  
+		 String id ="";
 	try{
 		 User globle_user = (User) request.getSession().getAttribute("globle_user");
 		 Date date = new Date();
 		 boolean flag=true;
 		 String status="";
 		String str = request.getParameter("orderIds");
+		
 		//总价格
 		String price = request.getParameter("countPrice");
 	    String scanType = "";//扫描方式（正常、快速、全量）
@@ -579,7 +581,7 @@ public class shoppingController {
 			  //插入数据到order_list
 		    OrderList ol = new OrderList();
 		    //生成订单id
-		    String id = String.valueOf(Random.eightcode());
+		    id = String.valueOf(Random.eightcode());
 		    ol.setId(id);
 		    ol.setCreate_date(new Date());
 		    ol.setOrderId(str);
@@ -594,6 +596,7 @@ public class shoppingController {
 
     //object转化为Json格式
        JSONObject JSON = CommonUtil.objectToJson(response, map);
+       map.put("orderId", id);
         // 把数据返回到页面
            try {
 			CommonUtil.writeToJsp(response, JSON);
