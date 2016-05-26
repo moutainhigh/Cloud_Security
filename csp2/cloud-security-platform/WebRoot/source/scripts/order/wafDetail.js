@@ -204,18 +204,19 @@ $(function(){
 			    			"times":times},  
 	    		     dataType: "json", 
 	    		     success: function(data) {
-	    		    	 if(data.timeCompare == true){
-	    		    		 if(data.assetsStatus == false && data.orderStatus == true){
-	    		    			 alert("完成下单，去订单跟踪查看吧~~"); 
-	    		    			 window.location.href = "orderTrackInit.html";
-		    		    	 }else{
-		    		    		 alert("订单资产未验证,请重新购买!");
-		    		     		 return;
-		    		    	 }
-	    		    	 }else{
-	    		    		 alert("订单超时,请重新购买!");
-	    		     		 return;
-	    		    	 }
+			    				if(data.assetsStatus == true){
+			    					alert("订单资产未验证,请重新购买!");
+			    		     		return;
+			    				}else if(data.timeCompare == true && data.orderStatus == true){
+			    					 alert("完成下单，去订单跟踪查看吧~~"); 
+		    		    			 window.location.href = "orderTrackInit.html";
+			    				}else if(data.timeCompare == false){
+			    					 alert("订单超时,请重新购买!");
+			    		     		 return;
+			    				}else{
+			    					alert("订单异常,请重新购买!");
+			    		     		return;
+			    				}
 	    		    	 }, 
 	    		     error: function(data){ 
 	    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
