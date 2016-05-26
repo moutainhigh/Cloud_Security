@@ -244,7 +244,7 @@ public class WafController {
         String orderId = String.valueOf(Random.fivecode())+orderDate;
         Date  create_date=sdf.parse(createDate); 
         order.setId(orderId);
-        order.setType(Integer.parseInt(orderType));
+       
         if(beginDate!=null && !beginDate.equals("")){
             begin_date=sdf.parse(beginDate); 
         }
@@ -258,6 +258,9 @@ public class WafController {
         order.setTask_date(begin_date);
 		order.setUserId(globle_user.getId());
 		order.setPrice(Double.parseDouble(priceVal));
+		order.setType(1);
+		order.setScan_type(Integer.parseInt(orderType));
+		order.setIsAPI(2);
         order.setPayFlag(0);//未支付
         selfHelpOrderService.insertOrder(order);
 
