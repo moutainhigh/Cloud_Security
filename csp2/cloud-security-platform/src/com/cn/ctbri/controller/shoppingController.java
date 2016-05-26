@@ -169,8 +169,6 @@ public class shoppingController {
         	priceD = assetArray.length*Double.parseDouble(priceVal);
         }
 
-        DecimalFormat df = new DecimalFormat("#.00");
-
         //联系人信息
 //       String linkname = new String(request.getParameter("linkname").getBytes("ISO-8859-1"),"UTF-8");
 //       String phone = request.getParameter("phone");
@@ -205,7 +203,10 @@ public class shoppingController {
         request.setAttribute("serviceId", serviceId);
         request.setAttribute("service", service);
         request.setAttribute("mark", "web");//web服务标记
+        
+        DecimalFormat df = new DecimalFormat("0.00");
         request.setAttribute("allPrice", df.format(priceD));
+        
         String result = "/source/page/details/settlement";
         return result;
 	}
@@ -278,7 +279,7 @@ public class shoppingController {
         }else{
         	priceD = assetArray.length*Double.parseDouble(priceVal);
         }
-        DecimalFormat df = new DecimalFormat("#.00");
+        DecimalFormat df = new DecimalFormat("0.00");
         String temp = df.format(priceD);
         order.setPrice(Double.parseDouble(temp));
         order.setPayFlag(0);//未支付
@@ -773,11 +774,16 @@ public class shoppingController {
 	        //根据serviceid查询价格列表
 			List<Price> priceList = priceService.findPriceByServiceId(serviceId);
 	        //长期
-	        if(type!=null){	  
-	            Date bDate=DateUtils.stringToDateNYRSFM(beginDate);
-	            Date eDate=DateUtils.stringToDateNYRSFM(endDate);  
-	            //时间之间的毫秒数
-	            long ms = DateUtils.getMsByDays(bDate, eDate);
+	        if(type!=null){	
+	        	long ms = 0;//时间之间的毫秒数
+	        	Date bDate = null;
+	        	Date eDate = null;
+	        	if(beginDate!=null&&beginDate!=""&endDate!=null&&endDate!=""){
+	        		bDate = DateUtils.stringToDateNYRSFM(beginDate);
+		            eDate = DateUtils.stringToDateNYRSFM(endDate);  
+		            ms = DateUtils.getMsByDays(bDate, eDate);
+	        	}
+	            
 	            int typeInt = Integer.parseInt(type);
 	            
 		        switch(serviceId){
@@ -796,9 +802,6 @@ public class shoppingController {
 		        			ms = DateUtils.getMsByDays(bDate, eDate);
 		        			times++;
 		        		}
-/*		        		long perMonth = 1000*3600*24;
-		        		perMonth = perMonth*30;
-		        		times = (int)(ms/perMonth);*/
 		        	}
 		        	break;
 		        	
@@ -813,30 +816,38 @@ public class shoppingController {
 		        	
 		        case 3://一天
 		        case 4:
-		        	int oneDay = 1000*3600*24;
-		        	if(ms%oneDay > 0){
-		        		times = (int)(ms/oneDay) + 1;
+		        	if(ms==0){
+		        		times = 2;//用于显示默认价格
 		        	}else{
-			        	times = (int)(ms/oneDay);
+			        	int oneDay = 1000*3600*24;
+			        	if(ms%oneDay > 0){
+			        		times = (int)(ms/oneDay) + 1;
+			        	}else{
+				        	times = (int)(ms/oneDay);
+			        	}
 		        	}
 		        	break;
 		        	
 		        case 5:
-		        	if(typeInt==3){//一小时
-			        	int oneHour = 1000*3600;
-			        	if(ms%oneHour > 0){
-			        		times = (int)(ms/oneHour) + 1;
-			        	}else{
-			        		times = (int)(ms/oneHour);
+		        	if(ms==0){
+		        		times = 2;//用于显示默认价格
+		        	}else{
+		        		if(typeInt==3){//一小时
+				        	int oneHour = 1000*3600;
+				        	if(ms%oneHour > 0){
+				        		times = (int)(ms/oneHour) + 1;
+				        	}else{
+				        		times = (int)(ms/oneHour);
+				        	}
+			        	}else{//2小时
+			        		int twoHour = 1000*3600*2;
+			        		if(ms%twoHour > 0){
+			        			times = (int)(ms/twoHour) + 1;
+			        		}else{
+			        			times = (int)(ms/twoHour);
+			        		}
 			        	}
-		        	}else{//2小时
-		        		int twoHour = 1000*3600*2;
-		        		if(ms%twoHour > 0){
-		        			times = (int)(ms/twoHour) + 1;
-		        		}else{
-		        			times = (int)(ms/twoHour);
-		        		}
-		        	}
+		        	}		        	
 		        	break;
 		        }
 		        if(priceList!=null && priceList.size()>0){
@@ -856,7 +867,9 @@ public class shoppingController {
 				        }
 
 				    }
-		        }	    		
+		        }else{
+		        	calPrice = 0;
+		        }
 	        }else{//单次
 	        	times = 1;
 	        	if(priceList!=null && priceList.size()>0){
@@ -868,10 +881,13 @@ public class shoppingController {
 				        	break;
 			        	}
 				    }
+	        	}else{
+	        		calPrice = 0;
 	        	}
 			}
 
-			DecimalFormat df = new DecimalFormat("#.00");  
+			DecimalFormat df = new DecimalFormat("0.00"); 
+
 			m.put("success", true);
 			m.put("price", df.format(calPrice));
 			m.put("times", times);
