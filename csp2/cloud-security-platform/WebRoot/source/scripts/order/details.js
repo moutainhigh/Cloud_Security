@@ -1,11 +1,26 @@
+//默认选中资产数
+var assetCount = 0;
+//默认服务频率
+var servType = 0;
 $(function(){
-	//默认类型
-	var indexDefault = 2;
-	//默认服务频率
-	var servType = 0;
-
 	//生成默认价格
 	calDefaultPrice();
+	
+	//选择资产
+	$('.dropdown-menu li').each(function(){
+		$(this).delegate(this,'click',function(){
+			var ck=$(this).find('input');
+			if($(ck).is(':checked')){
+				assetCount++;
+				
+			}else
+			{
+				assetCount--;
+			}
+			calPrice(null,servType);
+		})
+		
+	})
 	
 	
     //确认订单界面点击"确认订单"进入完成
@@ -268,28 +283,23 @@ function calDefaultPrice(){
 	switch(parseInt(serviceId)){
 	case 1://默认单次
 		servType = 2;
-		calPrice(serviceId);
-		$("#timesHidden").val(1);
 		break;
 	case 2://默认单次
 		servType = 1;
-		calPrice(serviceId);
-		$("#timesHidden").val(1);
 		break;
 	case 3://默认长期
 		servType = 4;
-		calPriceLong(null,servType);
 		break;
 	case 4://默认单次
 		servType = 4;
-		calPrice(serviceId);
-		$("#timesHidden").val(1);
 		break;
 	case 5://默认长期
-		servType = 3;
-		calPriceLong(null,servType);
 		break;
 	}
+	
+	calPrice(null,servType);
+	$("#timesHidden").val(1);
+	
 }
 function tasknum_verification(){
 		$.ajax({
@@ -363,12 +373,15 @@ function tasknum_verification(){
     }
     
     
-    //计算价格
+/*    //计算价格
     function calPrice(serviceId){
+    	if(assetCount==0){//如果资产不选，按单个资产算价格
+    		assetCount = 1;
+    	}
     	$.ajax({ type: "POST",
    		     async: false, 
    		     url: "calPrice.html", 
-   		     data:{"serviceId":serviceId},
+   		     data:{"serviceId":serviceId,"assetCount":assetCount},
    		     dataType: "json",
    		     success: function(data) {
        			if(data.success){
@@ -384,21 +397,25 @@ function tasknum_verification(){
 		    	 else { window.location.href = "loginUI.html"; } } 
 	    	
     	});
-	}
+	}*/
    
     //计算长期价格
-    function calPriceLong(obj,typeDefault){
+    function calPrice(obj,typeDefault){
     	var serviceId = $("#serviceIdHidden").val();
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
-    	var type = null;
-    	
-    	if(typeDefault!=null){
-    		type = typeDefault;
-    	}else if(obj!=null){
-    		type = obj.value;
+    	var assetCountNew = 0;
+    	if(assetCount==0){//如果资产不选，按单个资产算价格
+    		assetCountNew = 1;
     	}else{
-    		type = $(".clickTime").val();
+    		assetCountNew = assetCount;
+    	}
+    	if(typeDefault!=null){
+    		servType = typeDefault;
+    	}else if(obj!=null){
+    		servType = obj.value;
+    	}else{
+    		servType = $(".clickTime").val();
     	}
     	
     	//不是默认进入，需要判断时间
@@ -415,7 +432,7 @@ function tasknum_verification(){
 		$.ajax({ type: "POST",
 	     async: false, 
 	     url: "calPrice.html", 
-	     data:{"serviceId":serviceId,"type":type,"beginDate":beginDate,"endDate":endDate},
+	     data:{"serviceId":serviceId,"type":servType,"beginDate":beginDate,"endDate":endDate,"assetCount":assetCountNew},
 	     dataType: "json",
 	     success: function(data) {
    			if(data.success){
