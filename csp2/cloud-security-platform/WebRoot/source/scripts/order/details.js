@@ -18,7 +18,6 @@ $(function(){
     	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
     	var serviceId = $("#serviceId").val();
     	var times = $("#timesHidden").val();
-    	alert("sss"+times);
     	var price = $('.price').children('strong:first').text();
     	if(type==2){
     		scanType="";
