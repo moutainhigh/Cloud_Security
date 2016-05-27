@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		price.type=0
 		-->
 		select * from   cs_service service LEFT JOIN cs_price price  on price.serviceId = service.id and 
-		((service.id IN(1,2,4) and price.type=0) OR (service.id IN(3,5)) and price.type=1 and price.timesG=1)
+		((service.id IN(1,2,3,4) and price.type=0) OR (service.id IN(5)) and price.type=1 and price.timesG=1)
 	</select>
 	<select id="findById" resultMap="ServRM" parameterType="int">
 		select * from cs_service
