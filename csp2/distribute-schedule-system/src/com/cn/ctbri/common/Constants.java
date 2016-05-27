@@ -176,6 +176,16 @@ public class Constants {
 	
 	/**
 	 * 告警等级<br>
+	 * 4 :信息
+	 */
+	public static final String ALARMLEVEL_MESSAGE = "-1"; 
+	/**
+	 * 告警等级<br>
+	 * 3 :紧急
+	 */
+	public static final String ALARMLEVEL_HIGHER = "3"; 
+	/**
+	 * 告警等级<br>
 	 * 2 :高危
 	 */
 	public static final String ALARMLEVEL_HIGH = "2"; 
