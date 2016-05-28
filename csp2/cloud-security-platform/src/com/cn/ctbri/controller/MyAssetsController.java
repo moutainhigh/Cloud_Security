@@ -539,9 +539,9 @@ public class MyAssetsController {
 			}
 		}else if(_user.getType()==3){
 			//企业用户
-			if(list != null && list.size() >= 10){
+			if(list != null && list.size() >= 50){
 				m.put("msg", true);//表示添加的资产数已经为10，不能再进行添加
-				m.put("allowCount", "10");
+				m.put("allowCount", "50");
 			}else{
 				m.put("msg", false);
 			}
