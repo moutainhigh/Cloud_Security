@@ -439,6 +439,7 @@ public class WafController {
 			order.setTask_date(begin_date);
 			order.setIsAPI(2);
 			order.setDelFlag(0);
+			order.setPayFlag(1);
 			order.setUserId(globle_user.getId());
 
 			//订单开始时间不能早于当前订单提交时间,add by tangxr,2015-3-3
