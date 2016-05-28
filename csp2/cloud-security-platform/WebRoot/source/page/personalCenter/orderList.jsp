@@ -48,18 +48,25 @@
 									<c:if test="${list.package_type==2}">套餐2</c:if> 
 									<c:if test="${list.package_type==3}">套餐3</c:if>
 								</c:if>
+								<c:if test="${list.isAPI==2}">
+									<c:if test="${list.scan_type==8}">包月</c:if>
+									<c:if test="${list.scan_type==9}">包年</c:if> 
+								</c:if>
 								</p>
                             
                             </td>
                             <td class="order" valign="top">
                             	<c:set var="temp" value="${nowDate }"/>
-				                <c:if test="${list.status==0}"><p class="stylep" style="width:108px;">已下单<b class="wait"></b></p></c:if>
+				                <c:if test="${list.isAPI!=2 &&list.status==0}"><p class="stylep" style="width:108px;">已下单<b class="wait"></b></p></c:if>
 				                <c:if test="${list.isAPI==0 && (list.status==4||list.status==5)&&list.websoc!=2}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
 				                <c:if test="${list.isAPI==0 && (list.status==1)}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
 				                <c:if test="${list.isAPI==0 && (list.status==2)}"><p class="stylep" style="width:108px;">已结束<b class="endend"></b></p></c:if>
 				                
 				                <c:if test="${list.isAPI==1 && list.end_date>temp}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
 				                <c:if test="${list.isAPI==1 && list.end_date<=temp}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
+				                
+				                <c:if test="${list.isAPI==2 && (list.status==0)}"><p class="stylep" style="width:108px;">域名解析未生效</b></p></c:if>
+				                <c:if test="${list.isAPI==2 && (list.status==4)}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
                             </td>
                             <td class="order" valign="top">
                             	<p style="width:174px; line-height:24px; margin-top:33px;" class="stylep"><fmt:formatDate value="${list.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/><br><fmt:formatDate value="${list.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
@@ -71,10 +78,10 @@
                             </td>
                              <td class="order" valign="top">
                             	<p style="width:98px; line-height:24px;margin-top:33px; height:auto;" class="stylep">
-                            	
-                            		<c:if test="${list.status==0}"><a href="${ctx}/orderDetails.html?orderId=${list.id }" target="_blank" title="等待">查看详情</a></c:if>
              
 						            <c:if test="${list.serviceId==1||list.serviceId==2||list.serviceId==3||list.serviceId==4||list.serviceId==5}">
+						                <c:if test="${list.status==0}"><a href="${ctx}/orderDetails.html?orderId=${list.id }" target="_blank" title="等待">查看详情</a></c:if>
+						                
 						                <c:if test="${list.status==2}">
 						                 
 						                 <!-- <c:if test="${list.alarmViewedFlag==0}">
@@ -127,35 +134,17 @@
 							                </a>
 						                </c:if>
 						            </c:if>
-						                
-						                <!-- 华为的服务 -->
-						            <c:if test="${list.serviceId==6||list.serviceId==7||list.serviceId==8}">
-						                <c:if test="${list.begin_date<=temp&&list.status==0}">
-						                <a href="" title="服务中">
-						                	查看详情
-						                </a>
-						                </c:if>
-						                <c:if test="${list.status==2}">
-							                <!-- <c:if test="${list.alarmViewedFlag==0}"> 
-							                  <a href="${ctx}/warningTwoAnHeng.html?orderId=${list.id }&type=${list.type}" target="_blank" title="有告警">              
-							                 	查看详情
-							                  </a>
-							                </c:if>
-							                <c:if test="${list.alarmViewedFlag==1}">
-							                  <a href="${ctx}/warningTwoAnHeng.html?orderId=${list.id }&type=${list.type}" target="_blank" title="有告警(已查看)">
-							                   	查看详情
-							                  </a>
-							                </c:if> -->
-							                <a href="${ctx}/warningTwoAnHeng.html?orderId=${list.id }&type=${list.type}" target="_blank" title="有告警">              
-							                 	查看详情
-							                </a>
-						                </c:if>
-						                <c:if test="${list.status==1}">
-						                 <a href="${ctx}/warningTwoAnHeng.html?orderId=${list.id }&type=${list.type}" target="_blank">
-						                 防护
+						            
+						            <c:if test="${list.serviceId==6}">
+						                 <a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank" title="已完成有告警">
+						                 	查看详情
 						                 </a>
-						                </c:if>
+						                 <a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank" title="已完成有告警">
+						                 	设置域名解析
+						                 </a>
+						                
 						            </c:if>
+						         
                             	</p>
                        			<p style="width:98px; height:auto;">
 									<!-- 订单删除操作 -->
