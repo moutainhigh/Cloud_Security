@@ -213,3 +213,20 @@ function shopCarAPIVal(apiId,time,num,type,price){
 		    	 else { window.location.href = "loginUI.html"; } } 
 		});
 }
+
+ //跳转到购物车页面
+   function showShopCar(){
+		$.ajax({ type: "POST",
+		     async: false, 
+		     url: "getSession.html", 
+		     dataType: "json", 
+		     success: function(data) {
+		    	 window.location.href="showShopCar.html";
+		    	 }, 
+		     error: function(data){ 
+		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+		    		 window.location.href = "loginUI.html"; } 
+		    	 else { window.location.href = "loginUI.html"; } } 
+		});
+
+		}
