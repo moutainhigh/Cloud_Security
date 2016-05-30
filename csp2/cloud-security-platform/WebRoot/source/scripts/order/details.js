@@ -14,7 +14,6 @@ $(function(){
 			
 		}
 	})
-	alert(assetCount);
 	//生成默认价格
 	calDefaultPrice();
 	
@@ -32,7 +31,6 @@ $(function(){
 				}
 
 			}
-			alert(assetCount);
 			calPrice(null,servType,assetCount);
 		})
 		
