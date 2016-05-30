@@ -136,7 +136,7 @@ function showUnreadNews()
 		                                    </span>
 		                                    <div class="purchase">
 		                                    <c:if test="${!empty list.price}">
-		                                    	<strong style="text-decoration:lightblue;">
+		                                    	<strong style="text-decoration:none;">
 		                                    	¥<fmt:formatNumber type="number" value="${list.price }" maxFractionDigits="2" minFractionDigits="2"/>
 		                                    	</strong>
 		                                    </c:if>
