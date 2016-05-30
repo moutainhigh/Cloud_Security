@@ -19,6 +19,7 @@ import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -46,6 +47,7 @@ import com.cn.ctbri.service.IServiceAPIService;
 import com.cn.ctbri.service.ITaskHWService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
+import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Random;
@@ -88,6 +90,8 @@ public class shoppingController {
     IOrderAPIService orderAPIService;
     @Autowired
     IPriceService priceService;
+    @Autowired
+    IUserService userService;
     @Autowired
     IOrderListService orderListService;
     
@@ -311,6 +315,7 @@ public class shoppingController {
 		 //object转化为Json格式
 	       
 		  }catch(Exception e){
+			  e.printStackTrace();
 			  m.put("sucess", false);
 			  
 		  }
@@ -509,7 +514,7 @@ public class shoppingController {
 		    	    
 	    	    	 orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
 		            			scanDepth, maxPages, stategy, customManu, String.valueOf(shopCar.getServiceId()));
-	    	    	 orderVal=orderVal+",";
+	    	    	 orderVal = orderVal+ orderId+",";
 		    	     }else{
 		    	    	 SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
 		     			 String orderDate = odf.format(new Date());
@@ -526,7 +531,6 @@ public class shoppingController {
 		    		 //更新订单表
 		    		 selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "0",status);
 		    		 map.put("flag", flag);
-		    		 map.put("orderId", orderId);
 		    		 map.put("price", df.format(Double.parseDouble(price)));
 		    		 map.put("orderStatus", true);
 			    	 map.put("sucess", true);
@@ -581,7 +585,6 @@ public class shoppingController {
 						map.put("orderStatus", true);
 						map.put("sucess", true);
 						 map.put("flag", flag);
-			    		 map.put("orderId", orderId);
 			    		 map.put("price", df.format(Double.parseDouble(price)));
 					} else {
 						map.put("orderStatus", true);
@@ -598,6 +601,7 @@ public class shoppingController {
 		    id = String.valueOf(Random.eightcode());
 		    ol.setId(id);
 		    ol.setCreate_date(new Date());
+		    ol.setUserId(globle_user.getId());
 		    ol.setOrderId(orderVal.substring(0,orderVal.length()-1));
 		    ol.setPrice(Double.parseDouble(price));
 		    orderListService.insert(ol);
@@ -608,9 +612,9 @@ public class shoppingController {
     	map.put("sucess", false);
 	}
 
-    //object转化为Json格式
+    	//object转化为Json格式
+	   map.put("orderListId", id);
        JSONObject JSON = CommonUtil.objectToJson(response, map);
-       map.put("orderId", id);
         // 把数据返回到页面
            try {
 			CommonUtil.writeToJsp(response, JSON);
@@ -996,4 +1000,86 @@ public class shoppingController {
 	
 		
 	}
+    
+    /**
+     * 功能描述： 收银台页面
+     * */
+    @RequestMapping("cashierUI.html")
+    public String cashier(Model model, HttpServletRequest request){
+    	String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
+    	//获取orderId,购买时间,交易金额
+    	OrderList orderList = orderListService.findById(orderListId);
+    	//交易金额保留两位小数
+    	DecimalFormat df = new DecimalFormat("0.00");
+    	String priceStr = df.format(orderList.getPrice());
+    	
+    	//根据订单编号获取服务名称
+		List<String> nameList = orderService.findServiceNameByOrderId(orderList.getOrderId());
+
+    	//安全币余额
+		List<User> userList = userService.findUserById(orderList.getUserId());
+        String securCurrency = df.format(userList.get(0).getSecurCurrency());
+    	
+        model.addAttribute("orderList", orderList);
+        model.addAttribute("price", priceStr);
+        model.addAttribute("serviceName", nameList);
+        model.addAttribute("securCurrency",securCurrency);
+    	return "source/page/details/shoppingcashier-desk2";
+    }
+    
+    /**
+     * 功能描述： 确认支付
+     * */
+    @RequestMapping("payConfirm.html")
+    public String payConfirm(Model model, HttpServletRequest request){
+    	String orderDateStr = request.getParameter("orderDate");//下单时间
+    	Double price = Double.valueOf(request.getParameter("price"));//支付金额
+    	String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
+    	String orderIds = request.getParameter("orderIds");//订单条目编号(cs_order的id)
+    	
+    	//比较支付时间和下单时间
+    	Date orderDate = DateUtils.stringToDateNYRSFM(orderDateStr);
+        Date payDate = new Date();
+        //支付时间-下单时间 >15分钟
+        if (DateUtils.getMsByDays(orderDate, payDate)>= 15*60*1000){
+        	//更改订单的状态，支付超时设为9
+        	selfHelpOrderService.updateOrderStatus(orderIds, 9);
+        	
+        	//跳转到付款失败页面
+        	model.addAttribute("message", "支付时间超时");
+        	return "source/page/details/payFailed";
+        }
+        
+        //取得安全币余额
+        User globle_user = (User) request.getSession().getAttribute("globle_user");
+        List<User> userList = userService.findUserById(globle_user.getId());
+        Double securCurrency = userList.get(0).getSecurCurrency();
+        //安全币余额不足
+        if (securCurrency < price){
+        	//跳转到付款失败页面
+        	model.addAttribute("message", "余额不足！");
+        	return "source/page/details/payFailed";
+        }
+    	
+    	//更新安全币余额（DB和session中都更新）
+    	globle_user.setSecurCurrency(securCurrency - price);//session更新
+    	User user = new User();
+    	user.setId(globle_user.getId());
+    	user.setSecurCurrency(globle_user.getSecurCurrency());
+    	userService.updateSecurCurrency(user);//DB更新
+    	
+    	//更新 支付时间，支付金额(cs_order_list表)
+    	OrderList orderList = new OrderList();
+    	orderList.setId(orderListId);
+    	orderList.setPay_date(payDate);
+    	selfHelpOrderService.updatePayDate(orderList);
+    	
+    	//更新 支付Flag(cs_order表) 未支付-->已支付
+//    	orderIds = orderIds.substring(0, orderIds.length()-1);//去掉最后一个逗号
+    	selfHelpOrderService.updateOrderPayFlag(orderIds, 1);
+    	
+    	
+    	//跳转到付款成功页面
+    	return "source/page/details/paySuccess";
+    }
 }
