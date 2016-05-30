@@ -5,6 +5,16 @@ $(function(){
 	//默认选中资产数
 	var assetCount = 0;
 
+	//获取默认选中的资产数
+	//获取资产数
+	$('.dropdown-menu li').each(function(){
+		var ck=$(this).find('input');
+		if($(ck).is(':checked')){
+			assetCount++;
+			
+		}
+	})
+	alert(assetCount);
 	//生成默认价格
 	calDefaultPrice();
 	
@@ -13,12 +23,16 @@ $(function(){
 		$(this).delegate(this,'click',function(){
 			var ck=$(this).find('input');
 			if($(ck).is(':checked')){
-				assetCount++;
+				assetCount=assetCount+1;
 				
 			}else
 			{
-				assetCount--;
+				if(assetCount>0){
+					assetCount=assetCount-1;
+				}
+
 			}
+			alert(assetCount);
 			calPrice(null,servType,assetCount);
 		})
 		
