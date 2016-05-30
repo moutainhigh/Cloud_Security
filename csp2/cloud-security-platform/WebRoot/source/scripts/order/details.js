@@ -1,8 +1,10 @@
-//默认选中资产数
-var assetCount = 0;
+
 //默认服务频率
 var servType = 0;
 $(function(){
+	//默认选中资产数
+	var assetCount = 0;
+
 	//生成默认价格
 	calDefaultPrice();
 	
@@ -17,7 +19,7 @@ $(function(){
 			{
 				assetCount--;
 			}
-			calPrice(null,servType);
+			calPrice(null,servType,assetCount);
 		})
 		
 	})
@@ -300,7 +302,7 @@ function calDefaultPrice(){
 	case 5://默认长期
 		break;
 	}
-	calPrice(null,servType);
+	calPrice(null,servType,null);
 	$("#timesHidden").val(1);
 	
 }
@@ -403,16 +405,28 @@ function tasknum_verification(){
 	}*/
    
     //计算长期价格
-    function calPrice(obj,typeDefault){
+    function calPrice(obj,typeDefault,assetCount){
     	var serviceId = $("#serviceIdHidden").val();
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
     	var assetCountNew = 0;
-    	if(assetCount==0){//如果资产不选，按单个资产算价格
-    		assetCountNew = 1;
+    	if(assetCount==null){
+    		//获取资产数
+    		$('.dropdown-menu li').each(function(){
+				var ck=$(this).find('input');
+				if($(ck).is(':checked')){
+					assetCountNew++;
+					
+				}
+    		})
     	}else{
-    		assetCountNew = assetCount;
+        	assetCountNew = assetCount;
     	}
+    	
+    	if(assetCountNew==0){//如果资产不选，按单个资产算价格
+    		assetCountNew = 1;
+    	}
+
     	if(typeDefault!=null){
     		servType = typeDefault;
     	}else if(obj!=null){
