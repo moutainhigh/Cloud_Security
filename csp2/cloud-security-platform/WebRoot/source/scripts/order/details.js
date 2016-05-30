@@ -6,9 +6,13 @@ $(function(){
 	var assetCount = 0;
 
 	//获取默认选中的资产数
-	$('.btnNew i').each(function(){
-		assetCount++;
-	});
+	//获取资产数
+	$('.dropdown-menu li').each(function(){
+		var ck=$(this).find('input');
+		if($(ck).is(':checked')){
+			assetCount++;			
+		}
+	})
    		
 	//生成默认价格
 	calDefaultPrice();
@@ -402,9 +406,13 @@ function tasknum_verification(){
     	var assetCountNew = 0;
     	if(assetCount==null){
     		//获取资产数
-    		$('.btnNew i').each(function(){
-    			assetCountNew++;
-    		});
+    		$('.dropdown-menu li').each(function(){
+				var ck=$(this).find('input');
+				if($(ck).is(':checked')){
+					assetCountNew++;
+					
+				}
+    		})
     	}else{
         	assetCountNew = assetCount;
     	}
@@ -442,9 +450,13 @@ function tasknum_verification(){
     	var assetCountNew = 0;
     	if(assetCount==null){
     		//获取资产数
-    		$('.btnNew i').each(function(){
-    			assetCountNew++;
-    		});
+    		$('.dropdown-menu li').each(function(){
+				var ck=$(this).find('input');
+				if($(ck).is(':checked')){
+					assetCountNew++;
+					
+				}
+    		})
     	}else{
         	assetCountNew = assetCount;
     	}
@@ -468,7 +480,6 @@ function tasknum_verification(){
          		return;
          	}
 		}
-        
    	
 		$.ajax({ type: "POST",
 	     async: false, 
