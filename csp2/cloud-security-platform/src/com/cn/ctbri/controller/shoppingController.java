@@ -1004,82 +1004,82 @@ public class shoppingController {
     /**
      * 功能描述： 收银台页面
      * */
-    @RequestMapping("cashierUI.html")
-    public String cashier(Model model, HttpServletRequest request){
-    	String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
-    	//获取orderId,购买时间,交易金额
-    	OrderList orderList = orderListService.findById(orderListId);
-    	//交易金额保留两位小数
-    	DecimalFormat df = new DecimalFormat("0.00");
-    	String priceStr = df.format(orderList.getPrice());
-    	
-    	//根据订单编号获取服务名称
-		List<String> nameList = orderService.findServiceNameByOrderId(orderList.getOrderId());
-
-    	//安全币余额
-		List<User> userList = userService.findUserById(orderList.getUserId());
-        String securCurrency = df.format(userList.get(0).getSecurCurrency());
-    	
-        model.addAttribute("orderList", orderList);
-        model.addAttribute("price", priceStr);
-        model.addAttribute("serviceName", nameList);
-        model.addAttribute("securCurrency",securCurrency);
-    	return "source/page/details/shoppingcashier-desk2";
-    }
+//    @RequestMapping("cashierUI.html")
+//    public String cashier(Model model, HttpServletRequest request){
+//    	String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
+//    	//获取orderId,购买时间,交易金额
+//    	OrderList orderList = orderListService.findById(orderListId);
+//    	//交易金额保留两位小数
+//    	DecimalFormat df = new DecimalFormat("0.00");
+//    	String priceStr = df.format(orderList.getPrice());
+//    	
+//    	//根据订单编号获取服务名称
+//		List<String> nameList = orderService.findServiceNameByOrderId(orderList.getOrderId());
+//
+//    	//安全币余额
+//		List<User> userList = userService.findUserById(orderList.getUserId());
+//        String securCurrency = df.format(userList.get(0).getSecurCurrency());
+//    	
+//        model.addAttribute("orderList", orderList);
+//        model.addAttribute("price", priceStr);
+//        model.addAttribute("serviceName", nameList);
+//        model.addAttribute("securCurrency",securCurrency);
+//    	return "source/page/details/shoppingcashier-desk2";
+//    }
     
     /**
      * 功能描述： 确认支付
      * */
-    @RequestMapping("payConfirm.html")
-    public String payConfirm(Model model, HttpServletRequest request){
-    	String orderDateStr = request.getParameter("orderDate");//下单时间
-    	Double price = Double.valueOf(request.getParameter("price"));//支付金额
-    	String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
-    	String orderIds = request.getParameter("orderIds");//订单条目编号(cs_order的id)
-    	
-    	//比较支付时间和下单时间
-    	Date orderDate = DateUtils.stringToDateNYRSFM(orderDateStr);
-        Date payDate = new Date();
-        //支付时间-下单时间 >15分钟
-        if (DateUtils.getMsByDays(orderDate, payDate)>= 15*60*1000){
-        	//更改订单的状态，支付超时设为9
-        	selfHelpOrderService.updateOrderStatus(orderIds, 9);
-        	
-        	//跳转到付款失败页面
-        	model.addAttribute("message", "支付时间超时");
-        	return "source/page/details/payFailed";
-        }
-        
-        //取得安全币余额
-        User globle_user = (User) request.getSession().getAttribute("globle_user");
-        List<User> userList = userService.findUserById(globle_user.getId());
-        Double securCurrency = userList.get(0).getSecurCurrency();
-        //安全币余额不足
-        if (securCurrency < price){
-        	//跳转到付款失败页面
-        	model.addAttribute("message", "余额不足！");
-        	return "source/page/details/payFailed";
-        }
-    	
-    	//更新安全币余额（DB和session中都更新）
-    	globle_user.setSecurCurrency(securCurrency - price);//session更新
-    	User user = new User();
-    	user.setId(globle_user.getId());
-    	user.setSecurCurrency(globle_user.getSecurCurrency());
-    	userService.updateSecurCurrency(user);//DB更新
-    	
-    	//更新 支付时间，支付金额(cs_order_list表)
-    	OrderList orderList = new OrderList();
-    	orderList.setId(orderListId);
-    	orderList.setPay_date(payDate);
-    	selfHelpOrderService.updatePayDate(orderList);
-    	
-    	//更新 支付Flag(cs_order表) 未支付-->已支付
-//    	orderIds = orderIds.substring(0, orderIds.length()-1);//去掉最后一个逗号
-    	selfHelpOrderService.updateOrderPayFlag(orderIds, 1);
-    	
-    	
-    	//跳转到付款成功页面
-    	return "source/page/details/paySuccess";
-    }
+//    @RequestMapping("payConfirm.html")
+//    public String payConfirm(Model model, HttpServletRequest request){
+//    	String orderDateStr = request.getParameter("orderDate");//下单时间
+//    	Double price = Double.valueOf(request.getParameter("price"));//支付金额
+//    	String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
+//    	String orderIds = request.getParameter("orderIds");//订单条目编号(cs_order的id)
+//    	
+//    	//比较支付时间和下单时间
+//    	Date orderDate = DateUtils.stringToDateNYRSFM(orderDateStr);
+//        Date payDate = new Date();
+//        //支付时间-下单时间 >15分钟
+//        if (DateUtils.getMsByDays(orderDate, payDate)>= 15*60*1000){
+//        	//更改订单的状态，支付超时设为9
+//        	selfHelpOrderService.updateOrderStatus(orderIds, 9);
+//        	
+//        	//跳转到付款失败页面
+//        	model.addAttribute("message", "支付时间超时");
+//        	return "source/page/details/payFailed";
+//        }
+//        
+//        //取得安全币余额
+//        User globle_user = (User) request.getSession().getAttribute("globle_user");
+//        List<User> userList = userService.findUserById(globle_user.getId());
+//        Double securCurrency = userList.get(0).getSecurCurrency();
+//        //安全币余额不足
+//        if (securCurrency < price){
+//        	//跳转到付款失败页面
+//        	model.addAttribute("message", "余额不足！");
+//        	return "source/page/details/payFailed";
+//        }
+//    	
+//    	//更新安全币余额（DB和session中都更新）
+//    	globle_user.setSecurCurrency(securCurrency - price);//session更新
+//    	User user = new User();
+//    	user.setId(globle_user.getId());
+//    	user.setSecurCurrency(globle_user.getSecurCurrency());
+//    	userService.updateSecurCurrency(user);//DB更新
+//    	
+//    	//更新 支付时间，支付金额(cs_order_list表)
+//    	OrderList orderList = new OrderList();
+//    	orderList.setId(orderListId);
+//    	orderList.setPay_date(payDate);
+//    	selfHelpOrderService.updatePayDate(orderList);
+//    	
+//    	//更新 支付Flag(cs_order表) 未支付-->已支付
+////    	orderIds = orderIds.substring(0, orderIds.length()-1);//去掉最后一个逗号
+//    	selfHelpOrderService.updateOrderPayFlag(orderIds, 1);
+//    	
+//    	
+//    	//跳转到付款成功页面
+//    	return "source/page/details/paySuccess";
+//    }
 }
