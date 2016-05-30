@@ -6,14 +6,10 @@ $(function(){
 	var assetCount = 0;
 
 	//获取默认选中的资产数
-	//获取资产数
-	$('.dropdown-menu li').each(function(){
-		var ck=$(this).find('input');
-		if($(ck).is(':checked')){
-			assetCount++;
-			
-		}
-	})
+	$('.btnNew i').each(function(){
+		assetCount++;
+	});
+   		
 	//生成默认价格
 	calDefaultPrice();
 	
@@ -31,7 +27,13 @@ $(function(){
 				}
 
 			}
-			calPrice(null,servType,assetCount);
+			var type = $(".click").val();
+			if(type="1"){//长期
+				calPriceLong(null,servType,assetCount);
+			}else{
+				calPrice(assetCount);
+			}
+			
 		})
 		
 	})
@@ -301,20 +303,24 @@ function calDefaultPrice(){
 	switch(parseInt(serviceId)){
 	case 1://默认单次
 		servType = 2;
+		calPrice(null);
 		break;
 	case 2://默认单次
 		servType = 1;
+		calPrice(null);
 		break;
 	case 3://默认长期
 		servType = 4;
+		calPriceLong(null,servType,null);
 		break;
 	case 4://默认单次
 		servType = 4;
+		calPrice(null);
 		break;
 	case 5://默认长期
+		calPriceLong(null,servType,null);
 		break;
 	}
-	calPrice(null,servType,null);
 	$("#timesHidden").val(1);
 	
 }
@@ -384,21 +390,37 @@ function tasknum_verification(){
     	var apiId =$("#apiId").val();
     	var type =$("#type").val();
     	var num =$("#num").val();
-    
+    	var price = $('#priceHidden').val();
      window.location.href="orderBack.html?serviceId="+serviceId+"&indexPage=1&orderType="+orderType+"&beginDate="+beginDate
-		    		                       +"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&apiId="+apiId+"&type="+type+"&num="+num;	
+		    		                       +"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&apiId="+apiId+"&type="+type+"&num="+num+"&price="+price;	
     }
     
     
-/*    //计算价格
-    function calPrice(serviceId){
-    	if(assetCount==0){//如果资产不选，按单个资产算价格
-    		assetCount = 1;
+    //计算价格
+    function calPrice(assetCount){//assetCount:资产数
+    	var serviceId = $("#serviceIdHidden").val();
+    	var assetCountNew = 0;
+    	if(assetCount==null){
+    		//获取资产数
+    		$('.dropdown-menu li').each(function(){
+				var ck=$(this).find('input');
+				if($(ck).is(':checked')){
+					assetCountNew++;
+					
+				}
+    		})
+    	}else{
+        	assetCountNew = assetCount;
     	}
+    	
+    	if(assetCountNew==0){//如果资产不选，按单个资产算价格
+    		assetCountNew = 1;
+    	}
+    	
     	$.ajax({ type: "POST",
    		     async: false, 
    		     url: "calPrice.html", 
-   		     data:{"serviceId":serviceId,"assetCount":assetCount},
+   		     data:{"serviceId":serviceId,"assetCount":assetCountNew},
    		     dataType: "json",
    		     success: function(data) {
        			if(data.success){
@@ -414,10 +436,10 @@ function tasknum_verification(){
 		    	 else { window.location.href = "loginUI.html"; } } 
 	    	
     	});
-	}*/
+	}
    
     //计算长期价格
-    function calPrice(obj,typeDefault,assetCount){
+    function calPriceLong(obj,typeDefault,assetCount){
     	var serviceId = $("#serviceIdHidden").val();
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
@@ -446,9 +468,8 @@ function tasknum_verification(){
     	}else{
     		servType = $(".clickTime").val();
     	}
-    	
-    	//不是默认进入，需要判断时间
-    	if(!(obj==null&&typeDefault!=null)){
+
+		if(!(obj==null&&typeDefault!=null)){
         	if(beginDate==""||beginDate==null||endDate==""||endDate==null){
     			return;
     		}
@@ -457,7 +478,7 @@ function tasknum_verification(){
          		return;
          	}
     	}
-
+   	
 		$.ajax({ type: "POST",
 	     async: false, 
 	     url: "calPrice.html", 
