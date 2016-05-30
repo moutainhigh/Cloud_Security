@@ -461,15 +461,14 @@ function tasknum_verification(){
     		servType = $(".clickTime").val();
     	}
 
-		if(!(obj==null&&typeDefault!=null) && assetCount==null){
-        	if(beginDate==""||beginDate==null||endDate==""||endDate==null){
-    			return;
-    		}
-        	if(beginDate>=endDate){
+    	//都不为空时，判断时间大小
+    	if(beginDate!=""&&beginDate!=null&&endDate!=""&&endDate!=null){
+    		if(beginDate>=endDate){
          		alert("开始时间不能大于结束时间!");
          		return;
          	}
-    	}
+		}
+        
    	
 		$.ajax({ type: "POST",
 	     async: false, 
