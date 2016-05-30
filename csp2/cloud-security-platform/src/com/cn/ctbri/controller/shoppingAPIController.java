@@ -280,8 +280,10 @@ public class shoppingAPIController {
 		    ol.setId(id);
 		    ol.setCreate_date(new Date());
 		    ol.setOrderId(orderId);
+		    ol.setUserId(globle_user.getId());
 		    ol.setPrice(Double.parseDouble(price));
 		    orderListService.insert(ol);
+		    m.put("orderListId", id);
             m.put("message", true);
     	}else{
     		m.put("message", "系统异常，暂时不能购买api，请稍后购买~~");
