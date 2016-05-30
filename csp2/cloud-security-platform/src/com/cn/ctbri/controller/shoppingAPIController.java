@@ -330,6 +330,8 @@ public class shoppingAPIController {
 	        //套餐类型
 	        int type = Integer.parseInt(request.getParameter("type"));
 	        String price = request.getParameter("price");
+	        String priceVal="";
+	        priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
 	        SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
 			String orderDate = odf.format(new Date());
 	        String orderId = String.valueOf(Random.fivecode())+orderDate;
@@ -342,7 +344,7 @@ public class shoppingAPIController {
             order.setServiceId(apiId);
             order.setCreate_date(new Date());
             order.setUserId(globle_user.getId());
-            order.setPrice(Double.parseDouble(price));
+            order.setPrice(Double.parseDouble(priceVal));
             order.setStatus(1);//完成
             order.setPayFlag(0);
             order.setIsAPI(1);//api订单
