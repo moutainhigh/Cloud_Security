@@ -757,7 +757,7 @@ public class shoppingController {
 	        //根据serviceid查询价格列表
 			List<Price> priceList = priceService.findPriceByServiceId(serviceId);
 	        //长期
-	        if(beginDate!=null&&beginDate!=""&&endDate!=null&&endDate!=""){	
+	        if(type!=null){	
 	        	long ms = 0;//时间之间的毫秒数
 	        	Date bDate = null;
 	        	Date eDate = null;
