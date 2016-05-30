@@ -482,6 +482,7 @@ public class WafController {
 		    orderListService.insert(ol);
 		    
 			m.put("orderStatus", true);
+			m.put("orderListId", id);
 			//object转化为Json格式
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
 			try {
