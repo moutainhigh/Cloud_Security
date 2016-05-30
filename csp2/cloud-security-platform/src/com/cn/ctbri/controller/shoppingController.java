@@ -718,7 +718,7 @@ public class shoppingController {
 		//价格
 		double calPrice = 0;
         //计算出的次数
-        int times = 0;
+        long times = 0;
     	try {
 			//获得订单id
 			int serviceId = Integer.parseInt(request.getParameter("serviceId"));
@@ -798,9 +798,9 @@ public class shoppingController {
 		        	if(typeInt==2){
 		        		int perWeek = 1000*3600*24*7;
 		        		if(ms%perWeek>0){
-		        			times = (int)(ms/perWeek)+1;
+		        			times = (long)(ms/perWeek)+1;
 		        		}else{
-		        			times = (int)(ms/perWeek);
+		        			times = (long)(ms/perWeek);
 		        		}		        		
 		        	}else{//每月
 		        		while(ms>0){
@@ -814,9 +814,9 @@ public class shoppingController {
 		        case 2://30分钟
 		        	int min_30 = 1000*3600/2;
 		        	if(ms%min_30 > 0){
-		        		times = (int)(ms/min_30) + 1;
+		        		times = (long)(ms/min_30) + 1;
 		        	}else{
-		        		times = (int)(ms/min_30);
+		        		times = (long)(ms/min_30);
 		        	}
 		        	break;
 		        	
@@ -827,9 +827,9 @@ public class shoppingController {
 		        	}else{
 			        	int oneDay = 1000*3600*24;
 			        	if(ms%oneDay > 0){
-			        		times = (int)(ms/oneDay) + 1;
+			        		times = (long)(ms/oneDay) + 1;
 			        	}else{
-				        	times = (int)(ms/oneDay);
+				        	times = (long)(ms/oneDay);
 			        	}
 		        	}
 		        	break;
@@ -841,16 +841,16 @@ public class shoppingController {
 		        		if(typeInt==3){//一小时
 				        	int oneHour = 1000*3600;
 				        	if(ms%oneHour > 0){
-				        		times = (int)(ms/oneHour) + 1;
+				        		times = (long)(ms/oneHour) + 1;
 				        	}else{
-				        		times = (int)(ms/oneHour);
+				        		times = (long)(ms/oneHour);
 				        	}
 			        	}else{//2小时
 			        		int twoHour = 1000*3600*2;
 			        		if(ms%twoHour > 0){
-			        			times = (int)(ms/twoHour) + 1;
+			        			times = (long)(ms/twoHour) + 1;
 			        		}else{
-			        			times = (int)(ms/twoHour);
+			        			times = (long)(ms/twoHour);
 			        		}
 			        	}
 		        	}		        	
