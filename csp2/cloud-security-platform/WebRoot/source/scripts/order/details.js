@@ -280,6 +280,10 @@ $(function(){
 //设置默认价格
 function calDefaultPrice(){
 	var serviceId = $("#serviceIdHidden").val();
+	if(typeof(serviceId) == "undefined"){
+		return;
+	}
+	
 	switch(parseInt(serviceId)){
 	case 1://默认单次
 		servType = 2;
@@ -296,7 +300,6 @@ function calDefaultPrice(){
 	case 5://默认长期
 		break;
 	}
-	
 	calPrice(null,servType);
 	$("#timesHidden").val(1);
 	
