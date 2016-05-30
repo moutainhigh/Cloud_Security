@@ -19,6 +19,27 @@
 <script src="${ctx}/source/scripts/common/main.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/regist/login.js"></script>
 <script src="${ctx}/source/scripts/common/jquery.form.js" type="text/javascript"></script>
+<style type="text/css">
+@media screen and (min-width: 1201px) {
+.login {padding-top: 172px}
+}
+/* css 注释说明：设置了浏览器宽度不小于1201px时*/
+
+@media screen and (max-width: 1200px) {
+.login {padding-top: 150px}
+}
+/* 设置了浏览器宽度不大于1200px时 */
+
+@media screen and (max-width: 900px) {
+.login {padding-top: 100px}
+}
+/* 设置了浏览器宽度不大于900px时*/
+
+@media screen and (max-width: 500px) {
+.login {padding-top: 60px}
+}
+/* 设置了浏览器宽度不大于500px时 */ 
+</style>
 <script type="text/javascript">
 	window.onload=function(){
 		//页面加载时清空所有的val值，如需要请取消注释；
