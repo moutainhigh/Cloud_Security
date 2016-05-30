@@ -70,12 +70,26 @@ public class NsfocusWAFAdapter {
 		return true;
 	}
 	
+	private String errorWAFDeviceInfo(int resourceId, int deviceId) {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("status", "fail");
+		jsonObject.put("message", "Can not find device "+deviceId +" in resourceGroup "+resourceId);
+		return jsonObject.toString();
+	}
+	
 	public String getSites(int resourceId,int deviceId) {
+		if (getDeviceById(resourceId, deviceId)==null) {
+			return errorWAFDeviceInfo(resourceId, deviceId);
+		}
 		return getDeviceById(resourceId, deviceId).getSites();
 	}
 
 	public String createSite(int resourceId,int deviceId,JSONObject jsonObject) {
 		return getDeviceById(resourceId, deviceId).createSite(jsonObject);
+	}
+	
+	public String alterSite(int resourceId, int deviceId, JSONObject jsonObject) {
+		return getDeviceById(resourceId, deviceId).alterSite(jsonObject);
 	}
 	
 	public String createVSite(int resourceId, int deviceId, JSONObject jsonObject) {
@@ -85,6 +99,12 @@ public class NsfocusWAFAdapter {
 	public String alterVSite(int resourceId, int deviceId,JSONObject jsonObject) {
 		return getDeviceById(resourceId, deviceId).alterVirtSite(jsonObject);
 	}
+	
+	public String deleteVSite(int resourceId, int deviceId, JSONObject jsonObject) {
+		return getDeviceById(resourceId, deviceId).deleteVirtSite(jsonObject);
+	}
+	
+	
 	
 	public String postIpToEth(int resourceId, int deviceId,JSONObject jsonObject) {
 		return getDeviceById(resourceId, deviceId).postIpToEth(jsonObject);
@@ -151,7 +171,6 @@ public class NsfocusWAFAdapter {
 			xStream.alias("wafLogDeface", TWafLogDeface.class);
 			xStream.alias("wafLogDefaceList", List.class);
 			String xmlString = xStream.toXML(allList);
-			System.out.println(">>>>>"+xmlString);
 			sqlSession.close();
 			return xmlString;
 		} catch (IOException e) {

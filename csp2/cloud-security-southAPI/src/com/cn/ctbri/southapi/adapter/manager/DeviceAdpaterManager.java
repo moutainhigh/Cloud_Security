@@ -14,6 +14,7 @@ import net.sf.json.xml.XMLSerializer;
 import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
@@ -71,7 +72,7 @@ public class DeviceAdpaterManager {
 	 */
 	private JSONObject responseToJSON(String xml){
 		JSON json = new XMLSerializer().read(xml);
-        JSONObject responseObject = new JSONObject().fromObject(json.toString());
+        JSONObject responseObject = JSONObject.fromObject(json.toString());
         String status = responseObject.getString("@value");
         responseObject.remove("@value");
         responseObject.put("status", status);
@@ -306,83 +307,80 @@ public class DeviceAdpaterManager {
 		if (null==deviceId|| "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
 			return errorDevieInfo(deviceId);
 		}
-		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
+		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equalsIgnoreCase(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
 			JSONObject jsonObject = new JSONObject();
 			String responseString = arnhemDeviceAdpater.getEngineState(deviceId);	
 			System.out.println(responseString);
-			
+			Document document = null;
 			try {
-				SAXReader saxReader = new SAXReader();
-				Document document = saxReader.read(IOUtils.toInputStream(responseString));
-				Element rootElement = document.getRootElement();
-				if ("Success".equalsIgnoreCase(rootElement.attributeValue("value"))) {
-					
-					List<?> nodes = rootElement.elements("EngineList");
-					List<HashMap> engineList = new ArrayList<HashMap>();
-					for(Iterator<?> it=nodes.iterator();it.hasNext();){
-						Element engineStatElement = (Element) it.next();
-						HashMap<String, Comparable> engineRateMap = new HashMap<String, Comparable>();
-						
-						if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("IP"))||engineStatElement.elementTextTrim("IP")==null) {
-							engineRateMap.put("ip", null);
-						}else {
-							String IP = engineStatElement.elementTextTrim("IP");
-							engineRateMap.put("ip", IP);
-						}
-						
-						if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("CpuOccupancy"))
-								||engineStatElement.elementTextTrim("CpuOccupancy")==null) {
-							engineRateMap.put("cpuUsage", null);
-						}else {
-							String CpuOccupancy = engineStatElement.elementTextTrim("CpuOccupancy");
-							float cpuUsage = Float.parseFloat(CpuOccupancy);
-							engineRateMap.put("cpuUsage", cpuUsage);
-						}
-						
-						if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("MemoryFree"))
-								||engineStatElement.elementTextTrim("MemoryFree")==null
-								||"".equalsIgnoreCase(engineStatElement.elementTextTrim("MemoryTotal"))
-								||engineStatElement.elementTextTrim("MemoryTotal")==null) {
-							engineRateMap.put("memoryUsage", null);
-						} else {
-							float memoryFree = Float.parseFloat(engineStatElement.elementTextTrim("MemoryFree"));
-							float memoryTotal = Float.parseFloat(engineStatElement.elementTextTrim("MemoryTotal"));
-							float memoryUsage = 100.00f*(1f-memoryFree/memoryTotal);
-							engineRateMap.put("memoryUsage", memoryUsage);
-						}
-						
-						if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("DiskFree"))
-								||engineStatElement.elementTextTrim("DiskFree")==null
-								||"".equalsIgnoreCase(engineStatElement.elementTextTrim("DiskTotal"))
-								||engineStatElement.elementTextTrim("DiskTotal")==null) {
-							engineRateMap.put("diskUsage", null);
-						} else {
-							float diskFree = Float.parseFloat(engineStatElement.elementTextTrim("DiskFree"));
-							float diskTotal = Float.parseFloat(engineStatElement.elementTextTrim("DiskTotal"));
-							float diskUsage = 100.00f*(1f-diskFree/diskTotal);
-							engineRateMap.put("diskUsage", diskUsage);
-						}	            	
-						engineRateMap.put("getSpeed", 0);
-						engineRateMap.put("sendSpeed", 0);
-						
-						engineList.add(engineRateMap);
-						
-					}
-					JSONArray jsonArray = JSONArray.fromObject(engineList);
-					
-					jsonObject.put("status", "success");
-					jsonObject.put("StatRateList", jsonArray);
-					return jsonObject.toString();
-				} else {
-					return responseToJSON(responseString).toString();
-				}
-
+				document = DocumentHelper.parseText(responseString);
 			} catch (DocumentException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			
-				
+			} 
+			Element rootElement = document.getRootElement();
+			if ("Success".equalsIgnoreCase(rootElement.attributeValue("value"))) {		
+				List<?> nodes = rootElement.elements("EngineList");
+				List<HashMap> engineList = new ArrayList<HashMap>();
+				for(Iterator<?> it=nodes.iterator();it.hasNext();){
+					Element engineStatElement = (Element) it.next();
+					HashMap<String, Comparable> engineRateMap = new HashMap<String, Comparable>();
+					//For IP
+					if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("IP"))||engineStatElement.elementTextTrim("IP")==null) {
+						engineRateMap.put("ip", null);
+					}else {
+						String IP = engineStatElement.elementTextTrim("IP");
+						engineRateMap.put("ip", IP);
+					}
+					
+					//For CPU Usage
+					if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("CpuOccupancy"))
+							||engineStatElement.elementTextTrim("CpuOccupancy")==null) {
+						engineRateMap.put("cpuUsage", null);
+					}else {
+						String CpuOccupancy = engineStatElement.elementTextTrim("CpuOccupancy");
+						float cpuUsage = Float.parseFloat(CpuOccupancy);
+						engineRateMap.put("cpuUsage", cpuUsage);
+					}
+					
+					//For memoryFree
+					if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("MemoryFree"))
+							||engineStatElement.elementTextTrim("MemoryFree")==null
+							||"".equalsIgnoreCase(engineStatElement.elementTextTrim("MemoryTotal"))
+							||engineStatElement.elementTextTrim("MemoryTotal")==null) {
+						engineRateMap.put("memoryUsage", null);
+					} else {
+						float memoryFree = Float.parseFloat(engineStatElement.elementTextTrim("MemoryFree"));
+						float memoryTotal = Float.parseFloat(engineStatElement.elementTextTrim("MemoryTotal"));
+						float memoryUsage = 100.00f*(1f-memoryFree/memoryTotal);
+						engineRateMap.put("memoryUsage", memoryUsage);
+					}
+					
+					if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("DiskFree"))
+							||engineStatElement.elementTextTrim("DiskFree")==null
+							||"".equalsIgnoreCase(engineStatElement.elementTextTrim("DiskTotal"))
+							||engineStatElement.elementTextTrim("DiskTotal")==null) {
+						engineRateMap.put("diskUsage", null);
+					} else {
+						float diskFree = Float.parseFloat(engineStatElement.elementTextTrim("DiskFree"));
+						float diskTotal = Float.parseFloat(engineStatElement.elementTextTrim("DiskTotal"));
+						float diskUsage = 100.00f*(1f-diskFree/diskTotal);
+						engineRateMap.put("diskUsage", diskUsage);
+					}	            	
+					engineRateMap.put("getSpeed", 0);
+					engineRateMap.put("sendSpeed", 0);
+					
+					engineList.add(engineRateMap);
+					
+				}
+				JSONArray jsonArray = JSONArray.fromObject(engineList);
+				jsonObject.put("status", "success");
+				jsonObject.put("StatRateList", jsonArray);
+				return jsonObject.toString();
+			} else {
+				return responseToJSON(responseString).toString();
+			}				
 		}
 		return DEVICE_OPERATION_ERROR;
 	}
@@ -463,7 +461,7 @@ public class DeviceAdpaterManager {
 			if ("0".equalsIgnoreCase(responseObject.getString("code"))) {
 				responseObject.put("status", "Success");
 			}else {
-				responseObject.put("status", "Fail");
+				responseObject.put("status", "fail");
 			}
 	        return response.toString();
 		}
@@ -703,24 +701,26 @@ public class DeviceAdpaterManager {
 	}
 	
 	public String getSites(int resourceId, int deviceId) {
-		if("".equals(resourceId)||"".equals(deviceId))  return errorWAFDeviceInfo(resourceId, deviceId);
 		return nsfocusWAFAdapter.getSites(resourceId, deviceId);
 	}
 	public String createSite(int resourceId, int deviceId,JSONObject jsonObject) {
-		if("".equals(resourceId)||"".equals(deviceId))  return errorWAFDeviceInfo(resourceId, deviceId);
 		return nsfocusWAFAdapter.createSite(resourceId, deviceId, jsonObject);
 	}
+	public String alterSite(int resourceId, int deviceId, JSONObject jsonObject) {
+		return nsfocusWAFAdapter.alterSite(resourceId, deviceId, jsonObject);
+	}
+	
 	public String createVSite(int resourceId,int deviceId,JSONObject jsonObject) {
-		if("".equals(resourceId)||"".equals(deviceId))  return errorWAFDeviceInfo(resourceId, deviceId);
 		return nsfocusWAFAdapter.createVSite(resourceId, deviceId, jsonObject);
 	}
 	public String alterVSite(int resourceId, int deviceId, JSONObject jsonObject) {
-		if("".equals(resourceId)||"".equals(deviceId))  return errorWAFDeviceInfo(resourceId, deviceId);
 		return nsfocusWAFAdapter.alterVSite(resourceId, deviceId, jsonObject);
+	}
+	public String deleteVSite(int resourceId, int deviceId, JSONObject jsonObject) {
+		return nsfocusWAFAdapter.deleteVSite(resourceId, deviceId, jsonObject);
 	}
 	
 	public String postIpToEth(int resourceId, int deviceId,JSONObject jsonObject) {
-		if("".equals(resourceId)||"".equals(deviceId))  return errorWAFDeviceInfo(resourceId, deviceId);
 		return nsfocusWAFAdapter.postIpToEth(resourceId, deviceId, jsonObject);
 	}
 	
@@ -764,9 +764,4 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getWafLogDeface(dstIp);
 	}
 	
-	public static void main(String[] args) {
-		DeviceAdpaterManager deviceAdpaterManager = new DeviceAdpaterManager();
-		deviceAdpaterManager.loadDeviceAdpater();
-		System.out.println(deviceAdpaterManager.errorWAFDeviceInfo(10001, 30001));
-	}
 }

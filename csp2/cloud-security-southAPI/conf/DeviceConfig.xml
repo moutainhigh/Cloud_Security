@@ -3,7 +3,7 @@
 <DeviceAdapterConfig>
 	<DeviceList>
 		<DeviceScannerList>
-			<!--<DeviceScanner id="10001">
+			<DeviceScanner id="10001">
 				<DeviceID>10001</DeviceID>
 				<ScannerFactory>Arnhem</ScannerFactory>
 				<ScannerFactoryName>安恒</ScannerFactoryName>
@@ -11,7 +11,7 @@
 				<ScannerEngineAPI>https://219.141.189.187:61443</ScannerEngineAPI>
 			 	<ScannerUserName>ltb</ScannerUserName>
 				<ScannerPassword>qwer1234</ScannerPassword>
-			</DeviceScanner>-->
+			</DeviceScanner>
 			<DeviceScanner id="10002">
 				<DeviceID>10002</DeviceID>
 				<ScannerFactory>Arnhem</ScannerFactory>

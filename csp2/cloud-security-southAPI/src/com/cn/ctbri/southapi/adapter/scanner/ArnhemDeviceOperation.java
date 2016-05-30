@@ -197,7 +197,21 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 		WebResource service = client.resource(url);
 		//获取响应结果
 		String response = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
-		return response;
+		try {
+			SAXReader reader = new SAXReader();
+			Document document = reader.read(IOUtils.toInputStream(response));
+			Element rootElement = document.getRootElement();
+			String value = rootElement.attributeValue("value");
+			if ("AuthErr"==value&&createSessionId(username, password, arnhemServerWebrootUrl)) {
+				String redirectResponse = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class);
+				return redirectResponse;
+			} else {
+				return response;
+			}
+		} catch (DocumentException e) {
+			e.printStackTrace();
+			return response;
+		}
 	}
 	
 	

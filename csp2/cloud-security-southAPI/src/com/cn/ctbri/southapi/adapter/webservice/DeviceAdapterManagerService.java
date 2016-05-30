@@ -3,6 +3,8 @@ package com.cn.ctbri.southapi.adapter.webservice;
 import java.sql.Blob;
 import java.sql.SQLException;
 
+import javax.print.attribute.standard.Media;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -12,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 
 import net.sf.json.JSONObject;
 
+import org.apache.el.parser.JJTELParserState;
 import org.codehaus.jettison.json.JSONException;
 
 import com.cn.ctbri.southapi.adapter.config.ScannerTaskUniParam;
@@ -22,6 +25,22 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Path("adapter")
 public class DeviceAdapterManagerService {
 	private static DeviceAdpaterManager deviceAdpaterManager = new DeviceAdpaterManager();
+	
+	private String errNullScannerDevice() {
+		JSONObject errJsonObject = new JSONObject();
+		errJsonObject.put("status", "failed");
+		errJsonObject.put("message", "The deviceId is null.");
+		return errJsonObject.toString();
+	}
+	
+	
+	
+	private String errNullWafDevice() {
+		JSONObject errJsonObject = new JSONObject();
+		errJsonObject.put("status", "failed");
+		errJsonObject.put("message", "The resoureId or deviceId is null.");
+		return errJsonObject.toString();
+	}
 	@GET
 	@Path("/loadDeviceAdapter")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -41,8 +60,10 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String disposeScanTask(String dataJson)throws JSONException{
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
+		if(jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullScannerDevice();
 		String deviceId = jsonObject.get("deviceId").toString();
+		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		return deviceAdpaterManager.disposeScanTask(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -50,8 +71,10 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getProgressById(String dataJson){
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
+		if(jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullScannerDevice();
 		String deviceId = jsonObject.get("deviceId").toString();
+		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		return deviceAdpaterManager.getProgressById(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -59,6 +82,8 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getTemplate(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		if(jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullScannerDevice();
 		String deviceId = jsonObject.get("deviceId").toString();
 		return deviceAdpaterManager.getTemplate(deviceId);
 	}
@@ -67,6 +92,8 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getEngineStat(String dataJson){
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		if(jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullScannerDevice();
 		String deviceId = jsonObject.get("deviceId").toString();
 		return deviceAdpaterManager.getEngineStat(deviceId);
 	}
@@ -75,6 +102,8 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getEngineStatRate(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		if(jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullScannerDevice();
 		String deviceId = jsonObject.get("deviceId").toString();
 		return deviceAdpaterManager.getEngineStatRate(deviceId);
 	}
@@ -83,8 +112,10 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String removeTask(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
+		if(jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullScannerDevice();
 		String deviceId = jsonObject.get("deviceId").toString();
+		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		return deviceAdpaterManager.removeTask(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -92,8 +123,10 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String startTask(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
+		if(jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullScannerDevice();
 		String deviceId = jsonObject.get("deviceId").toString();
+		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		return deviceAdpaterManager.startTask(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -101,8 +134,10 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String pauseTask(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
+		if(jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullScannerDevice();
 		String deviceId = jsonObject.get("deviceId").toString();
+		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		return deviceAdpaterManager.pauseTask(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -110,8 +145,10 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String stopTask(String dataJson){
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
+		if(jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullScannerDevice();
 		String deviceId = jsonObject.get("deviceId").toString();
+		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		return deviceAdpaterManager.stopTask(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -128,8 +165,10 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getTaskPercentById(String dataJson){
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
+		if(jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullScannerDevice();
 		String deviceId = jsonObject.get("deviceId").toString();
+		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		return deviceAdpaterManager.getTaskPercentById(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -137,6 +176,8 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getTaskLoadInfo(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		if(jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullScannerDevice();
 		String deviceId = jsonObject.get("deviceId").toString();
 		return deviceAdpaterManager.getTaskLoadInfo(deviceId);
 	}
@@ -145,8 +186,10 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getResultCountByTaskID(String dataJson){
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
+		if(jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullScannerDevice();
 		String deviceId = jsonObject.get("deviceId").toString();
+		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		return deviceAdpaterManager.getResultCountByTaskID(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -154,8 +197,10 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getReportByTaskID(String dataJson) throws JSONException{
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
+		if(jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullScannerDevice();
 		String deviceId = jsonObject.get("deviceId").toString();
+		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		return deviceAdpaterManager.getReportByTaskID(deviceId, scannerTaskUniParam);
 	}
 	@POST
@@ -171,6 +216,8 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getWebsiteList(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		if(jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullScannerDevice();
 		String deviceId = jsonObject.get("deviceId").toString();
 		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		return deviceAdpaterManager.getWebsiteList(deviceId, scannerTaskUniParam);
@@ -181,7 +228,6 @@ public class DeviceAdapterManagerService {
 	public String getWafLogWebsecByIp(String dataJson){
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		String dstIp = jsonObject.getString("dstIp");
-		System.out.println(dstIp);
 		return deviceAdpaterManager.getWafLogWebsec(dstIp);
 	}
 	@POST
@@ -213,16 +259,22 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getSites(String dataJson){
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		int resourceId = Integer.parseInt(jsonObject.get("resourceId").toString());
-		int deviceId = Integer.parseInt(jsonObject.get("deviceId").toString());
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals("")
+		||jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullWafDevice();
+		int resourceId = jsonObject.getInt("resourceId");
+		int deviceId = jsonObject.getInt("deviceId");
 		return deviceAdpaterManager.getSites(resourceId, deviceId);
 	}
 	@POST
 	@Path("/postIpToEth")
 	public String postIpToEth(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		int resourceId = Integer.parseInt(jsonObject.getString("resourceId"));
-		int deviceId = Integer.parseInt(jsonObject.getString("deviceId"));
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals("")
+		||jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullWafDevice();
+		int resourceId = jsonObject.getInt("resourceId");
+		int deviceId = jsonObject.getInt("deviceId");
 		return deviceAdpaterManager.postIpToEth(resourceId, deviceId, jsonObject);
 	}
 	@POST
@@ -230,17 +282,35 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String createSite(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		int resourceId = Integer.parseInt(jsonObject.getString("resourceId"));
-		int deviceId = Integer.parseInt(jsonObject.getString("deviceId"));
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals("")
+		||jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullWafDevice();
+		int resourceId = jsonObject.getInt("resourceId");
+		int deviceId = jsonObject.getInt("deviceId");
 		return deviceAdpaterManager.createSite(resourceId, deviceId, jsonObject);
 	}
+	
+	@PUT
+	@Path("/alterSite")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String alterSite(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		int resourceId = Integer.parseInt(jsonObject.getString("resourceId"));
+		int deviceId = Integer.parseInt(jsonObject.getString("deviceId"));
+		return deviceAdpaterManager.alterSite(resourceId, deviceId, jsonObject);
+	}
+	
+	
 	@POST
 	@Path("/createVirtualSite")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String createVirtualSite(String dataJson){
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		int resourceId = Integer.parseInt(jsonObject.getString("resourceId"));
-		int deviceId = Integer.parseInt(jsonObject.getString("deviceId"));
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals("")
+		||jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullWafDevice();
+		int resourceId = jsonObject.getInt("resourceId");
+		int deviceId = jsonObject.getInt("deviceId");
 		return deviceAdpaterManager.createVSite(resourceId, deviceId, jsonObject);
 	}
 	
@@ -249,9 +319,18 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String alterVirtualSite(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		int resourceId = Integer.parseInt(jsonObject.getString("resourceId"));
-		int deviceId = Integer.parseInt(jsonObject.getString("deviceId"));
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals("")
+		||jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullWafDevice();
+		int resourceId = jsonObject.getInt("resourceId");
+		int deviceId = jsonObject.getInt("deviceId");
 		return deviceAdpaterManager.alterVSite(resourceId, deviceId, jsonObject);
+	}
+	@DELETE
+	@Path("/deleteVirtualSite")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String deleteVirtualSite(String dataJson) {
+		return null;
 	}
 
 }
