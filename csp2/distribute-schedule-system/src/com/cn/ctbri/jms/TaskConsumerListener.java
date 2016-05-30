@@ -83,6 +83,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	private static String disk_usageWeight;
 	private static String get_speed_usageWeight;
 	private static String send_speed_usageWeight;
+	private static String load_usageWeight;
 	private static String get_speedmax;
 	private static String get_speed;
 	private static String send_speedmax;
@@ -103,6 +104,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 			get_speed = p.getProperty("get_speed");
 			send_speedmax = p.getProperty("send_speedmax");
 			send_speed = p.getProperty("send_speed");
+			load_usageWeight = p.getProperty("load_usageWeight");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -689,7 +691,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
             String resultStr = SouthAPIWorker.getEngineStatRate(engineList.get(i).getEngine_number());
 
             //解析引擎设备参数，返回负载值
-            getLoadForEngine(resultStr);
+            getLoadForEngine(resultStr,engineList.get(i).getActivity(),engineList.get(i).getMaxTask());
           
     	}
 
@@ -722,12 +724,15 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 		return engineTop3;
 	}
 	
+
 	/**
 	 * 解析引擎，返回负载值
-	 * @param resultStr
+	 * @param resultStr 返回的json串
+	 * @param activity 运行中的任务数
+	 * @param maxTask 引擎最大承载任务数
 	 * @return
 	 */
-	private Map<String,Double> getLoadForEngine(String resultStr){
+	private Map<String,Double> getLoadForEngine(String resultStr,int activity,int maxTask){
 		Map<String,Double> loadMap = new HashMap<String,Double>();
 		double load = 0;
         try {
@@ -738,23 +743,18 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 				for (int i = 0; i < jsonList.size(); i++) {
 					JSONObject jsonObject = jsonList.getJSONObject(i); 
 					String ip = jsonObject.getString("ip");
-					if(!jsonObject.get("memoryUsage").equals("null")){
+					if(!jsonObject.get("memoryUsage").equals("null") && jsonObject.get("cpuUsage") != null && jsonObject.get("diskUsage") != null){
 						double memory_usage = jsonObject.getDouble("memoryUsage");
 						double cpu_usage = jsonObject.getDouble("cpuUsage");
 						double disk_usage = jsonObject.getDouble("diskUsage");
-						double get_speed = jsonObject.getDouble("getSpeed");
-						double send_speed = jsonObject.getDouble("sendSpeed");
+						double load_usage = activity/maxTask;
 						
 						double cpu_usageWeightD = Double.parseDouble(cpu_usageWeight);
 						double memory_usageWeightD = Double.parseDouble(memory_usageWeight);
 						double disk_usageWeightD = Double.parseDouble(disk_usageWeight);
-						double get_speed_usageWeightD = Double.parseDouble(get_speed_usageWeight);
-						double send_speed_usageWeightD = Double.parseDouble(send_speed_usageWeight);
-						double get_speedmaxD = Double.parseDouble(get_speedmax);
-	                    double send_speedmaxD = Double.parseDouble(send_speedmax);
+	                    double load_usageWeightD = Double.parseDouble(load_usageWeight);
 	                    
-	                    load = (cpu_usageWeightD*cpu_usage + memory_usageWeightD*memory_usage + disk_usageWeightD*disk_usage + get_speed_usageWeightD*(get_speed/get_speedmaxD) +
-	                    		send_speed_usageWeightD*(send_speed/send_speedmaxD))/(cpu_usageWeightD+memory_usageWeightD+disk_usageWeightD+get_speed_usageWeightD+send_speed_usageWeightD);
+	                    load = cpu_usageWeightD*cpu_usage + memory_usageWeightD*memory_usage + disk_usageWeightD*disk_usage + load_usage*load_usageWeightD;
 	                    if(load!=0){
 	                    	arnhemEngineMap.put(ip, load);
 	                    }
