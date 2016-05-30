@@ -161,31 +161,7 @@ public class shoppingController {
         String priceVal="";
         priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
         String[]  assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
-        double priceD = 0;
-        if(Integer.parseInt(times)!=0){
-        	if(serviceId!=5){
-        		priceD = Integer.parseInt(times)*assetArray.length*Double.parseDouble(priceVal);
-        	}else{
-        		priceD = assetArray.length*Double.parseDouble(priceVal);
-        	}
-        	
-        }else{
-        	priceD = assetArray.length*Double.parseDouble(priceVal);
-        }
-
-        //联系人信息
-//       String linkname = new String(request.getParameter("linkname").getBytes("ISO-8859-1"),"UTF-8");
-//       String phone = request.getParameter("phone");
-//       String email = request.getParameter("email");
-//       String company = new String(request.getParameter("company").getBytes("ISO-8859-1"),"UTF-8");
-//       String address = new String(request.getParameter("address").getBytes("ISO-8859-1"),"UTF-8");
-       //华为参数
-//       String ip = request.getParameter("ip");
-//       String bandwidth = request.getParameter("bandwidth");
-       //厂商
-//       String websoc = request.getParameter("websoc");
-       //任务数
-//       String tasknum = request.getParameter("tasknum");
+        double priceD = Double.parseDouble(priceVal);
        
         //根据id查询service
 	    Serv service = servService.findById(serviceId);
@@ -273,8 +249,8 @@ public class shoppingController {
         
 	    String[]  assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
         order.setUserId(globle_user.getId());
-        double priceD = 0;
-        if(Integer.parseInt(times)!=0){
+        double priceD = Double.parseDouble(priceVal);
+        /*if(Integer.parseInt(times)!=0){
         	if(Integer.parseInt(serviceId)!=5){
         		priceD = Integer.parseInt(times)*assetArray.length*Double.parseDouble(priceVal);
         	}else{
@@ -282,7 +258,7 @@ public class shoppingController {
         	}
         }else{
         	priceD = assetArray.length*Double.parseDouble(priceVal);
-        }
+        }*/
         DecimalFormat df = new DecimalFormat("0.00");
         String temp = df.format(priceD);
         order.setPrice(Double.parseDouble(temp));
