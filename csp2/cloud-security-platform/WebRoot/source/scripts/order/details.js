@@ -402,13 +402,9 @@ function tasknum_verification(){
     	var assetCountNew = 0;
     	if(assetCount==null){
     		//获取资产数
-    		$('.dropdown-menu li').each(function(){
-				var ck=$(this).find('input');
-				if($(ck).is(':checked')){
-					assetCountNew++;
-					
-				}
-    		})
+    		$('.btnNew i').each(function(){
+    			assetCountNew++;
+    		});
     	}else{
         	assetCountNew = assetCount;
     	}
@@ -446,13 +442,9 @@ function tasknum_verification(){
     	var assetCountNew = 0;
     	if(assetCount==null){
     		//获取资产数
-    		$('.dropdown-menu li').each(function(){
-				var ck=$(this).find('input');
-				if($(ck).is(':checked')){
-					assetCountNew++;
-					
-				}
-    		})
+    		$('.btnNew i').each(function(){
+    			assetCountNew++;
+    		});
     	}else{
         	assetCountNew = assetCount;
     	}
@@ -469,7 +461,7 @@ function tasknum_verification(){
     		servType = $(".clickTime").val();
     	}
 
-		if(!(obj==null&&typeDefault!=null)){
+		if(!(obj==null&&typeDefault!=null) && assetCount==null){
         	if(beginDate==""||beginDate==null||endDate==""||endDate==null){
     			return;
     		}
