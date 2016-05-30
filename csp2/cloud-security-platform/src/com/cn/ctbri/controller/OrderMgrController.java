@@ -534,7 +534,6 @@ public class OrderMgrController {
 				m.put("orderStatus", false);
 			}
             m.put("timeCompare", true);
-            m.put("orderId", orderId);
         }else{
             m.put("timeCompare", false);
         }
@@ -546,9 +545,12 @@ public class OrderMgrController {
 	    ol.setId(id);
 	    ol.setCreate_date(new Date());
 	    ol.setOrderId(orderId);
+	    ol.setUserId(globle_user.getId());
 	    ol.setPrice(Double.parseDouble(price));
 	    orderListService.insert(ol);
-        //object转化为Json格式
+	    
+	    m.put("orderListId", id);
+	    //object转化为Json格式
         JSONObject JSON = CommonUtil.objectToJson(response, m);
         try {
             // 把数据返回到页面
