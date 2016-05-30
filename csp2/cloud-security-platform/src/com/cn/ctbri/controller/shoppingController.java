@@ -620,7 +620,7 @@ public class shoppingController {
         String scanType = request.getParameter("scanType");
         String type = request.getParameter("type");
         String apiVal=request.getParameter("apiId");
-     
+        String price = request.getParameter("price");
         String serviceId = request.getParameter("serviceId");
         String num=request.getParameter("num");
         
@@ -676,6 +676,7 @@ public class shoppingController {
         request.setAttribute("serviceId", serviceId);
         request.setAttribute("serviceAssetList", serviceAssetList);
         request.setAttribute("num", num);
+        request.setAttribute("price", price);
         return result;
 	}
 	
