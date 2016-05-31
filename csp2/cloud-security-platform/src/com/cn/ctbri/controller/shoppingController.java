@@ -771,36 +771,45 @@ public class shoppingController {
 	            
 		        switch(serviceId){
 		        case 1:
-		        	//每周
-		        	if(typeInt==2){
-		        		int perWeek = 1000*3600*24*7;
-		        		if(ms%perWeek>0){
-		        			times = (long)(ms/perWeek)+1;
-		        		}else{
-		        			times = (long)(ms/perWeek);
-		        		}		        		
-		        	}else{//每月
-		        		while(ms>0){
-		        			bDate = DateUtils.getDayAfterMonth(bDate);
-		        			ms = DateUtils.getMsByDays(bDate, eDate);
-		        			times++;
-		        		}
+		        	if(ms==0){
+		        		times = 1;//用于显示默认价格
+		        	}else{
+		        		//每周
+			        	if(typeInt==2){
+			        		int perWeek = 1000*3600*24*7;
+			        		if(ms%perWeek>0){
+			        			times = (long)(ms/perWeek)+1;
+			        		}else{
+			        			times = (long)(ms/perWeek);
+			        		}		        		
+			        	}else{//每月
+			        		while(ms>0){
+			        			bDate = DateUtils.getDayAfterMonth(bDate);
+			        			ms = DateUtils.getMsByDays(bDate, eDate);
+			        			times++;
+			        		}
+			        	}	
 		        	}
 		        	break;
 		        	
 		        case 2://30分钟
-		        	int min_30 = 1000*3600/2;
-		        	if(ms%min_30 > 0){
-		        		times = (long)(ms/min_30) + 1;
+		        	if(ms==0){
+		        		times = 1;//用于显示默认价格
 		        	}else{
-		        		times = (long)(ms/min_30);
+			        	int min_30 = 1000*3600/2;
+			        	if(ms%min_30 > 0){
+			        		times = (long)(ms/min_30) + 1;
+			        	}else{
+			        		times = (long)(ms/min_30);
+			        	}
 		        	}
+
 		        	break;
 		        	
 		        case 3://一天
 		        case 4:
 		        	if(ms==0){
-		        		times = 2;//用于显示默认价格
+		        		times = 1;//用于显示默认价格
 		        	}else{
 			        	int oneDay = 1000*3600*24;
 			        	if(ms%oneDay > 0){
@@ -813,7 +822,7 @@ public class shoppingController {
 		        	
 		        case 5:
 		        	if(ms==0){
-		        		times = 2;//用于显示默认价格
+		        		times = 1;//用于显示默认价格
 		        	}else{
 		        		if(typeInt==3){//一小时
 				        	int oneHour = 1000*3600;
@@ -841,6 +850,10 @@ public class shoppingController {
 				    			calPrice = onePrice.getPrice()*times*assetCount;
 				    			break;
 				    		}
+				        	if(serviceId==5 && times==1 && onePrice.getTimesG()==1){//服务5：特殊，times==1，取第二区间
+				        		calPrice = onePrice.getPrice()*times*assetCount;
+				    			break;
+				        	}
 				        }else if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()==0 && times>onePrice.getTimesG()){//超过
 			        		calPrice = onePrice.getPrice()*times*assetCount;
 			        		break;
