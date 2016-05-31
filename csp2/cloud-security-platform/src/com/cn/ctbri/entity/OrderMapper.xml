@@ -306,4 +306,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from cs_linkman l where l.id=#{contactId}
     </select>
     
+    <!-- 查询 服务名称 -->
+    <select id="findServiceNameById" resultType="java.lang.String" parameterType="java.lang.String" >
+    	select distinct s.name
+		from cs_order o,cs_service s
+		where o.id in (${_parameter}) and o.serviceId = s.id and (o.isAPI is null or o.isAPI !=1)
+		union
+		select distinct s.name
+		from cs_order o,cs_service_api s
+		where o.id in (${_parameter}) and o.serviceId = s.id and o.isAPI = 1
+    </select>
+    
 </mapper>
