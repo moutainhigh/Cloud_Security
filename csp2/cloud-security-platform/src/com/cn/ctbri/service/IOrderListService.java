@@ -1,6 +1,7 @@
 package com.cn.ctbri.service;
 
 import com.cn.ctbri.entity.OrderList;
+import com.cn.ctbri.pager.PageBean;
 
 
 /**
@@ -14,4 +15,13 @@ public interface IOrderListService {
 	//插入购物订单
 	void insert(OrderList ol);
 	
+	//查询购物订单
+	OrderList findById(String id);
+	
+	/**
+     * 功能描述：消费记录-分页
+     *       @time 2016-5-19
+     * 返回值    ：  List<Order>
+     */
+	PageBean queryPayRecordByPage(int userId, int pageCode);
 }
