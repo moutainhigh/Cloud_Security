@@ -1,5 +1,9 @@
 package com.cn.ctbri.dao.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.DaoCommon;
@@ -23,5 +27,33 @@ public class OrderListDaoImpl extends DaoCommon implements OrderListDao{
 		this.getSqlSession().insert(ns + "insert", ol);
 	}
 	
+	public OrderList findById(String id){
+		return this.getSqlSession().selectOne(ns + "findById", id);
+	}
+	
+	public List findAllPayRecord(int userId) {
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("userId", userId);
+		paramMap.put("pageNow", null);
+        paramMap.put("pageSize", null);
+		List list = getSqlSession().selectList(ns +"queryPayRecordByPageAndUserId", paramMap);
+		return list;
+	}
+	
+	/**
+     * 功能描述： 消费记录分页
+     * @param userId
+     * @param  i  开始记录的个数
+     * @param pageSize  每页记录条数
+     *       @time 2016-5-19
+     */
+	public List queryPayRecordByPage(int userId, int offset, int pageSize) {
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("userId", userId);
+		paramMap.put("pageNow", offset);
+        paramMap.put("pageSize", pageSize);
+        List list = getSqlSession().selectList(ns +"queryPayRecordByPageAndUserId", paramMap);
+		return list;
+	}
 	
 }
