@@ -113,4 +113,7 @@ public interface IUserService {
     
     //插入用户登录历史
     void insertLoginHistory(LoginHistory lh);
+    
+    //更改安全币余额
+    int updateBalance(User user);
 }
