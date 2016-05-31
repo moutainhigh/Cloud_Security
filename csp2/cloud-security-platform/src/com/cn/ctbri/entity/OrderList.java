@@ -15,8 +15,10 @@ public class OrderList {
 	private int userId;//用户ID
 	private int contactId;//联系人Id
 	private String remarks;//备注
-	private String orderId;//以逗号分隔
+	private String orderId;//订单Id
 	private double price;//总价
+	private Date pay_date;//支付时间
+	
 	public String getId() {
 		return id;
 	}
@@ -58,6 +60,12 @@ public class OrderList {
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	public Date getPay_date() {
+		return pay_date;
+	}
+	public void setPay_date(Date pay_date) {
+		this.pay_date = pay_date;
 	}
 	
 }
