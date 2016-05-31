@@ -193,5 +193,25 @@ public class OrderServiceImpl implements IOrderService{
 	public List<String> findServiceNameByOrderId(String orderId){
 		return orderDao.findServiceNameByOrderId(orderId);
 	}
+	@Override
+	public Linkman findLinkmanByOrderId(String orderId) {
+		// TODO Auto-generated method stub
+		return orderDao.findLinkmanByOrderId(orderId);
+	}
+	@Override
+	public void updateLinkManByOrderId(Linkman linkman,String orderId) {
+		// TODO Auto-generated method stub
+		orderDao.updateLinkManByOrderId(linkman, orderId);
+	}
+	@Override
+	public void updateLinkManByAPIId(Linkman linkman, String orderId) {
+		// TODO Auto-generated method stub
+		orderDao.updateLinkManByAPIId(linkman, orderId);
+	}
+	@Override
+	public void delLinkmanByOrderId(String orderId) {
+		// TODO Auto-generated method stub
+		orderDao.delLinkmanByOrderId(orderId);
+	}
 	
 }
