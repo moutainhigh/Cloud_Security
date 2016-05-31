@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.DaoCommon;
@@ -217,6 +218,17 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 		List list = this.getSqlSession().selectList(nv + "findByCombineOrderTrackByPageAsset",paramMap);
         return list;
 	}
+	
+	/**
+     * 功能描述：根据orderId查询服务名称
+     *       @time 2016-4-25
+     * 返回值    ：  List<Order>
+     */
+	public List<String> findServiceNameByOrderId(String orderId){
+		List<String> serviceNameList =  this.getSqlSession().selectList(ns + "findServiceNameById", orderId);
+		return serviceNameList;
+	}
+	
     
     
 }
