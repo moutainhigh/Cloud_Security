@@ -1,0 +1,257 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<title>个人中心-我的余额</title>
+<link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
+<link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
+<link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
+<link href="${ctx}/source/css/core.css" type="text/css" rel="stylesheet">
+<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
+<SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
+<script src="${ctx}/source/scripts/common/jquery.js"></script>
+<script src="${ctx}/source/scripts/common/jquery-1.7.1.min.js"></script>
+<script src="${ctx}/source/scripts/common/portalindex.js"></script>
+<script src="${ctx}/source/scripts/common/popBox.js"></script>
+<script src="${ctx}/source/scripts/common/slidelf.js"></script>
+<script src="${ctx}/source/scripts/common/main.js"></script>
+<script type="text/javascript">
+
+
+</script>
+</head>
+
+<body>
+	<div class="safeBox">
+		
+		<div class="safe01 detalis-head">
+			<!--头部-->
+			<div class="head">
+				<div class="headBox">
+					<div class="safeL fl" style="width:260px; margin-right:13%">
+						<a href="${ctx}/index.html"><img src="${ctx}/source/images/anquanbang_white_logo.png" alt="" style="position:relative; top:4px;"/></a>
+                        <b class="dividing-line"></b>
+                        <strong>个人中心</strong>
+					</div>
+					
+					<div class="safem fl">
+						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
+						<!-- 商品分类 start -->
+						<c:import url="/category.html"></c:import>
+						<!-- 商品分类 end -->
+						
+						<span class="fl"><a href="${ctx}/knowUs.html">关于我们</a></span>
+						<span class="fl shopping" style="margin-right:0">
+							<a href="${ctx}/showShopCar.html"><i></i>购物车</a>
+						</span>
+						
+					</div>
+					<div class="safer fr" style="margin-left:0px;">
+						<!-- 如果已经登录则显示用户名，否则需要登录 -->
+				         <c:if test="${sessionScope.globle_user!=null }">
+				         <div class="login clearfix">
+					        <a href="${ctx}/userCenterUI.html"  class="fl loginname">${sessionScope.globle_user.name }</a>
+					        <em class="fl">|</em>
+					        <a href="${ctx}/exit.html" class="fl" >退出</a>
+					      </div>
+				         </c:if>
+				         <c:if test="${sessionScope.globle_user==null }">
+				            <a href="${ctx}/loginUI.html">登录</a>
+							<em>|</em>
+							<a href="${ctx}/registUI.html">注册</a>
+				         </c:if>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="core balance clearfix" style="margin-bottom:343px;">
+        	<div class="coreLeft fl">
+            	<a href="${ctx}/userCenterUI.html"><h3><i></i>个人中心</h3></a>
+                <dl>
+                	<dt>交易管理</dt>
+                    <dd><a href="${ctx}/orderTrackInit.html">我的订单</a></dd>
+                    <dd><a href="#" class="active">我的余额</a></dd>
+                    <dt>个人信息管理</dt>
+                    <dd><a href="${ctx}/userDataUI.html">个人资料</a></dd>
+                    <dd style="border:none;"><a href="${ctx }/userAssetsUI.html">我的资产</a></dd>
+                </dl>
+            </div>
+        	<div class="coreRight fl" style="margin-bottom:200px;">
+            		<div class="banlance_head clearfix">
+                    	<div class="c-lan fl">
+                        	<span class="b_aic">安全币余额：<em>500</em></span>
+                            <span class="b_bic qdbtn">
+                           		<i><img src="${ctx}/source/images/balance/sign_in.png" alt=""></i>
+                            	<c:if test="${signIn}">
+                            		<b style="padding-left:10px;"><i style="width:auto;padding-right: 8px;"><img src="${ctx}/source/images/balance/minig.png" alt=""></i>今日已签到</b>
+                            	</c:if>
+                            	<c:if  test="${!signIn}">
+                            		<b>签到可获得10安全币</b>
+                           </c:if>
+                            </span>
+                        </div>
+                        
+                       <a href="javascript:;" id="gz" class="gz-btn fr">安全币规则</a>
+                       <div class="gz pop rule">
+                       		<dl>
+                            	<dt><i><img src="${ctx}/source/images/balance/balance_rule.png"></i>安全币可以做什么？</dt>
+                                <dd>1、可以用于购买安全帮内所有的安全服务</dd>
+                                <dd>2、1安全币=1元人民币</dd>
+                            </dl>
+                            <dl>
+                            	<dt><i><img src="${ctx}/source/images/balance/balance_get.png"></i>怎么获取安全币？</dt>
+                                <dd>1、新用户注册可获得500安全币</dd>
+                                <dd>2、每日签到可获得10安全币</dd>
+                            </dl>
+                       
+                       </div>
+                    	
+                    </div>
+                    <div class="hr" style="margin:14px 0 20px 0"></div>
+            	<div class="take-notes">
+                	<h3>消费记录</h3>
+                    <table class="tabox">
+                    	<thead>
+                        	<tr height="50">
+                            	<th width="185"><span style=" padding-left:42px;">序号</span></th>
+                                <th width="264" align="center">时间</th>
+                                <th width="240">订单编号</th>
+                                <th width="280">名称</th>
+                                <th width="160">价格（元）</th>
+                            </tr>
+                            
+                        </thead>
+                       </table>
+                       <c:forEach var="payItem" items="${pb.datas }" varStatus="status">
+							<table class="tabox" style="background-color: #e4f3ff">
+								<tbody>
+									<tr height="80">
+										<td width="134" align="center">${status.count }</td>
+										<td width="200">
+											<fmt:formatDate value="${payItem.payDate }" pattern="yyyy-MM-dd HH:mm:ss"/>
+										</td>
+										<td width="200">${payItem.id }</td>
+										<td width="260" style="font-size: 16px;">${payItem.serviceName }</td>
+										<td width="130">
+											<fmt:formatNumber  value="${payItem.price }" pattern="0.00"/>
+										</td>
+									</tr>
+								</tbody>
+
+							</table>
+						</c:forEach>
+                </div>
+                <%--页码列表--%>
+                <div class="page clearfix">
+                	<a href="<c:url value='/balanceUI.html?pageCode=${pb.pageCode-1 }'/>" class="lt active fl"></a>
+                    <ul class="bpage fl">
+	                	<c:set var="begin" value="1"/>
+						<c:set var="end" value="10"/>
+						<%-- 定位begin和end --%>
+						<c:choose>
+							<c:when test="${pb.totalPage <= 10 }">
+								<c:set var="begin" value="1"/>
+								<c:set var="end" value="${pb.totalPage }"/>		
+							</c:when>
+							<c:otherwise>
+								<c:choose>
+									<c:when test="${pb.pageCode - 4 < 1 }">
+										<c:set var="begin" value="1"/>
+										<c:set var="end" value="10"/>					
+									</c:when>
+									<c:when test="${pb.pageCode + 5 > pb.totalPage }">
+										<c:set var="begin" value="${pb.totalPage - 9 }"/>
+										<c:set var="end" value="${pb.totalPage }"/>					
+									</c:when>
+									<c:otherwise>
+										<c:set var="begin" value="${pb.pageCode - 4 }"/>
+										<c:set var="end" value="${pb.pageCode + 5 }"/>					
+									</c:otherwise>
+								</c:choose>
+							</c:otherwise>
+						</c:choose>
+						<%-- 页码列表 --%>
+	                    <c:forEach begin="${begin }" end="${end }" var="i">
+						  <c:choose>
+						  	<c:when test="${pb.pageCode eq i }">
+						  		<li><a href="#">${i}</a></li>
+						  	</c:when>
+						  	<c:otherwise>
+						  		<li><a href="<c:url value='/balanceUI.html?pageCode=${i}'/>">[${i}]</a></li>
+						  	</c:otherwise>
+						  </c:choose>
+						</c:forEach>
+                    	<!-- <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li> -->
+                        
+                    </ul>
+                    <a href="<c:url value='/balanceUI.html?pageCode=${pb.pageCode+1 }'/>" class="gt fl"></a>
+                    <span class="pay fl">共${pb.totalPage }页</span>
+                </div>
+            </div>
+        </div>
+        
+		<div class="safe04">
+			<div class="imgBox clearfix">
+				<div class="footL fl">
+					<a href="${ctx}/index.html">
+						<img src="${ctx}/source/images/portal/new-footer-logo.png" alt="">
+                   </a>
+				</div>
+				<ol class="footr clearfix fr">
+					<li>
+                    	<h2>帮助中心</h2>
+                        <dl>
+                        	<dd>购物指南</dd>
+                            <dd>在线帮助</dd>
+                            <dd>常见问题</dd>
+                       </dl>
+                    </li>
+                    <li>
+                    	<h2>关于安全帮</h2>
+                        <dl>
+                            <dd><a href="${ctx}/knowUs.html">了解安全帮</a></dd>
+                            <dd><a href="${ctx}/joinUs.html">加入安全帮</a></dd>
+                            <dd>联系我们</dd>
+                       </dl>
+                    </li>
+                    <li>
+                    	<h2>关注我们</h2>
+                        <dl>
+                        	<dd>QQ交流群<br>470899318</dd>
+                            <dd class="weixin"><a href="#">官方微信</a></dd>
+                       </dl>
+                    </li>
+                     <li>
+                    	<h2>特色服务</h2>
+                        <dl>
+                        	<dd>优惠劵通道</dd>
+                            <dd>专家服务通道</dd>
+                       </dl>
+                    </li>
+					
+				</ol>
+				
+			</div>
+		</div>
+		<div class="foot">
+			<p>版权所有Copyright © 2015 中国电信股份有限公司北京研究院京ICP备12019458号-10</p>
+		</div>
+	</div>
+	
+	<!--签到弹框-->
+    <div class="succeed">
+    	<div class="spopo">
+        	<i class="icof"></i><span>签到成功</span><em>+<b>10</b></em><i class="icoc"></i>
+        </div>
+    
+    </div>
+</body>
+
+
+</html>
