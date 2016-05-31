@@ -105,5 +105,8 @@ public interface UserDao {
     int updatePass(User user);
     //插入用户登录历史
     void insertLoginHistory(LoginHistory lh);
+    
+    //更新个人安全币余额
+    int updateBalance(User user);
 
 }
