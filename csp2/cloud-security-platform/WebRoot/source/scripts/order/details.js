@@ -7,29 +7,36 @@ $(function(){
 
 	//获取默认选中的资产数
 	//获取资产数
-	$('.dropdown-menu li').each(function(){
+/*	$('.dropdown-menu li').each(function(){
 		var ck=$(this).find('input');
 		if($(ck).is(':checked')){
-			assetCount++;			
+			assetCount++;	
 		}
-	})
+	})*/
+	
+   	$('.btnNew i').each(function(){
+   		assetCount++;	
+	});
    		
 	//生成默认价格
 	calDefaultPrice();
 	
 	//选择资产
-	$('.dropdown-menu li').each(function(){
-		$(this).delegate(this,'click',function(){
+/*	$('.dropdown-menu li').each(function(){
+		$(this).click(function(){
+
 			var ck=$(this).find('input');
+			var id=$(this).find('input').attr('id');
+			alert("clickid:"+id);
 			if($(ck).is(':checked')){
 				assetCount=assetCount+1;
-				
+				//alert("check:"+assetCount);
 			}else
 			{
 				if(assetCount>0){
 					assetCount=assetCount-1;
 				}
-
+				//alert("uncheck:"+assetCount);
 			}
 			var type = $(".click").val();
 			if(type="1"){//长期
@@ -40,7 +47,50 @@ $(function(){
 			
 		})
 		
-	})
+	})*/
+	
+		var assetIds = $("#assetIds").val();
+		var assetAddr = $("#assetAddr").val();
+		$('.dropdown-menu li').each(function(){
+			$(this).delegate(this,'click',function(){
+				var ck=$(this).find('input');
+				var id=$(this).find('input').attr('id');
+				if($(ck).is(':checked')){
+					var flag = false;
+					$('.btnNew i').each(function(index, element) {
+                        var iId =$(this).attr('id');
+						if(id==iId){
+							flag = true;
+						}
+                    });
+					if(!flag){
+						var v= $(this).children('label').text();
+						$('.btnNew em').before('<i id='+ assetIds + id +'>'+ assetAddr + v +',</i>');
+						assetCount=assetCount+1;
+					}
+					
+				}else
+				{
+					$('.btnNew i').each(function(index, element) {
+                        var iId =$(this).attr('id');
+						if(id==iId){
+							$(this).remove();
+							if(assetCount>0){
+								assetCount=assetCount-1;
+							}
+						}
+                    });
+				}
+				
+				var type = $(".click").val();
+				if(type="1"){//长期
+					calPriceLong(null,servType,assetCount);
+				}else{
+					calPrice(assetCount);
+				}
+			})
+			
+		})
 	
 	
     //确认订单界面点击"确认订单"进入完成
@@ -406,13 +456,16 @@ function tasknum_verification(){
     	var assetCountNew = 0;
     	if(assetCount==null){
     		//获取资产数
-    		$('.dropdown-menu li').each(function(){
+/*    		$('.dropdown-menu li').each(function(){
 				var ck=$(this).find('input');
 				if($(ck).is(':checked')){
 					assetCountNew++;
 					
 				}
-    		})
+    		})*/
+    	   	$('.btnNew i').each(function(){
+    	   		assetCountNew++;
+    		});
     	}else{
         	assetCountNew = assetCount;
     	}
@@ -450,13 +503,18 @@ function tasknum_verification(){
     	var assetCountNew = 0;
     	if(assetCount==null){
     		//获取资产数
-    		$('.dropdown-menu li').each(function(){
+/*    		$('.dropdown-menu li').each(function(){
 				var ck=$(this).find('input');
 				if($(ck).is(':checked')){
 					assetCountNew++;
 					
 				}
-    		})
+    		})*/
+    		
+    	   	$('.btnNew i').each(function(){
+    	   		assetCountNew++;
+    		});
+    		
     	}else{
         	assetCountNew = assetCount;
     	}

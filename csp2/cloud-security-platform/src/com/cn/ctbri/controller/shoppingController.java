@@ -847,15 +847,23 @@ public class shoppingController {
 				    	Price onePrice = priceList.get(i);
 				        if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()!=0){//区间
 				        	if(times>onePrice.getTimesG()&&times<=onePrice.getTimesLE()){
-				    			calPrice = onePrice.getPrice()*times*assetCount;
+				    			if(serviceId!=5){
+				    				calPrice = onePrice.getPrice()*times*assetCount;
+				    			}else{
+				    				calPrice = onePrice.getPrice()*assetCount;
+				    			}
 				    			break;
 				    		}
 				        	if(serviceId==5 && times==1 && onePrice.getTimesG()==1){//服务5：特殊，times==1，取第二区间
-				        		calPrice = onePrice.getPrice()*times*assetCount;
+				        		calPrice = onePrice.getPrice()*assetCount;
 				    			break;
 				        	}
 				        }else if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()==0 && times>onePrice.getTimesG()){//超过
-			        		calPrice = onePrice.getPrice()*times*assetCount;
+			        		if(serviceId!=5){
+			        			calPrice = onePrice.getPrice()*times*assetCount;
+			    			}else{
+			    				calPrice = onePrice.getPrice()*assetCount;
+			    			}
 			        		break;
 				        }else if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0 && times <= 1){//单次类
 				        	calPrice = onePrice.getPrice()*assetCount;
