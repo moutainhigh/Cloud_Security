@@ -10,6 +10,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="userId" column="userId"/>
 		<result property="contactId" column="contactId"/>
 		<result property="remarks" column="remarks"/>
+		<result property="orderId" column="orderId"/>
+		<result property="price" column="price"/>
+		<result property="pay_date" column="pay_date"/>
 	</resultMap>
     
     <!-- 插入购物车订单 -->
@@ -18,4 +21,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         (id, create_date, userId, contactId, remarks, orderId, price) 
         values(#{id}, #{create_date}, #{userId}, #{contactId}, #{remarks}, #{orderId}, #{price})
     </insert>
+    
+    <select id="findById" resultMap="OrderListRM" parameterType="String">
+    	select * from cs_order_list
+    	where id= #{id}
+    </select>
+    
+    <select id="queryPayRecordByPageAndUserId" resultMap="OrderListRM" parameterType="hashmap">
+	     select * from cs_order_list
+		 where
+			userId = #{userId}
+			and
+			pay_date is not null
+	      order by pay_date desc 
+		  <if test="pageNow != null and pageSize!= null">
+		   LIMIT #{pageNow},#{pageSize}
+		  </if>
+      
+    </select>
 </mapper>
