@@ -316,5 +316,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from cs_order o,cs_service_api s
 		where o.id in (${_parameter}) and o.serviceId = s.id and o.isAPI = 1
     </select>
+     <!-- 查询联系人 -->
+    <select id="findLinkmanByOrderId" resultType="com.cn.ctbri.entity.Linkman" parameterType="String">
+       SELECT * FROM cs_linkman l WHERE l.id =(SELECT o.contactId FROM cs_order o WHERE o.id=#{orderId})
+    </select>
+    <!-- 修改联系人 -->
+    <update id="updateLinkManByOrderId" parameterType="hashmap">
+       update cs_linkman set name=#{name},mobile=#{mobile},email=#{email} where id=(SELECT o.contactId FROM cs_order o WHERE o.id=#{orderId})
     
+    </update>
+    <!-- 修改联系人 -->
+    <update id="updateLinkManByAPIId" parameterType="hashmap">
+       update cs_linkman set name=#{name},mobile=#{mobile},email=#{email} where id=(SELECT o.contactId FROM cs_order_api o WHERE o.id=#{orderId})
+    
+    </update>
+    
+    <!-- 删除联系人 -->
+    <delete id="delLinkmanByOrderId" parameterType="String">
+      delete FROM cs_linkman l WHERE l.id =(SELECT o.contactId FROM cs_order o WHERE o.id=#{orderId})
+    
+    </delete>
 </mapper>
