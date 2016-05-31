@@ -8,6 +8,7 @@ $(function(){
     	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
     	var apiId = $("#apiId").val();
     	var price = $('.price').children('strong:first').text();
+    	var priceVal = price.substring(price.indexOf("¥")+1,price.length);
     	var type = $('.click').attr("name");//获取套餐类型
     	//判断选择免费数量不能大于1
     	var f = $('.click').attr("id");
@@ -31,7 +32,7 @@ $(function(){
 		     dataType: "json", 
 		     success: function(data) {
 			    	 if(data.message == true){
-			    		 window.location.href="settlementAPI.html?apiId="+apiId+"&time="+time+"&num="+num+"&type="+type+"&price="+price;
+			    		 window.location.href="settlementAPI.html?apiId="+apiId+"&time="+time+"&num="+num+"&type="+type+"&price="+priceVal;
 			    		 
 			    	 
 			    	 }else{
