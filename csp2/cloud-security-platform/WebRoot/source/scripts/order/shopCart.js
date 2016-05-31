@@ -13,7 +13,7 @@ $(function(){
 		   $.ajax({ type: "POST",
 			     async: false, 
 			     url: "checkShoppOrder.html?str="+str,
-			     dataType: "json", 
+			    dataType: "json", 
 			     success: function(data) {
 			     if(data.flag){
 			    	 $("input:checkbox[name=check_name]").attr("checked",false);
@@ -38,6 +38,9 @@ $(function(){
     $("#shopSettlement").click(function(){
        var orderIds="";
        var countPrice = $("#countPrice").val();
+      var userName = $("#txtName").val();
+        var userAdd = $("#txtAdd").val();
+        var mobile = $("#txtTel").val();
        $("input:hidden[name='orderId']").each(function(obj){
     	    orderIds+=$(this).val()+",";
        });
@@ -45,7 +48,13 @@ $(function(){
     if(result){
 	  $.ajax({ type: "POST",
 		     async: false, 
-		     url: "shopSettlement.html?orderIds="+orderIds+"&countPrice="+countPrice,
+		     url: "shopSettlement.html",
+		      data:{"orderIds":orderIds,
+		            "countPrice":countPrice,
+		            "linkName":userName,
+		            "linkEmail":userAdd,
+		            "linkMobile":mobile
+		           },
 		     dataType: "json", 
 		     success: function(data) {
 					  if(!data.flag){
