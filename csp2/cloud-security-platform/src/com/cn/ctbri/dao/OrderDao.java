@@ -125,4 +125,12 @@ public interface OrderDao {
      * 返回值    ：  List<Order>
      */
 	List findByCombineOrderTrackByPageAsset(Map<String, Object> paramMap);
+	
+	/**
+     * 功能描述：查询订单服务名称
+     *       @time 2016-5-31
+     * 返回值    ：  List<String>
+     */
+	List<String> findServiceNameByOrderId(String orderId);
+	
 }
