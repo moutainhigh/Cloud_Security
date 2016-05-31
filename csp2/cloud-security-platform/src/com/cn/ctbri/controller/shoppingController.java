@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cn.ctbri.common.HuaweiWorker;
 import com.cn.ctbri.common.NorthAPIWorker;
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderList;
@@ -159,9 +160,9 @@ public class shoppingController {
         String times = request.getParameter("buy_times");
         String price = request.getParameter("price");
         String priceVal="";
-        priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
+      // priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
         String[]  assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
-        double priceD = Double.parseDouble(priceVal);
+      //  double priceD = Double.parseDouble(priceVal);
        
         //根据id查询service
 	    Serv service = servService.findById(serviceId);
@@ -185,7 +186,7 @@ public class shoppingController {
         request.setAttribute("mark", "web");//web服务标记
         
         DecimalFormat df = new DecimalFormat("0.00");
-        request.setAttribute("allPrice", df.format(priceD));
+        request.setAttribute("allPrice", df.format(Double.parseDouble(price)));
         
         String result = "/source/page/details/settlement";
         return result;
@@ -223,6 +224,7 @@ public class shoppingController {
         
         SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
 		String orderDate = odf.format(new Date());
+		  int linkmanId = Random.eightcode();
         String orderId = String.valueOf(Random.fivecode())+orderDate;
         Date  create_date=sdf.parse(createDate); 
         order.setId(orderId);
@@ -262,6 +264,7 @@ public class shoppingController {
         DecimalFormat df = new DecimalFormat("0.00");
         String temp = df.format(priceD);
         order.setPrice(Double.parseDouble(temp));
+        order.setContactId(linkmanId);
         order.setPayFlag(0);//未支付
         selfHelpOrderService.insertOrder(order);
 
@@ -277,6 +280,17 @@ public class shoppingController {
            
             orderAssetService.insertOrderAsset(orderAsset);
         }
+        
+		  //插入联系人
+          Linkman linkObj = new Linkman();
+        
+          linkObj.setId(linkmanId);
+          linkObj.setName(globle_user.getName());
+          linkObj.setMobile(globle_user.getMobile());
+          linkObj.setEmail(globle_user.getEmail());
+          linkObj.setUserId(globle_user.getId());
+          selfHelpOrderService.insertLinkman(linkObj);
+        
    	     //网站安全帮列表
           List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
        //查询安全能力API
@@ -344,6 +358,8 @@ public class shoppingController {
         orderAPIService.deleteOrderAPI(orderId);
          //删除订单
         orderService.deleteOrderById(orderId);
+        //删除联系人
+        orderService.delLinkmanByOrderId(orderId);
       //object转化为Json格式
 		JSONObject JSON = CommonUtil.objectToJson(response, m);
 		try {
@@ -369,6 +385,7 @@ public class shoppingController {
 		List<ShopCar> shopList = new ArrayList();
 		int orderNum=0;
 		List<String> orderIdList=new ArrayList();
+		Linkman linkman = new Linkman();
 	      if(str!=null&&!"".equals(str)){
 	    	  String strArray[] = str.substring(0, str.length()-1).split(",");
 	    	  orderNum= strArray.length;
@@ -376,6 +393,7 @@ public class shoppingController {
 	    		  orderIdList.add(strArray[m]);
 	    	  }
 	    	  list = selfHelpOrderService.findBuyShopList(orderIdList);
+	    	 linkman = orderService.findLinkmanByOrderId(strArray[0]);
 			}
 	      DecimalFormat df = new DecimalFormat("0.00");
 	      double shopCount=0.0;
@@ -393,7 +411,7 @@ public class shoppingController {
 	     }
 	     
 	  
-	
+	    request.setAttribute("linkman", linkman);
 		request.setAttribute("orderNum", orderNum);
 		request.setAttribute("shopCount", df.format(shopCount));
 		request.setAttribute("shopList", shopList);
@@ -422,6 +440,16 @@ public class shoppingController {
 		 String status="";
 		String str = request.getParameter("orderIds");
 		   DecimalFormat df = new DecimalFormat("0.00");
+		   //联系人名称
+		   String linkName = request.getParameter("linkName");
+		   //联系人电话
+		   String linkMoblie = request.getParameter("linkMobile");
+		   //联系人邮箱
+		   String linkEmail = request.getParameter("linkEmail");
+		   Linkman linkman = new Linkman();
+		   linkman.setName(linkName);
+		   linkman.setMobile(linkMoblie);
+		   linkman.setEmail(linkEmail);
 		//总价格
 		String price = request.getParameter("countPrice");
 	    String scanType = "";//扫描方式（正常、快速、全量）
@@ -455,6 +483,7 @@ public class shoppingController {
 	    	 
 	       }	 
 	     }
+	    
 	   //更新网站安全帮订单id
 	    
 	     if(shopList!=null&&shopList.size()>0){
@@ -488,8 +517,11 @@ public class shoppingController {
 	    	     try{
 	    	    	 if(shopCar.getServiceId()!=6){
 		    	    
-	    	    	 orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
+	    	    	orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
 		            			scanDepth, maxPages, stategy, customManu, String.valueOf(shopCar.getServiceId()));
+	    	    /*	SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+	    	    	 String orderDate = odf.format(new Date());
+	    	    	   orderId = orderDate+String.valueOf(Random.fivecode());*/
 	    	    	 orderVal = orderVal+ orderId+",";
 		    	     }else{
 		    	    	 SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
@@ -506,6 +538,7 @@ public class shoppingController {
 		    		 selfHelpOrderService.updateOrderAsset(shopCar.getOrderId(), orderId);
 		    		 //更新订单表
 		    		 selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "0",status);
+		    		 orderService.updateLinkManByOrderId(linkman, orderId);
 		    		 map.put("flag", flag);
 		    		 map.put("price", df.format(Double.parseDouble(price)));
 		    		 map.put("orderStatus", true);
@@ -541,10 +574,15 @@ public class shoppingController {
 					String orderId = "";
 					try {
 					if(shopCar.getServiceId()!=6){
-						  orderId = NorthAPIWorker.vulnScanCreateAPI(
+						orderId = NorthAPIWorker.vulnScanCreateAPI(
 								Integer.parseInt(shopCar.getAstName()),
 								shopCar.getNum(), shopCar.getServiceId(),
 								globle_user.getApikey(), globle_user.getId());
+						 
+						  /*SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+			    	    	 String orderDate = odf.format(new Date());
+			    	    	   orderId = orderDate+String.valueOf(Random.fivecode());*/
+			    	    	   orderVal = orderVal+ orderId+",";
 						 }
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -557,7 +595,7 @@ public class shoppingController {
 						// 更新订单表
 						selfHelpOrderService.updateOrder(shopCar.getOrderId(),
 								orderId, "1",status);
-
+						 orderService.updateLinkManByAPIId(linkman, orderId);
 						map.put("orderStatus", true);
 						map.put("sucess", true);
 						 map.put("flag", flag);
@@ -571,6 +609,7 @@ public class shoppingController {
 				}
 
 			}
+			
 			  //插入数据到order_list
 		    OrderList ol = new OrderList();
 		    //生成订单id
@@ -581,7 +620,7 @@ public class shoppingController {
 		    ol.setOrderId(orderVal.substring(0,orderVal.length()-1));
 		    ol.setPrice(Double.parseDouble(price));
 		    orderListService.insert(ol);
-	      
+	   
 	}catch(Exception e){
 		e.printStackTrace();
 		map.put("orderStatus", false);
