@@ -807,6 +807,10 @@ public class UserController{
 					user.setIp(request.getRemoteAddr());
 					//生成apikey add by tangxr 2016-4-9
 					user.setApikey(UUID.randomUUID().toString().replace("-", ""));
+					
+					//安全币功能(注册时奖励500安全币)  add by zhangsh 2016-5-17
+					user.setBalance(500D);
+					user.setLastSignInTime(new Date());
 					userService.insert(user);
 				}
 				//return "/source/page/regist/registToLogin";
