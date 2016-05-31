@@ -40,6 +40,7 @@ import com.cn.ctbri.service.ITaskHWService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.CommonUtil;
+import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Random;
 
 /**
@@ -129,7 +130,7 @@ public class shoppingAPIController {
         DecimalFormat df = new DecimalFormat("0.00");
        String price = request.getParameter("price");
        String priceVal="";
-       priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
+      // priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
         //根据id查询serviceAPI, add by tangxr 2016-3-28
 	    ServiceAPI serviceAPI = serviceAPIService.findById(apiId);
 	    
@@ -137,7 +138,7 @@ public class shoppingAPIController {
 	    request.setAttribute("time", time);
 	    request.setAttribute("num", num);
 	    request.setAttribute("type", type);
-	    request.setAttribute("allPrice", df.format(Double.parseDouble(priceVal)));
+	    request.setAttribute("allPrice", df.format(Double.parseDouble(price)));
         request.setAttribute("apiId", apiId);
         request.setAttribute("serviceAPI", serviceAPI);
         request.setAttribute("mark", "api");//api标记
@@ -214,11 +215,17 @@ public class shoppingAPIController {
         int num = Integer.parseInt(request.getParameter("num"));
         //套餐类型
         int type = Integer.parseInt(request.getParameter("type"));
+        String linkname =request.getParameter("linkname");
+        String phone = request.getParameter("phone");
+        String email = request.getParameter("email");
         Map<String, Object> m = new HashMap<String, Object>();
         String price = request.getParameter("price");
         String orderId = "";
         //创建订单（任务），调北向api，modify by tangxr 2015-12-21
     	try {
+    		/*SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+       	    String orderDate = odf.format(new Date());
+       	         orderId = orderDate+String.valueOf(Random.fivecode());*/
     		orderId = NorthAPIWorker.vulnScanCreateAPI(type, time*num, apiId, globle_user.getApikey(), globle_user.getId());
 		} catch (Exception e) {
 			m.put("message", "系统异常，暂时不能购买api，请稍后购买~~");
@@ -229,9 +236,9 @@ public class shoppingAPIController {
             Linkman linkObj = new Linkman();
             int linkmanId = Random.eightcode();
             linkObj.setId(linkmanId);
-//            linkObj.setName(linkname);
-//            linkObj.setMobile(phone);
-//            linkObj.setEmail(email);
+            linkObj.setName(linkname);
+            linkObj.setMobile(phone);
+            linkObj.setEmail(email);
 //            linkObj.setAddress(address);
 //            linkObj.setCompany(company);
             linkObj.setUserId(globle_user.getId());
@@ -338,15 +345,30 @@ public class shoppingAPIController {
 			String orderDate = odf.format(new Date());
 	        String orderId = String.valueOf(Random.fivecode())+orderDate;
 	        Map<String, Object> m = new HashMap<String, Object>();
+	        
+	    	//新增联系人
+            Linkman linkObj = new Linkman();
+            int linkmanId = Random.eightcode();
+            linkObj.setId(linkmanId);
+            linkObj.setName(globle_user.getName());
+            linkObj.setMobile(globle_user.getMobile());
+            linkObj.setEmail(globle_user.getEmail());
+            linkObj.setUserId(globle_user.getId());
+            selfHelpOrderService.insertLinkman(linkObj);
+	        
+	        
+	        
+	        
 	        Order order = new Order();
             order.setId(orderId);
             order.setType(1);
-            order.setBegin_date(new Date());
-            order.setEnd_date(getAfterYear(new Date()));
+            order.setBegin_date(DateUtils.getDateAfter10Mins(new Date()));
+            order.setEnd_date(getAfterYear(DateUtils.getDateAfter10Mins(new Date())));
             order.setServiceId(apiId);
             order.setCreate_date(new Date());
             order.setUserId(globle_user.getId());
             order.setPrice(Double.parseDouble(priceVal));
+            order.setContactId(linkmanId);
             order.setStatus(1);//完成
             order.setPayFlag(0);
             order.setIsAPI(1);//api订单
@@ -355,14 +377,14 @@ public class shoppingAPIController {
             //新增API订单
             OrderAPI oAPI = new OrderAPI();
             oAPI.setId(orderId);
-            oAPI.setBegin_date(new Date());
-            oAPI.setEnd_date(getAfterYear(new Date()));
+            oAPI.setBegin_date(DateUtils.getDateAfter10Mins(new Date()));
+            oAPI.setEnd_date(getAfterYear(DateUtils.getDateAfter10Mins(new Date())));
             oAPI.setApiId(apiId);
             oAPI.setCreate_date(new Date());
             oAPI.setPackage_type(type);
             oAPI.setNum(time*num);
             oAPI.setUserId(globle_user.getId());
-           
+            oAPI.setContactId(linkmanId);
             oAPI.setPayFlag(0);
             orderAPIService.insert(oAPI);
             //网站安全帮列表
