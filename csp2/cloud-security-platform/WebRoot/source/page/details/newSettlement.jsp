@@ -41,7 +41,6 @@ $(function() {
         var userName = $("#txtName").val();
         var userAdd = $("#txtAdd").val();
         var mobile = $("#txtTel").val();
-        
         if (userName == "") {
             $(".name1").hide();
             $(".name_wrong").show();
@@ -88,7 +87,7 @@ $(function() {
             $(".add_wrong p").html("地址最多可输入25个字符");
             return false;
         };
-
+ 
         $(".listone_box").hide();
         $(".tabox").show();
         $(".list-txt").html("联系人信息");
@@ -218,23 +217,24 @@ $(function() {
                                 <a href="javascript:;" id="ad-tj">提交信息</a>
                              </div>
                         </div> 
-          
+                      
                         <div class="tabox" style="margin-left: 0px; width:1108px;">
                         	<table class="test-table mrn" width="100%">
                         	<tbody>
+                        	  <c:if test="${not empty linkman}">
                             	 <tr height="40">
                                  	<td width="18%" style="font-size:14px; padding-left:30px;">
-                                    	姓名：<i>${user.name }</i>
+                                    	姓名：<i class="test_name">${linkman.name}</i>
                                     </td>
                                     <td width="24%" style="font-size:14px;">
-                                    	电话：<i>${user.mobile }</i>
+                                    	电话：<i class="test_iphone">${linkman.mobile }</i>
                                     </td>
                                     <td width="40%" style="font-size:14px;">
-                                    	邮箱：<i>${user.email }</i>
+                                    	邮箱：<i class="test_add">${linkman.email }</i>
                                     </td>
                                        <td width="16%" style="font-size:14px;"><span class="test-tablespan" style="cursor: pointer;"><b></b>修改</span></td>
                                  </tr>
-                                 
+                                 </c:if>
                             </tbody>
                         </table>
                         
