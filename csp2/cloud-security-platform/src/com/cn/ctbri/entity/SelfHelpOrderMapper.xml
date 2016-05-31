@@ -266,4 +266,27 @@ WHERE a.id = b.orderId
    update cs_order set status=#{status} where id=#{orderId}
  
  </update>
+ 
+ <update id="updatePayDate" parameterType="com.cn.ctbri.entity.OrderList">
+      	update cs_order_list
+      	set
+      	 pay_date = #{pay_date}
+      	where
+      	 id = #{id}
+ </update>
+ <update id="updatePayFlag" parameterType="hashMap">
+      	update cs_order
+      	set
+      	 payFlag = #{payFlag}
+      	where
+      	 id in (${orderId})
+ </update>
+ 
+ <update id="updateOrderStatus" parameterType="hashMap">
+      	update cs_order
+      	set
+      	 payFlag = #{status}
+      	where
+      	 id in (${orderId})
+ </update>
 </mapper>
