@@ -6,7 +6,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <title>安全帮-中国电信云安全服务在线商城</title>
 <link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
@@ -40,16 +41,31 @@ $(function(){
     function  payConfirm() {
     	var is=$('.shopCant_Btn').children('i').hasClass('chekthis');
 		if(is){
-			alert("请选择支付方式!");
+			alert("请选择付款方式!");
 		}else{
 			var orderListId=$("#orderListId").val();
-			var orderIds = $("#orderIds").val();
-			var orderDate = $("#orderDate").val();
-			var price = $("#price").val();
-			window.location.href = "payConfirm.html?orderListId="+orderListId+
-				"&orderIds="+orderIds+
-				"&orderDate="+orderDate+
-				"&price="+price;
+		
+			$.ajax({
+				type:"POST",
+				async: false, 
+				url:"checkPayTime.html",
+				dataType:"json",
+				data:{"orderListId":orderListId},
+				success: function(data) {
+					if (data.payFlag == 2){
+						alert("支付时间超时！");
+					}else if(data.payFlag ==1) {
+						alert("不能重复支付!");
+					}else {
+						window.location.href = "payConfirm.html?orderListId="+orderListId;
+					}
+				},
+				error:function(data){
+					 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+			    		 window.location.href = "loginUI.html"; } 
+			    	 else { window.location.href = "loginUI.html"; }
+				}
+			});
 		}
     }
 </script>
@@ -141,7 +157,7 @@ $(function(){
                                 </li>
                                  <li>
                                     <b>交易金额</b>
-                                    <P>￥${orderList.price }</P>
+                                    <P>￥${price }</P>
                                 </li>
                                 <li>
                                     <b>付款方式</b>
@@ -158,72 +174,19 @@ $(function(){
                              <input type="checkbox"class="cklost"  style="display:none" value="" />
                              <i class="chekLost chekthis"></i>
                         </div>
-                        <div class="shopCant_fix"><i></i>安全币余额${securCurrency }</div>
+                        <div class="shopCant_fix"><i></i>安全币余额${balance }</div>
                         <div class="shopCant_con">更换其他付款方式</div>
-                        <div class="shop_pay"><b>支付:</b>￥${orderList.price }</div>
+                        <div class="shop_pay"><b>支付:</b>￥${price }</div>
                     </div>
             	    
             </div>
             
             <div class="btnFox" style="margin-bottom:200px;">
-            <input type="hidden" id="orderListId" value = "${orderList.id }"/>
-                  <input type="hidden" id="orderIds" value = "${orderList.orderId }"/>
-                  <input type="hidden" id="price" value = "${orderList.price }"/>
-                  <input type="hidden" id="orderDate" value = "<fmt:formatDate value='${orderList.create_date }' pattern='yyyy-MM-dd HH:mm:ss'/>"/>
+            	  <input type="hidden" id="orderListId" value = "${orderList.id }"/>
                   <a href="#" onclick="payConfirm()">确认付款</a>
              </div>
 			
 		</div>
-            <!-- <div class="settlement-content desk">
-            		<div class="deskh">
-                    	<h2 class="fl">订单号${orderList.id }</h2>
-                        <p class="fr">应付金额 <strong>¥${orderList.price }</strong></p>
-                    </div>
-                    <div class="deskpay">
-                    	<h2 class="fl">购买时间:<fmt:formatDate value="${orderList.create_date }" pattern="yyyy-MM-dd HH:mm:ss"/></h2><br/>
-                    	<h2 class="fl">购买内容:${serviceName }</h2><br/>
-                    	<h2 class="fl">交易金额:${orderList.price }</h2><br/>
-                    	<h2 class="fl">安全币余额:${securCurrency }</h2><br/>
-                    	<div class="paysy">使用：<span class="type"><img src="${ctx}/source/images/portal/alipay.png" alt=""></span></div>
-                    	<div class="payTab">
-                        	<ul class="tablist clearfix">
-                                <li class="fl active">支付宝平台</li>
-                                <li class="fl">使用银行卡</li>
-                            </ul>
-                            <div class="pab">
-                            	<ul class="zfblist clearfix show">
-                                	<li class="fl">
-                                    	<img src="${ctx}/source/images/portal/alipay.png" alt="">
-                                    	
-                                    </li>
-                                    <li class="fl"><img src="${ctx}/source/images/portal/kq.png" alt=""></li>
-                                    <li class="fl"><img src="${ctx}/source/images/portal/alipay.png" alt=""></li>
-                                </ul>
-                                <ul class="clearfix hide">
-                                	<li class="fl">
-                                    	
-                                   
-                                    </li>
-                                    <li class="fl"></li>
-                                    <li class="fl"></li>
-                                </ul>
-                            </div>
-                        
-                        </div>
-                        <div class="btnBox" style="margin-bottom:20px;">
-                        	<input type="hidden" id="orderListId" value = "${orderList.id }"/>
-                        	<input type="hidden" id="orderIds" value = "${orderList.orderId }"/>
-                        	<input type="hidden" id="price" value = "${orderList.price }"/>
-                        	<input type="hidden" id="orderDate" value = "<fmt:formatDate value='${orderList.create_date }' pattern='yyyy-MM-dd HH:mm:ss'/>"/>
-                            <a href="#" onclick="payConfirm()">前往支付宝<i></i></a>
-                        </div>
-                    </div>
-            	
-            </div>
-            
-            
-			
-		</div> -->
         
 		<div class="safe04">
 			<div class="imgBox clearfix">
