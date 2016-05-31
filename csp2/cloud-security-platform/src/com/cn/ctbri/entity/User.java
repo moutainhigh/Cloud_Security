@@ -55,6 +55,10 @@ public class User implements java.io.Serializable{
 	private String apikey;
 	//推送url add by 2016-4-8
 	private String urlAddr;
+	//安全币 add by 2016-5-17
+	private double balance;
+	//用户最后一次签到的时间
+	private Date lastSignInTime;
 	//构造方法
 	public User(){}
 	public User(String name, String password, int status, int type) {
@@ -285,6 +289,17 @@ public class User implements java.io.Serializable{
 	public void setUrlAddr(String urlAddr) {
 		this.urlAddr = urlAddr;
 	}
-
+	public double getBalance() {
+		return balance;
+	}
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+	public Date getLastSignInTime() {
+		return lastSignInTime;
+	}
+	public void setLastSignInTime(Date lastSignInTime) {
+		this.lastSignInTime = lastSignInTime;
+	}
 	
 }
