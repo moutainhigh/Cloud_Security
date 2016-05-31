@@ -34,7 +34,7 @@ $(function(){
 	   }
     });
   
-       //购物车点击“结算”
+       //购物车点击“提交订单”
     $("#shopSettlement").click(function(){
        var orderIds="";
        var countPrice = $("#countPrice").val();
@@ -53,8 +53,9 @@ $(function(){
 						  return;
 					  }else{
 			    	 if(data.sucess==true&&data.orderStatus == true){
-	    		    			 alert("完成下单，去订单跟踪查看吧~~"); 
-	    		    			 window.location.href = "orderTrackInit.html";
+	    		    			 //alert("完成下单，去订单跟踪查看吧~~"); 
+	    		    			 var orderListId = data.orderListId;
+	    		    			 window.location.href = "cashierUI.html?orderListId="+orderListId;
 		    		    	 }else{
 		    		    		alert("系统异常，暂时不能购买，请稍后购买~~!");
 		    		     		 return;
