@@ -60,3 +60,52 @@
     width: 240px;
 }
 
+/*签到弹框*/
+.succeed{
+    display: none;
+    position:absolute;
+    width: 353px;
+    height: 88px;
+    background-color: #fff;
+    border: #f3f3f3 solid 1px;
+    left: 50%;
+    top:50%;
+    margin-left: -177px;
+    margin-top: -44px;
+    
+}
+.succeed .spopo{
+    text-align: center;
+    padding-top: 30px;
+}
+.succeed .spopo span{
+    font-size: 14px;
+     vertical-align: middle;
+    color: #696969;
+    padding-right: 32px;
+}
+.succeed .spopo i{
+	width:30px;
+	height:30px;
+	vertical-align: middle;
+	display:inline-block;
+}
+.succeed .icof{
+	padding-right:10px;
+	background:url(../images/balance/c.png) no-repeat left center;
+
+}
+.succeed .icoc{
+	padding-right:10px;
+	background:url(../images/balance/cg.png) no-repeat left center;
+}
+.succeed .spopo em{
+     vertical-align: middle;
+    color: #eb9712;
+    font-size: 16px;
+    padding-right: 10px;
+}
+.succeed .spopo b{
+    font-size: 24px;
+    vertical-align: middle;
+}
