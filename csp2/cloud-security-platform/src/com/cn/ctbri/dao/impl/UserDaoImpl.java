@@ -154,4 +154,8 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
 		this.getSqlSession().insert(ns_lh+"insert", lh);
 		
 	}
+	
+	public int updateBalance(User user){
+		return this.getSqlSession().update(ns + "updateBalance", user);
+	}
 }
