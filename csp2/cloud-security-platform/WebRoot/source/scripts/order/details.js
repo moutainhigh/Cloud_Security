@@ -86,6 +86,7 @@ $(function(){
     	var serviceId = $("#serviceId").val();
     	var times = $("#timesHidden").val();
     	var price = $('.price').children('strong:first').text();
+    	var priceVal = price.substring(price.indexOf("¥")+1,price.length);
     	if(type==2){
     		scanType="";
     	}
@@ -130,7 +131,7 @@ $(function(){
 		     url: "getSession.html", 
 		     dataType: "json", 
 		     success: function(data) {
-		    	 window.location.href="settlement.html?type="+type+"&beginDate="+beginDate+"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&buy_times="+times+"&price="+price;
+		    	 window.location.href="settlement.html?type="+type+"&beginDate="+beginDate+"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&buy_times="+times+"&price="+priceVal;
 		    	 }, 
 		     error: function(data){ 
 		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
@@ -150,6 +151,9 @@ $(function(){
 //    	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
     	var serviceId = $("#serviceId").val();
     	  var price = $('#priceHidden').val();
+       var userName = $("#txtName").val();
+        var userAdd = $("#txtAdd").val();
+        var mobile = $("#txtTel").val();
     	if(orderType==2){
     		scanType="";
     	}
@@ -170,9 +174,9 @@ $(function(){
 		    			   	"scanType":scanType,
 		    			   	"serviceId":serviceId,
 		    			   	"price":price,
-		    			   	"linkname":"",
-		    			   	"phone":"",
-		    			   	"email":"",
+		    			   	"linkname":userName,
+		    			   	"phone":mobile,
+		    			   	"email":userAdd,
 		    			   	"company":"",
 		    			   	"address":"",
 		    			   	"assetIds":assetIds,
@@ -213,6 +217,9 @@ $(function(){
     	var num = $('#num').val();//数量
     	var type = $('#type').val();//套餐类型
     	 var price = $('#priceHidden').val();
+    	  var userName = $("#txtName").val();
+        var userAdd = $("#txtAdd").val();
+        var mobile = $("#txtTel").val();
 		var result = window.confirm("确定要提交订单吗？");
     	if(result){
     		$.ajax({ type: "POST",
@@ -222,7 +229,10 @@ $(function(){
 		    			   	"time":time,
 		    			   	"price":price,
 		    			   	"num":num,
-		    			   	"type":type},  
+		    			   	"type":type,
+		    			  	"linkname":userName,
+		    			   	"phone":mobile,
+		    			   	"email":userAdd},  
 	    		     dataType: "json",
 	    		     success: function(data) {
 	    		    	 if(data.message == true){
