@@ -6,6 +6,7 @@ import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.entity.ShopCar;
@@ -102,4 +103,10 @@ public interface SelfHelpOrderDao {
 	void updateOrderAPI(String orderId,String newOrderId);
 	//修改订单状态
 	public void updateShopOrder(ShopCar order);
+	//更新支付时间
+	void updatePayDate(OrderList ol);
+	//更新订单支付状态
+	void updateOrderPayFlag(String orderIds, int payFlag);
+	//修改订单状态
+	void updateOrderStatus(String orderIds, int status);
 }
