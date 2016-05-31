@@ -73,7 +73,7 @@ onclick('time');
 //复选框
 chck();
 
-$('.dropdown').click(function(){
+/*$('.dropdown').click(function(){
 	$('.dropdown-menu').fadeIn();
 
 })
@@ -106,7 +106,7 @@ $('.dropdown-menu li').hover(function(){
 			
 			})
 			
-		})
+		})*/
 		
 //按钮切换显示	
 	$('.Single').click(function(){
