@@ -230,5 +230,41 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 	}
 	
     
-    
+	/**
+     * 功能描述：根据订单id查询联系人
+     *       @time 2016-5-31
+     * 返回值    ：  List<Order>
+     */
+	public Linkman findLinkmanByOrderId(String orderId) {
+		Linkman linkman = this.getSqlSession().selectOne(ns + "findLinkmanByOrderId",orderId);
+        return linkman;
+	}
+
+	@Override
+	public void updateLinkManByOrderId(Linkman linkman,String orderId) {
+		// TODO Auto-generated method stub
+		Map map = new HashMap();
+		map.put("name", linkman.getName());
+		map.put("mobile", linkman.getMobile());
+		map.put("email", linkman.getEmail());
+		map.put("orderId", orderId);
+		this.getSqlSession().update(ns+"updateLinkManByOrderId",map);
+	}
+
+	@Override
+	public void updateLinkManByAPIId(Linkman linkman, String orderId) {
+		// TODO Auto-generated method stub
+		Map map = new HashMap();
+		map.put("name", linkman.getName());
+		map.put("mobile", linkman.getMobile());
+		map.put("email", linkman.getEmail());
+		map.put("orderId", orderId);
+		this.getSqlSession().update(ns+"updateLinkManByAPIId",map);
+	}
+
+	@Override
+	public void delLinkmanByOrderId(String orderId) {
+		// TODO Auto-generated method stub
+		this.getSqlSession().delete(ns+"delLinkmanByOrderId",orderId);
+	}
 }
