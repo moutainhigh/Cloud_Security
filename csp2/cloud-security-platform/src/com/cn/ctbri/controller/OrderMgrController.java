@@ -411,7 +411,8 @@ public class OrderMgrController {
         String scanDate = request.getParameter("scanDate");
         String serviceId = request.getParameter("serviceId");
         //联系人信息
-        String linkname = new String(request.getParameter("linkname").getBytes("ISO-8859-1"),"UTF-8");
+        //String linkname = new String(request.getParameter("linkname").getBytes("ISO-8859-1"),"UTF-8");
+        String linkname =request.getParameter("linkname");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
         String company = new String(request.getParameter("company").getBytes("ISO-8859-1"),"UTF-8");
@@ -433,6 +434,9 @@ public class OrderMgrController {
         	try {
         		orderId = NorthAPIWorker.vulnScanCreate(orderType, targetURL, scanType, beginDate, endDate, scanPeriod,
             			scanDepth, maxPages, stategy, customManu, serviceId);
+        	/*	SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+   	    	 String orderDate = odf.format(new Date());
+   	    	   orderId = orderDate+String.valueOf(Random.fivecode());*/
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
