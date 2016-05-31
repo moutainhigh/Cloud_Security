@@ -1153,12 +1153,13 @@ font-weight:normal;
 	color: #2499fb;
 }
 .settlement-content .listone .test-table b{
-		width: 20px;
+	width: 20px;
 		height: 20px;
 		display: inline-block;
-		background:url(../images/portal/newico.png) no-repeat;
+		background:url(../images/portal/update.png) no-repeat;
 		vertical-align: middle;
 		margin-right: 10px;
+
 }
 .clickBox button{
 	    width: 98px;
@@ -2038,19 +2039,19 @@ padding: 20px 30px 0px 0px;
    
 }
 .list_wrong{ width:300px; display: inline-block; color: #6a6a6a; float: left; margin-top: 12px;}
-.list_wrong b{ width: 16px; float: left; height: 16px; background: url(imges/注意.png) no-repeat; display: inline-block; margin-right: 10px;}
+.list_wrong b{ width: 16px; float: left; height: 16px; background: url(../images/portal/notice.png) no-repeat; display: inline-block; margin-right: 10px;}
 .list_wrong p{ float: left; line-height: 16px; font-size: 14px;}
 
 .name_wrong{ width:300px;  color: #6a6a6a; display: none; float:left;  margin-top: 12px;}
-.name_wrong b{ width: 16px; float: left; height: 16px; background: url(imges/错误.png) no-repeat; display: inline-block; margin-right: 10px;}
+.name_wrong b{ width: 16px; float: left; height: 16px; background: url(../images/portal/wrong.png) no-repeat; display: inline-block; margin-right: 10px;}
 .name_wrong p{ float: left; line-height: 16px; font-size: 14px;}
 
 .phone_wrong{ width:300px; color: #6a6a6a; display: none; float:left;   margin-top: 12px;}
-.phone_wrong b{ width: 16px; float: left; height: 16px; background: url(imges/错误.png) no-repeat; display: inline-block; margin-right: 10px;}
+.phone_wrong b{ width: 16px; float: left; height: 16px; background: url(../images/portal/wrong.png) no-repeat; display: inline-block; margin-right: 10px;}
 .phone_wrong p{ float: left; line-height: 16px; font-size: 14px;}
 
 .add_wrong{ width:300px;  color: #6a6a6a; display: none; float:left;   margin-top: 12px;}
-.add_wrong b{ width: 16px; float: left; height: 16px; background: url(imges/错误.png) no-repeat; display: inline-block; margin-right: 10px;}
+.add_wrong b{ width: 16px; float: left; height: 16px; background: url(../images/portal/wrong.png) no-repeat; display: inline-block; margin-right: 10px;}
 .add_wrong p{ float: left; line-height: 16px; font-size: 14px;}
 
 .ad-tj{ width: 112px; height: 38px; background: #929292; color:#fff; font-size: 16px; margin-top: 30px; line-height: 38px;text-align: center; }
@@ -2061,7 +2062,7 @@ padding: 20px 30px 0px 0px;
         width: 20px;
         height: 20px;
         display: inline-block;
-        background:url(../imges/add-ip.png) no-repeat;
+        background:url(../images/portal/update.png) no-repeat;
         margin-right: 10px;
         float: left;
 
