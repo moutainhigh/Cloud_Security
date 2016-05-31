@@ -20,6 +20,82 @@
 <script src="${ctx}/source/scripts/order/details.js"></script>
 <script src="${ctx}/source/scripts/order/wafDetail.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
+<script type="text/javascript">
+$(function() {
+     $(".test-tablespan").on('click', function() {
+        $(".tabox").hide();
+        $(".listone_box").show();
+        $(".list-txt").html("修改联系人信息");
+
+     });
+
+     $("#ad-tj").on('click', function() {
+
+        var userName = $("#txtName").val();
+        var userAdd = $("#txtAdd").val();
+        var mobile = $("#txtTel").val();
+        alert(userName);
+        if (userName == "") {
+            $(".name1").hide();
+            $(".name_wrong").show();
+            $(".name_wrong p").html("请输入您的姓名");
+            return false;
+        };
+
+        if (userName.length > 10) {
+            $(".name1").hide();
+            $(".name_wrong").show();
+            $(".name_wrong p").html("姓名最多可输入10个字符");
+            return false;
+        };
+
+        if (mobile == "") {
+            $(".name2").hide();
+            $(".phone_wrong").show();
+            $(".phone_wrong p").html("请输入您的电话");
+            return false;
+        };
+
+        var myreg = /^1[3|4|5|7|8][0-9](\d{8})$/;
+        if (!(myreg.test(mobile))) {
+            $(".name2").hide();
+            $(".phone_wrong").show();
+            $(".phone_wrong p").html('请输入有效的手机号码！');
+            return false;
+        };
+        if (mobile.length != 11) {
+            $(".name2").hide();
+            $(".phone_wrong").show();
+            $(".phone_wrong p").html("请输入11位手机号码");
+            return false;
+        };
+        if (userAdd == "") {
+            $(".name3").hide();
+            $(".add_wrong").show();
+            $(".add_wrong p").html("请输入您的地址");
+            return false;
+        };
+        if (userAdd.length > 25) {
+            $(".name3").hide();
+            $(".add_wrong").show();
+            $(".add_wrong p").html("地址最多可输入25个字符");
+            return false;
+        };
+ 
+        $(".listone_box").hide();
+        $(".tabox").show();
+        $(".list-txt").html("联系人信息");
+        $(".test_name").html(userName);
+        $(".test_iphone").html(mobile);
+        $(".test_add").html(userAdd);
+
+
+
+            
+    });
+
+  });  
+  </script>
 </head>
 
 <body>
@@ -84,7 +160,7 @@
 			<div class="seetT">
 				<h2>填写并核对订单信息</h2>
 				<div class="step">
-					<!--<p class="step_top">
+					<p class="step_top">
 						<span class="sl">
 							<i></i>
 						</span>
@@ -97,37 +173,71 @@
                     	<em class="sone">1购物车</em>
                         <em class="stwo">2填写核对信息</em>
                         <em class="sthree">3成功提交订单</em>
-                    </p> -->
+                    </p> 
 
 				</div>
 			</div>
-            <div class="settlement-content">
+            <div class="settlement-content" style="padding: 20px 2px;">
             	<ul class="settlementList">
                 	<li class="listone">
-                    	<h3>联系人信息</h3>
-                        <div class="tabox">
-                        	<table class="test-table">
+                    	<div style=" clear:both;overflow: hidden;">
+                            <h3 class="list-txt" style="float:left">联系人信息</h3>
+                            <!--  <div class="listone_add"><b></b><span>新增联系人</span></div>-->
+                        </div>
+                        <div class="listone_box">
+                            <div class="show_name">
+                                <div class="n_txt1">姓名：</div>
+                                <div class="c_input">
+                                    <input type='text' id="txtName" value="">
+                                </div>
+                                <div class="list_wrong name1"><b></b><p>请输入联系人姓名</p></div>
+                                <div class="name_wrong"><b></b><p></p></div>
+                            </div>
+                            <div class="show_name">
+                                <div class="n_txt1">电话：</div>
+                                <div class="c_input">
+                                    <input type='text' id="txtTel" value="">
+                                </div>
+                                <div class="list_wrong name2"><b></b><p>请输入联系人电话，便于接收告警短信</p></div>
+                                <div class="phone_wrong"><b></b><p></p></div>
+                            </div>
+                            <div class="show_name">
+                                <div class="n_txt1">邮箱：</div>
+                                <div class="c_input">
+                                    <input type='text' id="txtAdd" value="">
+                                </div>
+                                <div class="list_wrong name3"><b></b><p>请输入电子邮箱，便于接受告警邮件</p></div>
+                                <div class="add_wrong"><b></b><p></p></div>
+                            </div>
+                            <div class="ad-tj">
+                                <a href="javascript:;" id="ad-tj">提交信息</a>
+                             </div>
+                        </div> 
+                      
+                        <div class="tabox" style="margin-left: 0px; width:1108px;">
+                        	<table class="test-table mrn" width="100%">
                         	<tbody>
+                        	 
                             	 <tr height="40">
-                                 	<td width="18%" style="font-size:14px;">
-                                    	姓名：<i>${user.name }</i>
+                                 	<td width="18%" style="font-size:14px; padding-left:30px;">
+                                    	姓名：<i class="test_name">${user.name }</i>
                                     </td>
                                     <td width="24%" style="font-size:14px;">
-                                    	电话：<i>${user.mobile }</i>
+                                    	电话：<i class="test_iphone">${user.mobile }</i>
                                     </td>
                                     <td width="40%" style="font-size:14px;">
-                                    	邮箱：<i>${user.email }</i>
+                                    	邮箱：<i class="test_add">${user.email }</i>
                                     </td>
-                                    <!-- <td width="20%" style="font-size:14px;"><span><b></b>新增联系人</span></td> -->
+                                       <td width="16%" style="font-size:14px;"><span class="test-tablespan" style="cursor: pointer;"><b></b>修改</span></td>
                                  </tr>
-                                 
+                               
                             </tbody>
                         </table>
                         
                         </div>
                         <div class="hr" style="margin-top:30px;"></div>
                     </li>
-                    <li class="listone">
+                     <li class="listone">
                     	<h3>支付方式</h3>
                        <div class="clickBox" style="margin-top:20px; margin-left:50px;" id="clickBox">
                        	<button type="button" class="click">在线支付</button>
