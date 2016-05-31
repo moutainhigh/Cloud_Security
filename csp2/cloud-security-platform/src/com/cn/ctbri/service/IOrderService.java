@@ -138,5 +138,13 @@ public interface IOrderService {
      * 返回值    ：  List<Order>
      */
 	List<String> findServiceNameByOrderId(String orderId);
+	   //根据订单id 查询联系人
+	public Linkman findLinkmanByOrderId(String orderId);
+	//修改联系人信息
+	public void updateLinkManByOrderId(Linkman linkman,String orderId);
+	//修改api联系人信息
+	public void updateLinkManByAPIId(Linkman linkman,String orderId);
+	//删除联系人信息
+	public void delLinkmanByOrderId(String orderId);
     
 }
