@@ -185,8 +185,9 @@ $(function(){
 	    		     success: function(data) {
 	    		    	 if(data.timeCompare == true){
 	    		    		 if(data.assetsStatus == false && data.orderStatus == true){
-	    		    			 alert("完成下单，去订单跟踪查看吧~~"); 
-	    		    			 window.location.href = "orderTrackInit.html";
+	    		    			 //alert("完成下单，去订单跟踪查看吧~~"); 
+			    		    	var orderListId = data.orderListId;
+	    		    			window.location.href = "cashierUI.html?orderListId="+orderListId;
 		    		    	 }else{
 		    		    		alert("订单有异常,请重新下单!");
 		    		     		 return;
@@ -225,8 +226,10 @@ $(function(){
 	    		     dataType: "json",
 	    		     success: function(data) {
 	    		    	 if(data.message == true){
-	    		    		 alert("完成下单，去订单跟踪查看订单吧~~");  
-    		    			 window.location.href = "orderTrackInit.html";
+	    		    		 //alert("完成下单，去订单跟踪查看订单吧~~");  
+    		    			 //window.location.href = "orderTrackInit.html";
+    		    			 var orderListId = data.orderListId;
+	    		    		 window.location.href = "cashierUI.html?orderListId="+orderListId;
 				    	 }else{
 				    		 alert(data.message);
 				     		 return;
