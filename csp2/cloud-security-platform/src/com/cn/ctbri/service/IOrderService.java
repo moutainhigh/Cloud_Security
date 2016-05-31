@@ -130,5 +130,13 @@ public interface IOrderService {
      * 返回值    ：  List<Order>
      */
 	List findByCombineOrderTrackByPageAsset(Map<String, Object> paramMap);
+	
+	/**
+     * 功能描述：获取订单中服务的名字
+     * @param orderId 多个订单编号（逗号隔开）
+     *       @time 2016-4-25
+     * 返回值    ：  List<Order>
+     */
+	List<String> findServiceNameByOrderId(String orderId);
     
 }
