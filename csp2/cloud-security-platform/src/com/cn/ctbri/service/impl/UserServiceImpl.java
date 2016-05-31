@@ -170,5 +170,9 @@ public class UserServiceImpl implements IUserService{
 		userDao.insertLoginHistory(lh);
 		
 	}
+	
+	public int updateBalance(User user){
+		return userDao.updateBalance(user);
+	}
 
 }
