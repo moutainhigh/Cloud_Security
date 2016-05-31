@@ -1,5 +1,7 @@
 package com.cn.ctbri.dao;
 
+import java.util.List;
+
 import com.cn.ctbri.entity.OrderList;
 
 
@@ -12,5 +14,25 @@ import com.cn.ctbri.entity.OrderList;
 public interface OrderListDao {
 
 	void insert(OrderList ol);
+	
+	OrderList findById(String id);
+	
+	/**
+     * 功能描述： 根据用户ID查询所有消费记录
+     * @param userId
+     * @param  offset  开始记录的个数
+     * @param pageSize  每页记录条数
+     *       @time 2016-5-19
+     */
+	List findAllPayRecord(int userId);
+	
+	/**
+     * 功能描述： 消费记录分页
+     * @param userId
+     * @param  i  开始记录的个数
+     * @param pageSize  每页记录条数
+     *       @time 2016-5-19
+     */
+	List queryPayRecordByPage(int userId, int offset, int pageSize);
 	
 }
