@@ -14,6 +14,7 @@ import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.entity.ShopCar;
@@ -190,6 +191,26 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 	public void updateShopOrder(ShopCar order) {
 		// TODO Auto-generated method stub
 		this.getSqlSession().update(ns+"updateShopOrder",order);
+	}
+	
+	public void updatePayDate(OrderList ol) {
+		getSqlSession().update(ns + "updatePayDate", ol);
+	}
+	
+	public void updateOrderPayFlag(String orderIds, int payFlag) {
+		Map map = new HashMap();
+		map.put("orderId", orderIds);
+		map.put("payFlag", payFlag);
+		
+		this.getSqlSession().update(ns + "updatePayFlag", map);
+	}
+
+	public void updateOrderStatus(String orderIds, int status) {
+		Map map = new HashMap();
+		map.put("orderId", orderIds);
+		map.put("status", status);
+		
+		this.getSqlSession().update(ns + "updateOrderStatus", map);
 	}
 
 	
