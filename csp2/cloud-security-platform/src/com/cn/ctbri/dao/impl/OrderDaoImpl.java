@@ -98,6 +98,8 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
         paramMap.put("userId", id);
         paramMap.put("pageNow", pageNow);
         paramMap.put("pageSize", pageSize);
+        //add by tangxr 2016-5-31 是否分页 -1表示不分页
+        paramMap.put("pageIndex", pageIndex);
         paramMap.put("type", type);
         if("2".equals(state)){
         	 paramMap.put("state", Integer.parseInt(state)+1);
@@ -240,7 +242,6 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
         return linkman;
 	}
 
-	@Override
 	public void updateLinkManByOrderId(Linkman linkman,String orderId) {
 		// TODO Auto-generated method stub
 		Map map = new HashMap();
@@ -251,7 +252,6 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 		this.getSqlSession().update(ns+"updateLinkManByOrderId",map);
 	}
 
-	@Override
 	public void updateLinkManByAPIId(Linkman linkman, String orderId) {
 		// TODO Auto-generated method stub
 		Map map = new HashMap();
@@ -262,7 +262,6 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 		this.getSqlSession().update(ns+"updateLinkManByAPIId",map);
 	}
 
-	@Override
 	public void delLinkmanByOrderId(String orderId) {
 		// TODO Auto-generated method stub
 		this.getSqlSession().delete(ns+"delLinkmanByOrderId",orderId);
