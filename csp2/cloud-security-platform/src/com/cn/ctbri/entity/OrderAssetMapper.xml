@@ -78,7 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findOrderAssetId" parameterType="hashmap" resultType="com.cn.ctbri.entity.OrderAsset">
 		select oa.id from cs_order_asset oa,cs_asset a
         where oa.assetId = a.id 
-        and a.addr = #{url} 
+        and a.addr like CONCAT(CONCAT('%', #{url}), '%')
         and oa.orderid = #{orderId}
     </select>
     
