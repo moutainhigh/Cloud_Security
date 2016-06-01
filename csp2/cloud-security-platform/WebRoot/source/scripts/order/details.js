@@ -151,9 +151,9 @@ $(function(){
 //    	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
     	var serviceId = $("#serviceId").val();
     	  var price = $('#priceHidden').val();
-       var userName = $("#txtName").val();
-        var userAdd = $("#txtAdd").val();
-        var mobile = $("#txtTel").val();
+       var userName =  $(".test_name").text();
+        var userAdd = $(".test_add").text();
+        var mobile =  $(".test_iphone").text();
     	if(orderType==2){
     		scanType="";
     	}
@@ -217,9 +217,9 @@ $(function(){
     	var num = $('#num').val();//数量
     	var type = $('#type').val();//套餐类型
     	 var price = $('#priceHidden').val();
-    	  var userName = $("#txtName").val();
-        var userAdd = $("#txtAdd").val();
-        var mobile = $("#txtTel").val();
+    	 var userName =  $(".test_name").text();
+        var userAdd = $(".test_add").text();
+        var mobile =  $(".test_iphone").text();
 		var result = window.confirm("确定要提交订单吗？");
     	if(result){
     		$.ajax({ type: "POST",

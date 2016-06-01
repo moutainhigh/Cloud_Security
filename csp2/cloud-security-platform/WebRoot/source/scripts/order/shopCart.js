@@ -38,9 +38,9 @@ $(function(){
     $("#shopSettlement").click(function(){
        var orderIds="";
        var countPrice = $("#countPrice").val();
-      var userName = $("#txtName").val();
-        var userAdd = $("#txtAdd").val();
-        var mobile = $("#txtTel").val();
+      var userName =  $(".test_name").text();
+        var userAdd = $(".test_add").text();
+        var mobile =  $(".test_iphone").text();
        $("input:hidden[name='orderId']").each(function(obj){
     	    orderIds+=$(this).val()+",";
        });
