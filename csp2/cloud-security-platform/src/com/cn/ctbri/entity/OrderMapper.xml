@@ -333,7 +333,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 删除联系人 -->
     <delete id="delLinkmanByOrderId" parameterType="String">
-      delete FROM cs_linkman l WHERE l.id =(SELECT o.contactId FROM cs_order o WHERE o.id=#{orderId})
+      delete FROM cs_linkman  WHERE id =(SELECT o.contactId FROM cs_order o WHERE o.id=#{orderId})
     
     </delete>
 </mapper>
