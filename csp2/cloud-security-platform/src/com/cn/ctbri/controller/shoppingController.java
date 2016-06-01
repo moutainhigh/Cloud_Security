@@ -352,14 +352,15 @@ public class shoppingController {
     	  Map<String, Object> m = new HashMap<String, Object>();
         //获得订单id
         String orderId = request.getParameter("orderId");
+        //删除联系人
+        orderService.delLinkmanByOrderId(orderId);
         //删除订单资产
         orderAssetService.deleteOaByOrderId(orderId);
         //删除订单api
         orderAPIService.deleteOrderAPI(orderId);
          //删除订单
         orderService.deleteOrderById(orderId);
-        //删除联系人
-        orderService.delLinkmanByOrderId(orderId);
+     
       //object转化为Json格式
 		JSONObject JSON = CommonUtil.objectToJson(response, m);
 		try {
@@ -513,15 +514,15 @@ public class shoppingController {
 	    	    	 end_date = sdf.format(endDate);
 	    	     }
 	    	     String orderId = "";
-	    	     
-	    	     try{
+	    	     orderVal = orderVal+ shopCar.getOrderId()+",";
+	    	    /* try{
 	    	    	 if(shopCar.getServiceId()!=6){
 		    	    
 	    	    	orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
 		            			scanDepth, maxPages, stategy, customManu, String.valueOf(shopCar.getServiceId()));
-	    	    /*	SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+	    	    	SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
 	    	    	 String orderDate = odf.format(new Date());
-	    	    	   orderId = orderDate+String.valueOf(Random.fivecode());*/
+	    	    	   orderId = orderDate+String.valueOf(Random.fivecode());
 	    	    	 orderVal = orderVal+ orderId+",";
 		    	     }else{
 		    	    	 SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
@@ -547,8 +548,13 @@ public class shoppingController {
 	         		 map.put("orderStatus", true);
 			    	 map.put("sucess", false);
 			    	 map.put("flag", flag);
-	         	}
+	         	}*/
 	    		
+	    	     orderService.updateLinkManByOrderId(linkman, shopCar.getOrderId());
+	    	     map.put("flag", flag);
+	    		 map.put("price", df.format(Double.parseDouble(price)));
+	    		 map.put("orderStatus", true);
+		    	 map.put("sucess", true);
 	    	 }
 	    	 
 	     }
@@ -571,24 +577,24 @@ public class shoppingController {
 					}else{
 						status = String.valueOf(shopCar.getStatus());
 					} 
-					String orderId = "";
-					try {
+					  orderVal = orderVal+ shopCar.getOrderId()+",";
+				/*	try {
 					if(shopCar.getServiceId()!=6){
 						orderId = NorthAPIWorker.vulnScanCreateAPI(
 								Integer.parseInt(shopCar.getAstName()),
 								shopCar.getNum(), shopCar.getServiceId(),
 								globle_user.getApikey(), globle_user.getId());
 						 
-						  /*SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+						  SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
 			    	    	 String orderDate = odf.format(new Date());
-			    	    	   orderId = orderDate+String.valueOf(Random.fivecode());*/
+			    	    	   orderId = orderDate+String.valueOf(Random.fivecode());
 			    	    	   orderVal = orderVal+ orderId+",";
 						 }
 					} catch (Exception e) {
 						e.printStackTrace();
-					}
+					}*/
 					// String orderId="2";
-					if (orderId != null && !"".equals(orderId)) {
+					/*if (orderId != null && !"".equals(orderId)) {
 						// 更新订单资产表
 						selfHelpOrderService.updateOrderAPI(
 								shopCar.getOrderId(), orderId);
@@ -604,8 +610,12 @@ public class shoppingController {
 						map.put("orderStatus", true);
 						map.put("sucess", true);
 						map.put("flag", flag);
-					}
-
+					}*/
+					    orderService.updateLinkManByAPIId(linkman, shopCar.getOrderId());
+						map.put("orderStatus", true);
+						map.put("sucess", true);
+						 map.put("flag", flag);
+			    		 map.put("price", df.format(Double.parseDouble(price)));
 				}
 
 			}

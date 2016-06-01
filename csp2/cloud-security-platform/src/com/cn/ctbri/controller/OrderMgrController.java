@@ -432,11 +432,11 @@ public class OrderMgrController {
         if(beginDate.compareTo(createDate)>0){
          	//创建订单（任务），调北向api，modify by tangxr 2015-12-21
         	try {
-        		orderId = NorthAPIWorker.vulnScanCreate(orderType, targetURL, scanType, beginDate, endDate, scanPeriod,
-            			scanDepth, maxPages, stategy, customManu, serviceId);
-        	/*	SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+        		/*orderId = NorthAPIWorker.vulnScanCreate(orderType, targetURL, scanType, beginDate, endDate, scanPeriod,
+            			scanDepth, maxPages, stategy, customManu, serviceId);*/
+        	SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
    	    	 String orderDate = odf.format(new Date());
-   	    	   orderId = orderDate+String.valueOf(Random.fivecode());*/
+   	    	   orderId = orderDate+String.valueOf(Random.fivecode());
 			} catch (Exception e) {
 				// TODO: handle exception
 			}

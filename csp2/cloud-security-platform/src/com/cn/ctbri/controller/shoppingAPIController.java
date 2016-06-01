@@ -223,10 +223,10 @@ public class shoppingAPIController {
         String orderId = "";
         //创建订单（任务），调北向api，modify by tangxr 2015-12-21
     	try {
-    		/*SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+    		SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
        	    String orderDate = odf.format(new Date());
-       	         orderId = orderDate+String.valueOf(Random.fivecode());*/
-    		orderId = NorthAPIWorker.vulnScanCreateAPI(type, time*num, apiId, globle_user.getApikey(), globle_user.getId());
+       	         orderId = orderDate+String.valueOf(Random.fivecode());
+    		//orderId = NorthAPIWorker.vulnScanCreateAPI(type, time*num, apiId, globle_user.getApikey(), globle_user.getId());
 		} catch (Exception e) {
 			m.put("message", "系统异常，暂时不能购买api，请稍后购买~~");
 		}
