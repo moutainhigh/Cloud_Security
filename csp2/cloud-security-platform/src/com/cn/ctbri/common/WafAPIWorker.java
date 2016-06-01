@@ -13,6 +13,7 @@ import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.sun.jersey.api.client.Client;
@@ -145,6 +146,92 @@ public class WafAPIWorker {
 	}
 	
 	/**
+	 * 功能描述：修改站点
+	 * @param resourceId 设备资源编号，
+	 * 		  deviceId   设备编号，
+	 * 		  siteId     站点id，
+	 * 		  name       站点名称，
+	 * 		  ip         设备ip，
+	 * 	      port       站点端口，
+	 *        cert       证书名称，
+	 *        type       协议类型
+	 * @time 2016-5-25
+	 */
+	public static String alterSite(String resourceId, String deviceId, 
+			String siteId, String name, String ip, String port, 
+			String cert, String type){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("resourceId", "10001");
+		json.put("deviceId", "30001");
+		json.put("siteId", siteId);
+		json.put("name", name);
+		json.put("ip", ip);
+		json.put("port", port);
+		json.put("cert", cert);
+		json.put("type", type);
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/alterSite";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        
+        return textEntity;
+	}
+	
+	
+	/**
+	 * 功能描述：新建虚拟站点
+	 * @param resourceId 设备资源编号，
+	 * 		  deviceId   设备编号，
+	 *        parent
+	 * 		  name       站点名称，
+	 * 		  ip         设备ip，
+	 * 	      port       站点端口，
+	 *        cert       证书名称，
+	 *        type       协议类型
+	 * @time 2016-5-25
+	 */
+	public static String createVirtualSite(String resourceId, String deviceId, 
+			String parent, String name, String domain, String include, 
+			String exclude, String[] server){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("resourceId", "10001");
+		json.put("deviceId", "30001");
+		json.put("parent", parent);
+		json.put("name", name);
+		json.put("domain", domain);
+		json.put("include", include);
+		json.put("exclude", exclude);
+		json.put("server", server);
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/createVirtualSite";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        
+        return textEntity;
+	}
+	
+	
+	
+	
+	/**
 	 * 功能描述：根据ip查询websec日志信息
 	 * @param dstIp
 	 * @time 2016-5-25
@@ -266,8 +353,22 @@ public class WafAPIWorker {
 	
     
     public static void main(String[] args) throws UnsupportedEncodingException {
-        String sites = getSites("10001", "30001");
-    	System.out.println(sites);
+//        String sites = getSites("10001", "30001");
+//    	String eth = postIpToEth("10001", "30001", "187.6.0.1", "255.255.255.0");
+//    	String createSite = createSite("10001", "30001", "test61", "187.6.0.1", "", "", "");
+//        System.out.println(eth);
+    	String ethStr = "{\"ip_address\":[{\"ip\":\"187.6.0.1\",\"mask\":\"255.255.255.0\",\"multi_status\":200,\"multi_result\":\"created successfully\"}]}";
+        String status = "";
+    	try {
+    		JSONObject obj = JSONObject.fromObject(ethStr);
+        	String ip_address = obj.getString("ip_address");
+            if("success".equals(status)){
+            	System.out.println(status);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(status);
         
     }
 }
