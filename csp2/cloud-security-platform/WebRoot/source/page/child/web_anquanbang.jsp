@@ -176,12 +176,12 @@ function showUnreadNews()
                                            
                                             <strong style="display:block"><em style="font-size:20px;font-family: Arial Regular;">¥199.00</em></strong>
                                              <strong style="display:block; font-size:30px;">¥100.00</strong>
-                                            <a href="javaScript:void(0);" class="btn" style="width:80px;" id="wafDetail">购买</a>
+                                            <a href="${ctx}/wafDetails.html?serviceId=6&indexPage=1" class="btn" style="width:80px;">购买</a>
                                         </div>
                                     </div>
                                <!-- <div class="mask">
                                 	<h6>即将上线</h6>
-                                </div> -->	
+                                </div> -->
                                 
                                
                             </li>
