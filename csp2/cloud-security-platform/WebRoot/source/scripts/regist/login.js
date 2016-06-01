@@ -131,7 +131,11 @@ function loginSubmit(){
 							$("#errMsgDiv").hide();
 							var serviceId = data.serviceId;
 							var indexPage = data.indexPage;
-							window.location.href="selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
+							if(serviceId==6){
+								window.location.href="wafDetails.html?serviceId="+serviceId+"&indexPage="+indexPage;
+							}else{
+								window.location.href="selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
+							}
 							break;
 						case 6:
 							$("#errMsg").html("");
