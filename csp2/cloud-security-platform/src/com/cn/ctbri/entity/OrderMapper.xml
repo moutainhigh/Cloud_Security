@@ -81,7 +81,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <!-- and ISNULL(o.delFlag)  -->
         and o.delFlag != 1
         and	o.payFlag = 1
-        order by o.create_date desc limit #{pageNow},#{pageSize}
+        order by o.create_date desc 
+        <if test="pageIndex!=-1"><!--服务中  -->
+        	limit #{pageNow},#{pageSize}
+        </if>
     </select>
 	<!-- 条件查询 -->
 	<!-- SELECT c.id,c.type,c.name,c.begin_date,c.end_date,c.create_date
@@ -298,7 +301,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		and o.delFlag !=1
 		and	o.payFlag = 1
 		and o.create_date &gt;='2016-04-17 00:00:00'
-		
     </select>
     
     <!-- 查询联系人 -->
