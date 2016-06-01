@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +66,9 @@ public class WafController {
 	@RequestMapping(value="wafDetails.html")
 	public String wafDetails(HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		int serviceId = Integer.parseInt(request.getParameter("serviceId"));
+	    //是否从首页进入
+	    String indexPage = request.getParameter("indexPage");
 		//获取服务对象资产
 	    List<Asset> list = selfHelpOrderService.findServiceAsset(globle_user.getId());
 		String hostnameRegex ="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
@@ -101,7 +105,6 @@ public class WafController {
 				}
 			}
 		}
-		int serviceId = Integer.parseInt(request.getParameter("serviceId"));
 		Serv service = servService.findById(serviceId);
 		  //网站安全帮列表
         List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
@@ -111,6 +114,8 @@ public class WafController {
 		 request.setAttribute("carnum", carnum);  
 		request.setAttribute("assList", assList);
 		request.setAttribute("service", service);
+		request.setAttribute("indexPage", indexPage);
+        request.setAttribute("service", service);
 	    return  "/source/page/details/wafDetails";
 	}
 	 /**
@@ -577,4 +582,25 @@ public class WafController {
 		 
 	    return  "/source/page/details/wafDetails";
 	}
+	
+	
+	/**
+     * 解析新建站点
+     * @param siteStr
+     * @return
+     */
+    private String getcreateSite(String siteStr) {
+    	String status = "";
+    	try {
+    		JSONArray siteArray = new JSONArray().fromObject(siteStr);
+    		JSONObject siteObject = siteArray.getJSONObject(0);
+    		status = siteObject.getString("status");
+            if("success".equals(status)){
+            	System.out.println(status);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
 }

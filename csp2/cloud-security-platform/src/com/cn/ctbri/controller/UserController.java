@@ -655,7 +655,8 @@ public class UserController{
                                  KK : 11小時制 (0-11)*/
         String temp = setDateFormat.format(Calendar.getInstance().getTime());
         m.put("currentDate", temp);
-        List servList = orderService.findByCombineOrderTrack(m);
+//        List servList = orderService.findByCombineOrderTrack(m);
+        List servList = orderService.findByUserIdAndPage(globle_user.getId(),-1,"1",null);
         int servNum = 0;
 		if(servList.size()>0&&servList!=null){
 			servNum = servList.size();
