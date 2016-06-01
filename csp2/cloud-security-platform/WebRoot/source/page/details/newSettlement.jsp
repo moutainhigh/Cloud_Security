@@ -224,7 +224,7 @@ $(function() {
                         	  <c:if test="${not empty linkman}">
                             	 <tr height="40">
                                  	<td width="18%" style="font-size:14px; padding-left:30px;">
-                                    	姓名：<i class="test_name">${linkman.name}</i>
+                                    	姓名：<i class="test_name" id="test_name">${linkman.name}</i>
                                     </td>
                                     <td width="24%" style="font-size:14px;">
                                     	电话：<i class="test_iphone">${linkman.mobile }</i>
