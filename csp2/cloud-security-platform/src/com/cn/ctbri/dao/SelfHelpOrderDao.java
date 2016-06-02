@@ -109,4 +109,8 @@ public interface SelfHelpOrderDao {
 	void updateOrderPayFlag(String orderIds, int payFlag);
 	//修改订单状态
 	void updateOrderStatus(String orderIds, int status);
+	//修改订单开始时间和结束时间
+	void updateOrderDate(ShopCar order);
+	//修改订单API开始时间和结束时间
+	void updateOrderAPIDate(ShopCar order);
 }
