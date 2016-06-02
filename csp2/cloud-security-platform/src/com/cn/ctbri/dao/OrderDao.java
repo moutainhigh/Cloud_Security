@@ -131,7 +131,7 @@ public interface OrderDao {
      *       @time 2016-5-31
      * 返回值    ：  List<String>
      */
-	List<String> findServiceNameByOrderId(String orderId);
+	List<String> findServiceNameByOrderId(List<String> orderId);
 	 //根据订单id 查询联系人
 	public Linkman findLinkmanByOrderId(String orderId);
 	//修改联系人信息
