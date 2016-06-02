@@ -18,6 +18,8 @@ public interface IOrderListService {
 	//查询购物订单
 	OrderList findById(String id);
 	
+	void update(OrderList ol);
+	
 	/**
      * 功能描述：消费记录-分页
      *       @time 2016-5-19
