@@ -24,7 +24,7 @@ public interface OrderListDao {
      * @param pageSize  每页记录条数
      *       @time 2016-5-19
      */
-	List findAllPayRecord(int userId);
+	List<OrderList> findAllPayRecord(int userId);
 	
 	void update(OrderList ol);
 	
@@ -35,6 +35,6 @@ public interface OrderListDao {
      * @param pageSize  每页记录条数
      *       @time 2016-5-19
      */
-	List queryPayRecordByPage(int userId, int offset, int pageSize);
+	List<OrderList> queryPayRecordByPage(int userId, int offset, int pageSize);
 	
 }
