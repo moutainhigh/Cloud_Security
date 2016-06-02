@@ -1065,7 +1065,8 @@ public class shoppingController {
     	String priceStr = df.format(orderList.getPrice());
     	
     	//根据订单编号获取服务名称
-		List<String> nameList = orderService.findServiceNameByOrderId(orderList.getOrderId());
+    	String[] serviceName = orderList.getServerName().split(",");
+//		List<String> nameList = orderService.findServiceNameByOrderId(orderList.getOrderId());
 
     	//安全币余额
 		List<User> userList = userService.findUserById(orderList.getUserId());
@@ -1073,7 +1074,7 @@ public class shoppingController {
     	
         model.addAttribute("orderList", orderList);
         model.addAttribute("price", priceStr);
-        model.addAttribute("serviceName", nameList);
+        model.addAttribute("serviceName", serviceName);
         model.addAttribute("balance",balance);
     	return "source/page/details/shoppingcashier-desk2";
     }
