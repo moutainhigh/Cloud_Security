@@ -187,19 +187,19 @@ $(function(){
 	    		     dataType: "json", 
 //		    		     contentType: "application/json; charset=utf-8", 
 	    		     success: function(data) {
-	    		    	 if(data.timeCompare == true){
-	    		    		 if(data.assetsStatus == false && data.orderStatus == true){
-	    		    			 //alert("完成下单，去订单跟踪查看吧~~"); 
+		    				if(data.assetsStatus == true){
+		    					alert("订单资产没有验证,请重新下单!");
+		    		     	    return;
+		    				}else if(data.timeCompare == false){
+		    					alert("订单无效,请重新下单!");
+		    		     		return;
+		    				}else if(data.orderStatus == false){
+		    					alert("订单有异常,请重新下单!");
+		    		     	    return;
+		    				}else{
 			    		    	var orderListId = data.orderListId;
 	    		    			window.location.href = "cashierUI.html?orderListId="+orderListId;
-		    		    	 }else{
-		    		    		alert("订单有异常,请重新下单!");
-		    		     		 return;
-		    		    	 }
-	    		    	 }else{
-	    		    		 alert("订单开始时间不能早于当前订单提交时间!");
-	    		     		 return;
-	    		    	 }
+		    				}
 	    		    	 }, 
 	    		     error: function(data){ 
 	    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
