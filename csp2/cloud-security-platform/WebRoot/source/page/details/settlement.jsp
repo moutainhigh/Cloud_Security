@@ -248,12 +248,13 @@
                         </div>
                         <div class="hr" style="margin-top:30px;"></div>
                     </li>
-                     <li class="listone">
+                    <li class="listone">
                     	<h3>支付方式</h3>
                        <div class="clickBox" style="margin-top:20px; margin-left:50px;" id="clickBox">
-                       	<button type="button" class="click">在线支付</button>
+                       	<!-- <button type="button" class="click">在线支付</button>
                         <button type="button">邮局汇款</button>
-                        <button type="button">公司转账</button>
+                        <button type="button">公司转账</button> -->
+                        <button type="button" class="click">安全币</button>
                        </div>
                         <div class="hr"></div>
                     </li>
