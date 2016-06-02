@@ -226,8 +226,10 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
      *       @time 2016-4-25
      * 返回值    ：  List<Order>
      */
-	public List<String> findServiceNameByOrderId(String orderId){
-		List<String> serviceNameList =  this.getSqlSession().selectList(ns + "findServiceNameById", orderId);
+	public List<String> findServiceNameByOrderId(List orderId){
+		Map map = new HashMap();
+		map.put("orderIds", orderId);
+		List<String> serviceNameList =  this.getSqlSession().selectList(ns + "findServiceNameById", map);
 		return serviceNameList;
 	}
 	
@@ -252,6 +254,7 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 		this.getSqlSession().update(ns+"updateLinkManByOrderId",map);
 	}
 
+//	@Override
 	public void updateLinkManByAPIId(Linkman linkman, String orderId) {
 		// TODO Auto-generated method stub
 		Map map = new HashMap();
