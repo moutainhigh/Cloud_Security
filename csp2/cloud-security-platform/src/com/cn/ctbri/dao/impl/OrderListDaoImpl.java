@@ -31,12 +31,12 @@ public class OrderListDaoImpl extends DaoCommon implements OrderListDao{
 		return this.getSqlSession().selectOne(ns + "findById", id);
 	}
 	
-	public List findAllPayRecord(int userId) {
+	public List<OrderList> findAllPayRecord(int userId) {
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("userId", userId);
 		paramMap.put("pageNow", null);
         paramMap.put("pageSize", null);
-		List list = getSqlSession().selectList(ns +"queryPayRecordByPageAndUserId", paramMap);
+		List<OrderList> list = getSqlSession().selectList(ns +"queryPayRecordByPageAndUserId", paramMap);
 		return list;
 	}
 	
@@ -51,12 +51,12 @@ public class OrderListDaoImpl extends DaoCommon implements OrderListDao{
      * @param pageSize  每页记录条数
      *       @time 2016-5-19
      */
-	public List queryPayRecordByPage(int userId, int offset, int pageSize) {
+	public List<OrderList> queryPayRecordByPage(int userId, int offset, int pageSize) {
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("userId", userId);
 		paramMap.put("pageNow", offset);
         paramMap.put("pageSize", pageSize);
-        List list = getSqlSession().selectList(ns +"queryPayRecordByPageAndUserId", paramMap);
+        List<OrderList> list = getSqlSession().selectList(ns +"queryPayRecordByPageAndUserId", paramMap);
 		return list;
 	}
 	
