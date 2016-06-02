@@ -220,18 +220,6 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
         return list;
 	}
 	
-	/**
-     * 功能描述：根据orderId查询服务名称
-     *       @time 2016-4-25
-     * 返回值    ：  List<Order>
-     */
-	public List<String> findServiceNameByOrderId(List orderId){
-		Map map = new HashMap();
-		map.put("orderIds", orderId);
-		List<String> serviceNameList =  this.getSqlSession().selectList(ns + "findServiceNameById", map);
-		return serviceNameList;
-	}
-	
     
 	/**
      * 功能描述：根据订单id查询联系人
