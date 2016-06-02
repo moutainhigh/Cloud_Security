@@ -281,6 +281,10 @@ $(function(){
         		alert("开始时间不能为空");
         		return;
 			}
+			if(endDate==""||endDate==null){
+            		alert("结束时间不能为空");
+            		return;
+            	}
 		}else{
 			if(beginDate==""||beginDate==null||endDate==""||endDate==null){
         		if(beginDate==""||beginDate==null){
