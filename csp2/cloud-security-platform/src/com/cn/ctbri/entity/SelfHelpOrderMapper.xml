@@ -289,4 +289,20 @@ WHERE a.id = b.orderId
       	where
       	 id in (${orderId})
  </update>
+ <update id="updateOrderDate" parameterType="com.cn.ctbri.entity.ShopCar">
+ 	update cs_order
+ 	set
+ 		begin_date = #{beginDate},
+ 		end_date = #{endDate}
+ 	where
+ 		id= #{orderId}
+ </update>
+ <update id="updateOrderAPIDate" parameterType="com.cn.ctbri.entity.ShopCar">
+ 	update cs_order_api
+ 	set
+ 		begin_date = #{beginDate},
+ 		end_date = #{endDate}
+ 	where
+ 		id= #{orderId}
+ </update>
 </mapper>
