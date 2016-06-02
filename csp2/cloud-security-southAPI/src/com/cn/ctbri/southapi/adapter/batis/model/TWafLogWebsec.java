@@ -5,17 +5,16 @@ import java.util.Date;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 public class TWafLogWebsec {
-    @XStreamOmitField
 	private Long logId;
-    @XStreamOmitField
+	
     private Integer resourceId;
 
     private String resourceUri;
 
     private String resourceIp;
-    @XStreamOmitField
+
     private Integer siteId;
-    @XStreamOmitField
+
     private Integer protectId;
 
     private String dstIp;

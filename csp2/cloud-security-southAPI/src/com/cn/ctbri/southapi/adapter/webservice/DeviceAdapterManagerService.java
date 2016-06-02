@@ -240,11 +240,14 @@ public class DeviceAdapterManagerService {
 		String dstIp = jsonObject.getString("dstIp");
 		return deviceAdpaterManager.getWafLogArp(dstIp);
 	}
-	
+	@POST
+	@Path("/getWaflogArpById")
+	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafLogArpById(String dataJson) {
-		return null;
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		String logId = jsonObject.getString("logId");
+		return deviceAdpaterManager.getWafLogArpById(logId);
 	}
-	
 	@POST
 	@Path("/getWaflogDdosByIp")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -254,12 +257,28 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.getWafLogDDOS(dstIp);
 	}
 	@POST
+	@Path("/getWaflogDdosById")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafLogDdosById(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		String logId = jsonObject.getString("logId");
+		return deviceAdpaterManager.getWafLogDDOSById(logId);
+	}
+	@POST
 	@Path("/getWaflogDefaceByIp")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafLogDefaceByIp(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		String dstIp = jsonObject.getString("dstIp");
 		return deviceAdpaterManager.getWafLogDeface(dstIp);
+	}
+	@POST
+	@Path("/getWaflogDefaceById")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafLogDefaceById(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		String logId = jsonObject.getString("logId");
+		return deviceAdpaterManager.getWafLogDefaceById(logId);
 	}
 	@POST
 	@Path("/getSites")
