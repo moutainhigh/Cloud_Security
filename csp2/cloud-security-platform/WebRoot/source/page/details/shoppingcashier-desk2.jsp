@@ -48,19 +48,24 @@ $(function(){
 			$.ajax({
 				type:"POST",
 				async: false, 
-				url:"checkPayTime.html",
+				url:"payConfirm.html",
 				dataType:"json",
 				data:{"orderListId":orderListId},
 				success: function(data) {
-					if (data.payFlag == 2){
-						alert("支付时间超时！");
-					}else if(data.payFlag ==1) {
+					if (data.payFlag == 1){
 						alert("不能重复支付!");
+					}else if(data.payFlag ==2) {
+						alert("支付时间超时!");
+					}else if(data.payFlag ==3 || data.payFlag ==0) {
+					    //余额不足/支付成功
+						window.location.href = "repayUI.html?orderListId="+orderListId;
 					}else {
-						window.location.href = "payConfirm.html?orderListId="+orderListId;
+						alert("订单有异常,请重新下单!");
+		    		    return;
 					}
 				},
 				error:function(data){
+						alert(data);
 					 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
 			    		 window.location.href = "loginUI.html"; } 
 			    	 else { window.location.href = "loginUI.html"; }
@@ -172,7 +177,7 @@ $(function(){
                     <div class="shoping_contant">
                          <div class="shopCant_Btn">
                              <input type="checkbox"class="cklost"  style="display:none" value="" />
-                             <i class="chekLost chekthis"></i>
+                             <i class="chekLost"></i>
                         </div>
                         <div class="shopCant_fix"><i></i>安全币余额${balance }</div>
                         <div class="shopCant_con">更换其他付款方式</div>
