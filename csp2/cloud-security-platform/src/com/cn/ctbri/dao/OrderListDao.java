@@ -26,6 +26,8 @@ public interface OrderListDao {
      */
 	List findAllPayRecord(int userId);
 	
+	void update(OrderList ol);
+	
 	/**
      * 功能描述： 消费记录分页
      * @param userId
