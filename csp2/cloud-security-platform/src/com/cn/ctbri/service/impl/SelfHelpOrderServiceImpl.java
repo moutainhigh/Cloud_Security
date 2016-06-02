@@ -168,6 +168,15 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 	public void updateOrderStatus(String orderIds, int status) {
 		selfHelpOrderDao.updateOrderStatus(orderIds, status);
 	}
+	
+	//修改订单开始时间和结束时间
+	public void updateOrderDate(ShopCar order){
+		selfHelpOrderDao.updateOrderDate(order);
+	}
+	//修改订单API开始时间和结束时间
+	public void updateOrderAPIDate(ShopCar order){
+		selfHelpOrderDao.updateOrderAPIDate(order);
+	}
 
 
 }
