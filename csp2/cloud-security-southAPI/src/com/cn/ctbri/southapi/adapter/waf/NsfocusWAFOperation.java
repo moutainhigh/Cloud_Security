@@ -94,12 +94,14 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
         String response = builder.post(String.class);
         return response;
 	}
+	
 	private String getMethod(String url){
         WebResource service = createBasicWebResource(url);   
         Builder builder =  service.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
         String response = builder.get(String.class);
         return response;
     }
+	
 	private String delMethod(String url){
         WebResource service = createBasicWebResource(url);   
         Builder builder =  service.type("application/json");
@@ -121,7 +123,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		return response;
 	}
 	
-	public static String getWAFAuth(String apiKey, String apiValue, String method) {
+	private String getWAFAuth(String apiKey, String apiValue, String method) {
 		long timestamp = System.currentTimeMillis();
 		String apivalue1 = apiValue;
 		String signature = "apikey="+apiKey+
@@ -135,6 +137,19 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 
 	}
 	
+	private String getWAFAuthWithQuery(String apiKey, String apiValue, String method) {
+		long timestamp = System.currentTimeMillis();
+		String apivalue1 = apiValue;
+		String signature = "apikey="+apiKey+
+							"method="+method+
+							"timestamp="+System.currentTimeMillis()+apivalue1;
+		String md5String = getMd5(signature);
+		String authString = "&timestamp="+timestamp+
+							"&apikey="+apiKey+
+							"&method=get&sign="+md5String;
+		return authString;
+	}
+
 	//基础方法负责生成各自标签字符串，拼接各自的登录参数字符串以及调用登录方法
 	/**
 	 * get基础方法
@@ -143,6 +158,13 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	 */
 	private String getOperation(String url) {
 		String authString = getWAFAuth(nsfocusAPIKey, nsfocusAPIValue, "get");
+		String returnString = getMethod(url+authString);
+		return returnString;
+	}
+	
+	
+	private String getOperationWithQuery(String url) {
+		String authString = getWAFAuthWithQuery(nsfocusAPIKey, nsfocusAPIValue, "get");
 		String returnString = getMethod(url+authString);
 		return returnString;
 	}
@@ -170,6 +192,12 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	private String delOperation(String url) {
 		String authString = getWAFAuth(nsfocusAPIKey, nsfocusAPIValue, "delete");
 		String returnString = delMethod(url+authString);
+		return returnString;
+	}
+	
+	private String delOperationWithQuery(String url) {
+		String autString = getWAFAuthWithQuery(nsfocusAPIKey, nsfocusAPIValue, "delete");
+		String returnString = delMethod(url+autString);
 		return returnString;
 	}
 	
@@ -216,13 +244,25 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	 * @param siteId
 	 * @return
 	 */
-	public String getSite(String siteId) {
-		String getSiteString = getOperation(nsfocusWafUrl+REST_URI_V1+"/sites/{"+siteId+"}");
+	public String getSite(JSONObject jsonObject) {
+		if (jsonObject.get("siteId")==null||jsonObject.getString("siteId").equals("")) {
+			JSONObject errJsonObject = new JSONObject();
+			errJsonObject.put("status", "failed");
+			errJsonObject.put("reason", "Site id is null!!");
+			return errJsonObject.toString();
+		}
+		String getSiteString = getOperation(nsfocusWafUrl+REST_URI_V1+"/sites/{"+jsonObject.getString("siteId")+"}");
 		return getSiteString;
 	}
 	
-	public String delSite(String siteId) {
-		String delSiteString = delOperation(nsfocusWafUrl+REST_URI_V1+"/sites?siteid="+siteId);
+	public String delSite(JSONObject jsonObject) {
+		if (jsonObject.get("siteId")==null||jsonObject.getString("siteId").equals("")) {
+			JSONObject errJsonObject = new JSONObject();
+			errJsonObject.put("status", "failed");
+			errJsonObject.put("reason", "Site id is null!!");
+			return errJsonObject.toString();
+		}
+		String delSiteString = delOperationWithQuery(nsfocusWafUrl+REST_URI_V1+"/sites?siteid="+jsonObject.getString("siteId"));
 		return delSiteString;
 	}
 	
@@ -236,13 +276,13 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		JSONObject tempJsonObject = new JSONObject();
 		tempJsonObject.put("ip", jsonObject.getString("ip"));
 		
-		if (jsonObject.get("name")!=null&&jsonObject.getString("name").equals("")){
+		if (jsonObject.get("name")!=null&&!jsonObject.getString("name").equals("")){
 			tempJsonObject.put("name", jsonObject.getString("name"));
 		}
-		if (jsonObject.get("port")!=null&&jsonObject.getString("port").equals("")){
+		if (jsonObject.get("port")!=null&&!jsonObject.getString("port").equals("")){
 			tempJsonObject.put("port", jsonObject.getString("port"));
 		}
-		if (jsonObject.get("type")!=null&&jsonObject.getString("type").equals("")){
+		if (jsonObject.get("type")!=null&&!jsonObject.getString("type").equals("")){
 			tempJsonObject.put("type", jsonObject.getString("type"));
 			if ("1".equals(jsonObject.getString("type"))&&jsonObject.get("cert")!=null) {
 				tempJsonObject.put("cert", jsonObject.getString("cert"));
@@ -250,9 +290,10 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		}
 		JSONObject createSiteJsonObject = new JSONObject();
 		createSiteJsonObject.put("0", tempJsonObject);
-		System.out.println(createSiteJsonObject.toString());
 		String createSiteString = postOperation(nsfocusWafUrl+REST_URI_V1+"/sites",createSiteJsonObject.toString());
-		return createSiteString;
+		JSONArray responseArray = JSONArray.fromObject(createSiteString);
+		String responseString = responseArray.getString(0);
+		return responseString;
 	}
 	public String alterSite(JSONObject jsonObject) {
 		if (jsonObject.get("siteId")==null||jsonObject.getString("siteId").equals("")) {
@@ -261,32 +302,37 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 			errJsonObject.put("reason", "Site id is null!!");
 		}
 		JSONObject tempJsonObject = new JSONObject();
-		if(jsonObject.get("name")!=null&&!jsonObject.getString("name").equals(""))
+		if(jsonObject.get("name")!=null && !jsonObject.getString("name").equals(""))
 			tempJsonObject.put("name", jsonObject.getString("name"));
-		if(jsonObject.get("ip")!=null&&!jsonObject.getString("ip").equals(""))
+		if(jsonObject.get("ip")!=null && !jsonObject.getString("ip").equals(""))
 			tempJsonObject.put("ip", jsonObject.getString("ip"));
-		if(jsonObject.get("port")!=null&&!jsonObject.getString("port").equals(""))
+		if(jsonObject.get("port")!=null && !jsonObject.getString("port").equals(""))
 			tempJsonObject.put("port", jsonObject.getString("port"));
-		if (jsonObject.get("type")!=null&&!jsonObject.getString("type").equals("")){
+		if (jsonObject.get("type")!=null && !jsonObject.getString("type").equals("")){
 			tempJsonObject.put("type", jsonObject.getString("type"));
-			if ("1".equals(jsonObject.getString("type"))&&jsonObject.get("cert")!=null) {
+			if ("1".equals(jsonObject.getString("type")) && jsonObject.get("cert")!=null) {
 				tempJsonObject.put("cert", jsonObject.getString("cert"));
 			}
 		}
 		JSONObject alterSiteJsonObject = new JSONObject();
 		alterSiteJsonObject.put(jsonObject.getString("siteId"), tempJsonObject);
-		System.out.println(">>>>>"+alterSiteJsonObject.toString());
 		String alterSiteString = putOperation(nsfocusWafUrl+REST_URI_V1+"/sites", alterSiteJsonObject.toString());
 		return alterSiteString;
 	}
 	
-	public String getVirtSite(String virtSiteId) {
-		String getVirtSiteString = getOperation(nsfocusWafUrl+REST_URI_V1+"/sites/protect/virts?virtid="+virtSiteId);
+	public String getVirtSite(JSONObject jsonObject) {
+		if (jsonObject.get("vSiteId")==null||jsonObject.getString("vSiteId").equals("")) {
+			JSONObject errJsonObject = new JSONObject();
+			errJsonObject.put("status", "failed");
+			errJsonObject.put("reason", "VirtualSite is null!!");
+		}
+		String virtSiteId = jsonObject.getString("vSiteId");
+		String getVirtSiteString = getOperationWithQuery(nsfocusWafUrl+REST_URI_V1+"/sites/protect/virts?virtid="+virtSiteId);
 		return getVirtSiteString;
 	}
 	
 	public String createVirtSite(JSONObject jsonObject) {
-		if(null==jsonObject.get("parent")||"".equals(jsonObject.getString("parent"))){
+		if(null==jsonObject.get("parent") || "".equals(jsonObject.getString("parent")) ){
 			JSONObject errJsonObject = new JSONObject();
 			errJsonObject.put("status", "failed");
 			errJsonObject.put("reason", "Parent is null!!!");
@@ -294,11 +340,15 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		}
 		JSONObject tempJsonObject = new JSONObject();
 		tempJsonObject.put("parent", jsonObject.getString("parent"));
-		if(jsonObject.get("name")!=null) tempJsonObject.put("name", jsonObject.getString("name"));
-		if(jsonObject.get("domain")!=null) tempJsonObject.put("domain", jsonObject.getString("domain"));
-		if(jsonObject.get("include")!=null) tempJsonObject.put("include", jsonObject.getString("include"));
-		if(jsonObject.get("exclude")!=null) tempJsonObject.put("exclude", jsonObject.getString("exclude"));
-		if (jsonObject.get("server")!=null) {
+		if(jsonObject.get("name")!=null && !jsonObject.getString("name").equals(""))
+			tempJsonObject.put("name", jsonObject.getString("name"));
+		if(jsonObject.get("domain")!=null && !jsonObject.getString("domain").equals(""))
+			tempJsonObject.put("domain", jsonObject.getString("domain"));
+		if(jsonObject.get("include")!=null && !jsonObject.getString("include").equals(""))
+			tempJsonObject.put("include", jsonObject.getString("include"));
+		if(jsonObject.get("exclude")!=null && !jsonObject.getString("exclude").equals(""))
+			tempJsonObject.put("exclude", jsonObject.getString("exclude"));
+		if (jsonObject.get("server")!=null && !jsonObject.getString("server").equals("")) {
 			JSONArray getJsonArray = JSONArray.fromObject(jsonObject.getString("server"));
 			JSONArray putJsonArray = new JSONArray();
 			for (Iterator<?> iterator = getJsonArray.iterator(); iterator.hasNext();) {
@@ -314,19 +364,23 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		JSONObject createVSiteObject = new JSONObject();
 		createVSiteObject.put("0", tempJsonObject);
 		String createVSiteString = postOperation(nsfocusWafUrl+REST_URI_V1+"/sites/protect/virts",createVSiteObject.toString());
-		return createVSiteString;
+		JSONArray responseArray = JSONArray.fromObject(createVSiteString);
+		String responseString = responseArray.getString(0);
+		return responseString;
 	}
 	public String alterVirtSite(JSONObject jsonObject) {
 		if(jsonObject.get("vSiteId")==null||"".equals(jsonObject.getString("vSiteId"))
 		||null==jsonObject.get("parent")||"".equals(jsonObject.getString("parent"))){
 			JSONObject errJsonObject = new JSONObject();
 			errJsonObject.put("status", "failed");
-			errJsonObject.put("reason", "Site ip is null!!!");
+			errJsonObject.put("reason", "VirtualSite or parent is null!!!");
 			return errJsonObject.toString();
 		}
 		JSONObject tempJsonObject = new JSONObject();
-		if(jsonObject.get("domain")!=null&&!jsonObject.getString("domain").equals("")) tempJsonObject.put("domain", jsonObject.getString("domain"));
-		if(jsonObject.get("name")!=null&&!jsonObject.getString("name").equals("")) tempJsonObject.put("name", jsonObject.getString("name"));
+		if(jsonObject.get("domain")!=null&&!jsonObject.getString("domain").equals(""))
+			tempJsonObject.put("domain", jsonObject.getString("domain"));
+		if(jsonObject.get("name")!=null&&!jsonObject.getString("name").equals(""))
+			tempJsonObject.put("name", jsonObject.getString("name"));
 		tempJsonObject.put("parent", jsonObject.getString("parent"));
 		JSONObject alterVirtSiteJsonObject = new JSONObject();
 		alterVirtSiteJsonObject.put(jsonObject.getString("vSiteId"), tempJsonObject);
@@ -342,7 +396,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 			return errJsonObject.toString();
 		}
 		String vSiteId = jsonObject.getString("vSiteId");
-		String deleteString = delOperation(nsfocusWafUrl+REST_URI_V1+"/sites/protect/virts?virtid="+vSiteId); 
+		String deleteString = delOperationWithQuery(nsfocusWafUrl+REST_URI_V1+"/sites/protect/virts?virtid="+vSiteId); 
 		return deleteString;
 	}
 	

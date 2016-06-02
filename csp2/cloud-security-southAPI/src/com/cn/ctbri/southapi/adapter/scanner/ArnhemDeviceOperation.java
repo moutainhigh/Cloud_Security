@@ -3,15 +3,6 @@ package com.cn.ctbri.southapi.adapter.scanner;
 import com.cn.ctbri.southapi.adapter.config.ScannerTaskUniParam;
 import com.cn.ctbri.southapi.adapter.manager.CommonDeviceOperation;
 
-import java.security.SecureRandom;
-import java.security.cert.CertificateException;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 
@@ -22,6 +13,7 @@ import net.sf.json.xml.XMLSerializer;
 import org.apache.commons.io.IOUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
@@ -197,9 +189,9 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 		WebResource service = client.resource(url);
 		//获取响应结果
 		String response = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
+		System.out.println(response);
 		try {
-			SAXReader reader = new SAXReader();
-			Document document = reader.read(IOUtils.toInputStream(response));
+			Document document = DocumentHelper.parseText(response);
 			Element rootElement = document.getRootElement();
 			String value = rootElement.attributeValue("value");
 			if ("AuthErr"==value&&createSessionId(username, password, arnhemServerWebrootUrl)) {

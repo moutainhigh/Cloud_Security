@@ -59,12 +59,6 @@ public class DeviceAdpaterManager {
 		return "{\"status\":\"fail\",\"message\":\"Can not find device: "+deviceId+"\"}";
 	}
 	
-	private String errorWAFDeviceInfo(int resourceId, int deviceId) {
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("status", "fail");
-		jsonObject.put("message", "Can not find device "+deviceId +" in resourceGroup "+resourceId);
-		return jsonObject.toString();
-	}
 	/**
 	 * 功能描述：统一状态参数的方法，替换掉原本转换后的默认参数
 	 * @param xml
@@ -495,7 +489,7 @@ public class DeviceAdpaterManager {
 			}
 		} else if (DeviceAdapterConstant.DEVICE_SCANNER_WEBSOC.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim())) {
 			String progressWebsoc = websocDeviceAdapter.getProgressByVirtualGroupId(deviceId, scannerTaskUniParam);
-			JSONObject responseObject = new JSONObject().fromObject(progressWebsoc);
+			JSONObject responseObject = JSONObject.fromObject(progressWebsoc);
 	        JSONObject resultObject = responseObject.getJSONObject("result");
 			if ("0".equalsIgnoreCase(responseObject.getString("code"))) {
 				float floatProgress = ((float)resultObject.getInt("sites_done_count"))/(float)resultObject.getInt("sites_count");
@@ -703,6 +697,13 @@ public class DeviceAdpaterManager {
 	public String getSites(int resourceId, int deviceId) {
 		return nsfocusWAFAdapter.getSites(resourceId, deviceId);
 	}
+	public String getSitesInResource(int resourceId) {
+		return nsfocusWAFAdapter.getSites(resourceId);
+	}
+	
+	public String createSiteInResource(int resourceId,JSONObject jsonObject) {
+		return nsfocusWAFAdapter.createSite(resourceId, jsonObject);
+	}
 	public String createSite(int resourceId, int deviceId,JSONObject jsonObject) {
 		return nsfocusWAFAdapter.createSite(resourceId, deviceId, jsonObject);
 	}
@@ -713,6 +714,11 @@ public class DeviceAdpaterManager {
 	public String createVSite(int resourceId,int deviceId,JSONObject jsonObject) {
 		return nsfocusWAFAdapter.createVSite(resourceId, deviceId, jsonObject);
 	}
+	
+	public String getVirtSite(int resourceId, int deviceId, JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getVirtSite(resourceId, deviceId, jsonObject);
+	}
+	
 	public String alterVSite(int resourceId, int deviceId, JSONObject jsonObject) {
 		return nsfocusWAFAdapter.alterVSite(resourceId, deviceId, jsonObject);
 	}
@@ -734,6 +740,16 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getWafLogWebsec(dstIp);
 	}
 	
+	public String getWafLogWebsecById(String logId) {
+		if (null==logId||"".equals(logId)){
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("status", "fail");
+			jsonObject.put("message", "LogId is null!!!");
+			return jsonObject.toString();
+		}
+		return nsfocusWAFAdapter.getWafLogWebSecById(logId);
+	}
+
 	public String getWafLogArp(String dstIp) {
 		if (null==dstIp||"".equals(dstIp)){
 			JSONObject jsonObject = new JSONObject();
@@ -742,6 +758,16 @@ public class DeviceAdpaterManager {
 			return jsonObject.toString();
 		}
 		return nsfocusWAFAdapter.getWafLogArp(dstIp);
+	}
+	
+	public String getWafLogArpById(String logId) {
+		if (null==logId || "".equals(logId)){
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("status", "fail");
+			jsonObject.put("message", "LogId is null!!!");
+			return jsonObject.toString();
+		}
+		return nsfocusWAFAdapter.getWafLogArpById(logId);
 	}
 	
 	public String getWafLogDDOS(String dstIp) {
@@ -754,6 +780,16 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getWafLogDDOS(dstIp);
 	}
 	
+	public String getWafLogDDOSById(String logId) {
+		if (null==logId || "".equals(logId)){
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("status", "fail");
+			jsonObject.put("message", "LogId is null!!!");
+			return jsonObject.toString();
+		}
+		return nsfocusWAFAdapter.getWafLogDDOSById(logId);
+	}
+	
 	public String getWafLogDeface(String dstIp) {
 		if (null==dstIp||"".equals(dstIp)){
 			JSONObject jsonObject = new JSONObject();
@@ -762,6 +798,16 @@ public class DeviceAdpaterManager {
 			return jsonObject.toString();
 		}
 		return nsfocusWAFAdapter.getWafLogDeface(dstIp);
+	}
+	
+	public String getWafLogDefaceById(String logId) {
+		if (null==logId || "".equals(logId)){
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("status", "fail");
+			jsonObject.put("message", "LogId is null!!!");
+			return jsonObject.toString();
+		}
+		return nsfocusWAFAdapter.getWafLogDefaceById(logId);
 	}
 	
 }

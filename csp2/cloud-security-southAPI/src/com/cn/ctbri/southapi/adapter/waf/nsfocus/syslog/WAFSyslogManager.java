@@ -1,6 +1,8 @@
 package com.cn.ctbri.southapi.adapter.waf.nsfocus.syslog;
 
 
+import java.lang.reflect.Method;
+
 import org.productivity.java.syslog4j.server.SyslogServer;
 import org.productivity.java.syslog4j.server.SyslogServerConfigIF;
 import org.productivity.java.syslog4j.server.SyslogServerEventHandlerIF;
@@ -99,6 +101,22 @@ public class WAFSyslogManager {
 	 * @param args
 	 */
 	public static void main(String[] args) {		
+		
+		/*
+		String strClass = "com.cn.ctbri.southapi.adapter.waf.nsfocus.syslog.WAFSyslogUtil";
+		String strMethod = "decode";
+		String param = "alertinfo:U2Nhbm5lciA6QWN1bmV0aXggV2ViIFZ1bG5lcmFiaWxpdHkgU2Nhbm5lciAu";
+		try {
+			Class<?> clz = Class.forName(strClass); 
+			Object o = clz.newInstance();
+			Method m = clz.getMethod(strMethod,String.class);
+			String result = (String)m.invoke(o, param);
+			System.out.println(result);
+		} catch(Exception e) {
+			
+		}
+		*/
+		
 		
 		WAFConfigManager wafConfigManager = new WAFConfigManager();
 		wafConfigManager.loadWAFConfig();

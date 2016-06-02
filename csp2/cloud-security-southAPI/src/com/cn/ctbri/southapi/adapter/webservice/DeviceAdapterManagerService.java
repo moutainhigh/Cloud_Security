@@ -1,9 +1,5 @@
 package com.cn.ctbri.southapi.adapter.webservice;
 
-import java.sql.Blob;
-import java.sql.SQLException;
-
-import javax.print.attribute.standard.Media;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -14,12 +10,10 @@ import javax.ws.rs.core.MediaType;
 
 import net.sf.json.JSONObject;
 
-import org.apache.el.parser.JJTELParserState;
 import org.codehaus.jettison.json.JSONException;
 
 import com.cn.ctbri.southapi.adapter.config.ScannerTaskUniParam;
 import com.cn.ctbri.southapi.adapter.manager.DeviceAdpaterManager;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 @Path("adapter")
@@ -231,6 +225,14 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.getWafLogWebsec(dstIp);
 	}
 	@POST
+	@Path("/getWaflogWebsecById")
+	@Produces
+	public String getWafLogWebsecById(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		String logId = jsonObject.getString("logId");
+		return deviceAdpaterManager.getWafLogWebsecById(logId);
+	}
+	@POST
 	@Path("/getWaflogArpByIp")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafLogArpByIp(String dataJson){
@@ -238,6 +240,11 @@ public class DeviceAdapterManagerService {
 		String dstIp = jsonObject.getString("dstIp");
 		return deviceAdpaterManager.getWafLogArp(dstIp);
 	}
+	
+	public String getWafLogArpById(String dataJson) {
+		return null;
+	}
+	
 	@POST
 	@Path("/getWaflogDdosByIp")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -278,6 +285,16 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.postIpToEth(resourceId, deviceId, jsonObject);
 	}
 	@POST
+	@Path("/getSitesInResource")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getSitesInResource(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals(""))
+			return errNullWafDevice();
+		int resourceId = jsonObject.getInt("resourceId");
+		return deviceAdpaterManager.getSitesInResource(resourceId);
+	}
+	@POST
 	@Path("/createSite")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String createSite(String dataJson) {
@@ -288,6 +305,17 @@ public class DeviceAdapterManagerService {
 		int resourceId = jsonObject.getInt("resourceId");
 		int deviceId = jsonObject.getInt("deviceId");
 		return deviceAdpaterManager.createSite(resourceId, deviceId, jsonObject);
+	}
+	@POST
+	@Path("/createSiteInResource")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String createSiteInResource(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals(""))
+			return errNullWafDevice();
+		int resourceId = jsonObject.getInt("resourceId");
+		jsonObject.remove("resourceId");
+		return deviceAdpaterManager.createSiteInResource(resourceId, jsonObject);
 	}
 	
 	@PUT
@@ -312,6 +340,19 @@ public class DeviceAdapterManagerService {
 		int resourceId = jsonObject.getInt("resourceId");
 		int deviceId = jsonObject.getInt("deviceId");
 		return deviceAdpaterManager.createVSite(resourceId, deviceId, jsonObject);
+	}
+	
+	@POST
+	@Path("/getVirtualSite")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getVirtualSite(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals("")
+		||jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+			return errNullWafDevice();
+		int resourceId = jsonObject.getInt("resourceId");
+		int deviceId = jsonObject.getInt("deviceId");
+		return deviceAdpaterManager.getVirtSite(resourceId, deviceId, jsonObject);
 	}
 	
 	@PUT

@@ -3,6 +3,7 @@ package com.cn.ctbri.southapi.adapter.waf.nsfocus.syslog;
 import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,6 +11,7 @@ import java.util.regex.Pattern;
 import com.cn.ctbri.southapi.adapter.waf.config.WAFConfigDevice;
 import com.cn.ctbri.southapi.adapter.waf.config.WAFConfigSyslog;
 import com.cn.ctbri.southapi.adapter.waf.config.WAFConfigSyslogItem;
+import com.cn.ctbri.southapi.adapter.waf.config.WAFConfigSyslogItemPre;
 
 /*
  * Description : 
@@ -40,6 +42,13 @@ public class WAFSyslogDisposeFactoryNSFocus implements IWAFSyslogDisposeFactory 
 		WAFConfigSyslogItem item = getWAFConfigSyslogItem(tagValue,wafConfigSyslog);
 		if ( item == null ) return false;
 		
+		//For extract syslog message
+		message = extractSyslogMessage(message,tagValue);
+		
+		//Prepare syslog message
+		message = prepareSyslogMessage(message,item);
+		
+		
 		//Get Syslog Message Key/Value
 		HashMap<String,String> mapSyslogKeyValue = disposeSyslogMessageRegex(message,item) ;
 		if ( mapSyslogKeyValue == null ) return false;
@@ -50,42 +59,41 @@ public class WAFSyslogDisposeFactoryNSFocus implements IWAFSyslogDisposeFactory 
 			WAFConfigDevice wafConfigDevice = wafSyslogHostParam.getWafConfigDevice();
 			
 			return updateWAFConfigDevicePerfInfo(wafConfigDevice,mapSyslogKeyValue);
-		}		
-	
-		//Get SQL Field List
-		String arrayFields[] = item.getSqlFieldNames();
-		if ( arrayFields == null ) {
-			arrayFields = getSQLFieldArray(item.getSqlForDB());
-			if ( arrayFields == null || arrayFields.length <= 0 ) return false;
-			//Store to Item
-			item.setSqlFieldNames(arrayFields);
-		}
+		}	
 		
-		//Get SQL Value NameList		
-		String arrayValueNames[] = item.getSqlValueNames();
-		if ( arrayValueNames == null ) {
-			arrayValueNames = getSQLValueArray(item.getSqlForDB());
-			if ( arrayValueNames == null || arrayValueNames.length <= 0 ) return false;
-			//Store to Item
-			item.setSqlValueNames(arrayValueNames);
-		}				
-		
-		//Get SQL String
-		String sql = item.getSqlInsertSentence();
-		if ( sql == null ) {
-			sql = getSQLSentence(item.getSqlForDB(),arrayFields.length);
-			item.setSqlInsertSentence(sql);
-		}
+		//For DB SQL dispose prepare
+		prepareDBSQLInfo(item);
 		
 		//Get PreparedStatement
-		PreparedStatement ps = wafSyslogDBHelper.getPreparedStatement(sql);
-		disposePreparedStatement(arrayValueNames,mapSyslogKeyValue,item,ps);
+		PreparedStatement ps = wafSyslogDBHelper.getPreparedStatement(item.getSqlInsertSentence());
+		disposePreparedStatement(item.getSqlValueNames(),mapSyslogKeyValue,item,ps);
 		
 		wafSyslogDBHelper.executePreparedStatement(ps);
 				
 		return true;
 	}
 	
+	
+	private String prepareSyslogMessage(String message,WAFConfigSyslogItem item) {
+		try {
+			List<WAFConfigSyslogItemPre> listSyslogItemPre = item.getListWAFConfigSyslogItemPre();
+			if ( listSyslogItemPre == null ) return message;
+			
+			String temp = message;
+			for(int i = 0; i < listSyslogItemPre.size(); i++) {
+				WAFConfigSyslogItemPre wafConfigSyslogItemPre  = listSyslogItemPre.get(i);
+				if ( wafConfigSyslogItemPre == null ) continue;
+				
+				if ( "StringReplace".equalsIgnoreCase(wafConfigSyslogItemPre.getObjmethod()) ) {
+					temp = temp.replace(wafConfigSyslogItemPre.getArrayArg()[0], wafConfigSyslogItemPre.getArrayArg()[1]);
+				}
+			}
+			
+			return temp;
+		} catch(Exception e) {
+			return message; //No dispose;
+		}
+	}
 	
 	
 	private boolean updateWAFConfigDevicePerfInfo(WAFConfigDevice wafConfigDevice,HashMap<String,String> mapSyslogKeyValue) {
@@ -165,8 +173,49 @@ public class WAFSyslogDisposeFactoryNSFocus implements IWAFSyslogDisposeFactory 
 		}
 	}
 	
+	private String extractSyslogMessage(String message,String tag) {
+		String temp = message;
+		try {
+			//Dispose Message
+			int nPos = temp.indexOf(tag);
+			int nLen = temp.length();
+			temp = temp.substring(nPos + tag.length(),nLen);
+			return temp.trim();
+		} catch(Exception e) {
+			return ""; //
+		}
+	}
+
 	
-	
+	private boolean prepareDBSQLInfo(WAFConfigSyslogItem item) {		
+		//Get SQL Field List
+		String arrayFields[] = item.getSqlFieldNames();
+		if ( arrayFields == null ) {
+			arrayFields = getSQLFieldArray(item.getSqlForDB());
+			if ( arrayFields == null || arrayFields.length <= 0 ) return false;
+			//Store to Item
+			item.setSqlFieldNames(arrayFields);
+		}
+		
+		//Get SQL Value NameList		
+		String arrayValueNames[] = item.getSqlValueNames();
+		if ( arrayValueNames == null ) {
+			arrayValueNames = getSQLValueArray(item.getSqlForDB());
+			if ( arrayValueNames == null || arrayValueNames.length <= 0 ) return false;
+			//Store to Item
+			item.setSqlValueNames(arrayValueNames);
+		}				
+		
+		//Get SQL String
+		String sql = item.getSqlInsertSentence();
+		if ( sql == null ) {
+			sql = getSQLSentence(item.getSqlForDB(),arrayFields.length);
+			item.setSqlInsertSentence(sql);
+		}
+		
+		return true;
+	}
+
 	private String[] getSQLFieldArray(String sqlStr) {
 		String temp = sqlStr;
 		try {
