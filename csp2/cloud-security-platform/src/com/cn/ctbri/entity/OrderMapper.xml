@@ -308,26 +308,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from cs_linkman l where l.id=#{contactId}
     </select>
     
-    <!-- 查询 服务名称 -->
-    <select id="findServiceNameById" resultType="java.lang.String" parameterType="hashmap" >
-    	select distinct s.name
-		from cs_order o,cs_service s
-		where o.id in 
-		<foreach item="orderId" index="index" collection="orderIds" open="("  
-						            separator="," close=")">  
-						          #{orderId} 
-							        </foreach>  
- 		and o.serviceId = s.id and (o.isAPI is null or o.isAPI !=1)
-		union
-		select distinct s.name
-		from cs_order o,cs_service_api s
-		where o.id in 
-		<foreach item="orderId" index="index" collection="orderIds" open="("  
-						            separator="," close=")">  
-						          #{orderId} 
-						        </foreach>  
-		 and o.serviceId = s.id and o.isAPI = 1
-    </select>
      <!-- 查询联系人 -->
     <select id="findLinkmanByOrderId" resultType="com.cn.ctbri.entity.Linkman" parameterType="String">
        SELECT * FROM cs_linkman l WHERE l.id =(SELECT o.contactId FROM cs_order o WHERE o.id=#{orderId})
