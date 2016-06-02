@@ -133,10 +133,10 @@
 									<tr height="80">
 										<td width="134" align="center">${status.count }</td>
 										<td width="200">
-											<fmt:formatDate value="${payItem.payDate }" pattern="yyyy-MM-dd HH:mm:ss"/>
+											<fmt:formatDate value="${payItem.pay_date }" pattern="yyyy-MM-dd HH:mm:ss"/>
 										</td>
 										<td width="200">${payItem.id }</td>
-										<td width="260" style="font-size: 16px;">${payItem.serviceName }</td>
+										<td width="260" style="font-size: 16px;">${payItem.serverName }</td>
 										<td width="130">
 											<fmt:formatNumber  value="${payItem.price }" pattern="0.00"/>
 										</td>
@@ -148,49 +148,32 @@
                 </div>
                 <%--页码列表--%>
                 <div class="page clearfix">
-                	<a href="<c:url value='/balanceUI.html?pageCode=${pb.pageCode-1 }'/>" class="lt active fl"></a>
+                	<c:if test="${pb.pageCode == 1}">
+                		<a href="#" class="lt fl"></a>
+                	</c:if>
+                	<c:if test="${pb.pageCode != 1}">
+                		<a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }" class="lt active fl"></a>
+                	</c:if>
+                	<%--页码--%>
                     <ul class="bpage fl">
-	                	<c:set var="begin" value="1"/>
-						<c:set var="end" value="10"/>
-						<%-- 定位begin和end --%>
-						<c:choose>
-							<c:when test="${pb.totalPage <= 10 }">
-								<c:set var="begin" value="1"/>
-								<c:set var="end" value="${pb.totalPage }"/>		
-							</c:when>
-							<c:otherwise>
-								<c:choose>
-									<c:when test="${pb.pageCode - 4 < 1 }">
-										<c:set var="begin" value="1"/>
-										<c:set var="end" value="10"/>					
-									</c:when>
-									<c:when test="${pb.pageCode + 5 > pb.totalPage }">
-										<c:set var="begin" value="${pb.totalPage - 9 }"/>
-										<c:set var="end" value="${pb.totalPage }"/>					
-									</c:when>
-									<c:otherwise>
-										<c:set var="begin" value="${pb.pageCode - 4 }"/>
-										<c:set var="end" value="${pb.pageCode + 5 }"/>					
-									</c:otherwise>
-								</c:choose>
-							</c:otherwise>
-						</c:choose>
-						<%-- 页码列表 --%>
-	                    <c:forEach begin="${begin }" end="${end }" var="i">
-						  <c:choose>
-						  	<c:when test="${pb.pageCode eq i }">
-						  		<li><a href="#">${i}</a></li>
-						  	</c:when>
-						  	<c:otherwise>
-						  		<li><a href="<c:url value='/balanceUI.html?pageCode=${i}'/>">[${i}]</a></li>
-						  	</c:otherwise>
-						  </c:choose>
-						</c:forEach>
-                    	<!-- <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li> -->
+                    	<c:if test="${pb.totalPage != 1 && pg.pageCode == pb.totalPage}">
+                       		<li><a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }">${pb.pageCode-1 }</a></li>
+                    	</c:if>
+                    	
+                    	<li><a href="#">${pb.pageCode }</a></li>
+                    	
+                    	<c:if test="${pb.pageCode < pb.totalPage}">
+                        	<li><a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }">${pb.pageCode+1 }</a></li>
+                    	</c:if>
                         
                     </ul>
-                    <a href="<c:url value='/balanceUI.html?pageCode=${pb.pageCode+1 }'/>" class="gt fl"></a>
+                    
+                    <c:if test="${pb.pageCode < pb.totalPage}">
+                    	<a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }" class="gt active fl"></a>
+                	</c:if>
+                	<c:if test="${pb.pageCode == pb.totalPage}">
+                		<a href="#" class="gt fl"></a>
+                	</c:if>
                     <span class="pay fl">共${pb.totalPage }页</span>
                 </div>
             </div>
@@ -200,7 +183,7 @@
 			<div class="imgBox clearfix">
 				<div class="footL fl">
 					<a href="${ctx}/index.html">
-						<img src="${ctx}/source/images/portal/new-footer-logo.png" alt="">
+						<img src="${ctx}/source/images/portal/new-footer-logo.png" alt="" />
                    </a>
 				</div>
 				<ol class="footr clearfix fr">
