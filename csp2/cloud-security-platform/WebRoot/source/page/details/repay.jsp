@@ -39,7 +39,7 @@
  				
  				$(".repay_anquan").children('div').remove();
  				var html='';
-				html+='<div><a href="###">点击领取安全币</a> 下单获赠5安全币</div>';
+				html+='<div>已成功领取5安全币</div>';
 				$(".repay_anquan").append(html);
  			} else {
  				alert("系统异常，安全币领取失败！");
@@ -143,6 +143,15 @@
                           <b></b>
                           <p>恭喜您已成功付款<span>${price }</span>元！</p>
                       </div>
+                      <c:if test="${modifyOrderId!= null && !empty modifyOrderId}">
+	                      <div class="repay_list">
+	                      	部分服务时间已根据订单支付成功时间自动进行调整，请查看
+	                      	<c:forEach items="${modifyOrderId}" var="orderId" varStatus="status">
+	                 	  		订单编号：<a href="${ctx}/orderDetails.html?orderId=${orderId }">${orderId }</a>
+	                 	  		<c:if test="${!status.last}">,</c:if>
+	                 	  	</c:forEach>
+	                      	详情。</div>
+                      	</c:if>
                       <div class="repay_mylist">请在<a href="${ctx}/orderTrackInit.html">我的订单</a>中查看详情</div>
                       <div class="repay_anquan"><div><a href="###" onclick="collectBalance()">点击领取安全币</a> 下单获赠5安全币</div></div>
                  </div>
