@@ -25,5 +25,5 @@ public interface IOrderListService {
      *       @time 2016-5-19
      * 返回值    ：  List<Order>
      */
-	PageBean queryPayRecordByPage(int userId, int pageCode);
+	PageBean<OrderList> queryPayRecordByPage(int userId, int pageCode);
 }
