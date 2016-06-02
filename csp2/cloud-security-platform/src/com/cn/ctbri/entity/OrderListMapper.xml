@@ -13,6 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="orderId" column="orderId"/>
 		<result property="price" column="price"/>
 		<result property="pay_date" column="pay_date"/>
+		<result property="serverName" column="serverNames"/>
 	</resultMap>
     
     <!-- 插入购物车订单 -->
