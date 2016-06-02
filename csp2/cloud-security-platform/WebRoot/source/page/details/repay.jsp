@@ -158,17 +158,6 @@
                     
                  </div>
                  </c:if>
-                 <!-- 重复支付 -->
-                 <c:if test="${paySuccess == 2}">
-            	 <div class="repay_contant">
-                      <div class="repay_txt" > 
-                          <b></b>
-                          <p>恭喜您已成功付款<span>${price }</span>元！</p>
-                      </div>
-                      <div class="repay_mylist">请在<a href="${ctx}/orderTrackInit.html">我的订单</a>中查看详情</div>
-                 </div>
-                 </c:if>
-
             </div>
             
            
