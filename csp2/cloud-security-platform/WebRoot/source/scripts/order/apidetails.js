@@ -114,8 +114,8 @@ $(function(){
     	var ip="";
 		var bandwidth="";
 		
-		var result = window.confirm("确定要提交订单吗？");
-    	if(result){
+		//var result = window.confirm("确定要提交订单吗？");
+    	//if(result){
     		$.ajax({ type: "POST",
 	    		     async: false, 
 	    		     url: "saveOrder.html", 
@@ -157,7 +157,7 @@ $(function(){
 	    		    	 else { window.location.href = "loginUI.html"; } } 
 		    	});
 
-    	}
+    	//}
     });
    
 
