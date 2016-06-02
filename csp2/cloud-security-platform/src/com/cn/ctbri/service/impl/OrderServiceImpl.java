@@ -1,5 +1,6 @@
 package com.cn.ctbri.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -191,7 +192,16 @@ public class OrderServiceImpl implements IOrderService{
      * 返回值    ：  List<Order>
      */
 	public List<String> findServiceNameByOrderId(String orderId){
-		return orderDao.findServiceNameByOrderId(orderId);
+		List<String> orderIdList=new ArrayList();
+		int orderNum = 0;
+		if(orderId!=null&&!"".equals(orderId)){
+	    	  String strArray[] = orderId.split(",");
+	    	  orderNum= strArray.length;
+	    	  for (int m=0;m<strArray.length;m++){
+	    		  orderIdList.add(strArray[m]);
+	    	  }
+		}
+		return orderDao.findServiceNameByOrderId(orderIdList);
 	}
 
 	public Linkman findLinkmanByOrderId(String orderId) {
