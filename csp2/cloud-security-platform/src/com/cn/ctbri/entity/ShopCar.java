@@ -19,6 +19,8 @@ public class ShopCar implements Serializable{
 	private int scanPeriod;//扫描类型(1：每天，2：每周，3：每月)
 	private int websoc;//创宇标志
 	private int status;//状态 -1订单已作废
+	private int pack_type;//类型
+	private int buynum;
 	public String getOrderId() {
 		return orderId;
 	}
@@ -99,6 +101,18 @@ public class ShopCar implements Serializable{
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	public int getPack_type() {
+		return pack_type;
+	}
+	public void setPack_type(int packType) {
+		pack_type = packType;
+	}
+	public int getBuynum() {
+		return buynum;
+	}
+	public void setBuynum(int buynum) {
+		this.buynum = buynum;
 	}
 
 	

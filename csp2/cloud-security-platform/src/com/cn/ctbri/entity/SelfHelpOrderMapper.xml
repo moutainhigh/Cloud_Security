@@ -118,14 +118,15 @@ WHERE a.id = b.orderId
 </select>
    <!-- 查询购物车列表 -->
     <select id="findShopCarAPIList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
-    SELECT
+  SELECT
   a.id            orderId,
   a.serverName,
   a.price,
-  b.package_type num,
+  b.package_type pack_type,
 a.serviceId,
 a.isAPI,
- a.status
+ a.status,
+b.buynum
 FROM (SELECT
         co.*,
         cs.name          serverName
@@ -137,7 +138,8 @@ FROM (SELECT
           AND co.isAPI = 1) a,
   (SELECT
      api.id           orderId,
-     api.package_type
+     api.package_type,
+     api.buynum
    FROM cs_order_api api
    WHERE api.id in (SELECT
                      co.id
@@ -165,7 +167,7 @@ WHERE a.id = b.orderId
   a.serviceId,
   a.scan_type     scanPeriod,
   a.websoc,
-  a.num
+  a.num buynum
 FROM (SELECT
         s.name           serverName,
         r.*
@@ -212,7 +214,7 @@ WHERE a.id = b.orderId
 	  c.serviceId,
 	  c.scan_type     scanPeriod,
 	    c.websoc,
-       d.num 
+        d.buynum
      FROM (SELECT
 	     s.name            serverName,
 	     r.*
@@ -228,7 +230,7 @@ WHERE a.id = b.orderId
        (SELECT
 	  i.package_type AS astName,
 	  i.id,
-	  i.num
+	 i.buynum buynum
 	FROM cs_order_api i
 	WHERE i.id IN(SELECT
 			o.id
@@ -240,6 +242,9 @@ WHERE a.id = b.orderId
         </foreach>  
 		      )) d
      WHERE c.id = d.id
+     
+     
+  
  </select>
  <update id="updateOrderAsset" parameterType="hashmap">
  UPDATE cs_order_asset a SET a.orderId=#{newOrderId}  WHERE a.orderId=#{orderId}

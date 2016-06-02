@@ -16,7 +16,7 @@ public class OrderAPI {
 	private int apiId;//apiId
 	private Date create_date;//下单日期
 	private int package_type;//套餐种类
-	private int num;//购买数量
+	private int num;//购买次数
 	private int userId;//用户ID
 	private int contactId;//联系人Id
 	private String remarks;//备注
@@ -25,6 +25,7 @@ public class OrderAPI {
 	private String end_datevo;//end_date vo备注
 	private int message;//是否发送告警信息
 	private int payFlag;//是否结算
+	private int buyNum;//购买数量
 	public String getId() {
 		return id;
 	}
@@ -114,6 +115,12 @@ public class OrderAPI {
 	}
 	public void setPayFlag(int payFlag) {
 		this.payFlag = payFlag;
+	}
+	public int getBuyNum() {
+		return buyNum;
+	}
+	public void setBuyNum(int buyNum) {
+		this.buyNum = buyNum;
 	}
 	
 	

@@ -22,8 +22,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 插入API订单 -->
     <insert id="insert" parameterType="com.cn.ctbri.entity.OrderAPI">
         insert into cs_order_api
-        (id, begin_date, end_date, apiId, create_date, package_type, num, userId, contactId, remarks, message, payFlag) 
-        values(#{id}, #{begin_date}, #{end_date}, #{apiId}, #{create_date}, #{package_type}, #{num}, #{userId}, #{contactId}, #{remarks}, #{message}, #{payFlag})
+        (id, begin_date, end_date, apiId, create_date, package_type, num, userId, contactId, remarks, message, payFlag,buynum) 
+        values(#{id}, #{begin_date}, #{end_date}, #{apiId}, #{create_date}, #{package_type}, #{num}, #{userId}, #{contactId}, #{remarks}, #{message}, #{payFlag}, #{buyNum})
     </insert>
     
     <!-- 插入或更新API数量 -->
