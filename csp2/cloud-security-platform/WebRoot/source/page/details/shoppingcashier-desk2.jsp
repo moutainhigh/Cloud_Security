@@ -54,13 +54,12 @@ $(function(){
 				success: function(data) {
 					if (data.payFlag == 1){
 						alert("不能重复支付!");
-					}else if(data.payFlag ==2) {
-						alert("支付时间超时!");
-					}else if(data.payFlag ==3 || data.payFlag ==0) {
+					} else if(data.payFlag ==3 || data.payFlag ==0) {
 					    //余额不足/支付成功
-						window.location.href = "repayUI.html?orderListId="+orderListId;
+					    var modifyOrderId = data.modifyOrderId;
+						window.location.href = "repayUI.html?orderListId="+orderListId+"&modifyOrderId="+modifyOrderId;
 					}else {
-						alert("订单有异常,请重新下单!");
+						alert("支付有异常,请重新下单!");
 		    		    return;
 					}
 				},
