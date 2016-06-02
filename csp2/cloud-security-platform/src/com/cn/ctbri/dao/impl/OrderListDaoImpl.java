@@ -40,6 +40,10 @@ public class OrderListDaoImpl extends DaoCommon implements OrderListDao{
 		return list;
 	}
 	
+	public void update(OrderList ol){
+		this.getSqlSession().update(ns + "update", ol);
+	}
+	
 	/**
      * 功能描述： 消费记录分页
      * @param userId
