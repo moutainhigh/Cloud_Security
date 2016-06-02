@@ -18,8 +18,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 插入购物车订单 -->
     <insert id="insert" parameterType="com.cn.ctbri.entity.OrderList">
         insert into cs_order_list
-        (id, create_date, userId, contactId, remarks, orderId, price) 
-        values(#{id}, #{create_date}, #{userId}, #{contactId}, #{remarks}, #{orderId}, #{price})
+        (id, create_date, userId, contactId, remarks, orderId, price,serverNames) 
+        values(#{id}, #{create_date}, #{userId}, #{contactId}, #{remarks}, #{orderId}, #{price},#{serverName})
     </insert>
     
     <select id="findById" resultMap="OrderListRM" parameterType="String">
