@@ -59,7 +59,7 @@ $(function(){
 					    var modifyOrderId = data.modifyOrderId;
 						window.location.href = "repayUI.html?orderListId="+orderListId+"&modifyOrderId="+modifyOrderId;
 					}else {
-						alert("支付有异常,请重新下单!");
+						alert("订单有异常,请重新下单!");
 		    		    return;
 					}
 				},
