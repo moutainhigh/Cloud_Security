@@ -19,7 +19,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cn.ctbri.common.NorthAPIWorker;
 import com.cn.ctbri.entity.APICount;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
@@ -383,6 +382,7 @@ public class shoppingAPIController {
             oAPI.setCreate_date(new Date());
             oAPI.setPackage_type(type);
             oAPI.setNum(time*num);
+            oAPI.setBuyNum(num);
             oAPI.setUserId(globle_user.getId());
             oAPI.setContactId(linkmanId);
             oAPI.setPayFlag(0);

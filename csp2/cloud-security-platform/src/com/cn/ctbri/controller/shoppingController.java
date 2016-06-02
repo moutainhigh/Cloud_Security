@@ -501,12 +501,13 @@ public class shoppingController {
 	    	     Date endDate = shopCar.getEndDate();
 	    	     String begin_date=null;
 	    	     String end_date="";
-	    	     
-	    	     if(date.getTime()>beginDate.getTime()){
+	    	     if(endDate!=null && !endDate.equals("")){
+	    	     if(date.getTime()>endDate.getTime()){
 	    	    	 flag=false;
 	    	    	 status="-1";
 	    	     }else{
 	    	    	 status = String.valueOf(shopCar.getStatus());
+	    	     }
 	    	     }
 	    	     if(beginDate!=null && !beginDate.equals("")){
 	    	    	 begin_date = sdf.format(beginDate);
@@ -573,7 +574,7 @@ public class shoppingController {
 					}
 					Date beginDate = shopCar.getBeginDate();
 					Date endDate = shopCar.getEndDate();
-					if(date.getTime()>beginDate.getTime()){
+					if(date.getTime()>endDate.getTime()){
 						 flag=false;
 		    	    	 status="-1";
 					}else{
@@ -1008,11 +1009,15 @@ public class shoppingController {
 	     if(list!=null&&list.size()>0){
 	       for(int i=0;i<list.size();i++){
 	    	   ShopCar shopCar = (ShopCar)list.get(i);
-	    	  Date beginDate = shopCar.getBeginDate();
-	    	  //判断当前时间已经查过下单时间
-	    	  if(date.getTime()>beginDate.getTime()){
-	    		  flag=false;
-	    		  break;
+	    	  Date endDate = shopCar.getEndDate();
+	    	  if(endDate!=null&&!"".equals(endDate)){
+		    		
+		    	  //判断当前时间已经查过下单时间
+		    	  if(date.getTime()>endDate.getTime()){
+		    		  flag=false;
+		    		  break;
+		    	  }
+	    	  
 	    	  }
 	       }	 
 	     }
