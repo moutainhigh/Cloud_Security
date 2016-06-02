@@ -29,6 +29,10 @@ public class OrderListServiceImpl implements IOrderListService{
 		return orderListDao.findById(id);
 	}
 	
+	public void update(OrderList ol) {
+		orderListDao.update(ol);
+	}
+	
 	/**
      * 功能描述：消费记录-分页
      *       @time 2016-5-19
