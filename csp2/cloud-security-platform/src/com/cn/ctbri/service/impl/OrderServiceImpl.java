@@ -185,24 +185,6 @@ public class OrderServiceImpl implements IOrderService{
 		List list = orderDao.findByCombineOrderTrackByPageAsset(paramMap);
         return list;
 	}
-	/**
-     * 功能描述：获取订单中服务的名字
-     * @param orderId 多个订单编号（逗号隔开）
-     *       @time 2016-4-25
-     * 返回值    ：  List<Order>
-     */
-	public List<String> findServiceNameByOrderId(String orderId){
-		List<String> orderIdList=new ArrayList();
-		int orderNum = 0;
-		if(orderId!=null&&!"".equals(orderId)){
-	    	  String strArray[] = orderId.split(",");
-	    	  orderNum= strArray.length;
-	    	  for (int m=0;m<strArray.length;m++){
-	    		  orderIdList.add(strArray[m]);
-	    	  }
-		}
-		return orderDao.findServiceNameByOrderId(orderIdList);
-	}
 
 	public Linkman findLinkmanByOrderId(String orderId) {
 		// TODO Auto-generated method stub
