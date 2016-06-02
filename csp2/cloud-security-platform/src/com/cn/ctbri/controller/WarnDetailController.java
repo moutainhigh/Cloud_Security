@@ -413,7 +413,10 @@ public class WarnDetailController {
 	    			    		huifu = taskWarnList.get(i).getWarn_time().getTime();
 	    			    	}
 						}
-	    			    float usabling = Float.parseFloat(String.valueOf(usable))/Float.parseFloat(String.valueOf((task.getEnd_time().getTime()-task.getExecute_time().getTime())));
+	    			    float usabling = 0f;
+	    			    if(task.getExecute_time()!=null){
+	    			    	usabling = Float.parseFloat(String.valueOf(usable))/Float.parseFloat(String.valueOf((task.getEnd_time().getTime()-task.getExecute_time().getTime())));
+	    			    }
 	    			    request.setAttribute("usabling", usabling*100+"%");
 	    			    request.setAttribute("value", flag1);
 //	    			    return "/source/page/order/order_usable";
