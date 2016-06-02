@@ -20,7 +20,7 @@ $(function(){
 				    	 window.location.href="shopBuy.html?str="+str;
 				   
 			     }else{
-			    	 alert("当前时间已经超过下单开始时间，订单已作废请删除订单!");
+			    	 alert("当前时间已经超过下单结束时间，订单已作废请删除订单!");
 			    	 window.location.href="showShopCar.html";
 			       } 
 			     },
@@ -58,7 +58,7 @@ $(function(){
 		     dataType: "json", 
 		     success: function(data) {
 					  if(!data.flag){
-						  alert("当前时间已经超过下单开始时间，订单已作废请到购物车修改订单!");
+						  alert("当前时间已经超过下单结束时间，订单已作废请到购物车修改订单!");
 						  return;
 					  }else{
 			    	 if(data.sucess==true&&data.orderStatus == true){
