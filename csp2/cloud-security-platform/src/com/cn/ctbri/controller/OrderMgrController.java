@@ -552,7 +552,7 @@ public class OrderMgrController {
 		}
         m.put("timeCompare", true);
         
-        
+        Serv serv = servService.findById(Integer.parseInt(serviceId));
      //插入数据到order_list
 	    OrderList ol = new OrderList();
 	    //生成订单id
@@ -562,6 +562,7 @@ public class OrderMgrController {
 	    ol.setOrderId(orderId);
 	    ol.setUserId(globle_user.getId());
 	    ol.setPrice(Double.parseDouble(price));
+	    ol.setServerName(serv.getName());
 	    orderListService.insert(ol);
 	    
 	    m.put("orderListId", id);

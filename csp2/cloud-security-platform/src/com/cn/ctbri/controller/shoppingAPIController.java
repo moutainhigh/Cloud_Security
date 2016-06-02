@@ -278,6 +278,8 @@ public class shoppingAPIController {
             count.setCount(time*num);
             count.setApiId(apiId);
             orderAPIService.insertOrUpdateCount(count);
+            //获得服务名称
+            ServiceAPI api =serviceAPIService.findById(apiId);
             
             //插入数据到order_list
 		    OrderList ol = new OrderList();
@@ -288,6 +290,7 @@ public class shoppingAPIController {
 		    ol.setOrderId(orderId);
 		    ol.setUserId(globle_user.getId());
 		    ol.setPrice(Double.parseDouble(price));
+		    ol.setServerName(api.getName());
 		    orderListService.insert(ol);
 		    m.put("orderListId", id);
             m.put("message", true);
