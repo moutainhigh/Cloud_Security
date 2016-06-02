@@ -212,6 +212,15 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		
 		this.getSqlSession().update(ns + "updateOrderStatus", map);
 	}
+	
+	//修改订单开始时间和结束时间
+	public void updateOrderDate(ShopCar order) {
+		this.getSqlSession().update(ns+"updateOrderDate",order);
+	}
+	//修改订单API开始时间和结束时间
+	public void updateOrderAPIDate(ShopCar order){
+		this.getSqlSession().update(ns+"updateOrderAPIDate",order);
+	}
 
 	
 
