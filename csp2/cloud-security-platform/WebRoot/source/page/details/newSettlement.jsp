@@ -28,9 +28,9 @@
 	
 </style>
 <script type="text/javascript">
-$(function() {
+  $(function() {
      $(".test-tablespan").on('click', function() {
-        $(".tabox").hide();
+        $(".ta-box").hide();
         $(".listone_box").show();
         $(".list-txt").html("修改联系人信息");
 
@@ -41,6 +41,7 @@ $(function() {
         var userName = $("#txtName").val();
         var userAdd = $("#txtAdd").val();
         var mobile = $("#txtTel").val();
+        
         if (userName == "") {
             $(".name1").hide();
             $(".name_wrong").show();
@@ -87,21 +88,29 @@ $(function() {
             $(".add_wrong p").html("地址最多可输入25个字符");
             return false;
         };
- 
+
         $(".listone_box").hide();
-        $(".tabox").show();
+        $(".ta-box").show();
+        $(".list-txt").html("联系人信息");
+        $(".test_name").html(userName);
+        $(".test_iphone").html(mobile);
+        $(".test_add").html(userAdd);
+            
+    });
+
+
+      $("#cd-tj").on('click', function() {
+        $(".listone_box").hide();
+        $(".ta-box").show();
         $(".list-txt").html("联系人信息");
         $(".test_name").html(userName);
         $(".test_iphone").html(mobile);
         $(".test_add").html(userAdd);
 
-
-
-            
-    });
+     });
 
   });  
-  </script>
+</script>
 </head>
 
 <body>
@@ -216,9 +225,12 @@ $(function() {
                             <div class="ad-tj">
                                 <a href="javascript:;" id="ad-tj">提交信息</a>
                              </div>
+                              <div class="cd-tj">
+                                <a href="javascript:;" id="cd-tj">返回</a>
+                             </div>
                         </div> 
                       
-                        <div class="tabox" style="margin-left: 0px; width:1108px;">
+                        <div class="tabox ta-box" style="margin-left: 0px; width:1108px;">
                         	<table class="test-table mrn" width="100%">
                         	<tbody>
                         	  <c:if test="${not empty linkman}">
