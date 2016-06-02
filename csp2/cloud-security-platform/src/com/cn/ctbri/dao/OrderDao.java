@@ -126,12 +126,6 @@ public interface OrderDao {
      */
 	List findByCombineOrderTrackByPageAsset(Map<String, Object> paramMap);
 	
-	/**
-     * 功能描述：查询订单服务名称
-     *       @time 2016-5-31
-     * 返回值    ：  List<String>
-     */
-	List<String> findServiceNameByOrderId(List<String> orderId);
 	 //根据订单id 查询联系人
 	public Linkman findLinkmanByOrderId(String orderId);
 	//修改联系人信息
