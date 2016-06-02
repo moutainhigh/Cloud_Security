@@ -1074,15 +1074,62 @@ public class shoppingController {
     	return "source/page/details/shoppingcashier-desk2";
     }
     
+//    /**
+//     * 功能描述： 检查支付时间
+//     * */
+//    @RequestMapping("checkPayTime.html")
+//    public void checkPayTime(HttpServletRequest request, HttpServletResponse response){
+//    	Map<String, Object> m = new HashMap<String, Object>();
+//    	try {
+//    		String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
+//    		OrderList orderList = orderListService.findById(orderListId);
+//    		//收银台页面刷新，再次支付
+//    		if (orderList.getPay_date() != null){
+//    			//不能重复支付
+//    			m.put("payFlag", 1);
+//    			return;
+//    		}
+//    		
+//    		Date orderCreateDate = orderList.getCreate_date();//下单时间
+//    		String orderIds = orderList.getOrderId();//订单条目编号(cs_order的id)
+//    		
+//    		//比较支付时间和下单时间
+//    		Date payDate = new Date();
+//    		//支付时间-下单时间 >15分钟
+//    		if (DateUtils.getMsByDays(orderCreateDate, payDate)>= 15*60*1000){
+//    			//更改订单的状态，支付超时设为9
+//    			selfHelpOrderService.updateOrderStatus(orderIds, 9);
+//    			
+//    			m.put("payFlag", 2);
+//    		}else{
+//    			m.put("payFlag", 0);
+//    		}
+//    		
+//    	} catch (Exception e){
+//    		e.printStackTrace();
+//    	} finally {
+//    		//object转化为Json格式
+//    		JSONObject JSON = CommonUtil.objectToJson(response, m);
+//    		try {
+//    			// 把数据返回到页面
+//    			CommonUtil.writeToJsp(response, JSON);
+//    		} catch (IOException e) {
+//    			e.printStackTrace();
+//    		}
+//    	}
+//		
+//    }
+    
     /**
-     * 功能描述： 检查支付时间
+     * 功能描述： 确认支付
      * */
-    @RequestMapping("checkPayTime.html")
-    public void checkPayTime(HttpServletRequest request, HttpServletResponse response){
+    @RequestMapping("payConfirm.html")
+    public void payConfirm(HttpServletRequest request, HttpServletResponse response){
     	Map<String, Object> m = new HashMap<String, Object>();
     	try {
     		String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
     		OrderList orderList = orderListService.findById(orderListId);
+    		Double price = orderList.getPrice();//支付金额
     		//收银台页面刷新，再次支付
     		if (orderList.getPay_date() != null){
     			//不能重复支付
@@ -1090,24 +1137,55 @@ public class shoppingController {
     			return;
     		}
     		
-    		Date orderCreateDate = orderList.getCreate_date();//下单时间
+//    		Date orderCreateDate = orderList.getCreate_date();//下单时间
     		String orderIds = orderList.getOrderId();//订单条目编号(cs_order的id)
     		
-    		//比较支付时间和下单时间
-    		Date payDate = new Date();
-    		//支付时间-下单时间 >15分钟
-    		if (DateUtils.getMsByDays(orderCreateDate, payDate)>= 15*60*1000){
-    			//更改订单的状态，支付超时设为9
-    			selfHelpOrderService.updateOrderStatus(orderIds, 9);
-    			
-    			m.put("payFlag", 2);
-    		}else{
-    			m.put("payFlag", 0);
+//    		//比较支付时间和下单时间
+//    		Date payDate = new Date();
+//    		//支付时间-下单时间 >15分钟
+//    		if (DateUtils.getMsByDays(orderCreateDate, payDate)>= 15*60*1000){
+//    			//更改订单的状态，支付超时设为9
+//    			selfHelpOrderService.updateOrderStatus(orderIds, 9);
+//    			
+//    			m.put("payFlag", 2);
+//    			return;
+//    		}
+    		
+    		//取得安全币余额
+    		User globle_user = (User) request.getSession().getAttribute("globle_user");
+    		List<User> userList = userService.findUserById(globle_user.getId());
+    		Double balance = userList.get(0).getBalance();
+    		//安全币余额不足
+    		if (balance < price){
+    			//安全币余额不足
+    			m.put("payFlag", 3);
+    			return;
     		}
     		
-    	} catch (Exception e){
+    		//更新安全币余额（DB和session中都更新）
+    		globle_user.setBalance(balance - price);//session更新
+    		User user = new User();
+    		user.setId(globle_user.getId());
+    		user.setBalance(globle_user.getBalance());
+    		userService.updateBalance(user);//DB更新
+    		
+    		//更新 支付时间，支付金额(cs_order_list表)
+    		orderList.setPay_date(new Date());
+    		selfHelpOrderService.updatePayDate(orderList);
+    		
+    		//更新 支付Flag(cs_order表) 未支付-->已支付
+    		selfHelpOrderService.updateOrderPayFlag(orderIds, 1);
+    		
+    		//TODO 南向API调用 任务执行
+    		if(!orderTask(orderList, globle_user)) {
+    			m.put("payFlag", 4);
+    			return;
+    		}
+    		
+    		m.put("payFlag", 0);//付款成功
+    	} catch(Exception e) {
     		e.printStackTrace();
-    	} finally {
+    	}finally {
     		//object转化为Json格式
     		JSONObject JSON = CommonUtil.objectToJson(response, m);
     		try {
@@ -1117,58 +1195,199 @@ public class shoppingController {
     			e.printStackTrace();
     		}
     	}
-		
+    }
+    
+    public boolean orderTask(OrderList orderList, User globle_user){
+    	boolean result = true;
+    	try{
+    		Date date = new Date();
+    		String status="";
+    		String scanType = "";//扫描方式（正常、快速、全量）
+    		String scanDepth = "";//检测深度
+    		String maxPages = "";//最大页面数
+    		String stategy = "";//策略
+    		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
+    		List list = new ArrayList();
+    		List shopAPIList = new ArrayList();
+    		List<ShopCar> shopList = new ArrayList();
+    		int orderNum=0;
+    		String orderVal="";
+    		
+    		List<String> orderIdList=new ArrayList();
+    		String orderIds = orderList.getOrderId();
+    		if(orderIds!=null&&!"".equals(orderIds)){
+    			String strArray[] = orderIds.split(",");
+    			orderNum= strArray.length;
+    			for (int m=0;m<strArray.length;m++){
+    				orderIdList.add(strArray[m]);
+    			}
+    			list = selfHelpOrderService.findBuyShopList(orderIdList);
+    		}
+    		
+    		if(list!=null&&list.size()>0){
+    			for(int i=0;i<list.size();i++){
+    				ShopCar shopCar = (ShopCar)list.get(i);
+    				if(shopCar.getIsAPI()==0){
+    					shopList.add(shopCar);
+    				}else{
+    					shopAPIList.add(shopCar);
+    				}
+    			}	 
+    		}
+    		
+    		//更新网站安全帮订单id
+    		
+    		if(shopList!=null&&shopList.size()>0){
+    			for(int i=0;i<shopList.size();i++){
+    				ShopCar shopCar = (ShopCar)shopList.get(i);
+    				String targetURL[]=shopCar.getAstName().split(",");
+    				String websoc = "0";
+    				String[] customManu = null;//指定厂家
+    				if(websoc != null && websoc != ""){
+    					customManu = websoc.split(","); //拆分字符为"," ,然后把结果交给数组customManu 
+    				}
+    				Date  beginDate = shopCar.getBeginDate();
+    				Date endDate = shopCar.getEndDate();
+    				String begin_date=null;
+    				String end_date="";
+    				
+    				if(date.getTime()>beginDate.getTime()){
+    					result=false;
+    					status="-1";
+    				}else{
+    					status = String.valueOf(shopCar.getStatus());
+    				}
+    				if(beginDate!=null && !beginDate.equals("")){
+    					begin_date = sdf.format(beginDate);
+    				}
+    				if(endDate!=null && !endDate.equals("")){
+    					end_date = sdf.format(endDate);
+    				}
+    				String orderId = "";
+    				try{
+    					if(shopCar.getServiceId()!=6){
+    						
+    						orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
+    								scanDepth, maxPages, stategy, customManu, String.valueOf(shopCar.getServiceId()));
+    						//SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+    						//String orderDate = odf.format(new Date());
+    						//orderId = orderDate+String.valueOf(Random.fivecode());
+    						orderVal = orderVal+ orderId+",";
+    					}else{
+    						SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+    						String orderDate = odf.format(new Date());
+    						orderId = orderDate+String.valueOf(Random.fivecode());
+    						orderVal = orderVal+ orderId+",";
+    					}
+    				} catch (Exception e) {
+    					e.printStackTrace();
+    				}
+    				
+    				//北向API返回orderId，创建用户订单
+    				if(!orderId.equals("") && orderId != null){
+    					// String orderId="1";
+    					//更新订单资产表
+    					selfHelpOrderService.updateOrderAsset(shopCar.getOrderId(), orderId);
+    					//更新订单表
+    					selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "0",status);
+//	    	    	 orderService.updateLinkManByOrderId(linkman, orderId);
+    				}else{
+    					result=false;
+    				}
+    			}
+    			
+    		}
+    		
+    		if (shopAPIList != null && shopAPIList.size() > 0) {
+    			for (int i = 0; i < shopAPIList.size(); i++) {
+    				ShopCar shopCar = (ShopCar) shopAPIList.get(i);
+    				String targetURL[] = null;
+    				String websoc = "0";
+    				String[] customManu = null;// 指定厂家
+    				if (websoc != null && websoc != "") {
+    					customManu = websoc.split(","); // 拆分字符为","
+    					// ,然后把结果交给数组customManu
+    				}
+    				Date beginDate = shopCar.getBeginDate();
+    				Date endDate = shopCar.getEndDate();
+    				if(date.getTime()>beginDate.getTime()){
+    					result=false;
+    					status="-1";
+    				}else{
+    					status = String.valueOf(shopCar.getStatus());
+    				} 
+    				String orderId = "";
+//	    		 orderVal = orderVal+ shopCar.getOrderId()+",";
+    				try {
+    					if(shopCar.getServiceId()!=6){
+    						orderId = NorthAPIWorker.vulnScanCreateAPI(
+    								Integer.parseInt(shopCar.getAstName()),
+    								shopCar.getNum(), shopCar.getServiceId(),
+    								globle_user.getApikey(), globle_user.getId());
+    						//SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+    						//String orderDate = odf.format(new Date());
+    						//orderId = orderDate+String.valueOf(Random.fivecode());
+    						orderVal = orderVal+ orderId+",";
+    					}
+    				} catch (Exception e) {
+    					e.printStackTrace();
+    				}
+    				// String orderId="2";
+    				if (orderId != null && !"".equals(orderId)) {
+    					// 更新订单资产表
+    					selfHelpOrderService.updateOrderAPI(
+    							shopCar.getOrderId(), orderId);
+    					// 更新订单表
+    					selfHelpOrderService.updateOrder(shopCar.getOrderId(),
+    							orderId, "1",status);
+//	    			 orderService.updateLinkManByAPIId(linkman, orderId);
+//	    			 map.put("orderStatus", true);
+//	    			 map.put("sucess", true);
+//	    			 map.put("flag", flag);
+//	    			 map.put("price", df.format(Double.parseDouble(price)));
+    				} else {
+    					result = false;
+//	    			 map.put("orderStatus", true);
+//	    			 map.put("sucess", true);
+//	    			 map.put("flag", flag);
+    				}
+    			}
+    			
+    		}
+    		
+    		//更新orderList表中的orderId
+    		if (orderVal != null&& !orderVal.equals("")) {
+    			orderList.setOrderId(orderVal.substring(0,orderVal.length()-1));
+    			orderListService.update(orderList);
+    		}
+    		
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		result = false;
+    	}
+	     
+	     return result;
     }
     
     /**
-     * 功能描述： 确认支付
+     * 功能描述： 支付成功页面
      * */
-    @RequestMapping("payConfirm.html")
-    public String payConfirm(Model m,HttpServletRequest request, HttpServletResponse response){
+    @RequestMapping("repayUI.html")
+    public String toRepayUI(Model m,HttpServletRequest request, HttpServletResponse response){
     	String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
-    	OrderList orderList = orderListService.findById(orderListId);
+		OrderList orderList = orderListService.findById(orderListId);
+		if (orderList.getPay_date()== null){
+			m.addAttribute("paySuccess", 1);
+		} else {
+			m.addAttribute("paySuccess", 0);
+			
+			Double price = orderList.getPrice();//支付金额
+	    	DecimalFormat df = new DecimalFormat("0.00");
+	    	String priceStr = df.format(price);
+	    	m.addAttribute("price", priceStr);
+			
+		}
+    	return "/source/page/details/repay";
     	
-    	Double price = orderList.getPrice();//支付金额
-    	DecimalFormat df = new DecimalFormat("0.00");
-    	String priceStr = df.format(price);
-    	
-    	m.addAttribute("price", priceStr);
-    	//表单重复提交，再次支付
-    	if (orderList.getPay_date() != null){
-    		//不能重复支付
-    		m.addAttribute("paySuccess", 2);
-    		return "source/page/details/repay";
-    	}
-    	
-    	//取得安全币余额
-    	User globle_user = (User) request.getSession().getAttribute("globle_user");
-    	List<User> userList = userService.findUserById(globle_user.getId());
-    	Double balance = userList.get(0).getBalance();
-    	//安全币余额不足
-    	if (balance < price){
-    		//安全币余额不足
-    		m.addAttribute("paySuccess", 1);
-    		return "source/page/details/repay";
-    	}
-    	
-    	//更新安全币余额（DB和session中都更新）
-    	globle_user.setBalance(balance - price);//session更新
-    	User user = new User();
-    	user.setId(globle_user.getId());
-    	user.setBalance(globle_user.getBalance());
-    	userService.updateBalance(user);//DB更新
-    	
-    	//更新 支付时间，支付金额(cs_order_list表)
-    	orderList.setPay_date(new Date());
-    	selfHelpOrderService.updatePayDate(orderList);
-    	
-    	//更新 支付Flag(cs_order表) 未支付-->已支付
-    	String orderIds = orderList.getOrderId();//订单条目编号(cs_order的id)
-    	selfHelpOrderService.updateOrderPayFlag(orderIds, 1);
-    	
-    	//付款成功页面
-    	m.addAttribute("paySuccess", 0);
-    	return "source/page/details/repay";
-    		
     }
 }
