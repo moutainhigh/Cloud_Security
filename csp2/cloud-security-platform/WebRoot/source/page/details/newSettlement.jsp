@@ -323,7 +323,19 @@
                                                <input type="hidden" name="orderId" value="${shopAPI.orderId}"/>
                                        <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${shopAPI.serviceId}&indexPage=2" target="_blank">${shopAPI.serverName}</a>
                                        </td>
-                                        <td width="60%"><p>${shopAPI.astName}</p></td>
+                                        <td width="60%"><p>
+                                         <c:if test="${shopAPI.astName==1}">
+                                                                                                                             套餐一
+                                      </c:if>
+                                       <c:if test="${shopAPI.astName==2}">
+                                                                                                                             套餐二
+                                      </c:if>
+                                       <c:if test="${shopAPI.astName==3}">
+                                                                                                                             套餐三
+                                      </c:if>
+                                        ${shopAPI.buynum}
+                                        
+                                        </p></td>
                                         <td width="20%"><em class="price">${shopAPI.price}</em></td>
                                         
                                      </tr>

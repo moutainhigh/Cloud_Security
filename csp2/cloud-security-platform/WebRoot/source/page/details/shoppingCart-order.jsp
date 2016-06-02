@@ -167,8 +167,21 @@
                                             </c:if>
                                             </label>
                                           <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${shopAPI.serviceId}&indexPage=2" target="_blank">${shopAPI.serverName}</a></td>
+                                   
+                                   
                                     <td width="36%"><p style="padding-left:40px;">
-                                    ${shopAPI.num}</p></td>
+                                   
+                                      <c:if test="${shopAPI.pack_type==1}">
+                                                                                                                             套餐一
+                                      </c:if>
+                                       <c:if test="${shopAPI.pack_type==2}">
+                                                                                                                             套餐二
+                                      </c:if>
+                                       <c:if test="${shopAPI.pack_type==3}">
+                                                                                                                             套餐三
+                                      </c:if>
+                                     &nbsp;&nbsp;&nbsp; ${shopAPI.buynum}</p></td>
+                                  
                                     <td width="8%"><em class="price">${shopAPI.price}</em></td>
                                     <td width="9%"><a href="#" onclick="delShopCar('${shopAPI.orderId}');">删除</a></td>
                                  </tr>
