@@ -1198,7 +1198,7 @@ public class shoppingController {
     		String orderId = "";
     		if (orderIdOfModify!= null && orderIdOfModify.size()!=0){
     			orderId = orderIdOfModify.toString();
-    			orderId = orderId.substring(1,orderId.length()-2);
+    			orderId = orderId.substring(1,orderId.length()-1);
     		}
     		m.put("modifyOrderId", orderId);
     		m.put("payFlag", 0);//付款成功
