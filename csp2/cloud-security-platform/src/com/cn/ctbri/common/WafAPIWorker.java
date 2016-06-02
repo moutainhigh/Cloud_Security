@@ -201,7 +201,7 @@ public class WafAPIWorker {
 	 */
 	public static String createVirtualSite(String resourceId, String deviceId, 
 			String parent, String name, String domain, String include, 
-			String exclude, String[] server){
+			String exclude, JSONArray server){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("resourceId", "10001");
@@ -355,20 +355,25 @@ public class WafAPIWorker {
     public static void main(String[] args) throws UnsupportedEncodingException {
 //        String sites = getSites("10001", "30001");
 //    	String eth = postIpToEth("10001", "30001", "187.6.0.1", "255.255.255.0");
-//    	String createSite = createSite("10001", "30001", "test61", "187.6.0.1", "", "", "");
+//    	String createSite = createSite("10001", "30001", "test62", "187.6.0.1", "", "", "");
 //        System.out.println(eth);
-    	String ethStr = "{\"ip_address\":[{\"ip\":\"187.6.0.1\",\"mask\":\"255.255.255.0\",\"multi_status\":200,\"multi_result\":\"created successfully\"}]}";
-        String status = "";
-    	try {
-    		JSONObject obj = JSONObject.fromObject(ethStr);
-        	String ip_address = obj.getString("ip_address");
-            if("success".equals(status)){
-            	System.out.println(status);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println(status);
+//    	String ethStr = "{\"ip_address\":[{\"ip\":\"187.6.0.1\",\"mask\":\"255.255.255.0\",\"multi_status\":200,\"multi_result\":\"created successfully\"}]}";
+    	JSONObject json = new JSONObject();
+		json.put("ip", "192.168.1.11");
+		json.put("port", "62222");
+    	JSONArray ser = JSONArray.fromObject(json);
+    	String virtualSite = createVirtualSite("10001", "30001", "1464833085", "62", "http://www.testfire.net/", "*", "", ser);
+//    	String status = "";
+//    	try {
+//    		JSONObject obj = JSONObject.fromObject(ethStr);
+//        	String ip_address = obj.getString("ip_address");
+//            if("success".equals(status)){
+//            	System.out.println(status);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        System.out.println(virtualSite);
         
     }
 }
