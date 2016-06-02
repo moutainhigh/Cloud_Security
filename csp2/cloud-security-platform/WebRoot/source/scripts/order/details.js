@@ -162,8 +162,8 @@ $(function(){
     	var ip="";
 		var bandwidth="";
 		
-		var result = window.confirm("确定要提交订单吗？");
-    	if(result){
+	/*	var result = window.confirm("确定要提交订单吗？");
+    	if(result){*/
     		$.ajax({ type: "POST",
 	    		     async: false, 
 	    		     url: "saveOrder.html", 
@@ -207,7 +207,7 @@ $(function(){
 	    		    	 else { window.location.href = "loginUI.html"; } } 
 		    	});
 
-    	}
+    	//}
     });
     
     
@@ -220,8 +220,8 @@ $(function(){
     	 var userName =  $(".test_name").text();
         var userAdd = $(".test_add").text();
         var mobile =  $(".test_iphone").text();
-		var result = window.confirm("确定要提交订单吗？");
-    	if(result){
+		//var result = window.confirm("确定要提交订单吗？");
+    	//if(result){
     		$.ajax({ type: "POST",
 	    		     async: false, 
 	    		     url: "saveOrderAPI.html", 
@@ -251,7 +251,7 @@ $(function(){
 	    		    		 window.location.href = "loginUI.html"; } 
 	    		    	 else { window.location.href = "loginUI.html"; } } 
 		    	});
-    	}
+    	//}
     });
    
    
@@ -281,10 +281,7 @@ $(function(){
         		alert("开始时间不能为空");
         		return;
 			}
-			if(endDate==""||endDate==null){
-            		alert("结束时间不能为空");
-            		return;
-            	}
+			
 		}else{
 			if(beginDate==""||beginDate==null||endDate==""||endDate==null){
         		if(beginDate==""||beginDate==null){
