@@ -2055,10 +2055,10 @@ padding: 20px 30px 0px 0px;
 .add_wrong p{ float: left; line-height: 16px; font-size: 14px;}
 
 .ad-tj{ width: 112px; height: 38px; background: #2499fb; color:#fff; font-size: 16px; margin-top: 30px; line-height: 38px;text-align: center; float: left; margin-right: 20px; }
-.ad-tj a{ color: #fff;}
+.ad-tj a{ color: #fff;display:block;}
 
 .cd-tj{width: 112px; height: 38px; background: #2499fb; color:#fff; font-size: 16px; margin-top: 30px; line-height: 38px;text-align: center; float: left; }
-.cd-tj a{ color: #fff;}
+.cd-tj a{ color: #fff;display:block;}
 
 .order .settlement-content li .listone_add{ float: right;  height:20px; line-height: 20px; color: #2499fb; cursor: pointer;}
 .order .settlement-content li .listone_add b{
