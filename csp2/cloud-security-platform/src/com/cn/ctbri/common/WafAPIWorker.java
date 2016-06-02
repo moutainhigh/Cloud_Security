@@ -2,6 +2,7 @@ package com.cn.ctbri.common;
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
+import java.util.List;
 import java.util.Properties;
 
 import javax.net.ssl.HostnameVerifier;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.NewCookie;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import com.cn.ctbri.controller.WafController;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -204,8 +206,8 @@ public class WafAPIWorker {
 			String exclude, JSONArray server){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
-		json.put("resourceId", "10001");
-		json.put("deviceId", "30001");
+		json.put("resourceId", resourceId);
+		json.put("deviceId", deviceId);
 		json.put("parent", parent);
 		json.put("name", name);
 		json.put("domain", domain);
@@ -354,26 +356,44 @@ public class WafAPIWorker {
     
     public static void main(String[] args) throws UnsupportedEncodingException {
 //        String sites = getSites("10001", "30001");
-//    	String eth = postIpToEth("10001", "30001", "187.6.0.1", "255.255.255.0");
-//    	String createSite = createSite("10001", "30001", "test62", "187.6.0.1", "", "", "");
+    	WafController controller = new WafController();
+/*    	String eth = postIpToEth("10001", "30001", "187.6.0.2", "255.255.255.0");
+    	String postIpToEthRe = controller.getPostIpToEth(eth);
+    	System.out.println(postIpToEthRe);
+    	
+    	String createSite = createSite("10001", "30001", "new", "187.6.0.2", "80", "", "1");
+    	String createSiteRe = controller.getcreateSite(createSite);
+    	System.out.println(createSiteRe);*/
+    	
 //        System.out.println(eth);
 //    	String ethStr = "{\"ip_address\":[{\"ip\":\"187.6.0.1\",\"mask\":\"255.255.255.0\",\"multi_status\":200,\"multi_result\":\"created successfully\"}]}";
-    	JSONObject json = new JSONObject();
+/*    	JSONObject json = new JSONObject();
 		json.put("ip", "192.168.1.11");
 		json.put("port", "62222");
     	JSONArray ser = JSONArray.fromObject(json);
-    	String virtualSite = createVirtualSite("10001", "30001", "1464833085", "62", "http://www.testfire.net/", "*", "", ser);
-//    	String status = "";
-//    	try {
-//    		JSONObject obj = JSONObject.fromObject(ethStr);
-//        	String ip_address = obj.getString("ip_address");
-//            if("success".equals(status)){
-//            	System.out.println(status);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        System.out.println(virtualSite);
+    	String virtualSite = createVirtualSite("10001", "30001", "1464833085", "testfire", "http://www.testfire.net/", "*", "", ser);
+    	String virtualSiteRe = controller.getCreateVirtualSite(virtualSite);
+    	System.out.println(virtualSiteRe);*/
+    	
+    	String wafLog = getWaflogWebsecByIp("219.141.189.183");
+    	List list = controller.getWaflogWebsecByIp(wafLog);
+    	
+        String status = "";
+    	try {
+    		/*JSONObject obj = JSONObject.fromObject(ethStr);
+        	String ip_address = obj.getString("ip_address");
+            if("success".equals(status)){
+            	System.out.println(status);
+            }*/
+/*    		JSONObject siteObject = JSONObject.fromObject(ethStr);
+    		JSONObject ip_addressObject = siteObject.getJSONObject("ip_address");
+        	JSONObject ipObject = ip_addressObject.getJSONObject("ip");
+        	String mask = ipObject.getString("mask");
+        	System.out.println(mask);*/
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(status);
         
     }
 }

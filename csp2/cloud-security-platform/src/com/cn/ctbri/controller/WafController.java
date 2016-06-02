@@ -579,20 +579,128 @@ public class WafController {
 	/**
      * 解析新建站点
      * @param siteStr
-     * @return
+     * @return id
      */
-    private String getcreateSite(String siteStr) {
-    	String status = "";
+    public String getcreateSite(String siteStr) {
+    	String id = "";
     	try {
-    		JSONArray siteArray = new JSONArray().fromObject(siteStr);
-    		JSONObject siteObject = siteArray.getJSONObject(0);
-    		status = siteObject.getString("status");
+    		//JSONObject siteObject = JSONObject.fromObject(siteStr);
+    		JSONArray siteArray = JSONArray.fromObject(siteStr);
+    		String str = siteArray.getString(0);
+    		JSONObject siteObject = JSONObject.fromObject(str);
+    		String status = siteObject.getString("status");
             if("success".equals(status)){
-            	System.out.println(status);
+            	JSONObject websiteObject = siteObject.getJSONObject("website");
+            	JSONObject groupObject = websiteObject.getJSONObject("group");
+            	id = groupObject.getString("id");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return status;
+        return id;
+    }
+    
+    /**
+     * 解析添加ip到工作接口
+     * @param ethStr
+     * @return multi_result
+     */
+    public String getPostIpToEth(String ethStr){
+    	String multiResult = "";
+    	try {
+    		JSONObject obj = JSONObject.fromObject(ethStr);
+    		JSONArray jsonArray = obj.getJSONArray("ip_address");
+    		if(jsonArray!=null && jsonArray.size()>0){
+    			String object = jsonArray.getString(0);
+		        JSONObject jsonObject = JSONObject.fromObject(object);
+		        multiResult = jsonObject.getString("multi_result");
+    		}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(multiResult);
+        return multiResult;
+    }
+    
+    /**
+     * 解析根据ip查询websec日志信息
+     * @param reStr
+     * @return wafLogWebsecList
+     */
+    public List getWaflogWebsecByIp(String reStr){
+		List reList = new ArrayList();
+    	try {
+    		JSONObject obj = JSONObject.fromObject(reStr);
+    		JSONArray jsonArray = obj.getJSONArray("wafLogWebsecList");
+    		if(jsonArray!=null && jsonArray.size()>0){
+    			for (int i = 0; i < jsonArray.size(); i++) {
+    				Map<String,Object> newMap = new HashMap<String,Object>();
+    				String object = jsonArray.getString(i);
+			        JSONObject jsonObject = JSONObject.fromObject(object);
+			        String resourceUri = jsonObject.getString("resourceUri");
+			        String resourceIp = jsonObject.getString("resourceIp");
+			        String dstIp = jsonObject.getString("dstIp");
+			        String dstPort = jsonObject.getString("dstPort");
+			        String srcIp = jsonObject.getString("srcIp");
+			        String srcPort = jsonObject.getString("srcPort");
+			        String method = jsonObject.getString("method");
+			        String domain = jsonObject.getString("domain");
+			        String uri = jsonObject.getString("uri");
+			        String alertlevel = jsonObject.getString("alertlevel");
+			        String eventType = jsonObject.getString("eventType");
+			        String statTime = jsonObject.getString("statTime");
+			        String action = jsonObject.getString("action");
+			        String block = jsonObject.getString("block");
+			        String blockInfo = jsonObject.getString("blockInfo");
+			        String alertinfo = jsonObject.getString("alertinfo");
+			        String proxyInfo = jsonObject.getString("proxyInfo");
+			        String characters = jsonObject.getString("characters");
+			        String countNum = jsonObject.getString("countNum");
+			        String protocolType = jsonObject.getString("protocolType");
+			        String wci = jsonObject.getString("wci");
+			        String wsi = jsonObject.getString("wsi");
+			        
+			        newMap.put("resourceUri", resourceUri);
+			        newMap.put("resourceIp", resourceIp);
+			        newMap.put("dstIp", dstIp);
+			        newMap.put("dstPort", dstPort);
+			        newMap.put("srcIp", srcIp);
+			        newMap.put("srcPort", srcPort);
+			        newMap.put("method", method);
+			        newMap.put("domain", domain);
+			        newMap.put("uri", uri);
+			        newMap.put("alertlevel", alertlevel);
+			        newMap.put("eventType", eventType);
+			        newMap.put("statTime", statTime);
+			        newMap.put("action", action);
+			        newMap.put("block", block);
+			        newMap.put("blockInfo", blockInfo);
+			        newMap.put("alertinfo", alertinfo);
+			        newMap.put("proxyInfo", proxyInfo);
+			        newMap.put("characters", characters);
+			        newMap.put("countNum", countNum);
+			        newMap.put("protocolType", protocolType);
+			        newMap.put("wci", wci);
+			        newMap.put("wsi", wsi);
+			        
+			        reList.add(newMap);
+				}
+    			
+    		}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    	return reList;
+    }
+    
+    public String getCreateVirtualSite(String siteStr){
+    	String status = "";
+    	try {
+    		JSONObject obj = JSONObject.fromObject(siteStr);
+    		status = obj.getString("status");   		
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    	return status;
     }
 }
