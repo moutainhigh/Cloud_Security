@@ -446,15 +446,8 @@ public class WafController {
 			order.setDelFlag(0);
 			order.setPayFlag(1);
 			order.setUserId(globle_user.getId());
-
-			//订单开始时间不能早于当前订单提交时间,add by tangxr,2015-3-3
-			if(beginDate.compareTo(createDate)>0){
-				m.put("timeCompare", true);
-			    order.setStatus(0);
-			}else{
-				m.put("timeCompare", false);
-			    order.setStatus(-1);
-			}
+			
+			order.setStatus(0);
 			order.setPrice(Double.parseDouble(price));
 			selfHelpOrderService.insertOrder(order);
 			
@@ -487,7 +480,6 @@ public class WafController {
 		    orderListService.insert(ol);
 		    
 			m.put("orderStatus", true);
-			m.put("orderListId", id);
 			//object转化为Json格式
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
 			try {
