@@ -430,7 +430,7 @@ public class OrderMgrController {
         String tasknum = request.getParameter("tasknum");
         
         //长期：订单结束时间不能早于当前订单提交时间,add by tangxr,2015-3-3
-        if(endDate!=null && endDate!="" && createDate.compareTo(endDate)>0){
+        if(orderType.equals("1") && endDate!=null && endDate!="" && createDate.compareTo(endDate)>0){
     		m.put("timeCompare", false);
     		//object转化为Json格式
             JSONObject JSON = CommonUtil.objectToJson(response, m);
