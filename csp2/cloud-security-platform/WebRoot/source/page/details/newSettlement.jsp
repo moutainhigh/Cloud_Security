@@ -397,7 +397,7 @@
             
             <ul class="Price">
             	<li>
-                	<i>${orderNum}</i>个订单，总额：<span>${shopCount}</span>
+                	<i>${orderNum}</i>个订单，总额：<span>¥${shopCount}</span>
                 </li>
                    <!--  
                 <li>
