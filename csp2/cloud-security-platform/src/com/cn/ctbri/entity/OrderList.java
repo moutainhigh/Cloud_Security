@@ -17,6 +17,7 @@ public class OrderList {
 	private String remarks;//备注
 	private String orderId;//订单Id
 	private double price;//总价
+	private String serverName;//服务名称
 	private Date pay_date;//支付时间
 	
 	public String getId() {
@@ -66,6 +67,12 @@ public class OrderList {
 	}
 	public void setPay_date(Date pay_date) {
 		this.pay_date = pay_date;
+	}
+	public String getServerName() {
+		return serverName;
+	}
+	public void setServerName(String serverName) {
+		this.serverName = serverName;
 	}
 	
 }
