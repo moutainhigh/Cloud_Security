@@ -44,8 +44,8 @@ $(function(){
        $("input:hidden[name='orderId']").each(function(obj){
     	    orderIds+=$(this).val()+",";
        });
-    var result = window.confirm("确定要提交订单吗？");
-    if(result){
+   // var result = window.confirm("确定要提交订单吗？");
+    //if(result){
 	  $.ajax({ type: "POST",
 		     async: false, 
 		     url: "shopSettlement.html",
@@ -75,7 +75,8 @@ $(function(){
 		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
 		    		 window.location.href = "loginUI.html"; } 
 		    	 else { window.location.href = "loginUI.html"; } } 
-		})};
+		})
+		//};
     })
 });
 
