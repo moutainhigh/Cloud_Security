@@ -434,6 +434,7 @@ public class shoppingController {
 		 Map<String, Object> map = new HashMap<String, Object>();  
 		 String id ="";
 		 String orderVal="";
+		 String serverNames="";
 	try{
 		 User globle_user = (User) request.getSession().getAttribute("globle_user");
 		 Date date = new Date();
@@ -515,6 +516,7 @@ public class shoppingController {
 	    	     }
 	    	     String orderId = "";
 	    	     orderVal = orderVal+ shopCar.getOrderId()+",";
+	    	     serverNames = serverNames+shopCar.getServerName()+",";
 	    	    /* try{
 	    	    	 if(shopCar.getServiceId()!=6){
 		    	    
@@ -578,6 +580,7 @@ public class shoppingController {
 						status = String.valueOf(shopCar.getStatus());
 					} 
 					  orderVal = orderVal+ shopCar.getOrderId()+",";
+					  serverNames = serverNames+shopCar.getServerName()+",";
 				/*	try {
 					if(shopCar.getServiceId()!=6){
 						orderId = NorthAPIWorker.vulnScanCreateAPI(
@@ -629,6 +632,7 @@ public class shoppingController {
 		    ol.setUserId(globle_user.getId());
 		    ol.setOrderId(orderVal.substring(0,orderVal.length()-1));
 		    ol.setPrice(Double.parseDouble(price));
+		    ol.setServerName(serverNames.substring(0, serverNames.length()-1));
 		    orderListService.insert(ol);
 	   
 	}catch(Exception e){
