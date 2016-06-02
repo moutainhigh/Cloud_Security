@@ -76,24 +76,24 @@ public class BalanceController {
     	}
     	
         //获取订单条目
-    	PageBean pb = orderListService.queryPayRecordByPage(globle_user.getId(), pageCode);
-    	List<OrderList> orderList = pb.getDatas();
+    	PageBean<OrderList> pb = orderListService.queryPayRecordByPage(globle_user.getId(), pageCode);
+//    	List<OrderList> orderList = pb.getDatas();
     	
     	
-    	List<Object> pageList = new ArrayList<Object>();
-        for(OrderList data : orderList){
-        	//根据订单编号获取服务名称
-			List<String> nameList = orderService.findServiceNameByOrderId(data.getOrderId());
-			String serviceName = nameList.toString();
-			Map<String,Object> m = new HashMap<String,Object>();
-			m.put("payDate", data.getPay_date()); //支付时间
-			m.put("id", data.getId());    //订单编号
-			m.put("serviceName", serviceName.substring(1, serviceName.length()-1)); //服务名称
-			m.put("price", data.getPrice());   //价格
-			pageList.add(m);
-		}
-		// 保存pageBean中
-		pb.setDatas(pageList);
+//    	List<Object> pageList = new ArrayList<Object>();
+//        for(OrderList data : orderList){
+//        	//根据订单编号获取服务名称
+//			List<String> nameList = orderService.findServiceNameByOrderId(data.getOrderId());
+//			String serviceName = nameList.toString();
+//			Map<String,Object> m = new HashMap<String,Object>();
+//			m.put("payDate", data.getPay_date()); //支付时间
+//			m.put("id", data.getId());    //订单编号
+//			m.put("serviceName", serviceName.substring(1, serviceName.length()-1)); //服务名称
+//			m.put("price", data.getPrice());   //价格
+//			pageList.add(m);
+//		}
+//		// 保存pageBean中
+//		pb.setDatas(pageList);
 		ModelAndView mv = new ModelAndView("/source/page/personalCenter/my_balance");
 		mv.addObject("pb", pb);
 		mv.addObject("signIn", signIn);
