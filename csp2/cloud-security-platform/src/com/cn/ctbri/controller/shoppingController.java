@@ -1172,6 +1172,19 @@ public class shoppingController {
     			return;
     		}
     		
+    		//南向API认证，连接失败时订单异常，不支付
+    		boolean session = false;
+	    	try {
+	    		session = NorthAPIWorker.getNorthSession();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if (!session){
+				//连接服务管理系统失败
+				m.put("payFlag", 4);
+    			return;
+			}
+    		
     		//更新安全币余额（DB和session中都更新）
     		globle_user.setBalance(balance - price);//session更新
     		User user = new User();
