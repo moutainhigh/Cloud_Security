@@ -147,6 +147,8 @@ $('.dropdown-menu li').hover(function(){
 		
 //选项卡切换
 	tablist();
+//我的余额效果
+	balance();
 })
 ///这里是结尾
 
@@ -563,4 +565,41 @@ function sck(){
 	})
 
 
+}
+
+//我的余额效果
+function balance(){
+	$('#gz').click(function(){
+		$('.rule').slideDown();	
+	})	
+	$('.qdbtn').one('click',function(){
+		$.ajax({ type: "POST",
+    		 url: "signIn.html", 
+    		 success: function(data) {
+	    		 	 if(data.collect == 0){
+	    		 	 	alert("系统异常，请稍后领取~~");
+	    		 	 }else if(data.collect == 1){
+    		    		alert("今日金额已经领取，不能重复领取！");  
+			    	 }else if(data.collect==2) {
+			    	 	$('.qdbtn').children('b').remove();
+						var html='';
+						html+='<b style="padding-left:10px;"><i style="width:auto;padding-right: 8px;"><img src="/cloud-security-platform/source/images/balance/minig.png" alt=""></i>今日已签到</b>';
+						$('.qdbtn').append(html);
+						$('.succeed').fadeIn(500);
+						$('.succeed').fadeOut(2000);
+							
+						$('.b_aic').children('em').remove();
+						html = '<em>'+data.balance+'</em>';
+						$('.b_aic').append(html);
+			    	 }
+    		    	 }, 
+    		  error: function(data){ 
+    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+    		    		 window.location.href = "loginUI.html"; } 
+    		    	 else { window.location.href = "loginUI.html"; } } 
+    	});
+    	
+	})	
+	
+	
 }
