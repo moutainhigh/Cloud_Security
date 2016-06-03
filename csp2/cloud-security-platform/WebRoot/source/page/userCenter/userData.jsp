@@ -71,6 +71,7 @@
                 	<dt>交易管理</dt>
                     <dd><a href="${ctx}/orderTrackInit.html" >我的订单</a></dd>
                     <!-- <dd><a href="#">我的优惠劵</a></dd> -->
+                    <dd><a href="${ctx}/balanceUI.html">我的余额</a></dd>
                     <dt>个人信息管理</dt>
                     <dd><a class="active" href="${ctx}/userDataUI.html">个人资料</a></dd>
                     <dd style="border-bottom:none;"><a  href="${ctx}/userAssetsUI.html">我的资产</a></dd>
@@ -168,6 +169,13 @@
 								<div class="fl dataListR">
                                 	<input type="text" class="text" name="urlAddr" value="${user.urlAddr}" id="urlAddr">
                                     <b>(用于API接口回调)</b>
+                                </div>
+                             </li>
+                             <li class="clearfix">
+                            	<label class="fl">个人金额</label>
+								<div class="fl dataListR">
+                                	<input type="text" class="text" name="balance" value="${user.balance}" id="balance" disabled="true" />
+                                	<a href="#" onclick="signIn()">每日签到领取安全币</a>
                                 </div>
                              </li>
                         	<li class="clearfix" style="margin-top:40px;">
