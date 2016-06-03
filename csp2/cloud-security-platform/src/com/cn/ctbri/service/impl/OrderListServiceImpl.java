@@ -46,7 +46,7 @@ public class OrderListServiceImpl implements IOrderListService{
 		}
 		
 		// 使用当前页码和总记录数创建PageBean
-		PageBean<OrderList> pb = new PageBean(pageCode, totalRecord,10);
+		PageBean<OrderList> pb = new PageBean(pageCode, totalRecord,5);
 		// 查询本页记录
 		List<OrderList> datas = orderListDao.queryPayRecordByPage(userId, (pageCode - 1) * pb.getPageSize(), pb.getPageSize());
 		
