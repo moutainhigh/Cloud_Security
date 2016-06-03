@@ -831,7 +831,7 @@ select::-ms-expand { display: none; }
 }
 .balance .b_bic i{
 	width: 32px;
-	height: 32px;
+	/*height: 32px;*/
 	display: inline-block;
 	padding-right: 12px;
 	vertical-align: middle;
@@ -853,11 +853,12 @@ select::-ms-expand { display: none; }
 	margin-bottom: 10px;
 }
 .take-notes .tabox th{
-	text-align:left;
+	text-align:center;
 	color: #343434;
 }
 
 .take-notes .tabox td{
+	text-align:center;
 	color: #343434;
 }
 .balance .page {
