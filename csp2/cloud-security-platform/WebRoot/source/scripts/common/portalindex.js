@@ -131,7 +131,6 @@ $('.dropdown-menu li').hover(function(){
 			$('.start').show();
 			$('.end').show();	
 			$('.time').show();	
-			$('.type').val("1");	
 		})	
 
 		//结束时间和频率初始化  add by tangxr 2016-3-14 
