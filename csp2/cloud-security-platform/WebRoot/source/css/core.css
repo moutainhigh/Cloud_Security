@@ -902,9 +902,10 @@ select::-ms-expand { display: none; }
 	background:url(../images/balance/l.png) #f3f3f3 no-repeat center center;
 }
 
-.balance .page .active{
+.balance .page .cl_active{
 		background:url(../images/balance/cl.png) #2499fb no-repeat center center;
 }
+
 .balance .page .gt{
 	width: 40px;
 	height: 40px;
@@ -914,6 +915,10 @@ select::-ms-expand { display: none; }
 	background:url(../images/balance/r.png) #f3f3f3 no-repeat center center;
 	
 }
+.balance .page .cr_active{
+		background:url(../images/balance/cr.png) #2499fb no-repeat center center;
+}
+
 .balance .pay{
 	color: #acb1b6;
 	position: relative;
