@@ -51,13 +51,13 @@ public class BalanceController {
     public ModelAndView payRecord(Model model,HttpServletRequest request){
     	
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
-		List<User> user = userService.findUserById(globle_user.getId());
+		User loginUser = userService.findUserById(globle_user.getId()).get(0);
     	
 		boolean signIn= false; //今日是否已签到标志位  false:今日未签到
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		//取得上次签到日期
 		String lastTime = null;
-		if (user.get(0).getLastSignInTime()!= null) {
+		if (loginUser.getLastSignInTime()!= null) {
 			lastTime = sdf.format(globle_user.getLastSignInTime());
 		}
 		//今天的日期
@@ -97,6 +97,7 @@ public class BalanceController {
 		ModelAndView mv = new ModelAndView("/source/page/personalCenter/my_balance");
 		mv.addObject("pb", pb);
 		mv.addObject("signIn", signIn);
+		mv.addObject("balance", (int)loginUser.getBalance());
         return mv;
     }
     
@@ -129,6 +130,7 @@ public class BalanceController {
 			globle_user.setLastSignInTime(new Date());
 			userService.updateBalance(globle_user);
 			m.put("collect", "2");//本次获取金额成功
+			m.put("balance", balance +10);
 			
 			
 		}catch(Exception e){
