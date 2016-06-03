@@ -5,8 +5,7 @@
 <%   
           java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
           java.util.Date currentTime = new java.util.Date();//得到当前系统时间 
-          String str_date = formatter.format(currentTime); //将日期时间格式化 
-         System.out.print("sdfdfffffffffffffffffffffffff"+str_date);
+          String str_date = formatter.format(currentTime); //将日期时间格式化
  %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -30,8 +29,7 @@
 
 
 $(document).ready(function(){
-	var ddd = <%=str_date%>;
-	alert(ddd);
+
     //回显
 	var orderType = ${service.orderType};
     if(orderType == 0){
@@ -77,10 +75,6 @@ $(document).ready(function(){
     }
     $("#price").html("¥"+"${price}");
     
-      function getMinDate(){
-      	alert("111"+<%=str_date%>);
-        return '<%=str_date%>';
-    }
 });
 </script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
@@ -144,6 +138,7 @@ $(document).ready(function(){
 		<input type="hidden" id="assetIds" value="${assetIds }"/>
 		<input type="hidden" id="assetAddr" value="${assetAddr }"/>
 		<input type="hidden" id="timesHidden" value=""/>
+		<input type="hidden" id="begin" value="<%=str_date%>"/>
 		<div class="dataCent">
 			<div class="data-crumbs">
 				<a href="${ctx}/index.html" style="font-size: 20px;">安全帮</a><i>&gt;</i><a href="${ctx}/web_anquanbang.html">网站安全帮</a><i>&gt;</i><a href="javascript:;">${service.name }</a>
@@ -172,8 +167,8 @@ $(document).ready(function(){
 						<li class="clearfix">
 							<label class="fl">服务时间</label>
                             <div class="fl" style="top:3px;">
-                            	<span class="start">开始时间 <input type="text" style="width:156px;" class="text" value="" id="beginDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'<%=str_date%>',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(dp){calPriceLong(null,null,null); }})"/></span>
-                                <span class="end" style="display:none; margin-right:0px;">结束时间 <input type="text" style="width:156px;" class="text" value="" id="endDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'<%=str_date%>',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(dp){calPriceLong(null,null,null); }})"/></span>
+                            	<span class="start">开始时间 <input type="text" style="width:156px;" class="text" value="" id="beginDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'<%=str_date%>',startDate:'<%=str_date%>',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(dp){calPriceLong(null,null,null); }})"/></span>
+                                <span class="end" style="display:none; margin-right:0px;">结束时间 <input type="text" style="width:156px;" class="text" value="" id="endDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'<%=str_date%>',startDate:'<%=str_date%>',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(dp){calPriceLong(null,null,null); }})"/></span>
                             </div> 
 						</li>
 						<li class="clearfix time">

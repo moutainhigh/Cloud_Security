@@ -690,6 +690,11 @@ public class WafController {
     	return reList;
     }
     
+    /**
+     * 解析新建虚拟站点
+     * @param siteStr
+     * @return
+     */
     public String getCreateVirtualSite(String siteStr){
     	String status = "";
     	try {
@@ -699,5 +704,76 @@ public class WafController {
             e.printStackTrace();
         }
     	return status;
+    }
+    
+    /**
+     * 解析根据ip查询websec日志信息
+     * @param reStr
+     * @return wafLogWebsecList
+     */
+    public List getWaflogWebsecById(String reStr){
+		List reList = new ArrayList();
+    	try {
+    		JSONObject obj = JSONObject.fromObject(reStr);
+    		JSONArray jsonArray = obj.getJSONArray("wafLogWebsecList");
+    		if(jsonArray!=null && jsonArray.size()>0){
+    			for (int i = 0; i < jsonArray.size(); i++) {
+    				Map<String,Object> newMap = new HashMap<String,Object>();
+    				String object = jsonArray.getString(i);
+			        JSONObject jsonObject = JSONObject.fromObject(object);
+			        String resourceUri = jsonObject.getString("resourceUri");
+			        String resourceIp = jsonObject.getString("resourceIp");
+			        String dstIp = jsonObject.getString("dstIp");
+			        String dstPort = jsonObject.getString("dstPort");
+			        String srcIp = jsonObject.getString("srcIp");
+			        String srcPort = jsonObject.getString("srcPort");
+			        String method = jsonObject.getString("method");
+			        String domain = jsonObject.getString("domain");
+			        String uri = jsonObject.getString("uri");
+			        String alertlevel = jsonObject.getString("alertlevel");
+			        String eventType = jsonObject.getString("eventType");
+			        String statTime = jsonObject.getString("statTime");
+			        String action = jsonObject.getString("action");
+			        String block = jsonObject.getString("block");
+			        String blockInfo = jsonObject.getString("blockInfo");
+			        String alertinfo = jsonObject.getString("alertinfo");
+			        String proxyInfo = jsonObject.getString("proxyInfo");
+			        String characters = jsonObject.getString("characters");
+			        String countNum = jsonObject.getString("countNum");
+			        String protocolType = jsonObject.getString("protocolType");
+			        String wci = jsonObject.getString("wci");
+			        String wsi = jsonObject.getString("wsi");
+			        
+			        newMap.put("resourceUri", resourceUri);
+			        newMap.put("resourceIp", resourceIp);
+			        newMap.put("dstIp", dstIp);
+			        newMap.put("dstPort", dstPort);
+			        newMap.put("srcIp", srcIp);
+			        newMap.put("srcPort", srcPort);
+			        newMap.put("method", method);
+			        newMap.put("domain", domain);
+			        newMap.put("uri", uri);
+			        newMap.put("alertlevel", alertlevel);
+			        newMap.put("eventType", eventType);
+			        newMap.put("statTime", statTime);
+			        newMap.put("action", action);
+			        newMap.put("block", block);
+			        newMap.put("blockInfo", blockInfo);
+			        newMap.put("alertinfo", alertinfo);
+			        newMap.put("proxyInfo", proxyInfo);
+			        newMap.put("characters", characters);
+			        newMap.put("countNum", countNum);
+			        newMap.put("protocolType", protocolType);
+			        newMap.put("wci", wci);
+			        newMap.put("wsi", wsi);
+			        
+			        reList.add(newMap);
+				}
+    			
+    		}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    	return reList;
     }
 }

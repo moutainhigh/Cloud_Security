@@ -2,6 +2,15 @@
 //默认服务频率
 var servType = 0;
 $(function(){
+	//修改时间控件选择的最小日期：服务器的当前时间
+	$("#beginDate").onfocus=function(){
+		var datetime = $("#begin").val();
+		WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:datetime,startDate:datetime,alwaysUseStartDate:true,dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(dp){calPriceLong(null,null,null); }})
+	}
+	$("#endDate").onfocus=function(){
+		var datetime = $("#begin").val();
+		WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:datetime,startDate:datetime,alwaysUseStartDate:true,dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(dp){calPriceLong(null,null,null); }})
+	}
 	//默认选中资产数
 	var assetCount = 0;
 
