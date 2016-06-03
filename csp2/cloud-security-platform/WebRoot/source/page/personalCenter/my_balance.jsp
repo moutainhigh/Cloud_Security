@@ -157,7 +157,7 @@ $(document).ready(function(){
                     <table class="tabox">
                     	<thead>
                         	<tr height="50">
-                            	<th width="134"><span style=" padding-left:42px;">序号</span></th>
+                            	<th width="134"><span>序号</span></th>
                                 <th width="200">时间</th>
                                 <th width="200">订单编号</th>
                                 <th width="280">名称</th>
