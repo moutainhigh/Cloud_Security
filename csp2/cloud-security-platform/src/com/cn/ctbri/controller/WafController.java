@@ -584,10 +584,7 @@ public class WafController {
     public String getcreateSite(String siteStr) {
     	String id = "";
     	try {
-    		//JSONObject siteObject = JSONObject.fromObject(siteStr);
-    		JSONArray siteArray = JSONArray.fromObject(siteStr);
-    		String str = siteArray.getString(0);
-    		JSONObject siteObject = JSONObject.fromObject(str);
+    		JSONObject siteObject = JSONObject.fromObject(siteStr);
     		String status = siteObject.getString("status");
             if("success".equals(status)){
             	JSONObject websiteObject = siteObject.getJSONObject("website");
