@@ -1194,7 +1194,11 @@ public class UserController{
 	 *		 @time 2015-1-8
 	 */
 	@RequestMapping(value="forgetPass.html")
-	public String forgetPass(Model m){
+	public String forgetPass(HttpServletRequest request,Model m){
+		String originalMobile = request.getParameter("originalMobile");
+		if(originalMobile!=null && !originalMobile.equals("")){
+			m.addAttribute("originalMobile", originalMobile);
+		}
 		return "/forgetPass";
 	}
 	/**

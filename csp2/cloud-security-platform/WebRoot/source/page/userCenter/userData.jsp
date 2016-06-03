@@ -94,7 +94,7 @@
                             	<label class="fl">密&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;码</label>
 								<div class="fl dataListR">
                                 	<input type="password" style=" color:#929292" class="text" value="******" disabled="true" id="regist_pwd">
-                                	<a href="${ctx }/forgetPass.html">修改</a>
+                                	<a href="${ctx }/forgetPass.html?originalMobile=${user.mobile}">修改</a>
                                 </div>
                              </li><!--
                              <li class="clearfix">
@@ -107,7 +107,6 @@
                              --><li class="clearfix">
                             	<label class="fl">手&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;机</label>
 								<div class="fl dataListR">
-								 	<input type="hidden" id="originalMobile"  value="${user.mobile}"/>
                                 	<input type="text" class="text" name="mobile" value="${user.mobile}" id="regist_phone" onblur="checkMobile()">
                                 	<span id="regist_mobile_msg" style="color:red;"></span>
                                 </div>

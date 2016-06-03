@@ -68,6 +68,15 @@ function checkSendMobile(){
 		$("#phone_code_prompt").html("<b></b>手机号码不能为空");
 		$("#phone_code_prompt").fadeIn();
 	}else{
+		//原始密码
+		var originalMobile = $("#originalMobile").val();
+		alert(originalMobile);
+		if(originalMobile!=phone){//不是原始密码
+			$("#phone_code_flag").attr("class","error");
+			$("#phone_code_prompt").html("<b></b>手机号码输入有误");
+			$("#phone_code_prompt").fadeIn();
+			return;
+		}
 		$("#phone_code_flag").attr("class","right");
 		$("#phone_code_prompt").html("<b></b>");
 		$("#phone_code_prompt").fadeOut();

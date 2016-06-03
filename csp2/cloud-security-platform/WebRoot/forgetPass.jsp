@@ -104,6 +104,7 @@
                         	<li class="clearfix">
                             	<label class="fl">已验证的手机号码</label>
                                 <div class="fl passwordr">
+                                	 <input type="hidden" id="originalMobile" value="${originalMobile}"/>
                                 	 <input type="text"  class="text" name="phone_code" id="phone_code" onblur="checkPhone()"/>
                                      <i id="phone_code_flag" ></i>
                                 </div>
