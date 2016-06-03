@@ -21,7 +21,24 @@
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
 <script type="text/javascript">
-
+function signIn(){
+	$.ajax({ type: "POST",
+    		 url: "signIn.html", 
+    		 success: function(data) {
+	    		 	 if(data.collect == 0){
+	    		 	 	alert("系统异常，请稍后领取~~");
+	    		 	 }else if(data.collect == 1){
+    		    		alert("今日金额已经领取，不能重复领取！");  
+			    	 }else if(data.collect==2) {
+			    	 	alert("领取成功！");  
+				    	 window.location.href = "userDataUI.html";
+			    	 }
+    		    	 }, 
+    		  error: function(data){ 
+    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+    		    		 window.location.href = "loginUI.html"; } 
+    		    	 else { window.location.href = "loginUI.html"; } } 
+    	});
 
 </script>
 </head>
@@ -84,7 +101,7 @@
         	<div class="coreRight fl" style="margin-bottom:200px;">
             		<div class="banlance_head clearfix">
                     	<div class="c-lan fl">
-                        	<span class="b_aic">安全币余额：<em>500</em></span>
+                        	<span class="b_aic">安全币余额：<em>${balance }</em></span>
                             <span class="b_bic qdbtn">
                            		<i><img src="${ctx}/source/images/balance/sign_in.png" alt=""></i>
                             	<c:if test="${signIn}">
@@ -152,7 +169,7 @@
                 		<a href="#" class="lt fl"></a>
                 	</c:if>
                 	<c:if test="${pb.pageCode != 1}">
-                		<a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }" class="lt active fl"></a>
+                		<a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }" class="lt cl_active fl"></a>
                 	</c:if>
                 	<%--页码--%>
                     <ul class="bpage fl">
@@ -169,7 +186,7 @@
                     </ul>
                     
                     <c:if test="${pb.pageCode < pb.totalPage}">
-                    	<a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }" class="gt active fl"></a>
+                    	<a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }" class="gt cr_active fl"></a>
                 	</c:if>
                 	<c:if test="${pb.pageCode == pb.totalPage}">
                 		<a href="#" class="gt fl"></a>
