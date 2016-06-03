@@ -2,7 +2,10 @@ package com.cn.ctbri.southapi.adapter.waf;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -29,6 +32,7 @@ import com.cn.ctbri.southapi.adapter.batis.model.TWafLogDeface;
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogDefaceExample;
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsec;
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecExample;
+import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecExample.Criteria;
 import com.cn.ctbri.southapi.adapter.waf.config.*;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
@@ -195,11 +199,12 @@ public class NsfocusWAFAdapter {
 		return nsfocusWAFOperation;
 	}
 		
-	public String getWafLogWebsec(String dstIp) {
+	public String getWafLogWebsec(List<String> dstIpList) {
 		try {
+			System.out.println(dstIpList);
 			SqlSession sqlSession = getSqlSession();
 			TWafLogWebsecExample example = new TWafLogWebsecExample();
-			example.or().andDstIpEqualTo(dstIp);
+			example.or().andDstIpIn(dstIpList);
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			List<TWafLogWebsec> allList = mapper.selectByExample(example);
 			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
@@ -216,6 +221,7 @@ public class NsfocusWAFAdapter {
 			return "{\"wafLogWebsecList\":\"error\"}";
 		}
 	}
+	
 	
 	public String getWafLogWebSecById(String logId) {
 		try {
@@ -240,11 +246,50 @@ public class NsfocusWAFAdapter {
 		
 	}
 		
-	public String getWafLogArp(String dstIp) {
+	public String getWafLogWebsecInTime(JSONObject jsonObject){
+		try {
+			int interval = jsonObject.getInt("interval");
+			List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
+			System.out.println("ip="+dstIpList.toString());
+			
+			
+			SqlSession sqlSession = getSqlSession();
+			TWafLogWebsecExample example = new TWafLogWebsecExample();
+			
+			//FOR TIME INTERVAL
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			Date dateNow = calendar.getTime();
+			calendar.add(Calendar.HOUR, -interval);
+			Date dateBefore = calendar.getTime();
+			
+			
+			example.or().andStatTimeBetween(dateBefore,dateNow).andDstIpIn(dstIpList);
+			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+			List<TWafLogWebsec> allList = mapper.selectByExample(example);
+			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
+			XStream xStream = new XStream(driver);
+			xStream.autodetectAnnotations(true);
+			xStream.alias("wafLogWebsec", TWafLogWebsec.class);
+			xStream.alias("wafLogWebsecList", List.class);
+			String jsonString =  xStream.toXML(allList);
+			sqlSession.close();
+			return jsonString;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "{\"wafLogWebsecList\":\"error\"}";
+		}
+		
+	}
+	
+	
+	
+	public String getWafLogArp(List<String> dstIpList) {
 		try {
 			SqlSession sqlSession = getSqlSession();
 			TWafLogArpExample example = new TWafLogArpExample();
-			example.or().andDstIpEqualTo(dstIp);
+			example.or().andDstIpIn(dstIpList);
 			TWafLogArpMapper mapper =sqlSession.getMapper(TWafLogArpMapper.class);
 			List<TWafLogArp> allList = mapper.selectByExample(example);
 			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
@@ -283,12 +328,12 @@ public class NsfocusWAFAdapter {
 			return "{\"wafLogArpList\":\"error\"}";
 		}
 	}
-	
-	public String getWafLogDeface(String dstIp) {
+			
+	public String getWafLogDeface(List<String> dstIpList) {
 		try {
 			SqlSession sqlSession = getSqlSession();
 			TWafLogDefaceExample example = new TWafLogDefaceExample();
-			example.or().andDstIpEqualTo(dstIp);
+			example.or().andDstIpIn(dstIpList);
 			TWafLogDefaceMapper mapper = sqlSession.getMapper(TWafLogDefaceMapper.class);
 			List<TWafLogDeface> allList = mapper.selectByExample(example);
 			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
@@ -329,11 +374,11 @@ public class NsfocusWAFAdapter {
 		}
 	}
 	
-	public String getWafLogDDOS(String dstIp) {
+	public String getWafLogDDOS(List<String> dstIpList) {
 		try {
 			SqlSession sqlSession = getSqlSession();
 			TWafLogDdosExample example = new TWafLogDdosExample();
-			example.or().andDstIpEqualTo(dstIp);
+			example.or().andDstIpIn(dstIpList);
 			TWafLogDdosMapper mapper = sqlSession.getMapper(TWafLogDdosMapper.class);
 			List<TWafLogDdos> allList = mapper.selectByExample(example);
 			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
@@ -382,6 +427,19 @@ public class NsfocusWAFAdapter {
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		return sqlSession;
+	}
+	
+	public static void main(String[] args) {
+		NsfocusWAFAdapter adapter = new NsfocusWAFAdapter();
+		JSONObject jsonObject = new JSONObject();
+		
+		JSONArray jsonArray = new JSONArray();
+		jsonArray.add("219.141.189.183");
+		jsonArray.add("219.141.189.184");
+		jsonObject.put("dstIp",jsonArray);
+		jsonObject.put("interval", "3");
+		String string = adapter.getWafLogWebsecInTime(jsonObject);
+		System.out.println(string);
 	}
 	
 	

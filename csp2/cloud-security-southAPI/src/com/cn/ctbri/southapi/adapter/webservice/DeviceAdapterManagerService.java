@@ -1,5 +1,7 @@
 package com.cn.ctbri.southapi.adapter.webservice;
 
+import java.util.List;
+
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -11,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import net.sf.json.JSONObject;
 
 import org.codehaus.jettison.json.JSONException;
+import org.w3c.dom.ls.LSInput;
 
 import com.cn.ctbri.southapi.adapter.config.ScannerTaskUniParam;
 import com.cn.ctbri.southapi.adapter.manager.DeviceAdpaterManager;
@@ -221,24 +224,31 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafLogWebsecByIp(String dataJson){
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		String dstIp = jsonObject.getString("dstIp");
-		return deviceAdpaterManager.getWafLogWebsec(dstIp);
+		List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
+		return deviceAdpaterManager.getWafLogWebsec(dstIpList);
 	}
 	@POST
 	@Path("/getWaflogWebsecById")
-	@Produces
+	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafLogWebsecById(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		String logId = jsonObject.getString("logId");
 		return deviceAdpaterManager.getWafLogWebsecById(logId);
 	}
 	@POST
+	@Path("/getWaflogWebsecInTime")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafLogWebsecInTime(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getWafLogWebsecInTime(jsonObject);
+	}
+	@POST
 	@Path("/getWaflogArpByIp")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafLogArpByIp(String dataJson){
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		String dstIp = jsonObject.getString("dstIp");
-		return deviceAdpaterManager.getWafLogArp(dstIp);
+		List<String> dstIpList = (List<String>)jsonObject.get("dstIp");
+		return deviceAdpaterManager.getWafLogArp(dstIpList);
 	}
 	@POST
 	@Path("/getWaflogArpById")
@@ -253,8 +263,8 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafLogDdosByIp(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		String dstIp = jsonObject.getString("dstIp");
-		return deviceAdpaterManager.getWafLogDDOS(dstIp);
+		List<String>  dstIpList= (List<String>) jsonObject.get("dstIp");
+		return deviceAdpaterManager.getWafLogDDOS(dstIpList);
 	}
 	@POST
 	@Path("/getWaflogDdosById")
@@ -269,8 +279,8 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafLogDefaceByIp(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		String dstIp = jsonObject.getString("dstIp");
-		return deviceAdpaterManager.getWafLogDeface(dstIp);
+		List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
+		return deviceAdpaterManager.getWafLogDeface(dstIpList);
 	}
 	@POST
 	@Path("/getWaflogDefaceById")

@@ -730,14 +730,12 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.postIpToEth(resourceId, deviceId, jsonObject);
 	}
 	
-	public String getWafLogWebsec(String dstIp) {
-		if (null==dstIp||"".equals(dstIp)){
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("status", "fail");
-			jsonObject.put("message", "dstIp is null!!!");
-			return jsonObject.toString();
-		}
-		return nsfocusWAFAdapter.getWafLogWebsec(dstIp);
+	public String getWafLogWebsec(List<String> dstIpList) {
+		return nsfocusWAFAdapter.getWafLogWebsec(dstIpList);
+	}
+	
+	public String getWafLogWebsecInTime(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getWafLogWebsecInTime(jsonObject);
 	}
 	
 	public String getWafLogWebsecById(String logId) {
@@ -750,14 +748,8 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getWafLogWebSecById(logId);
 	}
 
-	public String getWafLogArp(String dstIp) {
-		if (null==dstIp||"".equals(dstIp)){
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("status", "fail");
-			jsonObject.put("message", "dstIp is null!!!");
-			return jsonObject.toString();
-		}
-		return nsfocusWAFAdapter.getWafLogArp(dstIp);
+	public String getWafLogArp(List<String> dstIpList) {
+		return nsfocusWAFAdapter.getWafLogArp(dstIpList);
 	}
 	
 	public String getWafLogArpById(String logId) {
@@ -770,14 +762,8 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getWafLogArpById(logId);
 	}
 	
-	public String getWafLogDDOS(String dstIp) {
-		if (null==dstIp||"".equals(dstIp)){
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("status", "fail");
-			jsonObject.put("message", "dstIp is null!!!");
-			return jsonObject.toString();
-		}
-		return nsfocusWAFAdapter.getWafLogDDOS(dstIp);
+	public String getWafLogDDOS(List<String> dstIpList) {
+		return nsfocusWAFAdapter.getWafLogDDOS(dstIpList);
 	}
 	
 	public String getWafLogDDOSById(String logId) {
@@ -790,14 +776,8 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getWafLogDDOSById(logId);
 	}
 	
-	public String getWafLogDeface(String dstIp) {
-		if (null==dstIp||"".equals(dstIp)){
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("status", "fail");
-			jsonObject.put("message", "dstIp is null!!!");
-			return jsonObject.toString();
-		}
-		return nsfocusWAFAdapter.getWafLogDeface(dstIp);
+	public String getWafLogDeface(List<String> dstIpList) {
+		return nsfocusWAFAdapter.getWafLogDeface(dstIpList);
 	}
 	
 	public String getWafLogDefaceById(String logId) {

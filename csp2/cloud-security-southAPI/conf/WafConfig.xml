@@ -47,12 +47,24 @@
 		<Syslog factory="nsfocus" ver="6.0.5.0" regexTag="tag:{1}\S+[ \t]{1}">
 		    <WafLog item="ddos" tag="waf_log_ddos" >
 				<dbopt sql="INSERT INTO t_waf_log_ddos(resource_id,resource_uri,resource_ip,stat_time,alertlevel,event_type,dst_ip,dst_port,action) VALUES(@ResourceID,@ResourceURI,@WAFDevPhyIP,#stat_time,#alertlevel,#event_type,#dst_ip,#dst_port,#action)"/>
+				<precondition>
+					<pre id="1" method="StringReplace" argcount="2" arg0="action:ENTER DEFEND MODE" arg1="action:ENTER^DEFEND^MODE"/>
+					<pre id="2" method="StringReplace" argcount="2" arg0="action:QUIT DEFEND MODE" arg1="action:QUIT^DEFEND^MODE"/>
+					<pre id="3" method="StringReplace" argcount="2" arg0="action:Advertisement Announced" arg1="action:Advertisement^Announced"/>
+					<pre id="4" method="StringReplace" argcount="2" arg0="action:DDoS Mitigated by ADS" arg1="action:DDoS^Mitigated^by^ADS"/>
+					<pre id="5" method="StringReplace" argcount="2" arg0="action:DDoS Mitigated by WAF" arg1="action:DDoS^Mitigated^by^WAF"/>
+				</precondition>
 				<match reg="[a-zA-Z_]+:{1}\d{4}-\d{2}-\d{2} {1}\d{2}:\d{2}:\d{2}|[a-zA-Z_]+:{1}\S+">
 					<trans id="1" name="stat_time" express="StringtoDate" />
 				</match>
             </WafLog>
  		    <WafLog item="deface" tag="waf_log_deface" >
-				<dbopt sql="INSERT INTO t_waf_log_deface(resource_id,resource_uri,resource_ip,site_id,protect_id,stat_time,alertlevel,event_type.dst_ip,dst_port,url,reason) VALUES(@ResourceID,@ResourceURI,@WAFDevPhyIP,#site_id,#protect_id,#stat_time,#alertlevel,#event_type.dst_ip,#dst_port,#url,#reason)"/>
+				<dbopt sql="INSERT INTO t_waf_log_deface(resource_id,resource_uri,resource_ip,site_id,protect_id,stat_time,alertlevel,event_type,dst_ip,dst_port,url,reason) VALUES(@ResourceID,@ResourceURI,@WAFDevPhyIP,#site_id,#protect_id,#stat_time,#alertlevel,#event_type,#dst_ip,#dst_port,#url,#reason)"/>
+				<precondition>
+					<pre id="1" method="StringReplace" argcount="2" arg0="reason:Including insecure contents" arg1="reason:Including^insecure^contents"/>
+					<pre id="2" method="StringReplace" argcount="2" arg0="reason:Illegally changing the original contents" arg1="reason:Illegally^changing^the^original^contents"/>
+					<pre id="3" method="StringReplace" argcount="2" arg0="reason:Illegally changing the original contents" arg1="reason:Illegally^changing^the^original^contents"/>
+				</precondition>
 				<match reg="[a-zA-Z_]+:{1}\d{4}-\d{2}-\d{2} {1}\d{2}:\d{2}:\d{2}|[a-zA-Z_]+:{1}\S+">
 					<trans id="1" name="site_id" express="Integer.parseInt" />
 					<trans id="2" name="protect_id" express="Integer.parseInt" />
@@ -61,6 +73,12 @@
 			</WafLog>
 		    <WafLog item="arp" tag="waf_log_arp" >
 				<dbopt sql="INSERT INTO t_waf_log_arp(resource_id,resource_uri,resource_ip,stat_time,alertlevel,event_type,attack_type,src_ip,src_mac,dst_ip,dst_mac,status,action,def_ip,def_mac,conflit_mac,count_num) VALUES(@ResourceID,@ResourceURI,@WAFDevPhyIP,#stat_time,#alertlevel,#event_type,#attack_type,#src_ip,#src_mac,#dst_ip,#dst_mac,#status,#action,#def_ip,#def_mac,#conflit_mac,#count_num)"/>
+				<precondition>
+					<pre id="1" method="StringReplace" argcount="2" arg0="attack_type:MAC conflict" arg1="attack_type:MAC^conflict"/>
+					<pre id="2" method="StringReplace" argcount="2" arg0="attack_type:Invalid ARP" arg1="attack_type:Invalid^ARP"/>
+					<pre id="3" method="StringReplace" argcount="2" arg0="attack_type:Gateway Fakement" arg1="attack_type:Gateway^Fakement"/>
+					<pre id="4" method="StringReplace" argcount="2" arg0="status:Attack Succeeded" arg1="status:Attack^Succeeded"/>
+				</precondition>
 				<match reg="[a-zA-Z_]+:{1}\d{4}-\d{2}-\d{2} {1}\d{2}:\d{2}:\d{2}|[a-zA-Z_]+:{1}\S+">
 					<trans id="1" name="stat_time" express="StringtoDate" />
 					<trans id="2" name="count_num" express="Integer.parseInt" />
@@ -89,7 +107,7 @@
             </WafLog>
 		</Syslog>
 	</SyslogGroup>
-	<SyslogServer serverIP="127.0.0.1" port="514" threadPoolSize="10" packetDisposeMode="Store">
+	<SyslogServer serverIP="127.0.0.1" port="514" threadPoolSize="10" packetDisposeMode="Store/Relay">
 		<Store>
 			<JdbDriver>com.mysql.jdbc.Driver</JdbDriver>
 			<JdbcURL>jdbc:mysql://219.141.189.186:63306/southapi</JdbcURL>

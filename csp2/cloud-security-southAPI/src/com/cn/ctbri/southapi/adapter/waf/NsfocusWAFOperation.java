@@ -17,7 +17,7 @@ import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
+
 
 
 public class NsfocusWAFOperation extends CommonDeviceOperation {
