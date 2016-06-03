@@ -30,8 +30,22 @@ function signIn(){
 	    		 	 }else if(data.collect == 1){
     		    		alert("今日金额已经领取，不能重复领取！");  
 			    	 }else if(data.collect==2) {
-			    	 	alert("领取成功！");  
-				    	 window.location.href = "userDataUI.html";
+			    	 	//签到成功
+			    	 	//移除click事件
+			    	 	$('.qdbtn').unbind("click",signIn);
+			    	 	
+			    	 	//签到可获得10安全币-->“今日已签到”字样
+			    	 	$('.qdbtn').children('b').remove();
+						var html='';
+						html+='<b style="padding-left:10px;"><i style="width:auto;padding-right: 8px;"><img src="/cloud-security-platform/source/images/balance/minig.png" alt=""></i>今日已签到</b>';
+						$('.qdbtn').append(html);
+						$('.succeed').fadeIn(500);
+						$('.succeed').fadeOut(2000);
+						
+						//"安全币余额"的 显示改变	
+						$('.b_aic').children('em').remove();
+						html = '<em>'+data.balance+'</em>';
+						$('.b_aic').append(html);
 			    	 }
     		    	 }, 
     		  error: function(data){ 
@@ -39,6 +53,14 @@ function signIn(){
     		    		 window.location.href = "loginUI.html"; } 
     		    	 else { window.location.href = "loginUI.html"; } } 
     	});
+}
+//今日未签到时，签到按钮添加click事件
+$(document).ready(function(){
+  var signFlg = ${requestScope.signIn};
+  if (!signFlg) {
+  	$(".qdbtn").click(signIn);
+  }
+});
 
 </script>
 </head>
@@ -92,7 +114,7 @@ function signIn(){
                 <dl>
                 	<dt>交易管理</dt>
                     <dd><a href="${ctx}/orderTrackInit.html">我的订单</a></dd>
-                    <dd><a href="#" class="active">我的余额</a></dd>
+                    <dd><a href="${ctx}/balanceUI.html" class="active">我的余额</a></dd>
                     <dt>个人信息管理</dt>
                     <dd><a href="${ctx}/userDataUI.html">个人资料</a></dd>
                     <dd style="border:none;"><a href="${ctx }/userAssetsUI.html">我的资产</a></dd>
@@ -102,14 +124,14 @@ function signIn(){
             		<div class="banlance_head clearfix">
                     	<div class="c-lan fl">
                         	<span class="b_aic">安全币余额：<em>${balance }</em></span>
-                            <span class="b_bic qdbtn">
+                            <span class="b_bic qdbtn" >
                            		<i><img src="${ctx}/source/images/balance/sign_in.png" alt=""></i>
-                            	<c:if test="${signIn}">
-                            		<b style="padding-left:10px;"><i style="width:auto;padding-right: 8px;"><img src="${ctx}/source/images/balance/minig.png" alt=""></i>今日已签到</b>
-                            	</c:if>
-                            	<c:if  test="${!signIn}">
-                            		<b>签到可获得10安全币</b>
-                           </c:if>
+	                        	<c:if test="${!signIn}">
+                           			<b>签到可获得10安全币</b>
+	                        	</c:if>
+	                        	<c:if test="${signIn}">
+	                        		<b style="padding-left:10px;"><i style="width:auto;padding-right: 8px;"><img src="${ctx}/source/images/balance/minig.png" alt=""></i>今日已签到</b>
+	                        	</c:if>
                             </span>
                         </div>
                         
@@ -135,9 +157,9 @@ function signIn(){
                     <table class="tabox">
                     	<thead>
                         	<tr height="50">
-                            	<th width="185"><span style=" padding-left:42px;">序号</span></th>
-                                <th width="264" align="center">时间</th>
-                                <th width="240">订单编号</th>
+                            	<th width="134"><span style=" padding-left:42px;">序号</span></th>
+                                <th width="200">时间</th>
+                                <th width="200">订单编号</th>
                                 <th width="280">名称</th>
                                 <th width="160">价格（元）</th>
                             </tr>
@@ -148,13 +170,13 @@ function signIn(){
 							<table class="tabox" style="background-color: #e4f3ff">
 								<tbody>
 									<tr height="80">
-										<td width="134" align="center">${status.count }</td>
+										<td width="134">${status.count }</td>
 										<td width="200">
 											<fmt:formatDate value="${payItem.pay_date }" pattern="yyyy-MM-dd HH:mm:ss"/>
 										</td>
 										<td width="200">${payItem.id }</td>
-										<td width="260" style="font-size: 16px;">${payItem.serverName }</td>
-										<td width="130">
+										<td width="280" style="font-size: 16px;">${payItem.serverName }</td>
+										<td width="160">
 											<fmt:formatNumber  value="${payItem.price }" pattern="0.00"/>
 										</td>
 									</tr>
@@ -174,13 +196,13 @@ function signIn(){
                 	<%--页码--%>
                     <ul class="bpage fl">
                     	<c:if test="${pb.totalPage != 1 && pg.pageCode == pb.totalPage}">
-                       		<li><a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }">${pb.pageCode-1 }</a></li>
+                       		<li style="background-color:#2499fb;"><a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }" style="color:#f3f3f3;">${pb.pageCode-1 }</a></li>
                     	</c:if>
                     	
                     	<li><a href="#">${pb.pageCode }</a></li>
                     	
                     	<c:if test="${pb.pageCode < pb.totalPage}">
-                        	<li><a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }">${pb.pageCode+1 }</a></li>
+                        	<li style="background-color:#2499fb;"><a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }" style="color:#f3f3f3;">${pb.pageCode+1 }</a></li>
                     	</c:if>
                         
                     </ul>
