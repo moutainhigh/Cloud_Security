@@ -107,13 +107,13 @@
             </WafLog>
 		</Syslog>
 	</SyslogGroup>
-	<SyslogServer serverIP="127.0.0.1" port="514" threadPoolSize="10" packetDisposeMode="Store/Relay">
+	<SyslogServer serverIP="127.0.0.1" port="514" threadPoolSize="10" disposeBlockSize="10" packetDisposeMode="Store/Relay">
 		<Store>
 			<JdbDriver>com.mysql.jdbc.Driver</JdbDriver>
 			<JdbcURL>jdbc:mysql://219.141.189.186:63306/southapi</JdbcURL>
 			<JdbcUser>root</JdbcUser>
 			<JdbcPwd>mssp@ctbri&amp;</JdbcPwd>
 		</Store>
-		<Relay relayServerIP="127.0.0.1" relayPort="514" relayMode="Raw" />
+		<Relay relayServerIP="127.0.0.1" relayPort="514" relayProtocol="udp" relayMode="Raw" />
 	</SyslogServer>
 </WAF_CONFIG>

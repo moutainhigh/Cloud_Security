@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 
 import net.sf.json.JSONObject;
 
+import org.apache.cxf.ws.rm.RetransmissionCallback;
 import org.codehaus.jettison.json.JSONException;
 import org.w3c.dom.ls.LSInput;
 
@@ -259,6 +260,13 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.getWafLogArpById(logId);
 	}
 	@POST
+	@Path("/getWaflogInTime")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafLogArpInTime(String dataJson) {
+		JSONObject jsonObject = new JSONObject();
+		return deviceAdpaterManager.getWafLogArpInTime(jsonObject);
+	}
+	@POST
 	@Path("/getWaflogDdosByIp")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafLogDdosByIp(String dataJson) {
@@ -275,6 +283,14 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.getWafLogDDOSById(logId);
 	}
 	@POST
+	@Path("/getWaflogDdosInTime")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWaflogDdosInTime(String dataJson) {
+		JSONObject jsonObject = new JSONObject();
+		return deviceAdpaterManager.getWafLogDDOSInTime(jsonObject);
+	}
+	
+	@POST
 	@Path("/getWaflogDefaceByIp")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafLogDefaceByIp(String dataJson) {
@@ -290,6 +306,14 @@ public class DeviceAdapterManagerService {
 		String logId = jsonObject.getString("logId");
 		return deviceAdpaterManager.getWafLogDefaceById(logId);
 	}
+	@POST
+	@Path("/getWaflogDefaceInTime")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafLogDefaceInTime(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getWafLogDefaceInTime(jsonObject);
+	}
+	
 	@POST
 	@Path("/getSites")
 	@Produces(MediaType.APPLICATION_JSON)

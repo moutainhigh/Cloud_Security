@@ -762,6 +762,10 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getWafLogArpById(logId);
 	}
 	
+	public String getWafLogArpInTime(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getWafLogArpInTime(jsonObject);
+	}
+	
 	public String getWafLogDDOS(List<String> dstIpList) {
 		return nsfocusWAFAdapter.getWafLogDDOS(dstIpList);
 	}
@@ -776,6 +780,10 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getWafLogDDOSById(logId);
 	}
 	
+	public String getWafLogDDOSInTime(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getWaflogDDOSInTime(jsonObject);
+	}
+	
 	public String getWafLogDeface(List<String> dstIpList) {
 		return nsfocusWAFAdapter.getWafLogDeface(dstIpList);
 	}
@@ -788,6 +796,10 @@ public class DeviceAdpaterManager {
 			return jsonObject.toString();
 		}
 		return nsfocusWAFAdapter.getWafLogDefaceById(logId);
+	}
+	
+	public String getWafLogDefaceInTime(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getWafLogDefaceInTime(jsonObject);
 	}
 	
 }

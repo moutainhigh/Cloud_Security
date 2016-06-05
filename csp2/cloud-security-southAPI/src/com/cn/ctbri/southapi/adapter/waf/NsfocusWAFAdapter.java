@@ -248,13 +248,10 @@ public class NsfocusWAFAdapter {
 		
 	public String getWafLogWebsecInTime(JSONObject jsonObject){
 		try {
+			//FOR IP LIST
 			int interval = jsonObject.getInt("interval");
 			List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
 			System.out.println("ip="+dstIpList.toString());
-			
-			
-			SqlSession sqlSession = getSqlSession();
-			TWafLogWebsecExample example = new TWafLogWebsecExample();
 			
 			//FOR TIME INTERVAL
 			Calendar calendar = Calendar.getInstance();
@@ -264,6 +261,9 @@ public class NsfocusWAFAdapter {
 			Date dateBefore = calendar.getTime();
 			
 			
+			SqlSession sqlSession = getSqlSession();
+			
+			TWafLogWebsecExample example = new TWafLogWebsecExample();
 			example.or().andStatTimeBetween(dateBefore,dateNow).andDstIpIn(dstIpList);
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			List<TWafLogWebsec> allList = mapper.selectByExample(example);
@@ -328,7 +328,44 @@ public class NsfocusWAFAdapter {
 			return "{\"wafLogArpList\":\"error\"}";
 		}
 	}
+	
+	public String getWafLogArpInTime(JSONObject jsonObject){
+		SqlSession sqlSession = null;
+		
+		try {
+			sqlSession = getSqlSession();
+			int interval = jsonObject.getInt("interval");
+			List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
+			System.out.println("ip="+dstIpList.toString());
 			
+			TWafLogArpExample example = new TWafLogArpExample();
+			
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			Date dateNow = calendar.getTime();
+			calendar.add(Calendar.HOUR, -interval);
+			Date dateBefore = calendar.getTime();
+			
+			example.or().andStatTimeBetween(dateBefore, dateNow).andDstIpIn(dstIpList);
+			
+			TWafLogArpMapper mapper =sqlSession.getMapper(TWafLogArpMapper.class);
+			List<TWafLogArp> allList = mapper.selectByExample(example);
+			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
+			XStream xStream = new XStream(driver);
+			xStream.autodetectAnnotations(true);
+			xStream.alias("wafLogArp", TWafLogArp.class);
+			xStream.alias("wafLogArpList", List.class);
+			String xmlString = xStream.toXML(allList);
+			return xmlString;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return "{\"wafLogArpList\":\"error\"}";
+		}finally {
+			sqlSession.close();
+		}
+	}
+	
 	public String getWafLogDeface(List<String> dstIpList) {
 		try {
 			SqlSession sqlSession = getSqlSession();
@@ -374,6 +411,44 @@ public class NsfocusWAFAdapter {
 		}
 	}
 	
+	public String getWafLogDefaceInTime(JSONObject jsonObject) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getSqlSession();
+			
+			int interval = jsonObject.getInt("interval");
+			List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
+			System.out.println("ip="+dstIpList.toString());
+			
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			Date dateNow = calendar.getTime();
+			calendar.add(Calendar.HOUR, -interval);
+			Date dateBefore = calendar.getTime();
+			
+			TWafLogDefaceExample example = new TWafLogDefaceExample();
+			example.or().andDstIpIn(dstIpList).andStatTimeBetween(dateBefore, dateNow);
+			TWafLogDefaceMapper mapper = sqlSession.getMapper(TWafLogDefaceMapper.class);
+			List<TWafLogDeface> allList = mapper.selectByExample(example);
+			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
+			XStream xStream = new XStream(driver);
+			xStream.autodetectAnnotations(true);
+			xStream.alias("wafLogDeface", TWafLogDeface.class);
+			xStream.alias("wafLogDefaceList", List.class);
+			String xmlString = xStream.toXML(allList);
+			sqlSession.close();
+			return xmlString;
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "{\"wafLogDefaceList\":\"error\"}";
+		} finally {
+			sqlSession.close();
+		}
+	}
+	
 	public String getWafLogDDOS(List<String> dstIpList) {
 		try {
 			SqlSession sqlSession = getSqlSession();
@@ -397,10 +472,47 @@ public class NsfocusWAFAdapter {
 	}
 	
 	public String getWafLogDDOSById(String logId) {
+		SqlSession sqlSession = null;
 		try {
-			SqlSession sqlSession = getSqlSession();
+			sqlSession = getSqlSession();
 			TWafLogDdosExample example = new TWafLogDdosExample();
 			example.or().andLogIdEqualTo(Long.parseLong(logId));
+			TWafLogDdosMapper mapper = sqlSession.getMapper(TWafLogDdosMapper.class);
+			List<TWafLogDdos> allList = mapper.selectByExample(example);
+			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
+			XStream xStream = new XStream(driver);
+			xStream.autodetectAnnotations(true);
+			xStream.alias("wafLogDDOS", TWafLogDdos.class);
+			xStream.alias("wafLogDDOSList", List.class);
+			String xmlString = xStream.toXML(allList);
+
+			return xmlString;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "{\"wafLogDDOSList\":\"error\"}";
+		} finally {
+			sqlSession.close();
+		}
+	}
+	
+	public String getWaflogDDOSInTime(JSONObject jsonObject) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getSqlSession();
+			//IP List
+			int interval = jsonObject.getInt("interval");
+			List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
+			System.out.println("ip="+dstIpList.toString());
+			//System Time
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			Date dateNow = calendar.getTime();
+			calendar.add(Calendar.HOUR, -interval);
+			Date dateBefore = calendar.getTime();
+			
+			TWafLogDdosExample example = new TWafLogDdosExample();
+			example.or().andDstIpIn(dstIpList).andStatTimeBetween(dateBefore, dateNow);
 			TWafLogDdosMapper mapper = sqlSession.getMapper(TWafLogDdosMapper.class);
 			List<TWafLogDdos> allList = mapper.selectByExample(example);
 			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
@@ -415,10 +527,10 @@ public class NsfocusWAFAdapter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return "{\"wafLogDDOSList\":\"error\"}";
+		} finally {
+			sqlSession.close();
 		}
 	}
-	
-
 
 	
 	private SqlSession getSqlSession() throws IOException{
