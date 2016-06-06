@@ -188,6 +188,7 @@ $(function(){
         var price = $('#priceHidden').val();
         var ipArray = $('#ipArrayHidden').val();
         var times = $('#timesHidden').val();
+        var serviceName = $('#serviceName').val();
 		var result = window.confirm("确定要提交订单吗？");
     	if(result){
     		$.ajax({ type: "POST",
@@ -201,7 +202,8 @@ $(function(){
 		    			   	"domainId":domainId,
 			    			"price":price,
 			    			"ipArray":ipArray,
-			    			"timeswaf":times},  
+			    			"timeswaf":times,
+			    			"serviceName":serviceName},  
 	    		     dataType: "json", 
 	    		     success: function(data) {
 			    				if(data.assetsStatus == true){
