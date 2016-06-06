@@ -14,6 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="price" column="price"/>
 		<result property="pay_date" column="pay_date"/>
 		<result property="serverName" column="serverNames"/>
+		<result property="balanceFlag" column="balanceFlag"/>
 	</resultMap>
     
     <!-- 插入购物车订单 -->
@@ -47,4 +48,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  </if>
       
     </select>
+    <update id="updateBalanceFlag" parameterType="com.cn.ctbri.entity.OrderList">
+    	update cs_order_list
+    	set
+    		balanceFlag = #{balanceFlag}
+    	where id= #{id}
+    </update>
 </mapper>
