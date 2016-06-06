@@ -170,7 +170,7 @@ $(document).ready(function(){
 							<table class="tabox" style="background-color: #e4f3ff">
 								<tbody>
 									<tr height="80">
-										<td width="134">${status.count }</td>
+										<td width="134">${pb.pageSize * (pb.pageCode-1) + status.count }</td>
 										<td width="200">
 											<fmt:formatDate value="${payItem.pay_date }" pattern="yyyy-MM-dd HH:mm:ss"/>
 										</td>
@@ -191,24 +191,26 @@ $(document).ready(function(){
                 		<a href="#" class="lt fl"></a>
                 	</c:if>
                 	<c:if test="${pb.pageCode != 1}">
-                		<a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }" class="lt cl_active fl"></a>
+                		<!-- <a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }" class="lt cl_active fl"></a> -->
+                		<a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }" class="lt fl"></a>
                 	</c:if>
                 	<%--页码--%>
                     <ul class="bpage fl">
                     	<c:if test="${pb.totalPage != 1 && pg.pageCode == pb.totalPage}">
-                       		<li style="background-color:#2499fb;"><a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }" style="color:#f3f3f3;">${pb.pageCode-1 }</a></li>
+                       		<li><a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }">${pb.pageCode-1 }</a></li>
                     	</c:if>
                     	
-                    	<li><a href="#">${pb.pageCode }</a></li>
+                    	<li style="background-color:#2499fb;"><a href="#" style="color:#f3f3f3;">${pb.pageCode }</a></li>
                     	
                     	<c:if test="${pb.pageCode < pb.totalPage}">
-                        	<li style="background-color:#2499fb;"><a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }" style="color:#f3f3f3;">${pb.pageCode+1 }</a></li>
+                        	<li><a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }" >${pb.pageCode+1 }</a></li>
                     	</c:if>
                         
                     </ul>
                     
                     <c:if test="${pb.pageCode < pb.totalPage}">
-                    	<a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }" class="gt cr_active fl"></a>
+                    	<a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }" class="gt fl"></a>
+                    	<!-- <a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }" class="gt cr_active fl"></a> -->
                 	</c:if>
                 	<c:if test="${pb.pageCode == pb.totalPage}">
                 		<a href="#" class="gt fl"></a>
