@@ -414,6 +414,7 @@ public class WafController {
 			String ipArray = request.getParameter("ipArray");
 			String times = request.getParameter("timeswaf");
 			String price = request.getParameter("price");
+			String serviceName = request.getParameter("serviceName");
      				
 			//新增订单
 			Order order = new Order();
@@ -476,10 +477,13 @@ public class WafController {
 		    ol.setId(id);
 		    ol.setCreate_date(new Date());
 		    ol.setOrderId(orderId);
+		    ol.setUserId(globle_user.getId());
 		    ol.setPrice(Double.parseDouble(price));
+		    ol.setServerName(serviceName);
 		    orderListService.insert(ol);
 		    
 			m.put("orderStatus", true);
+			m.put("orderListId", id);
 			//object转化为Json格式
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
 			try {
