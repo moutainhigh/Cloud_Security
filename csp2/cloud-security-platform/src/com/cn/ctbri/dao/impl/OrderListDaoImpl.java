@@ -60,4 +60,8 @@ public class OrderListDaoImpl extends DaoCommon implements OrderListDao{
 		return list;
 	}
 	
+	public void updateBalanceFlag(OrderList ol){
+		this.getSqlSession().update(ns + "updateBalanceFlag", ol);
+	}
+	
 }
