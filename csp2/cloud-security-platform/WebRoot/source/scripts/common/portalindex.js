@@ -142,6 +142,7 @@ $('.dropdown-menu li').hover(function(){
 		if(orderType == 1){
 			$('.type').hide();	
 			$('.end').show();
+			$('.long').addClass('click').siblings().removeClass('click');	
 		}
 		
 		
