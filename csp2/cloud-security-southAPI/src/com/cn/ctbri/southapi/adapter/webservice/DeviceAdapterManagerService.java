@@ -260,7 +260,7 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.getWafLogArpById(logId);
 	}
 	@POST
-	@Path("/getWaflogInTime")
+	@Path("/getWaflogArpInTime")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafLogArpInTime(String dataJson) {
 		JSONObject jsonObject = new JSONObject();
