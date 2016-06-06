@@ -28,11 +28,13 @@
      });
  });
  
- function collectBalance(){
+ function collectBalance(orderListId){
  	$.ajax({
  		type:"POST",
  		async: false,
  		url:"collectBalance.html",
+ 		data:{"orderListId":orderListId},
+ 		dataType: "json", 
  		success:function(data) {
  			if (data.collect == 0){
  				$(".mark,.repay_tanc").show();
@@ -153,7 +155,14 @@
 	                      	详情。</div>
                       	</c:if>
                       <div class="repay_mylist">请在<a href="${ctx}/orderTrackInit.html">我的订单</a>中查看详情</div>
-                      <div class="repay_anquan"><div><a href="###" onclick="collectBalance()">点击领取安全币</a> 下单获赠5安全币</div></div>
+                      <div class="repay_anquan">
+	                      <c:if test="${orderList.balanceFlag==0}">
+	                      		<div><a href="###" onclick="collectBalance(${orderList.id })">点击领取安全币</a> 下单获赠5安全币</div>
+	                      </c:if>
+	                      <c:if test="${orderList.balanceFlag==1}">
+		                      <div>已成功领取5安全币</div>
+	                      </c:if>
+                      </div>
                  </div>
                  </c:if>
                  <!-- 失败支付 -->
