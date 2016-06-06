@@ -241,7 +241,7 @@ public class WafAPIWorker {
 	 * @param dstIp
 	 * @time 2016-5-25
 	 */
-	public static String getWaflogWebsecByIp(List<String> dstIpList){
+	public static String getWaflogWebsecByIp(String[] dstIpList){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("dstIp", dstIpList);
