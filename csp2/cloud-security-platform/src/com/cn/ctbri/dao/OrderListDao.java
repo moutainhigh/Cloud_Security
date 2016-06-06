@@ -37,4 +37,9 @@ public interface OrderListDao {
      */
 	List<OrderList> queryPayRecordByPage(int userId, int offset, int pageSize);
 	
+	/**
+     * 功能描述： 根据订单编号更改领取安全币状态
+     */
+	void updateBalanceFlag(OrderList ol);
+	
 }
