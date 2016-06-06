@@ -224,7 +224,7 @@ function clearTable(){
 							        	<div class="gj_fl">
 							        	<c:if test="${alist==0}">
 							        	   <img src="${ctx}/source/images/icon_cg-green.jpg" width="85" height="85" />
-							        	   <p>篡改告警正常</p>
+							        	   <p>未发现异常</p>
 							        	</c:if>
 							        	<c:if test="${alist!=0}">
 							                <img src="${ctx}/source/images/icon_cg.jpg" width="85" height="85" />

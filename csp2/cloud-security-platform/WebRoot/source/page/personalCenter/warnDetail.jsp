@@ -202,10 +202,10 @@ function seedetail1(e) {
 								            <c:if test="${asset.aNum==0}">
 								               <img src="${ctx}/source/images/icon_cg-green.jpg" width="85" height="85" />
 								               <c:if test="${order.serviceId==1 }">
-								                <p>漏洞告警正常</p>
+								                <p>未发现异常</p>
 								               </c:if>
 								               <c:if test="${order.serviceId==2 }">
-								                <p>木马检测正常</p>
+								                <p>未发现异常</p>
 								               </c:if>
 								               
 								            </c:if>

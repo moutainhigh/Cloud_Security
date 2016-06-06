@@ -192,7 +192,7 @@ $(function() {
 							        	<div class="gj_fl">
 							              <c:if test="${wlist==0}">
 							               <img src="${ctx}/source/images/icon_cg-green.jpg" width="85" height="85" />
-								               <p>可用性告警正常</p>
+								               <p>未发现异常</p>
 								            </c:if>
 								            <c:if test="${wlist!=0}">
 								                <img src="${ctx}/source/images/icon_cg.jpg" width="85" height="85" />
