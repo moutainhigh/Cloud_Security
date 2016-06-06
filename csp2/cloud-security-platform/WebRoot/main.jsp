@@ -107,7 +107,15 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                             <li class="fl">
                                 <a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1">
                                     <i><img src="${ctx}/source/images/portal/HOT.png" alt=""></i>
-                                    <p><img src="${ctx}/source/images/portal/vulnScan.png" alt=""></p>
+                                    <c:if test="${list.id ==1}">
+	                                    <p><img src="${ctx}/source/images/portal/vulnScan.png" alt=""></p>
+                                    </c:if>
+                                    <c:if test="${list.id ==2}">
+                                    	<p><img src="${ctx}/source/images/portal/trojanDetect.png" alt=""></p>
+                                    </c:if>
+                                    <c:if test="${list.id ==3}">
+                                    	<p><img src="${ctx}/source/images/portal/webPageTamper.png" alt=""></p>
+                                    </c:if>
                                     <h4>${list.name }</h4>
                                     <div class="purchase">
                                     	<c:if test="${empty list.price}">
