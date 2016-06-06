@@ -42,6 +42,8 @@ function confimPass(){
 					           			$("#checkNumber1_flag").show();
 					               		$("#checkNumber1_prompt").html("<b></b>验证码填写错误");
 					               		$("#checkNumber_prompt").fadeIn();
+					               		//刷新验证码
+					               		checkNumberImage();
 					           		}else{
 					           			$("#checkNumber1_flag").attr("class","right");
 					           			$("#checkNumber1_flag").show();

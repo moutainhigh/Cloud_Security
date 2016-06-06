@@ -120,6 +120,8 @@ function loginSubmit(){
 						case 3:
 							$("#errMsg").html("验证码输入有误!");
 							$("#errMsgDiv").show();
+							//刷新验证码
+							checkNumberImage();
 							break;
 						case 4:
 //							$("#errMsg").html("对不起，企业用户不允许登录!");

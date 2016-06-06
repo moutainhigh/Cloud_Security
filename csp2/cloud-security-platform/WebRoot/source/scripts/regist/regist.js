@@ -464,6 +464,7 @@ function submitForm(){
 										$("#checkNumber1_flag").show();
 										$("#checkNumber1_prompt").html("<b></b>验证码输入有误");
 										$("#checkNumber1_prompt").fadeIn();
+										checkNumberImage();
 								   }
 							   }
 						});
