@@ -85,7 +85,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- add by tangxr 2016-5-5 -->
     <!-- 根据orderid查询Asset -->
     <select id="findAssetsByOrderId" parameterType="String" resultType="hashmap" >
-        select a.name,a.addr,oa.id as orderAssetId from cs_order_asset oa,cs_asset a where oa.orderId=#{orderId} and oa.assetid = a.id
+        select a.name,a.addr,oa.id as orderAssetId, oa.ipArray from cs_order_asset oa,cs_asset a where oa.orderId=#{orderId} and oa.assetid = a.id
     </select>
 	
 </mapper>
