@@ -1465,6 +1465,7 @@ public class shoppingController {
 			m.addAttribute("paySuccess", 1);
 		} else {
 			m.addAttribute("paySuccess", 0);
+			m.addAttribute("orderList", orderList);
 			
 			Double price = orderList.getPrice();//支付金额
 	    	DecimalFormat df = new DecimalFormat("0.00");
