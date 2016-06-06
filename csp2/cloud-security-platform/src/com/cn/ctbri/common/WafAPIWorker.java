@@ -2,7 +2,10 @@ package com.cn.ctbri.common;
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.net.ssl.HostnameVerifier;
@@ -238,11 +241,132 @@ public class WafAPIWorker {
 	 * @param dstIp
 	 * @time 2016-5-25
 	 */
-	public static String getWaflogWebsecByIp(String ip){
+	public static String getWaflogWebsecByIp(List<String> dstIpList){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
-		json.put("dstIp", ip);
+		json.put("dstIp", dstIpList);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogWebsecByIp";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
+	
+	/**
+	 * 功能描述：根据logId查询websec日志信息
+	 * @param logId
+	 * @return
+	 */
+	public static String getWaflogWebsecById(String logId){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("logId", logId);
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogWebsecById";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
+	
+	/**
+	 * 功能描述：根据ip查询arp日志信息
+	 * @param logId
+	 * @return
+	 */
+	public static String getWaflogArpByIp(List<String> dstIpList){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("dstIp", dstIpList);
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogArpByIp";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
+	
+	/**
+	 * 功能描述：根据ip查询ddos日志信息
+	 * @param logId
+	 * @return
+	 */
+	public static String getWaflogDdosByIp(List<String> dstIpList){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("dstIp", dstIpList);
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogDdosByIp";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
+	
+	/**
+	 * 功能描述：根据ip查询deface（防篡改）日志信息
+	 * @param logId
+	 * @return
+	 */
+	public static String getWaflogDefaceByIp(List<String> dstIpList){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("dstIp", dstIpList);
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogDefaceByIp";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
+	
+	/**
+	 * 功能描述：根据ip和时间查询websec日志信息
+	 * @param logId
+	 * @return
+	 */
+	public static String getWaflogWebsecInTime(List<String> dstIpList,String interval){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("dstIp", dstIpList);
+		json.put("interval", interval);
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogWebsecInTime";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
@@ -358,11 +482,11 @@ public class WafAPIWorker {
 //        String sites = getSites("10001", "30001");
     	WafController controller = new WafController();
 /*    	String eth = postIpToEth("10001", "30001", "187.6.0.2", "255.255.255.0");
-    	String postIpToEthRe = controller.getPostIpToEth(eth);
+    	String postIpToEthRe = controller.analysisGetPostIpToEth(eth);
     	System.out.println(postIpToEthRe);
     	
     	String createSite = createSite("10001", "30001", "new", "187.6.0.2", "80", "", "1");
-    	String createSiteRe = controller.getcreateSite(createSite);
+    	String createSiteRe = controller.analysisGetcreateSite(createSite);
     	System.out.println(createSiteRe);*/
     	
 //        System.out.println(eth);
@@ -372,12 +496,116 @@ public class WafAPIWorker {
 		json.put("port", "62222");
     	JSONArray ser = JSONArray.fromObject(json);
     	String virtualSite = createVirtualSite("10001", "30001", "1464833085", "testfire", "http://www.testfire.net/", "*", "", ser);
-    	String virtualSiteRe = controller.getCreateVirtualSite(virtualSite);
+    	String virtualSiteRe = controller.analysisGetCreateVirtualSite(virtualSite);
     	System.out.println(virtualSiteRe);*/
     	
-    	String wafLog = getWaflogWebsecByIp("219.141.189.183");
-    	List list = controller.getWaflogWebsecByIp(wafLog);
+    	List<String> dstIpList = new ArrayList();
+    	dstIpList.add("219.141.189.184");
+    	dstIpList.add("219.141.189.185");
     	
+/*    	String wafLogByIp = getWaflogWebsecByIp(dstIpList);
+    	List list = controller.analysisGetWaflogWebsecByIp(wafLogByIp);
+    	if(list!=null&&list.size()>0){
+    		for (int i = 0; i < list.size(); i++) {
+				Map map = (Map)list.get(i);
+				int logId = (Integer)map.get("logId");
+				int resourceId = (Integer)map.get("resourceId");
+				String resourceUri = map.get("resourceUri").toString();
+				String resourceIp = map.get("resourceIp").toString();
+				long siteId = (Long)map.get("siteId");
+				int protectId = (Integer)map.get("protectId");
+				String dstIp = map.get("dstIp").toString();
+				String dstPort = map.get("dstPort").toString();
+				String srcIp = map.get("srcIp").toString();
+				String srcPort = map.get("srcPort").toString();
+				String method = map.get("method").toString();
+				String domain = map.get("domain").toString();
+				String uri = map.get("uri").toString();
+				String alertlevel = map.get("alertlevel").toString();
+				String eventType = map.get("eventType").toString();
+				String statTime = map.get("statTime").toString();
+				String action = map.get("action").toString();
+				String block = map.get("block").toString();
+				String blockInfo = map.get("blockInfo").toString();
+				String alertinfo = map.get("alertinfo").toString();
+				String proxyInfo = map.get("proxyInfo").toString();
+				String characters = map.get("characters").toString();
+		        int countNum = (Integer)map.get("countNum");
+		        String protocolType = map.get("protocolType").toString();
+		        String wci = map.get("wci").toString();
+		        String wsi = map.get("wsi").toString();
+		      
+			}
+    	}*/
+    	
+/*    	String wafLogById = getWaflogWebsecById("2104");
+    	Map map = controller.analysisGetWaflogWebsecById(wafLogById);
+    	
+		int logId = (Integer)map.get("logId");
+		int resourceId = (Integer)map.get("resourceId");
+		String resourceUri = map.get("resourceUri").toString();
+		String resourceIp = map.get("resourceIp").toString();
+		long siteId = (Long)map.get("siteId");
+		int protectId = (Integer)map.get("protectId");
+		String dstIp = map.get("dstIp").toString();
+		String dstPort = map.get("dstPort").toString();
+		String srcIp = map.get("srcIp").toString();
+		String srcPort = map.get("srcPort").toString();
+		String method = map.get("method").toString();
+		String domain = map.get("domain").toString();
+		String uri = map.get("uri").toString();
+		String alertlevel = map.get("alertlevel").toString();
+		String eventType = map.get("eventType").toString();
+		String statTime = map.get("statTime").toString();
+		String action = map.get("action").toString();
+		String block = map.get("block").toString();
+		String blockInfo = map.get("blockInfo").toString();
+		String alertinfo = map.get("alertinfo").toString();
+		String proxyInfo = map.get("proxyInfo").toString();
+		String characters = map.get("characters").toString();
+        int countNum = (Integer)map.get("countNum");
+        String protocolType = map.get("protocolType").toString();
+        String wci = map.get("wci").toString();
+        String wsi = map.get("wsi").toString();*/
+
+
+    	
+    	
+    	String wafLogInTime = getWaflogWebsecInTime(dstIpList,"1");
+    	List list3 = controller.analysisGetWaflogWebsecInTime(wafLogInTime);
+    	if(list3!=null&&list3.size()>0){
+    		for (int i = 0; i < list3.size(); i++) {
+				Map map = (Map)list3.get(i);
+				int logId = (Integer)map.get("logId");
+				int resourceId = (Integer)map.get("resourceId");
+				String resourceUri = map.get("resourceUri").toString();
+				String resourceIp = map.get("resourceIp").toString();
+				long siteId = (Long)map.get("siteId");
+				int protectId = (Integer)map.get("protectId");
+				String dstIp = map.get("dstIp").toString();
+				String dstPort = map.get("dstPort").toString();
+				String srcIp = map.get("srcIp").toString();
+				String srcPort = map.get("srcPort").toString();
+				String method = map.get("method").toString();
+				String domain = map.get("domain").toString();
+				String uri = map.get("uri").toString();
+				String alertlevel = map.get("alertlevel").toString();
+				String eventType = map.get("eventType").toString();
+				String statTime = map.get("statTime").toString();
+				String action = map.get("action").toString();
+				String block = map.get("block").toString();
+				String blockInfo = map.get("blockInfo").toString();
+				String alertinfo = map.get("alertinfo").toString();
+				String proxyInfo = map.get("proxyInfo").toString();
+				String characters = map.get("characters").toString();
+		        int countNum = (Integer)map.get("countNum");
+		        String protocolType = map.get("protocolType").toString();
+		        String wci = map.get("wci").toString();
+		        String wsi = map.get("wsi").toString();
+		      
+			}
+    	}
+    		
         String status = "";
     	try {
     		/*JSONObject obj = JSONObject.fromObject(ethStr);

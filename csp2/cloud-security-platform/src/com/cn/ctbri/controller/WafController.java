@@ -581,7 +581,7 @@ public class WafController {
      * @param siteStr
      * @return id
      */
-    public String getcreateSite(String siteStr) {
+    public String analysisGetcreateSite(String siteStr) {
     	String id = "";
     	try {
     		JSONObject siteObject = JSONObject.fromObject(siteStr);
@@ -602,7 +602,7 @@ public class WafController {
      * @param ethStr
      * @return multi_result
      */
-    public String getPostIpToEth(String ethStr){
+    public String analysisGetPostIpToEth(String ethStr){
     	String multiResult = "";
     	try {
     		JSONObject obj = JSONObject.fromObject(ethStr);
@@ -624,7 +624,7 @@ public class WafController {
      * @param reStr
      * @return wafLogWebsecList
      */
-    public List getWaflogWebsecByIp(String reStr){
+    public List analysisGetWaflogWebsecByIp(String reStr){
 		List reList = new ArrayList();
     	try {
     		JSONObject obj = JSONObject.fromObject(reStr);
@@ -634,8 +634,12 @@ public class WafController {
     				Map<String,Object> newMap = new HashMap<String,Object>();
     				String object = jsonArray.getString(i);
 			        JSONObject jsonObject = JSONObject.fromObject(object);
+			        int logId = jsonObject.getInt("logId");
+			        int resourceId = jsonObject.getInt("resourceId");
 			        String resourceUri = jsonObject.getString("resourceUri");
 			        String resourceIp = jsonObject.getString("resourceIp");
+			        long siteId = jsonObject.getLong("siteId");
+			        int protectId = jsonObject.getInt("protectId");
 			        String dstIp = jsonObject.getString("dstIp");
 			        String dstPort = jsonObject.getString("dstPort");
 			        String srcIp = jsonObject.getString("srcIp");
@@ -652,13 +656,17 @@ public class WafController {
 			        String alertinfo = jsonObject.getString("alertinfo");
 			        String proxyInfo = jsonObject.getString("proxyInfo");
 			        String characters = jsonObject.getString("characters");
-			        String countNum = jsonObject.getString("countNum");
+			        int countNum = jsonObject.getInt("countNum");
 			        String protocolType = jsonObject.getString("protocolType");
 			        String wci = jsonObject.getString("wci");
 			        String wsi = jsonObject.getString("wsi");
 			        
+			        newMap.put("logId", logId);
+			        newMap.put("resourceId", resourceId);
 			        newMap.put("resourceUri", resourceUri);
 			        newMap.put("resourceIp", resourceIp);
+			        newMap.put("siteId", siteId);
+			        newMap.put("protectId", protectId);
 			        newMap.put("dstIp", dstIp);
 			        newMap.put("dstPort", dstPort);
 			        newMap.put("srcIp", srcIp);
@@ -695,7 +703,7 @@ public class WafController {
      * @param siteStr
      * @return
      */
-    public String getCreateVirtualSite(String siteStr){
+    public String analysisGetCreateVirtualSite(String siteStr){
     	String status = "";
     	try {
     		JSONObject obj = JSONObject.fromObject(siteStr);
@@ -707,11 +715,77 @@ public class WafController {
     }
     
     /**
-     * 解析根据ip查询websec日志信息
+     * 解析根据logId查询websec日志信息
      * @param reStr
      * @return wafLogWebsecList
      */
-    public List getWaflogWebsecById(String reStr){
+    public Map analysisGetWaflogWebsecById(String reStr){
+		Map<String,Object> newMap = new HashMap<String,Object>();
+    	try {
+    		JSONObject obj = JSONObject.fromObject(reStr);
+    		JSONObject jsonObject = obj.getJSONObject("wafLogWebsec");
+    		
+	        int logId = jsonObject.getInt("logId");
+	        int resourceId = jsonObject.getInt("resourceId");
+	        String resourceUri = jsonObject.getString("resourceUri");
+	        String resourceIp = jsonObject.getString("resourceIp");
+	        long siteId = jsonObject.getLong("siteId");
+	        int protectId = jsonObject.getInt("protectId");
+	        String dstIp = jsonObject.getString("dstIp");
+	        String dstPort = jsonObject.getString("dstPort");
+	        String srcIp = jsonObject.getString("srcIp");
+	        String srcPort = jsonObject.getString("srcPort");
+	        String method = jsonObject.getString("method");
+	        String domain = jsonObject.getString("domain");
+	        String uri = jsonObject.getString("uri");
+	        String alertlevel = jsonObject.getString("alertlevel");
+	        String eventType = jsonObject.getString("eventType");
+	        String statTime = jsonObject.getString("statTime");
+	        String action = jsonObject.getString("action");
+	        String block = jsonObject.getString("block");
+	        String blockInfo = jsonObject.getString("blockInfo");
+	        String alertinfo = jsonObject.getString("alertinfo");
+	        String proxyInfo = jsonObject.getString("proxyInfo");
+	        String characters = jsonObject.getString("characters");
+	        int countNum = jsonObject.getInt("countNum");
+	        String protocolType = jsonObject.getString("protocolType");
+	        String wci = jsonObject.getString("wci");
+	        String wsi = jsonObject.getString("wsi");
+	        
+	        newMap.put("logId", logId);
+	        newMap.put("resourceId", resourceId);
+	        newMap.put("resourceUri", resourceUri);
+	        newMap.put("resourceIp", resourceIp);
+	        newMap.put("siteId", siteId);
+	        newMap.put("protectId", protectId);
+	        newMap.put("dstIp", dstIp);
+	        newMap.put("dstPort", dstPort);
+	        newMap.put("srcIp", srcIp);
+	        newMap.put("srcPort", srcPort);
+	        newMap.put("method", method);
+	        newMap.put("domain", domain);
+	        newMap.put("uri", uri);
+	        newMap.put("alertlevel", alertlevel);
+	        newMap.put("eventType", eventType);
+	        newMap.put("statTime", statTime);
+	        newMap.put("action", action);
+	        newMap.put("block", block);
+	        newMap.put("blockInfo", blockInfo);
+	        newMap.put("alertinfo", alertinfo);
+	        newMap.put("proxyInfo", proxyInfo);
+	        newMap.put("characters", characters);
+	        newMap.put("countNum", countNum);
+	        newMap.put("protocolType", protocolType);
+	        newMap.put("wci", wci);
+	        newMap.put("wsi", wsi);
+			 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    	return newMap;
+    }
+    
+    public List analysisGetWaflogWebsecInTime(String reStr){
 		List reList = new ArrayList();
     	try {
     		JSONObject obj = JSONObject.fromObject(reStr);
@@ -721,8 +795,12 @@ public class WafController {
     				Map<String,Object> newMap = new HashMap<String,Object>();
     				String object = jsonArray.getString(i);
 			        JSONObject jsonObject = JSONObject.fromObject(object);
+			        int logId = jsonObject.getInt("logId");
+			        int resourceId = jsonObject.getInt("resourceId");
 			        String resourceUri = jsonObject.getString("resourceUri");
 			        String resourceIp = jsonObject.getString("resourceIp");
+			        long siteId = jsonObject.getLong("siteId");
+			        int protectId = jsonObject.getInt("protectId");
 			        String dstIp = jsonObject.getString("dstIp");
 			        String dstPort = jsonObject.getString("dstPort");
 			        String srcIp = jsonObject.getString("srcIp");
@@ -739,13 +817,17 @@ public class WafController {
 			        String alertinfo = jsonObject.getString("alertinfo");
 			        String proxyInfo = jsonObject.getString("proxyInfo");
 			        String characters = jsonObject.getString("characters");
-			        String countNum = jsonObject.getString("countNum");
+			        int countNum = jsonObject.getInt("countNum");
 			        String protocolType = jsonObject.getString("protocolType");
 			        String wci = jsonObject.getString("wci");
 			        String wsi = jsonObject.getString("wsi");
 			        
+			        newMap.put("logId", logId);
+			        newMap.put("resourceId", resourceId);
 			        newMap.put("resourceUri", resourceUri);
 			        newMap.put("resourceIp", resourceIp);
+			        newMap.put("siteId", siteId);
+			        newMap.put("protectId", protectId);
 			        newMap.put("dstIp", dstIp);
 			        newMap.put("dstPort", dstPort);
 			        newMap.put("srcIp", srcIp);
