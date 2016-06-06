@@ -19,6 +19,7 @@ public class OrderList {
 	private double price;//总价
 	private String serverName;//服务名称
 	private Date pay_date;//支付时间
+	private int balanceFlag; //是否领取安全币（0:未领取；1:已领取）
 	
 	public String getId() {
 		return id;
@@ -73,6 +74,12 @@ public class OrderList {
 	}
 	public void setServerName(String serverName) {
 		this.serverName = serverName;
+	}
+	public int getBalanceFlag() {
+		return balanceFlag;
+	}
+	public void setBalanceFlag(int balanceFlag) {
+		this.balanceFlag = balanceFlag;
 	}
 	
 }
