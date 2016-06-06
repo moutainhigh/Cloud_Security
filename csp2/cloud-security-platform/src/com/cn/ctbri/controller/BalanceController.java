@@ -144,12 +144,21 @@ public class BalanceController {
 		try{
 			User globle_user = (User) request.getSession().getAttribute("globle_user");
 			
+			//更新安全币余额
 			double balance = globle_user.getBalance();
 			User user = new User();
 			user.setId(globle_user.getId());
 			user.setBalance(balance + 5);
 			userService.updateBalance(user);
 			globle_user.setBalance(user.getBalance());
+			
+			//设置该订单号的安全币领取状态为已领取
+			String orderListId = request.getParameter("orderListId");
+			OrderList orderList = new OrderList();
+			orderList.setId(orderListId);
+			orderList.setBalanceFlag(1);
+			orderListService.updateBalanceFlag(orderList);
+			
 			m.put("collect", "0");//本次获取金额成功
 		} catch(Exception e){
 			e.printStackTrace();
