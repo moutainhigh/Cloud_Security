@@ -24,10 +24,33 @@
 <script type="text/javascript">
   $(function() {
      $(".data_table_cont a").on('click', function() {
-        $(".mark,.data_tanc").show();
+     	var logId = $("#logIdHidden").val();
+        $.ajax({
+	         type: "POST",
+	         url: "warningWafDetail.html",
+	         data: {"logId":logId},
+	         dataType:"json",
+	         success: function(data){
+         		$("#dstIp").html(data.dstIp);
+         		$("#srcIp").html(data.srcIp);
+         		$("#srcPort").html(data.srcPort);
+         		$("#alertlevel").html(data.alertlevel);
+         		$("#eventType").html(data.eventType);
+         		$("#statTime").html(data.statTime);
+         		$("#alertinfo").html(data.alertinfo);
+         		$("#protocolType").html(data.protocolType);
+         		
+         		$(".mark,.data_tanc").show();
+         	}
+        });
+
      });
 
      $(".data_cuo").on('click', function() {
+        $(".mark,.data_tanc").hide();
+     });
+     
+     $(".data_btn").on('click', function() {
         $(".mark,.data_tanc").hide();
      });
  });
@@ -55,7 +78,7 @@
     filter: alpha(opacity=40);
     opacity: 0.4;
     z-index: 400;}
-   .data_tanc{ width: 680px; height: 405px;  position: fixed; z-index: 500; top: 50%; margin-top: -202px; left: 50%; margin-left:-340px; background: #fff;  border: 1px solid #787878; display: none; }
+   .data_tanc{ width: 680px; height: 355px;  position: fixed; z-index: 500; top: 50%; margin-top: -202px; left: 50%; margin-left:-340px; background: #fff;  border: 1px solid #787878; display: none; }
    .data_tanctop{ height: 46px; border-bottom: 1px solid #787878; background: #3c85db;}
    .data_tanctop h2{ color: #fff; font-size: 18px; line-height: 46px; padding-left: 30px; width: 200px; float: left;}
    .data_cuo{ width: 21px; height: 21px; float: right; background: url(${ctx}/source/images/dailog-close.png); margin-right: 10px; margin-top: 10px; cursor: pointer;}
@@ -80,54 +103,45 @@
               <tbody>
                  <tr>
                      <th width="25%">防护对象</th>
-                     <th width="75%"></th>
+                     <th width="75%" id="dstIp" style="text-align:left"></th>
                                      
                  </tr>
                   <tr>
                      <th width="25%">服务器IP</th>
-                     <th width="75%"></th>
+                     <th width="75%" id="srcIp" style="text-align:left"></th>
                                      
                  </tr>
                   <tr>
                      <th width="25%">服务器端口</th>
-                     <th width="75%"></th>
+                     <th width="75%" id="srcPort" style="text-align:left"></th>
                                      
                  </tr>
                   <tr>
                      <th width="25%">风险级别</th>
-                     <th width="75%"></th>
+                     <th width="75%" id="alertlevel" style="text-align:left"></th>
                                      
                  </tr>
                   <tr>
-                     <th width="25%">告警信息</th>
-                     <th width="75%"></th>
+                     <th width="25%">告警类型</th>
+                     <th width="75%" id="eventType" style="text-align:left"></th>
                                      
                  </tr>
                   <tr>
                      <th width="25%">告警发生时间</th>
-                     <th width="75%"></th>
+                     <th width="75%" id="statTime" style="text-align:left"></th>
                                      
                  </tr>
                   <tr>
                      <th width="25%">告警信息</th>
-                     <th width="75%"></th>
+                     <th width="75%" id="alertinfo" style="text-align:left"></th>
                                      
                  </tr>
                   <tr>
                      <th width="25%">HTTP请求或者相应信息</th>
-                     <th width="75%"></th>
+                     <th width="75%" id="protocolType" style="text-align:left"></th>
                                      
                  </tr>
-                  <tr>
-                     <th width="25%">告警信息</th>
-                     <th width="75%"></th>
-                                     
-                 </tr>
-                  <tr>
-                     <th width="25%">告警信息</th>
-                     <th width="75%"></th>
-                                     
-                 </tr>
+                
               </tbody>
             </table>
      </div>
@@ -197,6 +211,7 @@
 	                     <th width="25%">URL</th>                     
 	                 </tr>
 	                 <c:forEach var="list" items="${websecList}" varStatus="sta">
+	                 	 <input type="hidden" id="logIdHidden" value="${list.logId}">
 		                 <tr>
 		                     <td width="25%">${list.statTime }</td>
 		                     <td width="25%" class="data_table_cont"><a href="javascript:;">HTTP协议违背</a></td>
