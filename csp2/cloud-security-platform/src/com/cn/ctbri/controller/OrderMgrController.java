@@ -865,7 +865,7 @@ public class OrderMgrController {
             //删除联系人信息
             selfHelpOrderService.deleteLinkman(order.getContactId());
             //删除服务系统相关
-            //NorthAPIWorker.deleteOrder(orderId);
+            NorthAPIWorker.deleteOrder(orderId);
         }
         
 //        return "/source/page/order/orderTrack";
