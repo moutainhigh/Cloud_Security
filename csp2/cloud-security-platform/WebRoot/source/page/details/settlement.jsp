@@ -261,6 +261,8 @@
                     <li class="listone ">
                     <div class="clearfix">
                     	<h3 class="fl">订单详情</h3>
+                    	
+					<input type="hidden" id="serviceName" value="${service.name }"/>
                     <c:if test="${service.id le 5 }">
                     	<a class="fr" style="color:#2499fb;padding-right:54px;" href="javaScript:void(0);" onclick="javaScript:orderBack();" style="cursor:hand;">返回修改订单信息</a>
                     </c:if>
