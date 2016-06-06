@@ -26,4 +26,9 @@ public interface IOrderListService {
      * 返回值    ：  List<Order>
      */
 	PageBean<OrderList> queryPayRecordByPage(int userId, int pageCode);
+	
+	/**
+     * 功能描述： 根据订单编号更改领取安全币状态
+     */
+	void updateBalanceFlag(OrderList ol);
 }
