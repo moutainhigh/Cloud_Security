@@ -54,5 +54,9 @@ public class OrderListServiceImpl implements IOrderListService{
 		pb.setDatas(datas);
 		return pb;//返回pageBean
 	}
+	
+	public void updateBalanceFlag(OrderList ol){
+		orderListDao.updateBalanceFlag(ol);
+	}
 
 }
