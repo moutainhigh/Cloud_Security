@@ -258,10 +258,10 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	            CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]:任务-[" + t.getTaskId() + "]开始下发!;User="+null);
 	            preTaskData(t,engine);
 	            try {
-	            	String lssued = SouthAPIWorker.disposeScanTask(engine.getEngine_number(), String.valueOf(t.getTaskId())+"_"+t.getOrder_id(), this.destURL, this.destIP, "80", this.tplName);
-	                boolean state = this.getStatusBylssued(lssued);
-	            	if(state){
-//	            	if(true){
+//	            	String lssued = SouthAPIWorker.disposeScanTask(engine.getEngine_number(), String.valueOf(t.getTaskId())+"_"+t.getOrder_id(), this.destURL, this.destIP, "80", this.tplName);
+//	                boolean state = this.getStatusBylssued(lssued);
+//	            	if(state){
+	            	if(true){
 	                    //任务下发后,引擎活跃数加1
 	                    engine.setId(engine.getId());
 	                    engineService.update(engine);
@@ -359,6 +359,8 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	            	e.printStackTrace();
 	            	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!;User="+null);
 	            }
+	        }else if(!"".equals(status)&&t.getEngine()==-1){
+	        	SouthAPIWorker.removeTask(engine.getEngine_number(), String.valueOf(t.getTaskId())+"_"+t.getOrder_id());
 	        }else{
 	        	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!;User="+null);
 	        }
