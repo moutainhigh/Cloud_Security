@@ -5,7 +5,7 @@ import java.io.Reader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
+//import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,6 +21,7 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.commons.codec.binary.Base64;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -74,6 +75,10 @@ public class NsfocusWAFAdapter {
 		return true;
 	}
 	
+	private String stringToBase64(String string){
+		byte[] base64Bytes = Base64.encodeBase64Chunked(string.trim().getBytes());
+		return new String(base64Bytes).trim();
+	}
 	
 	private Map<String, String> getWafEventTypeMap() throws DocumentException {
 		Map<String, String> wafEventTypeMap = new HashMap<String, String>();
@@ -99,35 +104,35 @@ public class NsfocusWAFAdapter {
 				tWafLogWebsec.setEventType(eventTypeMap.get(eventTypeString));
 			}
 			
-			String eventTypeBase64 = Base64.getEncoder().encodeToString(eventTypeString.getBytes());
+			String eventTypeBase64 = stringToBase64(eventTypeString);
 			tWafLogWebsec.setEventType(eventTypeBase64);
 		}
 		//http请求或响应信息
 		if (tWafLogWebsec.getHttp()!=null) {
 			byte[] httpBytes = tWafLogWebsec.getHttp();
-			byte[] httpBytesBase64 = Base64.getEncoder().encode(httpBytes);
+			byte[] httpBytesBase64 = Base64.encodeBase64(httpBytes);
 			tWafLogWebsec.setHttp(httpBytesBase64);
 		}
 		//告警补充描述
 		if (tWafLogWebsec.getAlertinfo()!=null&&!tWafLogWebsec.getAlertinfo().equals("")) {
 			String alertInfoString = tWafLogWebsec.getAlertinfo();
-			String alertInfoBase64 = Base64.getEncoder().encodeToString(alertInfoString.getBytes());
+			String alertInfoBase64 = stringToBase64(alertInfoString);
 			tWafLogWebsec.setAlertinfo(alertInfoBase64);
 		}
 		//攻击字符
 		if (tWafLogWebsec.getCharacters()!=null&&!tWafLogWebsec.getCharacters().equals("")) {
 			String charactersString = tWafLogWebsec.getCharacters();
-			String charactersBase64 = Base64.getEncoder().encodeToString(charactersString.getBytes());
+			String charactersBase64 = stringToBase64(charactersString);
 			tWafLogWebsec.setCharacters(charactersBase64);
 		}
 		//浏览器识别
 		if (tWafLogWebsec.getWci()!=null&&!tWafLogWebsec.getWci().equals("")) {
-			String wciBase64 = Base64.getEncoder().encodeToString(tWafLogWebsec.getWci().getBytes());
+			String wciBase64 = stringToBase64(tWafLogWebsec.getWci());
 			tWafLogWebsec.setWci(wciBase64);
 		}
 		//waf会话识别
 		if (tWafLogWebsec.getWsi()!=null&&!tWafLogWebsec.getWsi().equals("")) {
-			String wsiBase64 = Base64.getEncoder().encodeToString(tWafLogWebsec.getWsi().getBytes());
+			String wsiBase64 = stringToBase64(tWafLogWebsec.getWsi());
 			tWafLogWebsec.setWsi(wsiBase64);
 		}
 		return tWafLogWebsec;
@@ -135,7 +140,7 @@ public class NsfocusWAFAdapter {
 	
 	private TWafLogDdos getTWafLogDdosBase64(TWafLogDdos tWafLogDdos){
 		if(tWafLogDdos.getAction()!=null&&!tWafLogDdos.getAction().equals("")){
-			String actionBase64 = Base64.getEncoder().encodeToString(tWafLogDdos.getAction().getBytes());
+			String actionBase64 = stringToBase64(tWafLogDdos.getAction());
 			tWafLogDdos.setAction(actionBase64);
 		}
 		return tWafLogDdos;
@@ -143,7 +148,7 @@ public class NsfocusWAFAdapter {
 	
 	private TWafLogDeface getTWafLogDefaceBase64(TWafLogDeface tWafLogDeface) {
 		if (tWafLogDeface.getReason()!=null&&!tWafLogDeface.getReason().equals("")) {
-			String reasonBase64 = Base64.getEncoder().encodeToString(tWafLogDeface.getReason().getBytes());
+			String reasonBase64 = stringToBase64(tWafLogDeface.getReason());
 			tWafLogDeface.setReason(reasonBase64);
 		}
 		return tWafLogDeface;
@@ -655,7 +660,7 @@ public class NsfocusWAFAdapter {
 			List<Element> typeElements = document.selectNodes("/TypeList/Type");
 			Map<String, Integer> mapEventTypeCount = new HashMap<String, Integer>();
 			for (Element element : typeElements) {
-				String eventTypeBase64 = Base64.getEncoder().encodeToString(element.getTextTrim().getBytes());
+				String eventTypeBase64 = stringToBase64(element.getTextTrim());
 				TWafLogWebsecExample example = new TWafLogWebsecExample();
 				example.or().andEventTypeEqualTo(element.attributeValue("name"));
 				TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
@@ -691,7 +696,7 @@ public class NsfocusWAFAdapter {
 			List<Element> typeElements = document.selectNodes("/TypeList/Type");
 			Map<String, Integer> mapEventTypeCount = new HashMap<String, Integer>();
 			for (Element element : typeElements) {
-				String eventTypeBase64 = Base64.getEncoder().encodeToString(element.getTextTrim().getBytes());
+				String eventTypeBase64 = stringToBase64(element.getTextTrim());
 				TWafLogWebsecExample example = new TWafLogWebsecExample();
 				example.or().andEventTypeEqualTo(element.attributeValue("name")).andStatTimeBetween(dateBefore, dateNow);
 				TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
@@ -721,6 +726,7 @@ public class NsfocusWAFAdapter {
 				TWafLogWebsecExample example = new TWafLogWebsecExample();
 				example.or().andAlertlevelEqualTo(alertLevelString);
 				TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+				System.out.println(alertLevelString+">>>>"+mapper.countByExample(example));
 				mapAlertLevelCount.put(alertLevelString, mapper.countByExample(example));
 			}
 			JSONObject alertLevelJsonObject = JSONObject.fromObject(mapAlertLevelCount);
@@ -748,6 +754,7 @@ public class NsfocusWAFAdapter {
 			Date dateBefore = calendar.getTime();
 			
 			List<String> alertLevelList = Arrays.asList(ALERT_LEVEL_STRINGS);
+			System.out.println(alertLevelList.toString());
 			Map<String, Integer> mapAlertLevelCount = new HashMap<String, Integer>();
 			for (String alertLevelString : alertLevelList) {
 				TWafLogWebsecExample example = new TWafLogWebsecExample();
@@ -776,10 +783,7 @@ public class NsfocusWAFAdapter {
 	}
 	
 	public static void main(String[] args) {
-		NsfocusWAFAdapter adapter = new NsfocusWAFAdapter();
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("interval", 1);
-		adapter.getEventTypeCountInTime(jsonObject);
+
 		
 	/**	JSONArray jsonArray = new JSONArray();
 		jsonArray.add("219.141.189.183");
