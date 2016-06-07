@@ -20,6 +20,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="status==1">
 		  and t.execute_time between date_add(now(),interval -1 minute) and now()
 		</if>
+		 union 
+		  select * from cs_task t
+		  where t.engine in (-1,0)
+		  and t.group_flag &lt;= date_add(now(),interval -10 minute)
 		<!--limit #{page}-->
 	</select>
 	
@@ -28,9 +32,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from cs_task t
         where t.status = #{status} 
         <if test="status==2">
-          and t.end_time between date_add(now(),interval -1 minute) and now()
+          and t.serviceId = #{serviceId} 
+          and t.end_time &gt; now()
         </if>
-        limit #{page}
+        <!-- and t.end_time between date_add(now(),interval -1 minute) and now() -->
+        <!--limit #{page}-->
     </select>
     
     <!-- 根据条件查询引擎异常任务表 -->

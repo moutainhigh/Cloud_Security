@@ -58,9 +58,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 查找最佳引擎 -->
     <select id="findEngineByParam" parameterType="hashmap" resultMap="EngineRM">
-       select * from cs_enginecfg en 
+       <!-- select * from cs_enginecfg en 
         where en.maxTask!=en.activity and en.engine_capacity like CONCAT(CONCAT('%', #{serviceId}), '%') and en.status = 1 
-        and en.equipment_factory=0 GROUP BY en.engine_number
+        and en.equipment_factory=0 GROUP BY en.engine_number -->
+        select * from cs_enginecfg en 
+        where en.engine_capacity like CONCAT(CONCAT('%', #{serviceId}), '%') and en.status = 1 
+        and en.equipment_factory=0 
+        and en.activity between 0 and en.maxtask
+        GROUP BY en.engine_number
     </select>
     
     <!-- 查找引擎 -->
