@@ -55,9 +55,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="type!=null">
 				type=#{type},
 			</if>
-			<if test="password!=null">
-				password=#{password},
-			</if>
 			<if test="lastLoginTime!=null">
 				lastLoginTime=#{lastLoginTime},
 			</if>
@@ -197,15 +194,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 修改用户 -->
 	<update id="updatePass" parameterType="com.cn.ctbri.entity.User">
-		update cs_user set password=#{password}
-		
-		 where  
-		<if test="mobile!=null and mobile!=''">
-				  mobile=#{mobile}
-		</if>
-		<if test="email!=null and email!=''">
-			   email=#{email}
-		</if>
+		update cs_user set password=#{password} where mobile=#{mobile}
 	</update>
 	
 	<!-- 修改用户的个人金额 -->
