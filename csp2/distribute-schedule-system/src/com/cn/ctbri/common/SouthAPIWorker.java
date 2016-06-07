@@ -537,7 +537,7 @@ public class SouthAPIWorker {
 //        		"", "80", "漏洞扫描模板");
     	
 //    	String p = getProgressByTaskId("10001", "3981_15102316092858295", "1");
-//    	String p1 = getStatusByTaskId("10002", "test2016010711");
+//    	String p1 = getStatusByTaskId("10002", "9999_16052919335846008");
     	
 //    	System.out.println(s1);
 //    	System.out.println("ok");
@@ -545,16 +545,16 @@ public class SouthAPIWorker {
 //    	String g = getStatusByTaskId(sessionId, "test88");
         
 //      String result = getReportByTaskID(sessionId, "3981_15102316092858295", "1",340, 30,2);
-//        String result = getReportByTaskID("10002", "test20160105111", "1",0, 30);
-//    	String count = getResultCountByTaskID("10002", "test20160105111");
-    	String en = getEngineStatRate("10001");
+//        String result = getReportByTaskID("10002", "9999_16052919335846008", "1",0, 30);
+    	String count = getResultCountByTaskID("10002", "9999_16052919335846008");
+//    	String en = getEngineStatRate("10001");
 //    	String stop = startTask(sessionId, "45_15120117145433875", 2);
 //    	System.out.println(sessionId);
-    	String s =  disposeScanTask("10001", "test20160121111", "http://www.testfire.net", 
-        		"", "", "漏洞扫描模板");
+//    	String s =  disposeScanTask("10001", "test20160121111", "http://www.testfire.net", 
+//        		"", "", "漏洞扫描模板");
 
 
         
-    	System.out.println(en);
+    	System.out.println(count);
     }
 }
