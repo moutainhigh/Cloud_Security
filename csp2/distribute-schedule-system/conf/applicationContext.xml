@@ -159,6 +159,21 @@
     	<property name="cronExpression" value="0 0/1 * * * ?" />
     </bean>
     
+    
+    <!--要调度的对象，任务删除-->
+    <bean id="taskDelJobBean" class="com.cn.ctbri.common.SchedulerDelTask" />
+    <bean id="taskDelJobDetail"
+    	class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    	<property name="targetObject" ref="taskDelJobBean" />
+    	<property name="targetMethod" value="execute" />
+    	<property name="concurrent" value="false" />
+    </bean>
+    <bean id="delTrigger"
+    	class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="taskDelJobDetail" />
+    	<property name="cronExpression" value="0 0/5 * * * ?" />
+    </bean>
+    
     <!-- 将lazy-init='false'那么容器启动就会执行调度程序   -->
     <bean id="startQuertz"
     	class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
@@ -166,6 +181,7 @@
     	<property name="triggers">
     		<list>
     			<ref bean="taskTrigger" />
+    			<ref bean="delTrigger" />
     		</list>
     	</property>
     </bean>
