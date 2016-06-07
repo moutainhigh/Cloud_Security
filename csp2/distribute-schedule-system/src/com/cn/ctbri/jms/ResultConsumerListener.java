@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.common.ReInternalWorker;
 import com.cn.ctbri.common.SouthAPIWorker;
-import com.cn.ctbri.common.WebSocWorker;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.EngineCfg;
 import com.cn.ctbri.entity.Task;
@@ -156,15 +155,15 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 				}else{//安恒
 					if(task.getServiceId()==5){//可用性检测
 						//根据groupId查询alarm表及taskwarn表
-						List<TaskWarn> taskwarnList = taskWarnService.findTaskWarnByTaskId(task.getTaskId());
+//						List<TaskWarn> taskwarnList = taskWarnService.findTaskWarnByTaskId(task.getTaskId());
 //						if(taskwarnList!=null && taskwarnList.size()>0){
 						if(task.getStatus()==3){
 							//返回结果
-							JSONArray taskwarnObject = new JSONArray().fromObject(taskwarnList);
-							json.put("taskwarnObj", taskwarnObject);
-							json.put("alarmObj", "");
-							json.put("status", "success");
-							ReInternalWorker.vulnScanGetOrderTaskResult(json.toString());
+//							JSONArray taskwarnObject = new JSONArray().fromObject(taskwarnList);
+//							json.put("taskwarnObj", taskwarnObject);
+//							json.put("alarmObj", "");
+//							json.put("status", "success");
+//							ReInternalWorker.vulnScanGetOrderTaskResult(json.toString());
 						}else{
 							JSONObject taskObject = new JSONObject().fromObject(task);
 							json.put("taskObj", taskObject);
@@ -239,113 +238,119 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 		
 		String engine = "";
 		EngineCfg en = engineService.getEngineById(task.getEngine());
-		if(task.getEngine()!=0){
+//		if(task.getEngine()!=0){
+//			engine = en.getEngine_number();
+//		}else{
+//			engine = "10001";
+//		}
+		//大于0,任务已经下发的引擎 modify by tangxr 2016-5-3
+		if(task.getEngine()>0){
 			engine = en.getEngine_number();
-		}else{
-			engine = "10001";
+		    if(task.getWebsoc()==1){//创宇
+//		        String sessionid = WebSocWorker.getSessionId();
+//		        boolean flag = WebSocWorker.getProgressByTaskId(sessionid,task.getGroup_id());
+		    	boolean flag = false;
+		    	//检测完成
+		        if(flag){
+		        	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析结果......;User="+null);
+		            task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
+		            task.setEnd_time(setDateFormat.parse(temp));
+	                task.setScanTime(String.valueOf(diff));
+	                task.setTaskProgress("101");
+	                taskService.update(task);
+					//任务完成后,引擎活跃数减1
+	                en.setId(task.getEngine());
+	                engineService.updatedown(en);
+		        }else{
+	                if(task.getStatus()==Integer.parseInt(Constants.TASK_RUNNING)){
+	                    if(diff/1000<=32){
+	                        task.setTaskProgress("20");
+	                    }else if(diff/1000<=63){
+	                        task.setTaskProgress("40");
+	                    }else if(diff/1000<=93){
+	                        task.setTaskProgress("60");
+	                    }else if(diff/1000<=123){
+	                        task.setTaskProgress("80");
+	                    }else if(diff/1000<=153){
+	                        task.setTaskProgress("90");
+	                    }else if(diff/1000<=183){
+	                        task.setTaskProgress("100");
+	                    }
+	                    CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，扫描进度[" + task.getTaskProgress()+"];User="+null);
+	                    taskService.updateTask(task);
+	                }
+		        }
+		    }else{//安恒
+		        try {
+	    			// 根据任务id获取任务状态
+	    			String resultStr = SouthAPIWorker.getStatusByTaskId(engine,String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
+	    			String status = this.getStatusByResult(resultStr);
+	                List<Alarm> aList = new ArrayList<Alarm>();
+	
+	    			if ("finish".equals(status) && task.getStatus()!=Integer.parseInt(Constants.TASK_FINISH)) {// 任务执行完毕
+	    				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析结果......;User="+null);
+	    				/**
+	    				 * 获取任务结果信息并入库
+	    				 */
+	    				//根据taskId查询地区
+	//    				int districtId = taskService.findDistrictIdByTaskId(String.valueOf(task.getTaskId()));
+	    				// 获取弱点总数
+	    				String resultCount = SouthAPIWorker.getResultCountByTaskID(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
+	    				int count = this.getCountByResult(resultCount);
+	    				if(count != 0){
+	    					for (int i = 0; i <= count/30; i++) {
+	        					int j = i*30;
+	        					// 获取任务引擎
+	//            				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),
+	//            						getProductByTask(task), j, 30, engine);   //获取全部告警
+	            				String reportByTaskID = SouthAPIWorker.getReportByTaskID(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),
+	            						String.valueOf(task.getServiceId()), j, 30);   //获取全部告警
+	            				
+	            				try {
+	            				    aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID,task.getServiceId());
+	                            } catch (Exception e) {
+	                                aList = new ArrayList<Alarm>();
+	                                continue;
+	                            }
+	            				
+	            				// 插入报警表
+	            				for (Alarm a : aList) {
+	            					alarmService.saveAlarm(a);
+	            				}
+	            				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]入库告警数为" + aList.size() + "个!;User="+null);
+	    					}
+	    				}
+	    				    				
+			    		task.setStatus(Integer.parseInt(Constants.TASK_FINISH));		    		
+			    		task.setEnd_time(setDateFormat.parse(temp));
+			    		task.setScanTime(String.valueOf(diff));
+			    		task.setTaskProgress("101");
+						taskService.update(task);
+	
+	    				//任务完成后,引擎活跃数减1
+	                    en.setId(task.getEngine());
+	                    engineService.updatedown(en);
+	
+	    			}else if("running".equals(status)){
+	                    
+	                    // 获取任务进度引擎
+	                    String progressStr = SouthAPIWorker.getProgressByTaskId(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),String.valueOf(task.getServiceId()));
+	    				getProgressByRes(task.getTaskId(),progressStr);
+	    				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，扫描进度["+task.getTaskProgress()+"];User="+null);
+	
+	//    			}else if(status.contains("not found")){
+	    			}
+//	    			else if(status.equals("")){
+//	    				task.setTaskProgress("101");
+//	    				task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
+//	    				taskService.update(task);
+//	    			} 
+		        }catch (Exception e) {
+		        	e.printStackTrace();
+		        	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]异常!;User="+null);
+			    }
+	    	}
 		}
-                        
-	    if(task.getWebsoc()==1){//创宇
-	        String sessionid = WebSocWorker.getSessionId();
-	        boolean flag = WebSocWorker.getProgressByTaskId(sessionid,task.getGroup_id());
-	        //检测完成
-	        if(flag){
-	        	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析结果......;User="+null);
-	            task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
-	            task.setEnd_time(setDateFormat.parse(temp));
-                task.setScanTime(String.valueOf(diff));
-                task.setTaskProgress("101");
-                taskService.update(task);
-				//任务完成后,引擎活跃数减1
-                en.setId(task.getEngine());
-                engineService.updatedown(en);
-	        }else{
-                if(task.getStatus()==Integer.parseInt(Constants.TASK_RUNNING)){
-                    if(diff/1000<=32){
-                        task.setTaskProgress("20");
-                    }else if(diff/1000<=63){
-                        task.setTaskProgress("40");
-                    }else if(diff/1000<=93){
-                        task.setTaskProgress("60");
-                    }else if(diff/1000<=123){
-                        task.setTaskProgress("80");
-                    }else if(diff/1000<=153){
-                        task.setTaskProgress("90");
-                    }else if(diff/1000<=183){
-                        task.setTaskProgress("100");
-                    }
-                    CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，扫描进度[" + task.getTaskProgress()+"];User="+null);
-                    taskService.updateTask(task);
-                }
-	        }
-	    }else{//安恒
-	        try {
-    			// 根据任务id获取任务状态
-    			String resultStr = SouthAPIWorker.getStatusByTaskId(engine,String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
-    			String status = this.getStatusByResult(resultStr);
-                List<Alarm> aList = new ArrayList<Alarm>();
-
-    			if ("finish".equals(status) && task.getStatus()!=Integer.parseInt(Constants.TASK_FINISH)) {// 任务执行完毕
-    				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析结果......;User="+null);
-    				/**
-    				 * 获取任务结果信息并入库
-    				 */
-    				//根据taskId查询地区
-//    				int districtId = taskService.findDistrictIdByTaskId(String.valueOf(task.getTaskId()));
-    				// 获取弱点总数
-    				String resultCount = SouthAPIWorker.getResultCountByTaskID(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
-    				int count = this.getCountByResult(resultCount);
-    				if(count != 0){
-    					for (int i = 0; i <= count/30; i++) {
-        					int j = i*30;
-        					// 获取任务引擎
-//            				String reportByTaskID = ArnhemWorker.getReportByTaskID(sessionId, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),
-//            						getProductByTask(task), j, 30, engine);   //获取全部告警
-            				String reportByTaskID = SouthAPIWorker.getReportByTaskID(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),
-            						String.valueOf(task.getServiceId()), j, 30);   //获取全部告警
-            				
-            				try {
-            				    aList = this.getAlarmByRerult(String.valueOf(task.getTaskId()), reportByTaskID,task.getServiceId());
-                            } catch (Exception e) {
-                                aList = new ArrayList<Alarm>();
-                                continue;
-                            }
-            				
-            				// 插入报警表
-            				for (Alarm a : aList) {
-            					alarmService.saveAlarm(a);
-            				}
-            				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]入库告警数为" + aList.size() + "个!;User="+null);
-    					}
-    				}
-    				    				
-		    		task.setStatus(Integer.parseInt(Constants.TASK_FINISH));		    		
-		    		task.setEnd_time(setDateFormat.parse(temp));
-		    		task.setScanTime(String.valueOf(diff));
-		    		task.setTaskProgress("101");
-					taskService.update(task);
-
-    				//任务完成后,引擎活跃数减1
-                    en.setId(task.getEngine());
-                    engineService.updatedown(en);
-
-    			}else if("running".equals(status)){
-                    
-                    // 获取任务进度引擎
-                    String progressStr = SouthAPIWorker.getProgressByTaskId(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),String.valueOf(task.getServiceId()));
-    				getProgressByRes(task.getTaskId(),progressStr);
-    				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，扫描进度["+task.getTaskProgress()+"];User="+null);
-
-//    			}else if(status.contains("not found")){
-    			}else if(status.equals("")){
-    				task.setTaskProgress("101");
-    				task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
-    				taskService.update(task);
-    			} 
-	        }catch (Exception e) {
-	        	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]异常!;User="+null);
-		    }
-    	}	    
 
 	    CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务表扫描结束....;User="+null);
 	}
@@ -479,7 +484,7 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 		alarm.setScore(score);
 		alarm.setAdvice(advice);
 		if ("信息".equals(level)) {
-			alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_LOW));
+			alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_MESSAGE));
 		} else if ("低危".equals(level)) {
 			alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_LOW));
 		} else if ("中危".equals(level)) {
@@ -487,9 +492,12 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 		} else if ("高危".equals(level)) {
 			alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_HIGH));
 		} else if ("紧急".equals(level)) {
-			alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_HIGH));
+			alarm.setLevel(Integer.parseInt(Constants.ALARMLEVEL_HIGHER));
 		}
 		alarm.setAlarm_content(url);
+		if(value.length()>9000){
+			value = value.substring(0, 8000);
+		}
 		alarm.setKeyword(value);
 		alarm.setServiceId(serviceId);
 		return alarm;
