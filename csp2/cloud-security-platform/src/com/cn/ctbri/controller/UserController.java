@@ -1229,7 +1229,9 @@ public class UserController{
 	public String confirmPass(User user){
 		String password = user.getPassword();
 		String passwdMD5 = DigestUtils.md5Hex(password);
+		String mobile = user.getMobile();
 		user.setPassword(passwdMD5);
+		user.setMobile(mobile);
 		int result = userService.updatePass(user);
 		if(result==1){
 			return "/updatePassSuccess";
