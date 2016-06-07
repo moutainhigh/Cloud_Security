@@ -157,10 +157,10 @@ $(document).ready(function(){
                     <table class="tabox">
                     	<thead>
                         	<tr height="50">
-                            	<th width="134"><span>序号</span></th>
+                            	<th width="100"><span>序号</span></th>
                                 <th width="200">时间</th>
                                 <th width="200">订单编号</th>
-                                <th width="280">名称</th>
+                                <th width="330">名称</th>
                                 <th width="160">价格（元）</th>
                             </tr>
                             
@@ -170,12 +170,12 @@ $(document).ready(function(){
 							<table class="tabox" style="background-color: #e4f3ff">
 								<tbody>
 									<tr height="80">
-										<td width="134">${pb.pageSize * (pb.pageCode-1) + status.count }</td>
+										<td width="100">${pb.pageSize * (pb.pageCode-1) + status.count }</td>
 										<td width="200">
 											<fmt:formatDate value="${payItem.pay_date }" pattern="yyyy-MM-dd HH:mm:ss"/>
 										</td>
 										<td width="200">${payItem.id }</td>
-										<td width="280" style="font-size: 16px;">${payItem.serverName }</td>
+										<td width="330" style="font-size: 16px;">${payItem.serverName }</td>
 										<td width="160">
 											<fmt:formatNumber  value="${payItem.price }" pattern="0.00"/>
 										</td>
