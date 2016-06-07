@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,6 +36,7 @@ import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 public class NsfocusWAFAdapter {	
 	private static final String RESOURCE_DATABASE_CONFIG = "./DataBaseConf.xml";
 	private static final String WAF_NSFOCUS_EVENT_TYPE = "./conf/WAF_Nsfocus_EventType.xml";
+	private static final String[] ALERT_LEVEL_STRINGS = {"LOW","MID","HIGH"};
 	
 	public static HashMap<Integer, NsfocusWAFOperation> mapNsfocusWAFOperation = new HashMap<Integer, NsfocusWAFOperation>();
 	public static HashMap<Integer, HashMap<Integer, NsfocusWAFOperation>> mapNsfocusWAFOperationGroup = new HashMap<Integer, HashMap<Integer,NsfocusWAFOperation>>();
@@ -707,7 +709,63 @@ public class NsfocusWAFAdapter {
 			return errorJsonObject.toString();
 		}
 	}
+	
+	public String getAlertLevelCount() {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getSqlSession();
+			
+			List<String> alertLevelList = Arrays.asList(ALERT_LEVEL_STRINGS);
+			Map<String, Integer> mapAlertLevelCount = new HashMap<String, Integer>();
+			for (String alertLevelString : alertLevelList) {
+				TWafLogWebsecExample example = new TWafLogWebsecExample();
+				example.or().andAlertlevelEqualTo(alertLevelString);
+				TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+				mapAlertLevelCount.put(alertLevelString, mapper.countByExample(example));
+			}
+			JSONObject alertLevelJsonObject = JSONObject.fromObject(mapAlertLevelCount);
+			return alertLevelJsonObject.toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "AlertLevel count error!!!");
+			return errorJsonObject.toString();
+		}
+	}
 
+	public String getAlertLevelCountInTime(JSONObject jsonObject) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getSqlSession();
+			
+			int interval = jsonObject.getInt("interval");
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			Date dateNow = calendar.getTime();
+			calendar.add(Calendar.HOUR, -interval);
+			Date dateBefore = calendar.getTime();
+			
+			List<String> alertLevelList = Arrays.asList(ALERT_LEVEL_STRINGS);
+			Map<String, Integer> mapAlertLevelCount = new HashMap<String, Integer>();
+			for (String alertLevelString : alertLevelList) {
+				TWafLogWebsecExample example = new TWafLogWebsecExample();
+				example.or().andAlertlevelEqualTo(alertLevelString).andStatTimeBetween(dateBefore, dateNow);
+				TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+				mapAlertLevelCount.put(alertLevelString, mapper.countByExample(example));
+			}
+			JSONObject alertLevelJsonObject = JSONObject.fromObject(mapAlertLevelCount);
+			return alertLevelJsonObject.toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "AlertLevel count error!!!");
+			return errorJsonObject.toString();
+		}
+	}
 	
 	private SqlSession getSqlSession() throws IOException{
 		Reader reader;

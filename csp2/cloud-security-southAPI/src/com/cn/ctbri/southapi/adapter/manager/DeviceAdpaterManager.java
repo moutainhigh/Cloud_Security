@@ -809,4 +809,12 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getEventTypeCountInTime(jsonObject);
 	}
 	
+	public String getAlertLevelCount() {
+		return nsfocusWAFAdapter.getAlertLevelCount();
+	}
+	
+	public String getAlertLevelInTime(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getAlertLevelCountInTime(jsonObject);
+	}
+	
 }
