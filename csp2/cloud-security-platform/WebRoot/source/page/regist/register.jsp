@@ -244,7 +244,7 @@
 <div id="box_mark"></div>
 <div id="box_logoIn_regist" style="display:none">
   <div id="close_edit"></div>  <div class="text_1">
-    <form id="" action="${ctx}/saveUserPassword.html" method="post">
+    <form id="" action="" method="post">
     <div class="text_top" style="text-align:center;">云安全服务平台用户协议</div>
       <div id="f1" class="dd" style="overflow:auto;height:430px;width:870px;margin-top:15px;">
         <p class="help_detail">中国电信股份有限公司北京研究院（以下简称"电信北研院"）同意按照本服务条款的规定基于云安全服务平台（以下简称“平台”）提供“WEB网站云安全服务”。为获得“WEB网站云安全服务”，服务使用人（以下称"用户"）应当同意本协议，才能完成申请程序并通过平台的审核。用户在向平台提交审核申请时，首先签订了该用户协议后才可提交申请。</p>
