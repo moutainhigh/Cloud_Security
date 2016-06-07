@@ -67,10 +67,10 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
     }
 
     public List<Task> findDelTask(Map<String, Object> delmap) {
-        String taskpage = String.valueOf(delmap.get("page"));
-        if(taskpage == null || "".equals(taskpage)){
-            taskpage = "20";
-        }
+//        String taskpage = String.valueOf(delmap.get("page"));
+//        if(taskpage == null || "".equals(taskpage)){
+//            taskpage = "20";
+//        }
         return getSqlSession().selectList(ns+"findDelTask", delmap);
     }
 
