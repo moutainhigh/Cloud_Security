@@ -187,16 +187,19 @@ $(document).ready(function(){
                 </div>
                 <%--页码列表--%>
                 <div class="page clearfix">
-                	<c:if test="${pb.pageCode == 1}">
-                		<a href="#" class="lt fl"></a>
-                	</c:if>
-                	<c:if test="${pb.pageCode != 1}">
-                		<!-- <a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }" class="lt cl_active fl"></a> -->
-                		<a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }" class="lt fl"></a>
-                	</c:if>
+	                <c:choose>
+	                	<c:when test="${pb.pageCode>1}">
+	                		<!-- <a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }" class="lt cl_active fl"></a> -->
+	                		<a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }" class="lt fl"></a>
+	                	</c:when>
+	                	<c:otherwise>
+	                		<a href="#" class="lt fl"></a>
+	                	</c:otherwise>
+	                </c:choose>
+                
                 	<%--页码--%>
                     <ul class="bpage fl">
-                    	<c:if test="${pb.totalPage != 1 && pg.pageCode == pb.totalPage}">
+                    	<c:if test="${pb.totalPage != 1 && pb.pageCode == pb.totalPage}">
                        		<li><a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }">${pb.pageCode-1 }</a></li>
                     	</c:if>
                     	
@@ -208,13 +211,15 @@ $(document).ready(function(){
                         
                     </ul>
                     
-                    <c:if test="${pb.pageCode < pb.totalPage}">
-                    	<a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }" class="gt fl"></a>
-                    	<!-- <a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }" class="gt cr_active fl"></a> -->
-                	</c:if>
-                	<c:if test="${pb.pageCode == pb.totalPage}">
-                		<a href="#" class="gt fl"></a>
-                	</c:if>
+                    <c:choose>
+	                	<c:when test="${pb.pageCode < pb.totalPage}">
+	                		<a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }" class="gt fl"></a>
+                    		<!-- <a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }" class="gt cr_active fl"></a> -->
+	                	</c:when>
+	                	<c:otherwise>
+	                		<a href="#" class="gt fl"></a>
+	                	</c:otherwise>
+	                </c:choose>
                     <span class="pay fl">共${pb.totalPage }页</span>
                 </div>
             </div>
