@@ -313,6 +313,19 @@ public class DeviceAdapterManagerService {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		return deviceAdpaterManager.getWafLogDefaceInTime(jsonObject);
 	}
+	@GET
+	@Path("/getWafEventTypeCount")
+	public String getWafEventType() {
+		return deviceAdpaterManager.getWafEventTypeCount();
+	}
+	@POST
+	@Path("/getWafEventTypeCount")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafEventType(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getWafEventTypeCountInTime(jsonObject);
+	}
+	
 	
 	@POST
 	@Path("/getSites")

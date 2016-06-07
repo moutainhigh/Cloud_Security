@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,6 +20,10 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 
 import com.cn.ctbri.southapi.adapter.batis.inter.*;
 import com.cn.ctbri.southapi.adapter.batis.model.*;
@@ -26,8 +31,10 @@ import com.cn.ctbri.southapi.adapter.waf.config.*;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 
+
 public class NsfocusWAFAdapter {	
 	private static final String RESOURCE_DATABASE_CONFIG = "./DataBaseConf.xml";
+	private static final String WAF_NSFOCUS_EVENT_TYPE = "./conf/WAF_Nsfocus_EventType.xml";
 	
 	public static HashMap<Integer, NsfocusWAFOperation> mapNsfocusWAFOperation = new HashMap<Integer, NsfocusWAFOperation>();
 	public static HashMap<Integer, HashMap<Integer, NsfocusWAFOperation>> mapNsfocusWAFOperationGroup = new HashMap<Integer, HashMap<Integer,NsfocusWAFOperation>>();
@@ -64,6 +71,82 @@ public class NsfocusWAFAdapter {
 		//mapNsfocusWAFOperation.put("30001", value)
 		return true;
 	}
+	
+	
+	private Map<String, String> getWafEventTypeMap() throws DocumentException {
+		Map<String, String> wafEventTypeMap = new HashMap<String, String>();
+		SAXReader reader = new SAXReader();
+		Document document = reader.read(WAF_NSFOCUS_EVENT_TYPE);
+		List<Element> list = document.selectNodes("/TypeList/Type");
+		for (Element element : list) {
+			wafEventTypeMap.put(element.attributeValue("name"), element.getTextTrim());
+			
+		}
+		return wafEventTypeMap;
+		
+	}
+	
+	private TWafLogWebsec getTWafLogWebsecBase64(TWafLogWebsec tWafLogWebsec) throws DocumentException {
+		//事件类型
+	
+		if (tWafLogWebsec.getEventType()!=null&&!tWafLogWebsec.getEventType().equals("")) {
+			//事件类型翻译 英文翻译为中文
+			Map<String, String> eventTypeMap = getWafEventTypeMap();
+			String eventTypeString = tWafLogWebsec.getEventType();
+			if (eventTypeMap.get(eventTypeString)!=null) {
+				tWafLogWebsec.setEventType(eventTypeMap.get(eventTypeString));
+			}
+			
+			String eventTypeBase64 = Base64.getEncoder().encodeToString(eventTypeString.getBytes());
+			tWafLogWebsec.setEventType(eventTypeBase64);
+		}
+		//http请求或响应信息
+		if (tWafLogWebsec.getHttp()!=null) {
+			byte[] httpBytes = tWafLogWebsec.getHttp();
+			byte[] httpBytesBase64 = Base64.getEncoder().encode(httpBytes);
+			tWafLogWebsec.setHttp(httpBytesBase64);
+		}
+		//告警补充描述
+		if (tWafLogWebsec.getAlertinfo()!=null&&!tWafLogWebsec.getAlertinfo().equals("")) {
+			String alertInfoString = tWafLogWebsec.getAlertinfo();
+			String alertInfoBase64 = Base64.getEncoder().encodeToString(alertInfoString.getBytes());
+			tWafLogWebsec.setAlertinfo(alertInfoBase64);
+		}
+		//攻击字符
+		if (tWafLogWebsec.getCharacters()!=null&&!tWafLogWebsec.getCharacters().equals("")) {
+			String charactersString = tWafLogWebsec.getCharacters();
+			String charactersBase64 = Base64.getEncoder().encodeToString(charactersString.getBytes());
+			tWafLogWebsec.setCharacters(charactersBase64);
+		}
+		//浏览器识别
+		if (tWafLogWebsec.getWci()!=null&&!tWafLogWebsec.getWci().equals("")) {
+			String wciBase64 = Base64.getEncoder().encodeToString(tWafLogWebsec.getWci().getBytes());
+			tWafLogWebsec.setWci(wciBase64);
+		}
+		//waf会话识别
+		if (tWafLogWebsec.getWsi()!=null&&!tWafLogWebsec.getWsi().equals("")) {
+			String wsiBase64 = Base64.getEncoder().encodeToString(tWafLogWebsec.getWsi().getBytes());
+			tWafLogWebsec.setWsi(wsiBase64);
+		}
+		return tWafLogWebsec;
+	}
+	
+	private TWafLogDdos getTWafLogDdosBase64(TWafLogDdos tWafLogDdos){
+		if(tWafLogDdos.getAction()!=null&&!tWafLogDdos.getAction().equals("")){
+			String actionBase64 = Base64.getEncoder().encodeToString(tWafLogDdos.getAction().getBytes());
+			tWafLogDdos.setAction(actionBase64);
+		}
+		return tWafLogDdos;
+	}
+	
+	private TWafLogDeface getTWafLogDefaceBase64(TWafLogDeface tWafLogDeface) {
+		if (tWafLogDeface.getReason()!=null&&!tWafLogDeface.getReason().equals("")) {
+			String reasonBase64 = Base64.getEncoder().encodeToString(tWafLogDeface.getReason().getBytes());
+			tWafLogDeface.setReason(reasonBase64);
+		}
+		return tWafLogDeface;
+	}
+	
 	public String getSites(int resourceId) {
 		HashMap<Integer,NsfocusWAFOperation> map = mapNsfocusWAFOperationGroup.get(resourceId);
 		JSONArray siteArray = new JSONArray();
@@ -211,6 +294,10 @@ public class NsfocusWAFAdapter {
 			example.or().andDstIpIn(dstIpList);
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			List<TWafLogWebsec> allList = mapper.selectByExample(example);
+
+			for (TWafLogWebsec tWafLogWebsec : allList) {
+				tWafLogWebsec = getTWafLogWebsecBase64(tWafLogWebsec);
+			}
 			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
 			XStream xStream = new XStream(driver);
 			xStream.autodetectAnnotations(true);
@@ -219,7 +306,7 @@ public class NsfocusWAFAdapter {
 			String xmlString =  xStream.toXML(allList);
 			sqlSession.close();
 			return xmlString;
-		}catch (IOException e) {
+		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return "{\"wafLogWebsecList\":\"error\"}";
@@ -232,6 +319,9 @@ public class NsfocusWAFAdapter {
 			SqlSession sqlSession = getSqlSession();
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			TWafLogWebsec wafLogWebsec = mapper.selectByPrimaryKey(Long.parseLong(logId));
+			
+			wafLogWebsec = getTWafLogWebsecBase64(wafLogWebsec);
+
 			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
 			XStream xStream = new XStream(driver);
 			xStream.autodetectAnnotations(true);
@@ -239,7 +329,7 @@ public class NsfocusWAFAdapter {
 			String jsonString =  xStream.toXML(wafLogWebsec);
 			sqlSession.close();
 			return jsonString;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return "{\"wafLogWebsec\":\"error\"}";
@@ -268,6 +358,12 @@ public class NsfocusWAFAdapter {
 			example.or().andStatTimeBetween(dateBefore,dateNow).andDstIpIn(dstIpList);
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			List<TWafLogWebsec> allList = mapper.selectByExample(example);
+
+
+			for (TWafLogWebsec tWafLogWebsec : allList) {
+				tWafLogWebsec = getTWafLogWebsecBase64(tWafLogWebsec);
+			}
+			
 			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
 			XStream xStream = new XStream(driver);
 			xStream.autodetectAnnotations(true);
@@ -276,7 +372,7 @@ public class NsfocusWAFAdapter {
 			String jsonString =  xStream.toXML(allList);
 			sqlSession.close();
 			return jsonString;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return "{\"wafLogWebsecList\":\"error\"}";
@@ -371,6 +467,10 @@ public class NsfocusWAFAdapter {
 			example.or().andDstIpIn(dstIpList);
 			TWafLogDefaceMapper mapper = sqlSession.getMapper(TWafLogDefaceMapper.class);
 			List<TWafLogDeface> allList = mapper.selectByExample(example);
+			for (TWafLogDeface tWafLogDeface : allList) {
+				tWafLogDeface = getTWafLogDefaceBase64(tWafLogDeface);
+			}
+			
 			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
 			XStream xStream = new XStream(driver);
 			xStream.autodetectAnnotations(true);
@@ -392,6 +492,9 @@ public class NsfocusWAFAdapter {
 			SqlSession sqlSession = getSqlSession();
 			TWafLogDefaceMapper mapper = sqlSession.getMapper(TWafLogDefaceMapper.class);
 			TWafLogDeface wafLogDeface = mapper.selectByPrimaryKey(Long.parseLong(logId));
+			
+			wafLogDeface = getTWafLogDefaceBase64(wafLogDeface);
+			
 			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
 			XStream xStream = new XStream(driver);
 			xStream.autodetectAnnotations(true);
@@ -425,6 +528,11 @@ public class NsfocusWAFAdapter {
 			example.or().andDstIpIn(dstIpList).andStatTimeBetween(dateBefore, dateNow);
 			TWafLogDefaceMapper mapper = sqlSession.getMapper(TWafLogDefaceMapper.class);
 			List<TWafLogDeface> allList = mapper.selectByExample(example);
+			
+			for (TWafLogDeface tWafLogDeface : allList) {
+				tWafLogDeface = getTWafLogDefaceBase64(tWafLogDeface);
+			}
+			
 			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
 			XStream xStream = new XStream(driver);
 			xStream.autodetectAnnotations(true);
@@ -451,6 +559,10 @@ public class NsfocusWAFAdapter {
 			example.or().andDstIpIn(dstIpList);
 			TWafLogDdosMapper mapper = sqlSession.getMapper(TWafLogDdosMapper.class);
 			List<TWafLogDdos> allList = mapper.selectByExample(example);
+			for (TWafLogDdos tWafLogDdos : allList) {
+				tWafLogDdos = getTWafLogDdosBase64(tWafLogDdos);
+			}
+			
 			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
 			XStream xStream = new XStream(driver);
 			xStream.autodetectAnnotations(true);
@@ -472,6 +584,8 @@ public class NsfocusWAFAdapter {
 			sqlSession = getSqlSession();
 			TWafLogDdosMapper mapper = sqlSession.getMapper(TWafLogDdosMapper.class);
 			TWafLogDdos wafLogDdos = mapper.selectByPrimaryKey(Long.parseLong(logId));
+			wafLogDdos = getTWafLogDdosBase64(wafLogDdos);
+			
 			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
 			XStream xStream = new XStream(driver);
 			xStream.autodetectAnnotations(true);
@@ -507,6 +621,10 @@ public class NsfocusWAFAdapter {
 			example.or().andDstIpIn(dstIpList).andStatTimeBetween(dateBefore, dateNow);
 			TWafLogDdosMapper mapper = sqlSession.getMapper(TWafLogDdosMapper.class);
 			List<TWafLogDdos> allList = mapper.selectByExample(example);
+			for (TWafLogDdos tWafLogDdos : allList) {
+				tWafLogDdos = getTWafLogDdosBase64(tWafLogDdos);
+			}
+			
 			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
 			XStream xStream = new XStream(driver);
 			xStream.autodetectAnnotations(true);
@@ -523,6 +641,72 @@ public class NsfocusWAFAdapter {
 			sqlSession.close();
 		}
 	}
+	
+	public String getEventTypeCount() {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getSqlSession();
+			
+			
+			SAXReader reader = new SAXReader();
+			Document document = reader.read(WAF_NSFOCUS_EVENT_TYPE);
+			List<Element> typeElements = document.selectNodes("/TypeList/Type");
+			Map<String, Integer> mapEventTypeCount = new HashMap<String, Integer>();
+			for (Element element : typeElements) {
+				String eventTypeBase64 = Base64.getEncoder().encodeToString(element.getTextTrim().getBytes());
+				TWafLogWebsecExample example = new TWafLogWebsecExample();
+				example.or().andEventTypeEqualTo(element.attributeValue("name"));
+				TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+				mapEventTypeCount.put(eventTypeBase64, mapper.countByExample(example));
+			}
+			JSONObject eventTypeJsonObject = JSONObject.fromObject(mapEventTypeCount);
+			return eventTypeJsonObject.toString();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "Eventtype count error!!!");
+			return errorJsonObject.toString();
+		}
+	}
+	
+	public String getEventTypeCountInTime(JSONObject jsonObject) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getSqlSession();
+			
+			int interval = jsonObject.getInt("interval");
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			Date dateNow = calendar.getTime();
+			calendar.add(Calendar.HOUR, -interval);
+			Date dateBefore = calendar.getTime();
+			
+			SAXReader reader = new SAXReader();
+			Document document = reader.read(WAF_NSFOCUS_EVENT_TYPE);
+			List<Element> typeElements = document.selectNodes("/TypeList/Type");
+			Map<String, Integer> mapEventTypeCount = new HashMap<String, Integer>();
+			for (Element element : typeElements) {
+				String eventTypeBase64 = Base64.getEncoder().encodeToString(element.getTextTrim().getBytes());
+				TWafLogWebsecExample example = new TWafLogWebsecExample();
+				example.or().andEventTypeEqualTo(element.attributeValue("name")).andStatTimeBetween(dateBefore, dateNow);
+				TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+				mapEventTypeCount.put(eventTypeBase64, mapper.countByExample(example));
+			}
+			JSONObject eventTypeJsonObject = JSONObject.fromObject(mapEventTypeCount);
+			return eventTypeJsonObject.toString();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "Eventtype count error!!!");
+			return errorJsonObject.toString();
+		}
+	}
 
 	
 	private SqlSession getSqlSession() throws IOException{
@@ -536,14 +720,16 @@ public class NsfocusWAFAdapter {
 	public static void main(String[] args) {
 		NsfocusWAFAdapter adapter = new NsfocusWAFAdapter();
 		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("interval", 1);
+		adapter.getEventTypeCountInTime(jsonObject);
 		
-		JSONArray jsonArray = new JSONArray();
+	/**	JSONArray jsonArray = new JSONArray();
 		jsonArray.add("219.141.189.183");
 		jsonArray.add("219.141.189.184");
 		jsonObject.put("dstIp",jsonArray);
 		jsonObject.put("interval", "3");
 		String string = adapter.getWafLogWebsecInTime(jsonObject);
-		System.out.println(string);
+		System.out.println(string);**/
 	}
 	
 	

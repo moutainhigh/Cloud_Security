@@ -39,7 +39,7 @@ public class DeviceAdpaterManager {
 	private static final String DEVICE_OPERATION_ERROR = "{\"status\":\"fail\",\"message\":\"This device does not support the operation\"}";
 	
 	public static HashMap<String, DeviceConfigInfo> mapDeviceConfigInfoHashMap = new HashMap<String, DeviceConfigInfo>();
-	public static final String wafRootString = "./conf/WafConfig.xml"; 
+	private static String wafRootString; 
 	
 	public static ArnhemDeviceAdpater arnhemDeviceAdpater = new ArnhemDeviceAdpater();
 	public static WebsocDeviceAdapter websocDeviceAdapter = new WebsocDeviceAdapter();
@@ -226,8 +226,7 @@ public class DeviceAdpaterManager {
 	        	  mapDeviceConfigInfoHashMap.put(daaInfo.getDeviceID(), daaInfo);
 	        }
 
-	        Element elementWAFRoot = doc.getRootElement().element("DeviceList").element("DeviceWAFList");
-
+	        wafRootString = doc.getRootElement().element("DeviceList").element("DeviceWAFList").attributeValue("configFile");
 	        System.out.println(mapDeviceConfigInfoHashMap.entrySet());
 	        return true;
 		} catch (DocumentException e) {
@@ -800,6 +799,14 @@ public class DeviceAdpaterManager {
 	
 	public String getWafLogDefaceInTime(JSONObject jsonObject) {
 		return nsfocusWAFAdapter.getWafLogDefaceInTime(jsonObject);
+	}
+	
+	public String getWafEventTypeCount() {
+		return nsfocusWAFAdapter.getEventTypeCount();
+	}
+	
+	public String getWafEventTypeCountInTime(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getEventTypeCountInTime(jsonObject);
 	}
 	
 }

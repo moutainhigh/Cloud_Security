@@ -24,7 +24,7 @@ public class TWafLogWebsecSqlProvider {
 
     public String countByExample(TWafLogWebsecExample example) {
         BEGIN();
-        SELECT("count (*)");
+        SELECT("count(*)");
         FROM("t_waf_log_websec");
         applyWhere(example, false);
         return SQL();
