@@ -693,7 +693,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
             String resultStr = SouthAPIWorker.getEngineStatRate(engineList.get(i).getEngine_number());
 
             //解析引擎设备参数，返回负载值
-            getLoadForEngine(resultStr,engineList.get(i).getActivity(),engineList.get(i).getMaxTask());
+            getLoadForEngine(resultStr);
           
     	}
 
@@ -734,7 +734,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	 * @param maxTask 引擎最大承载任务数
 	 * @return
 	 */
-	private Map<String,Double> getLoadForEngine(String resultStr,int activity,int maxTask){
+	private Map<String,Double> getLoadForEngine(String resultStr){
 		Map<String,Double> loadMap = new HashMap<String,Double>();
 		double load = 0;
         try {
@@ -749,7 +749,11 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 						double memory_usage = jsonObject.getDouble("memoryUsage");
 						double cpu_usage = jsonObject.getDouble("cpuUsage");
 						double disk_usage = jsonObject.getDouble("diskUsage");
-						double load_usage = activity/maxTask;
+						//根据ip查询当前任务数和最大任务数
+						EngineCfg engine = engineService.findEngineIdbyIP(ip);
+						int activity = engine.getActivity();
+						int maxTask = engine.getMaxTask();
+						double load_usage = (double)activity/(double)maxTask;
 						
 						double cpu_usageWeightD = Double.parseDouble(cpu_usageWeight);
 						double memory_usageWeightD = Double.parseDouble(memory_usageWeight);
