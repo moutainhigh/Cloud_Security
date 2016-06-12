@@ -108,7 +108,6 @@ public class Scheduler4Result {
 						}else{
 							for (Task task : tlist) {
 								if(task.getStatus()==3 && task.getIsAlarm()!=1){//任务结束
-									System.out.println("chongfu>>>>>>>>>>>>>"+task.getTaskId());
 									String result = NorthAPIWorker.vulnScanGetResult(order.getId(),String.valueOf(task.getTaskId()));
 									JSONObject jsonObj = new JSONObject().fromObject(result);
 									JSONArray alarmArray = jsonObj.getJSONArray("alarmObj");
@@ -168,10 +167,8 @@ public class Scheduler4Result {
 	//									order.setStatus(1);
 	//									orderService.update(order);
 									}
-									System.out.println("chongfu1>>>>>>>>>>>>>"+task.getTaskId());
 									task.setIsAlarm(1);
 									taskService.updateTask(task);
-									System.out.println("chongfu2>>>>>>>>>>>>>"+task.getTaskId());
 								}else{
 									String result = NorthAPIWorker.vulnScanGetStatus(order.getId());
 									JSONObject obj = new JSONObject().fromObject(result);
