@@ -175,6 +175,9 @@ var getCharsData=function(repeat){
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
+                	value = [];
+                	label = [];
+                   	colorData = [];
                     $.each(data,function(i,p){
 	                   	
 	                   	var temp = null;
@@ -273,6 +276,10 @@ var getCharsData=function(repeat){
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
+                	lineData=[];
+                   	lineData2=[];
+                   	lineData3=[];
+                   	time=[];
                     $.each(data,function(i,p){
 	                   	var temp = null;
 	                   	if(p['label']==0){
@@ -378,6 +385,7 @@ var getCharsData=function(repeat){
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
+                	lineData = [];
                     $.each(data,function(i,p){
 	                   	lineData[i]=p['name'];
                     });
