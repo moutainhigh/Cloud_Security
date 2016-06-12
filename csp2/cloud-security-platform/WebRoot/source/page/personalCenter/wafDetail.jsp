@@ -21,6 +21,10 @@
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
 
+<script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/order/wafPic.js"></script>
+
 <script type="text/javascript">
   $(function() {
      $(".data_table_cont a").on('click', function() {
@@ -196,9 +200,9 @@
           </ul>
         </div> 
         <div class="data_min">
-             <div class="data_1"></div>
-             <div class="data_1"></div>
-             <div class="data_1" style="margin-right:0px;"></div>
+             <div class="data_1" id="levelPie"></div>
+             <div class="data_1" id="eventBar"></div>
+             <div class="data_1" style="margin-right:0px;" id="eventPie"></div>
         </div>
         <div class="data_table">
             <c:if test="${websecNum!=0}">

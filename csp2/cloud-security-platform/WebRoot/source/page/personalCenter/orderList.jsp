@@ -140,7 +140,7 @@
 						                 <a href="${ctx}/warningWaf.html?orderId=${list.id }&type=${list.type}" target="_blank" title="">
 						                 	查看详情
 						                 </a>
-						                 <a href="${ctx}/warningInit.html?orderId=${list.id }&type=${list.type}&websoc=${list.websoc}" target="_blank" title="已完成有告警">
+						                 <a href="${ctx}/domainNameUI.html" target="_blank" title="设置域名解析">
 						                 	设置域名解析
 						                 </a>
 						                
