@@ -1,6 +1,7 @@
 package com.cn.ctbri.entity;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * 创 建 人  ： tangxr
@@ -20,6 +21,8 @@ public class OrderList {
 	private String serverName;//服务名称
 	private Date pay_date;//支付时间
 	private int balanceFlag; //是否领取安全币（0:未领取；1:已领取）
+	
+	private Map<String, Integer> serverNameMap;
 	
 	public String getId() {
 		return id;
@@ -80,6 +83,12 @@ public class OrderList {
 	}
 	public void setBalanceFlag(int balanceFlag) {
 		this.balanceFlag = balanceFlag;
+	}
+	public Map<String, Integer> getServerNameMap() {
+		return serverNameMap;
+	}
+	public void setServerNameMap(Map<String, Integer> serverNameMap) {
+		this.serverNameMap = serverNameMap;
 	}
 	
 }
