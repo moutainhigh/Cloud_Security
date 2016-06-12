@@ -179,9 +179,9 @@ function showUnreadNews()
                                             <a href="${ctx}/wafDetails.html?serviceId=6&indexPage=1" class="btn" style="width:80px;">购买</a>
                                         </div>
                                     </div>
-                               <!-- <div class="mask">
+                               <div class="mask">
                                 	<h6>即将上线</h6>
-                                </div> -->
+                                </div>
                                 
                                
                             </li>
