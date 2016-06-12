@@ -175,7 +175,11 @@ $(document).ready(function(){
 											<fmt:formatDate value="${payItem.pay_date }" pattern="yyyy-MM-dd HH:mm:ss"/>
 										</td>
 										<td width="200">${payItem.id }</td>
-										<td width="330" style="font-size: 16px;">${payItem.serverName }</td>
+										<td width="330" style="font-size: 16px;">
+											<c:forEach var="name" items="${payItem.serverNameMap }" varStatus="status">
+	                                    		${name.key }*${name.value }<br/>
+	                                    	</c:forEach>
+										</td>
 										<td width="160">
 											<fmt:formatNumber  value="${payItem.price }" pattern="0.00"/>
 										</td>
