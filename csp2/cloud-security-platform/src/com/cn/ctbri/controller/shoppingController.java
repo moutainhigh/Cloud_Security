@@ -1072,6 +1072,16 @@ public class shoppingController {
     	
     	//根据订单编号获取服务名称
     	String[] serviceName = orderList.getServerName().split(",");
+    	Map<String,Integer> serverNameMap = new HashMap<String,Integer>();
+    	for (String name: serviceName){
+    		if(serverNameMap.containsKey(name)){
+    			int count = serverNameMap.get(name) +1;
+    			serverNameMap.put(name, count);
+    		}else {
+    			serverNameMap.put(name, 1);
+    		}
+    		
+    	}
 //		List<String> nameList = orderService.findServiceNameByOrderId(orderList.getOrderId());
 
     	//安全币余额
@@ -1080,56 +1090,10 @@ public class shoppingController {
     	
         model.addAttribute("orderList", orderList);
         model.addAttribute("price", priceStr);
-        model.addAttribute("serviceName", serviceName);
+        model.addAttribute("serverName", serverNameMap);
         model.addAttribute("balance",balance);
     	return "source/page/details/shoppingcashier-desk2";
     }
-    
-//    /**
-//     * 功能描述： 检查支付时间
-//     * */
-//    @RequestMapping("checkPayTime.html")
-//    public void checkPayTime(HttpServletRequest request, HttpServletResponse response){
-//    	Map<String, Object> m = new HashMap<String, Object>();
-//    	try {
-//    		String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
-//    		OrderList orderList = orderListService.findById(orderListId);
-//    		//收银台页面刷新，再次支付
-//    		if (orderList.getPay_date() != null){
-//    			//不能重复支付
-//    			m.put("payFlag", 1);
-//    			return;
-//    		}
-//    		
-//    		Date orderCreateDate = orderList.getCreate_date();//下单时间
-//    		String orderIds = orderList.getOrderId();//订单条目编号(cs_order的id)
-//    		
-//    		//比较支付时间和下单时间
-//    		Date payDate = new Date();
-//    		//支付时间-下单时间 >15分钟
-//    		if (DateUtils.getMsByDays(orderCreateDate, payDate)>= 15*60*1000){
-//    			//更改订单的状态，支付超时设为9
-//    			selfHelpOrderService.updateOrderStatus(orderIds, 9);
-//    			
-//    			m.put("payFlag", 2);
-//    		}else{
-//    			m.put("payFlag", 0);
-//    		}
-//    		
-//    	} catch (Exception e){
-//    		e.printStackTrace();
-//    	} finally {
-//    		//object转化为Json格式
-//    		JSONObject JSON = CommonUtil.objectToJson(response, m);
-//    		try {
-//    			// 把数据返回到页面
-//    			CommonUtil.writeToJsp(response, JSON);
-//    		} catch (IOException e) {
-//    			e.printStackTrace();
-//    		}
-//    	}
-//		
-//    }
     
     /**
      * 功能描述： 确认支付
@@ -1150,17 +1114,6 @@ public class shoppingController {
     		
 //    		Date orderCreateDate = orderList.getCreate_date();//下单时间
     		String orderIds = orderList.getOrderId();//订单条目编号(cs_order的id)
-    		
-//    		//比较支付时间和下单时间
-//    		Date payDate = new Date();
-//    		//支付时间-下单时间 >15分钟
-//    		if (DateUtils.getMsByDays(orderCreateDate, payDate)>= 15*60*1000){
-//    			//更改订单的状态，支付超时设为9
-//    			selfHelpOrderService.updateOrderStatus(orderIds, 9);
-//    			
-//    			m.put("payFlag", 2);
-//    			return;
-//    		}
     		
     		//取得安全币余额
     		User globle_user = (User) request.getSession().getAttribute("globle_user");
