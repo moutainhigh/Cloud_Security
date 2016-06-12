@@ -166,7 +166,7 @@ public class NorthAPIWorker {
 	 */
 	public static String vulnScanCreate(String scanMode, String[] targetURL, String scanType, 
     		String startTime, String endTime, String scanPeriod, String scanDepth, 
-    		String maxPages, String stategy, String customManu[], String serviceId) {
+    		String maxPages, String stategy, String customManu[], String serviceId, String apiKey) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("scanMode", scanMode);
@@ -182,6 +182,7 @@ public class NorthAPIWorker {
 		JSONArray customManus = JSONArray.fromObject(customManu);
 		json.put("customManus", customManus);
 		json.put("serviceId", serviceId);
+		json.put("apiKey", apiKey);
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + North_Create_Order;
     	//创建jersery客户端配置对象

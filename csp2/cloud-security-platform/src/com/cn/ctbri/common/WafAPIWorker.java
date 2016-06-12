@@ -361,12 +361,61 @@ public class WafAPIWorker {
 	 * @param logId
 	 * @return
 	 */
-	public static String getWaflogWebsecInTime(List<String> dstIpList,String interval){
+	public static String getWaflogWebsecInTime(String[] dstIpList,String interval){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("dstIp", dstIpList);
 		json.put("interval", interval);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogWebsecInTime";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
+	
+	/**
+	 * 功能描述：获取安全事件类型统计信息
+	 * @param interval
+	 * @return
+	 */
+	public static String getWafEventTypeCount(String interval){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("interval", interval);
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafEventTypeCount";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
+	
+	
+	/**
+	 * 功能描述：获取Level统计信息
+	 * @param interval
+	 * @return
+	 */
+	public static String getWafAlertLevelCount(String interval){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("interval", interval);
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafAlertLevelCount";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
@@ -499,9 +548,9 @@ public class WafAPIWorker {
     	String virtualSiteRe = controller.analysisGetCreateVirtualSite(virtualSite);
     	System.out.println(virtualSiteRe);*/
     	
-    	List<String> dstIpList = new ArrayList();
-    	dstIpList.add("219.141.189.184");
-    	dstIpList.add("219.141.189.185");
+//    	List<String> dstIpList = new ArrayList();
+//    	dstIpList.add("219.141.189.184");
+//    	dstIpList.add("219.141.189.185");
     	
 /*    	String wafLogByIp = getWaflogWebsecByIp(dstIpList);
     	List list = controller.analysisGetWaflogWebsecByIp(wafLogByIp);
@@ -538,6 +587,9 @@ public class WafAPIWorker {
 			}
     	}*/
     	
+//    	String waf = getWafEventTypeCount("1");
+//    	String waf = getWafAlertLevelCount("1");
+    	
 /*    	String wafLogById = getWaflogWebsecById("2104");
     	Map map = controller.analysisGetWaflogWebsecById(wafLogById);
     	
@@ -571,7 +623,7 @@ public class WafAPIWorker {
 
     	
     	
-    	String wafLogInTime = getWaflogWebsecInTime(dstIpList,"1");
+    	/*String wafLogInTime = getWaflogWebsecInTime(dstIpList,"1");
     	List list3 = controller.analysisGetWaflogWebsecInTime(wafLogInTime);
     	if(list3!=null&&list3.size()>0){
     		for (int i = 0; i < list3.size(); i++) {
@@ -604,9 +656,9 @@ public class WafAPIWorker {
 		        String wsi = map.get("wsi").toString();
 		      
 			}
-    	}
+    	}*/
     		
-        String status = "";
+        String virtualSite = "";
     	try {
     		/*JSONObject obj = JSONObject.fromObject(ethStr);
         	String ip_address = obj.getString("ip_address");
@@ -618,10 +670,11 @@ public class WafAPIWorker {
         	JSONObject ipObject = ip_addressObject.getJSONObject("ip");
         	String mask = ipObject.getString("mask");
         	System.out.println(mask);*/
+//    		virtualSite  = createVirtualSite("10001", "30001", "1464833085", "testfire", "http://www.testfire.net/", "*", "");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(status);
+        System.out.println(virtualSite);
         
     }
 }
