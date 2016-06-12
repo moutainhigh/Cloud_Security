@@ -9,7 +9,7 @@
 
 .shoping_center {
 	background: #e4f3ff;
-	height: 208px;
+	/*height: 208px;*/
 	padding-left: 30px;
 	padding-top: 14px;
 }
@@ -17,7 +17,7 @@
 .shoping_center ul li {
 	font-size: 16px;
 	line-height: 43px;
-	height: 43px;
+	/*height: 43px;*/
 }
 
 .shoping_center ul li b {
