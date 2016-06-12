@@ -1,6 +1,8 @@
 package com.cn.ctbri.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +57,21 @@ public class OrderListServiceImpl implements IOrderListService{
 		}
 		// 查询本页记录
 		List<OrderList> datas = orderListDao.queryPayRecordByPage(userId, (pageCode - 1) * pb.getPageSize(), pb.getPageSize());
+		
+		for(OrderList ol: datas) {
+			String[] serviceName = ol.getServerName().split(","); 
+			Map<String,Integer> serverNameMap = new HashMap<String,Integer>();
+			for (String name: serviceName){
+	    		if(serverNameMap.containsKey(name)){
+	    			int count = serverNameMap.get(name) +1;
+	    			serverNameMap.put(name, count);
+	    		}else {
+	    			serverNameMap.put(name, 1);
+	    		}
+	    		
+	    	}
+			ol.setServerNameMap(serverNameMap);
+		}
 		
 		// 保存pageBean中
 		pb.setDatas(datas);
