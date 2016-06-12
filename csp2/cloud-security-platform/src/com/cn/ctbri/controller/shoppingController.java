@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.common.HuaweiWorker;
 import com.cn.ctbri.common.NorthAPIWorker;
+import com.cn.ctbri.common.WafAPIWorker;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
@@ -1347,7 +1348,7 @@ public class shoppingController {
     					if(shopCar.getServiceId()!=6){
     						
     						orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
-    								scanDepth, maxPages, stategy, customManu, String.valueOf(shopCar.getServiceId()));
+    								scanDepth, maxPages, stategy, customManu, String.valueOf(shopCar.getServiceId()), globle_user.getApikey());
 //    						SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
 //    						String orderDate = odf.format(new Date());
 //    						orderId = orderDate+String.valueOf(Random.fivecode());
@@ -1357,6 +1358,7 @@ public class shoppingController {
     						String orderDate = odf.format(new Date());
     						orderId = orderDate+String.valueOf(Random.fivecode());
     						orderVal = orderVal+ orderId+",";
+//    						WafAPIWorker.createVirtualSite(resourceId, deviceId, parent, name, domain, include, exclude, server)
     					}
     					
     				} catch (Exception e) {

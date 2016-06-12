@@ -1,7 +1,11 @@
 package com.cn.ctbri.controller;
 
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.common.WafAPIWorker;
 import com.cn.ctbri.entity.User;
@@ -71,7 +78,8 @@ public class WafDetailController {
         	String ipArray=(String) assetOrder.get("ipArray");
         	String[] ips = null;   
             ips = ipArray.split(",");
-            String websecStr = WafAPIWorker.getWaflogWebsecByIp(ips);
+//            String websecStr = WafAPIWorker.getWaflogWebsecByIp(ips);
+            String websecStr = WafAPIWorker.getWaflogWebsecInTime(ips, "1");
         	websecList = this.getWaflogWebsecByIp(websecStr);
         	request.setAttribute("websecList", websecList);
         }
@@ -89,6 +97,140 @@ public class WafDetailController {
     	JSONObject JSON = CommonUtil.objectToJson(response, map);
 	    // 把数据返回到页面
         CommonUtil.writeToJsp(response, JSON);
+    }
+    
+    
+    /**
+     * 功能描述： 获取level饼图数据
+     * 参数描述：  无
+     */
+    @RequestMapping(value="getLevelPieData.html")
+    @ResponseBody
+    public String getLevelPieData(HttpServletRequest request){
+    	String levelStr = WafAPIWorker.getWafAlertLevelCount("1");
+    	Map map = this.getWafAlertLevelCount(levelStr);
+        
+        int high = 0;
+        int middle = 0;
+        int low = 0;
+        int count = 0;
+        
+        if(map != null && map.size() > 0){
+			high = Integer.parseInt(map.get("high").toString());
+			middle = Integer.parseInt(map.get("low").toString());
+			low = Integer.parseInt(map.get("mid").toString());
+        }
+        count = high + middle + low;
+        DecimalFormat df = new DecimalFormat("0.00");//格式化小数，不足的补0
+        JSONArray json = new JSONArray();
+        
+        if(low>0){
+            JSONObject jo = new JSONObject();
+            jo.put("label", "0");
+            jo.put("value", low);
+            jo.put("color", "#1e91ff");
+            jo.put("ratio", df.format((float)low/count*100)+"%");
+            json.add(jo);
+        }
+        if(middle>0){
+            JSONObject jo = new JSONObject();
+            jo.put("label", "1");
+            jo.put("value", middle);
+            jo.put("color", "#ffa500");
+            jo.put("ratio", df.format((float)middle/count*100)+"%");
+            json.add(jo);
+        }
+        if(high>0){
+            JSONObject jo = new JSONObject();
+            jo.put("label", "2");
+            jo.put("value", high);
+            jo.put("color", "#ff7e50");
+            jo.put("ratio", df.format((float)high/count*100)+"%");
+            json.add(jo);
+        }
+        
+        return json.toString();
+    }
+    
+    /**
+     * 功能描述： 获取level饼图数据
+     * 参数描述：  无
+     */
+    @RequestMapping(value="getEventPieData.html", method = RequestMethod.POST)
+    @ResponseBody
+    public void getEventPieData(HttpServletRequest request, HttpServletResponse response){
+    	response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset=UTF-8");
+    	String eventStr = WafAPIWorker.getWafEventTypeCount("1");
+    	Map map = this.getWafEventTypeCount(eventStr);
+        
+        List name = null;
+        List value = null;
+        JSONObject jsondata = null;
+        
+        if(map != null && map.size() > 0){
+			name = (List) map.get("name");
+			value = (List) map.get("value");
+			jsondata = (JSONObject) map.get("json");
+        }
+
+        DecimalFormat df = new DecimalFormat("0.00");//格式化小数，不足的补0
+        JSONArray json = new JSONArray();
+        
+
+        JSONObject jo = new JSONObject();
+        jo.put("name", name);
+        jo.put("count", value);
+        jo.put("json", jsondata);
+//        json.add(jo);
+        
+        PrintWriter out;
+        try {
+            out = response.getWriter();
+            out.write(jo.toString()); 
+            out.flush(); 
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        return jo.toString();
+    }
+    
+    
+    /**
+     * 功能描述： 获取level柱数据
+     * 参数描述：  无
+     */
+    @RequestMapping(value="getEventBarData.html", method = RequestMethod.POST)
+    @ResponseBody
+    public void getEventBarData(HttpServletRequest request, HttpServletResponse response){
+    	response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset=UTF-8");
+    	String eventStr = WafAPIWorker.getWafEventTypeCount("1");
+    	Map map = this.getWafEventTypeCount(eventStr);
+        
+        List name = null;
+        List value = null;
+        
+        if(map != null && map.size() > 0){
+			name = (List) map.get("name");
+			value = (List) map.get("value");
+        }
+
+        JSONObject jo = new JSONObject();
+        jo.put("name", name);
+        jo.put("count", value);
+        
+        PrintWriter out;
+        try {
+            out = response.getWriter();
+            out.write(jo.toString()); 
+            out.flush(); 
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        return jo.toString();
     }
     
     
@@ -299,5 +441,76 @@ public class WafDetailController {
             e.printStackTrace();
         }
     	return newMap;
+    }
+    
+    
+    /**
+     * 解析安全事件类型统计信息
+     * @param eventStr
+     */
+    public Map getWafEventTypeCount(String eventStr){
+    	Map<String,Object> reMap = new HashMap<String,Object>();
+    	List<Object> arr = new ArrayList<Object>();
+		List<Object> arra = new ArrayList<Object>();
+		JSONObject json = new JSONObject();
+    	try {
+    		JSONArray obj = new JSONArray().fromObject(eventStr);
+    		for (Object aObj : obj) {
+    			JSONObject e = (JSONObject) aObj;
+    			int count = e.getInt("count");
+    			if(count!=0){
+    				byte[] base64Bytes = Base64.decodeBase64(e.getString("eventType").toString().getBytes());
+    				String eventType = new String(base64Bytes).trim();
+    				arr.add(eventType);
+    				arra.add(count);
+    				json.put("value", count);
+    				json.put("name", eventType);
+    			}
+    			
+    		}
+//    		List<Object> arr = obj.names();//获取名
+//			Collection<Object> arra = obj.values();//获取值
+//			
+//			List<Object> arrNew = new ArrayList<Object>();
+//			List<Object> arraNew = new ArrayList<Object>();
+//			for(Object name:arr){
+//				byte[] base64Bytes = Base64.decodeBase64(name.toString().trim().getBytes());
+//				arrNew.add(new String(base64Bytes).trim());
+//			}
+//			
+//			for(Object value:arra){
+//				arraNew.add(value.toString());
+//			} 		
+//
+//			
+			reMap.put("name", arr);
+			reMap.put("value", arra);
+			reMap.put("json", json);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    	return reMap;
+    }
+    
+    
+    /**
+     * 解析level统计信息
+     * @param levelStr
+     */
+    public Map getWafAlertLevelCount(String levelStr){
+    	Map<String,Object> reMap = new HashMap<String,Object>();
+    	try {
+    		JSONObject obj = JSONObject.fromObject(levelStr);
+    		int high = obj.getInt("HIGH");
+    		int low = obj.getInt("LOW");
+    		int mid = obj.getInt("MID");
+    		reMap.put("high", high);
+    		reMap.put("low", low);
+    		reMap.put("mid", mid);
+    		
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    	return reMap;
     }
 }

@@ -538,6 +538,9 @@ public class ExportController {
                     if (userAgent.indexOf("msie") != -1) {
                         rtn = "filename=\"" + new_filename + "\"";
                     }
+                    else if (userAgent.indexOf("edge") != -1) {
+                    	rtn = "filename=\"" + new_filename + "\"";
+                    }
                     // Opera浏览器只能采用filename*
                     else if (userAgent.indexOf("opera") != -1) {
                         rtn = "filename*=UTF-8''" + new_filename;
