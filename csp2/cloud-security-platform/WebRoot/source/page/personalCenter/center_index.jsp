@@ -98,10 +98,9 @@ function deleteOrder(orderId,begin_date){
 			<!--头部-->
 			<div class="head">
 				<div class="headBox">
-					<div class="safeL fl" style="width:260px; margin-right:13%">
+						<div class="safeL fl" style="width:260px; margin-right:13%">
 						<a href="${ctx}/index.html"><img src="${ctx}/source/images/anquanbang_white_logo.png" alt="" style="position:relative; top:4px;"/></a>
-                        <b class="dividing-line"></b>
-                        <strong>个人中心</strong>
+                        <strong style="font-size:20px; color:#fff; padding-left:10px;position:relative; top:-10px; font-weight:normal;">个人中心</strong>
 					</div>
 					
 					<div class="safem fl">
