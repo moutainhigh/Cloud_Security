@@ -11,10 +11,11 @@
     <javaModelGenerator targetPackage="com.cn.ctbri.southapi.adapter.batis.model" targetProject="cloud-security-southAPI/src" />
     <sqlMapGenerator targetPackage="com.cn.ctbri.southapi.adapter.batis.mapper" targetProject="cloud-security-southAPI/src" />
     <javaClientGenerator targetPackage="com.cn.ctbri.southapi.adapter.batis.inter" targetProject="cloud-security-southAPI/src" type="ANNOTATEDMAPPER" />
-    <table schema="t_waf_log_arp" tableName="t_waf_log_arp"></table>
+  	<table schema="t_waf_nsfocus_targetinfo" tableName="t_waf_nsfocus_targetinfo"></table>
+  <!--  <table schema="t_waf_log_arp" tableName="t_waf_log_arp"></table>
     <table schema="t_waf_log_ddos" tableName="t_waf_log_ddos">
-    <!--  <columnOverride column="???" property="???" /> -->
+	 <columnOverride column="???" property="???" /> 
     </table>
-    <table schema="t_waf_log_deface" tableName="t_waf_log_deface"></table> 
+    <table schema="t_waf_log_deface" tableName="t_waf_log_deface"></table> -->
   </context>
 </generatorConfiguration>

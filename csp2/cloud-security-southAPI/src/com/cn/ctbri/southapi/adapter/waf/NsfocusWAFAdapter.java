@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -64,7 +65,6 @@ public class NsfocusWAFAdapter {
 				String apiValue = wafConfigDevice.getApiValue();
 				String apiUsername = wafConfigDevice.getApiUserName();
 				String apiPassword = wafConfigDevice.getApiPwd();
-				System.out.println(apiAddr);
 				nsfocusWAFOperation = new NsfocusWAFOperation(apiAddr, apiKey, apiValue, apiUsername, apiPassword);
 				mapNsfocusWAFOperation.put(devId, nsfocusWAFOperation);
 			}
@@ -194,8 +194,33 @@ public class NsfocusWAFAdapter {
 	public String createSite(int resourceId, JSONObject jsonObject) {
 		HashMap<Integer, NsfocusWAFOperation> map = mapNsfocusWAFOperationGroup.get(resourceId);
 		JSONArray createSiteArray = new JSONArray();
+		String targetId = UUID.randomUUID().toString();
+		
 		for (Entry<Integer, NsfocusWAFOperation> entry : map.entrySet()) {
 			JSONObject responseJsonObject = JSONObject.fromObject(entry.getValue().createSite(jsonObject));
+			//int siteId = responseJsonObject.getInt("id");
+			//int groupId = responseJsonObject.getJSONObject("website").getJSONObject("group").getInt("id");
+			
+			TWafNsfocusTargetinfoKey key = new TWafNsfocusTargetinfoKey();
+			key.setId(targetId);
+			key.setResourceid(resourceId);
+			key.setDeviceid(entry.getKey());
+			TWafNsfocusTargetinfo record =new TWafNsfocusTargetinfo();
+			record.setDeviceid(entry.getKey());
+
+			record.setId(targetId);
+			record.setResourceid(resourceId);
+			//record.setSiteid(siteId);
+			//record.setGroup(groupId);
+			try {
+				SqlSession sqlSession = getSqlSession();
+				TWafNsfocusTargetinfoMapper mapper = sqlSession.getMapper(TWafNsfocusTargetinfoMapper.class);
+				mapper.insertSelective(record);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			JSONObject tempDeviceJsonObject = new JSONObject();
 			tempDeviceJsonObject.put("deviceId", entry.getKey());
 			tempDeviceJsonObject.put("InfoList", responseJsonObject);
@@ -205,7 +230,36 @@ public class NsfocusWAFAdapter {
 	}
 	
 	public String createSite(int resourceId,int deviceId,JSONObject jsonObject) {
-		return getDeviceById(resourceId, deviceId).createSite(jsonObject);
+		String responseString =  getDeviceById(resourceId, deviceId).createSite(jsonObject);
+		JSONObject responseJsonObject = JSONObject.fromObject(responseString);
+		
+		if (responseJsonObject.get("status")!=null&&responseJsonObject.getString("status").equals("success")) {
+			String siteId = responseJsonObject.getString("id").trim();
+			String groupId = responseJsonObject.getJSONObject("website").getJSONObject("group").getString("id").trim();
+			String targetId = UUID.randomUUID().toString();
+			
+			TWafNsfocusTargetinfo record =new TWafNsfocusTargetinfo();
+			record.setDeviceid(deviceId);
+			record.setId(targetId);
+			record.setResourceid(resourceId);
+			record.setSiteid(siteId);
+			record.setGroupid(groupId);
+			SqlSession sqlSession = null;
+			try {
+				sqlSession = getSqlSession();
+				TWafNsfocusTargetinfoMapper mapper = sqlSession.getMapper(TWafNsfocusTargetinfoMapper.class);
+				mapper.insertSelective(record);
+				sqlSession.commit();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				sqlSession.rollback();
+			}finally {
+				sqlSession.close();
+			}
+		}
+
+		return responseString;
 	}
 	
 	public String alterSite(int resourceId, JSONObject jsonObject) {
@@ -224,6 +278,10 @@ public class NsfocusWAFAdapter {
 	public String alterSite(int resourceId, int deviceId, JSONObject jsonObject) {
 		return getDeviceById(resourceId, deviceId).alterSite(jsonObject);
 	}
+	
+	/**public String delSite(int resourceId, int deviceId, String targetId) {
+		int
+	}**/
 	
 	
 	public String createVirtSite(int resourceId, JSONObject jsonObject) {
@@ -658,16 +716,18 @@ public class NsfocusWAFAdapter {
 			SAXReader reader = new SAXReader();
 			Document document = reader.read(WAF_NSFOCUS_EVENT_TYPE);
 			List<Element> typeElements = document.selectNodes("/TypeList/Type");
-			Map<String, Integer> mapEventTypeCount = new HashMap<String, Integer>();
+			List<JSONObject> typeCountList = new ArrayList<JSONObject>();
 			for (Element element : typeElements) {
 				String eventTypeBase64 = stringToBase64(element.getTextTrim());
 				TWafLogWebsecExample example = new TWafLogWebsecExample();
 				example.or().andEventTypeEqualTo(element.attributeValue("name"));
 				TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
-				mapEventTypeCount.put(eventTypeBase64, mapper.countByExample(example));
+				JSONObject eventTypeJsonObject = new JSONObject();
+				eventTypeJsonObject.put("eventType", eventTypeBase64);
+				eventTypeJsonObject.put("count", mapper.countByExample(example));
+				typeCountList.add(eventTypeJsonObject);
 			}
-			JSONObject eventTypeJsonObject = JSONObject.fromObject(mapEventTypeCount);
-			return eventTypeJsonObject.toString();
+			return JSONArray.fromObject(typeCountList).toString();
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -683,7 +743,7 @@ public class NsfocusWAFAdapter {
 		SqlSession sqlSession = null;
 		try {
 			sqlSession = getSqlSession();
-			
+			//根据时间间隔获取时间段
 			int interval = jsonObject.getInt("interval");
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
@@ -694,16 +754,18 @@ public class NsfocusWAFAdapter {
 			SAXReader reader = new SAXReader();
 			Document document = reader.read(WAF_NSFOCUS_EVENT_TYPE);
 			List<Element> typeElements = document.selectNodes("/TypeList/Type");
-			Map<String, Integer> mapEventTypeCount = new HashMap<String, Integer>();
+			List<JSONObject> typeCountList = new ArrayList<JSONObject>();
 			for (Element element : typeElements) {
 				String eventTypeBase64 = stringToBase64(element.getTextTrim());
 				TWafLogWebsecExample example = new TWafLogWebsecExample();
 				example.or().andEventTypeEqualTo(element.attributeValue("name")).andStatTimeBetween(dateBefore, dateNow);
 				TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
-				mapEventTypeCount.put(eventTypeBase64, mapper.countByExample(example));
+				JSONObject eventTypeJsonObject = new JSONObject();
+				eventTypeJsonObject.put("eventType", eventTypeBase64);
+				eventTypeJsonObject.put("count", mapper.countByExample(example));
+				typeCountList.add(eventTypeJsonObject);
 			}
-			JSONObject eventTypeJsonObject = JSONObject.fromObject(mapEventTypeCount);
-			return eventTypeJsonObject.toString();
+			return JSONArray.fromObject(typeCountList).toString();
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
