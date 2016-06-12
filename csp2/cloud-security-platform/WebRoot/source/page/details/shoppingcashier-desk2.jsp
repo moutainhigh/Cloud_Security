@@ -151,13 +151,24 @@ $(function(){
                                     <P><fmt:formatDate value="${orderList.create_date }" pattern="yyyy年MM月dd日HH点mm分"/></P>
                                 </li>
                                  <li>
-                                    <b>购买内容</b>
-                                    <p>
-                                    	<c:forEach var="name" items="${serviceName }">
-                                    		${name } &nbsp
+                                 	<table>
+                                 	<tr>
+                                 	<td valign="top"><b>购买内容</b></td>
+                                 	<td>
+                                 	<p style="padding-left:4px;">
+                                    	<c:forEach var="name" items="${serverName }" varStatus="status">
+                                    		${name.key }*${name.value }&nbsp&nbsp&nbsp
+                                    		
+                                    		<c:if test="${status.count%3==0}">
+                                    			<br/>
+                                    		</c:if>
                                     	</c:forEach>
                                     </p>
-                                    <!-- <P>WEB漏洞监测服务 &nbsp WEB漏洞监测能力API &nbsp 套餐1</P> -->
+                                 	</td>
+                                 	</tr>
+                                 	</table>
+                                    
+                                   <!--   <P>WEB漏洞监测服务 &nbsp WEB漏洞监测能力API &nbsp 套餐1</P> -->
                                 </li>
                                  <li>
                                     <b>交易金额</b>
@@ -179,7 +190,7 @@ $(function(){
                              <i class="chekLost"></i>
                         </div>
                         <div class="shopCant_fix"><i></i>安全币余额${balance }</div>
-                        <div class="shopCant_con">更换其他付款方式</div>
+                        <!-- <div class="shopCant_con">更换其他付款方式</div> -->
                         <div class="shop_pay"><b>支付:</b>￥${price }</div>
                     </div>
             	    
