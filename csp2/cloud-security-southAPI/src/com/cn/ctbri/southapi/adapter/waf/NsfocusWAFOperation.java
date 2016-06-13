@@ -295,6 +295,15 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		String responseString = responseArray.getString(0);
 		return responseString;
 	}
+	public boolean createSiteOnState(JSONObject jsonObject) {
+		JSONObject responseJsonObject = JSONObject.fromObject(createSite(jsonObject));
+		if (responseJsonObject.getString("status").equals("success")) {
+			return true;
+		}else {
+			return false;
+		}
+
+	}
 	public String alterSite(JSONObject jsonObject) {
 		if (jsonObject.get("siteId")==null||jsonObject.getString("siteId").equals("")) {
 			JSONObject errJsonObject = new JSONObject();
@@ -400,6 +409,10 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		return deleteString;
 	}
 	
+	public String getAllIpFromEth(JSONObject jsonObject) {
+		return getOperation(nsfocusWafUrl+REST_URI_V1+"/interfaces/all/ip");
+	}
+	
 	public String postIpToEth(JSONObject jsonObject) {
 		if (null==jsonObject.get("ip")||"".equals(jsonObject.getString("ip"))
 		||null==jsonObject.get("mask")||"".equals(jsonObject.getString("mask"))) {
@@ -420,21 +433,14 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		return postIpString;
 	}
 	
+	
+	
 	public static void main(String[] args) {
 
 		System.out.println(MediaType.APPLICATION_JSON.toString());
 		NsfocusWAFOperation operation = new NsfocusWAFOperation("https://219.141.189.189:58442/","vmwaf","E34A-44A6-E12B-E1C9","admin","nsfocus");
-		String jsonString = "{\"ip_address\":[{"+
-							"\"ip\":\"65.61.137.117\","+
-							"\"mask\":\"255.255.255.0\"}]}";
-		/*
-		 *
-		 * 
-		String jsonString = "{\"0\":{"
-				+ "\"name\":\"hello\","
-				+ "\";*/
-		System.out.println(jsonString);
-		String responseString = operation.postOperation("https://219.141.189.189:58442/rest/v1/interfaces/eth2/ip", jsonString);
+
+		String responseString = operation.getOperation("https://219.141.189.189:58442/rest/v1/interfaces/eth2");
 		System.out.println(">>>>>"+responseString);
 		JSONObject jsonObject = JSONObject.fromObject(responseString);
 		System.out.println("obj="+jsonObject.toString());

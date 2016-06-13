@@ -7,6 +7,8 @@ import org.quartz.SchedulerException;
 
 import com.cn.ctbri.southapi.adapter.manager.DeviceAdpaterManager;
 import com.cn.ctbri.southapi.adapter.manager.QuartzTest;
+import com.cn.ctbri.southapi.adapter.waf.config.WAFConfigManager;
+import com.cn.ctbri.southapi.adapter.waf.syslog.WAFSyslogManager;
 
 public class InitServlet extends HttpServlet {
 	/**

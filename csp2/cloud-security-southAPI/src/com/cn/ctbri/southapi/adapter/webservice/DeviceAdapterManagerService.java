@@ -419,6 +419,17 @@ public class DeviceAdapterManagerService {
 		int deviceId = jsonObject.getInt("deviceId");
 		return deviceAdpaterManager.createVSite(resourceId, deviceId, jsonObject);
 	}
+	@POST
+	@Path("/createVirtualSiteInResource")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String createVirtualSiteInResouce(String dataJson){
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals(""))
+			return errNullWafDevice();
+		int resourceId = jsonObject.getInt("resourceId");
+		jsonObject.remove("resourceId");
+		return deviceAdpaterManager.createVSiteInResource(resourceId, jsonObject);
+	}
 	
 	@POST
 	@Path("/getVirtualSite")
@@ -449,7 +460,12 @@ public class DeviceAdapterManagerService {
 	@Path("/deleteVirtualSite")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String deleteVirtualSite(String dataJson) {
-		return null;
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals(""))
+			return errNullWafDevice();
+		int resourceId = jsonObject.getInt("resourceId");
+		jsonObject.remove("resourceId");
+		return deviceAdpaterManager.deleteVSiteInResource(resourceId, jsonObject);
 	}
 
 }

@@ -23,6 +23,7 @@ import com.cn.ctbri.southapi.adapter.config.ScannerTaskUniParam;
 import com.cn.ctbri.southapi.adapter.scanner.ArnhemDeviceAdpater;
 import com.cn.ctbri.southapi.adapter.scanner.WebsocDeviceAdapter;
 import com.cn.ctbri.southapi.adapter.waf.NsfocusWAFAdapter;
+import com.cn.ctbri.southapi.adapter.waf.config.WAFConfigManager;
 
 
 
@@ -39,6 +40,8 @@ public class DeviceAdpaterManager {
 	private static final String DEVICE_OPERATION_ERROR = "{\"status\":\"fail\",\"message\":\"This device does not support the operation\"}";
 	
 	public static HashMap<String, DeviceConfigInfo> mapDeviceConfigInfoHashMap = new HashMap<String, DeviceConfigInfo>();
+	public static  WAFConfigManager wafConfigManager = new WAFConfigManager();
+	
 	private static String wafRootString; 
 	
 	public static ArnhemDeviceAdpater arnhemDeviceAdpater = new ArnhemDeviceAdpater();
@@ -122,8 +125,7 @@ public class DeviceAdpaterManager {
 			//log
 			return false;
 		}
-		System.out.println(wafRootString);
-		if (!nsfocusWAFAdapter.initDeviceAdapter(wafRootString)) {
+		if (!nsfocusWAFAdapter.initDeviceAdapter(wafConfigManager)) {
 		 
 			return false;
 		}
@@ -227,7 +229,7 @@ public class DeviceAdpaterManager {
 	        }
 
 	        wafRootString = doc.getRootElement().element("DeviceList").element("DeviceWAFList").attributeValue("configFile");
-	        System.out.println(mapDeviceConfigInfoHashMap.entrySet());
+	        wafConfigManager.loadWAFConfig(wafRootString);
 	        return true;
 		} catch (DocumentException e) {
 			e.printStackTrace();
@@ -713,6 +715,9 @@ public class DeviceAdpaterManager {
 	public String createVSite(int resourceId,int deviceId,JSONObject jsonObject) {
 		return nsfocusWAFAdapter.createVSite(resourceId, deviceId, jsonObject);
 	}
+	public String createVSiteInResource(int resourceId,JSONObject jsonObject) {
+		return nsfocusWAFAdapter.createVirtSite(resourceId, jsonObject);
+	}
 	
 	public String getVirtSite(int resourceId, int deviceId, JSONObject jsonObject) {
 		return nsfocusWAFAdapter.getVirtSite(resourceId, deviceId, jsonObject);
@@ -724,6 +729,10 @@ public class DeviceAdpaterManager {
 	public String deleteVSite(int resourceId, int deviceId, JSONObject jsonObject) {
 		return nsfocusWAFAdapter.deleteVSite(resourceId, deviceId, jsonObject);
 	}
+	public String deleteVSiteInResource(int resourceId, JSONObject jsonObject) {
+		return nsfocusWAFAdapter.deleteVSite(resourceId, jsonObject);
+	}
+	
 	
 	public String postIpToEth(int resourceId, int deviceId,JSONObject jsonObject) {
 		return nsfocusWAFAdapter.postIpToEth(resourceId, deviceId, jsonObject);

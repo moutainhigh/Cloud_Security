@@ -31,6 +31,7 @@ import org.dom4j.io.SAXReader;
 import com.cn.ctbri.southapi.adapter.batis.inter.*;
 import com.cn.ctbri.southapi.adapter.batis.model.*;
 import com.cn.ctbri.southapi.adapter.waf.config.*;
+import com.cn.ctbri.southapi.adapter.waf.syslog.WAFSyslogManager;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 
@@ -43,12 +44,11 @@ public class NsfocusWAFAdapter {
 	public static HashMap<Integer, NsfocusWAFOperation> mapNsfocusWAFOperation = new HashMap<Integer, NsfocusWAFOperation>();
 	public static HashMap<Integer, HashMap<Integer, NsfocusWAFOperation>> mapNsfocusWAFOperationGroup = new HashMap<Integer, HashMap<Integer,NsfocusWAFOperation>>();
 	public NsfocusWAFOperation nsfocusWAFOperation = null;
-	public static WAFConfigManager wafConfigManager = new WAFConfigManager();
 	
 	
-	public boolean initDeviceAdapter(String wafRoot){
-		System.out.println("wafAdapter="+wafRoot);
-		if(!wafConfigManager.loadWAFConfig(wafRoot)) return false;
+	public boolean initDeviceAdapter(WAFConfigManager wafConfigManager){
+		WAFSyslogManager wsm = new WAFSyslogManager();
+		wsm.initWAFSyslogManager();
 		Iterator<?> iterator = wafConfigManager.mapWAFConfigDeviceManager.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Map.Entry<Integer,WAFConfigDeviceGroup> entry = (Entry<Integer, WAFConfigDeviceGroup>)iterator.next();
@@ -233,31 +233,7 @@ public class NsfocusWAFAdapter {
 		String responseString =  getDeviceById(resourceId, deviceId).createSite(jsonObject);
 		JSONObject responseJsonObject = JSONObject.fromObject(responseString);
 		
-		if (responseJsonObject.get("status")!=null&&responseJsonObject.getString("status").equals("success")) {
-			String siteId = responseJsonObject.getString("id").trim();
-			String groupId = responseJsonObject.getJSONObject("website").getJSONObject("group").getString("id").trim();
-			String targetId = UUID.randomUUID().toString();
-			
-			TWafNsfocusTargetinfo record =new TWafNsfocusTargetinfo();
-			record.setDeviceid(deviceId);
-			record.setId(targetId);
-			record.setResourceid(resourceId);
-			record.setSiteid(siteId);
-			record.setGroupid(groupId);
-			SqlSession sqlSession = null;
-			try {
-				sqlSession = getSqlSession();
-				TWafNsfocusTargetinfoMapper mapper = sqlSession.getMapper(TWafNsfocusTargetinfoMapper.class);
-				mapper.insertSelective(record);
-				sqlSession.commit();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				sqlSession.rollback();
-			}finally {
-				sqlSession.close();
-			}
-		}
+
 
 		return responseString;
 	}
@@ -286,15 +262,48 @@ public class NsfocusWAFAdapter {
 	
 	public String createVirtSite(int resourceId, JSONObject jsonObject) {
 		HashMap<Integer, NsfocusWAFOperation> map = mapNsfocusWAFOperationGroup.get(resourceId);
+		JSONObject createVirtSiteJsonObject = new JSONObject();
 		JSONArray createVirtSiteJsonArray = new JSONArray();
+		String targetId = UUID.randomUUID().toString();
 		for (Entry<Integer, NsfocusWAFOperation> entry : map.entrySet()) {
+			//新建站点
+			String siteJsonString = entry.getValue().createSite(jsonObject);
+			System.out.println(">>>"+siteJsonString);
+			JSONObject siteResponseJsonObject = JSONObject.fromObject(siteJsonString);
+			if (siteResponseJsonObject.get("status")==null || !siteResponseJsonObject.getString("status").equals("success")) continue;
+			//组织入库信息
+			String siteId = siteResponseJsonObject.getString("id").trim();
+			String groupId = siteResponseJsonObject.getJSONObject("website").getJSONObject("group").getString("id").trim();			
+			TWafNsfocusTargetinfo record =new TWafNsfocusTargetinfo();
+			record.setDeviceid(entry.getKey());
+			record.setId(targetId);
+			record.setResourceid(resourceId);
+			record.setSiteid(siteId);
+			record.setGroupid(groupId);
+			
+			jsonObject.put("parent", groupId);
 			JSONObject responseJsonObject = JSONObject.fromObject(entry.getValue().createVirtSite(jsonObject));
-			JSONObject tempDeviceJsonObject = new JSONObject();
+			//虚拟站点id
+			String virtSiteId = responseJsonObject.getString("id");
+			record.setVirtsiteid(virtSiteId);
+			//入库
+			try {
+				SqlSession sqlSession = getSqlSession();
+				TWafNsfocusTargetinfoMapper mapper = sqlSession.getMapper(TWafNsfocusTargetinfoMapper.class);
+				mapper.insertSelective(record);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			JSONObject tempDeviceJsonObject = JSONObject.fromObject(responseJsonObject);
 			tempDeviceJsonObject.put("deviceId", entry.getKey());
-			tempDeviceJsonObject.put("InfoList", responseJsonObject);
 			createVirtSiteJsonArray.add(tempDeviceJsonObject);
 		}
-		return createVirtSiteJsonArray.toString();
+		createVirtSiteJsonObject.put("targetKey", targetId);
+		createVirtSiteJsonObject.put("virtualSiteList", createVirtSiteJsonArray);
+		return createVirtSiteJsonObject.toString();
 	}
 	
 	public String createVSite(int resourceId, int deviceId, JSONObject jsonObject) {
@@ -325,8 +334,24 @@ public class NsfocusWAFAdapter {
 	public String deleteVSite(int resourceId, JSONObject jsonObject) {
 		HashMap<Integer, NsfocusWAFOperation> map = mapNsfocusWAFOperationGroup.get(resourceId);
 		JSONArray deleteVirtJsonArray = new JSONArray();
+		TWafNsfocusTargetinfoKey targetinfoKey = new TWafNsfocusTargetinfoKey();
+		targetinfoKey.setId(jsonObject.getString("targetKey"));
+		targetinfoKey.setResourceid(resourceId);
 		for (Entry<Integer, NsfocusWAFOperation> entry : map.entrySet()) {
-			JSONObject responseJsonObject = JSONObject.fromObject(entry.getValue().deleteVirtSite(jsonObject));
+			targetinfoKey.setDeviceid(entry.getKey());
+			TWafNsfocusTargetinfo tWafNsfocusTargetinfo = new TWafNsfocusTargetinfo();
+			try {
+				SqlSession sqlSession = getSqlSession();
+				TWafNsfocusTargetinfoMapper mapper = sqlSession.getMapper(TWafNsfocusTargetinfoMapper.class);
+				tWafNsfocusTargetinfo = mapper.selectByPrimaryKey(targetinfoKey);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			JSONObject responseJsonObject = JSONObject.fromObject(entry.getValue().deleteVirtSite(JSONObject.fromObject("{\"vSiteId\":"+tWafNsfocusTargetinfo.getVirtsiteid()+"}")));
+			
+			System.out.println(entry.getValue().delSite(JSONObject.fromObject("{\"siteId\":"+tWafNsfocusTargetinfo.getSiteid()+"}")));
+			
 			JSONObject tempDeviceJsonObject = new JSONObject();
 			tempDeviceJsonObject.put("deviceId", entry.getKey());
 			tempDeviceJsonObject.put("InfoList", responseJsonObject);
@@ -339,7 +364,9 @@ public class NsfocusWAFAdapter {
 		return getDeviceById(resourceId, deviceId).deleteVirtSite(jsonObject);
 	}
 	
-	
+	public String getAllIpFromEth(int resourceId, int deviceId, JSONObject jsonObject) {
+		return getDeviceById(resourceId, deviceId).getAllIpFromEth(jsonObject);
+	}
 	
 	public String postIpToEth(int resourceId, int deviceId,JSONObject jsonObject) {
 		return getDeviceById(resourceId, deviceId).postIpToEth(jsonObject);
@@ -846,14 +873,6 @@ public class NsfocusWAFAdapter {
 	
 	public static void main(String[] args) {
 
-		
-	/**	JSONArray jsonArray = new JSONArray();
-		jsonArray.add("219.141.189.183");
-		jsonArray.add("219.141.189.184");
-		jsonObject.put("dstIp",jsonArray);
-		jsonObject.put("interval", "3");
-		String string = adapter.getWafLogWebsecInTime(jsonObject);
-		System.out.println(string);**/
 	}
 	
 	
