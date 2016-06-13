@@ -357,19 +357,19 @@ public class WafDetailController {
     }
     
     /**
-     * 解析新建虚拟站点
+     * 解析'在resource中统一新建虚拟站点'
      * @param siteStr
      * @return
      */
     public String getCreateVirtualSite(String siteStr){
-    	String status = "";
+    	String targetKey = "";
     	try {
     		JSONObject obj = JSONObject.fromObject(siteStr);
-    		status = obj.getString("status");   		
+    		targetKey = obj.getString("targetKey");   		
         } catch (Exception e) {
             e.printStackTrace();
         }
-    	return status;
+    	return targetKey;
     }
     
     /**

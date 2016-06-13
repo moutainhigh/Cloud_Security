@@ -1311,7 +1311,32 @@ public class shoppingController {
     						String orderDate = odf.format(new Date());
     						orderId = orderDate+String.valueOf(Random.fivecode());
     						orderVal = orderVal+ orderId+",";
-//    						WafAPIWorker.createVirtualSite(resourceId, deviceId, parent, name, domain, include, exclude, server)
+    						
+    						//创建waf虚拟站点,modify by tangxr 2016-6-13
+    						List assets = orderAssetService.findAssetsByOrderId(orderId);
+    						JSONArray ser = new JSONArray();
+    						if(assets != null && assets.size() > 0){
+    				        	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
+    				        	assetOrder=(HashMap) assets.get(0);
+    				        	String ipArray=(String) assetOrder.get("ipArray");
+    				        	String[] ips = null;   
+    				            ips = ipArray.split(",");
+    				            for (int n = 0; n < ips.length; n++) {
+    				            	JSONObject jo = new JSONObject();
+    	    						jo.put("ip", ips[n]);
+    	    						jo.put("port", "80");
+    	    						ser.add(jo);
+    				            }
+    				        }
+    						String wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", "test0613", "219.141.189.184", "443", "nsfocus.cer", "1", "", "*", "", ser);
+    						String targetKey = "";
+    				    	try {
+    				    		JSONObject obj = JSONObject.fromObject(wafcreate);
+    				    		targetKey = obj.getString("targetKey");   		
+    				        } catch (Exception e) {
+    				            e.printStackTrace();
+    				        }
+    						//end
     					}
     					
     				} catch (Exception e) {

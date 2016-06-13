@@ -526,7 +526,7 @@ public class ExportController {
                 //输出word内容文件流，提供下载
                 response.reset();
                 response.setContentType("application/x-msdownload");
-                String outfile = orderId+"报告文档-漏洞.docx";
+                String outfile = orderId+ "_" + webName +"_报告文档-漏洞.docx";
                 
                 String userAgent = request.getHeader("User-Agent");
                 String new_filename = URLEncoder.encode(outfile, "UTF8");
@@ -993,7 +993,7 @@ public class ExportController {
       return resultList;
     }
 
-    
+    String webName = "";
     private Map<String, String> getExportData(String orderId, Map<String, Object> paramMap) {
         //查找订单
         Order order = orderService.findOrderById(orderId);
@@ -1002,7 +1002,7 @@ public class ExportController {
         int orderAssetId = Integer.parseInt(paramMap.get("orderAssetId").toString());
         Asset asset = assetService.findByOrderAssetId(orderAssetId);
         String webSite = asset.getAddr();
-        String webName = asset.getName();
+        webName = asset.getName();
         
         SimpleDateFormat odf = new SimpleDateFormat("yyyy/MM/dd");//设置日期格式
         String createDate = odf.format(new Date());

@@ -22,7 +22,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.cn.ctbri.common.WafAPIWorker;
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
@@ -351,10 +353,30 @@ public class MyOrderController {
      *       @time 2016-5-18
      */
     @RequestMapping(value="domainNameUI.html")
-    public String domainNameUI(Model model){
+    public String domainNameUI(Model model, HttpServletRequest request){
     	//TODO
-    	model.addAttribute("domainName", "www.testfire.net"); //当前域名
-    	model.addAttribute("ipAddress", "65.61.137.117"); //当前A记录www值
+    	String orderId = request.getParameter("orderId");
+    	//获取订单信息
+        List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
+        model.addAttribute("order", orderList.get(0));
+        model.addAttribute("orderId", orderId);
+        //获取服务ID
+        int serviceId=0;
+        HashMap<String, Object> order=new HashMap<String, Object>();
+	    order=(HashMap) orderList.get(0);
+	    serviceId=(Integer) order.get("serviceId");
+
+	    List assets = orderAssetService.findAssetsByOrderId(orderId);
+        if(assets != null && assets.size() > 0){
+        	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
+        	assetOrder=(HashMap) assets.get(0);
+        	String addr=(String) assetOrder.get("addr");
+        	String ipArray=(String) assetOrder.get("ipArray");
+        	String[] ips = null;   
+            ips = ipArray.split(",");
+            model.addAttribute("domainName", addr.substring(7)); //当前域名
+        	model.addAttribute("ipAddress", ipArray); //当前A记录www值
+        }
     	return "/source/page/personalCenter/domainNameAnalysis";
     }
     
@@ -370,14 +392,20 @@ public class MyOrderController {
     	try {
     		String domainName = request.getParameter("domainName");
     		String ipAddress = request.getParameter("ipAddress");
+    		String orderId = request.getParameter("orderId");
     		
     		//取得域名对应的IP地址
     		InetAddress inetAddress = InetAddress.getByName(domainName);
     		//比较IP地址是否一致
     		if (!ipAddress.equals(inetAddress.getHostAddress())){
     			m.put("success", false);
+    		}else{
+    			Order order = new Order();
+    			order.setId(orderId);
+    			order.setStatus(4);
+    			orderService.update(order);
+    			m.put("success", true);
     		}
-    		m.put("success", true);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			m.put("success", false);
