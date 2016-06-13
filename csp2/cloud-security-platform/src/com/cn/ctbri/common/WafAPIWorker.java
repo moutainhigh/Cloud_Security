@@ -193,7 +193,7 @@ public class WafAPIWorker {
 	
 	
 	/**
-	 * 功能描述：新建虚拟站点
+	 * 功能描述：在resource中统一新建虚拟站点
 	 * @param resourceId 设备资源编号，
 	 * 		  deviceId   设备编号，
 	 *        parent
@@ -204,20 +204,22 @@ public class WafAPIWorker {
 	 *        type       协议类型
 	 * @time 2016-5-25
 	 */
-	public static String createVirtualSite(String resourceId, String deviceId, 
-			String parent, String name, String domain, String include, 
-			String exclude, JSONArray server){
+	public static String createVirtualSiteInResource(String resourceId, String name, 
+			String wafIp, String wafPort, String cert, String type, 
+			String domain, String include, String exclude, JSONArray server){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("resourceId", resourceId);
-		json.put("deviceId", deviceId);
-		json.put("parent", parent);
 		json.put("name", name);
+		json.put("ip", wafIp);
+		json.put("port", wafPort);
+		json.put("cert", cert);
+		json.put("type", type);
 		json.put("domain", domain);
 		json.put("include", include);
 		json.put("exclude", exclude);
 		json.put("server", server);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/createVirtualSite";
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/createVirtualSiteInResource";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
@@ -229,7 +231,6 @@ public class WafAPIWorker {
         //获取响应结果
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
         String textEntity = response.getEntity(String.class);
-        
         return textEntity;
 	}
 	
