@@ -300,6 +300,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where o.status not in (1,2) 
 		and o.delFlag !=1
 		and	o.payFlag = 1
+		and o.isAPI = 0
 		and o.create_date &gt;='2016-04-17 00:00:00'
     </select>
     
