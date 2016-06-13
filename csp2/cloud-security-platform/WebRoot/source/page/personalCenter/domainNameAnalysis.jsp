@@ -86,7 +86,7 @@
                     	<ul class="clearfix">
                         	<li style="width:272px;">当前域名：${domainName }</li>
                             <li style="width:336px;">当前A记录www值：${ipAddress }</li>
-                            <li class="explain">解析说明 <a href="#" class="btn" onclick="checkDomainName('${domainName }', '${ipAddress }')">检测解析是否更改成功</a></li>
+                            <li class="explain">解析说明 <a href="#" class="btn" onclick="checkDomainName('${domainName }', '${ipAddress }', '${orderId }')">检测解析是否更改成功</a></li>
                         </ul>
                        <dl>
                        	<dt>解析说明:</dt>
@@ -159,11 +159,11 @@
 		</div>
 	</div>
 	<script>
-		function checkDomainName(domainName, ipAddress) {
+		function checkDomainName(domainName, ipAddress, orderId) {
 			$.ajax({
 				type: "POST",
 				url:"checkDomainName.html",
-				data:{"domainName":domainName,"ipAddress":ipAddress},
+				data:{"domainName":domainName,"ipAddress":ipAddress,"orderId":orderId},
 				dataType:"json",
 				success: function(data) {
 					if(data.success == true) {

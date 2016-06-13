@@ -137,10 +137,12 @@
 						            </c:if>
 						            
 						            <c:if test="${list.serviceId==6}">
+						                 <c:if test="${list.isAPI==2 && (list.status==4)}">
 						                 <a href="${ctx}/warningWaf.html?orderId=${list.id }&type=${list.type}" target="_blank" title="">
 						                 	查看详情
 						                 </a>
-						                 <a href="${ctx}/domainNameUI.html" target="_blank" title="设置域名解析">
+						                 </c:if>
+						                 <a href="${ctx}/domainNameUI.html?orderId=${list.id }"  title="设置域名解析">
 						                 	设置域名解析
 						                 </a>
 						                
