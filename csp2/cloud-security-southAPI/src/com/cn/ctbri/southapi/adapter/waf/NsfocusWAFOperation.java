@@ -267,20 +267,20 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	}
 	
 	public String createSite(JSONObject jsonObject) {
-		if (jsonObject.get("ip")==null||jsonObject.getString("ip").equals("")) {
+		if (jsonObject.get("wafIp")==null||jsonObject.getString("wafIp").equals("")) {
 			JSONObject errJsonObject = new JSONObject();
 			errJsonObject.put("status", "failed");
 			errJsonObject.put("reason", "Site ip is null!!!");
 			return errJsonObject.toString();
 		}
 		JSONObject tempJsonObject = new JSONObject();
-		tempJsonObject.put("ip", jsonObject.getString("ip"));
+		tempJsonObject.put("ip", jsonObject.getString("wafIp"));
 		
 		if (jsonObject.get("name")!=null&&!jsonObject.getString("name").equals("")){
 			tempJsonObject.put("name", jsonObject.getString("name"));
 		}
-		if (jsonObject.get("port")!=null&&!jsonObject.getString("port").equals("")){
-			tempJsonObject.put("port", jsonObject.getString("port"));
+		if (jsonObject.get("wafPort")!=null&&!jsonObject.getString("wafPort").equals("")){
+			tempJsonObject.put("port", jsonObject.getString("wafPort"));
 		}
 		if (jsonObject.get("type")!=null&&!jsonObject.getString("type").equals("")){
 			tempJsonObject.put("type", jsonObject.getString("type"));
@@ -442,8 +442,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 
 		String responseString = operation.getOperation("https://219.141.189.189:58442/rest/v1/interfaces/eth2");
 		System.out.println(">>>>>"+responseString);
-		JSONObject jsonObject = JSONObject.fromObject(responseString);
-		System.out.println("obj="+jsonObject.toString());
+		
 	}
 	
 }
