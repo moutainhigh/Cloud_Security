@@ -245,7 +245,7 @@
 <div id="box_logoIn_regist" style="display:none">
   <div id="close_edit"></div>  <div class="text_1">
     <form id="" action="" method="post">
-    <div class="text_top" style="text-align:center;">云安全服务平台用户协议</div>
+    <div class="text_top" style="text-align:center;">安全帮用户协议</div>
       <div id="f1" class="dd" style="overflow:auto;height:430px;width:870px;margin-top:15px;">
         <p class="help_detail">中国电信股份有限公司北京研究院（以下简称"电信北研院"）同意按照本服务条款的规定基于安全帮（以下简称“平台”）提供云安全服务。为获得云安全服务，服务使用人（以下称"用户"）应当同意本协议，才能完成申请程序并通过平台的审核。用户在向平台提交审核申请时，首先签订了该用户协议后才可提交申请。</p>
         <h3 class="helph">1. 服务内容</h3>
@@ -274,7 +274,7 @@
         <p class="help_detail">2.3 用户不得对安全帮服务任何部分或全部服务之使用或获得，进行出售、转售或用于任何其它商业目的。</p>
          <p class="help_detail">2.4 用户须对自己在使用安全帮过程中的行为承担法律责任。用户承担法律责任的形式包括但不限于：对受到侵害者进行赔偿，以及在电信北研院首先承担了因用户行为导致的行政处罚或侵权损害赔偿责任后，用户应给予电信北研院等额的赔偿。</p>
         <h3 class="helph">3. 用户信息保护</h4>
-        <p class="help_detail">3.1 平台不得泄露用户的保密信息（不包括查询页面需要公布的信息），更不得以任何缘由对用户的隐私信息进行公布。s</p>
+        <p class="help_detail">3.1 平台不得泄露用户的保密信息（不包括查询页面需要公布的信息），更不得以任何缘由对用户的隐私信息进行公布。</p>
         <p class="help_detail">3.2 电信北研院制定了以下四项隐私权保护原则：</p>
         <p class="help_detail">3.2.1 利用我们收集的信息为用户提供有价值的产品和服务。</p>
         <p class="help_detail">3.2.2 开发符合隐私权标准和隐私权惯例的产品。</p>
@@ -292,10 +292,10 @@
         <h3 class="helph">6. 条款修改</h4>
         <p class="help_detail">6.1 电信北研院将有权随时修改本条款的有关内容，一旦本条款的内容发生变动，平台将通过适当方式作解释说明。</p>
         <p class="help_detail">6.2 如果用户不同意电信北研院对本条款相关内容所做的修改，有权停止使用安全帮。如果用户继续使用安全帮，则视为接受电信北研院对本协议相关内容所做的修改。</p>
-        <p class="help_detail" style="text-align:center;">本条款的更新修改及最终解释权归中国电信股份有限公司北京研究院所有。</p>
+        <p class="help_detail">本条款的更新修改及最终解释权归中国电信股份有限公司北京研究院所有。</p>
       </div>
       <input type="hidden" name="agreeId" id="agreeId"/>
-    <div style="margin-top:35px;text-align:center;"><a href="javascript:void(0)"><img src="${ctx}/source/images/agree.png" id="agree"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="${ctx}/source/images/notagree.png" id="not_agree"/></a></div>
+     <div style="margin-top:35px;text-align:center;"><a href="javascript:void(0)"><img src="${ctx}/source/images/agree.png" id="agree"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="${ctx}/source/images/notagree.png" id="not_agree"/></a></div>
   </div>
   </form>
 </div>
