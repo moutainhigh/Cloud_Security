@@ -172,7 +172,7 @@ function detectionUrl(){
 		</div>
 		
       
-        <iframe src="http://0day.websaas.com.cn/ctcc.html" width="100%" height="101%" style="border:0px"></iframe>
+        <iframe src="http://0day.websaas.com.cn/ctcc.html" scrolling="no" width="100%" height="100%" style="border:0px"></iframe>
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
