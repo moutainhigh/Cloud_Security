@@ -171,27 +171,8 @@ function detectionUrl(){
 
 		</div>
 		
-        <div class="content">
-        	<div class="x">
-            		<p class="logoimg"><img src="${ctx}/source/images/anquanbang_white_logo.png" alt=""></p>
-            		<h2>Struts2 S2-032漏洞在线检测 </h2>
-                    <div class="search">
-                    	<input type="text" class="text "placeholder="请输入站点域名或IP" id="urlInfo" onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')"><input type="button"  value="开始检测" class="btn"  onclick="detectionUrl();">
-                    </div>
-                    <!--有漏洞-->
-                    <div class="result clearfix" id="haveId" style="display:none" >
-                    	<h4 class="fl">检测结果：<span>发现漏洞</span>
-                    	<a href="http://mp.weixin.qq.com/s?__biz=MzIxNTE4ODQ1Mg==&mid=2649747802&idx=1&sn=65d056186175e8866df22b58de53bd4c&scene=0#wechat_redirect" target="_blank" style="color:#fff">点击此处，获取处理方案</a>
-                    	</h4>
-                       
-                    </div>
-                    <!--无漏洞-->
-                     <div class="result clearfix" style="display:none" id="noneId">
-                    	<h4 class="fl">检测结果：无。</h4>
-                    </div>
-            </div>
-        
-        </div>
+      
+        <iframe src="http://0day.websaas.com.cn/ctcc.html" width="100%" height="101%" style="border:0px"></iframe>
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
