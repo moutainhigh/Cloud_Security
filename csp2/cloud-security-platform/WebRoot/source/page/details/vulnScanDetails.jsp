@@ -195,9 +195,19 @@ $(document).ready(function(){
                             </div> 
 					   </li>
 						
-						 <li class="clearfix">
-							<label class="fl">资&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;产</label>
-                            <div class="fl">
+						 <li class="clearfix waf-datails" style="height:auto">
+							<label class="fl">网&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;站</label>
+							<div class="fl" style="top:10px;">
+                            	<div class="fl" style="color:#a3a3a3; margin-right:30px;">
+                                	<b>尚未选择网站</b>
+                                    <ul class="httpBox clearfix" style="max-width:366px; position:relative; top:-8px;">
+                                    	<!--<li class="aBtn"><em>安全帮</em><i></i></li>-->
+                                        <!--此处添加-->
+                                    </ul>
+                                </div>
+                                <a href="javascript:;" id="addhttp" class="href_btn fl" style="color:#2499fb;">点击此处选择网站</a>
+                            </div>
+                            <!-- <div class="fl">
                             	<div class="select">
                                     <div class="dropdown form-control line" style="width:360px;position:absolute; left:0px;top:3px;">
                                       <button class="btnNew" id="dLabel" type="button" style="width:360px; padding:0; padding-right:20px; overflow:hidden">
@@ -213,7 +223,7 @@ $(document).ready(function(){
                                       </ul>
                                     </div>
                                 </div>
-                            </div> 
+                            </div>  -->
 						</li>
 					</ul>
                     <div class="btnBox" style="text-align:left; margin-left:0px;">
@@ -321,6 +331,129 @@ $(document).ready(function(){
     </div>
 
 </div>
+
+
+<div class="waf-detais-pop flaw popBoxhide">
+	<i class="close chide"></i>
+    <div class="Pophead">
+    	<h2>请选择要服务的网站</h2>
+        <a href="#"  class="ass "><i><img src="${ctx}/source/images/add.png" alt=""></i>新增网站</a>
+       
+    </div>
+    
+    <script>
+    $(function(){
+		$('.ass').click(function(){
+			
+			$('#senone').fadeOut(200);
+			$('#sentwo').fadeIn(200);	
+		})
+		$('.sub').click(function(){
+			$('#sentwo').fadeOut(200);
+			$('#senone').fadeIn(200);	
+		})
+		
+		
+	})
+    
+    </script>
+	<div class="popBox">
+    	<!--请选择要服务的网站内容显示-->
+        <div class="centone" id="senone" style="display:block;">
+	        <ul class="allBox">
+		        <c:forEach items="${serviceAssetList}" var="asset" varStatus="status">
+		        	<li>
+		            	<div class="rcent">
+		                	<h3> 
+		                    	<label for="${status.count }">
+		                             <input type="checkbox"class="ck" id="${status.count }"  style=" display:none;" /><i class="cek" style="margin:0 16px 0 0;"></i>
+		                         </label>
+		                         <b>${asset.name }</b>
+		                    	
+		                     </h3>
+		                   <div class="tBox">${asset.addr }</div>
+		                </div>
+	            	</li>
+		        </c:forEach>
+	        </ul>
+            <div class="bottom clearfix" style="float:none">
+                <div class="bl fl">
+                    <label><i class="cheall" style="margin-right:20px;"></i>全选</label>
+                    <span>已选择<em id="number">0</em>个网站</span>
+                        
+                 </div>
+                 <a href="javascript:;" class="btn ok fr">确定</a>
+             </div>
+        
+        </div>
+        <!--新增网站内容显示-->
+        <div class="centone" id="sentwo" style="display:none;">
+        			<div class="addhttp">
+                        <div class="popBox">
+                            <ul style="height:auto;">
+                                <li class="clearfix">
+                                    <label class="fl">网站名称</label> <div class="fl"><input type="text" class="text"></div>
+                                </li>
+                                <li class="clearfix">
+                                    <label class="fl">网站地址类型</label> 
+                                    <div class="fl">
+                                        <label><input class="radio" type="radio"/>http</label>
+                                        <label style="margin-left:10px;"><input class="radio" type="radio"/>https</label>
+                                    </div>
+                                </li>
+                                <li class="clearfix">
+                                    <label class="fl">网站地址</label> <div class="fl"><input type="text" class="text"></div>
+                                </li>
+                                 <li class="clearfix">
+                                    <label class="fl">示例</label> 
+                                    <div class="fl">
+                                        <p>http://xxx.xxx.xxx</p>
+                                        <p>http://xxx.xxx.xxx</p>
+                                        <p>http://xxx.xxx.xxx</p>
+                                        <p>http://xxx.xxx.xxx</p>
+                                      
+                                    </div>
+                                </li>
+                                
+                                 <li class="clearfix">
+                                    <label class="fl">物理位置</label> 
+                                        <div class="fl">
+                                            <select class="select">
+                                                <option>请选择省份</option>
+                                            </select>
+                                            <select class="select">
+                                                <option>请选择城市</option>
+                                            </select>
+                                        </div>
+                                </li>
+                                <li class="clearfix">
+                                    <label class="fl">网站用途</label> 
+                                    <div class="fl">
+                                        <select class="select" placeholder="">
+                                            <option>请选择网站用途</option>
+                                            <option>请选择网站用途</option>
+                                            <option>请选择网站用途</option>
+                                        </select>
+                                    </div>
+                                </li>
+                            </ul>
+                           
+                         </div>
+                    
+                    </div>
+        			 <div class="bottom clearfix">
+                                <a href="javascript:;" class="btn sub" style="margin:0 20px 0 30px;">提交</a>
+                                <a href="javascript:;" class="btn sub return">返回</a>
+                            </div>
+        
+        
+        
+        </div>
+        	
+   	</div>
+	
+</div>
+
 	
 <div class="shade"></div>
 </body>
