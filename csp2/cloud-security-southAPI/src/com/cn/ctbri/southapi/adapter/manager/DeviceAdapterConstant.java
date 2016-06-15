@@ -1,5 +1,7 @@
 package com.cn.ctbri.southapi.adapter.manager;
 
+import com.cn.ctbri.southapi.adapter.servlet.InitServlet;
+
 /**
  * 设备适配管理配置参数
  * @version beta
@@ -7,6 +9,7 @@ package com.cn.ctbri.southapi.adapter.manager;
  * @time 2015-11-04
  */
 public class DeviceAdapterConstant {
+	public static String RootPath = DeviceAdapterConstant.class.getClassLoader().getResource("/").getPath();
 	/**
 	 * 设备加载失败的返回信息
 	 */
@@ -25,19 +28,19 @@ public class DeviceAdapterConstant {
 	/**
 	 * Mybatis数据库配置路径
 	 */
-	public static final String RESOURCE_DATABASE_CONFIG = "./DataBaseConf.xml";
+	public final static String RESOURCE_DATABASE_CONFIG = "./DataBaseConf.xml";
 	//部署用
 	//public static final String RESOURCE_DATABASE_CONFIG = "../conf/DataBaseConf.xml";
 	/**
 	 * waf告警事件类型
 	 */
-	public static final String WAF_NSFOCUS_EVENT_TYPE = "./conf/WAF_Nsfocus_EventType.xml";
+	public static final String WAF_NSFOCUS_EVENT_TYPE = RootPath+"WAF_Nsfocus_EventType.xml";
 	//部署用
 	//public static final String WAF_NSFOCUS_EVENT_TYPE = "../conf/WAF_Nsfocus_EventType.xml";
 
 	
 	//相对路径，部署环境变化时有可能会引起错误
-	public static final String FILE_DEVICE_CONFIG = "./conf/DeviceConfig.xml";
+	public static final String FILE_DEVICE_CONFIG = RootPath+"DeviceConfig.xml";
 	//部署用
 	//public static final String FILE_DEVICE_CONFIG = "../conf/DeviceConfig.xml";
 	
@@ -49,6 +52,6 @@ public class DeviceAdapterConstant {
 	 * 知道创宇扫描设备名
 	 */
 	public static final String DEVICE_SCANNER_WEBSOC = "Websoc";
-	public static String DEFALUT_DEVICE_TYPE_SCANNER = "SCANNER" ;
-	public static String DEFALUT_DEVICE_TYPE_DDOS = "DDOS" ;	
+	public static final String DEFALUT_DEVICE_TYPE_SCANNER = "SCANNER" ;
+	public static final String DEFALUT_DEVICE_TYPE_DDOS = "DDOS" ;	
 }

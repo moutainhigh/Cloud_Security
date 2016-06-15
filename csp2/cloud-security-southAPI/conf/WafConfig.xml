@@ -12,6 +12,7 @@
 					<WAFFactory>nsfocus</WAFFactory>
 					<WAFFactoryName>绿盟</WAFFactoryName>
 					<WAFDevPhyIP>127.0.0.1</WAFDevPhyIP>
+					<WAFVirtualIP></WAFVirtualIP>
 					<WAFDevAPI>
 						<APIAddr>https://219.141.189.189:58442</APIAddr>
 						<APIKey>vmwaf</APIKey>

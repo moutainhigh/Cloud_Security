@@ -12,6 +12,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.xml.XMLSerializer;
 
 import org.apache.commons.io.IOUtils;
+import org.aspectj.weaver.patterns.ThisOrTargetAnnotationPointcut;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -228,7 +229,7 @@ public class DeviceAdpaterManager {
 	        	  mapDeviceConfigInfoHashMap.put(daaInfo.getDeviceID(), daaInfo);
 	        }
 
-	        wafRootString = doc.getRootElement().element("DeviceList").element("DeviceWAFList").attributeValue("configFile");
+	        wafRootString = DeviceAdapterConstant.RootPath+doc.getRootElement().element("DeviceList").element("DeviceWAFList").attributeValue("configFile");
 	        wafConfigManager.loadWAFConfig(wafRootString);
 	        return true;
 		} catch (DocumentException e) {
@@ -825,5 +826,4 @@ public class DeviceAdpaterManager {
 	public String getAlertLevelInTime(JSONObject jsonObject) {
 		return nsfocusWAFAdapter.getAlertLevelCountInTime(jsonObject);
 	}
-	
 }

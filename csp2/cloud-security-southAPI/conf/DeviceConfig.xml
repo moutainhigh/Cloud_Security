@@ -36,6 +36,6 @@
 				<ID></ID>
 			</DeviceDDOS>		
 		</DeviceDDOSList>
-		<DeviceWAFList configFile="./conf/WafConfig.xml" />		
+		<DeviceWAFList configFile="WafConfig.xml" />		
 	</DeviceList>
 </DeviceAdapterConfig>
