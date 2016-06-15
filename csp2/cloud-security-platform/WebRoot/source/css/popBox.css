@@ -109,3 +109,234 @@
     font-size: 24px;
     vertical-align: middle;
 }
+
+/*waf弹框*/
+.waf-detais-pop{
+    width: 595px;
+    height: 570px;
+    background-color: #fff;
+    border: #ccc solid 1px;
+    margin-left: -288px;
+    margin-top: -285px;
+    left: 50%;
+}
+.waf-detais-pop .close{
+     width: 28px;
+    height: 28px;
+    display: block;
+    position: absolute;
+    right: 12px;
+    top: 13px;
+    background: url(../images/close.png) no-repeat;
+    cursor: pointer;
+    z-index: 200;
+}
+.waf-detais-pop  .Pophead{
+    padding: 40px 40px 40px 40px;
+    position: relative;
+     border-bottom: #e7e9eb solid 1px;
+
+}
+.waf-detais-pop  .Pophead h2{
+    font-size: 20px;
+    color: #2c3a60;
+}
+.waf-detais-pop  .Pophead a{
+ position: absolute;
+ font-size: 14px;
+ color: #2499fb;
+ right: 40px;
+ top:44px;
+}
+.waf-detais-pop .Pophead a i{
+    margin-right: 10px;
+}
+.waf-detais-pop .popBox ul{
+    overflow-y: auto;
+    height: 265px;
+}
+.waf-detais-pop .popBox ul li{
+    padding:20px 40px; 
+    font-size: 16px;
+    color: #566180;
+    border-bottom: #e7e9eb solid 1px;
+}
+.waf-detais-pop .popBox ul li h3{
+    font-size: 16px;
+}
+.waf-detais-pop ul .ac{
+    background-color: #f9fbfc;
+}
+.waf-detais-pop .popBox ul li .radio{
+  margin-right: 24px;
+  display: inline-block;
+}
+.waf-detais-pop .popBox ul li .tBox{
+    padding-left: 38px;
+    font-size: 14px;
+    color: #afb8bf;
+  }
+.waf-detais-pop .popBox p{
+    margin:30px 0 20px 0;
+    font-size: 16px;
+    color: #444f6e;
+    padding-left: 40px;
+}
+.waf-detais-pop ol{
+    padding-left: 40px;
+}
+.waf-detais-pop ol li{
+    margin-top: 15px;
+}
+
+.waf-detais-pop ol li .text{
+    width: 190px;
+    height: 38px;
+    border:#e5e5e5 solid 1px;
+    color: #979cab;
+    font-size: 16px;
+    margin-right: 20px; 
+    padding-left: 10px;
+}
+.waf-detais-pop ol li a{
+    font-size: 14px;
+    color: #2499fb;
+}
+.waf-detais-pop ol li i{
+   margin-right: 10px; 
+}
+.waf-detais-pop .bottom{
+    float: right;
+    padding-right: 40px;
+    margin-top: 10px;
+}
+.waf-detais-pop .Btnbottom a{
+     height: 50px;
+     display: inline-block;
+     background-color: #2499fb;
+     width: 178px;
+     font-size: 16px;
+     line-height: 50px;
+
+}
+/*waf添加网站*/
+.addhttp{ padding-left:80px; height:274px; overflow-y:auto}
+.waf-detais-pop #sentwo .bottom{ text-align:center; float:none; height:40px;}
+.waf-detais-pop #sentwo .bottom a{
+     height: 40px;
+     display: inline-block;
+     background-color: #2499fb;
+     width: 148px;
+     font-size: 16px;
+     line-height: 40px;
+
+}
+.addhttp ul{ padding-top:40px;}
+.addhttp li{
+    min-height: 50px;
+}
+.addhttp li{ 
+	padding:0 !important;
+	border-bottom:none !important;
+}
+.addhttp li > label{
+    width: 88px;
+    font-size: 14px;
+    color: #4e4e4e;
+    vertical-align: middle;
+    margin-right: 45px;
+}
+.addhttp .text{
+    width: 240px;
+    height: 34px;
+    border: #e1e1e1 solid 1px;
+}
+.addhttp .radio{
+    margin-right: 10px;
+    vertical-align: middle;
+
+}
+.addhttp p{
+    height: 20px;
+    line-height: 20px;
+    color: #999999;
+    font-size: 16px;
+}
+.addhttp .select{
+    height: 32px;
+    line-height: 32px;
+    padding: 0 10px;
+    border: #e1e1e1 solid 1px;
+}
+.addhttp .bottom{
+    height: 80px;
+
+}
+.addhttp a{
+     height: 50px;
+     display: inline-block;
+     background-color: #2499fb;
+     width: 178px;
+     font-size: 16px;
+     line-height: 50px;
+
+}
+
+/*漏洞扫描监测*/
+.flaw .rcent .cek,.flaw .cheall{
+	width: 16px;
+    height: 16px;
+    background: url(../images/k.png) no-repeat;
+    vertical-align: middle;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    top: -2px;
+}
+
+
+
+.flaw .rcent .this,.flaw .bl .this{
+	background: url(../images/d.png) no-repeat;	
+}
+
+
+
+.flaw{
+    width: 596px;
+    height: 448px;
+}
+.flaw .rcent .checkbox{
+    margin-right: 20px;
+}
+
+.flaw .bottom .bl{
+    padding-left: 40px;
+    color: #2c3a60;
+    font-size: 16px;
+    position: relative;
+    top:15px;
+}
+.flaw .bottom .bl .ck{
+    margin-right: 10px;
+}
+.flaw .bottom span{
+    color: #b2bac1;
+    padding-left: 14px;
+}
+
+.flaw .centone ul div p{
+	line-height:20px;
+	height:20px;
+	margin:0;
+	
+}
+.flaw .centone ul div{ margin-bottom:10px;}
+.flaw .bottom a{
+	height: 50px;
+     display: inline-block;
+     background-color: #2499fb;
+     width: 148px;
+     font-size: 16px;
+     line-height: 50px;
+}
