@@ -69,4 +69,6 @@ public interface OrderAssetDao {
 	//查询订单的资产 
 	List findAssetsByOrderId(String orderId);
 
+	void update(OrderAsset oa);
+
 }
