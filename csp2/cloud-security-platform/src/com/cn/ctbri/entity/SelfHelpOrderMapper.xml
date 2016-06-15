@@ -97,7 +97,7 @@ FROM (SELECT
       WHERE co.serviceId = cs.id
           AND co.userId = #{userId}
           AND co.payFlag = #{payFlag}
-          AND co.isAPI = 0) a,
+          AND (co.isAPI = 0 or co.isAPI = 2)) a,
   (SELECT
      GROUP_CONCAT(ast.addr) AS astName,
      cat.orderId
@@ -180,7 +180,7 @@ FROM (SELECT
             separator="," close=")">  
           #{orderId} 
         </foreach>  
-          AND r.isAPI = 0) a,
+          AND (r.isAPI = 0 OR r.isAPI = 2)) a,
   (SELECT
      GROUP_CONCAT(t.addr) AS astName,
      ca.orderId
