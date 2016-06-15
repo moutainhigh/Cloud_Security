@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderList;
@@ -224,7 +225,9 @@ public class WafController {
 	@RequestMapping(value="shoppingWaf.html")
 	public void shoppingWaf(HttpServletRequest request,HttpServletResponse response){
 		 Map<String, Object> m = new HashMap<String, Object>();
+		
 		  try{
+			  int linkmanId = Random.eightcode();
 		//用户
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
 		  SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
@@ -265,6 +268,7 @@ public class WafController {
 		order.setPrice(Double.parseDouble(priceVal));
 		order.setType(1);
 		order.setScan_type(Integer.parseInt(orderType));
+		order.setContactId(linkmanId);
 		order.setIsAPI(2);
         order.setPayFlag(0);//未支付
         selfHelpOrderService.insertOrder(order);
@@ -284,6 +288,17 @@ public class WafController {
             orderAsset.setIpArray(ipStr);
             orderAsset.setSermonth(Integer.parseInt(month));
            orderAssetService.insertOrderAsset(orderAsset);
+           
+           
+           //插入联系人
+           Linkman linkObj = new Linkman();
+         
+           linkObj.setId(linkmanId);
+           linkObj.setName(globle_user.getName());
+           linkObj.setMobile(globle_user.getMobile());
+           linkObj.setEmail(globle_user.getEmail());
+           linkObj.setUserId(globle_user.getId());
+           selfHelpOrderService.insertLinkman(linkObj);
       
    	     //网站安全帮列表
           List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
