@@ -211,8 +211,8 @@ public class WafAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("resourceId", resourceId);
 		json.put("name", name);
-		json.put("ip", wafIp);
-		json.put("port", wafPort);
+		json.put("wafIp", wafIp);
+		json.put("wafPort", wafPort);
 		json.put("cert", cert);
 		json.put("type", type);
 		json.put("domain", domain);
@@ -659,7 +659,7 @@ public class WafAPIWorker {
 			}
     	}*/
     		
-        String virtualSite = "";
+        String wafcreate = "";
     	try {
     		/*JSONObject obj = JSONObject.fromObject(ethStr);
         	String ip_address = obj.getString("ip_address");
@@ -672,10 +672,16 @@ public class WafAPIWorker {
         	String mask = ipObject.getString("mask");
         	System.out.println(mask);*/
 //    		virtualSite  = createVirtualSite("10001", "30001", "1464833085", "testfire", "http://www.testfire.net/", "*", "");
-        } catch (Exception e) {
+    		JSONArray ser = new JSONArray();
+    		JSONObject jo = new JSONObject();
+			jo.put("ip", "101.200.234.126");
+			jo.put("port", "80");
+			ser.add(jo);
+    		wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", "test06147", "219.141.189.183", "443", "nsfocus.cer", "1", "www.anquan", "*", "", ser);
+    	} catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(virtualSite);
+        System.out.println(wafcreate);
         
     }
 }
