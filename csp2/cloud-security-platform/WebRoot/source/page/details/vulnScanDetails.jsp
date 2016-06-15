@@ -25,6 +25,7 @@
 
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script src="${ctx}/source/scripts/order/details.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
 <script type="text/javascript">
 
 
@@ -392,47 +393,46 @@ $(document).ready(function(){
                         <div class="popBox">
                             <ul style="height:auto;">
                                 <li class="clearfix">
-                                    <label class="fl">网站名称</label> <div class="fl"><input type="text" class="text"></div>
+                                    <label class="fl">网站名称</label> <div class="fl"><input class="boz_inout_1" type="text" name="Intername" id="Intername"></div>
                                 </li>
                                 <li class="clearfix">
                                     <label class="fl">网站地址类型</label> 
                                     <div class="fl">
-                                        <label><input class="radio" type="radio"/>http</label>
-                                        <label style="margin-left:10px;"><input class="radio" type="radio"/>https</label>
+                                        <label><input type="radio" name="addrType" checked="checked" id="InterAddrType1" value="http">http</input></label>
+                                        <label style="margin-left:10px;"><input type="radio" name="addrType" id="InterAddrType2" value="https">https</label>
                                     </div>
                                 </li>
                                 <li class="clearfix">
-                                    <label class="fl">网站地址</label> <div class="fl"><input type="text" class="text"></div>
+                                    <label class="fl">网站地址</label> <div class="fl"><input class="boz_inout_1" type="text" name="addr" id="IntertAddr"></div>
                                 </li>
                                  <li class="clearfix">
                                     <label class="fl">示例</label> 
                                     <div class="fl">
-                                        <p>http://xxx.xxx.xxx</p>
-                                        <p>http://xxx.xxx.xxx</p>
-                                        <p>http://xxx.xxx.xxx</p>
-                                        <p>http://xxx.xxx.xxx</p>
-                                      
+                                        <p>http://xxx.xxx.xxx.xxx</p>
+                                        <p>https://xxx.xxx.xxx.xxx:1234</p>
+                                        <p>http://xxx.xxx.xxx.xxx:8080/home</p>
                                     </div>
                                 </li>
                                 
                                  <li class="clearfix">
                                     <label class="fl">物理位置</label> 
                                         <div class="fl">
-                                            <select class="select">
-                                                <option>请选择省份</option>
-                                            </select>
-                                            <select class="select">
-                                                <option>请选择城市</option>
-                                            </select>
+                                           <select class="user_secta_count spiclesel" id="districtId" name="districtId" onchange="getCitys(this.value)" style="width:119px;height: 35px;">
+  					                            <option selected="selected" value="-1">请选择省份</option>
+  				                          </select> 
+						    			<select  class="user_secta_count spiclesel"  id="city" name="city" disabled="disabled" style="width:119px;height: 35px;">
+						    			      <option value="-1">请选择城市</option>
+						    			</select>
                                         </div>
                                 </li>
                                 <li class="clearfix">
                                     <label class="fl">网站用途</label> 
                                     <div class="fl">
-                                        <select class="select" placeholder="">
-                                            <option>请选择网站用途</option>
-                                            <option>请选择网站用途</option>
-                                            <option>请选择网站用途</option>
+                                       <select class="user_secta_count spiclesel" id="purpose" name="purpose" style="width:242px;height: 35px;">
+                                          <option selected="selected" value="-1">请选择资产用途</option>
+							   				<option value="公共服务">公共服务</option>
+							   				<option value="信息发布">信息发布</option>
+							   				<option value="其他">其他</option>   
                                         </select>
                                     </div>
                                 </li>
@@ -442,7 +442,7 @@ $(document).ready(function(){
                     
                     </div>
         			 <div class="bottom clearfix">
-                                <a href="javascript:;" class="btn sub" style="margin:0 20px 0 30px;">提交</a>
+                                <a href="javascript:;" class="btn sub" style="margin:0 20px 0 30px;" onclick="saveInter()">提交</a>
                                 <a href="javascript:;" class="btn sub return">返回</a>
                             </div>
         
