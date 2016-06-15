@@ -402,7 +402,7 @@ public class shoppingController {
 	     if(list!=null&&list.size()>0){
 	       for(int i=0;i<list.size();i++){
 	    	   ShopCar shopCar = (ShopCar)list.get(i);
-	    	   if(shopCar.getIsAPI()==0){
+	    	   if(shopCar.getIsAPI()==0||shopCar.getIsAPI()==2){
 	    		   shopList.add(shopCar);
 	    	   }else{
 	    		   
