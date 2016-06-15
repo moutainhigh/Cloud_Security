@@ -82,4 +82,8 @@ public class OrderListServiceImpl implements IOrderListService{
 		orderListDao.updateBalanceFlag(ol);
 	}
 
+	public List<OrderList> getPayRecord(Map<String, Object> param) {
+		return orderListDao.findAllPayRecord((Integer) param.get("userId"));
+	}
+
 }

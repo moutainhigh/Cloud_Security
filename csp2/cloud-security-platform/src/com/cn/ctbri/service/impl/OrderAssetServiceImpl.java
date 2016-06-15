@@ -98,5 +98,9 @@ public class OrderAssetServiceImpl implements IOrderAssetService{
 	public List findAssetsByOrderId(String orderId) {
 		return orderAssetDao.findAssetsByOrderId(orderId);
 	}
+
+	public void update(OrderAsset oa) {
+		orderAssetDao.update(oa);
+	}
 	
 }

@@ -157,8 +157,8 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 		selfHelpOrderDao.updateShopOrder(order);
 	}
 
-	public void updateOrderPayFlag(String orderIds, int payFlag) {
-		selfHelpOrderDao.updateOrderPayFlag(orderIds, payFlag);
+	public void updateOrderPayFlag(String orderIds, int payFlag, int remarks) {
+		selfHelpOrderDao.updateOrderPayFlag(orderIds, payFlag, remarks);
 	}
 	
 	public void updatePayDate(OrderList ol) {
