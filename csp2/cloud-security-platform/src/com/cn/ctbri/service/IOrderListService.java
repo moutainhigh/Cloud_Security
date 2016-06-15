@@ -1,5 +1,8 @@
 package com.cn.ctbri.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.pager.PageBean;
 
@@ -31,4 +34,8 @@ public interface IOrderListService {
      * 功能描述： 根据订单编号更改领取安全币状态
      */
 	void updateBalanceFlag(OrderList ol);
+	/**
+     * 功能描述： 查询支付订单
+     */
+	List<OrderList> getPayRecord(Map<String, Object> param);
 }
