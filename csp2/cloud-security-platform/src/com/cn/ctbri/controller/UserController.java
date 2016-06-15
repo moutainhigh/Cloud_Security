@@ -368,14 +368,49 @@ public class UserController{
 	public void login(HttpServletRequest request,HttpServletResponse response){
 		String name = request.getParameter("name");
 		String password = request.getParameter("password");
-		String checkNumber = request.getParameter("checkNumber");
+		String md5password = DigestUtils.md5Hex(password);
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try {
 			User _user = null;
 			List<User> users = userService.findUserByName(name);
-			if(users.size()==0){
+			if(users!=null && users.size()>0){			
+				//判断用户名对应的密码
+				if(!md5password.equals(users.get(0).getPassword())){
+					//判断手机号对应的密码
+					users = userService.findUserByMobile(name);
+					if(users!=null && users.size()>0){
+						if(!md5password.equals(users.get(0).getPassword())){
+							//密码错误
+							map.put("result", 2);
+							JSONObject JSON = CommonUtil.objectToJson(response, map);
+							try {
+								// 把数据返回到页面
+								CommonUtil.writeToJsp(response, JSON);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+							return;
+						}
+					}
+					
+				}			
+			}else{
 				users = userService.findUserByMobile(name);
+				if(users!=null && users.size()>0){
+					if(!md5password.equals(users.get(0).getPassword())){
+						//密码错误
+						map.put("result", 2);
+						JSONObject JSON = CommonUtil.objectToJson(response, map);
+						try {
+							// 把数据返回到页面
+							CommonUtil.writeToJsp(response, JSON);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						return;
+					}
+				}
 			}
 			
 			_user = users.get(0);
@@ -391,20 +426,7 @@ public class UserController{
 				}
 				return;
 			}
-			//从页面上获取密码和User对象中存放的密码，进行匹配，如果不一致，提示【密码输入有误】
-			String md5password = DigestUtils.md5Hex(password);
-			if(!md5password.equals(_user.getPassword())){
-				//密码错误
-				map.put("result", 2);
-				JSONObject JSON = CommonUtil.objectToJson(response, map);
-				try {
-					// 把数据返回到页面
-					CommonUtil.writeToJsp(response, JSON);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				return;
-			}
+			
 
 			//添加验证码，判断验证码输入是否正确
 			boolean flag = LogonUtils.checkNumber(request);
@@ -421,27 +443,15 @@ public class UserController{
 				return;
 			}
 			//如果是企业用户判断IP是否在库存地址段内
-//			if(_user.getType()==3){
 			String ip = "";
 			if (request.getHeader("x-forwarded-for") == null) {
 				ip = request.getRemoteAddr();
 			}else{
 				ip = request.getHeader("x-forwarded-for");
 			}
-//			ip = "219.142.69.71";
 			String ipStart = _user.getStartIP();
 			String ipEnd = _user.getEndIP();
 				
-//				JSONObject JSON = CommonUtil.objectToJson(response, map);
-//				try {
-//					// 把数据返回到页面
-//					CommonUtil.writeToJsp(response, JSON);
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//				return;
-//			}
-
 			/**记住密码功能*/
 			LogonUtils.remeberMe(request,response,name,password);
 			
@@ -467,9 +477,6 @@ public class UserController{
 			
 			//将User放置到Session中，用于这个系统的操作
 			request.getSession().setAttribute("globle_user", _user);
-			
-/*			Timer timer = new Timer();
-			timer.schedule(new UserController(request),5000);*/
 			//add by tangxr 2016-3-14
 			if(request.getSession().getAttribute("indexPage")!=null){
 				int indexPage = (Integer) request.getSession().getAttribute("indexPage");
@@ -486,10 +493,6 @@ public class UserController{
 						}
 					}else{
 						int serviceId = (Integer) request.getSession().getAttribute("serviceId");
-//						return "redirect:/selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
-//						return "redirect:/selfHelpOrderInit.html";
-//						return "redirect:/selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
-						//return "redirect:/selfHelpOrderInit.html";
 						map.put("result", 5);
 						map.put("serviceId", serviceId);
 						map.put("indexPage", indexPage);
@@ -510,14 +513,12 @@ public class UserController{
 							map.put("result", 4);
 						}else{
 							int apiId = (Integer) request.getSession().getAttribute("apiId");
-							//return "redirect:/selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
 							map.put("result", 6);
 							map.put("apiId", apiId);
 							map.put("indexPage", indexPage);
 						}
 					}else{
 						int apiId = (Integer) request.getSession().getAttribute("apiId");
-						//return "redirect:/selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
 						map.put("result", 6);
 						map.put("apiId", apiId);
 						map.put("indexPage", indexPage);
@@ -531,7 +532,6 @@ public class UserController{
 					}
 					return;
 				}else{
-					//return "redirect:/userCenterUI.html";
 					if(_user.getType()==3){
 						if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
 							map.put("msg", "登录的IP不在IP地址段范围内");
@@ -552,7 +552,6 @@ public class UserController{
 					return;
 				}
 			}else{
-				//返回"redirect:/userCenterUI.html"
 				if(_user.getType()==3){
 					if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
 						map.put("msg", "登录的IP不在IP地址段范围内");
