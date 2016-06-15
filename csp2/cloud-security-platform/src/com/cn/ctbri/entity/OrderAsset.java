@@ -18,6 +18,7 @@ public class OrderAsset {
 	private int userId;
 	private String ipArray;//网站域名对应的IP地址
 	private int Sermonth;//服务期限
+	private String targetKey;//waf
 	public int getId() {
 		return id;
 	}
@@ -71,6 +72,12 @@ public class OrderAsset {
 	}
 	public void setSermonth(int sermonth) {
 		Sermonth = sermonth;
+	}
+	public String getTargetKey() {
+		return targetKey;
+	}
+	public void setTargetKey(String targetKey) {
+		this.targetKey = targetKey;
 	}
 	
     

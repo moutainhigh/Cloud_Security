@@ -87,5 +87,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findAssetsByOrderId" parameterType="String" resultType="hashmap" >
         select a.name,a.addr,oa.id as orderAssetId, oa.ipArray from cs_order_asset oa,cs_asset a where oa.orderId=#{orderId} and oa.assetid = a.id
     </select>
+    
+    <!-- 修改订单 -->
+	<update id="update" parameterType="com.cn.ctbri.entity.OrderAsset">
+		update cs_order_asset
+		<set>
+			<if test="targetKey!=null">
+				targetKey=#{targetKey}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
 	
 </mapper>

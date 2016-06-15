@@ -283,7 +283,8 @@ WHERE a.id = b.orderId
  <update id="updatePayFlag" parameterType="hashMap">
       	update cs_order
       	set
-      	 payFlag = #{payFlag}
+      	 payFlag = #{payFlag},
+      	 remarks = #{remarks}
       	where
       	 id in (${orderId})
  </update>
