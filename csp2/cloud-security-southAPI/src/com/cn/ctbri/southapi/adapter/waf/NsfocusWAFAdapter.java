@@ -32,14 +32,13 @@ import com.cn.ctbri.southapi.adapter.batis.inter.*;
 import com.cn.ctbri.southapi.adapter.batis.model.*;
 import com.cn.ctbri.southapi.adapter.waf.config.*;
 import com.cn.ctbri.southapi.adapter.waf.syslog.WAFSyslogManager;
+import com.cn.ctbri.southapi.adapter.manager.DeviceAdapterConstant;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 
 
 public class NsfocusWAFAdapter {	
-	private static final String RESOURCE_DATABASE_CONFIG = "./DataBaseConf.xml";
-	private static final String WAF_NSFOCUS_EVENT_TYPE = "./conf/WAF_Nsfocus_EventType.xml";
-	private static final String[] ALERT_LEVEL_STRINGS = {"LOW","MID","HIGH"};
+	private static final String[] ALERT_LEVEL_STRINGS = {"LOW","MEDIUM","HIGH"};
 	
 	public static HashMap<Integer, NsfocusWAFOperation> mapNsfocusWAFOperation = new HashMap<Integer, NsfocusWAFOperation>();
 	public static HashMap<Integer, HashMap<Integer, NsfocusWAFOperation>> mapNsfocusWAFOperationGroup = new HashMap<Integer, HashMap<Integer,NsfocusWAFOperation>>();
@@ -83,7 +82,7 @@ public class NsfocusWAFAdapter {
 	private Map<String, String> getWafEventTypeMap() throws DocumentException {
 		Map<String, String> wafEventTypeMap = new HashMap<String, String>();
 		SAXReader reader = new SAXReader();
-		Document document = reader.read(WAF_NSFOCUS_EVENT_TYPE);
+		Document document = reader.read(DeviceAdapterConstant.WAF_NSFOCUS_EVENT_TYPE);
 		List<Element> list = document.selectNodes("/TypeList/Type");
 		for (Element element : list) {
 			wafEventTypeMap.put(element.attributeValue("name"), element.getTextTrim());
@@ -259,34 +258,51 @@ public class NsfocusWAFAdapter {
 		int
 	}**/
 	
-	
+	/**
+	 * 在资源组内新建虚拟站点
+	 * @param resourceId
+	 * @param jsonObject
+	 * @return
+	 */
 	public String createVirtSite(int resourceId, JSONObject jsonObject) {
 		HashMap<Integer, NsfocusWAFOperation> map = mapNsfocusWAFOperationGroup.get(resourceId);
 		JSONObject createVirtSiteJsonObject = new JSONObject();
 		JSONArray createVirtSiteJsonArray = new JSONArray();
 		String targetId = UUID.randomUUID().toString();
+		int statusCount = 0;
 		for (Entry<Integer, NsfocusWAFOperation> entry : map.entrySet()) {
 			//新建站点
 			String siteJsonString = entry.getValue().createSite(jsonObject);
 			System.out.println(">>>"+siteJsonString);
 			JSONObject siteResponseJsonObject = JSONObject.fromObject(siteJsonString);
-			if (siteResponseJsonObject.get("status")==null || !siteResponseJsonObject.getString("status").equals("success")) continue;
+			if (siteResponseJsonObject.get("status")==null || !siteResponseJsonObject.getString("status").equals("success")){
+				siteResponseJsonObject.put("deviceId", entry.getKey());
+				createVirtSiteJsonArray.add(siteResponseJsonObject); 
+				continue;
+			}
 			//组织入库信息
 			String siteId = siteResponseJsonObject.getString("id").trim();
 			String groupId = siteResponseJsonObject.getJSONObject("website").getJSONObject("group").getString("id").trim();			
+
+			
+			jsonObject.put("parent", groupId);
+			JSONObject responseJsonObject = JSONObject.fromObject(entry.getValue().createVirtSite(jsonObject));
+			//虚拟站点id
+			if (responseJsonObject.get("status")==null|| !responseJsonObject.getString("status").equals("success")) {
+				responseJsonObject.put("deviceId", entry.getKey());
+				createVirtSiteJsonArray.add(responseJsonObject);
+				continue;
+			}
+			String virtSiteId = responseJsonObject.getString("id");
+
+			//入库
 			TWafNsfocusTargetinfo record =new TWafNsfocusTargetinfo();
 			record.setDeviceid(entry.getKey());
 			record.setId(targetId);
 			record.setResourceid(resourceId);
 			record.setSiteid(siteId);
 			record.setGroupid(groupId);
-			
-			jsonObject.put("parent", groupId);
-			JSONObject responseJsonObject = JSONObject.fromObject(entry.getValue().createVirtSite(jsonObject));
-			//虚拟站点id
-			String virtSiteId = responseJsonObject.getString("id");
 			record.setVirtsiteid(virtSiteId);
-			//入库
 			try {
 				SqlSession sqlSession = getSqlSession();
 				TWafNsfocusTargetinfoMapper mapper = sqlSession.getMapper(TWafNsfocusTargetinfoMapper.class);
@@ -300,12 +316,25 @@ public class NsfocusWAFAdapter {
 			JSONObject tempDeviceJsonObject = JSONObject.fromObject(responseJsonObject);
 			tempDeviceJsonObject.put("deviceId", entry.getKey());
 			createVirtSiteJsonArray.add(tempDeviceJsonObject);
+			statusCount+=1;
 		}
 		createVirtSiteJsonObject.put("targetKey", targetId);
 		createVirtSiteJsonObject.put("virtualSiteList", createVirtSiteJsonArray);
+		if (statusCount==map.size()) {
+			createVirtSiteJsonObject.put("status", "success");
+		}else {
+			createVirtSiteJsonObject.put("status", "failed");
+		}
+
 		return createVirtSiteJsonObject.toString();
 	}
-	
+	/**
+	 * 新建虚拟站点
+	 * @param resourceId
+	 * @param deviceId
+	 * @param jsonObject
+	 * @return
+	 */
 	public String createVSite(int resourceId, int deviceId, JSONObject jsonObject) {
 		return getDeviceById(resourceId, deviceId).createVirtSite(jsonObject);
 	}
@@ -741,7 +770,7 @@ public class NsfocusWAFAdapter {
 			
 			
 			SAXReader reader = new SAXReader();
-			Document document = reader.read(WAF_NSFOCUS_EVENT_TYPE);
+			Document document = reader.read(DeviceAdapterConstant.WAF_NSFOCUS_EVENT_TYPE);
 			List<Element> typeElements = document.selectNodes("/TypeList/Type");
 			List<JSONObject> typeCountList = new ArrayList<JSONObject>();
 			for (Element element : typeElements) {
@@ -779,7 +808,7 @@ public class NsfocusWAFAdapter {
 			Date dateBefore = calendar.getTime();
 			
 			SAXReader reader = new SAXReader();
-			Document document = reader.read(WAF_NSFOCUS_EVENT_TYPE);
+			Document document = reader.read(DeviceAdapterConstant.WAF_NSFOCUS_EVENT_TYPE);
 			List<Element> typeElements = document.selectNodes("/TypeList/Type");
 			List<JSONObject> typeCountList = new ArrayList<JSONObject>();
 			for (Element element : typeElements) {
@@ -865,7 +894,7 @@ public class NsfocusWAFAdapter {
 	
 	private SqlSession getSqlSession() throws IOException{
 		Reader reader;
-		reader = Resources.getResourceAsReader(RESOURCE_DATABASE_CONFIG);
+		reader = Resources.getResourceAsReader(DeviceAdapterConstant.RESOURCE_DATABASE_CONFIG);
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		return sqlSession;

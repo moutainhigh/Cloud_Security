@@ -274,8 +274,8 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 			return errJsonObject.toString();
 		}
 		JSONObject tempJsonObject = new JSONObject();
+		//create site
 		tempJsonObject.put("ip", jsonObject.getString("wafIp"));
-		
 		if (jsonObject.get("name")!=null&&!jsonObject.getString("name").equals("")){
 			tempJsonObject.put("name", jsonObject.getString("name"));
 		}

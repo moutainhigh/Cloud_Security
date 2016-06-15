@@ -22,11 +22,25 @@ public class DeviceAdapterConstant {
 	/**
 	 * 
 	 */
+	/**
+	 * Mybatis数据库配置路径
+	 */
+	public static final String RESOURCE_DATABASE_CONFIG = "./DataBaseConf.xml";
+	//部署用
+	//public static final String RESOURCE_DATABASE_CONFIG = "../conf/DataBaseConf.xml";
+	/**
+	 * waf告警事件类型
+	 */
+	public static final String WAF_NSFOCUS_EVENT_TYPE = "./conf/WAF_Nsfocus_EventType.xml";
+	//部署用
+	//public static final String WAF_NSFOCUS_EVENT_TYPE = "../conf/WAF_Nsfocus_EventType.xml";
+
 	
 	//相对路径，部署环境变化时有可能会引起错误
 	public static final String FILE_DEVICE_CONFIG = "./conf/DeviceConfig.xml";
-	//绝对路径，一般不会出错
-	//public static final String FILE_DEVICE_CONFIG = DeviceAdapterConstant.class.getResource("/DeviceConfig.xml").toString();
+	//部署用
+	//public static final String FILE_DEVICE_CONFIG = "../conf/DeviceConfig.xml";
+	
 	/**
 	 * 安恒扫描设备名
 	 */
