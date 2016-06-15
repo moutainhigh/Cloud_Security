@@ -174,7 +174,8 @@ $(document).ready(function(){
 										<td width="200">
 											<fmt:formatDate value="${payItem.pay_date }" pattern="yyyy-MM-dd HH:mm:ss"/>
 										</td>
-										<td width="200">${payItem.id }</td>
+										<!-- <td width="200">${payItem.id }</td> -->
+										<td width="200">${payItem.orderId }</td>
 										<td width="330" style="font-size: 16px;">
 											<c:forEach var="name" items="${payItem.serverNameMap }" varStatus="status">
 	                                    		${name.key }*${name.value }<br/>
