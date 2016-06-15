@@ -1933,27 +1933,7 @@ padding: 20px 30px 0px 0px;
 }
 
 /*waf商品详情页*/
-.waf-datails .httpBox li{
-	padding:8px;
-	border-radius: 1px;
-	border:#e5e5e5 solid 1px;
-	margin:0 20px 10px 0;
-	height:auto;
-}
-.waf-datails .httpBox li em{
-	font-size: 14px;
-	color: #4e4e4e;
-	padding-right: 10px;
-}
-.httpBox li i{
-	width:20px;
-	height:20px;
-	background:url(../images/newdel.png) no-repeat left center;
-	display:inline-block;
-	vertical-align:middle;
-	cursor: pointer;
-}
-/*.dataR .waf_ip_list li > .text{
+.dataR .waf_ip_list li > .text{
 	margin-left: 0;
 }
 .dataR .waf_ip_list{
@@ -1979,7 +1959,29 @@ padding: 20px 30px 0px 0px;
 }
 .dataR .waf_ip_list li span em{
 	color: #929292;
-}*/
+}
+/*waf商品详情页*/
+.waf-datails .httpBox li{
+	padding:8px;
+	border-radius: 1px;
+	border:#e5e5e5 solid 1px;
+	margin:0 20px 10px 0;
+	height:auto;
+}
+/*页面监测*/
+.waf-datails .httpBox li em{
+	font-size: 14px;
+	color: #4e4e4e;
+	padding-right: 10px;
+}
+.httpBox li i{
+	width:20px;
+	height:20px;
+	background:url(../images/newdel.png) no-repeat left center;
+	display:inline-block;
+	vertical-align:middle;
+	cursor: pointer;
+}
 
 /*设置域名名字*/
 .name_domain .coupontab ul li{
