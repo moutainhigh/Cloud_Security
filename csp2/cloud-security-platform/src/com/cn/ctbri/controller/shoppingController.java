@@ -1133,7 +1133,7 @@ public class shoppingController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			if (!session){
+			if (!true){
 				//连接服务管理系统失败
 				m.put("payFlag", 4);
     			return;
@@ -1151,7 +1151,7 @@ public class shoppingController {
     		selfHelpOrderService.updatePayDate(orderList);
     		
     		//更新 支付Flag(cs_order表) 未支付-->已支付
-    		selfHelpOrderService.updateOrderPayFlag(orderIds, 1);
+    		selfHelpOrderService.updateOrderPayFlag(orderIds, 1, 1);
     		
     		//若支付时间>服务的开始时间，更新订单的开始时间，结束时间
     		List<String> orderIdOfModify = modifyOrderBeginTime(orderList);
@@ -1307,18 +1307,21 @@ public class shoppingController {
 //    						orderId = orderDate+String.valueOf(Random.fivecode());
     						orderVal = orderVal+ orderId+",";
     					}else{
-    						SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
-    						String orderDate = odf.format(new Date());
-    						orderId = orderDate+String.valueOf(Random.fivecode());
-    						orderVal = orderVal+ orderId+",";
+//    						SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+//    						String orderDate = odf.format(new Date());
+//    						orderId = orderDate+String.valueOf(Random.fivecode());
+//    						orderVal = orderVal+ orderId+",";
+    						orderId = shopCar.getOrderId();
     						
     						//创建waf虚拟站点,modify by tangxr 2016-6-13
     						List assets = orderAssetService.findAssetsByOrderId(orderId);
+    						HashMap<String, Object> assetOrder = new HashMap<String, Object>();
+				        	assetOrder=(HashMap) assets.get(0);
+				        	int id = 0;
     						JSONArray ser = new JSONArray();
     						if(assets != null && assets.size() > 0){
-    				        	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
-    				        	assetOrder=(HashMap) assets.get(0);
     				        	String ipArray=(String) assetOrder.get("ipArray");
+    				        	id = (Integer) assetOrder.get("orderAssetId");
     				        	String[] ips = null;   
     				            ips = ipArray.split(",");
     				            for (int n = 0; n < ips.length; n++) {
@@ -1328,11 +1331,15 @@ public class shoppingController {
     	    						ser.add(jo);
     				            }
     				        }
-    						String wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", "test0613", "219.141.189.184", "443", "nsfocus.cer", "1", "", "*", "", ser);
+    						String wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", orderId, "219.141.189.184", "443", "nsfocus.cer", "1", "", "*", "", ser);
     						String targetKey = "";
     				    	try {
     				    		JSONObject obj = JSONObject.fromObject(wafcreate);
-    				    		targetKey = obj.getString("targetKey");   		
+    				    		targetKey = obj.getString("targetKey");  
+    				    		OrderAsset oa = new OrderAsset();
+    				    		oa.setId(id);
+    				    		oa.setTargetKey(targetKey);
+    				    		orderAssetService.update(oa);
     				        } catch (Exception e) {
     				            e.printStackTrace();
     				        }

@@ -253,7 +253,7 @@ public class shoppingAPIController {
             order.setUserId(globle_user.getId());
             order.setContactId(linkmanId);
             order.setStatus(1);//完成
-            order.setPayFlag(1);
+            order.setPayFlag(0);
             order.setPrice(Double.parseDouble(price));
             order.setIsAPI(1);//api订单
             selfHelpOrderService.insertOrder(order);

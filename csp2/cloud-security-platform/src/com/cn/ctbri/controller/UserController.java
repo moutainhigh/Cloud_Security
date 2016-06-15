@@ -682,7 +682,8 @@ public class UserController{
 	@RequestMapping(value="orderList.html")
 	public String orderList(HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
-		List orderList = orderService.findOrderByUserId(globle_user.getId());
+//		List orderList = orderService.findOrderByUserId(globle_user.getId());
+		List orderList = orderService.findByUserIdAndPage(globle_user.getId(),-1,null,null);
 		if(orderList.size()>2){
 			orderList = orderList.subList(0, 2);
 		}

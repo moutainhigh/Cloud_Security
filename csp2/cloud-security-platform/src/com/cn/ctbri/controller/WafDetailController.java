@@ -117,8 +117,8 @@ public class WafDetailController {
         
         if(map != null && map.size() > 0){
 			high = Integer.parseInt(map.get("high").toString());
-			middle = Integer.parseInt(map.get("low").toString());
-			low = Integer.parseInt(map.get("mid").toString());
+			middle = Integer.parseInt(map.get("mid").toString());
+			low = Integer.parseInt(map.get("low").toString());
         }
         count = high + middle + low;
         DecimalFormat df = new DecimalFormat("0.00");//格式化小数，不足的补0
@@ -503,7 +503,7 @@ public class WafDetailController {
     		JSONObject obj = JSONObject.fromObject(levelStr);
     		int high = obj.getInt("HIGH");
     		int low = obj.getInt("LOW");
-    		int mid = obj.getInt("MID");
+    		int mid = obj.getInt("MEDIUM");
     		reMap.put("high", high);
     		reMap.put("low", low);
     		reMap.put("mid", mid);

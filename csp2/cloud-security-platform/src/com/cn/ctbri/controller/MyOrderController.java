@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -25,11 +26,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.cn.ctbri.common.WafAPIWorker;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.User;
+import com.cn.ctbri.pager.PageBean;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAssetService;
+import com.cn.ctbri.service.IOrderListService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
@@ -69,6 +73,8 @@ public class MyOrderController {
     ITaskWarnService taskWarnService;
     @Autowired
     IUserService userService;
+    @Autowired
+    IOrderListService orderListService;
 	
 	/**
      * 功能描述： 个人中心——我的订单
@@ -132,6 +138,26 @@ public class MyOrderController {
 		        map.put("assetList", assetList);
 	        }
         }
+        
+        //查询orderList表
+        /*Map<String, Object> param = new HashMap<String, Object>();
+        param.put("userId", globle_user.getId());
+    	List ol = orderListService.getPayRecord(param);
+    	if(ol != null && ol.size() > 0){
+    		for(int i = 0; i < ol.size(); i++){
+    			Object olBean = ol.get(i);
+    			HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(i);
+    			//获取ids
+    			String orderIds = (String) map.get("orderId");
+    			if(orderIds!=null&&!"".equals(orderIds)){
+    				String strArray[] = orderIds.split(",");
+    				for (int m=0;m<strArray.length;m++){
+    					Order o = orderService.findOrderById(strArray[i]);
+    					map.put("o", o);
+    				}
+    			}
+    		}
+    	}*/
         
         //获取当前时间
         SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

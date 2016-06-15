@@ -460,7 +460,7 @@ public class WafController {
 			order.setTask_date(begin_date);
 			order.setIsAPI(2);
 			order.setDelFlag(0);
-			order.setPayFlag(1);
+			order.setPayFlag(0);
 			order.setUserId(globle_user.getId());
 			
 			order.setStatus(0);
