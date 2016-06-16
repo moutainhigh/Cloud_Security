@@ -149,6 +149,7 @@
 			</div>
 		</div>
 		
+		<input type="hidden" id="userIdHidden" value="${user.id}"/>
 		<input type="hidden" id="serviceId" value="${serviceId }"/>
 		<input type="hidden" id="orderType" value="${type }"/>
 		<input type="hidden" id="beginDate" value="${beginDate }"/>

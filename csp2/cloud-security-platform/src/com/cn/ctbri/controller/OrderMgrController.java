@@ -357,12 +357,35 @@ public class OrderMgrController {
     @RequestMapping(value="saveOrder.html")
     @ResponseBody
     public void saveOrder(HttpServletResponse response,HttpServletRequest request) throws Exception{
+        Map<String, Object> m = new HashMap<String, Object>();
+        
         //用户
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
+    	//前台传回的用户
+    	//前台传回的用户
+    	int userId = Integer.parseInt(request.getParameter("userId"));
+    	//判断用户是否为当前用户
+    	boolean userStatus = true;
+    	if(userId != globle_user.getId()){
+    		userStatus = false;
+    	}
+    	m.put("userStatus", userStatus);
+    	if(!userStatus){
+    		 //object转化为Json格式
+    	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+    	       try {
+    	           // 把数据返回到页面
+    	           CommonUtil.writeToJsp(response, JSON);
+    	       } catch (IOException e) {
+    	           e.printStackTrace();
+    	       }
+    	       return;
+    	}
+		
         //资产ids
         String assetIds = request.getParameter("assetIds");
         String price = request.getParameter("price");
-        Map<String, Object> m = new HashMap<String, Object>();
+
         /*定义变量*/
         String[] assetIdArrayAble = null;//资产id数组
         String[] targetURL = null;//资产url数组

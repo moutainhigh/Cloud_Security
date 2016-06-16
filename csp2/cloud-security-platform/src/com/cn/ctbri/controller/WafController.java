@@ -388,9 +388,30 @@ public class WafController {
     @RequestMapping(value="saveWafOrder.html")
     @ResponseBody
     public void saveWafOrder(HttpServletResponse response,HttpServletRequest request) throws Exception{
+        Map<String, Object> m = new HashMap<String, Object>();
+        
         //用户
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
-        Map<String, Object> m = new HashMap<String, Object>();
+    	//前台传回的用户
+    	int userId = Integer.parseInt(request.getParameter("userId"));
+    	//判断用户是否为当前用户
+    	boolean userStatus = true;
+    	if(userId != globle_user.getId()){
+    		userStatus = false;
+    	}
+    	m.put("userStatus", userStatus);
+    	if(!userStatus){
+    		 //object转化为Json格式
+    	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+    	       try {
+    	           // 把数据返回到页面
+    	           CommonUtil.writeToJsp(response, JSON);
+    	       } catch (IOException e) {
+    	           e.printStackTrace();
+    	       }
+    	       return;
+    	}
+
         String id ="";
         try {
 			//后台判断资产是否可用，防止恶意篡改资产

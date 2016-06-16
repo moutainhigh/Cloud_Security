@@ -189,6 +189,7 @@ $(function(){
         var ipArray = $('#ipArrayHidden').val();
         var times = $('#timesHidden').val();
         var serviceName = $('#serviceName').val();
+        var userId = $("#userIdHidden").val();
 		var result = window.confirm("确定要提交订单吗？");
     	if(result){
     		$.ajax({ type: "POST",
@@ -203,10 +204,15 @@ $(function(){
 			    			"price":price,
 			    			"ipArray":ipArray,
 			    			"timeswaf":times,
-			    			"serviceName":serviceName},  
+			    			"serviceName":serviceName,
+			    			"userId":userId},  
 	    		     dataType: "json", 
 	    		     success: function(data) {
-			    				if(data.assetsStatus == true){
+			    				if(data.userStatus == false){
+				    				alert("该订单不属当前用户,请重新下单!");
+				    				window.location.href = "index.html";
+			    		     	    return;
+				    			}else if(data.assetsStatus == true){
 			    					alert("订单资产未验证,请重新购买!");
 			    		     		return;
 			    				}else if(data.orderStatus == true){

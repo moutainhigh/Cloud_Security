@@ -336,6 +336,7 @@ public class shoppingController {
         request.setAttribute("shopCarList", shopCarList);
         request.setAttribute("apiList", apiList);
         request.setAttribute("flag", flag);
+        request.setAttribute("user", globle_user);
 	     String result = "/source/page/details/shoppingCart-order";
 		return result;
 	}
@@ -380,6 +381,7 @@ public class shoppingController {
 	@RequestMapping(value="shopBuy.html")
 	public String shopBuy(HttpServletRequest request){
 		 User globle_user = (User) request.getSession().getAttribute("globle_user");
+
 		String str = request.getParameter("str");
 		
 		List list = new ArrayList();
@@ -438,6 +440,26 @@ public class shoppingController {
 		 String serverNames="";
 	try{
 		 User globle_user = (User) request.getSession().getAttribute("globle_user");
+		//前台传回的用户
+	    	int userId = Integer.parseInt(request.getParameter("userId"));
+	    	//判断用户是否为当前用户
+	    	boolean userStatus = true;
+	    	if(userId != globle_user.getId()){
+	    		userStatus = false;
+	    	}
+	    	map.put("userStatus", userStatus);
+	    	if(!userStatus){
+	    		 //object转化为Json格式
+	    	       JSONObject JSON = CommonUtil.objectToJson(response, map);
+	    	       try {
+	    	           // 把数据返回到页面
+	    	           CommonUtil.writeToJsp(response, JSON);
+	    	       } catch (IOException e) {
+	    	           e.printStackTrace();
+	    	       }
+	    	       return;
+	    	}
+	    	
 		 Date date = new Date();
 		 boolean flag=true;
 		 String status="";
@@ -991,6 +1013,29 @@ public class shoppingController {
 	@RequestMapping(value="checkShoppOrder.html")
 	public void checkOrderInfo(HttpServletResponse response,HttpServletRequest request){
 		Map<String, Object> m = new HashMap<String, Object>();
+		
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		//前台传回的用户
+		//前台传回的用户
+    	int userId = Integer.parseInt(request.getParameter("userId"));
+    	//判断用户是否为当前用户
+    	boolean userStatus = true;
+    	if(userId != globle_user.getId()){
+    		userStatus = false;
+    	}
+    	m.put("userStatus", userStatus);
+    	if(!userStatus){
+    		 //object转化为Json格式
+    	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+    	       try {
+    	           // 把数据返回到页面
+    	           CommonUtil.writeToJsp(response, JSON);
+    	       } catch (IOException e) {
+    	           e.printStackTrace();
+    	       }
+    	       return;
+    	}
+
 	try{
 		Date date = new Date();
 		 boolean flag = true;

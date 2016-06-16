@@ -163,6 +163,7 @@ $(function(){
        var userName =  $(".test_name").text();
         var userAdd = $(".test_add").text();
         var mobile =  $(".test_iphone").text();
+        var userId = $("#userIdHidden").val();
     	if(orderType==2){
     		scanType="";
     	}
@@ -192,11 +193,16 @@ $(function(){
 		    			   	"ip":ip,
 		    			   	"bandwidth":bandwidth,
 			    			"websoc":"",
-			    			"tasknum":""},  
+			    			"tasknum":"",
+			    			"userId":userId},  
 	    		     dataType: "json", 
 //		    		     contentType: "application/json; charset=utf-8", 
 	    		     success: function(data) {
-		    				if(data.assetsStatus == true){
+			    			if(data.userStatus == false){
+			    				alert("该订单不属当前用户,请重新下单!");
+			    				window.location.href = "index.html";
+		    		     	    return;
+			    			}else if(data.assetsStatus == true){
 		    					alert("订单资产没有验证,请重新下单!");
 		    		     	    return;
 		    				}else if(data.timeCompare == false){
@@ -229,6 +235,7 @@ $(function(){
     	 var userName =  $(".test_name").text();
         var userAdd = $(".test_add").text();
         var mobile =  $(".test_iphone").text();
+        var userId = $("#userIdHidden").val();
 		//var result = window.confirm("确定要提交订单吗？");
     	//if(result){
     		$.ajax({ type: "POST",
@@ -241,10 +248,15 @@ $(function(){
 		    			   	"type":type,
 		    			  	"linkname":userName,
 		    			   	"phone":mobile,
-		    			   	"email":userAdd},  
+		    			   	"email":userAdd,
+		    			   	"userId":userId},  
 	    		     dataType: "json",
 	    		     success: function(data) {
-	    		    	 if(data.message == true){
+    			   		 if(data.userStatus==false){
+    			   			 alert("该订单不属当前用户,请重新下单!");
+    			   			 window.location.href = "index.html";
+	    		     	     return;
+    			   		 }else if(data.message == true){
 	    		    		 //alert("完成下单，去订单跟踪查看订单吧~~");  
     		    			 //window.location.href = "orderTrackInit.html";
     		    			 var orderListId = data.orderListId;

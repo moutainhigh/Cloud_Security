@@ -2,6 +2,7 @@ $(function(){
 
     //购物车点击“去结算”
     $("#shopBuy").click(function(){
+    	var userId = $("#userIdHidden").val();
        var str="";
 		$("input:checkbox[name=check_name]:checked").each(function(obj){
 		   str+=$(this).val()+",";
@@ -12,17 +13,26 @@ $(function(){
 		}else{
 		   $.ajax({ type: "POST",
 			     async: false, 
-			     url: "checkShoppOrder.html?str="+str,
+			     url: "checkShoppOrder.html",
+			     data:{"str":str,
+			            "userId":userId
+			           },
 			    dataType: "json", 
 			     success: function(data) {
-			     if(data.flag){
-			    	 $("input:checkbox[name=check_name]").attr("checked",false);
-				    	 window.location.href="shopBuy.html?str="+str;
-				   
-			     }else{
-			    	 alert("当前时间已经超过下单结束时间，订单已作废请删除订单!");
-			    	 window.location.href="showShopCar.html";
-			       } 
+			   		 if(!data.userStatus){
+			   			 alert("该订单不属当前用户,请重新下单!");
+			   			 window.location.href="index.html";
+			   		 }else{
+			   			 if(data.flag){
+					    	 $("input:checkbox[name=check_name]").attr("checked",false);
+						    	 window.location.href="shopBuy.html?str="+str;
+						   
+					     }else{
+					    	 alert("当前时间已经超过下单结束时间，订单已作废请删除订单!");
+					    	 window.location.href="showShopCar.html";
+					     } 
+			   		 }
+				    
 			     },
 			     error: function(data){ 
 			    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
@@ -41,6 +51,7 @@ $(function(){
       var userName =  $(".test_name").text();
         var userAdd = $(".test_add").text();
         var mobile =  $(".test_iphone").text();
+        var userId = $("#userIdHidden").val();
        $("input:hidden[name='orderId']").each(function(obj){
     	    orderIds+=$(this).val()+",";
        });
@@ -53,11 +64,16 @@ $(function(){
 		            "countPrice":countPrice,
 		            "linkName":userName,
 		            "linkEmail":userAdd,
-		            "linkMobile":mobile
+		            "linkMobile":mobile,
+		            "userId":userId
 		           },
 		     dataType: "json", 
 		     success: function(data) {
-					  if(!data.flag){
+		        	   if(!data.userStatus){
+		        		   alert("该订单不属当前用户,请重新下单!");
+		        		   window.location.href = "index.html";
+	    		     	    return;
+		        	   }else if(!data.flag){
 						  alert("当前时间已经超过下单结束时间，订单已作废请到购物车修改订单!");
 						  return;
 					  }else{

@@ -66,6 +66,8 @@
 			
 
 		</div>
+		<input type="hidden" id="userIdHidden" value="${user.id}"/>
+		
 		<c:if test="${flag==true}">  
 		<div class="dataCent seetlentBox order" style="width:1122px; position:relative; left:-1%;">
 			
