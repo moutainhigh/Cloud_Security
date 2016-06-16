@@ -54,17 +54,18 @@ $(function(){
 				success: function(data) {
 					if (data.payFlag == 1){
 						alert("不能重复支付!");
+					} else if(data.payFlag ==2) {
+						alert("该订单不存在!");
 					} else if(data.payFlag ==3 || data.payFlag ==0) {
 					    //余额不足/支付成功
 					    var modifyOrderId = data.modifyOrderId;
 						window.location.href = "repayUI.html?orderListId="+orderListId+"&modifyOrderId="+modifyOrderId;
-					}else {
+					} else {
 						alert("订单有异常,请重新下单!");
 		    		    return;
 					}
 				},
 				error:function(data){
-						alert(data);
 					 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
 			    		 window.location.href = "loginUI.html"; } 
 			    	 else { window.location.href = "loginUI.html"; }
