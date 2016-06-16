@@ -220,6 +220,7 @@ public class WafAPIWorker {
 		json.put("exclude", exclude);
 		json.put("server", server);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/createVirtualSiteInResource";
+    	System.out.println("test06"+url);
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
@@ -677,7 +678,7 @@ public class WafAPIWorker {
 			jo.put("ip", "101.200.234.126");
 			jo.put("port", "80");
 			ser.add(jo);
-    		wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", "test06147", "219.141.189.183", "443", "nsfocus.cer", "1", "www.anquan", "*", "", ser);
+    		wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", "test0615", "219.141.189.183", "80", "nsfocus.cer", "0", "www.anquanbang", "*", "", ser);
     	} catch (Exception e) {
             e.printStackTrace();
         }
