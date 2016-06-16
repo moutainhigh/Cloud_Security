@@ -196,18 +196,20 @@ $(document).ready(function(){
                             </div> 
 					   </li>
 						
-						 <li class="clearfix waf-datails" style="height:auto">
-							<label class="fl">网&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;站</label>
-							<div class="fl" style="top:10px;">
-                            	<div class="fl" style="color:#a3a3a3; margin-right:30px;">
-                                	<b>尚未选择网站</b>
-                                    <ul class="httpBox clearfix" style="max-width:366px; position:relative; top:-8px;">
-                                    	<!--<li class="aBtn"><em>安全帮</em><i></i></li>-->
+						   <li class="clearfix waf-datails" style="height:auto">
+                            	<label class="fl">网&nbsp;&nbsp;&nbsp;&nbsp;站</label>
+                            <div class="fl" style="top:10px;">
+                                <div class="fl" style="color:#a3a3a3; margin-right:30px;">
+                                    <b class="gt">尚未选择网站</b>
+                                    <ul class="httpBox clearfix" style="max-width:366px; position:relative; top:-8px; display:none;">
+                                        <!--<li class="aBtn"><em>安全帮</em><i></i></li>-->
                                         <!--此处添加-->
                                     </ul>
                                 </div>
-                                <a href="javascript:;" id="addhttp" class="href_btn fl" style="color:#2499fb;">点击此处选择网站</a>
+                                
                             </div>
+                           
+                            <a href="javascript:;" id="addhttp" class="href_btn fl" style="color:#2499fb; position:relative; top:10px;">点击此处选择网站</a>
                             <!-- <div class="fl">
                             	<div class="select">
                                     <div class="dropdown form-control line" style="width:360px;position:absolute; left:0px;top:3px;">
@@ -334,57 +336,58 @@ $(document).ready(function(){
 </div>
 
 
-<div class="waf-detais-pop flaw popBoxhide">
-	<i class="close chide"></i>
-    <div class="Pophead">
-    	<h2>请选择要服务的网站</h2>
-        <a href="#"  class="ass "><i><img src="${ctx}/source/images/add.png" alt=""></i>新增网站</a>
-       
-    </div>
+ <div class="waf-detais-pop flaw popBoxhide">
+        <i class="close chide waf-off" id="close"></i>
+        <div class="Pophead">
+            <h2>请选择要服务的网站</h2>
+            <a href="#" class="ass "><i><img src="${ctx}/source/images/add.png" alt=""></i>新增网站</a>
+
+        </div>
     
-    <script>
-    $(function(){
-		$('.ass').click(function(){
-			
-			$('#senone').fadeOut(200);
-			$('#sentwo').fadeIn(200);	
-		})
-		$('.sub').click(function(){
-			$('#sentwo').fadeOut(200);
-			$('#senone').fadeIn(200);	
-		})
-		
-		
-	})
-    
-    </script>
+  <script>
+            $(function() {
+                $('.ass').click(function() {
+                    $('#senone').fadeOut(20);
+                    $('#sentwo').fadeIn(20);
+                });
+                $('.sub').click(function() {
+                    $('#sentwo').fadeOut(20);
+                    $('#senone').fadeIn(20);
+                });
+
+
+                $('.waf-ym i').click(function() {
+                    $('.waf-ym i').removeClass('this');
+                    $(this).addClass('this');
+                })
+            })
+        </script>
 	<div class="popBox">
     	<!--请选择要服务的网站内容显示-->
         <div class="centone" id="senone" style="display:block;">
 	        <ul class="allBox">
-		        <c:forEach items="${serviceAssetList}" var="asset" varStatus="status">
+		        <c:forEach items="${serviceAssetList}" var="asset"  varStatus="status">
 		        	<li>
 		            	<div class="rcent">
-		                	<h3> 
-		                    	<label for="${status.count }">
-		                             <input type="checkbox"class="ck" id="${status.count }"  style=" display:none;" /><i class="cek" style="margin:0 16px 0 0;"></i>
-		                         </label>
-		                         <b>${asset.name }</b>
-		                    	
-		                     </h3>
-		                   <div class="tBox">${asset.addr }</div>
-		                </div>
+                            <h3>
+                                <label for="${status.count }" style="margin:0 16px 0 0;">
+                                     <input type="checkbox" class="ck"  value="${asset.id}" style=" display:none;"><i class="cek" data-id="${status.count }"></i>
+                                 </label>
+                                 <b>${asset.name }</b>
+                            
+                            </h3>
+                            <div class="tBox">${asset.addr }</div>
+                        </div>
 	            	</li>
 		        </c:forEach>
 	        </ul>
-            <div class="bottom clearfix" style="float:none">
-                <div class="bl fl">
-                    <label><i class="cheall" style="margin-right:20px;"></i>全选</label>
-                    <span>已选择<em id="number">0</em>个网站</span>
-                        
-                 </div>
-                 <a href="javascript:;" class="btn ok fr">确定</a>
-             </div>
+             <div class="bottom clearfix" style="float:none">
+                    <div class="bl fl">
+                        <!--<label><i class="cheall" style="margin-right:20px;"></i>全选</label>-->
+                        <span>已选择<em id="number">0</em>个网站</span>
+                    </div>
+                    <a href="javascript:;" class="btn ok fr">确定</a>
+                </div>
         
         </div>
         <!--新增网站内容显示-->
