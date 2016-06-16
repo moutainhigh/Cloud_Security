@@ -32,160 +32,169 @@ $(function(){
 	
 	//关闭按钮
 	
-	$('.closed').delegate(this,'click',function(){
-		$('.popBoxhide').hide();
-		$('.shade').hide();
-		$('html').css({overflow:'auto'})		
-	})
+	$('.closed').click(function () {
+            $('.popBoxhide').hide();
+            $('.shade').hide();
+            $('html').css({
+                overflow: 'auto'
+            })
+    })
 
-	
-//微信
-$('.weixin').delegate(this,'click',function(){
-		$('.shade').show();
-		$('#weixin').animate({
-			top:'50%',
-			opacity:'100',	
-		},500)
-		$('html').css({overflow:'hidden'})
-	
-})
 
-//waf
-$('#addhttp').bind('click',function(){
-	
-		$('.shade').show();
-		$('.waf-detais-pop').animate({
-			opacity:'100',
-			top:'50%',
-			left:'50%'	
-		},500)
-		$('html').css({overflow:'hidden'})
-	
-})
-//waf选中效果
-$('.rcent .radio').click(function(){
-	$('.waf-detais-pop ul li').removeClass('this');
-	$(this).parents('li').addClass('this');
+
+//数组 - 存放已选择的网站
+var arrLink = [];
+$(document).ready(function () {
+    //选择网站点击效果
+    $('#addhttp').click(function () {
 		
-})
-//删除
-function del(){
-	$('.httpBox').delegate('i','click',function(){
-			alert("已经删除")
-			$(this)	.parent('li').remove();
-	})	
-	
-}
-
-del();
-
-
-//漏洞监测 选中动作
-//计算列表个数
-function nu(){
-		var n=$('.n').length; 
-		$('#number').text(n);	
-	
-};
-
-//漏洞-选中-单选动作
-$('.rcent').delegate('.cek','click',function(){
-	var is=$(this).hasClass('this');
-	if(is==false){
-		$(this).addClass('this');	
-		$(this).parents('li').addClass('ac');
-		var num=$(this).addClass('n');
-		 nu();
-		 var lingth= $('.allBox li').length;
-		 var n=$('.n').length; 
-		 if(n==lingth){
-			$('.cheall').addClass('this');	 
+        //显示遮罩层
+        $('.shade').show();
+        //显示
+        $('.waf-detais-pop').animate({
+            opacity: '1',
+            top: '50%',
+            left: '50%',
+            marginTop: '-224px'
+        }, 500);
+        //alert(arrLink)
+        //关闭后清掉所有内容
+        for(var i=0;i<$('.cek').length;i++){
+            for(var j=0;j<arrLink.length;j++){
+                if(arrLink[j]==$('.cek').eq(i).parent().siblings('b').html()){
+                    //$('.cek').eq(i).removeClass('this');
+					//$('.cek').eq(i).addClass('disabled');
+					$('.cek').eq(i).addClass('this');
+                }
+            }
+        }
+		
+    })
+    //关闭按钮
+    $('#close').click(function () {
+        //关闭后效果
+        $('.waf-detais-pop').animate({
+            opacity: '1',
+            top: '50%',
+            left: '50%',
+            marginTop: '-1200px'
+        }, 500);
+        //隐藏遮罩层
+        $('.shade').hide();
+        //循环匹配内容 并清除掉
+        for(var i=0;i<$('.cek').length;i++){
+            $('.cek').eq(i).attr('class','cek');
+        }
+		var th= $('.httpBox li').length;
+		if(th==0){
+			$('.gt').show();		
+			
+		}else{
+			$('.gt').hide();	
 		}
+		})
 		
-	}else{
-		$(this).removeClass('this');	
-		$(this).removeClass('n');
-		nu();
-		$(this).parents('li').removeClass('ac');
-		var lingth= $('.allBox li').length;
-		 var n=$('.n').length; 
-		 if(n!=lingth){
-			$('.cheall').removeClass('this');	 
+        
+    })
+    //选择
+    for(var i=0;i<$('.cek').length;i++){
+//        $('.cek').attr('check','false');
+        $('.cek').eq(i).click(function(){
+            if($(this).attr('class').indexOf('this')!=-1){
+                $(this).removeClass('this');
+				var legth = $('.allBox .this').length;
+				//alert(legth)
+				$('#number').text(legth);
+				//$('.gt').show();	
+            }
+            else{
+				 $(this).addClass('this');
+				var legth = $('.allBox .this').length;
+				if(legth==6){
+					$(this).removeClass('this');
+					alert("不能超过5个")
+					$('#number').text('5');
+				}else{
+					$('#number').text(legth)	
+				}
+				
+               
+            }
+        })
+    }
+    //点击OK以后，插入数据
+    $('.ok').click(function(){
+		var th= $('.allBox .this').length;
+		$('.httpBox li').remove();
+		if(th==6){
+			alert("超过5个");
+			
+		}else{
+			//点击ok之前先清空一次数组，再重新添加内容
+			arrLink = [];			
+			for(var i=0;i<$('.cek').length;i++){
+				if($('.cek').eq(i).attr('class').indexOf('this')!=-1){
+					//判断如果数组中没有，就插入，有的话 忽略
+					arrLink.push($('.cek').eq(i).parent().siblings('b').html());
+						
+				}
+			}
+			
+			$('.gt').hide();
+			$('.httpBox').show();
+			var list='';
+			var index=0;
+			for(var i=0;i<arrLink.length;i++){
+				index++;
+				 list+='<li id='+ index +'>'+ arrLink[i] +'<i></i></li>';  
+			}
+			
+			$('.httpBox').append(list);
+			//alert(arrLink);
+			
+			var tleng= $('.httpBox li').length;
+			if(tleng==0){
+				$('.gt').show();		
+			}
+			
+			
+			 //关闭后效果
+			$('.waf-detais-pop').animate({
+				opacity: '1',
+				top: '50%',
+				left: '50%',
+				marginTop: '-1200px'
+			}, 500);
+			//隐藏遮罩层
+			$('.shade').hide();
 		}
-		
-	}
+       
+    })
+
+//删除添加的-对应删除弹框的
+$('.httpBox').delegate('i','click',function(){
+    var _this=$(this).parent('li').attr('id')-1;
+           	$('.allBox i').each(function(index, element) {
+                var ac= $(this).attr('data-id');
+				if(ac==_this){
+					arrLink[_this]='';
+					$(this).removeClass('this');
+					//$(this).removeClass('disabled');
+					
+				}
+            });
+            $(this) .parent('li').remove();
+			var tleng= $('.httpBox li').length;
+			if(tleng==0){
+				$('.gt').show();		
+			}
 	
-	
-})
-
-$('.cheall').click(function(){	
-	var is=$(this).hasClass('this');
-	if(is==false){
-		$(this).addClass('this');	
-		$('.allBox li').addClass('ac');
-		$('.allBox .cek').addClass('this');
-		$('.allBox input:checkbox').prop('checked',true);
-		var num=$('.allBox .cek').addClass('n');
-		nu()
-		
-	}else{
-		$(this).removeClass('this');
-		$('.allBox li').removeClass('ac');
-		$('.allBox .cek').removeClass('this');
-		$('.allBox input:checkbox').prop('checked',false);
-		$('.allBox .cek').removeClass('n');
-		nu();
-		$(this).parents('li').removeClass('ac');
-	}
-})
-
-$('#ass_http').bind('click',function(){
-		$('.shade').show();
-		$('.add_httpPop').fadeIn(300);
-		$('html').css({overflow:'hidden'})
-})
-//关闭，确定，还原相应的内容
-function offcent(){
-	$('.allBox .cek').removeClass('this');
-		$('html').css({overflow:'auto'});
-		$('.allBox input:checkbox').prop('checked',false);	
-		$('.allBox li').removeClass('ac');
-		$('.bl input:checkbox').prop('checked',false);
-		$('#number').text('0');	
-		$('.allBox .cek').removeClass('n');
-		nu();
-		$('.cheall').removeClass('this');	
-	
-}
-
-
-$('.ok').delegate(this,'click',function(){
-		$(this).parents('.popBoxhide').animate({
-			top:'-80%',
-			opacity:'0',	
-		},500);
-		$('.shade').hide();
-		
-		
-		offcent();
-		
+			
+			
 	})
 
-	
-//关闭按钮
-	
-	$('.chide').delegate(this,'click',function(){
-		$(this).parents('.popBoxhide').animate({
-			top:'-80%',
-			opacity:'0',	
-		},500);
-		$('.shade').hide();
-		$('html').css({overflow:'auto'});
-		offcent();	
-	})
-		
-	
-})
+});
+
 
 function hide(){
 	$('.add_httpPop').fadeOut(300); 
