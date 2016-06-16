@@ -286,7 +286,7 @@
 .flaw .rcent .cek,.flaw .cheall{
 	width: 16px;
     height: 16px;
-    background: url(../images/k.png) no-repeat;
+       background: url(../images/k.png) no-repeat;
     vertical-align: middle;
     display: inline-block;
     cursor: pointer;
@@ -300,7 +300,9 @@
 	background: url(../images/d.png) no-repeat;	
 }
 
-
+.disabled{
+	background:url(../imges/p-dle.png) no-repeat;;	
+}
 
 .flaw{
     width: 596px;
@@ -340,3 +342,71 @@
      font-size: 16px;
      line-height: 50px;
 }
+
+/*waf新增*/
+.add_ip{
+
+}
+.add_ip .waf-addBox li{ width:155px; height:32px; border:#e5e5e5 solid 1px; position:relative; float:left; margin-right:18px;}
+.add_ip .waf-addBox li .text{
+        width:142px; 
+        height:30px; 
+        border:none;
+        color: #2c3a60;
+}
+.add_ip .waf-addBox li i{ 
+    position:absolute; 
+    right:-11px; 
+    top:-1px;
+    cursor: pointer;
+}
+.add_ip span{
+    width: 160px;
+    height: 32px;
+    display: inline-block;
+    border: #2499fb solid 1px;
+    text-align: center;
+    line-height: 32px;
+    color: #2499fb;
+    cursor: pointer;
+    position: relative;
+    top:14px;
+}
+.add_ip span em{
+    vertical-align: middle;
+    margin-right: 16px;
+}
+
+.waf-detailsbtoom{
+    float: right;
+    padding-right: 36px;
+    margin-top: 15px;
+}
+.waf-detailsbtoom a{
+    height: 50px;
+     display: inline-block;
+     background-color: #2499fb;
+     width: 148px;
+     font-size: 16px;
+     line-height: 50px;
+     color: #fff;
+     text-align: center;
+}
+
+.waf-ym i{
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    background: url(../imges/rdw.png) no-repeat left center;
+    cursor: pointer;
+    margin-right: 12px;
+    vertical-align: middle;
+}
+.waf-ym b{
+    vertical-align: middle;
+}
+.waf-ym .this{
+    background: url(../imges/raio.png) no-repeat left center;
+}
+
+
