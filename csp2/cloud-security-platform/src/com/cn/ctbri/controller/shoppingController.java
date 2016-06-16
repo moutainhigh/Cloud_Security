@@ -1066,6 +1066,13 @@ public class shoppingController {
     	String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
     	//获取orderId,购买时间,交易金额
     	OrderList orderList = orderListService.findById(orderListId);
+    	
+    	//不是当前用户的订单,收银台不显示订单信息
+    	User globle_user = (User) request.getSession().getAttribute("globle_user");
+    	if (orderList== null || orderList.getUserId()!= globle_user.getId()) {
+    		return "redirect:/index.html";
+    	}
+    	
     	//交易金额保留两位小数
     	DecimalFormat df = new DecimalFormat("0.00");
     	String priceStr = df.format(orderList.getPrice());
@@ -1104,6 +1111,14 @@ public class shoppingController {
     	try {
     		String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
     		OrderList orderList = orderListService.findById(orderListId);
+    		
+    		//不是当前用户的订单,不能支付
+        	User globle_user = (User) request.getSession().getAttribute("globle_user");
+        	if (orderList.getUserId()!= globle_user.getId()) {
+        		m.put("payFlag", 2);
+    			return;
+        	}
+        	
     		Double price = orderList.getPrice();//支付金额
     		//收银台页面刷新，再次支付
     		if (orderList.getPay_date() != null){
@@ -1116,7 +1131,7 @@ public class shoppingController {
     		String orderIds = orderList.getOrderId();//订单条目编号(cs_order的id)
     		
     		//取得安全币余额
-    		User globle_user = (User) request.getSession().getAttribute("globle_user");
+//    		User globle_user = (User) request.getSession().getAttribute("globle_user");
     		List<User> userList = userService.findUserById(globle_user.getId());
     		Double balance = userList.get(0).getBalance();
     		//安全币余额不足
@@ -1310,8 +1325,8 @@ public class shoppingController {
 //    						SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
 //    						String orderDate = odf.format(new Date());
 //    						orderId = orderDate+String.valueOf(Random.fivecode());
-//    						orderVal = orderVal+ orderId+",";
     						orderId = shopCar.getOrderId();
+    						orderVal = orderVal+ orderId+",";
     						
     						//创建waf虚拟站点,modify by tangxr 2016-6-13
     						List assets = orderAssetService.findAssetsByOrderId(orderId);
@@ -1441,6 +1456,12 @@ public class shoppingController {
     	String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
 		OrderList orderList = orderListService.findById(orderListId);
 		
+		//不是当前用户的订单,不能支付
+    	User globle_user = (User) request.getSession().getAttribute("globle_user");
+    	if (orderListId== null || orderList.getUserId()!= globle_user.getId()) {
+    		return "redirect:/index.html";
+    	}
+    	
 		//获取修改时间的订单编号
 		String modifyOrderIdList = request.getParameter("modifyOrderId");
 		if (modifyOrderIdList != null && !modifyOrderIdList.equals("")){
