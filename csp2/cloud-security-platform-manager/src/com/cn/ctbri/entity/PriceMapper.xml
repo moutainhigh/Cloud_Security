@@ -28,5 +28,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findPriceByServiceId" parameterType="int" resultMap="PriceRM">
 		select * from cs_price where serviceId=#{serviceId}
 	</select>
+	<!-- 根据参数查询价格列表 -->
+	<select id="findPriceByParam" parameterType="hashmap" resultMap="PriceRM">
+		select * from cs_price where serviceId=#{serviceId} 
+		<if test="type!=null and type!=''">
+			and type=#{type}
+		</if>
+		<if test="parent!=null and parent!=''">
+			and parentC=#{parent}
+		</if>
+	</select>
 	
 </mapper>

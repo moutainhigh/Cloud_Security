@@ -1,6 +1,7 @@
 package com.cn.ctbri.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -113,6 +114,35 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
     public void deleteLinkman(int contactId) {
         selfHelpOrderDao.deleteLinkman(contactId);
     }
+
+	public List findSerList(Map map) {
+		return selfHelpOrderDao.findSerList(map);
+	}
+
+	public void insertAPI(Map map) {
+		selfHelpOrderDao.insertAPI(map);
+		
+	}
+
+	public void insertServ(Map map) {
+		selfHelpOrderDao.insertServ(map);
+		
+	}
+
+	public void delServ(Map map) {
+
+		selfHelpOrderDao.delServ(map);
+		
+	}
+
+	public void updateAPI(Map map) {
+		selfHelpOrderDao.updateAPI(map);
+	}
+
+	public void updateServ(Map map) {
+		selfHelpOrderDao.updateServ(map);
+		
+	}
 
 
 }

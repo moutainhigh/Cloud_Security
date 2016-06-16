@@ -1,6 +1,7 @@
 package com.cn.ctbri.dao.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -58,6 +59,11 @@ public class ServDaoImpl extends DaoCommon implements ServDao{
 
 	public List<Price> findPriceByServiceId(int serviceId) {
 		return this.getSqlSession().selectList(np+"findPriceByServiceId", serviceId);
+	}
+
+	public List<Price> findPriceByParam(Map map) {
+		
+		return this.getSqlSession().selectList(np+"findPriceByParam", map);
 	}
 	
 }

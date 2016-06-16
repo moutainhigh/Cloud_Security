@@ -9,7 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="name" column="name"/>
 		<result property="factory" column="factory"/>
 		<result property="module_name" column="module_name"/>
-		<result property="type" column="type"/>
+		<result property="type" column="type" javaType="int" jdbcType="INTEGER"/>
 		<result property="status" column="status"/>
 		<result property="remarks" column="remarks"/>
 		<result property="orderType" column="ordertype"/>
@@ -45,4 +45,103 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
         </where>
     </select>
+	
+	<!-- 查询所有服务 -->
+	<select id="findSerList" resultType="hashmap" parameterType="hashmap">
+		SELECT s.id,s.name,type.name typeName,type.id servType,s.remarks,s.parentC,s.icon FROM `cs_service` s,cs_service_type type WHERE s.type=type.id 
+		<if test="name!=null and name!=''">
+			and s.name like CONCAT('%','${name}','%') 
+        </if>
+		<if test="type!=0 and type!=null">
+            and s.type=#{type}
+        </if>
+		<if test="parent!=null and parent!=''">
+            and s.parentC=#{parent}
+        </if>			
+		union select a.id,a.name,a.type typeName,a.type servType,a.remarks,a.parentC,a.icon from cs_service_api a where 1=1
+		<if test="name!=null and name!=''">
+            and a.name like CONCAT('%','${name}','%') 
+        </if>
+		<if test="type!=0 and type!=null">
+            and a.type=#{type}
+        </if>
+		<if test="parent!=null and parent!=''">
+            and a.parentC=#{parent}
+        </if>
+	</select>
+	
+	<!-- 添加API服务 -->
+	<insert id="insertAPI" parameterType="hashmap">
+		insert into cs_service_api(name,type,parentC,remarks,icon)
+		values(#{name},#{type},#{parent},#{remarks},#{icon})
+		
+	</insert>
+	<!-- 添加普通服务 -->
+	<insert id="insertServ" parameterType="hashmap">
+		insert into cs_service(name,type,parentC,remarks,icon)
+		values(#{name},#{type},#{parent},#{remarks},#{icon})
+	</insert>
+	
+	<!-- 删除服务 -->
+	<delete id="delServ" parameterType="hashmap">
+		<if test="parent!=null and parent=='API'">
+            delete from cs_service_api where id=#{servId}
+        </if>
+		<if test="parent!=null and parent!='API'">
+            delete from cs_service where id=#{servId}
+        </if>
+	</delete>
+	<!-- 修改API服务 -->
+	<update id="updateAPI" parameterType="hashmap">
+		update cs_service_api
+		<set>
+			<if test="name!=null">
+				name=#{name},
+			</if>
+			<if test="remarks!=null">
+				remarks=#{remarks},
+			</if>
+			<if test="parent!=null">
+				parentC=#{parent},
+			</if>
+			<if test="icon!=null">
+				icon=#{icon},
+			</if>
+			<if test="scanTypes!=null">
+				scanTypes=#{scanTypes},
+			</if>
+			<if test="servRates!=null">
+				servRates=#{servRates},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<!-- 修改普通服务 -->
+	<update id="updateServ" parameterType="hashmap">
+		update cs_service
+		<set>
+			<if test="name!=null">
+				name=#{name},
+			</if>
+			<if test="type!=null">
+				type=#{type},
+			</if>
+			<if test="remarks!=null">
+				remarks=#{remarks},
+			</if>
+			<if test="parent!=null">
+				parentC=#{parent},
+			</if>
+			<if test="icon!=null">
+				icon=#{icon},
+			</if>
+			<if test="scanTypes!=null">
+				scanTypes=#{scanTypes},
+			</if>
+			<if test="servRates!=null">
+				servRates=#{servRates},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
 </mapper>

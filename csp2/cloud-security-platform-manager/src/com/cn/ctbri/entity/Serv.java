@@ -11,11 +11,11 @@ public class Serv {
 	private String name;//服务名称
 	private String factory;//服务厂家(先存名称)
 	private String module_name;//模板名称
-	private int type;//类型(1：扫描类，2：监控类，3：防护类，4：其他)
+	private int type;//类型
 	private int status;//服务状态(1：可用，0：不可用)
 	private String remarks;//备注
     private int orderType;	//订单类型(0:单次和长期,1:长期,2:单次)
-    private int parentC;//服务大类
+    private String parentC;//服务大类
     private int websoc;//创宇标志
 	public int getId() {
 		return id;
@@ -65,13 +65,14 @@ public class Serv {
     public void setOrderType(int orderType) {
         this.orderType = orderType;
     }
-    public int getParentC() {
-        return parentC;
-    }
-    public void setParentC(int parentC) {
-        this.parentC = parentC;
-    }
-    public int getWebsoc() {
+
+    public String getParentC() {
+		return parentC;
+	}
+	public void setParentC(String parentC) {
+		this.parentC = parentC;
+	}
+	public int getWebsoc() {
         return websoc;
     }
     public void setWebsoc(int websoc) {

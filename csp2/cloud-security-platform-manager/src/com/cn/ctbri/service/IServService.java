@@ -1,6 +1,7 @@
 package com.cn.ctbri.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.Price;
@@ -44,4 +45,8 @@ public interface IServService {
      * 根据serviceid查询价格列表
      */
     List<Price> findPriceByServiceId(int serviceId);
+    /*
+     * 根据参数查询价格
+     */
+    List<Price> findPriceByParam(Map map);
 }

@@ -19,79 +19,16 @@
 </head>
 <body>
     <div id="base" class="">
-    服务id:<input type="text" id="serviceId"/>
-    <div id="td0"><!--
+	<input type="hidden" id="serviceId" value="${serviceId}"/>
+    <div id="td0">
 
-	 
-     <c:if test="${priceList!= null}">
-     <c:forEach var="price" items="${priceList}" varStatus="status">
-         <div id="td">
-	      <div class="u10">
-	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
-	         Unnamed () 
-	        <div class="u11" class="text">
-	          <p><span>大于</span></p>
-	        </div>
-	      </div>
-	
-	       Unnamed (Text Field) 
-	      <div class="u12">
-	        <input class="u12_input" type="text" id="timesBegin" value='${price.timesBegin }' 
-	         onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
-	         onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
-	      </div>
-	
-	
-	
-	       Unnamed (Shape) 
-	      <div class="u14">
-	        <img class="u14_img" src="${ctx }/source/images/transparent.gif"/>
-	         Unnamed () 
-	        <div class="u15">
-	          <p><span>小于等于</span></p>
-	        </div>
-	      </div>
-	
-	       Unnamed (Text Field) 
-	      <div class="u16">
-	        <input class="u16_input" type="text" id="timesEnd" value="${price.timesEnd }"
-	        onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
-	        onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
-	      </div>
-	
-	       Unnamed (Shape) 
-	      <div class="u17">
-	        <img class="u17_img"  src="${ctx }/source/images/transparent.gif"/>
-	         Unnamed () 
-	        <div class="u18">
-	          <p><span>价格</span></p>
-	        </div>
-	      </div>
-	
-	       Unnamed (Text Field) 
-	      <div class="u19">
-	        <input class="u19_input" type="text" id="price" value="${price.price }"/>
-	      </div>
-	
-	       Unnamed (HTML Button) 
-	      <div class="u20">
-	        <input type="button" class="addtd" value="添加行"/>
-	      </div>
-	
-	       Unnamed (HTML Button) 
-	      <div class="u21">
-	        <input  type="button" class="deltd" value="删除行"/>
-	      </div>
-      </div>
-      </c:forEach>
-     </c:if>
-   
-     --><c:if test="${empty priceList}">
 
-         <div id="single" style="padding-bottom:38px">
+         <!-- 如果相关价格表不为空-->
+      <c:if test="${not empty priceList}">
+       <div id="single" style="padding-bottom:38px">
          <div class="u10" style="left:50px">
 	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
-	        <!-- Unnamed () -->
+	        
 	        <div class="u11" class="text">
 	          <p><span>单次：</span></p>
 	        </div>
@@ -99,13 +36,146 @@
 	      
 	      <div class="u10">
 	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
-	        <!-- Unnamed () -->
+	        
 	        <div class="u11" class="text">
 	          <p><span>价格</span></p>
 	        </div>
 	      </div>
 
-	      <!-- Unnamed (Text Field) -->
+	       
+	      <div class="u12">
+	        <input class="u12_input" type="text"  id="singlePrice" value="${priceSingle}"/>
+	      </div>
+	      </div>
+	      
+	      <div id="max" style="padding-bottom:38px">
+         <div class="u10" style="left:50px">
+	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
+	         
+	        <div class="u11" class="text">
+	          <p><span>最大限值：</span></p>
+	        </div>
+	      </div>
+	      <div class="u10">
+	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
+	         
+	        <div class="u11" class="text">
+	          <p><span>最大值</span></p>
+	        </div>
+	      </div>
+	
+	       
+	      <div class="u12">
+	        <input class="u12_input" type="text" id="timesMax" value="${priceMaxTimesG}"/>
+	      </div>
+	     	      
+	      <div class="u14">
+	        <img class="u14_img" src="${ctx }/source/images/transparent.gif"/>
+	        
+	        <div class="u15">
+	          <p><span>价格</span></p>
+	        </div>
+	      </div>
+	
+	      
+	      <div class="u16">
+	        <input class="u16_input" type="text" id="timesMaxPrice" value="${priceMax}"/>
+	      </div>
+	      </div>
+	 <c:if test="${priceLongList!= null}">
+     <c:forEach var="price" items="${priceLongList}" varStatus="status">
+	      <div id="td">
+	      <div id="long" style="padding-bottom:38px">
+          <div class="u10" style="left:50px">
+	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
+	        
+	        <div class="u11" class="text">
+	          <p><span>区间：</span></p>
+	        </div>
+	      </div>
+	      
+	      <div class="u10">
+	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
+	        
+	        <div class="u11" class="text">
+	          <p><span>大于</span></p>
+	        </div>
+	      </div>
+	
+	     
+	      <div class="u12">
+	        <input class="u12_input" type="text" id="timesG" value="${price.timesG}"
+	         onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+	         onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+	      </div>
+	
+	
+	
+	       
+	      <div class="u14">
+	        <img class="u14_img" src="${ctx }/source/images/transparent.gif"/>
+	       
+	        <div class="u15">
+	          <p><span>小于等于</span></p>
+	        </div>
+	      </div>
+	
+	      
+	      <div class="u16">
+	        <input class="u16_input" type="text" id="timesLE" value="${price.timesLE}"
+	        onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+	        onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+	      </div>
+	
+	       
+	      <div class="u17">
+	        <img class="u17_img"  src="${ctx }/source/images/transparent.gif"/>
+	       
+	        <div class="u18">
+	          <p><span>价格</span></p>
+	        </div>
+	      </div>
+	
+	       
+	      <div class="u19">
+	        <input class="u19_input" type="text" id="price" value="${price.price}"/>
+	      </div>
+	
+	      
+	      <div class="u20">
+	        <input type="button" class="addtd" value="添加行"/>
+	      </div>
+	
+	      
+	      <div class="u21">
+	        <input  type="button" class="deltd" value="删除行"/>
+	      </div>
+	      </div>
+      </div>
+      </c:forEach>
+     </c:if>
+   </c:if>
+   <!-- 如果相关价格表 为空-->
+     <c:if test="${empty priceList}">
+
+         <div id="single" style="padding-bottom:38px">
+         <div class="u10" style="left:50px">
+	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
+	        
+	        <div class="u11" class="text">
+	          <p><span>单次：</span></p>
+	        </div>
+	      </div>
+	      
+	      <div class="u10">
+	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
+	        
+	        <div class="u11" class="text">
+	          <p><span>价格</span></p>
+	        </div>
+	      </div>
+
+	       
 	      <div class="u12">
 	        <input class="u12_input" type="text"  id="singlePrice"/>
 	      </div>
@@ -114,33 +184,33 @@
 	      <div id="max" style="padding-bottom:38px">
          <div class="u10" style="left:50px">
 	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
-	        <!-- Unnamed () -->
+	         
 	        <div class="u11" class="text">
 	          <p><span>最大限值：</span></p>
 	        </div>
 	      </div>
 	      <div class="u10">
 	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
-	        <!-- Unnamed () -->
+	         
 	        <div class="u11" class="text">
 	          <p><span>最大值</span></p>
 	        </div>
 	      </div>
 	
-	      <!-- Unnamed (Text Field) -->
+	       
 	      <div class="u12">
 	        <input class="u12_input" type="text" id="timesMax"/>
 	      </div>
-	     	      <!-- Unnamed (Shape) -->
+	     	      
 	      <div class="u14">
 	        <img class="u14_img" src="${ctx }/source/images/transparent.gif"/>
-	        <!-- Unnamed () -->
+	        
 	        <div class="u15">
 	          <p><span>价格</span></p>
 	        </div>
 	      </div>
 	
-	      <!-- Unnamed (Text Field) -->
+	      
 	      <div class="u16">
 	        <input class="u16_input" type="text" id="timesMaxPrice"/>
 	      </div>
@@ -149,7 +219,7 @@
 	      <div id="long" style="padding-bottom:38px">
           <div class="u10" style="left:50px">
 	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
-	        <!-- Unnamed () -->
+	        
 	        <div class="u11" class="text">
 	          <p><span>区间：</span></p>
 	        </div>
@@ -157,53 +227,57 @@
 	      
 	      <div class="u10">
 	        <img class="u10_img" src="${ctx }/source/images/transparent.gif"/>
-	        <!-- Unnamed () -->
+	        
 	        <div class="u11" class="text">
 	          <p><span>大于</span></p>
 	        </div>
 	      </div>
 	
-	      <!-- Unnamed (Text Field) -->
+	     
 	      <div class="u12">
-	        <input class="u12_input" type="text" id="timesG"/>
+	        <input class="u12_input" type="text" id="timesG"
+	        onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+	         onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
 	      </div>
 	
 	
 	
-	      <!-- Unnamed (Shape) -->
+	       
 	      <div class="u14">
 	        <img class="u14_img" src="${ctx }/source/images/transparent.gif"/>
-	        <!-- Unnamed () -->
+	       
 	        <div class="u15">
 	          <p><span>小于等于</span></p>
 	        </div>
 	      </div>
 	
-	      <!-- Unnamed (Text Field) -->
+	      
 	      <div class="u16">
-	        <input class="u16_input" type="text" id="timesLE"/>
+	        <input class="u16_input" type="text" id="timesLE"
+	        onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+	        onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
 	      </div>
 	
-	      <!-- Unnamed (Shape) -->
+	       
 	      <div class="u17">
 	        <img class="u17_img"  src="${ctx }/source/images/transparent.gif"/>
-	        <!-- Unnamed () -->
+	       
 	        <div class="u18">
 	          <p><span>价格</span></p>
 	        </div>
 	      </div>
 	
-	      <!-- Unnamed (Text Field) -->
+	       
 	      <div class="u19">
 	        <input class="u19_input" type="text" id="price" />
 	      </div>
 	
-	      <!-- Unnamed (HTML Button) -->
+	      
 	      <div class="u20">
 	        <input type="button" class="addtd" value="添加行"/>
 	      </div>
 	
-	      <!-- Unnamed (HTML Button) -->
+	      
 	      <div class="u21">
 	        <input  type="button" class="deltd" value="删除行"/>
 	      </div>

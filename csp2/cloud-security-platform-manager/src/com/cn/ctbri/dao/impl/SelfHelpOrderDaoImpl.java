@@ -2,6 +2,7 @@ package com.cn.ctbri.dao.impl;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -131,6 +132,32 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
     public void deleteLinkman(int contactId) {
         this.getSqlSession().delete(ns + "deleteLinkman",contactId);
     }
+
+	public List findSerList(Map map) {
+		return this.getSqlSession().selectList(nv + "findSerList", map);
+	}
+
+	public void insertAPI(Map map) {
+		this.getSqlSession().insert(nv+"insertAPI",map);		
+	}
+
+	public void insertServ(Map map) {
+		this.getSqlSession().insert(nv+"insertServ",map);		
+	}
+
+	public void delServ(Map map) {
+		this.getSqlSession().delete(nv+"delServ",map);
+		
+	}
+
+	public void updateAPI(Map map) {
+		this.getSqlSession().update(nv+"updateAPI",map);
+	}
+
+	public void updateServ(Map map) {
+		this.getSqlSession().update(nv+"updateServ",map);
+		
+	}
 
 
 	

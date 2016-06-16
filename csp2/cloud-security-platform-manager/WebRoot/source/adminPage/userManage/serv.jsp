@@ -48,7 +48,8 @@
 <div class="main_wrap">
 	<div class="main_center">
     	<div class="add_service">
-        	<a href="#" class="add_ser" id="add_ser">添加服务</a>
+        	<!--<a href="#" class="add_ser" id="add_ser">添加服务</a>
+        	--><a href="${ctx}/getServiceList.html" class="sel_ser" id="sel_ser">服务列表</a>
         </div>
         <div class="b_choose">
         	<ul>

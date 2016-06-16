@@ -1,6 +1,7 @@
 package com.cn.ctbri.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,10 @@ public class ServServiceImpl implements IServService{
 
 	public List<Price> findPriceByServiceId(int serviceId) {
 		return servDao.findPriceByServiceId(serviceId);
+	}
+
+	public List<Price> findPriceByParam(Map map) {
+		return servDao.findPriceByParam(map);
 	}
 	
 }

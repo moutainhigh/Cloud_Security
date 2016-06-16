@@ -1,6 +1,7 @@
 package com.cn.ctbri.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
@@ -84,6 +85,30 @@ public interface ISelfHelpOrderService {
     //删除联系人
     void deleteLinkman(int contactId);
 
-
+    /**
+     * 查询所有服务
+     */
+	List findSerList(Map map);
 	
+	/**
+	 * 添加api服务
+	 */
+	void insertAPI(Map map);
+	/**
+	 * 添加普通服务
+	 */
+	void insertServ(Map map);
+	/**
+	 * 删除服务
+	 * @param map
+	 */
+	void delServ(Map map);
+	/**
+	 * 修改api服务
+	 */
+	void updateAPI(Map map);
+	/**
+	 * 修改普通服务
+	 */
+	void updateServ(Map map);
 }

@@ -78,4 +78,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <delete id="deleteLinkman" parameterType="int">
         delete from cs_linkman where id = #{contactId}
     </delete>
+
 </mapper>
