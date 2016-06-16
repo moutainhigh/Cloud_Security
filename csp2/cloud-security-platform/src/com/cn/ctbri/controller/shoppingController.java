@@ -1378,10 +1378,12 @@ public class shoppingController {
     						HashMap<String, Object> assetOrder = new HashMap<String, Object>();
 				        	assetOrder=(HashMap) assets.get(0);
 				        	int id = 0;
+				        	String addr = "";
     						JSONArray ser = new JSONArray();
     						if(assets != null && assets.size() > 0){
     				        	String ipArray=(String) assetOrder.get("ipArray");
     				        	id = (Integer) assetOrder.get("orderAssetId");
+    				        	addr=(String) assetOrder.get("addr");
     				        	String[] ips = null;   
     				            ips = ipArray.split(",");
     				            for (int n = 0; n < ips.length; n++) {
@@ -1391,7 +1393,7 @@ public class shoppingController {
     	    						ser.add(jo);
     				            }
     				        }
-    						String wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", orderId, "219.141.189.184", "443", "nsfocus.cer", "1", "", "*", "", ser);
+    						String wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", orderId, "219.141.189.183", "80", "nsfocus.cer", "0", addr.substring(7), "*", "", ser);
     						String targetKey = "";
     				    	try {
     				    		JSONObject obj = JSONObject.fromObject(wafcreate);

@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.cn.ctbri.common.WafAPIWorker;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.User;
@@ -417,11 +418,14 @@ public class MyOrderController {
     	Map<String,Object> m = new HashMap<String,Object>();
     	try {
     		String domainName = request.getParameter("domainName");
-    		String ipAddress = request.getParameter("ipAddress");
+//    		String ipAddress = request.getParameter("ipAddress");
     		String orderId = request.getParameter("orderId");
     		
+    		String ipAddress = "219.141.189.183";
     		//取得域名对应的IP地址
     		InetAddress inetAddress = InetAddress.getByName(domainName);
+    		
+    		System.out.println(inetAddress.getHostAddress());
     		//比较IP地址是否一致
     		if (!ipAddress.equals(inetAddress.getHostAddress())){
     			m.put("success", false);
@@ -430,7 +434,13 @@ public class MyOrderController {
     			order.setId(orderId);
     			order.setStatus(4);
     			orderService.update(order);
+//    			OrderAsset oa = new OrderAsset();
+//    			oa.setOrderId(orderId);
+//    			oa.setIpArray("219.141.189.183");
+//    			orderAssetService.update(oa);
     			m.put("success", true);
+    			
+//    			m.put("ipAddress", "219.141.189.183");
     		}
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
