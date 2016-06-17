@@ -210,23 +210,7 @@ $(document).ready(function(){
                             </div>
                            
                             <a href="javascript:;" id="addhttp" class="href_btn fl" style="color:#2499fb; position:relative; top:10px;">点击此处选择网站</a>
-                            <!-- <div class="fl">
-                            	<div class="select">
-                                    <div class="dropdown form-control line" style="width:360px;position:absolute; left:0px;top:3px;">
-                                      <button class="btnNew" id="dLabel" type="button" style="width:360px; padding:0; padding-right:20px; overflow:hidden">
-                                        <em></em>
-                                        <span class="caret"></span>
-                                      </button>
-                                      <ul class="dropdown-menu pop" style="width:358px">
-                                       <c:if test="${not empty serviceAssetList}">
-	                                     	<c:forEach var="list" items="${serviceAssetList}" varStatus="status">
-	                                       		<li><label name="a"><span><input type="checkbox"  id="${list.id }" >${list.addr}</span></label></li>
-	                                     	</c:forEach>
-	                                     </c:if>
-                                      </ul>
-                                    </div>
-                                </div>
-                            </div>  -->
+                           
 						</li>
 					</ul>
                     <div class="btnBox" style="text-align:left; margin-left:0px;">
@@ -366,12 +350,13 @@ $(document).ready(function(){
     	<!--请选择要服务的网站内容显示-->
         <div class="centone" id="senone" style="display:block;">
 	        <ul class="allBox">
-		        <c:forEach items="${serviceAssetList}" var="asset"  varStatus="status">
+		    
+                  <c:forEach items="${serviceAssetList}" var="asset"  varStatus="status">
 		        	<li>
-		            	<div class="rcent">
+		        	 <div class="rcent">
                             <h3>
                                 <label for="${status.count }" style="margin:0 16px 0 0;">
-                                     <input type="checkbox" class="ck"  value="${asset.id}" style=" display:none;"><i class="cek" data-id="${status.count }"></i>
+                                     <input type="checkbox" class="ck"   id="${status.count }"  style=" display:none;"><i class="cek" data-id="${status.count-1}"></i>
                                  </label>
                                  <b>${asset.name }</b>
                             
@@ -448,10 +433,7 @@ $(document).ready(function(){
                                 <a href="javascript:;" class="btn sub" style="margin:0 20px 0 30px;" onclick="saveInter()">提交</a>
                                 <a href="javascript:;" class="btn sub return">返回</a>
                             </div>
-        
-        
-        
-        </div>
+          </div>
         	
    	</div>
 	
