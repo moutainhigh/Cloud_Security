@@ -366,9 +366,9 @@ function getServ(c){
 				
 			</div>
 		</div>
-		<div class="foot">
-			<p>版权所有Copyright © 2015 中国电信股份有限公司北京研究院京ICP备12019458号-10</p>
-		</div>
+		<!-- 底部 start -->
+		<c:import url="/foot.jsp"></c:import>
+		<!-- 底部 end -->
 	</div>
 <script>
 	$(function(){
