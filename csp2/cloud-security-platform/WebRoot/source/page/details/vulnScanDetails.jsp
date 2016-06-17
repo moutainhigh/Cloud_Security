@@ -18,6 +18,7 @@
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
 <SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
 <script src="${ctx}/source/scripts/common/jquery.js"></script>
+<script type="text/javascript"  src="${ctx}/source/scripts/common/jquery.form.js"></script>
 <script src="${ctx}/source/scripts/common/portalindex.js"></script>
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
@@ -25,7 +26,6 @@
 
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script src="${ctx}/source/scripts/order/details.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/regist/asset.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
 <script type="text/javascript">
 
@@ -336,17 +336,18 @@ $(document).ready(function(){
             	//如果当前用户还没有资产，则进入新增资产页面
             	var AssetCount = $("#AssetCount").val();
             	if(AssetCount=='0'){
-            		$('#sentwo').hide();
-            		$('#senone').show();
-            	}else{
             		$('#sentwo').show();
             		$('#senone').hide();
+            	}else{
+            		$('#sentwo').hide();
+            		$('#senone').show();
             	}
                 $('.ass').click(function() {
+               		$('#saveAsset')[0].reset();		
                     $('#senone').fadeOut(20);
                     $('#sentwo').fadeIn(20);
                 });
-                $('.sub').click(function() {
+                $('#back').click(function() {
                     $('#sentwo').fadeOut(20);
                     $('#senone').fadeIn(20);
                 });
@@ -367,7 +368,7 @@ $(document).ready(function(){
 		            	<div class="rcent">
                             <h3>
                                 <label for="${status.count }" style="margin:0 16px 0 0;">
-                                     <input type="checkbox" class="ck"  value="${asset.id}" style=" display:none;"><i class="cek" data-id="${status.count }"></i>
+                                     <input type="checkbox" class="ck"  value="${asset.id}" style=" display:none;"><i class="cek" data-id="${status.count }" onclick='selAsset(this)'></i>
                                  </label>
                                  <b>${asset.name }</b>
                             
@@ -388,13 +389,13 @@ $(document).ready(function(){
         </div>
         <!--新增网站内容显示-->
         <div class="centone" id="sentwo" style="display:none;">
-        <form id="saveAsset" action="${ctx}/addAsset.html" method="post">
+        <form id="saveAsset" action="" method="post">
         			<div class="addhttp">
                         <div class="popBox">
                             <ul style="height:auto;">
                                 <li class="clearfix">
                                     <label class="fl">网站名称</label> <div class="fl"><input class="boz_inout_1" type="text" name="name" id="assetName"></div>
-                                    <div class="addMsg" id="assetName_msg"></div>
+                                    <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetName_msg"></div>
                                 </li>
                                 <li class="clearfix">
                                     <label class="fl">网站地址类型</label> 
@@ -405,7 +406,7 @@ $(document).ready(function(){
                                 </li>
                                 <li class="clearfix">
                                     <label class="fl">网站地址</label> <div class="fl"><input class="boz_inout_1" type="text" name="addr" id="InertAddr"></div>
-                                    <div class="addMsg" id="assetAddr_msg"></div></td>
+                                    <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetAddr_msg"></div></td>
                                 </li>
                                  <li class="clearfix">
                                     <label class="fl">示例</label> 
@@ -425,7 +426,7 @@ $(document).ready(function(){
 						    			<select  class="user_secta_count spiclesel"  id="city" name="city" disabled="disabled" style="width:119px;height: 35px;">
 						    			      <option value="-1">请选择城市</option>
 						    			</select>
-						    			<div class="addMsg" id="location_msg"></div>
+						    			<div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="location_msg"></div>
                                         </div>
                                 </li>
                                 <li class="clearfix">
@@ -437,7 +438,7 @@ $(document).ready(function(){
 							   				<option value="信息发布">信息发布</option>
 							   				<option value="其他">其他</option>   
                                         </select>
-                                        <div class="addMsg" id="assetUsage_msg"></div>
+                                        <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetUsage_msg"></div>
                                     </div>
                                 </li>
                             </ul>
@@ -447,7 +448,7 @@ $(document).ready(function(){
                     </div>
         			 <div class="bottom clearfix">
                                 <a href="javascript:;" class="btn sub" style="margin:0 20px 0 30px;" onclick="saveAsset()">提交</a>
-                                <a href="javascript:;" class="btn sub return">返回</a>
+                                <a href="javascript:;" class="btn sub return" id="back">返回</a>
                             </div>
         
         </form>
