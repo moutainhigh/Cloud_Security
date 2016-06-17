@@ -177,6 +177,7 @@ $('.httpBox').delegate('i','click',function(){
 				}
             });
             $(this) .parent('li').remove();
+            $('#number').text($('.allBox .this').length);
 			var tleng= $('.httpBox li').length;
 			if(tleng==0){
 				$('.gt').show();		
