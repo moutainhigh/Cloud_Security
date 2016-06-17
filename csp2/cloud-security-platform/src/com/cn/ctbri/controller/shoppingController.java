@@ -1560,4 +1560,70 @@ public class shoppingController {
     	return "/source/page/details/repay";
     	
     }
+    
+    
+	/**
+	 * 功能描述： 添加资产
+	 * 参数描述： Model model
+	 * @throws Exception 
+	 *		 @time 2015-1-16
+	 */
+	@RequestMapping("/addWebSite.html")
+	public void addWebSite(HttpServletRequest request,HttpServletResponse response){
+		Map<String, Object> m = new HashMap<String, Object>();
+		
+		try {
+			Asset asset = new Asset();
+			User globle_user = (User) request.getSession().getAttribute("globle_user");
+			asset.setUserid(globle_user.getId());//用户ID
+			asset.setCreate_date(new Date());//创建日期
+			if(globle_user.getType()==2){
+				asset.setStatus(0);//资产状态(1：已验证，0：未验证)
+			}else if(globle_user.getType()==3){
+				asset.setStatus(1);//资产状态(1：已验证，0：未验证)
+			}
+
+			String name = request.getParameter("assetName");//资产名称
+			String addr = request.getParameter("assetAddr");//资产地址
+			String addrType = request.getParameter("addrType");//资产类型
+			String purpose = request.getParameter("purpose");//用途
+			String prov = request.getParameter("prov");
+			String city = request.getParameter("city");
+
+			if(!(addr.startsWith(addrType))){
+				addr = addrType + "://" + addr.trim();
+			}
+			asset.setName(name);
+			asset.setAddr(addr);
+			asset.setPurpose(purpose);
+			asset.setDistrictId(prov);
+			asset.setCity(city);
+			assetService.saveAsset(asset);
+
+			//获取服务对象资产
+		    List<Asset> serviceAssetList = selfHelpOrderService.findServiceAsset(globle_user.getId());
+			m.put("success", true);
+			m.put("serviceAssetList", serviceAssetList);
+			//object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			m.put("success", false);
+			//object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+	}
 }
+
