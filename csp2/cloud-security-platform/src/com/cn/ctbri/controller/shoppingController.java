@@ -1192,17 +1192,25 @@ public class shoppingController {
     		}
     		
     		//南向API认证，连接失败时订单异常，不支付
-    		boolean session = false;
-	    	try {
-	    		session = NorthAPIWorker.getNorthSession();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			if (!true){
-				//连接服务管理系统失败
-				m.put("payFlag", 4);
+//    		boolean session = false;
+//	    	try {
+//	    		session = NorthAPIWorker.getNorthSession();
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//			if (!true){
+//				//连接服务管理系统失败
+//				m.put("payFlag", 4);
+//    			return;
+//			}
+    		//若支付时间>服务的开始时间，更新订单的开始时间，结束时间
+    		List<String> orderIdOfModify = modifyOrderBeginTime(orderList);
+    		
+    		// 南向API调用 任务执行
+    		if(!orderTask(orderList, globle_user, orderIdOfModify)) {
+    			m.put("payFlag", 4);
     			return;
-			}
+    		}
     		
     		//更新安全币余额（DB和session中都更新）
     		globle_user.setBalance(balance - price);//session更新
@@ -1218,14 +1226,14 @@ public class shoppingController {
     		//更新 支付Flag(cs_order表) 未支付-->已支付
     		selfHelpOrderService.updateOrderPayFlag(orderIds, 1, 1);
     		
-    		//若支付时间>服务的开始时间，更新订单的开始时间，结束时间
-    		List<String> orderIdOfModify = modifyOrderBeginTime(orderList);
-    		
-    		// 南向API调用 任务执行
-    		if(!orderTask(orderList, globle_user, orderIdOfModify)) {
-    			m.put("payFlag", 4);
-    			return;
-    		}
+//    		//若支付时间>服务的开始时间，更新订单的开始时间，结束时间
+//    		List<String> orderIdOfModify = modifyOrderBeginTime(orderList);
+//    		
+//    		// 南向API调用 任务执行
+//    		if(!orderTask(orderList, globle_user, orderIdOfModify)) {
+//    			m.put("payFlag", 4);
+//    			return;
+//    		}
     		
     		String orderId = "";
     		if (orderIdOfModify!= null && orderIdOfModify.size()!=0){
@@ -1271,7 +1279,8 @@ public class shoppingController {
 			list = selfHelpOrderService.findBuyShopList(orderIdList);
 		}
 		
-		Date payDate = orderList.getPay_date();
+//		Date payDate = orderList.getPay_date();
+		Date payDate = new Date();
 		if(list!=null&&list.size()>0){
 			for(int i=0;i<list.size();i++){
 				ShopCar shopCar = (ShopCar)list.get(i);
