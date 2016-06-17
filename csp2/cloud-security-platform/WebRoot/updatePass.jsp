@@ -189,11 +189,14 @@
 				
 			</div>
 		</div>
-		<div class="foot">
+		<!-- <div class="foot">
 			<p>Label@1234567890北京电信研究院<br>
 				www.anquanbang.net
 			</p>
-		</div>
+		</div>-->
+		<!-- 底部 start -->
+		<c:import url="/foot.jsp"></c:import>
+		<!-- 底部 end -->
 	</div>
 <!---执行效果-->
 <div class="weixinshow popBoxhide" id="weixin">
