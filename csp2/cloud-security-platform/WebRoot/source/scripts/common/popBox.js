@@ -1,12 +1,34 @@
 // JavaScript Document
 $(function(){
-	 //增加指标
-        $('.addass').delegate(this, 'click', function () {
-            $('.shade').show();
-           $('#revise').show();
-       })
+	//增加资产
+	$('.addass').delegate(this,'click',function(){	
+		$(".addMsg").html("");
+		$('.shade').show();
+		$('#revise').show();
+		$('html').css({overflow:"hidden"});
+	})
+	
+	//修改资产
+	$('.zc_edit').delegate(this,'click',function(){
+		$(".editMsg").html("");
+		$("#hiddenEditName").val($(this).attr("name"));
+		$("#hiddenEditAddr").val($(this).attr("addr"));
+		$("#editAssetName").val($(this).attr("name"));
+		$("#editAssetAddr").val($(this).attr("addr"));
+		$("#editDistrictId").val($(this).attr("districtId"));
+		getEditCitys($(this).attr("districtId"));
+		var temp = $(this).attr("city");
 
+		$("#editPurpose").val($(this).attr("purpose"));
+		$("#editAssetid").val($(this).attr("id"));
+		setTimeout(function(){
+			$("#editCity").val(temp);
+		},100);
 
+		$('.shade').show();
+		$('#updateAssest').show();
+		$('html').css({overflow:"hidden"});
+	})
 	
 	//关闭按钮
 	
@@ -17,13 +39,12 @@ $(function(){
                 overflow: 'auto'
             })
     })
-
 })
-
-//数组 - 存放已选择的网站
 var arrLink = [];
+//数组 - 存放已选择的网站
 $(document).ready(function () {
-		//扩展数组原型，添加del方法。删除数组元素，返回新的数组
+
+	//扩展数组原型，添加del方法。删除数组元素，返回新的数组
 	Array.prototype.del=function(index){
 	    if(isNaN(index)||index>=this.length){
 	        return false;
@@ -35,16 +56,19 @@ $(document).ready(function () {
 	    }
 	    this.length-=1;
 	};
+
+
+
+
     //选择网站点击效果
     $('#addhttp').click(function () {
-		
         //显示遮罩层
         $('.shade').show();
         //显示
         $('.waf-detais-pop').animate({
             opacity: '1',
             top: '50%',
-            left: '50%',
+            left: '30%',
             marginTop: '-224px'
         }, 500);
         //alert(arrLink)
@@ -58,7 +82,7 @@ $(document).ready(function () {
         }
 		
     })
-     //关闭按钮
+    //关闭按钮
     $('#close').click(function () {
         //关闭后效果
         $('.waf-detais-pop').animate({
@@ -89,14 +113,15 @@ $(document).ready(function () {
 //        $('.cek').attr('check','false');
         $('.cek').eq(i).click(function(){
             if($(this).attr('class').indexOf('this')!=-1){
+				//$(this).parents('li').removeClass('ac');
                 $(this).removeClass('this');
 				var legth = $('.allBox .this').length;
 				//alert(legth)
 				$('#number').text(legth);
-				//$('.gt').show();	
             }
             else{
 				 $(this).addClass('this');
+				 //$(this).parents('li').addClass('ac');
 				var legth = $('.allBox .this').length;
 				if(legth==6){
 					$(this).removeClass('this');
@@ -157,6 +182,7 @@ $(document).ready(function () {
 		}
        
     })
+
 //删除添加的-对应删除弹框的
 $('.httpBox').delegate('i','click',function(){
 
@@ -177,7 +203,7 @@ $('.httpBox').delegate('i','click',function(){
 				}
             });
             $(this) .parent('li').remove();
-            $('#number').text($('.allBox .this').length);
+			$('#number').text($('.allBox .this').length);
 			var tleng= $('.httpBox li').length;
 			if(tleng==0){
 				$('.gt').show();		
@@ -186,3 +212,13 @@ $('.httpBox').delegate('i','click',function(){
 		})
 
 });
+
+
+
+
+
+
+
+
+
+
