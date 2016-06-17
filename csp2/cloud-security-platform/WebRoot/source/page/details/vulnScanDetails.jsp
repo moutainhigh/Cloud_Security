@@ -346,10 +346,10 @@ $(document).ready(function(){
                     $('#senone').fadeOut(20);
                     $('#sentwo').fadeIn(20);
                 });
-                //$('.sub').click(function() {
-                  //  $('#sentwo').fadeOut(20);
-                  //  $('#senone').fadeIn(20);
-                //});
+                $('.sub').click(function() {
+                    $('#sentwo').fadeOut(20);
+                    $('#senone').fadeIn(20);
+                });
 
 
                 $('.waf-ym i').click(function() {
