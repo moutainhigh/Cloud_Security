@@ -93,7 +93,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update cs_order_asset
 		<set>
 			<if test="targetKey!=null">
-				targetKey=#{targetKey}
+				targetKey=#{targetKey},
+			</if>
+			<if test="ipArray!=null">
+				ipArray=#{ipArray}
 			</if>
 		</set>
 		where id=#{id}
