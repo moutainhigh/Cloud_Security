@@ -2094,3 +2094,22 @@ padding: 20px 30px 0px 0px;
 
 }
 .order .settlement-content li .listone_add span{ display: block; width:110px;  }
+
+/*waf商品详情页*/
+.dataR .waf-datails .href_btn:hover{
+	text-decoration:underline;
+}
+
+/*页面监测*/
+.waf-datails .httpBox li{
+	padding:8px;
+	border-radius: 1px;
+	border:#e5e5e5 solid 1px;
+	margin:0 20px 10px 0;
+	height:auto;
+}
+.waf-datails .httpBox li em{
+	font-size: 14px;
+	color: #4e4e4e;
+	padding-right: 10px;
+}
