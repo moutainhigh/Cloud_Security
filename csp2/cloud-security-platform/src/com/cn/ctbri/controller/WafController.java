@@ -417,14 +417,14 @@ public class WafController {
 			//后台判断资产是否可用，防止恶意篡改资产
 			//资产id
 			String domainId = request.getParameter("domainId");
-//			boolean assetsStatus = false;
+			boolean assetsStatus = false;
 			Asset _asset = assetService.findById(Integer.parseInt(domainId));
 //			int status = _asset.getStatus();
 //			if(status==0){//未验证
 //			    assetsStatus = true;
 //			}
 
-//			m.put("assetsStatus", assetsStatus);
+			m.put("assetsStatus", assetsStatus);
 //			if(assetsStatus){
 //			    //object转化为Json格式
 //			    JSONObject JSON = CommonUtil.objectToJson(response, m);
