@@ -1393,11 +1393,21 @@ public class shoppingController {
 				        	assetOrder=(HashMap) assets.get(0);
 				        	int id = 0;
 				        	String addr = "";
+				        	String wafIp = "219.141.189.183";
+				        	String wafPort = "";
     						JSONArray ser = new JSONArray();
     						if(assets != null && assets.size() > 0){
-    				        	String ipArray=(String) assetOrder.get("ipArray");
+    							String ipArray=(String) assetOrder.get("ipArray");
     				        	id = (Integer) assetOrder.get("orderAssetId");
     				        	addr=(String) assetOrder.get("addr");
+    				        	String[] addrs = addr.split(":");
+    				        	if(addrs[0].length()==5){
+    				        		addr = addr.substring(8);
+    				        		wafPort = "443";
+    				        	}else if(addrs[0].length()==4){
+    				        		addr = addr.substring(7);
+    				        		wafPort = "80";
+    				        	}
     				        	String[] ips = null;   
     				            ips = ipArray.split(",");
     				            for (int n = 0; n < ips.length; n++) {
@@ -1407,15 +1417,20 @@ public class shoppingController {
     	    						ser.add(jo);
     				            }
     				        }
-    						String wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", orderId, "219.141.189.183", "80", "nsfocus.cer", "0", addr.substring(7), "*", "", ser);
+    						String wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", shopCar.getOrderId(), wafIp, wafPort, "nsfocus.cer", "0", addr, "*", "", ser);
     						String targetKey = "";
     				    	try {
     				    		JSONObject obj = JSONObject.fromObject(wafcreate);
-    				    		targetKey = obj.getString("targetKey");  
-    				    		OrderAsset oa = new OrderAsset();
-    				    		oa.setId(id);
-    				    		oa.setTargetKey(targetKey);
-    				    		orderAssetService.update(oa);
+    				    		targetKey = obj.getString("targetKey"); 
+    				    		String sta = obj.getString("status");
+    				    		if(sta.equals("success")){
+    				    			OrderAsset oa = new OrderAsset();
+        				    		oa.setId(id);
+        				    		oa.setTargetKey(targetKey);
+        				    		orderAssetService.update(oa);
+        				    		
+            						orderId = shopCar.getOrderId();
+    				    		}
     				        } catch (Exception e) {
     				            e.printStackTrace();
     				        }
