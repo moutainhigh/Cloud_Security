@@ -1,6 +1,9 @@
 package com.cn.ctbri.southapi.adapter.waf;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 
@@ -28,8 +31,13 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	private String nsfocusWafPassword = "";
 	private String nsfocusAPIKey = "";
 	private String nsfocusAPIValue = "";
+	private String[] nsfocusWafPublicIPList = null;
 	
 	public NsfocusWAFOperation(String apiAddr, String apiKey, String apiValue, String apiUsername, String apiPassword) {
+		initNsfocusWafDevice(apiAddr, apiKey, apiValue, apiUsername, apiPassword);
+	}
+	
+	public NsfocusWAFOperation(String apiAddr, String apiKey, String apiValue, String apiUsername, String apiPassword, String[] apiPublicIPList) {
 		initNsfocusWafDevice(apiAddr, apiKey, apiValue, apiUsername, apiPassword);
 	}
 	
@@ -45,8 +53,23 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		if(null==apiPassword||"".equalsIgnoreCase(apiPassword)) return false;
 		nsfocusWafPassword = apiPassword;
 		return true;
-		
 	}
+	public boolean initNsfocusWafDevcie(String apiAddr, String apiKey, String apiValue, String apiUsername, String apiPassword, String[] apiPublicIPList) {
+		if(null==apiAddr||"".equalsIgnoreCase(apiAddr)) return false;
+		nsfocusWafUrl = apiAddr;
+		if(null==apiKey||"".equalsIgnoreCase(apiKey)) return false; 
+		nsfocusAPIKey = apiKey;
+		if(null==apiValue||"".equalsIgnoreCase(apiValue)) return false;
+		nsfocusAPIValue = apiValue;
+		if(null==apiUsername||"".equalsIgnoreCase(apiUsername)) return false;
+		nsfocusWafUsername = apiUsername;
+		if(null==apiPassword||"".equalsIgnoreCase(apiPassword)) return false;
+		nsfocusWafPassword = apiPassword;
+		if (null==apiPublicIPList) return false;
+		nsfocusWafPublicIPList = apiPublicIPList;
+		return true;
+	}
+	
 	
 	private WebResource createBasicWebResource(String url) {
     	ClientConfig config = new DefaultClientConfig();
@@ -57,7 +80,6 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		client.addFilter(new HTTPBasicAuthFilter(nsfocusWafUsername,nsfocusWafPassword));
 		//连接服务器
 		WebResource service = client.resource(url);
-
 		return service;
 	}
 	/**
@@ -213,6 +235,13 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		String returnString = putmethod(url+authString, jsonString);
 		return returnString;
 	}
+	
+	public JSONArray getPublicIpList() {
+		JSONArray publicIpJsonArray = JSONArray.fromObject(nsfocusWafPublicIPList);
+		return publicIpJsonArray;
+	}
+	
+	
 	public String getSSLCert(){
 		String getSSLCertString = getOperation(nsfocusWafUrl+REST_URI_V1+"/sslcert");
 		return getSSLCertString;
@@ -436,13 +465,19 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	
 	
 	public static void main(String[] args) {
-
+		/*
 		System.out.println(MediaType.APPLICATION_JSON.toString());
 		NsfocusWAFOperation operation = new NsfocusWAFOperation("https://219.141.189.189:58442/","vmwaf","E34A-44A6-E12B-E1C9","admin","nsfocus");
 
 		String responseString = operation.getOperation("https://219.141.189.189:58442/rest/v1/interfaces/eth2");
 		System.out.println(">>>>>"+responseString);
-		
+		*/
+		try {
+			System.out.println(InetAddress.getByName("www.anquanbang.net").getHostAddress());
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

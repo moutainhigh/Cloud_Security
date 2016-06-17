@@ -713,8 +713,8 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.alterSite(resourceId, deviceId, jsonObject);
 	}
 	
-	public String createVSite(int resourceId,int deviceId,JSONObject jsonObject) {
-		return nsfocusWAFAdapter.createVSite(resourceId, deviceId, jsonObject);
+	public String createVirtSite(int resourceId,int deviceId,JSONObject jsonObject) {
+		return nsfocusWAFAdapter.createVirtSite(resourceId, deviceId, jsonObject);
 	}
 	public String createVSiteInResource(int resourceId,JSONObject jsonObject) {
 		return nsfocusWAFAdapter.createVirtSite(resourceId, jsonObject);
@@ -825,5 +825,10 @@ public class DeviceAdpaterManager {
 	
 	public String getAlertLevelInTime(JSONObject jsonObject) {
 		return nsfocusWAFAdapter.getAlertLevelCountInTime(jsonObject);
+	}
+	
+	public String getWafPublicIpListInResource(int resourceId) {
+		return nsfocusWAFAdapter.getPublicIpListInResource(resourceId);
+		
 	}
 }

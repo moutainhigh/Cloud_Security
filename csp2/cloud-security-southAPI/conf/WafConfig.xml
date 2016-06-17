@@ -11,9 +11,17 @@
 					<WAFDevID>30001</WAFDevID>
 					<WAFFactory>nsfocus</WAFFactory>
 					<WAFFactoryName>绿盟</WAFFactoryName>
-					<WAFDevPhyIP>127.0.0.1</WAFDevPhyIP>
-					<WAFVirtualIP></WAFVirtualIP>
+					<WAFDevPhyIP>172.16.200.209</WAFDevPhyIP>
+					<!--VirtualIP: 
+						Master:219.141.189.184
+						Backup:219.141.189.183
+					 -->
+					<WAFPublicIPList>219.141.189.184;219.141.189.183</WAFPublicIPList>
 					<WAFDevAPI>
+						<!-- 部署186，内网地址
+						<APIAddr>https://172.16.200.209:8443</APIAddr>
+						-->
+						<!-- 部署外网 -->
 						<APIAddr>https://219.141.189.189:58442</APIAddr>
 						<APIKey>vmwaf</APIKey>
 						<APIValue>E34A-44A6-E12B-E1C9</APIValue>
@@ -29,7 +37,16 @@
 					<WAFFactory>nsfocus</WAFFactory>
 					<WAFFactoryName>绿盟</WAFFactoryName>
 					<WAFDevPhyIP>172.16.200.210</WAFDevPhyIP>
+					<!--VirtualIP: 
+						Master:219.141.189.183
+						Backup:219.141.189.184
+					 -->
+					<WAFPublicIPList>219.141.189.184;219.141.189.183</WAFPublicIPList>
 					<WAFDevAPI>
+						<!-- 部署186，内网地址
+						<APIAddr>https://172.16.200.210:8443</APIAddr>
+						-->
+						<!-- 部署外网 -->
 						<APIAddr>https://219.141.189.189:58443</APIAddr>
 						<APIKey>vmwaf</APIKey>
 						<APIValue>9E7B-960F-0DA7-4BC0</APIValue>
@@ -111,6 +128,10 @@
 	<SyslogServer serverIP="127.0.0.1" port="514" threadPoolSize="10" disposeBlockSize="10" packetDisposeMode="Store/Relay">
 		<Store>
 			<JdbDriver>com.mysql.jdbc.Driver</JdbDriver>
+			<!-- 部署到186服务器，186数据库
+			<JdbcURL>jdbc:mysql:///southapi</JdbcURL>
+			-->
+			<!-- 部署到本地，186服务器 -->
 			<JdbcURL>jdbc:mysql://219.141.189.186:63306/southapi</JdbcURL>
 			<JdbcUser>root</JdbcUser>
 			<JdbcPwd>mssp@ctbri&amp;</JdbcPwd>

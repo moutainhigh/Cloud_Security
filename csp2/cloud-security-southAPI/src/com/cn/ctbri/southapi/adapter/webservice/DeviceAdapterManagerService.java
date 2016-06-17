@@ -417,7 +417,7 @@ public class DeviceAdapterManagerService {
 			return errNullWafDevice();
 		int resourceId = jsonObject.getInt("resourceId");
 		int deviceId = jsonObject.getInt("deviceId");
-		return deviceAdpaterManager.createVSite(resourceId, deviceId, jsonObject);
+		return deviceAdpaterManager.createVirtSite(resourceId, deviceId, jsonObject);
 	}
 	@POST
 	@Path("/createVirtualSiteInResource")
@@ -466,6 +466,16 @@ public class DeviceAdapterManagerService {
 		int resourceId = jsonObject.getInt("resourceId");
 		jsonObject.remove("resourceId");
 		return deviceAdpaterManager.deleteVSiteInResource(resourceId, jsonObject);
+	}
+	@POST
+	@Path("/getWafPublicIP")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getPublicIpListInResource(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals(""))
+			return errNullWafDevice();
+		int resourceId = jsonObject.getInt("resourceId");
+		return deviceAdpaterManager.getWafPublicIpListInResource(resourceId);
 	}
 
 }

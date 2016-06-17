@@ -59,6 +59,7 @@ public class NsfocusWAFAdapter {
 				Map.Entry<Integer, WAFConfigDevice> wafConfigDeviceEntry = (Entry<Integer, WAFConfigDevice>) wafConfDevIterator.next();
 				int devId = wafConfigDeviceEntry.getKey();
 				WAFConfigDevice wafConfigDevice = wafConfigDeviceEntry.getValue();
+				String[] apiPublicIp = wafConfigDevice.getDevicePublicIPList();
 				String apiAddr = wafConfigDevice.getApiAddr();
 				String apiKey = wafConfigDevice.getApiKey();
 				String apiValue = wafConfigDevice.getApiValue();
@@ -151,6 +152,17 @@ public class NsfocusWAFAdapter {
 			tWafLogDeface.setReason(reasonBase64);
 		}
 		return tWafLogDeface;
+	}
+	
+	public String getPublicIpListInResource(int resourceId) {
+		HashMap<Integer,NsfocusWAFOperation> map = mapNsfocusWAFOperationGroup.get(resourceId);
+		JSONArray publicIpArray = new JSONArray();
+		for(Entry<Integer, NsfocusWAFOperation> entry: map.entrySet()){
+			JSONObject tempPublicIpObject = new JSONObject();
+			tempPublicIpObject.put("deviceId", entry.getKey());
+			tempPublicIpObject.put("publicIpList", entry.getValue().getPublicIpList());
+		}
+		return publicIpArray.toString();
 	}
 	
 	public String getSites(int resourceId) {
@@ -303,13 +315,18 @@ public class NsfocusWAFAdapter {
 			record.setSiteid(siteId);
 			record.setGroupid(groupId);
 			record.setVirtsiteid(virtSiteId);
+			SqlSession sqlSession = null;
 			try {
-				SqlSession sqlSession = getSqlSession();
+				sqlSession = getSqlSession();
 				TWafNsfocusTargetinfoMapper mapper = sqlSession.getMapper(TWafNsfocusTargetinfoMapper.class);
 				mapper.insertSelective(record);
+				sqlSession.commit();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				sqlSession.rollback();
+			} finally {
+				sqlSession.close();
 			}
 			
 			
@@ -335,7 +352,7 @@ public class NsfocusWAFAdapter {
 	 * @param jsonObject
 	 * @return
 	 */
-	public String createVSite(int resourceId, int deviceId, JSONObject jsonObject) {
+	public String createVirtSite(int resourceId, int deviceId, JSONObject jsonObject) {
 		return getDeviceById(resourceId, deviceId).createVirtSite(jsonObject);
 	}
 	
@@ -415,7 +432,6 @@ public class NsfocusWAFAdapter {
 			example.or().andDstIpIn(dstIpList);
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			List<TWafLogWebsec> allList = mapper.selectByExample(example);
-
 			for (TWafLogWebsec tWafLogWebsec : allList) {
 				tWafLogWebsec = getTWafLogWebsecBase64(tWafLogWebsec);
 			}
