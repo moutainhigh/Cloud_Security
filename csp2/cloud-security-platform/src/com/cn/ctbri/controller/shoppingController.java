@@ -1178,7 +1178,6 @@ public class shoppingController {
     		}
     		
 //    		Date orderCreateDate = orderList.getCreate_date();//下单时间
-    		String orderIds = orderList.getOrderId();//订单条目编号(cs_order的id)
     		
     		//取得安全币余额
 //    		User globle_user = (User) request.getSession().getAttribute("globle_user");
@@ -1224,6 +1223,7 @@ public class shoppingController {
     		selfHelpOrderService.updatePayDate(orderList);
     		
     		//更新 支付Flag(cs_order表) 未支付-->已支付
+    		String orderIds = orderList.getOrderId();//订单条目编号(cs_order的id)
     		selfHelpOrderService.updateOrderPayFlag(orderIds, 1, 1);
     		
 //    		//若支付时间>服务的开始时间，更新订单的开始时间，结束时间
