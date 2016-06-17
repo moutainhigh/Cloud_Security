@@ -157,6 +157,8 @@
     	class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="taskJobDetail" />
     	<property name="cronExpression" value="0 0/1 * * * ?" />
+    	<!-- <property name="cronExpression" value="0 15 10 * * ? *" /> -->
+    	 
     </bean>
     
     
@@ -181,7 +183,7 @@
     	<property name="triggers">
     		<list>
     			<ref bean="taskTrigger" />
-    			<ref bean="delTrigger" />
+    			<!-- <ref bean="delTrigger" /> -->
     		</list>
     	</property>
     </bean>
