@@ -137,6 +137,11 @@ public class shoppingController {
         request.setAttribute("serviceId", serviceId);
         request.setAttribute("indexPage", indexPage);
         request.setAttribute("service", service);
+        if(serviceAssetList!=null && serviceAssetList.size()>0){
+            request.setAttribute("AssetCount", serviceAssetList.size());
+        }else{
+        	request.setAttribute("AssetCount",0);
+        }
 //        request.setAttribute("orderType", "");
         String result = "/source/page/details/vulnScanDetails";
         return result;
