@@ -33,7 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where t.status = #{status} 
         <if test="status==2">
           and t.serviceId = #{serviceId} 
-          and t.end_time &gt; now()
+          and t.end_time &lt; now()
         </if>
         <!-- and t.end_time between date_add(now(),interval -1 minute) and now() -->
         <!--limit #{page}-->
