@@ -12,66 +12,60 @@ $(function(){
 		WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:datetime,startDate:datetime,alwaysUseStartDate:true,dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(dp){calPriceLong(null,null,null); }})
 	}
 	//默认选中资产数
-	var assetCount = 0;
+	var assetCount = $('.httpBox li').length;
 
-	//获取默认选中的资产数
-	//获取资产数
-/*	$('.dropdown-menu li').each(function(){
-		var ck=$(this).find('input');
-		if($(ck).is(':checked')){
-			assetCount++;	
-		}
-	})*/
-	
-   	$('.btnNew i').each(function(){
-   		assetCount++;	
-	});
    		
 	//生成默认价格
 	calDefaultPrice();
-	
-	//选择资产
-	$('.dropdown').click(function(){
-		$('.dropdown-menu').fadeIn();
-
-	})
-	$('.dropdown-menu li').hover(function(){
-				$(this).addClass('active');
-			},function(){
-				$(this).removeClass('active');
-	})
-	var assetIds = $("#assetIds").val();
-	var assetAddr = $("#assetAddr").val();
-	$('.dropdown-menu li').each(function(){
-		$(this).delegate(this,'click',function(){
-			var ck=$(this).find('input');
-			var id=$(this).find('input').attr('id');
-			if($(ck).is(':checked')){
-				var flag = false;
-				$('.btnNew i').each(function(index, element) {
-                    var iId =$(this).attr('id');
-					if(id==iId){
-						flag = true;
-					}
-                });
-				if(!flag){
-					var v= $(this).children('label').text();
-					$('.btnNew em').before('<i id='+ assetIds + id +'>'+ assetAddr + v +',</i>');
-					assetCount=assetCount+1;
+    
+	//点击添加资产的确定
+	    //点击OK以后，插入数据
+    $('.ok').click(function(){
+		var th= $('.allBox .this').length;
+		$('.httpBox li').remove();
+		if(th==6){
+			alert("超过5个");
+			
+		}else{
+			assetCount = th;
+			//点击ok之前先清空一次数组，再重新添加内容
+			arrLink = [];	
+			arrId = [];
+			for(var i=0;i<$('.cek').length;i++){
+				if($('.cek').eq(i).attr('class').indexOf('this')!=-1){
+					//判断如果数组中没有，就插入，有的话 忽略
+					arrLink.push($('.cek').eq(i).parent().siblings('b').html());
+					arrId.push($('.cek').eq(i).siblings('input').val());
 				}
-				
-			}else
-			{
-				$('.btnNew i').each(function(index, element) {
-                    var iId =$(this).attr('id');
-					if(id==iId){
-						$(this).remove();
-						if(assetCount>0){
-							assetCount=assetCount-1;
-						}
-					}
-                });
 			}
+			
+			$('.gt').hide();
+			$('.httpBox').show();
+			var list='';
+			var index=0;
+			for(var i=0;i<arrLink.length;i++){
+				index++;
+				 list+="<li id="+ index +" assetId='"+arrId[i]+"'>"+ arrLink[i] +"<i></i></li>";  
+			}
+			
+			$('.httpBox').append(list);
+			//alert(arrLink);
+			
+			var tleng= $('.httpBox li').length;
+			if(tleng==0){
+				$('.gt').show();		
+			}
+			
+			
+			 //关闭后效果
+			$('.waf-detais-pop').animate({
+				opacity: '1',
+				top: '50%',
+				left: '50%',
+				marginTop: '-1200px'
+			}, 500);
+			//隐藏遮罩层
+			$('.shade').hide();
 			
 			var type = $(".click").val();
 			if(type="1"){//长期
@@ -79,10 +73,12 @@ $(function(){
 			}else{
 				calPrice(assetCount);
 			}
-		})
+		}
 		
-	})
-	
+		
+       
+    })
+        
 	
     //确认订单界面点击"确认订单"进入完成
     $("#buyNow").click(function(){
@@ -99,13 +95,12 @@ $(function(){
     	if(type==2){
     		scanType="";
     	}
+
     	//获得服务资产
-//    	var assetIds = $("#assetIds").val();
-    	
     	var assetIds = "";
-   		$('.btnNew i').each(function(){
-   			assetIds = assetIds + $(this).attr("id") + ",";
-		});
+    	$('.httpBox li').each(function(index, element) {
+            assetIds = assetIds + $(this).attr("assetId") + ",";
+        });
     	var ip="";
 		var bandwidth="";
 		if(type==2){
@@ -292,9 +287,10 @@ $(function(){
     	}
     	//获得服务资产
     	var assetIds = "";
-   		$('.btnNew i').each(function(){
-   			assetIds = assetIds + $(this).attr("id") + ",";
-		});
+    	$('.httpBox li').each(function(index, element) {
+            assetIds = assetIds + $(this).attr("assetId") + ",";
+        });
+    
     	var ip="";
 		var bandwidth="";
 		if(orderType==2){
@@ -353,9 +349,37 @@ $(function(){
 
     });
     
-   
 
-   
+
+  //删除添加的-对应删除弹框的
+    $('.httpBox').delegate('i','click',function(){
+        var _this=$(this).parent('li').attr('id')-1;
+               	$('.allBox i').each(function(index, element) {
+                    var ac= $(this).attr('data-id');
+    				if(ac==_this){
+    					arrLink[_this]='';
+    					$(this).removeClass('this');
+    					//$(this).removeClass('disabled');
+    					
+    				}
+                });
+                $(this) .parent('li').remove();
+    			var tleng= $('.httpBox li').length;
+    			if(tleng==0){
+    				$('.gt').show();		
+    			}
+    	
+    			assetCount = $('.httpBox li').length;
+    			var type = $(".click").val();
+    			if(type="1"){//长期
+    				calPriceLong(null,servType,assetCount);
+    			}else{
+    				calPrice(assetCount);
+    			}
+    			
+    	})
+
+
    function getCreateDate(){
 	   var now = new Date();
    	   var createDate = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"-"+(now.getDate()<10?"0":"")+now.getDate()+" "+now.getHours()+":"+now.getMinutes()+":"+now.getSeconds();
@@ -472,17 +496,7 @@ function tasknum_verification(){
     	var serviceId = $("#serviceIdHidden").val();
     	var assetCountNew = 0;
     	if(assetCount==null){
-    		//获取资产数
-/*    		$('.dropdown-menu li').each(function(){
-				var ck=$(this).find('input');
-				if($(ck).is(':checked')){
-					assetCountNew++;
-					
-				}
-    		})*/
-    	   	$('.btnNew i').each(function(){
-    	   		assetCountNew++;
-    		});
+    		assetCountNew = $('.httpBox li').length;
     	}else{
         	assetCountNew = assetCount;
     	}
@@ -519,19 +533,7 @@ function tasknum_verification(){
     	var endDate=$('#endDate').val();
     	var assetCountNew = 0;
     	if(assetCount==null){
-    		//获取资产数
-/*    		$('.dropdown-menu li').each(function(){
-				var ck=$(this).find('input');
-				if($(ck).is(':checked')){
-					assetCountNew++;
-					
-				}
-    		})*/
-    		
-    	   	$('.btnNew i').each(function(){
-    	   		assetCountNew++;
-    		});
-    		
+    	   	var assetCountNew = $('.httpBox li').length;
     	}else{
         	assetCountNew = assetCount;
     	}
@@ -577,3 +579,153 @@ function tasknum_verification(){
    	});
 
 }
+    
+    function saveAsset() {
+    	var assetName =$("#assetName").val();
+    	var assetAddr = $("#InertAddr").val();
+         var addrType = $('input:radio[name="addrType"]:checked').val();
+         var purpose = $("#purpose").val();
+         var prov = $("#districtId").val();
+         var city = $("#city").val();
+         var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
+    	//获取选中的radio的值
+    	if(assetName == null || assetName == ""){
+    		$("#assetName_msg").html("请输入资产名称");
+    	}else if(patrn.test(assetName)){
+    		$("#assetName_msg").html("您输入的资产名称含有非法字符");
+    	}else if(assetName.length>25){
+    		$("#assetName_msg").html("资产名称长度不能超过25个字符！");
+    	}else if(patrn.test(assetAddr)){
+    		$("#assetAddr_msg").html("您输入的资产地址含有非法字符");
+    	}else if(assetAddr==null || assetAddr == ""){
+    			$("#assetName_msg").html("");
+    			$("#assetAddr_msg").html("请输入资产地址");
+    	}else if(assetAddr.length>50){
+    			 $("#assetName_msg").html("");
+    			 $("#assetAddr_msg").html("资产地址长度不能超过50个字符！");
+    	}else if(assetAddr.indexOf("gov.cn")!=-1){
+    		   $("#assetName_msg").html("");
+    		   $("#assetAddr_msg").html("输入资产地址不能包含'gov.cn'！");
+    	}else if((addrType.length==4 && assetAddr.substring(0,5)=='https') || (addrType.length==5 && assetAddr.substring(0,5)=='http:')){
+    		$("#assetName_msg").html("");
+    		$("#assetAddr_msg").html("资产类型与资产地址填写不一致!");
+    	}else if(prov == -1){
+    		$("#assetName_msg").html("");
+    		$("#assetAddr_msg").html("");
+    		$("#location_msg").html("请选择资产所在物理地址！");
+    	}else if(purpose==-1){
+    		$("#assetName_msg").html("");
+    		$("#assetAddr_msg").html("");
+    		$("#location_msg").html("");
+    		$("#assetUsage_msg").html("请选择资产用途！");
+    	}else{
+    		$("#assetName_msg").html("");
+    		$("#assetAddr_msg").html("");
+    		$("#location_msg").html("");
+    		$("#assetUsage_msg").html("");
+    			//验证资产是否重复
+    			$.ajax({
+    		        type: "POST",
+    		        url: "asset_addrIsExist.html",
+    		        data: {"addr":assetAddr,"name": encodeURI(assetName),"addrType":addrType},
+    		        dataType:"json",
+    		        success: function(data){
+    		            if(data.msg=='1'){
+    		            	$("#assetName_msg").html("资产名称重复!");
+    		            }else if(data.msg=='2'){
+    		            	$("#assetName_msg").html("");
+    		            	$("#assetAddr_msg").html("资产地址重复!");
+    		            }else{
+    		            	$("#assetName_msg").html("");
+    		            	$("#assetAddr_msg").html("");
+    		            	//资产数验证
+    		            	$.ajax({
+    		    		        type: "POST",
+    		    		        url: "asset_CountOver.html",
+    		    		        data: {},
+    		    		        dataType:"json",
+    		    		        success: function(data){
+    		    		            if(data.msg){
+    		    		            	alert("免费用户管理资产数不能大于" + data.allowCount);
+    		    		            }else{
+    		    			       		 var options = {
+    		    				 					url:'addWebSite.html',
+    		    				 					data:{
+    		    				  	               'assetName':assetName,
+    		    				  	               'assetAddr':assetAddr,
+    		    				  	               'addrType':addrType,
+    		    				  	               'purpose':purpose,
+    		    				  	               'prov':prov,
+    		    				  	               'city':city
+    		    				 					},
+    		    				 					//beforeSubmit:showRequest,
+    		    				 					success: function(data) {
+    		    				 						if(data.success){
+    		    				 							alert("添加成功!");
+    		    				 						
+    		    				 							var list = data.serviceAssetList;
+    		    				 							if(list!=null&&list.length>0){
+    		    				 								$(".allBox").empty();
+    		    				 								$.each(list,function(n,asset) {
+    		    				 						         var temp = "<li>"+
+    		    				 					            	 		"<div class='rcent'>"+
+    		    				 					            	 		"<h3>"+
+    		    				 			                                "<label for='"+(n+1)+"' style='margin:0 16px 0 0;'>"+
+    		    				 			                                     "<input type='checkbox' class='ck'  value='"+asset.id+"' style='display:none;'><i class='cek' data-id='"+(n+1)+"' onclick='selAsset(this)'></i>"+
+    		    				 			                                "</label>"+
+    		    				 			                                 "<b>"+asset.name+"</b>"+
+    		    				 			                            
+    		    				 			                            "</h3>"+
+    		    				 			                            "<div class='tBox'>"+asset.addr+"</div>"+
+    		    				 			                            "</div>"+
+    		    				 			                            "</li>";  
+    		    				 						         		$(".allBox").append(temp);
+    		    				 						           });  
+    		    				 								} 
+    		    				 							$('#sentwo').fadeOut(20);
+    		    				 			                $('#senone').fadeIn(20);
+    		    				 						}else{
+    		    				 							alert("添加失败!");
+    		    				 						}
+    		    				 								
+    		    				 					},
+    		    				 					error: function(data){
+    		    				 						 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+    		    				 				    		 window.location.href = "loginUI.html"; } 
+    		    				 				    	 else { window.location.href = "loginUI.html"; } 
+    		    				 					}
+    		    				 				};
+    		    						 		 // 将options传给ajaxForm
+    		    						 		 $('#saveAsset').ajaxSubmit(options);
+    		    		            }
+    		    		        },
+    		    		     }); 
+    		            }
+    		        },
+    		     }); 
+    		}
+    	
+    }
+    
+    function selAsset(Obj){
+         if($(Obj).attr('class').indexOf('this')!=-1){
+             $(Obj).removeClass('this');
+				var legth = $('.allBox .this').length;
+				//alert(legth)
+				$('#number').text(legth);
+				//$('.gt').show();	
+         }
+         else{
+				 $(Obj).addClass('this');
+				var legth = $('.allBox .this').length;
+				if(legth==6){
+					$(Obj).removeClass('this');
+					alert("不能超过5个")
+					$('#number').text('5');
+				}else{
+					$('#number').text(legth)	
+				}
+				
+            
+         }
+    }
