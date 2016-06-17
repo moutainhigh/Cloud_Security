@@ -21,20 +21,27 @@ $(function(){
     //点击“添加购物车”按钮
     $("#addCarWaf").click(function(){
     //类型
-      var orderType = $('.click').val();
-      
+      var orderType = $('.click').val(); 
       //开始时间
       var beginDate=null;
-      var month=null;
+       	var  month=null;
+   
       if(orderType=='8'){
     	  beginDate=$('#beginDateForMonth').val();
-    	  month = $('#month').val();
+    	  month =$('#month').val();
+       if(month==-1){
+    	    alert("请选择服务期限!");  
+    	    return;
+       }
       }else{
     	  beginDate=$('#beginDateForYear').val();
+    	  month=12;
       }
      var serviceId = $('#serviceIdHidden').val();
      //价格
       var price = $('#price').html().substr(1);
+ 
+    	
       //服务期限
     
       //网站域名
@@ -46,6 +53,7 @@ $(function(){
         		return;
 			}
         
+    
       //ip地址
       var Ipval= $("input[name='IPValue']").val();
       var ip="";
@@ -246,17 +254,16 @@ $(function(){
 	           }
 	}
    
- function chanageDiv(){
+ function chanageDiv(value){
   //类型
-      var orderType = $('.click').val();
-      if(orderType=='8'){
+      if(value=='long'){
     	  $("#yearDiv").show();
     	   $("#monthDiv").hide();
     	   $("#price").html("¥1000");
       }else{
     	  $("#yearDiv").hide();
     	   $("#monthDiv").show();
-    	   $("#price").html("¥100");
+    	 $("#price").html("¥100");
       }
  }
  
@@ -374,4 +381,11 @@ function getRootPath(){
     //获取带"/"的项目名，如：/uimcardprj
     var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
     return(localhostPaht+projectName);
+}
+
+function changePrice(){
+	//获得选择的月份
+	var month = $('#month').val();
+	var priceVals = 100*month;
+	$("#price").html("¥"+priceVals);
 }
