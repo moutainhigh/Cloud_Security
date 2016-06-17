@@ -259,6 +259,7 @@ WHERE a.id = b.orderId
  <set>
 	  <if test="newOrderId!=null">
 	    o.id=#{newOrderId}, 
+	    o.create_date=now(),
 	 </if>
 	 
 	 <if test="status!=''">
