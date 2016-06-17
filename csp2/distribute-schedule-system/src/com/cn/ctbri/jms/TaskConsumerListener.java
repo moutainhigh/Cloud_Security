@@ -258,10 +258,10 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	            CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]:任务-[" + t.getTaskId() + "]开始下发!;User="+null);
 	            preTaskData(t,engine);
 	            try {
-//	            	String lssued = SouthAPIWorker.disposeScanTask(engine.getEngine_number(), String.valueOf(t.getTaskId())+"_"+t.getOrder_id(), this.destURL, this.destIP, "80", this.tplName);
-//	                boolean state = this.getStatusBylssued(lssued);
-//	            	if(state){
-	            	if(true){
+	            	String lssued = SouthAPIWorker.disposeScanTask(engine.getEngine_number(), String.valueOf(t.getTaskId())+"_"+t.getOrder_id(), this.destURL, this.destIP, "80", this.tplName);
+	                boolean state = this.getStatusBylssued(lssued);
+	            	if(state){
+//	            	if(true){
 	                    //任务下发后,引擎活跃数加1
 	                    engine.setId(engine.getId());
 	                    engineService.update(engine);
@@ -745,27 +745,30 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 				for (int i = 0; i < jsonList.size(); i++) {
 					JSONObject jsonObject = jsonList.getJSONObject(i); 
 					String ip = jsonObject.getString("ip");
-					if(!jsonObject.get("memoryUsage").equals("null") && jsonObject.get("cpuUsage") != null && jsonObject.get("diskUsage") != null){
-						double memory_usage = jsonObject.getDouble("memoryUsage");
-						double cpu_usage = jsonObject.getDouble("cpuUsage");
-						double disk_usage = jsonObject.getDouble("diskUsage");
-						//根据ip查询当前任务数和最大任务数
-						EngineCfg engine = engineService.findEngineIdbyIP(ip);
-						int activity = engine.getActivity();
-						int maxTask = engine.getMaxTask();
-						double load_usage = (double)activity/(double)maxTask;
-						
-						double cpu_usageWeightD = Double.parseDouble(cpu_usageWeight);
-						double memory_usageWeightD = Double.parseDouble(memory_usageWeight);
-						double disk_usageWeightD = Double.parseDouble(disk_usageWeight);
-	                    double load_usageWeightD = Double.parseDouble(load_usageWeight);
-	                    
-	                    load = cpu_usageWeightD*cpu_usage + memory_usageWeightD*memory_usage + disk_usageWeightD*disk_usage + load_usage*load_usageWeightD;
-	                    if(load!=0){
-	                    	arnhemEngineMap.put(ip, load);
-	                    }
-					}else{
-						logger.info(ip+"引擎处于停止或者异常的状态!");
+					//根据ip查询当前任务数和最大任务数
+					EngineCfg engine = engineService.findEngineIdbyIP(ip);
+					if(engine!=null){
+						if(!jsonObject.get("memoryUsage").equals("null") && jsonObject.get("cpuUsage") != null && jsonObject.get("diskUsage") != null){
+							double memory_usage = jsonObject.getDouble("memoryUsage");
+							double cpu_usage = jsonObject.getDouble("cpuUsage");
+							double disk_usage = jsonObject.getDouble("diskUsage");
+							
+							int activity = engine.getActivity();
+							int maxTask = engine.getMaxTask();
+							double load_usage = (double)activity/(double)maxTask;
+							
+							double cpu_usageWeightD = Double.parseDouble(cpu_usageWeight);
+							double memory_usageWeightD = Double.parseDouble(memory_usageWeight);
+							double disk_usageWeightD = Double.parseDouble(disk_usageWeight);
+		                    double load_usageWeightD = Double.parseDouble(load_usageWeight);
+		                    
+		                    load = cpu_usageWeightD*cpu_usage + memory_usageWeightD*memory_usage + disk_usageWeightD*disk_usage + load_usage*load_usageWeightD;
+		                    if(load!=0){
+		                    	arnhemEngineMap.put(ip, load);
+		                    }
+						}else{
+							logger.info(ip+"引擎处于停止或者异常的状态!");
+						}
 					}
 				}
 			}else{
