@@ -152,7 +152,7 @@ public class InternalWorker {
 	 */
 	public static String vulnScanCreate(String scanMode, String targetURL, String scanType, 
     		String startTime, String endTime, String scanPeriod, String scanDepth, 
-    		String maxPages, String stategy, String customManu[], String orderTaskId) {
+    		String maxPages, String stategy, String customManu[], String orderTaskId, String serviceId) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("scanMode", scanMode);
@@ -167,6 +167,7 @@ public class InternalWorker {
 		JSONArray customManus = JSONArray.fromObject(customManu);
 		json.put("customManus", customManus);
 		json.put("orderTaskId", orderTaskId);
+		json.put("serviceId", serviceId);
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Create_orderTask;
     	//创建jersery客户端配置对象
@@ -360,7 +361,7 @@ public class InternalWorker {
 
 
     public static void main(String[] args) {
-    	String create = vulnScanCreate("1", "http://www.testfire.net", "", "2016-02-04 17:55:35", "2016-02-14 19:55:35", "1", "", "", "", new String[]{"2"},"35_16020515441179849");
+    	String create = vulnScanCreate("2", "http://www.testfire.net", "", "2016-03-22 10:30:35", "", "1", "", "", "", new String[]{"2"},"25_16032114524561268","1");
 //    	String o = vulnScanGetOrderTaskStatus("1","4");
     	System.out.println(create);
     }
