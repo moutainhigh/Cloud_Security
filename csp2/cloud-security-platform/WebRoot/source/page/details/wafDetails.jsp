@@ -98,8 +98,8 @@
                         <li class="clearfix">
 							<label class="fl">选 择 型</label>
                            <div class="fl clickBox" id="clickBox">
-                            <button class="click Single" value="8" onclick="chanageDiv();">包月</button>
-                            <button class="long" value="9" onclick="chanageDiv();">包年</button>
+                            <button class="click Single" value="8" onclick="chanageDiv('Single');">包月</button>
+                            <button class="long" value="9" onclick="chanageDiv('long');">包年</button>
                            </div> 
                            
 						</li>
@@ -110,7 +110,8 @@
                                  <!-- <span>结束时间 <input type="text"  id="endDate" style="width:156px;" class="text" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-{%d+1}',minDate:'#F{$dp.$D(\'beginDate\',{d:31})}',dateFmt:'yyyy-MM'})"></span> -->
                               <span>
                                                                                    服务期限
-                              <select class="text select" id="month">
+                              <select class="text select" id="month" onchange="changePrice();">
+                                <option value="-1">请选择</option>
                                 <option value="1">1个月</option>
                                 <option value="2">2个月</option>
                                 <option value="3">3个月</option>
