@@ -28,7 +28,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 根据ip查找引擎EngineCfg -->
     <select id="findEngineIdbyIP" parameterType="String" resultMap="EngineRM">
-       select * from cs_enginecfg en where en.engine_addr=#{engine_addr}
+       select * from cs_enginecfg en 
+       where en.engine_addr=#{engine_addr}
+       and en.activity between 0 and en.maxtask
     </select>
     
     <!-- 根据id查找引擎EngineCfg -->
