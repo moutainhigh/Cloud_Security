@@ -68,7 +68,7 @@ $(document).ready(function () {
         $('.waf-detais-pop').animate({
             opacity: '1',
             top: '50%',
-            left: '30%',
+            left: '50%',
             marginTop: '-224px'
         }, 500);
         //alert(arrLink)
