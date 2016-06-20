@@ -111,9 +111,11 @@
 }
 
 /*waf弹框*/
+/*waf弹框*/
 .waf-detais-pop{
-    width: 595px;
-    height: 570px;
+    width: 598px;
+    max-height:510px; 
+    height:auto;
     background-color: #fff;
     border: #ccc solid 1px;
     margin-left: -288px;
@@ -132,7 +134,7 @@
     z-index: 200;
 }
 .waf-detais-pop  .Pophead{
-    padding: 40px 40px 40px 40px;
+    padding: 34px 34px 34px 34px;
     position: relative;
      border-bottom: #e7e9eb solid 1px;
 
@@ -153,10 +155,10 @@
 }
 .waf-detais-pop .popBox ul{
     overflow-y: auto;
-    height: 265px;
+    height: 225px;
 }
 .waf-detais-pop .popBox ul li{
-    padding:20px 40px; 
+    padding:14px 40px; 
     font-size: 16px;
     color: #566180;
     border-bottom: #e7e9eb solid 1px;
@@ -165,6 +167,9 @@
     font-size: 16px;
 }
 .waf-detais-pop ul .ac{
+    background-color: #f9fbfc;
+}
+#wafpop #senone ul li.ac{
     background-color: #f9fbfc;
 }
 #wafpop #senone li label i{
@@ -183,12 +188,10 @@
 	background:url(../images/raio.png) no-repeat left center;	
 }
 
-
 .waf-detais-pop .popBox ul li .radio{
   margin-right: 24px;
   display: inline-block;
 }
-
 .waf-detais-pop .popBox ul li .tBox{
     padding-left: 38px;
     font-size: 14px;
@@ -203,7 +206,6 @@
 .add_ip{ 
         padding-left: 40px;
 }
-
 .waf-detais-pop ol li{
     margin-top: 15px;
 }
