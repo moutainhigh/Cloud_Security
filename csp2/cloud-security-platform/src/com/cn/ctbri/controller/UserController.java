@@ -392,6 +392,17 @@ public class UserController{
 							}
 							return;
 						}
+					}else{
+						//密码错误
+						map.put("result", 2);
+						JSONObject JSON = CommonUtil.objectToJson(response, map);
+						try {
+							// 把数据返回到页面
+							CommonUtil.writeToJsp(response, JSON);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						return;
 					}
 					
 				}			
