@@ -125,7 +125,7 @@
             </WafLog>
 		</Syslog>
 	</SyslogGroup>
-	<SyslogServer serverIP="127.0.0.1" port="514" threadPoolSize="10" disposeBlockSize="10" packetDisposeMode="Store/Relay">
+	<SyslogServer serverIP="127.0.0.1" port="5144" threadPoolSize="10" disposeBlockSize="10" packetDisposeMode="Store/Relay">
 		<Store>
 			<JdbDriver>com.mysql.jdbc.Driver</JdbDriver>
 			<!-- 部署到186服务器，186数据库

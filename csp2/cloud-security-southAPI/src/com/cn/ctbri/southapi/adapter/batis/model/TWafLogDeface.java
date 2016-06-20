@@ -11,9 +11,9 @@ public class TWafLogDeface {
 
     private String resourceIp;
 
-    private Integer siteId;
+    private String siteId;
 
-    private Integer protectId;
+    private String protectId;
 
     private Date statTime;
 
@@ -61,19 +61,19 @@ public class TWafLogDeface {
         this.resourceIp = resourceIp;
     }
 
-    public Integer getSiteId() {
+    public String getSiteId() {
         return siteId;
     }
 
-    public void setSiteId(Integer siteId) {
+    public void setSiteId(String siteId) {
         this.siteId = siteId;
     }
 
-    public Integer getProtectId() {
+    public String getProtectId() {
         return protectId;
     }
 
-    public void setProtectId(Integer protectId) {
+    public void setProtectId(String protectId) {
         this.protectId = protectId;
     }
 

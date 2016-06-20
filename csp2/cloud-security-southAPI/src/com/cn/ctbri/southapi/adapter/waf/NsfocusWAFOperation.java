@@ -33,12 +33,12 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	private String nsfocusAPIValue = "";
 	private String[] nsfocusWafPublicIPList = null;
 	
-	public NsfocusWAFOperation(String apiAddr, String apiKey, String apiValue, String apiUsername, String apiPassword) {
+	public NsfocusWAFOperation(String apiAddr, String apiKey, String apiValue, String apiUsername, String apiPassword ) {
 		initNsfocusWafDevice(apiAddr, apiKey, apiValue, apiUsername, apiPassword);
 	}
 	
 	public NsfocusWAFOperation(String apiAddr, String apiKey, String apiValue, String apiUsername, String apiPassword, String[] apiPublicIPList) {
-		initNsfocusWafDevice(apiAddr, apiKey, apiValue, apiUsername, apiPassword);
+		initNsfocusWafDevcie(apiAddr, apiKey, apiValue, apiUsername, apiPassword, apiPublicIPList);
 	}
 	
 	public boolean initNsfocusWafDevice(String apiAddr, String apiKey, String apiValue, String apiUsername, String apiPassword ) {
@@ -252,6 +252,12 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		String postSSLCertString = postOperation(nsfocusWafUrl+REST_URI_V1+"/sslcert", jsonString);
 		return postSSLCertString;
 	}
+	public JSONArray getApiPublicIpList() {
+		JSONArray jsonArray = JSONArray.fromObject(nsfocusWafPublicIPList);
+		return jsonArray;
+	}
+	
+	
 	/**
 	 * 资源池信息获取（获取所有站点组、站点、虚拟站点）
 	 * @return
@@ -472,12 +478,9 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		String responseString = operation.getOperation("https://219.141.189.189:58442/rest/v1/interfaces/eth2");
 		System.out.println(">>>>>"+responseString);
 		*/
-		try {
-			System.out.println(InetAddress.getByName("www.anquanbang.net").getHostAddress());
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String[] aStrings = new String[]{"11","22"};
+		JSONArray jsonArray = JSONArray.fromObject(aStrings);
+		System.out.println(jsonArray.get(0));
 	}
 	
 }

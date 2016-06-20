@@ -37,7 +37,7 @@ public class TWafLogArp {
 
     private String conflitMac;
 
-    private Integer countNum;
+    private String countNum;
 
     public Long getLogId() {
         return logId;
@@ -175,11 +175,11 @@ public class TWafLogArp {
         this.conflitMac = conflitMac;
     }
 
-    public Integer getCountNum() {
+    public String getCountNum() {
         return countNum;
     }
 
-    public void setCountNum(Integer countNum) {
+    public void setCountNum(String countNum) {
         this.countNum = countNum;
     }
 }

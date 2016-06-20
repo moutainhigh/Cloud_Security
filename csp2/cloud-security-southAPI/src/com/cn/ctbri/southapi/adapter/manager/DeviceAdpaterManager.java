@@ -230,7 +230,8 @@ public class DeviceAdpaterManager {
 	        }
 
 	        wafRootString = DeviceAdapterConstant.RootPath+doc.getRootElement().element("DeviceList").element("DeviceWAFList").attributeValue("configFile");
-	        wafConfigManager.loadWAFConfig(wafRootString);
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>WAFConfig：" + wafRootString); 
+			wafConfigManager.loadWAFConfig(wafRootString);
 	        return true;
 		} catch (DocumentException e) {
 			e.printStackTrace();
@@ -695,6 +696,8 @@ public class DeviceAdpaterManager {
 		}
 		return DEVICE_OPERATION_ERROR;	
 	}
+	
+
 	
 	public String getSites(int resourceId, int deviceId) {
 		return nsfocusWAFAdapter.getSites(resourceId, deviceId);

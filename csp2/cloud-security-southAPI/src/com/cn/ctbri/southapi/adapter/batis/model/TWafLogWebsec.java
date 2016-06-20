@@ -2,20 +2,18 @@ package com.cn.ctbri.southapi.adapter.batis.model;
 
 import java.util.Date;
 
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
-
 public class TWafLogWebsec {
-	private Long logId;
-	
+    private Long logId;
+
     private Integer resourceId;
 
     private String resourceUri;
 
     private String resourceIp;
 
-    private Integer siteId;
+    private String siteId;
 
-    private Integer protectId;
+    private String protectId;
 
     private String dstIp;
 
@@ -36,10 +34,10 @@ public class TWafLogWebsec {
     private String eventType;
 
     private Date statTime;
-    @XStreamOmitField
-    private Integer policyId;
-    @XStreamOmitField
-    private Integer ruleId;
+
+    private String policyId;
+
+    private String ruleId;
 
     private String action;
 
@@ -53,7 +51,7 @@ public class TWafLogWebsec {
 
     private String characters;
 
-    private Integer countNum;
+    private String countNum;
 
     private String protocolType;
 
@@ -95,19 +93,19 @@ public class TWafLogWebsec {
         this.resourceIp = resourceIp;
     }
 
-    public Integer getSiteId() {
+    public String getSiteId() {
         return siteId;
     }
 
-    public void setSiteId(Integer siteId) {
+    public void setSiteId(String siteId) {
         this.siteId = siteId;
     }
 
-    public Integer getProtectId() {
+    public String getProtectId() {
         return protectId;
     }
 
-    public void setProtectId(Integer protectId) {
+    public void setProtectId(String protectId) {
         this.protectId = protectId;
     }
 
@@ -191,19 +189,19 @@ public class TWafLogWebsec {
         this.statTime = statTime;
     }
 
-    public Integer getPolicyId() {
+    public String getPolicyId() {
         return policyId;
     }
 
-    public void setPolicyId(Integer policyId) {
+    public void setPolicyId(String policyId) {
         this.policyId = policyId;
     }
 
-    public Integer getRuleId() {
+    public String getRuleId() {
         return ruleId;
     }
 
-    public void setRuleId(Integer ruleId) {
+    public void setRuleId(String ruleId) {
         this.ruleId = ruleId;
     }
 
@@ -255,11 +253,11 @@ public class TWafLogWebsec {
         this.characters = characters;
     }
 
-    public Integer getCountNum() {
+    public String getCountNum() {
         return countNum;
     }
 
-    public void setCountNum(Integer countNum) {
+    public void setCountNum(String countNum) {
         this.countNum = countNum;
     }
 

@@ -1275,52 +1275,62 @@ public class TWafLogArpExample {
             return (Criteria) this;
         }
 
-        public Criteria andCountNumEqualTo(Integer value) {
+        public Criteria andCountNumEqualTo(String value) {
             addCriterion("count_num =", value, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumNotEqualTo(Integer value) {
+        public Criteria andCountNumNotEqualTo(String value) {
             addCriterion("count_num <>", value, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumGreaterThan(Integer value) {
+        public Criteria andCountNumGreaterThan(String value) {
             addCriterion("count_num >", value, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumGreaterThanOrEqualTo(Integer value) {
+        public Criteria andCountNumGreaterThanOrEqualTo(String value) {
             addCriterion("count_num >=", value, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumLessThan(Integer value) {
+        public Criteria andCountNumLessThan(String value) {
             addCriterion("count_num <", value, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumLessThanOrEqualTo(Integer value) {
+        public Criteria andCountNumLessThanOrEqualTo(String value) {
             addCriterion("count_num <=", value, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumIn(List<Integer> values) {
+        public Criteria andCountNumLike(String value) {
+            addCriterion("count_num like", value, "countNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountNumNotLike(String value) {
+            addCriterion("count_num not like", value, "countNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountNumIn(List<String> values) {
             addCriterion("count_num in", values, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumNotIn(List<Integer> values) {
+        public Criteria andCountNumNotIn(List<String> values) {
             addCriterion("count_num not in", values, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumBetween(Integer value1, Integer value2) {
+        public Criteria andCountNumBetween(String value1, String value2) {
             addCriterion("count_num between", value1, value2, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumNotBetween(Integer value1, Integer value2) {
+        public Criteria andCountNumNotBetween(String value1, String value2) {
             addCriterion("count_num not between", value1, value2, "countNum");
             return (Criteria) this;
         }

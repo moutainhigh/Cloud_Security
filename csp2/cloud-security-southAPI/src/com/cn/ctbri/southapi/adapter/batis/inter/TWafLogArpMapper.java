@@ -45,7 +45,7 @@ public interface TWafLogArpMapper {
         "#{srcIp,jdbcType=VARCHAR}, #{srcMac,jdbcType=VARCHAR}, #{dstIp,jdbcType=VARCHAR}, ",
         "#{dstMac,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, ",
         "#{action,jdbcType=VARCHAR}, #{defIp,jdbcType=VARCHAR}, #{defMac,jdbcType=VARCHAR}, ",
-        "#{conflitMac,jdbcType=VARCHAR}, #{countNum,jdbcType=INTEGER})"
+        "#{conflitMac,jdbcType=VARCHAR}, #{countNum,jdbcType=VARCHAR})"
     })
     int insert(TWafLogArp record);
 
@@ -71,7 +71,7 @@ public interface TWafLogArpMapper {
         @Result(column="def_ip", property="defIp", jdbcType=JdbcType.VARCHAR),
         @Result(column="def_mac", property="defMac", jdbcType=JdbcType.VARCHAR),
         @Result(column="conflit_mac", property="conflitMac", jdbcType=JdbcType.VARCHAR),
-        @Result(column="count_num", property="countNum", jdbcType=JdbcType.INTEGER)
+        @Result(column="count_num", property="countNum", jdbcType=JdbcType.VARCHAR)
     })
     List<TWafLogArp> selectByExample(TWafLogArpExample example);
 
@@ -101,7 +101,7 @@ public interface TWafLogArpMapper {
         @Result(column="def_ip", property="defIp", jdbcType=JdbcType.VARCHAR),
         @Result(column="def_mac", property="defMac", jdbcType=JdbcType.VARCHAR),
         @Result(column="conflit_mac", property="conflitMac", jdbcType=JdbcType.VARCHAR),
-        @Result(column="count_num", property="countNum", jdbcType=JdbcType.INTEGER)
+        @Result(column="count_num", property="countNum", jdbcType=JdbcType.VARCHAR)
     })
     TWafLogArp selectByPrimaryKey(Long logId);
 
@@ -132,7 +132,7 @@ public interface TWafLogArpMapper {
           "def_ip = #{defIp,jdbcType=VARCHAR},",
           "def_mac = #{defMac,jdbcType=VARCHAR},",
           "conflit_mac = #{conflitMac,jdbcType=VARCHAR},",
-          "count_num = #{countNum,jdbcType=INTEGER}",
+          "count_num = #{countNum,jdbcType=VARCHAR}",
         "where log_id = #{logId,jdbcType=BIGINT}"
     })
     int updateByPrimaryKey(TWafLogArp record);

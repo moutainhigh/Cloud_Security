@@ -375,52 +375,62 @@ public class TWafLogDefaceExample {
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdEqualTo(Integer value) {
+        public Criteria andSiteIdEqualTo(String value) {
             addCriterion("site_id =", value, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdNotEqualTo(Integer value) {
+        public Criteria andSiteIdNotEqualTo(String value) {
             addCriterion("site_id <>", value, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdGreaterThan(Integer value) {
+        public Criteria andSiteIdGreaterThan(String value) {
             addCriterion("site_id >", value, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andSiteIdGreaterThanOrEqualTo(String value) {
             addCriterion("site_id >=", value, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdLessThan(Integer value) {
+        public Criteria andSiteIdLessThan(String value) {
             addCriterion("site_id <", value, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdLessThanOrEqualTo(Integer value) {
+        public Criteria andSiteIdLessThanOrEqualTo(String value) {
             addCriterion("site_id <=", value, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdIn(List<Integer> values) {
+        public Criteria andSiteIdLike(String value) {
+            addCriterion("site_id like", value, "siteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSiteIdNotLike(String value) {
+            addCriterion("site_id not like", value, "siteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSiteIdIn(List<String> values) {
             addCriterion("site_id in", values, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdNotIn(List<Integer> values) {
+        public Criteria andSiteIdNotIn(List<String> values) {
             addCriterion("site_id not in", values, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdBetween(Integer value1, Integer value2) {
+        public Criteria andSiteIdBetween(String value1, String value2) {
             addCriterion("site_id between", value1, value2, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andSiteIdNotBetween(String value1, String value2) {
             addCriterion("site_id not between", value1, value2, "siteId");
             return (Criteria) this;
         }
@@ -435,52 +445,62 @@ public class TWafLogDefaceExample {
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdEqualTo(Integer value) {
+        public Criteria andProtectIdEqualTo(String value) {
             addCriterion("protect_id =", value, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdNotEqualTo(Integer value) {
+        public Criteria andProtectIdNotEqualTo(String value) {
             addCriterion("protect_id <>", value, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdGreaterThan(Integer value) {
+        public Criteria andProtectIdGreaterThan(String value) {
             addCriterion("protect_id >", value, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andProtectIdGreaterThanOrEqualTo(String value) {
             addCriterion("protect_id >=", value, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdLessThan(Integer value) {
+        public Criteria andProtectIdLessThan(String value) {
             addCriterion("protect_id <", value, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdLessThanOrEqualTo(Integer value) {
+        public Criteria andProtectIdLessThanOrEqualTo(String value) {
             addCriterion("protect_id <=", value, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdIn(List<Integer> values) {
+        public Criteria andProtectIdLike(String value) {
+            addCriterion("protect_id like", value, "protectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProtectIdNotLike(String value) {
+            addCriterion("protect_id not like", value, "protectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProtectIdIn(List<String> values) {
             addCriterion("protect_id in", values, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdNotIn(List<Integer> values) {
+        public Criteria andProtectIdNotIn(List<String> values) {
             addCriterion("protect_id not in", values, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdBetween(Integer value1, Integer value2) {
+        public Criteria andProtectIdBetween(String value1, String value2) {
             addCriterion("protect_id between", value1, value2, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andProtectIdNotBetween(String value1, String value2) {
             addCriterion("protect_id not between", value1, value2, "protectId");
             return (Criteria) this;
         }

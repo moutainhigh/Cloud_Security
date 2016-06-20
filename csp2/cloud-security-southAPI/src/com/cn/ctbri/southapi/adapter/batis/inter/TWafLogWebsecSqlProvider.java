@@ -58,11 +58,11 @@ public class TWafLogWebsecSqlProvider {
         }
         
         if (record.getSiteId() != null) {
-            VALUES("site_id", "#{siteId,jdbcType=INTEGER}");
+            VALUES("site_id", "#{siteId,jdbcType=VARCHAR}");
         }
         
         if (record.getProtectId() != null) {
-            VALUES("protect_id", "#{protectId,jdbcType=INTEGER}");
+            VALUES("protect_id", "#{protectId,jdbcType=VARCHAR}");
         }
         
         if (record.getDstIp() != null) {
@@ -106,11 +106,11 @@ public class TWafLogWebsecSqlProvider {
         }
         
         if (record.getPolicyId() != null) {
-            VALUES("policy_id", "#{policyId,jdbcType=INTEGER}");
+            VALUES("policy_id", "#{policyId,jdbcType=VARCHAR}");
         }
         
         if (record.getRuleId() != null) {
-            VALUES("rule_id", "#{ruleId,jdbcType=INTEGER}");
+            VALUES("rule_id", "#{ruleId,jdbcType=VARCHAR}");
         }
         
         if (record.getAction() != null) {
@@ -138,7 +138,7 @@ public class TWafLogWebsecSqlProvider {
         }
         
         if (record.getCountNum() != null) {
-            VALUES("count_num", "#{countNum,jdbcType=INTEGER}");
+            VALUES("count_num", "#{countNum,jdbcType=VARCHAR}");
         }
         
         if (record.getProtocolType() != null) {
@@ -273,11 +273,11 @@ public class TWafLogWebsecSqlProvider {
         }
         
         if (record.getSiteId() != null) {
-            SET("site_id = #{record.siteId,jdbcType=INTEGER}");
+            SET("site_id = #{record.siteId,jdbcType=VARCHAR}");
         }
         
         if (record.getProtectId() != null) {
-            SET("protect_id = #{record.protectId,jdbcType=INTEGER}");
+            SET("protect_id = #{record.protectId,jdbcType=VARCHAR}");
         }
         
         if (record.getDstIp() != null) {
@@ -321,11 +321,11 @@ public class TWafLogWebsecSqlProvider {
         }
         
         if (record.getPolicyId() != null) {
-            SET("policy_id = #{record.policyId,jdbcType=INTEGER}");
+            SET("policy_id = #{record.policyId,jdbcType=VARCHAR}");
         }
         
         if (record.getRuleId() != null) {
-            SET("rule_id = #{record.ruleId,jdbcType=INTEGER}");
+            SET("rule_id = #{record.ruleId,jdbcType=VARCHAR}");
         }
         
         if (record.getAction() != null) {
@@ -353,7 +353,7 @@ public class TWafLogWebsecSqlProvider {
         }
         
         if (record.getCountNum() != null) {
-            SET("count_num = #{record.countNum,jdbcType=INTEGER}");
+            SET("count_num = #{record.countNum,jdbcType=VARCHAR}");
         }
         
         if (record.getProtocolType() != null) {
@@ -384,8 +384,8 @@ public class TWafLogWebsecSqlProvider {
         SET("resource_id = #{record.resourceId,jdbcType=INTEGER}");
         SET("resource_uri = #{record.resourceUri,jdbcType=VARCHAR}");
         SET("resource_ip = #{record.resourceIp,jdbcType=VARCHAR}");
-        SET("site_id = #{record.siteId,jdbcType=INTEGER}");
-        SET("protect_id = #{record.protectId,jdbcType=INTEGER}");
+        SET("site_id = #{record.siteId,jdbcType=VARCHAR}");
+        SET("protect_id = #{record.protectId,jdbcType=VARCHAR}");
         SET("dst_ip = #{record.dstIp,jdbcType=VARCHAR}");
         SET("dst_port = #{record.dstPort,jdbcType=VARCHAR}");
         SET("src_ip = #{record.srcIp,jdbcType=VARCHAR}");
@@ -396,15 +396,15 @@ public class TWafLogWebsecSqlProvider {
         SET("alertlevel = #{record.alertlevel,jdbcType=VARCHAR}");
         SET("event_type = #{record.eventType,jdbcType=VARCHAR}");
         SET("stat_time = #{record.statTime,jdbcType=TIMESTAMP}");
-        SET("policy_id = #{record.policyId,jdbcType=INTEGER}");
-        SET("rule_id = #{record.ruleId,jdbcType=INTEGER}");
+        SET("policy_id = #{record.policyId,jdbcType=VARCHAR}");
+        SET("rule_id = #{record.ruleId,jdbcType=VARCHAR}");
         SET("action = #{record.action,jdbcType=VARCHAR}");
         SET("block = #{record.block,jdbcType=VARCHAR}");
         SET("block_info = #{record.blockInfo,jdbcType=VARCHAR}");
         SET("alertinfo = #{record.alertinfo,jdbcType=VARCHAR}");
         SET("proxy_info = #{record.proxyInfo,jdbcType=VARCHAR}");
         SET("characters = #{record.characters,jdbcType=VARCHAR}");
-        SET("count_num = #{record.countNum,jdbcType=INTEGER}");
+        SET("count_num = #{record.countNum,jdbcType=VARCHAR}");
         SET("protocol_type = #{record.protocolType,jdbcType=VARCHAR}");
         SET("wci = #{record.wci,jdbcType=VARCHAR}");
         SET("wsi = #{record.wsi,jdbcType=VARCHAR}");
@@ -423,8 +423,8 @@ public class TWafLogWebsecSqlProvider {
         SET("resource_id = #{record.resourceId,jdbcType=INTEGER}");
         SET("resource_uri = #{record.resourceUri,jdbcType=VARCHAR}");
         SET("resource_ip = #{record.resourceIp,jdbcType=VARCHAR}");
-        SET("site_id = #{record.siteId,jdbcType=INTEGER}");
-        SET("protect_id = #{record.protectId,jdbcType=INTEGER}");
+        SET("site_id = #{record.siteId,jdbcType=VARCHAR}");
+        SET("protect_id = #{record.protectId,jdbcType=VARCHAR}");
         SET("dst_ip = #{record.dstIp,jdbcType=VARCHAR}");
         SET("dst_port = #{record.dstPort,jdbcType=VARCHAR}");
         SET("src_ip = #{record.srcIp,jdbcType=VARCHAR}");
@@ -435,15 +435,15 @@ public class TWafLogWebsecSqlProvider {
         SET("alertlevel = #{record.alertlevel,jdbcType=VARCHAR}");
         SET("event_type = #{record.eventType,jdbcType=VARCHAR}");
         SET("stat_time = #{record.statTime,jdbcType=TIMESTAMP}");
-        SET("policy_id = #{record.policyId,jdbcType=INTEGER}");
-        SET("rule_id = #{record.ruleId,jdbcType=INTEGER}");
+        SET("policy_id = #{record.policyId,jdbcType=VARCHAR}");
+        SET("rule_id = #{record.ruleId,jdbcType=VARCHAR}");
         SET("action = #{record.action,jdbcType=VARCHAR}");
         SET("block = #{record.block,jdbcType=VARCHAR}");
         SET("block_info = #{record.blockInfo,jdbcType=VARCHAR}");
         SET("alertinfo = #{record.alertinfo,jdbcType=VARCHAR}");
         SET("proxy_info = #{record.proxyInfo,jdbcType=VARCHAR}");
         SET("characters = #{record.characters,jdbcType=VARCHAR}");
-        SET("count_num = #{record.countNum,jdbcType=INTEGER}");
+        SET("count_num = #{record.countNum,jdbcType=VARCHAR}");
         SET("protocol_type = #{record.protocolType,jdbcType=VARCHAR}");
         SET("wci = #{record.wci,jdbcType=VARCHAR}");
         SET("wsi = #{record.wsi,jdbcType=VARCHAR}");
@@ -470,11 +470,11 @@ public class TWafLogWebsecSqlProvider {
         }
         
         if (record.getSiteId() != null) {
-            SET("site_id = #{siteId,jdbcType=INTEGER}");
+            SET("site_id = #{siteId,jdbcType=VARCHAR}");
         }
         
         if (record.getProtectId() != null) {
-            SET("protect_id = #{protectId,jdbcType=INTEGER}");
+            SET("protect_id = #{protectId,jdbcType=VARCHAR}");
         }
         
         if (record.getDstIp() != null) {
@@ -518,11 +518,11 @@ public class TWafLogWebsecSqlProvider {
         }
         
         if (record.getPolicyId() != null) {
-            SET("policy_id = #{policyId,jdbcType=INTEGER}");
+            SET("policy_id = #{policyId,jdbcType=VARCHAR}");
         }
         
         if (record.getRuleId() != null) {
-            SET("rule_id = #{ruleId,jdbcType=INTEGER}");
+            SET("rule_id = #{ruleId,jdbcType=VARCHAR}");
         }
         
         if (record.getAction() != null) {
@@ -550,7 +550,7 @@ public class TWafLogWebsecSqlProvider {
         }
         
         if (record.getCountNum() != null) {
-            SET("count_num = #{countNum,jdbcType=INTEGER}");
+            SET("count_num = #{countNum,jdbcType=VARCHAR}");
         }
         
         if (record.getProtocolType() != null) {

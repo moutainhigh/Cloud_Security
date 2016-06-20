@@ -24,7 +24,7 @@ public class TWafLogDefaceSqlProvider {
 
     public String countByExample(TWafLogDefaceExample example) {
         BEGIN();
-        SELECT("count (*)");
+        SELECT("count(*)");
         FROM("t_waf_log_deface");
         applyWhere(example, false);
         return SQL();
@@ -58,11 +58,11 @@ public class TWafLogDefaceSqlProvider {
         }
         
         if (record.getSiteId() != null) {
-            VALUES("site_id", "#{siteId,jdbcType=INTEGER}");
+            VALUES("site_id", "#{siteId,jdbcType=VARCHAR}");
         }
         
         if (record.getProtectId() != null) {
-            VALUES("protect_id", "#{protectId,jdbcType=INTEGER}");
+            VALUES("protect_id", "#{protectId,jdbcType=VARCHAR}");
         }
         
         if (record.getStatTime() != null) {
@@ -149,11 +149,11 @@ public class TWafLogDefaceSqlProvider {
         }
         
         if (record.getSiteId() != null) {
-            SET("site_id = #{record.siteId,jdbcType=INTEGER}");
+            SET("site_id = #{record.siteId,jdbcType=VARCHAR}");
         }
         
         if (record.getProtectId() != null) {
-            SET("protect_id = #{record.protectId,jdbcType=INTEGER}");
+            SET("protect_id = #{record.protectId,jdbcType=VARCHAR}");
         }
         
         if (record.getStatTime() != null) {
@@ -196,8 +196,8 @@ public class TWafLogDefaceSqlProvider {
         SET("resource_id = #{record.resourceId,jdbcType=INTEGER}");
         SET("resource_uri = #{record.resourceUri,jdbcType=VARCHAR}");
         SET("resource_ip = #{record.resourceIp,jdbcType=VARCHAR}");
-        SET("site_id = #{record.siteId,jdbcType=INTEGER}");
-        SET("protect_id = #{record.protectId,jdbcType=INTEGER}");
+        SET("site_id = #{record.siteId,jdbcType=VARCHAR}");
+        SET("protect_id = #{record.protectId,jdbcType=VARCHAR}");
         SET("stat_time = #{record.statTime,jdbcType=TIMESTAMP}");
         SET("alertlevel = #{record.alertlevel,jdbcType=VARCHAR}");
         SET("event_type = #{record.eventType,jdbcType=VARCHAR}");
@@ -228,11 +228,11 @@ public class TWafLogDefaceSqlProvider {
         }
         
         if (record.getSiteId() != null) {
-            SET("site_id = #{siteId,jdbcType=INTEGER}");
+            SET("site_id = #{siteId,jdbcType=VARCHAR}");
         }
         
         if (record.getProtectId() != null) {
-            SET("protect_id = #{protectId,jdbcType=INTEGER}");
+            SET("protect_id = #{protectId,jdbcType=VARCHAR}");
         }
         
         if (record.getStatTime() != null) {

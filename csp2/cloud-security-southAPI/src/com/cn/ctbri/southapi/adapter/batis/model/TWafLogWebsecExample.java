@@ -375,52 +375,62 @@ public class TWafLogWebsecExample {
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdEqualTo(Integer value) {
+        public Criteria andSiteIdEqualTo(String value) {
             addCriterion("site_id =", value, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdNotEqualTo(Integer value) {
+        public Criteria andSiteIdNotEqualTo(String value) {
             addCriterion("site_id <>", value, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdGreaterThan(Integer value) {
+        public Criteria andSiteIdGreaterThan(String value) {
             addCriterion("site_id >", value, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andSiteIdGreaterThanOrEqualTo(String value) {
             addCriterion("site_id >=", value, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdLessThan(Integer value) {
+        public Criteria andSiteIdLessThan(String value) {
             addCriterion("site_id <", value, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdLessThanOrEqualTo(Integer value) {
+        public Criteria andSiteIdLessThanOrEqualTo(String value) {
             addCriterion("site_id <=", value, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdIn(List<Integer> values) {
+        public Criteria andSiteIdLike(String value) {
+            addCriterion("site_id like", value, "siteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSiteIdNotLike(String value) {
+            addCriterion("site_id not like", value, "siteId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSiteIdIn(List<String> values) {
             addCriterion("site_id in", values, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdNotIn(List<Integer> values) {
+        public Criteria andSiteIdNotIn(List<String> values) {
             addCriterion("site_id not in", values, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdBetween(Integer value1, Integer value2) {
+        public Criteria andSiteIdBetween(String value1, String value2) {
             addCriterion("site_id between", value1, value2, "siteId");
             return (Criteria) this;
         }
 
-        public Criteria andSiteIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andSiteIdNotBetween(String value1, String value2) {
             addCriterion("site_id not between", value1, value2, "siteId");
             return (Criteria) this;
         }
@@ -435,52 +445,62 @@ public class TWafLogWebsecExample {
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdEqualTo(Integer value) {
+        public Criteria andProtectIdEqualTo(String value) {
             addCriterion("protect_id =", value, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdNotEqualTo(Integer value) {
+        public Criteria andProtectIdNotEqualTo(String value) {
             addCriterion("protect_id <>", value, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdGreaterThan(Integer value) {
+        public Criteria andProtectIdGreaterThan(String value) {
             addCriterion("protect_id >", value, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andProtectIdGreaterThanOrEqualTo(String value) {
             addCriterion("protect_id >=", value, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdLessThan(Integer value) {
+        public Criteria andProtectIdLessThan(String value) {
             addCriterion("protect_id <", value, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdLessThanOrEqualTo(Integer value) {
+        public Criteria andProtectIdLessThanOrEqualTo(String value) {
             addCriterion("protect_id <=", value, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdIn(List<Integer> values) {
+        public Criteria andProtectIdLike(String value) {
+            addCriterion("protect_id like", value, "protectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProtectIdNotLike(String value) {
+            addCriterion("protect_id not like", value, "protectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProtectIdIn(List<String> values) {
             addCriterion("protect_id in", values, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdNotIn(List<Integer> values) {
+        public Criteria andProtectIdNotIn(List<String> values) {
             addCriterion("protect_id not in", values, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdBetween(Integer value1, Integer value2) {
+        public Criteria andProtectIdBetween(String value1, String value2) {
             addCriterion("protect_id between", value1, value2, "protectId");
             return (Criteria) this;
         }
 
-        public Criteria andProtectIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andProtectIdNotBetween(String value1, String value2) {
             addCriterion("protect_id not between", value1, value2, "protectId");
             return (Criteria) this;
         }
@@ -1185,52 +1205,62 @@ public class TWafLogWebsecExample {
             return (Criteria) this;
         }
 
-        public Criteria andPolicyIdEqualTo(Integer value) {
+        public Criteria andPolicyIdEqualTo(String value) {
             addCriterion("policy_id =", value, "policyId");
             return (Criteria) this;
         }
 
-        public Criteria andPolicyIdNotEqualTo(Integer value) {
+        public Criteria andPolicyIdNotEqualTo(String value) {
             addCriterion("policy_id <>", value, "policyId");
             return (Criteria) this;
         }
 
-        public Criteria andPolicyIdGreaterThan(Integer value) {
+        public Criteria andPolicyIdGreaterThan(String value) {
             addCriterion("policy_id >", value, "policyId");
             return (Criteria) this;
         }
 
-        public Criteria andPolicyIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andPolicyIdGreaterThanOrEqualTo(String value) {
             addCriterion("policy_id >=", value, "policyId");
             return (Criteria) this;
         }
 
-        public Criteria andPolicyIdLessThan(Integer value) {
+        public Criteria andPolicyIdLessThan(String value) {
             addCriterion("policy_id <", value, "policyId");
             return (Criteria) this;
         }
 
-        public Criteria andPolicyIdLessThanOrEqualTo(Integer value) {
+        public Criteria andPolicyIdLessThanOrEqualTo(String value) {
             addCriterion("policy_id <=", value, "policyId");
             return (Criteria) this;
         }
 
-        public Criteria andPolicyIdIn(List<Integer> values) {
+        public Criteria andPolicyIdLike(String value) {
+            addCriterion("policy_id like", value, "policyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPolicyIdNotLike(String value) {
+            addCriterion("policy_id not like", value, "policyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andPolicyIdIn(List<String> values) {
             addCriterion("policy_id in", values, "policyId");
             return (Criteria) this;
         }
 
-        public Criteria andPolicyIdNotIn(List<Integer> values) {
+        public Criteria andPolicyIdNotIn(List<String> values) {
             addCriterion("policy_id not in", values, "policyId");
             return (Criteria) this;
         }
 
-        public Criteria andPolicyIdBetween(Integer value1, Integer value2) {
+        public Criteria andPolicyIdBetween(String value1, String value2) {
             addCriterion("policy_id between", value1, value2, "policyId");
             return (Criteria) this;
         }
 
-        public Criteria andPolicyIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andPolicyIdNotBetween(String value1, String value2) {
             addCriterion("policy_id not between", value1, value2, "policyId");
             return (Criteria) this;
         }
@@ -1245,52 +1275,62 @@ public class TWafLogWebsecExample {
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdEqualTo(Integer value) {
+        public Criteria andRuleIdEqualTo(String value) {
             addCriterion("rule_id =", value, "ruleId");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdNotEqualTo(Integer value) {
+        public Criteria andRuleIdNotEqualTo(String value) {
             addCriterion("rule_id <>", value, "ruleId");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdGreaterThan(Integer value) {
+        public Criteria andRuleIdGreaterThan(String value) {
             addCriterion("rule_id >", value, "ruleId");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andRuleIdGreaterThanOrEqualTo(String value) {
             addCriterion("rule_id >=", value, "ruleId");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdLessThan(Integer value) {
+        public Criteria andRuleIdLessThan(String value) {
             addCriterion("rule_id <", value, "ruleId");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdLessThanOrEqualTo(Integer value) {
+        public Criteria andRuleIdLessThanOrEqualTo(String value) {
             addCriterion("rule_id <=", value, "ruleId");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdIn(List<Integer> values) {
+        public Criteria andRuleIdLike(String value) {
+            addCriterion("rule_id like", value, "ruleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRuleIdNotLike(String value) {
+            addCriterion("rule_id not like", value, "ruleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRuleIdIn(List<String> values) {
             addCriterion("rule_id in", values, "ruleId");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdNotIn(List<Integer> values) {
+        public Criteria andRuleIdNotIn(List<String> values) {
             addCriterion("rule_id not in", values, "ruleId");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdBetween(Integer value1, Integer value2) {
+        public Criteria andRuleIdBetween(String value1, String value2) {
             addCriterion("rule_id between", value1, value2, "ruleId");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andRuleIdNotBetween(String value1, String value2) {
             addCriterion("rule_id not between", value1, value2, "ruleId");
             return (Criteria) this;
         }
@@ -1725,52 +1765,62 @@ public class TWafLogWebsecExample {
             return (Criteria) this;
         }
 
-        public Criteria andCountNumEqualTo(Integer value) {
+        public Criteria andCountNumEqualTo(String value) {
             addCriterion("count_num =", value, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumNotEqualTo(Integer value) {
+        public Criteria andCountNumNotEqualTo(String value) {
             addCriterion("count_num <>", value, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumGreaterThan(Integer value) {
+        public Criteria andCountNumGreaterThan(String value) {
             addCriterion("count_num >", value, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumGreaterThanOrEqualTo(Integer value) {
+        public Criteria andCountNumGreaterThanOrEqualTo(String value) {
             addCriterion("count_num >=", value, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumLessThan(Integer value) {
+        public Criteria andCountNumLessThan(String value) {
             addCriterion("count_num <", value, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumLessThanOrEqualTo(Integer value) {
+        public Criteria andCountNumLessThanOrEqualTo(String value) {
             addCriterion("count_num <=", value, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumIn(List<Integer> values) {
+        public Criteria andCountNumLike(String value) {
+            addCriterion("count_num like", value, "countNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountNumNotLike(String value) {
+            addCriterion("count_num not like", value, "countNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountNumIn(List<String> values) {
             addCriterion("count_num in", values, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumNotIn(List<Integer> values) {
+        public Criteria andCountNumNotIn(List<String> values) {
             addCriterion("count_num not in", values, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumBetween(Integer value1, Integer value2) {
+        public Criteria andCountNumBetween(String value1, String value2) {
             addCriterion("count_num between", value1, value2, "countNum");
             return (Criteria) this;
         }
 
-        public Criteria andCountNumNotBetween(Integer value1, Integer value2) {
+        public Criteria andCountNumNotBetween(String value1, String value2) {
             addCriterion("count_num not between", value1, value2, "countNum");
             return (Criteria) this;
         }

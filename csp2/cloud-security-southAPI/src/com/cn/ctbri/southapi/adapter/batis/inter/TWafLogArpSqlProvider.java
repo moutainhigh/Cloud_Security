@@ -24,7 +24,7 @@ public class TWafLogArpSqlProvider {
 
     public String countByExample(TWafLogArpExample example) {
         BEGIN();
-        SELECT("count (*)");
+        SELECT("count(*)");
         FROM("t_waf_log_arp");
         applyWhere(example, false);
         return SQL();
@@ -110,7 +110,7 @@ public class TWafLogArpSqlProvider {
         }
         
         if (record.getCountNum() != null) {
-            VALUES("count_num", "#{countNum,jdbcType=INTEGER}");
+            VALUES("count_num", "#{countNum,jdbcType=VARCHAR}");
         }
         
         return SQL();
@@ -226,7 +226,7 @@ public class TWafLogArpSqlProvider {
         }
         
         if (record.getCountNum() != null) {
-            SET("count_num = #{record.countNum,jdbcType=INTEGER}");
+            SET("count_num = #{record.countNum,jdbcType=VARCHAR}");
         }
         
         applyWhere(example, true);
@@ -254,7 +254,7 @@ public class TWafLogArpSqlProvider {
         SET("def_ip = #{record.defIp,jdbcType=VARCHAR}");
         SET("def_mac = #{record.defMac,jdbcType=VARCHAR}");
         SET("conflit_mac = #{record.conflitMac,jdbcType=VARCHAR}");
-        SET("count_num = #{record.countNum,jdbcType=INTEGER}");
+        SET("count_num = #{record.countNum,jdbcType=VARCHAR}");
         
         TWafLogArpExample example = (TWafLogArpExample) parameter.get("example");
         applyWhere(example, true);
@@ -330,7 +330,7 @@ public class TWafLogArpSqlProvider {
         }
         
         if (record.getCountNum() != null) {
-            SET("count_num = #{countNum,jdbcType=INTEGER}");
+            SET("count_num = #{countNum,jdbcType=VARCHAR}");
         }
         
         WHERE("log_id = #{logId,jdbcType=BIGINT}");

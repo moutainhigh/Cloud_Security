@@ -24,7 +24,7 @@ public class TWafLogDdosSqlProvider {
 
     public String countByExample(TWafLogDdosExample example) {
         BEGIN();
-        SELECT("count (*)");
+        SELECT("count(*)");
         FROM("t_waf_log_ddos");
         applyWhere(example, false);
         return SQL();
