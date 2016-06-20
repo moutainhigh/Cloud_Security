@@ -67,8 +67,7 @@
 					</div>
 				</div>
 			</div>
-			
-	 <input type="hidden" id="scanTypeHidden" value="${scanType}"/>
+        <input type="hidden" id="scanTypeHidden" value="${scanType}"/>
 	 <input type="hidden" id="beginDateHidden" value="${beginDate}"/>
 	 <input type="hidden" id="timesHidden" value="${times}"/>
 	 <input type="hidden" id="domainNameHidden" value="${domainName}"/>
@@ -78,7 +77,7 @@
 			<div class="data-crumbs">
 				<a href="#" style="font-size: 20px;">安全帮</a><i>&gt;</i><a href="#">网站安全帮</a><i>&gt;</i><a href="javascript:;">${service.name }</a>
 			</div>
-			<input type="hidden" id="serviceIdHidden" value="${service.id }"/>
+				<input type="hidden" id="serviceIdHidden" value="${service.id }"/>
 			<div class="dataBox clearfix" style="padding-bottom:10px;">
 				<div class="dataL fl">
 					<div class="dataImg fl">
@@ -136,34 +135,36 @@
                                  <!-- <span>结束时间 <input type="text"  id="endDate" style="width:156px;" class="text" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-{%d+1}',minDate:'#F{$dp.$D(\'beginDate\',{d:365})}',dateFmt:'yyyy-MM'})"></span> -->
                            </div> 
 						</li>
-                         <li class="clearfix">
-							<label class="fl" style="position:relative; top:4px;">网站域名</label>
-                            <div class="fl">
-                          <c:if test="${not empty assList}">
-	                            
-                            	<select class="text select" style="width:248px; margin-left:0; height:36px;" id="domainName">
-                            	   <c:forEach var="assInfo" items="${assList}" varStatus="status">
-                                   <option value="${assInfo.addr}" assId="${assInfo.id}">${assInfo.name}</option> 
-                                    </c:forEach>
-                                </select>
-                               
-                                </c:if>
-                            </div> 
-						</li>
-                        <li class="clearfix" style="height:auto">
-							<label class="fl" style="position:relative; top:-2px; line-height:20px;">网站域名<br>对 应 I P</label>
-                            <div class="fl">
-                            	<ul class="waf_ip_list" id="wafbox">
-                                	<li><input type="text" class="text"  style="width:237px;" name="IPValue"><i id="addlist"><img src="${ctx}/source/images/portal/add-ip.png"></i><span>添加IP地址<em>（域名对应多IP地址时添加IP）</em></span></li>
-                                  
-                                    
-                                </ul>
-                            </div> 
-						</li>
+                        	<li class="clearfix waf-datails" style="height:auto">
+                        	<label class="fl">防护网站</label>
+                            <div class="fl" style="top:10px;">
+                            	<div class="fl" style="color:#a3a3a3; margin-right:20px;">
+                                	<span class="not">尚未选择网站</span>
+                                    <style>
+                                    	.http li{ line-height:24px; height:24px !important; color:#5f5f5f; border:none;}
+										.dele{ color:#d00000; margin-left:20px; cursor:pointer;}
+                                    </style>
+                                    <div class="http" style="display:none">
+                                    	<!--这里放添加过来的数据-->
+                                    	<!--<li><em>域名：</em><p>www.anquanbang.net</p></li>
+                                        <li><em>ip1:</em><p>12.12.1.12</p></li>
+                                        <li><em>ip2:</em><p>12.12.1.12</p></li>-->
+                                        <p class="ym"><em>域名：</em><span>www.anquanbang.net</span></p>
+                                        <ul class="fack">
+                                        	
+                                        </ul>
+                                    </div>
+                                 </div>
+                                <a href="javascript:;" id="waf_http" class="href_btn fl" style="color:#2499fb">点击此处选择网站</a>
+                                <em class="dele" style="display: none;" id="dele">删除</em>
+                                
+                            </div>
+                        </li>
+                         
                         
                         
 					</ul>
-                    <div class="btnBox" style="text-align:left; margin-left:0px; margin-bottom:0px; position:relative; top:-46px;">
+                    <div class="btnBox" style="text-align:left; margin-left:0px; margin-top:32px; margin-bottom:0px;">
                     	<button style="background:#d00000; width:146px;" id="addCarWaf">添加到购物车</button>
                         <button style="background:#5aba5f; width:126px" id="buyNowWaf">立即购买</button>
                     </div>
@@ -172,7 +173,7 @@
 				
 			</div>
 		</div>
-       <div class="commodity">
+        <div class="commodity">
         	<div class="imgBox clearfix">
             	<h4>商品信息</h4>
                 <div class="commoditys" style="height:620px; overflow:hidden">
@@ -192,7 +193,7 @@
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
-				<!--修改-->
+					<!--修改-->
 				   <a href="${ctx}/index.html">
 		               <img src="${ctx}/source/images/portal/new-footer-logo.png" alt="" />
                    </a>
@@ -238,7 +239,7 @@
 		<c:import url="/foot.jsp"></c:import>
 		<!-- 底部 end -->
 	</div>
-<!---执行效果-->
+  <!---执行效果-->
 <div class="weixinshow popBoxhide" id="weixin">
 	<i class="close chide"></i>
     <div class="Pophead">
@@ -253,34 +254,310 @@
            </div> 
     </div>
 
+</div> 
+<div class="waf-detais-pop popBoxhide" id="wafpop">
+	<i class="close chide" id="wafclose"></i>
+    <div class="Pophead">
+    	<h2>请选择要服务的网站域名（单选）</h2>
+        <a href="#"  class="ass "><i><img src="${ctx}/source/images/add.png" alt=""></i>新增域名</a>
+    </div>
+	<div class="popBox">
+    <!--请选择要服务的网站内容显示-->
+        <div class="centone" id="senone" style="display:block;">
+            <ul style="height:175px;">
+              <c:forEach items="${assList}" var="asset"  varStatus="status">
+                <li>
+                    <div class="rcent">
+                        <h3>
+                        <label><input type="radio" name="anquan" class="radio" style="display:none" value="${asset.id}"><i class=""></i></label>
+                        	<b>${asset.name }</b>
+                         </h3>
+                       <div class="tBox">${asset.addr }</div>
+                    </div>
+                </li>
+                </c:forEach>
+                
+            </ul>
+           <div class="hide">
+           	 <p style="margin: 20px 0 0px 0">填写域名对应的IP地址，对应多个IP时请逐个添加。</p>
+               <div class="add_ip clearfix">
+                    <ol id="wafBox" class="waf-addBox fl">
+                        <li><input type="text" class="text"></li>
+                        <span class="fl" id="acIp"><em><img src="${ctx}/source/images/add.png" alt=""></em>新增IP</span>
+                    </ol>
+           		</div>
+           
+           </div>
+           <div class="waf-detailsbtoom clearfix" style="margin-bottom:20px;">
+           	<a href="javascript:;" class="submit">确定</a>
+           </div>
+        </div>
+        <!--新增网站内容显示-->
+        <div class="centone" id="sentwo" style="display:none;">
+            <div class="addhttp">
+                <div class="popBox">
+                    <ul style="height:auto;">
+                        <li class="clearfix">
+                            <label class="fl">资产名称</label> <div class="fl"><input type="text" class="text"></div>
+                        </li>
+                        <li class="clearfix">
+                            <label class="fl">资产地址类型</label> 
+                            <div class="fl waf-ym">
+                                <label><input class="radio"  style="display:none;" type="radio" name="name"><i></i><b>http</b></label>
+                                <label style="margin-left:10px;"><input class="radio"  style="display:none;" name="name" type="radio"><i></i><b>https</b></label>
+                            </div>
+                        </li>
+                        <li class="clearfix">
+                            <label class="fl">资产地址</label> <div class="fl"><input type="text" class="text"></div>
+                        </li>
+                         <li class="clearfix">
+                            <label class="fl">示例</label> 
+                            <div class="fl" style="margin-bottom:10px;">
+                                <p style="margin:0">http://xxx.xxx.xxx</p>
+                                <p style="margin:0">http://xxx.xxx.xxx</p>
+                                <p style="margin:0">http://xxx.xxx.xxx</p>
+                                <p style="margin:0">http://xxx.xxx.xxx</p>
+                              
+                            </div>
+                        </li>
+                        
+                         <li class="clearfix">
+                            <label class="fl">物理位置</label> 
+                                <div class="fl">
+                                    <select class="select">
+                                        <option>请选择省份</option>
+                                    </select>
+                                    <select class="select">
+                                        <option>请选择城市</option>
+                                    </select>
+                                </div>
+                        </li>
+                        <li class="clearfix">
+                            <label class="fl">资产用途</label> 
+                            <div class="fl">
+                                <select class="select" placeholder="">
+                                    <option>请选择资产用途</option>
+                                    <option>请选择资产用途</option>
+                                    <option>请选择资产用途</option>
+                                </select>
+                            </div>
+                        </li>
+                    </ul>
+                   
+                 </div>
+            
+            </div>
+             <div class="bottom clearfix">
+                        <a href="javascript:;" class="btn sub" style="margin:0 20px 0 30px;">提交</a>
+                        <a href="javascript:;" class="btn sub return">返回</a>
+                    </div>
+        </div>
+    </div>
+	<div class="bottom clearfix">
+    	<a href="javascript:;" class="btn ok">确定</a>
+    </div>
 </div>
-	
 <div class="shade"></div>
-</body>
-
 <script>
-	$(function(){
-		function waf_adddel(){
-			var html='';
+$(function(){
+	//单选JS
+$(document).ready(function(){
+	
+		var arrtlink=[];	
+		$('#waf_http').click(function(){
+			
+			if(arrtlink.length!=0){
+			//恢复输入框填写状态
+			$('#wafBox li').remove();
+			//恢复列表选中状态
+			$('#senone li').removeClass('ac');
+			$('#senone li i').removeClass('this');
+			var ytext=$('.ym span').text();
+			$('#senone .tBox').each(function(index, element) {
+                var stxt= $(this).text();
+				if(ytext==stxt){
+					$(this)	.parents('li').addClass('ac');
+					$(this)	.parents('.ac').find('i').addClass('this');
+				}
+				
+            });
+			//添加输入框的动作
+			var list='';
+				var index=1;
+				//alert(arrLink)
+				for(var i=0;i<arrtlink.length;i++){
+					index++;
+					 list+='<li class="waflist">';
+					list+='<input type="text" class="text" data-id='+arrtlink[i] +' value="'+ arrtlink[i]+'">';
+					list+='<i><img src="${ctx}/source/images/p-dle.png" alt=""></i>';
+					list+='</li>';  
+				}
+				$('#wafBox span').before(list);
+				
+			}
+			
+			//显示遮罩层
+			$('.shade').show();
+			//显示
+			$('.waf-detais-pop').animate({
+				opacity: '1',
+				top: '50%',
+				left: '50%',
+				marginTop: '-224px'
+			}, 500);
+		})
+		$('.ass').click(function(){
+			$('#senone').fadeOut(20);
+			$('#sentwo').fadeIn(20);	
+		})
+		$('.sub').click(function(){
+			$('#sentwo').fadeOut(20);
+			$('#senone').fadeIn(20);	
+		})
+		//添加输入框的动作
 		
-		 html+= '<li class="add-list"> ';
-				html+='<input type="text" class="text"  style="width:236px;" name="IPValue">';
-					html+='<i class="del_list"><img src="${ctx}/source/images/portal/del.png"></i>';
-				html+='</li>';
-		
-		
-		$('#wafbox').delegate(".del_list","click",function(){
-				$(this).parents('.add-list').remove();
+		var html='';
+			html+='<li class="waflist">';
+				html+='<input type="text" class="text"  value="">';
+				html+='<i><img src="${ctx}/source/images/p-dle.png" alt=""></i>';
+			html+='</li>';
+			
+			
+		//添加输入框事件	
+		$('#acIp').click(function(){
+			var lenght=$('#wafBox li').length;
+			if(lenght==5){
+				$('#wafBox span').fadeOut(200);
+					
+			}else{
+				$('#wafBox span').before(html);	
+			}
+		});
+		//删除输入框
+		$('#wafBox').delegate('i','click',function(){
+           // alert($('#wafBox .waflist').length);
+			var wf=$('.waflist').length;
+			if(wf==4){
+				$('#acIp').fadeIn(200);		
+			}
+			$(this).parent('li').remove();	
+		});
+		//显示填写IP的输入框
+		$('.rcent label').click(function(){
+			$('.hide').show();
+			$('#acIp').show();
+			$('#senone li').removeClass('ac');
+			$('#senone i').removeClass('this');
+			$(this).parents('li').addClass('ac');
+			$(this).children('i').addClass('this');	
+		});
+		function waf(){
+			$('#senone label i').removeClass('this');
+			$('#senone input:radio').prop('checked',false);
+			$('#senone li').removeClass('ac');
+			$('.hide').hide();	
+			$('#wafBox .waflist').remove();
+			$('#acIp').show();
+			
+		};
+
+		$('.submit').click(function(){
+
+			var acleng =$('#senone .ac').length;
+			//判断是否什么都没选为空
+			if(acleng==0){
+				alert("请选择")
+					
+			}else{
+				arrtlink.length=0;
+				$('.fack li').remove();
+				//选中的网站地址			
+				var acval=$('#senone .ac .rcent div').text();
+				$('#wafBox input:text').each(function(index, element) {
+					var tval= $(this).val();
+					//存入val值
+					arrtlink.push(tval);
+				});
+				//页面添加网址
+				$('.ym span').text(acval);
+				
+				var list='';
+				var index=0;
+				for(var i=0;i<arrtlink.length;i++){
+					index++;
+					 list+='<li id='+ index +'><em>ip<b>'+ index +'</b>：</em>'+ arrtlink[i] +'</li>';  
+				}
+				$('.fack').append(list);
+				
+                //显示页面删除和容器标签
+                $('#dele').show();
+                $('.not').hide();
+                $('.http').show();
+				 //关闭后效果
+				$('.waf-detais-pop').animate({
+					opacity: '1',
+					top: '50%',
+					left: '50%',
+					marginTop: '-1200px'
+				}, 500);
+				//隐藏遮罩层
+				$('.shade').hide();
+				
+			}
+			
+			
 		})
 		
 		
-		$('#addlist').click(function(){
-			$('#wafbox').children('li:first').after(html);	
-		})	
-			
-		}
-		waf_adddel();	
-	})
+		//关闭窗口按钮
+		$('#wafclose').click(function(){
+			if(arrtlink.length==0){
+				$('#senone .hide .text').val('');
+				$('#senone li').removeClass('ac');
+				$('#senone li i').removeClass('this');
+				$('#senone .hide').hide();
+                $('#wafBox .waflist').remove();	
+				
+			}
+				 //关闭后效果
+				$('.waf-detais-pop').animate({
+					opacity: '1',
+					top: '50%',
+					left: '50%',
+					marginTop: '-1200px'
+				}, 500);
+				//隐藏遮罩层
+				$('.shade').hide();
+		})
+		//页面删除按钮
+		$('#dele').click(function(){
+				arrtlink.length=0;
+                $('#senone .hide .text').val('');
+				$('.ym span').text('');
+				$('.fack li').remove();
+				$('#senone li').removeClass('ac');
+				$('#senone li i').removeClass('this');
+				$('#wafBox .waflist').remove();
+				$('#senone .hide').hide();
+                $(this).hide();
+                $('.http').hide();
+                $('.not').show();
+		})
+	
+	
+	
+	
+})
+	
+	
+	
+})
+
+
 
 </script>
+
+
+</body>
+
 </html>
