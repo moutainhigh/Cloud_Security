@@ -133,6 +133,7 @@ public class WafController {
 		String ipStr = request.getParameter("ipVal");
 		//域名
 		String domainName = request.getParameter("domainName");
+	   String errorIp ="";
 		String addInfo = "";
 		//判断http协议
 		if(domainName.indexOf("http://")!=-1){
@@ -162,12 +163,18 @@ public class WafController {
         for(int i=0;i<ipArr.length;i++){
       	  for(int k=0;k<array.length;k++){
       		    if(ipArr[i].equals(array[k])){
+      		    
       		    	flag=true;
-      		    	break;
+      		    }else{
+      		      	errorIp=ipArr[i]+",";
+      		      	flag=false;
       		    }
       	  }
         }
+       
         
+        if(flag){
+       
         //添加购物车时
 		String serviceId = request.getParameter("serviceId");
 		if(serviceId!=null){
@@ -197,20 +204,24 @@ public class WafController {
 			//获得当前日期后十分钟
 			Date afterEnd = DateUtils.getDateAfter10Mins(end);
 			Date afterBegin = DateUtils.getDateAfter10Mins(begin);
-		    //资产名称
-			String assetName = request.getParameter("assetName");
-
+		   
 
 	         m.put("serviceId", serviceId);
 	         m.put("orderType", orderType);
 	         m.put("beginDate", DateUtils.dateToString(afterBegin));
 	         m.put("endDate", DateUtils.dateToString(afterEnd));
-	         m.put("assetName", assetName);
+	         m.put("domainName", domainName);
 	         m.put("ipStr", ipStr);
 	         m.put("price", price);
 	         m.put("month", month);
 		}
-           m.put("flag", flag);
+	 	
+        }   
+        if(errorIp.length()>1){
+        	  m.put("errorIp", errorIp.substring(0, errorIp.length()-1));
+        }
+     
+		m.put("flag", flag);
 		   JSONObject JSON = CommonUtil.objectToJson(response, m);
 	       // 把数据返回到页面
            CommonUtil.writeToJsp(response, JSON);
@@ -240,7 +251,7 @@ public class WafController {
         String endDate = request.getParameter("endDate");
         String createDate = DateUtils.dateToString(new Date());
         String price = request.getParameter("price");
-        String assetName = request.getParameter("assetName");
+        String domainName = request.getParameter("domainName");
         String ipStr = request.getParameter("ipStr");
         String month = request.getParameter("month");
         String priceVal="";
@@ -278,7 +289,7 @@ public class WafController {
         //根据资产名称查询资产信息
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("userId",globle_user.getId());
-        paramMap.put("name", assetName.trim());
+        paramMap.put("addr", domainName);
 		List<Asset> listForName = assetService.findByAssetAddr(paramMap);
 		Asset assetInfo = listForName.get(0);
             OrderAsset orderAsset = new OrderAsset();
