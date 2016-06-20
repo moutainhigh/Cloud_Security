@@ -40,40 +40,24 @@ $(function(){
      var serviceId = $('#serviceIdHidden').val();
      //价格
       var price = $('#price').html().substr(1);
- 
-    	
-      //服务期限
-    
       //网站域名
-      var domainName = $('#domainName').val();
-      var assetName = $("#domainName").find("option:selected").text(); 
-      var ipAddr ="/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/";
+      var domainName =$('.ym span').text();
       if(beginDate==""||beginDate==null){
         		alert("开始时间不能为空");
         		return;
 			}
-        
-    
-      //ip地址
-      var Ipval= $("input[name='IPValue']").val();
+      //选中的网站地址	
+      
       var ip="";
-      if(Ipval==""||Ipval==null){
-    	   alert("请输入IP地址"); 
-      }else{
-        $("input[name='IPValue']").each(function(obj){
-         ip = ip+$(this).val()+",";
-         
-      });
-      var ipVal = ip.substring(0,ip.length-1);
-      //循环判断ip地址
-      var isTrue = ipVal.split(',').every(function(ip){
-    	  return isIp(ip);
+		var acval=$('#senone .ac .rcent div').text();
+		$('#wafBox input:text').each(function(index, element) {
+			var tval= $(this).val();
+			//存入val值
+		   ip = ip+tval+",";
 		});
-        if(!isTrue){
-        	alert("IP地址输入无效，请输入正确的IP地址!");
-        	return false;
-        }
-        if(isTrue){
+      
+     var ipVal = ip.substring(0,ip.length-1);
+
         	$.ajax({ type: "POST",
 		     async: false, 
 		     url: "VerificationIP.html",
@@ -81,7 +65,6 @@ $(function(){
         		   "serviceId":serviceId,
         		    "price":price,
 	        		"orderType":orderType,
-	        		"assetName":assetName,
 	        		"beginDate":beginDate,
 	        		"month":month,
 	        		"ipVal":ipVal,
@@ -90,9 +73,9 @@ $(function(){
 		     dataType: "json", 
 		     success: function(data) {
     			   		 if(!data.flag){
-    			   			 alert("输入域名对应IP地址与绑定的域名IP地址不一致!");
+    			   			 alert("输入域名对应IP地址与绑定的域名IP地址不一致!输入的错误ip地址是："+data.errorIp);
     			   		 }else{
-    			   			 addCart(data.serviceId,data.price,data.orderType,data.beginDate,data.endDate,data.assetName,data.ipStr,data.month);
+    			   			 addCart(data.serviceId,data.price,data.orderType,data.beginDate,data.endDate,data.ipStr,data.month,data.domainName);
     			   		 }
     			 }, 
 		     error: function(data){ 
@@ -101,9 +84,6 @@ $(function(){
 		    	 else { window.location.href = "loginUI.html"; } } 
 		});
 
-        }
-        }
-         
      });
     
     //立即购买
@@ -268,7 +248,7 @@ $(function(){
  }
  
  //添加到购物车
- function addCart(serviceId,price,orderType,beginDate,endDate,assetName,ipStr,month){
+ function addCart(serviceId,price,orderType,beginDate,endDate,ipStr,month,domainName){
 	 $.ajax({ type: "POST",
 		     async: false, 
 		     url: "shoppingWaf.html",
@@ -277,10 +257,10 @@ $(function(){
 		            "orderType":orderType,
     			   	"beginDate": beginDate,
     			   	"endDate":endDate,
-    			   	"assetName":assetName,
     			   	"price":price,
     			   	"ipStr":ipStr,
-    			   	"month":month
+    			   	"month":month,
+    			   	"domainName":domainName
     			   	}, 
 		     dataType: "json", 
 		     success: function(data) {
