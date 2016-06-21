@@ -398,8 +398,6 @@ function getRootPath(){
 function changePrice(){
 	//获得选择的月份
 	var month = $('#month').val();
-	
-	var month = $('#month').val();
 	if(month=='-1'){
 		$("#price").html("¥100");
 	}else{
