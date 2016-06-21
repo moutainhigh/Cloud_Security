@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- WAF Config -->
 <WAF_CONFIG>
 	<WAFDeviceManage>
@@ -11,11 +11,7 @@
 					<WAFDevID>30001</WAFDevID>
 					<WAFFactory>nsfocus</WAFFactory>
 					<WAFFactoryName>绿盟</WAFFactoryName>
-					<WAFDevPhyIP>172.16.200.209</WAFDevPhyIP>
-					<!--VirtualIP: 
-						Master:219.141.189.184
-						Backup:219.141.189.183
-					 -->
+					<WAFDevPhyIP>172.16.100.209</WAFDevPhyIP>
 					<WAFPublicIPList>219.141.189.184;219.141.189.183</WAFPublicIPList>
 					<WAFDevAPI>
 						<!-- 部署186，内网地址
@@ -36,12 +32,8 @@
 					<WAFDevID>30002</WAFDevID>
 					<WAFFactory>nsfocus</WAFFactory>
 					<WAFFactoryName>绿盟</WAFFactoryName>
-					<WAFDevPhyIP>172.16.200.210</WAFDevPhyIP>
-					<!--VirtualIP: 
-						Master:219.141.189.183
-						Backup:219.141.189.184
-					 -->
-					<WAFPublicIPList>219.141.189.184;219.141.189.183</WAFPublicIPList>
+					<WAFDevPhyIP>172.16.100.210</WAFDevPhyIP>
+					<WAFPublicIPList>219.141.189.183;219.141.189.184</WAFPublicIPList>
 					<WAFDevAPI>
 						<!-- 部署186，内网地址
 						<APIAddr>https://172.16.200.210:8443</APIAddr>
@@ -84,9 +76,7 @@
 					<pre id="3" method="StringReplace" argcount="2" arg0="reason:Illegally changing the original contents" arg1="reason:Illegally^changing^the^original^contents"/>
 				</precondition>
 				<match reg="[a-zA-Z_]+:{1}\d{4}-\d{2}-\d{2} {1}\d{2}:\d{2}:\d{2}|[a-zA-Z_]+:{1}\S+">
-					<trans id="1" name="site_id" express="Integer.parseInt" />
-					<trans id="2" name="protect_id" express="Integer.parseInt" />
-					<trans id="3" name="stat_time" express="StringtoDate" />
+					<trans id="1" name="stat_time" express="StringtoDate" />
 				</match>
 			</WafLog>
 		    <WafLog item="arp" tag="waf_log_arp" >
@@ -99,23 +89,16 @@
 				</precondition>
 				<match reg="[a-zA-Z_]+:{1}\d{4}-\d{2}-\d{2} {1}\d{2}:\d{2}:\d{2}|[a-zA-Z_]+:{1}\S+">
 					<trans id="1" name="stat_time" express="StringtoDate" />
-					<trans id="2" name="count_num" express="Integer.parseInt" />
 				</match>
              </WafLog>
 		    <WafLog item="websec" tag="waf_log_websec" >
 				<dbopt sql="INSERT INTO t_waf_log_websec(resource_id,resource_uri,resource_ip,site_id,protect_id,dst_ip,dst_port,src_ip,src_port,method,domain,uri,alertlevel,event_type,stat_time,policy_id,rule_id,action,block,block_info,http,alertinfo,proxy_info,characters,count_num,protocol_type,wci,wsi) VALUES(@ResourceID,@ResourceURI,@WAFDevPhyIP,#site_id,#protect_id,#dst_ip,#dst_port,#src_ip,#src_port,#method,#domain,#uri,#alertlevel,#event_type,#stat_time,#policy_id,#rule_id,#action,#block,#block_info,#http,#alertinfo,#proxy_info,#characters,#count_num,#protocol_type,#wci,#wsi)"/>
 				<match reg="[a-zA-Z_]+:{1}\d{4}-\d{2}-\d{2} {1}\d{2}:\d{2}:\d{2}|[a-zA-Z_]+:{1}\S+">
-					<trans id="1" name="site_id" express="Integer.parseInt" />
-					<trans id="2" name="protect_id" express="Integer.parseInt" />
-					<trans id="3" name="stat_time" express="StringtoDate" />
-					<trans id="4" name="policy_id" express="Integer.parseInt" />
-					<trans id="5" name="rule_id" express="Integer.parseInt" />
-					<trans id="6" name="http" express="Base64toString" />
-					<trans id="7" name="alertinfo" express="Base64toString" />
-				<!-- <trans id="8" name="characters" express="Base64toString" />-->
-					<trans id="9" name="count_num" express="Integer.parseInt" />
-					<trans id="10" name="wci" express="Base64toString" />
-					<trans id="11" name="wsi" express="Base64toString" />
+					<trans id="1" name="stat_time" express="StringtoDate" />
+					<trans id="2" name="http" express="Base64toString" />
+					<trans id="3" name="alertinfo" express="Base64toString" />
+					<trans id="5" name="wci" express="Base64toString" />
+					<trans id="6" name="wsi" express="Base64toString" />
 				</match>
 			</WafLog>
 		    <WafLog item="webstat" tag="waf_log_wafstat" >
@@ -125,7 +108,7 @@
             </WafLog>
 		</Syslog>
 	</SyslogGroup>
-	<SyslogServer serverIP="172.16.100.86" port="5144" threadPoolSize="10" disposeBlockSize="10" packetDisposeMode="Store/Relay">
+	<SyslogServer serverIP="172.16.100.86" port="5144" threadPoolSize="10" disposeBlockSize="1" packetDisposeMode="Store">
 		<Store>
 			<JdbDriver>com.mysql.jdbc.Driver</JdbDriver>
 			<!-- 部署到186服务器，186数据库

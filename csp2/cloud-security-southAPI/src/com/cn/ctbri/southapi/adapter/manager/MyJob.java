@@ -24,7 +24,9 @@ import com.cn.ctbri.southapi.adapter.manager.DeviceAdapterConstant;
 public class MyJob implements Job {
 	private HashMap<String, EngineStatList> mapDeviceStat = new HashMap<String, EngineStatList>();
 	
-	@Override
+	/**
+	 * 获取引擎状态
+	 */
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		DeviceAdpaterManager deviceAdpaterManager = new DeviceAdpaterManager();
 		SAXReader reader = new SAXReader();

@@ -1,18 +1,13 @@
 package com.cn.ctbri.southapi.adapter.waf;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Iterator;
-import java.util.List;
-
 import javax.ws.rs.core.MediaType;
 
-import se.akerfeldt.com.google.gson.JsonArray;
-import se.akerfeldt.com.google.gson.JsonElement;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.cn.ctbri.southapi.adapter.manager.CommonDeviceOperation;
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -21,18 +16,24 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
-
+/**
+ * 
+ * This class is used for waf Operation   
+ * @author shaozhenya  
+ * @version   
+ * 	1.0, 2016年6月21日 下午2:59:25
+ */
 
 public class NsfocusWAFOperation extends CommonDeviceOperation {
-	private String nsfocusWafUrl ="";
 	private static final String REST_URI_V1 = "/rest/v1";
 	
+	private String nsfocusWafUrl ="";	
 	private String nsfocusWafUsername = "";
 	private String nsfocusWafPassword = "";
 	private String nsfocusAPIKey = "";
 	private String nsfocusAPIValue = "";
 	private String[] nsfocusWafPublicIPList = null;
-	
+		
 	public NsfocusWAFOperation(String apiAddr, String apiKey, String apiValue, String apiUsername, String apiPassword ) {
 		initNsfocusWafDevice(apiAddr, apiKey, apiValue, apiUsername, apiPassword);
 	}

@@ -1,19 +1,12 @@
 package com.cn.ctbri.southapi.adapter.servlet;
 
-import java.net.MalformedURLException;
-
-import javax.servlet.Servlet;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.quartz.SchedulerException;
 
 import com.cn.ctbri.southapi.adapter.manager.DeviceAdpaterManager;
-import com.cn.ctbri.southapi.adapter.manager.QuartzTest;
-import com.cn.ctbri.southapi.adapter.waf.config.WAFConfigManager;
-import com.cn.ctbri.southapi.adapter.waf.syslog.WAFSyslogManager;
+import com.cn.ctbri.southapi.adapter.manager.QuartzManager;
 
 public class InitServlet extends HttpServlet {
 	/**
@@ -28,7 +21,7 @@ public class InitServlet extends HttpServlet {
 		DeviceAdpaterManager deviceAdpaterManager = new DeviceAdpaterManager();
 		deviceAdpaterManager.loadDeviceAdpater();
 		try {
-			QuartzTest.runJob();
+			QuartzManager.runJob();
 		} catch (SchedulerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
