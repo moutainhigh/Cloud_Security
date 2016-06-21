@@ -1,4 +1,13 @@
 $(function(){
+	//价格
+	var month = $('#month').val();
+	if(month=='-1'){
+		$("#price").html("¥100");
+	}else{
+		var priceVals = 100*month;
+		$("#price").html("¥"+priceVals);
+	}
+	
 	//回显修改信息
 	getWafInfo();
 	
@@ -96,31 +105,46 @@ $(function(){
       var times = 1;//月份数
       if(scanType=='8'){
     	  beginDate=$('#beginDateForMonth').val();
+          if(beginDate==""||beginDate==null){
+      		alert("开始时间不能为空");
+      		return;
+          }
     	  times = $('#month').val();
+    	  if(times==-1){
+    		  alert("请选择服务期限!");
+    		  return;
+    	  }
       }else{
     	  beginDate=$('#beginDateForYear').val();
+          if(beginDate==""||beginDate==null){
+      		alert("开始时间不能为空");
+      		return;
+          }
       }
  
       //网站域名
-      var domainName = $('#domainName').val();
-      var domainId = $("#domainName option:selected").attr("assId");
+      var domainName = $('.ym span').text();
+      var domainId = $('.ym span').attr('id');
       var price = $('#price').html().substr(1);
-      //var addurl = $('#addurl').val();
       var ipAddr ="/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/";
-      if(beginDate==""||beginDate==null){
-        		alert("开始时间不能为空");
-        		return;
-	  }
+
       //ip地址
-      var Ipval="";
-        $("input[name='IPValue']").each(function(obj){
-         Ipval = Ipval+$(this).val()+",";
-         
-      });
+        var Ipval="";
+		$('#wafBox input:text').each(function(index, element) {
+			var ip= $(this).val();
+			if(ip!=null && ip!=''){
+				Ipval = Ipval + ip +",";
+			}		
+		});
+		
+		
       var ipVal = Ipval.substring(0,Ipval.length-1);
+      if(ipVal==''||ipVal==null){
+    	  alert("请选择网站!");
+      	  return false;
+      }
       //循环判断ip地址
       var isTrue = ipVal.split(',').every(function(ip){
-    	 
 		  return isIp(ip);//先将字符串按照逗号分成数组，在校验就可以了
 		});
         if(!isTrue){
@@ -136,7 +160,7 @@ $(function(){
 		     dataType: "json", 
 		     success: function(data) {
     			   		 if(!data.flag){
-    			   			 alert("输入域名对应IP地址与绑定的域名IP地址不一致!");
+    			   			 alert("输入域名对应IP地址与绑定的域名IP地址不一致!输入的错误ip地址是："+data.errorIp);
     			   		 }else{
     			   			$.ajax({ type: "POST",
 	    			   		     async: false, 
@@ -243,7 +267,15 @@ $(function(){
       }else{
     	  $("#yearDiv").hide();
     	   $("#monthDiv").show();
-    	 $("#price").html("¥100");
+    	  
+    		var month = $('#month').val();
+    		if(month=='-1'){
+    			$("#price").html("¥100");
+    		}else{
+    			var priceVals = 100*month;
+        		$("#price").html("¥"+priceVals);
+    		}
+    		
       }
  }
  
@@ -368,4 +400,147 @@ function changePrice(){
 	var month = $('#month').val();
 	var priceVals = 100*month;
 	$("#price").html("¥"+priceVals);
+}
+
+function saveWafAsset() {
+	var assetName =$("#assetName").val();
+	var assetAddr = $("#InertAddr").val();
+     var addrType = $('input:radio[name="addrType"]:checked').val();
+     var purpose = $("#purpose").val();
+     var prov = $("#districtId").val();
+     var city = $("#city").val();
+     var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
+	//获取选中的radio的值
+    if(assetName == null || assetName == ""){
+		$("#assetName_msg").html("请输入资产名称");
+	}else if(patrn.test(assetName)){
+		$("#assetName_msg").html("您输入的资产名称含有非法字符");
+	}else if(assetName.length>25){
+		$("#assetName_msg").html("资产名称长度不能超过25个字符！");
+	}else if(patrn.test(assetAddr)){
+		$("#assetAddr_msg").html("您输入的资产地址含有非法字符");
+	}else if(assetAddr==null || assetAddr == ""){
+			$("#assetName_msg").html("");
+			$("#assetAddr_msg").html("请输入资产地址");
+	}else if(assetAddr.length>50){
+			 $("#assetName_msg").html("");
+			 $("#assetAddr_msg").html("资产地址长度不能超过50个字符！");
+	}else if(assetAddr.indexOf("gov.cn")!=-1){
+		   $("#assetName_msg").html("");
+		   $("#assetAddr_msg").html("输入资产地址不能包含'gov.cn'！");
+	}else if((addrType.length==4 && assetAddr.substring(0,5)=='https') || (addrType.length==5 && assetAddr.substring(0,5)=='http:')){
+		$("#assetName_msg").html("");
+		$("#assetAddr_msg").html("资产类型与资产地址填写不一致!");
+	}else if(prov == -1){
+		$("#assetName_msg").html("");
+		$("#assetAddr_msg").html("");
+		$("#location_msg").html("请选择资产所在物理地址！");
+	}else if(purpose==-1){
+		$("#assetName_msg").html("");
+		$("#assetAddr_msg").html("");
+		$("#location_msg").html("");
+		$("#assetUsage_msg").html("请选择资产用途！");
+	}else{
+		$("#assetName_msg").html("");
+		$("#assetAddr_msg").html("");
+		$("#location_msg").html("");
+		$("#assetUsage_msg").html("");
+			//验证资产是否重复
+			$.ajax({
+		        type: "POST",
+		        url: "asset_addrIsExist.html",
+		        data: {"addr":assetAddr,"name": encodeURI(assetName),"addrType":addrType},
+		        dataType:"json",
+		        success: function(data){
+		            if(data.msg=='1'){
+		            	$("#assetName_msg").html("资产名称重复!");
+		            }else if(data.msg=='2'){
+		            	$("#assetName_msg").html("");
+		            	$("#assetAddr_msg").html("资产地址重复!");
+		            }else{
+		            	$("#assetName_msg").html("");
+		            	$("#assetAddr_msg").html("");
+		            	//资产数验证
+		            	$.ajax({
+		    		        type: "POST",
+		    		        url: "asset_CountOver.html",
+		    		        data: {},
+		    		        dataType:"json",
+		    		        success: function(data){
+		    		            if(data.msg){
+		    		            	alert("免费用户管理资产数不能大于" + data.allowCount);
+		    		            }else{
+		    			       		 var options = {
+		    				 					url:'addWebSite.html',
+		    				 					data:{
+		    				  	               'assetName':assetName,
+		    				  	               'assetAddr':assetAddr,
+		    				  	               'addrType':addrType,
+		    				  	               'purpose':purpose,
+		    				  	               'prov':prov,
+		    				  	               'city':city,
+		    				  	               'wafFlag':1
+		    				 					},
+		    				 					//beforeSubmit:showRequest,
+		    				 					success: function(data) {
+		    				 						if(data.success){
+		    				 							alert("添加成功!");
+		    				 						
+		    				 							var list = data.serviceAssetList;
+		    				 							if(list!=null&&list.length>0){
+		    				 								$("#assBox").empty();
+		    				 								$.each(list,function(n,asset) {
+		    				 						         var temp = "<li>"+
+		    				 					            	 		"<div class='rcent'>"+
+		    				 					            	 		"<h3>"+
+		    				 			                                "<label onclick='selWafAsset(this)'>"+
+		    				 			                                     "<input type='radio' class='radio'  style='display:none' name='anquan' value='"+asset.id+"'><i class=''></i>"+
+		    				 			                                "</label>"+
+		    				 			                                 "<b>"+asset.name+"</b>"+
+		    				 			                            
+		    				 			                            "</h3>"+
+		    				 			                            "<div class='tBox'>"+asset.addr+"</div>"+
+		    				 			                            "</div>"+
+		    				 			                            "</li>";  
+		    				 						         		$("#assBox").append(temp);
+		    				 						           });  
+		    				 								} 
+		    				 							$('#sentwo').fadeOut(20);
+		    				 			                $('#senone').fadeIn(20);
+		    				 						}else{
+		    				 							if(!data.wafFlag){
+		    				 								alert("资产地址不是域名,请填写域名!");
+		    				 							}else{
+			    				 							alert("添加失败!");
+		    				 							}
+		    				 						}
+		    				 								
+		    				 					},
+		    				 					error: function(data){
+		    				 						 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+		    				 				    		 window.location.href = "loginUI.html"; } 
+		    				 				    	 else { window.location.href = "loginUI.html"; } 
+		    				 					}
+		    				 				};
+		    						 		 // 将options传给ajaxForm
+		    						 		 $('#saveWafAsset').ajaxSubmit(options);
+		    		            }
+		    		        },
+		    		     }); 
+		            }
+		        },
+		     }); 
+		}
+	
+}
+
+function selWafAsset(Obj){
+	//显示填写IP的输入框
+	$('.hide').show();
+	$('#acIp').show();
+	$('#senone li').removeClass('ac');
+	$('#senone i').removeClass('this');
+	$(Obj).parents('li').addClass('ac');
+	$(Obj).children('i').addClass('this');	
+
 }

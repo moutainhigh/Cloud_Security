@@ -13,6 +13,7 @@
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
 <SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
 <script src="${ctx}/source/scripts/common/jquery.js"></script>
+<script type="text/javascript"  src="${ctx}/source/scripts/common/jquery.form.js"></script>
 <script src="${ctx}/source/scripts/common/portalindex.js"></script>
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
@@ -20,7 +21,7 @@
 <script src="${ctx}/source/scripts/order/wafDetail.js"></script>
 <script src="${ctx}/source/scripts/order/details.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
-
+<script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 
 
@@ -72,6 +73,7 @@
 	 <input type="hidden" id="timesHidden" value="${times}"/>
 	 <input type="hidden" id="domainNameHidden" value="${domainName}"/>
 	 <input type="hidden" id="ipArrayHidden" value="${ipArray}"/>
+	 <input type="hidden" id="assCountHidden" value="${assCount}">
 		</div>
 		<div class="dataCent">
 			<div class="data-crumbs">
@@ -263,13 +265,13 @@
     </div>
 	<div class="popBox">
     <!--请选择要服务的网站内容显示-->
-        <div class="centone" id="senone" style="display:block;">
-            <ul style="height:175px;">
+        <div class="centone" id="senone" style="display:none;">
+            <ul style="height:175px;" id="assBox">
               <c:forEach items="${assList}" var="asset"  varStatus="status">
                 <li>
                     <div class="rcent">
                         <h3>
-                        <label><input type="radio" name="anquan" class="radio" style="display:none" value="${asset.id}"><i class=""></i></label>
+                        <label onclick='selWafAsset(this)'><input type="radio" name="anquan" class="radio" style="display:none" value="${asset.id}"><i class=""></i></label>
                         	<b>${asset.name }</b>
                          </h3>
                        <div class="tBox">${asset.addr }</div>
@@ -294,53 +296,64 @@
         </div>
         <!--新增网站内容显示-->
         <div class="centone" id="sentwo" style="display:none;">
+         <form id="saveWafAsset" action="" method="post">
             <div class="addhttp">
                 <div class="popBox">
                     <ul style="height:auto;">
                         <li class="clearfix">
-                            <label class="fl">资产名称</label> <div class="fl"><input type="text" class="text"></div>
+                            <!--<label class="fl">资产名称</label> <div class="fl"><input type="text" class="text"></div>
+                            --><label class="fl">资产名称</label> <div class="fl"><input class="boz_inout_1" type="text" name="name" id="assetName"></div>
+                            <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetName_msg"></div>
                         </li>
                         <li class="clearfix">
-                            <label class="fl">资产地址类型</label> 
+                            <label class="fl">资产地址类型</label><!-- 
                             <div class="fl waf-ym">
                                 <label><input class="radio"  style="display:none;" type="radio" name="name"><i></i><b>http</b></label>
                                 <label style="margin-left:10px;"><input class="radio"  style="display:none;" name="name" type="radio"><i></i><b>https</b></label>
                             </div>
+                             --><div class="fl">
+                                <label><input type="radio" name="addrType" checked="checked" id="assetAddrType1" value="http">http</input></label>
+                                <label style="margin-left:10px;"><input type="radio" name="addrType" id="assetAddrType2" value="https">https</label>
+                             </div>
                         </li>
-                        <li class="clearfix">
+                        <li class="clearfix"><!--
                             <label class="fl">资产地址</label> <div class="fl"><input type="text" class="text"></div>
+                        -->
+                        	<label class="fl">资产地址</label> <div class="fl"><input class="boz_inout_1" type="text" name="addr" id="InertAddr"></div>
+                            <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetAddr_msg"></div>
                         </li>
                          <li class="clearfix">
                             <label class="fl">示例</label> 
-                            <div class="fl" style="margin-bottom:10px;">
-                                <p style="margin:0">http://xxx.xxx.xxx</p>
-                                <p style="margin:0">http://xxx.xxx.xxx</p>
-                                <p style="margin:0">http://xxx.xxx.xxx</p>
-                                <p style="margin:0">http://xxx.xxx.xxx</p>
-                              
+                            <div class="fl" style="margin-bottom:10px;">                              
+                                 <p style="margin:0px;">http://xxx.xxx.xxx.xxx</p>
+                                 <p style="margin:0px;">https://xxx.xxx.xxx.xxx:1234</p>
+                                 <p style="margin:0px;">http://xxx.xxx.xxx.xxx:8080/home</p>                                 
                             </div>
                         </li>
                         
                          <li class="clearfix">
                             <label class="fl">物理位置</label> 
                                 <div class="fl">
-                                    <select class="select">
-                                        <option>请选择省份</option>
-                                    </select>
-                                    <select class="select">
-                                        <option>请选择城市</option>
-                                    </select>
+                                    <select class="user_secta_count spiclesel" id="districtId" name="districtId" onchange="getCitys(this.value)" style="width:119px;height: 35px;">
+				                        <option selected="selected" value="-1">请选择省份</option>
+			                        </select> 
+			    					<select  class="user_secta_count spiclesel"  id="city" name="city" disabled="disabled" style="width:119px;height: 35px;">
+			    			      		<option value="-1">请选择城市</option>
+			    					</select>
+			    					<div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="location_msg"></div>
                                 </div>
                         </li>
                         <li class="clearfix">
                             <label class="fl">资产用途</label> 
                             <div class="fl">
-                                <select class="select" placeholder="">
-                                    <option>请选择资产用途</option>
-                                    <option>请选择资产用途</option>
-                                    <option>请选择资产用途</option>
-                                </select>
-                            </div>
+                                       <select class="user_secta_count spiclesel" id="purpose" name="purpose" style="width:242px;height: 35px;">
+                                          <option selected="selected" value="-1">请选择资产用途</option>
+							   				<option value="公共服务">公共服务</option>
+							   				<option value="信息发布">信息发布</option>
+							   				<option value="其他">其他</option>   
+                                        </select>
+                                        <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetUsage_msg"></div>
+                                    </div>
                         </li>
                     </ul>
                    
@@ -348,9 +361,10 @@
             
             </div>
              <div class="bottom clearfix">
-                        <a href="javascript:;" class="btn sub" style="margin:0 20px 0 30px;">提交</a>
-                        <a href="javascript:;" class="btn sub return">返回</a>
-                    </div>
+                        <a href="javascript:;" class="btn sub" style="margin:0 20px 0 30px;" onclick="saveWafAsset()">提交</a>
+                        <a href="javascript:;" class="btn sub return" id="back">返回</a>
+             </div>
+             </form>
         </div>
     </div>
 	<div class="bottom clearfix">
@@ -362,10 +376,33 @@
 $(function(){
 	//单选JS
 $(document).ready(function(){
-	
 		var arrtlink=[];	
 		$('#waf_http').click(function(){
-			
+		     $.ajax({ type: "POST",
+		     	async: false, 
+		     	url: "getAssetList.html",
+		     	data: {"wafFlag":"1"}, 
+		     	dataType: "json", 
+		     	success: function(data) {
+			     	if(data.success){
+				     	//如果当前用户没有资产，则进入新增资产页面
+						var assCount = data.assList.length;
+						if(assCount!=0){
+							$('#sentwo').fadeOut(20);
+							$('#senone').fadeIn(20);
+						}else{
+							$('#senone').fadeOut(20);
+							$('#sentwo').fadeIn(20);	
+						}
+			     	}
+		     	},
+		     	error:function(data) {
+		      		if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+		    		 		window.location.href = "loginUI.html"; } 
+		    	 	else { window.location.href = "loginUI.html"; } 
+		    	 	} 
+		  });
+		
 			if(arrtlink.length!=0){
 			//恢复输入框填写状态
 			$('#wafBox li').remove();
@@ -407,10 +444,11 @@ $(document).ready(function(){
 			}, 500);
 		})
 		$('.ass').click(function(){
+			$('#saveWafAsset')[0].reset();	
 			$('#senone').fadeOut(20);
 			$('#sentwo').fadeIn(20);	
 		})
-		$('.sub').click(function(){
+		$('#back').click(function(){
 			$('#sentwo').fadeOut(20);
 			$('#senone').fadeIn(20);	
 		})
@@ -442,15 +480,7 @@ $(document).ready(function(){
 			}
 			$(this).parent('li').remove();	
 		});
-		//显示填写IP的输入框
-		$('.rcent label').click(function(){
-			$('.hide').show();
-			$('#acIp').show();
-			$('#senone li').removeClass('ac');
-			$('#senone i').removeClass('this');
-			$(this).parents('li').addClass('ac');
-			$(this).children('i').addClass('this');	
-		});
+		
 		function waf(){
 			$('#senone label i').removeClass('this');
 			$('#senone input:radio').prop('checked',false);
@@ -473,6 +503,7 @@ $(document).ready(function(){
 				$('.fack li').remove();
 				//选中的网站地址			
 				var acval=$('#senone .ac .rcent div').text();
+				var assetId = $('#senone .ac .rcent').find('input').val();
 				$('#wafBox input:text').each(function(index, element) {
 					var tval= $(this).val();
 					//存入val值
@@ -480,7 +511,7 @@ $(document).ready(function(){
 				});
 				//页面添加网址
 				$('.ym span').text(acval);
-				
+				$('.ym span').attr('id',assetId);
 				var list='';
 				var index=0;
 				for(var i=0;i<arrtlink.length;i++){

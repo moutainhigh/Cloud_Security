@@ -59,6 +59,85 @@ public class WafController {
     IOrderListService orderListService;
     
 	 /**
+	 * 功能描述：获取所有资产列表
+	 * 参数描述：  无
+	 * add gxy
+	 *     @time 2016-5-18
+	 */
+	@RequestMapping(value="getAssetList.html")
+	public void getAssetList(HttpServletRequest request,HttpServletResponse response){
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		Map<String,Object> m = new HashMap<String,Object>();
+
+		try {
+			//获取服务对象资产
+			List<Asset> list = selfHelpOrderService.findServiceAsset(globle_user.getId());
+			String wafFlag = request.getParameter("wafFlag");
+			if(wafFlag.equals("0")){//不是waf
+				m.put("assList", list);
+				m.put("success", true);
+				JSONObject JSON = CommonUtil.objectToJson(response, m);
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			}else{
+				String hostnameRegex ="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
+				boolean flag=false;
+				List assList = new ArrayList();
+				if(list!=null&&list.size()>0){
+					for(int i=0;i<list.size();i++){
+						Asset asset = (Asset)list.get(i);
+						String addr = asset.getAddr();
+						String addInfo = "";
+						//判断http协议
+						if(addr.indexOf("http://")!=-1){
+						  	if(addr.substring(addr.length()-1).indexOf("/")!=-1){
+						  		addInfo = addr.trim().substring(7,addr.length()-1);
+						  	}else{
+						  		addInfo = addr.trim().substring(7,addr.length());
+						  	}
+						}else if(addr.indexOf("https://")!=-1){
+							if(addr.substring(addr.length()-1).indexOf("/")!=-1){
+						  		addInfo = addr.trim().substring(8,addr.length()-1);
+						  	}else{
+						  		addInfo = addr.trim().substring(8,addr.length());
+						  	}
+						}
+						//判断资产地址是否是域名
+						flag=addInfo.matches(hostnameRegex);
+						if(flag){
+							Asset  assetInfo = new Asset();
+							assetInfo.setAddr(asset.getAddr());
+							assetInfo.setId(asset.getId());
+							assetInfo.setName(asset.getName());
+							assetInfo.setIp(asset.getIp());
+							assList.add(assetInfo);
+						}
+					}
+				}
+				m.put("assList", assList);
+				m.put("success", true);
+				JSONObject JSON = CommonUtil.objectToJson(response, m);
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			m.put("success", false);
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			// 把数据返回到页面
+			try {
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
+	}
+    
+	 /**
 	 * 功能描述：购买waf服务
 	 * 参数描述：  无
 	 * add gxy
@@ -117,8 +196,10 @@ public class WafController {
 		request.setAttribute("service", service);
 		request.setAttribute("indexPage", indexPage);
         request.setAttribute("service", service);
+        request.setAttribute("assCount", assList.size());
 	    return  "/source/page/details/wafDetails";
 	}
+	
 	 /**
 	 * 功能描述：判断ip地址是否与域名绑定的一致
 	 * 参数描述：  无
@@ -315,7 +396,7 @@ public class WafController {
           List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
        //查询安全能力API
 		 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
-		 int carnum=shopCarList.size()+apiList.hashCode();
+		 int carnum=shopCarList.size()+apiList.size();
 		 request.setAttribute("carnum", carnum);
 		 
 		   m.put("sucess", true);
@@ -615,12 +696,12 @@ public class WafController {
 		
 		request.setAttribute("assList", assList);
 		request.setAttribute("service", service);
-		
+		request.setAttribute("assCount", assList.size());
   	     //网站安全帮列表
         List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
      //查询安全能力API
 		 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
-		 int carnum=shopCarList.size()+apiList.hashCode();
+		 int carnum=shopCarList.size()+apiList.size();
 		 request.setAttribute("carnum", carnum);
 		 
 	    return  "/source/page/details/wafDetails";

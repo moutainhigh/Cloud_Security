@@ -333,15 +333,7 @@ $(document).ready(function(){
     
   <script>
             $(function() {
-            	//如果当前用户还没有资产，则进入新增资产页面
-            	var AssetCount = $("#AssetCount").val();
-            	if(AssetCount=='0'){
-            		$('#sentwo').show();
-            		$('#senone').hide();
-            	}else{
-            		$('#sentwo').hide();
-            		$('#senone').show();
-            	}
+            	
                 $('.ass').click(function() {
                		$('#saveAsset')[0].reset();		
                     $('#senone').fadeOut(20);
@@ -406,7 +398,7 @@ $(document).ready(function(){
                                 </li>
                                 <li class="clearfix">
                                     <label class="fl">网站地址</label> <div class="fl"><input class="boz_inout_1" type="text" name="addr" id="InertAddr"></div>
-                                    <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetAddr_msg"></div></td>
+                                    <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetAddr_msg"></div>
                                 </li>
                                  <li class="clearfix">
                                     <label class="fl">示例</label> 

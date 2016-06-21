@@ -57,31 +57,6 @@ $(document).ready(function () {
 	    this.length-=1;
 	};
 
-
-
-
-    //选择网站点击效果
-    $('#addhttp').click(function () {
-        //显示遮罩层
-        $('.shade').show();
-        //显示
-        $('.waf-detais-pop').animate({
-            opacity: '1',
-            top: '50%',
-            left: '50%',
-            marginTop: '-224px'
-        }, 500);
-        //alert(arrLink)
-        //关闭后清掉所有内容
-        for(var i=0;i<$('.cek').length;i++){
-            for(var j=0;j<arrLink.length;j++){
-                if(arrLink[j]==$('.cek').eq(i).parent().siblings('b').html()){
-					$('.cek').eq(i).addClass('this');
-                }
-            }
-        }
-		
-    })
     //关闭按钮
     $('#close').click(function () {
         //关闭后效果
