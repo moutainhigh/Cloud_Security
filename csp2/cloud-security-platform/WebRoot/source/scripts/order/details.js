@@ -30,7 +30,7 @@ $(function(){
 	     	success: function(data) {
 		     	if(data.success){
 		     	//如果当前用户没有资产，则进入新增资产页面
-				var assCount = data.list.length;
+				var assCount = data.assList.length;
 				if(assCount!=0){
 					$('#sentwo').fadeOut(20);
 					$('#senone').fadeIn(20);
