@@ -398,8 +398,14 @@ function getRootPath(){
 function changePrice(){
 	//获得选择的月份
 	var month = $('#month').val();
-	var priceVals = 100*month;
-	$("#price").html("¥"+priceVals);
+	
+	var month = $('#month').val();
+	if(month=='-1'){
+		$("#price").html("¥100");
+	}else{
+		var priceVals = 100*month;
+		$("#price").html("¥"+priceVals);
+	}
 }
 
 function saveWafAsset() {
