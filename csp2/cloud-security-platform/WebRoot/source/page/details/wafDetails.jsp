@@ -73,7 +73,6 @@
 	 <input type="hidden" id="timesHidden" value="${times}"/>
 	 <input type="hidden" id="domainNameHidden" value="${domainName}"/>
 	 <input type="hidden" id="ipArrayHidden" value="${ipArray}"/>
-	 <input type="hidden" id="assCountHidden" value="${assCount}">
 		</div>
 		<div class="dataCent">
 			<div class="data-crumbs">

@@ -196,7 +196,6 @@ public class WafController {
 		request.setAttribute("service", service);
 		request.setAttribute("indexPage", indexPage);
         request.setAttribute("service", service);
-        request.setAttribute("assCount", assList.size());
 	    return  "/source/page/details/wafDetails";
 	}
 	
@@ -696,7 +695,6 @@ public class WafController {
 		
 		request.setAttribute("assList", assList);
 		request.setAttribute("service", service);
-		request.setAttribute("assCount", assList.size());
   	     //网站安全帮列表
         List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
      //查询安全能力API
