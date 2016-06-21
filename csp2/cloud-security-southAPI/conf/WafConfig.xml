@@ -112,7 +112,7 @@
 					<trans id="5" name="rule_id" express="Integer.parseInt" />
 					<trans id="6" name="http" express="Base64toString" />
 					<trans id="7" name="alertinfo" express="Base64toString" />
-					<trans id="8" name="characters" express="Base64toString" />
+				<!-- <trans id="8" name="characters" express="Base64toString" />-->
 					<trans id="9" name="count_num" express="Integer.parseInt" />
 					<trans id="10" name="wci" express="Base64toString" />
 					<trans id="11" name="wsi" express="Base64toString" />
@@ -125,7 +125,7 @@
             </WafLog>
 		</Syslog>
 	</SyslogGroup>
-	<SyslogServer serverIP="127.0.0.1" port="5144" threadPoolSize="10" disposeBlockSize="10" packetDisposeMode="Store/Relay">
+	<SyslogServer serverIP="172.16.100.86" port="5144" threadPoolSize="10" disposeBlockSize="10" packetDisposeMode="Store/Relay">
 		<Store>
 			<JdbDriver>com.mysql.jdbc.Driver</JdbDriver>
 			<!-- 部署到186服务器，186数据库
