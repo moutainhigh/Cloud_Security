@@ -397,20 +397,20 @@ public class OrderMgrController {
         
         //后台判断资产是否可用，防止恶意篡改资产
         boolean assetsStatus = false;
-//        if(assetIds!=null&&assetIds!=""){
-//        	String urls = "";
-//	        assetIdArrayAble = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
-//	        for(int i=0;i<assetIdArrayAble.length;i++){
-//	            Asset _asset = assetService.findById(Integer.parseInt(assetIdArrayAble[i]));
-//	            urls = urls + _asset.getAddr() + ",";
+        if(assetIds!=null&&assetIds!=""){
+        	String urls = "";
+	        assetIdArrayAble = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+	        for(int i=0;i<assetIdArrayAble.length;i++){
+	            Asset _asset = assetService.findById(Integer.parseInt(assetIdArrayAble[i]));
+	            urls = urls + _asset.getAddr() + ",";
 //	            int status = _asset.getStatus();
 //	            if(status==0){
 //	                assetsStatus = true;
 //	                break;
 //	            }
-//	        }
-//	        targetURL = urls.split(",");
-//        }
+	        }
+	        targetURL = urls.split(",");
+        }
         m.put("assetsStatus", assetsStatus);
         if(assetsStatus){
             //object转化为Json格式
