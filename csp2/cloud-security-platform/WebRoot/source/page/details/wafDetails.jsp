@@ -270,7 +270,7 @@
                 <li>
                     <div class="rcent">
                         <h3>
-                        <label><input type="radio" name="anquan" class="radio" style="display:none"><i class=""></i></label>
+                        <label onclick='selWafAsset(this)'><input type="radio" name="anquan" class="radio" style="display:none"><i class=""></i></label>
                         	<b>${asset.name }</b>
                          </h3>
                        <div class="tBox">${asset.addr }</div>
@@ -441,10 +441,11 @@ $(document).ready(function(){
 		})
         //弹框切换动作
 		$('.ass').click(function(){
+			$('#saveWafAsset')[0].reset();	
 			$('#senone').hide(1);
 			$('#sentwo').show(1);	
 		})
-		$('.sub').click(function(){
+		$('#back').click(function(){
 			$('#sentwo').hide(1);
 			$('#senone').show(1);	
 		})
@@ -476,24 +477,7 @@ $(document).ready(function(){
 			}
 			$(this).parent('li').remove();	
 		});
-		//显示填写IP的输入框
-		$('.rcent label').click(function(){
-            var bas=$('.basic').length;
-            if(bas==1){
-                //点击单选，显示选中效果         
-               $('#wafBox .waflist').remove();
-               $('#wafBox input:text').val('');
-               
-                $('.hide').show();
-                $('#acIp').show();
-                $('#senone li').removeClass('ac');
-                $('#senone i').removeClass('this');
-                $(this).parents('li').addClass('ac');
-                $(this).children('i').addClass('this');  
-            }else{
-               $('#wafBox span').before('<li class="basic"><input type="text" class="text"></li>') 
-            }
-		});
+
 		$('.submit').click(function(){
 			var acleng =$('#senone .ac').length;
 			var  le;
