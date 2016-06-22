@@ -60,7 +60,7 @@ public class Scheduler4Result {
 		 * 4：开始扫描
 		 * 5：暂停
 		 */
-//		map.put("status", 0);
+		map.put("isAPI", 0);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();//获得系统时间.
         String nowTime = sdf.format(date);
