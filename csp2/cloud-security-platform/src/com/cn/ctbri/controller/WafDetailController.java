@@ -75,7 +75,8 @@ public class WafDetailController {
         if(assets != null && assets.size() > 0){
         	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
         	assetOrder=(HashMap) assets.get(0);
-        	String ipArray=(String) assetOrder.get("ipArray");
+//        	String ipArray=(String) assetOrder.get("ipArray");
+        	String ipArray="219.141.189.183";
         	String[] ips = null;   
             ips = ipArray.split(",");
 //            String websecStr = WafAPIWorker.getWaflogWebsecByIp(ips);
@@ -314,7 +315,7 @@ public class WafDetailController {
 			        String alertinfo = jsonObject.getString("alertinfo");
 			        String proxyInfo = jsonObject.getString("proxyInfo");
 			        String characters = jsonObject.getString("characters");
-			        int countNum = jsonObject.getInt("countNum");
+			        String countNum = jsonObject.getString("countNum");
 			        String protocolType = jsonObject.getString("protocolType");
 			        String wci = jsonObject.getString("wci");
 			        String wsi = jsonObject.getString("wsi");
@@ -405,7 +406,7 @@ public class WafDetailController {
 	        String alertinfo = jsonObject.getString("alertinfo");
 	        String proxyInfo = jsonObject.getString("proxyInfo");
 	        String characters = jsonObject.getString("characters");
-	        int countNum = jsonObject.getInt("countNum");
+	        String countNum = jsonObject.getString("countNum");
 	        String protocolType = jsonObject.getString("protocolType");
 	        String wci = jsonObject.getString("wci");
 	        String wsi = jsonObject.getString("wsi");
