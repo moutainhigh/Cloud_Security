@@ -32,11 +32,11 @@ $(function(){
 		     	//如果当前用户没有资产，则进入新增资产页面
 				var assCount = data.assList.length;
 				if(assCount!=0){
-					$('#sentwo').fadeOut(20);
-					$('#senone').fadeIn(20);
+					$('#senone').hide(1);
+                    $('#sentwo').show(1);
 				}else{
-					$('#senone').fadeOut(20);
-					$('#sentwo').fadeIn(20);	
+					 $('#sentwo').hide(1);
+	                 $('#senone').show(1);
 				}
 		     	}
 	     	},

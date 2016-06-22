@@ -539,12 +539,20 @@ function saveWafAsset() {
 }
 
 function selWafAsset(Obj){
-	//显示填写IP的输入框
-	$('.hide').show();
-	$('#acIp').show();
-	$('#senone li').removeClass('ac');
-	$('#senone i').removeClass('this');
-	$(Obj).parents('li').addClass('ac');
-	$(Obj).children('i').addClass('this');	
-
+	//显示填写IP的输入框	
+	var bas=$('.basic').length;
+    if(bas==1){
+        //点击单选，显示选中效果         
+       $('#wafBox .waflist').remove();
+       $('#wafBox input:text').val('');
+       
+        $('.hide').show();
+        $('#acIp').show();
+        $('#senone li').removeClass('ac');
+        $('#senone i').removeClass('this');
+        $(Obj).parents('li').addClass('ac');
+        $(Obj).children('i').addClass('this');  
+    }else{
+       $('#wafBox span').before('<li class="basic"><input type="text" class="text"></li>') 
+    }
 }
