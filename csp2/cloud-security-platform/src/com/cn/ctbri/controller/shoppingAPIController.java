@@ -307,7 +307,10 @@ public class shoppingAPIController {
             //插入数据到order_list
 		    OrderList ol = new OrderList();
 		    //生成订单id
-		    String  id = String.valueOf(Random.eightcode());
+		    SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+			String orderDate = odf.format(new Date());
+			String id = orderDate+String.valueOf(Random.fivecode());
+//		    String  id = String.valueOf(Random.eightcode());
 		    ol.setId(id);
 		    ol.setCreate_date(new Date());
 		    ol.setOrderId(orderId);
