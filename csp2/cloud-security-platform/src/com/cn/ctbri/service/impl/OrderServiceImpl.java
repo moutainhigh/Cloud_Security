@@ -205,5 +205,8 @@ public class OrderServiceImpl implements IOrderService{
 		// TODO Auto-generated method stub
 		orderDao.delLinkmanByOrderId(orderId);
 	}
+	public List findByOrderListId(String orderListId) {
+		return orderDao.findByOrderListId(orderListId);
+	}
 	
 }

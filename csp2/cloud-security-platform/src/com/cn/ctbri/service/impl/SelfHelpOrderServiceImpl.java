@@ -137,9 +137,9 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 		return selfHelpOrderDao.findBuyShopList(orderId);
 	}
 
-	public void updateOrder(String orderId, String newOrderId,String isAPI,String status) {
+	public void updateOrder(String orderId, String newOrderId,String isAPI,String status,String orderListId) {
 		// TODO Auto-generated method stub
-		selfHelpOrderDao.updateOrder(orderId, newOrderId,isAPI,status);
+		selfHelpOrderDao.updateOrder(orderId, newOrderId,isAPI,status,orderListId);
 	}
 
 	public void updateOrderAPI(String orderId, String newOrderId) {
