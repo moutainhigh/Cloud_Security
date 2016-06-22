@@ -83,7 +83,7 @@ margin: 0 18%;
 		</div>
 <!-- 头部代码结束-->
 		
-		
+		<!-- 
 		<div class="safe02">
 			
 			<div class="imgBox">
@@ -123,31 +123,12 @@ margin: 0 18%;
 			  
 			  </div>
 			</div>
-		</div>
+		</div> -->
+		<!--  start -->
+		<c:import url="http://mp.weixin.qq.com/s?__biz=MzIxNTE4ODQ1Mg==&mid=2649747818&idx=1&sn=81fe2e316f2e91a044fdfc5390f28129&scene=4"></c:import>
+		<!--  end -->
 		
-		<div class="safe03">
-			<div class="imgBox" id="carrousel" style="width: 1190px;">
-				<h2><i></i>合作伙伴<i></i></h2>
-                
-                <div class="friend-Link ">
-                    <div class="left-arrow"><a href="javascript:;"><img src="${ctx}/source/images/portal/left.png"></a></div>
-                    <div class="fl-pic">
-                      <ul class="imgist clearfix">
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico11.png" alt=""></a></li>
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico12.png" alt=""></a></li>
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico13.png" alt=""></a></li>
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico14.png" alt=""></a></li>
-                        <li><a href="#"><img src="${ctx}/source/images/portal/ico15.png" alt=""></a></li>
-                        <!--<li><a href="#"><img src="imges/ico13.png" alt=""></a></li>
-                        <li><a href="#"><img src="imges/ico14.png" alt=""></a></li>
-                        <li><a href="#"><img src="imges/ico15.png" alt=""></a></li>-->
-                      </ul>
-                    </div>
-                    <div class="right-arrow"><a href="javascript:;"><img src="${ctx}/source/images/portal/right.png"></a></div>
-                  </div>
-        
-			</div>
-		</div>
+	
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
