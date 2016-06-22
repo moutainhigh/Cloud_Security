@@ -26,7 +26,6 @@
 
 
 </head>
-
 <body>
 	<div class="safeBox">
 		
@@ -74,7 +73,7 @@
 	 <input type="hidden" id="domainNameHidden" value="${domainName}"/>
 	 <input type="hidden" id="ipArrayHidden" value="${ipArray}"/>
 		</div>
-		<div class="dataCent">
+	<div class="dataCent">
 			<div class="data-crumbs">
 				<a href="#" style="font-size: 20px;">安全帮</a><i>&gt;</i><a href="#">网站安全帮</a><i>&gt;</i><a href="javascript:;">${service.name }</a>
 			</div>
@@ -95,7 +94,7 @@
                             <div class="fl price"><strong style="font-weight: bold;" id="price">¥100</strong><strong></strong></div> 
                           
 						</li>
-                        <li class="clearfix">
+                          <li class="clearfix">
 							<label class="fl">选 择 型</label>
                            <div class="fl clickBox" id="clickBox">
                             <button class="click Single" value="8" onclick="chanageDiv('Single');">包月</button>
@@ -103,7 +102,7 @@
                            </div> 
                            
 						</li>
-                        <li class="clearfix" id="monthDiv" style="display:block;">
+                 <li class="clearfix" id="monthDiv" style="display:block;">
 							<label class="fl">服务时间</label>
                             <div class="fl" style="top:3px;">
                             	<span>开始时间 <input type="text" id="beginDateForMonth" class="text" style="width:156px;" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd',onpicked:function(dp){ }})"></span>
@@ -136,7 +135,7 @@
                                  <!-- <span>结束时间 <input type="text"  id="endDate" style="width:156px;" class="text" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'%y-%M-{%d+1}',minDate:'#F{$dp.$D(\'beginDate\',{d:365})}',dateFmt:'yyyy-MM'})"></span> -->
                            </div> 
 						</li>
-                        	<li class="clearfix waf-datails" style="height:auto">
+                      	<li class="clearfix waf-datails" style="height:auto">
                         	<label class="fl">防护网站</label>
                             <div class="fl" style="top:10px;">
                             	<div class="fl" style="color:#a3a3a3; margin-right:20px;">
@@ -154,6 +153,7 @@
                                         <ul class="fack">
                                         	
                                         </ul>
+                                        
                                     </div>
                                  </div>
                                 <a href="javascript:;" id="waf_http" class="href_btn fl" style="color:#2499fb">点击此处选择网站</a>
@@ -211,7 +211,7 @@
                     </li>
                     <li>
                     	<h2>关于安全帮</h2>
-                        <dl>
+                      <dl>
                         	<dd><a href="${ctx}/knowUs.html">了解安全帮</a></dd>
                             <dd><a href="${ctx}/joinUs.html">加入安全帮</a></dd>
                             <dd><a href="#">联系我们</a></dd>
@@ -236,11 +236,11 @@
 				
 			</div>
 		</div>
-		<!-- 底部 start -->
+			<!-- 底部 start -->
 		<c:import url="/foot.jsp"></c:import>
 		<!-- 底部 end -->
 	</div>
-  <!---执行效果-->
+     <!---执行效果-->
 <div class="weixinshow popBoxhide" id="weixin">
 	<i class="close chide"></i>
     <div class="Pophead">
@@ -264,64 +264,60 @@
     </div>
 	<div class="popBox">
     <!--请选择要服务的网站内容显示-->
-        <div class="centone" id="senone" style="display:none;">
-            <ul style="height:175px;" id="assBox">
+        <div class="centone" id="senone" style="display:none;" >
+             <ul style="height:175px;" id="assBox">
               <c:forEach items="${assList}" var="asset"  varStatus="status">
                 <li>
                     <div class="rcent">
                         <h3>
-                        <label onclick='selWafAsset(this)'><input type="radio" name="anquan" class="radio" style="display:none" value="${asset.id}"><i class=""></i></label>
+                        <label><input type="radio" name="anquan" class="radio" style="display:none"><i class=""></i></label>
                         	<b>${asset.name }</b>
                          </h3>
                        <div class="tBox">${asset.addr }</div>
                     </div>
                 </li>
-                </c:forEach>
-                
+                 </c:forEach>
             </ul>
-           <div class="hide">
-           	 <p style="margin: 20px 0 0px 0">填写域名对应的IP地址，对应多个IP时请逐个添加。</p>
+           <div class="hide" style="position: relative;">
+           	 <p style="margin: 20px 20px 0px 0">填写域名对应的IP:端口号（例：192.168.1.1:8080），不填写端口号默认使用80端口，对应多个ip时请逐个添加
+</p>
                <div class="add_ip clearfix">
                     <ol id="wafBox" class="waf-addBox fl">
-                        <li><input type="text" class="text"></li>
+                        <li class="basic"><input type="text" class="text"></li>
                         <span class="fl" id="acIp"><em><img src="${ctx}/source/images/add.png" alt=""></em>新增IP</span>
                     </ol>
            		</div>
-           
+           		
            </div>
+           <style>
+
+           
+           </style>
            <div class="waf-detailsbtoom clearfix" style="margin-bottom:20px;">
            	<a href="javascript:;" class="submit">确定</a>
            </div>
         </div>
         <!--新增网站内容显示-->
         <div class="centone" id="sentwo" style="display:none;">
-         <form id="saveWafAsset" action="" method="post">
+           <form id="saveWafAsset" action="" method="post">
             <div class="addhttp">
                 <div class="popBox">
                     <ul style="height:auto;">
-                        <li class="clearfix">
-                            <!--<label class="fl">资产名称</label> <div class="fl"><input type="text" class="text"></div>
-                            --><label class="fl">资产名称</label> <div class="fl"><input class="boz_inout_1" type="text" name="name" id="assetName"></div>
+                      <li class="clearfix">
+                          <label class="fl">网站名称</label> <div class="fl"><input class="boz_inout_1" type="text" name="name" id="assetName"></div>
                             <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetName_msg"></div>
                         </li>
-                        <li class="clearfix">
-                            <label class="fl">资产地址类型</label><!-- 
-                            <div class="fl waf-ym">
-                                <label><input class="radio"  style="display:none;" type="radio" name="name"><i></i><b>http</b></label>
-                                <label style="margin-left:10px;"><input class="radio"  style="display:none;" name="name" type="radio"><i></i><b>https</b></label>
-                            </div>
-                             --><div class="fl">
+                      <li class="clearfix">
+                            <label class="fl">网站地址类型</label><div class="fl">
                                 <label><input type="radio" name="addrType" checked="checked" id="assetAddrType1" value="http">http</input></label>
                                 <label style="margin-left:10px;"><input type="radio" name="addrType" id="assetAddrType2" value="https">https</label>
                              </div>
                         </li>
-                        <li class="clearfix"><!--
-                            <label class="fl">资产地址</label> <div class="fl"><input type="text" class="text"></div>
-                        -->
-                        	<label class="fl">资产地址</label> <div class="fl"><input class="boz_inout_1" type="text" name="addr" id="InertAddr"></div>
+                       <li class="clearfix">
+                        	<label class="fl">网站地址</label> <div class="fl"><input class="boz_inout_1" type="text" name="addr" id="InertAddr"></div>
                             <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetAddr_msg"></div>
                         </li>
-                         <li class="clearfix">
+                        <li class="clearfix">
                             <label class="fl">示例</label> 
                             <div class="fl" style="margin-bottom:10px;">                              
                                  <p style="margin:0px;">http://xxx.xxx.xxx.xxx</p>
@@ -343,7 +339,7 @@
                                 </div>
                         </li>
                         <li class="clearfix">
-                            <label class="fl">资产用途</label> 
+                            <label class="fl">网站用途</label> 
                             <div class="fl">
                                        <select class="user_secta_count spiclesel" id="purpose" name="purpose" style="width:242px;height: 35px;">
                                           <option selected="selected" value="-1">请选择资产用途</option>
@@ -362,13 +358,14 @@
              <div class="bottom clearfix">
                         <a href="javascript:;" class="btn sub" style="margin:0 20px 0 30px;" onclick="saveWafAsset()">提交</a>
                         <a href="javascript:;" class="btn sub return" id="back">返回</a>
-             </div>
-             </form>
+                    </div>
+            </form>
         </div>
     </div>
 	<div class="bottom clearfix">
     	<a href="javascript:;" class="btn ok">确定</a>
     </div>
+    
 </div>
 <div class="shade"></div>
 <script>
@@ -377,7 +374,7 @@ $(function(){
 $(document).ready(function(){
 		var arrtlink=[];	
 		$('#waf_http').click(function(){
-		     $.ajax({ type: "POST",
+		 $.ajax({ type: "POST",
 		     	async: false, 
 		     	url: "getAssetList.html",
 		     	data: {"wafFlag":"1"}, 
@@ -387,11 +384,11 @@ $(document).ready(function(){
 				     	//如果当前用户没有资产，则进入新增资产页面
 						var assCount = data.assList.length;
 						if(assCount!=0){
-							$('#sentwo').fadeOut(20);
-							$('#senone').fadeIn(20);
+							$('#sentwo').hide(1);
+							$('#senone').show(1);
 						}else{
-							$('#senone').fadeOut(20);
-							$('#sentwo').fadeIn(20);	
+							$('#senone').hide(1);
+							$('#sentwo').show(1);	
 						}
 			     	}
 		     	},
@@ -437,19 +434,19 @@ $(document).ready(function(){
 			//显示
 			$('.waf-detais-pop').animate({
 				opacity: '1',
-				top: '50%',
+				top: '45%',
 				left: '50%',
 				marginTop: '-224px'
 			}, 500);
 		})
+        //弹框切换动作
 		$('.ass').click(function(){
-			$('#saveWafAsset')[0].reset();	
-			$('#senone').fadeOut(20);
-			$('#sentwo').fadeIn(20);	
+			$('#senone').hide(1);
+			$('#sentwo').show(1);	
 		})
-		$('#back').click(function(){
-			$('#sentwo').fadeOut(20);
-			$('#senone').fadeIn(20);	
+		$('.sub').click(function(){
+			$('#sentwo').hide(1);
+			$('#senone').show(1);	
 		})
 		//添加输入框的动作
 		
@@ -479,59 +476,79 @@ $(document).ready(function(){
 			}
 			$(this).parent('li').remove();	
 		});
-		
-		function waf(){
-			$('#senone label i').removeClass('this');
-			$('#senone input:radio').prop('checked',false);
-			$('#senone li').removeClass('ac');
-			$('.hide').hide();	
-			$('#wafBox .waflist').remove();
-			$('#acIp').show();
-			
-		};
-
+		//显示填写IP的输入框
+		$('.rcent label').click(function(){
+            var bas=$('.basic').length;
+            if(bas==1){
+                //点击单选，显示选中效果         
+               $('#wafBox .waflist').remove();
+               $('#wafBox input:text').val('');
+               
+                $('.hide').show();
+                $('#acIp').show();
+                $('#senone li').removeClass('ac');
+                $('#senone i').removeClass('this');
+                $(this).parents('li').addClass('ac');
+                $(this).children('i').addClass('this');  
+            }else{
+               $('#wafBox span').before('<li class="basic"><input type="text" class="text"></li>') 
+            }
+		});
 		$('.submit').click(function(){
-
 			var acleng =$('#senone .ac').length;
+			var  le;
+            $('#wafBox li input:text').each(function(index, element) {
+                le= $(this).val();
+            });
 			//判断是否什么都没选为空
 			if(acleng==0){
-				alert("请选择")
-					
-			}else{
-				arrtlink.length=0;
-				$('.fack li').remove();
-				//选中的网站地址			
-				var acval=$('#senone .ac .rcent div').text();
-				var assetId = $('#senone .ac .rcent').find('input').val();
-				$('#wafBox input:text').each(function(index, element) {
-					var tval= $(this).val();
-					//存入val值
-					arrtlink.push(tval);
-				});
-				//页面添加网址
-				$('.ym span').text(acval);
-				$('.ym span').attr('id',assetId);
-				var list='';
-				var index=0;
-				for(var i=0;i<arrtlink.length;i++){
-					index++;
-					 list+='<li id='+ index +'><em>ip<b>'+ index +'</b>：</em>'+ arrtlink[i] +'</li>';  
-				}
-				$('.fack').append(list);
-				
-                //显示页面删除和容器标签
-                $('#dele').show();
-                $('.not').hide();
-                $('.http').show();
-				 //关闭后效果
-				$('.waf-detais-pop').animate({
-					opacity: '1',
-					top: '50%',
-					left: '50%',
-					marginTop: '-1200px'
-				}, 500);
-				//隐藏遮罩层
-				$('.shade').hide();
+				alert("请选择网站域名!");	
+			}
+			else if(le==''){
+				alert("IP地址不能为空!");
+
+            }
+			else{
+                //判断输入框是否为空
+               // var inval= $('#wafBox input:text'); 
+                $('#wafBox input:text').each(function(index, element) {
+                        arrtlink.length=0;
+                        $('.fack li').remove();
+                        //选中的网站地址           
+                        var acval=$('#senone .ac .rcent div').text();
+                        $('#wafBox input:text').each(function(index, element) {
+                            var tval= $(this).val();
+                            //存入val值
+                            arrtlink.push(tval);
+                        });
+                        //页面添加网址
+                        $('.ym span').text(acval);
+                        var list='';
+                        var index=0;
+                        for(var i=0;i<arrtlink.length;i++){
+                            index++;
+                             list+='<li id='+ index +'><em>ip<b>'+ index +'</b>：</em>'+ arrtlink[i] +'</li>';  
+                        }
+                        $('.fack').append(list);
+                        
+                        //显示页面删除和容器标签
+                        $('#dele').show();
+                        $('.not').hide();
+                        $('.http').show();
+                         //关闭后效果
+                        $('.waf-detais-pop').animate({
+                            opacity: '1',
+                            top: '50%',
+                            left: '50%',
+                            marginTop: '-1200px'
+                        }, 500);
+                        //隐藏遮罩层
+                        $('.shade').hide();
+                    
+                });
+
+
+
 				
 			}
 			
@@ -563,6 +580,7 @@ $(document).ready(function(){
 		$('#dele').click(function(){
 				arrtlink.length=0;
                 $('#senone .hide .text').val('');
+               
 				$('.ym span').text('');
 				$('.fack li').remove();
 				$('#senone li').removeClass('ac');
@@ -572,22 +590,14 @@ $(document).ready(function(){
                 $(this).hide();
                 $('.http').hide();
                 $('.not').show();
-		})
-	
-	
-	
-	
+		})	
+})	
 })
-	
-	
-	
-})
-
-
-
 </script>
 
 
 </body>
+
+
 
 </html>
