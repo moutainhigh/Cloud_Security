@@ -600,7 +600,8 @@ public class WafController {
 			  //插入数据到order_list
 		    OrderList ol = new OrderList();
 		    //生成订单id
-		     id = String.valueOf(Random.eightcode());
+//		     id = String.valueOf(Random.eightcode());
+			id = orderDate+String.valueOf(Random.fivecode());
 		    ol.setId(id);
 		    ol.setCreate_date(new Date());
 		    ol.setOrderId(orderId);
