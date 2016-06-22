@@ -115,45 +115,53 @@ public class MyOrderController {
         //根据orderId查询task表判断告警是否查看过
         if(orderList != null && orderList.size() > 0){
 	        for(int i = 0; i < orderList.size(); i++){
-	        	int alarmViewedFlag = 1;
-	        	HashMap<String,Object>  map = (HashMap<String,Object>)orderList.get(i);
-	        	Map<String,Object> paramMap = new HashMap<String,Object>();
-	        	String orderId = (String)map.get("id");
-	        	String type = map.get("type").toString();
-	        	paramMap.put("orderId", orderId);
-	        	paramMap.put("type", type);
-	        	List<Task> taskList = taskService.findAllByOrderId(paramMap);
-				if(taskList != null && taskList.size() > 0){
-					for (Task task : taskList) {
-//						if(task.getAlarm_view_flag() != 1 && !task.getIssueCount().equals("0")){
-						if(task.getAlarm_view_flag() != 1 ){
-							alarmViewedFlag = 0;
+	        	
+	        	HashMap<String,Object>  mapOrder = (HashMap<String,Object>)orderList.get(i);
+	        	String orderListId = (String)mapOrder.get("orderListId");
+	        	//根据orderListId查询订单
+	        	List ol = orderService.findByOrderListId(orderListId);
+	        	for(int j = 0; j < ol.size(); j++){
+	        		int alarmViewedFlag = 1;
+		        	HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
+		        	Map<String,Object> paramMap = new HashMap<String,Object>();
+		        	String orderId = (String)map.get("id");
+		        	String type = map.get("type").toString();
+		        	paramMap.put("orderId", orderId);
+		        	paramMap.put("type", type);
+		        	List<Task> taskList = taskService.findAllByOrderId(paramMap);
+					if(taskList != null && taskList.size() > 0){
+						for (Task task : taskList) {
+//							if(task.getAlarm_view_flag() != 1 && !task.getIssueCount().equals("0")){
+							if(task.getAlarm_view_flag() != 1 ){
+								alarmViewedFlag = 0;
+							}
 						}
 					}
-				}
-				map.put("alarmViewedFlag", alarmViewedFlag);
-				
-				
-				//获取对应资产 add by tangxr 2016-4-25
-		        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
-		        map.put("assetList", assetList);
+					map.put("alarmViewedFlag", alarmViewedFlag);
+					
+					
+					//获取对应资产 add by tangxr 2016-4-25
+			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
+			        map.put("assetList", assetList);
+	        	}
+	        	mapOrder.put("order", ol);
 	        }
         }
         
         //查询orderList表
         /*Map<String, Object> param = new HashMap<String, Object>();
         param.put("userId", globle_user.getId());
+        //查订单消费记录
     	List ol = orderListService.getPayRecord(param);
     	if(ol != null && ol.size() > 0){
     		for(int i = 0; i < ol.size(); i++){
-    			Object olBean = ol.get(i);
     			HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(i);
     			//获取ids
     			String orderIds = (String) map.get("orderId");
     			if(orderIds!=null&&!"".equals(orderIds)){
     				String strArray[] = orderIds.split(",");
     				for (int m=0;m<strArray.length;m++){
-    					Order o = orderService.findOrderById(strArray[i]);
+    					Order o = orderService.findOrderById(strArray[m]);
     					map.put("o", o);
     				}
     			}
@@ -246,25 +254,32 @@ public class MyOrderController {
         //根据orderId查询task表判断告警是否查看过
         if(result != null && result.size() > 0){
 	        for(int i = 0; i < result.size(); i++){
-	        	int alarmViewedFlag = 1;
-	        	HashMap<String,Object>  map = (HashMap<String,Object>)result.get(i);
-	        	Map<String,Object> paramMap1 = new HashMap<String,Object>();
-	        	String orderId = (String)map.get("id");
-	        	String type1 = map.get("type").toString();
-	        	paramMap.put("orderId", orderId);
-	        	paramMap.put("type", type1);
-	        	List<Task> taskList = taskService.findAllByOrderId(paramMap1);
-				if(taskList != null && taskList.size() > 0){
-					for (Task task : taskList) {
-						if(task.getAlarm_view_flag() != 1 && !task.getIssueCount().equals("0")){
-							alarmViewedFlag = 0;
+	        	HashMap<String,Object>  mapOrder = (HashMap<String,Object>)result.get(i);
+	        	String orderListId = (String)mapOrder.get("orderListId");
+	        	//根据orderListId查询订单
+	        	List ol = orderService.findByOrderListId(orderListId);
+	        	for(int j = 0; j < ol.size(); j++){
+	        		int alarmViewedFlag = 1;
+		        	HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
+		        	Map<String,Object> paramMap1 = new HashMap<String,Object>();
+		        	String orderId = (String)map.get("id");
+		        	String type1 = map.get("type").toString();
+		        	paramMap.put("orderId", orderId);
+		        	paramMap.put("type", type1);
+		        	List<Task> taskList = taskService.findAllByOrderId(paramMap1);
+					if(taskList != null && taskList.size() > 0){
+						for (Task task : taskList) {
+							if(task.getAlarm_view_flag() != 1 && !task.getIssueCount().equals("0")){
+								alarmViewedFlag = 0;
+							}
 						}
 					}
-				}
-				map.put("alarmViewedFlag", alarmViewedFlag);
-				//获取对应资产 add by tangxr 2016-4-25
-		        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
-		        map.put("assetList", assetList);
+					map.put("alarmViewedFlag", alarmViewedFlag);
+					//获取对应资产 add by tangxr 2016-4-25
+			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
+			        map.put("assetList", assetList);
+	        	}
+	        	mapOrder.put("order", ol);
 	        }
         }
         
@@ -340,25 +355,32 @@ public class MyOrderController {
         //根据orderId查询task表判断告警是否查看过
         if(result != null && result.size() > 0){
 	        for(int i = 0; i < result.size(); i++){
-	        	int alarmViewedFlag = 1;
-	        	HashMap<String,Object>  map = (HashMap<String,Object>)result.get(i);
-	        	Map<String,Object> paramMap1 = new HashMap<String,Object>();
-	        	String orderId = (String)map.get("id");
-	        	String type1 = map.get("type").toString();
-	        	paramMap.put("orderId", orderId);
-	        	paramMap.put("type", type1);
-	        	List<Task> taskList = taskService.findAllByOrderId(paramMap1);
-				if(taskList != null && taskList.size() > 0){
-					for (Task task : taskList) {
-						if(task.getAlarm_view_flag() != 1 && !task.getIssueCount().equals("0")){
-							alarmViewedFlag = 0;
+	        	HashMap<String,Object>  mapOrder = (HashMap<String,Object>)result.get(i);
+	        	String orderListId = (String)mapOrder.get("orderListId");
+	        	//根据orderListId查询订单
+	        	List ol = orderService.findByOrderListId(orderListId);
+	        	for(int j = 0; j < ol.size(); j++){
+	        		int alarmViewedFlag = 1;
+		        	HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
+		        	Map<String,Object> paramMap1 = new HashMap<String,Object>();
+		        	String orderId = (String)map.get("id");
+		        	String type1 = map.get("type").toString();
+		        	paramMap.put("orderId", orderId);
+		        	paramMap.put("type", type1);
+		        	List<Task> taskList = taskService.findAllByOrderId(paramMap1);
+					if(taskList != null && taskList.size() > 0){
+						for (Task task : taskList) {
+							if(task.getAlarm_view_flag() != 1 && !task.getIssueCount().equals("0")){
+								alarmViewedFlag = 0;
+							}
 						}
 					}
-				}
-				map.put("alarmViewedFlag", alarmViewedFlag);
-				//获取对应资产 add by tangxr 2016-4-25
-		        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
-		        map.put("assetList", assetList);
+					map.put("alarmViewedFlag", alarmViewedFlag);
+					//获取对应资产 add by tangxr 2016-4-25
+			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
+			        map.put("assetList", assetList);
+	        	}
+	        	mapOrder.put("order", ol);
 	        }
         }
         
