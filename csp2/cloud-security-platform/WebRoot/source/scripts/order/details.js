@@ -31,12 +31,12 @@ $(function(){
 		     	if(data.success){
 		     	//如果当前用户没有资产，则进入新增资产页面
 				var assCount = data.assList.length;
-				if(assCount!=0){
-					$('#senone').hide(1);
-                    $('#sentwo').show(1);
-				}else{
+				if(assCount!='0'){
 					 $('#sentwo').hide(1);
 	                 $('#senone').show(1);
+				}else{
+					$('#senone').hide(1);
+                    $('#sentwo').show(1);
 				}
 		     	}
 	     	},
