@@ -336,12 +336,12 @@ $(document).ready(function(){
             	
                 $('.ass').click(function() {
                		$('#saveAsset')[0].reset();		
-                    $('#senone').fadeOut(20);
-                    $('#sentwo').fadeIn(20);
+                    $('#senone').hide(1);
+                    $('#sentwo').show(1);
                 });
                 $('#back').click(function() {
-                    $('#sentwo').fadeOut(20);
-                    $('#senone').fadeIn(20);
+                    $('#sentwo').hide(1);
+                    $('#senone').show(1);
                 });
 
 
