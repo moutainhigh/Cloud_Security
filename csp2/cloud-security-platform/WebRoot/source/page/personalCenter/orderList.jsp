@@ -9,16 +9,17 @@
 	response.setDateHeader("Expires", -10); 
 %>
 
-        <c:forEach var="list" items="${orderList}" varStatus="status">
+        <c:forEach var="olist" items="${orderList}" varStatus="status">
            <div class="mnlist">
         	<div class="tablist-head clearfix">
-            	<span class="fl">订单编号：${list.id }</span>
-                <span class="fr" style="padding-right:20px;">下单时间：<fmt:formatDate value="${list.create_date}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+            	<span class="fl">订单编号：${olist.orderListId }</span>
+                <span class="fr" style="padding-right:20px;">下单时间：<fmt:formatDate value="${olist.create_date}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
             </div>
         
             <div class="tabList">
             	<table cellpadding="0" cellspacing="0">
                 	<tbody>
+                		<c:forEach var="list" items="${olist.order}" varStatus="status">
                     	<tr valign="middle" align="center">
                         	<td class="order">
                             	<div class="fl htd" style="width:207px; padding-left:90px;">
@@ -74,7 +75,7 @@
                         	
                             </td>
                             <td class="order" valign="top">
-                            	 <p style="width:160px; height:auto; line-height:24px; margin-top:33px;" class="stylep">0.00</p>
+                            	 <p style="width:160px; height:auto; line-height:24px; margin-top:33px;" class="stylep">${list.price}</p>
                         		<!-- <p style="width:160px;height:auto;"><em>(使用优惠劵999.00)</em></p> -->
                             </td>
                              <td class="order" valign="top">
@@ -155,6 +156,7 @@
 								</p>
                             </td>
                         </tr>
+                        </c:forEach>
                     
                     </tbody>
                 
