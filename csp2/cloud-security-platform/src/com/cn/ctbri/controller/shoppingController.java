@@ -655,7 +655,10 @@ public class shoppingController {
 			  //插入数据到order_list
 		    OrderList ol = new OrderList();
 		    //生成订单id
-		    id = String.valueOf(Random.eightcode());
+//		    id = String.valueOf(Random.eightcode());
+			SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+			String orderDate = odf.format(new Date());
+			id = orderDate+String.valueOf(Random.fivecode());
 		    ol.setId(id);
 		    ol.setCreate_date(new Date());
 		    ol.setUserId(globle_user.getId());
@@ -1384,15 +1387,16 @@ public class shoppingController {
 //    						SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
 //    						String orderDate = odf.format(new Date());
 //    						orderId = orderDate+String.valueOf(Random.fivecode());
-    						orderId = shopCar.getOrderId();
-    						orderVal = orderVal+ orderId+",";
+////    						orderId = shopCar.getOrderId();
+//    						orderVal = orderVal+ orderId+",";
     						
     						//创建waf虚拟站点,modify by tangxr 2016-6-13
-    						List assets = orderAssetService.findAssetsByOrderId(orderId);
+    						List assets = orderAssetService.findAssetsByOrderId(shopCar.getOrderId());
     						HashMap<String, Object> assetOrder = new HashMap<String, Object>();
 				        	assetOrder=(HashMap) assets.get(0);
 				        	int id = 0;
 				        	String addr = "";
+				        	String addrName = "";
 				        	String wafIp = "219.141.189.183";
 				        	String wafPort = "";
     						JSONArray ser = new JSONArray();
@@ -1400,6 +1404,7 @@ public class shoppingController {
     							String ipArray=(String) assetOrder.get("ipArray");
     				        	id = (Integer) assetOrder.get("orderAssetId");
     				        	addr=(String) assetOrder.get("addr");
+    				        	addrName=(String) assetOrder.get("name");
     				        	String[] addrs = addr.split(":");
     				        	if(addrs[0].length()==5){
     				        		addr = addr.substring(8);
@@ -1417,21 +1422,31 @@ public class shoppingController {
     	    						ser.add(jo);
     				            }
     				        }
-    						String wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", shopCar.getOrderId(), wafIp, wafPort, "nsfocus.cer", "0", addr, "*", "", ser);
+    						//时间戳
+    						String timestamp = String.valueOf(new Date().getTime());
+    						addrName = addrName + timestamp;
+    						String wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", addrName, wafIp, wafPort, "nsfocus.cer", "0", addr, "*", "", ser);
     						String targetKey = "";
     				    	try {
     				    		JSONObject obj = JSONObject.fromObject(wafcreate);
     				    		targetKey = obj.getString("targetKey"); 
     				    		String sta = obj.getString("status");
+//    				    		String sta = "success";
     				    		if(sta.equals("success")){
     				    			OrderAsset oa = new OrderAsset();
         				    		oa.setId(id);
         				    		oa.setTargetKey(targetKey);
         				    		orderAssetService.update(oa);
         				    		
-            						orderId = shopCar.getOrderId();
+        				    		SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+            						String orderDate = odf.format(new Date());
+            						orderId = orderDate+String.valueOf(Random.fivecode());
+            						orderVal = orderVal+ orderId+",";
+    				    		}else{
+    				    			orderId = "";
     				    		}
     				        } catch (Exception e) {
+    				        	orderId = "";
     				            e.printStackTrace();
     				        }
     						//end
@@ -1447,7 +1462,8 @@ public class shoppingController {
     					//更新订单资产表
     					selfHelpOrderService.updateOrderAsset(shopCar.getOrderId(), orderId);
     					//更新订单表
-    					selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "0",status);
+//    					selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "0",status);
+    					selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, String.valueOf(shopCar.getIsAPI()),status,orderList.getId());
     					//更新 修改时间的订单Id
     					if (modifyOrderId.contains(shopCar.getOrderId())){
     						modifyOrderId.remove(shopCar.getOrderId());
@@ -1497,7 +1513,7 @@ public class shoppingController {
     							shopCar.getOrderId(), orderId);
     					// 更新订单表
     					selfHelpOrderService.updateOrder(shopCar.getOrderId(),
-    							orderId, "1",status);
+    							orderId, "1",status,orderList.getId());
     					//更新 修改时间的订单Id
     					if (modifyOrderId.contains(shopCar.getOrderId())){
     						modifyOrderId.remove(shopCar.getOrderId());
