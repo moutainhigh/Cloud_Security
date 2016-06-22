@@ -161,13 +161,14 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		return this.getSqlSession().selectList(ns + "findBuyShopList",map);
 	}
 
-	public void updateOrder(String orderId, String newOrderId,String isAPI,String status) {
+	public void updateOrder(String orderId, String newOrderId,String isAPI,String status,String orderListId) {
 		// TODO Auto-generated method stub
 		Map map = new HashMap();
 		map.put("orderId", orderId);
 		map.put("newOrderId", newOrderId);
 		map.put("isAPI", isAPI);
 		map.put("status", status);
+		map.put("orderListId", orderListId);
 		this.getSqlSession().update(ns+"updateOrder",map);
 	}
 

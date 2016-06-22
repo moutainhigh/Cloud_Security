@@ -256,4 +256,9 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 		// TODO Auto-generated method stub
 		this.getSqlSession().delete(ns+"delLinkmanByOrderId",orderId);
 	}
+
+	public List findByOrderListId(String orderListId) {
+		List list = this.getSqlSession().selectList(ns + "findByOrderListId",orderListId);
+        return list;
+	}
 }
