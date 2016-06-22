@@ -701,11 +701,18 @@ public class UserController{
         if(orderList != null && orderList.size() > 0){
         	//个人中心显示前两条订单信息
 	        for(int i = 0; i < orderList.size(); i++){
-				//获取对应资产 add by tangxr 2016-4-25
-	        	HashMap<String,Object>  map = (HashMap<String,Object>)orderList.get(i);
-	        	String orderId = (String)map.get("id");
-		        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
-		        map.put("assetList", assetList);
+	        	HashMap<String,Object>  mapOrder = (HashMap<String,Object>)orderList.get(i);
+	        	String orderListId = (String)mapOrder.get("orderListId");
+	        	//根据orderListId查询订单
+	        	List ol = orderService.findByOrderListId(orderListId);
+	        	for(int j = 0; j < ol.size(); j++){
+	        		//获取对应资产 add by tangxr 2016-4-25
+		        	HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
+		        	String orderId = (String)map.get("id");
+			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
+			        map.put("assetList", assetList);
+	        	}
+	        	mapOrder.put("order", ol);
 	        }
         }	
         
