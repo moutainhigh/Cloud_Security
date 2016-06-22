@@ -1390,6 +1390,13 @@ public class shoppingController {
 ////    						orderId = shopCar.getOrderId();
 //    						orderVal = orderVal+ orderId+",";
     						
+    						
+    						
+    						Date afterDay = DateUtils.getAfterDate(new Date(),1);
+    						SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+    						if(shopCar.getBeginDate().compareTo(afterDay)>0){
+    							
+    						}
     						//创建waf虚拟站点,modify by tangxr 2016-6-13
     						List assets = orderAssetService.findAssetsByOrderId(shopCar.getOrderId());
     						HashMap<String, Object> assetOrder = new HashMap<String, Object>();
