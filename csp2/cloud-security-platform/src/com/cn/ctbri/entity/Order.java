@@ -34,6 +34,9 @@ public class Order {
 	private int payFlag;//是否结算
 	private int isAPI;
 	private double price;//价格
+	//add by tangxr
+	private String orderListId;//orderlistid
+	//end
 	public String getBegin_datevo() {
 		return begin_datevo;
 	}
@@ -172,6 +175,12 @@ public class Order {
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	public String getOrderListId() {
+		return orderListId;
+	}
+	public void setOrderListId(String orderListId) {
+		this.orderListId = orderListId;
 	}
 	
 }

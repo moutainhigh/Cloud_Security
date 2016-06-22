@@ -263,7 +263,10 @@ WHERE a.id = b.orderId
 	 </if>
 	 
 	 <if test="status!=''">
-	   o.status = #{status}
+	   o.status = #{status},
+	 </if>
+	 <if test="orderListId!=''">
+	   o.orderListId = #{orderListId}
 	 </if>
  </set>
  WHERE o.isAPI=#{isAPI} AND o.id=#{orderId}

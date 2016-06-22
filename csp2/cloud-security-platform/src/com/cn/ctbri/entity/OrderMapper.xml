@@ -56,12 +56,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <!-- select o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI
         from cs_order o,cs_service s
         where o.userId = #{userId} and o.serviceId = s.id -->
-        select o.id,o.type,o.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI,o.package_type,o.num from
-		(select o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI, 0 as package_type,0 as num,o.delFlag
+        select o.id,o.type,o.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI,o.package_type,o.num,o.price,o.orderListId from
+		(select o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI, 0 as package_type,0 as num,o.delFlag,o.price,ifnull(o.orderListId,o.id) as orderListId
 		        from cs_order o,cs_service s
-		        where o.userId = #{userId} and o.serviceId = s.id and isAPI in(0,2) 
+		        where o.userId = #{userId} and o.serviceId = s.id and isAPI in(0,2)
 		union
-		select o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI,oa.package_type,oa.num,o.delFlag
+		select o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI,oa.package_type,oa.num,o.delFlag,o.price,ifnull(o.orderListId,o.id) as orderListId
 		        from cs_order o,cs_service_api s,cs_order_api oa
 		        where o.userId = #{userId} and o.serviceId = s.id and isAPI = 1 and oa.id = o.id) o
         where 1=1
@@ -81,10 +81,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <!-- and ISNULL(o.delFlag)  -->
         and o.delFlag != 1
         and	o.payFlag = 1
+        group by o.orderListId
         order by o.create_date desc 
         <if test="pageIndex!=-1"><!--服务中  -->
         	limit #{pageNow},#{pageSize}
         </if>
+    </select>
+    
+    <!-- 根据OrderListId查询记录 -->
+    <select id="findByOrderListId" resultType="hashmap" parameterType="String">
+        select o.id,o.type,o.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI,o.package_type,o.num,o.price,o.orderListId from
+		(select o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI, 0 as package_type,0 as num,o.delFlag,o.price,ifnull(o.orderListId,o.id) as orderListId
+		        from cs_order o,cs_service s
+		        where o.orderListId = #{orderListId} and o.serviceId = s.id and isAPI in(0,2)
+		union
+		select o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI,oa.package_type,oa.num,o.delFlag,o.price,ifnull(o.orderListId,o.id) as orderListId
+		        from cs_order o,cs_service_api s,cs_order_api oa
+		        where o.orderListId = #{orderListId} and o.serviceId = s.id and isAPI = 1 and oa.id = o.id) o
+        where 1=1
+        
+        <!-- and ISNULL(o.delFlag)  -->
+        and o.delFlag != 1
+        and	o.payFlag = 1
+        order by o.create_date desc 
+        
     </select>
 	<!-- 条件查询 -->
 	<!-- SELECT c.id,c.type,c.name,c.begin_date,c.end_date,c.create_date
