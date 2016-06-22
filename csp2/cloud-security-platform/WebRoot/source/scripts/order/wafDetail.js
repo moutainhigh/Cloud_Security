@@ -416,34 +416,34 @@ function saveWafAsset() {
      var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
 	//获取选中的radio的值
     if(assetName == null || assetName == ""){
-		$("#assetName_msg").html("请输入资产名称");
+		$("#assetName_msg").html("请输入网站名称");
 	}else if(patrn.test(assetName)){
-		$("#assetName_msg").html("您输入的资产名称含有非法字符");
+		$("#assetName_msg").html("您输入的网站名称含有非法字符");
 	}else if(assetName.length>25){
-		$("#assetName_msg").html("资产名称长度不能超过25个字符！");
+		$("#assetName_msg").html("网站名称长度不能超过25个字符！");
 	}else if(patrn.test(assetAddr)){
-		$("#assetAddr_msg").html("您输入的资产地址含有非法字符");
+		$("#assetAddr_msg").html("您输入的网站地址含有非法字符");
 	}else if(assetAddr==null || assetAddr == ""){
 			$("#assetName_msg").html("");
-			$("#assetAddr_msg").html("请输入资产地址");
+			$("#assetAddr_msg").html("请输入网站地址");
 	}else if(assetAddr.length>50){
 			 $("#assetName_msg").html("");
-			 $("#assetAddr_msg").html("资产地址长度不能超过50个字符！");
+			 $("#assetAddr_msg").html("网站地址长度不能超过50个字符！");
 	}else if(assetAddr.indexOf("gov.cn")!=-1){
 		   $("#assetName_msg").html("");
-		   $("#assetAddr_msg").html("输入资产地址不能包含'gov.cn'！");
+		   $("#assetAddr_msg").html("输入网站地址不能包含'gov.cn'！");
 	}else if((addrType.length==4 && assetAddr.substring(0,5)=='https') || (addrType.length==5 && assetAddr.substring(0,5)=='http:')){
 		$("#assetName_msg").html("");
-		$("#assetAddr_msg").html("资产类型与资产地址填写不一致!");
+		$("#assetAddr_msg").html("网站类型与网站地址填写不一致!");
 	}else if(prov == -1){
 		$("#assetName_msg").html("");
 		$("#assetAddr_msg").html("");
-		$("#location_msg").html("请选择资产所在物理地址！");
+		$("#location_msg").html("请选择网站所在物理地址！");
 	}else if(purpose==-1){
 		$("#assetName_msg").html("");
 		$("#assetAddr_msg").html("");
 		$("#location_msg").html("");
-		$("#assetUsage_msg").html("请选择资产用途！");
+		$("#assetUsage_msg").html("请选择网站用途！");
 	}else{
 		$("#assetName_msg").html("");
 		$("#assetAddr_msg").html("");
@@ -457,10 +457,10 @@ function saveWafAsset() {
 		        dataType:"json",
 		        success: function(data){
 		            if(data.msg=='1'){
-		            	$("#assetName_msg").html("资产名称重复!");
+		            	$("#assetName_msg").html("网站名称重复!");
 		            }else if(data.msg=='2'){
 		            	$("#assetName_msg").html("");
-		            	$("#assetAddr_msg").html("资产地址重复!");
+		            	$("#assetAddr_msg").html("网站地址重复!");
 		            }else{
 		            	$("#assetName_msg").html("");
 		            	$("#assetAddr_msg").html("");
@@ -513,7 +513,7 @@ function saveWafAsset() {
 		    				 			                $('#senone').fadeIn(20);
 		    				 						}else{
 		    				 							if(!data.wafFlag){
-		    				 								alert("资产地址不是域名,请填写域名!");
+		    				 								alert("网站地址不是域名,请填写域名!");
 		    				 							}else{
 			    				 							alert("添加失败!");
 		    				 							}
