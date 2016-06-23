@@ -114,6 +114,11 @@ public class SchedulerWaf {
 		    		oa.setId(id);
 		    		oa.setTargetKey(targetKey);
 		    		orderAssetService.update(oa);
+		    		
+		    		//5 下发到waf，但未解析域名
+	    			order.setId(order.getId());
+	    			order.setStatus(5);
+	    			orderService.update(order);
 	    		}
 	        } catch (Exception e) {
 	            e.printStackTrace();
