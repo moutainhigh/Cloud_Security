@@ -143,51 +143,39 @@ $(function(){
     	  alert("请选择网站!");
       	  return false;
       }
-      //循环判断ip地址
-      var isTrue = ipVal.split(',').every(function(ip){
-		  return isIp(ip);//先将字符串按照逗号分成数组，在校验就可以了
-		});
-        if(!isTrue){
-        	alert("IP地址输入无效，请输入正确的IP地址!");
-        	return false;
-        }
-        if(isTrue){
-        	$.ajax({ type: "POST",
-		     async: false, 
-		     url: "VerificationIP.html",
-		     data: {"ipVal":ipVal,
-        		    "domainName":domainName}, 
-		     dataType: "json", 
-		     success: function(data) {
-    			   		 if(!data.flag){
-    			   			 alert("输入域名对应IP地址与绑定的域名IP地址不一致!输入的错误ip地址是："+data.errorIp);
-    			   		 }else{
-    			   			$.ajax({ type: "POST",
-	    			   		     async: false, 
-	    			   		     url: "getSession.html", 
-	    			   		     dataType: "json", 
-	    			   		     success: function(data) {
-	    			   		    	 window.location.href="buyNowWafUI.html?type="+2+"&beginDate="+beginDate+"&timeswaf="+times+"&scanType="+scanType+"&serviceId="+serviceId+
-	    			   		    	 "&domainName="+domainName+"&domainId="+domainId+"&price="+price+"&ipArray="+ipVal;
-	    			   		    	 }, 
-	    			   		     error: function(data){ 
-	    			   		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-	    			   		    		 window.location.href = "loginUI.html"; } 
-	    			   		    	 else { window.location.href = "loginUI.html"; } } 
-    			   			});
-    			   		 }
-    			   			
-    			   	
-		    	 }, 
-		     error: function(data){ 
-		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-		    		 window.location.href = "loginUI.html"; } 
-		    	 else { window.location.href = "loginUI.html"; } } 
-		});
 
-        }
-         
-     });
+    	$.ajax({ type: "POST",
+	     async: false, 
+	     url: "VerificationIP.html",
+	     data: {"ipVal":ipVal,
+    		    "domainName":domainName}, 
+	     dataType: "json", 
+	     success: function(data) {
+	   		 if(!data.flag){
+	   			 alert("输入域名对应IP地址与绑定的域名IP地址不一致!输入的错误ip地址是："+data.errorIp);
+	   		 }else{
+	   			$.ajax({ type: "POST",
+		   		     async: false, 
+		   		     url: "getSession.html", 
+		   		     dataType: "json", 
+		   		     success: function(data) {
+		   		    	 window.location.href="buyNowWafUI.html?type="+2+"&beginDate="+beginDate+"&timeswaf="+times+"&scanType="+scanType+"&serviceId="+serviceId+
+		   		    	 "&domainName="+domainName+"&domainId="+domainId+"&price="+price+"&ipArray="+ipVal;
+		   		    	 }, 
+		   		     error: function(data){ 
+		   		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+		   		    		 window.location.href = "loginUI.html"; } 
+		   		    	 else { window.location.href = "loginUI.html"; } } 
+	   			});
+	   		 }
+	     }, 
+	     error: function(data){ 
+	    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+	    		 window.location.href = "loginUI.html"; } 
+	    	 else { window.location.href = "loginUI.html"; } } 
+	});
+     
+ });
    
     $('#settlementWaf').click(function(){
 
