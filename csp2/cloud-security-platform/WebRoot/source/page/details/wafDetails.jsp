@@ -270,7 +270,7 @@
                 <li>
                     <div class="rcent">
                         <h3>
-                        <label onclick='selWafAsset(this)'><input type="radio" name="anquan" class="radio" style="display:none"><i class=""></i></label>
+                        <label onclick='selWafAsset(this)'><input type="radio" name="anquan" class="radio" style="display:none" value="${asset.id}"><i class=""></i></label>
                         	<b>${asset.name }</b>
                          </h3>
                        <div class="tBox">${asset.addr }</div>
@@ -500,13 +500,16 @@ $(document).ready(function(){
                         $('.fack li').remove();
                         //选中的网站地址           
                         var acval=$('#senone .ac .rcent div').text();
+                        var assetId = $('#senone .ac .rcent').find('input').val();
                         $('#wafBox input:text').each(function(index, element) {
                             var tval= $(this).val();
                             //存入val值
                             arrtlink.push(tval);
                         });
                         //页面添加网址
-                        $('.ym span').text(acval);
+                        $('.ym span').text(acval);                       
+						$('.ym span').attr('id',assetId);
+						
                         var list='';
                         var index=0;
                         for(var i=0;i<arrtlink.length;i++){
