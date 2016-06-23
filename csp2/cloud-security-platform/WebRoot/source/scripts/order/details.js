@@ -55,11 +55,15 @@ $(function(){
             left: '50%',
             marginTop: '-224px'
         }, 500);
-        //alert(arrLink)
-        //关闭后清掉所有内容
+
+        //资产被选中
+        var arrlist = [];
+    	$('.httpBox li').each(function(index, element) {
+            arrlist.push($(this).attr("assetId"));
+        });
         for(var i=0;i<$('.cek').length;i++){
-            for(var j=0;j<arrLink.length;j++){
-                if(arrLink[j]==$('.cek').eq(i).parent().siblings('b').html()){
+            for(var j=0;j<arrlist.length;j++){
+                if(arrlist[j]==$('.cek').eq(i).prev().val()){
 					$('.cek').eq(i).addClass('this');
                 }
             }
