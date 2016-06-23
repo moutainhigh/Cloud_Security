@@ -399,8 +399,15 @@ $(document).ready(function(){
 		    	 	else { window.location.href = "loginUI.html"; } 
 		    	 	} 
 		  });
-		
-			if(arrtlink.length!=0){
+		  
+		    var ipList = [];
+			$('.fack li').each(function(index, element) {
+				var ip= $(this).contents().filter(function() { return this.nodeType == 3; }).text(); 
+				if(ip!=null && ip!=''){
+					ipList.push(ip);
+				}		
+			});
+			if(ipList.length!=0){
 			//恢复输入框填写状态
 			$('#wafBox li').remove();
 			//恢复列表选中状态
@@ -418,16 +425,15 @@ $(document).ready(function(){
 			//添加输入框的动作
 			var list='';
 				var index=1;
-				//alert(arrLink)
-				for(var i=0;i<arrtlink.length;i++){
+				for(var i=0;i<ipList.length;i++){
 					index++;
 					 list+='<li class="waflist">';
-					list+='<input type="text" class="text" data-id='+arrtlink[i] +' value="'+ arrtlink[i]+'">';
+					list+='<input type="text" class="text" data-id='+ipList[i] +' value="'+ ipList[i]+'">';
 					list+='<i><img src="${ctx}/source/images/p-dle.png" alt=""></i>';
 					list+='</li>';  
 				}
 				$('#wafBox span').before(list);
-				
+				$('.hide').show();
 			}
 			
 			//显示遮罩层
