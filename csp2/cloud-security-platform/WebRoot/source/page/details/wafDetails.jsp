@@ -71,6 +71,7 @@
 	 <input type="hidden" id="beginDateHidden" value="${beginDate}"/>
 	 <input type="hidden" id="timesHidden" value="${times}"/>
 	 <input type="hidden" id="domainNameHidden" value="${domainName}"/>
+	 <input type="hidden" id="domainIdHidden" value="${domainId}"/>
 	 <input type="hidden" id="ipArrayHidden" value="${ipArray}"/>
 		</div>
 	<div class="dataCent">

@@ -59,22 +59,31 @@ $(document).ready(function(){
     		}
 		});
 	}
-	
+	//回显选中的资产
 	var assetIds = $("#assetIds").val();
-	var assetAddr = $("#assetAddr").val();
+	var assetNames = $("#assetNames").val();
 	
-	$('.btnNew em').html(assetAddr);
-	var res = assetIds.split(",");
-    for(var n=0;n<res.length-1;n++){	
-    	$('.dropdown-menu li').each(function(){
-			var ck=$(this).find('input');
-			var id=$(this).find('input').attr('id');
-			if(res[n]==id){
-				$(ck).attr("checked",true);
-				$('.btnNew em').before('<i id='+ res[n] +'></i>');
-			}
-		})
-    }
+	var arrLink = assetNames.split(',');	
+	var arrId = assetIds.split(',');
+	
+	$('.gt').hide();
+	$('.httpBox').show();
+	var list='';
+	var index=0;
+	for(var i=0;i<arrLink.length;i++){
+		 index++;
+		 if(arrId[i]!=null&&arrId[i]!=''&&arrLink[i]!=null&&arrLink[i]!=''){
+		 	list+="<li id="+ index +" assetId='"+arrId[i]+"'>"+ arrLink[i] +"<i></i></li>";  
+		 }		 
+	}
+	
+	$('.httpBox').append(list);
+	
+	var tleng= $('.httpBox li').length;
+	if(tleng==0){
+		$('.gt').show();		
+	}
+
     $("#price").html("¥"+"${price}");
     
 });
@@ -139,6 +148,7 @@ $(document).ready(function(){
 		<input type="hidden" id="scanType" value="${scanType }"/>
 		<input type="hidden" id="assetIds" value="${assetIds }"/>
 		<input type="hidden" id="assetAddr" value="${assetAddr }"/>
+		<input type="hidden" id="assetNames" value="${assetNames }"/>
 		<input type="hidden" id="timesHidden" value=""/>
 		<input type="hidden" id="begin" value="<%=str_date%>"/>
 		<!-- 资产个数 -->

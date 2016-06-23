@@ -130,8 +130,8 @@ $(function(){
 
       //ip地址
         var Ipval="";
-		$('#wafBox input:text').each(function(index, element) {
-			var ip= $(this).val();
+		$('.fack li').each(function(index, element) {
+			var ip= $(this).contents().filter(function() { return this.nodeType === 3; }).text(); 
 			if(ip!=null && ip!=''){
 				Ipval = Ipval + ip +",";
 			}		
@@ -327,6 +327,7 @@ function getWafInfo(){
 	 var beginDate = $('#beginDateHidden').val();
 	 var times = $('#timesHidden').val();
 	 var domainName = $('#domainNameHidden').val();
+	 var domainId = $('#domainIdHidden').val();
 	 var ipArray = $('#ipArrayHidden').val();
 	 if(scanType!=null && scanType!=''){
 		 if(scanType=='8'){
@@ -334,10 +335,15 @@ function getWafInfo(){
 			 $('.long').removeClass("click");
 			 $('#beginDateForMonth').val(beginDate.substring(0,10));
 			 $('#month').val(times);
-			 $("#price").html("¥100");
 			 $("#yearDiv").hide();
 	    	 $("#monthDiv").show();
 
+    		if(times=='-1'){
+    			$("#price").html("¥100");
+    		}else{
+    			var priceVals = 100*times;
+    			$("#price").html("¥"+priceVals);
+    		}
 			 
 		 }else if(scanType=='9'){
 			 $('.long').addClass("click");
@@ -348,7 +354,7 @@ function getWafInfo(){
 	    	 $("#monthDiv").hide();
 			 
 		 }
-		 $('#domainName').val(domainName);
+		/* $('#domainName').val(domainName);
 		 
 		 var ips = ipArray.split(',');
 		 for(var n in ips){
@@ -364,7 +370,26 @@ function getWafInfo(){
 	    			 html+='</li>';
 	    		  $('#wafbox').children('li:first').after(html);	
 	    	  }
-		 }
+		 }*/
+		 
+		 //回显选中的资产
+		 var arrtlink = ipArray.split(",");
+		 var list='';
+         var index=0;
+         for(var i=0;i<arrtlink.length;i++){
+             index++;
+             if(arrtlink[i]!=null&&arrtlink[i]!=''){
+            	 list+='<li id='+ index +'><em>ip<b>'+ index +'</b>：</em>'+ arrtlink[i] +'</li>';  
+             }            
+         }
+         $('.ym span').text(domainName);                       
+		 $('.ym span').attr('id',domainId);
+		 $('.fack').append(list);
+         
+         //显示页面删除和容器标签
+         $('#dele').show();
+         $('.not').hide();
+         $('.http').show();
 	 }
 
 

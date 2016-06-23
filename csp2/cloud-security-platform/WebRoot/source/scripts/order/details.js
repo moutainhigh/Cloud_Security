@@ -536,8 +536,9 @@ function tasknum_verification(){
     	var type =$("#type").val();
     	var num =$("#num").val();
     	var price = $('#priceHidden').val();
+    	var assetNames = $("#assetNamesHidden").val();
      window.location.href="orderBack.html?serviceId="+serviceId+"&indexPage=1&orderType="+orderType+"&beginDate="+beginDate
-		    		                       +"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&apiId="+apiId+"&type="+type+"&num="+num+"&price="+price;	
+		    		                       +"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&apiId="+apiId+"&type="+type+"&num="+num+"&price="+price+"&assetNames="+assetNames;	
     }
     
     

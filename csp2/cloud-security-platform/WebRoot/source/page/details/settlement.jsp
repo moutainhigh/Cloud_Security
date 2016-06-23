@@ -157,6 +157,7 @@
 		<input type="hidden" id="scanType" value="${scanType }"/>
 		<input type="hidden" id="assetIds" value="${assetIds }"/>
 		<input type="hidden" id="assetAddr" value="${assetAddr }"/>
+		<input type="hidden" id="assetNamesHidden" value="${assetNames}"/>
 		<input type="hidden" id="priceHidden" value="${allPrice }"/>
 		<input type="hidden" id="ipArrayHidden" value="${ipArray }"/>
 		<input type="hidden" id="timesHidden" value="${times }"/>
