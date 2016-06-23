@@ -173,16 +173,18 @@ public class shoppingController {
         //根据id查询service
 	    Serv service = servService.findById(serviceId);
 	    String assetAddr = "";
-
+	    String assetNames = "";
         for(int i=0;i<assetArray.length;i++){
         	Asset asset = assetService.findById(Integer.parseInt(assetArray[i]));
         	assetAddr = assetAddr + asset.getAddr()+",";
+        	assetNames = assetNames + asset.getName() + ",";
         }
 //        assetAddr = assetAddr.substring(0, assetAddr.length()-1);
 	    
         request.setAttribute("user", globle_user);
 	    request.setAttribute("assetAddr", assetAddr);
 	    request.setAttribute("assetIds", assetIds);
+	    request.setAttribute("assetNames", assetNames);
 	    request.setAttribute("type", type);
         request.setAttribute("beginDate", beginDate);
         request.setAttribute("endDate", endDate);
@@ -708,6 +710,7 @@ public class shoppingController {
         String price = request.getParameter("price");
         String serviceId = request.getParameter("serviceId");
         String num=request.getParameter("num");
+        String assetNames = request.getParameter("assetNames");
         
 		// assetAddr = assetAddr.substring(0, assetAddr.length()-1);
 		if (apiVal != null && !"".equals(apiVal)) {
@@ -762,6 +765,7 @@ public class shoppingController {
         request.setAttribute("serviceAssetList", serviceAssetList);
         request.setAttribute("num", num);
         request.setAttribute("price", price);
+        request.setAttribute("assetNames", assetNames);
         return result;
 	}
 	
@@ -1380,7 +1384,7 @@ public class shoppingController {
     						orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
     								scanDepth, maxPages, stategy, customManu, String.valueOf(shopCar.getServiceId()), globle_user.getApikey());
 //    						SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
-//    						String orderDate = odf.format(new Date());
+//  						String orderDate = odf.format(new Date());
 //    						orderId = orderDate+String.valueOf(Random.fivecode());
     						orderVal = orderVal+ orderId+",";
     					}else{
