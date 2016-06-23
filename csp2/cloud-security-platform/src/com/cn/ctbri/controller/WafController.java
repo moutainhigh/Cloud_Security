@@ -238,15 +238,22 @@ public class WafController {
       }
         String array[]=IpInfo.toArray(new String[]{});
         boolean flag=false;
+        String ipPortVal="";
         //页面输入的ip地址
         String ipArr[]= ipStr.split(",");
         for(int i=0;i<ipArr.length;i++){
+        	if(ipArr[i].indexOf(":")!=-1){
+        		String ipPort[] = ipArr[i].split(":");
+        		ipPortVal=ipPort[0];
+        	}else{
+        		ipPortVal=ipArr[i];
+        	}
       	  for(int k=0;k<array.length;k++){
-      		    if(ipArr[i].equals(array[k])){
+      		    if(ipPortVal.equals(array[k])){
       		    
       		    	flag=true;
       		    }else{
-      		      	errorIp=ipArr[i]+",";
+      		      	errorIp=ipPortVal+",";
       		      	flag=false;
       		    }
       	  }
@@ -333,6 +340,28 @@ public class WafController {
         String price = request.getParameter("price");
         String domainName = request.getParameter("domainName");
         String ipStr = request.getParameter("ipStr");
+        //根据ip地址加端口号
+        String ipPortstr ="";
+        if(ipStr!=null&&!"".equals(ipStr)){
+        	if(ipStr.indexOf(",")!=-1){
+        		String ipArray[] = ipStr.split(",");
+        		for(int i =0;i<ipArray.length;i++){
+        			String ipPort = ipArray[i];
+        			if(ipPort.indexOf(":")==-1){
+        				ipPort=ipPort+":80";
+        				ipPortstr=ipPort+",";
+        			}else{
+        				ipPortstr = ipArray+",";
+        			}
+        		}
+        	}else{
+        		if(ipStr.indexOf(":")==-1){
+        			ipPortstr = ipStr+":80"+",";
+        		}else{
+        			ipPortstr =ipStr+",";
+        		}
+        	}
+        }
         String month = request.getParameter("month");
         String priceVal="";
         priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
@@ -350,7 +379,7 @@ public class WafController {
         if(endDate!=null && !endDate.equals("")){
             end_date=sdf.parse(endDate); 
         }
-        order.setBegin_date(begin_date);
+       order.setBegin_date(begin_date);
         order.setEnd_date(end_date);
         order.setServiceId(Integer.parseInt(serviceId));
         order.setCreate_date(create_date);
@@ -376,7 +405,7 @@ public class WafController {
             orderAsset.setOrderId(orderId);
             orderAsset.setAssetId(assetInfo.getId());
             orderAsset.setServiceId(Integer.parseInt(serviceId));
-            orderAsset.setIpArray(ipStr);
+            orderAsset.setIpArray(ipPortstr.substring(0,ipPortstr.length()-1));
             orderAsset.setSermonth(Integer.parseInt(month));
            orderAssetService.insertOrderAsset(orderAsset);
            
