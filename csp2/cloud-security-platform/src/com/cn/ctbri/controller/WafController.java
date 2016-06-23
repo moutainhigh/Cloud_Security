@@ -340,7 +340,7 @@ public class WafController {
         String price = request.getParameter("price");
         String domainName = request.getParameter("domainName");
         String ipStr = request.getParameter("ipStr");
-        //根据ip地址加端口号
+       /* //根据ip地址加端口号
         String ipPortstr ="";
         if(ipStr!=null&&!"".equals(ipStr)){
         	if(ipStr.indexOf(",")!=-1){
@@ -361,7 +361,7 @@ public class WafController {
         			ipPortstr =ipStr+",";
         		}
         	}
-        }
+        }*/
         String month = request.getParameter("month");
         String priceVal="";
         priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
@@ -405,7 +405,7 @@ public class WafController {
             orderAsset.setOrderId(orderId);
             orderAsset.setAssetId(assetInfo.getId());
             orderAsset.setServiceId(Integer.parseInt(serviceId));
-            orderAsset.setIpArray(ipPortstr.substring(0,ipPortstr.length()-1));
+            orderAsset.setIpArray(ipStr);
             orderAsset.setSermonth(Integer.parseInt(month));
            orderAssetService.insertOrderAsset(orderAsset);
            
