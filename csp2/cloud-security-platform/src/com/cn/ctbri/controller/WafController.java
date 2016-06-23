@@ -479,7 +479,7 @@ public class WafController {
 	        request.setAttribute("allPrice", df.format(price));
 	    }else{//包月
 	    	eDate = DateUtils.getDateAfterMonths(bDate, times);
-	        request.setAttribute("allPrice", df.format(price*times));
+	        request.setAttribute("allPrice", df.format(price));
 	    }
         
         request.setAttribute("user", globle_user);
