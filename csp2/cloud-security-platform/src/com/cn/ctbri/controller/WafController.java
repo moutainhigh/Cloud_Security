@@ -253,7 +253,7 @@ public class WafController {
       		    
       		    	flag=true;
       		    }else{
-      		      	errorIp=ipPortVal+",";
+      		      	errorIp+=ipPortVal+",";
       		      	flag=false;
       		    }
       	  }
