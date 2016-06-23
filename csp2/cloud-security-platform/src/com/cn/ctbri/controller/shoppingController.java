@@ -1394,73 +1394,82 @@ public class shoppingController {
 ////    						orderId = shopCar.getOrderId();
 //    						orderVal = orderVal+ orderId+",";
     						
-    						
-    						
-    						Date afterDay = DateUtils.getAfterDate(new Date(),1);
-    						SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-    						if(shopCar.getBeginDate().compareTo(afterDay)>0){
-    							
+    						//判断时间是否立即执行waf
+    						String nowDay = DateUtils.dateToDate(new Date());
+    						String begin = DateUtils.dateToDate(shopCar.getBeginDate());
+    						if(begin.compareTo(nowDay)<=0){
+    							//创建waf虚拟站点,modify by tangxr 2016-6-13
+        						List assets = orderAssetService.findAssetsByOrderId(shopCar.getOrderId());
+        						HashMap<String, Object> assetOrder = new HashMap<String, Object>();
+    				        	assetOrder=(HashMap) assets.get(0);
+    				        	int id = 0;
+    				        	String addr = "";
+    				        	String addrName = "";
+    				        	String wafIp = "219.141.189.183";
+    				        	String wafPort = "";
+        						JSONArray ser = new JSONArray();
+        						if(assets != null && assets.size() > 0){
+        							String ipArray=(String) assetOrder.get("ipArray");
+        				        	id = (Integer) assetOrder.get("orderAssetId");
+        				        	addr=(String) assetOrder.get("addr");
+        				        	addrName=(String) assetOrder.get("name");
+        				        	String[] addrs = addr.split(":");
+        				        	if(addrs[0].length()==5){
+        				        		addr = addr.substring(8);
+        				        		wafPort = "443";
+        				        	}else if(addrs[0].length()==4){
+        				        		addr = addr.substring(7);
+        				        		wafPort = "80";
+        				        	}
+        				        	String[] ips = null;   
+        				            ips = ipArray.split(",");
+        				            for (int n = 0; n < ips.length; n++) {
+        				            	JSONObject jo = new JSONObject();
+        	    						jo.put("ip", ips[n]);
+        	    						jo.put("port", "80");
+        	    						ser.add(jo);
+        				            }
+        				        }
+        						//时间戳
+        						String timestamp = String.valueOf(new Date().getTime());
+        						addrName = addrName + timestamp;
+//        						String wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", addrName, wafIp, wafPort, "nsfocus.cer", "0", addr, "*", "", ser);
+        						String targetKey = "";
+        				    	try {
+//        				    		JSONObject obj = JSONObject.fromObject(wafcreate);
+//        				    		targetKey = obj.getString("targetKey"); 
+//        				    		String sta = obj.getString("status");
+        				    		String sta = "success";
+        				    		if(sta.equals("success")){
+        				    			OrderAsset oa = new OrderAsset();
+            				    		oa.setId(id);
+            				    		oa.setTargetKey(targetKey);
+            				    		orderAssetService.update(oa);
+            				    		//5 下发到waf，但未解析域名
+            				    		Order order = new Order();
+            			    			order.setId(shopCar.getOrderId());
+            			    			order.setStatus(5);
+            			    			orderService.update(order);
+            			    			
+            				    		SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+                						String orderDate = odf.format(new Date());
+                						orderId = orderDate+String.valueOf(Random.fivecode());
+                						orderVal = orderVal+ orderId+",";
+        				    		}else{
+        				    			orderId = "";
+        				    		}
+        				        } catch (Exception e) {
+        				        	orderId = "";
+        				            e.printStackTrace();
+        				        }
+        						//end
+    						}else{
+    							SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+        						String orderDate = odf.format(new Date());
+        						orderId = orderDate+String.valueOf(Random.fivecode());
+        						orderVal = orderVal+ orderId+",";
     						}
-    						//创建waf虚拟站点,modify by tangxr 2016-6-13
-    						List assets = orderAssetService.findAssetsByOrderId(shopCar.getOrderId());
-    						HashMap<String, Object> assetOrder = new HashMap<String, Object>();
-				        	assetOrder=(HashMap) assets.get(0);
-				        	int id = 0;
-				        	String addr = "";
-				        	String addrName = "";
-				        	String wafIp = "219.141.189.183";
-				        	String wafPort = "";
-    						JSONArray ser = new JSONArray();
-    						if(assets != null && assets.size() > 0){
-    							String ipArray=(String) assetOrder.get("ipArray");
-    				        	id = (Integer) assetOrder.get("orderAssetId");
-    				        	addr=(String) assetOrder.get("addr");
-    				        	addrName=(String) assetOrder.get("name");
-    				        	String[] addrs = addr.split(":");
-    				        	if(addrs[0].length()==5){
-    				        		addr = addr.substring(8);
-    				        		wafPort = "443";
-    				        	}else if(addrs[0].length()==4){
-    				        		addr = addr.substring(7);
-    				        		wafPort = "80";
-    				        	}
-    				        	String[] ips = null;   
-    				            ips = ipArray.split(",");
-    				            for (int n = 0; n < ips.length; n++) {
-    				            	JSONObject jo = new JSONObject();
-    	    						jo.put("ip", ips[n]);
-    	    						jo.put("port", "80");
-    	    						ser.add(jo);
-    				            }
-    				        }
-    						//时间戳
-    						String timestamp = String.valueOf(new Date().getTime());
-    						addrName = addrName + timestamp;
-    						String wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", addrName, wafIp, wafPort, "nsfocus.cer", "0", addr, "*", "", ser);
-    						String targetKey = "";
-    				    	try {
-    				    		JSONObject obj = JSONObject.fromObject(wafcreate);
-    				    		targetKey = obj.getString("targetKey"); 
-    				    		String sta = obj.getString("status");
-//    				    		String sta = "success";
-    				    		if(sta.equals("success")){
-    				    			OrderAsset oa = new OrderAsset();
-        				    		oa.setId(id);
-        				    		oa.setTargetKey(targetKey);
-        				    		orderAssetService.update(oa);
-        				    		
-        				    		SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
-            						String orderDate = odf.format(new Date());
-            						orderId = orderDate+String.valueOf(Random.fivecode());
-            						orderVal = orderVal+ orderId+",";
-    				    		}else{
-    				    			orderId = "";
-    				    		}
-    				        } catch (Exception e) {
-    				        	orderId = "";
-    				            e.printStackTrace();
-    				        }
-    						//end
+    						
     					}
     					
     				} catch (Exception e) {
