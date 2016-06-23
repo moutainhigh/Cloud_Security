@@ -353,11 +353,20 @@ function deck(){
 function minsum(){
 	$(".add").click(function(){ 
 	var t=$('input[class*=text_box]'); 
+	if(t.val()==''){
+		alert("请输入购买数量!");
+		return;
+	}
 	t.val(parseInt(t.val())+1) 
 	}) 
 	$(".min").click(function(){ 
 	
 	var t=$('input[class*=text_box]'); 
+	if(t.val()==''){
+		alert("请输入购买数量!");
+		return;
+	}
+
 	t.val(parseInt(t.val())-1) 
 	if(parseInt(t.val())<0){ 
 	t.val(0); 
