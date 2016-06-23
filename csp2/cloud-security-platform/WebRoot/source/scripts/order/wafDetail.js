@@ -131,7 +131,7 @@ $(function(){
       //ip地址
         var Ipval="";
 		$('.fack li').each(function(index, element) {
-			var ip= $(this).contents().filter(function() { return this.nodeType === 3; }).text(); 
+			var ip= $(this).contents().filter(function() { return this.nodeType == 3; }).text(); 
 			if(ip!=null && ip!=''){
 				Ipval = Ipval + ip +",";
 			}		
