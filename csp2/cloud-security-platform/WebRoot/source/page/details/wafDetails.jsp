@@ -487,21 +487,47 @@ $(document).ready(function(){
 
 		$('.submit').click(function(){
 			var acleng =$('#senone .ac').length;
-			var  le;
+			var  ips = '';
+			var flag = true;
             $('#wafBox li input:text').each(function(index, element) {
-                le= $(this).val();
+                var le= $(this).val();
+                var temp = [];
+                if(le!=null && le!=''){
+                	temp = le.split(":");
+                	if(temp.length>2){
+                		alert("IP格式不正确!不正确IP为:"+le);
+                		flag = false;
+                		return;
+                	}else if(temp.length==1){
+                		if(!isIp(temp[0])){
+	                		alert("IP格式不正确!不正确IP为:"+le);
+	                		flag = false;
+	                		return;
+                		}
+                	}else{
+                		if((!isIp(temp[0]))||(!isPort(temp[1]))){
+	                		alert("IP格式不正确!不正确IP为:"+le);
+	                		flag = false;
+	                		return;
+                		}
+                	}
+                }
+                if(flag){
+                	ips+=le;
+                }
             });
+            if(!flag){
+            	//ip地址有误
+            	return;
+            }
 			//判断是否什么都没选为空
 			if(acleng==0){
 				alert("请选择网站域名!");	
 			}
-			else if(le==''){
+			else if(ips==''){
 				alert("IP地址不能为空!");
-
             }
 			else{
-                //判断输入框是否为空
-               // var inval= $('#wafBox input:text'); 
                 $('#wafBox input:text').each(function(index, element) {
                         arrtlink.length=0;
                         $('.fack li').remove();
@@ -521,7 +547,10 @@ $(document).ready(function(){
                         var index=0;
                         for(var i=0;i<arrtlink.length;i++){
                             index++;
-                             list+='<li id='+ index +'><em>ip<b>'+ index +'</b>：</em>'+ arrtlink[i] +'</li>';  
+                            if(arrtlink[i]!=null && arrtlink[i]!=''){
+                            	list+='<li id='+ index +'><em>ip<b>'+ index +'</b>：</em>'+ arrtlink[i] +'</li>';
+                            }
+                               
                         }
                         $('.fack').append(list);
                         

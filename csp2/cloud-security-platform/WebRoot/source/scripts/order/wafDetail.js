@@ -62,7 +62,9 @@ $(function(){
 		$('#wafBox input:text').each(function(index, element) {
 			var tval= $(this).val();
 			//存入val值
-		   ip = ip+tval+",";
+			if(tval!=null&&tval!=''){
+				ip = ip+tval+",";
+			}
 		});
       
      var ipVal = ip.substring(0,ip.length-1);
@@ -244,6 +246,16 @@ $(function(){
 	           }else{
 	        	   return true;
 	           }
+	}
+	
+	//判断port是否有效
+	var isPort = function(value){
+		var parten=/^(\d)+$/g;  
+	    if(parten.test(value)&&parseInt(value)<=65535&&parseInt(value)>=0){  
+	        return true;  
+	     }else{  
+	        return false;  
+	     }  
 	}
    
  function chanageDiv(value){
