@@ -57,17 +57,15 @@ $(function(){
 			}
       //选中的网站地址	
       
-      var ip="";
-		var acval=$('#senone .ac .rcent div').text();
-		$('#wafBox input:text').each(function(index, element) {
-			var tval= $(this).val();
-			//存入val值
-			if(tval!=null&&tval!=''){
-				ip = ip+tval+",";
-			}
+      	var ip="";		
+		$('.fack li').each(function(index, element) {
+			var tval= $(this).contents().filter(function() { return this.nodeType == 3; }).text(); 
+			if(tval!=null && tval!=''){
+				ip = ip+tval+","; 
+			}		
 		});
       
-     var ipVal = ip.substring(0,ip.length-1);
+        var ipVal = ip.substring(0,ip.length-1);
 
         	$.ajax({ type: "POST",
 		     async: false, 
