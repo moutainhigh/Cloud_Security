@@ -492,6 +492,11 @@ $(document).ready(function(){
             $('#wafBox li input:text').each(function(index, element) {
                 var le= $(this).val();
                 var temp = [];
+                if(le==''){
+                	alert("IP地址不能为空!");
+                	flag = false;
+                	return;
+                }
                 if(le!=null && le!=''){
                 	temp = le.split(":");
                 	if(temp.length>2){
