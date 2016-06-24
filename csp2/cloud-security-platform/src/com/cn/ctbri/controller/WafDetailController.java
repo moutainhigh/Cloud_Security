@@ -76,7 +76,8 @@ public class WafDetailController {
         	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
         	assetOrder=(HashMap) assets.get(0);
 //        	String ipArray=(String) assetOrder.get("ipArray");
-        	String ipArray="219.141.189.183";
+//        	String ipArray="219.141.189.183";
+        	String ipArray="101.201.222.199";
         	String[] ips = null;   
             ips = ipArray.split(",");
 //            String websecStr = WafAPIWorker.getWaflogWebsecByIp(ips);
@@ -167,12 +168,12 @@ public class WafDetailController {
         
         List name = null;
         List value = null;
-        JSONObject jsondata = null;
+        JSONArray jsondata = null;
         
         if(map != null && map.size() > 0){
 			name = (List) map.get("name");
 			value = (List) map.get("value");
-			jsondata = (JSONObject) map.get("json");
+			jsondata = (JSONArray) map.get("json");
         }
 
         DecimalFormat df = new DecimalFormat("0.00");//格式化小数，不足的补0
@@ -453,19 +454,21 @@ public class WafDetailController {
     	Map<String,Object> reMap = new HashMap<String,Object>();
     	List<Object> arr = new ArrayList<Object>();
 		List<Object> arra = new ArrayList<Object>();
-		JSONObject json = new JSONObject();
+		JSONArray json = new JSONArray();
     	try {
     		JSONArray obj = new JSONArray().fromObject(eventStr);
     		for (Object aObj : obj) {
     			JSONObject e = (JSONObject) aObj;
     			int count = e.getInt("count");
     			if(count!=0){
+    				JSONObject jo = new JSONObject();
     				byte[] base64Bytes = Base64.decodeBase64(e.getString("eventType").toString().getBytes());
     				String eventType = new String(base64Bytes).trim();
     				arr.add(eventType);
     				arra.add(count);
-    				json.put("value", count);
-    				json.put("name", eventType);
+    				jo.put("value", count);
+    				jo.put("name", eventType);
+    				json.add(jo);
     			}
     			
     		}
