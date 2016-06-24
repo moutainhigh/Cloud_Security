@@ -260,14 +260,13 @@ $(function(){
 	
 	//判断数组是否有重复数据
 	var isRepeat = function(arr) {
-		var hash = {};
-		for(var i in arr) {
-			if(hash[arr[i]])
+		var nary = arr.sort();
+		for(var i = 0; i < nary.length - 1; i++)
+		{
+			if (nary[i]!=null && nary[i]!='' && nary[i+1]!=null && nary[i+1]!='' && nary[i] == nary[i+1])
 			{
 				return true;
 			}
-				// 不存在该元素，则赋值为true，可以赋任意值，相应的修改if判断条件即可
-			hash[arr[i]] = true;
 		}
 		return false;
 	}
