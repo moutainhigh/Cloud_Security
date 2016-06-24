@@ -195,16 +195,23 @@ $(document).ready(function(){
 	                            </c:if>
 	                            <c:if test="${service.id == 2}">
 	                             <button class="clickTime" value="1" onclick="calPriceLong(this,null,null)">30分钟</button>
+	                             <button value="2" onclick="calPriceLong(this,null,null)">1小时</button>
+	                             <button value="4" onclick="calPriceLong(this,null,null)">1天</button>
 	                            </c:if>
 	                            <c:if test="${service.id == 3}">
-	                             <button class="clickTime" value="4" onclick="calPriceLong(this,null,null)">1天</button>
+	                             <button class="clickTime" value="1" onclick="calPriceLong(this,null,null)">30分钟</button>
+	                             <button value="2" onclick="calPriceLong(this,null,null)">1小时</button>
+	                             <button value="4" onclick="calPriceLong(this,null,null)">1天</button>
 	                            </c:if>
 	                            <c:if test="${service.id == 4}">
-	                             <button class="clickTime" value="4" onclick="calPriceLong(this,null,null)">1天</button>
+	                             <button class="clickTime" value="1" onclick="calPriceLong(this,null,null)">30分钟</button>
+	                             <button value="2" onclick="calPriceLong(this,null,null)">1小时</button>
+	                             <button value="4" onclick="calPriceLong(this,null,null)">1天</button>
 	                            </c:if>
 	                            <c:if test="${service.id == 5}">
-	                             <button class="clickTime" value="3" onclick="calPriceLong(this,null,null)">1小时</button>
-	                             <button value="4" onclick="calPriceLong(this,null,null)">2小时</button>
+	                             <button class="clickTime" value="1" onclick="calPriceLong(this,null,null)">10分钟</button>
+	                             <button value="2" onclick="calPriceLong(this,null,null)">30分钟</button>
+	                             <button value="3" onclick="calPriceLong(this,null,null)">1小时</button>
 	                            </c:if>
                             </div> 
 					   </li>

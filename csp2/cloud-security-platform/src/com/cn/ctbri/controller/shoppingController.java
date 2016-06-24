@@ -881,26 +881,27 @@ public class shoppingController {
 		        	}
 		        	break;
 		        	
-		        case 2://30分钟
+		        case 2:
+		        case 3:
+		        case 4:
 		        	if(ms==0){
 		        		times = 1;//用于显示默认价格
-		        	}else{
+		        	}else if(typeInt==1){//30分钟
 			        	int min_30 = 1000*3600/2;
 			        	if(ms%min_30 > 0){
 			        		times = (long)(ms/min_30) + 1;
 			        	}else{
 			        		times = (long)(ms/min_30);
 			        	}
-		        	}
-
-		        	break;
-		        	
-		        case 3://一天
-		        case 4:
-		        	if(ms==0){
-		        		times = 1;//用于显示默认价格
-		        	}else{
-			        	int oneDay = 1000*3600*24;
+		        	}else if(typeInt==2){//1小时
+		        		int oneHour = 1000*3600;
+			        	if(ms%oneHour > 0){
+			        		times = (long)(ms/oneHour) + 1;
+			        	}else{
+			        		times = (long)(ms/oneHour);
+			        	}
+		        	}else if(typeInt==4){//1天
+		        		int oneDay = 1000*3600*24;
 			        	if(ms%oneDay > 0){
 			        		times = (long)(ms/oneDay) + 1;
 			        	}else{
@@ -912,23 +913,29 @@ public class shoppingController {
 		        case 5:
 		        	if(ms==0){
 		        		times = 1;//用于显示默认价格
-		        	}else{
-		        		if(typeInt==3){//一小时
-				        	int oneHour = 1000*3600;
-				        	if(ms%oneHour > 0){
-				        		times = (long)(ms/oneHour) + 1;
-				        	}else{
-				        		times = (long)(ms/oneHour);
-				        	}
-			        	}else{//2小时
-			        		int twoHour = 1000*3600*2;
-			        		if(ms%twoHour > 0){
-			        			times = (long)(ms/twoHour) + 1;
-			        		}else{
-			        			times = (long)(ms/twoHour);
-			        		}
+		        	}else if(typeInt==1){//10分钟
+		        		int min_10 = 1000*3600/6;
+			        	if(ms%min_10 > 0){
+			        		times = (long)(ms/min_10) + 1;
+			        	}else{
+			        		times = (long)(ms/min_10);
 			        	}
-		        	}		        	
+		        	}else if(typeInt==2){//30分钟
+		        		int min_30 = 1000*3600/2;
+			        	if(ms%min_30 > 0){
+			        		times = (long)(ms/min_30) + 1;
+			        	}else{
+			        		times = (long)(ms/min_30);
+			        	}
+		        	}else if(typeInt==3){//1小时
+		        		int oneHour = 1000*3600;
+			        	if(ms%oneHour > 0){
+			        		times = (long)(ms/oneHour) + 1;
+			        	}else{
+			        		times = (long)(ms/oneHour);
+			        	}
+		        	}
+		        			        	
 		        	break;
 		        }
 		        if(priceList!=null && priceList.size()>0){
@@ -936,11 +943,7 @@ public class shoppingController {
 				    	Price onePrice = priceList.get(i);
 				        if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()!=0){//区间
 				        	if(times>onePrice.getTimesG()&&times<=onePrice.getTimesLE()){
-				    			if(serviceId!=5){
 				    				calPrice = onePrice.getPrice()*times*assetCount;
-				    			}else{
-				    				calPrice = onePrice.getPrice()*assetCount;
-				    			}
 				    			break;
 				    		}
 				        	if(serviceId==5 && times==1 && onePrice.getTimesG()==1){//服务5：特殊，times==1，取第二区间
@@ -948,11 +951,7 @@ public class shoppingController {
 				    			break;
 				        	}
 				        }else if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()==0 && times>onePrice.getTimesG()){//超过
-			        		if(serviceId!=5){
-			        			calPrice = onePrice.getPrice()*times*assetCount;
-			    			}else{
-			    				calPrice = onePrice.getPrice()*assetCount;
-			    			}
+			        			calPrice = onePrice.getPrice()*times*assetCount;			    			
 			        		break;
 				        }else if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0 && times <= 1){//单次类
 				        	calPrice = onePrice.getPrice()*assetCount;

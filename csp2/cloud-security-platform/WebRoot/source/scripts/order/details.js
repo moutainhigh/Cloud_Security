@@ -459,14 +459,15 @@ function calDefaultPrice(){
 		calPrice(null);
 		break;
 	case 3://默认长期
-		servType = 4;
+		servType = 1;
 		calPriceLong(null,servType,null);
 		break;
 	case 4://默认单次
-		servType = 4;
+		servType = 1;
 		calPrice(null);
 		break;
 	case 5://默认长期
+		servType = 1;
 		calPriceLong(null,servType,null);
 		break;
 	}
