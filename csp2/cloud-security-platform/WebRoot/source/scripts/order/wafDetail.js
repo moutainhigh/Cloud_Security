@@ -257,6 +257,20 @@ $(function(){
 	        return false;  
 	     }  
 	}
+	
+	//判断数组是否有重复数据
+	var isRepeat = function(arr) {
+		var hash = {};
+		for(var i in arr) {
+			if(hash[arr[i]])
+			{
+				return true;
+			}
+				// 不存在该元素，则赋值为true，可以赋任意值，相应的修改if判断条件即可
+			hash[arr[i]] = true;
+		}
+		return false;
+	}
    
  function chanageDiv(value){
   //类型
