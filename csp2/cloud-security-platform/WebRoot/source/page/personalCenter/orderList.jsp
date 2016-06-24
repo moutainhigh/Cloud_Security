@@ -63,8 +63,8 @@
 				                <c:if test="${list.isAPI==0 && (list.status==1)}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
 				                <c:if test="${list.isAPI==0 && (list.status==2)}"><p class="stylep" style="width:108px;">已结束<b class="endend"></b></p></c:if>
 				                
-				                <c:if test="${list.isAPI==1 && list.begin_date>temp}"><p class="stylep" style="width:108px;">已下单<b class="wait"></b></p></c:if>
-				                <c:if test="${list.isAPI==1 && list.end_date>temp}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
+				                <c:if test="${list.isAPI==1 && list.status==0}"><p class="stylep" style="width:108px;">已下单<b class="wait"></b></p></c:if>
+				                <c:if test="${list.isAPI==1 && list.status==1}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
 				                <c:if test="${list.isAPI==1 && list.end_date<=temp}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
 				                
 				                <c:if test="${list.isAPI==2 && (list.status==0)}"><p class="stylep" style="width:108px;">域名解析未生效</b></p></c:if>

@@ -200,9 +200,16 @@
           </ul>
         </div> 
         <div class="data_min">
+        	<c:if test="${websecNum>0}">
              <div class="data_1" id="levelPie"></div>
              <div class="data_1" id="eventBar"></div>
              <div class="data_1" style="margin-right:0px;" id="eventPie"></div>
+            </c:if>
+            <c:if test="${websecNum==0}">
+             <div class="data_1">暂无数据</div>
+             <div class="data_1">暂无数据</div>
+             <div class="data_1" style="margin-right:0px;">暂无数据</div>
+            </c:if>
         </div>
         <div class="data_table">
             <c:if test="${websecNum!=0}">
@@ -225,6 +232,9 @@
 	                 </c:forEach>
 	              </tbody>
 	            </table>
+            </c:if>
+            <c:if test="${websecNum==0}">
+	            	暂无数据
             </c:if>
         </div>
        </div>        
