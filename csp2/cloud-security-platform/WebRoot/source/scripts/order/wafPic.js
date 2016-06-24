@@ -150,7 +150,7 @@ $(function(){
                                 type:'pie',
                                 radius : '55%',
                                 center: ['50%', '60%'],
-                                data:[data.json]
+                                data:data.json
                             }
                         ]
                     },true);//图形展示
