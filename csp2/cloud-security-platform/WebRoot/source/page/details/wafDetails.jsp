@@ -487,18 +487,15 @@ $(document).ready(function(){
 
 		$('.submit').click(function(){
 			var acleng =$('#senone .ac').length;
-			var  ips = '';
+			var  ips = new Array();
 			var flag = true;
+			//选中的网站地址           
+            var acval=$('#senone .ac .rcent div').text();
             $('#wafBox li input:text').each(function(index, element) {
                 var le= $(this).val();
                 var temp = [];
-                if(le==''){
-                	alert("IP地址不能为空!");
-                	flag = false;
-                	return;
-                }
                 if(le!=null && le!=''){
-                	temp = le.split(":");
+                	temp = le.split(':');
                 	if(temp.length>2){
                 		alert("IP格式不正确!不正确IP为:"+le);
                 		flag = false;
@@ -508,6 +505,10 @@ $(document).ready(function(){
 	                		alert("IP格式不正确!不正确IP为:"+le);
 	                		flag = false;
 	                		return;
+                		}else if(acval.indexOf('http')!=-1){
+                			le+=":80";
+                		}else if(acval.indexOf('https')!=-1){
+                			le+=":443";
                 		}
                 	}else{
                 		if((!isIp(temp[0]))||(!isPort(temp[1]))){
@@ -518,7 +519,7 @@ $(document).ready(function(){
                 	}
                 }
                 if(flag){
-                	ips+=le;
+                	ips.push(le);
                 }
             });
             if(!flag){
@@ -529,8 +530,10 @@ $(document).ready(function(){
 			if(acleng==0){
 				alert("请选择网站域名!");	
 			}
-			else if(ips==''){
+			else if(ips.length==0){
 				alert("IP地址不能为空!");
+            }else if(isRepeat(ips)){
+            	alert("IP地址不能重复!");
             }
 			else{
                 $('#wafBox input:text').each(function(index, element) {
@@ -551,8 +554,8 @@ $(document).ready(function(){
                         var list='';
                         var index=0;
                         for(var i=0;i<arrtlink.length;i++){
-                            index++;
                             if(arrtlink[i]!=null && arrtlink[i]!=''){
+                                index++;
                             	list+='<li id='+ index +'><em>ip<b>'+ index +'</b>：</em>'+ arrtlink[i] +'</li>';
                             }
                                
