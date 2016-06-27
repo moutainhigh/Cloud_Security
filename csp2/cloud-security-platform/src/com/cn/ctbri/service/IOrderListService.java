@@ -38,4 +38,6 @@ public interface IOrderListService {
      * 功能描述： 查询支付订单
      */
 	List<OrderList> getPayRecord(Map<String, Object> param);
+	
+	void updateOrderListId(String oldId, String newId);
 }
