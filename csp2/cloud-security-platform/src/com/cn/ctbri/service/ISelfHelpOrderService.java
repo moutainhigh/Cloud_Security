@@ -114,4 +114,6 @@ public interface ISelfHelpOrderService {
 	void updateOrderDate(ShopCar order);
 	//修改订单API开始时间和结束时间
 	void updateOrderAPIDate(ShopCar order);
+
+	void updateOrderListId(String newOrderIds);
 }
