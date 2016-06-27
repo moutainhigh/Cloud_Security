@@ -46,6 +46,7 @@ public class NsfocusWAFAdapter {
 	
 	
 	public boolean initDeviceAdapter(WAFConfigManager wafConfigManager){
+		System.out.println(">>>initDeviceAdapter");
 		WAFSyslogManager wsm = new WAFSyslogManager();
 		wsm.initWAFSyslogManager();
 		Iterator<?> iterator = wafConfigManager.mapWAFConfigDeviceManager.entrySet().iterator();

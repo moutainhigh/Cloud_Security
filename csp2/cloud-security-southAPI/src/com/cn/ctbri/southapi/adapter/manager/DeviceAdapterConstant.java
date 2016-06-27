@@ -54,4 +54,7 @@ public class DeviceAdapterConstant {
 	public static final String DEVICE_SCANNER_WEBSOC = "Websoc";
 	public static final String DEFALUT_DEVICE_TYPE_SCANNER = "SCANNER" ;
 	public static final String DEFALUT_DEVICE_TYPE_DDOS = "DDOS" ;	
+	
+	public static final String DEVICE_STATE_ON = "ON";
+	public static final String DEVICE_STATE_OFF = "OFF";	
 }

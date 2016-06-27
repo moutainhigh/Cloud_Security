@@ -12,13 +12,13 @@ import net.sf.json.JSONObject;
 import net.sf.json.xml.XMLSerializer;
 
 import org.apache.commons.io.IOUtils;
-import org.aspectj.weaver.patterns.ThisOrTargetAnnotationPointcut;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import com.cn.ctbri.southapi.adapter.manager.DeviceAdapterConstant;
 import com.cn.ctbri.southapi.adapter.config.DeviceConfigInfo;
 import com.cn.ctbri.southapi.adapter.config.ScannerTaskUniParam;
 import com.cn.ctbri.southapi.adapter.scanner.ArnhemDeviceAdpater;
@@ -39,12 +39,13 @@ public class DeviceAdpaterManager {
 	private static final String LOAD_DEVICE_ERROR = "{\"status\":\"fail\",\"message\":\"Load DeviceConfig failed!!\"}";
 	private static final String INIT_DEVICE_ERROR = "{\"status\":\"fail\",\"message\":\"Init DeviceAdapter failed!!\"}";
 	private static final String DEVICE_OPERATION_ERROR = "{\"status\":\"fail\",\"message\":\"This device does not support the operation\"}";
+
+	private static String wafRootString; 
+	private static String wafRootStat;
 	
 	public static HashMap<String, DeviceConfigInfo> mapDeviceConfigInfoHashMap = new HashMap<String, DeviceConfigInfo>();
 	public static  WAFConfigManager wafConfigManager = new WAFConfigManager();
-	
-	private static String wafRootString; 
-	
+
 	public static ArnhemDeviceAdpater arnhemDeviceAdpater = new ArnhemDeviceAdpater();
 	public static WebsocDeviceAdapter websocDeviceAdapter = new WebsocDeviceAdapter();
 	public static NsfocusWAFAdapter nsfocusWAFAdapter = new NsfocusWAFAdapter();
@@ -83,7 +84,6 @@ public class DeviceAdpaterManager {
 	 */
 	public String loadDeviceAdpater()
 	{
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>"+DeviceAdapterConstant.FILE_DEVICE_CONFIG);
 		if (!loadDeviceConfig(DeviceAdapterConstant.FILE_DEVICE_CONFIG)){
 			
 			return LOAD_DEVICE_ERROR;
@@ -126,8 +126,8 @@ public class DeviceAdpaterManager {
 			//log
 			return false;
 		}
-		if (!nsfocusWAFAdapter.initDeviceAdapter(wafConfigManager)) {
-		 
+		if (wafRootStat.equals(DeviceAdapterConstant.DEVICE_STATE_ON)&&!nsfocusWAFAdapter.initDeviceAdapter(wafConfigManager))
+		{
 			return false;
 		}
 		/*  Huawei DDOS
@@ -154,7 +154,6 @@ public class DeviceAdpaterManager {
 	}
 	private boolean loadDeviceConfig(String configFileName)
 	{
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>" + System.getProperty("user.dir"));
 		SAXReader reader = new SAXReader();
         // 加载XML
         Document doc;
@@ -228,10 +227,13 @@ public class DeviceAdpaterManager {
 	        	  daaInfo.setScannerPassword(scannerPasswordString);    	  
 	        	  mapDeviceConfigInfoHashMap.put(daaInfo.getDeviceID(), daaInfo);
 	        }
+	        Element wafRoot = doc.getRootElement().element("DeviceList").element("DeviceWAFList");
+	        if(wafRoot.attribute("state")!=null||wafRoot.attributeValue("state").equalsIgnoreCase(DeviceAdapterConstant.DEVICE_STATE_ON)){
+		        wafRootStat = wafRoot.attributeValue("state");
+	        	wafRootString = DeviceAdapterConstant.RootPath+doc.getRootElement().element("DeviceList").element("DeviceWAFList").attributeValue("configFile");
+				wafConfigManager.loadWAFConfig(wafRootString);	    
+	        }
 
-	        wafRootString = DeviceAdapterConstant.RootPath+doc.getRootElement().element("DeviceList").element("DeviceWAFList").attributeValue("configFile");
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>WAFConfig：" + wafRootString); 
-			wafConfigManager.loadWAFConfig(wafRootString);
 	        return true;
 		} catch (DocumentException e) {
 			e.printStackTrace();
