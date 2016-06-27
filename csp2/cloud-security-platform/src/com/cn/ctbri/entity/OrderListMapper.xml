@@ -54,4 +54,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     		balanceFlag = #{balanceFlag}
     	where id= #{id}
     </update>
+    
+    <update id="updateId" parameterType="hashmap">
+    	update cs_order_list
+    	set
+    		id = #{newId}
+    	where id= #{oldId}
+    </update>
 </mapper>
