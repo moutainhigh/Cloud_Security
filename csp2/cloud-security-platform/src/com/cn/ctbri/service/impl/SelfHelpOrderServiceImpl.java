@@ -178,5 +178,9 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 		selfHelpOrderDao.updateOrderAPIDate(order);
 	}
 
+	public void updateOrderListId(String newOrderIds) {
+		selfHelpOrderDao.updateOrderListId(newOrderIds);
+	}
+
 
 }
