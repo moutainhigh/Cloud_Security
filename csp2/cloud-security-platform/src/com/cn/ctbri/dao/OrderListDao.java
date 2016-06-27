@@ -42,4 +42,6 @@ public interface OrderListDao {
      */
 	void updateBalanceFlag(OrderList ol);
 	
+	void updateOrderListId(String oldId, String newId);
+	
 }
