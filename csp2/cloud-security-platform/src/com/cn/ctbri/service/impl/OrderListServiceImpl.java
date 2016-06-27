@@ -85,5 +85,9 @@ public class OrderListServiceImpl implements IOrderListService{
 	public List<OrderList> getPayRecord(Map<String, Object> param) {
 		return orderListDao.findAllPayRecord((Integer) param.get("userId"));
 	}
+	
+	public void updateOrderListId(String oldId, String newId) {
+		orderListDao.updateOrderListId(oldId, newId);
+	}
 
 }
