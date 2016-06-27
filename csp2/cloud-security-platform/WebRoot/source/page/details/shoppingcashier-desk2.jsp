@@ -62,7 +62,7 @@ $(function(){
 					    orderListId = data.orderListId;
 						window.location.href = "repayUI.html?orderListId="+orderListId+"&modifyOrderId="+modifyOrderId;
 					} else {
-						alert("订单有异常,请重新下单!");
+						alert("系统异常,您的订单已加入购物车,请稍后付款!");
 		    		    return;
 					}
 				},
