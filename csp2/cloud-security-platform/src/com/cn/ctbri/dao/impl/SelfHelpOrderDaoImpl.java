@@ -224,6 +224,10 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		this.getSqlSession().update(ns+"updateOrderAPIDate",order);
 	}
 
+	public void updateOrderListId(String newOrderIds) {
+		this.getSqlSession().update(ns+"updateOrderListId",newOrderIds);
+	}
+
 	
 
 	
