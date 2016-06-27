@@ -59,6 +59,7 @@ $(function(){
 					} else if(data.payFlag ==3 || data.payFlag ==0) {
 					    //余额不足/支付成功
 					    var modifyOrderId = data.modifyOrderId;
+					    orderListId = data.orderListId;
 						window.location.href = "repayUI.html?orderListId="+orderListId+"&modifyOrderId="+modifyOrderId;
 					} else {
 						alert("订单有异常,请重新下单!");
