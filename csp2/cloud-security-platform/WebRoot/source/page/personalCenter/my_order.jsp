@@ -264,7 +264,7 @@ function getServ(c){
 	                    	<input type="button" value="搜索" class="sub fr" onclick="searchCombine()">
 	                    </label>
 	                   <div class="container fl contj">
-	                   	<span class="words"><em>精简筛选条件</em> <i class="nitial"></i></span>
+	                   	<span class="words"><em>高级筛选条件</em> <i class="nitial"></i></span>
 	                   </div>
 	                   
 	                </div>
