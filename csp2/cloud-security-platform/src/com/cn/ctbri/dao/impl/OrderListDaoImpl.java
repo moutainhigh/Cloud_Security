@@ -64,4 +64,11 @@ public class OrderListDaoImpl extends DaoCommon implements OrderListDao{
 		this.getSqlSession().update(ns + "updateBalanceFlag", ol);
 	}
 	
+	public void updateOrderListId(String oldId, String newId){
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("oldId", oldId);
+		paramMap.put("newId", newId);
+		this.getSqlSession().update(ns+ "updateId" , paramMap);
+	}
+	
 }
