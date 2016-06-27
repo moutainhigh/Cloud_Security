@@ -43,13 +43,13 @@ $('.words').click(function(){
 		{	
 			$(this).find('.nitial').removeClass('initial')
 			$(this).children('em').removeClass('add');
-			$(this).children('em').text('精简筛选条件');
+			$(this).children('em').text('高级筛选条件');
 			$('.coreshow').hide();	
 			
 		}else{
 			$(this).find('.nitial').addClass('initial');
 			$(this).children('em').addClass('add');
-			$(this).children('em').text('高级筛选条件');
+			$(this).children('em').text('精简筛选条件');
 			
 			$('.coreshow').show();	
 		}
