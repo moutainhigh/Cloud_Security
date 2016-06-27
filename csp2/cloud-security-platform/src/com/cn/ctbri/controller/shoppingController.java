@@ -1369,7 +1369,6 @@ public class shoppingController {
     				String begin_date=null;
     				String end_date="";
     				
-    				status = String.valueOf(shopCar.getStatus());
     				
     				if(beginDate!=null && !beginDate.equals("")){
     					begin_date = sdf.format(beginDate);
@@ -1433,13 +1432,16 @@ public class shoppingController {
         						//时间戳
         						String timestamp = String.valueOf(new Date().getTime());
         						addrName = addrName + timestamp;
-//        						String wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", addrName, wafIp, wafPort, "nsfocus.cer", "0", addr, "*", "", ser);
+        						if(addrName.length()>20){
+        							addrName = addrName.substring(0, 20);
+        						}
+        						String wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", addrName, wafIp, wafPort, "nsfocus.cer", "0", addr, "*", "", ser);
         						String targetKey = "";
         				    	try {
-//        				    		JSONObject obj = JSONObject.fromObject(wafcreate);
-//        				    		targetKey = obj.getString("targetKey"); 
-//        				    		String sta = obj.getString("status");
-        				    		String sta = "success";
+        				    		JSONObject obj = JSONObject.fromObject(wafcreate);
+        				    		targetKey = obj.getString("targetKey"); 
+        				    		String sta = obj.getString("status");
+//        				    		String sta = "success";
         				    		if(sta.equals("success")){
         				    			OrderAsset oa = new OrderAsset();
             				    		oa.setId(id);
@@ -1479,6 +1481,7 @@ public class shoppingController {
     				//北向API返回orderId，创建用户订单
     				if(!orderId.equals("") && orderId != null){
     					// String orderId="1";
+    					status = String.valueOf(shopCar.getStatus());
     					//更新订单资产表
     					selfHelpOrderService.updateOrderAsset(shopCar.getOrderId(), orderId);
     					//更新订单表
@@ -1557,7 +1560,7 @@ public class shoppingController {
     		if (orderIdList!= null && orderIdList.size() == 1) {
     			orderListService.updateOrderListId(orderList.getId(), newOrderIds);
     			orderList.setId(newOrderIds);
-    			
+    			selfHelpOrderService.updateOrderListId(newOrderIds);
     		}
     	}catch(Exception e){
     		e.printStackTrace();
