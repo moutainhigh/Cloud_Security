@@ -1246,6 +1246,7 @@ public class shoppingController {
     			orderId = orderIdOfModify.toString();
     			orderId = orderId.substring(1,orderId.length()-1);
     		}
+    		m.put("orderListId",orderList.getId());
     		m.put("modifyOrderId", orderId);
     		m.put("payFlag", 0);//付款成功
     	} catch(Exception e) {
@@ -1546,11 +1547,18 @@ public class shoppingController {
     		}
     		
     		//更新orderList表中的orderId
+    		String newOrderIds = orderVal.substring(0,orderVal.length()-1);
     		if (orderVal != null&& !orderVal.equals("")) {
-    			orderList.setOrderId(orderVal.substring(0,orderVal.length()-1));
+    			orderList.setOrderId(newOrderIds);
     			orderListService.update(orderList);
     		}
     		
+    		//只有一个订单明细时，订单编号(orderList的Id)和订单明细的编号(order的Id)一致
+    		if (orderIdList!= null && orderIdList.size() == 1) {
+    			orderListService.updateOrderListId(orderList.getId(), newOrderIds);
+    			orderList.setId(newOrderIds);
+    			
+    		}
     	}catch(Exception e){
     		e.printStackTrace();
     		result = false;
