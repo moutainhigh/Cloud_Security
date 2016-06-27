@@ -323,8 +323,15 @@ public class UserController{
 	 *		 @time 2015-1-8
 	 */
 	@RequestMapping(value="loginUI.html")
-	public String loginUI(Model m){
+	public String loginUI(Model m,HttpServletRequest request,HttpServletResponse response){
 		m.addAttribute("flag", "dl");
+		Map<String,Object> map = LogonUtils.readCookie(request, response);
+		if(map!=null && map.get("result")!=null){
+			String[] cookies = (String[])map.get("result");
+			m.addAttribute("userName", cookies[1]);
+			m.addAttribute("password", cookies[2]);
+			m.addAttribute("remeber", "true");
+		}
 		return "/source/page/regist/login";
 	}
 	
@@ -368,6 +375,7 @@ public class UserController{
 	public void login(HttpServletRequest request,HttpServletResponse response){
 		String name = request.getParameter("name");
 		String password = request.getParameter("password");
+		boolean remeberMe = Boolean.valueOf(request.getParameter("remeberMe"));
 		String md5password = DigestUtils.md5Hex(password);
 		Map<String, Object> map = new HashMap<String, Object>();
 		
@@ -464,7 +472,7 @@ public class UserController{
 			String ipEnd = _user.getEndIP();
 				
 			/**记住密码功能*/
-			LogonUtils.remeberMe(request,response,name,password);
+			LogonUtils.remeberMe(request,response,remeberMe,name,password);
 			
 			_user.setLastLoginTime(new Date());
 			//设置登录状态：2

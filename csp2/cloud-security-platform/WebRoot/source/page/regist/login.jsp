@@ -43,7 +43,7 @@
 <script type="text/javascript">
 	window.onload=function(){
 		//页面加载时清空所有的val值，如需要请取消注释；
-		$('.prompttext').val('');
+		//$('.prompttext').val('');
 }
 
 </script>
@@ -56,20 +56,23 @@
                 <img src="${ctx}/source/images/portal/logo.png" alt="">
             </a>
             <div class="cent">
+            	<input type="hidden" id="userNameHidden" value="${userName}"/>
+            	<input type="hidden" id="passwordHidden" value="${password}"/>
+            	<input type="hidden" id="remeberHidden" value="${remeber}"/>
             	<form class="form" id="form_login" name="form_login" method="post">
                 	<h2>登录安全帮账号</h2>
 
                 	<ul>
                     	<li class="clearfix">
                         	<div class="list fl">
-                            	<input type="text" class="text prompttext" id="login_name" name="name" placeholder="用户名/手机号" value="${requestScope.name }"/>
+                            	<input type="text" class="text prompttext" id="login_name" name="name" value="" placeholder="用户名/手机号"/>
                                 <i id="login_name_flag" class="error" style="display:none"></i>
                             </div>
                             <div class="prompt fl" id="login_name_prompt"><b></b></div>
                         </li>
                         <li class="clearfix">
                         	<div class="list fl">
-                            	 <input type="password" class="text prompttext password" id="login_password" name="password" placeholder="密码" value="${requestScope.password }" />
+                            	 <input type="password" class="text prompttext password" id="login_password" name="password" value="" placeholder="密码"/>
 
                                 <i id="login_password_flag" class="right" style="display:none"></i>
                             </div>
@@ -89,7 +92,7 @@
                     	</div>
                         <li class="clearfix" style=" position:relative; top:-5px;">
                         	<div class="list password fl" style="width:100%;">
-                            	<label class="fl"><input type="checkbox" class="login_checkbox" name="remeberMe" id="remeberMe" value="yes" ${requestScope.checked }/>
+                            	<label class="fl"><input type="checkbox" class="login_checkbox" name="remeberMe" id="remeberMe"/>
                             	记住密码</label>
                                 <a href="${ctx}/forgetPass.html">忘记密码</a> 
                             </div>
@@ -174,26 +177,24 @@
 
 <script>
 $(function(){
+	var username = $("#userNameHidden").val();
+	var password = $("#passwordHidden").val();
+	var remeber = $("#remeberHidden").val();
+	if(username!=null && username!=''){
+		$("#login_name").attr("value",username);
+	}else{
+		$('.prompttext').val('');
+	}
+	if(password!=null && password!=''){
+		$("#login_password").attr("value",password);
+	}
+	if(remeber!=null && remeber=="true"){
+		$("#remeberMe").prop("checked","checked");
+	}else{
+		$("#remeberMe").prop("checked",false);
+	}
 
-	/*提示文字效果*/
-		$('.promp').click(function(){
-			$(this).hide();
-			$(this).siblings('.prompttext').focus();
-		})
-		$('.prompttext').focus(function(){
-			$(this).siblings('p').hide();	
-		})
-		$('.prompttext').blur(function(){
-			var _this=$(this).val();
-			if(_this=='')
-			{
-				$(this).siblings('p').show();		
-			}else
-			{
-				$(this).siblings('p').hide();	
-			}
-			
-		})
+
 
 		
 })
