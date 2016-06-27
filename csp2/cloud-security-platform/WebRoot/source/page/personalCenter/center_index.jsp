@@ -237,7 +237,7 @@ function deleteOrder(orderId,begin_date){
 						<img src="${ctx}/source/images/portal/new-footer-logo.png" alt="">
                    </a>
 				</div>
-				<ol class="footr clearfix fr">
+				<ol class="footr clearfix fl">
 					<li>
                     	<h2>帮助中心</h2>
                         <dl>
