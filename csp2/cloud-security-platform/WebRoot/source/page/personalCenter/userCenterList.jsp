@@ -29,9 +29,18 @@
                                     
                                     <div class="tr fl">
                                         <div class="">
+                                         <c:if test="${fn:length(olist.order)>1}">
+                                         <h2 style="height: 90px;padding-top: 10px;line-height: 45px;font-size: 14px;color: #343434;text-align: left;*width: 208px;*text-align: left;">
+							                 ${list.name}
+							                 	<br>${status.index+1}_${list.id}
+                                         </h2>
+                                        </c:if>
+                                        <c:if test="${fn:length(olist.order)==1}">
                                          <h2>
-							                 ${list.name}   
-                                         </h2></div>
+							                 ${list.name}
+                                         </h2>
+                                        </c:if>
+                                         </div>
                                     	<c:forEach var="asset" items="${list.assetList}" varStatus="status">
                                         	<div class="listDiv"><p style="text-align: left; margin:0; line-height:24px;">资产名称：${asset.name}</p></div>
                                         </c:forEach>
@@ -67,7 +76,8 @@
 				                <c:if test="${list.isAPI==1 && list.status==1}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
 				                <c:if test="${list.isAPI==1 && list.end_date<=temp}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
 				                
-				                <c:if test="${list.isAPI==2 && (list.status==0)}"><p class="stylep" style="width:108px;">域名解析未生效</b></p></c:if>
+				                <c:if test="${list.isAPI==2 && (list.status==0)}"><p class="stylep" style="width:108px;">已下单<b class="wait"></b></p></c:if>
+				                <c:if test="${list.isAPI==2 && (list.status==5)}"><p class="stylep" style="width:108px;">域名解析未生效</b></p></c:if>
 				                <c:if test="${list.isAPI==2 && (list.status==4)}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
                             </td>
                             <td class="order" valign="top">

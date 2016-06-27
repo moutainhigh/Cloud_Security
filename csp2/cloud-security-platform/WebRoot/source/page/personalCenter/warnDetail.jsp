@@ -243,13 +243,14 @@ function seedetail1(e) {
 								                        <c:forEach var="time" items="${taskTime}" varStatus="status">
 								                           <c:if test="${timeSize!=0}">
 								                               <c:if test="${not status.last}">
-								                               <!-- 有告警 -->
+								                               <option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>
+								                               <!-- 有告警 
 								                               <c:if test="${time.alarm_view_flag==null && time.sum_issue_count!=null}">
 								                               <option style="color:red">                               
 								                               <fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss" />
 								                               </option>
-								                               </c:if>
-								                               <!-- 有告警  已查看-->
+								                               </c:if>-->
+								                               <!-- 有告警  已查看
 								                               <c:if test="${time.alarm_view_flag!=null && time.sum_issue_count!=null}">
 								                               <option >                               
 								                               <fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss" />
@@ -259,17 +260,18 @@ function seedetail1(e) {
 								                               <option>                               
 								                               <fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss" />
 								                               </option>
-								                               </c:if>
+								                               </c:if>-->
 								                               </c:if>
 								                           </c:if>
-								                           <c:if test="${timeSize==0}">                              
-								                                <!-- 有告警 -->
+								                           <c:if test="${timeSize==0}">  
+								                           		<option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>                            
+								                                <!-- 有告警 
 								                               <c:if test="${time.alarm_view_flag==null && time.sum_issue_count!=null}">
 								                               <option style="color:red">                               
 								                               <fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss" />
 								                               </option>
-								                               </c:if>
-								                                <!-- 有告警  已查看-->
+								                               </c:if>-->
+								                                <!-- 有告警  已查看
 								                               <c:if test="${time.alarm_view_flag!=null && time.sum_issue_count!=null}">
 								                               <option>                               
 								                               <fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss" />
@@ -279,7 +281,7 @@ function seedetail1(e) {
 								                               <option>                               
 								                               <fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss" />
 								                               </option>
-								                               </c:if>
+								                               </c:if>-->
 								                           </c:if>
 								                        </c:forEach>
 								                    </select>
