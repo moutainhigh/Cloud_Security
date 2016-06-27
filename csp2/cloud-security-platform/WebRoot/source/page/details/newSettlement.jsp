@@ -82,10 +82,11 @@
             $(".add_wrong p").html("请输入您的地址");
             return false;
         };
-        if (userAdd.length > 25) {
+        var emailReg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if (!emailReg.test(userAdd)) {
             $(".name3").hide();
             $(".add_wrong").show();
-            $(".add_wrong p").html("地址最多可输入25个字符");
+            $(".add_wrong p").html("请输入正确的邮箱地址!");
             return false;
         };
 
