@@ -316,4 +316,12 @@ WHERE a.id = b.orderId
  	where
  		id= #{orderId}
  </update>
+ 
+ <update id="updateOrderListId" parameterType="String">
+ 	update cs_order
+ 	set
+ 		orderListId = #{newOrderIds}
+ 	where
+ 		id= #{newOrderIds}
+ </update>
 </mapper>
