@@ -412,7 +412,7 @@
 			<input type="hidden" id="countPrice" value="${shopCount}"/>
             	<p>应付总额：<span>￥${shopCount}</span>
             	<c:if test="${shop eq '0' }">
-            		<input id="shopSettlement" class="submit" type="button" value="提交订单" style="cursor: hand"/>
+            		<input id="shopSettlement" class="submit" type="button" value="提交订单" style="cursor:pointer"/>
             	</c:if>
             	
             	</p>

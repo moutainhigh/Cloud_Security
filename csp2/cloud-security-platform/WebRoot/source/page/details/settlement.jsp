@@ -66,25 +66,26 @@
         if (mobile.length != 11) {
             $(".name2").hide();
             $(".phone_wrong").show();
-            $(".phone_wrong p").html("请输入11位手机号码");
+            $(".phone_wrong p").html("请输入11位手机号码!");
             return false;
         };
         if (userAdd == "") {
             $(".name3").hide();
             $(".add_wrong").show();
-            $(".add_wrong p").html("请输入您的地址");
+            $(".add_wrong p").html("请输入您的邮箱地址!");
             return false;
         };
-        if (userAdd.length > 25) {
+        var emailReg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if (!emailReg.test(userAdd)) {
             $(".name3").hide();
             $(".add_wrong").show();
-            $(".add_wrong p").html("地址最多可输入25个字符");
+            $(".add_wrong p").html("请输入正确的邮箱地址!");
             return false;
         };
 
         $(".listone_box").hide();
         $(".ta-box").show();
-        $(".list-txt").html("联系人信息");
+        $(".list-txt").html("联系人信息!");
         $(".test_name").html(userName);
         $(".test_iphone").html(mobile);
         $(".test_add").html(userAdd);
@@ -216,7 +217,7 @@
                                 <div class="c_input">
                                     <input type='text' id="txtAdd" value="">
                                 </div>
-                                <div class="list_wrong name3"><b></b><p>请输入电子邮箱，便于接受告警邮件</p></div>
+                                <div class="list_wrong name3"><b></b><p>请输入电子邮箱，便于接收告警邮件</p></div>
                                 <div class="add_wrong"><b></b><p></p></div>
                             </div>
                             <div class="ad-tj">
