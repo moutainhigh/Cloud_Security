@@ -166,11 +166,13 @@ public class MyAssetsController {
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		asset.setUserid(globle_user.getId());//用户ID
 		asset.setCreate_date(new Date());//创建日期
-		if(globle_user.getType()==2){
-			asset.setStatus(0);//资产状态(1：已验证，0：未验证)
-		}else if(globle_user.getType()==3){
-			asset.setStatus(1);//资产状态(1：已验证，0：未验证)
-		}
+		//modify by zsh 2016-06-28 
+		asset.setStatus(1);//资产状态 1：已验证
+//		if(globle_user.getType()==2){
+//			asset.setStatus(0);//资产状态(1：已验证，0：未验证)
+//		}else if(globle_user.getType()==3){
+//			asset.setStatus(1);//资产状态(1：已验证，0：未验证)
+//		}
 
 		String name = "";//资产名称
 		String addr = "";//资产地址
@@ -255,7 +257,9 @@ public class MyAssetsController {
 					addr = addrType+ "://" + addr.trim();
 				}
 				asset.setAddr(addr);
-				asset.setStatus(0);
+				//modify by zsh 2016-06-28 
+				asset.setStatus(1);  //资产状态 1：已验证
+//				asset.setStatus(0);
 				asset.setDistrictId(districtId);
 				asset.setCity(city);
 				asset.setPurpose(purpose);
