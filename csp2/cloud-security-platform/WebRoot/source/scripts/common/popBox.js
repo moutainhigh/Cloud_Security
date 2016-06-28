@@ -16,6 +16,14 @@ $(function(){
 		$("#editAssetName").val($(this).attr("name"));
 		$("#editAssetAddr").val($(this).attr("addr"));
 		$("#editDistrictId").val($(this).attr("districtId"));
+		
+		var type = $(this).attr("assetType");
+		if (type==0) {
+			$("input[name='editAssetType'][value='http']").attr("checked",true); 
+		}else if(type==1){
+			$("input[name='editAssetType'][value='https']").attr("checked",true);
+		}
+		
 		getEditCitys($(this).attr("districtId"));
 		var temp = $(this).attr("city");
 
