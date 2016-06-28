@@ -127,7 +127,7 @@
                                  </td> -->
                                  <td> 
                                      <span style="padding-left:80px; width:32px;">
-                                         <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}">修改</a>
+                                         <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}" assetType="${asset.type}">修改</a>
                                          <a href="#" style="color:#2499fb;" onclick="deleteAsset('${asset.id}')">删除</a>
                                      </span>
                                  </td>
@@ -162,7 +162,7 @@
                                  </td>-->
                                  <td> 
                                      <span style="padding-left:80px; width:32px;">
-                                         <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}">修改</a>
+                                         <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}" assetType="${asset.type}">修改</a>
                                          <a href="#" style="color:#2499fb;" onclick="deleteAsset('${asset.id}')">删除</a>
                                      </span>
                                  </td>
@@ -203,7 +203,7 @@
                                  </td>-->
                                  <td> 
                                      <span style="padding-left:80px; width:32px;">
-                                         <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}">修改</a>
+                                         <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}" assetType="${asset.type}">修改</a>
                                          <a href="#" style="color:#2499fb;" onclick="deleteAsset('${asset.id}')">删除</a>
                                      </span>
                                  </td>
@@ -375,7 +375,7 @@
         <div class="hr" style=" margin:10px 0px 10px 0px;"></div>
     </div>
     <div class="text_bottm">
-      <table style="margin-top:56px;width:630px">
+      <table style="margin-top:26px;width:630px">
         <tr>
           <td style="width:25%;">资产名称</td>
           <td style="width:37%;"><input class="boz_inout_1" type="text" name="name" id="editAssetName"/></td>
@@ -384,9 +384,9 @@
         <tr>
        	  <td>资产地址类型</td>
           <td style="text-align:left">
-		        &nbsp;&nbsp;<input type="radio" name="addrType"  value="http" checked="checked"/>
+		        &nbsp;&nbsp;<input type="radio" name="editAssetType"  value="http"/>
 		        &nbsp;http
-		        &nbsp;&nbsp;<input type="radio" name="addrType"  value="https"/>
+		        &nbsp;&nbsp;<input type="radio" name="editAssetType"  value="https"/>
 		        &nbsp;https
 		  </td>
         </tr>
@@ -395,6 +395,11 @@
           <td><input class="boz_inout_1" type="text" name="addr" id="editAssetAddr"/></td>
           <td style="color:#e32929;text-align:left"><div class="editMsg" id="editAssetAddr_msg"></div></td>
         </tr>
+        <tr>
+	        <td>示例</td>
+	        <td style="color:#999;text-align: left; line-height: 18px; padding-top: 4px; padding-left: 10px;">http://xxx.xxx.xxx.xxx<br>https://xxx.xxx.xxx.xxx:1234<br>http://xxx.xxx.xxx.xxx:8080/home
+            </td>
+        </tr> 
         <tr>
           <td>物理位置</td>
           <td>
@@ -421,7 +426,7 @@
         </tr>
       </table>
     </div>
-    <div style="margin-top:35px;"><a href="javascript:void(0)"><img src="${ctx}/source/images/portal/user_submit_3.jpg" onclick="editAsset()"/></a></div>
+    <div style="margin-top:26px;"><a href="javascript:void(0)"><img src="${ctx}/source/images/portal/user_submit_3.jpg" onclick="editAsset()"/></a></div>
   </div>
   </form>
 </div>
