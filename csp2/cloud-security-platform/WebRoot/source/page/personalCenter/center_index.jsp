@@ -39,6 +39,51 @@ function deleteOrder(orderId,begin_date){
         return;
     }
 }
+//今日未签到时，签到按钮添加click事件
+$(document).ready(function(){
+  var signFlg = ${requestScope.signIn};
+  if (!signFlg) {
+  	$(".qdbtn").click(signIn);
+  }
+});
+
+function signIn(){
+	$.ajax({ type: "POST",
+    		 url: "signIn.html", 
+    		 success: function(data) {
+	    		 	 if(data.collect == 0){
+	    		 	 	alert("系统异常，请稍后领取~~");
+	    		 	 }else if(data.collect == 1){
+    		    		alert("今日金额已经领取，不能重复领取！");  
+			    	 }else if(data.collect==2) {
+			    	 	//签到成功
+			    	 	//移除click事件
+			    	 	$('.qdbtn').unbind("click",signIn);
+			    	 	
+			    	 	//签到可获得10安全币-->“今日已签到”字样
+			    	 	$('.qdbtn').children('b').remove();
+						var projectName=window.document.location.pathname;
+						projectName=projectName.substring(0,projectName.substr(1).indexOf('/')+1);
+						//html+='<b style="padding-left:10px;"><i style="width:auto;padding-right: 8px;"><img src="/cloud-security-platform/source/images/balance/minig.png" alt=""></i>今日已签到</b>';
+						var html='';
+						html+='<b style="padding-left:10px;"><i style="width:auto;padding-right: 8px;"><img src="'+projectName+'/source/images/balance/minig.png" alt=""></i>今日已签到</b>';
+						$('.qdbtn').append(html);
+						$('.succeed').fadeIn(500);
+						$('.succeed').fadeOut(2000);
+						
+						//"安全币余额"的 显示改变	
+						$('.b_aic').children('em').remove();
+						html = '<em>'+data.balance+'</em>';
+						$('.b_aic').append(html);
+			    	 }
+    		    	 }, 
+    		  error: function(data){ 
+    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+    		    		 window.location.href = "loginUI.html"; } 
+    		    	 else { window.location.href = "loginUI.html"; } } 
+    	});
+}
+
 </script>
 <style>
 .mnlist .tablist-head{ border:#e5e5e5 solid 1px; border-bottom:none;}
@@ -88,6 +133,27 @@ function deleteOrder(orderId,begin_date){
 .tabList table td{ border:#e5e5e5 solid 1px; border-top:none;}
 .tabList table .only{ border-top:none;}
 .tabList table .onlytwo{border-bottom:none;}
+
+.b_bic{
+	background-color: #fff3dc;
+	width: 188px;
+	height: 34px;
+	line-height: 32px;
+	border-radius: 20px;
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 14px;
+	color: #f6a525;
+	cursor: pointer;
+}
+
+.b_bic i{
+	width: 32px;
+	/*height: 32px;*/
+	display: inline-block;
+	padding-right: 12px;
+	vertical-align: middle;
+}
 </style>
 </head>
 
@@ -157,8 +223,16 @@ function deleteOrder(orderId,begin_date){
                         <a href="${ctx}/orderTrackInit.html"><dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderCount.png" alt=""></i><span>订单总数<em>${orderNum}</em></span></dd></a>
                         <a href="${ctx}/orderTrackInit.html?state=1"><dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderRuning.png" alt=""></i><span>服务中的订单<em>${servNum}</em></span></dd></a>
                         <a href="${ctx}/orderTrackInit.html?state=2"><dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderWarn.png" alt=""></i><span>告警订单<em>${alarmSum}</em></span></dd></a>
-                      </dl>
-
+                      	<span class="b_bic qdbtn" style="float:right;margin-top:13px;color: #f6a525;">
+                           		<i><img src="${ctx}/source/images/balance/sign_in.png" alt=""></i>
+	                        	<c:if test="${!signIn}">
+                           			<b>签到可获得10安全币</b>
+	                        	</c:if>
+	                        	<c:if test="${signIn}">
+	                        		<b style="padding-left:10px;"><i style="width:auto;padding-right: 8px;"><img src="${ctx}/source/images/balance/minig.png" alt=""></i>今日已签到</b>
+	                        	</c:if>
+                            </span>
+                      </dl>                          
                     </div>
                      
                     <div class="neworder">
@@ -303,6 +377,14 @@ function deleteOrder(orderId,begin_date){
 	
 	
 </script>
+
+<!--签到弹框-->
+    <div class="succeed">
+    	<div class="spopo">
+        	<i class="icof"></i><span>签到成功</span><em>+<b>10</b></em><i class="icoc"></i>
+        </div>
+    
+    </div>
  
 </body>
 
