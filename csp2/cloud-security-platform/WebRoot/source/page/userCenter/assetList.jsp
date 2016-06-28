@@ -34,7 +34,7 @@
                                  </td> -->
                                  <td> 
                                      <span style="padding-left:80px; width:32px;">
-                                         <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}" onclick="editAssetUI('${asset.id},${asset.name},${asset.addr},${asset.districtId},${asset.city},${asset.purpose}')">修改</a>
+                                         <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}" onclick="editAssetUI('${asset.id},${asset.name},${asset.addr},${asset.districtId},${asset.city},${asset.purpose},${asset.type}')">修改</a>
                                          <a href="#" style="color:#2499fb;" onclick="deleteAsset('${asset.id}')">删除</a>
                                      </span>
                                  </td>
@@ -69,7 +69,7 @@
                                  </td>-->
                                  <td> 
                                      <span style="padding-left:80px; width:32px;">
-                                         <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}" onclick="editAssetUI('${asset.id},${asset.name},${asset.addr},${asset.districtId},${asset.city},${asset.purpose}')">修改</a>
+                                         <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}" onclick="editAssetUI('${asset.id},${asset.name},${asset.addr},${asset.districtId},${asset.city},${asset.purpose},${asset.type}')">修改</a>
                                          <a href="#" style="color:#2499fb;" onclick="deleteAsset('${asset.id}')">删除</a>
                                      </span>
                                  </td>
@@ -110,7 +110,7 @@
                                  </td>-->
                                  <td> 
                                      <span style="padding-left:80px; width:32px;">
-                                         <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}" onclick="editAssetUI('${asset.id},${asset.name},${asset.addr},${asset.districtId},${asset.city},${asset.purpose}')">修改</a>
+                                         <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}" onclick="editAssetUI('${asset.id},${asset.name},${asset.addr},${asset.districtId},${asset.city},${asset.purpose},${asset.type}')">修改</a>
                                          <a href="#" style="color:#2499fb;" onclick="deleteAsset('${asset.id}')">删除</a>
                                      </span>
                                  </td>
