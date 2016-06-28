@@ -15,6 +15,7 @@ function saveAsset() {
      var purpose = $("#purpose").val();
      var prov = $("#districtId").val();
      var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
+     var patrn2 = /[\u4e00-\u9fa5]/;    //中文
 	//获取选中的radio的值
 	if(assetName == null || assetName == ""){
 		$("#assetName_msg").html("请输入资产名称");
@@ -22,7 +23,7 @@ function saveAsset() {
 		$("#assetName_msg").html("您输入的资产名称含有非法字符");
 	}else if(assetName.length>25){
 		$("#assetName_msg").html("资产名称长度不能超过25个字符！");
-	}else if(patrn.test(assetAddr)){
+	}else if(patrn.test(assetAddr)|| patrn2.test(assetAddr)){
 		$("#assetAddr_msg").html("您输入的资产地址含有非法字符");
 	}else if(assetAddr==null || assetAddr == ""){
 			$("#assetName_msg").html("");
@@ -107,6 +108,11 @@ function editAssetUI(str){
 	$("#editAssetName").val(arr[1]);
 	$("#editAssetAddr").val(arr[2]);
 	$("#editDistrictId").val(arr[3]);
+	if (arr[6]==0) {
+		$("input[name='editAssetType'][value='http']").attr("checked",true); 
+	}else if(arr[6]==1){
+		$("input[name='editAssetType'][value='https']").attr("checked",true);
+	}
 	getEditCitys(arr[3]);
 	var temp = arr[4];
 
@@ -126,13 +132,14 @@ function editAsset(){
 	var oldAssetAddr = $("#hiddenEditAddr").val();
 	var assetName =$.trim($("#editAssetName").val());
 	var assetAddr = $.trim($("#editAssetAddr").val());
-    var addrType = $('input:radio[name="addrType"]:checked').val();
+    var addrType = $('input:radio[name="editAssetType"]:checked').val();
     var purpose = $("#editPurpose").val();
     var prov = $("#editDistrictId").val();
     var city = $("#editCity").val();
     var id = $("#editAssetid").val();
 //     var patrn=/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im; 
      var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
+     var patrn2 = /[\u4e00-\u9fa5]/;
 //     if(patrn.test(assetAddr)){  
 //         alert("提示信息：您输入的资产地址含有非法字符！");  
 //         return false;     
@@ -144,7 +151,7 @@ function editAsset(){
 		$("#editAssetName_msg").html("您输入的资产名称含有非法字符");
 	}else if(assetName.length>25){
 		$("#editAssetName_msg").html("资产名称长度不能超过25个字符！");
-	}else if(patrn.test(assetAddr)){
+	}else if(patrn.test(assetAddr)|| patrn2.test(assetAddr)){
 		$("#editAssetAddr_msg").html("您输入的资产地址含有非法字符");
 	}else if(assetAddr==null || assetAddr == ""){
 		$("#editAssetAddr_msg").html("请输入资产地址");
