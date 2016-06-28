@@ -103,16 +103,16 @@
                         	<tbody>
                             	
                                      	<tr height="40">
-                                     		<td width="20%"><label >
+                                     		<td width="20%"><label style=" margin: 0 20px 0 40px; width:16px; height:16px;display:inline-block;">
                                      		
                                             <input type="checkbox" class="ck" style="display:none" value="${shopCar.orderId}" isApi="0" name="check_name">
                                             </input>
                                            
                                             <c:if test="${shopCar.status==-1}">
-                                            <i class="chck" style="margin:0 30px 0 40px;display:none"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">已失效</font>
-                                            </c:if>&nbsp;&nbsp;&nbsp;
+                                            <i class="chck" style="margin: 0; position:relative; top:-6px;display:none"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">已失效</font>
+                                            </c:if>
                                              <c:if test="${shopCar.status!=-1}">
-                                            <i class="chck" style="margin:0 30px 0 40px;"></i>
+                                           <i class="chck" style="margin: 0; position:relative; top:-6px"></i>
                                             </c:if>
                                             </label>
                                            <c:if test="${shopCar.serviceId!=6}">
@@ -158,14 +158,14 @@
                         	<tbody>
                         	
                             	 <tr height="40">
-                                 	<td width="20%"><label >
+                                 	<td width="20%"><label style=" margin: 0 20px 0 40px; width:16px; height:16px;display:inline-block;">
                                     
                                             <input type="checkbox" class="ck" style="display:none" value="${shopAPI.orderId}" isApi="1" name="check_name"></input>
                                           <c:if test="${shopCar.status==-1}">
-                                            <i class="chck" style="margin:0 30px 0 40px;display:none"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">已失效</font>
-                                            </c:if>&nbsp;&nbsp;&nbsp;
+                                            <i class="chck" style="margin: 0; position:relative; top:0;display:none"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">已失效</font>
+                                            </c:if>
                                              <c:if test="${shopCar.status!=-1}">
-                                            <i class="chck" style="margin:0 30px 0 40px;"></i>
+                                            <i class="chck" style="margin: 0; position:relative; top:0"></i>
                                             </c:if>
                                             </label>
                                           <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${shopAPI.serviceId}&indexPage=2" target="_blank">${shopAPI.serverName}</a></td>
