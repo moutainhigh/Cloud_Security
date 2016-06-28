@@ -50,19 +50,6 @@ public class BalanceController {
     	
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
 		User loginUser = userService.findUserById(globle_user.getId()).get(0);
-    	
-		boolean signIn= false; //今日是否已签到标志位  false:今日未签到
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		//取得上次签到日期
-		String lastTime = null;
-		if (loginUser.getLastSignInTime()!= null) {
-			lastTime = sdf.format(globle_user.getLastSignInTime());
-		}
-		//今天的日期
-		String nowTime = sdf.format(new Date());
-		if (lastTime != null && lastTime.compareTo(nowTime) >=0){
-			signIn = true;//今日已签到
-		}
 		
 		//消费记录分页查询
     	int pageCode = 1;
@@ -78,7 +65,6 @@ public class BalanceController {
 
 		ModelAndView mv = new ModelAndView("/source/page/personalCenter/my_balance");
 		mv.addObject("pb", pb);
-		mv.addObject("signIn", signIn);
 		mv.addObject("balance", (int)loginUser.getBalance());
         return mv;
     }
