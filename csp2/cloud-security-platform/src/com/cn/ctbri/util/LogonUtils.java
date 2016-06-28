@@ -47,7 +47,7 @@ public class LogonUtils {
 
 	/**记住密码*/
 	public static void remeberMe(HttpServletRequest request,
-			HttpServletResponse response, boolean remeberMe, String name, String password) {
+			HttpServletResponse response, String name, String password) {
 		//如果name存在中文
 		try {
 			name = URLEncoder.encode(name, "UTF-8");
@@ -63,20 +63,10 @@ public class LogonUtils {
 		
 		//设置Cookie的有效路径
 		newCookie.setPath(request.getContextPath()+"/loginUI.html");
-
-		//获取页面复选框的值
-		//选中页面复选框
-		if(remeberMe){
-			newCookie.setMaxAge(cookieMaxAge);
-		}
-		//如果没有被选中，清空有效时长
-		else{
-			newCookie.setMaxAge(0);
-		}
+		newCookie.setMaxAge(cookieMaxAge);
 		newCookie.setPath("/");
 		//将Cookie放置到response对象中
 		response.addCookie(newCookie);
-
 	}
 
 	public static Map<String,Object> readCookie(HttpServletRequest request,HttpServletResponse response){

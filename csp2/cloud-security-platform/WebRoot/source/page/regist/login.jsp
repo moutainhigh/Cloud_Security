@@ -187,16 +187,7 @@ $(function(){
 	}
 	if(password!=null && password!=''){
 		$("#login_password").attr("value",password);
-	}
-	if(remeber!=null && remeber=="true"){
-		$("#remeberMe").prop("checked","checked");
-	}else{
-		$("#remeberMe").prop("checked",false);
-	}
-
-
-
-		
+	}		
 })
 
 </script>

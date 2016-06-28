@@ -5,7 +5,7 @@ window.onload =function(){
 }
 
 $(function(){
-	$('input[name=name]').change(function() {
+	$('#login_name').keyup(function() {
 		//用户名发生改变时判断是否为cookie保存
 		var userName = $("#login_name").val();
 		$.ajax({
@@ -16,10 +16,8 @@ $(function(){
             success: function(data){
                 if(data.cookie){
                 	$("#login_password").attr("value",data.password);
-                	$("#remeberMe").prop("checked","checked");
                 }else{
                 	$("#login_password").attr("value","");
-                	$("#remeberMe").prop("checked",false);
                 }
             },
          }); 
