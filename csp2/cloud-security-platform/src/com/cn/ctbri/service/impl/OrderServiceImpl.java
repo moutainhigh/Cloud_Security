@@ -90,8 +90,8 @@ public class OrderServiceImpl implements IOrderService{
      *       @time 2015-3-4
      * 返回值    ：  Order
      */
-    public List findByUserIdAndPage(int id, int pageIndex,String state,String type) {
-        return orderDao.findByUserIdAndPage(id,pageIndex,state,type);
+    public List findByUserIdAndPage(int id, int pageIndex,String state,String type,int list_group) {
+        return orderDao.findByUserIdAndPage(id,pageIndex,state,type,list_group);
     }
     /**
      * 功能描述：组合查询订单追踪-分页
