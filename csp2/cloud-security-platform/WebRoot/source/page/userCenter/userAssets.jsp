@@ -306,7 +306,7 @@
       <table style="margin-top:26px;width:630px">
         <tbody><tr>
           <td style="width:25%;">资产名称</td>
-          <td style="width:37%;"><input class="boz_inout_1" type="text" name="name" id="assetName"></td>
+          <td style="width:37%;"><input class="boz_inout_1" type="text" name="assetName" id="assetName"></td>
           <td style="width:30%; text-align:left; color:#e32929;font-size:12px"><div class="addMsg" id="assetName_msg"></div></td>
         </tr>
         <tr>
