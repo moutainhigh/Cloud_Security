@@ -20,49 +20,6 @@
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
-<script type="text/javascript">
-function signIn(){
-	$.ajax({ type: "POST",
-    		 url: "signIn.html", 
-    		 success: function(data) {
-	    		 	 if(data.collect == 0){
-	    		 	 	alert("系统异常，请稍后领取~~");
-	    		 	 }else if(data.collect == 1){
-    		    		alert("今日金额已经领取，不能重复领取！");  
-			    	 }else if(data.collect==2) {
-			    	 	//签到成功
-			    	 	//移除click事件
-			    	 	$('.qdbtn').unbind("click",signIn);
-			    	 	
-			    	 	//签到可获得10安全币-->“今日已签到”字样
-			    	 	$('.qdbtn').children('b').remove();
-						var html='';
-						html+='<b style="padding-left:10px;"><i style="width:auto;padding-right: 8px;"><img src="/cloud-security-platform/source/images/balance/minig.png" alt=""></i>今日已签到</b>';
-						$('.qdbtn').append(html);
-						$('.succeed').fadeIn(500);
-						$('.succeed').fadeOut(2000);
-						
-						//"安全币余额"的 显示改变	
-						$('.b_aic').children('em').remove();
-						html = '<em>'+data.balance+'</em>';
-						$('.b_aic').append(html);
-			    	 }
-    		    	 }, 
-    		  error: function(data){ 
-    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-    		    		 window.location.href = "loginUI.html"; } 
-    		    	 else { window.location.href = "loginUI.html"; } } 
-    	});
-}
-//今日未签到时，签到按钮添加click事件
-$(document).ready(function(){
-  var signFlg = ${requestScope.signIn};
-  if (!signFlg) {
-  	$(".qdbtn").click(signIn);
-  }
-});
-
-</script>
 </head>
 
 <body>
@@ -122,17 +79,8 @@ $(document).ready(function(){
             </div>
         	<div class="coreRight fl" style="margin-bottom:200px;">
             		<div class="banlance_head clearfix">
-                    	<div class="c-lan fl">
+                    	 <div class="c-lan fl">
                         	<span class="b_aic">安全币余额：<em>${balance }</em></span>
-                            <span class="b_bic qdbtn" >
-                           		<i><img src="${ctx}/source/images/balance/sign_in.png" alt=""></i>
-	                        	<c:if test="${!signIn}">
-                           			<b>签到可获得10安全币</b>
-	                        	</c:if>
-	                        	<c:if test="${signIn}">
-	                        		<b style="padding-left:10px;"><i style="width:auto;padding-right: 8px;"><img src="${ctx}/source/images/balance/minig.png" alt=""></i>今日已签到</b>
-	                        	</c:if>
-                            </span>
                         </div>
                         
                        <a href="javascript:;" id="gz" class="gz-btn fr">安全币规则</a>
@@ -278,13 +226,6 @@ $(document).ready(function(){
 		<!-- 底部 end -->
 	</div>
 	
-	<!--签到弹框-->
-    <div class="succeed">
-    	<div class="spopo">
-        	<i class="icof"></i><span>签到成功</span><em>+<b>10</b></em><i class="icoc"></i>
-        </div>
-    
-    </div>
 </body>
 
 
