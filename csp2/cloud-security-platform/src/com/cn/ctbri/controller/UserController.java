@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
@@ -37,7 +36,6 @@ import com.cn.ctbri.entity.Notice;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.User;
-import com.cn.ctbri.listener.SessionListener;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.INoticeService;
 import com.cn.ctbri.service.IOrderAssetService;
