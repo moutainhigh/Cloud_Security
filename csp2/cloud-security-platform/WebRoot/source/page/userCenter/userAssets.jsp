@@ -92,7 +92,7 @@
                 	<ol class="navlist centlist assets clearfix">
                     	<li class="active">全部</li>
                         <li>已验证</li>
-                        <li>未验证</li>
+                        <!-- <li>未验证</li> -->
                     </ol>
                     <div class="tabBox" id="assetsTable">
                     	
