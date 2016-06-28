@@ -109,10 +109,10 @@
                                             </input>
                                            
                                             <c:if test="${shopCar.status==-1}">
-                                            <i class="chck" style="margin: 0; position:relative; top:-6px;display:none"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">已失效</font>
+                                            <i class="chck" style="margin: 0; position:relative; top:0;display:none"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">已失效</font>
                                             </c:if>
                                              <c:if test="${shopCar.status!=-1}">
-                                           <i class="chck" style="margin: 0; position:relative; top:-6px"></i>
+                                           <i class="chck" style="margin: 0; position:relative; top:0"></i>
                                             </c:if>
                                             </label>
                                            <c:if test="${shopCar.serviceId!=6}">
