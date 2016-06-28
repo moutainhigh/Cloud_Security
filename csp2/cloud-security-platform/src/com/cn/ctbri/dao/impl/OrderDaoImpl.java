@@ -89,7 +89,7 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
      *       @time 2015-3-4
      * 返回值    ：  Order
      */
-    public List findByUserIdAndPage(int id, int pageIndex,String state,String type) {
+    public List findByUserIdAndPage(int id, int pageIndex,String state,String type,int list_group) {
         Map<String,Object> paramMap = new HashMap<String,Object>();
         //当前页
         int pageSize = 10;
@@ -100,6 +100,7 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
         //add by tangxr 2016-5-31 是否分页 -1表示不分页
         paramMap.put("pageIndex", pageIndex);
         paramMap.put("type", type);
+        paramMap.put("list_group", list_group);
         if("2".equals(state)){
         	 paramMap.put("state", Integer.parseInt(state)+1);
         }else{
