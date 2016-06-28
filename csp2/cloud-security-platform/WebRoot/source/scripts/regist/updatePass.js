@@ -1,5 +1,5 @@
 window.onload =function(){
-
+ $(':input','#passForm').not(':button, :submit, :reset, :hidden').val('');
  $('#imageNumber').click(function(){checkNumberImage()});
 }
 //跟换验证码
