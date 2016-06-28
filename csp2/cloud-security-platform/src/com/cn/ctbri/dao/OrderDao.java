@@ -57,10 +57,11 @@ public interface OrderDao {
     List findIPByOrderId(String orderId);
     /**
      * 功能描述： 根据pageIndex和用户id查询记录
+     * @param list_group 
      *       @time 2015-3-4
      * 返回值    ：  Order
      */
-    List findByUserIdAndPage(int id, int pageIndex,String state,String type);
+    List findByUserIdAndPage(int id, int pageIndex,String state,String type, int list_group);
     /**
      * 功能描述：组合查询订单追踪-分页
      *       @time 2015-1-15
