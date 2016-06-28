@@ -329,7 +329,6 @@ public class UserController{
 			String[] cookies = (String[])map.get("result");
 			m.addAttribute("userName", cookies[1]);
 			m.addAttribute("password", cookies[2]);
-			m.addAttribute("remeber", "true");
 		}
 		return "/source/page/regist/login";
 	}
@@ -363,6 +362,42 @@ public class UserController{
 		}
 	}
 	
+	/**
+	 * 功能描述：  修改用户名时判断是否为cookie保存
+	 * 参数描述：  String name,HttpServletResponse response
+	 * @throws Exception 
+	 *		 @time 2014-12-31
+	 */
+	@RequestMapping(value="login_checkCookie.html", method = RequestMethod.POST)
+	@ResponseBody
+	public void login_checkCookie(HttpServletRequest request,HttpServletResponse response){
+		String userName = request.getParameter("name");
+		Map<String, Object> m = new HashMap<String, Object>();
+		
+		//获取cookie值
+		Map<String,Object> map = LogonUtils.readCookie(request, response);		
+		if(map!=null && map.get("result")!=null){
+			String[] cookies = (String[])map.get("result");
+			if(cookies[1].equals(userName)){				
+				m.put("cookie", true);
+				m.put("password", cookies[2]);
+				m.put("remeber", "true");
+			}else{
+				m.put("cookie", false);
+			}
+		}else{
+			m.put("cookie", false);
+		}
+
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * 功能描述： 登录
@@ -471,10 +506,11 @@ public class UserController{
 			String ipEnd = _user.getEndIP();
 				
 			/**记住密码功能*/
-			LogonUtils.remeberMe(request,response,remeberMe,name,password);
+			if(remeberMe){
+				LogonUtils.remeberMe(request,response,name,password);
+			}			
 			
-			_user.setLastLoginTime(new Date());
-			//设置登录状态：2
+			_user.setLastLoginTime(new Date());			//设置登录状态：2
 			_user.setStatus(2);
 			userService.update(_user);
 			
@@ -607,29 +643,29 @@ public class UserController{
 	}
 	
 //	public void sessionHandlerByCacheMap(HttpSession session, int userId){
-////        String userid=session.getAttribute("userid").toString();
-//		String userIdStr = String.valueOf(userId);
-//        if(SessionListener.sessionContext.getSessionMap().get(userIdStr)!=null){
-//            HttpSession userSession=(HttpSession)SessionListener.sessionContext.getSessionMap().get(userIdStr);
-//            //注销在线用户
-//            try {
-//            	userSession.invalidate();           
-//            } catch (Exception e) {
-//            	e.printStackTrace();
-//            }
-//            SessionListener.sessionContext.getSessionMap().remove(userIdStr);
-//            //清除在线用户后，更新map,替换map sessionid
-//            SessionListener.sessionContext.getSessionMap().remove(session.getId()); 
-//            SessionListener.sessionContext.getSessionMap().put(userIdStr,session); 
-//        }
-//        else
-//        {
-//            // 根据当前sessionid 取session对象。 更新map key=用户名 value=session对象 删除map
-//            SessionListener.sessionContext.getSessionMap().get(session.getId());
-//            SessionListener.sessionContext.getSessionMap().put(userIdStr,SessionListener.sessionContext.getSessionMap().get(session.getId()));
-//            SessionListener.sessionContext.getSessionMap().remove(session.getId());
-//        }
+////String userid=session.getAttribute("userid").toString();
+//String userIdStr = String.valueOf(userId);
+//if(SessionListener.sessionContext.getSessionMap().get(userIdStr)!=null){
+//    HttpSession userSession=(HttpSession)SessionListener.sessionContext.getSessionMap().get(userIdStr);
+//    //注销在线用户
+//    try {
+//    	userSession.invalidate();           
+//    } catch (Exception e) {
+//    	e.printStackTrace();
 //    }
+//    SessionListener.sessionContext.getSessionMap().remove(userIdStr);
+//    //清除在线用户后，更新map,替换map sessionid
+//    SessionListener.sessionContext.getSessionMap().remove(session.getId()); 
+//    SessionListener.sessionContext.getSessionMap().put(userIdStr,session); 
+//}
+//else
+//{
+//    // 根据当前sessionid 取session对象。 更新map key=用户名 value=session对象 删除map
+//    SessionListener.sessionContext.getSessionMap().get(session.getId());
+//    SessionListener.sessionContext.getSessionMap().put(userIdStr,SessionListener.sessionContext.getSessionMap().get(session.getId()));
+//    SessionListener.sessionContext.getSessionMap().remove(session.getId());
+//}
+//}
 	
 	 /**
 		 * 功能描述： 用户中心页面
@@ -1127,13 +1163,13 @@ public class UserController{
 	            }
         	}else if(mobile.getTimes()==3){
         		Map<String, Object> m2 = new HashMap<String, Object>();
-        		//判断30分钟以后
+        		//判断1小时以后
         		String dateLast = mobile.getSendDate();
         		Date lastDate=DateUtils.stringToDateNYRSFM(dateLast);
         		Date nowDate=DateUtils.stringToDateNYRSFM(ds.format(date));  
         		//时间之间的毫秒数
 	            long ms = DateUtils.getMsByDays(lastDate, nowDate);
-	            if(ms>(1000*60*30)){
+	            if(ms>(1000*60*60)){
 	            	m2.put("mobileNumber", mobile.getMobileNumber());
 	        		m2.put("times", 1);
 	        		m2.put("sendDate", ds.format(date));
