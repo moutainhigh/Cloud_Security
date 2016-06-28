@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
@@ -34,9 +35,9 @@ import com.cn.ctbri.entity.LoginHistory;
 import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.Notice;
 import com.cn.ctbri.entity.Order;
-import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.User;
+import com.cn.ctbri.listener.SessionListener;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.INoticeService;
 import com.cn.ctbri.service.IOrderAssetService;
@@ -373,7 +374,7 @@ public class UserController{
 	@RequestMapping(value="login.html")
 	@ResponseBody
 	public void login(HttpServletRequest request,HttpServletResponse response){
-		String name = request.getParameter("name");
+		 String name = request.getParameter("name");
 		String password = request.getParameter("password");
 		boolean remeberMe = Boolean.valueOf(request.getParameter("remeberMe"));
 		String md5password = DigestUtils.md5Hex(password);
@@ -607,6 +608,31 @@ public class UserController{
 
 	}
 	
+	public void sessionHandlerByCacheMap(HttpSession session, int userId){
+//        String userid=session.getAttribute("userid").toString();
+		String userIdStr = String.valueOf(userId);
+        if(SessionListener.sessionContext.getSessionMap().get(userIdStr)!=null){
+            HttpSession userSession=(HttpSession)SessionListener.sessionContext.getSessionMap().get(userIdStr);
+            //注销在线用户
+            try {
+            	userSession.invalidate();           
+            } catch (Exception e) {
+            	e.printStackTrace();
+            }
+            SessionListener.sessionContext.getSessionMap().remove(userIdStr);
+            //清除在线用户后，更新map,替换map sessionid
+            SessionListener.sessionContext.getSessionMap().remove(session.getId()); 
+            SessionListener.sessionContext.getSessionMap().put(userIdStr,session); 
+        }
+        else
+        {
+            // 根据当前sessionid 取session对象。 更新map key=用户名 value=session对象 删除map
+            SessionListener.sessionContext.getSessionMap().get(session.getId());
+            SessionListener.sessionContext.getSessionMap().put(userIdStr,SessionListener.sessionContext.getSessionMap().get(session.getId()));
+            SessionListener.sessionContext.getSessionMap().remove(session.getId());
+        }
+    }
+	
 	 /**
 		 * 功能描述： 用户中心页面
 		 * 参数描述：  无
@@ -688,6 +714,22 @@ public class UserController{
 			alarmSum = alarmList.size();
 		}
 		request.setAttribute("alarmSum",alarmSum);
+		
+		//add by zhang_shaohua 签到按钮的表示
+		User loginUser = userService.findUserById(globle_user.getId()).get(0);
+		boolean signIn= false; //今日是否已签到标志位  false:今日未签到
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		//取得上次签到日期
+		String lastTime = null;
+		if (loginUser.getLastSignInTime()!= null) {
+			lastTime = sdf.format(globle_user.getLastSignInTime());
+		}
+		//今天的日期
+		String nowTime = sdf.format(new Date());
+		if (lastTime != null && lastTime.compareTo(nowTime) >=0){
+			signIn = true;//今日已签到
+		}
+		request.setAttribute("signIn",signIn);
 		return "/source/page/personalCenter/center_index";
 	}
 	
