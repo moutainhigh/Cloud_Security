@@ -9,8 +9,8 @@
 }*/
 
 function saveAsset() {
-	var assetName =$("#assetName").val();
-	var assetAddr = $("#assetAddr").val();
+	var assetName =$.trim($("#assetName").val());
+	var assetAddr = $.trim($("#assetAddr").val());
      var addrType = $('input:radio[name="addrType"]:checked').val();
      var purpose = $("#purpose").val();
      var prov = $("#districtId").val();
@@ -124,8 +124,8 @@ function editAssetUI(str){
 function editAsset(){
 	var oldAssetName = $("#hiddenEditName").val();
 	var oldAssetAddr = $("#hiddenEditAddr").val();
-	var assetName =$("#editAssetName").val();
-	var assetAddr = $("#editAssetAddr").val();
+	var assetName =$.trim($("#editAssetName").val());
+	var assetAddr = $.trim($("#editAssetAddr").val());
     var addrType = $('input:radio[name="addrType"]:checked').val();
     var purpose = $("#editPurpose").val();
     var prov = $("#editDistrictId").val();

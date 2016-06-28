@@ -443,8 +443,8 @@ function changePrice(){
 }
 
 function saveWafAsset() {
-	var assetName =$("#assetName").val();
-	var assetAddr = $("#InertAddr").val();
+	var assetName =$.trim($("#assetName").val());
+	var assetAddr = $.trim($("#InertAddr").val());
      var addrType = $('input:radio[name="addrType"]:checked').val();
      var purpose = $("#purpose").val();
      var prov = $("#districtId").val();

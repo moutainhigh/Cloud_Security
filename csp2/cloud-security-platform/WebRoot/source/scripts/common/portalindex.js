@@ -74,52 +74,7 @@ onclickTime('time');
 //复选框
 chck();
 
-/*	$('.dropdown').click(function(){
-	$('.dropdown-menu').fadeIn();
 
-})
-$('.dropdown-menu li').hover(function(){
-			$(this).addClass('active');
-		},function(){
-			$(this).removeClass('active');
-		})
-//		for(var i=0;i<10; i++){
-//			$('.dropdown-menu').append('<li><label name="a"><input type="checkbox"  id='+ i +' >1</label></li>');	
-//		}
-
-	var assetIds = $("#assetIds").val();
-		var assetAddr = $("#assetAddr").val();
-		$('.dropdown-menu li').each(function(){
-			$(this).delegate(this,'click',function(){
-				var ck=$(this).find('input');
-				var id=$(this).find('input').attr('id');
-				if($(ck).is(':checked')){
-					var flag = false;
-					$('.btnNew i').each(function(index, element) {
-                        var iId =$(this).attr('id');
-						if(id==iId){
-							flag = true;
-						}
-                    });
-					if(!flag){
-						var v= $(this).children('label').text();
-						$('.btnNew em').before('<i id='+ assetIds + id +'>'+ assetAddr + v +',</i>');
-					}
-					
-				}else
-				{
-					$('.btnNew i').each(function(index, element) {
-                        var iId =$(this).attr('id');
-						if(id==iId){
-							$(this).remove();	
-						}
-                    });
-				}
-				
-			
-			})
-			
-		})*/
 		//按钮切换显示	
 		$('.Single').click(function(){
 			$('.start').show();
