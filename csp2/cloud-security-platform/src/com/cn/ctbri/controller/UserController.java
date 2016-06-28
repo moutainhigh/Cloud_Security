@@ -608,30 +608,30 @@ public class UserController{
 
 	}
 	
-	public void sessionHandlerByCacheMap(HttpSession session, int userId){
-//        String userid=session.getAttribute("userid").toString();
-		String userIdStr = String.valueOf(userId);
-        if(SessionListener.sessionContext.getSessionMap().get(userIdStr)!=null){
-            HttpSession userSession=(HttpSession)SessionListener.sessionContext.getSessionMap().get(userIdStr);
-            //注销在线用户
-            try {
-            	userSession.invalidate();           
-            } catch (Exception e) {
-            	e.printStackTrace();
-            }
-            SessionListener.sessionContext.getSessionMap().remove(userIdStr);
-            //清除在线用户后，更新map,替换map sessionid
-            SessionListener.sessionContext.getSessionMap().remove(session.getId()); 
-            SessionListener.sessionContext.getSessionMap().put(userIdStr,session); 
-        }
-        else
-        {
-            // 根据当前sessionid 取session对象。 更新map key=用户名 value=session对象 删除map
-            SessionListener.sessionContext.getSessionMap().get(session.getId());
-            SessionListener.sessionContext.getSessionMap().put(userIdStr,SessionListener.sessionContext.getSessionMap().get(session.getId()));
-            SessionListener.sessionContext.getSessionMap().remove(session.getId());
-        }
-    }
+//	public void sessionHandlerByCacheMap(HttpSession session, int userId){
+////        String userid=session.getAttribute("userid").toString();
+//		String userIdStr = String.valueOf(userId);
+//        if(SessionListener.sessionContext.getSessionMap().get(userIdStr)!=null){
+//            HttpSession userSession=(HttpSession)SessionListener.sessionContext.getSessionMap().get(userIdStr);
+//            //注销在线用户
+//            try {
+//            	userSession.invalidate();           
+//            } catch (Exception e) {
+//            	e.printStackTrace();
+//            }
+//            SessionListener.sessionContext.getSessionMap().remove(userIdStr);
+//            //清除在线用户后，更新map,替换map sessionid
+//            SessionListener.sessionContext.getSessionMap().remove(session.getId()); 
+//            SessionListener.sessionContext.getSessionMap().put(userIdStr,session); 
+//        }
+//        else
+//        {
+//            // 根据当前sessionid 取session对象。 更新map key=用户名 value=session对象 删除map
+//            SessionListener.sessionContext.getSessionMap().get(session.getId());
+//            SessionListener.sessionContext.getSessionMap().put(userIdStr,SessionListener.sessionContext.getSessionMap().get(session.getId()));
+//            SessionListener.sessionContext.getSessionMap().remove(session.getId());
+//        }
+//    }
 	
 	 /**
 		 * 功能描述： 用户中心页面
