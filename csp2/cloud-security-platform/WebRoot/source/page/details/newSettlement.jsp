@@ -49,13 +49,6 @@
             return false;
         };
 
-        if (userName.length > 10) {
-            $(".name1").hide();
-            $(".name_wrong").show();
-            $(".name_wrong p").html("姓名最多可输入10个字符");
-            return false;
-        };
-
         if (mobile == "") {
             $(".name2").hide();
             $(".phone_wrong").show();
@@ -202,7 +195,7 @@
                             <div class="show_name">
                                 <div class="n_txt1">姓名：</div>
                                 <div class="c_input">
-                                    <input type='text' id="txtName" value="">
+                                    <input type='text' id="txtName" value="${linkman.name}">
                                 </div>
                                 <div class="list_wrong name1"><b></b><p>请输入联系人姓名</p></div>
                                 <div class="name_wrong"><b></b><p></p></div>
@@ -210,7 +203,7 @@
                             <div class="show_name">
                                 <div class="n_txt1">电话：</div>
                                 <div class="c_input">
-                                    <input type='text' id="txtTel" value="">
+                                    <input type='text' id="txtTel" value="${linkman.mobile }">
                                 </div>
                                 <div class="list_wrong name2"><b></b><p>请输入联系人电话，便于接收告警短信</p></div>
                                 <div class="phone_wrong"><b></b><p></p></div>
@@ -218,7 +211,7 @@
                             <div class="show_name">
                                 <div class="n_txt1">邮箱：</div>
                                 <div class="c_input">
-                                    <input type='text' id="txtAdd" value="">
+                                    <input type='text' id="txtAdd" value="${linkman.email }">
                                 </div>
                                 <div class="list_wrong name3"><b></b><p>请输入电子邮箱，便于接受告警邮件</p></div>
                                 <div class="add_wrong"><b></b><p></p></div>
