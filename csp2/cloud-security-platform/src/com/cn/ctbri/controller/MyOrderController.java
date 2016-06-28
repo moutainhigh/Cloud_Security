@@ -110,7 +110,7 @@ public class MyOrderController {
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         String state=request.getParameter("state");
         //根据pageIndex获取每页order条数,获取订单信息（逻辑删除订单不显示）
-        List orderList = orderService.findByUserIdAndPage(globle_user.getId(),pageIndex,state,null);
+        List orderList = orderService.findByUserIdAndPage(globle_user.getId(),pageIndex,state,null,1);
         
         //根据orderId查询task表判断告警是否查看过
         if(orderList != null && orderList.size() > 0){

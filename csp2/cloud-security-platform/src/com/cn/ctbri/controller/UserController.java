@@ -734,7 +734,9 @@ public class UserController{
         String temp = setDateFormat.format(Calendar.getInstance().getTime());
         m.put("currentDate", temp);
 //        List servList = orderService.findByCombineOrderTrack(m);
-        List servList = orderService.findByUserIdAndPage(globle_user.getId(),-1,"1",null);
+        //是否分组标志
+        int list_group = -1;
+        List servList = orderService.findByUserIdAndPage(globle_user.getId(),-1,"1",null,list_group);
         int servNum = 0;
 		if(servList.size()>0&&servList!=null){
 			servNum = servList.size();
@@ -777,7 +779,7 @@ public class UserController{
 	public String orderList(HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 //		List orderList = orderService.findOrderByUserId(globle_user.getId());
-		List orderList = orderService.findByUserIdAndPage(globle_user.getId(),-1,null,null);
+		List orderList = orderService.findByUserIdAndPage(globle_user.getId(),-1,null,null,1);
 		if(orderList.size()>2){
 			orderList = orderList.subList(0, 2);
 		}

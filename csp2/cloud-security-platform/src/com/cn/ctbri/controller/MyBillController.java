@@ -72,7 +72,7 @@ public class MyBillController {
         int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         //根据pageIndex获取每页账单条数,获取账单信息
-        List list = orderService.findByUserIdAndPage(globle_user.getId(),pageIndex,null,"0");
+        List list = orderService.findByUserIdAndPage(globle_user.getId(),pageIndex,null,"0",1);
         ModelAndView mv = new ModelAndView("/source/page/userCenter/billorderList");
         mv.addObject("list", list);
         return mv;
