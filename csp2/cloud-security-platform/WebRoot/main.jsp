@@ -69,7 +69,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
             	
 				<div class="bannerB v_cont">
 					<ul class="bannerHeight banner_img clearfix">
-						<li style=" display: list-item;"><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/NewVIP.png" alt=""></a></div></li>
+						<li style=" display: list-item;"><div class="vb"><a href="${ctx}/registUI.html"><img src="${ctx}/source/images/portal/NewVIP.png" alt=""></a></div></li>
 						<li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t1.png" alt=""></a></div></li>
                          <li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t2.jpg" alt=""></a></div></li>
                          <li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t3.png" alt=""></a></div></li>
