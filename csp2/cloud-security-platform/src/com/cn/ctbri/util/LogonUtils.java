@@ -57,7 +57,7 @@ public class LogonUtils {
 		
 		//设置cookie
 		int cookieMaxAge = 7*24*60*60;
-		long valueTime = System.currentTimeMillis() + cookieMaxAge;
+		long valueTime = System.currentTimeMillis() + cookieMaxAge*1000;
 		String cookieValue = valueTime + ":" + name + ":" + password;
 		Cookie newCookie = new Cookie("anquanbang_login",cookieValue);
 		
@@ -73,8 +73,10 @@ public class LogonUtils {
 		else{
 			newCookie.setMaxAge(0);
 		}
+		newCookie.setPath("/");
 		//将Cookie放置到response对象中
 		response.addCookie(newCookie);
+
 	}
 
 	public static Map<String,Object> readCookie(HttpServletRequest request,HttpServletResponse response){

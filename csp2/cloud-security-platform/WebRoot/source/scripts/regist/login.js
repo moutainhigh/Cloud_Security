@@ -5,7 +5,25 @@ window.onload =function(){
 }
 
 $(function(){
-
+	$('input[name=name]').change(function() {
+		//用户名发生改变时判断是否为cookie保存
+		var userName = $("#login_name").val();
+		$.ajax({
+            type: "POST",
+            url: "login_checkCookie.html",
+            data: {"name":userName},
+            dataType:"json",
+            success: function(data){
+                if(data.cookie){
+                	$("#login_password").attr("value",data.password);
+                	$("#remeberMe").prop("checked","checked");
+                }else{
+                	$("#login_password").attr("value","");
+                	$("#remeberMe").prop("checked",false);
+                }
+            },
+         }); 
+		});
 	$("body").keydown(function(e){ 
 		var curKey = e.which; 
 		if(curKey == 13){ 

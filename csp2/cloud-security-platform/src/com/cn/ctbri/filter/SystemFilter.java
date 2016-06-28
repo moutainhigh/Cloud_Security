@@ -42,6 +42,7 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/regist_checkEmail.html");
 		list.add("/regist_checkNumber.html");
 		list.add("/login_checkName.html");
+		list.add("/login_checkCookie.html");
 		list.add("/regist_checkEmailActivationCode.html");
 		list.add("/regist_checkSendMobile.html");
 		list.add("/regist.html");
