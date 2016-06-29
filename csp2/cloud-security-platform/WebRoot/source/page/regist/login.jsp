@@ -181,12 +181,12 @@ $(function(){
 	var password = $("#passwordHidden").val();
 	var remeber = $("#remeberHidden").val();
 	if(username!=null && username!=''){
-		$("#login_name").attr("value",username);
+		$("#login_name").prop("value",username);
 	}else{
 		$('.prompttext').val('');
 	}
 	if(password!=null && password!=''){
-		$("#login_password").attr("value",password);
+		$("#login_password").prop("value",password);
 	}		
 })
 
