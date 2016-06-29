@@ -31,6 +31,7 @@ public class Configuration {
 	private static String warn4_model;//告警模板
 	private static String warn5_model;//告警模板
 	private static String fileContent;//资产验证时的文件内容
+	private static String modifyCode_model;//修改密码模板
 	static {
 		InputStream inputStream = Configuration.class.getClassLoader().getResourceAsStream("default.properties");
 		Properties prop = new Properties();
@@ -54,6 +55,7 @@ public class Configuration {
 		warn3_model=(String)prop.get("warn3_model");
 		warn4_model=(String)prop.get("warn4_model");
 		warn5_model=(String)prop.get("warn5_model");
+		modifyCode_model=(String)prop.get("modifyCode_model");
 	}
 	public static String getFileContent() {
 		return fileContent;
@@ -145,6 +147,12 @@ public class Configuration {
     public static void setWarn5_model(String warn5_model) {
         Configuration.warn5_model = warn5_model;
     }
+	public static String getModifyCode_model() {
+		return modifyCode_model;
+	}
+	public static void setModifyCode_model(String modifyCode_model) {
+		Configuration.modifyCode_model = modifyCode_model;
+	}
     
     
 	
