@@ -1535,5 +1535,44 @@ public class UserController{
         m.addAttribute("servAPIList", servAPIList);
         return "/category";
 	} 
-
+	
+	/**
+	 * 功能描述： 修改手机号码
+	 * 参数描述： Model m
+	 *		 @time 2016-6-29
+	 */
+	@RequestMapping(value="updateMobile.html")
+	public String updateMobile(HttpServletRequest request,Model m){
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		List<User> userList = userService.findUserById(globle_user.getId());
+		String originalMobile = userList.get(0).getMobile();
+		if(originalMobile!=null && !originalMobile.equals("")){
+			m.addAttribute("originalMobile", originalMobile);
+		}
+		return "/updateMobile";
+	}
+	
+	/** 功能描述： 修改手机号码
+	 * 参数描述： User user
+	 *		 @time 2016-6-29
+	 */
+	@RequestMapping(value="/confirmMobile.html")
+	public String confirmMobile(HttpServletRequest request, User user){
+		boolean success = false;
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		if (globle_user != null) {
+			String mobile = user.getMobile();
+			user.setMobile(mobile);
+			user.setId(globle_user.getId());
+			int result = userService.updateUserMobile(user);
+			if(result==1){
+				globle_user.setMobile(mobile);
+				success = true;
+			}
+			
+		}
+		request.setAttribute("success", success);
+		return "/updateMobileFinish";
+	}
+	
 }
