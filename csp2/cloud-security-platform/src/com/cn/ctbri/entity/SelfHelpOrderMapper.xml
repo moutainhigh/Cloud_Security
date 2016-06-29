@@ -88,7 +88,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   a.price,
 a.serviceId,
 a.isAPI,
- a.status
+ a.status,
+ a.begin_date beginDate,
+a.end_date endDate
 FROM (SELECT
         co.*,
         cs.name          serverName
@@ -99,7 +101,7 @@ FROM (SELECT
           AND co.payFlag = #{payFlag}
           AND (co.isAPI = 0 or co.isAPI = 2)) a,
   (SELECT
-     GROUP_CONCAT(ast.addr) AS astName,
+     GROUP_CONCAT(ast.name) AS astName,
      cat.orderId
    FROM cs_asset ast,
      cs_order_asset cat
@@ -127,7 +129,9 @@ WHERE a.id = b.orderId
 a.serviceId,
 a.isAPI,
  a.status,
-b.buynum
+b.buynum,
+ a.begin_date beginDate,
+a.end_date endDate
 FROM (SELECT
         co.*,
         cs.name          serverName
@@ -182,7 +186,7 @@ FROM (SELECT
         </foreach>  
           AND (r.isAPI = 0 OR r.isAPI = 2)) a,
   (SELECT
-     GROUP_CONCAT(t.addr) AS astName,
+     GROUP_CONCAT(t.name) AS astName,
      ca.orderId
    FROM cs_asset t,
      cs_order_asset ca
