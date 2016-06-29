@@ -1,5 +1,35 @@
 $(function(){
-	$('#month').trigger('change');
+	//上下键操作下拉框
+	$("#month").keydown(function(event){
+		var isFocus=$("#month").is(":focus");
+		if(isFocus){
+			var month = parseInt($('#month').val());
+			if(event.keyCode == 38){//上
+				//价格
+
+				if(month==-1||month==1){
+					$("#price").html("¥100");
+				}else{
+					var priceVals = 100*(month-1);
+					$("#price").html("¥"+priceVals);
+				}
+			}
+			if(event.keyCode == 40){//下
+				//价格
+
+				if(month==-1){
+					$("#price").html("¥100");
+				}else{
+					if(month==11){
+						$("#price").html("¥1100");
+					}else{
+						var priceVals = 100*(month+1);
+						$("#price").html("¥"+priceVals);
+					}
+				}
+			}
+		}
+	})
 	//价格
 	var month = $('#month').val();
 	if(month=='-1'){
