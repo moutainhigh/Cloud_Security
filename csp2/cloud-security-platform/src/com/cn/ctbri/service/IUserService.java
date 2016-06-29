@@ -116,4 +116,7 @@ public interface IUserService {
     
     //更改安全币余额
     int updateBalance(User user);
+    
+    //更新用户的手机号码
+    int updateUserMobile(User user);
 }
