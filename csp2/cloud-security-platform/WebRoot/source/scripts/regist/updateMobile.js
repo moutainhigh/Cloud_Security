@@ -109,7 +109,6 @@ function timeMobile() {
 
 //检测验证码填写是否正确
 function checkActivationCode(){
-alert("aaa");
 	 var verification_code = $("#verification_phone").val();
 	 	if(verification_code!=null&&verification_code!=""){
 		 $.ajax({
