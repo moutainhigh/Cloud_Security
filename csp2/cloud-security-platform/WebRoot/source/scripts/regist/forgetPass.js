@@ -57,8 +57,8 @@ function checkSendMobile(){
            			$("#phone_code_prompt").fadeOut();
 		               $.ajax({
 					           type: "POST",
-					           url: "regist_checkSendMobile.html",
-					           data: {"mobile":phone},
+					           url: "checkSendMobile.html",
+					           data: {"mobile":phone,"useFlag":"1"},
 					           dataType:"json",
 					           success: function(data){
 					           		if(data.msg=="0"){

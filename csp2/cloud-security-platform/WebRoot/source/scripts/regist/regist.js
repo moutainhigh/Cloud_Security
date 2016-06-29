@@ -13,6 +13,7 @@ window.onload =function(){
 
 	 $('#imageNumber').click(function(){checkNumberImage()});
 }
+
 function checkName(){
 	var name = $("#regist_name").val();
 	var	pattern	= /^[a-zA-Z0-9_]{4,20}$/;
@@ -271,8 +272,8 @@ function checkSendMobile(){
 	 if(checkMobile1==1){
  		$.ajax({
            type: "POST",
-           url: "regist_checkSendMobile.html",
-           data: {"mobile":phone},
+           url: "checkSendMobile.html",
+           data: {"mobile":phone,"useFlag":"0"},
            dataType:"json",
            success: function(data){
            		if(data.msg=="0"){

@@ -1,4 +1,5 @@
 $(function(){
+	$('#month').trigger('change');
 	//价格
 	var month = $('#month').val();
 	if(month=='-1'){
@@ -440,7 +441,11 @@ function changePrice(){
 		var priceVals = 100*month;
 		$("#price").html("¥"+priceVals);
 	}
+
 }
+
+
+
 
 function saveWafAsset() {
 	var assetName =$.trim($("#assetName").val());

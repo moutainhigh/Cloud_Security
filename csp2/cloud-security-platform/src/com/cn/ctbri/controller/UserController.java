@@ -1122,10 +1122,12 @@ public class UserController{
 	 * @throws Exception 
 	 *		 @time 2015-1-4
 	 */
-	@RequestMapping(value="regist_checkSendMobile.html", method = RequestMethod.POST)
+	@RequestMapping(value="checkSendMobile.html", method = RequestMethod.POST)
 	@ResponseBody
-    public void sendMobile(User user,HttpServletRequest request,HttpServletResponse response) throws URISyntaxException {
+    public void sendMobile(HttpServletRequest request,HttpServletResponse response) throws URISyntaxException {
 		activationCode = Random.code();//生成激活码
+		String userMobile = request.getParameter("mobile");
+		String useFlag = request.getParameter("useFlag");//0:注册；1：更改密码
     	 //将验证码保存到session中
         request.getSession().setAttribute("activationCode", activationCode);
         Map<String, Object> m = new HashMap<String, Object>();
@@ -1136,10 +1138,10 @@ public class UserController{
     		Date date = new Date();
     		SimpleDateFormat ds = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         	//判断当前手机号是否已经发送过短信
-        	MobileInfo mobile = userService.getMobileById(user.getMobile());
+        	MobileInfo mobile = userService.getMobileById(userMobile);
         	if(mobile==null){
         		MobileInfo mobileInfo = new MobileInfo();
-        		mobileInfo.setMobileNumber(user.getMobile());
+        		mobileInfo.setMobileNumber(userMobile);
         		mobileInfo.setTimes(1);
         		mobileInfo.setSendDate(ds.format(date));
         		userService.addMobile(mobileInfo);
@@ -1180,15 +1182,20 @@ public class UserController{
 	            }
         	}
         	if(flag){
-        		//发送短信
-    			smsUtils.sendMessage(user.getMobile(), String.valueOf(activationCode));
+        		if(useFlag.equals("0")){//注册
+        			//发送短信
+        			smsUtils.sendMessage(userMobile, String.valueOf(activationCode));
+        		}else{//密码更改
+        			smsUtils.sendMessageForPwd(userMobile, String.valueOf(activationCode));
+        		}
+        		
     			m.put("msg", "1");//1：验证码发送成功
     			 //object转化为Json格式
         		JSONObject JSON = CommonUtil.objectToJson(response, m);
         		// 把数据返回到页面
         		CommonUtil.writeToJsp(response, JSON);
         	}else{
-        		m.put("msg", "2");//1：一个手机只能发送三次短信且时间间隔大于2分钟
+        		m.put("msg", "2");//1：一个手机一小时只能发送三次短信且时间间隔大于2分钟
         		JSONObject JSON = CommonUtil.objectToJson(response, m);
         		// 把数据返回到页面
         		CommonUtil.writeToJsp(response, JSON);
