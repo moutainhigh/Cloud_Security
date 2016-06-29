@@ -174,5 +174,9 @@ public class UserServiceImpl implements IUserService{
 	public int updateBalance(User user){
 		return userDao.updateBalance(user);
 	}
+	
+	public int updateUserMobile(User user){
+		return userDao.updateUserMobile(user);
+	}
 
 }
