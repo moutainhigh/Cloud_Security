@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -91,7 +92,8 @@
                                         	
                                         </td>
                                        
-                                        <td width="24%">资产内容</td>
+                                       <td width="18%">资产内容</td>
+                                        <td width="14%">服务时间</td>
                                         <td width="6%">价格</td>
                                         <td width="7%">操作</td>
                                     </tr>
@@ -122,11 +124,32 @@
                                             <a href="${ctx}/wafDetails.html?serviceId=6" target="_blank">${shopCar.serverName}</a>
                                             </c:if>
                                             </td>
-                                    <td width="36%"><p style="padding-left:40px;">
-                                     <input type="hidden" name="isAPI" value="${shopCar.isAPI}"/>
-                                    ${shopCar.astName}</p></td>
-                                    <td width="8%"><em class="price">${shopCar.price}</em></td>
-                                    <td width="9%"><a href="#" onclick="delShopCar('${shopCar.orderId}');">删除</a></td>
+                                    <td width="20%">
+                                    <input type="hidden" name="isAPI" value="${shopCar.isAPI}"/>
+                                    <c:if test="${fn:contains(shopCar.astName,',')}">   
+                                    <c:set value="${fn:split(shopCar.astName, ',')}" var="astName" />
+                                    <c:forEach items="${astName}" var="astVal">
+							              <p style="padding:5px 0 5px 40px;">
+                                            ${astVal}</p>
+                                         </c:forEach>
+                                   </c:if>
+                                     <c:if test="${!fn:contains(shopCar.astName,',')}">   
+                                          <p style="padding:5px 0 5px 40px;">   ${shopCar.astName}</p>
+                                   </c:if>
+                                    </td>
+                                    <td width="29%">
+                                 
+                                     <fmt:formatDate value="${shopCar.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                   
+                                     <c:if test="${shopCar.endDate!=null&&shopCar.endDate!=''}">
+                                       -   
+                                       <fmt:formatDate value="${shopCar.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                     
+                                     </c:if>
+                                    </td>
+                                      <td width="10%"><em class="price">${shopCar.price}</em></td>
+                                      <td width="9%"><a href="#" onclick="delShopCar('${shopCar.orderId}');">删除</a></td>
+                                    
                                   </tr>
                                   
                             </tbody>
@@ -147,7 +170,8 @@
                                         	
                                         </td>
                                        
-                                        <td width="24%">数量</td>
+                                        <td width="18%">数量</td>
+                                         <td width="14%">服务时间</td>
                                         <td width="6%">价格</td>
                                         <td width="7%">操作</td>
                                     </tr>
@@ -171,7 +195,7 @@
                                           <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${shopAPI.serviceId}&indexPage=2" target="_blank">${shopAPI.serverName}</a></td>
                                    
                                    
-                                    <td width="36%"><p style="padding-left:40px;">
+                                    <td width="20%"><p style="padding:5px 0 5px 40px;">
                                    
                                       <c:if test="${shopAPI.pack_type==1}">
                                                                                                                              套餐一
@@ -183,8 +207,10 @@
                                                                                                                              套餐三
                                       </c:if>
                                      &nbsp;&nbsp;&nbsp; ${shopAPI.buynum}</p></td>
-                                  
-                                    <td width="8%"><em class="price">${shopAPI.price}</em></td>
+                                   <td width="29%">
+                                    <fmt:formatDate value="${shopAPI.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/> - <fmt:formatDate value="${shopAPI.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                  </td>
+                                    <td width="10%"><em class="price">${shopAPI.price}</em></td>
                                     <td width="9%"><a href="#" onclick="delShopCar('${shopAPI.orderId}');">删除</a></td>
                                  </tr>
                                 

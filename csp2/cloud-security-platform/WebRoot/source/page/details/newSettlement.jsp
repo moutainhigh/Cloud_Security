@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -271,9 +272,10 @@
                         	<table class="ordertab" width="100%">
                             	<tbody>
                                 	<tr align="center">
-                                    	<td width="20%">网站安全帮</td>
-                                        <td width="60%">资产内容</td>
-                                        <td width="20%">价格</td>
+                                    		<td width="20%">网站安全帮</td>
+                                        <td width="30%">资产内容</td>
+                                         <td width="35%">服务时间</td>
+                                        <td width="15%">价格</td>
                                        
                                     </tr>
                                 </tbody>
@@ -286,8 +288,29 @@
                                  	  <input type="hidden" name="orderId" value="${shopCar.orderId}"/>
                                          <a href="${ctx}/selfHelpOrderInit.html?serviceId=${shopCar.serviceId}&indexPage=1" target="_blank">${shopCar.serverName}</a>
                                          </td>
-                                    <td width="60%"><p>${shopCar.astName}</p></td>
-                                    <td width="20%"><em class="price">${shopCar.price}</em></td>
+                                    <td width="30%"> 
+	                                    <c:if test="${fn:contains(shopCar.astName,',')}">   
+	                                    <c:set value="${fn:split(shopCar.astName, ',')}" var="astName" />
+	                                    <c:forEach items="${astName}" var="astVal">
+								              <p>
+	                                            ${astVal}</p>
+	                                         </c:forEach>
+	                                   </c:if>
+	                                     <c:if test="${!fn:contains(shopCar.astName,',')}">   
+	                                          <p>   ${shopCar.astName}</p>
+	                                   </c:if>
+                                   
+                                   </td>
+                                    <td width="35%">
+                                     <fmt:formatDate value="${shopCar.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                   
+                                     <c:if test="${shopCar.endDate!=null&&shopCar.endDate!=''}">
+                                       -   
+                                       <fmt:formatDate value="${shopCar.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                     
+                                     </c:if>
+                                    </td>
+                                    <td width="15%"><em class="price">${shopCar.price}</em></td>
                                     
                                  </tr>
                                  
@@ -298,18 +321,7 @@
                         </c:if>
                        <c:if test="${not empty shopAPIList}">
                         <div class="tabox" style=" margin-left:0px; width:1108px; padding:0;padding-top:10px">
-                        
-                        	<table class="ordertab" width="100%">
-                            	<tbody>
-                                	<tr>
-                                    	<td width="20%">安全能力API</td>
-                                        <td width="60%">数量</td>
-                                        <td width="20%">价格</td>
-                                        
-                                    </tr>
-                                </tbody>
-                            </table>
-                             <c:forEach var="shopAPI" items="${shopAPIList}">
+                           <c:forEach var="shopAPI" items="${shopAPIList}">
                         	<table class="test-table" width="100%">
                                 <tbody>
                                      <tr height="40">
@@ -317,7 +329,7 @@
                                                <input type="hidden" name="orderId" value="${shopAPI.orderId}"/>
                                        <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${shopAPI.serviceId}&indexPage=2" target="_blank">${shopAPI.serverName}</a>
                                        </td>
-                                        <td width="60%"><p>
+                                        <td width="30%"><p>
                                          <c:if test="${shopAPI.astName==1}">
                                                                                                                              套餐一
                                       </c:if>
@@ -330,7 +342,11 @@
                                         ${shopAPI.buynum}
                                         
                                         </p></td>
-                                        <td width="20%"><em class="price">${shopAPI.price}</em></td>
+                                        <td width="35%">
+                                        <fmt:formatDate value="${shopAPI.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                         - <fmt:formatDate value="${shopAPI.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                         </td>
+                                        <td width="15%"><em class="price">${shopAPI.price}</em></td>
                                         
                                      </tr>
                                      
