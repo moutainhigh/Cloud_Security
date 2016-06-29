@@ -8,6 +8,7 @@ var checkSendEmail1 = 0;
 var checkSendMobile1 = 0;
 var checkEmailActivationCode1 = 0;
 var checkCompany = 0;
+var checkCheckNumber1 = 0;
 var wait=120;
 window.onload =function(){
 
@@ -267,34 +268,39 @@ function checkSendEmail(){
 //检测手机验证码是否发送成功
 function checkSendMobile(){
  	var phone = $("#regist_phone").val();
-
-
-	 if(checkMobile1==1){
- 		$.ajax({
-           type: "POST",
-           url: "checkSendMobile.html",
-           data: {"mobile":phone,"useFlag":"0"},
-           dataType:"json",
-           success: function(data){
-           		if(data.msg=="0"){
-               		$("#verification_code_prompt").html("<b></b>短信发送失败");
-               		$("#verification_code_prompt").fadeIn();
-               		checkSendMobile1 = 0;
-           		}else if(data.msg=="1"){
-           			timeMobile();
-               		$("#verification_code_prompt").html("<b></b>验证码发送成功，请查收短信");
-               		$("#verification_code_prompt").fadeIn();
-           			checkSendMobile1 = 1;
-           		}else{
-               		$("#verification_code_prompt").html("<b></b>一个手机号码一小时内只能发送3次短信,且两次间隔大于2分钟");
-               		$("#verification_code_prompt").fadeIn();
-               		checkSendMobile1 = 0;
-           		}
-           }
-        });
-  
-    }
- 	
+ 	if(checkCheckNumber1==1){
+ 		alert("dffff");
+ 		if(checkMobile1==1){
+ 	 		$.ajax({
+ 	           type: "POST",
+ 	           url: "checkSendMobile.html",
+ 	           data: {"mobile":phone,"useFlag":"0"},
+ 	           dataType:"json",
+ 	           success: function(data){
+ 	           		if(data.msg=="0"){
+ 	               		$("#verification_code_prompt").html("<b></b>短信发送失败");
+ 	               		$("#verification_code_prompt").fadeIn();
+ 	               		checkSendMobile1 = 0;
+ 	           		}else if(data.msg=="1"){
+ 	           			timeMobile();
+ 	               		$("#verification_code_prompt").html("<b></b>验证码发送成功，请查收短信");
+ 	               		$("#verification_code_prompt").fadeIn();
+ 	           			checkSendMobile1 = 1;
+ 	           		}else{
+ 	               		$("#verification_code_prompt").html("<b></b>一个手机号码一小时内只能发送3次短信,且两次间隔大于2分钟");
+ 	               		$("#verification_code_prompt").fadeIn();
+ 	               		checkSendMobile1 = 0;
+ 	           		}
+ 	           }
+ 	        });
+ 	  
+ 	    } 
+ 	}else{
+ 		$("#verification_code_prompt").html("<b></b>请确保图片验证码输入无误");
+    	$("#verification_code_prompt").fadeIn();
+    	checkSendMobile1 = 0;
+ 	}
+	
 }
 /*//发邮件按钮显示倒计时的效果	
 function time() {
@@ -328,36 +334,38 @@ function timeMobile() {
 } 	
 //检测验证码填写是否正确
 function checkActivationCode(){
-	 var verification_code = $("#verification_code").val();
-	 if(verification_code!=null&&verification_code!=""){
-		 $.ajax({
-           type: "POST",
-           url: "regist_checkEmailActivationCode.html",
-           data: {"verification_code":verification_code},
-           dataType:"json",
-           success: function(data){
-           		if(data.msg=="0"){
-           			$("#verification_code_flag").attr("class","error");
-           			$("#verification_code_flag").show();
-               		$("#verification_code_prompt").html("<b></b>验证码填写错误");
-               		$("#verification_code_prompt").fadeIn();
-	               	checkEmailActivationCode1 = 0;
-           		}else{
-           			$("#verification_code_flag").attr("class","right");
-           			$("#verification_code_flag").show();
-               		$("#verification_code_prompt").html("<b></b>");
-               		$("#verification_code_prompt").fadeOut();
-           			checkEmailActivationCode1 = 1;
-           		}
-           },
-        });  
-	 }else{
-			$("#verification_code_flag").attr("class","error");
-   			$("#verification_code_flag").show();
-       		$("#verification_code_prompt").html("<b></b>请填写验证码");
-       		$("#verification_code_prompt").fadeIn();
-		checkEmailActivationCode1 = 0;
-	 }
+	var checkNumber = $("#checkNumber1").val();
+	if(checkNumber==""||checkNumber==null){
+		$("#checkNumber1_flag").attr("class","error");
+		$("#checkNumber1_flag").show();
+		checkCheckNumber1 = 0;
+		return false;
+	}else{
+		$.ajax({
+			   type: "POST",
+			   url:'regist_checkNumber.html',
+			   data:{"checkNumber":checkNumber},
+			   dataType:"json",
+			   success: function(data) {
+				   if(data.flag){
+						$("#checkNumber1_flag").attr("class","right");
+						$("#checkNumber1_flag").show();
+						$("#checkNumber1_prompt").html("<b></b>");
+						$("#checkNumber1_prompt").fadeOut();
+						checkCheckNumber1 = 1;
+						return true;
+				   }else{
+						$("#checkNumber1_flag").attr("class","error");
+						$("#checkNumber1_flag").show();
+						$("#checkNumber1_prompt").html("<b></b>验证码输入有误");
+						$("#checkNumber1_prompt").fadeIn();
+						checkCheckNumber1 = 0;
+						checkNumberImage();
+						return false;
+				   }
+			   }
+		});
+	}
 }
 
 

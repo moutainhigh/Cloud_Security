@@ -88,6 +88,14 @@
                             </div>
                            <div class="prompt fl" id="regist_confirm_password_prompt"><b></b>支持6-20位,且至少两种字符组合(大小写字母/数字/字符)</div>
                         </li>
+                         <li class="clearfix">
+                        	<div class="list fl">
+                            	<input type="text" placeholder="" class="text prompttext" name="company" id="company" onblur="checkCompanyFun()">
+                                <p class="promp">公司名称</p>
+                                <i class="right" style="display:none" id="company_flag"></i>
+                            </div>
+                            <div class="prompt fl" id="company_prompt"><b></b></div>
+                        </li>
                          <li class="clearfix">                       	
                             	 <select class="scelt" id="industry" name="industry">
                                     	<option selected="selected" value="-1">请选择行业</option>
@@ -121,15 +129,16 @@
                                  </select>
                             <div class="prompt fl"><b></b>支持6-20位，支持中英文/数字/字符组合</div>
                         </li>
-                        <li class="clearfix">
-                        	<div class="list fl">
-                            	<input type="text" placeholder="" class="text prompttext" name="company" id="company" onblur="checkCompanyFun()">
-                                <p class="promp">公司名称</p>
-                                <i class="right" style="display:none" id="company_flag"></i>
+                       
+                         <li class="clearfix">
+                        	<div class="list fl" style="width:218px;">
+                            	<input type="text" style="width:186px;" placeholder="" class="text prompttext" name="checkNumber" id="checkNumber1" onblur="checkActivationCode()">
+                                <p class="promp">验证码</p>
+                                <i class="right" style="display:none" id="checkNumber1_flag"></i>
+                                <span class="test"><img src="${ctx}/image.jsp" alt="" width="108" height="42" id="imageNumber" title="点击换一张" onclick="checkNumberImage()"></img></span>
                             </div>
-                            <div class="prompt fl" id="company_prompt"><b></b></div>
+                            <div class="prompt fl" id="checkNumber1_prompt"><b></b></div>
                         </li>
-                        
                         <li class="clearfix">
                         	<div class="list fl">
                             	<input type="text" placeholder="" class="text prompttext" name="mobile" id="regist_phone" onblur="checkMobile()"/>
@@ -147,15 +156,7 @@
                                </div>
                             <div class="prompt fl" id="verification_code_prompt"><b></b></div>
                         </li>
-                        <li class="clearfix">
-                        	<div class="list fl" style="width:218px;">
-                            	<input type="text" style="width:186px;" placeholder="" class="text prompttext" name="checkNumber" id="checkNumber1" onblur="checkActivationCode()">
-                                <p class="promp">验证码</p>
-                                <i class="right" style="display:none" id="checkNumber1_flag"></i>
-                                <span class="test"><img src="${ctx}/image.jsp" alt="" width="108" height="42" id="imageNumber" title="点击换一张" onclick="checkNumberImage()"></img></span>
-                            </div>
-                            <div class="prompt fl" id="checkNumber1_prompt"><b></b></div>
-                        </li>
+                       
                         <li class="clearfix" style=" position:relative; top:-5px;">
                         	<div class="list password fl" style="width:100%;">
                             	<label class="fl"><input type="checkbox"  class="login_checkbox" id="ck"/>我已阅读并同意
