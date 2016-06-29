@@ -108,7 +108,10 @@
                             	<label class="fl">手&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;机</label>
 								<div class="fl dataListR">
 									<input type="hidden" id="originalMobile"  value="${user.mobile}"/>
-                                	<input type="text" class="text" name="mobile" value="${user.mobile}" id="regist_phone" onblur="checkMobile()">
+                                	<!-- <input type="text" class="text" name="mobile" value="${user.mobile}" disabled="true" id="regist_phone" onblur="checkMobile()"/>
+                                	 -->
+                                	<input type="text" class="text" name="mobile" value="${user.mobile}" disabled="true" id="regist_phone"/>
+                                	<a href="${ctx }/updateMobile.html">修改</a>
                                 	<span id="regist_mobile_msg" style="color:red;"></span>
                                 </div>
                              </li>
