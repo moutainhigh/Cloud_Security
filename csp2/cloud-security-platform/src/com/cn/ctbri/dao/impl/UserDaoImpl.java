@@ -158,4 +158,9 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
 	public int updateBalance(User user){
 		return this.getSqlSession().update(ns + "updateBalance", user);
 	}
+	
+	//更新用户的手机号码
+    public int updateUserMobile(User user) {
+    	return this.getSqlSession().update(ns+"updateUserMobile", user);
+    }
 }
