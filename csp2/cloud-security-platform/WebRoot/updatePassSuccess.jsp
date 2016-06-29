@@ -18,7 +18,26 @@
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
 </head>
+<script>
+$(function(){
+	if (window.history && window.history.pushState) {
+		$(window).on('popstate', function () {
+		var hashLocation = location.hash;
+		var hashSplit = hashLocation.split("#!/");
+		var hashName = hashSplit[1];
+		if (hashName !== '') {
+		var hash = window.location.hash;
+		if (hash === '') {
+			window.location.href="loginUI.html";
+		}
+		}
+		});
+		//window.history.pushState('forward', null, './#forward');
+	}
+	
+})
 
+</script>
 <body>
 	<div class="safeBox">
 		
