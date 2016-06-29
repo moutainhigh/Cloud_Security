@@ -142,10 +142,10 @@
                         	<div class="list fl" style="width:218px;">
                             	<input type="text" style="width:186px;" placeholder="" class="text prompttext" name="verification_code" id="verification_code" onblur="checkActivationCode()"/>
                                 <p class="promp">手机验证码</p>
-                                <i class="right" style="display:none" id="verification_code_flag"></i><!--
-                                <a href="#" class="test verification" onclick="checkSendMobile()" id="phone_yzm">获取验证码</a>
-                                --><input type="button" class="test verification" id="phone_yzm" onclick="checkSendMobile()" value="获取验证码">
-                            </div>
+                                <i class="right" style="display:none" id="verification_code_flag"></i>
+                                <a href="javascript:;" class="test verification" onclick="checkSendMobile()" id="phone_yzm">获取验证码</a>
+                               <!-- <input type="button" class="test verification" id="phone_yzm" onclick="checkSendMobile()" value="获取验证码">
+                            --></div>
                             <div class="prompt fl" id="verification_code_prompt"><b></b></div>
                         </li>
                         <li class="clearfix">
