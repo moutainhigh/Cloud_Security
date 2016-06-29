@@ -403,7 +403,7 @@ $(document).ready(function(){
                         <div class="popBox">
                             <ul style="height:auto;">
                                 <li class="clearfix">
-                                    <label class="fl">网站名称</label> <div class="fl"><input class="boz_inout_1" type="text" name="assetName" id="assetName"></div>
+                                    <label class="fl">网站名称</label> <div class="fl"><input class="boz_inout_1" type="text" name="name" id="assetName"></div>
                                     <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetName_msg"></div>
                                 </li>
                                 <li class="clearfix">
