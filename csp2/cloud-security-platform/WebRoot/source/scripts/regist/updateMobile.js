@@ -69,8 +69,8 @@ function checkSendMobile(){
  	if(checkMobile==1){
 		$.ajax({
 			type: "POST",
-			url: "regist_checkSendMobile.html",
-			data: {"mobile":mobile},
+			url: "checkSendMobile.html",
+			data: {"mobile":mobile,"useFlag":2},
 			dataType:"json",
 			success: function(data){
 				if(data.msg=="0"){
