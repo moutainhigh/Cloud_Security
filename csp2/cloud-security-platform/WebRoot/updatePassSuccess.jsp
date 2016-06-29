@@ -87,15 +87,15 @@
                                 <span class="sl" style="border-top:#95cfff solid 1px;">
                                     <i style=" background-color:#95cfff"></i>
                                 </span>
-                                <span class="sr" style="border-top:1px solid #929292">
-                                    <i class="r0" style="background-color:#2499fb""></i>
-                                    <i class="r1" style="left:538px;"></i>
+                                <span class="sr" style="border-top:#95cfff solid 1px;">
+                                    <i class="r0" style="background-color:#95cfff"></i>
+                                    <i class="r1" style="background-color:#2499fb;left:538px;"></i>
                                 </span>
                             </p>
                             <p class="step_bottom">
                                 <em class="sone" style="color:#95cfff">1验证身份</em>
-                                <em class="sone" style="color:#2499fb;left:238px">2修改登录密码</em>
-                                <em class="stwo" style="left:526px">3完成</em>
+                                <em class="sone" style="color:#95cfff;left:238px">2修改登录密码</em>
+                                <em class="stwo" style="color:#2499fb;left:526px">3完成</em>
                             </p>
         
                         </div>
