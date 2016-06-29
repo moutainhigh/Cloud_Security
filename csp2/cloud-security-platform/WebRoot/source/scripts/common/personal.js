@@ -62,8 +62,8 @@ function checkUserData(){
 		$("#regist_company_msg").html("公司名称长度不能超过100个字符");
 		return;
 	}
-	var flag = checkMobile();
-	if(flag==1){
+	//var flag = checkMobile();
+	//if(flag==1){
 		$.ajax({ type: "POST",
     		     async: false, 
     		     url: "saveUserDataBate.html", 
@@ -86,8 +86,8 @@ function checkUserData(){
     		    		 window.location.href = "loginUI.html"; } 
     		    	 else { window.location.href = "loginUI.html"; } } 
     	});
-	}else{
-		return;
-	}
+	//}else{
+	//	return;
+	//}
 
 }
