@@ -197,6 +197,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update cs_user set password=#{password} where mobile=#{mobile}
 	</update>
 	
+	<!-- 修改用户的手机号码 -->
+	<update id="updateUserMobile" parameterType="com.cn.ctbri.entity.User">
+		update cs_user set mobile=#{mobile} where id=#{id}
+	</update>
+	
 	<!-- 修改用户的个人金额 -->
 	<update id="updateBalance" parameterType="com.cn.ctbri.entity.User">
 		update cs_user set balance=#{balance}
