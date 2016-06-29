@@ -15,9 +15,9 @@ $(function(){
             dataType:"json",
             success: function(data){
                 if(data.cookie){
-                	$("#login_password").attr("value",data.password);
+                	$("#login_password").prop("value",data.password);
                 }else{
-                	$("#login_password").attr("value","");
+                	$("#login_password").prop("value","");
                 }
             },
          }); 
