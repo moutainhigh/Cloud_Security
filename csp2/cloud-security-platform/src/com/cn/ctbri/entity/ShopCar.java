@@ -2,6 +2,7 @@ package com.cn.ctbri.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class ShopCar implements Serializable{
 	/***/
@@ -21,6 +22,8 @@ public class ShopCar implements Serializable{
 	private int status;//状态 -1订单已作废
 	private int pack_type;//类型
 	private int buynum;
+	private Date begin_date;//开始时间
+	private Date end_date;//结束日期
 	public String getOrderId() {
 		return orderId;
 	}
@@ -114,6 +117,19 @@ public class ShopCar implements Serializable{
 	public void setBuynum(int buynum) {
 		this.buynum = buynum;
 	}
+	public Date getBegin_date() {
+		return begin_date;
+	}
+	public void setBegin_date(Date beginDate) {
+		begin_date = beginDate;
+	}
+	public Date getEnd_date() {
+		return end_date;
+	}
+	public void setEnd_date(Date endDate) {
+		end_date = endDate;
+	}
+	
 
 	
 }
