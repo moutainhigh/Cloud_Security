@@ -117,8 +117,11 @@ function checkPhoneActivationCode(){
 		 useFlag = 1;//忘记密码
 	 }
 	 
+	 
 	 var verification_code = $("#verification_phone").val();
 	 	if(verification_code!=null&&verification_code!=""){
+	 	 var phone = $("#phone_code").val();
+	 	 verification_code = phone + verification_code;
 		 $.ajax({
            type: "POST",
            url: "regist_checkActivationCode.html",
