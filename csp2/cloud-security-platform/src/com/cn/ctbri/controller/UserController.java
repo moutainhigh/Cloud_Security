@@ -1198,7 +1198,8 @@ public class UserController{
         				smsUtils.sendMessage_modifyCode(userMobile, String.valueOf(activationCode));
         				break;
         			case 3://修改手机号
-        				request.getSession().setAttribute("modifyMobile_activationCode", sessionCode);
+        				long nowTime = System.currentTimeMillis();
+        				request.getSession().setAttribute("modifyMobile_activationCode", sessionCode + "," + nowTime);
         				smsUtils.sendMessage_modifyMobile(userMobile, String.valueOf(activationCode));
         				break;
         		}
@@ -1232,6 +1233,7 @@ public class UserController{
 	@RequestMapping(value="regist_checkActivationCode.html", method = RequestMethod.POST)
 	@ResponseBody
     public void checkActivationCode(User user,HttpServletRequest request,HttpServletResponse response) {
+		long sendTime =0;
 		int useFlag = Integer.parseInt(request.getParameter("useFlag"));
 		//从session中获取发送的验证码
 		String newactivationCode =  "";
@@ -1250,12 +1252,31 @@ public class UserController{
 			
 		case 3://修改手机号
 			newactivationCode = String.valueOf(request.getSession().getAttribute("modifyMobile_activationCode"));
+			if (newactivationCode != null && !newactivationCode.equals("null")) {
+				int spiltIndex = newactivationCode.lastIndexOf(",");
+				sendTime = Long.parseLong(newactivationCode.substring(spiltIndex+1));
+				newactivationCode = newactivationCode.substring(0,spiltIndex);
+			}
 			break;
 		}
 		
     	String myactivationCode = user.getVerification_code();
     	Map<String, Object> m = new HashMap<String, Object>();
-    	if(newactivationCode!=null&&newactivationCode.equals(myactivationCode) ){
+    	if(useFlag == 3 && System.currentTimeMillis() - sendTime >= 3*60*1000) {
+    		m.put("msg", "2");//修改手机号时,超过3分钟验证码失效
+    		//object转化为Json格式
+    		JSONObject JSON = CommonUtil.objectToJson(response, m);
+    		try {
+    			// 把数据返回到页面
+    			CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+    	}else if(newactivationCode!=null&&newactivationCode.equals(myactivationCode) ){
+    		if(useFlag == 3) {
+    			//验证码验证成功后，该验证码失效，不得再次使用
+    			request.getSession().removeAttribute("modifyMobile_activationCode");
+    		}
     		m.put("msg", "1");//用户填写验证码正确
     		//object转化为Json格式
     		JSONObject JSON = CommonUtil.objectToJson(response, m);
