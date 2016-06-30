@@ -269,7 +269,6 @@ function checkSendEmail(){
 function checkSendMobile(){
  	var phone = $("#regist_phone").val();
  	if(checkCheckNumber1==1){
- 		alert("dffff");
  		if(checkMobile1==1){
  	 		$.ajax({
  	           type: "POST",
