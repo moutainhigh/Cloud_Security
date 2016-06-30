@@ -6,7 +6,6 @@ var checkMobile1 = 0;
 var checkEmail1 = 0;
 var checkSendEmail1 = 0;
 var checkSendMobile1 = 0;
-var checkEmailActivationCode1 = 0;
 var checkCompany = 0;
 var checkCheckNumber1 = 0;
 var wait=120;
@@ -443,7 +442,7 @@ function submitForm(){
 	    	if(document.getElementById("ck").checked && agreeId==1){
 	    		$("#ck_flag").html("<b></b>");
 				$("#ck_flag").fadeOut();
-			    if(checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1&&checkSendMobile1==1&&checkEmailActivationCode1==1){
+			    if(checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1&&checkSendMobile1==1&&checkCheckNumber1==1){
 			    	if(name==p1){
 			    		$("#regist_password_flag").attr("class","error");
 						$("#regist_password_flag").show();

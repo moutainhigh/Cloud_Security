@@ -1638,7 +1638,7 @@ public class shoppingController {
 			String city = request.getParameter("city");
 			String wafFlag = request.getParameter("wafFlag");
 						
-			if(!(addr.startsWith(addrType))){
+			if(!(addr.startsWith(addrType)) || addr.equals(addrType)){
 				addr = addrType + "://" + addr.trim();
 			}
 			

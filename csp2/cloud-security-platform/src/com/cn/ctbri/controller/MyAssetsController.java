@@ -186,7 +186,7 @@ public class MyAssetsController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if(!(addr.startsWith(addrType))){
+		if(!(addr.startsWith(addrType)) || addr.equals(addrType)){
 			addr = addrType + "://" + addr.trim();
 		}
 		asset.setName(name);
@@ -253,7 +253,7 @@ public class MyAssetsController {
 				asset.setName(name);
 				asset.setId(id);
 				String addr = request.getParameter("assetAddr");
-				if(!(addr.startsWith(addrType))){
+				if(!(addr.startsWith(addrType)) || addr.equals(addrType)){
 					addr = addrType+ "://" + addr.trim();
 				}
 				asset.setAddr(addr);
