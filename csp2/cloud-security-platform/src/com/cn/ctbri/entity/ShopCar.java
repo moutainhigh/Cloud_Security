@@ -10,6 +10,7 @@ public class ShopCar implements Serializable{
 	private String orderId;//订单id
 	private String serverName;//服务名称
 	private String astName;//资产名称
+	private String addr;//
 	private double price;//价格
 	private int num;//数量
 	private int serviceId;//服务id
@@ -128,6 +129,12 @@ public class ShopCar implements Serializable{
 	}
 	public void setEnd_date(Date endDate) {
 		end_date = endDate;
+	}
+	public String getAddr() {
+		return addr;
+	}
+	public void setAddr(String addr) {
+		this.addr = addr;
 	}
 	
 
