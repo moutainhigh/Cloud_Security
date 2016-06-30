@@ -109,8 +109,10 @@ function timeMobile() {
 
 //检测验证码填写是否正确
 function checkActivationCode(){
+	 var mobile = $("#phone_code").val();
 	 var verification_code = $("#verification_phone").val();
-	 	if(verification_code!=null&&verification_code!=""){
+	 if(verification_code!=null&&verification_code!=""){
+	 	var verification_code = mobile + verification_code;
 		 $.ajax({
            type: "POST",
            url: "regist_checkActivationCode.html",
@@ -140,6 +142,9 @@ function checkActivationCode(){
 	
 
 function updateMobile(){
+	checkMobileNum();
+	checkActivationCode();
+	
 	if(checkEmailActivationCode == 1 && checkMobile == 1) {
 		$("#mobileForm").submit();
 	
