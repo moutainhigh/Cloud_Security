@@ -4,7 +4,7 @@ $(function(){
 		var isFocus=$("#month").is(":focus");
 		if(isFocus){
 			var month = parseInt($('#month').val());
-			if(event.keyCode == 38){//上
+			if((event.keyCode == 38) || (event.keyCode == 37)){//上
 				//价格
 
 				if(month==-1||month==1){
@@ -14,7 +14,7 @@ $(function(){
 					$("#price").html("¥"+priceVals);
 				}
 			}
-			if(event.keyCode == 40){//下
+			if((event.keyCode == 39) || (event.keyCode == 40)){//下
 				//价格
 
 				if(month==-1){
