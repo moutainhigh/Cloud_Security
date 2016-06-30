@@ -151,8 +151,8 @@ function checkCompanyFun(){
 	    checkCompany = 0;
 	}else{
 		$("#company_flag").attr("class","right");
-		$("#company_flag").show();
-	   	$("#company_prompt").html("<b></b>");
+		//$("#company_flag").show();
+	   	$("#company_prompt").html("<b></b>输入公司名称");
 	   	$("#company_prompt").fadeOut();
 	   	checkCompany = 1;
 	}
@@ -185,7 +185,7 @@ function checkMobile(){
                     }else{
                 		$("#regist_phone_flag").attr("class","right");
                 		$("#regist_phone_flag").show();
-                		 $("#regist_phone_prompt").html("<b></b>");
+                		 $("#regist_phone_prompt").html("<b></b>请输入手机号");
                 		$("#regist_phone_prompt").fadeOut();
                    		checkMobile1=1;
                     }
@@ -195,7 +195,7 @@ function checkMobile(){
     		$("#regist_phone_flag").attr("class","error");
     		$("#regist_phone_flag").show();
     		$("#regist_phone_prompt").fadeOut();
-   		 	$("#regist_phone_prompt").html("<b></b>");
+   		 	$("#regist_phone_prompt").html("<b></b>请输入手机号");
 			checkMobile1 = 0;
 		}
 	}
@@ -349,7 +349,7 @@ function checkActivationCode(){
 				   if(data.flag){
 						$("#checkNumber1_flag").attr("class","right");
 						$("#checkNumber1_flag").show();
-						$("#checkNumber1_prompt").html("<b></b>");
+						$("#checkNumber1_prompt").html("<b></b>输入图片验证码");
 						$("#checkNumber1_prompt").fadeOut();
 						checkCheckNumber1 = 1;
 						return true;

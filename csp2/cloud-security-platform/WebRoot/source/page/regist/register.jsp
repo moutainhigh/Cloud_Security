@@ -94,7 +94,7 @@
                                 <p class="promp">公司名称</p>
                                 <i class="right" style="display:none" id="company_flag"></i>
                             </div>
-                            <div class="prompt fl" id="company_prompt"><b></b></div>
+                            <div class="prompt fl" id="company_prompt"><b></b>输入公司名称</div>
                         </li>
                          <li class="clearfix">                       	
                             	 <select class="scelt" id="industry" name="industry">
@@ -135,7 +135,7 @@
                                 <p class="promp">手机</p>
                                 <i class="right" style="display:none" id="regist_phone_flag"></i>
                             </div>
-                            <div class="prompt fl" id="regist_phone_prompt"><b></b></div>
+                            <div class="prompt fl" id="regist_phone_prompt"><b></b>请输入手机号码</div>
                         </li>                       
                          <li class="clearfix">
                         	<div class="list fl" style="width:218px;">
@@ -144,7 +144,7 @@
                                 <i class="right" style="display:none" id="checkNumber1_flag"></i>
                                 <span class="test"><img src="${ctx}/image.jsp" alt="" width="108" height="42" id="imageNumber" title="点击换一张" onclick="checkNumberImage()"></img></span>
                             </div>
-                            <div class="prompt fl" id="checkNumber1_prompt"><b></b></div>
+                            <div class="prompt fl" id="checkNumber1_prompt"><b></b>输入图片验证码</div>
                         </li>
 
                          <li class="clearfix">
@@ -154,7 +154,7 @@
                                 <i class="right" style="display:none" id="verification_code_flag"></i>
                                 <a href="javascript:;" class="test verification" onclick="checkSendMobile()" id="phone_yzm">获取验证码</a>
                                </div>
-                            <div class="prompt fl" id="verification_code_prompt"><b></b></div>
+                            <div class="prompt fl" id="verification_code_prompt"><b></b>输入短信验证码</div>
                         </li>
                        
                         <li class="clearfix" style=" position:relative; top:-5px;">
