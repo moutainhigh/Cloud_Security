@@ -190,7 +190,7 @@ function seedetail1(e) {
 								<c:import url="/taskRunning.html?orderId=${order.id }&type=${order.type}&orderAssetId=${asset.orderAssetId }&index=${status.index+1 }"></c:import>
 								<!-- end -->
 							</c:if>
-			            	<c:if test="${asset.task.status==3}">
+			            	<c:if test="${asset.task.status==3 || order.status == 1 || order.status == 2}">
 			            		<div class="user_center clear">
 								  <form id="exportForm${status.index+1 }" action="${ctx}/export.html" method="post">
 								    <!-- 告警详情-->
@@ -300,21 +300,46 @@ function seedetail1(e) {
 										<!-- 进度 -->
 										<div class="process">
 								       	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span>
-								       	  	<c:if test="${asset.task.status==3}">
+								       	  	<c:if test="${asset.task.status==3 || order.status == 1 || order.status == 2}">
 									       	  <span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan scancur">完成</span>
 									       	</c:if>
 									       	<c:if test="${asset.task.status==2}">
 									       	  <span class="scan">未开始</span><span class="scan scancur">扫描中</span><span class="scan ">完成</span>
 									       	</c:if>
 								       	  </p>
-								            <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>${asset.progress }%</span>
+								          <!--<p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>${asset.progress }%</span>
 								            <span class="processingbox">
 								            	<span class="progress">
 								                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: ${asset.progress }%" id="bar2">${asset.progress }%</span>
 												</span>
-								            <!-- <c:if test="${websoc!=1}"><span class="prourl" id="url">当前URL:${asset.currentUrl }</span></c:if> -->
+								            <c:if test="${websoc!=1}"><span class="prourl" id="url">当前URL:${asset.currentUrl }</span></c:if>
 								            <span class="prourl" id="url">当前URL:${asset.currentUrl }</span>
-								            </span></p>
+								            </span>
+								          </p>-->
+								          <p><span class="scantitle">扫描进度</span><span class="propercent" id=bar1>100%</span>
+								            <span class="processingbox">
+								            	<span class="progress">
+								                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%" id="bar2">100%</span>
+												</span>
+								            <span class="prourl" id="url">当前URL:${asset.currentUrl }</span>
+								            </span>
+								          </p>
+								          <c:if test="${asset.currentUrl  eq '暂无' || asset.currentUrl  eq '[]'}">
+									          <p>
+									          	<br />
+									            <span class="prourl">
+									            	(网站访问被拒绝,可能有以下原因：</span>
+									            <span class="prourl" style="margin-left:-60px">
+													1该网址不存在；</span>
+												<span class="prourl" style="margin-left:31px">
+													2网站安装了防护类的产品导致扫描断断续续；</span>
+												<span class="prourl" style="margin-left:58px">
+													3由于持续扫描，引擎所在机器的IP可能被列入黑名单。</span>
+												<span class="prourl" style="margin-left:15px">
+													注：请联系在线客服咨询相关问题)
+									            </span>
+									          </p>
+								          </c:if>
 								        </div>
 								        
 								        <div class="gj_box">
