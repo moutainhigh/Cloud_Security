@@ -205,7 +205,7 @@ FROM (SELECT
        AND t.id = ca.assetId
    GROUP BY ca.orderId) b
 WHERE a.id = b.orderId 
-  UNION
+    UNION
   
    SELECT
        c.serverName,
@@ -233,7 +233,7 @@ WHERE a.id = b.orderId
         </foreach>
 	       AND isAPI = 1) c,
        (SELECT
-	  i.package_type AS astName,
+	  CAST(i.package_type AS CHAR) AS astName,
 	  i.id,
 	 i.buynum buynum
 	FROM cs_order_api i
