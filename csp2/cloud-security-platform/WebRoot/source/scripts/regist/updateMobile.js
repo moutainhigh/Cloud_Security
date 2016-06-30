@@ -70,7 +70,7 @@ function checkSendMobile(){
 		$.ajax({
 			type: "POST",
 			url: "checkSendMobile.html",
-			data: {"mobile":mobile,"useFlag":2},
+			data: {"mobile":mobile,"useFlag":"0"},
 			dataType:"json",
 			success: function(data){
 				if(data.msg=="0"){
