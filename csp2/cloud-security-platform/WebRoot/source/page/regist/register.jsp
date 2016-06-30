@@ -129,7 +129,14 @@
                                  </select>
                             <div class="prompt fl"><b></b>支持6-20位，支持中英文/数字/字符组合</div>
                         </li>
-                       
+                        <li class="clearfix">
+                        	<div class="list fl">
+                            	<input type="text" placeholder="" class="text prompttext" name="mobile" id="regist_phone" onblur="checkMobile()"/>
+                                <p class="promp">手机</p>
+                                <i class="right" style="display:none" id="regist_phone_flag"></i>
+                            </div>
+                            <div class="prompt fl" id="regist_phone_prompt"><b></b></div>
+                        </li>                       
                          <li class="clearfix">
                         	<div class="list fl" style="width:218px;">
                             	<input type="text" style="width:186px;" placeholder="" class="text prompttext" name="checkNumber" id="checkNumber1" onblur="checkActivationCode()">
@@ -139,14 +146,7 @@
                             </div>
                             <div class="prompt fl" id="checkNumber1_prompt"><b></b></div>
                         </li>
-                        <li class="clearfix">
-                        	<div class="list fl">
-                            	<input type="text" placeholder="" class="text prompttext" name="mobile" id="regist_phone" onblur="checkMobile()"/>
-                                <p class="promp">手机</p>
-                                <i class="right" style="display:none" id="regist_phone_flag"></i>
-                            </div>
-                            <div class="prompt fl" id="regist_phone_prompt"><b></b></div>
-                        </li>
+
                          <li class="clearfix">
                         	<div class="list fl" style="width:218px;">
                             	<input type="text" style="width:186px;" placeholder="" class="text prompttext" name="verification_code" id="verification_code" onblur="checkPhoneActivationCode()"/>

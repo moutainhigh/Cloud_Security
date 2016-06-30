@@ -295,7 +295,7 @@ function checkSendMobile(){
  	  
  	    } 
  	}else{
- 		$("#verification_code_prompt").html("<b></b>请确保图片验证码输入无误");
+ 		$("#verification_code_prompt").html("<b></b>请确认是否已正确输入图形验证码");
     	$("#verification_code_prompt").fadeIn();
     	checkSendMobile1 = 0;
  	}
