@@ -1181,22 +1181,23 @@ public class UserController{
 	            }
         	}
         	if(flag){
+        		String sessionCode = userMobile + activationCode;
            	 //将验证码保存到session中
         		switch(useFlag){
         			case 0://注册
-        				request.getSession().setAttribute("regist_activationCode", activationCode);
+        				request.getSession().setAttribute("regist_activationCode", sessionCode);
         				smsUtils.sendMessage(userMobile, String.valueOf(activationCode));
         				break;
         			case 1://忘记密码
-        				request.getSession().setAttribute("forgetCode_activationCode", activationCode);
+        				request.getSession().setAttribute("forgetCode_activationCode", sessionCode);
         				smsUtils.sendMessage_forgetCode(userMobile, String.valueOf(activationCode));
         				break;
         			case 2://修改密码
-        				request.getSession().setAttribute("modifyCode_activationCode", activationCode);
+        				request.getSession().setAttribute("modifyCode_activationCode", sessionCode);
         				smsUtils.sendMessage_modifyCode(userMobile, String.valueOf(activationCode));
         				break;
         			case 3://修改手机号
-        				request.getSession().setAttribute("modifyMobile_activationCode", activationCode);
+        				request.getSession().setAttribute("modifyMobile_activationCode", sessionCode);
         				smsUtils.sendMessage_modifyMobile(userMobile, String.valueOf(activationCode));
         				break;
         		}
