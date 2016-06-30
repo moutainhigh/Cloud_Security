@@ -163,7 +163,7 @@
                              <li class="clearfix">
                             	<label class="fl">API KEY</label>
 								<div class="fl dataListR">
-                                	<input type="text" class="text" name="apikey" value="${user.apikey}" id="urlAddr" disabled="true">
+                                	<input type="text" class="text" name="apikey" value="${user.apikey}" id="apikey" disabled="true">
                                     <b>(该apikey可以调用平台所有即用安全能力API服务)</b>
                                 </div>
                              </li>
