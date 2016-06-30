@@ -27,11 +27,10 @@
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script src="${ctx}/source/scripts/order/details.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
+
 <script type="text/javascript">
 
-
 $(document).ready(function(){
-
     //回显
 	var orderType = ${service.orderType};
     if(orderType == 0){
@@ -87,6 +86,39 @@ $(document).ready(function(){
     $("#price").html("¥"+"${price}");
     
 });
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+$('#us').hide();
+$("#beginDate").click(function(){
+$("#us").show("slow");
+$("#beginDate").blur(function(){
+$("#us").hide("slow");
+});
+});
+})
+/*$(document).ready(function(){
+$('#us').hide();
+var d =$('#beginDate');
+d.mouseover(function(){
+    d.data('lastEnter',new Date().getTime());
+    setTimeout(function(){
+        var t1 = new Date().getTime(),t2 = d.data('lastEnter');
+        //if(t2>0 && t1-t2>=2000){
+            $("#us").show("slow");
+        //}
+    },0);
+}).mouseout(function(){
+    //d.data('lastEnter',0);
+    d.data('lastEnter',new Date().getTime());
+    setTimeout(function(){
+        var t1 = new Date().getTime(),t2 = d.data('lastEnter');
+        //if(t2>0 && t1-t2>=2000){
+            $("#us").hide("slow");
+        //}
+    },2000);
+});
+})*/
 </script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <style>
@@ -178,12 +210,13 @@ $(document).ready(function(){
 	                            <button class="long" value="1" id="longBtn" onclick="calPriceLong(null,null,null)">长期</button>
                             </div> 
 						</li>
+						<li class="clearfix" style="height:30px;margin-left: 160px;" id="us">建议选择网站业务空闲时间</li>
 						<li class="clearfix">
 							<label class="fl">服务时间</label>
                             <div class="fl" style="top:3px;">
                             	<span class="start">开始时间 <input type="text" style="width:156px;" class="text" value="" id="beginDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'<%=str_date%>',startDate:'<%=str_date%>',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(dp){calPriceLong(null,null,null); }})"/></span>
                                 <span class="end" style="display:none; margin-right:0px;">结束时间 <input type="text" style="width:156px;" class="text" value="" id="endDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'<%=str_date%>',startDate:'<%=str_date%>',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(dp){calPriceLong(null,null,null); }})"/></span>
-                            </div> 
+                            </div>
 						</li>
 						<li class="clearfix time">
 							<label class="fl">服务频率</label>

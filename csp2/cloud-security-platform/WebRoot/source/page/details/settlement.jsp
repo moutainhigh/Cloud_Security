@@ -289,10 +289,16 @@
 	                                    	${service.name }
 	                                    </td>
 	                                   
-	                                    <td width="56%" style="font-size:14px;">
-	                                    	${assetAddr }
+	                                    <td width="36%" style="font-size:14px;">
+	                                    	${assetNames }
 	                                    </td>
-	                                    <td width="38%" style="font-size:14px;">${allPrice}</td>
+	                                    <td width="32%" style="font-size:14px;">
+	                                    	${beginDate }
+	                                    	<c:if test="${endDate !='' }">
+	                                    	~${endDate }
+	                                    	</c:if>
+	                                    </td>
+	                                    <td width="18%" style="font-size:14px;">${allPrice}</td>
 	                                 </tr>
 	                            </tbody>
                             </c:if>
