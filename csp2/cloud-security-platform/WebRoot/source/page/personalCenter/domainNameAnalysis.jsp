@@ -72,7 +72,7 @@
                 	<dt>交易管理</dt>
                     <dd><a  class="active" href="${ctx}/orderTrackInit.html" >我的订单</a></dd>
                     <!-- <dd><a href="#">我的优惠劵</a></dd> -->
-                    <dd><a href="${ctx}/balanceUI.html">我的余额</a></dd>
+                    <dd><a href="${ctx}/balanceUI.html">安全币</a></dd>
                     <dt>个人信息管理</dt>
                     <dd><a href="${ctx}/userDataUI.html">个人资料</a></dd>
                     <dd style="border-bottom:none;"><a  href="${ctx}/userAssetsUI.html">我的资产</a></dd>

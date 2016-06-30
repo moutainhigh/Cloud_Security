@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<title>个人中心-我的余额</title>
+<title>个人中心-安全币</title>
 <link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
@@ -71,7 +71,7 @@
                 <dl>
                 	<dt>交易管理</dt>
                     <dd><a href="${ctx}/orderTrackInit.html">我的订单</a></dd>
-                    <dd><a href="${ctx}/balanceUI.html" class="active">我的余额</a></dd>
+                    <dd><a href="${ctx}/balanceUI.html" class="active">安全币</a></dd>
                     <dt>个人信息管理</dt>
                     <dd><a href="${ctx}/userDataUI.html">个人资料</a></dd>
                     <dd style="border:none;"><a href="${ctx }/userAssetsUI.html">我的资产</a></dd>
