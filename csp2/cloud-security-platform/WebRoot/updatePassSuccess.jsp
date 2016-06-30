@@ -18,19 +18,7 @@
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
 </head>
-<script>
-$(document).ready(function() {
 
-     window.history.forward(1);
-
-     //OR
-
-     window.history.forward(-1);
-
-});
-
-
-</script>
 <body>
 	<div class="safeBox">
 		
