@@ -409,7 +409,8 @@ public class UserController{
 	public void login(HttpServletRequest request,HttpServletResponse response){
 		 String name = request.getParameter("name");
 		String password = request.getParameter("password");
-		boolean remeberMe = Boolean.valueOf(request.getParameter("remeberMe"));
+		//boolean remeberMe = Boolean.valueOf(request.getParameter("remeberMe"));
+		boolean remeberMe = false;
 		String md5password = DigestUtils.md5Hex(password);
 		Map<String, Object> map = new HashMap<String, Object>();
 		

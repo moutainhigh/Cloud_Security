@@ -86,7 +86,7 @@ function loginSubmit(){
 	var name = $("#login_name").val();
 	var password = $("#login_password").val();
 	var checkNumber = $("#checkNumber").val();
-	var remeberMe = $("#remeberMe").prop("checked");
+	//var remeberMe = $("#remeberMe").prop("checked");
 	if(name==null||name==""){
 		$("#errMsg").html("用户名不能为空!");
 		$("#errMsgDiv").show();
@@ -120,8 +120,8 @@ function loginSubmit(){
 					data:{
  	               'name':name,
  	               'password':password,
- 	               'checkNumber':checkNumber,
- 	               'remeberMe':remeberMe
+ 	               'checkNumber':checkNumber
+ 	               //'remeberMe':remeberMe
 					},
 					dataType:"json",
 					//beforeSubmit:showRequest,

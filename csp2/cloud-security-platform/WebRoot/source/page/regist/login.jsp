@@ -89,7 +89,7 @@
                         </li>
                         <div id="errMsgDiv" style="text-align:left;padding-bottom:10px;display:none">
                     		<span id="errMsg" style="color:red;"></span>
-                    	</div>
+                    	</div><!--
                         <li class="clearfix" style=" position:relative; top:-5px;">
                         	<div class="list password fl" style="width:100%;">
                             	<label class="fl"><input type="checkbox" class="login_checkbox" name="remeberMe" id="remeberMe"/>
@@ -97,8 +97,10 @@
                                 <a href="${ctx}/forgetPass.html">忘记密码</a> 
                             </div>
                         </li>
-                    </ul>
-                    <div class="subBox" style=" position:relative; top:-18px;">
+                    --></ul>
+                    <!--<div class="subBox" style=" position:relative; top:-18px;">
+                    	-->
+                    <div class="subBox" style=" position:relative; top:0px;">
                     	<input type="button" class="submit" id="login_btn" onclick="loginSubmit()" value="立即登录">
                     </div>
                     <div class="subBox" style=" position:relative; top:5px;">
