@@ -488,7 +488,12 @@ $(document).ready(function(){
 		$('.submit').click(function(){
 			var acleng =$('#senone .ac').length;
 			var  ips = new Array();
-			var flag = false;
+			var flag = true;
+			//判断是否什么都没选为空
+			if(acleng==0){
+				alert("请选择网站域名!");
+				return;	
+			}
 			//选中的网站地址           
             var acval=$('#senone .ac .rcent div').text();
             $('#wafBox li input:text').each(function(index, element) {
@@ -517,6 +522,10 @@ $(document).ready(function(){
 	                		return;
                 		}
                 	}
+                }else{
+                	alert("请输入IP地址!");
+                	flag = false;
+	                return;
                 }
                 if(flag){
                 	ips.push(le);
@@ -526,12 +535,9 @@ $(document).ready(function(){
             	//ip地址有误
             	return;
             }
-			//判断是否什么都没选为空
-			if(acleng==0){
-				alert("请选择网站域名!");	
-			}
+
 			else if(ips.length==0){
-				alert("IP地址不能为空!");
+				alert("请输入IP地址!");
             }else if(isRepeat(ips)){
             	alert("IP地址不能重复!");
             }
