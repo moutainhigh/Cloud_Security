@@ -165,7 +165,7 @@ function checkMobile(){
 	if(mobile==""||mobile==null){
 		$("#regist_phone_flag").attr("class","error");
 		$("#regist_phone_flag").show();
-        $("#regist_phone_prompt").html("<b></b>手机号码不能为空");
+        $("#regist_phone_prompt").html("<b></b>请输入手机号");
         $("#regist_phone_prompt").fadeIn();
 		 checkMobile1 = 0;
 	}else{
