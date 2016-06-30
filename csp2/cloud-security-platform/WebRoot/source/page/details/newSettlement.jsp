@@ -38,7 +38,19 @@
      });
 
      $("#ad-tj").on('click', function() {
-
+		//姓名
+     	$(".name1").show();
+        $(".name_wrong p").html("");
+        $(".name_wrong").hide();
+        //手机号码
+        $(".name2").show();
+        $(".phone_wrong p").html("");
+        $(".phone_wrong").hide();
+        //邮箱地址
+        $(".name3").show();
+        $(".add_wrong p").html("");
+        $(".add_wrong").hide();
+            
         var userName = $("#txtName").val();
         var userAdd = $("#txtAdd").val();
         var mobile = $("#txtTel").val();
@@ -70,14 +82,14 @@
             $(".phone_wrong p").html("请输入11位手机号码");
             return false;
         };
-        if (userAdd == "") {
-            $(".name3").hide();
-            $(".add_wrong").show();
-            $(".add_wrong p").html("请输入您的地址");
-            return false;
-        };
+        //if (userAdd == "") {
+        //    $(".name3").hide();
+        //    $(".add_wrong").show();
+        //    $(".add_wrong p").html("请输入您的邮箱地址!");
+        //    return false;
+        //};
         var emailReg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-        if (!emailReg.test(userAdd)) {
+        if (userAdd!="" && !emailReg.test(userAdd)) {
             $(".name3").hide();
             $(".add_wrong").show();
             $(".add_wrong p").html("请输入正确的邮箱地址!");
