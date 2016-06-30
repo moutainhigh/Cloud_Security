@@ -1358,7 +1358,7 @@ public class shoppingController {
     		if(shopList!=null&&shopList.size()>0){
     			for(int i=0;i<shopList.size();i++){
     				ShopCar shopCar = (ShopCar)shopList.get(i);
-    				String targetURL[]=shopCar.getAstName().split(",");
+    				String targetURL[]=shopCar.getAddr().split(",");
     				String websoc = "0";
     				String[] customManu = null;//指定厂家
     				if(websoc != null && websoc != ""){
