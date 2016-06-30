@@ -81,7 +81,9 @@ public class WafController {
 				CommonUtil.writeToJsp(response, JSON);
 			}else{
 				String hostnameRegex ="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
+				String IpAddressRegex ="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
 				boolean flag=false;
+				boolean ipflag=false;
 				List assList = new ArrayList();
 				if(list!=null&&list.size()>0){
 					for(int i=0;i<list.size();i++){
@@ -102,16 +104,28 @@ public class WafController {
 						  		addInfo = addr.trim().substring(8,addr.length());
 						  	}
 						}
-						//判断资产地址是否是域名
-						flag=addInfo.matches(hostnameRegex);
-						if(flag){
-							Asset  assetInfo = new Asset();
-							assetInfo.setAddr(asset.getAddr());
-							assetInfo.setId(asset.getId());
-							assetInfo.setName(asset.getName());
-							assetInfo.setIp(asset.getIp());
-							assList.add(assetInfo);
+						//判断ip地址是否包含端口号
+						if(addInfo.indexOf(":")!=-1){
+							String addArr[] = addInfo.split(":");
+							ipflag = addArr[0].matches(IpAddressRegex);
+							if(ipflag==false){
+								flag=addArr[0].matches(hostnameRegex);
+							}
+						}else{
+							ipflag = addInfo.matches(IpAddressRegex);
 						}
+						if(ipflag==false){
+                            //判断资产地址是否是域名
+								flag=addInfo.matches(hostnameRegex);
+								if(flag){
+									Asset  assetInfo = new Asset();
+									assetInfo.setAddr(asset.getAddr());
+									assetInfo.setId(asset.getId());
+									assetInfo.setName(asset.getName());
+									assetInfo.setIp(asset.getIp());
+									assList.add(assetInfo);
+								}
+							}
 					}
 				}
 				m.put("assList", assList);
@@ -151,8 +165,10 @@ public class WafController {
 	    String indexPage = request.getParameter("indexPage");
 		//获取服务对象资产
 	    List<Asset> list = selfHelpOrderService.findServiceAsset(globle_user.getId());
+	    String IpAddressRegex ="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
 		String hostnameRegex ="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
 		boolean flag=false;
+		boolean ipflag=false;
 		List assList = new ArrayList();
 		if(list!=null&&list.size()>0){
 			for(int i=0;i<list.size();i++){
@@ -173,7 +189,18 @@ public class WafController {
 				  		addInfo = addr.trim().substring(8,addr.length());
 				  	}
 				}
-				//判断资产地址是否是域名
+				//判断ip地址是否包含端口号
+				if(addInfo.indexOf(":")!=-1){
+					String addArr[] = addInfo.split(":");
+					ipflag = addArr[0].matches(IpAddressRegex);
+					if(ipflag==false){
+						flag=addArr[0].matches(hostnameRegex);
+					}
+				}else{
+					ipflag = addInfo.matches(IpAddressRegex);
+				}
+				if(ipflag==false){
+                    //判断资产地址是否是域名
 				flag=addInfo.matches(hostnameRegex);
 				if(flag){
 					Asset  assetInfo = new Asset();
@@ -182,6 +209,7 @@ public class WafController {
 					assetInfo.setName(asset.getName());
 					assetInfo.setIp(asset.getIp());
 					assList.add(assetInfo);
+				 }
 				}
 			}
 		}
