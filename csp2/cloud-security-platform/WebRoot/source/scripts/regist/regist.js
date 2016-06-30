@@ -8,7 +8,7 @@ var checkSendEmail1 = 0;
 var checkSendMobile1 = 0;
 var checkCompany = 0;
 var checkCheckNumber1 = 0;
-var checkPhoneActivationCode = 0;
+var checkCheckPhoneActivationCode = 0;
 var wait=120;
 window.onload =function(){
 
@@ -379,16 +379,19 @@ function checkPhoneActivationCode(){
            success: function(data){
            		if(data.msg=="0"){
            			$("#verification_code_flag").attr("class","error");
-           			checkPhoneActivationCode = 0;
+           			$("#verification_code_flag").show();
+           			checkCheckPhoneActivationCode = 0;
            		}else{
            			$("#verification_phone_flag").attr("class","right");
-           			checkPhoneActivationCode = 1;
+           			$("#verification_code_flag").show();
+           			checkCheckPhoneActivationCode = 1;
            		}
            },
         });  
 	 }else{
 		$("#verification_code_flag").attr("class","error");
-		checkPhoneActivationCode = 0;
+		$("#verification_code_flag").show();
+		checkCheckPhoneActivationCode = 0;
 	 }
 }
 
@@ -463,11 +466,12 @@ function submitForm(){
 		
 	}else{
 		checkCompanyFun();
+		checkPhoneActivationCode();
 	    if(checkCompany==1){
 	    	if(document.getElementById("ck").checked && agreeId==1){
 	    		$("#ck_flag").html("<b></b>");
 				$("#ck_flag").fadeOut();
-			    if(checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1&&checkSendMobile1==1&&checkCheckNumber1==1&&checkPhoneActivationCode==1){
+			    if(checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1&&checkSendMobile1==1&&checkCheckNumber1==1&&checkCheckPhoneActivationCode==1){
 			    	if(name==p1){
 			    		$("#regist_password_flag").attr("class","error");
 						$("#regist_password_flag").show();
