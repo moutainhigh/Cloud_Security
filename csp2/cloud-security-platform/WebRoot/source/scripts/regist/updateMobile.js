@@ -113,8 +113,8 @@ function checkActivationCode(){
 	 	if(verification_code!=null&&verification_code!=""){
 		 $.ajax({
            type: "POST",
-           url: "regist_checkEmailActivationCode.html",
-           data: {"verification_code":verification_code},
+           url: "regist_checkActivationCode.html",
+           data: {"verification_code":verification_code,"useFlag":3},
            dataType:"json",
            success: function(data){
            		if(data.msg=="0"){

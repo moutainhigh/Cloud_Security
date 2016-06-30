@@ -149,7 +149,7 @@
                         </li>
                          <li class="clearfix">
                         	<div class="list fl" style="width:218px;">
-                            	<input type="text" style="width:186px;" placeholder="" class="text prompttext" name="verification_code" id="verification_code" onblur="checkActivationCode()"/>
+                            	<input type="text" style="width:186px;" placeholder="" class="text prompttext" name="verification_code" id="verification_code" onblur="checkPhoneActivationCode()"/>
                                 <p class="promp">手机验证码</p>
                                 <i class="right" style="display:none" id="verification_code_flag"></i>
                                 <a href="javascript:;" class="test verification" onclick="checkSendMobile()" id="phone_yzm">获取验证码</a>

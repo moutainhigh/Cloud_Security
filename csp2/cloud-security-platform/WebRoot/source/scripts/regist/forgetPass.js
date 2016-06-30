@@ -26,20 +26,24 @@ function checkPhone(){
 //检测手机验证码是否发送成功
 function checkSendMobile(){
  	var phone = $("#phone_code").val();
+ 	var useFlag = 0;
  	if(phone==""||phone==null){
 		$("#phone_code_flag").attr("class","error");
 		$("#phone_code_prompt").html("<b></b>手机号码不能为空");
 		$("#phone_code_prompt").fadeIn();
 	}else{
-		//原始密码
+		//原始密码:为空是忘记密码；不为空修改密码
 		var originalMobile = $("#originalMobile").val();
 		if(originalMobile!='' && originalMobile!=null){
+			useFlag = 2;//修改密码
 			if(originalMobile!=phone){//不是原始密码
 				$("#phone_code_flag").attr("class","error");
 				$("#phone_code_prompt").html("<b></b>手机号码输入有误");
 				$("#phone_code_prompt").fadeIn();
 				return;
 			}
+		}else{
+			useFlag = 1;//忘记密码
 		}
 
 		$("#phone_code_flag").attr("class","right");
@@ -58,7 +62,7 @@ function checkSendMobile(){
 		               $.ajax({
 					           type: "POST",
 					           url: "checkSendMobile.html",
-					           data: {"mobile":phone,"useFlag":"0"},
+					           data: {"mobile":phone,"useFlag":useFlag},
 					           dataType:"json",
 					           success: function(data){
 					           		if(data.msg=="0"){
@@ -104,12 +108,21 @@ function timeMobile() {
 
 //检测验证码填写是否正确
 function checkPhoneActivationCode(){
+	 var useFlag = 0;
+	 //原始密码:为空是忘记密码；不为空修改密码
+	 var originalMobile = $("#originalMobile").val();
+	 if(originalMobile!=null && originalMobile!=''){
+		 useFlag = 2;//修改密码
+	 }else{
+		 useFlag = 1;//忘记密码
+	 }
+	 
 	 var verification_code = $("#verification_phone").val();
 	 	if(verification_code!=null&&verification_code!=""){
 		 $.ajax({
            type: "POST",
-           url: "regist_checkEmailActivationCode.html",
-           data: {"verification_code":verification_code},
+           url: "regist_checkActivationCode.html",
+           data: {"verification_code":verification_code,"useFlag":useFlag},
            dataType:"json",
            success: function(data){
            		if(data.msg=="0"){

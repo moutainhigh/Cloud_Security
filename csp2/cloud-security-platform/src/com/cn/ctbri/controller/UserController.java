@@ -1127,9 +1127,8 @@ public class UserController{
     public void sendMobile(HttpServletRequest request,HttpServletResponse response) throws URISyntaxException {
 		activationCode = Random.code();//生成激活码
 		String userMobile = request.getParameter("mobile");
-		String useFlag = request.getParameter("useFlag");//0:注册；1：更改密码
-    	 //将验证码保存到session中
-        request.getSession().setAttribute("activationCode", activationCode);
+		int useFlag = Integer.parseInt(request.getParameter("useFlag"));//0:注册；1：忘记密码；2：修改密码
+		
         Map<String, Object> m = new HashMap<String, Object>();
         SMSUtils smsUtils = new SMSUtils();
         try {
@@ -1182,11 +1181,24 @@ public class UserController{
 	            }
         	}
         	if(flag){
-        		if(useFlag.equals("0")){//注册
-        			//发送短信
-        			smsUtils.sendMessage(userMobile, String.valueOf(activationCode));
-        		}else{//密码更改
-        			smsUtils.sendMessageForPwd(userMobile, String.valueOf(activationCode));
+           	 //将验证码保存到session中
+        		switch(useFlag){
+        			case 0://注册
+        				request.getSession().setAttribute("regist_activationCode", activationCode);
+        				smsUtils.sendMessage(userMobile, String.valueOf(activationCode));
+        				break;
+        			case 1://忘记密码
+        				request.getSession().setAttribute("forgetCode_activationCode", activationCode);
+        				smsUtils.sendMessage_forgetCode(userMobile, String.valueOf(activationCode));
+        				break;
+        			case 2://修改密码
+        				request.getSession().setAttribute("modifyCode_activationCode", activationCode);
+        				smsUtils.sendMessage_modifyCode(userMobile, String.valueOf(activationCode));
+        				break;
+        			case 3://修改手机号
+        				request.getSession().setAttribute("modifyMobile_activationCode", activationCode);
+        				smsUtils.sendMessage_modifyMobile(userMobile, String.valueOf(activationCode));
+        				break;
         		}
         		
     			m.put("msg", "1");//1：验证码发送成功
@@ -1210,16 +1222,35 @@ public class UserController{
 	
 	
 	/**
-	 * 功能描述：  检测用户填写的邮箱验证码是否正确
+	 * 功能描述：  检测用户填写的验证码是否正确
 	 * 参数描述：  User user,HttpServletRequest request,HttpServletResponse response
 	 * @throws Exception 
 	 *		 @time 2015-1-4
 	 */
-	@RequestMapping(value="regist_checkEmailActivationCode.html", method = RequestMethod.POST)
+	@RequestMapping(value="regist_checkActivationCode.html", method = RequestMethod.POST)
 	@ResponseBody
-    public void checkEmailActivationCode(User user,HttpServletRequest request,HttpServletResponse response) {
+    public void checkActivationCode(User user,HttpServletRequest request,HttpServletResponse response) {
+		int useFlag = Integer.parseInt(request.getParameter("useFlag"));
 		//从session中获取发送的验证码
-		String newactivationCode =  String.valueOf(request.getSession().getAttribute("activationCode"));
+		String newactivationCode =  "";
+		switch(useFlag){
+		case 0://注册
+			newactivationCode = String.valueOf(request.getSession().getAttribute("regist_activationCode"));
+			break;
+			
+		case 1://忘记密码
+			newactivationCode = String.valueOf(request.getSession().getAttribute("forgetCode_activationCode"));
+			break;
+			
+		case 2://修改密码
+			newactivationCode = String.valueOf(request.getSession().getAttribute("modifyCode_activationCode"));
+			break;
+			
+		case 3://修改手机号
+			newactivationCode = String.valueOf(request.getSession().getAttribute("modifyMobile_activationCode"));
+			break;
+		}
+		
     	String myactivationCode = user.getVerification_code();
     	Map<String, Object> m = new HashMap<String, Object>();
     	if(newactivationCode!=null&&newactivationCode.equals(myactivationCode) ){

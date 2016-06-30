@@ -19,27 +19,16 @@
 <script src="${ctx}/source/scripts/common/main.js"></script>
 </head>
 <script>
-$(window).bind('hashchange', function() {
-	alert("dfdfdf");
+$(document).ready(function() {
+
+     window.history.forward(1);
+
+     //OR
+
+     window.history.forward(-1);
+
 });
-/**
-jQuery(document).ready(function ($) {
-                    if (window.history && window.history.pushState) {
-                        $(window).on('popstate', function () {
-                            var hashLocation = location.hash;
-                            var hashSplit = hashLocation.split("#!/");
-                            var hashName = hashSplit[1];
-                            if (hashName !== '') {
-                                var hash = window.location.hash;
-                                if (hash === '') {
-                                    window.location.href="loginUI.html";
-                                }
-                            }
-                        });
-                        window.history.pushState('forward', null, './#forward');
-                    }
-                });
-                */
+
 
 </script>
 <body>

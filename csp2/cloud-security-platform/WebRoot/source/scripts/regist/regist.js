@@ -8,6 +8,7 @@ var checkSendEmail1 = 0;
 var checkSendMobile1 = 0;
 var checkCompany = 0;
 var checkCheckNumber1 = 0;
+var checkPhoneActivationCode = 0;
 var wait=120;
 window.onload =function(){
 
@@ -272,7 +273,7 @@ function checkSendMobile(){
  	 		$.ajax({
  	           type: "POST",
  	           url: "checkSendMobile.html",
- 	           data: {"mobile":phone,"useFlag":"0"},
+ 	           data: {"mobile":phone,"useFlag":0},
  	           dataType:"json",
  	           success: function(data){
  	           		if(data.msg=="0"){
@@ -366,6 +367,30 @@ function checkActivationCode(){
 	}
 }
 
+//检测手机验证码填写是否正确
+function checkPhoneActivationCode(){
+	 var verification_code = $("#verification_code").val();
+	 	if(verification_code!=null&&verification_code!=""){
+		 $.ajax({
+           type: "POST",
+           url: "regist_checkActivationCode.html",
+           data: {"verification_code":verification_code,"useFlag":0},
+           dataType:"json",
+           success: function(data){
+           		if(data.msg=="0"){
+           			$("#verification_code_flag").attr("class","error");
+           			checkPhoneActivationCode = 0;
+           		}else{
+           			$("#verification_phone_flag").attr("class","right");
+           			checkPhoneActivationCode = 1;
+           		}
+           },
+        });  
+	 }else{
+		$("#verification_code_flag").attr("class","error");
+		checkPhoneActivationCode = 0;
+	 }
+}
 
 //提交表单及校验
 function submitForm(){
@@ -442,7 +467,7 @@ function submitForm(){
 	    	if(document.getElementById("ck").checked && agreeId==1){
 	    		$("#ck_flag").html("<b></b>");
 				$("#ck_flag").fadeOut();
-			    if(checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1&&checkSendMobile1==1&&checkCheckNumber1==1){
+			    if(checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1&&checkSendMobile1==1&&checkCheckNumber1==1&&checkPhoneActivationCode==1){
 			    	if(name==p1){
 			    		$("#regist_password_flag").attr("class","error");
 						$("#regist_password_flag").show();

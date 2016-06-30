@@ -21,7 +21,9 @@
 <script type="text/javascript" src="${ctx}/source/scripts/regist/updatePass.js"></script>
 
 </head>
-
+ <script type="text/javascript">
+        window.history.forward(1);
+ </script>
 <body>
 	<div class="safeBox">
 		

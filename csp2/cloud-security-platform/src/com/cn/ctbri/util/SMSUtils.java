@@ -92,11 +92,11 @@ public class SMSUtils {
 
 	}
 	
-	/**密码更改时发送短信
+	/**忘记密码时发送短信
 	 * @param args
 	 * @throws IOException
 	 */
-	public void sendMessageForPwd(String phoneNumber,String activationCode) throws IOException,URISyntaxException{
+	public void sendMessage_forgetCode(String phoneNumber,String activationCode) throws IOException,URISyntaxException{
 		//修改为您的apikey.apikey可在官网（http://www.yuanpian.com)登录后用户中心首页看到
         String apikey = Configuration.getApikey();
         //修改为您要发送的手机号
@@ -109,6 +109,60 @@ public class SMSUtils {
         
         //设置模板ID，如使用1号模板:【#company#】您的验证码是#code#
         long tpl_id = Long.parseLong(Configuration.getModifyCode_model());
+        //设置对应的模板变量值
+        //如果变量名或者变量值中带有#&=%中的任意一个特殊符号，需要先分别进行urlencode编码
+        //如code值是#1234#,需作如下编码转换
+        String codeValue = URLEncoder.encode(activationCode, ENCODING);
+        String tpl_value = "#code#=" + codeValue;
+        //模板发送的调用示例
+        System.out.println(tplSendSms(apikey, tpl_id, tpl_value, mobile));
+
+	}
+	
+	/**修改密码时发送短信
+	 * @param args
+	 * @throws IOException
+	 */
+	public void sendMessage_modifyCode(String phoneNumber,String activationCode) throws IOException,URISyntaxException{
+		//修改为您的apikey.apikey可在官网（http://www.yuanpian.com)登录后用户中心首页看到
+        String apikey = Configuration.getApikey();
+        //修改为您要发送的手机号
+        String mobile = phoneNumber;
+        /**************** 查账户信息调用示例 *****************/
+//        System.out.println(getUserInfo(apikey));
+        /**************** 使用通用接口发短信 *****************/
+        //发短信调用示例
+//        System.out.println(sendSms(apikey, text, mobile));
+        
+        //设置模板ID，如使用1号模板:【#company#】您的验证码是#code#
+        long tpl_id = Long.parseLong(Configuration.getForgetCode_model());
+        //设置对应的模板变量值
+        //如果变量名或者变量值中带有#&=%中的任意一个特殊符号，需要先分别进行urlencode编码
+        //如code值是#1234#,需作如下编码转换
+        String codeValue = URLEncoder.encode(activationCode, ENCODING);
+        String tpl_value = "#code#=" + codeValue;
+        //模板发送的调用示例
+        System.out.println(tplSendSms(apikey, tpl_id, tpl_value, mobile));
+
+	}
+	
+	/**修改手机号时发送短信
+	 * @param args
+	 * @throws IOException
+	 */
+	public void sendMessage_modifyMobile(String phoneNumber,String activationCode) throws IOException,URISyntaxException{
+		//修改为您的apikey.apikey可在官网（http://www.yuanpian.com)登录后用户中心首页看到
+        String apikey = Configuration.getApikey();
+        //修改为您要发送的手机号
+        String mobile = phoneNumber;
+        /**************** 查账户信息调用示例 *****************/
+//        System.out.println(getUserInfo(apikey));
+        /**************** 使用通用接口发短信 *****************/
+        //发短信调用示例
+//        System.out.println(sendSms(apikey, text, mobile));
+        
+        //设置模板ID，如使用1号模板:【#company#】您的验证码是#code#
+        long tpl_id = Long.parseLong(Configuration.getModifyMobile_model());
         //设置对应的模板变量值
         //如果变量名或者变量值中带有#&=%中的任意一个特殊符号，需要先分别进行urlencode编码
         //如code值是#1234#,需作如下编码转换
