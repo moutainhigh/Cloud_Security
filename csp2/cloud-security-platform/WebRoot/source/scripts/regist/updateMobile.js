@@ -124,6 +124,11 @@ function checkActivationCode(){
            			$("#verification_phone_prompt").html("<b></b>验证码填写错误!");
            			$("#verification_phone_prompt").fadeIn();
            			checkEmailActivationCode = 0;
+           		}else if(data.msg=="2"){
+           			$("#verification_phone_flag").attr("class","error");
+           			$("#verification_phone_prompt").html("<b></b>未获取验证码或验证码失效!");
+           			$("#verification_phone_prompt").fadeIn();
+           			checkEmailActivationCode = 0;
            		}else{
            			$("#verification_phone_flag").attr("class","right");
            			$("#verification_phone_prompt").html("<b></b>");
