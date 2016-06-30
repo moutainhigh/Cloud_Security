@@ -49,7 +49,8 @@ function checkMobile(){
 
 function checkUserData(){
 	var mobile = $("#regist_phone").val();
-	var urlAddr = $("#apikey").val();
+	var urlAddr = $("#urlAddr").val();
+	var apikey = $("#apikey").val();
 	var industry = $("#industry").val();
 	var job = $("#job").val();
 	var company = $("#company").val();
@@ -69,6 +70,7 @@ function checkUserData(){
     		     url: "saveUserDataBate.html", 
     		     data: {"mobile":mobile,
 	    			   	"urlAddr":urlAddr,
+	    			   	"apikey":apikey,
 	    			   	"industry":industry,
 	    			   	"job":job,
 	    			   	"company":company},  
