@@ -32,6 +32,8 @@ public class Configuration {
 	private static String warn5_model;//告警模板
 	private static String fileContent;//资产验证时的文件内容
 	private static String modifyCode_model;//修改密码模板
+	private static String forgetCode_model;//忘记密码模板
+	private static String modifyMobile_model;//修改手机号模板
 	static {
 		InputStream inputStream = Configuration.class.getClassLoader().getResourceAsStream("default.properties");
 		Properties prop = new Properties();
@@ -56,6 +58,8 @@ public class Configuration {
 		warn4_model=(String)prop.get("warn4_model");
 		warn5_model=(String)prop.get("warn5_model");
 		modifyCode_model=(String)prop.get("modifyCode_model");
+		forgetCode_model=(String)prop.get("forgetCode_model");
+		modifyMobile_model=(String)prop.get("modifyMobile_model");
 	}
 	public static String getFileContent() {
 		return fileContent;
@@ -152,6 +156,18 @@ public class Configuration {
 	}
 	public static void setModifyCode_model(String modifyCode_model) {
 		Configuration.modifyCode_model = modifyCode_model;
+	}
+	public static String getForgetCode_model() {
+		return forgetCode_model;
+	}
+	public static void setForgetCode_model(String forgetCode_model) {
+		Configuration.forgetCode_model = forgetCode_model;
+	}
+	public static String getModifyMobile_model() {
+		return modifyMobile_model;
+	}
+	public static void setModifyMobile_model(String modifyMobile_model) {
+		Configuration.modifyMobile_model = modifyMobile_model;
 	}
     
     
