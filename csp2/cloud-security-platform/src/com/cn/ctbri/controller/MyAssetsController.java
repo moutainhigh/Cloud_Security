@@ -180,9 +180,9 @@ public class MyAssetsController {
 		String purpose = "";//用途
 		//处理页面输入中文乱码的问题
 		try {
-			name=new String(asset.getName().getBytes("ISO-8859-1"), "UTF-8");
-			addr=new String(asset.getAddr().getBytes("ISO-8859-1"), "UTF-8");
-			purpose=new String(asset.getPurpose().getBytes("ISO-8859-1"), "UTF-8");
+			name=asset.getName();
+			addr=asset.getAddr();
+			purpose=asset.getPurpose();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
