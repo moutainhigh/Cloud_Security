@@ -181,7 +181,7 @@ public class UserController{
 		
 		Map<String, Object> m = new HashMap<String, Object>();
 		//add by tangxr 2016-4-10 将推送url存入服务能力系统
-//		if(!urlAddr.equals("") && urlAddr != null){
+		if(urlAddr != null && !urlAddr.equals("")  ){
 			UUID uuid = UUID.randomUUID();
 			String userID = String.valueOf(globle_user.getId());
 			String apikey = globle_user.getApikey();
@@ -193,7 +193,7 @@ public class UserController{
 				m.put("message", "推送url设置失败,请稍后设置~~");
 			}
 			
-			if(!token.equals("") && token != null){
+			if(token != null && !token.equals("")){
 				//推送地址 add by tangxr 2016-4-9
 				globle_user.setUrlAddr(urlAddr);
 				NorthAPIWorker.setCallbackAddr(urlAddr, token);
@@ -201,10 +201,10 @@ public class UserController{
 			}else{
 				m.put("message","推送url设置失败,请稍后设置~~");	
 			}
-//		}else{
-//			globle_user.setUrlAddr(urlAddr);
-//			m.put("message", true);
-//		}
+		}else{
+			globle_user.setUrlAddr(urlAddr);
+			m.put("message", true);
+		}
 		
 		userService.update(globle_user);
 		//object转化为Json格式
