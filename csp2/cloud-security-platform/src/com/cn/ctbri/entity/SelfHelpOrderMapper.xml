@@ -165,6 +165,7 @@ WHERE a.id = b.orderId
   a.price,
   a.isAPI,
   b.astName,
+   b.addr,
   a.id orderId,
    a.type          orderType,
   a.begin_date    beginDate,
@@ -187,6 +188,7 @@ FROM (SELECT
           AND (r.isAPI = 0 OR r.isAPI = 2)) a,
   (SELECT
      GROUP_CONCAT(t.name) AS astName,
+         GROUP_CONCAT(t.addr) AS addr,
      ca.orderId
    FROM cs_asset t,
      cs_order_asset ca
@@ -212,6 +214,7 @@ WHERE a.id = b.orderId
        c.price,
        c.isAPI,
        d.astName,
+          d.addr,
        c.id orderId,
         c.type          orderType,
 	  c.begin_date    beginDate,
@@ -234,6 +237,7 @@ WHERE a.id = b.orderId
 	       AND isAPI = 1) c,
        (SELECT
 	  CAST(i.package_type AS CHAR) AS astName,
+	   CAST(i.message AS CHAR) AS addr,
 	  i.id,
 	 i.buynum buynum
 	FROM cs_order_api i
