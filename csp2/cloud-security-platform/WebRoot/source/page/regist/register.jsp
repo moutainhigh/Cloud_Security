@@ -159,7 +159,7 @@
                        
                         <li class="clearfix" style=" position:relative; top:-5px;">
                         	<div class="list password fl" style="width:100%;">
-                            	<label class="fl"><input type="checkbox"  class="login_checkbox" id="ck" checked="checked"/>我已阅读并同意
+                            	<label class="fl"><input type="checkbox"  class="login_checkbox" id="ck"/>我已阅读并同意
                             	<a href="javascript:void(0)" class="forget_pass" id="zc_regist">《安全帮用户协议》</a></label>                              
                             </div>
                             <div class="prompt fl" id="ck_prompt"><b></b></div>
