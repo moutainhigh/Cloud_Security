@@ -488,7 +488,7 @@ $(document).ready(function(){
 		$('.submit').click(function(){
 			var acleng =$('#senone .ac').length;
 			var  ips = new Array();
-			var flag = true;
+			var flag = false;
 			//选中的网站地址           
             var acval=$('#senone .ac .rcent div').text();
             $('#wafBox li input:text').each(function(index, element) {
