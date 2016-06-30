@@ -371,6 +371,8 @@ function checkActivationCode(){
 function checkPhoneActivationCode(){
 	 var verification_code = $("#verification_code").val();
 	 	if(verification_code!=null&&verification_code!=""){
+	 	 var phone = $("#regist_phone").val();
+	 	 verification_code = phone + verification_code;
 		 $.ajax({
            type: "POST",
            url: "regist_checkActivationCode.html",
