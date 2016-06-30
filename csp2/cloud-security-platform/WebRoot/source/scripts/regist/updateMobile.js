@@ -70,7 +70,7 @@ function checkSendMobile(){
 		$.ajax({
 			type: "POST",
 			url: "checkSendMobile.html",
-			data: {"mobile":mobile,"useFlag":"0"},
+			data: {"mobile":mobile,"useFlag":"3"},
 			dataType:"json",
 			success: function(data){
 				if(data.msg=="0"){
@@ -114,7 +114,7 @@ function checkActivationCode(){
 		 $.ajax({
            type: "POST",
            url: "regist_checkActivationCode.html",
-           data: {"verification_code":verification_code,"useFlag":3},
+           data: {"verification_code":verification_code,"useFlag":"3"},
            dataType:"json",
            success: function(data){
            		if(data.msg=="0"){
