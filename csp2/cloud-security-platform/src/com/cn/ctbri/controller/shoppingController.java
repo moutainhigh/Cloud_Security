@@ -179,6 +179,7 @@ public class shoppingController {
         	assetAddr = assetAddr + asset.getAddr()+",";
         	assetNames = assetNames + asset.getName() + ",";
         }
+//        assetAddr = assetAddr.substring(0, assetAddr.length()-1);
         assetNames = assetNames.substring(0, assetNames.length()-1);
 	    
         request.setAttribute("user", globle_user);
