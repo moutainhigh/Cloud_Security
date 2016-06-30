@@ -31,7 +31,7 @@
 				<div class="headBox">
 					<div class="safeL fl" style="width:260px; margin-right:13%">
 						<a href="${ctx}/index.html"><img src="${ctx}/source/images/anquanbang_white_logo.png" alt="" style="position:relative; top:4px;"/></a>
-                        <b class="dividing-line"></b>
+                   
                         <strong>个人中心</strong>
 					</div>
 					
