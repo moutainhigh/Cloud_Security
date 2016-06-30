@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<title>个人中心-修改密码-3</title>
+<title>个人中心-修改密码</title>
 <link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
@@ -19,23 +19,27 @@
 <script src="${ctx}/source/scripts/common/main.js"></script>
 </head>
 <script>
-$(function(){
-	if (window.history && window.history.pushState) {
-		$(window).on('popstate', function () {
-		var hashLocation = location.hash;
-		var hashSplit = hashLocation.split("#!/");
-		var hashName = hashSplit[1];
-		if (hashName !== '') {
-		var hash = window.location.hash;
-		if (hash === '') {
-			window.location.href="loginUI.html";
-		}
-		}
-		});
-		//window.history.pushState('forward', null, './#forward');
-	}
-	
-})
+$(window).bind('hashchange', function() {
+	alert("dfdfdf");
+});
+/**
+jQuery(document).ready(function ($) {
+                    if (window.history && window.history.pushState) {
+                        $(window).on('popstate', function () {
+                            var hashLocation = location.hash;
+                            var hashSplit = hashLocation.split("#!/");
+                            var hashName = hashSplit[1];
+                            if (hashName !== '') {
+                                var hash = window.location.hash;
+                                if (hash === '') {
+                                    window.location.href="loginUI.html";
+                                }
+                            }
+                        });
+                        window.history.pushState('forward', null, './#forward');
+                    }
+                });
+                */
 
 </script>
 <body>
