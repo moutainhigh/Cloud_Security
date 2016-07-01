@@ -99,12 +99,12 @@
                             </p>
         
                         </div>
-                       <form id="phoneForm" action="${ctx}/updatePass.html">
+                       <form id="phoneForm" action="${ctx}/updatePass.html" method="post">
                         <ul class="passwordlist" style="padding-bottom:136px; width:458px; margin:0 auto">
                         	<li class="clearfix">
                             	<label class="fl">已验证的手机号码</label>
                                 <div class="fl passwordr">
-                                	 <input type="hidden" id="originalMobile" value="${originalMobile}"/>
+                                	 <input type="hidden" name="originalMobile" id="originalMobile" value="${originalMobile}"/>
                                 	 <input type="text"  class="text" name="phone_code" id="phone_code" onblur="checkPhone()"/>
                                      <i id="phone_code_flag" ></i>
                                 </div>
