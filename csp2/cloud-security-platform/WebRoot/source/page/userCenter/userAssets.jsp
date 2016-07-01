@@ -307,10 +307,10 @@
       <table style="margin-top:26px;width:630px">
         <tbody><tr>
           <td style="width:25%;">资产名称</td>
-          <td style="width:37%;"><input class="boz_inout_1" type="text" name="name" id="assetName"></td>
+          <td style="width:37%;"><input class="boz_inout_1" type="text" name="name" id="assetName" maxlength="20"></td>
           <td style="width:33%; text-align:left; color:#e32929;font-size:12px"><div class="addMsg" id="assetName_msg"></div></td>
         </tr>
-        <tr>
+       <!-- <tr>
        	  <td>资产地址类型</td>
           <td style="text-align:left">
 		        &nbsp;&nbsp;<input type="radio" name="addrType" checked="checked" id="assetAddrType1" value="http">
@@ -319,10 +319,10 @@
 		        &nbsp;https
 		  </td>
         </tr>
-        
+          -->
         <tr>
           <td>资产地址</td>
-          <td><input class="boz_inout_1" type="text" name="addr" id="assetAddr"></td>
+          <td><input class="boz_inout_1" type="text" name="addr" id="assetAddr" maxlength="100"></td>
           <td style="color:#e32929;text-align:left"><div class="addMsg" id="assetAddr_msg"></div></td>
         </tr>
         <tr>
@@ -379,10 +379,10 @@
       <table style="margin-top:26px;width:630px">
         <tr>
           <td style="width:25%;">资产名称</td>
-          <td style="width:37%;"><input class="boz_inout_1" type="text" name="name" id="editAssetName"/></td>
+          <td style="width:37%;"><input class="boz_inout_1" type="text" name="name" id="editAssetName" maxlength="20"/></td>
           <td style="width:33%; text-align:left; color:#e32929;font-size:12px"><div class="editMsg" id="editAssetName_msg"></div></td>
         </tr>
-        <tr>
+        <!-- <tr>
        	  <td>资产地址类型</td>
           <td style="text-align:left">
 		        &nbsp;&nbsp;<input type="radio" name="editAssetType"  value="http"/>
@@ -391,7 +391,7 @@
 		        &nbsp;https
 		  </td>
         </tr>
-        <tr>
+        <tr> -->
           <td>资产地址</td>
           <td><input class="boz_inout_1" type="text" name="addr" id="editAssetAddr"/></td>
           <td style="color:#e32929;text-align:left"><div class="editMsg" id="editAssetAddr_msg"></div></td>
