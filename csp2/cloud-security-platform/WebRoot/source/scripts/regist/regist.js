@@ -345,7 +345,7 @@ function checkPhoneActivationCode(){
            			$("#verification_code_prompt").fadeIn();
            			checkCheckPhoneActivationCode = 0;
            		}else{
-           			$("#verification_phone_flag").attr("class","right");
+           			$("#verification_code_flag").attr("class","right");
            			$("#verification_code_flag").show();
            			$("#verification_code_prompt").html("<b></b>输入短信验证码");
            			$("#verification_code_prompt").fadeOut();
