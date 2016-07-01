@@ -108,7 +108,7 @@ public class SMSUtils {
 //        System.out.println(sendSms(apikey, text, mobile));
         
         //设置模板ID，如使用1号模板:【#company#】您的验证码是#code#
-        long tpl_id = Long.parseLong(Configuration.getModifyCode_model());
+        long tpl_id = Long.parseLong(Configuration.getForgetCode_model());
         //设置对应的模板变量值
         //如果变量名或者变量值中带有#&=%中的任意一个特殊符号，需要先分别进行urlencode编码
         //如code值是#1234#,需作如下编码转换
@@ -135,7 +135,7 @@ public class SMSUtils {
 //        System.out.println(sendSms(apikey, text, mobile));
         
         //设置模板ID，如使用1号模板:【#company#】您的验证码是#code#
-        long tpl_id = Long.parseLong(Configuration.getForgetCode_model());
+        long tpl_id = Long.parseLong(Configuration.getModifyCode_model());
         //设置对应的模板变量值
         //如果变量名或者变量值中带有#&=%中的任意一个特殊符号，需要先分别进行urlencode编码
         //如code值是#1234#,需作如下编码转换
