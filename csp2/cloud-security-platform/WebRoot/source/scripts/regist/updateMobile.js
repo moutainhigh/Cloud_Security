@@ -54,6 +54,7 @@ function checkMobileNum(){
 			checkMobile = 0;
 		}
 	}
+	return checkMobile;
 }
 
 //检测手机验证码是否发送成功
@@ -111,12 +112,15 @@ function timeMobile() {
 function checkActivationCode(){
 	 var mobile = $("#phone_code").val();
 	 var verification_code = $("#verification_phone").val();
+	 if (checkMobile ==0) {
+		  checkEmailActivationCode = 0;
+		  return;
+	 }
 	 if(verification_code!=null&&verification_code!=""){
-	 	var verification_code = mobile + verification_code;
 		 $.ajax({
            type: "POST",
            url: "regist_checkActivationCode.html",
-           data: {"verification_code":verification_code,"useFlag":"3"},
+           data: {"verification_code":verification_code,"useFlag":"3","mobile":mobile},
            dataType:"json",
            success: function(data){
            		if(data.msg=="0"){
@@ -135,7 +139,7 @@ function checkActivationCode(){
            			$("#verification_phone_prompt").fadeOut();
            			checkEmailActivationCode = 1;
            		}
-           },
+           }
         });  
 	 }else{
 		$("#verification_phone_flag").attr("class","error");
@@ -143,15 +147,97 @@ function checkActivationCode(){
 		$("#verification_phone_prompt").fadeIn();
 		checkEmailActivationCode = 0;
 	 }
+	 return checkEmailActivationCode;
 }
 	
 
 function updateMobile(){
-	checkMobileNum();
-	checkActivationCode();
-	
-	if(checkEmailActivationCode == 1 && checkMobile == 1) {
-		$("#mobileForm").submit();
-	
+     var checkPhone = false;
+     var checkCode = false;
+    //------------------验证手机号码 start-----------
+    var oldMobile = $("#originalMobile").val();
+	var mobile = $("#phone_code").val();
+	var pattern = /^1[3|5|8|7][0-9]{9}$/;
+	var flag = pattern.test(mobile);
+	if(mobile==""||mobile==null){
+		$("#phone_code_flag").attr("class","error");
+		$("#phone_code_prompt").html("手机号码不能为空!");
+		$("#phone_code_prompt").fadeIn();
+	}else{
+		if(flag){
+			if(oldMobile!=mobile){//如果不是原来手机号
+				$.ajax({
+		               type: "POST",
+		               async: false, 
+		               url: "regist_checkMobile.html",
+		               data: {"mobile":mobile},
+		               dataType:"json",
+		               success: function(data){
+		                    if(data.count>0){
+		                    	$("#phone_code_flag").attr("class","error");
+		                    	$("#phone_code_prompt").html("该手机号码已使用!");
+		                    	$("#phone_code_prompt").fadeIn();
+		                    }else{
+		                    	$("#phone_code_flag").attr("class","right");
+								$("#phone_code_prompt").html("<b></b>");
+								$("#phone_code_prompt").fadeOut();
+								checkPhone = true;
+		                    }
+		               }
+		        });
+			}else{
+				$("#phone_code_flag").attr("class","right");
+				$("#phone_code_prompt").html("<b></b>");
+				$("#phone_code_prompt").fadeOut();
+				checkPhone = true;
+			}
+
+		}else{
+			$("#phone_code_flag").attr("class","error");
+			$("#phone_code_prompt").html("输入的手机号码格式不正确!");
+			$("#phone_code_prompt").fadeIn();
+		}
 	}
+	//------------------验证手机号码 end-----------
+	if (!checkPhone) {
+		$("#verification_phone_flag").removeClass("error");
+		$("#verification_phone_flag").removeClass("right");
+		$("#verification_phone_prompt").html("<b></b>");
+		$("#verification_phone_prompt").hide();
+		return;
+		
+	}
+	//------------------验证短信验证码 start-----------
+	var verification_code = $("#verification_phone").val();
+	 if(verification_code!=null&&verification_code!=""){
+		 $.ajax({
+           type: "POST",
+           url: "regist_checkActivationCode.html",
+           data: {"verification_code":verification_code,"useFlag":"3","mobile":mobile},
+           dataType:"json",
+           success: function(data){
+           		if(data.msg=="0"){
+           			$("#verification_phone_flag").attr("class","error");
+           			$("#verification_phone_prompt").html("<b></b>验证码填写错误!");
+           			$("#verification_phone_prompt").fadeIn();
+           		}else if(data.msg=="2"){
+           			$("#verification_phone_flag").attr("class","error");
+           			$("#verification_phone_prompt").html("<b></b>未获取验证码或验证码失效!");
+           			$("#verification_phone_prompt").fadeIn();
+           		}else{
+           			//checkCode = true;
+           			$("#verification_phone_flag").attr("class","right");
+           			$("#verification_phone_prompt").html("<b></b>");
+           			$("#verification_phone_prompt").fadeOut();
+           			$("#mobileForm").submit();
+           		}
+           }
+        });  
+	 }else{
+		$("#verification_phone_flag").attr("class","error");
+		$("#verification_phone_prompt").html("<b></b>请填写验证码!");
+		$("#verification_phone_prompt").fadeIn();
+	 }
+    //------------------验证短信验证码 end-----------
+
 }
