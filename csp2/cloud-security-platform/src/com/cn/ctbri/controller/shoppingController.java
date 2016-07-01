@@ -404,8 +404,16 @@ public class shoppingController {
 	    	  for (int m=0;m<strArray.length;m++){
 	    		  orderIdList.add(strArray[m]);
 	    	  }
+	    	  int count = selfHelpOrderService.findOrderCountByUserId(orderIdList,globle_user.getId());
+	    	  if (orderIdList.size()== 0 ||count != orderIdList.size()) {
+	    		  //有些订单号没有或有些订单不属于该用户时，跳转到首页
+	    		  return "redirect:/index.html";
+	    	  }
 	    	  list = selfHelpOrderService.findBuyShopList(orderIdList);
 	    	 linkman = orderService.findLinkmanByOrderId(strArray[0]);
+			}else {
+				//有些订单号没有或有些订单不属于该用户时，跳转到首页
+	    		  return "redirect:/index.html";
 			}
 	      DecimalFormat df = new DecimalFormat("0.00");
 	      double shopCount=0.0;
@@ -1582,14 +1590,20 @@ public class shoppingController {
 		
 		//不是当前用户的订单,不能支付
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
-    	if (orderListId== null || orderList.getUserId()!= globle_user.getId()) {
+    	if (orderListId== null || orderList == null ||orderList.getUserId()!= globle_user.getId()) {
     		return "redirect:/index.html";
     	}
     	
+    	
 		//获取修改时间的订单编号
 		String modifyOrderIdList = request.getParameter("modifyOrderId");
-		if (modifyOrderIdList != null && !modifyOrderIdList.equals("")){
+		if (modifyOrderIdList != null && !modifyOrderIdList.equals("") && !modifyOrderIdList.equals("undefined")){
 			String modifyOrderId[] = modifyOrderIdList.split(",");
+			for(String id:modifyOrderId){
+				if(!orderList.getOrderId().contains(id)){
+					return "redirect:/index.html"; 
+				}
+			}
 			m.addAttribute("modifyOrderId", modifyOrderId);
 		}
 		
