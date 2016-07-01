@@ -920,6 +920,8 @@ public class UserController{
 					userService.insert(user);
 				}
 				//return "/source/page/regist/registToLogin";
+				
+				request.getSession().removeAttribute("regist_activationCode");//注册成功，验证码失效
 				return "redirect:/loginUI.html";
 			}else{
 				request.setAttribute("errorMsg", "注册异常!");
@@ -1182,7 +1184,8 @@ public class UserController{
 	            }
         	}
         	if(flag){
-        		String sessionCode = userMobile + activationCode;
+        		long nowTime = System.currentTimeMillis();
+        		String sessionCode = userMobile +","+ activationCode + "," + nowTime;
            	 //将验证码保存到session中
         		switch(useFlag){
         			case 0://注册
@@ -1198,8 +1201,7 @@ public class UserController{
         				smsUtils.sendMessage_modifyCode(userMobile, String.valueOf(activationCode));
         				break;
         			case 3://修改手机号
-        				long nowTime = System.currentTimeMillis();
-        				request.getSession().setAttribute("modifyMobile_activationCode", sessionCode + "," + nowTime);
+        				request.getSession().setAttribute("modifyMobile_activationCode", sessionCode);
         				smsUtils.sendMessage_modifyMobile(userMobile, String.valueOf(activationCode));
         				break;
         		}
@@ -1233,10 +1235,13 @@ public class UserController{
 	@RequestMapping(value="regist_checkActivationCode.html", method = RequestMethod.POST)
 	@ResponseBody
     public void checkActivationCode(User user,HttpServletRequest request,HttpServletResponse response) {
-		long sendTime =0;
 		int useFlag = Integer.parseInt(request.getParameter("useFlag"));
+		String mobile = request.getParameter("mobile");
+		String myactivationCode = request.getParameter("verification_code");
 		//从session中获取发送的验证码
 		String newactivationCode =  "";
+		long sendTime =0;  //从session中获取发送验证码的时间
+		String sendMobile = null;  //从session中获取发送验证码的手机号
 		switch(useFlag){
 		case 0://注册
 			newactivationCode = String.valueOf(request.getSession().getAttribute("regist_activationCode"));
@@ -1252,18 +1257,24 @@ public class UserController{
 			
 		case 3://修改手机号
 			newactivationCode = String.valueOf(request.getSession().getAttribute("modifyMobile_activationCode"));
-			if (newactivationCode != null && !newactivationCode.equals("null")) {
-				int spiltIndex = newactivationCode.lastIndexOf(",");
-				sendTime = Long.parseLong(newactivationCode.substring(spiltIndex+1));
-				newactivationCode = newactivationCode.substring(0,spiltIndex);
-			}
 			break;
 		}
 		
-    	String myactivationCode = user.getVerification_code();
+		if (newactivationCode != null && !newactivationCode.equals("null")) {
+			String checkCode[] = newactivationCode.split(",");
+			sendMobile = checkCode[0];
+			newactivationCode = checkCode[1];
+			sendTime = Long.parseLong(checkCode[2]);
+		}
+		
+//    	String myactivationCode = user.getVerification_code();
     	Map<String, Object> m = new HashMap<String, Object>();
-    	if(useFlag == 3 && System.currentTimeMillis() - sendTime >= 3*60*1000) {
-    		m.put("msg", "2");//修改手机号时,超过3分钟验证码失效
+    	
+    	if (sendMobile == null ||                     //session中没有验证码相关信息
+    		!sendMobile.equals(mobile)||              //或手机号不匹配
+    		System.currentTimeMillis() - sendTime >= 3*60*1000) {  //或验证码获取时间超过3分钟
+    		
+    		m.put("msg", "2");//未获取验证码或验证码失效
     		//object转化为Json格式
     		JSONObject JSON = CommonUtil.objectToJson(response, m);
     		try {
@@ -1273,10 +1284,6 @@ public class UserController{
 				e.printStackTrace();
 			}
     	}else if(newactivationCode!=null&&newactivationCode.equals(myactivationCode) ){
-    		if(useFlag == 3) {
-    			//验证码验证成功后，该验证码失效，不得再次使用
-    			request.getSession().removeAttribute("modifyMobile_activationCode");
-    		}
     		m.put("msg", "1");//用户填写验证码正确
     		//object转化为Json格式
     		JSONObject JSON = CommonUtil.objectToJson(response, m);
@@ -1382,6 +1389,18 @@ public class UserController{
 			user.setMobile(mobile);
 		}
 		m.addAttribute("User", user);
+		
+		//原始密码:为空是忘记密码；不为空修改密码
+		//提交成功时，短信验证码失效
+		String originalMobile = request.getParameter("originalMobile");
+		if(originalMobile!=null && originalMobile.equals("")){
+			//修改密码
+			request.getSession().removeAttribute("modifyCode_activationCode");
+		}else{
+			//忘记密码
+			request.getSession().removeAttribute("forgetCode_activationCode");
+		}
+		
 		return "/updatePass";
 	}
 	
@@ -1621,6 +1640,7 @@ public class UserController{
 			int result = userService.updateUserMobile(user);
 			if(result==1){
 				globle_user.setMobile(mobile);
+				request.getSession().removeAttribute("modifyMobile_activationCode");
 				success = true;
 			}
 			
