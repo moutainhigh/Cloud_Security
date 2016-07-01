@@ -11,32 +11,34 @@
 function saveAsset() {
 	var assetName =$.trim($("#assetName").val());
 	var assetAddr = $.trim($("#assetAddr").val());
-     var addrType = $('input:radio[name="addrType"]:checked').val();
+    var addrType = $('input:radio[name="addrType"]:checked').val();
      var purpose = $("#purpose").val();
      var prov = $("#districtId").val();
-     var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
-     var patrn2 = /[\u4e00-\u9fa5]/;    //中文
-	//获取选中的radio的值
+     var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im; 
+	var strRegex = "^((https|http|ftp|rtsp|mms)?://)"
+		+ "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" //ftp的user@
+		+ "(([0-9]{1,3}.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
+		+ "|" // 允许IP和DOMAIN（域名）
+		+ "([0-9a-z_!~*'()-]+.)*" // 域名- www.
+		+ "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]." // 二级域名
+		+ "[a-z]{2,6})" // first level domain- .com or .museum
+		+ "(:[0-9]{1,4})?" // 端口- :80
+		+ "((/?)|" // a slash isn't required if there is no file name
+		+ "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
+    var re=new RegExp(strRegex);
+  //获取选中的radio的值
 	if(assetName == null || assetName == ""){
 		$("#assetName_msg").html("请输入资产名称");
 	}else if(patrn.test(assetName)){
 		$("#assetName_msg").html("您输入的资产名称含有非法字符");
-	}else if(assetName.length>25){
-		$("#assetName_msg").html("资产名称长度不能超过25个字符！");
-	}else if(patrn.test(assetAddr)|| patrn2.test(assetAddr)){
+	}else if(patrn.test(assetAddr)){
 		$("#assetAddr_msg").html("您输入的资产地址含有非法字符");
 	}else if(assetAddr==null || assetAddr == ""){
 			$("#assetName_msg").html("");
 			$("#assetAddr_msg").html("请输入资产地址");
-	}else if(assetAddr.length>50){
-			 $("#assetName_msg").html("");
-			 $("#assetAddr_msg").html("资产地址长度不能超过50个字符！");
-	}else if(assetAddr.indexOf("gov.cn")!=-1){
+	}else if(!re.test(assetAddr)){
 		   $("#assetName_msg").html("");
-		   $("#assetAddr_msg").html("输入资产地址不能包含'gov.cn'！");
-	}else if((addrType.length==4 && assetAddr.substring(0,5)=='https') || (addrType.length==5 && assetAddr.substring(0,5)=='http:')){
-		$("#assetName_msg").html("");
-		$("#assetAddr_msg").html("资产类型与资产地址填写不一致!");
+		   $("#assetAddr_msg").html("请输入正确的资产地址!");
 	}else if(prov == -1){
 		$("#assetName_msg").html("");
 		$("#assetAddr_msg").html("");
@@ -84,6 +86,8 @@ function saveAsset() {
 		        },
 		     }); 
 		}
+	
+   
 	
 }
 function searchAssetCombine(){
@@ -139,7 +143,17 @@ function editAsset(){
     var id = $("#editAssetid").val();
 //     var patrn=/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im; 
      var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
-     var patrn2 = /[\u4e00-\u9fa5]/;
+    var strRegex = "^((https|http|ftp|rtsp|mms)?://)"
+		+ "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" //ftp的user@
+		+ "(([0-9]{1,3}.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
+		+ "|" // 允许IP和DOMAIN（域名）
+		+ "([0-9a-z_!~*'()-]+.)*" // 域名- www.
+		+ "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]." // 二级域名
+		+ "[a-z]{2,6})" // first level domain- .com or .museum
+		+ "(:[0-9]{1,4})?" // 端口- :80
+		+ "((/?)|" // a slash isn't required if there is no file name
+		+ "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
+    var re=new RegExp(strRegex);
 //     if(patrn.test(assetAddr)){  
 //         alert("提示信息：您输入的资产地址含有非法字符！");  
 //         return false;     
@@ -149,19 +163,12 @@ function editAsset(){
 		$("#editAssetName_msg").html("请输入资产名称");
 	}else if(patrn.test(assetName)){
 		$("#editAssetName_msg").html("您输入的资产名称含有非法字符");
-	}else if(assetName.length>25){
-		$("#editAssetName_msg").html("资产名称长度不能超过25个字符！");
-	}else if(patrn.test(assetAddr)|| patrn2.test(assetAddr)){
-		$("#editAssetAddr_msg").html("您输入的资产地址含有非法字符");
 	}else if(assetAddr==null || assetAddr == ""){
 		$("#editAssetAddr_msg").html("请输入资产地址");
-	}else if(assetAddr.length>50){
-		 $("#editAssetAddr_msg").html("资产地址长度不能超过50个字符！");
-	}else if(assetAddr.indexOf("gov.cn")!=-1){
-	   $("#editAssetAddr_msg").html("输入资产地址不能包含'gov.cn'！");
-	}else if((addrType.length==4 && assetAddr.substring(0,5)=='https') || (addrType.length==5 && assetAddr.substring(0,5)=='http:')){
-		$("#editAssetAddr_msg").html("资产类型与资产地址填写不一致!");
-	}else if(prov == -1){
+	}else if(!re.test(assetAddr)){
+	   $("#editAssetName_msg").html("");
+    	$("#editAssetAddr_msg").html("请输入正确的资产地址!");
+    }else if(prov == -1){
 		$("#editAssetName_msg").html("");
 		$("#editAssetAddr_msg").html("");
 		$("#editLocation_msg").html("请选择资产所在物理地址！");
