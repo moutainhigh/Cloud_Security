@@ -228,7 +228,12 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		this.getSqlSession().update(ns+"updateOrderListId",newOrderIds);
 	}
 
-	
+	public int findOrderCountByUserId(List<String> orderIds, int userId){
+		Map map = new HashMap();
+		map.put("orderIds", orderIds);
+		map.put("userId", userId);
+		return this.getSqlSession().selectOne(ns+"findOrderCountByUserId",map);
+	}
 
 	
 }
