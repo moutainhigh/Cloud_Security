@@ -58,9 +58,31 @@ $(function(){
 						alert("该订单不存在!");
 					} else if(data.payFlag ==3 || data.payFlag ==0) {
 					    //余额不足/支付成功
-					    var modifyOrderId = data.modifyOrderId;
-					    orderListId = data.orderListId;
-						window.location.href = "repayUI.html?orderListId="+orderListId+"&modifyOrderId="+modifyOrderId;
+					    //虚拟表单post提交
+					    	var tempForm = document.createElement("form");
+  							tempForm.action = "repayUI.html";
+  							tempForm.method = "post";
+  							tempForm.style.display = "none";
+  							
+  							var orderListIdInput = document.createElement("input");
+  							orderListIdInput.type="hidden"; 
+							orderListIdInput.name= "orderListId"; 
+							orderListIdInput.value= data.orderListId; 
+							tempForm.appendChild(orderListIdInput);
+							
+							var modifyOrderIdInput = document.createElement("input");
+  							modifyOrderIdInput.type="hidden"; 
+							modifyOrderIdInput.name= "modifyOrderId"; 
+							modifyOrderIdInput.value= data.modifyOrderId; 
+							tempForm.appendChild(modifyOrderIdInput); 
+							
+							document.body.appendChild(tempForm);
+							tempForm.submit();
+							document.body.removeChild(tempForm);
+  
+					    //var modifyOrderId = data.modifyOrderId;
+					    //orderListId = data.orderListId;
+						//window.location.href = "repayUI.html?orderListId="+orderListId+"&modifyOrderId="+modifyOrderId;
 					} else {
 						alert("系统异常,您的订单已加入购物车,请稍后付款!");
 		    		    return;
