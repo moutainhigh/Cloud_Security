@@ -1393,7 +1393,7 @@ public class UserController{
 		//原始密码:为空是忘记密码；不为空修改密码
 		//提交成功时，短信验证码失效
 		String originalMobile = request.getParameter("originalMobile");
-		if(originalMobile!=null && originalMobile.equals("")){
+		if(originalMobile!=null && !originalMobile.equals("")){
 			//修改密码
 			request.getSession().removeAttribute("modifyCode_activationCode");
 		}else{
