@@ -132,7 +132,12 @@
           <p class="step_bottom">
               <em class="sone">1购物车</em>
               <em class="sone" style="left:126px">2填写核对信息</em>
+              <c:if test="${paySuccess == 0}">
               <em class="stwo" style="left:280px">3成功提交订单</em>
+              </c:if>
+              <c:if test="${paySuccess == 1}">
+              <em class="stwo" style="left:320px">3支付失败</em>
+              </c:if>
           </p>
            </div>
         </div>
