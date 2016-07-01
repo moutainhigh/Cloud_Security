@@ -255,6 +255,13 @@ WHERE a.id = b.orderId
      
   
  </select>
+ <select id="findOrderCountByUserId" parameterType="hashmap" resultType="java.lang.Integer">
+ select count(*) from cs_order where userId =#{userId} and
+ id in 
+ 	<foreach item="orderId" index="index" collection="orderIds" open="("  separator="," close=")">  
+      #{orderId} 
+     </foreach>  
+ </select>
  <update id="updateOrderAsset" parameterType="hashmap">
  UPDATE cs_order_asset a SET a.orderId=#{newOrderId}  WHERE a.orderId=#{orderId}
  </update>
