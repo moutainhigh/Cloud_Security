@@ -181,6 +181,9 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 	public void updateOrderListId(String newOrderIds) {
 		selfHelpOrderDao.updateOrderListId(newOrderIds);
 	}
-
+	
+	public int findOrderCountByUserId(List<String> orderId, int userId){
+		return selfHelpOrderDao.findOrderCountByUserId(orderId, userId);
+	}
 
 }
