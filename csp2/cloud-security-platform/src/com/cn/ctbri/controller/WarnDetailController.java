@@ -1326,6 +1326,19 @@ public class WarnDetailController {
         String orderId = request.getParameter("orderId");
         //获取订单信息
         List orderList = orderService.findByOrderId(orderId);
+
+		//不是当前用户的订单,不能查看
+    	User globle_user = (User) request.getSession().getAttribute("globle_user");
+    	if (orderId== null || orderList == null ||orderList.size() == 0) {
+    		return "redirect:/index.html";
+    	}
+    	
+    	 HashMap<String, Object> order=new HashMap<String, Object>();
+ 	    order=(HashMap) orderList.get(0);
+ 	    if (((Integer)order.get("userId"))!= globle_user.getId()) {
+ 	    	return "redirect:/index.html";
+ 	    }
+    	
         //获取对应资产
         List assetList = orderAssetService.findAssetNameByOrderId(orderId);
         //获取对应资产
