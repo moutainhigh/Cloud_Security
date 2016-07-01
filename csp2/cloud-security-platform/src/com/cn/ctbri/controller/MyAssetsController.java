@@ -15,6 +15,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -100,12 +102,18 @@ public class MyAssetsController {
 	    String oldAddr = request.getParameter("oldAddr");
 
 	    String addr = asset.getAddr();
+	    //判断资产地址是否包含http
+	    Pattern pattern2 = Pattern.compile("(http|https):\\/\\/([\\w.]+\\/?)\\S*");
+		Matcher matcher2 =	pattern2.matcher(addr);
+		if(!matcher2.find()){
+			addr="http://"+addr.trim();
+		}
 	    String assetName =URLDecoder.decode(asset.getName(),"utf-8"); ;
         paramMap.put("userId", globle_user.getId());
-    	String addrType = request.getParameter("addrType");
-    	if(!(addr.startsWith(addrType))){
+    	//String addrType = request.getParameter("addrType");
+    	/*if(!(addr.startsWith(addrType))){
             addr = addrType + "://" + addr.trim();
-        }
+        }*/
 		Map<String, Object> m = new HashMap<String, Object>();
 	    if(oldName!=null || oldAddr!=null){
 	    	//修改时判断存在
@@ -176,19 +184,23 @@ public class MyAssetsController {
 
 		String name = "";//资产名称
 		String addr = "";//资产地址
-		String addrType = asset.getAddrType();
+		//String addrType = asset.getAddrType();
 		String purpose = "";//用途
 		//处理页面输入中文乱码的问题
 		try {
 			name=new String(asset.getName().getBytes("ISO-8859-1"), "UTF-8");
 			addr=new String(asset.getAddr().getBytes("ISO-8859-1"), "UTF-8");
 			purpose=new String(asset.getPurpose().getBytes("ISO-8859-1"), "UTF-8");
+			//判断资产地址是否包含http
+		    Pattern pattern2 = Pattern.compile("(http|https):\\/\\/([\\w.]+\\/?)\\S*");
+			Matcher matcher2 =	pattern2.matcher(addr);
+			if(!matcher2.find()){
+				addr="http://"+addr.trim();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if(!(addr.startsWith(addrType)) || addr.equals(addrType)){
-			addr = addrType + "://" + addr.trim();
-		}
+	
 		asset.setName(name);
 		asset.setAddr(addr);
 		asset.setPurpose(purpose);
@@ -231,9 +243,18 @@ public class MyAssetsController {
         try {
 			int id = Integer.parseInt(request.getParameter("id"));
 			Asset oldAsset = assetService.findById(id);
-			String addrType = request.getParameter("addrType");
+			//String addrType = request.getParameter("addrType");
 			String districtId = request.getParameter("prov");
-			
+			String assetAddr = request.getParameter("assetAddr");
+			Pattern pattern2 = Pattern.compile("(http|https):\\/\\/([\\w.]+\\/?)\\S*");
+			Matcher matcher2 =	pattern2.matcher(assetAddr);
+			if(!matcher2.find()){
+				assetAddr="http://"+assetAddr.trim();
+			}
+			/*//判断资产地址是否包含http
+		    if((assetAddr.trim().toLowerCase().indexOf("http://")==-1||assetAddr.trim().toLowerCase().indexOf("https://")==-1)){
+		    
+		    }*/
 			String name = request.getParameter("assetName");
 			String purpose = request.getParameter("purpose");
 			String city = "";
@@ -244,26 +265,22 @@ public class MyAssetsController {
 			if(city!=null){
 				city = request.getParameter("city");
 			}
-			if(!(name.equals(oldAsset.getName())&&
-				(addrType+"://"+request.getParameter("assetAddr")).equals(oldAsset.getAddr())&&
-				purpose.equals(oldAsset.getPurpose())&&
+			if(!(name.equals(oldAsset.getName())&&assetAddr.equals(oldAsset.getAddr())&&purpose.equals(oldAsset.getPurpose())&&
 				districtId==oldAsset.getDistrictId()&&
 				oldCity.equals(city))){
 				Asset asset = new Asset();
 				asset.setName(name);
 				asset.setId(id);
-				String addr = request.getParameter("assetAddr");
-				if(!(addr.startsWith(addrType)) || addr.equals(addrType)){
-					addr = addrType+ "://" + addr.trim();
-				}
-				asset.setAddr(addr);
+				//String addr = request.getParameter("assetAddr");
+				
+				asset.setAddr(assetAddr);
 				//modify by zsh 2016-06-28 
 				asset.setStatus(1);  //资产状态 1：已验证
 //				asset.setStatus(0);
 				asset.setDistrictId(districtId);
 				asset.setCity(city);
 				asset.setPurpose(purpose);
-				asset.setAddrType(addrType);
+				//asset.setAddrType(addrType);
 				assetService.updateAsset(asset);
 
 				m.put("successFlag", true);
