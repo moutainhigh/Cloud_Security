@@ -115,4 +115,6 @@ public interface SelfHelpOrderDao {
 	void updateOrderAPIDate(ShopCar order);
 
 	void updateOrderListId(String newOrderIds);
+	
+	int findOrderCountByUserId(List<String> orderId, int userId);
 }
