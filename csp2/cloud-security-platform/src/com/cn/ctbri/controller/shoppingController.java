@@ -1193,6 +1193,7 @@ public class shoppingController {
     		//安全币余额不足
     		if (balance < price){
     			//安全币余额不足
+    			m.put("orderListId",orderList.getId());
     			m.put("payFlag", 3);
     			return;
     		}
