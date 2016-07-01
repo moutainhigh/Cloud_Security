@@ -325,17 +325,23 @@ function checkPhoneActivationCode(){
 	 var verification_code = $("#verification_code").val();
 	 	if(verification_code!=null&&verification_code!=""){
 	 	 var phone = $("#regist_phone").val();
-	 	 verification_code = phone + verification_code;
 		 $.ajax({
            type: "POST",
            url: "regist_checkActivationCode.html",
-           data: {"verification_code":verification_code,"useFlag":0},
+           data: {"verification_code":verification_code,"useFlag":0,"mobile":phone},
            dataType:"json",
            success: function(data){
            		if(data.msg=="0"){
            			$("#verification_code_flag").attr("class","error");
            			$("#verification_code_flag").show();
            			$("#verification_code_prompt").html("<b></b>短信验证码输入有误");
+           			$("#verification_code_prompt").fadeIn();
+           			checkCheckPhoneActivationCode = 0;
+           		}}else if(data.msg=="2"){
+					//未获取验证码或验证码失效!
+           			$("#verification_code_flag").attr("class","error");
+           			$("#verification_code_flag").show();
+           			$("#verification_code_prompt").html("<b></b>未获取短信验证码或短信验证码失效");
            			$("#verification_code_prompt").fadeIn();
            			checkCheckPhoneActivationCode = 0;
            		}else{
