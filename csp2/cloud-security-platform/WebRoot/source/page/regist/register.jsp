@@ -307,13 +307,11 @@ $(function(){
 
 	/*提示文字效果*/
 		$('.promp').click(function(){
-			//alert("3");
 			$(this).hide();
 			$(this).siblings('.prompttext').focus();
 		})
 		
 		$('.prompttext').focus(function(){
-			//alert("2");
 			$(this).siblings('p').hide();	
 			//var tempId = $(this).parents('li').children('.prompt').attr("id");
 			//if(tempId=='regist_name_prompt' || tempId=='regist_password_prompt'){
@@ -324,7 +322,6 @@ $(function(){
 		$('.prompttext').blur(function(){
 			//var tempId = $(this).parents('li').children('.prompt').attr("id");
 			//if(tempId=='regist_name_prompt' || tempId=='regist_password_prompt'){
-			//alert("1");
 				//$(this).parents('li').children('.prompt').fadeOut();	
 				var _this=$(this).val();
 				if(_this=='')
