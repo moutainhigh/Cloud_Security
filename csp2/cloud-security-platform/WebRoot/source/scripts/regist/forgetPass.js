@@ -121,16 +121,20 @@ function checkPhoneActivationCode(){
 	 var verification_code = $("#verification_phone").val();
 	 	if(verification_code!=null&&verification_code!=""){
 	 	 var phone = $("#phone_code").val();
-	 	 verification_code = phone + verification_code;
+	 	 
 		 $.ajax({
            type: "POST",
            url: "regist_checkActivationCode.html",
-           data: {"verification_code":verification_code,"useFlag":useFlag},
+           data: {"verification_code":verification_code,"useFlag":useFlag,"mobile":phone},
            dataType:"json",
            success: function(data){
            		if(data.msg=="0"){
            			$("#verification_phone_flag").attr("class","error");
            			$("#verification_phone_prompt").html("<b></b>验证码填写错误!");
+           			$("#verification_phone_prompt").fadeIn();
+           		}}else if(data.msg=="2"){
+           			$("#verification_phone_flag").attr("class","error");
+           			$("#verification_phone_prompt").html("<b></b>未获取验证码或验证码失效!");
            			$("#verification_phone_prompt").fadeIn();
            		}else{
            			$("#verification_phone_flag").attr("class","right");
