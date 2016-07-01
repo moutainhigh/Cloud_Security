@@ -337,7 +337,7 @@ function checkPhoneActivationCode(){
            			$("#verification_code_prompt").html("<b></b>短信验证码输入有误");
            			$("#verification_code_prompt").fadeIn();
            			checkCheckPhoneActivationCode = 0;
-           		}}else if(data.msg=="2"){
+           		}else if(data.msg=="2"){
 					//未获取验证码或验证码失效!
            			$("#verification_code_flag").attr("class","error");
            			$("#verification_code_flag").show();
