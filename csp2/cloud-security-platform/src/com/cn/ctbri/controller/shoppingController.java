@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -1664,8 +1666,14 @@ public class shoppingController {
 			String city = request.getParameter("city");
 			String wafFlag = request.getParameter("wafFlag");
 						
-			if(!(addr.startsWith(addrType)) || addr.equals(addrType)){
-				addr = addrType + "://" + addr.trim();
+//			if(!(addr.startsWith(addrType)) || addr.equals(addrType)){
+//				addr = addrType + "://" + addr.trim();
+//			}
+			//判断资产地址是否包含http
+		    Pattern pattern2 = Pattern.compile("(http|https):\\/\\/([\\w.]+\\/?)\\S*");
+			Matcher matcher2 =	pattern2.matcher(addr);
+			if(!matcher2.find()){
+				addr="http://"+addr.trim();
 			}
 			
 			//如果wafFlag!=null 只允许添加域名
