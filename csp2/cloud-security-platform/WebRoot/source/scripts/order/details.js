@@ -644,27 +644,20 @@ function tasknum_verification(){
          var prov = $("#districtId").val();
          var city = $("#city").val();
          var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
+         var strRegex = /^((([hH][tT][tT][pP][sS]?)\:\/\/)?([\w\.\-]+(\:[\w\.\&%\$\-]+)*@)?((([^\s\(\)\<\>\\\"\.\[\]\,@;:]+)(\.[^\s\(\)\<\>\\\"\.\[\]\,@;:]+)*(\.[a-zA-Z]{2,4}))|((([01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}([01]?\d{1,2}|2[0-4]\d|25[0-5])))(\b\:(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0)\b)?((\/[^\/][\w\.\,\?\'\\\/\+&%\$#\=~_\-@]*)*[^\.\,\?\"\'\(\)\[\]!;<>{}\s\x7F-\xFF])?)$/;
     	//获取选中的radio的值
     	if(assetName == null || assetName == ""){
     		$("#assetName_msg").html("请输入网站名称");
     	}else if(patrn.test(assetName)){
     		$("#assetName_msg").html("您输入的网站名称含有非法字符");
-    	}else if(assetName.length>25){
-    		$("#assetName_msg").html("资产名称长度不能超过25个字符！");
     	}else if(patrn.test(assetAddr)){
     		$("#assetAddr_msg").html("您输入的网站地址含有非法字符");
     	}else if(assetAddr==null || assetAddr == ""){
     			$("#assetName_msg").html("");
     			$("#assetAddr_msg").html("请输入网站地址");
-    	}else if(assetAddr.length>50){
-    			 $("#assetName_msg").html("");
-    			 $("#assetAddr_msg").html("网站地址长度不能超过50个字符！");
-    	}else if(assetAddr.indexOf("gov.cn")!=-1){
-    		   $("#assetName_msg").html("");
-    		   $("#assetAddr_msg").html("输入网站地址不能包含'gov.cn'！");
-    	}else if((addrType.length==4 && assetAddr.substring(0,5)=='https') || (addrType.length==5 && assetAddr.substring(0,5)=='http:')){
-    		$("#assetName_msg").html("");
-    		$("#assetAddr_msg").html("网站类型与网站地址填写不一致!");
+    	}else if(!strRegex.test(assetAddr)){
+		   $("#assetName_msg").html("");
+		   $("#assetAddr_msg").html("请输入正确的网站地址!");
     	}else if(prov == -1){
     		$("#assetName_msg").html("");
     		$("#assetAddr_msg").html("");
