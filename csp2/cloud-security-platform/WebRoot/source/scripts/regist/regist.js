@@ -145,7 +145,7 @@ function checkConfirmPassword(){
 			$("#regist_confirm_password_flag").attr("class","right");
 			$("#regist_confirm_password_flag").show();
 		   	$("#regist_confirm_password_prompt").html("<b></b>支持6-20位,且至少两种字符组合(大小写字母/数字/字符)");
-		   	$("#regist_confirm_password_prompt").fadeIn();
+		   	$("#regist_confirm_password_prompt").fadeOut();
 		    checkConfirmPassword1 = 1;
 		  }
 	  }else{
@@ -364,6 +364,7 @@ function checkPhoneActivationCode(){
 
 //提交表单及校验
 function submitForm(){
+
 	var name = $("#regist_name").val();
 	var p1 = $("#regist_password").val();
 	var p2=$("#regist_confirm_password").val();
@@ -373,15 +374,15 @@ function submitForm(){
 	var checkNumber = $("#checkNumber1").val();
 	var agreeId = $("#agreeId").val();//同意协议
 
+	checkPhoneActivationCode();
 	checkName();
 	checkPassword();
 	checkConfirmPassword();
 	checkCompanyFun();
 	checkMobile();
 	checkActivationCode();
-	checkPhoneActivationCode();
-    if(checkCompany==1&&checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1&&checkMobile1==1&&checkSendMobile1==1&&checkCheckNumber1==1&&checkCheckPhoneActivationCode==1){
-    	if(document.getElementById("ck").checked && agreeId==1){
+    if(checkCompany==1&&checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1&&checkMobile1==1&&checkSendMobile1==0&&checkCheckNumber1==1&&checkCheckPhoneActivationCode==0){
+    	if(agreeId==1){
     		$("#ck_prompt").html("<b></b>");
 			$("#ck_prompt").fadeOut();
 			$("#form_regist").submit();
