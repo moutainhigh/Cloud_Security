@@ -657,7 +657,7 @@ function tasknum_verification(){
     			$("#assetAddr_msg").html("请输入网站地址");
     	}else if(!strRegex.test(assetAddr)){
 		   $("#assetName_msg").html("");
-		   $("#assetAddr_msg").html("请输入正确的网站地址!");
+		   $("#assetAddr_msg").html("请输入正确的网址!");
     	}else if(prov == -1){
     		$("#assetName_msg").html("");
     		$("#assetAddr_msg").html("");
