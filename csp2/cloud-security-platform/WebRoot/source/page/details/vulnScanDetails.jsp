@@ -439,13 +439,13 @@ d.mouseover(function(){
                                     <label class="fl">网站名称</label> <div class="fl"><input class="boz_inout_1" type="text" name="name" id="assetName"></div>
                                     <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetName_msg"></div>
                                 </li>
-                                <li class="clearfix">
+                                <!-- <li class="clearfix">
                                     <label class="fl">网站地址类型</label> 
                                     <div class="fl">
                                         <label><input type="radio" name="addrType" checked="checked" id="assetAddrType1" value="http">http</input></label>
                                         <label style="margin-left:10px;"><input type="radio" name="addrType" id="assetAddrType2" value="https">https</label>
                                     </div>
-                                </li>
+                                </li> --> 
                                 <li class="clearfix">
                                     <label class="fl">网站地址</label> <div class="fl"><input class="boz_inout_1" type="text" name="addr" id="InertAddr"></div>
                                     <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetAddr_msg"></div>
