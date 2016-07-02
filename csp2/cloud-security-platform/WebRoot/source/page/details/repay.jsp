@@ -30,7 +30,6 @@
  
  function collectBalance(){
  var orderListId=$("#orderListId").val();
- alert(orderListId);
  	$.ajax({
  		type:"POST",
  		async: false,
