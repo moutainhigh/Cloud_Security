@@ -381,17 +381,20 @@ function submitForm(){
 	checkCompanyFun();
 	checkMobile();
 	checkActivationCode();
-    if(checkCompany==1&&checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1&&checkMobile1==1&&checkSendMobile1==1&&checkCheckNumber1==1&&checkCheckPhoneActivationCode==1){
-    	if(agreeId==1){
-    		$("#ck_prompt").html("<b></b>");
-			$("#ck_prompt").fadeOut();
-			$("#form_regist").submit();
-			alert("注册成功！"); 	
-	    }else{
-    		$("#ck_prompt").html("<b></b>请阅读《云平台用户注册协议》");
-			$("#ck_prompt").fadeIn();
-	    }
-    }
+	 setTimeout(function () {
+		 if(checkCompany==1&&checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1&&checkMobile1==1&&checkSendMobile1==1&&checkCheckNumber1==1&&checkCheckPhoneActivationCode==1){
+		    	if(agreeId=='1'){
+		    		$("#ck_prompt").html("<b></b>");
+					$("#ck_prompt").fadeOut();
+					$("#form_regist").submit();
+					alert("注册成功！"); 	
+			    }else{
+		    		$("#ck_prompt").html("<b></b>请阅读《云平台用户注册协议》");
+					$("#ck_prompt").fadeIn();
+			    }
+		    }
+	    }, 100);
+
 }
 
 
