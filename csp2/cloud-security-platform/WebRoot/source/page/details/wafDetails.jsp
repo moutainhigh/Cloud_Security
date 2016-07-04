@@ -150,7 +150,7 @@
                                     	<!--<li><em>域名：</em><p>www.anquanbang.net</p></li>
                                         <li><em>ip1:</em><p>12.12.1.12</p></li>
                                         <li><em>ip2:</em><p>12.12.1.12</p></li>-->
-                                        <p class="ym"><em>域名：</em><span>www.anquanbang.net</span></p>
+                                        <p class="ym"><em>域名：</em><span></span></p>
                                         <ul class="fack">
                                         	
                                         </ul>
