@@ -116,13 +116,11 @@
                                             </c:if>
                                             </label>
                                            <c:if test="${shopCar.serviceId!=6}">
-                                           <input type="checkbox" class="ck" style="display:none" value="${shopCar.orderId}" isApi="0" name="check_name">
-                                            </input>
+                                          
                                             <a href="${ctx}/selfHelpOrderInit.html?serviceId=${shopCar.serviceId}&indexPage=1" target="_blank">${shopCar.serverName}</a>
                                             </c:if>
                                              <c:if test="${shopCar.serviceId==6}">
-                                             <input type="checkbox" class="ck" style="display:none" value="${shopCar.orderId}" isApi="0" name="check_name">
-                                            </input>
+                                            
                                             <a href="${ctx}/wafDetails.html?serviceId=6" target="_blank">${shopCar.serverName}</a>
                                             </c:if>
                                             </td>
@@ -185,12 +183,13 @@
                         	
                             	 <tr height="40">
                                  	<td width="20%"><label style=" margin: 0 20px 0 40px; width:16px; height:16px;display:inline-block;">
-                                    
-                                            <input type="checkbox" class="ck" style="display:none" value="${shopAPI.orderId}" isApi="1" name="check_name"></input>
+                                    ${shopCar.status}
+                                           
                                           <c:if test="${shopCar.status==-1}">
                                             <i class="chck" style="margin: 0; position:relative; top:0;display:none"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">已失效</font>
                                             </c:if>
                                              <c:if test="${shopCar.status!=-1}">
+                                              <input type="checkbox" class="ck" style="display:none" value="${shopAPI.orderId}" isApi="1" name="check_name"></input>
                                             <i class="chck" style="margin: 0; position:relative; top:0"></i>
                                             </c:if>
                                             </label>
