@@ -28,6 +28,10 @@ function saveAsset() {
    // var re=new RegExp(strRegex);
      var strRegex = /^((([hH][tT][tT][pP][sS]?)\:\/\/)?([\w\.\-]+(\:[\w\.\&%\$\-]+)*@)?((([^\s\(\)\<\>\\\"\.\[\]\,@;:]+)(\.[^\s\(\)\<\>\\\"\.\[\]\,@;:]+)*(\.[a-zA-Z]{2,4}))|((([01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}([01]?\d{1,2}|2[0-4]\d|25[0-5])))(\b\:(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0)\b)?((\/[^\/][\w\.\,\?\'\\\/\+&%\$#\=~_\-@]*)*[^\.\,\?\"\'\(\)\[\]!;<>{}\s\x7F-\xFF])?)$/;
   //获取选中的radio的值
+	$("#assetName_msg").html("");
+	$("#assetAddr_msg").html("");
+	$("#location_msg").html("");
+	$("#assetUsage_msg").html("");
 	if(assetName == null || assetName == ""){
 		$("#assetName_msg").html("请输入资产名称!");
 	}else if(patrn.test(assetName)){
@@ -50,10 +54,6 @@ function saveAsset() {
 		$("#location_msg").html("");
 		$("#assetUsage_msg").html("请选择资产用途!");
 	}else{
-		$("#assetName_msg").html("");
-		$("#assetAddr_msg").html("");
-		$("#location_msg").html("");
-		$("#assetUsage_msg").html("");
 			//验证资产是否重复
 			$.ajax({
 		        type: "POST",
