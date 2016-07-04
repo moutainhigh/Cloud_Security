@@ -180,7 +180,7 @@ $(function(){
         	}
 		}
 		if(assetIds==""||assetIds==null){
-			alert("请选择网站!");
+			alert("请选择要服务的网站!");
     		return;
 		}
 
@@ -371,7 +371,7 @@ $(function(){
         	}
 		}
 		if(assetIds==""||assetIds==null){
-			alert("请选择网站!");
+			alert("请选择要服务的网站!");
     		return;
 		}
 
