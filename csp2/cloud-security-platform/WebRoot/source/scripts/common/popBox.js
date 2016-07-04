@@ -41,6 +41,16 @@ $(function(){
 	//关闭按钮
 	
 	$('.closed').click(function () {
+			$('#assetName').val('');
+			$('#assetAddr').val('');
+			$('#districtId').val(-1);
+			//清空城市下拉框
+			$("#city").empty();
+			$("#city").append( '<option value="-1">请选择城市</option>');
+			$("#city").attr('disabled','disabled');
+			$('#purpose').val(-1);
+			$(".addMsg").html("");
+			
             $('.popBoxhide').hide();
             $('.shade').hide();
             $('html').css({
@@ -88,7 +98,15 @@ $(document).ready(function () {
 			$('.gt').hide();	
 		}
 		
-		
+		$('#assetName').val('');
+		$('#InertAddr').val('');
+		$('#districtId').val(-1);
+		//清空城市下拉框
+		$("#city").empty();
+		$("#city").append( '<option value="-1">请选择城市</option>');
+		$("#city").attr('disabled','disabled');
+		$('#purpose').val(-1);
+		$(".addMsg").html("");
         
     })
 
