@@ -480,8 +480,8 @@ d.mouseover(function(){
 						    			<select  class="user_secta_count spiclesel"  id="city" name="city" disabled="disabled" style="width:119px;height: 35px;">
 						    			      <option value="-1">请选择城市</option>
 						    			</select>
-						    			<div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="location_msg"></div>
                                         </div>
+						    			<div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="location_msg"></div>
                                 </li>
                                 <li class="clearfix">
                                     <label class="fl">网站用途</label> 
@@ -492,8 +492,8 @@ d.mouseover(function(){
 							   				<option value="信息发布">信息发布</option>
 							   				<option value="其他">其他</option>   
                                         </select>
-                                        <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetUsage_msg"></div>
                                     </div>
+                                    <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetUsage_msg"></div>
                                 </li>
                             </ul>
                            
