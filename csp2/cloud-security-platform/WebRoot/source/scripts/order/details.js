@@ -99,7 +99,7 @@ $(function(){
 			var index=0;
 			for(var i=0;i<arrLink.length;i++){
 				index++;
-				 list+="<li id="+ index +" assetId='"+arrId[i]+"'>"+ arrLink[i] +"<i onclick='delAssetFun()'></i></li>";  
+				 list+="<li id="+ index +" assetId='"+arrId[i]+"'>"+ arrLink[i] +"<i></i></li>";  
 			}
 			
 			$('.httpBox').append(list);
@@ -407,29 +407,41 @@ $(function(){
 
   //删除添加的-对应删除弹框的
     $('.httpBox').delegate('i','click',function(){
-        var _this=$(this).parent('li').attr('id')-1;
-               	$('.allBox i').each(function(index, element) {
-                    var ac= $(this).attr('data-id');
-    				if(ac==_this){
-    					arrLink[_this]='';
-    					$(this).removeClass('this');
-    					//$(this).removeClass('disabled');
-    					
-    				}
-                });
-                $(this) .parent('li').remove();
-    			var tleng= $('.httpBox li').length;
-    			if(tleng==0){
-    				$('.gt').show();		
-    			}
+        //循环匹配内容 并清除掉
+        for(var i=0;i<$('.cek').length;i++){
+            $('.cek').eq(i).attr('class','cek');
+        }
+        
+        var _this=$(this).parent('li').attr('data');
+
+       	$('.allBox b').each(function(index, element) {
+            var ac= $(this).text();
+
+			if(ac==_this){
+				
+				$(this).parent('h3').find('i').removeClass('this');
+
+				for(i=0;i<arrLink.length;i++){
+					if(arrLink[i]==_this){
+						arrLink.del(i)	
+					}
+				}
+			}
+        });
+        $(this) .parent('li').remove();
+		$('#number').text($('.allBox .this').length);
+		var tleng= $('.httpBox li').length;
+		if(tleng==0){
+			$('.gt').show();		
+		}
     	
-    			assetCount = $('.httpBox li').length;
-    			var type = $(".click").val();
-    			if(type="1"){//长期
-    				calPriceLong(null,servType,assetCount);
-    			}else{
-    				calPrice(assetCount);
-    			}
+		assetCount = $('.httpBox li').length;
+		var type = $(".click").val();
+		if(type="1"){//长期
+			calPriceLong(null,servType,assetCount);
+		}else{
+			calPrice(assetCount);
+		}
     			
     	})
 
@@ -777,35 +789,4 @@ function tasknum_verification(){
 				
             
          }
-    }
-    
-    //去掉资产时
-    function delAssetFun(){
-        //选择
-        for(var i=0;i<$('.cek').length;i++){
-//            $('.cek').attr('check','false');
-            $('.cek').eq(i).click(function(){
-                if($(this).attr('class').indexOf('this')!=-1){
-    				//$(this).parents('li').removeClass('ac');
-                    $(this).removeClass('this');
-    				var legth = $('.allBox .this').length;
-    				//alert(legth)
-    				$('#number').text(legth);
-                }
-                else{
-    				 $(this).addClass('this');
-    				 //$(this).parents('li').addClass('ac');
-    				var legth = $('.allBox .this').length;
-    				if(legth==6){
-    					$(this).removeClass('this');
-    					alert("不能超过5个")
-    					$('#number').text('5');
-    				}else{
-    					$('#number').text(legth)	
-    				}
-    				
-                   
-                }
-            })
-        }    	
     }
