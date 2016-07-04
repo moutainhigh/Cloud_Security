@@ -183,8 +183,7 @@
                         	
                             	 <tr height="40">
                                  	<td width="20%"><label style=" margin: 0 20px 0 40px; width:16px; height:16px;display:inline-block;">
-                                    ${shopCar.status}
-                                           
+                                      
                                           <c:if test="${shopCar.status==-1}">
                                             <i class="chck" style="margin: 0; position:relative; top:0;display:none"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">已失效</font>
                                             </c:if>
