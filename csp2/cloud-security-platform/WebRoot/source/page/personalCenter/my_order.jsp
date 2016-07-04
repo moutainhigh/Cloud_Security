@@ -326,11 +326,13 @@ function getServ(c){
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
-					<a href="${ctx}/index.html">
-						<img src="${ctx}/source/images/portal/new-footer-logo.png" alt="">
+				<!--修改-->
+				   <a href="${ctx}/index.html">
+	               		<img src="${ctx}/source/images/portal/new-footer-logo.png" alt="" />
                    </a>
+                <!--修改-->  
 				</div>
-				<ol class="footr clearfix fl">
+				<ol class="footr clearfix fr">
 					<li>
                     	<h2>帮助中心</h2>
                         <dl>
@@ -370,6 +372,24 @@ function getServ(c){
 		<c:import url="/foot.jsp"></c:import>
 		<!-- 底部 end -->
 	</div>
+	<!---执行效果-->
+<div class="weixinshow popBoxhide" id="weixin">
+	<i class="close chide"></i>
+    <div class="Pophead">
+    	<h1 class="heaf">安全帮微信二维码</h1>
+    </div>
+	<div class="popBox">
+    	 <p>打开微信，点击右上角的“+”，选择“扫一扫”功能，<br>
+对准下方二维码即可。
+		</p>
+           <div class="weinImg" style="text-align:center;">
+           	<img src="${ctx}/source/images/portal/weixin.jpg" alt="">
+           </div> 
+    </div>
+
+</div>
+	
+<div class="shade"></div>
 <script>
 	$(function(){
 		/*$('.listul').each(function(index, element) {
