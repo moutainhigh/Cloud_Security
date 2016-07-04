@@ -448,7 +448,7 @@ d.mouseover(function(){
                         <div class="popBox">
                             <ul style="height:auto;">
                                 <li class="clearfix">
-                                    <label class="fl">网站名称</label> <div class="fl"><input class="boz_inout_1" type="text" name="name" id="assetName"></div>
+                                    <label class="fl">网站名称</label> <div class="fl"><input class="boz_inout_1" type="text" name="name" id="assetName" maxlength="20"></div>
                                     <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetName_msg"></div>
                                 </li>
                                 <!-- <li class="clearfix">
@@ -459,7 +459,7 @@ d.mouseover(function(){
                                     </div>
                                 </li> --> 
                                 <li class="clearfix">
-                                    <label class="fl">网站地址</label> <div class="fl"><input class="boz_inout_1" type="text" name="addr" id="InertAddr"></div>
+                                    <label class="fl">网站地址</label> <div class="fl"><input class="boz_inout_1" type="text" name="addr" id="InertAddr"  maxlength="100"></div>
                                     <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetAddr_msg"></div>
                                 </li>
                                  <li class="clearfix">
