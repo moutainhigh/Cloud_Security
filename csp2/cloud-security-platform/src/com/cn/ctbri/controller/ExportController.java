@@ -548,7 +548,8 @@ public class ExportController {
                     // Safari浏览器，只能采用ISO编码的中文输出
                     else if (userAgent.indexOf("safari") != -1) {
                         rtn = "filename=\""
-                                + new String(outfile.getBytes("UTF-8"), "ISO8859-1")
+                                //+ new String(outfile.getBytes("UTF-8"), "ISO8859-1")
+                        		+ outfile
                                 + "\"";
                     }
                     // Chrome浏览器，只能采用MimeUtility编码或ISO编码的中文输出

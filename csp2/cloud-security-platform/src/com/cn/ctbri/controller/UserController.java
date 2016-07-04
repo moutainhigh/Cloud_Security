@@ -113,9 +113,9 @@ public class UserController{
 		//公司名称
 		String company = "";
 		try {
-			industry = new String(user.getIndustry().getBytes("ISO-8859-1"), "UTF-8");
-			job = new String(user.getJob().getBytes("ISO-8859-1"),"UTF-8");
-			company = new String(user.getCompany().getBytes("ISO-8859-1"),"UTF-8");
+			industry = user.getIndustry();
+			job = user.getJob();
+			company = user.getCompany();
 			globle_user.setCompany(company);
 			if(!industry.equals("-1")){
 				globle_user.setIndustry(industry);
@@ -127,7 +127,7 @@ public class UserController{
 			}else{
 				globle_user.setJob(null);
 			}
-		} catch (UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		//推送地址 add by tangxr 2016-4-9
@@ -888,9 +888,9 @@ public class UserController{
 			//公司名称
 			String company = "";
 			try {
-				industry = new String(user.getIndustry().getBytes("ISO-8859-1"), "UTF-8");
-				job = new String(user.getJob().getBytes("ISO-8859-1"),"UTF-8");
-				company = new String(user.getCompany().getBytes("ISO-8859-1"),"UTF-8");
+				industry = user.getIndustry();
+				job = user.getJob();
+				company = user.getCompany();
 				user.setCompany(company);
 				if(!industry.equals("-1")){
 					user.setIndustry(industry);
@@ -898,7 +898,7 @@ public class UserController{
 				if(!job.equals("-1")){
 					user.setJob(job);
 				}
-			} catch (UnsupportedEncodingException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			if(name!=null&&!"".equals(name)&&m.matches()&&password!=null&&!"".equals(password)&&password.length()>=6&&password.length()<=20&&(mb)&&user.getVerification_code()!=null&&!"".equals(user.getVerification_code())){

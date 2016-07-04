@@ -188,9 +188,9 @@ public class MyAssetsController {
 		String purpose = "";//用途
 		//处理页面输入中文乱码的问题
 		try {
-			name=new String(asset.getName().getBytes("ISO-8859-1"), "UTF-8");
-			addr=new String(asset.getAddr().getBytes("ISO-8859-1"), "UTF-8");
-			purpose=new String(asset.getPurpose().getBytes("ISO-8859-1"), "UTF-8");
+			name=asset.getName();
+			addr=asset.getAddr();
+			purpose=asset.getPurpose();
 			//判断资产地址是否包含http
 		    Pattern pattern2 = Pattern.compile("(http|https):\\/\\/([\\w.]+\\/?)\\S*");
 			Matcher matcher2 =	pattern2.matcher(addr);
@@ -384,7 +384,8 @@ public class MyAssetsController {
 //			URL url =new URL(path);
 //			HttpClient httpClient = HttpClient.New(url);
 //			OutputStream outputStream = httpClient.getOutputStream();
-			verification_msg = new String(request.getParameter("codeStyle").getBytes("ISO-8859-1"), "UTF-8");
+//			verification_msg = new String(request.getParameter("codeStyle").getBytes("ISO-8859-1"), "UTF-8");
+			verification_msg = request.getParameter("codeStyle");
 			//代码验证
 			if(verification_msg.equals("codeVerification")){
 				 //获取已知代码
@@ -475,11 +476,12 @@ public class MyAssetsController {
 	@RequestMapping("/download.html")
 	public void download(HttpServletRequest request,HttpServletResponse response) throws Exception{
 		String fileName = request.getParameter("fileName");
-		fileName = new String(fileName.getBytes("ISO-8859-1"), "UTF-8");//反编译解决路径乱码
+		//fileName = new String(fileName.getBytes("ISO-8859-1"), "UTF-8");//反编译解决路径乱码
 		//获取文件路径
 		String path = request.getSession().getServletContext().getRealPath("/source/download");
 		File file = new File(path+"/"+fileName);
-		response.setHeader("Content-Disposition", "attachment; filename=" + new String(fileName.getBytes("GBK"), "ISO-8859-1") + ";");//文件的下载方式：attachment：附件
+		//response.setHeader("Content-Disposition", "attachment; filename=" + new String(fileName.getBytes("GBK"), "ISO-8859-1") + ";");//文件的下载方式：attachment：附件
+		response.setHeader("Content-Disposition", "attachment; filename=" + fileName + ";");//文件的下载方式：attachment：附件
 		// 通常文件名称得到mime类型
 		type = request.getSession().getServletContext().getMimeType(fileName);
 		//将路径path转化成输入流

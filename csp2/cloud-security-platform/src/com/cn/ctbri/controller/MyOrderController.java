@@ -195,10 +195,10 @@ public class MyOrderController {
         String search = request.getParameter("search");
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         //组织条件查询
-        String name=null;
+        String name=servName;
         String searchText = null;//输入的查询文本
         try {
-            name=new String(servName.getBytes("ISO-8859-1"), "UTF-8");
+            //name=new String(servName.getBytes("ISO-8859-1"), "UTF-8");
             if(search!=null){
 //            	searchText = new String(search.getBytes("ISO-8859-1"), "UTF-8");
             	searchText = search;
@@ -206,7 +206,7 @@ public class MyOrderController {
     				searchText = "";
     			}
             }
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         int isAPI = 0;
@@ -310,15 +310,17 @@ public class MyOrderController {
         String name=null;//服务名称
         String searchText = null;//输入的查询文本
         try {
-            name=new String(servName.getBytes("ISO-8859-1"), "UTF-8");
+            //name=new String(servName.getBytes("ISO-8859-1"), "UTF-8");
+        	name = servName;
             if(search!=null){
-            	searchText = new String(search.getBytes("ISO-8859-1"), "UTF-8");
+            	//searchText = new String(search.getBytes("ISO-8859-1"), "UTF-8");
+            	searchText = search;
     			if(searchText.equals("输入资产名称或者资产地址进行搜索")){
     				searchText = "";
     			}
             }
             
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         int isAPI = 0;

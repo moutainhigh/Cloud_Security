@@ -438,8 +438,10 @@ public class OrderMgrController {
         String linkname =request.getParameter("linkname");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
-        String company = new String(request.getParameter("company").getBytes("ISO-8859-1"),"UTF-8");
-        String address = new String(request.getParameter("address").getBytes("ISO-8859-1"),"UTF-8");
+        //String company = new String(request.getParameter("company").getBytes("ISO-8859-1"),"UTF-8");
+        //String address = new String(request.getParameter("address").getBytes("ISO-8859-1"),"UTF-8");
+        String company = request.getParameter("company");
+        String address = request.getParameter("address");
         //华为参数
         String ip = request.getParameter("ip");
         String bandwidth = request.getParameter("bandwidth");
@@ -695,16 +697,18 @@ public class OrderMgrController {
     public String searchCombine(Model model,Integer type,String servName,String state,String begin_datevo,String end_datevo,HttpServletRequest request){
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         //组织条件查询
-        String name=null;
+        String name = servName;
+        /*String name=null;
         try {
             name=new String(servName.getBytes("ISO-8859-1"), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
+        }*/
+
         Map<String,Object> paramMap = new HashMap<String,Object>();
         paramMap.put("userId", globle_user.getId());
         paramMap.put("type", type);
-        paramMap.put("servName", name);
+        paramMap.put("servName", servName);
         paramMap.put("state", state);
         if(StringUtils.isNotEmpty(begin_datevo)){
             paramMap.put("begin_date", DateUtils.stringToDateNYRSFM(begin_datevo));
@@ -773,12 +777,13 @@ public class OrderMgrController {
         String end_datevo = request.getParameter("end_date");
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         //组织条件查询
-        String name=null;
-        try {
+        String name = servName;
+       //String name=null;
+       /*         try {
             name=new String(servName.getBytes("ISO-8859-1"), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
+        }*/
         Map<String,Object> paramMap = new HashMap<String,Object>();
         paramMap.put("userId", globle_user.getId());
         paramMap.put("type", type);

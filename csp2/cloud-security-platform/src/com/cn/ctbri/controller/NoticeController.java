@@ -48,16 +48,18 @@ public class NoticeController {
      */
     @RequestMapping("/adminNoticeAdd.html")
     public String noticeAdd(Notice notice){
-        String noticeName = "";
-        String noticeDesc = "";
-        try {//中文乱码
+        String noticeName = notice.getNoticeName();
+        String noticeDesc = notice.getNoticeDesc();
+/*        try {//中文乱码
             noticeName = new String(notice.getNoticeName().getBytes("ISO-8859-1"), "UTF-8");
             noticeDesc = new String(notice.getNoticeDesc().getBytes("ISO-8859-1"), "UTF-8");
             notice.setNoticeName(noticeName);
             notice.setNoticeDesc(noticeDesc);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
+        }*/
+        notice.setNoticeName(noticeName);
+        notice.setNoticeDesc(noticeDesc);
         notice.setCreateDate(new Date());//创建时间
         noticeService.insert(notice);
         return "redirect:/adminNoticeManageUI.html";
@@ -68,16 +70,18 @@ public class NoticeController {
      */
     @RequestMapping("/adminNoticeEdit.html")
     public String edit(Notice notice){
-        String noticeName = "";
-        String noticeDesc = "";
-        try {//中文乱码
+        String noticeName = notice.getNoticeName();
+        String noticeDesc = notice.getNoticeDesc();
+/*        try {//中文乱码
             noticeName = new String(notice.getNoticeName().getBytes("ISO-8859-1"), "UTF-8");
             noticeDesc = new String(notice.getNoticeDesc().getBytes("ISO-8859-1"), "UTF-8");
             notice.setNoticeName(noticeName);
             notice.setNoticeDesc(noticeDesc);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }
+        }*/
+        notice.setNoticeName(noticeName);
+        notice.setNoticeDesc(noticeDesc);
         noticeService.update(notice);
         return "redirect:/adminNoticeManageUI.html";
     }
