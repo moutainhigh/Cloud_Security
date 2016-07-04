@@ -492,6 +492,23 @@
 	</div>
 </form>	
 </div>
+<!---执行效果-->
+<div class="weixinshow popBoxhide" id="weixin">
+	<i class="close chide"></i>
+    <div class="Pophead">
+    	<h1 class="heaf">安全帮微信二维码</h1>
+    </div>
+	<div class="popBox">
+    	 <p>打开微信，点击右上角的“+”，选择“扫一扫”功能，<br>
+对准下方二维码即可。
+		</p>
+           <div class="weinImg" style="text-align:center;">
+           	<img src="${ctx}/source/images/portal/weixin.jpg" alt="">
+           </div> 
+    </div>
+
+</div>
+	
 <div class="shade"></div>
 <script>
 	$(function(){
