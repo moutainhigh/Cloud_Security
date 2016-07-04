@@ -388,6 +388,18 @@ d.mouseover(function(){
                		$('#saveAsset')[0].reset();		
                     $('#senone').hide(1);
                     $('#sentwo').show(1);
+                    //添加网站页面的数据清空 start
+                    $('#assetName').val('');
+					$('#InertAddr').val('');
+					$('#districtId').val(-1);
+					//清空城市下拉框
+					$("#city").empty();
+					$("#city").append( '<option value="-1">请选择城市</option>');
+					$("#city").attr('disabled','disabled');
+					$('#purpose').val(-1);
+					$(".addMsg").html("");
+					//添加网站页面的数据清空 end
+                    
                 });
                 $('#back').click(function() {
                     $('#sentwo').hide(1);

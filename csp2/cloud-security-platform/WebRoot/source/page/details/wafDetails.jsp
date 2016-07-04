@@ -449,12 +449,23 @@ $(document).ready(function(){
         //弹框切换动作
 		$('.ass').click(function(){
 			$('#saveWafAsset')[0].reset();	
-			$('#senone').hide(1);
-			$('#sentwo').show(1);	
+			$('#senone').hide();
+			$('#sentwo').show();
+			//添加网站页面的数据清空 start
+			$('#assetName').val('');
+			$('#InertAddr').val('');
+			$('#districtId').val(-1);
+			//清空城市下拉框
+			$("#city").empty();
+			$("#city").append( '<option value="-1">请选择城市</option>');
+			$("#city").attr('disabled','disabled');
+			$('#purpose').val(-1);
+			$(".addMsg").html("");
+			//添加网站页面的数据清空 end
 		})
 		$('#back').click(function(){
-			$('#sentwo').hide(1);
-			$('#senone').show(1);	
+			$('#sentwo').hide();
+			$('#senone').show();	
 		})
 		//添加输入框的动作
 		
@@ -612,6 +623,18 @@ $(document).ready(function(){
 				}, 500);
 				//隐藏遮罩层
 				$('.shade').hide();
+				
+				//添加网站页面的数据清空 start
+				$('#assetName').val('');
+				$('#InertAddr').val('');
+				$('#districtId').val(-1);
+				//清空城市下拉框
+				$("#city").empty();
+				$("#city").append( '<option value="-1">请选择城市</option>');
+				$("#city").attr('disabled','disabled');
+				$('#purpose').val(-1);
+				$(".addMsg").html("");
+				//添加网站页面的数据清空 end
 		})
 		//页面删除按钮
 		$('#dele').click(function(){
