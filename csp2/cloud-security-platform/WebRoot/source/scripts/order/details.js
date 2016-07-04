@@ -99,7 +99,7 @@ $(function(){
 			var index=0;
 			for(var i=0;i<arrLink.length;i++){
 				index++;
-				 list+="<li id="+ index +" assetId='"+arrId[i]+"'>"+ arrLink[i] +"<i></i></li>";  
+				 list+="<li id="+ index +" assetId='"+arrId[i]+"'>"+ arrLink[i] +"<i onclick='delAssetFun()'></i></li>";  
 			}
 			
 			$('.httpBox').append(list);
@@ -777,4 +777,35 @@ function tasknum_verification(){
 				
             
          }
+    }
+    
+    //去掉资产时
+    function delAssetFun(){
+        //选择
+        for(var i=0;i<$('.cek').length;i++){
+//            $('.cek').attr('check','false');
+            $('.cek').eq(i).click(function(){
+                if($(this).attr('class').indexOf('this')!=-1){
+    				//$(this).parents('li').removeClass('ac');
+                    $(this).removeClass('this');
+    				var legth = $('.allBox .this').length;
+    				//alert(legth)
+    				$('#number').text(legth);
+                }
+                else{
+    				 $(this).addClass('this');
+    				 //$(this).parents('li').addClass('ac');
+    				var legth = $('.allBox .this').length;
+    				if(legth==6){
+    					$(this).removeClass('this');
+    					alert("不能超过5个")
+    					$('#number').text('5');
+    				}else{
+    					$('#number').text(legth)	
+    				}
+    				
+                   
+                }
+            })
+        }    	
     }
