@@ -488,26 +488,26 @@ function saveWafAsset() {
      var strRegex = /^((([hH][tT][tT][pP][sS]?)\:\/\/)?([\w\.\-]+(\:[\w\.\&%\$\-]+)*@)?((([^\s\(\)\<\>\\\"\.\[\]\,@;:]+)(\.[^\s\(\)\<\>\\\"\.\[\]\,@;:]+)*(\.[a-zA-Z]{2,4}))|((([01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}([01]?\d{1,2}|2[0-4]\d|25[0-5])))(\b\:(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0)\b)?((\/[^\/][\w\.\,\?\'\\\/\+&%\$#\=~_\-@]*)*[^\.\,\?\"\'\(\)\[\]!;<>{}\s\x7F-\xFF])?)$/;
 	//获取选中的radio的值
     if(assetName == null || assetName == ""){
-		$("#assetName_msg").html("请输入网站名称");
+		$("#assetName_msg").html("请输入网站名称!");
 	}else if(patrn.test(assetName)){
 		$("#assetName_msg").html("您输入的网站名称含有非法字符");
 	}else if(patrn.test(assetAddr)){
 		$("#assetAddr_msg").html("您输入的网站地址含有非法字符");
 	}else if(assetAddr==null || assetAddr == ""){
 			$("#assetName_msg").html("");
-			$("#assetAddr_msg").html("请输入网站地址");
+			$("#assetAddr_msg").html("请输入网站地址!");
 	}else if(!strRegex.test(assetAddr)){
 		   $("#assetName_msg").html("");
 		   $("#assetAddr_msg").html("请输入正确的网站地址!");
 	}else if(prov == -1){
 		$("#assetName_msg").html("");
 		$("#assetAddr_msg").html("");
-		$("#location_msg").html("请选择网站所在物理地址！");
+		$("#location_msg").html("请选择网站所在物理地址!");
 	}else if(purpose==-1){
 		$("#assetName_msg").html("");
 		$("#assetAddr_msg").html("");
 		$("#location_msg").html("");
-		$("#assetUsage_msg").html("请选择网站用途！");
+		$("#assetUsage_msg").html("请选择网站用途!");
 	}else{
 		$("#assetName_msg").html("");
 		$("#assetAddr_msg").html("");
