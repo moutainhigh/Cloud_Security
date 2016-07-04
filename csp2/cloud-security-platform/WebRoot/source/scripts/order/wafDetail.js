@@ -82,12 +82,17 @@ $(function(){
       var price = $('#price').html().substr(1);
       //网站域名
       var domainName =$('.ym span').text();
+     
       if(beginDate==""||beginDate==null){
         		alert("开始时间不能为空");
         		return;
 			}
       //选中的网站地址	
-      
+      if(domainName==""||domainName==null){
+    	  alert("请选择要服务的网站!");
+    	  return;
+      }
+    	
       	var ip="";		
 		$('.fack li').each(function(index, element) {
 			var tval= $(this).contents().filter(function() { return this.nodeType == 3; }).text(); 
