@@ -71,4 +71,8 @@ public interface OrderAssetDao {
 
 	void update(OrderAsset oa);
 
+	List<OrderAsset> findRunAssetById(int id);
+
+	OrderAsset findOrderAssetById(int orderAssetId);
+
 }
