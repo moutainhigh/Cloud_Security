@@ -280,7 +280,7 @@
                  </c:forEach>
             </ul>
            <div class="hide" style="position: relative;">
-           	 <p style="margin: 20px 20px 0px 0">填写域名对应的IP:端口号（例：192.168.1.1:8080），不填写端口号使用默认端口号(http:默认端口号80；https默认端口号443)，对应多个ip时请逐个添加
+           	 <p style="margin: 20px 20px 0px 40px">填写域名对应的IP:端口号（例：192.168.1.1:8080），不填写端口号使用默认端口号(http:默认端口号80；https默认端口号443)，对应多个ip时请逐个添加
 </p>
                <div class="add_ip clearfix">
                     <ol id="wafBox" class="waf-addBox fl">
