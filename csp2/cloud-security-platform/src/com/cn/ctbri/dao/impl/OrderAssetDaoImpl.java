@@ -106,5 +106,13 @@ public class OrderAssetDaoImpl extends DaoCommon implements OrderAssetDao{
 	public void update(OrderAsset oa) {
 		this.getSqlSession().update(ns + "update", oa);
 	}
+	public List<OrderAsset> findRunAssetById(int id) {
+		List list = this.getSqlSession().selectList(ns+"findRunAssetById",id);
+		return list;
+	}
+	public OrderAsset findOrderAssetById(int orderAssetId) {
+		OrderAsset oa = this.getSqlSession().selectOne(ns+"findOrderAssetById",orderAssetId);
+		return oa;
+	}
 		
 }
