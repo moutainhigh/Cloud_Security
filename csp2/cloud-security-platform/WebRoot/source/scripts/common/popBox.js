@@ -10,32 +10,47 @@ $(function(){
 	
 	//修改资产
 	$('.zc_edit').delegate(this,'click',function(){
-		$(".editMsg").html("");
-		$("#hiddenEditName").val($(this).attr("name"));
-		$("#hiddenEditAddr").val($(this).attr("addr"));
-		$("#editAssetName").val($(this).attr("name"));
-		$("#editAssetAddr").val($(this).attr("addr"));
-		$("#editDistrictId").val($(this).attr("districtId"));
-		
+		var id = $(this).attr("id");
+		var name = $(this).attr("name");
+		var addr = $(this).attr("addr");
+		var districtId = $(this).attr("districtId");
 		var type = $(this).attr("assetType");
-		if (type==0) {
-			$("input[name='editAssetType'][value='http']").attr("checked",true); 
-		}else if(type==1){
-			$("input[name='editAssetType'][value='https']").attr("checked",true);
-		}
-		
-		getEditCitys($(this).attr("districtId"));
 		var temp = $(this).attr("city");
+		var purpose = $(this).attr("purpose");
+		$.post("checkedit.html", {"id" : id}, function(data, textStatus) {
+			if (data.count>0){
+				alert("您正在执行的订单中包含此资产，暂时不能修改！");
+				return false;
+			}else{
+				$(".editMsg").html("");
+				$("#hiddenEditName").val(name);
+				$("#hiddenEditAddr").val(addr);
+				$("#editAssetName").val(name);
+				$("#editAssetAddr").val(addr);
+				$("#editDistrictId").val(districtId);
+				
+				if (type==0) {
+					$("input[name='editAssetType'][value='http']").attr("checked",true); 
+				}else if(type==1){
+					$("input[name='editAssetType'][value='https']").attr("checked",true);
+				}
+				
+				getEditCitys(districtId);
+				
 
-		$("#editPurpose").val($(this).attr("purpose"));
-		$("#editAssetid").val($(this).attr("id"));
-		setTimeout(function(){
-			$("#editCity").val(temp);
-		},100);
+				$("#editPurpose").val(purpose);
+				$("#editAssetid").val(id);
+				setTimeout(function(){
+					$("#editCity").val(temp);
+				},100);
 
-		$('.shade').show();
-		$('#updateAssest').show();
-		$('html').css({overflow:"hidden"});
+				$('.shade').show();
+				$('#updateAssest').show();
+				$('html').css({overflow:"hidden"});
+			}
+		})
+		
+
 	})
 	
 	
