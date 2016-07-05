@@ -168,7 +168,7 @@ function showUnreadNews()
                             <li class="fl">
                                     <p class="fl"><img src="${ctx}/source/images/portal/fanghu.png" alt=""></p>
                                     <div class="servicelistR fl">
-                                    	<h4>网站防护</h4>
+                                    	<h4>云WAF网站安全防护服务</h4>
                                         <span>
                                             	全天候网站保镖，<br>一站式管家服务
                                         </span>
@@ -179,9 +179,9 @@ function showUnreadNews()
                                             <a href="${ctx}/wafDetails.html?serviceId=6&indexPage=1" class="btn" style="width:80px;">购买</a>
                                         </div>
                                     </div>
-                               <!-- <div class="mask">
+                               <div class="mask">
                                 	<h6>即将上线</h6>
-                                </div> -->
+                                </div>
                                 
                                
                             </li>
