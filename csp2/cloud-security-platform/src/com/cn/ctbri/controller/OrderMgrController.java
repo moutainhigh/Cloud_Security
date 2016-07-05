@@ -556,6 +556,7 @@ public class OrderMgrController {
             }else{
                 //新增服务资产
                 for(int i=0;i<assetIdArrayAble.length;i++){
+                	Asset asset = assetService.findById(Integer.parseInt(assetIdArrayAble[i]));
                     OrderAsset orderAsset = new OrderAsset();
                     orderAsset.setOrderId(orderId);
                     orderAsset.setAssetId(Integer.parseInt(assetIdArrayAble[i]));
@@ -568,6 +569,8 @@ public class OrderMgrController {
                         scan_date=sdf.parse(scanDate);
                         orderAsset.setScan_date(scan_date);
                     }
+                    orderAsset.setAssetAddr(asset.getAddr());
+                    orderAsset.setAssetName(asset.getName());
                     orderAssetService.insertOrderAsset(orderAsset);
                 }
             }

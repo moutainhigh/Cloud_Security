@@ -65,6 +65,7 @@ import com.cn.ctbri.constant.WarnType;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.service.IAlarmDDOSService;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
@@ -1001,9 +1002,12 @@ public class ExportController {
         //获取对应资产
         List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
         int orderAssetId = Integer.parseInt(paramMap.get("orderAssetId").toString());
-        Asset asset = assetService.findByOrderAssetId(orderAssetId);
-        String webSite = asset.getAddr();
-        webName = asset.getName();
+//        Asset asset = assetService.findByOrderAssetId(orderAssetId);
+//        String webSite = asset.getAddr();
+//        webName = asset.getName();
+        OrderAsset oa = orderAssetService.findOrderAssetById(orderAssetId);
+        String webSite = oa.getAssetAddr();
+        webName = oa.getAssetName();
         
         SimpleDateFormat odf = new SimpleDateFormat("yyyy/MM/dd");//设置日期格式
         String createDate = odf.format(new Date());

@@ -437,6 +437,8 @@ public class WafController {
             orderAsset.setServiceId(Integer.parseInt(serviceId));
             orderAsset.setIpArray(ipStr);
             orderAsset.setSermonth(Integer.parseInt(month));
+            orderAsset.setAssetAddr(assetInfo.getAddr());
+            orderAsset.setAssetName(assetInfo.getName());
            orderAssetService.insertOrderAsset(orderAsset);
            
            
@@ -654,6 +656,8 @@ public class WafController {
 			    }
 			}
 			orderAsset.setIpArray(ipArray);
+			orderAsset.setAssetAddr(_asset.getAddr());
+            orderAsset.setAssetName(_asset.getName());
 			orderAssetService.insertOrderAsset(orderAsset);
 			
 			  //插入数据到order_list

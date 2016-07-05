@@ -232,6 +232,33 @@ public class MyAssetsController {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * 功能描述：检查资产是否可以被修改
+	 * 参数描述：Asset asset ,HttpServletResponse response
+	 *		 @time 2016-7-1
+	 */
+	@RequestMapping("/checkedit.html")
+	@ResponseBody
+	public void checkedit(Asset asset,HttpServletResponse response){
+		//检查订单资产表里面是否含有此资产
+		List<OrderAsset> list = orderAssetService.findRunAssetById(asset.getId());
+		int count = 0;
+		if(list.size()>0){
+			count = list.size();
+		}
+		Map<String, Object> m = new HashMap<String, Object>();
+		m.put("count", count);
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * 功能描述：修改资产
 	 * 参数描述： Model model

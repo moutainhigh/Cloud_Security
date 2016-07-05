@@ -7,6 +7,7 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,7 +142,8 @@ public class MyOrderController {
 					
 					
 					//获取对应资产 add by tangxr 2016-4-25
-			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
+//			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
+			        List<Asset> assetList = orderAssetService.findAssetsByOrderId(orderId);
 			        map.put("assetList", assetList);
 	        	}
 	        	mapOrder.put("order", ol);
@@ -168,9 +170,10 @@ public class MyOrderController {
     		}
     	}*/
         
-        //获取当前时间
-        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String temp = setDateFormat.format(Calendar.getInstance().getTime());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+        Date currentTime = new Date();//得到当前系统时间 
+        String temp = formatter.format(currentTime); //将日期时间格式化
+        
         ModelAndView mv = new ModelAndView("/source/page/personalCenter/orderList");
         mv.addObject("orderList", orderList);
         mv.addObject("state", state);
@@ -276,7 +279,8 @@ public class MyOrderController {
 					}
 					map.put("alarmViewedFlag", alarmViewedFlag);
 					//获取对应资产 add by tangxr 2016-4-25
-			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
+//			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
+			        List<Asset> assetList = orderAssetService.findAssetsByOrderId(orderId);
 			        map.put("assetList", assetList);
 	        	}
 	        	mapOrder.put("order", ol);
@@ -379,7 +383,8 @@ public class MyOrderController {
 					}
 					map.put("alarmViewedFlag", alarmViewedFlag);
 					//获取对应资产 add by tangxr 2016-4-25
-			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
+//			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
+			        List<Asset> assetList = orderAssetService.findAssetsByOrderId(orderId);
 			        map.put("assetList", assetList);
 	        	}
 	        	mapOrder.put("order", ol);

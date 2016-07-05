@@ -281,6 +281,7 @@ public class shoppingController {
 
         for(int i=0;i<assetArray.length;i++){
         	//插入订单资产表
+        	Asset asset = assetService.findById(Integer.parseInt(assetArray[i]));
             OrderAsset orderAsset = new OrderAsset();
             orderAsset.setOrderId(orderId);
             orderAsset.setAssetId(Integer.parseInt(assetArray[i]));
@@ -288,7 +289,8 @@ public class shoppingController {
             if(scanPeriod!=null && !scanPeriod.equals("")){
                 orderAsset.setScan_type(Integer.parseInt(scanPeriod));
             }
-           
+            orderAsset.setAssetAddr(asset.getAddr());
+            orderAsset.setAssetName(asset.getName());
             orderAssetService.insertOrderAsset(orderAsset);
         }
         
