@@ -68,7 +68,7 @@ public class Scheduler4Result {
 		List<Order> orderList = orderService.findOrderByMap(map);
 		for (Order order : orderList) {
 			//订单服务类型
-			String serviceId = String.valueOf(order.getServiceId());
+			int serviceId = order.getServiceId();
 			//订单扫描类型
 			String scanMode = String.valueOf(order.getType());
 			String begin_date = DateUtils.dateToString(order.getBegin_date());
@@ -95,7 +95,7 @@ public class Scheduler4Result {
 						List<Task> tlist = taskService.findAllByOrderId(paramMap);
 						//add by tangxr 2016-2-25
 						List<Task> finistlist = taskService.findFinishByOrderId(paramMap);
-						if(tlist.size() == finistlist.size()&&(s==1||s==2)){
+						if(tlist.size() == finistlist.size()&&(s==1||s==2)&&serviceId!=5){
 							int count = taskService.findissueCount(order.getId());
 							if(count>0){
 								order.setStatus(2);
@@ -105,9 +105,14 @@ public class Scheduler4Result {
 								orderService.update(order);
 							}
 						//end 2016-2-25
+						
+						}else if((s==1||s==2)&&serviceId==5){
+							order.setStatus(s);
+							orderService.update(order);
+						//end 2016-7-5
 						}else{
 							for (Task task : tlist) {
-								if(task.getStatus()==3 && task.getIsAlarm()!=1){//任务结束
+								if(task.getStatus()==3 && task.getIsAlarm()!=1 && serviceId!=5){//任务结束
 									String result = NorthAPIWorker.vulnScanGetResult(order.getId(),String.valueOf(task.getTaskId()));
 									JSONObject jsonObj = new JSONObject().fromObject(result);
 									JSONArray alarmArray = jsonObj.getJSONArray("alarmObj");
