@@ -19,6 +19,8 @@ public class OrderAsset {
 	private String ipArray;//网站域名对应的IP地址
 	private int Sermonth;//服务期限
 	private String targetKey;//waf
+	private String assetAddr;//资产addr
+	private String assetName;//资产name
 	public int getId() {
 		return id;
 	}
@@ -79,6 +81,17 @@ public class OrderAsset {
 	public void setTargetKey(String targetKey) {
 		this.targetKey = targetKey;
 	}
-	
+	public String getAssetAddr() {
+		return assetAddr;
+	}
+	public void setAssetAddr(String assetAddr) {
+		this.assetAddr = assetAddr;
+	}
+	public String getAssetName() {
+		return assetName;
+	}
+	public void setAssetName(String assetName) {
+		this.assetName = assetName;
+	}
     
 }

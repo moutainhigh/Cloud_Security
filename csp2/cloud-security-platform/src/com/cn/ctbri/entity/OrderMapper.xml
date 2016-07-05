@@ -318,10 +318,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 根据条件查询订单信息 -->
     <select id="findOrderByMap" resultMap="OrderRM" parameterType="hashmap">
-        select * from cs_order o
-		where o.delFlag !=1
+		select * from cs_order o
+		where o.status not in (1,2) 
+		and o.delFlag !=1
 		and	o.payFlag = 1
-		<if test="isAPI==0">
+		and o.isAPI = 0
+		and o.create_date &gt;='2016-06-24 00:00:00'
+		 <!--<if test="isAPI==0">
 		   and o.status not in (1,2) 
            and o.isAPI = 0
 		   and o.create_date &gt;='2016-04-17 00:00:00'
@@ -331,7 +334,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
            and o.serviceId = 6
            and o.isAPI = 2
            and o.begin_date  between CURDATE() and date_add(CURDATE(),interval 1 day) 
-        </if>
+        </if> -->
         
 		
     </select>

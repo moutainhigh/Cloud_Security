@@ -16,16 +16,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findAssetById" parameterType="int" resultMap="OrderAssetRM">
 		select asset.id,asset.orderId,asset.assetId,asset.serviceId
 		from cs_order_asset asset,cs_order order1
-		where asset.assetId = #{assetId} and asset.orderId=order1.id 
+		where asset.assetId = #{assetId} 
+		and asset.orderId=order1.id 
 		<![CDATA[ and order1.delFlag<>1 ]]>  
+	    and order1.isAPI != 1
+	    and order1.status not in (1,2)
 		
+	</select>
+	
+	<!-- 按资产id查询运运行中资产 -->
+	<select id="findRunAssetById" parameterType="int" resultMap="OrderAssetRM">
+		  select asset.id,asset.orderId,asset.assetId,asset.serviceId
+				from cs_order_asset asset,cs_order order1
+				where asset.assetId = #{assetId} and asset.orderId=order1.id 
+				<![CDATA[ and order1.delFlag<>1 ]]>  
+			    and order1.payFlag = 1
+			    and order1.isAPI != 1
+			    and order1.status not in (1,2)
 	</select>
 	
 	<!-- 插入服务资产 -->
     <insert id="insert" parameterType="com.cn.ctbri.entity.OrderAsset">
         insert into cs_order_asset
-        (orderId, assetId, serviceId, scan_type, scan_date,ipArray,Sermonth) 
-        values(#{orderId}, #{assetId}, #{serviceId}, #{scan_type}, #{scan_date}, #{ipArray}, #{Sermonth})
+        (orderId, assetId, serviceId, scan_type, scan_date,ipArray,Sermonth,assetAddr,assetName) 
+        values(#{orderId}, #{assetId}, #{serviceId}, #{scan_type}, #{scan_date}, #{ipArray}, #{Sermonth}, #{assetAddr}, #{assetName})
     </insert>
     
     <!-- 插入ip段 -->
@@ -41,7 +55,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 根据orderid查询Asset名称 -->
     <select id="findAssetNameByOrderId" parameterType="String" resultType="com.cn.ctbri.entity.Asset">
-        select a.name,a.addr,oa.id as orderAssetId from cs_order_asset oa,cs_asset a where oa.orderId=#{orderId} and oa.assetid = a.id
+        <!-- select a.name,a.addr,oa.id as orderAssetId from cs_order_asset oa,cs_asset a where oa.orderId=#{orderId} and oa.assetid = a.id -->
+        select oa.assetName as name,oa.assetAddr as addr,oa.id as orderAssetId from cs_order_asset oa where oa.orderId=#{orderId}
     </select>
     <select id="findLastTimeByOrderId" parameterType="hashmap" resultType="hashmap">
         select t.group_flag from cs_order_asset oa,cs_task t 
@@ -85,7 +100,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- add by tangxr 2016-5-5 -->
     <!-- 根据orderid查询Asset -->
     <select id="findAssetsByOrderId" parameterType="String" resultType="hashmap" >
-        select a.name,a.addr,oa.id as orderAssetId, oa.ipArray from cs_order_asset oa,cs_asset a where oa.orderId=#{orderId} and oa.assetid = a.id
+        <!-- select a.name,a.addr,oa.id as orderAssetId, oa.ipArray from cs_order_asset oa,cs_asset a where oa.orderId=#{orderId} and oa.assetid = a.id -->
+    	select oa.assetName as name,oa.assetAddr as addr,oa.id as orderAssetId, oa.ipArray from cs_order_asset oa where oa.orderId=#{orderId}
     </select>
     
     <!-- 修改订单 -->
@@ -101,5 +117,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</set>
 		where id=#{id}
 	</update>
+	
+	<!-- 按id查询orderAsset -->
+	<select id="findOrderAssetById" parameterType="int" resultMap="OrderAssetRM">
+		  select *
+				from cs_order_asset 
+				where id = #{orderAssetId}
+	</select>
 	
 </mapper>
