@@ -324,17 +324,17 @@ function seedetail1(e) {
 								            <span class="prourl" id="url">当前URL:${asset.currentUrl }</span>
 								            </span>
 								          </p>
-								          <c:if test="${asset.currentUrl  eq '暂无' || asset.currentUrl  eq '[]'}">
+								          <c:if test="${empty asset.task.urlCount && empty asset.send && empty asset.receive}">
 									          <p>
 									          	<br />
 									            <span class="prourl">
 									            	(网站访问被拒绝,可能有以下原因：</span>
 									            <span class="prourl" style="margin-left:-60px">
-													1该网址不存在；</span>
+													1：该网址不存在；</span>
 												<span class="prourl" style="margin-left:31px">
-													2网站安装了防护类的产品导致扫描断断续续；</span>
-												<span class="prourl" style="margin-left:58px">
-													3由于持续扫描，引擎所在机器的IP可能被列入黑名单。</span>
+													2：网站安装了防护类的产品导致扫描断断续续；</span>
+												<span class="prourl" style="margin-left:65px">
+													3：由于持续扫描等原因，安全帮扫描IP可能被列入黑名单。</span>
 												<span class="prourl" style="margin-left:15px">
 													注：请联系在线客服咨询相关问题)
 									            </span>
