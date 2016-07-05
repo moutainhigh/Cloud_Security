@@ -32,8 +32,8 @@
 			<div class="head">
 				<div class="headBox">
 					<div class="safeL fl" style="width:260px; margin-right:13%">
-						<img src="${ctx}/source/images/anquanbang_white_logo.png" alt="" style="position:relative; top:4px;"/>
-                        <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px; font-weight:normal;">个人中心</strong>
+						<a href="${ctx}/index.html"><img src="${ctx}/source/images/anquanbang_white_logo.png" alt="" style="position:relative; top:4px;"/></a>
+                        <strong style="font-size:20px; color:#fff; padding-left:10px;position:relative; top:-10px; font-weight:normal;">个人中心</strong>
 					</div>
 					<div class="safem fl">
 						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
