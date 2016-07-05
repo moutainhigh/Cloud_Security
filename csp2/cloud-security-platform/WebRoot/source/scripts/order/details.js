@@ -429,7 +429,7 @@ $(function(){
 			}
         });
         $(this) .parent('li').remove();
-		$('#number').text($('.allBox .this').length);
+		$('#number').text($('.httpBox li').length);
 		var tleng= $('.httpBox li').length;
 		if(tleng==0){
 			$('.gt').show();		
