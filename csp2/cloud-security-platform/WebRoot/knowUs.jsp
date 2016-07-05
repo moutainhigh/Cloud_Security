@@ -41,7 +41,8 @@
 </style>
 <script>
 $(function(){
-	$('.understand p').css('text-align','left');	
+	$('.understand p').css('text-align','left');
+	$('.understand p').css('width','640px');		
 })
 
 </script>
@@ -93,99 +94,50 @@ $(function(){
 		<div class="understand" style="width:740px; margin:0 auto">
         	<div class="rich_media_inner">
             <div id="page-content">
-                <div id="img-content" class="rich_media_area_primary">
-                    <!-- <h2 class="rich_media_title" id="activity-name">
-                        	安全帮，帮一下就好了！ 
-                    </h2>
-                    <div class="rich_media_meta_list">
-					   <em id="post-date" class="rich_media_meta rich_media_meta_text">2016-04-12</em>
-
-                       <em class="rich_media_meta rich_media_meta_text">安全帮团队</em>
-                       <a class="rich_media_meta rich_media_meta_link rich_media_meta_nickname" href="javascript:void(0);" id="post-user">安全帮</a>
-                       <span class="rich_media_meta rich_media_meta_text rich_media_meta_nickname">安全帮</span> -->
-
-                        <div id="js_profile_qrcode" class="profile_container" style="display:none;">
-                            <div class="profile_inner">
-                                <strong class="profile_nickname">安全帮</strong>
-                                <img class="profile_avatar" id="js_profile_qrcode_img" src="" alt="">
-
-                                <p class="profile_meta">
-                                <label class="profile_meta_label">微信号</label>
-                                <span class="profile_meta_value">anquanbang_123456</span>
-                                </p>
-
-                                <p class="profile_meta">
-                                <label class="profile_meta_label">功能介绍</label>
-                                <span class="profile_meta_value">安全帮，全自助式安全服务在线商城，是中国电信基于专业安全能力自主研发的云安全服务平台，旨在解决企业面临的安全厂商多、安全产品繁、安全投资大、安全人才缺等四大问题，为用户提供一站式安全服务。</span>
-                                </p>
-                                
-                            </div>
-                            <span class="profile_arrow_wrp" id="js_profile_arrow_wrp">
-                                <i class="profile_arrow arrow_out"></i>
-                                <i class="profile_arrow arrow_in"></i>
-                            </span>
-                        </div>
-                    </div>
-                    
-                    
-                    
-                    
-                                                            
-                                        <div class="rich_media_thumb_wrp" id="media">
-                        
-                                               <img class="rich_media_thumb" id="js_cover" onerror="this.parentNode.removeChild(this)" data-backsrc="http://mmbiz.qpic.cn/mmbiz/fPY475147RiaQaS0G2DOHr7kZN9FBcfqa3ia3Nnx8ib38rRELAsic6CserTCqkzoS2QGfhPXxwSR5SJ8a8OmqlHmIA/0?wx_fmt=jpeg" data-s="300,640" src="${ctx}/source/images/knowUs/1.jpg" alt="">
-                                            </div>
-                                        
+                
+                                                        
                     
                     <div class="rich_media_content " id="js_content">
                         
-                        <p>安全帮，</p><p>www.anquanbang.net</p><p>是一个全自助式安全服务云商城，</p><p>诞生于中国电信北京研究院安全技术与应用产品线。<img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/2.jpg" style="width: auto !important; visibility: visible !important; height: auto !important;"><br></p><p>在安全帮，</p><p>你可以像在线购买普通商品那样，</p><p>购买和使用及时生效的安全服务。</p><p>这样，</p><p>你不用再购买昂贵的安全设备，</p><p>不用再部署高大上的安全设备，</p><p>不用再熬夜看使用手册，</p><p>你要做的，就是：</p><p>轻点鼠标，立享服务，</p><p>晴空万里，一切都好！</p><p style="text-align: center;"><img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/7.jpg" style="width: auto !important; visibility: visible !important; height: auto !important;"><br></p><p style="text-align: center;"><img data-s="300,640" src="${ctx}/source/images/knowUs/3.png" style="width: auto !important; visibility: visible !important; height: auto !important;"><br></p><p>这是一个美好的理想，</p><p>也是我们的梦想。</p><p>梦想是远大的，如何实现呢？</p><p>我们决定先上线“网站安全帮”：</p><p>为370万个网站提供7*24小时的安全监测及预警服务。</p><p>我们的梦想，</p><p>为了让那些苦逼的网管不再那么疲倦，</p><p>让他们可以睡一次安稳觉。</p><p style="text-align: center;"><img data-s="300,640"  src="${ctx}/source/images/knowUs/6.jpg" style="width: auto !important; visibility: visible !important; height: auto !important;"><br></p><p>也许，我们的梦想就是：</p><p>我们希望可以让网管不再那么苦逼，</p><p>我们希望可以让企业不再那么花钱，</p><p>我们希望可以让安全不再那么遥远…….</p><p style="text-align: center;"><img data-s="300,640"  src="${ctx}/source/images/knowUs/5.jpg" style="width: auto !important; visibility: visible !important; height: auto !important;"><br></p><p>我们刚开始，</p><p>做的还很不好，</p><p>我们在路上，</p><p>为了梦想努力的向前走，</p><p>我们相信：我们会做得更好，</p><p>因为我们的梦想，</p><p>因为我们的坚持，</p><p>因为我们的专业。</p><p style="text-align: left;"><img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/4.png" style="width: auto !important; visibility: visible !important; height: auto !important;"><br><span style="color: rgb(61, 170, 214);"><strong>关于安全帮</strong></span></p><section class="pEditor" data-id="1660"><section style="padding-right: 5px; padding-left: 5px; line-height: 10px; color: inherit; border: 1px solid rgb(30, 154, 225);margin-bottom:10px;"><section style="color: inherit; height: 8px; margin-top: -8px; margin-left: 140px; width: 50%; background-color: rgb(254, 254, 254);">
-                        <section style="width: 8px; height: 8px; border-radius: 100%; line-height: 0; box-sizing: border-box; font-size: 18px; text-decoration: inherit; border-color: rgb(135, 190, 222); display: inline-block; color: rgb(255, 255, 238); background-color: rgb(30, 154, 225);"></section>
-                        </section>
-                        <section class="pBrush" style="line-height: 2em; color: rgb(62, 62, 62); font-size: 14px; margin: 15px;">
-                        <p>www.anquanbang.net</p><p>安全帮，全自助式安全服务云商城。</p><p>
-                        <span style="line-height: 2em;">
-                        是中国电信基于专业安全能力打造的云安全服务平台，是安全服务与产品集结的一个云平台。用户通过在线自助注册购买，即可享受及时、在线、智能、便捷的安全服务。
-                        </span><br></p><p>旨在解决企业面临的安全厂商多、安全产品繁、安全投资大、安全人才缺等四大问题，省时省力省钱。</p><p>
-                        <span style="line-height: 2em;"><br></span></p><p>
-                        <span style="line-height: 2em;">“安全帮”v1.0之“网站安全帮”已上线公测，首推5大网站安全监测及预警服务：WEB漏洞扫描、网页挂马监测、网页篡改监测、敏感内容监测、可用性监测。安全帮进行7*24小时监测，一旦发现问题，及时短信和邮件通知用户。</span><br></p><p>网络安全帮、数据库安全帮、系统安全帮、移动安全帮的相关服务会陆续上线提供。</p></section><section style="color: inherit; text-align: right; height: 10px; margin-bottom: -4px; margin-left: 25px; width: 65%; background-color: rgb(254, 254, 254);"><section style="margin-right: auto; margin-bottom: 1px; margin-left: auto; border-radius: 100%; line-height: 1; box-sizing: border-box; text-decoration: inherit; border-color: rgb(135, 190, 222); display: inline-block; height: 8px; width: 8px; color: rgb(255, 255, 238); background-color: rgb(30, 154, 225);"></section></section></section></section>
-                    </div>
-                    
-                    <link rel="stylesheet" type="text/css" href="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/style/page/appmsg/page_mp_article_improve_combo2d1390.css">
-                    
-                    
-                                        
-                                        
-                                        <div class="rich_media_tool" id="js_toobar3">
-                                                                    <div id="js_read_area3" class="media_tool_meta tips_global meta_primary" style="display:none;">阅读 <span id="readNum3"></span></div>
-
-                        <span style="display:none;" class="media_tool_meta meta_primary tips_global meta_praise" id="like3">
-                            <i class="icon_praise_gray"></i><span class="praise_num" id="likeNum3"></span>
-                        </span>
-
-                        <a id="js_report_article3" style="display:none;" class="media_tool_meta tips_global meta_extra" href="javascript:void(0);">投诉</a>
-
-                    </div>
-
-
-
-                                    </div>
-
-                <div class="rich_media_area_primary sougou" id="sg_tj" style="display:none">
-
-                </div>
-
-                <div class="rich_media_area_extra">
-
-                    
-                                        <div class="mpda_bottom_container" id="js_bottom_ad_area">
+                        
+                        <img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/1.jpg" style="width: auto !important; visibility: visible !important; height: auto !important;"><br></p>
+                        <!-- <p>安全帮，</p>
+                        <p>是中国电信基于专业安全能力打造的云安全服务平台，</p>
+                        <p>是SaaS云安全服务电子商城，</p>
+                        <p>为企业用户提供专业的中国电信自有品牌的、</p>
+                        <p>第三方厂商品牌的云化安全服务和安全能力API。</p>
+                        <p>用户通过在线注册购买，</p>
+                        <p>即可享受及时、在线、智能、便捷的安全服务。</p>
+                        <p>安全帮的创立，</p>
+                        <p>旨在解决企业面临的安全厂商多、安全产品繁、安全投资大、安全人才缺等四大问题，</p>
+                        <p>为企业省时省力省钱。</p>-->
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安全帮，是中国电信基于专业安全能力打造的云安全服务平台，是SaaS云安全服务电子商城，为企业用户提供专业的中国电信自有品牌的、第三方厂商品牌的云化安全服务和安全能力API。</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户通过在线注册购买，即可享受及时、在线、智能、便捷的安全服务。安全帮的创立，旨在解决企业面临的安全厂商多、安全产品繁、安全投资大、安全人才缺等四大问题，为企业省时省力省钱。  </p>
+                        <p style="text-align: center;"><img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/2.jpg" style="width: auto !important; visibility: visible !important; height: auto !important;"><br></p>
+                        <!-- <p>在安全帮，你可以像在线购买普通商品那样，</p>
+                        <p>购买和使用及时生效的安全服务。</p>
+                        <p>这样，你不用再购买昂贵的安全设备，</p>
+                        <p>不用再部署高大上的安全设备，不用再熬夜看使用手册，</p>
+                        <p>你要做的，就是：轻点鼠标，立享服务！</p>
+                        <p>安全帮，将通过以下三个阶段，打造专业、快捷、智能的安全服务云商城：</p>
+                        <p>1.	中国电信自有品牌安全服务；</p>
+                        <p>2.	第三方品牌安全服务入驻安全帮；</p>
+                        <p>3.	智能协同SaaS云安全服务。</p>-->
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在安全帮，你可以像在线购买普通商品那样，购买和使用及时生效的安全服务。这样，你不用再购买昂贵的安全设备，不用再部署高大上的安全设备，不用再熬夜看使用手册，你要做的，就是：轻点鼠标，立享服务！ </p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安全帮，将通过以下三个阶段，打造专业、快捷、智能的安全服务云商城：</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.	中国电信自有品牌安全服务；</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.	第三方品牌安全服务入驻安全帮；</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.	智能协同SaaS云安全服务。</p>
+                        <p style="text-align: center;"><img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/3.jpg" style="width: auto !important; visibility: visible !important; height: auto !important;"><br></p>
+                        <br />
+                        <p style="text-align: center;"><img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/4.jpg" style="width: auto !important; visibility: visible !important; height: auto !important;"><br></p>
+                        <br />
+                        <br />
                         
                     </div>
-                                        
-                    <div id="js_iframetest" style="display:none;"></div>
-                                        
-                                    </div>
-               
+                    
+                  </div>
+
             </div>
            
         </div>

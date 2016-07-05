@@ -252,10 +252,11 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                       <ul class="imgist clearfix">
                         <li><img src="${ctx}/source/images/portal/ico14.png" alt=""></li>
                         <li><img src="${ctx}/source/images/portal/ico11.png" alt=""></li>
+                        <li><img src="${ctx}/source/images/portal/ico17.png" alt=""></li>
+                        <li><img src="${ctx}/source/images/portal/ico18.png" alt="" height="150" width="150"></li>
                         <li><img src="${ctx}/source/images/portal/ico12.png" alt=""></li>
                         <li><img src="${ctx}/source/images/portal/ico15.png" alt=""></li>
                         <li><img src="${ctx}/source/images/portal/ico13.png" alt=""></li>
-                        <li><img src="${ctx}/source/images/portal/ico17.png" alt=""></li>
                         <li><img src="${ctx}/source/images/portal/ico16.png" alt=""></li>
                         <!--<li><a href="#"><img src="imges/ico13.png" alt=""></a></li>
                         <li><a href="#"><img src="imges/ico14.png" alt=""></a></li>
