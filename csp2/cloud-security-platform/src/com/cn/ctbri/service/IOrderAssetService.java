@@ -70,5 +70,10 @@ public interface IOrderAssetService {
 
 	void update(OrderAsset oa);
 
+	//查找正在执行任务的orderAsset
+	List<OrderAsset> findRunAssetById(int id);
+
+	OrderAsset findOrderAssetById(int orderAssetId);
+
 	
 }
