@@ -68,6 +68,8 @@ $(function(){
                 }
             }
         }
+        
+        $('#number').text($('.httpBox li').length);
 		
     })
     
