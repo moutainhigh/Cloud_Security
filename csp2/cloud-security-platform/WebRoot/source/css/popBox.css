@@ -200,7 +200,7 @@
     margin:20px 0 20px 0;
     font-size: 16px;
     color: #444f6e;
-    padding-left: 40px;
+    /*padding-left: 40px;*/
 }
 .add_ip{ 
         padding-left: 40px;
@@ -264,7 +264,7 @@
     font-size: 14px;
     color: #4e4e4e;
     vertical-align: middle;
-    margin-right: 45px;
+    /*margin-right: 45px;*/
 }
 .addhttp .text{
     width: 240px;
