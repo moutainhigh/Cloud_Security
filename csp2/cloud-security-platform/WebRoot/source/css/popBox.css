@@ -240,7 +240,7 @@
 
 }
 /*waf添加网站*/
-.addhttp{ padding-left:80px; height:274px; overflow-y:auto}
+.addhttp{ padding-left:80px; height:290px; overflow-y:auto}
 .waf-detais-pop #sentwo .bottom{ text-align:center; float:none; height:40px;}
 .waf-detais-pop #sentwo .bottom a{
      height: 40px;
@@ -251,7 +251,7 @@
      line-height: 40px;
 
 }
-.addhttp ul{ padding-top:40px;}
+.addhttp ul{ padding-top:20px;}
 .addhttp li{
     min-height: 50px;
 }
