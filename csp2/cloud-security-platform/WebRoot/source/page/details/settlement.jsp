@@ -155,24 +155,32 @@
 				</div>
 			</div>
 		</div>
-		
+		<c:if test="${service.id le 5 }">
+			<form method="post" action="orderBack.html" id="orderBackForm">
+		</c:if>
+		<c:if test="${service.id gt 5 }">
+			<form method="post" action="wafOrderBack.html" id="orderBackForm">
+		</c:if>
 		<input type="hidden" id="userIdHidden" value="${user.id}"/>
-		<input type="hidden" id="serviceId" value="${serviceId }"/>
-		<input type="hidden" id="orderType" value="${type }"/>
-		<input type="hidden" id="beginDate" value="${beginDate }"/>
-		<input type="hidden" id="endDate" value="${endDate }"/>
-		<input type="hidden" id="scanType" value="${scanType }"/>
-		<input type="hidden" id="assetIds" value="${assetIds }"/>
-		<input type="hidden" id="assetAddr" value="${assetAddr }"/>
-		<input type="hidden" id="assetNamesHidden" value="${assetNames}"/>
-		<input type="hidden" id="priceHidden" value="${allPrice }"/>
-		<input type="hidden" id="ipArrayHidden" value="${ipArray }"/>
-		<input type="hidden" id="timesHidden" value="${times }"/>
+		<input type="hidden" id="serviceId" name="serviceId" value="${serviceId }"/>
+		<input type="hidden" id="orderType" name="orderType" value="${type }"/>
+		<input type="hidden" id="beginDate" name="beginDate" value="${beginDate }"/>
+		<input type="hidden" id="endDate" name="endDate" value="${endDate }"/>
+		<input type="hidden" id="scanType" name="scanType" value="${scanType }"/>
+		<input type="hidden" id="assetIds" name="assetIds" value="${assetIds }"/>
+		<input type="hidden" id="assetAddr" name="domainName" value="${assetAddr }"/>
+		<input type="hidden" id="assetNamesHidden" name="assetNames" value="${assetNames}"/>
+		<input type="hidden" id="priceHidden" name="price" value="${allPrice }"/>
+		<input type="hidden" id="ipArrayHidden" name="ipArray" value="${ipArray }"/>
+		<input type="hidden" id="timesHidden" name="times" value="${times }"/>
 		
 		<input type="hidden" id="time" value="${time }"/>
-		<input type="hidden" id="num" value="${num }"/>
-		<input type="hidden" id="apiId" value="${apiId }"/>
-		<input type="hidden" id="type" value="${type }"/>
+		<input type="hidden" id="num" name="num" value="${num }"/>
+		<input type="hidden" id="apiId" name="apiId" value="${apiId }"/>
+		<input type="hidden" id="type" name="type" value="${type }"/>
+		
+		<input type="hidden" name="indexPage" value="1"/>
+		</form>
 		<div class="dataCent seetlentBox">
 			<div class="seetT">
 				<h2>填写并核对订单信息</h2>
