@@ -191,7 +191,64 @@ $(function(){
 		     url: "getSession.html", 
 		     dataType: "json", 
 		     success: function(data) {
-		    	 window.location.href="settlement.html?type="+type+"&beginDate="+beginDate+"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&buy_times="+times+"&price="+priceVal;
+		     	//虚拟表单post提交
+					    	var tempForm = document.createElement("form");
+  							tempForm.action = "settlement.html";
+  							tempForm.method = "post";
+  							tempForm.style.display = "none";
+  							
+  							var typeInput = document.createElement("input");
+  							typeInput.type="hidden"; 
+							typeInput.name= "type"; 
+							typeInput.value= type; 
+							tempForm.appendChild(typeInput);
+							
+							var beginDateInput = document.createElement("input");
+  							beginDateInput.type="hidden"; 
+							beginDateInput.name= "beginDate"; 
+							beginDateInput.value= beginDate; 
+							tempForm.appendChild(beginDateInput); 
+							
+							var endDateInput = document.createElement("input");
+  							endDateInput.type="hidden"; 
+							endDateInput.name= "endDate"; 
+							endDateInput.value= endDate; 
+							tempForm.appendChild(endDateInput);
+							
+							var scanTypeInput = document.createElement("input");
+  							scanTypeInput.type="hidden"; 
+							scanTypeInput.name= "scanType"; 
+							scanTypeInput.value= scanType; 
+							tempForm.appendChild(scanTypeInput);
+							
+							var serviceIdInput = document.createElement("input");
+  							serviceIdInput.type="hidden"; 
+							serviceIdInput.name= "serviceId"; 
+							serviceIdInput.value= serviceId; 
+							tempForm.appendChild(serviceIdInput);
+							
+							var assetIdsInput = document.createElement("input");
+  							assetIdsInput.type="hidden"; 
+							assetIdsInput.name= "assetIds"; 
+							assetIdsInput.value= assetIds; 
+							tempForm.appendChild(assetIdsInput);
+							
+							var timesInput = document.createElement("input");
+  							timesInput.type="hidden"; 
+							timesInput.name= "buy_times"; 
+							timesInput.value= times; 
+							tempForm.appendChild(timesInput);
+							
+							var priceInput = document.createElement("input");
+  							priceInput.type="hidden"; 
+							priceInput.name= "price"; 
+							priceInput.value= priceVal; 
+							tempForm.appendChild(priceInput);
+							
+							document.body.appendChild(tempForm);
+							tempForm.submit();
+							document.body.removeChild(tempForm);
+		    	 //window.location.href="settlement.html?type="+type+"&beginDate="+beginDate+"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&buy_times="+times+"&price="+priceVal;
 		    	 }, 
 		     error: function(data){ 
 		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
@@ -544,20 +601,20 @@ function tasknum_verification(){
     }
     //返回修改订单信息
     function orderBack(){
-    	
-    	var assetIds=$("#assetIds").val();
-    	var beginDate=$('#beginDate').val();
-    	var endDate=$('#endDate').val();
-    	var scanType = $('#scanType').val();
-    	var serviceId = $("#serviceId").val();
-    	var orderType = $("#orderType").val();
-    	var apiId =$("#apiId").val();
-    	var type =$("#type").val();
-    	var num =$("#num").val();
-    	var price = $('#priceHidden').val();
-    	var assetNames = $("#assetNamesHidden").val();
-     window.location.href="orderBack.html?serviceId="+serviceId+"&indexPage=1&orderType="+orderType+"&beginDate="+beginDate
-		    		                       +"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&apiId="+apiId+"&type="+type+"&num="+num+"&price="+price+"&assetNames="+assetNames;	
+    	$("#orderBackForm").submit();
+    	//var assetIds=$("#assetIds").val();
+    	//var beginDate=$('#beginDate').val();
+    	//var endDate=$('#endDate').val();
+    	//var scanType = $('#scanType').val();
+    	//var serviceId = $("#serviceId").val();
+    	//var orderType = $("#orderType").val();
+    	//var apiId =$("#apiId").val();
+    	//var type =$("#type").val();
+    	//var num =$("#num").val();
+    	//var price = $('#priceHidden').val();
+    	//var assetNames = $("#assetNamesHidden").val();
+     //window.location.href="orderBack.html?serviceId="+serviceId+"&indexPage=1&orderType="+orderType+"&beginDate="+beginDate
+		    		                       //+"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&apiId="+apiId+"&type="+type+"&num="+num+"&price="+price+"&assetNames="+assetNames;	
     }
     
     
