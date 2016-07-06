@@ -121,6 +121,10 @@ public class shoppingAPIController {
 	 */
 	@RequestMapping(value="settlementAPI.html")
 	public String settlementAPI(HttpServletRequest request){
+		//没有参数时,返回首页
+		if(request.getParameterMap().size()==0){
+			return "redirect:/index.html";
+		}
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
         int apiId = Integer.parseInt(request.getParameter("apiId"));
         int time = Integer.parseInt(request.getParameter("time"));
