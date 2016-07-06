@@ -1662,7 +1662,7 @@ public class shoppingController {
 //				addr = addrType + "://" + addr.trim();
 //			}
 			//判断资产地址是否包含http
-		    Pattern pattern2 = Pattern.compile("(http|https):\\/\\/([\\w.]+\\/?)\\S*");
+			Pattern pattern2 = Pattern.compile("([hH][tT][tT][pP][sS]?):\\/\\/([\\w.]+\\/?)\\S*");
 			Matcher matcher2 =	pattern2.matcher(addr);
 			if(!matcher2.find()){
 				addr="http://"+addr.trim();
