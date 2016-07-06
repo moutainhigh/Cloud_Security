@@ -105,16 +105,18 @@
                         	<tbody>
                             	
                                      	<tr height="40">
-                                     		<td width="20%"><label style=" margin: 0 20px 0 40px; width:16px; height:16px;display:inline-block;">
+                                     		<td width="20%">
                                      		  <c:if test="${shopCar.status==-1}">
-                                            <i class="chck" style="margin: 0; position:relative; top:0;display:none"></i><font color="red">已失效</font>
+                                           <div style="width: 50px; float: left; vertical-align: middle; margin: 0px 20px;"><font color="red">已失效</font></div>
                                             </c:if>
                                              <c:if test="${shopCar.status!=-1}">
+                                             <label style=" margin: 0 20px 0 40px; width:16px; height:16px;display:inline-block;">
                                              <input type="checkbox" class="ck" style="display:none" value="${shopCar.orderId}" isApi="0" name="check_name">
                                             </input>
                                            <i class="chck" style="margin: 0; position:relative; top:0"></i>
+                                           </label>
                                             </c:if>
-                                            </label>
+                                            
                                            <c:if test="${shopCar.serviceId!=6}">
                                           
                                             <a href="${ctx}/selfHelpOrderInit.html?serviceId=${shopCar.serviceId}&indexPage=1" target="_blank">${shopCar.serverName}</a>
@@ -185,7 +187,7 @@
                                  	<td width="20%"><label style=" margin: 0 20px 0 40px; width:16px; height:16px;display:inline-block;">
                                       
                                           <c:if test="${shopCar.status==-1}">
-                                            <i class="chck" style="margin: 0; position:relative; top:0;display:none"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">已失效</font>
+                                            <div style="width: 50px; float: left; vertical-align: middle; margin: 0px 20px;"><font color="red">已失效</font></div>
                                             </c:if>
                                              <c:if test="${shopCar.status!=-1}">
                                               <input type="checkbox" class="ck" style="display:none" value="${shopAPI.orderId}" isApi="1" name="check_name"></input>
