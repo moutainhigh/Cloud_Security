@@ -32,7 +32,45 @@ $(function(){
 		     dataType: "json", 
 		     success: function(data) {
 			    	 if(data.message == true){
-			    		 window.location.href="settlementAPI.html?apiId="+apiId+"&time="+time+"&num="+num+"&type="+type+"&price="+priceVal;
+			    	 var tempForm = document.createElement("form");
+  							tempForm.action = "settlementAPI.html";
+  							tempForm.method = "post";
+  							tempForm.style.display = "none";
+  							
+  							var apiIdInput = document.createElement("input");
+  							apiIdInput.type="hidden"; 
+							apiIdInput.name= "apiId"; 
+							apiIdInput.value= apiId; 
+							tempForm.appendChild(apiIdInput);
+							
+							var timeInput = document.createElement("input");
+  							timeInput.type="hidden"; 
+							timeInput.name= "time"; 
+							timeInput.value= time; 
+							tempForm.appendChild(timeInput); 
+							
+							var numInput = document.createElement("input");
+  							numInput.type="hidden"; 
+							numInput.name= "num"; 
+							numInput.value= num; 
+							tempForm.appendChild(numInput);
+							
+							var typeInput = document.createElement("input");
+  							typeInput.type="hidden"; 
+							typeInput.name= "type"; 
+							typeInput.value= type; 
+							tempForm.appendChild(typeInput);
+							
+							var priceInput = document.createElement("input");
+  							priceInput.type="hidden"; 
+							priceInput.name= "price"; 
+							priceInput.value= priceVal; 
+							tempForm.appendChild(priceInput);
+							
+							document.body.appendChild(tempForm);
+							tempForm.submit();
+							document.body.removeChild(tempForm);
+			    		 //window.location.href="settlementAPI.html?apiId="+apiId+"&time="+time+"&num="+num+"&type="+type+"&price="+priceVal;
 			    		 
 			    	 
 			    	 }else{
