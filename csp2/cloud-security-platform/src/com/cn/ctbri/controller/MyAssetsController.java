@@ -103,7 +103,7 @@ public class MyAssetsController {
 
 	    String addr = asset.getAddr();
 	    //判断资产地址是否包含http
-	    Pattern pattern2 = Pattern.compile("(http|https):\\/\\/([\\w.]+\\/?)\\S*");
+	    Pattern pattern2 = Pattern.compile("([hH][tT][tT][pP][sS]?):\\/\\/([\\w.]+\\/?)\\S*");
 		Matcher matcher2 =	pattern2.matcher(addr);
 		if(!matcher2.find()){
 			addr="http://"+addr.trim();
@@ -204,7 +204,7 @@ public class MyAssetsController {
 			addr=asset.getAddr();
 			purpose=asset.getPurpose();
 			//判断资产地址是否包含http
-		    Pattern pattern2 = Pattern.compile("(http|https):\\/\\/([\\w.]+\\/?)\\S*");
+		    Pattern pattern2 = Pattern.compile("([hH][tT][tT][pP][sS]?):\\/\\/([\\w.]+\\/?)\\S*");
 			Matcher matcher2 =	pattern2.matcher(addr);
 			if(!matcher2.find()){
 				addr="http://"+addr.trim();
@@ -285,7 +285,7 @@ public class MyAssetsController {
 			//String addrType = request.getParameter("addrType");
 			String districtId = request.getParameter("prov");
 			String assetAddr = request.getParameter("assetAddr");
-			Pattern pattern2 = Pattern.compile("(http|https):\\/\\/([\\w.]+\\/?)\\S*");
+			Pattern pattern2 = Pattern.compile("([hH][tT][tT][pP][sS]?):\\/\\/([\\w.]+\\/?)\\S*");
 			Matcher matcher2 =	pattern2.matcher(assetAddr);
 			if(!matcher2.find()){
 				assetAddr="http://"+assetAddr.trim();
