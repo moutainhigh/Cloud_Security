@@ -157,6 +157,9 @@ public class shoppingController {
 	@RequestMapping(value="settlement.html")
 	public String settlement(HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		if(request.getParameterMap().size()==0){
+			return "redirect:/index.html";
+		}
 		//资产ids
         String assetIds = request.getParameter("assetIds");
 		String type = request.getParameter("type");
@@ -707,6 +710,11 @@ public class shoppingController {
 	 */
 	@RequestMapping(value="orderBack.html")
 	public String  orderBack(HttpServletResponse response,HttpServletRequest request) throws Exception{
+		//没有参数时,返回首页
+		if(request.getParameterMap().size()==0){
+			return "redirect:/index.html";
+		}
+		
 		 Map<String, Object> map = new HashMap<String, Object>();
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 	    boolean apiFlag=false;
