@@ -123,6 +123,18 @@ public class MyAssetsController {
 
 	    		if(listForName != null && listForName.size()>0){
 	    			m.put("msg", '1');//1：表示资产名称已经存在
+	    		}else{
+	    			 if(!addr.trim().equals(oldAddr)){
+	    		    		Map<String, Object> paramMap1 = new HashMap<String, Object>();
+	    					paramMap1.put("userId", globle_user.getId());
+	    					paramMap1.put("addr", addr.trim());
+	    					List<Asset> listForAddr = assetService.findByAssetAddr(paramMap1);
+	    					if(listForAddr != null && listForAddr.size()>0){
+	    						m.put("msg", '2');//1：表示资产地址已经存在
+	    					}
+	    		    	}else{
+	    		    		m.put("msg", false);
+	    		    	}
 	    		}
 	    	}else if(!addr.trim().equals(oldAddr)){
 	    		Map<String, Object> paramMap1 = new HashMap<String, Object>();
