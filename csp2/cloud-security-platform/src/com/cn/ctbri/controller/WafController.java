@@ -479,6 +479,10 @@ public class WafController {
 	 */
 	@RequestMapping(value="buyNowWafUI.html")
 	public String buyNowWafUI(HttpServletRequest request){
+		//没有参数时,返回首页
+		if(request.getParameterMap().size()==0){
+			return "redirect:/index.html";
+		}
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		//资产ids
         String domainName = request.getParameter("domainName");
@@ -697,6 +701,11 @@ public class WafController {
 	 */
 	@RequestMapping(value="wafOrderBack.html")
 	public String  wafOrderBack(HttpServletResponse response,HttpServletRequest request) throws Exception{
+		//没有参数时,返回首页
+		if(request.getParameterMap().size()==0){
+			return "redirect:/index.html";
+		}
+		
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		
 		//查找当前用户的资产列表
@@ -736,7 +745,7 @@ public class WafController {
 			}
 		}
 		
-        String domainId = request.getParameter("domainId");
+        String domainId = request.getParameter("assetIds");
         String domainName = request.getParameter("domainName");
         String beginDate = request.getParameter("beginDate");
         String endDate = request.getParameter("endDate");
