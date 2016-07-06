@@ -1604,7 +1604,7 @@ public class shoppingController {
 		if (modifyOrderIdList != null && !modifyOrderIdList.equals("") && !modifyOrderIdList.equals("undefined")){
 			String modifyOrderId[] = modifyOrderIdList.split(",");
 			for(String id:modifyOrderId){
-				if(!orderList.getOrderId().contains(id)){
+				if(!orderList.getOrderId().contains(id.trim())){
 					return "redirect:/index.html"; 
 				}
 			}
