@@ -1210,18 +1210,6 @@ public class shoppingController {
     			return;
     		}
     		
-    		//南向API认证，连接失败时订单异常，不支付
-//    		boolean session = false;
-//	    	try {
-//	    		session = NorthAPIWorker.getNorthSession();
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//			if (!true){
-//				//连接服务管理系统失败
-//				m.put("payFlag", 4);
-//    			return;
-//			}
     		//若支付时间>服务的开始时间，更新订单的开始时间，结束时间
     		List<String> orderIdOfModify = modifyOrderBeginTime(orderList);
     		
@@ -1246,19 +1234,13 @@ public class shoppingController {
     		String orderIds = orderList.getOrderId();//订单条目编号(cs_order的id)
     		selfHelpOrderService.updateOrderPayFlag(orderIds, 1, 1);
     		
-//    		//若支付时间>服务的开始时间，更新订单的开始时间，结束时间
-//    		List<String> orderIdOfModify = modifyOrderBeginTime(orderList);
-//    		
-//    		// 南向API调用 任务执行
-//    		if(!orderTask(orderList, globle_user, orderIdOfModify)) {
-//    			m.put("payFlag", 4);
-//    			return;
-//    		}
-    		
+    		//取得服务时间更改的订单编号
     		String orderId = "";
-    		if (orderIdOfModify!= null && orderIdOfModify.size()!=0){
-    			orderId = orderIdOfModify.toString();
-    			orderId = orderId.substring(1,orderId.length()-1);
+    		for(String id: orderIdOfModify){
+    			orderId = orderId+ id +",";
+    		}
+    		if (orderId!= null && !orderId.equals("")) {
+    			orderId = orderId.substring(0,orderId.length()-1);
     		}
     		m.put("orderListId",orderList.getId());
     		m.put("modifyOrderId", orderId);
