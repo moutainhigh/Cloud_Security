@@ -195,8 +195,70 @@ $(function(){
 		   		     url: "getSession.html", 
 		   		     dataType: "json", 
 		   		     success: function(data) {
-		   		    	 window.location.href="buyNowWafUI.html?type="+2+"&beginDate="+beginDate+"&timeswaf="+times+"&scanType="+scanType+"&serviceId="+serviceId+
-		   		    	 "&domainName="+domainName+"&domainId="+domainId+"&price="+price+"&ipArray="+ipVal;
+		   		     		var tempForm = document.createElement("form");
+  							tempForm.action = "buyNowWafUI.html";
+  							tempForm.method = "post";
+  							tempForm.style.display = "none";
+  							
+  							var typeInput = document.createElement("input");
+  							typeInput.type="hidden"; 
+							typeInput.name= "type"; 
+							typeInput.value= 2; 
+							tempForm.appendChild(typeInput);
+							
+							var beginDateInput = document.createElement("input");
+  							beginDateInput.type="hidden"; 
+							beginDateInput.name= "beginDate"; 
+							beginDateInput.value= beginDate; 
+							tempForm.appendChild(beginDateInput); 
+							
+							var timeswafInput = document.createElement("input");
+  							timeswafInput.type="hidden"; 
+							timeswafInput.name= "timeswaf"; 
+							timeswafInput.value= times; 
+							tempForm.appendChild(timeswafInput);
+							
+							var scanTypeInput = document.createElement("input");
+  							scanTypeInput.type="hidden"; 
+							scanTypeInput.name= "scanType"; 
+							scanTypeInput.value= scanType; 
+							tempForm.appendChild(scanTypeInput);
+							
+							var serviceIdInput = document.createElement("input");
+  							serviceIdInput.type="hidden"; 
+							serviceIdInput.name= "serviceId"; 
+							serviceIdInput.value= serviceId; 
+							tempForm.appendChild(serviceIdInput);
+							
+							var domainNameInput = document.createElement("input");
+  							domainNameInput.type="hidden"; 
+							domainNameInput.name= "domainName"; 
+							domainNameInput.value= domainName; 
+							tempForm.appendChild(domainNameInput);
+							
+							var domainIdInput = document.createElement("input");
+  							domainIdInput.type="hidden"; 
+							domainIdInput.name= "domainId"; 
+							domainIdInput.value= domainId; 
+							tempForm.appendChild(domainIdInput);
+							
+							var priceInput = document.createElement("input");
+  							priceInput.type="hidden"; 
+							priceInput.name= "price"; 
+							priceInput.value= price; 
+							tempForm.appendChild(priceInput);
+							
+							var ipArrayInput = document.createElement("input");
+  							ipArrayInput.type="hidden"; 
+							ipArrayInput.name= "ipArray"; 
+							ipArrayInput.value= ipVal; 
+							tempForm.appendChild(ipArrayInput);
+							
+							document.body.appendChild(tempForm);
+							tempForm.submit();
+							document.body.removeChild(tempForm);
+		   		    	 //window.location.href="buyNowWafUI.html?type="+2+"&beginDate="+beginDate+"&timeswaf="+times+"&scanType="+scanType+"&serviceId="+serviceId+
+		   		    	 //"&domainName="+domainName+"&domainId="+domainId+"&price="+price+"&ipArray="+ipVal;
 		   		    	 }, 
 		   		     error: function(data){ 
 		   		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
@@ -366,17 +428,18 @@ $(function(){
 
 //返回修改订单信息
 function wafOrderBack(){	
-	var domainId=$("#assetIds").val();
-	var beginDate=$('#beginDate').val();
-	var endDate=$('#endDate').val();
-	var serviceId = $("#serviceId").val();
-	var scanType = $("#scanType").val();
-	var domainName = $("#assetAddr").val();
-	var ipArray = $("#ipArrayHidden").val();
-	var times = $("#timesHidden").val();
+	$("#orderBackForm").submit();
+	//var domainId=$("#assetIds").val();
+	//var beginDate=$('#beginDate').val();
+	//var endDate=$('#endDate').val();
+	//var serviceId = $("#serviceId").val();
+	//var scanType = $("#scanType").val();
+	//var domainName = $("#assetAddr").val();
+	//var ipArray = $("#ipArrayHidden").val();
+	//var times = $("#timesHidden").val();
 
-	window.location.href="wafOrderBack.html?serviceId="+serviceId+"&beginDate="+beginDate+"&endDate="+endDate+
-	"&scanType="+scanType+"&serviceId="+serviceId+"&domainId="+domainId+"&domainName="+domainName+"&ipArray="+ipArray+"&times="+times;
+	//window.location.href="wafOrderBack.html?serviceId="+serviceId+"&beginDate="+beginDate+"&endDate="+endDate+
+	//"&scanType="+scanType+"&serviceId="+serviceId+"&domainId="+domainId+"&domainName="+domainName+"&ipArray="+ipArray+"&times="+times;
 
 }
 
