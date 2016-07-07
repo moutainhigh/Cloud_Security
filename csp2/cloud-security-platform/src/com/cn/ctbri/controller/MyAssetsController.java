@@ -99,7 +99,7 @@ public class MyAssetsController {
 	    User globle_user = (User) request.getSession().getAttribute("globle_user");
 	    Map<String, Object> paramMap = new HashMap<String, Object>();
 	    String oldName = request.getParameter("oldName");
-	    String oldAddr = request.getParameter("oldAddr");
+	    String oldAddr = request.getParameter("oldAddr").toLowerCase();
 
 	    String addr = asset.getAddr();
 	    //判断资产地址是否包含http
@@ -201,7 +201,7 @@ public class MyAssetsController {
 		//处理页面输入中文乱码的问题
 		try {
 			name=asset.getName();
-			addr=asset.getAddr();
+			addr=asset.getAddr().toLowerCase();
 			purpose=asset.getPurpose();
 			//判断资产地址是否包含http
 		    Pattern pattern2 = Pattern.compile("([hH][tT][tT][pP][sS]?):\\/\\/([\\w.]+\\/?)\\S*");
@@ -284,7 +284,7 @@ public class MyAssetsController {
 			Asset oldAsset = assetService.findById(id);
 			//String addrType = request.getParameter("addrType");
 			String districtId = request.getParameter("prov");
-			String assetAddr = request.getParameter("assetAddr");
+			String assetAddr = request.getParameter("assetAddr").toLowerCase();
 			Pattern pattern2 = Pattern.compile("([hH][tT][tT][pP][sS]?):\\/\\/([\\w.]+\\/?)\\S*");
 			Matcher matcher2 =	pattern2.matcher(assetAddr);
 			if(!matcher2.find()){
@@ -413,7 +413,7 @@ public class MyAssetsController {
 	public void asset_verification(HttpServletRequest request,HttpServletResponse response){
 		int id = Integer.valueOf(request.getParameter("id"));
 		Asset _asset = assetService.findById(id);
-		String path = _asset.getAddr();
+		String path = _asset.getAddr().toLowerCase();
 		int status = _asset.getStatus();
 		//获取验证方式:代码验证 ;上传文件验证
 		String verification_msg;
