@@ -1373,6 +1373,24 @@ public class UserController{
 		}
 		return "/forgetPass";
 	}
+	
+	/**
+	 * 功能描述： 修改密码
+	 * 参数描述： Model m
+	 *		 @time 2016-7-6
+	 */
+	@RequestMapping(value="modifyPassUI.html")
+	public String modifyPassUI (HttpServletRequest request,Model m){
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		List<User> userList = userService.findUserById(globle_user.getId());
+		String originalMobile = userList.get(0).getMobile();
+		
+		if(originalMobile!=null && !originalMobile.equals("")){
+			m.addAttribute("originalMobile", originalMobile);
+		}
+		return "/forgetPass";
+	}
+	
 	/**
 	 * 功能描述： 忘记密码
 	 * 参数描述： Model m
@@ -1630,11 +1648,14 @@ public class UserController{
 	 *		 @time 2016-6-29
 	 */
 	@RequestMapping(value="/confirmMobile.html")
-	public String confirmMobile(HttpServletRequest request, User user){
+	public String confirmMobile(HttpServletRequest request){
 		boolean success = false;
+		String mobile = request.getParameter("mobile");
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
-		if (globle_user != null) {
-			String mobile = user.getMobile();
+		if(mobile == null ||mobile.equals("")|| globle_user == null) {
+			request.setAttribute("success", success);
+		}else {
+			User user = new User();
 			user.setMobile(mobile);
 			user.setId(globle_user.getId());
 			int result = userService.updateUserMobile(user);
@@ -1643,9 +1664,10 @@ public class UserController{
 				request.getSession().removeAttribute("modifyMobile_activationCode");
 				success = true;
 			}
+
+			request.setAttribute("success", success);
 			
 		}
-		request.setAttribute("success", success);
 		return "/updateMobileFinish";
 	}
 	
