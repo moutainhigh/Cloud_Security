@@ -90,16 +90,22 @@ function loginSubmit(){
 	if(name==null||name==""){
 		$("#errMsg").html("用户名不能为空!");
 		$("#errMsgDiv").show();
+		//刷新验证码
+		checkNumberImage();
 		return;
 	}
 	if(password==null||password==""){
 		$("#errMsg").html("密码不能为空!");
 		$("#errMsgDiv").show();
+		//刷新验证码
+		checkNumberImage();
 		return;
 	}
 	if(checkNumber==null||checkNumber==""){
     	$("#errMsg").html("验证码不能为空!");
 		$("#errMsgDiv").show();
+		//刷新验证码
+		checkNumberImage();
 		return;
 	}
 
@@ -112,6 +118,8 @@ function loginSubmit(){
             if(data.count<=0){
         		$("#errMsg").html("用户不存在!");
         		$("#errMsgDiv").show();
+        		//刷新验证码
+				checkNumberImage();
         		return;
             }else{
             	$.ajax({
@@ -130,10 +138,14 @@ function loginSubmit(){
 						case 1:
 					    	$("#errMsg").html("对不起，您的帐号已停用!");
 							$("#errMsgDiv").show();
+							//刷新验证码
+							checkNumberImage();
 							break;
 						case 2:
 							$("#errMsg").html("用户名或密码错误!");
 							$("#errMsgDiv").show();
+							//刷新验证码
+							checkNumberImage();
 							break;
 						case 3:
 							$("#errMsg").html("验证码输入有误!");
@@ -145,6 +157,8 @@ function loginSubmit(){
 //							$("#errMsg").html("对不起，企业用户不允许登录!");
 							$("#errMsg").html(data.msg);
 							$("#errMsgDiv").show();
+							//刷新验证码
+							checkNumberImage();
 							break;
 						case 5:
 							$("#errMsg").html("");
