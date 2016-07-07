@@ -102,7 +102,7 @@
                             </p>
         
                         </div>
-                        <form id="passForm" action="${ctx}/confirmPass.html">
+                        <form id="passForm" action="${ctx}/confirmPass.html" method="post">
                          <input type="hidden" name="mobile" value="${user.mobile}"/>
                         <ul class="passwordlist passwordtwo" style="padding-bottom:30px; width:416px; margin:0 auto">
                         	<li class="clearfix">
