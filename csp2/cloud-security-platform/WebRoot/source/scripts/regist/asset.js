@@ -14,21 +14,12 @@ function saveAsset() {
     var addrType = $('input:radio[name="addrType"]:checked').val();
      var purpose = $("#purpose").val();
      var prov = $("#districtId").val();
-     var patrn=/[`~@#$%^&*()+<>"{},;'[]]/im; 
-	//var strRegex = "^((https|http|ftp|rtsp|mms)?://)"
-		//+ "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" //ftp的user@
-		//+ "(([0-9]{1,3}.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
-		//+ "|" // 允许IP和DOMAIN（域名）
-		//+ "([0-9a-z_!~*'()-]+.)*" // 域名- www.
-		//+ "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]." // 二级域名
-		//+ "[a-z]{2,6})" // first level domain- .com or .museum
-		//+ "(:[0-9]{1,4})?" // 端口- :80
-		//+ "((/?)|" // a slash isn't required if there is no file name
-		//+ "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
-   // var re=new RegExp(strRegex);
+     var patrn=new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]");
+     var pattern = new RegExp("[`~!@#$^&*()=|{}';',<>?~！@#￥……&*（）——|{}【】‘；”“'。，？]"); 
      var newRegex = /^((?!([hH][tT][tT][pP][sS]?)\:*\/*)([\w\.\-]+(\:[\w\.\&%\$\-]+)*@)?((([^\s\(\)\<\>\\\"\.\[\]\,@;:]+)(\.[^\s\(\)\<\>\\\"\.\[\]\,@;:]+)*(\.[a-zA-Z]{2,4}))|((([01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}([01]?\d{1,2}|2[0-4]\d|25[0-5])))(\b\:(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0)\b)?((\/[^\/][\w\.\,\?\'\\\/\+&%\$#\=~_\-@]*)*[^\.\,\?\"\'\(\)\[\]!;<>{}\s\x7F-\xFF])?)$/;
      var strRegex = /^((([hH][tT][tT][pP][sS]?):\/\/)([\w\.\-]+(\:[\w\.\&%\$\-]+)*@)?((([^\s\(\)\<\>\\\"\.\[\]\,@;:]+)(\.[^\s\(\)\<\>\\\"\.\[\]\,@;:]+)*(\.[a-zA-Z]{2,4}))|((([01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}([01]?\d{1,2}|2[0-4]\d|25[0-5])))(\b\:(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0)\b)?((\/[^\/][\w\.\,\?\'\\\/\+&%\$#\=~_\-@]*)*[^\.\,\?\"\'\(\)\[\]!;<>{}\s\x7F-\xFF])?)$/;
-  //获取选中的radio的值
+ 
+    	 //获取选中的radio的值
 	$("#assetName_msg").html("");
 	$("#assetAddr_msg").html("");
 	$("#location_msg").html("");
@@ -36,16 +27,19 @@ function saveAsset() {
 	if(assetName == null || assetName == ""){
 		$("#assetName_msg").html("请输入资产名称!");
 	}else if(patrn.test(assetName)){
-		$("#assetName_msg").html("您输入的资产名称含有非法字符");
-	}else if(patrn.test(assetAddr)){
-		$("#assetAddr_msg").html("您输入的资产地址含有非法字符");
+		$("#assetName_msg").html("请输入正确的资产名称!");
 	}else if(assetAddr==null || assetAddr == ""){
 			$("#assetName_msg").html("");
 			$("#assetAddr_msg").html("请输入资产地址!");
-	}else if((!strRegex.test(assetAddr) && !newRegex.test(assetAddr)) || (strRegex.test(assetAddr)&&assetAddr.indexOf('\/\/\/')!=-1)){
+	}else if(pattern.test(assetAddr)){
 			$("#assetName_msg").html("");
 			$("#assetAddr_msg").html("请输入正确的资产地址!");
-	}else if(prov == -1){
+	}
+	else if((!strRegex.test(assetAddr)&&!newRegex.test(assetAddr))||(strRegex.test(assetAddr)&&assetAddr.indexOf('\/\/\/')!=-1)){
+			$("#assetName_msg").html("");
+			$("#assetAddr_msg").html("请输入正确的资产地址!");
+	}
+	else if(prov == -1){
 		$("#assetName_msg").html("");
 		$("#assetAddr_msg").html("");
 		$("#location_msg").html("请选择资产所在物理地址!");
@@ -143,29 +137,22 @@ function editAsset(){
     var prov = $("#editDistrictId").val();
     var city = $("#editCity").val();
     var id = $("#editAssetid").val();
-//     var patrn=/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im; 
-     var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
-  	//var strRegex = "^((https|http|ftp|rtsp|mms)?://)"
-		//+ "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" //ftp的user@
-		//+ "(([0-9]{1,3}.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
-		//+ "|" // 允许IP和DOMAIN（域名）
-		//+ "([0-9a-z_!~*'()-]+.)*" // 域名- www.
-		//+ "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]." // 二级域名
-		//+ "[a-z]{2,6})" // first level domain- .com or .museum
-		//+ "(:[0-9]{1,4})?" // 端口- :80
-		//+ "((/?)|" // a slash isn't required if there is no file name
-		//+ "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
-   // var re=new RegExp(strRegex);
+     var patrn=new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]");
+     var pattern = new RegExp("[`~!@#$^&*()=|{}';',<>?~！@#￥……&*（）——|{}【】‘；”“'。，、？]"); 
      var newRegex = /^((?!([hH][tT][tT][pP][sS]?)\:*\/*)([\w\.\-]+(\:[\w\.\&%\$\-]+)*@)?((([^\s\(\)\<\>\\\"\.\[\]\,@;:]+)(\.[^\s\(\)\<\>\\\"\.\[\]\,@;:]+)*(\.[a-zA-Z]{2,4}))|((([01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}([01]?\d{1,2}|2[0-4]\d|25[0-5])))(\b\:(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0)\b)?((\/[^\/][\w\.\,\?\'\\\/\+&%\$#\=~_\-@]*)*[^\.\,\?\"\'\(\)\[\]!;<>{}\s\x7F-\xFF])?)$/;
      var strRegex = /^((([hH][tT][tT][pP][sS]?):\/\/)([\w\.\-]+(\:[\w\.\&%\$\-]+)*@)?((([^\s\(\)\<\>\\\"\.\[\]\,@;:]+)(\.[^\s\(\)\<\>\\\"\.\[\]\,@;:]+)*(\.[a-zA-Z]{2,4}))|((([01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}([01]?\d{1,2}|2[0-4]\d|25[0-5])))(\b\:(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0)\b)?((\/[^\/][\w\.\,\?\'\\\/\+&%\$#\=~_\-@]*)*[^\.\,\?\"\'\(\)\[\]!;<>{}\s\x7F-\xFF])?)$/;
 	//获取选中的radio的值
 	if(assetName == null || assetName == ""){
-		$("#editAssetName_msg").html("请输入资产名称");
+		$("#editAssetName_msg").html("请输入资产名称!");
 	}else if(patrn.test(assetName)){
-		$("#editAssetName_msg").html("您输入的资产名称含有非法字符");
+		$("#editAssetName_msg").html("请输入正确的资产名称!");
 	}else if(assetAddr==null || assetAddr == ""){
-		$("#editAssetAddr_msg").html("请输入资产地址");
-	}else if((!strRegex.test(assetAddr) && !newRegex.test(assetAddr)) || (strRegex.test(assetAddr)&&assetAddr.indexOf('\/\/\/')!=-1)){
+		$("#editAssetAddr_msg").html("请输入资产地址!");
+	}else if(pattern.test(assetAddr)){
+			$("#assetName_msg").html("");
+			$("#assetAddr_msg").html("请输入正确的资产地址!");
+	}
+	else if((!strRegex.test(assetAddr) && !newRegex.test(assetAddr)) || (strRegex.test(assetAddr)&&assetAddr.indexOf('\/\/\/')!=-1)){
 	   $("#editAssetName_msg").html("");
     	$("#editAssetAddr_msg").html("请输入正确的资产地址!");
     }else if(prov == -1){
