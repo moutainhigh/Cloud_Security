@@ -506,6 +506,9 @@ select::-ms-expand { display: none; }
 	margin-right: 14px;
 	background: url(../images/personalCenter/right.png);
 }
+#updateError{
+	background: url(../images/personalCenter/error.png);
+}
 .coupon h1{
 	font-size: 22px;
 	color: #343434;
