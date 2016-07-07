@@ -99,7 +99,11 @@ public class MyAssetsController {
 	    User globle_user = (User) request.getSession().getAttribute("globle_user");
 	    Map<String, Object> paramMap = new HashMap<String, Object>();
 	    String oldName = request.getParameter("oldName");
-	    String oldAddr = request.getParameter("oldAddr").toLowerCase();
+	    String oldAddr = request.getParameter("oldAddr");
+	    String oldAddrVal="";
+	    if(oldAddr!=null&&!"".equals(oldAddr)){
+	    	oldAddrVal=oldAddr.toLowerCase();
+	    }
 
 	    String addr = asset.getAddr();
 	    //判断资产地址是否包含http
@@ -115,7 +119,7 @@ public class MyAssetsController {
             addr = addrType + "://" + addr.trim();
         }*/
 		Map<String, Object> m = new HashMap<String, Object>();
-	    if(oldName!=null || oldAddr!=null){
+	    if(oldName!=null || oldAddrVal!=null){
 	    	//修改时判断存在
 	    	if(!assetName.trim().equals(oldName)){
 	            paramMap.put("name", assetName.trim());
@@ -124,7 +128,7 @@ public class MyAssetsController {
 	    		if(listForName != null && listForName.size()>0){
 	    			m.put("msg", '1');//1：表示资产名称已经存在
 	    		}else{
-	    			 if(!addr.trim().equals(oldAddr)){
+	    			 if(!addr.trim().equals(oldAddrVal)){
 	    		    		Map<String, Object> paramMap1 = new HashMap<String, Object>();
 	    					paramMap1.put("userId", globle_user.getId());
 	    					paramMap1.put("addr", addr.trim());
@@ -136,7 +140,7 @@ public class MyAssetsController {
 	    		    		m.put("msg", false);
 	    		    	}
 	    		}
-	    	}else if(!addr.trim().equals(oldAddr)){
+	    	}else if(!addr.trim().equals(oldAddrVal)){
 	    		Map<String, Object> paramMap1 = new HashMap<String, Object>();
 				paramMap1.put("userId", globle_user.getId());
 				paramMap1.put("addr", addr.trim());
