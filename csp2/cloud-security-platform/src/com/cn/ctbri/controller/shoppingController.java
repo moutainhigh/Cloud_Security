@@ -1651,7 +1651,7 @@ public class shoppingController {
 			}
 
 			String name = request.getParameter("assetName");//资产名称
-			String addr = request.getParameter("assetAddr");//资产地址
+			String addr = request.getParameter("assetAddr").toLowerCase();//资产地址
 			String addrType = request.getParameter("addrType");//资产类型
 			String purpose = request.getParameter("purpose");//用途
 			String prov = request.getParameter("prov");
