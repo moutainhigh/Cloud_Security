@@ -105,7 +105,7 @@ public class MyAssetsController {
 	    	oldAddrVal=oldAddr.toLowerCase();
 	    }
 
-	    String addr = asset.getAddr();
+	    String addr = asset.getAddr().toLowerCase();
 	    //判断资产地址是否包含http
 	    Pattern pattern2 = Pattern.compile("([hH][tT][tT][pP][sS]?):\\/\\/([\\w.]+\\/?)\\S*");
 		Matcher matcher2 =	pattern2.matcher(addr);
@@ -143,7 +143,7 @@ public class MyAssetsController {
 	    	}else if(!addr.trim().equals(oldAddrVal)){
 	    		Map<String, Object> paramMap1 = new HashMap<String, Object>();
 				paramMap1.put("userId", globle_user.getId());
-				paramMap1.put("addr", addr.trim());
+				paramMap1.put("addr", addr.toLowerCase().trim());
 				List<Asset> listForAddr = assetService.findByAssetAddr(paramMap1);
 				if(listForAddr != null && listForAddr.size()>0){
 					m.put("msg", '2');//1：表示资产地址已经存在
