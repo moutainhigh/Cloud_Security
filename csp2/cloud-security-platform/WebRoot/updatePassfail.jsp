@@ -99,8 +99,8 @@
                             </p>
         
                         </div>
-                        <div class="complete">
-                        	<h2><i></i>抱歉，密码修改失败！</h2>
+                        <div class="complete updateError">
+                        	<h2><i id="updateError"></i>抱歉，密码修改失败！</h2>
                         </div>
                     </div>
                 </div>

@@ -100,12 +100,14 @@
         
                         </div>
                         <div class="complete">
-                        	<h2><i></i>
+                        	<h2>
                         	<c:if test="${success}">
-                        	恭喜您，手机号码修改成功！
+	                        	<i></i>
+	                        	恭喜您，手机号码修改成功！
                         	</c:if>
                         	<c:if test="${!success}">
-                        	抱歉，手机号码修改失败！
+	                        	<i id="updateError"></i>
+	                        	抱歉，手机号码修改失败！
                         	</c:if>
                         	</h2>
                         </div>
