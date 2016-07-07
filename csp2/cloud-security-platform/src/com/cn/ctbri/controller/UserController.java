@@ -1429,15 +1429,20 @@ public class UserController{
 	 */
 	@RequestMapping(value="/confirmPass.html")
 	public String confirmPass(User user){
-		String password = user.getPassword();
-		String passwdMD5 = DigestUtils.md5Hex(password);
-		String mobile = user.getMobile();
-		user.setPassword(passwdMD5);
-		user.setMobile(mobile);
-		int result = userService.updatePass(user);
-		if(result==1){
-			return "/updatePassSuccess";
-		}else{
+		try {
+			String password = user.getPassword();
+			String passwdMD5 = DigestUtils.md5Hex(password);
+			String mobile = user.getMobile();
+			user.setPassword(passwdMD5);
+			user.setMobile(mobile);
+			int result = userService.updatePass(user);
+			if(result==1){
+				return "/updatePassSuccess";
+			}else{
+				return "/updatePassfail";
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
 			return "/updatePassfail";
 		}
 
