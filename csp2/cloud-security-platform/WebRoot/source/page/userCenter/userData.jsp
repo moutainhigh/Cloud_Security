@@ -94,7 +94,7 @@
                             	<label class="fl">密&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;码</label>
 								<div class="fl dataListR">
                                 	<input type="password" style=" color:#929292" class="text" value="******" disabled="true" id="regist_pwd">
-                                	<a href="${ctx }/forgetPass.html?originalMobile=${user.mobile}">修改</a>
+                                	<a href="${ctx }/modifyPassUI.html">修改</a>
                                 </div>
                              </li><!--
                              <li class="clearfix">
