@@ -459,7 +459,7 @@ d.mouseover(function(){
                                     </div>
                                 </li> --> 
                                 <li class="clearfix">
-                                    <label class="fl">网站地址</label> <div class="fl"><input class="boz_inout_1" type="text" name="addr" id="InertAddr"  maxlength="100"></div>
+                                    <label class="fl">网站地址</label> <div class="fl"><input class="boz_inout_1" type="text" name="addr" id="InertAddr"  maxlength="100" onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')"></div>
                                     <div class="addMsg" style="color:#e32929;text-align:left;font-size: 14px;" id="assetAddr_msg"></div>
                                 </li>
                                  <li class="clearfix">
