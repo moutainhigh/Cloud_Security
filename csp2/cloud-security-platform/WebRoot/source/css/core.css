@@ -507,7 +507,9 @@ select::-ms-expand { display: none; }
 	background: url(../images/personalCenter/right.png);
 }
 #updateError{
-	background: url(../images/personalCenter/error.png);
+	width: 27px;
+	height: 27px;
+	background: url(../images/personalCenter/warn.png);
 }
 .coupon h1{
 	font-size: 22px;
