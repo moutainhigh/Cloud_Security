@@ -117,5 +117,9 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 	public List<Task> findProgssByOrderId(Map<String, Object> pMap) {
 		return this.getSqlSession().selectList(ns+"findProgssByOrderId",pMap);
 	}
+
+	public List<Task> findFinishAlarmByOrderId(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"findFinishAlarmByOrderId",paramMap);
+	}
 	
 }

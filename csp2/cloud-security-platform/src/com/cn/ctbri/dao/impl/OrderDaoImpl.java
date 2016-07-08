@@ -258,8 +258,15 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 		this.getSqlSession().delete(ns+"delLinkmanByOrderId",orderId);
 	}
 
-	public List findByOrderListId(String orderListId) {
-		List list = this.getSqlSession().selectList(ns + "findByOrderListId",orderListId);
+	public List findByOrderListId(String orderListId ,String state) {
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+        paramMap.put("orderListId", orderListId);
+        if("2".equals(state)){
+        	 paramMap.put("state", Integer.parseInt(state)+1);
+        }else{
+        	 paramMap.put("state", state);
+        }
+		List list = this.getSqlSession().selectList(ns + "findByOrderListId",paramMap);
         return list;
 	}
 }
