@@ -46,12 +46,13 @@ function loadData(){
     var end_date = $("#end_datepage").val();
     //文本查询 add by tangxr 2016-4-25
     var search = $("#searchpage").val(); 
+    var list_group = $("#list_grouppage").val(); 
     var data = "&pageIndex=" + pageIndex;
     var url = "";
     if(mark!=1){
-    	url = "searchCombineByPage1.html?type="+type+"&servName="+servName+"&state="+state+"&begin_date="+begin_date+"&end_date="+end_date+"&search="+search;
+    	url = "searchCombineByPage1.html?type="+type+"&servName="+servName+"&state="+state+"&list_group="+list_group+"&begin_date="+begin_date+"&end_date="+end_date+"&search="+search;
     }else{
-    	url = "getOrderList1.html?state="+state;
+    	url = "getOrderList1.html?state="+state+"&list_group="+list_group;
     }
     $.get(url, data, function(result){
         pageIndex++;
