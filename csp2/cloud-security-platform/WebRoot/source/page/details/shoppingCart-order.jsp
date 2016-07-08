@@ -136,21 +136,21 @@
                                          </c:forEach>
                                    </c:if>
                                      <c:if test="${!fn:contains(shopCar.astName,',')}">   
-                                          <p style="padding:5px 0 5px 40px;">   ${shopCar.astName}</p>
+                                          <p  style="text-align:center">   ${shopCar.astName}</p>
                                    </c:if>
                                     </td>
                                     <td width="29%">
                                  
-                                     <fmt:formatDate value="${shopCar.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                     <p style="text-align: center"><fmt:formatDate value="${shopCar.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                    
                                      <c:if test="${shopCar.endDate!=null&&shopCar.endDate!=''}">
-                                       -   
-                                       <fmt:formatDate value="${shopCar.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                       ~  
+                                       <fmt:formatDate value="${shopCar.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
                                      
                                      </c:if>
                                     </td>
-                                      <td width="10%"><em class="price">${shopCar.price}</em></td>
-                                      <td width="9%"><a href="#" onclick="delShopCar('${shopCar.orderId}');">删除</a></td>
+                                      <td width="10%"><em class="price" >${shopCar.price}</em></td>
+                                      <td width="9%" ><a href="#" onclick="delShopCar('${shopCar.orderId}');">删除</a></td>
                                     
                                   </tr>
                                   
