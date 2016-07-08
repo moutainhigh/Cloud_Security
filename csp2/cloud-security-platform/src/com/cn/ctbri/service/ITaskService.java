@@ -61,4 +61,6 @@ public interface ITaskService {
 
 	//查询任务进度
 	List<Task> findProgssByOrderId(Map<String, Object> pMap);
+
+	List<Task> findFinishAlarmByOrderId(Map<String, Object> paramMap);
 }
