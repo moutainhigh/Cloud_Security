@@ -87,5 +87,8 @@ public class TaskServiceImpl implements ITaskService{
 	public List<Task> findProgssByOrderId(Map<String, Object> pMap) {
 		return taskDao.findProgssByOrderId(pMap);
 	}
+	public List<Task> findFinishAlarmByOrderId(Map<String, Object> paramMap) {
+		return taskDao.findFinishAlarmByOrderId(paramMap);
+	}
 
 }
