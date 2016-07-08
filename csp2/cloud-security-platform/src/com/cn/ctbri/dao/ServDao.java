@@ -30,6 +30,10 @@ public interface ServDao {
      */
     List<Serv> getServiceByParam(Serv service);
 
-
+    /**
+     * 查询所有服务
+     * @return
+     */
+    List<Serv> findAllService();
 	
 }

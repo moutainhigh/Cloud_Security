@@ -123,6 +123,19 @@ public class shoppingController {
 	public String selfHelpOrderInit(HttpServletRequest request){
 	    User globle_user = (User) request.getSession().getAttribute("globle_user");
 	    int serviceId = Integer.parseInt(request.getParameter("serviceId"));
+	    //判断serviceId是否存在
+	    List<Serv> serList = servService.findAllService();
+	    boolean flag = false;
+	    if(serList!=null && serList.size()>0){
+	    	for(int i = 0; i < serList.size(); i++){
+	    		if(serviceId==serList.get(i).getId()){
+	    			flag = true;
+	    		}
+	    	}
+	    }
+	    if(!flag){
+	    	return "redirect:/loginUI.html";
+	    }
 	    //是否从首页进入
 	    String indexPage = request.getParameter("indexPage");
 	    //根据id查询service add by tangxr 2016-3-14

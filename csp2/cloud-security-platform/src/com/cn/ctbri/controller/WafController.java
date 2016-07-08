@@ -161,6 +161,21 @@ public class WafController {
 	public String wafDetails(HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		int serviceId = Integer.parseInt(request.getParameter("serviceId"));
+		
+	    //判断serviceId是否存在
+	    List<Serv> serList = servService.findAllService();
+	    boolean hasServFlag = false;
+	    if(serList!=null && serList.size()>0){
+	    	for(int i = 0; i < serList.size(); i++){
+	    		if(serviceId==serList.get(i).getId()){
+	    			hasServFlag = true;
+	    		}
+	    	}
+	    }
+	    if(!hasServFlag){
+	    	return "redirect:/loginUI.html";
+	    }
+	    
 	    //是否从首页进入
 	    String indexPage = request.getParameter("indexPage");
 		//获取服务对象资产

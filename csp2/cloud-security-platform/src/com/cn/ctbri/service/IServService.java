@@ -28,5 +28,9 @@ public interface IServService {
      */
     List<Serv> findServiceByParam(Serv service);
 
-
+    /**
+     * 查询所有服务
+     * @return
+     */
+    List<Serv> findAllService();
 }

@@ -84,6 +84,21 @@ public class shoppingAPIController {
 	public String selfHelpOrderAPIInit(HttpServletRequest request){
 	    User globle_user = (User) request.getSession().getAttribute("globle_user");
 	    int apiId = Integer.parseInt(request.getParameter("apiId"));
+	    
+	    //判断serviceId是否存在
+	    List<ServiceAPI> servList = serviceAPIService.findServiceAPI();
+        boolean flag = false;
+        if(servList!=null && servList.size()>0){
+            for(int i = 0; i < servList.size(); i++){
+                if(apiId==servList.get(i).getId()){
+                    flag = true;
+                }
+            }
+        }
+        if(!flag){
+            return "redirect:/loginUI.html";
+        }
+        
 	    //是否从首页进入
 	    String indexPage = request.getParameter("indexPage");
 	    //根据id查询serviceAPI, add by tangxr 2016-3-28
