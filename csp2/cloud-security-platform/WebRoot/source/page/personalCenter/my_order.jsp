@@ -256,6 +256,7 @@ function getServ(c){
 				    <input type="hidden" id="begin_datepage" value="${begin_date}"/>
 				    <input type="hidden" id="end_datepage" value="${end_date}"/>
 				    <input type="hidden" id="searchpage" value="${search}"/>
+				    <input type="hidden" id="list_grouppage" value="${list_group}"/>
 	            	
 	            	<div class="coreList clearfix">
 	                	<label class="container con-order fl">

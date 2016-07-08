@@ -284,9 +284,7 @@ function clearTable(){
 								  
 								    <!-- 告警详情-->
 								     <div class="user_right" style="width:1102px;" >
-								    	<div class="gj_top" style="width:1048px;">
-								        	<a href="#" class="aelse">我的订单</a>　>　<a href="#" class="acur">告警详情</a>
-								        </div>
+								    	
 								        <div class="gj_title webgj_title">
 								        	<div class="gj_fl">
 								        	

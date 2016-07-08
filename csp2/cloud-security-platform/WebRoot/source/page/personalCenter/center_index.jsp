@@ -228,8 +228,8 @@ function buyAPI(){
                      <dl class="clearfix">
                    	  <dt class="fl">消息提示</dt>
                         <a href="${ctx}/orderTrackInit.html"><dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderCount.png" alt=""></i><span>订单总数<em>${orderNum}</em></span></dd></a>
-                        <a href="${ctx}/orderTrackInit.html?state=1"><dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderRuning.png" alt=""></i><span>服务中的订单<em>${servNum}</em></span></dd></a>
-                        <a href="${ctx}/orderTrackInit.html?state=2"><dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderWarn.png" alt=""></i><span>告警订单<em>${alarmSum}</em></span></dd></a>
+                        <a href="${ctx}/orderTrackInit.html?state=1&list_group=1"><dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderRuning.png" alt=""></i><span>服务中的订单<em>${servNum}</em></span></dd></a>
+                        <a href="${ctx}/orderTrackInit.html?state=2&list_group=1"><dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderWarn.png" alt=""></i><span>告警订单<em>${alarmSum}</em></span></dd></a>
                       	<span class="b_bic qdbtn" style="float:right;margin-top:13px;color: #f6a525;">
                            		<i><img src="${ctx}/source/images/balance/sign_in.png" alt=""></i>
 	                        	<c:if test="${!signIn}">
