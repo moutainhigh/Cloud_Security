@@ -35,6 +35,7 @@ import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.Notice;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.ServiceAPI;
+import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.INoticeService;
@@ -42,6 +43,7 @@ import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServiceAPIService;
+import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
@@ -75,6 +77,8 @@ public class UserController{
     IServiceAPIService serviceAPIService;
 	@Autowired
     IOrderAssetService orderAssetService;
+	@Autowired
+    ITaskService taskService;
 
 	/**
 	 * 功能描述： 基本资料
@@ -745,7 +749,8 @@ public class UserController{
 		request.setAttribute("orderNum", orderNum);//订单总数
 		request.setAttribute("servNum",servNum);//服务中
 		//总告警数
-		List alarmList = alarmService.findAlarmByUserId(globle_user.getId());
+//		List alarmList = alarmService.findAlarmByUserId(globle_user.getId());
+		List alarmList = orderService.findByUserIdAndPage(globle_user.getId(),-1,"2",null,list_group);
 		int alarmSum = 0;
 		if(alarmList.size()>0&&alarmList!=null){
 			alarmSum = alarmList.size();
@@ -791,13 +796,23 @@ public class UserController{
 	        	HashMap<String,Object>  mapOrder = (HashMap<String,Object>)orderList.get(i);
 	        	String orderListId = (String)mapOrder.get("orderListId");
 	        	//根据orderListId查询订单
-	        	List ol = orderService.findByOrderListId(orderListId);
+	        	List ol = orderService.findByOrderListId(orderListId,null);
 	        	for(int j = 0; j < ol.size(); j++){
 	        		//获取对应资产 add by tangxr 2016-4-25
 		        	HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
 		        	String orderId = (String)map.get("id");
+		        	String type1 = map.get("type").toString();
+		        	Map<String,Object> paramMap = new HashMap<String,Object>();
+		        	paramMap.put("orderId", orderId);
+		        	paramMap.put("type", type1);
+		        	
 			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
 			        map.put("assetList", assetList);
+			        
+			        //多资产情况下，判断已完成的 add by tangxr 2016-7-7 
+//			        List<Task> tlist = taskService.findAllByOrderId(paramMap);
+					List<Task> finistlist = taskService.findFinishByOrderId(paramMap);
+					map.put("finistTask", finistlist.size());
 	        	}
 	        	mapOrder.put("order", ol);
 	        }

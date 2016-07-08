@@ -87,6 +87,7 @@ public class MyOrderController {
     public String orderTrackInit(HttpServletRequest request){
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         String state=request.getParameter("state");
+        String list_group=request.getParameter("list_group");
         //获取订单信息
         //List orderList = orderService.findByUserId(globle_user.getId());
         //获取当前时间
@@ -96,6 +97,7 @@ public class MyOrderController {
         //request.setAttribute("orderList", orderList);
         request.setAttribute("mark","1");
         request.setAttribute("state", state);
+        request.setAttribute("list_group", list_group);
         return "/source/page/personalCenter/my_order";
     }
     
@@ -110,6 +112,7 @@ public class MyOrderController {
         int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         String state=request.getParameter("state");
+//        int list_group=Integer.parseInt(request.getParameter("list_group"));
         //根据pageIndex获取每页order条数,获取订单信息（逻辑删除订单不显示）
         List orderList = orderService.findByUserIdAndPage(globle_user.getId(),pageIndex,state,null,1);
         
@@ -120,7 +123,7 @@ public class MyOrderController {
 	        	HashMap<String,Object>  mapOrder = (HashMap<String,Object>)orderList.get(i);
 	        	String orderListId = (String)mapOrder.get("orderListId");
 	        	//根据orderListId查询订单
-	        	List ol = orderService.findByOrderListId(orderListId);
+	        	List ol = orderService.findByOrderListId(orderListId,state);
 	        	for(int j = 0; j < ol.size(); j++){
 	        		int alarmViewedFlag = 1;
 		        	HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
@@ -145,6 +148,11 @@ public class MyOrderController {
 //			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
 			        List<Asset> assetList = orderAssetService.findAssetsByOrderId(orderId);
 			        map.put("assetList", assetList);
+			        
+			        //多资产情况下，判断已完成的 add by tangxr 2016-7-7 
+//			        List<Task> tlist = taskService.findAllByOrderId(paramMap);
+					List<Task> finistlist = taskService.findFinishAlarmByOrderId(paramMap);
+					map.put("finistTask", finistlist.size());
 	        	}
 	        	mapOrder.put("order", ol);
 	        }
@@ -196,6 +204,7 @@ public class MyOrderController {
         String begin_datevo = request.getParameter("begin_date");
         String end_datevo = request.getParameter("end_date");
         String search = request.getParameter("search");
+//        int list_group=Integer.parseInt(request.getParameter("list_group"));
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         //组织条件查询
         String name=servName;
@@ -260,7 +269,7 @@ public class MyOrderController {
 	        	HashMap<String,Object>  mapOrder = (HashMap<String,Object>)result.get(i);
 	        	String orderListId = (String)mapOrder.get("orderListId");
 	        	//根据orderListId查询订单
-	        	List ol = orderService.findByOrderListId(orderListId);
+	        	List ol = orderService.findByOrderListId(orderListId,state);
 	        	for(int j = 0; j < ol.size(); j++){
 	        		int alarmViewedFlag = 1;
 		        	HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
@@ -282,6 +291,11 @@ public class MyOrderController {
 //			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
 			        List<Asset> assetList = orderAssetService.findAssetsByOrderId(orderId);
 			        map.put("assetList", assetList);
+			        
+			        //多资产情况下，判断已完成的 add by tangxr 2016-7-7 
+//			        List<Task> tlist = taskService.findAllByOrderId(paramMap);
+					List<Task> finistlist = taskService.findFinishAlarmByOrderId(paramMap);
+					map.put("finistTask", finistlist.size());
 	        	}
 	        	mapOrder.put("order", ol);
 	        }
@@ -364,7 +378,7 @@ public class MyOrderController {
 	        	HashMap<String,Object>  mapOrder = (HashMap<String,Object>)result.get(i);
 	        	String orderListId = (String)mapOrder.get("orderListId");
 	        	//根据orderListId查询订单
-	        	List ol = orderService.findByOrderListId(orderListId);
+	        	List ol = orderService.findByOrderListId(orderListId,state);
 	        	for(int j = 0; j < ol.size(); j++){
 	        		int alarmViewedFlag = 1;
 		        	HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
@@ -386,6 +400,11 @@ public class MyOrderController {
 //			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
 			        List<Asset> assetList = orderAssetService.findAssetsByOrderId(orderId);
 			        map.put("assetList", assetList);
+			        
+			        //多资产情况下，判断已完成的 add by tangxr 2016-7-7 
+//			        List<Task> tlist = taskService.findAllByOrderId(paramMap);
+					List<Task> finistlist = taskService.findFinishAlarmByOrderId(paramMap);
+					map.put("finistTask", finistlist.size());
 	        	}
 	        	mapOrder.put("order", ol);
 	        }
