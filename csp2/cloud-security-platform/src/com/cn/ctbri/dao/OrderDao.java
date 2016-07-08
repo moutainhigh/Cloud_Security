@@ -136,5 +136,5 @@ public interface OrderDao {
 	//删除联系人信息
 	public void delLinkmanByOrderId(String orderId);
 	
-	List findByOrderListId(String orderListId);
+	List findByOrderListId(String orderListId, String state);
 }

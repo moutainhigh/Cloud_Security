@@ -62,4 +62,6 @@ public interface TaskDao {
 	public int findissueCount(String orderId);
 
 	public List<Task> findProgssByOrderId(Map<String, Object> pMap);
+
+	public List<Task> findFinishAlarmByOrderId(Map<String, Object> paramMap);
 }
