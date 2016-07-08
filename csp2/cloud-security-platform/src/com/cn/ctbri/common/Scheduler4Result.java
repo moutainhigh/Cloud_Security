@@ -84,7 +84,7 @@ public class Scheduler4Result {
 	    	//true成功连接服务管理系统
 	    	try{
 		    	if(session){
-		    		if(order.getStatus()==4){
+		    		if(order.getStatus()==4 || order.getStatus()==3){
 		    			int s = 0;
 	//	    			if(order.getType()==1){
 		    				s = getTask(order);
@@ -164,6 +164,7 @@ public class Scheduler4Result {
 				                                SMSUtils smsUtils = new SMSUtils();
 				                                smsUtils.sendMessage_warn(phoneNumber,order,assetName,String.valueOf(alarmArray.size()));
 				                                order.setMessage(1);
+				                                order.setStatus(3);
 				                                orderService.update(order);
 			                                }
 			                               }
