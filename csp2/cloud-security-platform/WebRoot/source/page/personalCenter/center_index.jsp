@@ -84,6 +84,13 @@ function signIn(){
     	});
 }
 
+function buySelfHelpOrder(serviceId){
+	$("#serviceId").val(serviceId);
+	$("#selfHelpOrderInitForm").submit();
+}
+function buyAPI(){
+	$("#APIForm").submit();
+}
 </script>
 <style>
 .mnlist .tablist-head{ border:#e5e5e5 solid 1px; border-bottom:none;}
@@ -266,38 +273,61 @@ function signIn(){
                     	<ul class="clearfix">
                         	<li class="fl">
                             	<!--需要显示AIP图标，给I加上类show-->
-                                <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=1&indexPage=2">
+                                <!--<a href="${ctx}/selfHelpOrderAPIInit.html?apiId=1&indexPage=2">
+                                	-->
+                                	<a href="javascript:;" onclick="buyAPI();">
                                 	<i class="show"></i>
                                     <p style=" text-align:center"><img src="${ctx}/source/images/personalCenter/1.png" alt=""></p>
-                                    <h5><a href="${ctx}/selfHelpOrderAPIInit.html?apiId=1&indexPage=2">WEB漏洞监测能力API</a></h5>
+                                    <!--<h5><a href="${ctx}/selfHelpOrderAPIInit.html?apiId=1&indexPage=2">WEB漏洞监测能力API</a></h5>
+                                -->
+                                	<h5><a href="javascript:;" onclick="buyAPI();">WEB漏洞监测能力API</a></h5>
                                 </a>
                                 
                             </li>
                             <li class="fl">
-                            	<a href="${ctx}/selfHelpOrderInit.html?serviceId=2&indexPage=1">
+                            	<!--<a href="${ctx}/selfHelpOrderInit.html?serviceId=2&indexPage=1">
+                                	-->
+                                	<a href="javascript:;" onclick="buySelfHelpOrder(2);">
                                 	<i></i>
                                     <p><img src="${ctx}/source/images/personalCenter/2.png" alt=""></p>
-                                    <h5><a href="${ctx}/selfHelpOrderInit.html?serviceId=2&indexPage=1">网站挂马监测服务</a></h5>
+                                    <!--<h5><a href="${ctx}/selfHelpOrderInit.html?serviceId=2&indexPage=1">网站挂马监测服务</a></h5>
+                            	-->
+                            	<h5><a href="javascript:;" onclick="buySelfHelpOrder(2);">网站挂马监测服务</a></h5>
                             	</a>
                             </li>
                             <li class="fl">
-                            	<a href="${ctx}/selfHelpOrderInit.html?serviceId=5&indexPage=1">
+                            	<!--<a href="${ctx}/selfHelpOrderInit.html?serviceId=5&indexPage=1">
+                                	-->
+                                	<a href="javascript:;" onclick="buySelfHelpOrder(5);">
                                 	<i></i>
                                    	<p style="padding-top:38px;"><img src="${ctx}/source/images/personalCenter/5.png" alt=""></p>
-                                    <h5><a href="${ctx}/selfHelpOrderInit.html?serviceId=5&indexPage=1">网站可用性监测服务</a></h5>
+                                    <!--<h5><a href="${ctx}/selfHelpOrderInit.html?serviceId=5&indexPage=1">网站可用性监测服务</a></h5>
+                                -->
+                                <h5><a href="javascript:;" onclick="buySelfHelpOrder(5);">网站可用性监测服务</a></h5>
                                 </a>
                                
                             </li>
                             <li class="fl" style="margin-right:0px;">
-                            	<a href="${ctx}/selfHelpOrderInit.html?serviceId=3&indexPage=1">
+                            	<!--<a href="${ctx}/selfHelpOrderInit.html?serviceId=3&indexPage=1">
+                                	-->
+                                	<a href="javascript:;" onclick="buySelfHelpOrder(3);">
                                 	<i></i>
                                     <p><img src="${ctx}/source/images/personalCenter/3.png" alt=""></p>
-                                    <h5><a href="${ctx}/selfHelpOrderInit.html?serviceId=3&indexPage=1">网页篡改监测服务</a></h5>
-                                </a>
+                                    <!--<h5><a href="${ctx}/selfHelpOrderInit.html?serviceId=3&indexPage=1">网页篡改监测服务</a></h5>
+                                -->
+	                                <h5><a href="javascript:;" onclick="buySelfHelpOrder(3);">网页篡改监测服务</a></h5>
+	                                </a>
                                 
                             </li>
                         </ul>
-                    
+                   		<form action="selfHelpOrderInit.html" method="post" id="selfHelpOrderInitForm">
+							<input type="hidden" id="serviceId" name="serviceId"/>
+							<input type="hidden" id="indexPage" name="indexPage" value="1"/>
+						</form>
+						<form action="selfHelpOrderAPIInit.html" method="post" id="APIForm">
+							<input type="hidden" id="apiId" name="apiId" value="1"/>
+							<input type="hidden" id="indexPage" name="indexPage" value="2"/>
+						</form>
                     </div>
                 </div>
             

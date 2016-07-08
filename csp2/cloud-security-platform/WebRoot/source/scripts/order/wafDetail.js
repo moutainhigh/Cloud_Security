@@ -49,7 +49,9 @@ $(function(){
 		     url: "getSession.html", 
 		     dataType: "json", 
 		     success: function(data) {
-		    	 window.location.href="wafDetails.html?serviceId=6";
+		    	 //window.location.href="wafDetails.html?serviceId=6";
+    			 $("#serviceIdWafHidden").val(6);
+    			 $("#wafDetailsForm").submit();
 		    	 }, 
 		     error: function(data){ 
 		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
@@ -407,7 +409,9 @@ $(function(){
 		     success: function(data) {
     			   		 if(data.sucess){
     			   			 alert("添加购物车成功!");
-    			   			 window.location.href="wafDetails.html?serviceId="+data.serviceId;
+    			   			 //window.location.href="wafDetails.html?serviceId="+data.serviceId;
+    			   			 $("#serviceIdWafHidden").val(data.serviceId);
+    		    			 $("#wafDetailsForm").submit();
     			   		 }
     			   			
     			   	

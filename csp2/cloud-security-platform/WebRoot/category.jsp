@@ -11,7 +11,20 @@
 		 <script src="${ctx}/source/scripts/common/main.js"></script>
 		<script src="${ctx}/source/scripts/common/portalindex.js"></script>-->
 	</head>
-
+<script type="text/javascript">
+function buyService(serviceId){
+	$("#serviceId").val(serviceId);
+	if(serviceId<5){
+		$("#selfHelpOrderInitForm").submit();
+	}else{
+		$("#wafDetailsForm").submit();
+	}
+}
+function buyServiceAPI(apiId){
+	$("#apiId").val(apiId);
+	$("#selfHelpOrderAPIInitForm").submit();
+}
+</script>
 	<body>
 		<div class="Divlist listJs fl" style="margin-right:48px;">
 			<a href="#" class="hbule">商品分类<i></i>
@@ -28,10 +41,23 @@
 							  <li>
 							</c:if>
 							<c:if test="${status.index < 5}">
-								<a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">${list.name }</a>
+								<!--<a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">${list.name }</a>
+								-->
+								<a href="javascript:;" onclick="buyService(${list.id });">${list.name }</a>
+								<form action="selfHelpOrderInit.html" method="post" id="selfHelpOrderInitForm">
+									<input type="hidden" id="type" name="type" value="${list.orderType }"/>
+									<input type="hidden" id="serviceId" name="serviceId" value="${list.id }"/>
+									<input type="hidden" id="indexPage" name="indexPage" value="1"/>
+								</form>
 							</c:if>
 							<c:if test="${status.index >= 5}">
-								<a href="${ctx}/wafDetails.html?serviceId=${list.id }&indexPage=1">${list.name }</a>
+								<!--<a href="${ctx}/wafDetails.html?serviceId=${list.id }&indexPage=1">${list.name }</a>
+							-->
+							<a href="javascript:;" onclick="buyService(${list.id });">${list.name }</a>
+							<form action="wafDetails.html" method="post" id="wafDetailsForm">
+								<input type="hidden" id="serviceId" name="serviceId" value="${list.id }"/>
+								<input type="hidden" id="indexPage" name="indexPage" value="1"/>
+							</form>
 							</c:if>
 								</li>
 						</c:forEach>
@@ -47,7 +73,13 @@
 							<c:if test="${status.count != 1}">
 							  <li>
 							</c:if>
-								<a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${apiList.id }&indexPage=2">${apiList.name }</a>
+								<!--<a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${apiList.id }&indexPage=2">${apiList.name }</a>
+							-->
+							<a href="javascript:;" onclick="buyServiceAPI(${apiList.id });">${apiList.name }</a>
+							<form action="selfHelpOrderAPIInit.html" method="post" id="selfHelpOrderAPIInitForm">
+								<input type="hidden" id="apiId" name="apiId" value="${apiList.id }"/>
+								<input type="hidden" id="indexPage" name="indexPage" value="2"/>
+							</form>
 							</li>
 						</c:forEach>
 					</ol>
@@ -59,6 +91,7 @@
 					<a href="${ctx}/Xpage.html">x专区</a>
 				</li>
 			</ul>
+
 		</div>
 	</body>
 </html>

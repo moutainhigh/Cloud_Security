@@ -37,6 +37,11 @@ function showUnreadNews()
         }
     });
 }
+
+function buyAPI(apiId){
+	$("#apiIdNew").val(apiId);
+	$("#selfHelpOrderAPIInitNewForm").submit();
+}
     //定时30s刷新一次
     //setInterval('showUnreadNews()',20000);
 </script>
@@ -135,7 +140,13 @@ function showUnreadNews()
 		                                    <div class="purchase">
 		                                    	<strong>¥0</strong>
 		                                    	<strong><em style="font-family:Arial Regular;font-size:22px;">¥99</em></strong>
-		                                    	<a style="left:112px" href="${ctx}/selfHelpOrderAPIInit.html?apiId=${list.id }&indexPage=2" class="btn">购买</a>
+		                                    	<!--<a style="left:112px" href="${ctx}/selfHelpOrderAPIInit.html?apiId=${list.id }&indexPage=2" class="btn">购买</a>
+		                                    -->
+		                                    <a style="left:112px" href="javascript:;" onclick="buyAPI(${list.id });" class="btn">购买</a>
+		                                    <form action="selfHelpOrderAPIInit.html" method="post" id="selfHelpOrderAPIInitNewForm">
+												<input type="hidden" id="apiIdNew" name="apiId"/>
+												<input type="hidden" id="indexPage" name="indexPage" value="2"/>
+											</form>
 		                                    </div>
 		                               
 		                            </li>

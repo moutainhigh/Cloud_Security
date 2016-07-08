@@ -107,7 +107,14 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                     	<c:choose>
                            <c:when test="${status.index<3}">
                             <li class="fl">
-                                <a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1">
+                                <!--<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1">
+                                    -->
+                                    <a href="javascript:;" onclick="buySelfHelpOrderMain(${list.id });"> 
+                                    <form action="selfHelpOrderInit.html" method="post" id="mainForm">
+                						<input type="hidden" id="serviceIdHidden" name="serviceId"/>
+                						<input type="hidden" id="indexPage" name="indexPage" value="1"/>
+                					</form>
+                                   
                                     <i><img src="${ctx}/source/images/portal/HOT.png" alt=""></i>
                                     <c:if test="${list.id ==1}">
 	                                    <p><img src="${ctx}/source/images/portal/vulnScan.png" alt=""></p>
@@ -177,7 +184,9 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                         </div>
                     	<ul class="newlist newlist-top fl">
                             <li class="fl">
-                                <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=3&indexPage=2">
+                                <!--<a href="${ctx}/selfHelpOrderAPIInit.html?apiId=3&indexPage=2">
+                                    -->
+                                    <a href="javascript:;" onclick="buySelfHelpOrderAPIMain(3);">
                                     <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/webPageTamper.png" alt=""></p>
                                     <h4>网页篡改监测能力API</h4>
@@ -188,7 +197,9 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                 </a>
                             </li>
                             <li class="fl">
-                                <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=4&indexPage=2">
+                                <!--<a href="${ctx}/selfHelpOrderAPIInit.html?apiId=4&indexPage=2">
+                                    -->
+                                    <a href="javascript:;" onclick="buySelfHelpOrderAPIMain(4);">
                                     <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/sensitiveWord.png" alt=""></p>
                                     <h4>网页敏感内容监测能力API</h4>
@@ -199,7 +210,9 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                 </a>
                             </li>
                             <li class="fl">
-                                <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=5&indexPage=2">
+                                <!--<a href="${ctx}/selfHelpOrderAPIInit.html?apiId=5&indexPage=2">
+                                    -->
+                                    <a href="javascript:;" onclick="buySelfHelpOrderAPIMain(5);">
                                     <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
                                     <p><img src="${ctx}/source/images/portal/availability.png" alt=""></p>
                                     <h4>网站可用性监测API</h4>
@@ -210,6 +223,10 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                 </a>
                             </li>
                         </ul>
+                        <form action="selfHelpOrderAPIInit.html" method="post" id="APIMainForm">
+    						<input type="hidden" id="apiIdHidden" name="apiId" value=""/>
+    						<input type="hidden" id="indexPage" name="indexPage" value="2"/>
+    					</form>
                     </div>
                 </div>
                 
@@ -360,7 +377,8 @@ $(function(){
 		});
 		
 	})
-	
+
+
 </script>
 <script>
 	//var w=$(document).width();

@@ -43,6 +43,10 @@ function showUnreadNews()
         }
     });
 }
+
+function buySelfHelpOrder(type,serviceId){
+alert(type);
+}
     //定时30s刷新一次
     //setInterval('showUnreadNews()',20000);
 </script>
@@ -166,7 +170,8 @@ function showUnreadNews()
 				         </p>
 		            </div>
 		            <div class="web_right fr">
-				    <a class="index_buy new_index_buy" href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">购买</a>
+				    <!--<a class="index_buy new_index_buy" href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">购买</a>
+				   --><a class="index_buy new_index_buy" href="javascript:;" onclick="buySelfHelpOrder(${list.orderType },${list.id });">购买</a>
 				    </div>
 		        </div>
 		      </div>
@@ -183,8 +188,9 @@ function showUnreadNews()
 				        	<span class="web_money" style="font-size:14px;text-decoration:line-through;">99￥</span>
 				         </p>
                     </div>
-                    <div class="web_right fr">
-				    <a class="index_buy new_index_buy" href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">购买</a>
+                    <div class="web_right fr"><!--
+                     <a class="index_buy new_index_buy" href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">购买</a>
+				    --><a class="index_buy new_index_buy" href="javascript:;" onclick="buySelfHelpOrder(${list});">购买</a>
 				    </div>
                 </div>
               </div>
@@ -247,6 +253,12 @@ function showUnreadNews()
            </c:choose>
         </c:forEach>
     </div>
+    	      <form method="post" action="selfHelpOrderInit.html" id="selfHelpOrderInitForm">
+              	<input type="hidden" id="orderTypeHidden" value="${list.orderType }"/>
+				<input type="hidden" id="serviceIdHidden" value="${list.id }"/>
+				<input type="hidden" id="indexPageHidden" value="1"/>
+              </form>
+    
   </div>
 </div>
 <%-- <div class="bottom_bj">

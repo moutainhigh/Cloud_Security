@@ -166,9 +166,15 @@ function loginSubmit(){
 							var serviceId = data.serviceId;
 							var indexPage = data.indexPage;
 							if(serviceId==6){
-								window.location.href="wafDetails.html?serviceId="+serviceId+"&indexPage="+indexPage;
+								//window.location.href="wafDetails.html?serviceId="+serviceId+"&indexPage="+indexPage;
+								$("#serviceIdWafHidden").val(serviceId);
+								$("#indexPageWafHidden").val(indexPage);
+								$("#wafDetailsForm").submit();
 							}else{
-								window.location.href="selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
+								//window.location.href="selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
+								$("#serviceIdHidden").val(serviceId);
+								$("#indexPageHidden").val(indexPage);
+								$("#serviceLoginForm").submit();
 							}
 							break;
 						case 6:
@@ -176,7 +182,10 @@ function loginSubmit(){
 							$("#errMsgDiv").hide();
 							var  apiId = data.apiId;
 							var indexPage = data.indexPage;
-							window.location.href="selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
+							//window.location.href="selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
+							$("#apiIdHidden").val(apiId);
+							$("#indexPageAPIHidden").val(indexPage);
+							$("#APILoginForm").submit();
 							break;
 						case 7:
 							$("#errMsg").html("");

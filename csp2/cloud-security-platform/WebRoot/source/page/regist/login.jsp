@@ -152,6 +152,18 @@
 				</ol>
 				
 			</div>
+            <form action="selfHelpOrderAPIInit.html" method="post" id="APILoginForm">
+				<input type="hidden" id="apiIdHidden" name="apiId" value=""/>
+				<input type="hidden" id="indexPageAPIHidden" name="indexPage" value="2"/>
+			</form>
+            <form action="selfHelpOrderInit.html" method="post" id="serviceLoginForm">
+				<input type="hidden" id="serviceIdHidden" name="serviceId" value=""/>
+				<input type="hidden" id="indexPageHidden" name="indexPage" value="1"/>
+			</form>
+			<form action="wafDetails.html" method="post" id="wafDetailsForm">
+				<input type="hidden" id="serviceIdWafHidden" name="serviceId" value=""/>
+				<input type="hidden" id="indexPageWafHidden" name="indexPage" value="1"/>
+			</form>
 		</div>
 		<!-- 底部 start -->
 		<c:import url="/foot.jsp"></c:import>

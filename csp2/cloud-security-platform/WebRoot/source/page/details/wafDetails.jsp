@@ -171,7 +171,9 @@
                         <button style="background:#5aba5f; width:126px" id="buyNowWaf">立即购买</button>
                     </div>
 				</div>
-                
+                <form action="wafDetails.html" method="post" id="wafDetailsForm">
+					<input type="hidden" id="serviceIdWafHidden" name="serviceId" value=""/>
+				</form>
 				
 			</div>
 		</div>

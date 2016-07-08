@@ -39,6 +39,15 @@ function showUnreadNews()
         }
     });
 }
+
+function buySefHelpOrder(serviceId){
+	$("#serviceId").val(serviceId);
+	$("#selfHelpOrderInitForm").submit();
+}
+function buyWafOrder(serviceId){
+	$("#serviceId").val(serviceId);
+	$("#wafDetailsForm").submit();
+}
     //定时30s刷新一次
     //setInterval('showUnreadNews()',20000);
 </script>
@@ -144,16 +153,24 @@ function showUnreadNews()
 		                                    	<strong>¥0.00</strong>
 		                                   	 	<strong><em style="font-family:Arial Regular;font-size:22px;">¥99.00</em></strong>
 		                                    </c:if>
-		                                    	<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1" class="btn">购买</a>
+		                                    	<!--<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1" class="btn">购买</a>
+		                                    -->
+		                                    <a href="javascript:;" class="btn" onclick="buySefHelpOrder(${list.id });">购买</a>
+		                                     <form action="selfHelpOrderInit.html" method="post" id="selfHelpOrderInitForm">
+                								<input type="hidden" id="serviceId" name="serviceId"/>
+                								<input type="hidden" id="indexPage" name="indexPage" value="1"/>
+                							</form>
 		                                    </div>
 		                               
 		                            </li>
 		                         </c:when>
+		                           
 		                       </c:choose>
                             </c:forEach>
                         </ul>
                     </div>
                 </div>
+
         </div>
 			
 		</div>
@@ -176,7 +193,13 @@ function showUnreadNews()
                                            
                                             <strong style="display:block"><em style="font-size:20px;font-family: Arial Regular;">¥199.00</em></strong>
                                              <strong style="display:block; font-size:30px;">¥100.00</strong>
-                                            <a href="${ctx}/wafDetails.html?serviceId=6&indexPage=1" class="btn" style="width:80px;">购买</a>
+                                            <!--<a href="${ctx}/wafDetails.html?serviceId=6&indexPage=1" class="btn" style="width:80px;">购买</a>
+                                        -->
+                                         	<a href="javascript:;" class="btn" style="width:80px;" onclick="buyWafOrder(6);">购买</a>
+		                                     <form action="wafDetails.html" method="post" id="wafDetailsForm">
+                								<input type="hidden" id="serviceId" name="serviceId" value="6"/>
+                								<input type="hidden" id="indexPage" name="indexPage" value="1"/>
+                							</form>
                                         </div>
                                     </div>
                                <div class="mask">

@@ -144,7 +144,7 @@ $(function(){
     	var endDate=$('#endDate').val();
     	var scanType = $('.clickTime').val();
     	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
-    	var serviceId = $("#serviceId").val();
+    	var serviceId = $("#serviceIdHidden").val();
     	var times = $("#timesHidden").val();
     	var price = $('.price').children('strong:first').text();
     	var priceVal = price.substring(price.indexOf("¥")+1,price.length);
@@ -392,7 +392,7 @@ $(function(){
     	var endDate=$('#endDate').val();
     	var scanType = $('.clickTime').val();
     	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
-    	var serviceId = $("#serviceId").val();
+    	var serviceId = $("#serviceIdHidden").val();
     	var price = $('.price').children('strong:first').text();
     	var times = $("#timesHidden").val();
     	if(orderType==2){
@@ -449,7 +449,8 @@ $(function(){
 		     success: function(data) {
     			   		 if(data.sucess){
     			   			 alert("添加购物车成功!");
-    			   			 window.location.href="selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
+    			   			 buyService(serviceId);
+    			   			// window.location.href="selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
     			   		 }
     			   			
     			   	
@@ -853,3 +854,16 @@ function tasknum_verification(){
             
          }
     }
+    
+    function buyService(serviceId){
+
+        $("#serviceIdNew").val(serviceId);
+      	$("#selfHelpOrderInitNewForm").submit();
+      }
+      
+      function buyAPI(apiId){
+    	  alert(apiId);
+      	$("#apiIdNew").val(apiId);
+      	$("#selfHelpOrderAPIInitNewForm").submit();
+      
+      }

@@ -126,6 +126,15 @@ topshow3();
 
 })
 
+function buySelfHelpOrderMain(serviceId){
+	$("#serviceIdHidden").val(serviceId);
+	$("#mainForm").submit();
+}
+function buySelfHelpOrderAPIMain(apiId){
+	$("#apiIdHidden").val(apiId);
+	$("#APIMainForm").submit();
+}	
+
 
 
 
