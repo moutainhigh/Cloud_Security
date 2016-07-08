@@ -128,7 +128,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					<if test="type==1 and group_flag==null or group_flag==''">
 		             limit #{count}
 		            </if>
-			)	t
+			)	t order by t.execute_time limit 1
 	</select>
 	
 	
@@ -300,4 +300,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	             ORDER BY t.execute_time DESC limit #{count}
 	            </if>
 	</select>
+	
+	<select id="findFinishAlarmByOrderId" parameterType="hashmap" resultType="com.cn.ctbri.entity.Task">				
+		select DISTINCT a.taskId
+		from cs_task t,cs_order_asset oa,cs_alarm a
+		WHERE
+		t.order_asset_Id=oa.id 
+		and t.taskId = a.taskId
+		and oa.orderId=#{orderId}
+        and t.status=3
+        and t.isAlarm=1
+    </select>
 </mapper>
