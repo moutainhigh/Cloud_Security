@@ -190,10 +190,16 @@ public class shoppingController {
        
         //根据id查询service
 	    Serv service = servService.findById(serviceId);
+	    if (service == null) {
+	    	return "redirect:/index.html";
+	    }
 	    String assetAddr = "";
 	    String assetNames = "";
         for(int i=0;i<assetArray.length;i++){
         	Asset asset = assetService.findById(Integer.parseInt(assetArray[i]));
+        	if(asset == null || asset.getUserid() != globle_user.getId()) {
+        		return "redirect:/index.html";
+        	}
         	assetAddr = assetAddr + asset.getAddr()+",";
         	assetNames = assetNames + asset.getName() + ",";
         }
@@ -1607,7 +1613,8 @@ public class shoppingController {
 		if (modifyOrderIdList != null && !modifyOrderIdList.equals("") && !modifyOrderIdList.equals("undefined")){
 			String modifyOrderId[] = modifyOrderIdList.split(",");
 			for(String id:modifyOrderId){
-				if(!orderList.getOrderId().contains(id.trim())){
+				if(!orderList.getOrderId().contains(id.trim()+",")&&
+						!orderList.getOrderId().endsWith(id.trim())){
 					return "redirect:/index.html"; 
 				}
 			}
