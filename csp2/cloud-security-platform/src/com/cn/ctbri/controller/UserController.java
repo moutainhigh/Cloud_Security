@@ -1415,25 +1415,35 @@ public class UserController{
 	public String updatePass(User user,HttpServletRequest request,Model m){
 		String email = request.getParameter("eamil_ecode");
 		String mobile = request.getParameter("phone_code");
+		
+		//原始密码:为空是忘记密码；不为空修改密码
+		//提交成功时，短信验证码失效
+		String originalMobile = request.getParameter("originalMobile");
+		if(originalMobile!=null && !originalMobile.equals("")){
+			String sessionMobile = (String) request.getSession().getAttribute("modifyCode_activationCode");
+			if(sessionMobile== null || mobile==null || "".equals(mobile)||!originalMobile.equals(mobile)||
+					!sessionMobile.startsWith(mobile)) {
+				return "redirect:/index.html";
+			}
+			//修改密码
+			request.getSession().removeAttribute("modifyCode_activationCode");
+		}else{
+			String sessionMobile = (String) request.getSession().getAttribute("forgetCode_activationCode");
+			if(sessionMobile== null || mobile==null || "".equals(mobile)|| !sessionMobile.startsWith(mobile)) {
+				return "redirect:/index.html";
+			}
+			//忘记密码
+			request.getSession().removeAttribute("forgetCode_activationCode");
+		}
+		
 		if(email!=null&&!"".equals(email)){
 			user.setEmail(email);
 		}
 		if(mobile!=null&&!"".equals(mobile)){
 			user.setMobile(mobile);
 		}
+		
 		m.addAttribute("User", user);
-		
-		//原始密码:为空是忘记密码；不为空修改密码
-		//提交成功时，短信验证码失效
-		String originalMobile = request.getParameter("originalMobile");
-		if(originalMobile!=null && !originalMobile.equals("")){
-			//修改密码
-			request.getSession().removeAttribute("modifyCode_activationCode");
-		}else{
-			//忘记密码
-			request.getSession().removeAttribute("forgetCode_activationCode");
-		}
-		
 		return "/updatePass";
 	}
 	
@@ -1443,9 +1453,18 @@ public class UserController{
 	 *		 @time 2015-1-8
 	 */
 	@RequestMapping(value="/confirmPass.html")
-	public String confirmPass(User user){
+	public String confirmPass(User user,HttpServletRequest request){
 		try {
+			if (!LogonUtils.checkNumber(request)) {
+				return "/updatePassfail";
+				
+			}
+			
+			String confirmPassword = request.getParameter("confirm_password");
 			String password = user.getPassword();
+			if (confirmPassword == null || password== null || !confirmPassword.equals(password)) {
+				return "/updatePassfail";
+			}
 			String passwdMD5 = DigestUtils.md5Hex(password);
 			String mobile = user.getMobile();
 			user.setPassword(passwdMD5);
@@ -1459,6 +1478,8 @@ public class UserController{
 		} catch(Exception e) {
 			e.printStackTrace();
 			return "/updatePassfail";
+		}finally{
+			request.getSession().removeAttribute("CHECK_NUMBER_KEY");
 		}
 
 	}
@@ -1671,10 +1692,16 @@ public class UserController{
 	public String confirmMobile(HttpServletRequest request){
 		boolean success = false;
 		String mobile = request.getParameter("mobile");
+		String code = request.getParameter("verification_code");
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		if(mobile == null ||mobile.equals("")|| globle_user == null) {
-			request.setAttribute("success", success);
+			request.setAttribute("success", false);
 		}else {
+			String modifyCode = (String) request.getSession().getAttribute("modifyMobile_activationCode");
+			if (modifyCode == null || !modifyCode.startsWith(mobile+","+code)) {
+				request.setAttribute("success", false);
+				return "/updateMobileFinish";
+			}
 			User user = new User();
 			user.setMobile(mobile);
 			user.setId(globle_user.getId());
