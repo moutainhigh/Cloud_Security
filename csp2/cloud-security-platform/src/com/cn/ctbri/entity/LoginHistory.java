@@ -8,6 +8,7 @@ public class LoginHistory {
 	private int userId;//用户ID
 	private int userType;//用户TYPE
 	private Date loginTime;//登录时间
+	private String IPAddr;//登录IP地址
 	public int getId() {
 		return id;
 	}
@@ -31,6 +32,12 @@ public class LoginHistory {
 	}
 	public void setLoginTime(Date loginTime) {
 		this.loginTime = loginTime;
+	}
+	public String getIPAddr() {
+		return IPAddr;
+	}
+	public void setIPAddr(String iPAddr) {
+		IPAddr = iPAddr;
 	}
 	
 	
