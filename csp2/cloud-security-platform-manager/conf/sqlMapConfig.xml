@@ -42,5 +42,6 @@
 	    <mapper resource="com/cn/ctbri/entity/EnginecfgMapper.xml"/>
 	    <mapper resource="com/cn/ctbri/entity/AssertAlarmMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/PriceMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/APIMapper.xml"/>
 	</mappers>
 </configuration>  
