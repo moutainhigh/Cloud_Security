@@ -231,7 +231,8 @@ public class DeviceAdpaterManager {
 	        if(wafRoot.attribute("state")!=null||wafRoot.attributeValue("state").equalsIgnoreCase(DeviceAdapterConstant.DEVICE_STATE_ON)){
 		        wafRootStat = wafRoot.attributeValue("state");
 	        	wafRootString = DeviceAdapterConstant.RootPath+doc.getRootElement().element("DeviceList").element("DeviceWAFList").attributeValue("configFile");
-				wafConfigManager.loadWAFConfig(wafRootString);	    
+				System.out.println(">>>wafRootString="+wafRootString);
+	        	wafConfigManager.loadWAFConfig(wafRootString);	    
 	        }
 
 	        return true;
@@ -315,7 +316,6 @@ public class DeviceAdpaterManager {
 			try {
 				document = DocumentHelper.parseText(responseString);
 			} catch (DocumentException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
 			Element rootElement = document.getRootElement();
@@ -705,7 +705,7 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getSites(resourceId, deviceId);
 	}
 	public String getSitesInResource(int resourceId) {
-		return nsfocusWAFAdapter.getSites(resourceId);
+		return nsfocusWAFAdapter.getSitesInResource(resourceId);
 	}
 	
 	public String createSiteInResource(int resourceId,JSONObject jsonObject) {

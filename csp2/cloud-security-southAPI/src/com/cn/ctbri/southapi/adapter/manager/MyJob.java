@@ -4,9 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -16,7 +13,6 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import com.cn.ctbri.southapi.adapter.config.DeviceConfigInfo;
 import com.cn.ctbri.southapi.adapter.config.Engine;
 import com.cn.ctbri.southapi.adapter.config.EngineStatList;
 import com.cn.ctbri.southapi.adapter.manager.DeviceAdapterConstant;
@@ -51,8 +47,8 @@ public class MyJob implements Job {
 		        	System.out.println("while"+deviceId);
 		        	Document engineStatDocument = DocumentHelper.parseText(deviceAdpaterManager.getEngineStat(deviceId));
 		        	Element engineStatRoot= engineStatDocument.getRootElement();
-		        	List nodes = engineStatRoot.elements("EngineList");
-		            for(Iterator it=nodes.iterator();it.hasNext();){
+		        	List<?> nodes = engineStatRoot.elements("EngineList");
+		            for(Iterator<?> it=nodes.iterator();it.hasNext();){
 		            	Engine engine = new Engine();
 		                Element engineStatElement = (Element) it.next();
 		                engineStatList.setIP(engineStatElement.elementTextTrim("IP"));

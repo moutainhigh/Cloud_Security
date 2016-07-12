@@ -12,10 +12,7 @@ import javax.ws.rs.core.MediaType;
 
 import net.sf.json.JSONObject;
 
-import org.apache.cxf.ws.rm.RetransmissionCallback;
 import org.codehaus.jettison.json.JSONException;
-import org.w3c.dom.ls.LSInput;
-
 import com.cn.ctbri.southapi.adapter.config.ScannerTaskUniParam;
 import com.cn.ctbri.southapi.adapter.manager.DeviceAdpaterManager;
 

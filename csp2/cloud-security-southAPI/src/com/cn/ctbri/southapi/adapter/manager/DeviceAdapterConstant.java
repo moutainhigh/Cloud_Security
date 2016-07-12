@@ -1,7 +1,5 @@
 package com.cn.ctbri.southapi.adapter.manager;
 
-import com.cn.ctbri.southapi.adapter.servlet.InitServlet;
-
 /**
  * 设备适配管理配置参数
  * @version beta

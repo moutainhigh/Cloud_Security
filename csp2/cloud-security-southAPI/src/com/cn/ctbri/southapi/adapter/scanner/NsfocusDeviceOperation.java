@@ -1,9 +1,6 @@
 package com.cn.ctbri.southapi.adapter.scanner;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,11 +12,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
-
 import com.cn.ctbri.southapi.adapter.bean.TaskInfo;
 import com.cn.ctbri.southapi.adapter.bean.URLInfo;
 import com.cn.ctbri.southapi.adapter.bean.VulInfo;
@@ -31,7 +25,6 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
 public class NsfocusDeviceOperation extends CommonDeviceOperation {
 	private String nsfocusServerWebrootUrl = "";
@@ -322,30 +315,6 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 	 * @param args
 	 * @throws IOException 
 	 */
-	public static void main(String[] args) throws IOException {
-		NsfocusDeviceOperation ns = new NsfocusDeviceOperation();
-		ScannerTaskUniParam scannerTaskUniParam = new ScannerTaskUniParam();
-		scannerTaskUniParam.setTaskId("37");
-		scannerTaskUniParam.setDestURL("https://www.testfire.net");
-		scannerTaskUniParam.setTaskSLA("100");
-		String serverWebRoot = "https://192.168.11.207";
-		String[] reports = new String[2];
- 		ns.createSessionId("admin", "1qa2ws3ed", serverWebRoot);
-		String reportString = ns.getReportByTaskId(scannerTaskUniParam);
-		ns.getNsfocusReport(reportString);
-		Files.write(Paths.get("s.txt"), reportString.getBytes());
-		reports = reportString.split("/r/n", 2);
-		System.out.println("report2= "+reports[1]);
-
-		try {
-			SAXReader reader = new SAXReader();
-			Document doc = DocumentHelper.parseText(reports[1]);
-			Element root = doc.getRootElement();
-			List<Element> elementList = root.elements();
-			Element ele = root.element("vuln_list");			
-		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public static void main(String[] args){
 	}
 }

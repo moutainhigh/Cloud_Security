@@ -93,10 +93,12 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	 */
 	private  String postMethod(String url, String jsonString) {
 		//创建客户端配置对象
+		System.out.println("URL="+url);
 		WebResource service = createBasicWebResource(url);
 		Builder builder = service.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 		//获取响应结果
 		ClientResponse response = builder.post(ClientResponse.class, jsonString);
+		System.out.println(response);
 		//String cookie = response.getCookies().toString();
 		String body = response.getEntity(String.class);
 		//For 2
@@ -326,7 +328,9 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		}
 		JSONObject createSiteJsonObject = new JSONObject();
 		createSiteJsonObject.put("0", tempJsonObject);
+		System.out.println(createSiteJsonObject);
 		String createSiteString = postOperation(nsfocusWafUrl+REST_URI_V1+"/sites",createSiteJsonObject.toString());
+		System.out.println(">>>"+createSiteString);
 		JSONArray responseArray = JSONArray.fromObject(createSiteString);
 		String responseString = responseArray.getString(0);
 		return responseString;
