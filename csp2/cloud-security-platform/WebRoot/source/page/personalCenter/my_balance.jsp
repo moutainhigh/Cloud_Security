@@ -20,6 +20,25 @@
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
+<script type="text/javascript">
+function getPage(page){
+//虚拟表单post提交
+	var tempForm = document.createElement("form");
+  	tempForm.action = "balanceUI.html";
+  	tempForm.method = "post";
+  	tempForm.style.display = "none";
+  							
+  	var pageCodeInput = document.createElement("input");
+  	pageCodeInput.type="hidden"; 
+	pageCodeInput.name= "pageCode"; 
+	pageCodeInput.value= page; 
+	tempForm.appendChild(pageCodeInput);
+							
+	document.body.appendChild(tempForm);
+	tempForm.submit();
+	document.body.removeChild(tempForm);
+}
+</script>
 </head>
 
 <body>
@@ -143,7 +162,7 @@
 	                <c:choose>
 	                	<c:when test="${pb.pageCode>1}">
 	                		<!-- <a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }" class="lt cl_active fl"></a> -->
-	                		<a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }" class="lt fl"></a>
+	                		<a href="#" class="lt fl" onclick="getPage(${pb.pageCode-1 })"></a>
 	                	</c:when>
 	                	<c:otherwise>
 	                		<a href="#" class="lt fl"></a>
@@ -153,20 +172,20 @@
                 	<%--页码--%>
                     <ul class="bpage fl">
                     	<c:if test="${pb.totalPage != 1 && pb.pageCode == pb.totalPage}">
-                       		<li><a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode-1 }">${pb.pageCode-1 }</a></li>
+                       		<li><a href="#" onclick="getPage(${pb.pageCode-1 })">${pb.pageCode-1 }</a></li>
                     	</c:if>
                     	
                     	<li style="background-color:#2499fb;"><a href="#" style="color:#f3f3f3;">${pb.pageCode }</a></li>
                     	
                     	<c:if test="${pb.pageCode < pb.totalPage}">
-                        	<li><a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }" >${pb.pageCode+1 }</a></li>
+                        	<li><a href="#" onclick="getPage(${pb.pageCode+1 })">${pb.pageCode+1 }</a></li>
                     	</c:if>
                         
                     </ul>
                     
                     <c:choose>
 	                	<c:when test="${pb.pageCode < pb.totalPage}">
-	                		<a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }" class="gt fl"></a>
+	                		<a href="#" class="gt fl" onclick="getPage(${pb.pageCode+1 })"></a>
                     		<!-- <a href="${ctx}/balanceUI.html?pageCode=${pb.pageCode+1 }" class="gt cr_active fl"></a> -->
 	                	</c:when>
 	                	<c:otherwise>
