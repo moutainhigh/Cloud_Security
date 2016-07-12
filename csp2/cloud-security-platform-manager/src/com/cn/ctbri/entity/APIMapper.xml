@@ -16,8 +16,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 		
 	<!-- 查询报警信息  -->
-	<select id="getAPICount" parameterType="int" resultType="map">
-		SELECT count(*) count,service_type,api_type FROM `cs_api` where cs_api.service_type=#{serviceType} GROUP BY cs_api.api_type
+	<select id="getAPICount" parameterType="map" resultType="map">
+		SELECT count(*) count,service_type,api_type FROM `cs_api`  a  where a.service_type=#{serviceType}
+		<if test="beginTime!=null">
+			AND a.create_time &gt;= #{beginTime}
+		</if>	 
+		<if test="endTime!=null">
+			AND a.create_time &lt;=#{endTime}
+		</if>
+		 GROUP BY a.api_type
 	</select>
 
 </mapper>

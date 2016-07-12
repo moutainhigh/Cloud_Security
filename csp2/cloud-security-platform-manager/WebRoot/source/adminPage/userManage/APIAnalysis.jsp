@@ -37,62 +37,9 @@
 .ui-rangeSlider-label-value, .ui-ruler-tick-label{ font-size: 16px; }
 </style>
  <script type="text/javascript">
-   	var Months = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
-   	$(function(){
-		createDemos();		
-	});
+
 	
-	function createDemos(){		
-		
-		
-		var	date1 = $("<div id='date' />").appendTo($("#dateSlider"));//渲染日期组件
-		var dateSilderObj=date1.dateRangeSlider({
-			arrows:false,//是否显示左右箭头
-			bounds: {min: new Date(new Date().getFullYear(), 0, 1), max: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 12, 59, 59)},//最大 最少日期
-			defaultValues: {min: new Date(new Date().getFullYear(), 0, 1), max: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())},//默认选中区域
-			scales:[{
-					first: function(value){return value; },
-					end: function(value) {return value; },
-					next: function(val){
-						var next = new Date(val);
-						return new Date(next.setMonth(next.getMonth() + 1));
-					 },
-					label: function(val){
-						return Months[val.getMonth()];
-					},
-					format: function(tickContainer, tickStart, tickEnd){
-						tickContainer.addClass("myCustomClass");
-					}
-			}]
-			
-					
-		});//日期控件
-		
-		//重新赋值（整个时间轴）
-		/*dateSilderObj.dateRangeSlider("bounds", new Date(new Date().getFullYear(), 0, 1), new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 12, 59, 59));*/
 
-		//重新赋值（选中区域）
-		/*dateSilderObj.dateRangeSlider("values", new Date(new Date().getFullYear(), 0, 1), new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()));*/
-
-		
-		//拖动完毕后的事件 获取到拖动后的起始时间stime 和 结束时间etime
-		dateSilderObj.bind("valuesChanged", function(e, data){
-			var val=data.values;
-			var stime=val.min.getFullYear()+"-"+(val.min.getMonth()+1)+"-"+val.min.getDate();
-			var etime=val.max.getFullYear()+"-"+(val.max.getMonth()+1)+"-"+val.max.getDate();
-		  	console.log("起止时间："+stime+" 至 "+etime);
-		  	//拖动后显示操作
-
-			alert("dddd");
-		  	setTimeout(function(){
-		  		//8秒恢复默认选中区域
-		  		dateSilderObj.dateRangeSlider("values", new Date(new Date().getFullYear(), 0, 1), new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()));
-		  	}, 5000)
-
-		});
-
-		
-	}
 	
    </script> 
 </head>

@@ -1,5 +1,8 @@
+var Months = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
+var stime;
+var etime;
 $(function(){
-	
+	createDemos();	
 	//为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
     require.config({
         paths:{ 
@@ -9,6 +12,62 @@ $(function(){
             'echarts/chart/pie' : '../echarts/echarts-map'
         }
     });
+    
+	analysisAPI();
+});
+
+function createDemos(){		
+	var	date1 = $("<div id='date' />").appendTo($("#dateSlider"));//渲染日期组件
+	var dateSilderObj=date1.dateRangeSlider({
+		arrows:false,//是否显示左右箭头
+		bounds: {min: new Date(new Date().getFullYear(), 0, 1), max: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 12, 59, 59)},//最大 最少日期
+		defaultValues: {min: new Date(new Date().getFullYear(), 0, 1), max: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())},//默认选中区域
+		scales:[{
+				first: function(value){return value; },
+				end: function(value) {return value; },
+				next: function(val){
+					var next = new Date(val);
+					return new Date(next.setMonth(next.getMonth() + 1));
+				 },
+				label: function(val){
+					return Months[val.getMonth()];
+				},
+				format: function(tickContainer, tickStart, tickEnd){
+					tickContainer.addClass("myCustomClass");
+				}
+		}]
+		
+				
+	});//日期控件
+	
+	//重新赋值（整个时间轴）
+	/*dateSilderObj.dateRangeSlider("bounds", new Date(new Date().getFullYear(), 0, 1), new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 12, 59, 59));*/
+
+	//重新赋值（选中区域）
+	/*dateSilderObj.dateRangeSlider("values", new Date(new Date().getFullYear(), 0, 1), new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()));*/
+
+	
+	//拖动完毕后的事件 获取到拖动后的起始时间stime 和 结束时间etime
+	dateSilderObj.bind("valuesChanged", function(e, data){
+		var val=data.values;
+		stime=val.min.getFullYear()+"-"+(val.min.getMonth()+1)+"-"+val.min.getDate();
+		etime=val.max.getFullYear()+"-"+(val.max.getMonth()+1)+"-"+val.max.getDate();
+	  	console.log("起止时间："+stime+" 至 "+etime);
+	  	//拖动后显示操作
+	  	analysisAPI();
+
+	  	var timer=setTimeout(function(){
+	  		//8秒恢复默认选中区域
+	  		dateSilderObj.dateRangeSlider("values", new Date(new Date().getFullYear(), 0, 1), new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()));
+	  		//analysisAPI();
+	  	}, 5000);
+	  	//window.clearTimeout(timer);//去掉定时器 
+	});
+
+	
+}
+
+function analysisAPI(){
 	require(
 	        [
 	            'echarts',
@@ -23,7 +82,7 @@ $(function(){
     $.ajax({
     	type : "post",
     	url:"adminAPICount.html",
-    	data:{"serviceType":1},
+    	data:{"serviceType":1,"beginTime":stime,"endTime":etime},
         dataType:"json",
         success:function(data){
     		var countList = [];
@@ -36,18 +95,16 @@ $(function(){
     		countList.reverse() ;
     		option1 = {
     			    tooltip : {
+    					show:true,
     			        trigger: 'axis',
     			        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
     			            type : 'none'        // 默认为直线，可选为：'line' | 'shadow'
     			        }
     			    },
-    			    legend: {
-    			    	textStyle:{
-    			    	fontSize:20
-    			    },
-    			        data: ['web漏洞扫描API']
-    			    },
+    			    
     			    grid: { // 控制图的大小，调整下面这些值就可以，
+    			    	 top:0,
+    			    	 height:100,
     		             x: 130,
     		             x2: 50,
     		             y2: 50,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
@@ -69,11 +126,12 @@ $(function(){
     			        {
     			            name: '数量',
     			            type: 'bar',
-    			            //stack: '总量',
+    			            stack: '总量',
     			            label: {
     			                normal: {
     			                    show: true,
-    			                    position: 'insideRight'
+    			                    formatter: '{c}',
+    			                    position: 'top'
     			                }
     			            },
     			            data: countList
@@ -93,7 +151,7 @@ $(function(){
 	    $.ajax({
 	    	type : "post",
 	    	url:"adminAPICount.html",
-	    	data:{"serviceType":2},
+	    	data:{"serviceType":2,"beginTime":stime,"endTime":etime},
 	        dataType:"json",
 	        success:function(data){
 	    		var countList = [];
@@ -102,50 +160,51 @@ $(function(){
 	    			//alert(list[i].count);
 	    			countList.push(list[i].count);
 	    		}
+	    		countList.reverse();
 	    		option2 = {
-	    			    tooltip : {
-	    			        trigger: 'axis',
-	    			        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-	    			            type : 'line'        // 默认为直线，可选为：'line' | 'shadow'
-	    			        }
-	    			    },
-	    			    legend: {
-	    			        data: ['木马检测API']
-	    			    },
-	    			    /*grid: {
-	    			        left: '3%',
-	    			        right: '4%',
-	    			        bottom: '3%',
-	    			        containLabel: true
-	    			    },*/
-	    			    xAxis:  {
-	    			        type: 'value',
-	    			        splitLine:{
-	    			    		show:false
-	    			    	}
-	    			    },
-	    			    yAxis: {
-	    			        type: 'category',
-	    			        data: ['创建木马检测订单','订单(任务)操作','获取订单(任务)状态','获取订单结果','获取订单结果报告'],
-	    			        splitLine:{
-	    			    		show:false
-	    			    	}
-	    			    },
-	    			    series: [
-	    			        {
-	    			            name: '数量',
-	    			            type: 'bar',
-	    			            //stack: '总量',
-	    			            label: {
-	    			                normal: {
-	    			                    show: true,
-	    			                    position: 'right'
-	    			                }
-	    			            },
-	    			            data: countList
-	    			        }
-	    			    ]
-	    			};
+	    				tooltip : {
+							show:true,
+					        trigger: 'axis',
+					        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+					            type : 'none'        // 默认为直线，可选为：'line' | 'shadow'
+					        }
+					    },
+					    
+					    grid: { // 控制图的大小，调整下面这些值就可以，
+					    	 top:50,
+					    	 height:100,
+				             x: 130,
+				             x2: 50,
+				             y2: 50,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+				         },
+					    xAxis:  {
+					        type: 'value',
+					        splitLine:{
+					    		show:false
+					    	}
+					    },
+					    yAxis: {
+					        type: 'category',
+					        data: ['获取订单结果报告','获取订单结果','获取订单(任务)状态','订单(任务)操作','创建木马检测订单'],
+					        splitLine:{
+					    		show:false
+					    	}
+					    },
+					    series: [
+					        {
+					            name: '数量',
+					            type: 'bar',
+					            //stack: '总量',
+					            label: {
+					                normal: {
+					                    show: true,
+					                    position: 'insideRight'
+					                }
+					            },
+					            data: countList
+					        }
+					    ]
+					};
 	    		
 	    			myChart2.setOption(option2);
 	        	},
@@ -158,7 +217,7 @@ $(function(){
     $.ajax({
     	type : "post",
     	url:"adminAPICount.html",
-    	data:{"serviceType":3},
+    	data:{"serviceType":3,"beginTime":stime,"endTime":etime},
         dataType:"json",
         success:function(data){
     		var countList = [];
@@ -167,50 +226,51 @@ $(function(){
     			//alert(list[i].count);
     			countList.push(list[i].count);
     		}
+    		countList.reverse();
     		option3 = {
-    			    tooltip : {
-    			        trigger: 'axis',
-    			        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-    			            type : 'line'        // 默认为直线，可选为：'line' | 'shadow'
-    			        }
-    			    },
-    			    legend: {
-    			        data: ['网页篡改监测API']
-    			    },
-    			    /*grid: {
-    			        left: '3%',
-    			        right: '4%',
-    			        bottom: '3%',
-    			        containLabel: true
-    			    },*/
-    			    xAxis:  {
-    			        type: 'value',
-    			        splitLine:{
-    			    		show:false
-    			    	}
-    			    },
-    			    yAxis: {
-    			        type: 'category',
-    			        data: ['创建网页篡改监测订单','订单(任务)操作','获取订单(任务)状态','获取订单结果','获取订单结果报告'],
-    			        splitLine:{
-    			    		show:false
-    			    	}
-    			    },
-    			    series: [
-    			        {
-    			            name: '数量',
-    			            type: 'bar',
-    			            //stack: '总量',
-    			            label: {
-    			                normal: {
-    			                    show: true,
-    			                    position: 'right'
-    			                }
-    			            },
-    			            data: countList
-    			        }
-    			    ]
-    			};
+    				tooltip : {
+						show:true,
+				        trigger: 'axis',
+				        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+				            type : 'none'        // 默认为直线，可选为：'line' | 'shadow'
+				        }
+				    },
+				    
+				    grid: { // 控制图的大小，调整下面这些值就可以，
+				    	 top:50,
+				    	 height:100,
+			             x: 130,
+			             x2: 50,
+			             y2: 50,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+			         },
+				    xAxis:  {
+				        type: 'value',
+				        splitLine:{
+				    		show:false
+				    	}
+				    },
+				    yAxis: {
+				        type: 'category',
+				        data: ['获取订单结果报告','获取订单结果','获取订单(任务)状态','订单(任务)操作','创建网页篡改监测订单'],
+				        splitLine:{
+				    		show:false
+				    	}
+				    },
+				    series: [
+				        {
+				            name: '数量',
+				            type: 'bar',
+				            //stack: '总量',
+				            label: {
+				                normal: {
+				                    show: true,
+				                    position: 'insideRight'
+				                }
+				            },
+				            data: countList
+				        }
+				    ]
+				};
     		
     			myChart3.setOption(option3);
         	},
@@ -222,7 +282,7 @@ $(function(){
     $.ajax({
     	type : "post",
     	url:"adminAPICount.html",
-    	data:{"serviceType":4},
+    	data:{"serviceType":4,"beginTime":stime,"endTime":etime},
         dataType:"json",
         success:function(data){
     		var countList = [];
@@ -231,50 +291,51 @@ $(function(){
     			//alert(list[i].count);
     			countList.push(list[i].count);
     		}
+    		countList.reverse();
     		option4 = {
-    			    tooltip : {
-    			        trigger: 'axis',
-    			        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-    			            type : 'line'        // 默认为直线，可选为：'line' | 'shadow'
-    			        }
-    			    },
-    			    legend: {
-    			        data: ['网页敏感内容监测API']
-    			    },
-    			    /*grid: {
-    			        left: '3%',
-    			        right: '4%',
-    			        bottom: '3%',
-    			        containLabel: true
-    			    },*/
-    			    xAxis:  {
-    			        type: 'value',
-    			        splitLine:{
-    			    		show:false
-    			    	}
-    			    },
-    			    yAxis: {
-    			        type: 'category',
-    			        data: ['创建网页敏感内容监测订单','订单(任务)操作','获取订单(任务)状态','获取订单结果','获取订单结果报告'],
-    			        splitLine:{
-    			    		show:false
-    			    	}
-    			    },
-    			    series: [
-    			        {
-    			            name: '数量',
-    			            type: 'bar',
-    			            //stack: '总量',
-    			            label: {
-    			                normal: {
-    			                    show: true,
-    			                    position: 'right'
-    			                }
-    			            },
-    			            data: countList
-    			        }
-    			    ]
-    			};
+    				tooltip : {
+						show:true,
+				        trigger: 'axis',
+				        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+				            type : 'none'        // 默认为直线，可选为：'line' | 'shadow'
+				        }
+				    },
+				    
+				    grid: { // 控制图的大小，调整下面这些值就可以，
+				    	 top:50,
+				    	 height:100,
+			             x: 130,
+			             x2: 50,
+			             y2: 50,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+			         },
+				    xAxis:  {
+				        type: 'value',
+				        splitLine:{
+				    		show:false
+				    	}
+				    },
+				    yAxis: {
+				        type: 'category',
+				        data: ['获取订单结果报告','获取订单结果','获取订单(任务)状态','订单(任务)操作','创建网页监测订单'],
+				        splitLine:{
+				    		show:false
+				    	}
+				    },
+				    series: [
+				        {
+				            name: '数量',
+				            type: 'bar',
+				            //stack: '总量',
+				            label: {
+				                normal: {
+				                    show: true,
+				                    position: 'insideRight'
+				                }
+				            },
+				            data: countList
+				        }
+				    ]
+				};
     		
     			myChart4.setOption(option4);
         	},
@@ -286,7 +347,7 @@ $(function(){
     $.ajax({
     	type : "post",
     	url:"adminAPICount.html",
-    	data:{"serviceType":5},
+    	data:{"serviceType":5,"beginTime":stime,"endTime":etime},
         dataType:"json",
         success:function(data){
     		var countList = [];
@@ -295,50 +356,51 @@ $(function(){
     			//alert(list[i].count);
     			countList.push(list[i].count);
     		}
+    		countList.reverse();
     		option5 = {
-    			    tooltip : {
-    			        trigger: 'axis',
-    			        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-    			            type : 'line'        // 默认为直线，可选为：'line' | 'shadow'
-    			        }
-    			    },
-    			    legend: {
-    			        data: ['网页敏感内容监测API']
-    			    },
-    			    /*grid: {
-    			        left: '3%',
-    			        right: '4%',
-    			        bottom: '3%',
-    			        containLabel: true
-    			    },*/
-    			    xAxis:  {
-    			        type: 'value',
-    			        splitLine:{
-    			    		show:false
-    			    	}
-    			    },
-    			    yAxis: {
-    			        type: 'category',
-    			        data: ['创建网页敏感内容监测订单','订单(任务)操作','获取订单(任务)状态','获取订单结果','获取订单结果报告'],
-    			        splitLine:{
-    			    		show:false
-    			    	}
-    			    },
-    			    series: [
-    			        {
-    			            name: '数量',
-    			            type: 'bar',
-    			            //stack: '总量',
-    			            label: {
-    			                normal: {
-    			                    show: true,
-    			                    position: 'right'
-    			                }
-    			            },
-    			            data: countList
-    			        }
-    			    ]
-    			};
+    				tooltip : {
+						show:true,
+				        trigger: 'axis',
+				        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+				            type : 'none'        // 默认为直线，可选为：'line' | 'shadow'
+				        }
+				    },
+				    
+				    grid: { // 控制图的大小，调整下面这些值就可以，
+				    	 top:50,
+				    	 height:100,
+			             x: 130,
+			             x2: 50,
+			             y2: 50,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+			         },
+				    xAxis:  {
+				        type: 'value',
+				        splitLine:{
+				    		show:false
+				    	}
+				    },
+				    yAxis: {
+				        type: 'category',
+				        data: ['获取订单结果报告','获取订单结果','获取订单(任务)状态','订单(任务)操作','创建可用性监测订单'],
+				        splitLine:{
+				    		show:false
+				    	}
+				    },
+				    series: [
+				        {
+				            name: '数量',
+				            type: 'bar',
+				            //stack: '总量',
+				            label: {
+				                normal: {
+				                    show: true,
+				                    position: 'insideRight'
+				                }
+				            },
+				            data: countList
+				        }
+				    ]
+				};
     		
     			myChart5.setOption(option5);
         	},
@@ -350,7 +412,7 @@ $(function(){
     $.ajax({
     	type : "post",
     	url:"adminAPICount.html",
-    	data:{"serviceType":100},
+    	data:{"serviceType":100,"beginTime":stime,"endTime":etime},
         dataType:"json",
         success:function(data){
     		var countList = [];
@@ -359,53 +421,54 @@ $(function(){
     			//alert(list[i].count);
     			countList.push(list[i].count);
     		}
+    		countList.reverse();
     		option6 = {
-    			    tooltip : {
-    			        trigger: 'axis',
-    			        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-    			            type : 'line'        // 默认为直线，可选为：'line' | 'shadow'
-    			        }
-    			    },
-    			    legend: {
-    			        data: ['网页敏感内容监测API']
-    			    },
-    			    /*grid: {
-    			        left: '3%',
-    			        right: '4%',
-    			        bottom: '3%',
-    			        containLabel: true
-    			    },*/
-    			    xAxis:  {
-    			        type: 'value',
-    			        splitLine:{
-    			    		show:false
-    			    	}
-    			    },
-    			    yAxis: {
-    			        type: 'category',
-    			        data: ['创建网页敏感内容监测订单','订单(任务)操作','获取订单(任务)状态','获取订单结果','获取订单结果报告'],
-    			        splitLine:{
-    			    		show:false
-    			    	}
-    			    },
-    			    series: [
-    			        {
-    			            name: '数量',
-    			            type: 'bar',
-    			            //stack: '总量',
-    			            label: {
-    			                normal: {
-    			                    show: true,
-    			                    position: 'right'
-    			                }
-    			            },
-    			            data: countList
-    			        }
-    			    ]
-    			};
+    				tooltip : {
+						show:true,
+				        trigger: 'axis',
+				        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+				            type : 'none'        // 默认为直线，可选为：'line' | 'shadow'
+				        }
+				    },
+				    
+				    grid: { // 控制图的大小，调整下面这些值就可以，
+				    	 top:50,
+				    	 height:100,
+			             x: 130,
+			             x2: 50,
+			             y2: 50,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+			         },
+				    xAxis:  {
+				        type: 'value',
+				        splitLine:{
+				    		show:false
+				    	}
+				    },
+				    yAxis: {
+				        type: 'category',
+				        data: ['获取订单结果报告','获取订单结果','获取订单(任务)状态','订单(任务)操作','创建可用性监测订单'],
+				        splitLine:{
+				    		show:false
+				    	}
+				    },
+				    series: [
+				        {
+				            name: '数量',
+				            type: 'bar',
+				            //stack: '总量',
+				            label: {
+				                normal: {
+				                    show: true,
+				                    position: 'insideRight'
+				                }
+				            },
+				            data: countList
+				        }
+				    ]
+				};
     		
     			myChart6.setOption(option6);
         	},
         });
-	});
-});
+	});	
+}

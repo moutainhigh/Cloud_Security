@@ -11,5 +11,5 @@ import java.util.Map;
  */
 public interface IAPIService {
 	//查询服务类型操作类型个数
-	List getAPICount(int serviceType);
+	List getAPICount(Map<String,Object> map);
 }

@@ -1,6 +1,7 @@
 package com.cn.ctbri.dao.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -17,8 +18,8 @@ import com.cn.ctbri.dao.DaoCommon;
 public class APIDaoImpl extends DaoCommon implements APIDao {
 	private String ns = "com.cn.ctbri.entity.APIMapper.";
 	
-	public List getAPICount(int serviceType) {
-		return this.getSqlSession().selectList(ns+"getAPICount", serviceType);
+	public List getAPICount(Map<String,Object> map) {
+		return this.getSqlSession().selectList(ns+"getAPICount", map);
 	}
 
 }

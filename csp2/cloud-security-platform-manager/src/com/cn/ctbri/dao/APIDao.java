@@ -1,6 +1,7 @@
 package com.cn.ctbri.dao;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 创 建 人  ：  zx
@@ -10,5 +11,5 @@ import java.util.List;
  */
 public interface APIDao {
 	//查询服务类型操作类型个数
-	List getAPICount(int serviceType);
+	List getAPICount(Map<String,Object> map);
 }

@@ -50,8 +50,14 @@ public class AdminAPIAnalysis {
 	@ResponseBody
 	public void adminAPICount(HttpServletRequest request,HttpServletResponse response){
 		int serviceType = Integer.parseInt(request.getParameter("serviceType"));
+		String beginTime = request.getParameter("beginTime");
+		String endTime = request.getParameter("endTime");
 		Map<String, Object> m = new HashMap<String, Object>();
-		List countList = apiService.getAPICount(serviceType);
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("serviceType", serviceType);
+		map.put("beginTime", beginTime);
+		map.put("endTime", endTime);
+		List countList = apiService.getAPICount(map);
 
 		m.put("countList", countList);
 		

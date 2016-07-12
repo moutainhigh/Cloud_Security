@@ -1,6 +1,7 @@
 package com.cn.ctbri.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,8 @@ public class APIServiceImpl implements IAPIService{
 	@Autowired
 	APIDao apiDao;
 	
-	public List getAPICount(int serviceType) {
-		return apiDao.getAPICount(serviceType);
+	public List getAPICount(Map<String,Object> map) {
+		return apiDao.getAPICount(map);
 	}
 
 }
