@@ -1,95 +1,156 @@
 package com.cn.ctbri.filter;
 
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 public class XSSRequestWrapper extends HttpServletRequestWrapper {
 
-    public XSSRequestWrapper(HttpServletRequest servletRequest) {
-        super(servletRequest);
-    }
+	HttpServletRequest orgRequest = null;
 
-    @Override
-    public String[] getParameterValues(String parameter) {
-        String[] values = super.getParameterValues(parameter);
+	private String apostrophe = "&#39;";
 
-        if (values == null) {
-            return null;
-        }
+	public XSSRequestWrapper(HttpServletRequest request) {
+		super(request);
+		this.orgRequest = request;
+		
+	}
+	@Override
+	public String getRequestURI(){
+		
+		String url=orgRequest.getQueryString();
+		if(url==null){
+			return "";
+		}
+		String val=cleanXSS(url);
+		//String path = orgRequest.getScheme()+"://"+orgRequest.getServerName()+":"+orgRequest.getServerPort()+orgRequest.getRequestURI()+"?"+val;
+		
+		return val;
+	}
+	@Override
+	public String getHeader(String paramString) {
+		String str = super.getHeader(paramString);
+		if (str == null) {
+			return null;
+		}
+		return cleanXSS(str);
+	}
 
-        int count = values.length;
-        String[] encodedValues = new String[count];
-        for (int i = 0; i < count; i++) {
-            encodedValues[i] = stripXSS(values[i]);
-        }
+	@Override
+	public String[] getParameterValues(String paramString) {
+		String[] arrayOfString1 = super.getParameterValues(paramString);
+		if (arrayOfString1 == null) {
+			return null;
+		}
+		int i = arrayOfString1.length;
+		String[] arrayOfString2 = new String[i];
+		for (int j = 0; j < i; j++) {
+			arrayOfString2[j] = cleanXSS(arrayOfString1[j]);
+		}
+		return arrayOfString2;
+	}
 
-        return encodedValues;
-    }
+	@Override
+	public String getParameter(String paramString) {
+		String str = super.getParameter(paramString);
+		if (str == null) {
+			return null;
+		}
+		return cleanXSS(str);
+	}
 
-    @Override
-    public String getParameter(String parameter) {
-        String value = super.getParameter(parameter);
+	private String cleanXSS(String paramString) {
+		if (paramString == null) {
+			return "";
+		}
+		String str = paramString;
+		str = str.replaceAll("", "");
+		str = str.replaceAll("../", "");
+		str = str.replaceAll("|", "");
+		str = str.replaceAll("\'", "&prime;");
+		str = str.replaceAll("insert", "forbidI")  
+           .replaceAll("select", "forbidS")  
+           .replaceAll("update", "forbidU")  
+           .replaceAll("delete", "forbidD")  
+           .replaceAll("and", "forbidA")  
+           .replaceAll("or", "forbidO")
+           .replaceAll("count", "forbidB") 
+		   .replaceAll("master", "forbidC")
+		   .replaceAll("declare", "forbidE")
+		   .replaceAll("truncate", "forbidG");
+		//str = str.replaceAll("=", "&#61;");
+		//str = str.replaceAll("&", "");
+		//str = str.replaceAll(";", "");
+		//str = str.replaceAll("$", "");
+		//str = str.replaceAll("@", "");
+		
+		Pattern localPattern = Pattern.compile("<script>(.*?)</script>",
+				Pattern.CASE_INSENSITIVE);
+		str = localPattern.matcher(str).replaceAll("");
+		localPattern = Pattern.compile("src[\r\n]*=[\r\n]*\\'(.*?)\\'", 42);
+		str = localPattern.matcher(str).replaceAll("");
+		localPattern = Pattern.compile("src[\r\n]*=[\r\n]*\\\"(.*?)\\\"", 42);
+		str = localPattern.matcher(str).replaceAll("");
+		localPattern = Pattern.compile("</script>", 2);
+		str = localPattern.matcher(str).replaceAll("");
+		localPattern = Pattern.compile("<script(.*?)>", 42);
+		str = localPattern.matcher(str).replaceAll("");
+		localPattern = Pattern.compile("eval\\((.*?)\\)", 42);
+		str = localPattern.matcher(str).replaceAll("");
+		localPattern = Pattern.compile("expression\\((.*?)\\)", 42);
+		str = localPattern.matcher(str).replaceAll("");
+		localPattern = Pattern.compile("javascript:", 2);
+		str = localPattern.matcher(str).replaceAll("");
+		localPattern = Pattern.compile("vbscript:", 2);
+		str = localPattern.matcher(str).replaceAll("");
+		localPattern = Pattern.compile("onload(.*?)=", 42);
+		str = localPattern.matcher(str).replaceAll("");
+		str = str.replaceAll("\\(", "&#40;").replaceAll("\\)", "&#41;");
+		str = str.replaceAll("'", this.apostrophe);
+		str = str.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+		str = str.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+	
+		return str;
+	}
 
-        return stripXSS(value);
-    }
+	/**
+	 * 获取最原始的request
+	 * 
+	 * @return
+	 */
+	public HttpServletRequest getOrgRequest() {
+		return orgRequest;
+	}
 
-    @Override
-    public String getHeader(String name) {
-        String value = super.getHeader(name);
-        return stripXSS(value);
-    }
+	/**
+	 * 获取最原始的request的静态方法
+	 * 
+	 * @return
+	 */
+	public static HttpServletRequest getOrgRequest(HttpServletRequest req) {
+		if (req instanceof XSSRequestWrapper) {
+			return ((XSSRequestWrapper) req).getOrgRequest();
+		}
 
-    private String stripXSS(String value) {
-        if (value != null) {
-            // NOTE: It's highly recommended to use the ESAPI library and uncomment the following line to
-            // avoid encoded attacks.
-            // value = ESAPI.encoder().canonicalize(value);
+		return req;
+	}
 
-            // Avoid null characters
-            value = value.replaceAll("", "");
-
-            // Avoid anything between script tags
-            StringBuilder sb = new StringBuilder(value.length() + 16);
-            for (int i = 0; i < value.length(); i++) {
-                char c = value.charAt(i);
-                switch (c) {
-                case '>':
-                    sb.append("&gt;");
-                    break;
-                case '<':
-                    sb.append("&lt;");
-                    break;
-                case '\'':
-                    sb.append("&prime;");
-                  
-                    break;
-                case '\"':
-                    sb.append("&quot;");
-                   break;
-                case '&':
-                    sb.append('＆');// 全角
-                    break;
-                case '\\':
-                    sb.append('＼');// 全角斜线
-                    break;
-                case '#':
-                    sb.append('＃');// 全角井号
-                    break;
-                case ':':
-                    sb.append('：');// 全角冒号
-                    break;
-                case '%':
-                    sb.append("\\\\%");
-                    break;
-                case '=':  
-                    sb.append("&#61;");  
-                    break;
-                default:
-                    sb.append(c);
-                    break;
-                }
-            }
-        }
-        return value;
-    }
+	@Override
+	public Map getParameterMap() {
+		Map<String, String[]> paramMap = super.getParameterMap();
+		Set<String> keySet = paramMap.keySet();
+		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
+			String key = (String) iterator.next();
+			String[] str = paramMap.get(key);
+			for (int i = 0; i < str.length; i++) {
+				str[i] = cleanXSS(str[i]);
+			}
+		}
+		return paramMap;
+	}
 }
