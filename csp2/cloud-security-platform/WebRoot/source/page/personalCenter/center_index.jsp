@@ -19,6 +19,29 @@
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
 <script type="text/javascript">
+function orderTrack(state, list_group){
+	//虚拟表单post提交
+	var tempForm = document.createElement("form");
+  	tempForm.action = "orderTrackInit.html";
+  	tempForm.method = "post";
+  	tempForm.style.display = "none";
+  							
+  	var stateInput = document.createElement("input");
+  	stateInput.type="hidden"; 
+	stateInput.name= "state"; 
+	stateInput.value= state; 
+	tempForm.appendChild(stateInput);
+							
+	var listGroupInput = document.createElement("input");
+  	listGroupInput.type="hidden"; 
+	listGroupInput.name= "list_group"; 
+	listGroupInput.value= list_group; 
+	tempForm.appendChild(listGroupInput); 
+							
+	document.body.appendChild(tempForm);
+	tempForm.submit();
+	document.body.removeChild(tempForm);
+}
 //删除
 function deleteOrder(orderId,begin_date){
     if (window.confirm("确实要删除吗?")==true) {
@@ -31,7 +54,22 @@ function deleteOrder(orderId,begin_date){
                 if(!data.status){
                     alert("订单正在执行,不可以删订单!");
                 }else{
-                	window.location.href="userdeleteOrder.html?orderId="+orderId;
+                	//window.location.href="userdeleteOrder.html?orderId="+orderId;
+                	//虚拟表单post提交
+					var tempForm = document.createElement("form");
+  					tempForm.action = "userdeleteOrder.html";
+  					tempForm.method = "post";
+  					tempForm.style.display = "none";
+  							
+  					var orderIdInput = document.createElement("input");
+  					orderIdInput.type="hidden"; 
+					orderIdInput.name= "orderId"; 
+					orderIdInput.value= orderId; 
+					tempForm.appendChild(orderIdInput);
+							
+					document.body.appendChild(tempForm);
+					tempForm.submit();
+					document.body.removeChild(tempForm);
                 }
             },
          });
@@ -228,8 +266,8 @@ function buyAPI(){
                      <dl class="clearfix">
                    	  <dt class="fl">消息提示</dt>
                         <a href="${ctx}/orderTrackInit.html"><dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderCount.png" alt=""></i><span>订单总数<em>${orderNum}</em></span></dd></a>
-                        <a href="${ctx}/orderTrackInit.html?state=1&list_group=1"><dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderRuning.png" alt=""></i><span>服务中的订单<em>${servNum}</em></span></dd></a>
-                        <a href="${ctx}/orderTrackInit.html?state=2&list_group=1"><dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderWarn.png" alt=""></i><span>告警订单<em>${alarmSum}</em></span></dd></a>
+                        <a href="#" onclick="orderTrack(1,1)"><dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderRuning.png" alt=""></i><span>服务中的订单<em>${servNum}</em></span></dd></a>
+                        <a href="#" onclick="orderTrack(2,1)"><dd class="fl"><i><img src="${ctx}/source/images/personalCenter/orderWarn.png" alt=""></i><span>告警订单<em>${alarmSum}</em></span></dd></a>
                       	<span class="b_bic qdbtn" style="float:right;margin-top:13px;color: #f6a525;">
                            		<i><img src="${ctx}/source/images/balance/sign_in.png" alt=""></i>
 	                        	<c:if test="${!signIn}">
