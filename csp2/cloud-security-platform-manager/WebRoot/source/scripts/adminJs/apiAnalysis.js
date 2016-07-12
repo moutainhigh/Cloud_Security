@@ -1,6 +1,8 @@
 var Months = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
 var stime;
 var etime;
+var defaultBDate = new Date(new Date().getFullYear(), 0, 1);
+var defaultStime = defaultBDate.getFullYear()+"-"+(defaultBDate.getMonth()+1)+"-"+defaultBDate.getDate();
 $(function(){
 	createDemos();	
 	//为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
@@ -49,20 +51,25 @@ function createDemos(){
 	
 	//拖动完毕后的事件 获取到拖动后的起始时间stime 和 结束时间etime
 	dateSilderObj.bind("valuesChanged", function(e, data){
+		
 	  	//window.clearTimeout(timer);//去掉定时器 
 		var val=data.values;
 		stime=val.min.getFullYear()+"-"+(val.min.getMonth()+1)+"-"+val.min.getDate();
 		etime=val.max.getFullYear()+"-"+(val.max.getMonth()+1)+"-"+val.max.getDate();
 	  	console.log("起止时间："+stime+" 至 "+etime);
+
 	  	//拖动后显示操作
 	  	analysisAPI();
-
-	  	var timer=setTimeout(function(){
-	  		//8秒恢复默认选中区域
-	  		dateSilderObj.dateRangeSlider("values", new Date(new Date().getFullYear(), 0, 1), new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()));
-	  		//analysisAPI();
-	  	}, 5000);
-	  	//window.clearTimeout(timer);//去掉定时器 
+	  	//alert("stime:"+stime+",defaulttime:"+defaultStime);
+	  	if(stime==defaultStime){
+	  		window.clearTimeout(timer);//去掉定时器 
+	  	}else{
+	  		var timer=setTimeout(function(){
+		  		//8秒恢复默认选中区域
+		  		dateSilderObj.dateRangeSlider("values", new Date(new Date().getFullYear(), 0, 1), new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()));
+		  		//analysisAPI();
+		  	}, 5000);
+	  	}
 	});
 
 }
