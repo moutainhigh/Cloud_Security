@@ -114,16 +114,27 @@ function analysisAPI(){
     		             x: 150,
     		             x2: 50,
     		             y2: 30,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+    		             borderColor:'#fff'
     		         },
+    		         calculable : false,
     			    xAxis:  {
     			        type: 'value',
+    			        show:false,
     			        splitLine:{
     			    		show:false
-    			    	}
+    			    	},
+    			    	axisLabel:{  
+    			            show:false
+    			        }, 
+    			        axisLine:{
+    			        	show:false
+    			        }
     			    },
+    			   
     			    yAxis: {
     			        type: 'category',
     			        data: ['获取订单结果报告','获取订单结果','获取订单(任务)状态','订单(任务)操作','创建web漏洞扫描订单'],
+    			        show: false,
     			        splitLine:{
     			    		show:false
     			    	}
@@ -132,8 +143,7 @@ function analysisAPI(){
     			        {
     			            name: '数量',
     			            type: 'bar',
-    			            stack: '总量',
-    			            itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
+    			            itemStyle : { normal: {label : {show: true, position: 'right'}}},
     			            data: countList
     			        }
     			    ]
@@ -175,13 +185,22 @@ function analysisAPI(){
 	    		             x: 150,
 	    		             x2: 50,
 	    		             y2: 30,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+	    		             borderColor:'#fff'
 	    		         },
-					    xAxis:  {
-					        type: 'value',
-					        splitLine:{
-					    		show:false
-					    	}
-					    },
+	    		         calculable : false,
+	    		         xAxis:  {
+	     			        type: 'value',
+	     			        show:false,
+	     			        splitLine:{
+	     			    		show:false
+	     			    	},
+	     			    	axisLabel:{  
+	     			            show:false
+	     			        }, 
+	     			        axisLine:{
+	     			        	show:false
+	     			        }
+	     			    },
 					    yAxis: {
 					        type: 'category',
 					        data: ['获取订单结果报告','获取订单结果','获取订单(任务)状态','订单(任务)操作','创建木马检测订单'],
@@ -194,7 +213,7 @@ function analysisAPI(){
 					            name: '数量',
 					            type: 'bar',
 					            //stack: '总量',
-					            itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
+					            itemStyle : { normal: {label : {show: true, position: 'right'}}},
 					            data: countList
 					        }
 					    ]
@@ -235,13 +254,21 @@ function analysisAPI(){
    		             x: 150,
    		             x2: 50,
    		             y2: 30,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+   		             borderColor:'#fff'	
    		         	},
-				    xAxis:  {
-				        type: 'value',
-				        splitLine:{
-				    		show:false
-				    	}
-				    },
+   		         xAxis:  {
+    			        type: 'value',
+    			        show:false,
+    			        splitLine:{
+    			    		show:false
+    			    	},
+    			    	axisLabel:{  
+    			            show:false
+    			        }, 
+    			        axisLine:{
+    			        	show:false
+    			        }
+    			    },
 				    yAxis: {
 				        type: 'category',
 				        data: ['获取订单结果报告','获取订单结果','获取订单(任务)状态','订单(任务)操作','创建网页篡改监测订单'],
@@ -254,7 +281,7 @@ function analysisAPI(){
 				            name: '数量',
 				            type: 'bar',
 				            //stack: '总量',
-				            itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
+				            itemStyle : { normal: {label : {show: true, position: 'right'}}},
 				            data: countList
 				        }
 				    ]
@@ -294,13 +321,21 @@ function analysisAPI(){
    		             x: 150,
    		             x2: 50,
    		             y2: 30,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+   		             borderColor:'#fff'
    		         	},
-				    xAxis:  {
-				        type: 'value',
-				        splitLine:{
-				    		show:false
-				    	}
-				    },
+   		         xAxis:  {
+    			        type: 'value',
+    			        show:false,
+    			        splitLine:{
+    			    		show:false
+    			    	},
+    			    	axisLabel:{  
+    			            show:false
+    			        }, 
+    			        axisLine:{
+    			        	show:false
+    			        }
+    			    },
 				    yAxis: {
 				        type: 'category',
 				        data: ['获取订单结果报告','获取订单结果','获取订单(任务)状态','订单(任务)操作','创建网页监测订单'],
@@ -313,7 +348,7 @@ function analysisAPI(){
 				            name: '数量',
 				            type: 'bar',
 				            //stack: '总量',
-				            itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
+				            itemStyle : { normal: {label : {show: true, position: 'right'}}},
 				            data: countList
 				        }
 				    ]
@@ -353,13 +388,21 @@ function analysisAPI(){
    		             x: 150,
    		             x2: 50,
    		             y2: 30,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+   		             borderColor:'#fff'
    		         	},
-				    xAxis:  {
-				        type: 'value',
-				        splitLine:{
-				    		show:false
-				    	}
-				    },
+   		         xAxis:  {
+    			        type: 'value',
+    			        show:false,
+    			        splitLine:{
+    			    		show:false
+    			    	},
+    			    	axisLabel:{  
+    			            show:false
+    			        }, 
+    			        axisLine:{
+    			        	show:false
+    			        }
+    			    },
 				    yAxis: {
 				        type: 'category',
 				        data: ['获取订单结果报告','获取订单结果','获取订单(任务)状态','订单(任务)操作','创建可用性监测订单'],
@@ -372,7 +415,7 @@ function analysisAPI(){
 				            name: '数量',
 				            type: 'bar',
 				            //stack: '总量',
-				            itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
+				            itemStyle : { normal: {label : {show: true, position: 'right'}}},
 				            data: countList
 				        }
 				    ]
@@ -412,13 +455,21 @@ function analysisAPI(){
    		             x: 150,
    		             x2: 50,
    		             y2: 30,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+   		             borderColor:'#fff'
    		         	},
-				    xAxis:  {
-				        type: 'value',
-				        splitLine:{
-				    		show:false
-				    	}
-				    },
+   		         xAxis:  {
+    			        type: 'value',
+    			        show:false,
+    			        splitLine:{
+    			    		show:false
+    			    	},
+    			    	axisLabel:{  
+    			            show:false
+    			        }, 
+    			        axisLine:{
+    			        	show:false
+    			        }
+    			    },
 				    yAxis: {
 				        type: 'category',
 				        data: ['获取订单结果报告','获取订单结果','获取订单(任务)状态','订单(任务)操作','创建可用性监测订单'],
@@ -431,7 +482,7 @@ function analysisAPI(){
 				            name: '数量',
 				            type: 'bar',
 				            //stack: '总量',
-				            itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
+				            itemStyle : { normal: {label : {show: true, position: 'right'}}},
 				            data: countList
 				        }
 				    ]
