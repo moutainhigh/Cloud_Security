@@ -1,7 +1,6 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -521,9 +520,20 @@ public class UserController{
 			
 			//添加到登录历史表中，用于统计分析
 			LoginHistory lh = new LoginHistory();
+		    String ipAddr = request.getHeader("x-forwarded-for");
+			 if(ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+			     ipAddr = request.getHeader("Proxy-Client-IP");
+			  }
+			 if(ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+			    ipAddr = request.getHeader("WL-Proxy-Client-IP");
+			 }
+			 if(ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+			    ipAddr = request.getRemoteAddr();
+		     }
 			lh.setUserId(_user.getId());
 			lh.setUserType(_user.getType());
 			lh.setLoginTime(_user.getLastLoginTime());
+			lh.setIPAddr(ipAddr);
 			userService.insertLoginHistory(lh);
 			
 			//登入key如果为空，则新增key值  add by tangxr 2016-03-31
