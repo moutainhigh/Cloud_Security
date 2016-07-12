@@ -49,6 +49,7 @@ function createDemos(){
 	
 	//拖动完毕后的事件 获取到拖动后的起始时间stime 和 结束时间etime
 	dateSilderObj.bind("valuesChanged", function(e, data){
+	  	//window.clearTimeout(timer);//去掉定时器 
 		var val=data.values;
 		stime=val.min.getFullYear()+"-"+(val.min.getMonth()+1)+"-"+val.min.getDate();
 		etime=val.max.getFullYear()+"-"+(val.max.getMonth()+1)+"-"+val.max.getDate();
@@ -64,7 +65,6 @@ function createDemos(){
 	  	//window.clearTimeout(timer);//去掉定时器 
 	});
 
-	
 }
 
 function analysisAPI(){
@@ -103,11 +103,10 @@ function analysisAPI(){
     			    },
     			    
     			    grid: { // 控制图的大小，调整下面这些值就可以，
-    			    	 top:0,
-    			    	 height:100,
-    		             x: 130,
+    			    	 y: 10,
+    		             x: 150,
     		             x2: 50,
-    		             y2: 50,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+    		             y2: 30,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
     		         },
     			    xAxis:  {
     			        type: 'value',
@@ -127,13 +126,7 @@ function analysisAPI(){
     			            name: '数量',
     			            type: 'bar',
     			            stack: '总量',
-    			            label: {
-    			                normal: {
-    			                    show: true,
-    			                    formatter: '{c}',
-    			                    position: 'top'
-    			                }
-    			            },
+    			            itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
     			            data: countList
     			        }
     			    ]
@@ -171,12 +164,11 @@ function analysisAPI(){
 					    },
 					    
 					    grid: { // 控制图的大小，调整下面这些值就可以，
-					    	 top:50,
-					    	 height:100,
-				             x: 130,
-				             x2: 50,
-				             y2: 50,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
-				         },
+	    			    	 y: 10,
+	    		             x: 150,
+	    		             x2: 50,
+	    		             y2: 30,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+	    		         },
 					    xAxis:  {
 					        type: 'value',
 					        splitLine:{
@@ -195,12 +187,7 @@ function analysisAPI(){
 					            name: '数量',
 					            type: 'bar',
 					            //stack: '总量',
-					            label: {
-					                normal: {
-					                    show: true,
-					                    position: 'insideRight'
-					                }
-					            },
+					            itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
 					            data: countList
 					        }
 					    ]
@@ -237,12 +224,11 @@ function analysisAPI(){
 				    },
 				    
 				    grid: { // 控制图的大小，调整下面这些值就可以，
-				    	 top:50,
-				    	 height:100,
-			             x: 130,
-			             x2: 50,
-			             y2: 50,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
-			         },
+   			    	 y: 10,
+   		             x: 150,
+   		             x2: 50,
+   		             y2: 30,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+   		         	},
 				    xAxis:  {
 				        type: 'value',
 				        splitLine:{
@@ -261,12 +247,7 @@ function analysisAPI(){
 				            name: '数量',
 				            type: 'bar',
 				            //stack: '总量',
-				            label: {
-				                normal: {
-				                    show: true,
-				                    position: 'insideRight'
-				                }
-				            },
+				            itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
 				            data: countList
 				        }
 				    ]
@@ -302,12 +283,11 @@ function analysisAPI(){
 				    },
 				    
 				    grid: { // 控制图的大小，调整下面这些值就可以，
-				    	 top:50,
-				    	 height:100,
-			             x: 130,
-			             x2: 50,
-			             y2: 50,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
-			         },
+   			    	 y: 10,
+   		             x: 150,
+   		             x2: 50,
+   		             y2: 30,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+   		         	},
 				    xAxis:  {
 				        type: 'value',
 				        splitLine:{
@@ -326,12 +306,7 @@ function analysisAPI(){
 				            name: '数量',
 				            type: 'bar',
 				            //stack: '总量',
-				            label: {
-				                normal: {
-				                    show: true,
-				                    position: 'insideRight'
-				                }
-				            },
+				            itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
 				            data: countList
 				        }
 				    ]
@@ -367,12 +342,11 @@ function analysisAPI(){
 				    },
 				    
 				    grid: { // 控制图的大小，调整下面这些值就可以，
-				    	 top:50,
-				    	 height:100,
-			             x: 130,
-			             x2: 50,
-			             y2: 50,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
-			         },
+   			    	 y: 10,
+   		             x: 150,
+   		             x2: 50,
+   		             y2: 30,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+   		         	},
 				    xAxis:  {
 				        type: 'value',
 				        splitLine:{
@@ -391,12 +365,7 @@ function analysisAPI(){
 				            name: '数量',
 				            type: 'bar',
 				            //stack: '总量',
-				            label: {
-				                normal: {
-				                    show: true,
-				                    position: 'insideRight'
-				                }
-				            },
+				            itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
 				            data: countList
 				        }
 				    ]
@@ -432,12 +401,11 @@ function analysisAPI(){
 				    },
 				    
 				    grid: { // 控制图的大小，调整下面这些值就可以，
-				    	 top:50,
-				    	 height:100,
-			             x: 130,
-			             x2: 50,
-			             y2: 50,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
-			         },
+   			    	 y: 10,
+   		             x: 150,
+   		             x2: 50,
+   		             y2: 30,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+   		         	},
 				    xAxis:  {
 				        type: 'value',
 				        splitLine:{
@@ -456,12 +424,7 @@ function analysisAPI(){
 				            name: '数量',
 				            type: 'bar',
 				            //stack: '总量',
-				            label: {
-				                normal: {
-				                    show: true,
-				                    position: 'insideRight'
-				                }
-				            },
+				            itemStyle : { normal: {label : {show: true, position: 'insideRight'}}},
 				            data: countList
 				        }
 				    ]
