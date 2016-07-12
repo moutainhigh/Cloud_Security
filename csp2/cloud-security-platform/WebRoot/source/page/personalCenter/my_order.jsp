@@ -93,7 +93,23 @@ function deleteOrder(orderId,begin_date){
                 if(!data.status){
                     alert("订单正在执行,不可以删订单!");
                 }else{
-                	window.location.href="deleteOrder.html?orderId="+orderId;
+                	//window.location.href="deleteOrder.html?orderId="+orderId;
+                	//虚拟表单post提交
+					var tempForm = document.createElement("form");
+  					tempForm.action = "deleteOrder.html";
+  					tempForm.method = "post";
+  					tempForm.style.display = "none";
+  							
+  					var orderIdInput = document.createElement("input");
+  					orderIdInput.type="hidden"; 
+					orderIdInput.name= "orderId"; 
+					orderIdInput.value= orderId; 
+					tempForm.appendChild(orderIdInput);
+							
+					document.body.appendChild(tempForm);
+					tempForm.submit();
+					document.body.removeChild(tempForm);
+                	
                 }
             },
          });
