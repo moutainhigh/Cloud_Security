@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.APIMapper">
+	<!-- 列集合 -->
+	<sql id="cols">id,apikey,service_type,api_type,status,create_time</sql>
+	<!-- 结果对象 -->
+	<resultMap type="com.cn.ctbri.entity.API" id="APIMap">
+		<id property="id" column="id"/>
+		<result property="apikey" column="apikey"/>
+		<result property="service_type" column="service_type"/>
+		<result property="api_type" column="api_type"/>
+		<result property="status" column="status"/>
+		<result property="create_time" column="create_time"/>
+	</resultMap>
+		
+	<!-- 查询报警信息  -->
+	<select id="getAPICount" parameterType="int" resultType="map">
+		SELECT count(*) count,service_type,api_type FROM `cs_api` where cs_api.service_type=#{serviceType} GROUP BY cs_api.api_type
+	</select>
+
+</mapper>
