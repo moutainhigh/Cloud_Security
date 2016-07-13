@@ -354,7 +354,7 @@ public class OrderMgrController {
 	 * @throws Exception 
      *       @time 2015-01-16
      */
-    @RequestMapping(value="saveOrder.html")
+    @RequestMapping(value="saveOrder.html",method=RequestMethod.POST)
     @ResponseBody
     public void saveOrder(HttpServletResponse response,HttpServletRequest request) throws Exception{
         Map<String, Object> m = new HashMap<String, Object>();
@@ -647,7 +647,7 @@ public class OrderMgrController {
      * 参数描述：  无
      *     @time 2015-3-4
      */
-    @RequestMapping(value="getOrderList.html")
+    @RequestMapping(value="getOrderList.html",method=RequestMethod.POST)
     public ModelAndView getOrderList(HttpServletRequest request){
         //获取pageIndex
         int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
@@ -770,7 +770,7 @@ public class OrderMgrController {
      *       @time 2015-3-6
      */
     @SuppressWarnings("rawtypes")
-    @RequestMapping("/searchCombineByPage.html")
+    @RequestMapping(value="/searchCombineByPage.html",method=RequestMethod.POST)
     public ModelAndView searchCombineByPage(HttpServletRequest request){
         int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
         String type = request.getParameter("type");
@@ -855,7 +855,7 @@ public class OrderMgrController {
      * 参数描述：  无
      *     @time 2015-7-7
      */
-    @RequestMapping(value="deleteOrder.html")
+    @RequestMapping(value="deleteOrder.html",method=RequestMethod.POST)
     public String deleteOrder(HttpServletRequest request){
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         String orderId = request.getParameter("orderId");
@@ -912,7 +912,7 @@ public class OrderMgrController {
      * 参数描述：  无
      *     @time 2015-7-7
      */
-    @RequestMapping(value="userdeleteOrder.html")
+    @RequestMapping(value="userdeleteOrder.html",method=RequestMethod.POST)
     public String userdeleteOrder(HttpServletRequest request){
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         String orderId = request.getParameter("orderId");
@@ -956,7 +956,7 @@ public class OrderMgrController {
             //删除联系人信息
             selfHelpOrderService.deleteLinkman(order.getContactId());
             //删除服务系统相关
-            //NorthAPIWorker.deleteOrder(orderId);
+            NorthAPIWorker.deleteOrder(orderId);
         }
         
 //        return "/source/page/order/orderTrack";
@@ -1049,7 +1049,7 @@ public class OrderMgrController {
 	 * @param request
 	 * @throws Exception
 	 */
-	@RequestMapping("/verificateSubmitTaskNum.html")
+	@RequestMapping(value="/verificateSubmitTaskNum.html",method=RequestMethod.POST)
 	@ResponseBody
 	public void verificateSubmitTaskNum(HttpServletResponse response,HttpServletRequest request) throws Exception{
 	    User globle_user = (User) request.getSession().getAttribute("globle_user");
@@ -1323,7 +1323,7 @@ public class OrderMgrController {
 	 * @throws JSONException 
      *     @time 2015-12-10
      */
-    @RequestMapping(value="optOrder.html")
+    @RequestMapping(value="optOrder.html",method=RequestMethod.POST)
     @ResponseBody
     public void optOrder(HttpServletResponse response,HttpServletRequest request) throws JSONException{
         String orderId = request.getParameter("orderId");
