@@ -39,7 +39,7 @@ import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 public class NsfocusWAFAdapter {	
 	//告警等级：高、中、低
 	private static final String[] ALERT_LEVEL_STRINGS = {"LOW","MEDIUM","HIGH"};
-	public HashMap<Integer, HashMap<Integer, NsfocusWAFOperation>> mapNsfocusWAFOperationGroup = new HashMap<Integer, HashMap<Integer,NsfocusWAFOperation>>();
+	public static HashMap<Integer, HashMap<Integer, NsfocusWAFOperation>> mapNsfocusWAFOperationGroup = new HashMap<Integer, HashMap<Integer,NsfocusWAFOperation>>();
 	public NsfocusWAFOperation nsfocusWAFOperation = null;
 	
 	/**
