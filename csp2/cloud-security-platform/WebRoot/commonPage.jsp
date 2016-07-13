@@ -55,7 +55,7 @@
 		</div>
 		
 	   	<div style="height:550px;width:100%;margin-top: 100px;line-height:1.4;font-weight::400;font-size:24px;text-align:center;" >
-	                                                           您的页面包含非法资产,请正确输入!
+	                                                           您输入的地址包含XSS攻击或者SQL注入,请正确输入!
 	    </div>
 		<div class="safe04">
 			<div class="imgBox clearfix">
