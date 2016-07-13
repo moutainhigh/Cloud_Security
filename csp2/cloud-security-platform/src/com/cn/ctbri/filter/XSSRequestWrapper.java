@@ -64,56 +64,32 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	private String cleanXSS(String paramString) {
+		
 		if (paramString == null) {
 			return "";
 		}
-		String str = paramString;
-		str = str.replaceAll("", "");
-		str = str.replaceAll("../", "");
-		str = str.replaceAll("|", "");
-		str = str.replaceAll("\'", "&prime;");
-		str = str.replaceAll("insert", "forbidI")  
-           .replaceAll("select", "forbidS")  
-           .replaceAll("update", "forbidU")  
-           .replaceAll("delete", "forbidD")  
-           .replaceAll("and", "forbidA")  
-           .replaceAll("or", "forbidO")
-           .replaceAll("count", "forbidB") 
-		   .replaceAll("master", "forbidC")
-		   .replaceAll("declare", "forbidE")
-		   .replaceAll("truncate", "forbidG");
-		//str = str.replaceAll("=", "&#61;");
-		//str = str.replaceAll("&", "");
-		//str = str.replaceAll(";", "");
-		//str = str.replaceAll("$", "");
-		//str = str.replaceAll("@", "");
+		String str =  java.net.URLDecoder.decode(paramString);
 		
+		String reg = "(>|<|\\()|%|--|"  
+            + "(\\b(select|update|and|or|delete|insert|trancate|char|into|substr|ascii|declare|exec|count|master|into|drop|limit|execute)\\b)";
+		Pattern sqlPattern = Pattern.compile(reg, Pattern.CASE_INSENSITIVE);
 		Pattern localPattern = Pattern.compile("<script>(.*?)</script>",
 				Pattern.CASE_INSENSITIVE);
-		str = localPattern.matcher(str).replaceAll("");
 		localPattern = Pattern.compile("src[\r\n]*=[\r\n]*\\'(.*?)\\'", 42);
-		str = localPattern.matcher(str).replaceAll("");
 		localPattern = Pattern.compile("src[\r\n]*=[\r\n]*\\\"(.*?)\\\"", 42);
-		str = localPattern.matcher(str).replaceAll("");
 		localPattern = Pattern.compile("</script>", 2);
-		str = localPattern.matcher(str).replaceAll("");
 		localPattern = Pattern.compile("<script(.*?)>", 42);
-		str = localPattern.matcher(str).replaceAll("");
 		localPattern = Pattern.compile("eval\\((.*?)\\)", 42);
-		str = localPattern.matcher(str).replaceAll("");
 		localPattern = Pattern.compile("expression\\((.*?)\\)", 42);
-		str = localPattern.matcher(str).replaceAll("");
 		localPattern = Pattern.compile("javascript:", 2);
-		str = localPattern.matcher(str).replaceAll("");
 		localPattern = Pattern.compile("vbscript:", 2);
-		str = localPattern.matcher(str).replaceAll("");
 		localPattern = Pattern.compile("onload(.*?)=", 42);
-		str = localPattern.matcher(str).replaceAll("");
-		str = str.replaceAll("\\(", "&#40;").replaceAll("\\)", "&#41;");
-		str = str.replaceAll("'", this.apostrophe);
-		str = str.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-	
-	
+		//boolean flag=sqlPattern.matcher(str).find();
+		if(sqlPattern.matcher(str).find()){
+			str= "true";
+		}else if(localPattern.matcher(str).find()){
+			str="true";
+		}
 		return str;
 	}
 
