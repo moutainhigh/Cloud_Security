@@ -14,7 +14,7 @@
 <script type="text/javascript">
 function buyService(serviceId){
 	$("#serviceId").val(serviceId);
-	if(serviceId<6){
+	if(serviceId != 6){
 		$("#selfHelpOrderInitForm").submit();
 	}else{
 		$("#wafDetailsForm").submit();
@@ -40,7 +40,7 @@ function buyServiceAPI(apiId){
 							<c:if test="${status.count != 1}">
 							  <li>
 							</c:if>
-							<c:if test="${list.id < 6}">
+							<c:if test="${list.id != 6}">
 								<!--<a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">${list.name }</a>
 								-->
 								<a href="javascript:;" onclick="buyService(${list.id });">${list.name }</a>
@@ -50,7 +50,7 @@ function buyServiceAPI(apiId){
 									<input type="hidden" id="indexPage" name="indexPage" value="1"/>
 								</form>
 							</c:if>
-							<c:if test="${list.id >= 6}">
+							<c:if test="${list.id == 6}">
 								<!--<a href="${ctx}/wafDetails.html?serviceId=${list.id }&indexPage=1">${list.name }</a>
 							-->
 							<a href="javascript:;" onclick="buyService(${list.id });">${list.name }</a>
