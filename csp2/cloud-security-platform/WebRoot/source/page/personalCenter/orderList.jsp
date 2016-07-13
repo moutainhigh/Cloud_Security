@@ -157,7 +157,8 @@
 						                 	查看详情
 						                 </a>
 						                 </c:if>
-						                 <a href="${ctx}/domainNameUI.html?orderId=${list.id }"  title="设置域名解析">
+						                 <!-- <a href="${ctx}/domainNameUI.html?orderId=${list.id }"  title="设置域名解析"> -->
+						                 <a href="javascript:void(0)" onclick="domainNameUI(${list.id })" title="设置域名解析">
 						                 	设置域名解析
 						                 </a>
 						                
