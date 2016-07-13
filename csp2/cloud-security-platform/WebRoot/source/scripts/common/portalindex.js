@@ -539,3 +539,22 @@ function balance(){
 	})	
 	
 }
+//设置域名解析
+function domainNameUI(orderId){
+//虚拟表单post提交
+	var tempForm = document.createElement("form");
+  	tempForm.action = "domainNameUI.html";
+  	tempForm.method = "post";
+  	tempForm.style.display = "none";
+  							
+  	var orderIdInput = document.createElement("input");
+  	orderIdInput.type="hidden"; 
+	orderIdInput.name= "orderId"; 
+	orderIdInput.value= orderId; 
+	tempForm.appendChild(orderIdInput);
+							
+	document.body.appendChild(tempForm);
+	tempForm.submit();
+	document.body.removeChild(tempForm);
+
+}
