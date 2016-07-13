@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.common.HuaweiWorker;
@@ -167,7 +168,7 @@ public class shoppingController {
 	 * 参数描述：  无
 	 *     @time 2016-3-10
 	 */
-	@RequestMapping(value="settlement.html")
+	@RequestMapping(value="settlement.html",method=RequestMethod.POST)
 	public String settlement(HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		if(request.getParameterMap().size()==0){
@@ -232,7 +233,7 @@ public class shoppingController {
 	 * @throws Exception 
 	 *      add by gxy 2016-5-03
 	 */
-	@RequestMapping(value="shoppingCar.html")
+	@RequestMapping(value="shoppingCar.html", method=RequestMethod.POST)
 	public void shoppingCar(HttpServletRequest request,HttpServletResponse response){
 		  Map<String, Object> m = new HashMap<String, Object>();
 		  try{
@@ -382,7 +383,7 @@ public class shoppingController {
 	 *  add  gxy
      *       @time 2016-05-5
      */
-    @RequestMapping(value="delShopCar.html")
+    @RequestMapping(value="delShopCar.html",method=RequestMethod.POST)
     @ResponseBody
     public void saveOrderAPI(HttpServletResponse response,HttpServletRequest request) throws Exception{
     	  Map<String, Object> m = new HashMap<String, Object>();
@@ -412,7 +413,7 @@ public class shoppingController {
 	 *     @time 2016-05-07
 	 *     add gxy
 	 */
-	@RequestMapping(value="shopBuy.html")
+	@RequestMapping(value="shopBuy.html",method=RequestMethod.POST)
 	public String shopBuy(HttpServletRequest request){
 		 User globle_user = (User) request.getSession().getAttribute("globle_user");
 
@@ -474,7 +475,7 @@ public class shoppingController {
 	 *     @time 2016-05-07
 	 *     add gxy
 	 */
-	@RequestMapping(value="shopSettlement.html")
+	@RequestMapping(value="shopSettlement.html",method=RequestMethod.POST)
 	public void shopSettlement(HttpServletResponse response,HttpServletRequest request){
 		 Map<String, Object> map = new HashMap<String, Object>();  
 		 String id ="";
@@ -727,7 +728,7 @@ public class shoppingController {
 	 * @throws Exception 
 	 *      add by gxy 2016-5-10
 	 */
-	@RequestMapping(value="orderBack.html")
+	@RequestMapping(value="orderBack.html", method=RequestMethod.POST)
 	public String  orderBack(HttpServletResponse response,HttpServletRequest request) throws Exception{
 		//没有参数时,返回首页
 		if(request.getParameterMap().size()==0){
@@ -817,7 +818,7 @@ public class shoppingController {
 	 *  add  pengdm
      *       @time 2016-05-12
      */
-    @RequestMapping(value="calPrice.html")
+    @RequestMapping(value="calPrice.html", method=RequestMethod.POST)
     @ResponseBody
     public void calPrice(HttpServletResponse response,HttpServletRequest request) throws Exception{
 		Map<String, Object> m = new HashMap<String, Object>();
@@ -1061,7 +1062,7 @@ public class shoppingController {
 	 *     @time 2016-05-23
 	 *     add gxy
 	 */
-	@RequestMapping(value="checkShoppOrder.html")
+	@RequestMapping(value="checkShoppOrder.html", method=RequestMethod.POST)
 	public void checkOrderInfo(HttpServletResponse response,HttpServletRequest request){
 		Map<String, Object> m = new HashMap<String, Object>();
 		
@@ -1201,7 +1202,7 @@ public class shoppingController {
     /**
      * 功能描述： 确认支付
      * */
-    @RequestMapping("payConfirm.html")
+    @RequestMapping(value="payConfirm.html", method=RequestMethod.POST)
     public void payConfirm(HttpServletRequest request, HttpServletResponse response){
     	Map<String, Object> m = new HashMap<String, Object>();
     	try {
@@ -1596,7 +1597,7 @@ public class shoppingController {
     /**
      * 功能描述： 支付成功页面
      * */
-    @RequestMapping("repayUI.html")
+    @RequestMapping(value="repayUI.html", method=RequestMethod.POST)
     public String toRepayUI(Model m,HttpServletRequest request, HttpServletResponse response){
     	String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
 		OrderList orderList = orderListService.findById(orderListId);
@@ -1654,7 +1655,7 @@ public class shoppingController {
 	 * @throws Exception 
 	 *		 @time 2015-1-16
 	 */
-	@RequestMapping("/addWebSite.html")
+	@RequestMapping(value="/addWebSite.html", method=RequestMethod.POST)
 	public void addWebSite(HttpServletRequest request,HttpServletResponse response){
 		Map<String, Object> m = new HashMap<String, Object>();
 		String hostnameRegex ="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
