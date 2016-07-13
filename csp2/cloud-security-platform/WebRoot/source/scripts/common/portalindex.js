@@ -464,21 +464,16 @@ function sck(){
 	//全选算价格
 	$('.check-all').click(function(){
 		//计算价格方法
-		function getTotal() {
-		var seleted = 0;
-		price = 0;
-		var HTMLstr = '';
-		for (var i = 0, len = tr.length; i < len; i++) {
-				price += parseFloat(tr[i].innerHTML);		
-		}	
-		
-		priceTotal.innerHTML = price.toFixed(2);
-		
-	}
 		var is=$(this).hasClass('this');
+		var isOk=$(this).parents('.tabox').find('.test-table tr');
 		if(is==false)
 		{
-			$(this).parents('.tabox').find('.price').addClass('ps');
+			
+			for (var i = 0; i < isOk.length ; i++) {
+				if($(isOk[i]).find('i.chck').length>0){
+					$(isOk[i]).find('.price').addClass('ps');
+				}
+			}
 			 var tr =$('.ps');
 			 var price;
 			var priceTotal = document.getElementById('priceTotal')
@@ -501,11 +496,10 @@ function sck(){
 			 
 		}else{
 			
-			$(this).parents('.tabox').find('.price').removeClass('ps');
+			var pri= $(this).parents('.tabox').find('.ps').addClass('ps2').removeClass('ps');
 			var zsh=$('#priceTotal').text();
 			var tab=$(this).parents('.tabox').children('.test-table')
-			 var tr = tab.find('.price');
-			 
+			 var tr = tab.find('.ps2');
 			 var price;
 			var priceTotal = document.getElementById('priceTotal')
 			
@@ -526,9 +520,22 @@ function sck(){
 			$(this).parents('.tabox').find('.ck').attr('checked',false);
 			
 		}
+		function getTotal() {
+			var seleted = 0;
+			price = 0;
+			var HTMLstr = '';
+			
+			for (var i = 0, len = tr.length; i < len; i++) {
+			
+					price += parseFloat(tr[i].innerHTML);
+					
+			}	
+		
+		priceTotal.innerHTML = price.toFixed(2);
+		
+		}
 		
 	})
-
 
 }
 
