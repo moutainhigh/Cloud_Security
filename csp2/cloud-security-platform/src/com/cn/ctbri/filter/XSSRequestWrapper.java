@@ -26,7 +26,7 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
 		if(url==null){
 			return "";
 		}
-		String val=cleanXSS(url.toLowerCase());
+		String val=cleanXSS(url.trim().toLowerCase());
 		//String path = orgRequest.getScheme()+"://"+orgRequest.getServerName()+":"+orgRequest.getServerPort()+orgRequest.getRequestURI()+"?"+val;
 		
 		return val;
