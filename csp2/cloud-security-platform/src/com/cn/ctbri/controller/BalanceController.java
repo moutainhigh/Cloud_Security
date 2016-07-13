@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cn.ctbri.entity.OrderList;
@@ -75,7 +76,7 @@ public class BalanceController {
 	 * 			HttpServletResponse response
 	 *		 @time 2016-5-17
 	 */
-	@RequestMapping("/signIn.html")
+	@RequestMapping(value="/signIn.html",method=RequestMethod.POST)
 	public void signIn(HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> m = new HashMap<String,Object>();
 		try{
@@ -124,7 +125,7 @@ public class BalanceController {
 	 * 			HttpServletResponse response
 	 *		 @time 2016-5-17
 	 */
-	@RequestMapping("/collectBalance.html")
+	@RequestMapping(value="/collectBalance.html",method=RequestMethod.POST)
 	public void collectBalance(HttpServletRequest request,HttpServletResponse response){
 		Map<String,Object> m = new HashMap<String,Object>();
 		try{
