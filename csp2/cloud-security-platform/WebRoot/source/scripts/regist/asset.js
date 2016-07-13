@@ -187,6 +187,7 @@ function editAsset(){
 	            	$("#editAssetAddr_msg").html("");
 
 	       		 var options = {
+	       		 		type: "POST",
 	 					url:'editAsset.html',
 	 					data:{
 	 			 		'id':id,
