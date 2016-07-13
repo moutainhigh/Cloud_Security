@@ -147,7 +147,7 @@ public class UserController{
 	 * 参数描述：HttpServletResponse response,HttpServletRequest request
 	 *		 @time 2016-4-10
 	 */
-	@RequestMapping("/saveUserDataBate.html")
+	@RequestMapping(value="/saveUserDataBate.html", method=RequestMethod.POST)
 	@ResponseBody
 	public void saveUserDataBate(HttpServletResponse response,HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
@@ -872,7 +872,7 @@ public class UserController{
 	 * 参数描述：  User user
 	 *		 @time 2014-12-31
 	 */
-	@RequestMapping(value="registToLogin.html")
+	@RequestMapping(value="registToLogin.html", method = RequestMethod.POST)
 	public String regist(User user,HttpServletRequest request){
 
 		if(user.getName() != null){
@@ -1392,10 +1392,10 @@ public class UserController{
 	 */
 	@RequestMapping(value="forgetPass.html")
 	public String forgetPass(HttpServletRequest request,Model m){
-		String originalMobile = request.getParameter("originalMobile");
-		if(originalMobile!=null && !originalMobile.equals("")){
-			m.addAttribute("originalMobile", originalMobile);
-		}
+//		String originalMobile = request.getParameter("originalMobile");
+//		if(originalMobile!=null && !originalMobile.equals("")){
+//			m.addAttribute("originalMobile", originalMobile);
+//		}
 		return "/forgetPass";
 	}
 	
@@ -1421,7 +1421,7 @@ public class UserController{
 	 * 参数描述： Model m
 	 *		 @time 2015-1-8
 	 */
-	@RequestMapping(value="updatePass.html")
+	@RequestMapping(value="updatePass.html", method = RequestMethod.POST)
 	public String updatePass(User user,HttpServletRequest request,Model m){
 		String email = request.getParameter("eamil_ecode");
 		String mobile = request.getParameter("phone_code");
@@ -1462,19 +1462,10 @@ public class UserController{
 	 * 参数描述： Model m
 	 *		 @time 2015-1-8
 	 */
-	@RequestMapping(value="/confirmPass.html")
+	@RequestMapping(value="/confirmPass.html",method=RequestMethod.POST)
 	public String confirmPass(User user,HttpServletRequest request){
 		try {
-			if (!LogonUtils.checkNumber(request)) {
-				return "/updatePassfail";
-				
-			}
-			
-			String confirmPassword = request.getParameter("confirm_password");
 			String password = user.getPassword();
-			if (confirmPassword == null || password== null || !confirmPassword.equals(password)) {
-				return "/updatePassfail";
-			}
 			String passwdMD5 = DigestUtils.md5Hex(password);
 			String mobile = user.getMobile();
 			user.setPassword(passwdMD5);
@@ -1488,8 +1479,6 @@ public class UserController{
 		} catch(Exception e) {
 			e.printStackTrace();
 			return "/updatePassfail";
-		}finally{
-			request.getSession().removeAttribute("CHECK_NUMBER_KEY");
 		}
 
 	}
@@ -1698,7 +1687,7 @@ public class UserController{
 	 * 参数描述： User user
 	 *		 @time 2016-6-29
 	 */
-	@RequestMapping(value="/confirmMobile.html")
+	@RequestMapping(value="/confirmMobile.html",method=RequestMethod.POST)
 	public String confirmMobile(HttpServletRequest request){
 		boolean success = false;
 		String mobile = request.getParameter("mobile");
