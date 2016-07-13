@@ -26,8 +26,9 @@ public class XSSFilter implements Filter
 	{
 		
 		XSSRequestWrapper xssRequest = new XSSRequestWrapper((HttpServletRequest) request);
+
 	   String url=xssRequest.getRequestURI();
-	  if(url!=null&&!"".equals(url)){
+	  if(url!=null&&!"".equals(url)&&url.equals("true")){
 	  request.getRequestDispatcher("/commonPage.jsp").forward(request, response);
 	  }else{
         chain.doFilter(xssRequest, response);
