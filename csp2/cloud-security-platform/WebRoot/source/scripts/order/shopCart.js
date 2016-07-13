@@ -25,7 +25,23 @@ $(function(){
 			   		 }else{
 			   			 if(data.flag){
 					    	 $("input:checkbox[name=check_name]").attr("checked",false);
-						    	 window.location.href="shopBuy.html?str="+str;
+						    	 //window.location.href="shopBuy.html?str="+str;
+						    	 //虚拟表单post提交
+						    	var tempForm = document.createElement("form");
+	  							tempForm.action = "shopBuy.html";
+	  							tempForm.method = "post";
+	  							tempForm.style.display = "none";
+  							
+	  							var orderIdInput = document.createElement("input");
+	  							orderIdInput.type="hidden"; 
+								orderIdInput.name= "str"; 
+								orderIdInput.value= str; 
+								tempForm.appendChild(orderIdInput);
+								
+								document.body.appendChild(tempForm);
+								tempForm.submit();
+								document.body.removeChild(tempForm);
+  
 						   
 					     }else{
 					    	 alert("当前时间已经超过下单结束时间，订单已作废请删除订单!");
@@ -80,7 +96,22 @@ $(function(){
 			    	 if(data.sucess==true&&data.orderStatus == true){
 	    		    			 //alert("完成下单，去订单跟踪查看吧~~"); 
 	    		    			 var orderListId = data.orderListId;
-	    		    			 window.location.href = "cashierUI.html?orderListId="+orderListId;
+	    		    			 //window.location.href = "cashierUI.html?orderListId="+orderListId;
+	    		    			 //虚拟表单post提交
+						    	var tempForm = document.createElement("form");
+	  							tempForm.action = "cashierUI.html";
+	  							tempForm.method = "post";
+	  							tempForm.style.display = "none";
+  							
+	  							var orderListIdInput = document.createElement("input");
+	  							orderListIdInput.type="hidden"; 
+								orderListIdInput.name= "orderListId"; 
+								orderListIdInput.value= orderListId; 
+								tempForm.appendChild(orderListIdInput);
+							
+								document.body.appendChild(tempForm);
+								tempForm.submit();
+								document.body.removeChild(tempForm);
 		    		    	 }else{
 		    		    		alert("系统异常，暂时不能购买，请稍后购买~~!");
 		    		     		 return;
