@@ -17,6 +17,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.entity.APICount;
@@ -134,7 +135,7 @@ public class shoppingAPIController {
 	 * 参数描述：  无
 	 *     @time 2016-3-10
 	 */
-	@RequestMapping(value="settlementAPI.html")
+	@RequestMapping(value="settlementAPI.html",method=RequestMethod.POST)
 	public String settlementAPI(HttpServletRequest request){
 		//没有参数时,返回首页
 		if(request.getParameterMap().size()==0){
@@ -170,7 +171,7 @@ public class shoppingAPIController {
 	 * @throws Exception 
      *       @time 2016-03-29
      */
-    @RequestMapping(value="checkAPI.html")
+    @RequestMapping(value="checkAPI.html",method=RequestMethod.POST)
     @ResponseBody
     public void checkAPI(HttpServletResponse response,HttpServletRequest request) throws Exception{
         User globle_user = (User) request.getSession().getAttribute("globle_user");
@@ -221,7 +222,7 @@ public class shoppingAPIController {
 	 * @throws Exception 
      *       @time 2016-03-29
      */
-    @RequestMapping(value="saveOrderAPI.html")
+    @RequestMapping(value="saveOrderAPI.html",method=RequestMethod.POST)
     @ResponseBody
     public void saveOrderAPI(HttpServletResponse response,HttpServletRequest request) throws Exception{
         Map<String, Object> m = new HashMap<String, Object>();
@@ -374,7 +375,7 @@ public class shoppingAPIController {
 	 * @throws Exception 
 	 *      add by gxy 2016-5-03
 	 */
-	@RequestMapping(value="shoppingCarAPI.html")
+	@RequestMapping(value="shoppingCarAPI.html",method=RequestMethod.POST)
 	public void shoppingCarAPI(HttpServletRequest request,HttpServletResponse response) throws Exception{
 		 User globle_user = (User) request.getSession().getAttribute("globle_user");
 	        //apiId
