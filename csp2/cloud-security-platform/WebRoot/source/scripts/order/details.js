@@ -321,7 +321,22 @@ $(function(){
 		    		     	    return;
 		    				}else{
 			    		    	var orderListId = data.orderListId;
-	    		    			window.location.href = "cashierUI.html?orderListId="+orderListId;
+	    		    			//window.location.href = "cashierUI.html?orderListId="+orderListId;
+	    		    			//虚拟表单post提交
+						    	var tempForm = document.createElement("form");
+	  							tempForm.action = "cashierUI.html";
+	  							tempForm.method = "post";
+	  							tempForm.style.display = "none";
+  							
+	  							var orderListIdInput = document.createElement("input");
+	  							orderListIdInput.type="hidden"; 
+								orderListIdInput.name= "orderListId"; 
+								orderListIdInput.value= orderListId; 
+								tempForm.appendChild(orderListIdInput);
+							
+								document.body.appendChild(tempForm);
+								tempForm.submit();
+								document.body.removeChild(tempForm);
 		    				}
 	    		    	 }, 
 	    		     error: function(data){ 
@@ -588,8 +603,9 @@ function tasknum_verification(){
     	if(result){
     		$.ajax({ type: "POST",
 	    		     async: false, 
-	    		     url: "delShopCar.html?orderId="+orderId, 
+	    		     url: "delShopCar.html", 
 	    		     dataType: "json",
+	    		     data:{"orderId":orderId},
 	    		     success: function(data) {
 	    		    	  window.location.href = "showShopCar.html";
 				    	 }, 
@@ -774,6 +790,7 @@ function tasknum_verification(){
     		    		            	alert("免费用户管理资产数不能大于" + data.allowCount);
     		    		            }else{
     		    			       		 var options = {
+    		    			       		 			type:'POST',
     		    				 					url:'addWebSite.html',
     		    				 					data:{
     		    				  	               'assetName':assetName,
