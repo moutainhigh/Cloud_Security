@@ -211,7 +211,8 @@ function getBranchInfo(){
 	        type: "POST",
 	        cache: false,
 	        dataType: "json",
-	        url: "initDistrictList.html?serviceId="+serviceId, 
+	        data:{"serviceId":serviceId},
+	        url: "initDistrictList.html", 
 	        success: function(obj){
 	        	// 从后台得到返回的值，是一个json对象。 
 //	        	console.log(obj.max);
@@ -231,7 +232,8 @@ function getRegionTOP(){
         type: "POST",
         cache: false,
         dataType: "json",
-        url: "getDistrictAlarmTop5.html?serviceId="+serviceId, 
+        data:{"serviceId":serviceId},
+        url: "getDistrictAlarmTop5.html", 
         success: function(obj){
         	// 从后台得到返回的值，是一个json对象。 
         	//console.log(obj.length);
@@ -260,7 +262,8 @@ function getServiceTOP(){
         type: "POST",
         cache: false,
         dataType: "json",
-        url: "getServiceAlarmTop5.html?serviceId="+serviceId, 
+        data:{"serviceId":serviceId},
+        url: "getServiceAlarmTop5.html", 
         success: function(obj){
         	// 从后台得到返回的值，是一个json对象。 
         	//console.log(obj);
@@ -286,7 +289,8 @@ function getLineChart(){
         type: "POST",
         cache: false,
         dataType: "json",
-        url: "getServiceAlarmMonth5.html?serviceId="+serviceId, 
+        data:{"serviceId":serviceId},
+        url: "getServiceAlarmMonth5.html", 
         success: function(obj){
         	// 从后台得到返回的值，是一个json对象。 
 //        	console.log(obj);
@@ -317,7 +321,8 @@ function getOrgData(param){
 				type : "POST",
 				cache : false,
 				dataType : "json",
-				url : "getDistrictData.html?id=" + oname + "&serviceId=" + serviceId,
+				data:{"id":id,"serviceId":serviceId},
+				url : "getDistrictData.html",
 				success : function(obj) {
 					console.log(obj);
 					var sname=obj[0].name;
