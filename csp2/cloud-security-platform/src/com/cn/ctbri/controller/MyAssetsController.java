@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -185,7 +186,7 @@ public class MyAssetsController {
 	 * @throws Exception 
 	 *		 @time 2015-1-16
 	 */
-	@RequestMapping("/addAsset.html")
+	@RequestMapping(value="/addAsset.html",method=RequestMethod.POST)
 	public String addAsset(Model model,Asset asset,HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		asset.setUserid(globle_user.getId());//用户ID
@@ -280,7 +281,7 @@ public class MyAssetsController {
 	 * 参数描述： Model model
 	 *		 @time 2015-1-19
 	 */
-	@RequestMapping("/editAsset.html")
+	@RequestMapping(value="/editAsset.html",method=RequestMethod.POST)
 	public void editAsset(HttpServletResponse response,HttpServletRequest request){
 		Map<String, Object> m = new HashMap<String, Object>();
         try {
@@ -353,7 +354,7 @@ public class MyAssetsController {
 	 * 参数描述： Model model
 	 *		 @time 2015-1-19
 	 */
-	@RequestMapping("/deleteAsset.html")
+	@RequestMapping(value="/deleteAsset.html",method=RequestMethod.POST)
 	public void delete(HttpServletRequest request,HttpServletResponse response){
 		Map<String, Object> m = new HashMap<String, Object>();
 		int id = Integer.parseInt(request.getParameter("id"));
@@ -413,7 +414,7 @@ public class MyAssetsController {
 	 *		 @time 2015-1-19
 	 *	返回值：无
 	 */
-	@RequestMapping("/asset_verification.html")
+	@RequestMapping(value="/asset_verification.html",method=RequestMethod.POST)
 	public void asset_verification(HttpServletRequest request,HttpServletResponse response){
 		int id = Integer.valueOf(request.getParameter("id"));
 		Asset _asset = assetService.findById(id);
@@ -498,7 +499,7 @@ public class MyAssetsController {
 	 *		 @time 2015-1-19
 	 *	返回值：redirect:/userAssetsUI.html
 	 */
-	@RequestMapping("/verificationAsset.html")
+	@RequestMapping(value="/verificationAsset.html",method=RequestMethod.POST)
 	public String verificationAsset(Asset asset){
 		asset.setStatus(1);
 		assetService.updateAsset(asset);
