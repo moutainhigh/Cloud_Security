@@ -135,7 +135,7 @@ public class shoppingController {
 	    	}
 	    }
 	    if(!flag){
-	    	return "redirect:/loginUI.html";
+	    	return "redirect:/index.html";
 	    }
 	    //是否从首页进入
 	    String indexPage = request.getParameter("indexPage");
