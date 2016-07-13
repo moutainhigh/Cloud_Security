@@ -293,7 +293,6 @@ public class NsfocusWAFAdapter {
 	public String createVirtSite(int resourceId, JSONObject jsonObject) {
 		System.out.println("resourceId="+resourceId);
 		HashMap<Integer, NsfocusWAFOperation> map = mapNsfocusWAFOperationGroup.get(resourceId);
-		System.out.println(map.entrySet());
 		JSONObject createVirtSiteJsonObject = new JSONObject();
 		JSONArray createVirtSiteJsonArray = new JSONArray();
 		String targetId = UUID.randomUUID().toString();

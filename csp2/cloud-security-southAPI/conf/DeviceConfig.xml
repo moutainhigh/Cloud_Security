@@ -3,7 +3,7 @@
 <DeviceAdapterConfig>
 	<DeviceList>
 		<DeviceScannerList>
-			<DeviceScanner id="10001">
+			<!--<DeviceScanner id="10001">
 				<DeviceID>10001</DeviceID>
 				<ScannerFactory>Arnhem</ScannerFactory>
 				<ScannerFactoryName>安恒</ScannerFactoryName>
@@ -21,7 +21,7 @@
 				<ScannerUserName>admin</ScannerUserName>
 				<ScannerPassword>admin123456</ScannerPassword>
 			</DeviceScanner>
-			<!--<DeviceScanner id="11001">
+			<DeviceScanner id="11001">
 				<DeviceID>11001</DeviceID>
 				<ScannerFactory>Websoc</ScannerFactory>
 				<ScannerFactoryName>知道创宇</ScannerFactoryName>
@@ -36,6 +36,6 @@
 				<ID></ID>
 			</DeviceDDOS>		
 		</DeviceDDOSList>
-		<DeviceWAFList state="ON"  configFile="WafConfig.xml" />		
+		<DeviceWAFList state="ON" configFile="WafConfig.xml" />		
 	</DeviceList>
 </DeviceAdapterConfig>
