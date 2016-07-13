@@ -44,14 +44,19 @@ function loadData(){
     var state = $("#statepage").val();
     var begin_date = $("#begin_datepage").val();
     var end_date = $("#end_datepage").val();
-    var data = "&pageIndex=" + pageIndex;
+    //var data = "&pageIndex=" + pageIndex;
+    var data;
     var url = "";
     if(mark!=1){
-    	url = "searchCombineByPage.html?type="+type+"&servName="+servName+"&state="+state+"&begin_date="+begin_date+"&end_date="+end_date;
+    	//url = "searchCombineByPage.html?type="+type+"&servName="+servName+"&state="+state+"&begin_date="+begin_date+"&end_date="+end_date;
+    	url="searchCombineByPage.html";
+    	data={"pageIndex":pageIndex,"type":type,"servName":servName,"state":state,"begin_date":begin_date,"end_date":end_date};
     }else{
-    	url = "getOrderList.html?state="+state;
+    	//url = "getOrderList.html?state="+state;
+    	url="getOrderList1.html";
+    	data={"pageIndex":pageIndex,"state":state};
     }
-    $.get(url, data, function(result){
+    $.post(url, data, function(result){
         pageIndex++;
         $("#orderTab tbody").append(result);
         if (result.length > 0) {
