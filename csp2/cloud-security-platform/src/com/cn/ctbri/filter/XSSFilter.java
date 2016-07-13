@@ -24,9 +24,15 @@ public class XSSFilter implements Filter
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
 			ServletException
 	{
+		
 		XSSRequestWrapper xssRequest = new XSSRequestWrapper((HttpServletRequest) request);
-	
+	   String url=xssRequest.getRequestURI();
+	  if(url!=null&&!"".equals(url)){
+	  request.getRequestDispatcher("/commonPage.jsp").forward(request, response);
+	  }else{
         chain.doFilter(xssRequest, response);
+	  }
+    
 	}
 
 	public void destroy()
