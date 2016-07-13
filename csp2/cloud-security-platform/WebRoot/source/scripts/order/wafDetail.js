@@ -318,7 +318,22 @@ $(function(){
 			    				}else if(data.orderStatus == true){
 			    					 //alert("完成下单，去订单跟踪查看吧~~"); 
 		    		    			 var orderListId = data.orderListId;
-	    		    			 	 window.location.href = "cashierUI.html?orderListId="+orderListId;
+	    		    			 	 //window.location.href = "cashierUI.html?orderListId="+orderListId;
+	    		    			 	 //虚拟表单post提交
+							    	var tempForm = document.createElement("form");
+		  							tempForm.action = "cashierUI.html";
+		  							tempForm.method = "post";
+		  							tempForm.style.display = "none";
+	  							
+		  							var orderListIdInput = document.createElement("input");
+		  							orderListIdInput.type="hidden"; 
+									orderListIdInput.name= "orderListId"; 
+									orderListIdInput.value= orderListId; 
+									tempForm.appendChild(orderListIdInput);
+								
+									document.body.appendChild(tempForm);
+									tempForm.submit();
+									document.body.removeChild(tempForm);
 			    				}else{
 			    					alert("订单异常,请重新购买!");
 			    		     		return;
@@ -616,6 +631,7 @@ function saveWafAsset() {
 		    		            	alert("免费用户管理资产数不能大于" + data.allowCount);
 		    		            }else{
 		    			       		 var options = {
+		    			       		 			type:'POST',
 		    				 					url:'addWebSite.html',
 		    				 					data:{
 		    				  	               'assetName':assetName,
