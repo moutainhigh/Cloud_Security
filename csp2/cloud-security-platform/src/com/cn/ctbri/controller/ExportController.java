@@ -57,6 +57,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import sun.misc.BASE64Decoder;
 
@@ -112,7 +113,7 @@ public class ExportController {
      * 参数描述：HttpServletRequest request,HttpServletResponse response
      *       @time 2015-1-21
      */
-    @RequestMapping(value="/export.html")
+    @RequestMapping(value="/export.html",method=RequestMethod.POST)
     public void export(HttpServletRequest request,HttpServletResponse response) throws Exception{
         try {
             String orderId = request.getParameter("orderId");
