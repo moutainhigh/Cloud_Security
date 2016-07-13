@@ -26,7 +26,7 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
 		if(url==null){
 			return "";
 		}
-		String val=cleanXSS(url);
+		String val=cleanXSS(url.toLowerCase());
 		//String path = orgRequest.getScheme()+"://"+orgRequest.getServerName()+":"+orgRequest.getServerPort()+orgRequest.getRequestURI()+"?"+val;
 		
 		return val;
@@ -112,7 +112,7 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
 		str = str.replaceAll("\\(", "&#40;").replaceAll("\\)", "&#41;");
 		str = str.replaceAll("'", this.apostrophe);
 		str = str.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-		str = str.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+	
 	
 		return str;
 	}
