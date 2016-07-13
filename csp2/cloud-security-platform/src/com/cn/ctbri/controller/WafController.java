@@ -173,7 +173,7 @@ public class WafController {
 	    	}
 	    }
 	    if(!hasServFlag){
-	    	return "redirect:/loginUI.html";
+	    	return "redirect:/index.html";
 	    }
 	    
 	    //是否从首页进入
