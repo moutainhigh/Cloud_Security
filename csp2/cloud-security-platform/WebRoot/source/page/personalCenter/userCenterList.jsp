@@ -36,9 +36,21 @@
                                          </h2>
                                         </c:if>
                                         <c:if test="${fn:length(olist.order)==1}">
+                                          <c:if test="${list.isAPI==0&&list.serviceId!=6}">
                                          <h2>
-							                 ${list.name}
+							                   <a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.serviceId}&indexPage=1" target="_blank">${list.name}</a>
                                          </h2>
+                                         </c:if>
+                                            <c:if test="${list.isAPI==0&&list.serviceId==6}">
+                                         <h2>
+							                   <a href="${ctx}/wafDetails.html?serviceId=6" target="_blank">${list.name}</a>
+                                         </h2>
+                                         </c:if>
+                                            <c:if test="${list.isAPI==1}">
+                                         <h2>
+							                   <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${list.serviceId}&indexPage=2" target="_blank">${list.name}</a>
+                                         </h2>
+                                         </c:if>
                                         </c:if>
                                          </div>
                                     	<c:forEach var="asset" items="${list.assetList}" varStatus="status">
