@@ -13,7 +13,7 @@
 	</head>
 <script type="text/javascript">
 function buyService(serviceId){
-	$("#serviceId").val(serviceId);
+	$("#category_serviceId").val(serviceId);
 	if(serviceId != 6){
 		$("#selfHelpOrderInitForm").submit();
 	}else{
@@ -21,7 +21,7 @@ function buyService(serviceId){
 	}
 }
 function buyServiceAPI(apiId){
-	$("#apiId").val(apiId);
+	$("#category_apiId").val(apiId);
 	$("#selfHelpOrderAPIInitForm").submit();
 }
 </script>
@@ -45,9 +45,9 @@ function buyServiceAPI(apiId){
 								-->
 								<a href="javascript:;" onclick="buyService(${list.id });">${list.name }</a>
 								<form action="selfHelpOrderInit.html" method="post" id="selfHelpOrderInitForm">
-									<input type="hidden" id="type" name="type" value="${list.orderType }"/>
-									<input type="hidden" id="serviceId" name="serviceId" value="${list.id }"/>
-									<input type="hidden" id="indexPage" name="indexPage" value="1"/>
+									<input type="hidden" name="type" value="${list.orderType }"/>
+									<input type="hidden" id="category_serviceId" name="serviceId" value="${list.id }"/>
+									<input type="hidden" name="indexPage" value="1"/>
 								</form>
 							</c:if>
 							<c:if test="${list.id == 6}">
@@ -55,8 +55,8 @@ function buyServiceAPI(apiId){
 							-->
 							<a href="javascript:;" onclick="buyService(${list.id });">${list.name }</a>
 							<form action="wafDetails.html" method="post" id="wafDetailsForm">
-								<input type="hidden" id="serviceId" name="serviceId" value="${list.id }"/>
-								<input type="hidden" id="indexPage" name="indexPage" value="1"/>
+								<input type="hidden" id="category_serviceId" name="serviceId" value="${list.id }"/>
+								<input type="hidden" name="indexPage" value="1"/>
 							</form>
 							</c:if>
 								</li>
@@ -77,7 +77,7 @@ function buyServiceAPI(apiId){
 							-->
 							<a href="javascript:;" onclick="buyServiceAPI(${apiList.id });">${apiList.name }</a>
 							<form action="selfHelpOrderAPIInit.html" method="post" id="selfHelpOrderAPIInitForm">
-								<input type="hidden" id="apiId" name="apiId" value="${apiList.id }"/>
+								<input type="hidden" id="category_apiId" name="apiId" value="${apiList.id }"/>
 								<input type="hidden" id="indexPage" name="indexPage" value="2"/>
 							</form>
 							</li>
