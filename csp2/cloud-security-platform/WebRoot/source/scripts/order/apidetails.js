@@ -243,7 +243,7 @@ function shopCarAPIVal(apiId,time,num,type,price){
 		     success: function(data) {
 			    	 if(data.sucess){
 			    		 alert("添加购物车成功!");
-			    		 window.location.href="selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
+			    		 window.location.href="selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage=2";
 			    	 }
 		    	 }, 
 		     error: function(data){ 
