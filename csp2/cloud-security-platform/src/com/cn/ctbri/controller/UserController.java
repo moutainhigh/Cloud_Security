@@ -544,28 +544,41 @@ public class UserController{
 				userService.update(_user);
 			}
 			
+			if (_user.getType()==3 && !IPCheck.ipIsValid(ipStart, ipEnd, ip)) {
+				map.put("msg", "登录的IP不在IP地址段范围内");
+				map.put("result", 4);
+				JSONObject JSON = CommonUtil.objectToJson(response, map);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+			}
+			
 			//将User放置到Session中，用于这个系统的操作
 			request.getSession().setAttribute("globle_user", _user);
 			//add by tangxr 2016-3-14
 			if(request.getSession().getAttribute("indexPage")!=null){
 				int indexPage = (Integer) request.getSession().getAttribute("indexPage");
 				if(indexPage == 1 ){
-					if(_user.getType()==3){
-						if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
-							map.put("msg", "登录的IP不在IP地址段范围内");
-							map.put("result", 4);
-						}else{
-							int serviceId = (Integer) request.getSession().getAttribute("serviceId");
-							map.put("result", 5);
-							map.put("serviceId", serviceId);
-							map.put("indexPage", indexPage);
-						}
-					}else{
+//					if(_user.getType()==3){
+//						if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
+//							map.put("msg", "登录的IP不在IP地址段范围内");
+//							map.put("result", 4);
+//						}else{
+//							int serviceId = (Integer) request.getSession().getAttribute("serviceId");
+//							map.put("result", 5);
+//							map.put("serviceId", serviceId);
+//							map.put("indexPage", indexPage);
+//						}
+//					}else{
 						int serviceId = (Integer) request.getSession().getAttribute("serviceId");
 						map.put("result", 5);
 						map.put("serviceId", serviceId);
 						map.put("indexPage", indexPage);
-					}
+//					}
 					
 					JSONObject JSON = CommonUtil.objectToJson(response, map);
 					try {
@@ -576,22 +589,22 @@ public class UserController{
 					}
 					return;
 				}else if(indexPage == 2){
-					if(_user.getType()==3){
-						if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
-							map.put("msg", "登录的IP不在IP地址段范围内");
-							map.put("result", 4);
-						}else{
-							int apiId = (Integer) request.getSession().getAttribute("apiId");
-							map.put("result", 6);
-							map.put("apiId", apiId);
-							map.put("indexPage", indexPage);
-						}
-					}else{
+//					if(_user.getType()==3){
+//						if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
+//							map.put("msg", "登录的IP不在IP地址段范围内");
+//							map.put("result", 4);
+//						}else{
+//							int apiId = (Integer) request.getSession().getAttribute("apiId");
+//							map.put("result", 6);
+//							map.put("apiId", apiId);
+//							map.put("indexPage", indexPage);
+//						}
+//					}else{
 						int apiId = (Integer) request.getSession().getAttribute("apiId");
 						map.put("result", 6);
 						map.put("apiId", apiId);
 						map.put("indexPage", indexPage);
-					}
+//					}
 					JSONObject JSON = CommonUtil.objectToJson(response, map);
 					try {
 						// 把数据返回到页面
@@ -601,16 +614,16 @@ public class UserController{
 					}
 					return;
 				}else{
-					if(_user.getType()==3){
-						if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
-							map.put("msg", "登录的IP不在IP地址段范围内");
-							map.put("result", 4);
-						}else{
-							map.put("result", 7);
-						}
-					}else{
+//					if(_user.getType()==3){
+//						if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
+//							map.put("msg", "登录的IP不在IP地址段范围内");
+//							map.put("result", 4);
+//						}else{
+//							map.put("result", 7);
+//						}
+//					}else{
 						map.put("result", 7);
-					}
+//					}
 					JSONObject JSON = CommonUtil.objectToJson(response, map);
 					try {
 						// 把数据返回到页面
@@ -621,16 +634,16 @@ public class UserController{
 					return;
 				}
 			}else{
-				if(_user.getType()==3){
-					if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
-						map.put("msg", "登录的IP不在IP地址段范围内");
-						map.put("result", 4);
-					}else{
-						map.put("result", 7);
-					}
-				}else{
+//				if(_user.getType()==3){
+//					if(!IPCheck.ipIsValid(ipStart, ipEnd, ip)){
+//						map.put("msg", "登录的IP不在IP地址段范围内");
+//						map.put("result", 4);
+//					}else{
+//						map.put("result", 7);
+//					}
+//				}else{
 					map.put("result", 7);
-				}
+//				}
 				JSONObject JSON = CommonUtil.objectToJson(response, map);
 				try {
 					// 把数据返回到页面
