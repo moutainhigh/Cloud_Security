@@ -311,7 +311,10 @@ public class Scheduler4Result {
 			        t.setStatus(sta);
 			        taskService.insert(t);
 				}
-				order.setStatus(4);
+				//modify by 2016-7-8
+				if(order.getStatus()!=3){
+					order.setStatus(4);
+				}
 				order.setWebsoc(websoc);
 				orderService.update(order);
 			}
