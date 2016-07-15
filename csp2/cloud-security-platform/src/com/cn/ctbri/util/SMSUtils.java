@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +90,7 @@ public class SMSUtils {
         String tpl_value = "#code#=" + codeValue;
         //模板发送的调用示例
         System.out.println(tplSendSms(apikey, tpl_id, tpl_value, mobile));
+        System.out.println(new Date()+ ":"+mobile+",模板:"+Configuration.getRegister_model());
 
 	}
 	
@@ -116,6 +118,7 @@ public class SMSUtils {
         String tpl_value = "#code#=" + codeValue;
         //模板发送的调用示例
         System.out.println(tplSendSms(apikey, tpl_id, tpl_value, mobile));
+        System.out.println(new Date()+ ":"+mobile+",模板:"+Configuration.getRegister_model());
 
 	}
 	
@@ -143,6 +146,7 @@ public class SMSUtils {
         String tpl_value = "#code#=" + codeValue;
         //模板发送的调用示例
         System.out.println(tplSendSms(apikey, tpl_id, tpl_value, mobile));
+        System.out.println(new Date()+ ":"+mobile+",模板:"+Configuration.getRegister_model());
 
 	}
 	
@@ -170,6 +174,7 @@ public class SMSUtils {
         String tpl_value = "#code#=" + codeValue;
         //模板发送的调用示例
         System.out.println(tplSendSms(apikey, tpl_id, tpl_value, mobile));
+        System.out.println(new Date()+ ":"+mobile+",模板:"+Configuration.getRegister_model());
 
 	}
 	
@@ -255,6 +260,7 @@ public class SMSUtils {
         }
         //模板发送的调用示例
         System.out.println(tplSendSms(apikey, tpl_id, tpl_value, mobile));
+        System.out.println(new Date()+ ":"+mobile+",模板:"+Configuration.getRegister_model());
 
 	}
 	
