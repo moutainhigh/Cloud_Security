@@ -26,30 +26,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/order/wafPic.js"></script>
 
 <script type="text/javascript">
-  $(function() {
-     $(".data_table_cont a").on('click', function() {
-     	var logId = $("#logIdHidden").val();
-        $.ajax({
-	         type: "POST",
-	         url: "warningWafDetail.html",
-	         data: {"logId":logId},
-	         dataType:"json",
-	         success: function(data){
-         		$("#dstIp").html(data.dstIp);
-         		$("#srcIp").html(data.srcIp);
-         		$("#srcPort").html(data.srcPort);
-         		$("#alertlevel").html(data.alertlevel);
-         		$("#eventType").html(data.eventType);
-         		$("#statTime").html(data.statTime);
-         		$("#alertinfo").html(data.alertinfo);
-         		$("#protocolType").html(data.protocolType);
-         		
-         		$(".mark,.data_tanc").show();
-         	}
-        });
-
-     });
-
+$(function() {
      $(".data_cuo").on('click', function() {
         $(".mark,.data_tanc").hide();
      });
@@ -58,6 +35,26 @@
         $(".mark,.data_tanc").hide();
      });
  });
+function websecDetail(logId){
+     $.ajax({
+       type: "POST",
+       url: "warningWafDetail.html",
+       data: {"logId":logId},
+       dataType:"json",
+       success: function(data){
+      		$("#dstIp").html(data.dstIp);
+      		$("#srcIp").html(data.srcIp);
+      		$("#srcPort").html(data.srcPort);
+      		$("#alertlevel").html(data.alertlevel);
+      		$("#eventType").html(data.eventType);
+      		$("#statTime").html(data.statTime);
+      		$("#alertinfo").html(data.alertinfo);
+      		$("#protocolType").html(data.protocolType);
+      		
+      		$(".mark,.data_tanc").show();
+      	}
+     });
+}
 </script>
 
 </head>
@@ -216,22 +213,32 @@
 	            <table class="data_table_tab" width="100%">
 	              <tbody>
 	                 <tr>
-	                     <th width="25%">开始时间</th>
-	                     <th width="25%">告警类型</th>
+	                     <th width="30%">开始时间</th>
+	                     <th width="30%">告警类型</th>
 	                     <th width="25%">服务器IP地址</th> 
-	                     <th width="25%">URL</th>                     
+	                     <th width="15%">风险级别</th>                     
 	                 </tr>
+	              </tbody>
+	             </table>
+	             <div style="overflow:auto;height:312px;width:1060px">
+	             <table class="data_table_tab" width="100%">
+	              <tbody>
 	                 <c:forEach var="list" items="${websecList}" varStatus="sta">
 	                 	 <input type="hidden" id="logIdHidden" value="${list.logId}">
 		                 <tr>
-		                     <td width="25%">${list.statTime }</td>
-		                     <td width="25%" class="data_table_cont"><a href="javascript:;">HTTP协议违背</a></td>
+		                     <td width="30%">${list.statTime }</td>
+		                     <td width="30%" class="data_table_cont"><a href="javascript:void(0)" onclick="websecDetail(${list.logId })">${list.eventType }</a></td>
 		                     <td width="25%">${list.dstIp }</td> 
-		                     <td width="25%">${list.resourceUri}</td>                     
+		                     <td width="13%">
+			                     <c:if test="${list.alertlevel eq 'LOW'}">低风险</c:if>
+				                 <c:if test="${list.alertlevel eq 'MEDIUM'}">中风险</c:if>
+			                     <c:if test="${list.alertlevel eq 'HIGH'}">高风险</c:if>
+		                     </td>                     
 		                 </tr>
 	                 </c:forEach>
 	              </tbody>
 	            </table>
+	            </div>
             </c:if>
             <c:if test="${websecNum==0}">
 	            	暂无数据
