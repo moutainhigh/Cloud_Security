@@ -454,7 +454,7 @@ public class WafController {
             orderAsset.setSermonth(Integer.parseInt(month));
             orderAsset.setAssetAddr(assetInfo.getAddr());
             orderAsset.setAssetName(assetInfo.getName());
-           orderAssetService.insertOrderAsset(orderAsset);
+            orderAssetService.insertOrderAsset(orderAsset);
            
            
            //插入联系人
