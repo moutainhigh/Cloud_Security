@@ -22,4 +22,28 @@ public class APIDaoImpl extends DaoCommon implements APIDao {
 		return this.getSqlSession().selectList(ns+"getAPICount", map);
 	}
 
+	public List getAPICountLast7Days() {
+		return this.getSqlSession().selectList(ns+"getAPICountLast7Days");
+	}
+
+	public List getAPIUserCountTop5(Map<String,Object> map) {
+		return this.getSqlSession().selectList(ns+"getAPIUserCountTop5", map);
+	}
+
+	public List getAllAPIUserList(Map<String, Object> map) {
+		return this.getSqlSession().selectList(ns+"getAllAPIUserList", map);
+	}
+
+	public List getAPICountByUser(Map<String, Object> map) {
+		return this.getSqlSession().selectList(ns+"getAPICountByUser",map);
+	}
+
+	public List getAPIUseTimes(Map<String, Object> map) {
+		return this.getSqlSession().selectList(ns+"getAPIUseTimes",map);
+	}
+
+	public List getAPITimesByUser(Map<String, Object> map) {
+		return this.getSqlSession().selectList(ns+"getAPITimesByUser",map);
+	}
+
 }

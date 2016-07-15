@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>系统管理</title>
+<title>API分析</title>
 <link href="${ctx}/source/adminCss/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/adminCss/dateSlider.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/adminCss/head_bottom.css" type="text/css" rel="stylesheet" />
@@ -13,7 +13,8 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.ui.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/backstage.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/common/raphael.2.1.0.min.js"></script>
+<!--<script type="text/javascript" src="${ctx}/source/scripts/common/modelbox.js"></script>
+--><script type="text/javascript" src="${ctx}/source/scripts/common/raphael.2.1.0.min.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/justgage.1.0.1.min.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
@@ -35,6 +36,23 @@
 .infos .cont{ padding: 5px 10px; min-height: 200px; overflow: scroll;  border: 1px solid #ccc; } 
 .myCustomClass > span{ display: none; }
 .ui-rangeSlider-label-value, .ui-ruler-tick-label{ font-size: 16px; }
+  	.assetsaAdd{
+	    display: none;
+		padding: 20px;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		z-index: 99;
+		text-align: center;
+		background: #fff;
+		border-radius: 10px;
+		width: 670px;
+		height: 400px;
+		margin-left:-355px;
+		margin-top:-220px;
+			
+}
+popBoxhide .close{ width:26px; height:26px; display:block; position:absolute; right:12px; top:13px; background:url(../images/user_ico_4.jpg) no-repeat; cursor:pointer;}
 </style>
  <script type="text/javascript">
 
@@ -75,80 +93,115 @@
 </div>
 <!--头部代码结束-->
 <div class="main_wrap">
-	<div class="text">
-		<span>API累计调用数<i>123782</i></span>
-		<span>扫描网站数<i>782</i></span>
-		<span>接入APIKEY数<i>1282</i></span>
-		<span>接入任务数<i>1782</i></span>
-	</div>
-	<!-- 时间轴 -->
-	<div class="dateSlider" id="dateSlider"></div>
-	<!-- 时间轴 -->
-	<div class="infos clearfix">
-		<dl class="info-33">
-			<dt>web漏洞扫描API</dt>
-			<dd class="cont" id="api1"></dd>
-		</dl>
-		<dl class="info-33">
-			<dt>木马检测API</dt>
-			<dd class="cont" id="api2"></dd>
-		</dl>
-		<dl class="info-33">
-			<dt>网页篡改监测API</dt>
-			<dd class="cont" id="api3"></dd>
-		</dl>
-		<dl class="info-33">
-			<dt>网页敏感内容监测API</dt>
-			<dd class="cont" id="api4"></dd>
-		</dl>
-		<dl class="info-33">
-			<dt>网站可用性监测API</dt>
-			<dd class="cont" id="api5"></dd>
-		</dl>
-		<dl class="info-33">
-			<dt>会话管理API</dt>
-			<dd class="cont" id="api6"></dd>
-		</dl>
-		<dl class="info-50">
-			<dt>服务类型百分比</dt>
-			<dd class="cont"></dd>
-		</dl>
-		<dl class="info-50">
-			<dt>接口类型百分比</dt>
-			<dd class="cont"></dd>
-		</dl>
-	</div><!--
-	
 	<div class="main_center">
-        <div class="dd_data_box">
-        	<div class="system_zy">
-                <div class="zy_top1" style="width:100%;height:300px">
-                   	<div class="zy_top_l fl" id="api1" style="width:500px">
-                    	<img src="${ctx}/source/adminImages/system1.jpg" width="249" height="164">  
-                    </div>
-                    <div class="zy_top_r fl" id="api2" style="width:500px">
-                    	 <img src="${ctx}/source/adminImages/system2.jpg"> 
-                    </div>
-                    <div class="zy_top_l fl" id="api3" style="width:500px">
-                    	<img src="${ctx}/source/adminImages/system1.jpg" width="249" height="164">  
-                    </div>
-                 </div>
-                 <div class="zy_top1" style="width:100%;height:300px;padding:0px">
-                    	<div class="zy_top_l fl" id="api4" style="width:500px">
-                    	<img src="${ctx}/source/adminImages/system1.jpg" width="249" height="164">  
-                    	</div>
-                    	<div class="zy_top_r fl" id="api5" style="width:500px">
-                    	<img src="${ctx}/source/adminImages/system1.jpg" width="249" height="164">  
-                    	</div>
-                    	<div class="zy_top_r fl" id="api6" style="width:500px">
-                    	<img src="${ctx}/source/adminImages/system1.jpg" width="249" height="164">  
-                    	</div>
-                 </div>
-                   
-             </div>
+		<div class="text">
+			<span>API累计调用数<i>123782</i></span>
+			<span>扫描网站数<i>782</i></span>
+			<span>接入APIKEY数<i>1282</i></span>
+			<span>接入任务数<i>1782</i></span>
+		</div>
+	
+		<div class="dateSlider" id="dateSlider"></div>
+	
+	    	<div class="data_title">
+	        	<button class="dataana_btn datab_cur fl" id="dd_btn">服务类型统计</button>
+	            <div class="bor_t_small fl"></div>
+	            <button class="dataana_btn fl" id="gj_btn">用户信息统计</button>
+	            <div class="bor_t_big fl"></div>
+	        </div>
+	        <div class="dd_data_box">
+	        <div class="infos clearfix">
+			<dl class="info-33">
+				<dt>web漏洞扫描API</dt>
+				<dd class="cont" id="api1"></dd>
+			</dl>
+			<dl class="info-33">
+				<dt>木马检测API</dt>
+				<dd class="cont" id="api2"></dd>
+			</dl>
+			<dl class="info-33">
+				<dt>网页篡改监测API</dt>
+				<dd class="cont" id="api3"></dd>
+			</dl>
+			<dl class="info-33">
+				<dt>网页敏感内容监测API</dt>
+				<dd class="cont" id="api4"></dd>
+			</dl>
+			<dl class="info-33">
+				<dt>网站可用性监测API</dt>
+				<dd class="cont" id="api5"></dd>
+			</dl>
+			<dl class="info-33">
+				<dt>会话管理API</dt>
+				<dd class="cont" id="api6"></dd>
+			</dl>
+			<dl class="info-50">
+				<dt>API服务使用时段统计</dt>
+				<dd class="cont" id="apiUseBar"  style="height:234px"></dd>
+			</dl>
+			<dl class="info-50">
+				<dt>最近7日使用趋势图</dt>
+				<dd class="cont" id="apiUseLine"  style="height:234px"></dd>
+			</dl>
+		</div>
+        </div>
+        <div class="gj_data_box">
+        	<div class="system_pz" style="margin:0px;width:1200px;height:674px">
+			    <div>
+			      <input type="text" name="name" id="searchName" style="border:1px solid red;" placeholder="请输入用户名">
+			      <a id="search" href="javascript:;" onclick="analysisAPIUser();">搜索</a>
+			    </div>   
+			<div class="infos clearfix">
+				<dl class="info-50">
+					<dt>API服务使用时段统计</dt>
+					<dd class="cont" style="height:234px">
+						<div style="height:214px;width:580px"  id="userBar"></div>	
+					</dd>
+				</dl>
+				<dl class="info-50">
+					<dt>开发者调用次数TOP5</dt>
+					<dd class="cont" style="height:234px">
+						<div style="height:214px;width:500px" id="userBarTop5"></div>	
+					</dd>
+				</dl>
+			</div> 
+			<div class="infos clearfix">
+				<dl class="info-50">
+					<dt>开发者使用服务统计</dt>
+					<dd class="cont">
+						<div style="height:214px;width:500px" id="apiCountForUser"></div>	
+					</dd>
+				</dl>
+				<dl class="info-50">
+					<a id="allAPIUsers" href="javascript:;">查看完整列表</a>
+				</dl>
+			</div>       	
+            </div>
         </div>
     </div>
---></div>
+</div>
+
+    <!---完整列表-->
+<div class="assetsaAdd hide popBoxhide" id="revise">
+	  <div class="add_ser_top w678" style="margin-left:0px">
+	<p class="w634">用户列表</p><p id="close" class="modelclose"><img src="${ctx}/source/adminImages/b_exit.jpg" width="25" height="26"></p>
+   </div> 
+        <div class="system_table" style="display:block;">
+        	<table class="user_table" cellpadding="0" cellspacing="0">
+            	<thead>
+                	<tr>
+                		<th class="t_username" style="text-align:center">序号</th>
+                    	<th class="t_username" style="text-align:center">用户名</th>
+                        <th class="t_date" style="text-align:center">使用API次数</th>
+                    </tr>
+                </thead>
+                <tbody id="apiUserCountList">
+	              
+
+                </tbody>
+            </table>
+        </div>
+</div>
 <!--尾部部分代码-->
 <div class="bottom_bj">
 <div class="bottom">

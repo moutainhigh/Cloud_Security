@@ -12,4 +12,16 @@ import java.util.Map;
 public interface IAPIService {
 	//查询服务类型操作类型个数
 	List getAPICount(Map<String,Object> map);
+	//查询所有服最近7日
+	List getAPICountLast7Days();
+	//查询开发者调用次数top5
+	List getAPIUserCountTop5(Map<String,Object> map);
+	//查询开发者调用次数列表
+	List getAllAPIUserList(Map<String,Object> map);
+	//根据开发这查询使用服务次数
+	List getAPICountByUser(Map<String,Object> map);
+	//查询API服务使用时段
+	List getAPIUseTimes(Map<String,Object> map);
+	//用户使用API时段统计
+	List getAPITimesByUser(Map<String,Object> map);
 }

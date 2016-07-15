@@ -27,4 +27,107 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 GROUP BY a.api_type
 	</select>
 
+	<!-- 查询最近7日数据 -->
+	<select id="getAPICountLast7Days" resultType="map">
+		SELECT
+		    service_type,COUNT(*) count1,
+		   DATE_FORMAT(
+		        a.create_time,
+		        '%Y/%m/%d'
+		    ) AS days
+		    
+		FROM
+		    cs_api a
+		WHERE date_sub(curdate(), INTERVAL 7 DAY) &lt;= date(a.`create_time`)
+		GROUP BY days,service_type
+		ORDER BY service_type
+
+	</select>
+	
+	<!-- 查询开发者调用次数TOP5 -->
+	<select id="getAllAPIUserList" resultType="map" parameterType="map">
+		SELECT count(*) count1, `user`.`name`,api.apikey FROM `cs_user` user, cs_api api where `user`.apikey=api.apikey
+		<if test="beginTime!=null">
+			AND api.create_time &gt;= #{beginTime}
+		</if>	 
+		<if test="endTime!=null">
+			AND api.create_time &lt;=#{endTime}
+		</if>
+
+		 GROUP BY api.apikey ORDER BY count1 DESC
+
+	</select>
+
+	<!-- 查询开发者调用次数TOP5 -->
+	<select id="getAPIUserCountTop5" resultType="map" parameterType="map">
+		SELECT count(*) count1, `user`.`name`,api.apikey FROM `cs_user` user, cs_api api where `user`.apikey=api.apikey
+		<if test="beginTime!=null">
+			AND api.create_time &gt;= #{beginTime}
+		</if>	 
+		<if test="endTime!=null">
+			AND api.create_time &lt;=#{endTime}
+		</if>
+
+		 GROUP BY api.apikey ORDER BY count1 DESC limit 5;
+
+	</select>
+	
+		<!-- 根据开发这查询使用服务次数 -->
+	<select id="getAPICountByUser" resultType="map" parameterType="map">
+		SELECT count(*) count,service_type FROM `cs_api` a,cs_user user where `user`.apikey=a.apikey 
+		<if test="userName!=null and userName!=''">
+			and `user`.`name`=#{userName}
+		</if>
+		<if test="beginTime!=null">
+			and a.create_time &gt;= #{beginTime}
+		</if>	 
+		<if test="endTime!=null">
+			AND a.create_time &lt;=#{endTime}
+		</if>	
+		and a.service_type &lt;&gt; 100
+		GROUP BY a.service_type 
+	</select>
+	
+	<!-- API服务使用时段统计 -->
+	<select id="getAPIUseTimes" resultType="map" parameterType="map">
+		SELECT count(*) counts,service_type,	
+		case when DATE_FORMAT(create_time,'%H:%i') &gt; '00:00' and DATE_FORMAT(create_time,'%H:%i') &lt;= '04:00' then '00:00-04:00'
+		when DATE_FORMAT(create_time,'%H:%i') &gt; '04:00' and DATE_FORMAT(create_time,'%H:%i') &lt;= '08:00' then '04:00-08:00'
+		when DATE_FORMAT(create_time,'%H:%i') &gt; '08:00' and DATE_FORMAT(create_time,'%H:%i') &lt;= '12:00' then '08:00-12:00'
+		when DATE_FORMAT(create_time,'%H:%i') &gt; '12:00' and DATE_FORMAT(create_time,'%H:%i') &lt;= '16:00' then '12:00-16:00'
+		when DATE_FORMAT(create_time,'%H:%i') &gt; '16:00' and DATE_FORMAT(create_time,'%H:%i') &lt;= '20:00' then '16:00-20:00'
+		else '24:00-08:00'
+		end AS timevalue
+		FROM `cs_api` WHERE service_type &lt;&gt; 100 
+		<if test="beginTime!=null">
+			and create_time &gt;= #{beginTime}
+		</if>	 
+		<if test="endTime!=null">
+			AND create_time &lt;=#{endTime}
+		</if>
+		GROUP BY service_type,timevalue ORDER BY service_type,timevalue 
+	</select>
+	
+		<!-- 用户使用服务时段统计 -->
+	<select id="getAPITimesByUser" resultType="map" parameterType="map">
+		SELECT count(*) counts,a.service_type,	
+		case when DATE_FORMAT(a.create_time,'%H:%i') &gt; '00:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '04:00' then '00:00-04:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '04:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '08:00' then '04:00-08:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '08:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '12:00' then '08:00-12:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '12:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '16:00' then '12:00-16:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '16:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '20:00' then '16:00-20:00'
+		else '24:00-08:00'
+		end AS timevalue
+		FROM `cs_api` a,cs_user user where `user`.apikey=a.apikey  and a.service_type &lt;&gt; 100 
+		<if test="beginTime!=null">
+			and a.create_time &gt;= #{beginTime}
+		</if>	 
+		<if test="endTime!=null">
+			AND a.create_time &lt;=#{endTime}
+		</if>
+		<if test="userName!=null and userName!=''">
+			and `user`.`name`=#{userName}
+		</if>
+		GROUP BY timevalue
+	</select>
 </mapper>

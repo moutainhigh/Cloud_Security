@@ -25,4 +25,28 @@ public class APIServiceImpl implements IAPIService{
 		return apiDao.getAPICount(map);
 	}
 
+	public List getAPICountLast7Days() {
+		return apiDao.getAPICountLast7Days();
+	}
+
+	public List getAPIUserCountTop5(Map<String,Object> map) {
+		return apiDao.getAPIUserCountTop5(map);
+	}
+
+	public List getAllAPIUserList(Map<String, Object> map) {
+		return apiDao.getAllAPIUserList(map);
+	}
+
+	public List getAPICountByUser(Map<String, Object> map) {
+		return apiDao.getAPICountByUser(map);
+	}
+
+	public List getAPIUseTimes(Map<String, Object> map) {
+		return apiDao.getAPIUseTimes(map);
+	}
+
+	public List getAPITimesByUser(Map<String, Object> map) {
+		return apiDao.getAPITimesByUser(map);
+	}
+
 }
