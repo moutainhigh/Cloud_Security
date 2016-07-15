@@ -4,10 +4,13 @@ package com.cn.ctbri.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,12 +79,12 @@ public class WafDetailController {
         	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
         	assetOrder=(HashMap) assets.get(0);
 //        	String ipArray=(String) assetOrder.get("ipArray");
-//        	String ipArray="219.141.189.183";
-        	String ipArray="101.201.222.199";
+        	String ipArray="219.141.189.183";
+//        	String ipArray="101.201.222.199";
         	String[] ips = null;   
             ips = ipArray.split(",");
 //            String websecStr = WafAPIWorker.getWaflogWebsecByIp(ips);
-            String websecStr = WafAPIWorker.getWaflogWebsecInTime(ips, "1");
+            String websecStr = WafAPIWorker.getWaflogWebsecInTime(ips, "10");
         	websecList = this.getWaflogWebsecByIp(websecStr);
         	request.setAttribute("websecList", websecList);
         }
@@ -109,7 +112,7 @@ public class WafDetailController {
     @RequestMapping(value="getLevelPieData.html")
     @ResponseBody
     public String getLevelPieData(HttpServletRequest request){
-    	String levelStr = WafAPIWorker.getWafAlertLevelCount("1");
+    	String levelStr = WafAPIWorker.getWafAlertLevelCount("10");
     	Map map = this.getWafAlertLevelCount(levelStr);
         
         int high = 0;
@@ -163,7 +166,7 @@ public class WafDetailController {
     public void getEventPieData(HttpServletRequest request, HttpServletResponse response){
     	response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=UTF-8");
-    	String eventStr = WafAPIWorker.getWafEventTypeCount("1");
+    	String eventStr = WafAPIWorker.getWafEventTypeCount("10");
     	Map map = this.getWafEventTypeCount(eventStr);
         
         List name = null;
@@ -208,20 +211,23 @@ public class WafDetailController {
     public void getEventBarData(HttpServletRequest request, HttpServletResponse response){
     	response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=UTF-8");
-    	String eventStr = WafAPIWorker.getWafEventTypeCount("1");
+    	String eventStr = WafAPIWorker.getWafEventTypeCount("10");
     	Map map = this.getWafEventTypeCount(eventStr);
         
         List name = null;
         List value = null;
+        JSONArray jsondata = null;
         
         if(map != null && map.size() > 0){
 			name = (List) map.get("name");
 			value = (List) map.get("value");
+			jsondata = (JSONArray) map.get("json");
         }
 
         JSONObject jo = new JSONObject();
         jo.put("name", name);
         jo.put("count", value);
+        jo.put("json", jsondata);
         
         PrintWriter out;
         try {
@@ -321,6 +327,15 @@ public class WafDetailController {
 			        String wci = jsonObject.getString("wci");
 			        String wsi = jsonObject.getString("wsi");
 			        
+			        byte[] base64Bytes = Base64.decodeBase64(eventType.getBytes());	
+    				eventType = new String(base64Bytes,"UTF-8");
+    				byte[] base64Bytes1 = Base64.decodeBase64(alertinfo.getBytes());	
+    				alertinfo = new String(base64Bytes1,"UTF-8");
+
+//			        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmm");
+//			        long millionSeconds = sdf.parse(statTime).getTime()+1000*60*60*8;//毫秒
+
+			        
 			        newMap.put("logId", logId);
 			        newMap.put("resourceId", resourceId);
 			        newMap.put("resourceUri", resourceUri);
@@ -412,6 +427,11 @@ public class WafDetailController {
 	        String wci = jsonObject.getString("wci");
 	        String wsi = jsonObject.getString("wsi");
 	        
+	        byte[] base64Bytes = Base64.decodeBase64(eventType.getBytes());	
+			eventType = new String(base64Bytes,"UTF-8");
+			byte[] base64Bytes1 = Base64.decodeBase64(alertinfo.getBytes());	
+			alertinfo = new String(base64Bytes1,"UTF-8");
+	        
 	        newMap.put("logId", logId);
 	        newMap.put("resourceId", resourceId);
 	        newMap.put("resourceUri", resourceUri);
@@ -462,8 +482,8 @@ public class WafDetailController {
     			int count = e.getInt("count");
     			if(count!=0){
     				JSONObject jo = new JSONObject();
-    				byte[] base64Bytes = Base64.decodeBase64(e.getString("eventType").toString().getBytes());
-    				String eventType = new String(base64Bytes).trim();
+    				byte[] base64Bytes = Base64.decodeBase64(e.getString("eventType").toString().getBytes());	
+    				String eventType = new String(base64Bytes,"UTF-8");
     				arr.add(eventType);
     				arra.add(count);
     				jo.put("value", count);
@@ -471,22 +491,7 @@ public class WafDetailController {
     				json.add(jo);
     			}
     			
-    		}
-//    		List<Object> arr = obj.names();//获取名
-//			Collection<Object> arra = obj.values();//获取值
-//			
-//			List<Object> arrNew = new ArrayList<Object>();
-//			List<Object> arraNew = new ArrayList<Object>();
-//			for(Object name:arr){
-//				byte[] base64Bytes = Base64.decodeBase64(name.toString().trim().getBytes());
-//				arrNew.add(new String(base64Bytes).trim());
-//			}
-//			
-//			for(Object value:arra){
-//				arraNew.add(value.toString());
-//			} 		
-//
-//			
+    		}	
 			reMap.put("name", arr);
 			reMap.put("value", arra);
 			reMap.put("json", json);
