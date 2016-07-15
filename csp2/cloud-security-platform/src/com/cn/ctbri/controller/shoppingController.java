@@ -1505,7 +1505,7 @@ public class shoppingController {
     				//北向API返回orderId，创建用户订单
     				if(!orderId.equals("") && orderId != null){
     					// String orderId="1";
-    					status = String.valueOf(shopCar.getStatus());
+//    					status = String.valueOf(shopCar.getStatus());
     					//更新订单资产表
     					selfHelpOrderService.updateOrderAsset(shopCar.getOrderId(), orderId);
     					//更新订单表
