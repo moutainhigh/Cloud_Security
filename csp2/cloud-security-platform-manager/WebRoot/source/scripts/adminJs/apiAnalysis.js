@@ -508,9 +508,11 @@ function analysisAPI(){
 	   		         {
 	   		             type : 'category',
 	   		             boundaryGap : false,
-		   		          "axisLabel":{  
-		   		              interval: 0  
-		   		          }, 
+	   		             axisLabel:{
+			                 //X轴刻度配置
+			                 interval:0 //0：表示全部显示不间隔；auto:表示自动根据刻度个数和宽度自动设置间隔个数
+			             },
+		   		          
 	   		             data : timeList
 	   		         }
 	   		     ],
@@ -521,11 +523,11 @@ function analysisAPI(){
 	   		     ],
 	   		  grid: { // 控制图的大小，调整下面这些值就可以，
 			    	 y: 30,
-		             x: 30,
-		             x2: 80,
+		             x: 50,
+		             x2: 30,
 		             y2: 20,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
-		             left:'10%',
-		             right:'10%',
+		            // left:'10%',
+		            // right:'10%',
 		             borderColor:'#fff'
 		         },
 	   		     series : countList
@@ -575,8 +577,8 @@ function analysisAPIUser(){
 				    
 				    grid: { // 控制图的大小，调整下面这些值就可以，
 				    	 y: 10,
-			             x: 150,
-			             x2: 50,
+			             x: 100,
+			             x2: 80,
 			             y2: 20,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
 			             borderColor:'#fff'
 			         },
@@ -598,8 +600,8 @@ function analysisAPIUser(){
 				        type: 'category',
 				        data: userList,
 				        splitLine:{
-				    		show:false
-				    	}
+	 			    		show:false
+	 			    	}
 				    },
 				    series: [
 				        {

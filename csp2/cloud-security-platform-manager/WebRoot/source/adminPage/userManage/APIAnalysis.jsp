@@ -33,7 +33,7 @@
 .info-50{ float: left; width:50%; }
 .infos{ margin-top: 30px; }
 .infos dt{padding: 10px 0; text-align: center; font-size: 24px}
-.infos .cont{ padding: 5px 10px; min-height: 200px; overflow: scroll;  border: 1px solid #ccc; } 
+.infos .cont{ padding: 5px 10px; min-height: 200px; /*overflow: scroll;  border: 1px solid #ccc;*/} 
 .myCustomClass > span{ display: none; }
 .ui-rangeSlider-label-value, .ui-ruler-tick-label{ font-size: 16px; }
   	.assetsaAdd{
