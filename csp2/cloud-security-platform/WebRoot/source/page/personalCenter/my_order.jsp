@@ -301,6 +301,8 @@ function getServ(c){
 					            <option value="30" >网页篡改监测服务</option>
 					            <option value="40" >网页敏感内容监测服务</option>
 					            <option value="50" >网站可用性监测服务</option>
+					            <option value="62" >云WAF网站安全防护服务</option>
+					            
 					            <!-- <option value="6" >日常流量监测服务</option>
 					            <option value="7" >日常攻击防护服务</option>
 					            <option value="8" >突发异常流量清洗服务</option>-->
