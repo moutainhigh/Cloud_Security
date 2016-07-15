@@ -381,6 +381,7 @@ function analysisAPI(){
 	   			map1['position']='inside';
 	   			var map2 = {};
 	   			map2['label']=map1;
+	   			//itemStyle: {normal: {label:{show:true,position:'inside',formatter:function(a,b,c){
 	   			var itemStyleMap = {};
 	   			itemStyleMap['normal']=map2;
 	   			map['itemStyle']=itemStyleMap;
@@ -694,53 +695,6 @@ function analysisAPIUser(){
 				            type : 'none'        // 默认为直线，可选为：'line' | 'shadow'
 				        }
 				    },
-				    
-/*				    grid: { // 控制图的大小，调整下面这些值就可以，
-				    	 y: 20,
-			             x: 50,
-			             x2: 50,
-			             y2: 20,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
-			             borderColor:'#fff'
-			         },
-			         calculable : true,
-			         yAxis:  {
-	 			        type: 'value',
-	 			        show:false,
-	 			        splitLine:{
-	 			    		show:false
-	 			    	},
-	 			    	axisLabel:{  
-	 			    		show:false
-	 			        }, 
-	 			        axisLine:{
-	 			        	show:false
-	 			        }
-	 			    },
-				    xAxis: {
-				        type: 'category',
-				        data: timeList,
-				    	axisLabel:{
-			                 //X轴刻度配置
-			                 interval:0 //0：表示全部显示不间隔；auto:表示自动根据刻度个数和宽度自动设置间隔个数
-			            },
-				        splitLine:{
-				    		show:false
-				    	}
-				    },
-				    series: [
-				        {
-				            name: '数量',
-				            type: 'bar',
-
-				            itemStyle : { normal: {label:{show:true,formatter:function(p){
-				        	alert(p.value);
-				        	return p.value > 0 ? (p.value):'';}}}
-				        	},
-				            data: countList
-				        }
-				    ]*/
-				    
-				   
 				    calculable : true,
 				    grid: { // 控制图的大小，调整下面这些值就可以，
 				    	 y: 20,
