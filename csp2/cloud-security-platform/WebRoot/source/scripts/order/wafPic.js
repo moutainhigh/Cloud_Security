@@ -57,6 +57,9 @@ $(function(){
 	                   	colorData[i]=p['color'];
                     });
                     myChartPieLevel.setOption({//图形
+                    	title: {
+                            text: '最近一个小时事件风险分布图'
+                        },
                         tooltip : {
                             trigger: 'item',
                             formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -78,9 +81,9 @@ $(function(){
                         calculable : false,
                         series : [
                             {
-                                name:'漏洞个数',
+                                name:'事件风险比例',
                                 type:'pie',
-                                radius : '55%',
+                                radius : '45%',
                                 center: ['50%', '60%'],
                                 data:testY()
                             }
@@ -109,22 +112,10 @@ $(function(){
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
-//                    $.each(data,function(i,p){
-//	                   	var temp = null;
-//	                   	if(p['label']==0){
-//	                   		temp="低";
-//	                   	}
-//	                   	if(p['label']==1){
-//	                   		temp="中";
-//	                   	}
-//	                   	if(p['label']==2){
-//	                   		temp="高";
-//	                   	}
-//	                   	label[i]=temp+p['ratio'];
-//	                   	value[i]={'name':temp+p['ratio'],'value':p['value']};
-//	                   	colorData[i]=p['color'];
-//                    });
                     myChartPieEvent.setOption({//图形
+                    	title: {
+                            text: '事件类型分布图'
+                        },
                         tooltip : {
                             trigger: 'item',
                             formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -134,7 +125,7 @@ $(function(){
                             x : 'right',
                             data:data.name
                         },
-                        color:colorData,
+//                        color:colorData,
                         toolbox: {
                             show : true,
                             feature : {
@@ -146,9 +137,9 @@ $(function(){
                         calculable : false,
                         series : [
                             {
-                                name:'漏洞个数',
+                                name:'事件类型比例',
                                 type:'pie',
-                                radius : '55%',
+                                radius : '45%',
                                 center: ['50%', '60%'],
                                 data:data.json
                             }
@@ -176,12 +167,8 @@ $(function(){
             	type: "post",
             	url:"getEventBarData.html",
                 dataType:"json",
-                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+//                contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
-//                	lineData = [];
-//                    $.each(data,function(i,p){
-//	                   	lineData[i]=p['name'];
-//                    });
                     
                     myChartBar.setOption({//图形
                     	title: {
@@ -213,7 +200,12 @@ $(function(){
                         xAxis : [
                             {
                                 type : 'category',
-                                data : ['']
+                                data : [''],
+                                axisLabel:{
+           		                 //X轴刻度配置
+           		                 interval:'auto' //0：表示全部显示不间隔；auto:表示自动根据刻度个数和宽度自动设置间隔个数
+           		                }
+
                             }
                         ],
                         yAxis : [
@@ -225,11 +217,11 @@ $(function(){
                         	function(){
 	                       	 var serie=[];
 	                       	 
-//	                    	 for( var i=0;i < data.length;i++){
-//	                    		 var num=[];
-//	                    		 num[0]=data[i].count;
+	                    	 for( var i=0;i < data.json.length;i++){
+	                    		 var num=[];
+	                    		 num[0]=data.json[i].value;
 	                        	 var item={
-		                        	 name:data.name,
+		                        	 name:data.json[i].name,
 		                        	 type:'bar',
 //		                        	 barWidth : 25,
 		                        	 itemStyle: {
@@ -242,10 +234,10 @@ $(function(){
 	                                         }
 	                                     }
 		                        	 },
-		                        	 data:data.count
+		                        	 data:num
 	                        	 };
 	                        	 serie.push(item);
-//	                    	 };
+	                    	 };
 	                    	 return serie;
 	                    	 }()
 
