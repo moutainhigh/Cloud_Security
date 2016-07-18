@@ -76,6 +76,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="urlAddr!=null">
 				urlAddr=#{urlAddr},
 			</if>
+			<if test="Salt!=null">
+				Salt=#{Salt},
+			</if>
+			<if test="password!=null">
+				password=#{password},
+			</if>
 		</set>
 		where id=#{id}
 	</update>

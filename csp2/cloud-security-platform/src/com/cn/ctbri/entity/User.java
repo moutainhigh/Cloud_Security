@@ -59,6 +59,8 @@ public class User implements java.io.Serializable{
 	private double balance;
 	//用户最后一次签到的时间
 	private Date lastSignInTime;
+	//加盐的值
+	private String Salt;
 	//构造方法
 	public User(){}
 	public User(String name, String password, int status, int type) {
@@ -300,6 +302,12 @@ public class User implements java.io.Serializable{
 	}
 	public void setLastSignInTime(Date lastSignInTime) {
 		this.lastSignInTime = lastSignInTime;
+	}
+	public String getSalt() {
+		return Salt;
+	}
+	public void setSalt(String salt) {
+		Salt = salt;
 	}
 	
 }
