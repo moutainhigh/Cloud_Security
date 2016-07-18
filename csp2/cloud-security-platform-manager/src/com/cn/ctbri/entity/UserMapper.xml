@@ -197,4 +197,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findRegisterCount" resultType="int">
 	SELECT COUNT(*) FROM cs_user WHERE type=2 or type=3
 	</select>
+	
+	
+	<!-- 插入用户api add by tangxr 2016-7-13-->
+	<insert id="insertAPINum" parameterType="com.cn.ctbri.entity.APINum">
+		insert into cs_api 
+		(apikey,service_type,api_type,status,create_time) values(#{apikey},#{service_type},#{api_type},#{status},#{create_time})
+	</insert>
 </mapper>
