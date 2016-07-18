@@ -2,6 +2,8 @@ package com.cn.ctbri.southapi.adapter.waf;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 //import java.util.Base64;
@@ -12,7 +14,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TimeZone;
 import java.util.UUID;
+
+import javax.xml.bind.annotation.XmlAccessOrder;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -32,6 +37,7 @@ import com.cn.ctbri.southapi.adapter.batis.model.*;
 import com.cn.ctbri.southapi.adapter.waf.config.*;
 import com.cn.ctbri.southapi.adapter.waf.syslog.WAFSyslogManager;
 import com.cn.ctbri.southapi.adapter.manager.DeviceAdapterConstant;
+import com.cn.ctbri.southapi.adapter.utils.CTSTimeConverter;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 
@@ -109,15 +115,29 @@ public class NsfocusWAFAdapter {
 				tWafLogWebsec.setEventType(eventTypeMap.get(eventTypeString));
 			}
 			
-			String eventTypeBase64 = stringToBase64(eventTypeString);
+			String eventTypeBase64 = stringToBase64(tWafLogWebsec.getEventType());
 			tWafLogWebsec.setEventType(eventTypeBase64);
 		}
 		//http请求或响应信息
-		if (tWafLogWebsec.getHttp()!=null) {
+		/*if (tWafLogWebsec.getHttp()!=null) {
 			byte[] httpBytes = tWafLogWebsec.getHttp();
 			byte[] httpBytesBase64 = Base64.encodeBase64(httpBytes);
 			tWafLogWebsec.setHttp(httpBytesBase64);
+		}*/
+		if(tWafLogWebsec.getStatTime()!=null){
+			System.out.println(tWafLogWebsec.getStatTime());
+			SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			df1.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+			String formatDateString = df1.format(tWafLogWebsec.getStatTime());
+			System.out.println(formatDateString);
+			try {
+				tWafLogWebsec.setStatTime(df1.parse(formatDateString));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		
 		//告警补充描述
 		if (tWafLogWebsec.getAlertinfo()!=null&&!tWafLogWebsec.getAlertinfo().equals("")) {
 			String alertInfoString = tWafLogWebsec.getAlertinfo();
@@ -453,7 +473,7 @@ public class NsfocusWAFAdapter {
 			TWafLogWebsecExample example = new TWafLogWebsecExample();
 			example.or().andDstIpIn(dstIpList);
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
-			List<TWafLogWebsec> allList = mapper.selectByExample(example);
+			List<TWafLogWebsec> allList = mapper.selectByExampleWithBLOBs(example);
 			for (TWafLogWebsec tWafLogWebsec : allList) {
 				tWafLogWebsec = getTWafLogWebsecBase64(tWafLogWebsec);
 			}
@@ -461,10 +481,15 @@ public class NsfocusWAFAdapter {
 			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
 			XStream xStream = new XStream(driver);
 			xStream.autodetectAnnotations(true);
+			xStream.registerConverter(new CTSTimeConverter());
 			xStream.alias("wafLogWebsec", TWafLogWebsec.class);
 			xStream.alias("wafLogWebsecList", List.class);
-			String xmlString =  xStream.toXML(allList);
-			return xmlString;
+			/**JSONObject jsonArray = JSONObject.fromObject(xStream.toXML(allList));
+			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			sf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+			jsonArray.accumulate("statTime", sf.format(jsonArray.getString("statTime")));
+			**/
+			return xStream.toXML(allList);
 		}catch (Exception e) {
 			// 
 			e.printStackTrace();

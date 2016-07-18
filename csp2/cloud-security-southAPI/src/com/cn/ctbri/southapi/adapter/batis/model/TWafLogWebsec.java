@@ -182,7 +182,7 @@ public class TWafLogWebsec {
     }
 
     public Date getStatTime() {
-        return statTime;
+    	return statTime;
     }
 
     public void setStatTime(Date statTime) {

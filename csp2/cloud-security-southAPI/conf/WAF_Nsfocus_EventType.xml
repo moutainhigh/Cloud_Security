@@ -18,7 +18,7 @@
 	<Type name="Directory_Index">目录索引</Type>
 	<Type name="Info_Leak">信息泄露</Type>
 	<Type name="Content_filter">内容过滤</Type>
-	<Type name="Down_load_limit">非法下载</Type>
+	<Type name="Download_limit">非法下载</Type>
 	<Type name="Custom">自定义攻击</Type>
 	<Type name="HTTP_ACL">HTTP访问控制事件</Type>
 	<Type name="Virtual_Patch">智能补丁</Type>
