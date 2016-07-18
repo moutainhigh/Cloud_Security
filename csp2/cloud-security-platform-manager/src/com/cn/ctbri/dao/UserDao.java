@@ -3,6 +3,7 @@ package com.cn.ctbri.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.cn.ctbri.entity.APINum;
 import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.User;
@@ -131,4 +132,6 @@ public interface UserDao {
      * @return
      */
     List findTimesTop5(Map<String, Object> paramMap);
+
+	void insertAPINum(APINum num);
 }
