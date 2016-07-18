@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.shiro.crypto.RandomNumberGenerator;
+import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +47,7 @@ import com.cn.ctbri.service.IServiceAPIService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.CommonUtil;
+import com.cn.ctbri.util.DES3;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.IPCheck;
 import com.cn.ctbri.util.LogonUtils;
@@ -410,18 +413,45 @@ public class UserController{
 	@RequestMapping(value="login.html")
 	@ResponseBody
 	public void login(HttpServletRequest request,HttpServletResponse response){
+		String Salt="";
 		 String name = request.getParameter("name");
-		String password = request.getParameter("password");
+		String password = request.getParameter("password"); 
 		//boolean remeberMe = Boolean.valueOf(request.getParameter("remeberMe"));
 		boolean remeberMe = false;
 		String md5password = DigestUtils.md5Hex(password);
+		 final byte[] keyBytes = DES3.generateSecret(name); // 24字节的密钥
+		 //加密
+		  String newPass=new String(DES3.encryptMode(keyBytes, md5password.getBytes()));
 		Map<String, Object> map = new HashMap<String, Object>();
-		
+		int count=0;
+		int count1=0;
 		try {
+				
 			User _user = null;
 			List<User> users = userService.findUserByName(name);
+			if(users!=null && users.size()>0){
+				count=users.size();
+			}
+			
+			List<User> users1 = userService.findUserByMobile(name);
+			if(users1!=null && users1.size()>0){
+				count1=users1.size();
+			}
+			if(count<=0&&count1<=0){
+				//密码错误
+				map.put("result", 2);
+				JSONObject JSON = CommonUtil.objectToJson(response, map);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+				
+			}
 			if(users!=null && users.size()>0){			
-				//判断用户名对应的密码
+				/*//判断用户名对应的密码
 				if(!md5password.equals(users.get(0).getPassword())){
 					//判断手机号对应的密码
 					users = userService.findUserByMobile(name);
@@ -451,11 +481,12 @@ public class UserController{
 						return;
 					}
 					
-				}			
-			}else{
-				users = userService.findUserByMobile(name);
-				if(users!=null && users.size()>0){
-					if(!md5password.equals(users.get(0).getPassword())){
+				}*/
+				Salt = users.get(0).getSalt();
+				//判断用户名对应的密码 判断当前用户密码是否已经有盐值； 无 用md5比较
+				if("".equals(Salt)||Salt==null){
+				//判断用户名对应的密码
+				if(!md5password.equals(users.get(0).getPassword())){
 						//密码错误
 						map.put("result", 2);
 						JSONObject JSON = CommonUtil.objectToJson(response, map);
@@ -466,7 +497,51 @@ public class UserController{
 							e.printStackTrace();
 						}
 						return;
+				 }
+			  }else{
+				  if(!newPass.equals(users.get(0).getPassword())){
+						//密码错误
+						map.put("result", 2);
+						JSONObject JSON = CommonUtil.objectToJson(response, map);
+						try {
+							// 把数据返回到页面
+							CommonUtil.writeToJsp(response, JSON);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						return;
+				  }
+			  }
+		   }else{
+				users = userService.findUserByMobile(name);
+				 if(users!=null && users.size()>0){
+					  if("".equals(Salt)||Salt==null){
+						if(!md5password.equals(users.get(0).getPassword())){
+							//密码错误
+							map.put("result", 2);
+							JSONObject JSON = CommonUtil.objectToJson(response, map);
+							try {
+								// 把数据返回到页面
+								CommonUtil.writeToJsp(response, JSON);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+							return;
+						}
 					}
+				}else{
+					if(!newPass.equals(users.get(0).getPassword())){
+						//密码错误
+						map.put("result", 2);
+						JSONObject JSON = CommonUtil.objectToJson(response, map);
+						try {
+							// 把数据返回到页面
+							CommonUtil.writeToJsp(response, JSON);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						return;
+				  }
 				}
 			}
 			
@@ -513,7 +588,13 @@ public class UserController{
 			if(remeberMe){
 				LogonUtils.remeberMe(request,response,name,password);
 			}			
-			
+			//盐值
+			if("".equals(Salt)||Salt==null){
+				RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
+				Salt=randomNumberGenerator.nextBytes().toHex();
+				_user.setSalt(Salt);
+				_user.setPassword(newPass);
+			}
 			_user.setLastLoginTime(new Date());			//设置登录状态：2
 			_user.setStatus(2);
 			userService.update(_user);
