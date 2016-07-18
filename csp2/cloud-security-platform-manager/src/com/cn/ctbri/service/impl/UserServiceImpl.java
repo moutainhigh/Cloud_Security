@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cn.ctbri.dao.UserDao;
+import com.cn.ctbri.entity.APINum;
 import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.User;
@@ -188,5 +189,9 @@ public class UserServiceImpl implements IUserService{
 
 	public List findTimesTop5(Map<String, Object> paramMap) {
 		return userDao.findTimesTop5(paramMap);
+	}
+
+	public void insertAPINum(APINum num) {
+		userDao.insertAPINum(num);
 	}
 }
