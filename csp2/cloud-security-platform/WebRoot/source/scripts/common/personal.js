@@ -74,7 +74,6 @@ function checkUserData(){
 	    			   	"company":company},  
     		     dataType: "json",
     		     success: function(data) {
-    		     alert(data.result);
     		     	if (data.result == 0){
     		     		if(data.message == true){
     		    		 	alert("设置成功");  
