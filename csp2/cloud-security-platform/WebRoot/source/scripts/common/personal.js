@@ -74,12 +74,19 @@ function checkUserData(){
 	    			   	"company":company},  
     		     dataType: "json",
     		     success: function(data) {
-    		    	 if(data.message == true){
-    		    		 alert("设置成功");  
-			    	 }else{
-			    		 alert(data.message);
-			    	 }
-			    	 window.location.href = "userDataUI.html";
+    		     alert(data.result);
+    		     	if (data.result == 0){
+    		     		if(data.message == true){
+    		    		 	alert("设置成功");  
+			    	 	}else{
+			    	 		alert(data.message);
+			    	 	}
+			    	 	window.location.href = "userDataUI.html";
+    		     	}else if(data.result == 1){
+    		     		//公司名称验证失败
+			    	 	$("#regist_company_msg").html(data.message);
+    		     	}
+    		    	 
     		    	 }, 
     		     error: function(data){ 
     		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
