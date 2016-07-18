@@ -95,7 +95,7 @@
                                        <td width="18%">资产内容</td>
                                         <td width="14%">服务时间</td>
                                         <td width="6%">价格</td>
-                                        <td width="7%">操作</td>
+                                        <td width="4%">操作</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -136,21 +136,23 @@
                                          </c:forEach>
                                    </c:if>
                                      <c:if test="${!fn:contains(shopCar.astName,',')}">   
-                                          <p  style="text-align:center">   ${shopCar.astName}</p>
+                                          <p  style="padding:5px 0 5px 40px;">   ${shopCar.astName}</p>
                                    </c:if>
                                     </td>
                                     <td width="29%">
                                  
-                                     <p style="text-align: center"><fmt:formatDate value="${shopCar.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                     <!--  <p style="text-align: center"> -->
+                                     <fmt:formatDate value="${shopCar.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                    
                                      <c:if test="${shopCar.endDate!=null&&shopCar.endDate!=''}">
                                        ~  
-                                       <fmt:formatDate value="${shopCar.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
+                                       <fmt:formatDate value="${shopCar.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                     <!--  </p> -->
                                      
                                      </c:if>
                                     </td>
-                                      <td width="10%"><em class="price" >${shopCar.price}</em></td>
-                                      <td width="9%" ><a href="#" onclick="delShopCar('${shopCar.orderId}');">删除</a></td>
+                                      <td width="10%"><em class="price" style="padding:5px 0px 5px 10px">${shopCar.price}</em></td>
+                                      <td width="5%" ><a href="#" onclick="delShopCar('${shopCar.orderId}');">删除</a></td>
                                     
                                   </tr>
                                   
@@ -175,7 +177,7 @@
                                         <td width="18%">数量</td>
                                          <td width="14%">服务时间</td>
                                         <td width="6%">价格</td>
-                                        <td width="7%">操作</td>
+                                        <td width="4%">操作</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -210,10 +212,10 @@
                                       </c:if>
                                      &nbsp;&nbsp;&nbsp; ${shopAPI.buynum}</p></td>
                                    <td width="29%">
-                                    <fmt:formatDate value="${shopAPI.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/> - <fmt:formatDate value="${shopAPI.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                    <fmt:formatDate value="${shopAPI.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/> ~ <fmt:formatDate value="${shopAPI.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                   </td>
-                                    <td width="10%"><em class="price">${shopAPI.price}</em></td>
-                                    <td width="9%"><a href="#" onclick="delShopCar('${shopAPI.orderId}');">删除</a></td>
+                                    <td width="10%"><em class="price" style="padding:5px 0px 5px 10px">${shopAPI.price}</em></td>
+                                    <td width="5%"><a href="#" onclick="delShopCar('${shopAPI.orderId}');">删除</a></td>
                                  </tr>
                                 
                             </tbody>
