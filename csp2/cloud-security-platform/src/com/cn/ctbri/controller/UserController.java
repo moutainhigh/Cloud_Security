@@ -165,6 +165,7 @@ public class UserController{
 		//验证公司名称
 		String msg = checkCompany(company);
 		if (!msg.equals("")) {
+			m.put("result", 1);//公司名称验证失败
 			m.put("message", msg);
 			//object转化为Json格式
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
@@ -229,6 +230,7 @@ public class UserController{
 		
 		userService.update(globle_user);
 		//object转化为Json格式
+		m.put("result", 0);//个人资料保存成功
 		JSONObject JSON = CommonUtil.objectToJson(response, m);
 		try {
 			// 把数据返回到页面
