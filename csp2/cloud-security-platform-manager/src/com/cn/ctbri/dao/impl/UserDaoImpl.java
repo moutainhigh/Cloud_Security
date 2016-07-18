@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.UserDao;
+import com.cn.ctbri.entity.APINum;
 import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.User;
@@ -170,5 +171,9 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
 
 	public List findTimesTop5(Map<String, Object> paramMap) {
 		return this.getSqlSession().selectList(ns_lh+"findTimesTop5", paramMap);
+	}
+
+	public void insertAPINum(APINum num) {
+		getSqlSession().insert(ns+"insertAPINum", num);
 	}
 }
