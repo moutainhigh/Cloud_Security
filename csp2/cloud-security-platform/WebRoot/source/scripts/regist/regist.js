@@ -59,6 +59,7 @@ function checkName(){
 //校验密码	
 function checkPassword(){
 	var p1 = $("#regist_password").val();
+	var p2=$("#regist_confirm_password").val();
 	var name = $("#regist_name").val();
 	if(p1==""){
 		$("#regist_password_flag").attr("class","error");
@@ -72,7 +73,7 @@ function checkPassword(){
 			$("#regist_password_prompt").html("<b></b>支持6-20位,且至少两种字符组合(大小写字母/数字/字符)");
 			$("#regist_password_prompt").fadeIn();
 			checkPassword1 = 0;
-		}else{
+	}else{
 			var number = passwordLevel(p1);
 			//请至少使用两种字符组合
 			if(number<2){
@@ -95,6 +96,9 @@ function checkPassword(){
 				checkPassword1 = 1;
 			}
 
+		}
+		if(p2!=""&&p2!=null){
+			checkConfirmPassword();
 		}
 	}
 
@@ -369,6 +373,8 @@ function submitForm(){
 	var p1 = $("#regist_password").val();
 	var p2=$("#regist_confirm_password").val();
 	var company = $("#company").val();
+	var industry = $("#industry").val();
+	var job = $("#job").val();
 	var mobile = $("#regist_phone").val();
 	var verification_code = $("#verification_code").val();
 	var checkNumber = $("#checkNumber1").val();
@@ -386,8 +392,96 @@ function submitForm(){
 		    	if(agreeId=='1'){
 		    		$("#ck_prompt").html("<b></b>");
 					$("#ck_prompt").fadeOut();
-					$("#form_regist").submit();
-					alert("注册成功！"); 	
+					//$("#form_regist").submit();
+					//alert("注册成功！"); 
+					$.ajax({
+						type: "POST",
+						url:'registToLogin.html',
+						data:{
+		 	               'name':name,
+		 	               'password':p1,
+		 	               'confirm_password':p2,
+		 	               'company':company,
+		 	               'industry':industry,
+		 	               'job':job,
+		 	               'mobile':mobile,
+		 	               'checkNumber':checkNumber,
+		 	               'verification_code':verification_code
+		 	               //'remeberMe':remeberMe
+						},
+						dataType:"json",
+						success: function(data){
+							switch(data.result) {
+								case 0:
+									//注册正确
+									alert("注册成功！");
+									window.location.href="loginUI.html";
+									break;
+								case 1:
+									//用户名
+									$("#regist_name_flag").attr("class","error");
+									$("#regist_name_flag").show();
+									$("#regist_name_prompt").html("<b></b>" + data.msg);
+							   		$("#regist_name_prompt").fadeIn();
+							   		break;
+								case 2:
+									//密码
+									$("#regist_password_flag").attr("class","error");
+									$("#regist_password_flag").show();
+									$("#regist_password_prompt").html("<b></b>" + data.msg);
+									$("#regist_password_prompt").fadeIn();
+									break;
+								case 3:
+									//确认密码
+									$("#regist_confirm_password_flag").attr("class","error");
+								   	$("#regist_confirm_password_flag").show();
+								   	$("#regist_confirm_password_prompt").html("<b></b>" + data.msg);
+								   	$("#regist_confirm_password_prompt").fadeIn();
+								   	break;
+								case 4:
+									//公司
+									$("#company_flag").attr("class","error");
+								   	$("#company_flag").show();
+								   	$("#company_prompt").html("<b></b>" + data.msg);
+								   	$("#company_prompt").fadeIn();
+								   	break;
+								case 5:
+									//行业
+									break;
+								case 6:
+									//职业
+									break;
+								case 7:
+									//手机号
+									$("#regist_phone_flag").attr("class","error");
+			                		$("#regist_phone_flag").show();
+			                        $("#regist_phone_prompt").html("<b></b>" + data.msg);
+			                        $("#regist_phone_prompt").fadeIn();
+			                        break;
+								case 8:
+									//验证码
+									$("#checkNumber1_flag").attr("class","error");
+									$("#checkNumber1_flag").show();
+									$("#checkNumber1_prompt").html("<b></b>" + data.msg);
+									$("#checkNumber1_prompt").fadeIn();
+									break;
+								case 9:
+									//手机验证码
+									$("#verification_code_flag").attr("class","error");
+				           			$("#verification_code_flag").show();
+				           			$("#verification_code_prompt").html("<b></b>" + data.msg);
+				           			$("#verification_code_prompt").fadeIn();
+				           			break;
+								default:
+									alert("注册失败！");
+									break;
+								
+							}
+						},
+						error: function(data){
+							window.location.href = "registUI.html";
+						}
+					});	
 			    }else{
 		    		$("#ck_prompt").html("<b></b>请阅读《云平台用户注册协议》");
 					$("#ck_prompt").fadeIn();
