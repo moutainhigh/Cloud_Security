@@ -55,6 +55,7 @@ import com.cn.ctbri.util.Mail;
 import com.cn.ctbri.util.MailUtils;
 import com.cn.ctbri.util.Random;
 import com.cn.ctbri.util.SMSUtils;
+import com.cn.ctbri.util.passwordLevelUtil;
 
 /**
  * 创 建 人  ：  于永波
@@ -94,55 +95,55 @@ public class UserController{
 		return "/source/page/userCenter/userData";
 	}
 	
-	/**
-	 * 功能描述： 保存修改后的基本资料
-	 * 参数描述：User user,Model model,HttpServletRequest request
-	 *		 @time 2015-1-13
-	 */
-	@RequestMapping("/saveUserData.html")
-	public String saveUserData(User user,Model model,HttpServletRequest request){
-		User globle_user = (User) request.getSession().getAttribute("globle_user");
-		//用户名
-//		String userName = user.getName();
-//		globle_user.setName(userName);
-		//手机号码
-		String mobile = user.getMobile();
-		globle_user.setMobile(mobile);
-		//邮箱
-		String email = user.getEmail();
-		globle_user.setEmail(email);
-		
-		 //行业
-		String industry = "";
-		//职业
-		String job = "";
-		//公司名称
-		String company = "";
-		try {
-			industry = user.getIndustry();
-			job = user.getJob();
-			company = user.getCompany();
-			globle_user.setCompany(company);
-			if(!industry.equals("-1")){
-				globle_user.setIndustry(industry);
-			}else{
-				globle_user.setIndustry(null);
-			}
-			if(!job.equals("-1")){
-				globle_user.setJob(job);
-			}else{
-				globle_user.setJob(null);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		//推送地址 add by tangxr 2016-4-9
-		String urlAddr = user.getUrlAddr();
-		globle_user.setUrlAddr(urlAddr);
-		
-		userService.update(globle_user);
-		return "redirect:/userDataUI.html";
-	}
+//	/**
+//	 * 功能描述： 保存修改后的基本资料
+//	 * 参数描述：User user,Model model,HttpServletRequest request
+//	 *		 @time 2015-1-13
+//	 */
+//	@RequestMapping("/saveUserData.html")
+//	public String saveUserData(User user,Model model,HttpServletRequest request){
+//		User globle_user = (User) request.getSession().getAttribute("globle_user");
+//		//用户名
+////		String userName = user.getName();
+////		globle_user.setName(userName);
+//		//手机号码
+//		String mobile = user.getMobile();
+//		globle_user.setMobile(mobile);
+//		//邮箱
+//		String email = user.getEmail();
+//		globle_user.setEmail(email);
+//		
+//		 //行业
+//		String industry = "";
+//		//职业
+//		String job = "";
+//		//公司名称
+//		String company = "";
+//		try {
+//			industry = user.getIndustry();
+//			job = user.getJob();
+//			company = user.getCompany();
+//			globle_user.setCompany(company);
+//			if(!industry.equals("-1")){
+//				globle_user.setIndustry(industry);
+//			}else{
+//				globle_user.setIndustry(null);
+//			}
+//			if(!job.equals("-1")){
+//				globle_user.setJob(job);
+//			}else{
+//				globle_user.setJob(null);
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		//推送地址 add by tangxr 2016-4-9
+//		String urlAddr = user.getUrlAddr();
+//		globle_user.setUrlAddr(urlAddr);
+//		
+//		userService.update(globle_user);
+//		return "redirect:/userDataUI.html";
+//	}
 	
 	
 	/**
@@ -153,17 +154,32 @@ public class UserController{
 	@RequestMapping(value="/saveUserDataBate.html", method=RequestMethod.POST)
 	@ResponseBody
 	public void saveUserDataBate(HttpServletResponse response,HttpServletRequest request){
+		Map<String, Object> m = new HashMap<String, Object>();
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
-		String mobile = request.getParameter("mobile");
-		String email = request.getParameter("email");
+//		String mobile = request.getParameter("mobile");
+//		String email = request.getParameter("email");
 		String urlAddr = request.getParameter("urlAddr");
 		String industry = request.getParameter("industry");
 		String job = request.getParameter("job");
 		String company = request.getParameter("company");
+		//验证公司名称
+		String msg = checkCompany(company);
+		if (!msg.equals("")) {
+			m.put("message", msg);
+			//object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return;
+		}
 		//手机号码
-		globle_user.setMobile(mobile);
+//		globle_user.setMobile(mobile);
 		//邮箱
-		globle_user.setEmail(email);
+//		globle_user.setEmail(email);
 		
 		try {
 			//公司名称
@@ -172,20 +188,19 @@ public class UserController{
 			if(!industry.equals("-1")){
 				globle_user.setIndustry(industry);
 			}else{
-				globle_user.setIndustry(null);
+				globle_user.setIndustry("");
 			}
 			//行业
 			if(!job.equals("-1")){
 				globle_user.setJob(job);
 			}else{
-				globle_user.setJob(null);
+				globle_user.setJob("");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		
-		Map<String, Object> m = new HashMap<String, Object>();
 		//add by tangxr 2016-4-10 将推送url存入服务能力系统
 		if(urlAddr != null && !urlAddr.equals("")  ){
 			UUID uuid = UUID.randomUUID();
@@ -928,90 +943,262 @@ public class UserController{
 	 *		 @time 2014-12-31
 	 */
 	@RequestMapping(value="registToLogin.html", method = RequestMethod.POST)
-	public String regist(User user,HttpServletRequest request){
-
-		if(user.getName() != null){
+	public String regist(User user,HttpServletRequest request, HttpServletResponse response){
+		Map<String, Object> map = new HashMap<String, Object>();
+		int result = 0; //0:注册成功 1：用户名2:密码3:确认密码4:公司5:行业6:职业7:手机号8:验证码9:手机验证码
+		String msg = "";
+		try {
 			String name = user.getName();
-			String password = user.getPassword();
-			//add by tang 2015-06-01
 			//验证用户名
-			String pattern = "^[a-zA-Z0-9_]{4,20}$";
-		    Pattern pat = Pattern.compile(pattern);
-		    Matcher m = null;
-		    if(name!=null&&!"".equals(name)){
-		        m = pat.matcher(name);
-		    }
-		    
-		    //验证手机号
-		    String patternM = "^1[3|5|8|7][0-9]{9}$";
-		    Pattern patM = Pattern.compile(patternM);
-		    Matcher mMobile = null;
-		    boolean mb = false;
-		    if(user.getMobile()!=null&&!"".equals(user.getMobile())){
-		        mMobile = patM.matcher(user.getMobile());
-		        mb = mMobile.matches();
-		    }
-		    //验证邮箱
-//		    String patternE = "^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.[a-zA-Z0-9_-])$";
-	/*	    String patternE = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
-		    Pattern patE = Pattern.compile(patternE);
-		    Matcher mEmail = null;
-		    boolean me = false;
-		    if(user.getEmail()!=null&&!"".equals(user.getEmail())){
-		        mEmail = patE.matcher(user.getEmail());
-		        me = mEmail.matches();
-		    }*/
-		    //行业
-			String industry = "";
-			//职业
-			String job = "";
-			//公司名称
-			String company = "";
+			msg = checkUserName(name);
+			if (!msg.equals("")) {
+				result = 1;
+				return null;
+			}
+			//验证密码
+			String password = user.getPassword();
+			msg = checkPassword(password, name);
+			if (!msg.equals("")) {
+				result = 2;
+				return null;
+			}
+			//验证确认密码
+			String confirmPass =  request.getParameter("confirm_password");
+			if (confirmPass == null || !confirmPass.equals(password)) {
+				msg = "两次输入密码不一致";
+				result = 3;
+				return null;
+			}
+			
+			//验证公司
+			String company = user.getCompany();
+			msg = checkCompany(company);
+			if (!msg.equals("")) {
+				result = 4;
+				return null;
+			}
+			
+			//验证行业
+			if(user.getIndustry().equals("-1")){
+				user.setIndustry("");
+			}
+			//验证职业
+			if(user.getJob().equals("-1")){
+				user.setJob("");
+			}
+			
+			//验证手机号
+			String mobile = user.getMobile();
+			msg = checkMobile(mobile);
+			if (!msg.equals("")) {
+				result = 7;
+				return null;
+			}
+			
+			//验证验证码
+			if(!LogonUtils.checkNumber(request)){
+				//验证码输入有误
+				msg="验证码输入有误";
+				result = 8;
+				return null;
+			}
+			
+			//验证手机验证码
+			String code = request.getParameter("verification_code");
+			msg = checkActivationCode(mobile, code, 0, request);
+			if (!msg.equals("")) {
+				result = 9;
+				return null;
+			}
+			
+//			String passwdMD5 = DigestUtils.md5Hex(password);
+			String md5password = DigestUtils.md5Hex(password);
+			byte[] keyBytes = DES3.generateSecret(name); // 24字节的密钥
+			 //加密
+			String newPass=new String(DES3.encryptMode(keyBytes, md5password.getBytes()));
+			RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
+			user.setPassword(newPass);
+			//加盐
+			String salt=randomNumberGenerator.nextBytes().toHex();
+			user.setSalt(salt);
+			user.setStatus(1);  //用户状态(1：正常，0：停用)
+			user.setType(2);	//用户类型（0：超级管理员，1：管理员，2：用户）
+			user.setCreateTime(new Date());//创建时间
+			user.setIp(request.getRemoteAddr());
+			//生成apikey add by tangxr 2016-4-9
+			user.setApikey(UUID.randomUUID().toString().replace("-", ""));
+			
+			//安全币功能(注册时奖励500安全币)  add by zhangsh 2016-5-17
+			user.setBalance(500D);
+			//user.setLastSignInTime(new Date());
+			userService.insert(user);
+			
+			request.getSession().removeAttribute("regist_activationCode");//注册成功，验证码失效
+			return null;
+		} catch(Exception e) {
+			e.printStackTrace();
+			result = 99;
+			return null;
+		}finally{
+			//密码错误
+			map.put("result", result);
+			map.put("msg", msg);
+			JSONObject JSON = CommonUtil.objectToJson(response, map);
 			try {
-				industry = user.getIndustry();
-				job = user.getJob();
-				company = user.getCompany();
-				user.setCompany(company);
-				if(!industry.equals("-1")){
-					user.setIndustry(industry);
-				}
-				if(!job.equals("-1")){
-					user.setJob(job);
-				}
-			} catch (Exception e) {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			if(name!=null&&!"".equals(name)&&m.matches()&&password!=null&&!"".equals(password)&&password.length()>=6&&password.length()<=20&&(mb)&&user.getVerification_code()!=null&&!"".equals(user.getVerification_code())){
-				//按用用户名、邮箱、手机号码组合查询用户,防止刷页面
-				List<User> users = userService.findUserByCombine(user);
-				if(!(users.size()>0)){
-					String passwdMD5 = DigestUtils.md5Hex(password);
-					user.setPassword(passwdMD5);
-					user.setStatus(1);  //用户状态(1：正常，0：停用)
-					user.setType(2);	//用户类型（0：超级管理员，1：管理员，2：用户）
-					user.setCreateTime(new Date());//创建时间
-					user.setIp(request.getRemoteAddr());
-					//生成apikey add by tangxr 2016-4-9
-					user.setApikey(UUID.randomUUID().toString().replace("-", ""));
-					
-					//安全币功能(注册时奖励500安全币)  add by zhangsh 2016-5-17
-					user.setBalance(500D);
-					//user.setLastSignInTime(new Date());
-					userService.insert(user);
-				}
-				//return "/source/page/regist/registToLogin";
-				
-				request.getSession().removeAttribute("regist_activationCode");//注册成功，验证码失效
-				return "redirect:/loginUI.html";
-			}else{
-				request.setAttribute("errorMsg", "注册异常!");
-	        	return "/source/error/errorMsg";
-			}
-		}else{
-        	return "redirect:/loginUI.html";
+		}
+
+	}
+	
+	private String checkUserName(String name) {
+		String msg = "";
+		//用户名不能为空
+		if (name == null || name.equals("")) {
+			msg = "用户名不能为空";
+			return msg;
+		}
+		//支持4-20位字母/数字/下划线及其组合
+		String pattern = "^[a-zA-Z0-9_]{4,20}$";
+	    Pattern pat = Pattern.compile(pattern);
+	    if(!(pat.matcher(name).matches())){
+			msg = "支持4-20位字母/数字/下划线及其组合";
+			return msg;
+	    }
+	    //用户名已经存在
+	    List<User> userList = userService.findUserByName(name);
+		int count = 0;
+		if(userList.size()>0){
+			msg="用户名已经存在";
+			return msg;
+		}
+		return msg;
+	}
+	
+	private String checkPassword(String password, String name){
+		String msg = "";
+		if (password == null || password.equals("")) {
+			msg="密码不能为空";
+			return msg;
+		}
+		
+		//支持6-20位,且至少两种字符组合(大小写字母/数字/字符)
+		if (password.length()<6 ||password.length()>20) {
+			msg="支持6-20位,且至少两种字符组合(大小写字母/数字/字符)";
+			return msg;
+		}
+		
+		//支持6-20位,且至少两种字符组合(大小写字母/数字/字符)
+		if(passwordLevelUtil.passwordLevel(password)<2) {
+			msg="支持6-20位,且至少两种字符组合(大小写字母/数字/字符)";
+			return msg;
 		}
 		
 		
+		if (password.equals(name)) {
+			msg="用户名和密码一致，请重新修改密码!";
+			return msg;
+		}
+		return msg;
+		
+	}
+	
+	private String checkCompany(String company) {
+		String msg = "";
+		if (company == null || company.equals("")) {
+			msg="公司名称不能为空";
+			return msg;
+		}
+		
+		//公司名称含有非法字符 /[`~@#$%^&*()+<>"{},\\;'[\]]/im
+		String pattern = "[`~@#$%^&*()+<>\"{},;'\\[\\]]";
+	    Pattern pat = Pattern.compile(pattern);
+	    if(pat.matcher(company).find()){
+			msg = "公司名称含有非法字符";
+			return msg;
+	    }
+	    
+	    if (company.length() > 20) {
+	    	msg = "公司名称长度不能超过20个字符";
+			return msg;
+	    }
+		
+		return msg;
+	}
+	
+	private String checkMobile(String mobile){
+		String msg = "";
+		if (mobile == null || mobile.equals("")) {
+			msg="手机号码不能为空";
+			return msg;
+		}
+		List<User> users = userService.findUserByMobile(mobile);
+		int count = 0;
+		if(users.size()>0){
+			msg="该手机号码已使用";
+			return msg;
+		}
+		
+		String patternM = "^1[3|5|8|7][0-9]{9}$";
+	    Pattern patM = Pattern.compile(patternM);
+	    Matcher mMobile = null;
+	    if(!(patM.matcher(mobile).matches())){
+	    	msg="手机号码格式不正确";
+			return msg;
+	    }
+	    
+	    return msg;
+	}
+	
+	private String checkActivationCode(String mobile, String myactivationCode, int useFlag, HttpServletRequest request) {
+		String msg = "";
+		//从session中获取发送的验证码
+		String newactivationCode =  "";
+		long sendTime =0;  //从session中获取发送验证码的时间
+		String sendMobile = null;  //从session中获取发送验证码的手机号
+		switch(useFlag){
+		case 0://注册
+			newactivationCode = String.valueOf(request.getSession().getAttribute("regist_activationCode"));
+			break;
+			
+		case 1://忘记密码
+			newactivationCode = String.valueOf(request.getSession().getAttribute("forgetCode_activationCode"));
+			break;
+			
+		case 2://修改密码
+			newactivationCode = String.valueOf(request.getSession().getAttribute("modifyCode_activationCode"));
+			break;
+			
+		case 3://修改手机号
+			newactivationCode = String.valueOf(request.getSession().getAttribute("modifyMobile_activationCode"));
+			break;
+		}
+		
+		if (newactivationCode != null && !newactivationCode.equals("null")) {
+			String checkCode[] = newactivationCode.split(",");
+			sendMobile = checkCode[0];
+			newactivationCode = checkCode[1];
+			sendTime = Long.parseLong(checkCode[2]);
+		}
+		
+    	Map<String, Object> m = new HashMap<String, Object>();
+    	
+    	if (sendMobile == null ||                     //session中没有验证码相关信息
+    		!sendMobile.equals(mobile)||              //或手机号不匹配
+    		System.currentTimeMillis() - sendTime >= 3*60*1000) {  //或验证码获取时间超过3分钟
+    		msg = "未获取验证码或验证码失效";
+    		
+    	}else if(newactivationCode!=null&&newactivationCode.equals(myactivationCode) ){
+    		//用户填写验证码正确
+    		msg = "";
+    	}else{
+    		//用户填写验证码正确
+    		msg = "短信验证码输入有误";
+    	}
+    	return msg;
 	}
 	
 	/**
