@@ -59,8 +59,8 @@ function checkUserData(){
 		$("#regist_company_msg").html("公司名称含有非法字符");
 		return;
 	}
-	if(company.length>100){
-		$("#regist_company_msg").html("公司名称长度不能超过100个字符");
+	if(company.length>20){
+		$("#regist_company_msg").html("公司名称长度不能超过20个字符");
 		return;
 	}
 	//var flag = checkMobile();
@@ -68,9 +68,7 @@ function checkUserData(){
 		$.ajax({ type: "POST",
     		     async: false, 
     		     url: "saveUserDataBate.html", 
-    		     data: {"mobile":mobile,
-	    			   	"urlAddr":urlAddr,
-	    			   	"apikey":apikey,
+    		     data: {"urlAddr":urlAddr,
 	    			   	"industry":industry,
 	    			   	"job":job,
 	    			   	"company":company},  
