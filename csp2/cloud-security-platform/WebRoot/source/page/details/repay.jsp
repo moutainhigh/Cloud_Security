@@ -146,11 +146,11 @@
             <div class="repay_box" style="padding: 20px 2px;">
                  <!-- 成功支付 -->
                  <c:if test="${paySuccess == 0}">
-            	 <div class="repay_contant">
-                      <div class="repay_txt" > 
-                          <b></b>
-                          <p>恭喜您已成功付款<span>${price }</span>元！</p>
+                      <div class="repay_txt"> 
+                          
+                          <p style="text-align:center;display: inline-block;"><b></b>恭喜您已成功付款<span>${price }</span>元！</p>
                       </div>
+            	 <div class="repay_contant">
                       <c:if test="${modifyOrderId!= null && !empty modifyOrderId}">
 	                      <div class="repay_list">
 	                      	部分服务时间已根据订单支付成功时间自动进行调整，请查看
