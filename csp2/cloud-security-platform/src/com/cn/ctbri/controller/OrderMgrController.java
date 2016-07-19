@@ -401,7 +401,7 @@ public class OrderMgrController {
         	String urls = "";
 	        assetIdArrayAble = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
 	        for(int i=0;i<assetIdArrayAble.length;i++){
-	            Asset _asset = assetService.findById(Integer.parseInt(assetIdArrayAble[i]));
+	            Asset _asset = assetService.findById(Integer.parseInt(assetIdArrayAble[i]),globle_user.getId());
 	            urls = urls + _asset.getAddr() + ",";
 //	            int status = _asset.getStatus();
 //	            if(status==0){
@@ -556,7 +556,7 @@ public class OrderMgrController {
             }else{
                 //新增服务资产
                 for(int i=0;i<assetIdArrayAble.length;i++){
-                	Asset asset = assetService.findById(Integer.parseInt(assetIdArrayAble[i]));
+                	Asset asset = assetService.findById(Integer.parseInt(assetIdArrayAble[i]),globle_user.getId());
                     OrderAsset orderAsset = new OrderAsset();
                     orderAsset.setOrderId(orderId);
                     orderAsset.setAssetId(Integer.parseInt(assetIdArrayAble[i]));
