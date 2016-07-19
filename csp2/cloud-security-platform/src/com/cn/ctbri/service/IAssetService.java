@@ -51,7 +51,7 @@ public interface IAssetService {
 	 *		 @time 2015-1-21
 	 * 返回值    ：Asset
 	 */
-	Asset findById(int id);
+	Asset findById(int id,int userid);
 	/**
 	 * 功能描述：更新资产状态
 	 * 参数描述：Asset asset
