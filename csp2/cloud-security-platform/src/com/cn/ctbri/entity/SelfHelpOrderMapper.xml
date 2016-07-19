@@ -339,4 +339,10 @@ WHERE a.id = b.orderId
  	where
  		id= #{newOrderIds}
  </update>
+ <!-- 插入服务详情页操作 -->
+    <insert id="SaveOrderDetail" parameterType="com.cn.ctbri.entity.OrderDetail">
+        insert into cs_settlemet
+        (id, type, begin_date, end_date, serviceId, create_date, userId, isAPI,price,asstId,scan_type) 
+   values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{userId}, #{isAPI}, #{price}, #{assetIds},#{scan_type})
+    </insert>
 </mapper>
