@@ -187,7 +187,6 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 		return selfHelpOrderDao.findOrderCountByUserId(orderId, userId);
 	}
 
-	@Override
 	public void SaveOrderDetail(OrderDetail orderDetail) {
 		// TODO Auto-generated method stub
 		selfHelpOrderDao.SaveOrderDetail(orderDetail);
