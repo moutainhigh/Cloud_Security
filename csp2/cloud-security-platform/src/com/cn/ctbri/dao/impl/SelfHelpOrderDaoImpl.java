@@ -236,7 +236,6 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		return this.getSqlSession().selectOne(ns+"findOrderCountByUserId",map);
 	}
 
-	@Override
 	public void SaveOrderDetail(OrderDetail orderDetail) {
 		// TODO Auto-generated method stub
 		this.getSqlSession().insert(ns+"SaveOrderDetail",orderDetail);
