@@ -67,8 +67,8 @@ public class AssetServiceImpl implements IAssetService{
 	 *		 @time 2015-1-21
 	 * 返回值    ：Asset
 	 */
-	public Asset findById(int id) {
-		Asset asset = assetDao.findById(id);
+	public Asset findById(int id,int userid) {
+		Asset asset = assetDao.findById(id,userid);
 		return asset;
 	}
 	/**
