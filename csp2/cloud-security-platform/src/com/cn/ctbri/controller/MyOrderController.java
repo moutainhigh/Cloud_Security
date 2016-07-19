@@ -132,16 +132,16 @@ public class MyOrderController {
 		        	String type = map.get("type").toString();
 		        	paramMap.put("orderId", orderId);
 		        	paramMap.put("type", type);
-		        	List<Task> taskList = taskService.findAllByOrderId(paramMap);
-					if(taskList != null && taskList.size() > 0){
-						for (Task task : taskList) {
-//							if(task.getAlarm_view_flag() != 1 && !task.getIssueCount().equals("0")){
-							if(task.getAlarm_view_flag() != 1 ){
-								alarmViewedFlag = 0;
-							}
-						}
-					}
-					map.put("alarmViewedFlag", alarmViewedFlag);
+//		        	List<Task> taskList = taskService.findAllByOrderId(paramMap);
+//					if(taskList != null && taskList.size() > 0){
+//						for (Task task : taskList) {
+////							if(task.getAlarm_view_flag() != 1 && !task.getIssueCount().equals("0")){
+//							if(task.getAlarm_view_flag() != 1 ){
+//								alarmViewedFlag = 0;
+//							}
+//						}
+//					}
+//					map.put("alarmViewedFlag", alarmViewedFlag);
 					
 					
 					//获取对应资产 add by tangxr 2016-4-25
@@ -151,8 +151,8 @@ public class MyOrderController {
 			        
 			        //多资产情况下，判断已完成的 add by tangxr 2016-7-7 
 //			        List<Task> tlist = taskService.findAllByOrderId(paramMap);
-					List<Task> finistlist = taskService.findFinishAlarmByOrderId(paramMap);
-					map.put("finistTask", finistlist.size());
+//					List<Task> finistlist = taskService.findFinishAlarmByOrderId(paramMap);
+//					map.put("finistTask", finistlist.size());
 	        	}
 	        	mapOrder.put("order", ol);
 	        }
@@ -294,8 +294,8 @@ public class MyOrderController {
 			        
 			        //多资产情况下，判断已完成的 add by tangxr 2016-7-7 
 //			        List<Task> tlist = taskService.findAllByOrderId(paramMap);
-					List<Task> finistlist = taskService.findFinishAlarmByOrderId(paramMap);
-					map.put("finistTask", finistlist.size());
+//					List<Task> finistlist = taskService.findFinishAlarmByOrderId(paramMap);
+//					map.put("finistTask", finistlist.size());
 	        	}
 	        	mapOrder.put("order", ol);
 	        }
@@ -403,8 +403,8 @@ public class MyOrderController {
 			        
 			        //多资产情况下，判断已完成的 add by tangxr 2016-7-7 
 //			        List<Task> tlist = taskService.findAllByOrderId(paramMap);
-					List<Task> finistlist = taskService.findFinishAlarmByOrderId(paramMap);
-					map.put("finistTask", finistlist.size());
+//					List<Task> finistlist = taskService.findFinishAlarmByOrderId(paramMap);
+//					map.put("finistTask", finistlist.size());
 	        	}
 	        	mapOrder.put("order", ol);
 	        }
