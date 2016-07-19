@@ -68,8 +68,8 @@
                             <td class="order" valign="top">
                             	<c:set var="temp" value="${nowDate }"/>
 				                <c:if test="${list.isAPI==0 && list.status==0}"><p class="stylep" style="width:108px;">已下单<b class="wait"></b></p></c:if>
-				                <c:if test="${list.isAPI==0 && (list.status==3||list.status==4||list.status==5)&&list.websoc!=2 && list.finistTask==0}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
-				                <c:if test="${list.isAPI==0 && (list.status==3||list.status==4||list.status==5)&&list.websoc!=2 && list.finistTask!=0}"><p class="stylep" style="width:108px;">服务中<b class="endend"></b></p></c:if>  
+				                <c:if test="${list.isAPI==0 && (list.status==4||list.status==5)&&list.websoc!=2}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
+				                <c:if test="${list.isAPI==0 && (list.status==3)&&list.websoc!=2}"><p class="stylep" style="width:108px;">服务中<b class="endend"></b></p></c:if>  
 				                
 				                <!-- <c:if test="${list.isAPI==0 && list.begin_date>temp}"><p class="stylep" style="width:108px;">已下单<b class="wait"></b></p></c:if>
 				                <c:if test="${list.isAPI==0 && list.begin_date<=temp}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>-->

@@ -151,6 +151,47 @@ function clearTable(){
             <span class="asset" style="display:block">${asset.addr }</span>
             </div></div>
             
+            <!-- add by tangxr 2016-7-18 -->
+            <div style="margin-top:14px;margin-left:-92px">
+			    <p class="dd_detail"><span class="detail_l fl">订单类型</span><span class="detail_r fl">
+			       <c:if test="${order.type==1}">长期</c:if>
+		           <c:if test="${order.type==2}">单次</c:if> 
+			    </span></p>
+			    <p class="dd_detail"><span class="detail_l fl">订单开始时间</span><span class="detail_r fl"><fmt:formatDate value="${order.begin_date }" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
+			    <c:if test="${order.type==1}">
+			       <p class="dd_detail"><span class="detail_l fl">订单结束时间</span><span class="detail_r fl"><fmt:formatDate value="${order.end_date }" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
+			    </c:if>
+			    
+			    <c:if test="${order.type==1}">
+		           <p class="dd_detail"><span class="detail_l fl">检测周期</span><span class="detail_r fl">
+		                <c:if test="${order.serviceId==1}">
+		                    <c:if test="${order.scan_type==2}">每周</c:if>
+		                    <c:if test="${order.scan_type==3}">每月</c:if>
+		                </c:if>
+		                <c:if test="${order.serviceId==2}">
+		                    <c:if test="${order.scan_type==1}">30分钟</c:if>
+		                    <c:if test="${order.scan_type==2}">1小时</c:if>
+		                    <c:if test="${order.scan_type==4}">1天</c:if>
+		                </c:if>
+		                <c:if test="${order.serviceId==3}">
+		                    <c:if test="${order.scan_type==1}">30分钟</c:if>
+		                    <c:if test="${order.scan_type==2}">1小时</c:if>
+		                    <c:if test="${order.scan_type==4}">1天</c:if>
+		                </c:if>
+		                <c:if test="${order.serviceId==4}">
+		                    <c:if test="${order.scan_type==1}">30分钟</c:if>
+		                    <c:if test="${order.scan_type==2}">1小时</c:if>
+		                    <c:if test="${order.scan_type==4}">1天</c:if>
+		                </c:if>
+		                <c:if test="${order.serviceId==5}">
+		                    <c:if test="${order.scan_type==1}">10分钟</c:if>
+		                    <c:if test="${order.scan_type==2}">30分钟</c:if>
+		                    <c:if test="${order.scan_type==3}">1小时</c:if>
+		                </c:if>
+		           </span></p>
+		        </c:if>
+            </div>
+            <!-- end -->
                
         </div>
         <div class="process">
