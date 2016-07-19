@@ -237,6 +237,7 @@ public class shoppingController {
 	@RequestMapping(value="shoppingCar.html", method=RequestMethod.POST)
 	public void shoppingCar(HttpServletRequest request,HttpServletResponse response){
 		  Map<String, Object> m = new HashMap<String, Object>();
+		  String assetArray[] = null;
 		  try{
 		 //用户
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
@@ -251,10 +252,294 @@ public class shoppingController {
         String scanPeriod = request.getParameter("scanType");
         String serviceId = request.getParameter("serviceId");
         String createDate = DateUtils.dateToString(new Date());
-        String price = request.getParameter("price");
         String times = request.getParameter("buy_times");
-        String priceVal="";
-        priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
+        
+        /****判断参数是否有效开始*****/
+        //判断参数值是否为空
+        if((assetIds==null||"".equals(assetIds))||(orderType==null||"".equals(orderType))||(beginDate==null||"".equals(beginDate))||(serviceId==null||"".equals(serviceId))){
+       	  m.put("error",true);
+       	  JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+        }
+        //判断服务类型是否存在
+        if(!orderType.equals("1")&&!orderType.equals("2")){
+       	 m.put("error",true);
+      	     JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+        }
+        
+        //单次
+        if(orderType.equals("2")){
+     	   if(endDate!=null&&!"".equals(endDate)){
+     		 m.put("error",true);
+      	     JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+     	   }
+     
+        //服务频率
+   	   if(scanPeriod!=null&&!"".equals(scanPeriod)){
+	      		 m.put("error",true);
+	       	     JSONObject JSON = CommonUtil.objectToJson(response, m);
+					try {
+						// 把数据返回到页面
+						CommonUtil.writeToJsp(response, JSON);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					return;
+	      	   }
+        }
+   	 //长期
+       if(orderType.equals("1")){
+    	   if((beginDate==null&&"".equals(beginDate))||(endDate==null&&"".equals(endDate))){
+    		 m.put("error",true);
+     	     JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+    	   }
+	       //服务频率
+	  	   if(scanPeriod==null&&"".equals(scanPeriod)){
+	  		 m.put("error",true);
+	   	     JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+	  	   }
+       }
+  	//开始时间和结束时间参数比较
+       if(beginDate!=null&&!"".equals(beginDate)&&endDate!=null&&!"".equals(endDate)){
+    	   Date begin = DateUtils.stringToDateNYRSFM(beginDate);
+           Date end = DateUtils.stringToDateNYRSFM(endDate);
+           
+           if(begin.getTime()>end.getTime()){
+          	 m.put("error",true);
+         	     JSONObject JSON = CommonUtil.objectToJson(response, m);
+  				try {
+  					// 把数据返回到页面
+  					CommonUtil.writeToJsp(response, JSON);
+  				} catch (IOException e) {
+  					e.printStackTrace();
+  				}
+  				return;
+           } 
+       }
+       //长期
+       if(orderType.equals("1")){
+	        //判断服务频率是否存在
+	       if(!scanPeriod.equals("1")&&!scanPeriod.equals("2")&&!scanPeriod.equals("3")&&!scanPeriod.equals("4")&&!scanPeriod.equals("5")){
+	    	 m.put("error",true);
+     	     JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+	      }
+       }
+       //根据判断服务id是否存在
+	    Serv service = servService.findById(Integer.parseInt(serviceId));  
+        if(service==null){
+       	 m.put("error",true);
+      	     JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+        }
+        /****判断参数是否有效结束*****/
+        /****计算价格开始*****/ 
+        double calPrice = 0;
+        //计算出的次数
+        long stimes = 0;
+          //获得订单id
+			int serviceIdV = Integer.parseInt(serviceId);
+			if(assetIds!=null&&!"".equals(assetIds)){
+				assetArray=assetIds.split(",");
+			}
+			int assetCount = assetArray.length;
+			if(assetCount<=0){
+				assetCount=1;
+			}
+			//进行价格分析
+	       List<Price> priceList = priceService.findPriceByServiceId(serviceIdV);
+	        //长期
+	        if(orderType!=null&&!"".equals(orderType)&&orderType.equals("1")){	
+	        	long ms = 0;//时间之间的毫秒数
+	        	Date bDate = null;
+	        	Date eDate = null;
+	        	if(beginDate!=null&&beginDate!=""&endDate!=null&&endDate!=""){
+	        		bDate = DateUtils.stringToDateNYRSFM(beginDate);
+		            eDate = DateUtils.stringToDateNYRSFM(endDate);  
+		            ms = DateUtils.getMsByDays(bDate, eDate);
+	        	}
+	            
+	            int typeInt = Integer.parseInt(scanPeriod);
+	            
+		        switch(serviceIdV){
+		        case 1:
+		        	if(ms==0){
+		        		stimes = 1;//用于显示默认价格
+		        	}else{
+		        		//每周
+			        	if(typeInt==2){
+			        		int perWeek = 1000*3600*24*7;
+			        		if(ms%perWeek>0){
+			        			stimes = (long)(ms/perWeek)+1;
+			        		}else{
+			        			stimes = (long)(ms/perWeek);
+			        		}		        		
+			        	}else{//每月
+			        		while(ms>0){
+			        			bDate = DateUtils.getDayAfterMonth(bDate);
+			        			ms = DateUtils.getMsByDays(bDate, eDate);
+			        			stimes++;
+			        		}
+			        	}	
+		        	}
+		        	break;
+		        	
+		        case 2:
+		        case 3:
+		        case 4:
+		        	if(ms==0){
+		        		stimes = 1;//用于显示默认价格
+		        	}else if(typeInt==1){//30分钟
+			        	int min_30 = 1000*3600/2;
+			        	if(ms%min_30 > 0){
+			        		stimes = (long)(ms/min_30) + 1;
+			        	}else{
+			        		stimes = (long)(ms/min_30);
+			        	}
+		        	}else if(typeInt==2){//1小时
+		        		int oneHour = 1000*3600;
+			        	if(ms%oneHour > 0){
+			        		stimes = (long)(ms/oneHour) + 1;
+			        	}else{
+			        		stimes = (long)(ms/oneHour);
+			        	}
+		        	}else if(typeInt==4){//1天
+		        		int oneDay = 1000*3600*24;
+			        	if(ms%oneDay > 0){
+			        		stimes = (long)(ms/oneDay) + 1;
+			        	}else{
+			        		stimes = (long)(ms/oneDay);
+			        	}
+		        	}
+		        	break;
+		        	
+		        case 5:
+		        	if(ms==0){
+		        		stimes = 1;//用于显示默认价格
+		        	}else if(typeInt==1){//10分钟
+		        		int min_10 = 1000*3600/6;
+			        	if(ms%min_10 > 0){
+			        		stimes = (long)(ms/min_10) + 1;
+			        	}else{
+			        		stimes = (long)(ms/min_10);
+			        	}
+		        	}else if(typeInt==2){//30分钟
+		        		int min_30 = 1000*3600/2;
+			        	if(ms%min_30 > 0){
+			        		stimes = (long)(ms/min_30) + 1;
+			        	}else{
+			        		stimes = (long)(ms/min_30);
+			        	}
+		        	}else if(typeInt==3){//1小时
+		        		int oneHour = 1000*3600;
+			        	if(ms%oneHour > 0){
+			        		stimes = (long)(ms/oneHour) + 1;
+			        	}else{
+			        		stimes = (long)(ms/oneHour);
+			        	}
+		        	}
+		        			        	
+		        	break;
+		        }
+		        if(priceList!=null && priceList.size()>0){
+				    for (int i = 0; i < priceList.size(); i++) {
+				    	Price onePrice = priceList.get(i);
+				        if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()!=0){//区间
+				        	if(stimes>onePrice.getTimesG()&&stimes<=onePrice.getTimesLE()){
+				    				calPrice = onePrice.getPrice()*stimes*assetCount;
+				    			break;
+				    		}
+				        	if(serviceIdV==5 && stimes==1 && onePrice.getTimesG()==1){//服务5：特殊，times==1，取第二区间
+				        		calPrice = onePrice.getPrice()*assetCount;
+				    			break;
+				        	}
+				        }else if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()==0 && stimes>onePrice.getTimesG()){//超过
+			        			calPrice = onePrice.getPrice()*stimes*assetCount;			    			
+			        		break;
+				        }else if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0 && stimes <= 1){//单次类
+				        	calPrice = onePrice.getPrice()*assetCount;
+			        		break;
+				        }
+
+				    }
+		        }else{
+		        	calPrice = 0;
+		        }
+	        }else{//单次
+	        	stimes = 1;
+	        	if(priceList!=null && priceList.size()>0){
+				    for (int i = 0; i < priceList.size(); i++) {
+				    	Price onePrice = priceList.get(i);
+				    	if(serviceIdV!=5){
+				    		 if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0){
+					        		//单次
+						        	calPrice = onePrice.getPrice()*assetCount;
+						        	break;
+					         }
+				    	}else{//服务5没有单次价格
+				    		if(onePrice.getTimesG()==1){
+				        		//单次
+					        	calPrice = onePrice.getPrice()*assetCount;
+					        	break;
+				         }
+				    	}
+				       
+				    }
+	        	}else{
+	        		calPrice = 0;
+	        	}
+			}
+
+			DecimalFormat df = new DecimalFormat("0.00"); 
+          String  price = df.format(calPrice);
+        /****计算价格结束*****/ 
+        
         Order order = new Order();
         
         SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
@@ -284,9 +569,9 @@ public class shoppingController {
             order.setScan_type(Integer.parseInt(scanPeriod));
         }
         
-	    String[]  assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+
         order.setUserId(globle_user.getId());
-        double priceD = Double.parseDouble(priceVal);
+       
         /*if(Integer.parseInt(times)!=0){
         	if(Integer.parseInt(serviceId)!=5){
         		priceD = Integer.parseInt(times)*assetArray.length*Double.parseDouble(priceVal);
@@ -296,9 +581,8 @@ public class shoppingController {
         }else{
         	priceD = assetArray.length*Double.parseDouble(priceVal);
         }*/
-        DecimalFormat df = new DecimalFormat("0.00");
-        String temp = df.format(priceD);
-        order.setPrice(Double.parseDouble(temp));
+      
+        order.setPrice(Double.parseDouble(price));
         order.setContactId(linkmanId);
         order.setPayFlag(0);//未支付
         selfHelpOrderService.insertOrder(order);
@@ -2056,7 +2340,10 @@ public class shoppingController {
           orderDetail.setAssetIds(assetIds.substring(0,assetIds.length()-1));
           orderDetail.setPrice(Double.parseDouble(price));
           orderDetail.setCreate_date(sdf.parse(createDate));
-          orderDetail.setScan_type(Integer.parseInt(scanPeriod));
+          if(scanPeriod!=null&&!"".equals(scanPeriod)){
+        	  orderDetail.setScan_type(Integer.parseInt(scanPeriod));
+          }
+        
           selfHelpOrderService.SaveOrderDetail(orderDetail);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -2066,6 +2353,7 @@ public class shoppingController {
 			
 		}
 		request.setAttribute("detailId",detailId);
+		request.setAttribute("globle_user",globle_user);
 	    String result = "/source/page/details/settlement";
         return result;
 	}catch(Exception e){
