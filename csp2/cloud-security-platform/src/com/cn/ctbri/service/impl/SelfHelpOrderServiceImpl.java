@@ -10,6 +10,7 @@ import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
@@ -184,6 +185,12 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 	
 	public int findOrderCountByUserId(List<String> orderId, int userId){
 		return selfHelpOrderDao.findOrderCountByUserId(orderId, userId);
+	}
+
+	@Override
+	public void SaveOrderDetail(OrderDetail orderDetail) {
+		// TODO Auto-generated method stub
+		selfHelpOrderDao.SaveOrderDetail(orderDetail);
 	}
 
 }
