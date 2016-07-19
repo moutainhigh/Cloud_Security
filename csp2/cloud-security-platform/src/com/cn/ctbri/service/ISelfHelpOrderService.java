@@ -6,6 +6,7 @@ import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
@@ -118,4 +119,6 @@ public interface ISelfHelpOrderService {
 	void updateOrderListId(String newOrderIds);
 	
 	int findOrderCountByUserId(List<String> orderId, int userId);
+	//保存服务详情页操作信息
+	void SaveOrderDetail(OrderDetail orderDetail);
 }
