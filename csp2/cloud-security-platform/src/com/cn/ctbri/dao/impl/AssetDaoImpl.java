@@ -4,6 +4,7 @@ package com.cn.ctbri.dao.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.AssetDao;
@@ -69,8 +70,11 @@ public class AssetDaoImpl extends DaoCommon implements AssetDao{
 	 *		 @time 2015-1-21
 	 * 返回值    ：Asset
 	 */
-	public Asset findById(int id) {
-		Asset asset = this.getSqlSession().selectOne(ns+"findById", id);
+	public Asset findById(int id,int userid) {
+		Map map = new HashMap();
+		map.put("id", id);
+		map.put("userid", userid);
+		Asset asset = this.getSqlSession().selectOne(ns+"findById", map);
 		return asset;
 	}
 	/**
