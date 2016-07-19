@@ -141,13 +141,13 @@
                                     </td>
                                     <td width="29%">
                                  
-                                     <!--  <p style="text-align: center"> -->
+                                     <p style="text-align: center">
                                      <fmt:formatDate value="${shopCar.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                    
                                      <c:if test="${shopCar.endDate!=null&&shopCar.endDate!=''}">
                                        ~  
                                        <fmt:formatDate value="${shopCar.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-                                     <!--  </p> -->
+                                     </p>
                                      
                                      </c:if>
                                     </td>
@@ -212,7 +212,9 @@
                                       </c:if>
                                      &nbsp;&nbsp;&nbsp; ${shopAPI.buynum}</p></td>
                                    <td width="29%">
+                                   <p style="text-align: center">
                                     <fmt:formatDate value="${shopAPI.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/> ~ <fmt:formatDate value="${shopAPI.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                   <p style="text-align: center">
                                   </td>
                                     <td width="10%"><em class="price" style="padding:5px 0px 5px 10px">${shopAPI.price}</em></td>
                                     <td width="5%"><a href="#" onclick="delShopCar('${shopAPI.orderId}');">删除</a></td>
