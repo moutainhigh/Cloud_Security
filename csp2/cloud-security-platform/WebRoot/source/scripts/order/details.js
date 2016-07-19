@@ -402,7 +402,6 @@ $(function(){
     	var scanType = $('.clickTime').val();
     	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
     	var serviceId = $("#serviceIdHidden").val();
-    	var price = $('.price').children('strong:first').text();
     	var times = $("#timesHidden").val();
     	if(orderType==2){
     		scanType="";
@@ -452,10 +451,13 @@ $(function(){
     			   	"scanType":scanType,
     			   	"serviceId":serviceId,
     			   	"assetIds":assetIds,
-    			   	"price":price,
     			   	"buy_times":times}, 
 		     dataType: "json", 
 		     success: function(data) {
+    			   		if(data.error){
+    			   			alert("参数值数据异常!");
+    			   			window.location.href="index.html";
+    			   		}
     			   		 if(data.sucess){
     			   			 alert("添加购物车成功!");
     			   			 buyService(serviceId);
@@ -871,7 +873,6 @@ function tasknum_verification(){
       }
       
       function buyAPI(apiId){
-    	  alert(apiId);
       	$("#apiIdNew").val(apiId);
       	$("#selfHelpOrderAPIInitNewForm").submit();
       
