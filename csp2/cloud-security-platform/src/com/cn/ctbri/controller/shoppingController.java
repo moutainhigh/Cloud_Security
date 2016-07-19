@@ -33,6 +33,7 @@ import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.Serv;
@@ -197,7 +198,7 @@ public class shoppingController {
 	    String assetAddr = "";
 	    String assetNames = "";
         for(int i=0;i<assetArray.length;i++){
-        	Asset asset = assetService.findById(Integer.parseInt(assetArray[i]));
+        	Asset asset = assetService.findById(Integer.parseInt(assetArray[i]),globle_user.getId());
         	if(asset == null || asset.getUserid() != globle_user.getId()) {
         		return "redirect:/index.html";
         	}
@@ -304,7 +305,7 @@ public class shoppingController {
 
         for(int i=0;i<assetArray.length;i++){
         	//插入订单资产表
-        	Asset asset = assetService.findById(Integer.parseInt(assetArray[i]));
+        	Asset asset = assetService.findById(Integer.parseInt(assetArray[i]),globle_user.getId());
             OrderAsset orderAsset = new OrderAsset();
             orderAsset.setOrderId(orderId);
             orderAsset.setAssetId(Integer.parseInt(assetArray[i]));
@@ -778,7 +779,7 @@ public class shoppingController {
 	        if(serviceId!=null&&!"".equals(serviceId)){
 	            assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
             	for(int i=0;i<assetArray.length;i++){
-                	Asset asset = assetService.findById(Integer.parseInt(assetArray[i]));
+                	Asset asset = assetService.findById(Integer.parseInt(assetArray[i]),globle_user.getId());
                 	assetAddr = assetAddr + asset.getAddr()+",";
                 }
 	        	//根据id查询service add by tangxr 2016-3-14
@@ -1793,5 +1794,283 @@ public class shoppingController {
 			e.printStackTrace();
 		}
 	}
-}
+	
+	/**
+	 * 功能描述： 保存详情页操作
+	 * 参数描述：  无
+	 *     @time 2016-07-18
+	 */
+	@RequestMapping(value="selfHelpOrderOpera.html",method=RequestMethod.POST)
+	public String selfHelpOrderOpera(HttpServletRequest request){
+		 String assetArray[] = null;
+		  String detailId="";
+	try{
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		//资产ids
+        String assetIds = request.getParameter("assetIds");
+		String orderType = request.getParameter("type");
+        String beginDate = request.getParameter("beginDate");
+        String endDate = request.getParameter("endDate");
+        String scanPeriod = request.getParameter("scanType");
+        String serviceId = request.getParameter("serviceId");
+        String createDate = DateUtils.dateToString(new Date());
+        String times = request.getParameter("buy_times");
+       
+       
+        //判断参数值是否为空
+        if((assetIds==null||"".equals(assetIds))||(orderType==null||"".equals(orderType))||(beginDate==null||"".equals(beginDate))||(serviceId==null||"".equals(serviceId))){
+        	return "redirect:/index.html";
+        }
+    
+     //判断资产是否存在
+      
+       if(assetIds!=null&&!"".equals(assetIds)){
+    	   assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+       	for(int i=0;i<assetArray.length;i++){
+           	Asset asset = assetService.findById(Integer.parseInt(assetArray[i]),globle_user.getId());
+            if(asset==null){
+            	return "redirect:/index.html";
+            }
+           }
+       }
+        //判断类型是否存在
+       if(!orderType.equals("1")&&!orderType.equals("2")){
+    		return "redirect:/index.html";
+       }
+       //单次
+       if(orderType.equals("2")){
+    	   if(endDate!=null&&!"".equals(endDate)){
+    		   return "redirect:/index.html";
+    	   }
+    	   //服务频率
+    	   if(scanPeriod!=null&&!"".equals(scanPeriod)){
+    		   return "redirect:/index.html";
+    	   }
+       }
+       //长期
+       if(orderType.equals("1")){
+    	   if((beginDate==null&&"".equals(beginDate))||(endDate==null&&"".equals(endDate))){
+    		   return "redirect:/index.html";
+    	   }
+    	   //服务频率
+    	   if(scanPeriod==null&&"".equals(scanPeriod)){
+    		   return "redirect:/index.html";
+    	   }
+       }
+       //开始时间和结束时间参数比较
+       if(beginDate!=null&&!"".equals(beginDate)&&endDate!=null&&!"".equals(endDate)){
+    	   Date begin = DateUtils.stringToDateNYRSFM(beginDate);
+           Date end = DateUtils.stringToDateNYRSFM(endDate);
+           
+           if(begin.getTime()>end.getTime()){
+           	return "redirect:/index.html";
+           } 
+       }
+       //长期
+       if(orderType.equals("1")){
+	        //判断服务频率是否存在
+	       if(!scanPeriod.equals("1")&&!scanPeriod.equals("2")&&!scanPeriod.equals("3")&&!scanPeriod.equals("4")&&!scanPeriod.equals("5")){
+	   		return "redirect:/index.html";
+	      }
+       }
+     //根据判断服务id是否存在
+	    Serv service = servService.findById(Integer.parseInt(serviceId));  
+        if(service==null){
+        	return "redirect:/index.html";
+        }
+      
+		/***计算价格开始***/
+		double calPrice = 0;
+        //计算出的次数
+        long stimes = 0;
+    	try {
+    		
+			//获得订单id
+			int serviceIdV = Integer.parseInt(serviceId);
+			if(assetIds!=null&&!"".equals(assetIds)){
+				assetArray=assetIds.split(",");
+			}
+			int assetCount = assetArray.length;
+			if(assetCount<=0){
+				assetCount=1;
+			}
+			//进行价格分析
+	       List<Price> priceList = priceService.findPriceByServiceId(serviceIdV);
+	        //长期
+	        if(orderType!=null&&!"".equals(orderType)&&orderType.equals("1")){	
+	        	long ms = 0;//时间之间的毫秒数
+	        	Date bDate = null;
+	        	Date eDate = null;
+	        	if(beginDate!=null&&beginDate!=""&endDate!=null&&endDate!=""){
+	        		bDate = DateUtils.stringToDateNYRSFM(beginDate);
+		            eDate = DateUtils.stringToDateNYRSFM(endDate);  
+		            ms = DateUtils.getMsByDays(bDate, eDate);
+	        	}
+	            
+	            int typeInt = Integer.parseInt(scanPeriod);
+	            
+		        switch(serviceIdV){
+		        case 1:
+		        	if(ms==0){
+		        		stimes = 1;//用于显示默认价格
+		        	}else{
+		        		//每周
+			        	if(typeInt==2){
+			        		int perWeek = 1000*3600*24*7;
+			        		if(ms%perWeek>0){
+			        			stimes = (long)(ms/perWeek)+1;
+			        		}else{
+			        			stimes = (long)(ms/perWeek);
+			        		}		        		
+			        	}else{//每月
+			        		while(ms>0){
+			        			bDate = DateUtils.getDayAfterMonth(bDate);
+			        			ms = DateUtils.getMsByDays(bDate, eDate);
+			        			stimes++;
+			        		}
+			        	}	
+		        	}
+		        	break;
+		        	
+		        case 2:
+		        case 3:
+		        case 4:
+		        	if(ms==0){
+		        		stimes = 1;//用于显示默认价格
+		        	}else if(typeInt==1){//30分钟
+			        	int min_30 = 1000*3600/2;
+			        	if(ms%min_30 > 0){
+			        		stimes = (long)(ms/min_30) + 1;
+			        	}else{
+			        		stimes = (long)(ms/min_30);
+			        	}
+		        	}else if(typeInt==2){//1小时
+		        		int oneHour = 1000*3600;
+			        	if(ms%oneHour > 0){
+			        		stimes = (long)(ms/oneHour) + 1;
+			        	}else{
+			        		stimes = (long)(ms/oneHour);
+			        	}
+		        	}else if(typeInt==4){//1天
+		        		int oneDay = 1000*3600*24;
+			        	if(ms%oneDay > 0){
+			        		stimes = (long)(ms/oneDay) + 1;
+			        	}else{
+			        		stimes = (long)(ms/oneDay);
+			        	}
+		        	}
+		        	break;
+		        	
+		        case 5:
+		        	if(ms==0){
+		        		stimes = 1;//用于显示默认价格
+		        	}else if(typeInt==1){//10分钟
+		        		int min_10 = 1000*3600/6;
+			        	if(ms%min_10 > 0){
+			        		stimes = (long)(ms/min_10) + 1;
+			        	}else{
+			        		stimes = (long)(ms/min_10);
+			        	}
+		        	}else if(typeInt==2){//30分钟
+		        		int min_30 = 1000*3600/2;
+			        	if(ms%min_30 > 0){
+			        		stimes = (long)(ms/min_30) + 1;
+			        	}else{
+			        		stimes = (long)(ms/min_30);
+			        	}
+		        	}else if(typeInt==3){//1小时
+		        		int oneHour = 1000*3600;
+			        	if(ms%oneHour > 0){
+			        		stimes = (long)(ms/oneHour) + 1;
+			        	}else{
+			        		stimes = (long)(ms/oneHour);
+			        	}
+		        	}
+		        			        	
+		        	break;
+		        }
+		        if(priceList!=null && priceList.size()>0){
+				    for (int i = 0; i < priceList.size(); i++) {
+				    	Price onePrice = priceList.get(i);
+				        if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()!=0){//区间
+				        	if(stimes>onePrice.getTimesG()&&stimes<=onePrice.getTimesLE()){
+				    				calPrice = onePrice.getPrice()*stimes*assetCount;
+				    			break;
+				    		}
+				        	if(serviceIdV==5 && stimes==1 && onePrice.getTimesG()==1){//服务5：特殊，times==1，取第二区间
+				        		calPrice = onePrice.getPrice()*assetCount;
+				    			break;
+				        	}
+				        }else if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()==0 && stimes>onePrice.getTimesG()){//超过
+			        			calPrice = onePrice.getPrice()*stimes*assetCount;			    			
+			        		break;
+				        }else if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0 && stimes <= 1){//单次类
+				        	calPrice = onePrice.getPrice()*assetCount;
+			        		break;
+				        }
 
+				    }
+		        }else{
+		        	calPrice = 0;
+		        }
+	        }else{//单次
+	        	stimes = 1;
+	        	if(priceList!=null && priceList.size()>0){
+				    for (int i = 0; i < priceList.size(); i++) {
+				    	Price onePrice = priceList.get(i);
+				    	if(serviceIdV!=5){
+				    		 if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0){
+					        		//单次
+						        	calPrice = onePrice.getPrice()*assetCount;
+						        	break;
+					         }
+				    	}else{//服务5没有单次价格
+				    		if(onePrice.getTimesG()==1){
+				        		//单次
+					        	calPrice = onePrice.getPrice()*assetCount;
+					        	break;
+				         }
+				    	}
+				       
+				    }
+	        	}else{
+	        		calPrice = 0;
+	        	}
+			}
+
+			DecimalFormat df = new DecimalFormat("0.00"); 
+          String  price = df.format(calPrice);
+          /***计算价格结束***/
+          OrderDetail orderDetail = new OrderDetail();
+      	  SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+   	      String orderDate = odf.format(new Date());
+   	     detailId = orderDate+String.valueOf(Random.fivecode());
+   	     SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
+   	      orderDetail.setId(detailId);
+          orderDetail.setBegin_date(DateUtils.stringToDateNYRSFM(beginDate));
+          orderDetail.setEnd_date(DateUtils.stringToDateNYRSFM(endDate));
+          orderDetail.setType(Integer.parseInt(orderType));
+          orderDetail.setServiceId(serviceIdV);
+          orderDetail.setUserId(globle_user.getId());
+          orderDetail.setIsAPI(0);
+          orderDetail.setAssetIds(assetIds.substring(0,assetIds.length()-1));
+          orderDetail.setPrice(Double.parseDouble(price));
+          orderDetail.setCreate_date(sdf.parse(createDate));
+          orderDetail.setScan_type(Integer.parseInt(scanPeriod));
+          selfHelpOrderService.SaveOrderDetail(orderDetail);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "redirect:/index.html";
+			//object转化为Json格式
+			
+		}
+		request.setAttribute("detailId",detailId);
+	    String result = "/source/page/details/settlement";
+        return result;
+	}catch(Exception e){
+		e.printStackTrace();
+	}
+	return "";
+}
+}
