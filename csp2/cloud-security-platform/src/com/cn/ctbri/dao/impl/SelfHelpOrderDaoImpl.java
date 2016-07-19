@@ -14,6 +14,7 @@ import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
@@ -233,6 +234,12 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		map.put("orderIds", orderIds);
 		map.put("userId", userId);
 		return this.getSqlSession().selectOne(ns+"findOrderCountByUserId",map);
+	}
+
+	@Override
+	public void SaveOrderDetail(OrderDetail orderDetail) {
+		// TODO Auto-generated method stub
+		this.getSqlSession().insert(ns+"SaveOrderDetail",orderDetail);
 	}
 
 	
