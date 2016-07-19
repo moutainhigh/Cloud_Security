@@ -146,7 +146,6 @@ $(function(){
     	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
     	var serviceId = $("#serviceIdHidden").val();
     	var times = $("#timesHidden").val();
-    	alert("type=="+type+"scanType=="+scanType);
     	if(type==2){
     		scanType="";
     	}
