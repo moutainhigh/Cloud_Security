@@ -284,9 +284,11 @@ public class MyAssetsController {
 	@RequestMapping(value="/editAsset.html",method=RequestMethod.POST)
 	public void editAsset(HttpServletResponse response,HttpServletRequest request){
 		Map<String, Object> m = new HashMap<String, Object>();
+		 //用户
+    	User globle_user = (User) request.getSession().getAttribute("globle_user");
         try {
 			int id = Integer.parseInt(request.getParameter("id"));
-			Asset oldAsset = assetService.findById(id);
+			Asset oldAsset = assetService.findById(id,globle_user.getId());
 			//String addrType = request.getParameter("addrType");
 			String districtId = request.getParameter("prov");
 			String assetAddr = request.getParameter("assetAddr").toLowerCase();
@@ -416,8 +418,10 @@ public class MyAssetsController {
 	 */
 	@RequestMapping(value="/asset_verification.html",method=RequestMethod.POST)
 	public void asset_verification(HttpServletRequest request,HttpServletResponse response){
+		 //用户
+    	User globle_user = (User) request.getSession().getAttribute("globle_user");
 		int id = Integer.valueOf(request.getParameter("id"));
-		Asset _asset = assetService.findById(id);
+		Asset _asset = assetService.findById(id,globle_user.getId());
 		String path = _asset.getAddr().toLowerCase();
 		int status = _asset.getStatus();
 		//获取验证方式:代码验证 ;上传文件验证
