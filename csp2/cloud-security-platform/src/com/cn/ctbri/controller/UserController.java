@@ -893,8 +893,8 @@ public class UserController{
 			        
 			        //多资产情况下，判断已完成的 add by tangxr 2016-7-7 
 //			        List<Task> tlist = taskService.findAllByOrderId(paramMap);
-					List<Task> finistlist = taskService.findFinishAlarmByOrderId(paramMap);
-					map.put("finistTask", finistlist.size());
+//					List<Task> finistlist = taskService.findFinishAlarmByOrderId(paramMap);
+//					map.put("finistTask", finistlist.size());
 	        	}
 	        	mapOrder.put("order", ol);
 	        }
