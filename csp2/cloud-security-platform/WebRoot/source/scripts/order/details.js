@@ -146,8 +146,7 @@ $(function(){
     	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
     	var serviceId = $("#serviceIdHidden").val();
     	var times = $("#timesHidden").val();
-    	var price = $('.price').children('strong:first').text();
-    	var priceVal = price.substring(price.indexOf("¥")+1,price.length);
+    	alert("type=="+type+"scanType=="+scanType);
     	if(type==2){
     		scanType="";
     	}
@@ -193,7 +192,7 @@ $(function(){
 		     success: function(data) {
 		     	//虚拟表单post提交
 					    	var tempForm = document.createElement("form");
-  							tempForm.action = "settlement.html";
+  							tempForm.action = "selfHelpOrderOpera.html";
   							tempForm.method = "post";
   							tempForm.style.display = "none";
   							
@@ -239,11 +238,7 @@ $(function(){
 							timesInput.value= times; 
 							tempForm.appendChild(timesInput);
 							
-							var priceInput = document.createElement("input");
-  							priceInput.type="hidden"; 
-							priceInput.name= "price"; 
-							priceInput.value= priceVal; 
-							tempForm.appendChild(priceInput);
+							
 							
 							document.body.appendChild(tempForm);
 							tempForm.submit();
@@ -535,7 +530,6 @@ function calDefaultPrice(){
 	if(typeof(serviceId) == "undefined"){
 		return;
 	}
-	
 	switch(parseInt(serviceId)){
 	case 1://默认单次
 		servType = 2;
@@ -693,7 +687,6 @@ function tasknum_verification(){
     	}else{
     		servType = $(".clickTime").val();
     	}
-
     	//都不为空时，判断时间大小
     	if(beginDate!=""&&beginDate!=null&&endDate!=""&&endDate!=null){
     		if(beginDate>=endDate){
