@@ -589,7 +589,7 @@ public class WafController {
 			//资产id
 			String domainId = request.getParameter("domainId");
 			boolean assetsStatus = false;
-			Asset _asset = assetService.findById(Integer.parseInt(domainId));
+			Asset _asset = assetService.findById(Integer.parseInt(domainId),globle_user.getId());
 //			int status = _asset.getStatus();
 //			if(status==0){//未验证
 //			    assetsStatus = true;
