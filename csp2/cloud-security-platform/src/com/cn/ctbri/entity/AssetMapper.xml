@@ -46,9 +46,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 	</select>
 	<!-- 根据资产id查询资产 -->
-	<select id="findById" parameterType="int" resultMap="AssetRM">
+	<select id="findById" parameterType="Map" resultMap="AssetRM">
 		select * from cs_asset
-		where id=#{id} 
+		where id=#{id} and userid=#{userid}
 	</select>
 	<!-- 修改资产状态 -->
 	<update id="updateAsset" parameterType="com.cn.ctbri.entity.Asset">
