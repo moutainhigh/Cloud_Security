@@ -12,8 +12,10 @@ public class OrderDetail {
 	private int userId;//用户ID
     private int isAPI;
 	private double price;//价格
-	private String assetIds;
+	private String asstId;
 	private int scan_type;//服务频率
+	private String serviceName;//服务名称
+	private String assetName;//资产名称
 	public String getId() {
 		return id;
 	}
@@ -68,17 +70,32 @@ public class OrderDetail {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	public String getAssetIds() {
-		return assetIds;
+	
+	
+	public String getAsstId() {
+		return asstId;
 	}
-	public void setAssetIds(String assetIds) {
-		this.assetIds = assetIds;
+	public void setAsstId(String asstId) {
+		this.asstId = asstId;
 	}
 	public int getScan_type() {
 		return scan_type;
 	}
 	public void setScan_type(int scanType) {
 		scan_type = scanType;
+	}
+	
+	public String getServiceName() {
+		return serviceName;
+	}
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+	public String getAssetName() {
+		return assetName;
+	}
+	public void setAssetName(String assetName) {
+		this.assetName = assetName;
 	}
 	
 	

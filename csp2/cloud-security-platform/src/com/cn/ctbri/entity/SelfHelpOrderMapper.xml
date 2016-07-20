@@ -343,6 +343,19 @@ WHERE a.id = b.orderId
     <insert id="SaveOrderDetail" parameterType="com.cn.ctbri.entity.OrderDetail">
         insert into cs_settlemet
         (id, type, begin_date, end_date, serviceId, create_date, userId, isAPI,price,asstId,scan_type) 
-   values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{userId}, #{isAPI}, #{price}, #{assetIds},#{scan_type})
+   values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{userId}, #{isAPI}, #{price}, #{asstId},#{scan_type})
     </insert>
+     <!-- 根据主键查询服务详情操作信息 -->
+    <select id="getOrderDetailById" resultType="com.cn.ctbri.entity.OrderDetail" parameterType="Map">
+        SELECT s.*,c.name serviceName,GROUP_CONCAT(a.name) assetName from cs_settlemet s, cs_service c,cs_asset a
+        
+        WHERE s.userId = #{userId}
+    AND s.id = #{id}
+AND s.serviceId=c.id
+AND a.id IN  <foreach item="assetId" index="index" collection="assetIdsList" open="("  
+            separator="," close=")">  
+          #{assetId} 
+        </foreach>
+      
+    </select>
 </mapper>
