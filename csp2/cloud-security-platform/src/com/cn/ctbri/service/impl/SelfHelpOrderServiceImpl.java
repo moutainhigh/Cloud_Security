@@ -192,4 +192,10 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 		selfHelpOrderDao.SaveOrderDetail(orderDetail);
 	}
 
+	
+	public OrderDetail getOrderDetailById(String id,int userId,List assetIdsList) {
+		// TODO Auto-generated method stub
+		return selfHelpOrderDao.getOrderDetailById(id,userId,assetIdsList);
+	}
+
 }
