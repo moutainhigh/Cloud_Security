@@ -745,7 +745,7 @@ public class shoppingController {
 	  
 	    request.setAttribute("linkman", linkman);
 		request.setAttribute("orderNum", orderNum);
-		request.setAttribute("shopCount", df.format(shopCount));
+		//request.setAttribute("shopCount", df.format(shopCount));
 		request.setAttribute("shopList", shopList);
 		request.setAttribute("shopAPIList", shopAPIList);
 		 request.setAttribute("user", globle_user);
@@ -768,7 +768,7 @@ public class shoppingController {
 		 String serverNames="";
 	try{
 		 User globle_user = (User) request.getSession().getAttribute("globle_user");
-		//前台传回的用户
+		/*//前台传回的用户
 	    	int userId = Integer.parseInt(request.getParameter("userId"));
 	    	//判断用户是否为当前用户
 	    	boolean userStatus = true;
@@ -786,7 +786,7 @@ public class shoppingController {
 	    	           e.printStackTrace();
 	    	       }
 	    	       return;
-	    	}
+	    	}*/
 	    	
 		 Date date = new Date();
 		 boolean flag=true;
@@ -833,7 +833,7 @@ public class shoppingController {
 	    		   
 	    		   shopAPIList.add(shopCar);
 	    	   }
-	    	 
+	    	   shopCount=shopCount+shopCar.getPrice();
 	       }	 
 	     }
 	    
@@ -906,7 +906,7 @@ public class shoppingController {
 	    		
 	    	     orderService.updateLinkManByOrderId(linkman, shopCar.getOrderId());
 	    	     map.put("flag", flag);
-	    		 map.put("price", df.format(Double.parseDouble(price)));
+	    		 map.put("price", shopCount);
 	    		 map.put("orderStatus", true);
 		    	 map.put("sucess", true);
 	    	 }
@@ -2088,6 +2088,7 @@ public class shoppingController {
 	public String selfHelpOrderOpera(HttpServletRequest request){
 		 String assetArray[] = null;
 		  String detailId="";
+		  List assetIdsList = new ArrayList();
 	try{
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		//资产ids
@@ -2098,7 +2099,7 @@ public class shoppingController {
         String scanPeriod = request.getParameter("scanType");
         String serviceId = request.getParameter("serviceId");
         String createDate = DateUtils.dateToString(new Date());
-        String times = request.getParameter("buy_times");
+        //String times = request.getParameter("buy_times");
        
        
         //判断参数值是否为空
@@ -2337,7 +2338,7 @@ public class shoppingController {
           orderDetail.setServiceId(serviceIdV);
           orderDetail.setUserId(globle_user.getId());
           orderDetail.setIsAPI(0);
-          orderDetail.setAssetIds(assetIds.substring(0,assetIds.length()-1));
+          orderDetail.setAsstId(assetIds.substring(0,assetIds.length()-1));
           orderDetail.setPrice(Double.parseDouble(price));
           orderDetail.setCreate_date(sdf.parse(createDate));
           if(scanPeriod!=null&&!"".equals(scanPeriod)){
@@ -2352,8 +2353,17 @@ public class shoppingController {
 			//object转化为Json格式
 			
 		}
-		request.setAttribute("detailId",detailId);
-		request.setAttribute("globle_user",globle_user);
+		if(assetIds!=null&&!"".equals(assetIds)){
+	    	   assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+	    	   for(int i=0;i<assetArray.length;i++){
+	    		   assetIdsList.add(assetArray[i]);
+	    	   }
+		}
+		OrderDetail orderDetail = selfHelpOrderService.getOrderDetailById(detailId, globle_user.getId(),assetIdsList);
+		
+		request.setAttribute("orderDetail",orderDetail);
+		
+		request.setAttribute("user",globle_user);
 	    String result = "/source/page/details/settlement";
         return result;
 	}catch(Exception e){

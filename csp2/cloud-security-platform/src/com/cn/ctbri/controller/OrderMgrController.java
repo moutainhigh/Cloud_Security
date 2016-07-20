@@ -1,14 +1,16 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +33,7 @@ import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.OrderIP;
 import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.Serv;
@@ -357,7 +360,7 @@ public class OrderMgrController {
     @RequestMapping(value="saveOrder.html",method=RequestMethod.POST)
     @ResponseBody
     public void saveOrder(HttpServletResponse response,HttpServletRequest request) throws Exception{
-        Map<String, Object> m = new HashMap<String, Object>();
+       /* Map<String, Object> m = new HashMap<String, Object>();
         
         //用户
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
@@ -386,7 +389,7 @@ public class OrderMgrController {
         String assetIds = request.getParameter("assetIds");
         String price = request.getParameter("price");
 
-        /*定义变量*/
+        定义变量
         String[] assetIdArrayAble = null;//资产id数组
         String[] targetURL = null;//资产url数组
         String[] customManu = null;//指定厂家
@@ -470,8 +473,8 @@ public class OrderMgrController {
         	
      	//创建订单（任务），调北向api，modify by tangxr 2015-12-21
     	try {
-    		/*orderId = NorthAPIWorker.vulnScanCreate(orderType, targetURL, scanType, beginDate, endDate, scanPeriod,
-        			scanDepth, maxPages, stategy, customManu, serviceId);*/
+    		orderId = NorthAPIWorker.vulnScanCreate(orderType, targetURL, scanType, beginDate, endDate, scanPeriod,
+        			scanDepth, maxPages, stategy, customManu, serviceId);
     	SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
     	 String orderDate = odf.format(new Date());
     	   orderId = orderDate+String.valueOf(Random.fivecode());
@@ -604,7 +607,266 @@ public class OrderMgrController {
             CommonUtil.writeToJsp(response, JSON);
         } catch (IOException e) {
             e.printStackTrace();
+        }*/
+    	
+    	  Map<String, Object> m = new HashMap<String, Object>();
+          String assetArray[] = null;
+          //用户
+      	User globle_user = (User) request.getSession().getAttribute("globle_user");
+      	List assetIdsList = new ArrayList();
+      	//判断参数值
+      	String assetIds = request.getParameter("assetIds");
+      	String orderDetailId = request.getParameter("orderDetailId");
+      	if(assetIds==null||"".equals(assetIds)||orderDetailId==null||"".equals(orderDetailId)){
+      		m.put("error", true);
+          		 //object转化为Json格式
+          	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+          	       try {
+          	           // 把数据返回到页面
+          	           CommonUtil.writeToJsp(response, JSON);
+          	       } catch (IOException e) {
+          	           e.printStackTrace();
+          	       }
+          	       return;
+          
+      	}
+      //服务详情操作id
+    	if(assetIds!=null&&!"".equals(assetIds)){
+	    	   assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+	    	   for(int i=0;i<assetArray.length;i++){
+	    		   assetIdsList.add(assetArray[i]);
+	    	   }
+		}
+    	
+    	OrderDetail orderDetail =selfHelpOrderService.getOrderDetailById(orderDetailId, globle_user.getId(), assetIdsList);
+    	if(orderDetail==null){
+    		m.put("error", true);
+   		 //object转化为Json格式
+   	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+   	       try {
+   	           // 把数据返回到页面
+   	           CommonUtil.writeToJsp(response, JSON);
+   	       } catch (IOException e) {
+   	           e.printStackTrace();
+   	       }
+   	       return;
+    	}
+    	 /*定义变量*/
+        String[] assetIdArrayAble = null;//资产id数组
+        String[] targetURL = null;//资产url数组
+        String[] customManu = null;//指定厂家
+        String scanType = "";//扫描方式（正常、快速、全量）
+        String scanDepth = "";//检测深度
+        String maxPages = "";//最大页面数
+        String stategy = "";//策略
+        
+        //后台判断资产是否可用，防止恶意篡改资产
+        boolean assetsStatus = false;
+        if(assetIds!=null&&assetIds!=""){
+        	String urls = "";
+	        assetIdArrayAble = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+	        for(int i=0;i<assetIdArrayAble.length;i++){
+	            Asset _asset = assetService.findById(Integer.parseInt(assetIdArrayAble[i]),globle_user.getId());
+	            urls = urls + _asset.getAddr() + ",";
+	        }
+	        targetURL = urls.split(",");
         }
+        m.put("assetsStatus", assetsStatus);
+        if(assetsStatus){
+            //object转化为Json格式
+            JSONObject JSON = CommonUtil.objectToJson(response, m);
+            try {
+                // 把数据返回到页面
+                CommonUtil.writeToJsp(response, JSON);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        String orderId = "";
+        String createDate = DateUtils.dateToString(new Date());
+        String linkname =request.getParameter("linkname");
+        String phone = request.getParameter("phone");
+        String email = request.getParameter("email");
+        String ip = request.getParameter("ip");
+        String bandwidth = request.getParameter("bandwidth");
+        /***判断参数开始**/
+       Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");  
+       
+       Matcher matcher = p.matcher(phone); 
+       if(!matcher.find()){
+    		m.put("error", true);
+      		 //object转化为Json格式
+      	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+      	       try {
+      	           // 把数据返回到页面
+      	           CommonUtil.writeToJsp(response, JSON);
+      	       } catch (IOException e) {
+      	           e.printStackTrace();
+      	       }
+      	       return;
+       }
+       if(email!=null&&!"".equals(email)){
+    	   Pattern emailP = Pattern.compile("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$");  
+           Matcher ematcher = emailP.matcher(email); 
+           if(!ematcher.find()){
+        	   m.put("error", true);
+        		 //object转化为Json格式
+        	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+        	       try {
+        	           // 把数据返回到页面
+        	           CommonUtil.writeToJsp(response, JSON);
+        	       } catch (IOException e) {
+        	           e.printStackTrace();
+        	       }
+        	       return;
+           }
+       }
+      
+     /***判断参数结束**/
+        String websoc = "0";
+        if(websoc != null && websoc != ""){
+        	customManu = websoc.split(","); //拆分字符为"," ,然后把结果交给数组customManu 
+        }
+        //任务数
+        String tasknum = request.getParameter("tasknum");
+        //长期：订单结束时间不能早于当前订单提交时间,add by tangxr,2015-3-3
+        if(String.valueOf(orderDetail.getType()).equals("1") && orderDetail.getEnd_date()!=null && DateUtils.dateToString(orderDetail.getEnd_date())!="" && createDate.compareTo( DateUtils.dateToString(orderDetail.getEnd_date()))>0){
+    		m.put("timeCompare", false);
+    		//object转化为Json格式
+            JSONObject JSON = CommonUtil.objectToJson(response, m);
+            try {
+                // 把数据返回到页面
+                CommonUtil.writeToJsp(response, JSON);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+    	//创建订单（任务），调北向api，modify by tangxr 2015-12-21
+    	try {
+    		/*orderId = NorthAPIWorker.vulnScanCreate(orderType, targetURL, scanType, beginDate, endDate, scanPeriod,
+        			scanDepth, maxPages, stategy, customManu, serviceId);*/
+    	SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+    	 String orderDate = odf.format(new Date());
+    	   orderId = orderDate+String.valueOf(Random.fivecode());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		 //北向API返回orderId，创建用户订单
+    	if(!orderId.equals("") && orderId != null){
+			//新增联系人
+            Linkman linkObj = new Linkman();
+            int linkmanId = Random.eightcode();
+            linkObj.setId(linkmanId);
+            linkObj.setName(linkname);
+            linkObj.setMobile(phone);
+            linkObj.setEmail(email);
+            //linkObj.setAddress(address);
+            //linkObj.setCompany(company);
+            linkObj.setUserId(globle_user.getId());
+            selfHelpOrderService.insertLinkman(linkObj);
+            //新增订单
+            Order order = new Order();
+            order.setId(orderId);
+            order.setType(orderDetail.getType());
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
+            Date begin_date = null;
+            Date end_date = null;
+            Date create_date = null;
+            
+            if(createDate!=null && !createDate.equals("")){
+                create_date=sdf.parse(createDate); 
+            }
+            order.setBegin_datevo(DateUtils.dateToString(orderDetail.getBegin_date()));
+            order.setEnd_datevo(DateUtils.dateToString(orderDetail.getEnd_date()));
+            order.setBegin_date(begin_date);
+            order.setEnd_date(end_date);
+            order.setCreate_date(create_date);
+            order.setPrice(orderDetail.getPrice());
+            
+                order.setScan_type(orderDetail.getScan_type());
+           
+            order.setServiceId(orderDetail.getServiceId());
+            
+            if (orderDetail.getServiceId()==1 && orderDetail.getType()==1) {//漏洞长期
+				Date executeTime = DateUtils.getOrderPeriods(DateUtils.dateToString(orderDetail.getBegin_date()),DateUtils.dateToString(orderDetail.getEnd_date()),String.valueOf(orderDetail.getScan_type()));
+				order.setTask_date(executeTime);
+			}else{
+				order.setTask_date(begin_date);
+			}
+            
+            order.setUserId(globle_user.getId());
+            order.setContactId(linkmanId);
+            order.setStatus(0);
+            order.setPayFlag(0);
+            if(orderDetail.getServiceId()==6||orderDetail.getServiceId()==7||orderDetail.getServiceId()==8){
+            	order.setWebsoc(0);
+            }else{
+            	if(!websoc.equals("null")){
+                	order.setWebsoc(Integer.parseInt(websoc));
+                }
+            }
+            if(tasknum!=null && !tasknum.equals("")){
+            	order.setTasknum(Integer.parseInt(tasknum));
+            }
+            
+            selfHelpOrderService.insertOrder(order);
+            
+            
+            if(orderDetail.getServiceId()==6||orderDetail.getServiceId()==7||orderDetail.getServiceId()==8){
+                //新增ip段
+                OrderIP orderIP = new OrderIP();
+                orderIP.setOrderId(orderId);
+                orderIP.setIp(ip);
+                orderIP.setBandwidth(Integer.parseInt(bandwidth));
+                orderIP.setServiceId(orderDetail.getServiceId());
+                orderAssetService.insertOrderIP(orderIP);
+            }
+             else{
+                //新增服务资产
+                for(int i=0;i<assetIdArrayAble.length;i++){
+                	Asset asset = assetService.findById(Integer.parseInt(assetIdArrayAble[i]),globle_user.getId());
+                    OrderAsset orderAsset = new OrderAsset();
+                    orderAsset.setOrderId(orderId);
+                    orderAsset.setAssetId(Integer.parseInt(assetIdArrayAble[i]));
+                    orderAsset.setServiceId(orderDetail.getServiceId());
+                    orderAsset.setScan_type(orderDetail.getScan_type());
+                    orderAsset.setAssetAddr(asset.getAddr());
+                    orderAsset.setAssetName(asset.getName());
+                    orderAssetService.insertOrderAsset(orderAsset);
+                }
+            }
+            m.put("orderStatus", true);
+		}else{
+			m.put("orderStatus", false);
+		}
+        m.put("timeCompare", true);
+        Serv serv = servService.findById(orderDetail.getServiceId());
+        //插入数据到order_list
+   	    OrderList ol = new OrderList();
+   	    //生成订单id
+//   	    String id = String.valueOf(Random.eightcode());
+   	    SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+   		String orderDate = odf.format(new Date());
+   		String id = orderDate+String.valueOf(Random.fivecode());
+   	    ol.setId(id);
+   	    ol.setCreate_date(new Date());
+   	    ol.setOrderId(orderId);
+   	    ol.setUserId(globle_user.getId());
+   	    ol.setPrice(orderDetail.getPrice());
+   	    ol.setServerName(serv.getName());
+   	    orderListService.insert(ol);
+   	    
+   	    m.put("orderListId", id);
+   	    //object转化为Json格式
+           JSONObject JSON = CommonUtil.objectToJson(response, m);
+           try {
+               // 把数据返回到页面
+               CommonUtil.writeToJsp(response, JSON);
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
     }
     
     /**
