@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -155,22 +156,17 @@
 				</div>
 			</div>
 		</div>
-		<c:if test="${service.id le 5 }">
+		<c:if test="${orderDetail.serviceId le 5 }">
 			<form method="post" action="orderBack.html" id="orderBackForm">
 		</c:if>
-		<c:if test="${service.id gt 5 }">
+		<c:if test="${orderDetail.serviceId gt 5 }">
 			<form method="post" action="wafOrderBack.html" id="orderBackForm">
 		</c:if>
 		<input type="hidden" id="userIdHidden" value="${user.id}"/>
-		<input type="hidden" id="serviceId" name="serviceId" value="${serviceId }"/>
-		<input type="hidden" id="orderType" name="orderType" value="${type }"/>
-		<input type="hidden" id="beginDate" name="beginDate" value="${beginDate }"/>
-		<input type="hidden" id="endDate" name="endDate" value="${endDate }"/>
-		<input type="hidden" id="scanType" name="scanType" value="${scanType }"/>
-		<input type="hidden" id="assetIds" name="assetIds" value="${assetIds }"/>
+		<input type="hidden" id="orderDetailId" value="${orderDetail.id}"/>
+		
 		<input type="hidden" id="assetAddr" name="domainName" value="${assetAddr }"/>
-		<input type="hidden" id="assetNamesHidden" name="assetNames" value="${assetNames}"/>
-		<input type="hidden" id="priceHidden" name="price" value="${allPrice }"/>
+
 		<input type="hidden" id="ipArrayHidden" name="ipArray" value="${ipArray }"/>
 		<input type="hidden" id="timesHidden" name="times" value="${times }"/>
 		
@@ -290,25 +286,27 @@
                     	
                         <div class="tabox zfize" style="margin-top:20px;">
                         	<table class="test-table" style="width:966px;">
-                        	<c:if test="${mark eq 'web' }">
+                        	<c:if test="${not empty orderDetail}">
+                        	    <c:if test="${orderDetail.isAPI==0}">
 	                        	<tbody>
 	                            	 <tr height="40">
 	                                 	<td width="16%" style="font-size:14px;">
-	                                    	${service.name }
+	                                    	${orderDetail.serviceName}
 	                                    </td>
 	                                   
 	                                    <td width="36%" style="font-size:14px;">
-	                                    	${assetNames }
+	                                    	${orderDetail.assetName}
 	                                    </td>
 	                                    <td width="32%" style="font-size:14px;">
-	                                    	${beginDate }
-	                                    	<c:if test="${endDate !='' }">
-	                                    	~${endDate }
+	                                    	<fmt:formatDate value="${orderDetail.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
+	                                    	<c:if test="${orderDetail.end_date!=null&&orderDetail.end_date!=''}">
+	                                    	~<fmt:formatDate value="${orderDetail.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
 	                                    	</c:if>
 	                                    </td>
-	                                    <td width="18%" style="font-size:14px;">${allPrice}</td>
+	                                    <td width="18%" style="font-size:14px;">${orderDetail.price}</td>
 	                                 </tr>
 	                            </tbody>
+	                            </c:if>
                             </c:if>
                             <c:if test="${mark eq 'api' }">
 	                        	<tbody>
@@ -381,7 +379,7 @@
             
             <ul class="Price">
             	<li>
-                	<i>1</i>个订单，总额：<span>￥${allPrice}</span>
+                	<i>1</i>个订单，总额：<span>￥${orderDetail.price}</span>
                 </li>
                 <!--  
                 <li>
@@ -389,22 +387,27 @@
                 </li>
                 -->
                 <li>
-                	应付总额：<span>￥${allPrice}</span>
+                	应付总额：<span>￥${orderDetail.price}</span>
                 </li>
             </ul>
 			<div class="SubmitBox">
-            	<p>应付总额：<span>￥${allPrice}</span>
-            	<c:if test="${mark eq 'web' }">
-            		<c:if test="${service.id gt 5 }">
-            			<input id="settlementWaf" class="submit" type="button" value="提交订单"/>
-            		</c:if>
-            		<c:if test="${service.id le 5 }">            		
-            			<input id="settlement" class="submit" type="submit" value="提交订单"/>
-            		</c:if>
-            	</c:if>
-            	<c:if test="${mark eq 'api' }">
-            		<input id="settlementAPI" class="submit" type="submit" value="提交订单"/>
-            	</c:if>
+            	<p>应付总额：<span>￥${orderDetail.price}</span>
+            	<c:if test="${not empty orderDetail}">
+	            	<c:if test="${orderDetail.isAPI==0}">
+		            		<c:if test="${orderDetail.serviceId gt 5 }">
+		            			<input id="settlementWaf" class="submit" type="button" value="提交订单"/>
+		            		</c:if>
+		            		<c:if test="${orderDetail.serviceId le 5 }">            		
+		            			<input id="settlement" class="submit" type="submit" value="提交订单"/>
+		            		</c:if>
+		            	</c:if>
+		            	<c:if test="${orderDetail.isAPI==1}">
+		            	<c:if test="${mark eq 'api' }">
+		            		<input id="settlementAPI" class="submit" type="submit" value="提交订单"/>
+		            	</c:if>
+		            	</c:if>
+	            	</c:if>
+            	
             	</p>
             </div>
 		</div>
