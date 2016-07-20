@@ -255,13 +255,14 @@ $(function(){
     
     $("#settlement").click(function(){
     	var createDate = getCreateDate();
-    	var orderType = $('#orderType').val();
-    	var beginDate=$('#beginDate').val();
-    	var endDate=$('#endDate').val();
-    	var scanType = $('#scanType').val();
+    	//var orderType = $('#orderType').val();
+    	//var beginDate=$('#beginDate').val();
+    	//var endDate=$('#endDate').val();
+    	//var scanType = $('#scanType').val();
 //    	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
-    	var serviceId = $("#serviceId").val();
-    	  var price = $('#priceHidden').val();
+    	//var serviceId = $("#serviceId").val();
+    	 // var price = $('#priceHidden').val();
+    	var orderDetailId = $("#orderDetailId").val();
        var userName =  $(".test_name").text();
         var userAdd = $(".test_add").text();
         var mobile =  $(".test_iphone").text();
@@ -279,24 +280,18 @@ $(function(){
     		$.ajax({ type: "POST",
 	    		     async: false, 
 	    		     url: "saveOrder.html", 
-	    		     data: {"orderType":orderType,
-		    			   	"beginDate": beginDate,
-		    			   	"endDate":endDate,
+	    		     data: {"orderDetailId":orderDetailId,
+    			            "assetIds":assetIds,
 		    			   	"createDate":createDate,
-		    			   	"scanType":scanType,
-		    			   	"serviceId":serviceId,
-		    			   	"price":price,
 		    			   	"linkname":userName,
 		    			   	"phone":mobile,
 		    			   	"email":userAdd,
 		    			   	"company":"",
 		    			   	"address":"",
-		    			   	"assetIds":assetIds,
-		    			   	"ip":ip,
-		    			   	"bandwidth":bandwidth,
+		    			    "bandwidth":bandwidth,
 			    			"websoc":"",
 			    			"tasknum":"",
-			    			"userId":userId},  
+			    			},  
 	    		     dataType: "json", 
 //		    		     contentType: "application/json; charset=utf-8", 
 	    		     success: function(data) {

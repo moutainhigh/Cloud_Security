@@ -63,11 +63,9 @@ $(function(){
        //购物车点击“提交订单”
     $("#shopSettlement").click(function(){
        var orderIds="";
-       var countPrice = $("#countPrice").val();
       var userName =  $(".test_name").text();
         var userAdd = $(".test_add").text();
         var mobile =  $(".test_iphone").text();
-        var userId = $("#userIdHidden").val();
        $("input:hidden[name='orderId']").each(function(obj){
     	    orderIds+=$(this).val()+",";
        });
@@ -77,11 +75,9 @@ $(function(){
 		     async: false, 
 		     url: "shopSettlement.html",
 		      data:{"orderIds":orderIds,
-		            "countPrice":countPrice,
 		            "linkName":userName,
 		            "linkEmail":userAdd,
-		            "linkMobile":mobile,
-		            "userId":userId
+		            "linkMobile":mobile
 		           },
 		     dataType: "json", 
 		     success: function(data) {
