@@ -120,4 +120,6 @@ public interface SelfHelpOrderDao {
 	int findOrderCountByUserId(List<String> orderId, int userId);
 	//保存服务详情页操作信息
 	void SaveOrderDetail(OrderDetail orderDetail);
+	//根据服务详情操作主键，查询
+	OrderDetail getOrderDetailById(String id,int userId,List assetIdsList);
 }
