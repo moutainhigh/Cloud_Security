@@ -1,7 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="ctx" value="${pageContext.request.contextPath}" />
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 <%   
           java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
           java.util.Date currentTime = new java.util.Date();//得到当前系统时间 
@@ -41,17 +42,17 @@ $(document).ready(function(){
 		$('.type').hide();	
 		$('.end').show();
 	}
-	var type = ${orderType};
+	var type = ${orderDetail.type};
 	if(type==2){
 		$("#endDate").val("");
-    	$("#beginDate").val("${beginDate}");
+    	$("#beginDate").val("<fmt:formatDate value='${orderDetail.begin_date}' pattern='yyyy-MM-dd HH:mm:ss'/>");
 	}else if(type==1){
 		var scanType = $("#scanType").val();
 		$('.long').addClass('click').siblings().removeClass('click');	
 		$('.end').show();
 		$('.time').show();
-    	$("#endDate").val("${endDate}");
-    	$("#beginDate").val("${beginDate}");
+    	$("#endDate").val("<fmt:formatDate value='${orderDetail.end_date}' pattern='yyyy-MM-dd HH:mm:ss'/>");
+    	$("#beginDate").val("<fmt:formatDate value='${orderDetail.begin_date}' pattern='yyyy-MM-dd HH:mm:ss'/>");
     	$('.time button').each(function(){
     		if($(this).val()==scanType){
     			$(this).addClass('clickTime').siblings().removeClass('clickTime');	
@@ -83,7 +84,7 @@ $(document).ready(function(){
 		$('.gt').show();		
 	}
 
-    $("#price").html("¥"+"${price}");
+    $("#price").html("¥"+"${orderDetail.price}");
     
 });
 </script>
@@ -174,13 +175,13 @@ d.mouseover(function(){
 			
 
 		</div>
-		<input type="hidden" id="serviceId" value="${serviceId }"/>
+		<input type="hidden" id="serviceId" value="${orderDetail.serviceId }"/>
 		<input type="hidden" id="indexPage" value="${indexPage }"/>
-		<input type="hidden" id="orderType" value="${service.orderType }"/>
-		<input type="hidden" id="scanType" value="${scanType }"/>
-		<input type="hidden" id="assetIds" value="${assetIds }"/>
-		<input type="hidden" id="assetAddr" value="${assetAddr }"/>
-		<input type="hidden" id="assetNames" value="${assetNames }"/>
+		<input type="hidden" id="orderType" value="${orderDetail.type}"/>
+		<input type="hidden" id="scanType" value="${orderDetail.scan_type }"/>
+		<input type="hidden" id="assetIds" value="${orderDetail.asstId}"/>
+		<input type="hidden" id="assetAddr" value="${orderDetail.assetAddr}"/>
+		<input type="hidden" id="assetNames" value="${orderDetail.assetName}"/>
 		<input type="hidden" id="timesHidden" value=""/>
 		<input type="hidden" id="begin" value="<%=str_date%>"/>
 		<!-- 资产个数 -->
