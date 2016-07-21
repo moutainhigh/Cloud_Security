@@ -16,6 +16,7 @@ public class OrderDetail {
 	private int scan_type;//服务频率
 	private String serviceName;//服务名称
 	private String assetName;//资产名称
+	private String assetAddr;//资产地址
 	public String getId() {
 		return id;
 	}
@@ -96,6 +97,12 @@ public class OrderDetail {
 	}
 	public void setAssetName(String assetName) {
 		this.assetName = assetName;
+	}
+	public String getAssetAddr() {
+		return assetAddr;
+	}
+	public void setAssetAddr(String assetAddr) {
+		this.assetAddr = assetAddr;
 	}
 	
 	
