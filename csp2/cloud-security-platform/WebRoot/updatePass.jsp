@@ -104,6 +104,8 @@
                         </div>
                         <form id="passForm" action="${ctx}/confirmPass.html" method="post">
                          <input type="hidden" name="mobile" value="${user.mobile}"/>
+                         <input type="hidden" name="useFlag" value="${useFlag}"/>
+                         <input type="hidden" name="verification_phone" value="${verification_phone}"/>
                         <ul class="passwordlist passwordtwo" style="padding-bottom:30px; width:416px; margin:0 auto">
                         	<li class="clearfix">
                             	<label class="fl">输入新密码</label>
