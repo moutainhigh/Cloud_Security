@@ -177,7 +177,7 @@ d.mouseover(function(){
 		</div>
 		<input type="hidden" id="serviceId" value="${orderDetail.serviceId }"/>
 		<input type="hidden" id="indexPage" value="${indexPage }"/>
-		<input type="hidden" id="orderType" value="${orderDetail.type}"/>
+		<input type="hidden" id="orderType" value="${service.orderType }"/>
 		<input type="hidden" id="scanType" value="${orderDetail.scan_type }"/>
 		<input type="hidden" id="assetIds" value="${orderDetail.asstId}"/>
 		<input type="hidden" id="assetAddr" value="${orderDetail.assetAddr}"/>
