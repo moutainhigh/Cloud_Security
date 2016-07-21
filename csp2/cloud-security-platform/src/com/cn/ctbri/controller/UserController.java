@@ -1100,7 +1100,7 @@ public class UserController{
 		}
 		
 		
-		if (password.equals(name)) {
+		if (name != null && password.equals(name)) {
 			msg="用户名和密码一致，请重新修改密码!";
 			return msg;
 		}
@@ -1667,37 +1667,56 @@ public class UserController{
 	 */
 	@RequestMapping(value="updatePass.html", method = RequestMethod.POST)
 	public String updatePass(User user,HttpServletRequest request,Model m){
-		String email = request.getParameter("eamil_ecode");
+//		String email = request.getParameter("eamil_ecode");
 		String mobile = request.getParameter("phone_code");
+		String phoneCode = request.getParameter("verification_phone");
+		if (mobile==null || "".equals(mobile)||phoneCode == null || phoneCode.equals("")) {
+			return "redirect:/index.html";
+		}
+		
+		String msg;
 		
 		//原始密码:为空是忘记密码；不为空修改密码
 		//提交成功时，短信验证码失效
 		String originalMobile = request.getParameter("originalMobile");
+		int useFlag; //1:忘记密码 2：修改密码
 		if(originalMobile!=null && !originalMobile.equals("")){
-			String sessionMobile = (String) request.getSession().getAttribute("modifyCode_activationCode");
-			if(sessionMobile== null || mobile==null || "".equals(mobile)||!originalMobile.equals(mobile)||
-					!sessionMobile.startsWith(mobile)) {
-				return "redirect:/index.html";
-			}
 			//修改密码
-			request.getSession().removeAttribute("modifyCode_activationCode");
-		}else{
-			String sessionMobile = (String) request.getSession().getAttribute("forgetCode_activationCode");
-			if(sessionMobile== null || mobile==null || "".equals(mobile)|| !sessionMobile.startsWith(mobile)) {
+			//验证手机号
+			User globle_user = (User) request.getSession().getAttribute("globle_user");
+			if(globle_user == null) {
 				return "redirect:/index.html";
 			}
+			
+			List<User> userList = userService.findUserById(globle_user.getId());
+			String mobileOfDB = userList.get(0).getMobile();
+			if (!mobileOfDB.equals(mobile)||!mobileOfDB.equals(originalMobile)) {
+				return "redirect:/index.html";
+			}
+			
+			useFlag = 2;
+		}else{
 			//忘记密码
-			request.getSession().removeAttribute("forgetCode_activationCode");
+			//验证手机号
+			List<User> userList = userService.findUserByMobile(mobile);
+			if (userList.size() == 0) {
+				return "redirect:/index.html";
+			}
+			useFlag = 1;
 		}
 		
-		if(email!=null&&!"".equals(email)){
-			user.setEmail(email);
+		//验证短信验证码
+		msg = checkActivationCode(mobile, phoneCode, useFlag, request);
+		if (!msg.equals("")) {
+			return "redirect:/index.html";
 		}
-		if(mobile!=null&&!"".equals(mobile)){
-			user.setMobile(mobile);
-		}
+		
+		
+		user.setMobile(mobile);
 		
 		m.addAttribute("User", user);
+		m.addAttribute("useFlag", useFlag);
+		m.addAttribute("verification_phone", activationCode);
 		return "/updatePass";
 	}
 	
@@ -1709,12 +1728,66 @@ public class UserController{
 	@RequestMapping(value="/confirmPass.html",method=RequestMethod.POST)
 	public String confirmPass(User user,HttpServletRequest request){
 		try {
-			String password = user.getPassword();
-			String passwdMD5 = DigestUtils.md5Hex(password);
+			String useFlagStr = request.getParameter("useFlag");
 			String mobile = user.getMobile();
-			user.setPassword(passwdMD5);
+			int useFlag = 1;
+			User userInfo;
+			//验证手机号
+			if ("2".equals(useFlagStr)) {  //2：修改密码
+				User globle_user = (User) request.getSession().getAttribute("globle_user");
+				if(globle_user == null) {
+					return "/updatePassfail";
+				}
+				
+				List<User> userList = userService.findUserById(globle_user.getId());
+				userInfo = userList.get(0);
+				if (!userInfo.getMobile().equals(mobile)) {
+					return "/updatePassfail";
+				}
+				useFlag = 2;
+			} else {  //1:忘记密码 
+				List<User> userList = userService.findUserByMobile(mobile);
+				if (userList.size() == 0) {
+					return "/updatePassfail";
+				}
+				userInfo = userList.get(0);
+			}
+			
+			//验证短信验证码
+			String phoneCode = request.getParameter("verification_phone");
+			String msg;
+			msg = checkActivationCode(mobile, phoneCode, useFlag, request);
+			if (!msg.equals("")) {
+				return "/updatePassfail";
+			}
+			
+			String password = user.getPassword();
+			//验证密码
+			msg = checkPassword(password,null);
+			if (!msg.equals("")) {
+				return "/updatePassfail";
+			}
+			
+			String passwdMD5 = DigestUtils.md5Hex(password);
+			//加密
+			String md5password = DigestUtils.md5Hex(password);
+			byte[] keyBytes = DES3.generateSecret(userInfo.getName()); // 24字节的密钥
+			String newPass=new String(DES3.encryptMode(keyBytes, md5password.getBytes()));
+			RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
+			user.setPassword(newPass);
+			//加盐
+			String salt=randomNumberGenerator.nextBytes().toHex();
+			user.setSalt(salt);
+			
 			user.setMobile(mobile);
 			int result = userService.updatePass(user);
+			
+			if(useFlag == 1) {
+				request.getSession().removeAttribute("forgetCode_activationCode");
+			} else if(useFlag == 2) {
+				request.getSession().removeAttribute("modifyCode_activationCode");
+			}
+			
 			if(result==1){
 				return "/updatePassSuccess";
 			}else{
@@ -1934,17 +2007,22 @@ public class UserController{
 	@RequestMapping(value="/confirmMobile.html",method=RequestMethod.POST)
 	public String confirmMobile(HttpServletRequest request){
 		boolean success = false;
-		String mobile = request.getParameter("mobile");
-		String code = request.getParameter("verification_code");
-		User globle_user = (User) request.getSession().getAttribute("globle_user");
-		if(mobile == null ||mobile.equals("")|| globle_user == null) {
-			request.setAttribute("success", false);
-		}else {
-			String modifyCode = (String) request.getSession().getAttribute("modifyMobile_activationCode");
-			if (modifyCode == null || !modifyCode.startsWith(mobile+","+code)) {
+		try {
+			String mobile = request.getParameter("mobile");
+			//验证手机号
+			if(checkMobile(mobile).equals("")) {
 				request.setAttribute("success", false);
 				return "/updateMobileFinish";
 			}
+			
+			String code = request.getParameter("verification_code");
+			//验证验证码
+			if(!checkActivationCode(mobile, code, 3, request).equals("")) {
+				request.setAttribute("success", false);
+				return "/updateMobileFinish";
+			}
+			
+			User globle_user = (User) request.getSession().getAttribute("globle_user");
 			User user = new User();
 			user.setMobile(mobile);
 			user.setId(globle_user.getId());
@@ -1954,9 +2032,11 @@ public class UserController{
 				request.getSession().removeAttribute("modifyMobile_activationCode");
 				success = true;
 			}
-
+			
 			request.setAttribute("success", success);
 			
+		} catch (Exception e) {
+			request.setAttribute("success", false);
 		}
 		return "/updateMobileFinish";
 	}
