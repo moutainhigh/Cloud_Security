@@ -162,10 +162,10 @@
 		<c:if test="${orderDetail.serviceId gt 5 }">
 			<form method="post" action="wafOrderBack.html" id="orderBackForm">
 		</c:if>
-		<input type="hidden" id="userIdHidden" value="${user.id}"/>
-		<input type="hidden" id="orderDetailId" value="${orderDetail.id}"/>
-		
-		<input type="hidden" id="assetAddr" name="domainName" value="${assetAddr }"/>
+		<input type="hidden" id="userIdHidden" name="userIdHidden" value="${user.id}"/>
+		<input type="hidden" id="orderDetailId" name="orderDetailId" value="${orderDetail.id}"/>
+		<input type="hidden" id="assetIds" name="assetIds" value="${orderDetail.asstId}"/>
+		<input type="hidden" id="assetAddr" name="domainName" value="${orderDetail.assetAddr}"/>
 
 		<input type="hidden" id="ipArrayHidden" name="ipArray" value="${ipArray }"/>
 		<input type="hidden" id="timesHidden" name="times" value="${times }"/>
