@@ -118,6 +118,7 @@ WHERE a.id = b.orderId
 <if test="orderId!=''">
     and   a.id=#{orderId}
 </if>
+ORDER BY a.create_date desc
 </select>
    <!-- 查询购物车列表 -->
     <select id="findShopCarAPIList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
@@ -156,6 +157,7 @@ WHERE a.id = b.orderId
 <if test="orderId!=''">
     and   a.id=#{orderId}
 </if>
+ORDER BY a.create_date desc
     </select>
     
     <select id="findBuyShopList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
