@@ -1015,18 +1015,14 @@ public class shoppingController {
 	 */
 	@RequestMapping(value="orderBack.html", method=RequestMethod.POST)
 	public String  orderBack(HttpServletResponse response,HttpServletRequest request) throws Exception{
-		//没有参数时,返回首页
-		if(request.getParameterMap().size()==0){
-			return "redirect:/index.html";
-		}
-		
 		 Map<String, Object> map = new HashMap<String, Object>();
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
-	    boolean apiFlag=false;
+	   /* boolean apiFlag=false;
 		String result="";
 		
 		//资产ids
         String assetIds = request.getParameter("assetIds");
+        String orderDetailId = request.getParameter("orderDetailId");
 		String orderType = request.getParameter("orderType");
         String beginDate = request.getParameter("beginDate");
         String endDate = request.getParameter("endDate");
@@ -1092,7 +1088,69 @@ public class shoppingController {
         request.setAttribute("num", num);
         request.setAttribute("price", price);
         request.setAttribute("assetNames", assetNames);
-        return result;
+        return result;*/
+		String result="";
+		String[] assetArray = null;
+		List assetIdsList = new ArrayList();
+		String assetIds = request.getParameter("assetIds");
+        String orderDetailId = request.getParameter("orderDetailId");
+        String apiVal=request.getParameter("apiId");
+        if(assetIds==null||"".equals(assetIds)||orderDetailId==null||"".equals(orderDetailId)){
+        	return "redirect:/index.html";	
+        }
+        if (apiVal != null && !"".equals(apiVal)) {
+			int apiId = Integer.parseInt(apiVal);
+			// 根据id查询serviceAPI, add by tangxr 2016-3-28
+			ServiceAPI serviceAPI = serviceAPIService.findById(apiId);
+			request.setAttribute("apiId", apiId);
+			request.setAttribute("serviceAPI", serviceAPI);
+			if (apiId == 1) {
+				result = "/source/page/details/apiDetails";
+			} else if (apiId == 2) {
+				result = "/source/page/details/apiDetails2";
+			} else if (apiId == 3) {
+				result = "/source/page/details/apiDetails3";
+			} else if (apiId == 4) {
+				result = "/source/page/details/apiDetails4";
+			} else if (apiId == 5) {
+				result = "/source/page/details/apiDetails5";
+			}
+		}
+        if(assetIds!=null&&!"".equals(assetIds)){
+	    	   assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+	    	   for(int i=0;i<assetArray.length;i++){
+	    		   assetIdsList.add(assetArray[i]);
+	    	   }
+		}
+        OrderDetail orderDetail = selfHelpOrderService.getOrderDetailById(orderDetailId, globle_user.getId(),assetIdsList);
+       if(orderDetail==null){
+    	   return "redirect:/index.html";	
+       }
+	    String assetAddr = "";
+	    if(assetIds.length()>0){
+	          assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
+            	for(int i=0;i<assetArray.length;i++){
+                	Asset asset = assetService.findById(Integer.parseInt(assetArray[i]),globle_user.getId());
+                	assetAddr = assetAddr + asset.getAddr()+",";
+                }
+	        	//根据id查询service add by tangxr 2016-3-14
+	    	    Serv service = servService.findById(orderDetail.getServiceId());
+	    	    request.setAttribute("service", service);
+	        	result = "/source/page/details/vulnScanDetails";	
+	     
+	    }
+	    //获取服务对象资产
+	    List<Asset> serviceAssetList = selfHelpOrderService.findServiceAsset(globle_user.getId());
+	    //网站安全帮列表
+        List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
+        //查询安全能力API
+		List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
+		int carnum=shopCarList.size()+apiList.size();
+		request.setAttribute("carnum", carnum);  
+		request.setAttribute("assetIds", assetIds);  
+		request.setAttribute("orderDetail", orderDetail);  
+		request.setAttribute("serviceAssetList", serviceAssetList);
+		return result;
 	}
 	
 	
@@ -2362,7 +2420,7 @@ public class shoppingController {
 		OrderDetail orderDetail = selfHelpOrderService.getOrderDetailById(detailId, globle_user.getId(),assetIdsList);
 		
 		request.setAttribute("orderDetail",orderDetail);
-		
+		request.setAttribute("service",service);
 		request.setAttribute("user",globle_user);
 	    String result = "/source/page/details/settlement";
         return result;
