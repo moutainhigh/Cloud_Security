@@ -3,6 +3,8 @@ package com.cn.ctbri.filter;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -25,15 +27,22 @@ public class XSSFilter implements Filter
 			ServletException
 	{
 		
-		XSSRequestWrapper xssRequest = new XSSRequestWrapper((HttpServletRequest) request);
-
-	   String url=xssRequest.getRequestURI();
-	  if(url!=null&&!"".equals(url)&&url.equals("true")){
-	  request.getRequestDispatcher("/commonPage.jsp").forward(request, response);
-	  }else{
-        chain.doFilter(xssRequest, response);
-	  }
-    
+		List<String> list = new ArrayList<String>();
+		list.add("/export.html");
+		String path = ((HttpServletRequest) request).getServletPath();
+		if(list.contains(path)){
+			//放行
+			chain.doFilter(request, response);
+		}else{
+			XSSRequestWrapper xssRequest = new XSSRequestWrapper((HttpServletRequest) request);
+	
+		   String url=xssRequest.getRequestURI();
+		  if(url!=null&&!"".equals(url)&&url.equals("true")){
+		  request.getRequestDispatcher("/commonPage.jsp").forward(request, response);
+		  }else{
+	        chain.doFilter(xssRequest, response);
+		  }
+		}
 	}
 
 	public void destroy()
