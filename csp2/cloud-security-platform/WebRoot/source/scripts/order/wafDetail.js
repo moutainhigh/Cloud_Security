@@ -81,7 +81,8 @@ $(function(){
       }
      var serviceId = $('#serviceIdHidden').val();
      //价格
-      var price = $('#price').html().substr(1);
+     // var price = $('#price').html().substr(1);
+      var domainId = $('.ym span').attr('id');
       //网站域名
       var domainName =$('.ym span').text();
      
@@ -90,7 +91,7 @@ $(function(){
         		return;
 			}
       //选中的网站地址	
-      if(domainName==""||domainName==null){
+      if(domainId==""||domainId==null){
     	  alert("请选择要服务的网站!");
     	  return;
       }
@@ -110,19 +111,19 @@ $(function(){
 		     url: "VerificationIP.html",
 		     data: {
         		   "serviceId":serviceId,
-        		    "price":price,
 	        		"orderType":orderType,
 	        		"beginDate":beginDate,
 	        		"month":month,
 	        		"ipVal":ipVal,
-	        		 "domainName":domainName,
+	        		"domainName":domainName,
+	        		 "domainId":domainId,
         		    }, 
 		     dataType: "json", 
 		     success: function(data) {
     			   		 if(!data.flag){
     			   			 alert("输入域名对应IP地址与绑定的域名IP地址不一致!输入的错误ip地址是："+data.errorIp);
     			   		 }else{
-    			   			 addCart(data.serviceId,data.price,data.orderType,data.beginDate,data.endDate,data.ipStr,data.month,data.domainName);
+    			   			 addCart(data.serviceId,data.orderType,data.beginDate,data.ipStr,data.month,data.domainName,data.domainId);
     			   		 }
     			 }, 
 		     error: function(data){ 
@@ -202,13 +203,7 @@ $(function(){
   							tempForm.method = "post";
   							tempForm.style.display = "none";
   							
-  							var typeInput = document.createElement("input");
-  							typeInput.type="hidden"; 
-							typeInput.name= "type"; 
-							typeInput.value= 2; 
-							tempForm.appendChild(typeInput);
-							
-							var beginDateInput = document.createElement("input");
+  						   var beginDateInput = document.createElement("input");
   							beginDateInput.type="hidden"; 
 							beginDateInput.name= "beginDate"; 
 							beginDateInput.value= beginDate; 
@@ -244,11 +239,7 @@ $(function(){
 							domainIdInput.value= domainId; 
 							tempForm.appendChild(domainIdInput);
 							
-							var priceInput = document.createElement("input");
-  							priceInput.type="hidden"; 
-							priceInput.name= "price"; 
-							priceInput.value= price; 
-							tempForm.appendChild(priceInput);
+							
 							
 							var ipArrayInput = document.createElement("input");
   							ipArrayInput.type="hidden"; 
@@ -280,8 +271,13 @@ $(function(){
     $('#settlementWaf').click(function(){
 
     	var createDate = getCreateDate();
-    	var scanType = $('#scanType').val();//(8:包月 9：包年)
-    	var beginDate=$('#beginDate').val();
+    	var orderDetailId = $("#orderDetailId").val();
+    	var userName =  $(".test_name").text();
+        var userAdd = $(".test_add").text();
+        var mobile =  $(".test_iphone").text();
+        var assetIds = $("#assetIds").val();
+    	/*var scanType = $('#scanType').val();(8:包月 9：包年)    
+    	 * var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
     	var serviceId = $("#serviceId").val();
         var domainId = $("#assetIds").val();
@@ -289,30 +285,25 @@ $(function(){
         var ipArray = $('#ipArrayHidden').val();
         var times = $('#timesHidden').val();
         var serviceName = $('#serviceName').val();
-        var userId = $("#userIdHidden").val();
-		var result = window.confirm("确定要提交订单吗？");
-    	if(result){
+        var userId = $("#userIdHidden").val();*/
+		/*var result = window.confirm("确定要提交订单吗？");
+    	if(result){*/
     		$.ajax({ type: "POST",
 	    		     async: false, 
 	    		     url: "saveWafOrder.html", 
-	    		     data: {"scanType":scanType,
-		    			   	"beginDate": beginDate,
-		    			   	"endDate":endDate,
+	    		     data: {"orderDetailId":orderDetailId,
+    			             "assetIds":assetIds,
+	    		            "userName": userName,
+		    			   	"userAdd":userAdd,
 		    			   	"createDate":createDate,
-		    			   	"serviceId":serviceId,
-		    			   	"domainId":domainId,
-			    			"price":price,
-			    			"ipArray":ipArray,
-			    			"timeswaf":times,
-			    			"serviceName":serviceName,
-			    			"userId":userId},  
+		    			   	"mobile":mobile},  
 	    		     dataType: "json", 
 	    		     success: function(data) {
-			    				if(data.userStatus == false){
-				    				alert("该订单不属当前用户,请重新下单!");
-				    				window.location.href = "index.html";
-			    		     	    return;
-				    			}else if(data.assetsStatus == true){
+		    		         if(data.error){
+		    		        	alert("参数值数据异常!!");
+			    				window.location.href = "index.html";
+		    		     	    return;
+		    		         }else if(data.assetsStatus == true){
 			    					alert("订单资产未验证,请重新购买!");
 			    		     		return;
 			    				}else if(data.orderStatus == true){
@@ -345,7 +336,7 @@ $(function(){
 	    		    	 else { window.location.href = "loginUI.html"; } } 
 		    	});
 
-    	}
+    	/*}*/
     });
     
    });
@@ -406,7 +397,7 @@ $(function(){
  }
  
  //添加到购物车
- function addCart(serviceId,price,orderType,beginDate,endDate,ipStr,month,domainName){
+ function addCart(serviceId,orderType,beginDate,ipStr,month,domainName,domainId){
 	 $.ajax({ type: "POST",
 		     async: false, 
 		     url: "shoppingWaf.html",
@@ -414,15 +405,17 @@ $(function(){
 		            "serviceId":serviceId,
 		            "orderType":orderType,
     			   	"beginDate": beginDate,
-    			   	"endDate":endDate,
-    			   	"price":price,
     			   	"ipStr":ipStr,
     			   	"month":month,
-    			   	"domainName":domainName
+    			   	"domainName":domainName,
+    			   	"domainId":domainId
     			   	}, 
 		     dataType: "json", 
 		     success: function(data) {
-    			   		 if(data.sucess){
+    			   		if(data.error){
+    			   			alert("参数值数据异常!");
+    			   			window.location.href="index.html";
+    			   		 }else  if(data.sucess){
     			   			 alert("添加购物车成功!");
     			   			 //window.location.href="wafDetails.html?serviceId="+data.serviceId;
     			   			 $("#serviceIdWafHidden").val(data.serviceId);
