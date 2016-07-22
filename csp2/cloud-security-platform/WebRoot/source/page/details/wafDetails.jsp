@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -67,12 +68,12 @@
 					</div>
 				</div>
 			</div>
-        <input type="hidden" id="scanTypeHidden" value="${scanType}"/>
-	 <input type="hidden" id="beginDateHidden" value="${beginDate}"/>
-	 <input type="hidden" id="timesHidden" value="${times}"/>
-	 <input type="hidden" id="domainNameHidden" value="${domainName}"/>
-	 <input type="hidden" id="domainIdHidden" value="${domainId}"/>
-	 <input type="hidden" id="ipArrayHidden" value="${ipArray}"/>
+        <input type="hidden" id="scanTypeHidden" value="${orderDetail.type}"/>
+	 <input type="hidden" id="beginDateHidden" value="<fmt:formatDate value='${orderDetail.begin_date}' pattern='yyyy-MM-dd HH:mm:ss'/>"/>
+	 <input type="hidden" id="timesHidden" value="${orderDetail.wafTimes}"/>
+	 <input type="hidden" id="domainNameHidden" value="${orderDetail.assetAddr}"/>
+	 <input type="hidden" id="domainIdHidden" value="${orderDetail.asstId}"/>
+	 <input type="hidden" id="ipArrayHidden" value="${orderDetail.ipArray}"/>
 		</div>
 	<div class="dataCent">
 			<div class="data-crumbs">
