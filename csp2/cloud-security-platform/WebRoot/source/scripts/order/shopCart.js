@@ -81,13 +81,13 @@ $(function(){
 		           },
 		     dataType: "json", 
 		     success: function(data) {
-		        	   if(!data.userStatus){
-		        		   alert("该订单不属当前用户,请重新下单!");
-		        		   window.location.href = "index.html";
-	    		     	    return;
-		        	   }else if(!data.flag){
+		        	    if(!data.flag){
 						  alert("当前时间已经超过下单结束时间，订单已作废请到购物车修改订单!");
 						  return;
+					  }else if(data.errorStatus){
+						   alert("参数值错误!");
+		        		   window.location.href = "index.html";
+	    		     	    return;
 					  }else{
 			    	 if(data.sucess==true&&data.orderStatus == true){
 	    		    			 //alert("完成下单，去订单跟踪查看吧~~"); 
