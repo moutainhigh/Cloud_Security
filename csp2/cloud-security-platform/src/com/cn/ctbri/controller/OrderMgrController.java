@@ -780,8 +780,8 @@ public class OrderMgrController {
             }
             order.setBegin_datevo(DateUtils.dateToString(orderDetail.getBegin_date()));
             order.setEnd_datevo(DateUtils.dateToString(orderDetail.getEnd_date()));
-            order.setBegin_date(begin_date);
-            order.setEnd_date(end_date);
+            order.setBegin_date(orderDetail.getBegin_date());
+            order.setEnd_date(orderDetail.getEnd_date());
             order.setCreate_date(create_date);
             order.setPrice(orderDetail.getPrice());
             
