@@ -255,7 +255,7 @@ $(function(){
     
     $("#settlement").click(function(){
     	var createDate = getCreateDate();
-    	//var orderType = $('#orderType').val();
+    	var orderType = $('#orderType').val();
     	//var beginDate=$('#beginDate').val();
     	//var endDate=$('#endDate').val();
     	//var scanType = $('#scanType').val();
@@ -271,9 +271,8 @@ $(function(){
     		scanType="";
     	}
     	//获得服务资产
-    	var assetIds = $("#assetIds").val();;
-    	var ip="";
-		var bandwidth="";
+    	var assetIds = $("#assetIds").val();
+    	var bandwidth="";
 		
 	/*	var result = window.confirm("确定要提交订单吗？");
     	if(result){*/
@@ -295,8 +294,8 @@ $(function(){
 	    		     dataType: "json", 
 //		    		     contentType: "application/json; charset=utf-8", 
 	    		     success: function(data) {
-			    			if(data.userStatus == false){
-			    				alert("该订单不属当前用户,请重新下单!");
+			    			if(data.error){
+			    				alert("参数值数据异常!!");
 			    				window.location.href = "index.html";
 		    		     	    return;
 			    			}else if(data.assetsStatus == true){
