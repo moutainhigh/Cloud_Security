@@ -17,6 +17,8 @@ public class OrderDetail {
 	private String serviceName;//服务名称
 	private String assetName;//资产名称
 	private String assetAddr;//资产地址
+	private String ipArray;//ip地址
+	private int wafTimes;//服务期限
 	public String getId() {
 		return id;
 	}
@@ -104,6 +106,19 @@ public class OrderDetail {
 	public void setAssetAddr(String assetAddr) {
 		this.assetAddr = assetAddr;
 	}
+	public String getIpArray() {
+		return ipArray;
+	}
+	public void setIpArray(String ipArray) {
+		this.ipArray = ipArray;
+	}
+	public int getWafTimes() {
+		return wafTimes;
+	}
+	public void setWafTimes(int wafTimes) {
+		this.wafTimes = wafTimes;
+	}
+	
 	
 	
 }
