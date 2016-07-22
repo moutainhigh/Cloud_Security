@@ -4,6 +4,7 @@ package com.cn.ctbri.controller;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +27,7 @@ import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
+import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.User;
@@ -254,8 +256,10 @@ public class WafController {
 		Map<String, Object> m = new HashMap<String, Object>();
 		//ip地址
 		String ipStr = request.getParameter("ipVal");
+		
 		//域名
 		String domainName = request.getParameter("domainName");
+		String domainId =  request.getParameter("domainId");
 	   String errorIp ="";
 		String addInfo = "";
 		//判断http协议
@@ -313,8 +317,6 @@ public class WafController {
 			 SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm:ss"); 
 			 Date date= new Date();
 			 String value1= sdf1.format(date);
-			 //价格
-			 String price = request.getParameter("price");
 			 //类型
 			 String orderType = request.getParameter("orderType");
 			 //开始时间
@@ -341,11 +343,10 @@ public class WafController {
 	         m.put("serviceId", serviceId);
 	         m.put("orderType", orderType);
 	         m.put("beginDate", DateUtils.dateToString(afterBegin));
-	         m.put("endDate", DateUtils.dateToString(afterEnd));
 	         m.put("domainName", domainName);
 	         m.put("ipStr", ipStr);
-	         m.put("price", price);
 	         m.put("month", month);
+	         m.put("domainId", domainId);
 		}
 	 	
         }   
@@ -367,7 +368,7 @@ public class WafController {
 	 */
 	@RequestMapping(value="shoppingWaf.html")
 	public void shoppingWaf(HttpServletRequest request,HttpServletResponse response){
-		 Map<String, Object> m = new HashMap<String, Object>();
+		/* Map<String, Object> m = new HashMap<String, Object>();
 		
 		  try{
 			  int linkmanId = Random.eightcode();
@@ -385,7 +386,7 @@ public class WafController {
         String price = request.getParameter("price");
         String domainName = request.getParameter("domainName");
         String ipStr = request.getParameter("ipStr");
-       /* //根据ip地址加端口号
+        //根据ip地址加端口号
         String ipPortstr ="";
         if(ipStr!=null&&!"".equals(ipStr)){
         	if(ipStr.indexOf(",")!=-1){
@@ -406,7 +407,7 @@ public class WafController {
         			ipPortstr =ipStr+",";
         		}
         	}
-        }*/
+        }
         String month = request.getParameter("month");
         String priceVal="";
         priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
@@ -484,37 +485,336 @@ public class WafController {
 		  }catch(Exception e){
 			  m.put("sucess", false);
 			  
+		  }*/
+		Map<String, Object> m = new HashMap<String, Object>();
+		  try{
+				boolean ipflag=false;
+				  boolean flag=false;
+				  String addInfo = "";
+				  double countPrice =0.0;
+				  Date eDate = new Date();
+				  List<String> IpInfo = new ArrayList();
+				  int linkmanId = Random.eightcode();
+				  SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
+			  User globle_user = (User) request.getSession().getAttribute("globle_user");
+				//资产ids
+		       String serviceId = request.getParameter("serviceId");
+				String orderType = request.getParameter("orderType");
+		        String beginDate = request.getParameter("beginDate");
+		       // String endDate = request.getParameter("endDate");
+		        String createDate = DateUtils.dateToString(new Date());
+		        //String price = request.getParameter("price");
+		        String domainName = request.getParameter("domainName");
+		        String domainId = request.getParameter("domainId");
+		        String ipStr = request.getParameter("ipStr");
+		        String month = request.getParameter("month");
+		        /*****判断参数开始***/
+		        if(serviceId==null||"".equals(serviceId)||orderType==null||"".equals(orderType)||beginDate==null||"".equals(beginDate)||month==null||"".equals(month)
+		        		||domainName==null||"".equals(domainName)||domainId==null||"".equals(domainId)||ipStr==null||"".equals(ipStr)){
+		        	
+		        	   m.put("error",true);
+		          	  JSONObject JSON = CommonUtil.objectToJson(response, m);
+		   				try {
+		   					// 把数据返回到页面
+		   					CommonUtil.writeToJsp(response, JSON);
+		   				} catch (IOException e) {
+		   					e.printStackTrace();
+		   				}
+		   				return;
+		        }
+		        if(!orderType.equals("8")&&!orderType.equals("9")){
+		        	  m.put("error",true);
+		          	  JSONObject JSON = CommonUtil.objectToJson(response, m);
+		   				try {
+		   					// 把数据返回到页面
+		   					CommonUtil.writeToJsp(response, JSON);
+		   				} catch (IOException e) {
+		   					e.printStackTrace();
+		   				}
+		   				return;
+		        }
+		        String IpAddressRegex ="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
+				String hostnameRegex ="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
+				//判断ip地址是否包含端口号
+				if(domainName.indexOf(":")!=-1){
+					String addArr[] = domainName.split(":");
+					ipflag = addArr[0].matches(IpAddressRegex);
+					if(ipflag==false){
+						flag=addArr[0].matches(hostnameRegex);
+					}
+				}else{
+					ipflag = domainName.matches(IpAddressRegex);
+				}
+				if(flag==false&&ipflag==false){
+					 m.put("error",true);
+		          	  JSONObject JSON = CommonUtil.objectToJson(response, m);
+		   				try {
+		   					// 把数据返回到页面
+		   					CommonUtil.writeToJsp(response, JSON);
+		   				} catch (IOException e) {
+		   					e.printStackTrace();
+		   				}
+		   				return;
+				}
+				//判断http协议
+				if(domainName.indexOf("http://")!=-1){
+				  	if(domainName.substring(domainName.length()-1).indexOf("/")!=-1){
+				  		addInfo = domainName.trim().substring(7,domainName.length()-1);
+				  	}else{
+				  		addInfo = domainName.trim().substring(7,domainName.length());
+				  	}
+				}else if(domainName.indexOf("https://")!=-1){
+					if(domainName.substring(domainName.length()-1).indexOf("/")!=-1){
+				  		addInfo = domainName.trim().substring(8,domainName.length()-1);
+				  	}else{
+				  		addInfo = domainName.trim().substring(8,domainName.length());
+				  	}
+				}
+				    //根据域名找出域名绑定下得所有ip地址
+					InetAddress[] addresses=InetAddress.getAllByName(addInfo);
+					for(InetAddress addr:addresses)
+					{
+						IpInfo.add(addr.getHostAddress());
+			      }
+					String array[]=IpInfo.toArray(new String[]{});
+			        boolean iflag=false;
+			        String ipPortVal="";
+			        //页面输入的ip地址
+			        String ipArr[]= ipStr.split(",");
+			        for(int i=0;i<ipArr.length;i++){
+			        	if(ipArr[i].indexOf(":")!=-1){
+			        		String ipPort[] = ipArr[i].split(":");
+			        		ipPortVal=ipPort[0];
+			        	}else{
+			        		ipPortVal=ipArr[i];
+			        	}
+			      	  for(int k=0;k<array.length;k++){
+			      		    if(ipPortVal.equals(array[k])){
+			      		    
+			      		    	iflag=true;
+			      		    }else{
+			      		    	iflag=false;
+			      		    }
+			      	  }
+			       }
+			        if(!iflag){
+			        	 m.put("error",true);
+			          	  JSONObject JSON = CommonUtil.objectToJson(response, m);
+			   				try {
+			   					// 把数据返回到页面
+			   					CommonUtil.writeToJsp(response, JSON);
+			   				} catch (IOException e) {
+			   					e.printStackTrace();
+			   				}
+			   				return;
+			        }
+			        /*****判断参数结束***/
+			        Serv service = servService.findById(Integer.parseInt(serviceId));
+				    if(service==null){
+				    	 m.put("error",true);
+			          	  JSONObject JSON = CommonUtil.objectToJson(response, m);
+			   				try {
+			   					// 把数据返回到页面
+			   					CommonUtil.writeToJsp(response, JSON);
+			   				} catch (IOException e) {
+			   					e.printStackTrace();
+			   				}
+			   				return;
+				    }
+				    Date bDate=DateUtils.stringToDateNYRSFM(beginDate);
+				    if(orderType.equals("9")){//包年
+				    	countPrice =1000;
+				    	eDate = DateUtils.getDateAfterOneYear(bDate);
+				     
+				    }else{//包月
+				    	countPrice = 100*Integer.parseInt(month);
+				    	eDate = DateUtils.getDateAfterMonths(bDate, Integer.parseInt(month));
+				    
+				    }
+				    Order order = new Order();
+			        
+			        SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+					String orderDate = odf.format(new Date());
+			        String orderId = String.valueOf(Random.fivecode())+orderDate;
+			        Date  create_date=sdf.parse(createDate); 
+			        order.setId(orderId);
+			       
+			      
+			       order.setBegin_date(DateUtils.stringToDateNYRSFM(beginDate));
+			        order.setEnd_date(eDate);
+			        order.setServiceId(Integer.parseInt(serviceId));
+			        order.setCreate_date(create_date);
+			        order.setTask_date(DateUtils.stringToDateNYRSFM(beginDate));
+					order.setUserId(globle_user.getId());
+					order.setPrice(countPrice);
+					order.setType(Integer.parseInt(orderType));
+					
+					order.setContactId(linkmanId);
+					order.setIsAPI(2);
+			        order.setPayFlag(0);//未支付
+			        selfHelpOrderService.insertOrder(order);
+				    
+			    	//插入订单资产表
+			        //根据资产名称查询资产信息
+			        Map<String, Object> paramMap = new HashMap<String, Object>();
+			        paramMap.put("userId",globle_user.getId());
+			        paramMap.put("addr", domainName);
+					List<Asset> listForName = assetService.findByAssetAddr(paramMap);
+					Asset assetInfo = listForName.get(0);
+			            OrderAsset orderAsset = new OrderAsset();
+			            orderAsset.setOrderId(orderId);
+			            orderAsset.setAssetId(assetInfo.getId());
+			            orderAsset.setServiceId(Integer.parseInt(serviceId));
+			            orderAsset.setIpArray(ipStr);
+			            orderAsset.setSermonth(Integer.parseInt(month));
+			            orderAsset.setAssetAddr(assetInfo.getAddr());
+			            orderAsset.setAssetName(assetInfo.getName());
+			            orderAssetService.insertOrderAsset(orderAsset);
+			           
+			            //插入联系人
+			            Linkman linkObj = new Linkman();
+			          
+			            linkObj.setId(linkmanId);
+			            linkObj.setName(globle_user.getName());
+			            linkObj.setMobile(globle_user.getMobile());
+			            linkObj.setEmail(globle_user.getEmail());
+			            linkObj.setUserId(globle_user.getId());
+			            selfHelpOrderService.insertLinkman(linkObj);
+			            
+			            //网站安全帮列表
+			            List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
+			         //查询安全能力API
+			  		 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
+			  		 int carnum=shopCarList.size()+apiList.size();
+			  		 request.setAttribute("carnum", carnum);
+			  		 
+			  		   m.put("sucess", true);
+			  		   m.put("serviceId", serviceId);
+			  		   JSONObject JSON = CommonUtil.objectToJson(response, m);
+			  	        // 把数据返回到页面
+			          CommonUtil.writeToJsp(response, JSON);
+		  }catch(Exception e){
+			  m.put("sucess", false);
+			  
 		  }
 	}
 
 	 /**
 	 * 功能描述： 跳立即支付頁
 	 * 参数描述：  无
+	 * @throws ParseException 
 	 *     @time 2016-3-10
 	 */
 	@RequestMapping(value="buyNowWafUI.html")
-	public String buyNowWafUI(HttpServletRequest request){
-		//没有参数时,返回首页
-		if(request.getParameterMap().size()==0){
-			return "redirect:/index.html";
-		}
+	public String buyNowWafUI(HttpServletRequest request) throws Exception{
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
+		List assetIdsList = new ArrayList();
+		 String addInfo = "";
+	       String price = "";
+	       double countPrice =0.0;
+	       List<String> IpInfo = new ArrayList();
+	       boolean flag=false;
+			boolean ipflag=false;
 		//资产ids
         String domainName = request.getParameter("domainName");
         String domainId = request.getParameter("domainId");
-		String type = request.getParameter("type");
         String beginDate = request.getParameter("beginDate");
         String scanType = request.getParameter("scanType");
-        int serviceId = Integer.parseInt(request.getParameter("serviceId"));
-        double price = Double.parseDouble(request.getParameter("price"));
-        int times = Integer.parseInt(request.getParameter("timeswaf"));
+        String serviceId = request.getParameter("serviceId");
+
+        String timeswaf = request.getParameter("timeswaf");
         String ipArray = request.getParameter("ipArray");
+        String createDate = DateUtils.dateToString(new Date());
+        
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
+        /*****判断参数开始***/
+        if(domainName==null||"".equals(domainName)||beginDate==null||"".equals(beginDate)||scanType==null||"".equals(scanType)
+        		||serviceId==null||"".equals(serviceId)||timeswaf==null||"".equals(timeswaf)||ipArray==null||"".equals(ipArray)){
+        	return "redirect:/index.html";
+        }
+        if(!scanType.equals("8")&&!scanType.equals("9")){
+        	return "redirect:/index.html";
+        }
+        String IpAddressRegex ="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
+		String hostnameRegex ="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
+		//判断ip地址是否包含端口号
+		if(domainName.indexOf(":")!=-1){
+			String addArr[] = domainName.split(":");
+			ipflag = addArr[0].matches(IpAddressRegex);
+			if(ipflag==false){
+				flag=addArr[0].matches(hostnameRegex);
+			}
+		}else{
+			ipflag = domainName.matches(IpAddressRegex);
+		}
+		if(flag==false&&ipflag==false){
+			return "redirect:/index.html";
+		}
+		
+       
+		//判断http协议
+		if(domainName.indexOf("http://")!=-1){
+		  	if(domainName.substring(domainName.length()-1).indexOf("/")!=-1){
+		  		addInfo = domainName.trim().substring(7,domainName.length()-1);
+		  	}else{
+		  		addInfo = domainName.trim().substring(7,domainName.length());
+		  	}
+		}else if(domainName.indexOf("https://")!=-1){
+			if(domainName.substring(domainName.length()-1).indexOf("/")!=-1){
+		  		addInfo = domainName.trim().substring(8,domainName.length()-1);
+		  	}else{
+		  		addInfo = domainName.trim().substring(8,domainName.length());
+		  	}
+		}
+		    //根据域名找出域名绑定下得所有ip地址
+			InetAddress[] addresses=InetAddress.getAllByName(addInfo);
+			for(InetAddress addr:addresses)
+			{
+				IpInfo.add(addr.getHostAddress());
+	      }
+		String array[]=IpInfo.toArray(new String[]{});
+        boolean iflag=false;
+        String ipPortVal="";
+        //页面输入的ip地址
+        String ipArr[]= ipArray.split(",");
+        for(int i=0;i<ipArr.length;i++){
+        	if(ipArr[i].indexOf(":")!=-1){
+        		String ipPort[] = ipArr[i].split(":");
+        		ipPortVal=ipPort[0];
+        	}else{
+        		ipPortVal=ipArr[i];
+        	}
+      	  for(int k=0;k<array.length;k++){
+      		    if(ipPortVal.equals(array[k])){
+      		    
+      		    	iflag=true;
+      		    }else{
+      		    	iflag=false;
+      		    }
+      	  }
+       }
+        if(!iflag){
+        	return "redirect:/index.html";
+        }
+	  
+        /*****判断参数结束***/
         //根据id查询service
-	    Serv service = servService.findById(serviceId);
+	    Serv service = servService.findById(Integer.parseInt(serviceId));
+	    if(service==null){
+	    	return "redirect:/index.html";
+	    }
+	 
 	    
-	   
 	    //日期格式 yyyy-MM
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    
+	    
+	    OrderDetail orderDetail = new OrderDetail();
+    	  SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+ 	      String orderDate = odf.format(new Date());
+ 	    String detailId = orderDate+String.valueOf(Random.fivecode());
+ 	   //格式化价格
+	    DecimalFormat df = new DecimalFormat("#.00");
 	    Date now = new Date();
 	    String nowDate = dateFormat.format(now);
 	    beginDate = beginDate + nowDate.substring(10);
@@ -522,30 +822,36 @@ public class WafController {
 	    //得到开始时间10分钟后
 	    bDate = DateUtils.getDateAfter10Mins(bDate);
 	    Date eDate = new Date();
-	    //格式化价格
-	    DecimalFormat df = new DecimalFormat("#.00");
-	    
+	   
 	    if(scanType.equals("9")){//包年
+	    	countPrice =1000;
 	    	eDate = DateUtils.getDateAfterOneYear(bDate);
-	        request.setAttribute("allPrice", df.format(price));
+	     
 	    }else{//包月
-	    	eDate = DateUtils.getDateAfterMonths(bDate, times);
-	        request.setAttribute("allPrice", df.format(price));
+	    	countPrice = 100*Integer.parseInt(timeswaf);
+	    	eDate = DateUtils.getDateAfterMonths(bDate, Integer.parseInt(timeswaf));
+	    
 	    }
-        
+	    assetIdsList.add(domainId);
+ 	   orderDetail.setId(detailId);
+       orderDetail.setBegin_date(DateUtils.stringToDateNYRSFM(beginDate));
+       orderDetail.setEnd_date(eDate);
+       orderDetail.setType(Integer.parseInt(scanType));
+       orderDetail.setServiceId(Integer.parseInt(serviceId));
+       orderDetail.setUserId(globle_user.getId());
+       orderDetail.setIsAPI(0);
+       orderDetail.setAsstId(domainId);
+       orderDetail.setPrice(Double.parseDouble(df.format(countPrice)));
+       orderDetail.setCreate_date(sdf.parse(createDate));
+       orderDetail.setIpArray(ipArray);
+       orderDetail.setWafTimes(Integer.parseInt(timeswaf));
+     
+       selfHelpOrderService.SaveOrderDetail(orderDetail);
+   	  OrderDetail orderDetailVo = selfHelpOrderService.getOrderDetailById(detailId, globle_user.getId(),assetIdsList);
+	 
         request.setAttribute("user", globle_user);
-	    request.setAttribute("assetAddr", domainName);
-	    request.setAttribute("assetIds", domainId);
-	    request.setAttribute("type", type);
-        request.setAttribute("beginDate", dateFormat.format(bDate));
-        request.setAttribute("endDate", dateFormat.format(eDate));
-        request.setAttribute("scanType", scanType);
-        request.setAttribute("serviceId", serviceId);
         request.setAttribute("service", service);
-        request.setAttribute("mark", "web");//web服务标记
-
-        request.setAttribute("ipArray", ipArray);
-        request.setAttribute("times", times);
+	    request.setAttribute("orderDetail", orderDetailVo);
         String result = "/source/page/details/settlement";
         return result;
 	}
@@ -559,8 +865,8 @@ public class WafController {
     @RequestMapping(value="saveWafOrder.html")
     @ResponseBody
     public void saveWafOrder(HttpServletResponse response,HttpServletRequest request) throws Exception{
-        Map<String, Object> m = new HashMap<String, Object>();
-        
+    	 /* Map<String, Object> m = new HashMap<String, Object>();
+       
         //用户
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
     	//前台传回的用户
@@ -704,8 +1010,126 @@ public class WafController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}*/
+    	String id ="";
+       try{
+    	  Map<String, Object> m = new HashMap<String, Object>();
+    	User globle_user = (User) request.getSession().getAttribute("globle_user");
+    	List assetIdsList = new ArrayList();
+    	String createDate = DateUtils.dateToString(new Date());
+    	//判断参数值
+      	String assetIds = request.getParameter("assetIds");
+      	String orderDetailId = request.getParameter("orderDetailId");
+      	if(assetIds==null||"".equals(assetIds)||orderDetailId==null||"".equals(orderDetailId)){
+      		m.put("error", true);
+          		 //object转化为Json格式
+          	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+          	       try {
+          	           // 把数据返回到页面
+          	           CommonUtil.writeToJsp(response, JSON);
+          	       } catch (IOException e) {
+          	           e.printStackTrace();
+          	       }
+          	       return;
+          
+      	}
+      	boolean assetsStatus = false;
+		Asset _asset = assetService.findById(Integer.parseInt(assetIds),globle_user.getId());
+		if(_asset==null){
+			m.put("error", true);
+     		 //object转化为Json格式
+     	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+     	       try {
+     	           // 把数据返回到页面
+     	           CommonUtil.writeToJsp(response, JSON);
+     	       } catch (IOException e) {
+     	           e.printStackTrace();
+     	       }
+     	       return;
 		}
-        
+		assetIdsList.add(assetIds);
+		OrderDetail orderDetail =selfHelpOrderService.getOrderDetailById(orderDetailId, globle_user.getId(), assetIdsList);
+    	if(orderDetail==null){
+    		m.put("error", true);
+   		 //object转化为Json格式
+   	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+   	       try {
+   	           // 把数据返回到页面
+   	           CommonUtil.writeToJsp(response, JSON);
+   	       } catch (IOException e) {
+   	           e.printStackTrace();
+   	       }
+   	       return;
+    	}
+    	
+		//新增订单
+
+		//生成订单id，当前日期加5位随机数
+		SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+		String orderDate = odf.format(new Date());
+        String orderId = orderDate+String.valueOf(Random.fivecode());
+		Order order = new Order();
+		order.setId(orderId);
+		order.setType(1);//长期
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
+		
+		order.setBegin_date(orderDetail.getBegin_date());
+		order.setEnd_date(orderDetail.getEnd_date());
+		order.setCreate_date(sdf.parse(createDate));
+		order.setScan_type(orderDetail.getType());
+		order.setPayFlag(0);	
+		order.setServiceId(orderDetail.getServiceId());
+		order.setTask_date(orderDetail.getBegin_date());
+		order.setIsAPI(2);
+		order.setDelFlag(0);
+		order.setPayFlag(0);
+		order.setUserId(globle_user.getId());
+		order.setStatus(0);
+		order.setPrice(orderDetail.getPrice());
+		selfHelpOrderService.insertOrder(order);
+		
+		//新增服务资产
+		OrderAsset orderAsset = new OrderAsset();
+		orderAsset.setOrderId(orderId);
+		orderAsset.setAssetId(Integer.parseInt(orderDetail.getAsstId()));
+		orderAsset.setServiceId(orderDetail.getServiceId());
+		orderAsset.setScan_type(orderDetail.getType());
+		    if(String.valueOf(orderDetail.getType()).equals("8")){//包月
+		    	orderAsset.setSermonth(orderDetail.getWafTimes());
+		    }else{
+		    	orderAsset.setSermonth(12);
+		    }
+		orderAsset.setIpArray(orderDetail.getIpArray());
+		orderAsset.setAssetAddr(_asset.getAddr());
+        orderAsset.setAssetName(_asset.getName());
+		orderAssetService.insertOrderAsset(orderAsset);
+		  //插入数据到order_list
+	    OrderList ol = new OrderList();
+	    //生成订单id
+//	     id = String.valueOf(Random.eightcode());
+		id = orderDate+String.valueOf(Random.fivecode());
+	    ol.setId(id);
+	    ol.setCreate_date(new Date());
+	    ol.setOrderId(orderId);
+	    ol.setUserId(globle_user.getId());
+	    ol.setPrice(orderDetail.getPrice());
+	    ol.setServerName(orderDetail.getServiceName());
+	    orderListService.insert(ol);
+	    
+		m.put("orderStatus", true);
+		m.put("orderListId", id);
+		//object转化为Json格式
+		//object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+			    // 把数据返回到页面
+			    CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e) {
+			    e.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
     
 	/**
@@ -716,14 +1140,9 @@ public class WafController {
 	 */
 	@RequestMapping(value="wafOrderBack.html")
 	public String  wafOrderBack(HttpServletResponse response,HttpServletRequest request) throws Exception{
-		//没有参数时,返回首页
-		if(request.getParameterMap().size()==0){
-			return "redirect:/index.html";
-		}
-		
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
-		
-		//查找当前用户的资产列表
+		List assetIdsList = new ArrayList();
+		/*//查找当前用户的资产列表
 		List<Asset> list = assetService.findByUserId(globle_user.getId());
 		String hostnameRegex ="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
 		boolean flag=false;
@@ -789,7 +1208,63 @@ public class WafController {
 		 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
 		 int carnum=shopCarList.size()+apiList.size();
 		 request.setAttribute("carnum", carnum);
-		 
+		 */
+		
+		List<Asset> list = assetService.findByUserId(globle_user.getId());
+		String hostnameRegex ="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
+		boolean flag=false;
+		List assList = new ArrayList();
+		if(list!=null&&list.size()>0){
+			for(int i=0;i<list.size();i++){
+				Asset asset = (Asset)list.get(i);
+				String addr = asset.getAddr();
+				String addInfo = "";
+				//判断http协议
+				if(addr.indexOf("http://")!=-1){
+				  	if(addr.substring(addr.length()-1).indexOf("/")!=-1){
+				  		addInfo = addr.trim().substring(7,addr.length()-1);
+				  	}else{
+				  		addInfo = addr.trim().substring(7,addr.length());
+				  	}
+				}else if(addr.indexOf("https://")!=-1){
+					if(addr.substring(addr.length()-1).indexOf("/")!=-1){
+				  		addInfo = addr.trim().substring(8,addr.length()-1);
+				  	}else{
+				  		addInfo = addr.trim().substring(8,addr.length());
+				  	}
+				}
+				//判断资产地址是否是域名
+				flag=addInfo.matches(hostnameRegex);
+				if(flag){
+					Asset  assetInfo = new Asset();
+					assetInfo.setAddr(asset.getAddr());
+					assetInfo.setId(asset.getId());
+					assetInfo.setName(asset.getName());
+					assetInfo.setIp(asset.getIp());
+					assList.add(assetInfo);
+				}
+			}
+		}
+		String domainId = request.getParameter("assetIds");
+		   String orderDetailId = request.getParameter("orderDetailId");
+		   if(domainId==null||"".equals(domainId)||orderDetailId==null||"".equals(orderDetailId)){
+	        	return "redirect:/index.html";	
+	        }
+		   assetIdsList.add(domainId);
+		   OrderDetail orderDetail = selfHelpOrderService.getOrderDetailById(orderDetailId, globle_user.getId(),assetIdsList);
+	       if(orderDetail==null){
+	    	   return "redirect:/index.html";	
+	       }
+	       Serv service = servService.findById(orderDetail.getServiceId()); 
+	       //网站安全帮列表
+	        List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
+	     //查询安全能力API
+			 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
+			 int carnum=shopCarList.size()+apiList.size();
+			 request.setAttribute("carnum", carnum);
+			 request.setAttribute("assList", assList);
+			request.setAttribute("service", service); 
+			request.setAttribute("orderDetail", orderDetail); 
 	    return  "/source/page/details/wafDetails";
 	}
 	
