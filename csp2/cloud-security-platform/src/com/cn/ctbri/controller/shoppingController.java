@@ -252,7 +252,7 @@ public class shoppingController {
         String scanPeriod = request.getParameter("scanType");
         String serviceId = request.getParameter("serviceId");
         String createDate = DateUtils.dateToString(new Date());
-        String times = request.getParameter("buy_times");
+        //String times = request.getParameter("buy_times");
         
         /****判断参数是否有效开始*****/
         //判断参数值是否为空
@@ -703,7 +703,9 @@ public class shoppingController {
 		 User globle_user = (User) request.getSession().getAttribute("globle_user");
 
 		String str = request.getParameter("str");
-		
+		if(str==null||"".equals(str)){
+			return "redirect:/index.html";
+		}
 		List list = new ArrayList();
 		List shopAPIList = new ArrayList();
 		List<ShopCar> shopList = new ArrayList();
@@ -745,7 +747,7 @@ public class shoppingController {
 	  
 	    request.setAttribute("linkman", linkman);
 		request.setAttribute("orderNum", orderNum);
-		//request.setAttribute("shopCount", df.format(shopCount));
+		request.setAttribute("shopCount", df.format(shopCount));
 		request.setAttribute("shopList", shopList);
 		request.setAttribute("shopAPIList", shopAPIList);
 		 request.setAttribute("user", globle_user);
@@ -768,28 +770,9 @@ public class shoppingController {
 		 String serverNames="";
 	try{
 		 User globle_user = (User) request.getSession().getAttribute("globle_user");
-		/*//前台传回的用户
-	    	int userId = Integer.parseInt(request.getParameter("userId"));
-	    	//判断用户是否为当前用户
-	    	boolean userStatus = true;
-	    	if(userId != globle_user.getId()){
-	    		userStatus = false;
-	    	}
-	    	map.put("userStatus", userStatus);
-	    	if(!userStatus){
-	    		 //object转化为Json格式
-	    	       JSONObject JSON = CommonUtil.objectToJson(response, map);
-	    	       try {
-	    	           // 把数据返回到页面
-	    	           CommonUtil.writeToJsp(response, JSON);
-	    	       } catch (IOException e) {
-	    	           e.printStackTrace();
-	    	       }
-	    	       return;
-	    	}*/
-	    	
 		 Date date = new Date();
 		 boolean flag=true;
+		 boolean bflag=true;
 		 String status="";
 		String str = request.getParameter("orderIds");
 		   DecimalFormat df = new DecimalFormat("0.00");
@@ -799,16 +782,66 @@ public class shoppingController {
 		   String linkMoblie = request.getParameter("linkMobile");
 		   //联系人邮箱
 		   String linkEmail = request.getParameter("linkEmail");
+		   if(str==null||"".equals(str)||linkName==null||"".equals(linkName)||linkMoblie==null||"".equals(linkMoblie)){
+			   map.put("errorStatus", true);
+			   JSONObject JSON = CommonUtil.objectToJson(response, map);
+		        // 把数据返回到页面
+		           try {
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return;
+		   }
+		   //验证邮箱
+		   if(linkEmail!=null&&!"".equals(linkEmail)){
+			   String check = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+	           Pattern regex = Pattern.compile(check);
+	           Matcher matcher = regex.matcher(linkEmail);
+	           bflag = matcher.matches();
+	           if(!bflag){
+	        	   map.put("errorStatus", true);
+	        	   JSONObject JSON = CommonUtil.objectToJson(response, map);
+			        // 把数据返回到页面
+			           try {
+						CommonUtil.writeToJsp(response, JSON);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return;
+	           }  
+	          
+		   }
+		   //验证手机号
+		   if(linkMoblie!=null&&!"".equals(linkMoblie)){
+			    Pattern regex = Pattern.compile("^(((13[0-9])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8})|(0\\d{2}-\\d{8})|(0\\d{3}-\\d{7})$");
+                Matcher matcher = regex.matcher(linkMoblie);
+                bflag = matcher.matches();
+              if(!bflag){
+            	  map.put("errorStatus", true);
+            	  
+            	  JSONObject JSON = CommonUtil.objectToJson(response, map);
+  		        // 把数据返回到页面
+  		           try {
+  					CommonUtil.writeToJsp(response, JSON);
+  				} catch (IOException e) {
+  					// TODO Auto-generated catch block
+  					e.printStackTrace();
+  				}
+  				return;
+              }
+             
+		   }
+           
 		   Linkman linkman = new Linkman();
 		   linkman.setName(linkName);
 		   linkman.setMobile(linkMoblie);
 		   linkman.setEmail(linkEmail);
 		//总价格
-		String price = request.getParameter("countPrice");
-	    String scanType = "";//扫描方式（正常、快速、全量）
-        String scanDepth = "";//检测深度
-        String maxPages = "";//最大页面数
-        String stategy = "";//策略
+		//String price = request.getParameter("countPrice");
+	  
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
 		List list = new ArrayList();
 		List shopAPIList = new ArrayList();
@@ -823,6 +856,18 @@ public class shoppingController {
 	    	  }
 	    	  list = selfHelpOrderService.findBuyShopList(orderIdList);
 			}
+	      if(list.size()<=0){
+	    	  map.put("errorStatus", true);  
+	    	  JSONObject JSON = CommonUtil.objectToJson(response, map);
+		        // 把数据返回到页面
+		           try {
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return;
+	      }
 	      double shopCount=0.0;
 	     if(list!=null&&list.size()>0){
 	       for(int i=0;i<list.size();i++){
@@ -866,45 +911,9 @@ public class shoppingController {
 	    	     if(endDate!=null && !endDate.equals("")){
 	    	    	 end_date = sdf.format(endDate);
 	    	     }
-	    	     String orderId = "";
 	    	     orderVal = orderVal+ shopCar.getOrderId()+",";
 	    	     serverNames = serverNames+shopCar.getServerName()+",";
-	    	    /* try{
-	    	    	 if(shopCar.getServiceId()!=6){
-		    	    
-	    	    	orderId = NorthAPIWorker.vulnScanCreate(String.valueOf(shopCar.getOrderType()), targetURL, scanType,begin_date,end_date, String.valueOf(shopCar.getScanPeriod()),
-		            			scanDepth, maxPages, stategy, customManu, String.valueOf(shopCar.getServiceId()));
-	    	    	SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
-	    	    	 String orderDate = odf.format(new Date());
-	    	    	   orderId = orderDate+String.valueOf(Random.fivecode());
-	    	    	 orderVal = orderVal+ orderId+",";
-		    	     }else{
-		    	    	 SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
-		     			 String orderDate = odf.format(new Date());
-		     	         orderId = orderDate+String.valueOf(Random.fivecode());
-		    	       }
-	    	    	 } catch (Exception e) {
-	  				e.printStackTrace();
-	  			 }
-	    	   //北向API返回orderId，创建用户订单
-	         	if(!orderId.equals("") && orderId != null){
-		    	     // String orderId="1";
-		    		 //更新订单资产表
-		    		 selfHelpOrderService.updateOrderAsset(shopCar.getOrderId(), orderId);
-		    		 //更新订单表
-		    		 selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "0",status);
-		    		 orderService.updateLinkManByOrderId(linkman, orderId);
-		    		 map.put("flag", flag);
-		    		 map.put("price", df.format(Double.parseDouble(price)));
-		    		 map.put("orderStatus", true);
-			    	 map.put("sucess", true);
-	         	}else{
-	         		 map.put("orderStatus", true);
-			    	 map.put("sucess", false);
-			    	 map.put("flag", flag);
-	         	}*/
-	    		
-	    	     orderService.updateLinkManByOrderId(linkman, shopCar.getOrderId());
+	    	    orderService.updateLinkManByOrderId(linkman, shopCar.getOrderId());
 	    	     map.put("flag", flag);
 	    		 map.put("price", shopCount);
 	    		 map.put("orderStatus", true);
@@ -933,44 +942,11 @@ public class shoppingController {
 					} 
 					  orderVal = orderVal+ shopCar.getOrderId()+",";
 					  serverNames = serverNames+shopCar.getServerName()+",";
-				/*	try {
-					if(shopCar.getServiceId()!=6){
-						orderId = NorthAPIWorker.vulnScanCreateAPI(
-								Integer.parseInt(shopCar.getAstName()),
-								shopCar.getNum(), shopCar.getServiceId(),
-								globle_user.getApikey(), globle_user.getId());
-						 
-						  SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
-			    	    	 String orderDate = odf.format(new Date());
-			    	    	   orderId = orderDate+String.valueOf(Random.fivecode());
-			    	    	   orderVal = orderVal+ orderId+",";
-						 }
-					} catch (Exception e) {
-						e.printStackTrace();
-					}*/
-					// String orderId="2";
-					/*if (orderId != null && !"".equals(orderId)) {
-						// 更新订单资产表
-						selfHelpOrderService.updateOrderAPI(
-								shopCar.getOrderId(), orderId);
-						// 更新订单表
-						selfHelpOrderService.updateOrder(shopCar.getOrderId(),
-								orderId, "1",status);
-						 orderService.updateLinkManByAPIId(linkman, orderId);
+			           orderService.updateLinkManByAPIId(linkman, shopCar.getOrderId());
 						map.put("orderStatus", true);
 						map.put("sucess", true);
 						 map.put("flag", flag);
-			    		 map.put("price", df.format(Double.parseDouble(price)));
-					} else {
-						map.put("orderStatus", true);
-						map.put("sucess", true);
-						map.put("flag", flag);
-					}*/
-					    orderService.updateLinkManByAPIId(linkman, shopCar.getOrderId());
-						map.put("orderStatus", true);
-						map.put("sucess", true);
-						 map.put("flag", flag);
-			    		 map.put("price", df.format(Double.parseDouble(price)));
+			    		 map.put("price", df.format(shopCount));
 				}
 
 			}
@@ -986,7 +962,7 @@ public class shoppingController {
 		    ol.setCreate_date(new Date());
 		    ol.setUserId(globle_user.getId());
 		    ol.setOrderId(orderVal.substring(0,orderVal.length()-1));
-		    ol.setPrice(Double.parseDouble(price));
+		    ol.setPrice(shopCount);
 		    ol.setServerName(serverNames.substring(0, serverNames.length()-1));
 		    orderListService.insert(ol);
 	   
@@ -1006,6 +982,9 @@ public class shoppingController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		 
+		
 	}
 	/**
 	 * 功能描述：返回修改订单
@@ -2185,10 +2164,7 @@ public class shoppingController {
     	   if(endDate!=null&&!"".equals(endDate)){
     		   return "redirect:/index.html";
     	   }
-    	   //服务频率
-    	   if(scanPeriod!=null&&!"".equals(scanPeriod)){
-    		   return "redirect:/index.html";
-    	   }
+    	 
        }
        //长期
        if(orderType.equals("1")){
