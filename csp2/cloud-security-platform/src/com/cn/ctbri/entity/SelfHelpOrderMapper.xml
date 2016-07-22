@@ -344,8 +344,8 @@ WHERE a.id = b.orderId
  <!-- 插入服务详情页操作 -->
     <insert id="SaveOrderDetail" parameterType="com.cn.ctbri.entity.OrderDetail">
         insert into cs_settlemet
-        (id, type, begin_date, end_date, serviceId, create_date, userId, isAPI,price,asstId,scan_type) 
-   values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{userId}, #{isAPI}, #{price}, #{asstId},#{scan_type})
+        (id, type, begin_date, end_date, serviceId, create_date, userId, isAPI,price,asstId,scan_type,ipArray,wafTimes) 
+   values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{userId}, #{isAPI}, #{price}, #{asstId},#{scan_type},#{ipArray},#{wafTimes})
     </insert>
      <!-- 根据主键查询服务详情操作信息 -->
     <select id="getOrderDetailById" resultType="com.cn.ctbri.entity.OrderDetail" parameterType="Map">
