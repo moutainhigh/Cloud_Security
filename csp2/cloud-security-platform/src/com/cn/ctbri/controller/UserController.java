@@ -950,6 +950,14 @@ public class UserController{
 		int result = 0; //0:注册成功 1：用户名2:密码3:确认密码4:公司5:行业6:职业7:手机号8:验证码9:手机验证码
 		String msg = "";
 		try {
+			//验证验证码
+			if(!LogonUtils.checkNumber(request)){
+				//验证码输入有误
+				msg="验证码输入有误";
+				result = 8;
+				return null;
+			}
+			
 			String name = user.getName();
 			//验证用户名
 			msg = checkUserName(name);
@@ -994,14 +1002,6 @@ public class UserController{
 			msg = checkMobile(mobile);
 			if (!msg.equals("")) {
 				result = 7;
-				return null;
-			}
-			
-			//验证验证码
-			if(!LogonUtils.checkNumber(request)){
-				//验证码输入有误
-				msg="验证码输入有误";
-				result = 8;
 				return null;
 			}
 			
@@ -1138,7 +1138,6 @@ public class UserController{
 			return msg;
 		}
 		List<User> users = userService.findUserByMobile(mobile);
-		int count = 0;
 		if(users.size()>0){
 			msg="该手机号码已使用";
 			return msg;
@@ -1146,7 +1145,6 @@ public class UserController{
 		
 		String patternM = "^1[3|5|8|7][0-9]{9}$";
 	    Pattern patM = Pattern.compile(patternM);
-	    Matcher mMobile = null;
 	    if(!(patM.matcher(mobile).matches())){
 	    	msg="手机号码格式不正确";
 			return msg;
@@ -2008,21 +2006,23 @@ public class UserController{
 	public String confirmMobile(HttpServletRequest request){
 		boolean success = false;
 		try {
+			User globle_user = (User) request.getSession().getAttribute("globle_user");
 			String mobile = request.getParameter("mobile");
 			//验证手机号
-			if(checkMobile(mobile).equals("")) {
-				request.setAttribute("success", false);
-				return "/updateMobileFinish";
+			if (!globle_user.getMobile().equals(mobile)) {
+				if(!checkMobile(mobile).equals("")) {
+					request.setAttribute("success", false);
+					return "/updateMobileFinish";
+				}
 			}
 			
-			String code = request.getParameter("verification_code");
+			String code = request.getParameter("verification_phone");
 			//验证验证码
 			if(!checkActivationCode(mobile, code, 3, request).equals("")) {
 				request.setAttribute("success", false);
 				return "/updateMobileFinish";
 			}
 			
-			User globle_user = (User) request.getSession().getAttribute("globle_user");
 			User user = new User();
 			user.setMobile(mobile);
 			user.setId(globle_user.getId());
