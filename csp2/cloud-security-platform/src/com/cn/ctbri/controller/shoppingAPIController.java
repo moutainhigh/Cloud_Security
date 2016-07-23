@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +26,7 @@ import com.cn.ctbri.entity.APICount;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAPI;
+import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.User;
@@ -137,31 +140,66 @@ public class shoppingAPIController {
 	 */
 	@RequestMapping(value="settlementAPI.html",method=RequestMethod.POST)
 	public String settlementAPI(HttpServletRequest request){
-		//没有参数时,返回首页
-		if(request.getParameterMap().size()==0){
-			return "redirect:/index.html";
-		}
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
-        int apiId = Integer.parseInt(request.getParameter("apiId"));
-        int time = Integer.parseInt(request.getParameter("time"));
-        int num = Integer.parseInt(request.getParameter("num"));
-        int type = Integer.parseInt(request.getParameter("type"));
+        String apiId = request.getParameter("apiId");
+        //套餐
+        String time =request.getParameter("time");
+        //数量
+        String num = request.getParameter("num");
+        //套餐类型
+        String type = request.getParameter("type");
         DecimalFormat df = new DecimalFormat("0.00");
-       String price = request.getParameter("price");
+       // String price = request.getParameter("price");
        String priceVal="";
+       /**参数判断开始**/
+       if(apiId==null||"".equals(apiId)||time==null||"".equals(time)||num==null||"".equals(num)||type==null||"".equals(type)){
+    		return "redirect:/index.html";
+       }
+       /**参数判断结束**/
       // priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
         //根据id查询serviceAPI, add by tangxr 2016-3-28
-	    ServiceAPI serviceAPI = serviceAPIService.findById(apiId);
-	    
+	    ServiceAPI serviceAPI = serviceAPIService.findById(Integer.parseInt(apiId));
+	    if(serviceAPI==null){
+	    	return "redirect:/index.html";
+	    }
+	   if(Integer.parseInt(num)<=0){
+			return "redirect:/index.html";
+	    }
+	   if(!type.equals("1")&&!type.equals("2")&&!type.equals("3")){
+		   return "redirect:/index.html";
+	   }
+	   if(time.equals("5")&&Integer.parseInt(num)>1){
+		   return "redirect:/index.html";
+	   }
+	    OrderDetail orderDetail = new OrderDetail();
+    	  SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+ 	      String orderDate = odf.format(new Date());
+ 	     String  detailId = orderDate+String.valueOf(Random.fivecode());
+ 	     SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
+ 	      orderDetail.setId(detailId);
+ 	      orderDetail.setCreate_date(new Date());
+ 	      orderDetail.setBegin_date(new Date());
+ 	      orderDetail.setEnd_date(getAfterYear(new Date()));
+ 	      orderDetail.setType(Integer.parseInt(type));
+ 	      orderDetail.setWafTimes(Integer.parseInt(num));
+ 	      orderDetail.setServiceId(Integer.parseInt(apiId));
+ 	     orderDetail.setScan_type(Integer.parseInt(time));
+ 	      orderDetail.setPrice(0.0);
+ 	     orderDetail.setIsAPI(1);
+ 	     orderDetail.setUserId(globle_user.getId());
+ 	    selfHelpOrderService.SaveOrderDetail(orderDetail);
+ 	    
+ 	   OrderDetail orderDetailVo = selfHelpOrderService.getOrderAPIDetailById(detailId, globle_user.getId());
         request.setAttribute("user", globle_user);
-	    request.setAttribute("time", time);
+	  /*  request.setAttribute("time", time);
 	    request.setAttribute("num", num);
-	    request.setAttribute("type", type);
-	    request.setAttribute("allPrice", df.format(Double.parseDouble(price)));
-        request.setAttribute("apiId", apiId);
+	    request.setAttribute("type", type);*/
+	    //request.setAttribute("allPrice", df.format(Double.parseDouble(price)));
+        //request.setAttribute("apiId", apiId);
         request.setAttribute("serviceAPI", serviceAPI);
-        request.setAttribute("mark", "api");//api标记
-        String result = "/source/page/details/settlement";
+        request.setAttribute("orderDetail", orderDetailVo);
+  /*      request.setAttribute("mark", "api");//api标记
+*/        String result = "/source/page/details/settlement";
         return result;
 	}
 	
@@ -228,40 +266,79 @@ public class shoppingAPIController {
         Map<String, Object> m = new HashMap<String, Object>();
         
         User globle_user = (User) request.getSession().getAttribute("globle_user");
-        //前台传回的用户
-      //前台传回的用户
-    	int userId = Integer.parseInt(request.getParameter("userId"));
-    	//判断用户是否为当前用户
-    	boolean userStatus = true;
-    	if(userId != globle_user.getId()){
-    		userStatus = false;
-    	}
-    	m.put("userStatus", userStatus);
-    	if(!userStatus){
-    		 //object转化为Json格式
-    	       JSONObject JSON = CommonUtil.objectToJson(response, m);
-    	       try {
-    	           // 把数据返回到页面
-    	           CommonUtil.writeToJsp(response, JSON);
-    	       } catch (IOException e) {
-    	           e.printStackTrace();
-    	       }
-    	       return;
-    	}
+      String orderDetailId = request.getParameter("orderDetailId");
     	
-        //apiId
+       /* //apiId
         int apiId = Integer.parseInt(request.getParameter("apiId"));
         //套餐次数
         int time = Integer.parseInt(request.getParameter("time"));
         //数量
         int num = Integer.parseInt(request.getParameter("num"));
         //套餐类型
-        int type = Integer.parseInt(request.getParameter("type"));
+        int type = Integer.parseInt(request.getParameter("type"));*/
         String linkname =request.getParameter("linkname");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
 
-        String price = request.getParameter("price");
+        if(orderDetailId==null||"".equals(orderDetailId)||linkname==null||"".equals(linkname)||phone==null||"".equals(phone)){
+        	m.put("error", true);
+        	 
+    		//object转化为Json格式
+    		JSONObject JSON = CommonUtil.objectToJson(response, m);
+    		try {
+    			// 把数据返回到页面
+    			CommonUtil.writeToJsp(response, JSON);
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    		return;
+        }
+        /***判断参数开始**/
+        Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");  
+        
+        Matcher matcher = p.matcher(phone); 
+        if(!matcher.find()){
+     		m.put("error", true);
+       		 //object转化为Json格式
+       	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+       	       try {
+       	           // 把数据返回到页面
+       	           CommonUtil.writeToJsp(response, JSON);
+       	       } catch (IOException e) {
+       	           e.printStackTrace();
+       	       }
+       	       return;
+        }
+        if(email!=null&&!"".equals(email)){
+     	   Pattern emailP = Pattern.compile("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$");  
+            Matcher ematcher = emailP.matcher(email); 
+            if(!ematcher.find()){
+         	   m.put("error", true);
+         		 //object转化为Json格式
+         	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+         	       try {
+         	           // 把数据返回到页面
+         	           CommonUtil.writeToJsp(response, JSON);
+         	       } catch (IOException e) {
+         	           e.printStackTrace();
+         	       }
+         	       return;
+            }
+        }
+        OrderDetail orderDetailVo = selfHelpOrderService.getOrderAPIDetailById(orderDetailId, globle_user.getId());
+        if(orderDetailVo==null){
+        	m.put("error", true);
+       	 
+    		//object转化为Json格式
+    		JSONObject JSON = CommonUtil.objectToJson(response, m);
+    		try {
+    			// 把数据返回到页面
+    			CommonUtil.writeToJsp(response, JSON);
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    		return;
+        }
         String orderId = "";
         //创建订单（任务），调北向api，modify by tangxr 2015-12-21
     	try {
@@ -291,13 +368,13 @@ public class shoppingAPIController {
             order.setType(1);
             order.setBegin_date(new Date());
             order.setEnd_date(getAfterYear(new Date()));
-            order.setServiceId(apiId);
+            order.setServiceId(orderDetailVo.getServiceId());
             order.setCreate_date(new Date());
             order.setUserId(globle_user.getId());
             order.setContactId(linkmanId);
             order.setStatus(1);//完成
             order.setPayFlag(0);
-            order.setPrice(Double.parseDouble(price));
+            order.setPrice(orderDetailVo.getPrice());
             order.setIsAPI(1);//api订单
             selfHelpOrderService.insertOrder(order);
             
@@ -306,10 +383,10 @@ public class shoppingAPIController {
             oAPI.setId(orderId);
             oAPI.setBegin_date(new Date());
             oAPI.setEnd_date(getAfterYear(new Date()));
-            oAPI.setApiId(apiId);
+            oAPI.setApiId(orderDetailVo.getServiceId());
             oAPI.setCreate_date(new Date());
-            oAPI.setPackage_type(type);
-            oAPI.setNum(time*num);
+            oAPI.setPackage_type(orderDetailVo.getType());
+            oAPI.setNum(orderDetailVo.getScan_type()*orderDetailVo.getWafTimes());
             oAPI.setUserId(globle_user.getId());
             oAPI.setContactId(linkmanId);
             oAPI.setPayFlag(1);
@@ -318,11 +395,11 @@ public class shoppingAPIController {
             //记录用户购买服务接口次数
             APICount count = new APICount();
             count.setUserId(globle_user.getId());
-            count.setCount(time*num);
-            count.setApiId(apiId);
+            count.setCount(orderDetailVo.getScan_type()*orderDetailVo.getWafTimes());
+            count.setApiId(orderDetailVo.getServiceId());
             orderAPIService.insertOrUpdateCount(count);
             //获得服务名称
-            ServiceAPI api =serviceAPIService.findById(apiId);
+            ServiceAPI api =serviceAPIService.findById(orderDetailVo.getServiceId());
             
             //插入数据到order_list
 		    OrderList ol = new OrderList();
@@ -335,7 +412,7 @@ public class shoppingAPIController {
 		    ol.setCreate_date(new Date());
 		    ol.setOrderId(orderId);
 		    ol.setUserId(globle_user.getId());
-		    ol.setPrice(Double.parseDouble(price));
+		    ol.setPrice(orderDetailVo.getPrice());
 		    ol.setServerName(api.getName());
 		    orderListService.insert(ol);
 		    m.put("orderListId", id);
@@ -377,22 +454,57 @@ public class shoppingAPIController {
 	 */
 	@RequestMapping(value="shoppingCarAPI.html",method=RequestMethod.POST)
 	public void shoppingCarAPI(HttpServletRequest request,HttpServletResponse response) throws Exception{
+		  Map<String, Object> m = new HashMap<String, Object>();
 		 User globle_user = (User) request.getSession().getAttribute("globle_user");
 	        //apiId
-	        int apiId = Integer.parseInt(request.getParameter("apiId"));
+	        String apiId = request.getParameter("apiId");
 	        //套餐次数
-	        int time = Integer.parseInt(request.getParameter("time"));
+	        String time = request.getParameter("time");
 	        //数量
-	        int num = Integer.parseInt(request.getParameter("num"));
+	       String num =request.getParameter("num");
 	        //套餐类型
-	        int type = Integer.parseInt(request.getParameter("type"));
-	        String price = request.getParameter("price");
+	        String type = request.getParameter("type");
+	        /*String price = request.getParameter("price");
 	        String priceVal="";
-	        priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
+	        priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;*/
+	        if(apiId==null||"".equals(apiId)||time==null||"".equals(time)||num==null||"".equals(num)||type==null||"".equals(type)){
+	        	 m.put("error", true);
+	        	//object转化为Json格式
+	             JSONObject JSON = CommonUtil.objectToJson(response, m);
+	             // 把数据返回到页面
+	             CommonUtil.writeToJsp(response, JSON);
+	             return;
+	        }
+	        if(!type.equals("1")&&!type.equals("2")&&!type.equals("3")){
+	        	 m.put("error", true);
+		        	//object转化为Json格式
+		             JSONObject JSON = CommonUtil.objectToJson(response, m);
+		             // 把数据返回到页面
+		             CommonUtil.writeToJsp(response, JSON);
+		             return;
+	        }
+	        if(time.equals(5)&&Integer.parseInt(num)>1){
+	        	 m.put("error", true);
+		        	//object转化为Json格式
+		             JSONObject JSON = CommonUtil.objectToJson(response, m);
+		             // 把数据返回到页面
+		             CommonUtil.writeToJsp(response, JSON);
+		             return;
+	        }
+	        //根据id查询serviceAPI, add by tangxr 2016-3-28
+		    ServiceAPI serviceAPI = serviceAPIService.findById(Integer.parseInt(apiId));
+		    if(serviceAPI==null){
+		    	m.put("error", true);
+	        	//object转化为Json格式
+	             JSONObject JSON = CommonUtil.objectToJson(response, m);
+	             // 把数据返回到页面
+	             CommonUtil.writeToJsp(response, JSON);
+	             return;
+		    }
 	        SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
 			String orderDate = odf.format(new Date());
 	        String orderId = String.valueOf(Random.fivecode())+orderDate;
-	        Map<String, Object> m = new HashMap<String, Object>();
+	      
 	        
 	    	//新增联系人
             Linkman linkObj = new Linkman();
@@ -412,10 +524,10 @@ public class shoppingAPIController {
             order.setType(1);
             order.setBegin_date(DateUtils.getDateAfter10Mins(new Date()));
             order.setEnd_date(getAfterYear(DateUtils.getDateAfter10Mins(new Date())));
-            order.setServiceId(apiId);
+            order.setServiceId(Integer.parseInt(apiId));
             order.setCreate_date(new Date());
             order.setUserId(globle_user.getId());
-            order.setPrice(Double.parseDouble(priceVal));
+            order.setPrice(0.0);
             order.setContactId(linkmanId);
             order.setStatus(1);//完成
             order.setPayFlag(0);
@@ -427,11 +539,11 @@ public class shoppingAPIController {
             oAPI.setId(orderId);
             oAPI.setBegin_date(DateUtils.getDateAfter10Mins(new Date()));
             oAPI.setEnd_date(getAfterYear(DateUtils.getDateAfter10Mins(new Date())));
-            oAPI.setApiId(apiId);
+            oAPI.setApiId(Integer.parseInt(apiId));
             oAPI.setCreate_date(new Date());
-            oAPI.setPackage_type(type);
-            oAPI.setNum(time*num);
-            oAPI.setBuyNum(num);
+            oAPI.setPackage_type(Integer.parseInt(type));
+            oAPI.setNum(Integer.parseInt(time)*Integer.parseInt(num));
+            oAPI.setBuyNum(Integer.parseInt(num));
             oAPI.setUserId(globle_user.getId());
             oAPI.setContactId(linkmanId);
             oAPI.setPayFlag(0);
