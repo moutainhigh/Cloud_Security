@@ -251,5 +251,14 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		return this.getSqlSession().selectOne(ns+"getOrderDetailById", map);
 	}
 
+	@Override
+	public OrderDetail getOrderAPIDetailById(String id, int userId) {
+		// TODO Auto-generated method stub
+		Map map = new HashMap();
+		map.put("id", id);
+		map.put("userId", userId);
+		return this.getSqlSession().selectOne(ns+"getOrderAPIDetailById", map);
+	}
+
 	
 }
