@@ -380,13 +380,13 @@ function submitForm(){
 	var checkNumber = $("#checkNumber1").val();
 	var agreeId = $("#agreeId").val();//同意协议
 
+	checkActivationCode();
 	checkPhoneActivationCode();
 	checkName();
 	checkPassword();
 	checkConfirmPassword();
 	checkCompanyFun();
 	checkMobile();
-	checkActivationCode();
 	 setTimeout(function () {
 		 if(checkCompany==1&&checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1&&checkMobile1==1&&checkSendMobile1==1&&checkCheckNumber1==1&&checkCheckPhoneActivationCode==1){
 		    	if(agreeId=='1'){
