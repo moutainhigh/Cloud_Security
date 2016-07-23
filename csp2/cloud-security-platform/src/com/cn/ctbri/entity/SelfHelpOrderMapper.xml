@@ -361,4 +361,14 @@ AND a.id IN  <foreach item="assetId" index="index" collection="assetIdsList" ope
         </foreach>
       
     </select>
+    <!-- 根据主键查询服务API详情操作信息 -->
+    <select id="getOrderAPIDetailById" resultType="com.cn.ctbri.entity.OrderDetail" parameterType="Map">
+        SELECT s.*,api.name serviceName FROM cs_settlemet s, cs_service_api api
+        
+        WHERE s.userId =#{userId}
+    AND s.id = #{id}
+AND s.serviceId=api.id
+    
+      
+    </select>
 </mapper>
