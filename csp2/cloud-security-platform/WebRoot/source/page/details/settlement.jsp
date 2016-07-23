@@ -170,10 +170,6 @@
 		<input type="hidden" id="ipArrayHidden" name="ipArray" value="${ipArray }"/>
 		<input type="hidden" id="timesHidden" name="times" value="${times }"/>
 		
-		<input type="hidden" id="time" value="${time }"/>
-		<input type="hidden" id="num" name="num" value="${num }"/>
-		<input type="hidden" id="apiId" name="apiId" value="${apiId }"/>
-		<input type="hidden" id="type" name="type" value="${type }"/>
 		
 		<input type="hidden" name="indexPage" value="1"/>
 		</form>
@@ -307,24 +303,25 @@
 	                                 </tr>
 	                            </tbody>
 	                            </c:if>
-                            </c:if>
-                            <c:if test="${mark eq 'api' }">
-	                        	<tbody>
+                              <c:if test="${orderDetail.isAPI==1}">
+                          	<tbody>
 	                            	 <tr height="40">
 	                                 	<td width="16%" style="font-size:14px;">
-	                                    	${serviceAPI.name }
+	                                    	${orderDetail.serviceName}
 	                                    </td>
 	                                   
 	                                    <td width="56%" style="font-size:14px;">
-	                                    	<c:if test="${type==1}">套餐一</c:if>&nbsp;&nbsp;&nbsp;
-	                                    	<c:if test="${type==2}">套餐二</c:if>&nbsp;&nbsp;&nbsp;
-	                                    	<c:if test="${type==3}">套餐三</c:if>&nbsp;&nbsp;&nbsp;
-	                                    	${time }次 * ${num }
+	                                    	<c:if test="${orderDetail.type==1}">套餐一</c:if>&nbsp;&nbsp;&nbsp;
+	                                    	<c:if test="${orderDetail.type==2}">套餐二</c:if>&nbsp;&nbsp;&nbsp;
+	                                    	<c:if test="${orderDetail.type==3}">套餐三</c:if>&nbsp;&nbsp;&nbsp;
+	                                    	${orderDetail.scan_type}次 * ${orderDetail.wafTimes}
 	                                    </td>
 	                                    <td width="38%" style="font-size:14px;">0.00</td>
 	                                 </tr>
 	                            </tbody>
-                            </c:if>
+	                            </c:if>
+                           </c:if>
+                           
                         </table>
                         
                         </div>
@@ -376,7 +373,7 @@
                 </ul>
             
             </div>
-            
+            <c:if test="${not empty orderDetail}">
             <ul class="Price">
             	<li>
                 	<i>1</i>个订单，总额：<span>￥${orderDetail.price}</span>
@@ -390,8 +387,13 @@
                 	应付总额：<span>￥${orderDetail.price}</span>
                 </li>
             </ul>
+            </c:if>
+          
 			<div class="SubmitBox">
+			  <c:if test="${not empty orderDetail}">
             	<p>应付总额：<span>￥${orderDetail.price}</span>
+            	</c:if>
+            	
             	<c:if test="${not empty orderDetail}">
 	            	<c:if test="${orderDetail.isAPI==0}">
 		            		<c:if test="${orderDetail.serviceId gt 5 }">
@@ -401,14 +403,14 @@
 		            			<input id="settlement" class="submit" type="submit" value="提交订单"/>
 		            		</c:if>
 		            	</c:if>
+		            	
+		            	
 		            	<c:if test="${orderDetail.isAPI==1}">
-		            	<c:if test="${mark eq 'api' }">
+		            	
 		            		<input id="settlementAPI" class="submit" type="submit" value="提交订单"/>
 		            	</c:if>
-		            	</c:if>
-	            	</c:if>
-            	
-            	</p>
+		          </c:if>
+		         </p>
             </div>
 		</div>
         
