@@ -338,33 +338,28 @@ $(function(){
     
     
     $("#settlementAPI").click(function(){
-    	var apiId = $("#apiId").val();
-    	var time = $('#time').val();//次数
-    	var num = $('#num').val();//数量
-    	var type = $('#type').val();//套餐类型
-    	 var price = $('#priceHidden').val();
+    
+    	//var time = $('#time').val();//次数
+    	//var num = $('#num').val();//数量
+    	//var type = $('#type').val();//套餐类型
+    	 var orderDetailId = $('#orderDetailId').val();
     	 var userName =  $(".test_name").text();
         var userAdd = $(".test_add").text();
         var mobile =  $(".test_iphone").text();
-        var userId = $("#userIdHidden").val();
+      //  var userId = $("#userIdHidden").val();
 		//var result = window.confirm("确定要提交订单吗？");
     	//if(result){
     		$.ajax({ type: "POST",
 	    		     async: false, 
 	    		     url: "saveOrderAPI.html", 
-	    		     data: {"apiId":apiId,
-		    			   	"time":time,
-		    			   	"price":price,
-		    			   	"num":num,
-		    			   	"type":type,
-		    			  	"linkname":userName,
+	    		     data: {"orderDetailId":orderDetailId,
+		    			    "linkname":userName,
 		    			   	"phone":mobile,
-		    			   	"email":userAdd,
-		    			   	"userId":userId},  
+		    			   	"email":userAdd},  
 	    		     dataType: "json",
 	    		     success: function(data) {
-    			   		 if(data.userStatus==false){
-    			   			 alert("该订单不属当前用户,请重新下单!");
+    			   		 if(data.error){
+    			   			 alert("参数数据异常!");
     			   			 window.location.href = "index.html";
 	    		     	     return;
     			   		 }else if(data.message == true){
