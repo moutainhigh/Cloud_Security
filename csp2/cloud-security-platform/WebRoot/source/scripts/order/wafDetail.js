@@ -560,7 +560,7 @@ function changePrice(){
 function saveWafAsset() {
 	var assetName =$.trim($("#assetName").val());
 	var assetAddr = $.trim($("#InertAddr").val());
-     var addrType = $('input:radio[name="addrType"]:checked').val();
+     //var addrType = $('input:radio[name="addrType"]:checked').val();
      var purpose = $("#purpose").val();
      var prov = $("#districtId").val();
      var city = $("#city").val();
@@ -582,9 +582,9 @@ function saveWafAsset() {
 	}else if(assetAddr==null || assetAddr == ""){
 			$("#assetName_msg").html("");
 			$("#assetAddr_msg").html("请输入网站地址!");
-	}else if(patrn.test(assetAddr)){
+	}else if(pattern.test(assetAddr)){
 		("#assetName_msg").html("");
-		$("#assetAddr_msg").html("请输入正确的网站地址");
+		$("#assetAddr_msg").html("请输入正确的网站地址!");
 	}else if((!strRegex.test(assetAddr) && !newRegex.test(assetAddr)) || (strRegex.test(assetAddr)&&assetAddr.indexOf('\/\/\/')!=-1)){
         $("#assetName_msg").html("");
         $("#assetAddr_msg").html("请输入正确的网站地址!");
@@ -602,7 +602,7 @@ function saveWafAsset() {
 			$.ajax({
 		        type: "POST",
 		        url: "asset_addrIsExist.html",
-		        data: {"addr":assetAddr,"name": encodeURI(assetName),"addrType":addrType},
+		        data: {"addr":assetAddr,"name": encodeURI(assetName)},
 		        dataType:"json",
 		        success: function(data){
 		            if(data.msg=='1'){
@@ -625,50 +625,81 @@ function saveWafAsset() {
 		    		            }else{
 		    			       		 var options = {
 		    			       		 			type:'POST',
-		    				 					url:'addWebSiteWaf.html',
+		    				 					url:'addWafWebSite.html',
 		    				 					data:{
-		    				  	               'assetName':assetName,
-		    				  	               'assetAddr':assetAddr,
-		    				  	               'addrType':addrType,
-		    				  	               'purpose':purpose,
-		    				  	               'prov':prov,
-		    				  	               'city':city,
-		    				  	               'wafFlag':1
+			    				  	               'assetName':assetName,
+			    				  	               'assetAddr':assetAddr,
+			    				  	               'purpose':purpose,
+			    				  	               'prov':prov,
+			    				  	               'city':city
 		    				 					},
 		    				 					//beforeSubmit:showRequest,
 		    				 					success: function(data) {
-		    				 						if(data.success){
-		    				 							alert("添加成功!");
-		    				 						
-		    				 							var list = data.serviceAssetList;
-		    				 							if(list!=null&&list.length>0){
-		    				 								$("#assBox").empty();
-		    				 								$.each(list,function(n,asset) {
-		    				 						         var temp = "<li>"+
-		    				 					            	 		"<div class='rcent'>"+
-		    				 					            	 		"<h3>"+
-		    				 			                                "<label onclick='selWafAsset(this)'>"+
-		    				 			                                     "<input type='radio' class='radio'  style='display:none' name='anquan' value='"+asset.id+"'><i class=''></i>"+
-		    				 			                                "</label>"+
-		    				 			                                 "<b>"+asset.name+"</b>"+
-		    				 			                            
-		    				 			                            "</h3>"+
-		    				 			                            "<div class='tBox'>"+asset.addr+"</div>"+
-		    				 			                            "</div>"+
-		    				 			                            "</li>";  
-		    				 						         		$("#assBox").append(temp);
-		    				 						           });  
-		    				 								} 
-		    				 							$('#sentwo').fadeOut(20);
-		    				 			                $('#senone').fadeIn(20);
-		    				 						}else{
-		    				 							if(!data.wafFlag){
-		    				 								alert("网站地址不是域名,请填写域名!");
-		    				 							}else{
-			    				 							alert("添加失败!");
-		    				 							}
-		    				 						}
-		    				 								
+		    				 						    $("#assetName_msg").html("");
+														$("#assetAddr_msg").html("");
+														$("#location_msg").html("");
+														$("#assetUsage_msg").html("");
+    		    				 						switch(data.result) {
+		    		            							case 0:
+		    		            								alert("添加成功!");
+		    		            								
+		    		            								var list = data.serviceAssetList;
+				    				 							if(list!=null&&list.length>0){
+				    				 								$("#assBox").empty();
+				    				 								$.each(list,function(n,asset) {
+				    				 						         var temp = "<li>"+
+				    				 					            	 		"<div class='rcent'>"+
+				    				 					            	 		"<h3>"+
+				    				 			                                "<label onclick='selWafAsset(this)'>"+
+				    				 			                                     "<input type='radio' class='radio'  style='display:none' name='anquan' value='"+asset.id+"'><i class=''></i>"+
+				    				 			                                "</label>"+
+				    				 			                                 "<b>"+asset.name+"</b>"+
+				    				 			                            
+				    				 			                            "</h3>"+
+				    				 			                            "<div class='tBox'>"+asset.addr+"</div>"+
+				    				 			                            "</div>"+
+				    				 			                            "</li>";  
+				    				 						         		$("#assBox").append(temp);
+				    				 						           });  
+				    				 								} 
+				    				 							$('#sentwo').fadeOut(20);
+				    				 			                $('#senone').fadeIn(20);
+		    		            								break;
+		    		            							case 1:
+		    		            								alert("免费用户管理资产数不能大于" + data.subResult);
+		    		            								break;
+		    		            							case 2:
+					    		            					if (data.subResult == 1) {
+					    		            						$("#assetName_msg").html("请输入网站名称!");
+					    		            					}else if(data.subResult == 2) {
+					    		            						$("#assetName_msg").html("请输入正确的网站名称!");
+					    		            					}else if(data.subResult == 3) {
+					    		            						$("#assetName_msg").html("网站名称重复!");
+					    		            					}
+					    		            					break;
+					    		            				case 3:
+					    		            					if (data.subResult == 1) {
+					    		            						$("#assetAddr_msg").html("请输入网站地址!");
+					    		            					}else if(data.subResult == 2) {
+					    		            						$("#assetAddr_msg").html("请输入正确的网站地址!");
+					    		            					}else if(data.subResult == 3) {
+					    		            						$("#assetName_msg").html("网站地址重复!");
+					    		            					}
+					    		            					break;
+					    		            				case 4:
+					    		            					$("#location_msg").html("请选择网站所在物理地址!");
+					    		            					break;
+					    		            				case 5:
+					    		            					$("#assetUsage_msg").html("请选择网站用途!");
+					    		            					break;
+					    		            				case 6:
+					    		            					alert("网站地址不是域名,请填写域名!");
+													break;
+					    		            				default:
+					    		            					alert("添加失败!");
+					    		            					break;
+					    		            			}
+		    				 					
 		    				 					},
 		    				 					error: function(data){
 		    				 						 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
@@ -679,10 +710,10 @@ function saveWafAsset() {
 		    						 		 // 将options传给ajaxForm
 		    						 		 $('#saveWafAsset').ajaxSubmit(options);
 		    		            }
-		    		        },
+		    		        }
 		    		     }); 
 		            }
-		        },
+		        }
 		     }); 
 		}
 	
