@@ -772,56 +772,88 @@ function tasknum_verification(){
     		    		            if(data.msg){
     		    		            	alert("免费用户管理资产数不能大于" + data.allowCount);
     		    		            }else{
-    		    			       		 var options = {
+    		    			       			 $.ajax({
     		    			       		 			type:'POST',
     		    				 					url:'addWebSite.html',
     		    				 					data:{
     		    				  	               'assetName':assetName,
     		    				  	               'assetAddr':assetAddr,
-    		    				  	               'addrType':addrType,
     		    				  	               'purpose':purpose,
     		    				  	               'prov':prov,
     		    				  	               'city':city
     		    				 					},
     		    				 					//beforeSubmit:showRequest,
     		    				 					success: function(data) {
-    		    				 						if(data.success){
-    		    				 							alert("添加成功!");
-    		    				 						
-    		    				 							var list = data.serviceAssetList;
-    		    				 							if(list!=null&&list.length>0){
-    		    				 								$(".allBox").empty();
-    		    				 								$.each(list,function(n,asset) {
-    		    				 						         var temp = "<li>"+
-    		    				 					            	 		"<div class='rcent'>"+
-    		    				 					            	 		"<h3>"+
-    		    				 			                                "<label for='"+(n+1)+"' style='margin:0 16px 0 0;'>"+
-    		    				 			                                     "<input type='checkbox' class='ck'  value='"+asset.id+"' style='display:none;'><i class='cek' data-id='"+(n+1)+"' onclick='selAsset(this)'></i>"+
-    		    				 			                                "</label>"+
-    		    				 			                                 "<b>"+asset.name+"</b>"+
-    		    				 			                            
-    		    				 			                            "</h3>"+
-    		    				 			                            "<div class='tBox'>"+asset.addr+"</div>"+
-    		    				 			                            "</div>"+
-    		    				 			                            "</li>";  
-    		    				 						         		$(".allBox").append(temp);
-    		    				 						           });  
-    		    				 								} 
-    		    				 							$('#sentwo').fadeOut(20);
-    		    				 			                $('#senone').fadeIn(20);
-    		    				 						}else{
-    		    				 							alert("添加失败!");
-    		    				 						}
-    		    				 								
+    		    				 						$("#assetName_msg").html("");
+												    	$("#assetAddr_msg").html("");
+												    	$("#location_msg").html("");
+												    	$("#assetUsage_msg").html("");
+    		    				 						switch(data.result) {
+		    		            							case 0:
+		    		            								//添加成功
+		    		            								alert("添加成功!");
+		    		            								var list = data.serviceAssetList;
+	    		    				 							if(list!=null&&list.length>0){
+	    		    				 								$(".allBox").empty();
+	    		    				 								$.each(list,function(n,asset) {
+	    		    				 						         var temp = "<li>"+
+	    		    				 					            	 		"<div class='rcent'>"+
+	    		    				 					            	 		"<h3>"+
+	    		    				 			                                "<label for='"+(n+1)+"' style='margin:0 16px 0 0;'>"+
+	    		    				 			                                     "<input type='checkbox' class='ck'  value='"+asset.id+"' style='display:none;'><i class='cek' data-id='"+(n+1)+"' onclick='selAsset(this)'></i>"+
+	    		    				 			                                "</label>"+
+	    		    				 			                                 "<b>"+asset.name+"</b>"+
+	    		    				 			                            
+	    		    				 			                            "</h3>"+
+	    		    				 			                            "<div class='tBox'>"+asset.addr+"</div>"+
+	    		    				 			                            "</div>"+
+	    		    				 			                            "</li>";  
+	    		    				 						         		$(".allBox").append(temp);
+	    		    				 						           });  
+	    		    				 								} 
+	    		    				 							$('#sentwo').fadeOut(20);
+	    		    				 			                $('#senone').fadeIn(20);
+		    		            								break;
+		    		            							case 1:
+		    		            								alert("免费用户管理资产数不能大于" + data.subResult);
+		    		            								break;
+		    		            							case 2:
+					    		            					if (data.subResult == 1) {
+					    		            						$("#assetName_msg").html("请输入网站名称!");
+					    		            					}else if(data.subResult == 2) {
+					    		            						$("#assetName_msg").html("请输入正确的网站名称!");
+					    		            					}else if(data.subResult == 3) {
+					    		            						$("#assetName_msg").html("网站名称重复!");
+					    		            					}
+					    		            					break;
+					    		            				case 3:
+					    		            					if (data.subResult == 1) {
+					    		            						$("#assetAddr_msg").html("请输入网站地址!");
+					    		            					} else if(data.subResult == 2) {
+					    		            						$("#assetAddr_msg").html("请输入正确的网站地址!");
+					    		            					}else if(data.subResult == 3) {
+					    		            						$("#assetName_msg").html("网站地址重复!");
+					    		            					}
+					    		            					break;
+					    		            				case 4:
+					    		            					$("#location_msg").html("请选择网站所在物理地址!");
+					    		            					break;
+					    		            				case 5:
+					    		            					$("#assetUsage_msg").html("请选择网站用途!");
+					    		            					break;
+					    		            				default:
+					    		            					alert("添加失败!");
+					    		            					break;
+					    		            			}
     		    				 					},
     		    				 					error: function(data){
     		    				 						 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
     		    				 				    		 window.location.href = "loginUI.html"; } 
     		    				 				    	 else { window.location.href = "loginUI.html"; } 
     		    				 					}
-    		    				 				};
+    		    				 				});
     		    						 		 // 将options传给ajaxForm
-    		    						 		 $('#saveAsset').ajaxSubmit(options);
+    		    						 		 //$('#saveAsset').ajaxSubmit(options);
     		    		            }
     		    		        },
     		    		     }); 
