@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -35,11 +36,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.cn.ctbri.cfg.Configuration;
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.City;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IDistrictDataService;
 import com.cn.ctbri.service.IOrderAssetService;
+import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.GetNetContent;
@@ -59,6 +62,11 @@ public class MyAssetsController {
 	IDistrictDataService districtService;
 	@Autowired
 	IUserService userService;
+	@Autowired
+    IDistrictDataService districtDataService;
+	@Autowired
+    ISelfHelpOrderService selfHelpOrderService;
+	
 	/**
 	 * 功能描述： 我的资产页面
 	 * 参数描述： Model model,HttpServletRequest request
@@ -187,43 +195,261 @@ public class MyAssetsController {
 	 *		 @time 2015-1-16
 	 */
 	@RequestMapping(value="/addAsset.html",method=RequestMethod.POST)
-	public String addAsset(Model model,Asset asset,HttpServletRequest request){
-		User globle_user = (User) request.getSession().getAttribute("globle_user");
-		asset.setUserid(globle_user.getId());//用户ID
-		asset.setCreate_date(new Date());//创建日期
-		//modify by zsh 2016-06-28 
-		asset.setStatus(1);//资产状态 1：已验证
-//		if(globle_user.getType()==2){
-//			asset.setStatus(0);//资产状态(1：已验证，0：未验证)
-//		}else if(globle_user.getType()==3){
-//			asset.setStatus(1);//资产状态(1：已验证，0：未验证)
-//		}
-
-		String name = "";//资产名称
-		String addr = "";//资产地址
-		//String addrType = asset.getAddrType();
-		String purpose = "";//用途
-		//处理页面输入中文乱码的问题
+	public void addAsset(HttpServletRequest request,HttpServletResponse response){
+		Map<String, Object> m = new HashMap<String, Object>();
+		int result = 0; //1:资产数验证失败 2：资产名称验证失败 3：资产地址 4：物理地址 5：用途
+		int subResult = 0;
 		try {
-			name=asset.getName();
-			addr=asset.getAddr().toLowerCase();
-			purpose=asset.getPurpose();
+			User globle_user = (User) request.getSession().getAttribute("globle_user");
+			
+			String name = request.getParameter("assetName");//资产名称
+			String addr = request.getParameter("assetAddr").toLowerCase();//资产地址
+//			String addrType = request.getParameter("addrType");//资产类型
+			String purpose = request.getParameter("purpose");//用途
+			String prov = request.getParameter("prov");
+			String city = request.getParameter("city");
+			
+			//验证资产数量
+			subResult = checkAssetCount(globle_user.getId());
+			if (subResult != 0) {
+				result = 1;
+				return;
+			}
+			
+			//验证资产名称
+			// 1:资产名称为空 2：资产名称含有非法字符  3：资产名称重复
+			subResult = checkAssetName(name, null, globle_user.getId());
+			if (subResult != 0) {
+				result = 2;
+				return;
+			}
+			
+			//验证资产地址
+			subResult = checkAssetAddress(addr, null, globle_user.getId());
+			if (subResult != 0) {
+				result = 3;
+				return;
+			}
+			
+			//验证资产所在物理地址
+			subResult = checkPhysicalAddress(prov,city);
+			if (subResult != 0) {
+				result = 4;
+				return;
+			}
+			
+			//验证资产用途
+			subResult = checkPurpose(purpose);
+			if (subResult != 0) {
+				result = 5;
+				return;
+			}
+			
 			//判断资产地址是否包含http
-		    Pattern pattern2 = Pattern.compile("([hH][tT][tT][pP][sS]?):\\/\\/([\\w.]+\\/?)\\S*");
+			Pattern pattern2 = Pattern.compile("([hH][tT][tT][pP][sS]?):\\/\\/([\\w.]+\\/?)\\S*");
 			Matcher matcher2 =	pattern2.matcher(addr);
 			if(!matcher2.find()){
 				addr="http://"+addr.trim();
 			}
-		} catch (Exception e) {
+			
+			Asset asset = new Asset();
+			asset.setUserid(globle_user.getId());//用户ID
+			asset.setCreate_date(new Date());//创建日期
+			if(globle_user.getType()==2){
+				asset.setStatus(0);//资产状态(1：已验证，0：未验证)
+			}else if(globle_user.getType()==3){
+				asset.setStatus(1);//资产状态(1：已验证，0：未验证)
+			}
+			asset.setName(name);
+			asset.setAddr(addr);
+			asset.setPurpose(purpose);
+			asset.setDistrictId(prov);
+			asset.setCity(city);
+			assetService.saveAsset(asset);
+//		return "redirect:/userAssetsUI.html";
+			
+		}catch(Exception e) {
 			e.printStackTrace();
+			result = 6;
+		}finally{
+			m.put("result", result);
+			m.put("subResult", subResult);
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
-	
-		asset.setName(name);
-		asset.setAddr(addr);
-		asset.setPurpose(purpose);
-		assetService.saveAsset(asset);
-		return "redirect:/userAssetsUI.html";
+		
+		
 	}
+	
+	private int checkAssetName(String assetName, String oldAssetName, int userId) {
+		if (null == assetName || assetName == "") {
+//			return "请输入网站名称!";
+			return 1;
+		}
+		
+		String pattern = "[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]"; 
+		Pattern pat = Pattern.compile(pattern);
+		if(pat.matcher(assetName).find()){
+//			return "请输入正确的网站名称!";
+			return 2;
+		}
+		
+		if (oldAssetName != null && assetName.equals(oldAssetName)) {
+			return 0;
+		}
+		
+	    Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("userId", userId);
+        paramMap.put("name", assetName.trim());
+		List<Asset> listForName = assetService.findByAssetAddr(paramMap);
+		if(listForName != null && listForName.size()>0){
+//			return "网站名称重复!";
+			return 3;
+		}
+		
+		return 0;
+	}
+	
+	private int checkAssetAddress(String assetAddress, String oldAssetAddr, int userId) {
+		if (null == assetAddress || assetAddress == "") {
+//			return "请输入网站地址!";
+			return 1;
+		}
+		
+		String pattern = "[`~!@#$^&*()=|{}';',<>?~！@#￥……&*（）——|{}【】‘；”“'。，？]"; 
+		Pattern pat1 = Pattern.compile(pattern);
+		if(pat1.matcher(assetAddress).find()){
+//			return "请输入正确的网站地址!";
+			return 2;
+		}
+		
+		//TODO
+		String newRegex ="/^((?!([hH][tT][tT][pP][sS]?)\\:*\\/*)([\\w\\.\\-]+(\\:[\\w\\.\\&%\\$\\-]+)*@)?((([^\\s\\(\\)\\<\\>\\\\\\\"\\.\\[\\]\\,@;:]+)(\\.[^\\s\\(\\)\\<\\>\\\\\\\"\\.\\[\\]\\,@;:]+)*(\\.[a-zA-Z]{2,4}))|((([01]?\\d{1,2}|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d{1,2}|2[0-4]\\d|25[0-5])))(\\b\\:(6553[0-5]|655[0-2]\\d|65[0-4]\\d{2}|6[0-4]\\d{3}|[1-5]\\d{4}|[1-9]\\d{0,3}|0)\\b)?((\\/[^\\/][\\w\\.\\,\\?\\'\\\\\\/\\+&%\\$#\\=~_\\-@]*)*[^\\.\\,\\?\\\"\\'\\(\\)\\[\\]!;<>{}\\s\\x7F-\\xFF])?)$/";
+//		String newRegex = "/^((([hH][tT][tT][pP][sS]?):\/\/)([\w\.\-]+(\:[\w\.\&%\$\-]+)*@)?((([^\s\(\)\<\>\\\"\.\[\]\,@;:]+)(\.[^\s\(\)\<\>\\\"\.\[\]\,@;:]+)*(\.[a-zA-Z]{2,4}))|((([01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}([01]?\d{1,2}|2[0-4]\d|25[0-5])))(\b\:(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0)\b)?((\/[^\/][\w\.\,\?\'\\\/\+&%\$#\=~_\-@]*)*[^\.\,\?\"\'\(\)\[\]!;<>{}\s\x7F-\xFF])?)$/";
+		Pattern pat2 = Pattern.compile(newRegex);
+		boolean newRegexFlag = pat2.matcher(assetAddress).matches();
+		
+		String strRegex ="/^((([hH][tT][tT][pP][sS]?):\\/\\/)([\\w\\.\\-]+(\\:[\\w\\.\\&%\\$\\-]+)*@)?((([^\\s\\(\\)\\<\\>\\\\\\\"\\.\\[\\]\\,@;:]+)(\\.[^\\s\\(\\)\\<\\>\\\\\\\"\\.\\[\\]\\,@;:]+)*(\\.[a-zA-Z]{2,4}))|((([01]?\\d{1,2}|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d{1,2}|2[0-4]\\d|25[0-5])))(\\b\\:(6553[0-5]|655[0-2]\\d|65[0-4]\\d{2}|6[0-4]\\d{3}|[1-5]\\d{4}|[1-9]\\d{0,3}|0)\\b)?((\\/[^\\/][\\w\\.\\,\\?\\'\\\\\\/\\+&%\\$#\\=~_\\-@]*)*[^\\.\\,\\?\\\"\\'\\(\\)\\[\\]!;<>{}\\s\\x7F-\\xFF])?)$/";
+//		String strRegex = "/^((?!([hH][tT][tT][pP][sS]?)\:*\/*)([\w\.\-]+(\:[\w\.\&%\$\-]+)*@)?((([^\s\(\)\<\>\\\"\.\[\]\,@;:]+)(\.[^\s\(\)\<\>\\\"\.\[\]\,@;:]+)*(\.[a-zA-Z]{2,4}))|((([01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}([01]?\d{1,2}|2[0-4]\d|25[0-5])))(\b\:(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0)\b)?((\/[^\/][\w\.\,\?\'\\\/\+&%\$#\=~_\-@]*)*[^\.\,\?\"\'\(\)\[\]!;<>{}\s\x7F-\xFF])?)$/";
+		Pattern pat3 = Pattern.compile(strRegex);
+		boolean strRegexFlag = pat3.matcher(assetAddress).matches();
+		
+	    if((!newRegexFlag && !strRegexFlag) || (strRegexFlag && assetAddress.indexOf("///")!=-1)){
+//	    	return "请输入正确的网站地址!";
+			return 2;
+	    }
+		
+	    //验证资产地址是否重复
+		String addr = assetAddress.toLowerCase();
+		//判断资产地址是否包含http
+		Pattern pattern2 = Pattern.compile("([hH][tT][tT][pP][sS]?):\\/\\/([\\w.]+\\/?)\\S*");
+		Matcher matcher2 =	pattern2.matcher(addr);
+		if(!matcher2.find()){
+			addr="http://"+addr.trim();
+		}
+		
+		if (oldAssetAddr != null && assetAddress.equals(oldAssetAddr)) {
+			return 0;
+		}
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("userId", userId);
+		paramMap.put("addr", addr.trim());
+		List<Asset> listForAddr = assetService.findByAssetAddr(paramMap);
+		if(listForAddr != null && listForAddr.size()>0){
+//			return "资产地址重复!";
+			return 3;
+		}
+		
+		return 0;
+	}
+	
+	/**
+	 * 功能描述：检查物理地址是否正确
+	 */
+	private int checkPhysicalAddress(String districtId, String cityId) {
+		try {
+			//未选择省份的场合，校验失败
+			if (districtId == null || districtId.equals("")) {
+				return 1;
+			}
+			
+			//省份Id不存在的场合，校验失败
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("provId", districtId);
+			String name = districtDataService.getProvNameById(paramMap);
+			if (null == name || name.equals("")) {
+				return 1;
+			}
+			
+			Map<String, Object> paramMap2 = new HashMap<String, Object>();
+			paramMap2.put("districtId", districtId);
+			List<City> cityList = districtDataService.getCityListByProv(paramMap2);
+			
+			if (cityList == null || cityList.size() == 0) {   //省份没有下属城市
+				if (cityId == null || cityId.equals("")|| cityId.equals("-1")) {
+					return 0;
+				}else {  //但城市信息参数有值时，校验失败
+					return 1;
+				}
+			}else {     //省份有下属城市
+				//检验城市信息
+				int cityIdInt = Integer.valueOf(cityId);
+				for (City city : cityList) {
+					if(city.getId()== cityIdInt) {   //该省份包括该城市，校验成功
+						return 0;
+					}
+				}
+				return 1;    //该省份不包括该城市，校验失败
+			}
+			
+		} catch(Exception e) {
+			return 1;   //校验失败
+		}
+	}
+	
+	/**
+	 * 功能描述：检查物理地址是否正确
+	 */
+	private int checkPurpose(String purpose) {
+		if ("公共服务".equals(purpose) || 
+				"信息发布".equals(purpose) || 
+				"其他".equals(purpose)) {
+			return 0;
+		}
+		return 1;
+	}
+	
+	private int checkAssetCount(int userId) {
+		//根据用户id查询
+	    List<User> userList = userService.findUserById(userId);
+	    User _user = userList.get(0);
+	    
+        //根据用户判断资产数是否超过预定
+		List<Asset> list = assetService.findByUserId(userId);
+		Map<String, Object> m = new HashMap<String, Object>();
+		
+		//个人用户
+		if(_user.getType()==2){
+			if(list != null && list.size() >= 5){
+				//表示添加的资产数已经为5，不能再进行添加
+				return 5;
+			}
+		}else if(_user.getType()==3){
+			//企业用户
+			if(list != null && list.size() >= 50){
+				//表示添加的资产数已经为10，不能再进行添加
+				return 50;
+			}
+		}
+		return 0;
+	}
+	
 
 	/**
 	 * 功能描述：检查资产是否可以被删除
@@ -284,14 +510,35 @@ public class MyAssetsController {
 	@RequestMapping(value="/editAsset.html",method=RequestMethod.POST)
 	public void editAsset(HttpServletResponse response,HttpServletRequest request){
 		Map<String, Object> m = new HashMap<String, Object>();
+		int result = 0;
+		int subResult = 0;
 		 //用户
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
         try {
 			int id = Integer.parseInt(request.getParameter("id"));
 			Asset oldAsset = assetService.findById(id,globle_user.getId());
-			//String addrType = request.getParameter("addrType");
-			String districtId = request.getParameter("prov");
+			
+			//id验证
+			if(oldAsset == null) {
+				result = 1;
+				subResult = 1;
+				return;
+			}
+			
+			//检查订单资产表里面是否含有此资产
+			List<OrderAsset> list = orderAssetService.findRunAssetById(id);
+			if(list.size() > 0){
+				result = 1;
+				subResult = 2;
+				return;
+			}
+			
+			String name = request.getParameter("assetName");
 			String assetAddr = request.getParameter("assetAddr").toLowerCase();
+			String districtId = request.getParameter("prov");
+			String city = request.getParameter("city");
+			String purpose = request.getParameter("purpose");
+			//String addrType = request.getParameter("addrType");
 			Pattern pattern2 = Pattern.compile("([hH][tT][tT][pP][sS]?):\\/\\/([\\w.]+\\/?)\\S*");
 			Matcher matcher2 =	pattern2.matcher(assetAddr);
 			if(!matcher2.find()){
@@ -301,53 +548,66 @@ public class MyAssetsController {
 		    if((assetAddr.trim().toLowerCase().indexOf("http://")==-1||assetAddr.trim().toLowerCase().indexOf("https://")==-1)){
 		    
 		    }*/
-			String name = request.getParameter("assetName");
-			String purpose = request.getParameter("purpose");
-			String city = "";
+			
 			String oldCity = "";
-			if(oldAsset.getCity()!=null){
+			if(oldAsset.getCity()!= null){
 				oldCity = oldAsset.getCity();
 			}
-			if(city!=null){
-				city = request.getParameter("city");
+			
+			if(oldAsset.getName().equals(name) && oldAsset.getAddr().equals(assetAddr) && 
+					oldAsset.getPurpose().equals(oldAsset.getPurpose()) &&
+					oldAsset.getDistrictId().equals(districtId) && oldCity.equals(city)){
+				return;
 			}
-			if(!(name.equals(oldAsset.getName())&&assetAddr.equals(oldAsset.getAddr())&&purpose.equals(oldAsset.getPurpose())&&
-				districtId==oldAsset.getDistrictId()&&
-				oldCity.equals(city))){
-				Asset asset = new Asset();
-				asset.setName(name);
-				asset.setId(id);
-				//String addr = request.getParameter("assetAddr");
-				
-				asset.setAddr(assetAddr);
-				//modify by zsh 2016-06-28 
-				asset.setStatus(1);  //资产状态 1：已验证
-//				asset.setStatus(0);
-				asset.setDistrictId(districtId);
-				asset.setCity(city);
-				asset.setPurpose(purpose);
-				//asset.setAddrType(addrType);
-				assetService.updateAsset(asset);
-
-				m.put("successFlag", true);
-				JSONObject JSON = CommonUtil.objectToJson(response, m);
-				try {
-					// 把数据返回到页面
-					CommonUtil.writeToJsp(response, JSON);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			
+			//资产名称验证
+			subResult = checkAssetName(name, oldAsset.getName(), globle_user.getId());
+			if (subResult != 0) {
+				result = 2;
 			}
-		} catch (NumberFormatException e) {
-			m.put("successFlag", false);
+			
+			
+			//资产地址验证
+			subResult = checkAssetAddress(assetAddr, oldAsset.getAddr(), globle_user.getId());
+			if (subResult != 0) {
+				result = 3;
+			}
+			
+			//资产物理地址验证
+			subResult = checkPhysicalAddress(districtId,city);
+			if (subResult != 0) {
+				result = 4;
+			}
+			
+			//资产用途验证
+			subResult = checkPurpose(purpose);
+			if (subResult != 0) {
+				result = 5;
+			}
+			
+			Asset asset = new Asset();
+			asset.setName(name);
+			asset.setId(id);
+			
+			asset.setAddr(assetAddr);
+			asset.setStatus(0);
+			asset.setDistrictId(districtId);
+			asset.setCity(city);
+			asset.setPurpose(purpose);
+			assetService.updateAsset(asset);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			m.put("result", result);
+			m.put("subResult", subResult);
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
 			try {
 				// 把数据返回到页面
 				CommonUtil.writeToJsp(response, JSON);
-			} catch (IOException e1) {
-				e1.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			e.printStackTrace();
 		}
 		
 	}
@@ -359,21 +619,37 @@ public class MyAssetsController {
 	@RequestMapping(value="/deleteAsset.html",method=RequestMethod.POST)
 	public void delete(HttpServletRequest request,HttpServletResponse response){
 		Map<String, Object> m = new HashMap<String, Object>();
+		int errorCode = 0;
 		int id = Integer.parseInt(request.getParameter("id"));
 	    try {
+	    	 //用户
+	    	User globle_user = (User) request.getSession().getAttribute("globle_user");
+			Asset oldAsset = assetService.findById(id,globle_user.getId());
+			//id验证
+			if(oldAsset == null) {
+				m.put("successFlag", false);
+				return;
+			}
+			
+			//检查订单资产表里面是否含有此资产
+			List<OrderAsset> list = orderAssetService.findRunAssetById(id);
+			if(list.size() > 0){
+				m.put("successFlag", false);
+				errorCode = 1;
+				return;
+			}
+			
 			if(validate(request)){
 			    assetService.delete(id);
 			    m.put("successFlag", true);
-				JSONObject JSON = CommonUtil.objectToJson(response, m);
-				try {
-					// 把数据返回到页面
-					CommonUtil.writeToJsp(response, JSON);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			    return;
 			}
+			m.put("successFlag", false);
 		} catch (Exception e) {
 			m.put("successFlag", false);
+			e.printStackTrace();
+		}finally {
+			m.put("errorCode", errorCode);
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
 			try {
 				// 把数据返回到页面
@@ -381,7 +657,6 @@ public class MyAssetsController {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			e.printStackTrace();
 		}
 		
 	}
@@ -628,5 +903,271 @@ public class MyAssetsController {
 		}
 	}
 	
+	
+	
+	/**
+	 * 功能描述： 添加资产
+	 * 参数描述： Model model
+	 * @throws Exception 
+	 *		 @time 2015-1-16
+	 */
+	@RequestMapping(value="/addWebSite.html", method=RequestMethod.POST)
+	public void addWebSite(HttpServletRequest request,HttpServletResponse response){
+		Map<String, Object> m = new HashMap<String, Object>();
+		int result = 0; //1:资产数验证失败 2：资产名称验证失败 3：资产地址 4：物理地址 5：用途
+		int subResult = 0;
+		
+		try {
+			User globle_user = (User) request.getSession().getAttribute("globle_user");
+			String name = request.getParameter("assetName");//资产名称
+			String addr = request.getParameter("assetAddr").toLowerCase();//资产地址
+			String purpose = request.getParameter("purpose");//用途
+			String prov = request.getParameter("prov");
+			String city = request.getParameter("city");
+			
+			//验证资产数量
+			subResult = checkAssetCount(globle_user.getId());
+			if (subResult != 0) {
+				result = 1;
+				return;
+			}
+			
+			//验证资产名称
+			// 1:资产名称为空 2：资产名称含有非法字符  3：资产名称重复
+			subResult = checkAssetName(name, null, globle_user.getId());
+			if (subResult != 0) {
+				result = 2;
+				return;
+			}
+			
+			//验证资产地址
+			subResult = checkAssetAddress(addr, null, globle_user.getId());
+			if (subResult != 0) {
+				result = 3;
+				return;
+			}
+			
+			//验证资产所在物理地址
+			subResult = checkPhysicalAddress(prov,city);
+			if (subResult != 0) {
+				result = 4;
+				return;
+			}
+			
+			//验证资产用途
+			subResult = checkPurpose(purpose);
+			if (subResult != 0) {
+				result = 5;
+				return;
+			}
+			
+			Asset asset = new Asset();
+			asset.setUserid(globle_user.getId());//用户ID
+			asset.setCreate_date(new Date());//创建日期
+			if(globle_user.getType()==2){
+				asset.setStatus(0);//资产状态(1：已验证，0：未验证)
+			}else if(globle_user.getType()==3){
+				asset.setStatus(1);//资产状态(1：已验证，0：未验证)
+			}
 
+						
+//			if(!(addr.startsWith(addrType)) || addr.equals(addrType)){
+//				addr = addrType + "://" + addr.trim();
+//			}
+			//判断资产地址是否包含http
+			Pattern pattern2 = Pattern.compile("([hH][tT][tT][pP][sS]?):\\/\\/([\\w.]+\\/?)\\S*");
+			Matcher matcher2 =	pattern2.matcher(addr);
+			if(!matcher2.find()){
+				addr="http://"+addr.trim();
+			}
+			
+			asset.setName(name);
+			asset.setAddr(addr);
+			asset.setPurpose(purpose);
+			asset.setDistrictId(prov);
+			asset.setCity(city);
+			assetService.saveAsset(asset);
+
+			//获取服务对象资产
+		    List<Asset> serviceAssetList = selfHelpOrderService.findServiceAsset(globle_user.getId());
+		    m.put("serviceAssetList", serviceAssetList);
+//			m.put("success", true);
+			
+		} catch (Exception e) {
+			result = 6;
+//			m.put("success", false);
+//			m.put("wafFlag", true);
+			e.printStackTrace();
+		}finally {
+			m.put("result", result);
+			m.put("subResult", subResult);
+			//object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * 功能描述： 添加资产
+	 * 参数描述： Model model
+	 * @throws Exception 
+	 *		 @time 2015-1-16
+	 */
+	@RequestMapping(value="/addWafWebSite.html", method=RequestMethod.POST)
+	public void addWafWebSite(HttpServletRequest request,HttpServletResponse response){
+		Map<String, Object> m = new HashMap<String, Object>();
+		int result = 0; //1:资产数验证失败 2：资产名称验证失败 3：资产地址 4：物理地址 5：用途
+		int subResult = 0;
+		
+
+		try {
+			User globle_user = (User) request.getSession().getAttribute("globle_user");
+			String name = request.getParameter("assetName");//资产名称
+			String addr = request.getParameter("assetAddr").toLowerCase();//资产地址
+//			String addrType = request.getParameter("addrType");//资产类型
+			String purpose = request.getParameter("purpose");//用途
+			String prov = request.getParameter("prov");
+			String city = request.getParameter("city");
+//			String wafFlag = request.getParameter("wafFlag");
+			//验证资产数量
+			subResult = checkAssetCount(globle_user.getId());
+			if (subResult != 0) {
+				result = 1;
+				return;
+			}
+			
+			//验证资产名称
+			// 1:资产名称为空 2：资产名称含有非法字符  3：资产名称重复
+			subResult = checkAssetName(name, null, globle_user.getId());
+			if (subResult != 0) {
+				result = 2;
+				return;
+			}
+			
+			//验证资产地址
+			subResult = checkAssetAddress(addr, null, globle_user.getId());
+			if (subResult != 0) {
+				result = 3;
+				return;
+			}
+			
+			//验证资产所在物理地址
+			subResult = checkPhysicalAddress(prov,city);
+			if (subResult != 0) {
+				result = 4;
+				return;
+			}
+			
+			//验证资产用途
+			subResult = checkPurpose(purpose);
+			if (subResult != 0) {
+				result = 5;
+				return;
+			}
+			
+			Asset asset = new Asset();
+			asset.setUserid(globle_user.getId());//用户ID
+			asset.setCreate_date(new Date());//创建日期
+			if(globle_user.getType()==2){
+				asset.setStatus(0);//资产状态(1：已验证，0：未验证)
+			}else if(globle_user.getType()==3){
+				asset.setStatus(1);//资产状态(1：已验证，0：未验证)
+			}
+
+						
+//			if(!(addr.startsWith(addrType)) || addr.equals(addrType)){
+//				addr = addrType + "://" + addr.trim();
+//			}
+			//判断资产地址是否包含http
+			Pattern pattern2 = Pattern.compile("([hH][tT][tT][pP][sS]?):\\/\\/([\\w.]+\\/?)\\S*");
+			Matcher matcher2 =	pattern2.matcher(addr);
+			if(!matcher2.find()){
+				addr="http://"+addr.trim();
+			}
+			
+			//如果wafFlag!=null 只允许添加域名
+			String addInfo = "";
+			//判断http协议
+			if(addr.indexOf("http://")!=-1){
+				if(addr.substring(addr.length()-1).indexOf("/")!=-1){
+					addInfo = addr.trim().substring(7,addr.length()-1);
+				}else{
+					addInfo = addr.trim().substring(7,addr.length());
+				}
+			}else if(addr.indexOf("https://")!=-1){
+				if(addr.substring(addr.length()-1).indexOf("/")!=-1){
+					addInfo = addr.trim().substring(8,addr.length()-1);
+				}else{
+					addInfo = addr.trim().substring(8,addr.length());
+				}
+			}
+			
+			//判断资产地址是否是域名
+			String hostnameRegex ="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
+			boolean flag=addInfo.matches(hostnameRegex);
+			if(!flag){
+				result = 6;
+				return;
+			}
+			
+			asset.setName(name);
+			asset.setAddr(addr);
+			asset.setPurpose(purpose);
+			asset.setDistrictId(prov);
+			asset.setCity(city);
+			assetService.saveAsset(asset);
+
+			//获取服务对象资产
+		    List<Asset> serviceAssetList = selfHelpOrderService.findServiceAsset(globle_user.getId());
+		    
+		    List assList = new ArrayList();
+		    if(serviceAssetList!=null&&serviceAssetList.size()>0){
+		    	for(int i=0;i<serviceAssetList.size();i++){
+		    		Asset newAsset = (Asset)serviceAssetList.get(i);
+		    		String newAddr = asset.getAddr();
+		    		String addressInfo = "";
+		    		//判断http协议
+		    		if(addr.indexOf("http://")!=-1){
+		    			if(addr.substring(addr.length()-1).indexOf("/")!=-1){
+		    				addressInfo = addr.trim().substring(7,addr.length()-1);
+		    			}else{
+		    				addressInfo = addr.trim().substring(7,addr.length());
+		    			}
+		    		}else if(addr.indexOf("https://")!=-1){
+		    			if(addr.substring(addr.length()-1).indexOf("/")!=-1){
+		    				addressInfo = addr.trim().substring(8,addr.length()-1);
+		    			}else{
+		    				addressInfo = addr.trim().substring(8,addr.length());
+		    			}
+		    		}
+		    		//判断资产地址是否是域名
+		    		if(addInfo.matches(hostnameRegex)){
+		    			assList.add(newAsset);
+		    		}
+		    	}
+		    }
+		    m.put("serviceAssetList", assList);
+		}catch (Exception e) {
+			result = 7;
+			e.printStackTrace();
+		}finally {
+			m.put("result", result);
+			m.put("subResult", subResult);
+			
+			//object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+	
 }
