@@ -625,7 +625,7 @@ function saveWafAsset() {
 		    		            }else{
 		    			       		 var options = {
 		    			       		 			type:'POST',
-		    				 					url:'addWebSite.html',
+		    				 					url:'addWebSiteWaf.html',
 		    				 					data:{
 		    				  	               'assetName':assetName,
 		    				  	               'assetAddr':assetAddr,
