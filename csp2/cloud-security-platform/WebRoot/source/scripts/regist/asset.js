@@ -11,9 +11,10 @@
 function saveAsset() {
 	var assetName =$.trim($("#assetName").val());
 	var assetAddr = $.trim($("#assetAddr").val());
-    var addrType = $('input:radio[name="addrType"]:checked').val();
+    //var addrType = $('input:radio[name="addrType"]:checked').val();
      var purpose = $("#purpose").val();
      var prov = $("#districtId").val();
+     var city = $("#city").val();
      var patrn=new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]");
      var pattern = new RegExp("[`~!@#$^&*()=|{}';',<>?~！@#￥……&*（）——|{}【】‘；”“'。，？]"); 
     
@@ -53,9 +54,10 @@ function saveAsset() {
 			$.ajax({
 		        type: "POST",
 		        url: "asset_addrIsExist.html",
-		        data: {"addr":assetAddr,"name": encodeURI(assetName),"addrType":addrType},
+		        data: {"addr":assetAddr,"name": encodeURI(assetName)},
 		        dataType:"json",
 		        success: function(data){
+		        alert("ccc");
 		            if(data.msg=='1'){
 		            	$("#assetName_msg").html("资产名称重复!");
 		            }else if(data.msg=='2'){
@@ -74,12 +76,66 @@ function saveAsset() {
 		    		            if(data.msg){
 		    		            	alert("免费用户管理资产数不能大于" + data.allowCount);
 		    		            }else{
-		    		            	$("#saveAsset").submit();
+		    		            	$.ajax({
+		    		            		type:'POST',
+		    		            		url:'addAsset.html',
+		    		            		data:{'assetName':assetName,'assetAddr':assetAddr,'purpose':purpose,'prov':prov,'city':city},
+		    		            		dataType:"json",
+		    		            		success:function(data){
+		    		            			$("#assetName_msg").html("");
+											$("#assetAddr_msg").html("");
+											$("#location_msg").html("");
+											$("#assetUsage_msg").html("");
+											
+		    		            			switch(data.result) {
+		    		            				case 0:
+		    		            					//添加成功
+		    		            					alert("添加成功!");
+		    		            					window.location.href="userAssetsUI.html";
+		    		            					break;
+		    		            				case 1:
+		    		            					alert("免费用户管理资产数不能大于" + data.subResult);
+		    		            					break;
+		    		            				case 2:
+		    		            					if (data.subResult == 1) {
+		    		            						$("#assetName_msg").html("请输入资产名称!");
+		    		            					}else if(data.subResult == 2) {
+		    		            						$("#assetName_msg").html("请输入正确的资产名称!");
+		    		            					}else if(data.subResult == 3) {
+		    		            						$("#assetName_msg").html("资产名称重复!");
+		    		            					}
+		    		            					break;
+		    		            				case 3:
+		    		            					if (data.subResult == 1) {
+		    		            						$("#assetAddr_msg").html("请输入资产地址!");
+		    		            					} else if(data.subResult == 2) {
+		    		            						$("#assetAddr_msg").html("请输入正确的资产地址!");
+		    		            					}else if(data.subResult == 3) {
+		    		            						$("#assetName_msg").html("资产地址重复!");
+		    		            					}
+		    		            					break;
+		    		            				case 4:
+		    		            					$("#location_msg").html("请选择资产所在物理地址!");
+		    		            					break;
+		    		            				case 5:
+		    		            					$("#assetUsage_msg").html("请选择资产用途!");
+		    		            					break;
+		    		            				default:
+		    		            					break;
+		    		            			}
+		    		            		},
+		    		            		error:function(data) {
+		    		            			if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+    		    				 				 window.location.href = "loginUI.html"; } 
+    		    				 			else { window.location.href = "loginUI.html"; }
+		    		            		}
+		    		            	
+		    		            	});
 		    		            }
-		    		        },
+		    		        }
 		    		     }); 
 		            }
-		        },
+		        }
 		     }); 
 		}
 	
@@ -101,30 +157,40 @@ function searchAssetCombine(){
 }
 //提取修改信息
 function editAssetUI(str){
-	$(".editMsg").html("");
 	var arr = str.split(',');
-	$("#hiddenEditName").val(arr[1]);
-	$("#hiddenEditAddr").val(arr[2]);
-	$("#editAssetName").val(arr[1]);
-	$("#editAssetAddr").val(arr[2]);
-	$("#editDistrictId").val(arr[3]);
-	if (arr[6]==0) {
-		$("input[name='editAssetType'][value='http']").attr("checked",true); 
-	}else if(arr[6]==1){
-		$("input[name='editAssetType'][value='https']").attr("checked",true);
-	}
-	getEditCitys(arr[3]);
-	var temp = arr[4];
-
-	$("#editPurpose").val(arr[5]);
-	$("#editAssetid").val(arr[0]);
-	setTimeout(function(){
-		$("#editCity").val(temp);
-	},100);
-
-	$('.shade').show();
-	$('#updateAssest').show();
-	$('html').css({overflow:"hidden"});
+	var id = arr[0];
+	$.post("checkedit.html", {"id" : id}, function(data, textStatus) {
+		if (data.count>0){
+			alert("您正在执行的订单中包含此资产，暂时不能修改！");
+			return false;
+		}else{
+			$(".editMsg").html("");
+			$("#hiddenEditName").val(arr[1]);
+			$("#hiddenEditAddr").val(arr[2]);
+			$("#editAssetName").val(arr[1]);
+			$("#editAssetAddr").val(arr[2]);
+			$("#editDistrictId").val(arr[3]);
+			if (arr[6]==0) {
+				$("input[name='editAssetType'][value='http']").attr("checked",true); 
+			}else if(arr[6]==1){
+				$("input[name='editAssetType'][value='https']").attr("checked",true);
+			}
+			getEditCitys(arr[3]);
+			var temp = arr[4];
+		
+			$("#editPurpose").val(arr[5]);
+			$("#editAssetid").val(arr[0]);
+			setTimeout(function(){
+				$("#editCity").val(temp);
+			},100);
+		
+			$('.shade').show();
+			$('#updateAssest').show();
+			$('html').css({overflow:"hidden"});
+				
+		}
+	})
+	
 }
 //修改资产
 function editAsset(){
@@ -186,46 +252,84 @@ function editAsset(){
 	            	$("#editAssetName_msg").html("");
 	            	$("#editAssetAddr_msg").html("");
 
-	       		 var options = {
+	       		 $.ajax({
 	       		 		type: "POST",
 	 					url:'editAsset.html',
 	 					data:{
-	 			 		'id':id,
-	  	               'assetName':assetName,
-	  	               'assetAddr':assetAddr,
-	  	               'addrType':addrType,
-	  	               'purpose':purpose,
-	  	               'prov':prov,
-	  	               'city':city
+	 			 			'id':id,
+	  	               		'assetName':assetName,
+	  	               		'assetAddr':assetAddr,
+	  	               		'purpose':purpose,
+	  	               		'prov':prov,
+	  	               		'city':city
 	 					},
 	 					//beforeSubmit:showRequest,
 	 					success: function(data) {
-	 						if(data.successFlag){
-	 							alert("修改成功!");
-	 							$('.popBoxhide').hide();
-	 							$('.shade').hide();
-	 							$('html').css({overflow:'auto'})
+	 						$("#editAssetName_msg").html("");
+							$("#editAssetAddr_msg").html("");
+							$("#editLocation_msg").html("");
+							$("#editAssetUsage_msg").html("");
+							
+	 						switch(data.result) {
+		    		            case 0:
+			    		            alert("修改成功!");
+	 								$('.popBoxhide').hide();
+	 								$('.shade').hide();
+	 								$('html').css({overflow:'auto'})
 
-	 							//刷新页面
-	 							$.post("userAssets.html",{},function(data){
-	 								$("#assetsTable").html("");
-	 								$("#assetsTable").append(data);
-	 								//设置tab的显示
-	 								setTabShow();
-	 							}); 
-	 						}else{
-	 							alert("修改失败!");
-	 						}
-	 								
+	 								//刷新页面
+	 								$.post("userAssets.html",{},function(data){
+	 									$("#assetsTable").html("");
+	 									$("#assetsTable").append(data);
+	 									//设置tab的显示
+	 									setTabShow();
+	 								}); 
+			    		            break;
+		    		            case 1:
+		    		            	if (data.subResult == 1) {
+			    		            	alert("修改失败!");
+		    		            		
+		    		            	}else if (data.subResult == 2){
+		    		            		alert("您正在执行的订单中包含此资产，暂时不能修改！");
+		    		            	}
+		    		            	break;
+		    		            case 2:
+		    		            	if (data.subResult == 1) {
+		    		            		$("#editAssetName_msg").html("请输入资产名称!");
+		    		            	}else if(data.subResult == 2) {
+		    		            		$("#editAssetName_msg").html("请输入正确的资产名称!");
+		    		            	}else if(data.subResult == 3) {
+		    		            		$("#editAssetName_msg").html("资产名称重复!");
+		    		            	}
+		    		            	break;
+		    		            case 3:
+		    		            	if (data.subResult == 1) {
+		    		            		$("#editAssetAddr_msg").html("请输入资产地址!");
+		    		            	} else if(data.subResult == 2) {
+		    		            		$("#editAssetAddr_msg").html("请输入正确的资产地址!");
+		    		            	}else if(data.subResult == 3) {
+		    		            		$("#editAssetAddr_msg").html("资产地址重复!");
+		    		            	}
+		    		            	break;
+		    		            case 4:
+		    		            	$("#editLocation_msg").html("请选择资产所在物理地址!");
+		    		            	break;
+		    		            case 5:
+		    		            	$("#editAssetUsage_msg").html("请选择资产用途!");
+		    		            	break;
+		    		            default:
+		    		            	break;
+		    		         }
+	 						
 	 					},
 	 					error: function(data){
 	 						 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
 	 				    		 window.location.href = "loginUI.html"; } 
 	 				    	 else { window.location.href = "loginUI.html"; } 
 	 					}
-	 				};
+	 				});
 			 		 // 将options传给ajaxForm
-			 		 $('#editAsset').ajaxSubmit(options);
+			 		// $('#editAsset').ajaxSubmit(options);
 	            }
 	        },
 	     }); 
@@ -262,7 +366,11 @@ function deleteAsset(id){
 							setTabShow();
 						});
 		        	}else{
-		        		alert("删除失败!");
+		        		if (data.errorCode == 1) {
+		        			alert("您的订单中包含此资产，不能删除！");
+		        		} else {
+		        			alert("删除失败!");
+		        		}
 		        	}
 		        		
 		        },
