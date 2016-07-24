@@ -41,12 +41,53 @@ function showUnreadNews()
 }
 
 function buySefHelpOrder(serviceId){
-	$("#serviceId").val(serviceId);
-	$("#selfHelpOrderInitForm").submit();
+	//虚拟表单post提交
+	var tempForm = document.createElement("form");
+  	tempForm.action = "selfHelpOrderInit.html";
+  	tempForm.method = "post";
+  	tempForm.style.display = "none";
+  							
+  	var serviceIdInput = document.createElement("input");
+  	serviceIdInput.type="hidden"; 
+	serviceIdInput.name= "serviceId"; 
+	serviceIdInput.value= serviceId; 
+	tempForm.appendChild(serviceIdInput);
+	
+	var indexPageInput = document.createElement("input");
+  	indexPageInput.type="hidden"; 
+	indexPageInput.name= "indexPage"; 
+	indexPageInput.value= 1; 
+	tempForm.appendChild(indexPageInput);
+							
+	document.body.appendChild(tempForm);
+	tempForm.submit();
+	document.body.removeChild(tempForm);
+	
 }
 function buyWafOrder(serviceId){
-	$("#serviceId").val(serviceId);
-	$("#wafDetailsForm").submit();
+
+    //虚拟表单post提交
+	var tempForm = document.createElement("form");
+  	tempForm.action = "wafDetails.html";
+  	tempForm.method = "post";
+  	tempForm.style.display = "none";
+  							
+  	var serviceIdInput = document.createElement("input");
+  	serviceIdInput.type="hidden"; 
+	serviceIdInput.name= "serviceId"; 
+	serviceIdInput.value= serviceId; 
+	tempForm.appendChild(serviceIdInput);
+	
+	var indexPageInput = document.createElement("input");
+  	indexPageInput.type="hidden"; 
+	indexPageInput.name= "indexPage"; 
+	indexPageInput.value= 1; 
+	tempForm.appendChild(indexPageInput);
+							
+	document.body.appendChild(tempForm);
+	tempForm.submit();
+	document.body.removeChild(tempForm);            							
+                							
 }
     //定时30s刷新一次
     //setInterval('showUnreadNews()',20000);
@@ -156,10 +197,6 @@ function buyWafOrder(serviceId){
 		                                    	<!--<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1" class="btn">购买</a>
 		                                    -->
 		                                    <a href="javascript:;" class="btn" onclick="buySefHelpOrder(${list.id });">购买</a>
-		                                     <form action="selfHelpOrderInit.html" method="post" id="selfHelpOrderInitForm">
-                								<input type="hidden" id="serviceId" name="serviceId"/>
-                								<input type="hidden" id="indexPage" name="indexPage" value="1"/>
-                							</form>
 		                                    </div>
 		                               
 		                            </li>
@@ -196,10 +233,6 @@ function buyWafOrder(serviceId){
                                             <!--<a href="${ctx}/wafDetails.html?serviceId=6&indexPage=1" class="btn" style="width:80px;">购买</a>
                                         -->
                                          	<a href="javascript:;" class="btn" style="width:80px;" onclick="buyWafOrder(6);">购买</a>
-		                                     <form action="wafDetails.html" method="post" id="wafDetailsForm">
-                								<input type="hidden" id="serviceId" name="serviceId" value="6"/>
-                								<input type="hidden" id="indexPage" name="indexPage" value="1"/>
-                							</form>
                                         </div>
                                     </div>
                                <div class="mask">
