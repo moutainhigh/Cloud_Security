@@ -1977,7 +1977,7 @@ public class shoppingController {
 	 * @throws Exception 
 	 *		 @time 2015-1-16
 	 */
-	@RequestMapping(value="/addWebSite.html", method=RequestMethod.POST)
+	@RequestMapping(value="/addWebSiteWaf.html", method=RequestMethod.POST)
 	public void addWebSite(HttpServletRequest request,HttpServletResponse response){
 		Map<String, Object> m = new HashMap<String, Object>();
 		String hostnameRegex ="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
