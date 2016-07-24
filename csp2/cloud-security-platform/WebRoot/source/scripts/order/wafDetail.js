@@ -623,7 +623,7 @@ function saveWafAsset() {
 		    		            if(data.msg){
 		    		            	alert("免费用户管理资产数不能大于" + data.allowCount);
 		    		            }else{
-		    			       		 var options = {
+		    			       		 $.ajax({
 		    			       		 			type:'POST',
 		    				 					url:'addWafWebSite.html',
 		    				 					data:{
@@ -706,9 +706,9 @@ function saveWafAsset() {
 		    				 				    		 window.location.href = "loginUI.html"; } 
 		    				 				    	 else { window.location.href = "loginUI.html"; } 
 		    				 					}
-		    				 				};
+		    				 				});
 		    						 		 // 将options传给ajaxForm
-		    						 		 $('#saveWafAsset').ajaxSubmit(options);
+		    						 		 //$('#saveWafAsset').ajaxSubmit(options);
 		    		            }
 		    		        }
 		    		     }); 
