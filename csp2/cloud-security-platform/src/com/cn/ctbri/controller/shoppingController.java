@@ -1971,150 +1971,150 @@ public class shoppingController {
     }
     
     
-	/**
-	 * 功能描述： 添加资产
-	 * 参数描述： Model model
-	 * @throws Exception 
-	 *		 @time 2015-1-16
-	 */
-	@RequestMapping(value="/addWebSiteWaf.html", method=RequestMethod.POST)
-	public void addWebSite(HttpServletRequest request,HttpServletResponse response){
-		Map<String, Object> m = new HashMap<String, Object>();
-		String hostnameRegex ="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
-
-		try {
-			Asset asset = new Asset();
-			User globle_user = (User) request.getSession().getAttribute("globle_user");
-			asset.setUserid(globle_user.getId());//用户ID
-			asset.setCreate_date(new Date());//创建日期
-			if(globle_user.getType()==2){
-				asset.setStatus(0);//资产状态(1：已验证，0：未验证)
-			}else if(globle_user.getType()==3){
-				asset.setStatus(1);//资产状态(1：已验证，0：未验证)
-			}
-
-			String name = request.getParameter("assetName");//资产名称
-			String addr = request.getParameter("assetAddr").toLowerCase();//资产地址
-			String addrType = request.getParameter("addrType");//资产类型
-			String purpose = request.getParameter("purpose");//用途
-			String prov = request.getParameter("prov");
-			String city = request.getParameter("city");
-			String wafFlag = request.getParameter("wafFlag");
-						
-//			if(!(addr.startsWith(addrType)) || addr.equals(addrType)){
-//				addr = addrType + "://" + addr.trim();
+//	/**
+//	 * 功能描述： 添加资产
+//	 * 参数描述： Model model
+//	 * @throws Exception 
+//	 *		 @time 2015-1-16
+//	 */
+//	@RequestMapping(value="/addWebSiteWaf.html", method=RequestMethod.POST)
+//	public void addWebSite(HttpServletRequest request,HttpServletResponse response){
+//		Map<String, Object> m = new HashMap<String, Object>();
+//		String hostnameRegex ="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
+//
+//		try {
+//			Asset asset = new Asset();
+//			User globle_user = (User) request.getSession().getAttribute("globle_user");
+//			asset.setUserid(globle_user.getId());//用户ID
+//			asset.setCreate_date(new Date());//创建日期
+//			if(globle_user.getType()==2){
+//				asset.setStatus(0);//资产状态(1：已验证，0：未验证)
+//			}else if(globle_user.getType()==3){
+//				asset.setStatus(1);//资产状态(1：已验证，0：未验证)
 //			}
-			//判断资产地址是否包含http
-			Pattern pattern2 = Pattern.compile("([hH][tT][tT][pP][sS]?):\\/\\/([\\w.]+\\/?)\\S*");
-			Matcher matcher2 =	pattern2.matcher(addr);
-			if(!matcher2.find()){
-				addr="http://"+addr.trim();
-			}
-			
-			//如果wafFlag!=null 只允许添加域名
-			if(wafFlag!=null){
-				String addInfo = "";
-				//判断http协议
-				if(addr.indexOf("http://")!=-1){
-				  	if(addr.substring(addr.length()-1).indexOf("/")!=-1){
-				  		addInfo = addr.trim().substring(7,addr.length()-1);
-				  	}else{
-				  		addInfo = addr.trim().substring(7,addr.length());
-				  	}
-				}else if(addr.indexOf("https://")!=-1){
-					if(addr.substring(addr.length()-1).indexOf("/")!=-1){
-				  		addInfo = addr.trim().substring(8,addr.length()-1);
-				  	}else{
-				  		addInfo = addr.trim().substring(8,addr.length());
-				  	}
-				}
-				
-				//判断资产地址是否是域名
-				boolean flag=addInfo.matches(hostnameRegex);
-				if(!flag){
-					m.put("success", false);
-					m.put("wafFlag", false);
-					//object转化为Json格式
-					JSONObject JSON = CommonUtil.objectToJson(response, m);
-					try {
-						// 把数据返回到页面
-						CommonUtil.writeToJsp(response, JSON);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					return;
-				}
-				
-			}
-			
-			
-			asset.setName(name);
-			asset.setAddr(addr);
-			asset.setPurpose(purpose);
-			asset.setDistrictId(prov);
-			asset.setCity(city);
-			assetService.saveAsset(asset);
-
-			//获取服务对象资产
-		    List<Asset> serviceAssetList = selfHelpOrderService.findServiceAsset(globle_user.getId());
-		    
-		    if(wafFlag==null){
-		    	m.put("serviceAssetList", serviceAssetList);
-		    }else{//如果是waf，获取域名列表
-				boolean flag=false;				
-		    	List assList = new ArrayList();
-				if(serviceAssetList!=null&&serviceAssetList.size()>0){
-					for(int i=0;i<serviceAssetList.size();i++){
-						Asset newAsset = (Asset)serviceAssetList.get(i);
-						String newAddr = asset.getAddr();
-						String addInfo = "";
-						//判断http协议
-						if(addr.indexOf("http://")!=-1){
-						  	if(addr.substring(addr.length()-1).indexOf("/")!=-1){
-						  		addInfo = addr.trim().substring(7,addr.length()-1);
-						  	}else{
-						  		addInfo = addr.trim().substring(7,addr.length());
-						  	}
-						}else if(addr.indexOf("https://")!=-1){
-							if(addr.substring(addr.length()-1).indexOf("/")!=-1){
-						  		addInfo = addr.trim().substring(8,addr.length()-1);
-						  	}else{
-						  		addInfo = addr.trim().substring(8,addr.length());
-						  	}
-						}
-						//判断资产地址是否是域名
-						flag=addInfo.matches(hostnameRegex);
-						if(flag){
-							assList.add(newAsset);
-						}
-					}
-				}
-				m.put("serviceAssetList", assList);
-		    }
-			m.put("success", true);
-			
-			//object转化为Json格式
-			JSONObject JSON = CommonUtil.objectToJson(response, m);
-			try {
-				// 把数据返回到页面
-				CommonUtil.writeToJsp(response, JSON);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} catch (Exception e) {
-			m.put("success", false);
-			m.put("wafFlag", true);
-			//object转化为Json格式
-			JSONObject JSON = CommonUtil.objectToJson(response, m);
-			try {
-				// 把数据返回到页面
-				CommonUtil.writeToJsp(response, JSON);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			e.printStackTrace();
-		}
-	}
+//
+//			String name = request.getParameter("assetName");//资产名称
+//			String addr = request.getParameter("assetAddr").toLowerCase();//资产地址
+//			String addrType = request.getParameter("addrType");//资产类型
+//			String purpose = request.getParameter("purpose");//用途
+//			String prov = request.getParameter("prov");
+//			String city = request.getParameter("city");
+//			String wafFlag = request.getParameter("wafFlag");
+//						
+////			if(!(addr.startsWith(addrType)) || addr.equals(addrType)){
+////				addr = addrType + "://" + addr.trim();
+////			}
+//			//判断资产地址是否包含http
+//			Pattern pattern2 = Pattern.compile("([hH][tT][tT][pP][sS]?):\\/\\/([\\w.]+\\/?)\\S*");
+//			Matcher matcher2 =	pattern2.matcher(addr);
+//			if(!matcher2.find()){
+//				addr="http://"+addr.trim();
+//			}
+//			
+//			//如果wafFlag!=null 只允许添加域名
+//			if(wafFlag!=null){
+//				String addInfo = "";
+//				//判断http协议
+//				if(addr.indexOf("http://")!=-1){
+//				  	if(addr.substring(addr.length()-1).indexOf("/")!=-1){
+//				  		addInfo = addr.trim().substring(7,addr.length()-1);
+//				  	}else{
+//				  		addInfo = addr.trim().substring(7,addr.length());
+//				  	}
+//				}else if(addr.indexOf("https://")!=-1){
+//					if(addr.substring(addr.length()-1).indexOf("/")!=-1){
+//				  		addInfo = addr.trim().substring(8,addr.length()-1);
+//				  	}else{
+//				  		addInfo = addr.trim().substring(8,addr.length());
+//				  	}
+//				}
+//				
+//				//判断资产地址是否是域名
+//				boolean flag=addInfo.matches(hostnameRegex);
+//				if(!flag){
+//					m.put("success", false);
+//					m.put("wafFlag", false);
+//					//object转化为Json格式
+//					JSONObject JSON = CommonUtil.objectToJson(response, m);
+//					try {
+//						// 把数据返回到页面
+//						CommonUtil.writeToJsp(response, JSON);
+//					} catch (IOException e) {
+//						e.printStackTrace();
+//					}
+//					return;
+//				}
+//				
+//			}
+//			
+//			
+//			asset.setName(name);
+//			asset.setAddr(addr);
+//			asset.setPurpose(purpose);
+//			asset.setDistrictId(prov);
+//			asset.setCity(city);
+//			assetService.saveAsset(asset);
+//
+//			//获取服务对象资产
+//		    List<Asset> serviceAssetList = selfHelpOrderService.findServiceAsset(globle_user.getId());
+//		    
+//		    if(wafFlag==null){
+//		    	m.put("serviceAssetList", serviceAssetList);
+//		    }else{//如果是waf，获取域名列表
+//				boolean flag=false;				
+//		    	List assList = new ArrayList();
+//				if(serviceAssetList!=null&&serviceAssetList.size()>0){
+//					for(int i=0;i<serviceAssetList.size();i++){
+//						Asset newAsset = (Asset)serviceAssetList.get(i);
+//						String newAddr = asset.getAddr();
+//						String addInfo = "";
+//						//判断http协议
+//						if(addr.indexOf("http://")!=-1){
+//						  	if(addr.substring(addr.length()-1).indexOf("/")!=-1){
+//						  		addInfo = addr.trim().substring(7,addr.length()-1);
+//						  	}else{
+//						  		addInfo = addr.trim().substring(7,addr.length());
+//						  	}
+//						}else if(addr.indexOf("https://")!=-1){
+//							if(addr.substring(addr.length()-1).indexOf("/")!=-1){
+//						  		addInfo = addr.trim().substring(8,addr.length()-1);
+//						  	}else{
+//						  		addInfo = addr.trim().substring(8,addr.length());
+//						  	}
+//						}
+//						//判断资产地址是否是域名
+//						flag=addInfo.matches(hostnameRegex);
+//						if(flag){
+//							assList.add(newAsset);
+//						}
+//					}
+//				}
+//				m.put("serviceAssetList", assList);
+//		    }
+//			m.put("success", true);
+//			
+//			//object转化为Json格式
+//			JSONObject JSON = CommonUtil.objectToJson(response, m);
+//			try {
+//				// 把数据返回到页面
+//				CommonUtil.writeToJsp(response, JSON);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		} catch (Exception e) {
+//			m.put("success", false);
+//			m.put("wafFlag", true);
+//			//object转化为Json格式
+//			JSONObject JSON = CommonUtil.objectToJson(response, m);
+//			try {
+//				// 把数据返回到页面
+//				CommonUtil.writeToJsp(response, JSON);
+//			} catch (IOException e1) {
+//				e1.printStackTrace();
+//			}
+//			e.printStackTrace();
+//		}
+//	}
 	
 	/**
 	 * 功能描述： 保存详情页操作
