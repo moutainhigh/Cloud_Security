@@ -207,6 +207,11 @@ function editAsset(){
      var pattern = new RegExp("[`~!@#$^&*()=|{}';',<>?~！@#￥……&*（）——|{}【】‘；”“'。，、？]"); 
      var newRegex = /^((?!([hH][tT][tT][pP][sS]?)\:*\/*)([\w\.\-]+(\:[\w\.\&%\$\-]+)*@)?((([^\s\(\)\<\>\\\"\.\[\]\,@;:]+)(\.[^\s\(\)\<\>\\\"\.\[\]\,@;:]+)*(\.[a-zA-Z]{2,4}))|((([01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}([01]?\d{1,2}|2[0-4]\d|25[0-5])))(\b\:(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0)\b)?((\/[^\/][\w\.\,\?\'\\\/\+&%\$#\=~_\-@]*)*[^\.\,\?\"\'\(\)\[\]!;<>{}\s\x7F-\xFF])?)$/;
      var strRegex = /^((([hH][tT][tT][pP][sS]?):\/\/)([\w\.\-]+(\:[\w\.\&%\$\-]+)*@)?((([^\s\(\)\<\>\\\"\.\[\]\,@;:]+)(\.[^\s\(\)\<\>\\\"\.\[\]\,@;:]+)*(\.[a-zA-Z]{2,4}))|((([01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}([01]?\d{1,2}|2[0-4]\d|25[0-5])))(\b\:(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0)\b)?((\/[^\/][\w\.\,\?\'\\\/\+&%\$#\=~_\-@]*)*[^\.\,\?\"\'\(\)\[\]!;<>{}\s\x7F-\xFF])?)$/;
+	
+	$("#editAssetName_msg").html("");
+	$("#editAssetAddr_msg").html("");
+	$("#editLocation_msg").html("");
+	$("#editAssetUsage_msg").html("");
 	//获取选中的radio的值
 	if(assetName == null || assetName == ""){
 		$("#editAssetName_msg").html("请输入资产名称!");
@@ -215,8 +220,8 @@ function editAsset(){
 	}else if(assetAddr==null || assetAddr == ""){
 		$("#editAssetAddr_msg").html("请输入资产地址!");
 	}else if(pattern.test(assetAddr)){
-			$("#assetName_msg").html("");
-			$("#assetAddr_msg").html("请输入正确的资产地址!");
+			$("#editAssetName_msg").html("");
+			$("#editAssetAddr_msg").html("请输入正确的资产地址!");
 	}
 	else if((!strRegex.test(assetAddr) && !newRegex.test(assetAddr)) || (strRegex.test(assetAddr)&&assetAddr.indexOf('\/\/\/')!=-1)){
 	   $("#editAssetName_msg").html("");
