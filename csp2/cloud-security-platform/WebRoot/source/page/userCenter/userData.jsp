@@ -87,24 +87,18 @@
                         	<li class="clearfix">
                             	<label class="fl">用&nbsp; 户&nbsp; 名</label>
 								<div class="fl dataListR">
-                                	<input type="text" class="text" name="name" disabled="true" value="${user.name}" id="regist_name">
+                                	<input type="text" class="text" name="name" disabled="true" value="${user.name}" id="regist_name"/>
                                 </div>
                              </li>
                              <li class="clearfix">
                             	<label class="fl">密&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;码</label>
 								<div class="fl dataListR">
-                                	<input type="password" style=" color:#929292" class="text" value="******" disabled="true" id="regist_pwd">
+                                	<input type="password" style="color:#929292" class="text" value="******" disabled="true" id="regist_pwd"/>
                                 	<a href="${ctx }/modifyPassUI.html">修改</a>
                                 </div>
-                             </li><!--
-                             <li class="clearfix">
-                            	<label class="fl">邮&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;箱</label>
-								<div class="fl dataListR">
-									<input type="hidden" id="originalEmail" value="${user.email}"/>
-                                	<input type="text" class="text" name="email" value="${user.email}" id="regist_email">
-                                </div>
                              </li>
-                             --><li class="clearfix">
+                             
+                           <li class="clearfix">
                             	<label class="fl">手&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;机</label>
 								<div class="fl dataListR">
 									<input type="hidden" id="originalMobile"  value="${user.mobile}"/>
@@ -113,6 +107,13 @@
                                 	<input type="text" class="text" name="mobile" value="${user.mobile}" disabled="true" id="regist_phone"/>
                                 	<a href="${ctx }/updateMobile.html">修改</a>
                                 	<span id="regist_mobile_msg" style="color:red;"></span>
+                                </div>
+                             </li>
+                             <li class="clearfix">
+                            	<label class="fl">邮&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;箱</label>
+								<div class="fl dataListR">
+                                	<input type="text" class="text" name="email" value="${user.email}" id="regist_email"/>
+                                	<span id="regist_email_msg" style="color:red;"></span>
                                 </div>
                              </li>
                              <li class="clearfix">
