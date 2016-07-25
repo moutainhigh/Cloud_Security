@@ -7,6 +7,7 @@ var checkSendMobile1 = 0;
 var checkCompany = 0;
 var checkCheckNumber1 = 0;
 var checkCheckPhoneActivationCode = 0;
+var checkEmail = 0;
 var wait=120;
 window.onload =function(){
 
@@ -365,7 +366,30 @@ function checkPhoneActivationCode(){
 		checkCheckPhoneActivationCode = 0;
 	 }
 }
-
+//验证邮箱
+function checkConfirmEmail(){
+	var emailVal=$("#regist_confirm_email").val();
+	var reg=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
+	if(emailVal!=null&&emailVal!=''){
+		if(!reg.test(emailVal)){
+			$("#regist_confirm_Email_flag").attr("class","error");
+    		$("#regist_confirm_Email_flag").show();
+    		$("#regist_confirm_email_prompt").html("<b></b>请输入正确的邮箱地址!");
+    		$("#regist_confirm_email_prompt").fadeIn();
+    		checkEmail = 0;
+		}else{
+			$("#regist_confirm_Email_flag").attr("class","right");
+   			$("#regist_confirm_Email_flag").show();
+   			$("#regist_confirm_email_prompt").fadeOut();
+   			checkEmail = 1;
+		}
+	}else{
+            $("#regist_confirm_Email_flag").attr("class","right");
+   			$("#regist_confirm_Email_flag").show();
+   			$("#regist_confirm_email_prompt").fadeOut();
+   			checkEmail = 1;
+	}
+}
 //提交表单及校验
 function submitForm(){
 
@@ -387,6 +411,7 @@ function submitForm(){
 	checkConfirmPassword();
 	checkCompanyFun();
 	checkMobile();
+	checkConfirmEmail();
 	 setTimeout(function () {
 		 if(checkCompany==1&&checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1&&checkMobile1==1&&checkSendMobile1==1&&checkCheckNumber1==1&&checkCheckPhoneActivationCode==1){
 		    	if(agreeId=='1'){
