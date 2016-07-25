@@ -562,6 +562,7 @@ public class MyAssetsController {
 			subResult = checkAssetName(name, oldAsset.getName(), globle_user.getId());
 			if (subResult != 0) {
 				result = 2;
+				return;
 			}
 			
 			
@@ -569,18 +570,21 @@ public class MyAssetsController {
 			subResult = checkAssetAddress(assetAddr, oldAsset.getAddr(), globle_user.getId());
 			if (subResult != 0) {
 				result = 3;
+				return;
 			}
 			
 			//资产物理地址验证
 			subResult = checkPhysicalAddress(districtId,city);
 			if (subResult != 0) {
 				result = 4;
+				return;
 			}
 			
 			//资产用途验证
 			subResult = checkPurpose(purpose);
 			if (subResult != 0) {
 				result = 5;
+				return;
 			}
 			
 			Asset asset = new Asset();
@@ -596,6 +600,7 @@ public class MyAssetsController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			result = 6;
 		}finally {
 			m.put("result", result);
 			m.put("subResult", subResult);
