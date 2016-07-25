@@ -90,6 +90,14 @@
                         </li>
                          <li class="clearfix">
                         	<div class="list fl">
+								<input type="text" placeholder="" class="text prompttext" name="confirm_email" id="regist_confirm_email" onblur="checkConfirmEmail()" autocomplete="false"/>
+                                <p class="promp">邮箱地址</p>
+                                <i class="right" style="display:none" id="regist_confirm_Email_flag"></i>
+                            </div>
+                         <div class="prompt fl" id="regist_confirm_email_prompt"><b></b>输入邮箱地址</div>
+                        </li>
+                         <li class="clearfix">
+                        	<div class="list fl">
                             	<input type="text" placeholder="" class="text prompttext" name="company" id="company" onblur="checkCompanyFun()">
                                 <p class="promp">公司名称</p>
                                 <i class="right" style="display:none" id="company_flag"></i>
