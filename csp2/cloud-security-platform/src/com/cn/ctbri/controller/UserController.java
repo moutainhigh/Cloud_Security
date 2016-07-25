@@ -162,6 +162,26 @@ public class UserController{
 		String industry = request.getParameter("industry");
 		String job = request.getParameter("job");
 		String company = request.getParameter("company");
+		String email= request.getParameter("email");
+		if(email!=null&&!"".equals(email)){
+		
+		 String check = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+		    Pattern regex = Pattern.compile(check);
+		    Matcher matcher = regex.matcher(email);
+		    if(!matcher.find()){
+				m.put("result", 2);//邮箱地址验证失败
+			
+				//object转化为Json格式
+				JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+			}
+		}
 		//验证公司名称
 		String msg = checkCompany(company);
 		if (!msg.equals("")) {
@@ -177,6 +197,7 @@ public class UserController{
 			}
 			return;
 		}
+		
 		//手机号码
 //		globle_user.setMobile(mobile);
 		//邮箱
