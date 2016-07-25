@@ -200,7 +200,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 修改用户 -->
 	<update id="updatePass" parameterType="com.cn.ctbri.entity.User">
-		update cs_user set password=#{password} where mobile=#{mobile}
+		update cs_user set 
+		password=#{password},
+		Salt=#{Salt}
+		where mobile=#{mobile}
 	</update>
 	
 	<!-- 修改用户的手机号码 -->
