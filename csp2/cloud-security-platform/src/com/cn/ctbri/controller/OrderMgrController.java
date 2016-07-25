@@ -691,7 +691,8 @@ public class OrderMgrController {
         String ip = request.getParameter("ip");
         String bandwidth = request.getParameter("bandwidth");
         /***判断参数开始**/
-       Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");  
+        if(phone!=null&&!"".equals(phone)){
+        Pattern p = Pattern.compile("^[1][3,4,5,8][0-9]{9}$");  
        
        Matcher matcher = p.matcher(phone); 
        if(!matcher.find()){
@@ -706,6 +707,8 @@ public class OrderMgrController {
       	       }
       	       return;
        }
+    	
+        }
        if(email!=null&&!"".equals(email)){
     	   Pattern emailP = Pattern.compile("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$");  
            Matcher ematcher = emailP.matcher(email); 
