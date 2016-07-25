@@ -34,9 +34,9 @@ public class OrderAPIServiceImpl implements IOrderAPIService{
 		return orderAPIDao.findOrderAPIByType(paramMap);
 	}
 
-	public void deleteOrderAPI(String orderId) {
+	public void deleteOrderAPI(String orderId,int userId) {
 		// TODO Auto-generated method stub
-		orderAPIDao.deleteOrderAPI(orderId);
+		orderAPIDao.deleteOrderAPI(orderId,userId);
 	}
 	
 }

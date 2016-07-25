@@ -113,8 +113,8 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
     }
 
    //删除联系人
-    public void deleteLinkman(int contactId) {
-        selfHelpOrderDao.deleteLinkman(contactId);
+    public void deleteLinkman(int contactId,int userId) {
+        selfHelpOrderDao.deleteLinkman(contactId,userId);
     }
 
 	public Serv findServiceById(int serviceId) {

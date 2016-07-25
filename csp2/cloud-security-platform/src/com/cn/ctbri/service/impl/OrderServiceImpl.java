@@ -162,8 +162,8 @@ public class OrderServiceImpl implements IOrderService{
 	}
 	
 	//删除订单
-    public void deleteOrderById(String orderId) {
-        orderDao.deleteOrderById(orderId);
+    public void deleteOrderById(String orderId,int userId) {
+        orderDao.deleteOrderById(orderId,userId);
     }
     //查找订单
     public Order findOrderById(String orderId) {
@@ -201,9 +201,9 @@ public class OrderServiceImpl implements IOrderService{
 		orderDao.updateLinkManByAPIId(linkman, orderId);
 	}
 
-	public void delLinkmanByOrderId(String orderId) {
+	public void delLinkmanByOrderId(String orderId,int userId) {
 		// TODO Auto-generated method stub
-		orderDao.delLinkmanByOrderId(orderId);
+		orderDao.delLinkmanByOrderId(orderId,userId);
 	}
 	public List findByOrderListId(String orderListId, String state) {
 		return orderDao.findByOrderListId(orderListId,state);

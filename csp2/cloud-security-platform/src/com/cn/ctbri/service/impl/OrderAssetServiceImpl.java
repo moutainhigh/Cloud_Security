@@ -80,8 +80,8 @@ public class OrderAssetServiceImpl implements IOrderAssetService{
     }
 
     //根据orderId删除订单资产
-    public void deleteOaByOrderId(String orderId) {
-        orderAssetDao.deleteOaByOrderId(orderId);
+    public void deleteOaByOrderId(String orderId,int userId) {
+        orderAssetDao.deleteOaByOrderId(orderId,userId);
     }
 
 	public List getOrdersByAsset(int assetId) {
