@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<title>${serviceAPI.name }订单</title>
+<title>${serviceAPI.name }商品信息</title>
 <link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
