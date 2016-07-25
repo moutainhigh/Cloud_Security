@@ -483,7 +483,15 @@ public class shoppingAPIController {
 		             CommonUtil.writeToJsp(response, JSON);
 		             return;
 	        }
-	        if(time.equals(5)&&Integer.parseInt(num)>1){
+	        if(time.equals("5")&&Integer.parseInt(num)>1){
+	        	 m.put("error", true);
+		        	//object转化为Json格式
+		             JSONObject JSON = CommonUtil.objectToJson(response, m);
+		             // 把数据返回到页面
+		             CommonUtil.writeToJsp(response, JSON);
+		             return;
+	        }
+	        if(Integer.parseInt(num)<1){
 	        	 m.put("error", true);
 		        	//object转化为Json格式
 		             JSONObject JSON = CommonUtil.objectToJson(response, m);
