@@ -1,5 +1,6 @@
 package com.cn.ctbri.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,8 +36,11 @@ public class OrderAPIDaoImpl extends DaoCommon implements OrderAPIDao{
 		return getSqlSession().selectList(ns+"findOrderAPIByType", paramMap);
 	}
 
-	public void deleteOrderAPI(String orderId) {
+	public void deleteOrderAPI(String orderId,int userId) {
 		// TODO Auto-generated method stub
+		Map map = new HashMap();
+		map.put("orderId", orderId);
+		map.put("userId", userId);
 		  this.getSqlSession().delete(ns + "deleteOrderAPI",orderId);
 	}
 	

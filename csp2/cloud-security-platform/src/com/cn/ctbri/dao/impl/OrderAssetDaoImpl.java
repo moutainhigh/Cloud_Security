@@ -1,17 +1,14 @@
 package com.cn.ctbri.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.OrderAssetDao;
 import com.cn.ctbri.entity.Asset;
-import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderIP;
 /**
@@ -85,8 +82,11 @@ public class OrderAssetDaoImpl extends DaoCommon implements OrderAssetDao{
     }
     
     //根据orderId删除订单资产
-    public void deleteOaByOrderId(String orderId) {
-        this.getSqlSession().delete(ns + "deleteOaByOrderId",orderId);
+    public void deleteOaByOrderId(String orderId,int userId) {
+       Map map = new HashMap();
+       map.put("orderId", orderId);
+       map.put("userId", userId);
+        this.getSqlSession().delete(ns + "deleteOaByOrderId",map);
     }
 	public List getOrdersByAsset(int assetId) {
 		List list = this.getSqlSession().selectList(ns+"getOrdersByAsset", assetId);

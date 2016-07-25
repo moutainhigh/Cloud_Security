@@ -181,13 +181,15 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 		map.put("userId", userId);
 		// TODO Auto-generated method stub
 	   String id = this.getSqlSession().selectOne(ns +"getOrderById",map);
-	   System.out.println("aa=="+id);
 		return String.valueOf(id);
 	}
 
 	//删除订单
-    public void deleteOrderById(String orderId) {
-        this.getSqlSession().delete(ns + "deleteOrderById",orderId);
+    public void deleteOrderById(String orderId,int userId) {
+    	Map map = new HashMap();
+    	map.put("orderId", orderId);
+    	map.put("userId", userId);
+        this.getSqlSession().delete(ns + "deleteOrderById",map);
     }
 
     public Order findOrderById(String orderId) {
@@ -253,9 +255,12 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 		this.getSqlSession().update(ns+"updateLinkManByAPIId",map);
 	}
 
-	public void delLinkmanByOrderId(String orderId) {
+	public void delLinkmanByOrderId(String orderId,int userId) {
 		// TODO Auto-generated method stub
-		this.getSqlSession().delete(ns+"delLinkmanByOrderId",orderId);
+		Map map = new HashMap();
+		map.put("orderId", orderId);
+		map.put("userId", userId);
+		this.getSqlSession().delete(ns+"delLinkmanByOrderId",map);
 	}
 
 	public List findByOrderListId(String orderListId ,String state) {
