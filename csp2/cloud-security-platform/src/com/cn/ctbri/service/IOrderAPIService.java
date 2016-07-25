@@ -24,6 +24,6 @@ public interface IOrderAPIService {
 	//查询用户购买api套餐数
 	List<OrderAPI> findOrderAPIByType(Map<String, Object> paramMap);
 	//删除订单
-	void deleteOrderAPI(String orderId);
+	void deleteOrderAPI(String orderId,int userId);
 
 }
