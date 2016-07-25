@@ -670,18 +670,32 @@ public class shoppingController {
      */
     @RequestMapping(value="delShopCar.html",method=RequestMethod.POST)
     @ResponseBody
-    public void saveOrderAPI(HttpServletResponse response,HttpServletRequest request) throws Exception{
+    public void delShopCar(HttpServletResponse response,HttpServletRequest request) throws Exception{
+    	Map map = new HashMap();
+    	User globle_user = (User) request.getSession().getAttribute("globle_user");
     	  Map<String, Object> m = new HashMap<String, Object>();
         //获得订单id
         String orderId = request.getParameter("orderId");
+        if(orderId==null&&"".equals(orderId)){
+        	map.put("error", true);
+            //object转化为Json格式
+      		JSONObject JSON = CommonUtil.objectToJson(response, m);
+      		try {
+      			// 把数据返回到页面
+      			CommonUtil.writeToJsp(response, JSON);
+      		} catch (IOException e) {
+      			e.printStackTrace();
+      		}
+      		return;
+        }
         //删除联系人
-        orderService.delLinkmanByOrderId(orderId);
+        orderService.delLinkmanByOrderId(orderId,globle_user.getId());
         //删除订单资产
-        orderAssetService.deleteOaByOrderId(orderId);
+        orderAssetService.deleteOaByOrderId(orderId,globle_user.getId());
         //删除订单api
-        orderAPIService.deleteOrderAPI(orderId);
+        orderAPIService.deleteOrderAPI(orderId,globle_user.getId());
          //删除订单
-        orderService.deleteOrderById(orderId);
+        orderService.deleteOrderById(orderId,globle_user.getId());
      
       //object转化为Json格式
 		JSONObject JSON = CommonUtil.objectToJson(response, m);
