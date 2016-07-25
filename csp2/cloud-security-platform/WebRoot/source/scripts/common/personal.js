@@ -54,6 +54,8 @@ function checkUserData(){
 	var industry = $("#industry").val();
 	var job = $("#job").val();
 	var company = $("#company").val();
+	var email=$("#regist_email").val();
+	var reg=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
 	var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
 	if(patrn.test(company)){
 		$("#regist_company_msg").html("公司名称含有非法字符");
@@ -63,6 +65,13 @@ function checkUserData(){
 		$("#regist_company_msg").html("公司名称长度不能超过20个字符");
 		return;
 	}
+	if(email!=null&&email!=''){
+		if(!reg.test(email)){
+			$("#regist_email_msg").html("请输入正确的邮箱地址!");
+	     	return;
+		}
+	}
+	
 	//var flag = checkMobile();
 	//if(flag==1){
 		$.ajax({ type: "POST",
@@ -71,6 +80,7 @@ function checkUserData(){
     		     data: {"urlAddr":urlAddr,
 	    			   	"industry":industry,
 	    			   	"job":job,
+	    			   	"email":email,
 	    			   	"company":company},  
     		     dataType: "json",
     		     success: function(data) {
@@ -84,6 +94,8 @@ function checkUserData(){
     		     	}else if(data.result == 1){
     		     		//公司名称验证失败
 			    	 	$("#regist_company_msg").html(data.message);
+    		     	}else if(data.result == 2){
+    		     		$("#regist_email_msg").html("请输入正确的邮箱地址!");
     		     	}
     		    	 
     		    	 }, 
