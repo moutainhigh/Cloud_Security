@@ -1158,11 +1158,11 @@ public class OrderMgrController {
                 taskService.deleteTaskByOaId(order_asset_Id);
             }
             //删除订单
-            orderService.deleteOrderById(orderId);
+            orderService.deleteOrderById(orderId,globle_user.getId());
             //删除订单资产
-            orderAssetService.deleteOaByOrderId(orderId);
+            orderAssetService.deleteOaByOrderId(orderId,globle_user.getId());
             //删除联系人信息
-            selfHelpOrderService.deleteLinkman(order.getContactId());
+            selfHelpOrderService.deleteLinkman(order.getContactId(),globle_user.getId());
             //删除服务系统相关
             NorthAPIWorker.deleteOrder(orderId);
         }
@@ -1215,11 +1215,11 @@ public class OrderMgrController {
                 taskService.deleteTaskByOaId(order_asset_Id);
             }
             //删除订单
-            orderService.deleteOrderById(orderId);
+            orderService.deleteOrderById(orderId,globle_user.getId());
             //删除订单资产
-            orderAssetService.deleteOaByOrderId(orderId);
+            orderAssetService.deleteOaByOrderId(orderId,globle_user.getId());
             //删除联系人信息
-            selfHelpOrderService.deleteLinkman(order.getContactId());
+            selfHelpOrderService.deleteLinkman(order.getContactId(),globle_user.getId());
             //删除服务系统相关
             NorthAPIWorker.deleteOrder(orderId);
         }
