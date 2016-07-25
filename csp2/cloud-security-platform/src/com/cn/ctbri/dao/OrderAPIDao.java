@@ -21,5 +21,5 @@ public interface OrderAPIDao {
 
 	List<OrderAPI> findOrderAPIByType(Map<String, Object> paramMap);
 	//删除订单
-	void deleteOrderAPI(String orderId);
+	void deleteOrderAPI(String orderId,int userId);
 }

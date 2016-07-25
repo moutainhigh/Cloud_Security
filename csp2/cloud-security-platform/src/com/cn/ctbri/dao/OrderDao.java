@@ -110,7 +110,7 @@ public interface OrderDao {
     String getOrderById(String orderId,String type,int userId);
     
     //删除订单
-    void deleteOrderById(String orderId);
+    void deleteOrderById(String orderId,int userId);
     //查找订单
     Order findOrderById(String orderId);
     //根据用户查询任务数
@@ -134,7 +134,7 @@ public interface OrderDao {
 	//修改api联系人信息
 	public void updateLinkManByAPIId(Linkman linkman,String orderId);
 	//删除联系人信息
-	public void delLinkmanByOrderId(String orderId);
+	public void delLinkmanByOrderId(String orderId,int userId);
 	
 	List findByOrderListId(String orderListId, String state);
 }

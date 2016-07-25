@@ -86,7 +86,7 @@ public interface SelfHelpOrderDao {
     int findBrokenNetwork();
 
     //删除联系人
-    void deleteLinkman(int contactId);
+    void deleteLinkman(int contactId,int userId);
 
 	Serv findServiceById(int serviceId);
 	 // 查询购物车列表

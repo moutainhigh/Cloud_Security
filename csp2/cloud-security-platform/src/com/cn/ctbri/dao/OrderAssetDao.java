@@ -59,7 +59,7 @@ public interface OrderAssetDao {
     List<OrderIP> findIpByOrderId(String orderId);
 
     //根据orderId删除订单资产
-    void deleteOaByOrderId(String orderId);
+    void deleteOaByOrderId(String orderId,int userId);
 
 	List getOrdersByAsset(int assetId);
 
