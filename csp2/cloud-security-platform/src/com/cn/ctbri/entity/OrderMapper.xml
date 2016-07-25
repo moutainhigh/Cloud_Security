@@ -299,8 +299,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <!-- 删除订单 -->
-    <delete id="deleteOrderById" parameterType="String">
-        delete from cs_order where id = #{orderId}
+    <delete id="deleteOrderById" parameterType="hashmap">
+        delete from cs_order where id = #{orderId} and userId=#{userId}
     </delete>
     
     <!-- 查找订单 -->
@@ -378,8 +378,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
     
     <!-- 删除联系人 -->
-    <delete id="delLinkmanByOrderId" parameterType="String">
-      delete FROM cs_linkman  WHERE id =(SELECT o.contactId FROM cs_order o WHERE o.id=#{orderId})
+    <delete id="delLinkmanByOrderId" parameterType="hashMap">
+      delete FROM cs_linkman  WHERE id =(SELECT o.contactId FROM cs_order o WHERE o.id=#{orderId} and  o.userId = #{userId})
     
     </delete>
 </mapper>

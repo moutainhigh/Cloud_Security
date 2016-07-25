@@ -75,8 +75,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <!-- 删除订单资产 -->
-    <delete id="deleteOaByOrderId" parameterType="String">
-        delete from cs_order_asset where orderId = #{orderId}
+    <delete id="deleteOaByOrderId" parameterType="hashmap">
+        delete from cs_order_asset WHERE orderId =(SELECT o.id FROM cs_order o WHERE o.id=#{orderId} and  o.userId = #{userId})
     </delete>
     
     <!-- 按资产id查询订单信息 -->

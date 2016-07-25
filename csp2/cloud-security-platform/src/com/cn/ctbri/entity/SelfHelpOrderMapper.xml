@@ -76,8 +76,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <!-- 删除联系人 -->
-    <delete id="deleteLinkman" parameterType="int">
-        delete from cs_linkman where id = #{contactId}
+    <delete id="deleteLinkman" parameterType="hashmap">
+        delete from cs_linkman where id = #{contactId} and userid=#{userId}
     </delete>
       <!-- 查询购物车列表 -->
     <select id="findShopCarList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
