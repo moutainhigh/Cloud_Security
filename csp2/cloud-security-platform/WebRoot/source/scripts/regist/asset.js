@@ -57,7 +57,6 @@ function saveAsset() {
 		        data: {"addr":assetAddr,"name": encodeURI(assetName)},
 		        dataType:"json",
 		        success: function(data){
-		        alert("ccc");
 		            if(data.msg=='1'){
 		            	$("#assetName_msg").html("资产名称重复!");
 		            }else if(data.msg=='2'){
