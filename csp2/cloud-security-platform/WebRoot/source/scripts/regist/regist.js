@@ -403,7 +403,7 @@ function submitForm(){
 	var verification_code = $("#verification_code").val();
 	var checkNumber = $("#checkNumber1").val();
 	var agreeId = $("#agreeId").val();//同意协议
-
+    var email = $("#regist_confirm_email").val();
 	checkActivationCode();
 	checkPhoneActivationCode();
 	checkName();
@@ -431,7 +431,8 @@ function submitForm(){
 		 	               'job':job,
 		 	               'mobile':mobile,
 		 	               'checkNumber':checkNumber,
-		 	               'verification_code':verification_code
+		 	               'verification_code':verification_code,
+		 	               'email':email
 		 	               //'remeberMe':remeberMe
 						},
 						dataType:"json",
@@ -496,6 +497,13 @@ function submitForm(){
 				           			$("#verification_code_flag").show();
 				           			$("#verification_code_prompt").html("<b></b>" + data.msg);
 				           			$("#verification_code_prompt").fadeIn();
+				           			break;
+				           		case 10:
+									//邮箱地址
+									$("#regist_confirm_Email_flag").attr("class","error");
+				           			$("#regist_confirm_Email_flag").show();
+				           			$("#regist_confirm_email_prompt").html("<b></b>" + data.msg);
+				           			$("#regist_confirm_email_prompt").fadeIn();
 				           			break;
 								default:
 									alert("注册失败！");
