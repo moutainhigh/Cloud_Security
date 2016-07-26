@@ -275,28 +275,15 @@ $(function(){
     	var userName =  $(".test_name").text();
         var userAdd = $(".test_add").text();
         var mobile =  $(".test_iphone").text();
-        var assetIds = $("#assetIds").val();
-    	/*var scanType = $('#scanType').val();(8:包月 9：包年)    
-    	 * var beginDate=$('#beginDate').val();
-    	var endDate=$('#endDate').val();
-    	var serviceId = $("#serviceId").val();
-        var domainId = $("#assetIds").val();
-        var price = $('#priceHidden').val();
-        var ipArray = $('#ipArrayHidden').val();
-        var times = $('#timesHidden').val();
-        var serviceName = $('#serviceName').val();
-        var userId = $("#userIdHidden").val();*/
-		/*var result = window.confirm("确定要提交订单吗？");
-    	if(result){*/
+    	
     		$.ajax({ type: "POST",
 	    		     async: false, 
 	    		     url: "saveWafOrder.html", 
 	    		     data: {"orderDetailId":orderDetailId,
-    			             "assetIds":assetIds,
-	    		            "userName": userName,
-		    			   	"userAdd":userAdd,
+    			            "linkname": userName,
+		    			   	"email":userAdd,
 		    			   	"createDate":createDate,
-		    			   	"mobile":mobile},  
+		    			   	"phone":mobile},  
 	    		     dataType: "json", 
 	    		     success: function(data) {
 		    		         if(data.error){
@@ -336,7 +323,6 @@ $(function(){
 	    		    	 else { window.location.href = "loginUI.html"; } } 
 		    	});
 
-    	/*}*/
     });
     
    });

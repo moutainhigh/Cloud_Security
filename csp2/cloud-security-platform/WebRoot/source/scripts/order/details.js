@@ -256,12 +256,6 @@ $(function(){
     $("#settlement").click(function(){
     	var createDate = getCreateDate();
     	var orderType = $('#orderType').val();
-    	//var beginDate=$('#beginDate').val();
-    	//var endDate=$('#endDate').val();
-    	//var scanType = $('#scanType').val();
-//    	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
-    	//var serviceId = $("#serviceId").val();
-    	 // var price = $('#priceHidden').val();
     	var orderDetailId = $("#orderDetailId").val();
        var userName =  $(".test_name").text();
         var userAdd = $(".test_add").text();
@@ -272,24 +266,17 @@ $(function(){
     	}
     	//获得服务资产
     	var assetIds = $("#assetIds").val();
-    	var bandwidth="";
-		
-	/*	var result = window.confirm("确定要提交订单吗？");
-    	if(result){*/
+    
+	
     		$.ajax({ type: "POST",
 	    		     async: false, 
 	    		     url: "saveOrder.html", 
 	    		     data: {"orderDetailId":orderDetailId,
-    			            "assetIds":assetIds,
+    			            
 		    			   	"createDate":createDate,
 		    			   	"linkname":userName,
 		    			   	"phone":mobile,
-		    			   	"email":userAdd,
-		    			   	"company":"",
-		    			   	"address":"",
-		    			    "bandwidth":bandwidth,
-			    			"websoc":"",
-			    			"tasknum":"",
+		    			   	"email":userAdd
 			    			},  
 	    		     dataType: "json", 
 //		    		     contentType: "application/json; charset=utf-8", 
@@ -333,7 +320,6 @@ $(function(){
 	    		    	 else { window.location.href = "loginUI.html"; } } 
 		    	});
 
-    	//}
     });
     
     
