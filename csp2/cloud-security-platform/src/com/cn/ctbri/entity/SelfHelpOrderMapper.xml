@@ -356,11 +356,19 @@ WHERE a.id = b.orderId
         WHERE s.userId = #{userId}
     AND s.id = #{id}
 AND s.serviceId=c.id
+
 AND a.id IN  <foreach item="assetId" index="index" collection="assetIdsList" open="("  
             separator="," close=")">  
           #{assetId} 
         </foreach>
-      
+ 
+    </select>
+       <!-- 根据主键查询服务详情操作信息 -->
+    <select id="findOrderDetailById" resultType="com.cn.ctbri.entity.OrderDetail" parameterType="Map">
+        SELECT * from cs_settlemet s
+        WHERE s.userId = #{userId}
+    AND s.id = #{id}
+
     </select>
     <!-- 根据主键查询服务API详情操作信息 -->
     <select id="getOrderAPIDetailById" resultType="com.cn.ctbri.entity.OrderDetail" parameterType="Map">
