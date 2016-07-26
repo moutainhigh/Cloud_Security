@@ -228,8 +228,11 @@
                         
                        
                         	<div class="settle" style="width:1108px;">
-                                <span>已选择<b>0</b>个订单</span><span>总价 <em style="position:relative; top:-2px;">¥<i id="priceTotal" style="font-size: 26px;
-    font-family: Arial Regular;">0.00</i></em></span><button type="button" style="font-family:'微软雅黑'" id="shopBuy">去结算</button>
+                                <span>已选择<b>0</b>个订单</span>
+                                <span>总价&nbsp;&nbsp;<em style="position:relative; top:-2px;">
+                                <i id="priceTotal" style="font-size: 26px;font-family: Arial Regular;">0.00</i>&nbsp;安全币
+                                </em></span>
+                                <button type="button" style="font-family:'微软雅黑'" id="shopBuy">去结算</button>
                             </div>
                      </li>
                 </ul>

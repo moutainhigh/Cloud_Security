@@ -104,7 +104,7 @@ $(function(){
 	<div class="safeBox">
 		
 		<div class="safe01 detalis-head">
-			<!--头部-->
+			f<!--头部-->
 			<div class="head">
 				<div class="headBox">
 					<div class="safeL fl" style="width:260px; margin-right:13%">
@@ -196,7 +196,7 @@ $(function(){
                                 </li>
                                  <li>
                                     <b>交易金额</b>
-                                    <P>￥${price }</P>
+                                    <P>${price }</P>
                                 </li>
                                 <li>
                                     <b>付款方式</b>
@@ -215,7 +215,7 @@ $(function(){
                         </div>
                         <div class="shopCant_fix"><i></i>安全币余额${balance }</div>
                         <!-- <div class="shopCant_con">更换其他付款方式</div> -->
-                        <div class="shop_pay"><b>支付:</b>￥${price }</div>
+                        <div class="shop_pay"><b>支付:</b>${price }<em style="font-size:14px;line-height:36px">&nbsp;安全币</em></div>
                     </div>
             	    
             </div>
