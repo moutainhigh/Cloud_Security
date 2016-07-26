@@ -625,11 +625,11 @@ public class WafController {
 				    }
 				    Date bDate=DateUtils.stringToDateNYRSFM(beginDate);
 				    if(orderType.equals("9")){//包年
-				    	countPrice =1000;
+				    	countPrice =9000;
 				    	eDate = DateUtils.getDateAfterOneYear(bDate);
 				     
 				    }else{//包月
-				    	countPrice = 100*Integer.parseInt(month);
+				    	countPrice = 880*Integer.parseInt(month);
 				    	eDate = DateUtils.getDateAfterMonths(bDate, Integer.parseInt(month));
 				    
 				    }
@@ -826,11 +826,11 @@ public class WafController {
 	    Date eDate = new Date();
 	   
 	    if(scanType.equals("9")){//包年
-	    	countPrice =1000;
+	    	countPrice =9000;
 	    	eDate = DateUtils.getDateAfterOneYear(bDate);
 	     
 	    }else{//包月
-	    	countPrice = 100*Integer.parseInt(timeswaf);
+	    	countPrice = 880*Integer.parseInt(timeswaf);
 	    	eDate = DateUtils.getDateAfterMonths(bDate, Integer.parseInt(timeswaf));
 	    
 	    }
