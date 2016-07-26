@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -1017,10 +1019,13 @@ public class WafController {
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
     	List assetIdsList = new ArrayList();
     	String createDate = DateUtils.dateToString(new Date());
+    	 String linkname =request.getParameter("linkname");
+         String phone = request.getParameter("phone");
+         String email = request.getParameter("email");
     	//判断参数值
-      	String assetIds = request.getParameter("assetIds");
+     
       	String orderDetailId = request.getParameter("orderDetailId");
-      	if(assetIds==null||"".equals(assetIds)||orderDetailId==null||"".equals(orderDetailId)){
+      	if(orderDetailId==null||"".equals(orderDetailId)||linkname==null||"".equals(linkname)||phone==null||"".equals(phone)){
       		m.put("error", true);
           		 //object转化为Json格式
           	       JSONObject JSON = CommonUtil.objectToJson(response, m);
@@ -1033,8 +1038,57 @@ public class WafController {
           	       return;
           
       	}
+      	 /***判断参数开始**/
+        if(phone!=null&&!"".equals(phone)){
+        Pattern p = Pattern.compile("^[1][3,4,5,8][0-9]{9}$");  
+         Matcher matcher = p.matcher(phone); 
+	       if(!matcher.find()){
+	    		m.put("error", true);
+	      		 //object转化为Json格式
+	      	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+	      	       try {
+	      	           // 把数据返回到页面
+	      	           CommonUtil.writeToJsp(response, JSON);
+	      	       } catch (IOException e) {
+	      	           e.printStackTrace();
+	      	       }
+	      	       return;
+	       }
+    	
+        }
+       if(email!=null&&!"".equals(email)){
+    	   Pattern emailP = Pattern.compile("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$");  
+           Matcher ematcher = emailP.matcher(email); 
+           if(!ematcher.find()){
+        	   m.put("error", true);
+        		 //object转化为Json格式
+        	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+        	       try {
+        	           // 把数据返回到页面
+        	           CommonUtil.writeToJsp(response, JSON);
+        	       } catch (IOException e) {
+        	           e.printStackTrace();
+        	       }
+        	       return;
+           }
+       }
+      
+     /***判断参数结束**/
+    	OrderDetail orderDetailVo =selfHelpOrderService.findOrderDetailById(orderDetailId, globle_user.getId());
+    	if(orderDetailVo==null){
+      		m.put("error", true);
+     		 //object转化为Json格式
+     	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+     	       try {
+     	           // 把数据返回到页面
+     	           CommonUtil.writeToJsp(response, JSON);
+     	       } catch (IOException e) {
+     	           e.printStackTrace();
+     	       }
+     	       return;
+      	}
       	boolean assetsStatus = false;
-		Asset _asset = assetService.findById(Integer.parseInt(assetIds),globle_user.getId());
+		Asset _asset = assetService.findById(Integer.parseInt(orderDetailVo.getAsstId()),globle_user.getId());
 		if(_asset==null){
 			m.put("error", true);
      		 //object转化为Json格式
@@ -1047,7 +1101,7 @@ public class WafController {
      	       }
      	       return;
 		}
-		assetIdsList.add(assetIds);
+		assetIdsList.add(orderDetailVo.getAsstId());
 		OrderDetail orderDetail =selfHelpOrderService.getOrderDetailById(orderDetailId, globle_user.getId(), assetIdsList);
     	if(orderDetail==null){
     		m.put("error", true);
@@ -1068,6 +1122,16 @@ public class WafController {
 		SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
 		String orderDate = odf.format(new Date());
         String orderId = orderDate+String.valueOf(Random.fivecode());
+      //新增联系人
+        Linkman linkObj = new Linkman();
+        int linkmanId = Random.eightcode();
+        linkObj.setId(linkmanId);
+        linkObj.setName(linkname);
+        linkObj.setMobile(phone);
+        linkObj.setEmail(email);
+        linkObj.setUserId(globle_user.getId());
+        selfHelpOrderService.insertLinkman(linkObj);
+        
 		Order order = new Order();
 		order.setId(orderId);
 		order.setType(1);//长期
@@ -1086,6 +1150,7 @@ public class WafController {
 		order.setUserId(globle_user.getId());
 		order.setStatus(0);
 		order.setPrice(orderDetail.getPrice());
+		order.setContactId(linkmanId);
 		selfHelpOrderService.insertOrder(order);
 		
 		//新增服务资产
