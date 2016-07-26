@@ -126,14 +126,14 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                     	<p><img src="${ctx}/source/images/portal/webPageTamper.png" alt=""></p>
                                     </c:if>
                                     <h4>${list.name }</h4>
-                                    <div class="purchase">
+                                    <div class="purchase" style="left:77px">
                                     	<c:if test="${empty list.price}">
-	                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">¥0.00</strong>
-	                                    	<strong style="text-decoration:line-through;color: #d00000;"><em style="font-family: Arial Regular;font-size: 16px;">¥99.00</em></strong>
+	                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">0.00 <em style="font-size: 14px;color: #D00000;">&nbsp;安全币</em></strong>
+	                                    	<strong style="text-decoration:line-through;color: #d00000;"><em style="font-family: Arial Regular;font-size: 16px;">99.00 <em style="font-size: 14px;color: #D00000;">&nbsp;安全币</em></em></strong>
 	                                    </c:if>
                                     	<c:if test="${!empty list.price}">
 	                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">
-	                                    	¥<fmt:formatNumber type="number" value="${list.price }" maxFractionDigits="2" minFractionDigits="2"/>
+	                                    	<fmt:formatNumber type="number" value="${list.price }" maxFractionDigits="2" minFractionDigits="2"/><em style="font-size: 14px;color: #D00000;">&nbsp;安全币</em>
 	                                    	</strong>
                                     	</c:if>
                                     	
@@ -191,8 +191,8 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                     <p><img src="${ctx}/source/images/portal/webPageTamper.png" alt=""></p>
                                     <h4>网页篡改监测能力API</h4>
                                     <div class="purchase">
-                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">¥0</strong>
-                                    	<strong style="text-decoration:line-through;color: #d00000;"><em style="font-family: Arial Regular;font-size: 16px;">¥99</em></strong>
+                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">0<em style="font-size: 14px;color: #D00000;">&nbsp;安全币</em></strong>
+                                    	<strong class="oldprice">99<em style="font-size: 11px;">安全币</em></strong>
                                     </div> 
                                 </a>
                             </li>
@@ -204,8 +204,8 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                     <p><img src="${ctx}/source/images/portal/sensitiveWord.png" alt=""></p>
                                     <h4>网页敏感内容监测能力API</h4>
                                     <div class="purchase">
-                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">¥0</strong>
-                                    	<strong style="text-decoration:line-through;color: #d00000;"><em style="font-family: Arial Regular;font-size: 16px;">¥99</em></strong>
+                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">0<em style="font-size: 14px;color: #D00000;">&nbsp;安全币</em></strong>
+                                    	<strong class="oldprice">99<em style="font-size: 11px;">&nbsp;安全币</em></strong>
                                     </div> 
                                 </a>
                             </li>
@@ -217,8 +217,8 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                     <p><img src="${ctx}/source/images/portal/availability.png" alt=""></p>
                                     <h4>网站可用性监测API</h4>
                                     <div class="purchase">
-                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">¥0</strong>
-                                    	<strong style="text-decoration:line-through;color: #d00000;"><em style="font-family: Arial Regular;font-size: 16px;">¥99</em></strong>
+                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">0<em style="font-size: 14px;color: #D00000;">&nbsp;安全币</em></strong>
+                                    	<strong class="oldprice">99<em style="font-size: 11px;">&nbsp;安全币</em></strong>
                                     </div>
                                 </a>
                             </li>
