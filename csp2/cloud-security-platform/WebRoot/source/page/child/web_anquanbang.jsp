@@ -187,12 +187,13 @@ function buyWafOrder(serviceId){
 		                                    <div class="purchase">
 		                                    <c:if test="${!empty list.price}">
 		                                    	<strong style="text-decoration:none;">
-		                                    	¥<fmt:formatNumber type="number" value="${list.price }" maxFractionDigits="2" minFractionDigits="2"/>
+		                                    	<fmt:formatNumber type="number" value="${list.price}" maxFractionDigits="2" minFractionDigits="2"/>
+		                                    	<em style="font-size: 14px;color: #D00000;">安全币</em>
 		                                    	</strong>
 		                                    </c:if>
 		                                    <c:if test="${empty list.price}">
-		                                    	<strong>¥0.00</strong>
-		                                   	 	<strong><em style="font-family:Arial Regular;font-size:22px;">¥99.00</em></strong>
+		                                    	<strong>0.00<em style="font-size: 14px;color: #D00000;">安全币</em></strong>
+		                                   	 	<strong><em style="font-family:Arial Regular;font-size:22px;">99.00</em><em style="font-size: 14px;color: #D00000;">安全币</em></strong>
 		                                    </c:if>
 		                                    	<!--<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1" class="btn">购买</a>
 		                                    -->
@@ -228,8 +229,13 @@ function buyWafOrder(serviceId){
                                         </span>
                                         <div class="purchase">
                                            
-                                            <strong style="display:block"><em style="font-size:20px;font-family: Arial Regular;">¥199.00</em></strong>
-                                             <strong style="display:block; font-size:30px;">¥100.00</strong>
+                                            <strong style="display:block">
+                                            	<em style="font-size:20px;font-family: Arial Regular;">199.00</em>
+                                            	<em style="font-size: 14px;">安全币</em>
+                                            </strong>
+                                             <strong style="display:block; font-size:30px;">100.00
+                                             	<em style="font-size: 14px;color: #D00000;">安全币</em>
+                                             </strong>
                                             <!--<a href="${ctx}/wafDetails.html?serviceId=6&indexPage=1" class="btn" style="width:80px;">购买</a>
                                         -->
                                          	<a href="javascript:;" class="btn" style="width:80px;" onclick="buyWafOrder(6);">购买</a>
@@ -250,8 +256,13 @@ function buyWafOrder(serviceId){
                                         </span>
                                         <div class="purchase">
                                            
-                                            <strong style="display:block"><em style="font-size:20px;font-family: Arial Regular;">¥199.00</em></strong>
-                                             <strong style="display:block; font-size:30px;">¥100.00</strong>
+                                            <strong style="display:block">
+                                             <em style="font-size:20px;font-family: Arial Regular;">199.00</em>
+                                             <em style="font-size: 14px;">安全币</em>
+                                            </strong>
+                                             <strong style="display:block; font-size:30px;">100.00
+                                             	<em style="font-size: 14px;color: #D00000;">安全币</em>
+                                             </strong>
                                             <a href="#" class="btn" style="width:80px;">购买</a>
                                         </div>
                                     </div>
