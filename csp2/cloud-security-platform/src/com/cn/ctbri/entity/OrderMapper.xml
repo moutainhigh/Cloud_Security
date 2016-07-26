@@ -332,6 +332,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and	o.payFlag = 1
 			and o.isAPI = 0
 			and o.create_date &gt;='2016-06-28 00:00:00'
+			order by create_date desc
 		</if>
 		<if test="isAPI==2">
 			select * from cs_order o
