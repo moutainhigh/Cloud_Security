@@ -294,7 +294,7 @@ public class shoppingAPIController {
     		return;
         }
         /***判断参数开始**/
-        Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");  
+        Pattern p = Pattern.compile("^[1][3,4,5,8][0-9]{9}$");  
         
         Matcher matcher = p.matcher(phone); 
         if(!matcher.find()){
@@ -358,8 +358,6 @@ public class shoppingAPIController {
             linkObj.setName(linkname);
             linkObj.setMobile(phone);
             linkObj.setEmail(email);
-//            linkObj.setAddress(address);
-//            linkObj.setCompany(company);
             linkObj.setUserId(globle_user.getId());
             selfHelpOrderService.insertLinkman(linkObj);
             
