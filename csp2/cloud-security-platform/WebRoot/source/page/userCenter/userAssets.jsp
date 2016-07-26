@@ -398,8 +398,8 @@
 		        &nbsp;&nbsp;<input type="radio" name="editAssetType"  value="https"/>
 		        &nbsp;https
 		  </td>
-        </tr>
-        <tr> -->
+        </tr> -->
+        <tr>
           <td>资产地址</td>
           <td><input class="boz_inout_1" type="text" name="addr" id="editAssetAddr" onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')"/></td>
           <td style="color:#e32929;text-align:left"><div class="editMsg" id="editAssetAddr_msg"></div></td>
