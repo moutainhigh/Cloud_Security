@@ -148,7 +148,7 @@
                  <c:if test="${paySuccess == 0}">
                       <div class="repay_txt"> 
                           
-                          <p style="text-align:center;display: inline-block;"><b></b>恭喜您已成功付款<span>${price }</span>元！</p>
+                          <p style="text-align:center;display: inline-block;"><b></b>恭喜您已成功付款<span>${price }</span>安全币！</p>
                       </div>
             	 <div class="repay_contant">
                       <c:if test="${modifyOrderId!= null && !empty modifyOrderId}">
