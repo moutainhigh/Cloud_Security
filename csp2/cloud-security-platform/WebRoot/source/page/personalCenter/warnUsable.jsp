@@ -28,7 +28,6 @@
   
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/order/warning_usable.js"></script>
 
 <script src="${ctx}/source/scripts/common/portalindex.js"></script>
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
@@ -108,6 +107,9 @@ $(function() {
  
 });
 </script>
+
+<script type="text/javascript" src="${ctx}/source/scripts/order/warning_usable.js"></script>
+
 <style>
 .detailbox{display:none;}
 .zhangd_table{ width:945px; color:9a9a9a; margin-left:35px;}

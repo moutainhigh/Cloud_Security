@@ -31,14 +31,34 @@
                                         <div class="">
                                         <c:if test="${fn:length(olist.order)>1}">
                                          <h2 style="height: 90px;padding-top: 10px;line-height: 45px;font-size: 14px;color: #343434;text-align: left;*width: 208px;*text-align: left;">
-							                 ${list.name}
-							                 	<br>${status.index+1}_${list.id}
+							                 <c:if test="${list.isAPI==0&&list.serviceId!=6}">
+							                 	<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.serviceId}&indexPage=1" target="_blank">${list.name}<br>${status.index+1}_${list.id}</a>
+							                 </c:if>
+							                 <c:if test="${list.isAPI==2&&list.serviceId==6}">
+							                   <a href="${ctx}/wafDetails.html?serviceId=6" target="_blank">${list.name}<br>${status.index+1}_${list.id}</a>
+                                             </c:if>
+                                             <c:if test="${list.isAPI==1}">
+							                   <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${list.serviceId}&indexPage=2" target="_blank">${list.name}<br>${status.index+1}_${list.id}</a>
+                                             </c:if>
                                          </h2>
+                                         
                                         </c:if>
                                         <c:if test="${fn:length(olist.order)==1}">
+                                          <c:if test="${list.isAPI==0&&list.serviceId!=6}">
                                          <h2>
-							                 ${list.name}
+							                   <a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.serviceId}&indexPage=1" target="_blank">${list.name}</a>
                                          </h2>
+                                         </c:if>
+                                            <c:if test="${list.isAPI==2&&list.serviceId==6}">
+                                         <h2>
+							                   <a href="${ctx}/wafDetails.html?serviceId=6" target="_blank">${list.name}</a>
+                                         </h2>
+                                         </c:if>
+                                            <c:if test="${list.isAPI==1}">
+                                         <h2>
+							                   <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${list.serviceId}&indexPage=2" target="_blank">${list.name}</a>
+                                         </h2>
+                                         </c:if>
                                         </c:if>
                                          </div>
                                     	<c:forEach var="asset" items="${list.assetList}" varStatus="status">

@@ -26,11 +26,9 @@
 <script type="text/javascript" src="http://cdn.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/exporting.js"></script>
-  
-<script type="text/javascript" src="${ctx}/source/scripts/order/warning_keyword.js"></script>
+
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/order/warning.js"></script>
 
 <script src="${ctx}/source/scripts/common/portalindex.js"></script>
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
@@ -141,6 +139,9 @@ function clearTable(){
     }
 }
 </script>
+
+<script type="text/javascript" src="${ctx}/source/scripts/order/warning_keyword.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/order/warning.js"></script>
 <style type="">
 .detailbox{display:none;}
 .zhangd_table{ width:945px; color:9a9a9a; margin-left:35px;}
@@ -217,9 +218,7 @@ function clearTable(){
   
 							    <!-- 告警详情-->
 							     <div class="user_right" style="width:1102px;" >
-							    	<div class="gj_top" style="width:1048px;">
-							        	<a href="#" class="aelse">我的订单</a>　>　<a href="#" class="acur">告警详情</a>
-							        </div>
+							    	
 							        <div class="gj_title webgj_title">
 							        	<div class="gj_fl">
 							        	<c:if test="${alist==0}">

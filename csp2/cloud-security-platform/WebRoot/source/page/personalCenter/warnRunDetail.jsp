@@ -143,7 +143,6 @@ function clearTable(){
             <input type="hidden" value="${group_flag }" id="group_flag"/>
             <input type="hidden" value="${task.order_asset_Id }" id="orderAssetId"/>
             <p><span class="bigfont">${order.name }</span>
-            <span>(  订单编号：${order.id }  )</span>
             </p>
             <div style="overflow:hidden;">
             <div style="float:left">资产：</div>
