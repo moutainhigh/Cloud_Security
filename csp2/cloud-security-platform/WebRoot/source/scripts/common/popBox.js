@@ -67,11 +67,12 @@ $(function(){
 			$('#purpose').val(-1);
 			$(".addMsg").html("");
 			
-            $('.popBoxhide').hide();
+            //$('.popBoxhide').hide();
+            $(this).parents('.popBoxhide').hide();
             $('.shade').hide();
             $('html').css({
                 overflow: 'auto'
-            })
+            });
     })
     //微信
 $('.weixin').delegate(this,'click',function(){
@@ -79,8 +80,9 @@ $('.weixin').delegate(this,'click',function(){
 		$('#weixin').animate({
 			top:'50%',
 			opacity:'100',	
-		},500)
-		$('html').css({overflow:'hidden'})
+		},500);
+		
+		$('html').css({overflow:'hidden'});
 	
 })
 
