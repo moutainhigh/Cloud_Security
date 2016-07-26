@@ -198,7 +198,6 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 		return selfHelpOrderDao.getOrderDetailById(id,userId,assetIdsList);
 	}
 
-	@Override
 	public OrderDetail getOrderAPIDetailById(String id, int userId) {
 		// TODO Auto-generated method stub
 		return selfHelpOrderDao.getOrderAPIDetailById(id, userId);
