@@ -627,7 +627,7 @@ function tasknum_verification(){
    		     success: function(data) {
        			if(data.success){
      		    	  var price = data.price;
-     		    	  $("#price").html("¥"+price);
+     		    	  $("#price").html(price);
      		    	  $("#timesHidden").val(data.times);
        			}
 
@@ -679,7 +679,7 @@ function tasknum_verification(){
 	     success: function(data) {
    			if(data.success){
  		    	  var price = data.price;
- 		    	  $("#price").html("¥"+price);
+ 		    	  $("#price").html(price);
  		    	  $("#timesHidden").val(data.times);
    			}
 

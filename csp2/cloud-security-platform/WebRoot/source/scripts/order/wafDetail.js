@@ -8,23 +8,23 @@ $(function(){
 				//价格
 
 				if(month==-1||month==1){
-					$("#price").html("¥880");
+					$("#price").html("880");
 				}else{
 					var priceVals = 880*(month-1);
-					$("#price").html("¥"+priceVals);
+					$("#price").html(priceVals);
 				}
 			}
 			if((event.keyCode == 39) || (event.keyCode == 40)){//下
 				//价格
 
 				if(month==-1){
-					$("#price").html("¥880");
+					$("#price").html("880");
 				}else{
 					if(month==11){
-						$("#price").html("¥9680");
+						$("#price").html("9680");
 					}else{
-						var priceVals = 100*(month+1);
-						$("#price").html("¥"+priceVals);
+						var priceVals = 880*(month+1);
+						$("#price").html(priceVals);
 					}
 				}
 			}
@@ -33,10 +33,10 @@ $(function(){
 	//价格
 	var month = $('#month').val();
 	if(month=='-1'){
-		$("#price").html("¥880");
+		$("#price").html("880");
 	}else{
 		var priceVals = 880*month;
-		$("#price").html("¥"+priceVals);
+		$("#price").html(priceVals);
 	}
 	
 	//回显修改信息
@@ -366,17 +366,17 @@ $(function(){
       if(value=='long'){
     	  $("#yearDiv").show();
     	   $("#monthDiv").hide();
-    	   $("#price").html("¥9000");
+    	   $("#price").html("9000");
       }else{
     	  $("#yearDiv").hide();
     	   $("#monthDiv").show();
     	  
     		var month = $('#month').val();
     		if(month=='-1'){
-    			$("#price").html("¥880");
+    			$("#price").html("880");
     		}else{
     			var priceVals = 880*month;
-        		$("#price").html("¥"+priceVals);
+        		$("#price").html(priceVals);
     		}
     		
       }
@@ -459,17 +459,17 @@ function getWafInfo(){
 	    	 $("#monthDiv").show();
 
     		if(times=='-1'){
-    			$("#price").html("¥880");
+    			$("#price").html("880");
     		}else{
     			var priceVals = 880*times;
-    			$("#price").html("¥"+priceVals);
+    			$("#price").html(priceVals);
     		}
 			 
 		 }else if(scanType=='9'){
 			 $('.long').addClass("click");
 			 $('.Single').removeClass("click");
 			 $('#beginDateForYear').val(beginDate.substring(0,10));
-			 $("#price").html("¥9000");
+			 $("#price").html("9000");
 			 $("#yearDiv").show();
 	    	 $("#monthDiv").hide();
 			 
@@ -532,10 +532,10 @@ function changePrice(){
 	//获得选择的月份
 	var month = $('#month').val();
 	if(month=='-1'){
-		$("#price").html("¥880");
+		$("#price").html("880");
 	}else{
 		var priceVals = 880*month;
-		$("#price").html("¥"+priceVals);
+		$("#price").html(priceVals);
 	}
 
 }
