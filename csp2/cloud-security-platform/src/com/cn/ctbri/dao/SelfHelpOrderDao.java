@@ -124,4 +124,6 @@ public interface SelfHelpOrderDao {
 	OrderDetail getOrderDetailById(String id,int userId,List assetIdsList);
 	//根据服务详情操作主键，查询
 	OrderDetail getOrderAPIDetailById(String id,int userId);
+	//根据服务详情操作主键，查询
+	OrderDetail findOrderDetailById(String id,int userId);
 }
