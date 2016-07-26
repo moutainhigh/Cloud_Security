@@ -138,11 +138,16 @@ function buyAPI(apiId){
 		                                    	${list.remarks }
 		                                    </span>
 		                                    <div class="purchase">
-		                                    	<strong>¥0</strong>
-		                                    	<strong><em style="font-family:Arial Regular;font-size:22px;">¥99</em></strong>
+		                                    	<strong>
+		                                    		0<em style="font-size: 14px;color:#D00000;">&nbsp;安全币</em>
+		                                    	</strong>
+		                                    	<strong style="text-decoration:line-through;text-decoration-color:#D00000;">
+		                                    		<em style="font-family:Arial Regular;font-size:22px;">99 </em> 
+		                                    		<em style="font-size: 14px;">安全币</em>
+		                                    	</strong>
 		                                    	<!--<a style="left:112px" href="${ctx}/selfHelpOrderAPIInit.html?apiId=${list.id }&indexPage=2" class="btn">购买</a>
 		                                    -->
-		                                    <a style="left:112px" href="javascript:;" onclick="buyAPI(${list.id });" class="btn">购买</a>
+		                                    <a style="left:42px" href="javascript:;" onclick="buyAPI(${list.id });" class="btn">购买</a>
 		                                    <form action="selfHelpOrderAPIInit.html" method="post" id="selfHelpOrderAPIInitNewForm">
 												<input type="hidden" id="apiIdNew" name="apiId"/>
 												<input type="hidden" id="indexPage" name="indexPage" value="2"/>
