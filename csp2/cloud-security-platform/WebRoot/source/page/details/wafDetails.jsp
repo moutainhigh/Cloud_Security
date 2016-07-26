@@ -93,7 +93,7 @@
 					<ul>
 						<li class="clearfix">
 							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
-                            <div class="fl price"><strong style="font-weight: bold;" id="price">¥100</strong><strong></strong></div> 
+                            <div class="fl price"><strong style="font-weight: bold;" id="price">¥880</strong><strong></strong></div> 
                           
 						</li>
                           <li class="clearfix">
