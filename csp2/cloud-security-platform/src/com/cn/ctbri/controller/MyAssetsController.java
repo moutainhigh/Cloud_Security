@@ -801,7 +801,8 @@ public class MyAssetsController {
 	 */
 	@RequestMapping("/download.html")
 	public void download(HttpServletRequest request,HttpServletResponse response) throws Exception{
-		String fileName = request.getParameter("fileName");
+//		String fileName = request.getParameter("fileName");
+		String fileName = "key.html";
 		//fileName = new String(fileName.getBytes("ISO-8859-1"), "UTF-8");//反编译解决路径乱码
 		//获取文件路径
 		String path = request.getSession().getServletContext().getRealPath("/source/download");
