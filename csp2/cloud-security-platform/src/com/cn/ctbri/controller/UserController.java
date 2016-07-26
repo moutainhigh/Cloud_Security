@@ -1033,7 +1033,16 @@ public class UserController{
 				result = 9;
 				return null;
 			}
-			
+			//验证邮箱
+			String email = request.getParameter("email");
+			if(email!=null&&!"".equals(email)){
+				String check = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+			    Pattern regex = Pattern.compile(check);
+			    Matcher matcher = regex.matcher(email);
+				msg = "邮箱地址输入错误!";
+				result = 10;
+				return null;
+			}
 //			String passwdMD5 = DigestUtils.md5Hex(password);
 			String md5password = DigestUtils.md5Hex(password);
 			byte[] keyBytes = DES3.generateSecret(name); // 24字节的密钥
