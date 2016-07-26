@@ -98,7 +98,9 @@ $(document).ready(function(){
 					<ul>
 						<li class="clearfix" style="height:50px;">
 							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
-                             <div class="fl price"><strong id="price">¥0</strong><strong></strong></div><span style="position: relative;top: 7px;left:7px">（推广初期价格）</span>
+                             <div class="fl price"><strong id="price">0</strong><strong></strong></div>
+                             <span style="position: relative;top: 7px;left:7px;color:#d00000">安全币</span>
+                             <span style="position: relative;top: 7px;left:7px">（推广初期价格）</span>
 						</li>
                         <li class="clearfix">
                         	<label class="fl">使用有效期</label>

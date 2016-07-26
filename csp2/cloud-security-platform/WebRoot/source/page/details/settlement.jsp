@@ -376,7 +376,7 @@
             <c:if test="${not empty orderDetail}">
             <ul class="Price">
             	<li>
-                	<i>1</i>个订单，总额：<span>￥${orderDetail.price}</span>
+                	<i>1</i>个订单，总额：<span>${orderDetail.price}<em>&nbsp;安全币</em></span>
                 </li>
                 <!--  
                 <li>
@@ -384,14 +384,14 @@
                 </li>
                 -->
                 <li>
-                	应付总额：<span>￥${orderDetail.price}</span>
+                	应付总额：<span>${orderDetail.price}<em>&nbsp;安全币</em></span>
                 </li>
             </ul>
             </c:if>
           
 			<div class="SubmitBox">
 			  <c:if test="${not empty orderDetail}">
-            	<p>应付总额：<span>￥${orderDetail.price}</span>
+            	<p>应付总额：<span>${orderDetail.price}<em style="font-size:14px">&nbsp;安全币</em></span>
             	</c:if>
             	
             	<c:if test="${not empty orderDetail}">
