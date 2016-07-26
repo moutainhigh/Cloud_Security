@@ -7,9 +7,9 @@
                     		<li class="head">
                             	<span style="padding-left:120px;">资产名称</span>
                                 <span style="padding-left:228px;">资产地址</span>
-                                <!-- <span style="padding-left:178px;">资产状态</span>
-                                <span style="padding-left:82px;">操作</span>-->
-                                <span style="padding-left:178px;">操作</span>
+                                <span style="padding-left:178px;">资产状态</span>
+                                <span style="padding-left:82px;">操作</span>
+                                <!-- <span style="padding-left:178px;">操作</span>-->
                             </li>
                      <c:forEach items="${list}" var="asset"> 
                      <li class="trlist">
@@ -18,7 +18,8 @@
                                  <tr height="100" valign="middle">
                                  <td><span style=" margin-left:80px; width:144px;">${asset.name}</span></td>
                                  <td> <span style="padding-left:80px; width:260px;">${asset.addr}</span></td>
-                                 <!--<td>
+                                 <!-- modify by tangxr 2016-7-23 放开资产验证 -->
+                                 <td>
                                  <c:if test="${asset.status==0}">
 				            		<span style="padding-left:84px;width:60px;">
 				            		<b>未验证</b>
@@ -31,7 +32,8 @@
                                                     
                                      </span>
 				                 </c:if>
-                                 </td> -->
+                                 </td> 
+                                 <!-- end -->
                                  <td> 
                                      <span style="padding-left:80px; width:32px;">
                                          <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}" onclick="editAssetUI('${asset.id},${asset.name},${asset.addr},${asset.districtId},${asset.city},${asset.purpose},${asset.type}')">修改</a>
@@ -49,9 +51,9 @@
                     		<li class="head">
                             	<span style="padding-left:120px;">资产名称</span>
                                 <span style="padding-left:228px;">资产地址</span>
-                                <!-- <span style="padding-left:178px;">资产状态</span>
-                                <span style="padding-left:82px;">操作</span>-->
-                                <span style="padding-left:178px;">操作</span>
+                                <span style="padding-left:178px;">资产状态</span>
+                                <span style="padding-left:82px;">操作</span>
+                                <!-- <span style="padding-left:178px;">操作</span>-->
                             </li>
  						<c:forEach items="${list}" var="asset"> 
  						<c:if test="${asset.status==1}">
@@ -61,12 +63,14 @@
                                  <tr height="100" valign="middle">
                                  <td><span style=" margin-left:80px; width:144px;">${asset.name}</span></td>
                                  <td> <span style="padding-left:80px; width:260px;">${asset.addr}</span></td>
-                                 <!-- <td>
+                                 <!-- modify by tangxr 2016-7-23 放开资产验证 -->
+                                 <td>
 				            		<span style="padding-left:84px;width:60px;">
                                                 	<b>已验证</b>
                                                     
                                      </span>
-                                 </td>-->
+                                 </td>
+                                 <!-- end -->
                                  <td> 
                                      <span style="padding-left:80px; width:32px;">
                                          <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}" onclick="editAssetUI('${asset.id},${asset.name},${asset.addr},${asset.districtId},${asset.city},${asset.purpose},${asset.type}')">修改</a>
@@ -87,9 +91,9 @@
                     		<li class="head">
                             	<span style="padding-left:120px;">资产名称</span>
                                 <span style="padding-left:228px;">资产地址</span>
-                                <!-- <span style="padding-left:178px;">资产状态</span>
-                                <span style="padding-left:82px;">操作</span>-->
-                                <span style="padding-left:178px;">操作</span>
+                                <span style="padding-left:178px;">资产状态</span>
+                                <span style="padding-left:82px;">操作</span>
+                                <!-- <span style="padding-left:178px;">操作</span> -->
                             </li>
                            <c:forEach items="${list}" var="asset"> 
                            <c:if test="${asset.status==0}">
@@ -99,7 +103,8 @@
                                  <tr height="100" valign="middle">
                                  <td><span style=" margin-left:80px; width:144px;">${asset.name}</span></td>
                                  <td> <span style="padding-left:80px; width:260px;">${asset.addr}</span></td>
-                                 <!--<td>
+                                 <!-- modify by tangxr 2016-7-23 放开资产验证 -->
+                                 <td>
 
 				            		<span style="padding-left:84px;width:60px;">
 				            		<b>未验证</b>
@@ -107,7 +112,8 @@
 				            		</span>
 				             	
 				             	 
-                                 </td>-->
+                                 </td>
+                                 <!-- end -->
                                  <td> 
                                      <span style="padding-left:80px; width:32px;">
                                          <a href="#" class="zc_edit" style="color:#2499fb;" id="${asset.id}" name="${asset.name}" addr="${asset.addr}" districtId="${asset.districtId}" city="${asset.city}" purpose="${asset.purpose}" onclick="editAssetUI('${asset.id},${asset.name},${asset.addr},${asset.districtId},${asset.city},${asset.purpose},${asset.type}')">修改</a>
