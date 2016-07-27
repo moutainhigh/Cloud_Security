@@ -432,7 +432,8 @@
             </ul>
 			<div class="SubmitBox">
 			<input type="hidden" id="countPrice" value="${shopCount}"/>
-            	<p>应付总额：<span>${shopCount}<em style="font-size:14px">&nbsp;安全币</em></span>
+            	<p>应付总额：
+            	<span style="padding-bottom:10px;">${shopCount}<em style="font-size:14px">&nbsp;安全币</em></span>
             	<c:if test="${shop eq '0' }">
             		<input id="shopSettlement" class="submit" type="button" value="提交订单" style="cursor:pointer"/>
             	</c:if>
