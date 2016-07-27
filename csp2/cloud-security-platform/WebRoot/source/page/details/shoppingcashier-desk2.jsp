@@ -106,7 +106,7 @@ $(function(){
 	<div class="safeBox">
 		
 		<div class="safe01 detalis-head">
-			f<!--头部-->
+			<!--头部-->
 			<div class="head">
 				<div class="headBox">
 					<div class="safeL fl" style="width:260px; margin-right:13%">
