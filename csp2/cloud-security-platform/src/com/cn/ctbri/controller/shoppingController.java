@@ -830,7 +830,7 @@ public class shoppingController {
 		   }
 		   //验证手机号
 		   if(linkMoblie!=null&&!"".equals(linkMoblie)){
-			    Pattern regex = Pattern.compile("^(((13[0-9])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8})|(0\\d{2}-\\d{8})|(0\\d{3}-\\d{7})$");
+			    Pattern regex = Pattern.compile("^[1][3,4,5,8][0-9]{9}$");;
                 Matcher matcher = regex.matcher(linkMoblie);
                 bflag = matcher.matches();
               if(!bflag){
