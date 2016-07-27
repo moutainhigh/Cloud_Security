@@ -128,7 +128,7 @@ function getPage(page){
                                 <th width="200">时间</th>
                                 <th width="200">订单编号</th>
                                 <th width="330">名称</th>
-                                <th width="160">价格（元）</th>
+                                <th width="160">价格（安全币）</th>
                             </tr>
                             
                         </thead>

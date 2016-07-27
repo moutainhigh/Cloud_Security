@@ -329,7 +329,7 @@ function getServ(c){
                         <span style="margin-right:42px;">订单类型</span>
                          <span style="margin-right:72px;">订单状态</span>
                          <span style="margin-right:94px;">服务起止时间</span>
-                         <span style="margin-right:78px;">价格（元）</span>
+                         <span style="margin-right:78px;">价格（安全币）</span>
                          <span style="">操作</span>
                     </div>
                     <div id="orderTab"></div>

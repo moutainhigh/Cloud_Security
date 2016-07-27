@@ -291,7 +291,7 @@ function buyAPI(){
                                     <td width="85">订单类型</td>
                                     <td width="109">订单状态</td>
                                     <td width="175">服务起止时间</td>
-                                    <td width="160">价格（元）</td>
+                                    <td width="160">价格（安全币）</td>
                                     <td width="96">操作</td>
                                 </tr>
                                 
