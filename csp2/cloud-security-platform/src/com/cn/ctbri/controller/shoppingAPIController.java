@@ -294,21 +294,24 @@ public class shoppingAPIController {
     		return;
         }
         /***判断参数开始**/
-        Pattern p = Pattern.compile("^[1][3,4,5,8][0-9]{9}$");  
-        
-        Matcher matcher = p.matcher(phone); 
-        if(!matcher.find()){
-     		m.put("error", true);
-       		 //object转化为Json格式
-       	       JSONObject JSON = CommonUtil.objectToJson(response, m);
-       	       try {
-       	           // 把数据返回到页面
-       	           CommonUtil.writeToJsp(response, JSON);
-       	       } catch (IOException e) {
-       	           e.printStackTrace();
-       	       }
-       	       return;
+        if(phone!=null&&!"".equals(phone)) {
+        	Pattern p = Pattern.compile("^[1][3,4,5,8][0-9]{9}$");  
+        	
+        	Matcher matcher = p.matcher(phone); 
+        	if(!matcher.find()){
+        		m.put("error", true);
+        		//object转化为Json格式
+        		JSONObject JSON = CommonUtil.objectToJson(response, m);
+        		try {
+        			// 把数据返回到页面
+        			CommonUtil.writeToJsp(response, JSON);
+        		} catch (IOException e) {
+        			e.printStackTrace();
+        		}
+        		return;
+        	}
         }
+        
         if(email!=null&&!"".equals(email)){
      	   Pattern emailP = Pattern.compile("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$");  
             Matcher ematcher = emailP.matcher(email); 
@@ -339,6 +342,24 @@ public class shoppingAPIController {
     		}
     		return;
         }
+        
+      //长期：订单结束时间不能早于当前订单提交时间,add by zsh,2016-7-27
+        String nowDate = DateUtils.dateToString(new Date());
+        if(1 == orderDetailVo.getType() && orderDetailVo.getEnd_date()!=null && 
+        		DateUtils.dateToString(orderDetailVo.getEnd_date())!="" && 
+        		nowDate.compareTo( DateUtils.dateToString(orderDetailVo.getEnd_date()))>0){
+    		m.put("timeCompare", false);
+    		//object转化为Json格式
+            JSONObject JSON = CommonUtil.objectToJson(response, m);
+            try {
+                // 把数据返回到页面
+                CommonUtil.writeToJsp(response, JSON);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        
         String orderId = "";
         //创建订单（任务），调北向api，modify by tangxr 2015-12-21
     	try {
