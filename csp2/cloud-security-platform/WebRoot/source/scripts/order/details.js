@@ -348,7 +348,10 @@ $(function(){
     			   			 alert("参数数据异常!");
     			   			 window.location.href = "index.html";
 	    		     	     return;
-    			   		 }else if(data.message == true){
+    			   		 }else if(data.timeCompare == false){
+		    					alert("订单无效,请重新下单!");
+		    		     		return;
+		    			}else if(data.message == true){
 	    		    		 //alert("完成下单，去订单跟踪查看订单吧~~");  
     		    			 //window.location.href = "orderTrackInit.html";
     		    			 var orderListId = data.orderListId;
