@@ -201,7 +201,7 @@ public class UserController{
 		//手机号码
 //		globle_user.setMobile(mobile);
 		//邮箱
-//		globle_user.setEmail(email);
+		globle_user.setEmail(email);
 		
 		try {
 			//公司名称
