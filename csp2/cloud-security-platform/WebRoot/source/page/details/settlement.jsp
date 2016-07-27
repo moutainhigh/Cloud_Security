@@ -391,7 +391,7 @@
           
 			<div class="SubmitBox">
 			  <c:if test="${not empty orderDetail}">
-            	<p>应付总额：<span>${orderDetail.price}<em style="font-size:14px">&nbsp;安全币</em></span>
+            	<p>应付总额：<span style="padding-bottom:10px;">${orderDetail.price}<em style="font-size:14px">&nbsp;安全币</em></span>
             	</c:if>
             	
             	<c:if test="${not empty orderDetail}">
