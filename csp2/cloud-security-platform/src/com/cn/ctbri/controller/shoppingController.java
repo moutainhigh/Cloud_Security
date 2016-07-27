@@ -1575,8 +1575,18 @@ public class shoppingController {
     		}
     		
     		//若支付时间>服务的开始时间，更新订单的开始时间，结束时间
-    		List<String> orderIdOfModify = modifyOrderBeginTime(orderList);
-    		
+    		List<String> orderIdOfModify = new ArrayList<String>();
+    		try{
+    			orderIdOfModify = modifyOrderBeginTime(orderList);
+    		} catch(Exception e) {
+    			e.printStackTrace();
+    			//长期：订单结束时间不能早于当前订单提交时间
+    			if (e.getMessage().equals("当前时间已经超过部分订单的结束时间，订单失效!")) {
+    				m.put("payFlag", 5);//付款成功
+    			}
+    			return;
+    		}
+    			
     		// 南向API调用 任务执行
     		if(!orderTask(orderList, globle_user, orderIdOfModify)) {
     			m.put("payFlag", 4);
@@ -1623,11 +1633,13 @@ public class shoppingController {
     	}
     }
     
+    
     /**
      * 功能描述：若支付时间>服务的开始时间，更新订单的开始时间，结束时间
      * @return  需要修改的订单编号(逗号分割)
+     * @throws Exception 
      * */
-    public List<String> modifyOrderBeginTime(OrderList orderList) {
+    public List<String> modifyOrderBeginTime(OrderList orderList) throws Exception {
     	List<String> orderIdOfModify = new ArrayList<String>();
     	
     	List list = new ArrayList();
@@ -1653,6 +1665,12 @@ public class shoppingController {
 				ShopCar shopCar = (ShopCar)list.get(i);
 				Date beginDate = shopCar.getBeginDate();
 				Date endDate = shopCar.getEndDate();
+				//长期：订单结束时间不能早于当前订单提交时间
+				if (endDate!= null && !DateUtils.dateToString(endDate).equals("")&& new Date().getTime()>endDate.getTime()) {
+					Exception e = new Exception("当前时间已经超过部分订单的结束时间，订单失效!");
+					throw e;
+				}
+				
 				if (beginDate.getTime() < payDate.getTime()){
 					shopCar.setBeginDate(payDate);
 					if (endDate != null){
