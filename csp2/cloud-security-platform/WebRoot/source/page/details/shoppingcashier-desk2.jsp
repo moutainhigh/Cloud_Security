@@ -83,7 +83,9 @@ $(function(){
 					    //var modifyOrderId = data.modifyOrderId;
 					    //orderListId = data.orderListId;
 						//window.location.href = "repayUI.html?orderListId="+orderListId+"&modifyOrderId="+modifyOrderId;
-					} else {
+					} else if (data.payFlag ==5){
+						alert("当前时间已经超过部分订单的结束时间，订单失效!");
+					}else {
 						alert("系统异常,您的订单已加入购物车,请稍后付款!");
 		    		    return;
 					}
