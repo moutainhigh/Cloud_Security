@@ -215,7 +215,7 @@ $(function(){
                         </div>
                         <div class="shopCant_fix"><i></i>安全币余额${balance }</div>
                         <!-- <div class="shopCant_con">更换其他付款方式</div> -->
-                        <div class="shop_pay"><b>支付:</b>${price }<em style="font-size:14px;line-height:36px">&nbsp;安全币</em></div>
+                        <div class="shop_pay"><b>支付：</b>${price }<em style="font-size:14px;line-height:36px">&nbsp;安全币</em></div>
                     </div>
             	    
             </div>
