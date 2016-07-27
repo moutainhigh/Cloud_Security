@@ -124,7 +124,7 @@
 	float: right;
 	font-size: 26px;
 	color: #d00000;
-	line-height: 36px;
+	/*line-height: 36px;*/
 	text-align: center;
 	margin-right: 60px;
 }
