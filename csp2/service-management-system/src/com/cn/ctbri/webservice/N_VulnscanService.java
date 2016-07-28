@@ -2,17 +2,14 @@ package com.cn.ctbri.webservice;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,14 +18,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.annotation.Resource;
 import javax.mail.internet.MimeUtility;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
-import javax.ws.rs.HttpMethod;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -36,18 +31,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
-import javax.xml.ws.WebServiceContext;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.apache.cxf.jaxrs.ext.MessageContext;
-import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.apache.poi.POIXMLDocument;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.xwpf.usermodel.Document;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -76,24 +65,25 @@ import org.springframework.stereotype.Component;
 import sun.misc.BASE64Decoder;
 
 import com.cn.ctbri.common.InternalWorker;
+import com.cn.ctbri.common.ManagerWorker;
 import com.cn.ctbri.constant.WarnType;
+import com.cn.ctbri.entity.APINum;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderAPI;
 import com.cn.ctbri.entity.OrderTask;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.User;
+import com.cn.ctbri.service.IAPIKeyService;
 import com.cn.ctbri.service.IAlarmService;
+import com.cn.ctbri.service.IOrderAPIService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IOrderTaskService;
 import com.cn.ctbri.service.ITaskService;
+import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.DateUtils;
-import com.cn.ctbri.util.HttpDownloader;
 import com.cn.ctbri.util.Random;
 import com.cn.ctbri.util.Respones;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
 /**
  * 创 建 人  ：  tangxr
  * 创建日期：  2015-10-19
@@ -110,87 +100,140 @@ public class N_VulnscanService {
 	@Autowired
     private IAlarmService alarmService;
 	@Autowired
-    private IOrderTaskService orderTaskService;	
+    private IOrderTaskService orderTaskService;
+	@Autowired
+    private IOrderAPIService orderAPIService;
+	@Autowired
+    private IAPIKeyService apiKeyService;
+	@Autowired
+    private IUserService userService;
 	
 	//创建漏洞扫描订单（任务）
 	@POST
-    @Path("/order")
+    @Path("/order/{token}")
 	@Produces(MediaType.APPLICATION_JSON) 
-    public String vulnScanCreate(String dataJson) {
+    public String vulnScanCreate(@PathParam("token") String token, String dataJson) {
 		JSONObject json = new JSONObject();
 		try {
-			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
-			//单次，长期
-			String scanMode = jsonObj.getString("scanMode");
-			//扫描方式（正常、快速、全量）
-			String scanType = jsonObj.getString("scanType");
-			//开始时间
-			String startTime = jsonObj.getString("startTime");
-			//结束时间
-			String endTime = jsonObj.getString("endTime");
-		    //周期
-			String scanPeriod = jsonObj.getString("scanPeriod");
-			//检测深度
-			String scanDepth = jsonObj.getString("scanDepth");
-			//最大页面数
-			String maxPages = jsonObj.getString("maxPages");
-			//策略
-			String stategy = jsonObj.getString("stategy");
-			//目标地址，可以多个
-			JSONArray targetArray = jsonObj.getJSONArray("targetURLs");
-			//指定厂家设备，可以多个
-			JSONArray customArray = jsonObj.getJSONArray("customManus");
-			//生成订单id，当前日期加5位随机数
-			SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
-			String orderDate = odf.format(new Date());
-	        String orderId = orderDate+String.valueOf(Random.fivecode());
-			//新增订单
-	        Order order = new Order();
-	        order.setId(orderId);
-			order.setServiceId(1);//漏扫
-	        order.setType(Integer.parseInt(scanMode));
-	        
-	        int scan_type = 0;
-	        if(scanPeriod!=null && !scanPeriod.equals("")){
-	        	scan_type = Integer.parseInt(scanPeriod);
-	        }
-	        Date begin_date = DateUtils.stringToDateNYRSFM(startTime);
-	        Date end_date = DateUtils.stringToDateNYRSFM(endTime);
-	        
-	        order.setBegin_date(begin_date);
-	        order.setEnd_date(end_date);
-	        order.setScan_type(scan_type);
-	        order.setTask_date(begin_date);
-	        order.setStatus(0);//设置订单状态为：0未执行
-	        orderService.insertOrder(order);
-	        
-	        for (int i = 0; i < targetArray.size(); i++) {
-	        	for (int j = 0; j < customArray.size(); j++) {
-			        OrderTask orderTask = new OrderTask();
-			        orderTask.setOrderId(orderId);
-			        orderTask.setServiceId(1);
-			        orderTask.setType(Integer.parseInt(scanMode));
-			        orderTask.setBegin_date(begin_date);
-					orderTask.setEnd_date(end_date);
-					orderTask.setScan_type(scan_type);
-					orderTask.setStatus(0);
-					orderTask.setWebsoc(Integer.parseInt(customArray.get(j).toString()));
-					orderTask.setUrl(targetArray.get(i).toString());
-					orderTask.setTask_status(1);//设置订单任务状态为：1未执行
-//					orderTask.setOrderTaskId(String.valueOf(Random.eightcode()));
-					
-//					if (scanMode.equals("1")) {//漏洞长期
-//						Date executeTime = DateUtils.getOrderPeriods(startTime,endTime,scanPeriod);
-//						orderTask.setTask_date(executeTime);
-//					}else{
-						orderTask.setTask_date(begin_date);
-//					}
-					orderTaskService.insertOrderTask(orderTask);
-					
-	        	}
-	        }
-	        json.put("code", 201);//返回201表示成功
-			json.put("orderId", orderId);
+			//通过token查询user
+			User user = userService.findUserByToken(token);
+			if(token!=null && token!="" && user!=null){
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("apiKey", user.getApikey());
+		        paramMap.put("apiId", 1);
+		        //查找此项服务的API订单
+				List<OrderAPI> oAPIList = orderAPIService.findByParam(paramMap);
+//				if(user.getApi1()>0 && oAPIList.size()>0){
+				if(user.getType()==3 || (user.getType()==2 && user.getApi1()>0 && oAPIList.size()>0)){
+					//服务结束时间
+					Date end = oAPIList.get(0).getEnd_date();
+					//当前时间
+					Date now = new Date();
+					if(now.compareTo(end)<=0){
+						JSONObject jsonObj = new JSONObject().fromObject(dataJson);
+						//单次，长期
+						String scanMode = jsonObj.getString("scanMode");
+						//扫描方式（正常、快速、全量）
+						String scanType = jsonObj.getString("scanType");
+						//开始时间
+						String startTime = jsonObj.getString("startTime");
+						//结束时间
+						String endTime = jsonObj.getString("endTime");
+					    //周期
+						String scanPeriod = jsonObj.getString("scanPeriod");
+						//检测深度
+						String scanDepth = jsonObj.getString("scanDepth");
+						//最大页面数
+						String maxPages = jsonObj.getString("maxPages");
+						//策略
+						String stategy = jsonObj.getString("stategy");
+						//目标地址，可以多个
+						JSONArray targetArray = jsonObj.getJSONArray("targetURLs");
+						//指定厂家设备，可以多个
+						JSONArray customArray = jsonObj.getJSONArray("customManus");
+						//生成订单id，当前日期加5位随机数
+						SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+						String orderDate = odf.format(new Date());
+				        String orderId = orderDate+String.valueOf(Random.fivecode());
+						//新增订单
+				        Order order = new Order();
+				        order.setId(orderId);
+						order.setServiceId(1);//漏扫
+				        order.setType(Integer.parseInt(scanMode));
+				        
+				        int scan_type = 0;
+				        if(scanPeriod!=null && !scanPeriod.equals("")){
+				        	scan_type = Integer.parseInt(scanPeriod);
+				        }
+				        Date begin_date = DateUtils.stringToDateNYRSFM(startTime);
+				        Date end_date = DateUtils.stringToDateNYRSFM(endTime);
+				        
+				        order.setBegin_date(begin_date);
+				        order.setEnd_date(end_date);
+				        order.setScan_type(scan_type);
+				        order.setTask_date(begin_date);
+				        order.setStatus(0);//设置订单状态为：0未执行
+				        //设置订单用户Id add by tangxr 2016-4-9
+				        order.setUserId(user.getId());
+				        //end
+				        orderService.insertOrder(order);
+				        
+				        for (int i = 0; i < targetArray.size(); i++) {
+				        	for (int j = 0; j < customArray.size(); j++) {
+						        OrderTask orderTask = new OrderTask();
+						        orderTask.setOrderId(orderId);
+						        orderTask.setServiceId(1);
+						        orderTask.setType(Integer.parseInt(scanMode));
+						        orderTask.setBegin_date(begin_date);
+								orderTask.setEnd_date(end_date);
+								orderTask.setScan_type(scan_type);
+								orderTask.setStatus(0);
+//								orderTask.setWebsoc(Integer.parseInt(customArray.get(j).toString()));
+								orderTask.setUrl(targetArray.get(i).toString());
+								orderTask.setTask_status(1);//设置订单任务状态为：1未执行
+//								orderTask.setOrderTaskId(String.valueOf(Random.eightcode()));
+								
+//								if (scanMode.equals("1")) {//漏洞长期
+//									Date executeTime = DateUtils.getOrderPeriods(startTime,endTime,scanPeriod);
+//									orderTask.setTask_date(executeTime);
+//								}else{
+									orderTask.setTask_date(begin_date);
+//								}
+								orderTaskService.insertOrderTask(orderTask);
+								
+				        	}
+				        }
+				        
+				        //更新api数量 add by tangxr 2016-4-9
+				        user.setApi(1);
+				        user.setCount(-1);
+				        userService.updateCount(user);
+				        
+				        //insert到统计表
+						APINum num = new APINum();
+						num.setApikey(user.getApikey());
+						num.setService_type(1);
+						num.setApi_type(1);
+						num.setStatus(1);
+						num.setCreate_time(new Date());
+						userService.insertAPINum(num);
+						ManagerWorker.createAPINum(user.getApikey(), 1, 1, 1);
+				        
+				        json.put("code", 201);//返回201表示成功
+						json.put("orderId", orderId);
+					}else{
+						json.put("code", 424);
+						json.put("message", "服务已过期，请重新购买");
+					}
+				}else{
+					json.put("code", 423);
+					json.put("message", "用户无权限");
+				}
+				
+			}else{
+				json.put("code", 422);
+				json.put("message", "token无效");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			json.put("code", 404);//返回404表示失败
@@ -235,52 +278,96 @@ public class N_VulnscanService {
 	
 	//获取status
 	@GET
-    @Path("/orderStatus/{orderId}")
+    @Path("/orderStatus/{orderId}/{token}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String VulnScan_Get_orderStatus(@PathParam("orderId") String orderId, @PathParam("taskId") String taskId) {
+	public String VulnScan_Get_orderStatus(@PathParam("token") String token,@PathParam("orderId") String orderId, @PathParam("taskId") String taskId) {
 		JSONObject json = new JSONObject();
 		try {
-			Order order = orderService.findOrderByOrderId(orderId);
-			if(order!=null){
-				//taskId 不空取任务信息，为空取订单状态
-				if(taskId!=null && taskId!=""){
-					Task task = new Task();
-					task = taskService.findTaskByTaskId(taskId);
-					task.setExecuteTime(DateUtils.dateToString(task.getExecute_time()));
-					task.setBeginTime(DateUtils.dateToString(task.getBegin_time()));
-					task.setEndTime(DateUtils.dateToString(task.getEnd_time()));
-					if(task!=null){
-						net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
-						json.put("taskObj", taskObject);
-						json.put("result", "success");
-						Respones r = new Respones();
-						r.setState("200");//成功获取
-						net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
-						json.put("state", state);
+			//通过token查询user
+			User user = userService.findUserByToken(token);
+			if(token!=null && token!="" && user!=null){
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("apiKey", user.getApikey());
+		        paramMap.put("apiId", 1);
+		        //查找此项服务的API订单
+				List<OrderAPI> oAPIList = orderAPIService.findByParam(paramMap);
+				if(user.getType()==3 || (user.getType()==2 && user.getApi1()>0 && oAPIList.size()>0)){
+					//服务结束时间
+					Date end = oAPIList.get(0).getEnd_date();
+					//当前时间
+					Date now = new Date();
+					if(now.compareTo(end)<=0){
+				
+						Order order = orderService.findOrderByOrderId(orderId);
+						if(order!=null){
+							//taskId 不空取任务信息，为空取订单状态
+							if(taskId!=null && taskId!=""){
+								Task task = new Task();
+								task = taskService.findTaskByTaskId(taskId);
+								task.setExecuteTime(DateUtils.dateToString(task.getExecute_time()));
+								task.setBeginTime(DateUtils.dateToString(task.getBegin_time()));
+								task.setEndTime(DateUtils.dateToString(task.getEnd_time()));
+                                task.setGroupFlag(DateUtils.dateToString(task.getGroup_flag()));
+								if(task!=null){
+									net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
+									json.put("taskObj", taskObject);
+									json.put("result", "success");
+									Respones r = new Respones();
+									r.setState("200");//成功获取
+									net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
+									json.put("state", state);
+								}else{
+									Respones r = new Respones();
+									r.setState("421");//订单不存在
+									net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
+									json.put("state", state);
+								}
+							}else{
+								List t= taskService.findTaskByOrderId(orderId);
+			//					if(t.size()>0){
+			//						t.setExecuteTime(DateUtils.dateToString(t.getExecute_time()));
+			//						t.setBeginTime(DateUtils.dateToString(t.getBegin_time()));
+			//						t.setEndTime(DateUtils.dateToString(t.getEnd_time()));
+			//					}
+								
+								
+								JSONArray taskObject = new JSONArray().fromObject(t);
+								json.put("code", 200);
+								json.put("status", order.getStatus());
+//								json.put("websoc", order.getWebsoc());
+								json.put("taskObj", taskObject);
+							}
+							
+						}else{
+							json.put("code", 421);
+							json.put("message", "订单不存在");
+						}
+						//更新api数量 add by tangxr 2016-4-9
+				        user.setApi(1);
+				        user.setCount(-1);
+				        userService.updateCount(user);
+				        
+				        //insert到统计表
+						APINum num = new APINum();
+						num.setApikey(user.getApikey());
+						num.setService_type(1);
+						num.setApi_type(3);//1表登录，2注销
+						num.setStatus(1);
+						num.setCreate_time(new Date());
+						userService.insertAPINum(num);
+						ManagerWorker.createAPINum(user.getApikey(), 1, 3, 1);
 					}else{
-						Respones r = new Respones();
-						r.setState("421");//订单不存在
-						net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
-						json.put("state", state);
+						json.put("code", 424);
+						json.put("message", "服务已过期，请重新购买");
 					}
 				}else{
-					List t= taskService.findTaskByOrderId(orderId);
-//					if(t.size()>0){
-//						t.setExecuteTime(DateUtils.dateToString(t.getExecute_time()));
-//						t.setBeginTime(DateUtils.dateToString(t.getBegin_time()));
-//						t.setEndTime(DateUtils.dateToString(t.getEnd_time()));
-//					}
-					
-					
-					JSONArray taskObject = new JSONArray().fromObject(t);
-					json.put("code", 200);
-					json.put("status", order.getStatus());
-					json.put("websoc", order.getWebsoc());
-					json.put("taskObj", taskObject);
+					json.put("code", 423);
+					json.put("message", "用户无权限");
 				}
+				
 			}else{
-				json.put("code", 421);
-				json.put("message", "订单不存在");
+				json.put("code", 422);
+				json.put("message", "token无效");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -291,30 +378,69 @@ public class N_VulnscanService {
     }
 	
 	
-	//获取进度
+	//获取结果
 	@GET
-    @Path("/orderResult/{orderId}/{taskId}")
+    @Path("/orderResult/{orderId}/{taskId}/{token}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String VulnScan_Get_orderResult(@PathParam("orderId") String orderId, @PathParam("taskId") String taskId) {
+	public String VulnScan_Get_orderResult(@PathParam("token") String token,@PathParam("orderId") String orderId, @PathParam("taskId") String taskId) {
 		JSONObject json = new JSONObject();
 		try {
-			Order order = orderService.findOrderByOrderId(orderId);
-			if(order!=null){
-				//taskId 不空取任务信息，为空取订单状态
-				if(taskId!=null && taskId!=""){
-					List<Alarm> alist = alarmService.findAlarmByTaskId(taskId);
-					JSONArray alarmObject = new JSONArray().fromObject(alist);
-					json.put("code", 200);
-					json.put("alarmObj", alarmObject);
-					return json.toString();
+			//通过token查询user
+			User user = userService.findUserByToken(token);
+			if(token!=null && token!="" && user!=null){
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("apiKey", user.getApikey());
+		        paramMap.put("apiId", 1);
+		        //查找此项服务的API订单
+				List<OrderAPI> oAPIList = orderAPIService.findByParam(paramMap);
+				if(user.getType()==3 || (user.getType()==2 && user.getApi1()>0 && oAPIList.size()>0)){
+					//服务结束时间
+					Date end = oAPIList.get(0).getEnd_date();
+					//当前时间
+					Date now = new Date();
+					if(now.compareTo(end)<=0){
+						Order order = orderService.findOrderByOrderId(orderId);
+						if(order!=null){
+							//taskId 不空取任务信息，为空取订单状态
+							if(taskId!=null && taskId!=""){
+								List<Alarm> alist = alarmService.findAlarmByTaskId(taskId);
+								JSONArray alarmObject = new JSONArray().fromObject(alist);
+								json.put("code", 200);
+								json.put("alarmObj", alarmObject);
+								return json.toString();
+							}else{
+								return json.toString();
+							}
+						}else{
+							json.put("code", 421);
+							json.put("message", "订单不存在");
+						}
+						//更新api数量 add by tangxr 2016-4-9
+				        user.setApi(1);
+				        user.setCount(-1);
+				        userService.updateCount(user);
+				        
+				        //insert到统计表
+						APINum num = new APINum();
+						num.setApikey(user.getApikey());
+						num.setService_type(1);
+						num.setApi_type(4);//1表登录，2注销
+						num.setStatus(1);
+						num.setCreate_time(new Date());
+						userService.insertAPINum(num);
+						ManagerWorker.createAPINum(user.getApikey(), 1, 4, 1);
+					}else{
+						json.put("code", 424);
+						json.put("message", "服务已过期，请重新购买");
+					}
 				}else{
-					return json.toString();
+					json.put("code", 423);
+					json.put("message", "用户无权限");
 				}
 			}else{
-				json.put("code", 421);
-				json.put("message", "订单不存在");
+				json.put("code", 422);
+				json.put("message", "token无效");
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			json.put("code", 404);//返回404表示失败
@@ -326,9 +452,8 @@ public class N_VulnscanService {
 	private URL base = this.getClass().getResource("");
 	//获取report
 	@POST
-    @Path("/orderReport/{orderId}")
-//	@Produces(MediaType.APPLICATION_JSON)
-	public void VulnScan_Get_orderReport(@PathParam("orderId") String orderId,@Context HttpServletRequest request,@Context HttpServletResponse response) {
+    @Path("/orderReport/{orderId}/{token}")
+	public void VulnScan_Get_orderReport(@PathParam("token") String token,@PathParam("orderId") String orderId,@Context HttpServletRequest request,@Context HttpServletResponse response) {
 //		JSONObject json = new JSONObject();
 		try {
 			//查找订单

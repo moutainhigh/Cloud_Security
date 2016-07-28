@@ -259,15 +259,15 @@ public class ArnhemWebService {
                 t.setTaskId(Integer.parseInt(task_id));
                 List<Asset> asset = assetService.findByTask(t);
                 //更新地域告警数
-                Map<String, Object> disMap = new HashMap<String, Object>();
+                /*Map<String, Object> disMap = new HashMap<String, Object>();
 				disMap.put("id", asset.get(0).getDistrictId());
 				disMap.put("count", 1);
 				disMap.put("serviceId", 5);
                 alarmService.updateDistrict(disMap);
-                System.out.println("999999");
+                System.out.println("999999");*/
                 log.info("[任务主动告警]:任务-[" + task_id + "]完成入库!");
                 //发短信
-                if(cat2.equals("断网")){
+                /*if(cat2.equals("断网")){
                     List<Order> oList = orderService.findOrderByTask(t);
                     Order order=oList.get(0);
                     List<Linkman> mlist= orderService.findLinkmanById(order.getContactId());
@@ -281,7 +281,7 @@ public class ArnhemWebService {
                         order.setMessage(1);
                         orderService.update(order);
                     }
-                }
+                }*/
                 
             }
 

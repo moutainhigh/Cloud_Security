@@ -14,15 +14,18 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cn.ctbri.common.ReNoticeWorker;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderTask;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IOrderTaskService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
+import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Respones;
 import com.sun.jersey.api.client.Client;
@@ -51,6 +54,8 @@ public class ReInternalWebService {
     private ITaskService taskService;
 	@Autowired
     private IOrderService orderService;
+	@Autowired
+    private IUserService userService;
 	
 	//主动告警
 	@POST
@@ -306,6 +311,15 @@ public class ReInternalWebService {
 						order.setStatus(1);//订单完成无告警
 						orderService.update(order);
 			        }
+		        	
+		        	//第三方推送  add by tangxr 2016-4-9
+		        	Order o = orderService.findOrderByOrderId(orderId);
+		        	User user = userService.findUserByUserId(o.getUserId());
+		        	//第三方推送url
+		        	if(user!=null){
+		        		String callbackAddr = user.getUrlAddr();
+			        	ReNoticeWorker.taskNotice(callbackAddr,orderId,o.getStatus(),"");
+		        	}
 		        }
 			}
 
