@@ -35,4 +35,8 @@ public class ApiPriceServiceImpl implements IApiPriceService {
 		return apiPriceDao.delPrice(serviceId);
 	}
 
+	public ApiPrice findPrice(int serviceId, int num) {
+		return apiPriceDao.findPrice(serviceId, num);
+	}
+
 }
