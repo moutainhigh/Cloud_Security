@@ -3,6 +3,7 @@ package com.cn.ctbri.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.cn.ctbri.entity.ApiPrice;
 import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.Serv;
 
@@ -50,4 +51,9 @@ public interface ServDao {
      * 根据参数查询价格
      */
     List<Price> findPriceByParam(Map map);
+    
+    /*
+     * 根据serviceid查询Api价格列表
+     */
+    List<ApiPrice> findApiPriceByServiceId(int serviceId);
 }
