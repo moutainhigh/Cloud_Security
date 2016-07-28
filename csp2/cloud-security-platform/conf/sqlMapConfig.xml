@@ -43,5 +43,10 @@
 		<mapper resource="com/cn/ctbri/entity/OrderAPIMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/OrderSearchMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/PriceMapper.xml"/>
+		
+		<!-- add by zhangshaohua 2016-7-27 -->
+		<mapper resource="com/cn/ctbri/entity/ApiPriceMapper.xml"/>
+		
+		
 	</mappers>
 </configuration>  
