@@ -12,14 +12,16 @@ import com.cn.ctbri.service.IOrderTaskService;
 import com.cn.ctbri.util.DateUtils;
 
 /**
- * 引擎异常的调度类
+ * 扫描订单任务表的调度类
  * 
- * @author tang
+ * @author tangxr 
  * 
  */
+
+@SuppressWarnings("deprecation")
 public class Scheduler4Exception {
 
-	static Logger logger = Logger.getLogger(Scheduler4Task.class.getName());
+	static Logger logger = Logger.getLogger(Scheduler4Exception.class.getName());
 
 	@Autowired
     IOrderTaskService orderTaskService;
@@ -32,7 +34,7 @@ public class Scheduler4Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("task_status", Integer.parseInt(Constants.TASK_START));   //设置为 已开始？
 		// 获取订单任务表前n条未下发的记录
-		List<OrderTask> oTaskList = orderTaskService.findOrderTask(map);
+		List<OrderTask> oTaskList = orderTaskService.findExpTask(map);
 		logger.info("[下发任务调度]:当前等待下发的任务有 " + oTaskList.size() + " 个!");
 		// 调用接口下发任务
 		for (OrderTask o : oTaskList) {
@@ -81,5 +83,5 @@ public class Scheduler4Exception {
 		}
 		logger.info("[下发任务调度]:任务表扫描结束......");
 	}
-
+	
 }
