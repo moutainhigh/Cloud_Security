@@ -272,23 +272,11 @@ public class shoppingAPIController {
 			System.out.println("链接服务器失败!");
 		}  
 		
-		
-		List<ApiPrice> priceList= apiPriceService.findPriceByServiceId(apiId);
-		double sumPrice = 0;
-		for (int i = 0; i < priceList.size(); i++) {
-			ApiPrice apiPrice = priceList.get(i);
-			if (num <= apiPrice.getTimesG()) {
-				continue;
-			} else if (num > apiPrice.getTimesG() && num > apiPrice.getTimesLE() && 
-					apiPrice.getTimesG() < apiPrice.getTimesLE()) {
-				sumPrice += (apiPrice.getTimesLE() - apiPrice.getTimesG()) * apiPrice.getPrice();
-			} else if (num > apiPrice.getTimesG() && num <= apiPrice.getTimesLE()) {
-				sumPrice += apiPrice.getPrice() * (num - apiPrice.getTimesG());
-			} else {
-				sumPrice +=apiPrice.getPrice() * (num - apiPrice.getTimesG());
-			}
+		ApiPrice price = apiPriceService.findPrice(apiId, num);
+		if (price != null) {
+			return price.getPrice()*num;
 		}
-		return sumPrice;
+		return 0;
 	}
 	
 	/**
