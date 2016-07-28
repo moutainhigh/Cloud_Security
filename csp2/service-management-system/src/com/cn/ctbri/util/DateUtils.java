@@ -178,5 +178,34 @@ public class DateUtils {
          date = calendar.getTime();  
          return date;
     }
+    
+    /**将日期类型转换成String类型   标准ISO8601
+     * add by tangxr
+     * 2016-4-11
+     */
+	public static String dateToStrISO(Date date) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD'T'HH:mm:ss.sssZ");
+		String sDate = "";
+		if(date!=null && !date.equals("")){
+			sDate = dateFormat.format(date);
+		}
+		return sDate;
+	}
+	
+	
+	/**
+     * 时间加一分钟
+     * @param d
+     * @return
+     */
+    public static Date getAfterMinute(Date d){
+         Date date = d;
+         Calendar calendar = Calendar.getInstance();  
+         calendar.setTime(date);  
+         calendar.add(Calendar.MINUTE,1);  
+         date = calendar.getTime();  
+         return date;
+    }
+	
 	
 }
