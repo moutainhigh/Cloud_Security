@@ -506,28 +506,30 @@ $(function(){
 //设置默认价格
 function calDefaultPrice(){
 	var serviceId = $("#serviceIdHidden").val();
+	var type = $('.click').val();
+    servType = $(".clickTime").val();
 	if(typeof(serviceId) == "undefined"){
 		return;
 	}
 	switch(parseInt(serviceId)){
 	case 1://默认单次
-		servType = 2;
+	
 		calPrice(null);
 		break;
 	case 2://默认单次
-		servType = 1;
+		
 		calPrice(null);
 		break;
 	case 3://默认长期
-		servType = 1;
+	
 		calPriceLong(null,servType,null);
 		break;
 	case 4://默认单次
-		servType = 1;
+		
 		calPrice(null);
 		break;
 	case 5://默认长期
-		servType = 1;
+		
 		calPriceLong(null,servType,null);
 		break;
 	}
@@ -648,6 +650,7 @@ function tasknum_verification(){
     	var serviceId = $("#serviceIdHidden").val();
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
+    	var serviceType = $('.click').val();
     	var assetCountNew = 0;
     	if(assetCount==null){
     	   	var assetCountNew = $('.httpBox li').length;
@@ -677,7 +680,7 @@ function tasknum_verification(){
 		$.ajax({ type: "POST",
 	     async: false, 
 	     url: "calPrice.html", 
-	     data:{"serviceId":serviceId,"type":servType,"beginDate":beginDate,"endDate":endDate,"assetCount":assetCountNew},
+	     data:{"serviceId":serviceId,"type":servType,"beginDate":beginDate,"endDate":endDate,"assetCount":assetCountNew,"orderType":serviceType},
 	     dataType: "json",
 	     success: function(data) {
    			if(data.success){
