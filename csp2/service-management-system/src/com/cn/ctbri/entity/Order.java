@@ -28,6 +28,7 @@ public class Order {
 	private String task_datevo;//end_date vo备注
 	private int message;//是否发送告警信息
 	private int websoc;//创宇标志
+	private String apiKey;
 	public String getBegin_datevo() {
 		return begin_datevo;
 	}
@@ -136,5 +137,11 @@ public class Order {
     public void setWebsoc(int websoc) {
         this.websoc = websoc;
     }
+	public String getApiKey() {
+		return apiKey;
+	}
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
 	
 }

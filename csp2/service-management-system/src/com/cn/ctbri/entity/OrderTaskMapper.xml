@@ -35,18 +35,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="task_status==1">
 		  and ot.task_date between date_add(now(),interval -1 minute) and now()
 		</if>
-		<!-- limit #{page} -->
+		and ot.id = '16072213543732219'
+		<!--union 
+		  select * from cs_order_task ot
+		  where ot.warn !=0
+		  and ot.task_date &lt;= date_add(now(),interval -10 minute)
+		 limit #{page} -->
 	</select>
 	
 	<!-- 根据条件查询订单任务表 （异常） -->
 	<select id="findExpOrderTask" parameterType="hashmap" resultMap="OrderTaskRM">
 		select * from cs_order_task ot
-		where ot.task_status = #{task_status}
-        <if test="status==1">
-          and t.engine = -1
-        </if>
-        order by t.execute_time
-        <!-- limit #{page} -->
+		  where ot.warn is NULL
+		  and ot.task_status = 1
+		  and ot.task_date &lt;= date_add(now(),interval -10 minute)
+		  order by ot.task_date desc
 	</select>
 	
 	<!-- 更新任务信息 -->

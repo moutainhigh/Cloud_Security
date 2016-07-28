@@ -60,13 +60,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 插入订单 -->
     <insert id="insert" parameterType="com.cn.ctbri.entity.Order">
         insert into cs_order
-        (id, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, contactId, remarks, status, websoc) 
-        values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks}, #{status}, #{websoc})
+        (id, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, contactId, remarks, status, websoc, apiKey) 
+        values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks}, #{status}, #{websoc}, #{apiKey})
     </insert>
     
     <!-- 根据订单Id查询记录 -->
     <select id="findOrderByOrderId" resultType="com.cn.ctbri.entity.Order" parameterType="String">
-        select o.id,o.type,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc
+        select o.id,o.type,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.userId,o.status,o.websoc
         from cs_order o
         where o.id = #{orderId}
     </select>

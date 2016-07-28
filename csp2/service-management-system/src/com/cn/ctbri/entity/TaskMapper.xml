@@ -232,6 +232,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          from cs_task t,cs_order_task ot 
          where t.orderTaskId = ot.orderTaskId 
          and ot.orderId = #{orderId}
+         group by t.group_flag,ot.orderTaskId
     </select>
     
     <!-- 根据taskId获取任务 -->
