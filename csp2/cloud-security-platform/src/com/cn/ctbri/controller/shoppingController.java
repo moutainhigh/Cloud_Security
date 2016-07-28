@@ -36,6 +36,7 @@ import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.Price;
+import com.cn.ctbri.entity.ScanType;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.ShopCar;
@@ -142,6 +143,8 @@ public class shoppingController {
 	    String indexPage = request.getParameter("indexPage");
 	    //根据id查询service add by tangxr 2016-3-14
 	    Serv service = servService.findById(serviceId);
+	    //查找服务频率
+	    List<ScanType> scanTypeList = selfHelpOrderService.findScanTypeById(serviceId);
 	    //获取服务对象资产
 	    List<Asset> serviceAssetList = selfHelpOrderService.findServiceAsset(globle_user.getId());
 	    //网站安全帮列表
@@ -154,6 +157,7 @@ public class shoppingController {
         request.setAttribute("serviceId", serviceId);
         request.setAttribute("indexPage", indexPage);
         request.setAttribute("service", service);
+        request.setAttribute("scanTypeList", scanTypeList);
         if(serviceAssetList!=null && serviceAssetList.size()>0){
             request.setAttribute("AssetCount", serviceAssetList.size());
         }else{
@@ -238,6 +242,7 @@ public class shoppingController {
 	public void shoppingCar(HttpServletRequest request,HttpServletResponse response){
 		  Map<String, Object> m = new HashMap<String, Object>();
 		  String assetArray[] = null;
+		 List<Price> priceList = new ArrayList();
 		  try{
 		 //用户
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
@@ -252,6 +257,7 @@ public class shoppingController {
         String scanPeriod = request.getParameter("scanType");
         String serviceId = request.getParameter("serviceId");
         String createDate = DateUtils.dateToString(new Date());
+       
         //String times = request.getParameter("buy_times");
         
         /****判断参数是否有效开始*****/
@@ -393,7 +399,17 @@ public class shoppingController {
 				assetCount=1;
 			}
 			//进行价格分析
-	       List<Price> priceList = priceService.findPriceByServiceId(serviceIdV);
+			   //根据serviceid查询价格列表
+			if(serviceIdV==3||serviceIdV==4||serviceIdV==5){
+				 if(scanPeriod!=null&&!"".equals(scanPeriod)&&!"".equals(orderType)&&orderType.equals("1")){
+					 priceList = priceService.findPriceByServiceId(serviceIdV,Integer.parseInt(scanPeriod));	 
+				 }else{
+					 priceList = priceService.findPriceByServiceId(serviceIdV,0);
+				 }
+			
+			}else{
+				priceList = priceService.findPriceByServiceId(serviceIdV,0);
+			}
 	        //长期
 	        if(orderType!=null&&!"".equals(orderType)&&orderType.equals("1")){	
 	        	long ms = 0;//时间之间的毫秒数
@@ -409,11 +425,12 @@ public class shoppingController {
 	            
 		        switch(serviceIdV){
 		        case 1:
+		        case 2:
 		        	if(ms==0){
 		        		stimes = 1;//用于显示默认价格
 		        	}else{
 		        		//每周
-			        	if(typeInt==2){
+			        	if(typeInt==5){
 			        		int perWeek = 1000*3600*24*7;
 			        		if(ms%perWeek>0){
 			        			stimes = (long)(ms/perWeek)+1;
@@ -430,19 +447,19 @@ public class shoppingController {
 		        	}
 		        	break;
 		        	
-		        case 2:
+		      
 		        case 3:
 		        case 4:
 		        	if(ms==0){
 		        		stimes = 1;//用于显示默认价格
-		        	}else if(typeInt==1){//30分钟
+		        	}else if(typeInt==2){//30分钟
 			        	int min_30 = 1000*3600/2;
 			        	if(ms%min_30 > 0){
 			        		stimes = (long)(ms/min_30) + 1;
 			        	}else{
 			        		stimes = (long)(ms/min_30);
 			        	}
-		        	}else if(typeInt==2){//1小时
+		        	}else if(typeInt==3){//1小时
 		        		int oneHour = 1000*3600;
 			        	if(ms%oneHour > 0){
 			        		stimes = (long)(ms/oneHour) + 1;
@@ -454,7 +471,7 @@ public class shoppingController {
 			        	if(ms%oneDay > 0){
 			        		stimes = (long)(ms/oneDay) + 1;
 			        	}else{
-			        		stimes = (long)(ms/oneDay);
+				        	stimes = (long)(ms/oneDay);
 			        	}
 		        	}
 		        	break;
@@ -483,8 +500,7 @@ public class shoppingController {
 			        	}else{
 			        		stimes = (long)(ms/oneHour);
 			        	}
-		        	}
-		        			        	
+		        	}     	
 		        	break;
 		        }
 		        if(priceList!=null && priceList.size()>0){
@@ -495,16 +511,22 @@ public class shoppingController {
 				    				calPrice = onePrice.getPrice()*stimes*assetCount;
 				    			break;
 				    		}
-				        	if(serviceIdV==5 && stimes==1 && onePrice.getTimesG()==1){//服务5：特殊，times==1，取第二区间
+				        	if(serviceIdV==4){
+				        		if(stimes>=onePrice.getTimesG()&&stimes<=onePrice.getTimesLE()){
+				    				calPrice = onePrice.getPrice()*stimes*assetCount;
+				    			break;
+				    		}
+				        	}
+				        	if((serviceIdV==5||serviceIdV==3) && stimes==1 && onePrice.getTimesG()==1){//服务5：特殊，times==1，取第二区间
 				        		calPrice = onePrice.getPrice()*assetCount;
 				    			break;
 				        	}
 				        }else if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()==0 && stimes>onePrice.getTimesG()){//超过
 			        			calPrice = onePrice.getPrice()*stimes*assetCount;			    			
-			        		break;
+			        			break;
 				        }else if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0 && stimes <= 1){//单次类
 				        	calPrice = onePrice.getPrice()*assetCount;
-			        		break;
+				        	break;
 				        }
 
 				    }
@@ -1138,10 +1160,14 @@ public class shoppingController {
         List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
         //查询安全能力API
 		List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
+		//查询服务频率
+		//查找服务频率
+	    List<ScanType> scanTypeList = selfHelpOrderService.findScanTypeById(orderDetail.getServiceId());
 		int carnum=shopCarList.size()+apiList.size();
 		request.setAttribute("carnum", carnum);  
 		request.setAttribute("assetIds", assetIds);  
 		request.setAttribute("orderDetail", orderDetail);  
+		request.setAttribute("scanTypeList", scanTypeList);  
 		request.setAttribute("serviceAssetList", serviceAssetList);
 		return result;
 	}
@@ -1162,6 +1188,7 @@ public class shoppingController {
 		double calPrice = 0;
         //计算出的次数
         long times = 0;
+        List<Price> priceList = new ArrayList();
     	try {
 			//获得订单id
 			int serviceId = Integer.parseInt(request.getParameter("serviceId"));
@@ -1169,6 +1196,7 @@ public class shoppingController {
 			String beginDate = request.getParameter("beginDate");
 			String endDate = request.getParameter("endDate");
 			int assetCount = Integer.parseInt(request.getParameter("assetCount"));
+			String orderType = request.getParameter("orderType");
 			String str;
 			try {
 				//远程调用接口
@@ -1179,9 +1207,7 @@ public class shoppingController {
 				String url = SERVER_WEB_ROOT + VulnScan_servicePrice;
 				WebResource service = client.resource(url+serviceId);
 				ClientResponse clientResponse = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);        
-				//System.out.println(clientResponse.toString());
 				str = clientResponse.getEntity(String.class);
-				//System.out.println(str);
 				
 				//解析json,进行数据同步
 				JSONObject jsonObject = JSONObject.fromObject(str);			
@@ -1221,7 +1247,17 @@ public class shoppingController {
 		
 			//进行价格分析
 	        //根据serviceid查询价格列表
-			List<Price> priceList = priceService.findPriceByServiceId(serviceId);
+			if(serviceId==3||serviceId==4||serviceId==5){
+				 if(type!=null&&!"".equals(type)&&orderType!=null&&!"".equals(orderType)&&orderType.equals("1")){
+					 priceList = priceService.findPriceByServiceId(serviceId,Integer.parseInt(type));	 
+				 }else{
+					 priceList = priceService.findPriceByServiceId(serviceId,0);
+				 }
+			
+			}else{
+				priceList = priceService.findPriceByServiceId(serviceId,0);
+			}
+			
 	        //长期
 	        if(type!=null){	
 	        	long ms = 0;//时间之间的毫秒数
@@ -1237,11 +1273,12 @@ public class shoppingController {
 	            
 		        switch(serviceId){
 		        case 1:
+		        case 2:
 		        	if(ms==0){
 		        		times = 1;//用于显示默认价格
 		        	}else{
 		        		//每周
-			        	if(typeInt==2){
+			        	if(typeInt==5){
 			        		int perWeek = 1000*3600*24*7;
 			        		if(ms%perWeek>0){
 			        			times = (long)(ms/perWeek)+1;
@@ -1258,19 +1295,19 @@ public class shoppingController {
 		        	}
 		        	break;
 		        	
-		        case 2:
+		       
 		        case 3:
 		        case 4:
 		        	if(ms==0){
 		        		times = 1;//用于显示默认价格
-		        	}else if(typeInt==1){//30分钟
+		        	}else if(typeInt==2){//30分钟
 			        	int min_30 = 1000*3600/2;
 			        	if(ms%min_30 > 0){
 			        		times = (long)(ms/min_30) + 1;
 			        	}else{
 			        		times = (long)(ms/min_30);
 			        	}
-		        	}else if(typeInt==2){//1小时
+		        	}else if(typeInt==3){//1小时
 		        		int oneHour = 1000*3600;
 			        	if(ms%oneHour > 0){
 			        		times = (long)(ms/oneHour) + 1;
@@ -1323,16 +1360,22 @@ public class shoppingController {
 				    				calPrice = onePrice.getPrice()*times*assetCount;
 				    			break;
 				    		}
-				        	if(serviceId==5 && times==1 && onePrice.getTimesG()==1){//服务5：特殊，times==1，取第二区间
+				        	if(serviceId==4){
+				        		if(times>=onePrice.getTimesG()&&times<=onePrice.getTimesLE()){
+				    				calPrice = onePrice.getPrice()*times*assetCount;
+				    			break;
+				    		}
+				        	}
+				        	if((serviceId==5||serviceId==3) && times==1 && onePrice.getTimesG()==1){//服务5：特殊，times==1，取第二区间
 				        		calPrice = onePrice.getPrice()*assetCount;
 				    			break;
 				        	}
 				        }else if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()==0 && times>onePrice.getTimesG()){//超过
 			        			calPrice = onePrice.getPrice()*times*assetCount;			    			
-			        		break;
+			        			break;
 				        }else if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0 && times <= 1){//单次类
 				        	calPrice = onePrice.getPrice()*assetCount;
-			        		break;
+				        	break;
 				        }
 
 				    }
@@ -2158,6 +2201,7 @@ public class shoppingController {
 		 String assetArray[] = null;
 		  String detailId="";
 		  List assetIdsList = new ArrayList();
+		  List<Price> priceList = new ArrayList();
 	try{
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		//资产ids
@@ -2220,7 +2264,7 @@ public class shoppingController {
        //长期
        if(orderType.equals("1")){
 	        //判断服务频率是否存在
-	       if(!scanPeriod.equals("1")&&!scanPeriod.equals("2")&&!scanPeriod.equals("3")&&!scanPeriod.equals("4")&&!scanPeriod.equals("5")){
+	       if(!scanPeriod.equals("1")&&!scanPeriod.equals("2")&&!scanPeriod.equals("3")&&!scanPeriod.equals("4")&&!scanPeriod.equals("5")&&!scanPeriod.equals("6")){
 	   		return "redirect:/index.html";
 	      }
        }
@@ -2231,6 +2275,7 @@ public class shoppingController {
         }
       
 		/***计算价格开始***/
+      
 		double calPrice = 0;
         //计算出的次数
         long stimes = 0;
@@ -2246,7 +2291,17 @@ public class shoppingController {
 				assetCount=1;
 			}
 			//进行价格分析
-	       List<Price> priceList = priceService.findPriceByServiceId(serviceIdV);
+			//根据serviceid查询价格列表
+			if(serviceIdV==3||serviceIdV==4||serviceIdV==5){
+				 if(scanPeriod!=null&&!"".equals(scanPeriod)&&!"".equals(orderType)&&orderType.equals("1")){
+					 priceList = priceService.findPriceByServiceId(serviceIdV,Integer.parseInt(scanPeriod));	 
+				 }else{
+					 priceList = priceService.findPriceByServiceId(serviceIdV,0);
+				 }
+			
+			}else{
+				priceList = priceService.findPriceByServiceId(serviceIdV,0);
+			}
 	        //长期
 	        if(orderType!=null&&!"".equals(orderType)&&orderType.equals("1")){	
 	        	long ms = 0;//时间之间的毫秒数
@@ -2262,11 +2317,12 @@ public class shoppingController {
 	            
 		        switch(serviceIdV){
 		        case 1:
+		        case 2:
 		        	if(ms==0){
 		        		stimes = 1;//用于显示默认价格
 		        	}else{
 		        		//每周
-			        	if(typeInt==2){
+			        	if(typeInt==5){
 			        		int perWeek = 1000*3600*24*7;
 			        		if(ms%perWeek>0){
 			        			stimes = (long)(ms/perWeek)+1;
@@ -2283,19 +2339,19 @@ public class shoppingController {
 		        	}
 		        	break;
 		        	
-		        case 2:
+		       
 		        case 3:
 		        case 4:
 		        	if(ms==0){
 		        		stimes = 1;//用于显示默认价格
-		        	}else if(typeInt==1){//30分钟
+		        	}else if(typeInt==2){//30分钟
 			        	int min_30 = 1000*3600/2;
 			        	if(ms%min_30 > 0){
 			        		stimes = (long)(ms/min_30) + 1;
 			        	}else{
 			        		stimes = (long)(ms/min_30);
 			        	}
-		        	}else if(typeInt==2){//1小时
+		        	}else if(typeInt==3){//1小时
 		        		int oneHour = 1000*3600;
 			        	if(ms%oneHour > 0){
 			        		stimes = (long)(ms/oneHour) + 1;
@@ -2348,16 +2404,22 @@ public class shoppingController {
 				    				calPrice = onePrice.getPrice()*stimes*assetCount;
 				    			break;
 				    		}
-				        	if(serviceIdV==5 && stimes==1 && onePrice.getTimesG()==1){//服务5：特殊，times==1，取第二区间
+				        	if(serviceIdV==4){
+				        		if(stimes>=onePrice.getTimesG()&&stimes<=onePrice.getTimesLE()){
+				    				calPrice = onePrice.getPrice()*stimes*assetCount;
+				    			break;
+				    		}
+				        	}
+				        	if((serviceIdV==5||serviceIdV==3) && stimes==1 && onePrice.getTimesG()==1){//服务5：特殊，times==1，取第二区间
 				        		calPrice = onePrice.getPrice()*assetCount;
 				    			break;
 				        	}
 				        }else if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()==0 && stimes>onePrice.getTimesG()){//超过
 			        			calPrice = onePrice.getPrice()*stimes*assetCount;			    			
-			        		break;
+			        			break;
 				        }else if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0 && stimes <= 1){//单次类
 				        	calPrice = onePrice.getPrice()*assetCount;
-			        		break;
+				        	break;
 				        }
 
 				    }
