@@ -12,6 +12,7 @@ import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.OrderList;
+import com.cn.ctbri.entity.ScanType;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.entity.ShopCar;
@@ -203,10 +204,16 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 		return selfHelpOrderDao.getOrderAPIDetailById(id, userId);
 	}
 
-	@Override
+	
 	public OrderDetail findOrderDetailById(String id, int userId) {
 		// TODO Auto-generated method stub
 		return selfHelpOrderDao.findOrderDetailById(id, userId);
+	}
+
+	
+	public List<ScanType> findScanTypeById(int serviceId){
+		// TODO Auto-generated method stub
+		return selfHelpOrderDao.findScanTypeById(serviceId);
 	}
 
 }
