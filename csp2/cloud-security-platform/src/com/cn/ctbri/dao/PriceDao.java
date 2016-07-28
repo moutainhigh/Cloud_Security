@@ -22,5 +22,5 @@ public interface PriceDao {
     /*
      * 根据serviceid查询价格列表
      */
-    List<Price> findPriceByServiceId(int serviceId);
+    List<Price> findPriceByServiceId(int serviceId,int type);
 }
