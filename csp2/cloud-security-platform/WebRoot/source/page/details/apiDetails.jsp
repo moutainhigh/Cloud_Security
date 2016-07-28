@@ -116,7 +116,7 @@ $(document).ready(function(){
 主要接口：任务创建、任务操作、任务执行状态、任务结果获取、订单报告获取等。</p>
                             </div>
                         </li>
-                        <li class="clearfix">
+                        <!-- <li class="clearfix">
 							<label class="fl">套&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;餐</label>
                            <div class="fl clickBox">
                            	<div id="clickBox" style="margin-right:-25px;">
@@ -127,12 +127,12 @@ $(document).ready(function(){
                             </div>
                            </div> 
                            
-						</li>
+						</li> -->
                         <li class="clearfix" style="margin-top:41px;">
                         	<label class="fl" style="top:4px;">数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量</label>
                             <div class="fl" style="width:546px;">
                             	<div class="btnBoxs clearfix">
-                                    <input type="text" value="1" class="text text_box fl" id="num" onKeyUp="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" maxlength="2">
+                                    <input type="text" value="1" class="text text_box fl" id="num" onKeyUp="checkNum()" onafterpaste="checkNum()" maxlength="5">
                                     <span class="texts fl">
                                     	<em class="add" style="border-bottom:#e5e5e5 solid 1px;"><img src="${ctx}/source/images/portal/-.png" alt=""></em>
                                         <em class="min"><img src="${ctx}/source/images/portal/sum.png" alt=""/></em>

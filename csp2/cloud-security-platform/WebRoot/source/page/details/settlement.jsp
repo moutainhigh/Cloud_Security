@@ -311,12 +311,13 @@
 	                                    </td>
 	                                   
 	                                    <td width="56%" style="font-size:14px;">
-	                                    	<c:if test="${orderDetail.type==1}">套餐一</c:if>&nbsp;&nbsp;&nbsp;
+	                                    	<!--<c:if test="${orderDetail.type==1}">套餐一</c:if>&nbsp;&nbsp;&nbsp;
 	                                    	<c:if test="${orderDetail.type==2}">套餐二</c:if>&nbsp;&nbsp;&nbsp;
 	                                    	<c:if test="${orderDetail.type==3}">套餐三</c:if>&nbsp;&nbsp;&nbsp;
-	                                    	${orderDetail.scan_type}次 * ${orderDetail.wafTimes}
+	                                    	${orderDetail.scan_type}次 * ${orderDetail.wafTimes}-->
+	                                    	${orderDetail.wafTimes}
 	                                    </td>
-	                                    <td width="38%" style="font-size:14px;">0.00</td>
+	                                    <td width="38%" style="font-size:14px;">${orderDetail.price}</td>
 	                                 </tr>
 	                            </tbody>
 	                            </c:if>
