@@ -56,6 +56,18 @@ public class NorthAPIWorker {
 	 * 获得订单/任务当前执行状态
 	 */
 	private static String VulnScan_Get_OrderStatus = "rest/openapi/orderStatus/";
+	/**
+	 * 创建API订单（任务）
+	 */
+	private static String VulnScan_Create_Order_API = "rest/openapi/orderAPI";
+	/**
+	 * 获取会话令牌
+	 */
+	private static String Login = "rest/openapi/useraction/login";
+	/**
+	 * 设置回调地址
+	 */
+	private static String CallbackAddr = "rest/openapi/external/setcallbackaddr/";
 	
 	public NorthAPIWorker() {
 	}
@@ -263,6 +275,121 @@ public class NorthAPIWorker {
         return textEntity;
 	}
 	
+	/**
+	 * 功能描述：创建API订单（任务）
+	 * 参数描述： 
+	 *		 @time 2015-10-16
+	 */
+	public static String vulnScanCreateAPI(int time, int num, 
+    		int apiId, String apiKey) {
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("time", time);
+		json.put("num", num);
+		json.put("apiId", apiId);
+		json.put("apiKey", apiKey);
+		//创建任务发送路径
+    	String url = SERVER_WEB_ROOT + VulnScan_Create_Order_API;
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, json.toString());
+        return response;
+	}
+	
+	/**
+	 * 功能描述：获取会话令牌
+	 * 参数描述： 
+	 *		 @time 2016-4-9
+	 */
+	public static String login(String userID, String apiKey, String randomChar) {
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("userID", userID);
+		json.put("apiKey", apiKey);
+		json.put("randomChar", randomChar);
+		//创建任务发送路径
+    	String url = SERVER_WEB_ROOT + Login;
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, json.toString());
+        JSONObject obj = JSONObject.fromObject(response);
+        String stateCode = obj.getString("code");
+		if(stateCode.equals("201")){
+			String token = obj.getString("token");
+			return token;
+		}else{
+			return "";
+		}
+//        return response;
+	}
+	
+	
+	/**
+	 * 功能描述：设置回调地址
+	 * 参数描述： 
+	 *		 @time 2016-4-9
+	 */
+	public static String setCallbackAddr(String callbackAddr, String token) {
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("callbackAddr", callbackAddr);
+		//创建任务发送路径
+    	String url = SERVER_WEB_ROOT + CallbackAddr + token;
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, json.toString());
+//        JSONObject obj = JSONObject.fromObject(response);
+//        String stateCode = obj.getString("code");
+//		if(stateCode.equals("201")){
+//			String token = obj.getString("token");
+//			return token;
+//		}else{
+//			return "";
+//		}
+        return response;
+	}
+	
+	public static String taskNotice(String callbackAddr, String orderId) {
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("orderId", orderId);
+		//创建任务发送路径
+    	String url = callbackAddr;
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, json.toString());
+        return response;
+	}
+	
+	
 	
 	/**
 	 * 功能描述：空字符串转化方法
@@ -333,14 +460,18 @@ public class NorthAPIWorker {
 //    	String status = vulnScanGetStatus("16032115111572197");
 //    	String opt = vulnScanOptOrder("16021615033414544","stop");//resume/stop
 //    	String result = vulnScanGetResult("16032114234741129","31");
-    	String report = vulnScanGetReport("16032114234741129");
+//    	String report = vulnScanGetReport("16032114234741129");
+//    	String createapi = vulnScanCreateAPI(1000, 1, 1, "fkshfksjfksjdfuruiyruy78");
 //    	boolean report = false;
+//        String token = login("191","d8bc3f404c65402f94ab417bfe8b427e", "79898uu8980iu8sjdfuruiyruy78");
+//        String callbackAddr = setCallbackAddr("http://localhost:8080",token);
     	try {
 //    		report = getSession();
 		} catch (Exception e) {
 //			e.printStackTrace();
 		}
     	
-        System.out.println(report);
+    	String ok = taskNotice("http://localhost:8080/cspi/rest/open/taskNotice","16041015204427745");
+        System.out.println(ok);
     }
 }

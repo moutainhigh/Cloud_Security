@@ -103,7 +103,7 @@ public class VulnScanWorker {
 	 */
 	public static String vulnScanCreate(String scanMode, String[] targetURL, String scanType, 
     		String startTime, String endTime, String scanPeriod, String scanDepth, 
-    		String maxPages, String stategy, String customManu[]) {
+    		String maxPages, String stategy, String customManu[], String token) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("scanMode", scanMode);
@@ -119,7 +119,7 @@ public class VulnScanWorker {
 		JSONArray customManus = JSONArray.fromObject(customManu);
 		json.put("customManus", customManus);
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Create_Order;
+    	String url = SERVER_WEB_ROOT + VulnScan_Create_Order + "/" + token;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
