@@ -377,7 +377,10 @@ AND a.id IN  <foreach item="assetId" index="index" collection="assetIdsList" ope
         WHERE s.userId =#{userId}
     AND s.id = #{id}
 AND s.serviceId=api.id
-    
-      
+       
     </select>
+    	<!-- 根据服务id查询服务频率-->
+	<select id="getScanTypeById" resultType="com.cn.ctbri.entity.ScanType" parameterType="java.lang.Integer">
+		SELECT * FROM cs_scanType s WHERE s.serviceId=#{serviceId} ORDER BY s.scan_type
+	</select>
 </mapper>
