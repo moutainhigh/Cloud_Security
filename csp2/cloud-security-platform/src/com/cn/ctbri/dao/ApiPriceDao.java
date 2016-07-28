@@ -16,6 +16,8 @@ public interface ApiPriceDao {
      * 根据serviceid查询价格列表
      */
     List<ApiPrice> findPriceByServiceId(int serviceId);
+    
+    ApiPrice findPrice(int serviceId, int num);
     /*
      * 保存价格
      */
