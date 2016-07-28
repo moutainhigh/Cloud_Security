@@ -67,7 +67,7 @@ public interface OrderTaskDao {
 
     public List<Task> findTaskByGroupId(String group_id);
 
-    public List<Task> findExpTask(Map<String, Object> map);
+    public List<OrderTask> findExpTask(Map<String, Object> map);
 
     public List getArnhemTask();
 
