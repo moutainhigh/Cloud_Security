@@ -64,7 +64,7 @@ public interface IOrderTaskService {
     List<Task> findTaskByGroupId(String group_id);
 
     //查找引擎异常为下发的任务
-    List<Task> findExpTask(Map<String, Object> map);
+    List<OrderTask> findExpTask(Map<String, Object> map);
 
     List getArnhemTask();
 
