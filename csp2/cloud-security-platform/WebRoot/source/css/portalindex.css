@@ -1601,7 +1601,7 @@ padding: 20px 30px 0px 0px;
 	font-size:14px;
 }
 .detailsAPI .btnBoxs{
-	width: 54px;
+	width: 64px;
 	/*width:74px;*/
 	height: 36px;
 	border: #e5e5e5 solid 1px;
@@ -1609,7 +1609,7 @@ padding: 20px 30px 0px 0px;
 }
 .detailsAPI .btnBoxs .text{
 	height: 36px;
-	width: 36px;
+	width: 46px;
 	line-height:36px;
 	border: none;
 	padding: 0;
