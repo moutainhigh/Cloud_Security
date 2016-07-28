@@ -3,10 +3,9 @@ package com.cn.ctbri.service;
 import java.util.List;
 import java.util.Map;
 
-import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.ApiPrice;
 import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.Serv;
-import com.cn.ctbri.entity.Service;
 
 /**
  * 创 建 人  ：  邓元元
@@ -49,4 +48,9 @@ public interface IServService {
      * 根据参数查询价格
      */
     List<Price> findPriceByParam(Map map);
+    
+    /*
+     * 根据serviceid查询Api价格列表
+     */
+    List<ApiPrice> findApiPriceByServiceId(int serviceId);
 }
