@@ -1,35 +1,57 @@
 $(function(){
+	//生成默认价格
+	calApiPrice();
+	
+	//增加数量
+	$(".add").click(function(){ 
+		var t=$('input[class*=text_box]'); 
+		if(t.val()==''){
+			alert("请输入购买数量!");
+			return;
+		}
+		//数量不能超过10000
+		if(parseInt(t.val())==10000) {
+			return;
+		}
+		t.val(parseInt(t.val())+1);
+		calApiPrice();
+	}) 
+	
+	//减少数量
+	$(".min").click(function(){ 
+	
+		var t=$('input[class*=text_box]'); 
+		if(t.val()==''){
+			alert("请输入购买数量!");
+			return;
+		}
+
+		t.val(parseInt(t.val())-1) 
+		if(parseInt(t.val())<0){ 
+		t.val(0); 
+		} 
+		calApiPrice();
+	})
+	
     
     //确认订单界面点击"确认订单"进入完成
     $("#buyAPI").click(function(){
     	var createDate = getCreateDate();
-    	var time = $('.click').val();//次数
     	var num = $('#num').val();//数量
     	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
     	var apiId = $("#apiId").val();
-    	var price = $('.price').children('strong:first').text();
-    	var priceVal = price.substring(price.indexOf("¥")+1,price.length);
-    	var type = $('.click').attr("name");//获取套餐类型
-    	//判断选择免费数量不能大于1
-    	var f = $('.click').attr("id");
-    	if(f=='free'){
-    		if(num>1){
-    			alert("免费使用数量不能大于1");
-        		return;
-    		}
-    	}
+    	
     	if(num<=0){
     		alert("数量不能小于0");
+    		return;
+    	}
+    	if(num>10000){
+    		alert("数量不能大于10000");
     		return;
     	}
     	$.ajax({ type: "POST",
 		     async: false, 
 		     url: "checkAPI.html", 
-		     data: {"apiId":apiId,
-			   	    "time":time,
-			   	    "num":num,
-			   	    "type":type},  
-		     dataType: "json", 
 		     success: function(data) {
 			    	 if(data.message == true){
 			    	 var tempForm = document.createElement("form");
@@ -43,29 +65,11 @@ $(function(){
 							apiIdInput.value= apiId; 
 							tempForm.appendChild(apiIdInput);
 							
-							var timeInput = document.createElement("input");
-  							timeInput.type="hidden"; 
-							timeInput.name= "time"; 
-							timeInput.value= time; 
-							tempForm.appendChild(timeInput); 
-							
 							var numInput = document.createElement("input");
   							numInput.type="hidden"; 
 							numInput.name= "num"; 
 							numInput.value= num; 
 							tempForm.appendChild(numInput);
-							
-							var typeInput = document.createElement("input");
-  							typeInput.type="hidden"; 
-							typeInput.name= "type"; 
-							typeInput.value= type; 
-							tempForm.appendChild(typeInput);
-							
-							var priceInput = document.createElement("input");
-  							priceInput.type="hidden"; 
-							priceInput.name= "price"; 
-							priceInput.value= priceVal; 
-							tempForm.appendChild(priceInput);
 							
 							document.body.appendChild(tempForm);
 							tempForm.submit();
@@ -89,36 +93,25 @@ $(function(){
    //添加到购物车
     $("#shopCarAPI").click(function(){
     	var createDate = getCreateDate();
-    	var time = $('.click').val();//次数
+
     	var num = $('#num').val();//数量
     	var indexPage = $("#indexPage").val();//标记从首页进入自助下单流程
     	var apiId = $("#apiId").val();
-    		var price = $('.price').children('strong:first').text();
-    	var type = $('.click').attr("name");//获取套餐类型
     	
-    	//判断选择免费数量不能大于1
-    	var f = $('.click').attr("id");
-    	if(f=='free'){
-    		if(num>1){
-    			alert("免费使用数量不能大于1");
-        		return;
-    		}
-    	}
     	if(num<=0){
     		alert("数量不能小于0");
+    		return;
+    	}
+    	if(num>10000){
+    		alert("数量不能大于10000");
     		return;
     	}
     	$.ajax({ type: "POST",
 		     async: false, 
 		     url: "checkAPI.html", 
-		     data: {"apiId":apiId,
- 			   	    "time":time,
- 			   	    "num":num,
- 			   	    "type":type},  
-		     dataType: "json", 
 		     success: function(data) {
  			   	    if(data.message == true){
-			    		shopCarAPIVal(apiId,time,num,type,price);
+			    		shopCarAPIVal(apiId,num);
 			    		 
 			    	 }else{
 			    		 alert(data.message);
@@ -230,15 +223,12 @@ function tasknum_verification(){
   		    	 else { window.location.href = "loginUI.html"; } } 
 	     });
 }
-function shopCarAPIVal(apiId,time,num,type,price){
+function shopCarAPIVal(apiId,num){
 	$.ajax({ type: "POST",
 		     async: false, 
 		     url: "shoppingCarAPI.html", 
 		     data: {"apiId":apiId,
- 			   	    "time":time,
- 			   	    "num":num,
- 			   	    "price":price,
- 			   	    "type":type},  
+ 			   	    "num":num},  
 		     dataType: "json", 
 		     success: function(data) {
 			    	 if(data.sucess){
@@ -269,3 +259,43 @@ function shopCarAPIVal(apiId,time,num,type,price){
 		});
 
 		}
+		
+
+    //计算API价格
+    function calApiPrice(){//num:数量
+    	var apiId = $("#apiId").val();
+    		num = $("#num").val();
+    	
+    	$.ajax({ type: "POST",
+   		     async: false, 
+   		     url: "calApiPrice.html", 
+   		     data:{"serviceId":apiId,"num":num},
+   		     dataType: "json",
+   		     success: function(data) {
+       			if(data.success){
+     		    	  var price = data.price;
+     		    	  $("#price").html(price);
+     		    	  //$("#timesHidden").val(data.times);
+       			}
+
+	    	 }, 
+	    	 error: function(data){ 
+	    		 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+		    		 window.location.href = "loginUI.html"; } 
+		    	 else { window.location.href = "loginUI.html"; } } 
+	    	
+    	});
+	}
+	
+	function checkNum() {
+		var num = $("#num").val().replace(/\D/g,'');
+		if(num>10000){
+			alert("数量不能大于10000");
+			$("#num").val(10000);
+		}else{
+			$("#num").val(num);
+		}
+		//计算价格
+		calApiPrice();
+		
+	}
