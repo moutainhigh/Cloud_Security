@@ -31,7 +31,7 @@ public class PriceDaoImpl extends DaoCommon implements PriceDao {
 	}
 
 	public int delPrice(int serviceId) {
-		return this.getSqlSession().delete("delPrice", serviceId);
+		return this.getSqlSession().delete(ns+"delPrice", serviceId);
 	}
 
 }
