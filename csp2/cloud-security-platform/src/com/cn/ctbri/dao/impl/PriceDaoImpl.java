@@ -1,6 +1,8 @@
 package com.cn.ctbri.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -22,8 +24,11 @@ public class PriceDaoImpl extends DaoCommon implements PriceDao {
 	private String ns = "com.cn.ctbri.entity.PriceMapper.";
 
 
-	public List<Price> findPriceByServiceId(int serviceId) {
-		return this.getSqlSession().selectList(ns+"findPriceByServiceId", serviceId);
+	public List<Price> findPriceByServiceId(int serviceId,int type) {
+		Map map = new HashMap();
+		map.put("serviceId", serviceId);
+		map.put("type", type);
+		return this.getSqlSession().selectList(ns+"findPriceByServiceId", map);
 	}
 
 	public void insertPrice(Price price) {
