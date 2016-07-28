@@ -1,5 +1,6 @@
 package com.cn.ctbri.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -32,6 +33,14 @@ public class ApiPriceDaoImpl extends DaoCommon implements ApiPriceDao {
 
 	public int delPrice(int serviceId) {
 		return this.getSqlSession().delete(ns+"delPrice", serviceId);
+	}
+
+	public ApiPrice findPrice(int serviceId, int num) {
+		HashMap paramMap = new HashMap<String,Object>();
+		paramMap.put("serviceId", serviceId);
+		paramMap.put("num", num);
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectOne(ns + "findPrice", paramMap);
 	}
 
 }
