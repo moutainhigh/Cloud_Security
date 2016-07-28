@@ -62,7 +62,7 @@ topshow2();
 //修改发票
 tab();
 //改变个数
-minsum();
+//minsum();
 
 //遮罩层
 showout();
