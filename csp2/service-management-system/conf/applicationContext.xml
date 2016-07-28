@@ -126,7 +126,7 @@
     <bean id="exceptionTrigger"
         class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="exceptionJobDetail" />
-        <property name="cronExpression" value="0 0/3 * * * ?" />
+        <property name="cronExpression" value="0 0/10 * * * ?" />
     </bean>
     
         <!-- 将lazy-init='false'那么容器启动就会执行调度程序   -->
@@ -140,8 +140,8 @@
     			<ref bean="taskTrigger" />
     			<ref bean="statusTrigger" />
     			<ref bean="exceptionTrigger" /> -->
-    			<ref bean="resultTrigger" />
-    			<ref bean="taskTrigger" />
+    			<!--<ref bean="resultTrigger" />
+    			<ref bean="taskTrigger" />-->
     		</list>
     	</property>
     </bean>

@@ -21,5 +21,12 @@
         <!-- add by tangxr 2015-11-10 -->
         <mapper resource="com/cn/ctbri/entity/OrderTaskMapper.xml" /> 
         <!-- end -->
+        <!-- add by tangxr 2016-3-30 -->
+        <mapper resource="com/cn/ctbri/entity/APIKeyMapper.xml" />
+        <mapper resource="com/cn/ctbri/entity/OrderAPIMapper.xml" /> 
+        <!-- end -->
+        <!-- add by tangxr 2016-4-9 -->
+        <mapper resource="com/cn/ctbri/entity/UserMapper.xml" /> 
+        <!-- end -->
     </mappers> 
 </configuration>  
