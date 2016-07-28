@@ -98,8 +98,8 @@ public class OrderTaskDaoImpl extends DaoCommon implements OrderTaskDao{
         return list;
     }
 
-    public List<Task> findExpTask(Map<String, Object> map) {
-        return getSqlSession().selectList(ns+"findExpTask", map);
+    public List<OrderTask> findExpTask(Map<String, Object> map) {
+        return getSqlSession().selectList(ns+"findExpOrderTask", map);
     }
 
     public List getArnhemTask() {
