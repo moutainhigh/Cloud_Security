@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.ServDao;
+import com.cn.ctbri.entity.ApiPrice;
 import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.service.IServService;
@@ -58,6 +59,10 @@ public class ServServiceImpl implements IServService{
 
 	public List<Price> findPriceByParam(Map map) {
 		return servDao.findPriceByParam(map);
+	}
+
+	public List<ApiPrice> findApiPriceByServiceId(int serviceId) {
+		return servDao.findApiPriceByServiceId(serviceId);
 	}
 	
 }
