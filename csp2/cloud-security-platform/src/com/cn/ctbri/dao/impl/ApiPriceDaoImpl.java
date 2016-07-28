@@ -31,7 +31,7 @@ public class ApiPriceDaoImpl extends DaoCommon implements ApiPriceDao {
 	}
 
 	public int delPrice(int serviceId) {
-		return this.getSqlSession().delete("delPrice", serviceId);
+		return this.getSqlSession().delete(ns+"delPrice", serviceId);
 	}
 
 }
