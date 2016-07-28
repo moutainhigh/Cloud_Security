@@ -177,7 +177,7 @@ d.mouseover(function(){
 		</div>
 		<input type="hidden" id="serviceId" value="${orderDetail.serviceId }"/>
 		<input type="hidden" id="indexPage" value="${indexPage }"/>
-		<input type="hidden" id="orderType" value="${orderDetail.type}"/>
+		<input type="hidden" id="orderType" value="${service.orderType}"/>
 		<input type="hidden" id="scanType" value="${orderDetail.scan_type }"/>
 		<input type="hidden" id="assetIds" value="${orderDetail.asstId}"/>
 		<input type="hidden" id="assetAddr" value="${orderDetail.assetAddr}"/>
@@ -226,33 +226,20 @@ d.mouseover(function(){
 						</li>
 						<li class="clearfix time">
 							<label class="fl">服务频率</label>
+							
                             <div class="fl clickBox" id="time">
                             <input type="hidden" id="serviceIdHidden" value="${service.id}"/>
-                            	<c:if test="${service.id == 1}">
-	                             <button class="clickTime" value="2" onclick="calPriceLong(this,null,null)">每周</button>
-	                             <button value="3" onclick="calPriceLong(this,null,null)">每月</button>
-	                            </c:if>
-	                            <c:if test="${service.id == 2}">
-	                             <button class="clickTime" value="1" onclick="calPriceLong(this,null,null)">30分钟</button>
-	                             <button value="2" onclick="calPriceLong(this,null,null)">1小时</button>
-	                             <button value="4" onclick="calPriceLong(this,null,null)">1天</button>
-	                            </c:if>
-	                            <c:if test="${service.id == 3}">
-	                             <button class="clickTime" value="1" onclick="calPriceLong(this,null,null)">30分钟</button>
-	                             <button value="2" onclick="calPriceLong(this,null,null)">1小时</button>
-	                             <button value="4" onclick="calPriceLong(this,null,null)">1天</button>
-	                            </c:if>
-	                            <c:if test="${service.id == 4}">
-	                             <button class="clickTime" value="1" onclick="calPriceLong(this,null,null)">30分钟</button>
-	                             <button value="2" onclick="calPriceLong(this,null,null)">1小时</button>
-	                             <button value="4" onclick="calPriceLong(this,null,null)">1天</button>
-	                            </c:if>
-	                            <c:if test="${service.id == 5}">
-	                             <button class="clickTime" value="1" onclick="calPriceLong(this,null,null)">10分钟</button>
-	                             <button value="2" onclick="calPriceLong(this,null,null)">30分钟</button>
-	                             <button value="3" onclick="calPriceLong(this,null,null)">1小时</button>
-	                            </c:if>
-                            </div> 
+                              <c:forEach items="${scanTypeList}" var="scanType" varStatus="status">
+                               <c:if test="${status.index==0}">
+	                             <button class="clickTime" value="${scanType.scan_type}" onclick="calPriceLong(this,null,null)">${scanType.scan_name}</button>
+	                             </c:if>
+	                               <c:if test="${status.index!=0}">
+	                               <button value="${scanType.scan_type}" onclick="calPriceLong(this,null,null)">${scanType.scan_name}</button>
+	                               </c:if>
+	                             </c:forEach>
+	                        
+	                          </div> 
+                            
 					   </li>
 						
 						   <li class="clearfix waf-datails" style="height:auto">
