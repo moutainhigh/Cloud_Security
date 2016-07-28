@@ -3,13 +3,11 @@ package com.cn.ctbri.dao.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.ServDao;
+import com.cn.ctbri.entity.ApiPrice;
 import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.Serv;
 /**
@@ -30,6 +28,10 @@ public class ServDaoImpl extends DaoCommon implements ServDao{
 	 * 功        能：PriceMapper命名空间
 	 */
 	private String np = "com.cn.ctbri.entity.PriceMapper.";
+	/**
+	 * 功        能：ApiPriceMapper命名空间
+	 */
+	private String na = "com.cn.ctbri.entity.ApiPriceMapper.";
 
 	public Serv findById(int serviceid) {
 		return this.getSqlSession().selectOne(ns + "findById",serviceid);
@@ -64,6 +66,11 @@ public class ServDaoImpl extends DaoCommon implements ServDao{
 	public List<Price> findPriceByParam(Map map) {
 		
 		return this.getSqlSession().selectList(np+"findPriceByParam", map);
+	}
+
+	@Override
+	public List<ApiPrice> findApiPriceByServiceId(int serviceId) {
+		return this.getSqlSession().selectList(na+"findApiPriceByServiceId", serviceId);
 	}
 	
 }
