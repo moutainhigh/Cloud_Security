@@ -1,6 +1,5 @@
 package com.cn.ctbri.webservice;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.POST;
@@ -15,22 +14,23 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cn.ctbri.service.IServService;
+import com.cn.ctbri.entity.ApiPrice;
 import com.cn.ctbri.entity.Price;
+import com.cn.ctbri.service.IServService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 @Component
-@Path("servermanager/price")
+@Path("servermanager")
 public class InternalService {
 	@Autowired
 	IServService servService;
 	
 	//获取服务价格
 	@POST
-	@Path("/vindicatePrice/{serverid}")
+	@Path("/price/vindicatePrice/{serverid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String VulnScan_servicePrice(@PathParam("serverid") int serverid) {
 		JSONObject json = new JSONObject();
@@ -56,6 +56,39 @@ public class InternalService {
 			e.printStackTrace();
 			json.put("code", 404);//返回404表示失败
 			json.put("message", "创建订单任务失败");
+		}
+    	    	
+        return json.toString();
+    }
+	
+	//获取API服务价格
+	@POST
+	@Path("/APIPrice/comboPrice/{serverid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String VulnScanServiceApiPrice(@PathParam("serverid") int serverid) {
+		JSONObject json = new JSONObject();
+		//JSONArray jsonArray = new JSONArray();
+		try {
+			//根据serviceid查询价格列表
+			List<ApiPrice> priceList = servService.findApiPriceByServiceId(serverid);
+/*			if(priceList!=null&& priceList.size()>0){
+				//for(int i = 0; i < priceList.size(); i++){
+					JSONObject newJson = new JSONObject();
+					newJson.put("GTR", priceList.get(i).getTimesG());
+					newJson.put("ITE", priceList.get(i).getTimesLE());
+					newJson.put("Price", priceList.get(i).getPrice());
+					//jsonArray.add(priceList);
+				//}
+			}*/
+			JSONArray jsonArray = new JSONArray().fromObject(priceList);
+			json.put("PriceStr", jsonArray);
+			/*
+			}
+			json.put("code", 201);//返回201表示成功
+*/		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("code", 404);//返回404表示失败
+			json.put("message", "API套餐价格维护失败");
 		}
     	    	
         return json.toString();
