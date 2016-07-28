@@ -82,7 +82,7 @@ public class OrderTaskServiceImpl implements IOrderTaskService{
         return this.orderTaskDao.findTaskByGroupId(group_id);
     }
 
-    public List<Task> findExpTask(Map<String, Object> map) {
+    public List<OrderTask> findExpTask(Map<String, Object> map) {
         return this.orderTaskDao.findExpTask(map);
     }
 
