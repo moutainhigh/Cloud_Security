@@ -8,12 +8,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.MediaType;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +25,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cn.ctbri.common.HuaweiWorker;
 import com.cn.ctbri.entity.APICount;
+import com.cn.ctbri.entity.ApiPrice;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAPI;
@@ -31,6 +36,7 @@ import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
+import com.cn.ctbri.service.IApiPriceService;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAPIService;
 import com.cn.ctbri.service.IOrderAssetService;
@@ -45,6 +51,11 @@ import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Random;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 /**
  * 创 建 人  ：  tangxr
@@ -79,6 +90,24 @@ public class shoppingAPIController {
     IOrderAPIService orderAPIService;
     @Autowired
     IOrderListService orderListService;
+    @Autowired
+    IApiPriceService apiPriceService;
+    
+    
+    private static String SERVER_WEB_ROOT;
+    private static String VulnScan_serviceApiPrice;
+    
+	static{
+		try {
+			Properties p = new Properties();
+			p.load(HuaweiWorker.class.getClassLoader().getResourceAsStream("InternalAPI.properties"));
+			
+			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
+			VulnScan_serviceApiPrice = p.getProperty("VulnScan_serviceApiPrice");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * 功能描述： 购买API检测服务
 	 * 参数描述：  无
@@ -142,52 +171,47 @@ public class shoppingAPIController {
 	public String settlementAPI(HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
         String apiId = request.getParameter("apiId");
-        //套餐
-        String time =request.getParameter("time");
+
         //数量
         String num = request.getParameter("num");
-        //套餐类型
-        String type = request.getParameter("type");
-        DecimalFormat df = new DecimalFormat("0.00");
-       // String price = request.getParameter("price");
-       String priceVal="";
+
        /**参数判断开始**/
-       if(apiId==null||"".equals(apiId)||time==null||"".equals(time)||num==null||"".equals(num)||type==null||"".equals(type)){
+       if(apiId==null||"".equals(apiId)||num==null||"".equals(num)){
     		return "redirect:/index.html";
        }
        /**参数判断结束**/
+       int apiIdInt = Integer.parseInt(apiId);
       // priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;
         //根据id查询serviceAPI, add by tangxr 2016-3-28
-	    ServiceAPI serviceAPI = serviceAPIService.findById(Integer.parseInt(apiId));
+	    ServiceAPI serviceAPI = serviceAPIService.findById(apiIdInt);
 	    if(serviceAPI==null){
 	    	return "redirect:/index.html";
 	    }
-	   if(Integer.parseInt(num)<=0){
+	   if(Integer.parseInt(num)<=0||Integer.parseInt(num)>10000){
 			return "redirect:/index.html";
 	    }
-	   if(!type.equals("1")&&!type.equals("2")&&!type.equals("3")){
-		   return "redirect:/index.html";
-	   }
-	   if(time.equals("5")&&Integer.parseInt(num)>1){
-		   return "redirect:/index.html";
-	   }
-	    OrderDetail orderDetail = new OrderDetail();
-    	  SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
- 	      String orderDate = odf.format(new Date());
- 	     String  detailId = orderDate+String.valueOf(Random.fivecode());
- 	     SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
- 	      orderDetail.setId(detailId);
- 	      orderDetail.setCreate_date(new Date());
- 	      orderDetail.setBegin_date(new Date());
- 	      orderDetail.setEnd_date(getAfterYear(new Date()));
- 	      orderDetail.setType(Integer.parseInt(type));
- 	      orderDetail.setWafTimes(Integer.parseInt(num));
- 	      orderDetail.setServiceId(Integer.parseInt(apiId));
- 	     orderDetail.setScan_type(Integer.parseInt(time));
- 	      orderDetail.setPrice(0.0);
- 	     orderDetail.setIsAPI(1);
- 	     orderDetail.setUserId(globle_user.getId());
- 	    selfHelpOrderService.SaveOrderDetail(orderDetail);
+	   
+	   //计算价格
+	   //DecimalFormat df = new DecimalFormat("0.00");
+	   double price = calApiPrice(apiIdInt, Integer.parseInt(num));
+	   
+	   OrderDetail orderDetail = new OrderDetail();
+	   SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+	   String orderDate = odf.format(new Date());
+	   String  detailId = orderDate+String.valueOf(Random.fivecode());
+	   SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
+	   orderDetail.setId(detailId);
+	   orderDetail.setCreate_date(new Date());
+	   orderDetail.setBegin_date(new Date());
+	   orderDetail.setEnd_date(getAfterYear(new Date()));
+// 	      orderDetail.setType(Integer.parseInt(type));
+	   orderDetail.setWafTimes(Integer.parseInt(num));
+	   orderDetail.setServiceId(apiIdInt);
+// 	     orderDetail.setScan_type(Integer.parseInt(time));
+	   orderDetail.setPrice(price);
+	   orderDetail.setIsAPI(1);
+	   orderDetail.setUserId(globle_user.getId());
+	   selfHelpOrderService.SaveOrderDetail(orderDetail);
  	    
  	   OrderDetail orderDetailVo = selfHelpOrderService.getOrderAPIDetailById(detailId, globle_user.getId());
         request.setAttribute("user", globle_user);
@@ -203,6 +227,70 @@ public class shoppingAPIController {
         return result;
 	}
 	
+	private double calApiPrice(int apiId, int num) {
+		String str;
+		try {
+			//远程调用接口
+			ClientConfig config = new DefaultClientConfig();
+			//检查安全传输协议设置
+			Client client = Client.create(config);
+			//连接服务器
+			String url = SERVER_WEB_ROOT + VulnScan_serviceApiPrice;
+			WebResource service = client.resource(url+apiId);
+			ClientResponse clientResponse = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);        
+			//System.out.println(clientResponse.toString());
+			str = clientResponse.getEntity(String.class);
+			//System.out.println(str);
+			
+			//解析json,进行数据同步
+			JSONObject jsonObject = JSONObject.fromObject(str);			
+			JSONArray jsonArray = jsonObject.getJSONArray("PriceStr");
+			if(jsonArray!=null && jsonArray.size()>0){
+				//删除数据
+				apiPriceService.delPrice(apiId);
+				for (int i = 0; i < jsonArray.size(); i++) {
+					String object = jsonArray.getString(i);
+					JSONObject jsonObject1 = JSONObject.fromObject(object);
+//		        int idJson = Integer.parseInt(jsonObject1.getString("id"));
+					int serviceIdJson = Integer.parseInt(jsonObject1.getString("serviceId"));
+					double priceJson = Double.parseDouble(jsonObject1.getString("price"));
+					int timesGJson = Integer.parseInt(jsonObject1.getString("timesG"));
+					int timesLEJson = Integer.parseInt(jsonObject1.getString("timesLE"));
+					
+					ApiPrice newprice = new ApiPrice();
+					newprice.setServiceId(serviceIdJson);
+					newprice.setTimesG(timesGJson);
+					newprice.setTimesLE(timesLEJson);
+					newprice.setPrice(priceJson);
+					
+					apiPriceService.insertPrice(newprice);
+				}
+			}
+			
+		} catch (Exception e1) {
+			//e1.printStackTrace();
+			System.out.println("链接服务器失败!");
+		}  
+		
+		
+		List<ApiPrice> priceList= apiPriceService.findPriceByServiceId(apiId);
+		double sumPrice = 0;
+		for (int i = 0; i < priceList.size(); i++) {
+			ApiPrice apiPrice = priceList.get(i);
+			if (num <= apiPrice.getTimesG()) {
+				continue;
+			} else if (num > apiPrice.getTimesG() && num > apiPrice.getTimesLE() && 
+					apiPrice.getTimesG() < apiPrice.getTimesLE()) {
+				sumPrice += (apiPrice.getTimesLE() - apiPrice.getTimesG()) * apiPrice.getPrice();
+			} else if (num > apiPrice.getTimesG() && num <= apiPrice.getTimesLE()) {
+				sumPrice += apiPrice.getPrice() * (num - apiPrice.getTimesG());
+			} else {
+				sumPrice +=apiPrice.getPrice() * (num - apiPrice.getTimesG());
+			}
+		}
+		return sumPrice;
+	}
+	
 	/**
      * 功能描述： 判断是否有购买api的权限
      * 参数描述：  
@@ -213,36 +301,41 @@ public class shoppingAPIController {
     @ResponseBody
     public void checkAPI(HttpServletResponse response,HttpServletRequest request) throws Exception{
         User globle_user = (User) request.getSession().getAttribute("globle_user");
-        int apiId = Integer.parseInt(request.getParameter("apiId"));
-        int time = Integer.parseInt(request.getParameter("time"));
-        int num = Integer.parseInt(request.getParameter("num"));
-        int type = Integer.parseInt(request.getParameter("type"));
+//        int apiId = Integer.parseInt(request.getParameter("apiId"));
+//        int time = Integer.parseInt(request.getParameter("time"));
+//        int num = Integer.parseInt(request.getParameter("num"));
+//        int type = Integer.parseInt(request.getParameter("type"));
         Map<String, Object> m = new HashMap<String, Object>();
-        if(globle_user.getApikey()!=null && !globle_user.getApikey().equals("")){
-        	//查询用户是否买过服务
-//        	List<Order> list = orderService.findByUserId(globle_user.getId());
-//        	if(list.size()>0){
-        		//add by 2016-4-13 免费购买超过一次，提示不能购买
-        		if(type==1){
-        			Map<String, Object> paramMap = new HashMap<String, Object>();
-    				paramMap.put("userId", globle_user.getId());
-    		        paramMap.put("type", type);
-    		        paramMap.put("apiId", apiId);
-            		List<OrderAPI> oAPIList = orderAPIService.findOrderAPIByType(paramMap);
-            		if(oAPIList.size()>=1){
-            			m.put("message", "此项服务不能免费购买第二次");
-            		}else{
-            			m.put("message", true);
-            		}
-        		}else{
-        			m.put("message", true);
-        		}
-//        	}else{
-//        		m.put("message", "用户尚未购买过服务");
-//        	}
-        }else{
+        if(globle_user.getApikey()==null || globle_user.getApikey().equals("")) {
         	m.put("message", "用户无key");
+        }else {
+        	m.put("message", true);
         }
+//        if(globle_user.getApikey()!=null && !globle_user.getApikey().equals("")){
+//        	//查询用户是否买过服务
+////        	List<Order> list = orderService.findByUserId(globle_user.getId());
+////        	if(list.size()>0){
+//        		//add by 2016-4-13 免费购买超过一次，提示不能购买
+//        		if(type==1){
+//        			Map<String, Object> paramMap = new HashMap<String, Object>();
+//    				paramMap.put("userId", globle_user.getId());
+//    		        paramMap.put("type", type);
+//    		        paramMap.put("apiId", apiId);
+//            		List<OrderAPI> oAPIList = orderAPIService.findOrderAPIByType(paramMap);
+//            		if(oAPIList.size()>=1){
+//            			m.put("message", "此项服务不能免费购买第二次");
+//            		}else{
+//            			m.put("message", true);
+//            		}
+//        		}else{
+//        			m.put("message", true);
+//        		}
+////        	}else{
+////        		m.put("message", "用户尚未购买过服务");
+////        	}
+//        }else{
+//        	m.put("message", "用户无key");
+//        }
 		//object转化为Json格式
 		JSONObject JSON = CommonUtil.objectToJson(response, m);
 		try {
@@ -405,7 +498,8 @@ public class shoppingAPIController {
             oAPI.setApiId(orderDetailVo.getServiceId());
             oAPI.setCreate_date(new Date());
             oAPI.setPackage_type(orderDetailVo.getType());
-            oAPI.setNum(orderDetailVo.getScan_type()*orderDetailVo.getWafTimes());
+//            oAPI.setNum(orderDetailVo.getScan_type()*orderDetailVo.getWafTimes());
+            oAPI.setNum(orderDetailVo.getWafTimes());
             oAPI.setUserId(globle_user.getId());
             oAPI.setContactId(linkmanId);
             oAPI.setPayFlag(1);
@@ -477,16 +571,10 @@ public class shoppingAPIController {
 		 User globle_user = (User) request.getSession().getAttribute("globle_user");
 	        //apiId
 	        String apiId = request.getParameter("apiId");
-	        //套餐次数
-	        String time = request.getParameter("time");
 	        //数量
 	       String num =request.getParameter("num");
-	        //套餐类型
-	        String type = request.getParameter("type");
-	        /*String price = request.getParameter("price");
-	        String priceVal="";
-	        priceVal =  price.substring(price.indexOf("¥")+1,price.length()) ;*/
-	        if(apiId==null||"".equals(apiId)||time==null||"".equals(time)||num==null||"".equals(num)||type==null||"".equals(type)){
+
+	        if(apiId==null||"".equals(apiId)||num==null||"".equals(num)){
 	        	 m.put("error", true);
 	        	//object转化为Json格式
 	             JSONObject JSON = CommonUtil.objectToJson(response, m);
@@ -494,23 +582,8 @@ public class shoppingAPIController {
 	             CommonUtil.writeToJsp(response, JSON);
 	             return;
 	        }
-	        if(!type.equals("1")&&!type.equals("2")&&!type.equals("3")){
-	        	 m.put("error", true);
-		        	//object转化为Json格式
-		             JSONObject JSON = CommonUtil.objectToJson(response, m);
-		             // 把数据返回到页面
-		             CommonUtil.writeToJsp(response, JSON);
-		             return;
-	        }
-	        if(time.equals("5")&&Integer.parseInt(num)>1){
-	        	 m.put("error", true);
-		        	//object转化为Json格式
-		             JSONObject JSON = CommonUtil.objectToJson(response, m);
-		             // 把数据返回到页面
-		             CommonUtil.writeToJsp(response, JSON);
-		             return;
-	        }
-	        if(Integer.parseInt(num)<1){
+
+	        if(Integer.parseInt(num)<1 || Integer.parseInt(num) > 10000){
 	        	 m.put("error", true);
 		        	//object转化为Json格式
 		             JSONObject JSON = CommonUtil.objectToJson(response, m);
@@ -554,7 +627,7 @@ public class shoppingAPIController {
             order.setServiceId(Integer.parseInt(apiId));
             order.setCreate_date(new Date());
             order.setUserId(globle_user.getId());
-            order.setPrice(0.0);
+            order.setPrice(calApiPrice(Integer.parseInt(apiId),Integer.parseInt(num)));
             order.setContactId(linkmanId);
             order.setStatus(1);//完成
             order.setPayFlag(0);
@@ -568,8 +641,8 @@ public class shoppingAPIController {
             oAPI.setEnd_date(getAfterYear(DateUtils.getDateAfter10Mins(new Date())));
             oAPI.setApiId(Integer.parseInt(apiId));
             oAPI.setCreate_date(new Date());
-            oAPI.setPackage_type(Integer.parseInt(type));
-            oAPI.setNum(Integer.parseInt(time)*Integer.parseInt(num));
+            //oAPI.setPackage_type(Integer.parseInt(type));
+            oAPI.setNum(Integer.parseInt(num));
             oAPI.setBuyNum(Integer.parseInt(num));
             oAPI.setUserId(globle_user.getId());
             oAPI.setContactId(linkmanId);
@@ -587,4 +660,36 @@ public class shoppingAPIController {
        // 把数据返回到页面
        CommonUtil.writeToJsp(response, JSON);
 	}
+	
+	@RequestMapping(value="calApiPrice.html", method=RequestMethod.POST)
+    @ResponseBody
+    public void calApiPrice(HttpServletResponse response,HttpServletRequest request) throws Exception{
+		Map<String, Object> m = new HashMap<String, Object>();
+		try {
+			int serviceId = Integer.parseInt(request.getParameter("serviceId"));
+			int num = Integer.parseInt(request.getParameter("num"));
+			
+			//计算价格
+			double sumPrice = calApiPrice(serviceId, num);
+			DecimalFormat df = new DecimalFormat("0.00"); 
+			
+			m.put("success", true);
+			m.put("price", df.format(sumPrice));
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			m.put("success", false);
+		}finally {
+			try {
+				//object转化为Json格式
+				JSONObject JSON = CommonUtil.objectToJson(response, m);
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
 }
