@@ -328,6 +328,10 @@ public class UserController{
 //	    List<Notice> list = noticeService.findAllNotice();
 	    //获取服务类型
         List servList = selfHelpOrderService.findService();
+        
+      //获取服务API类型
+        List servAPIList = serviceAPIService.findApiPriceList();
+        
         //查询网页篡改个数 
 //        int whorseNum = selfHelpOrderService.findLeakNum(3);
         //查询木马检测个数 
@@ -347,6 +351,7 @@ public class UserController{
 //        m.addAttribute("webSite", webSite);
 //        m.addAttribute("brokenNetwork", brokenNetwork);
         m.addAttribute("servList", servList);
+        m.addAttribute("servAPIList", servAPIList);
 //        m.addAttribute("noticeList", list);
 		return "/main";
 	}
@@ -1978,7 +1983,7 @@ public class UserController{
 	    //获取公告
 	    List<Notice> list = noticeService.findAllNotice();
 	    //获取服务类型
-        List<ServiceAPI> servList = serviceAPIService.findServiceAPI();
+        List servList = serviceAPIService.findApiPriceList();
         //查询漏洞个数
         int leakNum = selfHelpOrderService.findLeakNum(1);
         //查询网页数
