@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -138,16 +139,24 @@ function buyAPI(apiId){
 		                                    	${list.remarks }
 		                                    </span>
 		                                    <div class="purchase">
-		                                    	<strong>
-		                                    		0<em style="font-size: 14px;color:#D00000;">&nbsp;安全币</em>
-		                                    	</strong>
-		                                    	<strong style="text-decoration:line-through;text-decoration-color:#D00000;">
-		                                    		<em style="font-family:Arial Regular;font-size:22px;">99 </em> 
-		                                    		<em style="font-size: 14px;">安全币</em>
-		                                    	</strong>
+			                                     <c:if test="${!empty list.price}">
+			                                    	<strong style="text-decoration:none;font-size: 22px;">
+			                                    	<fmt:formatNumber type="number" value="${list.price}" maxFractionDigits="2" minFractionDigits="2"/>
+			                                    	<em style="font-size: 14px;color: #D00000;">安全币</em>
+			                                    	</strong>
+			                                    </c:if>
+			                                    <c:if test="${empty list.price}">
+			                                    	<strong>
+			                                    		0<em style="font-size: 14px;color:#D00000;">&nbsp;安全币</em>
+			                                    	</strong>
+			                                    	<strong style="text-decoration:line-through;text-decoration-color:#D00000;">
+			                                    		<em style="font-family:Arial Regular;font-size:22px;">99 </em> 
+			                                    		<em style="font-size: 14px;">安全币</em>
+			                                    	</strong>
+		                                    	</c:if>
 		                                    	<!--<a style="left:112px" href="${ctx}/selfHelpOrderAPIInit.html?apiId=${list.id }&indexPage=2" class="btn">购买</a>
 		                                    -->
-		                                    <a style="left:42px" href="javascript:;" onclick="buyAPI(${list.id });" class="btn">购买</a>
+		                                    <a style="left:62px" href="javascript:;" onclick="buyAPI(${list.id });" class="btn">购买</a>
 		                                    <form action="selfHelpOrderAPIInit.html" method="post" id="selfHelpOrderAPIInitNewForm">
 												<input type="hidden" id="apiIdNew" name="apiId"/>
 												<input type="hidden" id="indexPage" name="indexPage" value="2"/>
