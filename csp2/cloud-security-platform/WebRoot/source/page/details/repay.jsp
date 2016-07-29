@@ -163,10 +163,10 @@
                       <div class="repay_mylist">请在<a href="${ctx}/orderTrackInit.html">我的订单</a>中查看详情</div>
                       <div class="repay_anquan">
                       	<input type="hidden" id="orderListId" value="${orderList.id }" />
-	                      <c:if test="${orderList.balanceFlag==0 && !apiOrderFlg}">
+	                      <c:if test="${orderList.balanceFlag==0}">
 	                      		<div><a href="###" onclick="collectBalance()">点击领取安全币</a> 下单获赠5安全币</div>
 	                      </c:if>
-	                      <c:if test="${orderList.balanceFlag==1 && !apiOrderFlg}">
+	                      <c:if test="${orderList.balanceFlag==1}">
 		                      <div>已成功领取5安全币</div>
 	                      </c:if>
                       </div>
