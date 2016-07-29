@@ -111,8 +111,7 @@
                                             </c:if>
                                              <c:if test="${shopCar.status!=-1}">
                                              <label style=" margin: 0 20px 0 40px; width:16px; height:16px;display:inline-block;">
-                                             <input type="checkbox" class="ck" style="display:none" value="${shopCar.orderId}" isApi="0" name="check_name">
-                                            </input>
+                                             <input type="checkbox" class="ck" style="display:none" value="${shopCar.orderId}" isApi="0" name="check_name" />
                                            <i class="chck" style="margin: 0; position:relative; top:0"></i>
                                            </label>
                                             </c:if>
@@ -147,12 +146,16 @@
                                      <c:if test="${shopCar.endDate!=null&&shopCar.endDate!=''}">
                                        ~  
                                        <fmt:formatDate value="${shopCar.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                     </c:if>
                                      </p>
                                      
-                                     </c:if>
                                     </td>
-                                      <td width="10%"><em class="price" style="padding:5px 0px 5px 10px">${shopCar.price}</em></td>
-                                      <td width="5%" ><a href="#" onclick="delShopCar('${shopCar.orderId}');">删除</a></td>
+                                    <td width="10%">
+                                      	<em class="price" style="padding:5px 0px 5px 10px">
+                                      		<fmt:formatNumber type="number" value="${shopCar.price}" maxFractionDigits="2" minFractionDigits="2"/>
+                                      	</em>
+                                    </td>
+                                    <td width="5%" ><a href="#" onclick="delShopCar('${shopCar.orderId}');">删除</a></td>
                                     
                                   </tr>
                                   
@@ -216,10 +219,14 @@
                                    <td width="29%">
                                    <p style="text-align: center">
                                     <fmt:formatDate value="${shopAPI.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/> ~ <fmt:formatDate value="${shopAPI.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-                                   <p style="text-align: center">
+                                   </p>
                                   </td>
-                                    <td width="10%"><em class="price" style="padding:5px 0px 5px 10px">${shopAPI.price}</em></td>
-                                    <td width="5%"><a href="#" onclick="delShopCar('${shopAPI.orderId}');">删除</a></td>
+                                  <td width="10%">
+                                  	<em class="price" style="padding:5px 0px 5px 10px">
+                                  		<fmt:formatNumber type="number" value="${shopAPI.price}" maxFractionDigits="2" minFractionDigits="2"/>
+                                  	</em>
+                                  </td>
+                                  <td width="5%"><a href="#" onclick="delShopCar('${shopAPI.orderId}');">删除</a></td>
                                  </tr>
                                 
                             </tbody>
