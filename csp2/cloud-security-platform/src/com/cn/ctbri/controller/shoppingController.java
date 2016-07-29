@@ -2023,15 +2023,15 @@ public class shoppingController {
 			m.addAttribute("paySuccess", 1);
 		} else {
 			String[] api = orderList.getServerName().split(",");
-			//判断所有订单都是API
-			boolean apiOrderFlg = true;//true：所有订单都是API
-			for(String name: api) {
-				if(!name.endsWith("API")){
-					apiOrderFlg = false;
-					break;
-				}
-			}
-			m.addAttribute("apiOrderFlg", apiOrderFlg);
+//			//判断所有订单都是API
+//			boolean apiOrderFlg = true;//true：所有订单都是API
+//			for(String name: api) {
+//				if(!name.endsWith("API")){
+//					apiOrderFlg = false;
+//					break;
+//				}
+//			}
+//			m.addAttribute("apiOrderFlg", apiOrderFlg);
 			m.addAttribute("paySuccess", 0);
 			m.addAttribute("orderList", orderList);
 			
