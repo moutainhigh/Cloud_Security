@@ -524,6 +524,17 @@ public class WafController {
 		   				}
 		   				return;
 		        }
+		        if(!serviceId.equals("6")){
+		        	  m.put("error",true);
+		          	  JSONObject JSON = CommonUtil.objectToJson(response, m);
+		   				try {
+		   					// 把数据返回到页面
+		   					CommonUtil.writeToJsp(response, JSON);
+		   				} catch (IOException e) {
+		   					e.printStackTrace();
+		   				}
+		   				return;
+		        }
 		        if(!orderType.equals("8")&&!orderType.equals("9")){
 		        	  m.put("error",true);
 		          	  JSONObject JSON = CommonUtil.objectToJson(response, m);
