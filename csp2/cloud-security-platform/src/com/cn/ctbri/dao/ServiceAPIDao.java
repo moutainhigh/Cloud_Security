@@ -24,6 +24,8 @@ public interface ServiceAPIDao {
 	ServiceAPI findById(int apiId);
 
 	List<ServiceAPI> findServiceAPI();
+	
+	List findApiPriceList();
 
 	
 }
