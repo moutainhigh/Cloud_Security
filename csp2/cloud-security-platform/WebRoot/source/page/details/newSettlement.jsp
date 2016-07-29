@@ -322,7 +322,11 @@
                                      
                                      </c:if>
                                     </td>
-                                    <td width="15%"><em class="price">${shopCar.price}</em></td>
+                                    <td width="15%">
+                                    	<em class="price">
+                                    	<fmt:formatNumber type="number" value="${shopCar.price}" maxFractionDigits="2" minFractionDigits="2"/>
+                                    	</em>
+                                    </td>
                                     
                                  </tr>
                                  
@@ -358,7 +362,11 @@
                                         <fmt:formatDate value="${shopAPI.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                          - <fmt:formatDate value="${shopAPI.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                          </td>
-                                        <td width="15%"><em class="price">${shopAPI.price}</em></td>
+                                        <td width="15%">
+	                                        <em class="price">
+	                                        	<fmt:formatNumber type="number" value="${shopAPI.price}" maxFractionDigits="2" minFractionDigits="2"/>
+	                                        </em>
+                                        </td>
                                         
                                      </tr>
                                      
@@ -427,7 +435,8 @@
                 </li>
                 -->
                 <li>
-                                          应付总额：<span>${shopCount}<em>&nbsp;安全币</em></span>
+                       应付总额：
+                    <span>${shopCount}<em>&nbsp;安全币</em></span>
                 </li>
             </ul>
 			<div class="SubmitBox">
