@@ -759,7 +759,7 @@ public class shoppingController {
 	    		  //有些订单号没有或有些订单不属于该用户时，跳转到首页
 	    		  return "redirect:/index.html";
 	    	  }
-	    	  list = selfHelpOrderService.findBuyShopList(orderIdList);
+	    	  list = selfHelpOrderService.findBuyShopList(orderIdList,globle_user.getId());
 	    	 linkman = orderService.findLinkmanByOrderId(strArray[0]);
 			}else {
 				//有些订单号没有或有些订单不属于该用户时，跳转到首页
@@ -890,7 +890,7 @@ public class shoppingController {
 	    	  for (int m=0;m<strArray.length;m++){
 	    		  orderIdList.add(strArray[m]);
 	    	  }
-	    	  list = selfHelpOrderService.findBuyShopList(orderIdList);
+	    	  list = selfHelpOrderService.findBuyShopList(orderIdList,globle_user.getId());
 			}
 	      if(list.size()<=0){
 	    	  map.put("errorStatus", true);  
@@ -1481,7 +1481,7 @@ public class shoppingController {
 	    	  for (int k=0;k<strArray.length;k++){
 	    		  orderIdList.add(strArray[k]);
 	    	  }
-	    	  list = selfHelpOrderService.findBuyShopList(orderIdList);
+	    	  list = selfHelpOrderService.findBuyShopList(orderIdList,globle_user.getId());
 			}
 	     if(list!=null&&list.size()>0){
 	       for(int i=0;i<list.size();i++){
@@ -1620,7 +1620,7 @@ public class shoppingController {
     		//若支付时间>服务的开始时间，更新订单的开始时间，结束时间
     		List<String> orderIdOfModify = new ArrayList<String>();
     		try{
-    			orderIdOfModify = modifyOrderBeginTime(orderList);
+    			orderIdOfModify = modifyOrderBeginTime(orderList,request);
     		} catch(Exception e) {
     			e.printStackTrace();
     			//长期：订单结束时间不能早于当前订单提交时间
@@ -1682,9 +1682,9 @@ public class shoppingController {
      * @return  需要修改的订单编号(逗号分割)
      * @throws Exception 
      * */
-    public List<String> modifyOrderBeginTime(OrderList orderList) throws Exception {
+    public List<String> modifyOrderBeginTime(OrderList orderList,HttpServletRequest request) throws Exception {
     	List<String> orderIdOfModify = new ArrayList<String>();
-    	
+    	User globle_user = (User) request.getSession().getAttribute("globle_user");
     	List list = new ArrayList();
 		List shopAPIList = new ArrayList();
 		List<ShopCar> shopList = new ArrayList();
@@ -1698,7 +1698,7 @@ public class shoppingController {
 			for (int m=0;m<strArray.length;m++){
 				orderIdList.add(strArray[m]);
 			}
-			list = selfHelpOrderService.findBuyShopList(orderIdList);
+			list = selfHelpOrderService.findBuyShopList(orderIdList,globle_user.getId());
 		}
 		
 //		Date payDate = orderList.getPay_date();
@@ -1760,7 +1760,7 @@ public class shoppingController {
     			for (int m=0;m<strArray.length;m++){
     				orderIdList.add(strArray[m]);
     			}
-    			list = selfHelpOrderService.findBuyShopList(orderIdList);
+    			list = selfHelpOrderService.findBuyShopList(orderIdList,globle_user.getId());
     		}
     		
     		if(list!=null&&list.size()>0){
