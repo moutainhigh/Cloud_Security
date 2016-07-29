@@ -32,5 +32,10 @@ public class ServiceAPIDaoImpl extends DaoCommon implements ServiceAPIDao{
 	public List<ServiceAPI> findServiceAPI() {
 		return this.getSqlSession().selectList(ns + "list");
 	}
+
+
+	public List findApiPriceList() {
+		return this.getSqlSession().selectList(ns + "findApiPriceList");
+	}
 	
 }
