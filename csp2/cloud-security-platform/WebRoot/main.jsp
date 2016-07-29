@@ -183,45 +183,34 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                             <a href="${ctx}/api_anquanbang.html" class="fr">查看更多<b></b></a>
                         </div>
                     	<ul class="newlist newlist-top fl">
-                            <li class="fl">
-                                <!--<a href="${ctx}/selfHelpOrderAPIInit.html?apiId=3&indexPage=2">
-                                    -->
-                                    <a href="javascript:;" onclick="buySelfHelpOrderAPIMain(3);">
-                                    <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
-                                    <p><img src="${ctx}/source/images/portal/webPageTamper.png" alt=""></p>
-                                    <h4>网页篡改监测能力API</h4>
-                                    <div class="purchase">
-                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">0<em style="font-size: 14px;color: #D00000;">&nbsp;安全币</em></strong>
-                                    	<strong class="oldprice">99<em style="font-size: 11px;">安全币</em></strong>
+                    	<c:forEach var="apiList" items="${servAPIList}" varStatus="status">
+	                    	<c:choose>
+	                           <c:when test="${apiList.id >=3}">
+	                           
+	                           <li class="fl">
+	                           <a href="javascript:;" onclick="buySelfHelpOrderAPIMain(${apiList.serviceId});">
+	                           		<i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
+	                           		<c:if test="${apiList.id ==3}">
+                                    	<p><img src="${ctx}/source/images/portal/webPageTamper.png" alt=""></p>
+	                           		</c:if>
+	                           		<c:if test="${apiList.id ==4}">
+                                    	<p><img src="${ctx}/source/images/portal/sensitiveWord.png" alt=""></p>
+	                           		</c:if>
+	                           		<c:if test="${apiList.id ==5}">
+                                    	<p><img src="${ctx}/source/images/portal/availability.png" alt=""></p>
+	                           		</c:if>
+                                    <h4>${apiList.name}</h4>
+                                    <div class="purchase"  style="left:77px">
+                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">
+                                    	<fmt:formatNumber type="number" value="${apiList.price }" maxFractionDigits="2" minFractionDigits="2"/><em style="font-size: 14px;color: #D00000;">&nbsp;安全币</em>
+                                    	</strong>
+                                    	<!-- <strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">${apiList.price}<em style="font-size: 14px;color: #D00000;">&nbsp;安全币</em></strong>
+                                    	<strong class="oldprice">${apiList.price}<em style="font-size: 11px;">安全币</em></strong> -->
                                     </div> 
                                 </a>
-                            </li>
-                            <li class="fl">
-                                <!--<a href="${ctx}/selfHelpOrderAPIInit.html?apiId=4&indexPage=2">
-                                    -->
-                                    <a href="javascript:;" onclick="buySelfHelpOrderAPIMain(4);">
-                                    <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
-                                    <p><img src="${ctx}/source/images/portal/sensitiveWord.png" alt=""></p>
-                                    <h4>网页敏感内容监测能力API</h4>
-                                    <div class="purchase">
-                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">0<em style="font-size: 14px;color: #D00000;">&nbsp;安全币</em></strong>
-                                    	<strong class="oldprice">99<em style="font-size: 11px;">&nbsp;安全币</em></strong>
-                                    </div> 
-                                </a>
-                            </li>
-                            <li class="fl">
-                                <!--<a href="${ctx}/selfHelpOrderAPIInit.html?apiId=5&indexPage=2">
-                                    -->
-                                    <a href="javascript:;" onclick="buySelfHelpOrderAPIMain(5);">
-                                    <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
-                                    <p><img src="${ctx}/source/images/portal/availability.png" alt=""></p>
-                                    <h4>网站可用性监测API</h4>
-                                    <div class="purchase">
-                                    	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">0<em style="font-size: 14px;color: #D00000;">&nbsp;安全币</em></strong>
-                                    	<strong class="oldprice">99<em style="font-size: 11px;">&nbsp;安全币</em></strong>
-                                    </div>
-                                </a>
-                            </li>
+	                           </c:when>
+	                        </c:choose>
+                        </c:forEach>
                         </ul>
                         <form action="selfHelpOrderAPIInit.html" method="post" id="APIMainForm">
     						<input type="hidden" id="apiIdHidden" name="apiId" value=""/>
