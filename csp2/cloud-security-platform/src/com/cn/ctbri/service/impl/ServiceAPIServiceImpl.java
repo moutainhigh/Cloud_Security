@@ -32,5 +32,8 @@ public class ServiceAPIServiceImpl implements IServiceAPIService{
 	public List<ServiceAPI> findServiceAPI() {
 		return serviceAPIDao.findServiceAPI();
 	}
+	public List findApiPriceList() {
+		return serviceAPIDao.findApiPriceList();
+	}
 	
 }
