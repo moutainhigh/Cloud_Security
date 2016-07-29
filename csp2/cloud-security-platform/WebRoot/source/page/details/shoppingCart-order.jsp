@@ -200,7 +200,7 @@
                                    
                                    
                                     <td width="20%"><p style="padding:5px 0 5px 40px;">
-                                   
+                                   	<!-- 
                                       <c:if test="${shopAPI.pack_type==1}">
                                                                                                                              套餐一
                                       </c:if>
@@ -210,7 +210,9 @@
                                        <c:if test="${shopAPI.pack_type==3}">
                                                                                                                              套餐三
                                       </c:if>
-                                     &nbsp;&nbsp;&nbsp; ${shopAPI.buynum}</p></td>
+                                     &nbsp;&nbsp;&nbsp; ${shopAPI.buynum}</p> -->
+                                     ${shopAPI.buynum}
+                                     </td>
                                    <td width="29%">
                                    <p style="text-align: center">
                                     <fmt:formatDate value="${shopAPI.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/> ~ <fmt:formatDate value="${shopAPI.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
