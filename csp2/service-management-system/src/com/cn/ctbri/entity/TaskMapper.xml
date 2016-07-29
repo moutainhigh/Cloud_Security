@@ -220,7 +220,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 根据orderId获取任务 -->
     <select id="findTaskByOrderId" parameterType="String" resultType="map">
-         select t.taskId, t.status,
+         select min(t.taskId) as taskId, t.status,
 	         date_format(t.execute_time,'%Y-%m-%d %H:%i:%S') executeTime,
 	         date_format(t.begin_time,'%Y-%m-%d %H:%i:%S') beginTime,
 	         ifnull(date_format(t.end_time,'%Y-%m-%d %H:%i:%S'),'') endTime,
