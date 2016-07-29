@@ -299,25 +299,29 @@
 	                                    	~<fmt:formatDate value="${orderDetail.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
 	                                    	</c:if>
 	                                    </td>
-	                                    <td width="18%" style="font-size:14px;">${orderDetail.price}</td>
+	                                    <td width="18%" style="font-size:14px;">
+	                                    	<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2"/>
+	                                    </td>
 	                                 </tr>
 	                            </tbody>
 	                            </c:if>
                               <c:if test="${orderDetail.isAPI==1}">
                           	<tbody>
 	                            	 <tr height="40">
-	                                 	<td width="16%" style="font-size:14px;">
+	                                 	<td width="34%" style="font-size:14px;">
 	                                    	${orderDetail.serviceName}
 	                                    </td>
 	                                   
-	                                    <td width="56%" style="font-size:14px;">
+	                                    <td width="26%" style="font-size:14px;">
 	                                    	<!--<c:if test="${orderDetail.type==1}">套餐一</c:if>&nbsp;&nbsp;&nbsp;
 	                                    	<c:if test="${orderDetail.type==2}">套餐二</c:if>&nbsp;&nbsp;&nbsp;
 	                                    	<c:if test="${orderDetail.type==3}">套餐三</c:if>&nbsp;&nbsp;&nbsp;
 	                                    	${orderDetail.scan_type}次 * ${orderDetail.wafTimes}-->
 	                                    	${orderDetail.wafTimes}
 	                                    </td>
-	                                    <td width="38%" style="font-size:14px;">${orderDetail.price}</td>
+	                                    <td width="30%" style="font-size:14px;">
+	                                    	<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2"/>
+	                                    </td>
 	                                 </tr>
 	                            </tbody>
 	                            </c:if>
@@ -377,7 +381,11 @@
             <c:if test="${not empty orderDetail}">
             <ul class="Price">
             	<li>
-                	<i>1</i>个订单，总额：<span>${orderDetail.price}<em>&nbsp;安全币</em></span>
+                	<i>1</i>个订单，总额：
+                	<span>
+                		<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2"/>
+                		<em>&nbsp;安全币</em>
+                	</span>
                 </li>
                 <!--  
                 <li>
@@ -385,14 +393,22 @@
                 </li>
                 -->
                 <li>
-                	应付总额：<span>${orderDetail.price}<em>&nbsp;安全币</em></span>
+                	应付总额：
+                	<span>
+                		<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2"/>
+                		<em>&nbsp;安全币</em>
+                	</span>
                 </li>
             </ul>
             </c:if>
           
 			<div class="SubmitBox">
 			  <c:if test="${not empty orderDetail}">
-            	<p>应付总额：<span style="padding-bottom:10px;">${orderDetail.price}<em style="font-size:14px">&nbsp;安全币</em></span>
+            	<p>应付总额：
+            	<span style="padding-bottom:10px;">
+	            	<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2"/>
+	            	<em style="font-size:14px">&nbsp;安全币</em>
+            	</span>
             	</c:if>
             	
             	<c:if test="${not empty orderDetail}">
