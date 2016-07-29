@@ -74,9 +74,10 @@
 									<c:if test="${list.type==2}">单次</c:if> 
 								</c:if>
 								<c:if test="${list.isAPI==1}">
-									<c:if test="${list.package_type==1}">套餐1</c:if>
+									<!--<c:if test="${list.package_type==1}">套餐1</c:if>
 									<c:if test="${list.package_type==2}">套餐2</c:if> 
-									<c:if test="${list.package_type==3}">套餐3</c:if>
+									<c:if test="${list.package_type==3}">套餐3</c:if>-->
+									长期
 								</c:if>
 								<c:if test="${list.isAPI==2}">
 									<c:if test="${list.scan_type==8}">包月</c:if>
