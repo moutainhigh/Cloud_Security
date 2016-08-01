@@ -99,7 +99,9 @@ function getPage(page){
         	<div class="coreRight fl" style="margin-bottom:200px;">
             		<div class="banlance_head clearfix">
                     	 <div class="c-lan fl">
-                        	<span class="b_aic">安全币余额：<em>${balance }</em></span>
+                        	<span class="b_aic">安全币余额：
+                        	<em><fmt:formatNumber  value="${balance }" pattern="0.00"/></em>
+                        	</span>
                         </div>
                         
                        <a href="javascript:;" id="gz" class="gz-btn fr">安全币规则</a>
