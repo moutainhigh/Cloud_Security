@@ -300,7 +300,7 @@
 	                                    	</c:if>
 	                                    </td>
 	                                    <td width="18%" style="font-size:14px;">
-	                                    	<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2"/>
+	                                    	<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
 	                                    </td>
 	                                 </tr>
 	                            </tbody>
@@ -320,7 +320,7 @@
 	                                    	${orderDetail.wafTimes}
 	                                    </td>
 	                                    <td width="30%" style="font-size:14px;">
-	                                    	<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2"/>
+	                                    	<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
 	                                    </td>
 	                                 </tr>
 	                            </tbody>
@@ -383,7 +383,7 @@
             	<li>
                 	<i>1</i>个订单，总额：
                 	<span>
-                		<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2"/>
+                		<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
                 		<em>&nbsp;安全币</em>
                 	</span>
                 </li>
@@ -395,7 +395,7 @@
                 <li>
                 	应付总额：
                 	<span>
-                		<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2"/>
+                		<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
                 		<em>&nbsp;安全币</em>
                 	</span>
                 </li>
@@ -406,7 +406,7 @@
 			  <c:if test="${not empty orderDetail}">
             	<p>应付总额：
             	<span style="padding-bottom:10px;">
-	            	<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2"/>
+	            	<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
 	            	<em style="font-size:14px">&nbsp;安全币</em>
             	</span>
             	</c:if>

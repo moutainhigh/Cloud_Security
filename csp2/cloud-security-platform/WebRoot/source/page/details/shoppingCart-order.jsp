@@ -152,7 +152,7 @@
                                     </td>
                                     <td width="10%">
                                       	<em class="price" style="padding:5px 0px 5px 10px">
-                                      		<fmt:formatNumber type="number" value="${shopCar.price}" maxFractionDigits="2" minFractionDigits="2"/>
+                                      		<fmt:formatNumber type="number" value="${shopCar.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
                                       	</em>
                                     </td>
                                     <td width="5%" ><a href="#" onclick="delShopCar('${shopCar.orderId}');">删除</a></td>
@@ -223,7 +223,7 @@
                                   </td>
                                   <td width="10%">
                                   	<em class="price" style="padding:5px 0px 5px 10px">
-                                  		<fmt:formatNumber type="number" value="${shopAPI.price}" maxFractionDigits="2" minFractionDigits="2"/>
+                                  		<fmt:formatNumber type="number" value="${shopAPI.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false" />
                                   	</em>
                                   </td>
                                   <td width="5%"><a href="#" onclick="delShopCar('${shopAPI.orderId}');">删除</a></td>

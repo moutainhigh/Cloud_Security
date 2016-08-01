@@ -324,7 +324,7 @@
                                     </td>
                                     <td width="15%">
                                     	<em class="price">
-                                    	<fmt:formatNumber type="number" value="${shopCar.price}" maxFractionDigits="2" minFractionDigits="2"/>
+                                    	<fmt:formatNumber type="number" value="${shopCar.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
                                     	</em>
                                     </td>
                                     
@@ -364,7 +364,7 @@
                                          </td>
                                         <td width="15%">
 	                                        <em class="price">
-	                                        	<fmt:formatNumber type="number" value="${shopAPI.price}" maxFractionDigits="2" minFractionDigits="2"/>
+	                                        	<fmt:formatNumber type="number" value="${shopAPI.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
 	                                        </em>
                                         </td>
                                         
