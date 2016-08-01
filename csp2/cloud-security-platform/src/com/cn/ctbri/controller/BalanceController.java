@@ -66,7 +66,7 @@ public class BalanceController {
 
 		ModelAndView mv = new ModelAndView("/source/page/personalCenter/my_balance");
 		mv.addObject("pb", pb);
-		mv.addObject("balance", (int)loginUser.getBalance());
+		mv.addObject("balance", loginUser.getBalance());
         return mv;
     }
     
