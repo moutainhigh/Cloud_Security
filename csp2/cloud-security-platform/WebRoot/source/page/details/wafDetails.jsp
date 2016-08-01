@@ -184,10 +184,10 @@
                 <div class="commoditys" style="height:620px; overflow:hidden">
                 	<img src="${ctx}/source/images/portal/wafImage1.png" alt="">
                 </div>
-                <div class="commoditys"style="height:752px; overflow:hidden">
+                <div class="commoditys"style=" overflow:hidden">
                 	<img src="${ctx}/source/images/portal/wafImage2.png" alt="">
                 </div>
-                <div class="commoditys" style="height:820px; overflow:hidden">
+                <div class="commoditys" style="overflow:hidden">
                 	<img src="${ctx}/source/images/portal/wafImage3.png" alt="">
                 </div>
                 <div class="commoditys" style="height:464px; overflow:hidden">
