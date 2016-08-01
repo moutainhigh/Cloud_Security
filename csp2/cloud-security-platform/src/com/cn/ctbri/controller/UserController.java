@@ -1045,7 +1045,7 @@ public class UserController{
 			    Pattern regex = Pattern.compile(check);
 			    Matcher matcher = regex.matcher(email);
 			    if (!matcher.matches()) {
-			    	msg = "邮箱地址输入错误!";
+			    	msg = "请输入正确的邮箱地址!";
 			    	result = 10;
 			    	return null;
 			    }
