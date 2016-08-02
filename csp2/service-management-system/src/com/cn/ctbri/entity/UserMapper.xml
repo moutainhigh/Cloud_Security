@@ -54,7 +54,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入用户api -->
 	<insert id="insertAPINum" parameterType="com.cn.ctbri.entity.APINum">
 		insert into cs_api 
-		(apikey,service_type,api_type,status,create_time) values(#{apikey},#{service_type},#{api_type},#{status},#{create_time})
+		(apikey,service_type,api_type,status,create_time,apiId,orderId,taskId,token) 
+		values(#{apikey},#{service_type},#{api_type},#{status},#{create_time},#{apiId},#{orderId},#{taskId},#{token})
 	</insert>
 	
 	<!-- 通过apiKey查询user -->

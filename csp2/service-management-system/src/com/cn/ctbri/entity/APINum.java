@@ -23,6 +23,14 @@ public class APINum {
 	private int status;
 	//访问时间
 	private Date create_time;
+	//apiId
+	private String apiId;
+	//orderId
+	private String orderId;
+	//taskId
+	private int taskId;
+	//token
+	private String token;
 	
 	public int getId() {
 		return id;
@@ -59,6 +67,30 @@ public class APINum {
 	}
 	public void setCreate_time(Date create_time) {
 		this.create_time = create_time;
+	}
+	public String getApiId() {
+		return apiId;
+	}
+	public void setApiId(String apiId) {
+		this.apiId = apiId;
+	}
+	public String getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+	public int getTaskId() {
+		return taskId;
+	}
+	public void setTaskId(int taskId) {
+		this.taskId = taskId;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 }

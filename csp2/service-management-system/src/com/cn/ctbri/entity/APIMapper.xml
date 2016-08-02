@@ -35,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order1.type,DATE_FORMAT(order1.begin_date,'%Y-%m-%d %H:%i:%s') begin_date,DATE_FORMAT(order1.end_date,'%Y-%m-%d %H:%i:%s') end_date,order1.scan_type,task1.url FROM (SELECT *
 		from cs_api api WHERE api.apiId=#{orderId})s
 		left JOIN cs_order order1 on s.apiId=#{orderId} and order1.id=s.orderId
-		left JOIN cs_order_task task1 on task1.Id=s.taskId)a where 1=1
+		left JOIN cs_order_task task1 on task1.orderId=s.orderId)a where 1=1
 		<if test="scanUrl!=null and scanUrl!=''">
 			and a.url like CONCAT('%','${scanUrl}','%' ) 
 		</if>
