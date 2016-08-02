@@ -52,6 +52,13 @@ public interface IOrderService {
      */
     List findByOrderId(String orderId);
     /**
+     * 根据订单id查询api服务信息
+     * @param orderId
+     * @return
+     */
+    List findAPIInfoByOrderId(String orderId);
+    
+    /**
      * 功能描述： 根据订单Id查询IP
      *       @time 2015-2-2
      * 返回值    ：  Order
@@ -142,5 +149,12 @@ public interface IOrderService {
 	public void delLinkmanByOrderId(String orderId,int userId);
 	
 	List findByOrderListId(String orderListId, String state);
+	
+	/**
+	 * 根据orderId查询购买次数
+	 * @param paramMap
+	 * @return
+	 */
+	int findAPICountByParam(Map<String, Object> paramMap);
     
 }

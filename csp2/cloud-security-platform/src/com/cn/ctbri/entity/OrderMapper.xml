@@ -383,4 +383,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       delete FROM cs_linkman  WHERE id =(SELECT o.contactId FROM cs_order o WHERE o.id=#{orderId} and  o.userId = #{userId})
     
     </delete>
+	<!-- 根据订单Id查询API记录 -->
+    <select id="findAPIInfoByOrderId" resultType="hashmap" parameterType="String">
+        select o.id,o.serviceId,o.type,s.name,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI,o.userId
+        from cs_order o,cs_service_api s
+        where o.id = #{orderId} and o.serviceId = s.id
+    </select>
+		<!-- 根据orderId查询购买api数量 -->
+    <select id="findAPICountByParam" resultType="int" parameterType="hashMap">
+  		select api.num from cs_order_api api,cs_order order1 where api.id=#{orderId} and order1.payFlag=1 and order1.id=api.id
+    </select>
 </mapper>

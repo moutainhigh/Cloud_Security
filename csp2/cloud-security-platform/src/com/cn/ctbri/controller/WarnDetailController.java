@@ -12,14 +12,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.MediaType;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,10 +32,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import se.akerfeldt.com.google.gson.Gson;
 
 import com.cn.ctbri.common.Constants;
+import com.cn.ctbri.common.HuaweiWorker;
 import com.cn.ctbri.constant.WarnType;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.AlarmDDOS;
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.entity.User;
@@ -41,10 +46,20 @@ import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
+import com.cn.ctbri.service.IServiceAPIService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.UniformInterfaceException;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
+
 /**
  * 创 建 人  ：  tangxr
  * 创建日期：  2016-5-5
@@ -68,7 +83,27 @@ public class WarnDetailController {
     IAlarmDDOSService alarmDDOSService;
     @Autowired
     IAssetService assetService;
+    @Autowired
+    IServiceAPIService serviceAPIService;
     
+    private static String SERVER_WEB_ROOT;
+    private static String VulnScan_serviceCreateAPICount;
+    private static String VulnScan_analysisAPICount;
+    private static String VulnScan_getAPIHistory;
+	static{
+		try {
+			Properties p = new Properties();
+			p.load(HuaweiWorker.class.getClassLoader().getResourceAsStream("InternalAPI.properties"));
+			
+			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
+			VulnScan_serviceCreateAPICount = p.getProperty("VulnScan_serviceCreateAPICount");
+			VulnScan_analysisAPICount = p.getProperty("VulnScan_analysisAPICount");
+			VulnScan_getAPIHistory = p.getProperty("VulnScan_getAPIHistory");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
     @RequestMapping(value="warningInit.html")
     public String warningInit(HttpServletRequest request,HttpServletResponse response) throws Exception{
         String orderId = request.getParameter("orderId");
@@ -2060,4 +2095,317 @@ public class WarnDetailController {
         return paramMap;
     }
     
+    /**
+     * 功能描述： 根据订单号查询调用接口的次数
+     * 参数描述：  无
+     *     @time 2015-2-2
+     */
+    @RequestMapping(value="apiDetails.html")
+    public String apiDetails(HttpServletRequest request){
+        try {
+			String orderId = request.getParameter("orderId");
+			//获取订单信息
+			List orderList = orderService.findAPIInfoByOrderId(orderId);
+
+			//不是当前用户的订单,不能查看
+			User globle_user = (User) request.getSession().getAttribute("globle_user");
+			if (orderId== null || orderList == null ||orderList.size() == 0) {
+				return "redirect:/index.html";
+			}
+			
+			HashMap<String, Object> order=new HashMap<String, Object>();
+			order=(HashMap) orderList.get(0);
+			if (((Integer)order.get("userId"))!= globle_user.getId()) {
+				return "redirect:/index.html";
+			}
+			
+			//获取用户购买服务次数
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("userId", globle_user.getId());
+			paramMap.put("orderId", orderId);
+			int apiCount = orderService.findAPICountByParam(paramMap);
+			
+			//远程调用接口
+			ClientConfig config = new DefaultClientConfig();
+			//检查安全传输协议设置
+			Client client = Client.create(config);
+			//连接服务器
+			String url = SERVER_WEB_ROOT + VulnScan_serviceCreateAPICount;
+			WebResource service = client.resource(url+orderId);
+			ClientResponse clientResponse = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);        
+			String str = clientResponse.getEntity(String.class);
+			
+			//解析json,进行数据同步
+			JSONObject jsonObject = JSONObject.fromObject(str);	
+			int createAPICount = 0;//订单调用创建接口的次数
+			int code = jsonObject.getInt("code");
+			if(code==201){
+				createAPICount = jsonObject.getInt("createAPICount");
+			}
+			
+			request.setAttribute("order",order);
+			request.setAttribute("apiCount", apiCount);
+			request.setAttribute("createAPICount", createAPICount);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        return "/source/page/personalCenter/apiDetail";
+    }
+    
+    /**
+     * 功能描述： 获取某订单扫描所有api的次数
+     * 参数描述：  无
+     *     @time 2015-2-2
+     */
+    @RequestMapping(value="getAllApiCount.html")
+    public void getAllApiCount(HttpServletRequest request,HttpServletResponse response){
+    	Map<String, Object> m = new HashMap<String, Object>();
+        try {
+			String orderId = request.getParameter("orderId");
+			//获取订单信息
+			List orderList = orderService.findAPIInfoByOrderId(orderId);
+
+			//不是当前用户的订单,不能查看
+			User globle_user = (User) request.getSession().getAttribute("globle_user");
+			if (orderId== null || orderList == null ||orderList.size() == 0) {
+				m.put("success", false);//订单号错误
+				
+				//object转化为Json格式
+				JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+			}
+			
+			HashMap<String, Object> order=new HashMap<String, Object>();
+			order=(HashMap) orderList.get(0);
+			if (((Integer)order.get("userId"))!= globle_user.getId()) {
+				m.put("success", false);//订单号错误
+				
+				//object转化为Json格式
+				JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+			}
+			
+			
+			
+			//获取某订单扫描所有api的次数
+			//远程调用接口
+			ClientConfig config = new DefaultClientConfig();
+			//检查安全传输协议设置
+			Client client = Client.create(config);	
+
+			//连接服务器
+			String url = SERVER_WEB_ROOT + VulnScan_analysisAPICount;
+			WebResource service = client.resource(url+orderId);
+			ClientResponse clientResponse = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);        
+			String str = clientResponse.getEntity(String.class);
+			
+			//解析json,进行数据同步
+			JSONObject jsonObject = JSONObject.fromObject(str);	
+			JSONArray jsonArray = jsonObject.getJSONArray("apiArray");
+			int code = jsonObject.getInt("code");
+			if(code==201){
+				JSONArray jsonArray1 = new JSONArray();
+				for (int i = 0; i < jsonArray.size(); i++) {
+			        String object = jsonArray.getString(i);
+			        JSONObject jsonObject1 = JSONObject.fromObject(object);
+			        int apiType = jsonObject1.getInt("api_type");
+			        int apiCount = jsonObject1.getInt("apiCount");
+			        //查询服务名称
+			        ServiceAPI serviceAPI = serviceAPIService.findById(apiType);
+			        String apiName = serviceAPI.getName();
+			        //传给前台的json串
+			        JSONObject newJO = new JSONObject();
+			        newJO.put("value", apiCount);
+			        newJO.put("name", apiName);
+			        jsonArray1.add(newJO);
+				}
+				
+				m.put("success", true);//订单号错误
+				m.put("dataArray", jsonArray1);
+				//object转化为Json格式
+				JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			m.put("success", false);			
+			//object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+
+			return;
+
+		}
+    }
+    
+    /**
+     * 功能描述： 根据订单号获取调用接口历史记录
+     * 参数描述：  无
+     *     @time 2015-2-2
+     */
+    @RequestMapping(value="getAPIHistoryInfo.html")
+    public void getAPIHistoryInfo(HttpServletRequest request,HttpServletResponse response){
+    	Map<String, Object> m = new HashMap<String, Object>();
+        try {
+			String orderId = request.getParameter("orderId");
+			String beginDate = request.getParameter("beginDate");
+			String endDate = request.getParameter("endDate");
+			String scanUrl = request.getParameter("url");
+			//获取订单信息
+			List orderList = orderService.findAPIInfoByOrderId(orderId);
+
+			//不是当前用户的订单,不能查看
+			User globle_user = (User) request.getSession().getAttribute("globle_user");
+			if (orderId== null || orderList == null ||orderList.size() == 0) {
+				m.put("success", false);
+				//object转化为Json格式
+				JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+			}
+			
+			HashMap<String, Object> order=new HashMap<String, Object>();
+			order=(HashMap) orderList.get(0);
+			if (((Integer)order.get("userId"))!= globle_user.getId()) {
+				m.put("success", false);
+				//object转化为Json格式
+				JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+			}
+			
+
+			//远程调用接口		
+			ClientConfig cc = new DefaultClientConfig(); 
+			Client client = Client.create(cc);
+			
+			//连接服务器
+			String url = SERVER_WEB_ROOT + VulnScan_getAPIHistory;
+			WebResource service = client.resource(url+orderId);
+			JSONObject req = new JSONObject();
+			req.put("scanUrl", scanUrl);
+			req.put("beginDate", beginDate);
+			req.put("endDate", endDate);
+			String param = req.toString();
+ 
+			ClientResponse clientResponse = service.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON).post(ClientResponse.class, param);  
+			String str = clientResponse.getEntity(String.class);
+			
+			//解析json,进行数据同步
+			JSONObject jsonObject = JSONObject.fromObject(str);	
+			JSONArray jsonArray = jsonObject.getJSONArray("apiArray");
+			int code = jsonObject.getInt("code");
+			List infoList = new ArrayList();
+			if(code==201){
+				for (int i = 0; i < jsonArray.size(); i++) {
+			        String object = jsonArray.getString(i);
+			        JSONObject jsonObject1 = JSONObject.fromObject(object);
+
+			        Map<String,Object> newMap = new HashMap<String,Object>();
+			        newMap.put("create_time", jsonObject1.getString("create_time"));
+			        newMap.put("api_type", jsonObject1.getInt("api_type"));
+			        newMap.put("service_type", jsonObject1.getInt("service_type"));
+			        newMap.put("status", jsonObject1.getInt("status"));
+			        
+			        //可能为空
+			        String[] keys = {"token","taskId","orderId","type","scan_type","url","begin_date","end_date"};
+			        for(int j = 0; j<keys.length;j++){
+			        	if(jsonObject1.containsKey(keys[j])){
+			        		newMap.put(keys[j], jsonObject1.getString(keys[j]));
+			        	}else{
+			        		newMap.put(keys[j], "");
+			        	}
+			        }
+			       
+			        //定义接口api
+			    	switch(jsonObject1.getInt("service_type")){
+			    	case 1:
+			    		newMap.put("apiUrl", "rest/openapi/vulnscan/");
+			    		newMap.put("apiName", "创建WEB漏洞扫描订单");
+			    		break;
+			    		
+			    	case 2:
+			    		newMap.put("apiUrl", "rest/openapi/trojandetect/");
+			    		newMap.put("apiName", "创建木马检测订单（任务）");
+			    		break;
+			    		
+			    	case 3:
+			    		newMap.put("apiUrl", "rest/openapi/webpagetamper/");
+			    		newMap.put("apiName", "创建网页篡改订单（任务）");
+			    		break;
+			    		
+			    	case 4:
+			    		newMap.put("apiUrl", "rest/openapi/availability/");
+			    		newMap.put("apiName", "创建可用性监测订单（任务）");
+			    		break;
+			    		
+			    	case 5:
+			    		newMap.put("apiUrl", "rest/openapi/sensitiveword/");
+			    		newMap.put("apiName", "创建敏感词监测订单（任务）");
+			    		break;
+			    	}
+			    	
+			        infoList.add(newMap);
+				}
+				
+				m.put("success", true);
+				m.put("infoList", infoList);
+				//object转化为Json格式
+				JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+			}
+		} catch (Exception e) {
+			m.put("success", false);
+			//object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+
+			e.printStackTrace();
+			return;
+		} 
+    }
 }

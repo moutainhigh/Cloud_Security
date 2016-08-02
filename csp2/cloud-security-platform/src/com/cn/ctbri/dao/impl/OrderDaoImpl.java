@@ -274,4 +274,12 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 		List list = this.getSqlSession().selectList(ns + "findByOrderListId",paramMap);
         return list;
 	}
+
+	public List findAPIInfoByOrderId(String orderId) {
+		return this.getSqlSession().selectList(ns+"findAPIInfoByOrderId",orderId);
+	}
+
+	public int findAPICountByParam(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectOne(ns+"findAPICountByParam", paramMap);
+	}
 }
