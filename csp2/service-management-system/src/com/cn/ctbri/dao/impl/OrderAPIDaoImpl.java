@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.OrderAPIDao;
+import com.cn.ctbri.entity.API;
 import com.cn.ctbri.entity.APICount;
 import com.cn.ctbri.entity.OrderAPI;
 /**
@@ -22,6 +23,7 @@ public class OrderAPIDaoImpl extends DaoCommon implements OrderAPIDao{
 	 * 功        能： OrderAPIMapper命名空间
 	 */
 	private String ns = "com.cn.ctbri.entity.OrderAPIMapper.";
+	private String nv = "com.cn.ctbri.entity.APIMapper.";
 
 	public void insert(OrderAPI oAPI) {
 		this.getSqlSession().insert(ns + "insert", oAPI);
@@ -33,6 +35,18 @@ public class OrderAPIDaoImpl extends DaoCommon implements OrderAPIDao{
 
 	public List<OrderAPI> findByParam(Map<String, Object> paramMap) {
 		return getSqlSession().selectList(ns+"findByParam", paramMap);
+	}
+
+	public List<API> findAPIByParam(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(nv+"findAPIByParam",paramMap);
+	}
+
+	public List findAllAPIByParam(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(nv+"findAllAPIByParam",paramMap);
+	}
+
+	public List findAPIHistoryInfoByParam(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(nv+"findAPIHistoryInfoByParam",paramMap);
 	}
 	
 }

@@ -3,6 +3,7 @@ package com.cn.ctbri.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.cn.ctbri.entity.API;
 import com.cn.ctbri.entity.APICount;
 import com.cn.ctbri.entity.OrderAPI;
 
@@ -20,5 +21,22 @@ public interface OrderAPIDao {
 	void insertOrUpdateCount(APICount count);
 
 	List<OrderAPI> findByParam(Map<String, Object> paramMap);
-	
+	/**
+	 * 根据订单编号查询调用接口次数
+	 * @param paramMap
+	 * @return
+	 */
+	List<API> findAPIByParam(Map<String, Object> paramMap);
+	/**
+	 * 根据订单编号查询调用所有接口次数
+	 * @param paramMap
+	 * @return
+	 */
+	List findAllAPIByParam(Map<String, Object> paramMap);
+	/**
+	 * 根据用户和订单号查询调用接口历史记录
+	 * @param paramMap
+	 * @return
+	 */
+	List findAPIHistoryInfoByParam(Map<String, Object> paramMap);
 }

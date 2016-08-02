@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.OrderAPIDao;
+import com.cn.ctbri.entity.API;
 import com.cn.ctbri.entity.APICount;
 import com.cn.ctbri.entity.OrderAPI;
 import com.cn.ctbri.service.IOrderAPIService;
@@ -32,6 +33,18 @@ public class OrderAPIServiceImpl implements IOrderAPIService{
 
 	public List<OrderAPI> findByParam(Map<String, Object> paramMap) {
 		return orderAPIDao.findByParam(paramMap);
+	}
+
+	public List<API> findAPIByParam(Map<String, Object> paramMap) {
+		return orderAPIDao.findAPIByParam(paramMap);
+	}
+
+	public List findAllAPIByParam(Map<String, Object> paramMap) {
+		return orderAPIDao.findAllAPIByParam(paramMap);
+	}
+
+	public List findAPIHistoryInfoByParam(Map<String, Object> paramMap) {
+		return orderAPIDao.findAPIHistoryInfoByParam(paramMap);
 	}
 	
 }
