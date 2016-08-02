@@ -40,6 +40,10 @@
     <servlet-name>receive</servlet-name>
     <servlet-class>com.cn.ctbri.servlet.ReceiveServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>del</servlet-name>
+    <servlet-class>com.cn.ctbri.servlet.DelServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>springMVC</servlet-name>
     <url-pattern>/</url-pattern>
@@ -67,6 +71,10 @@
   <servlet-mapping>
     <servlet-name>receive</servlet-name>
     <url-pattern>/receive</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>del</servlet-name>
+    <url-pattern>/del</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
