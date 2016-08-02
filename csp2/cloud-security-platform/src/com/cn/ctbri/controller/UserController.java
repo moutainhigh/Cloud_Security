@@ -36,7 +36,6 @@ import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.Notice;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.ServiceAPI;
-import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.INoticeService;
@@ -760,28 +759,32 @@ public class UserController{
 	}
 	
 //	public void sessionHandlerByCacheMap(HttpSession session, int userId){
-////String userid=session.getAttribute("userid").toString();
-//String userIdStr = String.valueOf(userId);
-//if(SessionListener.sessionContext.getSessionMap().get(userIdStr)!=null){
-//    HttpSession userSession=(HttpSession)SessionListener.sessionContext.getSessionMap().get(userIdStr);
-//    //注销在线用户
-//    try {
-//    	userSession.invalidate();           
-//    } catch (Exception e) {
-//    	e.printStackTrace();
-//    }
-//    SessionListener.sessionContext.getSessionMap().remove(userIdStr);
-//    //清除在线用户后，更新map,替换map sessionid
-//    SessionListener.sessionContext.getSessionMap().remove(session.getId()); 
-//    SessionListener.sessionContext.getSessionMap().put(userIdStr,session); 
-//}
-//else
-//{
-//    // 根据当前sessionid 取session对象。 更新map key=用户名 value=session对象 删除map
-//    SessionListener.sessionContext.getSessionMap().get(session.getId());
-//    SessionListener.sessionContext.getSessionMap().put(userIdStr,SessionListener.sessionContext.getSessionMap().get(session.getId()));
-//    SessionListener.sessionContext.getSessionMap().remove(session.getId());
-//}
+//		//String userid=session.getAttribute("userid").toString();
+//		String userIdStr = String.valueOf(userId);
+//		if(SessionListener.sessionContext.getSessionMap().get(userIdStr)!=null){
+//			HttpSession userSession=(HttpSession)SessionListener.sessionContext.getSessionMap().get(userIdStr);
+//			//
+//			//注销在线用户(重复登录后，强制之前登录的session过期)
+//			try {
+//				userSession.invalidate();           
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//			SessionListener.sessionContext.getSessionMap().remove(userIdStr);
+//			
+//			//监听器维护服务器上缓存的sessionMap :是<session.getId(),session>的键值对，
+//		    //在登录后，使用userid替换session.getId()，从而使得sessionMap中维护的是<userid, session>的键值对。
+//			SessionListener.sessionContext.getSessionMap().remove(session.getId()); 
+//			SessionListener.sessionContext.getSessionMap().put(userIdStr,session); 
+//		}
+//		else
+//		{
+//			//监听器维护服务器上缓存的sessionMap :是<session.getId(),session>的键值对，
+//		    //在登录后，使用userid替换session.getId()，从而使得sessionMap中维护的是<userid, session>的键值对。
+//			//SessionListener.sessionContext.getSessionMap().get(session.getId());
+//			SessionListener.sessionContext.getSessionMap().put(userIdStr,SessionListener.sessionContext.getSessionMap().get(session.getId()));
+//			SessionListener.sessionContext.getSessionMap().remove(session.getId());
+//		}
 //}
 	
 	 /**
@@ -1054,11 +1057,11 @@ public class UserController{
 			    	return null;
 			    }
 			}
-//			String passwdMD5 = DigestUtils.md5Hex(password);
-			String md5password = DigestUtils.md5Hex(password);
-			byte[] keyBytes = DES3.generateSecret(name); // 24字节的密钥
-			 //加密
-			String newPass=new String(DES3.encryptMode(keyBytes, md5password.getBytes()));
+			//密码 加密
+			byte[] enk = ThreeDes.hex(name);// 用户名
+			byte[] encoded = ThreeDes.encryptMode(enk, password.getBytes());
+		    String newPass = Base64.encode(encoded);
+		        
 			RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
 			user.setPassword(newPass);
 			//加盐
@@ -1807,11 +1810,11 @@ public class UserController{
 				return "/updatePassfail";
 			}
 			
-			String passwdMD5 = DigestUtils.md5Hex(password);
-			//加密
-			String md5password = DigestUtils.md5Hex(password);
-			byte[] keyBytes = DES3.generateSecret(userInfo.getName()); // 24字节的密钥
-			String newPass=new String(DES3.encryptMode(keyBytes, md5password.getBytes()));
+			//密码 加密
+			byte[] enk = ThreeDes.hex(userInfo.getName());// 用户名
+			byte[] encoded = ThreeDes.encryptMode(enk, password.getBytes());
+		    String newPass = Base64.encode(encoded);
+		    
 			RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
 			user.setPassword(newPass);
 			//加盐
