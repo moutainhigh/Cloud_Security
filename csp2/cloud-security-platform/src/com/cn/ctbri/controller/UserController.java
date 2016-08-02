@@ -55,7 +55,9 @@ import com.cn.ctbri.util.Mail;
 import com.cn.ctbri.util.MailUtils;
 import com.cn.ctbri.util.Random;
 import com.cn.ctbri.util.SMSUtils;
+import com.cn.ctbri.util.ThreeDes;
 import com.cn.ctbri.util.passwordLevelUtil;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 /**
  * 创 建 人  ：  于永波
@@ -460,11 +462,13 @@ public class UserController{
 		 String name = request.getParameter("name");
 		String password = request.getParameter("password"); 
 		//boolean remeberMe = Boolean.valueOf(request.getParameter("remeberMe"));
-		boolean remeberMe = false;
 		String md5password = DigestUtils.md5Hex(password);
-		 final byte[] keyBytes = DES3.generateSecret(name); // 24字节的密钥
-		 //加密
-		  String newPass=new String(DES3.encryptMode(keyBytes, md5password.getBytes()));
+		boolean remeberMe = false;
+		//加密
+	   byte[] enk = ThreeDes.hex(name);// 用户名
+	   byte[] encoded = ThreeDes.encryptMode(enk, password.getBytes());
+        String newPass = Base64.encode(encoded);
+		 
 		Map<String, Object> map = new HashMap<String, Object>();
 		int count=0;
 		int count1=0;
