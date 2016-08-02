@@ -42,4 +42,8 @@ public interface IOrderAPIService {
 	 * @return
 	 */
 	List findAPIHistoryInfoByParam(Map<String, Object> paramMap);
+	List<OrderAPI> findUseableByParam(Map<String, Object> paramMap);
+
+	void updateCount(OrderAPI orderAPI);
+
 }
