@@ -47,4 +47,13 @@ public class OrderAPIServiceImpl implements IOrderAPIService{
 		return orderAPIDao.findAPIHistoryInfoByParam(paramMap);
 	}
 	
+
+	public List<OrderAPI> findUseableByParam(Map<String, Object> paramMap) {
+		return orderAPIDao.findUseableByParam(paramMap);
+	}
+
+	public void updateCount(OrderAPI orderAPI) {
+		orderAPIDao.updateCount(orderAPI);
+	}
+	
 }
