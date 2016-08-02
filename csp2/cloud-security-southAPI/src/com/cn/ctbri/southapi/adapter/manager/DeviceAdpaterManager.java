@@ -231,7 +231,6 @@ public class DeviceAdpaterManager {
 	        if(wafRoot.attribute("state")!=null||wafRoot.attributeValue("state").equalsIgnoreCase(DeviceAdapterConstant.DEVICE_STATE_ON)){
 		        wafRootStat = wafRoot.attributeValue("state");
 	        	wafRootString = DeviceAdapterConstant.RootPath+doc.getRootElement().element("DeviceList").element("DeviceWAFList").attributeValue("configFile");
-				System.out.println(">>>wafRootString="+wafRootString);
 	        	wafConfigManager.loadWAFConfig(wafRootString);	    
 	        }
 
@@ -674,7 +673,7 @@ public class DeviceAdpaterManager {
 	 * @return
 	 */
 	public String getReportIDList(String deviceId, ScannerTaskUniParam scannerTaskUniParam, int startNum, int size){
-		if (null==deviceId|| "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
+		if (null==deviceId||deviceId.length()<=0|| getDeviceAdapterAttrInfo(deviceId)==null ){
 			return errorDevieInfo(deviceId);
 		}
 		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
@@ -689,7 +688,7 @@ public class DeviceAdpaterManager {
 	 * @return
 	 */
 	public String  getIssueRepositoryList(String deviceId){
-		if (null==deviceId|| "".equals(deviceId) || getDeviceAdapterAttrInfo(deviceId)==null ){
+		if (null==deviceId|| deviceId.length()<=0 || getDeviceAdapterAttrInfo(deviceId)==null ){
 			return errorDevieInfo(deviceId);
 		}
 		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
@@ -737,13 +736,7 @@ public class DeviceAdpaterManager {
 	}
 	public String deleteVSiteInResource(int resourceId, JSONObject jsonObject) {
 		return nsfocusWAFAdapter.deleteVSite(resourceId, jsonObject);
-	}
-	
-	
-	public String postIpToEth(int resourceId, int deviceId,JSONObject jsonObject) {
-		return nsfocusWAFAdapter.postIpToEth(resourceId, deviceId, jsonObject);
-	}
-	
+	}	
 	public String getWafLogWebsec(List<String> dstIpList) {
 		return nsfocusWAFAdapter.getWafLogWebsec(dstIpList);
 	}
@@ -753,7 +746,7 @@ public class DeviceAdpaterManager {
 	}
 	
 	public String getWafLogWebsecById(String logId) {
-		if (null==logId||"".equals(logId)){
+		if (null==logId||logId.length()<=0){
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("status", "fail");
 			jsonObject.put("message", "LogId is null!!!");
@@ -767,7 +760,7 @@ public class DeviceAdpaterManager {
 	}
 	
 	public String getWafLogArpById(String logId) {
-		if (null==logId || "".equals(logId)){
+		if (null==logId || logId.length()<=0){
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("status", "fail");
 			jsonObject.put("message", "LogId is null!!!");

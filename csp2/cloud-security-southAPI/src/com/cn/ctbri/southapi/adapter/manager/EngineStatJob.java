@@ -17,7 +17,7 @@ import com.cn.ctbri.southapi.adapter.config.Engine;
 import com.cn.ctbri.southapi.adapter.config.EngineStatList;
 import com.cn.ctbri.southapi.adapter.manager.DeviceAdapterConstant;
 
-public class MyJob implements Job {
+public class EngineStatJob implements Job {
 	private HashMap<String, EngineStatList> mapDeviceStat = new HashMap<String, EngineStatList>();
 	
 	/**
@@ -25,6 +25,7 @@ public class MyJob implements Job {
 	 */
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		DeviceAdpaterManager deviceAdpaterManager = new DeviceAdpaterManager();
+		deviceAdpaterManager.loadDeviceAdpater();
 		SAXReader reader = new SAXReader();
         // 加载XML
 		

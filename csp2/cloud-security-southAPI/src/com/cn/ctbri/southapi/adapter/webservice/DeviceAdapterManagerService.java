@@ -21,6 +21,7 @@ import com.cn.ctbri.southapi.adapter.manager.DeviceAdpaterManager;
 public class DeviceAdapterManagerService {
 	private static DeviceAdpaterManager deviceAdpaterManager = new DeviceAdpaterManager();
 	
+	//设备为空时的错误提示函数
 	private String errNullScannerDevice() {
 		JSONObject errJsonObject = new JSONObject();
 		errJsonObject.put("status", "failed");
@@ -29,19 +30,24 @@ public class DeviceAdapterManagerService {
 	}
 	
 	
-	
+	//设备resourceId或deviceId为空或者不在列表内的报错
 	private String errNullWafDevice() {
 		JSONObject errJsonObject = new JSONObject();
 		errJsonObject.put("status", "failed");
-		errJsonObject.put("message", "The resoureId or deviceId is null.");
+		errJsonObject.put("message", "The resourceId or deviceId is null.");
 		return errJsonObject.toString();
 	}
+	
+	//加载设备
 	@GET
 	@Path("/loadDeviceAdapter")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String loadDeviceAdapter(){
 		return deviceAdpaterManager.loadDeviceAdpater();
 	}
+	
+//扫描器类
+	//加载单个设备
 	@POST
 	@Path("/loadDeviceAdapter")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -50,6 +56,8 @@ public class DeviceAdapterManagerService {
 		String deviceId = jsonObject.get("deviceId").toString();
 		return deviceAdpaterManager.loadDeviceAdapter(deviceId);
 	}
+	
+	//下发扫描任务
 	@POST
 	@Path("/disposeScanTask")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -72,6 +80,8 @@ public class DeviceAdapterManagerService {
 		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		return deviceAdpaterManager.getProgressById(deviceId, scannerTaskUniParam);
 	}
+	
+	//获取扫描模板
 	@POST
 	@Path("/getTemplate")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -82,6 +92,8 @@ public class DeviceAdapterManagerService {
 		String deviceId = jsonObject.get("deviceId").toString();
 		return deviceAdpaterManager.getTemplate(deviceId);
 	}
+	
+	//获取引擎状态
 	@POST
 	@Path("/getEngineStat")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -341,30 +353,19 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getSites(String dataJson){
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals("")
-		||jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").length()<=0
+		||jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").length()<-0)
 			return errNullWafDevice();
 		int resourceId = jsonObject.getInt("resourceId");
 		int deviceId = jsonObject.getInt("deviceId");
 		return deviceAdpaterManager.getSites(resourceId, deviceId);
 	}
 	@POST
-	@Path("/postIpToEth")
-	public String postIpToEth(String dataJson) {
-		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals("")
-		||jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
-			return errNullWafDevice();
-		int resourceId = jsonObject.getInt("resourceId");
-		int deviceId = jsonObject.getInt("deviceId");
-		return deviceAdpaterManager.postIpToEth(resourceId, deviceId, jsonObject);
-	}
-	@POST
 	@Path("/getSitesInResource")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getSitesInResource(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals(""))
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").length()<=0)
 			return errNullWafDevice();
 		int resourceId = jsonObject.getInt("resourceId");
 		return deviceAdpaterManager.getSitesInResource(resourceId);
@@ -374,8 +375,8 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String createSite(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals("")
-		||jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").length()<=0
+		||jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").length()<=0)
 			return errNullWafDevice();
 		int resourceId = jsonObject.getInt("resourceId");
 		int deviceId = jsonObject.getInt("deviceId");
@@ -409,8 +410,8 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String createVirtualSite(String dataJson){
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals("")
-		||jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").length()<=0
+		||jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").length()<=0)
 			return errNullWafDevice();
 		int resourceId = jsonObject.getInt("resourceId");
 		int deviceId = jsonObject.getInt("deviceId");
@@ -421,7 +422,7 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String createVirtualSiteInResouce(String dataJson){
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals(""))
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").length()<=0)
 			return errNullWafDevice();
 		int resourceId = jsonObject.getInt("resourceId");
 		jsonObject.remove("resourceId");
@@ -433,8 +434,8 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getVirtualSite(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals("")
-		||jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").length()<=0
+		||jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").length()<=0)
 			return errNullWafDevice();
 		int resourceId = jsonObject.getInt("resourceId");
 		int deviceId = jsonObject.getInt("deviceId");
@@ -446,8 +447,8 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String alterVirtualSite(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals("")
-		||jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").equals(""))
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").length()<=0
+		||jsonObject.get("deviceId")==null||jsonObject.getString("deviceId").length()<=0)
 			return errNullWafDevice();
 		int resourceId = jsonObject.getInt("resourceId");
 		int deviceId = jsonObject.getInt("deviceId");
@@ -458,7 +459,7 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String deleteVirtualSite(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals(""))
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").length()<=0)
 			return errNullWafDevice();
 		int resourceId = jsonObject.getInt("resourceId");
 		jsonObject.remove("resourceId");
@@ -469,7 +470,7 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getPublicIpListInResource(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").equals(""))
+		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").length()<=0)
 			return errNullWafDevice();
 		int resourceId = jsonObject.getInt("resourceId");
 		return deviceAdpaterManager.getWafPublicIpListInResource(resourceId);

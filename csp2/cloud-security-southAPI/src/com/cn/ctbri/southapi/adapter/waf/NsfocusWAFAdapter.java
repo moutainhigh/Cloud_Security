@@ -76,8 +76,8 @@ public class NsfocusWAFAdapter {
 				String apiValue = wafConfigDevice.getApiValue();
 				String apiUsername = wafConfigDevice.getApiUserName();
 				String apiPassword = wafConfigDevice.getApiPwd();
+				System.out.println("apiPassWord="+apiPassword);
 				nsfocusWAFOperation = new NsfocusWAFOperation(apiAddr, apiKey, apiValue, apiUsername, apiPassword, apiPublicIp);
-				System.out.println(">>>"+apiAddr);
 				mapNsfocusWAFOperation.put(devId, nsfocusWAFOperation);
 			}
 			mapNsfocusWAFOperationGroup.put(resourceId, mapNsfocusWAFOperation);
@@ -107,7 +107,7 @@ public class NsfocusWAFAdapter {
 	private TWafLogWebsec getTWafLogWebsecBase64(TWafLogWebsec tWafLogWebsec) throws DocumentException {
 		//事件类型
 	
-		if (tWafLogWebsec.getEventType()!=null&&!tWafLogWebsec.getEventType().equals("")) {
+		if (tWafLogWebsec.getEventType()!=null&&tWafLogWebsec.getEventType().length()>0) {
 			//事件类型翻译 英文翻译为中文
 			Map<String, String> eventTypeMap = getWafEventTypeMap();
 			String eventTypeString = tWafLogWebsec.getEventType();
@@ -124,39 +124,26 @@ public class NsfocusWAFAdapter {
 			byte[] httpBytesBase64 = Base64.encodeBase64(httpBytes);
 			tWafLogWebsec.setHttp(httpBytesBase64);
 		}*/
-		if(tWafLogWebsec.getStatTime()!=null){
-			System.out.println(tWafLogWebsec.getStatTime());
-			SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			df1.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-			String formatDateString = df1.format(tWafLogWebsec.getStatTime());
-			System.out.println(formatDateString);
-			try {
-				tWafLogWebsec.setStatTime(df1.parse(formatDateString));
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
+	
 		//告警补充描述
-		if (tWafLogWebsec.getAlertinfo()!=null&&!tWafLogWebsec.getAlertinfo().equals("")) {
+		if (tWafLogWebsec.getAlertinfo()!=null&&tWafLogWebsec.getAlertinfo().length()>0) {
 			String alertInfoString = tWafLogWebsec.getAlertinfo();
 			String alertInfoBase64 = stringToBase64(alertInfoString);
 			tWafLogWebsec.setAlertinfo(alertInfoBase64);
 		}
 		//攻击字符
-		if (tWafLogWebsec.getCharacters()!=null&&!tWafLogWebsec.getCharacters().equals("")) {
+		if (tWafLogWebsec.getCharacters()!=null&&tWafLogWebsec.getCharacters().length()>0) {
 			String charactersString = tWafLogWebsec.getCharacters();
 			String charactersBase64 = stringToBase64(charactersString);
 			tWafLogWebsec.setCharacters(charactersBase64);
 		}
 		//浏览器识别
-		if (tWafLogWebsec.getWci()!=null&&!tWafLogWebsec.getWci().equals("")) {
+		if (tWafLogWebsec.getWci()!=null&&tWafLogWebsec.getWci().length()>0) {
 			String wciBase64 = stringToBase64(tWafLogWebsec.getWci());
 			tWafLogWebsec.setWci(wciBase64);
 		}
 		//waf会话识别
-		if (tWafLogWebsec.getWsi()!=null&&!tWafLogWebsec.getWsi().equals("")) {
+		if (tWafLogWebsec.getWsi()!=null&&tWafLogWebsec.getWsi().length()>0) {
 			String wsiBase64 = stringToBase64(tWafLogWebsec.getWsi());
 			tWafLogWebsec.setWsi(wsiBase64);
 		}
@@ -165,7 +152,7 @@ public class NsfocusWAFAdapter {
 	
 	//DDOS防护日志BASE64编码
 	private TWafLogDdos getTWafLogDdosBase64(TWafLogDdos tWafLogDdos){
-		if(tWafLogDdos.getAction()!=null&&!tWafLogDdos.getAction().equals("")){
+		if(tWafLogDdos.getAction()!=null&&tWafLogDdos.getAction().length()>0){
 			String actionBase64 = stringToBase64(tWafLogDdos.getAction());
 			tWafLogDdos.setAction(actionBase64);
 		}
@@ -173,7 +160,7 @@ public class NsfocusWAFAdapter {
 	}
 	//防篡改防护日志BASE64编码
 	private TWafLogDeface getTWafLogDefaceBase64(TWafLogDeface tWafLogDeface) {
-		if (tWafLogDeface.getReason()!=null&&!tWafLogDeface.getReason().equals("")) {
+		if (tWafLogDeface.getReason()!=null&&tWafLogDeface.getReason().length()>0) {
 			String reasonBase64 = stringToBase64(tWafLogDeface.getReason());
 			tWafLogDeface.setReason(reasonBase64);
 		}
@@ -186,6 +173,14 @@ public class NsfocusWAFAdapter {
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		return sqlSession;
+	}
+	
+	private XStream getXStream() {
+		JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
+		XStream xStream = new XStream(driver);
+		xStream.autodetectAnnotations(true);
+		xStream.registerConverter(new CTSTimeConverter());
+		return xStream;
 	}
 	/**
 	 * 获取resource内所有设备公网虚拟IP
@@ -431,8 +426,6 @@ public class NsfocusWAFAdapter {
 				TWafNsfocusTargetinfoMapper mapper = sqlSession.getMapper(TWafNsfocusTargetinfoMapper.class);
 				tWafNsfocusTargetinfo = mapper.selectByPrimaryKey(targetinfoKey);
 				JSONObject responseJsonObject = JSONObject.fromObject(entry.getValue().deleteVirtSite(JSONObject.fromObject("{\"vSiteId\":"+tWafNsfocusTargetinfo.getVirtsiteid()+"}")));
-				
-				System.out.println(entry.getValue().delSite(JSONObject.fromObject("{\"siteId\":"+tWafNsfocusTargetinfo.getSiteid()+"}")));
 				JSONObject tempDeviceJsonObject = new JSONObject();
 				tempDeviceJsonObject.put("deviceId", entry.getKey());
 				tempDeviceJsonObject.put("InfoList", responseJsonObject);
@@ -455,11 +448,6 @@ public class NsfocusWAFAdapter {
 	public String getAllIpFromEth(int resourceId, int deviceId, JSONObject jsonObject) {
 		return getDeviceById(resourceId, deviceId).getAllIpFromEth(jsonObject);
 	}
-	
-	public String postIpToEth(int resourceId, int deviceId,JSONObject jsonObject) {
-		return getDeviceById(resourceId, deviceId).postIpToEth(jsonObject);
-	}
-	
 	private NsfocusWAFOperation getDeviceById(int resourceId, int deviceId) {
 		System.out.println("resourceId="+resourceId);
 		NsfocusWAFOperation nsfocusWAFOperation = mapNsfocusWAFOperationGroup.get(resourceId).get(deviceId);
@@ -478,17 +466,9 @@ public class NsfocusWAFAdapter {
 				tWafLogWebsec = getTWafLogWebsecBase64(tWafLogWebsec);
 			}
 			sqlSession.commit();
-			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
-			XStream xStream = new XStream(driver);
-			xStream.autodetectAnnotations(true);
-			xStream.registerConverter(new CTSTimeConverter());
+			XStream xStream = getXStream();
 			xStream.alias("wafLogWebsec", TWafLogWebsec.class);
 			xStream.alias("wafLogWebsecList", List.class);
-			/**JSONObject jsonArray = JSONObject.fromObject(xStream.toXML(allList));
-			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			sf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-			jsonArray.accumulate("statTime", sf.format(jsonArray.getString("statTime")));
-			**/
 			return xStream.toXML(allList);
 		}catch (Exception e) {
 			// 
@@ -500,7 +480,6 @@ public class NsfocusWAFAdapter {
 		}
 	}
 	
-	
 	public String getWafLogWebSecById(String logId) {
 		SqlSession sqlSession = null;
 		try {
@@ -510,9 +489,7 @@ public class NsfocusWAFAdapter {
 			
 			wafLogWebsec = getTWafLogWebsecBase64(wafLogWebsec);
 			sqlSession.commit();
-			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
-			XStream xStream = new XStream(driver);
-			xStream.autodetectAnnotations(true);
+			XStream xStream = getXStream();
 			xStream.alias("wafLogWebsec", TWafLogWebsec.class);
 			String jsonString =  xStream.toXML(wafLogWebsec);
 			
@@ -556,9 +533,7 @@ public class NsfocusWAFAdapter {
 				tWafLogWebsec = getTWafLogWebsecBase64(tWafLogWebsec);
 			}
 			sqlSession.commit();
-			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
-			XStream xStream = new XStream(driver);
-			xStream.autodetectAnnotations(true);
+			XStream xStream = getXStream();
 			xStream.alias("wafLogWebsec", TWafLogWebsec.class);
 			xStream.alias("wafLogWebsecList", List.class);
 			String jsonString =  xStream.toXML(allList);
@@ -584,9 +559,7 @@ public class NsfocusWAFAdapter {
 			TWafLogArpMapper mapper =sqlSession.getMapper(TWafLogArpMapper.class);
 			List<TWafLogArp> allList = mapper.selectByExample(example);
 			sqlSession.commit();
-			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
-			XStream xStream = new XStream(driver);
-			xStream.autodetectAnnotations(true);
+			XStream xStream = getXStream();
 			xStream.alias("wafLogArp", TWafLogArp.class);
 			String jsonString = xStream.toXML(allList);
 			
@@ -607,9 +580,7 @@ public class NsfocusWAFAdapter {
 			TWafLogArpMapper mapper =sqlSession.getMapper(TWafLogArpMapper.class);
 			TWafLogArp wafLogArp = mapper.selectByPrimaryKey(Long.parseLong(logId));
 			sqlSession.commit();
-			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
-			XStream xStream = new XStream(driver);
-			xStream.autodetectAnnotations(true);
+			XStream xStream = getXStream();
 			xStream.alias("wafLogArp", TWafLogArp.class);
 			String xmlString = xStream.toXML(wafLogArp);
 			
@@ -630,10 +601,6 @@ public class NsfocusWAFAdapter {
 			sqlSession = getSqlSession();
 			int interval = jsonObject.getInt("interval");
 			List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
-			System.out.println("ip="+dstIpList.toString());
-			
-
-			
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
 			Date dateNow = calendar.getTime();
@@ -646,9 +613,7 @@ public class NsfocusWAFAdapter {
 			TWafLogArpMapper mapper =sqlSession.getMapper(TWafLogArpMapper.class);
 			List<TWafLogArp> allList = mapper.selectByExample(example);
 			sqlSession.commit();
-			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
-			XStream xStream = new XStream(driver);
-			xStream.autodetectAnnotations(true);
+			XStream xStream = getXStream();
 			xStream.alias("wafLogArp", TWafLogArp.class);
 			xStream.alias("wafLogArpList", List.class);
 			String xmlString = xStream.toXML(allList);
@@ -674,9 +639,7 @@ public class NsfocusWAFAdapter {
 				tWafLogDeface = getTWafLogDefaceBase64(tWafLogDeface);
 			}
 			sqlSession.commit();
-			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
-			XStream xStream = new XStream(driver);
-			xStream.autodetectAnnotations(true);
+			XStream xStream = getXStream();
 			xStream.alias("wafLogDeface", TWafLogDeface.class);
 			xStream.alias("wafLogDefaceList", List.class);
 			String xmlString = xStream.toXML(allList);
@@ -701,9 +664,7 @@ public class NsfocusWAFAdapter {
 			
 			wafLogDeface = getTWafLogDefaceBase64(wafLogDeface);
 			sqlSession.commit();
-			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
-			XStream xStream = new XStream(driver);
-			xStream.autodetectAnnotations(true);
+			XStream xStream = getXStream();
 			xStream.alias("wafLogDeface", TWafLogDeface.class);
 			String xmlString = xStream.toXML(wafLogDeface);
 			return xmlString;
@@ -738,15 +699,12 @@ public class NsfocusWAFAdapter {
 				tWafLogDeface = getTWafLogDefaceBase64(tWafLogDeface);
 			}
 			sqlSession.commit();
-			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
-			XStream xStream = new XStream(driver);
-			xStream.autodetectAnnotations(true);
+			XStream xStream = getXStream();
 			xStream.alias("wafLogDeface", TWafLogDeface.class);
 			xStream.alias("wafLogDefaceList", List.class);
 			String xmlString = xStream.toXML(allList);
 			return xmlString;
-			
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			sqlSession.rollback();
@@ -766,10 +724,7 @@ public class NsfocusWAFAdapter {
 			for (TWafLogDdos tWafLogDdos : allList) {
 				tWafLogDdos = getTWafLogDdosBase64(tWafLogDdos);
 			}
-			
-			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
-			XStream xStream = new XStream(driver);
-			xStream.autodetectAnnotations(true);
+			XStream xStream = getXStream();
 			xStream.alias("wafLogDDOS", TWafLogDdos.class);
 			xStream.alias("wafLogDDOSList", List.class);
 			String xmlString = xStream.toXML(allList);
@@ -789,9 +744,7 @@ public class NsfocusWAFAdapter {
 			TWafLogDdos wafLogDdos = mapper.selectByPrimaryKey(Long.parseLong(logId));
 			wafLogDdos = getTWafLogDdosBase64(wafLogDdos);
 			sqlSession.commit();
-			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
-			XStream xStream = new XStream(driver);
-			xStream.autodetectAnnotations(true);
+			XStream xStream = getXStream();
 			xStream.alias("wafLogDDOS", TWafLogDdos.class);
 			String xmlString = xStream.toXML(wafLogDdos);
 
@@ -811,7 +764,6 @@ public class NsfocusWAFAdapter {
 			//IP List
 			int interval = jsonObject.getInt("interval");
 			List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
-			System.out.println("ip="+dstIpList.toString());
 			//System Time
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
@@ -828,9 +780,7 @@ public class NsfocusWAFAdapter {
 				tWafLogDdos = getTWafLogDdosBase64(tWafLogDdos);
 			}
 			sqlSession.commit();
-			JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
-			XStream xStream = new XStream(driver);
-			xStream.autodetectAnnotations(true);
+			XStream xStream = getXStream();
 			xStream.alias("wafLogDDOS", TWafLogDdos.class);
 			xStream.alias("wafLogDDOSList", List.class);
 			String xmlString = xStream.toXML(allList);
@@ -931,7 +881,6 @@ public class NsfocusWAFAdapter {
 				TWafLogWebsecExample example = new TWafLogWebsecExample();
 				example.or().andAlertlevelEqualTo(alertLevelString);
 				TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
-				System.out.println(alertLevelString+">>>>"+mapper.countByExample(example));
 				mapAlertLevelCount.put(alertLevelString, mapper.countByExample(example));
 			}
 			sqlSession.commit();

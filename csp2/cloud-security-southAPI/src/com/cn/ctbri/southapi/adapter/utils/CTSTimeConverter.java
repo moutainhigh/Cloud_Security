@@ -13,7 +13,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 /**
- * xstream日期转换器，定制用于转换为东八区时间
+ * xstream日期转换器，用于将标准时转换为东八区时间
  * @author shaozhenya
  *
  */

@@ -77,7 +77,6 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 	         Element ele = doc.getRootElement();
 	         Element s = ele.element("SessionId");
 	         connectSessionId = s.getText();
-	         System.out.println("sessionId="+connectSessionId);
 	         arnhemServerWebrootUrl = serverWebRoot;
 	         return true;
 	   	}catch(Exception e) {
@@ -109,8 +108,7 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 		//获取响应结果
 		String response = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xml);
 		
-		//For 2
-
+		//解析响应结果内容，如果登录错误重新登录
 		try {
 			SAXReader reader = new SAXReader();
 			Document document = reader.read(IOUtils.toInputStream(response));

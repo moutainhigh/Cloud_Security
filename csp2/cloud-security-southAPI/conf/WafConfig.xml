@@ -15,7 +15,7 @@
 					<WAFPublicIPList>219.141.189.184;219.141.189.183</WAFPublicIPList>
 					<WAFDevAPI>
 						<!-- 部署186，内网地址
-						<APIAddr>https://172.16.200.209:8443</APIAddr>
+						<APIAddr>https://172.16.100.209:8443</APIAddr>
 						-->
 						<!-- 部署外网 -->
 						<APIAddr>https://219.141.189.189:58442</APIAddr>
@@ -36,7 +36,7 @@
 					<WAFPublicIPList>219.141.189.183;219.141.189.184</WAFPublicIPList>
 					<WAFDevAPI>
 						<!-- 部署186，内网地址
-						<APIAddr>https://172.16.200.210:8443</APIAddr>
+						<APIAddr>https://172.16.100.210:8443</APIAddr>
 						-->
 						<!-- 部署外网 -->
 						<APIAddr>https://219.141.189.189:58443</APIAddr>
@@ -64,9 +64,9 @@
 					<WAFPublicIPList>219.141.189.185</WAFPublicIPList>
 					<WAFDevAPI>
 						<!-- 部署186，内网地址-->
-						<APIAddr>https://172.16.200.210:8443</APIAddr>
-						<!-- 部署外网
-						<APIAddr>https://219.141.189.189:61184</APIAddr>-->
+						<APIAddr>https://172.16.100.184:8443</APIAddr>
+						<!-- 部署外网-->
+						<APIAddr>https://219.141.189.189:61184</APIAddr>
 						<APIKey>vmwaf</APIKey>
 						<APIValue>FF20-23C9-8164-A9B2</APIValue>
 						<APIUserName>admin</APIUserName>
