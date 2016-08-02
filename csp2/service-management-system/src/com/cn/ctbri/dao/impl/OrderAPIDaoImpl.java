@@ -48,5 +48,13 @@ public class OrderAPIDaoImpl extends DaoCommon implements OrderAPIDao{
 	public List findAPIHistoryInfoByParam(Map<String, Object> paramMap) {
 		return this.getSqlSession().selectList(nv+"findAPIHistoryInfoByParam",paramMap);
 	}
+
+	public List<OrderAPI> findUseableByParam(Map<String, Object> paramMap) {
+		return getSqlSession().selectList(ns+"findUseableByParam", paramMap);
+	}
+
+	public void updateCount(OrderAPI orderAPI) {
+		this.getSqlSession().insert(ns + "updateCount", orderAPI);
+	}
 	
 }
