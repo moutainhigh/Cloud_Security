@@ -671,7 +671,7 @@ public class OrderMgrController {
        
         /***判断参数开始**/
         if(phone!=null&&!"".equals(phone)){
-        Pattern p = Pattern.compile("^[1][3,4,5,8][0-9]{9}$");  
+        Pattern p = Pattern.compile("^[1][3,4,5,7,8][0-9]{9}$");  
          Matcher matcher = p.matcher(phone); 
 	       if(!matcher.find()){
 	    		m.put("error", true);
