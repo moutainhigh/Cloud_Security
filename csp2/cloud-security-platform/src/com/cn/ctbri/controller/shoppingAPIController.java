@@ -272,11 +272,27 @@ public class shoppingAPIController {
 			System.out.println("链接服务器失败!");
 		}  
 		
-		ApiPrice price = apiPriceService.findPrice(apiId, num);
-		if (price != null) {
-			return price.getPrice()*num;
+//		ApiPrice price = apiPriceService.findPrice(apiId, num);
+//		if (price != null) {
+//			return price.getPrice()*num;
+//		}
+		//API分段计价
+		List<ApiPrice> priceList= apiPriceService.findPriceByServiceId(apiId);
+		double sumPrice = 0;
+		for (int i = 0; i < priceList.size(); i++) {
+			ApiPrice apiPrice = priceList.get(i);
+			if (num <= apiPrice.getTimesG()) {
+				continue;
+			} else if (num > apiPrice.getTimesG() && num > apiPrice.getTimesLE() && 
+					apiPrice.getTimesG() < apiPrice.getTimesLE()) {
+				sumPrice += (apiPrice.getTimesLE() - apiPrice.getTimesG()) * apiPrice.getPrice();
+			} else if (num > apiPrice.getTimesG() && num <= apiPrice.getTimesLE()) {
+				sumPrice += apiPrice.getPrice() * (num - apiPrice.getTimesG());
+			} else {
+				sumPrice +=apiPrice.getPrice() * (num - apiPrice.getTimesG());
+			}
 		}
-		return 0;
+		return sumPrice;
 	}
 	
 	/**
@@ -488,6 +504,7 @@ public class shoppingAPIController {
             oAPI.setPackage_type(orderDetailVo.getType());
 //            oAPI.setNum(orderDetailVo.getScan_type()*orderDetailVo.getWafTimes());
             oAPI.setNum(orderDetailVo.getWafTimes());
+            oAPI.setBuyNum(orderDetailVo.getWafTimes());
             oAPI.setUserId(globle_user.getId());
             oAPI.setContactId(linkmanId);
             oAPI.setPayFlag(1);
