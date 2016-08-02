@@ -21,6 +21,7 @@ public interface OrderAPIDao {
 	void insertOrUpdateCount(APICount count);
 
 	List<OrderAPI> findByParam(Map<String, Object> paramMap);
+
 	/**
 	 * 根据订单编号查询调用接口次数
 	 * @param paramMap
@@ -39,4 +40,9 @@ public interface OrderAPIDao {
 	 * @return
 	 */
 	List findAPIHistoryInfoByParam(Map<String, Object> paramMap);
+	
+	List<OrderAPI> findUseableByParam(Map<String, Object> paramMap);
+
+	void updateCount(OrderAPI orderAPI);
+	
 }
