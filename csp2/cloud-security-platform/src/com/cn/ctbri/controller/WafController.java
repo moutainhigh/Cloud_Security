@@ -497,6 +497,8 @@ public class WafController {
 				  Date eDate = new Date();
 				  List<String> IpInfo = new ArrayList();
 				  int linkmanId = Random.eightcode();
+				  //根据ip地址加端口号
+			        String ipPortstr ="";
 				  SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
 			  User globle_user = (User) request.getSession().getAttribute("globle_user");
 				//资产ids
@@ -622,6 +624,34 @@ public class WafController {
 			   				return;
 			        }
 			        /*****判断参数结束***/
+			        if(ipStr!=null&&!"".equals(ipStr)){
+			        	if(ipStr.indexOf(",")!=-1){
+			        		String ipArray[] = ipStr.split(",");
+			        		for(int i =0;i<ipArray.length;i++){
+			        			String ipPort = ipArray[i];
+			        			if(ipPort.indexOf(":")==-1){
+			        			   if(domainName.indexOf("http://")!=-1){
+			        				ipPort=ipPort+":80";
+			        				}else if(domainName.indexOf("https://")!=-1){
+			        					ipPort=ipPort+":443";	
+			        				}
+			        				ipPortstr=ipPort+",";
+			        			}else{
+			        				ipPortstr = ipArray+",";
+			        			}
+			        		}
+			        	}else{
+			        		if(ipStr.indexOf(":")==-1){
+			        			 if(domainName.indexOf("http://")!=-1){
+			        			    ipPortstr = ipStr+":80"+",";
+			        			 }else if(domainName.indexOf("https://")!=-1){
+			        				 ipPortstr=ipStr+":443";	
+			        				}
+			        		}else{
+			        			ipPortstr =ipStr+",";
+			        		}
+			        	}
+			        }
 			        Serv service = servService.findById(Integer.parseInt(serviceId));
 				    if(service==null){
 				    	 m.put("error",true);
@@ -653,7 +683,7 @@ public class WafController {
 			        order.setId(orderId);
 			       
 			      
-			       order.setBegin_date(DateUtils.stringToDateNYRSFM(beginDate));
+			        order.setBegin_date(DateUtils.stringToDateNYRSFM(beginDate));
 			        order.setEnd_date(eDate);
 			        order.setServiceId(Integer.parseInt(serviceId));
 			        order.setCreate_date(create_date);
@@ -678,7 +708,7 @@ public class WafController {
 			            orderAsset.setOrderId(orderId);
 			            orderAsset.setAssetId(assetInfo.getId());
 			            orderAsset.setServiceId(Integer.parseInt(serviceId));
-			            orderAsset.setIpArray(ipStr);
+			            orderAsset.setIpArray(ipPortstr);
 			            orderAsset.setSermonth(Integer.parseInt(month));
 			            orderAsset.setAssetAddr(assetInfo.getAddr());
 			            orderAsset.setAssetName(assetInfo.getName());
@@ -728,6 +758,7 @@ public class WafController {
 	       List<String> IpInfo = new ArrayList();
 	       boolean flag=false;
 			boolean ipflag=false;
+			String ipPortstr="";
 		//资产ids
         String domainName = request.getParameter("domainName");
         String domainId = request.getParameter("domainId");
@@ -816,7 +847,34 @@ public class WafController {
 	    if(service==null){
 	    	return "redirect:/index.html";
 	    }
-	 
+	    if(ipArray!=null&&!"".equals(ipArray)){
+        	if(ipArray.indexOf(",")!=-1){
+        		String ipArrays[] = ipArray.split(",");
+        		for(int i =0;i<ipArrays.length;i++){
+        			String ipPort = ipArrays[i];
+        			if(ipPort.indexOf(":")==-1){
+        			   if(domainName.indexOf("http://")!=-1){
+        				ipPort=ipPort+":80";
+        				}else if(domainName.indexOf("https://")!=-1){
+        					ipPort=ipPort+":443";	
+        				}
+        				ipPortstr=ipPort+",";
+        			}else{
+        				ipPortstr = ipArray+",";
+        			}
+        		}
+        	}else{
+        		if(ipArray.indexOf(":")==-1){
+        			 if(domainName.indexOf("http://")!=-1){
+        			    ipPortstr = ipArray+":80"+",";
+        			 }else if(domainName.indexOf("https://")!=-1){
+        				 ipPortstr=ipArray+":443";	
+        				}
+        		}else{
+        			ipPortstr =ipArray+",";
+        		}
+        	}
+        }
 	    
 	    //日期格式 yyyy-MM
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -856,7 +914,7 @@ public class WafController {
        orderDetail.setAsstId(domainId);
        orderDetail.setPrice(Double.parseDouble(df.format(countPrice)));
        orderDetail.setCreate_date(sdf.parse(createDate));
-       orderDetail.setIpArray(ipArray);
+       orderDetail.setIpArray(ipPortstr);
        orderDetail.setWafTimes(Integer.parseInt(timeswaf));
      
        selfHelpOrderService.SaveOrderDetail(orderDetail);
