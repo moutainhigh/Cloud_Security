@@ -1940,7 +1940,7 @@ public class shoppingController {
     					if(shopCar.getServiceId()!=6){
     						orderId = NorthAPIWorker.vulnScanCreateAPI(
     								Integer.parseInt(shopCar.getAstName()),
-    								shopCar.getNum(), shopCar.getServiceId(),
+    								shopCar.getBuynum(), shopCar.getServiceId(),
     								globle_user.getApikey(), globle_user.getId());
 //    						SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
 //    						String orderDate = odf.format(new Date());
