@@ -70,10 +70,14 @@ public class DelServlet extends HttpServlet {
         ITaskService taskService  = (ITaskService) context.getBean("taskService");
         
         String sessionId = ArnhemWorker.getSessionId(2);
-        List<Task> tlist = taskService.getDels();
-        for (Task task : tlist) {
-        	String s = ArnhemWorker.removeTask(sessionId,String.valueOf(task.getTaskId()),2);
-        	System.out.println(s);
+//        List<Task> tlist = taskService.getDels();
+//        for (Task task : tlist) {
+//        	String s = ArnhemWorker.removeTask(sessionId,"55049_16072909552723161",2);
+//        	System.out.println(s);
+//		}
+        for (int i = 56000;i<57000; i++) {
+	      	String s = ArnhemWorker.removeTask(sessionId,i+"_16072909552723161",2);
+	      	System.out.println(s);
 		}
 		if (true) { 
 			response.setContentType("text/html");
