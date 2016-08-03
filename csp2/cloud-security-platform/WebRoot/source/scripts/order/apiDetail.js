@@ -53,6 +53,7 @@ $(function(){
     		}
         	},
         });
+
 });
     searchCombine();
 });
@@ -102,28 +103,35 @@ function searchCombine(){
         				}else if(infoList[i].service_type==2){
         					temp = "参数  scanMode："+infoList[i].type+
 		    						",  TargetURL："+infoList[i].url+
+		    						",  ScanType："+
 		    						",  startTime："+infoList[i].begin_date+
 		    						",  endTime :"+infoList[i].end_date+
-		    						",  timeSpace: " +scan_type+
+		    						",  scanPeriod: " +scan_type+
 		    						",  ScanDepth: "+
 		    						",  MaxPages: "+
 		    						",  Stategy: "+
 		    						",  CustomManu: ";
         				}else if(infoList[i].service_type==3){
-        					temp = "参数  TargetURL："+infoList[i].url+
-		    						",  timeSpace: " +scan_type+
+        					temp = "参数  scanMode："+infoList[i].type+
+        							"   TargetURL："+infoList[i].url+
+		    						",  startTime："+infoList[i].begin_date+
+		    						",  endTime :"+infoList[i].end_date+
+		    						",  scanPeriod: " +scan_type+
 		    						",  ScanDepth: "+
+		    						",  Stategy: "+
 		    						",  CustomManu: ";
         				}else if(infoList[i].service_type==4){
         					temp = "参数  TargetURL："+infoList[i].url+
-		    						",  timeSpace: " +scan_type;
+		    						",  startTime："+infoList[i].begin_date+
+		    						",  endTime :"+infoList[i].end_date+
+		    						",  scanPeriod: " +scan_type+
+		    						",  ScanDepth: "+
+		    						",  CustomManu: ";
         				}else{
-        					temp = "参数  scanMode："+infoList[i].type+
-	    						",  TargetURL："+infoList[i].url+
-	    						",  timeSpace: " +scan_type+
-	    						",  ScanDepth: "+
-	    						",  Stategy: "+
-	    						",  CustomManu: ";
+        					temp = "参数  TargetURL："+infoList[i].url+
+		    						",  startTime："+infoList[i].begin_date+
+		    						",  endTime :"+infoList[i].end_date+
+		    						",  scanPeriod: " +scan_type;
         				}
         					html += temp + "</p>"+ "</td>";
         				break;
