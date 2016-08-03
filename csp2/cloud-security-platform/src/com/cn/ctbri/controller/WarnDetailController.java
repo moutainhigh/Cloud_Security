@@ -2335,7 +2335,7 @@ public class WarnDetailController {
 			        JSONObject jsonObject1 = JSONObject.fromObject(object);
 
 			        Map<String,Object> newMap = new HashMap<String,Object>();
-			        newMap.put("create_time", jsonObject1.getString("create_time"));
+			        newMap.put("create_time", jsonObject1.getString("create_time1"));
 			        newMap.put("api_type", jsonObject1.getInt("api_type"));
 			        newMap.put("service_type", jsonObject1.getInt("service_type"));
 			        newMap.put("status", jsonObject1.getInt("status"));
