@@ -138,6 +138,12 @@ public class BalanceController {
 				return;
 			}
 			
+			//支付金额小于5安全币,不能领取
+			if (order.getPrice() < 5) {
+				m.put("collect", "1");//领取失败
+				return;
+			}
+			
 			//更新安全币余额
 			double balance = globle_user.getBalance();
 			User user = new User();
