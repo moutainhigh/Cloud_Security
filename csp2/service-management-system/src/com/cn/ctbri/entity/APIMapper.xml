@@ -30,12 +30,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>	
 	<!-- 根据用户和订单号查询调用接口历史记录 -->
 	<select id="findAPIHistoryInfoByParam" resultType="hashmap" parameterType="hashmap">
-		SELECT * FROM (
-		SELECT DATE_FORMAT(s.create_time,'%Y-%m-%d %H:%i:%s') create_time,s.api_type,s.service_type,s.`status`,s.taskId,s.token,s.apiId,s.orderId,
-		order1.type,DATE_FORMAT(order1.begin_date,'%Y-%m-%d %H:%i:%s') begin_date,DATE_FORMAT(order1.end_date,'%Y-%m-%d %H:%i:%s') end_date,order1.scan_type,task1.url FROM (SELECT *
-		from cs_api api WHERE api.apiId=#{orderId})s
-		left JOIN cs_order order1 on s.apiId=#{orderId} and order1.id=s.orderId
-		left JOIN cs_order_task task1 on task1.orderId=s.orderId)a where 1=1
+		
+		SELECT *,DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') create_time1
+		from cs_api api 
+		LEFT JOIN (select order1.id,order1.type,order1.scan_type,group_concat(task1.url) as url,DATE_FORMAT(order1.begin_date,'%Y-%m-%d %H:%i:%s') begin_date,DATE_FORMAT(order1.end_date,'%Y-%m-%d %H:%i:%s') end_date from cs_order order1,cs_order_task task1 where task1.orderId=order1.id GROUP BY order1.id)b
+		on b.id=api.orderId WHERE api.apiId=#{orderId}
 		<if test="scanUrl!=null and scanUrl!=''">
 			and a.url like CONCAT('%','${scanUrl}','%' ) 
 		</if>
