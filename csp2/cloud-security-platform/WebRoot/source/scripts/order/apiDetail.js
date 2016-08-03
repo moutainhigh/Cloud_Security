@@ -82,21 +82,65 @@ function searchCombine(){
         				html += "<td  style='width:20%;'>"+infoList[i].apiName+"</td>";
         				html += "<td  style='width:50%;'>"+infoList[i].apiUrl+"order/"+infoList[i].token+
         						"<br>"+
-        						"<p style='font-size:12px;color:#888;margin-bottom:0px'>"+
-        						"参数  scanMode："+infoList[i].type+
-        						"  TargetURL："+infoList[i].url+" ScanType："+
-        						"  startTime："+infoList[i].begin_date+
-        						"  endTime :"+infoList[i].end_date+
-        						"  ScnanPeriod: " +infoList[i].scan_type+
-        						"  ScanDepth: MaxPages: Stategy: CustomManu: "+
-        						"</p>"+
-        						"</td>";
+        						"<p style='font-size:12px;color:#888;margin-bottom:0px'>";
+        				var temp = "";
+        				var scan_type = "";
+        				if(infoList[i].scan_type!=0){
+        					scan_type = infoList[i].scan_type;
+        				}
+        				if(infoList[i].service_type==1){
+        					temp = "参数  scanMode："+infoList[i].type+
+		    						",  TargetURL："+infoList[i].url+
+		    						",  ScanType："+
+		    						",  startTime："+infoList[i].begin_date+
+		    						",  endTime :"+infoList[i].end_date+
+		    						",  ScnanPeriod: " +scan_type+
+		    						",  ScanDepth: "+
+		    						",  MaxPages: "+
+		    						",  Stategy: "+
+		    						",  CustomManu: ";
+        				}else if(infoList[i].service_type==2){
+        					temp = "参数  scanMode："+infoList[i].type+
+		    						",  TargetURL："+infoList[i].url+
+		    						",  startTime："+infoList[i].begin_date+
+		    						",  endTime :"+infoList[i].end_date+
+		    						",  timeSpace: " +scan_type+
+		    						",  ScanDepth: "+
+		    						",  MaxPages: "+
+		    						",  Stategy: "+
+		    						",  CustomManu: ";
+        				}else if(infoList[i].service_type==3){
+        					temp = "参数  TargetURL："+infoList[i].url+
+		    						",  timeSpace: " +scan_type+
+		    						",  ScanDepth: "+
+		    						",  CustomManu: ";
+        				}else if(infoList[i].service_type==4){
+        					temp = "参数  TargetURL："+infoList[i].url+
+		    						",  timeSpace: " +scan_type;
+        				}else{
+        					temp = "参数  scanMode："+infoList[i].type+
+	    						",  TargetURL："+infoList[i].url+
+	    						",  timeSpace: " +scan_type+
+	    						",  ScanDepth: "+
+	    						",  Stategy: "+
+	    						",  CustomManu: ";
+        				}
+        					html += temp + "</p>"+ "</td>";
         				break;
         				
         			case 2:
         				html += "<td  style='width:6%;'>PUT</td>";
         				html += "<td  style='width:20%;'>订单(任务)操作</td>";
-        				html += "<td  style='width:50%;'>"+infoList[i].apiUrl+"order/"+infoList[i].orderId+"/"+infoList[i].token+"</td>";
+        				html += "<td  style='width:50%;'>"+infoList[i].apiUrl+"order/"+infoList[i].orderId+"/"+infoList[i].token+
+        						"<br>"+
+        						"<p style='font-size:12px;color:#888;margin-bottom:0px'>";
+        				var temp = "";
+        				if(infoList[i].service_type==1){
+        					temp = "参数  opt：pause/resume/stop";
+        				}else {
+        					temp = "参数  opt：resume/stop";
+        				}
+        				html += temp + "</p>"+ "</td>";
         				break;
         				
         			case 3:
@@ -114,7 +158,16 @@ function searchCombine(){
         			case 5:
         				html += "<td  style='width:6%;'>POST</td>";
         				html += "<td  style='width:20%;'>获取订单结果报告</td>";
-        				html += "<td  style='width:50%;'>"+infoList[i].apiUrl+"orderReport/"+infoList[i].orderId+"/"+infoList[i].token+"</td>";
+        				html += "<td  style='width:50%;'>"+infoList[i].apiUrl+"orderReport/"+infoList[i].orderId+"/"+infoList[i].token;
+        				if(infoList[i].service_type==1 || infoList[i].service_type==2){
+        					html += "</td>";
+        				}else{
+        					html += "<br>"+
+    								"<p style='font-size:12px;color:#888;margin-bottom:0px'>" + 
+    								"参数  Content：Report" +
+    								"</p>" +
+    								"</td>";
+        				}
         				break;
         			}
         			if(infoList[i].status==1){
