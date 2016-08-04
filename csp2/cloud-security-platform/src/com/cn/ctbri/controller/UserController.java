@@ -1080,13 +1080,17 @@ public class UserController{
 			userService.insert(user);
 			
 			request.getSession().removeAttribute("regist_activationCode");//注册成功，验证码失效
+			
+			//注册成功时发送短信,短信模板：【安全帮】恭喜您注册成功! 系统赠送500安全币。
+			SMSUtils smsUtils = new SMSUtils();
+			smsUtils.sendRegistSuccessMessage(user.getMobile());
+			
 			return null;
 		} catch(Exception e) {
 			e.printStackTrace();
 			result = 99;
 			return null;
 		}finally{
-			//密码错误
 			map.put("result", result);
 			map.put("msg", msg);
 			JSONObject JSON = CommonUtil.objectToJson(response, map);
