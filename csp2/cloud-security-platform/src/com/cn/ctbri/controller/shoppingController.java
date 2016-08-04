@@ -275,47 +275,47 @@ public class shoppingController {
         }
         //判断服务类型是否存在
         if(!orderType.equals("1")&&!orderType.equals("2")){
-       	 m.put("error",true);
-      	     JSONObject JSON = CommonUtil.objectToJson(response, m);
-				try {
-					// 把数据返回到页面
-					CommonUtil.writeToJsp(response, JSON);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				return;
+        	m.put("error",true);
+        	JSONObject JSON = CommonUtil.objectToJson(response, m);
+        	try {
+        		// 把数据返回到页面
+        		CommonUtil.writeToJsp(response, JSON);
+        	} catch (IOException e) {
+        		e.printStackTrace();
+        	}
+        	return;
         }
         
         //单次
         if(orderType.equals("2")){
-     	   if(endDate!=null&&!"".equals(endDate)){
-     		 m.put("error",true);
-      	     JSONObject JSON = CommonUtil.objectToJson(response, m);
-				try {
-					// 把数据返回到页面
-					CommonUtil.writeToJsp(response, JSON);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				return;
-     	   }
-     
-        //服务频率
-   	   if(scanPeriod!=null&&!"".equals(scanPeriod)){
-	      		 m.put("error",true);
-	       	     JSONObject JSON = CommonUtil.objectToJson(response, m);
-					try {
-						// 把数据返回到页面
-						CommonUtil.writeToJsp(response, JSON);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					return;
-	      	   }
+        	if(endDate!=null&&!"".equals(endDate)){
+        		m.put("error",true);
+        		JSONObject JSON = CommonUtil.objectToJson(response, m);
+        		try {
+        			// 把数据返回到页面
+        			CommonUtil.writeToJsp(response, JSON);
+        		} catch (IOException e) {
+        			e.printStackTrace();
+        		}
+        		return;
+        	}
+        	
+        	//服务频率
+        	if(scanPeriod!=null&&!"".equals(scanPeriod)){
+        		m.put("error",true);
+        		JSONObject JSON = CommonUtil.objectToJson(response, m);
+        		try {
+        			// 把数据返回到页面
+        			CommonUtil.writeToJsp(response, JSON);
+        		} catch (IOException e) {
+        			e.printStackTrace();
+        		}
+        		return;
+        	}
         }
    	 //长期
        if(orderType.equals("1")){
-    	   if((beginDate==null&&"".equals(beginDate))||(endDate==null&&"".equals(endDate))){
+    	   if(beginDate==null||"".equals(beginDate)||endDate==null || "".equals(endDate)){
     		 m.put("error",true);
      	     JSONObject JSON = CommonUtil.objectToJson(response, m);
 				try {
@@ -327,7 +327,7 @@ public class shoppingController {
 				return;
     	   }
 	       //服务频率
-	  	   if(scanPeriod==null&&"".equals(scanPeriod)){
+	  	   if(scanPeriod==null || "".equals(scanPeriod)){
 	  		 m.put("error",true);
 	   	     JSONObject JSON = CommonUtil.objectToJson(response, m);
 				try {
@@ -358,18 +358,19 @@ public class shoppingController {
        }
        //长期
        if(orderType.equals("1")){
-	        //判断服务频率是否存在
-	       if(!scanPeriod.equals("1")&&!scanPeriod.equals("2")&&!scanPeriod.equals("3")&&!scanPeriod.equals("4")&&!scanPeriod.equals("5")){
-	    	 m.put("error",true);
-     	     JSONObject JSON = CommonUtil.objectToJson(response, m);
-				try {
-					// 把数据返回到页面
-					CommonUtil.writeToJsp(response, JSON);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				return;
-	      }
+    	   //判断服务频率是否存在
+    	   List<ScanType> scanTypeList = selfHelpOrderService.findScanType(Integer.parseInt(serviceId), Integer.parseInt(orderType));
+    	   if(scanTypeList.size() <= 0){
+    		   m.put("error",true);
+    		   JSONObject JSON = CommonUtil.objectToJson(response, m);
+    		   try {
+    			   // 把数据返回到页面
+    			   CommonUtil.writeToJsp(response, JSON);
+    		   } catch (IOException e) {
+    			   e.printStackTrace();
+    		   }
+    		   return;
+    	   }
        }
        //根据判断服务id是否存在
 	    Serv service = servService.findById(Integer.parseInt(serviceId));  
