@@ -364,20 +364,12 @@ public class shoppingAPIController {
         
         User globle_user = (User) request.getSession().getAttribute("globle_user");
       String orderDetailId = request.getParameter("orderDetailId");
-    	
-       /* //apiId
-        int apiId = Integer.parseInt(request.getParameter("apiId"));
-        //套餐次数
-        int time = Integer.parseInt(request.getParameter("time"));
-        //数量
-        int num = Integer.parseInt(request.getParameter("num"));
-        //套餐类型
-        int type = Integer.parseInt(request.getParameter("type"));*/
+   
         String linkname =request.getParameter("linkname");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
 
-        if(orderDetailId==null||"".equals(orderDetailId)||linkname==null||"".equals(linkname)||phone==null||"".equals(phone)){
+        if(orderDetailId==null||"".equals(orderDetailId)||linkname==null||"".equals(linkname)){
         	m.put("error", true);
         	 
     		//object转化为Json格式
@@ -502,7 +494,6 @@ public class shoppingAPIController {
             oAPI.setApiId(orderDetailVo.getServiceId());
             oAPI.setCreate_date(new Date());
             oAPI.setPackage_type(orderDetailVo.getType());
-//            oAPI.setNum(orderDetailVo.getScan_type()*orderDetailVo.getWafTimes());
             oAPI.setNum(orderDetailVo.getWafTimes());
             oAPI.setBuyNum(orderDetailVo.getWafTimes());
             oAPI.setUserId(globle_user.getId());
