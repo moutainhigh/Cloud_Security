@@ -189,31 +189,30 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 	}
 
 	public void SaveOrderDetail(OrderDetail orderDetail) {
-		// TODO Auto-generated method stub
 		selfHelpOrderDao.SaveOrderDetail(orderDetail);
 	}
 
 	
 	public OrderDetail getOrderDetailById(String id,int userId,List assetIdsList) {
-		// TODO Auto-generated method stub
 		return selfHelpOrderDao.getOrderDetailById(id,userId,assetIdsList);
 	}
 
 	public OrderDetail getOrderAPIDetailById(String id, int userId) {
-		// TODO Auto-generated method stub
 		return selfHelpOrderDao.getOrderAPIDetailById(id, userId);
 	}
 
 	
 	public OrderDetail findOrderDetailById(String id, int userId) {
-		// TODO Auto-generated method stub
 		return selfHelpOrderDao.findOrderDetailById(id, userId);
 	}
 
 	
 	public List<ScanType> findScanTypeById(int serviceId){
-		// TODO Auto-generated method stub
 		return selfHelpOrderDao.findScanTypeById(serviceId);
+	}
+
+	public List<ScanType> findScanType(int serviceId, int scanType) {
+		return selfHelpOrderDao.findScanType(serviceId, scanType);
 	}
 
 }
