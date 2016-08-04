@@ -1617,6 +1617,9 @@ public class shoppingController {
     			return;
     		}
     		
+    		//设置支付时间
+    		orderList.setPay_date(new Date());
+    		
     		//若支付时间>服务的开始时间，更新订单的开始时间，结束时间
     		List<String> orderIdOfModify = new ArrayList<String>();
     		try{
@@ -1644,7 +1647,7 @@ public class shoppingController {
     		userService.updateBalance(user);//DB更新
     		
     		//更新 支付时间，支付金额(cs_order_list表)
-    		orderList.setPay_date(new Date());
+    		//orderList.setPay_date(new Date());
     		selfHelpOrderService.updatePayDate(orderList);
     		
     		//更新 支付Flag(cs_order表) 未支付-->已支付
@@ -1660,7 +1663,7 @@ public class shoppingController {
     			orderId = orderId.substring(0,orderId.length()-1);
     		}
     		m.put("orderListId",orderList.getId());
-    		m.put("modifyOrderId", orderId);
+    		m.put("modifyOrderId", orderId);//部分服务调整的 orderId
     		m.put("payFlag", 0);//付款成功
     	} catch(Exception e) {
     		e.printStackTrace();
@@ -1701,8 +1704,8 @@ public class shoppingController {
 			list = selfHelpOrderService.findBuyShopList(orderIdList,globle_user.getId());
 		}
 		
-//		Date payDate = orderList.getPay_date();
-		Date payDate = new Date();
+		Date payDate = orderList.getPay_date();
+//		Date payDate = new Date();
 		if(list!=null&&list.size()>0){
 			for(int i=0;i<list.size();i++){
 				ShopCar shopCar = (ShopCar)list.get(i);
@@ -2017,6 +2020,7 @@ public class shoppingController {
 				}
 			}
 			m.addAttribute("modifyOrderId", modifyOrderId);
+			m.addAttribute("beginDate", orderList.getPay_date());  //部分服务调整的开始时间时间
 		}
 		
 		if (orderList.getPay_date()== null){
