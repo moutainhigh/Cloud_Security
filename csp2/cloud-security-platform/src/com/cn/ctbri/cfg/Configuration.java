@@ -34,7 +34,7 @@ public class Configuration {
 	private static String modifyCode_model;//修改密码模板
 	private static String forgetCode_model;//忘记密码模板
 	private static String modifyMobile_model;//修改手机号模板
-	private static String anquanbi;//注册赠送安全币模板
+	private static String anquanbi_model;//注册赠送安全币模板
 	static {
 		InputStream inputStream = Configuration.class.getClassLoader().getResourceAsStream("default.properties");
 		Properties prop = new Properties();
@@ -61,7 +61,7 @@ public class Configuration {
 		modifyCode_model=(String)prop.get("modifyCode_model");
 		forgetCode_model=(String)prop.get("forgetCode_model");
 		modifyMobile_model=(String)prop.get("modifyMobile_model");
-		anquanbi=(String)prop.get("anquanbi");
+		anquanbi_model=(String)prop.get("anquanbi_model");
 	}
 	public static String getFileContent() {
 		return fileContent;
@@ -171,12 +171,13 @@ public class Configuration {
 	public static void setModifyMobile_model(String modifyMobile_model) {
 		Configuration.modifyMobile_model = modifyMobile_model;
 	}
-	public static String getAnquanbi() {
-		return anquanbi;
+	public static String getAnquanbi_model() {
+		return anquanbi_model;
 	}
-	public static void setAnquanbi(String anquanbi) {
-		Configuration.anquanbi = anquanbi;
+	public static void setAnquanbi_model(String anquanbi_model) {
+		Configuration.anquanbi_model = anquanbi_model;
 	}
+    
     
 	
 }
