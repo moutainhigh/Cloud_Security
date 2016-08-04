@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -153,12 +154,13 @@
             	 <div class="repay_contant">
                       <c:if test="${modifyOrderId!= null && !empty modifyOrderId}">
 	                      <div class="repay_list">
-	                      	部分服务时间已根据订单支付成功时间自动进行调整，请查看
+	                      	部分服务时间已根据订单支付成功时间自动调整为：<fmt:formatDate value="${beginDate }" pattern="yyyy-MM-dd HH:mm:ss"/>，请查看
 	                      	<c:forEach items="${modifyOrderId}" var="orderId" varStatus="status">
 	                 	  		订单编号：<a href="${ctx}/orderDetails.html?orderId=${orderId }">${orderId }</a>
 	                 	  		<c:if test="${!status.last}">,</c:if>
 	                 	  	</c:forEach>
-	                      	详情。</div>
+	                      	详情。
+	                      	</div>
                       	</c:if>
                       <div class="repay_mylist">请在<a href="${ctx}/orderTrackInit.html">我的订单</a>中查看详情</div>
                       <div class="repay_anquan">
