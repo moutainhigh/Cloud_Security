@@ -1587,6 +1587,10 @@ public class shoppingController {
     	try {
     		String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
     		OrderList orderList = orderListService.findById(orderListId);
+    		if (orderList == null) {
+    			m.put("payFlag", 1);
+    			return;
+    		}
     		
     		//不是当前用户的订单,不能支付
         	User globle_user = (User) request.getSession().getAttribute("globle_user");
