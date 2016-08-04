@@ -53,7 +53,7 @@ $(function(){
 				data:{"orderListId":orderListId},
 				success: function(data) {
 					if (data.payFlag == 1){
-						alert("不能重复支付!");
+						alert("您的订单已支付完成，请勿重复支付!");
 					} else if(data.payFlag ==2) {
 						alert("该订单不存在!");
 					} else if(data.payFlag ==3 || data.payFlag ==0) {
