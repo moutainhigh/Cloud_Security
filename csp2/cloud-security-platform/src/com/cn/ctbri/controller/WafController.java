@@ -724,6 +724,9 @@ public class WafController {
         	return "redirect:/index.html";
         }
 	  
+        if(!serviceId.equals("6")){
+        	return "redirect:/index.html";
+      }
         /*****判断参数结束***/
         //根据id查询service
 	    Serv service = servService.findById(Integer.parseInt(serviceId));
