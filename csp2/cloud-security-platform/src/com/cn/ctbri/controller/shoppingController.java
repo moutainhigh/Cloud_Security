@@ -359,7 +359,7 @@ public class shoppingController {
        //长期
        if(orderType.equals("1")){
     	   //判断服务频率是否存在
-    	   List<ScanType> scanTypeList = selfHelpOrderService.findScanType(Integer.parseInt(serviceId), Integer.parseInt(orderType));
+    	   List<ScanType> scanTypeList = selfHelpOrderService.findScanType(Integer.parseInt(serviceId), Integer.parseInt(scanPeriod));
     	   if(scanTypeList.size() <= 0){
     		   m.put("error",true);
     		   JSONObject JSON = CommonUtil.objectToJson(response, m);
