@@ -2526,8 +2526,8 @@ public class shoppingController {
 			
 		} else if (serviceId.equals("3") || serviceId.equals("5")) {
 			// 网页篡改监测服务/网站可用性监测服务   
-			// 单次：2
-			if(orderType.equals("2")) {
+			// 长期：1
+			if(orderType.equals("1")) {
 				result = true;
 			}
 			
