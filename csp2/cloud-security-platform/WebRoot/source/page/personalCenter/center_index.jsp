@@ -123,11 +123,50 @@ function signIn(){
 }
 
 function buySelfHelpOrder(serviceId){
-	$("#serviceId").val(serviceId);
-	$("#selfHelpOrderInitForm").submit();
+	
+	//虚拟表单post提交
+	var tempForm = document.createElement("form");
+  	tempForm.action = "selfHelpOrderInit.html";
+  	tempForm.method = "post";
+  	tempForm.style.display = "none";
+  	
+  	var serviceIdInput = document.createElement("input");
+  	serviceIdInput.type="hidden"; 
+	serviceIdInput.name= "serviceId"; 
+	serviceIdInput.value= serviceId; 
+	tempForm.appendChild(serviceIdInput);
+	
+	var indexPageInput = document.createElement("input");
+  	indexPageInput.type="hidden"; 
+	indexPageInput.name= "indexPage"; 
+	indexPageInput.value= 1; 
+	tempForm.appendChild(indexPageInput);
+	
+	document.body.appendChild(tempForm);
+	tempForm.submit();
+	document.body.removeChild(tempForm);
 }
-function buyAPI(){
-	$("#APIForm").submit();
+function buyAPI(apiId){
+		var tempForm = document.createElement("form");
+  		tempForm.action = "selfHelpOrderAPIInit.html";
+  		tempForm.method = "post";
+  		tempForm.style.display = "none";
+  							
+  		var apiIdInput = document.createElement("input");
+  		apiIdInput.type="hidden"; 
+		apiIdInput.name= "apiId"; 
+		apiIdInput.value= apiId; 
+		tempForm.appendChild(apiIdInput);
+					
+		var indexPageInput = document.createElement("input");
+  		indexPageInput.type="hidden"; 
+		indexPageInput.name= "indexPage"; 
+		indexPageInput.value= 2; 
+		tempForm.appendChild(indexPageInput);
+							
+		document.body.appendChild(tempForm);
+		tempForm.submit();
+		document.body.removeChild(tempForm);				
 }
 </script>
 <style>
@@ -313,12 +352,12 @@ function buyAPI(){
                             	<!--需要显示AIP图标，给I加上类show-->
                                 <!--<a href="${ctx}/selfHelpOrderAPIInit.html?apiId=1&indexPage=2">
                                 	-->
-                                	<a href="javascript:;" onclick="buyAPI();">
+                                	<a href="javascript:;" onclick="buyAPI(1);">
                                 	<i class="show"></i>
                                     <p style=" text-align:center"><img src="${ctx}/source/images/personalCenter/1.png" alt=""></p>
                                     <!--<h5><a href="${ctx}/selfHelpOrderAPIInit.html?apiId=1&indexPage=2">WEB漏洞监测能力API</a></h5>
                                 -->
-                                	<h5><a href="javascript:;" onclick="buyAPI();">WEB漏洞监测能力API</a></h5>
+                                	<h5><a href="javascript:;" onclick="buyAPI(1);">WEB漏洞监测能力API</a></h5>
                                 </a>
                                 
                             </li>
@@ -358,14 +397,7 @@ function buyAPI(){
                                 
                             </li>
                         </ul>
-                   		<form action="selfHelpOrderInit.html" method="post" id="selfHelpOrderInitForm">
-							<input type="hidden" id="serviceId" name="serviceId"/>
-							<input type="hidden" id="indexPage" name="indexPage" value="1"/>
-						</form>
-						<form action="selfHelpOrderAPIInit.html" method="post" id="APIForm">
-							<input type="hidden" id="apiId" name="apiId" value="1"/>
-							<input type="hidden" id="indexPage" name="indexPage" value="2"/>
-						</form>
+                   		
                     </div>
                 </div>
             
