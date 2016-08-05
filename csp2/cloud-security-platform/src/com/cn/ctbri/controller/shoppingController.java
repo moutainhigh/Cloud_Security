@@ -273,8 +273,23 @@ public class shoppingController {
 				}
 				return;
         }
+        
+        //根据判断服务id是否存在
+        Serv service = servService.findById(Integer.parseInt(serviceId));  
+        if(service==null){
+        	m.put("error",true);
+        	JSONObject JSON = CommonUtil.objectToJson(response, m);
+        	try {
+        		// 把数据返回到页面
+        		CommonUtil.writeToJsp(response, JSON);
+        	} catch (IOException e) {
+        		e.printStackTrace();
+        	}
+        	return;
+        }
+        
         //判断服务类型是否存在
-        if(!orderType.equals("1")&&!orderType.equals("2")){
+        if(!checkOrderType(serviceId,orderType)){
         	m.put("error",true);
         	JSONObject JSON = CommonUtil.objectToJson(response, m);
         	try {
@@ -372,19 +387,6 @@ public class shoppingController {
     		   return;
     	   }
        }
-       //根据判断服务id是否存在
-	    Serv service = servService.findById(Integer.parseInt(serviceId));  
-        if(service==null){
-       	 m.put("error",true);
-      	     JSONObject JSON = CommonUtil.objectToJson(response, m);
-				try {
-					// 把数据返回到页面
-					CommonUtil.writeToJsp(response, JSON);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				return;
-        }
         /****判断参数是否有效结束*****/
         /****计算价格开始*****/ 
         double calPrice = 0;
@@ -2240,8 +2242,15 @@ public class shoppingController {
             }
            }
        }
+       
+       //根据判断服务id是否存在
+       Serv service = servService.findById(Integer.parseInt(serviceId));  
+       if(service==null){
+    	   return "redirect:/index.html";
+       }
+       
         //判断类型是否存在
-       if(!orderType.equals("1")&&!orderType.equals("2")){
+       if(!checkOrderType(serviceId,orderType)){
     		return "redirect:/index.html";
        }
        //单次
@@ -2278,11 +2287,6 @@ public class shoppingController {
     		   return "redirect:/index.html";
     	   }
        }
-     //根据判断服务id是否存在
-	    Serv service = servService.findById(Integer.parseInt(serviceId));  
-        if(service==null){
-        	return "redirect:/index.html";
-        }
       
 		/***计算价格开始***/
       
@@ -2509,4 +2513,32 @@ public class shoppingController {
 	}
 	return "";
 }
+	/**
+	 * 检查各服务的服务类型
+	 */
+	private boolean checkOrderType(String serviceId, String orderType) {
+		boolean result = false;
+		if (serviceId.equals("1") || serviceId.equals("2") || serviceId.equals("4")) {
+			//长期：2 单次：1
+			if(orderType.equals("1") || orderType.equals("2")) {
+				result = true;
+			}
+			
+		} else if (serviceId.equals("3") || serviceId.equals("5")) {
+			// 网页篡改监测服务/网站可用性监测服务   
+			// 单次：1
+			if(orderType.equals("1")) {
+				result = true;
+			}
+			
+		} 
+//		else if (serviceId.equals("6")) {
+//			//waf 8：包月 9：包年
+//			if (orderType.equals("8") || orderType.equals("9")) {
+//				result = true;
+//			}
+//		}
+		
+		return result;
+	}
 }
