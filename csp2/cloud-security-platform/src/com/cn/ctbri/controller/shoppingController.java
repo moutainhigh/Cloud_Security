@@ -2519,15 +2519,15 @@ public class shoppingController {
 	private boolean checkOrderType(String serviceId, String orderType) {
 		boolean result = false;
 		if (serviceId.equals("1") || serviceId.equals("2") || serviceId.equals("4")) {
-			//长期：2 单次：1
+			//长期：1 单次：2
 			if(orderType.equals("1") || orderType.equals("2")) {
 				result = true;
 			}
 			
 		} else if (serviceId.equals("3") || serviceId.equals("5")) {
 			// 网页篡改监测服务/网站可用性监测服务   
-			// 单次：1
-			if(orderType.equals("1")) {
+			// 单次：2
+			if(orderType.equals("2")) {
 				result = true;
 			}
 			
