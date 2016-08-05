@@ -2253,11 +2253,11 @@ public class shoppingController {
        }
        //长期
        if(orderType.equals("1")){
-    	   if((beginDate==null&&"".equals(beginDate))||(endDate==null&&"".equals(endDate))){
+    	   if(beginDate==null || "".equals(beginDate)|| endDate==null || "".equals(endDate)){
     		   return "redirect:/index.html";
     	   }
     	   //服务频率
-    	   if(scanPeriod==null&&"".equals(scanPeriod)){
+    	   if(scanPeriod==null || "".equals(scanPeriod)){
     		   return "redirect:/index.html";
     	   }
        }
@@ -2272,10 +2272,11 @@ public class shoppingController {
        }
        //长期
        if(orderType.equals("1")){
-	        //判断服务频率是否存在
-	       if(!scanPeriod.equals("1")&&!scanPeriod.equals("2")&&!scanPeriod.equals("3")&&!scanPeriod.equals("4")&&!scanPeriod.equals("5")&&!scanPeriod.equals("6")){
-	   		return "redirect:/index.html";
-	      }
+    	   //判断服务频率是否存在
+    	   List<ScanType> scanTypeList = selfHelpOrderService.findScanType(Integer.parseInt(serviceId), Integer.parseInt(scanPeriod));
+    	   if(scanTypeList.size() <= 0){
+    		   return "redirect:/index.html";
+    	   }
        }
      //根据判断服务id是否存在
 	    Serv service = servService.findById(Integer.parseInt(serviceId));  
