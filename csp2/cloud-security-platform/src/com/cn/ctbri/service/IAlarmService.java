@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.AlarmBug;
 import com.cn.ctbri.entity.AlarmDDOS;
 import com.cn.ctbri.entity.Task;
 
@@ -99,5 +100,9 @@ public interface IAlarmService {
 	List<Alarm> getAlarmByAsset(Map<String, Object> paramAlarm);
 	//查询告警数等级 add by tangxr 2016-5-11
 	List getAlarmByParam(Map<String, Object> paramMap);
+	//统计漏洞类型分布及发展趋势
+	List<AlarmBug> findAlarmBugCounts(Map<String, Object> paramMap);
+	//统计前20个漏洞类型
+	List<AlarmBug> findBugMaxCounts(Map<String, Object> paramMap);
 	
 }

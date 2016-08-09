@@ -393,4 +393,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findAPICountByParam" resultType="int" parameterType="hashMap">
   		select api.num from cs_order_api api,cs_order order1 where api.id=#{orderId} and order1.payFlag=1 and order1.id=api.id
     </select>
+    
+    <select id="getServiceUserCount" resultType="hashmap">
+    	select t1.type,t2.`name`,count(t1.type) as userNums from (
+			select type,userId,serviceId from cs_order 
+			where delFlag=0
+			and payFlag=1
+			group by type,userId,serviceId
+		)as t1
+		inner join cs_service as t2
+		on t1.serviceId=t2.id
+		where t1.type in(1,2)
+		group by t1.type,t1.serviceId
+    </select>
+    
+    <select id="getServiceCount" resultType="hashmap">
+    	select t1.type,t2.`name`,count(t1.id) as countNums 
+		from cs_order as t1
+		inner join cs_service as t2
+		on t1.serviceId=t2.id
+		and  t1.delFlag=0
+		and t1.payFlag=1
+		group by t1.type,t1.serviceId
+    </select>
+    
+    
+    
 </mapper>

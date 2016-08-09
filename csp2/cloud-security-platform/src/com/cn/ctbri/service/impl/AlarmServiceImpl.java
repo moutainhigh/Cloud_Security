@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.AlarmDao;
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.AlarmBug;
 import com.cn.ctbri.entity.AlarmDDOS;
 import com.cn.ctbri.entity.DataAnalysis;
 import com.cn.ctbri.entity.Task;
@@ -142,5 +143,11 @@ public class AlarmServiceImpl implements IAlarmService{
 	}
 	public List getAlarmByParam(Map<String, Object> paramMap) {
 		return alarmDao.getAlarmByParam(paramMap);
+	}
+	public List<AlarmBug> findAlarmBugCounts(Map<String, Object> paramMap) {
+		return alarmDao.getAlarmBugCounts(paramMap);
+	}
+	public List<AlarmBug> findBugMaxCounts(Map<String, Object> paramMap) {
+		return alarmDao.getBugMaxCounts(paramMap);
 	}
 }

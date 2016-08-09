@@ -74,6 +74,12 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/api_anquanbang.html");//安全动态感知
 		list.add("/Xpage.html");//x专区
 		list.add("/detectionUrl.html");//x专区
+		list.add("/bugUI.html");//x专区
+		list.add("/bug.html");//x专区
+		list.add("/serviceUserUI.html");
+		list.add("/serviceUser.html");
+		list.add("/orderServiceUI.html");
+		list.add("/orderServiceCount.html");
 		//获取访问的url路径
 		String path = request.getServletPath();
 		forwordIndexPage(path,request,response);

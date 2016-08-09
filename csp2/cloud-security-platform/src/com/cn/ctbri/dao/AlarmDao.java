@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.AlarmBug;
 import com.cn.ctbri.entity.AlarmDDOS;
 import com.cn.ctbri.entity.Task;
 
@@ -108,5 +109,9 @@ public interface AlarmDao {
 	//资产查询告警
 	public List<Alarm> getAlarmByAsset(Map<String, Object> paramAlarm);
 	
+	public List<AlarmBug> getAlarmBugCounts(Map<String, Object> paramMap);
+	
 	public List getAlarmByParam(Map<String, Object> paramMap);
+	
+	public List<AlarmBug> getBugMaxCounts(Map<String, Object> paramMap);
 }
