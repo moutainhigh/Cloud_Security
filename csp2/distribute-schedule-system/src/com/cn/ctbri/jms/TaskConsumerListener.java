@@ -74,36 +74,19 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	/**
 	 * 引擎编号r 
 	 */
-	private static String engine_capacity;
-	
-	private static String engine_capacity1;
 	
 	private static String cpu_usageWeight;
 	private static String memory_usageWeight;
 	private static String disk_usageWeight;
-	private static String get_speed_usageWeight;
-	private static String send_speed_usageWeight;
 	private static String load_usageWeight;
-	private static String get_speedmax;
-	private static String get_speed;
-	private static String send_speedmax;
-	private static String send_speed;
 	
 	static {
 		try {
 			Properties p = new Properties();
 			p.load(EngineWorker.class.getClassLoader().getResourceAsStream("engineConfig.properties"));
-			engine_capacity = p.getProperty("engine_capacity");
-			engine_capacity1 = p.getProperty("engine_capacity1");
 			cpu_usageWeight = p.getProperty("cpu_usageWeight");
 			memory_usageWeight = p.getProperty("memory_usageWeight");
 			disk_usageWeight = p.getProperty("disk_usageWeight");
-			get_speed_usageWeight = p.getProperty("get_speed_usageWeight");
-			send_speed_usageWeight = p.getProperty("send_speed_usageWeight");
-			get_speedmax = p.getProperty("get_speedmax");
-			get_speed = p.getProperty("get_speed");
-			send_speedmax = p.getProperty("send_speedmax");
-			send_speed = p.getProperty("send_speed");
 			load_usageWeight = p.getProperty("load_usageWeight");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -259,7 +242,8 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	            preTaskData(t,engine);
 	            try {
 	            	String lssued = SouthAPIWorker.disposeScanTask(engine.getEngine_number(), String.valueOf(t.getTaskId())+"_"+t.getOrder_id(), this.destURL, this.destIP, "80", this.tplName);
-	                boolean state = this.getStatusBylssued(lssued);
+	                System.out.println("任务logo"+lssued);
+	            	boolean state = this.getStatusBylssued(lssued);
 	            	if(state){
 //	            	if(true){
 	                    //任务下发后,引擎活跃数加1
@@ -281,80 +265,84 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	                    
 	                    LogInfo logInf = LoggerUtil.addLoginfo("", "", new Date(), "","getArnhem","",LoggerUtil.TASK_SUCCESS);
 	                    loggerService.insert(logInf);
+	                    
+	                    //modify by 2016-8-1
+	                    int serviceId = t.getServiceId();
+		                if(serviceId==3||serviceId==4){
+		                    if(t.getScanMode() == 1){
+		                        //下一次扫描时间
+		                        Date endTime = t.getEnd_time();
+		                        Map<String, Object> paramMap = new HashMap<String, Object>();
+		                        paramMap.put("executeTime", t.getGroup_flag());
+		                        paramMap.put("scantime", this.scantime);
+		                        Date nextTime = taskService.getNextScanTime(paramMap);
+		                        if(nextTime.compareTo(endTime)<=0){
+		                            //创建任务
+		                            Task task = new Task(); 
+		                            task.setExecute_time(nextTime);
+		                            task.setStatus(Integer.parseInt(Constants.TASK_START));
+		                            //设置订单详情id
+//		                            task.setOrder_asset_Id(t.getOrder_asset_Id());
+		                            task.setGroup_flag(nextTime);
+		                            task.setBegin_time(t.getBegin_time());
+		                            task.setEnd_time(t.getEnd_time());
+		                            task.setOrderTaskId(t.getOrderTaskId());
+		                            task.setServiceId(t.getServiceId());
+		                            task.setScanMode(t.getScanMode());
+		                            task.setScanType(t.getScanType());
+		                            task.setAssetAddr(t.getAssetAddr());
+		                            task.setOrder_id(t.getOrder_id());
+		                            if(t.getWebsoc()==0){
+		                            	task.setWebsoc(0);
+		                            }else{
+		                            	task.setWebsoc(2);
+		                            }
+		                            //插入一条任务数据  获取任务id
+		                            int taskId = taskService.insert(task);
+		                        }
+		                    }
+		                }
+		                if(serviceId==1||serviceId==2){//漏扫和木马
+		                    if(t.getScanMode() == 1){
+		                        //下一次扫描时间
+		                        Date endTime = t.getEnd_time();
+		                        Map<String, Object> paramMap = new HashMap<String, Object>();
+		                        Date nextTime = null;
+		                        if(t.getScanType()==1){
+		                        	nextTime = DateUtils.getAfterDate(t.getGroup_flag(),1);
+		                        }else if(t.getScanType()==5){
+		                        	nextTime = DateUtils.getAfterDate(t.getGroup_flag(),7);
+		                        }else if(t.getScanType()==6){
+		                        	nextTime = DateUtils.getAfterMonth(t.getGroup_flag());
+		                        }
+		                        if(nextTime.compareTo(endTime)<=0){
+		                            //创建任务
+		                            Task task = new Task(); 
+		                            task.setExecute_time(nextTime);
+		                            task.setStatus(Integer.parseInt(Constants.TASK_START));
+		                            //设置订单详情id
+//		                            task.setOrder_asset_Id(t.getOrder_asset_Id());
+		                            task.setGroup_flag(nextTime);
+		                            task.setBegin_time(t.getBegin_time());
+		                            task.setEnd_time(t.getEnd_time());
+		                            task.setOrderTaskId(t.getOrderTaskId());
+		                            task.setServiceId(t.getServiceId());
+		                            task.setScanMode(t.getScanMode());
+		                            task.setScanType(t.getScanType());
+		                            task.setAssetAddr(t.getAssetAddr());
+		                            task.setOrder_id(t.getOrder_id());
+		                            if(t.getWebsoc()==0){
+		                            	task.setWebsoc(0);
+		                            }else{
+		                            	task.setWebsoc(2);
+		                            }
+		                            //插入一条任务数据  获取任务id
+		                            int taskId = taskService.insert(task);
+		                        }
+		                    }
+		                }
 	                }
-	                int serviceId = t.getServiceId();
-	                if(serviceId==2||serviceId==3||serviceId==4){
-	                    if(t.getScanMode() == 1){
-	                        //下一次扫描时间
-	                        Date endTime = t.getEnd_time();
-	                        Map<String, Object> paramMap = new HashMap<String, Object>();
-	                        paramMap.put("executeTime", t.getGroup_flag());
-	                        paramMap.put("scantime", this.scantime);
-	                        Date nextTime = taskService.getNextScanTime(paramMap);
-	                        if(nextTime.compareTo(endTime)<=0){
-	                            //创建任务
-	                            Task task = new Task(); 
-	                            task.setExecute_time(nextTime);
-	                            task.setStatus(Integer.parseInt(Constants.TASK_START));
-	                            //设置订单详情id
-//	                            task.setOrder_asset_Id(t.getOrder_asset_Id());
-	                            task.setGroup_flag(nextTime);
-	                            task.setBegin_time(t.getBegin_time());
-	                            task.setEnd_time(t.getEnd_time());
-	                            task.setOrderTaskId(t.getOrderTaskId());
-	                            task.setServiceId(t.getServiceId());
-	                            task.setScanMode(t.getScanMode());
-	                            task.setScanType(t.getScanType());
-	                            task.setAssetAddr(t.getAssetAddr());
-	                            if(t.getWebsoc()==0){
-	                            	task.setWebsoc(0);
-	                            }else{
-	                            	task.setWebsoc(2);
-	                            }
-	                            //插入一条任务数据  获取任务id
-	                            int taskId = taskService.insert(task);
-	                        }
-	                    }
-	                }
-	                if(serviceId==1){
-	                    if(t.getScanMode() == 1){
-	                        //下一次扫描时间
-	                        Date endTime = t.getEnd_time();
-	                        Map<String, Object> paramMap = new HashMap<String, Object>();
-	                        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
-	                        Date nextTime = null;
-	                        if(t.getScanType()==1){
-	                        	nextTime = DateUtils.getAfterDate(t.getGroup_flag(),1);
-	                        }else if(t.getScanType()==2){
-	                        	nextTime = DateUtils.getAfterDate(t.getGroup_flag(),7);
-	                        }else if(t.getScanType()==3){
-	                        	nextTime = DateUtils.getAfterMonth(t.getGroup_flag());
-	                        }
-	                        if(nextTime.compareTo(endTime)<=0){
-	                            //创建任务
-	                            Task task = new Task(); 
-	                            task.setExecute_time(nextTime);
-	                            task.setStatus(Integer.parseInt(Constants.TASK_START));
-	                            //设置订单详情id
-//	                            task.setOrder_asset_Id(t.getOrder_asset_Id());
-	                            task.setGroup_flag(nextTime);
-	                            task.setBegin_time(t.getBegin_time());
-	                            task.setEnd_time(t.getEnd_time());
-	                            task.setOrderTaskId(t.getOrderTaskId());
-	                            task.setServiceId(t.getServiceId());
-	                            task.setScanMode(t.getScanMode());
-	                            task.setScanType(t.getScanType());
-	                            task.setAssetAddr(t.getAssetAddr());
-	                            if(t.getWebsoc()==0){
-	                            	task.setWebsoc(0);
-	                            }else{
-	                            	task.setWebsoc(2);
-	                            }
-	                            //插入一条任务数据  获取任务id
-	                            int taskId = taskService.insert(task);
-	                        }
-	                    }
-	                }
+	                
 	            } catch (Exception e) {
 	            	e.printStackTrace();
 	            	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!;User="+null);
@@ -511,37 +499,43 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 						+ engine.getEngine_name();
 				this.scantime = 60;
 				break;
-			case 4:
-				this.tplName = Constants.TPL_KYXJCFU_2H
-						+ engine.getEngine_name();
-				this.scantime = 120;
-				break;
+//			case 4:
+//				this.tplName = Constants.TPL_KYXJCFU_2H
+//						+ engine.getEngine_name();
+//				this.scantime = 120;
+//				break;
 			}
 
 		} else if (Constants.SERVICE_WYCGJCFW.equals(this.tplName)) {
 			switch (rate) {
-			case 1:
+			case 2:
 				this.tplName = Constants.TPL_WYCGJCFW_30M2
 						+ engine.getEngine_name();
 				this.scantime = 30;
 				break;
-			case 2:
+			case 3:
 				this.tplName = Constants.TPL_WYCGJCFW_1H2
 						+ engine.getEngine_name();
 				this.scantime = 60;
 				break;
-			case 3:
-				this.tplName = Constants.TPL_WYCGJCFW_2H2
-						+ engine.getEngine_name();
-				this.scantime = 120;
-				break;
 			case 4:
-				this.tplName = Constants.TPL_WYCGJCFW + engine.getEngine_name();
+				this.tplName = Constants.TPL_WYCGJCFW_1D2
+						+ engine.getEngine_name();
 				this.scantime = 1440;
 				break;
 			}
 		} else if (Constants.SERVICE_GJZJCFW.equals(this.tplName)) {
 			switch (rate) {
+			case 2:
+				this.tplName = Constants.SERVICE_GJZJCFW
+						+ engine.getEngine_name();
+				this.scantime = 30;
+				break;
+			case 3:
+				this.tplName = Constants.SERVICE_GJZJCFW
+						+ engine.getEngine_name();
+				this.scantime = 60;
+				break;
 			case 4:
 				this.tplName = Constants.SERVICE_GJZJCFW
 						+ engine.getEngine_name();
@@ -552,12 +546,27 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 						+ engine.getEngine_name();
 				break;
 			}
-		} else if (Constants.SERVICE_EYDMJCFW.equals(this.tplName)) {
+		} else if (Constants.SERVICE_EYDMJCFW.equals(this.tplName)) {//木马改成每周每月，执行
 			switch (rate) {
 			case 1:
 				this.tplName = Constants.SERVICE_EYDMJCFW
 						+ engine.getEngine_name();
 				this.scantime = 30;
+				break;
+			case 2:
+				this.tplName = Constants.SERVICE_EYDMJCFW
+						+ engine.getEngine_name();
+				this.scantime = 60;
+				break;
+			case 3:
+				this.tplName = Constants.SERVICE_EYDMJCFW
+						+ engine.getEngine_name();
+				this.scantime = 120;
+				break;
+			case 4:
+				this.tplName = Constants.SERVICE_EYDMJCFW
+						+ engine.getEngine_name();
+				this.scantime = 1440;
 				break;
 			default:
 				this.tplName = Constants.SERVICE_EYDMJCFW
