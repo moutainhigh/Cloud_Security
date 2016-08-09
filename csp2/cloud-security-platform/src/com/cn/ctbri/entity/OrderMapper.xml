@@ -395,16 +395,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="getServiceUserCount" resultType="hashmap">
-    	select t1.type,t2.`name`,count(t1.type) as userNums from (
-			select type,userId,serviceId from cs_order 
+    	select t1.type,count(t1.type) as userNums from (
+			select type,userId from cs_order 
 			where delFlag=0
 			and payFlag=1
-			group by type,userId,serviceId
-		)as t1
-		inner join cs_service as t2
-		on t1.serviceId=t2.id
-		where t1.type in(1,2)
-		group by t1.type,t1.serviceId
+			and type=1
+			group by type,userId
+		) as t1
+		union 
+		select t2.type,count(t2.type) as userNums from (
+				select type,userId from cs_order 
+							where delFlag=0
+							and payFlag=1
+							and type=2
+							group by type,userId
+							having userId not in( 
+								select userId from cs_order 
+								where delFlag=0
+								and payFlag=1
+								and type=1
+								group by userId
+				)
+		) as t2
     </select>
     
     <select id="getServiceCount" resultType="hashmap">

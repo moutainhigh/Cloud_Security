@@ -12,10 +12,11 @@
 </head>
 
 <body style="height: 100%; margin: 0">
-	<div id="main" style="width:50%;height:100%;border:1px solid red;"></div>
-	
+	<div id="main" style="width:50%;height:100%;float:left;"></div>
+<!-- 	<div id="main2" style="width:50%;height:100%;float:left;"></div> -->
 	<script>
 	var myChart = echarts.init(document.getElementById('main'));
+// 	var myChart2 = echarts.init(document.getElementById('main2'));
 	var option;
 		$.ajax({
 	        type: "POST",
@@ -35,7 +36,7 @@
 					    },
 					    tooltip : {
 					        trigger: 'item',
-					        formatter: "{a} <br/>{b} : {c} ({d}%)"
+					        formatter: "{a} <br/>{b} :({d}%)"
 					    },
 					    legend: {
 					        orient: 'vertical',
@@ -60,7 +61,7 @@
 					                normal:{ 
 		                                label:{ 
 		                                   show: true, 
-		                                   formatter: '{b} : {c} ({d}%)' ,
+		                                   formatter: '{b} : ({d}%)' ,
 		                                   position: 'outer'
 		                                }, 
 		                                labelLine :{show:true}
@@ -70,7 +71,7 @@
 					    ]
 					};
 					myChart.setOption(option);
-				        	
+// 				    myChart2.setOption(option);	
 				        }
 				    });
 	</script>

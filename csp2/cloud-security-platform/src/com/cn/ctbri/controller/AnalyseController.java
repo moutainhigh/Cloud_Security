@@ -238,40 +238,32 @@ public class AnalyseController {
 		
 		String title="只订购单次服务的用户数与订购过长期服务的用户数分布情况";
 		//左侧：组装数据格式['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
-		StringBuilder sbType=new StringBuilder();
-		sbType.append("[");
+		String sbType="['"+longTerm+"','"+single+"']";
 		//组装数据
 		StringBuilder sb=new StringBuilder();
 		sb.append("[");
 		if(serviceUserSize==0){//不存在数据
-			sb.append("{value:0,name:'无数据'}");
-		}else{//正常情况下（1长期或者2单次）
+			sb.append("{value:0,name:'"+longTerm+"',value:0,name:'"+single+"'}");
+		}else{//正常情况下（1长期或者2单次）备注：如果仅仅只出现一种类型的话，也将它归为正常情况，因为显示效果是相同的
 			int i=0;
 			for(Map<String,Object> map:serviceUserList){
 				if(i>0){
 					sb.append(",");
-					sbType.append(",");
 				}
 				StringBuilder sbUnit=new StringBuilder();
 				sbUnit.append("{");
 				int type=(Integer) map.get("type");
-				String name=(String) map.get("name");
+//				String name=(String) map.get("name");
 				long userNums=(Long) map.get("userNums");
 				//单元格式{value:135, name:'视频广告'},
 				sbUnit.append("value:");
 				sbUnit.append(userNums);
 				sbUnit.append(",name:'");
-				sbType.append("'");
 				if(type==1){//长期
 					sbUnit.append(longTerm);
-					sbType.append(longTerm);
 				}else{//单次
 					sbUnit.append(single);
-					sbType.append(single);
 				}
-				sbType.append(name);
-				sbType.append("'");
-				sbUnit.append(name);
 				sbUnit.append("'");
 				sbUnit.append("}");
 				sb.append(sbUnit);
@@ -279,11 +271,10 @@ public class AnalyseController {
 			}
 		}
 		sb.append("]");
-		sbType.append("]");
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("title",title);
 		jsonObject.put("serviceUserList", sb.toString());
-		jsonObject.put("legend", sbType.toString());
+		jsonObject.put("legend", sbType);
 		String resultGson = jsonObject.toString();//转成json数据
         response.setContentType("textml;charset=UTF-8");
         response.getWriter().print(resultGson);

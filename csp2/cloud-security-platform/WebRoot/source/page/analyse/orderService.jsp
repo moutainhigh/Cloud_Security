@@ -12,7 +12,7 @@
 </head>
 
 <body style="height: 100%; margin: 0">
-	<div id="main" style="height:100%;"></div>
+	<div id="main" style="width:50%;height:100%;"></div>
 	
 	<script>
 	var myChart = echarts.init(document.getElementById('main'));
@@ -31,10 +31,10 @@
 	        	option = {
 				    tooltip: {
 				        trigger: 'item',
-				        formatter: "{a} <br/>{b}: {c} ({d}%)"
+				        formatter: "{a} <br/>{b}:  ({d}%)"
 				    },
 				    legend: {
-				        orient: 'vertical',
+				        orient: 'horizontal',
 				        x: 'left',
 				        data:typeData
 				    },
@@ -60,7 +60,7 @@
 	                            normal:{ 
 	                                label:{ 
 	                                   show: true, 
-	                                   formatter: '{b} : {c} ({d}%)' 
+	                                   formatter: '{b} :  ({d}%)' 
 	                                }, 
 	                                labelLine :{show:true}
 	                            } 
@@ -75,7 +75,7 @@
 	                            normal:{ 
 	                                label:{ 
 	                                   show: true, 
-	                                   formatter: '{b} : {c} ({d}%)' 
+	                                   formatter: '{b} : ({d}%)' 
 	                                }, 
 	                                labelLine :{show:true}
 	                            } 
