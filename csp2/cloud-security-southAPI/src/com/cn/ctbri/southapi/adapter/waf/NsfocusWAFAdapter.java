@@ -496,9 +496,9 @@ public class NsfocusWAFAdapter {
 			sqlSession = getSqlSession();
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			TWafLogWebsec wafLogWebsec = mapper.selectByPrimaryKey(Long.parseLong(logId));
+			sqlSession.commit();
 			
 			wafLogWebsec = getTWafLogWebsecBase64(wafLogWebsec);
-			sqlSession.commit();
 			XStream xStream = getXStream();
 			xStream.alias("wafLogWebsec", TWafLogWebsec.class);
 			String jsonString =  xStream.toXML(wafLogWebsec);
@@ -532,17 +532,16 @@ public class NsfocusWAFAdapter {
 			
 			
 			sqlSession = getSqlSession();
-			
 			TWafLogWebsecExample example = new TWafLogWebsecExample();
 			example.or().andStatTimeBetween(dateBefore,dateNow).andDstIpIn(dstIpList);
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
-			List<TWafLogWebsec> allList = mapper.selectByExample(example);
-
+			List<TWafLogWebsec> allList = mapper.selectByExampleWithBLOBs(example);
+			sqlSession.commit();
 
 			for (TWafLogWebsec tWafLogWebsec : allList) {
 				tWafLogWebsec = getTWafLogWebsecBase64(tWafLogWebsec);
 			}
-			sqlSession.commit();
+
 			XStream xStream = getXStream();
 			xStream.alias("wafLogWebsecList", List.class);
 			String jsonString =  xStream.toXML(allList);
@@ -572,9 +571,10 @@ public class NsfocusWAFAdapter {
 			Date dateBefore = calendar.getTime();
 			
 			//组装查询条件并进行查询
-			sqlSession = getSqlSession();
 			TWafLogWebsecExample example = new TWafLogWebsecExample();
 			example.or().andStatTimeBetween(dateBefore,dateNow);
+			
+			sqlSession = getSqlSession();
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			List<TWafLogWebsec> allList = mapper.selectByExample(example);
 			sqlSession.commit();
@@ -598,71 +598,7 @@ public class NsfocusWAFAdapter {
 		}
 	}
 	
-	public String getWafAlertInTime(JSONObject jsonObject){
-		SqlSession sqlSession = null;
-		try {
-			//FOR IP LIST
-			int interval = jsonObject.getInt("interval");
-			List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
-			System.out.println("ip="+dstIpList.toString());
-			
-			//FOR TIME INTERVAL
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(new Date());
-			Date dateNow = calendar.getTime();
-			calendar.add(Calendar.HOUR, -interval);
-			Date dateBefore = calendar.getTime();
-			
-			
-			sqlSession = getSqlSession();
-			
-			TWafLogWebsecExample example = new TWafLogWebsecExample();
-			example.or().andStatTimeBetween(dateBefore,dateNow).andDstIpIn(dstIpList);
-			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
-			List<TWafLogWebsec> tWafLogWebsecList = mapper.selectByExample(example);
-			for (TWafLogWebsec tWafLogWebsec : tWafLogWebsecList) {
-				tWafLogWebsec = getTWafLogWebsecBase64(tWafLogWebsec);
-			}
-			System.out.println(tWafLogWebsecList);
-			TWafLogArpExample tWafLogArpExample = new TWafLogArpExample();
-			tWafLogArpExample.or().andStatTimeBetween(dateBefore, dateNow).andDstIpIn(dstIpList);
-			TWafLogArpMapper tWafLogArpMapper =sqlSession.getMapper(TWafLogArpMapper.class);
-			List<TWafLogArp> tWafLogArpList = tWafLogArpMapper.selectByExample(tWafLogArpExample);
-			
-			TWafLogDefaceExample tWafLogDefaceExample = new TWafLogDefaceExample();
-			tWafLogDefaceExample.or().andDstIpIn(dstIpList).andStatTimeBetween(dateBefore, dateNow);
-			TWafLogDefaceMapper tWafLogDefaceMapper = sqlSession.getMapper(TWafLogDefaceMapper.class);
-			List<TWafLogDeface> tWafLogDefaceList = tWafLogDefaceMapper.selectByExample(tWafLogDefaceExample);
-			for (TWafLogDeface tWafLogDeface : tWafLogDefaceList) {
-				tWafLogDeface = getTWafLogDefaceBase64(tWafLogDeface);
-			}
-			
-			TWafLogDdosExample tWafLogDdosExample = new TWafLogDdosExample();
-			tWafLogDdosExample.or().andDstIpIn(dstIpList).andStatTimeBetween(dateBefore, dateNow);
-			TWafLogDdosMapper tWafLogDdosMapper = sqlSession.getMapper(TWafLogDdosMapper.class);
-			List<TWafLogDdos> tWafLogDdosList = tWafLogDdosMapper.selectByExample(tWafLogDdosExample);
-			for (TWafLogDdos tWafLogDdos : tWafLogDdosList) {
-				tWafLogDdos = getTWafLogDdosBase64(tWafLogDdos);
-			}
-			
-			
-			
-			
-			
-			
-			sqlSession.commit();
-			XStream xStream = getXStream();
-			xStream.alias("wafLogWebsecList", List.class);
-			String jsonString =  xStream.toXML(tWafLogWebsecList);
-			return jsonString;
-		} catch (Exception e) {
-			e.printStackTrace();
-			sqlSession.rollback();
-			return "{\"wafLogWebsecList\":\"error\"}";
-		} finally {
-			sqlSession.close();
-		}
-	}
+
 	
 	
 	
@@ -714,7 +650,7 @@ public class NsfocusWAFAdapter {
 		SqlSession sqlSession = null;
 		
 		try {
-			sqlSession = getSqlSession();
+			
 			int interval = jsonObject.getInt("interval");
 			List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
 			
@@ -725,13 +661,14 @@ public class NsfocusWAFAdapter {
 			calendar.add(Calendar.HOUR, -interval);
 			Date dateBefore = calendar.getTime();
 			
+			sqlSession = getSqlSession();
 			TWafLogArpExample example = new TWafLogArpExample();
 			example.or().andStatTimeBetween(dateBefore, dateNow).andDstIpIn(dstIpList);
-			
 			TWafLogArpMapper mapper =sqlSession.getMapper(TWafLogArpMapper.class);
 			List<TWafLogArp> allList = mapper.selectByExample(example);
-			
 			sqlSession.commit();
+			
+			
 			XStream xStream = getXStream();
 			xStream.alias("wafLogArp", TWafLogArp.class);
 			xStream.alias("wafLogArpList", List.class);

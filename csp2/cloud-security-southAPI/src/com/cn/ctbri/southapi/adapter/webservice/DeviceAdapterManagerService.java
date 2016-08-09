@@ -104,6 +104,8 @@ public class DeviceAdapterManagerService {
 		String deviceId = jsonObject.get("deviceId").toString();
 		return deviceAdpaterManager.getEngineStat(deviceId);
 	}
+	
+	//获取引擎
 	@POST
 	@Path("/getEngineStatRate")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -114,6 +116,8 @@ public class DeviceAdapterManagerService {
 		String deviceId = jsonObject.get("deviceId").toString();
 		return deviceAdpaterManager.getEngineStatRate(deviceId);
 	}
+	
+	//移除任务
 	@POST
 	@Path("/removeTask")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -125,6 +129,8 @@ public class DeviceAdapterManagerService {
 		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		return deviceAdpaterManager.removeTask(deviceId, scannerTaskUniParam);
 	}
+	
+	//开始任务
 	@POST
 	@Path("/startTask")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -136,6 +142,8 @@ public class DeviceAdapterManagerService {
 		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		return deviceAdpaterManager.startTask(deviceId, scannerTaskUniParam);
 	}
+	
+	//暂停任务
 	@POST
 	@Path("/pauseTask")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -147,6 +155,8 @@ public class DeviceAdapterManagerService {
 		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		return deviceAdpaterManager.pauseTask(deviceId, scannerTaskUniParam);
 	}
+	
+	//停止任务
 	@POST
 	@Path("/stopTask")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -158,6 +168,8 @@ public class DeviceAdapterManagerService {
 		ScannerTaskUniParam scannerTaskUniParam = (ScannerTaskUniParam) JSONObject.toBean(jsonObject,ScannerTaskUniParam.class);
 		return deviceAdpaterManager.stopTask(deviceId, scannerTaskUniParam);
 	}
+	
+	
 	@POST
 	@Path("/getStatusByTaskId")
 	@Produces(MediaType.APPLICATION_JSON)
