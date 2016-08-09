@@ -257,4 +257,18 @@ public class DateUtils {
          date = calendar.getTime();  
          return date;
     }
+    /**
+     * 
+	 * 功能描述： 得到上一个月的日期
+	 * 参数描述：   date某个时间
+	 *@date:2016-8-3下午2:02:05
+	 * 返回值    ：  上一个月当天的日期
+	 * 异        常：
+     */
+    public static Date getBeforeMonthDate(Date date){
+    	if(date!=null){
+    		return getDateAfterMonths(date,-1);
+    	}
+    	return null;
+    }
 }
