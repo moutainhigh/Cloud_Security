@@ -25,7 +25,6 @@ public class EngineStatJob implements Job {
 	 */
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		DeviceAdpaterManager deviceAdpaterManager = new DeviceAdpaterManager();
-		deviceAdpaterManager.loadDeviceAdpater();
 		SAXReader reader = new SAXReader();
         // 加载XML
 		

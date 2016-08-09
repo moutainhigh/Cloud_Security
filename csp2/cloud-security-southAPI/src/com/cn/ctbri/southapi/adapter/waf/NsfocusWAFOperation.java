@@ -25,12 +25,17 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
  */
 
 public class NsfocusWAFOperation extends CommonDeviceOperation {
+	//REST版本uri
 	private static final String REST_URI_V1 = "/rest/v1";
-	
+	//WAF地址
 	private String nsfocusWafUrl ="";	
+	//WAF用户名
 	private String nsfocusWafUsername = "";
+	//WAF密码
 	private String nsfocusWafPassword = "";
+	//WAF API Key=用户名
 	private String nsfocusAPIKey = "";
+	//WAF API Value=密码
 	private String nsfocusAPIValue = "";
 	private String[] nsfocusWafPublicIPList = null;
 		
@@ -157,7 +162,6 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 							"&apikey="+apiKey+
 							"&method=get&sign="+md5String;
 		return authString;
-
 	}
 	
 	private String getWAFAuthWithQuery(String apiKey, String apiValue, String method) {
@@ -173,80 +177,70 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		return authString;
 	}
 
-	//基础方法负责生成各自标签字符串，拼接各自的登录参数字符串以及调用登录方法
-	/**
-	 * get基础方法
-	 * @param url
-	 * @return
-	 */
+//基础方法负责生成各自标签字符串，拼接各自的登录参数字符串以及调用登录方法	
+	//get基本操作，不带请求参数
 	private String getOperation(String url) {
 		String authString = getWAFAuth(nsfocusAPIKey, nsfocusAPIValue, "get");
 		String returnString = getMethod(url+authString);
 		return returnString;
 	}
-	
-	
+	//get基本操作，带请求参数
 	private String getOperationWithQuery(String url) {
 		String authString = getWAFAuthWithQuery(nsfocusAPIKey, nsfocusAPIValue, "get");
 		String returnString = getMethod(url+authString);
 		return returnString;
 	}
-	/**
-	 * post基础方法
-	 * @param url
-	 * @return
-	 */
-	private String postOperation(String url) {
-		String authString = getWAFAuth(nsfocusAPIKey, nsfocusAPIValue, "post");
-		String returnString = delMethod(url+authString);
-		return returnString;
-	}
-	
+	//post基本操作
 	private String postOperation(String url,String jsonString){
 		String authString = getWAFAuth(nsfocusAPIKey, nsfocusAPIValue, "post");
 		String returnString = postMethod(url+authString, jsonString);
 		return returnString;
 	}
-	/**
-	 * delete基础方法
-	 * @param url
-	 * @return
-	 */
+	//delete基本操作，不带请求参数
 	private String delOperation(String url) {
 		String authString = getWAFAuth(nsfocusAPIKey, nsfocusAPIValue, "delete");
 		String returnString = delMethod(url+authString);
 		return returnString;
 	}
-	
+	//delete基本操作，带请求参数
 	private String delOperationWithQuery(String url) {
 		String autString = getWAFAuthWithQuery(nsfocusAPIKey, nsfocusAPIValue, "delete");
 		String returnString = delMethod(url+autString);
 		return returnString;
 	}
-	
+	//delete基本操作，带传入参数
 	private String delOperation(String url,String jsonString){
 		String authString = getWAFAuth(nsfocusAPIKey, nsfocusAPIValue, "delete");
 		String returnString = delMethod(url+authString, jsonString);
 		return returnString;
 	}
-	
-	
+	//put基本操作
 	private String putOperation(String url,String jsonString) {
 		String authString = getWAFAuth(nsfocusAPIKey, nsfocusAPIValue, "put");
 		String returnString = putmethod(url+authString, jsonString);
 		return returnString;
 	}
 	
+	
+	//获取可用的公共代理ip
 	public JSONArray getPublicIpList() {
 		JSONArray publicIpJsonArray = JSONArray.fromObject(nsfocusWafPublicIPList);
 		return publicIpJsonArray;
 	}
+	/*public JSONArray getApiPublicIpList() {
+		JSONArray jsonArray = JSONArray.fromObject(nsfocusWafPublicIPList);
+		return jsonArray;
+	}*/
 	
-	
+	/**
+	 * 获取全部证书信息
+	 * @return
+	 */
 	public String getSSLCert(){
 		String getSSLCertString = getOperation(nsfocusWafUrl+REST_URI_V1+"/sslcert");
 		return getSSLCertString;
 	}
+	
 	/**
 	 * 上传证书
 	 * @return
@@ -256,11 +250,6 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		String postSSLCertString = postOperation(nsfocusWafUrl+REST_URI_V1+"/sslcert", jsonString);
 		return postSSLCertString;
 	}
-	public JSONArray getApiPublicIpList() {
-		JSONArray jsonArray = JSONArray.fromObject(nsfocusWafPublicIPList);
-		return jsonArray;
-	}
-	
 	
 	/**
 	 * 资源池信息获取（获取所有站点组、站点、虚拟站点）
@@ -270,6 +259,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		String getSiteString = getOperation(nsfocusWafUrl+REST_URI_V1+"/sites");
 		return getSiteString;
 	}
+	
 	/**
 	 * 删除所有站点组、站点、虚拟站点
 	 * @return
@@ -278,6 +268,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		String deleteString = delOperation(nsfocusWafUrl+REST_URI_V1+"/sites?siteid=all");
 		return deleteString;
 	}
+	
 	/**
 	 * 资产信息查询（站点查询）
 	 * @param siteId
@@ -290,9 +281,15 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 			errJsonObject.put("reason", "Site id is null!!");
 			return errJsonObject.toString();
 		}
-		String getSiteString = getOperation(nsfocusWafUrl+REST_URI_V1+"/sites/{"+jsonObject.getString("siteId")+"}");
+		String getSiteString = getSiteOperation(jsonObject.getString("siteId"));
 		return getSiteString;
 	}
+	//站点查询基本操作
+	public String getSiteOperation(String siteId) {
+		String getSiteOperationString = getOperation(nsfocusWafUrl+REST_URI_V1+"/sites/{"+siteId+"}");
+		return getSiteOperationString;
+	}
+	
 	
 	public String delSite(JSONObject jsonObject) {
 		if (jsonObject.get("siteId")==null||jsonObject.getString("siteId").length()<=0) {
@@ -301,9 +298,14 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 			errJsonObject.put("reason", "Site id is null!!");
 			return errJsonObject.toString();
 		}
-		String delSiteString = delOperationWithQuery(nsfocusWafUrl+REST_URI_V1+"/sites?siteid="+jsonObject.getString("siteId"));
+		String delSiteString = delSiteOperation(jsonObject.getString("siteId"));
 		return delSiteString;
 	}
+	public String delSiteOperation(String siteId) {
+		String delSiteOperationString = delOperationWithQuery(nsfocusWafUrl+REST_URI_V1+"/sites?siteid="+siteId);
+		return delSiteOperationString;
+	}
+	
 	
 	public String createSite(JSONObject jsonObject) {
 		if (jsonObject.get("wafIp")==null||jsonObject.getString("wafIp").length()<=0) {
@@ -329,9 +331,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		}
 		JSONObject createSiteJsonObject = new JSONObject();
 		createSiteJsonObject.put("0", tempJsonObject);
-		System.out.println(createSiteJsonObject);
 		String createSiteString = postOperation(nsfocusWafUrl+REST_URI_V1+"/sites",createSiteJsonObject.toString());
-		System.out.println(">>>"+createSiteString);
 		JSONArray responseArray = JSONArray.fromObject(createSiteString);
 		String responseString = responseArray.getString(0);
 		return responseString;
@@ -351,13 +351,18 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 			errJsonObject.put("status", "failed");
 			errJsonObject.put("reason", "Site id is null!!");
 		}
+		//根据传入对象组装符合设备需求格式的临时json对象
 		JSONObject tempJsonObject = new JSONObject();
+		//站点名称
 		if(jsonObject.get("name")!=null && jsonObject.getString("name").length()>0)
 			tempJsonObject.put("name", jsonObject.getString("name"));
+		//站点ip
 		if(jsonObject.get("ip")!=null && jsonObject.getString("ip").length()>0)
 			tempJsonObject.put("ip", jsonObject.getString("ip"));
+		//站点的端口
 		if(jsonObject.get("port")!=null && jsonObject.getString("port").length()>0)
 			tempJsonObject.put("port", jsonObject.getString("port"));
+		//站点的类型，0为http，1为https
 		if (jsonObject.get("type")!=null && jsonObject.getString("type").length()>0){
 			tempJsonObject.put("type", jsonObject.getString("type"));
 			if ("1".equals(jsonObject.getString("type")) && jsonObject.get("cert")!=null) {
@@ -382,22 +387,33 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	}
 	
 	public String createVirtSite(JSONObject jsonObject) {
+		//判断虚拟站点所在站点组是否为空
 		if(jsonObject.get("parent")==null || jsonObject.getString("parent").length()<=0 ){
 			JSONObject errJsonObject = new JSONObject();
 			errJsonObject.put("status", "failed");
 			errJsonObject.put("reason", "Parent is null!!!");
 			return errJsonObject.toString();
 		}
+		
+		//根据传入的json对象组装符合设备需求格式的临时json对象
 		JSONObject tempJsonObject = new JSONObject();
+		
+		//所在站点组
 		tempJsonObject.put("parent", jsonObject.getString("parent"));
+		
+		//虚拟站点名称
 		if(jsonObject.get("name")!=null && jsonObject.getString("name").length()>0)
 			tempJsonObject.put("name", jsonObject.getString("name"));
+		//虚拟站点域名
 		if(jsonObject.get("domain")!=null && jsonObject.getString("domain").length()>0)
 			tempJsonObject.put("domain", jsonObject.getString("domain"));
+		//包含路径，默认为*
 		if(jsonObject.get("include")!=null && jsonObject.getString("include").length()>0)
 			tempJsonObject.put("include", jsonObject.getString("include"));
+		//不包含的路径，默认为空
 		if(jsonObject.get("exclude")!=null && jsonObject.getString("exclude").length()>0)
 			tempJsonObject.put("exclude", jsonObject.getString("exclude"));
+		//真实服务器信息(ip、端口)，一组有多个
 		if (jsonObject.get("server")!=null && jsonObject.getString("server").length()>0) {
 			JSONArray getJsonArray = JSONArray.fromObject(jsonObject.getString("server"));
 			JSONArray putJsonArray = new JSONArray();
@@ -411,10 +427,15 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 			}
 			tempJsonObject.put("server", putJsonArray);
 		}
+		
+		//利用临时json对象创建虚拟站点json对象
 		JSONObject createVSiteObject = new JSONObject();
+		//加入虚拟站点json对象外层包装，id位置为0
 		createVSiteObject.put("0", tempJsonObject);
+		//发送创建虚拟站点请求并接收返回的内容
 		String createVSiteString = postOperation(nsfocusWafUrl+REST_URI_V1+"/sites/protect/virts",createVSiteObject.toString());
 		JSONArray responseArray = JSONArray.fromObject(createVSiteString);
+		//取id位为0的返回内容，一般都为0
 		String responseString = responseArray.getString(0);
 		return responseString;
 	}
@@ -437,7 +458,11 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		String alterString = putOperation(nsfocusWafUrl+REST_URI_V1+"/sites/protect/virts", alterVirtSiteJsonObject.toString());
 		return alterString;
 	}
-	
+	/**
+	 * 删除指定的虚拟站点信息
+	 * @param jsonObject
+	 * @return
+	 */
 	public String deleteVirtSite(JSONObject jsonObject) {
 		if(jsonObject.get("vSiteId")==null||jsonObject.getString("vSiteId").length()<=0){
 			JSONObject errJsonObject = new JSONObject();
@@ -449,23 +474,14 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		String deleteString = delOperationWithQuery(nsfocusWafUrl+REST_URI_V1+"/sites/protect/virts?virtid="+vSiteId); 
 		return deleteString;
 	}
-	
+	/**
+	 * 获取工作组ip
+	 * @param jsonObject
+	 * @return
+	 */
 	public String getAllIpFromEth(JSONObject jsonObject) {
 		return getOperation(nsfocusWafUrl+REST_URI_V1+"/interfaces/all/ip");
-	}	
-	public static void main(String[] args) {
-		/*
-		System.out.println(MediaType.APPLICATION_JSON.toString());
-		NsfocusWAFOperation operation = new NsfocusWAFOperation("https://219.141.189.189:58442/","vmwaf","E34A-44A6-E12B-E1C9","admin","nsfocus");
-
-		String responseString = operation.getOperation("https://219.141.189.189:58442/rest/v1/interfaces/eth2");
-		System.out.println(">>>>>"+responseString);
-		*/
-		String[] aStrings = new String[]{"11","22"};
-		JSONArray jsonArray = JSONArray.fromObject(aStrings);
-		System.out.println(jsonArray.get(0));
-	}
-	
+	}		
 }
 
 

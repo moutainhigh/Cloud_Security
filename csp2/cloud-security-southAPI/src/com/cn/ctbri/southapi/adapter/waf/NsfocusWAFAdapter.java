@@ -54,9 +54,13 @@ public class NsfocusWAFAdapter {
 	 * @return
 	 */
 	public boolean initDeviceAdapter(WAFConfigManager wafConfigManager){
+		//初始化
 		System.out.println(">>>initDeviceAdapter");
+		//初始化Syslog
 		WAFSyslogManager wsm = new WAFSyslogManager();
 		wsm.initWAFSyslogManager();
+		
+		//加载waf设备配置、初始化waf设备、保存设备操作对象
 		Iterator<?> iterator = wafConfigManager.mapWAFConfigDeviceManager.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Map.Entry<Integer,WAFConfigDeviceGroup> entry = (Entry<Integer, WAFConfigDeviceGroup>)iterator.next();
@@ -76,17 +80,15 @@ public class NsfocusWAFAdapter {
 				String apiValue = wafConfigDevice.getApiValue();
 				String apiUsername = wafConfigDevice.getApiUserName();
 				String apiPassword = wafConfigDevice.getApiPwd();
-				System.out.println("apiPassWord="+apiPassword);
 				nsfocusWAFOperation = new NsfocusWAFOperation(apiAddr, apiKey, apiValue, apiUsername, apiPassword, apiPublicIp);
 				mapNsfocusWAFOperation.put(devId, nsfocusWAFOperation);
 			}
 			mapNsfocusWAFOperationGroup.put(resourceId, mapNsfocusWAFOperation);
 		}
-		//mapNsfocusWAFOperation.put("30001", value)
 		return true;
 	}
 	
-	//Base64编码
+	//字符串Base64编码
 	private String stringToBase64(String string){
 		byte[] base64Bytes = Base64.encodeBase64Chunked(string.trim().getBytes());
 		return new String(base64Bytes).trim();
@@ -102,7 +104,8 @@ public class NsfocusWAFAdapter {
 		}
 		return wafEventTypeMap;
 		
-	}	
+	}
+	
 	//Web安全事件防护日志Base64编码
 	private TWafLogWebsec getTWafLogWebsecBase64(TWafLogWebsec tWafLogWebsec) throws DocumentException {
 		//事件类型
@@ -174,11 +177,14 @@ public class NsfocusWAFAdapter {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		return sqlSession;
 	}
-	
+	//配置xstream
 	private XStream getXStream() {
+		//转换格式为json
 		JsonHierarchicalStreamDriver driver = new JsonHierarchicalStreamDriver();
 		XStream xStream = new XStream(driver);
+		//自动解析JavaBean中的Annotation
 		xStream.autodetectAnnotations(true);
+		//配置日期转换器的时间格式为北京时间(东八区时间)
 		xStream.registerConverter(new CTSTimeConverter());
 		return xStream;
 	}
@@ -226,7 +232,13 @@ public class NsfocusWAFAdapter {
 		return siteArray.toString();
 	}
 	
-	
+	/**
+	 * 获取resource内指定设备的站点信息
+	 * @param resourceId
+	 * @param deviceId
+	 * @param jsonObject
+	 * @return
+	 */
 	public String getSite(int resourceId, int deviceId,JSONObject jsonObject) {
 		return getDeviceById(resourceId, deviceId).getSite(jsonObject);
 	}
@@ -238,9 +250,6 @@ public class NsfocusWAFAdapter {
 		
 		for (Entry<Integer, NsfocusWAFOperation> entry : map.entrySet()) {
 			JSONObject responseJsonObject = JSONObject.fromObject(entry.getValue().createSite(jsonObject));
-			//int siteId = responseJsonObject.getInt("id");
-			//int groupId = responseJsonObject.getJSONObject("website").getJSONObject("group").getInt("id");
-			
 			TWafNsfocusTargetinfoKey key = new TWafNsfocusTargetinfoKey();
 			key.setId(targetId);
 			key.setResourceid(resourceId);
@@ -249,8 +258,6 @@ public class NsfocusWAFAdapter {
 			record.setDeviceid(entry.getKey());
 			record.setId(targetId);
 			record.setResourceid(resourceId);
-			//record.setSiteid(siteId);
-			//record.setGroup(groupId);
 			try {
 				SqlSession sqlSession = getSqlSession();
 				TWafNsfocusTargetinfoMapper mapper = sqlSession.getMapper(TWafNsfocusTargetinfoMapper.class);
@@ -306,8 +313,11 @@ public class NsfocusWAFAdapter {
 	 * @return
 	 */
 	public String createVirtSite(int resourceId, JSONObject jsonObject) {
+		//resourceId
 		System.out.println("resourceId="+resourceId);
+		//获取指定resource内需要操作的一组waf设备
 		HashMap<Integer, NsfocusWAFOperation> map = mapNsfocusWAFOperationGroup.get(resourceId);
+		
 		JSONObject createVirtSiteJsonObject = new JSONObject();
 		JSONArray createVirtSiteJsonArray = new JSONArray();
 		String targetId = UUID.randomUUID().toString();
@@ -534,7 +544,6 @@ public class NsfocusWAFAdapter {
 			}
 			sqlSession.commit();
 			XStream xStream = getXStream();
-			xStream.alias("wafLogWebsec", TWafLogWebsec.class);
 			xStream.alias("wafLogWebsecList", List.class);
 			String jsonString =  xStream.toXML(allList);
 			return jsonString;
@@ -546,6 +555,113 @@ public class NsfocusWAFAdapter {
 			sqlSession.close();
 		}
 		
+	}
+	
+	
+	public String getAllWafLogWebsecInTime(JSONObject jsonObject) {
+		SqlSession sqlSession = null;
+		try {
+			//根据时间间隔获取时间段
+			int interval = jsonObject.getInt("interval");
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			//当前时间
+			Date dateNow = calendar.getTime();
+			calendar.add(Calendar.HOUR, -interval);
+			//开始时间
+			Date dateBefore = calendar.getTime();
+			
+			//组装查询条件并进行查询
+			sqlSession = getSqlSession();
+			TWafLogWebsecExample example = new TWafLogWebsecExample();
+			example.or().andStatTimeBetween(dateBefore,dateNow);
+			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+			List<TWafLogWebsec> allList = mapper.selectByExample(example);
+			sqlSession.commit();
+			
+			//base64编码
+			for (TWafLogWebsec tWafLogWebsec : allList) {
+				tWafLogWebsec = getTWafLogWebsecBase64(tWafLogWebsec);
+			}
+
+			//Java对象转为json数据
+			XStream xStream = getXStream();
+			xStream.alias("wafLogWebsecList", List.class);
+			String jsonString =  xStream.toXML(allList);
+			return jsonString;
+		} catch (Exception e) {
+			e.printStackTrace();
+			sqlSession.rollback();
+			return "{\"wafLogWebsecList\":\"error\"}";
+		} finally {
+			sqlSession.close();
+		}
+	}
+	
+	public String getWafAlertInTime(JSONObject jsonObject){
+		SqlSession sqlSession = null;
+		try {
+			//FOR IP LIST
+			int interval = jsonObject.getInt("interval");
+			List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
+			System.out.println("ip="+dstIpList.toString());
+			
+			//FOR TIME INTERVAL
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			Date dateNow = calendar.getTime();
+			calendar.add(Calendar.HOUR, -interval);
+			Date dateBefore = calendar.getTime();
+			
+			
+			sqlSession = getSqlSession();
+			
+			TWafLogWebsecExample example = new TWafLogWebsecExample();
+			example.or().andStatTimeBetween(dateBefore,dateNow).andDstIpIn(dstIpList);
+			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+			List<TWafLogWebsec> tWafLogWebsecList = mapper.selectByExample(example);
+			for (TWafLogWebsec tWafLogWebsec : tWafLogWebsecList) {
+				tWafLogWebsec = getTWafLogWebsecBase64(tWafLogWebsec);
+			}
+			System.out.println(tWafLogWebsecList);
+			TWafLogArpExample tWafLogArpExample = new TWafLogArpExample();
+			tWafLogArpExample.or().andStatTimeBetween(dateBefore, dateNow).andDstIpIn(dstIpList);
+			TWafLogArpMapper tWafLogArpMapper =sqlSession.getMapper(TWafLogArpMapper.class);
+			List<TWafLogArp> tWafLogArpList = tWafLogArpMapper.selectByExample(tWafLogArpExample);
+			
+			TWafLogDefaceExample tWafLogDefaceExample = new TWafLogDefaceExample();
+			tWafLogDefaceExample.or().andDstIpIn(dstIpList).andStatTimeBetween(dateBefore, dateNow);
+			TWafLogDefaceMapper tWafLogDefaceMapper = sqlSession.getMapper(TWafLogDefaceMapper.class);
+			List<TWafLogDeface> tWafLogDefaceList = tWafLogDefaceMapper.selectByExample(tWafLogDefaceExample);
+			for (TWafLogDeface tWafLogDeface : tWafLogDefaceList) {
+				tWafLogDeface = getTWafLogDefaceBase64(tWafLogDeface);
+			}
+			
+			TWafLogDdosExample tWafLogDdosExample = new TWafLogDdosExample();
+			tWafLogDdosExample.or().andDstIpIn(dstIpList).andStatTimeBetween(dateBefore, dateNow);
+			TWafLogDdosMapper tWafLogDdosMapper = sqlSession.getMapper(TWafLogDdosMapper.class);
+			List<TWafLogDdos> tWafLogDdosList = tWafLogDdosMapper.selectByExample(tWafLogDdosExample);
+			for (TWafLogDdos tWafLogDdos : tWafLogDdosList) {
+				tWafLogDdos = getTWafLogDdosBase64(tWafLogDdos);
+			}
+			
+			
+			
+			
+			
+			
+			sqlSession.commit();
+			XStream xStream = getXStream();
+			xStream.alias("wafLogWebsecList", List.class);
+			String jsonString =  xStream.toXML(tWafLogWebsecList);
+			return jsonString;
+		} catch (Exception e) {
+			e.printStackTrace();
+			sqlSession.rollback();
+			return "{\"wafLogWebsecList\":\"error\"}";
+		} finally {
+			sqlSession.close();
+		}
 	}
 	
 	
@@ -601,6 +717,8 @@ public class NsfocusWAFAdapter {
 			sqlSession = getSqlSession();
 			int interval = jsonObject.getInt("interval");
 			List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
+			
+			//根据时间间隔获取时间段
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
 			Date dateNow = calendar.getTime();
@@ -612,6 +730,7 @@ public class NsfocusWAFAdapter {
 			
 			TWafLogArpMapper mapper =sqlSession.getMapper(TWafLogArpMapper.class);
 			List<TWafLogArp> allList = mapper.selectByExample(example);
+			
 			sqlSession.commit();
 			XStream xStream = getXStream();
 			xStream.alias("wafLogArp", TWafLogArp.class);
@@ -639,6 +758,7 @@ public class NsfocusWAFAdapter {
 				tWafLogDeface = getTWafLogDefaceBase64(tWafLogDeface);
 			}
 			sqlSession.commit();
+			
 			XStream xStream = getXStream();
 			xStream.alias("wafLogDeface", TWafLogDeface.class);
 			xStream.alias("wafLogDefaceList", List.class);
@@ -683,13 +803,13 @@ public class NsfocusWAFAdapter {
 			
 			int interval = jsonObject.getInt("interval");
 			List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
-			
+			//根据时间间隔获取时间段
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
 			Date dateNow = calendar.getTime();
 			calendar.add(Calendar.HOUR, -interval);
 			Date dateBefore = calendar.getTime();
-			
+			//组织查询内容
 			TWafLogDefaceExample example = new TWafLogDefaceExample();
 			example.or().andDstIpIn(dstIpList).andStatTimeBetween(dateBefore, dateNow);
 			TWafLogDefaceMapper mapper = sqlSession.getMapper(TWafLogDefaceMapper.class);
@@ -764,7 +884,7 @@ public class NsfocusWAFAdapter {
 			//IP List
 			int interval = jsonObject.getInt("interval");
 			List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
-			//System Time
+			//根据时间间隔获取时间段
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
 			Date dateNow = calendar.getTime();
@@ -901,7 +1021,7 @@ public class NsfocusWAFAdapter {
 		SqlSession sqlSession = null;
 		try {
 			sqlSession = getSqlSession();
-			
+			//根据时间间隔获取时间段
 			int interval = jsonObject.getInt("interval");
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());

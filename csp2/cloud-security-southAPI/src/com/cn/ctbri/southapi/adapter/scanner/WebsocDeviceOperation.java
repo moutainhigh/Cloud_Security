@@ -177,15 +177,6 @@ public class WebsocDeviceOperation {
 			responseObject.put("status", "Fail");
 		}
 		return	responseObject.toString();
-/*    	System.out.println(response);
-        String jsStr = JSONObject.fromObject(response).getString("result");
-        String messageString =  JSONObject.fromObject(response).getString("message");
-        if("{}".equals(jsStr)){
-        	return messageString;
-        }else{
-            String virtual_group_id = JSONObject.fromObject(jsStr).getString("virtual_group_id");
-            return virtual_group_id;
-        }*/
 	}
 
 	

@@ -742,7 +742,11 @@ public class DeviceAdpaterManager {
 	}
 	
 	public String getWafLogWebsecInTime(JSONObject jsonObject) {
-		return nsfocusWAFAdapter.getWafLogWebsecInTime(jsonObject);
+		return nsfocusWAFAdapter.getWafAlertInTime(jsonObject);
+	}
+	
+	public String getAllWafLogWebsecInTime(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getAllWafLogWebsecInTime(jsonObject);
 	}
 	
 	public String getWafLogWebsecById(String logId) {

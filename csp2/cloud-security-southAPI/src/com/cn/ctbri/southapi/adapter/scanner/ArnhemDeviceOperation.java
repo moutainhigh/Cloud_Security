@@ -63,9 +63,9 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 	         // 连接服务器
 	         WebResource service = client.resource(url); 
 	         // 发送请求，接收返回数据
-	         System.out.println(service.toString());
+	         System.out.println("sessionIdService="+service.toString());
 	         String response = service.type(MediaType.APPLICATION_XML).post(String.class, xmlContent);
-	         System.out.println(response);
+	         System.out.println("sessionId="+response);
 	         if(response==null){
 	        	 return false;
 	         }
@@ -192,8 +192,11 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 			Document document = DocumentHelper.parseText(response);
 			Element rootElement = document.getRootElement();
 			String value = rootElement.attributeValue("value");
-			if ("AuthErr"==value&&createSessionId(username, password, arnhemServerWebrootUrl)) {
+			System.out.println("value="+value);
+			System.out.println("err="+("AuthErr".equals(value)));
+			if ("AuthErr".equals(value) && createSessionId(username, password, arnhemServerWebrootUrl)) {
 				String redirectResponse = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class);
+				System.out.println("redirect="+redirectResponse);
 				return redirectResponse;
 			} else {
 				return response;
