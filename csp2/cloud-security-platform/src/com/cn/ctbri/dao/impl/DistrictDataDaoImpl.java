@@ -84,6 +84,30 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
 
 	public Alarm getServiceAlarmByMonth(Map<String, Object> paramMap) {
 		return getSqlSession().selectOne(ns + "getServiceAlarmByMonth", paramMap);
+	}
+
+	public List getVulnscanAlarmOneHour() {
+		return this.getSqlSession().selectList(ns+"getVulnscanAlarmOneHour");
+	}
+
+	public List getVulnscanAlarmTOP20() {
+		return this.getSqlSession().selectList(ns+"getVulnscanAlarmTOP20");
+	}
+
+	public List getVulnscanAlarm(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"getVulnscanAlarm", paramMap);
+	}
+
+	public List getServiceUseInfoMonth6(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"getServiceUseInfoMonth6", paramMap);
+	}
+
+	public List getIndustryOrderCount() {
+		return this.getSqlSession().selectList(ns+"getIndustryOrderCount");
+	}
+
+	public List getIndustryUserCount() {
+		return this.getSqlSession().selectList(ns+"getIndustryUserCount");
 	}		
 	
 	

@@ -150,4 +150,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findProvName" parameterType="hashmap" resultType="String">
 		select name from cs_district where id=#{provId}
     </select>
+	
+	<!-- 近1个小时内漏洞的数据 -->
+    <select id="getVulnscanAlarmOneHour" resultType="hashmap">
+         select  a.name,COUNT(a.name) AS count from cs_alarm_test a
+		 where a.serviceId=1 and a.name &lt;&gt; '' and a.alarm_time > (select date_sub(now(), interval 1 hour) before_hour1)
+         group by a.name 
+            
+    </select>
+	
+	<!-- 获取漏洞情况top20 -->
+    <select id="getVulnscanAlarmTOP20" resultType="hashmap">
+         select  a.name,COUNT(a.name) AS count from cs_alarm_test a
+		 where a.serviceId=1 and a.name &lt;&gt; ''
+         group by a.name
+         order by count desc limit 5
+    </select>
+	
+
+	
+	<!-- 根据月份获取各等级漏洞分布 -->
+    <select id="getVulnscanAlarm" resultType="hashmap" parameterType="hashmap">
+         select  COUNT(a.alarm_time) count,a.level,DATE_FORMAT(a.alarm_time,'%Y.%m') month1 from cs_alarm_test a
+		 where a.serviceId=1 and a.level=#{level} and DATE_FORMAT(a.alarm_time,'%Y.%m') &gt; #{month}
+         group by month1,level
+		 order by level,month1
+    </select>
+	
+	<!-- 最近6个月内不同类型服务订单数量变化 -->
+    <select id="getServiceUseInfoMonth6" resultType="hashmap" parameterType="hashmap">
+		SELECT order1.serviceId,COUNT(order1.serviceId) count,DATE_FORMAT(order1.begin_date,'%Y.%m') month1 FROM `cs_order_test` order1
+		 WHERE DATE_FORMAT(order1.begin_date,'%Y.%m')=#{month}
+		GROUP BY month1,order1.serviceId
+    </select>
+	
+	<!-- 获取行业注册用户数 -->
+    <select id="getIndustryUserCount" resultType="hashmap">
+		SELECT count(*) userCount,user1.industry FROM `cs_user` user1 group by user1.industry
+    </select>
+	<!-- 获取行业订单数 -->
+    <select id="getIndustryOrderCount" resultType="hashmap">
+		select count(order1.id) orderCount, user1.industry
+ 		from cs_order order1,cs_user user1 
+		where order1.userId=user1.id group by user1.industry
+    </select>
+
 </mapper>

@@ -23,7 +23,12 @@ public interface DistrictDataDao {
     List getDistrictAlarmTop5(Map<String, Object> paramMap);
 
     List getServiceAlarmTop5(Map<String, Object> paramMap);
-
+    /**
+     * 最近一个小时内漏洞跟踪
+     * @param paramMap
+     * @return
+     */
+    List getVulnscanAlarmOneHour();
     List getServiceAlarmMonth5(Map<String, Object> paramMap);
 
     int getMax(Map<String, Object> paramMap);
@@ -37,5 +42,31 @@ public interface DistrictDataDao {
 	String getMonth(int i);
 
 	Alarm getServiceAlarmByMonth(Map<String, Object> paramMap);
-
+    /**
+     * 获取漏洞情况TOP20
+     * @param paramMap
+     * @return
+     */
+    List getVulnscanAlarmTOP20();
+    /**
+     * 根据月份获取各等级漏洞分布
+     * @return
+     */
+    List getVulnscanAlarm(Map<String, Object> paramMap);
+    /**
+     * 最近6个月内不同类型服务订单数量变化
+     * @param month
+     * @return
+     */
+    List getServiceUseInfoMonth6(Map<String, Object> paramMap);
+    /**
+     * 获取各行业用户数
+     * @return
+     */
+    List getIndustryUserCount();
+    /**
+     * 获取各行业订单数
+     * @return
+     */
+    List getIndustryOrderCount();
 }

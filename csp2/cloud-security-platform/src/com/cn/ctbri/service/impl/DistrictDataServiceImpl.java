@@ -68,5 +68,29 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
 		return districtDataDao.getProvNameById(paramMap);
 	}
 
+	public List getVulnscanAlarmOneHour() {
+		return districtDataDao.getVulnscanAlarmOneHour();
+	}
+
+	public List getVulnscanAlarmTOP20() {
+		return districtDataDao.getVulnscanAlarmTOP20();
+	}
+
+	public List getVulnscanAlarm(Map<String, Object> paramMap) {
+		return districtDataDao.getVulnscanAlarm(paramMap);
+	}
+
+	public List getServiceUseInfoMonth6(Map<String, Object> paramMap) {
+		return districtDataDao.getServiceUseInfoMonth6(paramMap);
+	}
+
+	public List getIndustryOrderCount() {
+		return districtDataDao.getIndustryOrderCount();
+	}
+
+	public List getIndustryUserCount() {
+		return districtDataDao.getIndustryUserCount();
+	}
+
 
 }
