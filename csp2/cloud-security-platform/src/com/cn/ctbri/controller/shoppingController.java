@@ -1495,22 +1495,25 @@ public class shoppingController {
 		    	  //判断当前时间已经查过下单时间
 		    	  if(date.getTime()>endDate.getTime()){
 		    		  flag=false;
-		    		  break;
+//		    		  break;
+		    		  //修改订单状态已作废
+		    		  shopCar.setStatus(-1);
+		    		  selfHelpOrderService.updateShopOrder(shopCar);
 		    	  }
 	    	  
 	    	  }
 	       }	 
 	     }
 	     //修改订单状态已作废
-	     if(!flag){
-	    	  if(list!=null&&list.size()>0){
-	   	       for(int i=0;i<list.size();i++){
-	   	    	   ShopCar shopCar = (ShopCar)list.get(i);
-	   	    	  shopCar.setStatus(-1);
-	   	    	 selfHelpOrderService.updateShopOrder(shopCar);
-	   	       }	 
-	   	     } 
-	     }
+//	     if(!flag){
+//	    	  if(list!=null&&list.size()>0){
+//	   	       for(int i=0;i<list.size();i++){
+//	   	    	   ShopCar shopCar = (ShopCar)list.get(i);
+//	   	    	  shopCar.setStatus(-1);
+//	   	    	 selfHelpOrderService.updateShopOrder(shopCar);
+//	   	       }	 
+//	   	     } 
+//	     }
 	   //object转化为Json格式
 	         m.put("flag", flag);
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
