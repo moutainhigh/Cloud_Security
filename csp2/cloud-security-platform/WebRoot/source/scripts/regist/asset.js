@@ -348,7 +348,9 @@ function deleteAsset(id){
 	//检查订单资产表里是否有此项记录，若有：则提示不能删除，若无：则可以删除
 //	$.post("checkdelete.html", {"id" : assetId}, function(data, textStatus) {
 	$.post("checkedit.html", {"id" : assetId}, function(data, textStatus) {
-		if (data.count>0){
+		if (data.checkId == false || data.assetId != id) {
+				window.location.href = "index.html";
+		}else if (data.count>0){
 			alert("您的订单中包含此资产，不能删除！");
 			return false;
 		}else{
