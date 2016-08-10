@@ -1,5 +1,58 @@
 $(function(){
 	//最近一小时内漏洞跟踪
+	var myChart0 = echarts.init(document.getElementById('wafOneHour'));
+	   $.ajax({
+	    	type : "post",
+	    	url:"getWafOneHour.html",
+	        dataType:"json",
+	        success:function(obj){
+		   		var option0 = {
+		   			    title : {
+		   	        text: '南丁格尔玫瑰图',
+		   	        subtext: '纯属虚构',
+		   	        x:'center'
+		   	    },
+		   	    tooltip : {
+		   	        trigger: 'item',
+		   	        formatter: "{a} <br/>{b} : {c} ({d}%)"
+		   	    },
+/*		   	    legend: {
+		   	        x : 'center',
+		   	        y : 'bottom',
+		   	        data:['rose1','rose2','rose3','rose4','rose5','rose6','rose7','rose8']
+		   	    },*/
+/*		   	    toolbox: {
+		   	        show : true,
+		   	        feature : {
+		   	            mark : {show: true},
+		   	            dataView : {show: true, readOnly: false},
+		   	            magicType : {
+		   	                show: true,
+		   	                type: ['pie', 'funnel']
+		   	            },
+		   	            restore : {show: true},
+		   	            saveAsImage : {show: true}
+		   	        }
+		   	    },*/
+		   	    calculable : true,
+		   	    series : [
+		   	        
+		   	        {
+		   	            name:'面积模式',
+		   	            type:'pie',
+		   	            radius : [20, 110],
+		   	            center : ['50%', '50%'],
+		   	            roseType : 'area',
+		   	            data:obj.dataArray
+		   	        }
+		   	    ]
+		   	};
+		   		myChart0.setOption(option0);
+	     },
+
+	});
+	
+	//最近一小时内漏洞跟踪
 	var myChart1 = echarts.init(document.getElementById('serviceUseInfo'));
 	   $.ajax({
 	    	type : "post",
@@ -40,8 +93,8 @@ $(function(){
 		   	        {
 		   	            name:'面积模式',
 		   	            type:'pie',
-		   	            radius : [10, 110],
-		   	            center : ['75%', '50%'],
+		   	            radius : [20, 110],
+		   	            center : ['50%', '50%'],
 		   	            roseType : 'area',
 		   	            data:obj.dataArray
 		   	        }
