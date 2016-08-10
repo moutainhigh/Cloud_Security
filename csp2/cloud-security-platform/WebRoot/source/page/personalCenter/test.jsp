@@ -51,8 +51,11 @@
 		<div  style="width:600px; height:500px;" id="serviceUseInfoMonth6">		            
 		 </div>
 		 
-		 <div style="width:116px">	用户行业分布</div>
+		 <div style="width:116px">用户行业分布</div>
  				<div  style="width:600px; height:500px;" id="service1OneHour">
+         </div>
+        <div style="width:116px">最近一小时内攻击跟踪</div>
+ 				<div  style="width:600px; height:500px;" id="wafOneHour">
          </div>
 </body>
 </html>
