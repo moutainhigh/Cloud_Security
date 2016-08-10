@@ -18,7 +18,9 @@ $(function(){
 		var temp = $(this).attr("city");
 		var purpose = $(this).attr("purpose");
 		$.post("checkedit.html", {"id" : id}, function(data, textStatus) {
-			if (data.count>0){
+			if (data.checkId == false || data.assetId != id) {
+				window.location.href = "index.html";
+			}else if (data.count>0){
 				alert("您正在执行的订单中包含此资产，暂时不能修改！");
 				return false;
 			}else{
