@@ -3,8 +3,11 @@ package com.cn.ctbri.controller;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,6 +15,7 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cn.ctbri.common.WafAPIWorker;
 import com.cn.ctbri.entity.AlarmBug;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
@@ -364,6 +369,124 @@ public class AnalyseController {
 		jsonObject.put("type",sbType.toString());
 		jsonObject.put("innerRing",sbInnerRing.toString());
 		jsonObject.put("detailService",sbDetailService.toString());
+		String resultGson = jsonObject.toString();//转成json数据
+        response.setContentType("textml;charset=UTF-8");
+        response.getWriter().print(resultGson);
+       return null;
+	}
+	
+	/**
+	 * 
+	 * 功能描述： 攻击类型页面
+	 * 参数描述：   
+	 *@date:2016-8-9下午3:44:36
+	 * 返回值    ：  
+	 * 异        常：
+	 */
+	@RequestMapping(value="attackUI.html")
+	public String attackUI(HttpServletRequest request){
+        String result = "/source/page/analyse/attack";
+        return result;
+	}
+	
+	class Attack implements Comparator{
+		
+		public Attack(String attackType, int attackValue) {
+			super();
+			this.attackType = attackType;
+			this.attackValue = attackValue;
+		}
+		
+		public Attack() {
+			super();
+		}
+
+		private String attackType;
+		private int attackValue;
+		public String getAttackType() {
+			return attackType;
+		}
+		public void setAttackType(String attackType) {
+			this.attackType = attackType;
+		}
+		public int getAttackValue() {
+			return attackValue;
+		}
+		public void setAttackValue(int attackValue) {
+			this.attackValue = attackValue;
+		}
+		public int compare(Object o1, Object o2) {
+			Attack obj1=(Attack) o1;
+			Attack obj2=(Attack) o2;
+			return (obj2.getAttackValue()-obj1.getAttackValue());
+		}
+		
+	}
+	@RequestMapping(value="attackCount.html",method=RequestMethod.POST)
+	@ResponseBody
+	public String attackCount(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		String title="攻击类型分布及发展趋势";
+		
+		int showNums=20;
+		Date currentDate=new Date();
+		//1.根据当前时间获取距离一个月前的日期
+		Date lastMonthDate= DateUtils.getBeforeMonthDate(currentDate);
+		Map<String,Integer> dateStrMap=new HashMap<String,Integer>();
+		Date date=lastMonthDate;
+		Date startDate=DateUtils.getAfterDate(date,1);
+		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+		String starteDateStr=format.format(startDate);
+		String endDateStr=format.format(currentDate);
+		long start=System.currentTimeMillis();
+		String wafcreate = WafAPIWorker.getEventTypeCountByDay("1",format.format(lastMonthDate));
+		long end=System.currentTimeMillis();
+		System.out.println(end-start);
+		JSONArray jsonArray=JSONArray.fromObject(wafcreate);
+		List<String> attackTypeList=new ArrayList<String>();
+		List<Attack> attackList=new LinkedList<Attack>();
+		int size=jsonArray.size();
+		Map<String,List> map=new HashMap<String,List>();
+		List resultList=new LinkedList();
+		if(size>20){//超过20个攻击类型后，需要通过排序查找出这段时间内攻击类型数量最多的20个
+			for(int i=0;i<size;i++){
+    			JSONObject obj=(JSONObject) jsonArray.get(i);
+    			String type=(String) obj.get("eventType");
+    			map.put(type,new ArrayList());
+    			map.get(type).add(type);
+    			JSONArray dateValueArray=(JSONArray) obj.get("countInTime");
+    			int dateSize=dateValueArray.size();
+    			int sum=0;
+    			boolean flag=false;
+    			for(int j=0;j<dateSize;j++){
+    				JSONObject dateObj=(JSONObject) dateValueArray.get(j);
+        			String dateType=(String) dateObj.get("date");
+        			if(dateType.equals(starteDateStr)){
+        				flag=true;
+        			}
+        			if(flag){
+        				
+        				int dateValue=(Integer) dateObj.get("count");
+        				map.get(type).add(dateValue);
+        				sum+=dateValue;
+        			}
+        			
+    			}
+    			attackList.add(new Attack(type,sum));
+    		}
+			Collections.sort(attackList,new Attack());
+			for(int x=0;x<showNums;x++){
+				String attackType=attackList.get(x).getAttackType();
+				attackTypeList.add(attackType);
+				resultList.add(map.get(attackType));
+			}
+		}
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("title",title);
+		jsonObject.put("startTime",format.format(lastMonthDate));
+		jsonObject.put("endTime",endDateStr);
+		jsonObject.put("listResult", resultList);
+		jsonObject.put("names",attackTypeList);
+		
 		String resultGson = jsonObject.toString();//转成json数据
         response.setContentType("textml;charset=UTF-8");
         response.getWriter().print(resultGson);
