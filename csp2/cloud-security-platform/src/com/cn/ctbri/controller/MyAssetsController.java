@@ -481,15 +481,25 @@ public class MyAssetsController {
 	 */
 	@RequestMapping("/checkedit.html")
 	@ResponseBody
-	public void checkedit(Asset asset,HttpServletResponse response){
-		//检查订单资产表里面是否含有此资产
-		List<OrderAsset> list = orderAssetService.findRunAssetById(asset.getId());
-		int count = 0;
-		if(list.size()>0){
-			count = list.size();
-		}
+	public void checkedit(Asset asset,HttpServletRequest request,HttpServletResponse response){
 		Map<String, Object> m = new HashMap<String, Object>();
-		m.put("count", count);
+		//id验证
+    	User globle_user = (User) request.getSession().getAttribute("globle_user");
+		Asset oldAsset = assetService.findById(asset.getId(),globle_user.getId());
+		if(oldAsset == null) {
+			m.put("checkId", false);
+		} else {
+			//检查订单资产表里面是否含有此资产
+			List<OrderAsset> list = orderAssetService.findRunAssetById(asset.getId());
+			int count = 0;
+			if(list.size()>0){
+				count = list.size();
+			}
+			m.put("checkId", true);
+			m.put("count", count);
+		}
+		
+		m.put("assetId", asset.getId());
 		//object转化为Json格式
 		JSONObject JSON = CommonUtil.objectToJson(response, m);
 		try {
