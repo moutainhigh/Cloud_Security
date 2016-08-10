@@ -522,4 +522,44 @@ public class WafDetailController {
         }
     	return reMap;
     }
+    
+    /**
+     * 最近一小时内WAF跟踪
+     * 
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value="getWafOneHour.html")
+    @ResponseBody
+    public void getWafOneHour(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	String eventStr = WafAPIWorker.getWafEventTypeCount("4");
+    	Map map = this.getWafEventTypeCount(eventStr);
+        
+        List name = null;
+        List value = null;
+        JSONArray jsondata = null;
+        
+        if(map != null && map.size() > 0){
+			name = (List) map.get("name");
+			value = (List) map.get("value");
+			jsondata = (JSONArray) map.get("json");
+        }
+
+        JSONObject jo = new JSONObject();
+        jo.put("name", name);
+        jo.put("count", value);
+        jo.put("json", jsondata);
+    	
+        Map<String, Object> m = new HashMap<String, Object>();
+        m.put("dataArray", jsondata);
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return;
+    }
 }
