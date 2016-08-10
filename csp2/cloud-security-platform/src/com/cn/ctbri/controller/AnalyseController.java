@@ -1,7 +1,6 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.common.WafAPIWorker;
 import com.cn.ctbri.entity.AlarmBug;
-import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.util.DateUtils;
@@ -89,10 +87,9 @@ public class AnalyseController {
 				dateStrMap.put(DateUtils.dateToDate(date),i);
 			}
 		}
-		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
 		Map paramMap=new HashMap<String,Object>();
-		paramMap.put("startTime",format.format(startDate));
-		paramMap.put("endTime",format.format(currentDate));
+		paramMap.put("startTime",DateUtils.dateToDate(startDate));
+		paramMap.put("endTime",DateUtils.dateToDate(currentDate));
 		List<AlarmBug> bugMaxList=alarmService.findBugMaxCounts(paramMap);
 		List<String> names=new ArrayList<String>();
 		int bugMaxSize=bugMaxList.size();
@@ -135,8 +132,8 @@ public class AnalyseController {
 		}
 		results.append("]\"");
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("startTime",format.format(lastMonthDate));
-		jsonObject.put("endTime",format.format(currentDate));
+		jsonObject.put("startTime",DateUtils.dateToDate(lastMonthDate));
+		jsonObject.put("endTime",DateUtils.dateToDate(currentDate));
 		jsonObject.put("names", names);
 //		String result="\"[" +
 //"[\"框架注入\",0, 0, 10, 5, 0, 1, 0, 20, 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 7, 7, 0, 12, 0, 0, 0, 6, 0, 0, 0, 0],"+
@@ -389,39 +386,7 @@ public class AnalyseController {
         return result;
 	}
 	
-	class Attack implements Comparator{
-		
-		public Attack(String attackType, int attackValue) {
-			super();
-			this.attackType = attackType;
-			this.attackValue = attackValue;
-		}
-		
-		public Attack() {
-			super();
-		}
-
-		private String attackType;
-		private int attackValue;
-		public String getAttackType() {
-			return attackType;
-		}
-		public void setAttackType(String attackType) {
-			this.attackType = attackType;
-		}
-		public int getAttackValue() {
-			return attackValue;
-		}
-		public void setAttackValue(int attackValue) {
-			this.attackValue = attackValue;
-		}
-		public int compare(Object o1, Object o2) {
-			Attack obj1=(Attack) o1;
-			Attack obj2=(Attack) o2;
-			return (obj2.getAttackValue()-obj1.getAttackValue());
-		}
-		
-	}
+	
 	@RequestMapping(value="attackCount.html",method=RequestMethod.POST)
 	@ResponseBody
 	public String attackCount(HttpServletRequest request, HttpServletResponse response) throws IOException{
@@ -434,11 +399,11 @@ public class AnalyseController {
 		Map<String,Integer> dateStrMap=new HashMap<String,Integer>();
 		Date date=lastMonthDate;
 		Date startDate=DateUtils.getAfterDate(date,1);
-		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-		String starteDateStr=format.format(startDate);
-		String endDateStr=format.format(currentDate);
+		
+		String starteDateStr=DateUtils.dateToDate(startDate);
+		String endDateStr=DateUtils.dateToDate(currentDate);
 		long start=System.currentTimeMillis();
-		String wafcreate = WafAPIWorker.getEventTypeCountByDay("1",format.format(lastMonthDate));
+		String wafcreate = WafAPIWorker.getEventTypeCountByDay("1",DateUtils.dateToDate(lastMonthDate));
 		long end=System.currentTimeMillis();
 		System.out.println(end-start);
 		JSONArray jsonArray=JSONArray.fromObject(wafcreate);
@@ -482,7 +447,7 @@ public class AnalyseController {
 		}
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("title",title);
-		jsonObject.put("startTime",format.format(lastMonthDate));
+		jsonObject.put("startTime",DateUtils.dateToDate(lastMonthDate));
 		jsonObject.put("endTime",endDateStr);
 		jsonObject.put("listResult", resultList);
 		jsonObject.put("names",attackTypeList);
@@ -491,5 +456,38 @@ public class AnalyseController {
         response.setContentType("textml;charset=UTF-8");
         response.getWriter().print(resultGson);
        return null;
+	}
+class Attack implements Comparator{
+		
+		public Attack(String attackType, int attackValue) {
+			super();
+			this.attackType = attackType;
+			this.attackValue = attackValue;
+		}
+		
+		public Attack() {
+			super();
+		}
+
+		private String attackType;
+		private int attackValue;
+		public String getAttackType() {
+			return attackType;
+		}
+		public void setAttackType(String attackType) {
+			this.attackType = attackType;
+		}
+		public int getAttackValue() {
+			return attackValue;
+		}
+		public void setAttackValue(int attackValue) {
+			this.attackValue = attackValue;
+		}
+		public int compare(Object o1, Object o2) {
+			Attack obj1=(Attack) o1;
+			Attack obj2=(Attack) o2;
+			return (obj2.getAttackValue()-obj1.getAttackValue());
+		}
+		
 	}
 }
