@@ -105,7 +105,7 @@ $(function(){
 
 	});
 
-	   //5、	重大漏洞分布视图
+/*	   //5、	重大漏洞分布视图
 	var myChart2 = echarts.init(document.getElementById('vulnscanAlarmTOP20'));
 	   $.ajax({
 	    	type : "post",
@@ -115,14 +115,14 @@ $(function(){
 		   		var option2 = {
 		   			 backgroundColor: '#2c343c',
 
-		   		   /* title: {
+		   		    title: {
 		   		        text: 'Customized Pie',
 		   		        left: 'center',
 		   		        top: 20,
 		   		        textStyle: {
 		   		            color: '#ccc'
 		   		        }
-		   		    },*/
+		   		    },
 
 		   		    tooltip : {
 		   		        trigger: 'item',
@@ -175,10 +175,10 @@ $(function(){
 		   		myChart2.setOption(option2);
 	     },
 
-	});
+	});*/
 	 
 	   //a)	最近6个月各等级漏洞分布
-	var myChart3 = echarts.init(document.getElementById('vulnscanAlarmByLevelMonth6'));
+/*	var myChart3 = echarts.init(document.getElementById('vulnscanAlarmByLevelMonth6'));
 	   $.ajax({
 	    	type : "post",
 	    	url:"getVulnscanAlarmByLevelMonth6.html",
@@ -191,9 +191,9 @@ $(function(){
 		   	            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
 		   	        }
 		   	    },
-		   	  /*  legend: {
-		   	        data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎','百度','谷歌','必应','其他']
-		   	    },*/
+		   	    legend: {
+		   	        data:obj.levelList
+		   	    },
 		   	    grid: {
 		   	        left: '3%',
 		   	        right: '4%',
@@ -217,7 +217,7 @@ $(function(){
 		   		myChart3.setOption(option3);
 	     },
 
-	});
+	});*/
 	   
 	var myChart4 = echarts.init(document.getElementById('serviceUseInfoMonth6'));
 	   $.ajax({
@@ -248,9 +248,9 @@ $(function(){
 		   	            return list;
 		   	        })()
 		   	    },*/
-		   	  /*  visualMap: {
+		   	    visualMap: {
 		   	        color: ['red', 'yellow']
-		   	    },*/
+		   	    },
 		   	    radar: {
 		   	       indicator : indicatorList
 		   	    },
@@ -291,17 +291,17 @@ $(function(){
 	        dataType:"json",
 	        success:function(obj){
 		   		var option5 = {
-		   			    title : {
+		   		/*	    title : {
 		   	        text: '某地区蒸发量和降水量',
 		   	        subtext: '纯属虚构'
-		   	    },
+		   	    },*/
 		   	    tooltip : {
 		   	        trigger: 'axis'
 		   	    },
 		   	    legend: {
 		   	        data:['各行业注册用户数','已下订单数']
 		   	    },
-		   	    toolbox: {
+		   	 /*   toolbox: {
 		   	        show : true,
 		   	        feature : {
 		   	            dataView : {show: true, readOnly: false},
@@ -309,15 +309,16 @@ $(function(){
 		   	            restore : {show: true},
 		   	            saveAsImage : {show: true}
 		   	        }
-		   	    },
-		   	    calculable : true,
+		   	    },*/
+		   	    //calculable : true,
 		   	    xAxis : [
 		   	        {
 		   	            type : 'category',
+		   	            offset:5,
 		   	         axisLabel:{
-	                           interval:0,
+	                         interval:0,
 	                         rotate:45,
-	                         margin:2,
+	                         margin:0,
 	                         textStyle:{
 	                             color:"#222"
 	                         }
@@ -325,6 +326,11 @@ $(function(){
 		   	            data : obj.industryList
 		   	        }
 		   	    ],
+		   	    grid: { // 控制图的大小，调整下面这些值就可以，
+		             x: 40,
+		             x2: 100,
+		             y2: 150,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+		        },
 		   	    yAxis : [
 		   	        {
 		   	            type : 'value'
@@ -347,9 +353,9 @@ $(function(){
 		   	            type:'bar',
 		   	            data:obj.orderList,
 		   	            markPoint : {
-		   	                data : [
-		   	                    {name : '年最高', value : 182.2, xAxis: 7, yAxis: 183},
-		   	                    {name : '年最低', value : 2.3, xAxis: 11, yAxis: 3}
+		   	        		data : [
+		   	                    {type : 'max', name: '最大值'},
+		   	                    {type : 'min', name: '最小值'}
 		   	                ]
 		   	            }
 		   	        }
