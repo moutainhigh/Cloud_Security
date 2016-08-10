@@ -759,6 +759,7 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getWafLogWebSecById(logId);
 	}
 
+	
 	public String getWafLogArp(List<String> dstIpList) {
 		return nsfocusWAFAdapter.getWafLogArp(dstIpList);
 	}
@@ -815,6 +816,10 @@ public class DeviceAdpaterManager {
 	
 	public String getWafEventTypeCount() {
 		return nsfocusWAFAdapter.getEventTypeCount();
+	}
+	
+	public String getWafEventTypeCountByDay(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getEventTypeCountByDay(jsonObject);
 	}
 	
 	public String getWafEventTypeCountInTime(JSONObject jsonObject) {

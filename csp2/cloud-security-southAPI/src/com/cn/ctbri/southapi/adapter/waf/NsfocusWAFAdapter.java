@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlAccessOrder;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.util.NewBeanInstanceStrategy;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -902,14 +903,14 @@ public class NsfocusWAFAdapter {
 			Document document = reader.read(DeviceAdapterConstant.WAF_NSFOCUS_EVENT_TYPE);
 			List<Element> typeElements = document.selectNodes("/TypeList/Type");
 			List<JSONObject> typeCountList = new ArrayList<JSONObject>();
+			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			for (Element element : typeElements) {
 				String eventTypeBase64 = stringToBase64(element.getTextTrim());
-				TWafLogWebsecExample example = new TWafLogWebsecExample();
-				example.or().andEventTypeEqualTo(element.attributeValue("name")).andStatTimeBetween(dateBefore, dateNow);
-				TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+				TWafLogWebsecExample exampleElement = new TWafLogWebsecExample();
+				exampleElement.or().andEventTypeEqualTo(element.attributeValue("name")).andStatTimeBetween(dateBefore, dateNow);
 				JSONObject eventTypeJsonObject = new JSONObject();
 				eventTypeJsonObject.put("eventType", eventTypeBase64);
-				eventTypeJsonObject.put("count", mapper.countByExample(example));
+				eventTypeJsonObject.put("count", mapper.countByExample(exampleElement));
 				typeCountList.add(eventTypeJsonObject);
 			}
 			sqlSession.commit();
@@ -926,6 +927,70 @@ public class NsfocusWAFAdapter {
 			sqlSession.close();
 		}
 	}
+	//按天查询统计告警类型信息
+	public String getEventTypeCountByDay(JSONObject jsonObject) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getSqlSession();
+			//根据时间间隔获取时间段
+			int interval = jsonObject.getInt("interval");
+
+
+			
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			Date endDate = calendar.getTime();
+			System.out.println(endDate);
+			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM-dd");
+	
+			
+			SAXReader reader = new SAXReader();
+			Document document = reader.read(DeviceAdapterConstant.WAF_NSFOCUS_EVENT_TYPE);
+			List<Element> typeElements = document.selectNodes("/TypeList/Type");
+			List<JSONObject> typeCountList = new ArrayList<JSONObject>();
+			System.out.println("start="+sdf.format(new Date()));
+			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+			System.out.println("end="+sdf.format(new Date()));
+			for (Element element : typeElements) {
+				String eventTypeBase64 = stringToBase64(element.getTextTrim());
+				JSONObject eventTypeJsonObject = new JSONObject();
+				eventTypeJsonObject.put("eventType", element.getTextTrim());
+				JSONArray eventTypeInTimeArray = new JSONArray();
+				Date startDate = sdf.parse(jsonObject.getString("startDate"));
+				while (startDate.before(endDate)) {
+					TWafLogWebsecExample exampleElement = new TWafLogWebsecExample();
+					JSONObject eventTypeInTimeJsonObject = new JSONObject();
+					calendar.setTime(startDate);
+					calendar.add(calendar.DATE, interval);
+					exampleElement.or().andEventTypeEqualTo(element.attributeValue("name")).andStatTimeBetween(startDate, calendar.getTime());
+
+					eventTypeInTimeJsonObject.put("date", sdf.format(startDate));
+					eventTypeInTimeJsonObject.put("count", mapper.countByExample(exampleElement));
+					eventTypeInTimeArray.add(eventTypeInTimeJsonObject);
+					startDate = calendar.getTime();
+				}
+				eventTypeJsonObject.put("countInTime", eventTypeInTimeArray);
+				
+				
+				
+				typeCountList.add(eventTypeJsonObject);
+			}
+			System.out.println("postTime="+sdf.format(new Date()));
+			sqlSession.commit();
+			return JSONArray.fromObject(typeCountList).toString();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			sqlSession.rollback();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "Eventtype count error!!!");
+			return errorJsonObject.toString();
+		}finally {
+			sqlSession.close();
+		}
+	}
+	
 	
 	public String getAlertLevelCount() {
 		SqlSession sqlSession = null;
