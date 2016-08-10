@@ -189,16 +189,17 @@
                         	<tbody>
                         	
                             	 <tr height="40">
-                                 	<td width="20%"><label style=" margin: 0 20px 0 40px; width:16px; height:16px;display:inline-block;">
-                                      
-                                          <c:if test="${shopCar.status==-1}">
-                                            <div style="width: 50px; float: left; vertical-align: middle; margin: 0px 20px;"><font color="red">已失效</font></div>
+                                 	<td width="20%">
+                                            <c:if test="${shopAPI.status==-1}">
+                                           <div style="width: 50px; float: left; vertical-align: middle; margin: 0px 20px;"><font color="red">已失效</font></div>
                                             </c:if>
-                                             <c:if test="${shopCar.status!=-1}">
-                                              <input type="checkbox" class="ck" style="display:none" value="${shopAPI.orderId}" isApi="1" name="check_name"></input>
-                                            <i class="chck" style="margin: 0; position:relative; top:0"></i>
+                                             <c:if test="${shopAPI.status!=-1}">
+                                             <label style=" margin: 0 20px 0 40px; width:16px; height:16px;display:inline-block;">
+                                             <input type="checkbox" class="ck" style="display:none" value="${shopAPI.orderId}" isApi="1" name="check_name" />
+                                           <i class="chck" style="margin: 0; position:relative; top:0"></i>
+                                           </label>
                                             </c:if>
-                                            </label>
+                                            
                                           <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${shopAPI.serviceId}&indexPage=2" target="_blank">${shopAPI.serverName}</a></td>
                                    
                                    
