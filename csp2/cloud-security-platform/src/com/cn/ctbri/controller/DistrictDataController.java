@@ -290,6 +290,7 @@ public class DistrictDataController {
         //定义漏洞等级
         int[] levels = {-1,0,1,2,3};
         String[] levelNames = {"信息","低","中","高","紧急"};
+        List levelList = new ArrayList();
         for(int i = 0; i<levels.length; i++){
             //获取前六个月的漏洞等级分布情况
         	Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -299,6 +300,7 @@ public class DistrictDataController {
             List<Integer> tempList = new ArrayList<Integer>();
             boolean flag = false;
             if(dataList!=null && dataList.size()>0){
+            	levelList.add(levelNames[i]);
             	for(int j = 0; j<monthList.size(); j++){//判断该月份有没有数值
             		for(int k = 0; k < dataList.size(); k++){
                 		String month = ((Map)dataList.get(k)).get("month1").toString();
@@ -337,6 +339,7 @@ public class DistrictDataController {
         Map<String, Object> m = new HashMap<String, Object>();
         m.put("dataArray", jsonArray);
         m.put("monthList", monthList);
+        m.put("levelList", levelList);
 		//object转化为Json格式
 		JSONObject JSON = CommonUtil.objectToJson(response, m);
 		try {
@@ -368,17 +371,7 @@ public class DistrictDataController {
         	monthList.add(month);
 		}
         
-        //获取服务名称
-        List<Serv> servList = servService.findAllService();
-        List indicatorList = new ArrayList();
-        if(servList!=null && servList.size()>0){
-        	for(int i = 0; i < servList.size(); i++){
-        		Map<String,Object> newMap = new HashMap<String,Object>();
-        		newMap.put("text", servList.get(i).getName());
-        		newMap.put("max", 100);
-        		indicatorList.add(newMap);
-        	}
-        }
+        int maxCount = 0;//定义最大数值
         //根据用户和月份查询
         JSONArray jsonArray = new JSONArray();
         for(int i = 0; i < monthList.size(); i++){
@@ -394,6 +387,9 @@ public class DistrictDataController {
             		for(int k = 0; k < dataList.size(); k++){
                 		String month = ((Map)dataList.get(k)).get("month1").toString();
                 		int count = Integer.parseInt(((Map)dataList.get(k)).get("count").toString());
+                		if(count > maxCount){
+                			maxCount = count;
+                		}
                 		int serviceId = Integer.parseInt(((Map)dataList.get(k)).get("serviceId").toString());
                 		if(serviceId==j){
                 			tempList.add(count);
@@ -416,6 +412,18 @@ public class DistrictDataController {
         	jsonObject.put("name", monthList.get(i));
         	jsonObject.put("value", tempList);
         	jsonArray.add(jsonObject);
+        }
+        
+        //获取服务名称
+        List<Serv> servList = servService.findAllService();
+        List indicatorList = new ArrayList();
+        if(servList!=null && servList.size()>0){
+        	for(int i = 0; i < servList.size(); i++){
+        		Map<String,Object> newMap = new HashMap<String,Object>();
+        		newMap.put("text", servList.get(i).getName());
+        		newMap.put("max", maxCount);
+        		indicatorList.add(newMap);
+        	}
         }
        
         Map<String, Object> m = new HashMap<String, Object>();
