@@ -432,6 +432,31 @@ public class WafAPIWorker {
         return textEntity;
 	}
 	
+	/**
+	 * 功能描述：按日期获取一段时间内的告警类型统计
+	 * @param interval
+	 * @return
+	 */
+	public static String getEventTypeCountByDay(String interval,String startDate){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("interval", interval);
+		json.put("startDate", startDate);
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/getEventTypeCountByDay";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
+	
 	
 	/**
 	 * 功能描述： 获取安全套接层上下文对象
@@ -673,12 +698,13 @@ public class WafAPIWorker {
         	String mask = ipObject.getString("mask");
         	System.out.println(mask);*/
 //    		virtualSite  = createVirtualSite("10001", "30001", "1464833085", "testfire", "http://www.testfire.net/", "*", "");
-    		JSONArray ser = new JSONArray();
-    		JSONObject jo = new JSONObject();
-			jo.put("ip", "101.200.234.126");
-			jo.put("port", "80");
-			ser.add(jo);
-    		wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", "test0615", "219.141.189.183", "80", "nsfocus.cer", "0", "www.anquanbang", "*", "", ser);
+//    		JSONArray ser = new JSONArray();
+//    		JSONObject jo = new JSONObject();
+//			jo.put("ip", "101.200.234.126");
+//			jo.put("port", "80");
+//			ser.add(jo);
+//    		wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", "test0615", "219.141.189.183", "80", "nsfocus.cer", "0", "www.anquanbang", "*", "", ser);
+    		wafcreate = WafAPIWorker.getEventTypeCountByDay("720","2016-8-10");
     	} catch (Exception e) {
             e.printStackTrace();
         }
