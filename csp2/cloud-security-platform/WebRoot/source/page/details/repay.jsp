@@ -182,6 +182,7 @@
                           <p>支付失败 余额不足</p>
                       </div>
                       <div class="repay_faillist">请在<a href="${ctx}/balanceUI.html">个人中心-安全币</a>中查看余额</div>
+                      <div class="repay_faillist">关于安全币余额不足问题请联系客服</div>
                     
                  </div>
                  </c:if>
