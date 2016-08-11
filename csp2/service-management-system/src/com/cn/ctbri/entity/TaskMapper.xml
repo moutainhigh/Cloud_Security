@@ -219,7 +219,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <!-- 根据orderId获取任务 -->
-    <select id="findTaskByOrderId" parameterType="String" resultType="map">
+    <select id="findTaskByOrderId" parameterType="hashmap" resultType="map">
          select min(t.taskId) as taskId, t.status,
 	         date_format(t.execute_time,'%Y-%m-%d %H:%i:%S') executeTime,
 	         date_format(t.begin_time,'%Y-%m-%d %H:%i:%S') beginTime,
@@ -232,6 +232,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          from cs_task t,cs_order_task ot 
          where t.orderTaskId = ot.orderTaskId 
          and ot.orderId = #{orderId}
+         <if test="status != null">
+	          and t.status = #{status} 
+	     </if>
          group by t.group_flag,ot.orderTaskId
     </select>
     
