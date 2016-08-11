@@ -25,6 +25,7 @@ public class ShopCar implements Serializable{
 	private int buynum;
 	private Date begin_date;//开始时间
 	private Date end_date;//结束日期
+	private Date createDate;
 	public String getOrderId() {
 		return orderId;
 	}
@@ -136,7 +137,11 @@ public class ShopCar implements Serializable{
 	public void setAddr(String addr) {
 		this.addr = addr;
 	}
-	
-
+	public Date getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
 	
 }
