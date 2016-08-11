@@ -45,6 +45,11 @@ $('.words').click(function(){
 			$(this).children('em').removeClass('add');
 			$(this).children('em').text('高级筛选条件');
 			$('.coreshow').hide();	
+			//2016-08-11
+			$("#type").val("");
+		    $("#servName").val("");
+		    $("#begin_date").val("");
+		    $("#end_date").val("");
 			
 		}else{
 			$(this).find('.nitial').addClass('initial');
