@@ -1,5 +1,6 @@
 package com.cn.ctbri.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,9 +140,9 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 		return selfHelpOrderDao.findBuyShopList(orderId,userId);
 	}
 
-	public void updateOrder(String orderId, String newOrderId,String isAPI,String status,String orderListId) {
+	public void updateOrder(String orderId, String newOrderId,String isAPI,String status,String orderListId,Date creatDate) {
 		// TODO Auto-generated method stub
-		selfHelpOrderDao.updateOrder(orderId, newOrderId,isAPI,status,orderListId);
+		selfHelpOrderDao.updateOrder(orderId, newOrderId,isAPI,status,orderListId,creatDate);
 	}
 
 	public void updateOrderAPI(String orderId, String newOrderId) {
