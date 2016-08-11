@@ -97,8 +97,8 @@ public class TaskServiceImpl implements ITaskService{
 		return this.taskDao.findByOrderTaskId(orderTaskId);
 	}
 
-	public List findTaskByOrderId(String orderId) {
-		return this.taskDao.findTaskByOrderId(orderId);
+	public List findTaskByOrderId(Map<String, Object> paramMap) {
+		return this.taskDao.findTaskByOrderId(paramMap);
 	}
 
 	public Task findTaskByTaskId(String taskId) {
