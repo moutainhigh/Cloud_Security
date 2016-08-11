@@ -22,8 +22,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入报警信息 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.Alarm" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO cs_alarm 
-		(name,alarm_time,score,level,advice,alarm_content,url,keyword,taskId,userId,alarm_type) 
-		VALUES(#{name,jdbcType=VARCHAR},#{alarm_time},#{score},#{level},#{advice},#{alarm_content},#{url},#{keyword},#{taskId},#{userId},#{alarm_type})
+		(name,alarm_time,score,level,advice,alarm_content,url,keyword,taskId,userId,alarm_type,serviceId,districtId) 
+		VALUES(#{name,jdbcType=VARCHAR},#{alarm_time},#{score},#{level},#{advice},#{alarm_content},#{url},#{keyword},#{taskId},#{userId},#{alarm_type},#{serviceId},#{districtId})
 	</insert>
 	
 	<!-- 查询报警信息  -->
