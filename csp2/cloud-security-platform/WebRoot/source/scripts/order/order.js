@@ -179,9 +179,9 @@ $(function(){
     	if(serviceId==1){
     		if(scanType==1){
         		scanName="每天00:10:00开始";
-        	}else if(scanType==2){
+        	}else if(scanType==5){
         		scanName="每周一00:10:00开始";
-        	}else if(scanType==3){
+        	}else if(scanType==6){
         		scanName="每月1日00:10:00开始";
         	}
     	}else{
