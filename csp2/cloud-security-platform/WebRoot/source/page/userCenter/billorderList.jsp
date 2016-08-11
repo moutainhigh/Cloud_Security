@@ -29,8 +29,8 @@
                                     扫描频率 &nbsp;&nbsp; &nbsp; 
                                     <span id="scan_type">
                                         <c:if test="${order.scan_type==1}">每天</c:if>
-                                        <c:if test="${order.scan_type==2}">每周</c:if>
-                                        <c:if test="${order.scan_type==3}">每月</c:if>
+                                        <c:if test="${order.scan_type==5}">每周</c:if>
+                                        <c:if test="${order.scan_type==6}">每月</c:if>
                                     </span> &nbsp;&nbsp; &nbsp;  
                          </c:if> 
                                     扫描次数 &nbsp;&nbsp; &nbsp; <span id="${order.id}scan"></span> </div></td>
