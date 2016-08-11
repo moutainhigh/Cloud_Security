@@ -176,7 +176,8 @@ ORDER BY a.create_date desc
   a.serviceId,
   a.scan_type     scanPeriod,
   a.websoc,
-  a.num buynum
+  a.num buynum,
+  a.create_date createDate
 FROM (SELECT
         s.name           serverName,
         r.*
@@ -228,7 +229,8 @@ WHERE a.id = b.orderId
 	  c.serviceId,
 	  c.scan_type     scanPeriod,
 	    c.websoc,
-        d.buynum
+        d.buynum,
+        c.create_date
      FROM (SELECT
 	     s.name            serverName,
 	     r.*
