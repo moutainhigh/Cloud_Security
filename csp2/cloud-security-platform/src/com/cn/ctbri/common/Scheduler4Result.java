@@ -143,6 +143,7 @@ public class Scheduler4Result {
 											alarm.setAlarm_content(alarm_content);
 											alarm.setKeyword(keyword);
 											alarm.setServiceId(Integer.parseInt(serId));
+											alarm.setDistrictId(0);
 											alarmService.saveAlarm(alarm);
 										}
 	//									order.setStatus(2);
