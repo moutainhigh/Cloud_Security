@@ -65,7 +65,7 @@ public interface ITaskService {
 	//二期新增 2015-12-1 by tangxr
 	Task findByOrderTaskId(String orderTaskId);
 
-	List findTaskByOrderId(String orderId);
+	List findTaskByOrderId(Map<String, Object> paramMap);
 
 	Task findTaskByTaskId(String taskId);
 
