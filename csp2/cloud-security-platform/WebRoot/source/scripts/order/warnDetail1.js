@@ -276,28 +276,29 @@ var getCharsData=function(repeat){
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
+                	lineData0=[];
                 	lineData=[];
                    	lineData2=[];
                    	lineData3=[];
+                   	lineData4=[];
                    	time=[];
                     $.each(data,function(i,p){
-	                   	var temp = null;
-	                   	if(p['label']==0){
-	                   		temp="低";
-	                   	}
-	                   	if(p['label']==1){
-	                   		temp="中";
-	                   	}
-	                   	if(p['label']==2){
-	                   		temp="高";
-	                   	}
-//	                   	label[i]=temp;
+//	                   	var temp = null;
+//	                   	if(p['label']==0){
+//	                   		temp="低";
+//	                   	}
+//	                   	if(p['label']==1){
+//	                   		temp="中";
+//	                   	}
+//	                   	if(p['label']==2){
+//	                   		temp="高";
+//	                   	}
+                    	lineData0[i]=p['value0'];
 	                   	lineData[i]=p['value'];
 	                   	lineData2[i]=p['value2'];
 	                   	lineData3[i]=p['value3'];
+	                   	lineData4[i]=p['value4'];
 	                   	time[i]=p['time'];
-//	                   	label[i]=p['label'];
-//	                   	value[i]={'name':p['label'],'value':p['value']};
                     });
                     
                     myChartLine.setOption({//图形
@@ -305,7 +306,7 @@ var getCharsData=function(repeat){
                             trigger: 'axis'
                         },
                         legend: {
-                            data:['低危漏洞个数','中危漏洞个数','高危漏洞个数']
+                            data:['信息漏洞个数','低危漏洞个数','中危漏洞个数','高危漏洞个数','紧急漏洞个数']
 //                        	data:testX()
                         },
                         toolbox: {
@@ -332,6 +333,15 @@ var getCharsData=function(repeat){
                             }
                         ],
                         series : [
+							{
+							    name:'信息漏洞个数',
+							    type:'line',
+							//    stack: '总量',
+							    smooth: true,
+							    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+							//    data:[120, 132, 101, 134, 90, 230, 210]
+							    data: testLineData0()
+							},
                             {
                                 name:'低危漏洞个数',
                                 type:'line',
@@ -358,6 +368,15 @@ var getCharsData=function(repeat){
                                 itemStyle: {normal: {areaStyle: {type: 'default'}}},
 //                                data:[150, 232, 201, 154, 190, 330, 410]
                                 data: testLineData3()
+                            },
+                            {
+                                name:'紧急漏洞个数',
+                                type:'line',
+//                                stack: '总量',
+                                smooth: true,
+                                itemStyle: {normal: {areaStyle: {type: 'default'}}},
+//                                data:[120, 132, 101, 134, 90, 230, 210]
+                                data: testLineData4()
                             }
                         ]
                     },true);//图形展示
@@ -487,6 +506,10 @@ function testLineX(){
 	return time;
 }
 
+function testLineData0(){
+	return lineData0;
+}
+
 function testLineData(){
 	return lineData;
 }
@@ -497,6 +520,10 @@ function testLineData2(){
 
 function testLineData3(){
 	return lineData3;
+}
+
+function testLineData4(){
+	return lineData4;
 }
 
 function exportImg(repeat){
