@@ -288,7 +288,10 @@ public class NorthAPIService {
 						json.put("state", state);
 					}
 				}else{
-					List t= taskService.findTaskByOrderId(orderId);
+					Map<String,Object> paramMap = new HashMap<String,Object>();
+					paramMap.put("orderId", orderId);
+		        	paramMap.put("status", 2);
+					List t= taskService.findTaskByOrderId(paramMap);
 //					if(t.size()>0){
 //						t.setExecuteTime(DateUtils.dateToString(t.getExecute_time()));
 //						t.setBeginTime(DateUtils.dateToString(t.getBegin_time()));
@@ -568,7 +571,7 @@ public class NorthAPIService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			json.put("code", 404);//返回404表示失败
-			json.put("message", "无效的UserID或APIKey");
+			json.put("message", "创建token失败");
 		}
         return json.toString();
     }
@@ -701,7 +704,7 @@ public class NorthAPIService {
             }else{
             	executeTime = getAfterDate(taskTime);
             }
-		}else if(scanType.equals("2")){ //周期为每周（每周一00:10:00）
+		}else if(scanType.equals("5")){ //周期为每周（每周一00:10:00）
 			 int dayForWeekBegin = 0;//开始时间星期几 
 			 if(calBegin.get(Calendar.DAY_OF_WEEK) == 1){  
 				 dayForWeekBegin = 7;  
