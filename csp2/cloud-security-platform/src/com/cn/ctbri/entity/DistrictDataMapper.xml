@@ -172,7 +172,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 根据月份获取各等级漏洞分布 -->
     <select id="getVulnscanAlarm" resultType="hashmap" parameterType="hashmap">
          select  COUNT(a.alarm_time) count,a.level,DATE_FORMAT(a.alarm_time,'%Y.%m') month1 from cs_alarm a
-		 where a.serviceId=1 and a.level=#{level} and DATE_FORMAT(a.alarm_time,'%Y.%m') &gt;= #{month}
+		 where a.serviceId=1 and DATE_FORMAT(a.alarm_time,'%Y.%m') &gt;= #{month}
          group by level,month1
     </select>
 	

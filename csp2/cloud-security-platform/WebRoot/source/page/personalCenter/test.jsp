@@ -40,22 +40,25 @@
 <body>
 		<div>最近一小时内漏洞跟踪</div>
           <div style="padding-left:100px; width:600px; height:500px;" id="serviceUseInfo">
-        </div>
+        </div><!--
          <div>重大漏洞分布视图</div>
 		<div  style="width:600px; height:500px;" id="vulnscanAlarmTOP20">		            
 		 </div>
-		<div>最近6个月各等级漏洞分布</div>
-		<div  style="width:600px; height:500px;" id="vulnscanAlarmByLevelMonth6">		            
+		--><div>最近6个月各等级漏洞分布</div>
+		<div  style="width:100%; height:500px;" id="vulnscanAlarmByLevelMonth6">		            
 		 </div>
 		<div>用户最近6个月内不同类型服务订单数量变化</div>
 		<div  style="width:600px; height:500px;" id="serviceUseInfoMonth6">		            
 		 </div>
 		 
 		 <div style="width:116px">用户行业分布</div>
- 				<div  style="width:600px; height:500px;" id="service1OneHour">
+ 				<div  style="width:600px; height:600px;" id="service1OneHour">
          </div>
         <div style="width:116px">最近一小时内攻击跟踪</div>
  				<div  style="width:600px; height:500px;" id="wafOneHour">
+         </div>
+        <div style="width:116px">订单集中的时间点</div>
+ 				<div  style="width:600px; height:500px;" id="orderServiceTimes">
          </div>
 </body>
 </html>
