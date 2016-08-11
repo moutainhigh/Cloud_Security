@@ -1920,7 +1920,7 @@ public class shoppingController {
     					selfHelpOrderService.updateOrderAsset(shopCar.getOrderId(), orderId);
     					//更新订单表
 //    					selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, "0",status);
-    					selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, String.valueOf(shopCar.getIsAPI()),status,orderList.getId());
+    					selfHelpOrderService.updateOrder(shopCar.getOrderId(), orderId, String.valueOf(shopCar.getIsAPI()),status,orderList.getId(),orderList.getPay_date());
     					//更新 修改时间的订单Id
     					if (modifyOrderId.contains(shopCar.getOrderId())){
     						modifyOrderId.remove(shopCar.getOrderId());
@@ -1970,7 +1970,7 @@ public class shoppingController {
     							shopCar.getOrderId(), orderId);
     					// 更新订单表
     					selfHelpOrderService.updateOrder(shopCar.getOrderId(),
-    							orderId, "1",status,orderList.getId());
+    							orderId, "1",status,orderList.getId(),orderList.getPay_date());
     					//更新 修改时间的订单Id
     					if (modifyOrderId.contains(shopCar.getOrderId())){
     						modifyOrderId.remove(shopCar.getOrderId());
