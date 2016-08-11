@@ -768,6 +768,13 @@ public class shoppingController {
 				//有些订单号没有或有些订单不属于该用户时，跳转到首页
 	    		  return "redirect:/index.html";
 			}
+	      
+	      //检查订单是否失效
+	      if(!checkOrderDate(list)){
+	    	//有些订单号失效时，跳转到首页
+    		  return "redirect:/index.html";
+	      }
+	      
 	      DecimalFormat df = new DecimalFormat("0.00");
 	      double shopCount=0.0;
 	     if(list!=null&&list.size()>0){
@@ -907,6 +914,21 @@ public class shoppingController {
 				}
 				return;
 	      }
+	      
+	      //判断订单是否失效
+	      if(!checkOrderDate(list)) {
+	    	  map.put("errorStatus", true);  
+	    	  JSONObject JSON = CommonUtil.objectToJson(response, map);
+		        // 把数据返回到页面
+		           try {
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return;
+	      }
+	      
 	      double shopCount=0.0;
 	     if(list!=null&&list.size()>0){
 	       for(int i=0;i<list.size();i++){
@@ -1439,7 +1461,7 @@ public class shoppingController {
 		}
     }
 	 /**
-	 * 功能描述： 购物车去结算判断当前时间是否超过下单开始时间
+	 * 功能描述： 购物车去结算判断当前时间是否超过服务结束时间/加入购物车时间是否超过7天
 	 * 参数描述：  无
 	 *     @time 2016-05-23
 	 *     add gxy
@@ -1471,7 +1493,6 @@ public class shoppingController {
     	}
 
 	try{
-		Date date = new Date();
 		 boolean flag = true;
 		String str = request.getParameter("str");
 		
@@ -1486,24 +1507,8 @@ public class shoppingController {
 	    	  }
 	    	  list = selfHelpOrderService.findBuyShopList(orderIdList,globle_user.getId());
 			}
-	     if(list!=null&&list.size()>0){
-	       for(int i=0;i<list.size();i++){
-	    	   ShopCar shopCar = (ShopCar)list.get(i);
-	    	  Date endDate = shopCar.getEndDate();
-	    	  if(endDate!=null&&!"".equals(endDate)){
-		    		
-		    	  //判断当前时间已经查过下单时间
-		    	  if(date.getTime()>endDate.getTime()){
-		    		  flag=false;
-//		    		  break;
-		    		  //修改订单状态已作废
-		    		  shopCar.setStatus(-1);
-		    		  selfHelpOrderService.updateShopOrder(shopCar);
-		    	  }
-	    	  
-	    	  }
-	       }	 
-	     }
+	      
+	      flag = checkOrderDate(list);
 	     //修改订单状态已作废
 //	     if(!flag){
 //	    	  if(list!=null&&list.size()>0){
@@ -1538,6 +1543,36 @@ public class shoppingController {
 		}
 	
 		
+	}
+	
+	/**  功能描述：判断订单是否失效 
+	 * true:所有订单都未失效 false：部分或所有订单失效
+	 */
+	private boolean checkOrderDate(List list){
+		boolean flag = true;
+		Date date = new Date();
+		if(list!=null&&list.size()>0){
+			for(int i=0;i<list.size();i++){
+				ShopCar shopCar = (ShopCar)list.get(i);
+				Date endDate = shopCar.getEndDate();
+				//判断当前时间已经超过服务结束时间
+				if(endDate!=null && !"".equals(endDate) && date.getTime()>endDate.getTime()){
+					
+					flag=false;
+					//修改订单状态已作废
+					shopCar.setStatus(-1);
+					selfHelpOrderService.updateShopOrder(shopCar);
+				//加入购物车时间是否超过7天
+				}else if (date.getTime() - shopCar.getCreateDate().getTime() > 1000*60*60*24*7) {
+					flag=false;
+					//修改订单状态已作废
+					shopCar.setStatus(-1);
+					selfHelpOrderService.updateShopOrder(shopCar);
+				}
+			}	 
+		}
+		
+		return flag;
 	}
     
     /**
@@ -1637,7 +1672,7 @@ public class shoppingController {
     		} catch(Exception e) {
     			e.printStackTrace();
     			//长期：订单结束时间不能早于当前订单提交时间
-    			if (e.getMessage().equals("当前时间已经超过部分订单的结束时间，订单失效!")) {
+    			if (e.getMessage().equals("订单失效!")) {
     				m.put("payFlag", 5);//付款成功
     			}
     			return;
@@ -1721,9 +1756,13 @@ public class shoppingController {
 				ShopCar shopCar = (ShopCar)list.get(i);
 				Date beginDate = shopCar.getBeginDate();
 				Date endDate = shopCar.getEndDate();
+				//判断订单是否失效
 				//长期：订单结束时间不能早于当前订单提交时间
 				if (endDate!= null && !DateUtils.dateToString(endDate).equals("")&& new Date().getTime()>endDate.getTime()) {
-					Exception e = new Exception("当前时间已经超过部分订单的结束时间，订单失效!");
+					Exception e = new Exception("订单失效!");
+					throw e;
+				}else if (new Date().getTime() - shopCar.getCreateDate().getTime() > 1000*60*60*24*7) {
+					Exception e = new Exception("订单失效!");
 					throw e;
 				}
 				
