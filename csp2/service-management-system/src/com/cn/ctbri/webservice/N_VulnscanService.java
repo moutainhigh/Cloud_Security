@@ -225,6 +225,7 @@ public class N_VulnscanService {
 							
 							num.setApiId(orderAPI.getId());
 							num.setToken(token);
+							num.setOrderId(orderId);
 							userService.insertAPINum(num);
 							ManagerWorker.createAPINum(user.getApikey(), 1, 1, 1);
 					        
@@ -338,7 +339,9 @@ public class N_VulnscanService {
 										json.put("state", state);
 									}
 								}else{
-									List t= taskService.findTaskByOrderId(orderId);
+									Map<String,Object> param = new HashMap<String,Object>();
+									paramMap.put("orderId", orderId);
+									List t= taskService.findTaskByOrderId(param);
 				//					if(t.size()>0){
 				//						t.setExecuteTime(DateUtils.dateToString(t.getExecute_time()));
 				//						t.setBeginTime(DateUtils.dateToString(t.getBegin_time()));

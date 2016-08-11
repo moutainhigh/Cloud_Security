@@ -324,7 +324,9 @@ public class N_WebPageTamperService {
 									json.put("state", state);
 								}
 							}else{
-								List t= taskService.findTaskByOrderId(orderId);
+								Map<String,Object> param = new HashMap<String,Object>();
+								paramMap.put("orderId", orderId);
+								List t= taskService.findTaskByOrderId(param);
 			//					if(t.size()>0){
 			//						t.setExecuteTime(DateUtils.dateToString(t.getExecute_time()));
 			//						t.setBeginTime(DateUtils.dateToString(t.getBegin_time()));
