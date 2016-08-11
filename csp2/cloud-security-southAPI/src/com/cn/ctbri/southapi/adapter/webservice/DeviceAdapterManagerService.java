@@ -362,6 +362,12 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.getWafEventTypeCountByDay(jsonObject);
 	}
 	
+	@POST
+	@Path("/getEventTypeCountByMonth")
+	public String getWafEventTypeCountByMonth(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getWafEventTypeCountByMonth(jsonObject);
+	}
 	
 	@GET
 	@Path("/getWafAlertLevelCount")

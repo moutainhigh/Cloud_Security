@@ -954,7 +954,7 @@ public class NsfocusWAFAdapter {
 			for (Element element : typeElements) {
 				String eventTypeBase64 = stringToBase64(element.getTextTrim());
 				JSONObject eventTypeJsonObject = new JSONObject();
-				eventTypeJsonObject.put("eventType", element.getTextTrim());
+				eventTypeJsonObject.put("eventType", eventTypeBase64);
 				JSONArray eventTypeInTimeArray = new JSONArray();
 				Date startDate = sdf.parse(jsonObject.getString("startDate"));
 				while (startDate.before(endDate)) {
@@ -990,6 +990,69 @@ public class NsfocusWAFAdapter {
 			sqlSession.close();
 		}
 	}
+	
+	public String getEventTypeCountByMonth(JSONObject jsonObject) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getSqlSession();
+			//根据时间间隔获取时间段
+			int interval = jsonObject.getInt("interval");
+
+
+			
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			Date endDate = calendar.getTime();
+			System.out.println(endDate);
+			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
+	
+			
+			SAXReader reader = new SAXReader();
+			Document document = reader.read(DeviceAdapterConstant.WAF_NSFOCUS_EVENT_TYPE);
+			List<Element> typeElements = document.selectNodes("/TypeList/Type");
+			List<JSONObject> typeCountList = new ArrayList<JSONObject>();
+			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+			for (Element element : typeElements) {
+				String eventTypeBase64 = stringToBase64(element.getTextTrim());
+				JSONObject eventTypeJsonObject = new JSONObject();
+				eventTypeJsonObject.put("eventType", eventTypeBase64);
+				JSONArray eventTypeInTimeArray = new JSONArray();
+				Date startDate = sdf.parse(jsonObject.getString("startDate"));
+				System.out.println("startDate"+startDate);
+				while (startDate.before(endDate)) {
+					TWafLogWebsecExample exampleElement = new TWafLogWebsecExample();
+					JSONObject eventTypeInTimeJsonObject = new JSONObject();
+					calendar.setTime(startDate);
+					calendar.add(calendar.MONTH, interval);
+					exampleElement.or().andEventTypeEqualTo(element.attributeValue("name")).andStatTimeBetween(startDate, calendar.getTime());
+
+					eventTypeInTimeJsonObject.put("date", sdf.format(startDate));
+					eventTypeInTimeJsonObject.put("count", mapper.countByExample(exampleElement));
+					eventTypeInTimeArray.add(eventTypeInTimeJsonObject);
+					startDate = calendar.getTime();
+				}
+				eventTypeJsonObject.put("countInTime", eventTypeInTimeArray);
+				
+				
+				
+				typeCountList.add(eventTypeJsonObject);
+			}
+			System.out.println("postTime="+sdf.format(new Date()));
+			sqlSession.commit();
+			return JSONArray.fromObject(typeCountList).toString();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			sqlSession.rollback();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "Eventtype count error!!!");
+			return errorJsonObject.toString();
+		}finally {
+			sqlSession.close();
+		}
+	}
+	
 	
 	
 	public String getAlertLevelCount() {

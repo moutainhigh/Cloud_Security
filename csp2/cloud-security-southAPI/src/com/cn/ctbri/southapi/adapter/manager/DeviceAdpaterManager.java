@@ -822,6 +822,10 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getEventTypeCountByDay(jsonObject);
 	}
 	
+	public String getWafEventTypeCountByMonth(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getEventTypeCountByMonth(jsonObject);
+	}
+	
 	public String getWafEventTypeCountInTime(JSONObject jsonObject) {
 		return nsfocusWAFAdapter.getEventTypeCountInTime(jsonObject);
 	}
