@@ -457,6 +457,31 @@ public class WafAPIWorker {
         return textEntity;
 	}
 	
+	/**
+	 * 功能描述：按月份获取一段时间内的告警类型统计
+	 * @param interval
+	 * @return
+	 */
+	public static String getEventTypeCountByMonth(String interval,String startDate){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("interval", interval);
+		json.put("startDate", startDate);
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/getEventTypeCountByMonth";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
+	
 	
 	/**
 	 * 功能描述： 获取安全套接层上下文对象
@@ -704,7 +729,7 @@ public class WafAPIWorker {
 //			jo.put("port", "80");
 //			ser.add(jo);
 //    		wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", "test0615", "219.141.189.183", "80", "nsfocus.cer", "0", "www.anquanbang", "*", "", ser);
-    		wafcreate = WafAPIWorker.getEventTypeCountByDay("720","2016-8-10");
+    		wafcreate = WafAPIWorker.getEventTypeCountByMonth("1","2016-6");
     	} catch (Exception e) {
             e.printStackTrace();
         }
