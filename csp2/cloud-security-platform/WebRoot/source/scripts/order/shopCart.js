@@ -44,7 +44,7 @@ $(function(){
   
 						   
 					     }else{
-					    	 alert("当前时间已经超过部分订单的服务结束时间，订单已作废请删除订单!");
+					    	 alert("部分订单已失效，请重新下单!");
 					    	 window.location.href="showShopCar.html";
 					     } 
 			   		 }
