@@ -1,9 +1,9 @@
 package com.cn.ctbri.dao.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 import org.springframework.stereotype.Repository;
 
@@ -165,13 +165,14 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		return this.getSqlSession().selectList(ns + "findBuyShopList",map);
 	}
 
-	public void updateOrder(String orderId, String newOrderId,String isAPI,String status,String orderListId) {
+	public void updateOrder(String orderId, String newOrderId,String isAPI,String status,String orderListId, Date createDate) {
 		Map map = new HashMap();
 		map.put("orderId", orderId);
 		map.put("newOrderId", newOrderId);
 		map.put("isAPI", isAPI);
 		map.put("status", status);
 		map.put("orderListId", orderListId);
+		map.put("createDate", createDate);
 		this.getSqlSession().update(ns+"updateOrder",map);
 	}
 
