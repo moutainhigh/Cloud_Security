@@ -291,50 +291,69 @@ public class DistrictDataController {
         int[] levels = {-1,0,1,2,3};
         String[] levelNames = {"信息","低","中","高","紧急"};
         List levelList = new ArrayList();
+        
+        //优化（查询六个月的数据）
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("month", lastMonth6);
+        List dataList = districtDataService.getVulnscanAlarm(paramMap);
+        
         for(int i = 0; i<levels.length; i++){
-            //获取前六个月的漏洞等级分布情况
-        	Map<String, Object> paramMap = new HashMap<String, Object>();
-        	paramMap.put("level", levels[i]);
-        	paramMap.put("month", lastMonth6);
-            List dataList = districtDataService.getVulnscanAlarm(paramMap);
-            List<Integer> tempList = new ArrayList<Integer>();
-            boolean flag = false;
-            if(dataList!=null && dataList.size()>0){
-            	levelList.add(levelNames[i]);
-            	for(int j = 0; j<monthList.size(); j++){//判断该月份有没有数值
-            		for(int k = 0; k < dataList.size(); k++){
-                		String month = ((Map)dataList.get(k)).get("month1").toString();
-                		int count = Integer.parseInt(((Map)dataList.get(k)).get("count").toString());
-                		if(month.equals(monthList.get(j))){
-                			tempList.add(count);
-                			flag = true;
-                			break;
-                		}else{
-                			flag = false;
-                		}
-                	}
-            		if(!flag){
-            			tempList.add(0);
-            		}
-                }
-            	
-            	JSONObject jsonObject = new JSONObject();
-            	jsonObject.put("name", levelNames[i]);
-            	jsonObject.put("type", "bar");
-            	jsonObject.put("data", tempList);
-            	
-            	JSONObject jsonNormal = new JSONObject();
-            	jsonNormal.put("show", true);
-            	jsonNormal.put("position","top");
-            	
-            	JSONObject jsonLabel = new JSONObject();
-            	jsonLabel.put("normal", jsonNormal);
-            	
-            	jsonObject.put("label", jsonLabel);
-            	jsonArray.add(jsonObject);
-            }
-            
+        	levelList.add(levelNames[i]);
+        	//定义每个月的数值list
+        	List<Integer> countList = new ArrayList<Integer>();
+        	//按level分组
+        	List tempList = new ArrayList();
+        	if(dataList!=null && dataList.size()>0){
+        		for(int j = 0; j < dataList.size(); j++){
+        			Map newMap = (Map)dataList.get(j);
+        			int newLevel = Integer.parseInt(newMap.get("level").toString());
+        			if(newLevel==levels[i]){
+        				tempList.add(dataList.get(j));
+        			}
+        		}
+        	}
+        	
+        	//判断tempList
+    		for(int j=0; j<monthList.size(); j++){//6个月
+            	if(tempList!=null && tempList.size()>0){
+            		boolean flag = false;
+        			for(int k = 0; k < tempList.size(); k++){
+        				Map<String,Object> newMap = (Map<String,Object>)tempList.get(k);
+        				String month = newMap.get("month1").toString();
+        				int count = Integer.parseInt(newMap.get("count").toString());
+        				if(month.equals(monthList.get(j))){//有当月日期
+        					countList.add(count);
+        					flag = true;
+        					break;
+        				}else{
+        					flag = false;
+        				}
+        			}
+        			if(!flag){
+        				countList.add(0);
+        			}
+        		}else{
+        			countList.add(0);
+        		}
+        	}
+        	
+    		//生成前台展示json
+        	JSONObject jsonObject = new JSONObject();
+        	jsonObject.put("name", levelNames[i]);
+        	jsonObject.put("type", "bar");
+        	jsonObject.put("data", countList);
+        	
+        	JSONObject jsonNormal = new JSONObject();
+        	jsonNormal.put("show", true);
+        	jsonNormal.put("position","top");
+        	
+        	JSONObject jsonLabel = new JSONObject();
+        	jsonLabel.put("normal", jsonNormal);
+        	
+        	jsonObject.put("label", jsonLabel);
+        	jsonArray.add(jsonObject);
         }
+        
         
         Map<String, Object> m = new HashMap<String, Object>();
         m.put("dataArray", jsonArray);
@@ -450,6 +469,50 @@ public class DistrictDataController {
     @RequestMapping(value="getIndustryStatistics.html")
     @ResponseBody
     public void getIndustryStatistics(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //获取各行业注册用户数
+        List userList = districtDataService.getIndustryUserCount();
+        //行业list
+        List industryList = new ArrayList();
+        List jsonUserList = new ArrayList();
+        if(userList!=null && userList.size()>0){
+        	for(int i = 0; i<userList.size(); i++){
+        		industryList.add(((Map)(userList.get(i))).get("industry"));
+        		jsonUserList.add(((Map)(userList.get(i))).get("userCount"));
+        	}
+        }
+        
+        //获取各行业订单数
+        List orderList = districtDataService.getIndustryOrderCount();
+        List jsonOrderList = new ArrayList();
+        if(orderList!=null && orderList.size()>0){
+        	for(int i = 0; i < orderList.size(); i++){
+        		jsonOrderList.add(((Map)(orderList.get(i))).get("orderCount"));
+        	}
+        }
+        Map<String, Object> m = new HashMap<String, Object>();
+        m.put("userList", jsonUserList);
+        m.put("orderList", jsonOrderList);
+        m.put("industryList", industryList);
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return;
+    }
+    
+    /**
+     * 用户行业分布：各行业注册用户数与已下订单数
+     * 
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value="getOrderServiceTimes.html")
+    @ResponseBody
+    public void getOrderServiceTimes(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //获取各行业注册用户数
         List userList = districtDataService.getIndustryUserCount();
         //行业list
