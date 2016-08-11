@@ -56,10 +56,10 @@ function getData(){
            dataType:"json",
            success: function(data){
           		var progress = data.progress;
-           		$("#bar1"+${index}).html(progress+"%");
-           		$("#bar2"+${index}).css("width", progress+"%");
-           		$("#bar2"+${index}).html(progress+"%");
-           		$("#url"+${index}).html("当前URL:"+data.currentUrl);
+           		$("#bar1").html(progress+"%");
+           		$("#bar2").css("width", progress+"%");
+           		$("#bar2").html(progress+"%");
+           		$("#url").html("当前URL:"+data.currentUrl);
            }
         });
 }
@@ -164,22 +164,25 @@ function clearTable(){
 			    <c:if test="${order.type==1}">
 		           <p class="dd_detail"><span class="detail_l fl">检测周期</span><span class="detail_r fl">
 		                <c:if test="${order.serviceId==1}">
-		                    <c:if test="${order.scan_type==2}">每周</c:if>
-		                    <c:if test="${order.scan_type==3}">每月</c:if>
+		                    <c:if test="${order.scan_type==5}">每周</c:if>
+		                    <c:if test="${order.scan_type==6}">每月</c:if>
 		                </c:if>
 		                <c:if test="${order.serviceId==2}">
-		                    <c:if test="${order.scan_type==1}">30分钟</c:if>
+		                	<c:if test="${order.scan_type==1}">30分钟</c:if>
 		                    <c:if test="${order.scan_type==2}">1小时</c:if>
+		                    <c:if test="${order.scan_type==3}">2小时</c:if>
 		                    <c:if test="${order.scan_type==4}">1天</c:if>
+		                    <c:if test="${order.scan_type==5}">每周</c:if>
+		                    <c:if test="${order.scan_type==6}">每月</c:if>
 		                </c:if>
 		                <c:if test="${order.serviceId==3}">
-		                    <c:if test="${order.scan_type==1}">30分钟</c:if>
-		                    <c:if test="${order.scan_type==2}">1小时</c:if>
+		                    <c:if test="${order.scan_type==2}">30分钟</c:if>
+		                    <c:if test="${order.scan_type==3}">1小时</c:if>
 		                    <c:if test="${order.scan_type==4}">1天</c:if>
 		                </c:if>
 		                <c:if test="${order.serviceId==4}">
-		                    <c:if test="${order.scan_type==1}">30分钟</c:if>
-		                    <c:if test="${order.scan_type==2}">1小时</c:if>
+		                    <c:if test="${order.scan_type==2}">30分钟</c:if>
+		                    <c:if test="${order.scan_type==3}">1小时</c:if>
 		                    <c:if test="${order.scan_type==4}">1天</c:if>
 		                </c:if>
 		                <c:if test="${order.serviceId==5}">
@@ -198,12 +201,12 @@ function clearTable(){
        	  	<span class="scan">未开始</span><span class="scan scancur">扫描中</span><span class="scan">完成</span>
        	  
        	  </p>
-            <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1${index}">${progress }%</span>
+            <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1">${progress }%</span>
             <span class="processingbox">
             	<span class="progress">
-                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: ${progress }%" id="bar2${index}">${progress }%</span>
+                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: ${progress }%" id="bar2">${progress }%</span>
 				</span>
-            <span class="prourl" id="url${index}">当前URL:${currentUrl }</span>
+            <span class="prourl" id="url">当前URL:${task.currentUrl }</span>
             </span></p>
         </div>
         

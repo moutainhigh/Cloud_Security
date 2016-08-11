@@ -16,6 +16,11 @@
                 <span class="fr" style="padding-right:20px;">下单时间：<fmt:formatDate value="${olist.create_date}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
             </div>
         
+	        <style>
+	        a{color:#2499fb}
+	        a:visited{color: #2499fb;}
+	        </style>
+	        
             <div class="tabList">
             	<table cellpadding="0" cellspacing="0">
                 	<tbody>
@@ -117,7 +122,7 @@
              
 						            <c:if test="${list.serviceId==1||list.serviceId==2||list.serviceId==3||list.serviceId==4||list.serviceId==5}">
 						            
-						            	<c:if test="${list.isAPI==1}"><a href="${ctx}/apiDetails.html?orderId=${list.id }" target="_blank" title="等待">查看详情</a></c:if>
+						            	<c:if test="${list.isAPI==1}"><a href="${ctx}/apiDetails.html?orderId=${list.id }" target="_blank" >查看详情</a></c:if>
 						                <c:if test="${list.isAPI!=1 && list.status==0}"><a href="${ctx}/orderDetails.html?orderId=${list.id }" target="_blank" title="等待">查看详情</a></c:if>
 						                <c:if test="${list.status==2}">
 						                 
@@ -178,7 +183,7 @@
 						                 	查看详情
 						                 </a>
 						                 </c:if>
-						                 <a href="${ctx}/domainNameUI.html?orderId=${list.id }"  title="设置域名解析"> 
+						                 <a href="${ctx}/domainNameUI.html?orderId=${list.id }" style="display:block;" title="设置域名解析"> 
 						                 <!-- <a href="javascript:void(0)" onclick="domainNameUI(${list.id })" title="设置域名解析">-->
 						                 	设置域名解析
 						                 </a>

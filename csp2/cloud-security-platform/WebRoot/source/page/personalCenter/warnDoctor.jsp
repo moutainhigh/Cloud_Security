@@ -261,22 +261,25 @@ function clearTable(){
 										    <c:if test="${order.type==1}">
 									           <p class="dd_detail"><span class="detail_l fl">检测周期</span><span class="detail_r fl">
 									                <c:if test="${order.serviceId==1}">
-									                    <c:if test="${order.scan_type==2}">每周</c:if>
-									                    <c:if test="${order.scan_type==3}">每月</c:if>
+									                    <c:if test="${order.scan_type==5}">每周</c:if>
+									                    <c:if test="${order.scan_type==6}">每月</c:if>
 									                </c:if>
 									                <c:if test="${order.serviceId==2}">
 									                    <c:if test="${order.scan_type==1}">30分钟</c:if>
 									                    <c:if test="${order.scan_type==2}">1小时</c:if>
+									                    <c:if test="${order.scan_type==3}">2小时</c:if>
 									                    <c:if test="${order.scan_type==4}">1天</c:if>
+									                    <c:if test="${order.scan_type==5}">每周</c:if>
+									                    <c:if test="${order.scan_type==6}">每月</c:if>
 									                </c:if>
 									                <c:if test="${order.serviceId==3}">
-									                    <c:if test="${order.scan_type==1}">30分钟</c:if>
-									                    <c:if test="${order.scan_type==2}">1小时</c:if>
+									                    <c:if test="${order.scan_type==2}">30分钟</c:if>
+									                    <c:if test="${order.scan_type==3}">1小时</c:if>
 									                    <c:if test="${order.scan_type==4}">1天</c:if>
 									                </c:if>
 									                <c:if test="${order.serviceId==4}">
-									                    <c:if test="${order.scan_type==1}">30分钟</c:if>
-									                    <c:if test="${order.scan_type==2}">1小时</c:if>
+									                    <c:if test="${order.scan_type==2}">30分钟</c:if>
+									                    <c:if test="${order.scan_type==3}">1小时</c:if>
 									                    <c:if test="${order.scan_type==4}">1天</c:if>
 									                </c:if>
 									                <c:if test="${order.serviceId==5}">
@@ -323,6 +326,24 @@ function clearTable(){
 												</span>
 								            <span class="prourl" id="url">当前URL:${asset.task.currentUrl }</span>
 								            </span></p>
+								            <!-- add by tangxr 2016-7-27 任务异常提示 -->
+								            <c:if test="${(empty asset.task.engineIP && empty asset.send && empty asset.receive) || asset.task.currentUrl eq '[]'}">
+									          <p>
+									          	<br />
+									            <span class="prourl">
+									            	(网站访问被拒绝,可能有以下原因：</span>
+									            <span class="prourl" style="margin-left:-60px">
+													1：该网址不存在；</span>
+												<span class="prourl" style="margin-left:31px">
+													2：网站安装了防护类的产品导致扫描断断续续；</span>
+												<span class="prourl" style="margin-left:65px">
+													3：由于持续扫描等原因，安全帮扫描IP可能被列入黑名单。</span>
+												<span class="prourl" style="margin-left:15px">
+													注：请联系在线客服咨询相关问题)
+									            </span>
+									          </p>
+								           </c:if>
+								           <!-- end -->
 							       	  </c:if>
 							       	  <c:if test="${asset.task.status==2}">
 								       	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span>
@@ -386,8 +407,8 @@ function clearTable(){
 							            	<p>监测URL：<span>${a.url}</span></p>
 							                <p>监测频率：<span>
 							                			<c:if test="${a.scan_type==1}">每天</c:if>
-							                			<c:if test="${a.scan_type==2}">每周</c:if>
-							                			<c:if test="${a.scan_type==3}">每月</c:if>
+							                			<c:if test="${a.scan_type==5}">每周</c:if>
+							                			<c:if test="${a.scan_type==6}">每月</c:if>
 							                		  </span>
 							                </p>
 							                <p>得分：<span>${a.score}分</span></p>
