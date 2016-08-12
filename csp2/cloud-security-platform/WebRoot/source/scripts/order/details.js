@@ -650,7 +650,8 @@ function tasknum_verification(){
     	var serviceId = $("#serviceIdHidden").val();
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
-    	var serviceType = $('.click').val();
+    	//var serviceType = $('.click').val();
+    	var serviceType =1;
     	var assetCountNew = 0;
     	if(assetCount==null){
     	   	var assetCountNew = $('.httpBox li').length;
