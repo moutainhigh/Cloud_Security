@@ -93,7 +93,7 @@ public class WarnDetailController {
 	static{
 		try {
 			Properties p = new Properties();
-			p.load(HuaweiWorker.class.getClassLoader().getResourceAsStream("InternalAPI.properties"));
+			p.load(HuaweiWorker.class.getClassLoader().getResourceAsStream("northAPI.properties"));
 			
 			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
 			VulnScan_serviceCreateAPICount = p.getProperty("VulnScan_serviceCreateAPICount");
@@ -1307,43 +1307,82 @@ public class WarnDetailController {
         List<Task> taskList = alarmService.getTaskByOrderId(paramMap);
         JSONArray json = new JSONArray();
         for (int i=0; i<taskList.size(); i++) {
-//            Map<String, Object> param = new HashMap<String, Object>();
-//            param.put("taskId", taskList.get(i).getTaskId());
-//            param.put("level", WarnType.LOWLEVEL.ordinal());
-//            List<Alarm> lowList = alarmService.getAlarmByTaskId(param);
-//            param.put("level", WarnType.MIDDLELEVEL.ordinal());
-//            List<Alarm> middleList = alarmService.getAlarmByTaskId(param);
-//            param.put("level", WarnType.HIGHLEVEL.ordinal());
-//            List<Alarm> highList = alarmService.getAlarmByTaskId(param);
-            //低
-            paramMap.put("level", WarnType.LOWLEVEL.ordinal());
-            paramMap.put("group_flag", taskList.get(i).getGroup_flag());
-            List<Alarm> lowList = alarmService.getAlarmByOrderId(paramMap);
-            //中
-            paramMap.put("level", WarnType.MIDDLELEVEL.ordinal());
-            List<Alarm> middleList = alarmService.getAlarmByOrderId(paramMap);
-            //高
-            paramMap.put("level", WarnType.HIGHLEVEL.ordinal());
-            List<Alarm> highList = alarmService.getAlarmByOrderId(paramMap);
+
+//        	//信息
+//            paramMap.put("level", -1);
+//            paramMap.put("group_flag", taskList.get(i).getGroup_flag());
+//            List<Alarm> messageList = alarmService.getAlarmByOrderId(paramMap);
+//            //低
+//            paramMap.put("level", WarnType.LOWLEVEL.ordinal());
+//            List<Alarm> lowList = alarmService.getAlarmByOrderId(paramMap);
+//            //中
+//            paramMap.put("level", WarnType.MIDDLELEVEL.ordinal());
+//            List<Alarm> middleList = alarmService.getAlarmByOrderId(paramMap);
+//            //高
+//            paramMap.put("level", WarnType.HIGHLEVEL.ordinal());
+//            List<Alarm> highList = alarmService.getAlarmByOrderId(paramMap);
+//            //紧急
+//            paramMap.put("level", 3);
+//            List<Alarm> higherList = alarmService.getAlarmByOrderId(paramMap);
             
+        	//add by tangxr 2016-5-17
+            int message = 0;
+            int higher = 0;
+            int high = 0;
+            int middle = 0;
+            int low = 0;
+            int count = 0;
+            paramMap.put("group_flag", taskList.get(i).getGroup_flag());
+            List result = alarmService.getAlarmByParam(paramMap);
+            if(result != null && result.size() > 0){
+            	for(int n = 0; n < result.size(); n++){
+            		HashMap<String,Object>  map = (HashMap<String,Object>)result.get(n);
+            		if((Integer)map.get("level")==3){
+            			higher = Integer.parseInt(map.get("count").toString());
+            		}
+            		if((Integer)map.get("level")==2){
+            			high = Integer.parseInt(map.get("count").toString());
+            		}
+            		if((Integer)map.get("level")==1){
+            			middle = Integer.parseInt(map.get("count").toString());
+            		}
+            		if((Integer)map.get("level")==0){
+            			low = Integer.parseInt(map.get("count").toString());
+            		}
+            		if((Integer)map.get("level")==-1){
+    	    			message = Integer.parseInt(map.get("count").toString());
+    	    		}
+            	}
+            }
+        	
             SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String time = setDateFormat.format(taskList.get(i).getExecute_time());
             JSONObject jo = new JSONObject();
             jo.put("time", time);
-            if(lowList.size()>0&&lowList!=null){
-                jo.put("value", lowList.size());
+            if(message>0){
+                jo.put("value0", message);
+            }else{
+                jo.put("value0", 0);
+            }
+            if(low>0){
+                jo.put("value", low);
             }else{
                 jo.put("value", 0);
             }
-            if(middleList.size()>0&&middleList!=null){
-                jo.put("value2", middleList.size());
+            if(middle>0){
+                jo.put("value2", middle);
             }else{
                 jo.put("value2", 0);
             }
-            if(highList.size()>0&&highList!=null){
-                jo.put("value3", highList.size());
+            if(high>0){
+                jo.put("value3", high);
             }else{
                 jo.put("value3", 0);
+            }
+            if(higher>0){
+                jo.put("value4", higher);
+            }else{
+                jo.put("value4", 0);
             }
             json.add(jo);
         }
@@ -1946,7 +1985,7 @@ public class WarnDetailController {
         paramMap.put("orderAssetId", orderAssetId);
                 
         request.setAttribute("status", 2);
-        request.setAttribute("index", index);
+//        request.setAttribute("index", index);
         
         Asset asset = assetService.findByOrderAssetId(Integer.parseInt(orderAssetId));
         request.setAttribute("asset", asset);
