@@ -92,10 +92,16 @@ public class Scheduler4Result {
 						Map<String,Object> paramMap = new HashMap<String,Object>();
 						paramMap.put("orderId", order.getId());
 			        	paramMap.put("type", String.valueOf(order.getType()));
+			        	paramMap.put("isAlarm", 1);
 						List<Task> tlist = taskService.findAllByOrderId(paramMap);
+						
+						Map<String,Object> param = new HashMap<String,Object>();
+						param.put("orderId", order.getId());
+			        	param.put("type", String.valueOf(order.getType()));
+						List<Task> tl = taskService.findAllByOrderId(param);
 						//add by tangxr 2016-2-25
 						List<Task> finistlist = taskService.findFinishByOrderId(paramMap);
-						if(tlist.size() == finistlist.size()&&(s==1||s==2)&&serviceId!=5){
+						if(tl.size() == finistlist.size()&&(s==1||s==2)&&serviceId!=5){
 							int count = taskService.findissueCount(order.getId());
 							if(count>0){
 								order.setStatus(2);
