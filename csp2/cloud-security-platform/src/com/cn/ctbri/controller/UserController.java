@@ -1120,7 +1120,10 @@ public class UserController{
 	    }
 	    //用户名已经存在
 	    List<User> userList = userService.findUserByName(name);
-		int count = 0;
+	    if (userList.size() <=0) {
+	    	userList = userService.findUserByMobile(name);
+	    }
+	    
 		if(userList.size()>0){
 			msg="用户名已经存在";
 			return msg;
@@ -1270,11 +1273,14 @@ public class UserController{
 	public void regist_checkName(String name,HttpServletResponse response){
 		List<User> users = userService.findUserByName(name);
 		int count = 0;
-		if(users.size()>0){
-			count = users.size();
+//		if(users.size()>0){
+//			count = users.size();
+//		}
+		if (users.size() <= 0) {
+			users = userService.findUserByMobile(name);
 		}
 		Map<String, Object> m = new HashMap<String, Object>();
-		m.put("count", count);
+		m.put("count", users.size());
 		//object转化为Json格式
 		JSONObject JSON = CommonUtil.objectToJson(response, m);
 		try {
