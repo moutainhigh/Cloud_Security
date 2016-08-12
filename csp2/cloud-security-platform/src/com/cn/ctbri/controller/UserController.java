@@ -1,6 +1,7 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,8 +46,8 @@ import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServiceAPIService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.IUserService;
+import com.cn.ctbri.util.AddressUtils;
 import com.cn.ctbri.util.CommonUtil;
-import com.cn.ctbri.util.DES3;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.IPCheck;
 import com.cn.ctbri.util.LogonUtils;
@@ -607,10 +608,10 @@ public class UserController{
 				ip = request.getHeader("x-forwarded-for");
 			}
 			  //获得ip地址所在的省份
-		    //AddressUtils addressUtils = new AddressUtils(); 
+		    AddressUtils addressUtils = new AddressUtils(); 
 		  
 		    //ip所在的省份
-		    //String ipProvice = addressUtils.GetAddressByIp(ip);
+		    String ipProvice = addressUtils.GetAddressByIp(ip);
 		    	//addressUtils.getAddresses("ip="+ip, "utf-8"); 
 			String ipStart = _user.getStartIP();
 			String ipEnd = _user.getEndIP();
@@ -627,9 +628,9 @@ public class UserController{
 				_user.setPassword(newPass);
 			}
 			//ip地址所在的省份
-//			if(ipProvice!=null&&!"".equals(ipProvice)){
-//				_user.setIpProvice(ipProvice);
-//			}
+			if(ipProvice!=null&&!"".equals(ipProvice)){
+				_user.setIpProvice(ipProvice);
+			}
 			_user.setLastLoginTime(new Date());			//设置登录状态：2
 			_user.setStatus(2);
 			userService.update(_user);
@@ -1050,7 +1051,13 @@ public class UserController{
 			byte[] enk = ThreeDes.hex(name);// 用户名
 			byte[] encoded = ThreeDes.encryptMode(enk, password.getBytes());
 		    String newPass = Base64.encode(encoded);
-		        
+		     //获得ip地址所在的省份
+		    AddressUtils addressUtils = new AddressUtils(); 
+		    String ip=request.getRemoteAddr();
+		    //ip所在的省份
+		    String ipProvice =addressUtils.GetAddressByIp(ip);;
+		    	//addressUtils.getAddresses("ip="+ip, "utf-8"); 
+		    
 			RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
 			user.setPassword(newPass);
 			//加盐
@@ -1059,7 +1066,11 @@ public class UserController{
 			user.setStatus(1);  //用户状态(1：正常，0：停用)
 			user.setType(2);	//用户类型（0：超级管理员，1：管理员，2：用户）
 			user.setCreateTime(new Date());//创建时间
-			user.setIp(request.getRemoteAddr());
+			user.setIp(ip);
+			if(ipProvice!=null&&!"".equals(ipProvice)){
+				user.setIpProvice(ipProvice);
+			}
+			
 			//生成apikey add by tangxr 2016-4-9
 			user.setApikey(UUID.randomUUID().toString().replace("-", ""));
 			
@@ -2077,5 +2088,37 @@ public class UserController{
 		}
 		return "/updateMobileFinish";
 	}
-	
+	/**
+	 * 功能描述： 更新ip地址所在的省份
+	 * 参数描述：  无
+	 *     @time 2016-8-11
+	 */
+	@RequestMapping(value="updateUserProvice.html")
+	public void updateUserProvice(HttpServletRequest request) throws Exception{
+		User user= new User();
+		List<User> userList = userService.findAll(user);
+		if(userList!=null&&userList.size()>0){
+		   for(int i=0;i<userList.size();i++){
+			   User userInfo =userList.get(i); 
+			   String ipProvince = userInfo.getIpProvice();
+			   String ip = userInfo.getIp();
+				  //获得ip地址所在的省份
+			    AddressUtils addressUtils = new AddressUtils(); 
+			  
+			    //ip所在的省份
+			    if(ip!=null&&!"".equals(ip)){
+			    	String ipProviceVal=addressUtils.GetAddressByIp(ip);
+					   if(ipProvince==null||"".equals(ipProvince)){
+						   if(ipProviceVal!=null&&!"".equals(ipProviceVal)){
+							   userInfo.setIpProvice(ipProviceVal);
+							   userService.update(userInfo); 
+						   }
+						  
+					   }
+			    }
+			   
+		   }	
+		}
+		System.out.println("====已完成=====");
+	}
 }
