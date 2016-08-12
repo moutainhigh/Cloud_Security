@@ -67,7 +67,7 @@
                     	<li class="clearfix">
                         	<div class="list fl">
                             	<input type="text" placeholder="" class="text prompttext" name="name" id="regist_name" onblur="checkName()" />
-                                <p class="promp">用户名/手机号</p>
+                                <p class="promp">用户名</p>
                                 <i class="error" style="display:none" id="regist_name_flag"></i>
                             </div>
                             <!--此为提示 默认隐藏-->
