@@ -61,6 +61,8 @@ public class User implements java.io.Serializable{
 	private Date lastSignInTime;
 	//加盐的值
 	private String Salt;
+	//ip地址所在的省
+	private String ipProvice;
 	//构造方法
 	public User(){}
 	public User(String name, String password, int status, int type) {
@@ -308,6 +310,12 @@ public class User implements java.io.Serializable{
 	}
 	public void setSalt(String salt) {
 		Salt = salt;
+	}
+	public String getIpProvice() {
+		return ipProvice;
+	}
+	public void setIpProvice(String ipProvice) {
+		this.ipProvice = ipProvice;
 	}
 	
 }

@@ -82,6 +82,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="password!=null">
 				password=#{password},
 			</if>
+			<if test="ipProvice!=null">
+				ipProvice=#{ipProvice}
+			</if>
 		</set>
 		where id=#{id}
 	</update>
@@ -97,8 +100,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入用户 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.User">
 		insert into cs_user 
-		(name,password,mobile,email,status,type,remarks,createTime,realName,ip,industry,job,company,apikey,urlAddr,balance,lastSignInTime,Salt) 
-		values(#{name},#{password},#{mobile},#{email},#{status},#{type},#{remarks},#{createTime},#{realName},#{ip},#{industry},#{job},#{company},#{apikey},#{urlAddr},#{balance},#{lastSignInTime},#{Salt})
+		(name,password,mobile,email,status,type,remarks,createTime,realName,ip,industry,job,company,apikey,urlAddr,balance,lastSignInTime,Salt,ipProvice) 
+		values(#{name},#{password},#{mobile},#{email},#{status},#{type},#{remarks},#{createTime},#{realName},#{ip},#{industry},#{job},#{company},#{apikey},#{urlAddr},#{balance},#{lastSignInTime},#{Salt},#{ipProvice})
 	</insert>
 	
 	<!-- 按用户名查询用户 -->
@@ -219,4 +222,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 		 where id=#{id}
 	</update>
+	
 </mapper>
