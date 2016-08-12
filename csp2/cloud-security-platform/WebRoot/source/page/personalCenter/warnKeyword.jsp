@@ -131,14 +131,18 @@ function warningTask(){
 		} 
 	});
 }); */
+
 function historicalDetails(){
 	var orderId = $("#orderId").val();
+	var taskId = $("#execute_Time").val();
 	var groupId = $("#execute_Time").val();
 	var type = $("#type").val();
 //	window.location.href = "${ctx}/historyInit.html?execute_Time="
 	//							+ execute_Time+"&orderId="+orderId;
-	window.open("${ctx}/warningInit.html?groupId="
-								+ groupId+"&orderId="+orderId+"&type="+type); 
+	if($("#execute_Time").val()!=1){
+		window.open("${ctx}/warningInit.html?groupId="
+                + groupId+"&orderId="+orderId+"&type="+type); 
+	}
 }
 
 //更新table的内容
@@ -361,6 +365,60 @@ function clearTable(){
 									            </div>
 									            <!-- end -->
 									        </p>
+									        
+									        <c:if test="${order.type==1}"><!-- test="${order.type==1 && group_flag==null}" -->
+								                <p><span class="bigfont historyde">历史详情</span>
+								                    <select class="historyse" id=execute_Time name="execute_Time" onchange="historicalDetails()">
+								                        <option value="1">请选择</option>
+								                        <c:forEach var="time" items="${taskTime}" varStatus="statusTime">
+								                           <c:if test="${timeSize!=0}">
+								                               <c:if test="${not statusTime.last}">
+								                               <option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>
+								                               <!-- 有告警 
+								                               <c:if test="${time.alarm_view_flag==null && time.sum_issue_count!=null}">
+								                               <option style="color:red">                               
+								                               <fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss" />
+								                               </option>
+								                               </c:if>-->
+								                               <!-- 有告警  已查看
+								                               <c:if test="${time.alarm_view_flag!=null && time.sum_issue_count!=null}">
+								                               <option >                               
+								                               <fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss" />
+								                               </option>
+								                               </c:if>
+								                               <c:if test="${time.alarm_view_flag==null && time.sum_issue_count==null}">
+								                               <option>                               
+								                               <fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss" />
+								                               </option>
+								                               </c:if>-->
+								                               </c:if>
+								                           </c:if>
+								                           <c:if test="${timeSize==0}">  
+								                           		<option><fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss"/></option>                            
+								                                <!-- 有告警 
+								                               <c:if test="${time.alarm_view_flag==null && time.sum_issue_count!=null}">
+								                               <option style="color:red">                               
+								                               <fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss" />
+								                               </option>
+								                               </c:if>-->
+								                                <!-- 有告警  已查看
+								                               <c:if test="${time.alarm_view_flag!=null && time.sum_issue_count!=null}">
+								                               <option>                               
+								                               <fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss" />
+								                               </option>
+								                               </c:if>
+								                               <c:if test="${time.alarm_view_flag==null && time.sum_issue_count==null}">
+								                               <option>                               
+								                               <fmt:formatDate value="${time.group_flag }" pattern="yyyy-MM-dd HH:mm:ss" />
+								                               </option>
+								                               </c:if>-->
+								                           </c:if>
+								                        </c:forEach>
+								                    </select>
+								                </p>
+								                <!--  <a href="${ctx}/historyInit.html?orderId=${order.id }" target="_blank"><span style="float:right; margin-right:30px; dispiay:inline-block;color:#999; ">历史记录</span></a>
+								                -->
+								            </c:if>
 								        </div>
 								        </div>
 								        <!-- 进度 -->

@@ -104,8 +104,10 @@ function historicalDetails(){
 	var type = $("#type").val();
 //	window.location.href = "${ctx}/historyInit.html?execute_Time="
 	//							+ execute_Time+"&orderId="+orderId;
-	window.open("${ctx}/warningInit.html?groupId="
-								+ groupId+"&orderId="+orderId+"&type="+type); 
+	if($("#execute_Time").val()!=1){
+		window.open("${ctx}/warningInit.html?groupId="
+                + groupId+"&orderId="+orderId+"&type="+type); 
+	}
 }
 
 //更新table的内容
@@ -125,7 +127,7 @@ function updateTable(data){
        "<span class='scrg_sp'><span class='scrg_ti'>请求次数</span><span class='scrg_de'>"+requestCount+"次</span></span>"+
        "<span class='scrg_sp'><span class='scrg_ti'>平均响应时间</span><span class='scrg_de'>"+averResponse+"毫秒</span></span>"+
        "<span class='scrg_sp'><span class='scrg_ti'>发送字节</span><span class='scrg_de'>"+sendBytes+"</span></span>"+
-       "<span class='scrg_sp'><span class='scrg_ti'>结束时间</span><span class='scrg_de'>"+endTime+"</span></span>"+
+       "<span class='scrg_sp'><span class='scrg_ti'>结束时间</span><span class='scrg_de'>--</span></span>"+
        "<span class='scrg_sp'><span class='scrg_ti'>URL个数</span><span class='scrg_de'>"+urlCount+"个</span></span>"+
        "<span class='scrg_sp'><span class='scrg_ti'>每秒访问个数</span><span class='scrg_de'>"+averSendCount+"个</span></span>"+
        "<span class='scrg_sp'><span class='scrg_ti'>接收字节</span><span class='scrg_de'>"+receiveBytes+"</span></span>");    

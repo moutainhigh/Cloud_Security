@@ -56,10 +56,10 @@ function getData(){
            dataType:"json",
            success: function(data){
           		var progress = data.progress;
-           		$("#bar1").html(progress+"%");
-           		$("#bar2").css("width", progress+"%");
-           		$("#bar2").html(progress+"%");
-           		$("#url").html("当前URL:"+data.currentUrl);
+           		$("#bar1"+${index}).html(progress+"%");
+           		$("#bar2"+${index}).css("width", progress+"%");
+           		$("#bar2"+${index}).html(progress+"%");
+           		$("#url"+${index}).html("当前URL:"+data.currentUrl);
            }
         });
 }
@@ -201,12 +201,12 @@ function clearTable(){
        	  	<span class="scan">未开始</span><span class="scan scancur">扫描中</span><span class="scan">完成</span>
        	  
        	  </p>
-            <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1">${progress }%</span>
+            <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1${index}">${progress }%</span>
             <span class="processingbox">
             	<span class="progress">
-                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: ${progress }%" id="bar2">${progress }%</span>
+                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: ${progress }%" id="bar2${index}">${progress }%</span>
 				</span>
-            <span class="prourl" id="url">当前URL:${task.currentUrl }</span>
+            <span class="prourl" id="url${index}">当前URL:${task.currentUrl }</span>
             </span></p>
         </div>
         
