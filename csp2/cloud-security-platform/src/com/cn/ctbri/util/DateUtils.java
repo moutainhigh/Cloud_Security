@@ -136,7 +136,7 @@ public class DateUtils {
             }else{
             	executeTime = getAfterDate(taskTime,1);
             }
-		}else if(scanType.equals("2")){ //周期为每周（每周一00:10:00）
+		}else if(scanType.equals("5")){ //周期为每周（每周一00:10:00）
 			if(taskTime.compareTo(DateUtils.stringToDateNYRSFM(endDate))>0){
             	executeTime = null;
             }else if(taskTime.compareTo(DateUtils.stringToDateNYRSFM(beginDate))==0){
@@ -153,7 +153,7 @@ public class DateUtils {
             		executeTime = getAfterDate(taskTime,n);
             	}
             }
-		}else if(scanType.equals("3")){ //周期为每月（1日00:10:00）
+		}else if(scanType.equals("6")){ //周期为每月（1日00:10:00）
 			if(taskTime.compareTo(DateUtils.stringToDateNYRSFM(endDate))>0){
             	executeTime = null;
             }else if(taskTime.compareTo(DateUtils.stringToDateNYRSFM(beginDate))==0){
