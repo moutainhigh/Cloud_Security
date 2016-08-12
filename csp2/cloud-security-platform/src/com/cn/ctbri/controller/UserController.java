@@ -461,13 +461,12 @@ public class UserController{
 		 String name = request.getParameter("name");
 		String password = request.getParameter("password"); 
 		//boolean remeberMe = Boolean.valueOf(request.getParameter("remeberMe"));
-		String md5password = DigestUtils.md5Hex(password);
+		String md5password ="";
 		boolean remeberMe = false;
 		//加密
-	   byte[] enk = ThreeDes.hex(name);// 用户名
-	   byte[] encoded = ThreeDes.encryptMode(enk, password.getBytes());
-        String newPass = Base64.encode(encoded);
-		 
+	  
+        String newPass ="";
+        	
 		Map<String, Object> map = new HashMap<String, Object>();
 		int count=0;
 		int count1=0;
@@ -476,11 +475,19 @@ public class UserController{
 			User _user = null;
 			List<User> users = userService.findUserByName(name);
 			if(users!=null && users.size()>0){
+				 byte[] enk = ThreeDes.hex(name);// 用户名
+				 byte[] encoded = ThreeDes.encryptMode(enk, password.getBytes());
+				md5password= DigestUtils.md5Hex(password);
+				newPass=Base64.encode(encoded);
 				count=users.size();
 			}
 			
 			List<User> users1 = userService.findUserByMobile(name);
 			if(users1!=null && users1.size()>0){
+				 byte[] enk = ThreeDes.hex(users1.get(0).getName());// 用户名
+				 byte[] encoded = ThreeDes.encryptMode(enk, password.getBytes());
+				md5password= DigestUtils.md5Hex(password);
+				newPass=Base64.encode(encoded);
 				count1=users1.size();
 			}
 			if(count<=0&&count1<=0){
@@ -497,38 +504,9 @@ public class UserController{
 				
 			}
 			if(users!=null && users.size()>0){			
-				/*//判断用户名对应的密码
-				if(!md5password.equals(users.get(0).getPassword())){
-					//判断手机号对应的密码
-					users = userService.findUserByMobile(name);
-					if(users!=null && users.size()>0){
-						if(!md5password.equals(users.get(0).getPassword())){
-							//密码错误
-							map.put("result", 2);
-							JSONObject JSON = CommonUtil.objectToJson(response, map);
-							try {
-								// 把数据返回到页面
-								CommonUtil.writeToJsp(response, JSON);
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-							return;
-						}
-					}else{
-						//密码错误
-						map.put("result", 2);
-						JSONObject JSON = CommonUtil.objectToJson(response, map);
-						try {
-							// 把数据返回到页面
-							CommonUtil.writeToJsp(response, JSON);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-						return;
-					}
-					
-				}*/
+				
 				Salt = users.get(0).getSalt();
+				_user = users.get(0);
 				//判断用户名对应的密码 判断当前用户密码是否已经有盐值； 无 用md5比较
 				if("".equals(Salt)||Salt==null){
 				//判断用户名对应的密码
@@ -559,7 +537,7 @@ public class UserController{
 				  }
 			  }
 		   }else{
-				users = userService.findUserByMobile(name);
+			   Salt = users1.get(0).getSalt();
 				 if(users!=null && users.size()>0){
 					  if("".equals(Salt)||Salt==null){
 						if(!md5password.equals(users.get(0).getPassword())){
@@ -576,7 +554,7 @@ public class UserController{
 						}
 					}
 				}else{
-					if(!newPass.equals(users.get(0).getPassword())){
+					if(!newPass.equals(users1.get(0).getPassword())){
 						//密码错误
 						map.put("result", 2);
 						JSONObject JSON = CommonUtil.objectToJson(response, map);
@@ -589,9 +567,10 @@ public class UserController{
 						return;
 				  }
 				}
+					_user = users1.get(0);
 			}
 			
-			_user = users.get(0);
+		
 			if(_user.getStatus()!=1 && _user.getStatus()!=2 && _user.getStatus()!=0){
 				//对不起，您的帐号已停用
 				map.put("result", 1);
@@ -627,6 +606,12 @@ public class UserController{
 			}else{
 				ip = request.getHeader("x-forwarded-for");
 			}
+			  //获得ip地址所在的省份
+		    //AddressUtils addressUtils = new AddressUtils(); 
+		  
+		    //ip所在的省份
+		    //String ipProvice = addressUtils.GetAddressByIp(ip);
+		    	//addressUtils.getAddresses("ip="+ip, "utf-8"); 
 			String ipStart = _user.getStartIP();
 			String ipEnd = _user.getEndIP();
 				
@@ -641,6 +626,10 @@ public class UserController{
 				_user.setSalt(Salt);
 				_user.setPassword(newPass);
 			}
+			//ip地址所在的省份
+//			if(ipProvice!=null&&!"".equals(ipProvice)){
+//				_user.setIpProvice(ipProvice);
+//			}
 			_user.setLastLoginTime(new Date());			//设置登录状态：2
 			_user.setStatus(2);
 			userService.update(_user);
