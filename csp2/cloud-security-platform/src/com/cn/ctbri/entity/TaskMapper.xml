@@ -189,6 +189,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from cs_task t,cs_order_asset oa
 		WHERE
 		t.order_asset_Id=oa.id AND oa.orderId=#{orderId}
+		<if test="isAlarm!=null">
+        	and t.isAlarm!=1
+        </if>
 		<!-- <if test="type!=null and type='1'">
         	and t.status=3
         </if>
