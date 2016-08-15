@@ -48,7 +48,6 @@ $('.words').click(function(){
 			//---------Add by zsh 2016-08-15 start 
 			//高级筛选条件选择API的场合,关闭高级筛选条件时，资产名称 disabled=false
 			var servNameValue = $("#servName").val();
-			alert(servNameValue.slice(-1));
 			if(servNameValue.slice(-1)=="1"){
 				$("#search").attr('placeholder','输入资产名称或者资产地址进行搜索');
 			}
