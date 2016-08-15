@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -400,7 +401,8 @@ public class AnalyseController {
 		if (size > 20) {// 超过20个攻击类型后，需要通过排序查找出这段时间内攻击类型数量最多的20个
 			for (int i = 0; i < size; i++) {
 				JSONObject obj = (JSONObject) jsonArray.get(i);
-				String type = (String) obj.get("eventType");
+				byte[] base64Bytes = Base64.decodeBase64(obj.get("eventType").toString().getBytes());	
+				String type = new String(base64Bytes,"UTF-8");
 				map.put(type, new ArrayList());
 				map.get(type).add(type);
 				JSONArray dateValueArray = (JSONArray) obj.get("countInTime");
