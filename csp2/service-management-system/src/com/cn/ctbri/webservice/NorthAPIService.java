@@ -290,7 +290,7 @@ public class NorthAPIService {
 				}else{
 					Map<String,Object> paramMap = new HashMap<String,Object>();
 					paramMap.put("orderId", orderId);
-		        	paramMap.put("status", 2);
+//		        	paramMap.put("status", 2);
 					List t= taskService.findTaskByOrderId(paramMap);
 //					if(t.size()>0){
 //						t.setExecuteTime(DateUtils.dateToString(t.getExecute_time()));
