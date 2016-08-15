@@ -1785,8 +1785,8 @@ public class UserController{
 			int useFlag = 1;
 			User userInfo;
 			//验证手机号
+			User globle_user = (User) request.getSession().getAttribute("globle_user");
 			if ("2".equals(useFlagStr)) {  //2：修改密码
-				User globle_user = (User) request.getSession().getAttribute("globle_user");
 				if(globle_user == null) {
 					return "/updatePassfail";
 				}
@@ -1838,6 +1838,11 @@ public class UserController{
 				request.getSession().removeAttribute("forgetCode_activationCode");
 			} else if(useFlag == 2) {
 				request.getSession().removeAttribute("modifyCode_activationCode");
+			}
+			
+			if (globle_user != null && userInfo.getName().equals(globle_user.getName())) {
+				globle_user.setPassword(newPass);
+				globle_user.setSalt(salt);
 			}
 			
 			if(result==1){
