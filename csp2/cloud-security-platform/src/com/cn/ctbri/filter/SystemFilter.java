@@ -82,6 +82,11 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/orderServiceCount.html");
 		list.add("/attackUI.html");
 		list.add("/attackCount.html");
+		list.add("/mapUI.html");
+		list.add("/worldMapSocketServer.html");
+		list.add("/test.html");
+		list.add("/websocket");
+		
 		//获取访问的url路径
 		String path = request.getServletPath();
 		forwordIndexPage(path,request,response);

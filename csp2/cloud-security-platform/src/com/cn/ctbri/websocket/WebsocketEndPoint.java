@@ -8,16 +8,17 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
  * 描        述：    WebSocket服务器消息监听控制器
  * 版        本：   1.0
  */
-public class WebsocketEndPoint extends TextWebSocketHandler {
-	
-	
-    @Override
-    public void handleTextMessage(WebSocketSession session,
-            TextMessage message) throws Exception {
-        super.handleTextMessage(session, message);
-        WebsocketSessionStore.sessionStores.put(System.currentTimeMillis()+"", session);
-        TextMessage returnMessage = new TextMessage(message.getPayload()+" received at server");
-        System.err.println("--------------------------------");
-        session.sendMessage(returnMessage);
-    }
-}
+public class WebsocketEndPoint extends TextWebSocketHandler {  
+    
+      
+    @Override  
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {  
+          
+        super.handleTextMessage(session, message);  
+        System.out.println("GOMA === > WebSocketEndPoint.handlerTextMessage...");  
+          
+        TextMessage returnMessage = new TextMessage(message.getPayload()+" received at server");  
+        session.sendMessage(returnMessage);  
+          
+    }  
+}  

@@ -29,6 +29,7 @@ public class XSSFilter implements Filter
 		
 		List<String> list = new ArrayList<String>();
 		list.add("/export.html");
+		list.add("/websocket");
 		String path = ((HttpServletRequest) request).getServletPath();
 		if(list.contains(path)){
 			//放行
