@@ -2,6 +2,7 @@ package com.cn.ctbri.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ import com.cn.ctbri.service.IDistrictDataService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.util.CommonUtil;
+import com.cn.ctbri.util.DateUtils;
 
 /**
  * 创 建 人  ：  txr
@@ -150,7 +152,15 @@ public class DistrictDataController {
     @ResponseBody
     public void getVulnscanAlarmOneHour(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map<String, Object> paramMap = new HashMap<String, Object>();
-        List result = districtDataService.getVulnscanAlarmOneHour();
+
+        String endDate = DateUtils.dateToString(new Date());
+        Date date = DateUtils.getDateBeforeOneHour(new Date());
+        String beginDate = DateUtils.dateToString(date);
+        
+        Map<String,Object> dateMap = new HashMap<String,Object>();
+        dateMap.put("beginDate", beginDate);
+        dateMap.put("endDate", endDate);
+        List result = districtDataService.getVulnscanAlarmOneHour(dateMap);
         JSONArray jsonArray = new JSONArray();
 
         if(result!=null && result.size()>0){
@@ -513,30 +523,64 @@ public class DistrictDataController {
     @RequestMapping(value="getOrderServiceTimes.html")
     @ResponseBody
     public void getOrderServiceTimes(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //获取各行业注册用户数
-        List userList = districtDataService.getIndustryUserCount();
-        //行业list
-        List industryList = new ArrayList();
-        List jsonUserList = new ArrayList();
-        if(userList!=null && userList.size()>0){
-        	for(int i = 0; i<userList.size(); i++){
-        		industryList.add(((Map)(userList.get(i))).get("industry"));
-        		jsonUserList.add(((Map)(userList.get(i))).get("userCount"));
-        	}
-        }
-        
-        //获取各行业订单数
-        List orderList = districtDataService.getIndustryOrderCount();
-        List jsonOrderList = new ArrayList();
-        if(orderList!=null && orderList.size()>0){
-        	for(int i = 0; i < orderList.size(); i++){
-        		jsonOrderList.add(((Map)(orderList.get(i))).get("orderCount"));
-        	}
-        }
-        Map<String, Object> m = new HashMap<String, Object>();
-        m.put("userList", jsonUserList);
-        m.put("orderList", jsonOrderList);
-        m.put("industryList", industryList);
+
+    	JSONArray jsonArray = new JSONArray();
+    	//获取服务
+    	List<Serv> servList = servService.findAllService();
+    	List servNameList = new ArrayList();
+    	if(servList!=null && servList.size()>0){
+    		for(int i = 0; i < servList.size(); i++){
+    			servNameList.add(((Serv)servList.get(i)).getName());
+    			List countList = new ArrayList();
+    			List list = districtDataService.getOrderCountTimesAndServiceId(((Serv)servList.get(i)).getId());
+    			if(list!=null && list.size()>0){
+    				for(int j = 0; j<list.size();j++){
+    					countList.add(Integer.parseInt(((Map)list.get(j)).get("count2").toString()));
+    				}
+    			}
+    			
+    			//生成前台json
+    			JSONObject jsonObject = new JSONObject();
+    			jsonObject.put("name", ((Serv)servList.get(i)).getName());
+    			jsonObject.put("type", "line");
+    			jsonObject.put("stack", "总量");
+    			
+    			JSONObject jsonObject2 = new JSONObject();
+    			jsonObject2.put("normal", new JSONObject());
+
+    			jsonObject.put("areaStyle", jsonObject2);
+    			
+    			jsonObject.put("data", countList);
+    			
+    			jsonArray.add(jsonObject);
+    		}
+    	}
+    	
+    	//获取一年内日期
+    	List dayList = districtDataService.getDaysInYear();
+    	List jsonDayList = new ArrayList();
+    	if(dayList!=null && dayList.size()>0){
+    		for(int i = 0; i < dayList.size(); i++){
+    			Map map = (Map)dayList.get(i);
+    			jsonDayList.add(map.get("dayName").toString());
+    		}
+    	}
+    	
+    	//获取一年内月份的最后一天
+    	List lastdayList = districtDataService.getLastDayForMonthInYear();
+    	List jsonLastdayList = new ArrayList();
+    	if(lastdayList!=null && lastdayList.size()>0){
+    		for(int i = 0; i < lastdayList.size(); i++){
+    			Map map = (Map)lastdayList.get(i);
+    			jsonLastdayList.add(map.get("lastday").toString());
+    		}
+    	}
+
+    	Map<String, Object> m = new HashMap<String, Object>();
+        m.put("seriesList", jsonArray);
+        m.put("servNameList", servNameList);
+        m.put("dayList", jsonDayList);
+        m.put("lastdayList", jsonLastdayList);
 		//object转化为Json格式
 		JSONObject JSON = CommonUtil.objectToJson(response, m);
 		try {
