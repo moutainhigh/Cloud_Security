@@ -213,4 +213,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="getLastDayForMonthInYear" resultType="hashmap">
     	SELECT LAST_DAY(dayName) lastday,DATE_FORMAT(dayName,'%Y-%m') months FROM `cs_days` GROUP BY months
     </select>	
+    
+    <!-- 获取同一网站同一漏洞数大于等于3的-->
+    <select id="getVulnscanAlarmOver3" resultType="hashmap">
+    	SELECT count(a.name),a.url,a.name FROM cs_alarm a GROUP BY a.url,a.name having COUNT(a.name)>=3
+    </select>
+    
+    <!-- 获取同一网站同一漏洞数-->
+    <select id="getVulnscanAlarmAllCount" resultType="hashmap">
+    	SELECT count(a.name),a.url,a.name FROM cs_alarm a GROUP BY a.url,a.name
+    </select>
 </mapper>
