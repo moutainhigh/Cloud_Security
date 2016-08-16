@@ -510,13 +510,14 @@ $(function(){
 
 		});
 		   
-		//同一网站三次结果中同一漏洞的重复率：左图为所有网站中出现过连续三次结果中有同一漏洞告警的网站占比情况
+
+		 //同一网站三次结果中同一漏洞的重复率：左图为所有网站中出现过连续三次结果中有同一漏洞告警的网站占比情况
 			var myChart7 = echarts.init(document.getElementById('assetPercent'));
-			  /* $.ajax({
+			   $.ajax({
 			    	type : "post",
-			    	url:"getWafOneHour.html",
+			    	url:"getAssetPercent.html",
 			        dataType:"json",
-			        success:function(obj){*/
+			        success:function(obj){
 				   		var option7 = {
 				   				title : {
 				   			        text: '网站漏洞重复率',
@@ -538,13 +539,7 @@ $(function(){
 				   			            type: 'pie',
 				   			            radius : '55%',
 				   			            center: ['50%', '60%'],
-				   			            data:[
-				   			                {value:335, name:'直接访问'},
-				   			                {value:310, name:'邮件营销'},
-				   			                {value:234, name:'联盟广告'},
-				   			                {value:135, name:'视频广告'},
-				   			                {value:1548, name:'搜索引擎'}
-				   			            ],
+				   			            data:obj.jsonList,
 				   			            itemStyle: {
 				   			                emphasis: {
 				   			                    shadowBlur: 10,
@@ -556,9 +551,9 @@ $(function(){
 				   			    ]
 				   	};
 				   		myChart7.setOption(option7);
-			   /*  },
+			     },
 
-			});   */
+			});   
 });
 
 function getRootPath(){
