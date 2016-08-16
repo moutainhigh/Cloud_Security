@@ -412,11 +412,17 @@ public class MyAssetsController {
 	}
 	
 	/**
-	 * 功能描述：检查物理地址是否正确
+	 * 功能描述：资产用途是否正确
 	 */
 	private int checkPurpose(String purpose) {
 		if ("公共服务".equals(purpose) || 
 				"信息发布".equals(purpose) || 
+				"信息服务".equals(purpose)|| 
+				"社交".equals(purpose)|| 
+				"娱乐".equals(purpose)|| 
+				"电子商务/金融".equals(purpose)|| 
+				"移动互联网".equals(purpose)|| 
+				"教育/医疗".equals(purpose)|| 
 				"其他".equals(purpose)) {
 			return 0;
 		}
@@ -563,7 +569,7 @@ public class MyAssetsController {
 			}
 			
 			if(oldAsset.getName().equals(name) && oldAsset.getAddr().equals(assetAddr) && 
-					oldAsset.getPurpose().equals(oldAsset.getPurpose()) &&
+					oldAsset.getPurpose().equals(purpose) &&
 					oldAsset.getDistrictId().equals(districtId) && oldCity.equals(city)){
 				return;
 			}
