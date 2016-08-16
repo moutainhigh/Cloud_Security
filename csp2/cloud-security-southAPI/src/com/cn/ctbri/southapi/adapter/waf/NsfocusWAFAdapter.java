@@ -983,7 +983,9 @@ public class NsfocusWAFAdapter {
 		try {
 			sqlSession = getSqlSession();
 			//根据时间间隔获取时间段
-			if(0<=jsonObject.getInt("interval")||null==jsonObject.getString("startDate")||jsonObject.getString("startDate").length()<0){
+			
+			if(0>=jsonObject.getInt("interval")||null==jsonObject.get("startDate")||jsonObject.getString("startDate").length()<0){
+				System.out.println("interval="+jsonObject.getInt("interval")+";startDate="+jsonObject.getString("startDate")==null+";lenth="+jsonObject.getString("startDate").length());
 				JSONObject errorJsonObject = new JSONObject();
 				errorJsonObject.put("status", "failed");
 				errorJsonObject.put("message", "EventType count error.Interval or startDate is null.");
