@@ -122,5 +122,14 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
 		return this.getSqlSession().selectList(ns+"getLastDayForMonthInYear");
 	}		
 	
-	
+	@Override
+	public List getVulnscanAlarmOver3() {
+		
+		return this.getSqlSession().selectList(ns+"getVulnscanAlarmOver3");
+	}
+
+	@Override
+	public List getVulnscanAlarmAllCount() {
+		return this.getSqlSession().selectList(ns+"getVulnscanAlarmAllCount");
+	}
 }
