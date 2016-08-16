@@ -18,7 +18,7 @@
 
 <script src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts3/echarts.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/order/doudong_test.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/order/bigdata.js"></script>
 
 </head>
 
