@@ -515,7 +515,7 @@ public class DistrictDataController {
     }
     
     /**
-     * 用户行业分布：各行业注册用户数与已下订单数
+     * 订单集中时间点
      * 
      * @return
      * @throws IOException
