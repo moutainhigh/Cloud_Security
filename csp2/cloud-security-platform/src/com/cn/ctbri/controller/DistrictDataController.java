@@ -593,6 +593,47 @@ public class DistrictDataController {
     }
     
     /**
+     * 网站漏洞分布
+     * 
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value="getAssetPercent.html")
+    @ResponseBody
+    public void getAssetPercent(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    	List jsonList = new ArrayList();
+    	
+    	//获取同一网站同一漏洞数大于等于3的
+    	List listOver3 = districtDataService.getVulnscanAlarmOver3();
+    	//获取同一网站同一漏洞数的
+    	List list = districtDataService.getVulnscanAlarmAllCount();
+
+    	Map<String,Object> mapOver3 = new HashMap<String,Object>();
+    	mapOver3.put("name", "网站同一漏洞告警大等于3");
+    	mapOver3.put("value", listOver3.size());
+    	jsonList.add(mapOver3);
+    	
+    	Map<String,Object> map = new HashMap<String,Object>();
+    	map.put("name", "网站同一漏洞告警小于3");
+    	map.put("value", list.size()-listOver3.size());
+
+    	jsonList.add(map);
+    	
+    	Map<String, Object> m = new HashMap<String, Object>();
+        m.put("jsonList", jsonList);
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return;
+    }
+    
+    /**
      * 服务能力告警近5个月数量统计
      * 
      * @return
