@@ -351,7 +351,7 @@ public class MyAssetsController {
 			addr="http://"+addr.trim();
 		}
 		
-		if (oldAssetAddr != null && assetAddress.equals(oldAssetAddr)) {
+		if (oldAssetAddr != null && assetAddress.equalsIgnoreCase(oldAssetAddr)) {
 			return 0;
 		}
 		
@@ -542,7 +542,7 @@ public class MyAssetsController {
 			}
 			
 			String name = request.getParameter("assetName");
-			String assetAddr = request.getParameter("assetAddr").toLowerCase();
+			String assetAddr = request.getParameter("assetAddr");
 			String districtId = request.getParameter("prov");
 			String city = request.getParameter("city");
 			String purpose = request.getParameter("purpose");
