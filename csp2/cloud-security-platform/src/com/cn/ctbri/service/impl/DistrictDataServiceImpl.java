@@ -104,5 +104,14 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
 		return districtDataDao.getLastDayForMonthInYear();
 	}
 
+	@Override
+	public List getVulnscanAlarmOver3() {
+		return districtDataDao.getVulnscanAlarmOver3();
+	}
+
+	@Override
+	public List getVulnscanAlarmAllCount() {
+		return districtDataDao.getVulnscanAlarmAllCount();
+	}
 
 }
