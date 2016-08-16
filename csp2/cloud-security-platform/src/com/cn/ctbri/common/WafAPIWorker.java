@@ -388,7 +388,7 @@ public class WafAPIWorker {
 	 * @param logId
 	 * @return
 	 */
-	public static String getWaflogWebsecInTime(String interval){
+	public static String getAllWafLogWebsecInTime(String interval){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("interval", interval);
@@ -461,11 +461,10 @@ public class WafAPIWorker {
 	 * @param interval
 	 * @return
 	 */
-	public static String getEventTypeCountByDay(String interval,String startDate){
+	public static String getEventTypeCountByDay(String interval){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("interval", interval);
-		json.put("startDate", startDate);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getEventTypeCountByDay";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
@@ -502,6 +501,28 @@ public class WafAPIWorker {
         WebResource service = client.resource(url);
         //获取响应结果
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
+	
+	/**
+	 * 功能描述：获取攻击源攻击统计信息
+	 * @return
+	 */
+	public static String getWafLogWebSecSrcIpList(){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafLogWebSecSrcIpList";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
         String textEntity = response.getEntity(String.class);
         return textEntity;
 	}
@@ -753,8 +774,10 @@ public class WafAPIWorker {
 //			jo.put("port", "80");
 //			ser.add(jo);
 //    		wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", "test0615", "219.141.189.183", "80", "nsfocus.cer", "0", "www.anquanbang", "*", "", ser);
-//    		wafcreate = WafAPIWorker.getEventTypeCountByDay("1","2016-8-10");
-    		wafcreate = WafAPIWorker.getWaflogWebsecInTime("27");
+//    		wafcreate = WafAPIWorker.getEventTypeCountByDay("30");
+//    		wafcreate = WafAPIWorker.getAllWafLogWebsecInTime("27");
+//    		wafcreate = WafAPIWorker.getEventTypeCountByMonth("1","2016-4");
+    		wafcreate = WafAPIWorker.getWafLogWebSecSrcIpList();
     	} catch (Exception e) {
             e.printStackTrace();
         }
