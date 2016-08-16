@@ -506,6 +506,29 @@ public class WafAPIWorker {
 	}
 	
 	/**
+	 * 功能描述：获取防护目标ip统计信息
+	 * @return
+	 */
+	public static String getWafLogWebSecDstIpList(){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafLogWebSecDstIpList";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
+	
+	
+	/**
 	 * 功能描述：获取攻击源攻击统计信息
 	 * @return
 	 */
@@ -777,7 +800,8 @@ public class WafAPIWorker {
 //    		wafcreate = WafAPIWorker.getEventTypeCountByDay("30");
 //    		wafcreate = WafAPIWorker.getAllWafLogWebsecInTime("27");
 //    		wafcreate = WafAPIWorker.getEventTypeCountByMonth("1","2016-4");
-    		wafcreate = WafAPIWorker.getWafLogWebSecSrcIpList();
+//    		wafcreate = WafAPIWorker.getWafLogWebSecSrcIpList();
+    		wafcreate = WafAPIWorker.getWafLogWebSecDstIpList();
     	} catch (Exception e) {
             e.printStackTrace();
         }
