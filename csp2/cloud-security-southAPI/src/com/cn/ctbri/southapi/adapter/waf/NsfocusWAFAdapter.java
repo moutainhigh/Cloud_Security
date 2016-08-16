@@ -32,6 +32,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.joda.time.DateTime;
 
 import com.cn.ctbri.southapi.adapter.batis.inter.*;
 import com.cn.ctbri.southapi.adapter.batis.model.*;
@@ -932,52 +933,37 @@ public class NsfocusWAFAdapter {
 		SqlSession sqlSession = null;
 		try {
 			sqlSession = getSqlSession();
-			//根据时间间隔获取时间段
-			int interval = jsonObject.getInt("interval");
-
-
 			
+			int interval = jsonObject.getInt("interval");
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
-			Date endDate = calendar.getTime();
-			System.out.println(endDate);
-			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM-dd");
-	
+			Date dateNow = calendar.getTime();
+			calendar.add(Calendar.DATE, -interval);
+			Date dateBefore = calendar.getTime();
 			
+			
+			//根据时间间隔获取时间段
+			
+			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM-dd");
+			
+			
+			
+			TWafLogWebsecCountMapper mapper = sqlSession.getMapper(TWafLogWebsecCountMapper.class);
 			SAXReader reader = new SAXReader();
 			Document document = reader.read(DeviceAdapterConstant.WAF_NSFOCUS_EVENT_TYPE);
 			List<Element> typeElements = document.selectNodes("/TypeList/Type");
-			List<JSONObject> typeCountList = new ArrayList<JSONObject>();
-			System.out.println("start="+sdf.format(new Date()));
-			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
-			System.out.println("end="+sdf.format(new Date()));
+			JSONArray jsonArray = new JSONArray();
 			for (Element element : typeElements) {
 				String eventTypeBase64 = stringToBase64(element.getTextTrim());
-				JSONObject eventTypeJsonObject = new JSONObject();
-				eventTypeJsonObject.put("eventType", eventTypeBase64);
-				JSONArray eventTypeInTimeArray = new JSONArray();
-				Date startDate = sdf.parse(jsonObject.getString("startDate"));
-				while (startDate.before(endDate)) {
-					TWafLogWebsecExample exampleElement = new TWafLogWebsecExample();
-					JSONObject eventTypeInTimeJsonObject = new JSONObject();
-					calendar.setTime(startDate);
-					calendar.add(calendar.DATE, interval);
-					exampleElement.or().andEventTypeEqualTo(element.attributeValue("name")).andStatTimeBetween(startDate, calendar.getTime());
-
-					eventTypeInTimeJsonObject.put("date", sdf.format(startDate));
-					eventTypeInTimeJsonObject.put("count", mapper.countByExample(exampleElement));
-					eventTypeInTimeArray.add(eventTypeInTimeJsonObject);
-					startDate = calendar.getTime();
-				}
-				eventTypeJsonObject.put("countInTime", eventTypeInTimeArray);
-				
-				
-				
-				typeCountList.add(eventTypeJsonObject);
+				TWafLogWebsecCountExample countExample = new TWafLogWebsecCountExample();
+				countExample.or().andStatTimeBetween(sdf.format(dateBefore), sdf.format(dateNow)).andEventTypeEqualTo(element.attributeValue("name"));
+				List<TWafLogWebsecCount> counts = mapper.selectByExample(countExample);
+				JSONObject counntInTimeJsonObject = JSONObject.fromObject(getXStream().toXML(counts));				
+				counntInTimeJsonObject.put("eventTypeBase64", eventTypeBase64);
+				jsonArray.add(counntInTimeJsonObject);
 			}
-			System.out.println("postTime="+sdf.format(new Date()));
-			sqlSession.commit();
-			return JSONArray.fromObject(typeCountList).toString();
+			
+			return jsonArray.toString();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -996,6 +982,12 @@ public class NsfocusWAFAdapter {
 		try {
 			sqlSession = getSqlSession();
 			//根据时间间隔获取时间段
+			if(0<=jsonObject.getInt("interval")||null==jsonObject.getString("startDate")||jsonObject.getString("startDate").length()<0){
+				JSONObject errorJsonObject = new JSONObject();
+				errorJsonObject.put("status", "failed");
+				errorJsonObject.put("message", "EventType count error.Interval or startDate is null.");
+				return errorJsonObject.toString();
+			}
 			int interval = jsonObject.getInt("interval");
 
 
@@ -1012,13 +1004,13 @@ public class NsfocusWAFAdapter {
 			List<Element> typeElements = document.selectNodes("/TypeList/Type");
 			List<JSONObject> typeCountList = new ArrayList<JSONObject>();
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
-			for (Element element : typeElements) {
+			for (int i=0;i<typeElements.size();i++) {
+				Element element = typeElements.get(i);
 				String eventTypeBase64 = stringToBase64(element.getTextTrim());
 				JSONObject eventTypeJsonObject = new JSONObject();
 				eventTypeJsonObject.put("eventType", eventTypeBase64);
 				JSONArray eventTypeInTimeArray = new JSONArray();
 				Date startDate = sdf.parse(jsonObject.getString("startDate"));
-				System.out.println("startDate"+startDate);
 				while (startDate.before(endDate)) {
 					TWafLogWebsecExample exampleElement = new TWafLogWebsecExample();
 					JSONObject eventTypeInTimeJsonObject = new JSONObject();

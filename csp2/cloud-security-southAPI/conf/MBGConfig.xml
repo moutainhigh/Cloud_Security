@@ -12,9 +12,10 @@
     <sqlMapGenerator targetPackage="com.cn.ctbri.southapi.adapter.batis.mapper" targetProject="cloud-security-southAPI/src" />
     <javaClientGenerator targetPackage="com.cn.ctbri.southapi.adapter.batis.inter" targetProject="cloud-security-southAPI/src" type="ANNOTATEDMAPPER" />
   	<!-- <table schema="t_waf_nsfocus_targetinfo" tableName="t_waf_nsfocus_targetinfo"></table> -->
-  	<table schema="t_waf_log_arp" tableName="t_waf_log_arp"></table>
+  	<!--  <table schema="t_waf_log_arp" tableName="t_waf_log_arp"></table>
     <table schema="t_waf_log_ddos" tableName="t_waf_log_ddos"></table>
     <table schema="t_waf_log_deface" tableName="t_waf_log_deface"></table>
-    <table schema="t_waf_log_websec" tableName="t_waf_log_websec"></table>
+    <table schema="t_waf_log_websec" tableName="t_waf_log_websec"></table>-->
+    <table schema="t_waf_log_websec_count" tableName="t_waf_log_websec_count"></table>
   </context>
 </generatorConfiguration>

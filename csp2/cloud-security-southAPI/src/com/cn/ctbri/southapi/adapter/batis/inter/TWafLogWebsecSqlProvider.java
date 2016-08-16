@@ -29,6 +29,14 @@ public class TWafLogWebsecSqlProvider {
         applyWhere(example, false);
         return SQL();
     }
+    
+    public String countByExampleGroup(TWafLogWebsecExample example) {
+        BEGIN();
+        SELECT("count(*)");
+        FROM("t_waf_log_websec");
+        applyWhere(example, false);
+        return SQL();
+    }
 
     public String deleteByExample(TWafLogWebsecExample example) {
         BEGIN();

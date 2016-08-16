@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class TWafLogWebsec {
     private Long logId;
-
+    
     private Integer resourceId;
 
     private String resourceUri;
