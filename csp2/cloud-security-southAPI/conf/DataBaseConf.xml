@@ -22,5 +22,7 @@
     	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogDefaceMapper"/>
     	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafNsfocusTargetinfoMapper"></mapper>
     	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogWebsecCountMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogWebsecDstMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogWebsecSrcMapper"/>
     </mappers>
 </configuration>

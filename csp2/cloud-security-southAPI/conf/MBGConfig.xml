@@ -15,7 +15,9 @@
   	<!--  <table schema="t_waf_log_arp" tableName="t_waf_log_arp"></table>
     <table schema="t_waf_log_ddos" tableName="t_waf_log_ddos"></table>
     <table schema="t_waf_log_deface" tableName="t_waf_log_deface"></table>
-    <table schema="t_waf_log_websec" tableName="t_waf_log_websec"></table>-->
-    <table schema="t_waf_log_websec_count" tableName="t_waf_log_websec_count"></table>
+    <table schema="t_waf_log_websec" tableName="t_waf_log_websec"></table>
+    <table schema="t_waf_log_websec_count" tableName="t_waf_log_websec_count"></table> -->
+    <table schema="t_waf_log_websec_src" tableName="t_waf_log_websec_src"></table>
+    <table schema="t_waf_log_websec_dst" tableName="t_waf_log_websec_dst"></table>
   </context>
 </generatorConfiguration>

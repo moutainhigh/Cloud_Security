@@ -830,6 +830,14 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getEventTypeCountInTime(jsonObject);
 	}
 	
+	public String getWafLogWebSecDstIpList() {
+		return nsfocusWAFAdapter.getWafLogWebSecDstIpList();
+	}
+	
+	public String getWafLogWebSecSrcIpList() {
+		return nsfocusWAFAdapter.getWafLogWebSecSrcIpList();
+	}
+	
 	public String getAlertLevelCount() {
 		return nsfocusWAFAdapter.getAlertLevelCount();
 	}

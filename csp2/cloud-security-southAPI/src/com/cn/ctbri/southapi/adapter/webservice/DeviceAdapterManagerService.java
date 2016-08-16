@@ -383,6 +383,20 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.getAlertLevelInTime(jsonObject);
 	}
 	
+	@GET
+	@Path("/getWafLogWebSecDstIpList")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafLogWebSecDstIpList(){
+		return deviceAdpaterManager.getWafLogWebSecDstIpList();
+	}
+	
+	@GET
+	@Path("/getWafLogWebSecSrcIpList")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafLogWebSecSrcIpList(){
+		return deviceAdpaterManager.getWafLogWebSecSrcIpList();
+	}
+	
 	@POST
 	@Path("/getSites")
 	@Produces(MediaType.APPLICATION_JSON)

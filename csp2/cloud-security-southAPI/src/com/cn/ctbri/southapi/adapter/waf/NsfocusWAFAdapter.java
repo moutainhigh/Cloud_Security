@@ -2,6 +2,7 @@ package com.cn.ctbri.southapi.adapter.waf;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1045,6 +1046,51 @@ public class NsfocusWAFAdapter {
 		}
 	}
 	
+	public String getWafLogWebSecDstIpList(){
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getSqlSession();
+			TWafLogWebsecDstMapper mapper =sqlSession.getMapper(TWafLogWebsecDstMapper.class);
+			TWafLogWebsecDstExample example = new TWafLogWebsecDstExample();
+			List<TWafLogWebsecDst> dsts = mapper.selectByExample(example);
+			XStream xStream = getXStream();
+			xStream.alias("WafLogWebSecDstIpList", List.class);
+			String jsonString = xStream.toXML(dsts);
+			sqlSession.close();
+			return jsonString;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			sqlSession.rollback();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "WafLogWebSecDstIp Count error!!!");
+			return errorJsonObject.toString();
+		}
+	}
+	
+	public String getWafLogWebSecSrcIpList(){
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getSqlSession();
+			TWafLogWebsecSrcMapper mapper =sqlSession.getMapper(TWafLogWebsecSrcMapper.class);
+			TWafLogWebsecSrcExample example = new TWafLogWebsecSrcExample();
+			List<TWafLogWebsecSrc> srcs = mapper.selectByExample(example);
+			XStream xStream = getXStream();
+			xStream.alias("WafLogWebSecSrcIpList", List.class);
+			String jsonString = xStream.toXML(srcs);
+			sqlSession.close();
+			return jsonString;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			sqlSession.rollback();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "WafLogWebSecSrcIp Count error!!!");
+			return errorJsonObject.toString();
+		}
+	}
 	
 	
 	public String getAlertLevelCount() {
