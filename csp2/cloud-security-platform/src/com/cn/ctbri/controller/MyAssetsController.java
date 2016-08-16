@@ -542,7 +542,7 @@ public class MyAssetsController {
 			}
 			
 			String name = request.getParameter("assetName");
-			String assetAddr = request.getParameter("assetAddr");
+			String assetAddr = request.getParameter("assetAddr").toLowerCase();
 			String districtId = request.getParameter("prov");
 			String city = request.getParameter("city");
 			String purpose = request.getParameter("purpose");
