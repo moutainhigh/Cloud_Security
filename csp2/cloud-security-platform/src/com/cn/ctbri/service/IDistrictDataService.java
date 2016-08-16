@@ -87,4 +87,16 @@ public interface IDistrictDataService {
      * @return
      */
     List getLastDayForMonthInYear();
+    
+    /**
+     * 获取同一网站同一漏洞数大于等于3的
+     * @return
+     */
+    List getVulnscanAlarmOver3();
+    /**
+     * 获取同一网站同一漏洞数
+     * @return
+     */
+    List getVulnscanAlarmAllCount();
+
 }
