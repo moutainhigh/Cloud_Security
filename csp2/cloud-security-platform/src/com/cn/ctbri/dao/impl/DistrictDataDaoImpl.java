@@ -86,8 +86,8 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
 		return getSqlSession().selectOne(ns + "getServiceAlarmByMonth", paramMap);
 	}
 
-	public List getVulnscanAlarmOneHour() {
-		return this.getSqlSession().selectList(ns+"getVulnscanAlarmOneHour");
+	public List getVulnscanAlarmOneHour(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"getVulnscanAlarmOneHour", paramMap);
 	}
 
 	public List getVulnscanAlarmTOP20() {
@@ -108,6 +108,18 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
 
 	public List getIndustryUserCount() {
 		return this.getSqlSession().selectList(ns+"getIndustryUserCount");
+	}
+
+	public List getOrderCountTimesAndServiceId(int serviceId) {
+		return this.getSqlSession().selectList(ns+"getOrderCountTimesAndServiceId",serviceId);
+	}
+
+	public List getDaysInYear() {
+		return this.getSqlSession().selectList(ns+"getDaysInYear");
+	}
+
+	public List getLastDayForMonthInYear() {
+		return this.getSqlSession().selectList(ns+"getLastDayForMonthInYear");
 	}		
 	
 	

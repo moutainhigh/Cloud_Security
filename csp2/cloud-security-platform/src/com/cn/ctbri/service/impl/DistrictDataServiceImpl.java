@@ -68,8 +68,8 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
 		return districtDataDao.getProvNameById(paramMap);
 	}
 
-	public List getVulnscanAlarmOneHour() {
-		return districtDataDao.getVulnscanAlarmOneHour();
+	public List getVulnscanAlarmOneHour(Map<String, Object> paramMap) {
+		return districtDataDao.getVulnscanAlarmOneHour(paramMap);
 	}
 
 	public List getVulnscanAlarmTOP20() {
@@ -90,6 +90,18 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
 
 	public List getIndustryUserCount() {
 		return districtDataDao.getIndustryUserCount();
+	}
+
+	public List getOrderCountTimesAndServiceId(int serviceId) {
+		return districtDataDao.getOrderCountTimesAndServiceId(serviceId);
+	}
+
+	public List getDaysInYear() {
+		return districtDataDao.getDaysInYear();
+	}
+
+	public List getLastDayForMonthInYear() {
+		return districtDataDao.getLastDayForMonthInYear();
 	}
 
 

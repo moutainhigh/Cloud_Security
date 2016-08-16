@@ -28,7 +28,7 @@ public interface DistrictDataDao {
      * @param paramMap
      * @return
      */
-    List getVulnscanAlarmOneHour();
+    List getVulnscanAlarmOneHour(Map<String, Object> paramMap);
     List getServiceAlarmMonth5(Map<String, Object> paramMap);
 
     int getMax(Map<String, Object> paramMap);
@@ -69,4 +69,19 @@ public interface DistrictDataDao {
      * @return
      */
     List getIndustryOrderCount();
+    /**
+     * 根据servID获取按日期分组的订单数量
+     * @return
+     */
+    List getOrderCountTimesAndServiceId(int serviceId);
+    /**
+     * 获取最近一年内的日期
+     * @return
+     */
+    List getDaysInYear();
+    /**
+     * 获取一年内的所有月份的最后一天 
+     * @return
+     */
+    List getLastDayForMonthInYear();
 }

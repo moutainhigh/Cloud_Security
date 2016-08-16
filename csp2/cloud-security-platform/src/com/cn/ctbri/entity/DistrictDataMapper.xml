@@ -152,9 +152,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 	
 	<!-- 近1个小时内漏洞的数据 -->
-    <select id="getVulnscanAlarmOneHour" resultType="hashmap">
+    <select id="getVulnscanAlarmOneHour" resultType="hashmap" parameterType="hashmap">
          select  a.name,COUNT(a.name) AS count from cs_alarm a
-		 where a.serviceId=1 and a.name &lt;&gt; '' and a.alarm_time > (select date_sub(now(), interval 1 hour) before_hour1)
+		 where a.serviceId=1 and a.name &lt;&gt; '' and a.alarm_time &gt;= #{beginDate} and a.alarm_time &lt;= #{endDate}
          group by a.name 
             
     </select>
@@ -195,4 +195,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		on mm.industry=user1.industry group by user1.industry
     </select>
 
+	<!-- 根据servID获取按日期分组的订单数量 -->
+    <select id="getOrderCountTimesAndServiceId" resultType="hashmap">
+		SELECT days.dayName,if(isnull(m.count1),0,m.count1) count2 from cs_days days LEFT JOIN
+		(SELECT DATE_FORMAT(order1.create_date,'%Y-%m-%d') date1, count(order1.create_date) count1 from cs_order order1 
+		WHERE order1.create_date>=DATE_SUB(NOW(),INTERVAL 1 YEAR) and order1.serviceId=#{serviceId}
+		GROUP BY  date1)m
+		ON days.dayName=m.date1
+    </select>
+	
+	<!-- 获取一年内的日期 -->
+    <select id="getDaysInYear" resultType="hashmap">
+    	select * from cs_days
+    </select>
+
+	<!-- 获取一年内的所有月份的最后一天 -->
+    <select id="getLastDayForMonthInYear" resultType="hashmap">
+    	SELECT LAST_DAY(dayName) lastday,DATE_FORMAT(dayName,'%Y-%m') months FROM `cs_days` GROUP BY months
+    </select>	
 </mapper>

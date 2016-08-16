@@ -271,4 +271,17 @@ public class DateUtils {
     	}
     	return null;
     }
+    /**
+     * 获取当前日期一个小时前日期
+     * @param date
+     * @return
+     */
+    public static Date getDateBeforeOneHour(Date d){
+    	Date date = d;
+        Calendar calendar = Calendar.getInstance();  
+        calendar.setTime(date);  
+        calendar.add(Calendar.HOUR,-1); 
+        date = calendar.getTime();  
+        return date;
+    }
 }

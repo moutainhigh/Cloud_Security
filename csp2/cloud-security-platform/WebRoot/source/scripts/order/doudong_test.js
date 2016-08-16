@@ -1,3 +1,4 @@
+var lastdayArray = [];
 $(function(){
 	//最近一小时内漏洞跟踪
 	var myChart0 = echarts.init(document.getElementById('wafOneHour'));
@@ -7,21 +8,21 @@ $(function(){
 	        dataType:"json",
 	        success:function(obj){
 		   		var option0 = {
-		   			    title : {
+		   			  /*  title : {
 		   	        text: '南丁格尔玫瑰图',
 		   	        subtext: '纯属虚构',
 		   	        x:'center'
-		   	    },
+		   	    },*/
 		   	    tooltip : {
 		   	        trigger: 'item',
 		   	        formatter: "{a} <br/>{b} : {c} ({d}%)"
 		   	    },
-/*		   	    legend: {
+		   	    legend: {
 		   	        x : 'center',
 		   	        y : 'bottom',
 		   	        data:['rose1','rose2','rose3','rose4','rose5','rose6','rose7','rose8']
-		   	    },*/
-/*		   	    toolbox: {
+		   	    },
+		   	  /*  toolbox: {
 		   	        show : true,
 		   	        feature : {
 		   	            mark : {show: true},
@@ -40,7 +41,7 @@ $(function(){
 		   	        {
 		   	            name:'面积模式',
 		   	            type:'pie',
-		   	            radius : [20, 110],
+		   	            radius : [20, 180],
 		   	            center : ['50%', '50%'],
 		   	            roseType : 'area',
 		   	            data:obj.dataArray
@@ -53,6 +54,8 @@ $(function(){
 	});
 	
 	//最近一小时内漏洞跟踪
+	//var imgPath = getRootPath() + "/source/images/rose1.png";
+	//alert(imgPath);
 	var myChart1 = echarts.init(document.getElementById('serviceUseInfo'));
 	   $.ajax({
 	    	type : "post",
@@ -61,10 +64,11 @@ $(function(){
 	        success:function(obj){
 		   		var option1 = {
 		   			    title : {
-		   	        text: '南丁格尔玫瑰图',
-		   	        subtext: '纯属虚构',
+		   	        text: '最近一小时内漏洞跟踪',
+		   	        //subtext: '纯属虚构',
 		   	        x:'center'
 		   	    },
+		   		//renderAsImage:imgPath,
 		   	    tooltip : {
 		   	        trigger: 'item',
 		   	        formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -74,7 +78,7 @@ $(function(){
 		   	        y : 'bottom',
 		   	        data:['rose1','rose2','rose3','rose4','rose5','rose6','rose7','rose8']
 		   	    },*/
-		   	    toolbox: {
+		   	   /* toolbox: {
 		   	        show : true,
 		   	        feature : {
 		   	            mark : {show: true},
@@ -86,16 +90,32 @@ $(function(){
 		   	            restore : {show: true},
 		   	            saveAsImage : {show: true}
 		   	        }
-		   	    },
+		   	    },*/
 		   	    calculable : true,
 		   	    series : [
 		   	        
 		   	        {
 		   	            name:'面积模式',
 		   	            type:'pie',
-		   	            radius : [20, 110],
+		   	            radius : [20, 180],
 		   	            center : ['50%', '50%'],
 		   	            roseType : 'area',
+		   	         label: {
+		   	                normal: {
+		   	                    show: true
+		   	                },
+		   	                emphasis: {
+		   	                    show: true
+		   	                }
+		   	            },
+		   	            lableLine: {
+		   	                normal: {
+		   	                    show: true
+		   	                },
+		   	                emphasis: {
+		   	                    show: true
+		   	                }
+		   	            },
 		   	            data:obj.dataArray
 		   	        }
 		   	    ]
@@ -185,6 +205,11 @@ $(function(){
 	        dataType:"json",
 	        success:function(obj){
 		   		var option3 = {
+		   			 title : {
+		   		        text: '最\n近\n六\n个\n月\n漏\n洞\n等\n级\n分\n布\n',
+		   		        top:150
+		   		        //subtext: '纯属虚构'
+		   		    },
 		   			 tooltip : {
 		   	        trigger: 'axis',
 		   	        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
@@ -229,12 +254,12 @@ $(function(){
 		   		var indicatorList = obj.indicatorList;
 		   		var dataArray = obj.dataArray;
 		   		var option4 = {
-		   			 title: {
+		   			/* title: {
 		   	        text: '浏览器占比变化',
 		   	        subtext: '纯属虚构',
 		   	        x:'right',
 		   	        y:'bottom'
-		   	    },
+		   	    },*/
 		   	    tooltip: {
 		   	        trigger: 'item',
 		   	        backgroundColor : 'rgba(0,0,250,0.2)'
@@ -248,9 +273,9 @@ $(function(){
 		   	            return list;
 		   	        })()
 		   	    },*/
-		   	    visualMap: {
+		   	   /* visualMap: {
 		   	        color: ['red', 'yellow']
-		   	    },
+		   	    },*/
 		   	    radar: {
 		   	       indicator : indicatorList
 		   	    },
@@ -284,6 +309,7 @@ $(function(){
 
 	});
 	   
+	   //用户行业分布
 	var myChart5 = echarts.init(document.getElementById('service1OneHour'));
 	   $.ajax({
 	    	type : "post",
@@ -291,25 +317,18 @@ $(function(){
 	        dataType:"json",
 	        success:function(obj){
 		   		var option5 = {
-		   		/*	    title : {
-		   	        text: '某地区蒸发量和降水量',
-		   	        subtext: '纯属虚构'
-		   	    },*/
+	   			 title : {
+		   		        text: '用\n户\n行\n业\n分\n布\n',
+		   		        top:200
+		   		        //subtext: '纯属虚构'
+		   		},
 		   	    tooltip : {
 		   	        trigger: 'axis'
 		   	    },
 		   	    legend: {
 		   	        data:['各行业注册用户数','已下订单数']
 		   	    },
-		   	 /*   toolbox: {
-		   	        show : true,
-		   	        feature : {
-		   	            dataView : {show: true, readOnly: false},
-		   	            magicType : {show: true, type: ['line', 'bar']},
-		   	            restore : {show: true},
-		   	            saveAsImage : {show: true}
-		   	        }
-		   	    },*/
+		   	 
 		   	    //calculable : true,
 		   	    xAxis : [
 		   	        {
@@ -327,7 +346,7 @@ $(function(){
 		   	        }
 		   	    ],
 		   	    grid: { // 控制图的大小，调整下面这些值就可以，
-		             x: 40,
+		             x: 55,
 		             x2: 100,
 		             y2: 150,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
 		        },
@@ -372,40 +391,68 @@ $(function(){
 		    	url:"getOrderServiceTimes.html",
 		        dataType:"json",
 		        success:function(obj){
+			   lastdayArray = obj.lastdayList;
 			   		var option6 = {
 			   				title: {
-			   	        text: '堆叠区域图'
+			   	        text: '订\n单\n集\n中\n的\n时\n间\n点\n',
+			   	        top:200
 			   	    },
 			   	    tooltip : {
 			   	        trigger: 'axis'
 			   	    },
 			   	    legend: {
-			   	        data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+			   	        data:obj.servNameList
 			   	    },
-			   	    toolbox: {
-			   	        feature: {
-			   	            saveAsImage: {}
-			   	        }
-			   	    },
+			   	  
 			   	    grid: {
 			   	        left: '3%',
 			   	        right: '4%',
-			   	        bottom: '3%',
+			   	        bottom: '10%',
 			   	        containLabel: true
 			   	    },
 			   	    xAxis : [
 			   	        {
 			   	            type : 'category',
 			   	            boundaryGap : false,
+			   	            nameGap:20,
 			   	            axisLabel:{
-			   		                         interval:2,
-			   		                         rotate:45,
-			   		                         margin:0,
+			   		                         interval:0,
+			   		                         //rotate:45,
+			   		                         margin:4,
 			   		                         textStyle:{
 			   		                             color:"#222"
+			   		                         },
+			   		                         /*formatter: function(value) 
+				   		                     { 
+			   		                        	 //alert(value);
+			   		                        	// alert(value.substring(8,10));
+			   		                        	 if(value.substring(8,10)=='30'||value.substring(8,10)=='31'){
+			   		                        		 return value; 
+			   		                        	 }
+			   		                        	 //return value+”kg”; 
+				   		                     } */
+			   		                      formatter: function (value, index) {
+			   		                          // 格式化成月/日，只在第一个刻度显示年份
+			   		                         // var date = new Date(value);
+			   		                          //if(date.getDate()==30||date.getDate()==31){
+			   		                        	//var texts = [date.getYear(),(date.getMonth() + 1), date.getDate()];
+			   		                        	//var res = texts.join('-');
+			   		                        	if(lastdayArray.indexOf(value)!=-1){
+			   		                        		return value.substring(0,7);
+			   		                        	}
+			   		                        	//return texts.join('/');
+			   		                          //}
+			   		                         /* var texts = [(date.getMonth() + 1), date.getDate()];
+			   		                          if (index === 0) {
+			   		                              texts.unshift(date.getYear());
+			   		                          }
+			   		                          return texts.join('/');
+			   		                        	if(value.substring(8,10)=='30'||value.substring(8,10)=='31'){
+			   		                        		 return value; 
+			   		                        	 }*/
 			   		                         }
 			   		                     },
-			   	            data : ['周一','周二','周三','周四','周五','周六','周日']
+			   	           data : obj.dayList
 			   	        }
 			   	    ],
 			   	    yAxis : [
@@ -413,7 +460,8 @@ $(function(){
 			   	            type : 'value'
 			   	        }
 			   	    ],
-			   	    series : [
+			   	    series : obj.seriesList
+			   	    	/*[
 			   	        {
 			   	            name:'邮件营销',
 			   	            type:'line',
@@ -455,10 +503,73 @@ $(function(){
 			   	            areaStyle: {normal: {}},
 			   	            data:[820, 932, 901, 934, 1290, 1330, 1320]
 			   	        }
-			   	    ]
+			   	    ]*/
 			   	};
 			   		myChart6.setOption(option6);
 		     },
 
 		});
+		   
+		//同一网站三次结果中同一漏洞的重复率：左图为所有网站中出现过连续三次结果中有同一漏洞告警的网站占比情况
+			var myChart7 = echarts.init(document.getElementById('assetPercent'));
+			  /* $.ajax({
+			    	type : "post",
+			    	url:"getWafOneHour.html",
+			        dataType:"json",
+			        success:function(obj){*/
+				   		var option7 = {
+				   				title : {
+				   			        text: '网站漏洞重复率',
+				   			        //subtext: '纯属虚构',
+				   			        x:'center'
+				   			    },
+				   			    tooltip : {
+				   			        trigger: 'item',
+				   			        formatter: "{a} <br/>{b} : {c} ({d}%)"
+				   			    },
+				   			   /* legend: {
+				   			        orient: 'vertical',
+				   			        left: 'left',
+				   			        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+				   			    },*/
+				   			    series : [
+				   			        {
+				   			            name: '访问来源',
+				   			            type: 'pie',
+				   			            radius : '55%',
+				   			            center: ['50%', '60%'],
+				   			            data:[
+				   			                {value:335, name:'直接访问'},
+				   			                {value:310, name:'邮件营销'},
+				   			                {value:234, name:'联盟广告'},
+				   			                {value:135, name:'视频广告'},
+				   			                {value:1548, name:'搜索引擎'}
+				   			            ],
+				   			            itemStyle: {
+				   			                emphasis: {
+				   			                    shadowBlur: 10,
+				   			                    shadowOffsetX: 0,
+				   			                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+				   			                }
+				   			            }
+				   			        }
+				   			    ]
+				   	};
+				   		myChart7.setOption(option7);
+			   /*  },
+
+			});   */
 });
+
+function getRootPath(){
+    //获取当前网址，如： http://localhost:8083/uimcardprj/share/meun.jsp
+    var curWwwPath=window.document.location.href;
+    //获取主机地址之后的目录，如： uimcardprj/share/meun.jsp
+    var pathName=window.document.location.pathname;
+    var pos=curWwwPath.indexOf(pathName);
+    //获取主机地址，如： http://localhost:8083
+    var localhostPaht=curWwwPath.substring(0,pos);
+    //获取带"/"的项目名，如：/uimcardprj
+    var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+    return(localhostPaht+projectName);
+}

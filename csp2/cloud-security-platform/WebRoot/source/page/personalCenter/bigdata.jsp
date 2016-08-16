@@ -15,36 +15,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <title>我的订单-API详情</title>
-<link href="${ctx}/source/css/mian.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/css/chinatelecom.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/css/prompt.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/css/blue.css" type="text/css" rel="stylesheet" />
 
-<link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet" />	
-<link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/css/core.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
-<script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script src="${ctx}/source/scripts/common/jquery.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts3/echarts.js"></script>
-<script src="${ctx}/source/scripts/common/portalindex.js"></script>
-<script src="${ctx}/source/scripts/common/popBox.js"></script>
-<script src="${ctx}/source/scripts/common/slidelf.js"></script>
-<script src="${ctx}/source/scripts/common/main.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/doudong_test.js"></script>
 
 </head>
 
 <body>
-		<div>最近一小时内漏洞跟踪</div>
-          <div style="padding-left:100px; width:600px; height:500px;" id="serviceUseInfo">
+		<!-- <div>最近一小时内漏洞跟踪</div> -->
+          <div style="width:600px; height:500px;background:url('${ctx}/source/images/rose2.png') 83px 8px no-repeat;">
+        	<div  id="serviceUseInfo" style="width:600px; height:500px;position:relative;top:-20px"></div>
         </div><!--
          <div>重大漏洞分布视图</div>
 		<div  style="width:600px; height:500px;" id="vulnscanAlarmTOP20">		            
 		 </div>
-		--><div>最近6个月各等级漏洞分布</div>
+		-->
+		<!-- <div>最近6个月各等级漏洞分布</div> -->
 		<div  style="width:100%; height:500px;" id="vulnscanAlarmByLevelMonth6">		            
 		 </div>
 		<div>用户最近6个月内不同类型服务订单数量变化</div>
@@ -55,10 +42,13 @@
  				<div  style="width:600px; height:600px;" id="service1OneHour">
          </div>
         <div style="width:116px">最近一小时内攻击跟踪</div>
- 				<div  style="width:600px; height:500px;" id="wafOneHour">
+ 				<div  style="width:600px; height:500px;background:url('${ctx}/source/images/rose2.png') 68px -13px no-repeat;" >
+ 				<div  id="wafOneHour" style="width:600px; height:500px;position:relative;top:-20px"></div>
          </div>
-        <div style="width:116px">订单集中的时间点</div>
- 				<div  style="width:600px; height:500px;" id="orderServiceTimes">
+        <!-- <div style="width:116px">订单集中的时间点</div> -->
+ 		<div  style="width:100%; height:500px;" id="orderServiceTimes">
+         </div>
+        <div  style="width:100%; height:500px;" id="assetPercent">
          </div>
 </body>
 </html>
