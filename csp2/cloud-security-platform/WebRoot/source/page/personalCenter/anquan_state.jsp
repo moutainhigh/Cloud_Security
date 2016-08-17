@@ -38,11 +38,11 @@
                     <div class="tabBox fadeBox">
                     	<div class="not-used" style="display:block">
                         	<ul class="clearfix">
-                        		<li class="fl" style="height:444px;background:url('${ctx}/source/images/rose2.png') 83px 8px no-repeat;">
-                        				<div id="vulnscanAlarmOneHour"></div>
+                        		<li class="fl" style="height:444px;background:url('${ctx}/source/images/rose2.png') 43px 8px no-repeat;">
+                        				<div id="vulnscanAlarmOneHour" style="width:540px;height:444px"></div>
                         		</li>
-                        		<li class="fl" style="height:444px;background:url('${ctx}/source/images/rose2.png') 83px 8px no-repeat;">
-                        			<div id="wafOneHour"></div>
+                        		<li class="fl" style="height:444px;background:url('${ctx}/source/images/rose2.png') 43px 8px no-repeat;">
+                        			<div id="wafOneHour" style="width:540px;height:444px"></div>
                         		</li>
                         	</ul>
                         	<div class="fadechid">
@@ -128,7 +128,7 @@
                         			<img src="${ctx}/source/images/safe/20160808101512.png" />
                         		</div>
                         		
-                        		<div class="exhibitionList fl" style="width: 530px" id="vulnscanAlarmByLevelMonth6">
+                        		<div class="exhibitionList fl" style="width: 540px;background:transparent none repeat scroll 0% 0%" id="vulnscanAlarmByLevelMonth6">
                         	
                         		</div>
                         		<div class="exhibitionList fl" style="width: 530px">
@@ -139,10 +139,10 @@
                     	<div class="not-used">
                         	<div class="mapListBox clearfix">
                         		<div class="ltmit" >
-                        			<div><div id="orderServiceTimes" style="width:100%;height:300px"></div></div>
+                        			<div id="orderServiceTimes" style="width:1130px;height:300px"></div>
                         		</div>
-                        		<div class="ltmit" id="serviceUseInfoMonth6">
-                        			
+                        		<div class="ltmit">
+                        			<div id="serviceUseInfoMonth6" style="width:360px;height:300px"></div>
                         		</div>
                         		<div class="ltmit">
                         			<img src="${ctx}/source/images/safe/20160808105611.png" />
@@ -151,10 +151,11 @@
                         			<img src="${ctx}/source/images/safe/20160808105619.png" />
                         		</div>
                         		<div class="ltmit">
-                        			<img src="${ctx}/source/images/safe/20160808105632.png" />
+                        			<div id="userIndustry" style="width:540px;height:300px"></div>
                         		</div>
                         		<div class="ltmit">
-                        			<h3 style="height: 62px; color: #000; font-size: 24px;">用户行业分布</h3>
+                        			<div id="assetPercent" style="width:540px;height:300px"></div>
+                        			<%-- <h3 style="height: 62px; color: #000; font-size: 24px;">用户行业分布</h3>
                         			<div class="fb">
                         				<div class="fbL" style="left: 0px; top:2px; width: 192px; height: 208px;">
                         					<img src="${ctx}/source/images/safe/20160808111717.png" width="100%"; height="100%">
@@ -168,7 +169,7 @@
                         				<div class="fbr" style="right: 0px; top:2px;width: 192px; height: 208px;">
                         					<img src="${ctx}/source/images/safe/20160808111725.png" width="100%"; height="100%">
                         				</div>
-                        			</div>
+                        			</div> --%>
                         		</div>
                         	</div>
                     	</div>
