@@ -185,7 +185,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 获取行业注册用户数 -->
     <select id="getIndustryUserCount" resultType="hashmap">
-		SELECT count(*) userCount,user1.industry FROM `cs_user` user1 group by user1.industry
+		SELECT count(*) userCount,user1.industry FROM `cs_user` user1 where user1.industry !='' group by user1.industry
     </select>
 	<!-- 获取行业订单数 -->
     <select id="getIndustryOrderCount" resultType="hashmap">
