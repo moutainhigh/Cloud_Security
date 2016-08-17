@@ -532,7 +532,7 @@ public class WafDetailController {
     @RequestMapping(value="getWafOneHour.html")
     @ResponseBody
     public void getWafOneHour(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    	String eventStr = WafAPIWorker.getWafEventTypeCount("4");
+    	String eventStr = WafAPIWorker.getWafEventTypeCount("1000");
     	Map map = this.getWafEventTypeCount(eventStr);
         
         List name = null;
