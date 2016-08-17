@@ -1,39 +1,5 @@
 var lastdayArray = [];
 $(function(){
-	//最近一小时内waf
-	var myChart0 = echarts.init(document.getElementById('wafOneHour'));
-	   $.ajax({
-	    	type : "post",
-	    	url:"getWafOneHour.html",
-	        dataType:"json",
-	        success:function(obj){
-		   		var option0 = {
-		   		 title : {
-		   	        text: '最近一小时内攻击',
-		   	        x:'center'
-		   	    },
-		   	    tooltip : {
-		   	        trigger: 'item',
-		   	        formatter: "{a} <br/>{b} : {c} ({d}%)"
-		   	    },
-		   	  
-		   	    calculable : true,
-		   	    series : [
-		   	        
-		   	        {
-		   	            name:'漏洞类型',
-		   	            type:'pie',
-		   	            radius : [20, 180],
-		   	            center : ['50%', '56%'],
-		   	            roseType : 'area',
-		   	            data:obj.dataArray
-		   	        }
-		   	    ]
-		   	};
-		   		myChart0.setOption(option0);
-	     },
-
-	});
 	//最近一小时漏洞
 	var myChart1 = echarts.init(document.getElementById('vulnscanAlarmOneHour'));
 	   $.ajax({
@@ -49,7 +15,7 @@ $(function(){
 
 		   	    tooltip : {
 		   	        trigger: 'item',
-		   	        formatter: "{a} <br/>{b} : {c} ({d}%)"
+		   	        formatter: "{b} : {c} ({d}%)"
 		   	    },
 
 		   	    calculable : true,
@@ -59,11 +25,21 @@ $(function(){
 		   	            name:'攻击类型',
 		   	            type:'pie',
 		   	            radius : [20, 180],
-		   	            center : ['50%', '56%'],
+		   	            center : ['50%', '50%'],
 		   	            roseType : 'area',
 		   	         label: {
 		   	                normal: {
-		   	                    show: true
+		   	                    show: true,
+		   	                 formatter: function(params){
+	                        	 // alert(params.name.length);
+	                        	  var res=params.name;
+	                        	  if(params.name.length>4){
+	                        		  var temp = res.substring(0,4);
+	                        		  var temp2 = res.substr(4);
+	                        		  res= temp + "\n" + temp2;
+	                        	  }
+	                          return res;
+	                         }
 		   	                },
 		   	                emphasis: {
 		   	                    show: true
@@ -85,6 +61,67 @@ $(function(){
 	     },
 
 	});
+	//最近一小时内waf
+	var myChart0 = echarts.init(document.getElementById('wafOneHour'));
+	   $.ajax({
+	    	type : "post",
+	    	url:"getWafOneHour.html",
+	        dataType:"json",
+	        success:function(obj){
+		   		var option0 = {
+		   		 title : {
+		   	        text: '最近一小时内攻击',
+		   	        x:'center'
+		   	    },
+		   	    tooltip : {
+		   	        trigger: 'item',
+		   	        formatter: "{b} : {c} ({d}%)"
+		   	    },
+		   	  
+		   	    calculable : true,
+		   	    series : [
+		   	        
+		   	        {
+		   	            name:'漏洞类型',
+		   	            type:'pie',
+		   	            radius : [20, 180],
+		   	            center : ['50%', '50%'],
+		   	            roseType : 'area',
+		   	         label: {
+		   	                normal: {
+		   	                    show: true,
+		   	                 formatter: function(params){
+	                        	  //alert(params.name.length);
+	                        	  var res=params.name;
+	                        	  if(params.name.length>4){
+	                        		  var temp = res.substring(0,4);
+	                        		  var temp2 = res.substr(4);
+	                        		  res= temp + "\n" + temp2;
+	                        	  }
+	                          return res;
+	                         }
+		   	                },
+		   	                emphasis: {
+		   	                    show: true
+		   	                }
+		   	            },
+		   	            lableLine: {
+		   	                normal: {
+		   	                    show: true
+		   	                },
+		   	                emphasis: {
+		   	                    show: true
+		   	                }
+		   	            },
+		   	            data:obj.dataArray
+		   	        }
+		   	    ]
+		   	};
+		   		myChart0.setOption(option0);
+	     },
+
+	});
+
 	  
 	   //最近六个月等级漏洞分布
 	   var myChart3 = echarts.init(document.getElementById('vulnscanAlarmByLevelMonth6'));
@@ -288,25 +325,26 @@ $(function(){
 				   	            offset:5,
 				   	            axisLabel:{
 			                         interval:0,
-			                         rotate:50,
-			                         margin:0,
+			                         rotate:40,
+			                         margin:8,
 			                       
 			                         textStyle:{
 			                             color:"#222"
 			                         },
-			                          /*formatter: function(value,index){
-			                        	  alert(value);
-			                        	  var res='ff';
-			                              for(var i=0, l=value.length;i<l;i++){
-			                                  res+=value[i];
-			                                  if((i<(l-1)) && (i%6==0)){
-			                                      res=res+"<br/>";//就是这里！！！
-
-			                                                                //每次都是把<br/>当成实际的字符串去处理而没起到换行的作用
-			                                  }
-			                             }
-			                          return res;
-			                         },*/
+			                         formatter: function(value,index){
+			                        	//alert(value.length);
+/*			                        	  if(typeof(value)=='undefined'){
+			                        		  return '';
+			                        	  }else{
+			                        		  if(value.length>7){
+				                        		  var temp = value.substring(0,4);
+				                        		  var temp2 = value.substr(4);
+				                        		  value= temp + "\n" + temp2;
+						                          return value;
+				                        	  }
+			                        	  }*/
+			                        	 return value;
+			                         }
 			                     },
 				   	            data : obj.industryList
 				   	        }
@@ -314,7 +352,7 @@ $(function(){
 				   	    grid: { // 控制图的大小，调整下面这些值就可以，
 				             x: 35,
 				             x2: 30,
-				             y2: 100,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+				             y2: 150,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
 				        },
 				   	    yAxis : [
 				   	        {
