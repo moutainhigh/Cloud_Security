@@ -21,10 +21,10 @@ $(function(){
 		   	    series : [
 		   	        
 		   	        {
-		   	            name:'面积模式',
+		   	            name:'漏洞类型',
 		   	            type:'pie',
 		   	            radius : [20, 180],
-		   	            center : ['50%', '50%'],
+		   	            center : ['50%', '56%'],
 		   	            roseType : 'area',
 		   	            data:obj.dataArray
 		   	        }
@@ -56,10 +56,10 @@ $(function(){
 		   	    series : [
 		   	        
 		   	        {
-		   	            name:'面积模式',
+		   	            name:'攻击类型',
 		   	            type:'pie',
 		   	            radius : [20, 180],
-		   	            center : ['50%', '50%'],
+		   	            center : ['50%', '56%'],
 		   	            roseType : 'area',
 		   	         label: {
 		   	                normal: {
@@ -97,7 +97,7 @@ $(function(){
 		   			 title : {
 		   		        //text: '最\n近\n六\n个\n月\n漏\n洞\n等\n级\n分\n布\n',
 		   				 text:'近六个月漏洞等级分布',
-		   		         x:'center'
+		   		         x:'left'
 		   		    },
 		   			 tooltip : {
 		   	        trigger: 'axis',
@@ -105,9 +105,10 @@ $(function(){
 		   	            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
 		   	        }
 		   	    },
-		   	    /*legend: {
-		   	        data:obj.levelList
-		   	    },*/
+		   	    legend: {
+		   	        data:obj.levelList,
+		   	        x:'right'
+		   	    },
 		   	    grid: {
 		   	        left: '5%',
 		   	        right: '5%',
@@ -154,9 +155,11 @@ $(function(){
 			   	    },
 			   	  
 			   	    grid: {
-			   	        left: '50%',
-			   	        right: '1%',
-			   	        bottom: '1%',
+			   	        left: '1%',
+			   	       right: '3%',
+			   	        bottom: '3%',
+			   	    	//width:500,
+			   	    	//height:300,
 			   	        containLabel: true
 			   	    },
 			   	    xAxis : [
@@ -219,28 +222,15 @@ $(function(){
 			   		var indicatorList = obj.indicatorList;
 			   		var dataArray = obj.dataArray;
 			   		var option4 = {
-			   			/* title: {
-			   	        text: '浏览器占比变化',
-			   	        subtext: '纯属虚构',
-			   	        x:'right',
-			   	        y:'bottom'
-			   	    },*/
+			   			 title: {
+			   	        text: '订单类型分布',
+			   	        x:'left'
+			   	    },
 			   	    tooltip: {
 			   	        trigger: 'item',
 			   	        backgroundColor : 'rgba(0,0,250,0.2)'
 			   	    },
-			   	   /* legend: {
-			   	        data: (function (){
-			   	            var list = [];
-			   	            for (var i = 1; i <=28; i++) {
-			   	                list.push(i + 2000 + '');
-			   	            }
-			   	            return list;
-			   	        })()
-			   	    },*/
-			   	   /* visualMap: {
-			   	        color: ['red', 'yellow']
-			   	    },*/
+			   	   
 			   	    radar: {
 			   	       indicator : indicatorList
 			   	    },
@@ -273,4 +263,135 @@ $(function(){
 		     },
 
 		});
+		   
+		   //用户行业分布
+			var myChart5 = echarts.init(document.getElementById('userIndustry'));
+			   $.ajax({
+			    	type : "post",
+			    	url:"getIndustryStatistics.html",
+			        dataType:"json",
+			        success:function(obj){
+				   		var option5 = {
+			   			 title : {
+				   		        text: '用户行业分布',
+				   		        x:'left'
+				   		},
+				   	    tooltip : {
+				   	        trigger: 'axis'
+				   	    },
+				   	    legend: {
+				   	        data:['各行业注册用户数','已下订单数']
+				   	    },
+				   	    xAxis : [
+				   	        {
+				   	            type : 'category',
+				   	            offset:5,
+				   	            axisLabel:{
+			                         interval:0,
+			                         rotate:50,
+			                         margin:0,
+			                       
+			                         textStyle:{
+			                             color:"#222"
+			                         },
+			                          /*formatter: function(value,index){
+			                        	  alert(value);
+			                        	  var res='ff';
+			                              for(var i=0, l=value.length;i<l;i++){
+			                                  res+=value[i];
+			                                  if((i<(l-1)) && (i%6==0)){
+			                                      res=res+"<br/>";//就是这里！！！
+
+			                                                                //每次都是把<br/>当成实际的字符串去处理而没起到换行的作用
+			                                  }
+			                             }
+			                          return res;
+			                         },*/
+			                     },
+				   	            data : obj.industryList
+				   	        }
+				   	    ],
+				   	    grid: { // 控制图的大小，调整下面这些值就可以，
+				             x: 35,
+				             x2: 30,
+				             y2: 100,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+				        },
+				   	    yAxis : [
+				   	        {
+				   	            type : 'value'
+				   	        }
+				   	    ],
+				   	    series : [
+				   	        {
+				   	            name:'各行业注册用户数',
+				   	            type:'bar',
+				   	            data:obj.userList,
+				   	            markPoint : {
+				   	                data : [
+				   	                    {type : 'max', name: '最大值'},
+				   	                    {type : 'min', name: '最小值'}
+				   	                ]
+				   	            }
+				   	        },
+				   	        {
+				   	            name:'已下订单数',
+				   	            type:'bar',
+				   	            data:obj.orderList,
+				   	            markPoint : {
+				   	        		data : [
+				   	                    {type : 'max', name: '最大值'},
+				   	                    {type : 'min', name: '最小值'}
+				   	                ]
+				   	            }
+				   	        }
+				   	    ]
+				   	};
+				   		myChart5.setOption(option5);
+			     },
+
+			});
+			   
+				 //同一网站三次结果中同一漏洞的重复率：左图为所有网站中出现过连续三次结果中有同一漏洞告警的网站占比情况
+				var myChart7 = echarts.init(document.getElementById('assetPercent'));
+				   $.ajax({
+				    	type : "post",
+				    	url:"getAssetPercent.html",
+				        dataType:"json",
+				        success:function(obj){
+					   		var option7 = {
+					   				title : {
+					   			        text: '网站漏洞重复率',
+					   			        //subtext: '纯属虚构',
+					   			        x:'center'
+					   			    },
+					   			    tooltip : {
+					   			        trigger: 'item',
+					   			        formatter: "{a} <br/>{b} : {c} ({d}%)"
+					   			    },
+					   			   /* legend: {
+					   			        orient: 'vertical',
+					   			        left: 'left',
+					   			        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+					   			    },*/
+					   			    series : [
+					   			        {
+					   			            name: '访问来源',
+					   			            type: 'pie',
+					   			            radius : '55%',
+					   			            center: ['50%', '60%'],
+					   			            data:obj.jsonList,
+					   			            itemStyle: {
+					   			                emphasis: {
+					   			                    shadowBlur: 10,
+					   			                    shadowOffsetX: 0,
+					   			                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+					   			                }
+					   			            }
+					   			        }
+					   			    ]
+					   	};
+					   		myChart7.setOption(option7);
+				     },
+
+				}); 
 });
