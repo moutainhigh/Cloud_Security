@@ -38,11 +38,11 @@
                     <div class="tabBox fadeBox">
                     	<div class="not-used" style="display:block">
                         	<ul class="clearfix">
-                        		<li class="fl" style="height:444px;background:url('${ctx}/source/images/rose2.png') 43px 8px no-repeat;">
-                        				<div id="vulnscanAlarmOneHour" style="width:540px;height:444px"></div>
+                        		<li class="fl" style="height:500px;background:url('${ctx}/source/images/rose2.png') 43px 8px no-repeat;">
+                        				<div id="vulnscanAlarmOneHour" style="width:540px;height:500px"></div>
                         		</li>
-                        		<li class="fl" style="height:444px;background:url('${ctx}/source/images/rose2.png') 43px 8px no-repeat;">
-                        			<div id="wafOneHour" style="width:540px;height:444px"></div>
+                        		<li class="fl" style="height:500px;background:url('${ctx}/source/images/rose2.png') 43px 8px no-repeat;">
+                        			<div id="wafOneHour" style="width:540px;height:500px"></div>
                         		</li>
                         	</ul>
                         	<div class="fadechid">
@@ -151,10 +151,10 @@
                         			<img src="${ctx}/source/images/safe/20160808105619.png" />
                         		</div>
                         		<div class="ltmit">
-                        			<div id="userIndustry" style="width:540px;height:300px"></div>
+                        			<div id="userIndustry" style="width:540px;height:350px"></div>
                         		</div>
                         		<div class="ltmit">
-                        			<div id="assetPercent" style="width:540px;height:300px"></div>
+                        			<div id="assetPercent" style="width:540px;height:350px"></div>
                         			<%-- <h3 style="height: 62px; color: #000; font-size: 24px;">用户行业分布</h3>
                         			<div class="fb">
                         				<div class="fbL" style="left: 0px; top:2px; width: 192px; height: 208px;">
