@@ -969,8 +969,7 @@ public class NsfocusWAFAdapter {
 		SqlSession sqlSession = null;
 		try {
 			sqlSession = getSqlSession();
-			//根据时间间隔获取时间段
-			
+			//校验传入参数
 			if(0>=jsonObject.getInt("interval")||null==jsonObject.get("startDate")||jsonObject.getString("startDate").length()<0){
 				System.out.println("interval="+jsonObject.getInt("interval")+";startDate="+jsonObject.getString("startDate")==null+";lenth="+jsonObject.getString("startDate").length());
 				JSONObject errorJsonObject = new JSONObject();
@@ -978,20 +977,23 @@ public class NsfocusWAFAdapter {
 				errorJsonObject.put("message", "EventType count error.Interval or startDate is null.");
 				return errorJsonObject.toString();
 			}
-			int interval = jsonObject.getInt("interval");
-
-
 			
+			//获取时间间隔
+			int interval = jsonObject.getInt("interval");
+			//获取结束时间
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
 			Date endDate = calendar.getTime();
 			System.out.println(endDate);
+			//组装时间格式
 			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
 	
-			
+			//获取事件类型列表
 			SAXReader reader = new SAXReader();
 			Document document = reader.read(DeviceAdapterConstant.WAF_NSFOCUS_EVENT_TYPE);
 			List<Element> typeElements = document.selectNodes("/TypeList/Type");
+			
+			//按月统计事件类型
 			List<JSONObject> typeCountList = new ArrayList<JSONObject>();
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			for (int i=0;i<typeElements.size();i++) {
@@ -1014,18 +1016,12 @@ public class NsfocusWAFAdapter {
 					startDate = calendar.getTime();
 				}
 				eventTypeJsonObject.put("countInTime", eventTypeInTimeArray);
-				
-				
-				
 				typeCountList.add(eventTypeJsonObject);
 			}
-			System.out.println("postTime="+sdf.format(new Date()));
-			sqlSession.commit();
 			return JSONArray.fromObject(typeCountList).toString();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			sqlSession.rollback();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "Eventtype count error!!!");
@@ -1108,7 +1104,7 @@ public class NsfocusWAFAdapter {
 		}
 	}
 
-	public String getAlertLevelCountInTime(JSONObject jsonObject) {
+	public String getAlertLevelCountByHour(JSONObject jsonObject) {
 		SqlSession sqlSession = null;
 		try {
 			sqlSession = getSqlSession();
@@ -1120,7 +1116,10 @@ public class NsfocusWAFAdapter {
 			calendar.add(Calendar.HOUR, -interval);
 			Date dateBefore = calendar.getTime();
 			
+			//取告警等级列表<目前为高、中、低>
 			List<String> alertLevelList = Arrays.asList(ALERT_LEVEL_STRINGS);
+			
+			//获取告警等级统计信息
 			Map<String, Integer> mapAlertLevelCount = new HashMap<String, Integer>();
 			for (String alertLevelString : alertLevelList) {
 				TWafLogWebsecExample example = new TWafLogWebsecExample();
@@ -1142,7 +1141,61 @@ public class NsfocusWAFAdapter {
 			sqlSession.close();
 		}
 	}
-	
+	public String getAlertLevelCountByMonth(JSONObject jsonObject){
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getSqlSession();
+			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+			//获取时间间隔
+			int interval = jsonObject.getInt("interval");
+			//获取结束时间(当前时间)
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			Date endDate = calendar.getTime();
+			System.out.println(endDate);
+			//组装时间格式
+			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
+			
+			//取告警等级列表<目前为高、中、低>
+			List<String> alertLevelList = Arrays.asList(ALERT_LEVEL_STRINGS);
+			
+			//获取告警等级统计信息
+			JSONArray allAlertLevelaArray = new JSONArray();
+			for (String alertLevelString : alertLevelList) {
+				JSONObject alertLevelObject = new JSONObject();
+				Date startDate = sdf.parse(jsonObject.getString("startDate"));
+				JSONArray alertLevelArray = new JSONArray();
+				while (startDate.before(endDate)) {
+					calendar.setTime(startDate);
+					calendar.add(Calendar.MONTH, interval);
+					
+					TWafLogWebsecExample example = new TWafLogWebsecExample();
+					example.or().andAlertlevelEqualTo(alertLevelString).andStatTimeBetween(startDate, calendar.getTime());
+					
+					//组织返回内容
+					JSONObject alertLevelOneMonthObject = new JSONObject();
+					alertLevelOneMonthObject.put("count", mapper.countByExample(example));
+					alertLevelOneMonthObject.put("time", sdf.format(startDate));
+					alertLevelArray.add(alertLevelOneMonthObject);
+					startDate = calendar.getTime();
+				}
+				alertLevelObject.put("alertLevel", alertLevelString);
+				alertLevelObject.put("countList", alertLevelArray);
+				allAlertLevelaArray.add(alertLevelObject);
+				
+			}
+			return allAlertLevelaArray.toString();
+		} catch (Exception e) {
+			// 
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "AlertLevel count error!!!");
+			return errorJsonObject.toString();
+		}finally {
+			sqlSession.close();
+		}
+	}
 
 	
 	public static void main(String[] args) {

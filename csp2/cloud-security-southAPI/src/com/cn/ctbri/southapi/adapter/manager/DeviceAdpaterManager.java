@@ -842,8 +842,12 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getAlertLevelCount();
 	}
 	
-	public String getAlertLevelInTime(JSONObject jsonObject) {
-		return nsfocusWAFAdapter.getAlertLevelCountInTime(jsonObject);
+	public String getAlertLevelCountByHour(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getAlertLevelCountByHour(jsonObject);
+	}
+	
+	public String getAlertLevelCountByMonth(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getAlertLevelCountByMonth(jsonObject);
 	}
 	
 	public String getWafPublicIpListInResource(int resourceId) {

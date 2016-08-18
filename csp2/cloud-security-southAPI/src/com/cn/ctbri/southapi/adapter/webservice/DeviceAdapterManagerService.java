@@ -380,7 +380,14 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafAlertLevelCountInTime(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		return deviceAdpaterManager.getAlertLevelInTime(jsonObject);
+		return deviceAdpaterManager.getAlertLevelCountByHour(jsonObject);
+	}
+	@POST
+	@Path("/getWafAlertLevelCountByMonth")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getAlertLevelCountByMonth(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getAlertLevelCountByMonth(jsonObject);
 	}
 	
 	@GET
