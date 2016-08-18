@@ -20,34 +20,6 @@ public interface TWafLogDefaceMapper {
     @SelectProvider(type=TWafLogDefaceSqlProvider.class, method="countByExample")
     int countByExample(TWafLogDefaceExample example);
 
-    @DeleteProvider(type=TWafLogDefaceSqlProvider.class, method="deleteByExample")
-    int deleteByExample(TWafLogDefaceExample example);
-
-    @Delete({
-        "delete from t_waf_log_deface",
-        "where log_id = #{logId,jdbcType=BIGINT}"
-    })
-    int deleteByPrimaryKey(Long logId);
-
-    @Insert({
-        "insert into t_waf_log_deface (log_id, resource_id, ",
-        "resource_uri, resource_ip, ",
-        "site_id, protect_id, ",
-        "stat_time, alertlevel, ",
-        "event_type, dst_ip, ",
-        "dst_port, url, reason)",
-        "values (#{logId,jdbcType=BIGINT}, #{resourceId,jdbcType=INTEGER}, ",
-        "#{resourceUri,jdbcType=VARCHAR}, #{resourceIp,jdbcType=VARCHAR}, ",
-        "#{siteId,jdbcType=VARCHAR}, #{protectId,jdbcType=VARCHAR}, ",
-        "#{statTime,jdbcType=TIMESTAMP}, #{alertlevel,jdbcType=VARCHAR}, ",
-        "#{eventType,jdbcType=VARCHAR}, #{dstIp,jdbcType=VARCHAR}, ",
-        "#{dstPort,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{reason,jdbcType=VARCHAR})"
-    })
-    int insert(TWafLogDeface record);
-
-    @InsertProvider(type=TWafLogDefaceSqlProvider.class, method="insertSelective")
-    int insertSelective(TWafLogDeface record);
-
     @SelectProvider(type=TWafLogDefaceSqlProvider.class, method="selectByExample")
     @Results({
         @Result(column="log_id", property="logId", jdbcType=JdbcType.BIGINT, id=true),
@@ -89,31 +61,4 @@ public interface TWafLogDefaceMapper {
         @Result(column="reason", property="reason", jdbcType=JdbcType.VARCHAR)
     })
     TWafLogDeface selectByPrimaryKey(Long logId);
-
-    @UpdateProvider(type=TWafLogDefaceSqlProvider.class, method="updateByExampleSelective")
-    int updateByExampleSelective(@Param("record") TWafLogDeface record, @Param("example") TWafLogDefaceExample example);
-
-    @UpdateProvider(type=TWafLogDefaceSqlProvider.class, method="updateByExample")
-    int updateByExample(@Param("record") TWafLogDeface record, @Param("example") TWafLogDefaceExample example);
-
-    @UpdateProvider(type=TWafLogDefaceSqlProvider.class, method="updateByPrimaryKeySelective")
-    int updateByPrimaryKeySelective(TWafLogDeface record);
-
-    @Update({
-        "update t_waf_log_deface",
-        "set resource_id = #{resourceId,jdbcType=INTEGER},",
-          "resource_uri = #{resourceUri,jdbcType=VARCHAR},",
-          "resource_ip = #{resourceIp,jdbcType=VARCHAR},",
-          "site_id = #{siteId,jdbcType=VARCHAR},",
-          "protect_id = #{protectId,jdbcType=VARCHAR},",
-          "stat_time = #{statTime,jdbcType=TIMESTAMP},",
-          "alertlevel = #{alertlevel,jdbcType=VARCHAR},",
-          "event_type = #{eventType,jdbcType=VARCHAR},",
-          "dst_ip = #{dstIp,jdbcType=VARCHAR},",
-          "dst_port = #{dstPort,jdbcType=VARCHAR},",
-          "url = #{url,jdbcType=VARCHAR},",
-          "reason = #{reason,jdbcType=VARCHAR}",
-        "where log_id = #{logId,jdbcType=BIGINT}"
-    })
-    int updateByPrimaryKey(TWafLogDeface record);
 }

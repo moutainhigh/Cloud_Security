@@ -20,32 +20,6 @@ public interface TWafLogDdosMapper {
     @SelectProvider(type=TWafLogDdosSqlProvider.class, method="countByExample")
     int countByExample(TWafLogDdosExample example);
 
-    @DeleteProvider(type=TWafLogDdosSqlProvider.class, method="deleteByExample")
-    int deleteByExample(TWafLogDdosExample example);
-
-    @Delete({
-        "delete from t_waf_log_ddos",
-        "where log_id = #{logId,jdbcType=BIGINT}"
-    })
-    int deleteByPrimaryKey(Long logId);
-
-    @Insert({
-        "insert into t_waf_log_ddos (log_id, resource_id, ",
-        "resource_uri, resource_ip, ",
-        "stat_time, alertlevel, ",
-        "event_type, dst_ip, ",
-        "dst_port, action)",
-        "values (#{logId,jdbcType=BIGINT}, #{resourceId,jdbcType=INTEGER}, ",
-        "#{resourceUri,jdbcType=VARCHAR}, #{resourceIp,jdbcType=VARCHAR}, ",
-        "#{statTime,jdbcType=TIMESTAMP}, #{alertlevel,jdbcType=VARCHAR}, ",
-        "#{eventType,jdbcType=VARCHAR}, #{dstIp,jdbcType=VARCHAR}, ",
-        "#{dstPort,jdbcType=VARCHAR}, #{action,jdbcType=VARCHAR})"
-    })
-    int insert(TWafLogDdos record);
-
-    @InsertProvider(type=TWafLogDdosSqlProvider.class, method="insertSelective")
-    int insertSelective(TWafLogDdos record);
-
     @SelectProvider(type=TWafLogDdosSqlProvider.class, method="selectByExample")
     @Results({
         @Result(column="log_id", property="logId", jdbcType=JdbcType.BIGINT, id=true),
@@ -81,28 +55,4 @@ public interface TWafLogDdosMapper {
         @Result(column="action", property="action", jdbcType=JdbcType.VARCHAR)
     })
     TWafLogDdos selectByPrimaryKey(Long logId);
-
-    @UpdateProvider(type=TWafLogDdosSqlProvider.class, method="updateByExampleSelective")
-    int updateByExampleSelective(@Param("record") TWafLogDdos record, @Param("example") TWafLogDdosExample example);
-
-    @UpdateProvider(type=TWafLogDdosSqlProvider.class, method="updateByExample")
-    int updateByExample(@Param("record") TWafLogDdos record, @Param("example") TWafLogDdosExample example);
-
-    @UpdateProvider(type=TWafLogDdosSqlProvider.class, method="updateByPrimaryKeySelective")
-    int updateByPrimaryKeySelective(TWafLogDdos record);
-
-    @Update({
-        "update t_waf_log_ddos",
-        "set resource_id = #{resourceId,jdbcType=INTEGER},",
-          "resource_uri = #{resourceUri,jdbcType=VARCHAR},",
-          "resource_ip = #{resourceIp,jdbcType=VARCHAR},",
-          "stat_time = #{statTime,jdbcType=TIMESTAMP},",
-          "alertlevel = #{alertlevel,jdbcType=VARCHAR},",
-          "event_type = #{eventType,jdbcType=VARCHAR},",
-          "dst_ip = #{dstIp,jdbcType=VARCHAR},",
-          "dst_port = #{dstPort,jdbcType=VARCHAR},",
-          "action = #{action,jdbcType=VARCHAR}",
-        "where log_id = #{logId,jdbcType=BIGINT}"
-    })
-    int updateByPrimaryKey(TWafLogDdos record);
 }

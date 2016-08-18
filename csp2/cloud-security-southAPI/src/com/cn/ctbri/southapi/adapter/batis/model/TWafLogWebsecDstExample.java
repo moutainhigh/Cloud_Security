@@ -233,6 +233,76 @@ public class TWafLogWebsecDstExample {
             addCriterion("dst_ip not between", value1, value2, "dstIp");
             return (Criteria) this;
         }
+
+        public Criteria andDstPortIsNull() {
+            addCriterion("dst_port is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstPortIsNotNull() {
+            addCriterion("dst_port is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstPortEqualTo(String value) {
+            addCriterion("dst_port =", value, "dstPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstPortNotEqualTo(String value) {
+            addCriterion("dst_port <>", value, "dstPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstPortGreaterThan(String value) {
+            addCriterion("dst_port >", value, "dstPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstPortGreaterThanOrEqualTo(String value) {
+            addCriterion("dst_port >=", value, "dstPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstPortLessThan(String value) {
+            addCriterion("dst_port <", value, "dstPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstPortLessThanOrEqualTo(String value) {
+            addCriterion("dst_port <=", value, "dstPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstPortLike(String value) {
+            addCriterion("dst_port like", value, "dstPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstPortNotLike(String value) {
+            addCriterion("dst_port not like", value, "dstPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstPortIn(List<String> values) {
+            addCriterion("dst_port in", values, "dstPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstPortNotIn(List<String> values) {
+            addCriterion("dst_port not in", values, "dstPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstPortBetween(String value1, String value2) {
+            addCriterion("dst_port between", value1, value2, "dstPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstPortNotBetween(String value1, String value2) {
+            addCriterion("dst_port not between", value1, value2, "dstPort");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

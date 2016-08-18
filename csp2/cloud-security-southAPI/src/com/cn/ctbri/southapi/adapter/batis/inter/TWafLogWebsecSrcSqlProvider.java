@@ -30,28 +30,6 @@ public class TWafLogWebsecSrcSqlProvider {
         return SQL();
     }
 
-    public String deleteByExample(TWafLogWebsecSrcExample example) {
-        BEGIN();
-        DELETE_FROM("t_waf_log_websec_src");
-        applyWhere(example, false);
-        return SQL();
-    }
-
-    public String insertSelective(TWafLogWebsecSrc record) {
-        BEGIN();
-        INSERT_INTO("t_waf_log_websec_src");
-        
-        if (record.getCount() != null) {
-            VALUES("count", "#{count,jdbcType=BIGINT}");
-        }
-        
-        if (record.getSrcIp() != null) {
-            VALUES("src_ip", "#{srcIp,jdbcType=VARCHAR}");
-        }
-        
-        return SQL();
-    }
-
     public String selectByExample(TWafLogWebsecSrcExample example) {
         BEGIN();
         if (example != null && example.isDistinct()) {
@@ -67,37 +45,6 @@ public class TWafLogWebsecSrcSqlProvider {
             ORDER_BY(example.getOrderByClause());
         }
         
-        return SQL();
-    }
-
-    public String updateByExampleSelective(Map<String, Object> parameter) {
-        TWafLogWebsecSrc record = (TWafLogWebsecSrc) parameter.get("record");
-        TWafLogWebsecSrcExample example = (TWafLogWebsecSrcExample) parameter.get("example");
-        
-        BEGIN();
-        UPDATE("t_waf_log_websec_src");
-        
-        if (record.getCount() != null) {
-            SET("count = #{record.count,jdbcType=BIGINT}");
-        }
-        
-        if (record.getSrcIp() != null) {
-            SET("src_ip = #{record.srcIp,jdbcType=VARCHAR}");
-        }
-        
-        applyWhere(example, true);
-        return SQL();
-    }
-
-    public String updateByExample(Map<String, Object> parameter) {
-        BEGIN();
-        UPDATE("t_waf_log_websec_src");
-        
-        SET("count = #{record.count,jdbcType=BIGINT}");
-        SET("src_ip = #{record.srcIp,jdbcType=VARCHAR}");
-        
-        TWafLogWebsecSrcExample example = (TWafLogWebsecSrcExample) parameter.get("example");
-        applyWhere(example, true);
         return SQL();
     }
 

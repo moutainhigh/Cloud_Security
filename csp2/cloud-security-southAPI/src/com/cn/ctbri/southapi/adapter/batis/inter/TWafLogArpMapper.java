@@ -20,38 +20,6 @@ public interface TWafLogArpMapper {
     @SelectProvider(type=TWafLogArpSqlProvider.class, method="countByExample")
     int countByExample(TWafLogArpExample example);
 
-    @DeleteProvider(type=TWafLogArpSqlProvider.class, method="deleteByExample")
-    int deleteByExample(TWafLogArpExample example);
-
-    @Delete({
-        "delete from t_waf_log_arp",
-        "where log_id = #{logId,jdbcType=BIGINT}"
-    })
-    int deleteByPrimaryKey(Long logId);
-
-    @Insert({
-        "insert into t_waf_log_arp (log_id, resource_id, ",
-        "resource_uri, resource_ip, ",
-        "stat_time, alertlevel, ",
-        "event_type, attack_type, ",
-        "src_ip, src_mac, dst_ip, ",
-        "dst_mac, status, ",
-        "action, def_ip, def_mac, ",
-        "conflit_mac, count_num)",
-        "values (#{logId,jdbcType=BIGINT}, #{resourceId,jdbcType=INTEGER}, ",
-        "#{resourceUri,jdbcType=VARCHAR}, #{resourceIp,jdbcType=VARCHAR}, ",
-        "#{statTime,jdbcType=TIMESTAMP}, #{alertlevel,jdbcType=VARCHAR}, ",
-        "#{eventType,jdbcType=VARCHAR}, #{attackType,jdbcType=VARCHAR}, ",
-        "#{srcIp,jdbcType=VARCHAR}, #{srcMac,jdbcType=VARCHAR}, #{dstIp,jdbcType=VARCHAR}, ",
-        "#{dstMac,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, ",
-        "#{action,jdbcType=VARCHAR}, #{defIp,jdbcType=VARCHAR}, #{defMac,jdbcType=VARCHAR}, ",
-        "#{conflitMac,jdbcType=VARCHAR}, #{countNum,jdbcType=VARCHAR})"
-    })
-    int insert(TWafLogArp record);
-
-    @InsertProvider(type=TWafLogArpSqlProvider.class, method="insertSelective")
-    int insertSelective(TWafLogArp record);
-
     @SelectProvider(type=TWafLogArpSqlProvider.class, method="selectByExample")
     @Results({
         @Result(column="log_id", property="logId", jdbcType=JdbcType.BIGINT, id=true),
@@ -104,36 +72,4 @@ public interface TWafLogArpMapper {
         @Result(column="count_num", property="countNum", jdbcType=JdbcType.VARCHAR)
     })
     TWafLogArp selectByPrimaryKey(Long logId);
-
-    @UpdateProvider(type=TWafLogArpSqlProvider.class, method="updateByExampleSelective")
-    int updateByExampleSelective(@Param("record") TWafLogArp record, @Param("example") TWafLogArpExample example);
-
-    @UpdateProvider(type=TWafLogArpSqlProvider.class, method="updateByExample")
-    int updateByExample(@Param("record") TWafLogArp record, @Param("example") TWafLogArpExample example);
-
-    @UpdateProvider(type=TWafLogArpSqlProvider.class, method="updateByPrimaryKeySelective")
-    int updateByPrimaryKeySelective(TWafLogArp record);
-
-    @Update({
-        "update t_waf_log_arp",
-        "set resource_id = #{resourceId,jdbcType=INTEGER},",
-          "resource_uri = #{resourceUri,jdbcType=VARCHAR},",
-          "resource_ip = #{resourceIp,jdbcType=VARCHAR},",
-          "stat_time = #{statTime,jdbcType=TIMESTAMP},",
-          "alertlevel = #{alertlevel,jdbcType=VARCHAR},",
-          "event_type = #{eventType,jdbcType=VARCHAR},",
-          "attack_type = #{attackType,jdbcType=VARCHAR},",
-          "src_ip = #{srcIp,jdbcType=VARCHAR},",
-          "src_mac = #{srcMac,jdbcType=VARCHAR},",
-          "dst_ip = #{dstIp,jdbcType=VARCHAR},",
-          "dst_mac = #{dstMac,jdbcType=VARCHAR},",
-          "status = #{status,jdbcType=VARCHAR},",
-          "action = #{action,jdbcType=VARCHAR},",
-          "def_ip = #{defIp,jdbcType=VARCHAR},",
-          "def_mac = #{defMac,jdbcType=VARCHAR},",
-          "conflit_mac = #{conflitMac,jdbcType=VARCHAR},",
-          "count_num = #{countNum,jdbcType=VARCHAR}",
-        "where log_id = #{logId,jdbcType=BIGINT}"
-    })
-    int updateByPrimaryKey(TWafLogArp record);
 }

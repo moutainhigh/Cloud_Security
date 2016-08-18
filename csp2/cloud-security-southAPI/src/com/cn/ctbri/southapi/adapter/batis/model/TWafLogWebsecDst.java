@@ -5,6 +5,8 @@ public class TWafLogWebsecDst {
 
     private String dstIp;
 
+    private String dstPort;
+
     public Long getCount() {
         return count;
     }
@@ -19,5 +21,13 @@ public class TWafLogWebsecDst {
 
     public void setDstIp(String dstIp) {
         this.dstIp = dstIp;
+    }
+
+    public String getDstPort() {
+        return dstPort;
+    }
+
+    public void setDstPort(String dstPort) {
+        this.dstPort = dstPort;
     }
 }

@@ -16,7 +16,6 @@ public class InitServlet extends HttpServlet {
 	public static String rootPath = null;
 	public void init() throws ServletException { 
 		
-
 	
 		DeviceAdpaterManager deviceAdpaterManager = new DeviceAdpaterManager();
 		deviceAdpaterManager.loadDeviceAdpater();

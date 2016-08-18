@@ -30,27 +30,7 @@ public class TWafLogWebsecDstSqlProvider {
         return SQL();
     }
 
-    public String deleteByExample(TWafLogWebsecDstExample example) {
-        BEGIN();
-        DELETE_FROM("t_waf_log_websec_dst");
-        applyWhere(example, false);
-        return SQL();
-    }
 
-    public String insertSelective(TWafLogWebsecDst record) {
-        BEGIN();
-        INSERT_INTO("t_waf_log_websec_dst");
-        
-        if (record.getCount() != null) {
-            VALUES("count", "#{count,jdbcType=BIGINT}");
-        }
-        
-        if (record.getDstIp() != null) {
-            VALUES("dst_ip", "#{dstIp,jdbcType=VARCHAR}");
-        }
-        
-        return SQL();
-    }
 
     public String selectByExample(TWafLogWebsecDstExample example) {
         BEGIN();
@@ -60,6 +40,7 @@ public class TWafLogWebsecDstSqlProvider {
             SELECT("count");
         }
         SELECT("dst_ip");
+        SELECT("dst_port");
         FROM("t_waf_log_websec_dst");
         applyWhere(example, false);
         
@@ -67,37 +48,6 @@ public class TWafLogWebsecDstSqlProvider {
             ORDER_BY(example.getOrderByClause());
         }
         
-        return SQL();
-    }
-
-    public String updateByExampleSelective(Map<String, Object> parameter) {
-        TWafLogWebsecDst record = (TWafLogWebsecDst) parameter.get("record");
-        TWafLogWebsecDstExample example = (TWafLogWebsecDstExample) parameter.get("example");
-        
-        BEGIN();
-        UPDATE("t_waf_log_websec_dst");
-        
-        if (record.getCount() != null) {
-            SET("count = #{record.count,jdbcType=BIGINT}");
-        }
-        
-        if (record.getDstIp() != null) {
-            SET("dst_ip = #{record.dstIp,jdbcType=VARCHAR}");
-        }
-        
-        applyWhere(example, true);
-        return SQL();
-    }
-
-    public String updateByExample(Map<String, Object> parameter) {
-        BEGIN();
-        UPDATE("t_waf_log_websec_dst");
-        
-        SET("count = #{record.count,jdbcType=BIGINT}");
-        SET("dst_ip = #{record.dstIp,jdbcType=VARCHAR}");
-        
-        TWafLogWebsecDstExample example = (TWafLogWebsecDstExample) parameter.get("example");
-        applyWhere(example, true);
         return SQL();
     }
 

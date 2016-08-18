@@ -2,8 +2,6 @@ package com.cn.ctbri.southapi.adapter.waf;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,15 +13,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TimeZone;
 import java.util.UUID;
-
-import javax.xml.bind.annotation.XmlAccessOrder;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import net.sf.json.util.NewBeanInstanceStrategy;
-
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -33,8 +26,6 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.joda.time.DateTime;
-
 import com.cn.ctbri.southapi.adapter.batis.inter.*;
 import com.cn.ctbri.southapi.adapter.batis.model.*;
 import com.cn.ctbri.southapi.adapter.waf.config.*;
@@ -279,10 +270,6 @@ public class NsfocusWAFAdapter {
 	
 	public String createSite(int resourceId,int deviceId,JSONObject jsonObject) {
 		String responseString =  getDeviceById(resourceId, deviceId).createSite(jsonObject);
-		JSONObject responseJsonObject = JSONObject.fromObject(responseString);
-		
-
-
 		return responseString;
 	}
 	
@@ -363,7 +350,7 @@ public class NsfocusWAFAdapter {
 				TWafNsfocusTargetinfoMapper mapper = sqlSession.getMapper(TWafNsfocusTargetinfoMapper.class);
 				mapper.insertSelective(record);
 				sqlSession.commit();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				// 
 				e.printStackTrace();
 				sqlSession.rollback();
@@ -1018,7 +1005,7 @@ public class NsfocusWAFAdapter {
 					TWafLogWebsecExample exampleElement = new TWafLogWebsecExample();
 					JSONObject eventTypeInTimeJsonObject = new JSONObject();
 					calendar.setTime(startDate);
-					calendar.add(calendar.MONTH, interval);
+					calendar.add(Calendar.MONTH, interval);
 					exampleElement.or().andEventTypeEqualTo(element.attributeValue("name")).andStatTimeBetween(startDate, calendar.getTime());
 
 					eventTypeInTimeJsonObject.put("date", sdf.format(startDate));
@@ -1058,16 +1045,15 @@ public class NsfocusWAFAdapter {
 			XStream xStream = getXStream();
 			xStream.alias("WafLogWebSecDstIpList", List.class);
 			String jsonString = xStream.toXML(dsts);
-			sqlSession.close();
 			return jsonString;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			sqlSession.rollback();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "WafLogWebSecDstIp Count error!!!");
 			return errorJsonObject.toString();
+		}finally {
+			sqlSession.close();
 		}
 	}
 	
@@ -1081,16 +1067,16 @@ public class NsfocusWAFAdapter {
 			XStream xStream = getXStream();
 			xStream.alias("WafLogWebSecSrcIpList", List.class);
 			String jsonString = xStream.toXML(srcs);
-			sqlSession.close();
 			return jsonString;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			sqlSession.rollback();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "WafLogWebSecSrcIp Count error!!!");
 			return errorJsonObject.toString();
+		}finally {
+			sqlSession.close();
 		}
 	}
 	
