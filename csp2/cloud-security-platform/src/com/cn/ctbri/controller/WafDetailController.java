@@ -166,7 +166,7 @@ public class WafDetailController {
     public void getEventPieData(HttpServletRequest request, HttpServletResponse response){
     	response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=UTF-8");
-    	String eventStr = WafAPIWorker.getWafEventTypeCount("10");
+    	String eventStr = WafAPIWorker.getWafEventTypeCount("10","hour");
     	Map map = this.getWafEventTypeCount(eventStr);
         
         List name = null;
@@ -211,7 +211,7 @@ public class WafDetailController {
     public void getEventBarData(HttpServletRequest request, HttpServletResponse response){
     	response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=UTF-8");
-    	String eventStr = WafAPIWorker.getWafEventTypeCount("10");
+    	String eventStr = WafAPIWorker.getWafEventTypeCount("10","hour");
     	Map map = this.getWafEventTypeCount(eventStr);
         
         List name = null;
@@ -532,7 +532,7 @@ public class WafDetailController {
     @RequestMapping(value="getWafOneHour.html")
     @ResponseBody
     public void getWafOneHour(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    	String eventStr = WafAPIWorker.getWafEventTypeCount("1000");
+    	String eventStr = WafAPIWorker.getWafEventTypeCount("1000","hour");
     	Map map = this.getWafEventTypeCount(eventStr);
         
         List name = null;
