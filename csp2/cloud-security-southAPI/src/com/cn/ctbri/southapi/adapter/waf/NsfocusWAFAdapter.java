@@ -558,6 +558,12 @@ public class NsfocusWAFAdapter {
 	
 	
 	public String getAllWafLogWebsecInTime(JSONObject jsonObject) {
+		if (jsonObject.get("timeUnit")==null||jsonObject.getString("timeUnit").length()<=0
+		||jsonObject.get("interval")==null||jsonObject.getInt("interval")<=0) {
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "Eventtype parameter error!!!");
+		}
 		SqlSession sqlSession = null;
 		try {
 			//根据时间间隔获取时间段
@@ -566,6 +572,14 @@ public class NsfocusWAFAdapter {
 			calendar.setTime(new Date());
 			//当前时间
 			Date dateNow = calendar.getTime();
+			//获取时间间隔单位
+			if (jsonObject.getString("timeUnit").equalsIgnoreCase("hour")) {
+				calendar.add(Calendar.HOUR, -interval);
+			}else if(jsonObject.getString("timeUnit").equalsIgnoreCase("minute")){
+				calendar.add(Calendar.MINUTE, -interval);
+			}else if(jsonObject.getString("timeUnit").equalsIgnoreCase("date")){
+				calendar.add(Calendar.DATE, -interval);
+			}
 			calendar.add(Calendar.HOUR, -interval);
 			//开始时间
 			Date dateBefore = calendar.getTime();
@@ -573,11 +587,10 @@ public class NsfocusWAFAdapter {
 			//组装查询条件并进行查询
 			TWafLogWebsecExample example = new TWafLogWebsecExample();
 			example.or().andStatTimeBetween(dateBefore,dateNow);
-			
+			//查询并返回结果
 			sqlSession = getSqlSession();
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			List<TWafLogWebsec> allList = mapper.selectByExample(example);
-			sqlSession.commit();
 			
 			//base64编码
 			for (TWafLogWebsec tWafLogWebsec : allList) {
