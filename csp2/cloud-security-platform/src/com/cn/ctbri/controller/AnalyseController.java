@@ -384,12 +384,18 @@ public class AnalyseController {
 		Map<String, Integer> dateStrMap = new HashMap<String, Integer>();
 		Date date = lastMonthDate;
 		Date startDate = DateUtils.getAfterDate(date, 1);
-
+		List<String> dateList=new ArrayList<String>();
+		Date tempDate=startDate;
+		while(tempDate.getTime()<=currentDate.getTime()){
+			dateList.add(DateUtils.dateToDate(tempDate));
+			tempDate=DateUtils.getAfterDate(tempDate,1);
+		}
+		int dateSize=dateList.size();
 		String starteDateStr = DateUtils.dateToDate(startDate);
 		String endDateStr = DateUtils.dateToDate(currentDate);
 		long start = System.currentTimeMillis();
-		String wafcreate = WafAPIWorker.getEventTypeCountByDay("1",
-				DateUtils.dateToDate(lastMonthDate));
+		String wafcreate = null;
+		wafcreate=WafAPIWorker.getEventTypeCountByDay("30");
 		long end = System.currentTimeMillis();
 		System.out.println(end - start);
 		JSONArray jsonArray = JSONArray.fromObject(wafcreate);
@@ -398,40 +404,42 @@ public class AnalyseController {
 		int size = jsonArray.size();
 		Map<String, List> map = new HashMap<String, List>();
 		List resultList = new LinkedList();
-		if (size > 20) {// 超过20个攻击类型后，需要通过排序查找出这段时间内攻击类型数量最多的20个
-			for (int i = 0; i < size; i++) {
-				JSONObject obj = (JSONObject) jsonArray.get(i);
-				byte[] base64Bytes = Base64.decodeBase64(obj.get("eventType").toString().getBytes());	
-				String type = new String(base64Bytes,"UTF-8");
-				map.put(type, new ArrayList());
-				map.get(type).add(type);
-				JSONArray dateValueArray = (JSONArray) obj.get("countInTime");
-				int dateSize = dateValueArray.size();
-				int sum = 0;
-				boolean flag = false;
-				for (int j = 0; j < dateSize; j++) {
-					JSONObject dateObj = (JSONObject) dateValueArray.get(j);
-					String dateType = (String) dateObj.get("date");
-					if (dateType.equals(starteDateStr)) {
-						flag = true;
-					}
-					if (flag) {
-
-						int dateValue = (Integer) dateObj.get("count");
-						map.get(type).add(dateValue);
-						sum += dateValue;
-					}
-
+		// 超过20个攻击类型后，需要通过排序查找出这段时间内攻击类型数量最多的20个
+		for(int i=0;i<size;i++){
+			JSONObject obj = (JSONObject) jsonArray.get(i);
+			byte[] base64Bytes = Base64.decodeBase64(obj.get("eventTypeBase64").toString().getBytes());	
+			String type = new String(base64Bytes,"UTF-8");
+			JSONArray array=obj.getJSONArray("list");
+			int listSize=array.size();
+			int sum=0;
+			//存储格式key=type,value={type,count1,count2,count3....},类型加日期最多不超过32个元素
+			map.put(type,new ArrayList(32));
+			map.get(type).add(type);;
+			Map<String,Integer> mapCount=new HashMap<String,Integer>();
+			for(int j=0;j<listSize;j++){
+				JSONObject objData=array.getJSONObject(j);
+				int count=objData.getInt("count");
+				mapCount.put(objData.getString("statTime"),count);
+				sum+=count;
+			}
+			for(int z=0;z<dateSize;z++){
+				String dateStr=dateList.get(z);
+				if(mapCount.get(dateStr)==null){
+					mapCount.put(dateStr,0);
 				}
-				attackList.add(new Attack(type, sum));
+				map.get(type).add(mapCount.get(dateStr));
 			}
-			Collections.sort(attackList, new Attack());
-			for (int x = 0; x < showNums; x++) {
-				String attackType = attackList.get(x).getAttackType();
-				attackTypeList.add(attackType);
-				resultList.add(map.get(attackType));
-			}
+			attackList.add(new Attack(type,sum));
 		}
+		//排序
+		Collections.sort(attackList, new Attack());
+		//查找前20个攻击类型
+		for (int x = 0; x < showNums; x++) {
+			String attackType = attackList.get(x).getAttackType();
+			attackTypeList.add(attackType);
+			resultList.add(map.get(attackType));
+		}
+		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("title", title);
 		jsonObject.put("startTime", DateUtils.dateToDate(lastMonthDate));
