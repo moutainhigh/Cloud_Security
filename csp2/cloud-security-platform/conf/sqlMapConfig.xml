@@ -46,7 +46,8 @@
 		
 		<!-- add by zhangshaohua 2016-7-27 -->
 		<mapper resource="com/cn/ctbri/entity/ApiPriceMapper.xml"/>
-		
+		<!-- add by lvcongliang 2016-8-17 -->
+		<mapper resource="com/cn/ctbri/entity/IPPositionMapper.xml"/>
 		
 	</mappers>
 </configuration>  
