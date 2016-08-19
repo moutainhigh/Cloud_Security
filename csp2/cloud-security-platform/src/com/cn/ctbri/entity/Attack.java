@@ -1,0 +1,91 @@
+package com.cn.ctbri.entity;
+
+public class Attack {
+	
+	//时间，攻击方，IP,被攻击方，IP，攻击类型，类型编码，端口,经度，纬度
+	private String startTime;
+	private String srcName;
+	private String srcIP;
+	private String desName;
+	private String desIP;
+	private String type;
+	private Integer typeCode;
+	private String port;
+	private String srcLongitude;
+	private String srcLatitude;
+	private String desLongitude;
+	private String desLatitude;
+	public String getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	public String getSrcName() {
+		return srcName;
+	}
+	public void setSrcName(String srcName) {
+		this.srcName = srcName;
+	}
+	public String getSrcIP() {
+		return srcIP;
+	}
+	public void setSrcIP(String srcIP) {
+		this.srcIP = srcIP;
+	}
+	public String getDesName() {
+		return desName;
+	}
+	public void setDesName(String desName) {
+		this.desName = desName;
+	}
+	public String getDesIP() {
+		return desIP;
+	}
+	public void setDesIP(String desIP) {
+		this.desIP = desIP;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public Integer getTypeCode() {
+		return typeCode;
+	}
+	public void setTypeCode(Integer typeCode) {
+		this.typeCode = typeCode;
+	}
+	public String getPort() {
+		return port;
+	}
+	public void setPort(String port) {
+		this.port = port;
+	}
+	public String getSrcLongitude() {
+		return srcLongitude;
+	}
+	public void setSrcLongitude(String srcLongitude) {
+		this.srcLongitude = srcLongitude;
+	}
+	public String getSrcLatitude() {
+		return srcLatitude;
+	}
+	public void setSrcLatitude(String srcLatitude) {
+		this.srcLatitude = srcLatitude;
+	}
+	public String getDesLongitude() {
+		return desLongitude;
+	}
+	public void setDesLongitude(String desLongitude) {
+		this.desLongitude = desLongitude;
+	}
+	public String getDesLatitude() {
+		return desLatitude;
+	}
+	public void setDesLatitude(String desLatitude) {
+		this.desLatitude = desLatitude;
+	}
+	
+}

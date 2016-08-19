@@ -61,7 +61,7 @@
                 new SockJS(url, undefined, {protocols_whitelist: transports}) :  */
                 
                 
-            ws.onopen = function () {
+            ws.onopen = function (event) {
                 setConnected(true);
                 log('Info: connection opened.');
             };

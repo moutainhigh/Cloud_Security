@@ -57,7 +57,7 @@
             }
             
 			
-            ws = new WebSocket('ws://localhost:8080/csp/worldMapSocketServer.html');/* (url.indexOf('sockjs') != -1) ? 
+            ws = new WebSocket('ws://localhost:8080/csp/websocket');/* (url.indexOf('sockjs') != -1) ? 
                 new SockJS(url, undefined, {protocols_whitelist: transports}) :  */
                 
                 
