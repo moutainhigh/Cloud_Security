@@ -388,10 +388,11 @@ public class WafAPIWorker {
 	 * @param logId
 	 * @return
 	 */
-	public static String getAllWafLogWebsecInTime(String interval){
+	public static String getAllWafLogWebsecInTime(String interval, String timeUnit){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("interval", interval);
+		json.put("timeUnit", timeUnit);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getAllWafLogWebsecInTime";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
@@ -824,12 +825,12 @@ public class WafAPIWorker {
 //			ser.add(jo);
 //    		wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", "test0615", "219.141.189.183", "80", "nsfocus.cer", "0", "www.anquanbang", "*", "", ser);
 //    		wafcreate = WafAPIWorker.getEventTypeCountByDay("30");
-//    		wafcreate = WafAPIWorker.getAllWafLogWebsecInTime("27");
+    		wafcreate = WafAPIWorker.getAllWafLogWebsecInTime("48","minute");
 //    		wafcreate = WafAPIWorker.getEventTypeCountByMonth("1","2016-08");
 //    		wafcreate = WafAPIWorker.getWafLogWebSecSrcIpList();
 //    		wafcreate = WafAPIWorker.getWafLogWebSecDstIpList();
 //    		wafcreate = WafAPIWorker.getWafAlertLevelCountByMonth("1","2016-08");
-    		wafcreate = WafAPIWorker.getWafEventTypeCount("1","hour");
+//    		wafcreate = WafAPIWorker.getWafEventTypeCount("1","hour");
     	} catch (Exception e) {
             e.printStackTrace();
         }
