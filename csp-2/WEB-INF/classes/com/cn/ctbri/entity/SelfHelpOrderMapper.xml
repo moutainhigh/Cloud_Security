@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.SelfHelpOrderMapper">
+	
+	<!-- 查询服务类型所有记录 -->
+	<select id="findServiceType" resultType="serviceType">
+		select * from cs_service_type
+	</select>
+	
+	<!-- 查询厂商所有记录 -->
+    <select id="findFactory" resultType="factory">
+        select * from cs_factory
+    </select>
+    
+    <!-- 查询服务资产 -->
+    <select id="findServiceAsset" resultType="asset" parameterType="Integer">
+        select * from cs_asset where userid = #{userId} and status = 1
+    </select>
+	
+	<!-- 插入联系人 -->
+    <insert id="insertLinkman" parameterType="linkman">
+        insert into cs_linkman
+        (id, name, mobile, email, company, address, userId) 
+        values(#{id}, #{name}, #{mobile}, #{email}, #{company}, #{address}, #{userId})
+    </insert>
+    
+	<!-- 插入订单 -->
+    <insert id="insert" parameterType="order">
+        insert into cs_order
+        (id, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, contactId, remarks, status, websoc, tasknum, payFlag, isAPI) 
+        values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks}, #{status}, #{websoc}, #{tasknum}, #{payFlag}, #{isAPI})
+    </insert>
+    
+    <!-- 查询漏洞个数 -->
+    <select id="findLeakNum" parameterType="Integer" resultType="com.cn.ctbri.entity.Alarm">
+        <!-- select * from cs_alarm a,
+		(select t.taskId from cs_task t,
+		(select oa.id from cs_order o,cs_service s,cs_order_asset oa where o.serviceId = s.id and o.id = oa.orderId and s.parentC = 1 and s.id=#{i}) asset
+		where t.order_asset_id = asset.id) task where a.taskId = task.taskId 
+		
+		select count(a.id) as count
+			from cs_order o,cs_order_asset oa,cs_task t,cs_alarm a,cs_asset s
+			where o.id = oa.orderId 
+			and t.order_asset_Id = oa.id 
+			and (a.taskId=t.taskId or a.group_Id = t.group_Id)
+			and s.id = oa.assetId
+			and o.serviceId = #{i} -->
+		select sum(dis.count#{i}) as count from cs_district dis
+    </select>
+    
+    <!-- 查询网页数 -->
+    <select id="findWebPageNum" resultType="hashmap">
+        select sum(t.urlCount) url from cs_task t
+        <!-- select * from cs_alarm a,
+        (select t.taskId from cs_task t,
+        (select oa.id from cs_order o,cs_service s,cs_order_asset oa 
+            where o.serviceId = s.id 
+            and o.id = oa.orderId 
+            and s.parentC = 1
+            ) asset
+        where t.order_asset_id = asset.id) task where a.taskId = task.taskId -->
+    </select>
+    
+    <!-- 检测网页数 -->
+    <select id="findWebSite" resultType="hashmap">
+        <!-- select * from cs_order_asset -->
+        select * from cs_order_asset oa, cs_asset a where oa.assetId = a.id
+    </select>
+    
+    <!-- 断网次数 -->
+    <select id="findBrokenNetwork" resultType="hashmap">
+        select * from cs_taskwarn tw where tw.name = '断网'
+    </select>
+    
+    <!-- 删除联系人 -->
+    <delete id="deleteLinkman" parameterType="int">
+        delete from cs_linkman where id = #{contactId}
+    </delete>
+</mapper>
