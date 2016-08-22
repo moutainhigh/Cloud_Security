@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import se.akerfeldt.com.google.gson.Gson;
 
+import com.cn.ctbri.common.WafAPIWorker;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.City;
@@ -381,6 +382,97 @@ public class DistrictDataController {
     }
     
     /**
+     * 最近6个月各等级漏洞
+     * 
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value="getWafByLevelMonth6.html")
+    @ResponseBody
+    public void getWafByLevelMonth6(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	JSONArray newArray = new JSONArray();
+        //获取月份，近6个月
+        List monthList = new ArrayList();
+        for (int i = 5; i >= 0; i--) {
+        	String month = districtDataService.getMonth(i);
+        	monthList.add(month);
+		}
+        
+        //定义漏洞等级
+        String[] levelNames = {"低","中","高"};
+        List levelList = new ArrayList();
+        
+    	String startDate = DateUtils.dateToDate(new Date());	
+    	String wafRes = WafAPIWorker.getWafAlertLevelCountByMonth("6", startDate);
+    	//解析等级数据
+    	JSONArray jsonArray = JSONArray.fromObject(wafRes);
+    	if(jsonArray!=null && jsonArray.size()>0){
+    		for(int i = 0; i < jsonArray.size(); i++){
+    			JSONObject jsonObject = (JSONObject)jsonArray.get(i);
+    			//String alertLevel = jsonObject.getString("alertLevel");
+    			levelList.add(levelNames[i]);
+    			JSONArray arrayTemp = jsonObject.getJSONArray("countList");
+    			//每一个level对应的数据
+				List dataList = new ArrayList();
+    			for(int k = 0; k < monthList.size(); k++){
+    				boolean flag = false;
+
+    				if(arrayTemp!=null && arrayTemp.size()>0){
+        				for(int j = 0; j < arrayTemp.size(); j++){
+        					JSONObject jsonTemp = (JSONObject)arrayTemp.get(j);
+        					String month = jsonTemp.getString("time");
+        					String count = jsonTemp.getString("count");
+        					if(month.equals(monthList.get(k).toString().replace(".", "-"))){//如果月份相同
+        						flag = true;
+        						dataList.add(count);
+        						break;
+        					}else{
+        						flag = false;
+        					}
+        				}
+        			}
+    				if(!flag){
+    					dataList.add(0);
+    				}
+    			}
+    			
+    			//生成前台展示json
+            	JSONObject json = new JSONObject();
+            	json.put("name", levelNames[i]);
+            	json.put("type", "bar");
+            	json.put("data", dataList);
+            	
+            	JSONObject jsonNormal = new JSONObject();
+            	jsonNormal.put("show", true);
+            	jsonNormal.put("position","top");
+            	
+            	JSONObject jsonLabel = new JSONObject();
+            	jsonLabel.put("normal", jsonNormal);
+            	
+            	json.put("label", jsonLabel);
+            	newArray.add(json);
+            }
+            
+    			
+    		}        	
+    	
+        
+        Map<String, Object> m = new HashMap<String, Object>();
+        m.put("dataArray", newArray);
+        m.put("monthList", monthList);
+        m.put("levelList", levelList);
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return;
+    }
+    
+    /**
      * 查询用户最近6个月内不同类型服务订单数量变化
      * 
      * @return
@@ -388,14 +480,12 @@ public class DistrictDataController {
      */
     @RequestMapping(value="getServiceUseInfoMonth6.html")
     @ResponseBody
-    public void getServiceUseInfoMonth6(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        User globle_user = (User) request.getSession().getAttribute("globle_user");
-        
+    public void getServiceUseInfoMonth6(HttpServletRequest request, HttpServletResponse response) throws IOException {        
        //前6个月的月份
-        String lastMonth6 = districtDataService.getMonth(23);
-        //获取月份，近24个月
+        String lastMonth6 = districtDataService.getMonth(5);
+        //获取月份，近6个月
         List monthList = new ArrayList();
-        for (int i = 23; i >= 0; i--) {
+        for (int i = 5; i >= 0; i--) {
         	String month = districtDataService.getMonth(i);
         	monthList.add(month);
 		}
@@ -403,10 +493,18 @@ public class DistrictDataController {
         int maxCount = 0;//定义最大数值
         //根据用户和月份查询
         JSONArray jsonArray = new JSONArray();
+        List<String> jsonMonthList = new ArrayList<String>();
         for(int i = 0; i < monthList.size(); i++){
+        	String months = "";
+        	if(i==0){
+        		months = lastMonth6;
+        	}else{
+        		months = lastMonth6 + "--" + monthList.get(i);
+        	}
+        	
             Map<String, Object> paramMap = new HashMap<String, Object>();
-            paramMap.put("userId", globle_user.getId());
-            paramMap.put("month", monthList.get(i));
+            paramMap.put("endMonth", monthList.get(i));
+            paramMap.put("beginMonth", lastMonth6);
             List dataList = districtDataService.getServiceUseInfoMonth6(paramMap);
 
             List<Integer> tempList = new ArrayList<Integer>();
@@ -414,7 +512,7 @@ public class DistrictDataController {
             for(int j=1; j<=6; j++){
                 if(dataList!=null && dataList.size()>0){
             		for(int k = 0; k < dataList.size(); k++){
-                		String month = ((Map)dataList.get(k)).get("month1").toString();
+                		
                 		int count = Integer.parseInt(((Map)dataList.get(k)).get("count").toString());
                 		if(count > maxCount){
                 			maxCount = count;
@@ -438,9 +536,10 @@ public class DistrictDataController {
 
         	
         	JSONObject jsonObject = new JSONObject();
-        	jsonObject.put("name", monthList.get(i));
+        	jsonObject.put("name", months);
         	jsonObject.put("value", tempList);
         	jsonArray.add(jsonObject);
+        	jsonMonthList.add(months);
         }
         
         //获取服务名称
@@ -458,7 +557,7 @@ public class DistrictDataController {
         Map<String, Object> m = new HashMap<String, Object>();
         m.put("dataArray", jsonArray);
         m.put("indicatorList", indicatorList);
-        m.put("monthList", monthList);
+        m.put("monthList", jsonMonthList);
 		//object转化为Json格式
 		JSONObject JSON = CommonUtil.objectToJson(response, m);
 		try {
@@ -557,7 +656,16 @@ public class DistrictDataController {
     	}
     	
     	//获取一年内日期
-    	List dayList = districtDataService.getDaysInYear();
+    	//List dayList = districtDataService.getDaysInYear();
+    	Date now = new Date();
+    	String endDate = DateUtils.dateToDate(new Date());
+        Date date = DateUtils.getDateBeforeOneYear(new Date());
+        String beginDate = DateUtils.dateToDate(date);
+        Map<String,Object> dayMap = new HashMap<String,Object>();
+        dayMap.put("beginDate", beginDate);
+        dayMap.put("endDate", endDate);
+        
+    	List dayList = districtDataService.getDaysInYear(dayMap);
     	List jsonDayList = new ArrayList();
     	if(dayList!=null && dayList.size()>0){
     		for(int i = 0; i < dayList.size(); i++){
@@ -567,7 +675,7 @@ public class DistrictDataController {
     	}
     	
     	//获取一年内月份的最后一天
-    	List lastdayList = districtDataService.getLastDayForMonthInYear();
+    	List lastdayList = districtDataService.getLastDayForMonthInYear(dayMap);
     	List jsonLastdayList = new ArrayList();
     	if(lastdayList!=null && lastdayList.size()>0){
     		for(int i = 0; i < lastdayList.size(); i++){
@@ -610,15 +718,54 @@ public class DistrictDataController {
     	List list = districtDataService.getVulnscanAlarmAllCount();
 
     	Map<String,Object> mapOver3 = new HashMap<String,Object>();
-    	mapOver3.put("name", "网站同一漏洞告警大等于3");
+    	mapOver3.put("name", "网站漏洞告警>=3");
     	mapOver3.put("value", listOver3.size());
     	jsonList.add(mapOver3);
     	
     	Map<String,Object> map = new HashMap<String,Object>();
-    	map.put("name", "网站同一漏洞告警小于3");
+    	map.put("name", "网站漏洞告警<3");
     	map.put("value", list.size()-listOver3.size());
 
     	jsonList.add(map);
+    	
+    	Map<String, Object> m = new HashMap<String, Object>();
+        m.put("jsonList", jsonList);
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return;
+    }
+    
+    /**
+     * 网站用途分布
+     * 
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value="getAssetPurpose.html")
+    @ResponseBody
+    public void getAssetPurpose(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    	List jsonList = new ArrayList();
+    	
+    	//获取漏洞大于3的资产的用途分布
+    	List list = districtDataService.getAssetPurpose();
+
+    	if(list!=null && list.size()>0){
+    		for(int i = 0; i < list.size(); i++){
+    			Map<String,Object> map = new HashMap<String,Object>();
+    			map.put("name", ((Map)list.get(i)).get("purpose"));
+    			map.put("value", ((Map)list.get(i)).get("count"));
+    			jsonList.add(map);
+    		}
+    	}
+    	
+    
     	
     	Map<String, Object> m = new HashMap<String, Object>();
         m.put("jsonList", jsonList);
