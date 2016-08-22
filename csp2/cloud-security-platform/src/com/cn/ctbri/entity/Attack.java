@@ -87,5 +87,14 @@ public class Attack {
 	public void setDesLatitude(String desLatitude) {
 		this.desLatitude = desLatitude;
 	}
+	@Override
+	public String toString() {
+		return "[srcName:" + srcName + ", srcIP:" + srcIP + ", desName:"
+				+ desName + ", desIP:" + desIP + ", type:" + type
+				+ ", typeCode:" + typeCode + ", port:" + port
+				+ ", srcLongitude:" + srcLongitude + ", srcLatitude:"
+				+ srcLatitude + ", desLongitude:" + desLongitude
+				+ ", desLatitude:" + desLatitude + "]";
+	}
 	
 }

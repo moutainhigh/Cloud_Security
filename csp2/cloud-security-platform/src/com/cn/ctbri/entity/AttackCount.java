@@ -3,12 +3,14 @@ package com.cn.ctbri.entity;
 public class AttackCount {
 	// 类型编码
 	private Integer typeCode;
+	
+	private String type;
 	// 数量
 	private long currentNum;
 
 
-	public AttackCount(Integer typeCode, long currentNum) {
-		this.typeCode = typeCode;
+	public AttackCount(String type, long currentNum) {
+		this.type = type;
 		this.currentNum = currentNum;
 	}
 
@@ -27,5 +29,21 @@ public class AttackCount {
 	public void setCurrentNum(long currentNum) {
 		this.currentNum = currentNum;
 	}
+	
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	@Override
+	public String toString() {
+		return "[\""+type+"\","+
+				+ currentNum + "]";
+	}
+	
 
 }

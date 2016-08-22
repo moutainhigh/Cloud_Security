@@ -1,6 +1,7 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.common.WafAPIWorker;
+import com.cn.ctbri.constant.EventTypeCode;
 import com.cn.ctbri.entity.AlarmBug;
+import com.cn.ctbri.entity.AttackCount;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.util.DateUtils;
@@ -493,7 +496,24 @@ public class AnalyseController {
 	}
 
 	@RequestMapping(value = "mapUI.html")
-	public String mapUI(HttpServletRequest request) {
+	public String mapUI(HttpServletRequest request) throws UnsupportedEncodingException {
+		WafAPIWorker worker = new WafAPIWorker();
+		String texts = worker.getWafEventTypeCount("1", "hour");
+		JSONArray array = JSONArray.fromObject(texts);
+		List<AttackCount> attackCountList = new ArrayList<AttackCount>();
+		for (int i = 0; i < array.size(); i++) {
+			JSONObject obj = (JSONObject) array.get(i);
+			byte[] base64Bytes = Base64.decodeBase64(obj.get("eventType")
+					.toString().getBytes());
+			String eventType = new String(base64Bytes, "UTF-8");
+//			Integer typeCode = EventTypeCode.typeToCodeMap.get(eventType);
+			Integer count = (Integer) obj.get("count");
+			attackCountList.add(new AttackCount(eventType, count));
+		}
+//		JSONObject jsonObject = new JSONObject();
+//		jsonObject.put("wafEventTypeCount", attackCountList);
+		request.setAttribute("wafEventTypeCount",attackCountList.toString());
+//		String resultJson = jsonObject.toString();// 转成json数据
 		String result = "/source/page/analyse/map";
 		return result;
 	}

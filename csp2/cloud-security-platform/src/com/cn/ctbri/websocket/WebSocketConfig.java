@@ -15,7 +15,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 //        registry.addHandler(myhandler(), "/websocket").addInterceptors(myInterceptors());
 //        registry.addHandler(myhandler(), "/sockjs/websocket").addInterceptors(myInterceptors()).withSockJS();  
     	registry.addHandler(myhandler(), "/websocket");
-        registry.addHandler(myhandler(), "/sockjs/websocket");
+//        registry.addHandler(myhandler(), "/sockjs/websocket");
     }  
   
     @Bean  
