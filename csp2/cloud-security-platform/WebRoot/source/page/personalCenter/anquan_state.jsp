@@ -17,7 +17,9 @@
 <link href="${ctx}/source/css/core.css" type="text/css" rel="stylesheet" />
 <script src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts3/echarts.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/echarts3/china.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/anquan_state.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/order/anquanStateMap.js"></script>
 <script src="${ctx}/source/scripts/common/portalindex.js"></script>
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
@@ -32,48 +34,15 @@
                 	<ol class="navlist centlist assets clearfix">
                     	<li class="active">概况</li>
                         <li>地理位置</li>
-                        <li>安全态势</li>
+                        <li>安全生态</li>
                         <li>用户行为</li>
+                        <li>XXX</li>
                     </ol>
                     <div class="tabBox fadeBox">
+                   	 	
+                   	 	<!-- 概况 -->
                     	<div class="not-used" style="display:block">
-                        	<ul class="clearfix">
-                        		<li class="fl" style="height:500px;background:url('${ctx}/source/images/rose2.png') 43px 8px no-repeat;">
-                        				<div id="vulnscanAlarmOneHour" style="width:540px;height:500px"></div>
-                        		</li>
-                        		<li class="fl" style="height:500px;background:url('${ctx}/source/images/rose2.png') 43px 8px no-repeat;">
-                        			<div id="wafOneHour" style="width:540px;height:500px"></div>
-                        		</li>
-                        	</ul>
-                        	<div class="fadechid">
-                        		<h2>安全帮使用情况</h2>
-                        		<ul class="clearfix">
-                        			<li class="fl">
-                        				<img src="${ctx}/source/images/safe/u6.png">
-                        				<span>扫描网站数</span>
-                        				<strong>29</strong>
-                        			</li>
-                        			<li class="fl">
-                        				<img src="${ctx}/source/images/safe/u10.png">
-                        				<span>扫描页面数</span>
-                        				<strong>283599</strong>
-                        			</li>
-                        			<li class="fl">
-                        				<img src="${ctx}/source/images/safe/u14.png">
-                        				<span>发现漏洞数</span>
-                        				<strong>12580</strong>
-                        			
-                        			</li>
-                        			<li class="fl">
-                        				<img src="${ctx}/source/images/safe/u18.png">
-                        				<span>抵御攻击次数</span>
-                        				<strong>38182101</strong>
-                        			</li>
-                        		</ul>
-                        	</div>
-                    	</div>
-                        <div class="not-used">
-                        	<div class="words_map">
+                    		<div class="words_map">
                         		<div class="word" style="width: 100%; height: 600px;">
                         			<img src="${ctx}/source/images/safe/u2.png" width="100%" height="100%" />
                         		</div>
@@ -81,35 +50,29 @@
                         		<div class="lb" style="width: 200px; height: 200px;border: #1C94C4 solid 1px;">左下的Div</div>
                         		
                         	</div>
-                        	
+                    	</div>
+                    	
+                    	<!-- 地理位置 -->
+                        <div class="not-used">
                         	<div class="tab">
                         		<div class="tabList tab-pane clearfix">
-                        			<span class="active"><a href="#">监测数据</a></span>
-                        			<span><a href="#">WAF告警</a></span>
-                        			<span><a href="#">攻击源</a></span>
-                        			<span><a href="#">安全帮用户</a></span>
+                        			<span class="active" onclick="showHighSiteMap()"><a href="#">监测数据</a></span>
+                        			<!-- <span ><a href="#">WAF告警</a></span> -->
+                        			<span onclick="showHackerMap()"><a href="#">攻击源</a></span>
+                        			<span onclick="showUserMap()"><a href="#">安全帮用户</a></span>
                         			
                         		</div>
                         		<div class="mapBox">
-                        			<div class="list" style="display: block;">
+                        			<div class="list" id="safe-map" style="display: block;">
                         				<img src="${ctx}/source/images/safe/u121.png" alt="" />
 	                        		</div>
-	                        		<div class="list">
-	                        			<img src="${ctx}/source/images/safe/u121.png" alt="" />
-	                        		</div>
-	                        		<div class="list">
-	                        			<img src="${ctx}/source/images/safe/u121.png" alt="" />
-	                        		</div>
-	                        		<div class="list">
-	                        			<img src="${ctx}/source/images/safe/u121.png" alt="" />
-	                        		</div>
-                        			
-                        			
                         		</div>
                         		
                         	</div>
                         	
                     	</div>
+                    	
+                    	<!-- 安全生态 -->
                         <div class="not-used">
                         	<div class="point clearfix">
                         		<h5 class="fl">重大风险预警</h5>
@@ -136,6 +99,8 @@
                         		</div>
                         	</div>
                     	</div>
+                    	
+                    	<!-- 用户行为 -->
                     	<div class="not-used">
                         	<div class="mapListBox clearfix">
                         		<div class="ltmit" >
@@ -174,6 +139,43 @@
                         	</div>
                     	</div>
                         
+                        <!-- XXX 页面 -->
+                    	<div class="not-used">
+                        	<ul class="clearfix">
+                        		<li class="fl" style="height:500px;background:url('${ctx}/source/images/rose2.png') 43px 8px no-repeat;">
+                        				<div id="vulnscanAlarmOneHour" style="width:540px;height:500px"></div>
+                        		</li>
+                        		<li class="fl" style="height:500px;background:url('${ctx}/source/images/rose2.png') 43px 8px no-repeat;">
+                        			<div id="wafOneHour" style="width:540px;height:500px"></div>
+                        		</li>
+                        	</ul>
+                        	<div class="fadechid">
+                        		<h2>安全帮使用情况</h2>
+                        		<ul class="clearfix">
+                        			<li class="fl">
+                        				<img src="${ctx}/source/images/safe/u6.png">
+                        				<span>扫描网站数</span>
+                        				<strong>29</strong>
+                        			</li>
+                        			<li class="fl">
+                        				<img src="${ctx}/source/images/safe/u10.png">
+                        				<span>扫描页面数</span>
+                        				<strong>283599</strong>
+                        			</li>
+                        			<li class="fl">
+                        				<img src="${ctx}/source/images/safe/u14.png">
+                        				<span>发现漏洞数</span>
+                        				<strong>12580</strong>
+                        			
+                        			</li>
+                        			<li class="fl">
+                        				<img src="${ctx}/source/images/safe/u18.png">
+                        				<span>抵御攻击次数</span>
+                        				<strong>38182101</strong>
+                        			</li>
+                        		</ul>
+                        	</div>
+                    	</div>
                     
                     </div>
                 </div>
@@ -185,7 +187,7 @@
 		
 		
 	</div>
-<script>
+<!-- <script>
 	$(function(){
 		$('.tab-pane span').click(function(){
 		  var index = $(this).index();
@@ -195,7 +197,7 @@
 
 	});
 	
-</script>
+</script> -->
 </body>
 
 
