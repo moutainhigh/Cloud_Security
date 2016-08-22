@@ -29,8 +29,8 @@
 <body>
 	<div class="safeBox">
 		<div class="detaails">
-        	<div class="coreRight user_right coupon" style="width: 1210px;">
-                 <div class="coupontab" style="width: 96%; margin: 20px auto;">
+        	<div class="coreRight coupon">
+                 <div class="coupontab" style="width: 100%; margin: 0px auto;">
                 	<ol class="navlist centlist assets clearfix">
                     	<li class="active">概况</li>
                         <li>地理位置</li>
@@ -38,7 +38,7 @@
                         <li>用户行为</li>
                         <li>XXX</li>
                     </ol>
-                    <div class="tabBox fadeBox">
+                    <div class="tabBox fadeBox" style="background-color:#04144d">
                    	 	
                    	 	<!-- 概况 -->
                     	<div class="not-used" style="display:block">
