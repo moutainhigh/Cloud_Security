@@ -177,9 +177,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 最近6个月内不同类型服务订单数量变化 -->
     <select id="getServiceUseInfoMonth6" resultType="hashmap" parameterType="hashmap">
-		SELECT order1.serviceId,COUNT(order1.serviceId) count,DATE_FORMAT(order1.begin_date,'%Y.%m') month1 FROM `cs_order` order1
-		 WHERE DATE_FORMAT(order1.begin_date,'%Y.%m')=#{month}
-		GROUP BY month1,order1.serviceId
+		SELECT order1.serviceId,COUNT(order1.serviceId) count FROM `cs_order` order1
+		 WHERE DATE_FORMAT(order1.begin_date,'%Y.%m') &gt;= #{beginMonth} and DATE_FORMAT(order1.begin_date,'%Y.%m') &lt;= #{endMonth}
+		GROUP BY order1.serviceId
 	
     </select>
 	
@@ -205,22 +205,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 	
 	<!-- 获取一年内的日期 -->
-    <select id="getDaysInYear" resultType="hashmap">
-    	select * from cs_days
+    <select id="getDaysInYear" resultType="hashmap" parameterType="hashmap" statementType="CALLABLE">
+    	<!--  select * from cs_days -->
+    	 {call pro_dayInYear(#{beginDate,  mode=IN},  
+                                   #{endDate,  mode=IN})}
     </select>
 
 	<!-- 获取一年内的所有月份的最后一天 -->
-    <select id="getLastDayForMonthInYear" resultType="hashmap">
-    	SELECT LAST_DAY(dayName) lastday,DATE_FORMAT(dayName,'%Y-%m') months FROM `cs_days` GROUP BY months
+    <select id="getLastDayForMonthInYear" resultType="hashmap" parameterType="hashmap" statementType="CALLABLE">
+    	<!-- SELECT LAST_DAY(dayName) lastday,DATE_FORMAT(dayName,'%Y-%m') months FROM `cs_days` GROUP BY months -->
+    	 {call pro_lastdayForMonth(#{beginDate,  mode=IN},  
+                                   #{endDate,  mode=IN})}
     </select>	
     
     <!-- 获取同一网站同一漏洞数大于等于3的-->
     <select id="getVulnscanAlarmOver3" resultType="hashmap">
-    	SELECT count,url,name FROM v_VulnscanAlarmOver3
+    	SELECT count,url,name FROM v_VulnscanAlarmAllCount where count>=3
     </select>
     
     <!-- 获取同一网站同一漏洞数-->
     <select id="getVulnscanAlarmAllCount" resultType="hashmap">
     	SELECT count,url,name FROM v_VulnscanAlarmAllCount
+    </select>
+    
+    <!-- 获取漏洞大于3的网站的用途分组个数-->
+    <select id="getAssetPurpose" resultType="hashmap">
+    	select count(asset.purpose) count,asset.purpose from cs_asset asset where asset.addr in(select DISTINCT url from v_VulnscanAlarmAllCount where count>=3) and asset.purpose !='' GROUP BY asset.purpose
     </select>
 </mapper>

@@ -1051,7 +1051,7 @@ select::-ms-expand { display: none; }
 	color: #fff;
 	text-align: center;
 }
-.point .pont span:nth-child(1){
+/* .point .pont span:nth-child(1){
 	background-color: #b10930;
 }
 
@@ -1064,7 +1064,7 @@ select::-ms-expand { display: none; }
 }
 .point .pont span:nth-child(4){
 	background-color: #3869ca;
-}
+} */
 .exhibitionBox{
 	padding-top: 40px;
 }

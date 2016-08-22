@@ -118,8 +118,8 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
 		return this.getSqlSession().selectList(ns+"getDaysInYear");
 	}
 
-	public List getLastDayForMonthInYear() {
-		return this.getSqlSession().selectList(ns+"getLastDayForMonthInYear");
+	public List getLastDayForMonthInYear(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"getLastDayForMonthInYear",paramMap);
 	}		
 	
 	@Override
@@ -131,5 +131,15 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
 	@Override
 	public List getVulnscanAlarmAllCount() {
 		return this.getSqlSession().selectList(ns+"getVulnscanAlarmAllCount");
+	}
+
+	@Override
+	public List getAssetPurpose() {
+		return this.getSqlSession().selectList(ns+"getAssetPurpose");
+	}
+
+	@Override
+	public List getDaysInYear(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"getDaysInYear",paramMap);
 	}
 }

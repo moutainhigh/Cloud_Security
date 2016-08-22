@@ -1,126 +1,130 @@
 var lastdayArray = [];
 $(function(){
-	//最近一小时漏洞
-	var myChart1 = echarts.init(document.getElementById('vulnscanAlarmOneHour'));
-	   $.ajax({
-	    	type : "post",
-	    	url:"getVulnscanAlarmOneHour.html",
-	        dataType:"json",
-	        success:function(obj){
-		   		var option1 = {
-		   			title : {
-		   	        text: '最近一小时内漏洞跟踪',
-		   	        x:'center'
-		   	    },
+	//setInterval(function(){
+		//最近一小时漏洞
+		var myChart1 = echarts.init(document.getElementById('vulnscanAlarmOneHour'));
+		   $.ajax({
+		    	type : "post",
+		    	url:"getVulnscanAlarmOneHour.html",
+		        dataType:"json",
+		        success:function(obj){
+			   		var option1 = {
+			   			title : {
+			   	        text: '最近一小时内漏洞跟踪',
+			   	        x:'center'
+			   	    },
 
-		   	    tooltip : {
-		   	        trigger: 'item',
-		   	        formatter: "{b} : {c} ({d}%)"
-		   	    },
+			   	    tooltip : {
+			   	        trigger: 'item',
+			   	        formatter: "{b} : {c} ({d}%)"
+			   	    },
 
-		   	    calculable : true,
-		   	    series : [
-		   	        
-		   	        {
-		   	            name:'攻击类型',
-		   	            type:'pie',
-		   	            radius : [20, 180],
-		   	            center : ['50%', '50%'],
-		   	            roseType : 'area',
-		   	         label: {
-		   	                normal: {
-		   	                    show: true,
-		   	                 formatter: function(params){
-	                        	 // alert(params.name.length);
-	                        	  var res=params.name;
-	                        	  if(params.name.length>4){
-	                        		  var temp = res.substring(0,4);
-	                        		  var temp2 = res.substr(4);
-	                        		  res= temp + "\n" + temp2;
-	                        	  }
-	                          return res;
-	                         }
-		   	                },
-		   	                emphasis: {
-		   	                    show: true
-		   	                }
-		   	            },
-		   	            lableLine: {
-		   	                normal: {
-		   	                    show: true
-		   	                },
-		   	                emphasis: {
-		   	                    show: true
-		   	                }
-		   	            },
-		   	            data:obj.dataArray
-		   	        }
-		   	    ]
-		   	};
-		   		myChart1.setOption(option1);
-	     },
+			   	    calculable : true,
+			   	    series : [
+			   	        
+			   	        {
+			   	            name:'攻击类型',
+			   	            type:'pie',
+			   	            radius : [20, 180],
+			   	            center : ['50%', '50%'],
+			   	            roseType : 'area',
+			   	         label: {
+			   	                normal: {
+			   	                    show: true,
+			   	                 formatter: function(params){
+		                        	 // alert(params.name.length);
+		                        	  var res=params.name;
+		                        	  if(params.name.length>4){
+		                        		  var temp = res.substring(0,4);
+		                        		  var temp2 = res.substr(4);
+		                        		  res= temp + "\n" + temp2;
+		                        	  }
+		                          return res;
+		                         }
+			   	                },
+			   	                emphasis: {
+			   	                    show: true
+			   	                }
+			   	            },
+			   	            lableLine: {
+			   	                normal: {
+			   	                    show: true
+			   	                },
+			   	                emphasis: {
+			   	                    show: true
+			   	                }
+			   	            },
+			   	            data:obj.dataArray
+			   	        }
+			   	    ]
+			   	};
+			   		myChart1.setOption(option1);
+		     },
 
-	});
-	//最近一小时内waf
-	var myChart0 = echarts.init(document.getElementById('wafOneHour'));
-	   $.ajax({
-	    	type : "post",
-	    	url:"getWafOneHour.html",
-	        dataType:"json",
-	        success:function(obj){
-		   		var option0 = {
-		   		 title : {
-		   	        text: '最近一小时内攻击',
-		   	        x:'center'
-		   	    },
-		   	    tooltip : {
-		   	        trigger: 'item',
-		   	        formatter: "{b} : {c} ({d}%)"
-		   	    },
-		   	  
-		   	    calculable : true,
-		   	    series : [
-		   	        
-		   	        {
-		   	            name:'漏洞类型',
-		   	            type:'pie',
-		   	            radius : [20, 180],
-		   	            center : ['50%', '50%'],
-		   	            roseType : 'area',
-		   	         label: {
-		   	                normal: {
-		   	                    show: true,
-		   	                 formatter: function(params){
-	                        	  //alert(params.name.length);
-	                        	  var res=params.name;
-	                        	  if(params.name.length>4){
-	                        		  var temp = res.substring(0,4);
-	                        		  var temp2 = res.substr(4);
-	                        		  res= temp + "\n" + temp2;
-	                        	  }
-	                          return res;
-	                         }
-		   	                },
-		   	                emphasis: {
-		   	                    show: true
-		   	                }
-		   	            },
-		   	            lableLine: {
-		   	                normal: {
-		   	                    show: true
-		   	                },
-		   	                emphasis: {
-		   	                    show: true
-		   	                }
-		   	            },
-		   	            data:obj.dataArray
-		   	        }
-		   	    ]
-		   	};
-		   		myChart0.setOption(option0);
-	     },
+		});
+		//最近一小时内waf
+		var myChart0 = echarts.init(document.getElementById('wafOneHour'));
+		   $.ajax({
+		    	type : "post",
+		    	url:"getWafOneHour.html",
+		        dataType:"json",
+		        success:function(obj){
+			   		var option0 = {
+			   		 title : {
+			   	        text: '最近一小时内攻击',
+			   	        x:'center'
+			   	    },
+			   	    tooltip : {
+			   	        trigger: 'item',
+			   	        formatter: "{b} : {c} ({d}%)"
+			   	    },
+			   	  
+			   	    calculable : true,
+			   	    series : [
+			   	        
+			   	        {
+			   	            name:'漏洞类型',
+			   	            type:'pie',
+			   	            radius : [20, 180],
+			   	            center : ['50%', '50%'],
+			   	            roseType : 'area',
+			   	         label: {
+			   	                normal: {
+			   	                    show: true,
+			   	                 formatter: function(params){
+		                        	  //alert(params.name.length);
+		                        	  var res=params.name;
+		                        	  if(params.name.length>4){
+		                        		  var temp = res.substring(0,4);
+		                        		  var temp2 = res.substr(4);
+		                        		  res= temp + "\n" + temp2;
+		                        	  }
+		                          return res;
+		                         }
+			   	                },
+			   	                emphasis: {
+			   	                    show: true
+			   	                }
+			   	            },
+			   	            lableLine: {
+			   	                normal: {
+			   	                    show: true
+			   	                },
+			   	                emphasis: {
+			   	                    show: true
+			   	                }
+			   	            },
+			   	            data:obj.dataArray
+			   	        }
+			   	    ]
+			   	};
+			   		myChart0.setOption(option0);
+		     },
 
-	});
+		});
+  	//}, 5000);
+	
+
 
 	  
 	   //最近六个月等级漏洞分布
@@ -188,7 +192,8 @@ $(function(){
 			   	        trigger: 'axis'
 			   	    },
 			   	    legend: {
-			   	        data:obj.servNameList
+			   	        data:obj.servNameList,
+			   	        x:'center'
 			   	    },
 			   	  
 			   	    grid: {
@@ -209,28 +214,14 @@ $(function(){
 			   		                         //rotate:45,
 			   		                         margin:4,
 			   		                         textStyle:{
-			   		                             color:"#222"
+			   		                             //color:"#222"
 			   		                         },
 
 			   		                      formatter: function (value, index) {
-			   		                          // 格式化成月/日，只在第一个刻度显示年份
-			   		                         // var date = new Date(value);
-			   		                          //if(date.getDate()==30||date.getDate()==31){
-			   		                        	//var texts = [date.getYear(),(date.getMonth() + 1), date.getDate()];
-			   		                        	//var res = texts.join('-');
 			   		                        	if(lastdayArray.indexOf(value)!=-1){
 			   		                        		return value.substring(0,7);
 			   		                        	}
-			   		                        	//return texts.join('/');
-			   		                          //}
-			   		                         /* var texts = [(date.getMonth() + 1), date.getDate()];
-			   		                          if (index === 0) {
-			   		                              texts.unshift(date.getYear());
-			   		                          }
-			   		                          return texts.join('/');
-			   		                        	if(value.substring(8,10)=='30'||value.substring(8,10)=='31'){
-			   		                        		 return value; 
-			   		                        	 }*/
+
 			   		                         }
 			   		                     },
 			   	           data : obj.dayList
@@ -267,13 +258,23 @@ $(function(){
 			   	        trigger: 'item',
 			   	        backgroundColor : 'rgba(0,0,250,0.2)'
 			   	    },
-			   	   
+				   	 legend: {
+				         data: (function (){
+				        	return monthList;
+				         })(),
+				         y:'bottom'
+				     },
+				    /* visualMap: {
+				         color: ['red', 'yellow']
+				     },*/
 			   	    radar: {
-			   	       indicator : indicatorList
+			   	       indicator : indicatorList,
+			   	       radius:'50%',
+			   	       center:['50%', '40%']
 			   	    },
 			   	    series : (function (){
 			   	        var series = [];
-			   	        for (var i = 1; i <= 24; i++) {
+			   	        for (var i = 0; i < 6; i++) {
 			   	        	var list = [];
 			   	        	list.push(dataArray[i]);
 			   	            series.push({
@@ -285,11 +286,9 @@ $(function(){
 			   	                        lineStyle: {
 			   	                          width:1
 			   	                        }
-			   	                    },
-			   	                    emphasis : {
-			   	                        areaStyle: {color:'rgba(0,250,0,0.3)'}
 			   	                    }
 			   	                },
+			   	             
 			   	                data:list
 			   	            });
 			   	        }
@@ -390,7 +389,7 @@ $(function(){
 			});
 			   
 				 //同一网站三次结果中同一漏洞的重复率：左图为所有网站中出现过连续三次结果中有同一漏洞告警的网站占比情况
-				var myChart7 = echarts.init(document.getElementById('assetPercent'));
+/*				var myChart7 = echarts.init(document.getElementById('assetPercent'));
 				   $.ajax({
 				    	type : "post",
 				    	url:"getAssetPercent.html",
@@ -404,13 +403,9 @@ $(function(){
 					   			    },
 					   			    tooltip : {
 					   			        trigger: 'item',
-					   			        formatter: "{a} <br/>{b} : {c} ({d}%)"
+					   			        formatter: "{b} : {c} ({d}%)"
 					   			    },
-					   			   /* legend: {
-					   			        orient: 'vertical',
-					   			        left: 'left',
-					   			        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
-					   			    },*/
+					   			
 					   			    series : [
 					   			        {
 					   			            name: '访问来源',
@@ -418,6 +413,32 @@ $(function(){
 					   			            radius : '55%',
 					   			            center: ['50%', '60%'],
 					   			            data:obj.jsonList,
+					   			         label: {
+							   	                normal: {
+							   	                    show: true,
+							   	                 formatter: function(params){
+						                        	 // alert(params.name.length);
+						                        	  var res=params.name;
+						                        	  if(params.name.length>4){
+						                        		  var temp = res.substring(0,4);
+						                        		  var temp2 = res.substr(4);
+						                        		  res= temp + "\n" + temp2;
+						                        	  }
+						                          return res;
+						                         }
+							   	                },
+							   	                emphasis: {
+							   	                    show: true
+							   	                }
+							   	            },
+							   	            lableLine: {
+							   	                normal: {
+							   	                    show: true
+							   	                },
+							   	                emphasis: {
+							   	                    show: true
+							   	                }
+							   	            },
 					   			            itemStyle: {
 					   			                emphasis: {
 					   			                    shadowBlur: 10,
@@ -431,5 +452,120 @@ $(function(){
 					   		myChart7.setOption(option7);
 				     },
 
+				}); */
+				   
+			   //网站用途分布
+				var myChart8 = echarts.init(document.getElementById('assetPurpose'));
+				 $.ajax({
+				    	type : "post",
+				    	url:"getAssetPurpose.html",
+				        dataType:"json",
+				        success:function(obj){
+					   		var option8 = {
+					   				title : {
+					   			        text: '网站漏洞重复率大等于3的行业分布情况',
+					   			        //subtext: '纯属虚构',
+					   			        x:'center'
+					   			    },
+					   			    tooltip : {
+					   			        trigger: 'item',
+					   			        formatter: "{b} : {d}%"
+					   			    },
+					   			  
+					   			    series : [
+					   			        {
+					   			            name: '访问来源',
+					   			            type: 'pie',
+					   			            radius : '55%',
+					   			            center: ['50%', '60%'],
+					   			         label: {
+							   	                normal: {
+							   	                    show: true,
+							   	                 formatter: function(params){
+						                        	 // alert(params.name.length);
+						                        	  var res=params.name;
+						                        	  if(params.name.length>2){
+						                        		  var temp = res.substring(0,2);
+						                        		  var temp2 = res.substr(2);
+						                        		  res= temp + "\n" + temp2;
+						                        	  }
+						                          return res;
+						                         }
+							   	                },
+							   	                emphasis: {
+							   	                    show: true
+							   	                }
+							   	            },
+							   	            lableLine: {
+							   	                normal: {
+							   	                    show: true
+							   	                },
+							   	                emphasis: {
+							   	                    show: true
+							   	                }
+							   	            },
+					   			            data:obj.jsonList,
+					   			            itemStyle: {
+					   			                emphasis: {
+					   			                    shadowBlur: 10,
+					   			                    shadowOffsetX: 0,
+					   			                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+					   			                }
+					   			            }
+					   			        }
+					   			    ]
+					   	};
+					   		myChart8.setOption(option8);
+				     },
+
 				}); 
+				 
+				   //最近六个月攻击等级分布
+				   var myChart9 = echarts.init(document.getElementById('wafByLevelMonth6'));
+				   $.ajax({
+				    	type : "post",
+				    	url:"getWafByLevelMonth6.html",
+				        dataType:"json",
+				        success:function(obj){
+					   		var option9 = {
+					   			 title : {
+					   		       
+					   				 text:'近六个月攻击等级分布',
+					   		         x:'left'
+					   		    },
+					   			 tooltip : {
+					   	        trigger: 'axis',
+					   	        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+					   	            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+					   	        }
+					   	    },
+					   	    legend: {
+					   	        data:obj.levelList,
+					   	        x:'right'
+					   	    },
+					   	    grid: {
+					   	        left: '5%',
+					   	        right: '5%',
+					 
+					   	        bottom: '1%',
+					   	        containLabel: true
+					   	    },
+					   	    xAxis : [
+					   	        {
+					   	            type : 'category',
+					   	            data : obj.monthList
+					   	        }
+					   	    ],
+					   	    yAxis : [
+					   	        {
+					   	            type : 'value'
+					   	           
+					   	        }
+					   	    ],
+					   	    series : obj.dataArray
+					   	};
+					   		myChart9.setOption(option9);
+				     },
+
+				});
 });

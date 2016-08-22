@@ -100,8 +100,8 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
 		return districtDataDao.getDaysInYear();
 	}
 
-	public List getLastDayForMonthInYear() {
-		return districtDataDao.getLastDayForMonthInYear();
+	public List getLastDayForMonthInYear(Map<String, Object> paramMap) {
+		return districtDataDao.getLastDayForMonthInYear(paramMap);
 	}
 
 	@Override
@@ -112,6 +112,16 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
 	@Override
 	public List getVulnscanAlarmAllCount() {
 		return districtDataDao.getVulnscanAlarmAllCount();
+	}
+
+	@Override
+	public List getAssetPurpose() {
+		return districtDataDao.getAssetPurpose();
+	}
+
+	@Override
+	public List getDaysInYear(Map<String, Object> paramMap) {
+		return districtDataDao.getDaysInYear(paramMap);
 	}
 
 }

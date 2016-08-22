@@ -79,11 +79,12 @@ public interface DistrictDataDao {
      * @return
      */
     List getDaysInYear();
+    List getDaysInYear(Map<String, Object> paramMap);
     /**
      * 获取一年内的所有月份的最后一天 
      * @return
      */
-    List getLastDayForMonthInYear();
+    List getLastDayForMonthInYear(Map<String, Object> paramMap);
     /**
      * 获取同一网站同一漏洞数大于等于3的
      * @return
@@ -94,4 +95,9 @@ public interface DistrictDataDao {
      * @return
      */
     List getVulnscanAlarmAllCount();
+    /**
+     * 获取漏洞大于3的网站的用途分组个数
+     * @return
+     */
+    List getAssetPurpose();
 }

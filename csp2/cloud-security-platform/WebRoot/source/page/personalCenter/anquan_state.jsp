@@ -77,10 +77,30 @@
                         	<div class="point clearfix">
                         		<h5 class="fl">重大风险预警</h5>
                         		<div class="pont fl">
-                        			<span>SEVERE</span>
-                        			<span>HIGH</span>
-                        			<span>ELEVATED</span>
-                        			<span>GUARDED</span>
+                        		<c:if test="${wafAlarmLevel==4}">
+                        			<span style="background-color: #b10930; border-right:1px solid #fff;">SEVERE</span>
+                        			<span style="background-color: #6b6768; border-right:1px solid #fff;">HIGH</span>
+                        			<span style="background-color: #6b6768; border-right:1px solid #fff;">ELEVATED</span>
+                        			<span style="background-color: #6b6768;">GUARDED</span>
+                        		</c:if>
+                        		<c:if test="${wafAlarmLevel==3}">
+                        			<span style="background-color: #6b6768; border-right:1px solid #fff;">SEVERE</span>
+                        			<span style="background-color: #ef5f1e; border-right:1px solid #fff;">HIGH</span>
+                        			<span style="background-color: #6b6768; border-right:1px solid #fff;">ELEVATED</span>
+                        			<span style="background-color: #6b6768;">GUARDED</span>
+                        		</c:if>	
+                        		<c:if test="${wafAlarmLevel==2}">
+                        			<span style="background-color: #6b6768; border-right:1px solid #fff;">SEVERE</span>
+                        			<span style="background-color: #6b6768; border-right:1px solid #fff;">HIGH</span>
+                        			<span style="background-color: #fcdf32; border-right:1px solid #fff;">ELEVATED</span>
+                        			<span style="background-color: #6b6768;">GUARDED</span>
+                        		</c:if>	
+                        		<c:if test="${wafAlarmLevel==1}">
+                        			<span style="background-color: #6b6768; border-right:1px solid #fff;">SEVERE</span>
+                        			<span style="background-color: #6b6768; border-right:1px solid #fff;">HIGH</span>
+                        			<span style="background-color: #6b6768; border-right:1px solid #fff;">ELEVATED</span>
+                        			<span style="background-color: #3869ca;">GUARDED</span>
+                        		</c:if>	
                         		</div>
                         	</div>
                         	<div class="exhibitionBox clearfix">
@@ -91,12 +111,7 @@
                         			<img src="${ctx}/source/images/safe/20160808101512.png" />
                         		</div>
                         		
-                        		<div class="exhibitionList fl" style="width: 540px;background:transparent none repeat scroll 0% 0%" id="vulnscanAlarmByLevelMonth6">
-                        	
-                        		</div>
-                        		<div class="exhibitionList fl" style="width: 530px">
-                        			<img src="${ctx}/source/images/safe/20160808101546.png" />
-                        		</div>
+                        		
                         	</div>
                     	</div>
                     	
@@ -104,22 +119,22 @@
                     	<div class="not-used">
                         	<div class="mapListBox clearfix">
                         		<div class="ltmit" >
-                        			<div id="orderServiceTimes" style="width:1130px;height:300px"></div>
+                        			<div id="orderServiceTimes" style="width:1330px;height:300px"></div>
                         		</div>
-                        		<div class="ltmit">
-                        			<div id="serviceUseInfoMonth6" style="width:360px;height:300px"></div>
-                        		</div>
-                        		<div class="ltmit">
+                        		<div class="ltmit" style="width:600px">
                         			<img src="${ctx}/source/images/safe/20160808105611.png" />
                         		</div>
-                        		<div class="ltmit">
+                        		<div class="ltmit" style="width:600px">
                         			<img src="${ctx}/source/images/safe/20160808105619.png" />
                         		</div>
-                        		<div class="ltmit">
-                        			<div id="userIndustry" style="width:540px;height:350px"></div>
+                        		<div class="ltmit" style="width:600px;height:350px">
+                        			<div id="serviceUseInfoMonth6" style="width:600px;height:350px"></div>
+                        		</div>
+                        		<div class="ltmit" style="width:600px;height:350px">
+                        			<div id="userIndustry" style="width:600px;height:350px"></div>
                         		</div>
                         		<div class="ltmit">
-                        			<div id="assetPercent" style="width:540px;height:350px"></div>
+                        			<div id="assetPurpose" style="width:540px;height:350px"></div>
                         			<%-- <h3 style="height: 62px; color: #000; font-size: 24px;">用户行业分布</h3>
                         			<div class="fb">
                         				<div class="fbL" style="left: 0px; top:2px; width: 192px; height: 208px;">
@@ -148,33 +163,14 @@
                         		<li class="fl" style="height:500px;background:url('${ctx}/source/images/rose2.png') 43px 8px no-repeat;">
                         			<div id="wafOneHour" style="width:540px;height:500px"></div>
                         		</li>
+                        		<li class="fl" style="width:600px;">
+                        			<div id="vulnscanAlarmByLevelMonth6" style="width:600px;height:380px"></div>
+                        		</li>
+                        		<li class="fl" style="width:600px;">
+                        			<div id="wafByLevelMonth6" style="width:600px;height:380px"></div>
+                        		</li>
                         	</ul>
-                        	<div class="fadechid">
-                        		<h2>安全帮使用情况</h2>
-                        		<ul class="clearfix">
-                        			<li class="fl">
-                        				<img src="${ctx}/source/images/safe/u6.png">
-                        				<span>扫描网站数</span>
-                        				<strong>29</strong>
-                        			</li>
-                        			<li class="fl">
-                        				<img src="${ctx}/source/images/safe/u10.png">
-                        				<span>扫描页面数</span>
-                        				<strong>283599</strong>
-                        			</li>
-                        			<li class="fl">
-                        				<img src="${ctx}/source/images/safe/u14.png">
-                        				<span>发现漏洞数</span>
-                        				<strong>12580</strong>
-                        			
-                        			</li>
-                        			<li class="fl">
-                        				<img src="${ctx}/source/images/safe/u18.png">
-                        				<span>抵御攻击次数</span>
-                        				<strong>38182101</strong>
-                        			</li>
-                        		</ul>
-                        	</div>
+                        	
                     	</div>
                     
                     </div>

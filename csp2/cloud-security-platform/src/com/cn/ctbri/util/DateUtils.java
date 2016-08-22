@@ -284,4 +284,18 @@ public class DateUtils {
         date = calendar.getTime();  
         return date;
     }
+    
+    /**
+     * 得到当前日期的上一年
+     * @param d
+     * @return
+     */
+    public static Date getDateBeforeOneYear(Date d){
+         Date date = d;
+         Calendar calendar = Calendar.getInstance();  
+         calendar.setTime(date);  
+         calendar.add(Calendar.YEAR,-1); 
+         date = calendar.getTime();  
+         return date;
+    }
 }
