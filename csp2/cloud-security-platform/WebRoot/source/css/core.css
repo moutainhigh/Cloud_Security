@@ -994,9 +994,9 @@ select::-ms-expand { display: none; }
 	bottom:0px;
 	left: 10px;
 }
-.fadeBox .tab{
+/*.fadeBox .tab{
 	margin-top: 100px;
-}
+}*/
 .fadeBox .tab .tabList > span{
 	width: 120px;
     height: 40px;
@@ -1022,7 +1022,7 @@ select::-ms-expand { display: none; }
 	color: #fff;
 }
 .fadeBox .mapBox{
-	padding-top: 40px;
+	/*padding-top: 40px;*/
 	
 }
 .point h5{
@@ -1039,7 +1039,7 @@ select::-ms-expand { display: none; }
 .tabBox .mapBox .list{
 	height: 660px !important;
 	display: none;
-	width: 1008px;
+	width: 90%;
 	background: none !important;	
 }
 .point .pont span{
