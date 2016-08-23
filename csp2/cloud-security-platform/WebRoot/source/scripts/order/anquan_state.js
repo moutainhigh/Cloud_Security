@@ -10,7 +10,10 @@ $(function(){
 		        success:function(obj){
 			   		var option1 = {
 			   			title : {
-			   	        text: '最近一小时内漏洞跟踪',
+			   			textStyle:{
+			   				color:'#fff'
+			   			},
+			   	        text: '最近一小时漏洞数据分类',
 			   	        x:'center'
 			   	    },
 
@@ -23,7 +26,7 @@ $(function(){
 			   	    series : [
 			   	        
 			   	        {
-			   	            name:'攻击类型',
+			   	            name:'',
 			   	            type:'pie',
 			   	            radius : [20, 180],
 			   	            center : ['50%', '50%'],
@@ -71,7 +74,10 @@ $(function(){
 		        success:function(obj){
 			   		var option0 = {
 			   		 title : {
-			   	        text: '最近一小时内攻击',
+			   	        text: '最近一小时攻击数据分类',
+			   	        textStyle:{
+			   				color:'#fff'
+			   			},
 			   	        x:'center'
 			   	    },
 			   	    tooltip : {
@@ -138,7 +144,10 @@ $(function(){
 		   			 title : {
 		   		        //text: '最\n近\n六\n个\n月\n漏\n洞\n等\n级\n分\n布\n',
 		   				 text:'近六个月漏洞等级分布',
-		   		         x:'left'
+		   				textStyle:{
+			   				color:'#fff'
+			   			},
+		   		         x:'center'
 		   		    },
 		   			 tooltip : {
 		   	        trigger: 'axis',
@@ -148,14 +157,15 @@ $(function(){
 		   	    },
 		   	    legend: {
 		   	        data:obj.levelList,
-		   	        x:'right'
+		   	        y:'bottom',
+		   	       padding:0
 		   	    },
 		   	    grid: {
-		   	        left: '5%',
-		   	        right: '5%',
+		   	        left: '10%',
+		   	        right: '0%',
 		 
-		   	        bottom: '1%',
-		   	        containLabel: true
+		   	        bottom: '10%',
+		   	        //containLabel: true
 		   	    },
 		   	    xAxis : [
 		   	        {
@@ -186,6 +196,9 @@ $(function(){
 			   		var option6 = {
 			   				title: {
 			   	        text: '历史订单（一年内）',
+			   	     textStyle:{
+			   				color:'#fff'
+			   			},
 			   	        x:'left'
 			   	    },
 			   	    tooltip : {
@@ -193,7 +206,10 @@ $(function(){
 			   	    },
 			   	    legend: {
 			   	        data:obj.servNameList,
-			   	        x:'center'
+			   	        x:'center',
+			   	     textStyle:{
+			   				color:'#fff'
+			   			},
 			   	    },
 			   	  
 			   	    grid: {
@@ -214,7 +230,7 @@ $(function(){
 			   		                         //rotate:45,
 			   		                         margin:4,
 			   		                         textStyle:{
-			   		                             //color:"#222"
+			   		                             color:"#fff"
 			   		                         },
 
 			   		                      formatter: function (value, index) {
@@ -229,7 +245,12 @@ $(function(){
 			   	    ],
 			   	    yAxis : [
 			   	        {
-			   	            type : 'value'
+			   	            type : 'value',
+				   	         axisLabel:{
+		                         textStyle:{
+		                             color:"#fff"
+		                         },
+			                 }
 			   	        }
 			   	    ],
 			   	    series : obj.seriesList
@@ -252,7 +273,10 @@ $(function(){
 			   		var option4 = {
 			   			 title: {
 			   	        text: '订单类型分布',
-			   	        x:'left'
+			   	     textStyle:{
+			   				color:'#fff'
+			   			},
+			   	        x:'center'
 			   	    },
 			   	    tooltip: {
 			   	        trigger: 'item',
@@ -262,7 +286,10 @@ $(function(){
 				         data: (function (){
 				        	return monthList;
 				         })(),
-				         y:'bottom'
+				         y:'bottom',
+				         textStyle:{
+				   				color:'#fff'
+				   			}
 				     },
 				    /* visualMap: {
 				         color: ['red', 'yellow']
@@ -270,7 +297,7 @@ $(function(){
 			   	    radar: {
 			   	       indicator : indicatorList,
 			   	       radius:'50%',
-			   	       center:['50%', '40%']
+			   	       center:['50%', '50%']
 			   	    },
 			   	    series : (function (){
 			   	        var series = [];
@@ -310,13 +337,20 @@ $(function(){
 				   		var option5 = {
 			   			 title : {
 				   		        text: '用户行业分布',
-				   		        x:'left'
+				   		     textStyle:{
+					   				color:'#fff'
+					   			},
+				   		        x:'center'
 				   		},
 				   	    tooltip : {
 				   	        trigger: 'axis'
 				   	    },
 				   	    legend: {
-				   	        data:['各行业注册用户数','已下订单数']
+				   	        data:['各行业注册用户数','已下订单数'],
+				   	        y:'bottom',
+				   	     textStyle:{
+                             color:"#fff"
+                         }
 				   	    },
 				   	    xAxis : [
 				   	        {
@@ -328,7 +362,7 @@ $(function(){
 			                         margin:8,
 			                       
 			                         textStyle:{
-			                             color:"#222"
+			                             color:"#fff"
 			                         },
 			                         formatter: function(value,index){
 			                        	//alert(value.length);
@@ -351,11 +385,17 @@ $(function(){
 				   	    grid: { // 控制图的大小，调整下面这些值就可以，
 				             x: 35,
 				             x2: 30,
-				             y2: 150,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+				             y2: 160,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
 				        },
 				   	    yAxis : [
 				   	        {
-				   	            type : 'value'
+				   	            type : 'value',
+				   	         axisLabel:{
+		                         
+		                         textStyle:{
+		                             color:"#fff"
+		                         }
+		                     }
 				   	        }
 				   	    ],
 				   	    series : [
@@ -464,7 +504,9 @@ $(function(){
 					   		var option8 = {
 					   				title : {
 					   			        text: '网站漏洞重复率大等于3的行业分布情况',
-					   			        //subtext: '纯属虚构',
+					   			     textStyle:{
+							   				color:'#fff'
+							   			},
 					   			        x:'center'
 					   			    },
 					   			    tooltip : {
@@ -529,9 +571,11 @@ $(function(){
 				        success:function(obj){
 					   		var option9 = {
 					   			 title : {
-					   		       
-					   				 text:'近六个月攻击等级分布',
-					   		         x:'left'
+					   				 text:'近六个月攻击手段等级分布',
+					   				textStyle:{
+						   				color:'#fff'
+						   			},
+					   		         x:'center'
 					   		    },
 					   			 tooltip : {
 					   	        trigger: 'axis',
@@ -541,14 +585,15 @@ $(function(){
 					   	    },
 					   	    legend: {
 					   	        data:obj.levelList,
-					   	        x:'right'
+					   	        y:'bottom',
+					   	        padding:0
 					   	    },
 					   	    grid: {
-					   	        left: '5%',
-					   	        right: '5%',
+					   	        left: '10%',
+					   	        right: '0%',
 					 
-					   	        bottom: '1%',
-					   	        containLabel: true
+					   	        bottom: '10%',
+					   	        //containLabel: true
 					   	    },
 					   	    xAxis : [
 					   	        {
