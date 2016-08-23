@@ -49,5 +49,8 @@
 		<!-- add by lvcongliang 2016-8-17 -->
 		<mapper resource="com/cn/ctbri/entity/IPPositionMapper.xml"/>
 		
+		<!-- add by zhangshaohua 2016-8-5 -->
+		<mapper resource="com/cn/ctbri/entity/DataAnalysisMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/AttackSourceMapper.xml"/>
 	</mappers>
 </configuration>  
