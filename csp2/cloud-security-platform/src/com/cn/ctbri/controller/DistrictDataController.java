@@ -355,7 +355,7 @@ public class DistrictDataController {
         	jsonObject.put("data", countList);
         	
         	JSONObject jsonNormal = new JSONObject();
-        	jsonNormal.put("show", true);
+        	jsonNormal.put("show", false);
         	jsonNormal.put("position","top");
         	
         	JSONObject jsonLabel = new JSONObject();
@@ -443,7 +443,7 @@ public class DistrictDataController {
             	json.put("data", dataList);
             	
             	JSONObject jsonNormal = new JSONObject();
-            	jsonNormal.put("show", true);
+            	jsonNormal.put("show", false);
             	jsonNormal.put("position","top");
             	
             	JSONObject jsonLabel = new JSONObject();
