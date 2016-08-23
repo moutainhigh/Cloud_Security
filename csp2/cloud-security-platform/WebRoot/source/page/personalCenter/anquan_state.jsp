@@ -19,7 +19,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/echarts3/echarts.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts3/china.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/anquan_state.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/order/anquanStateMap.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/highSiteMap.js"></script>
 <script src="${ctx}/source/scripts/common/portalindex.js"></script>
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
