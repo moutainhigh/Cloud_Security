@@ -57,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     select b.*, dis.name districtName from
     	(select districtId,url,count(url) alarmCount 
 			from 
-		    	(select districtId,url from cs_alarm_test 
+		    	(select districtId,url from cs_alarm 
 		    	 union all 
 		    	select districtId,url from cs_taskwarn) a
 		    group by a.districtId,a.url) b
