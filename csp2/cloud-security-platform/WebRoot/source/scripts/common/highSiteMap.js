@@ -52,7 +52,15 @@ function initHighSiteMap(myChart) {
 	myChart.setOption({
 		//backgroundColor: '#404a59',
 	    tooltip: {
-	        trigger: 'item'
+	    	backgroundColor : 'rgba(20, 94, 181,0.8)',
+	        trigger: 'item',
+	        formatter: function (params) {
+	        	var count = params.value;
+	        	if(count== null || isNaN(count)) {
+	        		count = 0;
+	        	}
+            	return params.name + ' : ' + count;
+        	}
 	    },
 	    visualMap: {
 	        min: 0,
@@ -62,6 +70,10 @@ function initHighSiteMap(myChart) {
 	        textStyle: {
 	           color: '#fff'
 	        },
+	        inRange: {
+	            //color : [ '#c4fffd', '#9ae9e6', '#6aceca', '#42aeaa', '#1e8682']
+	            color: ['#ffe074', '#fd2204']
+	       },
 	        calculable: true
 	    },
 	    series: [
@@ -83,12 +95,12 @@ function initHighSiteMap(myChart) {
 	            itemStyle: {
 		            normal: {
 		            	borderWidth : 2,
-		                areaColor : '#04144d',
+		                areaColor : 'rgba(0,0,0,0.1)',
 		                borderColor : 'rgb(110,117,145)'
 		            },
 		            emphasis: {
-		                //areaColor: '#2a333d',
-		                areaColor : '#04144d'
+		                //areaColor: '#04144d',
+		                areaColor : '#42a7ff'
 		            }
 		        },
 	            data: []
@@ -180,11 +192,11 @@ function showHackerMap() {
 	           color: '#fff'
 	        },
 	        pieces: [
-	        	{gt: 300, color: 'black'},            // (300, Infinity]
-			    {gt: 100, lte: 300, color: 'red'},  // (100, 300]
-			    {gt: 50,  lte: 100, color: 'green'},  // (50, 100]  orange
-			    {gt: 10,  lte: 50,  color: 'yellow'},  // (10, 50]
-			    {gt: 0,   lte: 10,  color: 'orange'}   // (0, 10]   green
+	        	{gt: 300, color: '#fa0909'},            // (300, Infinity]
+			    {gt: 100, lte: 300, color: '#ff7210'},  // (100, 300]
+			    {gt: 50,  lte: 100, color: '#ffcf22'},  // (50, 100]  orange
+			    {gt: 10,  lte: 50,  color: '#fefb2c'},  // (10, 50]
+			    {gt: 0,   lte: 10,  color: '#a9d522'}   // (0, 10]   green
 			]
 	    },
 	    geo: {
@@ -273,18 +285,10 @@ function showUserMap() {
 				        	name: '用户地理位置分布',
 				            data: dataValue,
 				            symbolSize: function (val) {
-				            // 根据最大的值 来控制气泡半径  （最小 3  最大 13）
-			               		return Math.round(3 + val[2] * 10 / maxVal);
+				            // 根据最大的值 来控制气泡半径  （最小 3  最大 23）
+			               		return 3 + val[2] * 20 / maxVal;
 				            }
 				            
-				        },
-				        {
-				            name: 'Top 5',
-				            data: UserTop5Data(dataValue),
-				            symbolSize: function (val) {
-				                // 根据最大的值 来控制气泡半径  （最小 3  最大 13）
-			               		return Math.round(3 + val[2] * 10 / maxVal);
-				            }
 				        }
 				    ]
 				});
@@ -304,26 +308,27 @@ function showUserMap() {
 	myChart.setOption({
 		//backgroundColor: '#404a59',
 	    tooltip : {
+	    	backgroundColor : 'rgba(20, 94, 181,0.8)',
 	        trigger: 'item',
 	        formatter: function (params) {
             	return params.name + ' : ' + params.value[2];
         	}
 	    },
 	    visualMap: {
+	    	show : true,
+	    	type: 'piecewise', // 定义为分段型 visualMap
 	        min: 0,
 	        max: 5000,
 	        left: '10%',
 	        bottom: '25%',
-	        calculable: true,
-	        inRange: {
-	            //color: ['#50a3ba', '#eac736', '#d94e5d']
-	            color: ['lightskyblue','yellow', 'orangered']
-	            //color : [ '#ff81ff', '#99d9eb', '#c9bfe7', '#ffff9b', '#ffffff']
-	        },
-	        textStyle: {
-	           color: '#fff'
-	        },
-	        show: true
+	        calculable: false,
+	        pieces: [
+	        	{gt: 4000, color: '#ff7474'}, 
+			    {gt: 3000, lte: 4000, color: '#ffe074'},
+			    {gt: 2000, lte: 3000, color: '#a3ffa0'},
+			    {gt: 1000, lte: 2000,  color: '#74fffa'},
+			    {gt: 0,    lte: 1000,  color: '#7cc2fd'}
+			]
     	},
 	    geo: {
 	        map: 'china',
@@ -370,48 +375,9 @@ function showUserMap() {
 	                    color: '#ddb926'
 	                }
 	            }
-	        },
-	        {
-	            name: 'Top 5',
-	            type: 'effectScatter',
-	            coordinateSystem: 'geo',
-	            data: [],
-	            showEffectOn: 'render',
-	            rippleEffect: {
-	                //brushType: 'stroke',
-	                brushType: 'fill',
-	                scale:5, //动画中波纹的最大缩放比例
-	                period:2 //动画的时间
-	            },
-	            hoverAnimation: true,
-	            label: {
-	                normal: {
-	                    formatter: '{b}',
-	                    position: 'right',
-	                    show: false
-	                },
-	                emphasis: {
-	                    show: true
-	                }
-	            },
-	            itemStyle: {
-	                normal: {
-	                    color: '#f4e925',
-	                    shadowBlur: 10,
-	                    shadowColor: '#333'
-	                }
-	            },
-	            zlevel: 1
 	        }
 	    ]
 	});
-}
-
-function UserTop5Data(dataObj){
-	var data = dataObj.sort(function (a, b) {
-		                return b.value[2] - a.value[2];
-		            });
-	return data.slice(0, 5);
 }
 
 function showSecurityStateMap(){
