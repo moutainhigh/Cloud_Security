@@ -36,9 +36,6 @@ import com.cn.ctbri.southapi.adapter.waf.config.WAFConfigManager;
  */
 
 public class DeviceAdpaterManager {
-	private static final String LOAD_DEVICE_ERROR = "{\"status\":\"fail\",\"message\":\"Load DeviceConfig failed!!\"}";
-	private static final String INIT_DEVICE_ERROR = "{\"status\":\"fail\",\"message\":\"Init DeviceAdapter failed!!\"}";
-	private static final String DEVICE_OPERATION_ERROR = "{\"status\":\"fail\",\"message\":\"This device does not support the operation\"}";
 
 	private static String wafRootString; 
 	private static String wafRootStat;
@@ -50,6 +47,13 @@ public class DeviceAdpaterManager {
 	public static WebsocDeviceAdapter websocDeviceAdapter = new WebsocDeviceAdapter();
 	public static NsfocusWAFAdapter nsfocusWAFAdapter = new NsfocusWAFAdapter();
 	
+	//加载设备错误信息
+	private static final String LOAD_DEVICE_ERROR = "{\"status\":\"fail\",\"message\":\"Load DeviceConfig failed!!\"}";
+	//初始胡错误信息
+	private static final String INIT_DEVICE_ERROR = "{\"status\":\"fail\",\"message\":\"Init DeviceAdapter failed!!\"}";
+	//设备操作失败错误信息
+	private static final String DEVICE_OPERATION_ERROR = "{\"status\":\"fail\",\"message\":\"This device does not support the operation\"}";
+
 	/**
 	 * 获取设备配置信息
 	 * @param deviceId
@@ -355,8 +359,8 @@ public class DeviceAdpaterManager {
 						engineRateMap.put("memoryUsage", memoryUsage);
 					}
 					
-					if ("".equalsIgnoreCase(engineStatElement.elementTextTrim("DiskFree"))
-							||engineStatElement.elementTextTrim("DiskFree")==null
+					if (engineStatElement.elementTextTrim("DiskFree")==null
+							||engineStatElement.elementTextTrim("DiskFree").length()<=0
 							||"".equalsIgnoreCase(engineStatElement.elementTextTrim("DiskTotal"))
 							||engineStatElement.elementTextTrim("DiskTotal")==null) {
 						engineRateMap.put("diskUsage", null);

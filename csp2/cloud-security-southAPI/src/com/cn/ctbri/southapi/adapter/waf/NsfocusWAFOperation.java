@@ -331,6 +331,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		}
 		JSONObject createSiteJsonObject = new JSONObject();
 		createSiteJsonObject.put("0", tempJsonObject);
+		System.out.println(">>>>"+createSiteJsonObject.toString());
 		String createSiteString = postOperation(nsfocusWafUrl+REST_URI_V1+"/sites",createSiteJsonObject.toString());
 		JSONArray responseArray = JSONArray.fromObject(createSiteString);
 		String responseString = responseArray.getString(0);
