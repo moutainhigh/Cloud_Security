@@ -24,6 +24,36 @@
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
+<style>
+			.img{
+				display: block;
+				width: 386px;
+				height: 386px;
+				border-radius: 50%;
+			}
+			
+			@keyframes ancircle{
+				0%{transform: rotate(0deg);}
+				100%{transform: rotate(360deg);}
+			}
+			@-webkit-keyframes ancircle{
+				0%{transform: rotate(0deg);}
+				100%{transform: rotate(360deg);}
+			}
+			@-moz-keyframes ancircle{
+				0%{transform: rotate(0deg);}
+				100%{transform: rotate(360deg);}
+			}
+			@-ms-keyframes ancircle{
+				0%{transform: rotate(0deg);}
+				100%{transform: rotate(360deg);}
+			}
+			#vulnscanAlarmOneHour,#wafOneHour{
+				width:600px;height:500px; z-index:99; position:absolute;
+				top:0; left:0;
+			}
+		</style>
+
 </head>
 
 <body>
@@ -174,21 +204,7 @@
                         		</div>
                         		<div class="ltmit">
                         			<div id="assetPurpose" style="width:540px;height:350px"></div>
-                        			<%-- <h3 style="height: 62px; color: #000; font-size: 24px;">用户行业分布</h3>
-                        			<div class="fb">
-                        				<div class="fbL" style="left: 0px; top:2px; width: 192px; height: 208px;">
-                        					<img src="${ctx}/source/images/safe/20160808111717.png" width="100%"; height="100%">
-                        				</div>
-                        				<div class="fbt" style="left: 162px; top:5px; width: 192px; height: 24 px;">
-                        					<img src="${ctx}/source/images/safe/20160808111740.png" width="100%"; height="100%">
-                        				</div>
-                        				<div class="fbb" style="left: 162px;  top: 175px; width: 192px; height: 24px;">
-                        					<img src="${ctx}/source/images/safe/20160808111740.png" width="100%"; height="100%">
-                        				</div>
-                        				<div class="fbr" style="right: 0px; top:2px;width: 192px; height: 208px;">
-                        					<img src="${ctx}/source/images/safe/20160808111725.png" width="100%"; height="100%">
-                        				</div>
-                        			</div> --%>
+                        			
                         		</div>
                         	</div>
                     	</div>
@@ -196,17 +212,22 @@
                         <!-- XXX 页面 -->
                     	<div class="not-used">
                         	<ul class="clearfix">
-                        		<li class="fl" style="height:500px;background:url('${ctx}/source/images/rose2.png') 43px 8px no-repeat;">
-                        				<div id="vulnscanAlarmOneHour" style="width:540px;height:500px"></div>
+                        		<li class="fl clearfix" style="width:600px;height:500px;position:relative;">
+                        				<img class="img" src="${ctx}/source/images/rose2_3.png" style="margin-top:59px;margin-left:105px;"/>
+                        				<div id="vulnscanAlarmOneHour" ></div>
                         		</li>
-                        		<li class="fl" style="height:500px;background:url('${ctx}/source/images/rose2.png') 43px 8px no-repeat;">
-                        			<div id="wafOneHour" style="width:540px;height:500px"></div>
+                        		<li class="fl" style="width:600px;height:500px;position:relative;">
+                        			<img class="img" src="${ctx}/source/images/rose2_3.png"  style="margin-top:59px;margin-left:105px;"/>
+                        			<div id="wafOneHour"></div>
                         		</li>
-                        		<li class="fl" style="width:600px;">
-                        			<div id="vulnscanAlarmByLevelMonth6" style="width:600px;height:380px"></div>
+                        		<%-- <li class="fl" style="height:500px;background:url('${ctx}/source/images/rose2.png') 43px 8px no-repeat;">
+                        			<div id="vulnscanAlarmOneHour" style="width:540px;height:500px"></div>
+                        		</li> --%>
+                        		<li class="fl" style="width:600px;left:17px">
+                        			<div id="vulnscanAlarmByLevelMonth6" style="width:600px;height:394px"></div>
                         		</li>
-                        		<li class="fl" style="width:600px;">
-                        			<div id="wafByLevelMonth6" style="width:600px;height:380px"></div>
+                        		<li class="fl" style="width:600px;left:17px">
+                        			<div id="wafByLevelMonth6" style="width:600px;height:394px"></div>
                         		</li>
                         	</ul>
                         	
@@ -286,17 +307,35 @@
 </div>
 	
 <div class="shade"></div>
-<!-- <script>
+ <script>
 	$(function(){
-		$('.tab-pane span').click(function(){
+		/* $('.tab-pane span').click(function(){
 		  var index = $(this).index();
 		  $(this).addClass('active').siblings().removeClass('active');
 		  $('.mapBox .list').eq(index).show().siblings().hide();
+		}); */
+		$("#vulnscanAlarmOneHour,#wafOneHour").hover(function(){
+			$(this).parent("li").find(".img").css({
+				"animation":"ancircle 3s infinite linear",
+				"-webkit-animation":"ancircle 3s infinite linear",
+				"-moz-animation":"ancircle 3s infinite linear",
+				"-ms-animation":"ancircle 3s infinite linear"
+			});
+		},function(){
+			$(this).parent("li").find(".img").css({
+				"animation-play-state":"paused",
+				"animation-fill-mode":"forwards",
+				"-webkit-animation-play-state":"paused",
+				"-webkit-animation-fill-mode":"forwards",
+				"-moz-animation-play-state":"paused",
+				"-moz-animation-fill-mode":"forwards",
+				"-ms-animation-play-state":"paused",
+				"-ms-animation-fill-mode":"forwards",
+			});
 		});
-
 	});
 	
-</script> -->
+</script> 
 </body>
 
 
