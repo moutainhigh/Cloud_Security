@@ -158,24 +158,39 @@ $(function(){
 		   	    legend: {
 		   	        data:obj.levelList,
 		   	        y:'bottom',
+		   	     textStyle:{
+                     color:"#fff"
+                 },
 		   	       padding:0
 		   	    },
 		   	    grid: {
 		   	        left: '10%',
 		   	        right: '0%',
 		 
-		   	        bottom: '10%',
+		   	        bottom: '15%',
 		   	        //containLabel: true
 		   	    },
 		   	    xAxis : [
 		   	        {
 		   	            type : 'category',
+		   	         axisLabel:{
+                         
+                         textStyle:{
+                             color:"#fff"
+                         }
+                     },
 		   	            data : obj.monthList
 		   	        }
 		   	    ],
 		   	    yAxis : [
 		   	        {
-		   	            type : 'value'
+		   	            type : 'value',
+		   	         axisLabel:{
+                         
+                         textStyle:{
+                             color:"#fff"
+                         }
+                     }
 		   	           
 		   	        }
 		   	    ],
@@ -586,25 +601,39 @@ $(function(){
 					   	    legend: {
 					   	        data:obj.levelList,
 					   	        y:'bottom',
+					   	     textStyle:{
+	                             color:"#fff"
+	                         },
 					   	        padding:0
 					   	    },
 					   	    grid: {
 					   	        left: '10%',
 					   	        right: '0%',
 					 
-					   	        bottom: '10%',
+					   	        bottom: '15%',
 					   	        //containLabel: true
 					   	    },
 					   	    xAxis : [
 					   	        {
 					   	            type : 'category',
+					   	         axisLabel:{
+			                         
+			                         textStyle:{
+			                             color:"#fff"
+			                         }
+			                     },
 					   	            data : obj.monthList
 					   	        }
 					   	    ],
 					   	    yAxis : [
 					   	        {
-					   	            type : 'value'
-					   	           
+					   	            type : 'value',
+					   	         axisLabel:{
+			                         
+			                         textStyle:{
+			                             color:"#fff"
+			                         }
+			                     }
 					   	        }
 					   	    ],
 					   	    series : obj.dataArray
