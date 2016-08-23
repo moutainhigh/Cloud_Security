@@ -153,9 +153,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 近1个小时内漏洞的数据 -->
     <select id="getVulnscanAlarmOneHour" resultType="hashmap" parameterType="hashmap">
-        
-            
-            select name,count from v_alarm where serviceId=1 and name &lt;&gt; '' and alarm_time &gt;= #{beginDate} and alarm_time &lt;= #{endDate}
+            select a.name,a.count from 
+			(select name,serviceId,count(name) count,alarm_time from cs_alarm group by name) a
+		    where a.serviceId=1 and a.name &lt;&gt; '' and a.alarm_time &gt;= #{beginDate} and a.alarm_time &lt;= #{endDate}
     </select>
 	
 	<!-- 获取漏洞情况top20 -->
@@ -219,17 +219,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>	
     
     <!-- 获取同一网站同一漏洞数大于等于3的-->
-    <select id="getVulnscanAlarmOver3" resultType="hashmap">
+<!--     <select id="getVulnscanAlarmOver3" resultType="hashmap">
     	SELECT count,url,name FROM v_VulnscanAlarmAllCount where count>=3
     </select>
     
-    <!-- 获取同一网站同一漏洞数-->
+    获取同一网站同一漏洞数
     <select id="getVulnscanAlarmAllCount" resultType="hashmap">
     	SELECT count,url,name FROM v_VulnscanAlarmAllCount
-    </select>
+    </select> -->
     
     <!-- 获取漏洞大于3的网站的用途分组个数-->
     <select id="getAssetPurpose" resultType="hashmap">
-    	select count(asset.purpose) count,asset.purpose from cs_asset asset where asset.addr in(select DISTINCT url from v_VulnscanAlarmAllCount where count>=3) and asset.purpose !='' GROUP BY asset.purpose
+    	select count(asset.purpose) count,asset.purpose from cs_asset asset where asset.addr in(select DISTINCT mm.url from 
+		(select count(name) AS count,url,name from cs_alarm group by url,name) mm where mm.count>=3) 
+		and asset.purpose !='' GROUP BY asset.purpose
     </select>
 </mapper>
