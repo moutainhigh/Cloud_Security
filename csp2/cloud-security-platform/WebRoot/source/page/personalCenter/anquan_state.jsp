@@ -226,7 +226,7 @@
                         		<li class="fl" style="width:600px;left:17px">
                         			<div id="vulnscanAlarmByLevelMonth6" style="width:600px;height:394px"></div>
                         		</li>
-                        		<li class="fl" style="width:600px;left:17px">
+                        		<li class="fl" style="width:600px;margin-left:57px">
                         			<div id="wafByLevelMonth6" style="width:600px;height:394px"></div>
                         		</li>
                         	</ul>
