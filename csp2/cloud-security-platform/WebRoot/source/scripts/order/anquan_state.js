@@ -60,7 +60,7 @@ $(function(){
 			   	            data:obj.dataArray
 			   	        }
 			   	    ],
-			   	 color:["#b675ff","#ffb675","#75ffb6","#fa0008","#f942ff","#fffa75","#42a7ff","#4249ff","#bfff75","ff383f"]
+			   	 color:["#b675ff","#ffb675","#757aff","#fa0008","#f942ff","#fffa75","#42a7ff","#4249ff","#bfff75","ff383f"]
 			   	};
 			   		myChart1.setOption(option1);
 		     },
@@ -124,7 +124,7 @@ $(function(){
 			   	            data:obj.dataArray
 			   	        }
 			   	    ],
-			   	 color:["#b675ff","#ffb675","#75ffb6","#fa0008","#f942ff","#fffa75","#42a7ff","#4249ff","#bfff75","ff383f"]
+			   	 color:["#b675ff","#ffb675","#757aff","#fa0008","#f942ff","#fffa75","#42a7ff","#4249ff","#bfff75","ff383f"]
 			   	};
 			   		myChart0.setOption(option0);
 		     },
@@ -271,7 +271,7 @@ $(function(){
 			   	        }
 			   	    ],
 			   	    series : obj.seriesList,
-			   	    color:["#b675ff","#ffb675","#75ffb6","#fa0008","#f942ff","#fffa75"]
+			   	    color:["#b675ff","#ffb675","#757aff","#fa0008","#f942ff","#fffa75"]
 			   	};
 			   		myChart6.setOption(option6);
 		     },
@@ -319,7 +319,7 @@ $(function(){
 			   	    },
 			   	    series : (function (){
 			   	        var series = [];
-			   	        var colors = ["#b675ff","#ffb675","#75ffb6","#fa0008","#f942ff","#fffa75"];
+			   	        var colors = ["#b675ff","#ffb675","#757aff","#fa0008","#f942ff","#fffa75"];
 			   	        for (var i = 0; i < 6; i++) {
 			   	        	var list = [];
 			   	        	list.push(dataArray[i]);
@@ -410,7 +410,7 @@ $(function(){
 				   	            type:'bar',
 				   	            data:obj.userList,
 				   	         itemStyle:{
-				                  normal:{color:'#75ffb6'}
+				                  normal:{color:'#757aff'}
 				              },
 				   	            markPoint : {
 				   	                data : [
@@ -568,7 +568,7 @@ $(function(){
 					   			            }
 					   			        }
 					   			    ],
-					   			 color:["#b675ff","#ff757a","#75ffb6","#f942ff","#fffa75","#38fff8"]
+					   			 color:["#b675ff","#ff757a","#757aff","#f942ff","#fffa75","#38fff8"]
 					   	};
 					   		myChart8.setOption(option8);
 				     },
