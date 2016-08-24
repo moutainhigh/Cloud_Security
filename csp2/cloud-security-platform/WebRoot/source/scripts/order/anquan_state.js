@@ -31,19 +31,18 @@ $(function(){
 			   	            radius : [20, 180],
 			   	            center : ['50%', '50%'],
 			   	            roseType : 'area',
-			   	         label: {
+			   	            label: {
 			   	                normal: {
 			   	                    show: true,
-			   	                 formatter: function(params){
-		                        	 // alert(params.name.length);
-		                        	  var res=params.name;
-		                        	  if(params.name.length>4){
-		                        		  var temp = res.substring(0,4);
-		                        		  var temp2 = res.substr(4);
-		                        		  res= temp + "\n" + temp2;
-		                        	  }
-		                          return res;
-		                         }
+			   	                    formatter: function(params){
+			   	                    	var res=params.name;
+			   	                    	if(params.name.length>4){
+			   	                    		var temp = res.substring(0,4);
+			   	                    		var temp2 = res.substr(4);
+			   	                    		res= temp + "\n" + temp2;
+			   	                    	}
+			   	                    	return res;
+			   	                    }
 			   	                },
 			   	                emphasis: {
 			   	                    show: true
@@ -60,12 +59,12 @@ $(function(){
 			   	            data:obj.dataArray
 			   	        }
 			   	    ],
-			   	 color:["#b675ff","#ffb675","#757aff","#ff757a","#f942ff","#fffa75","#42a7ff","#4249ff","#bfff75","ff383f"]
+			   	    color:["#b675ff","#ffb675","#757aff","#ff757a","#f942ff","#fffa75","#42a7ff","#4249ff","#bfff75","ff383f"]
 			   	};
-			   		myChart1.setOption(option1);
+			   	myChart1.setOption(option1);
 		     },
-
 		});
+		   
 		//最近一小时内waf
 		var myChart0 = echarts.init(document.getElementById('wafOneHour'));
 		   $.ajax({
@@ -87,27 +86,25 @@ $(function(){
 			   	    },
 			   	  
 			   	    calculable : true,
-			   	    series : [
-			   	        
+			   	    series : [			   	        
 			   	        {
 			   	            name:'漏洞类型',
 			   	            type:'pie',
 			   	            radius : [20, 180],
 			   	            center : ['50%', '50%'],
 			   	            roseType : 'area',
-			   	         label: {
+				   	        label: {
 			   	                normal: {
 			   	                    show: true,
-			   	                 formatter: function(params){
-		                        	  //alert(params.name.length);
+			   	                    formatter: function(params){
 		                        	  var res=params.name;
 		                        	  if(params.name.length>4){
 		                        		  var temp = res.substring(0,4);
 		                        		  var temp2 = res.substr(4);
 		                        		  res= temp + "\n" + temp2;
 		                        	  }
-		                          return res;
-		                         }
+			                          return res;
+			                       }
 			   	                },
 			   	                emphasis: {
 			   	                    show: true
@@ -124,17 +121,14 @@ $(function(){
 			   	            data:obj.dataArray
 			   	        }
 			   	    ],
-			   	 color:["#b675ff","#ffb675","#757aff","#ff757a","#f942ff","#fffa75","#42a7ff","#4249ff","#bfff75","ff383f"]
+			   	    color:["#b675ff","#ffb675","#757aff","#ff757a","#f942ff","#fffa75","#42a7ff","#4249ff","#bfff75","ff383f"]
 			   	};
-			   		myChart0.setOption(option0);
+			   	myChart0.setOption(option0);
 		     },
 
 		});
   	//}, 5000);
-	
-
-
-	  
+		  
 	   //最近六个月等级漏洞分布
 	   var myChart3 = echarts.init(document.getElementById('vulnscanAlarmByLevelMonth6'));
 	   $.ajax({
@@ -144,135 +138,125 @@ $(function(){
 	        success:function(obj){
 		   		var option3 = {
 		   			 title : {
-		   		        //text: '最\n近\n六\n个\n月\n漏\n洞\n等\n级\n分\n布\n',
 		   				 text:'近六个月漏洞等级分布',
-		   				textStyle:{
-			   				color:'#fff'
+		   				 textStyle:{
+			   			 color:'#fff'
 			   			},
 		   		         x:'center'
-		   		    },
+		   		     },
 		   			 tooltip : {
-		   	        trigger: 'axis',
-		   	        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-		   	            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-		   	        }
+		   	         trigger: 'axis',
+		   	         axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+		   	             type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+		   	         }
 		   	    },
 		   	    legend: {
 		   	        data:obj.levelList,
 		   	        y:'bottom',
-		   	     textStyle:{
-                     color:"#fff"
-                 },
-		   	       padding:0
+			   	    textStyle:{
+	                    color:"#fff"
+	                },
+		   	        padding:0
 		   	    },
 		   	    grid: {
 		   	        left: '10%',
-		   	        right: '0%',
-		 
-		   	        bottom: '15%',
-		   	        //containLabel: true
+		   	        right: '0%',		 
+		   	        bottom: '15%'
 		   	    },
 		   	    xAxis : [
 		   	        {
 		   	            type : 'category',
-		   	         axisLabel:{
-                         
-                         textStyle:{
-                             color:"#fff"
-                         }
-                     },
+			   	         axisLabel:{	                         
+	                         textStyle:{
+	                             color:"#fff"
+	                         }
+	                     },
 		   	            data : obj.monthList
 		   	        }
 		   	    ],
 		   	    yAxis : [
 		   	        {
 		   	            type : 'value',
-		   	         axisLabel:{
-                         
-                         textStyle:{
-                             color:"#fff"
-                         }
-                     }
-		   	           
+			   	        axisLabel:{
+	                        textStyle:{
+	                            color:"#fff"
+	                        }
+	                    }		   	           
 		   	        }
 		   	    ],
 		   	    series : obj.dataArray
 		   	};
-		   		myChart3.setOption(option3);
+		   	myChart3.setOption(option3);
 	     },
 
 	});
 	   
+	   //一年内历史订单
 		var myChart6 = echarts.init(document.getElementById('orderServiceTimes'));
 		   $.ajax({
 		    	type : "post",
 		    	url:"getOrderServiceTimes.html",
 		        dataType:"json",
 		        success:function(obj){
-			   lastdayArray = obj.lastdayList;
+			    lastdayArray = obj.lastdayList;
 			   		var option6 = {
-			   				title: {
-			   	        text: '历史订单（一年内）',
-			   	     textStyle:{
-			   				color:'#fff'
-			   			},
-			   	        x:'left'
-			   	    },
-			   	    tooltip : {
-			   	        trigger: 'axis'
-			   	    },
-			   	    legend: {
-			   	        data:obj.servNameList,
-			   	        x:'center',
-			   	     textStyle:{
-			   				color:'#fff'
-			   			},
-			   	    },
-			   	  
-			   	    grid: {
-			   	        left: '1%',
-			   	       right: '3%',
-			   	        bottom: '3%',
-			   	    	//width:500,
-			   	    	//height:300,
-			   	        containLabel: true
-			   	    },
-			   	    xAxis : [
-			   	        {
-			   	            type : 'category',
-			   	            boundaryGap : false,
-			   	            nameGap:20,
-			   	            axisLabel:{
-			   		                         interval:0,
-			   		                         //rotate:45,
-			   		                         margin:4,
-			   		                         textStyle:{
-			   		                             color:"#fff"
-			   		                         },
-
-			   		                      formatter: function (value, index) {
-			   		                        	if(lastdayArray.indexOf(value)!=-1){
-			   		                        		return value.substring(0,7);
-			   		                        	}
-
-			   		                         }
-			   		                     },
-			   	           data : obj.dayList
-			   	        }
-			   	    ],
-			   	    yAxis : [
-			   	        {
-			   	            type : 'value',
-				   	         axisLabel:{
-		                         textStyle:{
-		                             color:"#fff"
-		                         },
-			                 }
-			   	        }
-			   	    ],
-			   	    series : obj.seriesList,
-			   	    color:["#b675ff","#ffb675","#757aff","#ff757a","#f942ff","#fffa75"]
-			   	};
+		   				title: {
+		   					text: '历史订单（一年内）',
+					   	    textStyle:{
+					   			color:'#fff'
+					   		},
+					   	    x:'left'
+		   				},
+				   	    tooltip : {
+				   	        trigger: 'axis'
+				   	    },
+				   	    legend: {
+				   	        data:obj.servNameList,
+				   	        x:'center',
+					   	    textStyle:{
+					   			color:'#fff'
+				   			},
+				   	    },				   	  
+				   	    grid: {
+				   	        left: '1%',
+				   	        right: '3%',
+				   	        bottom: '3%',
+				   	        containLabel: true
+				   	    },
+				   	    xAxis : [
+				   	        {
+				   	            type : 'category',
+				   	            boundaryGap : false,
+				   	            nameGap:20,
+				   	            axisLabel:{
+	   		                         interval:0,
+	   		                         //rotate:45,
+	   		                         margin:4,
+	   		                         textStyle:{
+	   		                             color:"#fff"
+	   		                         },
+		   		                     formatter: function (value, index) {
+		   		                        if(lastdayArray.indexOf(value)!=-1){
+		   		                        	return value.substring(0,7);
+		   		                        }
+		   		                     }
+		   		               },
+				   	           data : obj.dayList
+				   	        }
+				   	    ],
+				   	    yAxis : [
+				   	        {
+				   	            type : 'value',
+					   	         axisLabel:{
+			                         textStyle:{
+			                             color:"#fff"
+			                         },
+				                 }
+				   	        }
+				   	    ],
+				   	    series : obj.seriesList,
+				   	    color:["#b675ff","#ffb675","#757aff","#ff757a","#f942ff","#fffa75"]
+				   	};
 			   		myChart6.setOption(option6);
 		     },
 
@@ -291,8 +275,8 @@ $(function(){
 			   		var option4 = {
 			   			 title: {
 			   	        text: '订单类型分布',
-			   	     textStyle:{
-			   				color:'#fff'
+				   	    textStyle:{
+				   			color:'#fff'
 			   			},
 			   	        x:'center'
 			   	    },
@@ -306,8 +290,8 @@ $(function(){
 				         })(),
 				         y:'bottom',
 				         textStyle:{
-				   				color:'#fff'
-				   			}
+				   			color:'#fff'
+				   		 }
 				     },
 				    /* visualMap: {
 				         color: ['red', 'yellow']
@@ -324,7 +308,7 @@ $(function(){
 			   	        	var list = [];
 			   	        	list.push(dataArray[i]);
 			   	            series.push({
-			   	                name:'浏览器（数据纯属虚构）',
+			   	                name:'',
 			   	                type: 'radar',
 			   	                symbol: 'none',
 			   	                itemStyle: {
@@ -334,17 +318,15 @@ $(function(){
 			   	                        },
 			   	                        color:colors[i]
 			   	                    }
-			   	                },
-			   	             
+			   	                },			   	             
 			   	                data:list
 			   	            });
 			   	        }
 			   	        return series;
 			   	    })()
 			   	};
-			   		myChart4.setOption(option4);
+			   	myChart4.setOption(option4);
 		     },
-
 		});
 		   
 		   //用户行业分布
@@ -356,11 +338,11 @@ $(function(){
 			        success:function(obj){
 				   		var option5 = {
 			   			 title : {
-				   		        text: '用户行业分布',
+				   		     text: '用户行业分布',
 				   		     textStyle:{
-					   				color:'#fff'
-					   			},
-				   		        x:'center'
+				   				 color:'#fff'
+				   			 },
+			   		         x:'center'
 				   		},
 				   	    tooltip : {
 				   	        trigger: 'axis'
@@ -379,8 +361,7 @@ $(function(){
 				   	            axisLabel:{
 			                         interval:0,
 			                         rotate:40,
-			                         margin:8,
-			                       
+			                         margin:8,			                       
 			                         textStyle:{
 			                             color:"#fff"
 			                         }
@@ -396,12 +377,11 @@ $(function(){
 				   	    yAxis : [
 				   	        {
 				   	            type : 'value',
-				   	         axisLabel:{
-		                         
-		                         textStyle:{
-		                             color:"#fff"
-		                         }
-		                     }
+				   	            axisLabel:{		                         
+				   	            	textStyle:{
+				   	            		color:"#fff"
+				   	            	}
+				   	            }
 				   	        }
 				   	    ],
 				   	    series : [
@@ -409,9 +389,9 @@ $(function(){
 				   	            name:'各行业注册用户数',
 				   	            type:'bar',
 				   	            data:obj.userList,
-				   	         itemStyle:{
-				                  normal:{color:'#757aff'}
-				              },
+					   	        itemStyle:{
+					                normal:{color:'#757aff'}
+					            },
 				   	            markPoint : {
 				   	                data : [
 				   	                    {type : 'max', name: '最大值'},
@@ -423,9 +403,9 @@ $(function(){
 				   	            name:'已下订单数',
 				   	            type:'bar',
 				   	            data:obj.orderList,
-				   	         itemStyle:{
-				                  normal:{color:'#ff757a'}
-				              },
+					   	        itemStyle:{
+					                normal:{color:'#ff757a'}
+					            },
 				   	            markPoint : {
 				   	        		data : [
 				   	                    {type : 'max', name: '最大值'},
@@ -435,7 +415,7 @@ $(function(){
 				   	        }
 				   	    ]
 				   	};
-				   		myChart5.setOption(option5);
+				   	myChart5.setOption(option5);
 			     },
 
 			});
@@ -516,7 +496,7 @@ $(function(){
 					   		var option8 = {
 					   				title : {
 					   			        text: '网站漏洞重复率大等于3的行业分布情况',
-					   			     textStyle:{
+					   			        textStyle:{
 							   				color:'#fff'
 							   			},
 					   			        x:'center'
@@ -524,27 +504,25 @@ $(function(){
 					   			    tooltip : {
 					   			        trigger: 'item',
 					   			        formatter: "{b} : {d}%"
-					   			    },
-					   			  
+					   			    },					   			  
 					   			    series : [
 					   			        {
 					   			            name: '访问来源',
 					   			            type: 'pie',
 					   			            radius : '75%',
 					   			            center: ['50%', '60%'],
-					   			         label: {
+					   			            label: {
 							   	                normal: {
 							   	                    show: true,
-							   	                 formatter: function(params){
-						                        	 // alert(params.name.length);
-						                        	  var res=params.name;
-						                        	  if(params.name.length>2){
-						                        		  var temp = res.substring(0,2);
-						                        		  var temp2 = res.substr(2);
-						                        		  res= temp + "\n" + temp2;
-						                        	  }
-						                          return res;
-						                         }
+								   	                formatter: function(params){
+							                        	var res=params.name;
+							                        	if(params.name.length>2){
+							                        		var temp = res.substring(0,2);
+							                        		var temp2 = res.substr(2);
+							                        		res= temp + "\n" + temp2;
+							                        	}
+							                        	return res;
+							                        }
 							   	                },
 							   	                emphasis: {
 							   	                    show: true
@@ -568,9 +546,9 @@ $(function(){
 					   			            }
 					   			        }
 					   			    ],
-					   			 color:["#b675ff","#ff757a","#757aff","#f942ff","#fffa75","#38fff8"]
+					   		color:["#b675ff","#ff757a","#757aff","#f942ff","#fffa75","#38fff8"]
 					   	};
-					   		myChart8.setOption(option8);
+					   	myChart8.setOption(option8);
 				     },
 
 				}); 
@@ -585,12 +563,12 @@ $(function(){
 					   		var option9 = {
 					   			 title : {
 					   				 text:'近六个月攻击手段等级分布',
-					   				textStyle:{
-						   				color:'#fff'
-						   			},
+					   				 textStyle:{
+						   				 color:'#fff'
+						   			 },
 					   		         x:'center'
 					   		    },
-					   			 tooltip : {
+					   			tooltip : {
 					   	        trigger: 'axis',
 					   	        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
 					   	            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
@@ -599,44 +577,40 @@ $(function(){
 					   	    legend: {
 					   	        data:obj.levelList,
 					   	        y:'bottom',
-					   	     textStyle:{
-	                             color:"#fff"
-	                         },
+						   	    textStyle:{
+		                            color:"#fff"
+		                        },
 					   	        padding:0
 					   	    },
 					   	    grid: {
 					   	        left: '10%',
 					   	        right: '0%',
-					 
-					   	        bottom: '15%',
-					   	        //containLabel: true
+					   	        bottom: '15%'
 					   	    },
 					   	    xAxis : [
 					   	        {
 					   	            type : 'category',
-					   	         axisLabel:{
-			                         
-			                         textStyle:{
-			                             color:"#fff"
-			                         }
+					   	            axisLabel:{ 
+			                        textStyle:{
+			                            color:"#fff"
+			                        }
 			                     },
-					   	            data : obj.monthList
-					   	        }
+					   	         data : obj.monthList
+					   	       }
 					   	    ],
 					   	    yAxis : [
 					   	        {
 					   	            type : 'value',
-					   	         axisLabel:{
-			                         
-			                         textStyle:{
-			                             color:"#fff"
-			                         }
+					   	            axisLabel:{			                         
+			                        textStyle:{
+			                            color:"#fff"
+			                        }
 			                     }
-					   	        }
+					   	      }
 					   	    ],
 					   	    series : obj.dataArray
 					   	};
-					   		myChart9.setOption(option9);
+					   	myChart9.setOption(option9);
 				     },
 
 				});
