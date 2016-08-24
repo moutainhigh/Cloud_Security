@@ -118,6 +118,8 @@
 		text-align: center;
 		background: url(../images/PersonalCenter/bt.png) no-repeat left bottom;
 	}
+	
+	
 	.contentcenter ul li a{
 		color: #fff;
 		font-size: 18px;
@@ -129,14 +131,27 @@
 		border-left: 6px solid #0d84bf;
 		color: #00aeff;
 	}
+	
+	.contentcenterdata{
+		/*width: 1120px;*/
+		margin: 0 auto;
+		padding-top: 40px;
+	}
+	.contentcenterdata ul li{
+		line-height: 52px;
+		text-align: center;
+		background: url(../images/PersonalCenter/bt.png) no-repeat left bottom;
+	}
+	
 </style>
 <script>
 	$(function(){
-		var h=$(window).height();
+		//var h=$(window).height();
 		t=$('#content').offset().top;
 		l=$('#content_ul').offset().top;
 		//$('#content_ul').height(h-l);
 		//$('#content').height(h-t);
+
 		
 		//选项卡切换
 		$('.navlist li:last').css('background-image','none');
@@ -157,6 +172,7 @@
 					
 		})
 	})
+
 </script>
 </head>
 
@@ -333,9 +349,9 @@
         </div>
                         
         <!-- XXX 页面 -->
-        <div class="contentcenter not-used">
-            <ul class="clearfix">
-	            <li class="fl clearfix" style="width:600px;height:500px;position:relative;">
+        <div class="contentcenterdata not-used">
+            <ul class="clearfix" style="width:auto">
+	            <li class="fl" style="width:600px;height:500px;position:relative;">
 	                <img class="img" src="${ctx}/source/images/rose2_3.png" style="margin-top:59px;margin-left:105px;"/>
 	                <div id="vulnscanAlarmOneHour" ></div>
 	            </li>
@@ -343,10 +359,7 @@
 	                <img class="img" src="${ctx}/source/images/rose2_3.png"  style="margin-top:59px;margin-left:105px;"/>
 	                <div id="wafOneHour"></div>
 	            </li>
-	                        		<%-- <li class="fl" style="height:500px;background:url('${ctx}/source/images/rose2.png') 43px 8px no-repeat;">
-	                        			<div id="vulnscanAlarmOneHour" style="width:540px;height:500px"></div>
-	                        		</li> --%>
-	           <li class="fl" style="width:600px;left:17px">
+	           <li class="fl" style="width:600px;height:atuo;left:17px">
 	               <div id="vulnscanAlarmByLevelMonth6" style="width:600px;height:394px"></div>
 	           </li>
 	           <li class="fl" style="width:600px;margin-left:57px">
@@ -424,17 +437,35 @@
 </div>
 	
 <div class="shade"></div>
-<!-- <script>
+<script>
 	$(function(){
-		$('.tab-pane span').click(function(){
+		/* $('.tab-pane span').click(function(){
 		  var index = $(this).index();
 		  $(this).addClass('active').siblings().removeClass('active');
 		  $('.mapBox .list').eq(index).show().siblings().hide();
+		}); */
+		$("#vulnscanAlarmOneHour,#wafOneHour").hover(function(){
+			$(this).parent("li").find(".img").css({
+				"animation":"ancircle 3s infinite linear",
+				"-webkit-animation":"ancircle 3s infinite linear",
+				"-moz-animation":"ancircle 3s infinite linear",
+				"-ms-animation":"ancircle 3s infinite linear"
+			});
+		},function(){
+			$(this).parent("li").find(".img").css({
+				"animation-play-state":"paused",
+				"animation-fill-mode":"forwards",
+				"-webkit-animation-play-state":"paused",
+				"-webkit-animation-fill-mode":"forwards",
+				"-moz-animation-play-state":"paused",
+				"-moz-animation-fill-mode":"forwards",
+				"-ms-animation-play-state":"paused",
+				"-ms-animation-fill-mode":"forwards",
+			});
 		});
-
 	});
 	
-</script> -->
+</script> 
 </body>
 
 
