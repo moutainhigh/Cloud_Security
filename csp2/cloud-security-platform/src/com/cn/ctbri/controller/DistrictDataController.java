@@ -622,7 +622,10 @@ public class DistrictDataController {
     @RequestMapping(value="getOrderServiceTimes.html")
     @ResponseBody
     public void getOrderServiceTimes(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+    	Date now = new Date();
+    	String endDate = DateUtils.dateToDate(new Date());
+        Date date = DateUtils.getDateBeforeOneYear(new Date());
+        String beginDate = DateUtils.dateToDate(date);
     	JSONArray jsonArray = new JSONArray();
     	//获取服务
     	List<Serv> servList = servService.findAllService();
@@ -631,7 +634,12 @@ public class DistrictDataController {
     		for(int i = 0; i < servList.size(); i++){
     			servNameList.add(((Serv)servList.get(i)).getName());
     			List countList = new ArrayList();
-    			List list = districtDataService.getOrderCountTimesAndServiceId(((Serv)servList.get(i)).getId());
+    			//查询时间对应订单个数
+    			Map<String,Object> countTimesMap = new HashMap<String,Object>();
+    			countTimesMap.put("beginDate", beginDate);
+    			countTimesMap.put("endDate", endDate);
+    			countTimesMap.put("serviceId", ((Serv)servList.get(i)).getId());
+    			List list = districtDataService.getOrderCountTimesAndServiceId(countTimesMap);
     			if(list!=null && list.size()>0){
     				for(int j = 0; j<list.size();j++){
     					countList.add(Integer.parseInt(((Map)list.get(j)).get("count2").toString()));
@@ -657,10 +665,7 @@ public class DistrictDataController {
     	
     	//获取一年内日期
     	//List dayList = districtDataService.getDaysInYear();
-    	Date now = new Date();
-    	String endDate = DateUtils.dateToDate(new Date());
-        Date date = DateUtils.getDateBeforeOneYear(new Date());
-        String beginDate = DateUtils.dateToDate(date);
+
         Map<String,Object> dayMap = new HashMap<String,Object>();
         dayMap.put("beginDate", beginDate);
         dayMap.put("endDate", endDate);
