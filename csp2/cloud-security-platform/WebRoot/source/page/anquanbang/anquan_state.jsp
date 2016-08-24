@@ -95,18 +95,23 @@
 		height: 6px;
 	}
 	.contentLeft{
-		/*margin-top: 42px;*/
-		margin-left: 90px;
+		margin-top: 42px;
+		width: 125px;
 	}
 	.contentLeft ul{
 		width: 125px;
 		background-color: #364371;
 		min-height: 400px;
 	}
+	.contentRight{
+		margin-left: 180px; 
+		height: 500px;
+	}
+
 	.contentcenter{
 		/*width: 1120px;*/
 		margin: 0 auto;
-		padding-top: 40px;
+		/*padding-top: 40px;*/
 	}
 	.contentcenter ul li{
 		height: 52px;
@@ -123,6 +128,7 @@
 		width: 100%;
 		height: 100%;
 		border-left: 6px solid #0d84bf;
+		color: #00aeff;
 	}
 </style>
 <script>
@@ -217,26 +223,26 @@
         </div>
         、
         <!-- 地域分布 -->
-		<div class="contentcenter not-used">
+		<div class="contentcenter not-used" style="width: 1120px;">
 			<div class="contentLeft fl">
 				<ul id="content_ul">
 					<li class="active">
-						<a href="#">漏洞分布</a>
+						<a href="#" onclick="showSecurityStateMap()">漏洞分布</a>
 					</li>
 					<li>
-						<a href="#">监测数据</a>
+						<a href="#" onclick="showHighSiteMap()">监测数据</a>
 					</li>
 					<li>
-						<a href="#">攻击源分布</a>
+						<a href="#" onclick="showHackerMap()">攻击源分布</a>
 					</li>
 					<li>
-						<a href="#">用户分布</a>
+						<a href="#" onclick="showUserMap()">用户分布</a>
 					</li>
 					
 				</ul>
 			</div>
-			<div class="mapBox">
-                <div class="list" id="safe-map" style="display: block;">
+			<div class="contentRight">
+                <div id="safe-map" style="display: block;height:550px">
                    <!-- <img src="${ctx}/source/images/safe/u121.png" alt="" /> -->
 	        	</div>
 	        </div>
