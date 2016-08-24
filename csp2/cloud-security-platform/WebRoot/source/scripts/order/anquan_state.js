@@ -59,7 +59,8 @@ $(function(){
 			   	            },
 			   	            data:obj.dataArray
 			   	        }
-			   	    ]
+			   	    ],
+			   	 color:["#b675ff","#ffb675","#75ffb6","#fa0008","#f942ff","#fffa75","#42a7ff","#4249ff","#bfff75","ff383f"]
 			   	};
 			   		myChart1.setOption(option1);
 		     },
@@ -122,7 +123,8 @@ $(function(){
 			   	            },
 			   	            data:obj.dataArray
 			   	        }
-			   	    ]
+			   	    ],
+			   	 color:["#b675ff","#ffb675","#75ffb6","#fa0008","#f942ff","#fffa75","#42a7ff","#4249ff","#bfff75","ff383f"]
 			   	};
 			   		myChart0.setOption(option0);
 		     },
@@ -268,7 +270,8 @@ $(function(){
 			                 }
 			   	        }
 			   	    ],
-			   	    series : obj.seriesList
+			   	    series : obj.seriesList,
+			   	    color:["#b675ff","#ffb675","#75ffb6","#fa0008","#f942ff","#fffa75"]
 			   	};
 			   		myChart6.setOption(option6);
 		     },
@@ -316,6 +319,7 @@ $(function(){
 			   	    },
 			   	    series : (function (){
 			   	        var series = [];
+			   	        var colors = ["#b675ff","#ffb675","#75ffb6","#fa0008","#f942ff","#fffa75"];
 			   	        for (var i = 0; i < 6; i++) {
 			   	        	var list = [];
 			   	        	list.push(dataArray[i]);
@@ -327,7 +331,8 @@ $(function(){
 			   	                    normal: {
 			   	                        lineStyle: {
 			   	                          width:1
-			   	                        }
+			   	                        },
+			   	                        color:colors[i]
 			   	                    }
 			   	                },
 			   	             
@@ -378,20 +383,6 @@ $(function(){
 			                       
 			                         textStyle:{
 			                             color:"#fff"
-			                         },
-			                         formatter: function(value,index){
-			                        	//alert(value.length);
-/*			                        	  if(typeof(value)=='undefined'){
-			                        		  return '';
-			                        	  }else{
-			                        		  if(value.length>7){
-				                        		  var temp = value.substring(0,4);
-				                        		  var temp2 = value.substr(4);
-				                        		  value= temp + "\n" + temp2;
-						                          return value;
-				                        	  }
-			                        	  }*/
-			                        	 return value;
 			                         }
 			                     },
 				   	            data : obj.industryList
@@ -418,6 +409,9 @@ $(function(){
 				   	            name:'各行业注册用户数',
 				   	            type:'bar',
 				   	            data:obj.userList,
+				   	         itemStyle:{
+				                  normal:{color:'#75ffb6'}
+				              },
 				   	            markPoint : {
 				   	                data : [
 				   	                    {type : 'max', name: '最大值'},
@@ -429,6 +423,9 @@ $(function(){
 				   	            name:'已下订单数',
 				   	            type:'bar',
 				   	            data:obj.orderList,
+				   	         itemStyle:{
+				                  normal:{color:'#fa0008'}
+				              },
 				   	            markPoint : {
 				   	        		data : [
 				   	                    {type : 'max', name: '最大值'},
@@ -533,7 +530,7 @@ $(function(){
 					   			        {
 					   			            name: '访问来源',
 					   			            type: 'pie',
-					   			            radius : '55%',
+					   			            radius : '75%',
 					   			            center: ['50%', '60%'],
 					   			         label: {
 							   	                normal: {
@@ -570,7 +567,8 @@ $(function(){
 					   			                }
 					   			            }
 					   			        }
-					   			    ]
+					   			    ],
+					   			 color:["#b675ff","#ff757a","#75ffb6","#f942ff","#fffa75","#38fff8"]
 					   	};
 					   		myChart8.setOption(option8);
 				     },
