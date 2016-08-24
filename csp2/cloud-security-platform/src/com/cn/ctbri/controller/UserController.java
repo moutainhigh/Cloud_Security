@@ -17,6 +17,7 @@ import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.cfg.Configuration;
 import com.cn.ctbri.common.NorthAPIWorker;
+import com.cn.ctbri.common.WafAPIWorker;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.LoginHistory;
 import com.cn.ctbri.entity.MobileInfo;
@@ -58,6 +60,7 @@ import com.cn.ctbri.util.SMSUtils;
 import com.cn.ctbri.util.ThreeDes;
 import com.cn.ctbri.util.passwordLevelUtil;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+
 
 /**
  * 创 建 人  ：  于永波
@@ -1935,18 +1938,61 @@ public class UserController{
 	 */
 	@RequestMapping(value="/sa_anquanbang.html")
 	public String saAnquanbang(Model m){
-	    //查询漏洞个数
-        int leakNum = selfHelpOrderService.findLeakNum(1);
-        //查询网页数
-        int webPageNum = selfHelpOrderService.findWebPageNum();
-        //检测网页数
-        int webSite = selfHelpOrderService.findWebSite();
-        //断网次数
-        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
-        m.addAttribute("leakNum", leakNum);
-        m.addAttribute("webPageNum", webPageNum);
-        m.addAttribute("webSite", webSite);
-        m.addAttribute("brokenNetwork", brokenNetwork);
+	  	try {
+		    //查询漏洞个数
+	        int leakNum = selfHelpOrderService.findLeakNum(1);
+	        //查询网页数
+	        int webPageNum = selfHelpOrderService.findWebPageNum();
+	        //检测网页数
+	        int webSite = selfHelpOrderService.findWebSite();
+	        //断网次数
+	        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
+	        m.addAttribute("leakNum", leakNum);
+	        m.addAttribute("webPageNum", webPageNum);
+	        m.addAttribute("webSite", webSite);
+	        m.addAttribute("brokenNetwork", brokenNetwork);
+	        
+	        JSONArray jsonArray;
+	  	    int wafAlarmLevel = 0;
+  		  
+  		  //waf结果集	
+  		  int countAll = 0;
+  		  String wafResult = WafAPIWorker.getEventTypeCountByDay("7");
+  		  jsonArray = JSONArray.fromObject(wafResult);
+  		  if(jsonArray!=null && jsonArray.size()>0){
+  			  for(int i = 0; i < jsonArray.size(); i++){
+  				  JSONObject obj=(JSONObject) jsonArray.get(i);
+  				  //解析攻击类型
+  				  byte[] base64Bytes = Base64.decode(obj.getString("eventTypeBase64").toString());	
+  				  String eventType = new String(base64Bytes,"UTF-8");
+  				  //解析count
+  				  JSONArray array = obj.getJSONArray("list");
+  				  
+  				  if(array!=null && array.size()>0){
+  					  for(int j = 0; j < array.size(); j++){
+  						  JSONObject jsonTemp =(JSONObject) array.get(j);
+  						  countAll += jsonTemp.getInt("count");
+  					  }
+  				  }
+
+  				 
+  			  }
+  		  }
+  		  if(countAll>100){
+  			  wafAlarmLevel = 4;
+  		  }else if(countAll>50){
+  			  wafAlarmLevel = 3;
+  		  }else if(countAll>30){
+  			  wafAlarmLevel = 2;
+  		  }else if(countAll>10){
+  			  wafAlarmLevel = 1;
+  		  }
+  	  	  m.addAttribute("wafAlarmLevel",wafAlarmLevel);
+  	  	  
+	  	} catch (UnsupportedEncodingException e) {
+	  		e.printStackTrace();
+	  	}  	  
+
 		return "/source/page/anquanbang/anquan_state";
 	}
 	
