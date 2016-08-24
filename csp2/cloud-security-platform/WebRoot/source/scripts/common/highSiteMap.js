@@ -1,11 +1,17 @@
 var orgnames="";
 var numMsg = "漏洞总数";
 var typeMsg = "漏洞类型";
-//$(function(){
+$(function(){
 //	showHighSiteMap();
 	//initHackerMap();
 	//initUserMap();
-//}); 
+	//地图切换
+	$('#content_ul li').click(function(){
+		  var index = $(this).index();
+		  $(this).addClass('active').siblings('li').removeClass('active');
+	}); 
+	
+}); 
 
 function showHighSiteMap() {
 	var myChart = echarts.init(document.getElementById('safe-map'));
@@ -66,7 +72,7 @@ function initHighSiteMap(myChart) {
 	        min: 0,
 	        max: 1000,
 	        left: '10%',
-	        bottom: '25%',
+	        bottom: '2%',
 	        textStyle: {
 	           color: '#fff'
 	        },
@@ -81,12 +87,12 @@ function initHighSiteMap(myChart) {
 	            name: '告警总和超过100的网站数',
 	            type: 'map',
 	            mapType: 'china',
-	            layoutCenter: ['50%', '40%'],  //地图中心到两侧的距离
-				layoutSize: 650,  //地图大小
+	            layoutCenter: ['50%', '50%'],  //地图中心到两侧的距离
+				layoutSize: 550,  //地图大小
 	            roam: false,
 	            label: {
 	                normal: {
-	                    show: true
+	                    show: false
 	                },
 	                emphasis: {
 	                    show: true
@@ -186,7 +192,7 @@ function showHackerMap() {
 	    visualMap: {
 	    	type: 'piecewise', // 定义为分段型 visualMap
 	        left: '10%',
-	        bottom: '25%',
+	        bottom: '2%',
 	        calculable: true,
 	        textStyle: {
 	           color: '#fff'
@@ -207,8 +213,8 @@ function showHackerMap() {
 	            }
 	        },
 	        roam: false,
-	        layoutCenter: ['50%', '40%'],  //地图中心到两侧的距离
-			layoutSize: 650,  //地图大小
+	        layoutCenter: ['50%', '50%'],  //地图中心到两侧的距离
+			layoutSize: 550,  //地图大小
 	        itemStyle: {
 		            normal: {
 		            	borderWidth : 2,
@@ -320,7 +326,7 @@ function showUserMap() {
 	        min: 0,
 	        max: 5000,
 	        left: '10%',
-	        bottom: '25%',
+	        bottom: '2%',
 	        calculable: false,
 	        pieces: [
 	        	{gt: 4000, color: '#ff7474'}, 
@@ -332,8 +338,8 @@ function showUserMap() {
     	},
 	    geo: {
 	        map: 'china',
-	        layoutCenter: ['50%', '40%'],  //地图中心到两侧的距离
-			layoutSize: 650,  //地图大小
+	        layoutCenter: ['50%', '50%'],  //地图中心到两侧的距离
+			layoutSize: 550,  //地图大小
 	        label: {
 	            emphasis: {
 	                show: false
@@ -458,7 +464,7 @@ function initSecurityStateMap(myChart){
 	        min: 0,
 	        max: 5000,
 	        left: '10%',
-	        bottom: '25%',
+	        bottom: '2%',
 	        calculable: false,
 	        //inRange: {
 	        //    color : [ '#ff81ff', '#99d9eb', '#c9bfe7', '#ffff9b', '#ffffff']
@@ -473,8 +479,8 @@ function initSecurityStateMap(myChart){
     	},
 	    geo: {
 	        map: 'china',
-	        layoutCenter: ['50%', '40%'],  //地图中心到两侧的距离
-			layoutSize: 650,  //地图大小
+	        layoutCenter: ['50%', '50%'],  //地图中心到两侧的距离
+			layoutSize: 550,  //地图大小
 	        label: {
 	            emphasis: {
 	                show: false
