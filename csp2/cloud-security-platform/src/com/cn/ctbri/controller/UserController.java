@@ -61,7 +61,6 @@ import com.cn.ctbri.util.ThreeDes;
 import com.cn.ctbri.util.passwordLevelUtil;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
-
 /**
  * 创 建 人  ：  于永波
  * 创建日期：  2014-12-31
@@ -1936,21 +1935,44 @@ public class UserController{
 	 * 参数描述： Model m
 	 *		 @time 2015-1-8
 	 */
+//	@RequestMapping(value="/sa_anquanbang.html")
+//	public String saAnquanbang(Model m){
+//	    //查询漏洞个数
+//        int leakNum = selfHelpOrderService.findLeakNum(1);
+//        //查询网页数
+//        int webPageNum = selfHelpOrderService.findWebPageNum();
+//        //检测网页数
+//        int webSite = selfHelpOrderService.findWebSite();
+//        //断网次数
+//        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
+//        m.addAttribute("leakNum", leakNum);
+//        m.addAttribute("webPageNum", webPageNum);
+//        m.addAttribute("webSite", webSite);
+//        m.addAttribute("brokenNetwork", brokenNetwork);
+//		return "/source/page/anquanbang/sa_anquanbang";
+//		//return "/source/page/anquanbang/anquan_state";
+//	}
+	
+	/**
+	 * 功能描述： 跳转动态感知
+	 * 参数描述： Model m
+	 *		 @time 2015-1-8
+	 */
 	@RequestMapping(value="/sa_anquanbang.html")
 	public String saAnquanbang(Model m){
 	  	try {
-		    //查询漏洞个数
-	        int leakNum = selfHelpOrderService.findLeakNum(1);
+	  		//查询漏洞个数
+	        //int leakNum = selfHelpOrderService.findLeakNum(1);
 	        //查询网页数
-	        int webPageNum = selfHelpOrderService.findWebPageNum();
+	        //int webPageNum = selfHelpOrderService.findWebPageNum();
 	        //检测网页数
-	        int webSite = selfHelpOrderService.findWebSite();
+	        //int webSite = selfHelpOrderService.findWebSite();
 	        //断网次数
-	        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
-	        m.addAttribute("leakNum", leakNum);
-	        m.addAttribute("webPageNum", webPageNum);
-	        m.addAttribute("webSite", webSite);
-	        m.addAttribute("brokenNetwork", brokenNetwork);
+	        //int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
+	        //m.addAttribute("leakNum", leakNum);
+	        //m.addAttribute("webPageNum", webPageNum);
+	        //m.addAttribute("webSite", webSite);
+	        //m.addAttribute("brokenNetwork", brokenNetwork);
 	        
 	        JSONArray jsonArray;
 	  	    int wafAlarmLevel = 0;
