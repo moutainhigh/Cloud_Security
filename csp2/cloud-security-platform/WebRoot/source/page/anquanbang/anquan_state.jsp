@@ -153,7 +153,27 @@
 		//$('#content').height(h-t);
 
 	})
-
+	function getDate(strDate) {
+           var date = eval('new Date(' + strDate.replace(/\d+(?=-[^-]+$)/,
+            function (a) { return parseInt(a, 10) - 1; }).match(/\d+/g) + ')');
+           return date;
+       }
+       Date.prototype.Format = function (fmt) { 
+	    var o = {
+	        "M+": this.getMonth() + 1, //月份 
+	        "d+": this.getDate(), //日 
+	        "h+": this.getHours(), //小时 
+	        "m+": this.getMinutes(), //分 
+	        "s+": this.getSeconds(), //秒 
+	        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+	        "S": this.getMilliseconds() //毫秒 
+	    };
+	    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+	    for (var k in o)
+	    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+	    return fmt;
+	}
+	
 </script>
 </head>
 
@@ -308,15 +328,12 @@
         <!-- 安全关注点 -->
         <div class="contentcenter not-used">
             <div class="mapListBox clearfix">
-                <div class="ltmit" >
-                    <div id="orderServiceTimes" style="width:1330px;height:300px"></div>
-                </div>
-                <div class="ltmit" style="width:600px">
-                    <img src="${ctx}/source/images/safe/20160808105611.png" />
-                </div>
-                <div class="ltmit" style="width:600px">
-                    <img src="${ctx}/source/images/safe/20160808105619.png" />
-                </div>
+                <div class="exhibitionList fl"  id="bugMainId"  style="width:1300px;height:500px;background-color:transparent;">
+              	</div>
+              	<img src="${ctx}/source/img/loading.gif" id="loading" style="width:1300px;height:500px;margin-top:-540px;z-index:999;display:inline-block;"/>
+              	<div class="exhibitionList fl" id="attackMainId"  style="width:1300px;height:500px;background-color:transparent;">
+              	</div>
+              	<img src="${ctx}/source/img/loading.gif" id="attackLoading" style="width:1300px;height:500px;margin-top:-540px;z-index:999;display:inline-block;"/>
                 <div class="ltmit" style="width:600px;height:350px">
                     <div id="serviceUseInfoMonth6" style="width:600px;height:350px"></div>
                 </div>
