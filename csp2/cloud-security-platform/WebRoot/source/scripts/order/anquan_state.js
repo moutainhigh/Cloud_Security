@@ -60,7 +60,7 @@ $(function(){
 			   	            data:obj.dataArray
 			   	        }
 			   	    ],
-			   	 color:["#b675ff","#ffb675","#757aff","#fa0008","#f942ff","#fffa75","#42a7ff","#4249ff","#bfff75","ff383f"]
+			   	 color:["#b675ff","#ffb675","#757aff","#ff757a","#f942ff","#fffa75","#42a7ff","#4249ff","#bfff75","ff383f"]
 			   	};
 			   		myChart1.setOption(option1);
 		     },
@@ -124,7 +124,7 @@ $(function(){
 			   	            data:obj.dataArray
 			   	        }
 			   	    ],
-			   	 color:["#b675ff","#ffb675","#757aff","#fa0008","#f942ff","#fffa75","#42a7ff","#4249ff","#bfff75","ff383f"]
+			   	 color:["#b675ff","#ffb675","#757aff","#ff757a","#f942ff","#fffa75","#42a7ff","#4249ff","#bfff75","ff383f"]
 			   	};
 			   		myChart0.setOption(option0);
 		     },
@@ -271,7 +271,7 @@ $(function(){
 			   	        }
 			   	    ],
 			   	    series : obj.seriesList,
-			   	    color:["#b675ff","#ffb675","#757aff","#fa0008","#f942ff","#fffa75"]
+			   	    color:["#b675ff","#ffb675","#757aff","#ff757a","#f942ff","#fffa75"]
 			   	};
 			   		myChart6.setOption(option6);
 		     },
@@ -319,7 +319,7 @@ $(function(){
 			   	    },
 			   	    series : (function (){
 			   	        var series = [];
-			   	        var colors = ["#b675ff","#ffb675","#757aff","#fa0008","#f942ff","#fffa75"];
+			   	        var colors = ["#b675ff","#ffb675","#757aff","#ff757a","#f942ff","#fffa75"];
 			   	        for (var i = 0; i < 6; i++) {
 			   	        	var list = [];
 			   	        	list.push(dataArray[i]);
@@ -424,7 +424,7 @@ $(function(){
 				   	            type:'bar',
 				   	            data:obj.orderList,
 				   	         itemStyle:{
-				                  normal:{color:'#fa0008'}
+				                  normal:{color:'#ff757a'}
 				              },
 				   	            markPoint : {
 				   	        		data : [
