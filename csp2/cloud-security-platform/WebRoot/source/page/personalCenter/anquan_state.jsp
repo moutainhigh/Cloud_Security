@@ -211,7 +211,7 @@
                         
                         <!-- XXX 页面 -->
                     	<div class="not-used">
-                        	<ul class="clearfix">
+                        	<ul class="clearfix" >
                         		<li class="fl clearfix" style="width:600px;height:500px;position:relative;">
                         				<img class="img" src="${ctx}/source/images/rose2_3.png" style="margin-top:59px;margin-left:105px;"/>
                         				<div id="vulnscanAlarmOneHour" ></div>
