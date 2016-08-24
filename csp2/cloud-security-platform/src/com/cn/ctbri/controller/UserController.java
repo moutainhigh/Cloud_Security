@@ -1947,7 +1947,7 @@ public class UserController{
         m.addAttribute("webPageNum", webPageNum);
         m.addAttribute("webSite", webSite);
         m.addAttribute("brokenNetwork", brokenNetwork);
-		return "/source/page/anquanbang/sa_anquanbang";
+		return "/source/page/anquanbang/anquan_state";
 	}
 	
 	
