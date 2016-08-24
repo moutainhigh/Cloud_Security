@@ -112,7 +112,10 @@ function initHighSiteMap(myChart) {
 	            roam: false,
 	            label: {
 	                normal: {
-	                    show: false
+	                    show: true,
+	                    textStyle: {
+				           color: '#fff'
+				        }
 	                },
 	                emphasis: {
 	                    show: true
