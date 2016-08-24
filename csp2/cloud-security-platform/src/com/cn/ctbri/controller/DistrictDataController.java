@@ -286,7 +286,6 @@ public class DistrictDataController {
     @RequestMapping(value="getVulnscanAlarmByLevelMonth6.html")
     @ResponseBody
     public void getVulnscanAlarmByLevelMonth6(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //List result = districtDataService.getVulnscanAlarmByLevelMonth6();
         JSONArray jsonArray = new JSONArray();
 
         //前6个月的月份
@@ -308,6 +307,7 @@ public class DistrictDataController {
         paramMap.put("month", lastMonth6);
         List dataList = districtDataService.getVulnscanAlarm(paramMap);
         
+        String colors[] = {"#b675ff","#ffb675","#75ffb6","#fa0008","#f942ff"};
         for(int i = 0; i<levels.length; i++){
         	levelList.add(levelNames[i]);
         	//定义每个月的数值list
@@ -362,6 +362,15 @@ public class DistrictDataController {
         	jsonLabel.put("normal", jsonNormal);
         	
         	jsonObject.put("label", jsonLabel);
+        	
+        	JSONObject jsonColor = new JSONObject();
+        	jsonColor.put("color", colors[i]);
+        	
+        	//自定义颜色
+        	JSONObject jsonNoral1 = new JSONObject();
+        	jsonNoral1.put("normal", jsonColor);       	
+        	jsonObject.put("itemStyle", jsonNoral1);
+        	
         	jsonArray.add(jsonObject);
         }
         
@@ -404,6 +413,9 @@ public class DistrictDataController {
         
     	String startDate = DateUtils.dateToDate(new Date());	
     	String wafRes = WafAPIWorker.getWafAlertLevelCountByMonth("6", startDate);
+    	
+    	//自定义颜色值
+    	String colors[] = {"#b675ff","#ffb675","#75ffb6"};
     	//解析等级数据
     	JSONArray jsonArray = JSONArray.fromObject(wafRes);
     	if(jsonArray!=null && jsonArray.size()>0){
@@ -447,9 +459,15 @@ public class DistrictDataController {
             	jsonNormal.put("position","top");
             	
             	JSONObject jsonLabel = new JSONObject();
-            	jsonLabel.put("normal", jsonNormal);
-            	
+            	jsonLabel.put("normal", jsonNormal);            	
             	json.put("label", jsonLabel);
+            	  
+            	//颜色
+            	JSONObject jsonColor = new JSONObject();
+            	jsonColor.put("color", colors[i]);
+            	JSONObject jsonNoral1 = new JSONObject();
+            	jsonNoral1.put("normal", jsonColor);       	
+            	json.put("itemStyle", jsonNoral1);
             	newArray.add(json);
             }
             
@@ -630,6 +648,7 @@ public class DistrictDataController {
     	//获取服务
     	List<Serv> servList = servService.findAllService();
     	List servNameList = new ArrayList();
+
     	if(servList!=null && servList.size()>0){
     		for(int i = 0; i < servList.size(); i++){
     			servNameList.add(((Serv)servList.get(i)).getName());
