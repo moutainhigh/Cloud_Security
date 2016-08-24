@@ -38,21 +38,6 @@ public class DataAnalysisController {
 	IAttackSourceService attackSourceService;
 	
 	/**
-	 * 功能描述： 
-	 * 参数描述： Model m
-	 *		 @time 2016-8-3
-	 */
-	@RequestMapping(value="/highSiteMapUI.html")
-	public String highSiteMap(Model m){
-		return "/source/page/anquanbang/highSiteMap";
-	}
-	
-	@RequestMapping(value="/MapUI.html")
-	public String Map(Model m){
-		return "/source/page/personalCenter/anquan_state";
-	}
-	
-	/**
 	 * 功能描述： 高危网站地图（所有监测数据与WAF数据结合）：
 	 * 			以省为单位，累加所有漏洞、木马、关键字、篡改、可用性及WAF告警数据总和超过100的网站数
 	 * 参数描述： Model m
@@ -135,6 +120,8 @@ public class DataAnalysisController {
 //		SiteCountMap.put("黑龙江", 600);
 //		SiteCountMap.put("内蒙古", 700);
 //		SiteCountMap.put("宁夏", 800);
+//		SiteCountMap.put("云南", 900);
+//		SiteCountMap.put("湖南", 1000);
 //		try {
 //			Thread.sleep(2000);
 //		} catch (InterruptedException e) {
@@ -234,21 +221,21 @@ public class DataAnalysisController {
 //		map.put("name", "北京");
 //		map.put("longitude", 116.4135540000);
 //		map.put("latitude", 39.9110130000);
-//		map.put("val", 30);
+//		map.put("val", 8);
 //		result.add(map);
 ////		
 //		Map<String,Object> map2 = new HashMap<String,Object>();
 //		map2.put("name", "河北");
 //		map2.put("longitude", 114.5208280000);
 //		map2.put("latitude", 38.0486840000);
-//		map2.put("val", 70);
+//		map2.put("val", 20);
 //		result.add(map2);
 //		
 //		Map<String,Object> map3 = new HashMap<String,Object>();
 //		map3.put("name", "四川");
 //		map3.put("longitude", 104.0712160000);
 //		map3.put("latitude", 30.5762790000);
-//		map3.put("val", 150);
+//		map3.put("val", 70);
 //		result.add(map3);
 //		
 //		Map<String,Object> map4 = new HashMap<String,Object>();
@@ -262,8 +249,22 @@ public class DataAnalysisController {
 //		map5.put("name", "辽宁");
 //		map5.put("longitude", 123.4389730000);
 //		map5.put("latitude", 41.8113390000);
-//		map5.put("val", 5);
+//		map5.put("val", 500);
 //		result.add(map5);
+//		
+//		Map<String,Object> map6 = new HashMap<String,Object>();
+//		map6.put("name", "新疆");
+//		map6.put("longitude", 87.6233140000);
+//		map6.put("latitude", 43.8328060000);
+//		map6.put("val", 130);
+//		result.add(map6);
+//		
+//		Map<String,Object> map7 = new HashMap<String,Object>();
+//		map7.put("name", "香港");
+//		map7.put("longitude", 114.1719940000);
+//		map7.put("latitude", 22.2810890000);
+//		map7.put("val", 200);
+//		result.add(map6);
 //		try {
 //			Thread.sleep(2000);
 //		} catch (InterruptedException e) {
@@ -306,14 +307,14 @@ public class DataAnalysisController {
 //		user1.setProviceName("北京");
 //		user1.setLongitude("116.4135540000");
 //		user1.setLatitude("39.9110130000");
-//		user1.setUserCount(1000);
+//		user1.setUserCount(2500);
 //		result.add(user1);
 //		
 //		UserDistribution user2 = new UserDistribution(); 
 //		user2.setProviceName("河北");
 //		user2.setLongitude("114.5208280000");
 //		user2.setLatitude("38.0486840000");
-//		user2.setUserCount(3000);
+//		user2.setUserCount(3200);
 //		result.add(user2);
 //		
 //		UserDistribution user3 = new UserDistribution(); 
@@ -327,8 +328,15 @@ public class DataAnalysisController {
 //		user4.setProviceName("宁夏");
 //		user4.setLongitude("106.2389760000");
 //		user4.setLatitude("38.4923920000");
-//		user4.setUserCount(1500);
+//		user4.setUserCount(4500);
 //		result.add(user4);
+//		
+//		UserDistribution user5 = new UserDistribution(); 
+//		user5.setProviceName("新疆");
+//		user5.setLongitude("87.6233140000");
+//		user5.setLatitude("43.8328060000");
+//		user5.setUserCount(1800);
+//		result.add(user5);
 		
 //		try {
 //			Thread.sleep(2000);
