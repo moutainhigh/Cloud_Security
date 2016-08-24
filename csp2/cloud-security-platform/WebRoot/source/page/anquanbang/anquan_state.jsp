@@ -20,7 +20,6 @@
 <script type="text/javascript" src="${ctx}/source/scripts/echarts3/china.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/anquan_state.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/highSiteMap.js"></script>
-<script src="${ctx}/source/scripts/common/portalindex.js"></script>
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
@@ -105,7 +104,7 @@
 	}
 	.contentRight{
 		margin-left: 180px; 
-		height: 500px;
+		height: 450px;
 	}
 
 	.contentcenter{
@@ -138,6 +137,25 @@
 		l=$('#content_ul').offset().top;
 		//$('#content_ul').height(h-l);
 		//$('#content').height(h-t);
+		
+		//选项卡切换
+		$('.navlist li:last').css('background-image','none');
+		$('.navlist li').click(function(){
+			var zindex=$(this).index();
+			
+			$('.navlist li').removeClass('none');
+			$(this).addClass('this');
+			$(this).prev('li').addClass('none');
+			$(this).addClass('active').siblings('li').removeClass('active');
+			$(".tabBox .not-used").eq($(this).index()).show().siblings().hide();
+			
+			//地域分布
+			if (zindex == 2) {
+				showSecurityStateMap();
+			}
+			
+					
+		})
 	})
 </script>
 </head>
@@ -242,7 +260,7 @@
 				</ul>
 			</div>
 			<div class="contentRight">
-                <div id="safe-map" style="display: block;height:550px">
+                <div id="safe-map" style="display: block;height:450px">
                    <!-- <img src="${ctx}/source/images/safe/u121.png" alt="" /> -->
 	        	</div>
 	        </div>
