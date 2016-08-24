@@ -31,7 +31,7 @@ $(function(){
 			   	            radius : [20, 180],
 			   	            center : ['50%', '50%'],
 			   	            roseType : 'area',
-			   	            label: {
+			   	         label: {
 			   	                normal: {
 			   	                    show: true,
 			   	                    formatter: function(params){
@@ -614,4 +614,558 @@ $(function(){
 				     },
 
 				});
+				//start   bug漏洞
+				   window.dateMaxIndex=0;
+			        var myChart = echarts.init(document.getElementById('bugMainId'));
+					var option;
+			//         var option = {
+			// 		    title: {
+			// 		        text: '折线图堆叠'
+			// 		    },
+			// 		    tooltip: {
+			// 		        trigger: 'axis'
+			// 		    },
+			// 		    legend: {
+			// 		        data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+			// 		    },
+			// 		    grid: {
+			// 		        left: '3%',
+			// 		        right: '4%',
+			// 		        bottom: '3%',
+			// 		        containLabel: true
+			// 		    },
+			// 		    toolbox: {
+			// 		        feature: {
+			// 		            saveAsImage: {}
+			// 		        }
+			// 		    },
+			// 		    xAxis: {
+			// 		        type: 'category',
+			// 		        boundaryGap: false,
+			// 		        data: ['周一','周二','周三','周四','周五','周六','周日']
+			// 		    },
+			// 		    yAxis: {
+			// 		        type: 'value'
+			// 		    },
+			// 		    series: [
+			// 		        {
+			// 		            name:'邮件营销',
+			// 		            type:'line',
+			// 		            stack: '总量',
+			// 		            data:[120, 132, 101, 134, 90, 230, 210]
+			// 		        },
+			// 		        {
+			// 		            name:'联盟广告',
+			// 		            type:'line',
+			// 		            stack: '总量',
+			// 		            data:[220, 182, 191, 234, 290, 330, 310]
+			// 		        },
+			// 		        {
+			// 		            name:'视频广告',
+			// 		            type:'line',
+			// 		            stack: '总量',
+			// 		            data:[150, 232, 201, 154, 190, 330, 410]
+			// 		        },
+			// 		        {
+			// 		            name:'直接访问',
+			// 		            type:'line',
+			// 		            stack: '总量',
+			// 		            data:[320, 332, 301, 334, 390, 330, 320]
+			// 		        },
+			// 		        {
+			// 		            name:'搜索引擎',
+			// 		            type:'line',
+			// 		            stack: '总量',
+			// 		            data:[820, 932, 901, 934, 1290, 1330, 1320]
+			// 		        }
+			// 		    ]
+			// 		};
+			//         使用刚指定的配置项和数据显示图表。
+			//         myChart.setOption(option);
+			        
+			 var legendData;
+			 var xAxisData=[];
+			 var seriesData=[];
+			 var bugColor=['#75fffa','#fa75ff','#fffa75','#38fff8','#42a7ff','#75bfff','#ff75bf','#bfff75','#00faf2','#4249ff','#757aff','#ff757a','#7aff75','#ff383f','#9a42ff','#b675ff','#ffb675','#75ffb6','#fa0008','#f942ff'];
+			 $.ajax({
+				        type: "POST",
+				        cache: false,
+				        dataType: "json",
+				        url: "bug.html", 
+				        success: function(obj){
+				        var data= eval ("(" + obj.listResult + ")");
+				        var legendData= obj.names;
+			// 	        	从后台得到返回的值，是一个json对象。 
+				        	var　startDate=obj.startTime;
+				        	var endDate=obj.endTime;
+			// 	        	生成开始日期~今天的日期列表
+				        	var startTime=getDate(startDate);
+				        	var endTime=getDate(endDate);
+				        	var currentTime=getDate(startDate);
+				        	for(var i=0;i<31;i++){
+				        		if(currentTime<=endTime){
+				        			currentTime.setDate(currentTime.getDate()+1);
+				        			xAxisData.push(currentTime.Format("yyyy-MM-dd"));
+				        		}
+				        	}
+				        	for(var j=0;j<data.length;j++){
+				        		var dataUnit=data[j];
+				        		var textData=dataUnit.splice(0,1);
+				        		seriesData.push({
+					            name:textData,
+					            type:'line',
+					            stack: '总量',
+					            itemStyle : {
+											normal : {
+												color:bugColor[j],
+												
+												lineStyle:{
+													color:bugColor[j]
+												}
+											}
+										},
+					            data:dataUnit
+					        });
+				        		
+				        	}
+				        	
+				  option = {
+					    title: {
+					        text: '漏洞类型分布及发展趋势'.split("").join("\n"),
+					         x:'left',
+					         y:'center',
+					         textStyle:{
+					         	color:'#7aff75'
+					         }
+					         
+					    },
+					    tooltip: {
+					        trigger: 'axis'
+					    },
+					    legend: {
+					        data:legendData,
+							textStyle:{color: '#00faf2'}
+					    },
+					    grid: {
+					    	height:333,
+					        
+					        containLabel: true
+					    },
+					    toolbox: {
+					    	show:false,
+					        feature: {
+					            saveAsImage: {}
+					        }
+					    },
+					    xAxis: {
+					    	type : 'category',
+							position: 'bottom',
+							boundaryGap: true,
+							axisLabel : {
+							show:true,
+							interval: 0, 
+							rotate: 30,
+							margin: 8,
+							formatter: '{value}',
+							textStyle: {color: '#7aff75',fontFamily: 'sans-serif',fontSize:12,fontStyle: '幼圆',fontWeight: 'bold'}
+							},
+							data : xAxisData 
+					    },
+					    yAxis : [
+							        {
+							            type : 'value',
+							            position: 'left',
+							            boundaryGap: [0,0],
+							            axisLine : {    // 轴线
+							                show: true,
+							                lineStyle: {
+							                    type: 'solid',
+							                    width: 1
+							                }
+							            },
+							           
+							            axisLabel : {
+							                show:true,
+							                interval: 'auto',    // {number}
+							                margin: 18,
+							                formatter: '{value}',    // Template formatter!
+							                textStyle: {
+							                    color: '#7aff75',
+							                    fontFamily: 'verdana',
+							                    fontSize: 10,
+							                    fontStyle: 'normal',
+							                    fontWeight: 'bold'
+							                }
+							            },
+							            splitLine : {
+							                show:true,
+							                lineStyle: {
+							                    color: '#483d8b',
+							                    type: 'dotted',
+							                    width: 1
+							                }
+							            }
+							        }
+							    ],
+					    series: seriesData
+					};		
+							$("#loading").hide();
+			    			myChart.setOption(option);
+				     	},
+				     	error:function(event){
+				     		alert(event);
+				     	}
+					});
+				//end  bug漏洞
+			 
+			 
+			 
+			 
+			 
+			 	//start attack漏洞
+			 window.dateMaxIndex=0;
+		        var attackMyChart = echarts.init(document.getElementById('attackMainId'));
+				var option;
+		//         var option = {
+		// 		    title: {
+		// 		        text: '折线图堆叠'
+		// 		    },
+		// 		    tooltip: {
+		// 		        trigger: 'axis'
+		// 		    },
+		// 		    legend: {
+		// 		        data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+		// 		    },
+		// 		    grid: {
+		// 		        left: '3%',
+		// 		        right: '4%',
+		// 		        bottom: '3%',
+		// 		        containLabel: true
+		// 		    },
+		// 		    toolbox: {
+		// 		        feature: {
+		// 		            saveAsImage: {}
+		// 		        }
+		// 		    },
+		// 		    xAxis: {
+		// 		        type: 'category',
+		// 		        boundaryGap: false,
+		// 		        data: ['周一','周二','周三','周四','周五','周六','周日']
+		// 		    },
+		// 		    yAxis: {
+		// 		        type: 'value'
+		// 		    },
+		// 		    series: [
+		// 		        {
+		// 		            name:'邮件营销',
+		// 		            type:'line',
+		// 		            stack: '总量',
+		// 		            data:[120, 132, 101, 134, 90, 230, 210]
+		// 		        },
+		// 		        {
+		// 		            name:'联盟广告',
+		// 		            type:'line',
+		// 		            stack: '总量',
+		// 		            data:[220, 182, 191, 234, 290, 330, 310]
+		// 		        },
+		// 		        {
+		// 		            name:'视频广告',
+		// 		            type:'line',
+		// 		            stack: '总量',
+		// 		            data:[150, 232, 201, 154, 190, 330, 410]
+		// 		        },
+		// 		        {
+		// 		            name:'直接访问',
+		// 		            type:'line',
+		// 		            stack: '总量',
+		// 		            data:[320, 332, 301, 334, 390, 330, 320]
+		// 		        },
+		// 		        {
+		// 		            name:'搜索引擎',
+		// 		            type:'line',
+		// 		            stack: '总量',
+		// 		            data:[820, 932, 901, 934, 1290, 1330, 1320]
+		// 		        }
+		// 		    ]
+		// 		};
+		//         使用刚指定的配置项和数据显示图表。
+		//         myChart.setOption(option);
+		        
+		 var legendData;
+		 var xAxisData=[];
+		 var seriesData=[];
+		 $.ajax({
+			        type: "POST",
+			        cache: false,
+			        dataType: "json",
+			        url: "attackCount.html", 
+			        success: function(obj){
+			        var data= obj.listResult;
+		// 	        alert(data);
+			        var legendData= obj.names;
+		// 	        	从后台得到返回的值，是一个json对象。 
+			        	var　startDate=obj.startTime;
+			        	var endDate=obj.endTime;
+		// 	        	生成开始日期~今天的日期列表
+			        	var startTime=getDate(startDate);
+			        	var endTime=getDate(endDate);
+			        	var currentTime=getDate(startDate);
+			        	for(var i=0;i<31;i++){
+			        		if(currentTime<=endTime){
+			        			currentTime.setDate(currentTime.getDate()+1);
+			        			xAxisData.push(currentTime.Format("yyyy-MM-dd"));
+			        		}
+			        	}
+			        	for(var j=0;j<data.length;j++){
+			        		var dataUnit=data[j];
+			        		var textData=dataUnit.splice(0,1);
+			        		seriesData.push({
+				            name:textData,
+				            type:'line',
+				            stack: '总量',
+				            data:dataUnit
+				        });
+			        		
+			        	}
+			        	
+			        	option = {
+						    title: {
+						        text: '漏洞类型分布及发展趋势'.split("").join("\n"),
+						         x:'left',
+						         y:'center',
+						         textStyle:{
+						         	color:'#7aff75'
+						         }
+						    },
+						    tooltip: {
+						        trigger: 'axis'
+						    },
+						     legend: {
+						        data:legendData,
+								textStyle:{color: '#00faf2'}
+						    },
+						    grid: {
+						    	height:333,
+						        containLabel: true
+						    },
+						    toolbox: {
+						    	show:false,
+						        feature: {
+						            saveAsImage: {}
+						        }
+						    },
+						    xAxis: {
+						    	type : 'category',
+								position: 'bottom',
+								boundaryGap: true,
+								axisLabel : {
+								show:true,
+								interval: 0, 
+								rotate: 30,
+								margin: 8,
+								formatter: '{value}',
+								textStyle: {color: '#7aff75',fontFamily: 'sans-serif',fontSize: 10,fontStyle: '幼圆',fontWeight: 'bold'}
+								},
+								data : xAxisData
+						    },
+						    yAxis: [
+								        {
+								            type : 'value',
+								            position: 'left',
+								            boundaryGap: [0,0.1],
+								            axisLine : {    // 轴线
+								                show: true,
+								                lineStyle: {
+								                    type: 'solid',
+								                    width: 1
+								                }
+								            },
+								           
+								            axisLabel : {
+								                show:true,
+								                interval: 'auto',    // {number}
+								                margin: 18,
+								                formatter: '{value}',    // Template formatter!
+								                textStyle: {
+								                    color: '#7aff75',
+								                    fontFamily: 'verdana',
+								                    fontSize: 10,
+								                    fontStyle: 'normal',
+								                    fontWeight: 'bold'
+								                }
+								            },
+								            splitLine : {
+								                show:true,
+								                lineStyle: {
+								                    color: '#483d8b',
+								                    type: 'dotted',
+								                    width: 1
+								                }
+								            }
+								        }
+								    ],
+						    series: seriesData
+						};
+			        	
+			        	$("#attackLoading").hide();
+		    			attackMyChart.setOption(option);
+			     	}
+				});
+		
+			 	//end attack漏洞
+				var serviceUserMyChart = echarts.init(document.getElementById('serviceUserId'));
+				var serviceUserOption;
+					$.ajax({
+				        type: "POST",
+				        cache: false,
+				        dataType: "json",
+				        url: "serviceUser.html", 
+				        success: function(obj){
+				        	var titleData=obj.title;
+				        	var legendData=obj.legend;
+				        	var serviceUserList=obj.serviceUserList;
+				        	
+				        	serviceUserOption = {
+								    title : {
+								        text: titleData,
+								        x:'center',
+								        y:'15px',
+								        textStyle:{
+								         	color:'#7aff75'
+								         }
+								    },
+								    tooltip : {
+								        trigger: 'item',
+								        formatter: "{a} <br/>{b} :({d}%)"
+								    },
+								    legend: {
+								    	show:false,
+								    	orient: 'vertical',
+								        left: 'left',
+//								        x:'200',
+//								        y:'bottom',
+								        data: legendData
+								    },
+								    series : [
+								        {
+								            name: '',
+								            type: 'pie',
+								            radius : '55%',
+								            center: ['50%', '60%'],
+								            data:serviceUserList,
+								            itemStyle: {
+								                emphasis: {
+								                    shadowBlur: 10,
+								                    shadowOffsetX: 0,
+								                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+								                },
+								                normal:{ 
+								                	normal : {
+									                    color : 'rgba(255, 255, 64,1)'
+									                },
+					                                label:{ 
+					                                   show: true, 
+					                                   formatter: '{b} : ({d}%)' ,
+					                                   position: 'outer'
+					                                }, 
+					                                labelLine :{show:true}
+					                            } 
+								            }
+								        }
+								    ],
+								    color:[ 
+								     '#ffe074','#ff383f' 
+								     ]
+								};
+				        	serviceUserMyChart.setOption(serviceUserOption);
+							        }
+							    });
+					var orderServiceMyChart = echarts.init(document.getElementById('orderServiceId'));
+					var orderServiceOption;
+						$.ajax({
+					        type: "POST",
+					        cache: false,
+					        dataType: "json",
+					        url: "orderServiceCount.html", 
+					        success: function(obj){
+					        	var titleData=obj.title;
+					        	var typeData=obj.type;
+					        	var innerRingData=obj.innerRing;
+					        	var detailServiceData=obj.detailService;
+					        	
+					        	orderServiceOption = {
+				        			title : {
+								        text: titleData,
+								        x:'center',
+								        y:'15px',
+								        textStyle:{
+								         	color:'#7aff75'
+								         }
+								    },
+								    tooltip: {
+								        trigger: 'item',
+								        formatter: "{a} <br/>{b}:  ({d}%)"
+								    },
+								    legend: {
+								    	show:false,
+								    	orient: 'vertical',
+								        x: 'left',
+								        y:'top',
+								        data:typeData
+								    },
+								    series: [
+								        {
+								            name:'',
+								            type:'pie',
+								            selectedMode: 'single',
+								            radius: [0, '30%'],
+								
+								            label: {
+								                normal: {
+								                    position: 'inner'
+								                }
+								            },
+								            labelLine: {
+								                normal: {
+								                    show: false
+								                }
+								            },
+								            data:innerRingData,
+								            itemStyle:{ 
+					                            normal:{ 
+					                                label:{ 
+					                                   show: true, 
+					                                   formatter: '{b} :  ({d}%)' 
+					                                }, 
+					                                labelLine :{show:true}
+					                            } 
+					                        } 
+								        },
+								        {
+								            name:'',
+								            type:'pie',
+								            radius: ['40%', '55%'],
+								            data:detailServiceData,
+								            itemStyle:{ 
+					                            normal:{ 
+					                                label:{ 
+					                                   show: true, 
+					                                   formatter: '{b} : ({d}%)' 
+					                                }, 
+					                                labelLine :{show:true}
+					                            } 
+					                        } 
+								        }
+								    ],
+								    color:[ 
+										     '#4249ff','#04d8d0','#4249ff','#7cc2fd',
+										     '#7cc2fd','#74fffa','#a3ffa0','#ffe074',
+										     '#9a4aff','#ffb675','#ff383f','#ff7474',
+										     '#ff75bf','#f28afe','#b675ff' 
+										  ]
+								};	        	
+					        	orderServiceMyChart.setOption(orderServiceOption);
+				        	}
+						});
+						
 });
