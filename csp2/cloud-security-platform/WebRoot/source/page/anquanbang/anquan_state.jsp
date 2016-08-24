@@ -152,25 +152,6 @@
 		//$('#content_ul').height(h-l);
 		//$('#content').height(h-t);
 
-		
-		//选项卡切换
-		$('.navlist li:last').css('background-image','none');
-		$('.navlist li').click(function(){
-			var zindex=$(this).index();
-			
-			$('.navlist li').removeClass('none');
-			$(this).addClass('this');
-			$(this).prev('li').addClass('none');
-			$(this).addClass('active').siblings('li').removeClass('active');
-			$(".tabBox .not-used").eq($(this).index()).show().siblings().hide();
-			
-			//地域分布
-			if (zindex == 2) {
-				showSecurityStateMap();
-			}
-			
-					
-		})
 	})
 
 </script>
