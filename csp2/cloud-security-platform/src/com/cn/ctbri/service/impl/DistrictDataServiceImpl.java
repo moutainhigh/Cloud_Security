@@ -92,8 +92,8 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
 		return districtDataDao.getIndustryUserCount();
 	}
 
-	public List getOrderCountTimesAndServiceId(int serviceId) {
-		return districtDataDao.getOrderCountTimesAndServiceId(serviceId);
+	public List getOrderCountTimesAndServiceId(Map<String, Object> paramMap) {
+		return districtDataDao.getOrderCountTimesAndServiceId(paramMap);
 	}
 
 	public List getDaysInYear() {

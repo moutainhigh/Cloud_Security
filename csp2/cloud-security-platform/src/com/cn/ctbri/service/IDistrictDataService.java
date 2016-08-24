@@ -76,7 +76,7 @@ public interface IDistrictDataService {
      * 根据servID获取按日期分组的订单数量
      * @return
      */
-    List getOrderCountTimesAndServiceId(int serviceId);
+    List getOrderCountTimesAndServiceId(Map<String, Object> paramMap);
     /**
      * 获取最近一年内的日期
      * @return

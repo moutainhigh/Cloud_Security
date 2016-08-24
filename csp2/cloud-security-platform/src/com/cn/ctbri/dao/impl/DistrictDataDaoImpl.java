@@ -110,8 +110,8 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
 		return this.getSqlSession().selectList(ns+"getIndustryUserCount");
 	}
 
-	public List getOrderCountTimesAndServiceId(int serviceId) {
-		return this.getSqlSession().selectList(ns+"getOrderCountTimesAndServiceId",serviceId);
+	public List getOrderCountTimesAndServiceId(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"getOrderCountTimesAndServiceId",paramMap);
 	}
 
 	public List getDaysInYear() {

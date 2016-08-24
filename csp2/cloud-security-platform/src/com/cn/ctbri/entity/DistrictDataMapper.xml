@@ -197,11 +197,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 根据servID获取按日期分组的订单数量 -->
     <select id="getOrderCountTimesAndServiceId" resultType="hashmap">
-		SELECT days.dayName,if(isnull(m.count1),0,m.count1) count2 from cs_days days LEFT JOIN
+<!-- 		SELECT days.dayName,if(isnull(m.count1),0,m.count1) count2 from cs_days days LEFT JOIN
 		(SELECT DATE_FORMAT(order1.create_date,'%Y-%m-%d') date1, count(order1.create_date) count1 from cs_order order1 
 		WHERE order1.create_date>=DATE_SUB(NOW(),INTERVAL 1 YEAR) and order1.serviceId=#{serviceId}
 		GROUP BY  date1)m
-		ON days.dayName=m.date1
+		ON days.dayName=m.date1 -->
+		{call pro_getOrderForOneYear(#{beginDate,  mode=IN},  
+                                   #{endDate,  mode=IN},#{serviceId,  mode=IN})}
     </select>
 	
 	<!-- 获取一年内的日期 -->
