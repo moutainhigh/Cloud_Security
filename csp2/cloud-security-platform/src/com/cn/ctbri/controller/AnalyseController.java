@@ -73,6 +73,8 @@ public class AnalyseController {
 	public String settlement(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		Date currentDate = new Date();
+		currentDate.setMonth(3);
+		currentDate.setDate(19);
 		// 1.根据当前时间获取距离一个月前的日期
 		Date lastMonthDate = DateUtils.getBeforeMonthDate(currentDate);
 		Map<String, Integer> dateStrMap = new HashMap<String, Integer>();
@@ -232,7 +234,7 @@ public class AnalyseController {
 				.findServiceUserCount();
 		int serviceUserSize = serviceUserList.size();
 
-		String title = "只订购单次服务的用户数与订购过长期服务的用户数分布情况";
+		String title = "只订购";
 		// 左侧：组装数据格式['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
 		String sbType = "['" + longTerm + "','" + single + "']";
 		// 组装数据
@@ -515,6 +517,13 @@ public class AnalyseController {
 		request.setAttribute("wafEventTypeCount",attackCountList.toString());
 //		String resultJson = jsonObject.toString();// 转成json数据
 		String result = "/source/page/analyse/map";
+		return result;
+	}
+	
+	
+	@RequestMapping(value = "anquanStateUI.html")
+	public String anquanStateUI(HttpServletRequest request) {
+		String result = "/source/page/personalCenter/anquan_state";
 		return result;
 	}
 }

@@ -10,7 +10,6 @@ $(function(){
 	$('.navlist li:last').css('background-image','none');
 	$('.navlist li').click(function(){
 			var zindex=$(this).index();
-			
 			$('.navlist li').removeClass('none');
 			$(this).addClass('this');
 			$(this).prev('li').addClass('none');

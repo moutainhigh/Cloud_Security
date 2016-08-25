@@ -23,6 +23,7 @@
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
+
 <style>
 			.img{
 				display: block;
@@ -152,7 +153,8 @@
 		//$('#content_ul').height(h-l);
 		//$('#content').height(h-t);
 
-	})
+	});
+	
 	function getDate(strDate) {
            var date = eval('new Date(' + strDate.replace(/\d+(?=-[^-]+$)/,
             function (a) { return parseInt(a, 10) - 1; }).match(/\d+/g) + ')');
@@ -315,12 +317,12 @@
                 </div>
             </div>
             <div class="exhibitionBox clearfix">
-                <div class="exhibitionList fl">
-                    <img src="${ctx}/source/images/safe/20160808101501.png" />
-                </div>
-                <div class="exhibitionList fl">
-                    <img src="${ctx}/source/images/safe/20160808101512.png" />
-                </div>
+                 <div class="exhibitionList fl"  id="bugMainId"  style="width:1300px;height:500px;background-color:transparent;">
+              	</div>
+              	<img src="${ctx}/source/img/loading.gif" id="loading" style="width:1300px;height:500px;margin-top:-540px;z-index:999;display:inline-block;"/>
+              	<div class="exhibitionList fl" id="attackMainId"  style="width:1300px;height:500px;background-color:transparent;">
+              	</div>
+              	<img src="${ctx}/source/img/loading.gif" id="attackLoading" style="width:1300px;height:500px;margin-top:-540px;z-index:999;display:inline-block;"/>
                         		
             </div>
         </div>
@@ -328,18 +330,24 @@
         <!-- 安全关注点 -->
         <div class="contentcenter not-used">
             <div class="mapListBox clearfix">
-                <div class="exhibitionList fl"  id="bugMainId"  style="width:1300px;height:500px;background-color:transparent;">
-              	</div>
-              	<img src="${ctx}/source/img/loading.gif" id="loading" style="width:1300px;height:500px;margin-top:-540px;z-index:999;display:inline-block;"/>
-              	<div class="exhibitionList fl" id="attackMainId"  style="width:1300px;height:500px;background-color:transparent;">
-              	</div>
-              	<img src="${ctx}/source/img/loading.gif" id="attackLoading" style="width:1300px;height:500px;margin-top:-540px;z-index:999;display:inline-block;"/>
+            	<div class="ltmit" >
+                    <div id="orderServiceTimes" style="width:1330px;height:300px"></div>
+                </div>
+                <div class="ltmit" style="float:left;position:static;width:470px;height:400px;">
+                   			<!-- 	使用单次服务与长期服务的情况对比 -->
+					<div id="serviceUserId" style="width:470px;height:400px;border:1px solid white;"></div>
+                </div>
+                <div class="ltmit"  style="float:left;position:static;width:780px;height:400px;border:1px solid white;">
+                   			<!-- 内圈为单次服务订单与长期服务订单的对比，外圈为两类订单中各服务订单的对比 -->
+				<div id="orderServiceId" style="width:780px;height:400px;"></div>
+                   		</div>
                 <div class="ltmit" style="width:600px;height:350px">
                     <div id="serviceUseInfoMonth6" style="width:600px;height:350px"></div>
                 </div>
                 <div class="ltmit" style="width:600px;height:350px">
                     <div id="userIndustry" style="width:600px;height:350px"></div>
                 </div>
+
                 <div class="ltmit">
                     <div id="assetPurpose" style="width:540px;height:350px"></div>
                 </div>
@@ -424,11 +432,11 @@
     	<h1 class="heaf">安全帮微信二维码</h1>
     </div>
 	<div class="popBox">
-    	 <p>打开微信，点击右上角的“+”，选择“扫一扫”功能，<br>
+    	 <p>打开微信，点击右上角的“+”，选择“扫一扫”功能，<br/>
 对准下方二维码即可。
 		</p>
            <div class="weinImg" style="text-align:center;">
-           	<img src="${ctx}/source/images/portal/weixin.jpg" alt="">
+           	<img src="${ctx}/source/images/portal/weixin.jpg" alt="" />
            </div> 
     </div>
 

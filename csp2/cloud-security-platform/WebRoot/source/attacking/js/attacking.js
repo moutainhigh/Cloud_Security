@@ -916,7 +916,7 @@ function start(loc, psk) {
         webSocket.send('stop');
         
         d3.select("#events").selectAll("tr.row").remove(); 
-        d3.select("#events").append("tr").attr('class', 'row').html("<td colspan='7'><img src='img/loading.gif' style='margin-top: 6px;'/>&nbsp;<span style='display: inline-block; height: 25px; vertical-align: middle;'>与服务器断开连接，5秒后尝试重新连接...</span></td>");
+        d3.select("#events").append("tr").attr('class', 'row').html("<td colspan='7'><span style='display: inline-block; height: 25px; vertical-align: middle;'>与服务器断开连接，5秒后尝试重新连接...</span></td>");
 
         if (wsDiscTime > settings.wsTimeout) {
         	console.log("与服务器连接困难，不过我们仍在尝试...");

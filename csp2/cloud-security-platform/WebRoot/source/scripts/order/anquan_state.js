@@ -326,7 +326,7 @@ $(function(){
 			   	    })()
 			   	};
 			   	myChart4.setOption(option4);
-		     },
+		     }
 		});
 		   
 		   //用户行业分布
@@ -1042,8 +1042,6 @@ $(function(){
 								    	show:false,
 								    	orient: 'vertical',
 								        left: 'left',
-//								        x:'200',
-//								        y:'bottom',
 								        data: legendData
 								    },
 								    series : [
@@ -1079,7 +1077,7 @@ $(function(){
 								};
 				        	serviceUserMyChart.setOption(serviceUserOption);
 							        }
-							    });
+					});
 					var orderServiceMyChart = echarts.init(document.getElementById('orderServiceId'));
 					var orderServiceOption;
 						$.ajax({
