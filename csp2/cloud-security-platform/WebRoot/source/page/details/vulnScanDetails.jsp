@@ -98,28 +98,7 @@ $("#us").hide("slow");
 });
 });
 })
-/*$(document).ready(function(){
-$('#us').hide();
-var d =$('#beginDate');
-d.mouseover(function(){
-    d.data('lastEnter',new Date().getTime());
-    setTimeout(function(){
-        var t1 = new Date().getTime(),t2 = d.data('lastEnter');
-        //if(t2>0 && t1-t2>=2000){
-            $("#us").show("slow");
-        //}
-    },0);
-}).mouseout(function(){
-    //d.data('lastEnter',0);
-    d.data('lastEnter',new Date().getTime());
-    setTimeout(function(){
-        var t1 = new Date().getTime(),t2 = d.data('lastEnter');
-        //if(t2>0 && t1-t2>=2000){
-            $("#us").hide("slow");
-        //}
-    },2000);
-});
-})*/
+
 </script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <style>
