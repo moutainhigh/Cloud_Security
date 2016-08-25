@@ -307,7 +307,7 @@ public class DistrictDataController {
         paramMap.put("month", lastMonth6);
         List dataList = districtDataService.getVulnscanAlarm(paramMap);
         
-        String colors[] = {"#b675ff","#ffb675","#75ffb6","#fa0008","#f942ff"};
+        String colors[] = {"#52a2e5","#eabf6c","#6bc770","#fa7e7d","#806bff"};
         for(int i = 0; i<levels.length; i++){
         	levelList.add(levelNames[i]);
         	//定义每个月的数值list
@@ -415,7 +415,7 @@ public class DistrictDataController {
     	String wafRes = WafAPIWorker.getWafAlertLevelCountByMonth("6", startDate);
     	
     	//自定义颜色值
-    	String colors[] = {"#b675ff","#ffb675","#75ffb6"};
+    	String colors[] = {"#806bff","#eabf6c","#6bc770"};
     	//解析等级数据
     	JSONArray jsonArray = JSONArray.fromObject(wafRes);
     	if(jsonArray!=null && jsonArray.size()>0){
