@@ -319,10 +319,8 @@
             <div class="exhibitionBox clearfix">
                  <div class="exhibitionList fl"  id="bugMainId"  style="width:1300px;height:500px;background-color:transparent;">
               	</div>
-              	<img src="${ctx}/source/img/loading.gif" id="loading" style="width:1300px;height:500px;margin-top:-540px;z-index:999;display:inline-block;"/>
               	<div class="exhibitionList fl" id="attackMainId"  style="width:1300px;height:500px;background-color:transparent;">
               	</div>
-              	<img src="${ctx}/source/img/loading.gif" id="attackLoading" style="width:1300px;height:500px;margin-top:-540px;z-index:999;display:inline-block;"/>
                         		
             </div>
         </div>

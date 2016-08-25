@@ -617,6 +617,13 @@ $(function(){
 				//start   bug漏洞
 				   window.dateMaxIndex=0;
 			        var myChart = echarts.init(document.getElementById('bugMainId'));
+			        myChart.showLoading({
+			        	  text: '正在加载中',
+			        	  color: '#c23531',
+			        	  textColor: '#073763',
+			        	  maskColor: 'rgba(255, 255, 255, 0)',
+			        	  zlevel: 0
+			        	});
 					var option;
 			//         var option = {
 			// 		    title: {
@@ -696,7 +703,7 @@ $(function(){
 				        var data= eval ("(" + obj.listResult + ")");
 				        var legendData= obj.names;
 			// 	        	从后台得到返回的值，是一个json对象。 
-				        	var startDate=obj.startTime;
+				        	var　startDate=obj.startTime;
 				        	var endDate=obj.endTime;
 			// 	        	生成开始日期~今天的日期列表
 				        	var startTime=getDate(startDate);
@@ -809,7 +816,7 @@ $(function(){
 							    ],
 					    series: seriesData
 					};		
-							$("#loading").hide();
+				  			myChart.hideLoading();
 			    			myChart.setOption(option);
 				     	},
 				     	error:function(event){
@@ -825,6 +832,13 @@ $(function(){
 			 	//start attack漏洞
 			 window.dateMaxIndex=0;
 		        var attackMyChart = echarts.init(document.getElementById('attackMainId'));
+		        attackMyChart.showLoading({
+		        	  text: '正在加载中',
+		        	  color: '#c23531',
+		        	  textColor: '#073763',
+		        	  maskColor: 'rgba(255, 255, 255, 0)',
+		        	  zlevel: 0
+		        	});
 				var option;
 		//         var option = {
 		// 		    title: {
@@ -904,7 +918,7 @@ $(function(){
 		// 	        alert(data);
 			        var legendData= obj.names;
 		// 	        	从后台得到返回的值，是一个json对象。 
-			        	var startDate=obj.startTime;
+			        	var　startDate=obj.startTime;
 			        	var endDate=obj.endTime;
 		// 	        	生成开始日期~今天的日期列表
 			        	var startTime=getDate(startDate);
@@ -1007,7 +1021,7 @@ $(function(){
 						    series: seriesData
 						};
 			        	
-			        	$("#attackLoading").hide();
+			        	attackMyChart.hideLoading();
 		    			attackMyChart.setOption(option);
 			     	}
 				});
