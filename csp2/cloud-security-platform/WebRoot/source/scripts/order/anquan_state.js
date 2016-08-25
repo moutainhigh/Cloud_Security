@@ -303,7 +303,7 @@ $(function(){
 			   	    },
 			   	    series : (function (){
 			   	        var series = [];
-			   	        var colors = ["#b675ff","#ffb675","#757aff","#ff757a","#f942ff","#fffa75"];
+			   	        var colors = ["#52a5e5","#eabf6c","#fa7e7d","#6bc770","#806bff","#ddde73"];
 			   	        for (var i = 0; i < 6; i++) {
 			   	        	var list = [];
 			   	        	list.push(dataArray[i]);
@@ -390,7 +390,7 @@ $(function(){
 				   	            type:'bar',
 				   	            data:obj.userList,
 					   	        itemStyle:{
-					                normal:{color:'#757aff'}
+					                normal:{color:'#52a2e5'}
 					            },
 				   	            markPoint : {
 				   	                data : [
@@ -404,7 +404,7 @@ $(function(){
 				   	            type:'bar',
 				   	            data:obj.orderList,
 					   	        itemStyle:{
-					                normal:{color:'#ff757a'}
+					                normal:{color:'#5aba5f'}
 					            },
 				   	            markPoint : {
 				   	        		data : [
@@ -546,7 +546,7 @@ $(function(){
 					   			            }
 					   			        }
 					   			    ],
-					   		color:["#b675ff","#ff757a","#757aff","#f942ff","#fffa75","#38fff8"]
+					   		color:["#6a7e7d","#eabf6c","#ddde73","#6bc770","#52a2e5","#806bff"]
 					   	};
 					   	myChart8.setOption(option8);
 				     },
@@ -703,7 +703,7 @@ $(function(){
 				        var data= eval ("(" + obj.listResult + ")");
 				        var legendData= obj.names;
 			// 	        	从后台得到返回的值，是一个json对象。 
-				        	var　startDate=obj.startTime;
+				        	var startDate=obj.startTime;
 				        	var endDate=obj.endTime;
 			// 	        	生成开始日期~今天的日期列表
 				        	var startTime=getDate(startDate);
@@ -918,7 +918,7 @@ $(function(){
 		// 	        alert(data);
 			        var legendData= obj.names;
 		// 	        	从后台得到返回的值，是一个json对象。 
-			        	var　startDate=obj.startTime;
+			        	var startDate=obj.startTime;
 			        	var endDate=obj.endTime;
 		// 	        	生成开始日期~今天的日期列表
 			        	var startTime=getDate(startDate);
