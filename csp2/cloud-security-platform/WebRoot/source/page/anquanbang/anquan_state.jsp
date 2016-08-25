@@ -288,7 +288,7 @@
 		<!-- 安全趋势 -->
         <div class="contentcenter not-used">
             <div class="point clearfix">
-            	<h5 class="fl">重大风险预警</h5>
+            	<h5 class="fl" style="color:white">重大风险预警</h5>
                 <div class="pont fl">
                 	<c:if test="${wafAlarmLevel==4}">
 	                	<span style="background-color: #b10930; border-right:1px solid #fff;">SEVERE</span>
