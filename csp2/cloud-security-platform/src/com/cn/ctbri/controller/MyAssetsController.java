@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ import com.cn.ctbri.service.IDistrictDataService;
 import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IUserService;
+import com.cn.ctbri.util.AddressUtils;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.GetNetContent;
 /**
@@ -259,6 +261,15 @@ public class MyAssetsController {
 				asset.setStatus(0);//资产状态(1：已验证，0：未验证)
 			}else if(globle_user.getType()==3){
 				asset.setStatus(1);//资产状态(1：已验证，0：未验证)
+			}
+			//获得资产地址所在的省份
+			String province = getProvinceInfo(addr);
+			if(province!=null&&!"".equals(province)){
+				//更新资产对应的省份
+				String provinceId = assetService.getProvinceIdByName(province.substring(0,2));
+				asset.setAssetProvince(provinceId);
+			}else{
+			    asset.setAssetProvince("35");
 			}
 			asset.setName(name);
 			asset.setAddr(addr);
@@ -612,6 +623,15 @@ public class MyAssetsController {
 			asset.setDistrictId(districtId);
 			asset.setCity(city);
 			asset.setPurpose(purpose);
+			//获得资产地址所在的省份
+			String province = getProvinceInfo(assetAddr);
+			if(province!=null&&!"".equals(province)){
+				//更新资产对应的省份
+				String provinceId = assetService.getProvinceIdByName(province.substring(0,2));
+				asset.setAssetProvince(provinceId);
+			}else{
+			    asset.setAssetProvince("35");
+			}
 			assetService.updateAsset(asset);
 			
 		} catch (Exception e) {
@@ -1000,7 +1020,15 @@ public class MyAssetsController {
 			if(!matcher2.find()){
 				addr="http://"+addr.trim();
 			}
-			
+			//获得资产地址所在的省份
+			String province = getProvinceInfo(addr);
+			if(province!=null&&!"".equals(province)){
+				//更新资产对应的省份
+				String provinceId = assetService.getProvinceIdByName(province.substring(0,2));
+				asset.setAssetProvince(provinceId);
+			}else{
+			    asset.setAssetProvince("35");
+			}
 			asset.setName(name);
 			asset.setAddr(addr);
 			asset.setPurpose(purpose);
@@ -1189,5 +1217,116 @@ public class MyAssetsController {
 			}
 		}
 	}
-	
+	/**
+     * 功能描述：查询资产对应的省份
+     * 参数描述：HttpServletRequest request
+	 * @throws Exception 
+     *       @time 2016-08-18
+     */
+	public static String getProvinceInfo(String addr){
+		 String IpAddressRegex ="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
+		String hostnameRegex ="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
+		String addInfo="";
+		boolean ipflag=false;
+		boolean flag=false;
+	  String assetAddr="";
+	  String ipAsset="";
+	  String province="";
+	  List<String> IpInfo = new ArrayList();
+	  AddressUtils addressUtils = new  AddressUtils();
+	  try{
+		//判断http协议
+		if(addr.indexOf("http://")!=-1){
+		  	if(addr.substring(addr.length()-1).indexOf("/")!=-1){
+		  		addInfo = addr.trim().substring(7,addr.length()-1);
+		  	}else{
+		  		addInfo = addr.trim().substring(7,addr.length());
+		  	}
+		}else if(addr.indexOf("https://")!=-1){
+			if(addr.substring(addr.length()-1).indexOf("/")!=-1){
+		  		addInfo = addr.trim().substring(8,addr.length()-1);
+		  	}else{
+		  		addInfo = addr.trim().substring(8,addr.length());
+		  	}
+		}	
+		//判断ip地址是否包含端口号
+		if(addInfo.indexOf(":")!=-1){
+			String addArr[] = addInfo.split(":");
+			ipflag = addArr[0].matches(IpAddressRegex);
+			if(ipflag==false){
+				//判断是否是域名
+				flag=addArr[0].matches(hostnameRegex);
+				if(flag){
+					assetAddr=addArr[0];
+				}
+			}else{
+				ipAsset=addArr[0];
+			}
+		}else{
+			//判断是否是ip地址
+			ipflag = addInfo.matches(IpAddressRegex);
+			if(ipflag){
+				ipAsset=addInfo;
+			}
+		    flag=addInfo.matches(hostnameRegex);
+		    if(flag){
+		    	assetAddr=addInfo;
+		    }
+		}
+		//循环域名，判断域名对应的ip地址，并根据ip地址获取省份；
+		if(assetAddr!=null&&!"".equals(assetAddr)){
+			 System.out.println("addInfo=="+addInfo);
+			    //根据域名找出域名绑定下得所有ip地址
+				InetAddress[] addresses=InetAddress.getAllByName(addInfo);
+				for(InetAddress addr1:addresses)
+				{
+					IpInfo.add(addr1.getHostAddress());
+		      }
+				
+			//根据ip地址查询省份
+				if(IpInfo!=null&&!"".equals(IpInfo)){
+					System.out.println("ip=="+IpInfo.get(0));
+					province=addressUtils.GetAddressByIp(IpInfo.get(0));
+				}
+				
+		}
+		if(ipAsset!=null&&!"".equals(ipAsset)){
+			province=addressUtils.GetAddressByIp(ipAsset);
+		}
+	  }catch(Exception e){
+		  e.printStackTrace();
+		  province="";
+	  }
+		return province;
+	}
+	/**
+	 * 功能描述： 更新所有的资产对应的省份
+	 * 参数描述： Model model
+	 * @throws Exception 
+	 * @throws Exception 
+	 *		 @time 2015-1-16
+	 */
+	@RequestMapping(value="/updateAssetProvince.html")
+	public void updateAssetProvince(HttpServletRequest request) throws Exception{
+		//查询所有的资产列表
+		List assetInfo = assetService.findAllAssetInfo();
+		if(assetInfo!=null&&assetInfo.size()>0){
+			for(int i=0;i<assetInfo.size();i++){
+				System.out.println("1=="+i);
+				Asset asset =(Asset)assetInfo.get(i);
+				String assetAddr = asset.getAddr();
+				//获得资产地址所在的省份
+				String province = getProvinceInfo(assetAddr);
+				if(province!=null&&!"".equals(province)){
+					//更新资产对应的省份
+					String provinceId = assetService.getProvinceIdByName(province.substring(0,2));
+					asset.setAssetProvince(provinceId);
+				}else{
+				    asset.setAssetProvince("35");
+				}
+				assetService.updateAsset(asset);
+			}
+			System.out.println("更新资产所在的省份完成!");
+		}
+	}
 }
