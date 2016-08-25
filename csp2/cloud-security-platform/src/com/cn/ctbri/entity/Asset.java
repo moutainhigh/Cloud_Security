@@ -28,7 +28,7 @@ public class Asset {
 	
 	private String city;//物理位置：市
 	private String purpose;//资产用途
-	private String assetProvince;//资产所在的省份
+	private int assetProvince;//资产所在的省份
 	public String getAddrType() {
 		return addrType;
 	}
@@ -120,11 +120,12 @@ public class Asset {
 	public void setPurpose(String purpose) {
 		this.purpose = purpose;
 	}
-	public String getAssetProvince() {
+	public int getAssetProvince() {
 		return assetProvince;
 	}
-	public void setAssetProvince(String assetProvince) {
+	public void setAssetProvince(int assetProvince) {
 		this.assetProvince = assetProvince;
 	}
+	
 	
 }
