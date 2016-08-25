@@ -153,9 +153,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 近1个小时内漏洞的数据 -->
     <select id="getVulnscanAlarmOneHour" resultType="hashmap" parameterType="hashmap">
-            select a.name,a.count from 
+<!--             select a.name,a.count from 
 			(select name,serviceId,count(name) count,alarm_time from cs_alarm group by name) a
 		    where a.serviceId=1 and a.name &lt;&gt; '' and a.alarm_time &gt;= #{beginDate} and a.alarm_time &lt;= #{endDate}
+ -->		    
+		    select name,serviceId,count(name) count,alarm_time from cs_alarm where alarm_time &gt;= #{beginDate} and alarm_time &lt;= #{endDate} and serviceId=1 and name &lt;&gt; '' group by name
     </select>
 	
 	<!-- 获取漏洞情况top20 -->
