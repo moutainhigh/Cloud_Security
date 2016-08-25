@@ -267,9 +267,9 @@ public class MyAssetsController {
 			if(province!=null&&!"".equals(province)){
 				//更新资产对应的省份
 				String provinceId = assetService.getProvinceIdByName(province.substring(0,2));
-				asset.setAssetProvince(provinceId);
+				asset.setAssetProvince(Integer.parseInt(provinceId));
 			}else{
-			    asset.setAssetProvince("35");
+			    asset.setAssetProvince(35);
 			}
 			asset.setName(name);
 			asset.setAddr(addr);
@@ -628,9 +628,9 @@ public class MyAssetsController {
 			if(province!=null&&!"".equals(province)){
 				//更新资产对应的省份
 				String provinceId = assetService.getProvinceIdByName(province.substring(0,2));
-				asset.setAssetProvince(provinceId);
+				asset.setAssetProvince(Integer.parseInt(provinceId));
 			}else{
-			    asset.setAssetProvince("35");
+			    asset.setAssetProvince(35);
 			}
 			assetService.updateAsset(asset);
 			
@@ -1025,9 +1025,9 @@ public class MyAssetsController {
 			if(province!=null&&!"".equals(province)){
 				//更新资产对应的省份
 				String provinceId = assetService.getProvinceIdByName(province.substring(0,2));
-				asset.setAssetProvince(provinceId);
+				asset.setAssetProvince(Integer.parseInt(provinceId));
 			}else{
-			    asset.setAssetProvince("35");
+			    asset.setAssetProvince(35);
 			}
 			asset.setName(name);
 			asset.setAddr(addr);
@@ -1320,9 +1320,9 @@ public class MyAssetsController {
 				if(province!=null&&!"".equals(province)){
 					//更新资产对应的省份
 					String provinceId = assetService.getProvinceIdByName(province.substring(0,2));
-					asset.setAssetProvince(provinceId);
+					asset.setAssetProvince(Integer.parseInt(provinceId));
 				}else{
-				    asset.setAssetProvince("35");
+				    asset.setAssetProvince(35);
 				}
 				assetService.updateAsset(asset);
 			}
