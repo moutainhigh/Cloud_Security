@@ -546,7 +546,7 @@ $(function(){
 					   			            }
 					   			        }
 					   			    ],
-					   		color:["#6a7e7d","#eabf6c","#ddde73","#6bc770","#52a2e5","#806bff"]
+					   		color:["#fa7e7d","#eabf6c","#ddde73","#6bc770","#52a2e5","#806bff"]
 					   	};
 					   	myChart8.setOption(option8);
 				     },
