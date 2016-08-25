@@ -696,7 +696,7 @@ $(function(){
 				        var data= eval ("(" + obj.listResult + ")");
 				        var legendData= obj.names;
 			// 	        	从后台得到返回的值，是一个json对象。 
-				        	var　startDate=obj.startTime;
+				        	var startDate=obj.startTime;
 				        	var endDate=obj.endTime;
 			// 	        	生成开始日期~今天的日期列表
 				        	var startTime=getDate(startDate);
@@ -904,7 +904,7 @@ $(function(){
 		// 	        alert(data);
 			        var legendData= obj.names;
 		// 	        	从后台得到返回的值，是一个json对象。 
-			        	var　startDate=obj.startTime;
+			        	var startDate=obj.startTime;
 			        	var endDate=obj.endTime;
 		// 	        	生成开始日期~今天的日期列表
 			        	var startTime=getDate(startDate);
