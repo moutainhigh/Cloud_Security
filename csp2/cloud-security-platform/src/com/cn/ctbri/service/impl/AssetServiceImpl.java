@@ -141,4 +141,14 @@ public class AssetServiceImpl implements IAssetService{
 	public Asset findByOrderAssetId(int orderAssetId) {
 		return assetDao.findByOrderAssetId(orderAssetId);
 	}
+	@Override
+	public List<Asset> findAllAssetInfo() {
+		// TODO Auto-generated method stub
+		return assetDao.findAllAssetInfo();
+	}
+	@Override
+	public String getProvinceIdByName(String provinceName) {
+		// TODO Auto-generated method stub
+		return assetDao.getProvinceIdByName(provinceName);
+	}
 }
