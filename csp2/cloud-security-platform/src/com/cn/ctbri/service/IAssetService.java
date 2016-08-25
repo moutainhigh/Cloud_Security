@@ -92,7 +92,15 @@ public interface IAssetService {
 	List<Asset> findByTask(Task task);
 	
 	Asset findByOrderAssetId(int orderAssetId);
+	 /**
+     * 功能描述： 查询所有资产
+     *       @time 2015-3-9
+     */
+	List<Asset> findAllAssetInfo();
 
-
-	
+	 /**
+     * 功能描述： 查询所有资产
+     *       @time 2016-8-24
+     */
+	String getProvinceIdByName(String provinceName);
 }
