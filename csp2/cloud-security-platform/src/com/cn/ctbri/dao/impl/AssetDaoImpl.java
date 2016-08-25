@@ -137,4 +137,14 @@ public class AssetDaoImpl extends DaoCommon implements AssetDao{
 	public Asset findByOrderAssetId(int orderAssetId) {
 		return this.getSqlSession().selectOne(ns+"findByOrderAssetId", orderAssetId);
 	}
+	@Override
+	public List<Asset> findAllAssetInfo() {
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectList(ns+"findAllAsset");
+	}
+	@Override
+	public String getProvinceIdByName(String provinceName) {
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectOne(ns+"getProvinceIdByName", provinceName);
+	}
 }
