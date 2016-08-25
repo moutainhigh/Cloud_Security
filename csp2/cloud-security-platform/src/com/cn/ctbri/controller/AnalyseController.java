@@ -70,7 +70,7 @@ public class AnalyseController {
 	 */
 	@RequestMapping(value = "bug.html", method = RequestMethod.POST)
 	@ResponseBody
-	public String settlement(HttpServletRequest request,
+	public String bugCount(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		Date currentDate = new Date();
 		currentDate.setMonth(3);
