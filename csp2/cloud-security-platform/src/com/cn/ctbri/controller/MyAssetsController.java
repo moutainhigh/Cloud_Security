@@ -1318,9 +1318,14 @@ public class MyAssetsController {
 				//获得资产地址所在的省份
 				String province = getProvinceInfo(assetAddr);
 				if(province!=null&&!"".equals(province)){
+					System.out.println("i=="+i);
+					System.out.println("province=="+province);
 					//更新资产对应的省份
 					String provinceId = assetService.getProvinceIdByName(province.substring(0,2));
-					asset.setAssetProvince(Integer.parseInt(provinceId));
+					if(provinceId!=null&&!"".equals(provinceId)){
+						asset.setAssetProvince(Integer.parseInt(provinceId));
+					}
+					
 				}else{
 				    asset.setAssetProvince(35);
 				}
