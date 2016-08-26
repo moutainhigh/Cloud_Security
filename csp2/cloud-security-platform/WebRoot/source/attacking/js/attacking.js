@@ -23,7 +23,7 @@ var settings = {
     linkSiblings: false,
 
     tableRows: 8,
-    wsHost: "ws://127.0.0.1:8080/csp/websocket",
+    wsHost: "ws://"+wsurl+"/websocket",
     psk: "135de9e2fb6ae653e45f06ed18fbe9a7",
     wsTimeout: 30000,
     pruneInterval: 3600,
@@ -82,9 +82,10 @@ svg.append("defs")
     .attr("stdDeviation", 2);
 
 //设置colorizer为自定义的20种颜色
-var colorizer = d3.scale.ordinal().range(["#A7734B","#4BA74D","#C95399","#5494BB","#B1A135",
-		"#BA4A52", "#9655A6","#465BD3","#83A74B","#4879CA","#469337", "#C2964B", 
-		"#BD4ED1", "#55A1A6","#C0473E", "#CBC364","#4646BD","#A67424","#7D63B0","#9EBE75"]);
+var colorizer = d3.scale.ordinal().range([
+		"#806bff","#fffb74", "#ff383e","#a3ffa1","#4248ff","#52a3e5","#7aff74", 
+		"#f2c304", "#7b008c","#dee700", "#ff6300","#673ab7","#e51c23","#009688",
+		"#cddc39","#ddde73","#fa7e7d","#6bc770", "#0665bf","#ebbf6c"]);
 
 //返回添加过title的字符串
 function spanWrap(content, classes, title) {
