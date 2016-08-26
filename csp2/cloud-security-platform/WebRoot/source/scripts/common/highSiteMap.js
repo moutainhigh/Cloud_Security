@@ -176,7 +176,6 @@ function showHackerMap() {
 	  zlevel: 0
 	});
 	
-	alert("aaa");
 	//后台获取数据
     $.ajax({
            type : "post",
@@ -190,13 +189,14 @@ function showHackerMap() {
 			   if(null!=dataList && dataList.length>0){
 					for (var i = 0; i < dataList.length; i++) {
 						var value = [];
-						value.push(dataList[i].longitude);
-						value.push(dataList[i].latitude);
+						 var longitude = dataList[i].longitude;
+						 var latitude = dataList[i].latitude;
+						value.push(longitude);
+						value.push(latitude);
 						value.push(dataList[i].val);
 						
 						var name = getDistrictName(dataList[i].name);
 						dataValue[i]={'name':name,'value':value};
-						alert(name +':'+value);
 					}
 				}
 				myChart.hideLoading();
