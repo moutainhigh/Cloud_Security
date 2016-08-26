@@ -69,4 +69,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
           num = num-1
 		  where id = #{id}
 	</update>
+	
+	<select id="findUsedByParam" resultType="com.cn.ctbri.entity.API" parameterType="hashmap">
+        select *
+        from cs_api
+		WHERE 1 = 1
+		<if test="api_type != null">
+			AND api_type=#{api_type}
+		</if>
+		<if test="orderId != null">
+			AND orderId=#{orderId}
+		</if>
+    </select>
 </mapper>
