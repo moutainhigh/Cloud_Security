@@ -67,6 +67,7 @@ import sun.misc.BASE64Decoder;
 import com.cn.ctbri.common.InternalWorker;
 import com.cn.ctbri.common.ManagerWorker;
 import com.cn.ctbri.constant.WarnType;
+import com.cn.ctbri.entity.API;
 import com.cn.ctbri.entity.APINum;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Order;
@@ -258,30 +259,40 @@ public class N_VulnscanService {
 		
 	//订单操作
 	@PUT
-    @Path("/order/{orderId}")
+    @Path("/order/{orderId}/{token}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String VulnScan_opt_orderTask(@PathParam("orderId") String orderId, String dataJson) {
+	public String VulnScan_opt_orderTask(@PathParam("token") String token, @PathParam("orderId") String orderId, String dataJson) {
 		JSONObject json = new JSONObject();
 		try {
-			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
-			String opt = jsonObj.getString("opt");
-			Order o = orderService.findOrderByOrderId(orderId);
-//			OrderTask ot = orderTaskService.findByOrderId(orderId);
-			String result = InternalWorker.vulnScanOptOrderTask(orderId,opt);
-	        if(result.equals("success")){
-//	        	if(o.getStatus()==4){
-	        	if("stop".equals(opt)){
-	        		o.setStatus(5);//stop
-//	        	}else if(o.getStatus()==5){
-	        	}else if("resume".equals(opt)){
-	        		o.setStatus(4);//start
-	        	}
-	        	orderService.update(o);
-	        	json.put("code", "200");
-	        }else{
-	        	json.put("code", "404");
-	        	json.put("message", "订单操作失败");
-	        }			
+			//通过token查询user
+			User user = userService.findUserByToken(token);
+			if(token!=null && token!="" && user!=null){
+				JSONObject jsonObj = new JSONObject().fromObject(dataJson);
+				String opt = jsonObj.getString("opt");
+				Order o = orderService.findOrderByOrderId(orderId);
+	//			OrderTask ot = orderTaskService.findByOrderId(orderId);
+				String result = InternalWorker.vulnScanOptOrderTask(orderId,opt);
+		        if(result.equals("success")){
+	//	        	if(o.getStatus()==4){
+		        	if("stop".equals(opt)){
+		        		o.setStatus(5);//stop
+	//	        	}else if(o.getStatus()==5){
+		        	}else if("resume".equals(opt)){
+		        		o.setStatus(4);//start
+		        	}
+		        	orderService.update(o);
+		        	
+		        	this.countAPI(token, orderId, null, 1, 2);
+		        	
+		        	json.put("code", "200");
+		        }else{
+		        	json.put("code", "404");
+		        	json.put("message", "订单操作失败");
+		        }
+			}else{
+				json.put("code", 422);
+				json.put("message", "token无效");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			json.put("code", "404");
@@ -300,20 +311,17 @@ public class N_VulnscanService {
 			//通过token查询user
 			User user = userService.findUserByToken(token);
 			if(token!=null && token!="" && user!=null){
-				Map<String, Object> paramMap = new HashMap<String, Object>();
-				paramMap.put("apiKey", user.getApikey());
-		        paramMap.put("apiId", 1);
 		        //查找此项服务的API订单
-				List<OrderAPI> oAPIList = orderAPIService.findByParam(paramMap);
-				if(user.getType()==3 || (user.getType()==2 && user.getApi1()>0 && oAPIList.size()>0)){
-					//服务结束时间
-					Date end = oAPIList.get(0).getEnd_date();
-					//当前时间
-					Date now = new Date();
-					if(now.compareTo(end)<=0){
+//				List<OrderAPI> oAPIList = orderAPIService.findByParam(paramMap);
+//				if(user.getType()==3 || (user.getType()==2 && user.getApi1()>0 && oAPIList.size()>0)){
+//					//服务结束时间
+//					Date end = oAPIList.get(0).getEnd_date();
+//					//当前时间
+//					Date now = new Date();
+//					if(now.compareTo(end)<=0){
 						//查询可以用的api订单，按时间先后
-						List<OrderAPI> userableList = orderAPIService.findUseableByParam(paramMap);
-						if(userableList.size()>0){
+//						List<OrderAPI> userableList = orderAPIService.findUseableByParam(paramMap);
+//						if(userableList.size()>0){
 							Order order = orderService.findOrderByOrderId(orderId);
 							if(order!=null){
 								//taskId 不空取任务信息，为空取订单状态
@@ -340,7 +348,7 @@ public class N_VulnscanService {
 									}
 								}else{
 									Map<String,Object> param = new HashMap<String,Object>();
-									paramMap.put("orderId", orderId);
+									param.put("orderId", orderId);
 									List t= taskService.findTaskByOrderId(param);
 				//					if(t.size()>0){
 				//						t.setExecuteTime(DateUtils.dateToString(t.getExecute_time()));
@@ -360,41 +368,21 @@ public class N_VulnscanService {
 								json.put("code", 421);
 								json.put("message", "订单不存在");
 							}
-							//更新api数量 add by tangxr 2016-4-9
-//					        user.setApi(1);
-//					        user.setCount(-1);
-//					        userService.updateCount(user);
 							
-							OrderAPI orderAPI = userableList.get(0);
-					        orderAPIService.updateCount(orderAPI);
-					        
-					        //insert到统计表
-							APINum num = new APINum();
-							num.setApikey(user.getApikey());
-							num.setService_type(1);
-							num.setApi_type(3);//1表登录，2注销
-							num.setStatus(1);
-							num.setCreate_time(new Date());
-							
-							num.setApiId(orderAPI.getId());
-							num.setToken(token);
-							num.setOrderId(orderId);
-							num.setTaskId(Integer.parseInt(taskId));
-							userService.insertAPINum(num);
-							ManagerWorker.createAPINum(user.getApikey(), 1, 3, 1);
-						}else{
-							json.put("code", 425);
-							json.put("message", "购买的服务次数已用完，请重新购买");
-						}
-						
-					}else{
-						json.put("code", 424);
-						json.put("message", "服务已过期，请重新购买");
-					}
-				}else{
-					json.put("code", 423);
-					json.put("message", "用户无权限");
-				}
+							this.countAPI(token, orderId, null, 1, 3);
+//						}else{
+//							json.put("code", 425);
+//							json.put("message", "购买的服务次数已用完，请重新购买");
+//						}
+//						
+//					}else{
+//						json.put("code", 424);
+//						json.put("message", "服务已过期，请重新购买");
+//					}
+//				}else{
+//					json.put("code", 423);
+//					json.put("message", "用户无权限");
+//				}
 				
 			}else{
 				json.put("code", 422);
@@ -419,21 +407,18 @@ public class N_VulnscanService {
 			//通过token查询user
 			User user = userService.findUserByToken(token);
 			if(token!=null && token!="" && user!=null){
-				Map<String, Object> paramMap = new HashMap<String, Object>();
-				paramMap.put("apiKey", user.getApikey());
-		        paramMap.put("apiId", 1);
 		        //查找此项服务的API订单
-				List<OrderAPI> oAPIList = orderAPIService.findByParam(paramMap);
-				if(user.getType()==3 || (user.getType()==2 && user.getApi1()>0 && oAPIList.size()>0)){
-					//服务结束时间
-					Date end = oAPIList.get(0).getEnd_date();
-					//当前时间
-					Date now = new Date();
-					if(now.compareTo(end)<=0){
+//				List<OrderAPI> oAPIList = orderAPIService.findByParam(paramMap);
+//				if(user.getType()==3 || (user.getType()==2 && user.getApi1()>0 && oAPIList.size()>0)){
+//					//服务结束时间
+//					Date end = oAPIList.get(0).getEnd_date();
+//					//当前时间
+//					Date now = new Date();
+//					if(now.compareTo(end)<=0){
 						
 						//查询可以用的api订单，按时间先后
-						List<OrderAPI> userableList = orderAPIService.findUseableByParam(paramMap);
-						if(userableList.size()>0){
+//						List<OrderAPI> userableList = orderAPIService.findUseableByParam(paramMap);
+//						if(userableList.size()>0){
 							Order order = orderService.findOrderByOrderId(orderId);
 							if(order!=null){
 								//taskId 不空取任务信息，为空取订单状态
@@ -449,42 +434,23 @@ public class N_VulnscanService {
 							}else{
 								json.put("code", 421);
 								json.put("message", "订单不存在");
-							}
-							//更新api数量 add by tangxr 2016-4-9
-//					        user.setApi(1);
-//					        user.setCount(-1);
-//					        userService.updateCount(user);
-							
-							OrderAPI orderAPI = userableList.get(0);
-					        orderAPIService.updateCount(orderAPI);
+							}							
 					        
-					        //insert到统计表
-							APINum num = new APINum();
-							num.setApikey(user.getApikey());
-							num.setService_type(1);
-							num.setApi_type(4);//1表登录，2注销
-							num.setStatus(1);
-							num.setCreate_time(new Date());
+							this.countAPI(token, orderId, taskId, 1, 4);
 							
-							num.setApiId(orderAPI.getId());
-							num.setToken(token);
-							num.setOrderId(orderId);
-							num.setTaskId(Integer.parseInt(taskId));
-							userService.insertAPINum(num);
-							ManagerWorker.createAPINum(user.getApikey(), 1, 4, 1);
-						}else{
-							json.put("code", 425);
-							json.put("message", "购买的服务次数已用完，请重新购买");
-						}
-						
-					}else{
-						json.put("code", 424);
-						json.put("message", "服务已过期，请重新购买");
-					}
-				}else{
-					json.put("code", 423);
-					json.put("message", "用户无权限");
-				}
+//						}else{
+//							json.put("code", 425);
+//							json.put("message", "购买的服务次数已用完，请重新购买");
+//						}
+//						
+//					}else{
+//						json.put("code", 424);
+//						json.put("message", "服务已过期，请重新购买");
+//					}
+//				}else{
+//					json.put("code", 423);
+//					json.put("message", "用户无权限");
+//				}
 			}else{
 				json.put("code", 422);
 				json.put("message", "token无效");
@@ -497,6 +463,34 @@ public class N_VulnscanService {
 		return json.toString();
     }
 		
+	//add by tangxr 2016-8-25 统计api
+	public void countAPI(String token, String orderId, String taskId, int service_type, int api_type){
+		User user = userService.findUserByToken(token);
+		Map<String, Object> param = new HashMap<String, Object>();
+        param.put("api_type", 1);
+        param.put("orderId", orderId);
+        API used = orderAPIService.findUsedByParam(param);
+		
+		//insert到统计表
+		APINum num = new APINum();
+		num.setApikey(user.getApikey());
+		num.setService_type(service_type);
+		num.setApi_type(api_type);//1表登录，2注销
+		num.setStatus(1);
+		num.setCreate_time(new Date());
+		
+		num.setApiId(used.getApiId());
+		num.setToken(token);
+		num.setOrderId(orderId);
+		if(taskId!=null){
+			num.setTaskId(Integer.parseInt(taskId));
+		}
+		userService.insertAPINum(num);
+		ManagerWorker.createAPINum(user.getApikey(), service_type, api_type, 1);
+		//end
+	}
+	
+	
 	private URL base = this.getClass().getResource("");
 	//获取report
 	@POST
@@ -507,6 +501,9 @@ public class N_VulnscanService {
 			//查找订单
 			Order order = orderService.findOrderByOrderId(orderId);
 			if(order!=null){
+				
+				this.countAPI(token, orderId, null, 1, 5);
+				
 	            String group_flag = null;
 	            String imgPie = null;
 	            String imgBar = null;

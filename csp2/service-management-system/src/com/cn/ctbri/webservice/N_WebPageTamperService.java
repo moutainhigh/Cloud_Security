@@ -67,6 +67,7 @@ import sun.misc.BASE64Decoder;
 import com.cn.ctbri.common.InternalWorker;
 import com.cn.ctbri.common.ManagerWorker;
 import com.cn.ctbri.constant.WarnType;
+import com.cn.ctbri.entity.API;
 import com.cn.ctbri.entity.APINum;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Order;
@@ -129,99 +130,108 @@ public class N_WebPageTamperService {
 					//当前时间
 					Date now = new Date();
 					if(now.compareTo(end)<=0){
-						JSONObject jsonObj = new JSONObject().fromObject(dataJson);
-						//单次，长期
-//						String scanMode = jsonObj.getString("scanMode");
-						//扫描方式（正常、快速、全量）
-//						String scanType = jsonObj.getString("scanType");
-						//开始时间
-						String startTime = jsonObj.getString("startTime");
-						//结束时间
-						String endTime = jsonObj.getString("endTime");
-					    //周期
-						String scanPeriod = jsonObj.getString("scanPeriod");
-						//检测深度
-						String scanDepth = jsonObj.getString("scanDepth");
-						//最大页面数
-//						String maxPages = jsonObj.getString("maxPages");
-//						//策略
-//						String stategy = jsonObj.getString("stategy");
-						//目标地址，可以多个
-						JSONArray targetArray = jsonObj.getJSONArray("targetURLs");
-						//指定厂家设备，可以多个
-						JSONArray customArray = jsonObj.getJSONArray("customManus");
-						//生成订单id，当前日期加5位随机数
-						SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
-						String orderDate = odf.format(new Date());
-				        String orderId = orderDate+String.valueOf(Random.fivecode());
-						//新增订单
-				        Order order = new Order();
-				        order.setId(orderId);
-						order.setServiceId(3);//漏扫
-//				        order.setType(Integer.parseInt(scanMode));
-						order.setType(1);
-				        
-				        int scan_type = 0;
-				        if(scanPeriod!=null && !scanPeriod.equals("")){
-				        	scan_type = Integer.parseInt(scanPeriod);
-				        }
-				        Date begin_date = DateUtils.stringToDateNYRSFM(startTime);
-				        Date end_date = DateUtils.stringToDateNYRSFM(endTime);
-				        
-				        order.setBegin_date(begin_date);
-				        order.setEnd_date(end_date);
-				        order.setScan_type(scan_type);
-				        order.setTask_date(begin_date);
-				        order.setStatus(0);//设置订单状态为：0未执行
-				        //设置订单用户Id add by tangxr 2016-4-9
-				        order.setUserId(user.getId());
-				        //end
-				        orderService.insertOrder(order);
-				        
-				        for (int i = 0; i < targetArray.size(); i++) {
-				        	for (int j = 0; j < customArray.size(); j++) {
-						        OrderTask orderTask = new OrderTask();
-						        orderTask.setOrderId(orderId);
-						        orderTask.setServiceId(3);
-//						        orderTask.setType(Integer.parseInt(scanMode));
-						        orderTask.setType(1);
-						        orderTask.setBegin_date(begin_date);
-								orderTask.setEnd_date(end_date);
-								orderTask.setScan_type(scan_type);
-								orderTask.setStatus(0);
-//								orderTask.setWebsoc(Integer.parseInt(customArray.get(j).toString()));
-								orderTask.setUrl(targetArray.get(i).toString());
-								orderTask.setTask_status(1);//设置订单任务状态为：1未执行
-//								orderTask.setOrderTaskId(String.valueOf(Random.eightcode()));
-								
-//								if (scanMode.equals("1")) {//漏洞长期
-//									Date executeTime = DateUtils.getOrderPeriods(startTime,endTime,scanPeriod);
-//									orderTask.setTask_date(executeTime);
-//								}else{
-									orderTask.setTask_date(begin_date);
-//								}
-								orderTaskService.insertOrderTask(orderTask);
-								
-				        	}
-				        }
-				        
-				        //更新api数量 add by tangxr 2016-4-9
-				        user.setApi(3);
-				        user.setCount(-1);
-				        userService.updateCount(user);
-				        
-				        //insert到统计表
-						APINum num = new APINum();
-						num.setApikey(user.getApikey());
-						num.setService_type(3);
-						num.setApi_type(1);
-						num.setStatus(1);
-						num.setCreate_time(new Date());
-						userService.insertAPINum(num);
-						ManagerWorker.createAPINum(user.getApikey(), 3, 1, 1);
-				        
-				        json.put("code", 201);//返回201表示成功
-						json.put("orderId", orderId);
+						//查询可以用的api订单，按时间先后
+						List<OrderAPI> userableList = orderAPIService.findUseableByParam(paramMap);
+						if(userableList.size()>0){
+							JSONObject jsonObj = new JSONObject().fromObject(dataJson);
+							//单次，长期
+	//						String scanMode = jsonObj.getString("scanMode");
+							//扫描方式（正常、快速、全量）
+	//						String scanType = jsonObj.getString("scanType");
+							//开始时间
+							String startTime = jsonObj.getString("startTime");
+							//结束时间
+							String endTime = jsonObj.getString("endTime");
+						    //周期
+							String scanPeriod = jsonObj.getString("scanPeriod");
+							//检测深度
+							String scanDepth = jsonObj.getString("scanDepth");
+							//最大页面数
+	//						String maxPages = jsonObj.getString("maxPages");
+	//						//策略
+	//						String stategy = jsonObj.getString("stategy");
+							//目标地址，可以多个
+							JSONArray targetArray = jsonObj.getJSONArray("targetURLs");
+							//指定厂家设备，可以多个
+							JSONArray customArray = jsonObj.getJSONArray("customManus");
+							//生成订单id，当前日期加5位随机数
+							SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+							String orderDate = odf.format(new Date());
+					        String orderId = orderDate+String.valueOf(Random.fivecode());
+							//新增订单
+					        Order order = new Order();
+					        order.setId(orderId);
+							order.setServiceId(3);//漏扫
+	//				        order.setType(Integer.parseInt(scanMode));
+							order.setType(1);
+					        
+					        int scan_type = 0;
+					        if(scanPeriod!=null && !scanPeriod.equals("")){
+					        	scan_type = Integer.parseInt(scanPeriod);
+					        }
+					        Date begin_date = DateUtils.stringToDateNYRSFM(startTime);
+					        Date end_date = DateUtils.stringToDateNYRSFM(endTime);
+					        
+					        order.setBegin_date(begin_date);
+					        order.setEnd_date(end_date);
+					        order.setScan_type(scan_type);
+					        order.setTask_date(begin_date);
+					        order.setStatus(0);//设置订单状态为：0未执行
+					        //设置订单用户Id add by tangxr 2016-4-9
+					        order.setUserId(user.getId());
+					        //end
+					        orderService.insertOrder(order);
+					        
+					        for (int i = 0; i < targetArray.size(); i++) {
+					        	for (int j = 0; j < customArray.size(); j++) {
+							        OrderTask orderTask = new OrderTask();
+							        orderTask.setOrderId(orderId);
+							        orderTask.setServiceId(3);
+	//						        orderTask.setType(Integer.parseInt(scanMode));
+							        orderTask.setType(1);
+							        orderTask.setBegin_date(begin_date);
+									orderTask.setEnd_date(end_date);
+									orderTask.setScan_type(scan_type);
+									orderTask.setStatus(0);
+	//								orderTask.setWebsoc(Integer.parseInt(customArray.get(j).toString()));
+									orderTask.setUrl(targetArray.get(i).toString());
+									orderTask.setTask_status(1);//设置订单任务状态为：1未执行
+	//								orderTask.setOrderTaskId(String.valueOf(Random.eightcode()));
+									
+	//								if (scanMode.equals("1")) {//漏洞长期
+	//									Date executeTime = DateUtils.getOrderPeriods(startTime,endTime,scanPeriod);
+	//									orderTask.setTask_date(executeTime);
+	//								}else{
+										orderTask.setTask_date(begin_date);
+	//								}
+									orderTaskService.insertOrderTask(orderTask);
+									
+					        	}
+					        }
+					        
+					        OrderAPI orderAPI = userableList.get(0);
+					        orderAPIService.updateCount(orderAPI);
+					        
+					        //insert到统计表
+							APINum num = new APINum();
+							num.setApikey(user.getApikey());
+							num.setService_type(3);
+							num.setApi_type(1);
+							num.setStatus(1);
+							num.setCreate_time(new Date());
+							
+							num.setApiId(orderAPI.getId());
+							num.setToken(token);
+							num.setOrderId(orderId);
+							userService.insertAPINum(num);
+							ManagerWorker.createAPINum(user.getApikey(), 3, 1, 1);
+					        
+					        json.put("code", 201);//返回201表示成功
+							json.put("orderId", orderId);
+						}else{
+							json.put("code", 425);
+							json.put("message", "购买的服务次数已用完，请重新购买");
+						}
 					}else{
 						json.put("code", 424);
 						json.put("message", "服务已过期，请重新购买");
@@ -245,30 +255,41 @@ public class N_WebPageTamperService {
 		
 	//订单操作
 	@PUT
-    @Path("/order/{orderId}")
+    @Path("/order/{orderId}/{token}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String VulnScan_opt_orderTask(@PathParam("orderId") String orderId, String dataJson) {
+	public String VulnScan_opt_orderTask(@PathParam("token") String token, @PathParam("orderId") String orderId, String dataJson) {
 		JSONObject json = new JSONObject();
 		try {
-			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
-			String opt = jsonObj.getString("opt");
-			Order o = orderService.findOrderByOrderId(orderId);
-//			OrderTask ot = orderTaskService.findByOrderId(orderId);
-			String result = InternalWorker.vulnScanOptOrderTask(orderId,opt);
-	        if(result.equals("success")){
-//	        	if(o.getStatus()==4){
-	        	if("stop".equals(opt)){
-	        		o.setStatus(5);//stop
-//	        	}else if(o.getStatus()==5){
-	        	}else if("resume".equals(opt)){
-	        		o.setStatus(4);//start
-	        	}
-	        	orderService.update(o);
-	        	json.put("code", "200");
-	        }else{
-	        	json.put("code", "404");
-	        	json.put("message", "订单操作失败");
-	        }			
+			//通过token查询user
+			User user = userService.findUserByToken(token);
+			if(token!=null && token!="" && user!=null){
+			
+				JSONObject jsonObj = new JSONObject().fromObject(dataJson);
+				String opt = jsonObj.getString("opt");
+				Order o = orderService.findOrderByOrderId(orderId);
+	//			OrderTask ot = orderTaskService.findByOrderId(orderId);
+				String result = InternalWorker.vulnScanOptOrderTask(orderId,opt);
+		        if(result.equals("success")){
+	//	        	if(o.getStatus()==4){
+		        	if("stop".equals(opt)){
+		        		o.setStatus(5);//stop
+	//	        	}else if(o.getStatus()==5){
+		        	}else if("resume".equals(opt)){
+		        		o.setStatus(4);//start
+		        	}
+		        	orderService.update(o);
+		        	
+		        	this.countAPI(token, orderId, null, 3, 2);
+		        	
+		        	json.put("code", "200");
+		        }else{
+		        	json.put("code", "404");
+		        	json.put("message", "订单操作失败");
+		        }
+			}else{
+				json.put("code", 422);
+				json.put("message", "token无效");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			json.put("code", "404");
@@ -287,87 +308,54 @@ public class N_WebPageTamperService {
 			//通过token查询user
 			User user = userService.findUserByToken(token);
 			if(token!=null && token!="" && user!=null){
-				Map<String, Object> paramMap = new HashMap<String, Object>();
-				paramMap.put("apiKey", user.getApikey());
-		        paramMap.put("apiId", 3);
-		        //查找此项服务的API订单
-				List<OrderAPI> oAPIList = orderAPIService.findByParam(paramMap);
-				if(user.getType()==3 || (user.getType()==2 && user.getApi1()>0 && oAPIList.size()>0)){
-					//服务结束时间
-					Date end = oAPIList.get(0).getEnd_date();
-					//当前时间
-					Date now = new Date();
-					if(now.compareTo(end)<=0){
 				
-						Order order = orderService.findOrderByOrderId(orderId);
-						if(order!=null){
-							//taskId 不空取任务信息，为空取订单状态
-							if(taskId!=null && taskId!=""){
-								Task task = new Task();
-								task = taskService.findTaskByTaskId(taskId);
-								task.setExecuteTime(DateUtils.dateToString(task.getExecute_time()));
-								task.setBeginTime(DateUtils.dateToString(task.getBegin_time()));
-								task.setEndTime(DateUtils.dateToString(task.getEnd_time()));
-                                task.setGroupFlag(DateUtils.dateToString(task.getGroup_flag()));
-								if(task!=null){
-									net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
-									json.put("taskObj", taskObject);
-									json.put("result", "success");
-									Respones r = new Respones();
-									r.setState("200");//成功获取
-									net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
-									json.put("state", state);
-								}else{
-									Respones r = new Respones();
-									r.setState("421");//订单不存在
-									net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
-									json.put("state", state);
-								}
-							}else{
-								Map<String,Object> param = new HashMap<String,Object>();
-								paramMap.put("orderId", orderId);
-								List t= taskService.findTaskByOrderId(param);
-			//					if(t.size()>0){
-			//						t.setExecuteTime(DateUtils.dateToString(t.getExecute_time()));
-			//						t.setBeginTime(DateUtils.dateToString(t.getBegin_time()));
-			//						t.setEndTime(DateUtils.dateToString(t.getEnd_time()));
-			//					}
-								
-								
-								JSONArray taskObject = new JSONArray().fromObject(t);
-								json.put("code", 200);
-								json.put("status", order.getStatus());
-//								json.put("websoc", order.getWebsoc());
-								json.put("taskObj", taskObject);
-							}
-							
+				Order order = orderService.findOrderByOrderId(orderId);
+				if(order!=null){
+					//taskId 不空取任务信息，为空取订单状态
+					if(taskId!=null && taskId!=""){
+						Task task = new Task();
+						task = taskService.findTaskByTaskId(taskId);
+						task.setExecuteTime(DateUtils.dateToString(task.getExecute_time()));
+						task.setBeginTime(DateUtils.dateToString(task.getBegin_time()));
+						task.setEndTime(DateUtils.dateToString(task.getEnd_time()));
+                        task.setGroupFlag(DateUtils.dateToString(task.getGroup_flag()));
+						if(task!=null){
+							net.sf.json.JSONObject taskObject = new net.sf.json.JSONObject().fromObject(task);
+							json.put("taskObj", taskObject);
+							json.put("result", "success");
+							Respones r = new Respones();
+							r.setState("200");//成功获取
+							net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
+							json.put("state", state);
 						}else{
-							json.put("code", 421);
-							json.put("message", "订单不存在");
+							Respones r = new Respones();
+							r.setState("421");//订单不存在
+							net.sf.json.JSONArray state = new net.sf.json.JSONArray().fromObject(r);
+							json.put("state", state);
 						}
-						//更新api数量 add by tangxr 2016-4-9
-				        user.setApi(3);
-				        user.setCount(-1);
-				        userService.updateCount(user);
-				        
-				        //insert到统计表
-						APINum num = new APINum();
-						num.setApikey(user.getApikey());
-						num.setService_type(3);
-						num.setApi_type(3);
-						num.setStatus(1);
-						num.setCreate_time(new Date());
-						userService.insertAPINum(num);
-						ManagerWorker.createAPINum(user.getApikey(), 3, 3, 1);
 					}else{
-						json.put("code", 424);
-						json.put("message", "服务已过期，请重新购买");
+						Map<String,Object> param = new HashMap<String,Object>();
+						param.put("orderId", orderId);
+						List t= taskService.findTaskByOrderId(param);
+	//					if(t.size()>0){
+	//						t.setExecuteTime(DateUtils.dateToString(t.getExecute_time()));
+	//						t.setBeginTime(DateUtils.dateToString(t.getBegin_time()));
+	//						t.setEndTime(DateUtils.dateToString(t.getEnd_time()));
+	//					}
+						
+						
+						JSONArray taskObject = new JSONArray().fromObject(t);
+						json.put("code", 200);
+						json.put("status", order.getStatus());
+//								json.put("websoc", order.getWebsoc());
+						json.put("taskObj", taskObject);
 					}
+					
 				}else{
-					json.put("code", 423);
-					json.put("message", "用户无权限");
+					json.put("code", 421);
+					json.put("message", "订单不存在");
 				}
-				
+				this.countAPI(token, orderId, null, 3, 3);
 			}else{
 				json.put("code", 422);
 				json.put("message", "token无效");
@@ -391,55 +379,23 @@ public class N_WebPageTamperService {
 			//通过token查询user
 			User user = userService.findUserByToken(token);
 			if(token!=null && token!="" && user!=null){
-				Map<String, Object> paramMap = new HashMap<String, Object>();
-				paramMap.put("apiKey", user.getApikey());
-		        paramMap.put("apiId", 3);
-		        //查找此项服务的API订单
-				List<OrderAPI> oAPIList = orderAPIService.findByParam(paramMap);
-				if(user.getType()==3 || (user.getType()==2 && user.getApi1()>0 && oAPIList.size()>0)){
-					//服务结束时间
-					Date end = oAPIList.get(0).getEnd_date();
-					//当前时间
-					Date now = new Date();
-					if(now.compareTo(end)<=0){
-						Order order = orderService.findOrderByOrderId(orderId);
-						if(order!=null){
-							//taskId 不空取任务信息，为空取订单状态
-							if(taskId!=null && taskId!=""){
-								List<Alarm> alist = alarmService.findAlarmByTaskId(taskId);
-								JSONArray alarmObject = new JSONArray().fromObject(alist);
-								json.put("code", 200);
-								json.put("alarmObj", alarmObject);
-								return json.toString();
-							}else{
-								return json.toString();
-							}
-						}else{
-							json.put("code", 421);
-							json.put("message", "订单不存在");
-						}
-						//更新api数量 add by tangxr 2016-4-9
-				        user.setApi(3);
-				        user.setCount(-1);
-				        userService.updateCount(user);
-				        
-				        //insert到统计表
-						APINum num = new APINum();
-						num.setApikey(user.getApikey());
-						num.setService_type(3);
-						num.setApi_type(4);
-						num.setStatus(1);
-						num.setCreate_time(new Date());
-						userService.insertAPINum(num);
-						ManagerWorker.createAPINum(user.getApikey(), 3, 4, 1);
+				Order order = orderService.findOrderByOrderId(orderId);
+				if(order!=null){
+					//taskId 不空取任务信息，为空取订单状态
+					if(taskId!=null && taskId!=""){
+						List<Alarm> alist = alarmService.findAlarmByTaskId(taskId);
+						JSONArray alarmObject = new JSONArray().fromObject(alist);
+						json.put("code", 200);
+						json.put("alarmObj", alarmObject);
+						return json.toString();
 					}else{
-						json.put("code", 424);
-						json.put("message", "服务已过期，请重新购买");
+						return json.toString();
 					}
 				}else{
-					json.put("code", 423);
-					json.put("message", "用户无权限");
+					json.put("code", 421);
+					json.put("message", "订单不存在");
 				}
+				this.countAPI(token, orderId, taskId, 3, 4);
 			}else{
 				json.put("code", 422);
 				json.put("message", "token无效");
@@ -451,6 +407,33 @@ public class N_WebPageTamperService {
 		}
 		return json.toString();
     }
+	
+	//add by tangxr 2016-8-25 统计api
+	public void countAPI(String token, String orderId, String taskId, int service_type, int api_type){
+		User user = userService.findUserByToken(token);
+		Map<String, Object> param = new HashMap<String, Object>();
+        param.put("api_type", 1);
+        param.put("orderId", orderId);
+        API used = orderAPIService.findUsedByParam(param);
+		
+		//insert到统计表
+		APINum num = new APINum();
+		num.setApikey(user.getApikey());
+		num.setService_type(service_type);
+		num.setApi_type(api_type);//1表登录，2注销
+		num.setStatus(1);
+		num.setCreate_time(new Date());
+		
+		num.setApiId(used.getApiId());
+		num.setToken(token);
+		num.setOrderId(orderId);
+		if(taskId!=null){
+			num.setTaskId(Integer.parseInt(taskId));
+		}
+		userService.insertAPINum(num);
+		ManagerWorker.createAPINum(user.getApikey(), service_type, api_type, 1);
+		//end
+	}
 		
 	private URL base = this.getClass().getResource("");
 	//获取report
@@ -462,6 +445,9 @@ public class N_WebPageTamperService {
 			//查找订单
 			Order order = orderService.findOrderByOrderId(orderId);
 			if(order!=null){
+				
+				this.countAPI(token, orderId, null, 3, 5);
+				
 	            String group_flag = null;
 	            String imgPie = null;
 	            String imgBar = null;
