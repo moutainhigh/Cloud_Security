@@ -11,7 +11,7 @@ $(function(){
 			   		var option1 = {
 			   			title : {
 			   			textStyle:{
-			   				color:'#fff'
+			   				color:'#7aff75'
 			   			},
 			   	        text: '最近一小时漏洞数据分类',
 			   	        x:'center'
@@ -76,7 +76,7 @@ $(function(){
 			   		 title : {
 			   	        text: '最近一小时攻击数据分类',
 			   	        textStyle:{
-			   				color:'#fff'
+			   				color:'#7aff75'
 			   			},
 			   	        x:'center'
 			   	    },
@@ -140,7 +140,7 @@ $(function(){
 		   			 title : {
 		   				 text:'近六个月漏洞等级分布',
 		   				 textStyle:{
-			   			 color:'#fff'
+			   			 color:'#7aff75'
 			   			},
 		   		         x:'center'
 		   		     },
@@ -154,7 +154,7 @@ $(function(){
 		   	        data:obj.levelList,
 		   	        y:'bottom',
 			   	    textStyle:{
-	                    color:"#fff"
+	                    color:"#00faf2"
 	                },
 		   	        padding:0
 		   	    },
@@ -168,7 +168,7 @@ $(function(){
 		   	            type : 'category',
 			   	         axisLabel:{	                         
 	                         textStyle:{
-	                             color:"#fff"
+	                             color:"#7aff75"
 	                         }
 	                     },
 		   	            data : obj.monthList
@@ -179,7 +179,7 @@ $(function(){
 		   	            type : 'value',
 			   	        axisLabel:{
 	                        textStyle:{
-	                            color:"#fff"
+	                            color:"#7aff75"
 	                        }
 	                    }		   	           
 		   	        }
@@ -203,7 +203,7 @@ $(function(){
 		   				title: {
 		   					text: '历史订单（一年内）',
 					   	    textStyle:{
-					   			color:'#fff'
+					   			color:'#7aff75'
 					   		},
 					   	    x:'left'
 		   				},
@@ -214,7 +214,7 @@ $(function(){
 				   	        data:obj.servNameList,
 				   	        x:'center',
 					   	    textStyle:{
-					   			color:'#fff'
+					   			color:'#00faf2'
 				   			},
 				   	    },				   	  
 				   	    grid: {
@@ -233,7 +233,7 @@ $(function(){
 	   		                         //rotate:45,
 	   		                         margin:4,
 	   		                         textStyle:{
-	   		                             color:"#fff"
+	   		                             color:"#7aff75"
 	   		                         },
 		   		                     formatter: function (value, index) {
 		   		                        if(lastdayArray.indexOf(value)!=-1){
@@ -249,7 +249,7 @@ $(function(){
 				   	            type : 'value',
 					   	         axisLabel:{
 			                         textStyle:{
-			                             color:"#fff"
+			                             color:"#7aff75"
 			                         },
 				                 }
 				   	        }
@@ -276,7 +276,7 @@ $(function(){
 			   			 title: {
 			   	        text: '订单类型分布',
 				   	    textStyle:{
-				   			color:'#fff'
+				   			color:'#7aff75'
 			   			},
 			   	        x:'center'
 			   	    },
@@ -290,7 +290,7 @@ $(function(){
 				         })(),
 				         y:'bottom',
 				         textStyle:{
-				   			color:'#fff'
+				   			color:'#00faf2'
 				   		 }
 				     },
 				    /* visualMap: {
@@ -340,7 +340,7 @@ $(function(){
 			   			 title : {
 				   		     text: '用户行业分布',
 				   		     textStyle:{
-				   				 color:'#fff'
+				   				 color:'#7aff75'
 				   			 },
 			   		         x:'center'
 				   		},
@@ -351,7 +351,7 @@ $(function(){
 				   	        data:['各行业注册用户数','已下订单数'],
 				   	        y:'bottom',
 				   	     textStyle:{
-                             color:"#fff"
+                             color:"#00faf2"
                          }
 				   	    },
 				   	    xAxis : [
@@ -363,7 +363,7 @@ $(function(){
 			                         rotate:40,
 			                         margin:8,			                       
 			                         textStyle:{
-			                             color:"#fff"
+			                             color:"#7aff75"
 			                         }
 			                     },
 				   	            data : obj.industryList
@@ -379,7 +379,7 @@ $(function(){
 				   	            type : 'value',
 				   	            axisLabel:{		                         
 				   	            	textStyle:{
-				   	            		color:"#fff"
+				   	            		color:"#7aff75"
 				   	            	}
 				   	            }
 				   	        }
@@ -487,7 +487,7 @@ $(function(){
 				}); */
 				   
 			   //网站用途分布
-				var myChart8 = echarts.init(document.getElementById('assetPurpose'));
+/*				var myChart8 = echarts.init(document.getElementById('assetPurpose'));
 				 $.ajax({
 				    	type : "post",
 				    	url:"getAssetPurpose.html",
@@ -497,7 +497,7 @@ $(function(){
 					   				title : {
 					   			        text: '网站漏洞重复率大等于3的行业分布情况',
 					   			        textStyle:{
-							   				color:'#fff'
+							   				color:'#7aff75'
 							   			},
 					   			        x:'center'
 					   			    },
@@ -551,7 +551,7 @@ $(function(){
 					   	myChart8.setOption(option8);
 				     },
 
-				}); 
+				}); */
 				 
 				   //最近六个月攻击等级分布
 				   var myChart9 = echarts.init(document.getElementById('wafByLevelMonth6'));
@@ -564,7 +564,7 @@ $(function(){
 					   			 title : {
 					   				 text:'近六个月攻击手段等级分布',
 					   				 textStyle:{
-						   				 color:'#fff'
+						   				 color:'##7aff75'
 						   			 },
 					   		         x:'center'
 					   		    },
@@ -578,7 +578,7 @@ $(function(){
 					   	        data:obj.levelList,
 					   	        y:'bottom',
 						   	    textStyle:{
-		                            color:"#fff"
+		                            color:"#00faf2"
 		                        },
 					   	        padding:0
 					   	    },
@@ -592,7 +592,7 @@ $(function(){
 					   	            type : 'category',
 					   	            axisLabel:{ 
 			                        textStyle:{
-			                            color:"#fff"
+			                            color:"#7aff75"
 			                        }
 			                     },
 					   	         data : obj.monthList
@@ -603,7 +603,7 @@ $(function(){
 					   	            type : 'value',
 					   	            axisLabel:{			                         
 			                        textStyle:{
-			                            color:"#fff"
+			                            color:"#7aff75"
 			                        }
 			                     }
 					   	      }
