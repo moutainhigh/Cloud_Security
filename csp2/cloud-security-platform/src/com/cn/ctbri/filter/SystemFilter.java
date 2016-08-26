@@ -87,6 +87,8 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/test.html");
 		list.add("/websocket");
 		list.add("/anquanStateUI.html");
+		
+		list.add("/anquanStateUI.html");
 		list.add("/getVulnscanAlarmOneHour.html");
 		list.add("/getWafOneHour.html");
 		list.add("/getVulnscanAlarmByLevelMonth6.html");
@@ -95,6 +97,10 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/getIndustryStatistics.html");
 		list.add("/getAssetPurpose.html");
 		list.add("/getWafByLevelMonth6.html");
+		
+		list.add("/highSiteMap.html");
+		list.add("/HackerMap.html");
+		list.add("/UserMap.html");
 		//获取访问的url路径
 		String path = request.getServletPath();
 		forwordIndexPage(path,request,response);
