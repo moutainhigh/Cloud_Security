@@ -10,6 +10,7 @@ $(function(){
 	$('.navlist li:last').css('background-image','none');
 	$('.navlist li').click(function(){
 			var zindex=$(this).index();
+			
 			$('.navlist li').removeClass('none');
 			$(this).addClass('this');
 			$(this).prev('li').addClass('none');
@@ -38,6 +39,13 @@ function showHighSiteMap() {
 	initHighSiteMap(myChart);
 	//loading动画显示
 	//myChart.showLoading();
+	myChart.showLoading({
+	  text: 'loading',
+	  color: '#42a7ff',
+	  textColor: '#000',
+	  maskColor: '#04144d',
+	  zlevel: 0
+	});
 	
 	
 	//后台获取数据
@@ -55,7 +63,7 @@ function showHighSiteMap() {
 	  				dataValue.push(val);
 				}); 
 				//loading动画隐藏 
-				//myChart.hideLoading();
+				myChart.hideLoading();
 				//map中数据显示
 				myChart.setOption({
 				    series: [
@@ -67,7 +75,8 @@ function showHighSiteMap() {
 				});
            },
            error:function(){
-           		//myChart.hideLoading();
+           		myChart.hideLoading();
+           		alert("系统异常，数据加载失败！");
            		return;
            }
      });
@@ -97,7 +106,8 @@ function initHighSiteMap(myChart) {
 	        },
 	        inRange: {
 	            //color : [ '#c4fffd', '#9ae9e6', '#6aceca', '#42aeaa', '#1e8682']
-	            color: ['#ffe074', '#fd2204']
+	            //color: ['#ffe074', '#fd2204']
+	            color: ['#63cdf6', '#58b7ed','#52a2e5','#4793e9','#4576e3']
 	       },
 	        calculable: true
 	    },
@@ -158,7 +168,15 @@ function showHackerMap() {
 	initHackerMap(myChart);
 	//loading动画显示
 	//myChart.showLoading();
+	myChart.showLoading({
+	  text: 'loading',
+	  color: '#42a7ff',
+	  textColor: '#000',
+	  maskColor: '#04144d',
+	  zlevel: 0
+	});
 	
+	alert("aaa");
 	//后台获取数据
     $.ajax({
            type : "post",
@@ -178,10 +196,10 @@ function showHackerMap() {
 						
 						var name = getDistrictName(dataList[i].name);
 						dataValue[i]={'name':name,'value':value};
-						
+						alert(name +':'+value);
 					}
 				}
-				//myChart.hideLoading();
+				myChart.hideLoading();
 				//map中数据显示
 				myChart.setOption({
 				    series: [
@@ -195,7 +213,7 @@ function showHackerMap() {
            },
            error:function(){
            		myChart.hideLoading();
-           		return;
+           		alert("系统异常，数据加载失败！");
            }
      });
  }
@@ -220,11 +238,11 @@ function showHackerMap() {
 	           color: '#fff'
 	        },
 	        pieces: [
-	        	{gt: 300, color: '#fa0909'},            // (300, Infinity]
-			    {gt: 100, lte: 300, color: '#ff7210'},  // (100, 300]
-			    {gt: 50,  lte: 100, color: '#ffcf22'},  // (50, 100]  orange
-			    {gt: 10,  lte: 50,  color: '#fefb2c'},  // (10, 50]
-			    {gt: 0,   lte: 10,  color: '#a9d522'}   // (0, 10]   green
+	        	{gt: 300, color: '#fa7e7d'},            // (300, Infinity]
+			    {gt: 100, lte: 300, color: '#ea9068'},  // (100, 300]
+			    {gt: 50,  lte: 100, color: '#eabf6c'},  // (50, 100]  orange
+			    {gt: 10,  lte: 50,  color: '#ddde73'},  // (10, 50]
+			    {gt: 0,   lte: 10,  color: '#6bc770'}   // (0, 10]   green
 			]
 	    },
 	    geo: {
@@ -254,6 +272,7 @@ function showHackerMap() {
 	            type: 'heatmap',
         		coordinateSystem: 'geo',
 	            mapType: 'china',
+	            blurSize:20,
 	            //roam: false,
 	            label: {
 	                normal: {
@@ -277,6 +296,13 @@ function showUserMap() {
 	initUserMap(myChart);
 	//loading动画显示
  	//myChart.showLoading();
+	myChart.showLoading({
+	  text: 'loading',
+	  color: '#42a7ff',
+	  textColor: '#000',
+	  maskColor: '#04144d',
+	  zlevel: 0
+	});
 	
 	var maxVal = 0;
 	//后台获取数据
@@ -305,7 +331,7 @@ function showUserMap() {
 		   				
 					}
 				}
-				//myChart.hideLoading();
+				myChart.hideLoading();
 				//map中数据显示
 				myChart.setOption({
 				    series: [
@@ -322,8 +348,9 @@ function showUserMap() {
 				});
 				
            },
-           error:function(){
+           error:function(data){
            		myChart.hideLoading();
+           		alert("系统异常，数据加载失败！");
            		return;
            }
      });
@@ -349,13 +376,16 @@ function showUserMap() {
 	        max: 5000,
 	        left: '10%',
 	        bottom: '2%',
+	        textStyle: {
+	           color: '#fff'
+	        },
 	        calculable: false,
 	        pieces: [
-	        	{gt: 4000, color: '#ff7474'}, 
-			    {gt: 3000, lte: 4000, color: '#ffe074'},
-			    {gt: 2000, lte: 3000, color: '#a3ffa0'},
-			    {gt: 1000, lte: 2000,  color: '#74fffa'},
-			    {gt: 0,    lte: 1000,  color: '#7cc2fd'}
+	        	{gt: 4000, color: '#fa7e7d'}, 
+			    {gt: 3000, lte: 4000, color: '#eabf6c'},
+			    {gt: 2000, lte: 3000, color: '#6bc770'},
+			    {gt: 1000, lte: 2000,  color: '#52a2e5'},
+			    {gt: 0,    lte: 1000,  color: '#806bff'}
 			]
     	},
 	    geo: {
@@ -412,6 +442,16 @@ function showSecurityStateMap(){
 	var myChart = echarts.init(document.getElementById('safe-map'));
  	//地图初始化
 	initSecurityStateMap(myChart);
+	//loading动画显示
+ 	//myChart.showLoading();
+	myChart.showLoading({
+	  text: 'loading',
+	  color: '#42a7ff',
+	  textColor: '#000',
+	  maskColor: '#04144d',
+	  zlevel: 0
+	});
+	
 	$.ajax({
 	        type: "POST",
 	        cache: false,
@@ -433,7 +473,7 @@ function showSecurityStateMap(){
 						dataValue[i]={'name':dataList[i].id,'value':value};
 					}
 				}
-	        	//myChart.hideLoading();
+	        	myChart.hideLoading();
 				//map中数据显示
 				myChart.setOption({
 				    series: [
@@ -458,7 +498,12 @@ function showSecurityStateMap(){
 				    ]
 				});
 	        	
-	     	}
+	     	},
+           error:function(){
+           		myChart.hideLoading();
+           		alert("系统异常，数据加载失败！");
+           		return;
+           }
 		});
 	
 }
@@ -487,6 +532,9 @@ function initSecurityStateMap(myChart){
 	        max: 5000,
 	        left: '10%',
 	        bottom: '2%',
+	        textStyle: {
+	           color: '#fff'
+	        },
 	        calculable: false,
 	        //inRange: {
 	        //    color : [ '#ff81ff', '#99d9eb', '#c9bfe7', '#ffff9b', '#ffffff']
