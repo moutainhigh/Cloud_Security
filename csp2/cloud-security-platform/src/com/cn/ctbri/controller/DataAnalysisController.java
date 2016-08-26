@@ -182,10 +182,12 @@ public class DataAnalysisController {
 			if (attackSource == null){
 				String ipProvice = addressUtils.GetAddressByIp(srcIp);
 				//insert into DB
-				attackSource = new AttackSource();
-				attackSource.setIp(srcIp);
-				attackSource.setProvice(ipProvice);
-				attackSourceService.save(attackSource);
+				if (!ipProvice.equals("获取IP地址异常：") || !ipProvice.equals("IP地址有误")) {
+					attackSource = new AttackSource();
+					attackSource.setIp(srcIp);
+					attackSource.setProvice(ipProvice);
+					attackSourceService.save(attackSource);
+				}
 				
 			}
 			
@@ -198,7 +200,6 @@ public class DataAnalysisController {
 			}
 		}
 		
-		districtDataService.getDistrictList();
 		List result = new ArrayList();
 		for (Map.Entry<String, Integer> entry: attackCountMap.entrySet()) {
 			String districtName = entry.getKey();
@@ -209,9 +210,11 @@ public class DataAnalysisController {
 			Map<String,Object> map = dataAnalysisService.findlLongitudeAndLatitude(districtName.substring(0, 2));
 			//map.put("longitude", 116.4135540000);
 			//map.put("latitude", 39.9110130000);
-			map.put("name", districtName);
-			map.put("val", entry.getValue());
-			result.add(map);
+			if (map!=null && map.size()!=0){
+				map.put("name", districtName);
+				map.put("val", entry.getValue());
+				result.add(map);
+			}
 		}
 		
 		
