@@ -147,6 +147,8 @@
 	
 </style>
 <script>
+	var ctx='${ctx}';
+	var wsurl=window.location.host+ctx;
 	$(function(){
 		//var h=$(window).height();
 		t=$('#content').offset().top;
