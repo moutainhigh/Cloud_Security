@@ -124,4 +124,7 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
 		return districtDataDao.getDaysInYear(paramMap);
 	}
 
+	public void updateDistrict(Map<String, Object> disMap) {
+		districtDataDao.updateDistrict(disMap);
+	}
 }
