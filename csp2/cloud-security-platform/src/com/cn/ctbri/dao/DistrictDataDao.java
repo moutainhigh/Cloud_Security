@@ -100,4 +100,7 @@ public interface DistrictDataDao {
      * @return
      */
     List getAssetPurpose();
+    
+    void updateDistrict(Map<String, Object> disMap);
+
 }
