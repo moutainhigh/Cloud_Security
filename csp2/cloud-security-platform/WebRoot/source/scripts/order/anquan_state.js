@@ -278,7 +278,7 @@ $(function(){
 				   	    textStyle:{
 				   			color:'#7aff75'
 			   			},
-			   	        x:'center'
+			   	        x:'180'
 			   	    },
 			   	    tooltip: {
 			   	        trigger: 'item',
@@ -289,6 +289,7 @@ $(function(){
 				        	return monthList;
 				         })(),
 				         y:'bottom',
+				         x:'left',
 				         textStyle:{
 				   			color:'#00faf2'
 				   		 }
@@ -299,7 +300,7 @@ $(function(){
 			   	    radar: {
 			   	       indicator : indicatorList,
 			   	       radius:'70%',
-			   	       center:['50%', '52%']
+			   	       center:['40%', '52%']
 			   	    },
 			   	    series : (function (){
 			   	        var series = [];
@@ -370,7 +371,7 @@ $(function(){
 				   	        }
 				   	    ],
 				   	    grid: { // 控制图的大小，调整下面这些值就可以，
-				             x: 35,
+				             x: 20,
 				             x2: 30,
 				             y2: 160,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
 				        },
