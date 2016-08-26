@@ -238,4 +238,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(select count(name) AS count,url,name from cs_alarm group by url,name) mm where mm.count>=3) 
 		and asset.purpose !='' GROUP BY asset.purpose
     </select>
+    
+    <!-- 更新地域告警数 -->
+	<update id="updateDistrict"  parameterType="java.util.HashMap">
+		update cs_district 
+		<set>
+			count#{serviceId}=#{count} + count#{serviceId}
+		</set>
+		where id = #{id}
+	</update>
 </mapper>
