@@ -73,12 +73,13 @@ function showHighSiteMap() {
 				        }
 				    ]
 				});
-           },
+           }
+   /* ,
            error:function(){
            		myChart.hideLoading();
            		alert("系统异常，数据加载失败！");
            		return;
-           }
+           }*/
      });
  }
  
