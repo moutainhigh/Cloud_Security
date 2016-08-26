@@ -104,4 +104,7 @@ public interface IDistrictDataService {
      * @return
      */
     List getAssetPurpose();
+    
+    //更新地域告警数
+  	void updateDistrict(Map<String, Object> disMap);
 }
