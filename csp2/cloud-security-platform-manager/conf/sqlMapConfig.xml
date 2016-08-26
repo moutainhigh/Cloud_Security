@@ -46,5 +46,8 @@
 		
 		<!-- 2016-07-28 update by zhangshaohua -->
 		<mapper resource="com/cn/ctbri/entity/ApiPriceMapper.xml"/>
+		
+		<!-- 2016-08-25 update by tangxr -->
+		<mapper resource="com/cn/ctbri/entity/LogsMapper.xml"/>
 	</mappers>
 </configuration>  
