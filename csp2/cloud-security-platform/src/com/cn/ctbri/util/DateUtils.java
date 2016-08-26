@@ -280,7 +280,7 @@ public class DateUtils {
     	Date date = d;
         Calendar calendar = Calendar.getInstance();  
         calendar.setTime(date);  
-        calendar.add(Calendar.HOUR,-1); 
+        calendar.add(Calendar.HOUR,-24); 
         date = calendar.getTime();  
         return date;
     }
