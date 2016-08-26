@@ -44,5 +44,7 @@ public interface OrderAPIDao {
 	List<OrderAPI> findUseableByParam(Map<String, Object> paramMap);
 
 	void updateCount(OrderAPI orderAPI);
+
+	API findUsedByParam(Map<String, Object> paramMap);
 	
 }
