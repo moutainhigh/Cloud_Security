@@ -79,6 +79,7 @@ popBoxhide .close{ width:26px; height:26px; display:block; position:absolute; ri
         <li><a href="${ctx}/equResourceUI.html" class="white">设备资源管理</a></li>
         <li><a href="${ctx}/adminSystemManageUI.html" class="white">系统管理</a></li>
         <li class="b_current"><a href="${ctx}/adminAPIAnalysisUI.html" class="white">API分析</a></li>
+        <li><a href="${ctx}/adminAPIAnalysisUI.html" class="white">日志分析</a></li>
         <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/adminNoticeManageUI.html" class="white">公告管理</a></li>
       </ul>
     </div>
