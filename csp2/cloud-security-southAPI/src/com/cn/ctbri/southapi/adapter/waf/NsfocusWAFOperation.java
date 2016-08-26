@@ -37,6 +37,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	private String nsfocusAPIKey = "";
 	//WAF API Value=密码
 	private String nsfocusAPIValue = "";
+	//WAF代理ip列表
 	private String[] nsfocusWafPublicIPList = null;
 		
 	public NsfocusWAFOperation(String apiAddr, String apiKey, String apiValue, String apiUsername, String apiPassword ) {
@@ -46,7 +47,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	public NsfocusWAFOperation(String apiAddr, String apiKey, String apiValue, String apiUsername, String apiPassword, String[] apiPublicIPList) {
 		initNsfocusWafDevcie(apiAddr, apiKey, apiValue, apiUsername, apiPassword, apiPublicIPList);
 	}
-	
+	//初始化WAF设备参数
 	public boolean initNsfocusWafDevice(String apiAddr, String apiKey, String apiValue, String apiUsername, String apiPassword ) {
 		if(null==apiAddr||"".equalsIgnoreCase(apiAddr)) return false;
 		nsfocusWafUrl = apiAddr;
@@ -60,6 +61,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		nsfocusWafPassword = apiPassword;
 		return true;
 	}
+	//初始化WAF设备参数，带ip列表
 	public boolean initNsfocusWafDevcie(String apiAddr, String apiKey, String apiValue, String apiUsername, String apiPassword, String[] apiPublicIPList) {
 		if(null==apiAddr||"".equalsIgnoreCase(apiAddr)) return false;
 		nsfocusWafUrl = apiAddr;
@@ -76,7 +78,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		return true;
 	}
 	
-	
+	//创建基础wenresource通信资源
 	private WebResource createBasicWebResource(String url) {
     	ClientConfig config = new DefaultClientConfig();
     	//通信层配置设定

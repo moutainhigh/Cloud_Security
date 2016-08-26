@@ -390,6 +390,7 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.getAlertLevelCountByMonth(jsonObject);
 	}
 	
+	
 	@GET
 	@Path("/getWafLogWebSecDstIpList")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -402,6 +403,14 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafLogWebSecSrcIpList(){
 		return deviceAdpaterManager.getWafLogWebSecSrcIpList();
+	}
+	
+	@POST
+	@Path("/getLocationFromIp")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getLocationFromIp(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getLocationFromIp(jsonObject);
 	}
 	
 	@POST

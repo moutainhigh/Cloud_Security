@@ -13,121 +13,55 @@ import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
 import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
 import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
 
-import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsec;
-import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecExample.Criteria;
-import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecExample.Criterion;
-import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecExample;
+import com.cn.ctbri.southapi.adapter.batis.model.TIpv4Latlong;
+import com.cn.ctbri.southapi.adapter.batis.model.TIpv4LatlongExample.Criteria;
+import com.cn.ctbri.southapi.adapter.batis.model.TIpv4LatlongExample.Criterion;
+import com.cn.ctbri.southapi.adapter.batis.model.TIpv4LatlongExample;
 import java.util.List;
 import java.util.Map;
 
-public class TWafLogWebsecSqlProvider {
+public class TIpv4LatlongSqlProvider {
 
-    public String countByExample(TWafLogWebsecExample example) {
+    public String countByExample(TIpv4LatlongExample example) {
         BEGIN();
         SELECT("count(*)");
-        FROM("t_waf_log_websec");
-        applyWhere(example, false);
-        return SQL();
-    }
-    
-    public String countByExampleGroup(TWafLogWebsecExample example) {
-        BEGIN();
-        SELECT("count(*)");
-        FROM("t_waf_log_websec");
+        FROM("t_ipv4_latlong");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String selectByExampleWithBLOBs(TWafLogWebsecExample example) {
+    public String selectByExample(TIpv4LatlongExample example) {
         BEGIN();
         if (example != null && example.isDistinct()) {
-            SELECT_DISTINCT("log_id");
+            SELECT_DISTINCT("latlong_id");
         } else {
-            SELECT("log_id");
+            SELECT("latlong_id");
         }
-        SELECT("resource_id");
-        SELECT("resource_uri");
-        SELECT("resource_ip");
-        SELECT("site_id");
-        SELECT("protect_id");
-        SELECT("dst_ip");
-        SELECT("dst_port");
-        SELECT("src_ip");
-        SELECT("src_port");
-        SELECT("method");
-        SELECT("domain");
-        SELECT("uri");
-        SELECT("alertlevel");
-        SELECT("event_type");
-        SELECT("stat_time");
-        SELECT("policy_id");
-        SELECT("rule_id");
-        SELECT("action");
-        SELECT("block");
-        SELECT("block_info");
-        SELECT("alertinfo");
-        SELECT("proxy_info");
-        SELECT("characters");
-        SELECT("count_num");
-        SELECT("protocol_type");
-        SELECT("wci");
-        SELECT("wsi");
-        SELECT("http");
-        FROM("t_waf_log_websec");
+        SELECT("network");
+        SELECT("netmask");
+        SELECT("startip");
+        SELECT("endip");
+        SELECT("location_id");
+        SELECT("registered_country_location_id");
+        SELECT("represented_country_location_id");
+        SELECT("is_anonymous_proxy");
+        SELECT("is_satellite_provider");
+        SELECT("postal_code");
+        SELECT("latitude");
+        SELECT("longitude");
+        SELECT("accuracy_radius");
+        FROM("t_ipv4_latlong");
         applyWhere(example, false);
         
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
-        
         return SQL();
     }
 
-    public String selectByExample(TWafLogWebsecExample example) {
-        BEGIN();
-        if (example != null && example.isDistinct()) {
-            SELECT_DISTINCT("log_id");
-        } else {
-            SELECT("log_id");
-        }
-        SELECT("resource_id");
-        SELECT("resource_uri");
-        SELECT("resource_ip");
-        SELECT("site_id");
-        SELECT("protect_id");
-        SELECT("dst_ip");
-        SELECT("dst_port");
-        SELECT("src_ip");
-        SELECT("src_port");
-        SELECT("method");
-        SELECT("domain");
-        SELECT("uri");
-        SELECT("alertlevel");
-        SELECT("event_type");
-        SELECT("stat_time");
-        SELECT("policy_id");
-        SELECT("rule_id");
-        SELECT("action");
-        SELECT("block");
-        SELECT("block_info");
-        SELECT("alertinfo");
-        SELECT("proxy_info");
-        SELECT("characters");
-        SELECT("count_num");
-        SELECT("protocol_type");
-        SELECT("wci");
-        SELECT("wsi");
-        FROM("t_waf_log_websec");
-        applyWhere(example, false);
-        
-        if (example != null && example.getOrderByClause() != null) {
-            ORDER_BY(example.getOrderByClause());
-        }
-        
-        return SQL();
-    }
+  
 
-    protected void applyWhere(TWafLogWebsecExample example, boolean includeExamplePhrase) {
+    protected void applyWhere(TIpv4LatlongExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }
@@ -216,7 +150,6 @@ public class TWafLogWebsecSqlProvider {
         }
         
         if (sb.length() > 0) {
-        	System.out.println("where="+sb);
             WHERE(sb.toString());
         }
     }

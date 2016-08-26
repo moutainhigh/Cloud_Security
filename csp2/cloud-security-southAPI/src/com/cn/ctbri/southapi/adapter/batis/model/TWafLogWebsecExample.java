@@ -65,7 +65,7 @@ public class TWafLogWebsecExample {
     }
 
     protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria;
+        public List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();

@@ -24,5 +24,7 @@
     	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogWebsecCountMapper"/>
     	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogWebsecDstMapper"/>
     	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogWebsecSrcMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TViewIpv4LocationMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TIpv4LatlongMapper"/>
     </mappers>
 </configuration>

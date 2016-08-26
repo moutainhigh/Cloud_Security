@@ -854,6 +854,10 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getAlertLevelCountByMonth(jsonObject);
 	}
 	
+	public String getLocationFromIp(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getLocationFromIp(jsonObject);
+	}
+	
 	public String getWafPublicIpListInResource(int resourceId) {
 		return nsfocusWAFAdapter.getPublicIpListInResource(resourceId);
 		
