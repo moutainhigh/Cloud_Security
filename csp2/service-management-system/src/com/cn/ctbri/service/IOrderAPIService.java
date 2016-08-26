@@ -46,4 +46,6 @@ public interface IOrderAPIService {
 
 	void updateCount(OrderAPI orderAPI);
 
+	API findUsedByParam(Map<String, Object> paramMap);
+
 }
