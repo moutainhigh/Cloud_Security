@@ -2,12 +2,17 @@ package com.cn.ctbri.websocket;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Random;
+import java.util.TreeMap;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -81,20 +86,43 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			}
 		}
 	}
+	class DateComparator implements Comparator<Date>{
+
+		@Override
+		public int compare(Date o1, Date o2) {
+			return (int) (o1.getTime()-o2.getTime());
+		}
+		
+	}
 	public void perSendData(WebSocketSession session,TextMessage message) throws IOException, InterruptedException{
 		long startTime1 = System.currentTimeMillis();
 		WafAPIWorker worker = new WafAPIWorker();
+		long startTimeTest=System.currentTimeMillis();
 		String text = worker.getAllWafLogWebsecInTime("3", "date");
+		long endTime=System.currentTimeMillis();
 		JSONObject json = JSONObject.fromObject(text);
+		long endTime2=System.currentTimeMillis();
+		System.out.println("jiekou:"+(endTime-startTimeTest)/1000);
+		System.out.println("转json:"+(endTime2-endTime)/1000);
 		JSONArray array = (JSONArray) json.get("wafLogWebsecList");
 		long size = array.size();
 //		List<Attack> attackList = new LinkedList<Attack>();
+//		Map<Date,LinkedList<Attack>> attackSortMap=new TreeMap<Date,LinkedList<Attack>>(new DateComparator());
+		
+		
+		/**
+		 * Date：外层Map以时间作为key，时间精确到秒，每秒可能产生几百条数据量
+		 * String：内层Map以攻击类型作为Key，为了便于统计同一时间产生不同类型的攻击数量
+		 * LinkedList<Attack>存储同一时间下，同一攻击类型的详细攻击信息
+		 */
+		Map<Date,HashMap<Integer,LinkedList<Attack>>> attackSortMap=new TreeMap<Date,HashMap<Integer,LinkedList<Attack>>>(new DateComparator());
 		for (int i = 0; i < size; i++) {
 			JSONObject obj = (JSONObject) array.get(i);
 			String srcIP = obj.getString("srcIp");
 			String desIP = obj.getString("dstIp");
 			String desPort = obj.getString("dstPort");
-			String startTime = obj.getString("statTime");
+//			String startTime=obj.getString("statTime");
+			Date startTime =DateUtils.stringToDateNYRSFM(obj.getString("statTime")); ;
 			byte[] base64Bytes = Base64.decodeBase64(obj.getString("eventType")
 					.getBytes());
 			String eventType = new String(base64Bytes, "UTF-8");
@@ -200,19 +228,70 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 				attack.setSrcIP(srcIP);
 				attack.setDesIP(desIP);
 				attack.setPort(desPort);
-				JSONObject jsonObject = new JSONObject();
-				jsonObject.put("attack", attack);
-				TextMessage returnMessage = new TextMessage(jsonObject.toString());
-				session.sendMessage(returnMessage);
-				Thread.currentThread().sleep(350);
-//				attackList.add(attack);
+				HashMap<Integer,LinkedList<Attack>> attackListMap=attackSortMap.get(startTime);
+				if(attackListMap==null||attackListMap.isEmpty()){
+					attackSortMap.put(startTime,new HashMap<Integer,LinkedList<Attack>>());
+				}
+				LinkedList<Attack> attackList= attackSortMap.get(startTime).get(eventType);
+				if(attackList==null||attackList.isEmpty()){
+					attackSortMap.get(startTime).put(EventTypeCode.typeToCodeMap.get(eventType),new LinkedList<Attack>());
+				}
+				attackSortMap.get(startTime).get(eventType).add(attack);
 			}
 		}
-//		long endTime = System.currentTimeMillis();
-//		System.out.println("时间差：" + (endTime - startTime1) / 1000);
-//		JSONObject jsonObject = new JSONObject();
-//		jsonObject.put("attackList", attackList);
-//		TextMessage returnMessage = new TextMessage(jsonObject.toString());
-//		session.sendMessage(returnMessage);
+		JSONObject jsonObject = new JSONObject();
+		ArrayList<AttackCount> attackCountList=null;
+		for(Entry<Date, HashMap<Integer, LinkedList<Attack>>> entry :attackSortMap.entrySet()){
+			/**
+			 * 存储同一时间内各个攻击类型的数量
+			 */
+			attackCountList=new ArrayList<AttackCount>();
+			HashMap<Integer, LinkedList<Attack>> attackMap=entry.getValue();
+			for(Entry<Integer,LinkedList<Attack>> attackEntry:attackMap.entrySet()){
+				attackCountList.add(new AttackCount(EventTypeCode.codeToTypeMap.get(attackEntry.getKey()),attackEntry.getValue().size()));
+			}
+			/**
+			 * 随机读取同一时间内的三条数据，推送到前端
+			 */
+			int includeType=attackMap.size();//同一时间内的攻击类型
+			//1.如果同一时间攻击类型>=3种类型
+			if(includeType>2){
+				for(int i=0;i<3;i++){					
+					Random random = new Random();
+					LinkedList<Attack> attackList=attackMap.get(random.nextInt(includeType));
+					Attack attack=attackList.get(0);
+					if(i==2){
+						attack.setAttackCount(attackCountList);
+					}
+					jsonObject.put("attack", attack);
+					System.out.println("jsonObject:"+jsonObject.toString());
+					TextMessage returnMessage = new TextMessage(jsonObject.toString());
+					session.sendMessage(returnMessage);
+					Thread.currentThread().sleep(350);
+				}
+			}else{
+				//2.如果同一时间攻击类型<3种类型,从开始找三个数据就ok了
+				int i=0;
+				for(Entry<Integer,LinkedList<Attack>> attackEntry:attackMap.entrySet()){
+					for(Attack attack:attackEntry.getValue()){
+						if(i==0){
+							attack.setAttackCount(attackCountList);
+						}
+						i++;
+						jsonObject.put("attack", attack);
+						System.out.println("jsonObject:"+jsonObject.toString());
+						TextMessage returnMessage = new TextMessage(jsonObject.toString());
+						session.sendMessage(returnMessage);
+						Thread.currentThread().sleep(350);
+						if(i==3){
+							return;
+						}
+					}
+				}
+			}
+			
+		}
+		
 	}
+	 
 }

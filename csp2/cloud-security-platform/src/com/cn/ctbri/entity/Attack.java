@@ -1,9 +1,12 @@
 package com.cn.ctbri.entity;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 public class Attack {
 	
 	//时间，攻击方，IP,被攻击方，IP，攻击类型，类型编码，端口,经度，纬度
-	private String startTime;
+	private Date startTime;
 	private String srcName;
 	private String srcIP;
 	private String desName;
@@ -15,10 +18,11 @@ public class Attack {
 	private String srcLatitude;
 	private String desLongitude;
 	private String desLatitude;
-	public String getStartTime() {
+	private ArrayList<AttackCount> attackCount;
+	public Date getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(String startTime) {
+	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
 	}
 	public String getSrcName() {
@@ -86,6 +90,12 @@ public class Attack {
 	}
 	public void setDesLatitude(String desLatitude) {
 		this.desLatitude = desLatitude;
+	}
+	public ArrayList<AttackCount> getAttackCount() {
+		return attackCount;
+	}
+	public void setAttackCount(ArrayList<AttackCount> attackCount) {
+		this.attackCount = attackCount;
 	}
 	@Override
 	public String toString() {
