@@ -2201,7 +2201,10 @@ public class UserController{
 			  
 			    //ip所在的省份
 			    if(ip!=null&&!"".equals(ip)){
+			    	System.out.println("i=="+i);
+			    	System.out.println("ip="+ip);
 			    	String ipProviceVal=addressUtils.GetAddressByIp(ip);
+			    	System.out.println("ipProviceVal=="+ipProviceVal);
 					   if(ipProvince==null||"".equals(ipProvince)){
 						   if(ipProviceVal!=null&&!"".equals(ipProviceVal)){
 							   userInfo.setIpProvice(ipProviceVal);
