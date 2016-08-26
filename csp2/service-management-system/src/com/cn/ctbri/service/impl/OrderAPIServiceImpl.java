@@ -55,5 +55,9 @@ public class OrderAPIServiceImpl implements IOrderAPIService{
 	public void updateCount(OrderAPI orderAPI) {
 		orderAPIDao.updateCount(orderAPI);
 	}
+
+	public API findUsedByParam(Map<String, Object> paramMap) {
+		return orderAPIDao.findUsedByParam(paramMap);
+	}
 	
 }
