@@ -155,7 +155,7 @@ public class DistrictDataController {
         Map<String, Object> paramMap = new HashMap<String, Object>();
 
         String endDate = DateUtils.dateToString(new Date());
-        Date date = DateUtils.getDateBeforeOneHour(new Date());
+        Date date = DateUtils.getBeforeMonthDate(new Date());
         String beginDate = DateUtils.dateToString(date);
         
         Map<String,Object> dateMap = new HashMap<String,Object>();
