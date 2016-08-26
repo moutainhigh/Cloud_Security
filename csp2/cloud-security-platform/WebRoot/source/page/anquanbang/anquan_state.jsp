@@ -364,7 +364,7 @@
 		<!-- 安全趋势 -->
         <div class="contentcenter not-used">
             <div class="point clearfix">
-            	<h5 class="fl" style="color:white">重大风险预警</h5>
+            	<h5 class="fl" style="color:#7aff75;font-family: sans-serif; font-style: normal; font-size: 18px; font-weight: bold;">重大风险预警</h5>
                 <div class="pont fl">
                 	<c:if test="${wafAlarmLevel==4}">
 	                	<span style="background-color: #b10930; border-right:1px solid #fff;">SEVERE</span>
@@ -420,10 +420,6 @@
                 </div>
                 <div class="ltmit" style="width:600px;height:350px">
                     <div id="userIndustry" style="width:600px;height:350px"></div>
-                </div>
-
-                <div class="ltmit">
-                    <div id="assetPurpose" style="width:540px;height:350px"></div>
                 </div>
             </div>
         </div>
