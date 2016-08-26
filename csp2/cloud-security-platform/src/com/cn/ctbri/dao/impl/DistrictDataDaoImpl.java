@@ -142,4 +142,8 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
 	public List getDaysInYear(Map<String, Object> paramMap) {
 		return this.getSqlSession().selectList(ns+"getDaysInYear",paramMap);
 	}
+	
+	public void updateDistrict(Map<String, Object> disMap) {
+		getSqlSession().update(ns+"updateDistrict", disMap);
+	}
 }
