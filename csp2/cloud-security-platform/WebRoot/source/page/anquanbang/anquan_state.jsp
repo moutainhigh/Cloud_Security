@@ -418,8 +418,8 @@
                 <div class="ltmit" style="width:600px;height:350px">
                     <div id="serviceUseInfoMonth6" style="width:600px;height:350px"></div>
                 </div>
-                <div class="ltmit" style="width:600px;height:350px">
-                    <div id="userIndustry" style="width:600px;height:350px"></div>
+                <div class="ltmit" style="width:680px;height:350px">
+                    <div id="userIndustry" style="width:680px;height:350px"></div>
                 </div>
             </div>
         </div>

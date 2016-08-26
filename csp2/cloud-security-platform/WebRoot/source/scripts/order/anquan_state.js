@@ -298,8 +298,8 @@ $(function(){
 				     },*/
 			   	    radar: {
 			   	       indicator : indicatorList,
-			   	       radius:'50%',
-			   	       center:['50%', '50%']
+			   	       radius:'70%',
+			   	       center:['50%', '52%']
 			   	    },
 			   	    series : (function (){
 			   	        var series = [];
