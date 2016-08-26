@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.LogsMapper">
+	<!-- 列集合 -->
+	<sql id="cols">log_id,ip_address,log_content,log_type,log_date</sql>
+	<!-- 结果对象 -->
+	<resultMap type="com.cn.ctbri.entity.LogsInfo" id="LogsMap">
+		<id property="log_id" column="log_id"/>
+		<result property="ip_address" column="ip_address"/>
+		<result property="log_content" column="log_content"/>
+		<result property="log_type" column="log_type"/>
+		<result property="log_date" column="log_date"/>
+	</resultMap>
+	
+	<select id="findLogsTimesLine" parameterType="hashmap" resultType="hashmap">
+	    SELECT
+		    COUNT(*) count1,
+		   DATE_FORMAT(
+		        a.log_date,
+		        '%m/%d'
+		    ) AS days
+		    
+		FROM
+		    cs_logs a
+		WHERE date_sub(curdate(), INTERVAL 30 DAY) &lt;= date(a.`log_date`)
+		GROUP BY log_date
+		ORDER BY log_date
+    </select>
+	
+</mapper>

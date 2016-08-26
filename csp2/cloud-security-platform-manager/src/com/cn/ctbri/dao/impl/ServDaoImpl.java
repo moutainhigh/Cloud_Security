@@ -68,7 +68,6 @@ public class ServDaoImpl extends DaoCommon implements ServDao{
 		return this.getSqlSession().selectList(np+"findPriceByParam", map);
 	}
 
-	@Override
 	public List<ApiPrice> findApiPriceByServiceId(int serviceId) {
 		return this.getSqlSession().selectList(na+"findApiPriceByServiceId", serviceId);
 	}
