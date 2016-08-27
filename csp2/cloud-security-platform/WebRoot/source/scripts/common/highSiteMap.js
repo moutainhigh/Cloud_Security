@@ -40,11 +40,12 @@ function showHighSiteMap() {
 	//loading动画显示
 	//myChart.showLoading();
 	myChart.showLoading({
-	  text: 'loading',
-	  color: '#42a7ff',
-	  textColor: '#000',
-	  maskColor: '#04144d',
-	  zlevel: 0
+	 text: '正在加载中',
+	 color: '#42a7ff',
+	 //textColor: '#073763',
+	  textColor: '#42a7ff',
+	 maskColor: 'rgba(255, 255, 255, 0)',
+	 zlevel: 0
 	});
 	
 	
@@ -118,7 +119,7 @@ function initHighSiteMap(myChart) {
 	            type: 'map',
 	            mapType: 'china',
 	            layoutCenter: ['50%', '50%'],  //地图中心到两侧的距离
-				layoutSize: 550,  //地图大小
+				layoutSize: 750,  //地图大小
 	            roam: false,
 	            label: {
 	                normal: {
@@ -170,11 +171,12 @@ function showHackerMap() {
 	//loading动画显示
 	//myChart.showLoading();
 	myChart.showLoading({
-	  text: 'loading',
-	  color: '#42a7ff',
-	  textColor: '#000',
-	  maskColor: '#04144d',
-	  zlevel: 0
+	   text: '正在加载中',
+	   color: '#42a7ff',
+	   //textColor: '#073763',
+	   textColor: '#42a7ff',
+	   maskColor: 'rgba(255, 255, 255, 0)',
+	   zlevel: 0
 	});
 	
 	//后台获取数据
@@ -190,11 +192,9 @@ function showHackerMap() {
 			   if(null!=dataList && dataList.length>0){
 					for (var i = 0; i < dataList.length; i++) {
 						var value = [];
-						 var longitude = dataList[i].longitude;
-						 var latitude = dataList[i].latitude;
-						value.push(longitude);
-						value.push(latitude);
-						value.push(dataList[i].val);
+						value.push(dataList[i].longitude);
+						value.push(dataList[i].latitude);
+						value.push(dataList[i].val * 10);
 						
 						var name = getDistrictName(dataList[i].name);
 						dataValue[i]={'name':name,'value':value};
@@ -234,16 +234,15 @@ function showHackerMap() {
 	    	type: 'piecewise', // 定义为分段型 visualMap
 	        left: '10%',
 	        bottom: '2%',
-	        calculable: true,
 	        textStyle: {
 	           color: '#fff'
 	        },
 	        pieces: [
 	        	{gt: 300, color: '#fa7e7d'},            // (300, Infinity]
 			    {gt: 100, lte: 300, color: '#ea9068'},  // (100, 300]
-			    {gt: 50,  lte: 100, color: '#eabf6c'},  // (50, 100]  orange
+			    {gt: 50,  lte: 100, color: '#eabf6c'},  // (50, 100]
 			    {gt: 10,  lte: 50,  color: '#ddde73'},  // (10, 50]
-			    {gt: 0,   lte: 10,  color: '#6bc770'}   // (0, 10]   green
+			    {gt: 0,   lte: 10,  color: '#6bc770'}   // (0, 10]
 			]
 	    },
 	    geo: {
@@ -255,7 +254,7 @@ function showHackerMap() {
 	        },
 	        roam: false,
 	        layoutCenter: ['50%', '50%'],  //地图中心到两侧的距离
-			layoutSize: 550,  //地图大小
+			layoutSize: 750,  //地图大小
 	        itemStyle: {
 		            normal: {
 		            	borderWidth : 2,
@@ -273,7 +272,9 @@ function showHackerMap() {
 	            type: 'heatmap',
         		coordinateSystem: 'geo',
 	            mapType: 'china',
-	            blurSize:20,
+	            //blurSize:5,
+	            //minOpacity:0.2,
+	            //maxOpacity:1,
 	            //roam: false,
 	            label: {
 	                normal: {
@@ -298,11 +299,12 @@ function showUserMap() {
 	//loading动画显示
  	//myChart.showLoading();
 	myChart.showLoading({
-	  text: 'loading',
-	  color: '#42a7ff',
-	  textColor: '#000',
-	  maskColor: '#04144d',
-	  zlevel: 0
+	   text: '正在加载中',
+	   color: '#42a7ff',
+	   //textColor: '#073763',
+	   textColor: '#42a7ff',
+	   maskColor: 'rgba(255, 255, 255, 0)',
+	   zlevel: 0
 	});
 	
 	var maxVal = 0;
@@ -340,8 +342,8 @@ function showUserMap() {
 				        	name: '用户地理位置分布',
 				            data: dataValue,
 				            symbolSize: function (val) {
-				            // 根据最大的值 来控制气泡半径  （最小 3  最大 23）
-			               		return 3 + val[2] * 20 / maxVal;
+				            // 根据最大的值 来控制气泡半径  （最小 10  最大 20）
+			               		return 15 + val[2] * 10 / maxVal;
 				            }
 				            
 				        }
@@ -392,7 +394,7 @@ function showUserMap() {
 	    geo: {
 	        map: 'china',
 	        layoutCenter: ['50%', '50%'],  //地图中心到两侧的距离
-			layoutSize: 550,  //地图大小
+			layoutSize: 750,  //地图大小
 	        label: {
 	            emphasis: {
 	                show: false
@@ -446,11 +448,12 @@ function showSecurityStateMap(){
 	//loading动画显示
  	//myChart.showLoading();
 	myChart.showLoading({
-	  text: 'loading',
-	  color: '#42a7ff',
-	  textColor: '#000',
-	  maskColor: '#04144d',
-	  zlevel: 0
+	   text: '正在加载中',
+	   color: '#42a7ff',
+	   //textColor: '#073763',
+	   textColor: '#42a7ff',
+	   maskColor: 'rgba(255, 255, 255, 0)',
+	   zlevel: 0
 	});
 	
 	$.ajax({
@@ -551,7 +554,7 @@ function initSecurityStateMap(myChart){
 	    geo: {
 	        map: 'china',
 	        layoutCenter: ['50%', '50%'],  //地图中心到两侧的距离
-			layoutSize: 550,  //地图大小
+			layoutSize: 750,  //地图大小
 	        label: {
 	            emphasis: {
 	                show: false
