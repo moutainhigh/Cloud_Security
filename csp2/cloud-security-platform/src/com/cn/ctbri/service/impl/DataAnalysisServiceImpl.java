@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.DataAnalysisDao;
 import com.cn.ctbri.entity.AlarmSum;
+import com.cn.ctbri.entity.District;
 import com.cn.ctbri.entity.UserDistribution;
 import com.cn.ctbri.service.IDataAnalysisService;
 
@@ -27,8 +28,8 @@ public class DataAnalysisServiceImpl implements IDataAnalysisService {
 		return dataAnalysisDao.findUserCountByDistrict();
 	}
 
-	public Map<String,Object> findlLongitudeAndLatitude(String proName) {
-		return dataAnalysisDao.findlLongitudeAndLatitude(proName);
+	public District findlLongitudeAndLatitude(String proName) {
+		return dataAnalysisDao.findlDistrictDataByProName(proName);
 	}
 	
 	public List<AlarmSum> findAlarmSum(){
