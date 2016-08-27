@@ -45,9 +45,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	select ipProvice proviceName, count(*) userCount from cs_user group by ipProvice
     </select>
     
-    <select id="findlLongitudeAndLatitude" resultType="hashmap">
+    <select id="findlLongitudeAndLatitude" resultType="com.cn.ctbri.entity.District">
 
-		select longitude, latitude 
+		select *
 		from cs_district
 		where 
 		name like CONCAT(#{proName},'%')
@@ -69,7 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     select dis.name districtName, asset.addr 
     from cs_asset asset, cs_district dis 
     where 
-		asset.districtid = dis.id
+		asset.assetProvince = dis.id
 	and
 		asset.id in 
 			(select distinct assetid from cs_order_asset where ipArray like #{ip})
