@@ -15,6 +15,8 @@ public class District {
 	private String latitude;//地图坐标-纬度
 	private String count;
 	private String limit;
+	private int siteCount;  //高危网站数量
+	
     public int getId() {
         return id;
     }
@@ -51,6 +53,12 @@ public class District {
     public void setLimit(String limit) {
         this.limit = limit;
     }
+	public int getSiteCount() {
+		return siteCount;
+	}
+	public void setSiteCount(int siteCount) {
+		this.siteCount = siteCount;
+	}
 
     
 	
