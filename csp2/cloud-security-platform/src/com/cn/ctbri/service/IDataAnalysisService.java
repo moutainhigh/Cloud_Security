@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cn.ctbri.entity.AlarmSum;
+import com.cn.ctbri.entity.District;
 import com.cn.ctbri.entity.UserDistribution;
 
 public interface IDataAnalysisService {
@@ -15,7 +16,7 @@ public interface IDataAnalysisService {
 	public List<UserDistribution> findUserCountByDistrict();
 	
 	//根据省份查询经纬度
-	public Map<String, Object> findlLongitudeAndLatitude(String proName);
+	public District findlLongitudeAndLatitude(String proName);
 	
 	//以网站资产为单位，累加所有漏洞、木马、关键字、篡改、可用性告警数据总和
 	public List<AlarmSum> findAlarmSum();
