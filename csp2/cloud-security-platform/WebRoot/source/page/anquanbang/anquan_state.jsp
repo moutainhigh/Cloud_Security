@@ -54,15 +54,26 @@
 				top:0; left:0;
 			}
 			
-			
+	body{
+        background:url(${ctx}/source/images/personalCenter/background4.png);
+    }	
 	.contentBox{
-		background-color: #04144d;
-		
-		/*min-height: 600px;*/
+		/*background-color: #04144d;*/
+		position: relative;
+	}
+	.contentBox nav{
+		top:30px;
+		left: 120px;
+		position: absolute;
+		z-index:99999;
+	
 	}
 	.contentBox nav ul{
 		margin-right: -100px;
-		padding-top: 30px;
+		/*padding-top: 30px;*/
+		position: absolute;
+		left: 0px;
+		top:0px
 	}
 	.contentBox nav li{
 		float:left;
@@ -87,17 +98,12 @@
 		color: #00aeff;
 		
 	}
-	.contentBox nav ul li.active i{
-		background: url(${ctx}/source/images/personalCenter/t.png) no-repeat left bottom;
-		position: absolute;
-		bottom: 2px;
-		left: -116px;
-		width: 332px;
-		height: 6px;
-	}
 	.contentLeft{
 		margin-top: 42px;
 		width: 125px;
+		position: absolute;
+		left: 20px;
+		top:70px
 	}
 	.contentLeft ul{
 		width: 125px;
@@ -105,8 +111,7 @@
 		min-height: 400px;
 	}
 	.contentRight{
-		margin-left: 180px; 
-		height: 450px;
+		margin-left: 150px; 
 	}
 
 	.contentcenter{
@@ -118,7 +123,7 @@
 		height: 52px;
 		line-height: 52px;
 		text-align: center;
-		background: url(../images/PersonalCenter/bt.png) no-repeat left bottom;
+		background: url(${ctx}/source/images/personalCenter/bt.png) no-repeat left bottom;
 	}
 	
 	
@@ -142,7 +147,7 @@
 	.contentcenterdata ul li{
 		line-height: 52px;
 		text-align: center;
-		background: url(../images/PersonalCenter/bt.png) no-repeat left bottom;
+		background: url(${ctx}/source/images/personalCenter/bt.png) no-repeat left bottom;
 	}
 	
 </style>
@@ -183,45 +188,7 @@
 </head>
 
 <body>
-<!--头部-->
-	<div class="safe01">
-		<div class="head">
-			<div class="headBox">
-				<div class="safeL fl" style="width:260px; margin-right:13%">
-					<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:4px;"/></a>
-					<span style="font-size: 20px;color: #4a4a4a; padding-left:10px;position:relative; top:-10px;">安全大数据</span>
-				</div>
-				<div class="safem fl">
-					<span class="fl"><a href="${ctx}/index.html" class="hbule this">首页</a></span>
-					
-					<!-- 商品分类 start -->
-					<c:import url="/category.html"></c:import>
-					<!-- 商品分类 end -->
-						
-					<span class="fl"><a href="${ctx}/knowUs.html" class="hbule">关于我们</a></span>
-					<span class="fl shopping" style="margin-right:0">
-						<a href="${ctx}/showShopCar.html"><i></i>购物车</a>
-					</span>
-					
-				</div>
-				<div class="safer fr" style="margin-left:0px;">
-					<!-- 如果已经登录则显示用户名，否则需要登录 -->
-					<c:if test="${sessionScope.globle_user!=null }">
-					<div class="login clearfix">
-						<a href="${ctx}/userCenterUI.html"  class="fl loginname">${sessionScope.globle_user.name }</a>
-						<em class="fl">|</em>
-						<a href="${ctx}/exit.html" class="fl" >退出</a>
-					</div>
-					</c:if>
-					<c:if test="${sessionScope.globle_user==null }">
-						<a href="${ctx}/loginUI.html">登录</a>
-						<em>|</em>
-						<a href="${ctx}/registUI.html">注册</a>
-					</c:if>
-				</div>
-			</div>
-		</div>
-	</div>
+
 <div class="safeBox">
 	<div class="contentBox" id="content">
 		<nav>
@@ -336,7 +303,7 @@
         </div>
         、
         <!-- 地域分布 -->
-		<div class="contentcenter not-used" style="width: 1120px;">
+		<div class="contentcenter not-used">
 			<div class="contentLeft fl">
 				<ul id="content_ul">
 					<li class="active">
@@ -355,7 +322,7 @@
 				</ul>
 			</div>
 			<div class="contentRight">
-                <div id="safe-map" style="display: block;height:450px">
+                <div id="safe-map" style="display: block;height:600px">
                    <!-- <img src="${ctx}/source/images/safe/u121.png" alt="" /> -->
 	        	</div>
 	        </div>
@@ -448,71 +415,7 @@
 		
 	</div>
 </div>
-	<div class="safe04">
-			<div class="imgBox clearfix">
-				<div class="footL fl">
-					<a href="${ctx}/index.html">
-						<img src="${ctx}/source/images/portal/new-footer-logo.png" alt="" />
-                   </a>
-				</div>
-				<ol class="footr clearfix fr">
-					<li>
-                    	<h2>帮助中心</h2>
-                        <dl>
-                        	<dd>购物指南</dd>
-                            <dd>在线帮助</dd>
-                            <dd>常见问题</dd>
-                       </dl>
-                    </li>
-                    <li>
-                    	<h2>关于安全帮</h2>
-                        <dl>
-                            <dd><a href="${ctx}/knowUs.html">了解安全帮</a></dd>
-                            <dd><a href="${ctx}/joinUs.html">加入安全帮</a></dd>
-                            <dd>联系我们</dd>
-                       </dl>
-                    </li>
-                    <li>
-                    	<h2>关注我们</h2>
-                        <dl>
-                        	<dd>QQ交流群<br/>470899318</dd>
-                            <dd class="weixin"><a href="#">官方微信</a></dd>
-                       </dl>
-                    </li>
-                     <li>
-                    	<h2>特色服务</h2>
-                        <dl>
-                        	<dd>优惠劵通道</dd>
-                            <dd>专家服务通道</dd>
-                       </dl>
-                    </li>
-					
-				</ol>
-				
-			</div>
-	</div>
-	<!-- 底部 start -->
-	<c:import url="/foot.jsp"></c:import>
-	<!-- 底部 end -->
-		
-<!---执行效果-->
-<div class="weixinshow popBoxhide" id="weixin">
-	<i class="close chide"></i>
-    <div class="Pophead">
-    	<h1 class="heaf">安全帮微信二维码</h1>
-    </div>
-	<div class="popBox">
-    	 <p>打开微信，点击右上角的“+”，选择“扫一扫”功能，<br/>
-对准下方二维码即可。
-		</p>
-           <div class="weinImg" style="text-align:center;">
-           	<img src="${ctx}/source/images/portal/weixin.jpg" alt="" />
-           </div> 
-    </div>
 
-</div>
-	
-<div class="shade"></div>
 <script>
 	$(function(){
 		/* $('.tab-pane span').click(function(){
