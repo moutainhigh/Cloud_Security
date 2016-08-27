@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.DataAnalysisDao;
 import com.cn.ctbri.entity.AlarmSum;
+import com.cn.ctbri.entity.District;
 import com.cn.ctbri.entity.UserDistribution;
 
 @Repository
@@ -26,7 +27,7 @@ public class DataAnalysisDaoImpl extends DaoCommon implements DataAnalysisDao{
 	}
 	
 	//根据省份查询经纬度
-	public Map<String,Object> findlLongitudeAndLatitude(String proName) {
+	public District findlDistrictDataByProName(String proName) {
 		return this.getSqlSession().selectOne(ns + "findlLongitudeAndLatitude", proName);
 	}
 	
