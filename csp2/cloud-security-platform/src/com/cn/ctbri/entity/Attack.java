@@ -6,6 +6,7 @@ import java.util.Date;
 public class Attack {
 	
 	//时间，攻击方，IP,被攻击方，IP，攻击类型，类型编码，端口,经度，纬度
+	private long id;
 	private Date startTime;
 	private String srcName;
 	private String srcIP;
@@ -96,6 +97,12 @@ public class Attack {
 	}
 	public void setAttackCount(ArrayList<AttackCount> attackCount) {
 		this.attackCount = attackCount;
+	}
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
 	}
 	@Override
 	public String toString() {
