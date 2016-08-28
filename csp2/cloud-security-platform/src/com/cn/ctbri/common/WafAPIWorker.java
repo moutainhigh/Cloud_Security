@@ -408,6 +408,24 @@ public class WafAPIWorker {
         return textEntity;
 	}
 	
+	public static String getLocationFromIp(String ip){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("ip", ip);
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/getLocationFromIp";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
 	/**
 	 * 功能描述：获取安全事件类型统计信息
 	 * @param interval
@@ -825,16 +843,18 @@ public class WafAPIWorker {
 //			ser.add(jo);
 //    		wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", "test0615", "219.141.189.183", "80", "nsfocus.cer", "0", "www.anquanbang", "*", "", ser);
 //    		wafcreate = WafAPIWorker.getEventTypeCountByDay("30");
-    		wafcreate = WafAPIWorker.getAllWafLogWebsecInTime("48","minute");
+//    		wafcreate = WafAPIWorker.getAllWafLogWebsecInTime("48","minute");
 //    		wafcreate = WafAPIWorker.getEventTypeCountByMonth("1","2016-08");
 //    		wafcreate = WafAPIWorker.getWafLogWebSecSrcIpList();
 //    		wafcreate = WafAPIWorker.getWafLogWebSecDstIpList();
 //    		wafcreate = WafAPIWorker.getWafAlertLevelCountByMonth("1","2016-08");
 //    		wafcreate = WafAPIWorker.getWafEventTypeCount("1","hour");
+    		String data=getLocationFromIp("1.2.2.3");
+    		System.out.println("data:"+data);
     	} catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(wafcreate);
+//        System.out.println(wafcreate);
         
     }
 }
