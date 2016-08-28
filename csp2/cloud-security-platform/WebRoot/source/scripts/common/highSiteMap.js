@@ -57,12 +57,15 @@ function showHighSiteMap() {
            contentType: "application/x-www-form-urlencoded; charset=utf-8",
            success:function(data){
           	   var dataValue = [];
-	           var dataMap= data.map;
-	           $.each(dataMap,function(key,value){ 
-	           		var name = getDistrictName(key);
-	  				var val ={'name':name,'value':value};
-	  				dataValue.push(val);
-				}); 
+	           var dataList= data.list;
+	           if(null!=dataList && dataList.length>0){
+					for (var i = 0; i < dataList.length; i++) {
+
+						var name = getDistrictName(dataList[i].name);
+	  					var val ={'name':name,'value':dataList[i].siteCount};
+	  					dataValue.push(val);
+					}
+				}
 				//loading动画隐藏 
 				myChart.hideLoading();
 				//map中数据显示
@@ -74,13 +77,12 @@ function showHighSiteMap() {
 				        }
 				    ]
 				});
-           }
-   /* ,
+           },
            error:function(){
            		myChart.hideLoading();
            		alert("系统异常，数据加载失败！");
            		return;
-           }*/
+           }
      });
  }
  
@@ -272,8 +274,8 @@ function showHackerMap() {
 	            type: 'heatmap',
         		coordinateSystem: 'geo',
 	            mapType: 'china',
-	            //blurSize:5,
-	            //minOpacity:0.2,
+	            blurSize:5,
+	            minOpacity:0.2,
 	            //maxOpacity:1,
 	            //roam: false,
 	            label: {
