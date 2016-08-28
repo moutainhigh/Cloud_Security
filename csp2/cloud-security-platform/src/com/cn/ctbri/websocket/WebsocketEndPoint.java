@@ -2,6 +2,7 @@ package com.cn.ctbri.websocket;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -33,6 +34,7 @@ import com.cn.ctbri.entity.IPPosition;
 import com.cn.ctbri.service.IIPPositionService;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.MapUtil;
+import com.cn.ctbri.vo.AttackVO;
 
 /**
  * 创 建 人 ： 于永波 创建日期： 2014-12-30 描 述： WebSocket服务器消息监听控制器 版 本： 1.0
@@ -42,6 +44,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 	IIPPositionService ipPositionService;
 	// 存储格式（IP,IPPosition）
 	static Map<String, IPPosition> ipPositionMap = null;
+	private long id=0;
 
 	public synchronized Map<String, IPPosition> getIPPositions() {
 		if (ipPositionMap == null) {
@@ -54,23 +57,6 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session)
 			throws Exception {
-//		WafAPIWorker worker = new WafAPIWorker();
-//		String texts = worker.getWafEventTypeCount("1", "hour");
-//		JSONArray array = JSONArray.fromObject(texts);
-//		List<AttackCount> attackCountList = new ArrayList<AttackCount>();
-//		for (int i = 0; i < array.size(); i++) {
-//			JSONObject obj = (JSONObject) array.get(i);
-//			byte[] base64Bytes = Base64.decodeBase64(obj.get("eventType")
-//					.toString().getBytes());
-//			String eventType = new String(base64Bytes, "UTF-8");
-//			Integer typeCode = EventTypeCode.typeToCodeMap.get(eventType);
-//			Integer count = (Integer) obj.get("count");
-//			attackCountList.add(new AttackCount(typeCode, count));
-//		}
-//		JSONObject jsonObject = new JSONObject();
-//		jsonObject.put("wafEventTypeCount", attackCountList);
-//		String resultJson = jsonObject.toString();// 转成json数据
-//		session.sendMessage(new TextMessage(resultJson));
 	}
 
 	@Override
@@ -79,11 +65,37 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 		String receiveMsg=message.getPayload();
 		//为了安全做的一个类似token认证
 		if("135de9e2fb6ae653e45f06ed18fbe9a7".equals(receiveMsg)){
-			while(true){
-				System.out.println("testxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-				perSendData(session,message);
-//				Thread.sleep(10000);
-			}
+			
+//			while(true){
+//				System.out.println("testxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+//				perSendData(session,message);
+//			}
+			WafAPIWorker worker = new WafAPIWorker();
+			//第一次读取数据
+			boolean firstRead=true;
+			long startReadTime=0;
+			String dataText =null;
+			do{
+				if(firstRead){//第一次读取数据
+					startReadTime=System.currentTimeMillis();
+					dataText = getFirstWafData();
+				}else{
+					long currentReadTime=System.currentTimeMillis();
+					int seconds=(int) ((currentReadTime-startReadTime)/1000);
+					int minute=(int) ((currentReadTime-startReadTime)/1000/60);
+					dataText=getWafData(minute);
+					System.out.println("seconds:"+seconds+"minute:"+minute+"dataText:"+dataText);
+					startReadTime=currentReadTime;
+				}
+				JSONObject json = JSONObject.fromObject(dataText);
+				JSONArray array = (JSONArray) json.get("wafLogWebsecList");
+				if(null!=array&&array.size()==0){
+					Thread.sleep(1000*60*3);
+					continue;
+				}
+				perSendData(session,message,array);
+				firstRead=false;
+			}while(!firstRead);
 		}
 	}
 	class DateComparator implements Comparator<Date>{
@@ -94,22 +106,23 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 		}
 		
 	}
-	public void perSendData(WebSocketSession session,TextMessage message) throws IOException, InterruptedException{
-		long startTime1 = System.currentTimeMillis();
+	public String getFirstWafData(){
 		WafAPIWorker worker = new WafAPIWorker();
 		long startTimeTest=System.currentTimeMillis();
 		String text = worker.getAllWafLogWebsecInTime("3", "date");
-		long endTime=System.currentTimeMillis();
-		JSONObject json = JSONObject.fromObject(text);
-		long endTime2=System.currentTimeMillis();
-		System.out.println("jiekou:"+(endTime-startTimeTest)/1000);
-		System.out.println("转json:"+(endTime2-endTime)/1000);
-		JSONArray array = (JSONArray) json.get("wafLogWebsecList");
+		return text;
+	}
+	public String getWafData(int minute){
+		WafAPIWorker worker = new WafAPIWorker();
+		String text = worker.getAllWafLogWebsecInTime(minute+"", "minute");
+		return text;
+	}
+	
+	public void perSendData(WebSocketSession session,TextMessage message,JSONArray array) throws IOException, InterruptedException{
+		if(array==null){
+			return;
+		}
 		long size = array.size();
-//		List<Attack> attackList = new LinkedList<Attack>();
-//		Map<Date,LinkedList<Attack>> attackSortMap=new TreeMap<Date,LinkedList<Attack>>(new DateComparator());
-		
-		
 		/**
 		 * Date：外层Map以时间作为key，时间精确到秒，每秒可能产生几百条数据量
 		 * String：内层Map以攻击类型作为Key，为了便于统计同一时间产生不同类型的攻击数量
@@ -121,7 +134,6 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			String srcIP = obj.getString("srcIp");
 			String desIP = obj.getString("dstIp");
 			String desPort = obj.getString("dstPort");
-//			String startTime=obj.getString("statTime");
 			Date startTime =DateUtils.stringToDateNYRSFM(obj.getString("statTime")); ;
 			byte[] base64Bytes = Base64.decodeBase64(obj.getString("eventType")
 					.getBytes());
@@ -236,7 +248,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 				if(attackList==null||attackList.isEmpty()){
 					attackSortMap.get(startTime).put(EventTypeCode.typeToCodeMap.get(eventType),new LinkedList<Attack>());
 				}
-				attackSortMap.get(startTime).get(eventType).add(attack);
+				attackSortMap.get(startTime).get(EventTypeCode.typeToCodeMap.get(eventType)).add(attack);
 			}
 		}
 		JSONObject jsonObject = new JSONObject();
@@ -256,18 +268,35 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			int includeType=attackMap.size();//同一时间内的攻击类型
 			//1.如果同一时间攻击类型>=3种类型
 			if(includeType>2){
+				int [] randomArray=new int[3];
 				for(int i=0;i<3;i++){					
 					Random random = new Random();
-					LinkedList<Attack> attackList=attackMap.get(random.nextInt(includeType));
-					Attack attack=attackList.get(0);
-					if(i==2){
-						attack.setAttackCount(attackCountList);
+					randomArray[i]=random.nextInt(includeType);
+				}
+				Arrays.sort(randomArray);
+				int i=0;
+				for(Entry<Integer,LinkedList<Attack>> attackListEntry:attackMap.entrySet()){
+					if(i==randomArray[0]||i==randomArray[1]||i==randomArray[2]){
+						LinkedList<Attack> attackList=attackListEntry.getValue();
+						Attack attack=attackList.get(0);
+						attack.setId(id);
+						if(id<Long.MAX_VALUE){
+							id++;
+						}else{
+							id=0;
+						}
+						if(i==2){
+							attack.setAttackCount(attackCountList);
+						}
+						AttackVO attackVO=new AttackVO(attack);
+						jsonObject.put("attack", attackVO);
+						System.out.println("jsonObject:"+jsonObject.toString());
+						TextMessage returnMessage = new TextMessage(jsonObject.toString());
+						session.sendMessage(returnMessage);
+						Thread.currentThread().sleep(350);
 					}
-					jsonObject.put("attack", attack);
-					System.out.println("jsonObject:"+jsonObject.toString());
-					TextMessage returnMessage = new TextMessage(jsonObject.toString());
-					session.sendMessage(returnMessage);
-					Thread.currentThread().sleep(350);
+					i++;
+					
 				}
 			}else{
 				//2.如果同一时间攻击类型<3种类型,从开始找三个数据就ok了
@@ -278,7 +307,14 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 							attack.setAttackCount(attackCountList);
 						}
 						i++;
-						jsonObject.put("attack", attack);
+						attack.setId(id);
+						if(id<Long.MAX_VALUE){
+							id++;
+						}else{
+							id=0;
+						}
+						AttackVO attackVO=new AttackVO(attack);
+						jsonObject.put("attack", attackVO);
 						System.out.println("jsonObject:"+jsonObject.toString());
 						TextMessage returnMessage = new TextMessage(jsonObject.toString());
 						session.sendMessage(returnMessage);
