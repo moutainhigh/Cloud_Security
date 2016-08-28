@@ -146,4 +146,16 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
 	public void updateDistrict(Map<String, Object> disMap) {
 		getSqlSession().update(ns+"updateDistrict", disMap);
 	}
+
+	@Override
+	public void updateSiteCount(List<District> list) {
+		getSqlSession().update(ns+"updateSiteCount", list);
+		
+	}
+
+	@Override
+	public List<District> getSiteCount() {
+		return getSqlSession().selectList(ns+"getSiteCount");
+		
+	}
 }
