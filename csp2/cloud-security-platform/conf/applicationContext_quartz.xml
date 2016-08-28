@@ -64,6 +64,19 @@
     	<property name="cronExpression" value="0 0/1 * * * ?" />
     </bean>
     
+    <!--要调度的对象-->
+    <bean id="taskHighRiskSiteBean" class="com.cn.ctbri.scheduler.HighRiskSiteAnalysisTask" />
+    <bean id="taskHighRiskSiteDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="taskHighRiskSiteBean" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="taskHRSTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="taskHighRiskSiteDetail" />
+        <property name="cronExpression" value="0 0/30 * * * ?" />
+    </bean>
     
     <!-- 将lazy-init='false'那么容器启动就会执行调度程序   -->
     <bean id="startQuertz"
@@ -75,6 +88,7 @@
                 <ref bean="resultTrigger" />
                 -->
                 <ref bean="resultTrigger" />
+                <ref bean="taskHRSTrigger" />
             </list>
         </property>
     </bean>
