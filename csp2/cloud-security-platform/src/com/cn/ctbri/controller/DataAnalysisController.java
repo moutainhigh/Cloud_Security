@@ -2,6 +2,7 @@ package com.cn.ctbri.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,82 +49,32 @@ public class DataAnalysisController {
 	@ResponseBody
 	public String highRiskSiteMap(HttpServletResponse response,HttpServletRequest request) throws IOException {
         
-		Map<String, Integer> SiteCountMap = new HashMap<String, Integer>();
 		
-		//查询 漏洞、木马、关键字、篡改、可用性告警数据总和
-		List<AlarmSum> alarmSumList = dataAnalysisService.findAlarmSum();
-		
-		//查询 WAF告警数量
-		String wafcreate = WafAPIWorker.getWafLogWebSecDstIpList();
-		JSONObject jsonObject = JSONObject.fromObject(wafcreate);			
-		JSONArray jsonArray = jsonObject.getJSONArray("WafLogWebSecDstIpList");
-		
-		//根据网站，累加所有漏洞、木马、关键字、篡改、可用性及WAF告警数据总和
-		//----------------------累加告警数据总和  start ----------------------
-		int wafWebSiteSize = jsonArray.size();
-		for (int i = 0;i < wafWebSiteSize; i++) {
-			JSONObject obj = (JSONObject) jsonArray.get(i);
-			String dstIp = obj.getString("dstIp");
-			int count = obj.getInt("count");
-			//DB:根据waf防护目标的ip查询网站名、所在省份
-			Map<String, String> assetInfo = dataAnalysisService.findAssetInfoByIp(dstIp);
-			if (assetInfo != null) {
-				String disName = assetInfo.get("districtName");
-				String addr = assetInfo.get("addr");
-				
-				//累计标志 true：已累计 false：未累计
-				boolean totalFlag = false;
-				for(AlarmSum alarmSum: alarmSumList) {
-					if (alarmSum.getUrl().equals(disName) && 
-							alarmSum.getDistrictName().equals(disName)) {
-						alarmSum.setAlarmCount(alarmSum.getAlarmCount() + count);
-						totalFlag = true;
-						break;
-					}
-				}
-				
-				if(!totalFlag){
-					AlarmSum alarmSum = new AlarmSum();
-					alarmSum.setDistrictName(disName);
-					alarmSum.setUrl(addr);
-					alarmSum.setAlarmCount(count);
-					alarmSumList.add(alarmSum);
-				}
-			}
-			
-		}
-		//----------------------累加告警数据总和  end ----------------------
-		
-		//判断告警数据总和是否超过100,超过100则该省分的网站数量加1
-		for(AlarmSum alarmSum: alarmSumList) {
-			if (alarmSum.getAlarmCount() <100) {
-				continue;
-			}
-			
-			String disName = alarmSum.getDistrictName();
-			
-			if (SiteCountMap.containsKey(disName)) {
-				int count = SiteCountMap.get(disName) + 1;
-				SiteCountMap.remove(disName);
-				SiteCountMap.put(disName, count);
-			}else {
-				SiteCountMap.put(disName, 1);
-			}
-		}
+		List<District> result = districtDataService.getSiteCount();
 		
 		//--------------------------demo start-----------
-//		SiteCountMap.put("北京", 5000);
-//		SiteCountMap.put("河北", 100);
-//		SiteCountMap.put("四川", 200);
-//		SiteCountMap.put("台湾", 300);
-//		SiteCountMap.put("香港", 400);
-//		SiteCountMap.put("新疆", 500);
-//		SiteCountMap.put("黑龙江", 600);
-//		SiteCountMap.put("内蒙古", 700);
-//		SiteCountMap.put("宁夏", 800);
-//		SiteCountMap.put("云南", 900);
-//		SiteCountMap.put("湖南", 1000);
-//		SiteCountMap.put("西藏", 400);
+//		List<District> result = new ArrayList<District>();
+//		
+//		District dis1 = new District();
+//		dis1.setName("北京");
+//		dis1.setSiteCount(5000);
+//		result.add(dis1);
+//		
+//		District dis2 = new District();
+//		dis2.setName("河北");
+//		dis2.setSiteCount(100);
+//		result.add(dis2);
+//		
+//		District dis3 = new District();
+//		dis3.setName("四川");
+//		dis3.setSiteCount(200);
+//		result.add(dis3);
+//		
+//		District dis4 = new District();
+//		dis4.setName("台湾");
+//		dis4.setSiteCount(300);
+//		result.add(dis4);
+		
 //		try {
 //			Thread.sleep(2000);
 //		} catch (InterruptedException e) {
@@ -133,7 +84,7 @@ public class DataAnalysisController {
 		//--------------------------demo end-----------
 		
 		JSONObject jo = new JSONObject(); 
-		jo.put("map", SiteCountMap);
+		jo.put("list", result);
 		String resultGson = jo.toString();//转成json数据
 		
 		response.setCharacterEncoding("utf-8");
