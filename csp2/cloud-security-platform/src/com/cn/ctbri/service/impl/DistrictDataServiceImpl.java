@@ -127,4 +127,15 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
 	public void updateDistrict(Map<String, Object> disMap) {
 		districtDataDao.updateDistrict(disMap);
 	}
+
+	@Override
+	public void updateSiteCount(List<District> list) {
+		districtDataDao.updateSiteCount(list);
+	}
+
+	@Override
+	public List<District> getSiteCount() {
+		return districtDataDao.getSiteCount();
+		
+	}
 }
