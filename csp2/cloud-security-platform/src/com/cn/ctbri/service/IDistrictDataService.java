@@ -107,4 +107,8 @@ public interface IDistrictDataService {
     
     //更新地域告警数
   	void updateDistrict(Map<String, Object> disMap);
+  	
+  	void updateSiteCount(List<District> list);
+  	
+  	List<District> getSiteCount();
 }
