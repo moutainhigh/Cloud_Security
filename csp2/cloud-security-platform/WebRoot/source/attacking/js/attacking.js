@@ -16,7 +16,7 @@ console.log(typestate);
 
 var settings = {
     // The data properties to parse into numbers
-    numberProps: ["dport", "latitude", "longitude", "latitude2", "longitude2"],
+    numberProps: ["port", "srcLatitude", "srcLongitude", "desLatitude", "desLongitude"],
 
     // Layout settings
     linkAnchor: false,
@@ -276,8 +276,8 @@ var nodeModel = {
                 y: attack.cy,
                 cx: attack.cx,
                 cy: attack.cy,
-                country: attack.country,
-                city: attack.city,
+                srcName: attack.srcName,
+                service: attack.service,
                 fixed: true,
                 pruneTS: (new Date()).getTime() / 1000 + settings.dataPruneInterval
             }
@@ -325,13 +325,13 @@ var nodeModel = {
                 cy: attack.targetY,
                 startX: attack.x,
                 startY: attack.y,
-                city: attack.city2,
-                country: attack.country2,
+                desName: attack.desName,
                 theta: Math.atan((attack.targetY - attack.y) /
                                  (attack.targetX - attack.x)),
 
                 dport: attack.dport,
                 dtype: attack.dtype,
+                service: attack.service,
                 pruneTS: (new Date()).getTime() / 1000 + settings.dataPruneInterval
             }
             this.links.push({source: this._getsertAnchorFor(target),
@@ -487,13 +487,10 @@ var painter = {
                 }
 
                 var that = this;
-                // console.log(nodeModel.get(nodeModel.ATTACKS));
-                // 此方法返回值为空，更改为TARGETS可获取到值。  -By Lee.
-                //nodeModel.get(nodeModel.ATTACKS)
+                
                 nodeModel.get(nodeModel.TARGETS)
                     .forEach(function(n) {
-                        //console.log(n.age);
-                       var c = d3.rgb(colorizer(n.dtype)),
+                       var c = d3.rgb(colorizer(n.service)),
                             r = that.getRadius(n),
                             afterArrival = n.age - n["arrivalAge"];
                        
@@ -527,7 +524,7 @@ var painter = {
                 nodeModel.get(nodeModel.TARGETS)
                     .forEach(function(n) {
 
-                        var c = d3.rgb(colorizer(n.dtype)),
+                        var c = d3.rgb(colorizer(n.service)),
                             afterArrival = n.age - n["arrivalAge"];
 
                         // 绘制攻击目标处的光圈。
@@ -715,12 +712,16 @@ var statsManager = {
              state: typestate,
 
              insert: function(incoming) {
-                this.updated = incoming.service;
-                if (this.state.has(incoming.service)) {
-                    this.state.set(incoming.service,
-                            	this.state.get(incoming.service) + 1);
-                } else {
-                    this.state.set(incoming.service, 1);
+                this.updated = incoming.attackCount;
+                if(this.updated.length != 0){
+                	for(var i=0; i<this.updated.length; i++){
+                		if (this.state.has(this.updated[i].type)) {
+                            this.state.set(this.updated[i].type,
+                                    	this.state.get(this.updated[i].type) + this.updated[i].currentNum);
+                        } else {
+                            this.state.set(this.updated[i].type, this.updated[i].currentNum);
+                        }
+                	}
                 }
              },
 
@@ -743,11 +744,13 @@ var statsManager = {
                  rows.exit().remove();
 
                  // 过滤器：如果新的攻击在state中，则该行的颜色变为预定的颜色并动画到原来的颜色。
-                 rows.filter(function(d) {return d.key == updated})
-                 	.style("color", settings.typetriggerColor)
-                     .transition()
-                     .duration(1000)
-                     .style("color", function(d) { return colorizer(d.key); });
+                 for(var i=0; i<updated.length; i++){
+	                 rows.filter(function(d) {return d.key == updated[i].type})
+	                 	.style("color", settings.typetriggerColor)
+	                     .transition()
+	                     .duration(1000)
+	                     .style("color", function(d) { return colorizer(d.key); });
+                 }
 
                  // 返回表格要显示的数据。
                  var cols = rows.selectAll("td")
@@ -903,7 +906,7 @@ function start(loc, psk) {
 		datum.targetX = endLoc[0];
 		datum.targetY = endLoc[1];
 		datum.id = getID();
-		datum.datetime = (new Date()).Format("yyyy-MM-dd hh:mm:ss");
+		datum.datetime = datum.startTime;
 		datum.dport = datum.port;
 	
 	    pauser.push(datum);
