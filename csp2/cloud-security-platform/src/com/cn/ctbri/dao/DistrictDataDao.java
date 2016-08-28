@@ -102,5 +102,9 @@ public interface DistrictDataDao {
     List getAssetPurpose();
     
     void updateDistrict(Map<String, Object> disMap);
+    
+    void updateSiteCount(List<District> list);
+    
+    List<District> getSiteCount();
 
 }
