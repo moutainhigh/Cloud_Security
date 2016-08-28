@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="longitude" column="longitude"/>
 		<result property="latitude" column="latitude"/>
 		<result property="count" column="count"/>
+		<result property="siteCount" column="siteCount"/>
 	</resultMap>
 	<!-- 查询省份 -->
     <select id="findDistrictList" parameterType="hashmap" resultMap="DistrictRM">
@@ -247,4 +248,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</set>
 		where id = #{id}
 	</update>
+	<update id="updateSiteCount"  parameterType="java.util.List">
+	 
+	      <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+				update cs_district 
+				<set>
+				  siteCount=${item.siteCount}
+				</set>
+				where id = ${item.id}
+		 </foreach>
+		 
+    </update>
+    
+    <select id ="getSiteCount" resultMap="DistrictRM">
+		select dis.name, dis.siteCount from cs_district dis where siteCount != 0
+    </select>
 </mapper>
