@@ -377,9 +377,9 @@
                 </div>
                 <div class="ltmit" style="float:left;position:static;width:470px;height:400px;">
                    			<!-- 	使用单次服务与长期服务的情况对比 -->
-					<div id="serviceUserId" style="width:470px;height:400px;border:1px solid white;"></div>
+					<div id="serviceUserId" style="width:470px;height:400px;"></div>
                 </div>
-                <div class="ltmit"  style="float:left;position:static;width:780px;height:400px;border:1px solid white;">
+                <div class="ltmit"  style="float:left;position:static;width:780px;height:400px;">
                    			<!-- 内圈为单次服务订单与长期服务订单的对比，外圈为两类订单中各服务订单的对比 -->
 				<div id="orderServiceId" style="width:780px;height:400px;"></div>
                    		</div>
