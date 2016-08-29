@@ -1312,7 +1312,7 @@ public class MyAssetsController {
 		List assetInfo = assetService.findAllAssetInfo();
 		if(assetInfo!=null&&assetInfo.size()>0){
 			for(int i=0;i<assetInfo.size();i++){
-				System.out.println("1=="+i);
+				System.out.println("i=="+i);
 				Asset asset =(Asset)assetInfo.get(i);
 				String assetAddr = asset.getAddr();
 				//获得资产地址所在的省份
