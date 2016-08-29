@@ -330,7 +330,7 @@
 		
 		<!-- 安全趋势 -->
         <div class="contentcenter not-used">
-            <div class="point clearfix">
+            <div class="point clearfix" style="margin-top:50px">
             	<h5 class="fl" style="color:#7aff75;font-family: sans-serif; font-style: normal; font-size: 18px; font-weight: bold;">重大风险预警</h5>
                 <div class="pont fl">
                 	<c:if test="${wafAlarmLevel==4}">
@@ -371,7 +371,7 @@
         <!-- 安全关注点 -->
         <div class="contentcenter not-used">
             <div class="mapListBox clearfix">
-            	<div class="ltmit" >
+            	<div class="ltmit" style="margin-top:50px">
                     <div id="orderServiceTimes" style="width:1330px;height:300px"></div>
                 </div>
                 <div class="ltmit" style="float:left;position:static;width:470px;height:400px;">
