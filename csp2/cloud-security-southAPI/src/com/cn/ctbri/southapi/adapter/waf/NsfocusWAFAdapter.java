@@ -574,8 +574,9 @@ public class NsfocusWAFAdapter {
 				calendar.add(Calendar.MINUTE, -interval);
 			}else if(jsonObject.getString("timeUnit").equalsIgnoreCase("date")){
 				calendar.add(Calendar.DATE, -interval);
+			}else if (jsonObject.getString("timeUnit").equalsIgnoreCase("second")) {
+				calendar.add(Calendar.SECOND, -interval);
 			}
-			calendar.add(Calendar.HOUR, -interval);
 			//开始时间
 			Date dateBefore = calendar.getTime();
 			
@@ -1253,7 +1254,7 @@ public class NsfocusWAFAdapter {
 				allAlertLevelaArray.add(alertLevelObject);
 			}
 			return allAlertLevelaArray.toString();
-		} catch (IOException|ParseException e) {
+		} catch (IOException e) {
 			// 
 			e.printStackTrace();
 			//错误
@@ -1261,7 +1262,16 @@ public class NsfocusWAFAdapter {
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "AlertLevel count error!!!");
 			return errorJsonObject.toString();
-		}finally {
+		}catch (ParseException e) {
+			// 
+			e.printStackTrace();
+			//错误
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "AlertLevel date format count error!!!");
+			return errorJsonObject.toString();
+		}
+		finally {
 			sqlSession.close();
 		}
 	}
