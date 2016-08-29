@@ -69,8 +69,8 @@
 	
 	}
 	.contentBox nav ul{
-		margin-right: -100px;
-		/*padding-top: 30px;*/
+		/*margin-right: -100px;
+		padding-top: 30px;*/
 		position: absolute;
 		left: 0px;
 		top:0px
@@ -129,7 +129,7 @@
 	
 	.contentcenter ul li a{
 		color: #fff;
-		font-size: 18px;
+		font-size: 16px;
 		display: block;
 	}
 	.contentcenter ul li.active a{
@@ -197,6 +197,10 @@
 					<i></i>
 				</li>
 				<li>
+					<a href="#">数据简摘</a>
+					<i></i>
+				</li>
+				<li>
 					<a href="#">地域分布</a>
 					<i></i>
 				</li>
@@ -206,10 +210,6 @@
 				</li>
 				<li>
 					<a href="#">安全关注点</a>
-					<i></i>
-				</li>
-				<li>
-					<a href="#">数据简摘</a>
 					<i></i>
 				</li>
 			</ul>
@@ -302,6 +302,26 @@
        		</div>
         </div>
         、
+        <!-- 数据简摘 -->
+        <div class="contentcenterdata not-used">
+            <ul class="clearfix" style="width:auto">
+	            <li class="fl" style="width:600px;height:500px;position:relative;">
+	                <img class="img" src="${ctx}/source/images/rose4.png" style="margin-top:60px;margin-left:108px;"/>
+	                <div id="vulnscanAlarmOneHour" ></div>
+	            </li>
+	            <li class="fl" style="width:600px;height:500px;position:relative;">
+	                <img class="img" src="${ctx}/source/images/rose4.png"  style="margin-top:60px;margin-left:108px;"/>
+	                <div id="wafOneHour"></div>
+	            </li>
+	           <li class="fl" style="width:600px;height:atuo;left:17px">
+	               <div id="vulnscanAlarmByLevelMonth6" style="width:600px;height:394px"></div>
+	           </li>
+	           <li class="fl" style="width:600px;margin-left:57px">
+	               <div id="wafByLevelMonth6" style="width:600px;height:394px"></div>
+	           </li>
+           </ul>
+                        	
+        </div>
         <!-- 地域分布 -->
 		<div class="contentcenter not-used">
 			<div class="contentLeft fl">
@@ -391,26 +411,6 @@
             </div>
         </div>
                         
-        <!-- XXX 页面 -->
-        <div class="contentcenterdata not-used">
-            <ul class="clearfix" style="width:auto">
-	            <li class="fl" style="width:600px;height:500px;position:relative;">
-	                <img class="img" src="${ctx}/source/images/rose4.png" style="margin-top:60px;margin-left:108px;"/>
-	                <div id="vulnscanAlarmOneHour" ></div>
-	            </li>
-	            <li class="fl" style="width:600px;height:500px;position:relative;">
-	                <img class="img" src="${ctx}/source/images/rose4.png"  style="margin-top:60px;margin-left:108px;"/>
-	                <div id="wafOneHour"></div>
-	            </li>
-	           <li class="fl" style="width:600px;height:atuo;left:17px">
-	               <div id="vulnscanAlarmByLevelMonth6" style="width:600px;height:394px"></div>
-	           </li>
-	           <li class="fl" style="width:600px;margin-left:57px">
-	               <div id="wafByLevelMonth6" style="width:600px;height:394px"></div>
-	           </li>
-           </ul>
-                        	
-        </div>
        </div>
 		
 	</div>
