@@ -386,11 +386,11 @@ function showUserMap() {
 	        },
 	        calculable: false,
 	        pieces: [
-	        	{gt: 4000, color: '#fa7e7d'}, 
-			    {gt: 3000, lte: 4000, color: '#eabf6c'},
-			    {gt: 2000, lte: 3000, color: '#6bc770'},
-			    {gt: 1000, lte: 2000,  color: '#52a2e5'},
-			    {gt: 0,    lte: 1000,  color: '#806bff'}
+	        	{gt: 2000, color: '#fa7e7d'}, 
+			    {gt: 1500, lte: 2000, color: '#eabf6c'},
+			    {gt: 1000, lte: 1500, color: '#6bc770'},
+			    {gt: 500, lte: 1000,  color: '#52a2e5'},
+			    {gt: 0,    lte: 500,  color: '#806bff'}
 			]
     	},
 	    geo: {
