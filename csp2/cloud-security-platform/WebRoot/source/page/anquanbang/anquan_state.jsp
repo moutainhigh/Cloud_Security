@@ -221,7 +221,8 @@
         <div class="contentcenter not-used" style="display:block">
             <div class="words_map">
                 <div class="word" style="width: 100%; height: 600px;">
-                	<div class="background-image"><img src="${ctx}/source/attacking/img/body-background.png" alt="background-image" /></div>
+                <!-- 世界地图背景色 -->
+<!--                 	<div class="background-image"><img src="${ctx}/source/attacking/img/body-background.png" alt="background-image" /></div> -->
 					<div class="content">
 						<div class="data attack-type box gray-bg">
 							<div id="attack-type-table-container">
