@@ -144,7 +144,7 @@ th {
 .attack-type {
 
    bottom:0px;
-   left: 0px;
+   left: -5px;
 }
 #attack-type,
 #events{
@@ -211,7 +211,7 @@ th {
 
 /* 实时信息 */
 .console {
-    left: 300px;
+    left: 285px;
     bottom: 0px;
     width: 1034px;
 }
