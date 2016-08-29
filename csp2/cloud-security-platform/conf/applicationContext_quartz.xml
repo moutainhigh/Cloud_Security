@@ -65,16 +65,16 @@
     </bean>
     
     <!--要调度的对象-->
-    <bean id="taskHighRiskSiteBean" class="com.cn.ctbri.scheduler.HighRiskSiteAnalysisTask" />
-    <bean id="taskHighRiskSiteDetail"
+    <bean id="taskHRSJobBean" class="com.cn.ctbri.common.HighRiskSiteAnalysisTask" />
+    <bean id="taskHRSJobDetail"
         class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="taskHighRiskSiteBean" />
+        <property name="targetObject" ref="taskHRSJobBean" />
         <property name="targetMethod" value="execute" />
         <property name="concurrent" value="false" />
     </bean>
     <bean id="taskHRSTrigger"
         class="org.springframework.scheduling.quartz.CronTriggerBean">
-        <property name="jobDetail" ref="taskHighRiskSiteDetail" />
+        <property name="jobDetail" ref="taskHRSJobDetail" />
         <property name="cronExpression" value="0 0/30 * * * ?" />
     </bean>
     
