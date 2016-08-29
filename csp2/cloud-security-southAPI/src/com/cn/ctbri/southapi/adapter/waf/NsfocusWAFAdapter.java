@@ -952,7 +952,7 @@ public class NsfocusWAFAdapter {
 				TWafLogWebsecExample tWafLogWebsecExample = new TWafLogWebsecExample();
 				tWafLogWebsecExample.or(tWafLogWebseCriteria);
 				JSONObject eventTypeJsonObject = new JSONObject();
-				eventTypeJsonObject.put("eventType", element.getTextTrim());
+				eventTypeJsonObject.put("eventType", eventTypeBase64);
 				TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 				eventTypeJsonObject.put("count", mapper.countByExample(tWafLogWebsecExample));
 				typeCountList.add(eventTypeJsonObject);
