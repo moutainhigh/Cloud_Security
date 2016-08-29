@@ -85,7 +85,7 @@ function buyServiceAPI(apiId){
 					</ol>
 				</li>
 				<li>
-					<a href="${ctx}/sa_anquanbang.html">安全态势感知</a>
+					<a href="${ctx}/sa_anquanbang.html" target="_blank">安全态势感知</a>
 				</li>
 				<li style="border: none;">
 					<a href="${ctx}/Xpage.html">x专区</a>
