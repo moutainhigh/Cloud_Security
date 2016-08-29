@@ -73,9 +73,10 @@
         <property name="concurrent" value="false" />
     </bean>
     <bean id="taskHRSTrigger"
-        class="org.springframework.scheduling.quartz.CronTriggerBean">
+        class="org.springframework.scheduling.quartz.SimpleTriggerBean">
         <property name="jobDetail" ref="taskHRSJobDetail" />
-        <property name="cronExpression" value="0 0/30 * * * ?" />
+        <property name="startDelay" value="0" /><!-- 调度工厂实例化后，经过0秒开始执行调度 -->  
+		<property name="repeatInterval" value="1800000" /><!-- 每30分调度一次 --> 
     </bean>
     
     <!-- 将lazy-init='false'那么容器启动就会执行调度程序   -->
