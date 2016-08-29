@@ -18,7 +18,7 @@ $(function(){
 			$(".tabBox .not-used").eq($(this).index()).show().siblings().hide();
 			
 			//地域分布
-			if (zindex == 1) {
+			if (zindex == 2) {
 				showSecurityStateMap();
 			}
 			
@@ -121,7 +121,7 @@ function initHighSiteMap(myChart) {
 	            type: 'map',
 	            mapType: 'china',
 	            layoutCenter: ['50%', '50%'],  //地图中心到两侧的距离
-				layoutSize: 750,  //地图大小
+				layoutSize: 780,  //地图大小
 	            roam: false,
 	            label: {
 	                normal: {
@@ -256,7 +256,7 @@ function showHackerMap() {
 	        },
 	        roam: false,
 	        layoutCenter: ['50%', '50%'],  //地图中心到两侧的距离
-			layoutSize: 750,  //地图大小
+			layoutSize: 780,  //地图大小
 	        itemStyle: {
 		            normal: {
 		            	borderWidth : 2,
@@ -396,7 +396,7 @@ function showUserMap() {
 	    geo: {
 	        map: 'china',
 	        layoutCenter: ['50%', '50%'],  //地图中心到两侧的距离
-			layoutSize: 750,  //地图大小
+			layoutSize: 780,  //地图大小
 	        label: {
 	            emphasis: {
 	                show: false
@@ -556,7 +556,7 @@ function initSecurityStateMap(myChart){
 	    geo: {
 	        map: 'china',
 	        layoutCenter: ['50%', '50%'],  //地图中心到两侧的距离
-			layoutSize: 750,  //地图大小
+			layoutSize: 780,  //地图大小
 	        label: {
 	            emphasis: {
 	                show: false
