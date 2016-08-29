@@ -261,6 +261,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
     
     <select id ="getSiteCount" resultMap="DistrictRM">
-		select dis.name, dis.siteCount from cs_district dis where siteCount != 0
+		select dis.name, dis.siteCount from cs_district dis
     </select>
 </mapper>
