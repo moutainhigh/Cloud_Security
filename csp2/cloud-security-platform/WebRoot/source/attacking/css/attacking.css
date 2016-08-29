@@ -142,7 +142,7 @@ th {
 }
 
 .attack-type {
-    top: 30px;
+    top: 50px;
     left: 0px;
 }
 #attack-type,
@@ -211,7 +211,7 @@ th {
 /* 实时信息 */
 .console {
     left: 0px;
-    bottom: 30px;
+    bottom: 0px;
     width: 1034px;
 }
 
