@@ -82,9 +82,9 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 				}else{
 					long currentReadTime=System.currentTimeMillis();
 					int seconds=(int) ((currentReadTime-startReadTime)/1000);
-					int minute=(int) ((currentReadTime-startReadTime)/1000/60);
-					dataText=getWafData(minute);
-					System.out.println("seconds:"+seconds+"minute:"+minute+"dataText:"+dataText);
+//					int minute=(int) ((currentReadTime-startReadTime)/1000/60);
+					dataText=getWafData(seconds);
+					System.out.println("seconds:"+seconds+"dataText:"+dataText);
 					startReadTime=currentReadTime;
 				}
 				JSONObject json = JSONObject.fromObject(dataText);
@@ -112,9 +112,9 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 		String text = worker.getAllWafLogWebsecInTime("3", "date");
 		return text;
 	}
-	public String getWafData(int minute){
+	public String getWafData(int seconds){
 		WafAPIWorker worker = new WafAPIWorker();
-		String text = worker.getAllWafLogWebsecInTime(minute+"", "minute");
+		String text = worker.getAllWafLogWebsecInTime(seconds+"", "seconds");
 		return text;
 	}
 	
