@@ -147,7 +147,6 @@
 	.contentcenterdata ul li{
 		line-height: 52px;
 		text-align: center;
-		background: url(${ctx}/source/images/personalCenter/bt.png) no-repeat left bottom;
 	}
 	
 </style>
@@ -396,11 +395,11 @@
         <div class="contentcenterdata not-used">
             <ul class="clearfix" style="width:auto">
 	            <li class="fl" style="width:600px;height:500px;position:relative;">
-	                <img class="img" src="${ctx}/source/images/rose2_3.png" style="margin-top:59px;margin-left:105px;"/>
+	                <img class="img" src="${ctx}/source/images/rose4.png" style="margin-top:60px;margin-left:108px;"/>
 	                <div id="vulnscanAlarmOneHour" ></div>
 	            </li>
 	            <li class="fl" style="width:600px;height:500px;position:relative;">
-	                <img class="img" src="${ctx}/source/images/rose2_3.png"  style="margin-top:59px;margin-left:105px;"/>
+	                <img class="img" src="${ctx}/source/images/rose4.png"  style="margin-top:60px;margin-left:108px;"/>
 	                <div id="wafOneHour"></div>
 	            </li>
 	           <li class="fl" style="width:600px;height:atuo;left:17px">

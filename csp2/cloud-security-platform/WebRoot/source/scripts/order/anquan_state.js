@@ -28,7 +28,7 @@ $(function(){
 			   	        {
 			   	            name:'',
 			   	            type:'pie',
-			   	            radius : [20, 180],
+			   	            radius : [15, 150],
 			   	            center : ['50%', '50%'],
 			   	            roseType : 'area',
 			   	         label: {
@@ -59,7 +59,7 @@ $(function(){
 			   	            data:obj.dataArray
 			   	        }
 			   	    ],
-			   	    color:["#b675ff","#ffb675","#757aff","#ff757a","#f942ff","#fffa75","#42a7ff","#4249ff","#bfff75","ff383f"]
+			   	    color:["#b675ff","#ffb675","#757aff","#ff757a","#f942ff","#fffa75","#42a7ff","#4249ff"]
 			   	};
 			   	myChart1.setOption(option1);
 		     },
@@ -90,7 +90,7 @@ $(function(){
 			   	        {
 			   	            name:'漏洞类型',
 			   	            type:'pie',
-			   	            radius : [20, 180],
+			   	            radius : [15, 150],
 			   	            center : ['50%', '50%'],
 			   	            roseType : 'area',
 				   	        label: {
@@ -121,7 +121,7 @@ $(function(){
 			   	            data:obj.dataArray
 			   	        }
 			   	    ],
-			   	    color:["#b675ff","#ffb675","#757aff","#ff757a","#f942ff","#fffa75","#42a7ff","#4249ff","#bfff75","ff383f"]
+			   	    color:["#b675ff","#ffb675","#757aff","#ff757a","#f942ff","#fffa75","#42a7ff","#4249ff"]
 			   	};
 			   	myChart0.setOption(option0);
 		     },
@@ -299,7 +299,7 @@ $(function(){
 				     },*/
 			   	    radar: {
 			   	       indicator : indicatorList,
-			   	       radius:'70%',
+			   	       radius:'50%',
 			   	       center:['40%', '52%']
 			   	    },
 			   	    series : (function (){
