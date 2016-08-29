@@ -216,7 +216,6 @@ public class TWafLogWebsecSqlProvider {
         }
         
         if (sb.length() > 0) {
-        	System.out.println("where="+sb);
             WHERE(sb.toString());
         }
     }
