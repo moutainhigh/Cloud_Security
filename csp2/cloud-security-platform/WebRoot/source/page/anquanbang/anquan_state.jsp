@@ -285,7 +285,7 @@
 						</div>
 					</div>
 					
-					<script type="text/javascript" src="${ctx}/source/attacking/js/jquery-1.11.0.min.js"></script>
+<!-- 					<script type="text/javascript" src="${ctx}/source/attacking/js/jquery-1.11.0.min.js"></script> -->
 					<script type="text/javascript" src="${ctx}/source/attacking/js/d3/d3.min.js"></script>
 					<script type="text/javascript" src="${ctx}/source/attacking/js/d3/d3.geo.projection.min.js"></script>
 					<script type="text/javascript" src="${ctx}/source/attacking/js/plugins/queue.min.js"></script>
@@ -360,9 +360,9 @@
                 </div>
             </div>
             <div class="exhibitionBox clearfix">
-                 <div class="exhibitionList fl"  id="bugMainId"  style="width:1300px;height:500px;background-color:transparent;">
+                 <div class="exhibitionList fl"  id="bugMainId"  style="width:1300px;height:450px;background-color:transparent;">
               	</div>
-              	<div class="exhibitionList fl" id="attackMainId"  style="width:1300px;height:500px;background-color:transparent;">
+              	<div class="exhibitionList fl" id="attackMainId"  style="width:1300px;height:450px;background-color:transparent;">
               	</div>
                         		
             </div>
