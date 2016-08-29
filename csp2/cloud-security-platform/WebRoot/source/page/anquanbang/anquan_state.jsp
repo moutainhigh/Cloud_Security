@@ -62,7 +62,7 @@
 		position: relative;
 	}
 	.contentBox nav{
-		top:20px;
+		/*top:20px;*/
 		left: 25px;
 		position: absolute;
 		z-index:99999;
