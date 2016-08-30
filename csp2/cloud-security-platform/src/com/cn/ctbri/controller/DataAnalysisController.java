@@ -2,7 +2,6 @@ package com.cn.ctbri.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,13 +14,11 @@ import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.common.WafAPIWorker;
-import com.cn.ctbri.entity.AlarmSum;
 import com.cn.ctbri.entity.AttackSource;
 import com.cn.ctbri.entity.District;
 import com.cn.ctbri.entity.UserDistribution;
@@ -179,42 +176,42 @@ public class DataAnalysisController {
 //		map.put("name", "北京");
 //		map.put("longitude", 116.4135540000);
 //		map.put("latitude", 39.9110130000);
-//		map.put("val", 8);
+//		map.put("val", 15);
 //		result.add(map);
 ////		
 //		Map<String,Object> map2 = new HashMap<String,Object>();
 //		map2.put("name", "河北");
 //		map2.put("longitude", 114.5208280000);
 //		map2.put("latitude", 38.0486840000);
-//		map2.put("val", 20);
+//		map2.put("val", 40);
 //		result.add(map2);
 ////		
 //		Map<String,Object> map3 = new HashMap<String,Object>();
 //		map3.put("name", "四川");
 //		map3.put("longitude", 104.0712160000);
 //		map3.put("latitude", 30.5762790000);
-//		map3.put("val", 300);
+//		map3.put("val", 90);
 //		result.add(map3);
 //		
 //		Map<String,Object> map4 = new HashMap<String,Object>();
 //		map4.put("name", "河南");
 //		map4.put("longitude", 113.6313490000);
 //		map4.put("latitude", 34.7534880000);
-//		map4.put("val", 200);
+//		map4.put("val", 280);
 //		result.add(map4);
 //		
 //		Map<String,Object> map5 = new HashMap<String,Object>();
 //		map5.put("name", "辽宁");
 //		map5.put("longitude", 123.4389730000);
 //		map5.put("latitude", 41.8113390000);
-//		map5.put("val", 500);
+//		map5.put("val", 280);
 //		result.add(map5);
 //		
 //		Map<String,Object> map6 = new HashMap<String,Object>();
 //		map6.put("name", "新疆");
 //		map6.put("longitude", 87.6233140000);
 //		map6.put("latitude", 43.8328060000);
-//		map6.put("val", 130);
+//		map6.put("val", 500);
 //		result.add(map6);
 //		
 //		Map<String,Object> map7 = new HashMap<String,Object>();
