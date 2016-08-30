@@ -11,7 +11,8 @@ $(function(){
 			   		var option1 = {
 			   			title : {
 			   			textStyle:{
-			   				color:'#7aff75'
+			   				color:'#7aff75',
+			   				fontSize:14
 			   			},
 			   	        text: '最近一小时漏洞数据分类',
 			   	        x:'center'
@@ -34,15 +35,15 @@ $(function(){
 			   	         label: {
 			   	                normal: {
 			   	                    show: true,
-			   	                    formatter: function(params){
+			   	                   /* formatter: function(params){
 			   	                    	var res=params.name;
-			   	                    	if(params.name.length>4){
-			   	                    		var temp = res.substring(0,4);
-			   	                    		var temp2 = res.substr(4);
+			   	                    	if(params.name.length>7){
+			   	                    		var temp = res.substring(0,7);
+			   	                    		var temp2 = res.substr(7);
 			   	                    		res= temp + "\n" + temp2;
 			   	                    	}
 			   	                    	return res;
-			   	                    }
+			   	                    }*/
 			   	                },
 			   	                emphasis: {
 			   	                    show: true
@@ -76,7 +77,8 @@ $(function(){
 			   		 title : {
 			   	        text: '最近一小时攻击数据分类',
 			   	        textStyle:{
-			   				color:'#7aff75'
+			   				color:'#7aff75',
+			   				fontSize:14
 			   			},
 			   	        x:'center'
 			   	    },
@@ -96,15 +98,15 @@ $(function(){
 				   	        label: {
 			   	                normal: {
 			   	                    show: true,
-			   	                    formatter: function(params){
+			   	                    /*formatter: function(params){
 		                        	  var res=params.name;
-		                        	  if(params.name.length>4){
-		                        		  var temp = res.substring(0,4);
-		                        		  var temp2 = res.substr(4);
+		                        	  if(params.name.length>7){
+		                        		  var temp = res.substring(0,7);
+		                        		  var temp2 = res.substr(7);
 		                        		  res= temp + "\n" + temp2;
 		                        	  }
 			                          return res;
-			                       }
+			                       }*/
 			   	                },
 			   	                emphasis: {
 			   	                    show: true
@@ -140,7 +142,8 @@ $(function(){
 		   			 title : {
 		   				 text:'近六个月漏洞等级分布',
 		   				 textStyle:{
-			   			 color:'#7aff75'
+			   			 color:'#7aff75',
+			   			fontSize:14
 			   			},
 		   		         x:'center'
 		   		     },
@@ -203,7 +206,8 @@ $(function(){
 		   				title: {
 		   					text: '历史订单（一年内）',
 					   	    textStyle:{
-					   			color:'#7aff75'
+					   			color:'#7aff75',
+					   			fontSize:14
 					   		},
 					   	    x:'left'
 		   				},
@@ -212,15 +216,16 @@ $(function(){
 				   	    },
 				   	    legend: {
 				   	        data:obj.servNameList,
-				   	        x:'center',
+				   	        y:'bottom',
 					   	    textStyle:{
 					   			color:'#00faf2'
 				   			},
+				   			icon: 'circle'
 				   	    },				   	  
 				   	    grid: {
 				   	        left: '1%',
 				   	        right: '3%',
-				   	        bottom: '3%',
+				   	        bottom: '15%',
 				   	        containLabel: true
 				   	    },
 				   	    xAxis : [
@@ -249,7 +254,8 @@ $(function(){
 				   	            type : 'value',
 					   	         axisLabel:{
 			                         textStyle:{
-			                             color:"#7aff75"
+			                             color:"#7aff75",
+			                             fontSize:14
 			                         },
 				                 }
 				   	        }
@@ -276,9 +282,10 @@ $(function(){
 			   			 title: {
 			   	        text: '订单类型分布',
 				   	    textStyle:{
-				   			color:'#7aff75'
+				   			color:'#7aff75',
+				   			fontSize:14
 			   			},
-			   	        x:'180'
+			   	        x:'150'
 			   	    },
 			   	    tooltip: {
 			   	        trigger: 'item',
@@ -341,7 +348,8 @@ $(function(){
 			   			 title : {
 				   		     text: '用户行业分布',
 				   		     textStyle:{
-				   				 color:'#7aff75'
+				   				 color:'#7aff75',
+				   				fontSize:14
 				   			 },
 			   		         x:'center'
 				   		},
@@ -371,7 +379,7 @@ $(function(){
 				   	        }
 				   	    ],
 				   	    grid: { // 控制图的大小，调整下面这些值就可以，
-				             x: 20,
+				             x: 40,
 				             x2: 30,
 				             y2: 160,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
 				        },
@@ -392,13 +400,7 @@ $(function(){
 				   	            data:obj.userList,
 					   	        itemStyle:{
 					                normal:{color:'#52a2e5'}
-					            },
-				   	            markPoint : {
-				   	                data : [
-				   	                    {type : 'max', name: '最大值'},
-				   	                    {type : 'min', name: '最小值'}
-				   	                ]
-				   	            }
+					            }
 				   	        },
 				   	        {
 				   	            name:'已下订单数',
@@ -406,13 +408,7 @@ $(function(){
 				   	            data:obj.orderList,
 					   	        itemStyle:{
 					                normal:{color:'#5aba5f'}
-					            },
-				   	            markPoint : {
-				   	        		data : [
-				   	                    {type : 'max', name: '最大值'},
-				   	                    {type : 'min', name: '最小值'}
-				   	                ]
-				   	            }
+					            }
 				   	        }
 				   	    ]
 				   	};
@@ -565,7 +561,8 @@ $(function(){
 					   			 title : {
 					   				 text:'近六个月攻击手段等级分布',
 					   				 textStyle:{
-						   				 color:'##7aff75'
+						   				 color:'#7aff75',
+						   				fontSize:14
 						   			 },
 					   		         x:'center'
 					   		    },
@@ -743,7 +740,8 @@ $(function(){
 					         x:'left',
 					         y:'center',
 					         textStyle:{
-					         	color:'#7aff75'
+					         	color:'#7aff75',
+					         	fontSize:14
 					         }
 					         
 					    },
@@ -949,7 +947,8 @@ $(function(){
 						         x:'left',
 						         y:'center',
 						         textStyle:{
-						         	color:'#7aff75'
+						         	color:'#7aff75',
+						         	fontSize:14
 						         }
 						    },
 						    tooltip: {
@@ -1046,7 +1045,8 @@ $(function(){
 								        x:'center',
 								        y:'15px',
 								        textStyle:{
-								         	color:'#7aff75'
+								         	color:'#7aff75',
+								         	fontSize:14
 								         }
 								    },
 								    tooltip : {
@@ -1112,7 +1112,8 @@ $(function(){
 								        x:'center',
 								        y:'15px',
 								        textStyle:{
-								         	color:'#7aff75'
+								         	color:'#7aff75',
+								         	fontSize:14
 								         }
 								    },
 								    tooltip: {
