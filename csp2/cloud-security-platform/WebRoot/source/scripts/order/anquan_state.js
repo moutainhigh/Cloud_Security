@@ -220,7 +220,7 @@ $(function(){
 					   	    textStyle:{
 					   			color:'#00faf2'
 				   			},
-				   			icon: 'circle'
+				   			icon: 'roundRect'
 				   	    },				   	  
 				   	    grid: {
 				   	        left: '1%',
