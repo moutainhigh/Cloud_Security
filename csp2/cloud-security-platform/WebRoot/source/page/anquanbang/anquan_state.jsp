@@ -391,26 +391,46 @@
         <!-- 安全关注点 -->
         <div class="contentcenter not-used">
             <div class="mapListBox clearfix">
-            	<div class="ltmit" style="margin-top:50px">
+            	<div class="ltmit" style="margin-top:25px">
                     <div id="orderServiceTimes" style="width:1330px;height:300px"></div>
                 </div>
-                <div class="ltmit" style="float:left;position:static;width:470px;height:400px;">
-                   			<!-- 	使用单次服务与长期服务的情况对比 -->
-					<div id="serviceUserId" style="width:470px;height:400px;"></div>
+                <div class="ltmit" style="width:510px;height:400px">
+                    <div id="serviceUseInfoMonth6" style="width:510px;height:400px"></div>
                 </div>
-                <div class="ltmit"  style="float:left;position:static;width:780px;height:400px;">
-                   			<!-- 内圈为单次服务订单与长期服务订单的对比，外圈为两类订单中各服务订单的对比 -->
-				<div id="orderServiceId" style="width:780px;height:400px;"></div>
-                   		</div>
-                <div class="ltmit" style="width:600px;height:350px">
-                    <div id="serviceUseInfoMonth6" style="width:600px;height:350px"></div>
+                <div class="ltmit"  style="width:680px;height:400px;">
+                <!-- 内圈为单次服务订单与长期服务订单的对比，外圈为两类订单中各服务订单的对比 -->
+				<div id="orderServiceId" style="width:680px;height:400px;"></div>
                 </div>
-                <div class="ltmit" style="width:680px;height:350px">
-                    <div id="userIndustry" style="width:680px;height:350px"></div>
+
+                <div class="ltmit" style="width:500px;height:350px;">
+                <!-- 	使用单次服务与长期服务的情况对比 -->
+				<div id="serviceUserId" style="width:500px;height:350px;"></div>
+                </div>
+                <div class="ltmit" style="width:780px;height:350px">
+                    <div id="userIndustry" style="width:780px;height:350px"></div>
                 </div>
             </div>
         </div>
-                        
+        <!-- XXX 页面 -->
+        <div class="contentcenterdata not-used">
+            <ul class="clearfix" style="width:auto">
+	            <li class="fl" style="width:600px;height:500px;position:relative;margin-left:40px">
+	                <img class="img" src="${ctx}/source/images/rose4.png" style="margin-top:60px;margin-left:108px;"/>
+	                <div id="vulnscanAlarmOneHour" ></div>
+	            </li>
+	            <li class="fl" style="width:600px;height:500px;position:relative;">
+	                <img class="img" src="${ctx}/source/images/rose4.png"  style="margin-top:60px;margin-left:108px;"/>
+	                <div id="wafOneHour"></div>
+	            </li>
+	           <li class="fl" style="width:600px;height:atuo;left:17px">
+	               <div id="vulnscanAlarmByLevelMonth6" style="width:600px;height:394px"></div>
+	           </li>
+	           <li class="fl" style="width:600px;margin-left:57px">
+	               <div id="wafByLevelMonth6" style="width:600px;height:394px"></div>
+	           </li>
+           </ul>
+                        	
+        </div>
        </div>
 		
 	</div>
