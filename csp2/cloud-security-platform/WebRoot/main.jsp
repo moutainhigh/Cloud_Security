@@ -229,7 +229,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                     <a href="${ctx}/sa_anquanbang.html" target="_blank">
 	                	<dd class="fl frn">
 	                    	<div class="introduce">
-	                        		<h4>安全态势感知</h4>
+	                        		<h4>安全大数据</h4>
 	                                <p>安全大数据分析</p>
 									<p>可视化地域告警统计分析</p>
 									<p>实时安全趋势预测</p>
