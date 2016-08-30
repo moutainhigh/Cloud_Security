@@ -613,7 +613,7 @@ $(function(){
 
 				});
 				//start   bug漏洞
-				   window.dateMaxIndex=0;
+//				   window.dateMaxIndex=0;
 			        var myChart = echarts.init(document.getElementById('bugMainId'));
 			        myChart.showLoading({
 			        	  text: '正在加载中',
@@ -688,9 +688,9 @@ $(function(){
 			//         使用刚指定的配置项和数据显示图表。
 			//         myChart.setOption(option);
 			        
-			 var legendData;
-			 var xAxisData=[];
-			 var seriesData=[];
+			 var bugLegendData;
+			 var bugxAxisData=[];
+			 var bugseriesData=[];
 			 var bugColor=['#75fffa','#fa75ff','#fffa75','#38fff8','#42a7ff','#75bfff','#ff75bf','#bfff75','#00faf2','#4249ff','#757aff','#ff757a','#7aff75','#ff383f','#9a42ff','#b675ff','#ffb675','#75ffb6','#fa0008','#f942ff'];
 			 $.ajax({
 				        type: "POST",
@@ -699,7 +699,7 @@ $(function(){
 				        url: "bug.html", 
 				        success: function(obj){
 				        var data= eval ("(" + obj.listResult + ")");
-				        var legendData= obj.names;
+				        bugLegendData= obj.names;
 			// 	        	从后台得到返回的值，是一个json对象。 
 				        	var startDate=obj.startTime;
 				        	var endDate=obj.endTime;
@@ -710,13 +710,13 @@ $(function(){
 				        	for(var i=0;i<31;i++){
 				        		if(currentTime<=endTime){
 				        			currentTime.setDate(currentTime.getDate()+1);
-				        			xAxisData.push(currentTime.Format("yyyy-MM-dd"));
+				        			bugxAxisData.push(currentTime.Format("yyyy-MM-dd"));
 				        		}
 				        	}
 				        	for(var j=0;j<data.length;j++){
 				        		var dataUnit=data[j];
 				        		var textData=dataUnit.splice(0,1);
-				        		seriesData.push({
+				        		bugseriesData.push({
 					            name:textData,
 					            type:'line',
 					            stack: '总量',
@@ -736,7 +736,7 @@ $(function(){
 				        	
 				  option = {
 					    title: {
-					        text: '漏洞类型分布及发展趋势'.split("").join("\n"),
+					        text: '漏洞类型分布及趋势'.split("").join("\n"),
 					         x:'left',
 					         y:'center',
 					         textStyle:{
@@ -749,7 +749,7 @@ $(function(){
 					        trigger: 'axis'
 					    },
 					    legend: {
-					        data:legendData,
+					        data:bugLegendData,
 							textStyle:{color: '#00faf2'}
 					    },
 					    grid: {
@@ -775,7 +775,7 @@ $(function(){
 							formatter: '{value}',
 							textStyle: {color: '#7aff75',fontFamily: 'sans-serif',fontSize:12,fontStyle: '幼圆',fontWeight: 'bold'}
 							},
-							data : xAxisData 
+							data : bugxAxisData 
 					    },
 					    yAxis : [
 							        {
@@ -813,7 +813,7 @@ $(function(){
 							            }
 							        }
 							    ],
-					    series: seriesData
+					    series: bugseriesData
 					};		
 				  			myChart.hideLoading();
 			    			myChart.setOption(option);
@@ -829,7 +829,7 @@ $(function(){
 			 
 			 
 			 	//start attack漏洞
-			 window.dateMaxIndex=0;
+//			 	window.dateMaxIndex=0;
 		        var attackMyChart = echarts.init(document.getElementById('attackMainId'));
 		        attackMyChart.showLoading({
 		        	  text: '正在加载中',
@@ -904,9 +904,9 @@ $(function(){
 		//         使用刚指定的配置项和数据显示图表。
 		//         myChart.setOption(option);
 		        
-		 var legendData;
-		 var xAxisData=[];
-		 var seriesData=[];
+		 var attackLegendData;
+		 var attackxAxisData=[];
+		 var attackseriesData=[];
 		 $.ajax({
 			        type: "POST",
 			        cache: false,
@@ -914,8 +914,7 @@ $(function(){
 			        url: "attackCount.html", 
 			        success: function(obj){
 			        var data= obj.listResult;
-		// 	        alert(data);
-			        var legendData= obj.names;
+			        attackLegendData= obj.names;
 		// 	        	从后台得到返回的值，是一个json对象。 
 			        	var startDate=obj.startTime;
 			        	var endDate=obj.endTime;
@@ -926,13 +925,13 @@ $(function(){
 			        	for(var i=0;i<31;i++){
 			        		if(currentTime<=endTime){
 			        			currentTime.setDate(currentTime.getDate()+1);
-			        			xAxisData.push(currentTime.Format("yyyy-MM-dd"));
+			        			attackxAxisData.push(currentTime.Format("yyyy-MM-dd"));
 			        		}
 			        	}
 			        	for(var j=0;j<data.length;j++){
 			        		var dataUnit=data[j];
 			        		var textData=dataUnit.splice(0,1);
-			        		seriesData.push({
+			        		attackseriesData.push({
 				            name:textData,
 				            type:'line',
 				            stack: '总量',
@@ -943,7 +942,7 @@ $(function(){
 			        	
 			        	option = {
 						    title: {
-						        text: '漏洞类型分布及发展趋势'.split("").join("\n"),
+						        text: '攻击类型分布及趋势'.split("").join("\n"),
 						         x:'left',
 						         y:'center',
 						         textStyle:{
@@ -955,8 +954,8 @@ $(function(){
 						        trigger: 'axis'
 						    },
 						     legend: {
-						        data:legendData,
-								textStyle:{color: '#00faf2'}
+						        data:attackLegendData,
+								textStyle:{color: 'auto'}
 						    },
 						    grid: {
 						    	height:333,
@@ -980,7 +979,7 @@ $(function(){
 								formatter: '{value}',
 								textStyle: {color: '#7aff75',fontFamily: 'sans-serif',fontSize: 10,fontStyle: '幼圆',fontWeight: 'bold'}
 								},
-								data : xAxisData
+								data : attackxAxisData
 						    },
 						    yAxis: [
 								        {
@@ -1018,7 +1017,7 @@ $(function(){
 								            }
 								        }
 								    ],
-						    series: seriesData
+						    series: attackseriesData
 						};
 			        	
 			        	attackMyChart.hideLoading();
