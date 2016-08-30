@@ -305,7 +305,7 @@
         <!-- 数据简摘 -->
         <div class="contentcenterdata not-used">
             <ul class="clearfix" style="width:auto">
-	            <li class="fl" style="width:600px;height:500px;position:relative;">
+	            <li class="fl" style="width:600px;height:500px;position:relative; margin-left:40px">
 	                <img class="img" src="${ctx}/source/images/rose4.png" style="margin-top:60px;margin-left:108px;"/>
 	                <div id="vulnscanAlarmOneHour" ></div>
 	            </li>
@@ -411,26 +411,6 @@
                 </div>
             </div>
         </div>
-        <!-- XXX 页面 -->
-        <div class="contentcenterdata not-used">
-            <ul class="clearfix" style="width:auto">
-	            <li class="fl" style="width:600px;height:500px;position:relative;margin-left:40px">
-	                <img class="img" src="${ctx}/source/images/rose4.png" style="margin-top:60px;margin-left:108px;"/>
-	                <div id="vulnscanAlarmOneHour" ></div>
-	            </li>
-	            <li class="fl" style="width:600px;height:500px;position:relative;">
-	                <img class="img" src="${ctx}/source/images/rose4.png"  style="margin-top:60px;margin-left:108px;"/>
-	                <div id="wafOneHour"></div>
-	            </li>
-	           <li class="fl" style="width:600px;height:atuo;left:17px">
-	               <div id="vulnscanAlarmByLevelMonth6" style="width:600px;height:394px"></div>
-	           </li>
-	           <li class="fl" style="width:600px;margin-left:57px">
-	               <div id="wafByLevelMonth6" style="width:600px;height:394px"></div>
-	           </li>
-           </ul>
-                        	
-        </div>
        </div>
 		
 	</div>
@@ -448,7 +428,8 @@
 				"animation":"ancircle 3s infinite linear",
 				"-webkit-animation":"ancircle 3s infinite linear",
 				"-moz-animation":"ancircle 3s infinite linear",
-				"-ms-animation":"ancircle 3s infinite linear"
+				"-ms-animation":"ancircle 3s infinite linear",
+				"-ms-animation-play-state":"running"
 			});
 		},function(){
 			$(this).parent("li").find(".img").css({
