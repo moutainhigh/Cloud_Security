@@ -140,5 +140,8 @@ public class AssetDaoImpl extends DaoCommon implements AssetDao{
 	public List<Asset> findByAssetPurposeList(Map<String, Object> paramMap) {
 		return this.getSqlSession().selectList(ns+"findAssertPurpose", paramMap);
 	}
+	public int getAssetCount() {
+		return this.getSqlSession().selectOne(ns+"getAssetCount");
+	}
 	
 }

@@ -98,5 +98,7 @@ public interface IAssetService {
 	 */
 	List<Asset> findByAssetPurposeList(Map<String, Object> paramMap);
 
+	//查询所有网站总数
+	int getAssetCount();
 	
 }

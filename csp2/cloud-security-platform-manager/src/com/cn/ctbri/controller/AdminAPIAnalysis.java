@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.service.IAPIService;
+import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.util.CommonUtil;
 
 
@@ -36,13 +37,23 @@ public class AdminAPIAnalysis {
 	
 	@Autowired
 	IAPIService apiService;
+	@Autowired
+	IAssetService assetService;
 	/**
 	 * 功能描述： API分析页面
 	 *		 @time 2015-2-3
 	 */
 	@RequestMapping("/adminAPIAnalysisUI.html")
 	public String apiAnalysis(Model model,HttpServletRequest request){
-		
+		//API累计调用数
+		int apiUseCount = apiService.getAPIUseCount();
+		//扫描网站数
+		int assetCount = assetService.getAssetCount();
+		//接入APIKEY数
+		int apiCount = apiService.getAllAPICount();
+		model.addAttribute("apiUseCount", apiUseCount);
+		model.addAttribute("assetCount", assetCount);
+		model.addAttribute("apiCount",apiCount);
 		return "/source/adminPage/userManage/APIAnalysis";
 	}
 	

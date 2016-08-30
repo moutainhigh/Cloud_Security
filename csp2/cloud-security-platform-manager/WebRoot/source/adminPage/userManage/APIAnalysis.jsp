@@ -27,6 +27,7 @@
 .text{margin-bottom: 30px;}
 .text span{display: inline-block; width: 23%; }
 .text span, .text span i{font-size: 18px; color: #009393; font-weight: 700;}
+.text  span{float:left;}
 .text span i{ font-style: normal; padding: 0 10px; }
 #dateSlider{width:970px; height:40px; padding-top: 20px;}
 .info-33{ float: left; width:33%; }
@@ -95,11 +96,10 @@ popBoxhide .close{ width:26px; height:26px; display:block; position:absolute; ri
 <!--头部代码结束-->
 <div class="main_wrap">
 	<div class="main_center">
-		<div class="text">
-			<span>API累计调用数<i>123782</i></span>
-			<span>扫描网站数<i>782</i></span>
-			<span>接入APIKEY数<i>1282</i></span>
-			<span>接入任务数<i>1782</i></span>
+		<div class="text clearfix">
+			<span>API累计调用数<i>${apiUseCount}</i></span>
+			<span>扫描网站数<i>${assetCount}</i></span>
+			<span>接入APIKEY数<i>${apiCount}</i></span>
 		</div>
 	
 		<div class="dateSlider" id="dateSlider"></div>

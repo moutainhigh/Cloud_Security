@@ -146,7 +146,9 @@ public class AssetServiceImpl implements IAssetService{
 	 *      @time 2015-10-29
 	 */
 	public List<Asset> findByAssetPurposeList(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
 		return assetDao.findByAssetPurposeList(paramMap);
+	}
+	public int getAssetCount() {
+		return assetDao.getAssetCount();
 	}
 }

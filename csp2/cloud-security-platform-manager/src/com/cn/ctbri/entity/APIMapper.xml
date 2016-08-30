@@ -130,4 +130,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if>
 		GROUP BY timevalue
 	</select>
+	
+	<!-- API调用总次数 -->
+	<select id="getAPIUseCount" resultType="int">
+	select count(*) from cs_api
+	</select>
+	<!-- API接入数 -->
+	<select id="getAllAPICount" resultType="int">
+	select count(*) from cs_user_api
+	</select>
 </mapper>

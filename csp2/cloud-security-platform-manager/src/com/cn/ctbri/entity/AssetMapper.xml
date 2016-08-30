@@ -159,4 +159,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
            </if>
            group by cu.type,(case when IFNULL(ca.purpose,0) not in('公共服务','信息发布') then '其他' else ca.purpose end)
 	</select>
+	<!-- 查询所有网站数 -->
+	<select id="getAssetCount" resultType="int">
+	 select count(*) from cs_asset
+	</select>
 </mapper>

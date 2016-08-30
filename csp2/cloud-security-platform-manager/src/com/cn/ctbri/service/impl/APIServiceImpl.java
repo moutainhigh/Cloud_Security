@@ -49,4 +49,12 @@ public class APIServiceImpl implements IAPIService{
 		return apiDao.getAPITimesByUser(map);
 	}
 
+	public int getAPIUseCount() {
+		return apiDao.getAPIUseCount();
+	}
+
+	public int getAllAPICount() {
+		return apiDao.getAllAPICount();
+	}
+
 }

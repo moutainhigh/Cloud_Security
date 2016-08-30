@@ -24,4 +24,8 @@ public interface APIDao {
 	List getAPIUseTimes(Map<String,Object> map);
 	//用户使用API时段统计
 	List getAPITimesByUser(Map<String,Object> map);
+	//API累计调用数
+	int getAPIUseCount();
+	//API接入总数
+	int getAllAPICount();
 }

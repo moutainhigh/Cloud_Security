@@ -46,4 +46,12 @@ public class APIDaoImpl extends DaoCommon implements APIDao {
 		return this.getSqlSession().selectList(ns+"getAPITimesByUser",map);
 	}
 
+	public int getAPIUseCount() {
+		return this.getSqlSession().selectOne(ns+"getAPIUseCount");
+	}
+
+	public int getAllAPICount() {
+		return this.getSqlSession().selectOne(ns+"getAllAPICount");
+	}
+
 }
