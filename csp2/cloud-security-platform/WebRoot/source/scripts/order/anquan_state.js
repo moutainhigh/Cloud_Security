@@ -202,6 +202,21 @@ $(function(){
 		        dataType:"json",
 		        success:function(obj){
 			    lastdayArray = obj.lastdayList;
+			    var colors = ["#b675ff","#ffb675","#757aff","#ff757a","#f942ff","#fffa75"];
+			    var datas = [];
+			    for(var i = 0; i < obj.servNameList.length; i++){
+			    	var textName = obj.servNameList[i];
+			    	datas.push(
+			    			{
+			    				name:textName,
+			    				textStyle:{
+			    					color:colors[i]
+			    				}
+			    			}
+			    	);
+			    }
+			    
+
 			   		var option6 = {
 		   				title: {
 		   					text: '历史订单（一年内）',
@@ -215,12 +230,9 @@ $(function(){
 				   	        trigger: 'axis'
 				   	    },
 				   	    legend: {
-				   	        data:obj.servNameList,
+				   	        data:datas,
 				   	        y:'bottom',
-					   	    textStyle:{
-					   			color:'#00faf2'
-				   			},
-				   			icon: 'roundRect'
+					   	    
 				   	    },				   	  
 				   	    grid: {
 				   	        left: '1%',
@@ -261,7 +273,7 @@ $(function(){
 				   	        }
 				   	    ],
 				   	    series : obj.seriesList,
-				   	    color:["#b675ff","#ffb675","#757aff","#ff757a","#f942ff","#fffa75"]
+				   	    color:colors
 				   	};
 			   		myChart6.setOption(option6);
 		     },
