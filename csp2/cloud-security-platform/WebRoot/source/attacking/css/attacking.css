@@ -130,6 +130,8 @@ th {
 	-webkit-border-radius: 12px;
     -moz-border-radius: 12px;
     border-radius: 12px;
+    float:right;
+    margin-right:10px;
 }
 .title-triangle{
 	width: 0;
@@ -144,7 +146,7 @@ th {
 .attack-type {
 
    bottom:0px;
-   left: -5px;
+   left: 7px;
 }
 #attack-type,
 #events{
@@ -155,10 +157,11 @@ th {
     color: #3DC2C2;
     font-size: 12px;
 }
-
+/**
 #events{
 	width: 1034px;
 }
+*/
 
 #attack-type tr,
 #events tr {
@@ -185,7 +188,7 @@ th {
     text-overflow: ellipsis;
 }
 .data {
-    width: 296px;
+    width: 200px;
 }
 
 #attack-type th {
@@ -211,9 +214,9 @@ th {
 
 /* 实时信息 */
 .console {
-    left: 285px;
+    left: 245px;
     bottom: 0px;
-    width: 1034px;
+    width: 925px;
 }
 
 #events td, #events th {
