@@ -37,9 +37,9 @@ $(function(){
 			   	                    show: true,
 			   	                   /* formatter: function(params){
 			   	                    	var res=params.name;
-			   	                    	if(params.name.length>7){
-			   	                    		var temp = res.substring(0,7);
-			   	                    		var temp2 = res.substr(7);
+			   	                    	if(params.name.length>9){
+			   	                    		var temp = res.substring(0,9);
+			   	                    		var temp2 = res.substr(9);
 			   	                    		res= temp + "\n" + temp2;
 			   	                    	}
 			   	                    	return res;
@@ -100,9 +100,9 @@ $(function(){
 			   	                    show: true,
 			   	                    /*formatter: function(params){
 		                        	  var res=params.name;
-		                        	  if(params.name.length>7){
-		                        		  var temp = res.substring(0,7);
-		                        		  var temp2 = res.substr(7);
+		                        	  if(params.name.length>9){
+		                        		  var temp = res.substring(0,9);
+		                        		  var temp2 = res.substr(9);
 		                        		  res= temp + "\n" + temp2;
 		                        	  }
 			                          return res;
@@ -209,7 +209,7 @@ $(function(){
 					   			color:'#7aff75',
 					   			fontSize:14
 					   		},
-					   	    x:'left'
+					   	    x:'center'
 		   				},
 				   	    tooltip : {
 				   	        trigger: 'axis'

@@ -353,30 +353,30 @@
             <div class="point clearfix" style="margin-top:50px">
             	<h5 class="fl" style="color:#7aff75;font-family: sans-serif; font-style: normal; font-size: 14px; font-weight: bold;">重大风险预警</h5>
                 <div class="pont fl">
-                	<c:if test="${wafAlarmLevel==4}">
-	                	<span style="background-color: #b10930; border-right:1px solid #fff;">SEVERE</span>
-	                    <span style="background-color: #6b6768; border-right:1px solid #fff;">HIGH</span>
-	                    <span style="background-color: #6b6768; border-right:1px solid #fff;">ELEVATED</span>
-	                    <span style="background-color: #6b6768;">GUARDED</span>
-                    </c:if>
-                    <c:if test="${wafAlarmLevel==3}">
-                        <span style="background-color: #6b6768; border-right:1px solid #fff;">SEVERE</span>
-                        <span style="background-color: #ef5f1e; border-right:1px solid #fff;">HIGH</span>
-                        <span style="background-color: #6b6768; border-right:1px solid #fff;">ELEVATED</span>
-                        <span style="background-color: #6b6768;">GUARDED</span>
-                    </c:if>	
-                    <c:if test="${wafAlarmLevel==2}">
-                        <span style="background-color: #6b6768; border-right:1px solid #fff;">SEVERE</span>
-                        <span style="background-color: #6b6768; border-right:1px solid #fff;">HIGH</span>
-                        <span style="background-color: #fcdf32; border-right:1px solid #fff;">ELEVATED</span>
-                        <span style="background-color: #6b6768;">GUARDED</span>
-                    </c:if>	
-                    <c:if test="${wafAlarmLevel==1}">
-                        <span style="background-color: #6b6768; border-right:1px solid #fff;">SEVERE</span>
-                        <span style="background-color: #6b6768; border-right:1px solid #fff;">HIGH</span>
-                        <span style="background-color: #6b6768; border-right:1px solid #fff;">ELEVATED</span>
-                        <span style="background-color: #3869ca;">GUARDED</span>
-                    </c:if>	
+                <c:if test="${wafAlarmLevel==4}">
+                <span>SEVERE<i ></i></span>
+                <span>HIGH</span>
+                <span>ELEVATED</span>
+                <span>GUARDED</span>
+                </c:if>
+                <c:if test="${wafAlarmLevel==3}">
+                <span>SEVERE</span>
+                <span>HIGH<i></i></span>
+                <span>ELEVATED</span>
+                <span>GUARDED</span>
+                </c:if>
+                <c:if test="${wafAlarmLevel==2}">
+                <span>SEVERE</span>
+                <span>HIGH</span>
+                <span>ELEVATED<i></i></span>
+                <span>GUARDED</span> 			
+                 </c:if>
+                <c:if test="${wafAlarmLevel==1}">
+                <span>SEVERE</span>
+                <span>HIGH</span>
+                <span>ELEVATED</span>
+                <span>GUARDED<i></i></span>
+				</c:if>
                 </div>
             </div>
             <div class="exhibitionBox clearfix">

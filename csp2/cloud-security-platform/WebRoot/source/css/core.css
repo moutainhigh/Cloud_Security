@@ -1034,7 +1034,10 @@ select::-ms-expand { display: none; }
 	margin-right: 20px;
 }
 .point .pont{
-	border: #797979 solid 1px;
+	background: -webkit-linear-gradient(left,#7ac66e,#88ba6b,#a1a367,#be8961,#d7725d,#e5665a); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(right,#7ac66e,#88ba6b,#a1a367,#be8961,#d7725d,#e5665a); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(right,#7ac66e,#88ba6b,#a1a367,#be8961,#d7725d,#e5665a); /* Firefox 3.6 - 15 */
+  background: linear-gradient(right,#7ac66e,#88ba6b,#a1a367,#be8961,#d7725d,#e5665a); /* 标准的语法 */
 }
 .tabBox .mapBox .list{
 	height: 660px !important;
@@ -1050,6 +1053,15 @@ select::-ms-expand { display: none; }
 	font-size: 16px;
 	color: #fff;
 	text-align: center;
+	position: relative;
+}
+.point .pont span i{
+	position: absolute;
+	left: 45%;
+    top: 42px;
+	width: 20px;
+	height: 14px;
+	background: url(../images/triangle.png) no-repeat;
 }
 /* .point .pont span:nth-child(1){
 	background-color: #b10930;
