@@ -79,10 +79,10 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 				if(firstRead){//第一次读取数据
 					startReadTime=System.currentTimeMillis();
 					dataText = getFirstWafData();
+					System.out.println("firstgetdataText:"+dataText);
 				}else{
 					long currentReadTime=System.currentTimeMillis();
 					int seconds=(int) ((currentReadTime-startReadTime)/1000);
-//					int minute=(int) ((currentReadTime-startReadTime)/1000/60);
 					dataText=getWafData(seconds);
 					System.out.println("seconds:"+seconds+"dataText:"+dataText);
 					startReadTime=currentReadTime;
@@ -109,7 +109,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 	public String getFirstWafData(){
 		WafAPIWorker worker = new WafAPIWorker();
 		long startTimeTest=System.currentTimeMillis();
-		String text = worker.getAllWafLogWebsecInTime("3", "date");
+		String text = worker.getAllWafLogWebsecInTime("1", "date");
 		return text;
 	}
 	public String getWafData(int seconds){
