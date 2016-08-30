@@ -111,7 +111,7 @@ function initHighSiteMap(myChart) {
 	        inRange: {
 	            //color : [ '#c4fffd', '#9ae9e6', '#6aceca', '#42aeaa', '#1e8682']
 	            //color: ['#ffe074', '#fd2204']
-	            color: ['#63cdf6', '#58b7ed','#52a2e5','#4793e9','#4576e3']
+	            color: ['#b8e2b0', '#93b06a','#b09664','#cc7c5f','#e5665a']
 	       },
 	        calculable: true
 	    },
@@ -196,7 +196,7 @@ function showHackerMap() {
 						var value = [];
 						value.push(dataList[i].longitude);
 						value.push(dataList[i].latitude);
-						value.push(dataList[i].val * 10);
+						value.push(dataList[i].val*100);
 						
 						var name = getDistrictName(dataList[i].name);
 						dataValue[i]={'name':name,'value':value};
@@ -240,12 +240,15 @@ function showHackerMap() {
 	           color: '#fff'
 	        },
 	        pieces: [
-	        	{gt: 300, color: '#fa7e7d'},            // (300, Infinity]
-			    {gt: 100, lte: 300, color: '#ea9068'},  // (100, 300]
-			    {gt: 50,  lte: 100, color: '#eabf6c'},  // (50, 100]
-			    {gt: 10,  lte: 50,  color: '#ddde73'},  // (10, 50]
-			    {gt: 0,   lte: 10,  color: '#6bc770'}   // (0, 10]
-			]
+			    {gt: 0,   lte: 10},   // (0, 10]
+			    {gt: 10,  lte: 50},  // (10, 50]
+			    {gt: 50,  lte: 100},  // (50, 100]
+			    {gt: 100, lte: 300},  // (100, 300]
+	        	{gt: 300}          // (300, Infinity]
+			],
+			inRange: {
+            	color: ['#6bc770','#ddde73','#eabf6c','#ea9068', '#fa7e7d']
+        	}
 	    },
 	    geo: {
 	        map: 'china',
@@ -274,8 +277,8 @@ function showHackerMap() {
 	            type: 'heatmap',
         		coordinateSystem: 'geo',
 	            mapType: 'china',
-	            blurSize:5,
-	            minOpacity:0.2,
+	            blurSize:20,
+	            //minOpacity:0.2,
 	            //maxOpacity:1,
 	            //roam: false,
 	            label: {
@@ -367,18 +370,16 @@ function showUserMap() {
 	//var myChart = echarts.init(document.getElementById('safe-map'));
 	myChart.setOption({
 		//backgroundColor: '#404a59',
-	    tooltip : {
-	    	backgroundColor : 'rgba(20, 94, 181,0.8)',
-	        trigger: 'item',
-	        formatter: function (params) {
-            	return params.name + ' : ' + params.value[2];
-        	}
-	    },
+	    //tooltip : {
+	    //	backgroundColor : 'rgba(20, 94, 181,0.8)',
+	    //    trigger: 'item',
+	    //    formatter: function (params) {
+        //    	return params.name + ' : ' + params.value[2];
+        //	}
+	    //},
 	    visualMap: {
-	    	show : true,
+	    	show : false,
 	    	type: 'piecewise', // 定义为分段型 visualMap
-	        min: 0,
-	        max: 5000,
 	        left: '10%',
 	        bottom: '2%',
 	        textStyle: {
@@ -386,11 +387,11 @@ function showUserMap() {
 	        },
 	        calculable: false,
 	        pieces: [
-	        	{gt: 2000, color: '#fa7e7d'}, 
-			    {gt: 1500, lte: 2000, color: '#eabf6c'},
-			    {gt: 1000, lte: 1500, color: '#6bc770'},
-			    {gt: 500, lte: 1000,  color: '#52a2e5'},
-			    {gt: 0,    lte: 500,  color: '#806bff'}
+	        	{gt: 2000, color: '#ffffff'}, 
+			    {gt: 1500, lte: 2000, color: '#ffffff'},
+			    {gt: 1000, lte: 1500, color: '#ffffff'},
+			    {gt: 500, lte: 1000,  color: '#ffffff'},
+			    {gt: 0,    lte: 500,  color: '#ffffff'}
 			]
     	},
 	    geo: {
@@ -430,7 +431,7 @@ function showUserMap() {
 	                    show: false
 	                },
 	                emphasis: {
-	                    show: true
+	                    show: false
 	                }
 	            },
 	            itemStyle: {
@@ -546,10 +547,10 @@ function initSecurityStateMap(myChart){
 	        //    color : [ '#ff81ff', '#99d9eb', '#c9bfe7', '#ffff9b', '#ffffff']
 	       // }
 	        pieces: [
-	        	{gt: 4000, color: '#ff81ff'}, 
-			    {gt: 3000, lte: 4000, color: '#99d9eb'},
-			    {gt: 2000, lte: 3000, color: '#c9bfe7'},
-			    {gt: 1000, lte: 2000,  color: '#ffff9b'},
+	        	{gt: 4000, color: '#ed3230'}, 
+			    {gt: 3000, lte: 4000, color: '#ef7024'},
+			    {gt: 2000, lte: 3000, color: '#f3d94c'},
+			    {gt: 1000, lte: 2000,  color: '#62cf3b'},
 			    {gt: 0,    lte: 1000,  color: '#ffffff'}
 			]
     	},
