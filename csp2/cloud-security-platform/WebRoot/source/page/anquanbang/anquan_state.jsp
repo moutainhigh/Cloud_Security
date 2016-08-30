@@ -380,9 +380,9 @@
                 </div>
             </div>
             <div class="exhibitionBox clearfix">
-                 <div class="exhibitionList fl"  id="bugMainId"  style="width:1300px;height:450px;background-color:transparent;">
+                 <div class="exhibitionList fl"  id="bugMainId"  style="width:1300px;height:480px;background-color:transparent;">
               	</div>
-              	<div class="exhibitionList fl" id="attackMainId"  style="width:1300px;height:450px;background-color:transparent;">
+              	<div class="exhibitionList fl" id="attackMainId"  style="width:1300px;height:480px;background-color:transparent;">
               	</div>
                         		
             </div>
