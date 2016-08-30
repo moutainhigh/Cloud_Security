@@ -114,10 +114,9 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 	}
 	public String getWafData(int seconds){
 		WafAPIWorker worker = new WafAPIWorker();
-		String text = worker.getAllWafLogWebsecInTime(seconds+"", "seconds");
+		String text = worker.getAllWafLogWebsecInTime(seconds+"", "second");
 		return text;
 	}
-	
 	public void perSendData(WebSocketSession session,TextMessage message,JSONArray array) throws IOException, InterruptedException{
 		if(array==null){
 			return;
