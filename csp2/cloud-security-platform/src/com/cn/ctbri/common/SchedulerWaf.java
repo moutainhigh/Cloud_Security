@@ -78,6 +78,7 @@ public class SchedulerWaf {
         	String wafIp = "219.141.189.183";
         	String wafPort = "";
 			JSONArray ser = new JSONArray();
+			
 			if(assets != null && assets.size() > 0){
 				String ipArray=(String) assetOrder.get("ipArray");
 	        	id = (Integer) assetOrder.get("orderAssetId");
@@ -95,20 +96,25 @@ public class SchedulerWaf {
 	            ips = ipArray.split(",");
 	            for (int n = 0; n < ips.length; n++) {
 	            	JSONObject jo = new JSONObject();
-					jo.put("ip", ips[n]);
-					jo.put("port", "80");
+	            	String[] ip = ips[n].split(":");
+					jo.put("ip", ip[0]);
+					jo.put("port", ip[1]);
 					ser.add(jo);
 	            }
 	        }
 			//时间戳
 			String timestamp = String.valueOf(new Date().getTime());
 			addrName = addrName + timestamp;
+			if(addrName.length()>20){
+				addrName = addrName.substring(0, 20);
+			}
 			String wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", addrName, wafIp, wafPort, "nsfocus.cer", "0", addr, "*", "", ser);
 			String targetKey = "";
 	    	try {
 	    		JSONObject obj = JSONObject.fromObject(wafcreate);
 	    		targetKey = obj.getString("targetKey"); 
 	    		String sta = obj.getString("status");
+//	    		String sta = "success";
 	    		if(sta.equals("success")){
 	    			OrderAsset oa = new OrderAsset();
 		    		oa.setId(id);
