@@ -773,8 +773,7 @@ $(function(){
 							    	y:'435',
 							    	x:'150',
 							    	width:1200,
-							    	padding: 3, 
-							        itemGap: 3,
+							        itemGap: 15,
 							        data:bugLegendData
 									//textStyle:{color: 'auto'}
 							    },
@@ -1002,8 +1001,7 @@ $(function(){
 								    	y:'435',
 								    	x:'150',
 								    	width:1200,
-								    	padding: 3, 
-								        itemGap: 3,
+								    	itemGap: 15,
 								        data:attackLegendData
 										//textStyle:{color: 'auto'}
 								    },
