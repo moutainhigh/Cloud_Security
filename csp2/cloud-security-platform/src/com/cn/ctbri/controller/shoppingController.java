@@ -1897,8 +1897,9 @@ public class shoppingController {
         				            ips = ipArray.split(",");
         				            for (int n = 0; n < ips.length; n++) {
         				            	JSONObject jo = new JSONObject();
-        	    						jo.put("ip", ips[n]);
-        	    						jo.put("port", "80");
+        				            	String[] ip = ips[n].split(":");
+        	    						jo.put("ip", ip[0]);
+        	    						jo.put("port", ip[1]);
         	    						ser.add(jo);
         				            }
         				        }
