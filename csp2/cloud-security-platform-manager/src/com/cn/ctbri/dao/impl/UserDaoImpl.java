@@ -176,4 +176,8 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
 	public void insertAPINum(APINum num) {
 		getSqlSession().insert(ns+"insertAPINum", num);
 	}
+	
+	public List findUserApikey(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"findUserApiKey", paramMap);
+	}
 }
