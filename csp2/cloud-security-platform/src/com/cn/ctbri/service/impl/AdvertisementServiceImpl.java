@@ -28,7 +28,7 @@ public class AdvertisementServiceImpl implements IAdvertisementService{
     	return advertisementDao.findById(id);
     }
     /**
-     * 功能描述：查询所有广告
+     * 功能描述：查询所有有效期内的广告
      *       @time 2016-06-12
      */
     public List<Advertisement> findAllAdvertisement() {
