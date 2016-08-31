@@ -126,6 +126,8 @@ p.w634{width:624px;}
 .regist_input{width:274px;}
 .regist_prompt{width:292px;color:#999;font-size:14px;}
 .regist_txt{width:246px;height:22px;border:1px solid #cbc9c9;padding:7px 8px;float:left;}
+.regist_date_start{width:100px;height:22px;border:1px solid #cbc9c9;padding:7px 8px;float:left;}
+.regist_date_end{width:100px;height:22px;border:1px solid #cbc9c9;padding:7px 8px;}
 .regist_sel{width:264px;border:1px solid #cbc9c9;padding:7px 8px;float:left;overflow:hidden;height:36px;}
 .register_tr{height:42px;}
 .regist_yzm{width:130px;margin-right:10px;}
