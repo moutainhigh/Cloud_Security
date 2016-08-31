@@ -26,6 +26,7 @@ public class UserMapper implements RowMapper {
 		user.setType(rs.getInt("type"));
 		user.setRemarks(rs.getString("remarks"));
 		user.setIp(rs.getString("ip"));
+		user.setApikey(rs.getString("apikey"));
 		return user;
 	}
 }
