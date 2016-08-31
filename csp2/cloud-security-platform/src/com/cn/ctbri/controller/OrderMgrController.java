@@ -942,6 +942,7 @@ public class OrderMgrController {
     public void checkOrderStatus(HttpServletResponse response,HttpServletRequest request){
         String orderId = request.getParameter("orderId");
         String beginDate = request.getParameter("begin_date");
+//        Date begin_Date = DateUtils.stringToDateNYRSFM(beginDate);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String nowDate = df.format(new Date());
         //查找订单
@@ -953,7 +954,8 @@ public class OrderMgrController {
         int isAPI = order.getIsAPI();
         Map<String, Object> m = new HashMap<String, Object>();
 //        if((status==0&&beginDate.compareTo(nowDate)>0)||status!=0){
-        if(isAPI==0 && (status==1||status==2||status==0)){
+//        if(isAPI==0 && (status==1||status==2||status==0)){
+        if(isAPI==0 && (status==1||status==2||beginDate.compareTo(nowDate)>0)){
             m.put("status", true);
         }else{
             m.put("status", false);
