@@ -17,7 +17,7 @@ public interface IAdvertisementService {
      */
 	Advertisement findById(int id);
 	/**
-	 * 功能描述：查询所有广告
+	 * 功能描述：查询所有有效期内的广告
 	 *		 @time 2016-06-12
 	 */
 	List<Advertisement> findAllAdvertisement();
