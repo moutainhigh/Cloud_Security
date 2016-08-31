@@ -149,33 +149,62 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			if (null == srcIPPosition) {// 数据库中不存在
 				srcIPPosition = new IPPosition();
 				ipPositionMap.put(srcIP, srcIPPosition);
-				// 源经纬度
-				String srcPosition = MapUtil.getPositionByIp(srcIP);
-				srcIPPosition.setIp(srcIP);
-				srcIPPosition.setRegisterTime(new Date());
-				if (null != srcPosition) {
-					String[] positionArray = srcPosition.split(",");
-					srcLongitude = positionArray[0];
-					srcLatitude = positionArray[1];
+				//1.先调电信的接口
+				String ipMessage=WafAPIWorker.getLocationFromIp(srcIP);
+				JSONObject ipJson = JSONObject.fromObject(ipMessage); 
+				//存在数据的情况返回数据格式：{"ip":"1.54.44.1","latitude":"16.0000","longtitude":"106.0000","continent":"亚洲","country":"越南","city":""}
+				//不存在数据的情况下返回的数据格式:{"ip":"1.2.2.3"}
+				try {
+					srcLatitude=ipJson.getString("latitude");
+				} catch (Exception e) {
+					//电信接口不存在数据
+				}
+				if(StringUtils.isNotEmpty(srcLatitude)){//电信接口存在数据
+					srcLongitude=ipJson.getString("longtitude");
+					String wafCountry=ipJson.getString("country");
+					String wafCity=ipJson.getString("city");
+					srcName=wafCountry+wafCity;
+					srcIPPosition.setIp(srcIP);
+					srcIPPosition.setRegisterTime(new Date());
 					srcIPPosition.setLongitude(srcLongitude);
 					srcIPPosition.setLatitude(srcLatitude);
-				} else {
-					// 入库
-					ipPositionService.saveIPPosition(srcIPPosition);
-					continue;
-
-				}
-				srcName = MapUtil.getCountryByPosition(srcLongitude,
-						srcLatitude);
-				if (null == srcName) {
-					// 入库
-					ipPositionService.saveIPPosition(srcIPPosition);
-					continue;
-				} else {
 					srcIPPosition.setCountryProvince(srcName);
 					ipPositionService.saveIPPosition(srcIPPosition);
-				}
+				}else{//电信接口不存在数据
+					//2.电信接口如果不存在的话，再掉百度的接口
+					
+					// 源经纬度
+					String srcPosition = MapUtil.getPositionByIp(srcIP);
+					srcIPPosition.setIp(srcIP);
+					srcIPPosition.setRegisterTime(new Date());
+					if (null != srcPosition) {
+						String[] positionArray = srcPosition.split(",");
+						srcLongitude = positionArray[0];
+						srcLatitude = positionArray[1];
+						srcIPPosition.setLongitude(srcLongitude);
+						srcIPPosition.setLatitude(srcLatitude);
+					} else {
+						// 入库
+						ipPositionService.saveIPPosition(srcIPPosition);
+						continue;
 
+					}
+					srcName = MapUtil.getCountryByPosition(srcLongitude,
+							srcLatitude);
+					if (null == srcName) {
+						// 入库
+						ipPositionService.saveIPPosition(srcIPPosition);
+						continue;
+					} else {
+						srcIPPosition.setCountryProvince(srcName);
+						ipPositionService.saveIPPosition(srcIPPosition);
+					}
+
+				}
+				
+				
+				
+				
 			} else {// 已经存在于数据库中
 				srcLongitude = srcIPPosition.getLongitude();
 				srcLatitude = srcIPPosition.getLatitude();
@@ -186,36 +215,62 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			// 分析目标ip
 			IPPosition desIPPosition = getIPPositions().get(desIP);
 			if (null == desIPPosition) {// 数据库中不存在数据
+				
 				desIPPosition = new IPPosition();
 				ipPositionMap.put(desIP, desIPPosition);
-				// 目标经纬度
-				String desPosition = MapUtil.getPositionByIp(desIP);
-				desIPPosition.setIp(desIP);
-				desIPPosition.setRegisterTime(new Date());
-				if (null != desPosition) {
-					String[] positionArray = desPosition.split(",");
-					desLongitude = positionArray[0];
-					desLatitude = positionArray[1];
+				
+				//1.先调电信的接口
+				String ipMessage=WafAPIWorker.getLocationFromIp(desIP);
+				JSONObject ipJson = JSONObject.fromObject(ipMessage); 
+				//存在数据的情况返回数据格式：{"ip":"1.54.44.1","latitude":"16.0000","longtitude":"106.0000","continent":"亚洲","country":"越南","city":""}
+				//不存在数据的情况下返回的数据格式:{"ip":"1.2.2.3"}
+				try {
+					desLatitude=ipJson.getString("latitude");
+				} catch (Exception e) {
+				}
+				if(StringUtils.isNotEmpty(desLatitude)){//电信接口存在数据
+					desLongitude=ipJson.getString("longtitude");
+					String wafCountry=ipJson.getString("country");
+					String wafCity=ipJson.getString("city");
+					desName=wafCountry+wafCity;
+					desIPPosition.setIp(desIP);
+					desIPPosition.setRegisterTime(new Date());
 					desIPPosition.setLongitude(desLongitude);
 					desIPPosition.setLatitude(desLatitude);
-				} else {
-
-					// 入库
-					ipPositionService.saveIPPosition(desIPPosition);
-					continue;
-
-				}
-
-				desName = MapUtil.getCountryByPosition(desLongitude,
-						desLatitude);
-
-				if (null == desName) {
-					// 入库
-					ipPositionService.saveIPPosition(desIPPosition);
-					continue;
-				} else {
 					desIPPosition.setCountryProvince(desName);
 					ipPositionService.saveIPPosition(desIPPosition);
+				}else{//电信接口不存在数据
+					
+					// 目标经纬度
+					String desPosition = MapUtil.getPositionByIp(desIP);
+					desIPPosition.setIp(desIP);
+					desIPPosition.setRegisterTime(new Date());
+					if (null != desPosition) {
+						String[] positionArray = desPosition.split(",");
+						desLongitude = positionArray[0];
+						desLatitude = positionArray[1];
+						desIPPosition.setLongitude(desLongitude);
+						desIPPosition.setLatitude(desLatitude);
+					} else {
+
+						// 入库
+						ipPositionService.saveIPPosition(desIPPosition);
+						continue;
+
+					}
+
+					desName = MapUtil.getCountryByPosition(desLongitude,
+							desLatitude);
+
+					if (null == desName) {
+						// 入库
+						ipPositionService.saveIPPosition(desIPPosition);
+						continue;
+					} else {
+						desIPPosition.setCountryProvince(desName);
+						ipPositionService.saveIPPosition(desIPPosition);
+					}
+					
 				}
 			} else {// 数据库中已存在
 				desLongitude = desIPPosition.getLongitude();
