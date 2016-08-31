@@ -530,7 +530,7 @@ public class NsfocusWAFAdapter {
 			}else {
 				example.or().andStatTimeBetween(dateBefore, dateNow);
 			}
-			
+			example.setOrderByClause("stat_time desc");
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			List<TWafLogWebsec> allList = mapper.selectByExampleWithBLOBs(example);
 
