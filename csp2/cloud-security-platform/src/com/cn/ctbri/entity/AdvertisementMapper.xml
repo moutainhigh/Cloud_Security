@@ -22,16 +22,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 查询所有记录 -->
 	<select id="list" resultMap="AdRM" parameterType="com.cn.ctbri.entity.Advertisement">
-		select * from cs_advertisement
-		where 1=1
-        <if test="id!=null and id!=''">
-            and id=#{id}
-        </if>
+		select * from cs_advertisement 
+		where 
+   			date(now()) between startDate and endDate
 		order by createDate desc
 	</select>
 	
-	
-	<!-- 插入公告 -->
+		
+	<!-- 插入广告 -->
 	<!-- <insert id="insert" parameterType="com.cn.ctbri.entity.Advertisement">
 		insert into cs_advertisement 
 		(id,name,image,startDate,endDate,createDate) values(#{id} #{name},#{image},#{startDate},#{endDate},#{createDate})
@@ -43,7 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	
-	<!-- 删除公告 -->
+	<!-- 删除广告 -->
 	<delete id="delete">
 		delete from cs_advertisement
 		where id=#{id}
