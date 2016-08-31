@@ -132,6 +132,13 @@ public interface UserDao {
      * @return
      */
     List findTimesTop5(Map<String, Object> paramMap);
-
-	void insertAPINum(APINum num);
+    
+    void insertAPINum(APINum num);
+    
+    /**
+     * 查询用户的apikey
+     * @param paramMap
+     * @return
+     */
+    List findUserApikey(Map<String, Object> paramMap);
 }
