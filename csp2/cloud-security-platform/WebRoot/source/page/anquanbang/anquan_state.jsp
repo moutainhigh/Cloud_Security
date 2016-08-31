@@ -354,28 +354,28 @@
             	<h5 class="fl" style="color:#7aff75;font-family: sans-serif; font-style: normal; font-size: 14px; font-weight: bold;">重大风险预警</h5>
                 <div class="pont fl">
                 <c:if test="${wafAlarmLevel==4}">
-                <span>GUARDED</span>
-                <span>ELEVATED</span>
-                <span>HIGH</span>
-                <span>SEVERE<i ></i></span>
+                <span>低</span>
+                <span>中</span>
+                <span>高</span>
+                <span>紧急<i ></i></span>
                 </c:if>
                 <c:if test="${wafAlarmLevel==3}">
-                <span>GUARDED</span>
-                <span>ELEVATED</span>
-                <span>HIGH<i></i></span>
-                <span>SEVERE</span>
+                <span>低</span>
+                <span>中</span>
+                <span>高<i></i></span>
+                <span>紧急</span>
                 </c:if>
                 <c:if test="${wafAlarmLevel==2}">
-                <span>GUARDED</span> 
-                <span>ELEVATED<i></i></span>
-                <span>HIGH</span>	
-                <span>SEVERE</span>		
+                <span>低</span> 
+                <span>中<i></i></span>
+                <span>高</span>	
+                <span>紧急</span>		
                  </c:if>
                 <c:if test="${wafAlarmLevel==1}">
-                <span>GUARDED<i></i></span>
-                <span>ELEVATED</span>
-                <span>HIGH</span>
-                <span>SEVERE</span>
+                <span>低<i></i></span>
+                <span>中</span>
+                <span>高</span>
+                <span>紧急</span>
 				</c:if>
                 </div>
             </div>
