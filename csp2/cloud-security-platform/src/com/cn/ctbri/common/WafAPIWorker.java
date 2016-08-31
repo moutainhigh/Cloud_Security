@@ -363,7 +363,7 @@ public class WafAPIWorker {
 	 * @param logId
 	 * @return
 	 */
-	public static String getWaflogWebsecInTime(String[] dstIpList,String interval){
+	public static String getWaflogWebsecInTime(List<String> dstIpList,String interval){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("dstIp", dstIpList);
@@ -451,6 +451,32 @@ public class WafAPIWorker {
         return textEntity;
 	}
 	
+	/**
+	 * 功能描述：获取安全事件类型统计信息
+	 * @param interval
+	 * @return
+	 */
+	public static String getWafEventTypeCount(String interval, String timeUnit, List<String> dstIpList){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("interval", interval);
+		json.put("timeUnit", timeUnit);
+		json.put("dstIp", dstIpList);
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafEventTypeCount";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
+	
 	
 	/**
 	 * 功能描述：获取Level统计信息
@@ -461,6 +487,26 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("interval", interval);
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafAlertLevelCount";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
+	
+	public static String getWafAlertLevelCount(String interval,List<String> dstIpList){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("interval", interval);
+		json.put("dstIp", dstIpList);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafAlertLevelCount";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
@@ -752,7 +798,6 @@ public class WafAPIWorker {
 			}
     	}*/
     	
-//    	String waf = getWafEventTypeCount("1");
 //    	String waf = getWafAlertLevelCount("1");
     	
 /*    	String wafLogById = getWaflogWebsecById("2104");
@@ -849,12 +894,16 @@ public class WafAPIWorker {
 //    		wafcreate = WafAPIWorker.getWafLogWebSecDstIpList();
 //    		wafcreate = WafAPIWorker.getWafAlertLevelCountByMonth("1","2016-08");
 //    		wafcreate = WafAPIWorker.getWafEventTypeCount("1","hour");
-    		String data=getLocationFromIp("1.2.2.3");
-    		System.out.println("data:"+data);
+        	List<String> dstIpList = new ArrayList();
+        	dstIpList.add("42.96.147.75");
+//        	dstIpList.add("219.141.189.183");
+    		wafcreate = WafAPIWorker.getWafEventTypeCount("3","hour",dstIpList);
+//    		String data=getLocationFromIp("1.2.2.3");
+//    		System.out.println("data:"+data);
     	} catch (Exception e) {
             e.printStackTrace();
         }
-//        System.out.println(wafcreate);
+        System.out.println(wafcreate);
         
     }
 }
