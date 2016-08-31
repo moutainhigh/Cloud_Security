@@ -771,6 +771,10 @@ $(function(){
 							    },
 							    legend: {
 							    	y:'435',
+							    	x:'150',
+							    	width:1200,
+							    	padding: 3, 
+							        itemGap: 3,
 							        data:bugLegendData
 									//textStyle:{color: 'auto'}
 							    },
@@ -995,7 +999,11 @@ $(function(){
 								        trigger: 'axis'
 								    },
 								     legend: {
-								    	 y : '435',
+								    	y:'435',
+								    	x:'150',
+								    	width:1200,
+								    	padding: 3, 
+								        itemGap: 3,
 								        data:attackLegendData
 										//textStyle:{color: 'auto'}
 								    },
