@@ -68,4 +68,7 @@
        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
     </bean>
     
+    <!-- 支持上传文件 -->  
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>  
+    
 </beans>  
