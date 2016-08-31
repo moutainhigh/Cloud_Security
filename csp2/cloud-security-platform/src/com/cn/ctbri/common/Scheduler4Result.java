@@ -20,6 +20,7 @@ import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
+import com.cn.ctbri.service.IDistrictDataService;
 import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ITaskService;
@@ -46,6 +47,8 @@ public class Scheduler4Result {
 	private IAlarmService alarmService;
 	@Autowired
 	private IAssetService assetService;
+	@Autowired
+	private IDistrictDataService districtDataService;
 
 	public void execute() throws Exception {
 		logger.info("[获取结果调度]:任务表扫描开始....");
@@ -123,6 +126,14 @@ public class Scheduler4Result {
 									JSONObject jsonObj = new JSONObject().fromObject(result);
 									JSONArray alarmArray = jsonObj.getJSONArray("alarmObj");
 									if(alarmArray.size()>0){
+										//查询资产，获取地理id add by 2016-8-16
+										Asset a = assetService.findByOrderAssetId(Integer.parseInt(task.getOrder_asset_Id()));
+										int districtId = 0;
+										if(a!=null){
+											districtId = Integer.parseInt(a.getDistrictId());
+										}else{
+											districtId = 35;
+										}
 										for (Object aObj : alarmArray) {
 											JSONObject alarmObj = (JSONObject) aObj;
 											String taskId = alarmObj.getString("taskId");
@@ -149,22 +160,30 @@ public class Scheduler4Result {
 											alarm.setAlarm_content(alarm_content);
 											alarm.setKeyword(keyword);
 											alarm.setServiceId(Integer.parseInt(serId));
-											alarm.setDistrictId(0);
+											alarm.setDistrictId(districtId);
 											alarmService.saveAlarm(alarm);
 										}
-	//									order.setStatus(2);
-	//									orderService.update(order);
-										
-	//									task.setIsAlarm(1);
-	//									taskService.updateTask(task);
+										// 更新地域告警数  modify by 2016-8-23
+						                Map<String, Object> disMap = new HashMap<String, Object>();
+										disMap.put("id", districtId);
+										disMap.put("count", alarmArray.size());
+										disMap.put("serviceId", serviceId);
+										districtDataService.updateDistrict(disMap);
+										// end
 										
 										if(alarmArray.size()>0){
 			                                List<Linkman> mlist= orderService.findLinkmanById(order.getContactId());
 			                                if(mlist.size()>0){
 			                                	Linkman linkman=mlist.get(0);
 				                                String phoneNumber = linkman.getMobile();//联系方式
-					                            List<Asset> asset = assetService.findByTask(task);
-				                                String assetName = asset.get(0).getName();
+				                                String assetName = "";
+				                                Asset asset = assetService.findByOrderAssetId(Integer.parseInt(task.getOrder_asset_Id()));
+				                                if(asset!=null){
+				                                	assetName = asset.getName();
+				                                }else{
+				                                	OrderAsset oa = orderAssetService.findOrderAssetById(Integer.parseInt(task.getOrder_asset_Id()));
+					                                assetName = oa.getAssetName();
+				                                }
 				    //                          int sendFlag=order.getMessage();//是否下发短信
 				                                if(!phoneNumber.equals("") && phoneNumber!=null){
 				                                //发短信
