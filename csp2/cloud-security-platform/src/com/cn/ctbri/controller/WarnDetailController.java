@@ -449,7 +449,7 @@ public class WarnDetailController {
 	    			    	}
 						}
 	    			    float usabling = 0f;
-	    			    if(task.getExecute_time()!=null){
+	    			    if(task!=null&&task.getExecute_time()!=null){
 	    			    	usabling = Float.parseFloat(String.valueOf(usable))/Float.parseFloat(String.valueOf((task.getEnd_time().getTime()-task.getExecute_time().getTime())));
 	    			    }
 	    			    request.setAttribute("usabling", usabling*100+"%");
@@ -2182,6 +2182,7 @@ public class WarnDetailController {
 				createAPICount = jsonObject.getInt("createAPICount");
 			}
 			
+			request.setAttribute("user",globle_user);
 			request.setAttribute("order",order);
 			request.setAttribute("apiCount", apiCount);
 			request.setAttribute("createAPICount", createAPICount);
@@ -2262,8 +2263,19 @@ public class WarnDetailController {
 			        int apiType = jsonObject1.getInt("api_type");
 			        int apiCount = jsonObject1.getInt("apiCount");
 			        //查询服务名称
-			        ServiceAPI serviceAPI = serviceAPIService.findById(apiType);
-			        String apiName = serviceAPI.getName();
+			        String apiName = "";
+			        if(apiType==1){
+			        	apiName = "创建订单";
+			        }else if(apiType==2){
+			        	apiName = "操作订单";
+			        }else if(apiType==3){
+			        	apiName = "获取订单(任务)状态";
+			        }else if(apiType==4){
+			        	apiName = "获取订单(任务)结果";
+			        }else if(apiType==5){
+			        	apiName = "获取订单(任务)报表";
+			        }
+			        
 			        //传给前台的json串
 			        JSONObject newJO = new JSONObject();
 			        newJO.put("value", apiCount);
