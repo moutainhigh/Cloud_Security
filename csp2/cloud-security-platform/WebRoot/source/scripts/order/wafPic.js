@@ -34,7 +34,7 @@ $(function(){
             //后台获取数据
             $.ajax({
             	type : "post",
-            	url:"getLevelPieData.html",
+            	url:"getLevelPieData.html?orderId="+$('#orderId').val(),
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
@@ -108,7 +108,7 @@ $(function(){
             //后台获取数据
             $.ajax({
             	type : "post",
-            	url:"getEventPieData.html",
+            	url:"getEventPieData.html?orderId="+$('#orderId').val(),
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
@@ -165,7 +165,7 @@ $(function(){
           //后台获取数据
             $.ajax({
             	type: "post",
-            	url:"getEventBarData.html",
+            	url:"getEventBarData.html?orderId="+$('#orderId').val(),
                 dataType:"json",
 //                contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
