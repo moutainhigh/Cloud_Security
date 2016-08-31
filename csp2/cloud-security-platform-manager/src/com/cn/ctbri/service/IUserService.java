@@ -144,4 +144,11 @@ public interface IUserService {
 
 	void insertAPINum(APINum num);
     
+    /**
+    * 查询用户的apikey
+    * @param paramMap
+    * @return
+    */
+    List findUserApikey(Map<String, Object> paramMap);
+    
 }
