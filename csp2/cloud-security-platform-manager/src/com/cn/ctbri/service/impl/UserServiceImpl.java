@@ -194,4 +194,9 @@ public class UserServiceImpl implements IUserService{
 	public void insertAPINum(APINum num) {
 		userDao.insertAPINum(num);
 	}
+
+
+	public List findUserApikey(Map<String, Object> paramMap) {
+		return userDao.findUserApikey(paramMap);
+	}
 }
