@@ -50,6 +50,8 @@ public class User implements java.io.Serializable{
 	private String endIP;
 	//用户最后一次登录时间
 	private Date lastLoginTime;
+	//用户key add by 2016-6-14
+	private String apikey;
 	//构造方法
 	public User(){}
 	public User(String name, String password, int status, int type) {
@@ -267,6 +269,12 @@ public class User implements java.io.Serializable{
 	}
 	public void setEndIP(String endIP) {
 		this.endIP = endIP;
+	}
+	public String getApikey() {
+		return apikey;
+	}
+	public void setApikey(String apikey) {
+		this.apikey = apikey;
 	}
 	
 }
