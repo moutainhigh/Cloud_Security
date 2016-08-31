@@ -75,18 +75,37 @@ public class WafDetailController {
 
         List assets = orderAssetService.findAssetsByOrderId(orderId);
         List websecList = null;
-        if(assets != null && assets.size() > 0){
+//        if(assets != null && assets.size() > 0){
+//        	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
+//        	assetOrder=(HashMap) assets.get(0);
+////        	String ipArray=(String) assetOrder.get("ipArray");
+//        	String ipArray="219.141.189.183";
+////        	String ipArray="101.201.222.199";
+//        	String[] ips = null;   
+//            ips = ipArray.split(",");
+////            String websecStr = WafAPIWorker.getWaflogWebsecByIp(ips);
+//            String websecStr = WafAPIWorker.getWaflogWebsecInTime(ips, "1");
+//        	websecList = this.getWaflogWebsecByIp(websecStr);
+//        	request.setAttribute("websecList", websecList);
+//        }
+        
+        List<String> dstIpList = new ArrayList();
+    	if(assets != null && assets.size() > 0){
         	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
         	assetOrder=(HashMap) assets.get(0);
-//        	String ipArray=(String) assetOrder.get("ipArray");
-        	String ipArray="219.141.189.183";
-//        	String ipArray="101.201.222.199";
+        	String ipArray=(String) assetOrder.get("ipArray");
         	String[] ips = null;   
             ips = ipArray.split(",");
-//            String websecStr = WafAPIWorker.getWaflogWebsecByIp(ips);
-            String websecStr = WafAPIWorker.getWaflogWebsecInTime(ips, "10");
+            for (int n = 0; n < ips.length; n++) {
+            	String[] ip = ips[n].split(":");
+				dstIpList.add(ip[0]);
+            }
+            dstIpList.add("219.141.189.183");
+            
+            String websecStr = WafAPIWorker.getWaflogWebsecInTime(dstIpList, "1");
         	websecList = this.getWaflogWebsecByIp(websecStr);
         	request.setAttribute("websecList", websecList);
+            
         }
         request.setAttribute("websecNum", websecList.size());
         //end 
@@ -112,7 +131,24 @@ public class WafDetailController {
     @RequestMapping(value="getLevelPieData.html")
     @ResponseBody
     public String getLevelPieData(HttpServletRequest request){
-    	String levelStr = WafAPIWorker.getWafAlertLevelCount("10");
+    	String orderId = request.getParameter("orderId");
+    	List assets = orderAssetService.findAssetsByOrderId(orderId);
+    	List<String> dstIpList = new ArrayList();
+    	if(assets != null && assets.size() > 0){
+        	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
+        	assetOrder=(HashMap) assets.get(0);
+        	String ipArray=(String) assetOrder.get("ipArray");
+        	String[] ips = null;   
+            ips = ipArray.split(",");
+            for (int n = 0; n < ips.length; n++) {
+            	String[] ip = ips[n].split(":");
+				dstIpList.add(ip[0]);
+            }
+            dstIpList.add("219.141.189.183");
+            
+        }
+    	
+    	String levelStr = WafAPIWorker.getWafAlertLevelCount("1",dstIpList);
     	Map map = this.getWafAlertLevelCount(levelStr);
         
         int high = 0;
@@ -166,7 +202,24 @@ public class WafDetailController {
     public void getEventPieData(HttpServletRequest request, HttpServletResponse response){
     	response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=UTF-8");
-    	String eventStr = WafAPIWorker.getWafEventTypeCount("10","hour");
+        
+        String orderId = request.getParameter("orderId");
+    	List assets = orderAssetService.findAssetsByOrderId(orderId);
+    	List<String> dstIpList = new ArrayList();
+    	if(assets != null && assets.size() > 0){
+        	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
+        	assetOrder=(HashMap) assets.get(0);
+        	String ipArray=(String) assetOrder.get("ipArray");
+        	String[] ips = null;   
+            ips = ipArray.split(",");
+            for (int n = 0; n < ips.length; n++) {
+            	String[] ip = ips[n].split(":");
+				dstIpList.add(ip[0]);
+            }
+            dstIpList.add("219.141.189.183");
+            
+        }
+    	String eventStr = WafAPIWorker.getWafEventTypeCount("1","hour",dstIpList);
     	Map map = this.getWafEventTypeCount(eventStr);
         
         List name = null;
@@ -211,7 +264,25 @@ public class WafDetailController {
     public void getEventBarData(HttpServletRequest request, HttpServletResponse response){
     	response.setCharacterEncoding("utf-8");
         response.setContentType("application/json;charset=UTF-8");
-    	String eventStr = WafAPIWorker.getWafEventTypeCount("10","hour");
+        
+        String orderId = request.getParameter("orderId");
+    	List assets = orderAssetService.findAssetsByOrderId(orderId);
+    	List<String> dstIpList = new ArrayList();
+    	if(assets != null && assets.size() > 0){
+        	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
+        	assetOrder=(HashMap) assets.get(0);
+        	String ipArray=(String) assetOrder.get("ipArray");
+        	String[] ips = null;   
+            ips = ipArray.split(",");
+            for (int n = 0; n < ips.length; n++) {
+            	String[] ip = ips[n].split(":");
+				dstIpList.add(ip[0]);
+            }
+            dstIpList.add("219.141.189.183");
+            
+        }
+        
+    	String eventStr = WafAPIWorker.getWafEventTypeCount("1","hour",dstIpList);
     	Map map = this.getWafEventTypeCount(eventStr);
         
         List name = null;
