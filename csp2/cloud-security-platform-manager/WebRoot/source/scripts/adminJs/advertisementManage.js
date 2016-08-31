@@ -48,7 +48,7 @@ function add(){
 	}
 	
 	$("#form_advertisement").ajaxSubmit(function (responseResult) {
-	alert(responseResult.success);
+
 		if(responseResult.success == false) {
 			alert("添加广告失败!");
 		}
@@ -74,7 +74,7 @@ function deleteAdvertisement(id){
 		url:"adminAdvertisementDelete.html",
 		success: function(data){
 			if(data.success == false) {
-				alert("添加广告失败!");
+				alert("删除广告失败!");
 			}
 			window.location.href = "adminAdvertisementManageUI.html";
 		},
