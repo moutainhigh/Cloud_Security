@@ -147,12 +147,38 @@ $(function(){
 			   			},
 		   		         x:'center'
 		   		     },
-		   			 tooltip : {
-		   	         trigger: 'axis',
-		   	         axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-		   	             type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-		   	         }
-		   	    },
+		   			tooltip : {
+		   	             trigger: 'axis',
+		   	             axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+		   	                type : 'shadow'// 默认为直线，可选为：'line' | 'shadow'
+		   	             },
+				   		  formatter: function(params) {
+				   			var level = obj.levelList;
+	                        var str = "<table style='text-align:left;width:auto;'><tr><td style='color: #806bff;width:auto'>" + params[0].name + "</td><tr>";
+	                       // var colors[] = {"#52a2e5","#eabf6c","#6bc770","#fa7e7d","#806bff"};
+	                        var bgColor="";
+	                        for (var i = 0; i < params.length;i++) {
+	                        	for(var j=0;j<level.length;j++){
+	                        		if(params[i].seriesName == level[j]){
+	                        			if(j == 0){
+	                        				bgColor="#52a2e5";
+	                        			}else if(j == 1){
+	                        				bgColor="#eabf6c";
+	                        			}else if(j == 2){
+	                        				bgColor="#6bc770";
+	                        			}else if(j == 3){
+	                        				bgColor="#fa7e7d";
+	                        			}else{ 
+	                        				bgColor="#806bff";
+	                        			}
+	                        		}
+	                        	}
+	                        	str = str + "<tr><td style='height:20px;' width='10'><span style='display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:"+bgColor+"'></span><span style=''>" + params[i].seriesName + " : " + params[i].value + "</span></td></tr>";
+	                        }
+	                        str = str + "</table>";
+	                        return str;
+				          }
+		   	        },
 		   	    legend: {
 		   	        data:obj.levelList,
 		   	        y:'bottom',
@@ -297,7 +323,8 @@ $(function(){
 				   			color:'#7aff75',
 				   			fontSize:14
 			   			},
-			   	        x:'150'
+			   	        x:'150',
+			   	        y:'15'
 			   	    },
 			   	    tooltip: {
 			   	        trigger: 'item',
@@ -561,7 +588,6 @@ $(function(){
 				     },
 
 				}); */
-				 
 				   //最近六个月攻击等级分布
 				   var myChart9 = echarts.init(document.getElementById('wafByLevelMonth6'));
 				   $.ajax({
@@ -582,7 +608,29 @@ $(function(){
 					   	        trigger: 'axis',
 					   	        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
 					   	            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-					   	        }
+					   	        },
+					   		  formatter: function(params) {
+					   			var level = obj.levelList;
+		                        var str = "<table style='text-align:left;width:auto;'><tr><td style='color: #806bff;width:auto'>" + params[0].name + "</td><tr>";
+		                       //String colors[] = {"#806bff","#eabf6c","#6bc770"};
+		                        var bgColor="";
+		                        for (var i = 0; i < params.length;i++) {
+		                        	for(var j=0;j<level.length;j++){
+		                        		if(params[i].seriesName == level[j]){
+		                        			if(j == 0){
+		                        				bgColor="#806bff";
+		                        			}else if(j == 1){
+		                        				bgColor="#eabf6c";
+		                        			}else{
+		                        				bgColor="#6bc770";
+		                        			}
+		                        		}
+		                        	}
+		                        	str = str + "<tr><td style='height:20px;' width='10'><span style='display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:"+bgColor+"'></span><span style=''>" + params[i].seriesName + " : " + params[i].value + "</span></td></tr>";
+		                        }
+		                        str = str + "</table>";
+		                        return str;
+					          }
 					   	    },
 					   	    legend: {
 					   	        data:obj.levelList,
