@@ -1,7 +1,9 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -411,8 +413,17 @@ public class DistrictDataController {
         String[] levelNames = {"低","中","高"};
         List levelList = new ArrayList();
         
-    	String startDate = DateUtils.dateToDate(new Date());	
-    	String wafRes = WafAPIWorker.getWafAlertLevelCountByMonth("6", startDate);
+        //modify by tangxr 2016-9-1
+//    	String startDate = DateUtils.dateToDate(new Date());	
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();  
+        calendar.setTime(date);  
+        calendar.add(Calendar.MONTH,-5); 
+        date = calendar.getTime();  
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+        String startDate = dateFormat.format(date);
+        //end
+    	String wafRes = WafAPIWorker.getWafAlertLevelCountByMonth("1", startDate);
     	
     	//自定义颜色值
     	String colors[] = {"#806bff","#eabf6c","#6bc770"};
