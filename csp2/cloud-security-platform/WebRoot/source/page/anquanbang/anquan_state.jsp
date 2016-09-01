@@ -402,12 +402,12 @@
 				<div id="orderServiceId" style="width:680px;height:400px;"></div>
                 </div>
 
-                <div class="ltmit" style="width:500px;height:350px;">
+                <div class="ltmit" style="width:580px;height:350px;">
                 <!-- 	使用单次服务与长期服务的情况对比 -->
-				<div id="serviceUserId" style="width:500px;height:350px;"></div>
+				<div id="serviceUserId" style="width:580px;height:350px;"></div>
                 </div>
-                <div class="ltmit" style="width:780px;height:350px">
-                    <div id="userIndustry" style="width:780px;height:350px"></div>
+                <div class="ltmit" style="width:680px;height:350px">
+                    <div id="userIndustry" style="width:680px;height:350px"></div>
                 </div>
             </div>
         </div>
