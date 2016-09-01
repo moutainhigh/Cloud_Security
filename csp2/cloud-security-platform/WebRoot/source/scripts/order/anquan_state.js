@@ -14,7 +14,7 @@ $(function(){
 			   				color:'#7aff75',
 			   				fontSize:14
 			   			},
-			   	        text: '最近一小时漏洞数据分类',
+			   	        text: '最新漏洞类型分布',
 			   	        x:'center'
 			   	    },
 
@@ -75,7 +75,7 @@ $(function(){
 		        success:function(obj){
 			   		var option0 = {
 			   		 title : {
-			   	        text: '最近一小时攻击数据分类',
+			   	        text: '最新攻击类型分布',
 			   	        textStyle:{
 			   				color:'#7aff75',
 			   				fontSize:14
@@ -140,7 +140,7 @@ $(function(){
 	        success:function(obj){
 		   		var option3 = {
 		   			 title : {
-		   				 text:'近六个月漏洞等级分布',
+		   				 text:'漏洞等级分布走势',
 		   				 textStyle:{
 			   			 color:'#7aff75',
 			   			fontSize:14
@@ -219,7 +219,7 @@ $(function(){
 
 			   		var option6 = {
 		   				title: {
-		   					text: '历史订单（一年内）',
+		   					text: '年度服务订购趋势',
 					   	    textStyle:{
 					   			color:'#7aff75',
 					   			fontSize:14
@@ -292,7 +292,7 @@ $(function(){
 			   		var dataArray = obj.dataArray;
 			   		var option4 = {
 			   			 title: {
-			   	        text: '订单类型分布',
+			   	        text: '服务数量分布',
 				   	    textStyle:{
 				   			color:'#7aff75',
 				   			fontSize:14
@@ -571,7 +571,7 @@ $(function(){
 				        success:function(obj){
 					   		var option9 = {
 					   			 title : {
-					   				 text:'近六个月攻击手段等级分布',
+					   				 text:'攻击等级分布走势',
 					   				 textStyle:{
 						   				 color:'#7aff75',
 						   				fontSize:14
