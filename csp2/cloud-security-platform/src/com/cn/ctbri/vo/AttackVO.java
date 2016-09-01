@@ -3,6 +3,8 @@ package com.cn.ctbri.vo;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.cn.ctbri.entity.Attack;
 import com.cn.ctbri.entity.AttackCount;
 import com.cn.ctbri.util.DateUtils;
@@ -21,7 +23,7 @@ public class AttackVO {
 		this.srcName=attack.getSrcName();
 		this.srcIP=attack.getSrcIP();
 		this.desName=attack.getDesName();
-		this.desIP=attack.getDesIP();
+		this.desIP=convertIp(attack.getDesIP());
 		this.type=attack.getType();
 		this.typeCode=attack.getTypeCode();
 		this.port=attack.getPort();
@@ -138,6 +140,21 @@ public class AttackVO {
 					+ ", srcLongitude:" + srcLongitude + ", srcLatitude:"
 					+ srcLatitude + ", desLongitude:" + desLongitude
 					+ ", desLatitude:" + desLatitude + "]";
+		}
+		
+		public String convertIp(String ip){
+			if(StringUtils.isNotEmpty(ip)){
+				String ipArray[]=ip.split("\\.");
+				ipArray[1]="*";
+				ipArray[2]="*";
+				StringBuilder sb=new StringBuilder();
+				sb.append(ipArray[0]+".");
+				sb.append(ipArray[1]+".");
+				sb.append(ipArray[2]+".");
+				sb.append(ipArray[3]);
+				return sb.toString();
+			}
+			return null;
 		}
 		
 }
