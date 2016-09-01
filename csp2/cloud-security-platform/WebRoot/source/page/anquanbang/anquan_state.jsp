@@ -190,13 +190,13 @@
 
 <div class="safeBox">
 	<div class="contentBox" id="content">
+		<c:if test="${sessionScope.globle_user.name =='anquanbang'}">
 		<nav>
 			<ul class="clearfix navlist">
 				<li class="active">
 					<a href="#">攻击态势</a>
 					<i></i>
 				</li>
-				<c:if test="${sessionScope.globle_user.name =='anquanbang'}">
 				<li>
 					<a href="#">数据总览</a>
 					<i></i>
@@ -213,9 +213,9 @@
 					<a href="#">安全关注点</a>
 					<i></i>
 				</li>
-				</c:if>
 			</ul>
 		</nav>
+		</c:if>
 		
 		<div class="tabBox">
 		<!-- 攻击态势 -->
