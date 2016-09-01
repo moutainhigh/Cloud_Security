@@ -234,7 +234,7 @@ public class AnalyseController {
 				.findServiceUserCount();
 		int serviceUserSize = serviceUserList.size();
 
-		String title = "只订购";
+		String title = "不同频次服务用户分布";
 		// 左侧：组装数据格式['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
 		String sbType = "['" + longTerm + "','" + single + "']";
 		// 组装数据
@@ -304,7 +304,7 @@ public class AnalyseController {
 		List<Map<String, Object>> orderServiceList = orderService
 				.findServiceCount();
 		int orderServiceSize = orderServiceList.size();
-		String title = "订单中各服务订单的对比";
+		String title = "服务类型关注分布";
 		// 左侧标识：组装数据格式['直达','营销广告','搜索引擎','邮件营销','联盟广告','视频广告','百度','谷歌','必应','其他']
 		StringBuilder sbType = new StringBuilder();
 		/**
