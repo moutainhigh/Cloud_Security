@@ -46,8 +46,8 @@ public class AnalyseController {
 
 	@Autowired
 	private IOrderService orderService;
-	String longTerm = "长期";
-	String single = "单次";
+	String longTerm = "订购长期服务用户";
+	String single = "订购单次服务用户";
 
 	/**
 	 * 
@@ -301,6 +301,8 @@ public class AnalyseController {
 	@ResponseBody
 	public String orderServiceCount(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
+		String single="单次";
+		String longTerm="长期";
 		List<Map<String, Object>> orderServiceList = orderService
 				.findServiceCount();
 		int orderServiceSize = orderServiceList.size();
