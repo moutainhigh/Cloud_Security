@@ -2,6 +2,7 @@ package com.cn.ctbri.southapi.adapter.waf;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,7 +47,7 @@ public class NsfocusWAFAdapter {
 	private static final String[] ALERT_LEVEL_STRINGS = {"LOW","MEDIUM","HIGH"};
 	public static HashMap<Integer, HashMap<Integer, NsfocusWAFOperation>> mapNsfocusWAFOperationGroup = new HashMap<Integer, HashMap<Integer,NsfocusWAFOperation>>();
 	public NsfocusWAFOperation nsfocusWAFOperation = null;
-	
+	public static Blob blob;
 	/**
 	 * 初始化waf适配器
 	 * @param wafConfigManager waf配置
@@ -536,6 +537,8 @@ public class NsfocusWAFAdapter {
 
 			for (TWafLogWebsec tWafLogWebsec : allList) {
 				tWafLogWebsec = getTWafLogWebsecBase64(tWafLogWebsec);
+
+				
 			}
 
 			XStream xStream = getXStream();
@@ -591,8 +594,10 @@ public class NsfocusWAFAdapter {
 			//base64编码
 			for (TWafLogWebsec tWafLogWebsec : allList) {
 				tWafLogWebsec = getTWafLogWebsecBase64(tWafLogWebsec);
-			}
+				byte[] bb = tWafLogWebsec.getHttp();
 
+			}
+			
 			//Java对象转为json数据
 			XStream xStream = getXStream();
 			xStream.alias("wafLogWebsecList", List.class);
@@ -920,7 +925,7 @@ public class NsfocusWAFAdapter {
 			sqlSession = getSqlSession();
 			
 			//根据时间间隔获取时间段
-			int interval = jsonObject.getInt("interval");
+			
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
 			Date dateNow = calendar.getTime();
@@ -928,23 +933,26 @@ public class NsfocusWAFAdapter {
 			if (jsonObject.get("dstIp")!=null&&!dstIpList.isEmpty()) {
 				tWafLogWebseCriteria.andDstIpIn(dstIpList);
 			}
-			
-			if (jsonObject.getString("timeUnit").equalsIgnoreCase("forever")) {
-			}else if (jsonObject.getString("timeUnit").equalsIgnoreCase("hour")) {
-				calendar.add(Calendar.HOUR, -interval);
-				tWafLogWebseCriteria.andStatTimeBetween(calendar.getTime(), dateNow);
-			}else if(jsonObject.getString("timeUnit").equalsIgnoreCase("minute")){
-				calendar.add(Calendar.MINUTE, -interval);
-				tWafLogWebseCriteria.andStatTimeBetween(calendar.getTime(), dateNow);
-			}else if(jsonObject.getString("timeUnit").equalsIgnoreCase("date")){
-				calendar.add(Calendar.DATE, -interval);
-				tWafLogWebseCriteria.andStatTimeBetween(calendar.getTime(), dateNow);
-			}else {
-				JSONObject errorJsonObject = new JSONObject();
-				errorJsonObject.put("status", "failed");
-				errorJsonObject.put("message", "Eventtype's timeunit error!!!");
-				return errorJsonObject.toString();
+			int interval = 0;
+			if (!jsonObject.getString("timeUnit").equalsIgnoreCase("forever")) {
+				interval = jsonObject.getInt("interval");
+				if (jsonObject.getString("timeUnit").equalsIgnoreCase("hour")) {
+					calendar.add(Calendar.HOUR, -interval);
+					tWafLogWebseCriteria.andStatTimeBetween(calendar.getTime(), dateNow);
+				}else if(jsonObject.getString("timeUnit").equalsIgnoreCase("minute")){
+					calendar.add(Calendar.MINUTE, -interval);
+					tWafLogWebseCriteria.andStatTimeBetween(calendar.getTime(), dateNow);
+				}else if(jsonObject.getString("timeUnit").equalsIgnoreCase("date")){
+					calendar.add(Calendar.DATE, -interval);
+					tWafLogWebseCriteria.andStatTimeBetween(calendar.getTime(), dateNow);
+				}else {
+					JSONObject errorJsonObject = new JSONObject();
+					errorJsonObject.put("status", "failed");
+					errorJsonObject.put("message", "Eventtype's timeunit error!!!");
+					return errorJsonObject.toString();
+				}
 			}
+			
 			
 			for (Element element : typeElements) {
 				String eventTypeBase64 = stringToBase64(element.getTextTrim());
@@ -960,7 +968,13 @@ public class NsfocusWAFAdapter {
 			}
 			return JSONArray.fromObject(typeCountList).toString();
 			
-		} catch (Exception e) {
+		} catch (IOException e) {
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "Eventtype count error!!!");
+			return errorJsonObject.toString();
+		} catch (DocumentException e) {
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
