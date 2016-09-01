@@ -351,7 +351,7 @@
 		<!-- 安全趋势 -->
         <div class="contentcenter not-used">
             <div class="point clearfix" style="margin-top:50px">
-            	<h5 class="fl" style="color:#7aff75;font-family: sans-serif; font-style: normal; font-size: 14px; font-weight: bold;">重大风险预警</h5>
+            	<h5 class="fl" style="color:#7aff75;font-family: sans-serif; font-style: normal; font-size: 14px; font-weight: bold;">风险预警</h5>
                 <div class="pont fl">
                 <c:if test="${wafAlarmLevel==4}">
                 <span>低</span>
