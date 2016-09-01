@@ -703,6 +703,7 @@ $(function(){
 					 var bugLegendData=[];
 					 var bugxAxisData=[];
 					 var bugseriesData=[];
+					 var selected="{";
 					 var bugColor=['#75fffa','#fa75ff','#fffa75','#38fff8','#42a7ff','#75bfff','#ff75bf','#bfff75','#00faf2','#4249ff','#757aff','#ff757a','#7aff75','#ff383f','#9a42ff','#b675ff','#ffb675','#75ffb6','#fa0008','#f942ff'];
 					 $.ajax({
 						        type: "POST",
@@ -725,10 +726,22 @@ $(function(){
 						        			bugxAxisData.push(currentTime.Format("yyyy-MM-dd"));
 						        		}
 						        	}
+						        	//selected.push("{");
+						        	var num=1;
 						        	for(var j=0;j<data.length;j++){
 						        		var dataUnit=data[j];
 						        		var textData=dataUnit.splice(0,1);
 						        		var textName = "'"+textData+"'";
+						        		//alert(textData);
+						        		if(textData =="E-Mail地址" || textData =="可能的网站路径泄露" || textData =="目录浏览" || textData =="内网IP" || textData =="脚本木马"){
+						        			if(num == 1){
+						        				selected += textName + ":" +"false";
+						        			}else{
+						        				selected +=","+ textName + ":" +"false";
+						        			}
+						        			num++;
+						        		}
+						        		
 			        			    	bugLegendData.push(
 			        			    			{
 			        			    				name:eval(textName),
@@ -740,7 +753,7 @@ $(function(){
 						        		bugseriesData.push({
 							            name:textData,
 							            type:'line',
-							            stack: '总量',
+							            //stack: '总量',
 							            itemStyle : {
 													normal : {
 														color:bugColor[j],
@@ -754,12 +767,13 @@ $(function(){
 							        });
 						        		
 						        	}
-						        	
+						        	selected += "}";
 						  option = {
 							    title: {
-							        text: '漏洞类型分布及趋势',
-							         x:'center',
-							         y:'top',
+							        text: '漏洞类型分布及趋势'.split("").join("\n"),
+							         x:'left',
+							        // y:'center',
+							         padding:100,
 							         textStyle:{
 							         	color:'#7aff75',
 							         	fontSize:14
@@ -774,6 +788,7 @@ $(function(){
 							    	x:'150',
 							    	width:1200,
 							        itemGap: 15,
+							        selected:eval("("+selected+")"),
 							        data:bugLegendData
 									//textStyle:{color: 'auto'}
 							    },
@@ -957,7 +972,7 @@ $(function(){
 					        		var dataUnit=data[j];
 					        		var textData=dataUnit.splice(0,1);
 					        		var textName1="'"+textData+"'";
-					        		//alert(textName1)
+					        		
 					        		attackLegendData.push(
 		        			    			{
 		        			    				name:eval(textName1),
@@ -969,7 +984,7 @@ $(function(){
 					        		attackseriesData.push({
 						            name:textData,
 						            type:'line',
-						            stack: '总量',
+						           // stack: '总量',
 						            itemStyle : {
 										normal : {
 											color:bugColor1[j],
@@ -983,12 +998,12 @@ $(function(){
 						        });
 					        		
 					        	}
-					        	
 					        	option = {
 								    title: {
-								        text: '攻击类型分布及趋势',
-								         x:'center',
-								         y:'top',
+								        text: '攻击类型分布及趋势'.split("").join("\n"),
+								         x:'left',
+								         padding:100,
+								         //y:'center',
 								         textStyle:{
 								         	color:'#7aff75',
 								         	fontSize:14
