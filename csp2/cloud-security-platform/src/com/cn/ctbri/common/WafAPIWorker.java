@@ -432,9 +432,12 @@ public class WafAPIWorker {
 	 * @return
 	 */
 	public static String getWafEventTypeCount(String interval, String timeUnit){
+		
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
-		json.put("interval", interval);
+		if(!"forever".equals(timeUnit)){
+			json.put("interval", interval);
+		}
 		json.put("timeUnit", timeUnit);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafEventTypeCount";
     	//创建jersery客户端配置对象
@@ -894,12 +897,8 @@ public class WafAPIWorker {
 //    		wafcreate = WafAPIWorker.getWafLogWebSecDstIpList();
 //    		wafcreate = WafAPIWorker.getWafAlertLevelCountByMonth("1","2016-08");
 //    		wafcreate = WafAPIWorker.getWafEventTypeCount("1","hour");
-        	List<String> dstIpList = new ArrayList();
-        	dstIpList.add("42.96.147.75");
-//        	dstIpList.add("219.141.189.183");
-    		wafcreate = WafAPIWorker.getWafEventTypeCount("3","hour",dstIpList);
-//    		String data=getLocationFromIp("1.2.2.3");
-//    		System.out.println("data:"+data);
+    		String data=getLocationFromIp("1.2.2.3");
+    		System.out.println("data:"+data);
     	} catch (Exception e) {
             e.printStackTrace();
         }
