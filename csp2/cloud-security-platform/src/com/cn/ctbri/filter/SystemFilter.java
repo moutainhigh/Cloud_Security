@@ -67,7 +67,7 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/findUseAssetAddr.html");
 		//add by tangxr 2016-1-23
 		list.add("/web_anquanbang.html");//网络安全帮 
-		list.add("/sa_anquanbang.html");//安全动态感知
+		//list.add("/sa_anquanbang.html");//安全动态感知
 		list.add("/joinUs.html");//加入我们
 		list.add("/knowUs.html");//了解我们
 		//add by tangxr 2016-4-18
@@ -76,31 +76,28 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/detectionUrl.html");//x专区
 		list.add("/bugUI.html");//x专区
 		list.add("/bug.html");//x专区
-		list.add("/serviceUserUI.html");
-		list.add("/serviceUser.html");
-		list.add("/orderServiceUI.html");
-		list.add("/orderServiceCount.html");
-		list.add("/attackUI.html");
-		list.add("/attackCount.html");
-		list.add("/mapUI.html");
-		list.add("/worldMapSocketServer.html");
-		list.add("/test.html");
-		list.add("/websocket");
-		list.add("/anquanStateUI.html");
+//		list.add("/serviceUserUI.html");
+//		list.add("/serviceUser.html");
+//		list.add("/orderServiceUI.html");
+//		list.add("/orderServiceCount.html");
+//		list.add("/attackUI.html");
+//		list.add("/attackCount.html");
+//		list.add("/mapUI.html");
+//		list.add("/worldMapSocketServer.html");
+//		list.add("/websocket");
+
+//		list.add("/getVulnscanAlarmOneHour.html");
+//		list.add("/getWafOneHour.html");
+//		list.add("/getVulnscanAlarmByLevelMonth6.html");
+//		list.add("/getOrderServiceTimes.html");
+//		list.add("/getServiceUseInfoMonth6.html");
+//		list.add("/getIndustryStatistics.html");
+//		list.add("/getAssetPurpose.html");
+//		list.add("/getWafByLevelMonth6.html");
 		
-		list.add("/anquanStateUI.html");
-		list.add("/getVulnscanAlarmOneHour.html");
-		list.add("/getWafOneHour.html");
-		list.add("/getVulnscanAlarmByLevelMonth6.html");
-		list.add("/getOrderServiceTimes.html");
-		list.add("/getServiceUseInfoMonth6.html");
-		list.add("/getIndustryStatistics.html");
-		list.add("/getAssetPurpose.html");
-		list.add("/getWafByLevelMonth6.html");
-		
-		list.add("/highSiteMap.html");
-		list.add("/HackerMap.html");
-		list.add("/UserMap.html");
+//		list.add("/highSiteMap.html");
+//		list.add("/HackerMap.html");
+//		list.add("/UserMap.html");
 		//获取访问的url路径
 		String path = request.getServletPath();
 		forwordIndexPage(path,request,response);
