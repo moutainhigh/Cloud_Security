@@ -18,6 +18,9 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor{
 	            ServerHttpResponse response, WebSocketHandler wsHandler,  
 	            Map<String, Object> attributes) throws Exception {  
 	        System.out.println("GOMA ===> Before Handshake");  
+	        if(request.getHeaders().containsKey("Sec-WebSocket-Extensions")){
+	    		request.getHeaders().set("Sec-WebSocket-Extensions", "permessage-deflate");
+	    	}
 	        return super.beforeHandshake(request, response, wsHandler, attributes);  
 	    }  
 	  

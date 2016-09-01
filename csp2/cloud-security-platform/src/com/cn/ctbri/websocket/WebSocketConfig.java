@@ -12,10 +12,10 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 public class WebSocketConfig implements WebSocketConfigurer {  
   
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {  
-//        registry.addHandler(myhandler(), "/websocket").addInterceptors(myInterceptors());
-//        registry.addHandler(myhandler(), "/sockjs/websocket").addInterceptors(myInterceptors()).withSockJS();  
-    	registry.addHandler(myhandler(), "/websocket");
-//        registry.addHandler(myhandler(), "/sockjs/websocket");
+        registry.addHandler(myhandler(), "/websocket").addInterceptors(myInterceptors());
+        registry.addHandler(myhandler(), "/websocket").addInterceptors(myInterceptors()).withSockJS();  
+//    	registry.addHandler(myhandler(), "/websocket");
+//    	registry.addHandler(myhandler(), "/websocket").withSockJS();
     }  
   
     @Bean  
