@@ -1,4 +1,3 @@
-var orgnames="";
 var numMsg = "漏洞总数";
 var typeMsg = "漏洞类型";
 $(function(){
@@ -489,7 +488,7 @@ function showSecurityStateMap(){
 				            data: dataValue,
 				            symbolSize: function (val) {
 				            // 根据最大的值 来控制气泡半径  （最小 3  最大 13）
-			               		return val[2]/maxVal*10+3;
+			               		return val[2]/maxVal*15 +10;
 			               		
 				            }
 				            
@@ -499,7 +498,7 @@ function showSecurityStateMap(){
 				            data: dataValue,
 				            symbolSize: function (val) {
 				                // 根据最大的值 来控制气泡半径  （最小 3  最大 13）
-			               		return 10 + val[2] / maxVal *10;
+			               		return val[2] / maxVal *15 +10;
 				            }
 				        }
 				    ]
@@ -527,9 +526,29 @@ function initSecurityStateMap(myChart){
 				fontSize : 12,
 			},
 			enterable : false,
-			formatter : function(param){
-				getOrgData(param);
-				return orgnames;
+			hideDelay : 10,
+			formatter : function(param, ticket, callback){
+				var reg = /^\+?[1-9][0-9]*$/;
+				if (param.name != null && "" != param.name) {
+					var oname = param.name;
+					var count = param.value[2];
+					var re = reg.test(oname);
+					if (re) {
+						$.ajax({
+							type : "POST",
+							cache : false,
+							dataType : "json",
+							url : "getDistrictData.html?id=" + oname + "&serviceId=1",
+							success : function(obj) {
+								var str = getDetailData(obj,count);
+					         	callback(ticket, str);
+							}
+						});
+					
+				     }
+				}
+			 	//return 'Loading';
+			 	return '';
 		 	}
 	    },
 	    visualMap: {
@@ -637,41 +656,23 @@ function initSecurityStateMap(myChart){
 	});
 }
 
-/*鼠标悬浮*/
-function getOrgData(param){
-	var reg = /^\+?[1-9][0-9]*$/;
-	if (param.name != null && "" != param.name) {
-		//console.log(param);
-		var oname = param.name;
-		var count = param.value[2];
-		var re = reg.test(oname);
-		if (re) {
-			$.ajax({
-				type : "POST",
-				cache : false,
-				dataType : "json",
-				url : "getDistrictData.html?id=" + oname + "&serviceId=1",
-				success : function(obj) {
-					console.log(obj);
-					var sname=obj[0].name;
-					var leaks = "";
+function getDetailData(obj,count){
+	//console.log(obj);
+	var datalist = [];
+	datalist = obj;
+	var sname=obj[0].name;
+	var leaks = "";
 					
-					for (var i=0; i< obj.length;i++) {
-						leaks += "<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;.&nbsp;&nbsp;"+obj[i].leakName+"</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'>"+obj[i].count+"</td></tr>"
-					}
-					orgnames = "<div>"
-						+"<table style='font-family: 'LTH';'>"
-							+"<tr><th style='height: 24px;line-height: 24px;text-align: left;font-size: 12px; font-weight: bold;margin: 0;'>"+sname+"</th></tr>"
-							+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;"+numMsg+"</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'>"+count+"</td></tr>"
-							+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;"+typeMsg+"TOP5：</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'></td></tr>"
-							+leaks
-						+"</table>"
-					+"</div>";
-					
-				}
-			});
-		}else {
-			orgnames="";
-		}
+	for (var i=0; i< obj.length;i++) {
+		leaks += "<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;.&nbsp;&nbsp;"+obj[i].leakName+"</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'>"+obj[i].count+"</td></tr>"
 	}
+	var orgnames = "<div>"
+			+"<table style='font-family: 'LTH';'>"
+			+"<tr><th style='height: 24px;line-height: 24px;text-align: left;font-size: 12px; font-weight: bold;margin: 0;'>"+sname+"</th></tr>"
+			+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;"+numMsg+"</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'>"+count+"</td></tr>"
+			+"<tr style='height: 16px;line-height: 16px;font-size: 12px;margin: 0;'><td>&nbsp;&nbsp;"+typeMsg+"TOP5：</td><td style='width: 30px;color: rgb(235,174,96); text-align: right;'></td></tr>"
+			+leaks
+			+"</table>"
+			+"</div>";
+	return orgnames;
 }
