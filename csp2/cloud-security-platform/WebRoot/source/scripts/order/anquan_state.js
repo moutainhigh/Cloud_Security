@@ -154,7 +154,7 @@ $(function(){
 		   	             },
 				   		  formatter: function(params) {
 				   			var level = obj.levelList;
-	                        var str = "<table style='text-align:left;width:auto;'><tr><td style='color: #806bff;width:auto'>" + params[0].name + "</td><tr>";
+	                        var str = "<table style='text-align:left;width:auto;'><tr><td style='width:auto'>" + params[0].name + "</td><tr>";
 	                       // var colors[] = {"#52a2e5","#eabf6c","#6bc770","#fa7e7d","#806bff"};
 	                        var bgColor="";
 	                        for (var i = 0; i < params.length;i++) {
@@ -611,7 +611,7 @@ $(function(){
 					   	        },
 					   		  formatter: function(params) {
 					   			var level = obj.levelList;
-		                        var str = "<table style='text-align:left;width:auto;'><tr><td style='color: #806bff;width:auto'>" + params[0].name + "</td><tr>";
+		                        var str = "<table style='text-align:left;width:auto;'><tr><td style='width:auto'>" + params[0].name + "</td><tr>";
 		                       //String colors[] = {"#806bff","#eabf6c","#6bc770"};
 		                        var bgColor="";
 		                        for (var i = 0; i < params.length;i++) {
