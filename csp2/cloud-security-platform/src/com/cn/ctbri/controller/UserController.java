@@ -714,6 +714,7 @@ public class UserController{
 					return;
 				}else{
 					map.put("result", 7);
+					map.put("afterLoginUrl", request.getSession().getAttribute("afterLoginUrl"));
 					JSONObject JSON = CommonUtil.objectToJson(response, map);
 					try {
 						// 把数据返回到页面
@@ -725,6 +726,7 @@ public class UserController{
 				}
 			}else{
 				map.put("result", 7);
+				map.put("afterLoginUrl", request.getSession().getAttribute("afterLoginUrl"));
 				
 				JSONObject JSON = CommonUtil.objectToJson(response, map);
 				try {
