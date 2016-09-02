@@ -53,6 +53,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		name like CONCAT(#{proName},'%')
     </select>
     
+    <!-- 资产地理位置分布:查询每个省份的资产数量 -->
+    <select id="findAssetCountByDistrict"  resultType="hashmap">
+    	select dis.name,dis.longitude,dis.latitude,a.num
+    	from
+    	(select assetProvince, count(*) num from cs_asset group by assetProvince) a
+    	join cs_district dis
+		on a.assetProvince = dis.id
+    	
+    </select>
+    
     <select id="findAlarmSum"  resultType="com.cn.ctbri.entity.AlarmSum">
     select b.*, dis.name districtName from
     	(select districtId,url,count(url) alarmCount 
