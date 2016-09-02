@@ -396,7 +396,7 @@ $(function(){
 				   	        trigger: 'axis'
 				   	    },
 				   	    legend: {
-				   	        data:['各行业注册用户数','已下订单数'],
+				   	        data:['注册用户数','已下订单数'],
 				   	        y:'bottom',
 				   	     textStyle:{
                              color:"#00faf2"
@@ -434,7 +434,7 @@ $(function(){
 				   	    ],
 				   	    series : [
 				   	        {
-				   	            name:'各行业注册用户数',
+				   	            name:'注册用户数',
 				   	            type:'bar',
 				   	            data:obj.userList,
 					   	        itemStyle:{
