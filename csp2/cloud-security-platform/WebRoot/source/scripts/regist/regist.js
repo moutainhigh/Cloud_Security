@@ -437,6 +437,17 @@ function submitForm(){
 						},
 						dataType:"json",
 						success: function(data){
+							if(data.result != 0) {
+								//刷新验证码
+								checkNumberImage();
+								$("#checkNumber1").val("");
+								if (data.result != 8) {
+									$("#checkNumber1_flag").hide();
+									$("#checkNumber1_prompt").fadeOut();
+						    	
+						    	}
+							}
+					    	
 							switch(data.result) {
 								case 0:
 									//注册正确
@@ -519,6 +530,15 @@ function submitForm(){
 		    		$("#ck_prompt").html("<b></b>请阅读《云平台用户注册协议》");
 					$("#ck_prompt").fadeIn();
 			    }
+		    }else {
+		    	//刷新验证码
+		    	checkNumberImage();
+		    	$("#checkNumber1").val("");
+		    	if (checkCheckNumber1 == 1) {
+					$("#checkNumber1_flag").hide();
+					$("#checkNumber1_prompt").fadeOut();
+		    	
+		    	}
 		    }
 	    }, 100);
 
