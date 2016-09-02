@@ -41,4 +41,9 @@ public class DataAnalysisServiceImpl implements IDataAnalysisService {
 		return dataAnalysisDao.findAssetInfoByIp(ip);
 	}
 
+	@Override
+	public List findAssetCountByDistrict() {
+		return dataAnalysisDao.findAssetCountByDistrict();
+	}
+
 }
