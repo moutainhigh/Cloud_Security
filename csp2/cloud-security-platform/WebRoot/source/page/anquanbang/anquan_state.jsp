@@ -190,7 +190,7 @@
 
 <div class="safeBox">
 	<div class="contentBox" id="content">
-		<c:if test="${sessionScope.globle_user.name =='anquanbang'}">
+		<c:if test="${sessionScope.globle_user.name =='anquanbang' ||sessionScope.globle_user.name =='liuyanzhe' ||sessionScope.globle_user.name =='timelysnow'}">
 		<nav>
 			<ul class="clearfix navlist">
 				<li class="active">
