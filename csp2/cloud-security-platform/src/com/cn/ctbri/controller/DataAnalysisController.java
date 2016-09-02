@@ -250,7 +250,7 @@ public class DataAnalysisController {
 	
 	@RequestMapping(value="/UserMap.html", method=RequestMethod.POST)
 	@ResponseBody
-	public String UserDistributionMap(HttpServletResponse response,HttpServletRequest request) throws IOException {
+	public String userDistributionMap(HttpServletResponse response,HttpServletRequest request) throws IOException {
 		List<UserDistribution> result = dataAnalysisService.findUserCountByDistrict();
 		for (UserDistribution userDistribution : result) {
 			String prociveName = userDistribution.getProviceName();
@@ -307,6 +307,91 @@ public class DataAnalysisController {
 //		user5.setLatitude("29.6500880000");
 //		user5.setUserCount(1800);
 //		result.add(user5);
+		
+//		try {
+//			Thread.sleep(2000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		//--------------------------demo end-----------
+		
+		JSONObject jo = new JSONObject(); 
+		jo.put("list", result);
+		String resultGson = jo.toString();//转成json数据
+		
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("application/json;charset=UTF-8");
+		response.setContentType("textml;charset=UTF-8");
+        response.getWriter().print(resultGson);
+        return null;
+	}
+	
+	/**
+	 * 资产分布
+	 * */
+	@RequestMapping(value="/AssetMap.html", method=RequestMethod.POST)
+	@ResponseBody
+	public String assetDistributionMap(HttpServletResponse response,HttpServletRequest request) throws IOException {
+		List result = dataAnalysisService.findAssetCountByDistrict();
+		
+		//--------------------------demo start-----------
+//		List result = new ArrayList();
+//		Map<String,Object> map = new HashMap<String,Object>(); 
+//		map.put("name", "北京");
+//		map.put("longitude", 116.4135540000);
+//		map.put("latitude", 39.9110130000);
+//		map.put("num", 15);
+//		result.add(map);
+////		
+//		Map<String,Object> map2 = new HashMap<String,Object>();
+//		map2.put("name", "河北");
+//		map2.put("longitude", 114.5208280000);
+//		map2.put("latitude", 38.0486840000);
+//		map2.put("num", 40);
+//		result.add(map2);
+////		
+//		Map<String,Object> map3 = new HashMap<String,Object>();
+//		map3.put("name", "四川");
+//		map3.put("longitude", 104.0712160000);
+//		map3.put("latitude", 30.5762790000);
+//		map3.put("num", 90);
+//		result.add(map3);
+//		
+//		Map<String,Object> map4 = new HashMap<String,Object>();
+//		map4.put("name", "河南");
+//		map4.put("longitude", 113.6313490000);
+//		map4.put("latitude", 34.7534880000);
+//		map4.put("num", 280);
+//		result.add(map4);
+//		
+//		Map<String,Object> map5 = new HashMap<String,Object>();
+//		map5.put("name", "辽宁");
+//		map5.put("longitude", 123.4389730000);
+//		map5.put("latitude", 41.8113390000);
+//		map5.put("num", 280);
+//		result.add(map5);
+//		
+//		Map<String,Object> map6 = new HashMap<String,Object>();
+//		map6.put("name", "新疆");
+//		map6.put("longitude", 87.6233140000);
+//		map6.put("latitude", 43.8328060000);
+//		map6.put("num", 500);
+//		result.add(map6);
+//		
+//		Map<String,Object> map7 = new HashMap<String,Object>();
+//		map7.put("name", "香港");
+//		map7.put("longitude", 114.1719940000);
+//		map7.put("latitude", 22.2810890000);
+//		map7.put("num", 200);
+//		result.add(map7);
+//		
+//		Map<String,Object> map8 = new HashMap<String,Object>(); 
+//		map8.put("name", "西藏");
+//		map8.put("longitude", 91.1210250000);
+//		map8.put("latitude", 29.6500880000);
+//		map8.put("num", 200);
+//		result.add(map8);
 		
 //		try {
 //			Thread.sleep(2000);
