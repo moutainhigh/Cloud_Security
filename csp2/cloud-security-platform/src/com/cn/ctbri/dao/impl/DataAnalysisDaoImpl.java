@@ -40,4 +40,9 @@ public class DataAnalysisDaoImpl extends DaoCommon implements DataAnalysisDao{
 		return this.getSqlSession().selectOne(ns + "findAssetInfoByIp", "%"+ip+"%");
 	}
 
+	@Override
+	public List findAssetCountByDistrict() {
+		return this.getSqlSession().selectList(ns + "findAssetCountByDistrict");
+	}
+
 }
