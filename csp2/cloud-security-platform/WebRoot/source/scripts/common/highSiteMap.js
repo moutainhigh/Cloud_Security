@@ -315,7 +315,7 @@ function showUserMap() {
 	//后台获取数据
     $.ajax({
            type : "post",
-           url:"UserMap.html",
+           url:"AssetMap.html",
            dataType:"json",
            contentType: "application/x-www-form-urlencoded; charset=utf-8",
            success:function(data){
@@ -328,12 +328,12 @@ function showUserMap() {
 						var value = [];
 						value.push(dataList[i].longitude);
 						value.push(dataList[i].latitude);
-						value.push(dataList[i].userCount);
+						value.push(dataList[i].num);
 						
-						dataValue[i]={'name':dataList[i].proviceName,'value':value};
+						dataValue[i]={'name':dataList[i].name,'value':value};
 						// 获取到最大的值 来控制气泡半径
-						if (parseInt(dataList[i].userCount) >= maxVal) {
-		    				maxVal = parseInt(dataList[i].userCount);
+						if (parseInt(dataList[i].num) >= maxVal) {
+		    				maxVal = parseInt(dataList[i].num);
 		   				}
 		   				
 					}
@@ -526,7 +526,7 @@ function initSecurityStateMap(myChart){
 				fontSize : 12,
 			},
 			enterable : false,
-			hideDelay : 10,
+			hideDelay : 0,
 			formatter : function(param, ticket, callback){
 				var reg = /^\+?[1-9][0-9]*$/;
 				if (param.name != null && "" != param.name) {
@@ -541,7 +541,9 @@ function initSecurityStateMap(myChart){
 							url : "getDistrictData.html?id=" + oname + "&serviceId=1",
 							success : function(obj) {
 								var str = getDetailData(obj,count);
-					         	callback(ticket, str);
+								 //setTimeout(function (){callback(ticket, str); },100);
+								callback(ticket, str);
+					         	
 							}
 						});
 					
@@ -566,10 +568,10 @@ function initSecurityStateMap(myChart){
 	        //    color : [ '#ff81ff', '#99d9eb', '#c9bfe7', '#ffff9b', '#ffffff']
 	       // }
 	        pieces: [
-	        	{gt: 4000, color: '#ed3230'}, 
-			    {gt: 3000, lte: 4000, color: '#ef7024'},
-			    {gt: 2000, lte: 3000, color: '#f3d94c'},
-			    {gt: 1000, lte: 2000,  color: '#62cf3b'},
+			    {gt: 4000, color: '#ff81ff'}, 
+			    {gt: 3000, lte: 4000, color: '#99d9eb'},
+			    {gt: 2000, lte: 3000, color: '#c9bfe7'},
+			    {gt: 1000, lte: 2000,  color: '#ffff9b'},
 			    {gt: 0,    lte: 1000,  color: '#ffffff'}
 			]
     	},
