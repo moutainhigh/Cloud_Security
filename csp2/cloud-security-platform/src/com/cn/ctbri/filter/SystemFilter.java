@@ -138,6 +138,13 @@ public class SystemFilter extends OncePerRequestFilter  {
 				}else{
 					request.getSession().setAttribute("indexPage", 0);
 				}
+				
+				//安全大数据
+				if ("/sa_anquanbang.html".equals(path)) {
+					request.getSession().setAttribute("afterLoginUrl", "sa_anquanbang.html");
+				}else {
+					request.getSession().setAttribute("afterLoginUrl", "userCenterUI.html");
+				}
 				//end
 				request.getRequestDispatcher("/loginUI.html").forward(request,response);
 				return;
