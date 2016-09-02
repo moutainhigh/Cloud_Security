@@ -73,8 +73,8 @@ public class AnalyseController {
 	public String bugCount(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		Date currentDate = new Date();
-		currentDate.setMonth(3);
-		currentDate.setDate(19);
+//		currentDate.setMonth(3);
+//		currentDate.setDate(19);
 		// 1.根据当前时间获取距离一个月前的日期
 		Date lastMonthDate = DateUtils.getBeforeMonthDate(currentDate);
 		Map<String, Integer> dateStrMap = new HashMap<String, Integer>();
