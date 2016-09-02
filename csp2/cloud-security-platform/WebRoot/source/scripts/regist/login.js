@@ -190,7 +190,12 @@ function loginSubmit(){
 						case 7:
 							$("#errMsg").html("");
 							$("#errMsgDiv").hide();
-							window.location.href="userCenterUI.html";
+							if (data.afterLoginUrl != null && data.afterLoginUrl!='') {
+								window.location.href = data.afterLoginUrl;
+							
+							}else{
+								window.location.href="userCenterUI.html";
+							}
 							break;
 						case 8:
 							$("#errMsg").html("");
