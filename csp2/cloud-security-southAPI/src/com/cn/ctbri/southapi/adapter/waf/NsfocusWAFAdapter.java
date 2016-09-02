@@ -571,7 +571,9 @@ public class NsfocusWAFAdapter {
 			//当前时间
 			Date dateNow = calendar.getTime();
 			//获取时间间隔单位
-			if (jsonObject.getString("timeUnit").equalsIgnoreCase("hour")) {
+			if (jsonObject.getString("timeUnit").equalsIgnoreCase("millisecond")) {
+				calendar.add(Calendar.MILLISECOND, -interval);
+			}else if (jsonObject.getString("timeUnit").equalsIgnoreCase("hour")) {
 				calendar.add(Calendar.HOUR, -interval);
 			}else if(jsonObject.getString("timeUnit").equalsIgnoreCase("minute")){
 				calendar.add(Calendar.MINUTE, -interval);
@@ -594,8 +596,6 @@ public class NsfocusWAFAdapter {
 			//base64编码
 			for (TWafLogWebsec tWafLogWebsec : allList) {
 				tWafLogWebsec = getTWafLogWebsecBase64(tWafLogWebsec);
-				byte[] bb = tWafLogWebsec.getHttp();
-
 			}
 			
 			//Java对象转为json数据
@@ -613,7 +613,7 @@ public class NsfocusWAFAdapter {
 	}
 	
 
-	
+	//public String getAllWafLogWebsecInTime() {}
 	
 	
 	public String getWafLogArp(List<String> dstIpList) {
@@ -953,7 +953,7 @@ public class NsfocusWAFAdapter {
 				}
 			}
 			
-			
+			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			for (Element element : typeElements) {
 				String eventTypeBase64 = stringToBase64(element.getTextTrim());
 				tWafLogWebseCriteria.andEventTypeEqualTo(element.attributeValue("name"));
@@ -961,7 +961,6 @@ public class NsfocusWAFAdapter {
 				tWafLogWebsecExample.or(tWafLogWebseCriteria);
 				JSONObject eventTypeJsonObject = new JSONObject();
 				eventTypeJsonObject.put("eventType", eventTypeBase64);
-				TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 				eventTypeJsonObject.put("count", mapper.countByExample(tWafLogWebsecExample));
 				typeCountList.add(eventTypeJsonObject);
 				tWafLogWebseCriteria.criteria.remove(tWafLogWebseCriteria.criteria.size()-1);
