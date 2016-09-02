@@ -15,6 +15,9 @@ public interface IDataAnalysisService {
 	//查询每个省份的用户数量
 	public List<UserDistribution> findUserCountByDistrict();
 	
+	//查询每个省份的资产数量
+	public List findAssetCountByDistrict();
+	
 	//根据省份查询经纬度
 	public District findlLongitudeAndLatitude(String proName);
 	
