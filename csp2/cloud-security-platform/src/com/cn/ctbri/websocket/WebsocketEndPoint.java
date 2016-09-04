@@ -19,6 +19,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tools.ant.taskdefs.Sleep;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ import com.cn.ctbri.entity.IPPosition;
 import com.cn.ctbri.service.IIPPositionService;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.MapUtil;
+import com.cn.ctbri.util.NumberUtils;
 import com.cn.ctbri.vo.AttackVO;
 
 /**
@@ -45,7 +47,9 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 	// 存储格式（IP,IPPosition）
 	static Map<String, IPPosition> ipPositionMap = null;
 	private long id=0;
-
+	
+	private static int maxSize=20;
+	
 	public synchronized Map<String, IPPosition> getIPPositions() {
 		if (ipPositionMap == null) {
 			ipPositionMap = ipPositionService.findIPPositions();
@@ -65,11 +69,11 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 		String receiveMsg=message.getPayload();
 		//为了安全做的一个类似token认证
 		if("135de9e2fb6ae653e45f06ed18fbe9a7".equals(receiveMsg)){
+			//源端的经纬度
+			LinkedList<String> srcPositionList=new LinkedList<String>();
+			//目的端的经纬度
+			LinkedList<String> desPositionList=new LinkedList<String>();
 			
-//			while(true){
-//				System.out.println("testxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-//				perSendData(session,message);
-//			}
 			WafAPIWorker worker = new WafAPIWorker();
 			//第一次读取数据
 			boolean firstRead=true;
@@ -84,6 +88,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 					long currentReadTime=System.currentTimeMillis();
 					int seconds=(int) ((currentReadTime-startReadTime)/1000);
 					dataText=getWafData(seconds);
+//					dataText = getFirstWafData();
 					System.out.println("seconds:"+seconds+"dataText:"+dataText);
 					startReadTime=currentReadTime;
 				}
@@ -93,7 +98,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 					Thread.sleep(1000*60*3);
 					continue;
 				}
-				perSendData(session,message,array);
+				perSendData(session,message,array,srcPositionList,desPositionList);
 				firstRead=false;
 			}while(!firstRead);
 		}
@@ -109,7 +114,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 	public String getFirstWafData(){
 		WafAPIWorker worker = new WafAPIWorker();
 		long startTimeTest=System.currentTimeMillis();
-		String text = worker.getAllWafLogWebsecInTime("1", "date");
+		String text = worker.getAllWafLogWebsecInTime("10", "date");
 		return text;
 	}
 	public String getWafData(int seconds){
@@ -117,7 +122,8 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 		String text = worker.getAllWafLogWebsecInTime(seconds+"", "second");
 		return text;
 	}
-	public void perSendData(WebSocketSession session,TextMessage message,JSONArray array) throws IOException, InterruptedException{
+	
+	public void perSendData(WebSocketSession session,TextMessage message,JSONArray array,LinkedList srcPositionList,LinkedList desPositionList) throws IOException, InterruptedException{
 		if(array==null){
 			return;
 		}
@@ -343,8 +349,9 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 							attack.setAttackCount(attackCountList);
 						}
 						AttackVO attackVO=new AttackVO(attack);
+						judgeRepeat(attackVO,srcPositionList,desPositionList);
 						jsonObject.put("attack", attackVO);
-						System.out.println("jsonObject:"+jsonObject.toString());
+						System.out.println("positionDetail:"+attackVO.getSrcLongitude()+"-"+attackVO.getSrcLatitude()+"----"+attackVO.getDesLongitude()+"-"+attackVO.getDesLatitude());
 						TextMessage returnMessage = new TextMessage(jsonObject.toString());
 						session.sendMessage(returnMessage);
 						Thread.currentThread().sleep(350);
@@ -368,8 +375,9 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 							id=0;
 						}
 						AttackVO attackVO=new AttackVO(attack);
+						judgeRepeat(attackVO,srcPositionList,desPositionList);
 						jsonObject.put("attack", attackVO);
-						System.out.println("jsonObject:"+jsonObject.toString());
+						System.out.println("positionDetail:"+attackVO.getSrcLongitude()+"-"+attackVO.getSrcLatitude()+"----"+attackVO.getDesLongitude()+"-"+attackVO.getDesLatitude());
 						TextMessage returnMessage = new TextMessage(jsonObject.toString());
 						session.sendMessage(returnMessage);
 						Thread.currentThread().sleep(350);
@@ -383,5 +391,126 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 		}
 		
 	}
-	 
+	public void judgeRepeat(AttackVO attackVO,LinkedList srcPositionList,LinkedList desPositionList){
+		String srcPosition=attackVO.getSrcLongitude()+"--"+attackVO.getSrcLatitude();
+		String desPosition=attackVO.getDesLongitude()+"--"+attackVO.getDesLatitude();
+		//对原经纬度进行分析
+		int srcPositionListSize=srcPositionList.size();
+		if(srcPositionListSize==0){
+			srcPositionList.add(srcPosition);
+		}else if(srcPositionListSize<maxSize){
+			boolean flag=srcPositionList.contains(srcPosition);
+			if(flag){//如果已经存在了就要去重（方法是：经纬度加1或者-1（视经纬度的大小进行调整））
+				srcPosition=updateRepeat(srcPosition,srcPositionList);
+				String[] positionArray=srcPosition.split("--");
+				srcPositionList.add(srcPosition);
+				attackVO.setSrcLongitude(positionArray[0]);
+				attackVO.setSrcLatitude(positionArray[1]);
+			}else{
+				srcPositionList.add(srcPosition);
+			}
+		}else{
+			boolean flag=srcPositionList.contains(srcPosition);
+			if(flag){//如果已经存在了就要去重（方法是：经纬度加1或者-1（视经纬度的大小进行调整））
+				srcPosition=updateRepeat(srcPosition,srcPositionList);
+				String[] positionArray=srcPosition.split("--");
+				srcPositionList.add(srcPosition);
+				srcPositionList.removeFirst();
+				attackVO.setSrcLongitude(positionArray[0]);
+				attackVO.setSrcLatitude(positionArray[1]);
+			}else{
+				srcPositionList.add(srcPosition);
+				srcPositionList.removeFirst();
+			}
+		}
+		//对目的经纬度进行分析
+		int desPositionListSize=desPositionList.size();
+		if(desPositionListSize==0){
+			desPositionList.add(desPosition);
+		}else if(desPositionListSize<maxSize){
+			boolean flag=desPositionList.contains(desPosition);
+			if(flag){//如果已经存在了就要去重（方法是：经纬度加1或者-1（视经纬度的大小进行调整））
+				desPosition=updateRepeat(desPosition,desPositionList);
+				String[] positionArray=desPosition.split("--");
+				desPositionList.add(desPosition);
+				attackVO.setDesLongitude(positionArray[0]);
+				attackVO.setDesLatitude(positionArray[1]);
+			}else{
+				desPositionList.add(desPosition);
+			}
+		}else{
+			boolean flag=desPositionList.contains(desPosition);
+			if(flag){//如果已经存在了就要去重（方法是：经纬度加1或者-1（视经纬度的大小进行调整））
+				desPosition=updateRepeat(desPosition,desPositionList);
+				String[] positionArray=desPosition.split("--");
+				desPositionList.add(desPosition);
+				desPositionList.removeFirst();
+				attackVO.setDesLongitude(positionArray[0]);
+				attackVO.setDesLatitude(positionArray[1]);
+			}else{
+				desPositionList.add(desPosition);
+				desPositionList.removeFirst();
+			}
+		}
+	}
+	public String updateRepeat(String position,LinkedList positionList){
+		if(StringUtils.isEmpty(position)||positionList==null||positionList.isEmpty()){
+			try {
+				throw new Exception("去重经纬度代码逻辑错误");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		boolean flag=positionList.contains(position);
+		if(!flag){
+			return position;
+		}
+		//分割经纬度
+		//经度范围[-180,180],纬度范围[-90,90]
+		String [] positionArray=position.split("--");
+		String longitudeStr=positionArray[0];
+		String latitudeStr=positionArray[1];
+		//1.先用经度进行去重
+		double longitude=Double.parseDouble(longitudeStr);
+		if(longitude>(180-maxSize)){
+			longitude-=0.1;
+		}else if(longitude<(-180+maxSize)){
+			longitude+=0.1;
+		}else{//longitude在[(-180+maxSize),(180-maxSize)]区间采用加1的策略
+			longitude+=0.1;
+		}
+		longitude=Double.parseDouble(NumberUtils.getPointAfterOneNumber(longitude));
+		position=longitude+"--"+latitudeStr;
+		flag=positionList.contains(position);
+		if(!flag){
+			return position;
+		}
+		//2.再用纬度进行去重
+		double latitude=Double.parseDouble(latitudeStr);
+		if(latitude>(90-maxSize)){
+			latitude-=0.1;
+		}else if(latitude<(-90+maxSize)){
+			latitude+=0.1;
+		}else{//longitude在[(-90+maxSize),(90-maxSize)]区间采用加1的策略
+			latitude+=0.1;
+		}
+		latitude=Double.parseDouble(NumberUtils.getPointAfterOneNumber(latitude));
+		position=longitude+"--"+latitude;
+		flag=positionList.contains(position);
+		if(!flag){
+			return position;
+		}
+		return updateRepeat(position,positionList);
+	}
+	public static void main(String[] args) {
+//		String position="1.3-1.8";
+//		String [] positionArray=position.split("-");
+//		System.out.println(positionArray[0]);
+//		System.out.println(positionArray[1]);
+//		double d = 3.1415926;
+		double d=3.1415926;
+		String result = String .format("%.1f",d);
+		System.out.println(result);
+	}
 }
