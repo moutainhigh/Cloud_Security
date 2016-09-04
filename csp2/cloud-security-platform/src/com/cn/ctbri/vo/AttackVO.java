@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import com.cn.ctbri.entity.Attack;
 import com.cn.ctbri.entity.AttackCount;
 import com.cn.ctbri.util.DateUtils;
+import com.cn.ctbri.util.NumberUtils;
 
 public class AttackVO {
 	/**
@@ -27,10 +28,14 @@ public class AttackVO {
 		this.type=attack.getType();
 		this.typeCode=attack.getTypeCode();
 		this.port=attack.getPort();
-		this.srcLongitude=attack.getSrcLongitude();
-		this.srcLatitude=attack.getSrcLatitude();
-		this.desLongitude=attack.getDesLongitude();
-		this.desLatitude=attack.getDesLatitude();
+		double srcLongitudeTemp=Double.parseDouble(attack.getSrcLongitude());
+		double srcLatitudeTemp=Double.parseDouble(attack.getSrcLatitude());
+		double desLongitudeTemp=Double.parseDouble(attack.getDesLongitude());
+		double desLatitudeTemp=Double.parseDouble(attack.getDesLatitude());
+		this.srcLongitude=NumberUtils.getPointAfterOneNumber(srcLongitudeTemp);
+		this.srcLatitude=NumberUtils.getPointAfterOneNumber(srcLatitudeTemp);
+		this.desLongitude=NumberUtils.getPointAfterOneNumber(desLongitudeTemp);
+		this.desLatitude=NumberUtils.getPointAfterOneNumber(desLatitudeTemp);
 		this.attackCount=attack.getAttackCount();
 	}
 	//时间，攻击方，IP,被攻击方，IP，攻击类型，类型编码，端口,经度，纬度
