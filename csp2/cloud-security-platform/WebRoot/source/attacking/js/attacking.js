@@ -3,6 +3,7 @@
  */
 
 
+(function(window){
 // 攻击类型。
 var typestate = d3.map();
 
@@ -11,8 +12,6 @@ var typearray = eval("("+ typejson +")");
 for(var i=0;i<typearray.length; i++){
 	typestate.set(typearray[i][0], typearray[i][1]);
 }
-
-console.log(typestate);
 
 var settings = {
     // The data properties to parse into numbers
@@ -74,12 +73,6 @@ var svg = d3.select(".content").append("svg")
     .attr("width", width)
     .attr("height", height);
 
-svg.append("defs")
-    .append("filter")
-    .attr("id", "blur")
-  .append("feGaussianBlur")
-  	//设置标准偏差
-    .attr("stdDeviation", 2);
 
 //设置colorizer为自定义的20种颜色
 var colorizer = d3.scale.ordinal().range([
@@ -107,22 +100,6 @@ function dist(x1, y1, x2, y2) {
 //返回颜色的rgba字符串
 function rgbaString(c, a) {
     return "rgba(" + c.r + "," + c.g + "," + c.b + "," + a + ")";
-}
-
-function parsePorts(rawPorts) {
-    var ports = [];
-    for (var i = 0; i < rawPorts.length; ++i) {
-        var port = parseInt(rawPorts[i].port);
-        if (port in ports) {
-            ports[port] = ports[port] + ", " + rawPorts[i].service;
-        } else {
-            ports[port] = rawPorts[i].service;
-        }
-    }
-
-    // Fix certain port strings
-    ports[80] = "http";
-    return ports;
 }
 
 var getID = (function() {
@@ -171,7 +148,6 @@ var nodeModel = {
     targetMaxAge: 200,
     scaleTargetVel: d3.scale.log().domain([1, 40]).range([40, 100]),
 
-    // Constants
     // 常量
     ATTACKS: "attacks",
     TARGETS: "targets",
@@ -228,7 +204,7 @@ var nodeModel = {
 
     // 返回城市+纬度+经度
     _mapKey: function(d) {
-        return d.city + d.latitude + d.longitude;
+        return d.srcCountry + d.srcLatitude + d.srcLongitude;
     },
 
     
@@ -287,7 +263,7 @@ var nodeModel = {
     },
 
     pushAttack: function(attack) {
-        while (this.get(this.ATTACKS).length > 50) {
+        while (this.get(this.ATTACKS).length > 19) {
             this._shift(this.ATTACKS);
         }
         if (this.linkSiblings) {
@@ -299,7 +275,7 @@ var nodeModel = {
                         source: n,
                         target: attack,
                         pruneTS: (new Date()).getTime() / 1000 + settings.dataPruneInterval,
-                        linkStrength: n.dport === attack.dport ? 0.5 : 2.25});
+                        linkStrength: n.dport === attack.dport ? 0.5 : 0.25});
                 }
             });
         }
@@ -339,10 +315,8 @@ var nodeModel = {
             this.nodes.push(target);
         }
 
-        // Decorate and add the attack node
         attack.type = this.ATTACKS;
         attack.age = 0;
-        /*this.nodes.push(attack);*/
 
         this.force.start();
     },
@@ -364,11 +338,9 @@ var nodeModel = {
     },
 
     start: function() {
-        // Start the layout
     	// 开始布局
         var that = this;
 
-        // Initialize the array references
         // 初始化数组的引用
         this.nodes = [];
         this.links = [];
@@ -392,17 +364,14 @@ var nodeModel = {
                             d.fixed = true;
                         } else {
                             var travelled = dist(d.x, d.y, d.startX, d.startY),
-                                //v = (Math.sqrt(travelled * 50) + 180) * e.alpha,
                                 v = that.scaleTargetVel(d.age) * e.alpha,
                                 toTarget = dist(d.cx, d.cy, d.x, d.y);
 
                             if (v <= toTarget) {
                                 var theta = Math.atan2(d.cy - d.y, d.cx - d.x);
-                                    //r = v / d.h;
                                 d.x += v * Math.cos(theta);
                                 d.y += v * Math.sin(theta);
                             } else {
-                                //debugger;
                                 d.x = d.cx;
                                 d.y = d.cy;
                                 d.arrivalAge = d.age;
@@ -419,9 +388,6 @@ var nodeModel = {
     }
 }
 
-/*
- * painter handles rendering to the canvas
- */
 
 // Prepare canvas and buffer
 var canvas = d3.select(".content").append("canvas")
@@ -458,7 +424,6 @@ var painter = {
         nodes: {
             active: true,
             nodeModel: nodeModel,
-            // Canvas composition: "lighter", "darker", ...
             compositeOperation: undefined,
             impactOpacityScale: d3.scale.linear().domain([1, 40]).range([1, 0]),
 
@@ -514,7 +479,7 @@ var painter = {
             // 设置攻击目标圆形缩放的大小
             impactRadiusScale: d3.scale.linear().domain([1, 40]).range([1, 30]),
             impactOpacityScale: d3.scale.linear().domain([1, 40]).range([1, 0]),
-            // 设置碰撞攻击目标圆环的宽度。 -By Lee.
+            // 设置碰撞攻击目标圆环的宽度。
             impactWidth: 3,
 
             draw: function(ctx) {
@@ -551,7 +516,6 @@ var painter = {
                                 grd.addColorStop(0, rgbaString(c, 1));
                                 grd.addColorStop(1, rgbaString(c, 0));
                                 ctx.lineCap = 'round';
-                                // 设置实时攻击线条的宽度。 -By Lee.
                                 ctx.lineWidth = 3;
                                 ctx.beginPath();
                                 ctx.moveTo(n.x, n.y);
@@ -565,55 +529,7 @@ var painter = {
 
                     }, this);
             }
-        },
-
-        // Draw the provided links.
-        // A link: {source: _, target: _, color: _, width: _}
-        // source/target: {x: _, y: _, strokeStyle: _, fillStyle: _}
-        links: {
-            active: true,
-            order: -1,
-            data: [],
-
-            draw: function(context) {
-                var pi = Math.PI;
-
-                for (var i = 0; i < this.data.length; i++) {
-                    context.beginPath();
-                    context.strokeStyle = this.data[i].color;
-                    context.moveTo(this.data[i].source.x, this.data[i].source.y);
-                    context.lineTo(this.data[i].target.x, this.data[i].target.y);
-                    context.lineWidth = this.data[i].width;
-                    context.lineCap = "round";
-                    context.stroke();
-
-                    context.lineWidth = 2;
-                    context.beginPath();
-                    context.arc(this.data[i].source.x, this.data[i].source.y,
-                                this.data[i].source.r || 5, 0, pi * 2);
-                    if (this.data[i].source.fillStyle) {
-                        context.fillStyle = this.data[i].source.fillStyle;
-                        context.fill();
-                    }
-                    if (this.data[i].source.strokeStyle) {
-                        context.strokeStyle = this.data[i].source.strokeStyle;
-                        context.stroke();
-                    }
-
-                    context.beginPath();
-                    context.fillStyle = this.data[i].target.fillStyle || "#fff";
-                    context.arc(this.data[i].target.x, this.data[i].target.y,
-                                this.data[i].target.r || 5, 0, pi * 2);
-                    if (this.data[i].target.fillStyle) {
-                        context.fillStyle = this.data[i].target.fillStyle;
-                        context.fill();
-                    }
-                    if (this.data[i].target.strokeStyle) {
-                        context.strokeStyle = this.data[i].target.strokeStyle;
-                        context.stroke();
-                    }
-                }
-            }
+        
         }
 
     },
@@ -671,12 +587,10 @@ function Stats(params) {
     this.tag = params.tag || "div";
 
     this.insert = function(incoming) {
-        // Insert a new item, updating the state. params.insert should mutate
         params.insert(incoming, this.state);
     };
 
     this.data = function() {
-        // Get the data as a list
         if (params.data) return params.data(this.state); else this.state;
     }
 
@@ -887,7 +801,7 @@ function start(loc, psk) {
 	    // 攻击目的坐标
 	    var endLoc = projection([datum.desLongitude, datum.desLatitude]);
 	
-	    // 如果数据解析出现错误，弹出错误窗口
+	    // 如果数据解析出现错误
 	    if (datum.error) {
 	        console.log("ERROR: " + datum.error.msg);
 	    }
@@ -936,11 +850,6 @@ function start(loc, psk) {
     return webSocket;
 }
 
-
-// Attacks are added to the .attacks svg group and based on data
-var node = svg.selectAll(".node"),
-    link = svg.selectAll(".link");
-
 queue()
     .defer(d3.json, "source/attacking/data/world-110m.json")
     .await(function (error, world) {
@@ -961,5 +870,11 @@ queue()
         // 画攻击源与攻击目标之间线条。 
         painter.start();
     });
+window.monitoring = {
+            settings: settings
+        };
+    
+	setInterval(function () { prune(); }, 30000);
+})(window);
     
 
