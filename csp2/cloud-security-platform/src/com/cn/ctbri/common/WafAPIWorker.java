@@ -453,7 +453,26 @@ public class WafAPIWorker {
         String textEntity = response.getEntity(String.class);
         return textEntity;
 	}
-	
+	/**
+	 * 获取最新前N条数据
+	 */
+	public static String getWafLogWebsecCurrent(int topNum){
+		JSONObject json = new JSONObject();
+		json.put("topNum", topNum);
+		String url = SERVER_WAF_ROOT + "/rest/adapter/getWafLogWebsecCurrent";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
 	/**
 	 * 功能描述：获取安全事件类型统计信息
 	 * @param interval
