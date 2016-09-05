@@ -7,7 +7,7 @@
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 	<bean id="readDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<!-- 基本属性 url、user、password -->
-		<property name="url" value="${jdbc.url}" />
+		<property name="url" value="${jdbc.url2}" />
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
