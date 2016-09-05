@@ -188,14 +188,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 获取行业注册用户数 -->
     <select id="getIndustryUserCount" resultType="hashmap">
-		SELECT count(*) userCount,user1.industry FROM `cs_user` user1  group by user1.industry
+		SELECT count(*) userCount,user1.industry FROM `cs_user` user1 WHERE user1.industry IS NOT NULL AND user1.industry != '-1' group by user1.industry
     </select>
 	<!-- 获取行业订单数 -->
     <select id="getIndustryOrderCount" resultType="hashmap">
 		select user1.industry,if(isnull(mm.count1),0,mm.count1) orderCount from cs_user user1 
 		LEFT JOIN
-		(SELECT count(order1.id) count1, user2.industry industry from cs_order order1,cs_user user2 WHERE order1.userId=user2.id group by user2.industry)mm
-		on mm.industry=user1.industry group by user1.industry
+		(SELECT count(order1.id) count1, user2.industry industry from cs_order order1,cs_user user2 WHERE order1.userId=user2.id and order1.payFlag='1' group by user2.industry)mm
+		on mm.industry=user1.industry WHERE user1.industry is not null group by user1.industry
     </select>
 
 	<!-- 根据servID获取按日期分组的订单数量 -->
