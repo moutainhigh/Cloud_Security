@@ -95,7 +95,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 				JSONObject json = JSONObject.fromObject(dataText);
 				JSONArray array = (JSONArray) json.get("wafLogWebsecList");
 				if(null!=array&&array.size()==0){
-					Thread.sleep(1000*60*3);
+					Thread.sleep(1000*20);
 					continue;
 				}
 				perSendData(session,message,array,srcPositionList,desPositionList);
@@ -114,7 +114,8 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 	public String getFirstWafData(){
 		WafAPIWorker worker = new WafAPIWorker();
 		long startTimeTest=System.currentTimeMillis();
-		String text = worker.getAllWafLogWebsecInTime("10", "date");
+//		String text = worker.getAllWafLogWebsecInTime("10", "date");
+		String text=worker.getWafLogWebsecCurrent(500);
 		return text;
 	}
 	public String getWafData(int seconds){
