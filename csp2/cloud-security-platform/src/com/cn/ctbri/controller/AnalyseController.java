@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ import com.cn.ctbri.common.WafAPIWorker;
 import com.cn.ctbri.constant.EventTypeCode;
 import com.cn.ctbri.entity.AlarmBug;
 import com.cn.ctbri.entity.AttackCount;
+import com.cn.ctbri.entity.OrderCount;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.util.DateUtils;
@@ -321,11 +323,33 @@ public class AnalyseController {
 		long longTermSum = 0;
 		long singleSum = 0;
 		int i = 0;
+		String typeName="云WAF网站安全防护服务";
+		LinkedHashMap<String,OrderCount> orderCountMap=new LinkedHashMap<String,OrderCount>();
 		for (Map<String, Object> orderServiceMap : orderServiceList) {
-			sbType.append(",");
+			
 			int type = (Integer) orderServiceMap.get("type");
 			String name = (String) orderServiceMap.get("name");
-			long countNums = (Long) orderServiceMap.get("countNums");
+			long countNums = (long) orderServiceMap.get("countNums");
+			OrderCount orderCount=new OrderCount(type,name,countNums);
+			
+			String key="";
+			if(type==8){//包年包月的转为长期类型
+				type=1;
+			}
+			key=type+name;
+			OrderCount orderValue=orderCountMap.get(key);
+			if(null==orderValue){
+				orderCountMap.put(key,orderCount);
+			}else{				
+				orderValue.setCountNums(orderValue.getCountNums()+countNums);
+			}
+		}
+		for(Entry<String,OrderCount> entry:orderCountMap.entrySet()){
+			sbType.append(",");
+			OrderCount orderCount=entry.getValue();
+			int type = orderCount.getType();
+			String name = orderCount.getName();
+			long countNums = orderCount.getCountNums();
 			sbType.append("'");
 			if (i > 0) {
 				sbDetailService.append(",");
@@ -335,14 +359,17 @@ public class AnalyseController {
 				sbType.append(longTerm);
 				sbDetailService.append(longTerm);
 				longTermSum += countNums;
-			} else {// 短期
+				sbType.append(name);
+				sbType.append("'");
+				sbDetailService.append(name + "'}");
+			} else if(type==2){// 短期
 				sbType.append(single);
 				sbDetailService.append(single);
 				singleSum += countNums;
+				sbType.append(name);
+				sbType.append("'");
+				sbDetailService.append(name + "'}");
 			}
-			sbType.append(name);
-			sbType.append("'");
-			sbDetailService.append(name + "'}");
 
 			i++;
 		}
