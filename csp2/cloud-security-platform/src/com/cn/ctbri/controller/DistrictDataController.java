@@ -680,7 +680,7 @@ public class DistrictDataController {
     			JSONObject jsonObject = new JSONObject();
     			jsonObject.put("name", ((Serv)servList.get(i)).getName());
     			jsonObject.put("type", "line");
-    			jsonObject.put("stack", "总量");
+    			//jsonObject.put("stack", "总量");
     			
     			JSONObject jsonObject2 = new JSONObject();
     			jsonObject2.put("normal", new JSONObject());
