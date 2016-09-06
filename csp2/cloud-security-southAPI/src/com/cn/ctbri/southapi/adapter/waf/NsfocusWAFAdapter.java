@@ -999,12 +999,8 @@ public class NsfocusWAFAdapter {
 					return errorJsonObject.toString();
 				}
 			}
-			
-			
-			
-			//查询并返回结果
-
-			
+	
+			//查询并返回结果			
 			for (Element element : typeElements) {
 				
 				String eventTypeBase64 = stringToBase64(element.getTextTrim());
@@ -1070,13 +1066,15 @@ public class NsfocusWAFAdapter {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			sqlSession.rollback();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "Eventtype count error!!!");
 			return errorJsonObject.toString();
 		}finally {
-			sqlSession.close();
+			if(sqlSession!=null){
+				sqlSession.close();
+			}
+			
 		}
 	}
 	
