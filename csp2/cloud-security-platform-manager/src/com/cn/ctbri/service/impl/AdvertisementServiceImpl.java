@@ -23,8 +23,8 @@ public class AdvertisementServiceImpl implements IAdvertisementService{
      * 功能描述：查询所有广告
      *       @time 2016-06-12
      */
-    public List<Advertisement> findAllAdvertisement() {
-        return advertisementDao.findAllAdvertisement();
+    public List<Advertisement> findADbyType(int type) {
+        return advertisementDao.findADbyType(type);
     }
     /**
      * 功能描述：添加广告
@@ -40,5 +40,14 @@ public class AdvertisementServiceImpl implements IAdvertisementService{
     public void delete(int id) {
     	advertisementDao.deleteAdvertisement(id);
     }
+	@Override
+	public int getMaxOrderIndex(int type) {
+		return advertisementDao.getMaxOrderIndex(type);
+	}
+	@Override
+	public void update(Advertisement advertisement) {
+		advertisementDao.update(advertisement);
+		
+	}
 
 }
