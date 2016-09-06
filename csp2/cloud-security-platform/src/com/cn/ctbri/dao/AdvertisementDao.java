@@ -21,7 +21,7 @@ public interface AdvertisementDao {
      * 功能描述：查询所有广告
      *       @time 2016-06-12
      */
-    List<Advertisement> findAllAdvertisement();
+    List<Advertisement> findAdvertisementByType(int type);
 
     /**
      * 功能描述：添加广告
@@ -33,4 +33,6 @@ public interface AdvertisementDao {
      *       @time 2016-06-12
      */
     void deleteAdvertisement(int id);
+    
+    void update(Advertisement advertisement);
 }
