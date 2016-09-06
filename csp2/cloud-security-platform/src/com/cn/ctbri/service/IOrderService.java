@@ -185,5 +185,8 @@ public interface IOrderService {
 	 * 异        常：
 	 */
 	List<Map<String,Object>> findServiceCount();
+	
+	//根据条件查询删除订单
+	List<Order> findDelOrderByMap(Map<String, Object> map);
 
 }
