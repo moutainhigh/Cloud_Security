@@ -21,6 +21,7 @@ public class OrderAsset {
 	private String targetKey;//waf
 	private String assetAddr;//资产addr
 	private String assetName;//资产name
+	private String domainIp;//waf指向ip
 	public int getId() {
 		return id;
 	}
@@ -92,6 +93,12 @@ public class OrderAsset {
 	}
 	public void setAssetName(String assetName) {
 		this.assetName = assetName;
+	}
+	public String getDomainIp() {
+		return domainIp;
+	}
+	public void setDomainIp(String domainIp) {
+		this.domainIp = domainIp;
 	}
     
 }
