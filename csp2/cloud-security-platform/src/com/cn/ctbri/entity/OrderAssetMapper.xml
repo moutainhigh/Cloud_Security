@@ -91,9 +91,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="findOrderAssetId" parameterType="hashmap" resultType="com.cn.ctbri.entity.OrderAsset">
-		select oa.id from cs_order_asset oa,cs_asset a
+		<!-- select oa.id from cs_order_asset oa,cs_asset a
         where oa.assetId = a.id 
         and a.addr like CONCAT(CONCAT('%', #{url}), '%')
+        and oa.orderid = #{orderId} -->
+        
+        select * from cs_order_asset oa
+        where oa.assetAddr like CONCAT(CONCAT('%', #{url}), '%')
         and oa.orderid = #{orderId}
     </select>
     
@@ -101,7 +105,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 根据orderid查询Asset -->
     <select id="findAssetsByOrderId" parameterType="String" resultType="hashmap" >
         <!-- select a.name,a.addr,oa.id as orderAssetId, oa.ipArray from cs_order_asset oa,cs_asset a where oa.orderId=#{orderId} and oa.assetid = a.id -->
-    	select oa.assetName as name,oa.assetAddr as addr,oa.id as orderAssetId, oa.ipArray from cs_order_asset oa where oa.orderId=#{orderId}
+    	select oa.assetName as name,oa.assetAddr as addr,oa.id as orderAssetId, oa.ipArray, oa.domainIp, oa.targetKey from cs_order_asset oa where oa.orderId=#{orderId}
     </select>
     
     <!-- 修改订单 -->
@@ -113,6 +117,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 			<if test="ipArray!=null">
 				ipArray=#{ipArray}
+			</if>
+			<if test="domainIp!=null">
+				domainIp=#{domainIp}
 			</if>
 		</set>
 		where id=#{id}
