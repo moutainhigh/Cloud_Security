@@ -25,8 +25,8 @@ public class AdvertisementDaoImpl extends DaoCommon implements AdvertisementDao{
      * 功能描述：查询所有广告
      *       @time 2016-06-12
      */
-	public List<Advertisement> findAllAdvertisement() {
-		return getSqlSession().selectList(ns + "list");
+	public List<Advertisement> findADbyType(int type) {
+		return getSqlSession().selectList(ns + "findADbyType", type);
 
 	}
 
@@ -45,5 +45,19 @@ public class AdvertisementDaoImpl extends DaoCommon implements AdvertisementDao{
     public void deleteAdvertisement(int id) {
         getSqlSession().delete(ns +"delete",id);
     }
+
+	@Override
+	public int getMaxOrderIndex(int type) {
+		Integer index = getSqlSession().selectOne(ns + "findMaxOrderIndex", type);
+		if (index == null) {
+			return 0;
+		}
+		return index;
+	}
+
+	@Override
+	public void update(Advertisement advertisement) {
+		getSqlSession().update(ns+"update", advertisement);
+	}
 
 }
