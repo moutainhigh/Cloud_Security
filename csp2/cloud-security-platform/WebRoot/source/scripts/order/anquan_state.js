@@ -831,7 +831,7 @@ $(function(){
 							    tooltip: {
 							        trigger: 'axis',
 							        position:function([x, y]) {
-							        	if(x>1000){
+							        	if(x>550){
 							        		return [x-250,-40]
 							        	}
 							        	return [x,-40]
@@ -1066,7 +1066,7 @@ $(function(){
 								    tooltip: {
 								        trigger: 'axis',
 								        position:function([x, y]) {
-								        	if(x>850){
+								        	if(x>550){
 								        		return [x-250,-120]
 								        	}
 								        	return [x,-120]
