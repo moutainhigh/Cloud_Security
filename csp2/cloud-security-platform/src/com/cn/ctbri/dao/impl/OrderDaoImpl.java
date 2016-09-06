@@ -290,4 +290,8 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 	public List<Map<String, Object>> getServiceCount() {
 		return this.getSqlSession().selectList(ns+"getServiceCount");
 	}
+	
+	public List<Order> findDelOrderByMap(Map<String, Object> map) {
+		return this.getSqlSession().selectList(ns + "findDelOrderByMap",map);
+	}
 }
