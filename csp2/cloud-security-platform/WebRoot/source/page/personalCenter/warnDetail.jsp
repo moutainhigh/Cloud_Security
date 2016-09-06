@@ -91,7 +91,7 @@ function historicalDetails(){
 	var type = $("#type").val();
 //	window.location.href = "${ctx}/historyInit.html?execute_Time="
 	//							+ execute_Time+"&orderId="+orderId;
-	if($("#execute_Time").val()!=1){
+	if($("#execute_Time").val()!=-1){
 		window.open("${ctx}/warningInit.html?groupId="
                 + groupId+"&orderId="+orderId+"&type="+type); 
 	}
@@ -185,7 +185,7 @@ function seedetail1(e) {
                     	<c:forEach var="asset" items="${assets}" varStatus="status">
 			            	<div class="not-used">
 			            	<!-- 告警开始 -->
-			            	<c:if test="${asset.task.status==2}">
+			            	<c:if test="${(asset.task.status==2 && order.status == 4) || order.status == 0}">
 								<!-- 任务运行start -->
 								<c:import url="/taskRunning.html?orderId=${order.id }&type=${order.type}&orderAssetId=${asset.orderAssetId }&index=${status.index+1 }"></c:import>
 								<!-- end -->
@@ -287,7 +287,7 @@ function seedetail1(e) {
 								            <c:if test="${order.type==1}"><!-- test="${order.type==1 && group_flag==null}" -->
 								                <p><span class="bigfont historyde">历史详情</span>
 								                    <select class="historyse" id=execute_Time name="execute_Time" onchange="historicalDetails()">
-								                        <option value="1">请选择</option>
+								                        <option value="-1">请选择</option>
 								                        <c:forEach var="time" items="${taskTime}" varStatus="statusTime">
 								                           <c:if test="${timeSize!=0}">
 								                               <c:if test="${not statusTime.last}">
