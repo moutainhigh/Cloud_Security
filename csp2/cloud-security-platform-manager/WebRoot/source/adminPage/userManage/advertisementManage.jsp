@@ -59,6 +59,17 @@ filter: alpha(opacity = 0);
 opacity: 0;
 }
 
+#select_type{
+	background: rgba(0, 0, 0, 0) url("${ctx}/source/images/b_safes_icon.jpg") no-repeat scroll 0 0;
+    float: right;
+    height: 36px;
+    line-height: 36px;
+    margin-left: 15px;
+    padding-left: 10px;
+    width: 178px;
+    border:none; 
+}
+
 </style>
 </head>
 
@@ -94,9 +105,17 @@ opacity: 0;
 </div>
 <div class="main_wrap">
 	<div class="main_center">
-    	<div class="add_service">
-        	<a href="#" class="add_ser fl" id="add_ser">添加广告</a>
-        </div>
+		<input type="hidden" value="${adType}" id="adType"/>
+		<a href="javascript:;" class="adBtn new"  id="add_ser">添加广告</a>
+	    <form class="clearfix equipment analysecent" >
+	            <select id="select_type" class="text" name="type">
+	            	<option value="0">首页</option>
+	            	<option value="1">网站安全帮</option>
+	            	<option value="2">安全能力API</option>
+	            </select>                            
+	            <input type="button" onclick="toAdManagerUI(null);" class="sub" value="" style="right:-130px; top:16px;">
+	    </form>
+
         <div class="supper_table">
         	<table class="user_table" cellpadding="0" cellspacing="0">
             	<thead>
@@ -104,11 +123,12 @@ opacity: 0;
                     	<th class="t_username">广告名称</th>
                         <th class="t_date">广告图片</th>
                         <th class="t_role">广告有效时间</th>
+                        <th class="t_order">广告排序</th>
                         <th class="t_operation">操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${adList}" var="ad">
+                <c:forEach items="${adList}" var="ad" varStatus="status">
                     <tr>
                     	<td class="t_username">${ad.name}</td>
                         <td class="t_date" style="width:280px">
@@ -120,7 +140,19 @@ opacity: 0;
 	                        </c:if>
                         </td>
                         <td class="t_role"><fmt:formatDate value="${ad.startDate}" pattern="yyyy/MM/dd"/>&nbsp;-&nbsp;<fmt:formatDate value="${ad.endDate}" pattern="yyyy/MM/dd"/></td>
-                        <td class="t_operation"><a href="javascript:void(0)" class="ope_a" onclick="deleteAdvertisement('${ad.id}')">删除</a></td>
+                        <td class="t_order">
+                        	<input type="hidden" id="ad_id_${status.index }" value="${ad.id}"/>
+                        	<input type="hidden" id="ad_order_${status.index }" value="${ad.orderIndex}"/>
+	                        <c:if test="${status.index > 0}">
+	                        	<a href="javascript:void(0)" class="ope_a" onclick="upSort('${status.index}')">上移</a>
+	                        </c:if>
+	                        <c:if test="${status.index < adList.size()-1}">
+                        		<a href="javascript:void(0)" class="ope_a" onclick="downSort'${status.index}')">下移</a>
+	                        </c:if>
+                        </td>
+                        <td class="t_operation">
+                        	<a href="javascript:void(0)" class="ope_a" onclick="deleteAdvertisement('${ad.id}')">删除</a>
+                        </td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -194,6 +226,20 @@ opacity: 0;
 	        </td>
 	        <td class="regist_prompt" style="text-align:left;">请上传.jpg,.bmp或.png格式的文件</td>
           </tr>
+          <tr class="register_tr">
+          	<td class="regist_title">广告分类</td>
+            <td class="regist_input">
+                <select class="regist_sel" id="regist_type" name="type">
+                	<option selected="selected" value="-1">请选择分类</option>
+                	<option value="0" >首页</option>
+         			<option value="1" >网站安全帮</option>
+         			<option value="2" >安全能力API</option>
+                </select>
+                <span id="regist_type_msg" style="color:red;float:left;">
+            </td>
+            <td class="regist_prompt"></td>
+          </tr>
+
           <tr class="register_tr">
             <td class="regist_title">广告有效期</td>
             <td class="regist_input">
