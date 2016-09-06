@@ -829,7 +829,13 @@ $(function(){
 							         
 							    },
 							    tooltip: {
-							        trigger: 'axis'
+							        trigger: 'axis',
+							        position:function([x, y]) {
+							        	if(x>1000){
+							        		return [x-250,-40]
+							        	}
+							        	return [x,-40]
+							        }
 							    },
 							    legend: {
 							    	y:'435',
@@ -853,7 +859,7 @@ $(function(){
 							    xAxis: {
 							    	type : 'category',
 									position: 'bottom',
-									boundaryGap: true,
+									boundaryGap: false,
 									axisLabel : {
 									show:true,
 									interval: 0, 
@@ -1058,7 +1064,13 @@ $(function(){
 								         }
 								    },
 								    tooltip: {
-								        trigger: 'axis'
+								        trigger: 'axis',
+								        position:function([x, y]) {
+								        	if(x>1000){
+								        		return [x-250,-120]
+								        	}
+								        	return [x,-120]
+								        }
 								    },
 								     legend: {
 								    	y:'435',
@@ -1081,7 +1093,7 @@ $(function(){
 								    xAxis: {
 								    	type : 'category',
 										position: 'bottom',
-										boundaryGap: true,
+										boundaryGap: false,
 										axisLabel : {
 										show:true,
 										interval: 0, 
