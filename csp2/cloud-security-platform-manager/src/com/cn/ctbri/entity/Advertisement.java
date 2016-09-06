@@ -18,6 +18,10 @@ public class Advertisement implements Serializable{
 	private String name;
 	//广告图片
 	private String image;
+	//广告分类(0：首页，1：网站安全帮，2：安全能力API)
+	private int type;
+	//前端展示顺序（数字越大，优先度越高）
+	private int orderIndex;
 	//广告有效期开始时间
 	private Date startDate;
 	//广告有效期结束时间
@@ -60,6 +64,18 @@ public class Advertisement implements Serializable{
 	}
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
+	public int getOrderIndex() {
+		return orderIndex;
+	}
+	public void setOrderIndex(int orderIndex) {
+		this.orderIndex = orderIndex;
 	}
 	
 }
