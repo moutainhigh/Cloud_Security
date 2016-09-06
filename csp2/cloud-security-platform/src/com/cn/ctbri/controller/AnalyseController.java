@@ -323,13 +323,12 @@ public class AnalyseController {
 		long longTermSum = 0;
 		long singleSum = 0;
 		int i = 0;
-		String typeName="云WAF网站安全防护服务";
 		LinkedHashMap<String,OrderCount> orderCountMap=new LinkedHashMap<String,OrderCount>();
 		for (Map<String, Object> orderServiceMap : orderServiceList) {
 			
 			int type = (Integer) orderServiceMap.get("type");
 			String name = (String) orderServiceMap.get("name");
-			long countNums = (long) orderServiceMap.get("countNums");
+			long countNums = (Long) orderServiceMap.get("countNums");
 			OrderCount orderCount=new OrderCount(type,name,countNums);
 			
 			String key="";
