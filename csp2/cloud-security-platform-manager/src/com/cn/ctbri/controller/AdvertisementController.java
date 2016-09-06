@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import com.cn.ctbri.cfg.CspAPIWorker;
+import com.cn.ctbri.cfg.CspWorker;
 import com.cn.ctbri.entity.Advertisement;
 import com.cn.ctbri.service.IAdvertisementService;
 import com.cn.ctbri.util.CommonUtil;
@@ -44,10 +44,16 @@ public class AdvertisementController {
      *       @time 2016-6-12
      */
     @RequestMapping("/adminAdvertisementManageUI.html")
-    public String noticeManageUI(Model model,HttpServletRequest request){
+    public String advertisementManageUI(Model model,HttpServletRequest request){
         //User globle_user = (User) request.getSession().getAttribute("globle_user");
-        List<Advertisement> list = adService.findAllAdvertisement();
+    	int type = 0;
+    	String typeStr = request.getParameter("type");
+    	if(typeStr != null) {
+    		type = Integer.valueOf(typeStr);
+    	}
+        List<Advertisement> list = adService.findADbyType(type);
         model.addAttribute("adList",list);//广告列表
+        model.addAttribute("adType",type);//广告分类
         return "/source/adminPage/userManage/advertisementManage";
     }
     
@@ -97,16 +103,18 @@ public class AdvertisementController {
 //    		String image = "";
 //    		String name = new String(advertisement.getName().getBytes("ISO-8859-1"), "UTF-8");
 //    		image = new String(advertisement.getImage().getBytes("ISO-8859-1"), "UTF-8");
-    		String name =  new String(request.getParameter("name").getBytes("ISO-8859-1"), "UTF-8");
+    		String name =  new String(request.getParameter("name"));
     		String startDateStr = request.getParameter("startDate");
     		String endDateStr = request.getParameter("endDate");
+    		int type = Integer.valueOf(request.getParameter("type"));
+    		int orderIndex = adService.getMaxOrderIndex(type) + 1;
     		
     		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//小写的mm表示的是分钟  
     		Date createDate = new Date();
     		//TODO
     		//通过接口方式将数据存储于前端Portal数据库中
-    		String adId = CspAPIWorker.addAdvertisement(name, images,
-    				startDateStr, endDateStr, sdf.format(createDate));
+    		String adId = CspWorker.addAdvertisement(name, images,type,
+    				orderIndex, startDateStr, endDateStr, sdf.format(createDate));
     		System.out.println("adId:"+adId);
     		if(adId == null || adId.equals("")) {
     			m.put("success", false);
@@ -123,6 +131,8 @@ public class AdvertisementController {
     		advertisement.setStartDate(startDate);
     		advertisement.setEndDate(endDate);
     		advertisement.setCreateDate(createDate);//创建时间
+    		advertisement.setType(type);
+    		advertisement.setOrderIndex(orderIndex);
     		adService.insert(advertisement);
     		m.put("success", true);
     		
@@ -153,7 +163,7 @@ public class AdvertisementController {
     	Map<String, Object> m = new HashMap<String,Object>();
     	String adId = request.getParameter("adId");//广告Id
     	//通过接口方式将数据从前端Portal数据库中删除
-		String code = CspAPIWorker.deleteAdvertisement(adId);
+		String code = CspWorker.deleteAdvertisement(adId);
 		if(code == null || !code.equals("200")) {
 			m.put("success", false);
 		}else {
@@ -170,7 +180,42 @@ public class AdvertisementController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+    }
+    
+    @RequestMapping("/adminAdvertisementSort.html")
+    public void sort(HttpServletRequest request, HttpServletResponse response) {
+    	Map<String, Object> m = new HashMap<String,Object>();
+    	
+    	String adId1 = request.getParameter("adId1");
+    	String adOrder1 = request.getParameter("adOrder1");
+    	
+    	String adId2 = request.getParameter("adId2");
+    	String adOrder2 = request.getParameter("adOrder2");
+    	
+    	//通过接口方式将数据从前端Portal数据库中排序
+		String code = CspWorker.sortAdvertisement(adId1, adOrder1, adId2, adOrder2);
+		if(code == null || !code.equals("200")) {
+			m.put("success", false);
+		}else {
+			//将数据从运营管理系统数据库中排序
+			Advertisement ad = new Advertisement();
+			ad.setId(Integer.valueOf(adId1));
+			ad.setOrderIndex(Integer.valueOf(adOrder1));
+			adService.update(ad);
+			
+			ad.setId(Integer.valueOf(adId2));
+			ad.setOrderIndex(Integer.valueOf(adOrder2));
+			adService.update(ad);
+			
+			m.put("success", true);
+		}
 		
-        //return "redirect:/adminAdvertisementManageUI.html";
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 }
