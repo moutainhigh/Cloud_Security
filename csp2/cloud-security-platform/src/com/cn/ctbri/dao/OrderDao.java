@@ -169,4 +169,6 @@ public interface OrderDao {
 	 */
 	List<Map<String, Object>> getServiceCount();
 	
+	List<Order> findDelOrderByMap(Map<String, Object> map);
+	
 }
