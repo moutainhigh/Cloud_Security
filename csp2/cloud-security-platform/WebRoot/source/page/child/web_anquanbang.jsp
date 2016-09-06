@@ -143,7 +143,25 @@ function buyWafOrder(serviceId){
             <div class="v_show vBox">
 				<div class="bannerB">
 					<ul class="bannerHeight banner_img clearfix">
-						<li style="display: list-item;">
+					<c:forEach var="list" items="${adList}" varStatus="status">
+							<c:if test="${status.index ==0}">
+								<li style="display: list-item;">
+									<div class="vb data">
+									<a href="#"><img src="${ctx}/source/images/ad/${list.image }" alt="">
+										<span class="lt">已监测网站<em id="num">${webSite }</em>个</span>
+				                        <span class="rt">发现断网<em id="num3">${brokenNetwork }</em>次</span>
+				                        <span class="rm">发现<em id="num2">${leakNum }</em>个漏洞</span>
+				                        <span class="lm">检测页面<em id="num1">${webPageNum }</em>个</span>
+									</a>
+									</div>
+								</li>
+							</c:if>
+							<c:if test="${status.index !=0}">
+								<li><div class="vb"><a href="#"><img src="${ctx}/source/images/ad/${list.image }" alt=""></a></div></li>
+							</c:if>
+					</c:forEach>
+						
+						<!-- <li style="display: list-item;">
 							<div class="vb data">
 							<a href="#"><img src="${ctx}/source/images/portal/banner4.png" alt="">
 								<span class="lt">已监测网站<em id="num">${webSite }</em>个</span>
@@ -155,14 +173,23 @@ function buyWafOrder(serviceId){
 						<li><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/banner2.png" alt=""></a></div></li>
                         <li><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/banner3.png" alt=""></a></div></li>
                         <li><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/banner1.png" alt=""></a></div></li>
+					 	-->
 					</ul>
 				</div>
              </div>
 				<ol class="bannerbtn circle clearfix">
-                    <li class="active"></li>
+                   <!-- <li class="active"></li>
                     <li></li>
                     <li></li>
-                    <li></li>
+                    <li></li> --> 
+                    <c:forEach var="list" items="${adList}" varStatus="status">
+                    	<c:if test="${status.index ==0}">
+							<li class="active"></li>
+						</c:if>
+						<c:if test="${status.index !=0}">
+							<li></li>
+						</c:if>
+					</c:forEach>
 				</ol>
 			</div>
 
