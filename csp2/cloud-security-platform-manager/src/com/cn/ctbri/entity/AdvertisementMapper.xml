@@ -9,19 +9,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<id property="id" column="id"/>
 		<result property="name" column="name"/>
 		<result property="image" column="image"/>
+		<result property="type" column="type"/>
+		<result property="orderIndex" column="orderIndex"/>
 		<result property="startDate" column="startDate"/>
 		<result property="endDate" column="endDate"/>
 		<result property="createDate" column="createDate"/>
 	</resultMap>
 	
 	<!-- 查询所有记录 -->
-	<select id="list" resultMap="AdRM" parameterType="com.cn.ctbri.entity.Advertisement">
+	<select id="findADbyType" resultMap="AdRM" parameterType="int">
 		select * from cs_advertisement
-		where 1=1
-        <if test="id!=null and id!=''">
-            and id=#{id}
-        </if>
-		order by createDate desc
+		where 
+			type=#{type}
+		order by orderIndex desc,createDate desc
 	</select>
 	
 	<!-- 插入公告 -->
@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="insert" parameterType="com.cn.ctbri.entity.Advertisement">
 		insert into cs_advertisement 
-		(id,name,image,startDate,endDate,createDate) values(#{id}, #{name},#{image},#{startDate},#{endDate},#{createDate})
+		(id,name,image,type,orderIndex,startDate,endDate,createDate) values(#{id}, #{name},#{image},#{type},#{orderIndex},#{startDate},#{endDate},#{createDate})
 	</insert>
 	
 	
@@ -41,5 +41,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from cs_advertisement
 		where id=#{id}
 	</delete>
+	
+	<select id="findMaxOrderIndex" resultType="int"  parameterType="int">
+		select Max(orderIndex) from cs_advertisement
+		where type=#{type}
+	</select>
+	
+	<update id="update"  parameterType="com.cn.ctbri.entity.Advertisement">
+		update cs_advertisement 
+		set
+			orderIndex = #{orderIndex}
+		where id=#{id}
+	</update>
 	
 </mapper>
