@@ -113,6 +113,9 @@
 					<div class="user_right" style="border-bottom:#e5e5e5 solid 1px;min-height:auto">
 						<div style="margin-top:14px;margin-left: 320px;">
 							<p class="dd_detail"><span class="bigfont">${order.name }</span></p>
+							<p class="dd_detail"><span class="detail_l fl">用户ID</span><span class="detail_r fl">${user.id}</span></p>
+							<p class="dd_detail"><span class="detail_l fl">apiKey</span><span class="detail_r fl">${user.apikey}</span></p>
+							<p class="dd_detail"><span class="detail_l fl">URL</span><span class="detail_r fl">api.anquanbang.net</span></p>
 						    <p class="dd_detail"><span class="detail_l fl">购买次数</span><span class="detail_r fl">${apiCount}</span></p>
 						    <p class="dd_detail"><span class="detail_l fl">订单开始时间</span><span class="detail_r fl"><fmt:formatDate value="${order.begin_date }" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
 						    <p class="dd_detail"><span class="detail_l fl">订单结束时间</span><span class="detail_r fl"><fmt:formatDate value="${order.end_date }" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
