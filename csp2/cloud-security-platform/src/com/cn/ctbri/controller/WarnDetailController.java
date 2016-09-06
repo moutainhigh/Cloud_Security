@@ -1193,7 +1193,7 @@ public class WarnDetailController {
             jo.put("label", "-1");
             jo.put("value", message);
             jo.put("color", "#40e1d1");
-            jo.put("ratio", df.format((float)message/count*100)+"%");
+//            jo.put("ratio", df.format((float)message/count*100)+"%");
             json.add(jo);
         }
         if(low>0){
@@ -1201,7 +1201,7 @@ public class WarnDetailController {
             jo.put("label", "0");
             jo.put("value", low);
             jo.put("color", "#1e91ff");
-            jo.put("ratio", df.format((float)low/count*100)+"%");
+//            jo.put("ratio", df.format((float)low/count*100)+"%");
             json.add(jo);
         }
         if(middle>0){
@@ -1209,7 +1209,7 @@ public class WarnDetailController {
             jo.put("label", "1");
             jo.put("value", middle);
             jo.put("color", "#ffa500");
-            jo.put("ratio", df.format((float)middle/count*100)+"%");
+//            jo.put("ratio", df.format((float)middle/count*100)+"%");
             json.add(jo);
         }
         if(high>0){
@@ -1217,7 +1217,7 @@ public class WarnDetailController {
             jo.put("label", "2");
             jo.put("value", high);
             jo.put("color", "#ff7e50");
-            jo.put("ratio", df.format((float)high/count*100)+"%");
+//            jo.put("ratio", df.format((float)high/count*100)+"%");
             json.add(jo);
         }
         if(higher>0){
@@ -1225,7 +1225,7 @@ public class WarnDetailController {
             jo.put("label", "3");
             jo.put("value", higher);
             jo.put("color", "#cd5c5c");
-            jo.put("ratio", df.format((float)higher/count*100)+"%");
+//            jo.put("ratio", df.format((float)higher/count*100)+"%");
             json.add(jo);
         }
         return json.toString();
