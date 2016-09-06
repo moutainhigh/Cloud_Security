@@ -192,6 +192,7 @@ function websecDetail(logId){
 		
        <div class="data_box">
         <div class="data_nav">
+          <input type="hidden" value="${order.id }" id="orderId" name="orderId"/>
           <ul>
             <li>实时数据</li>
           </ul>
