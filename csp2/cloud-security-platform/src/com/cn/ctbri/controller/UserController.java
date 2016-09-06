@@ -42,6 +42,7 @@ import com.cn.ctbri.entity.Notice;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.User;
+import com.cn.ctbri.service.IAdvertisementService;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.INoticeService;
 import com.cn.ctbri.service.IOrderAssetService;
@@ -88,6 +89,8 @@ public class UserController{
     IOrderAssetService orderAssetService;
 	@Autowired
     ITaskService taskService;
+	@Autowired
+	IAdvertisementService adService;
 
 	/**
 	 * 功能描述： 基本资料
@@ -338,6 +341,9 @@ public class UserController{
       //获取服务API类型
         List servAPIList = serviceAPIService.findApiPriceList();
         
+        //获取首页的广告
+        List adList = adService.findAdvertisementByType(0);
+        
         //查询网页篡改个数 
 //        int whorseNum = selfHelpOrderService.findLeakNum(3);
         //查询木马检测个数 
@@ -358,6 +364,7 @@ public class UserController{
 //        m.addAttribute("brokenNetwork", brokenNetwork);
         m.addAttribute("servList", servList);
         m.addAttribute("servAPIList", servAPIList);
+        m.addAttribute("adList", adList);
 //        m.addAttribute("noticeList", list);
 		return "/main";
 	}
@@ -2054,12 +2061,17 @@ public class UserController{
         int webSite = selfHelpOrderService.findWebSite();
         //断网次数
         int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
+        
+        //获取网站安全帮页面的广告
+        List adList = adService.findAdvertisementByType(1);
+        
         m.addAttribute("leakNum", leakNum);
         m.addAttribute("webPageNum", webPageNum);
         m.addAttribute("webSite", webSite);
         m.addAttribute("brokenNetwork", brokenNetwork);
         m.addAttribute("servList", servList);
         m.addAttribute("noticeList", list);
+        m.addAttribute("adList", adList);
 		return "/source/page/child/web_anquanbang";
 	}
 	
@@ -2101,12 +2113,16 @@ public class UserController{
         int webSite = selfHelpOrderService.findWebSite();
         //断网次数
         int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
+        //获取安全能力API页面的广告
+        List adList = adService.findAdvertisementByType(2);
+        
         m.addAttribute("leakNum", leakNum);
         m.addAttribute("webPageNum", webPageNum);
         m.addAttribute("webSite", webSite);
         m.addAttribute("brokenNetwork", brokenNetwork);
         m.addAttribute("servList", servList);
         m.addAttribute("noticeList", list);
+        m.addAttribute("adList", adList);
 		return "/source/page/child/api_anquanbang";
 	}
 	
