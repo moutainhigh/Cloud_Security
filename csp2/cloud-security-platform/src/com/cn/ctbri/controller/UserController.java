@@ -2015,7 +2015,7 @@ public class UserController{
   		  }
   	  	  m.addAttribute("wafAlarmLevel",wafAlarmLevel);
   		WafAPIWorker worker = new WafAPIWorker();
-  		String texts = worker.getWafEventTypeCount(null, "forever");
+  		String texts = worker.getWafEventTypeCount(null, "forever",0);
   		JSONArray array = JSONArray.fromObject(texts);
   		List<AttackCount> attackCountList = new ArrayList<AttackCount>();
   		for (int i = 0; i < array.size(); i++) {

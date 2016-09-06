@@ -431,12 +431,15 @@ public class WafAPIWorker {
 	 * @param interval
 	 * @return
 	 */
-	public static String getWafEventTypeCount(String interval, String timeUnit){
+	public static String getWafEventTypeCount(String interval, String timeUnit,long topNum){
 		
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		if(!"forever".equals(timeUnit)){
 			json.put("interval", interval);
+		}
+		if("forever".equals(timeUnit)){			
+			json.put("topNum",topNum);
 		}
 		json.put("timeUnit", timeUnit);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafEventTypeCount";

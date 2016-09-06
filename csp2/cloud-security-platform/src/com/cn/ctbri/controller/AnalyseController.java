@@ -529,7 +529,7 @@ public class AnalyseController {
 	@RequestMapping(value = "mapUI.html")
 	public String mapUI(HttpServletRequest request) throws UnsupportedEncodingException {
 		WafAPIWorker worker = new WafAPIWorker();
-		String texts = worker.getWafEventTypeCount(null,"forever");
+		String texts = worker.getWafEventTypeCount(null,"forever",0);
 		JSONArray array = JSONArray.fromObject(texts);
 		List<AttackCount> attackCountList = new ArrayList<AttackCount>();
 		for (int i = 0; i < array.size(); i++) {
