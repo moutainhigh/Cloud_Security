@@ -104,7 +104,7 @@ function historicalDetails(){
 	var type = $("#type").val();
 //	window.location.href = "${ctx}/historyInit.html?execute_Time="
 	//							+ execute_Time+"&orderId="+orderId;
-	if($("#execute_Time").val()!=1){
+	if($("#execute_Time").val()!=-1){
 		window.open("${ctx}/warningInit.html?groupId="
                 + groupId+"&orderId="+orderId+"&type="+type); 
 	}
@@ -297,7 +297,7 @@ function clearTable(){
 							            <c:if test="${order.type==1 && group_flag==null}">
 					                        <p><span class="bigfont historyde">历史详情</span>
 					                            <select class="historyse" id="execute_Time" name="execute_Time" onchange="historicalDetails()">
-					                                <option>请选择</option>
+					                                <option value="-1">请选择</option>
 					                                <c:forEach var="time" items="${taskTime}" varStatus="status">
 					                                   <c:if test="${timeSize!=0}">
 					                                       <c:if test="${not status.last}">
