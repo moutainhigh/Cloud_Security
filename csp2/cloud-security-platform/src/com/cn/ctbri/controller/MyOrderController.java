@@ -447,10 +447,23 @@ public class MyOrderController {
         	assetOrder=(HashMap) assets.get(0);
         	String addr=(String) assetOrder.get("addr");
         	String ipArray=(String) assetOrder.get("ipArray");
+        	String domainIp=(String) assetOrder.get("domainIp");
         	String[] ips = null;   
             ips = ipArray.split(",");
+            
             model.addAttribute("domainName", addr.substring(7)); //当前域名
-        	model.addAttribute("ipAddress", ipArray); //当前A记录www值
+            if(domainIp!=null && !domainIp.equals("")){
+            	model.addAttribute("domainIp", domainIp); //当前A记录www值
+            }else{
+            	String newIpStr = "";
+                for (int n = 0; n < ips.length; n++) {
+                	String[] ip = ips[n].split(":");
+                	newIpStr = newIpStr + ip[0] + ",";
+                }
+                domainIp = newIpStr.substring(0, newIpStr.length()-1);
+            	model.addAttribute("domainIp", domainIp); //当前A记录www值
+            }
+        	
         }
     	return "/source/page/personalCenter/domainNameAnalysis";
     }
@@ -482,10 +495,18 @@ public class MyOrderController {
     			order.setId(orderId);
     			order.setStatus(4);
     			orderService.update(order);
-//    			OrderAsset oa = new OrderAsset();
-//    			oa.setOrderId(orderId);
-//    			oa.setIpArray("219.141.189.183");
-//    			orderAssetService.update(oa);
+    			//资产信息
+    			List assets = orderAssetService.findAssetsByOrderId(orderId);
+    			int id = 0;
+    	    	if(assets != null && assets.size() > 0){
+    	        	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
+    	        	assetOrder=(HashMap) assets.get(0);
+    	        	id= (Integer) assetOrder.get("orderAssetId");
+    	        }
+    			OrderAsset oa = new OrderAsset();
+    			oa.setId(id);
+    			oa.setDomainIp(ipAddress);
+    			orderAssetService.update(oa);
     			m.put("success", true);
     			
 //    			m.put("ipAddress", "219.141.189.183");
