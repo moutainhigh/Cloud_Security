@@ -85,7 +85,7 @@
                     <div class="tabBox" style="padding:30px;">
                     	<ul class="clearfix">
                         	<li style="width:272px;">当前域名：${domainName }</li>
-                            <li style="width:336px;">当前A记录www值：${ipAddress }</li>
+                            <li style="width:336px;">当前A记录www值：${domainIp }</li>
                             <li class="explain">解析说明 <a href="#" class="btn" onclick="checkDomainName('${domainName }', '${ipAddress }', '${orderId }')">检测解析是否更改成功</a></li>
                         </ul>
                        <dl>
@@ -168,6 +168,7 @@
 				success: function(data) {
 					if(data.success == true) {
 					 	alert("域名解析更改成功！");
+					 	window.location.href="domainNameUI.html?orderId="+orderId;
 					} else {
 						alert("域名解析更改失败！");
 					}
