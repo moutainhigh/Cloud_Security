@@ -9,6 +9,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<id property="id" column="id"/>
 		<result property="name" column="name"/>
 		<result property="image" column="image"/>
+		<result property="type" column="type"/>
+		<result property="orderIndex" column="orderIndex"/>
 		<result property="startDate" column="startDate"/>
 		<result property="endDate" column="endDate"/>
 		<result property="createDate" column="createDate"/>
@@ -21,11 +23,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 查询所有记录 -->
-	<select id="list" resultMap="AdRM" parameterType="com.cn.ctbri.entity.Advertisement">
-		select * from cs_advertisement 
+	<select id="findADbyType" resultMap="AdRM" parameterType="int">
+		select * from cs_advertisement
 		where 
-   			date(now()) between startDate and endDate
-		order by createDate desc
+			type=#{type}
+		order by orderIndex desc,createDate desc
 	</select>
 	
 		
@@ -37,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="insert" parameterType="com.cn.ctbri.entity.Advertisement" useGeneratedKeys="true" keyProperty="id">
 		insert into cs_advertisement 
-		(name,image,startDate,endDate,createDate) values(#{name},#{image},#{startDate},#{endDate},#{createDate})
+		(id,name,image,type,orderIndex,startDate,endDate,createDate) values(#{id}, #{name},#{image},#{type},#{orderIndex},#{startDate},#{endDate},#{createDate})
 	</insert>
 	
 	
@@ -46,5 +48,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from cs_advertisement
 		where id=#{id}
 	</delete>
+	
+	<update id="update"  parameterType="com.cn.ctbri.entity.Advertisement">
+		update cs_advertisement 
+		set
+			orderIndex = #{orderIndex}
+		where id=#{id}
+	</update>
 	
 </mapper>
