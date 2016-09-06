@@ -52,8 +52,8 @@ $(function(){
 	                   	if(p['label']==2){
 	                   		temp="高";
 	                   	}
-	                   	label[i]=temp+p['ratio'];
-	                   	value[i]={'name':temp+p['ratio'],'value':p['value']};
+	                   	label[i]=temp;
+	                   	value[i]={'name':temp,'value':p['value']};
 	                   	colorData[i]=p['color'];
                     });
                     myChartPieLevel.setOption({//图形
@@ -65,9 +65,12 @@ $(function(){
                             formatter: "{a} <br/>{b} : {c} ({d}%)"
                         },
                         legend: {
-                            orient : 'vertical',
-                            x : 'right',
-                            data:testX()
+                            show:false,
+//					    	orient: 'vertical',
+					        x: 'left',
+//					        y:'top',
+					        y: '35',
+					        data:testX()
                         },
                         color:colorData,
                         toolbox: {
@@ -85,7 +88,16 @@ $(function(){
                                 type:'pie',
                                 radius : '45%',
                                 center: ['50%', '60%'],
-                                data:testY()
+                                data:testY(),
+                                itemStyle:{ 
+		                            normal:{ 
+		                                label:{ 
+		                                   show: true, 
+		                                   formatter: '{b} :  ({d}%)' 
+		                                }, 
+		                                labelLine :{show:true}
+		                            } 
+		                        }
                             }
                         ]
                     },true);//图形展示
@@ -121,9 +133,10 @@ $(function(){
                             formatter: "{a} <br/>{b} : {c} ({d}%)"
                         },
                         legend: {
-                            orient : 'vertical',
-                            x : 'right',
-                            data:data.name
+                            show:false,
+					        x: 'left',
+					        y: '35',
+					        data:data.name
                         },
 //                        color:colorData,
                         toolbox: {
@@ -141,7 +154,16 @@ $(function(){
                                 type:'pie',
                                 radius : '45%',
                                 center: ['50%', '60%'],
-                                data:data.json
+                                data:data.json,
+                                itemStyle:{ 
+		                            normal:{ 
+		                                label:{ 
+		                                   show: true, 
+		                                   formatter: '{d}%' 
+		                                }, 
+		                                labelLine :{show:true}
+		                            } 
+		                        }
                             }
                         ]
                     },true);//图形展示

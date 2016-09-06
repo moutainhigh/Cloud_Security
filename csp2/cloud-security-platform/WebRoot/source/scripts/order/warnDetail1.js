@@ -197,7 +197,7 @@ var getCharsData=function(repeat){
 	                   		temp="紧急";
 	                   	}
 	                   	label[i]=temp+p['ratio'];
-	                   	value[i]={'name':temp+p['ratio'],'value':p['value']};
+	                   	value[i]={'name':temp,'value':p['value']};
 	                   	colorData[i]=p['color'];
 //	                   	label[i]=p['label'];
 //	                   	value[i]={'name':p['label'],'value':p['value']};
@@ -205,7 +205,9 @@ var getCharsData=function(repeat){
                     myChartPie.setOption({//图形
                         tooltip : {
                             trigger: 'item',
-                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+//                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                            formatter: "{a} : {c}"
+                            
                         },
 //                        legend: {
 //                            orient : 'vertical',
@@ -247,7 +249,17 @@ var getCharsData=function(repeat){
 //                                    {value:135, name:'中'},
 //                                    {value:1548, name:'高'}
 //                                ]
-                                data:testY()
+                                data:testY(),
+                                itemStyle:{ 
+    	                            normal:{ 
+    	                                label:{ 
+    	                                   show: true, 
+    	                                   formatter: '{b} :  ({d}%)' 
+    	                                }, 
+    	                                labelLine :{show:true}
+    	                            } 
+    	                        } 
+                                
                             }
                         ]
                     },true);//图形展示
