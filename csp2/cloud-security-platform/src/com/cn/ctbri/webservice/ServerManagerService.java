@@ -50,6 +50,8 @@ public class ServerManagerService {
 //			String adId = jsonObj.getString("AdId");
 			String adName = jsonObj.getString("AdName");
 			String adImage = jsonObj.getString("AdImage");
+			int type = jsonObj.getInt("AdType");
+			int order = jsonObj.getInt("AdOrder");
 			String adStartDate = jsonObj.getString("AdStartDate");
 			String adEndDate = jsonObj.getString("AdEndDate");
 			String adCreateDate = jsonObj.getString("AdCreateDate");
@@ -63,6 +65,8 @@ public class ServerManagerService {
 //			ad.setId(Integer.valueOf(adId));
 			ad.setName(adName);
 			ad.setImage(adImage);
+			ad.setType(type);
+			ad.setOrderIndex(order);
 			ad.setStartDate(startDate);
 			ad.setEndDate(endDate);
 			ad.setCreateDate(createDate);
@@ -120,6 +124,46 @@ public class ServerManagerService {
 			json.put("message", "删除广告失败");
 		}
 		
+		return json.toString();
+	}
+	
+	/**
+	 * 功能描述：广告排序
+	 * */
+	@POST
+	@Path("/advertisement/sortAD")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String sortAdvertisement(String dataJson){
+		JSONObject json = new JSONObject();
+		try {
+			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
+			
+			String adId1 = jsonObj.getString("AdId1");
+			int adOrder1 = jsonObj.getInt("AdOrder1");
+			
+			String adId2 = jsonObj.getString("AdId2");
+			int adOrder2 = jsonObj.getInt("AdOrder2");
+			
+			
+			
+			Advertisement ad = new Advertisement();
+			ad.setId(Integer.valueOf(adId1));
+			ad.setOrderIndex(adOrder1);
+			adService.update(ad);
+			
+			ad.setId(Integer.valueOf(adId2));
+			ad.setOrderIndex(adOrder2);
+			adService.update(ad);
+			
+			json.put("code", 200);//返回200表示成功
+			json.put("messaage", "广告排序成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			json.put("code", 400);//返回400表示失败
+			json.put("messaage", "广告排序失败");
+		}
+        
 		return json.toString();
 	}
 	
