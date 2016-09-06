@@ -964,12 +964,14 @@ public class NsfocusWAFAdapter {
 			//根据时间间隔获取时间段
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			int maxNum = mapper.selectMaxByExample(new TWafLogWebsecExample());
+			Criteria tWafLogWebseCriteria = new TWafLogWebsecExample().or();
 			int startNum = maxNum;
 			if (null!=jsonObject.get("topNum")&&jsonObject.getInt("topNum")>0) {
 				startNum = maxNum-jsonObject.getInt("topNum");
+				tWafLogWebseCriteria.andLogIdLessThanOrEqualTo(Long.valueOf(startNum));
 			}
-			Criteria tWafLogWebseCriteria = new TWafLogWebsecExample().or();
-			tWafLogWebseCriteria.andLogIdLessThanOrEqualTo(Long.valueOf(startNum));
+			
+			
 			
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
