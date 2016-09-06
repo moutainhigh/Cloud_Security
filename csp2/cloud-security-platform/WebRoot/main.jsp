@@ -69,18 +69,35 @@ html, body{height: 100%; min-height: 100%; position: relative;}
             	
 				<div class="bannerB v_cont">
 					<ul class="bannerHeight banner_img clearfix">
-						<li style=" display: list-item;"><div class="vb"><a href="${ctx}/registUI.html"><img src="${ctx}/source/images/portal/NewVIP.png" alt=""></a></div></li>
+						<!--  <li style=" display: list-item;"><div class="vb"><a href="${ctx}/registUI.html"><img src="${ctx}/source/images/portal/NewVIP.png" alt=""></a></div></li>
 						<li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/NewVIP2.png" alt=""></a></div></li>
 						<li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t1.png" alt=""></a></div></li>
                         <li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/t3.png" alt=""></a></div></li>
+						-->
+						<c:forEach var="list" items="${adList}" varStatus="status">
+							<c:if test="${status.index ==0}">
+								<li style=" display: list-item;"><div class="vb"><a href="#"><img src="${ctx}/source/images/ad/${list.image }" alt=""></a></div></li>
+							</c:if>
+							<c:if test="${status.index !=0}">
+								<li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/ad/${list.image }" alt=""></a></div></li>
+							</c:if>
+						</c:forEach>
 					</ul>
 				</div>
              </div>
 				<ol class="bannerbtn circle clearfix">
-                    <li class="active"></li>
+                    <!-- <li class="active"></li>
                     <li></li>
                     <li></li>
-                    <li></li>
+                    <li></li> -->
+                    <c:forEach var="list" items="${adList}" varStatus="status">
+                    	<c:if test="${status.index ==0}">
+							<li class="active"></li>
+						</c:if>
+						<c:if test="${status.index !=0}">
+							<li></li>
+						</c:if>
+					</c:forEach>
 				</ol>
 			</div>
 
