@@ -220,6 +220,10 @@ public class OrderServiceImpl implements IOrderService{
 	public List<Map<String, Object>> findServiceCount() {
 		return orderDao.getServiceCount();
 	}
+	
+	public List<Order> findDelOrderByMap(Map<String, Object> map) {
+		return orderDao.findDelOrderByMap(map);
+	}
 
 	
 }
