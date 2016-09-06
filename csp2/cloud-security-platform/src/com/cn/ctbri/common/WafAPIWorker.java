@@ -2,7 +2,10 @@ package com.cn.ctbri.common;
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +24,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.cn.ctbri.controller.WafController;
+import com.cn.ctbri.util.DateUtils;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -235,7 +239,27 @@ public class WafAPIWorker {
         return textEntity;
 	}
 	
-	
+	/**
+	 * 功能描述：删除waf
+	 * 参数描述： targetKey 订单编号
+	 */
+	public static void deleteVirtualSite(String resourceId, String targetKey) {
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("resourceId", resourceId);
+		json.put("targetKey", targetKey);
+		//创建任务发送路径
+		String url = SERVER_WAF_ROOT + "/rest/adapter/deleteVirtualSite";
+		//创建配置
+		ClientConfig config = new DefaultClientConfig();
+		//绑定配置
+    	buildConfig(url,config);
+    	//创建客户端
+        Client client = Client.create(config);
+        WebResource service = client.resource(url);
+        //获取响应结果
+        String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, json.toString());
+	}
 	
 	
 	/**
