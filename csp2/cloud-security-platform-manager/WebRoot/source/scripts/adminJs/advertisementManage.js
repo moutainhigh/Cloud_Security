@@ -31,6 +31,12 @@ function add(){
     //}else {
     //	$("#regist_image_msg").html("");
     //}
+    //验证广告分类
+    var adType = $("#regist_type").val();
+    if(adType=="" ||adType==-1){
+    	$("#regist_type_msg").html("广告分类不能为空!");
+    	submitFlg = false;
+    }
     
     if(startDate=="" || endDate=="") {
     	$("#regist_date_msg").html("有效期时间不能为空!");
@@ -52,7 +58,9 @@ function add(){
 		if(responseResult.success == false) {
 			alert("添加广告失败!");
 		}
-		window.location.href = "adminAdvertisementManageUI.html";
+		
+		toAdManagerUI(adType);
+		//window.location.href = "adminAdvertisementManageUI.html";
 	});
 	
 	
@@ -76,7 +84,9 @@ function deleteAdvertisement(id){
 			if(data.success == false) {
 				alert("删除广告失败!");
 			}
-			window.location.href = "adminAdvertisementManageUI.html";
+			//window.location.href = "adminAdvertisementManageUI.html";
+			var adType = $("#adType").val();
+			toAdManagerUI(adType);
 		},
 		error:function(data){
 			alert("系统异常!请稍后再试");
@@ -102,4 +112,81 @@ function checkDate() {
          	return;
          }
 	}
+}
+
+function toAdManagerUI(adType){
+	if( adType == null) {
+		adType = $("#select_type").val();
+	}
+		var tempForm = document.createElement("form");
+  		tempForm.action = "adminAdvertisementManageUI.html";
+  		tempForm.method = "post";
+  		tempForm.style.display = "none";
+  							
+  		var adTypeInput = document.createElement("input");
+  		adTypeInput.type="hidden"; 
+		adTypeInput.name= "type"; 
+		adTypeInput.value= adType; 
+		tempForm.appendChild(adTypeInput);
+							
+		document.body.appendChild(tempForm);
+		tempForm.submit();
+		document.body.removeChild(tempForm);
+}
+
+//广告上移
+function upSort(tableIndex){
+	var upIndex = tableIndex-1;
+	
+	var adId1 = $("#ad_id_"+tableIndex).val();
+	var adOrder1 = $("#ad_order_"+ upIndex).val();
+	
+	var adId2 = $("#ad_id_"+upIndex).val();
+	var adOrder2 = $("#ad_order_"+ tableIndex).val();
+	$.ajax({
+		type:"POST",
+		dataType:"json",
+		data:{"adId1":adId1,"adOrder1":adOrder1,"adId2":adId2,"adOrder2":adOrder2},
+		url:"adminAdvertisementSort.html",
+		success: function(data){
+			if(data.success == false) {
+				alert("广告排序失败!");
+			}
+			//window.location.href = "adminAdvertisementManageUI.html";
+			var adType = $("#adType").val();
+			toAdManagerUI(adType);
+		},
+		error:function(data){
+			alert("系统异常!请稍后再试");
+		}
+	});
+
+}
+//广告下移
+function downSort(tableIndex){
+	var downIndex = tableIndex+1;
+	
+	var adId1 = $("#ad_id_"+tableIndex).val();
+	var adOrder1 = $("#ad_order_"+ downIndex).val();
+	
+	var adId2 = $("#ad_id_"+downIndex).val();
+	var adOrder2 = $("#ad_order_"+ tableIndex).val();
+	
+	$.ajax({
+		type:"POST",
+		dataType:"json",
+		data:{"adId1":adId1,"adOrder1":adOrder1,"adId2":adId2,"adOrder2":adOrder2},
+		url:"adminAdvertisementSort.html",
+		success: function(data){
+			if(data.success == false) {
+				alert("广告排序失败!");
+			}
+			//window.location.href = "adminAdvertisementManageUI.html";
+			var adType = $("#adType").val();
+			toAdManagerUI(adType);
+		},
+		error:function(data){
+			alert("系统异常!请稍后再试");
+		}
+	});
 }
