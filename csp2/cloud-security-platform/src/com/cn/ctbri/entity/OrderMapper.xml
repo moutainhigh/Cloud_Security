@@ -358,6 +358,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
     </select>
     
+    
+    <!-- 根据条件查询订单信息 -->
+    <select id="findDelOrderByMap" resultMap="OrderRM" parameterType="hashmap">
+		<if test="isAPI==2">
+	        select * from cs_order o
+				where o.status in (4) 
+				and o.delFlag !=1
+				and	o.payFlag = 1
+				and o.isAPI = 2
+				and o.serviceId = 6
+				and CURDATE() BETWEEN date_add(DATE_FORMAT(o.end_date, '%Y-%m-%d'),interval -1 day) AND o.end_date
+			union
+			select * from cs_order o
+				where o.status in (4) 
+				and o.delFlag !=1
+				and	o.payFlag = 1
+				and o.isAPI = 2
+				and o.serviceId = 6
+				and CURDATE() BETWEEN date_add(DATE_FORMAT(o.end_date, '%Y-%m-%d'),interval -9 day) AND o.end_date
+		</if>
+		
+    </select>
+    
     <!-- 查询联系人 -->
     <select id="findLinkmanById" resultType="com.cn.ctbri.entity.Linkman" parameterType="int">
         select * from cs_linkman l where l.id=#{contactId}
