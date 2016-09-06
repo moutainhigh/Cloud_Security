@@ -272,6 +272,14 @@ public class DeviceAdapterManagerService {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		return deviceAdpaterManager.getAllWafLogWebsecInTime(jsonObject);
 	}
+	
+	@POST
+	@Path("/getWafLogWebsecCurrent")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafLogWebsecCurrent(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getWafLogWebsecCurrent(jsonObject);
+	}
 	@POST
 	@Path("/getWaflogArpByIp")
 	@Produces(MediaType.APPLICATION_JSON)

@@ -3,6 +3,7 @@
 <generatorConfiguration >
   <classPathEntry location="/Users/shaozhenya/DevelopingSpaces/Workspaces/MyEclipse 2015/cloud-security-southAPI/WebRoot/WEB-INF/lib/mysql-connector-java-5.1.5-bin.jar" />
   <context id="context1" targetRuntime="MyBatis3">
+  	<plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
   	<commentGenerator>
       <property name="suppressAllComments" value="true" />
       <property name="suppressDate" value="true" />
@@ -18,7 +19,8 @@
     <table schema="t_waf_log_websec" tableName="t_waf_log_websec"></table>
     <table schema="t_waf_log_websec_count" tableName="t_waf_log_websec_count"></table> -->
     <!-- <table schema="t_waf_log_websec_src" tableName="t_waf_log_websec_src"></table>
-    <table schema="t_waf_log_websec_dst" tableName="t_waf_log_websec_dst"></table> -->
-    <table schema="t_view_ipv4_location" tableName="t_view_ipv4_location"></table>
+    <table schema="t_waf_log_websec_dst" tableName="t_waf_log_websec_dst"></table> 
+    <table schema="t_view_ipv4_location" tableName="t_view_ipv4_location"></table> -->
+    <table schema="t_waf_log_websec" tableName="t_waf_log_websec"></table>
   </context>
 </generatorConfiguration>

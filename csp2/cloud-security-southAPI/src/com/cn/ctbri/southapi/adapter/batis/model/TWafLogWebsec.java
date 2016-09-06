@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class TWafLogWebsec {
     private Long logId;
-    
+
     private Integer resourceId;
 
     private String resourceUri;
@@ -182,7 +182,7 @@ public class TWafLogWebsec {
     }
 
     public Date getStatTime() {
-    	return statTime;
+        return statTime;
     }
 
     public void setStatTime(Date statTime) {

@@ -20,6 +20,7 @@ import java.util.UUID;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -612,6 +613,42 @@ public class NsfocusWAFAdapter {
 		}
 	}
 	
+	public String getWafLogWebsecCurrent(JSONObject jsonObject) {
+		SqlSession sqlSession = null;
+		try {
+			//组装查询条件并进行查询
+			TWafLogWebsecExample example = new TWafLogWebsecExample();
+			
+			//查询并返回结果
+			sqlSession = getSqlSession();
+			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+			int maxNum = mapper.selectMaxByExample(example);
+			int startNum = 0;
+			if (null!=jsonObject.get("topNum")&&jsonObject.getInt("topNum")>0) {
+				startNum = maxNum-jsonObject.getInt("topNum")+1;
+			}
+			example.or().andLogIdBetween(Long.valueOf(startNum), Long.valueOf(maxNum));
+			List<TWafLogWebsec> allList = mapper.selectByExample(example);
+
+			//base64编码
+			for (TWafLogWebsec tWafLogWebsec : allList) {
+				tWafLogWebsec = getTWafLogWebsecBase64(tWafLogWebsec);
+			}
+			
+			//Java对象转为json数据
+			XStream xStream = getXStream();
+			xStream.alias("wafLogWebsecList", List.class);
+			String jsonString =  xStream.toXML(allList);
+			return jsonString;
+		} catch (Exception e) {
+			e.printStackTrace();
+			sqlSession.rollback();
+			return "{\"wafLogWebsecList\":\"error\"}";
+		} finally {
+			sqlSession.close();
+		}					
+	}
+	
 
 	//public String getAllWafLogWebsecInTime() {}
 	
@@ -925,11 +962,19 @@ public class NsfocusWAFAdapter {
 			sqlSession = getSqlSession();
 			
 			//根据时间间隔获取时间段
+			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+			int maxNum = mapper.selectMaxByExample(new TWafLogWebsecExample());
+			int startNum = maxNum;
+			if (null!=jsonObject.get("topNum")&&jsonObject.getInt("topNum")>0) {
+				startNum = maxNum-jsonObject.getInt("topNum");
+			}
+			Criteria tWafLogWebseCriteria = new TWafLogWebsecExample().or();
+			tWafLogWebseCriteria.andLogIdLessThanOrEqualTo(Long.valueOf(startNum));
 			
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
 			Date dateNow = calendar.getTime();
-			Criteria tWafLogWebseCriteria = new TWafLogWebsecExample().or();
+			
 			if (jsonObject.get("dstIp")!=null&&!dstIpList.isEmpty()) {
 				tWafLogWebseCriteria.andDstIpIn(dstIpList);
 			}
@@ -953,8 +998,13 @@ public class NsfocusWAFAdapter {
 				}
 			}
 			
-			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+			
+			
+			//查询并返回结果
+
+			
 			for (Element element : typeElements) {
+				
 				String eventTypeBase64 = stringToBase64(element.getTextTrim());
 				tWafLogWebseCriteria.andEventTypeEqualTo(element.attributeValue("name"));
 				TWafLogWebsecExample tWafLogWebsecExample = new TWafLogWebsecExample();

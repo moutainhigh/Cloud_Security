@@ -8,10 +8,6 @@ public class TWafLogWebsecExample {
     protected String orderByClause;
 
     protected boolean distinct;
-    
-    protected boolean top;
-    
-    protected int topNum;
 
     protected List<Criteria> oredCriteria;
 
@@ -30,26 +26,10 @@ public class TWafLogWebsecExample {
     public void setDistinct(boolean distinct) {
         this.distinct = distinct;
     }
-    
+
     public boolean isDistinct() {
         return distinct;
     }
-    
-    public void setTop(boolean top){
-    	this.top = top;
-    }
-
-    public boolean getTop() {
-		return top;
-	}
-
-    public void setTopNum(int num) {
-		this.topNum = num;
-	}
-    
-    public int getTopNum() {
-		return topNum;
-	}
 
     public List<Criteria> getOredCriteria() {
         return oredCriteria;

@@ -30,13 +30,13 @@ public class TWafLogWebsecSqlProvider {
         return SQL();
     }
     
-    public String countByExampleGroup(TWafLogWebsecExample example) {
-        BEGIN();
-        SELECT("count(*)");
+    public String selectMaxByExample(TWafLogWebsecExample example) {
+		BEGIN();
+		SELECT("max(log_id) as log_id");
         FROM("t_waf_log_websec");
         applyWhere(example, false);
         return SQL();
-    }
+	}
 
     public String selectByExampleWithBLOBs(TWafLogWebsecExample example) {
         BEGIN();
