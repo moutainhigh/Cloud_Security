@@ -170,7 +170,7 @@ public class WafDetailController {
             jo.put("label", "0");
             jo.put("value", low);
             jo.put("color", "#1e91ff");
-            jo.put("ratio", df.format((float)low/count*100)+"%");
+//            jo.put("ratio", df.format((float)low/count*100)+"%");
             json.add(jo);
         }
         if(middle>0){
@@ -178,7 +178,7 @@ public class WafDetailController {
             jo.put("label", "1");
             jo.put("value", middle);
             jo.put("color", "#ffa500");
-            jo.put("ratio", df.format((float)middle/count*100)+"%");
+//            jo.put("ratio", df.format((float)middle/count*100)+"%");
             json.add(jo);
         }
         if(high>0){
@@ -186,7 +186,7 @@ public class WafDetailController {
             jo.put("label", "2");
             jo.put("value", high);
             jo.put("color", "#ff7e50");
-            jo.put("ratio", df.format((float)high/count*100)+"%");
+//            jo.put("ratio", df.format((float)high/count*100)+"%");
             json.add(jo);
         }
         
