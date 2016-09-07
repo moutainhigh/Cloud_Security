@@ -23,7 +23,7 @@ var settings = {
 
     tableRows: 8,
     wsHost: "ws://"+wsurl+"/websocket",
-    psk: "135de9e2fb6ae653e45f06ed18fbe9a7",
+    psk: "135de9e2fb6ae653e45f06ed18fbe9a7"+"--"+window.currentId,
     wsTimeout: 30000,
     pruneInterval: 3600,
     dataPruneInterval: 60
