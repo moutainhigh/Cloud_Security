@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.DistrictDataDao;
 import com.cn.ctbri.dao.TaskDao;
+import com.cn.ctbri.entity.AlarmSum;
 import com.cn.ctbri.entity.City;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.District;
@@ -130,6 +131,17 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
 
 	public List<District> getSiteCount() {
 		return districtDataDao.getSiteCount();
+		
+	}
+
+	@Override
+	public List getAllAlarmCount() {
+		return districtDataDao.getAllAlarmCount();
+	}
+
+	@Override
+	public void updateWafAlarmCount(List<District> list) {
+		districtDataDao.updateWafAlarmCount(list);
 		
 	}
 }
