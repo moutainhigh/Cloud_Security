@@ -76,7 +76,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 						-->
 						<c:forEach var="list" items="${adList}" varStatus="status">
 							<c:if test="${status.index ==0}">
-								<li style=" display: list-item;"><div class="vb"><a href="#"><img src="${ctx}/source/images/ad/${list.image }" alt=""></a></div></li>
+								<li style=" display: list-item;"><div class="vb"><a href="${ctx}/registUI.html"><img src="${ctx}/source/images/ad/${list.image }" alt=""></a></div></li>
 							</c:if>
 							<c:if test="${status.index !=0}">
 								<li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/ad/${list.image }" alt=""></a></div></li>
