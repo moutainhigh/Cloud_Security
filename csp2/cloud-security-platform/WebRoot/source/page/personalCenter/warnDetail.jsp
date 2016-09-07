@@ -185,7 +185,7 @@ function seedetail1(e) {
                     	<c:forEach var="asset" items="${assets}" varStatus="status">
 			            	<div class="not-used">
 			            	<!-- 告警开始 -->
-			            	<c:if test="${(asset.task.status==2 && order.status == 4) || order.status == 0}">
+			            	<c:if test="${(asset.task.status==2 && (order.status == 4 || order.status == 3)) || order.status == 0}">
 								<!-- 任务运行start -->
 								<c:import url="/taskRunning.html?orderId=${order.id }&type=${order.type}&orderAssetId=${asset.orderAssetId }&index=${status.index+1 }"></c:import>
 								<!-- end -->
