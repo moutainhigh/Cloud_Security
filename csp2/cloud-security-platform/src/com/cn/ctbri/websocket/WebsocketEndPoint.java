@@ -3,13 +3,10 @@ package com.cn.ctbri.websocket;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -19,9 +16,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tools.ant.taskdefs.Sleep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -66,35 +61,38 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 	@Override
 	protected void handleTextMessage(WebSocketSession session,
 			TextMessage message) throws Exception {
+		long startId=0;
 		String receiveMsg=message.getPayload();
-		//为了安全做的一个类似token认证
-		if("135de9e2fb6ae653e45f06ed18fbe9a7".equals(receiveMsg)){
-			//源端的经纬度
-			LinkedList<String> srcPositionList=new LinkedList<String>();
-			//目的端的经纬度
-			LinkedList<String> desPositionList=new LinkedList<String>();
-			
-			
-			//第一次读取数据
-			boolean firstRead=true;
-			long startId=0;
-			String dataText =null;
-			do{
-				if(firstRead){//第一次读取数据
-					dataText = getFirstWafData();
-				}else{
-					dataText=getWafData(startId);
+		if(StringUtils.isNotEmpty(receiveMsg)){
+			String[] arrayToken=receiveMsg.split("--");
+			//为了安全做的一个类似token认证
+			if(arrayToken!=null&&arrayToken[0]!=null&&"135de9e2fb6ae653e45f06ed18fbe9a7".equals(arrayToken[0])){
+				startId=Long.parseLong(arrayToken[1]);
+				//源端的经纬度
+				LinkedList<String> srcPositionList=new LinkedList<String>();
+				//目的端的经纬度
+				LinkedList<String> desPositionList=new LinkedList<String>();
+				
+				String dataText =null;
+				while(true){
+					System.out.println("startId:"+startId);
+					try{
+						dataText=getWafData(startId);
+						System.out.println("dataText:"+dataText);
+						JSONObject json = JSONObject.fromObject(dataText);
+						JSONArray array = (JSONArray) json.get("wafLogWebsecList");
+						startId=json.getLong("currentId");
+						if(null!=array&&array.size()==0){
+							Thread.sleep(1000*10);
+							continue;
+						}
+						perSendData(session,message,array,srcPositionList,desPositionList);
+					}catch(Exception ex){
+						ex.printStackTrace();
+					}
+					
 				}
-				JSONObject json = JSONObject.fromObject(dataText);
-				JSONArray array = (JSONArray) json.get("wafLogWebsecList");
-				startId=json.getLong("currentId");
-				if(null!=array&&array.size()==0){
-					Thread.sleep(1000*10);
-					continue;
-				}
-				perSendData(session,message,array,srcPositionList,desPositionList);
-				firstRead=false;
-			}while(!firstRead);
+			}
 		}
 	}
 	class DateComparator implements Comparator<Date>{
@@ -542,8 +540,13 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 //		JSONObject json=JSONObject.fromObject(text);
 //		int currentId=json.getInt("currentId");
 //		System.out.println(currentId);
-		String text2=WafAPIWorker.getAllWafLogWebsecInTime(1+"", "date");
-		System.out.println(text2);
-				
+//		String text2=WafAPIWorker.getAllWafLogWebsecInTime(1+"", "date");
+//		System.out.println(text2);
+		String dataText=WafAPIWorker.getAllWafLogWebsecInTime(70677);
+		JSONObject json = JSONObject.fromObject(dataText);
+		JSONArray array = (JSONArray) json.get("wafLogWebsecList");
+		if(null!=array&&array.size()==0){
+			System.out.println("size==0");
+		}
 	}
 }
