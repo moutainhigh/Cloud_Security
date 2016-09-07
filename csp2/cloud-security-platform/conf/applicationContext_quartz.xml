@@ -79,6 +79,21 @@
 		<property name="repeatInterval" value="1800000" /><!-- 每30分调度一次 --> 
     </bean>
     
+    <!--要调度的对象-->
+    <bean id="taskWafAlarmJobBean" class="com.cn.ctbri.common.WafAlarmAnalysisWorker" />
+    <bean id="taskWafAlarmJobDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="taskWafAlarmJobBean" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="taskWafAlarmTrigger"
+        class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="taskWafAlarmJobDetail" />
+        <property name="startDelay" value="0" /><!-- 调度工厂实例化后，经过0秒开始执行调度 -->  
+		<property name="repeatInterval" value="1800000" /><!-- 每30分调度一次 --> 
+    </bean>
+    
     <!-- 将lazy-init='false'那么容器启动就会执行调度程序   -->
     <bean id="startQuertz"
         class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
@@ -89,7 +104,7 @@
                 <ref bean="resultTrigger" />
                 -->
                 <ref bean="resultTrigger" />
-                <ref bean="taskHRSTrigger" />
+                <ref bean="taskWafAlarmTrigger" />
             </list>
         </property>
     </bean>
