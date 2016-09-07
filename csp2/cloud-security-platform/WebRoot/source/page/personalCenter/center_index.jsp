@@ -254,8 +254,8 @@ function buyAPI(apiId){
 					</div>
 					
 					<div class="safem fl">
-					<!--<span class="fl"><a href="${ctx}/updateUserProvice.html">更新用户</a></span>
-						<span class="fl"><a href="${ctx}/updateAssetProvince.html">更新资产</a></span>-->
+				<span class="fl"><a href="${ctx}/updateUserProvice.html">更新用户</a></span>
+						<span class="fl"><a href="${ctx}/updateAssetProvince.html">更新资产</a></span>
 						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
 						<!-- 商品分类 start -->
 						<c:import url="/category.html"></c:import>
