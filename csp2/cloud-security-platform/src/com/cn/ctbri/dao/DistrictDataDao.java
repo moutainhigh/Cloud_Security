@@ -3,6 +3,7 @@ package com.cn.ctbri.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.cn.ctbri.entity.AlarmSum;
 import com.cn.ctbri.entity.City;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.District;
@@ -106,5 +107,9 @@ public interface DistrictDataDao {
     void updateSiteCount(List<District> list);
     
     List<District> getSiteCount();
+    
+    List getAllAlarmCount();
+    
+    void updateWafAlarmCount(List<District> list);
 
 }
