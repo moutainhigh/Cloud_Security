@@ -61,7 +61,7 @@ function showHighSiteMap() {
 					for (var i = 0; i < dataList.length; i++) {
 
 						var name = getDistrictName(dataList[i].name);
-	  					var val ={'name':name,'value':dataList[i].siteCount};
+	  					var val ={'name':name,'value':dataList[i].alarmCount};
 	  					dataValue.push(val);
 					}
 				}
