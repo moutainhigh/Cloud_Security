@@ -726,10 +726,15 @@ public class NsfocusWAFAdapter {
 			e.printStackTrace();
 			return "{\"wafLogArpList\":\"error\"}";
 		}finally {
-			sqlSession.close();
+			closeSqlSession(sqlSession);
 		}
 	}
-	
+	 public static void closeSqlSession(SqlSession sqlSession){
+		 if(sqlSession==null){
+			 return;
+		 }
+		 sqlSession.close();
+	 }
 	public String getWafLogDeface(List<String> dstIpList) {
 		SqlSession sqlSession = null;
 		try {
@@ -1019,13 +1024,13 @@ public class NsfocusWAFAdapter {
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
-			errorJsonObject.put("message", "Eventtype count error!!!");
+			errorJsonObject.put("message", "Eventtype counts' IO error!!!");
 			return errorJsonObject.toString();
 		} catch (DocumentException e) {
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
-			errorJsonObject.put("message", "Eventtype count error!!!");
+			errorJsonObject.put("message", "Eventtype counts' document read error!!!");
 			return errorJsonObject.toString();
 		}finally {
 			sqlSession.close();
@@ -1064,11 +1069,21 @@ public class NsfocusWAFAdapter {
 			
 			return jsonArray.toString();
 			
-		} catch (Exception e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
-			errorJsonObject.put("message", "Eventtype count error!!!");
+			errorJsonObject.put("message", "Eventtype counts' IO error!!!");
+			JSONArray errorJsonArray = new JSONArray();
+			errorJsonArray.add(errorJsonObject);
+			return errorJsonArray.toString();
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "Eventtype counts' document read error!!!");
 			return errorJsonObject.toString();
 		}finally {
 			if(sqlSession!=null){
