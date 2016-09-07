@@ -168,7 +168,7 @@ public class NsfocusWAFAdapter {
 		return tWafLogDeface;
 	}
 	//获取sqlSession
-	private SqlSession getSqlSession() throws IOException{
+	private  SqlSession getSqlSession() throws IOException{
 		Reader reader;
 		reader = Resources.getResourceAsReader(DeviceAdapterConstant.RESOURCE_DATABASE_CONFIG);
 		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
@@ -585,7 +585,7 @@ public class NsfocusWAFAdapter {
 			}
 			//开始时间
 			Date dateBefore = calendar.getTime();
-			
+		
 			//组装查询条件并进行查询
 			TWafLogWebsecExample example = new TWafLogWebsecExample();
 			example.or().andStatTimeBetween(dateBefore,dateNow);
@@ -613,6 +613,45 @@ public class NsfocusWAFAdapter {
 		}
 	}
 	
+	public String getAllWafLogWebsecThanCurrentId(JSONObject jsonObject) {
+		SqlSession sqlSession = null;
+		try {
+			//根据
+			TWafLogWebsecExample example = new TWafLogWebsecExample();
+			if (jsonObject.get("currentId")!=null&&!jsonObject.getString("currentId").isEmpty()&&jsonObject.getLong("currentId")>0 ){
+				example.or().andLogIdGreaterThan(Long.parseLong(jsonObject.getString("currentId")));
+			}
+		
+			//组装查询条件并进行查询
+			
+			
+			//查询并返回结果
+			sqlSession = getSqlSession();
+			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+			int maxNum = mapper.selectMaxByExample(example);
+			List<TWafLogWebsec> allList = mapper.selectByExample(example);
+			//base64编码
+			for (TWafLogWebsec tWafLogWebsec : allList) {
+				tWafLogWebsec = getTWafLogWebsecBase64(tWafLogWebsec);
+			}
+			
+			//Java对象转为json数据
+			XStream xStream = getXStream();
+			xStream.alias("wafLogWebsecList", List.class);
+			String jsonString =  xStream.toXML(allList);
+			JSONObject returnJsonObject = JSONObject.fromObject(jsonString);
+			returnJsonObject.put("currentId", maxNum);
+			return returnJsonObject.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			sqlSession.rollback();
+			return "{\"wafLogWebsecList\":\"error\"}";
+		} finally {
+			sqlSession.close();
+		}
+	}
+	
+	
 	public String getWafLogWebsecCurrent(JSONObject jsonObject) {
 		SqlSession sqlSession = null;
 		try {
@@ -639,7 +678,9 @@ public class NsfocusWAFAdapter {
 			XStream xStream = getXStream();
 			xStream.alias("wafLogWebsecList", List.class);
 			String jsonString =  xStream.toXML(allList);
-			return jsonString;
+			JSONObject returnJsonObject = JSONObject.fromObject(jsonString);
+			returnJsonObject.put("currentId", maxNum);
+			return returnJsonObject.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
 			sqlSession.rollback();

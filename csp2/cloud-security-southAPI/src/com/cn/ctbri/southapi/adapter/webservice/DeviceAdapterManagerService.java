@@ -274,6 +274,14 @@ public class DeviceAdapterManagerService {
 	}
 	
 	@POST
+	@Path("/getAllWafLogWebsecThanCurrentId")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getAllWafLogWebsecThanCurrentId(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getAllWafLogWebsecThanCurrentId(jsonObject);
+	}
+	
+	@POST
 	@Path("/getWafLogWebsecCurrent")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafLogWebsecCurrent(String dataJson) {

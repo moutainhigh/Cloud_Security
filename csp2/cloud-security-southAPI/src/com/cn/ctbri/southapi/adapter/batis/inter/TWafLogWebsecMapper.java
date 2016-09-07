@@ -21,7 +21,7 @@ public interface TWafLogWebsecMapper {
     @SelectProvider(type=TWafLogWebsecSqlProvider.class, method="countByExample")
     int countByExample(TWafLogWebsecExample example);
     
-    @SelectProvider(type=TWafLogWebsecSqlProvider.class, method="countByExample")
+    @SelectProvider(type=TWafLogWebsecSqlProvider.class, method="selectMaxByExample")
     int selectMaxByExample(TWafLogWebsecExample example);
     
     @SelectProvider(type=TWafLogWebsecSqlProvider.class, method="selectByExampleWithBLOBs")
