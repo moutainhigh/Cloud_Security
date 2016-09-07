@@ -198,7 +198,7 @@
 
 <div class="safeBox">
 	<div class="contentBox" id="content">
-		<div style="position: relative;float:left;">
+		<div style="position:absolute; z-index:1">
 			<img src="${ctx}/source/images/portal/state_logo.png" id="logo_img"/>
 		</div>
 		<c:if test="${sessionScope.globle_user.name =='anquanbang' ||sessionScope.globle_user.name =='liuyanzhe' ||sessionScope.globle_user.name =='timelysnow'}">
