@@ -16,6 +16,7 @@ public class District {
 	private String count;
 	private String limit;
 	private int siteCount;  //高危网站数量
+	private int wafAlarmCount; //WAF告警数量
 	
     public int getId() {
         return id;
@@ -58,6 +59,12 @@ public class District {
 	}
 	public void setSiteCount(int siteCount) {
 		this.siteCount = siteCount;
+	}
+	public int getWafAlarmCount() {
+		return wafAlarmCount;
+	}
+	public void setWafAlarmCount(int wafAlarmCount) {
+		this.wafAlarmCount = wafAlarmCount;
 	}
 
     
