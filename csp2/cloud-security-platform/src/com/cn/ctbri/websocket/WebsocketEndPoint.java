@@ -49,7 +49,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 	private long id=0;
 	
 	private static int maxSize=20;
-	
+	WafAPIWorker worker = new WafAPIWorker();
 	public synchronized Map<String, IPPosition> getIPPositions() {
 		if (ipPositionMap == null) {
 			ipPositionMap = ipPositionService.findIPPositions();
@@ -74,28 +74,22 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			//目的端的经纬度
 			LinkedList<String> desPositionList=new LinkedList<String>();
 			
-			WafAPIWorker worker = new WafAPIWorker();
+			
 			//第一次读取数据
 			boolean firstRead=true;
-			long startReadTime=0;
+			long startId=0;
 			String dataText =null;
 			do{
 				if(firstRead){//第一次读取数据
-					startReadTime=System.currentTimeMillis();
 					dataText = getFirstWafData();
-					System.out.println("firstgetdataText:"+dataText);
 				}else{
-					long currentReadTime=System.currentTimeMillis();
-					int seconds=(int) ((currentReadTime-startReadTime)/1000);
-					dataText=getWafData(seconds);
-//					dataText = getFirstWafData();
-					System.out.println("seconds:"+seconds+"dataText:"+dataText);
-					startReadTime=currentReadTime;
+					dataText=getWafData(startId);
 				}
 				JSONObject json = JSONObject.fromObject(dataText);
 				JSONArray array = (JSONArray) json.get("wafLogWebsecList");
+				startId=json.getLong("currentId");
 				if(null!=array&&array.size()==0){
-					Thread.sleep(1000*20);
+					Thread.sleep(1000*10);
 					continue;
 				}
 				perSendData(session,message,array,srcPositionList,desPositionList);
@@ -112,15 +106,12 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 		
 	}
 	public String getFirstWafData(){
-		WafAPIWorker worker = new WafAPIWorker();
-		long startTimeTest=System.currentTimeMillis();
-//		String text = worker.getAllWafLogWebsecInTime("10", "date");
 		String text=worker.getWafLogWebsecCurrent(500);
 		return text;
 	}
-	public String getWafData(int seconds){
+	public String getWafData(long currentId){
 		WafAPIWorker worker = new WafAPIWorker();
-		String text = worker.getAllWafLogWebsecInTime(seconds+"", "second");
+		String text = worker.getAllWafLogWebsecInTime(currentId);
 		return text;
 	}
 	
@@ -510,8 +501,49 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 //		System.out.println(positionArray[0]);
 //		System.out.println(positionArray[1]);
 //		double d = 3.1415926;
-		double d=3.1415926;
-		String result = String .format("%.1f",d);
-		System.out.println(result);
+//		double d=3.1415926;
+//		String result = String .format("%.1f",d);
+//		System.out.println(result);
+//		String text=WafAPIWorker.getWafLogWebsecCurrent(2);
+//		System.out.println("getFirstWafData:"+text);
+		String text="{\"wafLogWebsecList\": ["+
+  "{"
++    "\"logId\": 69062,"+
+    "\"resourceId\": 10001,"+
+    "\"resourceUri\": \"/WAF/DEVICE/CTBRI/Group001\","+
+    "\"resourceIp\": \"172.16.100.210\","+
+    "\"siteId\": \"1472538509\","+
+    "\"protectId\": \"2472538509\","+
+    "\"dstIp\": \"219.141.189.183\","+
+    "\"dstPort\": \"80\","+
+    "\"srcIp\": \"106.184.4.137\","+
+    "\"srcPort\": \"60242\","+
+    "\"method\": \"GET\","+
+    "\"domain\": \"None\","+
+    "\"uri\": \"/docs/\","+
+    "\"alertlevel\": \"MEDIUM\","+
+    "\"eventType\": \"SFRUUOWNj+iurui/neiDjA==\","+
+    "\"statTime\": \"2016-09-07 15:55:29\","+
+    "\"policyId\": \"1\","+
+    "\"ruleId\": \"0\","+
+    "\"action\": \"Block\","+
+    "\"block\": \"No\","+
+    "\"blockInfo\": \"None\","+
+    "\"alertinfo\": \"cmVxdWVzdCBleGNlZWRzIHN5c3RlbSdzIGxpbWl0\","+
+    "\"proxyInfo\": \"None\","+
+    "\"characters\": \"Tm9uZQ==\","+
+    "\"countNum\": \"1\","+
+    "\"protocolType\": \"HTTP\","+
+    "\"wci\": \"Tm9uZQ==\","+
+    "\"wsi\": \"Tm9uZQ==\""+
+  "}"+
+"],\"currentId\":10}";
+//		System.out.println(text);
+//		JSONObject json=JSONObject.fromObject(text);
+//		int currentId=json.getInt("currentId");
+//		System.out.println(currentId);
+		String text2=WafAPIWorker.getAllWafLogWebsecInTime(1+"", "date");
+		System.out.println(text2);
+				
 	}
 }

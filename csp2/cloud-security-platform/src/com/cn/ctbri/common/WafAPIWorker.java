@@ -432,6 +432,29 @@ public class WafAPIWorker {
         return textEntity;
 	}
 	
+	/**
+	 * 根据自增的主键id来查询数据
+	 * @param currentId
+	 * @return
+	 */
+	public static String getAllWafLogWebsecInTime(long currentId){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("currentId", currentId);
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/getAllWafLogWebsecInTime";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
 	public static String getLocationFromIp(String ip){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
