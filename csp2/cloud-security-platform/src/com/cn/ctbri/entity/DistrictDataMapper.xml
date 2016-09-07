@@ -263,4 +263,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id ="getSiteCount" resultMap="DistrictRM">
 		select dis.name, dis.siteCount from cs_district dis
     </select>
+    <select id="getAllAlarmCount" resultType="hashmap">
+     select name, count1+count2+count3+count4+count5+wafAlarmCount alarmCount from cs_district
+    </select>
+    <update id="updateWafAlarmCount"   parameterType="java.util.List">
+    	<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+				update cs_district 
+				<set>
+				  wafAlarmCount=${item.wafAlarmCount}
+				</set>
+				where id = ${item.id}
+		 </foreach>
+    </update>
 </mapper>
