@@ -612,20 +612,40 @@ public class DistrictDataController {
         //行业list
         List industryList = new ArrayList();
         List jsonUserList = new ArrayList();
+        String vIndustry = "";
+        String userCount = "";
         if(userList!=null && userList.size()>0){
         	for(int i = 0; i<userList.size(); i++){
-        		industryList.add(((Map)(userList.get(i))).get("industry"));
-        		jsonUserList.add(((Map)(userList.get(i))).get("userCount"));
+        		Object industry = ((Map)(userList.get(i))).get("industry");
+        		if("其他".equals(industry)){
+        			vIndustry += industry.toString();
+        			userCount += ((Map)(userList.get(i))).get("userCount").toString();
+        		}else{
+        			industryList.add(((Map)(userList.get(i))).get("industry"));
+        			jsonUserList.add(((Map)(userList.get(i))).get("userCount"));
+        		}
         	}
+        	industryList.add(vIndustry);
+        	jsonUserList.add(userCount);
         }
         
         //获取各行业订单数
+        //String oIndustry = "";
+        String orderCount = "";
         List orderList = districtDataService.getIndustryOrderCount();
         List jsonOrderList = new ArrayList();
+        
         if(orderList!=null && orderList.size()>0){
         	for(int i = 0; i < orderList.size(); i++){
-        		jsonOrderList.add(((Map)(orderList.get(i))).get("orderCount"));
+        		Object industry = ((Map)(userList.get(i))).get("industry");
+        		if("其他".equals(industry)){
+        			orderCount += ((Map)(orderList.get(i))).get("orderCount").toString();
+        		}else{
+        			jsonOrderList.add(((Map)(orderList.get(i))).get("orderCount"));
+        		}
+        		
         	}
+        	jsonOrderList.add(orderCount);
         }
         Map<String, Object> m = new HashMap<String, Object>();
         m.put("userList", jsonUserList);
