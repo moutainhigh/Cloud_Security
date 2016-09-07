@@ -63,7 +63,7 @@
 	}
 	.contentBox nav{
 		/*top:20px;*/
-		left: 25px;
+		left: 230px;
 		position: absolute;
 		z-index:99999;
 	
@@ -149,6 +149,14 @@
 		text-align: center;
 	}
 	
+	#logo_img {
+		padding-right:20px;
+		max-width:200px;
+		myimg:expression(onload=function(){
+			this.style.width=(this.offsetWidth > 500)?”500px”:”auto”}
+		);
+	}
+	
 </style>
 <script>
 	var ctx='${ctx}';
@@ -190,6 +198,9 @@
 
 <div class="safeBox">
 	<div class="contentBox" id="content">
+		<div style="position: relative;float:left;">
+			<img src="${ctx}/source/images/portal/state_logo.png" id="logo_img"/>
+		</div>
 		<c:if test="${sessionScope.globle_user.name =='anquanbang' ||sessionScope.globle_user.name =='liuyanzhe' ||sessionScope.globle_user.name =='timelysnow'}">
 		<nav>
 			<ul class="clearfix navlist">
@@ -216,6 +227,7 @@
 			</ul>
 		</nav>
 		</c:if>
+		
 		
 		<div class="tabBox">
 		<!-- 攻击态势 -->
