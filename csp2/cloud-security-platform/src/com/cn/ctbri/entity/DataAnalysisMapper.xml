@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		join cs_district d
 		on b.districtId = d.id -->
 		
-		select c.districtId, c.val,d.echart_name
+		select c.districtId, c.val,d.name
 		from
 		    (select districtId, count(*) val 
 		     from
