@@ -508,6 +508,7 @@ function calDefaultPrice(){
 	var serviceId = $("#serviceIdHidden").val();
 	var type = $('.click').val();
     servType = $(".clickTime").val();
+    alert(type);
 	if(typeof(serviceId) == "undefined"){
 		return;
 	}
@@ -522,7 +523,7 @@ function calDefaultPrice(){
 		break;
 	case 3://默认长期
 	
-		calPriceLong(null,servType,null);
+		calPriceLong(null,servType,null,'1');
 		break;
 	case 4://默认单次
 		
@@ -530,7 +531,7 @@ function calDefaultPrice(){
 		break;
 	case 5://默认长期
 		
-		calPriceLong(null,servType,null);
+		calPriceLong(null,servType,null,'1');
 		break;
 	}
 	$("#timesHidden").val(1);
@@ -646,12 +647,13 @@ function tasknum_verification(){
 	}
    
     //计算长期价格
-    function calPriceLong(obj,typeDefault,assetCount){
+    function calPriceLong(obj,typeDefault,assetCount,serviceType){
     	var serviceId = $("#serviceIdHidden").val();
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
-    	//var serviceType = $('.click').val();
-    	var serviceType =1;
+    	
+    	alert(serviceType);
+    	//var serviceType =1;
     	var assetCountNew = 0;
     	if(assetCount==null){
     	   	var assetCountNew = $('.httpBox li').length;
@@ -669,6 +671,7 @@ function tasknum_verification(){
     		servType = obj.value;
     	}else{
     		servType = $(".clickTime").val();
+    		
     	}
     	//都不为空时，判断时间大小
     	if(beginDate!=""&&beginDate!=null&&endDate!=""&&endDate!=null){
