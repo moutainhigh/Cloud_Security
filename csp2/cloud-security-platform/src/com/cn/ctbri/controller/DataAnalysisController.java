@@ -47,7 +47,44 @@ public class DataAnalysisController {
 	public String highRiskSiteMap(HttpServletResponse response,HttpServletRequest request) throws IOException {
         
 		
-		List<District> result = districtDataService.getSiteCount();
+//		List<District> result = districtDataService.getSiteCount();
+		
+		//累加所有漏洞、木马、关键字、篡改、可用性告警数据
+		List result = districtDataService.getAllAlarmCount();
+		
+//		//查询 WAF告警数量
+//		String wafcreate = WafAPIWorker.getWafLogWebSecDstIpList();
+//		JSONObject jsonObject = JSONObject.fromObject(wafcreate);			
+//		JSONArray jsonArray = jsonObject.getJSONArray("WafLogWebSecDstIpList");
+		
+//		累加所有漏洞、木马、关键字、篡改、可用性及WAF告警数据总和
+//		----------------------累加告警数据总和  start ----------------------
+//		int wafWebSiteSize = jsonArray.size();
+//		for (int i = 0;i < wafWebSiteSize; i++) {
+//			JSONObject obj = (JSONObject) jsonArray.get(i);
+//			String dstIp = obj.getString("dstIp");
+//			int count = obj.getInt("count");
+//			System.out.print(dstIp + "/"+count+": ");
+//			//DB:根据waf防护目标的ip查询网站名、所在省份
+//			Map<String, String> assetInfo = dataAnalysisService.findAssetInfoByIp(dstIp);
+//			if (assetInfo != null) {
+//				String disName = assetInfo.get("districtName");
+////				String addr = assetInfo.get("addr");
+//				System.out.println(disName);
+//				
+//				//累计标志 true：已累计 false：未累计
+//				boolean totalFlag = false;
+//				for(AlarmSum alarmSum: result) {
+//					if (alarmSum.getDistrictName().equals(disName)) {
+//						alarmSum.setAlarmCount(alarmSum.getAlarmCount() + count);
+//					}
+//				}
+//				
+//			}
+//			
+//		}
+		
+		
 		
 		//--------------------------demo start-----------
 //		List<District> result = new ArrayList<District>();
