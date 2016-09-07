@@ -306,7 +306,7 @@
 					<script type="text/javascript" src="${ctx}/source/attacking/js/plugins/topojson.min.js"></script>
 					<script type="text/javascript">
 					var typejson ='${wafEventTypeCount}';
-					console.log(typejson);
+					window.currentId='${currentId}';
 					</script>
 					<script type="text/javascript" src="${ctx}/source/attacking/js/attacking.js"></script>
                 </div>
