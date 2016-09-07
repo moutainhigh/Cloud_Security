@@ -2022,8 +2022,10 @@ public class UserController{
   		  }
   	  	  m.addAttribute("wafAlarmLevel",wafAlarmLevel);
   		WafAPIWorker worker = new WafAPIWorker();
-  		String texts = worker.getWafEventTypeCount(null, "forever",0);
-  		JSONArray array = JSONArray.fromObject(texts);
+  		String texts = worker.getEventTypeCountInTimeCurrent(500);
+  		JSONObject json=JSONObject.fromObject(texts);
+  		JSONArray array = json.getJSONArray("eventTypeCountList");
+  		long currentId=json.getLong("currentId");
   		List<AttackCount> attackCountList = new ArrayList<AttackCount>();
   		for (int i = 0; i < array.size(); i++) {
   			JSONObject obj = (JSONObject) array.get(i);
@@ -2035,6 +2037,7 @@ public class UserController{
   			attackCountList.add(new AttackCount(eventType, count));
   		}
   		m.addAttribute("wafEventTypeCount",attackCountList.toString());
+  		m.addAttribute("currentId", currentId);
 	  	} catch (UnsupportedEncodingException e) {
 	  		e.printStackTrace();
 	  	}  	  
