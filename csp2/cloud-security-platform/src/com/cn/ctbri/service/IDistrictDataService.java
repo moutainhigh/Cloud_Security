@@ -3,6 +3,7 @@ package com.cn.ctbri.service;
 import java.util.List;
 import java.util.Map;
 
+import com.cn.ctbri.entity.AlarmSum;
 import com.cn.ctbri.entity.City;
 import com.cn.ctbri.entity.District;
 import com.cn.ctbri.entity.Alarm;
@@ -111,4 +112,8 @@ public interface IDistrictDataService {
   	void updateSiteCount(List<District> list);
   	
   	List<District> getSiteCount();
+  	
+  	List getAllAlarmCount();
+  	
+  	void updateWafAlarmCount(List<District> list);
 }
