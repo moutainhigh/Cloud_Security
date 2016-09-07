@@ -14,6 +14,7 @@ import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.DistrictDataDao;
 import com.cn.ctbri.dao.TaskDao;
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.AlarmSum;
 import com.cn.ctbri.entity.City;
 import com.cn.ctbri.entity.District;
 import com.cn.ctbri.entity.Task;
@@ -150,6 +151,17 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
 
 	public List<District> getSiteCount() {
 		return getSqlSession().selectList(ns+"getSiteCount");
+		
+	}
+
+	@Override
+	public List getAllAlarmCount() {
+		return getSqlSession().selectList(ns+"getAllAlarmCount");
+	}
+
+	@Override
+	public void updateWafAlarmCount(List<District> list) {
+		getSqlSession().update(ns+"updateWafAlarmCount", list);
 		
 	}
 }
