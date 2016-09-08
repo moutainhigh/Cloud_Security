@@ -1,3 +1,4 @@
+var saveFlag = 0;
 //获取资产列表
 /*function getUserAssets(){
 	$.post("userAssets.html",{},function(data){
@@ -9,6 +10,12 @@
 }*/
 
 function saveAsset() {
+	//$("#addAssetButton").onclick = function(){saveAsset()};
+	//防止重复提交
+	if (saveFlag == 1) {
+		return;
+	}
+	saveFlag = 1;
 	var assetName =$.trim($("#assetName").val());
 	var assetAddr = $.trim($("#assetAddr").val());
     //var addrType = $('input:radio[name="addrType"]:checked').val();
@@ -28,27 +35,34 @@ function saveAsset() {
 	$("#assetUsage_msg").html("");
 	if(assetName == null || assetName == ""){
 		$("#assetName_msg").html("请输入资产名称!");
+		saveFlag = 0;
 	}else if(patrn.test(assetName)){
 		$("#assetName_msg").html("请输入正确的资产名称!");
+		saveFlag = 0;
 	}else if(assetAddr==null || assetAddr == ""){
 			$("#assetName_msg").html("");
 			$("#assetAddr_msg").html("请输入资产地址!");
+			saveFlag = 0;
 	}else if(pattern.test(assetAddr)){
 			$("#assetName_msg").html("");
 			$("#assetAddr_msg").html("请输入正确的资产地址!");
+			saveFlag = 0;
 	}else if((!strRegex.test(assetAddr)&&!newRegex.test(assetAddr))||(strRegex.test(assetAddr)&&assetAddr.indexOf('\/\/\/')!=-1)){
 			$("#assetName_msg").html("");
 			$("#assetAddr_msg").html("请输入正确的资产地址!");
+			saveFlag = 0;
 	}
 	else if(prov == -1){
 		$("#assetName_msg").html("");
 		$("#assetAddr_msg").html("");
 		$("#location_msg").html("请选择资产所在物理地址!");
+		saveFlag = 0;
 	}else if(purpose==-1){
 		$("#assetName_msg").html("");
 		$("#assetAddr_msg").html("");
 		$("#location_msg").html("");
 		$("#assetUsage_msg").html("请选择资产用途!");
+		saveFlag = 0;
 	}else{
 			//验证资产是否重复
 			$.ajax({
@@ -59,9 +73,11 @@ function saveAsset() {
 		        success: function(data){
 		            if(data.msg=='1'){
 		            	$("#assetName_msg").html("资产名称重复!");
+			            saveFlag = 0;
 		            }else if(data.msg=='2'){
 		            	$("#assetName_msg").html("");
 		            	$("#assetAddr_msg").html("资产地址重复!");
+		            	saveFlag = 0;
 		            }else{
 		            	$("#assetName_msg").html("");
 		            	$("#assetAddr_msg").html("");
@@ -74,6 +90,7 @@ function saveAsset() {
 		    		        success: function(data){
 		    		            if(data.msg){
 		    		            	alert("免费用户管理资产数不能大于" + data.allowCount);
+		    		            	saveFlag = 0;
 		    		            }else{
 		    		            	$.ajax({
 		    		            		type:'POST',
@@ -122,6 +139,7 @@ function saveAsset() {
 		    		            				default:
 		    		            					break;
 		    		            			}
+		    		            			saveFlag = 0;
 		    		            		},
 		    		            		error:function(data) {
 		    		            			if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
@@ -138,7 +156,7 @@ function saveAsset() {
 		     }); 
 		}
 	
-   
+     
 	
 }
 function searchAssetCombine(){
