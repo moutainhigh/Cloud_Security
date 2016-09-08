@@ -72,10 +72,11 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 				LinkedList<String> srcPositionList=new LinkedList<String>();
 				//目的端的经纬度
 				LinkedList<String> desPositionList=new LinkedList<String>();
-				
+				boolean flag=true;
 				String dataText =null;
-				while(true){
+				while(flag){
 					System.out.println("startId:"+startId);
+					flag=session.isOpen();
 					try{
 						dataText=getWafData(startId);
 						System.out.println("dataText:"+dataText);
@@ -86,7 +87,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 							Thread.sleep(1000*10);
 							continue;
 						}
-						perSendData(session,message,array,srcPositionList,desPositionList);
+						flag=perSendData(session,message,array,srcPositionList,desPositionList);
 					}catch(Exception ex){
 						ex.printStackTrace();
 					}
@@ -97,7 +98,6 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 	}
 	class DateComparator implements Comparator<Date>{
 
-		@Override
 		public int compare(Date o1, Date o2) {
 			return (int) (o1.getTime()-o2.getTime());
 		}
@@ -113,9 +113,9 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 		return text;
 	}
 	
-	public void perSendData(WebSocketSession session,TextMessage message,JSONArray array,LinkedList srcPositionList,LinkedList desPositionList) throws IOException, InterruptedException{
+	public boolean perSendData(WebSocketSession session,TextMessage message,JSONArray array,LinkedList srcPositionList,LinkedList desPositionList) throws IOException, InterruptedException{
 		if(array==null){
-			return;
+			return true;
 		}
 		long size = array.size();
 		/**
@@ -343,7 +343,12 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 						jsonObject.put("attack", attackVO);
 						System.out.println("positionDetail:"+attackVO.getSrcLongitude()+"-"+attackVO.getSrcLatitude()+"----"+attackVO.getDesLongitude()+"-"+attackVO.getDesLatitude());
 						TextMessage returnMessage = new TextMessage(jsonObject.toString());
-						session.sendMessage(returnMessage);
+						try {
+							session.sendMessage(returnMessage);
+						} catch (Exception e) {
+							e.printStackTrace();
+							return false;
+						}
 						Thread.currentThread().sleep(350);
 					}
 					i++;
@@ -369,16 +374,22 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 						jsonObject.put("attack", attackVO);
 						System.out.println("positionDetail:"+attackVO.getSrcLongitude()+"-"+attackVO.getSrcLatitude()+"----"+attackVO.getDesLongitude()+"-"+attackVO.getDesLatitude());
 						TextMessage returnMessage = new TextMessage(jsonObject.toString());
-						session.sendMessage(returnMessage);
+						try {
+							session.sendMessage(returnMessage);
+						} catch (Exception e) {
+							e.printStackTrace();
+							return false;
+						}
 						Thread.currentThread().sleep(350);
 						if(i==3){
-							return;
+							return true;
 						}
 					}
 				}
 			}
 			
 		}
+		return true;
 		
 	}
 	public void judgeRepeat(AttackVO attackVO,LinkedList srcPositionList,LinkedList desPositionList){
