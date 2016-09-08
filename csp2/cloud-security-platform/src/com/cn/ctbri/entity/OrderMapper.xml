@@ -72,7 +72,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                AND o.status in (2,3)
         </if>
         <if test="state==1"><!--服务中  -->
-               and (o.status in (3,4,5)
+               <!-- and (o.status in (3,4,5) -->
+               and ( (o.begin_date &lt;= now() and o.status in (0))
+               or o.status in (3,4,5)
                or (end_date &gt;= now() and o.isAPI = 1))
         </if>
         <!--<if test="type!=null">有警告的  
@@ -109,7 +111,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                and o.status in (2,3)
         </if>
         <if test="state==1"><!--服务中  -->
-               and (o.status in (3,4,5)
+               <!-- and (o.status in (3,4,5) -->
+               and ( (o.begin_date &lt;= now() and o.status in (0))
+               or o.status in (3,4,5)
                or (end_date &gt;= now() and o.isAPI = 1))
         </if>
         order by o.create_date desc 
