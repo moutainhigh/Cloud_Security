@@ -508,7 +508,6 @@ function calDefaultPrice(){
 	var serviceId = $("#serviceIdHidden").val();
 	var type = $('.click').val();
     servType = $(".clickTime").val();
-    alert(type);
 	if(typeof(serviceId) == "undefined"){
 		return;
 	}
@@ -651,8 +650,7 @@ function tasknum_verification(){
     	var serviceId = $("#serviceIdHidden").val();
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
-    	
-    	alert(serviceType);
+    
     	//var serviceType =1;
     	var assetCountNew = 0;
     	if(assetCount==null){
