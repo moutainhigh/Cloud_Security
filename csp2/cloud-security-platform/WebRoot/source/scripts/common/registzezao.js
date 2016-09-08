@@ -26,6 +26,8 @@ $(function(){
 			oMark2.style.height = documentHeight() + 'px';
 			oLogin2.style.left = (viewWidth() - oLogin2.offsetWidth)/2 + 'px';
 			oLogin2.style.top = (viewHeight() - oLogin2.offsetHeight)/2-25 + 'px';
+		}else{
+			$("#agreeId").val(0);
 		}
 		
 	});
