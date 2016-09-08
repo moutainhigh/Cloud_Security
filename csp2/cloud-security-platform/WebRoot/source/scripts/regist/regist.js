@@ -527,7 +527,7 @@ function submitForm(){
 						}
 					});	
 			    }else{
-		    		$("#ck_prompt").html("<b></b>请阅读《云平台用户注册协议》");
+		    		$("#ck_prompt").html("<b></b>请阅读《安全帮用户协议》");
 					$("#ck_prompt").fadeIn();
 			    }
 		    }else {
