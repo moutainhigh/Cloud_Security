@@ -15,6 +15,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="scan_type" column="scan_type"/>
 		<result property="userId" column="userId"/>
 		<result property="contactId" column="contactId"/>
+		<result property="price" column="price"/>
+		<result property="count" column="count"/>
 		<result property="remarks" column="remarks"/>
 		<result property="status" column="status"/>
 	</resultMap>
@@ -449,5 +451,108 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	AND serviceId=#{serviceId} 
 	</if>
 	GROUP BY o.userId
+    </select>
+    
+    <!--  统计当日交易总额  -->
+    <select id="countOrderAmount" parameterType="hashmap" resultType="hashmap">
+      SELECT IFNULL(sum(o.price),0) price FROM cs_order o,cs_user u
+      WHERE u.id = o.userId AND o.payFlag = '1' 
+	  <if test="beginDate!=null and beginDate!=''">
+	    <![CDATA[
+		AND o.create_date>=#{beginDate}  
+		]]>	
+	   </if>
+	   <if test="endDate!=null and endDate!=''">
+	    <![CDATA[
+		AND o.create_date<=#{endDate}
+		]]>	
+	   </if>
+    </select>
+    
+    <!--  各类服务订单交易额总数  -->
+    <select id="findServiceAmount" parameterType="hashmap" resultType="com.cn.ctbri.entity.Order">
+       SELECT sum(o.price) price,s.name servName FROM cs_order o,cs_service s 
+		WHERE o.serviceId = s.id AND o.payFlag = '1' 
+		<if test="beginDate!=null and beginDate!=''">
+	    <![CDATA[
+		AND o.create_date>=#{beginDate}  
+		]]>	
+	   </if>
+	   <if test="endDate!=null and endDate!=''">
+	    <![CDATA[
+		AND o.create_date<=#{endDate}
+		]]>	
+	   </if>
+		GROUP BY s.name
+    </select>
+    
+    <!--  最近6小时交易额变化曲线  -->
+    <select id="findTradingCurve" parameterType="hashmap" resultType="com.cn.ctbri.entity.Order">
+      SELECT o.price price,DATE_FORMAT(o.create_date,'%H:%I:%S') AS time FROM cs_order o,cs_user u
+      WHERE u.id=o.userId AND o.payFlag = '1'
+      	<if test="beginDate!=null and beginDate!=''">
+	    <![CDATA[
+		AND o.create_date>=#{beginDate}  
+		]]>	
+	   </if>
+	   <if test="endDate!=null and endDate!=''">
+	    <![CDATA[
+		AND o.create_date<=#{endDate}
+		]]>	
+	   </if>
+	   order by time
+    </select>
+    
+    <!--  当日内各类服务订单交易额占比情况  -->
+    <select id="findOrderAmountDayPie" parameterType="hashmap" resultType="com.cn.ctbri.entity.Order">
+       SELECT IFNULL(sum(o.price),0) price,s.name servName FROM cs_order o,cs_service s
+        WHERE s.id=o.serviceId AND o.payFlag = '1' 
+        <if test="beginDate!=null and beginDate!=''">
+	    <![CDATA[
+		AND o.create_date>=#{beginDate}  
+		]]>	
+	   </if>
+	   <if test="endDate!=null and endDate!=''">
+	    <![CDATA[
+		AND o.create_date<=#{endDate}
+		]]>	
+	   </if>
+	   GROUP BY s.name
+	   order by price
+    </select>
+    
+    <!--  当月内各类服务订单交易额占比情况  -->
+    <select id="findOrderAmountMonthPie" parameterType="String" resultType="com.cn.ctbri.entity.Order">
+       SELECT IFNULL(sum(o.price),0) price,s.name servName FROM cs_order o,cs_service s
+        WHERE s.id=o.serviceId AND o.payFlag = '1' and date_format(o.create_date,'%Y-%m')=#{createDate}
+	   GROUP BY s.name
+	   order by price
+    </select>
+    
+     <!--  日交易额总数 -->
+    <select id="findOrderAmounDayLine" parameterType="hashmap" resultType="com.cn.ctbri.entity.Order">
+       SELECT IFNULL(sum(o.price),0) price,DATE_FORMAT(o.create_date,'%H:00:00') time FROM cs_order o,cs_service s
+          WHERE s.id=o.serviceId AND o.payFlag = '1'
+        <if test="beginDate!=null and beginDate!=''">
+	    <![CDATA[
+		AND o.create_date>=#{beginDate}  
+		]]>	
+	   </if>
+	   <if test="endDate!=null and endDate!=''">
+	    <![CDATA[
+		AND o.create_date<=#{endDate}
+		]]>	
+	   </if>
+	   GROUP BY time
+	   order by time
+    </select>
+    
+    <!--  当月交易额总数  -->
+    <select id="findOrderAmountMonthLine" parameterType="hashmap" resultType="com.cn.ctbri.entity.Order">
+       SELECT o.price price,DATE_FORMAT(o.create_date,'%Y-%m-%d') AS time FROM cs_order o,cs_service s
+        WHERE s.id=o.serviceId AND o.payFlag = '1' and date_format(o.create_date,'%Y-%m')=#{createDate} 
+        and s.id=#{servName}
+	   GROUP BY time
+	   order by time
     </select>
 </mapper>

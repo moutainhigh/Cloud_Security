@@ -1,5 +1,6 @@
 package com.cn.ctbri.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -30,6 +31,9 @@ public class Order {
 	private int websoc;//创宇标志
 	private int tasknum;//订单对应的任务数
 	private int delFlag;//是否逻辑删除（1：逻辑删除）
+	private BigDecimal price;
+	private int count;
+	private String time;
 	//add by 2016-4-11
 	private int payFlag;//是否结算
 	private int isAPI;
@@ -166,4 +170,25 @@ public class Order {
 	public void setIsAPI(int isAPI) {
 		this.isAPI = isAPI;
 	}
+	public BigDecimal getPrice() {
+		return price;
+	}
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	
+	
 }
