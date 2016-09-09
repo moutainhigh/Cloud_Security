@@ -114,6 +114,8 @@ public class FinancialController {
     	}
         if(orderAmountPieList.size()>0){
         	paramMap.put("sta","1");
+        }else{
+        	paramMap.put("sta","0");
         }
 		paramMap.put("orderAmountPieList",orderAmountPieList);
 		paramMap.put("flag",flag);

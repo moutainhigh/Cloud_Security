@@ -85,6 +85,8 @@ $(function(){
 		$("#servName").val("0");
 		$("#timeDiv").css('display','none'); 
 		$("#timeDiv1").css('display','none'); 
+		$("#orderAmountLine").css('display','none'); 
+		$("#orderAmountPie").css('display','none'); 
 		$(this).siblings().removeClass('datab_cur');
 		$(this).addClass('datab_cur');
 		$('.dd_data_box').show();
@@ -147,51 +149,54 @@ $(function(){
 			data: {"create_date":createDate,"reportype":reportype},
 			dataType : "json",
 			success : function(data) {
-				var name = "";
-				if(data.flag == "1"){
-					name += "当日内各类服务订单交易额占比情况";
+				if(data.sta == "1"){
+					var name = "";
+					if(data.flag == "1"){
+						name += "当日内各类服务订单交易额占比情况";
+					}
+	                if(data.flag == "2"){
+						name += "当月内各类服务订单交易额占比情况";
+					}
+	                
+					var series;
+					$.each(data.orderAmountPieList, function(i, item) {
+						pielabel[i]= item['servName'];
+						pievalue[i]={'value':item['price'],'name':item['servName']};
+					});
+					require([ 'echarts', 'echarts/chart/pie' ], function(ec) {
+						// 基于准备好的dom，初始化echarts图表
+						var myChart = ec.init(document.getElementById('orderAmountPie'));
+						//设置数据
+						var option = {
+							      title : {
+							        text: name,
+							        x:'center'
+							      },
+							      tooltip : {
+							        trigger: 'item',
+							        formatter: "{a} <br/>{b} : {c} ({d}%)"
+							      },
+							      /*legend: {
+							        orient : 'vertical',
+							        x : 'left',
+							        data:pielabel
+							      },*/
+							      calculable : false,
+							      series : [
+							        {
+							          name:name,
+							          type:'pie',
+							          radius : '55%',
+							          center: ['50%', '60%'],
+							          data:pievalue
+							        }
+							      ]
+							    };
+						// 为echarts对象加载数据 
+						myChart.setOption(option);
+					});
 				}
-                if(data.flag == "2"){
-					name += "当月内各类服务订单交易额占比情况";
-				}
-                
-				var series;
-				$.each(data.orderAmountPieList, function(i, item) {
-					pielabel[i]= item['servName'];
-					pievalue[i]={'value':item['price'],'name':item['servName']};
-				});
-				require([ 'echarts', 'echarts/chart/pie' ], function(ec) {
-					// 基于准备好的dom，初始化echarts图表
-					var myChart = ec.init(document.getElementById('orderAmountPie'));
-					//设置数据
-					var option = {
-						      title : {
-						        text: name,
-						        x:'center'
-						      },
-						      tooltip : {
-						        trigger: 'item',
-						        formatter: "{a} <br/>{b} : {c} ({d}%)"
-						      },
-						      /*legend: {
-						        orient : 'vertical',
-						        x : 'left',
-						        data:pielabel
-						      },*/
-						      calculable : false,
-						      series : [
-						        {
-						          name:name,
-						          type:'pie',
-						          radius : '55%',
-						          center: ['50%', '60%'],
-						          data:pievalue
-						        }
-						      ]
-						    };
-					// 为echarts对象加载数据 
-					myChart.setOption(option);
-				});
+				
 			}
 		});
 	}else{
@@ -206,6 +211,7 @@ $(function(){
 	        data: {"create_date":createDate,"servName":servName,"reportype":reportype},
 	        dataType:"json",
 	        success: function(data){
+	        	
 	        	var name = "";
 				if(data.flag == "1"){
 					name += "日交易额总数";
