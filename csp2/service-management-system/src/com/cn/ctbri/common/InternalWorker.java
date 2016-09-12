@@ -235,6 +235,8 @@ public class InternalWorker {
 		String stateCode = obj.getString("code");
 		if(stateCode.equals("200")){
 			return "success";
+		}else if(stateCode.equals("421")){
+			return "wrong";
 		}else{
 			return "error";
 		}
