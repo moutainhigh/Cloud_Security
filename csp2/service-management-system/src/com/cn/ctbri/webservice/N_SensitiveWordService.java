@@ -124,36 +124,28 @@ public class N_SensitiveWordService {
 		        paramMap.put("apiId", 4);
 		        //查找此项服务的API订单
 				List<OrderAPI> oAPIList = orderAPIService.findByParam(paramMap);
-				if(user.getType()==3 || (user.getType()==2 && user.getApi1()>0 && oAPIList.size()>0)){
+				//如果是企业用户，或者普通用户下有api订单
+				if(user.getType()==3 || (user.getType()==2 && oAPIList.size()>0)){
 					//服务结束时间
-					Date end = oAPIList.get(0).getEnd_date();
+					Date end = null;
+					if(user.getType()!=3){
+						end = oAPIList.get(0).getEnd_date();
+					}
 					//当前时间
 					Date now = new Date();
-					if(now.compareTo(end)<=0){
+					if(user.getType()==3 || now.compareTo(end)<=0){
 						//查询可以用的api订单，按时间先后
 						List<OrderAPI> userableList = orderAPIService.findUseableByParam(paramMap);
-						if(userableList.size()>0){
+						if(user.getType()==3 || userableList.size()>0){
 							JSONObject jsonObj = new JSONObject().fromObject(dataJson);
-							//单次，长期
-							String scanMode = jsonObj.getString("scanMode");
-							//扫描方式（正常、快速、全量）
-	//						String scanType = jsonObj.getString("scanType");
 							//开始时间
 							String startTime = jsonObj.getString("startTime");
-							//结束时间
-							String endTime = jsonObj.getString("endTime");
-						    //周期
-							String scanPeriod = jsonObj.getString("scanPeriod");
 							//检测深度
 							String scanDepth = jsonObj.getString("scanDepth");
-							//最大页面数
-	//						String maxPages = jsonObj.getString("maxPages");
 							//策略
 							String stategy = jsonObj.getString("stategy");
-							//目标地址，可以多个
-							JSONArray targetArray = jsonObj.getJSONArray("targetURLs");
-							//指定厂家设备，可以多个
-							JSONArray customArray = jsonObj.getJSONArray("customManus");
+							//目标地址
+							String targetURL = jsonObj.getString("targetURL");
 							//生成订单id，当前日期加5位随机数
 							SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
 							String orderDate = odf.format(new Date());
@@ -161,19 +153,15 @@ public class N_SensitiveWordService {
 							//新增订单
 					        Order order = new Order();
 					        order.setId(orderId);
-							order.setServiceId(4);//漏扫
-					        order.setType(Integer.parseInt(scanMode));
+							order.setServiceId(4);//关键字
+					        order.setType(2);//单次
 					        
 					        int scan_type = 0;
-					        if(scanPeriod!=null && !scanPeriod.equals("")){
-					        	scan_type = Integer.parseInt(scanPeriod);
-					        }
 					        Date begin_date = DateUtils.stringToDateNYRSFM(startTime);
-					        Date end_date = DateUtils.stringToDateNYRSFM(endTime);
 					        
 					        order.setBegin_date(begin_date);
-					        order.setEnd_date(end_date);
 					        order.setScan_type(scan_type);
+					        order.setCreate_date(now);
 					        order.setTask_date(begin_date);
 					        order.setStatus(0);//设置订单状态为：0未执行
 					        //设置订单用户Id add by tangxr 2016-4-9
@@ -181,48 +169,43 @@ public class N_SensitiveWordService {
 					        //end
 					        orderService.insertOrder(order);
 					        
-					        for (int i = 0; i < targetArray.size(); i++) {
-					        	for (int j = 0; j < customArray.size(); j++) {
-							        OrderTask orderTask = new OrderTask();
-							        orderTask.setOrderId(orderId);
-							        orderTask.setServiceId(4);
-							        orderTask.setType(Integer.parseInt(scanMode));
-							        orderTask.setBegin_date(begin_date);
-									orderTask.setEnd_date(end_date);
-									orderTask.setScan_type(scan_type);
-									orderTask.setStatus(0);
-	//								orderTask.setWebsoc(Integer.parseInt(customArray.get(j).toString()));
-									orderTask.setUrl(targetArray.get(i).toString());
-									orderTask.setTask_status(1);//设置订单任务状态为：1未执行
-	//								orderTask.setOrderTaskId(String.valueOf(Random.eightcode()));
-									
-	//								if (scanMode.equals("1")) {//漏洞长期
-	//									Date executeTime = DateUtils.getOrderPeriods(startTime,endTime,scanPeriod);
-	//									orderTask.setTask_date(executeTime);
-	//								}else{
-										orderTask.setTask_date(begin_date);
-	//								}
-									orderTaskService.insertOrderTask(orderTask);
-									
-					        	}
-					        }
-					        
-					        OrderAPI orderAPI = userableList.get(0);
-					        orderAPIService.updateCount(orderAPI);
-					        
-					        //insert到统计表
-							APINum num = new APINum();
-							num.setApikey(user.getApikey());
-							num.setService_type(4);
-							num.setApi_type(1);
-							num.setStatus(1);
-							num.setCreate_time(new Date());
+					        //纪录到订单任务表
+					        OrderTask orderTask = new OrderTask();
+					        orderTask.setOrderId(orderId);
+					        orderTask.setServiceId(4);//关键字
+					        orderTask.setType(2);//单次
+					        orderTask.setBegin_date(begin_date);
+							orderTask.setScan_type(scan_type);
+							orderTask.setStatus(0);
+							orderTask.setUrl(targetURL);
+							orderTask.setTask_status(1);//设置订单任务状态为：1未执行
+							orderTask.setTask_date(begin_date);
+							orderTaskService.insertOrderTask(orderTask);
 							
-							num.setApiId(orderAPI.getId());
-							num.setToken(token);
-							num.setOrderId(orderId);
-							userService.insertAPINum(num);
-							ManagerWorker.createAPINum(user.getApikey(), 4, 1, 1);
+					        if(user.getType()!=3){
+					        	//更新api数量 add by tangxr 2016-4-9
+						        OrderAPI orderAPI = userableList.get(0);
+						        
+						        Map<String, Object> param = new HashMap<String, Object>();
+								param.put("id", orderAPI.getId());
+						        param.put("count", 1);
+						        orderAPIService.updateCount(param);
+						        
+						        //insert到统计表
+								APINum num = new APINum();
+								num.setApikey(user.getApikey());
+								num.setService_type(4);
+								num.setApi_type(1);
+								num.setStatus(1);
+								num.setCreate_time(new Date());
+								num.setCount(1);
+								
+								num.setApiId(orderAPI.getId());
+								num.setToken(token);
+								num.setOrderId(orderId);
+								userService.insertAPINum(num);
+								ManagerWorker.createAPINum(user.getApikey(), 4, 1, 1);
+					        }
 					        
 					        json.put("code", 201);//返回201表示成功
 							json.put("orderId", orderId);
@@ -384,9 +367,7 @@ public class N_SensitiveWordService {
 						JSONArray alarmObject = new JSONArray().fromObject(alist);
 						json.put("code", 200);
 						json.put("alarmObj", alarmObject);
-						return json.toString();
-					}else{
-						return json.toString();
+//						return json.toString();
 					}
 				}else{
 					json.put("code", 421);

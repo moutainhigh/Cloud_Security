@@ -479,6 +479,7 @@ public class NorthAPIService {
 	        user.setApikey(apiKey);
 	        user.setApi(apiId);
 	        user.setCount(num);
+	        user.setType(2);
 	        //插入用户
 	        userService.insert(user);
 	        //更新购买api数量
@@ -586,20 +587,23 @@ public class NorthAPIService {
 		try {
 			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
 			//apiKey
-			String apiKey = jsonObj.getString("apiKey");
-			User u = userService.findUserByApiKey(apiKey);
+			String token = jsonObj.getString("token");
+			User u = userService.findUserByApiKey(token);
 			u.setToken("");
 			userService.insert(u);
 			
 			//insert到统计表
-			APINum num = new APINum();
-			num.setApikey(apiKey);
-			num.setService_type(100);
-			num.setApi_type(2);//1表登录，2注销
-			num.setStatus(1);
-			num.setCreate_time(new Date());
-			userService.insertAPINum(num);
-			String message = ManagerWorker.createAPINum(apiKey, 100, 2, 1);
+			if(u.getType()!=3){
+				APINum num = new APINum();
+				num.setApikey(u.getApikey());
+				num.setService_type(100);
+				num.setApi_type(2);//1表登录，2注销
+				num.setStatus(1);
+				num.setCreate_time(new Date());
+				userService.insertAPINum(num);
+				String message = ManagerWorker.createAPINum(u.getApikey(), 100, 2, 1);
+			}
+			
 			//返回json
 			json.put("code", 201);
 			json.put("token", "");
