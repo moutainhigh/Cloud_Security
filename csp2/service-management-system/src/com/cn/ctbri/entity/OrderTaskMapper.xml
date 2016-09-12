@@ -32,10 +32,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findOrderTask" parameterType="hashmap" resultMap="OrderTaskRM">
 		select * from cs_order_task ot
 		where ot.task_status = #{task_status}
-		<!-- <if test="task_status==1">
+		<if test="task_status==1">
 		  and ot.task_date between date_add(now(),interval -1 minute) and now()
-		</if> -->
-		and ot.orderId = '16080112561278906'
+		</if>
 		<!--union 
 		  select * from cs_order_task ot
 		  where ot.warn !=0

@@ -31,6 +31,8 @@ public class APINum {
 	private int taskId;
 	//token
 	private String token;
+	//count 纪录创建接口使用次数，针对长期服务
+	private long count;
 	
 	public int getId() {
 		return id;
@@ -91,6 +93,12 @@ public class APINum {
 	}
 	public void setToken(String token) {
 		this.token = token;
+	}
+	public long getCount() {
+		return count;
+	}
+	public void setCount(long times) {
+		this.count = times;
 	}
 	
 }

@@ -63,10 +63,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <!-- 插入或更新API数量 -->
-    <update id="updateCount"  parameterType="com.cn.ctbri.entity.OrderAPI">
+    <update id="updateCount"  parameterType="hashmap">
 		update cs_order_api
 		set
-          num = num-1
+          num = num - #{count}
 		  where id = #{id}
 	</update>
 	
