@@ -206,6 +206,32 @@ public class DateUtils {
          date = calendar.getTime();  
          return date;
     }
+    
+    /**
+	 * 计算两时间之间的毫秒数
+	 * @param beginDate
+	 * @param endDate
+	 * @return
+	 */
+	public static long getMsByDays(Date beginDate, Date endDate){
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+		try {
+			beginDate=sdf.parse(sdf.format(beginDate));  
+			endDate=sdf.parse(sdf.format(endDate));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+        Calendar cal = Calendar.getInstance();    
+        cal.setTime(beginDate);    
+        long time1 = cal.getTimeInMillis();                 
+        cal.setTime(endDate);    
+        long time2 = cal.getTimeInMillis();         
+        long between_ms=time2-time1;  
+            
+        return between_ms; 
+
+	}
 	
 	
 }
