@@ -53,8 +53,8 @@ public class OrderAPIDaoImpl extends DaoCommon implements OrderAPIDao{
 		return getSqlSession().selectList(ns+"findUseableByParam", paramMap);
 	}
 
-	public void updateCount(OrderAPI orderAPI) {
-		this.getSqlSession().insert(ns + "updateCount", orderAPI);
+	public void updateCount(Map<String, Object> param) {
+		this.getSqlSession().insert(ns + "updateCount", param);
 	}
 
 	public API findUsedByParam(Map<String, Object> paramMap) {
