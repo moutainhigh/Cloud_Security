@@ -44,7 +44,7 @@ public interface IOrderAPIService {
 	List findAPIHistoryInfoByParam(Map<String, Object> paramMap);
 	List<OrderAPI> findUseableByParam(Map<String, Object> paramMap);
 
-	void updateCount(OrderAPI orderAPI);
+	void updateCount(Map<String, Object> param);
 
 	API findUsedByParam(Map<String, Object> paramMap);
 
