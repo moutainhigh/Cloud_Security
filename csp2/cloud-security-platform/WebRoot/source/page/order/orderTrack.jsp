@@ -66,7 +66,7 @@ function deleteOrder(orderId,begin_date){
     	$.ajax({
             type: "POST",
             url: "checkOrderStatus.html",
-            data: {"orderId":orderId,"begin_date":begin_date},
+            data: {"orderId":orderId},
             dataType:"json",
             success: function(data){
                 if(!data.status){
