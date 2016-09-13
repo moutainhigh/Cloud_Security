@@ -10,12 +10,15 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Set;
 
 import javax.mail.internet.MimeUtility;
@@ -81,9 +84,12 @@ import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IOrderTaskService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.IUserService;
+import com.cn.ctbri.util.Common;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Random;
 import com.cn.ctbri.util.Respones;
+
+import jdk.nashorn.internal.codegen.CompilerConstants.Call;
 /**
  * 创 建 人  ：  tangxr
  * 创建日期：  2015-10-19
@@ -146,7 +152,20 @@ public class N_VulnscanService {
 							//策略
 							String stategy = jsonObj.getString("stategy");
 							//目标地址
-							String targetURL = jsonObj.getString("targetURL");
+							String targetURL = jsonObj.getString("targetURL").toLowerCase();
+							
+						    Date date = DateUtils.stringToDateNYRSFM(startTime);
+							
+							boolean flag = Common.isSameDate(date);
+							if(!flag){
+								return "startTime不能小于当前日期，请输入正确的日期!";
+							}
+							boolean urlStatus = Common.urlCheck(targetURL);
+							if(urlStatus){
+								return "targetURL不是有效的地址，请输入正确的网站地址!";
+							}
+							
+							
 							//生成订单id，当前日期加5位随机数
 							SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
 							String orderDate = odf.format(new Date());
@@ -235,6 +254,7 @@ public class N_VulnscanService {
 		return json.toString();
 	}
 		
+	
 	//订单操作
 	@PUT
     @Path("/order/{orderId}/{token}")

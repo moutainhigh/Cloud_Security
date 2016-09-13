@@ -82,6 +82,7 @@ import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IOrderTaskService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.IUserService;
+import com.cn.ctbri.util.Common;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Random;
 import com.cn.ctbri.util.Respones;
@@ -148,6 +149,18 @@ public class N_WebPageTamperService {
 							String scanDepth = jsonObj.getString("scanDepth");
 							//目标地址
 							String targetURL = jsonObj.getString("targetURL");
+
+						    Date date = DateUtils.stringToDateNYRSFM(startTime);
+							
+							boolean flag = Common.isSameDate(date);
+							if(!flag){
+								return "startTime不能小于当前日期，请输入正确的日期!";
+							}
+							boolean urlStatus = Common.urlCheck(targetURL);
+							if(urlStatus){
+								return "targetURL不是有效的地址，请输入正确的网站地址!";
+							}
+							
 							//生成订单id，当前日期加5位随机数
 							SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
 							String orderDate = odf.format(new Date());
