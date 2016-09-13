@@ -522,7 +522,7 @@ function calDefaultPrice(){
 		break;
 	case 3://默认长期
 	
-		calPriceLong(null,servType,null,'1');
+		calPriceLong(null,servType,null);
 		break;
 	case 4://默认单次
 		
@@ -530,7 +530,7 @@ function calDefaultPrice(){
 		break;
 	case 5://默认长期
 		
-		calPriceLong(null,servType,null,'1');
+		calPriceLong(null,servType,null);
 		break;
 	}
 	$("#timesHidden").val(1);
@@ -594,19 +594,6 @@ function tasknum_verification(){
     //返回修改订单信息
     function orderBack(){
     	$("#orderBackForm").submit();
-    	//var assetIds=$("#assetIds").val();
-    	//var beginDate=$('#beginDate').val();
-    	//var endDate=$('#endDate').val();
-    	//var scanType = $('#scanType').val();
-    	//var serviceId = $("#serviceId").val();
-    	//var orderType = $("#orderType").val();
-    	//var apiId =$("#apiId").val();
-    	//var type =$("#type").val();
-    	//var num =$("#num").val();
-    	//var price = $('#priceHidden').val();
-    	//var assetNames = $("#assetNamesHidden").val();
-     //window.location.href="orderBack.html?serviceId="+serviceId+"&indexPage=1&orderType="+orderType+"&beginDate="+beginDate
-		    		                       //+"&endDate="+endDate+"&scanType="+scanType+"&serviceId="+serviceId+"&assetIds="+assetIds+"&apiId="+apiId+"&type="+type+"&num="+num+"&price="+price+"&assetNames="+assetNames;	
     }
     
     
@@ -646,12 +633,12 @@ function tasknum_verification(){
 	}
    
     //计算长期价格
-    function calPriceLong(obj,typeDefault,assetCount,serviceType){
+    function calPriceLong(obj,typeDefault,assetCount){
+      
     	var serviceId = $("#serviceIdHidden").val();
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
-    
-    	//var serviceType =1;
+    	
     	var assetCountNew = 0;
     	if(assetCount==null){
     	   	var assetCountNew = $('.httpBox li').length;
@@ -678,7 +665,15 @@ function tasknum_verification(){
          		return;
          	}
 		}
-   	
+    	//判断服务频率是否是显示隐藏
+    	if($('.time').is(':hidden')==false){
+    		//长期
+    	   serviceType=1;
+    	}else{	
+    	   //单次
+    		serviceType=2;
+    	}
+    
 		$.ajax({ type: "POST",
 	     async: false, 
 	     url: "calPrice.html", 
