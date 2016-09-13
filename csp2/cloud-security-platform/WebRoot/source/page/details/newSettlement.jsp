@@ -208,7 +208,7 @@
                             <div class="show_name">
                                 <div class="n_txt1">姓名：</div>
                                 <div class="c_input">
-                                    <input type='text' id="txtName" value="${linkman.name}">
+                                    <input type='text' id="txtName" value="${linkman.name}" maxlength="10">
                                 </div>
                                 <div class="list_wrong name1"><b></b><p>请输入联系人姓名</p></div>
                                 <div class="name_wrong"><b></b><p></p></div>
