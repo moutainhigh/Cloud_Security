@@ -332,7 +332,7 @@ $(function(){
                                 saveAsImage : true
                             }
                         },
-                        calculable : true,
+                        calculable : false,
                         xAxis : [
                             {
                                 type : 'category',
