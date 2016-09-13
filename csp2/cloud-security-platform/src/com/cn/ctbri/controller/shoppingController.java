@@ -2584,4 +2584,59 @@ public class shoppingController {
 		
 		return result;
 	}
+	
+	/**
+     * 功能描述： 订单详情
+     * */
+    @RequestMapping(value="orderDetailsUI.html")
+    public String toOrderDetails(Model m,HttpServletRequest request, HttpServletResponse response){
+    	String orderId = request.getParameter("orderId");//订单编号(cs_order_list的id)
+		Order order = orderService.findOrderById(orderId);
+		
+		//验证orderId
+    	User globle_user = (User) request.getSession().getAttribute("globle_user");
+    	if (orderId == null || order == null ||order.getUserId()!= globle_user.getId()) {
+    		return "redirect:/index.html";
+    	}
+    	
+    	if(order.getServiceId() != 6){
+    		//API
+    		if(order.getIsAPI() == 1) {
+    			return "redirect:/apiDetails.html?orderId="+orderId;
+    		}
+    		
+    		if(order.getIsAPI() != 1 && order.getBegin_date().getTime() > new Date().getTime()) {
+    			return "redirect:/orderDetails.html?orderId=" + orderId;
+    		}
+    		
+    		if (order.getStatus() == 2){  
+    			return "redirect:/warningInit.html?orderId="+orderId+"&type="+order.getType()+"&websoc="+order.getWebsoc();
+    		}
+    		
+    		if (order.getStatus() == 1 && order.getIsAPI() == 0) {  //status=1：完成无告警
+    			return "redirect:/warningInit.html?orderId="+orderId+"&type="+order.getType()+"&websoc="+order.getWebsoc();
+    		}
+    		
+    		if (order.getStatus() == 1 && order.getIsAPI() == 1) {   //status=1：完成无告警  API
+    			return "redirect:/selfHelpOrderAPIInit.html?apiId="+order.getServiceId()+"&indexPage=2";
+    		}
+    		//安恒的服务
+    		if (order.getIsAPI() == 0 && order.getBegin_date().getTime() <= new Date().getTime() && 
+    				order.getStatus() != 3 && order.getStatus() != 2 && order.getStatus() != 1) {  //status=4：执行中 
+    			return "redirect:/warningInit.html?orderId="+orderId+"&type="+order.getType()+"&websoc="+order.getWebsoc();
+    		}
+    		
+    		if (order.getBegin_date().getTime() <= new Date().getTime() && order.getStatus() == 3) { //status=3：执行中有告警 
+    			return "redirect:/warningInit.html?orderId="+orderId+"&type="+order.getType()+"&websoc="+order.getWebsoc();
+    		}
+    		
+    	}else{
+    		if (order.getIsAPI() == 2 && order.getStatus() == 4) {
+    			return "redirect:/warningWaf.html?orderId="+orderId+"&type="+order.getType();
+    		}
+    	}
+    	
+    	
+    	return "redirect:/orderDetails.html?orderId=" + orderId;
+    }
 }
