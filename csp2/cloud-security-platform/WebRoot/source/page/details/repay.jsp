@@ -156,7 +156,7 @@
 	                      <div class="repay_list">
 	                      	部分服务时间已根据订单支付成功时间自动调整为：<fmt:formatDate value="${beginDate }" pattern="yyyy-MM-dd HH:mm:ss"/>，请查看
 	                      	<c:forEach items="${modifyOrderId}" var="orderId" varStatus="status">
-	                 	  		订单编号：<a href="${ctx}/orderDetails.html?orderId=${orderId }">${orderId }</a>
+	                 	  		订单编号：<a href="${ctx}/orderDetailsUI.html?orderId=${orderId }">${orderId }</a>
 	                 	  		<c:if test="${!status.last}">,</c:if>
 	                 	  	</c:forEach>
 	                      	详情。
