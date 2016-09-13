@@ -941,15 +941,16 @@ public class OrderMgrController {
     @ResponseBody
     public void checkOrderStatus(HttpServletResponse response,HttpServletRequest request){
         String orderId = request.getParameter("orderId");
-        String beginDate = request.getParameter("begin_date");
+        //String beginDate = request.getParameter("begin_date");
 //        Date begin_Date = DateUtils.stringToDateNYRSFM(beginDate);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String nowDate = df.format(new Date());
         //查找订单
         Order order = orderService.findOrderById(orderId);
         //根据orderId查询正在执行的任务
-        List runList = orderService.findTaskRunning(orderId);
+//        List runList = orderService.findTaskRunning(orderId);
         //订单状态
+        String beginDate = df.format(order.getBegin_date());
         int status = order.getStatus();
         int isAPI = order.getIsAPI();
         Map<String, Object> m = new HashMap<String, Object>();
@@ -957,6 +958,8 @@ public class OrderMgrController {
 //        if(isAPI==0 && (status==1||status==2||status==0)){
         if(isAPI==0 && (status==1||status==2||beginDate.compareTo(nowDate)>0)){
             m.put("status", true);
+        }else if (isAPI==2 && (status==0||status==1||status==2||beginDate.compareTo(nowDate)>0)) {
+        	 m.put("status", true);
         }else{
             m.put("status", false);
         }
