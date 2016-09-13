@@ -841,7 +841,9 @@ public String getAllWafLogWebsecThanCurrentId(JSONObject jsonObject) {
 	public String getWafEventTypeCountInTime(JSONObject jsonObject) {
 		return nsfocusWAFAdapter.getEventTypeCountInTime(jsonObject);
 	}
-	
+	public String getEventTypeCountInTimeCurrent(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getEventTypeCountInTimeCurrent(jsonObject);
+	}
 	public String getWafLogWebSecDstIpList() {
 		return nsfocusWAFAdapter.getWafLogWebSecDstIpList();
 	}

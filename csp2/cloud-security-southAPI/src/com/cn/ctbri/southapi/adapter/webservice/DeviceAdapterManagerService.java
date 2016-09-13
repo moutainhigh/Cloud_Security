@@ -372,6 +372,13 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.getWafEventTypeCountInTime(jsonObject);
 	}
 	@POST
+	@Path("/getEventTypeCountInTimeCurrent")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getEventTypeCountInTimeCurrent(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getEventTypeCountInTimeCurrent(jsonObject);		
+	}
+	@POST
 	@Path("/getEventTypeCountByDay")
 	public String getEventTypeCountByDay(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
