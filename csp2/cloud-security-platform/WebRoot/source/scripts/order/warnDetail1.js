@@ -330,7 +330,7 @@ var getCharsData=function(repeat){
                                 saveAsImage : true
                             }
                         },
-                        calculable : true,
+                        calculable : false,
                         xAxis : [
                             {
                                 type : 'category',
