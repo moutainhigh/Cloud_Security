@@ -192,15 +192,15 @@ $("#us").hide("slow");
 							<label class="fl">选 类型</label>
                             <div class="fl clickBox" id="clickBox">
 	                            <button class="click Single" value="2" id="singleBtn" onclick="calPrice(null,null);">单次</button>
-	                            <button class="long" value="1" id="longBtn" onclick="calPriceLong(null,null,null,'1')">长期</button>
+	                            <button class="long" value="1" id="longBtn" onclick="calPriceLong(null,null,null)">长期</button>
                             </div> 
 						</li>
 						<li class="clearfix" style="height:30px;margin-left: 160px;" id="us">建议选择网站业务空闲时间</li>
 						<li class="clearfix">
 							<label class="fl">服务时间</label>
                             <div class="fl" style="top:3px;">
-                            	<span class="start">开始时间 <input type="text" style="width:156px;" class="text" value="" id="beginDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'<%=str_date%>',startDate:'<%=str_date%>',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(dp){calPriceLong(null,null,null,null); }})"/></span>
-                                <span class="end" style="display:none; margin-right:0px;">结束时间 <input type="text" style="width:156px;" class="text" value="" id="endDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'<%=str_date%>',startDate:'<%=str_date%>',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(dp){calPriceLong(null,null,null,null); }})"/></span>
+                            	<span class="start">开始时间 <input type="text" style="width:156px;" class="text" value="" id="beginDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'<%=str_date%>',startDate:'<%=str_date%>',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(dp){calPriceLong(null,null,null); }})"/></span>
+                                <span class="end" style="display:none; margin-right:0px;">结束时间 <input type="text" style="width:156px;" class="text" value="" id="endDate" onfocus="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,minDate:'<%=str_date%>',startDate:'<%=str_date%>',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(dp){calPriceLong(null,null,null); }})"/></span>
                             </div>
 						</li>
 						<li class="clearfix time">
@@ -210,10 +210,10 @@ $("#us").hide("slow");
                             <input type="hidden" id="serviceIdHidden" value="${service.id}"/>
                               <c:forEach items="${scanTypeList}" var="scanType" varStatus="status">
                                <c:if test="${status.index==0}">
-	                             <button class="clickTime" value="${scanType.scan_type}" onclick="calPriceLong(this,null,null,'1')">${scanType.scan_name}</button>
+	                             <button class="clickTime" value="${scanType.scan_type}" onclick="calPriceLong(this,null,null)">${scanType.scan_name}</button>
 	                             </c:if>
 	                               <c:if test="${status.index!=0}">
-	                               <button value="${scanType.scan_type}" onclick="calPriceLong(this,null,null,'1')">${scanType.scan_name}</button>
+	                               <button value="${scanType.scan_type}" onclick="calPriceLong(this,null,null)">${scanType.scan_name}</button>
 	                               </c:if>
 	                             </c:forEach>
 	                        
