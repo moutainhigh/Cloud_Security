@@ -514,17 +514,24 @@ public class NorthAPIService {
 			String apiKey = jsonObj.getString("apiKey");
 			if(userID!=null && !userID.equals("") && apiKey!=null && !apiKey.equals("")){
 				User u = userService.findUserByUserId(Integer.parseInt(userID));
+				/*if(!userID.equals(u.getId())){
+				}*/
 				if(u == null){
-					u = new User();
+					return "userID不存在请重新输入";
+					/*u = new User();
 					u.setId(Integer.parseInt(userID));
 					u.setApikey(apiKey);
 					u.setType(2);
-					userService.insert(u);
+					userService.insert(u);*/
 				}
 				
 				//add by 2016-4-11 设置token过期时间
 				Map<String, Object> paramMap = new HashMap<String, Object>();
-				paramMap.put("apiKey", apiKey);
+				if(!apiKey.equals(u.getApikey())){
+					return "apiKey不存在请重新输入";
+				}else{
+					paramMap.put("apiKey", apiKey);
+				}
 		        //查找此项服务的API订单
 				List<OrderAPI> oAPIList = orderAPIService.findByParam(paramMap);
 				if(u.getType()==3 || (u.getType()==2 && oAPIList.size()>0)){
