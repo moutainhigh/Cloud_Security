@@ -254,7 +254,7 @@ var getCharsData=function(repeat){
     	                            normal:{ 
     	                                label:{ 
     	                                   show: true, 
-    	                                   formatter: '{b} :  ({d}%)' 
+    	                                   formatter: '{b} : ({d}%)' 
     	                                }, 
     	                                labelLine :{show:true}
     	                            } 
