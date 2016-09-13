@@ -81,6 +81,7 @@
 	    <p class="dd_detail"><span class="detail_l fl">订单状态</span><span class="detail_r fl">
            <c:set var="temp" value="${nowDate }"/>
            <c:if test="${order.status==0}">已下单</c:if>
+           <c:if test="${order.status==5}">域名解析未生效</c:if>
            <!-- <c:if test="${order.begin_date<=temp&&order.status==0}">服务中</c:if>
            <c:if test="${order.status==1||order.status==2}">已结束</c:if> -->
 	    </span></p>
