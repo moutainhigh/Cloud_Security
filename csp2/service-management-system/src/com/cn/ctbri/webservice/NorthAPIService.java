@@ -473,10 +473,15 @@ public class NorthAPIService {
 	        oAPI.setApiKey(apiKey);
 	        orderAPIService.insert(oAPI);
 	        
-	        
+	        String token = "";
+	        User u = userService.findUserByUserId(userId);
+			if(u!=null){
+				token = u.getToken();
+			}
 	        User user = new User();
 	        user.setId(userId);
 	        user.setApikey(apiKey);
+	        user.setToken(token);
 	        user.setApi(apiId);
 	        user.setCount(num);
 	        user.setType(2);
