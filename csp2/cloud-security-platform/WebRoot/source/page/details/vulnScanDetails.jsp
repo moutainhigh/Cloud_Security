@@ -408,10 +408,10 @@ $("#us").hide("slow");
                             </h3>
                             <div class="tBox">${asset.addr }  
                                 <c:if test="${asset.status == '0' }">
-		                            <a href="${ctx}/userAssetsUI.html" style='padding-left:20px;color:red;font-size:14px;'>未验证</a>
+		                            <a href="${ctx}/userAssetsUI.html" style='padding-left:20px;color:#2499fb;font-size:14px;'>未验证</a>
 		                       </c:if>
 		                       <c:if test="${asset.status == '1' }">
-		                            <span style='padding-left:20px;color:red;font-size:14px;'>已验证</span>
+		                            <span style='padding-left:20px;color:#2499fb;font-size:14px;'>已验证</span>
 		                       </c:if>
 	                       </div>
                             
