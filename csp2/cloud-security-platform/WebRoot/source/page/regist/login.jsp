@@ -100,7 +100,7 @@
                     </ul>
                     
                     <div class="subBox" style=" position:relative; top:0px;">
-                    	<input type="button" class="submit" id="login_btn" onclick="loginSubmit()" value="立即登录">
+                    	<input type="button" class="submit" style="background-color: #2499fb;" id="login_btn" value="立即登录">
                     </div>
                     <div class="subBox" style=" position:relative; top:5px;">
                     	<!--<span><a style="padding-right:50px;" href="${ctx}/forgetPass.html">忘记密码</a></span>
