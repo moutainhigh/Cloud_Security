@@ -70,18 +70,24 @@ $(function(){
 									$("#errMsgDiv").show();
 									//刷新验证码
 									checkNumberImage();
+									$('#login_btn').removeAttr('disabled');
+									$("#login_btn").css("opacity",""); 
 									break;
 								case 2:
 									$("#errMsg").html("用户名或密码错误!");
 									$("#errMsgDiv").show();
 									//刷新验证码
 									checkNumberImage();
+									$('#login_btn').removeAttr('disabled');
+									$("#login_btn").css("opacity",""); 
 									break;
 								case 3:
 									$("#errMsg").html("验证码输入有误!");
 									$("#errMsgDiv").show();
 									//刷新验证码
 									checkNumberImage();
+									$('#login_btn').removeAttr('disabled');
+									$("#login_btn").css("opacity","");
 									break;
 								case 4:
 //									$("#errMsg").html("对不起，企业用户不允许登录!");
@@ -89,6 +95,8 @@ $(function(){
 									$("#errMsgDiv").show();
 									//刷新验证码
 									checkNumberImage();
+									$('#login_btn').removeAttr('disabled');
+									$("#login_btn").css("opacity","");
 									break;
 								case 5:
 									$("#errMsg").html("");
