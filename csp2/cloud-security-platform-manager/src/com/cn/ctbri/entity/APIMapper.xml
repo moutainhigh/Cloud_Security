@@ -96,7 +96,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		when DATE_FORMAT(create_time,'%H:%i') &gt; '08:00' and DATE_FORMAT(create_time,'%H:%i') &lt;= '12:00' then '08:00-12:00'
 		when DATE_FORMAT(create_time,'%H:%i') &gt; '12:00' and DATE_FORMAT(create_time,'%H:%i') &lt;= '16:00' then '12:00-16:00'
 		when DATE_FORMAT(create_time,'%H:%i') &gt; '16:00' and DATE_FORMAT(create_time,'%H:%i') &lt;= '20:00' then '16:00-20:00'
-		else '24:00-08:00'
+		else '20:00-24:00'
 		end AS timevalue
 		FROM `cs_api` WHERE service_type &lt;&gt; 100 
 		<if test="beginTime!=null">
@@ -116,9 +116,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '08:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '12:00' then '08:00-12:00'
 		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '12:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '16:00' then '12:00-16:00'
 		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '16:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '20:00' then '16:00-20:00'
-		else '24:00-08:00'
+		else '20:00-24:00'
 		end AS timevalue
-		FROM `cs_api` a,cs_user user where `user`.apikey=a.apikey  and a.service_type &lt;&gt; 100 
+		FROM `cs_api` a left join cs_user user on `user`.apikey=a.apikey 
+		where a.service_type &lt;&gt; 100 
 		<if test="beginTime!=null">
 			and a.create_time &gt;= #{beginTime}
 		</if>	 
@@ -128,7 +129,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="userName!=null and userName!=''">
 			and `user`.`name`=#{userName}
 		</if>
-		GROUP BY timevalue
+		GROUP BY service_type,timevalue ORDER BY service_type,timevalue
 	</select>
 	
 	<!-- API调用总次数 -->
