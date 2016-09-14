@@ -393,14 +393,29 @@ $("#us").hide("slow");
 		        	<li>
 		            	<div class="rcent">
                             <h3>
-                                <label for="${status.count }" style="margin:0 16px 0 0;">
-                                     <input type="checkbox" class="ck"  value="${asset.id}" style=" display:none;"><i class="cek" data-id="${status.count }" onclick='selAsset(this)'></i>
-                                 </label>
-                                 <b>${asset.name }</b>
-                            
+                                <c:if test="${asset.status == '0' }">
+                                      <label for="${status.count }" style="margin:0 16px 0 0;">
+	                                       <span style="padding-left:40px;padding-top:20px">${asset.name }</span>
+		                              </label>
+		                        </c:if>
+		                        
+		                        <c:if test="${asset.status == '1' }">
+	                                <label for="${status.count }" style="margin:0 16px 0 0;">
+			                                 <input type="checkbox" class="ck"  value="${asset.id}" style=" display:none;"/><i class="cek" data-id="${status.count }" onclick='selAsset(this)'></i>
+	                                 </label>
+	                                 <b>${asset.name }</b>
+		                        </c:if>
                             </h3>
-                            <div class="tBox">${asset.addr }</div>
-                        </div>
+                            <div class="tBox">${asset.addr }  
+                                <c:if test="${asset.status == '0' }">
+		                            <a href="${ctx}/userAssetsUI.html" style='padding-left:20px;color:red;font-size:18px;'>未验证</a>
+		                       </c:if>
+		                       <c:if test="${asset.status == '1' }">
+		                            <span style='padding-left:20px;color:red;font-size:18px;'>已验证</span>
+		                       </c:if>
+	                       </div>
+                            
+	                     </div>
 	            	</li>
 		        </c:forEach>
 	        </ul>
