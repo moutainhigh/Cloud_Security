@@ -79,6 +79,7 @@ public class MyAssetsController {
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		List<Asset> list = assetService.findByUserId(globle_user.getId());
 		model.addAttribute("list",list);
+		model.addAttribute("type",request.getParameter("type"));
 		return "/source/page/userCenter/userAssets";
 	}
 	
