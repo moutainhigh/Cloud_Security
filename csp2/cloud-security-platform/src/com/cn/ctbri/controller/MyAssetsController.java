@@ -458,9 +458,9 @@ public class MyAssetsController {
 			}
 		}else if(_user.getType()==3){
 			//企业用户
-			if(list != null && list.size() >= 50){
+			if(list != null && list.size() >= 100){
 				//表示添加的资产数已经为10，不能再进行添加
-				return 50;
+				return 100;
 			}
 		}
 		return 0;
