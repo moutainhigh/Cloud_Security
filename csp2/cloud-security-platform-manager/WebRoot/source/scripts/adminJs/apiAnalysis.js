@@ -99,11 +99,12 @@ function createDemos(){
 	  	//拖动后显示操作
 	  	analysisAPI();
 	  	analysisAPIUser();
-  		var timer=setTimeout(function(){
+  		/*var timer=setTimeout(function(){
 	  		//8秒恢复默认选中区域
 	  		dateSilderObj.dateRangeSlider("values", new Date(new Date().getFullYear(), 0, 1), new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()));
 	  		//analysisAPI();
 	  	}, 5000);
+	  	*/
 
 	});
 
@@ -672,90 +673,95 @@ function analysisAPIUser(){
 		   	       success:function(data){
 		   	   		var countList = [];
 		   	   		var list = data.countList;
-      				for(var k = 0; k < timeList.length; k++){
-      		   			var timeFlag = false;//该时间段是否存在
-      		   			for(var i = 0; i < list.length; i++){
-	   	   					if(list[i].timevalue==timeList[k]){
-	   	   						countList.push(list[i].counts);
-	   	   						timeFlag = true;
-	   	   						break;
-	   	   					}
-   			   			
-      		   			}
-	   	   		   		if(!timeFlag){
-	   	   		   			countList.push(0);
-	   		   			}
-   	   		   			
-   		   			}		   	   		
+		   	   		for (var j = 0;j < serviceList.length;j++) {
+		   	   			var valueList = [];
+			   			var map = {};
+			   			map['name']=serviceList[j];
+			   			map['type']='bar';
+			   			map['stack']='总量';
+			   			
+			   			var map1 = {};
+			   			map1['show']=true;
+			   			map1['position']='inside';
+			   			var map2 = {};
+			   			map2['label']=map1;
+			   			var itemStyleMap = {};
+			   			itemStyleMap['normal']=map2;
+			   			map['itemStyle']=itemStyleMap;
+			   			
+	      				for(var k = 0; k < timeList.length; k++){
+	      		   			var timeFlag = false;//该时间段是否存在
+	      		   			for(var i = 0; i < list.length; i++){
+		   	   					if(list[i].timevalue==timeList[k]&& list[i].service_type==j+1){
+		   	   						valueList.push(list[i].counts);
+		   	   						timeFlag = true;
+		   	   						break;
+		   	   					}
+	   			   			
+	      		   			}
+		   	   		   		if(!timeFlag){
+		   	   		   			valueList.push(0);
+		   		   			}
+	   	   		   			
+	   		   			}	   	   		
+		   		   		map['data']=valueList;
+	   					countList.push(map);
+		   	   		}
+		   	   		
 		   	   		option11 = {
 		   	   			tooltip : {
-						show:true,
-				        trigger: 'axis',
-				        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-				            type : 'none'        // 默认为直线，可选为：'line' | 'shadow'
-				        }
-				    },
-				    calculable : true,
-				    grid: { // 控制图的大小，调整下面这些值就可以，
-				    	 y: 20,
-			             x: 50,
-			             x2: 50,
-			             y2: 20,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
-			             borderColor:'#fff'
-			         },
-				    xAxis : [
-				        {
-				            type : 'category',
-				            axisLabel:{
-				                 //X轴刻度配置
-				                 interval:0 //0：表示全部显示不间隔；auto:表示自动根据刻度个数和宽度自动设置间隔个数
-				            },
-				            data : timeList,
-				            splitLine:{
-					    		show:false
-					    	}
-				        },
-				        {
-				            type : 'category',
-				            axisLine: {show:false},
-				            axisTick: {show:false},
-				            axisLabel: {show:false},
-				            splitArea: {show:false},
-				            splitLine: {show:false},
-				            data : timeList
-				        }
-				    ],
-				    yAxis : [
-				        {
-				            type : 'value',
-				            show:false,
-		 			        splitLine:{
-		 			    		show:false
-		 			    	},
-		 			    	axisLabel:{  
-		 			    		show:false
-		 			        }, 
-		 			        axisLine:{
-		 			        	show:false
-		 			        }
-				        }
-				    ],
-				    series : [
-				        
-
-				        {
-				            name:'数量',
-				            type:'bar',
-				            xAxisIndex:1,
-				            itemStyle: {normal: {label:{show:true,position:'inside',formatter:function(a,b,c){
-				        	
-				        	return c>0?c:'';}}}},
-				            data:countList
-				        }
-				    ]
-		   	   			};
+							show:true,
+					        trigger: 'axis',
+					        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+					            type : 'none'        // 默认为直线，可选为：'line' | 'shadow'
+					        }
+				    	},
+					    legend: {
+				   	        data:serviceList
+				   	    },
+					    calculable : false,
+					    grid: { // 控制图的大小，调整下面这些值就可以，
+					    	 y: 20,
+				             x: 50,
+				             x2: 50,
+				             y2: 20,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+				             borderColor:'#fff'
+				         },
+					    xAxis : [
+					        {
+					            type : 'category',
+					            splitLine:{
+						    		show:false
+						    	},
+						    	axisLine:{
+						    		onZero:true
+						    	},
+					            axisLabel:{
+					                 //X轴刻度配置
+					                 interval:0 //0：表示全部显示不间隔；auto:表示自动根据刻度个数和宽度自动设置间隔个数
+					            },
+					            data : timeList
+					        }
+					    ],
+					    yAxis : [
+					        {
+					            type : 'value',
+					            show:false,
+			 			        splitLine:{
+			 			    		show:false
+			 			    	},
+			 			    	axisLabel:{  
+			 			    		show:false
+			 			        }, 
+			 			        axisLine:{
+			 			        	show:false
+			 			        }
+					        }
+					    ],
+				    	series :countList
+		   	   		};
 		   	   		
-		   	   			myChart11.setOption(option11);
+		   	   		myChart11.setOption(option11);
 		   	       	},
 		   	   	});
     });
