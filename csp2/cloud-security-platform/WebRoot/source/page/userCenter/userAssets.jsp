@@ -90,7 +90,7 @@
                 </div>
             	<div class="coupontab">
             		<!-- modify by tangxr 2016-7-23 资产验证 -->
-                	<ol class="navlist centlist assets clearfix">
+                	<ol class="navlist centlist assets clearfix">                	    
                     	<li class="active">全部</li>
                          <li>已验证</li>
                         <li>未验证</li> 
@@ -142,7 +142,7 @@
                          </table>  
                      </li> 
                      </c:forEach>                 
-                    	</ul>
+                    	</ul>                    	
                         <ul class="not-used">
                     		<li class="head">
                             	<span style="padding-left:120px;">资产名称</span>
@@ -182,7 +182,7 @@
                      </c:forEach> 
                         
                     
-                    	</ul>
+                    	</ul>                   	
                         <ul class="not-used">
                     		<li class="head">
                             	<span style="padding-left:120px;">资产名称</span>
@@ -536,10 +536,14 @@
 			}
 				
 		})
-		//切换效果
-	
 		
-
+		//切换效果
+		var type ="${type}";
+		if(type == "1"){
+			$('.navlist li').removeClass('active');
+			$('.navlist li ').eq(2).addClass('active');
+			$(".tabBox .not-used").eq(2).show().siblings().hide();	
+		}
 	})
 	
 	
