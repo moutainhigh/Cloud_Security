@@ -39,6 +39,18 @@ var getCharsData=function(repeat){
         function (ec) {//回调函数
             //--- 仪表盘 ---
             var myChart = ec.init(document.getElementById('aqfx'+repeat));
+            myChart.showLoading({
+            	  text: 'loading...',
+            	  effect : 'spin',
+            	  textStyle : {
+            	        fontSize : 20,
+            	        color:'#000'
+            	    },
+            	    effectOption :{
+            	    	  backgroundColor:'#fff'
+            	   }
+
+	        	});
             //后台获取数据
             $.ajax({
             	url:"getGaugeData.html?orderId="+$('#orderId').val()+"&type="+$('#type').val()+"&group_flag="+$('#group_flag').val()+"&websoc="+$('#websoc').val()+"&orderAssetId="+$('#orderAssetId'+repeat).val(),
@@ -150,7 +162,8 @@ var getCharsData=function(repeat){
 //                    clearInterval(timeTicket);
 //                    var timeTicket = setInterval(function (){
 //                        option.series[0].data[0].value = (Math.random()*100).toFixed(2) - 0;
-                        myChart.setOption(option, true);
+                    myChart.hideLoading();    
+                    myChart.setOption(option, true);
 //                    },2000)
                     window.onresize = myChart.resize;
                 }//ajax执行后台
@@ -168,6 +181,18 @@ var getCharsData=function(repeat){
         function (ec) {//回调函数
             //--- 饼图 ---
             myChartPie = ec.init(document.getElementById('ldgs'+ repeat));
+            myChartPie.showLoading({
+          	  text: 'loading...',
+          	  effect : 'spin',
+          	  textStyle : {
+          	        fontSize : 20,
+          	        color:'#000'
+          	    },
+          	    effectOption :{
+          	    	  backgroundColor:'#fff'
+          	   }
+
+	        	});
             //后台获取数据
             $.ajax({
             	type : "post",
@@ -202,6 +227,7 @@ var getCharsData=function(repeat){
 //	                   	label[i]=p['label'];
 //	                   	value[i]={'name':p['label'],'value':p['value']};
                     });
+                    myChartPie.hideLoading();    
                     myChartPie.setOption({//图形
                         tooltip : {
                             trigger: 'item',
@@ -280,6 +306,18 @@ var getCharsData=function(repeat){
             //--- 趋势图 ---
         	if($('#type').val()==1){
         		myChartLine = ec.init(document.getElementById('aqpf' + repeat));
+        		myChartLine.showLoading({
+              	  text: 'loading...',
+              	  effect : 'spin',
+              	  textStyle : {
+              	        fontSize : 20,
+              	        color:'#000'
+              	    },
+              	    effectOption :{
+              	    	  backgroundColor:'#fff'
+              	   }
+
+  	        	});
         	}
           //后台获取数据
             $.ajax({
@@ -313,6 +351,7 @@ var getCharsData=function(repeat){
 	                   	time[i]=p['time'];
                     });
                     
+                    myChartLine.hideLoading();    
                     myChartLine.setOption({//图形
                     	tooltip : {
                             trigger: 'axis'
@@ -409,6 +448,18 @@ var getCharsData=function(repeat){
         function (ec) {//回调函数
             //--- 柱形图 ---
         	myChartBar = ec.init(document.getElementById('aqpf1'+ repeat));
+        	myChartBar.showLoading({
+          	  text: 'loading...',
+          	  effect : 'spin',
+          	  textStyle : {
+          	        fontSize : 20,
+          	        color:'#000'
+          	    },
+          	    effectOption :{
+          	    	  backgroundColor:'#fff'
+          	   }
+
+	        	});
           //后台获取数据
             $.ajax({
             	type: "post",
@@ -421,6 +472,7 @@ var getCharsData=function(repeat){
 	                   	lineData[i]=p['name'];
                     });
                     
+                    myChartBar.hideLoading();    
                     myChartBar.setOption({//图形
                     	title: {
                             text: '弱点类型统计图'
