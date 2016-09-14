@@ -5,6 +5,150 @@ window.onload =function(){
 }
 
 $(function(){
+	$('#login_btn').removeAttr('disabled');
+	$('#login_btn').css('background-color','#2499fb');
+	$('#login_btn').click(function(){
+		/*function loginSubmit(){*/
+			
+			var name = $("#login_name").val();
+			var password = $("#login_password").val();
+			var checkNumber = $("#checkNumber").val();
+			//var remeberMe = $("#remeberMe").prop("checked");
+			if(name==null||name==""){
+				$("#errMsg").html("用户名不能为空!");
+				$("#errMsgDiv").show();
+				//刷新验证码
+				checkNumberImage();
+				return;
+			}
+			if(password==null||password==""){
+				$("#errMsg").html("密码不能为空!");
+				$("#errMsgDiv").show();
+				//刷新验证码
+				checkNumberImage();
+				return;
+			}
+			if(checkNumber==null||checkNumber==""){
+		    	$("#errMsg").html("验证码不能为空!");
+				$("#errMsgDiv").show();
+				//刷新验证码
+				checkNumberImage();
+				return;
+			}
+
+			$.ajax({
+		        type: "POST",
+		        url: "login_checkName.html",
+		        data: {"name":name},
+		        dataType:"json",
+		        success: function(data){
+		        	$('#login_btn').attr('disabled',"disabled");
+					//$('#login_btn').css("background-color","");
+					$("#login_btn").css("opacity","0.4"); 
+		            if(data.count<=0){
+		        		$("#errMsg").html("用户不存在!");
+		        		$("#errMsgDiv").show();
+		        		//刷新验证码
+						checkNumberImage();
+		        		return;
+		            }else{
+		            	$.ajax({
+				            type: "POST",
+							url:'login.html',
+							data:{
+		 	               'name':name,
+		 	               'password':password,
+		 	               'checkNumber':checkNumber
+		 	               //'remeberMe':remeberMe
+							},
+							dataType:"json",
+							//beforeSubmit:showRequest,
+							success: function(data) {
+								switch(data.result){
+								case 1:
+							    	$("#errMsg").html("对不起，您的帐号已停用!");
+									$("#errMsgDiv").show();
+									//刷新验证码
+									checkNumberImage();
+									break;
+								case 2:
+									$("#errMsg").html("用户名或密码错误!");
+									$("#errMsgDiv").show();
+									//刷新验证码
+									checkNumberImage();
+									break;
+								case 3:
+									$("#errMsg").html("验证码输入有误!");
+									$("#errMsgDiv").show();
+									//刷新验证码
+									checkNumberImage();
+									break;
+								case 4:
+//									$("#errMsg").html("对不起，企业用户不允许登录!");
+									$("#errMsg").html(data.msg);
+									$("#errMsgDiv").show();
+									//刷新验证码
+									checkNumberImage();
+									break;
+								case 5:
+									$("#errMsg").html("");
+									$("#errMsgDiv").hide();
+									var serviceId = data.serviceId;
+									var indexPage = data.indexPage;
+									if(serviceId==6){
+										//window.location.href="wafDetails.html?serviceId="+serviceId+"&indexPage="+indexPage;
+										$("#serviceIdWafHidden").val(serviceId);
+										$("#indexPageWafHidden").val(indexPage);
+										$("#wafDetailsForm").submit();
+									}else{
+										//window.location.href="selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
+										$("#serviceIdHidden").val(serviceId);
+										$("#indexPageHidden").val(indexPage);
+										$("#serviceLoginForm").submit();
+									}
+									break;
+								case 6:
+									$("#errMsg").html("");
+									$("#errMsgDiv").hide();
+									var  apiId = data.apiId;
+									var indexPage = data.indexPage;
+									//window.location.href="selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
+									$("#apiIdHidden").val(apiId);
+									$("#indexPageAPIHidden").val(indexPage);
+									$("#APILoginForm").submit();
+									break;
+								case 7:
+									$("#errMsg").html("");
+									$("#errMsgDiv").hide();
+									//alert(data.afterLoginUrl);
+									if (data.afterLoginUrl != null && data.afterLoginUrl!='') {
+										window.location.href = data.afterLoginUrl;
+									
+									}else{
+										window.location.href="userCenterUI.html";
+									}
+									break;
+								case 8:
+									$("#errMsg").html("");
+									$("#errMsgDiv").hide();
+									window.location.href="loginUI.html";
+									break;
+								default:
+									break;
+								}
+							},
+							error: function(data){
+								 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+						    		 window.location.href = "loginUI.html"; } 
+						    	 else { window.location.href = "loginUI.html"; }
+								 } 
+							});
+		            }
+		        },
+		     }); 
+
+		})
+
 	$('#login_name').keyup(function() {
 		//用户名发生改变时判断是否为cookie保存
 		var userName = $("#login_name").val();
@@ -80,142 +224,6 @@ function checkPassword(){
 		$("#login_password_prompt").html("<b></b>");
 		$("#login_password_prompt").fadeOut();
 	}
-}
-
-function loginSubmit(){
-	var name = $("#login_name").val();
-	var password = $("#login_password").val();
-	var checkNumber = $("#checkNumber").val();
-	//var remeberMe = $("#remeberMe").prop("checked");
-	if(name==null||name==""){
-		$("#errMsg").html("用户名不能为空!");
-		$("#errMsgDiv").show();
-		//刷新验证码
-		checkNumberImage();
-		return;
-	}
-	if(password==null||password==""){
-		$("#errMsg").html("密码不能为空!");
-		$("#errMsgDiv").show();
-		//刷新验证码
-		checkNumberImage();
-		return;
-	}
-	if(checkNumber==null||checkNumber==""){
-    	$("#errMsg").html("验证码不能为空!");
-		$("#errMsgDiv").show();
-		//刷新验证码
-		checkNumberImage();
-		return;
-	}
-
-	$.ajax({
-        type: "POST",
-        url: "login_checkName.html",
-        data: {"name":name},
-        dataType:"json",
-        success: function(data){
-            if(data.count<=0){
-        		$("#errMsg").html("用户不存在!");
-        		$("#errMsgDiv").show();
-        		//刷新验证码
-				checkNumberImage();
-        		return;
-            }else{
-            	$.ajax({
-		            type: "POST",
-					url:'login.html',
-					data:{
- 	               'name':name,
- 	               'password':password,
- 	               'checkNumber':checkNumber
- 	               //'remeberMe':remeberMe
-					},
-					dataType:"json",
-					//beforeSubmit:showRequest,
-					success: function(data) {
-						switch(data.result){
-						case 1:
-					    	$("#errMsg").html("对不起，您的帐号已停用!");
-							$("#errMsgDiv").show();
-							//刷新验证码
-							checkNumberImage();
-							break;
-						case 2:
-							$("#errMsg").html("用户名或密码错误!");
-							$("#errMsgDiv").show();
-							//刷新验证码
-							checkNumberImage();
-							break;
-						case 3:
-							$("#errMsg").html("验证码输入有误!");
-							$("#errMsgDiv").show();
-							//刷新验证码
-							checkNumberImage();
-							break;
-						case 4:
-//							$("#errMsg").html("对不起，企业用户不允许登录!");
-							$("#errMsg").html(data.msg);
-							$("#errMsgDiv").show();
-							//刷新验证码
-							checkNumberImage();
-							break;
-						case 5:
-							$("#errMsg").html("");
-							$("#errMsgDiv").hide();
-							var serviceId = data.serviceId;
-							var indexPage = data.indexPage;
-							if(serviceId==6){
-								//window.location.href="wafDetails.html?serviceId="+serviceId+"&indexPage="+indexPage;
-								$("#serviceIdWafHidden").val(serviceId);
-								$("#indexPageWafHidden").val(indexPage);
-								$("#wafDetailsForm").submit();
-							}else{
-								//window.location.href="selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
-								$("#serviceIdHidden").val(serviceId);
-								$("#indexPageHidden").val(indexPage);
-								$("#serviceLoginForm").submit();
-							}
-							break;
-						case 6:
-							$("#errMsg").html("");
-							$("#errMsgDiv").hide();
-							var  apiId = data.apiId;
-							var indexPage = data.indexPage;
-							//window.location.href="selfHelpOrderAPIInit.html?apiId="+apiId+"&indexPage="+indexPage;
-							$("#apiIdHidden").val(apiId);
-							$("#indexPageAPIHidden").val(indexPage);
-							$("#APILoginForm").submit();
-							break;
-						case 7:
-							$("#errMsg").html("");
-							$("#errMsgDiv").hide();
-							if (data.afterLoginUrl != null && data.afterLoginUrl!='') {
-								window.location.href = data.afterLoginUrl;
-							
-							}else{
-								window.location.href="userCenterUI.html";
-							}
-							break;
-						case 8:
-							$("#errMsg").html("");
-							$("#errMsgDiv").hide();
-							window.location.href="loginUI.html";
-							break;
-						default:
-							break;
-						}
-					},
-					error: function(data){
-						 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-				    		 window.location.href = "loginUI.html"; } 
-				    	 else { window.location.href = "loginUI.html"; }
-						 } 
-					});
-            }
-        },
-     }); 
-
 }
 
 function getRootPath(){
