@@ -259,6 +259,7 @@ public class MyAssetsController {
 			asset.setCreate_date(new Date());//创建日期
 			if(globle_user.getType()==2){
 				asset.setStatus(0);//资产状态(1：已验证，0：未验证)
+//				asset.setStatus(1);//资产状态(1：已验证，0：未验证)
 			}else if(globle_user.getType()==3){
 				asset.setStatus(1);//资产状态(1：已验证，0：未验证)
 			}
@@ -620,6 +621,7 @@ public class MyAssetsController {
 			
 			asset.setAddr(assetAddr);
 			asset.setStatus(0);
+//			asset.setStatus(1);
 			asset.setDistrictId(districtId);
 			asset.setCity(city);
 			asset.setPurpose(purpose);
@@ -925,9 +927,9 @@ public class MyAssetsController {
 			}
 		}else if(_user.getType()==3){
 			//企业用户
-			if(list != null && list.size() >= 50){
+			if(list != null && list.size() >= 100){
 				m.put("msg", true);//表示添加的资产数已经为10，不能再进行添加
-				m.put("allowCount", "50");
+				m.put("allowCount", "100");
 			}else{
 				m.put("msg", false);
 			}
@@ -1006,6 +1008,7 @@ public class MyAssetsController {
 			asset.setCreate_date(new Date());//创建日期
 			if(globle_user.getType()==2){
 				asset.setStatus(0);//资产状态(1：已验证，0：未验证)
+//				asset.setStatus(1);//资产状态(1：已验证，0：未验证)
 			}else if(globle_user.getType()==3){
 				asset.setStatus(1);//资产状态(1：已验证，0：未验证)
 			}
@@ -1123,6 +1126,7 @@ public class MyAssetsController {
 			asset.setCreate_date(new Date());//创建日期
 			if(globle_user.getType()==2){
 				asset.setStatus(0);//资产状态(1：已验证，0：未验证)
+//				asset.setStatus(1);//资产状态(1：已验证，0：未验证)
 			}else if(globle_user.getType()==3){
 				asset.setStatus(1);//资产状态(1：已验证，0：未验证)
 			}
