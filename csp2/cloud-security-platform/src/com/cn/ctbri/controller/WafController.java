@@ -264,6 +264,8 @@ public class WafController {
 		String domainId =  request.getParameter("domainId");
 	   String errorIp ="";
 		String addInfo = "";
+		  boolean flag=false;
+		try{
 		//判断http协议
 		if(domainName.indexOf("http://")!=-1){
 		  	if(domainName.substring(domainName.length()-1).indexOf("/")!=-1){
@@ -286,7 +288,7 @@ public class WafController {
 			IpInfo.add(addr.getHostAddress());
       }
         String array[]=IpInfo.toArray(new String[]{});
-        boolean flag=false;
+      
         String ipPortVal="";
         //页面输入的ip地址
         String ipArr[]= ipStr.split(",");
@@ -356,10 +358,15 @@ public class WafController {
         	  m.put("errorIp", errorIp.substring(0, errorIp.length()-1));
         }
      
+	}catch(Exception e){
+			flag=false;
+			 m.put("errorIp", "");
+		}
 		m.put("flag", flag);
 		   JSONObject JSON = CommonUtil.objectToJson(response, m);
 	       // 把数据返回到页面
            CommonUtil.writeToJsp(response, JSON);
+		
 	}
 	
 	 /**
