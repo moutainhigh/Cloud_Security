@@ -599,6 +599,8 @@ function tasknum_verification(){
     
     //计算价格
     function calPrice(assetCount){//assetCount:资产数
+    	$("#price").html("");
+   	    $("#timesHidden").val("");
     	var serviceId = $("#serviceIdHidden").val();
     	var assetCountNew = 0;
     	if(assetCount==null){
@@ -634,7 +636,8 @@ function tasknum_verification(){
    
     //计算长期价格
     function calPriceLong(obj,typeDefault,assetCount){
-      
+    	$("#price").html("");
+   	    $("#timesHidden").val("");
     	var serviceId = $("#serviceIdHidden").val();
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
@@ -666,13 +669,18 @@ function tasknum_verification(){
          	}
 		}
     	//判断服务频率是否是显示隐藏
-    	if($('.time').is(':hidden')==false){
-    		//长期
-    	   serviceType=1;
-    	}else{	
-    	   //单次
+    	if($("#singleBtn").val() == "2"){
+    		//单次
     		serviceType=2;
     	}
+        if($("#longBtn").val() == "1"){
+        	//长期
+        	serviceType=1;
+    	}
+//    	alert($('.time').is(':hidden'));
+//    	if($('.time').is(':hidden')==true){
+//    	}else{	
+//    	}
     
 		$.ajax({ type: "POST",
 	     async: false, 
