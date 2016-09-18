@@ -599,8 +599,6 @@ function tasknum_verification(){
     
     //计算价格
     function calPrice(assetCount){//assetCount:资产数
-    	$("#price").html("");
-   	    $("#timesHidden").val("");
     	var serviceId = $("#serviceIdHidden").val();
     	var assetCountNew = 0;
     	if(assetCount==null){
@@ -636,8 +634,6 @@ function tasknum_verification(){
    
     //计算长期价格
     function calPriceLong(obj,typeDefault,assetCount){
-    	$("#price").html("");
-   	    $("#timesHidden").val("");
     	var serviceId = $("#serviceIdHidden").val();
     	var beginDate=$('#beginDate').val();
     	var endDate=$('#endDate').val();
