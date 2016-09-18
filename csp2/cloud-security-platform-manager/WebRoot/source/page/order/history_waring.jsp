@@ -22,7 +22,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/warning.js"></script>
-<SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
+<!-- <SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT> -->
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <!-- add by 2016-02 -->
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">

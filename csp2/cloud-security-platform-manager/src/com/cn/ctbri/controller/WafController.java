@@ -2,6 +2,7 @@ package com.cn.ctbri.controller;
 
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -377,6 +378,7 @@ public class WafController {
 				  boolean flag=false;
 				  String addInfo = "";
 				  double countPrice =0.0;
+				  BigDecimal countPrice1 = new BigDecimal(countPrice);
 				  Date eDate = new Date();
 				  List<String> IpInfo = new ArrayList();
 				  int linkmanId = Random.eightcode();
@@ -572,7 +574,7 @@ public class WafController {
 			        order.setCreate_date(create_date);
 			        order.setTask_date(DateUtils.stringToDateNYRSFM(beginDate));
 					order.setUserId(globle_user.getId());
-					order.setPrice(countPrice);
+					order.setPrice(countPrice1);
 					order.setType(Integer.parseInt(orderType));
 					
 					order.setContactId(linkmanId);
@@ -959,7 +961,7 @@ public class WafController {
 		order.setPayFlag(0);
 		order.setUserId(globle_user.getId());
 		order.setStatus(0);
-		order.setPrice(orderDetail.getPrice());
+		order.setPrice(new BigDecimal(orderDetail.getPrice()));
 		order.setContactId(linkmanId);
 		selfHelpOrderService.insertOrder(order);
 		

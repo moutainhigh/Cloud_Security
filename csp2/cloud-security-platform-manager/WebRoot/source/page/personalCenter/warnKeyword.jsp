@@ -21,7 +21,7 @@
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/core.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
-<SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
+<!-- <SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT> -->
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/user.js"></script>
 <script type="text/javascript" src="http://cdn.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
