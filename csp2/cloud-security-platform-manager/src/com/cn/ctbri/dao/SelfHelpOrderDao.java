@@ -7,6 +7,7 @@ import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
 /**
@@ -110,4 +111,14 @@ public interface SelfHelpOrderDao {
 	 * 修改普通服务
 	 */
 	void updateServ(Map map);
+
+	List findShopCarList(String userId, int payFlag, String orderId);
+
+	List findShopCarAPIList(String userId, int payFlag, String orderId);
+
+	void SaveOrderDetail(OrderDetail orderDetail);
+
+	OrderDetail getOrderDetailById(String id, int userId, List assetIdsList);
+
+	OrderDetail findOrderDetailById(String id, int userId);
 }

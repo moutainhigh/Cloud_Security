@@ -7,6 +7,7 @@ import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
 /**
@@ -111,4 +112,15 @@ public interface ISelfHelpOrderService {
 	 * 修改普通服务
 	 */
 	void updateServ(Map map);
+
+	List findShopCarList(String valueOf, int i, String string);
+
+	List findShopCarAPIList(String valueOf, int i, String string);
+	
+	//保存服务详情页操作信息
+	void SaveOrderDetail(OrderDetail orderDetail);
+	//根据服务详情操作主键，查询
+	OrderDetail getOrderDetailById(String id,int userId,List assetIdsList);
+	//根据服务详情操作主键，查询
+	OrderDetail findOrderDetailById(String id,int userId);
 }

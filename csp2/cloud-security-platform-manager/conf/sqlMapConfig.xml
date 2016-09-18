@@ -50,5 +50,10 @@
 		
 		<!-- 2016-08-25 update by tangxr -->
 		<mapper resource="com/cn/ctbri/entity/LogsMapper.xml"/>
+		 
+		<mapper resource="com/cn/ctbri/entity/CustomerSupportMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/ServiceAPIMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/OrderListMapper.xml"/>
+		
 	</mappers>
 </configuration>  

@@ -16,6 +16,22 @@ public class OrderAsset {
 	private int scan_type;//扫描类型
 	private Date scan_date;//扫描类型
 	private int userId;
+	private String ipArray;//网站域名对应的IP地址
+	private int Sermonth;//服务期限
+	private String assetName;//资产名称
+	private String assetAddr;//资产地址
+	public String getAssetName() {
+		return assetName;
+	}
+	public void setAssetName(String assetName) {
+		this.assetName = assetName;
+	}
+	public String getAssetAddr() {
+		return assetAddr;
+	}
+	public void setAssetAddr(String assetAddr) {
+		this.assetAddr = assetAddr;
+	}
 	public int getId() {
 		return id;
 	}
@@ -58,5 +74,17 @@ public class OrderAsset {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+	public String getIpArray() {
+		return ipArray;
+	}
+	public void setIpArray(String ipArray) {
+		this.ipArray = ipArray;
+	}
+	public int getSermonth() {
+		return Sermonth;
+	}
+	public void setSermonth(int sermonth) {
+		Sermonth = sermonth;
+	}
     
 }

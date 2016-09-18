@@ -18,6 +18,7 @@ import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.entity.User;
@@ -157,6 +158,43 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 	public void updateServ(Map map) {
 		this.getSqlSession().update(nv+"updateServ",map);
 		
+	}
+
+	public List findShopCarList(String userId, int payFlag, String orderId) {
+		 Map carMap = new HashMap();
+		 carMap.put("userId", userId);
+		 carMap.put("payFlag", payFlag);
+		 carMap.put("orderId", orderId);
+		 return this.getSqlSession().selectList(ns + "findShopCarList",carMap);
+	}
+
+	public List findShopCarAPIList(String userId, int payFlag, String orderId) {
+		Map carMap = new HashMap();
+		 carMap.put("userId", userId);
+		 carMap.put("payFlag", payFlag);
+		 carMap.put("orderId", orderId);
+		 return this.getSqlSession().selectList(ns + "findShopCarAPIList",carMap);
+	}
+
+	public void SaveOrderDetail(OrderDetail orderDetail) {
+		// TODO Auto-generated method stub
+		this.getSqlSession().insert(ns+"SaveOrderDetail",orderDetail);
+	}
+
+	public OrderDetail getOrderDetailById(String id, int userId,
+			List assetIdsList) {
+		Map map = new HashMap();
+		map.put("id", id);
+		map.put("userId", userId);
+		map.put("assetIdsList", assetIdsList);
+		return this.getSqlSession().selectOne(ns+"getOrderDetailById", map);
+	}
+
+	public OrderDetail findOrderDetailById(String id, int userId) {
+		Map map = new HashMap();
+		map.put("id", id);
+		map.put("userId", userId);
+		return this.getSqlSession().selectOne(ns+"findOrderDetailById", map);
 	}
 
 

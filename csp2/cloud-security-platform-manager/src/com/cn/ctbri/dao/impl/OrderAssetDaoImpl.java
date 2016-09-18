@@ -92,5 +92,10 @@ public class OrderAssetDaoImpl extends DaoCommon implements OrderAssetDao{
 		List list = this.getSqlSession().selectList(ns+"getOrdersByAsset", assetId);
 		return list;
 	}
+	//查询订单的资产 
+	public List findAssetsByOrderId(String orderId) {
+		List list = this.getSqlSession().selectList(ns+"findAssetsByOrderId",orderId);
+		return list;
+	}
 		
 }

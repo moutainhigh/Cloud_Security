@@ -302,7 +302,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="getOrderById" resultType="String" parameterType="hashmap">
-    SELECT c.id FROM cs_order  c WHERE c.userId=#{userId}  AND c.id=#{orderId} AND c.type =#{type}
+    SELECT c.id FROM cs_order  c WHERE c.id=#{orderId} AND c.type =#{type}
+    <if test="userId != null and userId != 0">AND c.userId=#{userId}</if>
     </select>
     
     <!-- 删除订单 -->
@@ -451,6 +452,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	AND serviceId=#{serviceId} 
 	</if>
 	GROUP BY o.userId
+    </select>
+    
+    <select id="findOrderByOrderIdMatch" parameterType="String" resultMap="OrderRM">
+    select *  from cs_order where 1=1 
+    <if test="id != null and id != ''">and id like concat('%',concat(#{id}, '%'))</if>
+    <if test="userId != null and userId != 0"> and userId = #{userId}</if>
+    order by userId
+    </select>
+    
+    		<!-- 根据orderId查询购买api数量 -->
+    <select id="findAPICountByParam" resultType="int" parameterType="hashMap">
+  		select api.num from cs_order_api api,cs_order order1 where api.id=#{orderId} and order1.payFlag=1 and order1.id=api.id
+    </select>
+    
+    <select id="getServiceUserCount" resultType="hashmap">
+    	select t1.type,count(t1.type) as userNums from (
+			select type,userId from cs_order 
+			where delFlag=0
+			and payFlag=1
+			and type=1
+			group by type,userId
+		) as t1
+		union 
+		select t2.type,count(t2.type) as userNums from (
+				select type,userId from cs_order 
+							where delFlag=0
+							and payFlag=1
+							and type=2
+							group by type,userId
+							having userId not in( 
+								select userId from cs_order 
+								where delFlag=0
+								and payFlag=1
+								and type=1
+								group by userId
+				)
+		) as t2
     </select>
     
     <!--  统计当日交易总额  -->

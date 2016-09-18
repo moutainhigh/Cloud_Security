@@ -212,4 +212,23 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 	public List<Map> findOrderWithServiceIdBuy(Map<String, Object> paramMap) {
 		return this.getSqlSession().selectList(ns+"findOrderWithServiceIdBuy",paramMap);
 	}
+	
+	/**
+     * 功能描述：根据订单号查询订单(模糊匹配)
+     * 参数描述：int orderId
+     *       @time 2016-9-5
+     * 返回值    ：  List
+     */
+    public List<Order> findOrderByOrderIdMatch(Map<String, Object> paramMap) {
+        return this.getSqlSession().selectList(ns + "findOrderByOrderIdMatch",paramMap);
+    }
+
+	public List findAPIInfoByOrderId(String orderId) {
+		return this.getSqlSession().selectList(ns+"findAPIInfoByOrderId",orderId);
+	}
+
+	public int findAPICountByParam(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectOne(ns+"findAPICountByParam", paramMap);
+	}
+
 }

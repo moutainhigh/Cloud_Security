@@ -93,4 +93,9 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 		return this.getSqlSession().selectOne(ns + "countTestRunning",engine);
 	}
 	
+	public void update(Map<String, Object> paramMap) {
+		this.getSqlSession().update(ns+"update", paramMap);
+		
+	}
+	
 }

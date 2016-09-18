@@ -4,8 +4,8 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * 创 建 人  ： zhang_shaohua
- * 创建日期：  2016-9-1
+ * 创 建 人  ： tangxr
+ * 创建日期：  2016-3-30
  * 描        述： 购物车订单
  * 版        本：  1.0
  */
@@ -18,7 +18,7 @@ public class OrderList {
 	private String remarks;//备注
 	private String orderId;//订单Id
 	private double price;//总价
-	private String serverNames;//服务名称
+	private String serverName;//服务名称
 	private Date pay_date;//支付时间
 	private int balanceFlag; //是否领取安全币（0:未领取；1:已领取）
 	
@@ -72,11 +72,11 @@ public class OrderList {
 	public void setPay_date(Date pay_date) {
 		this.pay_date = pay_date;
 	}
-	public String getServerNames() {
-		return serverNames;
+	public String getServerName() {
+		return serverName;
 	}
-	public void setServerNames(String serverName) {
-		this.serverNames = serverName;
+	public void setServerName(String serverName) {
+		this.serverName = serverName;
 	}
 	public int getBalanceFlag() {
 		return balanceFlag;

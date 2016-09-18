@@ -50,6 +50,7 @@ $(document).ready(function(){
         <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/adminAdvertisementManageUI.html" class="white">广告管理</a></li>
         <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/adminApikeyUI.html" class="white">APIKEY分析</a></li>
         <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/financialManage.html" class="white">财务统计分析</a></li>
+        <li style="border-right:1px solid #1f8db4;"><a href="${ctx}/customerSupportUI.html" class="white">客服支持</a></li>
       	<a href="" id="synData" title="数据同步" style="position: relative;top: 10px;left: 10px;"><img src="${ctx}/source/adminImages/refresh.png"/></a>
       	
       </ul>

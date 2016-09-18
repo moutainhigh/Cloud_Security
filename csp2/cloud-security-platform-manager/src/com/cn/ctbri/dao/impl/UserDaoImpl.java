@@ -180,4 +180,9 @@ public class UserDaoImpl extends DaoCommon implements UserDao{
 	public List findUserApikey(Map<String, Object> paramMap) {
 		return this.getSqlSession().selectList(ns+"findUserApiKey", paramMap);
 	}
+
+	public List<User> findUser(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectList(ns+"findUser", map);
+	}
 }

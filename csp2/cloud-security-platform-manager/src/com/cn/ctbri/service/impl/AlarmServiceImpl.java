@@ -140,4 +140,12 @@ public class AlarmServiceImpl implements IAlarmService{
 	public List getAlarmTop5ByService(Map<String, Object> paramMap) {
 		return alarmDao.getAlarmTop5ByService(paramMap);
 	}
+	//资产查询告警
+	public List<Alarm> getAlarmByAsset(Map<String, Object> paramAlarm) {
+		return alarmDao.getAlarmByAsset(paramAlarm);
+	}
+	public List getAlarmByParam(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return alarmDao.getAlarmByParam(paramMap);
+	}
 }

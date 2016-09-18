@@ -189,5 +189,11 @@ public class OrderServiceImpl implements IOrderService{
 	public List<Map> findOrderWithServiceIdBuy(Map<String, Object> paramMap) {
 		return orderDao.findOrderWithServiceIdBuy(paramMap);
 	}
+	public List findAPIInfoByOrderId(String orderId) {
+		return orderDao.findAPIInfoByOrderId(orderId);
+	}
+	public int findAPICountByParam(Map<String, Object> paramMap) {
+		return orderDao.findAPICountByParam(paramMap);
+	}
 	
 }

@@ -101,4 +101,8 @@ public interface IAssetService {
 	//查询所有网站总数
 	int getAssetCount();
 	
+	Asset findByOrderAssetId(int parseInt);
+	
+	Asset findById(int parseInt, int id);
+	
 }

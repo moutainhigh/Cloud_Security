@@ -105,4 +105,14 @@ public interface AssetDao {
 	
 	//查询所有网站总数
 	int getAssetCount();
+	/**
+	 * 功能描述：根据资产名称或地址查询资产列表
+	 * @param paramMap
+	 * @return
+	 */
+	List<Asset> findByAssetAddrOrName(Map<String, Object> paramMap);
+
+	Asset findByOrderAssetId(int orderAssetId);
+	
+	Asset findById(int id, int userid);
 }

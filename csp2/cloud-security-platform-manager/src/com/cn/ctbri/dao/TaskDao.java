@@ -48,4 +48,6 @@ public interface TaskDao {
     public void deleteTaskByOaId(String order_asset_Id);
     
     public int getCount(int engine);
+
+	public void update(Map<String, Object> paramMap);
 }

@@ -139,4 +139,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="countTestRunning" parameterType="int" resultType="int" >
     	select count(*) count from cs_task where status=2 and engine=#{engine}
     </select>
+    
+        <!-- 修改任务 -->
+    <update id="update" parameterType="String">
+		update cs_task set alarm_view_flag=1 where taskId in
+		(SELECT a.id FROM
+		(select t.taskId id
+		from cs_task t,cs_order_asset oa
+		WHERE
+		t.order_asset_Id=oa.id AND oa.orderId=#{orderId}
+		<if test="groupId!=null and groupId!=''">
+        	and t.group_flag=#{groupId}
+        </if>
+		) a)
+    </update>
 </mapper>

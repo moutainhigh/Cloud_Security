@@ -141,4 +141,11 @@ public interface UserDao {
      * @return
      */
     List findUserApikey(Map<String, Object> paramMap);
+
+    /**
+     * 查询用户信息根据email，name，mobile
+     * @param map
+     * @return
+     */
+	List<User> findUser(Map<String, Object> map);
 }

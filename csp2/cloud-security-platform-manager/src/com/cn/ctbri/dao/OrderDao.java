@@ -124,4 +124,14 @@ public interface OrderDao {
 	List<Map> findOrderWithServiceIdReBuy(Map<String, Object> paramMap);
 	//购买数
 	List<Map> findOrderWithServiceIdBuy(Map<String, Object> paramMap);
+	/**
+	 * 功能描述：根据orderId查询order信息(模糊匹配)
+	 * @param id
+	 * @return
+	 */
+	List<Order> findOrderByOrderIdMatch(Map<String, Object> paramMap);
+
+	List findAPIInfoByOrderId(String orderId);
+
+	int findAPICountByParam(Map<String, Object> paramMap);
 }

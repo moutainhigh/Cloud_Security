@@ -143,5 +143,31 @@ public class AssetDaoImpl extends DaoCommon implements AssetDao{
 	public int getAssetCount() {
 		return this.getSqlSession().selectOne(ns+"getAssetCount");
 	}
+    /**
+     * 功能描述： 根据资产地址或者名称查询资产
+     * 参数描述： String addr
+     *        String name
+     *       @time 2016-9-5
+     */
+	public List<Asset> findByAssetAddrOrName(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"findByAssetAddrOrName", paramMap);
+	}
+	public Asset findByOrderAssetId(int orderAssetId) {
+		return this.getSqlSession().selectOne(ns+"findByOrderAssetId", orderAssetId);
+	}
+	/**
+	 * 功能描述：根据资产id获取资产
+	 * 参数描述：int id
+	 *		 @time 2015-1-21
+	 * 返回值    ：Asset
+	 */
+	public Asset findById(int id,int userid) {
+		Map map = new HashMap();
+		map.put("id", id);
+		map.put("userid", userid);
+		Asset asset = this.getSqlSession().selectOne(ns+"findByIdAndUserId", map);
+		return asset;
+	}
+	
 	
 }

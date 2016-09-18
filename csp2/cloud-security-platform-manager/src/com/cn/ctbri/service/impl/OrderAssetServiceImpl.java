@@ -87,5 +87,10 @@ public class OrderAssetServiceImpl implements IOrderAssetService{
 	public List getOrdersByAsset(int assetId) {
 		return orderAssetDao.getOrdersByAsset(assetId);
 	}
+
+	public List findAssetsByOrderId(String orderId) {
+		// TODO Auto-generated method stub
+		return orderAssetDao.findAssetsByOrderId(orderId);
+	}
 	
 }

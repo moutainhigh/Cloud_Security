@@ -5,6 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.cn.ctbri.entity.AlarmMapper">
 	<!-- 列集合 -->
 	<sql id="cols">id,name,alarm_time,level,advice,alarm_content,url,userId,taskId,alarm_type</sql>
+	<sql id="oacols">oa.id,oa.orderId,oa.assetId,oa.serviceId,oa.scan_type,oa.scan_date,oa.assetAddr,oa.assetName,oa.ipArray,oa.sermonth</sql>
 	<!-- 结果对象 -->
 	<resultMap type="com.cn.ctbri.entity.Alarm" id="Alarm">
 		<id property="id" column="id"/>
@@ -116,7 +117,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 根据orderid查询任务数  -->
     <select id="findTaskByOrderId" resultType="com.cn.ctbri.entity.Task" parameterType="hashmap">
 		select * from
-	   (select * from cs_task t,cs_order_asset oa where oa.id = t.order_asset_id 
+	   (select t.*,<include refid="oacols" /> from cs_task t,cs_order_asset oa where oa.id = t.order_asset_id 
 	    and oa.orderId=#{orderId} and t.status = 3 group by t.group_flag order by t.execute_time desc limit 0,7) a order by a.execute_time
     </select>
     
@@ -387,5 +388,56 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </if>
          group by a.name
 		 order by count desc limit 5            
+    </select>
+    
+    <!-- 资产查询告警-->
+    <select id="getAlarmByAsset" resultMap="Alarm" parameterType="hashmap">
+	        select a.id,a.name,a.alarm_time,a.score,a.level,a.alarm_content,a.url,a.keyword,a.taskId,a.alarm_type,a.userId,a.group_id,a.advice from cs_alarm a,
+			  (select t.taskId,t.group_id from cs_order_asset oa,cs_task t 
+			    where oa.id = t.order_asset_id 
+			    and oa.orderId=#{orderId}
+			    and t.order_asset_id = #{orderAssetId}
+			    and t.status = 3
+			    <if test="group_flag!=null and group_flag!=''">
+	            and t.group_flag=#{group_flag}
+	            </if>
+			    order by t.execute_time desc
+			    <if test="type==1 and group_flag==null or group_flag==''">
+	             limit #{count}
+	            </if>) b
+			where (a.taskId = b.taskId or a.group_id = b.group_id)
+			<if test="level!=null">
+	            and a.level=#{level}
+	        </if>
+	        <if test="name!=null">
+                and a.name=#{name}
+            </if>
+	        order by a.level desc
+    </select> 
+    
+        <!-- 查询告警等级-->
+    <select id="getAlarmByParam" parameterType="hashmap" resultType="hashmap">
+	        select COUNT(a.level) AS count,a.level from cs_alarm a,
+			  (select t.taskId,t.group_id from cs_order_asset oa,cs_task t 
+			    where oa.id = t.order_asset_id 
+			    and oa.orderId=#{orderId}
+			    and t.order_asset_id = #{orderAssetId}
+			    and t.status = 3
+			    <if test="group_flag!=null and group_flag!=''">
+	            and t.group_flag=#{group_flag}
+	            </if>
+			    order by t.execute_time desc
+			    <if test="type==1 and group_flag==null or group_flag==''">
+	             limit #{count}
+	            </if>) b
+			where (a.taskId = b.taskId or a.group_id = b.group_id)
+			<if test="level!=null">
+	            and a.level=#{level}
+	        </if>
+	        <if test="name!=null">
+                and a.name=#{name}
+            </if>
+            group by a.level
+	        order by a.level desc
     </select>
 </mapper>

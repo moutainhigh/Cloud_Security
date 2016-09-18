@@ -11,6 +11,7 @@ import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.service.ISelfHelpOrderService;
@@ -142,6 +143,32 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 	public void updateServ(Map map) {
 		selfHelpOrderDao.updateServ(map);
 		
+	}
+
+	public List findShopCarList(String userId, int payFlag,String orderId) {
+		// TODO Auto-generated method stub
+		return selfHelpOrderDao.findShopCarList(userId, payFlag,orderId);
+	}
+
+	public List findShopCarAPIList(String userId, int payFlag, String orderId) {
+		// TODO Auto-generated method stub
+		return selfHelpOrderDao.findShopCarAPIList(userId, payFlag,orderId);
+	}
+
+	public void SaveOrderDetail(OrderDetail orderDetail) {
+		// TODO Auto-generated method stub
+		selfHelpOrderDao.SaveOrderDetail(orderDetail);
+	}
+
+	public OrderDetail getOrderDetailById(String id, int userId,
+			List assetIdsList) {
+		// TODO Auto-generated method stub
+		return selfHelpOrderDao.getOrderDetailById(id,userId,assetIdsList);
+	}
+
+	public OrderDetail findOrderDetailById(String id, int userId) {
+		// TODO Auto-generated method stub
+		return selfHelpOrderDao.findOrderDetailById(id, userId);
 	}
 
 

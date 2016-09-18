@@ -62,5 +62,9 @@ public class TaskServiceImpl implements ITaskService{
 	public int getCount(int engine) {
 		return taskDao.getCount(engine);
 	}
+	public void update(Map<String, Object> paramMap) {
+		taskDao.update(paramMap);
+		
+	}
 
 }

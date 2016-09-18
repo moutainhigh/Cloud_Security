@@ -37,6 +37,13 @@ public class Order {
 	//add by 2016-4-11
 	private int payFlag;//是否结算
 	private int isAPI;
+	private String res1; //备用字段
+	public String getRes1() {
+		return res1;
+	}
+	public void setRes1(String res1) {
+		this.res1 = res1;
+	}
 	public String getBegin_datevo() {
 		return begin_datevo;
 	}

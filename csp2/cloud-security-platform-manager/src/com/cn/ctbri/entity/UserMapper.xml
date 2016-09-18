@@ -216,4 +216,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		and name like CONCAT(CONCAT('%', #{name}), '%')
 		</if>
 	</select>
+	
+	<select id="findUser" resultMap="UserRM" parameterType="hashmap">
+	 select * from cs_user where 1=1
+	 <if test="name != null and name != ''">and name like concat('%',concat(#{name}, '%'))</if>
+	 <if test="email != null and email != ''">and email = #{email}</if>
+	 <if test="mobile != null and mobile != ''">and mobile like concat('%', concat(#{mobile}, '%'))</if>
+	 order by id
+	</select>
 </mapper>

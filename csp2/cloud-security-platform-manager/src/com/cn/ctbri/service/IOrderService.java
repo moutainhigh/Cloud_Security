@@ -127,4 +127,8 @@ public interface IOrderService {
 	List<Map> findOrderWithServiceIdReBuy(Map<String, Object> paramMap);
 	//购买数
 	List<Map> findOrderWithServiceIdBuy(Map<String, Object> paramMap);
+
+	List findAPIInfoByOrderId(String orderId);
+
+	int findAPICountByParam(Map<String, Object> paramMap);
 }

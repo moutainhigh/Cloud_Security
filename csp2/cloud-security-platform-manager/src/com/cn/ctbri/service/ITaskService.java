@@ -42,4 +42,6 @@ public interface ITaskService {
     
     public int getCount(int engine);
 
+	void update(Map<String, Object> paramMap);
+
 }

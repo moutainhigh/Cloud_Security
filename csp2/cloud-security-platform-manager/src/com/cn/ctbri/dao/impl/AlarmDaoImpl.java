@@ -177,4 +177,11 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
 	public List getAlarmTop5ByService(Map<String, Object> paramMap) {
 		return this.getSqlSession().selectList(ns+"findAlarmTop5ByService", paramMap);
 	}
+	//资产查询告警
+	public List<Alarm> getAlarmByAsset(Map<String, Object> paramAlarm) {
+		return getSqlSession().selectList(ns+"getAlarmByAsset", paramAlarm);
+	}
+	public List getAlarmByParam(Map<String, Object> paramMap) {
+		return getSqlSession().selectList(ns+"getAlarmByParam", paramMap);
+	}
 }

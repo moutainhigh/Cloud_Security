@@ -163,4 +163,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getAssetCount" resultType="int">
 	 select count(*) from cs_asset
 	</select>
+	<!-- 根据资产地址或名称查询资产 -->
+	<select id="findByAssetAddrOrName" parameterType="hashmap" resultMap="AssetRM">
+		select * from cs_asset
+		where 1=1
+		<if test="name != null and name != ''">and name like concat('%', concat(#{name}, '%'))</if>
+		<if test="addr != null and addr != ''">and addr = #{addr}</if>
+		<if test="userId != null and userId != 0">and userid = #{userId}</if>
+		 order by userid
+	</select>
+	
+	    <!-- 根据orderAssetId查询资产 -->
+	<select id="findByOrderAssetId" parameterType="int" resultMap="AssetRM">
+		select a.* from cs_asset a,cs_order_asset oa
+		where oa.assetId = a.id
+   		and oa.id = #{orderAssetId}
+	</select>
+	
+		<!-- 根据资产id查询资产 -->
+	<select id="findByIdAndUserId" parameterType="Map" resultMap="AssetRM">
+		select * from cs_asset
+		where id=#{id} and userid=#{userid}
+	</select>
 </mapper>

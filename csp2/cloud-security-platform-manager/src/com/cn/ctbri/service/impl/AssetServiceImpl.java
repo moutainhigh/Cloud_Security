@@ -151,4 +151,18 @@ public class AssetServiceImpl implements IAssetService{
 	public int getAssetCount() {
 		return assetDao.getAssetCount();
 	}
+	public Asset findByOrderAssetId(int orderAssetId) {
+		return assetDao.findByOrderAssetId(orderAssetId);
+	}
+	
+	/**
+	 * 功能描述：根据资产id获取资产
+	 * 参数描述：int id
+	 *		 @time 2015-1-21
+	 * 返回值    ：Asset
+	 */
+	public Asset findById(int id,int userid) {
+		Asset asset = assetDao.findById(id,userid);
+		return asset;
+	}
 }

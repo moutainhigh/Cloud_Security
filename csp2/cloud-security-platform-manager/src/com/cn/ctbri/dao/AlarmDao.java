@@ -107,4 +107,7 @@ public interface AlarmDao {
     List<Alarm> getAlarmNumByTime(String time);
     //根据服务获取告警TOP5
     List getAlarmTop5ByService(Map<String, Object> paramMap);
+    
+	public List<Alarm> getAlarmByAsset(Map<String, Object> paramAlarm);
+	public List getAlarmByParam(Map<String, Object> paramMap);
 }
