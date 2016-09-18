@@ -7,6 +7,7 @@ window.onload =function(){
 $(function(){
 	$('#login_btn').removeAttr('disabled');
 	$('#login_btn').css('background-color','#2499fb');
+	$("#login_btn").css("opacity",""); 
 	$('#login_btn').click(function(){
 		/*function loginSubmit(){*/
 			
@@ -43,13 +44,14 @@ $(function(){
 		        dataType:"json",
 		        success: function(data){
 		        	$('#login_btn').attr('disabled',"disabled");
-					//$('#login_btn').css("background-color","");
 					$("#login_btn").css("opacity","0.4"); 
 		            if(data.count<=0){
 		        		$("#errMsg").html("用户不存在!");
 		        		$("#errMsgDiv").show();
 		        		//刷新验证码
 						checkNumberImage();
+						$('#login_btn').removeAttr('disabled');
+						$("#login_btn").css("opacity",""); 
 		        		return;
 		            }else{
 		            	$.ajax({
@@ -128,7 +130,6 @@ $(function(){
 								case 7:
 									$("#errMsg").html("");
 									$("#errMsgDiv").hide();
-									//alert(data.afterLoginUrl);
 									if (data.afterLoginUrl != null && data.afterLoginUrl!='') {
 										window.location.href = data.afterLoginUrl;
 									
@@ -140,6 +141,8 @@ $(function(){
 									$("#errMsg").html("");
 									$("#errMsgDiv").hide();
 									window.location.href="loginUI.html";
+									$('#login_btn').removeAttr('disabled');
+									$("#login_btn").css("opacity","");
 									break;
 								default:
 									break;
@@ -157,7 +160,7 @@ $(function(){
 
 		})
 
-	$('#login_name').keyup(function() {
+	/*$('#login_name').keyup(function() {
 		//用户名发生改变时判断是否为cookie保存
 		var userName = $("#login_name").val();
 		$.ajax({
@@ -173,7 +176,7 @@ $(function(){
                 }
             },
          }); 
-		});
+		});*/
 	$("body").keydown(function(e){ 
 		var curKey = e.which; 
 		if(curKey == 13){ 
@@ -188,6 +191,23 @@ function checkNumberImage(){
 	imageNumber.src = getRootPath()+"/image.jsp?timestamp="+new Date().getTime();
 }
 
+//用户名发生改变时判断是否为cookie保存
+function logiName(){
+	var userName = $("#login_name").val();
+	$.ajax({
+        type: "POST",
+        url: "login_checkCookie.html",
+        data: {"name":userName},
+        dataType:"json",
+        success: function(data){
+            if(data.cookie){
+            	$("#login_password").prop("value",data.password);
+            }else{
+            	$("#login_password").prop("value","");
+            }
+        },
+     }); 
+}
 //校验用户名
 function checkName(){
 	var name = $("#login_name").val();
@@ -208,11 +228,15 @@ function checkName(){
             		$("#login_name_flag").show();
             		$("#login_name_prompt").html("<b></b>用户名不存在");
             		$("#login_name_prompt").fadeIn();
+            		$('#login_btn').removeAttr('disabled');
+					$("#login_btn").css("opacity","");
                 }else{
             		$("#login_name_flag").attr("class","right");
             		$("#login_name_flag").show();
             		$("#login_name_prompt").html("<b></b>");
             		$("#login_name_prompt").fadeOut();
+            		$('#login_btn').removeAttr('disabled');
+					$("#login_btn").css("opacity","");
                 }
             },
          }); 
