@@ -2239,4 +2239,26 @@ public class UserController{
 		}
 		System.out.println("====已完成=====");
 	}
+	
+	/**
+	 * 功能描述：获取登录用户
+	 * 参数描述：  
+	 * @throws Exception 
+	 */
+	@RequestMapping(value="getLoginUser.html", method = RequestMethod.POST)
+	@ResponseBody
+	public void getLoginUser(HttpServletRequest request,HttpServletResponse response) {
+		Map<String, Object> m = new HashMap<String, Object>();
+		User user = (User)request.getSession().getAttribute("globle_user");
+		
+		m.put("LoginUser", user);
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
