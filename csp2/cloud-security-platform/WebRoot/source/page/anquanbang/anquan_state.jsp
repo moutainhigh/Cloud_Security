@@ -20,7 +20,6 @@
 <script type="text/javascript" src="${ctx}/source/scripts/echarts3/echarts.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts3/china.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/anquan_state.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/common/highSiteMap.js"></script>
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
@@ -167,6 +166,8 @@
 		l=$('#content_ul').offset().top;
 		//$('#content_ul').height(h-l);
 		//$('#content').height(h-t);
+		
+		
 
 	});
 	
@@ -341,16 +342,16 @@
 			<div class="contentLeft fl">
 				<ul id="content_ul">
 					<li class="active">
-						<a href="#" onclick="showSecurityStateMap()">漏洞分布</a>
+						<a href="#">漏洞分布</a>
 					</li>
 					<li>
-						<a href="#" onclick="showHighSiteMap()">监测数据</a>
+						<a href="#">监测数据</a>
 					</li>
 					<li>
-						<a href="#" onclick="showHackerMap()">攻击源分布</a>
+						<a href="#">攻击源分布</a>
 					</li>
 					<li>
-						<a href="#" onclick="showUserMap()">用户分布</a>
+						<a href="#">用户分布</a>
 					</li>
 					
 				</ul>
