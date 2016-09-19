@@ -10,11 +10,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="latitude" column="latitude"/>
 		<result property="countryProvince" column="countryProvince"/>
 		<result property="registerTime" column="registerTime"/>
+		<result property="sourceStatus" column="sourceStatus"/>
 	</resultMap>
 	<!-- 插入数据 -->
     <insert id="saveIPPosition">
 		insert into cs_ipposition
-		values(#{ip},#{longitude},#{latitude},#{countryProvince},#{registerTime})
+		values(#{ip},#{longitude},#{latitude},#{countryProvince},#{registerTime},#{sourceStatus})
 	</insert>
 	<select id="getIPPositionList" resultMap="IPPosition">
 		select * from cs_ipposition

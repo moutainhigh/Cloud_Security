@@ -37,6 +37,15 @@ import com.cn.ctbri.vo.AttackVO;
  * 创 建 人 ： 于永波 创建日期： 2014-12-30 描 述： WebSocket服务器消息监听控制器 版 本： 1.0
  */
 public class WebsocketEndPoint extends TextWebSocketHandler {
+	/**
+	 * 数据解析来源信息状态值
+	 * 0：未知数据，或者初始数据，1：电信接口数据，2：百度接口通过ip查询出经纬度数据，但是不能根据经纬度查询出国家城市信息，3：百度接口不仅通过ip将经纬度查询出来，还根据经纬度将城市信息查询出来
+	 */
+	public final int INITIALIZE=0;
+	public final int SOURCE_DIANXIN=1;
+	public final int SOURCE_BAIDU_IP=2;
+	public final int SOURCE_BAIDU_CITY=3;
+	
 	@Autowired
 	IIPPositionService ipPositionService;
 	// 存储格式（IP,IPPosition）
@@ -144,6 +153,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			// 1.优先使用百度接口根据ip查询经纬度
 			if (null == srcIPPosition) {// 数据库中不存在
 				srcIPPosition = new IPPosition();
+				srcIPPosition.setSourceStatus(INITIALIZE);
 				ipPositionMap.put(srcIP, srcIPPosition);
 				//1.先调电信的接口
 				String ipMessage=WafAPIWorker.getLocationFromIp(srcIP);
@@ -165,6 +175,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 					srcIPPosition.setLongitude(srcLongitude);
 					srcIPPosition.setLatitude(srcLatitude);
 					srcIPPosition.setCountryProvince(srcName);
+					srcIPPosition.setSourceStatus(SOURCE_DIANXIN);
 					ipPositionService.saveIPPosition(srcIPPosition);
 				}else{//电信接口不存在数据
 					//2.电信接口如果不存在的话，再掉百度的接口
@@ -179,6 +190,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 						srcLatitude = positionArray[1];
 						srcIPPosition.setLongitude(srcLongitude);
 						srcIPPosition.setLatitude(srcLatitude);
+						srcIPPosition.setSourceStatus(SOURCE_BAIDU_IP);
 					} else {
 						// 入库
 						ipPositionService.saveIPPosition(srcIPPosition);
@@ -193,6 +205,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 						continue;
 					} else {
 						srcIPPosition.setCountryProvince(srcName);
+						srcIPPosition.setSourceStatus(SOURCE_BAIDU_CITY);
 						ipPositionService.saveIPPosition(srcIPPosition);
 					}
 
@@ -213,6 +226,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			if (null == desIPPosition) {// 数据库中不存在数据
 				
 				desIPPosition = new IPPosition();
+				desIPPosition.setSourceStatus(INITIALIZE);
 				ipPositionMap.put(desIP, desIPPosition);
 				
 				//1.先调电信的接口
@@ -234,6 +248,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 					desIPPosition.setLongitude(desLongitude);
 					desIPPosition.setLatitude(desLatitude);
 					desIPPosition.setCountryProvince(desName);
+					desIPPosition.setSourceStatus(SOURCE_DIANXIN);
 					ipPositionService.saveIPPosition(desIPPosition);
 				}else{//电信接口不存在数据
 					
@@ -247,6 +262,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 						desLatitude = positionArray[1];
 						desIPPosition.setLongitude(desLongitude);
 						desIPPosition.setLatitude(desLatitude);
+						desIPPosition.setSourceStatus(SOURCE_BAIDU_IP);
 					} else {
 
 						// 入库
@@ -264,6 +280,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 						continue;
 					} else {
 						desIPPosition.setCountryProvince(desName);
+						desIPPosition.setSourceStatus(SOURCE_BAIDU_CITY);
 						ipPositionService.saveIPPosition(desIPPosition);
 					}
 					

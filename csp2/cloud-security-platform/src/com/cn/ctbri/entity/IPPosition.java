@@ -8,6 +8,7 @@ public class IPPosition {
 	private String latitude;
 	private String countryProvince;
 	private Date registerTime;
+	private int sourceStatus;
 	public String getIp() {
 		return ip;
 	}
@@ -38,6 +39,12 @@ public class IPPosition {
 	}
 	public void setCountryProvince(String countryProvince) {
 		this.countryProvince = countryProvince;
+	}
+	public int getSourceStatus() {
+		return sourceStatus;
+	}
+	public void setSourceStatus(int sourceStatus) {
+		this.sourceStatus = sourceStatus;
 	}
 	
 }
