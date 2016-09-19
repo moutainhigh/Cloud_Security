@@ -24,6 +24,17 @@ public class IPUtility {
         System.out.println(l);
         return l;  
     }
+    /*
+    public static final long ip2Long(final String ip) { 
+    	String ipAddr = ip.trim();
+    	String[] ipNums = ipAddr.split("\\.");  
+    	
+    	return (Long.parseLong(ipNums[0]) << 24)  
+    	          + (Long.parseLong(ipNums[1]) << 16)  
+    	           + (Long.parseLong(ipNums[2]) << 8)  
+    	            + (Long.parseLong(ipNums[3]));  
+    }  
+    */
     /**
      * long转ipv4
      * @param l
@@ -100,5 +111,5 @@ public class IPUtility {
         str = str.substring(0, str.length() - 1);  
           
         return str.replaceFirst("(^|:)(0+(:|$)){2,8}", "::");  
-    }  
+    } 
 }

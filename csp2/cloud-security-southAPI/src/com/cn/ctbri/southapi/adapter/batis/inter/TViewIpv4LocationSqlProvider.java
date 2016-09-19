@@ -131,7 +131,6 @@ public class TViewIpv4LocationSqlProvider {
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
-        
         return SQL();
     }
 
