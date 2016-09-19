@@ -1044,7 +1044,6 @@ public class NsfocusWAFAdapter {
 	
 			//查询并返回结果			
 			for (Element element : typeElements) {
-				
 				String eventTypeBase64 = stringToBase64(element.getTextTrim());
 				tWafLogWebseCriteria.andEventTypeEqualTo(element.attributeValue("name"));
 				TWafLogWebsecExample tWafLogWebsecExample = new TWafLogWebsecExample();

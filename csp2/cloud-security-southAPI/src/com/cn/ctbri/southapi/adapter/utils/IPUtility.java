@@ -20,8 +20,8 @@ public class IPUtility {
         l = l + (Long.valueOf(splits[2], 10) << 8);  
         // yunsuanfu youxianji  
         l = l + (Long.valueOf(splits[3], 10));  
-        System.out.println(Long.toBinaryString(l));
-        System.out.println(l);
+        //System.out.println(Long.toBinaryString(l));
+        //System.out.println(l);
         return l;  
     }
     /*
