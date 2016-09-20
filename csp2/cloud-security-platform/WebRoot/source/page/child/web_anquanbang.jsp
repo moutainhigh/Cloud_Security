@@ -268,9 +268,9 @@ function buyWafOrder(serviceId){
                                          	<a href="javascript:;" class="btn" style="width:80px;" onclick="buyWafOrder(6);">购买</a>
                                         </div>
                                     </div>
-                               <div class="mask">
+                                 <!--<div class="mask">
                                 	<h6>即将上线</h6>
-                                </div>
+                                </div>  -->
                                 
                                
                             </li>
