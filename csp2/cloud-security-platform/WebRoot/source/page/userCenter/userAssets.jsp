@@ -355,6 +355,12 @@
    				<option selected="selected" value="-1">请选择资产用途</option>
    				<option value="公共服务">公共服务</option>
    				<option value="信息发布">信息发布</option>
+   				<option value="信息服务">信息服务</option>
+   				<option value="社交">社交</option>
+   				<option value="娱乐">娱乐</option>
+   				<option value="电子商务/金融">电子商务/金融</option>
+   				<option value="移动互联网">移动互联网</option>
+   				<option value="教育/医疗">教育/医疗</option>
    				<option value="其他">其他</option>   				
    			</select>
 	   </td>
