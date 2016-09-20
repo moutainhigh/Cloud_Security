@@ -90,45 +90,32 @@ function searchCombine(){
         					scan_type = infoList[i].scan_type;
         				}
         				if(infoList[i].service_type==1){
-        					temp = "参数  scanMode："+infoList[i].type+
-		    						",  TargetURL："+infoList[i].url+
-		    						",  ScanType："+
+        					temp = "参数  targetURL："+infoList[i].url+
+		    						",  scanType："+
 		    						",  startTime："+infoList[i].begin_date+
-		    						",  endTime :"+infoList[i].end_date+
-		    						",  ScnanPeriod: " +scan_type+
-		    						",  ScanDepth: "+
-		    						",  MaxPages: "+
-		    						",  Stategy: "+
-		    						",  CustomManu: ";
+		    						",  scanDepth: "+
+		    						",  maxPages: "+
+		    						",  stategy: ";
         				}else if(infoList[i].service_type==2){
-        					temp = "参数  scanMode："+infoList[i].type+
-		    						",  TargetURL："+infoList[i].url+
-		    						",  ScanType："+
+        					temp = "参数  targetURL："+infoList[i].url+
+		    						",  scanType："+
 		    						",  startTime："+infoList[i].begin_date+
-		    						",  endTime :"+infoList[i].end_date+
-		    						",  scanPeriod: " +scan_type+
-		    						",  ScanDepth: "+
-		    						",  MaxPages: "+
-		    						",  Stategy: "+
-		    						",  CustomManu: ";
+		    						",  scanDepth: "+
+		    						",  maxPages: "+
+		    						",  stategy: ";
         				}else if(infoList[i].service_type==3){
-        					temp = "参数  scanMode："+infoList[i].type+
-        							"   TargetURL："+infoList[i].url+
+        					temp = "参数  targetURL："+infoList[i].url+
 		    						",  startTime："+infoList[i].begin_date+
 		    						",  endTime :"+infoList[i].end_date+
 		    						",  scanPeriod: " +scan_type+
-		    						",  ScanDepth: "+
-		    						",  Stategy: "+
-		    						",  CustomManu: ";
+		    						",  scanDepth: ";
         				}else if(infoList[i].service_type==4){
-        					temp = "参数  TargetURL："+infoList[i].url+
+        					temp = "参数  targetURL："+infoList[i].url+
 		    						",  startTime："+infoList[i].begin_date+
-		    						",  endTime :"+infoList[i].end_date+
-		    						",  scanPeriod: " +scan_type+
-		    						",  ScanDepth: "+
-		    						",  CustomManu: ";
+		    						",  scanDepth: "+
+		    						",  stategy: ";
         				}else{
-        					temp = "参数  TargetURL："+infoList[i].url+
+        					temp = "参数  targetURL："+infoList[i].url+
 		    						",  startTime："+infoList[i].begin_date+
 		    						",  endTime :"+infoList[i].end_date+
 		    						",  scanPeriod: " +scan_type;
