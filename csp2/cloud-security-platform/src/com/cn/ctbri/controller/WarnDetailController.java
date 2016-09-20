@@ -2419,13 +2419,13 @@ public class WarnDetailController {
 			    		break;
 			    		
 			    	case 4:
-			    		newMap.put("apiUrl", "rest/openapi/availability/");
-			    		newMap.put("apiName", "创建可用性监测订单（任务）");
+			    		newMap.put("apiUrl", "rest/openapi/sensitiveword/");
+			    		newMap.put("apiName", "创建敏感词监测订单（任务）");
 			    		break;
 			    		
 			    	case 5:
-			    		newMap.put("apiUrl", "rest/openapi/sensitiveword/");
-			    		newMap.put("apiName", "创建敏感词监测订单（任务）");
+			    		newMap.put("apiUrl", "rest/openapi/availability/");
+			    		newMap.put("apiName", "创建可用性监测订单（任务）");
 			    		break;
 			    	}
 			    	
