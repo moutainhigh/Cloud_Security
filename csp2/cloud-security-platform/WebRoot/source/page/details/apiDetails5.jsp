@@ -154,7 +154,8 @@ $(document).ready(function(){
                		<div class="apiL fl" style="width:256px;">
                     	<dl class="apitab">
                         	<dt>API表格</dt>
-                            <dd class="active">创建可用性监测订单</dd>
+                        	<dd class="active">获取会话令牌</dd>
+                            <dd>创建可用性监测订单</dd>
                             <dd>订单（任务）操作</dd>
                             <dd>获取订单（任务）状态</dd>
                             <dd>获取订单结果</dd>
@@ -163,6 +164,142 @@ $(document).ready(function(){
                     </div>
                     <div class="apiR fl">
                     	<div class="listtab" style="display:block">
+                        	<ul>
+                        	<li class="clearfix">
+                            	<label class="fl">接口描述：</label>
+                                <div class="fl centapi">
+                                	<p>获取会话令牌</p>
+                                </div>
+                            </li>
+                            <li class="clearfix">
+                            	<label class="fl">接口地址：</label>
+                                <div class="fl centapi">
+                                	<p>rest/openapi/useraction/login</p>
+                                </div>
+                            </li>
+                            <li class="clearfix">
+                            	<label class="fl">请求方法：</label>
+                                <div class="fl centapi">
+                                	<p>POST</p>
+                                </div>
+                            </li>
+                            <li class="clearfix">
+                            	<label class="fl">参数说明：</label>
+                                <div class="fl centapi">
+                                	<table class="tableapi" width="718" cellpadding="0" cellspacing="0">
+                                    	<thead>
+                                        	<tr>
+                                            	<th width="170">名称</th>
+                                                <th width="100">必选</th>
+                                                <th width="446">描述</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        	<tr>
+                                            	<td width="170">userID</td>
+                                                <td width="100">是</td>
+                                                <td class="aw" width="446">用户在云安全服务平台注册时系统分配的ID</td>
+                                            </tr>
+                                            <tr>
+                                            	<td width="170">apiKey</td>
+                                                <td width="100">是</td>
+                                                <td class="aw" width="446">用户在云安全服务平台注册时系统分配的APIKey</td>
+                                            </tr>
+                                            <tr>
+                                            	<td width="170">randomChar</td>
+                                                <td width="100">是</td>
+                                                <td class="aw" width="446">用户用于登录时随机生成的字符串，该字符串用户自己生成（长度限制16字节），平台用其生成后续交互使用的token</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </li>
+                             <li class="clearfix" style="margin-top:28px;">
+                            	<label class="fl">发送请求：(示例)</label>
+                                <div class="fl centapi">
+                                	<div class="cent-div" style="height:200px;">
+                                    	POST  /rest/openapi/ useraction /login<br/>
+										Content-Type: application/json<br/>
+										Accept: application/json;version=1.0<br/>
+										{     <br/>
+										    "userID" : "",<br/>
+										    "apiKey  : "",<br/>
+										    "randomChar" : ""<br/>
+										}<br/><br/>
+										                                    	
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="clearfix" style="margin:22px 0px;">
+                            	<label class="fl">返回结果：(示例)</label>
+                                <div class="fl centapi">
+                                	<div class="cent-div" style="height:98px;">
+                                    	成功：{"code":201,"token":"a05d8b432183ea025276cc6640cf9643"," "expireTime":"2018-03-90T11:01:02.002+0800" }<br/>
+
+										失败：{"code":404,"message":"无效的UserID或APIKey"}<br/>
+										      {"code":424,"message":"token过期"}<br/>
+										                                    	
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="clearfix">
+                            	<label class="fl">返回结果<br>代码表：</label>
+                                <div class="fl centapi capi">
+                                	<table class="tableapi" width="718" cellpadding="0" cellspacing="0">
+                                    	<thead>
+                                        	<tr>
+                                            	<th width="270">成功代码</th>
+                                                <th width="446">描述</th> 
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        	<tr>
+                                            	<td width="270">code</td>
+                                                <td width="446">返回码</td>
+                                            </tr>
+                                            <tr>
+                                            	<td width="270"></td>
+                                                <td width="446">201：成功</td>
+                                            </tr>
+                                            <tr>
+                                            	<td width="270">token</td>
+                                                <td width="446">会话token，用户进行API调用的标识，后续所有API接口调用都需使用该标识。</td>
+                                            </tr>
+                                            <tr>
+                                            	<td width="270">expireTime</td>
+                                                <td width="446">会话token过期时间，格式：ISO8601标准格式，YYYY-MM-DD'T'HH:mm:ss.sssZ</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="tableapi capi" width="718" cellpadding="0" cellspacing="0">
+                                    	<thead>
+                                        	<tr>
+                                            	<th width="270" align="left">错误代码</th>
+                                                <th width="446" align="left">描述</th>
+                                               
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        	<tr>
+                                            	<td width="270">code</td>
+                                                <td width="446">返回码</td>
+                                            </tr>
+                                            <tr>
+                                            	<td width="270"></td>
+                                                <td width="446">404：无效的UserID或APIKey</td>
+                                            </tr>
+                                            <tr>
+                                            	<td width="270"></td>
+                                                <td width="446">424: token过期</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </li>
+                        
+                        </ul>
+                        </div>
+                    	<div class="listtab">
                         	<ul>
                         	<li class="clearfix">
                             	<label class="fl">接口描述：</label>
@@ -194,55 +331,25 @@ $(document).ready(function(){
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        	<tr>
-                                            	<td width="170">ScanMode</td>
+                                            <tr>
+                                            	<td width="170">targetURL</td>
                                                 <td width="100">是</td>
-                                                <td class="aw" width="446">单次、长期</td>
+                                                <td class="aw" width="446">目标地址，字符串</td>
                                             </tr>
                                             <tr>
-                                            	<td width="170">TargetURL</td>
-                                                <td width="100">是</td>
-                                                <td class="aw" width="446">目标地址，可以多个，以逗号区分</td>
-                                            </tr>
-                                            <tr>
-                                            	<td width="170">ScanType</td>
-                                                <td width="100">是</td>
-                                                <td class="aw" width="446">扫描方式（正常、快速、全量）</td>
-                                            </tr>
-                                            <tr>
-                                            	<td width="170">StartTime</td>
+                                            	<td width="170">startTime</td>
                                                 <td width="100">是</td>
                                                 <td class="aw" width="446">计划开始时间（不早于当前时间）</td>
                                             </tr>
                                             <tr>
-                                            	<td width="170">EndTime</td>
-                                                <td width="100">否</td>
-                                                <td class="aw" width="446">单次扫描此项为空</td>
+                                            	<td width="170">endTime</td>
+                                                <td width="100">是</td>
+                                                <td class="aw" width="446">计划结束时间</td>
                                             </tr>
                                             <tr>
-                                            	<td width="170">ScanPeriod</td>
+                                            	<td width="170">scanPeriod</td>
                                                 <td width="100">是</td>
-                                                <td class="aw" width="446">周期（长期任务执行的周期，每天，每周，每月）</td>
-                                            </tr>
-                                            <tr>
-                                            	<td width="170">ScanDepth</td>
-                                                <td width="100">是</td>
-                                                <td class="aw" width="446">检测深度（20、16、12、8、仅首页、不限）</td>
-                                            </tr>
-                                            <tr>
-                                            	<td width="170">MaxPages</td>
-                                                <td width="100">是</td>
-                                                <td class="aw" width="446">最大页面数（默认30000可修改）</td>
-                                            </tr>
-                                            <tr>
-                                            	<td width="170">Stategy</td>
-                                                <td width="100">是</td>
-                                                <td class="aw" width="446">策略（自定义）</td>
-                                            </tr>
-                                            <tr>
-                                            	<td width="170">CustomManu</td>
-                                                <td width="100">是</td>
-                                                <td class="aw" width="446">指定厂家，可以多个，以逗号区分</td>
+                                                <td class="aw" width="446">检测周期（固定）M1：10分钟、M3: 30分钟、H: 1小时</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -256,17 +363,10 @@ $(document).ready(function(){
 										Content-Type: application/json<br/>
 										Accept: application/json;version=1.0<br/>
 										{     <br/>
-										    "ScanMode" : "",<br/>
-										    "TargetURL" : ["","",""]<br/>
-										    "ScanType" : "",<br/>
-										    "StartTime" : "",<br/>
-										    "EndTime" : "",<br/>
-										    "ScanPeriod" : "",<br/>
-										    "ScanDepth" : "",<br/>
-										    "MaxPages" : "",<br/>
-										    "Stategy" : "",<br/>
-										    "CustomManu:["","",""],<br/>
-										    "Reserve":""<br/>
+										    "targetURL" : "",<br/>
+										    "startTime" : "",<br/>
+										    "endTime" : "",<br/>
+										    "scanPeriod" : ""<br/>
 										}<br/><br/>
 										                                    	
                                     </div>
