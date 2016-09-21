@@ -640,21 +640,26 @@ function analysisAPIUser(){
 		   	   		
 		   	   		var option10 = {
 		   	   			tooltip : {
-	    	        	trigger: 'item',
-	    	        	formatter: "{a} <br/>{b} : {c} ({d}%)"
-	    	    },    	    
-	    	    //calculable : true,
-	    	    series : [
-	    	        {
-	    	            name:'数量',
-	    	            type:'pie',
-	    	            radius : '50%',
-	    	            center: ['48.5%', '50%'],
-	    	            itemStyle : { normal: {label : {show: true, position: 'outer',formatter: "{b}:{c}"}}},
-	    	            data: countList
-	    	        }
-	    	        ]
-		   	 };
+		    	        	trigger: 'item',
+		    	        	formatter: "{a} <br/>{b} : {c} ({d}%)"
+	    	    		}, 
+			    	    legend: {
+					        orient : 'vertical',
+					        x : 'left',
+					        data:serviceList
+					    },   	    
+			    	    //calculable : true,
+			    	    series : [
+			    	        {
+			    	            name:'数量',
+			    	            type:'pie',
+			    	            radius : '50%',
+			    	            center: ['48.5%', '50%'],
+			    	            itemStyle : { normal: {label : {show: true, position: 'outer',formatter: "{b}:{c}"}}},
+			    	            data: countList
+			    	        }
+			    	        ]
+		   	 		};
 		   	   		
 		   	   			myChart10.setOption(option10);
 		   	    	},
