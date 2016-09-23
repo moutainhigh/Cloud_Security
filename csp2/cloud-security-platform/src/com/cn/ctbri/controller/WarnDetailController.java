@@ -12,17 +12,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.MediaType;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,13 +28,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import se.akerfeldt.com.google.gson.Gson;
 
+import com.cn.ctbri.common.APIWorker;
 import com.cn.ctbri.common.Constants;
-import com.cn.ctbri.common.HuaweiWorker;
-import com.cn.ctbri.constant.WarnType;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.AlarmDDOS;
 import com.cn.ctbri.entity.Asset;
-import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.entity.User;
@@ -51,14 +46,6 @@ import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientHandlerException;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.UniformInterfaceException;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
 
 /**
  * 创 建 人  ：  tangxr
@@ -86,23 +73,8 @@ public class WarnDetailController {
     @Autowired
     IServiceAPIService serviceAPIService;
     
-    private static String SERVER_WEB_ROOT;
-    private static String VulnScan_serviceCreateAPICount;
-    private static String VulnScan_analysisAPICount;
-    private static String VulnScan_getAPIHistory;
-	static{
-		try {
-			Properties p = new Properties();
-			p.load(HuaweiWorker.class.getClassLoader().getResourceAsStream("northAPI.properties"));
-			
-			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
-			VulnScan_serviceCreateAPICount = p.getProperty("VulnScan_serviceCreateAPICount");
-			VulnScan_analysisAPICount = p.getProperty("VulnScan_analysisAPICount");
-			VulnScan_getAPIHistory = p.getProperty("VulnScan_getAPIHistory");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    
+	
 	
     @RequestMapping(value="warningInit.html")
     public String warningInit(HttpServletRequest request,HttpServletResponse response) throws Exception{
@@ -2165,14 +2137,7 @@ public class WarnDetailController {
 			int apiCount = orderService.findAPICountByParam(paramMap);
 			
 			//远程调用接口
-			ClientConfig config = new DefaultClientConfig();
-			//检查安全传输协议设置
-			Client client = Client.create(config);
-			//连接服务器
-			String url = SERVER_WEB_ROOT + VulnScan_serviceCreateAPICount;
-			WebResource service = client.resource(url+orderId);
-			ClientResponse clientResponse = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);        
-			String str = clientResponse.getEntity(String.class);
+			String str = APIWorker.getUserCount(orderId);
 			
 			//解析json,进行数据同步
 			JSONObject jsonObject = JSONObject.fromObject(str);	
@@ -2241,15 +2206,7 @@ public class WarnDetailController {
 			
 			//获取某订单扫描所有api的次数
 			//远程调用接口
-			ClientConfig config = new DefaultClientConfig();
-			//检查安全传输协议设置
-			Client client = Client.create(config);	
-
-			//连接服务器
-			String url = SERVER_WEB_ROOT + VulnScan_analysisAPICount;
-			WebResource service = client.resource(url+orderId);
-			ClientResponse clientResponse = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);        
-			String str = clientResponse.getEntity(String.class);
+			String str = APIWorker.getUserAllCount(orderId);
 			
 			//解析json,进行数据同步
 			JSONObject jsonObject = JSONObject.fromObject(str);	
@@ -2360,20 +2317,7 @@ public class WarnDetailController {
 			
 
 			//远程调用接口		
-			ClientConfig cc = new DefaultClientConfig(); 
-			Client client = Client.create(cc);
-			
-			//连接服务器
-			String url = SERVER_WEB_ROOT + VulnScan_getAPIHistory;
-			WebResource service = client.resource(url+orderId);
-			JSONObject req = new JSONObject();
-			req.put("scanUrl", scanUrl);
-			req.put("beginDate", beginDate);
-			req.put("endDate", endDate);
-			String param = req.toString();
- 
-			ClientResponse clientResponse = service.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON).post(ClientResponse.class, param);  
-			String str = clientResponse.getEntity(String.class);
+			String str = APIWorker.getAPIHistory(scanUrl, beginDate, endDate, orderId);
 			
 			//解析json,进行数据同步
 			JSONObject jsonObject = JSONObject.fromObject(str);	
