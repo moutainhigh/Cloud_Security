@@ -31,6 +31,18 @@ $(function(){
         function (ec) {//回调函数
             //--- 饼图 ---
             var myChartPieLevel = ec.init(document.getElementById('levelPie'));
+            myChartPieLevel.showLoading({
+          	  text: 'loading...',
+          	  effect : 'spin',
+          	  textStyle : {
+          	        fontSize : 20,
+          	        color:'#000'
+          	    },
+          	    effectOption :{
+          	    	  backgroundColor:'#fff'
+          	   }
+
+	        });
             //后台获取数据
             $.ajax({
             	type : "post",
@@ -56,6 +68,7 @@ $(function(){
 	                   	value[i]={'name':temp,'value':p['value']};
 	                   	colorData[i]=p['color'];
                     });
+                	myChartPieLevel.hideLoading();  
                     myChartPieLevel.setOption({//图形
                     	title: {
                             text: '最近一个小时事件风险分布图'
@@ -93,7 +106,7 @@ $(function(){
 		                            normal:{ 
 		                                label:{ 
 		                                   show: true, 
-		                                   formatter: '{b} :  ({d}%)' 
+		                                   formatter: '{b} : {d}%' 
 		                                }, 
 		                                labelLine :{show:true}
 		                            } 
@@ -117,6 +130,18 @@ $(function(){
         function (ec) {//回调函数
             //--- 饼图 ---
             var myChartPieEvent = ec.init(document.getElementById('eventPie'));
+            myChartPieEvent.showLoading({
+          	  text: 'loading...',
+          	  effect : 'spin',
+          	  textStyle : {
+          	        fontSize : 20,
+          	        color:'#000'
+          	    },
+          	    effectOption :{
+          	    	  backgroundColor:'#fff'
+          	   }
+
+	        });
             //后台获取数据
             $.ajax({
             	type : "post",
@@ -124,6 +149,7 @@ $(function(){
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
+                	myChartPieEvent.hideLoading();  
                     myChartPieEvent.setOption({//图形
                     	title: {
                             text: '事件类型分布图'
@@ -134,8 +160,7 @@ $(function(){
                         },
                         legend: {
                             show:false,
-					        x: 'left',
-					        y: '35',
+					        y : 'bottom',
 					        data:data.name
                         },
 //                        color:colorData,
@@ -153,7 +178,7 @@ $(function(){
                                 name:'事件类型比例',
                                 type:'pie',
                                 radius : '45%',
-                                center: ['50%', '60%'],
+                                center: ['50%', '50%'],
                                 data:data.json,
                                 itemStyle:{ 
 		                            normal:{ 
@@ -184,6 +209,18 @@ $(function(){
         function (ec) {//回调函数
             //--- 柱形图 ---
         	var myChartBar = ec.init(document.getElementById('eventBar'));
+        	myChartBar.showLoading({
+          	  text: 'loading...',
+          	  effect : 'spin',
+          	  textStyle : {
+          	        fontSize : 20,
+          	        color:'#000'
+          	    },
+          	    effectOption :{
+          	    	  backgroundColor:'#fff'
+          	   }
+
+	        });
           //后台获取数据
             $.ajax({
             	type: "post",
@@ -191,7 +228,7 @@ $(function(){
                 dataType:"json",
 //                contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 success:function(data){
-                    
+                	myChartBar.hideLoading();  
                     myChartBar.setOption({//图形
                     	title: {
                             text: '最近一个小时事件发生事件'
