@@ -128,7 +128,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					<if test="type==1 and group_flag==null or group_flag==''">
 		             limit #{count}
 		            </if>
-			)	t order by t.execute_time limit 1
+			)	t order by t.execute_time desc limit 1
 	</select>
 	
 	
