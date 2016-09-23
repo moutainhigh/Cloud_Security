@@ -130,7 +130,7 @@ public class Scheduler4Result {
 										Asset a = assetService.findByOrderAssetId(Integer.parseInt(task.getOrder_asset_Id()));
 										int districtId = 0;
 										if(a!=null){
-											districtId = Integer.parseInt(a.getDistrictId());
+											districtId = a.getAssetProvince();
 										}else{
 											districtId = 35;
 										}
