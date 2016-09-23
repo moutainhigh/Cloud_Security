@@ -1,3 +1,4 @@
+var saveAssetFlag = 0;
 $(function(){
 	//上下键操作下拉框
 	$("#month").keydown(function(event){
@@ -544,6 +545,12 @@ function changePrice(){
 
 
 function saveWafAsset() {
+	//防止重复提交
+	if (saveAssetFlag == 1) {
+		return;
+	}
+	saveAssetFlag = 1;
+	
 	var assetName =$.trim($("#assetName").val());
 	var assetAddr = $.trim($("#InertAddr").val());
      //var addrType = $('input:radio[name="addrType"]:checked').val();
@@ -563,26 +570,33 @@ function saveWafAsset() {
 	$("#assetUsage_msg").html("");
     if(assetName == null || assetName == ""){
 		$("#assetName_msg").html("请输入网站名称!");
+		saveAssetFlag = 0;
 	}else if(patrn.test(assetName)){
 		$("#assetName_msg").html("请输入正确的网站名称");
+		saveAssetFlag = 0;
 	}else if(assetAddr==null || assetAddr == ""){
 			$("#assetName_msg").html("");
 			$("#assetAddr_msg").html("请输入网站地址!");
+			saveAssetFlag = 0;
 	}else if(pattern.test(assetAddr)){
 		("#assetName_msg").html("");
 		$("#assetAddr_msg").html("请输入正确的网站地址!");
+		saveAssetFlag = 0;
 	}else if((!strRegex.test(assetAddr) && !newRegex.test(assetAddr)) || (strRegex.test(assetAddr)&&assetAddr.indexOf('\/\/\/')!=-1)){
         $("#assetName_msg").html("");
         $("#assetAddr_msg").html("请输入正确的网站地址!");
+        saveAssetFlag = 0;
 	}else if(prov == -1){
 		$("#assetName_msg").html("");
 		$("#assetAddr_msg").html("");
 		$("#location_msg").html("请选择网站所在物理地址!");
+		saveAssetFlag = 0;
 	}else if(purpose==-1){
 		$("#assetName_msg").html("");
 		$("#assetAddr_msg").html("");
 		$("#location_msg").html("");
 		$("#assetUsage_msg").html("请选择网站用途!");
+		saveAssetFlag = 0;
 	}else{
 			//验证资产是否重复
 			$.ajax({
@@ -593,9 +607,11 @@ function saveWafAsset() {
 		        success: function(data){
 		            if(data.msg=='1'){
 		            	$("#assetName_msg").html("网站名称重复!");
+		            	saveAssetFlag = 0;
 		            }else if(data.msg=='2'){
 		            	$("#assetName_msg").html("");
 		            	$("#assetAddr_msg").html("网站地址重复!");
+		            	saveAssetFlag = 0;
 		            }else{
 		            	$("#assetName_msg").html("");
 		            	$("#assetAddr_msg").html("");
@@ -608,6 +624,7 @@ function saveWafAsset() {
 		    		        success: function(data){
 		    		            if(data.msg){
 		    		            	alert("免费用户管理资产数不能大于" + data.allowCount);
+		    		            	saveAssetFlag = 0;
 		    		            }else{
 		    			       		 $.ajax({
 		    			       		 			type:'POST',
@@ -680,11 +697,12 @@ function saveWafAsset() {
 					    		            					break;
 					    		            				case 6:
 					    		            					alert("网站地址不是域名,请填写域名!");
-													break;
+																break;
 					    		            				default:
 					    		            					alert("添加失败!");
 					    		            					break;
 					    		            			}
+					    		            			saveAssetFlag = 0;
 		    				 					
 		    				 					},
 		    				 					error: function(data){
