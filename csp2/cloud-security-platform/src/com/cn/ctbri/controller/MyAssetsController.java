@@ -1178,30 +1178,56 @@ public class MyAssetsController {
 			//获取服务对象资产
 		    List<Asset> serviceAssetList = selfHelpOrderService.findServiceAsset(globle_user.getId());
 		    
+		    String IpAddressRegex ="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
 		    List assList = new ArrayList();
+		    boolean ipflag=false;
 		    if(serviceAssetList!=null&&serviceAssetList.size()>0){
 		    	for(int i=0;i<serviceAssetList.size();i++){
 		    		Asset newAsset = (Asset)serviceAssetList.get(i);
-		    		String newAddr = asset.getAddr();
+		    		String newAddr = newAsset.getAddr();
 		    		String addressInfo = "";
 		    		//判断http协议
-		    		if(addr.indexOf("http://")!=-1){
-		    			if(addr.substring(addr.length()-1).indexOf("/")!=-1){
-		    				addressInfo = addr.trim().substring(7,addr.length()-1);
+		    		if(newAddr.indexOf("http://")!=-1){
+		    			if(newAddr.substring(newAddr.length()-1).indexOf("/")!=-1){
+		    				addressInfo = newAddr.trim().substring(7,newAddr.length()-1);
 		    			}else{
-		    				addressInfo = addr.trim().substring(7,addr.length());
+		    				addressInfo = newAddr.trim().substring(7,newAddr.length());
 		    			}
-		    		}else if(addr.indexOf("https://")!=-1){
-		    			if(addr.substring(addr.length()-1).indexOf("/")!=-1){
-		    				addressInfo = addr.trim().substring(8,addr.length()-1);
+		    		}else if(newAddr.indexOf("https://")!=-1){
+		    			if(newAddr.substring(newAddr.length()-1).indexOf("/")!=-1){
+		    				addressInfo = newAddr.trim().substring(8,newAddr.length()-1);
 		    			}else{
-		    				addressInfo = addr.trim().substring(8,addr.length());
+		    				addressInfo = newAddr.trim().substring(8,newAddr.length());
 		    			}
 		    		}
 		    		//判断资产地址是否是域名
-		    		if(addInfo.matches(hostnameRegex)){
-		    			assList.add(newAsset);
-		    		}
+//		    		if(addInfo.matches(hostnameRegex)){
+//		    			assList.add(newAsset);
+//		    		}
+		    		
+		    		//判断ip地址是否包含端口号
+					if(addressInfo.indexOf(":")!=-1){
+						String addArr[] = addressInfo.split(":");
+						ipflag = addArr[0].matches(IpAddressRegex);
+						if(ipflag==false){
+							flag=addArr[0].matches(hostnameRegex);
+						}
+					}else{
+						ipflag = addressInfo.matches(IpAddressRegex);
+					}
+					if(ipflag==false){
+                        //判断资产地址是否是域名
+							flag=addressInfo.matches(hostnameRegex);
+							if(flag){
+								Asset  assetInfo = new Asset();
+								assetInfo.setAddr(newAsset.getAddr());
+								assetInfo.setId(newAsset.getId());
+								assetInfo.setName(newAsset.getName());
+								assetInfo.setIp(newAsset.getIp());
+								assetInfo.setStatus(newAsset.getStatus());
+								assList.add(assetInfo);
+							}
+						}
 		    	}
 		    }
 		    m.put("serviceAssetList", assList);
