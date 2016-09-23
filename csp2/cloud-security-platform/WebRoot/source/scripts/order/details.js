@@ -1,4 +1,4 @@
-
+saveAssetFlag = 0;
 //默认服务频率
 var servType = 0;
 $(function(){
@@ -701,6 +701,12 @@ function tasknum_verification(){
 }
     
     function saveAsset() {
+	    //防止重复提交
+		if (saveAssetFlag == 1) {
+			return;
+		}
+		saveAssetFlag = 1;
+		
     	var assetName =$.trim($("#assetName").val());
     	var assetAddr = $.trim($("#InertAddr").val());
          var addrType = $('input:radio[name="addrType"]:checked').val();
@@ -718,27 +724,34 @@ function tasknum_verification(){
     	$("#assetUsage_msg").html("");
     	if(assetName == null || assetName == ""){
     		$("#assetName_msg").html("请输入网站名称!");
+    		saveAssetFlag = 0;
     	}else if(patrn.test(assetName)){
     		$("#assetName_msg").html("请输入正确的网站名称!");
+    		saveAssetFlag = 0;
     	}else if(assetAddr==null || assetAddr == ""){
     			$("#assetName_msg").html("");
     			$("#assetAddr_msg").html("请输入网站地址!");
+    			saveAssetFlag = 0;
     	}else if(pattern.test(assetAddr)){
 			$("#assetName_msg").html("");
 			$("#assetAddr_msg").html("请输入正确的网站地址!");
+			saveAssetFlag = 0;
 	    }
     	else if((!strRegex.test(assetAddr) && !newRegex.test(assetAddr)) || (strRegex.test(assetAddr)&&assetAddr.indexOf('\/\/\/')!=-1)){
             $("#assetName_msg").html("");
             $("#assetAddr_msg").html("请输入正确的网站地址!");
+            saveAssetFlag = 0;
     	}else if(prov == -1){
     		$("#assetName_msg").html("");
     		$("#assetAddr_msg").html("");
     		$("#location_msg").html("请选择网站所在物理地址!");
+    		saveAssetFlag = 0;
     	}else if(purpose==-1){
     		$("#assetName_msg").html("");
     		$("#assetAddr_msg").html("");
     		$("#location_msg").html("");
     		$("#assetUsage_msg").html("请选择网站用途!");
+    		saveAssetFlag = 0;
     	}else{
     			//验证资产是否重复
     			$.ajax({
@@ -749,9 +762,11 @@ function tasknum_verification(){
     		        success: function(data){
     		            if(data.msg=='1'){
     		            	$("#assetName_msg").html("网站名称重复!");
+    		            	saveAssetFlag = 0;
     		            }else if(data.msg=='2'){
     		            	$("#assetName_msg").html("");
     		            	$("#assetAddr_msg").html("网站地址重复!");
+    		            	saveAssetFlag = 0;
     		            }else{
     		            	$("#assetName_msg").html("");
     		            	$("#assetAddr_msg").html("");
@@ -764,6 +779,7 @@ function tasknum_verification(){
     		    		        success: function(data){
     		    		            if(data.msg){
     		    		            	alert("免费用户管理资产数不能大于" + data.allowCount);
+    		    		            	saveAssetFlag = 0;
     		    		            }else{
     		    			       			 $.ajax({
     		    			       		 			type:'POST',
@@ -789,7 +805,24 @@ function tasknum_verification(){
 	    		    				 							if(list!=null&&list.length>0){
 	    		    				 								$(".allBox").empty();
 	    		    				 								$.each(list,function(n,asset) {
-	    		    				 						         var temp = "<li>"+
+	    		    				 									
+	    		    				 									if (asset.status == '0') {
+	    		    				 										var temp = "<li>"+
+	    		    				 					            	 		"<div class='rcent'>"+
+	    		    				 					            	 		"<h3>"+
+	    		    				 			                                "<label for='"+(n+1)+"' style='margin:0 16px 0 0;'>"+
+	    		    				 			                                     "<span style='padding-left:40px;padding-top:20px'>"+
+	    		    				 			                                     	asset.name+
+	    		    				 			                                     "</span>"+
+	    		    				 			                                "</label>"+
+	    		    				 			                            "</h3>"+
+	    		    				 			                            "<div class='tBox'>"+asset.addr+
+	    		    				 			                            	"<a href='userAssetsUI.html?type=1'  style='padding-left:20px;color:#2499fb;font-size:14px;'>未验证</a>"+
+	    		    				 			                            "</div>"+
+	    		    				 			                            "</div>"+
+	    		    				 			                            "</li>";  
+	    		    				 									}else {
+	    		    				 										var temp = "<li>"+
 	    		    				 					            	 		"<div class='rcent'>"+
 	    		    				 					            	 		"<h3>"+
 	    		    				 			                                "<label for='"+(n+1)+"' style='margin:0 16px 0 0;'>"+
@@ -798,9 +831,13 @@ function tasknum_verification(){
 	    		    				 			                                 "<b>"+asset.name+"</b>"+
 	    		    				 			                            
 	    		    				 			                            "</h3>"+
-	    		    				 			                            "<div class='tBox'>"+asset.addr+"</div>"+
+	    		    				 			                            "<div class='tBox'>"+asset.addr+
+	    		    				 			                            "<span style='padding-left:20px;color:#2499fb;font-size:14px;'>已验证</span>"+
+	    		    				 			                            "</div>"+
 	    		    				 			                            "</div>"+
 	    		    				 			                            "</li>";  
+	    		    				 									}
+	    		    				 						         
 	    		    				 						         		$(".allBox").append(temp);
 	    		    				 						           });  
 	    		    				 								} 
@@ -838,6 +875,7 @@ function tasknum_verification(){
 					    		            					alert("添加失败!");
 					    		            					break;
 					    		            			}
+					    		            			saveAssetFlag = 0;
     		    				 					},
     		    				 					error: function(data){
     		    				 						 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
