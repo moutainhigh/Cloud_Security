@@ -547,6 +547,7 @@
 		var type ="${type}";
 		if(type == "1"){
 			$('.navlist li').removeClass('active');
+			$('.navlist li ').eq(2).addClass('this');
 			$('.navlist li ').eq(2).addClass('active');
 			$(".tabBox .not-used").eq(2).show().siblings().hide();	
 		}
