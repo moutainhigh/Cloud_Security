@@ -92,6 +92,10 @@ public class WafController {
 				if(list!=null&&list.size()>0){
 					for(int i=0;i<list.size();i++){
 						Asset asset = (Asset)list.get(i);
+						if (asset.getStatus() == 0) {
+							continue;
+						}
+						
 						String addr = asset.getAddr();
 						String addInfo = "";
 						//判断http协议
@@ -127,6 +131,7 @@ public class WafController {
 									assetInfo.setId(asset.getId());
 									assetInfo.setName(asset.getName());
 									assetInfo.setIp(asset.getIp());
+									assetInfo.setStatus(asset.getStatus());
 									assList.add(assetInfo);
 								}
 							}
@@ -192,6 +197,9 @@ public class WafController {
 		if(list!=null&&list.size()>0){
 			for(int i=0;i<list.size();i++){
 				Asset asset = (Asset)list.get(i);
+				if (asset.getStatus() == 0) {
+					continue;
+				}
 				String addr = asset.getAddr();
 				String addInfo = "";
 				//判断http协议
@@ -227,6 +235,7 @@ public class WafController {
 					assetInfo.setId(asset.getId());
 					assetInfo.setName(asset.getName());
 					assetInfo.setIp(asset.getIp());
+					assetInfo.setStatus(asset.getStatus());
 					assList.add(assetInfo);
 				 }
 				}
