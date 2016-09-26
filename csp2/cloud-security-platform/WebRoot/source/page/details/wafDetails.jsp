@@ -512,7 +512,16 @@ $(document).ready(function(){
 			var flag = true;
 			//判断是否什么都没选为空
 			if(acleng==0){
-				alert("请选择网站域名!");
+			//	alert("请选择网站域名!");
+			//关闭后效果
+                $('.waf-detais-pop').animate({
+                    opacity: '1',
+                    top: '50%',
+                    left: '50%',
+                    marginTop: '-1200px'
+                 }, 500);
+                 //隐藏遮罩层
+                 $('.shade').hide();
 				return;	
 			}
 			//选中的网站地址           
