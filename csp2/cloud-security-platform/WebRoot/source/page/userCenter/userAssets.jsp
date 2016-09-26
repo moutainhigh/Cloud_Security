@@ -333,6 +333,10 @@
           <td><input class="boz_inout_1" type="text" name="addr" id="assetAddr" maxlength="100"  onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')"></td>
           <td style="color:#e32929;text-align:left"><div class="addMsg" id="assetAddr_msg"></div></td>
         </tr>
+        <tr style="height: 20px;line-height: 18px;">
+          <td></td>
+          <td style="text-align: left;padding-left: 10px;color: rgb(227, 41, 41);">云WAF订单只支持域名网站</td>
+        </tr>
         <tr>
 	        <td>示例</td>
 	        <td style="color:#999;text-align: left; line-height: 18px; padding-top: 4px; padding-left: 10px;">http://xxx.xxx.xxx.xxx<br>https://xxx.xxx.xxx.xxx:1234<br>http://xxx.xxx.xxx.xxx:8080/home
@@ -409,6 +413,10 @@
           <td>资产地址</td>
           <td><input class="boz_inout_1" type="text" name="addr" id="editAssetAddr" onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')"/></td>
           <td style="color:#e32929;text-align:left"><div class="editMsg" id="editAssetAddr_msg"></div></td>
+        </tr>
+        <tr style="height: 20px;line-height: 18px;">
+          <td></td>
+          <td style="text-align: left;padding-left: 10px;color: rgb(227, 41, 41);">云WAF订单只支持域名网站</td>
         </tr>
         <tr>
 	        <td>示例</td>
