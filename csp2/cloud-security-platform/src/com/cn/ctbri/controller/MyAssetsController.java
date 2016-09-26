@@ -1184,6 +1184,9 @@ public class MyAssetsController {
 		    if(serviceAssetList!=null&&serviceAssetList.size()>0){
 		    	for(int i=0;i<serviceAssetList.size();i++){
 		    		Asset newAsset = (Asset)serviceAssetList.get(i);
+		    		if (newAsset.getStatus() == 0) {
+						continue;
+					}
 		    		String newAddr = newAsset.getAddr();
 		    		String addressInfo = "";
 		    		//判断http协议
