@@ -832,7 +832,6 @@ function tasknum_verification(){
 	    		    				 			                            
 	    		    				 			                            "</h3>"+
 	    		    				 			                            "<div class='tBox'>"+asset.addr+
-	    		    				 			                            "<span style='padding-left:20px;color:#2499fb;font-size:14px;'>已验证</span>"+
 	    		    				 			                            "</div>"+
 	    		    				 			                            "</div>"+
 	    		    				 			                            "</li>";  
