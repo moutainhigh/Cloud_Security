@@ -263,7 +263,16 @@ public class N_TrojanDetectService {
 			User user = userService.findUserByToken(token);
 			if(token!=null && token!="" && user!=null){
 				Order order = orderService.findOrderByOrderId(orderId);
-				if(order!=null && order.getServiceId()==2){
+				//判断token权限 add by tangtang 2016-9-21
+				boolean apikey = false;
+				boolean userId = false;
+				if(order.getApiKey()!=null){
+					apikey = order.getApiKey().equals(user.getApikey());
+				}
+				if(String.valueOf(order.getUserId())!=null){
+					userId = String.valueOf(order.getUserId()).equals(String.valueOf(user.getId()));
+				}
+				if(order!=null && order.getServiceId()==2 && (apikey||userId)){
 					JSONObject jsonObj = new JSONObject().fromObject(dataJson);
 					String opt = jsonObj.getString("opt");
 					Order o = orderService.findOrderByOrderId(orderId);
@@ -317,7 +326,16 @@ public class N_TrojanDetectService {
 			User user = userService.findUserByToken(token);
 			if(token!=null && token!="" && user!=null){
 				Order order = orderService.findOrderByOrderId(orderId);
-				if(order!=null && order.getServiceId()==2){
+				//判断token权限 add by tangtang 2016-9-21
+				boolean apikey = false;
+				boolean userId = false;
+				if(order.getApiKey()!=null){
+					apikey = order.getApiKey().equals(user.getApikey());
+				}
+				if(String.valueOf(order.getUserId())!=null){
+					userId = String.valueOf(order.getUserId()).equals(String.valueOf(user.getId()));
+				}
+				if(order!=null && order.getServiceId()==2 && (apikey||userId)){
 					//taskId 不空取任务信息，为空取订单状态
 					if(taskId!=null && taskId!=""){
 						Task task = new Task();
@@ -390,14 +408,32 @@ public class N_TrojanDetectService {
 			User user = userService.findUserByToken(token);
 			if(token!=null && token!="" && user!=null){
 				Order order = orderService.findOrderByOrderId(orderId);
-				if(order!=null && order.getServiceId()==2){
+				//判断token权限 add by tangtang 2016-9-21
+				boolean apikey = false;
+				boolean userId = false;
+				if(order.getApiKey()!=null){
+					apikey = order.getApiKey().equals(user.getApikey());
+				}
+				if(String.valueOf(order.getUserId())!=null){
+					userId = String.valueOf(order.getUserId()).equals(String.valueOf(user.getId()));
+				}
+				if(order!=null && order.getServiceId()==2 && (apikey||userId)){
 					//taskId 不空取任务信息，为空取订单状态
 					if(taskId!=null && taskId!=""){
-						List<Alarm> alist = alarmService.findAlarmByTaskId(taskId);
-						JSONArray alarmObject = new JSONArray().fromObject(alist);
-						json.put("code", 200);
-						json.put("alarmObj", alarmObject);
-//						return json.toString();
+						Task t = taskService.findTaskByTaskId(taskId);
+						String orderTaskId = t.getOrderTaskId();
+						String[] strs = orderTaskId.split("_");  	
+						String oId = strs[1];
+						if(orderId.equals(oId)){
+							List<Alarm> alist = alarmService.findAlarmByTaskId(taskId);
+							JSONArray alarmObject = new JSONArray().fromObject(alist);
+							json.put("code", 200);
+							json.put("alarmObj", alarmObject);
+	//						return json.toString();
+						}else{
+							json.put("code", 421);
+							json.put("message", "订单taskId有误，请检查");
+						}
 					}
 				}else{
 					json.put("code", 421);
@@ -453,9 +489,20 @@ public class N_TrojanDetectService {
 	public void VulnScan_Get_orderReport(@PathParam("token") String token,@PathParam("orderId") String orderId,@Context HttpServletRequest request,@Context HttpServletResponse response) {
 //		JSONObject json = new JSONObject();
 		try {
+			//通过token查询user
+			User user = userService.findUserByToken(token);
 			//查找订单
 			Order order = orderService.findOrderByOrderId(orderId);
-			if(order!=null && order.getServiceId()==2){
+			//判断token权限 add by tangtang 2016-9-21
+			boolean apikey = false;
+			boolean userId = false;
+			if(order.getApiKey()!=null){
+				apikey = order.getApiKey().equals(user.getApikey());
+			}
+			if(String.valueOf(order.getUserId())!=null){
+				userId = String.valueOf(order.getUserId()).equals(String.valueOf(user.getId()));
+			}
+			if(order!=null && order.getServiceId()==2 && (apikey||userId)){
 				
 				this.countAPI(token, orderId, null, 1, 5);
 				

@@ -278,13 +278,6 @@ public class ReInternalWebService {
 					JSONArray taskwarnObj = jsonObj.getJSONArray("taskwarnObj");
 				}
 				
-				OrderTask orderTask = new OrderTask();
-		        orderTask.setOrderId(orderId);
-		        orderTask.setId(id);
-		        orderTask.setTask_status(3);
-		        //更新orderTask数据库
-		        orderTaskService.update(orderTask);
-		        
 		        Task task = new Task();
 		        task.setTaskId(taskId);
 		        task.setOrderTaskId(orderTaskId);
@@ -298,6 +291,16 @@ public class ReInternalWebService {
 		        List<Task> runs = taskService.findRunningTask(orderId);
 		        //查询弱点数
 		        int count = taskService.findissueCount(orderId);
+		        
+		        //add by tangxr 2016-9-22 finish设置orderTask状态完成
+				if(taskStatus.equals("finish") && runs.size()==0){
+					OrderTask orderTask = new OrderTask();
+			        orderTask.setOrderId(orderId);
+			        orderTask.setId(id);
+			        orderTask.setTask_status(3);
+			        //更新orderTask数据库
+			        orderTaskService.update(orderTask);
+				}
 		        //更新订单状态
 		        if(taskStatus.equals("finish")){
 		        	if(runs.size()==0 && count>0){
