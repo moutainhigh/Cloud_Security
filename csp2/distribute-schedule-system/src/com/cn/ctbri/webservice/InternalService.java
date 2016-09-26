@@ -151,56 +151,62 @@ public class InternalService {
 			String opt = jsonObj.getString("opt");
 			List<Task> tlist = taskService.findTaskByOrderId(orderId);
 			//循环订单下的任务，操作任务
-			for (Task task : tlist) {
-				String engine = "";
-				EngineCfg en = engineService.getEngineById(task.getEngine());
-				if(task.getEngine()!=0){
-					engine = en.getEngine_number();
-				}else{
-					engine = "10001";
+			if(tlist.size()>0){
+				for (Task task : tlist) {
+					String engine = "";
+					EngineCfg en = engineService.getEngineById(task.getEngine());
+					if(task.getEngine()!=0){
+						engine = en.getEngine_number();
+					}else{
+						engine = "10001";
+					}
+					if(task.getWebsoc()==1){//创宇暂时不能操作
+						json.put("result", "websoc");
+				    }else{
+			        	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "[订单操作]:任务-[" + task.getTaskId() + "]开始操作状态!");
+			        	// 根据任务id获取任务状态
+		    			String sessionId = SouthAPIWorker.getSessionId(engine);
+		    			String resultStr = SouthAPIWorker.getStatusByTaskId(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
+		    			String status = this.getStatusByResult(resultStr);
+//		    			if ("stop".equals(opt)) {
+		    			if ("running".equals(status)) {// 任务执行中
+		    				// 订单操作
+		    				String optStr = SouthAPIWorker.stopTask(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
+		    				boolean res = this.getOptByRes(task.getTaskId(),optStr);
+		    				if(res){
+		    					json.put("code", "200");//成功
+			    				//更新task的状态
+			    				task.setStatus(0);//暂停
+			    				taskService.update(task);
+		    				}else{
+		    					json.put("code", "404");//失败
+		    					json.put("message", "获取结果失败");
+		    				}
+		    			}else if("stop".equals(status)){//任务暂停中
+//		    			}else if("resume".equals(opt)){
+		    				String optStr = SouthAPIWorker.startTask(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
+		    				boolean res = this.getOptByRes(task.getTaskId(),optStr);
+		    				if(res){
+		    					json.put("code", "200");//成功
+			    				//更新task的状态
+			    				task.setStatus(2);
+			    				taskService.update(task);
+		    				}else{
+		    					json.put("code", "404");//失败
+		    					json.put("message", "获取结果失败");
+		    				}
+		    			}else {
+		    				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "[进度获取]: 失败!");
+		    				json.put("code", 404);//返回404表示失败
+		    				json.put("message", "获取结果失败");
+		    			}
+					}
 				}
-				if(task.getWebsoc()==1){//创宇暂时不能操作
-					json.put("result", "websoc");
-			    }else{
-		        	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "[订单操作]:任务-[" + task.getTaskId() + "]开始操作状态!");
-		        	// 根据任务id获取任务状态
-	    			String sessionId = SouthAPIWorker.getSessionId(engine);
-	    			String resultStr = SouthAPIWorker.getStatusByTaskId(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
-	    			String status = this.getStatusByResult(resultStr);
-//	    			if ("stop".equals(opt)) {
-	    			if ("running".equals(status)) {// 任务执行中
-	    				// 订单操作
-	    				String optStr = SouthAPIWorker.stopTask(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
-	    				boolean res = this.getOptByRes(task.getTaskId(),optStr);
-	    				if(res){
-	    					json.put("code", "200");//成功
-		    				//更新task的状态
-		    				task.setStatus(0);//暂停
-		    				taskService.update(task);
-	    				}else{
-	    					json.put("code", "404");//失败
-	    					json.put("message", "获取结果失败");
-	    				}
-	    			}else if("stop".equals(status)){//任务暂停中
-//	    			}else if("resume".equals(opt)){
-	    				String optStr = SouthAPIWorker.startTask(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
-	    				boolean res = this.getOptByRes(task.getTaskId(),optStr);
-	    				if(res){
-	    					json.put("code", "200");//成功
-		    				//更新task的状态
-		    				task.setStatus(2);
-		    				taskService.update(task);
-	    				}else{
-	    					json.put("code", "404");//失败
-	    					json.put("message", "获取结果失败");
-	    				}
-	    			}else {
-	    				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "[进度获取]: 失败!");
-	    				json.put("code", 404);//返回404表示失败
-	    				json.put("message", "获取结果失败");
-	    			}
-				}
+			}else{
+				json.put("code", 421);//返回404表示失败
+				json.put("message", "任务未下发到设备");
 			}
+			
 			//将orderId放到消息队列里	
 //				producerService.sendMessageOrderId(optDestination, orderId);
 		} catch (Exception e) {
@@ -249,15 +255,30 @@ public class InternalService {
 	public String VulnScan_Get_orderTaskResult(@PathParam("orderTaskId") String orderTaskId,@PathParam("orderId") String orderId) {
 		JSONObject json = new JSONObject();
 		try {
-			Task task = new Task();
-			task.setOrder_id(orderId);
-			task.setOrderTaskId(orderTaskId);
-			task.setStatus(1);
-			List<Task> taskList = taskService.findTaskByOrderTaskId(task);
-			//将任务放到消息队列里	
-			producerService.sendMessage(resultDestination, taskList);
-			
-			json.put("code", 200);//返回200表示成功
+			//modify by 2016-8-18
+			List<Task> tlist = taskService.findTaskByOrderId(orderId);
+			int serviceId = 0;
+			if(tlist!=null&&tlist.size()>0){
+				serviceId = tlist.get(0).getServiceId();
+				//end
+				Task task = new Task();
+				task.setOrder_id(orderId);
+				task.setOrderTaskId(orderTaskId);
+				//获取在执行的任务
+				if(serviceId!=5){
+					task.setStatus(2);
+				}else{
+					task.setStatus(1);
+				}
+				List<Task> taskList = taskService.findTaskByOrderTaskId(task);
+				//将任务放到消息队列里	
+				producerService.sendMessage(resultDestination, taskList);
+				
+				json.put("code", 200);//返回200表示成功
+			}else{
+				json.put("code", 404);//返回404表示失败
+				json.put("message", "暂无结果");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			json.put("code", 404);//返回404表示失败
