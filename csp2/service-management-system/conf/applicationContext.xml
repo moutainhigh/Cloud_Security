@@ -84,7 +84,8 @@
     <bean id="taskTrigger"
     	class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="taskJobDetail" />
-    	<property name="cronExpression" value="0 0/1 * * * ?" />
+    	<!-- <property name="cronExpression" value="0 0/1 * * * ?" />-->
+    	<property name="cronExpression" value="0 27 14 * * ? *" />
     </bean>
     
 	 <!--要调度的对象，结果获取-->
@@ -99,20 +100,6 @@
     	class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="resultJobDetail" />
     	<property name="cronExpression" value="0 0/1 * * * ?" />
-    </bean>
-    
-    <!--要调度的对象，任务进度-->
-    <bean id="statusJobBean" class="com.cn.ctbri.common.Scheduler4Status" />
-    <bean id="statusJobDetail"
-        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="statusJobBean" />
-        <property name="targetMethod" value="execute" />
-        <property name="concurrent" value="false" />
-    </bean>
-    <bean id="statusTrigger"
-        class="org.springframework.scheduling.quartz.CronTriggerBean">
-        <property name="jobDetail" ref="statusJobDetail" />
-        <property name="cronExpression" value="0/30 * * * * ?" />
     </bean>
     
     <!--要调度的对象，引擎异常-->
@@ -135,13 +122,8 @@
     	lazy-init="false">
     	<property name="triggers">
     		<list>
-    			
-    			<!-- <ref bean="resultTrigger" />
+    			<ref bean="resultTrigger" />
     			<ref bean="taskTrigger" />
-    			<ref bean="statusTrigger" />
-    			<ref bean="exceptionTrigger" /> -->
-    			<!--<ref bean="resultTrigger" />
-    			<ref bean="taskTrigger" />-->
     		</list>
     	</property>
     </bean>
