@@ -21,7 +21,7 @@
         http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">  
     
     <!-- Timer schedule -->
-    <!--要调度的对象-->
+    <!--要调度的对象,HW-->
     <bean id="taskHWJobBean" class="com.cn.ctbri.scheduler.HuaweiScheduler4Task" />
     <bean id="taskHWJobDetail"
         class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
