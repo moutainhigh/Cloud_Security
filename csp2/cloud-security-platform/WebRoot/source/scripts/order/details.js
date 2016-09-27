@@ -665,14 +665,21 @@ function tasknum_verification(){
          	}
 		}
     	//判断服务频率是否是显示隐藏
-    	if($("#singleBtn").val() == "2"){
+    	if($("#singleBtn").attr("class").indexOf("click")>=0){
+    		//单次
+    		serviceType=2;
+    	}else if($("#longBtn").attr("class").indexOf("click")>=0){
+    		//长期
+        	serviceType=1;
+    	}
+    	/*if($("#singleBtn").val() == "2"){
     		//单次
     		serviceType=2;
     	}
         if($("#longBtn").val() == "1"){
         	//长期
         	serviceType=1;
-    	}
+    	}*/
 //    	alert($('.time').is(':hidden'));
 //    	if($('.time').is(':hidden')==true){
 //    	}else{	
