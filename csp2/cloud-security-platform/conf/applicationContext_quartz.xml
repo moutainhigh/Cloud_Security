@@ -50,20 +50,6 @@
     	<property name="cronExpression" value="0 0/1 * * * ?" />
     </bean>
     
-    <!--要调度的对象，结果获取-->
-    <bean id="resultAlarmJobBean" class="com.cn.ctbri.common.Scheduler4ResultAlarm" />
-    <bean id="resultAlarmJobDetail"
-    	class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-    	<property name="targetObject" ref="resultAlarmJobBean" />
-    	<property name="targetMethod" value="execute" />
-    	<property name="concurrent" value="false" />
-    </bean>
-    <bean id="resultAlarmTrigger"
-    	class="org.springframework.scheduling.quartz.CronTriggerBean">
-    	<property name="jobDetail" ref="resultAlarmJobDetail" />
-    	<property name="cronExpression" value="0 0/1 * * * ?" />
-    </bean>
-    
     <!--要调度的对象-->
     <bean id="taskHRSJobBean" class="com.cn.ctbri.common.HighRiskSiteAnalysisTask" />
     <bean id="taskHRSJobDetail"
@@ -79,7 +65,7 @@
 		<property name="repeatInterval" value="1800000" /><!-- 每30分调度一次 --> 
     </bean>
     
-    <!--要调度的对象-->
+    <!--要调度的对象,WAF告警数量统计任务-->
     <bean id="taskWafAlarmJobBean" class="com.cn.ctbri.common.WafAlarmAnalysisWorker" />
     <bean id="taskWafAlarmJobDetail"
         class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -94,17 +80,30 @@
 		<property name="repeatInterval" value="1800000" /><!-- 每30分调度一次 --> 
     </bean>
     
+    <!--要调度的对象waf-->
+    <bean id="wafJobBean" class="com.cn.ctbri.common.SchedulerWaf" />
+    <bean id="wafJobDetail"
+    	class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    	<property name="targetObject" ref="wafJobBean" />
+    	<property name="targetMethod" value="execute" />
+    	<property name="concurrent" value="false" />
+    </bean>
+    <bean id="wafTrigger"
+    	class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="wafJobDetail" />
+    	<property name="cronExpression" value="0 0/3 * * * ?" />
+    </bean>
+    
     <!-- 将lazy-init='false'那么容器启动就会执行调度程序   -->
     <bean id="startQuertz"
         class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
         lazy-init="false">
         <property name="triggers">
             <list>
-                <!-- <ref bean="taskHWTrigger" /> 
-                <ref bean="resultTrigger" />
-                -->
+                <!-- 
                 <ref bean="resultTrigger" />
                 <ref bean="taskWafAlarmTrigger" />
+                <ref bean="wafTrigger" />-->
             </list>
         </property>
     </bean>
