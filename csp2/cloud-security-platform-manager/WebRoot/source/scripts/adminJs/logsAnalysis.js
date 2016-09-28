@@ -62,6 +62,7 @@ $(function() {
 		
 						calculable : false,
 						xAxis : [ {
+							name : '日期',
 							type : 'category',
 							boundaryGap : false,
 							axisLabel : {
@@ -73,6 +74,7 @@ $(function() {
 							data : timeList
 						} ],
 						yAxis : [ {
+							name : '扫描个数',
 							type : 'value'
 						} ],
 						grid : { // 控制图的大小，调整下面这些值就可以，
