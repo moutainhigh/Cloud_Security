@@ -459,7 +459,7 @@
   </div>
   </form>
 </div>
-<div class="assetsaAdd hide popBoxhide" id="verification">
+<div class="assetsaAdd hide popBoxhide" id="verification" style="width:700px">
 <i class="close closed"></i>
 <form action="${ctx}/verificationAsset.html" method="post" id="verificationAssetForm">
 <input type="hidden" value="" id="hiddenId" name="id"/>
