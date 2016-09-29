@@ -56,7 +56,32 @@
   $axure.utils.getReloadPath = function() { return 'resources/reload.html'; };
 </script>
 <script type="text/javascript" src="${ctx}/source/serviceManage/servManage.js"></script>
+<script type="text/javascript">
+$(function(){
+//一级分类设定
+var parent = "${parent}";
+var length = $("#u14_input option").length;
+for(var i=0; i<length; i++){
+	if($("#u14_input option").eq(i).text() == parent){
+		$("#u14_input option").eq(i).siblings().attr("selected",false);
+		$("#u14_input option").eq(i).attr("selected",true);
+	}
+}
+//服务类型设定
+var type = ${type}-1;
+$("#u17_input option").eq(type).siblings().attr("selected",false);
+$("#u17_input option").eq(type).attr("selected",true);
 
+//重置按钮
+$("#u11_input").click(function(){
+	$("#u14_input").val('1');
+	$("#u17_input").val('1');
+	$("#u2_input").val('');
+	$("#u5_input").val('');
+});
+});
+
+</script>
   </head>
   <body>
     <div id="base" class="">
@@ -131,13 +156,13 @@
 
       <!-- Unnamed (Droplist) -->
       <div id="u14" class="ax_droplist">
-        <select id="u14_input" onchange="changeParent();" value="${parent}">
-          <option value="网站安全帮">网站安全帮</option>
-          <option value="数据库安全帮">数据库安全帮</option>
-          <option value="系统安全帮">系统安全帮</option>
-          <option value="网络安全帮">网络安全帮</option>
-          <option value="移动安全帮">移动安全帮</option>
-          <option value="API">API</option>
+        <select id="u14_input" onchange="changeParent();">
+          <option value="1">网站安全帮</option>
+          <option value="2">数据库安全帮</option>
+          <option value="3">系统安全帮</option>
+          <option value="4">网络安全帮</option>
+          <option value="5">移动安全帮</option>
+          <option value="6">API</option>
         </select>
       </div>
 
@@ -151,10 +176,10 @@
       </div>
 
       <!-- Unnamed (Droplist) -->
-      <div id="u17" class="ax_droplist" value="${type}">
+      <div id="u17" class="ax_droplist">
         <select id="u17_input">
-          <option value="1">监测及预警服务</option>
-          <option value="2">防护及加固服务</option>
+          <option value="1">网站安全监测及预警服务</option>
+          <option value="2">网站安全防护及加固服务</option>
         </select>
       </div>
 

@@ -13,6 +13,7 @@ import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.Serv;
+import com.cn.ctbri.entity.ServiceDetail;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 /**
@@ -169,6 +170,58 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 	public OrderDetail findOrderDetailById(String id, int userId) {
 		// TODO Auto-generated method stub
 		return selfHelpOrderDao.findOrderDetailById(id, userId);
+	}
+	/**
+	 * 添加服务详情
+	 */
+	public void insertServiceDetail(ServiceDetail sd) {
+		// TODO Auto-generated method stub
+		selfHelpOrderDao.insertServiceDetail(sd);
+	}
+
+	public void insertScanType(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		selfHelpOrderDao.insertScanType(map);
+	}
+
+	public String selectScanType(Map<String, Object> insertMap) {
+		// TODO Auto-generated method stub
+		return selfHelpOrderDao.selectScanType(insertMap);
+	}
+
+	public int selectMaxScanType(Map<String, Object> insertMap) {
+		// TODO Auto-generated method stub
+		return selfHelpOrderDao.selectMaxScanType(insertMap);
+	}
+
+	public ServiceDetail findServiceDetail(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return selfHelpOrderDao.findServiceDetail(map);
+	}
+
+	public int selectParentId(String parent) {
+		// TODO Auto-generated method stub
+		return selfHelpOrderDao.selectParentId(parent);
+	}
+
+	public void delScanType(int serviceId) {
+		// TODO Auto-generated method stub
+		selfHelpOrderDao.delScanType(serviceId);
+	}
+
+	public void updateServiceDetail(ServiceDetail sd) {
+		// TODO Auto-generated method stub
+		selfHelpOrderDao.updateServiceDetail(sd);
+	}
+
+	public List<Map<String, Object>> findScanTypeList(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return selfHelpOrderDao.findScanTypeList(map);
+	}
+
+	public void delServDetail(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		selfHelpOrderDao.delServDetail(map);
 	}
 
 

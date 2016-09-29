@@ -6,7 +6,7 @@ function changeParent(){
 		$("#u17_input").empty();
 	}else{
 		$("#u17_input").empty();
-		var temp = "<option value='1'>监测及预警服务</option><option value='2'>防护及加固服务</option>";
+		var temp = "<option value='1'>网站安全监测及预警服务</option><option value='2'>网站安全防护及加固服务</option>";
 		$("#u17_input").append(temp);
 	}
 }
@@ -18,7 +18,7 @@ function changeParentForSearch(){
 		$("#u43_input").empty();
 	}else{
 		$("#u43_input").empty();
-		var temp = "<option value='1'>监测及预警服务</option><option value='2'>防护及加固服务</option>";
+		var temp = "<option value='1'>网站安全监测及预警服务</option><option value='2'>网站安全防护及加固服务</option>";
 		$("#u43_input").append(temp);
 	}
 }
@@ -68,6 +68,7 @@ function saveServ(){
     	        success: function(data){
     	        	if(data.success){
     	        		alert("服务添加成功!");
+    	        		init();
     	        	}else{
     	        		alert("服务添加失败!");
     	        	}
@@ -109,9 +110,9 @@ function searchServ(){
                     "<td class='t_assets'>"+this.name+"</td>"+
                     "<td class='t_service' style='text-align:center;width:320px'>"+this.remarks+"</td>"+
                     "<td class='t_operation'>"+
-                    	"<a href='${ctx}/updateServUI.html?servId="+this.id+"&parent="+this.parentC+"&servName="+this.name+"&icon="+this.icon+"&remarks="+this.remarks+"&type="+this.servType+"' class='ope_a add_change'>修改</a>"+
+                    	"<a href='"+location.href.substring(0,location.href.lastIndexOf("/"))+"/updateServUI.html?servId="+this.id+"&parent="+this.parentC+"&servName="+this.name+"&icon="+this.icon+"&remarks="+this.remarks+"&type="+this.servType+"' class='ope_a add_change'>编辑</a>"+
                     	"<a href='javascript:void(0)' onclick='delServ(this)' class='ope_a ml20' servid='"+this.id+"' parentC='"+this.parentC+"'>删除</a>"+
-                    	"<a href='${ctx}/addServicePriceUI.html?servId="+this.id+"&parent="+this.parentC+"' class='ope_a add_change'>设置价格</a>"+
+                    	"<a href='"+location.href.substring(0,location.href.lastIndexOf("/"))+"/addServicePriceUI.html?servId="+this.id+"&parent="+this.parentC+"' class='ope_a add_change'>设置价格</a>"+
                     "</td>"+
            		"</tr>";
 	        	     $("#servList").append(temp);
@@ -135,6 +136,7 @@ function delServ(Obj){
 	        success: function(data){
 	        	if(data.success){
 	        		alert("删除服务成功!");
+	        		init();
 	        	}else{
 	        		alert("删除服务失败!");
 	        	}
@@ -202,34 +204,70 @@ function updateServ(){
 }
 
 //设置详情
-function saveDetails(serviceId,parent){
+//flag:true 创建  false:编辑
+function saveDetails(serviceId,parent,flag){
+	//价格标题
+	var priceTitle = $.trim($("#u2_input").val());
+	//选类型标题
+	var typeTitle = $.trim($("#u5_input").val());
+	//选类型(0:单次和长期 1:单次2:长期)
+	var servType = '';
+	var length = $("input[name='servType']:checked").length;
+	if(length > 1){
+		servType = '0';
+	} else {
+		servType = $("input[name='servType']:checked").val();
+	}
+	//服务频率标题
+	var servRatesTitle = $.trim($("#u14_input").val());
 	//服务频率
-	var servRates = $("#u19_input").val();
-	var list = [];
-	//扫描类型
-	var scanTypes = '';
-	$("input[name='scanTypeCheck']").each(function(){ 
-		if($(this).attr("checked")) 
-		{ 
-			list.push($(this).val());
-		} 
-		else 
-		{ 
-			list.pop($(this).val());
-		} 
-		}) ;
-	$.each(list,function(n,value) {   
-        	if(n<list.length-1){
-                scanTypes+=value+",";
-        	}else{
-        		scanTypes+=value;
-        	}
-        });  
+	var scanType = [];
+	$("input[name='scanType']").each(function(){
+		if($.trim($(this).val()) != ""){
+			scanType.push($.trim($(this).val()));
+		}
+	});
+	//详细信息选项
+	var servSelected = $("#u34_input").val();
+	//服务详细信息
+	var servIcon = '';
+	if(servSelected == 0){
+		servIcon = $("#servDetailHidden").val();
+	} else {
+		servIcon = $.trim($("#u39_input").val());
+	}
+	
+	if(flag){
+		if(priceTitle == null || priceTitle == ""){
+			alert("请填写价格标题！");
+			return;
+		} else if(typeTitle == null || typeTitle == ""){
+			alert("请填写选类型标题！");
+			return;
+		} else if(servType == null || servType == "" || servType == undefined){
+			alert("请至少选择一种选类型！");
+			return;
+		} else if(servIcon == null || servIcon == ""){
+			alert("服务详细信息不能为空，请至少上传一张图片或填写api信息！");
+			return;
+		}
+		if(parent != 'API'){
+			if(servRatesTitle == null || servRatesTitle == ""){
+				alert("请填写服务频率标题！");
+				return;
+			} else if(scanType.length == 0){
+				alert("请至少填写一个服务频率！");
+				return;
+			}
+		}
+	}
 	$.ajax({
         type: "POST",
         url: "saveServDetails.html",
-        data: {"serviceId":serviceId,"parent":parent,"scanTypes":scanTypes,"servRates":servRates},
+        data: {"serviceId":serviceId,"parent":parent,"priceTitle":priceTitle,"typeTitle":typeTitle,"servType":servType,"servRatesTitle":servRatesTitle,"scanType":scanType,"servIcon":servIcon,"servIconFlag":servSelected},
         dataType:"json",
+        contentType:"application/x-www-form-urlencoded; charset=utf-8",
+        traditional: true, 
         success: function(data){
         	if(data.success){
         		alert("服务详情设置成功!");
@@ -241,4 +279,11 @@ function saveDetails(serviceId,parent){
         	alert("err");
         }
      });
+}
+/**
+ * 添加或删除成功后，手动刷新页面
+ */
+function init(){
+	var currentAddr = location.href;
+	location.href = currentAddr.substring(0,currentAddr.lastIndexOf("/")) + "/getServiceList.html";
 }

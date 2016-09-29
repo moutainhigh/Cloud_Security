@@ -9,6 +9,7 @@ import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.Serv;
+import com.cn.ctbri.entity.ServiceDetail;
 import com.cn.ctbri.entity.ServiceType;
 /**
  * 创 建 人  ：  txr
@@ -121,4 +122,24 @@ public interface SelfHelpOrderDao {
 	OrderDetail getOrderDetailById(String id, int userId, List assetIdsList);
 
 	OrderDetail findOrderDetailById(String id, int userId);
+
+	void insertServiceDetail(ServiceDetail sd);
+
+	void insertScanType(Map<String, Object> map);
+
+	String selectScanType(Map<String, Object> insertMap);
+
+	int selectMaxScanType(Map<String, Object> insertMap);
+
+	ServiceDetail findServiceDetail(Map<String, Object> map);
+
+	int selectParentId(String parent);
+
+	void delScanType(int serviceId);
+
+	void updateServiceDetail(ServiceDetail sd);
+
+	List<Map<String, Object>> findScanTypeList(Map<String, Object> map);
+
+	void delServDetail(Map<String, Object> map);
 }

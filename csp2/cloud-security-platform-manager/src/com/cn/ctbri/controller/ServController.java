@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -13,22 +16,28 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import org.apache.poi.ss.formula.ptg.LessEqualPtg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.Serv;
+import com.cn.ctbri.entity.ServiceDetail;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.util.CommonUtil;
+import com.cn.ctbri.util.SFTPUtil;
 
 
 /**
@@ -79,15 +88,17 @@ public class ServController {
 	
 	/**
 	 * 功能描述：修改服务页面
+	 * @throws UnsupportedEncodingException 
 	 *		 @time 2015-2-3
 	 */
 	@RequestMapping("/updateServUI.html")
-	public String updateServUI(HttpServletRequest request){
+	public String updateServUI(HttpServletResponse response,HttpServletRequest request) throws UnsupportedEncodingException {
+
 		String servId = request.getParameter("servId");
-		String remarks = request.getParameter("remarks");
-		String parent = request.getParameter("parent");
+		String remarks = new String(request.getParameter("remarks").getBytes("ISO-8859-1"),"UTF-8");
+		String parent = new String(request.getParameter("parent").getBytes("ISO-8859-1"),"UTF-8");
 		String icon = request.getParameter("icon");
-		String servName = request.getParameter("servName");
+		String servName = new String(request.getParameter("servName").getBytes("ISO-8859-1"),"UTF-8");
 		String type = request.getParameter("type");
 		
 		request.setAttribute("servId", servId);
@@ -141,25 +152,17 @@ public class ServController {
 					e.printStackTrace();
 				}
 	        }
-		
-	        //上传文件路径
-	        String savePath =request.getSession().getServletContext().getRealPath("/uploadFile");
 	        //上传文件名称；
 	        String uploadFilePathName = String.valueOf(System.currentTimeMillis())+originalFileName.substring(originalFileName.lastIndexOf("."));
-	        File file=new File(savePath);
-	        if(!file.exists()){
-	            file.mkdir();
-	        }
-	        
-	        File fileToCreate = new File(savePath, uploadFilePathName);
-	        FileOutputStream os = new FileOutputStream(fileToCreate);
-   			os.write(multipartFile.getBytes());
-   			os.flush();
-   			os.close();
+	        boolean isSuccFlag = SFTPUtil.upload(multipartFile, uploadFilePathName);
 
-   			String filePath = savePath+"\\"+uploadFilePathName;
-			m.put("success", true);
-			m.put("filePath", filePath);
+	        if(isSuccFlag){
+				m.put("success", true);
+				m.put("filePath", uploadFilePathName);
+	        } else {
+	        	m.put("success", false);
+	        }
+
 			//object转化为Json格式
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
 			try {
@@ -207,7 +210,7 @@ public class ServController {
 			map.put("type", type);
 			map.put("remarks", remarks);
 			map.put("icon", icon);
-			if(!parent.equals("API")){//添加到普通服务列表
+			if(!parent.equals("6")){//添加到普通服务列表
 				selfHelpOrderService.insertServ(map);
 			}else{//添加到API服务列表
 				selfHelpOrderService.insertAPI(map);
@@ -306,19 +309,21 @@ public class ServController {
 	public void searchServ(HttpServletRequest request,HttpServletResponse response){	
 		Map<String, Object> m = new HashMap<String, Object>();
 		String name = "";
-		String parent = "";
 		try {
 			name = new String(request.getParameter("name").getBytes("ISO-8859-1"),"UTF-8");
-			parent = new String(request.getParameter("parent").getBytes("ISO-8859-1"),"UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		int type = 0;
+		int parent = 0;
+		
 		if(!request.getParameter("type").equals("null")){
 			type = Integer.parseInt(request.getParameter("type"));
 		}
-		
+		if(!StringUtils.isEmpty(request.getParameter("parent"))){
+			parent = Integer.parseInt(request.getParameter("parent"));
+		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("name", name);
 		map.put("parent", parent);
@@ -354,8 +359,14 @@ public class ServController {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("servId", servId);
 			map.put("parent", parent);
-			
+			//删除service表数据
 			selfHelpOrderService.delServ(map);
+			//删除service详情表数据
+			selfHelpOrderService.delServDetail(map);
+			//删除scanType表数据
+			if(!StringUtils.isEmpty(parent) && !parent.equals("API")){
+				selfHelpOrderService.delScanType(Integer.parseInt(servId));
+			}
 			
 			m.put("success", true);
 			//object转化为Json格式
@@ -507,13 +518,31 @@ public class ServController {
 	
 	/**
 	 * 功能描述：服务详情维护
+	 * @throws UnsupportedEncodingException 
 	 *		 @time 2015-2-3
 	 */
 	@RequestMapping("/serviceDetailsUI.html")
-	public String serviceDetailsUI(HttpServletRequest request){
+	public String serviceDetailsUI(HttpServletRequest request) throws UnsupportedEncodingException{
 		//获取服务类型
 		int serviceId = Integer.parseInt(request.getParameter("servId"));
-		String parent = request.getParameter("parent");
+		String parent = new String(request.getParameter("parent").getBytes("ISO-8859-1"),"UTF-8");
+		ServiceDetail serviceDetail = new ServiceDetail();
+		List<Map<String, Object>> scanList = null;
+		if(!StringUtils.isEmpty(parent)){
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("serviceId", serviceId);
+			map.put("parent", parent);
+			serviceDetail = selfHelpOrderService.findServiceDetail(map);
+
+			map.remove("parent");
+			scanList = selfHelpOrderService.findScanTypeList(map);
+		}
+		if(serviceDetail != null){
+			String detailIcon = serviceDetail.getDetailIcon();
+			request.setAttribute("detailIcon", detailIcon);
+		}
+		request.setAttribute("scanTypeList", scanList);
+		request.setAttribute("serviceDetail", serviceDetail);
 		request.setAttribute("serviceId", serviceId);
 		request.setAttribute("parent", parent);
 		return "/source/serviceManage/servDetails";
@@ -524,27 +553,73 @@ public class ServController {
 	 * 参数描述：HttpServletRequest request,HttpServletResponse response
 	 *		 @time 2015-1-19
 	 */
+	/**
+	 * @param request
+	 * @param response
+	 */
 	@RequestMapping(value="/saveServDetails.html",method = RequestMethod.POST)
 	@ResponseBody
 	public void saveServDetails(HttpServletRequest request,HttpServletResponse response){
 		Map<String, Object> m = new HashMap<String, Object>();
 		try {
 			int serviceId = Integer.parseInt(request.getParameter("serviceId"));
-			String scanTypes = request.getParameter("scanTypes");
-			String servRates = new String(request.getParameter("servRates").getBytes("ISO-8859-1"),"UTF-8");
-			String parent = new String(request.getParameter("parent").getBytes("ISO-8859-1"),"UTF-8");
+			String parent = request.getParameter("parent");
+			String priceTitle = request.getParameter("priceTitle");
+			String typeTitle = request.getParameter("typeTitle");
+			int servType = 9;
+			if(!StringUtils.isEmpty(request.getParameter("servType"))){
+				servType = Integer.parseInt(request.getParameter("servType"));
+			}		
+			String servRatesTitle = request.getParameter("servRatesTitle");
+			String[] scanType = null;
+			scanType = request.getParameterValues("scanType");
+			String servIconFlag = request.getParameter("servIconFlag");
+			String servIcon = request.getParameter("servIcon");
 			
-			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("scanTypes", scanTypes);
-			map.put("servRates", servRates);
-			map.put("id", serviceId);
-			
-			if(!parent.equals("API")){//添加到普通服务列表
-				selfHelpOrderService.updateServ(map);
-			}else{//添加到API服务列表
-				selfHelpOrderService.updateAPI(map);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("serviceId", serviceId);
+			map.put("parent", parent);
+			ServiceDetail serviceDetail = selfHelpOrderService.findServiceDetail(map);
+			boolean editFlag = false;
+			if(serviceDetail != null){
+				//删除scanType表serviceId的相关信息
+				editFlag = true;
+				selfHelpOrderService.delScanType(serviceId);
 			}
 			
+			int parentC = selfHelpOrderService.selectParentId(parent);
+			
+			if(!StringUtils.isEmpty(scanType)){
+				for(int i=0; i<scanType.length; i++){
+					Map<String, Object> insertMap = new HashMap<String, Object>();
+					insertMap.put("serviceId", serviceId);
+					insertMap.put("scanName", scanType[i]);
+					String res = selfHelpOrderService.selectScanType(insertMap);
+					if(StringUtils.isEmpty(res)){
+						int maxScanType = selfHelpOrderService.selectMaxScanType(insertMap);
+						maxScanType += 1;
+						insertMap.put("scanType", maxScanType);
+						selfHelpOrderService.insertScanType(insertMap);
+					}
+					
+				}
+			}
+
+			ServiceDetail sd = new ServiceDetail();
+			sd.setServiceId(serviceId);
+			sd.setPriceTitle(priceTitle);
+			sd.setTypeTitle(typeTitle);
+			sd.setServType(servType);
+			sd.setRatesTitle(servRatesTitle);
+			sd.setDetailIcon(servIcon);
+			sd.setCreateTime(new Date());
+			sd.setParentC(parentC);
+			sd.setDetailFlag(servIconFlag);
+			if(editFlag){
+				selfHelpOrderService.updateServiceDetail(sd);
+			} else {
+				selfHelpOrderService.insertServiceDetail(sd);
+			}
 
 			m.put("success", true);
 			//object转化为Json格式
@@ -555,6 +630,96 @@ public class ServController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			m.put("success", false);
+			//object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * 功能描述：上传服务详情图片
+	 * 参数描述：HttpServletRequest request,HttpServletResponse response
+	 *		 @time 2015-1-19
+	 */
+	@RequestMapping(value="/uploadDetail.html")
+	public void uploadDetailPhoto(HttpServletRequest request,HttpServletResponse response){
+
+		Map<String, Object> m = new HashMap<String, Object>();
+		try {
+    		//将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
+    		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
+					request.getSession().getServletContext());
+			// 检查form中是否有enctype="multipart/form-data"
+    		if(multipartResolver.isMultipart(request)){
+    			//将request变成多部分request
+    			MultipartHttpServletRequest multiRequest=(MultipartHttpServletRequest)request;
+    			//获取multiRequest 中所有的文件名
+    			Iterator iter=multiRequest.getFileNames();
+    			
+    			while(iter.hasNext()){
+    				//一次遍历所有文件
+    				MultipartFile multipartFile = multiRequest.getFile(iter.next().toString());
+    		        if(multipartFile==null){
+    		        	m.put("success", false);
+    		        	m.put("errorMsg", "请上传文件!");
+    		        	
+    					//object转化为Json格式
+    					JSONObject JSON = CommonUtil.objectToJson(response, m);
+    					try {
+    						// 把数据返回到页面
+    						CommonUtil.writeToJsp(response, JSON);
+    					} catch (IOException e) {
+    						e.printStackTrace();
+    					}
+    		        }
+    				
+    		        String originalFileName=multipartFile.getOriginalFilename();
+    		        String fileType = originalFileName.substring(originalFileName.lastIndexOf(".")+1);
+    		        //判断文件格式
+    		        if(!"png".equals(fileType.toLowerCase())){
+    		        	m.put("successFlag", false);
+    		        	m.put("errorMsg", "请导入png格式的文件!");
+    		        	
+    		        	//object转化为Json格式
+    					JSONObject JSON = CommonUtil.objectToJson(response, m);
+    					try {
+    						// 把数据返回到页面
+    						CommonUtil.writeToJsp(response, JSON);
+    					} catch (IOException e) {
+    						e.printStackTrace();
+    					}
+    		        }
+    		        //上传文件名称；
+    		        String uploadFilePathName = String.valueOf(System.currentTimeMillis())+originalFileName.substring(originalFileName.lastIndexOf("."));
+    		        boolean isSuccFlag = SFTPUtil.upload(multipartFile, uploadFilePathName);
+
+    		        if(isSuccFlag){
+    					m.put("success", true);
+    					m.put("filePath", uploadFilePathName);
+    		        } else {
+    		        	m.put("success", false);
+    		        }
+
+    				//object转化为Json格式
+    				JSONObject JSON = CommonUtil.objectToJson(response, m);
+    				try {
+    					// 把数据返回到页面
+    					CommonUtil.writeToJsp(response, JSON);
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    				
+    			}
+    		}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

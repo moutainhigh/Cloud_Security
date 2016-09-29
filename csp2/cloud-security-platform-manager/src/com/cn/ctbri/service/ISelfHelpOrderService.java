@@ -9,6 +9,7 @@ import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.Serv;
+import com.cn.ctbri.entity.ServiceDetail;
 import com.cn.ctbri.entity.ServiceType;
 /**
  * 创 建 人  ：  txr
@@ -123,4 +124,33 @@ public interface ISelfHelpOrderService {
 	OrderDetail getOrderDetailById(String id,int userId,List assetIdsList);
 	//根据服务详情操作主键，查询
 	OrderDetail findOrderDetailById(String id,int userId);
+	/**
+	 * 添加服务详情
+	 * @param sd
+	 */
+	void insertServiceDetail(ServiceDetail sd);
+	/**
+	 * 添加服务频率
+	 * @param map
+	 */
+	void insertScanType(Map<String, Object> map);
+	/**
+	 * 查询cs_scanType表中是否已存在相应的服务频率
+	 * @param insertMap
+	 */
+	String selectScanType(Map<String, Object> insertMap);
+
+	int selectMaxScanType(Map<String, Object> insertMap);
+
+	ServiceDetail findServiceDetail(Map<String, Object> map);
+
+	int selectParentId(String parent);
+
+	void delScanType(int serviceId);
+
+	void updateServiceDetail(ServiceDetail sd);
+
+	List<Map<String, Object>> findScanTypeList(Map<String, Object> map);
+
+	void delServDetail(Map<String, Object> map);
 }

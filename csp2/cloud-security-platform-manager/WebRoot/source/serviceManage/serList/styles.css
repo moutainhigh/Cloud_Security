@@ -1,4 +1,4 @@
-﻿body {
+body {
   margin:0px;
   background-image:none;
   position:static;
@@ -107,7 +107,7 @@
 }
 #u6_input {
   position:absolute;
-  left:0px;
+  left:40px;
   top:0px;
   width:100px;
   height:25px;
@@ -462,7 +462,7 @@
 }
 #u38 {
   position:absolute;
-  left:723px;
+  left:989px;
   top:66px;
   width:100px;
   height:25px;
@@ -534,7 +534,7 @@
   position:absolute;
   left:0px;
   top:0px;
-  width:124px;
+  width:167px;
   height:22px;
   font-family:'Arial Normal', 'Arial';
   font-weight:400;

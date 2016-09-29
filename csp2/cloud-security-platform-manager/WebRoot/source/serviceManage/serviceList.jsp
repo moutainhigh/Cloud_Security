@@ -83,12 +83,12 @@
       <!-- Unnamed (Droplist) -->
       <div id="u5" class="ax_droplist">
         <select id="u5_input" onchange="changeParentForSearch();">
-          <option value="网站安全帮">网站安全帮</option>
-          <option value="数据库安全帮">数据库安全帮</option>
-          <option value="系统安全帮">系统安全帮</option>
-          <option value="网络安全帮">网络安全帮</option>
-          <option value="移动安全帮">移动安全帮</option>
-          <option value="API">API</option>
+          <option value="1">网站安全帮</option>
+          <option value="2">数据库安全帮</option>
+          <option value="3">系统安全帮</option>
+          <option value="4">网络安全帮</option>
+          <option value="5">移动安全帮</option>
+          <option value="6">API</option>
         </select>
       </div>
             <!-- Unnamed (Shape) -->
@@ -102,8 +102,8 @@
 		<!-- Unnamed (Droplist) -->
       <div id="u43" class="ax_droplist">
         <select id="u43_input">
-          <option value="1">监测及预警服务</option>
-          <option value="2">防护及加固服务</option>
+          <option value="1">网站安全监测及预警服务</option>
+          <option value="2">网站安全防护及加固服务</option>
         </select>
       </div>
       <!-- Unnamed (HTML Button) -->
@@ -133,13 +133,12 @@
 	                    <tr>
 	                    	<td class="t_username">${serv.parentC}</td>
 	                        <td class="t_date">${serv.typeName}</td>
-	                        <td class="t_assets">${serv.name}</td>
+	                        <td class="t_assets"><a href="${ctx}/serviceDetailsUI.html?servId=${serv.id}&parent=${serv.parentC}">${serv.name}</a></td>
 	                        <td class="t_service" style="text-align:center;width:320px">${serv.remarks}</td>
 	                        <td class="t_operation">
-	                        	<a href="${ctx }/updateServUI.html?servId=${serv.id}&parent=${serv.parentC}&servName=${serv.name}&icon=${serv.icon}&remarks=${serv.remarks}&type=${serv.servType}" class="ope_a add_change">修改</a>
+	                        	<a href="${ctx }/updateServUI.html?servId=${serv.id}&parent=${serv.parentC}&servName=${serv.name}&icon=${serv.icon}&remarks=${serv.remarks}&type=${serv.servType}" class="ope_a add_change">编辑</a>
 	                        	<a href="javascript:void(0)" servid="${serv.id}" parentC="${serv.parentC}" onclick="delServ(this)" class="ope_a ml20">删除</a>
 	                        	<a href="${ctx }/addServicePriceUI.html?servId=${serv.id}&parent=${serv.parentC}" class="ope_a add_change">设置价格</a>
-	                        	<a href="${ctx}/serviceDetailsUI.html?servId=${serv.id}&parent=${serv.parentC}" class="ope_a add_change">详情维护</a>
 	                        </td>
                    		</tr>
                     </c:forEach>

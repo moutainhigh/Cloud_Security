@@ -20,6 +20,7 @@ import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.Serv;
+import com.cn.ctbri.entity.ServiceDetail;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.entity.User;
 /**
@@ -195,6 +196,56 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		map.put("id", id);
 		map.put("userId", userId);
 		return this.getSqlSession().selectOne(ns+"findOrderDetailById", map);
+	}
+
+	public void insertServiceDetail(ServiceDetail sd) {
+		// TODO Auto-generated method stub
+		this.getSqlSession().insert(nv+"insertServiceDetail", sd);
+	}
+
+	public void insertScanType(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		this.getSqlSession().insert(nv+"insertScanType", map);
+	}
+
+	public String selectScanType(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectOne(nv+"selectScanType",map);
+	}
+
+	public int selectMaxScanType(Map<String, Object> insertMap) {
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectOne(nv+"selectMaxScanType", insertMap);
+	}
+
+	public ServiceDetail findServiceDetail(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectOne(nv+"findServiceDetail", map);
+	}
+
+	public int selectParentId(String parent) {
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectOne(nv+"selectParentId",parent);
+	}
+
+	public void delScanType(int serviceId) {
+		// TODO Auto-generated method stub
+		this.getSqlSession().delete(nv+"delScanType", serviceId);
+	}
+
+	public void updateServiceDetail(ServiceDetail sd) {
+		// TODO Auto-generated method stub
+		this.getSqlSession().update(nv+"updateServiceDetail", sd);
+	}
+
+	public List<Map<String, Object>> findScanTypeList(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectList(nv+"findScanTypeList",map);
+	}
+
+	public void delServDetail(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		this.getSqlSession().delete(nv+"delServDetail", map);
 	}
 
 

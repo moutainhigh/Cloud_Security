@@ -48,17 +48,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 查询所有服务 -->
 	<select id="findSerList" resultType="hashmap" parameterType="hashmap">
-		SELECT s.id,s.name,type.name typeName,type.id servType,s.remarks,s.parentC,s.icon FROM `cs_service` s,cs_service_type type WHERE s.type=type.id 
+		SELECT s.id,s.name,type.name typeName,type.id servType,s.remarks,ptype.name parentC,s.icon FROM cs_service s,cs_service_type type,cs_service_dictionary ptype 
+		WHERE s.type=type.id and s.parentC = ptype.id
 		<if test="name!=null and name!=''">
 			and s.name like CONCAT('%','${name}','%') 
         </if>
 		<if test="type!=0 and type!=null">
             and s.type=#{type}
         </if>
-		<if test="parent!=null and parent!=''">
+		<if test="parent!=null and parent!=0">
             and s.parentC=#{parent}
         </if>			
-		union select a.id,a.name,a.type typeName,a.type servType,a.remarks,a.parentC,a.icon from cs_service_api a where 1=1
+		union select a.id,a.name,type.name typeName,a.type servType,a.remarks,ptype.name parentC,a.icon from cs_service_api a,cs_service_type type,cs_service_dictionary ptype
+		where a.type=type.id and a.parentC = ptype.id
 		<if test="name!=null and name!=''">
             and a.name like CONCAT('%','${name}','%') 
         </if>
@@ -82,6 +84,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values(#{name},#{type},#{parent},#{remarks},#{icon})
 	</insert>
 	
+	<!-- 添加服务详情 -->
+	<insert id="insertServiceDetail" parameterType="com.cn.ctbri.entity.ServiceDetail">
+		insert into cs_service_detail(serviceId,priceTitle,typeTitle,servType,ratesTitle,detailIcon,createTime,parentC,detailFlag)
+		values(#{serviceId},#{priceTitle},#{typeTitle},#{servType},#{ratesTitle},#{detailIcon},#{createTime},#{parentC},#{detailFlag})
+	</insert>
+	
+	<!-- 添加服务频率 -->
+	<insert id="insertScanType" parameterType="map">
+		insert into cs_scanType(serviceId,scan_name,scan_type) values
+		(#{serviceId},#{scanName},#{scanType})
+	</insert>
+	
+	<!-- 查询cs_scanType表 -->
+	<select id="selectScanType" parameterType="map" resultType="String">
+		select scan_name from cs_scanType where serviceId = #{serviceId} and scan_name = #{scanName}
+	</select>
+	
+	<!-- 查询cs_scanType中scan_type的最大值 -->
+	<select id="selectMaxScanType" parameterType="map" resultType="int">
+		select ifnull(max(scan_type),0) from cs_scanType where serviceId = #{serviceId}
+	</select>
 	<!-- 删除服务 -->
 	<delete id="delServ" parameterType="hashmap">
 		<if test="parent!=null and parent=='API'">
@@ -144,4 +167,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</set>
 		where id=#{id}
 	</update>
+
+	<!-- 查询服务详情配置信息 -->
+	<select id="findServiceDetail" parameterType="hashmap" resultType="com.cn.ctbri.entity.ServiceDetail">
+		select * from cs_service_detail where serviceId = #{serviceId} and parentC = (select id from cs_service_dictionary where name = #{parent})
+	</select>
+
+	<!-- 根据服务详情一级分类名字查询服务ID -->
+	<select id="selectParentId" parameterType="String" resultType="int">
+		select id from cs_service_dictionary where name = #{parent}
+	</select>
+	<!-- 删除相应serviceId的cs_scanType表 -->
+	<delete id="delScanType" parameterType="int">
+		delete from cs_scanType where serviceId = #{serviceId}
+	</delete>
+	<!-- 更新serviceDetail表 -->
+	<update id="updateServiceDetail" parameterType="com.cn.ctbri.entity.ServiceDetail">
+		update cs_service_detail
+		set createTime = #{createTime}
+		<if test="priceTitle != null and priceTitle != ''">,priceTitle = #{priceTitle}</if>
+		<if test="typeTitle != null and typeTitle != ''">,typeTitle = #{typeTitle}</if>
+		<if test="servType != null and servType != 9">,servType = #{servType}</if>
+		<if test="ratesTitle != null and ratesTitle != ''">,ratesTitle = #{ratesTitle}</if>
+		<if test="detailIcon != null and detailIcon != ''">,detailIcon = #{detailIcon}</if>
+		<if test="detailFlag != null and detailFlag != ''">,detailFlag = #{detailFlag}</if>
+		where serviceId = #{serviceId} and parentC = #{parentC}
+	</update>
+	
+	<!-- 根据serviceId查询cs_scanType列表 -->
+	<select id="findScanTypeList" parameterType="hashmap" resultType="hashmap">
+		select scan_type, scan_name from cs_scanType where serviceId = #{serviceId}
+	</select>
+	
+	<!-- 删除信息详情表 -->
+	<delete id="delServDetail" parameterType="hashmap">
+		delete from cs_service_detail where serviceId = #{servId} 
+		and parentC = (select id from cs_service_dictionary where name = #{parent})
+	</delete>
 </mapper>

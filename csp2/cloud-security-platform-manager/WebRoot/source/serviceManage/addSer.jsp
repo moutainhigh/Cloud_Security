@@ -130,13 +130,13 @@
 
       <!-- Unnamed (Droplist) -->
       <div id="u14" class="ax_droplist">
-        <select id="u14_input" onchange="changeParent();" value="">
-          <option value="网站安全帮">网站安全帮</option>
-          <option value="数据库安全帮">数据库安全帮</option>
-          <option value="系统安全帮">系统安全帮</option>
-          <option value="网络安全帮">网络安全帮</option>
-          <option value="移动安全帮">移动安全帮</option>
-          <option value="API">API</option>
+        <select id="u14_input" onchange="changeParent();">
+          <option value="1">网站安全帮</option>
+          <option value="2">数据库安全帮</option>
+          <option value="3">系统安全帮</option>
+          <option value="4">网络安全帮</option>
+          <option value="5">移动安全帮</option>
+          <option value="6">API</option>
         </select>
       </div>
 
@@ -152,8 +152,8 @@
       <!-- Unnamed (Droplist) -->
       <div id="u17" class="ax_droplist" value="">
         <select id="u17_input">
-          <option value="1">监测及预警服务</option>
-          <option value="2">防护及加固服务</option>
+          <option value="1">网站安全监测及预警服务</option>
+          <option value="2">网站安全防护及加固服务</option>
         </select>
       </div>
 
