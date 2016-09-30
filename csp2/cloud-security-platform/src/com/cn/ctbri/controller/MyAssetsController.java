@@ -80,7 +80,7 @@ public class MyAssetsController {
 		List<Asset> list = assetService.findByUserId(globle_user.getId());
 		model.addAttribute("list",list);
 		model.addAttribute("type",request.getParameter("type"));
-		return "/source/page/userCenter/userAssets";
+		return "/source/page/personalCenter/userAssets";
 	}
 	
 	/**
@@ -91,7 +91,7 @@ public class MyAssetsController {
 	 */
 	@RequestMapping("/userAssets.html")
 	public ModelAndView userAssets(HttpServletRequest request,HttpServletResponse response){
-		ModelAndView mv = new ModelAndView("source/page/userCenter/assetList");
+		ModelAndView mv = new ModelAndView("source/page/personalCenter/assetList");
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		List<Asset> list = assetService.findByUserId(globle_user.getId());
 		if(list!=null && list.size()>0){
@@ -709,7 +709,7 @@ public class MyAssetsController {
 	 */
 	@RequestMapping("/searchAssetCombine.html")
 	public ModelAndView searchAssetsCombine(HttpServletRequest request,HttpServletResponse response){
-		ModelAndView mv = new ModelAndView("source/page/userCenter/assetList");
+		ModelAndView mv = new ModelAndView("source/page/personalCenter/assetList");
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		Map<String, Object> map = new HashMap<String, Object>();
 
