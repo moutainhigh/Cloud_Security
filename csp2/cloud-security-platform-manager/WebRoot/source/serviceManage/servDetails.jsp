@@ -136,6 +136,7 @@ if(serviceDetail != null && serviceDetail != ''){
 				iconList.push(detailIconArray[i]);
 				$("#resServDetailHidden").val(iconList.join(";"));
 			}
+			$("#uploadHtml").val($('#preview').html());
 		}
 	}
 }
@@ -146,6 +147,7 @@ $(".upload_delete").click(function(){
 	iconList.splice($.inArray(currentIcon,iconList),1);
 	$("#resServDetailHidden").val(iconList.join(";"));
 	$(this).parent().remove();
+	$("#uploadHtml").val($('#preview').html());
 });
 
 });
@@ -153,7 +155,7 @@ $(".upload_delete").click(function(){
 </head>
   <body>
     <div id="base" class="">
-	
+	  <input type="hidden" id="uploadHtml" value=""/>
 	  <input type="hidden" id="servDetailHidden" value=""/>
 	  <input type="hidden" id="resServDetailHidden" value=""/>
       <!-- Unnamed (Shape) -->
@@ -431,8 +433,8 @@ var params = {
 		return arrFiles;
 	},
 	onSelect: function(files) {
-		var html = '',i = 0;
-		html = $(".upload_preview").children();
+		var html = '', i = 0;
+		html = $("#uploadHtml").val();
 		$("#preview").html('<div class="upload_loading"></div>');
 		var funAppendImage = function() {
 			file = files[i];
@@ -443,7 +445,8 @@ var params = {
 						'<a href="javascript:" class="upload_delete" title="删除" data-index="'+ i +'">删除</a><br />' +
 						'<img id="uploadImage_' + i + '" src="' + e.target.result + '" class="upload_image" /></p>'+ 
 						'<span id="uploadProgress_' + i + '" class="upload_progress"></span>' +
-					'</div>';	
+					'</div>';
+					
 					i++;
 					funAppendImage();
 				}
