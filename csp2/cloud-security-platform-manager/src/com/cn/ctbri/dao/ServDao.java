@@ -56,4 +56,15 @@ public interface ServDao {
      * 根据serviceid查询Api价格列表
      */
     List<ApiPrice> findApiPriceByServiceId(int serviceId);
+    
+    /*
+     * 根据serviceid查询长期价格列表
+     */
+	List<Price> findLongPriceByServiceId(int serviceId);
+
+	void updatePriceDeleteFlag(int serviceId);
+
+	void updateApiPriceDeleteFlag(int serviceId);
+
+	void insertApiPrice(ApiPrice price);
 }
