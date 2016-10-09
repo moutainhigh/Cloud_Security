@@ -1,10 +1,7 @@
 package com.cn.ctbri.controller;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,20 +13,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
-import org.apache.poi.ss.formula.ptg.LessEqualPtg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import com.cn.ctbri.entity.Asset;
-import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceDetail;
@@ -74,7 +67,7 @@ public class ServController {
 		//获取服务类型
         List servList = selfHelpOrderService.findSerList(null);
         request.setAttribute("servList", servList);//订单总数
-		return "/source/serviceManage/serviceList";
+		return "/source/adminPage/userManage/serviceList";
 	}
 	
 	/**
@@ -134,6 +127,7 @@ public class ServController {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				return;
 	        }
 			
 	        String originalFileName=multipartFile.getOriginalFilename();
@@ -151,6 +145,7 @@ public class ServController {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				return;
 	        }
 	        //上传文件名称；
 	        String uploadFilePathName = String.valueOf(System.currentTimeMillis())+originalFileName.substring(originalFileName.lastIndexOf("."));
@@ -405,7 +400,7 @@ public class ServController {
 		String parent = request.getParameter("parent");
 		Map<String,Object> newMap = new HashMap<String,Object>();
 		newMap.put("serviceId", serviceId);
-		newMap.put("parent", parent);
+//		newMap.put("parent", parent);
 		List<Price> priceList = servService.findPriceByParam(newMap);
 		if(priceList!=null && priceList.size()>0){
 			for (int i = 0; i < priceList.size(); i++) {
@@ -422,7 +417,7 @@ public class ServController {
 		//查询区间list
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("serviceId", serviceId);
-		map.put("parent", parent);
+		//map.put("parent", parent);
 		map.put("type", 1);
 		List<Price> priceLongList = servService.findPriceByParam(map);
         request.setAttribute("priceLongList", priceLongList);//订单总数
@@ -545,7 +540,8 @@ public class ServController {
 		request.setAttribute("serviceDetail", serviceDetail);
 		request.setAttribute("serviceId", serviceId);
 		request.setAttribute("parent", parent);
-		return "/source/serviceManage/servDetails";
+		return "/source/adminPage/userManage/servDetails";
+		//return "/source/serviceManage/servDetails";
 	}
 	
 	/**
