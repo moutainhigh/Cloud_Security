@@ -6,6 +6,7 @@ public class ApiPrice {
 	private int timesG;//大于
 	private int timesLE;//小于等于
 	private double price;//价格
+	private int delFlag;
 	
 	public int getId() {
 		return id;
@@ -36,6 +37,12 @@ public class ApiPrice {
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	public int getDelFlag() {
+		return delFlag;
+	}
+	public void setDelFlag(int delFlag) {
+		this.delFlag = delFlag;
 	}
 	
 	
