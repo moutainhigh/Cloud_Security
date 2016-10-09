@@ -1,0 +1,319 @@
+// JavaScript Document
+var maxPriceIndex=0;
+var scanTypeList;
+//价格维护
+$(function(){
+	
+	var oMark =document.getElementById('modelbox');
+	var oLogin =document.getElementById('box_servicePrice');
+	
+	//$(".price_add").click(function(){
+		
+		//var image=$(this).parent().find("a img");
+		//$(".box_logoIn").empty()
+		//oMark.style.display ="block";
+		//oLogin.style.display ="block";
+		//oMark.style.width = viewWidth() + 'px';
+		//oMark.style.height = documentHeight() + 'px';
+		//oLogin.style.left = (viewWidth() - oLogin.offsetWidth)/2 + 'px';
+		//oLogin.style.top = (viewHeight() - oLogin.offsetHeight)/2-25 + 'px';	
+		
+		//image.clone(true).appendTo(".box_logoIn");
+	
+	//});
+     
+		/*//关闭按钮
+		function toClose(){
+			var oClose = document.getElementById('close');
+			oClose.onclick = function(){
+				oMark.style.display ="none";
+				oLogin.style.display ="none";
+				//$(".box_logoIn").empty()
+				
+			};
+		}
+		toClose();
+		
+		window.onscroll = window.onresize = function(){
+		
+			var oDiv = document.getElementById('box_logoIn');
+			if(oDiv){
+				oDiv.style.left = (viewWidth() - oDiv.offsetWidth)/2 + 'px';
+				oDiv.style.top = (viewHeight() - oDiv.offsetHeight)/2-25 + 'px';
+			}
+	
+		}*/
+})
+function editPrice(servId){
+	var oMark =document.getElementById('modelbox');
+	var oLogin =document.getElementById('box_servicePrice');
+	maxPriceIndex = 0;
+	scanTypeList= null;
+	$.ajax({
+		type: "POST",
+		url:"servicePriceMaintainUI.html",
+		data:{"servId":servId},
+		success:function(data) {
+			$("#add_serviceId").val(servId);
+			
+			if (data.orderType!=1) {   //1：长期
+				//单次价格组件 追加
+				var singlePriceDiv = '<div id="singlePrice_div">'+
+	        							'<table>'+
+	          								'<tr class="price_tr" id="singlePrice_tr">'+
+	            								'<td class="regist_title">单次价格</td>'+
+	            								'<td class="price_input"><input type="text" class="price_txt required" name="singlePrice" id="singlePrice"/><span id="regist_name_msg" style="color:red;float:left"></span></td>'+
+	            								'<td class="regist_prompt"></td>'+
+	          								'</tr>'+
+	        						 	'</table>'+
+        							'</div>';
+				$("#allPriceDiv").append(singlePriceDiv);
+			}
+			if(data.orderType!=2) { //2：单次
+				//长期价格组件 追加
+				var longPriceDiv = '<div id="longPrice_div">'+
+	        						'<table >'+
+	          							'<tr class="price_tr">'+
+	            							'<td class="regist_title">长期价格</td>'+
+	            							'<td class="price_input_radio">'+
+	            								'<input type="radio" name="scanTypeRadio" value="0" checked="true" onclick="getScanTypeSettingFlag()"/>不根据频率设置价格'+
+	            								'<input type="radio" name="scanTypeRadio" value="1" onclick="getScanTypeSettingFlag()"/>根据频率设置价格'+
+	            							'</td>'+
+	          							'</tr>'+
+	        						'</table>'+
+	        						'<div id="allLongPriceDiv"></div>'+
+	        					'</div>';
+				$("#allPriceDiv").append(longPriceDiv);
+			}
+			
+			//单次价格回填
+			if (data.singlePrice != null) {
+				$("#singlePrice").val(data.singlePrice);
+			}
+			
+			var scanTypeHtml = $("#scanType_id_template").html();
+			var priceTrHtml = $("#scanTypeTable_template").html();
+			var longPriceList = data.longPriceList;
+			var scanTypeSettingFlag = 0;
+			if (longPriceList.length >0){
+				scanTypeSettingFlag = longPriceList[0].scanType;
+			}
+			scanTypeList = data.scanTypeList;
+			//服务频率回填
+			if (scanTypeList!= null) {
+				//$("#scanType_id_0").remove();
+				//根据服务频率设置
+				if (scanTypeSettingFlag != 0) {
+					maxPriceIndex = scanTypeList.length;
+					for(var s=0; s<scanTypeList.length;s++) {
+						var scanTypeDivHtml = scanTypeHtml.replace("scanType_id_template","scanType_id_"+scanTypeList[s].scan_type);
+						scanTypeDivHtml = scanTypeDivHtml.replace("scanType_div_template","scanType_div");
+						scanTypeDivHtml = scanTypeDivHtml.replace("scanTypeTable_template","scanTypeTable_"+scanTypeList[s].scan_type);
+						scanTypeDivHtml = scanTypeDivHtml.replace("price_index_template","price_index_"+scanTypeList[s].scan_type);
+						scanTypeDivHtml = scanTypeDivHtml.replace("addOnePrice(0)","addOnePrice("+scanTypeList[s].scan_type+")");
+						scanTypeDivHtml = scanTypeDivHtml.replace("price_scanType_0","price_scanType_"+s);  //为每一行设置服务频率
+						//替换服务频率    scanType_index_
+						scanTypeDivHtml = scanTypeDivHtml.replace("XXXX",scanTypeList[s].scan_name);
+						$("#allLongPriceDiv").append(scanTypeDivHtml);
+						$("#price_scanType_"+s).val(scanTypeList[s].scan_type);   //该组件的服务频率设为
+						
+					}
+				}else{
+					//不根据服务频率设置
+						maxPriceIndex = 1;
+						var scanTypeDivHtml = scanTypeHtml.replace("scanType_id_template","scanType_id_0");
+						scanTypeDivHtml = scanTypeDivHtml.replace("scanType_div_template","scanType_div");
+						scanTypeDivHtml = scanTypeDivHtml.replace("scanTypeTable_template","scanTypeTable_0");
+						scanTypeDivHtml = scanTypeDivHtml.replace("price_index_template","price_index_0");
+						scanTypeDivHtml = scanTypeDivHtml.replace("addOnePrice(0)","addOnePrice(0)");
+						//替换服务频率
+						scanTypeDivHtml = scanTypeDivHtml.replace("服务频率: XXXX","");
+						$("#allLongPriceDiv").append(scanTypeDivHtml);
+						$("#price_scanType_0").val(0);   //该组件的服务频率设为0
+				}
+			}
+			
+			//长期价格回填
+			if(longPriceList!= null && longPriceList.length > 0){
+				maxPriceIndex = longPriceList.length;
+				var lastScanType=-1;
+				for (var i = 1;i <= longPriceList.length;i++) {
+					var price = longPriceList[i-1];
+					if (price.scanType != lastScanType) {
+						lastScanType = price.scanType;
+						$("#scanTypeTable_"+lastScanType).find("tr").first().remove();
+					}
+					//元素id,name替换
+					htmlStr = priceTrHtml.replace("price_index_template", "price_index_"+i);
+					htmlStr = htmlStr.replace("type_0", "type_"+i);
+					htmlStr = htmlStr.replace("scanType_0", "scanType_"+i);
+					htmlStr = htmlStr.replace("price_0", "price_"+i);
+					htmlStr = htmlStr.replace("timesG_0", "timesG_"+i);
+					htmlStr = htmlStr.replace("timesLE_0", "timesLE_"+i);
+					htmlStr = htmlStr.replace("title_timesLE_0", "title_timesLE_"+i);
+					htmlStr = htmlStr.replace("deleteOnePrice(0)","deleteOnePrice("+i+")");
+					htmlStr = htmlStr.replace("getPriceType(this.value,0)","getPriceType(this.value,"+i+")");
+					$("#scanTypeTable_"+price.scanType).append(htmlStr);
+					//替换 类型
+					$("#type_"+i).val(price.type);
+					//替换 大于
+					$("#timesG_"+i).val(price.timesG);
+					//替换 小于等于
+					$("#timesLE_"+i).val(price.timesLE);
+					//替换 价格
+					$("#price_"+i).val(price.price);
+					//替换 服务频率
+					$("#price_scanType_"+i).val(price.scanType);
+					
+					if (price.type == 2) {   //0:单次；1：长期；2：大于
+						//小于等于 移除
+						$("#title_timesLE_"+i).hide();
+						$("#timesLE_"+i).hide();
+					}
+				}
+				if(lastScanType == -1 || lastScanType == 0) {
+					//$(".scanType_div").remove();
+					$(":radio[name=scanTypeRadio][value=0]").attr("checked","true");
+				}else {
+					$(":radio[name=scanTypeRadio][value=1]").attr("checked","true");
+				}
+				
+			}
+			oMark.style.display ="block";
+			oLogin.style.display ="block";
+			oMark.style.width = viewWidth() + 'px';
+			oMark.style.height = documentHeight() + 'px';
+			oLogin.style.left = (viewWidth() - oLogin.offsetWidth)/2 + 'px';
+			oLogin.style.top = (viewHeight() - oLogin.offsetHeight)/2-25 + 'px';	
+			
+		},
+		error:function(data) {
+		
+		}
+		
+	});
+	//oMark.style.display ="block";
+	//oLogin.style.display ="block";
+	//oMark.style.width = viewWidth() + 'px';
+	//oMark.style.height = documentHeight() + 'px';
+	//oLogin.style.left = (viewWidth() - oLogin.offsetWidth)/2 + 'px';
+	//oLogin.style.top = (viewHeight() - oLogin.offsetHeight)/2-25 + 'px';	
+	
+}
+
+//获取浏览器可视区的宽度和高度
+function viewWidth(){
+	return document.documentElement.clientWidth;
+}
+function viewHeight(){
+	return document.documentElement.clientHeight;
+}
+function documentHeight(){
+	return Math.max(document.documentElement.scrollHeight || document.body.scrollHeight,document.documentElement.clientHeight);
+}
+function scrollY(){
+	return document.documentElement.scrollTop || document.body.scrollTop;
+}
+
+function saveServicePrice(){
+	//验证 TODO
+	$("#maxPriceIndex").val(maxPriceIndex);
+	
+	//表单提交
+	$("#form_price").ajaxSubmit(function (responseResult) {
+
+		if(responseResult.success == false) {
+			alert("价格维护失败!");
+		}
+		
+		window.location.href = "getServiceList.html";
+	});
+}
+
+//关闭按钮
+function toClose(){
+	var oMark =document.getElementById('modelbox');
+	oMark.style.display ="none";
+	
+	var priceBox =document.getElementById('box_servicePrice');
+	priceBox.style.display ="none";
+	$("#allPriceDiv").empty();
+	$("#maxPriceIndex").val("");
+	
+	var apiPriceBox =document.getElementById('box_apiPrice');
+	apiPriceBox.style.display ="none";
+	$("#apiPrice_table").empty();
+	$("#maxApiPriceIndex").val("");
+	
+}
+
+//删除行
+function deleteOnePrice(delete_index){
+	$("#price_index_"+delete_index).remove();
+	
+}
+
+//添加行
+function addOnePrice(scantype_index){
+	maxPriceIndex = maxPriceIndex+1;
+	var priceTrHtml = $("#scanTypeTable_template").html();
+	//元素id,name替换
+	var htmlStr = priceTrHtml.replace("price_index_template", "price_index_"+maxPriceIndex);
+	htmlStr = htmlStr.replace("type_0", "type_"+maxPriceIndex);
+	htmlStr = htmlStr.replace("scanType_0", "scanType_"+maxPriceIndex);
+	htmlStr = htmlStr.replace("price_0", "price_"+maxPriceIndex);
+	htmlStr = htmlStr.replace("timesG_0", "timesG_"+maxPriceIndex);
+	htmlStr = htmlStr.replace("timesLE_0", "timesLE_"+maxPriceIndex);
+	htmlStr = htmlStr.replace("title_timesLE_0", "title_timesLE_"+maxPriceIndex);
+	htmlStr = htmlStr.replace("deleteOnePrice(0)","deleteOnePrice("+maxPriceIndex+")");
+	htmlStr = htmlStr.replace("getPriceType(this.value,0)","getPriceType(this.value,"+maxPriceIndex+")");
+	$("#scanTypeTable_"+scantype_index).append(htmlStr);
+	$("#price_scanType_"+maxPriceIndex).val(scantype_index);
+	
+}
+
+//区间或大于的下拉框选择
+function getPriceType(value, priceIndex){
+	if (value == 2) {   //1：区间；2：大于
+		//小于等于 移除
+		$("#title_timesLE_"+priceIndex).hide();
+		$("#timesLE_"+priceIndex).hide();
+	}else {
+		$("#title_timesLE_"+priceIndex).show();
+		$("#timesLE_"+priceIndex).show();
+	}
+}
+//是否根据频率设置长期价格
+function getScanTypeSettingFlag() {
+    var servId = $("#add_serviceId").val(servId);
+	var scanTypeSettingFlag=$("input[name='scanTypeRadio']:checked").val();
+	$("#allLongPriceDiv").empty();
+	var scanTypeHtml = $("#scanType_id_template").html();
+	//服务频率回填
+	if (scanTypeList!= null) {
+		//根据服务频率设置
+		if (scanTypeSettingFlag != 0) {
+			for(var s=0; s<scanTypeList.length;s++) {
+				var scanTypeDivHtml = scanTypeHtml.replace("scanType_id_template","scanType_id_"+scanTypeList[s].scan_type);
+				scanTypeDivHtml = scanTypeDivHtml.replace("scanType_div_template","scanType_div");
+				scanTypeDivHtml = scanTypeDivHtml.replace("scanTypeTable_template","scanTypeTable_"+scanTypeList[s].scan_type);
+				scanTypeDivHtml = scanTypeDivHtml.replace("price_index_template","price_index_"+scanTypeList[s].scan_type);
+				scanTypeDivHtml = scanTypeDivHtml.replace("addOnePrice(0)","addOnePrice("+scanTypeList[s].scan_type+")");
+				//替换服务频率    scanType_index_
+				scanTypeDivHtml = scanTypeDivHtml.replace("XXXX",scanTypeList[s].scan_name);
+				$("#allLongPriceDiv").append(scanTypeDivHtml);
+			}
+		}else{
+			//不根据服务频率设置
+			var scanTypeDivHtml = scanTypeHtml.replace("scanType_id_template","scanType_id_0");
+			scanTypeDivHtml = scanTypeDivHtml.replace("scanType_div_template","scanType_div");
+			scanTypeDivHtml = scanTypeDivHtml.replace("scanTypeTable_template","scanTypeTable_0");
+			scanTypeDivHtml = scanTypeDivHtml.replace("price_index_template","price_index_0");
+			scanTypeDivHtml = scanTypeDivHtml.replace("addOnePrice(0)","addOnePrice(0)");
+			//替换服务频率
+			scanTypeDivHtml = scanTypeDivHtml.replace("服务频率: XXXX","");
+			$("#allLongPriceDiv").append(scanTypeDivHtml);
+		}
+	}
+}
+
