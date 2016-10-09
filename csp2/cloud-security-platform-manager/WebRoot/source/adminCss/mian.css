@@ -63,4 +63,9 @@ li{ list-style:none;}
 /*广告管理*/
 .main_center .adBtn{ width:96px; line-height:36px; height:36px; background:url(../images/b_add_icon.jpg) no-repeat; position:absolute; padding-left:38px; left:10px; top:16px; z-index:100; font-size:16px; color:#3cacd4;}
 
+/*优惠券维护*/
+.main_center .couAddBtn{ width:96px;  line-height:36px; height:36px; background:url(../images/b_add_icon.jpg) no-repeat; position:absolute; padding-left:38px; left:10px; top:36px; z-index:100; font-size:16px; color:#3cacd4;}
+.couponform{ padding:16px 0;width:470px;position:relative; left:490px; top:20px}
+/*服务管理*/
+.main_center .serviceBtn{ width:96px; line-height:36px; height:36px; background:url(../images/b_add_icon.jpg) no-repeat; position:absolute; padding-left:38px; left:10px; top:16px; z-index:100; font-size:16px; color:#3cacd4;}
 
