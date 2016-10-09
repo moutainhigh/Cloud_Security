@@ -24,7 +24,7 @@ public class OrderListMapper implements RowMapper {
 		orderList.setOrderId(rs.getString("orderId"));
 		orderList.setPrice(rs.getInt("price"));
 		orderList.setPay_date(rs.getTimestamp("pay_date"));
-		orderList.setServerNames(rs.getString("serverNames"));
+		orderList.setServerName(rs.getString("serverNames"));
 		orderList.setBalanceFlag(rs.getInt("balanceFlag"));
 		return orderList;
 	}
