@@ -53,4 +53,18 @@ public interface IServService {
      * 根据serviceid查询Api价格列表
      */
     List<ApiPrice> findApiPriceByServiceId(int serviceId);
+    
+    /*
+     * 根据serviceid查询长期价格列表
+     */
+    List<Price> findLongPriceByServiceId(int serviceId);
+    
+     void updatePriceDeleteFlag(int serviceId);
+     
+     void updateApiPriceDeleteFlag(int serviceId);
+     /**
+      * 功能描述：保存API服务价格
+      *       @time 2016-9-28
+      */
+     void insertApiPrice(ApiPrice price);
 }
