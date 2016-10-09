@@ -54,6 +54,7 @@
 		<mapper resource="com/cn/ctbri/entity/CustomerSupportMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/ServiceAPIMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/OrderListMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/ScanTypeMapper.xml"/>
 		
 	</mappers>
 </configuration>  
