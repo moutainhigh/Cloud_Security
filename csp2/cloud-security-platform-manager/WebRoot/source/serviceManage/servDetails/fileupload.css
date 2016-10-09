@@ -1,4 +1,4 @@
-.upload_box{width:800px; margin:1em auto;}
+.upload_box{width:750px; margin:1em auto;}
 .upload_main{border-width:1px 1px 2px; border-style:solid; border-color:#ccc #ccc #ddd; background-color:#fbfbfb;}
 .upload_choose{padding:1em;}
 .upload_drag_area{display:inline-block; width:60%; padding:4em 0; margin-left:.5em; border:1px dashed #ddd; background:#fff url(../images/drag.png) no-repeat 20px center; color:#999; text-align:center; vertical-align:middle;}
