@@ -144,15 +144,15 @@ function editPrice(servId){
 						$("#scanTypeTable_"+lastScanType).find("tr").first().remove();
 					}
 					//元素id,name替换
-					htmlStr = priceTrHtml.replace("price_index_template", "price_index_"+i);
-					htmlStr = htmlStr.replace("type_0", "type_"+i);
-					htmlStr = htmlStr.replace("scanType_0", "scanType_"+i);
-					htmlStr = htmlStr.replace("price_0", "price_"+i);
-					htmlStr = htmlStr.replace("timesG_0", "timesG_"+i);
-					htmlStr = htmlStr.replace("timesLE_0", "timesLE_"+i);
-					htmlStr = htmlStr.replace("title_timesLE_0", "title_timesLE_"+i);
-					htmlStr = htmlStr.replace("deleteOnePrice(0)","deleteOnePrice("+i+")");
-					htmlStr = htmlStr.replace("getPriceType(this.value,0)","getPriceType(this.value,"+i+")");
+					htmlStr = priceTrHtml.replace(new RegExp("price_index_template",'gm'), "price_index_"+i);
+					htmlStr = htmlStr.replace(new RegExp("type_0",'gm'), "type_"+i);
+					htmlStr = htmlStr.replace(new RegExp("scanType_0",'gm'), "scanType_"+i);
+					htmlStr = htmlStr.replace(new RegExp("price_0",'gm'), "price_"+i);
+					htmlStr = htmlStr.replace(new RegExp("timesG_0",'gm'), "timesG_"+i);
+					htmlStr = htmlStr.replace(new RegExp("timesLE_0",'gm'), "timesLE_"+i);
+					htmlStr = htmlStr.replace(new RegExp("title_timesLE_0",'gm'), "title_timesLE_"+i);
+					htmlStr = htmlStr.replace(new RegExp("deleteOnePrice(0)",'gm'),"deleteOnePrice("+i+")");
+					htmlStr = htmlStr.replace(new RegExp("getPriceType(this.value,0)",'gm'),"getPriceType(this.value,"+i+")");
 					$("#scanTypeTable_"+price.scanType).append(htmlStr);
 					//替换 类型
 					$("#type_"+i).val(price.type);
@@ -258,15 +258,15 @@ function addOnePrice(scantype_index){
 	maxPriceIndex = maxPriceIndex+1;
 	var priceTrHtml = $("#scanTypeTable_template").html();
 	//元素id,name替换
-	var htmlStr = priceTrHtml.replace("price_index_template", "price_index_"+maxPriceIndex);
-	htmlStr = htmlStr.replace("type_0", "type_"+maxPriceIndex);
-	htmlStr = htmlStr.replace("scanType_0", "scanType_"+maxPriceIndex);
-	htmlStr = htmlStr.replace("price_0", "price_"+maxPriceIndex);
-	htmlStr = htmlStr.replace("timesG_0", "timesG_"+maxPriceIndex);
-	htmlStr = htmlStr.replace("timesLE_0", "timesLE_"+maxPriceIndex);
-	htmlStr = htmlStr.replace("title_timesLE_0", "title_timesLE_"+maxPriceIndex);
-	htmlStr = htmlStr.replace("deleteOnePrice(0)","deleteOnePrice("+maxPriceIndex+")");
-	htmlStr = htmlStr.replace("getPriceType(this.value,0)","getPriceType(this.value,"+maxPriceIndex+")");
+	var htmlStr = priceTrHtml.replace(new RegExp("price_index_template",'gm'), "price_index_"+maxPriceIndex);
+	htmlStr = htmlStr.replace(new RegExp("type_0",'gm'), "type_"+maxPriceIndex);
+	htmlStr = htmlStr.replace(new RegExp("scanType_0",'gm'), "scanType_"+maxPriceIndex);
+	htmlStr = htmlStr.replace(new RegExp("price_0",'gm'), "price_"+maxPriceIndex);
+	htmlStr = htmlStr.replace(new RegExp("timesG_0",'gm'), "timesG_"+maxPriceIndex);
+	htmlStr = htmlStr.replace(new RegExp("timesLE_0",'gm'), "timesLE_"+maxPriceIndex);
+	htmlStr = htmlStr.replace(new RegExp("title_timesLE_0",'gm'), "title_timesLE_"+maxPriceIndex);
+	htmlStr = htmlStr.replace(new RegExp("deleteOnePrice(0)",'gm'),"deleteOnePrice("+maxPriceIndex+")");
+	htmlStr = htmlStr.replace(new RegExp("getPriceType(this.value,0)",'gm'),"getPriceType(this.value,"+maxPriceIndex+")");
 	$("#scanTypeTable_"+scantype_index).append(htmlStr);
 	$("#price_scanType_"+maxPriceIndex).val(scantype_index);
 	
