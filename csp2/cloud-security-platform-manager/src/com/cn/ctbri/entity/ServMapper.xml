@@ -48,7 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 查询所有服务 -->
 	<select id="findSerList" resultType="hashmap" parameterType="hashmap">
-		SELECT s.id,s.name,type.name typeName,type.id servType,s.remarks,ptype.name parentC,s.icon FROM cs_service s,cs_service_type type,cs_service_dictionary ptype 
+		SELECT s.id,s.name,type.name typeName,type.id servType,s.remarks,s.parentC, ptype.name parentCName,s.icon FROM cs_service s,cs_service_type type,cs_service_dictionary ptype 
 		WHERE s.type=type.id and s.parentC = ptype.id
 		<if test="name!=null and name!=''">
 			and s.name like CONCAT('%','${name}','%') 
@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="parent!=null and parent!=0">
             and s.parentC=#{parent}
         </if>			
-		union select a.id,a.name,type.name typeName,a.type servType,a.remarks,ptype.name parentC,a.icon from cs_service_api a,cs_service_type type,cs_service_dictionary ptype
+		union select a.id,a.name,type.name typeName,a.type servType,a.remarks,a.parentC, ptype.name parentCName,a.icon from cs_service_api a,cs_service_type type,cs_service_dictionary ptype
 		where a.type=type.id and a.parentC = ptype.id
 		<if test="name!=null and name!=''">
             and a.name like CONCAT('%','${name}','%') 
