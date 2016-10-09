@@ -16,14 +16,14 @@ function editApiPrice(servId){
 				for(var i = 1;i <= priceList.length;i++) {
 					var price = priceList[i-1];
 					//元素id,name替换
-					var htmlStr = priceTrHtml.replace("apiPrice_index_0", "apiPrice_index_"+i);
-					htmlStr = htmlStr.replace("apiPrice_type_0", "apiPrice_type_"+i);
-					htmlStr = htmlStr.replace("apiPrice_price_0", "apiPrice_price_"+i);
-					htmlStr = htmlStr.replace("apiPrice_timesG_0", "apiPrice_timesG_"+i);
-					htmlStr = htmlStr.replace("apiPrice_timesLE_0", "apiPrice_timesLE_"+i);
-					htmlStr = htmlStr.replace("apiPrice_title_timesLE_0", "apiPrice_title_timesLE_"+i);
-					htmlStr = htmlStr.replace("deleteOneApiPrice(0)","deleteOneApiPrice("+i+")");
-					htmlStr = htmlStr.replace("getApiPriceType(this.value,0)","getApiPriceType(this.value,"+i+")");
+					var htmlStr = priceTrHtml.replace(new RegExp("apiPrice_index_0",'gm'), "apiPrice_index_"+i);
+					htmlStr = htmlStr.replace(new RegExp("apiPrice_type_0",'gm'), "apiPrice_type_"+i);
+					htmlStr = htmlStr.replace(new RegExp("apiPrice_price_0",'gm'), "apiPrice_price_"+i);
+					htmlStr = htmlStr.replace(new RegExp("apiPrice_timesG_0",'gm'), "apiPrice_timesG_"+i);
+					htmlStr = htmlStr.replace(new RegExp("apiPrice_timesLE_0",'gm'), "apiPrice_timesLE_"+i);
+					htmlStr = htmlStr.replace(new RegExp("apiPrice_title_timesLE_0",'gm'), "apiPrice_title_timesLE_"+i);
+					htmlStr = htmlStr.replace(new RegExp("deleteOneApiPrice(0)",'gm'),"deleteOneApiPrice("+i+")");
+					htmlStr = htmlStr.replace(new RegExp("getApiPriceType(this.value,0)",'gm'),"getApiPriceType(this.value,"+i+")");
 					$("#apiPrice_table").append(htmlStr);
 					//替换 大于
 					$("#apiPrice_timesG_"+i).val(price.timesG);
@@ -43,14 +43,14 @@ function editApiPrice(servId){
 			}else {
 				maxApiPriceIndex = 1;
 				//元素id,name替换
-				var htmlStr = priceTrHtml.replace("apiPrice_index_0", "apiPrice_index_1");
-				htmlStr = htmlStr.replace("apiPrice_type_0", "apiPrice_type_1");
-				htmlStr = htmlStr.replace("apiPrice_price_0", "apiPrice_price_1");
-				htmlStr = htmlStr.replace("apiPrice_timesG_0", "apiPrice_timesG_1");
-				htmlStr = htmlStr.replace("apiPrice_timesLE_0", "apiPrice_timesLE_1");
-				htmlStr = htmlStr.replace("apiPrice_title_timesLE_0", "apiPrice_title_timesLE_1");
-				htmlStr = htmlStr.replace("deleteOnePrice(0)","deleteOnePrice(1)");
-				htmlStr = htmlStr.replace("getPriceType(this.value,0)","getPriceType(this.value,1)");
+				var htmlStr = priceTrHtml.replace(new RegExp("apiPrice_index_0",'gm'), "apiPrice_index_1");
+				htmlStr = htmlStr.replace(new RegExp("apiPrice_type_0",'gm'), "apiPrice_type_1");
+				htmlStr = htmlStr.replace(new RegExp("apiPrice_price_0",'gm'), "apiPrice_price_1");
+				htmlStr = htmlStr.replace(new RegExp("apiPrice_timesG_0",'gm'), "apiPrice_timesG_1");
+				htmlStr = htmlStr.replace(new RegExp("apiPrice_timesLE_0",'gm'), "apiPrice_timesLE_1");
+				htmlStr = htmlStr.replace(new RegExp("apiPrice_title_timesLE_0",'gm'), "apiPrice_title_timesLE_1");
+				htmlStr = htmlStr.replace(new RegExp("deleteOnePrice(0)",'gm'),"deleteOnePrice(1)");
+				htmlStr = htmlStr.replace(new RegExp("getPriceType(this.value,0)",'gm'),"getPriceType(this.value,1)");
 				$("#apiPrice_table").append(htmlStr);
 			}
 			
@@ -86,14 +86,14 @@ function addOneApiPrice(){
 	maxApiPriceIndex = maxApiPriceIndex+1;
 	var priceTrHtml = $("#apiPrice_table_template").html();
 	//元素id,name替换
-	var htmlStr = priceTrHtml.replace("apiPrice_index_0", "apiPrice_index_"+maxApiPriceIndex);
-	htmlStr = htmlStr.replace("apiPrice_type_0", "apiPrice_type_"+maxApiPriceIndex);
-	htmlStr = htmlStr.replace("apiPrice_price_0", "apiPrice_price_"+maxApiPriceIndex);
-	htmlStr = htmlStr.replace("apiPrice_timesG_0", "apiPrice_timesG_"+maxApiPriceIndex);
-	htmlStr = htmlStr.replace("apiPrice_timesLE_0", "apiPrice_timesLE_"+maxApiPriceIndex);
-	htmlStr = htmlStr.replace("apiPrice_title_timesLE_0", "apiPrice_title_timesLE_"+maxApiPriceIndex);
-	htmlStr = htmlStr.replace("deleteOneApiPrice(0)","deleteOneApiPrice("+maxApiPriceIndex+")");
-	htmlStr = htmlStr.replace("getApiPriceType(this.value,0)","getApiPriceType(this.value,"+maxApiPriceIndex+")");
+	var htmlStr = priceTrHtml.replace(new RegExp("apiPrice_index_0",'gm'), "apiPrice_index_"+maxApiPriceIndex);
+	htmlStr = htmlStr.replace(new RegExp("apiPrice_type_0",'gm'), "apiPrice_type_"+maxApiPriceIndex);
+	htmlStr = htmlStr.replace(new RegExp("apiPrice_price_0",'gm'), "apiPrice_price_"+maxApiPriceIndex);
+	htmlStr = htmlStr.replace(new RegExp("apiPrice_timesG_0",'gm'), "apiPrice_timesG_"+maxApiPriceIndex);
+	htmlStr = htmlStr.replace(new RegExp("apiPrice_timesLE_0",'gm'), "apiPrice_timesLE_"+maxApiPriceIndex);
+	htmlStr = htmlStr.replace(new RegExp("apiPrice_title_timesLE_0",'gm'), "apiPrice_title_timesLE_"+maxApiPriceIndex);
+	htmlStr = htmlStr.replace(new RegExp("deleteOneApiPrice(0)",'gm'),"deleteOneApiPrice("+maxApiPriceIndex+")");
+	htmlStr = htmlStr.replace(new RegExp("getApiPriceType(this.value,0)",'gm'),"getApiPriceType(this.value,"+maxApiPriceIndex+")");
 	$("#apiPrice_table").append(htmlStr);
 }
 
