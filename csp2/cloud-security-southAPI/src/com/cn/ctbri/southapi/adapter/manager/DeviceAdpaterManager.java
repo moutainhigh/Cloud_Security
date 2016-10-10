@@ -243,7 +243,12 @@ public class DeviceAdpaterManager {
 			e.printStackTrace();
 		}
 		return false;
-	}	
+	}
+	
+	public String getDeviceId(){
+		return arnhemDeviceAdpater.getDeviceId();
+	}
+	
 	public String getState(String deviceId) {
 		if ("".equals(deviceId)||getDeviceAdapterAttrInfo(deviceId) == null){
 			return errorDevieInfo(deviceId);

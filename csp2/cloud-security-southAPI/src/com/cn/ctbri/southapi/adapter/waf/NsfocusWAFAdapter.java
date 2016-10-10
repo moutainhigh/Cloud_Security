@@ -1364,6 +1364,7 @@ public class NsfocusWAFAdapter {
 		SqlSession sqlSession = null;
 		try {
 			sqlSession = getSqlSession();
+			
 			//根据时间间隔获取时间段
 			int interval = jsonObject.getInt("interval");
 			Calendar calendar = Calendar.getInstance();
@@ -1371,9 +1372,9 @@ public class NsfocusWAFAdapter {
 			Date dateNow = calendar.getTime();
 			calendar.add(Calendar.HOUR, -interval);
 			Date dateBefore = calendar.getTime();
+			
+			
 			List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
-			
-			
 			//取告警等级列表<目前为高、中、低>
 			List<String> alertLevelList = Arrays.asList(ALERT_LEVEL_STRINGS);
 			
@@ -1411,15 +1412,12 @@ public class NsfocusWAFAdapter {
 	public String getAlertLevelCountByMonth(JSONObject jsonObject){
 		SqlSession sqlSession = null;
 		try {
-			sqlSession  = getSqlSession();
-			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+
 			//获取时间间隔
 			int interval = jsonObject.getInt("interval");
-			//获取结束时间(当前时间)
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
 			Date endDate = calendar.getTime();
-			//组装时间格式
 			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
 			
 			//取告警等级列表<目前为高、中、低>
@@ -1427,6 +1425,8 @@ public class NsfocusWAFAdapter {
 
 			
 			//获取告警等级统计信息
+			sqlSession  = getSqlSession();
+			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			JSONArray allAlertLevelaArray = new JSONArray();
 			for (String alertLevelString : alertLevelList) {
 				JSONObject alertLevelObject = new JSONObject();
@@ -1493,6 +1493,7 @@ public class NsfocusWAFAdapter {
 				TIpv4LatlongExample ipLatlongExample = new TIpv4LatlongExample();
 				ipLatlongExample.or().andStartipLessThanOrEqualTo(IPUtility.ip2long(ip)).andEndipGreaterThanOrEqualTo(IPUtility.ip2long(ip));
 				ipLatlongExample.setOrderByClause("netmask desc");
+				
 				TIpv4LatlongMapper ipLatlongMapper = sqlSession.getMapper(TIpv4LatlongMapper.class);
 				List<TIpv4Latlong> tIpv4Latlongs = ipLatlongMapper.selectByExample(ipLatlongExample);
 				if(tIpv4Latlongs.isEmpty()){

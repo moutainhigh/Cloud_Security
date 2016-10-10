@@ -3,11 +3,14 @@ package com.cn.ctbri.southapi.adapter.scanner;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import com.cn.ctbri.southapi.adapter.config.DeviceConfigInfo;
 import com.cn.ctbri.southapi.adapter.config.ScannerTaskUniParam;
 import com.cn.ctbri.southapi.adapter.manager.IDeviceAdpater;
+
+import net.sf.json.JSONArray;
 
 public class ArnhemDeviceAdpater implements IDeviceAdpater {
 	
@@ -37,6 +40,12 @@ public class ArnhemDeviceAdpater implements IDeviceAdpater {
 		return true;
 	}
 
+	
+	public String getDeviceId() {
+		Set<?> deviceIdSet = mapArnhemDeviceOperation.keySet();
+		JSONArray jsonArray = JSONArray.fromObject(deviceIdSet);
+		return jsonArray.toString();
+	}
 	/**
 	 * 根据deviceId在安恒设备map中获取指定设备
 	 * @param deviceId

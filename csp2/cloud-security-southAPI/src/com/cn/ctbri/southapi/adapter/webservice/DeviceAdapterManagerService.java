@@ -56,7 +56,12 @@ public class DeviceAdapterManagerService {
 		String deviceId = jsonObject.get("deviceId").toString();
 		return deviceAdpaterManager.loadDeviceAdapter(deviceId);
 	}
-	
+	@GET
+	@Path("/getDeviceId")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getDeviceId() {
+		return deviceAdpaterManager.getDeviceId();
+	}
 	//下发扫描任务
 	@POST
 	@Path("/disposeScanTask")
