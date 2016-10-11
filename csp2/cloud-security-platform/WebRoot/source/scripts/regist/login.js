@@ -177,14 +177,34 @@ $(function(){
             },
          }); 
 		});*/
-	$("body").keydown(function(e){ 
+	/*用户名输入框的回车事件：提交登录表单*/
+	$("#login_name").keydown(function(e){ 
 		var curKey = e.which; 
 		if(curKey == 13){ 
 		$("#login_btn").click(); 
 		return false; 
 		} 
 	}); 
+	
+	/*密码输入框的回车事件：提交登录表单*/
+	$("#login_password").keydown(function(e){ 
+		var curKey = e.which; 
+		if(curKey == 13){ 
+		$("#login_btn").click(); 
+		return false; 
+		} 
+	});
+	
+	/*校验码输入框的回车事件：提交登录表单*/
+	$("#checkNumber").keydown(function(e){ 
+		var curKey = e.which; 
+		if(curKey == 13){ 
+		$("#login_btn").click(); 
+		return false; 
+		} 
+	});
 });
+
 //跟换验证码
 function checkNumberImage(){
 	var imageNumber = document.getElementById("imageNumber");
