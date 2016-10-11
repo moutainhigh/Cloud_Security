@@ -179,7 +179,7 @@
                     	<input type="button" class="submit" onclick="submitForm()" value="立即注册">
                     </div>
                     <div class="subBox" style=" position:relative; top:5px;">
-                    	<span>已有有安全帮账号？<a href="${ctx }/loginUI.html">直接登录</a><i></i></span>
+                    	<span>已有安全帮账号？<a href="${ctx }/loginUI.html">直接登录</a><i></i></span>
                     </div>
                     
                 </form>
