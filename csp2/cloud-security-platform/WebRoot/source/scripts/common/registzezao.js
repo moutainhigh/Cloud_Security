@@ -14,7 +14,9 @@ $(function(){
 		oMark2.style.height = documentHeight() + 'px';
 		oLogin2.style.left = (viewWidth() - oLogin2.offsetWidth)/2 + 'px';
 		oLogin2.style.top = (viewHeight() - oLogin2.offsetHeight)/2-25 + 'px';	
-		
+		$("body").height($(window).height()).css({
+		  "overflow-y": "hidden"
+		});
 	});
 	
 	$("#ck").click(function(){
@@ -26,6 +28,9 @@ $(function(){
 			oMark2.style.height = documentHeight() + 'px';
 			oLogin2.style.left = (viewWidth() - oLogin2.offsetWidth)/2 + 'px';
 			oLogin2.style.top = (viewHeight() - oLogin2.offsetHeight)/2-25 + 'px';
+			$("body").height($(window).height()).css({
+			  "overflow-y": "hidden"
+			});
 		}else{
 			$("#agreeId").val(0);
 		}
@@ -38,6 +43,9 @@ $(function(){
 			oClose.onclick = function(){
 				oMark2.style.display ="none";
 				oLogin2.style.display ="none";
+				$("body").height($(window).height()).css({
+				  "overflow-y": "auto"
+				});
 			};
 		}
 		toCloseedit();
@@ -48,6 +56,9 @@ $(function(){
 			$("#ck").prop("checked", "checked");
 			oMark2.style.display ="none";
 	        oLogin2.style.display ="none";
+	        $("body").height($(window).height()).css({
+			  "overflow-y": "auto"
+			});
 		});
 
 		$("#not_agree").click(function(){
@@ -55,6 +66,9 @@ $(function(){
 			$("#ck").prop("checked", false);
 			oMark2.style.display ="none";
 	        oLogin2.style.display ="none";
+	        $("body").height($(window).height()).css({
+			  "overflow-y": "auto"
+			});
 		});
 		
 })
