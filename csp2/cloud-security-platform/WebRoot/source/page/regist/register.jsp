@@ -176,7 +176,7 @@
                         
                     </ul>
                     <div class="subBox" style=" position:relative; top:-18px;">
-                    	<input type="button" class="submit" onclick="submitForm()" value="立即注册">
+                    	<input type="button" style="background-color: rgb(36, 153, 251);" class="submit" onclick="submitForm()" value="立即注册">
                     </div>
                     <div class="subBox" style=" position:relative; top:5px;">
                     	<span>已有安全帮账号？<a href="${ctx }/loginUI.html">直接登录</a><i></i></span>
