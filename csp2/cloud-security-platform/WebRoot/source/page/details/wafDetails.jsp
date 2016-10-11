@@ -97,7 +97,7 @@
                           	<span style="position: relative;top: 7px;left:7px;color:#d00000">安全币</span>
 						</li>
                           <li class="clearfix">
-							<label class="fl">选 择 型</label>
+							<label class="fl">选 类 型</label>
                            <div class="fl clickBox" id="clickBox">
                             <button class="click Single" value="8" onclick="chanageDiv('Single');">包月</button>
                             <button class="long" value="9" onclick="chanageDiv('long');">包年</button>
