@@ -31,7 +31,6 @@ public class FinancialServiceImpl implements FinancialService{
      * @time 2016-09-06
      * 
      */
-	@Override
 	public List<Map> countOrderAmount() {
 		return financialDao.countOrderAmount();
 	}
@@ -42,7 +41,6 @@ public class FinancialServiceImpl implements FinancialService{
      * 参数描述：userId
      * @time 2016-09-06
      */
-	@Override
 	public List<Order> findServiceAmount() {
 		return financialDao.findServiceAmount();
 	}
@@ -53,7 +51,6 @@ public class FinancialServiceImpl implements FinancialService{
      * 参数描述：userId
      * @time 2016-09-06
      */
-	@Override
 	public List<Order> findTradingCurve() {
 		return financialDao.findTradingCurve();
 	}
@@ -71,7 +68,6 @@ public class FinancialServiceImpl implements FinancialService{
      * 功能描述:当月内各类服务订单交易额占比情况
      * @time 2016-09-07
      */
-	@Override
 	public List<Order> findOrderAmountMonthPie(String createDate) {
 		return financialDao.findOrderAmountMonthPie(createDate);
 	}
@@ -81,7 +77,6 @@ public class FinancialServiceImpl implements FinancialService{
      * 功能描述：当日交易额总数
      * @time 2016-09-07
      */
-	@Override
 	public List<Order> findOrderAmounDayLine(Map<String, Object> paramMap) {
 		return financialDao.findOrderAmounDayLine(paramMap);
 	}
@@ -91,7 +86,6 @@ public class FinancialServiceImpl implements FinancialService{
      * 功能描述：当月交易额总数
      * @time 2016-09-07
      */
-	@Override
 	public List<Order> findOrderAmountMonthLine(Map<String, Object> paramMap) {
 		return financialDao.findOrderAmountMonthLine(paramMap);
 	}

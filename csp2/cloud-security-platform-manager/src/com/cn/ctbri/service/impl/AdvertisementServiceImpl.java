@@ -40,11 +40,9 @@ public class AdvertisementServiceImpl implements IAdvertisementService{
     public void delete(int id) {
     	advertisementDao.deleteAdvertisement(id);
     }
-	@Override
 	public int getMaxOrderIndex(int type) {
 		return advertisementDao.getMaxOrderIndex(type);
 	}
-	@Override
 	public void update(Advertisement advertisement) {
 		advertisementDao.update(advertisement);
 		
