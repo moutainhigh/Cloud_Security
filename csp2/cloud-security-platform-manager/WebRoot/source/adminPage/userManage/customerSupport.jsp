@@ -60,6 +60,7 @@
     	<ul class="main_nav tabList clearfix">
         	<li class="active">用户信息查询<i></i></li>
             <li class="">订单查询<i></i></li>
+            <li class="">资源信息查询<i></i></li>
         </ul>
 			<div class="tabBox tabCont">
 				<div class="item clearfix tabItem" style="display:block">
@@ -192,6 +193,52 @@
 									</tr>
 								</thead>
 								<tbody id="queryOrder">
+								</tbody>
+							</table>
+
+						</div>
+
+					</div>
+				</div>
+				
+				<!-- 资源信息查询  add by tang 2016-10-9 -->
+				<div class="item tabItem">
+					<form class="clearfix analysecent user_form">
+
+						<div class="analyse_lable fl">
+							<label>资源名称</label> 
+							<input type="text" class="text" id="resourcename" name="resourcename"> 
+							<label>资源地址</label> 
+							<input type="text" class="text" id="resourceaddr" name="resourceaddr">
+							<label>资源能力</label> 
+							<select class="text" id="isApiSel">
+								<option value="0">监测服务</option>
+								<!-- <option value="1">API服务</option>
+								<option value="2">WAF防护</option> -->
+							</select>
+							
+						</div>
+						<input type="button" class="sub" value="" style="right:-130px;"
+							onclick="activeQueryResource()">
+					</form>
+					<div class="tableBox">
+
+						<div class="tableUser" style="height:260px; overflow-y:auto;">
+							<table cellpadding="0" cellspacing="0" border="1" width="954"
+								bordercolor="#e0e0e0">
+								<thead>
+									<tr style="width:100%">
+										<th>资源名称</th>
+										<th>资源地址</th>
+										<th>资源能力</th>
+										<th>资源运行状态</th>
+										<th>CPU占用率</th>
+										<th>内存占用率</th>
+										<th>磁盘占用率</th>
+										<th>进行中任务数</th>
+									</tr>
+								</thead>
+								<tbody id="queryResource">
 								</tbody>
 							</table>
 
