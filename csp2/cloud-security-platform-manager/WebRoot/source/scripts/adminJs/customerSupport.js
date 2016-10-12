@@ -217,3 +217,41 @@ function getCurrentAddress(){
 	var url = location.href;
 	return url.substring(0,url.lastIndexOf("/"));
 }
+
+//资源信息查询
+function activeQueryResource(){
+	var resourcename = $.trim($("#resourcename").val());
+	var resourceaddr = $.trim($("#resourceaddr").val());
+    var isapi = $.trim($("#isApiSel").val());
+    
+    $.ajax({
+        type: "POST",
+        url: "customerResource.html",
+        data: {"resourcename":resourcename,"resourceaddr":resourceaddr,"isapi":isapi},
+        dataType:"json",
+        success:function(data){
+        	var resourceList = data.resourceList;
+        	$("#queryResource").empty();
+        	if(resourceList.length == 0){
+        		alert("未找到符合条件的结果！");
+        		return;
+        	}
+        	for(var i=0; i<resourceList.length; i++){
+        		var resource = resourceList[i];
+        		var html = '<tr><td>'+resource.engine_number+'</td>';
+        			html += '<td>'+resource.engine_addr+'</td>';
+        			html += '<td>'+'监测服务'+'</td>';
+        			if(resource.status == 1){
+        				html += '<td>正常</td>';
+        			} else {
+        				html += '<td>异常</td>';
+        			}
+        			html += '<td>'+resource.memoryUsage+'</td>';
+        			html += '<td>'+resource.cpuUsage+'</td>';
+        			html += '<td>'+resource.diskUsage+'</td>';
+        			html += '<td>'+'暂无'+'</td>';
+        			$("#queryResource").append(html);
+        	}
+        }
+    });
+}
