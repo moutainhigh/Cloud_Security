@@ -1,6 +1,7 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,16 +9,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
+import com.cn.ctbri.cfg.dssWorker;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.service.ICustomerSupportSevice;
 import com.cn.ctbri.util.CommonUtil;
@@ -115,6 +114,71 @@ public class CustomerSupportController {
 		
 		Map<String, Object> outputMap = new HashMap<String, Object>();
 		outputMap.put("orderList", orderList);
+		
+		JSONObject json = CommonUtil.objectToJson(response, outputMap);
+		
+		try {
+			CommonUtil.writeToJsp(response, json);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 资源信息查询tab显示
+	 * @param response
+	 * @param request
+	 */
+	@RequestMapping(value="customerResource.html")
+	public void getResourceInfoTab(HttpServletResponse response,HttpServletRequest request){
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("application/json;charset=UTF-8");
+
+		String resourcename = request.getParameter("resourcename");
+		String resourceaddr = request.getParameter("resourceaddr");
+		int isapi = Integer.parseInt(request.getParameter("isapi"));
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("resourcename", resourcename);
+		paramMap.put("resourceaddr", resourceaddr);
+		paramMap.put("isapi", isapi);
+		
+		//存放解析数据，返回页面
+		List resourceList = new ArrayList();
+		
+		String resultStr = dssWorker.getResource(resourcename, resourceaddr, isapi);
+		JSONObject obj = JSONObject.fromObject(resultStr);
+        String stateCode = obj.getString("code");
+        if(stateCode.equals("201")){
+        	String engineStr = obj.getString("engineObj");
+        	if(engineStr!=null && !engineStr.equals("")){
+				JSONArray engineArray = obj.getJSONArray("engineObj");
+				for (Object enObj : engineArray) {
+					JSONObject engineObj = (JSONObject) enObj;
+					String engine_number = engineObj.getString("engine_number");
+					String engine_addr = engineObj.getString("engine_addr");
+		            String status = engineObj.getString("status");
+		            String memoryUsage = engineObj.getString("memoryUsage");
+		            String cpuUsage = engineObj.getString("cpuUsage");
+		            String diskUsage = engineObj.getString("diskUsage");
+		            
+		            Map<String,Object> newMap = new HashMap<String,Object>();
+			        newMap.put("engine_number", engine_number);
+			        newMap.put("engine_addr", engine_addr);
+			        newMap.put("status", status);
+			        newMap.put("memoryUsage", memoryUsage);
+			        newMap.put("cpuUsage", cpuUsage);
+			        newMap.put("diskUsage", diskUsage);
+			        
+			        resourceList.add(newMap);
+				}
+        	}
+				
+        }
+		
+		Map<String, Object> outputMap = new HashMap<String, Object>();
+		outputMap.put("resourceList", resourceList);
 		
 		JSONObject json = CommonUtil.objectToJson(response, outputMap);
 		
