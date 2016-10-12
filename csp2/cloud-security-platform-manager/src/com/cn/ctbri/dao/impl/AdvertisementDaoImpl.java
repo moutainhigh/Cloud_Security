@@ -46,7 +46,6 @@ public class AdvertisementDaoImpl extends DaoCommon implements AdvertisementDao{
         getSqlSession().delete(ns +"delete",id);
     }
 
-	@Override
 	public int getMaxOrderIndex(int type) {
 		Integer index = getSqlSession().selectOne(ns + "findMaxOrderIndex", type);
 		if (index == null) {
@@ -55,7 +54,6 @@ public class AdvertisementDaoImpl extends DaoCommon implements AdvertisementDao{
 		return index;
 	}
 
-	@Override
 	public void update(Advertisement advertisement) {
 		getSqlSession().update(ns+"update", advertisement);
 	}

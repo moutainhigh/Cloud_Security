@@ -32,7 +32,6 @@ public class FinancialDaoImpl extends DaoCommon implements FinancialDao {
      * @time 2016-09-06
      * 
      */
-	@Override
 	public List<Map> countOrderAmount() {
 		Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
 		int year = c.get(Calendar.YEAR); 
@@ -60,7 +59,6 @@ public class FinancialDaoImpl extends DaoCommon implements FinancialDao {
      * 参数描述：userId
      * @time 2016-09-06
      */
-	@Override
 	public List<Order> findServiceAmount() {
 		Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
 		int year = c.get(Calendar.YEAR); 
@@ -84,7 +82,6 @@ public class FinancialDaoImpl extends DaoCommon implements FinancialDao {
      * 参数描述：userId
      * @time 2016-09-06
      */
-	@Override
 	public List<Order> findTradingCurve() {
 		Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
 		int year = c.get(Calendar.YEAR); 
@@ -108,7 +105,6 @@ public class FinancialDaoImpl extends DaoCommon implements FinancialDao {
      * 功能描述:当日内各类服务订单交易额占比情况
      * @time 2016-09-07
      */
-	@Override
 	public List<Order> findOrderAmountDayPie(String createDate) {
 		String beginDate = createDate + " 00:00:00";
 		String endDate = createDate + " 23:59:59";
@@ -122,7 +118,6 @@ public class FinancialDaoImpl extends DaoCommon implements FinancialDao {
      * 功能描述:当月内各类服务订单交易额占比情况
      * @time 2016-09-07
      */
-	@Override
 	public List<Order> findOrderAmountMonthPie(String createDate) {
 		return this.getSqlSession().selectList(ns+"findOrderAmountMonthPie",createDate);
 	}
@@ -131,7 +126,6 @@ public class FinancialDaoImpl extends DaoCommon implements FinancialDao {
      * 功能描述：当日交易额总数
      * @time 2016-09-07
      */
-	@Override
 	public List<Order> findOrderAmounDayLine(Map<String, Object> hashmap) {
 		 return this.getSqlSession().selectList(ns+"findOrderAmounDayLine",hashmap);
 	}
@@ -140,7 +134,6 @@ public class FinancialDaoImpl extends DaoCommon implements FinancialDao {
      * 功能描述：当月交易额总数
      * @time 2016-09-07
      */
-	@Override
 	public List<Order> findOrderAmountMonthLine(Map<String, Object> hashmap) {
 		 return this.getSqlSession().selectList(ns+"findOrderAmountMonthLine",hashmap);
 	}
