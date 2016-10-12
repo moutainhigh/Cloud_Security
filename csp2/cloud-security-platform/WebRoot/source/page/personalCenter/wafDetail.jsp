@@ -59,16 +59,16 @@ function websecDetail(logId){
 
 </head>
 <style type="text/css">
-   .data_box{ width: 1108px; margin-top: 20px;margin-bottom: 60px; }
+   .data_box{ width: 1180px; margin-top: 20px;margin-bottom: 60px; }
    .data_nav{ height: 38px; border-bottom: 1px solid #cfcfcf; margin-bottom: 10px;} 
    .data_nav ul li { width: 160px; float:left; text-align: center; line-height: 38px; height: 38px; font-size: 16px; border: 1px solid #a6a6a6;  border-bottom: 0px; border-radius: 10px 10px 0 0 ;}
    .data_min{clear: both; overflow: hidden; }
-   .data_1{ width:357px; border:1px solid #cbcbcb; height: 380px; float: left; margin-right: 13px;}
-   .data_table{ width: 1060px; height: 360px; border:1px solid #cbcbcb; margin-top: 15px; padding: 20px;}
+   .data_1{ width:382px; border:1px solid #cbcbcb; height: 380px; float: left; margin-right: 13px;}
+   .data_table{ width: 1138px; height: 360px; border:1px solid #cbcbcb; margin-top: 15px; padding: 20px;}
    .data_table_tab {margin-bottom: 20px; width: 100%; }
    .data_table_tab tr th{ border-bottom: 1px solid #000;height: 40px; text-align: left;} 
    .data_table_tab tr td{ height: 40px; background: #f0f8fa;} 
-   .data_table_cont a{ color: #000;}
+   .data_table_cont a{ color: #00bfff;}
    .mark{ width: 100%; 
     height: 100%;
     display: none;
@@ -88,6 +88,11 @@ function websecDetail(logId){
    .tancmain_table tr th{ border: 1px solid #787878; height: 28px; text-align: center;} 
    .tancmain_table tr td{ height: 28px; font-size: 14px; line-height: 29px;} 
    .data_btn{ width: 145px; height: 30px; line-height: 30px; font-size: 16px; text-align: center; background: #cdcdcd; border-radius: 10px; margin:auto; color: #323232; cursor: pointer;}
+   .nodata{
+	    text-align: center;
+	    margin: auto;
+	    padding-top: 100px;
+	}
    
 
 </style>
@@ -188,7 +193,7 @@ function websecDetail(logId){
 				</div>
 			</div>
 		</div>
-		<div class="dataCent seetlentBox order">
+		<div class="dataCent seetlentBox order" style="width: 1156px;">
 		
        <div class="data_box">
         <div class="data_nav">
@@ -204,9 +209,9 @@ function websecDetail(logId){
              <div class="data_1" style="margin-right:0px;" id="eventPie"></div>
             </c:if>
             <c:if test="${websecNum==0}">
-             <div class="data_1">暂无数据</div>
-             <div class="data_1">暂无数据</div>
-             <div class="data_1" style="margin-right:0px;">暂无数据</div>
+             <div class="data_1"><div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div></div>
+             <div class="data_1"><div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div></div>
+             <div class="data_1" style="margin-right:0px;"><div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div></div>
             </c:if>
         </div>
         <div class="data_table">
@@ -221,7 +226,7 @@ function websecDetail(logId){
 	                 </tr>
 	              </tbody>
 	             </table>
-	             <div style="overflow:auto;height:312px;width:1060px">
+	             <div style="overflow:auto;height:312px;width:1138px">
 	             <table class="data_table_tab" width="100%">
 	              <tbody>
 	                 <c:forEach var="list" items="${websecList}" varStatus="sta">
@@ -242,7 +247,7 @@ function websecDetail(logId){
 	            </div>
             </c:if>
             <c:if test="${websecNum==0}">
-	            	暂无数据
+	            	<div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div>
             </c:if>
         </div>
        </div>        
