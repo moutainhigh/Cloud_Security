@@ -16,7 +16,6 @@ public class ScanTypeDaoImpl extends DaoCommon implements ScanTypeDao {
 	 */
 	private String ns = "com.cn.ctbri.entity.ScanTypeMapper.";
 
-	@Override
 	public List<ScanType> findByServiceId(int serviceId) {
 		return this.getSqlSession().selectList(ns+"findByServiceId", serviceId);
 	}
