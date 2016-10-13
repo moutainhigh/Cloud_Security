@@ -14,7 +14,6 @@ public class ScanTypeServiceImpl implements IScanTypeService {
 	@Autowired
 	ScanTypeDao scanTypeDao;
 	
-	@Override
 	public List<ScanType> findByServiceId(int serviceId) {
 		return scanTypeDao.findByServiceId(serviceId);
 	}

@@ -65,24 +65,20 @@ public class ServServiceImpl implements IServService{
 		return servDao.findApiPriceByServiceId(serviceId);
 	}
 
-	@Override
 	public List<Price> findLongPriceByServiceId(int serviceId) {
 		return servDao.findLongPriceByServiceId(serviceId);
 	}
 
-	@Override
 	public void updatePriceDeleteFlag(int serviceId) {
 		servDao.updatePriceDeleteFlag(serviceId);
 		
 	}
 
-	@Override
 	public void updateApiPriceDeleteFlag(int serviceId) {
 		servDao.updateApiPriceDeleteFlag(serviceId);
 		
 	}
 
-	@Override
 	public void insertApiPrice(ApiPrice price) {
 		servDao.insertApiPrice(price);
 		
