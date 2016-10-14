@@ -104,13 +104,13 @@ public class Constants {
 	public static final String SERVICE_GJZJCFW = "敏感关键字模板";//"关键字监测服务"; 
 	
 	/**
-	 * 关键字监测服务<br>
+	 * 可用性监测服务<br>
 	 * 对应保存在服务表中
 	 */
 	public static final String SERVICE_KYXJCFW = "可用性监测服务"; 
 	
 	/**
-	 * 关键字监测服务<br>
+	 * 篡改监测模板<br>
 	 * 对应保存在服务表中
 	 */
 	public static final String SERVICE_WYCGJCFW = "篡改监测模板";//"网页篡改监测服务"; 
@@ -148,25 +148,25 @@ public class Constants {
 	 * 任务模版<br>
 	 * 网页篡改监测服务-周期2小时深度2
 	 */
-	public static final String TPL_WYCGJCFW_1D2 = "网页篡改监测服务-周期1天深度2"; 
+	public static final String TPL_WYCGJCFW_1D2 = "网页篡改监测服务-周期1天"; 
 	
 	/**
 	 * 任务模版<br>
 	 * 网页篡改监测服务-周期2小时深度2
 	 */
-	public static final String TPL_WYCGJCFW_2H2 = "网页篡改监测服务-周期2小时深度2";
+	public static final String TPL_WYCGJCFW_2H2 = "网页篡改监测服务-周期2小时";
 	
 	/**
 	 * 任务模版<br>
 	 * 网页篡改监测服务-周期2小时深度2
 	 */
-	public static final String TPL_WYCGJCFW_1H2 = "网页篡改监测服务-周期1小时深度2";
+	public static final String TPL_WYCGJCFW_1H2 = "网页篡改监测服务-周期1小时";
 	
 	/**
 	 * 任务模版<br>
 	 * 网页篡改监测服务-周期2小时深度2
 	 */
-	public static final String TPL_WYCGJCFW_30M2 = "网页篡改监测服务-周期30分钟深度2";
+	public static final String TPL_WYCGJCFW_30M2 = "网页篡改监测服务-周期30分钟";
 	
 	/**
 	 * 任务模版<br>
