@@ -351,6 +351,25 @@ public class SouthAPIWorker {
     
     
     /**
+     * 获取服务资源设备id
+     */
+    public static String getDeviceId() {
+    	//组织发送内容JSON
+    	String url = SERVER_WEB_ROOT + "/rest/adapter/getDeviceId";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        String response = service.type(MediaType.APPLICATION_JSON_TYPE).get(String.class);
+        return response;
+    }
+    
+    /**
      * 获取引擎的存活状态
      * @param sessionId 会话id
      * @param taskId 任务id
@@ -376,7 +395,6 @@ public class SouthAPIWorker {
 //        System.out.println(textEntity);
         return textEntity;
     }
-    
     /**
      * 获取性能数据参数
      * @param sessionId 会话id
@@ -427,7 +445,6 @@ public class SouthAPIWorker {
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
-//        System.out.println(textEntity);
         return textEntity;
     }
     
@@ -526,7 +543,7 @@ public class SouthAPIWorker {
 //        		"                                                                         \"zone_ip\":" +
 //        		"                                                                              \"[\"12.12.12.12/32\"," +
 //        		"                                                                                 \"33.33.33.33/24\"]\"}");
-//        String sessionId = getSessionId("10002");
+//        String sessionId = getSessionId("10001");
 //        String s = getEngineState("10002");
         
 //        String sessionId1 = getSessionId("https://219.141.189.187:60443","developer","developer111111");
@@ -546,15 +563,15 @@ public class SouthAPIWorker {
         
 //      String result = getReportByTaskID(sessionId, "3981_15102316092858295", "1",340, 30,2);
 //        String result = getReportByTaskID("10002", "9999_16052919335846008", "1",0, 30);
-    	String count = getResultCountByTaskID("10002", "9999_16052919335846008");
-//    	String en = getEngineStatRate("10001");
+//    	String count = getResultCountByTaskID("10002", "9999_16052919335846008");
+//    	String en = ("10001");
 //    	String stop = startTask(sessionId, "45_15120117145433875", 2);
 //    	System.out.println(sessionId);
 //    	String s =  disposeScanTask("10001", "test20160121111", "http://www.testfire.net", 
 //        		"", "", "漏洞扫描模板");
 
 
-        
-    	System.out.println(count);
+        String en = getDeviceId();
+    	System.out.println(en);
     }
 }
