@@ -3,26 +3,17 @@ package com.cn.ctbri.common;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-
-import javax.jms.Destination;
 
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.cn.ctbri.entity.EngineCfg;
-import com.cn.ctbri.entity.Order;
-import com.cn.ctbri.entity.OrderTask;
 import com.cn.ctbri.entity.Task;
-import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.logger.CSPLoggerAdapter;
 import com.cn.ctbri.logger.CSPLoggerConstant;
 import com.cn.ctbri.service.IEngineService;
-import com.cn.ctbri.service.IOrderTaskService;
-import com.cn.ctbri.service.IProducerService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.util.DateUtils;
 
@@ -80,7 +71,10 @@ public class SchedulerDelTask {
                 }
                 logger.info("[删除任务调度]:任务-[" + t.getTaskId() + "]完成删除!");
             }else{
-                logger.info("[删除任务调度]: 任务-[" + t.getTaskId() + "]下发失败!，远程存在同名任务请先删除或重新下订单!");
+            	//更新任务状态为finish
+                t.setStatus(Integer.parseInt(Constants.TASK_FINISH));
+                taskService.update(t);
+                logger.info("[删除任务调度]: 任务-[" + t.getTaskId() + "]可能由于某些原因未发现任务！");
             }
 
         }
