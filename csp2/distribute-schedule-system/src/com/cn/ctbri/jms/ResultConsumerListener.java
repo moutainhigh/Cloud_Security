@@ -103,6 +103,7 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 				task.setStatus(3);
 				task = taskService.findTaskById(task.getTaskId());
 				
+				//获取未结束的任务
 				List<Task> taskList = taskService.findTaskByOrderTaskId(task);
 				if(taskList.size()>0){
 					json.put("taskStatus", "running");
@@ -164,6 +165,12 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 //							json.put("alarmObj", "");
 //							json.put("status", "success");
 //							ReInternalWorker.vulnScanGetOrderTaskResult(json.toString());
+							//返回结果
+							json.put("status", "success");
+							json.put("taskObj", task);
+							json.put("taskwarnObj", "");
+							json.put("alarmObj", "");
+							ReInternalWorker.vulnScanGetOrderTaskResult(json.toString());
 						}else{
 							JSONObject taskObject = new JSONObject().fromObject(task);
 							json.put("taskObj", taskObject);
@@ -288,6 +295,13 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 	                List<Alarm> aList = new ArrayList<Alarm>();
 	
 	    			if ("finish".equals(status) && task.getStatus()!=Integer.parseInt(Constants.TASK_FINISH)) {// 任务执行完毕
+	    				//2016-7-26 完成状态，先获取任务进度
+	    				// 获取任务进度引擎
+	                    String progressStr = SouthAPIWorker.getProgressByTaskId(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),String.valueOf(task.getServiceId()));
+	    				getProgressByRes(task.getTaskId(),progressStr);
+	    				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，扫描进度["+task.getTaskProgress()+"];User="+null);
+
+	    				//再去获取扫描结果
 	    				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描已完成，准备解析结果......;User="+null);
 	    				/**
 	    				 * 获取任务结果信息并入库
@@ -565,7 +579,7 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
         	String status = obj.getString("status");
             if("Success".equals(status)){
             	String taskState = obj.getString("TaskState");
-                if(!"other".equals(taskState)||!"wait".equals(taskState)){
+                if(!"other".equals(taskState) && !"wait".equals(taskState)){
                     String engineIP = obj.getString("EngineIP");
                     String taskProgress = obj.getString("TaskProgress");
                     String currentUrl = URLDecoder.decode(obj.getString("CurrentUrl"), "UTF-8");
