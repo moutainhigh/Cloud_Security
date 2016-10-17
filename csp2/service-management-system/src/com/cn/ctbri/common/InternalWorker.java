@@ -201,8 +201,8 @@ public class InternalWorker {
         //获取响应结果
         String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, json.toString());
         JSONObject obj = JSONObject.fromObject(response);
-		String stateCode = obj.getString("code");
-		if(stateCode.equals("201")){
+		int stateCode = obj.getInt("code");
+		if(stateCode == 201){
 			return "success";
 		}else{
 			return "error";
