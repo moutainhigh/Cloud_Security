@@ -26,7 +26,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cn.ctbri.common.Constants;
-import com.cn.ctbri.common.EngineWorker;
 import com.cn.ctbri.common.ReInternalWorker;
 import com.cn.ctbri.common.SouthAPIWorker;
 import com.cn.ctbri.entity.EngineCfg;
@@ -83,7 +82,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	static {
 		try {
 			Properties p = new Properties();
-			p.load(EngineWorker.class.getClassLoader().getResourceAsStream("engineConfig.properties"));
+			p.load(TaskConsumerListener.class.getClassLoader().getResourceAsStream("engineConfig.properties"));
 			cpu_usageWeight = p.getProperty("cpu_usageWeight");
 			memory_usageWeight = p.getProperty("memory_usageWeight");
 			disk_usageWeight = p.getProperty("disk_usageWeight");
