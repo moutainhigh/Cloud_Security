@@ -264,7 +264,7 @@ function getServ(c){
             </div>
             
         	<div class="coreRight my-order fl">
-        		<form action="${ctx}/searchCombineOrderTrack1.html" method="post" id="searchForm">
+        		<form action="${ctx}/searchCombineOrderTrack.html" method="post" id="searchForm">
 	            	<input type="hidden" id="mark" value="${mark}"/>
 				    <input type="hidden" id="typepage" value="${type}"/>
 				    <input type="hidden" id="servNamepage" value="${servName}"/>
