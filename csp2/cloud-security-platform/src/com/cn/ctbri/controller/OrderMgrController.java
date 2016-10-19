@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cn.ctbri.common.NorthAPIWorker;
+import com.cn.ctbri.common.WafAPIWorker;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Factory;
 import com.cn.ctbri.entity.Linkman;
@@ -86,86 +87,7 @@ public class OrderMgrController {
     IUserService userService;
     @Autowired
     IOrderListService orderListService;
-	 /**
-	 * 功能描述： 用户中心-自助下单
-	 * 参数描述：  无
-	 *     @time 2015-1-12
-	 */
-	@RequestMapping(value="selfHelpOrderInit1.html")
-	public String selfHelpOrderInit(HttpServletRequest request){
-	    User globle_user = (User) request.getSession().getAttribute("globle_user");
-//	    String orderId = request.getParameter("orderId");
-	    //订单类型
-	    String type = request.getParameter("type");
-	    //服务ID
-	    String serviceId = request.getParameter("serviceId");
-	    //是否从首页进入
-	    String indexPage = request.getParameter("indexPage");
-	    //获取服务类型
-        List servList = selfHelpOrderService.findService();
-	    //获取服务类型
-	    List<ServiceType> typeList = selfHelpOrderService.findServiceType();
-	    //获取厂商
-	    List<Factory> factoryList = selfHelpOrderService.findListFactory();
-	    //获取服务对象资产
-	    List<Asset> serviceAssetList = selfHelpOrderService.findServiceAsset(globle_user.getId());
-//	    Order order = new Order();
-//	    if(orderId!=null && orderId!=""){
-//	        order = orderService.findOrderById(orderId);
-//	    }
-	    request.setAttribute("servList", servList);
-	    request.setAttribute("typeList", typeList);
-        request.setAttribute("factoryList", factoryList);
-        request.setAttribute("serviceAssetList", serviceAssetList);
-        request.setAttribute("type", type);
-        request.setAttribute("serviceId", serviceId);
-        request.setAttribute("indexPage", indexPage);
-//        request.setAttribute("orderId", orderId);
-//        request.setAttribute("order", order);
-        String result = "/source/page/order/order";
-//        String result = "/source/page/details/vulnScanDetails";
-        return result;
-	}
 	
-	
-	 /**
-	 * 功能描述： 结算
-	 * 参数描述：  无
-	 *     @time 2016-3-10
-	 */
-	@RequestMapping(value="settlement1.html")
-	public String settlement(HttpServletRequest request){
-		//资产ids
-        String assetIds = request.getParameter("assetIds");
-		String orderType = request.getParameter("orderType");
-        String beginDate = request.getParameter("beginDate");
-        String endDate = request.getParameter("endDate");
-//        String createDate = DateUtils.dateToString(new Date());
-        String scanPeriod = request.getParameter("scanType");
-        String serviceId = request.getParameter("serviceId");
-        //联系人信息
-//        String linkname = new String(request.getParameter("linkname").getBytes("ISO-8859-1"),"UTF-8");
-//        String phone = request.getParameter("phone");
-//        String email = request.getParameter("email");
-//        String company = new String(request.getParameter("company").getBytes("ISO-8859-1"),"UTF-8");
-//        String address = new String(request.getParameter("address").getBytes("ISO-8859-1"),"UTF-8");
-        //华为参数
-//        String ip = request.getParameter("ip");
-//        String bandwidth = request.getParameter("bandwidth");
-        //厂商
-//        String websoc = request.getParameter("websoc");
-        //任务数
-//        String tasknum = request.getParameter("tasknum");
-        
-	    request.setAttribute("assetIds", assetIds);
-	    request.setAttribute("orderType", orderType);
-        request.setAttribute("beginDate", beginDate);
-        request.setAttribute("endDate", endDate);
-        request.setAttribute("scanType", scanPeriod);
-        request.setAttribute("serviceId", serviceId);
-        String result = "/source/page/details/settlement";
-        return result;
-	}
 	
 	/**
      * 功能描述： 筛选页面
@@ -589,234 +511,6 @@ public class OrderMgrController {
          date = calendar.getTime();  
          return date;
     }
-	
-	/**
-     * 功能描述： 用户中心-订单跟踪
-     * 参数描述：  无
-     *     @time 2015-1-12
-     */
-    @RequestMapping(value="orderTrackInit1.html")
-    public String orderTrackInit(HttpServletRequest request){
-        User globle_user = (User) request.getSession().getAttribute("globle_user");
-        String state=request.getParameter("state");
-        //获取订单信息
-        //List orderList = orderService.findByUserId(globle_user.getId());
-        //获取当前时间
-        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String temp = setDateFormat.format(Calendar.getInstance().getTime());
-        request.setAttribute("nowDate",temp); 
-        //request.setAttribute("orderList", orderList);
-        request.setAttribute("mark","1");
-        request.setAttribute("state", state);
-        return "/source/page/order/orderTrack";
-    }
-    
-    /**
-     * 功能描述： 用户中心-订单跟踪-滚动加载
-     * 参数描述：  无
-     *     @time 2015-3-4
-     */
-    @RequestMapping(value="getOrderList.html",method=RequestMethod.POST)
-    public ModelAndView getOrderList(HttpServletRequest request){
-        //获取pageIndex
-        int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
-        User globle_user = (User) request.getSession().getAttribute("globle_user");
-        String state=request.getParameter("state");
-        //根据pageIndex获取每页order条数,获取订单信息（逻辑删除订单不显示）
-        List orderList = orderService.findByUserIdAndPage(globle_user.getId(),pageIndex,state,null,1);
-        
-        //根据orderId查询task表判断告警是否查看过
-        if(orderList != null && orderList.size() > 0){
-	        for(int i = 0; i < orderList.size(); i++){
-	        	int alarmViewedFlag = 1;
-	        	HashMap<String,Object>  map = (HashMap<String,Object>)orderList.get(i);
-	        	Map<String,Object> paramMap = new HashMap<String,Object>();
-	        	String orderId = (String)map.get("id");
-	        	String type = map.get("type").toString();
-	        	paramMap.put("orderId", orderId);
-	        	paramMap.put("type", type);
-	        	List<Task> taskList = taskService.findAllByOrderId(paramMap);
-				if(taskList != null && taskList.size() > 0){
-					for (Task task : taskList) {
-//						if(task.getAlarm_view_flag() != 1 && !task.getIssueCount().equals("0")){
-						if(task.getAlarm_view_flag() != 1 ){
-							alarmViewedFlag = 0;
-						}
-					}
-				}
-				map.put("alarmViewedFlag", alarmViewedFlag);
-	        }
-        }
-        
-        //获取当前时间
-        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String temp = setDateFormat.format(Calendar.getInstance().getTime());
-        ModelAndView mv = new ModelAndView("/source/page/order/orderList");
-        mv.addObject("orderList", orderList);
-        mv.addObject("state", state);
-        mv.addObject("nowDate", temp);
-        return mv;
-    }
-    
-	
-    /**
-     * 功能描述： 按条件查询订单
-     * 参数描述： Model model
-     *       @time 2015-1-15
-     */
-    @SuppressWarnings("rawtypes")
-    @RequestMapping("/searchCombineOrderTrack.html")
-    public String searchCombine(Model model,Integer type,String servName,String state,String begin_datevo,String end_datevo,HttpServletRequest request){
-        User globle_user = (User) request.getSession().getAttribute("globle_user");
-        //组织条件查询
-        String name = servName;
-        /*String name=null;
-        try {
-            name=new String(servName.getBytes("ISO-8859-1"), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }*/
-
-        Map<String,Object> paramMap = new HashMap<String,Object>();
-        paramMap.put("userId", globle_user.getId());
-        paramMap.put("type", type);
-        paramMap.put("servName", servName);
-        paramMap.put("state", state);
-        if(StringUtils.isNotEmpty(begin_datevo)){
-            paramMap.put("begin_date", DateUtils.stringToDateNYRSFM(begin_datevo));
-        }else{
-            paramMap.put("begin_date", null);
-        }
-        if(StringUtils.isNotEmpty(end_datevo)){
-            paramMap.put("end_date", DateUtils.stringToDateNYRSFM(end_datevo));
-        }else{
-            paramMap.put("end_date", null);
-        }
-        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        /* 時：分：秒  HH:mm:ss  HH : 23小時制 (0-23)
-                                 kk : 24小時制 (1-24)
-                                 hh : 12小時制 (1-12)
-                                 KK : 11小時制 (0-11)*/
-        String temp = setDateFormat.format(Calendar.getInstance().getTime());
-        paramMap.put("currentDate", temp);
-        List result = orderService.findByCombineOrderTrack(paramMap);
-       
-        //根据orderId查询task表判断告警是否查看过
-        if(result != null && result.size() > 0){
-	        for(int i = 0; i < result.size(); i++){
-	        	int alarmViewedFlag = 1;
-	        	HashMap<String,Object>  map = (HashMap<String,Object>)result.get(i);
-	        	Map<String,Object> paramMap1 = new HashMap<String,Object>();
-	        	String orderId = (String)map.get("id");
-	        	String type1 = map.get("type").toString();
-	        	paramMap.put("orderId", orderId);
-	        	paramMap.put("type", type1);
-	        	List<Task> taskList = taskService.findAllByOrderId(paramMap1);
-				if(taskList != null && taskList.size() > 0){
-					for (Task task : taskList) {
-						if(task.getAlarm_view_flag() != 1 && !task.getIssueCount().equals("0")){
-							alarmViewedFlag = 0;
-						}
-					}
-				}
-				map.put("alarmViewedFlag", alarmViewedFlag);
-	        }
-        }
-        
-        model.addAttribute("nowDate",temp); 
-        model.addAttribute("orderList",result);      //传对象到页面
-        model.addAttribute("type",type);//回显类型  
-        model.addAttribute("servName",name);//回显服务名称
-        model.addAttribute("state",state);//回显服务状态
-        model.addAttribute("begin_date",begin_datevo);//回显服务开始时间    
-        model.addAttribute("end_date",end_datevo);  //回显结束时间
-        return "/source/page/order/orderTrack";
-    }
-    
-    /**
-     * 功能描述： 按条件分页查询订单
-     * 参数描述： Model model
-     *       @time 2015-3-6
-     */
-    @SuppressWarnings("rawtypes")
-    @RequestMapping(value="/searchCombineByPage.html",method=RequestMethod.POST)
-    public ModelAndView searchCombineByPage(HttpServletRequest request){
-        int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
-        String type = request.getParameter("type");
-        String servName = request.getParameter("servName");
-        String state = request.getParameter("state");
-        String begin_datevo = request.getParameter("begin_date");
-        String end_datevo = request.getParameter("end_date");
-        User globle_user = (User) request.getSession().getAttribute("globle_user");
-        //组织条件查询
-        String name = servName;
-       //String name=null;
-       /*         try {
-            name=new String(servName.getBytes("ISO-8859-1"), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }*/
-        Map<String,Object> paramMap = new HashMap<String,Object>();
-        paramMap.put("userId", globle_user.getId());
-        paramMap.put("type", type);
-        paramMap.put("servName", name);
-        paramMap.put("state", state);
-        if(StringUtils.isNotEmpty(begin_datevo)){
-            paramMap.put("begin_date", DateUtils.stringToDateNYRSFM(begin_datevo));
-        }else{
-            paramMap.put("begin_date", null);
-        }
-        if(StringUtils.isNotEmpty(end_datevo)){
-            paramMap.put("end_date", DateUtils.stringToDateNYRSFM(end_datevo));
-        }else{
-            paramMap.put("end_date", null);
-        }
-        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        /* 時：分：秒  HH:mm:ss  HH : 23小時制 (0-23)
-                                 kk : 24小時制 (1-24)
-                                 hh : 12小時制 (1-12)
-                                 KK : 11小時制 (0-11)*/
-        String temp = setDateFormat.format(Calendar.getInstance().getTime());
-        paramMap.put("currentDate", temp);
-        //当前页
-        int pageSize = 10;
-        int pageNow = pageIndex*pageSize;
-        paramMap.put("pageNow", pageNow);
-        paramMap.put("pageSize", pageSize);
-        List result = orderService.findByCombineOrderTrackByPage(paramMap);
-
-        //根据orderId查询task表判断告警是否查看过
-        if(result != null && result.size() > 0){
-	        for(int i = 0; i < result.size(); i++){
-	        	int alarmViewedFlag = 1;
-	        	HashMap<String,Object>  map = (HashMap<String,Object>)result.get(i);
-	        	Map<String,Object> paramMap1 = new HashMap<String,Object>();
-	        	String orderId = (String)map.get("id");
-	        	String type1 = map.get("type").toString();
-	        	paramMap.put("orderId", orderId);
-	        	paramMap.put("type", type1);
-	        	List<Task> taskList = taskService.findAllByOrderId(paramMap1);
-				if(taskList != null && taskList.size() > 0){
-					for (Task task : taskList) {
-						if(task.getAlarm_view_flag() != 1 && !task.getIssueCount().equals("0")){
-							alarmViewedFlag = 0;
-						}
-					}
-				}
-				map.put("alarmViewedFlag", alarmViewedFlag);
-	        }
-        }
-        
-        ModelAndView mv = new ModelAndView("/source/page/order/orderList");
-        mv.addObject("nowDate",temp); 
-        mv.addObject("orderList",result);      //传对象到页面
-        mv.addObject("type",type);//回显类型  
-        mv.addObject("servName",name);//回显服务名称
-        mv.addObject("state",state);//回显服务状态
-        mv.addObject("begin_date",begin_datevo);//回显服务开始时间    
-        mv.addObject("end_date",end_datevo);  //回显结束时间
-        return mv;
-    }
     
     
     /**
@@ -831,45 +525,61 @@ public class OrderMgrController {
         //查找订单
         Order order = orderService.findOrderById(orderId);
         //已完成订单则逻辑删除
-        if(order.getStatus()==1 || order.getStatus() == 2){
-        	//更新删除标记
-        	order.setDelFlag(1);
-        	orderService.update(order);
-//        }else{
-        }else if(order.getStatus()==0){
-            //获取订单资产
-            List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
-            //删除任务
-            for (OrderAsset orderAsset : oaList) {
-                String order_asset_Id = String.valueOf(orderAsset.getId());
-                List<Task> tlist = taskService.findTaskByOrderAssetId(orderAsset.getId());
-                for (Task task : tlist) {
-                    //删除告警
-                    Map<String,Object> paramMap = new HashMap<String,Object>();
-                    paramMap.put("taskId", task.getTaskId());
-                    paramMap.put("group_id",task.getGroup_id());
-                    paramMap.put("websoc",order.getWebsoc());
-                    if(order.getServiceId()==5){
-                        taskWarnService.deleteTaskWarnByTaskId(paramMap);
-                    }else{
-                        alarmService.deleteAlarmByTaskId(paramMap);
+        if(order.getIsAPI()==0){
+            if(order.getStatus()==1 || order.getStatus() == 2){
+            	//更新删除标记
+            	order.setDelFlag(1);
+            	orderService.update(order);
+//            }else{
+            }else if(order.getStatus()==0){
+                //获取订单资产
+                List<OrderAsset> oaList = orderAssetService.findOrderAssetByOrderId(orderId);
+                //删除任务
+                for (OrderAsset orderAsset : oaList) {
+                    String order_asset_Id = String.valueOf(orderAsset.getId());
+                    List<Task> tlist = taskService.findTaskByOrderAssetId(orderAsset.getId());
+                    for (Task task : tlist) {
+                        //删除告警
+                        Map<String,Object> paramMap = new HashMap<String,Object>();
+                        paramMap.put("taskId", task.getTaskId());
+                        paramMap.put("group_id",task.getGroup_id());
+                        paramMap.put("websoc",order.getWebsoc());
+                        if(order.getServiceId()==5){
+                            taskWarnService.deleteTaskWarnByTaskId(paramMap);
+                        }else{
+                            alarmService.deleteAlarmByTaskId(paramMap);
+                        }
+                        if(order.getWebsoc()!=1&&order.getWebsoc()!=2){
+//                            String sessionId = ArnhemWorker.getSessionId();
+//                            ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId())+"_"+orderId);
+                        }
                     }
-                    if(order.getWebsoc()!=1&&order.getWebsoc()!=2){
-//                        String sessionId = ArnhemWorker.getSessionId();
-//                        ArnhemWorker.removeTask(sessionId, String.valueOf(task.getTaskId())+"_"+orderId);
-                    }
+                    taskService.deleteTaskByOaId(order_asset_Id);
                 }
-                taskService.deleteTaskByOaId(order_asset_Id);
+                //删除订单
+                orderService.deleteOrderById(orderId,globle_user.getId());
+                //删除订单资产
+                orderAssetService.deleteOaByOrderId(orderId,globle_user.getId());
+                //删除联系人信息
+                selfHelpOrderService.deleteLinkman(order.getContactId(),globle_user.getId());
+                //删除服务系统相关
+                NorthAPIWorker.deleteOrder(orderId);
             }
-            //删除订单
+        }else if(order.getIsAPI()==2){//waf
+        	//删除订单
             orderService.deleteOrderById(orderId,globle_user.getId());
             //删除订单资产
             orderAssetService.deleteOaByOrderId(orderId,globle_user.getId());
             //删除联系人信息
             selfHelpOrderService.deleteLinkman(order.getContactId(),globle_user.getId());
             //删除服务系统相关
-            NorthAPIWorker.deleteOrder(orderId);
+            List assets = orderAssetService.findAssetsByOrderId(order.getId());
+			HashMap<String, Object> assetOrder = new HashMap<String, Object>();
+        	assetOrder=(HashMap) assets.get(0);
+        	String targetKey = (String) assetOrder.get("targetKey");
+//            WafAPIWorker.deleteVirtualSite("10001", targetKey);
         }
+
         
 //        return "/source/page/order/orderTrack";
         return "redirect:/orderTrackInit.html";
