@@ -548,10 +548,4 @@ public class AnalyseController {
 		return result;
 	}
 	
-	
-	@RequestMapping(value = "anquanStateUI.html")
-	public String anquanStateUI(HttpServletRequest request) {
-		String result = "/source/page/personalCenter/anquan_state";
-		return result;
-	}
 }
