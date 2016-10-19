@@ -54,7 +54,6 @@ public class AdvertisementDaoImpl extends DaoCommon implements AdvertisementDao{
         getSqlSession().delete(ns +"delete",id);
     }
     
-	@Override
 	public void update(Advertisement advertisement) {
 		getSqlSession().update(ns+"update",advertisement);
 	}

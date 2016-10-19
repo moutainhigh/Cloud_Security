@@ -15,17 +15,14 @@ public class AttackSourceServiceImpl implements IAttackSourceService {
 	@Autowired
 	AttackSourceDao attackSourceDao;
 
-	@Override
 	public List findCountByProvice() {
 		return attackSourceDao.findCountByProvice();
 	}
 
-	@Override
 	public AttackSource findByIp(String ip) {
 		return attackSourceDao.findByIp(ip);
 	}
 
-	@Override
 	public void save(AttackSource attackSource) {
 		attackSourceDao.save(attackSource);
 		

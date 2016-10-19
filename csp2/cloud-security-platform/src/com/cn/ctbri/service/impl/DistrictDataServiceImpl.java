@@ -134,12 +134,10 @@ public class DistrictDataServiceImpl implements IDistrictDataService{
 		
 	}
 
-	@Override
 	public List getAllAlarmCount() {
 		return districtDataDao.getAllAlarmCount();
 	}
 
-	@Override
 	public void updateWafAlarmCount(List<District> list) {
 		districtDataDao.updateWafAlarmCount(list);
 		

@@ -21,7 +21,6 @@ public class AttackSourceDaoImpl extends DaoCommon implements AttackSourceDao {
 	 * 参数描述：
 	 * 返回值    ：  List
 	 */
-	@Override
 	public List findCountByProvice() {
 		List list = this.getSqlSession().selectList(ns + "findCountByProvice");
 		return list;
@@ -32,14 +31,12 @@ public class AttackSourceDaoImpl extends DaoCommon implements AttackSourceDao {
 	 * 参数描述：String ip
 	 * 返回值    ：  AttackSource
 	 */
-	@Override
 	public AttackSource findByIp(String ip) {
 		return this.getSqlSession().selectOne(ns + "findByIp", ip);
 		
 		
 	}
 
-	@Override
 	public void save(AttackSource attackSource) {
 		this.getSqlSession().selectOne(ns + "save", attackSource);
 	}

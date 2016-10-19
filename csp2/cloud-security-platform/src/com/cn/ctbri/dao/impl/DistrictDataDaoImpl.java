@@ -154,12 +154,10 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
 		
 	}
 
-	@Override
 	public List getAllAlarmCount() {
 		return getSqlSession().selectList(ns+"getAllAlarmCount");
 	}
 
-	@Override
 	public void updateWafAlarmCount(List<District> list) {
 		getSqlSession().update(ns+"updateWafAlarmCount", list);
 		
