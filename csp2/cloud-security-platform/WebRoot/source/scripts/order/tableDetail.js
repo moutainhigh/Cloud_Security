@@ -53,7 +53,7 @@ function loadData(){
     	data={"pageIndex":pageIndex,"type":type,"servName":servName,"state":state,"begin_date":begin_date,"end_date":end_date};
     }else{
     	//url = "getOrderList.html?state="+state;
-    	url="getOrderList1.html";
+    	url="getOrderList.html";
     	data={"pageIndex":pageIndex,"state":state};
     }
     $.post(url, data, function(result){

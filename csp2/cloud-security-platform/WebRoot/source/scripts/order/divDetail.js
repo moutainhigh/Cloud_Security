@@ -51,12 +51,12 @@ function loadData(){
     var data;
     var url = "";
     if(mark!=1){
-    	//url = "searchCombineByPage1.html?type="+type+"&servName="+servName+"&state="+state+"&list_group="+list_group+"&begin_date="+begin_date+"&end_date="+end_date+"&search="+search;
-    	url="searchCombineByPage1.html";
+    	//url = "searchCombineByPage.html?type="+type+"&servName="+servName+"&state="+state+"&list_group="+list_group+"&begin_date="+begin_date+"&end_date="+end_date+"&search="+search;
+    	url="searchCombineByPage.html";
     	data={"pageIndex":pageIndex,"type":type,"servName":servName,"state":state,"list_group":list_group,"begin_date":begin_date,"end_date":end_date,"search":search};
     }else{
-    	//url = "getOrderList1.html?state="+state+"&list_group="+list_group;
-    	url="getOrderList1.html";
+    	//url = "getOrderList.html?state="+state+"&list_group="+list_group;
+    	url="getOrderList.html";
     	data={"pageIndex":pageIndex,"state":state,"list_group":list_group};
     	
     }
