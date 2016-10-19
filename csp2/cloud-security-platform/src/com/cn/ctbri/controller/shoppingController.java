@@ -828,8 +828,9 @@ public class shoppingController {
 		   String linkMoblie = request.getParameter("linkMobile");
 		   //联系人邮箱
 		   String linkEmail = request.getParameter("linkEmail");
-		   if(str==null||"".equals(str)||linkName==null||"".equals(linkName)||linkMoblie==null||"".equals(linkMoblie)){
+		   if(str==null||"".equals(str)||linkName==null||"".equals(linkName)){
 			   map.put("errorStatus", true);
+			   map.put("errorMsg", "");
 			   JSONObject JSON = CommonUtil.objectToJson(response, map);
 		        // 把数据返回到页面
 		           try {
@@ -848,6 +849,7 @@ public class shoppingController {
 	           bflag = matcher.matches();
 	           if(!bflag){
 	        	   map.put("errorStatus", true);
+	        	   map.put("errorMsg", "邮箱格式不正确!");
 	        	   JSONObject JSON = CommonUtil.objectToJson(response, map);
 			        // 把数据返回到页面
 			           try {
@@ -861,26 +863,40 @@ public class shoppingController {
 	          
 		   }
 		   //验证手机号
+		   if(linkMoblie==null||"".equals(linkMoblie)){
+			   map.put("errorStatus", true);
+			   map.put("errorMsg", "手机号码不能为空!");
+			   JSONObject JSON = CommonUtil.objectToJson(response, map);
+		        // 把数据返回到页面
+		           try {
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return;
+		   }
+		   
 		   if(linkMoblie!=null&&!"".equals(linkMoblie)){
 			    Pattern regex = Pattern.compile("^[1][3,4,5,7,8][0-9]{9}$");;
-                Matcher matcher = regex.matcher(linkMoblie);
-                bflag = matcher.matches();
-              if(!bflag){
-            	  map.put("errorStatus", true);
-            	  
-            	  JSONObject JSON = CommonUtil.objectToJson(response, map);
-  		        // 把数据返回到页面
-  		           try {
-  					CommonUtil.writeToJsp(response, JSON);
-  				} catch (IOException e) {
-  					// TODO Auto-generated catch block
-  					e.printStackTrace();
-  				}
-  				return;
-              }
-             
+               Matcher matcher = regex.matcher(linkMoblie);
+               bflag = matcher.matches();
+             if(!bflag){
+           	  map.put("errorStatus", true);
+           	  map.put("errorMsg", "手机号码格式不正确!");
+           	  JSONObject JSON = CommonUtil.objectToJson(response, map);
+ 		        // 把数据返回到页面
+ 		           try {
+ 					CommonUtil.writeToJsp(response, JSON);
+ 				} catch (IOException e) {
+ 					// TODO Auto-generated catch block
+ 					e.printStackTrace();
+ 				}
+ 				return;
+             }
+            
 		   }
-           
+          
 		   Linkman linkman = new Linkman();
 		   linkman.setName(linkName);
 		   linkman.setMobile(linkMoblie);
@@ -904,6 +920,7 @@ public class shoppingController {
 			}
 	      if(list.size()<=0){
 	    	  map.put("errorStatus", true);  
+	    	  map.put("errorMsg", "");
 	    	  JSONObject JSON = CommonUtil.objectToJson(response, map);
 		        // 把数据返回到页面
 		           try {
@@ -917,7 +934,8 @@ public class shoppingController {
 	      
 	      //判断订单是否失效
 	      if(!checkOrderDate(list)) {
-	    	  map.put("errorStatus", true);  
+	    	  map.put("errorStatus", true); 
+	    	  map.put("errorMsg", "");
 	    	  JSONObject JSON = CommonUtil.objectToJson(response, map);
 		        // 把数据返回到页面
 		           try {
@@ -951,9 +969,9 @@ public class shoppingController {
 	    		 String targetURL[]=shopCar.getAstName().split(",");
 	    		 String websoc = "0";
 	    		 String[] customManu = null;//指定厂家
-    	         if(websoc != null && websoc != ""){
-    	        	customManu = websoc.split(","); //拆分字符为"," ,然后把结果交给数组customManu 
-    	         }
+   	         if(websoc != null && websoc != ""){
+   	        	customManu = websoc.split(","); //拆分字符为"," ,然后把结果交给数组customManu 
+   	         }
 	    	     Date  beginDate = shopCar.getBeginDate();
 	    	     Date endDate = shopCar.getEndDate();
 	    	     String begin_date=null;
@@ -1030,23 +1048,23 @@ public class shoppingController {
 	}catch(Exception e){
 		e.printStackTrace();
 		map.put("orderStatus", false);
-    	map.put("sucess", false);
+   	map.put("sucess", false);
 	}
 
-    	//object转化为Json格式
+   	//object转化为Json格式
 	   map.put("orderListId", id);
-       JSONObject JSON = CommonUtil.objectToJson(response, map);
-        // 把数据返回到页面
-           try {
+      JSONObject JSON = CommonUtil.objectToJson(response, map);
+       // 把数据返回到页面
+          try {
 			CommonUtil.writeToJsp(response, JSON);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		 
-		
 	}
+	
+	
+	
 	/**
 	 * 功能描述：返回修改订单
 	 * 参数描述：  无
