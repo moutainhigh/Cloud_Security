@@ -104,56 +104,6 @@ public class UserController{
 		return "/source/page/personalCenter/userData";
 	}
 	
-//	/**
-//	 * 功能描述： 保存修改后的基本资料
-//	 * 参数描述：User user,Model model,HttpServletRequest request
-//	 *		 @time 2015-1-13
-//	 */
-//	@RequestMapping("/saveUserData.html")
-//	public String saveUserData(User user,Model model,HttpServletRequest request){
-//		User globle_user = (User) request.getSession().getAttribute("globle_user");
-//		//用户名
-////		String userName = user.getName();
-////		globle_user.setName(userName);
-//		//手机号码
-//		String mobile = user.getMobile();
-//		globle_user.setMobile(mobile);
-//		//邮箱
-//		String email = user.getEmail();
-//		globle_user.setEmail(email);
-//		
-//		 //行业
-//		String industry = "";
-//		//职业
-//		String job = "";
-//		//公司名称
-//		String company = "";
-//		try {
-//			industry = user.getIndustry();
-//			job = user.getJob();
-//			company = user.getCompany();
-//			globle_user.setCompany(company);
-//			if(!industry.equals("-1")){
-//				globle_user.setIndustry(industry);
-//			}else{
-//				globle_user.setIndustry(null);
-//			}
-//			if(!job.equals("-1")){
-//				globle_user.setJob(job);
-//			}else{
-//				globle_user.setJob(null);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		//推送地址 add by tangxr 2016-4-9
-//		String urlAddr = user.getUrlAddr();
-//		globle_user.setUrlAddr(urlAddr);
-//		
-//		userService.update(globle_user);
-//		return "redirect:/userDataUI.html";
-//	}
-	
 	
 	/**
 	 * 功能描述： 保存修改后的基本资料
@@ -790,47 +740,6 @@ public class UserController{
 //		}
 //}
 	
-	 /**
-		 * 功能描述： 用户中心页面
-		 * 参数描述：  无
-		 *     @time 2015-1-12
-		 */
-		@RequestMapping(value="userCenterUI1.html")
-		public String userCenterUI1(HttpServletRequest request){
-			User globle_user = (User) request.getSession().getAttribute("globle_user");
-			//根据用户id查询订单表
-			List<Order> orderList = orderService.findOrderByUserId(globle_user.getId());
-			int orderNum = 0;
-			if(orderList.size()>0&&orderList!=null){
-				orderNum = orderList.size();
-			}
-			//根据用户id查询服务中订单表在开始时间和结束时间中间
-	        Map<String, Object> m = new HashMap<String, Object>();
-	        m.put("userId", globle_user.getId());
-	        m.put("state", 1);
-	        SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	        /* 時：分：秒  HH:mm:ss  HH : 23小時制 (0-23)
-	                                 kk : 24小時制 (1-24)
-	                                 hh : 12小時制 (1-12)
-	                                 KK : 11小時制 (0-11)*/
-	        String temp = setDateFormat.format(Calendar.getInstance().getTime());
-	        m.put("currentDate", temp);
-	        List servList = orderService.findByCombineOrderTrack(m);
-			int servNum = 0;
-			if(servList.size()>0&&servList!=null){
-				servNum = servList.size();
-			}
-			request.setAttribute("orderNum", orderNum);//订单总数
-			request.setAttribute("servNum",servNum);//服务中
-			//总告警数
-			List alarmList = alarmService.findAlarmByUserId(globle_user.getId());
-			int alarmSum = 0;
-			if(alarmList.size()>0&&alarmList!=null){
-				alarmSum = alarmList.size();
-			}
-			request.setAttribute("alarmSum",alarmSum);
-			return "/source/page/userCenter/userCenter";
-		}
 		
 	/**
 	 * 功能描述： 用户中心页面
@@ -1941,28 +1850,7 @@ public class UserController{
 			}
     	}
 	}
-	/**
-	 * 功能描述： 跳转动态感知
-	 * 参数描述： Model m
-	 *		 @time 2015-1-8
-	 */
-//	@RequestMapping(value="/sa_anquanbang.html")
-//	public String saAnquanbang(Model m){
-//	    //查询漏洞个数
-//        int leakNum = selfHelpOrderService.findLeakNum(1);
-//        //查询网页数
-//        int webPageNum = selfHelpOrderService.findWebPageNum();
-//        //检测网页数
-//        int webSite = selfHelpOrderService.findWebSite();
-//        //断网次数
-//        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
-//        m.addAttribute("leakNum", leakNum);
-//        m.addAttribute("webPageNum", webPageNum);
-//        m.addAttribute("webSite", webSite);
-//        m.addAttribute("brokenNetwork", brokenNetwork);
-//		return "/source/page/anquanbang/sa_anquanbang";
-//		//return "/source/page/anquanbang/anquan_state";
-//	}
+
 	
 	/**
 	 * 功能描述： 跳转动态感知
@@ -1972,18 +1860,6 @@ public class UserController{
 	@RequestMapping(value="/sa_anquanbang.html")
 	public String saAnquanbang(Model m){
 	  	try {
-	  		//查询漏洞个数
-	        //int leakNum = selfHelpOrderService.findLeakNum(1);
-	        //查询网页数
-	        //int webPageNum = selfHelpOrderService.findWebPageNum();
-	        //检测网页数
-	        //int webSite = selfHelpOrderService.findWebSite();
-	        //断网次数
-	        //int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
-	        //m.addAttribute("leakNum", leakNum);
-	        //m.addAttribute("webPageNum", webPageNum);
-	        //m.addAttribute("webSite", webSite);
-	        //m.addAttribute("brokenNetwork", brokenNetwork);
 	        
 	        JSONArray jsonArray;
 	  	    int wafAlarmLevel = 0;
