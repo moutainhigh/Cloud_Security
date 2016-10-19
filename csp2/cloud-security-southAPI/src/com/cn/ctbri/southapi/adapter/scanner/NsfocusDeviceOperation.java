@@ -55,17 +55,14 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 			//获取响应结果
 			ClientResponse response = service.type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(ClientResponse.class, xmlContent);
 			String resString = response.getEntity(String.class);
-			System.out.println(resString);
 			String[] cookie = response.getCookies().get(0).toString().split(";");
 			HashMap<String, String> cookieHashMap = new HashMap<String, String>();
 			for (int i = 0; i < cookie.length; i++) {
 				String[] s = cookie[i].split("=");
 				cookieHashMap.put(s[0], s[1]);
-				System.out.println("s0="+s[0]+" s1="+s[1]);
 			}
 
 			connectSessionId = cookieHashMap.get("sessionid");
-			System.out.println("connectSessionId="+connectSessionId);
 			return true;
 		} catch (UniformInterfaceException e) {
 			// TODO Auto-generated catch block
@@ -114,7 +111,6 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
         //service.type("application/x-download");
         //连接服务器，返回结果
         //String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).delete(String.class);
-        System.out.println("connectSessionId="+connectSessionId+"\r\n");
         String response = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class);
         return response;
 	}
@@ -286,7 +282,6 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 					urlInfo.setUrlParam(urlParam);
 					urlInfo.setVerifyUrl(verifyUrl);
 					urlInfos.add(urlInfo);
-					System.out.println(urlInfo.toString());
 				}
 				VulInfo vulInfo = new VulInfo();
 				vulInfo.setVulInfoId(vulInfoId);

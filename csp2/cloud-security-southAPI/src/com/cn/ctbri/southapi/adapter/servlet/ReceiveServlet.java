@@ -44,7 +44,6 @@ public class ReceiveServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		WebsocDeviceOperation websocDeviceOperation = new WebsocDeviceOperation();
 		String parameter = request.getParameter("parameter");
-		System.out.println("parameter"+parameter);
 		String responseString = websocDeviceOperation.postDetectResult("http://101.200.234.126/cspi/receive", parameter);//确认接收的url
 		if (true) {
 			response.setContentType("text/html");

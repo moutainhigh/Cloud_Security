@@ -44,7 +44,6 @@ public class EngineStatJob implements Job {
 					continue;
 				}else if ("Arnhem".equalsIgnoreCase(factoryString)) {
 		        	String deviceId = elementDeviceScanner.attributeValue("id");
-		        	System.out.println("while"+deviceId);
 		        	Document engineStatDocument = DocumentHelper.parseText(deviceAdpaterManager.getEngineStat(deviceId));
 		        	Element engineStatRoot= engineStatDocument.getRootElement();
 		        	List<?> nodes = engineStatRoot.elements("EngineList");

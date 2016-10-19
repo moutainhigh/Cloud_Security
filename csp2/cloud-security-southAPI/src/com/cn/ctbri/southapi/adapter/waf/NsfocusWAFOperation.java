@@ -99,12 +99,10 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	 */
 	private  String postMethod(String url, String jsonString) {
 		//创建客户端配置对象
-		System.out.println("URL="+url);
 		WebResource service = createBasicWebResource(url);
 		Builder builder = service.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 		//获取响应结果
 		ClientResponse response = builder.post(ClientResponse.class, jsonString);
-		System.out.println(response);
 		//String cookie = response.getCookies().toString();
 		String body = response.getEntity(String.class);
 		//For 2

@@ -319,7 +319,6 @@ public class DeviceAdpaterManager {
 		{
 			JSONObject jsonObject = new JSONObject();
 			String responseString = arnhemDeviceAdpater.getEngineState(deviceId);	
-			System.out.println(responseString);
 			Document document = null;
 			try {
 				document = DocumentHelper.parseText(responseString);
@@ -482,7 +481,6 @@ public class DeviceAdpaterManager {
 			float percentProgress = 0;
 			JSONObject jsonObject = new JSONObject();
 			String progressArnhem =  arnhemDeviceAdpater.getProgressByTaskId(deviceId,scannerTaskUniParam);
-			System.out.println("progress"+progressArnhem);
 			try {
 				 SAXReader reader = new SAXReader();
 				 Document document = reader.read(IOUtils.toInputStream(progressArnhem));

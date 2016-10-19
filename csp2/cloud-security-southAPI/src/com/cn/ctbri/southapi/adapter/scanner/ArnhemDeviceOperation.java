@@ -63,9 +63,7 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 	         // 连接服务器
 	         WebResource service = client.resource(url); 
 	         // 发送请求，接收返回数据
-	         System.out.println("sessionIdService="+service.toString());
 	         String response = service.type(MediaType.APPLICATION_XML).post(String.class, xmlContent);
-	         System.out.println("sessionId="+response);
 	         if(response==null){
 	        	 return false;
 	         }
@@ -187,16 +185,12 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 		WebResource service = client.resource(url);
 		//获取响应结果
 		String response = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
-		System.out.println(response);
 		try {
 			Document document = DocumentHelper.parseText(response);
 			Element rootElement = document.getRootElement();
 			String value = rootElement.attributeValue("value");
-			System.out.println("value="+value);
-			System.out.println("err="+("AuthErr".equals(value)));
 			if ("AuthErr".equals(value) && createSessionId(username, password, arnhemServerWebrootUrl)) {
 				String redirectResponse = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class);
-				System.out.println("redirect="+redirectResponse);
 				return redirectResponse;
 			} else {
 				return response;
@@ -252,7 +246,6 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
     public  String getTemplate(String engine_api) {
         //创建路径
         String url = engine_api + "/rest/control/SLA";
-        System.out.println(getMethod(url));
         return getMethod(url);
     }
 	/**
@@ -267,7 +260,6 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 	    + nullFilter(scannerTaskUniParam.getDestURL()) + "</DestURL><DestIP>" + nullFilter(scannerTaskUniParam.getDestIP()) + "</DestIP><DestPort>" 
 		+ nullFilter(scannerTaskUniParam.getDestPort()) + "</DestPort></TaskInfo><TaskSLA>" + scannerTaskUniParam.getTaskSLA() + "</TaskSLA></Task>";
 		//创建任务发送路径
-		System.out.println("TaskId="+scannerTaskUniParam.getTaskId());
     	String url = arnhemServerWebrootUrl + "/rest/task";
     	String responseString = postMethod(url, xml);
 		JSONObject jsonObj = new JSONObject();

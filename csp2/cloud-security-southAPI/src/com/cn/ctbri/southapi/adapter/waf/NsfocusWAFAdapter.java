@@ -1518,8 +1518,6 @@ public class NsfocusWAFAdapter {
 					locationFromIpObject.put("country", location.getCountryName());
 					locationFromIpObject.put("city", location.getCityName());
 				}
-			
-				System.out.println(locationFromIpObject.toString());
 				return locationFromIpObject.toString();
 			}
 		} catch (IOException exception) {

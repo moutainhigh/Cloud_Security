@@ -35,7 +35,6 @@ public class WebsocDeviceAdapter implements IDeviceAdpater{
 			    websocDeviceOperation = new WebsocDeviceOperation();
 			    if(!websocDeviceOperation.createSessionId(deviceConfigInfo.getScannerUserName(),deviceConfigInfo.getScannerPassword(),deviceConfigInfo.getScannerWebUrl())) return false;
 			    mapWebsocDeviceOperation.put(deviceConfigInfo.getDeviceID(), websocDeviceOperation);
-			    System.out.println(deviceConfigInfo.getDeviceID());
 			}
 		}
 		loadWebsocTemplate();
