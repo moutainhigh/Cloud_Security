@@ -106,7 +106,7 @@ public class MyOrderController {
      * 参数描述：  无
      *     @time 2015-3-4
      */
-    @RequestMapping(value="getOrderList1.html")
+    @RequestMapping(value="getOrderList.html")
     public ModelAndView getOrderList(HttpServletRequest request){
         //获取pageIndex
         int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
@@ -195,7 +195,7 @@ public class MyOrderController {
      *       @time 2015-3-6
      */
     @SuppressWarnings("rawtypes")
-    @RequestMapping("/searchCombineByPage1.html")
+    @RequestMapping("/searchCombineByPage.html")
     public ModelAndView searchCombineByPage(HttpServletRequest request){
         int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
         String type = request.getParameter("type");
@@ -321,7 +321,7 @@ public class MyOrderController {
      *       @time 2015-1-15
      */
     @SuppressWarnings("rawtypes")
-    @RequestMapping("/searchCombineOrderTrack1.html")
+    @RequestMapping("/searchCombineOrderTrack.html")
     public String searchCombine(Model model,Integer type,String servName,String state,String begin_datevo,String end_datevo,String search, HttpServletRequest request){
         User globle_user = (User) request.getSession().getAttribute("globle_user");
         //组织条件查询
