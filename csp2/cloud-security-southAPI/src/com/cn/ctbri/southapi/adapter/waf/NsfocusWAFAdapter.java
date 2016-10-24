@@ -3,7 +3,6 @@ package com.cn.ctbri.southapi.adapter.waf;
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.Blob;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,11 +19,9 @@ import java.util.UUID;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.apache.poi.hssf.model.RecordStream;
 import org.apache.commons.codec.binary.Base64;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -425,7 +422,7 @@ public class NsfocusWAFAdapter {
 	 * @param jsonObject targetKey 
 	 * @return
 	 */
-	public String deleteVSite(int resourceId, JSONObject jsonObject) {
+	public String deleteVirtSite(int resourceId, JSONObject jsonObject) {
 		HashMap<Integer, NsfocusWAFOperation> map = mapNsfocusWAFOperationGroup.get(resourceId);
 		JSONArray deleteVirtJsonArray = new JSONArray();
 		TWafNsfocusTargetinfoKey targetinfoKey = new TWafNsfocusTargetinfoKey();
@@ -438,8 +435,15 @@ public class NsfocusWAFAdapter {
 				TWafNsfocusTargetinfo tWafNsfocusTargetinfo = new TWafNsfocusTargetinfo();
 				sqlSession = getSqlSession();
 				TWafNsfocusTargetinfoMapper mapper = sqlSession.getMapper(TWafNsfocusTargetinfoMapper.class);
-				tWafNsfocusTargetinfo = mapper.selectByPrimaryKey(targetinfoKey);
-				JSONObject responseJsonObject = JSONObject.fromObject(entry.getValue().deleteVirtSite(JSONObject.fromObject("{\"vSiteId\":"+tWafNsfocusTargetinfo.getVirtsiteid()+"}")));
+				JSONObject responseJsonObject = new JSONObject();
+				if (mapper.selectByPrimaryKey(targetinfoKey) != null) {
+					tWafNsfocusTargetinfo = mapper.selectByPrimaryKey(targetinfoKey);
+					JSONObject tempResJsonObject = JSONObject.fromObject(entry.getValue().deleteVirtSite(JSONObject.fromObject("{\"vSiteId\":"+tWafNsfocusTargetinfo.getVirtsiteid()+"}")));
+					responseJsonObject = JSONObject.fromObject(tempResJsonObject.get(tWafNsfocusTargetinfo.getVirtsiteid()));
+					mapper.deleteByPrimaryKey(targetinfoKey);
+				}else {
+					responseJsonObject.put("result", "virtualSite is null");
+				}
 				JSONObject tempDeviceJsonObject = new JSONObject();
 				tempDeviceJsonObject.put("deviceId", entry.getKey());
 				tempDeviceJsonObject.put("InfoList", responseJsonObject);

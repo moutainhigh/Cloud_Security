@@ -54,7 +54,6 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 			WebResource service = client.resource(url);
 			//获取响应结果
 			ClientResponse response = service.type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(ClientResponse.class, xmlContent);
-			String resString = response.getEntity(String.class);
 			String[] cookie = response.getCookies().get(0).toString().split(";");
 			HashMap<String, String> cookieHashMap = new HashMap<String, String>();
 			for (int i = 0; i < cookie.length; i++) {

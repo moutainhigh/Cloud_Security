@@ -548,9 +548,9 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.alterVSite(resourceId, deviceId, jsonObject);
 	}
 	@DELETE
-	@Path("/deleteVirtualSite")
+	@Path("/deleteVirtualSiteInResource")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String deleteVirtualSite(String dataJson) {
+	public String deleteVirtualSiteInResource(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		if (jsonObject.get("resourceId")==null||jsonObject.getString("resourceId").length()<=0)
 			return errNullWafDevice();

@@ -328,7 +328,7 @@ public class DeviceAdpaterManager {
 			Element rootElement = document.getRootElement();
 			if ("Success".equalsIgnoreCase(rootElement.attributeValue("value"))) {		
 				List<?> nodes = rootElement.elements("EngineList");
-				List<HashMap> engineList = new ArrayList<HashMap>();
+				List<HashMap<String, Comparable>> engineList = new ArrayList<HashMap<String, Comparable>>();
 				for(Iterator<?> it=nodes.iterator();it.hasNext();){
 					Element engineStatElement = (Element) it.next();
 					HashMap<String, Comparable> engineRateMap = new HashMap<String, Comparable>();
@@ -742,7 +742,7 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.deleteVSite(resourceId, deviceId, jsonObject);
 	}
 	public String deleteVSiteInResource(int resourceId, JSONObject jsonObject) {
-		return nsfocusWAFAdapter.deleteVSite(resourceId, jsonObject);
+		return nsfocusWAFAdapter.deleteVirtSite(resourceId, jsonObject);
 	}	
 	public String getWafLogWebsec(List<String> dstIpList) {
 		return nsfocusWAFAdapter.getWafLogWebsec(dstIpList);

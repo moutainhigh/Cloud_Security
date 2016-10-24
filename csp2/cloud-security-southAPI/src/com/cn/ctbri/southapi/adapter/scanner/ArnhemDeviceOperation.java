@@ -286,8 +286,6 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 	public  String removeTask(ScannerTaskUniParam scannerTaskUniParam){
 		//创建路径
 		String url = arnhemServerWebrootUrl + "/rest/task/Remove/" + scannerTaskUniParam.getTaskId();
-		JSON json = new XMLSerializer().read(postMethod(url));
-		JSONObject responseObject = new JSONObject().fromObject(json.toString());
         return postMethod(url);
 	}
 	/**
