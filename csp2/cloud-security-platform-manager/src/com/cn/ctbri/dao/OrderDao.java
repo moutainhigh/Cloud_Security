@@ -134,4 +134,24 @@ public interface OrderDao {
 	List findAPIInfoByOrderId(String orderId);
 
 	int findAPICountByParam(Map<String, Object> paramMap);
+	/**
+	 * 
+	 * 功能描述：统计订购单次服务的用户数与订购过长期服务的用户数 
+	 * 参数描述：   
+	 *@date:2016-8-5下午2:35:54
+	 * 返回值    ：  订购单次服务的用户数与订购过长期服务的用户数 
+	 * 异        常：
+	 */
+	List<Map<String,Object>> getServiceUserCount();
+	/**
+	 * 
+	 * 功能描述： 统计长期和单次订单中各服务订单的对比
+	 * 参数描述：   
+	 *@date:2016-8-8上午10:37:34
+	 * 返回值    ：  长期和单次订单中各服务订单的对比
+	 * 异        常：
+	 */
+	List<Map<String, Object>> getServiceCount();
+	//总订单
+	List<Order> getOrder();
 }
