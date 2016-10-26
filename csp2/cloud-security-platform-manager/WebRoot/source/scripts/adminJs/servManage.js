@@ -93,49 +93,39 @@ function saveServ(){
    
 }
 
-function searchServ(){
-	//服务名称
-	var servName = $("#u2_input").val();
-	//一级分类
-	var parentC = $("#u5_input").val();
-	//服务类型
-	var servType = $("#u43_input").val();
-	 $.ajax({
-	        type: "POST",
-	        url: "searchServ.html",
-	        data: {"parent":parentC,"type":servType,"name":servName},
-	        dataType:"json",
-	        success: function(data){
-	        	var list = data.servList;
-	        	$("#servList").empty();
-	        	$.each(list, function(i, value) {
-	        		var type = this.typeName;
-	        		if(typeof(type) == 'undefined'){
-	        			type="";
-	        		}
-	        	     // this;      //this指向当前元素
-	        	    // i;         //i表示Array当前下标
-	        	    // value;     //value表示Array当前元素
-	        	     var temp = "<tr>"+
-                 	"<td class='t_username'>"+this.parentC+"</td>"+
-                    "<td class='t_date'>"+type+"</td>"+
-                    "<td class='t_assets'>"+this.name+"</td>"+
-                    "<td class='t_service' style='text-align:center;width:320px'>"+this.remarks+"</td>"+
-                    "<td class='t_operation'>"+
-                    	"<a href='"+location.href.substring(0,location.href.lastIndexOf("/"))+"/updateServUI.html?servId="+this.id+"&parent="+this.parentC+"&servName="+this.name+"&icon="+this.icon+"&remarks="+this.remarks+"&type="+this.servType+"' class='ope_a add_change'>编辑</a>"+
-                    	"<a href='javascript:void(0)' onclick='delServ(this)' class='ope_a ml20' servid='"+this.id+"' parentC='"+this.parentC+"'>删除</a>"+
-                    	"<a href='"+location.href.substring(0,location.href.lastIndexOf("/"))+"/addServicePriceUI.html?servId="+this.id+"&parent="+this.parentC+"' class='ope_a add_change'>设置价格</a>"+
-                    "</td>"+
-           		"</tr>";
-	        	     $("#servList").append(temp);
-	        	});
-	        },
-	        error:function(data){
-	        	alert(data);
-	        }
-	     });
+function searchService(){
+	//提交表单
+    $("#searchForm").submit();
 }
 
+function editServ(Obj){
+	var oMark =document.getElementById('modelbox');
+	var addUI =document.getElementById('box_addService');
+	var editUI =document.getElementById('box_editService');
+	
+	var servId = $(Obj).attr("servId");
+	var remarks = $(Obj).attr("remarks");
+	var parent = $(Obj).attr("parent");
+	var icon = $(Obj).attr("icon");
+	var servName = $(Obj).attr("servName");
+	var type = $(Obj).attr("type");
+	
+	$("#edit_serv_id").val(servId);
+	$("#edit_serv_parent").val(parent);
+	$("#edit_serv_type").val(type);
+	$("#edit_serv_name").val(servName);
+	$("#edit_serv_remarks").val(remarks);
+	$("#edit_filePathHidden").val(icon);
+	$(".filename").val(icon);
+	
+	oMark.style.display ="block";
+	editUI.style.display ="block";
+	oMark.style.width = viewWidth() + 'px';
+	oMark.style.height = documentHeight() + 'px';
+	editUI.style.left = (viewWidth() - editUI.offsetWidth)/2 + 'px';
+	editUI.style.top = (viewHeight() - editUI.offsetHeight)/2-25 + 'px';	
+
+}
 //删除服务
 function delServ(Obj){
 	var servid = $(Obj).attr("servid");
