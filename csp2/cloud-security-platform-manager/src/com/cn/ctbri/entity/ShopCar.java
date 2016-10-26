@@ -2,7 +2,6 @@ package com.cn.ctbri.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 public class ShopCar implements Serializable{
 	/***/

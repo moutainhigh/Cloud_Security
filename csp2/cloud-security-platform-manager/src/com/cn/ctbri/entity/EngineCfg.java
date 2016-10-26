@@ -1,7 +1,6 @@
 package com.cn.ctbri.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 创 建 人  ：  tang

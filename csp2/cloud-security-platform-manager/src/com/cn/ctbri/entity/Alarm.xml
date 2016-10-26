@@ -440,4 +440,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             group by a.level
 	        order by a.level desc
     </select>
+    
+    <select id="getAlarmBugCounts" parameterType="hashmap" resultType="com.cn.ctbri.entity.AlarmBug">
+		select name,count(name) as countVals,date(alarm_time) as alarmTime from cs_alarm 
+								where serviceId=1 
+								and ( alarm_time BETWEEN  #{startTime} and #{endTime} ) 
+								<if test="names!=null and names.size()>0">
+									and name in
+									<foreach item="name" index="index" collection="names" 
+					                         open="(" separator="," close=")">
+					                        #{name}
+					                </foreach>
+								</if>
+								group by name,date(alarm_time)
+								order by level desc
+    </select>
+    <select id="getBugMaxCounts" parameterType="hashmap" resultType="com.cn.ctbri.entity.AlarmBug">
+		select name from cs_alarm 
+		where serviceId=1 
+		and ( alarm_time BETWEEN #{startTime} and #{endTime} ) 
+		and name is not null
+		group by name
+		order by count(name) desc 
+		limit 20	
+    </select>
 </mapper>
