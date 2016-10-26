@@ -1,22 +1,16 @@
 package com.cn.ctbri.dao.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.DistrictDataDao;
-import com.cn.ctbri.dao.TaskDao;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.City;
 import com.cn.ctbri.entity.District;
-import com.cn.ctbri.entity.Task;
 /**
  * 创 建 人  ：  txr
  * 创建日期：  2015-08-20
@@ -65,6 +59,18 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
         return maxValue;
     }
 
+	public List<District> getDistrictList() {
+		return getSqlSession().selectList(ns + "findDistrictListAll");
+	}
+
+	public List<City> getCityListByProv(Map<String, Object> paramMap) {
+		return getSqlSession().selectList(nsCity + "findCityList",paramMap);
+	}
+
+	public String getProvNameById(Map<String, Object> paramMap) {
+		return getSqlSession().selectOne(ns + "findProvName", paramMap);
+	}		
+
 	public String getMonth(int i) {
 		String months = this.getSqlSession().selectOne(ns + "getMonth",i);
 		return String.valueOf(months);
@@ -74,21 +80,79 @@ public class DistrictDataDaoImpl extends DaoCommon implements DistrictDataDao {
 		return getSqlSession().selectOne(ns + "getServiceAlarmByMonth", paramMap);
 	}
 
-	/**
-	 * 功能描述：地区查询
-	 * 返回值    ：List<District>
-	 */
-	public List<District> getDistrictList() {
-		return getSqlSession().selectList(ns + "findDistrictListAll");
+	public List getVulnscanAlarmOneHour(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"getVulnscanAlarmOneHour", paramMap);
 	}
-	/**
-	 * 功能描述：城市查询
-	 * 参数描述：paramMap
-	 * 返回值    ：List<District>
-	 */
-	public List<City> getCityListByProv(Map<String, Object> paramMap) {
-		return getSqlSession().selectList(nsCity + "findCityList",paramMap);
-	}	
+
+	public List getVulnscanAlarmTOP20() {
+		return this.getSqlSession().selectList(ns+"getVulnscanAlarmTOP20");
+	}
+
+	public List getVulnscanAlarm(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"getVulnscanAlarm", paramMap);
+	}
+
+	public List getServiceUseInfoMonth6(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"getServiceUseInfoMonth6", paramMap);
+	}
+
+	public List getIndustryOrderCount() {
+		return this.getSqlSession().selectList(ns+"getIndustryOrderCount");
+	}
+
+	public List getIndustryUserCount() {
+		return this.getSqlSession().selectList(ns+"getIndustryUserCount");
+	}
+
+	public List getOrderCountTimesAndServiceId(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"getOrderCountTimesAndServiceId",paramMap);
+	}
+
+	public List getDaysInYear() {
+		return this.getSqlSession().selectList(ns+"getDaysInYear");
+	}
+
+	public List getLastDayForMonthInYear(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"getLastDayForMonthInYear",paramMap);
+	}		
 	
+	public List getVulnscanAlarmOver3() {
+		
+		return this.getSqlSession().selectList(ns+"getVulnscanAlarmOver3");
+	}
+
+	public List getVulnscanAlarmAllCount() {
+		return this.getSqlSession().selectList(ns+"getVulnscanAlarmAllCount");
+	}
+
+	public List getAssetPurpose() {
+		return this.getSqlSession().selectList(ns+"getAssetPurpose");
+	}
+
+	public List getDaysInYear(Map<String, Object> paramMap) {
+		return this.getSqlSession().selectList(ns+"getDaysInYear",paramMap);
+	}
 	
+	public void updateDistrict(Map<String, Object> disMap) {
+		getSqlSession().update(ns+"updateDistrict", disMap);
+	}
+
+	public void updateSiteCount(List<District> list) {
+		getSqlSession().update(ns+"updateSiteCount", list);
+		
+	}
+
+	public List<District> getSiteCount() {
+		return getSqlSession().selectList(ns+"getSiteCount");
+		
+	}
+
+	public List getAllAlarmCount() {
+		return getSqlSession().selectList(ns+"getAllAlarmCount");
+	}
+
+	public void updateWafAlarmCount(List<District> list) {
+		getSqlSession().update(ns+"updateWafAlarmCount", list);
+		
+	}
 }

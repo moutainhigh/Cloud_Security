@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cn.ctbri.dao.AlarmDao;
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.entity.Alarm;
+import com.cn.ctbri.entity.AlarmBug;
 import com.cn.ctbri.entity.AlarmDDOS;
 import com.cn.ctbri.entity.Task;
 /**
@@ -183,5 +184,12 @@ public class AlarmDaoImpl extends DaoCommon implements AlarmDao {
 	}
 	public List getAlarmByParam(Map<String, Object> paramMap) {
 		return getSqlSession().selectList(ns+"getAlarmByParam", paramMap);
+	}
+	
+	public List<AlarmBug> getAlarmBugCounts(Map<String, Object> paramMap) {
+		return getSqlSession().selectList(ns+"getAlarmBugCounts", paramMap);
+	}
+	public List<AlarmBug> getBugMaxCounts(Map<String, Object> paramMap) {
+		return getSqlSession().selectList(ns+"getBugMaxCounts", paramMap);
 	}
 }
