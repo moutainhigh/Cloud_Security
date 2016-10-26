@@ -56,5 +56,10 @@
 		<mapper resource="com/cn/ctbri/entity/OrderListMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/ScanTypeMapper.xml"/>
 		
+		<!-- 2016-10-19 update by tangxr -->
+		<mapper resource="com/cn/ctbri/entity/BigDataAnalysisMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/AttackSourceMapper.xml"/>
+		
+		
 	</mappers>
 </configuration>  
