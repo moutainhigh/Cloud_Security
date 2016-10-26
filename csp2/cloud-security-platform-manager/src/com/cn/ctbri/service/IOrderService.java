@@ -131,4 +131,25 @@ public interface IOrderService {
 	List findAPIInfoByOrderId(String orderId);
 
 	int findAPICountByParam(Map<String, Object> paramMap);
+	/**
+	 * 
+	 * 功能描述： 统计订购单次服务的用户数与订购过长期服务的用户数 
+	 * 参数描述：
+	 * 
+	 * @date:2016-8-5下午2:39:04 
+	 * 返回值 ： 统计订购单次服务的用户数与订购过长期服务的用户数 
+	 * 异 常：
+	 */
+	List<Map<String,Object>> findServiceUserCount();
+	/**
+	 * 
+	 * 功能描述：  统计长期和单次订单中各服务订单的对比
+	 * 参数描述：   
+	 *@date:2016-8-8上午10:43:41
+	 * 返回值    ：  长期和单次订单中各服务订单的对比
+	 * 异        常：
+	 */
+	List<Map<String,Object>> findServiceCount();
+	//总订单
+	List<Order> getOrder();
 }
