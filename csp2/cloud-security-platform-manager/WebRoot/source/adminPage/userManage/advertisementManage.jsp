@@ -13,8 +13,19 @@
 <head>
 <meta charset="utf-8" />
 <title>广告管理</title>
+<link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/common.css"/>
+<link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/index.css"/>
+<style>
+.user_table thead tr th:nth-child(1) {padding-right: 170px;padding-left: 60px;}
+.user_table thead tr th:nth-child(2) {padding-right: 160px;}
+.user_table thead tr th:nth-child(3) {padding-right: 151px;}
+.user_table thead tr th:nth-child(4) {padding-right: 140px;}
+.user_table tbody tr td:nth-child(1) {width: 229px;padding-left: 60px;}
+.user_table tbody tr td:nth-child(2) {width: 220px;}
+.user_table tbody tr td:nth-child(3) {width: 230px;}
+.user_table tbody tr td:nth-child(4) {width: 225px;}
+</style>
 <link href="${ctx}/source/adminCss/mian.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/adminCss/head_bottom.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/adminCss/backstage.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
@@ -74,35 +85,12 @@ opacity: 0;
 </head>
 
 <body>
-<!--头部代码-->
-<div class="head_bj b_head">
-  <div class="head">
-    <div class="logo"><img src="${ctx}/source/adminImages/b_logo2.jpg"/></div>
-    <div class="list b_list">
-      <ul>
-      	<li><a href="${ctx}/adminUserManageUI.html" class="white">用户管理</a></li>
-		<li><a href="${ctx}/adminchinas.html" target="_blank" class="white">安全态势</a></li>
-        <li><a href="${ctx}/adminServUI.html" class="white">服务管理</a></li>
-        <li><a href="${ctx}/adminDataAssetUI.html" class="white">资产分析</a></li>
-        <li><a href="${ctx}/adminUserAnalysisUI.html" class="white">用户分析</a></li>
-        <!-- <li><a href="${ctx}/adminDataAnalysisUI.html" class="white">订单分析</a></li>-->
-        <li><a href="${ctx}/orderformanalyse.html" class="white">订单分析</a></li>
-        <li><a href="${ctx}/adminWarnAnalysisUI.html" class="white">告警分析</a></li>
-        <li><a href="${ctx}/equResourceUI.html" class="white">设备资源管理</a></li>
-        <li><a href="${ctx}/adminSystemManageUI.html" class="white">系统管理</a></li>
-        <li><a href="${ctx}/adminNoticeManageUI.html" class="white">公告管理</a></li>
-        <li class="b_current" style="border-right:1px solid #1f8db4;"><a href="${ctx}/adminAdvertisementManageUI.html" class="white">广告管理</a></li>
-      </ul>
-    </div>
-    <div class="lagst">
-      <div class="lagst-left b_lagst_left"> <a href="#"><img src="${ctx}/source/adminImages/b_photo.jpg" width="43" height="42"></a> </div>
-      <div class="lagst-right">
-        <p ><a href="###" class="white">${sessionScope.admin_user.name }</a></p>
-        <p> <a href="${ctx}/adminExit.html" class="white">退出</a></p>
-      </div>
-    </div>
-  </div>
-</div>
+<div id="container">
+		<!--=============top==============-->
+		
+		<!-- menu start -->
+		<c:import url="/menu.html"></c:import>
+		<!-- menu end -->
 <div class="main_wrap">
 	<div class="main_center">
 		<input type="hidden" value="${adType}" id="adType"/>
@@ -120,18 +108,18 @@ opacity: 0;
         	<table class="user_table" cellpadding="0" cellspacing="0">
             	<thead>
                 	<tr>
-                    	<th class="t_username">广告名称</th>
-                        <th class="t_date">广告图片</th>
-                        <th class="t_role">广告有效时间</th>
-                        <th class="t_order">广告排序</th>
-                        <th class="t_operation">操作</th>
+                    	<th>广告名称</th>
+                        <th>广告图片</th>
+                        <th>广告有效时间</th>
+                        <th>广告排序</th>
+                        <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
                 <c:forEach items="${adList}" var="ad" varStatus="status">
                     <tr>
-                    	<td class="t_username">${ad.name}</td>
-                        <td class="t_date" style="width:280px">
+                    	<td>${ad.name}</td>
+                        <td>
 	                        <c:if test="${fn:length(ad.image)<=18}">
 	                                    ${ad.image}
 	                        </c:if>
@@ -139,8 +127,8 @@ opacity: 0;
 	                                ${fn:substring(ad.image, 0, 18)}...
 	                        </c:if>
                         </td>
-                        <td class="t_role"><fmt:formatDate value="${ad.startDate}" pattern="yyyy/MM/dd"/>&nbsp;-&nbsp;<fmt:formatDate value="${ad.endDate}" pattern="yyyy/MM/dd"/></td>
-                        <td class="t_order">
+                        <td><fmt:formatDate value="${ad.startDate}" pattern="yyyy/MM/dd"/>&nbsp;-&nbsp;<fmt:formatDate value="${ad.endDate}" pattern="yyyy/MM/dd"/></td>
+                        <td>
                         	<input type="hidden" id="ad_id_${status.index }" value="${ad.id}"/>
                         	<input type="hidden" id="ad_order_${status.index }" value="${ad.orderIndex}"/>
 	                        <c:if test="${status.index > 0}">
@@ -150,8 +138,8 @@ opacity: 0;
                         		<a href="javascript:void(0)" class="ope_a" onclick="downSort'${status.index}')">下移</a>
 	                        </c:if>
                         </td>
-                        <td class="t_operation">
-                        	<a href="javascript:void(0)" class="ope_a" onclick="deleteAdvertisement('${ad.id}')">删除</a>
+                        <td>
+                        	<a href="javascript:void(0)" class="delet" onclick="deleteAdvertisement('${ad.id}')">删除</a>
                         </td>
                     </tr>
                 </c:forEach>
@@ -160,45 +148,11 @@ opacity: 0;
         </div>
     </div>
 </div>
-<!--尾部部分代码-->
-<div class="bottom_bj">
-<div class="bottom">
-<div class="bottom_main">
-  <h3><a href="###">新手入门</a></h3>
-  <ul>
-    <li><a href="${ctx}/registUI.html">新用户注册</a></li>
-    <li><a href="${ctx}/loginUI.html">用户登录</a></li>
-    <li><a href="###">找回密码</a></li>
-  </ul>
+<!--============bottom============-->
+	<!-- footer start -->
+	<c:import url="/footer.html"></c:import>
+	<!-- footer end -->
 </div>
-<div  class="bottom_main">
-  <h3><a href="###"> 帮助</a></h3>
-  <ul>
-     <li><a href="${ctx}/aider.html">常见问题</a></li>
-  </ul>
-</div>
-<div  class="bottom_main">
-  <h3><a href="###">厂商合作</a></h3>
-  <ul>
-    <li><a href="###">华为</a></li>
-    <li><a href="###">安恒</a></li>
-    <li><a href="###">知道创宇</a></li>
-  </ul>
-</div>
-<div  class="bottom_main">
-<h3><a href="###">联系我们</a></h3>
-<ul>
-<li><a href="###">客户电话</a></li>
-</div>
-<div  class="bottom_main" style="width:380px;">
-<h3><a href="###">版权信息</a></h3>
- <ul>
- <li>Copyright&nbsp;©&nbsp;2015 中国电信股份有限公司北京研究院<br />
-京ICP备12019458号－10</li>
-</div>
-</div>
-</div>
-<!--尾部部分代码结束-->
 <!--模态框-->
 <div class="modelbox" id="modelbox"></div>
 <div id="box_logoIn" class="box_logoIn user_model">
