@@ -4,13 +4,9 @@ package com.cn.ctbri.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,7 +59,7 @@ public class WafDetailController {
     public String warningWaf(HttpServletRequest request,HttpServletResponse response) throws Exception{
         String orderId = request.getParameter("orderId");
         String type = request.getParameter("type");
-//        User user = (User)request.getSession().getAttribute("globle_user");
+        User user = (User)request.getSession().getAttribute("globle_user");
         //获取订单信息
         List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
         request.setAttribute("order", orderList.get(0));
@@ -170,7 +166,7 @@ public class WafDetailController {
             jo.put("label", "0");
             jo.put("value", low);
             jo.put("color", "#1e91ff");
-            jo.put("ratio", df.format((float)low/count*100)+"%");
+//            jo.put("ratio", df.format((float)low/count*100)+"%");
             json.add(jo);
         }
         if(middle>0){
@@ -178,7 +174,7 @@ public class WafDetailController {
             jo.put("label", "1");
             jo.put("value", middle);
             jo.put("color", "#ffa500");
-            jo.put("ratio", df.format((float)middle/count*100)+"%");
+//            jo.put("ratio", df.format((float)middle/count*100)+"%");
             json.add(jo);
         }
         if(high>0){
@@ -186,7 +182,7 @@ public class WafDetailController {
             jo.put("label", "2");
             jo.put("value", high);
             jo.put("color", "#ff7e50");
-            jo.put("ratio", df.format((float)high/count*100)+"%");
+//            jo.put("ratio", df.format((float)high/count*100)+"%");
             json.add(jo);
         }
         
@@ -603,7 +599,7 @@ public class WafDetailController {
     @RequestMapping(value="getWafOneHour.html")
     @ResponseBody
     public void getWafOneHour(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    	String eventStr = WafAPIWorker.getWafEventTypeCount("24","hour");
+    	String eventStr = WafAPIWorker.getWafEventTypeCount("24","hour",0);
     	Map map = this.getWafEventTypeCount(eventStr);
         
         List name = null;

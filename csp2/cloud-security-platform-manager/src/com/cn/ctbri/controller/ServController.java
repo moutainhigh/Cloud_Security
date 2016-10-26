@@ -15,6 +15,7 @@ import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -300,24 +301,28 @@ public class ServController {
 	 * 参数描述：HttpServletRequest request,HttpServletResponse response
 	 *		 @time 2015-1-19
 	 */
-	@RequestMapping(value="/searchServ.html")
-	public void searchServ(HttpServletRequest request,HttpServletResponse response){	
-		Map<String, Object> m = new HashMap<String, Object>();
-		String name = "";
+	@RequestMapping(value="/searchService.html")
+	public String searchService(Model model,HttpServletRequest request,HttpServletResponse response){	
+		String name = null;
 		try {
-			name = new String(request.getParameter("name").getBytes("ISO-8859-1"),"UTF-8");
+			String nameStr = request.getParameter("servName");
+			if(!StringUtils.isEmpty(nameStr)){
+				name = new String(nameStr.getBytes("ISO-8859-1"),"UTF-8");
+			}
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		int type = 0;
-		int parent = 0;
+		int type = -1;
+		int parent = -1;
 		
-		if(!request.getParameter("type").equals("null")){
-			type = Integer.parseInt(request.getParameter("type"));
+		String typeStr = request.getParameter("servType");
+		if(!StringUtils.isEmpty(typeStr)){
+			type = Integer.parseInt(typeStr);
 		}
-		if(!StringUtils.isEmpty(request.getParameter("parent"))){
-			parent = Integer.parseInt(request.getParameter("parent"));
+		String parentStr = request.getParameter("parentC");
+		if(!StringUtils.isEmpty(parentStr)){
+			parent = Integer.parseInt(parentStr);
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("name", name);
@@ -326,17 +331,11 @@ public class ServController {
 		
 		List servList = selfHelpOrderService.findSerList(map);
 		
-		m.put("servList", servList);
-		//object转化为Json格式
-		JSONObject JSON = CommonUtil.objectToJson(response, m);
-		try {
-			// 把数据返回到页面
-			CommonUtil.writeToJsp(response, JSON);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-
+        model.addAttribute("servList",servList);      //传对象到页面
+        model.addAttribute("name",name);  //回显结束时间
+        model.addAttribute("parent",parent);  //回显查询文本
+        model.addAttribute("type",type);  //回显查询文本
+        return "/source/adminPage/userManage/serviceList";
 	}
 	
 	/**

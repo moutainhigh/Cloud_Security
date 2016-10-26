@@ -1,8 +1,10 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -26,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.cfg.Configuration;
+import com.cn.ctbri.common.WafAPIWorker;
+import com.cn.ctbri.entity.AttackCount;
 import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.Notice;
 import com.cn.ctbri.entity.Order;
@@ -42,6 +47,7 @@ import com.cn.ctbri.util.Mail;
 import com.cn.ctbri.util.MailUtils;
 import com.cn.ctbri.util.Random;
 import com.cn.ctbri.util.SMSUtils;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 /**
  * 创 建 人  ：  于永波
@@ -792,24 +798,92 @@ public class UserController {
     	}
 	}
 	/**
-	 * 功能描述： 忘记密码
+	 * 功能描述： 跳转动态感知
 	 * 参数描述： Model m
 	 *		 @time 2015-1-8
 	 */
-	@RequestMapping(value="/chinas.html")
-	public String chians(Model m){
-	    //查询漏洞个数
-        int leakNum = selfHelpOrderService.findLeakNum(1);
-        //查询网页数
-        int webPageNum = selfHelpOrderService.findWebPageNum();
-        //检测网页数
-        int webSite = selfHelpOrderService.findWebSite();
-        //断网次数
-        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
-        m.addAttribute("leakNum", leakNum);
-        m.addAttribute("webPageNum", webPageNum);
-        m.addAttribute("webSite", webSite);
-        m.addAttribute("brokenNetwork", brokenNetwork);
-		return "/china";
+	@RequestMapping(value="/sa_anquanbang.html")
+	public String saAnquanbang(Model m){
+	  	try {	        
+	        JSONArray jsonArray;
+	  	    int wafAlarmLevel = 0;
+  		  
+  		  //waf结果集	
+  		  int countAll = 0;
+  		  String wafResult = WafAPIWorker.getEventTypeCountByDay("7");
+  		  jsonArray = JSONArray.fromObject(wafResult);
+  		  if(jsonArray!=null && jsonArray.size()>0){
+  			  for(int i = 0; i < jsonArray.size(); i++){
+  				  JSONObject obj=(JSONObject) jsonArray.get(i);
+  				  //解析攻击类型
+  				  byte[] base64Bytes = Base64.decode(obj.getString("eventTypeBase64").toString());	
+  				  String eventType = new String(base64Bytes,"UTF-8");
+  				  //解析count
+  				  JSONArray array = obj.getJSONArray("list");
+  				  
+  				  if(array!=null && array.size()>0){
+  					  for(int j = 0; j < array.size(); j++){
+  						  JSONObject jsonTemp =(JSONObject) array.get(j);
+  						  countAll += jsonTemp.getInt("count");
+  					  }
+  				  }
+
+  				 
+  			  }
+  		  }
+  		  if(countAll>100){
+  			  wafAlarmLevel = 4;
+  		  }else if(countAll>50){
+  			  wafAlarmLevel = 3;
+  		  }else if(countAll>30){
+  			  wafAlarmLevel = 2;
+  		  }else if(countAll>10){
+  			  wafAlarmLevel = 1;
+  		  }
+  	  	  m.addAttribute("wafAlarmLevel",wafAlarmLevel);
+  		WafAPIWorker worker = new WafAPIWorker();
+  		String texts = worker.getEventTypeCountInTimeCurrent(500);
+  		JSONObject json=JSONObject.fromObject(texts);
+  		JSONArray array = json.getJSONArray("eventTypeCountList");
+  		long currentId=json.getLong("currentId");
+  		List<AttackCount> attackCountList = new ArrayList<AttackCount>();
+  		for (int i = 0; i < array.size(); i++) {
+  			JSONObject obj = (JSONObject) array.get(i);
+  			byte[] base64Bytes = org.apache.commons.codec.binary.Base64.decodeBase64(obj.get("eventType")
+  					.toString().getBytes());
+  			String eventType = new String(base64Bytes, "UTF-8");
+//  			Integer typeCode = EventTypeCode.typeToCodeMap.get(eventType);
+  			Integer count = (Integer) obj.get("count");
+  			attackCountList.add(new AttackCount(eventType, count));
+  		}
+  		m.addAttribute("wafEventTypeCount",attackCountList.toString());
+  		m.addAttribute("currentId", currentId);
+	  	} catch (UnsupportedEncodingException e) {
+	  		e.printStackTrace();
+	  	}  	  
+
+		return "/source/adminPage/anquanbang/anquan_state";
+	}
+	
+	/**
+	 * 功能描述：获取登录用户
+	 * 参数描述：  
+	 * @throws Exception 
+	 */
+	@RequestMapping(value="getLoginUser.html", method = RequestMethod.POST)
+	@ResponseBody
+	public void getLoginUser(HttpServletRequest request,HttpServletResponse response) {
+		Map<String, Object> m = new HashMap<String, Object>();
+		User user = (User)request.getSession().getAttribute("admin_user");
+		
+		m.put("LoginUser", user);
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

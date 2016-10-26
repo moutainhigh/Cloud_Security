@@ -35,6 +35,7 @@ import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderService;
+import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.LogonUtils;
@@ -55,6 +56,8 @@ public class AdminUserController {
 	IAssetService assetService;
 	@Autowired
 	IOrderService orderService;
+	@Autowired
+	ISelfHelpOrderService selfHelpOrderService;
 	/**
 	 * 功能描述：后台登录页面 
 	 * 参数描述：无
@@ -107,7 +110,7 @@ public class AdminUserController {
 		LogonUtils.remeberAdmin(request,response,name,password);
 		//将User放置到Session中，用于这个系统的操作
 		request.getSession().setAttribute("admin_user", _user);
-		return "redirect:/adminUserManageUI.html";
+		return "redirect:/adminWelcomeUI.html";
 	}
 	/**
 	 * 功能描述：后台用户管理页面
@@ -475,4 +478,61 @@ public class AdminUserController {
 			e.printStackTrace();
 		}
 	}	
+	
+	
+	/**
+	 * 功能描述：后台welcome页面
+	 * 参数描述：无
+	 *		 @time 2016-10-13
+	 */
+	@RequestMapping("/adminWelcomeUI.html")
+	public String adminWelcomeUI(Model model,HttpServletRequest request,User user){
+		//User globle_user = (User) request.getSession().getAttribute("globle_user");
+		List<User> userlist = userService.findAll(user);
+		int userSum = 0;//查询用户数个数
+		if(userlist.size()>0&&userlist!=null){
+			userSum = userlist.size();
+		}
+		request.setAttribute("userSum", userSum);
+		//扫描网站
+        int webSite = selfHelpOrderService.findWebSite();
+        request.setAttribute("webSite", webSite);
+        //扫描页面数
+        int webPageNum = selfHelpOrderService.findWebPageNum();
+        request.setAttribute("webPageNum", webPageNum);
+		//订单数
+        int orderSum = orderService.getOrder().size();
+        request.setAttribute("orderSum", orderSum);
+        //防护网站数
+        int wafNum = 0;
+        request.setAttribute("wafNum", wafNum);
+        //告警数
+        int leakNum = selfHelpOrderService.findLeakNum(1);
+        request.setAttribute("leakNum", leakNum);
+        
+        
+				
+		return "/source/adminPage/userManage/welcomePage";
+	}
+	
+	
+	/**
+	 * 功能描述：后台menu页面
+	 * 参数描述：无
+	 *		 @time 2016-10-13
+	 */
+	@RequestMapping("/menu.html")
+	public String menu(Model model,HttpServletRequest request,User user){
+		return "/source/adminPage/common/menu";
+	}
+	
+	/**
+	 * 功能描述：后台footer页面
+	 * 参数描述：无
+	 *		 @time 2016-10-13
+	 */
+	@RequestMapping("/footer.html")
+	public String footer(Model model,HttpServletRequest request,User user){
+		return "/source/adminPage/common/footer";
+	}
 }
