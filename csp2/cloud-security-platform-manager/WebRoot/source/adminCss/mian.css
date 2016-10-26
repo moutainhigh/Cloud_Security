@@ -32,8 +32,8 @@ li{ list-style:none;}
 .analysecent .analyse_lable label{ color:#888888; font-size:16px;}
 .analysecent .analyse_lable .text{ width:136px; height:26px; border:#e0e0e0 solid 1px;}
 .analysecent .sub{ width:82px; height:32px; background:url(../images/b_search_bg.jpg) no-repeat; border:none; position:absolute; right:-130px; top:10px;cursor:pointer;}
-.tableBox{ border:#e0e0e0 solid 1px; padding:24px; margin:24px 0 24px 0;}
-.tableBox table{ width:954px; margin:0 auto;border-collapse:collapse;}
+.tableBox{ border:#e0e0e0 solid 0px; padding:0px; margin:24px 0 24px 0;}
+.tableBox table{ width:1086px; margin:0 auto;border-collapse:collapse;}
 .tableBox thead th{ background-color:#3cacd4; border:#e0e0e0 solid 1px; width:134px; text-align:center; vertical-align:middle; font-size:16px; color:#fff;}
 .tableBox tr{ height:32px; line-height:32px;}
 .tableBox tbody tr td{width:134px; border:#e0e0e0 solid 1px;text-align:center; vertical-align:middle;}

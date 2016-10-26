@@ -105,9 +105,17 @@ select.ser_input{height:38px;line-height:38px;width:262px;color:#888888;font-siz
 .userbox_cur{background:url(../images/b_arrow.jpg) no-repeat center 106px;}
 .b_user_table_c{border:1px solid #e0e0e0;border-right:0;height:104px;width:215px;padding-left:58px;}
 .user_title{padding-top:38px;color:#999;font-size:18px;display:block;float:left;}
-.user_num{color:#f1a31a;font-size:36px;padding:26px 0 0 10px;display:block;float:left;}
+.user_num{color:#f1a31a;font-size:36px;padding:37px 0 0 10px;display:block;float:left;}
 .supper_table{width:100%;overflow:hidden;padding-bottom:36px;}
 .system_table,.users_table,.online_table{width:100%;overflow:hidden;padding-bottom:36px;display:none;}
+.user_table{width: 1108px;margin: 20px auto;height: auto;font-size: 16px;}
+.user_table thead tr {display: block;height: 50px;line-height: 50px;background: #f3f3f3;margin-bottom: 20px;}
+.user_table tbody tr {display: block;height: 100px;line-height: 100px;background: #def0ff;margin-bottom: 10px;}
+.user_table tbody tr td a {display: inline-block;width: 60px;padding-left: 36px;}
+.delet {background: url(../backstageImg/delet.png) no-repeat 0 40px;}
+.add_change {background: url(../backstageImg/exchange.png) no-repeat 0 38px;}
+
+/*#
 .user_table{width:100%;}
 .user_table th{height:40px;background:#e0e0e0;font-size:16px;color:#888;font-weight:normal;}
 .user_table td{border-bottom:1px solid #e0e0e0;height:42px;text-align:center;color:#888;font-size:14px;}
@@ -116,7 +124,7 @@ select.ser_input{height:38px;line-height:38px;width:262px;color:#888888;font-siz
 .t_role{width:200px;}
 .t_assets{width:166px;}
 .t_service{width:166px;}
-.t_operation{width:180px;}
+.t_operation{width:180px;}*/
 .ope_a{color:#f1a31a;text-decoration:underline;}
 .user_model{background:url(../images/2b_modelbox_user.png) no-repeat;width:756px;height:610px;}
 .w678{width:678px;margin-bottom:20px;}
