@@ -24,14 +24,24 @@ var getAllEngine = function() {
 				}else{
 					factory = "创宇";
 				}
-				tbody.append("<tr height='40'>" + "<td style='display: none;'>" + p['id'] + "</td>"
-						+ "<td width='250'><a href='javascript:void(0)'><span onclick='openNamePopBox("+p['id']+","+p['engine']+", " +
+//				tbody.append("<tr height='40'>" + "<td style='display: none;'>" + p['id'] + "</td>"
+//						+ "<td width='250'><a href='javascript:void(0)'><span onclick='openNamePopBox("+p['id']+","+p['engine']+", " +
+//								"\""+p['engine_addr']+"\")'>" + p['engine_name']
+//						+ "</span></a></td>" + "<td width='336'>"
+//						+ p['engine_addr'] + "</td>" + "<td width='250'>"
+//						+ factory + "</td>"
+//						+ "<td width='260'><a href='javascript:void(0)' onclick='upd(" + p['id']
+//						+ ")' >修改</a><a href='javascript:void(0)' onclick='del(" + p['id']
+//						+ ")'>删除</a></td>" + "</tr>");
+				
+				tbody.append("<tr>"
+						+ "<td><a href='javascript:void(0)' style='color:#f1a31a;'><span onclick='openNamePopBox("+p['id']+","+p['engine']+", " +
 								"\""+p['engine_addr']+"\")'>" + p['engine_name']
-						+ "</span></a></td>" + "<td width='336'>"
-						+ p['engine_addr'] + "</td>" + "<td width='250'>"
+						+ "</span></a></td>" + "<td>"
+						+ p['engine_addr'] + "</td>" + "<td>"
 						+ factory + "</td>"
-						+ "<td width='260'><a href='javascript:void(0)' onclick='upd(" + p['id']
-						+ ")' >修改</a><a href='javascript:void(0)' onclick='del(" + p['id']
+						+ "<td><a href='javascript:void(0)' class='add_change' onclick='upd(" + p['id']
+						+ ")' >修改</a><a href='javascript:void(0)' class='delet' onclick='del(" + p['id']
 						+ ")'>删除</a></td>" + "</tr>");
 			});
 		}
