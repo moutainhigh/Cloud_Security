@@ -9,6 +9,9 @@
 <link href="${ctx}/source/adminCss/mian.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/adminCss/loginregist.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/adminCss/head_bottom.css" type="text/css" rel="stylesheet" />
+<!-- add new css -->
+<link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/common.css"/>
+<link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/index.css"/>
 <link href="${ctx}/source/adminCss/backstage.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/adminJs/adminLogin.js"></script>
@@ -22,12 +25,13 @@ function checkNumberImage(){
 </head>
 <body>
 <!--头部代码-->
+<div id="container">
 <div class="head_bj b_head_bj">
   <div class="head">
     <div class="logo"><img src="${ctx}/source/adminImages/backstage_logo.jpg" width="342" height="54" /></div>
     </div>
-  </div>
 </div>
+
 <!--头部代码结束-->
 <div class="b_login_wrap">
   <div class="b_login_box">
@@ -58,44 +62,10 @@ function checkNumberImage(){
     </div>
   </div>
 </div>
-<!--尾部部分代码-->
-<div class="bottom_bj">
-<div class="bottom">
-<div class="bottom_main">
-  <h3><a href="###">新手入门</a></h3>
-  <ul>
-    <li><a href="${ctx}/registUI.html">新用户注册</a></li>
-    <li><a href="${ctx}/loginUI.html">用户登录</a></li>
-    <li><a href="###">找回密码</a></li>
-  </ul>
+<!--============bottom============-->
+	<!-- footer start -->
+	<c:import url="/footer.html"></c:import>
+	<!-- footer end -->	
 </div>
-<div  class="bottom_main">
-  <h3><a href="###"> 帮助</a></h3>
-  <ul>
-    <li><a href="${ctx}/aider.html">常见问题</a></li>
-  </ul>
-</div>
-<div  class="bottom_main">
-  <h3><a href="###">厂商合作</a></h3>
-  <ul>
-    <li><a href="###">华为</a></li>
-    <li><a href="###">安恒</a></li>
-    <li><a href="###">知道创宇</a></li>
-  </ul>
-</div>
-<div  class="bottom_main">
-<h3><a href="###">联系我们</a></h3>
-<ul>
-<li><a href="###">客户电话</a></li>
-</div>
-<div  class="bottom_main" style="width:380px;">
-<h3><a href="###">版权信息</a></h3>
- <ul>
- <li>Copyright&nbsp;©&nbsp;2015 中国电信股份有限公司北京研究院<br />
-京ICP备12019458号－10</li>
-</div>
-</div>
-</div>
-<!--尾部部分代码结束-->
 </body>
 </html>
