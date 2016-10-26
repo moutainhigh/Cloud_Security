@@ -41,7 +41,6 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/getServiceAlarmMonth5.html");
 		list.add("/findUseAssetAddr.html");
 		//------------------
-		list.add("/equResourceUI.html");
 		list.add("/findAllFactory.html");
 		list.add("/equFindAll.html");
 		list.add("/addEqu.html");
