@@ -195,5 +195,14 @@ public class OrderServiceImpl implements IOrderService{
 	public int findAPICountByParam(Map<String, Object> paramMap) {
 		return orderDao.findAPICountByParam(paramMap);
 	}
+	public List<Map<String,Object>> findServiceUserCount() {
+		return orderDao.getServiceUserCount();
+	}
+	public List<Map<String, Object>> findServiceCount() {
+		return orderDao.getServiceCount();
+	}
+	public List<Order> getOrder() {
+		return orderDao.getOrder();
+	}
 	
 }
