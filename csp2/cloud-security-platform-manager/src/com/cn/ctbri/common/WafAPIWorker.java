@@ -2,7 +2,10 @@ package com.cn.ctbri.common;
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +24,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.cn.ctbri.controller.WafController;
+import com.cn.ctbri.util.DateUtils;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -43,7 +47,7 @@ public class WafAPIWorker {
 	static{
 		try {
 			Properties p = new Properties();
-			p.load(WafAPIWorker.class.getClassLoader().getResourceAsStream("northAPI.properties"));
+			p.load(WafAPIWorker.class.getClassLoader().getResourceAsStream("InternalAPI.properties"));
 			SERVER_WAF_ROOT = p.getProperty("SERVER_WAF_ROOT");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -235,7 +239,27 @@ public class WafAPIWorker {
         return textEntity;
 	}
 	
-	
+	/**
+	 * 功能描述：删除waf
+	 * 参数描述： targetKey 订单编号
+	 */
+	public static void deleteVirtualSite(String resourceId, String targetKey) {
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("resourceId", resourceId);
+		json.put("targetKey", targetKey);
+		//创建任务发送路径
+		String url = SERVER_WAF_ROOT + "/rest/adapter/deleteVirtualSite";
+		//创建配置
+		ClientConfig config = new DefaultClientConfig();
+		//绑定配置
+    	buildConfig(url,config);
+    	//创建客户端
+        Client client = Client.create(config);
+        WebResource service = client.resource(url);
+        //获取响应结果
+        String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, json.toString());
+	}
 	
 	
 	/**
@@ -408,6 +432,29 @@ public class WafAPIWorker {
         return textEntity;
 	}
 	
+	/**
+	 * 根据自增的主键id来查询数据
+	 * @param currentId
+	 * @return
+	 */
+	public static String getAllWafLogWebsecInTime(long currentId){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("currentId", currentId);
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/getAllWafLogWebsecThanCurrentId";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
 	public static String getLocationFromIp(String ip){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
@@ -431,12 +478,15 @@ public class WafAPIWorker {
 	 * @param interval
 	 * @return
 	 */
-	public static String getWafEventTypeCount(String interval, String timeUnit){
+	public static String getWafEventTypeCount(String interval, String timeUnit,long topNum){
 		
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		if(!"forever".equals(timeUnit)){
 			json.put("interval", interval);
+		}
+		if("forever".equals(timeUnit)){			
+			json.put("topNum",topNum);
 		}
 		json.put("timeUnit", timeUnit);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafEventTypeCount";
@@ -453,7 +503,44 @@ public class WafAPIWorker {
         String textEntity = response.getEntity(String.class);
         return textEntity;
 	}
-	
+	public static String getEventTypeCountInTimeCurrent(long topNum){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("topNum",topNum);
+    	String url = SERVER_WAF_ROOT + "/rest/adapter/getEventTypeCountInTimeCurrent";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
+	/**
+	 * 获取最新前N条数据
+	 */
+	public static String getWafLogWebsecCurrent(int topNum){
+		JSONObject json = new JSONObject();
+		json.put("topNum", topNum);
+		String url = SERVER_WAF_ROOT + "/rest/adapter/getWafLogWebsecCurrent";
+    	//创建jersery客户端配置对象
+	    ClientConfig config = new DefaultClientConfig();
+	    //检查安全传输协议设置
+	    buildConfig(url,config);
+	    //创建Jersery客户端对象
+        Client client = Client.create(config);
+        //连接服务器
+        WebResource service = client.resource(url);
+        //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+        return textEntity;
+	}
 	/**
 	 * 功能描述：获取安全事件类型统计信息
 	 * @param interval
