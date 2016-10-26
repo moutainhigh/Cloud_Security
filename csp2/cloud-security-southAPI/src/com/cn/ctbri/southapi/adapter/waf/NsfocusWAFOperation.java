@@ -289,24 +289,6 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		String getSiteOperationString = getOperation(nsfocusWafUrl+REST_URI_V1+"/sites/{"+siteId+"}");
 		return getSiteOperationString;
 	}
-	
-	
-	public String delSite(JSONObject jsonObject) {
-		if (jsonObject.get("siteId")==null||jsonObject.getString("siteId").length()<=0) {
-			JSONObject errJsonObject = new JSONObject();
-			errJsonObject.put("status", "failed");
-			errJsonObject.put("reason", "Site id is null!!");
-			return errJsonObject.toString();
-		}
-		String delSiteString = delSiteOperation(jsonObject.getString("siteId"));
-		return delSiteString;
-	}
-	public String delSiteOperation(String siteId) {
-		String delSiteOperationString = delOperationWithQuery(nsfocusWafUrl+REST_URI_V1+"/sites?siteid="+siteId);
-		return delSiteOperationString;
-	}
-	
-	
 	public String createSite(JSONObject jsonObject) {
 		if (jsonObject.get("wafIp")==null||jsonObject.getString("wafIp").length()<=0) {
 			JSONObject errJsonObject = new JSONObject();
@@ -374,6 +356,19 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		String alterSiteString = putOperation(nsfocusWafUrl+REST_URI_V1+"/sites", alterSiteJsonObject.toString());
 		return alterSiteString;
 	}
+	public String deleteSite(JSONObject jsonObject) {
+		if (jsonObject.get("siteId")==null||jsonObject.getString("siteId").length()<=0) {
+			JSONObject tempJsonObject = new JSONObject();
+			tempJsonObject.put("result", "siteId is Null");
+			JSONObject errJsonObject = new JSONObject();
+			errJsonObject.put("null", errJsonObject);
+			return errJsonObject.toString();
+		}
+		String siteId = jsonObject.getString("siteId");
+		String delSiteString = delOperationWithQuery(nsfocusWafUrl+REST_URI_V1+"/sites?siteid="+siteId);
+		return delSiteString;
+	}
+	
 	
 	public String getVirtSite(JSONObject jsonObject) {
 		if (jsonObject.get("vSiteId")==null||jsonObject.getString("vSiteId").length()<=0) {

@@ -308,6 +308,16 @@ public class NsfocusWAFAdapter {
 		return getDeviceById(resourceId, deviceId).alterSite(jsonObject);
 	}
 	
+	public String deleteSiteInResource(int resourceId, JSONObject jsonObject) {
+		HashMap<Integer, NsfocusWAFOperation> map = mapNsfocusWAFOperationGroup.get(resourceId);
+		JSONArray deleteSiteJsonArray = new JSONArray();
+		for(Entry<Integer, NsfocusWAFOperation> entry : map.entrySet()){
+			JSONObject responseJsonObject = new JSONObject();
+			entry.getValue().deleteSite(jsonObject);
+			
+		}
+		return null;
+	}
 	
 	/**
 	 * 在资源组内新建虚拟站点
@@ -336,7 +346,7 @@ public class NsfocusWAFAdapter {
 			String siteId = siteResponseJsonObject.getString("id").trim();
 			String groupId = siteResponseJsonObject.getJSONObject("website").getJSONObject("group").getString("id").trim();			
 
-			
+			//创建虚拟站点
 			jsonObject.put("parent", groupId);
 			JSONObject responseJsonObject = JSONObject.fromObject(entry.getValue().createVirtSite(jsonObject));
 			//虚拟站点id
@@ -442,7 +452,7 @@ public class NsfocusWAFAdapter {
 					responseJsonObject = JSONObject.fromObject(tempResJsonObject.get(tWafNsfocusTargetinfo.getVirtsiteid()));
 					mapper.deleteByPrimaryKey(targetinfoKey);
 				}else {
-					responseJsonObject.put("result", "virtualSite is null");
+					responseJsonObject.put("result", "not found");
 				}
 				JSONObject tempDeviceJsonObject = new JSONObject();
 				tempDeviceJsonObject.put("deviceId", entry.getKey());
