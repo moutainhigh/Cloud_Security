@@ -547,7 +547,7 @@ public class DeviceAdapterManagerService {
 		int deviceId = jsonObject.getInt("deviceId");
 		return deviceAdpaterManager.alterVSite(resourceId, deviceId, jsonObject);
 	}
-	@DELETE
+	@POST
 	@Path("/deleteVirtualSiteInResource")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String deleteVirtualSiteInResource(String dataJson) {
