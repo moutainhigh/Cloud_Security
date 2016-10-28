@@ -20,7 +20,8 @@ public class SFTPUtil {
 	private static int port;
 	private static String username;
 	private static String password;
-	private static String directory;
+	private static String serviceIconDirectory;
+	private static String serviceDetailDirectory;
 	
 	static {
 		
@@ -32,7 +33,8 @@ public class SFTPUtil {
 			port = Integer.parseInt(properties.getProperty("port"));
 			username = properties.getProperty("username");
 			password = properties.getProperty("password");
-			directory = properties.getProperty("directory");
+			serviceIconDirectory = properties.getProperty("serviceIconDirectory");
+			serviceDetailDirectory = properties.getProperty("serviceDetailDirectory");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -69,17 +71,22 @@ public class SFTPUtil {
 	 * 上传文件 流 本地文件路径 remotePath 服务器路径
 	 * @throws IOException 
 	 */
-	public static boolean upload(MultipartFile file, String remotName){
+	public static boolean upload(MultipartFile file,String remotName, int folderFlag){
 		ChannelSftp sftp = connect();
 		try {
-				String rpath = directory; // 服务器需要创建的路径
+				String rpath=null;
+				if (folderFlag==1){
+					rpath = serviceIconDirectory; // 服务器需要创建的路径
+				}else if (folderFlag==2){
+					rpath = serviceDetailDirectory; // 服务器需要创建的路径
+				}
 				try {
 					createDir(rpath, sftp);
 				} catch (Exception e) {
 					System.out.println("创建路径失败：" + rpath);
 				}
 				// this.sftp.rm(file.getName());
-				sftp.cd(directory);
+				sftp.cd(rpath);
 				sftp.put(file.getInputStream(), remotName, new ProgressMonitor(file.getSize()),ChannelSftp.OVERWRITE);
 				return true;
 		} catch (FileNotFoundException e) {
@@ -87,7 +94,6 @@ public class SFTPUtil {
 		} catch (SftpException e) {
 			System.out.println("上传ftp服务器错误");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
