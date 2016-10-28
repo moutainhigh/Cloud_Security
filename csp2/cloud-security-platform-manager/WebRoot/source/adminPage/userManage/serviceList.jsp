@@ -11,14 +11,14 @@
 <link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/common.css"/>
 <link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/index.css"/>
 <style>
-.user_table thead tr th:nth-child(1) {padding-right: 66px;padding-left: 60px;}
-.user_table thead tr th:nth-child(2) {padding-right: 56px;}
+.user_table thead tr th:nth-child(1) {padding-right: 66px;padding-left: 35px;}
+.user_table thead tr th:nth-child(2) {padding-right: 152px;}
 .user_table thead tr th:nth-child(3) {padding-right: 143px;}
 .user_table thead tr th:nth-child(4) {padding-right: 236px;}
-.user_table tbody tr td:nth-child(1) {width: 135px;padding-left: 60px;}
-.user_table tbody tr td:nth-child(2) {width: 104px;}
+.user_table tbody tr td:nth-child(1) {width: 125px;padding-left: 35px;}
+.user_table tbody tr td:nth-child(2) {width: 180px;}
 .user_table tbody tr td:nth-child(3) {}
-.user_table tbody tr td:nth-child(4) {width: 297px;}
+.user_table tbody tr td:nth-child(4) {width: 260px;}
 .user_table tbody tr td:last-child a {display: inline-block;width: auto;padding-left: 6px;}
 </style>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
