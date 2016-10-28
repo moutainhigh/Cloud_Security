@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import com.cn.ctbri.entity.Price;
+import com.cn.ctbri.cfg.CspWorker;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceDetail;
 import com.cn.ctbri.entity.User;
@@ -47,6 +47,18 @@ public class ServController {
 	IServService servService;
 	@Autowired
     ISelfHelpOrderService selfHelpOrderService;
+	
+	private static Map<String,Integer> scanTypeMap = new HashMap<String, Integer>();
+	static{
+		
+		scanTypeMap.put("10分钟", 1);
+		scanTypeMap.put("30分钟", 2);
+		scanTypeMap.put("1小时", 3);
+		scanTypeMap.put("1天", 4);
+		scanTypeMap.put("每周", 5);
+		scanTypeMap.put("每月", 6);
+	}
+	
 	/**
 	 * 功能描述：服务管理页面
 	 *		 @time 2015-2-3
@@ -150,7 +162,7 @@ public class ServController {
 	        }
 	        //上传文件名称；
 	        String uploadFilePathName = String.valueOf(System.currentTimeMillis())+originalFileName.substring(originalFileName.lastIndexOf("."));
-	        boolean isSuccFlag = SFTPUtil.upload(multipartFile, uploadFilePathName);
+	        boolean isSuccFlag = SFTPUtil.upload(multipartFile, uploadFilePathName, 1);
 
 	        if(isSuccFlag){
 				m.put("success", true);
@@ -200,7 +212,16 @@ public class ServController {
 			String remarks = request.getParameter("remarks");
 			String icon = request.getParameter("icon");
 			
+			//通过接口方式将数据存储于前端Portal数据库中
+    		String servId = CspWorker.addService(name, parent,type,
+    				remarks, icon);
+    		if(servId == null || servId.equals("")) {
+    			m.put("success", false);
+    			return;
+    		}
+			
 			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("id", servId);
 			map.put("name", name);
 			map.put("parent", parent);
 			map.put("type", type);
@@ -212,22 +233,11 @@ public class ServController {
 				selfHelpOrderService.insertAPI(map);
 			}
 			
-		
-			
-
 			m.put("success", true);
-			//object转化为Json格式
-			JSONObject JSON = CommonUtil.objectToJson(response, m);
-			try {
-				// 把数据返回到页面
-				CommonUtil.writeToJsp(response, JSON);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			m.put("success", false);
+		}finally {
 			//object转化为Json格式
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
 			try {
@@ -256,6 +266,14 @@ public class ServController {
 			String remarks = request.getParameter("remarks");
 			String icon = request.getParameter("icon");
 			
+			//通过接口方式将数据存储于前端Portal数据库中
+    		String code = CspWorker.updateService(id, name, parent,type,
+    				remarks, icon);
+    		if(code == null || !code.equals("200")) {
+    			m.put("success", false);
+    			return;
+    		}
+    		
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("id", id);
 			map.put("name", name);
@@ -268,23 +286,12 @@ public class ServController {
 			}else{//添加到API服务列表
 				selfHelpOrderService.updateAPI(map);
 			}
-			
 		
-			
-
 			m.put("success", true);
-			//object转化为Json格式
-			JSONObject JSON = CommonUtil.objectToJson(response, m);
-			try {
-				// 把数据返回到页面
-				CommonUtil.writeToJsp(response, JSON);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			m.put("success", false);
+		} finally {
 			//object转化为Json格式
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
 			try {
@@ -349,7 +356,14 @@ public class ServController {
 		try {
 			String servId = request.getParameter("servId");
 			String parent = new String(request.getParameter("parent").getBytes("ISO-8859-1"),"UTF-8");
-					
+			
+			//通过接口方式将数据存储于前端Portal数据库中
+    		String code = CspWorker.deleteService(servId,parent);
+    		if(code == null || !code.equals("200")) {
+    			m.put("success", false);
+    			return;
+    		}
+			
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("servId", servId);
 			map.put("parent", parent);
@@ -361,20 +375,14 @@ public class ServController {
 			if(!StringUtils.isEmpty(parent) && !parent.equals("API")){
 				selfHelpOrderService.delScanType(Integer.parseInt(servId));
 			}
+			//TODO 删除价格表
 			
 			m.put("success", true);
-			//object转化为Json格式
-			JSONObject JSON = CommonUtil.objectToJson(response, m);
-			try {
-				// 把数据返回到页面
-				CommonUtil.writeToJsp(response, JSON);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			m.put("success", false);
+			
+		} finally {
 			//object转化为Json格式
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
 			try {
@@ -388,127 +396,127 @@ public class ServController {
 
 	}
 	
-	/**
-	 * 功能描述：添加服务价格页面
-	 *		 @time 2015-2-3
-	 */
-	@RequestMapping("/addServicePriceUI.html")
-	public String addServicePriceUI(HttpServletRequest request){
-		//获取服务类型
-		int serviceId = Integer.parseInt(request.getParameter("servId"));
-		String parent = request.getParameter("parent");
-		Map<String,Object> newMap = new HashMap<String,Object>();
-		newMap.put("serviceId", serviceId);
-//		newMap.put("parent", parent);
-		List<Price> priceList = servService.findPriceByParam(newMap);
-		if(priceList!=null && priceList.size()>0){
-			for (int i = 0; i < priceList.size(); i++) {
-				if(priceList.get(i).getType()==0){//单次
-					request.setAttribute("priceSingle", priceList.get(i).getPrice());
-				}else if(priceList.get(i).getType()==2){//大于
-					request.setAttribute("priceMaxTimesG", priceList.get(i).getTimesG());
-					request.setAttribute("priceMax", priceList.get(i).getPrice());
-				}
-			}
-		}
-		request.setAttribute("serviceId", serviceId);
-		request.setAttribute("priceList", priceList);//订单总数
-		//查询区间list
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("serviceId", serviceId);
-		//map.put("parent", parent);
-		map.put("type", 1);
-		List<Price> priceLongList = servService.findPriceByParam(map);
-        request.setAttribute("priceLongList", priceLongList);//订单总数
-		return "/source/serviceManage/priceManage";
-	}
+//	/**
+//	 * 功能描述：添加服务价格页面
+//	 *		 @time 2015-2-3
+//	 */
+//	@RequestMapping("/addServicePriceUI.html")
+//	public String addServicePriceUI(HttpServletRequest request){
+//		//获取服务类型
+//		int serviceId = Integer.parseInt(request.getParameter("servId"));
+//		String parent = request.getParameter("parent");
+//		Map<String,Object> newMap = new HashMap<String,Object>();
+//		newMap.put("serviceId", serviceId);
+////		newMap.put("parent", parent);
+//		List<Price> priceList = servService.findPriceByParam(newMap);
+//		if(priceList!=null && priceList.size()>0){
+//			for (int i = 0; i < priceList.size(); i++) {
+//				if(priceList.get(i).getType()==0){//单次
+//					request.setAttribute("priceSingle", priceList.get(i).getPrice());
+//				}else if(priceList.get(i).getType()==2){//大于
+//					request.setAttribute("priceMaxTimesG", priceList.get(i).getTimesG());
+//					request.setAttribute("priceMax", priceList.get(i).getPrice());
+//				}
+//			}
+//		}
+//		request.setAttribute("serviceId", serviceId);
+//		request.setAttribute("priceList", priceList);//订单总数
+//		//查询区间list
+//		Map<String,Object> map = new HashMap<String,Object>();
+//		map.put("serviceId", serviceId);
+//		//map.put("parent", parent);
+//		map.put("type", 1);
+//		List<Price> priceLongList = servService.findPriceByParam(map);
+//        request.setAttribute("priceLongList", priceLongList);//订单总数
+//		return "/source/serviceManage/priceManage";
+//	}
 	
-	/**
-	 * 功能描述：为服务添加价格
-	 * 参数描述：HttpServletRequest request,HttpServletResponse response
-	 *		 @time 2015-1-19
-	 */
-	@RequestMapping(value="/addServicePrice.html",method = RequestMethod.POST)
-	@ResponseBody
-	public void addServicePrice(HttpServletRequest request,HttpServletResponse response){
-		Map<String, Object> m = new HashMap<String, Object>();
-		try {
-			int serviceId = Integer.parseInt(request.getParameter("serviceId"));
-			int timesG = Integer.parseInt(request.getParameter("timesG"));
-			int timesLE = Integer.parseInt(request.getParameter("timesLE"));
-			int type = Integer.parseInt(request.getParameter("type"));
-			double price = Double.parseDouble(request.getParameter("price")); 
-			
-			Price newprice = new Price();
-			newprice.setServiceId(serviceId);
-			newprice.setTimesG(timesG);
-			newprice.setTimesLE(timesLE);
-			newprice.setPrice(price);
-			newprice.setType(type);
-			
-			servService.insertPrice(newprice);
-			
-
-			m.put("success", true);
-			//object转化为Json格式
-			JSONObject JSON = CommonUtil.objectToJson(response, m);
-			try {
-				// 把数据返回到页面
-				CommonUtil.writeToJsp(response, JSON);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			m.put("success", false);
-			//object转化为Json格式
-			JSONObject JSON = CommonUtil.objectToJson(response, m);
-			try {
-				// 把数据返回到页面
-				CommonUtil.writeToJsp(response, JSON);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		}
-	}
+//	/**
+//	 * 功能描述：为服务添加价格
+//	 * 参数描述：HttpServletRequest request,HttpServletResponse response
+//	 *		 @time 2015-1-19
+//	 */
+//	@RequestMapping(value="/addServicePrice.html",method = RequestMethod.POST)
+//	@ResponseBody
+//	public void addServicePrice(HttpServletRequest request,HttpServletResponse response){
+//		Map<String, Object> m = new HashMap<String, Object>();
+//		try {
+//			int serviceId = Integer.parseInt(request.getParameter("serviceId"));
+//			int timesG = Integer.parseInt(request.getParameter("timesG"));
+//			int timesLE = Integer.parseInt(request.getParameter("timesLE"));
+//			int type = Integer.parseInt(request.getParameter("type"));
+//			double price = Double.parseDouble(request.getParameter("price")); 
+//			
+//			Price newprice = new Price();
+//			newprice.setServiceId(serviceId);
+//			newprice.setTimesG(timesG);
+//			newprice.setTimesLE(timesLE);
+//			newprice.setPrice(price);
+//			newprice.setType(type);
+//			
+//			servService.insertPrice(newprice);
+//			
+//
+//			m.put("success", true);
+//			//object转化为Json格式
+//			JSONObject JSON = CommonUtil.objectToJson(response, m);
+//			try {
+//				// 把数据返回到页面
+//				CommonUtil.writeToJsp(response, JSON);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		} catch (NumberFormatException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			m.put("success", false);
+//			//object转化为Json格式
+//			JSONObject JSON = CommonUtil.objectToJson(response, m);
+//			try {
+//				// 把数据返回到页面
+//				CommonUtil.writeToJsp(response, JSON);
+//			} catch (IOException e1) {
+//				e1.printStackTrace();
+//			}
+//		}
+//	}
 	
-	/**
-	 * 功能描述：删除服务价格
-	 * 参数描述：HttpServletRequest request,HttpServletResponse response
-	 *		 @time 2015-1-19
-	 */
-	@RequestMapping(value="/delServicePrice.html",method = RequestMethod.POST)
-	@ResponseBody
-	public void delServicePrice(HttpServletRequest request,HttpServletResponse response){
-		Map<String, Object> m = new HashMap<String, Object>();
-		try {
-			int serviceId = Integer.parseInt(request.getParameter("serviceId"));		
-			servService.delPrice(serviceId);
-			
-			m.put("success", true);
-			//object转化为Json格式
-			JSONObject JSON = CommonUtil.objectToJson(response, m);
-			try {
-				// 把数据返回到页面
-				CommonUtil.writeToJsp(response, JSON);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			m.put("success", false);
-			//object转化为Json格式
-			JSONObject JSON = CommonUtil.objectToJson(response, m);
-			try {
-				// 把数据返回到页面
-				CommonUtil.writeToJsp(response, JSON);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		}
-	}
+//	/**
+//	 * 功能描述：删除服务价格
+//	 * 参数描述：HttpServletRequest request,HttpServletResponse response
+//	 *		 @time 2015-1-19
+//	 */
+//	@RequestMapping(value="/delServicePrice.html",method = RequestMethod.POST)
+//	@ResponseBody
+//	public void delServicePrice(HttpServletRequest request,HttpServletResponse response){
+//		Map<String, Object> m = new HashMap<String, Object>();
+//		try {
+//			int serviceId = Integer.parseInt(request.getParameter("serviceId"));		
+//			servService.delPrice(serviceId);
+//			
+//			m.put("success", true);
+//			//object转化为Json格式
+//			JSONObject JSON = CommonUtil.objectToJson(response, m);
+//			try {
+//				// 把数据返回到页面
+//				CommonUtil.writeToJsp(response, JSON);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		} catch (NumberFormatException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			m.put("success", false);
+//			//object转化为Json格式
+//			JSONObject JSON = CommonUtil.objectToJson(response, m);
+//			try {
+//				// 把数据返回到页面
+//				CommonUtil.writeToJsp(response, JSON);
+//			} catch (IOException e1) {
+//				e1.printStackTrace();
+//			}
+//		}
+//	}
 	
 	/**
 	 * 功能描述：服务详情维护
@@ -519,10 +527,10 @@ public class ServController {
 	public String serviceDetailsUI(HttpServletRequest request) throws UnsupportedEncodingException{
 		//获取服务类型
 		int serviceId = Integer.parseInt(request.getParameter("servId"));
-		String parent = new String(request.getParameter("parent").getBytes("ISO-8859-1"),"UTF-8");
+		int parent = Integer.parseInt(request.getParameter("parent"));
 		ServiceDetail serviceDetail = new ServiceDetail();
 		List<Map<String, Object>> scanList = null;
-		if(!StringUtils.isEmpty(parent)){
+		if(parent != 0){
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("serviceId", serviceId);
 			map.put("parent", parent);
@@ -539,6 +547,7 @@ public class ServController {
 		request.setAttribute("serviceDetail", serviceDetail);
 		request.setAttribute("serviceId", serviceId);
 		request.setAttribute("parent", parent);
+		request.setAttribute("webRootPath",CspWorker.getServerWebRoot());
 		return "/source/adminPage/userManage/servDetails";
 		//return "/source/serviceManage/servDetails";
 	}
@@ -558,22 +567,30 @@ public class ServController {
 		Map<String, Object> m = new HashMap<String, Object>();
 		try {
 			int serviceId = Integer.parseInt(request.getParameter("serviceId"));
-			String parent = request.getParameter("parent");
-			String priceTitle = request.getParameter("priceTitle");
-			String typeTitle = request.getParameter("typeTitle");
-			int servType = 9;
-			if(!StringUtils.isEmpty(request.getParameter("servType"))){
+			int parentC = Integer.parseInt(request.getParameter("parent"));			//一级分类
+			String priceTitle = request.getParameter("priceTitle"); //价格标题
+			String typeTitle = request.getParameter("typeTitle");	//选类型标题
+			int servType = -1;
+			if(!StringUtils.isEmpty(request.getParameter("servType"))){    //选类型(0:单次和长期,1:长期,2:单次)
 				servType = Integer.parseInt(request.getParameter("servType"));
 			}		
-			String servRatesTitle = request.getParameter("servRatesTitle");
-			String[] scanType = null;
-			scanType = request.getParameterValues("scanType");
+			String servRatesTitle = request.getParameter("servRatesTitle");	//服务频率标题
+			String scanTypeStr = null;
+			scanTypeStr = request.getParameter("scanType");				//服务频率
 			String servIconFlag = request.getParameter("servIconFlag");
-			String servIcon = request.getParameter("servIcon");
+			String servIcon = request.getParameter("servIcon");				//服务详情图片
+			
+			//通过接口方式将数据存储于前端Portal数据库中
+    		String code = CspWorker.saveServDetails(serviceId, parentC, priceTitle, 
+    				typeTitle, servType, servRatesTitle, scanTypeStr, servIcon);
+			if(code == null || !code.equals("200")) {
+				m.put("success", false);
+				return;
+			}
 			
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("serviceId", serviceId);
-			map.put("parent", parent);
+			map.put("parent", parentC);
 			ServiceDetail serviceDetail = selfHelpOrderService.findServiceDetail(map);
 			boolean editFlag = false;
 			if(serviceDetail != null){
@@ -582,21 +599,19 @@ public class ServController {
 				selfHelpOrderService.delScanType(serviceId);
 			}
 			
-			int parentC = selfHelpOrderService.selectParentId(parent);
+			//int parentC = selfHelpOrderService.selectParentId(parent);
 			
+			String[] scanType = scanTypeStr.split(",");
 			if(!StringUtils.isEmpty(scanType)){
 				for(int i=0; i<scanType.length; i++){
 					Map<String, Object> insertMap = new HashMap<String, Object>();
 					insertMap.put("serviceId", serviceId);
 					insertMap.put("scanName", scanType[i]);
-					String res = selfHelpOrderService.selectScanType(insertMap);
-					if(StringUtils.isEmpty(res)){
-						int maxScanType = selfHelpOrderService.selectMaxScanType(insertMap);
-						maxScanType += 1;
-						insertMap.put("scanType", maxScanType);
+					Integer scanTypeInt = scanTypeMap.get(scanType[i]);
+					if (scanTypeInt != null) {
+						insertMap.put("scanType", scanTypeInt);
 						selfHelpOrderService.insertScanType(insertMap);
 					}
-					
 				}
 			}
 
@@ -617,18 +632,10 @@ public class ServController {
 			}
 
 			m.put("success", true);
-			//object转化为Json格式
-			JSONObject JSON = CommonUtil.objectToJson(response, m);
-			try {
-				// 把数据返回到页面
-				CommonUtil.writeToJsp(response, JSON);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			m.put("success", false);
+		}finally {
 			//object转化为Json格式
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
 			try {
@@ -637,7 +644,9 @@ public class ServController {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
+			
 		}
+		
 	}
 	
 	/**
@@ -666,15 +675,7 @@ public class ServController {
     		        if(multipartFile==null){
     		        	m.put("success", false);
     		        	m.put("errorMsg", "请上传文件!");
-    		        	
-    					//object转化为Json格式
-    					JSONObject JSON = CommonUtil.objectToJson(response, m);
-    					try {
-    						// 把数据返回到页面
-    						CommonUtil.writeToJsp(response, JSON);
-    					} catch (IOException e) {
-    						e.printStackTrace();
-    					}
+    		        	return;
     		        }
     				
     		        String originalFileName=multipartFile.getOriginalFilename();
@@ -684,18 +685,11 @@ public class ServController {
     		        	m.put("successFlag", false);
     		        	m.put("errorMsg", "请导入png格式的文件!");
     		        	
-    		        	//object转化为Json格式
-    					JSONObject JSON = CommonUtil.objectToJson(response, m);
-    					try {
-    						// 把数据返回到页面
-    						CommonUtil.writeToJsp(response, JSON);
-    					} catch (IOException e) {
-    						e.printStackTrace();
-    					}
+    		        	return;
     		        }
     		        //上传文件名称；
     		        String uploadFilePathName = String.valueOf(System.currentTimeMillis())+originalFileName.substring(originalFileName.lastIndexOf("."));
-    		        boolean isSuccFlag = SFTPUtil.upload(multipartFile, uploadFilePathName);
+    		        boolean isSuccFlag = SFTPUtil.upload(multipartFile, uploadFilePathName, 2);
 
     		        if(isSuccFlag){
     					m.put("success", true);
@@ -704,21 +698,13 @@ public class ServController {
     		        	m.put("success", false);
     		        }
 
-    				//object转化为Json格式
-    				JSONObject JSON = CommonUtil.objectToJson(response, m);
-    				try {
-    					// 把数据返回到页面
-    					CommonUtil.writeToJsp(response, JSON);
-    				} catch (IOException e) {
-    					e.printStackTrace();
-    				}
-    				
     			}
     		}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			m.put("success", false);
+			
+		}finally {
 			//object转化为Json格式
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
 			try {
