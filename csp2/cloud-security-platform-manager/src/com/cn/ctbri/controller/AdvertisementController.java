@@ -115,7 +115,6 @@ public class AdvertisementController {
     		//通过接口方式将数据存储于前端Portal数据库中
     		String adId = CspWorker.addAdvertisement(name, images,type,
     				orderIndex, startDateStr, endDateStr, sdf.format(createDate));
-    		System.out.println("adId:"+adId);
     		if(adId == null || adId.equals("")) {
     			m.put("success", false);
     			return;
