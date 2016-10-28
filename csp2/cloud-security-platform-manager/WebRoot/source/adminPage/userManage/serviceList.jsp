@@ -124,7 +124,7 @@ $(document).ready(function(){
 	          		<option value="3">系统安全帮</option>
 	          		<option value="4">网络安全帮</option>
 	         		<option value="5">移动安全帮</option>
-	          		<option value="6">API</option>
+	          		<option value="6">安全能力API</option>
 	          	</select>
 	        </div>
 	        <div class="analyse_lable fl" style="float: right;">
@@ -165,15 +165,15 @@ $(document).ready(function(){
 	                        	<!-- 
 	                        	<a href="${ctx }/updateServUI.html?servId=${serv.id}&parent=${serv.parentC}&servName=${serv.name}&icon=${serv.icon}&remarks=${serv.remarks}&type=${serv.servType}" class="ope_a add_change">编辑</a>
 	                        	 -->
-	                        	<a href="javascript:void(0)" servid="${serv.id}" parentC="${serv.parentCName}" onclick="delServ(this)" class="ope_a">删除</a>
+	                        	<a href="javascript:void(0)" servid="${serv.id}" parentC="${serv.parentC}" onclick="delServ(this)" class="ope_a">删除</a>
 	                        	<!-- <a href="${ctx }/addServicePriceUI.html?servId=${serv.id}&parent=${serv.parentC}" class="ope_a">设置价格</a> -->
-	                        	<c:if test="${serv.parentCName=='API'}">
+	                        	<c:if test="${serv.parentC==6}">
 		                        	<a href="javascript:void(0)" class="ope_a" onclick="editApiPrice(${serv.id })">设置价格</a>
 	                        	</c:if>
-	                        	<c:if test="${serv.parentCName!='API'}">
+	                        	<c:if test="${serv.parentC!=6}">
 		                        	<a href="javascript:void(0)" class="ope_a" onclick="editPrice(${serv.id })">设置价格</a>
 	                        	</c:if>
-	                        	<a href="${ctx}/serviceDetailsUI.html?servId=${serv.id}&parent=${serv.parentCName}" class="ope_a">详情维护</a>
+	                        	<a href="${ctx}/serviceDetailsUI.html?servId=${serv.id}&parent=${serv.parentC}" class="ope_a">详情维护</a>
 	                        </td>
                    		</tr>
                     </c:forEach>
@@ -207,7 +207,7 @@ $(document).ready(function(){
 			          	<option value="3">系统安全帮</option>
 			          	<option value="4">网络安全帮</option>
 			          	<option value="5">移动安全帮</option>
-			          	<option value="6">API</option>
+			          	<option value="6">安全能力API</option>
                 	</select>
 		            <span id="regist_name_msg" style="color:red;float:left"></span>
 	            </td>
@@ -244,13 +244,13 @@ $(document).ready(function(){
           	<tr class="register_tr">
 	            <td class="regist_title">服务图标</td>
 	            <td class="regist_input" style="width:400px;">
-	            	<form enctype='multipart/form-data' method="post" name="form1" id="form1" > 
+	            	<form enctype='multipart/form-data' method="post" name="form1" id="form" > 
 	            	<div  class="uploader">
 			            <input type="text" class="regist_txt filename" readonly="readonly">
 			            <input type="button" class="filebutton" value="浏览.."/>
 			            <input type="file" id="u8_input" name="file" />
 		            </div>
-		            <input id="u9_input" type="button"  class="filebutton" value="上传" onclick="uploadIcon();" style="margin-left:10px;"/>
+		            <input id="u9_input" type="button"  class="filebutton" value="上传" onclick="saveIcon();" style="margin-left:10px;"/>
 		            <input type="hidden" id="filePathHidden" value=""/>
 		            </form>
 		            <span id="regist_image_msg" style="color:red;float:left"></span>
@@ -283,7 +283,7 @@ $(document).ready(function(){
 			          	<option value="3">系统安全帮</option>
 			          	<option value="4">网络安全帮</option>
 			          	<option value="5">移动安全帮</option>
-			          	<option value="6">API</option>
+			          	<option value="6">安全能力API</option>
                 	</select>
 		            <span id="regist_name_msg" style="color:red;float:left"></span>
 	            </td>
@@ -326,7 +326,7 @@ $(document).ready(function(){
 			            <input type="button" class="filebutton" value="浏览.."/>
 			            <input type="file" class="file" name="file" />
 		            </div>
-		            <input id="u9_input" type="button"  class="filebutton" value="上传" onclick="uploadIcon();" style="margin-left:10px;"/>
+		            <input id="u9_input" type="button"  class="filebutton" value="上传" onclick="editIcon();" style="margin-left:10px;"/>
 		            <input type="hidden" id="edit_filePathHidden" value=""/>
 		            </form>
 		            <span id="regist_image_msg" style="color:red;float:left"></span>
