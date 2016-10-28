@@ -20,7 +20,7 @@
 <link href="${ctx}/source/adminCss/backstage.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/adminCss/fileupload.css" type="text/css" rel="stylesheet"/>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
-<script type="text/javascript" src="${ctx}/source/serviceManage/zxxFile.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/adminJs/zxxFile.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/adminJs/servManage.js"></script>
 <style type="text/css">
 .regist_input {
@@ -103,6 +103,7 @@ $("#u34_input").bind('change',function(){
 });
 
 var serviceDetail = '${serviceDetail}';
+var webPath = '${webRootPath}';
 if(serviceDetail != null && serviceDetail != ''){
 	var detailFlag = '${serviceDetail.detailFlag}';
 	if(detailFlag != null && detailFlag != '' && detailFlag == '0'){
@@ -110,7 +111,11 @@ if(serviceDetail != null && serviceDetail != ''){
 		if(detailIcon != null && detailIcon != ''){
 			var detailIconArray = detailIcon.split(";");
 			for(var i=0; i<detailIconArray.length; i++){
-				var imgsrc = 'http://219.141.189.186:60080/cloud-security-platform/source/images/portal/' + detailIconArray[i];
+				if (detailIconArray[i]==null || detailIconArray[i]=="" ) {
+					continue;
+				}
+				var imgsrc = webPath + 'source/images/serviceDetail/'+ detailIconArray[i];
+				//var imgsrc = 'http://127.0.0.1:8080/csp/source/images/serviceDetail/' + detailIconArray[i];
 				var html = '';
 				html = html + '<div id="resUploadList_'+ i +'" class="upload_append_list"><p><strong>' + detailIconArray[i] + '</strong>'+ 
 					'<a href="javascript:" class="upload_delete" title="删除" data-index="'+ i +'">删除</a><br />' +
