@@ -100,6 +100,8 @@ public class PriceController {
 				price.setServiceId(serviceId);
 				price.setType(0);   //0:单次；1：长期；2：大于
 				price.setPrice(Double.valueOf(singlePriceStr));
+				price.setTimesG(0);
+				price.setTimesLE(0);
 				servService.insertPrice(price);
 			}
 			
