@@ -135,7 +135,7 @@ opacity: 0;
 	                        	<a href="javascript:void(0)" class="ope_a" onclick="upSort('${status.index}')">上移</a>
 	                        </c:if>
 	                        <c:if test="${status.index < adList.size()-1}">
-                        		<a href="javascript:void(0)" class="ope_a" onclick="downSort'${status.index}')">下移</a>
+                        		<a href="javascript:void(0)" class="ope_a" onclick="downSort('${status.index}')">下移</a>
 	                        </c:if>
                         </td>
                         <td>
