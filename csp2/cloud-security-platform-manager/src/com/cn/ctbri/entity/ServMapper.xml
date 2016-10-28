@@ -74,14 +74,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 添加API服务 -->
 	<insert id="insertAPI" parameterType="hashmap">
-		insert into cs_service_api(name,type,parentC,remarks,icon)
-		values(#{name},#{type},#{parent},#{remarks},#{icon})
+		insert into cs_service_api(id,name,type,parentC,remarks,icon)
+		values(#{id},#{name},#{type},#{parent},#{remarks},#{icon})
 		
 	</insert>
 	<!-- 添加普通服务 -->
 	<insert id="insertServ" parameterType="hashmap">
-		insert into cs_service(name,type,parentC,remarks,icon)
-		values(#{name},#{type},#{parent},#{remarks},#{icon})
+		insert into cs_service(id,name,type,parentC,remarks,icon)
+		values(#{id},#{name},#{type},#{parent},#{remarks},#{icon})
 	</insert>
 	
 	<!-- 添加服务详情 -->
@@ -130,6 +130,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="icon!=null">
 				icon=#{icon},
 			</if>
+			<if test="type!=null">
+				type=#{type},
+			</if>
 			<if test="scanTypes!=null">
 				scanTypes=#{scanTypes},
 			</if>
@@ -170,7 +173,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 查询服务详情配置信息 -->
 	<select id="findServiceDetail" parameterType="hashmap" resultType="com.cn.ctbri.entity.ServiceDetail">
-		select * from cs_service_detail where serviceId = #{serviceId} and parentC = (select id from cs_service_dictionary where name = #{parent})
+		select * from cs_service_detail where serviceId = #{serviceId} and parentC = #{parent}
 	</select>
 
 	<!-- 根据服务详情一级分类名字查询服务ID -->
