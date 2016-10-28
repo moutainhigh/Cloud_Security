@@ -30,14 +30,15 @@ public class CspWorker {
 	
 	private static String SERVER_WEB_ROOT;
 	
-	//添加广告
-	private static String Advertisement_Add;
 	
-	//删除广告
-	private static String Advertisement_Delete;
+	private static String Advertisement_Add;		//添加广告
+	private static String Advertisement_Delete;		//删除广告
+	private static String Advertisement_Sort;		//广告排序
 	
-	//广告排序
-	private static String Advertisement_Sort;
+	private static String Service_Add;				//添加服务
+	private static String Service_Update;			//修改服务
+	private static String Service_Delete;			//删除服务
+	private static String ServiceDetail_vindicate;	//服务详情维护
 	
 	static {
 		try {
@@ -47,6 +48,11 @@ public class CspWorker {
 			Advertisement_Add = p.getProperty("Advertisement_Add");
 			Advertisement_Delete = p.getProperty("Advertisement_Delete");
 			Advertisement_Sort = p.getProperty("Advertisement_Sort");
+			
+			Service_Add = p.getProperty("Service_Add");
+			Service_Update = p.getProperty("Service_Update");
+			Service_Delete = p.getProperty("Service_Delete");
+			ServiceDetail_vindicate = p.getProperty("ServiceDetail_vindicate");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -148,6 +154,127 @@ public class CspWorker {
 	}
 	
 	/**
+	 * 功能描述：添加服务
+	 * 参数描述： 
+	 */
+	public static String addService(String name,String parent, 
+			int type, String remarks, String icon) {
+		JSONObject json = new JSONObject();
+		json.put("parent", parent);      //一级分类
+		json.put("type", type);	//服务类型
+		json.put("name", name);		//服务名称
+		json.put("remarks", remarks);	//服务描述
+		json.put("icon", icon);	//服务图标
+		
+		//创建任务发送路径
+    	String url = SERVER_WEB_ROOT + Service_Add;
+		//创建配置
+		ClientConfig config = new DefaultClientConfig();
+		//绑定配置
+    	buildConfig(url,config);
+    	//创建客户端
+        Client client = Client.create(config);
+        WebResource service = client.resource(url);
+        //获取响应结果
+        String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, json.toString()); 
+        JSONObject obj = JSONObject.fromObject(response);
+        String stateCode = obj.getString("code");
+        if(stateCode.equals("200")){
+			String adId = obj.getString("serviceId");
+			return adId;
+		}else{
+			return "";
+		}
+	}
+	
+	/**
+	 * 功能描述：编辑服务
+	 * 参数描述： 
+	 */
+	public static String updateService(String serviceId, String name, 
+			String parent, int type, String remarks, String icon) {
+		JSONObject json = new JSONObject();
+		json.put("serviceId", serviceId);
+		json.put("parent", parent);      //一级分类
+		json.put("type", type);	//服务类型
+		json.put("name", name);		//服务名称
+		json.put("remarks", remarks);	//服务描述
+		json.put("icon", icon);	//服务图标
+		
+		//创建任务发送路径
+    	String url = SERVER_WEB_ROOT + Service_Update;
+		//创建配置
+		ClientConfig config = new DefaultClientConfig();
+		//绑定配置
+    	buildConfig(url,config);
+    	//创建客户端
+        Client client = Client.create(config);
+        WebResource service = client.resource(url);
+        //获取响应结果
+        String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, json.toString()); 
+        JSONObject obj = JSONObject.fromObject(response);
+        String stateCode = obj.getString("code");
+        return stateCode;
+	}
+	
+	/**
+	 * 功能描述：删除服务
+	 * 参数描述： serviceId 服务Id
+	 *		 @time 2016-06-20
+	 */
+	public static String deleteService(String serviceId, String parent){
+		JSONObject json = new JSONObject();
+		json.put("serviceId", serviceId);
+		json.put("parent", parent);      //一级分类
+		//创建任务发送路径
+    	String url = SERVER_WEB_ROOT + Service_Delete;
+		//创建配置
+		ClientConfig config = new DefaultClientConfig();
+		//绑定配置
+    	buildConfig(url,config);
+    	//创建客户端
+        Client client = Client.create(config);
+        WebResource service = client.resource(url);
+        //获取响应结果
+        String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, json.toString()); 
+        JSONObject obj = JSONObject.fromObject(response);
+        String stateCode = obj.getString("code");
+        return stateCode;
+	}
+	
+	/**
+	 * 功能描述：服务详情维护
+	 * 参数描述： 
+	 */
+	public static String saveServDetails(int serviceId, int parent, String priceTitle, String typeTitle, 
+			int servType, String servRatesTitle, String scanType, String servIcon) {
+		JSONObject json = new JSONObject();
+		json.put("serviceId", serviceId);
+		json.put("parent", parent);//一级分类
+		json.put("priceTitle", priceTitle);			//价格标题
+		json.put("typeTitle", typeTitle);			//选类型标题
+		json.put("servType", servType);				//选类型(0:单次和长期,1:长期,2:单次)
+		json.put("servRatesTitle", servRatesTitle);	//服务频率标题
+		json.put("scanType", scanType);				//服务频率
+		json.put("servIcon", servIcon);				//服务详情图片
+		
+		//创建任务发送路径
+    	String url = SERVER_WEB_ROOT + ServiceDetail_vindicate;
+		//创建配置
+		ClientConfig config = new DefaultClientConfig();
+		//绑定配置
+    	buildConfig(url,config);
+    	//创建客户端
+        Client client = Client.create(config);
+        WebResource service = client.resource(url);
+        //获取响应结果
+        String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, json.toString()); 
+        JSONObject obj = JSONObject.fromObject(response);
+        String stateCode = obj.getString("code");
+        return stateCode;
+	}
+	
+	/**
 	 * 功能描述：安全通信配置设置
 	 * 参数描述:String url 路径,ClientConfig config 配置对象
 	 *		 @time 2015-10-16
@@ -194,5 +321,9 @@ public class CspWorker {
     	}
     	return null;
     }
+
+	public static String getServerWebRoot() {
+		return SERVER_WEB_ROOT;
+	}
 
 }
