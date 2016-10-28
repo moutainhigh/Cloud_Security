@@ -40,7 +40,7 @@
 							<div>网站检测数</div>
 						</li>
 						<li class="right">
-							<div class="num">${webPageNum }</div>
+							<div style="width: auto;" class="num">${webPageNum }</div>
 							<div>网页数</div>
 						</li>
 						<li>
@@ -52,7 +52,7 @@
 							<div>防护网站数</div>
 						</li>
 						<li class="right">
-							<div class="num">${leakNum }</div>
+							<div style="width: auto;" class="num">${leakNum }</div>
 							<div>告警数</div>
 						</li>
 					</ul>
