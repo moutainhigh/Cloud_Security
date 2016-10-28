@@ -35,7 +35,7 @@ function changeParentForSearch(){
 }
 
 //上传服务图标
-function uploadIcon(){
+function saveIcon(){
 	var options = {
 		url:'uploadIcon.html',
 		//beforeSubmit:showRequest,
@@ -44,6 +44,28 @@ function uploadIcon(){
 			if(data.success){
 	    		alert("上传服务图标成功!");
 	    		$("#filePathHidden").val(data.filePath);
+	    	}else{
+	    		alert("上传服务图标失败!");
+	    	}
+		  },
+	      error:function(data){
+	      	alert("上传服务图标失败!");
+	      }
+	}
+	// 将options传给ajaxForm
+	$('#form').ajaxSubmit(options);
+
+}
+
+//上传服务图标
+function editIcon(){
+	var options = {
+		url:'uploadIcon.html',
+		//beforeSubmit:showRequest,
+		success: function(data) {
+				
+			if(data.success){
+	    		alert("上传服务图标成功!");
 	    		$("#edit_filePathHidden").val(data.filePath);
 	    	}else{
 	    		alert("上传服务图标失败!");
@@ -86,7 +108,7 @@ function saveServ(){
     	        	}
     	        },
     	        error:function(data){
-    	        	alert("err");
+    	        	alert("服务添加失败!");
     	        }
     	     });
     }
@@ -223,12 +245,21 @@ function saveDetails(serviceId,parent,flag){
 	//服务频率标题
 	var servRatesTitle = $.trim($("#u14_input").val());
 	//服务频率
-	var scanType = [];
+	/*var scanType = [];
 	$("input[name='scanType']").each(function(){
 		if($.trim($(this).val()) != ""){
 			scanType.push($.trim($(this).val()));
 		}
+	});*/
+	var scanType = "";
+	$("input[name='scanType']").each(function(){
+		if($.trim($(this).val()) != ""){
+			scanType= scanType+","+$.trim($(this).val());
+		}
 	});
+	if (scanType!="") {
+		scanType = scanType.slice(1);
+	}
 	//详细信息选项
 	var servSelected = $("#u34_input").val();
 	//服务详细信息
@@ -258,11 +289,11 @@ function saveDetails(serviceId,parent,flag){
 			alert("服务详细信息不能为空，请至少上传一张图片或填写api信息！");
 			return;
 		}
-		if(parent != 'API'){
+		if(parent != 6){
 			if(servRatesTitle == null || servRatesTitle == ""){
 				alert("请填写服务频率标题！");
 				return;
-			} else if(scanType.length == 0){
+			} else if(scanType== ""){
 				alert("请至少填写一个服务频率！");
 				return;
 			}
@@ -283,7 +314,7 @@ function saveDetails(serviceId,parent,flag){
         	}
         },
         error:function(data){
-        	alert("err");
+        	alert("服务详情设置失败!");
         }
      });
 }
