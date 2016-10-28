@@ -265,8 +265,8 @@ function addOnePrice(scantype_index){
 	htmlStr = htmlStr.replace(new RegExp("timesG_0",'gm'), "timesG_"+maxPriceIndex);
 	htmlStr = htmlStr.replace(new RegExp("timesLE_0",'gm'), "timesLE_"+maxPriceIndex);
 	htmlStr = htmlStr.replace(new RegExp("title_timesLE_0",'gm'), "title_timesLE_"+maxPriceIndex);
-	htmlStr = htmlStr.replace(new RegExp("deleteOnePrice(0)",'gm'),"deleteOnePrice("+maxPriceIndex+")");
-	htmlStr = htmlStr.replace(new RegExp("getPriceType(this.value,0)",'gm'),"getPriceType(this.value,"+maxPriceIndex+")");
+	htmlStr = htmlStr.replace("deleteOnePrice(0)","deleteOnePrice("+maxPriceIndex+")");
+	htmlStr = htmlStr.replace("getPriceType(this.value,0)","getPriceType(this.value,"+maxPriceIndex+")");
 	$("#scanTypeTable_"+scantype_index).append(htmlStr);
 	$("#price_scanType_"+maxPriceIndex).val(scantype_index);
 	
