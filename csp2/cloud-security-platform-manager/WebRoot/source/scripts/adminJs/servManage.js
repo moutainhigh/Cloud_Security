@@ -318,7 +318,6 @@ function updateServ(){
     var homeIcon = $("#edit_homeIconPathHidden").val();
 	var categoryIcon= $("#edit_categoryIconPathHidden").val();
 	var detailIcon = $("#edit_detailIconPathHidden").val();
-	alert(remarks);
 	
     if(parent == -1){
 	    alert("请选择一级分类!");
