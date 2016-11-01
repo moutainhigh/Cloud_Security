@@ -120,10 +120,10 @@ $(document).ready(function(){
 	            <select class="text" id="u5_input" onchange="changeParentForSearch();" name="parentC">
 	                <option value="">请选择</option>
 	               	<option value="1">网站安全帮</option>
-	          		<option value="2">数据库安全帮</option>
+	          		<!--  <option value="2">数据库安全帮</option>
 	          		<option value="3">系统安全帮</option>
 	          		<option value="4">网络安全帮</option>
-	         		<option value="5">移动安全帮</option>
+	         		<option value="5">移动安全帮</option>-->
 	          		<option value="6">安全能力API</option>
 	          	</select>
 	        </div>
@@ -161,7 +161,7 @@ $(document).ready(function(){
 		                        </c:if>
 	                        </td>
 	                        <td>
-	                        	<a href="javascript:void(0);" class="ope_a edit_service" servId="${serv.id}" remarks="${serv.remarks}" parent="${serv.parentC}" icon="${serv.icon}" servName="${serv.name}" type="${serv.servType}">编辑</a>
+	                        	<a href="javascript:void(0);" class="ope_a edit_service" servId="${serv.id}" remarks="${serv.remarks}" parent="${serv.parentC}" homeIcon="${serv.homeIcon}" categoryIcon="${serv.categoryIcon }" detailIcon="${serv.detailIcon }" servName="${serv.name}" type="${serv.servType}">编辑</a>
 	                        	<!-- 
 	                        	<a href="${ctx }/updateServUI.html?servId=${serv.id}&parent=${serv.parentC}&servName=${serv.name}&icon=${serv.icon}&remarks=${serv.remarks}&type=${serv.servType}" class="ope_a add_change">编辑</a>
 	                        	 -->
@@ -203,10 +203,10 @@ $(document).ready(function(){
 		            <select class="regist_sel" id="serv_parent"  onchange="changeParent();">
                 		<option selected="selected" value="-1">请选择</option>
                 		<option value="1">网站安全帮</option>
-			          	<option value="2">数据库安全帮</option>
+			          	<!-- <option value="2">数据库安全帮</option>
 			          	<option value="3">系统安全帮</option>
 			          	<option value="4">网络安全帮</option>
-			          	<option value="5">移动安全帮</option>
+			          	<option value="5">移动安全帮</option> -->
 			          	<option value="6">安全能力API</option>
                 	</select>
 		            <span id="regist_name_msg" style="color:red;float:left"></span>
@@ -236,22 +236,54 @@ $(document).ready(function(){
           	<tr class="register_tr">
 	            <td class="regist_title">服务描述</td>
 	            <td class="regist_input">
-		            <textarea id="serv_remarks" class="regist_txt" style="height:160px;"></textarea>
+		            <textarea id="serv_remarks" class="regist_txt" style="height:130px;"></textarea>
 		            <span id="regist_name_msg" style="color:red;float:left"></span>
 	            </td>
 	            <td class="regist_prompt"></td>
           	</tr>
-          	<tr class="register_tr">
-	            <td class="regist_title">服务图标</td>
+	         <tr class="register_tr">
+	            <td class="regist_title">首页服务图标</td>
 	            <td class="regist_input" style="width:400px;">
-	            	<form enctype='multipart/form-data' method="post" name="form1" id="form" > 
+	            	<form enctype='multipart/form-data' method="post" name="form1" id="homeIconForm" > 
 	            	<div  class="uploader">
 			            <input type="text" class="regist_txt filename" readonly="readonly">
 			            <input type="button" class="filebutton" value="浏览.."/>
-			            <input type="file" id="u8_input" name="file" />
+			            <input type="file" id="u8_input" name="file" class="homeIconPath"/>
 		            </div>
-		            <input id="u9_input" type="button"  class="filebutton" value="上传" onclick="saveIcon();" style="margin-left:10px;"/>
-		            <input type="hidden" id="filePathHidden" value=""/>
+		            <input id="u9_input" type="button"  class="filebutton" value="上传" onclick="saveHomeIcon();" style="margin-left:10px;"/>
+		            <input type="hidden" id="homeIconPathHidden" value=""/>
+		            </form>
+		            <span id="regist_image_msg" style="color:red;float:left"></span>
+		        </td>
+		        <td class="regist_prompt" style="text-align:left;">图片大小 </td>
+	         </tr>
+	         <tr class="register_tr">
+	            <td class="regist_title">二级服务图标</td>
+	            <td class="regist_input" style="width:400px;">
+	            	<form enctype='multipart/form-data' method="post" name="form1" id="categoryIconForm" > 
+	            	<div  class="uploader">
+			            <input type="text" class="regist_txt filename" readonly="readonly">
+			            <input type="button" class="filebutton" value="浏览.."/>
+			            <input type="file" id="u8_input" name="file" class="categoryIconPath"/>
+		            </div>
+		            <input id="u9_input" type="button"  class="filebutton" value="上传" onclick="saveCategoryIcon();" style="margin-left:10px;"/>
+		            <input type="hidden" id="categoryIconPathHidden" value=""/>
+		            </form>
+		            <span id="regist_image_msg" style="color:red;float:left"></span>
+		        </td>
+		        <td class="regist_prompt" style="text-align:left;">请上传.jpg,.bmp或.png格式的文件</td>
+	         </tr>
+	         <tr class="register_tr">
+	            <td class="regist_title">详情服务图标</td>
+	            <td class="regist_input" style="width:400px;">
+	            	<form enctype='multipart/form-data' method="post" name="form1" id="detailIconForm" > 
+	            	<div  class="uploader">
+			            <input type="text" class="regist_txt filename" readonly="readonly">
+			            <input type="button" class="filebutton" value="浏览.."/>
+			            <input type="file" id="u8_input" name="file" class="detailIconPath"/>
+		            </div>
+		            <input id="u9_input" type="button"  class="filebutton" value="上传" onclick="saveDetailIcon();" style="margin-left:10px;"/>
+		            <input type="hidden" id="detailIconPathHidden" value=""/>
 		            </form>
 		            <span id="regist_image_msg" style="color:red;float:left"></span>
 		        </td>
@@ -279,10 +311,10 @@ $(document).ready(function(){
 		            <select class="regist_sel" id="edit_serv_parent"  onchange="changeEditParent();">
                 		<option selected="selected" value="-1">请选择</option>
                 		<option value="1">网站安全帮</option>
-			          	<option value="2">数据库安全帮</option>
+			          	<!-- <option value="2">数据库安全帮</option>
 			          	<option value="3">系统安全帮</option>
 			          	<option value="4">网络安全帮</option>
-			          	<option value="5">移动安全帮</option>
+			          	<option value="5">移动安全帮</option> -->
 			          	<option value="6">安全能力API</option>
                 	</select>
 		            <span id="regist_name_msg" style="color:red;float:left"></span>
@@ -312,22 +344,54 @@ $(document).ready(function(){
           	<tr class="register_tr">
 	            <td class="regist_title">服务描述</td>
 	            <td class="regist_input">
-		            <textarea id="edit_serv_remarks" class="regist_txt" style="height:160px;"></textarea>
+		            <textarea id="edit_serv_remarks" class="regist_txt" style="height:130px;"></textarea>
 		            <span id="regist_name_msg" style="color:red;float:left"></span>
 	            </td>
 	            <td class="regist_prompt"></td>
           	</tr>
           	<tr class="register_tr">
-	            <td class="regist_title">服务图标</td>
+	            <td class="regist_title">首页服务图标</td>
 	            <td class="regist_input" style="width:400px;">
-	            	<form enctype='multipart/form-data' method="post" name="form1" id="form1" > 
+	            	<form enctype='multipart/form-data' method="post" name="form1" id="homeIconForm1" > 
 	            	<div  class="uploader">
-			            <input type="text" class="regist_txt filename" readonly="readonly">
+			            <input type="text" class="regist_txt filename" readonly="readonly" id="homeIconName">
 			            <input type="button" class="filebutton" value="浏览.."/>
-			            <input type="file" class="file" name="file" />
+			            <input type="file" class="file homeIconPath" name="file" />
 		            </div>
-		            <input id="u9_input" type="button"  class="filebutton" value="上传" onclick="editIcon();" style="margin-left:10px;"/>
-		            <input type="hidden" id="edit_filePathHidden" value=""/>
+		            <input id="u9_input" type="button"  class="filebutton" value="上传" onclick="editHomeIcon();" style="margin-left:10px;"/>
+		            <input type="hidden" id="edit_homeIconPathHidden" value=""/>
+		            </form>
+		            <span id="regist_image_msg" style="color:red;float:left"></span>
+		        </td>
+		        <td class="regist_prompt" style="text-align:left;">请上传.jpg,.bmp或.png格式的文件</td>
+	         </tr>
+	         <tr class="register_tr">
+	            <td class="regist_title">二级服务图标</td>
+	            <td class="regist_input" style="width:400px;">
+	            	<form enctype='multipart/form-data' method="post" name="form1" id="categoryIconForm1" > 
+	            	<div  class="uploader">
+			            <input type="text" class="regist_txt filename" readonly="readonly" id="categoryIconName">
+			            <input type="button" class="filebutton" value="浏览.."/>
+			            <input type="file" class="file categoryIconPath" name="file" />
+		            </div>
+		            <input id="u9_input" type="button"  class="filebutton" value="上传" onclick="editCategoryIcon();" style="margin-left:10px;"/>
+		            <input type="hidden" id="edit_categoryIconPathHidden" value=""/>
+		            </form>
+		            <span id="regist_image_msg" style="color:red;float:left"></span>
+		        </td>
+		        <td class="regist_prompt" style="text-align:left;">请上传.jpg,.bmp或.png格式的文件</td>
+	         </tr>
+	         <tr class="register_tr">
+	            <td class="regist_title">详情服务图标</td>
+	            <td class="regist_input" style="width:400px;">
+	            	<form enctype='multipart/form-data' method="post" name="form1" id="detailIconFrom1" > 
+	            	<div  class="uploader">
+			            <input type="text" class="regist_txt filename" readonly="readonly" id="detailIconName">
+			            <input type="button" class="filebutton" value="浏览.."/>
+			            <input type="file" class="file detailIconPath" name="file" />
+		            </div>
+		            <input id="u9_input" type="button"  class="filebutton" value="上传" onclick="editDetailIcon();" style="margin-left:10px;"/>
+		            <input type="hidden" id="edit_detailIconPathHidden" value=""/>
 		            </form>
 		            <span id="regist_image_msg" style="color:red;float:left"></span>
 		        </td>
