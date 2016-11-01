@@ -34,8 +34,8 @@ function changeParentForSearch(){
 	}
 }
 
-//上传服务图标
-function saveIcon(){
+//上传首页服务图标
+function saveHomeIcon(){
 	var options = {
 		url:'uploadIcon.html',
 		//beforeSubmit:showRequest,
@@ -43,7 +43,7 @@ function saveIcon(){
 				
 			if(data.success){
 	    		alert("上传服务图标成功!");
-	    		$("#filePathHidden").val(data.filePath);
+	    		$("#homeIconPathHidden").val(data.filePath);
 	    	}else{
 	    		alert("上传服务图标失败!");
 	    	}
@@ -53,12 +53,12 @@ function saveIcon(){
 	      }
 	}
 	// 将options传给ajaxForm
-	$('#form').ajaxSubmit(options);
+	$('#homeIconForm').ajaxSubmit(options);
 
 }
 
-//上传服务图标
-function editIcon(){
+//上传二级服务图标
+function saveCategoryIcon(){
 	var options = {
 		url:'uploadIcon.html',
 		//beforeSubmit:showRequest,
@@ -66,7 +66,7 @@ function editIcon(){
 				
 			if(data.success){
 	    		alert("上传服务图标成功!");
-	    		$("#edit_filePathHidden").val(data.filePath);
+	    		$("#categoryIconPathHidden").val(data.filePath);
 	    	}else{
 	    		alert("上传服务图标失败!");
 	    	}
@@ -76,7 +76,97 @@ function editIcon(){
 	      }
 	}
 	// 将options传给ajaxForm
-	$('#form1').ajaxSubmit(options);
+	$('#categoryIconForm').ajaxSubmit(options);
+}
+
+//上传详情服务图标
+function saveDetailIcon(){
+	var options = {
+		url:'uploadIcon.html',
+		//beforeSubmit:showRequest,
+		success: function(data) {
+				
+			if(data.success){
+	    		alert("上传服务图标成功!");
+	    		$("#detailIconPathHidden").val(data.filePath);
+	    	}else{
+	    		alert("上传服务图标失败!");
+	    	}
+		  },
+	      error:function(data){
+	      	alert("上传服务图标失败!");
+	      }
+	}
+	// 将options传给ajaxForm
+	$('#detailIconForm').ajaxSubmit(options);
+}
+
+//修改首页服务图标
+function editHomeIcon(){
+	var options = {
+		url:'uploadIcon.html',
+		//beforeSubmit:showRequest,
+		success: function(data) {
+				
+			if(data.success){
+	    		alert("上传服务图标成功!");
+	    		$("#edit_homeIconPathHidden").val(data.filePath);
+	    	}else{
+	    		alert("上传服务图标失败!");
+	    	}
+		  },
+	      error:function(data){
+	      	alert("上传服务图标失败!");
+	      }
+	}
+	// 将options传给ajaxForm
+	$('#homeIconForm1').ajaxSubmit(options);
+
+}
+
+//修改二级页服务图标
+function editCategoryIcon(){
+	var options = {
+		url:'uploadIcon.html',
+		//beforeSubmit:showRequest,
+		success: function(data) {
+				
+			if(data.success){
+	    		alert("上传服务图标成功!");
+	    		$("#edit_categoryIconPathHidden").val(data.filePath);
+	    	}else{
+	    		alert("上传服务图标失败!");
+	    	}
+		  },
+	      error:function(data){
+	      	alert("上传服务图标失败!");
+	      }
+	}
+	// 将options传给ajaxForm
+	$('#categoryIconForm1').ajaxSubmit(options);
+
+}
+
+//修改详情页服务图标
+function editDetailIcon(){
+	var options = {
+		url:'uploadIcon.html',
+		//beforeSubmit:showRequest,
+		success: function(data) {
+				
+			if(data.success){
+	    		alert("上传服务图标成功!");
+	    		$("#edit_detailIconPathHidden").val(data.filePath);
+	    	}else{
+	    		alert("上传服务图标失败!");
+	    	}
+		  },
+	      error:function(data){
+	      	alert("上传服务图标失败!");
+	      }
+	}
+	// 将options传给ajaxForm
+	$('#detailIconForm1').ajaxSubmit(options);
 
 }
 
@@ -86,18 +176,36 @@ function saveServ(){
 	var type = $("#serv_type").val();
 	var name = $("#serv_name").val();
     var remarks = $("#serv_remarks").val();
-    var icon = $("#filePathHidden").val();
-    if(name==null||name==""){
+    var homeIcon = $("#homeIconPathHidden").val();
+    var categoryIcon = $("#categoryIconPathHidden").val();
+    var detailIcon = $("#detailIconPathHidden").val();
+    
+    if(parent == -1){
+	    alert("请选择一级分类!");
+	    return;
+    }else if (type == -1){
+    	alert("请选择服务类型!");
+	    return;
+    }else if(name==null||name==""){
     	alert("请填写服务名称!");
     	return;
-    }else if(icon==null||icon==""){
-    	alert("请上传服务图标!");
+    }else if (remarks=null || remarks=="") {
+    	alert("请填写服务描述!");
+    	return;
+    }else if(homeIcon==null||homeIcon==""){
+    	alert("请上传首页服务图标!");
+    	return;
+    }else if(categoryIcon==null||categoryIcon==""){
+    	alert("请上传二级服务图标!");
+    	return;
+    }else if(detailIcon==null||detailIcon==""){
+    	alert("请上传详情服务图标!");
     	return;
     }else{
     	 $.ajax({
     	        type: "POST",
     	        url: "addServ.html",
-    	        data: {"parent":parent,"type":type,"name":name,"remarks":remarks,"icon":icon},
+    	        data: {"parent":parent,"type":type,"name":name,"remarks":remarks,"homeIcon":homeIcon,"categoryIcon":categoryIcon,"detailIcon":detailIcon},
     	        dataType:"json",
     	        success: function(data){
     	        	if(data.success){
@@ -128,7 +236,9 @@ function editServ(Obj){
 	var servId = $(Obj).attr("servId");
 	var remarks = $(Obj).attr("remarks");
 	var parent = $(Obj).attr("parent");
-	var icon = $(Obj).attr("icon");
+	var homeIcon = $(Obj).attr("homeIcon");
+	var categoryIcon = $(Obj).attr("categoryIcon");
+	var detailIcon = $(Obj).attr("detailIcon");
 	var servName = $(Obj).attr("servName");
 	var type = $(Obj).attr("type");
 	
@@ -137,8 +247,13 @@ function editServ(Obj){
 	$("#edit_serv_type").val(type);
 	$("#edit_serv_name").val(servName);
 	$("#edit_serv_remarks").val(remarks);
-	$("#edit_filePathHidden").val(icon);
-	$(".filename").val(icon);
+	$("#homeIconName").val(homeIcon);
+	$("#categoryIconName").val(categoryIcon);
+	$("#detailIconName").val(detailIcon);
+	
+	$("#edit_homeIconPathHidden").val(homeIcon);
+	$("#edit_categoryIconPathHidden").val(categoryIcon);
+	$("#edit_detailIconPathHidden").val(detailIcon);
 	
 	oMark.style.display ="block";
 	editUI.style.display ="block";
@@ -172,7 +287,7 @@ function delServ(Obj){
 }
 
 //修改服务
-function updateServ(Obj){
+/*function updateServ(Obj){
 	var servid = $(Obj).attr("servid");
 	var parentC = $(Obj).attr("parentC");
 	 $.ajax({
@@ -191,7 +306,7 @@ function updateServ(Obj){
 	        	alert("err");
 	        }
 	 });
-}
+}*/
 
 //修改服务
 function updateServ(){
@@ -200,28 +315,48 @@ function updateServ(){
 	var type = $("#edit_serv_type").val();
 	var name = $("#edit_serv_name").val();
     var remarks = $("#edit_serv_remarks").val();
-    var icon = $("#edit_filePathHidden").val();
-    if(name==null||name==""){
+    var homeIcon = $("#edit_homeIconPathHidden").val();
+	var categoryIcon= $("#edit_categoryIconPathHidden").val();
+	var detailIcon = $("#edit_detailIconPathHidden").val();
+	alert(remarks);
+	
+    if(parent == -1){
+	    alert("请选择一级分类!");
+	    return;
+    }else if (type == -1){
+    	alert("请选择服务类型!");
+	    return;
+    }else if(name==null||name==""){
     	alert("请填写服务名称!");
     	return;
-    }else if(icon==null||icon==""){
-    	alert("请上传服务图标!");
+    }else if (remarks=null || remarks=="") {
+    	alert("请填写服务描述!");
+    	return;
+    }else if(homeIcon==null||homeIcon==""){
+    	alert("请上传首页服务图标!");
+    	return;
+    }else if(categoryIcon==null||categoryIcon==""){
+    	alert("请上传二级服务图标!");
+    	return;
+    }else if(detailIcon==null||detailIcon==""){
+    	alert("请上传详情服务图标!");
     	return;
     }else{
     	 $.ajax({
     	        type: "POST",
     	        url: "updateServ.html",
-    	        data: {"servId":servId,"parent":parent,"type":type,"name":name,"remarks":remarks,"icon":icon},
+    	        data: {"servId":servId,"parent":parent,"type":type,"name":name,"remarks":remarks,"homeIcon":homeIcon,"categoryIcon":categoryIcon,"detailIcon":detailIcon},
     	        dataType:"json",
     	        success: function(data){
     	        	if(data.success){
     	        		alert("服务修改成功!");
+    	        		init();
     	        	}else{
     	        		alert("服务修改失败!");
     	        	}
     	        },
     	        error:function(data){
-    	        	alert("err");
+    	        	alert("服务修改失败!");
     	        }
     	     });
     }
@@ -309,6 +444,7 @@ function saveDetails(serviceId,parent,flag){
         success: function(data){
         	if(data.success){
         		alert("服务详情设置成功!");
+        		init();
         	}else{
         		alert("服务详情设置失败!");
         	}
