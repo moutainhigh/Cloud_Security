@@ -15,6 +15,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="orderType" column="ordertype"/>
 		<result property="parentC" column="parentC"/>
 		<result property="websoc" column="websoc"/>
+		<result property="home_icon" column="homeIcon"/>
+		<result property="category_icon" column="categoryIcon"/>
+		<result property="detail_icon" column="detailIcon"/>
 	</resultMap>
 	<!-- 查询所有记录 -->
 	<select id="list" resultMap="ServRM">
@@ -48,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 查询所有服务 -->
 	<select id="findSerList" resultType="hashmap" parameterType="hashmap">
-		SELECT s.id,s.name,type.name typeName,type.id servType,s.remarks,s.parentC, ptype.name parentCName,s.icon FROM cs_service s,cs_service_type type,cs_service_dictionary ptype 
+		SELECT s.id,s.name,type.name typeName,type.id servType,s.remarks,s.parentC, ptype.name parentCName,s.home_icon homeIcon,s.category_icon categoryIcon,s.detail_icon detailIcon  FROM cs_service s,cs_service_type type,cs_service_dictionary ptype 
 		WHERE s.type=type.id and s.parentC = ptype.id
 		<if test="name!=null and name!=''">
 			and s.name like CONCAT('%','${name}','%') 
@@ -59,7 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="parent!=null and parent!=-1">
             and s.parentC=#{parent}
         </if>			
-		union select a.id,a.name,type.name typeName,a.type servType,a.remarks,a.parentC, ptype.name parentCName,a.icon from cs_service_api a,cs_service_type type,cs_service_dictionary ptype
+		union select a.id,a.name,type.name typeName,a.type servType,a.remarks,a.parentC, ptype.name parentCName,a.home_icon homeIcon,a.category_icon categoryIcon,a.detail_icon detailIcon from cs_service_api a,cs_service_type type,cs_service_dictionary ptype
 		where a.type=type.id and a.parentC = ptype.id
 		<if test="name!=null and name!=''">
             and a.name like CONCAT('%','${name}','%') 
@@ -74,14 +77,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 添加API服务 -->
 	<insert id="insertAPI" parameterType="hashmap">
-		insert into cs_service_api(id,name,type,parentC,remarks,icon)
-		values(#{id},#{name},#{type},#{parent},#{remarks},#{icon})
+		insert into cs_service_api(id,name,type,parentC,remarks,home_icon,category_icon,detail_icon)
+		values(#{id},#{name},#{type},#{parent},#{remarks},#{homeIcon},#{categoryIcon},#{detailIcon})
 		
 	</insert>
 	<!-- 添加普通服务 -->
 	<insert id="insertServ" parameterType="hashmap">
-		insert into cs_service(id,name,type,parentC,remarks,icon)
-		values(#{id},#{name},#{type},#{parent},#{remarks},#{icon})
+		insert into cs_service(id,name,type,parentC,remarks,home_icon,category_icon,detail_icon)
+		values(#{id},#{name},#{type},#{parent},#{remarks},#{homeIcon},#{categoryIcon},#{detailIcon})
 	</insert>
 	
 	<!-- 添加服务详情 -->
@@ -127,8 +130,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="parent!=null">
 				parentC=#{parent},
 			</if>
-			<if test="icon!=null">
-				icon=#{icon},
+			<if test="homeIcon!=null">
+				home_icon=#{homeIcon},
+			</if>
+			<if test="categoryIcon!=null">
+				category_icon=#{categoryIcon},
+			</if>
+			<if test="detailIcon!=null">
+				detail_icon=#{detailIcon},
 			</if>
 			<if test="type!=null">
 				type=#{type},
@@ -158,8 +167,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="parent!=null">
 				parentC=#{parent},
 			</if>
-			<if test="icon!=null">
-				icon=#{icon},
+			<if test="homeIcon!=null">
+				home_icon=#{homeIcon},
+			</if>
+			<if test="categoryIcon!=null">
+				category_icon=#{categoryIcon},
+			</if>
+			<if test="detailIcon!=null">
+				detail_icon=#{detailIcon},
 			</if>
 			<if test="scanTypes!=null">
 				scanTypes=#{scanTypes},
