@@ -210,11 +210,13 @@ public class ServController {
 			String parent = request.getParameter("parent");
 			int type = Integer.parseInt(request.getParameter("type"));
 			String remarks = request.getParameter("remarks");
-			String icon = request.getParameter("icon");
+			String homeIcon = request.getParameter("homeIcon");
+			String categoryIcon = request.getParameter("categoryIcon");
+			String detailIcon = request.getParameter("detailIcon");
 			
 			//通过接口方式将数据存储于前端Portal数据库中
     		String servId = CspWorker.addService(name, parent,type,
-    				remarks, icon);
+    				remarks, homeIcon, categoryIcon, detailIcon);
     		if(servId == null || servId.equals("")) {
     			m.put("success", false);
     			return;
@@ -226,7 +228,9 @@ public class ServController {
 			map.put("parent", parent);
 			map.put("type", type);
 			map.put("remarks", remarks);
-			map.put("icon", icon);
+			map.put("homeIcon", homeIcon);
+			map.put("categoryIcon", categoryIcon);
+			map.put("detailIcon", detailIcon);
 			if(!parent.equals("6")){//添加到普通服务列表
 				selfHelpOrderService.insertServ(map);
 			}else{//添加到API服务列表
@@ -264,11 +268,13 @@ public class ServController {
 			String parent = request.getParameter("parent");
 			int type = Integer.parseInt(request.getParameter("type"));
 			String remarks = request.getParameter("remarks");
-			String icon = request.getParameter("icon");
+			String homeIcon = request.getParameter("homeIcon");
+			String categoryIcon = request.getParameter("categoryIcon");
+			String detailIcon = request.getParameter("detailIcon");
 			
 			//通过接口方式将数据存储于前端Portal数据库中
     		String code = CspWorker.updateService(id, name, parent,type,
-    				remarks, icon);
+    				remarks, homeIcon, categoryIcon, detailIcon);
     		if(code == null || !code.equals("200")) {
     			m.put("success", false);
     			return;
@@ -280,8 +286,10 @@ public class ServController {
 			map.put("parent", parent);
 			map.put("type", type);
 			map.put("remarks", remarks);
-			map.put("icon", icon);
-			if(!parent.equals("API")){//添加到普通服务列表
+			map.put("homeIcon", homeIcon);
+			map.put("categoryIcon", categoryIcon);
+			map.put("detailIcon", detailIcon);
+			if(!parent.equals("6")){//添加到普通服务列表
 				selfHelpOrderService.updateServ(map);
 			}else{//添加到API服务列表
 				selfHelpOrderService.updateAPI(map);
