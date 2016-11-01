@@ -158,13 +158,16 @@ public class CspWorker {
 	 * 参数描述： 
 	 */
 	public static String addService(String name,String parent, 
-			int type, String remarks, String icon) {
+			int type, String remarks, String homeIcon, 
+			String categoryIcon, String detailIcon) {
 		JSONObject json = new JSONObject();
 		json.put("parent", parent);      //一级分类
 		json.put("type", type);	//服务类型
 		json.put("name", name);		//服务名称
 		json.put("remarks", remarks);	//服务描述
-		json.put("icon", icon);	//服务图标
+		json.put("homeIcon", homeIcon);	//首页服务图标
+		json.put("categoryIcon", categoryIcon);	//二级服务图标
+		json.put("detailIcon", detailIcon);	//详情页服务图标
 		
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + Service_Add;
@@ -192,14 +195,17 @@ public class CspWorker {
 	 * 参数描述： 
 	 */
 	public static String updateService(String serviceId, String name, 
-			String parent, int type, String remarks, String icon) {
+			String parent, int type, String remarks, String homeIcon, 
+			String categoryIcon, String detailIcon) {
 		JSONObject json = new JSONObject();
 		json.put("serviceId", serviceId);
 		json.put("parent", parent);      //一级分类
 		json.put("type", type);	//服务类型
 		json.put("name", name);		//服务名称
 		json.put("remarks", remarks);	//服务描述
-		json.put("icon", icon);	//服务图标
+		json.put("homeIcon", homeIcon);	//首页服务图标
+		json.put("categoryIcon", categoryIcon);	//二级服务图标
+		json.put("detailIcon", detailIcon);	//详情页服务图标
 		
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + Service_Update;
