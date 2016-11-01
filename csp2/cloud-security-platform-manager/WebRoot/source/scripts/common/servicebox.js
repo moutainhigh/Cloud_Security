@@ -2,13 +2,40 @@
 //添加
 $(function(){
 	//图片选择时,图片名称变换
-	$("input[type=file]").change(function(){
+	$(".homeIconPath").change(function(){
 		$(this).parents(".uploader").find(".filename").val($(this).val());
-		$("#filePathHidden").val("");
-		$("#edit_filePathHidden").val("");
+		$("#homeIconPathHidden").val("");
+		$("#edit_homeIconPathHidden").val("");
 	});
 	//未选择图片时,		
-	$("input[type=file]").each(function(){
+	$(".homeIconPath").each(function(){
+		if($(this).val()==""){
+			$(this).parents(".uploader").find(".filename").val("No file selected...");
+		}
+	});
+	
+	//图片选择时,图片名称变换
+	$(".categoryIconPath").change(function(){
+		$(this).parents(".uploader").find(".filename").val($(this).val());
+		$("#categoryIconPathHidden").val("");
+		$("#edit_categoryIconPathHidden").val("");
+	});
+	
+	//未选择图片时,		
+	$(".categoryIconPath").each(function(){
+		if($(this).val()==""){
+			$(this).parents(".uploader").find(".filename").val("No file selected...");
+		}
+	});
+	
+	//图片选择时,图片名称变换
+	$(".detailIconPath").change(function(){
+		$(this).parents(".uploader").find(".filename").val($(this).val());
+		$("#detailIconPathHidden").val("");
+		$("#edit_detailIconPathHidden").val("");
+	});
+	//未选择图片时,		
+	$(".detailIconPath").each(function(){
 		if($(this).val()==""){
 			$(this).parents(".uploader").find(".filename").val("No file selected...");
 		}
@@ -25,7 +52,9 @@ $(function(){
 		$("#serv_type").val("-1");
 		$("#serv_name").val("");
 		$("#serv_remarks").val("");
-		$("#filePathHidden").val("");
+		$("#homeIconPathHidden").val("");
+		$("#categoryIconPathHidden").val("");
+		$("#detailIconPathHidden").val("");
 		$(".file").val("");
 		$(".filename").val("");
 		
@@ -50,7 +79,9 @@ $(function(){
 		$("#serv_type").val("-1");
 		$("#serv_name").val("");
 		$("#serv_remarks").val("");
-		$("#filePathHidden").val("");
+		$("#homeIconPathHidden").val("");
+		$("#categoryIconPathHidden").val("");
+		$("#detailIconPathHidden").val("");
 		$(".file").val("");
 		$(".filename").val("");
 	});
@@ -59,7 +90,9 @@ $(function(){
 		var servId = $(this).attr("servId");
 		var remarks = $(this).attr("remarks");
 		var parent = $(this).attr("parent");
-		var icon = $(this).attr("icon");
+		var homeIcon = $(this).attr("homeIcon");
+		var categoryIcon = $(this).attr("categoryIcon");
+		var detailIcon = $(this).attr("detailIcon");
 		var servName = $(this).attr("servName");
 		var type = $(this).attr("type");
 		
@@ -68,8 +101,13 @@ $(function(){
 		$("#edit_serv_type").val(type);
 		$("#edit_serv_name").val(servName);
 		$("#edit_serv_remarks").val(remarks);
-		$("#edit_filePathHidden").val(icon);
-		$(".filename").val(icon);
+		$("#homeIconName").val(homeIcon);
+		$("#categoryIconName").val(categoryIcon);
+		$("#detailIconName").val(detailIcon);
+		
+		$("#edit_homeIconPathHidden").val(homeIcon);
+		$("#edit_categoryIconPathHidden").val(categoryIcon);
+		$("#edit_detailIconPathHidden").val(detailIcon);
 		
 		oMark.style.display ="block";
 		editUI.style.display ="block";
@@ -86,7 +124,9 @@ $(function(){
 		$("#edit_serv_type").val("-1");
 		$("#edit_serv_name").val("");
 		$("#edit_serv_remarks").val("");
-		$("#edit_filePathHidden").val("");
+		$("#edit_homeIconPathHidden").val("");
+		$("#edit_categoryIconPathHidden").val("");
+		$("#edit_detailIconPathHidden").val("");
 		$(".file").val("");
 		$(".filename").val("");
 	});
