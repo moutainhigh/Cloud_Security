@@ -18,6 +18,7 @@ import com.cn.ctbri.entity.ApiPrice;
 import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.ScanType;
 import com.cn.ctbri.entity.Serv;
+import com.cn.ctbri.entity.ServiceDetail;
 import com.cn.ctbri.service.IScanTypeService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
@@ -47,14 +48,19 @@ public class PriceController {
 		Map<String, Object> m = new HashMap<String, Object>();
 		//获取服务类型
 		int serviceId = Integer.parseInt(request.getParameter("servId"));
-		Map<String,Object> newMap = new HashMap<String,Object>();
-		newMap.put("serviceId", serviceId);
+		int parentC = Integer.parseInt(request.getParameter("parentC"));
 		
 		//获取 类型(0:单次和长期,1:长期,2:单次)
-		Serv serv = servService.findById(serviceId);
-		m.put("orderType", serv.getOrderType());
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("serviceId", serviceId);
+		map.put("parent", parentC);
+		ServiceDetail serviceDetail = selfHelpOrderService.findServiceDetail(map);
+//		Serv serv = servService.findById(serviceId);
+		m.put("orderType", serviceDetail.getServType());
 		//获取单次价格
-		if (serv.getOrderType() != 1) {
+		if (serviceDetail.getServType() != 1) {
+			Map<String,Object> newMap = new HashMap<String,Object>();
+			newMap.put("serviceId", serviceId);
 			newMap.put("type", 0);    //(0:单次；1：长期；2：大于)
 			List<Price> priceList = servService.findPriceByParam(newMap);
 			if(priceList.size() !=0) {
@@ -126,7 +132,7 @@ public class PriceController {
 				
 				//0:不根据服务频率设置的场合，DB中服务频率设为null
 				Integer scanType = null;
-				if (!scanTypeStr.equals("0")) {
+				if (scanTypeStr != null && !scanTypeStr.equals("") && !scanTypeStr.equals("0")) {
 					scanType = Integer.valueOf(scanTypeStr);
 				}
 				
