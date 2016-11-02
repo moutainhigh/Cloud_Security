@@ -6,7 +6,8 @@ function changeParent(){
 		$("#serv_type").empty();
 	}else{
 		$("#serv_type").empty();
-		var temp = "<option selected='selected' value='-1'>请选择</option><option value='1'>网站安全监测及预警服务</option><option value='2'>网站安全防护及加固服务</option>";
+		//var temp = "<option selected='selected' value='-1'>请选择</option><option value='1'>网站安全监测及预警服务</option><option value='2'>网站安全防护及加固服务</option>";
+		var temp = "<option selected='selected' value='1'>网站安全监测及预警服务</option>";
 		$("#serv_type").append(temp);
 	}
 }
@@ -17,7 +18,8 @@ function changeEditParent(){
 		$("#edit_serv_type").empty();
 	}else{
 		$("#edit_serv_type").empty();
-		var temp = "<option selected='selected' value='-1'>请选择</option><option value='1'>网站安全监测及预警服务</option><option value='2'>网站安全防护及加固服务</option>";
+		//var temp = "<option selected='selected' value='-1'>请选择</option><option value='1'>网站安全监测及预警服务</option><option value='2'>网站安全防护及加固服务</option>";
+		var temp = "<option selected='selected' value='1'>网站安全监测及预警服务</option>";
 		$("#edit_serv_type").append(temp);
 	}
 }
@@ -183,9 +185,6 @@ function saveServ(){
     if(parent == -1){
 	    alert("请选择一级分类!");
 	    return;
-    }else if (type == -1){
-    	alert("请选择服务类型!");
-	    return;
     }else if(name==null||name==""){
     	alert("请填写服务名称!");
     	return;
@@ -321,9 +320,6 @@ function updateServ(){
 	
     if(parent == -1){
 	    alert("请选择一级分类!");
-	    return;
-    }else if (type == -1){
-    	alert("请选择服务类型!");
 	    return;
     }else if(name==null||name==""){
     	alert("请填写服务名称!");
