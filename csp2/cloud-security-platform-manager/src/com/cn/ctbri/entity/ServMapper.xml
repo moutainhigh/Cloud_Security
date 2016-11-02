@@ -62,8 +62,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="parent!=null and parent!=-1">
             and s.parentC=#{parent}
         </if>			
-		union select a.id,a.name,type.name typeName,a.type servType,a.remarks,a.parentC, ptype.name parentCName,a.home_icon homeIcon,a.category_icon categoryIcon,a.detail_icon detailIcon from cs_service_api a,cs_service_type type,cs_service_dictionary ptype
-		where a.type=type.id and a.parentC = ptype.id
+		union select a.id,a.name,'',a.type servType,a.remarks,a.parentC, ptype.name parentCName,a.home_icon homeIcon,a.category_icon categoryIcon,a.detail_icon detailIcon 
+		from cs_service_api a,cs_service_dictionary ptype
+		where a.parentC = ptype.id
 		<if test="name!=null and name!=''">
             and a.name like CONCAT('%','${name}','%') 
         </if>
