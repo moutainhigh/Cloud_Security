@@ -208,11 +208,16 @@ public class ServController {
 		try {
 			String name = request.getParameter("name");
 			String parent = request.getParameter("parent");
-			int type = Integer.parseInt(request.getParameter("type"));
+			String typeStr = request.getParameter("type");
 			String remarks = request.getParameter("remarks");
 			String homeIcon = request.getParameter("homeIcon");
 			String categoryIcon = request.getParameter("categoryIcon");
 			String detailIcon = request.getParameter("detailIcon");
+			
+			int type = -1;
+			if (typeStr!= null && !typeStr.endsWith("")) {
+				type = Integer.valueOf(typeStr);
+			}
 			
 			//通过接口方式将数据存储于前端Portal数据库中
     		String servId = CspWorker.addService(name, parent,type,
@@ -600,27 +605,34 @@ public class ServController {
 			map.put("serviceId", serviceId);
 			map.put("parent", parentC);
 			ServiceDetail serviceDetail = selfHelpOrderService.findServiceDetail(map);
+			
 			boolean editFlag = false;
+			//删除scanType表serviceId的相关信息
 			if(serviceDetail != null){
-				//删除scanType表serviceId的相关信息
 				editFlag = true;
 				selfHelpOrderService.delScanType(serviceId);
 			}
 			
-			//int parentC = selfHelpOrderService.selectParentId(parent);
+			//变更前的价钱  delFlag设为1(已删除)
+			//servService.updatePriceDeleteFlag(serviceId);
 			
-			String[] scanType = scanTypeStr.split(",");
-			if(!StringUtils.isEmpty(scanType)){
-				for(int i=0; i<scanType.length; i++){
-					Map<String, Object> insertMap = new HashMap<String, Object>();
-					insertMap.put("serviceId", serviceId);
-					insertMap.put("scanName", scanType[i]);
-					Integer scanTypeInt = scanTypeMap.get(scanType[i]);
-					if (scanTypeInt != null) {
-						insertMap.put("scanType", scanTypeInt);
-						selfHelpOrderService.insertScanType(insertMap);
+			//保存服务频率
+			if (servType== 0 || servType==1) {  //0:单次和长期,1:长期
+				String[] scanType = scanTypeStr.split(",");
+				if(!StringUtils.isEmpty(scanType)){
+					for(int i=0; i<scanType.length; i++){
+						Map<String, Object> insertMap = new HashMap<String, Object>();
+						insertMap.put("serviceId", serviceId);
+						insertMap.put("scanName", scanType[i]);
+						Integer scanTypeInt = scanTypeMap.get(scanType[i]);
+						if (scanTypeInt != null) {
+							insertMap.put("scanType", scanTypeInt);
+							selfHelpOrderService.insertScanType(insertMap);
+						}
 					}
 				}
+			}else {
+				servRatesTitle = "";
 			}
 
 			ServiceDetail sd = new ServiceDetail();
