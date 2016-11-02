@@ -43,22 +43,28 @@ $("#servDetailHidden").val('');
 $("#resServDetailHidden").val('');
 $("#preview").empty();
 var iconList = new Array();
+
 var parent = '${parent}';
-if(parent == 'API'){
-	$("#u12").hide();
-	$("#u15").hide();
-	//$("#u16").hide();
-	//$("#u27").hide();
-	//$("#u30").hide();
-	//$("#u26").hide();
+var type = ${serviceDetail.servType};	//type: 0:单次和长期,1:长期 2:单次
+if(parent == '6' || type== 2){	
+	$("#u12").hide();	//服务频率标题 隐藏
+	$("#u15").hide();	//服务频率     隐藏
 } else {
 	$("#u12").show();
 	$("#u15").show();
-	//$("#u16").show();
-	//$("#u27").show();
-	//$("#u30").show();
-	//$("#u26").show();
 }
+
+//长期复选框
+$("#u10_input").click(function(){
+	var chk = document.getElementById('u10_input');
+	if(chk.checked){ 
+		$("#u12").show();
+		$("#u15").show();
+	}else{ 
+		$("#u12").hide();	
+		$("#u15").hide();
+	}
+});
 //添加行按钮
 $("#u27_input").click(function(){
 	var html = '<div id="u31" class="ax_text_field positionr">'
@@ -173,11 +179,11 @@ $(".upload_delete").click(function(){
 	  			<td class="regist_input" id="u8">
 		  			<label for="u8_input" class="checkbox_lable" >
 			          	<c:choose>
-				          	<c:when test="${serviceDetail.servType == 0 or serviceDetail.servType ==1}">
-				          		<input id="u8_input" type="checkbox" name="servType" value="1" checked/>  
+				          	<c:when test="${serviceDetail.servType == 0 or serviceDetail.servType ==2}">
+				          		<input id="u8_input" type="checkbox" name="servType" value="2" checked/>  
 				          	</c:when>
 				          	<c:otherwise>
-				          		<input id="u8_input" type="checkbox" name="servType" value="1"/> 
+				          		<input id="u8_input" type="checkbox" name="servType" value="2"/> 
 				          	</c:otherwise>
 			          	</c:choose>         
 			            <span>单次</span>      
@@ -185,11 +191,11 @@ $(".upload_delete").click(function(){
 			        
 			        <label for="u10_input" class="checkbox_lable" >
 			            <c:choose>
-				          	<c:when test="${serviceDetail.servType == 0 or serviceDetail.servType ==2}">
-				          		<input id="u10_input" type="checkbox" name="servType" value="2" checked/>  
+				          	<c:when test="${serviceDetail.servType == 0 or serviceDetail.servType ==1}">
+				          		<input id="u10_input" type="checkbox" name="servType" value="1" checked/>  
 				          	</c:when>
 				          	<c:otherwise>
-				          		<input id="u10_input" type="checkbox" name="servType" value="2"/>
+				          		<input id="u10_input" type="checkbox" name="servType" value="1"/>
 				          	</c:otherwise>
 			          	</c:choose>    
 			            
