@@ -170,10 +170,10 @@ $(document).ready(function(){
 	                        	<c:if test="${serv.parentC==6}">
 		                        	<a href="javascript:void(0)" class="ope_a" onclick="editApiPrice(${serv.id })">设置价格</a>
 	                        	</c:if>
-	                        	<c:if test="${serv.parentC!=6}">
-		                        	<a href="javascript:void(0)" class="ope_a" onclick="editPrice(${serv.id })">设置价格</a>
+	                        	<c:if test="${serv.parentC!=6 && serv.id != 6}">
+		                        	<a href="javascript:void(0)" class="ope_a" onclick="editPrice(${serv.id },${serv.parentC})">设置价格</a>
+	                        		<a href="${ctx}/serviceDetailsUI.html?servId=${serv.id}&parent=${serv.parentC}" class="ope_a">详情维护</a>
 	                        	</c:if>
-	                        	<a href="${ctx}/serviceDetailsUI.html?servId=${serv.id}&parent=${serv.parentC}" class="ope_a">详情维护</a>
 	                        </td>
                    		</tr>
                     </c:forEach>
@@ -201,7 +201,7 @@ $(document).ready(function(){
 	            <td class="regist_title">一级分类</td>
 	            <td class="regist_input">
 		            <select class="regist_sel" id="serv_parent"  onchange="changeParent();">
-                		<option selected="selected" value="-1">请选择</option>
+                		<!-- <option selected="selected" value="-1">请选择</option> -->
                 		<option value="1">网站安全帮</option>
 			          	<!-- <option value="2">数据库安全帮</option>
 			          	<option value="3">系统安全帮</option>
@@ -216,10 +216,10 @@ $(document).ready(function(){
           	<tr class="register_tr">
 	            <td class="regist_title">服务类型</td>
 	            <td class="regist_input">
-		            <select class="regist_sel" id="serv_type">
-                		<option selected="selected" value="-1">请选择</option>
+		            <select class="regist_sel" id="serv_type" disabled>
+                		<!-- <option selected="selected" value="-1">请选择</option> -->
                 		<option value="1">网站安全监测及预警服务</option>
-          				<option value="2">网站安全防护及加固服务</option>
+          				<!-- <option value="2">网站安全防护及加固服务</option> -->
                 	</select>
 		            <span id="regist_name_msg" style="color:red;float:left"></span>
 	            </td>
@@ -255,7 +255,7 @@ $(document).ready(function(){
 		            </form>
 		            <span id="regist_image_msg" style="color:red;float:left"></span>
 		        </td>
-		        <td class="regist_prompt" style="text-align:left;">图片大小 </td>
+		        <td class="regist_prompt" style="text-align:left;">建议图片大小 130*130</td>
 	         </tr>
 	         <tr class="register_tr">
 	            <td class="regist_title">二级服务图标</td>
@@ -271,7 +271,7 @@ $(document).ready(function(){
 		            </form>
 		            <span id="regist_image_msg" style="color:red;float:left"></span>
 		        </td>
-		        <td class="regist_prompt" style="text-align:left;">请上传.jpg,.bmp或.png格式的文件</td>
+		        <td class="regist_prompt" style="text-align:left;">建议图片大小 220*220</td>
 	         </tr>
 	         <tr class="register_tr">
 	            <td class="regist_title">详情服务图标</td>
@@ -287,7 +287,7 @@ $(document).ready(function(){
 		            </form>
 		            <span id="regist_image_msg" style="color:red;float:left"></span>
 		        </td>
-		        <td class="regist_prompt" style="text-align:left;">请上传.jpg,.bmp或.png格式的文件</td>
+		        <td class="regist_prompt" style="text-align:left;">建议图片大小 420*420</td>
 	         </tr>
           
          </table>
@@ -309,7 +309,7 @@ $(document).ready(function(){
 	            <td class="regist_input">
 	            	<input type="hidden" id="edit_serv_id" value=""/>
 		            <select class="regist_sel" id="edit_serv_parent"  onchange="changeEditParent();">
-                		<option selected="selected" value="-1">请选择</option>
+                		<!-- <option selected="selected" value="-1">请选择</option> -->
                 		<option value="1">网站安全帮</option>
 			          	<!-- <option value="2">数据库安全帮</option>
 			          	<option value="3">系统安全帮</option>
@@ -324,7 +324,7 @@ $(document).ready(function(){
           	<tr class="register_tr">
 	            <td class="regist_title">服务类型</td>
 	            <td class="regist_input">
-		            <select class="regist_sel" id="edit_serv_type">
+		            <select class="regist_sel" id="edit_serv_type" disabled>
                 		<option selected="selected" value="-1">请选择</option>
                 		<option value="1">网站安全监测及预警服务</option>
           				<option value="2">网站安全防护及加固服务</option>
