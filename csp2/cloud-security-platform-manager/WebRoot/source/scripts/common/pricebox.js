@@ -7,20 +7,7 @@ $(function(){
 	var oMark =document.getElementById('modelbox');
 	var oLogin =document.getElementById('box_servicePrice');
 	
-	//$(".price_add").click(function(){
-		
-		//var image=$(this).parent().find("a img");
-		//$(".box_logoIn").empty()
-		//oMark.style.display ="block";
-		//oLogin.style.display ="block";
-		//oMark.style.width = viewWidth() + 'px';
-		//oMark.style.height = documentHeight() + 'px';
-		//oLogin.style.left = (viewWidth() - oLogin.offsetWidth)/2 + 'px';
-		//oLogin.style.top = (viewHeight() - oLogin.offsetHeight)/2-25 + 'px';	
-		
-		//image.clone(true).appendTo(".box_logoIn");
-	
-	//});
+
      
 		/*//关闭按钮
 		function toClose(){
@@ -44,7 +31,7 @@ $(function(){
 	
 		}*/
 })
-function editPrice(servId){
+function editPrice(servId,parentC){
 	var oMark =document.getElementById('modelbox');
 	var oLogin =document.getElementById('box_servicePrice');
 	maxPriceIndex = 0;
@@ -52,7 +39,7 @@ function editPrice(servId){
 	$.ajax({
 		type: "POST",
 		url:"servicePriceMaintainUI.html",
-		data:{"servId":servId},
+		data:{"servId":servId,"parentC":parentC},
 		success:function(data) {
 			$("#add_serviceId").val(servId);
 			
@@ -285,7 +272,7 @@ function getPriceType(value, priceIndex){
 }
 //是否根据频率设置长期价格
 function getScanTypeSettingFlag() {
-    var servId = $("#add_serviceId").val(servId);
+    //var servId = $("#add_serviceId").val(servId);
 	var scanTypeSettingFlag=$("input[name='scanTypeRadio']:checked").val();
 	$("#allLongPriceDiv").empty();
 	var scanTypeHtml = $("#scanType_id_template").html();
@@ -293,17 +280,33 @@ function getScanTypeSettingFlag() {
 	if (scanTypeList!= null) {
 		//根据服务频率设置
 		if (scanTypeSettingFlag != 0) {
+			maxPriceIndex = scanTypeList.length;
 			for(var s=0; s<scanTypeList.length;s++) {
 				var scanTypeDivHtml = scanTypeHtml.replace("scanType_id_template","scanType_id_"+scanTypeList[s].scan_type);
 				scanTypeDivHtml = scanTypeDivHtml.replace("scanType_div_template","scanType_div");
 				scanTypeDivHtml = scanTypeDivHtml.replace("scanTypeTable_template","scanTypeTable_"+scanTypeList[s].scan_type);
 				scanTypeDivHtml = scanTypeDivHtml.replace("price_index_template","price_index_"+scanTypeList[s].scan_type);
 				scanTypeDivHtml = scanTypeDivHtml.replace("addOnePrice(0)","addOnePrice("+scanTypeList[s].scan_type+")");
+				
+				//元素id,name替换
+				scanTypeDivHtml = scanTypeDivHtml.replace(new RegExp("price_index_template",'gm'), "price_index_"+s);
+				scanTypeDivHtml = scanTypeDivHtml.replace(new RegExp("type_0",'gm'), "type_"+s);
+				scanTypeDivHtml = scanTypeDivHtml.replace(new RegExp("scanType_0",'gm'), "scanType_"+s);
+				scanTypeDivHtml = scanTypeDivHtml.replace(new RegExp("price_0",'gm'), "price_"+s);
+				scanTypeDivHtml = scanTypeDivHtml.replace(new RegExp("timesG_0",'gm'), "timesG_"+s);
+				scanTypeDivHtml = scanTypeDivHtml.replace(new RegExp("timesLE_0",'gm'), "timesLE_"+s);
+				scanTypeDivHtml = scanTypeDivHtml.replace(new RegExp("title_timesLE_0",'gm'), "title_timesLE_"+s);
+				scanTypeDivHtml = scanTypeDivHtml.replace("deleteOnePrice(0)","deleteOnePrice("+s+")");
+				scanTypeDivHtml = scanTypeDivHtml.replace("getPriceType(this.value,0)","getPriceType(this.value,"+s+")");
+				scanTypeDivHtml = scanTypeDivHtml.replace("price_scanType_0","price_scanType_"+s);  //为每一行设置服务频率
 				//替换服务频率    scanType_index_
 				scanTypeDivHtml = scanTypeDivHtml.replace("XXXX",scanTypeList[s].scan_name);
+				
 				$("#allLongPriceDiv").append(scanTypeDivHtml);
+				$("#price_scanType_"+s).val(scanTypeList[s].scan_type);   //该组件的服务频率设值
 			}
 		}else{
+			maxPriceIndex = 1;
 			//不根据服务频率设置
 			var scanTypeDivHtml = scanTypeHtml.replace("scanType_id_template","scanType_id_0");
 			scanTypeDivHtml = scanTypeDivHtml.replace("scanType_div_template","scanType_div");
