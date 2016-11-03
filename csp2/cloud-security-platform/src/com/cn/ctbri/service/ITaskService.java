@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskWarn;
 
 
 /**
@@ -63,4 +64,6 @@ public interface ITaskService {
 	List<Task> findProgssByOrderId(Map<String, Object> pMap);
 
 	List<Task> findFinishAlarmByOrderId(Map<String, Object> paramMap);
+
+	void insertTaskWarn(TaskWarn taskwarn);
 }
