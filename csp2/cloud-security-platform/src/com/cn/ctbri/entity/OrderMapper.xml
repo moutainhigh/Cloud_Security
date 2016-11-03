@@ -365,22 +365,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 根据条件查询订单信息 -->
     <select id="findDelOrderByMap" resultMap="OrderRM" parameterType="hashmap">
-		<if test="isAPI==2">
-	        select * from cs_order o
-				where o.status in (4) 
-				and o.delFlag !=1
-				and	o.payFlag = 1
-				and o.isAPI = 2
-				and o.serviceId = 6
-				and CURDATE() BETWEEN date_add(DATE_FORMAT(o.end_date, '%Y-%m-%d'),interval -1 day) AND o.end_date
-			union
+		<!-- waf删除 -->
+		<if test="isAPI==2 and mark=='del'">
+			select * from cs_order o
+		        where o.status in (4) 
+					and o.delFlag !=1
+					and	o.payFlag = 1
+					and o.isAPI = 2
+					and o.serviceId = 6
+	        		and o.end_date &lt; now()
+		</if>
+		<!-- waf信息通知 -->
+		<if test="isAPI==2 and mark=='sendMessage'">
 			select * from cs_order o
 				where o.status in (4) 
 				and o.delFlag !=1
 				and	o.payFlag = 1
 				and o.isAPI = 2
 				and o.serviceId = 6
-				and CURDATE() BETWEEN date_add(DATE_FORMAT(o.end_date, '%Y-%m-%d'),interval -9 day) AND o.end_date
+				and date_add(DATE_FORMAT(CURDATE(), '%Y-%m-%d'),interval #{deadline} day) = DATE_FORMAT(o.end_date, '%Y-%m-%d')
+				<!-- and CURDATE() BETWEEN date_add(DATE_FORMAT(o.end_date, '%Y-%m-%d'),interval -#{deadline} day) AND o.end_date -->
+			
 		</if>
 		
     </select>

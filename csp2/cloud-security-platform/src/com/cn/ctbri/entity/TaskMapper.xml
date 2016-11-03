@@ -189,7 +189,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from cs_task t,cs_order_asset oa
 		WHERE
 		t.order_asset_Id=oa.id AND oa.orderId=#{orderId}
-		<if test="isAlarm!=null">
+		<if test="isAlarm!=null and isAlarm!=''">
         	and t.isAlarm!=1
         </if>
 		<!-- <if test="type!=null and type='1'">
@@ -314,4 +314,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         and t.status=3
         and t.isAlarm=1
     </select>
+    
+    <!-- 插入任务信息 -->
+	<insert id="insertTaskWarn" parameterType="com.cn.ctbri.entity.TaskWarn" >	
+		INSERT INTO cs_taskwarn
+        (id,cat1,cat2,name,severity,rule,ct,app_p,tran_p,url,msg,task_id,warn_time) 
+        VALUES(#{id}, #{cat1} , #{cat2},#{name},#{severity},#{rule},#{ct},#{app_p},#{tran_p},#{url},#{msg},#{task_id},#{warn_time})
+        ON DUPLICATE KEY UPDATE 
+				cat1=#{cat1},
+				cat2=#{cat2},
+				name=#{name},
+                severity=#{severity},
+                rule=#{rule},
+                ct=#{ct},
+                app_p=#{app_p},
+                tran_p=#{tran_p},
+                url=#{url},
+                msg=#{msg},
+                task_id=#{task_id},
+                warn_time=#{warn_time}
+	</insert>
 </mapper>
