@@ -35,5 +35,11 @@ public interface ServDao {
      * @return
      */
     List<Serv> findAllService();
+
+	int insert(Serv service);
+
+	void updateById(Serv service);
+
+	void deleteById(int serviceId);
 	
 }
