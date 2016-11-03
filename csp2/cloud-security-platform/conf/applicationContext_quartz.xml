@@ -89,9 +89,39 @@
     	<property name="concurrent" value="false" />
     </bean>
     <bean id="wafTrigger"
-    	class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	class="org.springframework.scheduling.quartz.SimpleTriggerBean">
     	<property name="jobDetail" ref="wafJobDetail" />
-    	<property name="cronExpression" value="0 0/3 * * * ?" />
+    	<property name="startDelay" value="60000" /><!-- 调度工厂实例化后，经过60秒开始执行调度 -->  
+		<property name="repeatInterval" value="3600000" /><!-- 每60分调度一次 --> 
+    </bean>
+    
+    <!--要调度的对象,WAF删除-->
+    <bean id="delJobBean" class="com.cn.ctbri.common.SchedulerWaf" />
+    <bean id="delJobDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="delJobBean" />
+        <property name="targetMethod" value="executeDel" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="delTrigger"
+        class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="delJobDetail" />
+        <property name="startDelay" value="120000" /><!-- 调度工厂实例化后，经过120秒开始执行调度 -->  
+		<property name="repeatInterval" value="1800000" /><!-- 每30分调度一次 --> 
+    </bean>
+    
+    <!--要调度的对象,WAF信息处理-->
+    <bean id="sendMessageJobBean" class="com.cn.ctbri.common.SchedulerWaf" />
+    <bean id="sendMessageJobDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="sendMessageJobBean" />
+        <property name="targetMethod" value="executeSendMessage" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean id="sendMessageTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="sendMessageJobDetail" />
+        <property name="cronExpression" value="0 15 10 ? * *" /><!-- 每天上午10:15触发 -->
     </bean>
     
     <!-- 将lazy-init='false'那么容器启动就会执行调度程序   -->
@@ -100,10 +130,12 @@
         lazy-init="false">
         <property name="triggers">
             <list>
-                <!-- 
-                <ref bean="resultTrigger" />
+                 
+                <!--<ref bean="resultTrigger" />-->
                 <ref bean="taskWafAlarmTrigger" />
-                <ref bean="wafTrigger" />-->
+                <ref bean="wafTrigger" />
+                <ref bean="delTrigger"/>
+                <ref bean="sendMessageTrigger"/>
             </list>
         </property>
     </bean>
