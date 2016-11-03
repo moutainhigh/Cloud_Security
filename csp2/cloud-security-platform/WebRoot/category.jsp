@@ -34,32 +34,34 @@ function buyServiceAPI(apiId){
 					<a href="${ctx}/web_anquanbang.html">网站安全帮</a>
 					<ol id="anquanbang_ol">
 						<c:forEach var="list" items="${servList}" varStatus="status">
-							<c:if test="${status.count == 1}">
-							  <li style="border: none;">
-							</c:if>
-							<c:if test="${status.count != 1}">
-							  <li>
-							</c:if>
 							<c:if test="${list.id != 6}">
-								<!--<a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">${list.name }</a>
-								-->
-								<a href="javascript:;" onclick="buyService(${list.id });">${list.name }</a>
-								<form action="selfHelpOrderInit.html" method="post" id="selfHelpOrderInitForm">
-									<input type="hidden" name="type" value="${list.orderType }"/>
-									<input type="hidden" id="category_serviceId" name="serviceId" value="${list.id }"/>
-									<input type="hidden" name="indexPage" value="1"/>
-								</form>
+								<c:if test="${status.count == 1}">
+								  <li style="border: none;">
+								</c:if>
+								<c:if test="${status.count != 1}">
+								  <li>
+								</c:if>
+									<!--<a href="${ctx}/selfHelpOrderInit.html?type=${list.orderType }&serviceId=${list.id }&indexPage=1">${list.name }</a>
+									-->
+									<a href="javascript:;" onclick="buyService(${list.id });">${list.name }</a>
+									<form action="selfHelpOrderInit.html" method="post" id="selfHelpOrderInitForm">
+										<input type="hidden" name="type" value="${list.orderType }"/>
+										<input type="hidden" id="category_serviceId" name="serviceId" value="${list.id }"/>
+										<input type="hidden" name="indexPage" value="1"/>
+									</form>
+								</li>
 							</c:if>
 							<c:if test="${list.id == 6}">
-								<!--<a href="${ctx}/wafDetails.html?serviceId=${list.id }&indexPage=1">${list.name }</a>
-							-->
-							<a href="javascript:;" onclick="buyService(${list.id });">${list.name }</a>
-							<form action="wafDetails.html" method="post" id="wafDetailsForm">
-								<input type="hidden" id="category_serviceId" name="serviceId" value="${list.id }"/>
-								<input type="hidden" name="indexPage" value="1"/>
-							</form>
-							</c:if>
+								<li>
+										<!--<a href="${ctx}/wafDetails.html?serviceId=${list.id }&indexPage=1">${list.name }</a>
+									-->
+									<a href="javascript:;" onclick="buyService(${list.id });">${list.name }</a>
+									<form action="wafDetails.html" method="post" id="wafDetailsForm">
+										<input type="hidden" id="category_serviceId" name="serviceId" value="${list.id }"/>
+										<input type="hidden" name="indexPage" value="1"/>
+									</form>
 								</li>
+							</c:if>
 						</c:forEach>
 					</ol>
 				</li>
