@@ -1,4 +1,8 @@
 package com.cn.ctbri.common;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 常量表
  * @author googe
@@ -114,5 +118,15 @@ public class Constants {
 	 * 网页篡改监测服务-周期2小时深度2
 	 */
 	public static final String TPL_WYCGJCFW_2H2 = "网页篡改监测服务-周期2小时深度2"; 
-
+	
+	public static Map<String,Integer> SCAN_TYPE_MAP = new HashMap<String, Integer>();
+	static{
+		
+		SCAN_TYPE_MAP.put("10分钟", 1);
+		SCAN_TYPE_MAP.put("30分钟", 2);
+		SCAN_TYPE_MAP.put("1小时", 3);
+		SCAN_TYPE_MAP.put("1天", 4);
+		SCAN_TYPE_MAP.put("每周", 5);
+		SCAN_TYPE_MAP.put("每月", 6);
+	}
 }
