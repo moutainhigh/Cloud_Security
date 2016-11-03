@@ -45,18 +45,16 @@ $("#preview").empty();
 var iconList = new Array();
 
 var parent = '${parent}';
-var type = ${serviceDetail.servType};	//type: 0:单次和长期,1:长期 2:单次
-if(parent == '6' || type== 2){	
-	$("#u12").hide();	//服务频率标题 隐藏
-	$("#u15").hide();	//服务频率     隐藏
-} else {
-	$("#u12").show();
-	$("#u15").show();
+var type = '${serviceDetail.servType}';	//type: 0:单次和长期,1:长期 2:单次
+if(parent != '6' && (type== '0' || type =='1') ){	
+	$("#u12").show();	//服务频率标题 显示
+	$("#u15").show();	//服务频率     显示
 }
 
 //长期复选框
 $("#u10_input").click(function(){
 	var chk = document.getElementById('u10_input');
+	alert(chk.checked);
 	if(chk.checked){ 
 		$("#u12").show();
 		$("#u15").show();
@@ -206,14 +204,14 @@ $(".upload_delete").click(function(){
 	  				<span>备注：如果当前服务只有单次或者长期，详情页面不显示这一行</span>
 	  			</td>
 	  		</tr>
-	  		<tr class="register_tr" id="u12">
+	  		<tr class="register_tr" id="u12" style="display:none;">
 	  			<td class="regist_title" id="u13">服务频率标题：</td>
 	  			<td id="u14">
 	  				<input class="regist_txt" id="u14_input" type="text" value="${serviceDetail.ratesTitle }"/>
 	  			</td>
 	  			<td></td>
 	  		</tr>
-	  		<tr class="register_tr" id="u15">
+	  		<tr class="register_tr" id="u15" style="display:none;">
 	  			<td class="regist_title" id="u16" style="vertical-align:top;">服务频率：</td>
 	  			<td class="regist_input" id="u17">
 	  				<c:choose>
