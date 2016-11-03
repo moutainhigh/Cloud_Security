@@ -2,6 +2,7 @@ package com.cn.ctbri.service;
 
 import java.util.List;
 
+import com.cn.ctbri.entity.Advertisement;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.Service;
 
@@ -33,4 +34,14 @@ public interface IServService {
      * @return
      */
     List<Serv> findAllService();
+    
+    /**
+     * 功能描述：添加广告
+     *       @time 2016-06-12
+     */
+    int insert(Serv service);
+
+	void updateById(Serv service);
+
+	void deleteById(int serviceId);
 }

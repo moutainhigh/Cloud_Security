@@ -23,4 +23,8 @@ public interface IPriceService {
      * 根据serviceid查询价格列表
      */
     List<Price> findPriceByServiceId(int serviceId,int type);
+    /*
+     * 根据serviceid查询scanType为空的价格列表
+     */
+	List<Price> findPriceByScanTypeNull(int serviceId);
 }
