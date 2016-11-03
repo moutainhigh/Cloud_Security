@@ -3,6 +3,7 @@ package com.cn.ctbri.dao;
 import java.util.List;
 
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskWarn;
 
 import java.util.Map;
 
@@ -64,4 +65,6 @@ public interface TaskDao {
 	public List<Task> findProgssByOrderId(Map<String, Object> pMap);
 
 	public List<Task> findFinishAlarmByOrderId(Map<String, Object> paramMap);
+
+	public void insertTaskWarn(TaskWarn taskwarn);
 }
