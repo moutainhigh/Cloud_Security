@@ -385,10 +385,15 @@ public class ServController {
 			//删除service详情表数据
 			selfHelpOrderService.delServDetail(map);
 			//删除scanType表数据
-			if(!StringUtils.isEmpty(parent) && !parent.equals("API")){
+			if(!StringUtils.isEmpty(parent) && !parent.equals("6")){
 				selfHelpOrderService.delScanType(Integer.parseInt(servId));
 			}
-			//TODO 删除价格表
+			//删除价格表 :变更前的价钱  delFlag设为1(已删除)
+			if(parent.equals("6")){
+				servService.updateApiPriceDeleteFlag(Integer.parseInt(servId));
+			}else{
+				servService.updatePriceDeleteFlag(Integer.parseInt(servId));
+			}
 			
 			m.put("success", true);
 		} catch (Exception e) {
@@ -408,128 +413,6 @@ public class ServController {
 		
 
 	}
-	
-//	/**
-//	 * 功能描述：添加服务价格页面
-//	 *		 @time 2015-2-3
-//	 */
-//	@RequestMapping("/addServicePriceUI.html")
-//	public String addServicePriceUI(HttpServletRequest request){
-//		//获取服务类型
-//		int serviceId = Integer.parseInt(request.getParameter("servId"));
-//		String parent = request.getParameter("parent");
-//		Map<String,Object> newMap = new HashMap<String,Object>();
-//		newMap.put("serviceId", serviceId);
-////		newMap.put("parent", parent);
-//		List<Price> priceList = servService.findPriceByParam(newMap);
-//		if(priceList!=null && priceList.size()>0){
-//			for (int i = 0; i < priceList.size(); i++) {
-//				if(priceList.get(i).getType()==0){//单次
-//					request.setAttribute("priceSingle", priceList.get(i).getPrice());
-//				}else if(priceList.get(i).getType()==2){//大于
-//					request.setAttribute("priceMaxTimesG", priceList.get(i).getTimesG());
-//					request.setAttribute("priceMax", priceList.get(i).getPrice());
-//				}
-//			}
-//		}
-//		request.setAttribute("serviceId", serviceId);
-//		request.setAttribute("priceList", priceList);//订单总数
-//		//查询区间list
-//		Map<String,Object> map = new HashMap<String,Object>();
-//		map.put("serviceId", serviceId);
-//		//map.put("parent", parent);
-//		map.put("type", 1);
-//		List<Price> priceLongList = servService.findPriceByParam(map);
-//        request.setAttribute("priceLongList", priceLongList);//订单总数
-//		return "/source/serviceManage/priceManage";
-//	}
-	
-//	/**
-//	 * 功能描述：为服务添加价格
-//	 * 参数描述：HttpServletRequest request,HttpServletResponse response
-//	 *		 @time 2015-1-19
-//	 */
-//	@RequestMapping(value="/addServicePrice.html",method = RequestMethod.POST)
-//	@ResponseBody
-//	public void addServicePrice(HttpServletRequest request,HttpServletResponse response){
-//		Map<String, Object> m = new HashMap<String, Object>();
-//		try {
-//			int serviceId = Integer.parseInt(request.getParameter("serviceId"));
-//			int timesG = Integer.parseInt(request.getParameter("timesG"));
-//			int timesLE = Integer.parseInt(request.getParameter("timesLE"));
-//			int type = Integer.parseInt(request.getParameter("type"));
-//			double price = Double.parseDouble(request.getParameter("price")); 
-//			
-//			Price newprice = new Price();
-//			newprice.setServiceId(serviceId);
-//			newprice.setTimesG(timesG);
-//			newprice.setTimesLE(timesLE);
-//			newprice.setPrice(price);
-//			newprice.setType(type);
-//			
-//			servService.insertPrice(newprice);
-//			
-//
-//			m.put("success", true);
-//			//object转化为Json格式
-//			JSONObject JSON = CommonUtil.objectToJson(response, m);
-//			try {
-//				// 把数据返回到页面
-//				CommonUtil.writeToJsp(response, JSON);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		} catch (NumberFormatException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			m.put("success", false);
-//			//object转化为Json格式
-//			JSONObject JSON = CommonUtil.objectToJson(response, m);
-//			try {
-//				// 把数据返回到页面
-//				CommonUtil.writeToJsp(response, JSON);
-//			} catch (IOException e1) {
-//				e1.printStackTrace();
-//			}
-//		}
-//	}
-	
-//	/**
-//	 * 功能描述：删除服务价格
-//	 * 参数描述：HttpServletRequest request,HttpServletResponse response
-//	 *		 @time 2015-1-19
-//	 */
-//	@RequestMapping(value="/delServicePrice.html",method = RequestMethod.POST)
-//	@ResponseBody
-//	public void delServicePrice(HttpServletRequest request,HttpServletResponse response){
-//		Map<String, Object> m = new HashMap<String, Object>();
-//		try {
-//			int serviceId = Integer.parseInt(request.getParameter("serviceId"));		
-//			servService.delPrice(serviceId);
-//			
-//			m.put("success", true);
-//			//object转化为Json格式
-//			JSONObject JSON = CommonUtil.objectToJson(response, m);
-//			try {
-//				// 把数据返回到页面
-//				CommonUtil.writeToJsp(response, JSON);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		} catch (NumberFormatException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			m.put("success", false);
-//			//object转化为Json格式
-//			JSONObject JSON = CommonUtil.objectToJson(response, m);
-//			try {
-//				// 把数据返回到页面
-//				CommonUtil.writeToJsp(response, JSON);
-//			} catch (IOException e1) {
-//				e1.printStackTrace();
-//			}
-//		}
-//	}
 	
 	/**
 	 * 功能描述：服务详情维护
