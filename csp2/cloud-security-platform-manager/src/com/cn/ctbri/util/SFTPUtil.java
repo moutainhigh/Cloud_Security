@@ -22,6 +22,7 @@ public class SFTPUtil {
 	private static String password;
 	private static String serviceIconDirectory;
 	private static String serviceDetailDirectory;
+	private static String advertisementDirectory;
 	
 	static {
 		
@@ -35,6 +36,7 @@ public class SFTPUtil {
 			password = properties.getProperty("password");
 			serviceIconDirectory = properties.getProperty("serviceIconDirectory");
 			serviceDetailDirectory = properties.getProperty("serviceDetailDirectory");
+			advertisementDirectory = properties.getProperty("advertisementDirectory");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -79,7 +81,10 @@ public class SFTPUtil {
 					rpath = serviceIconDirectory; // 服务器需要创建的路径
 				}else if (folderFlag==2){
 					rpath = serviceDetailDirectory; // 服务器需要创建的路径
+				}else if (folderFlag==3) {
+					rpath = advertisementDirectory;
 				}
+				
 				try {
 					createDir(rpath, sftp);
 				} catch (Exception e) {
