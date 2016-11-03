@@ -18,6 +18,7 @@ import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IDistrictDataService;
@@ -98,10 +99,8 @@ public class Scheduler4Result {
 			        	paramMap.put("isAlarm", 1);
 						List<Task> tlist = taskService.findAllByOrderId(paramMap);
 						
-						Map<String,Object> param = new HashMap<String,Object>();
-						param.put("orderId", order.getId());
-			        	param.put("type", String.valueOf(order.getType()));
-						List<Task> tl = taskService.findAllByOrderId(param);
+						paramMap.put("isAlarm", "");
+						List<Task> tl = taskService.findAllByOrderId(paramMap);
 						//add by tangxr 2016-2-25
 						List<Task> finistlist = taskService.findFinishByOrderId(paramMap);
 						if(tl.size() == finistlist.size()&&(s==1||s==2)&&serviceId!=5){
@@ -121,7 +120,8 @@ public class Scheduler4Result {
 						//end 2016-7-5
 						}else{
 							for (Task task : tlist) {
-								if(task.getStatus()==3 && task.getIsAlarm()!=1 && serviceId!=5){//任务结束
+								//任务结束，告警未入库，并且非可用性
+								if(task.getStatus()==3 && task.getIsAlarm()!=1 && serviceId!=5){
 									String result = NorthAPIWorker.vulnScanGetResult(order.getId(),String.valueOf(task.getTaskId()));
 									JSONObject jsonObj = new JSONObject().fromObject(result);
 									JSONArray alarmArray = jsonObj.getJSONArray("alarmObj");
@@ -257,6 +257,49 @@ public class Scheduler4Result {
 	//										orderService.update(order);
 										}
 									}
+									if(serviceId==5){
+										String result1 = NorthAPIWorker.vulnScanGetResult(order.getId(),String.valueOf(task.getTaskId()));
+										JSONObject jsonObj = new JSONObject().fromObject(result1);
+										JSONArray taskwarnArray = jsonObj.getJSONArray("taskwarnObj");
+										if(taskwarnArray.size()>0){
+											for (Object wObj : taskwarnArray) {
+												JSONObject warnObj = (JSONObject) wObj;
+												int warnid = warnObj.getInt("id");
+												String cat1 = warnObj.getString("cat1");
+												String cat2 = warnObj.getString("cat2");
+									            String name = warnObj.getString("name");
+									            String severity = warnObj.getString("severity");
+									            String rule = warnObj.getString("rule");
+									            String ct = warnObj.getString("ct");
+									            String app_p = warnObj.getString("app_p");
+									            String tran_p = warnObj.getString("tran_p");
+									            String url = warnObj.getString("url");
+									            String msg = warnObj.getString("msg");
+									            String task_id = warnObj.getString("task_id");
+									            
+									            TaskWarn taskwarn = new TaskWarn();
+									            taskwarn.setId(warnid);
+								                taskwarn.setCat1(cat1);
+								                taskwarn.setCat2(cat2);
+								                taskwarn.setName(name);
+								                taskwarn.setSeverity(Integer.parseInt(severity));
+								                taskwarn.setRule(rule);
+								                taskwarn.setCt(Integer.parseInt(ct));
+								                taskwarn.setApp_p(app_p);
+								                taskwarn.setTran_p(tran_p);
+								                taskwarn.setUrl(url);
+								                taskwarn.setMsg(msg);
+								                taskwarn.setTask_id(task_id);
+								                taskwarn.setWarn_time(new Date());
+								                taskwarn.setServiceId(5);
+								                taskService.insertTaskWarn(taskwarn);
+											}
+											order.setStatus(3);
+			                                orderService.update(order);
+										}
+										
+									}
+									
 								}
 							}
 						}

@@ -43,12 +43,14 @@ public class WafAPIWorker {
 	 */
 	
 	private static String SERVER_WAF_ROOT;
+	private static String resourceId;
 	
 	static{
 		try {
 			Properties p = new Properties();
 			p.load(WafAPIWorker.class.getClassLoader().getResourceAsStream("northAPI.properties"));
 			SERVER_WAF_ROOT = p.getProperty("SERVER_WAF_ROOT");
+			resourceId = p.getProperty("resourceId");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -243,13 +245,13 @@ public class WafAPIWorker {
 	 * 功能描述：删除waf
 	 * 参数描述： targetKey 订单编号
 	 */
-	public static void deleteVirtualSite(String resourceId, String targetKey) {
+	public static String deleteVirtualSiteInResource(String resourceId, String targetKey) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("resourceId", resourceId);
 		json.put("targetKey", targetKey);
 		//创建任务发送路径
-		String url = SERVER_WAF_ROOT + "/rest/adapter/deleteVirtualSite";
+		String url = SERVER_WAF_ROOT + "/rest/adapter/deleteVirtualSiteInResource";
 		//创建配置
 		ClientConfig config = new DefaultClientConfig();
 		//绑定配置
@@ -257,8 +259,9 @@ public class WafAPIWorker {
     	//创建客户端
         Client client = Client.create(config);
         WebResource service = client.resource(url);
-        //获取响应结果
         String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, json.toString());
+//        String textEntity = response.getEntity(String.class);
+        return response;
 	}
 	
 	
@@ -984,8 +987,9 @@ public class WafAPIWorker {
 //    		wafcreate = WafAPIWorker.getWafLogWebSecDstIpList();
 //    		wafcreate = WafAPIWorker.getWafAlertLevelCountByMonth("1","2016-08");
 //    		wafcreate = WafAPIWorker.getWafEventTypeCount("1","hour");
-    		String data=getLocationFromIp("1.2.2.3");
-    		System.out.println("data:"+data);
+    		wafcreate = WafAPIWorker.deleteVirtualSiteInResource("10001","fdbe5087-1439-4a09-bfb2-a325489dfb9b");
+//    		String data=getLocationFromIp("1.2.2.3");
+//    		System.out.println("data:"+data);
     	} catch (Exception e) {
             e.printStackTrace();
         }
