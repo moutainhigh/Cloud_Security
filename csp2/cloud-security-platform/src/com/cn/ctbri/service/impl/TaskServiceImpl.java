@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.TaskDao;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.service.ITaskService;
 /**
  * 创 建 人  ：  邓元元
@@ -89,6 +90,9 @@ public class TaskServiceImpl implements ITaskService{
 	}
 	public List<Task> findFinishAlarmByOrderId(Map<String, Object> paramMap) {
 		return taskDao.findFinishAlarmByOrderId(paramMap);
+	}
+	public void insertTaskWarn(TaskWarn taskwarn) {
+		taskDao.insertTaskWarn(taskwarn);
 	}
 
 }
