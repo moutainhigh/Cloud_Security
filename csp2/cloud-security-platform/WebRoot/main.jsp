@@ -133,7 +133,11 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                 					</form>
                                    
                                     <i><img src="${ctx}/source/images/portal/HOT.png" alt=""></i>
-                                    <c:if test="${list.id ==1}">
+                                    <p style="width:100%;height:180px;">
+                                    <!-- <img src="${ctx}/source/images/serviceIcon/${list.icon}" alt="" style="width:auto;height:auto;max-width:50%;max-height:50%;vertical-align:middle;"> -->
+                                    <img src="${ctx}/source/images/serviceIcon/${list.home_icon}" alt="" style="width:130px;height:auto;margin-top: 25px;margin-left: 65px;">
+                                    </p>
+                                    <!--<c:if test="${list.id ==1}">
 	                                    <p><img src="${ctx}/source/images/portal/vulnScan.png" alt=""></p>
                                     </c:if>
                                     <c:if test="${list.id ==2}">
@@ -141,7 +145,7 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                                     </c:if>
                                     <c:if test="${list.id ==3}">
                                     	<p><img src="${ctx}/source/images/portal/webPageTamper.png" alt=""></p>
-                                    </c:if>
+                                    </c:if>-->
                                     <h4>${list.name }</h4>
                                     <div class="purchase" style="left:77px">
                                     	<c:if test="${empty list.price}">
@@ -202,12 +206,12 @@ html, body{height: 100%; min-height: 100%; position: relative;}
                     	<ul class="newlist newlist-top fl">
                     	<c:forEach var="apiList" items="${servAPIList}" varStatus="status">
 	                    	<c:choose>
-	                           <c:when test="${apiList.id >=3}">
+	                           <c:when test="${apiList.id >=3 && apiList.id <=5}">
 	                           
 	                           <li class="fl">
 	                           <a href="javascript:;" onclick="buySelfHelpOrderAPIMain(${apiList.serviceId});">
 	                           		<i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
-	                           		<c:if test="${apiList.id ==3}">
+	                           		<!--<c:if test="${apiList.id ==3}">
                                     	<p><img src="${ctx}/source/images/portal/webPageTamper.png" alt=""></p>
 	                           		</c:if>
 	                           		<c:if test="${apiList.id ==4}">
@@ -215,7 +219,8 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 	                           		</c:if>
 	                           		<c:if test="${apiList.id ==5}">
                                     	<p><img src="${ctx}/source/images/portal/availability.png" alt=""></p>
-	                           		</c:if>
+	                           		</c:if> -->
+	                           		<p><img src="${ctx}/source/images/serviceIcon/${apiList.home_icon}" alt="" style="width:130px;height:auto;margin-top: 25px;margin-left: 65px;"></p>
                                     <h4>${apiList.name}</h4>
                                     <div class="purchase"  style="left:77px">
                                     	<strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">
