@@ -27,5 +27,11 @@ public interface ServiceAPIDao {
 	
 	List findApiPriceList();
 
+	int insert(ServiceAPI service);
+
+	void updateById(ServiceAPI serviceAPI);
+
+	void deleteById(int apiId);
+
 	
 }
