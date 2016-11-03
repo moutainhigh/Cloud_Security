@@ -33,7 +33,7 @@
 
 $(document).ready(function(){
     //回显
-	var orderType = ${service.orderType};
+	var orderType = ${servDetail.servType};
     if(orderType == 0){
 			$('.end').hide();
 			$('.time').hide();
@@ -41,6 +41,10 @@ $(document).ready(function(){
 	if(orderType == 1){
 		$('.type').hide();	
 		$('.end').show();
+	}
+	if(orderType == 2){
+		$('.type').hide();	
+		$('.end').hide();
 	}
 	var type = ${orderDetail.type};
 	if(type==2){
@@ -155,7 +159,7 @@ $("#us").hide("slow");
 		</div>
 		<input type="hidden" id="serviceId" value="${orderDetail.serviceId }"/>
 		<input type="hidden" id="indexPage" value="${indexPage }"/>
-		<input type="hidden" id="orderType" value="${service.orderType}"/>
+		<input type="hidden" id="orderType" value="${servDetail.servType}"/>
 		<input type="hidden" id="scanType" value="${orderDetail.scan_type }"/>
 		<input type="hidden" id="assetIds" value="${orderDetail.asstId}"/>
 		<input type="hidden" id="assetAddr" value="${orderDetail.assetAddr}"/>
@@ -171,7 +175,8 @@ $("#us").hide("slow");
 			<div class="dataBox clearfix">
 				<div class="dataL fl">
 					<div class="dataImg fl">
-						<img src="${ctx}/source/images/portal/product.png" alt="" />
+						<img src="${ctx}/source/images/serviceIcon/${service.detailIcon }" alt="" />
+						<!-- <img src="${ctx}/source/images/portal/product.png" alt="" /> -->
 					</div>
 				</div>
 				<div class="dataR detailsR fl" style="width:640px;">
@@ -179,7 +184,8 @@ $("#us").hide("slow");
                   <a href="javascript:showShopCar();" class="buttoncar" style="right:0px;"><b>${carnum}</b><i></i>我的购物车&gt;</a>
 					<ul>
 						<li class="clearfix">
-							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
+							<!-- <label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label> -->
+							<label class="fl">${servDetail.priceTitle }</label>
                             <div class="fl price">
 	                            <strong id="price">0</strong>
 	                            <strong></strong>
@@ -188,7 +194,8 @@ $("#us").hide("slow");
                             <span style="position: relative;top: 7px;left:7px">（推广初期价格）</span>
 						</li>
 						 <li class="clearfix type">
-							<label class="fl">选 类型</label>
+							<!-- <label class="fl">选 类型</label> -->
+							<label class="fl">${servDetail.typeTitle }</label>
                             <div class="fl clickBox" id="clickBox">
 	                            <button class="click Single" value="2" id="singleBtn" onclick="calPrice(null,null);">单次</button>
 	                            <button class="long" value="1" id="longBtn" onclick="calPriceLong(null,null,null)">长期</button>
@@ -203,7 +210,8 @@ $("#us").hide("slow");
                             </div>
 						</li>
 						<li class="clearfix time">
-							<label class="fl">服务频率</label>
+							<!-- <label class="fl">服务频率</label> -->
+							<label class="fl">${servDetail.ratesTitle }</label>
 							
                             <div class="fl clickBox" id="time">
                             <input type="hidden" id="serviceIdHidden" value="${service.id}"/>
@@ -249,7 +257,12 @@ $("#us").hide("slow");
         <div class="commodity">
         	<div class="imgBox clearfix">
             	<h4>商品信息</h4>
-                <div class="commoditys" style="height:618px; overflow:hidden">
+            	<c:forEach var="detailImage" items="${detailImages}" varStatus="status">
+            		<div class="commoditys" style="overflow:hidden">
+            			<img src="${ctx}/source/images/serviceDetail/${detailImage }" alt=""/>
+            		</div>
+            	</c:forEach>
+                <!-- <div class="commoditys" style="height:618px; overflow:hidden">
                 	<c:if test="${service.id == 1}">
                 		<img src="${ctx}/source/images/portal/servicePic1.png" alt=""/>
                 	</c:if>
@@ -274,7 +287,7 @@ $("#us").hide("slow");
                 </div>
                 <div class="commoditys">
                 	<img src="${ctx}/source/images/portal/product4.png" alt=""/>
-                </div>
+                </div> -->
             </div>
         </div>
 		<div class="safe04">
