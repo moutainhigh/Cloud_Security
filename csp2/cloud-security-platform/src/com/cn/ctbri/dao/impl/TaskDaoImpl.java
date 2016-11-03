@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.TaskDao;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskWarn;
 /**
  * 任务信息dao实现类
  * @author googe
@@ -120,6 +121,10 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 
 	public List<Task> findFinishAlarmByOrderId(Map<String, Object> paramMap) {
 		return this.getSqlSession().selectList(ns+"findFinishAlarmByOrderId",paramMap);
+	}
+
+	public void insertTaskWarn(TaskWarn taskwarn) {
+		getSqlSession().insert(ns+"insertTaskWarn", taskwarn);
 	}
 	
 }
