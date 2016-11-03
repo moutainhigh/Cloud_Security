@@ -8,6 +8,8 @@ public class Price {
 	private int timesLE;//小于等于
 	private double price;//价格
 	
+	private Integer scanType;
+	
 	public int getId() {
 		return id;
 	}
@@ -43,6 +45,12 @@ public class Price {
 	}
 	public void setTimesLE(int timesLE) {
 		this.timesLE = timesLE;
+	}
+	public Integer getScanType() {
+		return scanType;
+	}
+	public void setScanType(Integer scanType) {
+		this.scanType = scanType;
 	}
 
 
