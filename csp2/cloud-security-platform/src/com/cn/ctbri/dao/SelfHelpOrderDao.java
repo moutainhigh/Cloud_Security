@@ -128,8 +128,4 @@ public interface SelfHelpOrderDao {
 	OrderDetail getOrderAPIDetailById(String id,int userId);
 	//根据服务详情操作主键，查询
 	OrderDetail findOrderDetailById(String id,int userId);
-	//根据服务id查询服务频率信息
-	List<ScanType> findScanTypeById(int serviceId);
-	//根据服务id和服务频率查询服务频率信息
-	List<ScanType> findScanType(int serviceId, int scanType);
 }
