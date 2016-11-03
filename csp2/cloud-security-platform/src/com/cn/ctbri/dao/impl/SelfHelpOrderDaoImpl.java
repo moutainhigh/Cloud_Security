@@ -16,7 +16,6 @@ import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.OrderList;
-import com.cn.ctbri.entity.ScanType;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.entity.ShopCar;
@@ -264,17 +263,4 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		return this.getSqlSession().selectOne(ns+"findOrderDetailById", map);
 	}
 
-
-	public List<ScanType> findScanTypeById(int serviceId){
-		return this.getSqlSession().selectList(ns+"getScanTypeById", serviceId);
-	}
-
-	public List<ScanType> findScanType(int serviceId, int scanType) {
-		Map map = new HashMap();
-		map.put("serviceId", serviceId);
-		map.put("scanType", scanType);
-		return this.getSqlSession().selectList(ns+"getScanType", map);
-	}
-
-	
 }

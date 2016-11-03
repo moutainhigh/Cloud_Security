@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.ServiceAPIDao;
+import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceAPI;
 /**
  * 创 建 人  ：  tangxr
@@ -36,6 +37,27 @@ public class ServiceAPIDaoImpl extends DaoCommon implements ServiceAPIDao{
 
 	public List findApiPriceList() {
 		return this.getSqlSession().selectList(ns + "findApiPriceList");
+	}
+
+
+	@Override
+	public int insert(ServiceAPI serviceAPI) {
+		this.getSqlSession().insert(ns + "insertServAPI", serviceAPI);
+        return serviceAPI.getId();
+	}
+
+
+	@Override
+	public void updateById(ServiceAPI serviceAPI) {
+		this.getSqlSession().update(ns+"update", serviceAPI);
+		
+	}
+
+
+	@Override
+	public void deleteById(int apiId) {
+		this.getSqlSession().delete(ns+"deleteById", apiId);
+		
 	}
 	
 }
