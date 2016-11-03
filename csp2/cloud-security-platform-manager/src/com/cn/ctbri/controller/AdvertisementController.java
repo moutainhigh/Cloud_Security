@@ -1,11 +1,9 @@
 package com.cn.ctbri.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -20,12 +18,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.cn.ctbri.cfg.CspWorker;
 import com.cn.ctbri.entity.Advertisement;
 import com.cn.ctbri.service.IAdvertisementService;
 import com.cn.ctbri.util.CommonUtil;
+import com.cn.ctbri.util.SFTPUtil;
 
 /**
  * 创 建 人  ：  zsh
@@ -66,43 +64,54 @@ public class AdvertisementController {
     	Map<String, Object> m = new HashMap<String, Object>();
     	try{
     		//获取根目录
-    		String folderPath = request.getSession().getServletContext().getRealPath("");
-    		folderPath = folderPath.substring(0,folderPath.lastIndexOf("\\"));
-    		folderPath = folderPath + "/csp/source/images/ad/";
+//    		String folderPath = request.getSession().getServletContext().getRealPath("");
+//    		folderPath = folderPath.substring(0,folderPath.lastIndexOf("\\"));
+//    		folderPath = folderPath + "/csp/source/images/ad/";
 //    		folderPath = folderPath + "/cloud-security-platform/source/images/portal/ad/";
-    		String images = "";
-    		long  startTime=System.currentTimeMillis();
-    		//将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
-    		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
-					request.getSession().getServletContext());
-			// 检查form中是否有enctype="multipart/form-data"
-    		if(multipartResolver.isMultipart(request)){
-    			//将request变成多部分request
-    			MultipartHttpServletRequest multiRequest=(MultipartHttpServletRequest)request;
-    			//获取multiRequest 中所有的文件名
-    			Iterator iter=multiRequest.getFileNames();
-    			
-    			while(iter.hasNext()){
-    				//一次遍历所有文件
-    				MultipartFile file=multiRequest.getFile(iter.next().toString());
-    				if(file!=null){
-    					String path= folderPath+file.getOriginalFilename();
-    					//上传
-    					file.transferTo(new File(path));
-    					images = images + file.getOriginalFilename()+",";
-    				}
-    				
-    			}
-    			
-    			if (!images.equals("")) {
-    				images = images.substring(0,images.length() - 1);
-    			}
-    		}
-    		
-//    		String name = "";
-//    		String image = "";
-//    		String name = new String(advertisement.getName().getBytes("ISO-8859-1"), "UTF-8");
-//    		image = new String(advertisement.getImage().getBytes("ISO-8859-1"), "UTF-8");
+//    		String images = "";
+//    		long  startTime=System.currentTimeMillis();
+//    		//将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
+//    		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
+//					request.getSession().getServletContext());
+//			// 检查form中是否有enctype="multipart/form-data"
+//    		if(multipartResolver.isMultipart(request)){
+//    			//将request变成多部分request
+//    			MultipartHttpServletRequest multiRequest=(MultipartHttpServletRequest)request;
+//    			//获取multiRequest 中所有的文件名
+//    			Iterator iter=multiRequest.getFileNames();
+//    			
+//    			while(iter.hasNext()){
+//    				//一次遍历所有文件
+//    				MultipartFile file=multiRequest.getFile(iter.next().toString());
+//    				if(file!=null){
+//    					String path= folderPath+file.getOriginalFilename();
+//    					//上传
+//    					file.transferTo(new File(path));
+//    					images = images + file.getOriginalFilename()+",";
+//    				}
+//    				
+//    			}
+//    			
+//    			if (!images.equals("")) {
+//    				images = images.substring(0,images.length() - 1);
+//    			}
+//    		}
+    		MultipartHttpServletRequest multipartHttpservletRequest=(MultipartHttpServletRequest) request;
+	        MultipartFile multipartFile = multipartHttpservletRequest.getFile("file");
+	        if(multipartFile==null){
+	        	m.put("success", false);
+	        	return;
+	        }
+	        String originalFileName=multipartFile.getOriginalFilename();
+	        //上传文件名称；
+	        String uploadFileName = String.valueOf(System.currentTimeMillis())+ 
+	        						originalFileName.substring(originalFileName.lastIndexOf("."));
+	        boolean isSuccFlag = SFTPUtil.upload(multipartFile, uploadFileName, 3);
+
+	        if(!isSuccFlag){
+				m.put("success", false);
+				return;
+	        }
     		String name =  new String(request.getParameter("name"));
     		String startDateStr = request.getParameter("startDate");
     		String endDateStr = request.getParameter("endDate");
@@ -111,9 +120,9 @@ public class AdvertisementController {
     		
     		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//小写的mm表示的是分钟  
     		Date createDate = new Date();
-    		//TODO
+    		
     		//通过接口方式将数据存储于前端Portal数据库中
-    		String adId = CspWorker.addAdvertisement(name, images,type,
+    		String adId = CspWorker.addAdvertisement(name, uploadFileName,type,
     				orderIndex, startDateStr, endDateStr, sdf.format(createDate));
     		if(adId == null || adId.equals("")) {
     			m.put("success", false);
@@ -126,7 +135,7 @@ public class AdvertisementController {
             Advertisement advertisement = new Advertisement();
             advertisement.setId(Integer.valueOf(adId));
     		advertisement.setName(name);
-    		advertisement.setImage(images);
+    		advertisement.setImage(uploadFileName);
     		advertisement.setStartDate(startDate);
     		advertisement.setEndDate(endDate);
     		advertisement.setCreateDate(createDate);//创建时间
