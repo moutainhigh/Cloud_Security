@@ -16,8 +16,19 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.entity.Advertisement;
+import com.cn.ctbri.entity.ScanType;
+import com.cn.ctbri.entity.Serv;
+import com.cn.ctbri.entity.ServiceAPI;
+import com.cn.ctbri.entity.ServiceDetail;
 import com.cn.ctbri.service.IAdvertisementService;
+import com.cn.ctbri.service.IApiPriceService;
+import com.cn.ctbri.service.IPriceService;
+import com.cn.ctbri.service.IScanTypeService;
+import com.cn.ctbri.service.IServDetailService;
+import com.cn.ctbri.service.IServService;
+import com.cn.ctbri.service.IServiceAPIService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -35,6 +46,18 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 public class ServerManagerService {
 	@Autowired
 	IAdvertisementService adService;
+	@Autowired
+	IServService servService;
+	@Autowired
+	IServiceAPIService servAPIService;
+	@Autowired
+	IServDetailService servDetailService;
+	@Autowired
+	IScanTypeService scanTypeService;
+	@Autowired
+	IPriceService priceService;
+	@Autowired
+	IApiPriceService apiPriceService;
 	
 	/**
 	 * 功能描述：广告添加
@@ -162,6 +185,302 @@ public class ServerManagerService {
 			
 			json.put("code", 400);//返回400表示失败
 			json.put("messaage", "广告排序失败");
+		}
+        
+		return json.toString();
+	}
+	
+	/**
+	 * 功能描述：添加服务
+	 * */
+	@POST
+	@Path("/server/addserver")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String addService(String dataJson){
+		JSONObject json = new JSONObject();
+		try {
+			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
+			
+			int parent = jsonObj.getInt("parent");
+			int type = jsonObj.getInt("type");
+			String name = jsonObj.getString("name");
+			String remarks = jsonObj.getString("remarks");
+			String homeIcon = jsonObj.getString("homeIcon");
+			String categoryIcon = jsonObj.getString("categoryIcon");
+			String detailIcon = jsonObj.getString("detailIcon");
+			
+			int serviceId = 0;
+			if (parent==6) {
+				//API服务
+				ServiceAPI service = new ServiceAPI();
+				service.setName(name);
+				service.setParentC(parent);
+				service.setType(type);
+				service.setRemarks(remarks);
+				service.setHomeIcon(homeIcon);
+				service.setCategoryIcon(categoryIcon);
+				service.setDetailIcon(detailIcon);
+				serviceId = servAPIService.insert(service);
+			}else{
+				Serv service = new Serv();
+				service.setName(name);
+				service.setParentC(parent);
+				service.setType(type);
+				service.setRemarks(remarks);
+				service.setHomeIcon(homeIcon);
+				service.setCategoryIcon(categoryIcon);
+				service.setDetailIcon(detailIcon);
+				serviceId= servService.insert(service);
+				
+			}
+			
+			json.put("code", 200);//返回200表示成功
+			json.put("messaage", "添加服务成功");
+			json.put("serviceId", serviceId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			json.put("code", 400);//返回400表示失败
+			json.put("messaage", "添加服务失败");
+		}
+        
+		return json.toString();
+	}
+	
+	/**
+	 * 功能描述：服务删除
+	 * */
+	@POST
+	@Path("/server/deleteserver")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String deleteService(String dataJson){
+		JSONObject json = new JSONObject();
+		
+		try {
+			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
+			
+			int serviceId = jsonObj.getInt("serviceId");
+			int parent = jsonObj.getInt("parent");
+			
+			String serviceIcon = null;
+			if(parent == 6) {	//删除API服务
+				//删除服务图标
+				ServiceAPI serviceAPI = servAPIService.findById(serviceId);
+				serviceIcon = serviceAPI.getHomeIcon();
+				deleteImage("serviceIcon", serviceIcon);
+				
+				serviceIcon = serviceAPI.getCategoryIcon();
+				deleteImage("serviceIcon", serviceIcon);
+				
+				serviceIcon = serviceAPI.getDetailIcon();
+				deleteImage("serviceIcon", serviceIcon);
+				
+				//删除service_api表数据
+				servAPIService.deleteById(serviceId);
+				//删除price_api表数据
+				apiPriceService.delPrice(serviceId);
+				
+				
+			} else {				//删除服务
+				//删除服务图标
+				Serv service = servService.findById(serviceId);
+				if (service != null) {
+					serviceIcon = service.getHomeIcon();
+					deleteImage("serviceIcon", serviceIcon);
+					
+					serviceIcon = service.getCategoryIcon();
+					deleteImage("serviceIcon", serviceIcon);
+					
+					serviceIcon = service.getDetailIcon();
+					deleteImage("serviceIcon", serviceIcon);
+				}
+				
+				//删除服务详情的图片
+				String detailImage = null; 
+				ServiceDetail servDetail = servDetailService.findByServId(serviceId);
+				if(null != servDetail) {
+					detailImage = servDetail.getDetailIcon(); 
+					deleteImage("serviceDetail", detailImage);
+				}
+				
+				//删除service表数据
+				servService.deleteById(serviceId);
+				
+				//删除service详情表数据
+				servDetailService.delete(serviceId, parent);
+				
+				//删除scanType表数据
+				scanTypeService.deleteByServiceId(serviceId);
+				
+				//删除price表数据
+				priceService.delPrice(serviceId);
+			}
+			
+			json.put("code", 200);//返回200表示成功
+			json.put("message", "删除服务成功");
+		} catch(Exception e){
+			e.printStackTrace();
+			json.put("code", 400);//返回400表示失败
+			json.put("message", "删除服务失败");
+		}
+		
+		return json.toString();
+	}
+	
+	private void deleteImage(String folderName, String imageNames) throws Exception{
+		if (imageNames == null || imageNames.equals("") || imageNames.equals(";")) {
+			return;
+		}
+		
+		String[] imageNameArray = imageNames.split(";");
+		//获取根目录  例 E:/apache-tomcat-X.X.XX/webapps/csp/WEB-INF/classes/  
+		String path = this.getClass().getClassLoader().getResource("/").getPath();
+		path = URLDecoder.decode(path, "UTF-8");
+		
+		path = path.substring(0, path.lastIndexOf("/"));  //E:\apache-tomcat-X.X.XX\webapps\csp\WEB-INF/classes
+		path = path.substring(0, path.lastIndexOf("/"));  //E:\apache-tomcat-X.X.XX\webapps\csp\WEB-INF
+		path = path.substring(0, path.lastIndexOf("/"));  //E:\apache-tomcat-X.X.XX\webapps\csp\
+		path = path +"/source/images/serviceIcon/"+ folderName+"/";
+		for (String imageName : imageNameArray) {
+			String imagePath = path + imageName;
+			File imageFile = new File(imagePath);
+			if (imageFile.exists()) {
+				imageFile.delete();
+			}
+		}
+	}
+	
+	/**
+	 * 功能描述：修改服务
+	 * */
+	@POST
+	@Path("/server/updateserver")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateService(String dataJson){
+		JSONObject json = new JSONObject();
+		try {
+			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
+			
+			int serviceId = jsonObj.getInt("serviceId");
+			int parent = jsonObj.getInt("parent");
+			int type = jsonObj.getInt("type");
+			String name = jsonObj.getString("name");
+			String remarks = jsonObj.getString("remarks");
+			String homeIcon = jsonObj.getString("homeIcon");
+			String categoryIcon = jsonObj.getString("categoryIcon");
+			String detailIcon = jsonObj.getString("detailIcon");
+			
+			if (parent==6) {
+				//API服务
+				ServiceAPI service = new ServiceAPI();
+				service.setId(serviceId);
+				service.setName(name);
+				service.setParentC(parent);
+				service.setType(type);
+				service.setRemarks(remarks);
+				service.setHomeIcon(homeIcon);
+				service.setCategoryIcon(categoryIcon);
+				service.setDetailIcon(detailIcon);
+				servAPIService.updateById(service);
+			}else{
+				Serv service = new Serv();
+				service.setId(serviceId);
+				service.setName(name);
+				service.setParentC(parent);
+				service.setType(type);
+				service.setRemarks(remarks);
+				service.setHomeIcon(homeIcon);
+				service.setCategoryIcon(categoryIcon);
+				service.setDetailIcon(detailIcon);
+				servService.updateById(service);
+			}
+			
+			json.put("code", 200);//返回200表示成功
+			json.put("messaage", "修改服务成功");
+			json.put("serviceId", serviceId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			json.put("code", 400);//返回400表示失败
+			json.put("messaage", "修改服务失败");
+		}
+        
+		return json.toString();
+	}
+	
+	/**
+	 * 功能描述：服务详情维护
+	 * */
+	@POST
+	@Path("/serverDetail/vindicateDetail")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String saveServDetails(String dataJson){
+		JSONObject json = new JSONObject();
+		try {
+			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
+			
+			int serviceId = jsonObj.getInt("serviceId");
+			int parentC = jsonObj.getInt("parent");
+			String priceTitle = jsonObj.getString("priceTitle");		//价格标题
+			String typeTitle = jsonObj.getString("typeTitle");			//选类型标题
+			int servType = jsonObj.getInt("servType");					//选类型(0:单次和长期,1:长期,2:单次)
+			String servRatesTitle = jsonObj.getString("servRatesTitle");//服务频率标题
+			String scanTypeStr = jsonObj.getString("scanType");			//服务频率
+			String servIcon = jsonObj.getString("servIcon");			//服务详情图片
+			
+			//删除服务详情表数据
+//			Map<String, Object> map = new HashMap<String, Object>();
+//			map.put("servId", serviceId);
+//			map.put("parent", parentC);
+			servDetailService.delete(serviceId, parentC);
+			
+			//删除scanType表数据
+			scanTypeService.deleteByServiceId(serviceId);
+			
+			//删除price表数据
+			priceService.delPrice(serviceId);
+			
+			//新增服务频率
+			if (servType== 0 || servType==1) {  //0:单次和长期,1:长期
+				String[] scanTypeArray = scanTypeStr.split(",");
+				for(int i=0; i<scanTypeArray.length; i++){
+					ScanType scanType = new ScanType();
+					scanType.setServiceId(serviceId);
+					scanType.setScan_name(scanTypeArray[i]);
+					
+					Integer scanTypeInt = Constants.SCAN_TYPE_MAP.get(scanTypeArray[i]);
+					if (scanTypeInt != null) {
+						scanType.setScan_type(scanTypeInt);
+						scanTypeService.insert(scanType);
+					}
+				}
+			}else {
+				servRatesTitle="";
+			}
+			
+			//新增服务详情
+			ServiceDetail sd = new ServiceDetail();
+			sd.setServiceId(serviceId);
+			sd.setPriceTitle(priceTitle);
+			sd.setTypeTitle(typeTitle);
+			sd.setServType(servType);
+			sd.setRatesTitle(servRatesTitle);
+			sd.setDetailIcon(servIcon);
+			sd.setCreateTime(new Date());
+			sd.setParentC(parentC);
+			sd.setDetailFlag("0");
+			servDetailService.insert(sd);
+			
+			
+			
+			json.put("code", 200);//返回200表示成功
+			json.put("messaage", "修改服务详情成功");
+			json.put("serviceId", serviceId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			json.put("code", 400);//返回400表示失败
+			json.put("messaage", "修改服务详情失败");
 		}
         
 		return json.toString();
