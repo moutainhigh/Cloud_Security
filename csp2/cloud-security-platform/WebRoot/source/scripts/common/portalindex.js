@@ -107,10 +107,15 @@ chck();
 			$('.end').hide();
 			$('.time').hide();
 		}
-		if(orderType == 1){
+		if(orderType == 1){   //长期
 			$('.type').hide();	
 			$('.end').show();
 			$('.long').addClass('click').siblings().removeClass('click');	
+		}
+		if(orderType == 2){   //单次
+			$('.type').hide();	//选类型 隐藏
+			$('.end').hide();	//服务结束时间隐藏
+			$('.time').hide();	//服务频率隐藏
 		}
 		
 		
