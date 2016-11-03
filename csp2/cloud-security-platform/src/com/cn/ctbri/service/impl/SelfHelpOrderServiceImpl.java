@@ -208,12 +208,4 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 	}
 
 	
-	public List<ScanType> findScanTypeById(int serviceId){
-		return selfHelpOrderDao.findScanTypeById(serviceId);
-	}
-
-	public List<ScanType> findScanType(int serviceId, int scanType) {
-		return selfHelpOrderDao.findScanType(serviceId, scanType);
-	}
-
 }

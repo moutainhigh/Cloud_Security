@@ -36,4 +36,9 @@ public class PriceServiceImpl implements IPriceService{
 		return priceDao.delPrice(serviceId);
 	}
 
+	@Override
+	public List<Price> findPriceByScanTypeNull(int serviceId) {
+		return priceDao.findPriceByScanTypeNull(serviceId);
+	}
+
 }

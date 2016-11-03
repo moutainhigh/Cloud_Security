@@ -36,4 +36,18 @@ public class ServiceAPIServiceImpl implements IServiceAPIService{
 		return serviceAPIDao.findApiPriceList();
 	}
 	
+	public int insert(ServiceAPI service) {
+		return serviceAPIDao.insert(service);
+	}
+	@Override
+	public void updateById(ServiceAPI serviceAPI) {
+		serviceAPIDao.updateById(serviceAPI);
+		
+	}
+	@Override
+	public void deleteById(int apiId) {
+		serviceAPIDao.deleteById(apiId);
+		
+	}
+	
 }
