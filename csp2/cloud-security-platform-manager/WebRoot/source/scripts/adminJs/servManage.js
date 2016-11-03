@@ -38,6 +38,16 @@ function changeParentForSearch(){
 
 //上传首页服务图标
 function saveHomeIcon(){
+	var filename = $("#homeIconPathHidden").val();
+    var fileFormat = filename.substring(filename.lastIndexOf("."));
+
+    if(filename=="") {
+    	alert("未选择图片!");
+    	return;
+    }else if(!/.jpg|.JPG|.bmp|.BMP|.PNG|.png|.PDF|.pdf/.test(fileFormat)){
+    	alert("格式不正确!");
+    	return;
+    }
 	var options = {
 		url:'uploadIcon.html',
 		//beforeSubmit:showRequest,
@@ -61,6 +71,16 @@ function saveHomeIcon(){
 
 //上传二级服务图标
 function saveCategoryIcon(){
+	var filename = $("#categoryIconPathHidden").val();
+    var fileFormat = filename.substring(filename.lastIndexOf("."));
+
+    if(filename=="") {
+    	alert("未选择图片!");
+    	return;
+    }else if(!/.jpg|.JPG|.bmp|.BMP|.PNG|.png|.PDF|.pdf/.test(fileFormat)){
+    	alert("格式不正确!");
+    	return;
+    }
 	var options = {
 		url:'uploadIcon.html',
 		//beforeSubmit:showRequest,
@@ -83,6 +103,17 @@ function saveCategoryIcon(){
 
 //上传详情服务图标
 function saveDetailIcon(){
+	var filename = $("#detailIconPathHidden").val();
+    var fileFormat = filename.substring(filename.lastIndexOf("."));
+
+    if(filename=="") {
+    	alert("未选择图片!");
+    	return;
+    }else if(!/.jpg|.JPG|.bmp|.BMP|.PNG|.png|.PDF|.pdf/.test(fileFormat)){
+    	alert("格式不正确!");
+    	return;
+    }
+    
 	var options = {
 		url:'uploadIcon.html',
 		//beforeSubmit:showRequest,
@@ -105,6 +136,17 @@ function saveDetailIcon(){
 
 //修改首页服务图标
 function editHomeIcon(){
+	var filename = $("#edit_homeIconPathHidden").val();
+    var fileFormat = filename.substring(filename.lastIndexOf("."));
+
+    if(filename=="") {
+    	alert("未选择图片!");
+    	return;
+    }else if(!/.jpg|.JPG|.bmp|.BMP|.PNG|.png|.PDF|.pdf/.test(fileFormat)){
+    	alert("格式不正确!");
+    	return;
+    }
+    
 	var options = {
 		url:'uploadIcon.html',
 		//beforeSubmit:showRequest,
@@ -128,6 +170,17 @@ function editHomeIcon(){
 
 //修改二级页服务图标
 function editCategoryIcon(){
+	var filename = $("#edit_categoryIconPathHidden").val();
+    var fileFormat = filename.substring(filename.lastIndexOf("."));
+
+    if(filename=="") {
+    	alert("未选择图片!");
+    	return;
+    }else if(!/.jpg|.JPG|.bmp|.BMP|.PNG|.png|.PDF|.pdf/.test(fileFormat)){
+    	alert("格式不正确!");
+    	return;
+    }
+    
 	var options = {
 		url:'uploadIcon.html',
 		//beforeSubmit:showRequest,
@@ -151,6 +204,17 @@ function editCategoryIcon(){
 
 //修改详情页服务图标
 function editDetailIcon(){
+	var filename = $("#edit_detailIconPathHidden").val();
+    var fileFormat = filename.substring(filename.lastIndexOf("."));
+
+    if(filename=="") {
+    	alert("未选择图片!");
+    	return;
+    }else if(!/.jpg|.JPG|.bmp|.BMP|.PNG|.png|.PDF|.pdf/.test(fileFormat)){
+    	alert("格式不正确!");
+    	return;
+    }
+    
 	var options = {
 		url:'uploadIcon.html',
 		//beforeSubmit:showRequest,
@@ -181,7 +245,7 @@ function saveServ(){
     var homeIcon = $("#homeIconPathHidden").val();
     var categoryIcon = $("#categoryIconPathHidden").val();
     var detailIcon = $("#detailIconPathHidden").val();
-    
+
     if(parent == -1){
 	    alert("请选择一级分类!");
 	    return;
