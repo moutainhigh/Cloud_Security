@@ -55,5 +55,8 @@
 		<!-- add by zhangshaohua 2016-8-5 -->
 		<mapper resource="com/cn/ctbri/entity/DataAnalysisMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/AttackSourceMapper.xml"/>
+		
+		<mapper resource="com/cn/ctbri/entity/ServDetailMapper.xml"/>
+		<mapper resource="com/cn/ctbri/entity/ScanTypeMapper.xml"/>
 	</mappers>
 </configuration>  
