@@ -17,6 +17,9 @@ public class Serv {
     private int orderType;	//订单类型(0:单次和长期,1:长期,2:单次)
     private int parentC;//服务大类
     private int websoc;//创宇标志
+    private String homeIcon;//首页服务图标
+    private String categoryIcon;//二级页服务图标
+    private String detailIcon;//详情页服务图标
 	public int getId() {
 		return id;
 	}
@@ -77,5 +80,23 @@ public class Serv {
     public void setWebsoc(int websoc) {
         this.websoc = websoc;
     }
+	public String getHomeIcon() {
+		return homeIcon;
+	}
+	public void setHomeIcon(String homeIcon) {
+		this.homeIcon = homeIcon;
+	}
+	public String getCategoryIcon() {
+		return categoryIcon;
+	}
+	public void setCategoryIcon(String categoryIcon) {
+		this.categoryIcon = categoryIcon;
+	}
+	public String getDetailIcon() {
+		return detailIcon;
+	}
+	public void setDetailIcon(String detailIcon) {
+		this.detailIcon = detailIcon;
+	}
 	
 }
