@@ -109,6 +109,7 @@
 				                <c:if test="${list.isAPI==2 && (list.status==0)}"><p class="stylep" style="width:108px;">已下单<b class="wait"></b></p></c:if>
 				                <c:if test="${list.isAPI==2 && (list.status==5)}"><p class="stylep" style="width:108px;">域名解析未生效</b></p></c:if>
 				                <c:if test="${list.isAPI==2 && (list.status==4)}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
+				                <c:if test="${list.isAPI==2 && (list.status==1)}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
                             </td>
                             <td class="order" valign="top">
                             	<p style="width:174px; line-height:24px; margin-top:33px;" class="stylep"><fmt:formatDate value="${list.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/><br><fmt:formatDate value="${list.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
