@@ -54,7 +54,6 @@ if(parent != '6' && (type== '0' || type =='1') ){
 //长期复选框
 $("#u10_input").click(function(){
 	var chk = document.getElementById('u10_input');
-	alert(chk.checked);
 	if(chk.checked){ 
 		$("#u12").show();
 		$("#u15").show();
