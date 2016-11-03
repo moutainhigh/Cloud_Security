@@ -35,6 +35,7 @@ public class Configuration {
 	private static String forgetCode_model;//忘记密码模板
 	private static String modifyMobile_model;//修改手机号模板
 	private static String anquanbi_model;//注册赠送安全币模板
+	private static String wafMsg_model;//waf短信提醒
 	static {
 		InputStream inputStream = Configuration.class.getClassLoader().getResourceAsStream("default.properties");
 		Properties prop = new Properties();
@@ -62,6 +63,7 @@ public class Configuration {
 		forgetCode_model=(String)prop.get("forgetCode_model");
 		modifyMobile_model=(String)prop.get("modifyMobile_model");
 		anquanbi_model=(String)prop.get("anquanbi_model");
+		wafMsg_model=(String)prop.get("wafMsg_model");
 	}
 	public static String getFileContent() {
 		return fileContent;
@@ -177,7 +179,11 @@ public class Configuration {
 	public static void setAnquanbi_model(String anquanbi_model) {
 		Configuration.anquanbi_model = anquanbi_model;
 	}
+	public static String getWafMsg_model() {
+		return wafMsg_model;
+	}
+	public static void setWafMsg_model(String wafMsg_model) {
+		Configuration.wafMsg_model = wafMsg_model;
+	}
     
-    
-	
 }
