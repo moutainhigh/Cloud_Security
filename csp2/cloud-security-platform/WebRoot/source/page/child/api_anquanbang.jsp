@@ -156,11 +156,11 @@ function buyAPI(apiId){
                 	<div class="listR" style="width:1108px; margin:0 auto;">
                     	<ul class="newlist row newlist-top child-newlist clearfix" style="margin-right:-38px;">
                             <c:forEach var="list" items="${servList}" varStatus="status">
-	                          <c:choose>
-                               <c:when test="${status.index<5}">
+	                          <!--<c:choose>
+                               <c:when test="${status.index<5}">-->
 		                            <li class="fl col-md-4">
 		                                    <i><img src="${ctx}/source/images/portal/API_Sign.png" alt=""></i>
-		                                    <p><img src="${ctx}/source/images/portal/child${status.index+1 }.png" alt=""></p>
+		                                    <p><img src="${ctx}/source/images/serviceIcon/${list.category_icon }" alt="" style="width:210px;height:auto;margin-top: 35px;margin-left: 62px;"></p>
 		                                    <h4>${list.name }</h4>
 		                                    <span style="padding-right: 30px">
 		                                    	${list.remarks }
@@ -191,8 +191,8 @@ function buyAPI(apiId){
 		                                    </div>
 		                               
 		                            </li>
-		                         </c:when>
-		                       </c:choose>
+		                         <!--</c:when>
+		                       </c:choose>-->
                             </c:forEach>
                         </ul>
                     </div>

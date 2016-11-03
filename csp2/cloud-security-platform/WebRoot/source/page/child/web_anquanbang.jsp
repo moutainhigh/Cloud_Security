@@ -203,12 +203,14 @@ function buyWafOrder(serviceId){
                     	<ul class="newlist row newlist-top child-newlist clearfix" style="margin-right:-38px;">
                             <c:forEach var="list" items="${servList}" varStatus="status">
 	                          <c:choose>
-                               <c:when test="${status.index<5}">
+                               <c:when test="${list.type==1}">
 		                            <li class="fl col-md-4">
 		                                    <!--<i><img src="imges/HOT.png" alt=""></i>-->
-		                                    <p><img src="${ctx}/source/images/portal/child${status.index+1 }.png" alt=""></p>
+		                                    <p style="width:100%;height:269px;">
+		                                    	<img src="${ctx}/source/images/serviceIcon/${list.category_icon }" alt="" style="width:210px;height:auto;margin-top: 35px;margin-left: 62px;">
+		                                    </p>
 		                                    <h4>${list.name }</h4>
-		                                    <span>
+		                                    <span style="right: 30px;">
 		                                    	${list.remarks }
 		                                    </span>
 		                                    <div class="purchase">
@@ -218,9 +220,11 @@ function buyWafOrder(serviceId){
 		                                    	<em style="font-size: 14px;color: #D00000;">安全币</em>
 		                                    	</strong>
 		                                    </c:if>
-		                                    <c:if test="${empty list.price}">
-		                                    	<strong>0.00<em style="font-size: 14px;color: #D00000;">安全币</em></strong>
-		                                   	 	<strong><em style="font-family:Arial Regular;font-size:22px;">99.00</em><em style="font-size: 14px;color: #D00000;">安全币</em></strong>
+		                                    
+		                                   <c:if test="${empty list.price}">
+		                                    	<strong style="text-decoration:none;">
+		                                    		0.00<em style="font-size: 14px;color: #D00000;">安全币</em>
+		                                    	</strong>
 		                                    </c:if>
 		                                    	<!--<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1" class="btn">购买</a>
 		                                    -->
@@ -298,6 +302,40 @@ function buyWafOrder(serviceId){
                                 </div>
                                
                             </li>
+                            <!--<c:forEach  var="list" items="${servList}" varStatus="status">
+                            	<c:if test="${list.type == 2 && list.id != 6}">
+                            	
+	                            <li class="fl">
+	                                    <p class="fl">
+	                                    	<img src="${ctx}/source/images/serviceIcon/${list.category_icon }" alt="" style="width:220px;height:auto;margin-top: 41px;margin-left: 24px;" />
+	                                    </p>
+	                                    <div class="servicelistR fl">
+	                                    	<h4>${list.name }</h4>
+	                                        <span>
+	                                            	${list.remarks }
+	                                        </span>
+	                                        <div class="purchase" style="padding-top:100px;">
+	                                           
+	                                            <c:if test="${!empty list.price}">
+	                                             <strong style="display:block; font-size:30px;">${list.price }
+		                                            <fmt:formatNumber type="number" value="${list.price}" maxFractionDigits="2" minFractionDigits="2"/>
+			                                    	<em style="font-size: 14px;color: #D00000;">安全币</em>
+	                                             </strong>
+	                                             </c:if>
+	                                             
+	                                             <c:if test="${empty list.price}">
+			                                    	<strong style="display:block; font-size:30px;">0.00
+			                                    	<em style="font-size: 14px;color: #D00000;">安全币</em>
+			                                    	</strong>
+		                                    	</c:if>
+	                                            <a href="javascript:;" class="btn" onclick="buySefHelpOrder(${list.id });" style="width:80px;">购买</a>
+	                                        </div>
+	                                    </div>
+	                               
+	                            </li>
+	                            </c:if>
+                            
+                            </c:forEach>-->
                            </ul>
                         </div>
                    </div>
