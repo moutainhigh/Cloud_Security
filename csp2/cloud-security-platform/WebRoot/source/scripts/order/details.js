@@ -511,7 +511,7 @@ function calDefaultPrice(){
 	if(typeof(serviceId) == "undefined"){
 		return;
 	}
-	switch(parseInt(serviceId)){
+	/*switch(parseInt(serviceId)){
 	case 1://默认单次
 	
 		calPrice(null);
@@ -532,6 +532,14 @@ function calDefaultPrice(){
 		
 		calPriceLong(null,servType,null);
 		break;
+	}*/
+	var orderType = $("#orderType").val();
+	if(orderType==0 || orderType == 2){  //0:长期和单次 2：单次
+		calPrice(null);
+		
+	} else if(orderType == 1) {   //1:长期
+		calPriceLong(null,servType,null);
+		
 	}
 	$("#timesHidden").val(1);
 	
