@@ -64,14 +64,23 @@ $("#u10_input").click(function(){
 });
 //添加行按钮
 $("#u27_input").click(function(){
+	       // +'<input class="regist_txt"  id="u31_input" name="scanType" type="text" value=""/>'
 	var html = '<div id="u31" class="ax_text_field positionr">'
-	        +'<input class="regist_txt"  id="u31_input" name="scanType" type="text" value=""/>'
+	        +'<select class="regist_sel" id="u31_input" name="scanType">'
+				+'<option value="-1" selected="selected">请选择</option>'
+				+'<option value="1">10分钟</option>'
+				+'<option value="2">30分钟</option>'
+				+'<option value="3">1小时</option>'
+				+'<option value="4">1天</option>'
+				+'<option value="5">每周</option>'
+				+'<option value="6">每月</option>'
+			+'</select>'
 	        +'</div>';
 	$("#u17").append(html);
 });
 //删除行按钮
 $("#u30_input").click(function(){
-	$("input[name='scanType']:last").parent().remove();
+	$("select[name='scanType']:last").parent().remove();
 });
 
 //重置按钮
@@ -189,7 +198,7 @@ $(".upload_delete").click(function(){
 			        <label for="u10_input" class="checkbox_lable" >
 			            <c:choose>
 				          	<c:when test="${serviceDetail.servType == 0 or serviceDetail.servType ==1}">
-				          		<input id="u10_input" type="checkbox" name="servType" value="1" checked/>  
+				          		<input id="u10_input" type="checkbox" name="servType" value="1" checked/>
 				          	</c:when>
 				          	<c:otherwise>
 				          		<input id="u10_input" type="checkbox" name="servType" value="1"/>
@@ -216,13 +225,74 @@ $(".upload_delete").click(function(){
 	  				<c:choose>
 			          	<c:when test="${scanTypeList==null or scanTypeList.size() == 0}">
 			          		<div id="u31" class="ax_text_field positionr">
-						        <input class="regist_txt" id="u31_input" name="scanType" type="text" value=""/>
+						        <!-- <input class="regist_txt" id="u31_input" name="scanType" type="text" value=""/> -->
+						        <select class="regist_sel" id="u31_input" name="scanType">
+			                		<option value="-1" selected="selected">请选择</option>
+				                	<option value="1">10分钟</option>
+				                	<option value="2">30分钟</option>
+				                	<option value="3">1小时</option>
+				                	<option value="4">1天</option>
+				                	<option value="5">每周</option>
+				                	<option value="6">每月</option>
+				                </select>
 						    </div>
 			          	</c:when>
 			          	<c:otherwise>
-				          <c:forEach var="scanType" items="${scanTypeList }">
+				          <c:forEach var="scanType" items="${scanTypeList }" varStatus="status">
 						      <div id="u31" class="ax_text_field positionr">
-						        <input class="regist_txt" id="u31_input" name="scanType" type="text" value="${scanType.scan_name }"/>
+						        <!-- <input class="regist_txt" id="u31_input" name="scanType" type="text" value="${scanType.scan_name }"/>
+						      	  -->
+						      	  <select class="regist_sel" id="u31_input" name="scanType">
+			                		<option value="-1">请选择</option>
+			                		<c:if test="${scanType.scan_type==1}">
+				                		<option value="1" selected="selected">10分钟</option>
+				                		<option value="2">30分钟</option>
+				                		<option value="3">1小时</option>
+				                		<option value="4">1天</option>
+				                		<option value="5">每周</option>
+				                		<option value="6">每月</option>
+			                		</c:if>
+			                		<c:if test="${scanType.scan_type==2}">
+				                		<option value="1">10分钟</option>
+				                		<option value="2" selected="selected">30分钟</option>
+				                		<option value="3">1小时</option>
+				                		<option value="4">1天</option>
+				                		<option value="5">每周</option>
+				                		<option value="6">每月</option>
+			                		</c:if>
+			                		<c:if test="${scanType.scan_type==3}">
+				                		<option value="1">10分钟</option>
+				                		<option value="2">30分钟</option>
+				                		<option value="3" selected="selected">1小时</option>
+				                		<option value="4">1天</option>
+				                		<option value="5">每周</option>
+				                		<option value="6">每月</option>
+			                		</c:if>
+			                		<c:if test="${scanType.scan_type==4}">
+				                		<option value="1">10分钟</option>
+				                		<option value="2">30分钟</option>
+				                		<option value="3">1小时</option>
+				                		<option value="4" selected="selected">1天</option>
+				                		<option value="5">每周</option>
+				                		<option value="6">每月</option>
+			                		</c:if>
+			                		<c:if test="${scanType.scan_type==5}">
+				                		<option value="1">10分钟</option>
+				                		<option value="2">30分钟</option>
+				                		<option value="3">1小时</option>
+				                		<option value="4">1天</option>
+				                		<option value="5" selected="selected">每周</option>
+				                		<option value="6">每月</option>
+			                		</c:if>
+			                		<c:if test="${scanType.scan_type==6}">
+				                		<option value="1">10分钟</option>
+				                		<option value="2">30分钟</option>
+				                		<option value="3">1小时</option>
+				                		<option value="4">1天</option>
+				                		<option value="5">每周</option>
+				                		<option value="6" selected="selected">每月</option>
+			                		</c:if>
+			                	</select>
 						      </div>
 					      </c:forEach>
 			          	</c:otherwise>
