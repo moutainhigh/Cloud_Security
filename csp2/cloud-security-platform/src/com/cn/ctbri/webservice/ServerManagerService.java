@@ -446,11 +446,11 @@ public class ServerManagerService {
 				for(int i=0; i<scanTypeArray.length; i++){
 					ScanType scanType = new ScanType();
 					scanType.setServiceId(serviceId);
-					scanType.setScan_name(scanTypeArray[i]);
+					scanType.setScan_type(Integer.valueOf(scanTypeArray[i]));
 					
-					Integer scanTypeInt = Constants.SCAN_TYPE_MAP.get(scanTypeArray[i]);
-					if (scanTypeInt != null) {
-						scanType.setScan_type(scanTypeInt);
+					String scanTypeName = Constants.SCAN_TYPE_MAP.get(scanTypeArray[i]);
+					if (scanTypeName != null && !scanTypeName.equals("")) {
+						scanType.setScan_name(scanTypeName);
 						scanTypeService.insert(scanType);
 					}
 				}
