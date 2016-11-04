@@ -48,15 +48,15 @@ public class ServController {
 	@Autowired
     ISelfHelpOrderService selfHelpOrderService;
 	
-	private static Map<String,Integer> scanTypeMap = new HashMap<String, Integer>();
+	private static Map<String,String> scanTypeMap = new HashMap<String,String>();
 	static{
 		
-		scanTypeMap.put("10分钟", 1);
-		scanTypeMap.put("30分钟", 2);
-		scanTypeMap.put("1小时", 3);
-		scanTypeMap.put("1天", 4);
-		scanTypeMap.put("每周", 5);
-		scanTypeMap.put("每月", 6);
+		scanTypeMap.put("1","10分钟");
+		scanTypeMap.put("2","30分钟");
+		scanTypeMap.put("3","1小时");
+		scanTypeMap.put("4","1天");
+		scanTypeMap.put("5","每周");
+		scanTypeMap.put("6","每月");
 	}
 	
 	/**
@@ -506,10 +506,10 @@ public class ServController {
 					for(int i=0; i<scanType.length; i++){
 						Map<String, Object> insertMap = new HashMap<String, Object>();
 						insertMap.put("serviceId", serviceId);
-						insertMap.put("scanName", scanType[i]);
-						Integer scanTypeInt = scanTypeMap.get(scanType[i]);
-						if (scanTypeInt != null) {
-							insertMap.put("scanType", scanTypeInt);
+						insertMap.put("scanType", Integer.valueOf(scanType[i]));
+						String scanTypeName = scanTypeMap.get(scanType[i]);
+						if (scanTypeName != null && !scanTypeName.equals("")) {
+							insertMap.put("scanName", scanTypeName);
 							selfHelpOrderService.insertScanType(insertMap);
 						}
 					}
