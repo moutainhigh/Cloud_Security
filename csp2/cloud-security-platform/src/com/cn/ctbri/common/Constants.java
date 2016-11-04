@@ -119,14 +119,14 @@ public class Constants {
 	 */
 	public static final String TPL_WYCGJCFW_2H2 = "网页篡改监测服务-周期2小时深度2"; 
 	
-	public static Map<String,Integer> SCAN_TYPE_MAP = new HashMap<String, Integer>();
+	public static Map<String,String> SCAN_TYPE_MAP = new HashMap<String, String>();
 	static{
 		
-		SCAN_TYPE_MAP.put("10分钟", 1);
-		SCAN_TYPE_MAP.put("30分钟", 2);
-		SCAN_TYPE_MAP.put("1小时", 3);
-		SCAN_TYPE_MAP.put("1天", 4);
-		SCAN_TYPE_MAP.put("每周", 5);
-		SCAN_TYPE_MAP.put("每月", 6);
+		SCAN_TYPE_MAP.put("1","10分钟");
+		SCAN_TYPE_MAP.put("2","30分钟");
+		SCAN_TYPE_MAP.put("3","1小时");
+		SCAN_TYPE_MAP.put("4","1天");
+		SCAN_TYPE_MAP.put("5","每周");
+		SCAN_TYPE_MAP.put("6","每月");
 	}
 }
