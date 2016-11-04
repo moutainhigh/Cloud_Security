@@ -82,6 +82,12 @@ opacity: 0;
 }
 
 </style>
+<script type="text/javascript">
+$(function() {
+	var type = ${adType};
+	 document.getElementById("select_type")[type].selected=true;
+});
+</script>
 </head>
 
 <body>
