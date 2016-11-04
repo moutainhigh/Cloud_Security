@@ -310,7 +310,7 @@ $(".upload_delete").click(function(){
 			        </div>
 	  			</td>
 	  		</tr>
-	  		<tr class="register_tr">
+	  		<tr class="register_tr" style="display:none">
 	  			<td class="regist_title" id="u33">详细信息选项：</td>
 	  			<td class="regist_input" id="u34">
 	  				<c:choose>
