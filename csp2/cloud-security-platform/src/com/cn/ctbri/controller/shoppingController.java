@@ -1287,7 +1287,7 @@ public class shoppingController {
 				
 			} else {	//单次
 				  List<Price> priceList = priceService.findPriceByServiceId(serviceId,0);
-				  if (priceList != null || priceList.size() != 0){
+				  if (priceList != null && priceList.size() != 0){
 					  //priceList按序排列，取第一个元素判断是不是单次价格
 					  Price price = priceList.get(0);  
 					  if (price.getType() == 0){
