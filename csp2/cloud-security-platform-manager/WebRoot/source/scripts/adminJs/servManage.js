@@ -445,8 +445,9 @@ function saveDetails(serviceId,parent,flag){
 			scanType.push($.trim($(this).val()));
 		}
 	});*/
+
 	var scanType = "";
-	$("input[name='scanType']").each(function(){
+	$("select[name='scanType']").each(function(){
 		if($.trim($(this).val()) != ""){
 			scanType= scanType+","+$.trim($(this).val());
 		}
