@@ -49,7 +49,7 @@ public class dssWorker {
 	
 	
 	/**
-	 * 功能描述：广告排序(广告上移或下移)
+	 * 功能描述：资源获取
 	 *		 @time 2016-09-5
 	 */
 	public static String getResource(String resourcename,String resourceaddr,int isapi){
