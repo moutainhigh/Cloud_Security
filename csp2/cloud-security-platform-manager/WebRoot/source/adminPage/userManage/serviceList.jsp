@@ -192,7 +192,7 @@ $(document).ready(function(){
 <!-- 添加服务 -->
 <div id="box_addService" class="box_logoIn user_model">
 	<div class="add_ser_top w678">
-		<p class="w634">服务维护</p><p id="close" class="modelclose" onclick="toClose()"><img src="${ctx}/source/adminImages/b_exit.jpg" width="25" height="26"></p>
+		<p class="w634">添加服务</p><p id="close" class="modelclose" onclick="toClose()"><img src="${ctx}/source/adminImages/b_exit.jpg" width="25" height="26"></p>
 	</div>
 	<div class="regist_form" style="height:70%;overflow-y:auto">
 	<!--  <form id="form_addService" name="form_regist" method="post" action="${ctx}/servicePriceMaintain.html">-->
