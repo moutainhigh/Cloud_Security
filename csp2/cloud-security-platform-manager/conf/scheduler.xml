@@ -39,7 +39,7 @@
 		<property name="triggers">  
 			<list>  
 				<!-- 将上面定义的测试定时任务注入（可以定义多个定时任务，同时注入）-->  
-				<ref local="ledgerCronTrigger" />  
+				<!-- <ref local="ledgerCronTrigger" />   -->
 			</list>  
 		</property>  
 	</bean>    
