@@ -470,7 +470,7 @@ function saveDetails(serviceId,parent,flag){
 		servIcon = $.trim($("#u39_input").val());
 	}
 	
-	if(flag){
+	/*if(flag){*/
 		if(priceTitle == null || priceTitle == ""){
 			alert("请填写价格标题！");
 			return;
@@ -480,11 +480,11 @@ function saveDetails(serviceId,parent,flag){
 		} else if(servType == null || servType == "" || servType == undefined){
 			alert("请至少选择一种选类型！");
 			return;
-		} else if(servIcon == null || servIcon == ""){
+		} else if(servIcon == null || servIcon == "" || servIcon == ";"){
 			alert("服务详细信息不能为空，请至少上传一张图片或填写api信息！");
 			return;
 		}
-		if(parent != 6){
+		if(parent != 6 && (servType ==0 || servType == 1)){
 			if(servRatesTitle == null || servRatesTitle == ""){
 				alert("请填写服务频率标题！");
 				return;
@@ -493,7 +493,7 @@ function saveDetails(serviceId,parent,flag){
 				return;
 			}
 		}
-	}
+	/*}*/
 	$.ajax({
         type: "POST",
         url: "saveServDetails.html",
