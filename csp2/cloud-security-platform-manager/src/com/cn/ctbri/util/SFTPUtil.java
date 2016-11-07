@@ -24,6 +24,8 @@ public class SFTPUtil {
 	private static String serviceDetailDirectory;
 	private static String advertisementDirectory;
 	
+	private static String imageShow;
+	
 	static {
 		
 		InputStream in = SFTPUtil.class.getClassLoader().getResourceAsStream("upload.properties");
@@ -37,6 +39,7 @@ public class SFTPUtil {
 			serviceIconDirectory = properties.getProperty("serviceIconDirectory");
 			serviceDetailDirectory = properties.getProperty("serviceDetailDirectory");
 			advertisementDirectory = properties.getProperty("advertisementDirectory");
+			imageShow= properties.getProperty("imageShow");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -149,6 +152,10 @@ public class SFTPUtil {
 			}
 		}
 		return isDirExistFlag;
+	}
+
+	public static String getImageShow() {
+		return imageShow;
 	}
 	
 /*	public static void main(String[] args){
