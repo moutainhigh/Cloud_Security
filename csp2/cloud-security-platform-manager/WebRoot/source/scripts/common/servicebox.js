@@ -47,7 +47,7 @@ $(function(){
 	
 	$("#add_ser").click(function(){
 		//var _index =$(".add_ser").index(this);  //获取当前点击按钮
-		$("#add_name").val("添加服务");
+		
 		$("#serv_parent").val("-1");
 		$("#serv_type").val("-1");
 		$("#serv_name").val("");
