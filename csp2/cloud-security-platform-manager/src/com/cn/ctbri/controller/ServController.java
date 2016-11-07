@@ -443,7 +443,7 @@ public class ServController {
 		request.setAttribute("serviceDetail", serviceDetail);
 		request.setAttribute("serviceId", serviceId);
 		request.setAttribute("parent", parent);
-		request.setAttribute("webRootPath",CspWorker.getServerWebRoot());
+		request.setAttribute("webRootPath",SFTPUtil.getImageShow());
 		return "/source/adminPage/userManage/servDetails";
 		//return "/source/serviceManage/servDetails";
 	}
