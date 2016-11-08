@@ -152,9 +152,13 @@ public class shoppingController {
 	    Serv service = servService.findById(serviceId);
 	    //根据service Id查询服务详细信息
 	    ServiceDetail servDetail = servDetailService.findByServId(serviceId);
-//	    if(servDetail == null){
-//	    	return "redirect:/index.html";
-//	    }
+	    if(servDetail == null){
+	    	return "redirect:/index.html";
+	    }
+	    List pricelist = priceService.findPriceByServiceId(serviceId,0);
+	    if (pricelist== null || pricelist.size() == 0){
+	    	return "redirect:/index.html";
+	    }
 	    //
 	    String[] detailImages = null;
 	    if (servDetail != null) {
@@ -1275,7 +1279,7 @@ public class shoppingController {
 			String orderType = request.getParameter("orderType");   //选类型  单次:2/长期:1
 			
 			//和运营管理数据同步
-			synPriceData(serviceId);
+//			synPriceData(serviceId);
 			
 			
 			//进行价格分析
