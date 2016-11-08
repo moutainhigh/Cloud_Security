@@ -228,49 +228,49 @@ public class shoppingAPIController {
 	}
 	
 	private double calApiPrice(int apiId, int num) {
-		String str;
-		try {
-			//远程调用接口
-			ClientConfig config = new DefaultClientConfig();
-			//检查安全传输协议设置
-			Client client = Client.create(config);
-			//连接服务器
-			String url = SERVER_WEB_ROOT + VulnScan_serviceApiPrice;
-			WebResource service = client.resource(url+apiId);
-			ClientResponse clientResponse = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);        
-			//System.out.println(clientResponse.toString());
-			str = clientResponse.getEntity(String.class);
-			//System.out.println(str);
-			
-			//解析json,进行数据同步
-			JSONObject jsonObject = JSONObject.fromObject(str);			
-			JSONArray jsonArray = jsonObject.getJSONArray("PriceStr");
-			if(jsonArray!=null && jsonArray.size()>0){
-				//删除数据
-				apiPriceService.delPrice(apiId);
-				for (int i = 0; i < jsonArray.size(); i++) {
-					String object = jsonArray.getString(i);
-					JSONObject jsonObject1 = JSONObject.fromObject(object);
-//		        int idJson = Integer.parseInt(jsonObject1.getString("id"));
-					int serviceIdJson = Integer.parseInt(jsonObject1.getString("serviceId"));
-					double priceJson = Double.parseDouble(jsonObject1.getString("price"));
-					int timesGJson = Integer.parseInt(jsonObject1.getString("timesG"));
-					int timesLEJson = Integer.parseInt(jsonObject1.getString("timesLE"));
-					
-					ApiPrice newprice = new ApiPrice();
-					newprice.setServiceId(serviceIdJson);
-					newprice.setTimesG(timesGJson);
-					newprice.setTimesLE(timesLEJson);
-					newprice.setPrice(priceJson);
-					
-					apiPriceService.insertPrice(newprice);
-				}
-			}
-			
-		} catch (Exception e1) {
-			//e1.printStackTrace();
-			System.out.println("链接服务器失败!");
-		}  
+//		String str;
+//		try {
+//			//远程调用接口
+//			ClientConfig config = new DefaultClientConfig();
+//			//检查安全传输协议设置
+//			Client client = Client.create(config);
+//			//连接服务器
+//			String url = SERVER_WEB_ROOT + VulnScan_serviceApiPrice;
+//			WebResource service = client.resource(url+apiId);
+//			ClientResponse clientResponse = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);        
+//			//System.out.println(clientResponse.toString());
+//			str = clientResponse.getEntity(String.class);
+//			//System.out.println(str);
+//			
+//			//解析json,进行数据同步
+//			JSONObject jsonObject = JSONObject.fromObject(str);			
+//			JSONArray jsonArray = jsonObject.getJSONArray("PriceStr");
+//			if(jsonArray!=null && jsonArray.size()>0){
+//				//删除数据
+//				apiPriceService.delPrice(apiId);
+//				for (int i = 0; i < jsonArray.size(); i++) {
+//					String object = jsonArray.getString(i);
+//					JSONObject jsonObject1 = JSONObject.fromObject(object);
+////		        int idJson = Integer.parseInt(jsonObject1.getString("id"));
+//					int serviceIdJson = Integer.parseInt(jsonObject1.getString("serviceId"));
+//					double priceJson = Double.parseDouble(jsonObject1.getString("price"));
+//					int timesGJson = Integer.parseInt(jsonObject1.getString("timesG"));
+//					int timesLEJson = Integer.parseInt(jsonObject1.getString("timesLE"));
+//					
+//					ApiPrice newprice = new ApiPrice();
+//					newprice.setServiceId(serviceIdJson);
+//					newprice.setTimesG(timesGJson);
+//					newprice.setTimesLE(timesLEJson);
+//					newprice.setPrice(priceJson);
+//					
+//					apiPriceService.insertPrice(newprice);
+//				}
+//			}
+//			
+//		} catch (Exception e1) {
+//			//e1.printStackTrace();
+//			System.out.println("链接服务器失败!");
+//		}  
 		
 //		ApiPrice price = apiPriceService.findPrice(apiId, num);
 //		if (price != null) {
