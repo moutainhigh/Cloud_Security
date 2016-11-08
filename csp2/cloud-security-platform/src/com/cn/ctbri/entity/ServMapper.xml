@@ -27,9 +27,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 		price.type=0
 		-->
-		SELECT * FROM   cs_service service LEFT JOIN cs_price price  ON price.serviceId = service.id AND 
+		<!-- SELECT * FROM   cs_service service LEFT JOIN cs_price price  ON price.serviceId = service.id AND 
 		((service.id IN(1,2,4) AND price.type=0) OR ((service.id=5 AND price.scan_type=1) OR (service.id =3 AND price.scan_type=2)) AND price.type=1 AND price.timesG=1)
-		ORDER BY service.id 
+		ORDER BY service.id  -->
+		select * from 
+(SELECT service.*,price.scan_type, price.type priceType,price.timesG,price.price FROM  (
+       select s.*,detail.servType from cs_service s join cs_service_detail detail on detail.serviceId = s.id) service join
+       cs_price price
+ON price.serviceId = service.id
+AND
+((service.servType=0 OR service.servType=2) AND price.type=0)
+UNION
+select * from(
+SELECT service.*,price.scan_type, price.type priceType,price.timesG,price.price FROM  
+       (select s.*,detail.servType from cs_service s join cs_service_detail detail on detail.serviceId = s.id) service join
+       cs_price price
+ON price.serviceId = service.id
+AND service.servType=1
+order by service.id,price.scan_type, price.type,price.timesG) ser
+group by ser.id
+UNION 
+ select cs_service.*,-1,-1,-1,-1,0.0 from cs_service where cs_service.type=2
+) serv
+order by serv.id
 	</select>
 	<select id="findById" resultMap="ServRM" parameterType="int">
 		select * from cs_service
