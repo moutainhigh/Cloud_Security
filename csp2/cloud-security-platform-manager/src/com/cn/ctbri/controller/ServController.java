@@ -584,12 +584,12 @@ public class ServController {
     		        String originalFileName=multipartFile.getOriginalFilename();
     		        String fileType = originalFileName.substring(originalFileName.lastIndexOf(".")+1);
     		        //判断文件格式
-    		        if(!"png".equals(fileType.toLowerCase())){
-    		        	m.put("successFlag", false);
-    		        	m.put("errorMsg", "请导入png格式的文件!");
-    		        	
-    		        	return;
-    		        }
+//    		        if(!"png".equals(fileType.toLowerCase())){
+//    		        	m.put("successFlag", false);
+//    		        	m.put("errorMsg", "请导入png格式的文件!");
+//    		        	
+//    		        	return;
+//    		        }
     		        //上传文件名称；
     		        String uploadFilePathName = String.valueOf(System.currentTimeMillis())+originalFileName.substring(originalFileName.lastIndexOf("."));
     		        boolean isSuccFlag = SFTPUtil.upload(multipartFile, uploadFilePathName, 2);
