@@ -215,7 +215,7 @@ public class ServController {
 			String detailIcon = request.getParameter("detailIcon");
 			
 			int type = -1;
-			if (typeStr!= null && !typeStr.endsWith("")) {
+			if (typeStr!= null && !typeStr.equals("")) {
 				type = Integer.valueOf(typeStr);
 			}
 			
