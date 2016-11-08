@@ -2,6 +2,7 @@ package com.cn.ctbri.cfg;
 
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
+import java.util.List;
 import java.util.Properties;
 
 import javax.net.ssl.HostnameVerifier;
@@ -12,8 +13,14 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.MediaType;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import com.cn.ctbri.entity.ApiPrice;
+import com.cn.ctbri.entity.Price;
+import com.cn.ctbri.service.IServService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -40,6 +47,10 @@ public class CspWorker {
 	private static String Service_Delete;			//删除服务
 	private static String ServiceDetail_vindicate;	//服务详情维护
 	
+	private static String Service_Price_Vindicate;
+	private static String serviceAPI_Price_Vindicate;
+	
+	
 	static {
 		try {
 			Properties p = new Properties();
@@ -53,6 +64,9 @@ public class CspWorker {
 			Service_Update = p.getProperty("Service_Update");
 			Service_Delete = p.getProperty("Service_Delete");
 			ServiceDetail_vindicate = p.getProperty("ServiceDetail_vindicate");
+			
+			Service_Price_Vindicate = p.getProperty("Service_Price_Vindicate");
+			serviceAPI_Price_Vindicate = p.getProperty("serviceAPI_Price_Vindicate");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -279,6 +293,82 @@ public class CspWorker {
         String stateCode = obj.getString("code");
         return stateCode;
 	}
+	
+	//服务价格
+	public static String updateServicePrice(int serverid, List<Price> priceList) {
+		JSONObject json = new JSONObject();
+		//JSONArray jsonArray = new JSONArray();
+		try {
+			//根据serviceid查询价格列表
+			//List<Price> priceList = servService.findPriceByServiceId(serverid);
+			JSONArray jsonArray = null;
+			if (priceList != null && priceList.size()!=0){
+				jsonArray = new JSONArray().fromObject(priceList);
+				
+			}
+			json.put("PriceStr", jsonArray);
+			json.put("serviceId", serverid);
+			
+			//创建任务发送路径
+	    	String url = SERVER_WEB_ROOT + Service_Price_Vindicate;
+			//创建配置
+			ClientConfig config = new DefaultClientConfig();
+			//绑定配置
+	    	buildConfig(url,config);
+	    	//创建客户端
+	        Client client = Client.create(config);
+	        WebResource service = client.resource(url);
+	        //获取响应结果
+	        String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, json.toString()); 
+	        JSONObject obj = JSONObject.fromObject(response);
+	        String stateCode = obj.getString("code");
+	        return stateCode;
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("code", 404);//返回404表示失败
+			json.put("message", "更新服务价格失败");
+		}
+    	    	
+        return json.toString();
+    }
+	
+	//服务价格
+	public static String updateServiceAPIPrice(int serverid, List<ApiPrice> priceList) {
+		JSONObject json = new JSONObject();
+		//JSONArray jsonArray = new JSONArray();
+		try {
+			//根据serviceid查询价格列表
+//			List<ApiPrice> priceList = servService.findApiPriceByServiceId(serverid);
+			JSONArray jsonArray = null;
+			if (priceList != null && priceList.size()!=0){
+				jsonArray = new JSONArray().fromObject(priceList);
+				
+			}
+			json.put("PriceStr", jsonArray);
+			json.put("serviceId", serverid);
+			
+			//创建任务发送路径
+	    	String url = SERVER_WEB_ROOT + serviceAPI_Price_Vindicate;
+			//创建配置
+			ClientConfig config = new DefaultClientConfig();
+			//绑定配置
+	    	buildConfig(url,config);
+	    	//创建客户端
+	        Client client = Client.create(config);
+	        WebResource service = client.resource(url);
+	        //获取响应结果
+	        String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, json.toString()); 
+	        JSONObject obj = JSONObject.fromObject(response);
+	        String stateCode = obj.getString("code");
+	        return stateCode;
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("code", 404);//返回404表示失败
+			json.put("message", "更新服务价格失败");
+		}
+    	    	
+        return json.toString();
+    }
 	
 	/**
 	 * 功能描述：安全通信配置设置
