@@ -252,7 +252,7 @@ function saveServ(){
     }else if(name==null||name==""){
     	alert("请填写服务名称!");
     	return;
-    }else if (remarks=null || remarks=="") {
+    }else if (remarks==null || remarks=="") {
     	alert("请填写服务描述!");
     	return;
     }else if(homeIcon==null||homeIcon==""){
