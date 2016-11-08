@@ -11,6 +11,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Component;
 
 import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.entity.Advertisement;
+import com.cn.ctbri.entity.ApiPrice;
+import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.ScanType;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceAPI;
@@ -483,6 +486,110 @@ public class ServerManagerService {
 			json.put("messaage", "修改服务详情失败");
 		}
         
+		return json.toString();
+	}
+	
+	/**
+	 * 功能描述：服务价格维护
+	 * */
+	@POST
+	@Path("/price/vindicatePrice/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String saveServPrice(String dataJson){
+		JSONObject json = new JSONObject();
+		try {
+			//JSONObject jsonObject = new JSONObject().fromObject(dataJson);
+			JSONObject jsonObject = JSONObject.fromObject(dataJson);
+			int serviceId = jsonObject.getInt("serviceId");
+			JSONArray jsonArray = jsonObject.getJSONArray("PriceStr");
+			
+			if(jsonArray!=null && jsonArray.size()>0){
+		        //删除数据
+		        priceService.delPrice(serviceId);
+			    for (int i = 0; i < jsonArray.size(); i++) {
+			        String object = jsonArray.getString(i);
+			        JSONObject jsonObject1 = JSONObject.fromObject(object);
+			        int idJson = Integer.parseInt(jsonObject1.getString("id"));
+			        int serviceIdJson = Integer.parseInt(jsonObject1.getString("serviceId"));
+			        int typeJson = Integer.parseInt(jsonObject1.getString("type"));
+			        double priceJson = Double.parseDouble(jsonObject1.getString("price"));
+			        int timesGJson = Integer.parseInt(jsonObject1.getString("timesG"));
+			        int timesLEJson = Integer.parseInt(jsonObject1.getString("timesLE"));
+			        int scanTypeJson = Integer.parseInt(jsonObject1.getString("scanType"));
+			       
+			        Price newprice = new Price();
+			        newprice.setServiceId(serviceIdJson);
+			        newprice.setType(typeJson);
+			        if(typeJson != 0) {   //0:单次；1：长期；2：大于
+			        	newprice.setTimesG(timesGJson);
+			        	newprice.setTimesLE(timesLEJson);
+			        }
+			        newprice.setPrice(priceJson);
+			        if (scanTypeJson !=0) {  //长期价格不根据服务频率计算时，服务频率设为null
+			        	newprice.setScanType(scanTypeJson);
+			        }
+			        
+			        priceService.insertPrice(newprice);
+			    }
+	        }
+			
+			json.put("code", 200);//返回200表示成功
+			json.put("messaage", "修改服务价格成功");
+		}catch(Exception e) {
+			e.printStackTrace();
+			
+			json.put("code", 400);//返回400表示失败
+			json.put("messaage", "修改服务价格失败");
+		}
+		
+		return json.toString();
+	}
+	
+	
+	/**
+	 * 功能描述：服务价格维护
+	 * */
+	@POST
+	@Path("/APIPrice/vindicatePrice/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String saveServAPIPrice(String dataJson){
+		JSONObject json = new JSONObject();
+		try {
+			//JSONObject jsonObject = new JSONObject().fromObject(dataJson);
+			JSONObject jsonObject = JSONObject.fromObject(dataJson);
+			int serviceId = jsonObject.getInt("serviceId");
+			JSONArray jsonArray = jsonObject.getJSONArray("PriceStr");
+			
+			if(jsonArray!=null && jsonArray.size()>0){
+				//删除数据
+				apiPriceService.delPrice(serviceId);
+				for (int i = 0; i < jsonArray.size(); i++) {
+					String object = jsonArray.getString(i);
+					JSONObject jsonObject1 = JSONObject.fromObject(object);
+					int serviceIdJson = Integer.parseInt(jsonObject1.getString("serviceId"));
+					double priceJson = Double.parseDouble(jsonObject1.getString("price"));
+					int timesGJson = Integer.parseInt(jsonObject1.getString("timesG"));
+					int timesLEJson = Integer.parseInt(jsonObject1.getString("timesLE"));
+					
+					ApiPrice newprice = new ApiPrice();
+					newprice.setServiceId(serviceIdJson);
+					newprice.setTimesG(timesGJson);
+					newprice.setTimesLE(timesLEJson);
+					newprice.setPrice(priceJson);
+					
+					apiPriceService.insertPrice(newprice);
+				}
+			}
+			
+			json.put("code", 200);//返回200表示成功
+			json.put("messaage", "修改服务价格成功");
+		}catch(Exception e) {
+			e.printStackTrace();
+			
+			json.put("code", 400);//返回400表示失败
+			json.put("messaage", "修改服务价格失败");
+		}
+		
 		return json.toString();
 	}
 	
