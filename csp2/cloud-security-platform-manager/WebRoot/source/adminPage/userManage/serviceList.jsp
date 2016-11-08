@@ -171,8 +171,8 @@ $(document).ready(function(){
 		                        	<a href="javascript:void(0)" class="ope_a" onclick="editApiPrice(${serv.id })">设置价格</a>
 	                        	</c:if>
 	                        	<c:if test="${serv.parentC!=6 && serv.id != 6}">
-		                        	<a href="javascript:void(0)" class="ope_a" onclick="editPrice(${serv.id },${serv.parentC})">设置价格</a>
 	                        		<a href="${ctx}/serviceDetailsUI.html?servId=${serv.id}&parent=${serv.parentC}" class="ope_a">详情维护</a>
+		                        	<a href="javascript:void(0)" class="ope_a" onclick="editPrice(${serv.id },${serv.parentC})">设置价格</a>
 	                        	</c:if>
 	                        </td>
                    		</tr>
