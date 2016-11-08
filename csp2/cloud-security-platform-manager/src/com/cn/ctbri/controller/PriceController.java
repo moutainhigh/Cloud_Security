@@ -57,6 +57,11 @@ public class PriceController {
 		map.put("parent", parentC);
 		ServiceDetail serviceDetail = selfHelpOrderService.findServiceDetail(map);
 //		Serv serv = servService.findById(serviceId);
+		if (serviceDetail == null) {
+			m.put("detailFlag", false);
+			return;
+		}
+		m.put("detailFlag", true);
 		m.put("orderType", serviceDetail.getServType());
 		//获取单次价格
 		if (serviceDetail.getServType() != 1) {
