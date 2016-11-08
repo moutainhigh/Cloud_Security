@@ -175,7 +175,7 @@ $("#us").hide("slow");
 			<div class="dataBox clearfix">
 				<div class="dataL fl">
 					<div class="dataImg fl">
-						<img src="${ctx}/source/images/serviceIcon/${service.detailIcon }" alt="" />
+						<img src="${ctx}/source/images/serviceIcon/${service.detailIcon }" alt="" style="width:420px;height:420px;"/>
 						<!-- <img src="${ctx}/source/images/portal/product.png" alt="" /> -->
 					</div>
 				</div>
