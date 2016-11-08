@@ -363,7 +363,7 @@ $(document).ready(function(){
 		            </form>
 		            <span id="regist_image_msg" style="color:red;float:left"></span>
 		        </td>
-		        <td class="regist_prompt" style="text-align:left;">请上传.jpg,.bmp或.png格式的文件</td>
+		        <td class="regist_prompt" style="text-align:left;">建议图片大小 130*130</td>
 	         </tr>
 	         <tr class="register_tr">
 	            <td class="regist_title">二级服务图标</td>
@@ -379,7 +379,7 @@ $(document).ready(function(){
 		            </form>
 		            <span id="regist_image_msg" style="color:red;float:left"></span>
 		        </td>
-		        <td class="regist_prompt" style="text-align:left;">请上传.jpg,.bmp或.png格式的文件</td>
+		        <td class="regist_prompt" style="text-align:left;">建议图片大小 220*220</td>
 	         </tr>
 	         <tr class="register_tr">
 	            <td class="regist_title">详情服务图标</td>
@@ -395,7 +395,7 @@ $(document).ready(function(){
 		            </form>
 		            <span id="regist_image_msg" style="color:red;float:left"></span>
 		        </td>
-		        <td class="regist_prompt" style="text-align:left;">请上传.jpg,.bmp或.png格式的文件</td>
+		        <td class="regist_prompt" style="text-align:left;">建议图片大小 420*420</td>
 	         </tr>
           
          </table>
