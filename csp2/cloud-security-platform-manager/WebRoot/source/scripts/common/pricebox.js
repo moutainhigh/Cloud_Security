@@ -41,8 +41,11 @@ function editPrice(servId,parentC){
 		url:"servicePriceMaintainUI.html",
 		data:{"servId":servId,"parentC":parentC},
 		success:function(data) {
+			if (!data.detailFlag) {
+				alert("请先完成详情维护！");
+				return;
+			}
 			$("#add_serviceId").val(servId);
-			
 			if (data.orderType!=1) {   //1：长期
 				//单次价格组件 追加
 				var singlePriceDiv = '<div id="singlePrice_div">'+
