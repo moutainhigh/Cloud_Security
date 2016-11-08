@@ -1,6 +1,7 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.cn.ctbri.cfg.CspWorker;
 import com.cn.ctbri.entity.ApiPrice;
 import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.ScanType;
-import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceDetail;
 import com.cn.ctbri.service.IScanTypeService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
@@ -93,6 +94,7 @@ public class PriceController {
 	@RequestMapping("/servicePriceMaintain.html")
 	public void servicePriceMaintain(HttpServletRequest request,HttpServletResponse response){
 		Map<String, Object> m = new HashMap<String, Object>();
+		List<Price> priceList = new ArrayList<Price>();
 		try {
 			//获取服务Id
 			int serviceId = Integer.valueOf(request.getParameter("add_serviceId"));
@@ -109,6 +111,7 @@ public class PriceController {
 				price.setTimesG(0);
 				price.setTimesLE(0);
 				servService.insertPrice(price);
+				priceList.add(price);
 			}
 			
 			int maxPriceIndex = Integer.valueOf(request.getParameter("maxPriceIndex"));
@@ -144,7 +147,13 @@ public class PriceController {
 				price.setTimesLE(timesLE);
 				price.setPrice(priceValue);
 				servService.insertPrice(price);
+				priceList.add(price);
 			}
+			String code = CspWorker.updateServicePrice(serviceId,priceList);
+			if(code == null || !code.equals("200")) {
+    			m.put("success", false);
+    			return;
+    		}
 			
 			m.put("success", true);
 			
@@ -200,6 +209,7 @@ public class PriceController {
 	@RequestMapping("/serviceApiPriceMaintain.html")
 	public void serviceAPIPriceMaintain(HttpServletRequest request,HttpServletResponse response){
 		Map<String, Object> m = new HashMap<String, Object>();
+		List<ApiPrice> priceList = new ArrayList<ApiPrice>();
 		try {
 			//获取服务Id
 			int serviceId = Integer.valueOf(request.getParameter("add_serviceApiId"));
@@ -230,7 +240,13 @@ public class PriceController {
 				price.setTimesLE(timesLE);
 				price.setPrice(priceValue);
 				servService.insertApiPrice(price);
+				priceList.add(price);
 			}
+			String code = CspWorker.updateServiceAPIPrice(serviceId,priceList);
+			if(code == null || !code.equals("200")) {
+    			m.put("success", false);
+    			return;
+    		}
 			
 			m.put("success", true);
 			
