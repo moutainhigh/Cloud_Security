@@ -98,8 +98,12 @@ var getAllEngine = function() {
 	getCount(id);
 	return false;
 },addAndUpdate=function(){
-	var engineName = $("#equName").val();
-	var engineAddr = $("#equIP").val();
+	var engineName = $.trim($("#equName").val());
+	var engineAddr = $.trim($("#equIP").val());
+	
+	var newRegex = /^((?!([hH][tT][tT][pP][sS]?)\:*\/*)([\w\.\-]+(\:[\w\.\&%\$\-]+)*@)?((([^\s\(\)\<\>\\\"\.\[\]\,@;:]+)(\.[^\s\(\)\<\>\\\"\.\[\]\,@;:]+)*(\.[a-zA-Z]{2,4}))|((([01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}([01]?\d{1,2}|2[0-4]\d|25[0-5])))(\b\:(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0)\b)?((\/[^\/][\w\.\,\?\'\\\/\+&%\$#\=~_\-@]*)*[^\.\,\?\"\'\(\)\[\]!;<>{}\s\x7F-\xFF])?)$/;
+    var strRegex = /^((([hH][tT][tT][pP][sS]?):\/\/)([\w\.\-]+(\:[\w\.\&%\$\-]+)*@)?((([^\s\(\)\<\>\\\"\.\[\]\,@;:]+)(\.[^\s\(\)\<\>\\\"\.\[\]\,@;:]+)*(\.[a-zA-Z]{2,4}))|((([01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}([01]?\d{1,2}|2[0-4]\d|25[0-5])))(\b\:(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0)\b)?((\/[^\/][\w\.\,\?\'\\\/\+&%\$#\=~_\-@]*)*[^\.\,\?\"\'\(\)\[\]!;<>{}\s\x7F-\xFF])?)$/;
+
 	if(engineName==null||engineName==''){
 		alert("设备引擎名称不能为空！");
 		return false;
@@ -109,9 +113,22 @@ var getAllEngine = function() {
 		return false;
 	}
 	var pattern = /\d+\.\d+\.\d+\.\d+/;
-	if(!pattern.test(engineAddr)){
+	if((!strRegex.test(engineAddr)&&!newRegex.test(engineAddr))||(strRegex.test(engineAddr)&&engineAddr.indexOf('\/\/\/')!=-1)){
 		alert("IP地址输入有误！");
 		return false;
 	}
-	$("#addAndUpd").submit();
+	$.ajax({
+        type: "POST",
+        url: "/cloud-security-platform-manager/checkEngineName.html",
+        data: {"engineName":engineName},
+        dataType:"json",
+        success: function(data){
+            if(data.count>0){
+            	alert(data.message);
+            }else{
+            	$("#addAndUpd").submit();
+            }
+        },
+     });
+	
 }
