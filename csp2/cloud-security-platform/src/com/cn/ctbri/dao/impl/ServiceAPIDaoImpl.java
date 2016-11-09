@@ -49,7 +49,7 @@ public class ServiceAPIDaoImpl extends DaoCommon implements ServiceAPIDao{
 
 	@Override
 	public void updateById(ServiceAPI serviceAPI) {
-		this.getSqlSession().update(ns+"update", serviceAPI);
+		this.getSqlSession().update(ns+"updateById", serviceAPI);
 		
 	}
 
