@@ -276,11 +276,16 @@ public class ServController {
 			String id = request.getParameter("servId");
 			String name = request.getParameter("name");
 			String parent = request.getParameter("parent");
-			int type = Integer.parseInt(request.getParameter("type"));
+			String typeStr = request.getParameter("type");
 			String remarks = request.getParameter("remarks");
 			String homeIcon = request.getParameter("homeIcon");
 			String categoryIcon = request.getParameter("categoryIcon");
 			String detailIcon = request.getParameter("detailIcon");
+			
+			int type = -1;
+			if (typeStr!= null && !typeStr.equals("")) {
+				type = Integer.valueOf(typeStr);
+			}
 			
 			//通过接口方式将数据存储于前端Portal数据库中
     		String code = CspWorker.updateService(id, name, parent,type,
