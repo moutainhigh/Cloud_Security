@@ -73,34 +73,55 @@ var ZXXFILE = {
 		var self = this;	
 		for (var i = 0, file; file = this.fileFilter[i]; i++) {
 			(function(file) {
-				self.onProgress(file);
-				var options = {
-						url:self.url,
-						success: function(data) {
-							if(data.success){
-					    		self.onSuccess(file,data);
-					    		self.funDeleteFile(file);
-					    		if("" == $.trim($("#servDetailHidden").val())){
-					    			$("#servDetailHidden").val(data.filePath);
-					    			tmpDetailIcon = $.trim($("#servDetailHidden").val());
-					    		} else {
-					    			$("#servDetailHidden").val(tmpDetailIcon+";"+data.filePath);
-					    			tmpDetailIcon = $.trim($("#servDetailHidden").val());
-					    		}
-					    		
-					    	}else{
-					    		self.onFailure(file,data);
-					    	}
-						  },
-					      error:function(data){
-					      	alert("err");
-					      }
+				
+				var uploadSuccess = $.trim($("#uploadSuccessHidden").val());
+				if (uploadSuccess.indexOf(file.name) == -1) {  //如果不包含表明该文件未上传
+					self.onProgress(file);
+				
+					var base64String = '';
+					var reader = new FileReader();
+					reader.onload = function(e) {
+						base64String = e.target.result;
+						var options = {
+							url:self.url,
+							data: {"fileName":file.name,"base64String":base64String},
+	    	        		dataType:"json",
+							success: function(data) {
+								if(data.success){
+						    		self.onSuccess(file,data);
+						    		//self.funDeleteFile(file);
+						    		if("" == $.trim($("#servDetailHidden").val())){
+						    			$("#servDetailHidden").val(data.filePath);
+						    			$("#uploadSuccessHidden").val(file.name);
+						    			tmpDetailIcon = $.trim($("#servDetailHidden").val());
+						    		} else {
+						    			$("#servDetailHidden").val(tmpDetailIcon+";"+data.filePath);
+						    			var uploadSuccessFile = $("#uploadSuccessHidden").val();
+						    			$("#uploadSuccessHidden").val(uploadSuccessFile+";"+file.name);
+						    			tmpDetailIcon = $.trim($("#servDetailHidden").val());
+						    		}
+						    	}else{
+						    		self.onFailure(file,data);
+						    	}
+							  },
+						      error:function(data){
+						      	self.onFailure(file,data);
+						      }
+						};
+						// Form表单提交
+						$('#uploadForm').ajaxSubmit(options);
+					}
+					reader.onerror = function(event) {
+						alert("图片" + file.name + "上传失败！");	
 					};
-					// Form表单提交
-					$('#uploadForm').ajaxSubmit(options);
+					reader.readAsDataURL(file);
+				
+				}
+				
 			})(file);	
-		}	
+		}
 			
+		self.onComplete();	
 	},
 	
 	init: function() {
