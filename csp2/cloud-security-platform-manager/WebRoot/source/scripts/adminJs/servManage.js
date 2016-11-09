@@ -328,6 +328,9 @@ function editServ(Obj){
 }
 //删除服务
 function delServ(Obj){
+	if (window.confirm("确实要删除该服务吗?")==false) {
+		return;
+	}
 	var servid = $(Obj).attr("servid");
 	var parentC = $(Obj).attr("parentC");
 	 $.ajax({
