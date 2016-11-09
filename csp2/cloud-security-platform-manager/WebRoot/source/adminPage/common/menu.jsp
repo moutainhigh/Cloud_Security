@@ -25,8 +25,9 @@
 							<div class="list-inner">
 								<p class="li-inner-title">软件管理</p>
 								<p><a href="${ctx}/adminUserManageUI.html">用户管理</a></p>
-								<p><a href="${ctx}/adminServUI.html">服务管理</a></p>
+								<!-- <p><a href="${ctx}/adminServUI.html">服务管理</a></p> -->
 								<p><a href="${ctx}/adminNoticeManageUI.html">公告管理</a></p>
+								<p></p>
 							</div>
 							<div class="list-inner">
 								<p class="li-inner-title">硬件管理</p>
