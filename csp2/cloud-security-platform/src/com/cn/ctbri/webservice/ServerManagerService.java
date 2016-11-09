@@ -441,7 +441,7 @@ public class ServerManagerService {
 			scanTypeService.deleteByServiceId(serviceId);
 			
 			//删除price表数据
-			priceService.delPrice(serviceId);
+			//priceService.delPrice(serviceId);
 			
 			//新增服务频率
 			if (servType== 0 || servType==1) {  //0:单次和长期,1:长期
