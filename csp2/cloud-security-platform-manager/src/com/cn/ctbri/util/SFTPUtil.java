@@ -7,7 +7,6 @@ import java.util.Properties;
 
 import org.springframework.web.multipart.MultipartFile;
 
-
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
@@ -102,6 +101,42 @@ public class SFTPUtil {
 		} catch (SftpException e) {
 			System.out.println("上传ftp服务器错误");
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	/**
+	 * 上传文件 流 本地文件路径 remotePath 服务器路径
+	 * @throws IOException 
+	 */
+	public static boolean upload(InputStream ins,String remotName, int folderFlag){
+		ChannelSftp sftp = connect();
+		try {
+				String rpath=null;
+				if (folderFlag==1){
+					rpath = serviceIconDirectory; // 服务器需要创建的路径
+				}else if (folderFlag==2){
+					rpath = serviceDetailDirectory; // 服务器需要创建的路径
+				}else if (folderFlag==3) {
+					rpath = advertisementDirectory;
+				}
+				
+				try {
+					createDir(rpath, sftp);
+				} catch (Exception e) {
+					System.out.println("创建路径失败：" + rpath);
+				}
+				// this.sftp.rm(file.getName());
+				sftp.cd(rpath);
+				sftp.put(ins, remotName,ChannelSftp.OVERWRITE);
+				return true;
+//		} catch (FileNotFoundException e) {
+//			System.out.println("上传文件没有找到");
+		} catch (SftpException e) {
+			e.printStackTrace();
+			System.out.println("上传ftp服务器错误");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
