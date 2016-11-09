@@ -249,6 +249,8 @@ public class AdminUserController {
 			industry = new String(user.getIndustry().getBytes("ISO-8859-1"), "UTF-8");
 			job = new String(user.getJob().getBytes("ISO-8859-1"),"UTF-8");
 			company = new String(user.getCompany().getBytes("ISO-8859-1"),"UTF-8");
+			user.setIndustry(industry);
+			user.setJob(job);
 			user.setCompany(company);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -283,6 +285,8 @@ public class AdminUserController {
 			industry = new String(user.getIndustry().getBytes("ISO-8859-1"), "UTF-8");
 			job = new String(user.getJob().getBytes("ISO-8859-1"),"UTF-8");
 			company = new String(user.getCompany().getBytes("ISO-8859-1"),"UTF-8");
+			user.setIndustry(industry);
+			user.setJob(job);
 			user.setCompany(company);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

@@ -77,7 +77,8 @@ public class SystemManageController {
 		serverParamConfiguration.setSessionTime(maxInactiveInterval/60);
 		Properties p = new Properties();
 		try {
-			p.load(SystemManageController.class.getResourceAsStream("/default.properties"));
+//			p.load(SystemManageController.class.getResourceAsStream("/default.properties"));
+			p.load(SystemManageController.class.getClassLoader().getResourceAsStream("default.properties"));
 			//邮件服务器地址
 			serverParamConfiguration.setServerEmailAdd(p.getProperty("emailFrom"));
 			//邮件用户名

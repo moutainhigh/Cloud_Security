@@ -3,6 +3,7 @@ package com.cn.ctbri.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import se.akerfeldt.com.google.gson.Gson;
@@ -35,6 +37,7 @@ import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IEnginecfgService;
 import com.cn.ctbri.service.IFactoryService;
 import com.cn.ctbri.service.ITaskService;
+import com.cn.ctbri.util.CommonUtil;
 
 
 
@@ -93,7 +96,8 @@ public class EquResourceController {
 	@RequestMapping("/equFindAll.html")
 	public void findAll(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		Map paramMap = new HashMap();
-		paramMap.put("engineName", request.getParameter("engineName"));
+		String equName = new String(request.getParameter("engineName").getBytes("ISO-8859-1"), "UTF-8");
+		paramMap.put("engineName", equName);
 		paramMap.put("engineAddr", request.getParameter("engineAddr"));
 		paramMap.put("factory", request.getParameter("factory"));
 		List<Map> list = enginecfgService.findAllEnginecfg(paramMap);
@@ -119,10 +123,16 @@ public class EquResourceController {
 	@RequestMapping("/addEqu.html")
 	public String addEqu(HttpServletRequest request,HttpServletResponse response){
 		EngineCfg enginecfg = new EngineCfg();
-		enginecfg.setEngine_name(request.getParameter("equName"));
-		enginecfg.setEngine_addr(request.getParameter("equIP"));
-		enginecfg.setEquipment_factory(request.getParameter("factoryName"));
-		enginecfg.setStatus(1);
+		try {
+			String equName=new String(request.getParameter("equName").getBytes("ISO-8859-1"), "UTF-8");
+			enginecfg.setEngine_name(equName);
+			enginecfg.setEngine_addr(request.getParameter("equIP"));
+			enginecfg.setEquipment_factory(request.getParameter("factoryName"));
+			enginecfg.setStatus(1);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
 		enginecfgService.insertSelective(enginecfg);
 		return "redirect:/equResourceUI.html";
 	}
@@ -138,13 +148,19 @@ public class EquResourceController {
 	 */
 	@RequestMapping("/updEqu.html")
 	public String updEqu(HttpServletRequest request,HttpServletResponse response){
-		EngineCfg enginecfg = new EngineCfg();
-		enginecfg.setId(Integer.parseInt(request.getParameter("id")));
-		enginecfg.setEngine_name(request.getParameter("equName"));
-		enginecfg.setEngine_addr(request.getParameter("equIP"));
-		enginecfg.setEquipment_factory(request.getParameter("factoryName"));
-		enginecfg.setStatus(1);
-		enginecfgService.updateByPrimaryKeySelective(enginecfg);
+		try {
+			EngineCfg enginecfg = new EngineCfg();
+			enginecfg.setId(Integer.parseInt(request.getParameter("id")));
+			String equName;
+			equName = new String(request.getParameter("equName").getBytes("ISO-8859-1"), "UTF-8");
+			enginecfg.setEngine_name(equName);
+			enginecfg.setEngine_addr(request.getParameter("equIP"));
+			enginecfg.setEquipment_factory(request.getParameter("factoryName"));
+			enginecfg.setStatus(1);
+			enginecfgService.updateByPrimaryKeySelective(enginecfg);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		return "redirect:/equResourceUI.html";
 	}
 	
@@ -336,5 +352,34 @@ public class EquResourceController {
 		int count = taskService.getCount(engine);
 		JSONObject json = new JSONObject();
 		return json.element("count", count).toString();
+	}
+	
+	/**
+	 * 功能描述： 检验引擎名称或者IP是否已经存在
+	 * @throws Exception 
+	 *		 @time 2016-11-8
+	 */
+	@RequestMapping(value="checkEngineName.html", method = RequestMethod.POST)
+	@ResponseBody
+	public void checkEngineName(String engineName,HttpServletResponse response,HttpServletRequest request){
+		try {
+			Map paramMap = new HashMap();
+			String equName = new String(engineName.getBytes("ISO-8859-1"), "UTF-8");
+			paramMap.put("engineName", equName);
+			paramMap.put("check", 1);
+			List<Map> list = enginecfgService.findAllEnginecfg(paramMap);
+			Map<String, Object> m = new HashMap<String, Object>();
+			if(list.size()>0){
+				m.put("message", "设备引擎名称已存在！");
+			}
+			m.put("count", list.size()>0);
+			//object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+		
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
