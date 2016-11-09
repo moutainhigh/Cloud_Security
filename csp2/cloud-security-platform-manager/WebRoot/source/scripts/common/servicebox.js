@@ -98,7 +98,12 @@ $(function(){
 		
 		$("#edit_serv_id").val(servId);
 		$("#edit_serv_parent").val(parent);
-		$("#edit_serv_type").val(type);
+		if(parent=="6"){
+			$("#edit_serv_type").empty();
+		}else{
+			$("#edit_serv_type").val(type);
+		
+		}
 		$("#edit_serv_name").val(servName);
 		$("#edit_serv_remarks").val(remarks);
 		$("#homeIconName").val(homeIcon);
