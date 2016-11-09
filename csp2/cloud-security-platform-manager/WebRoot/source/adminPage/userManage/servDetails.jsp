@@ -39,6 +39,7 @@
 $(function(){
 //保存上传图片的名字
 $("#servDetailHidden").val('');
+$("#uploadSuccessHidden").val('');
 //编辑详情时，编辑前存的图片
 $("#resServDetailHidden").val('');
 $("#preview").empty();
@@ -88,9 +89,9 @@ $(".u22_input").click(function(){
 	$("#u2_input").val('');
 	$("#u5_input").val('');
 	$("input[name='servType']").each(function(){
-	if($(this).attr('checked')){
-		$(this).removeAttr('checked');
-	}
+		if($(this).attr('checked')){
+			$(this).removeAttr('checked');
+		}
 	});
 	$("#u14_input").val('');
 	$("input[name='scanType']").each(function(){
@@ -163,11 +164,21 @@ $(".upload_delete").click(function(){
 		<c:import url="/menu.html"></c:import>
 		<!-- menu end -->
 	<div class="main_wrap">
+	<div style="padding-top: 20px;padding-left: 30px;">
+	<a href="javascript:void(0)" class="ope_a" onclick="goBack()">&lt;&lt;返回服务列表</a>
+	</div>
     <div id="base" class="main_center" style="padding-top: 30px;padding-bottom: 20px;">
 	  <input type="hidden" id="uploadHtml" value=""/>
+	  <input type="hidden" id="uploadSuccessHidden" value=""/>
 	  <input type="hidden" id="servDetailHidden" value=""/>
 	  <input type="hidden" id="resServDetailHidden" value=""/>
 	  <table>
+	  		<tr class="register_tr">
+	  			<td class="regist_title" >服务名称：</td>
+	  			<td class="regist_input" style="color:#888">
+	  				${servName }
+	  			</td>
+	  		</tr>
 	  		<tr class="register_tr">
 	  			<td class="regist_title" id="u1">价格标题：</td>
 	  			<td class="regist_input" id="u2">
@@ -435,6 +446,7 @@ var params = {
 						'<a href="javascript:" class="upload_delete" title="删除" data-index="'+ i +'">删除</a><br />' +
 						'<img id="uploadImage_' + i + '" src="' + e.target.result + '" class="upload_image" /></p>'+ 
 						'<span id="uploadProgress_' + i + '" class="upload_progress"></span>' +
+						'<input type="hidden" id="uploadName_'+ i +'" value=""/>'+
 					'</div>';	
 					i++;
 					funAppendImage();
@@ -449,7 +461,8 @@ var params = {
 						return false;	
 					});
 					//提交按钮显示
-					$("#fileSubmit").show();	
+					$("#fileSubmit").show();
+					$("#fileSubmit").attr("disabled", false);	
 				} else {
 					//提交按钮隐藏
 					$("#fileSubmit").hide();	
@@ -460,6 +473,18 @@ var params = {
 	},
 	onDelete: function(file) {
 		$("#uploadList_" + file.index).fadeOut();
+		
+		var fileName=$("#uploadName_" + file.index).val();
+		var iconNames = $("#servDetailHidden").val();
+		iconNames = iconNames.replace(fileName+";","");
+		iconNames = iconNames.replace(fileName, "");
+		$("#servDetailHidden").val(iconNames);
+		
+		fileName = file.name;
+		var names = $("#uploadSuccessHidden").val();
+		names = names.replace(fileName+";", "");
+		names = names.replace(fileName, "");
+		$("#uploadSuccessHidden").val(names);
 	},
 	onDragOver: function() {
 		$(this).addClass("upload_drag_hover");
@@ -468,10 +493,14 @@ var params = {
 		$(this).removeClass("upload_drag_hover");
 	},
 	onProgress: function(file) {
-	$("#uploadProgress_" + file.index).show();
+		$("#uploadProgress_" + file.index).show();
+		$("#fileSubmit").attr("disabled", true);
 	},
 	onSuccess: function(file, response) {
 		alert("图片" + file.name +"上传成功!");
+		$("#uploadProgress_" + file.index).hide();
+		$("#uploadName_" + file.index).val(response.filePath);
+		
 	},
 	onFailure: function(file) {
 		alert("图片" + file.name + "上传失败！");	
@@ -479,10 +508,10 @@ var params = {
 	},
 	onComplete: function() {
 		//提交按钮隐藏
-		/* $("#fileSubmit").hide(); */
+		$("#fileSubmit").hide();
 		//file控件value置空
 		$("#fileImage").val("");
-		$("#uploadInf").append("<p>当前图片全部上传完毕，可继续添加上传。</p>");
+		//$("#uploadInf").append("<p>当前图片全部上传完毕，可继续添加上传。</p>");
 	}
 };
 ZXXFILE = $.extend(ZXXFILE, params);
