@@ -11,14 +11,14 @@
 <link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/common.css"/>
 <link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/index.css"/>
 <style>
-.user_table thead tr th:nth-child(1) {padding-right: 66px;padding-left: 35px;}
-.user_table thead tr th:nth-child(2) {padding-right: 152px;}
-.user_table thead tr th:nth-child(3) {padding-right: 143px;}
+.user_table thead tr th:nth-child(1) {padding-right: 66px;padding-left: 25px;}
+.user_table thead tr th:nth-child(2) {padding-right: 132px;}
+.user_table thead tr th:nth-child(3) {padding-right: 173px;}
 .user_table thead tr th:nth-child(4) {padding-right: 236px;}
-.user_table tbody tr td:nth-child(1) {width: 125px;padding-left: 35px;}
+.user_table tbody tr td:nth-child(1) {width: 115px;padding-left: 25px;}
 .user_table tbody tr td:nth-child(2) {width: 180px;}
 .user_table tbody tr td:nth-child(3) {}
-.user_table tbody tr td:nth-child(4) {width: 260px;}
+.user_table tbody tr td:nth-child(4) {width: 250px;}
 .user_table tbody tr td:last-child a {display: inline-block;width: auto;padding-left: 6px;}
 </style>
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
@@ -151,7 +151,16 @@ $(document).ready(function(){
 	                    <tr>
 	                    	<td>${serv.parentCName}</td>
 	                        <td>${serv.typeName}</td>
-	                        <td><a href="${ctx}/serviceDetailsUI.html?servId=${serv.id}&parent=${serv.parentC}" style="width:210px">${serv.name}</a></td>
+	                        <td>
+	                        <a href="${ctx}/serviceDetailsUI.html?servId=${serv.id}&parent=${serv.parentC}" style="width:240px;padding-left: 26px;">
+	                        	<c:if test="${fn:length(serv.name)<=13}">
+		                                    ${serv.name}
+		                        </c:if>
+		                        <c:if test="${fn:length(serv.name)>13}">
+		                                ${fn:substring(serv.name, 0, 13)}...
+		                        </c:if>
+	                        </a>
+	                        </td>
 	                        <td>
 		                        <c:if test="${fn:length(serv.remarks)<=13}">
 		                                    ${serv.remarks}
@@ -228,7 +237,7 @@ $(document).ready(function(){
           	<tr class="register_tr">
 	            <td class="regist_title">服务名称</td>
 	            <td class="regist_input">
-		            <input type="text" class="regist_txt required" id="serv_name"/>
+		            <input type="text" class="regist_txt required" id="serv_name" maxlength="20"/>
 		            <span id="regist_name_msg" style="color:red;float:left"></span>
 	            </td>
 	            <td class="regist_prompt"></td>
@@ -336,7 +345,7 @@ $(document).ready(function(){
           	<tr class="register_tr">
 	            <td class="regist_title">服务名称</td>
 	            <td class="regist_input">
-		            <input type="text" class="regist_txt required" id="edit_serv_name"/>
+		            <input type="text" class="regist_txt required" id="edit_serv_name" maxlength="20"/>
 		            <span id="regist_name_msg" style="color:red;float:left"></span>
 	            </td>
 	            <td class="regist_prompt"></td>
