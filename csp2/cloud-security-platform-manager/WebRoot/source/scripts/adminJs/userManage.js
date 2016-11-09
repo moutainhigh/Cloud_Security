@@ -42,7 +42,7 @@ function checkPassword(){
 		checkPassword1 = 0;
 	}else{
 		if(p1.length<6||p1.length>20){
-			$("#regist_password_msg").html("请输入6-20位，支持中英文，数字，字符组合");
+			$("#regist_password_msg").html("请输入6-20位，支持英文，数字，字符组合");
 			checkPassword1 = 0;
 		}else{
 			$("#regist_password_msg").html("");
@@ -70,54 +70,67 @@ function checkConfirmPassword(){
 }
 //提交
 function add(){
+	 var name=$("#regist_name").val();//用户名
 	 var type=$("#addType").val();//获取用户类型
 	 var ipStart=$("#addStartIP").val();
 	 var ipEnd=$("#addEndIP").val();
 	 var p1=$("#regist_password").val();//获取密码框的值
 	 var p2=$("#regist_confirm_password").val();//获取重新输入的密码值
 
-	  if(p1==""){
-		    	$("#regist_password_msg").html("<font color='red'>密码不能为空!</font>");
-	   }else if(p1.length<6||p1.length>20){
-		   $("#regist_password_msg").html("请输入6-20位，支持中英文，数字，字符组合");
-	   }else{
-		   	$("#regist_password_msg").html("");
-	   }
-	  if(p2==""){
-		   	$("#regist_confirm_password_msg").html("<font color='red'>确认密码不能为空!</font>");
-	  }else if(p2.length<6||p2.length>20){
-		   $("#regist_confirm_password_msg").html("请输入6-20位，支持中英文，数字，字符组合");
-	   }else{
-		   	$("#regist_confirm_password_msg").html("");
-	   }
-	  if(p2!=null&&p2!=""){
-		  if (p1!=p2) {
-		   	$("#regist_confirm_password_msg").html("<font color='red'>两次输入密码不一致，请重新输入</font>");
-		
-		  }else{
-		    $("#regist_confirm_password_msg").html("");
-			 if(type=="-1"){
-				 $("#regist_type_msg").html("<font color='red'>请选择用户分组!</font>");
-			 }else{
-				 if(type=="3"){
-					 //手机号不能为空
-					 var mobile = $("#addPhone").val();
-					 if(mobile=="" || mobile==null){
-						 $("#add_mobile_msg").html("企业用户手机号码不能为空!");
-					 }else{
-						 $("#add_mobile_msg").html("");
-						 if(checkIP(ipStart,ipEnd)){
-							 $("#form_regist").submit();
-						 }
-					 }
-			   }else{
-				   $("#add_mobile_msg").html("");
-				   $("#form_regist").submit();
-			   }
-				 
+	 checkName();
+	 checkPassword();
+	 checkConfirmPassword();
+	 
+	 if(checkName1==1&&checkPassword1==1&&checkConfirmPassword1==1){
+		 if (name == "") {
+				$("#regist_name_msg").html("<font color='red'>用户账号不能为空!</font>");
+			} else if (p1.length < 4 || p1.length > 20) {
+				$("#regist_name_msg").html("4-20位字符，支持英文，数字，字符组合");
+			} else {
+				$("#regist_name_msg").html("");
 			}
-		  }
-	  }
+//			if (p1 == "") {
+//				$("#regist_password_msg").html("<font color='red'>密码不能为空!</font>");
+//			} else if (p1.length < 6 || p1.length > 20) {
+//				$("#regist_password_msg").html("请输入6-20位，支持英文，数字，字符组合");
+//			} else {
+//				$("#regist_password_msg").html("");
+//			}
+//			if (p2 == "") {
+//				$("#regist_confirm_password_msg").html("<font color='red'>确认密码不能为空!</font>");
+//			} else if (p2.length < 6 || p2.length > 20) {
+//				$("#regist_confirm_password_msg").html("请输入6-20位，支持英文，数字，字符组合");
+//			} else {
+//				$("#regist_confirm_password_msg").html("");
+//			}
+			if (p2 != null && p2 != "") {
+				if (p1 != p2) {
+					$("#regist_confirm_password_msg").html("<font color='red'>两次输入密码不一致，请重新输入</font>");
+				} else {
+					$("#regist_confirm_password_msg").html("");
+					if (type == "-1") {
+						$("#regist_type_msg").html("<font color='red'>请选择用户分组!</font>");
+					} else {
+						if (type == "3") {
+							// 手机号不能为空
+							var mobile = $("#addPhone").val();
+							if (mobile == "" || mobile == null) {
+								$("#add_mobile_msg").html("企业用户手机号码不能为空!");
+							} else {
+								$("#add_mobile_msg").html("");
+								if (checkIP(ipStart, ipEnd)) {
+									$("#form_regist").submit();
+								}
+							}
+						} else {
+							$("#add_mobile_msg").html("");
+							$("#form_regist").submit();
+						}
+					}
+				}
+			}
+	 }
+	
 }
 
 //验证IP

@@ -285,7 +285,8 @@ $(document).ready(function() {
         },                                                                      
         yAxis: {                                                                
             title: {                                                            
-                text: 'GB'                                                   
+//                text: 'GB' 
+            	text: 'MB'
             },                                                                  
             plotLines: [{                                                       
                 value: 0,                                                       

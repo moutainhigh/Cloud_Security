@@ -64,35 +64,43 @@ function useAnalysis(){
         	if(useSel=="1"){
         		$("#body1").html("");
         		var list = data;
-        		for (var i = 0; i < list.length; i++){
-        			var index = i+1;
-        			var trid = "tr1" + i;
-        			if(i%2==0){
-        				$("#body1").append( "<tr id='"+trid+"'" +"style='background: rgb(250, 250, 250) none repeat scroll 0% 0%;'>" );
-        			}else{
-        				$("#body1").append( "<tr id='"+trid+"'");
-        			}
-        			
-        			$("#"+trid).append( "<td>" + index + "</td>");
-        			$("#"+trid).append( "<td colspan='4'>" + list[i].time+"~~~"+list[i].time1 + "</td>");
-        			$("#body1").append( "</tr>" );
+        		if(list.length==0){
+        			alert("信息提示：未查询到结果！"); 
+        		}else{
+        			for (var i = 0; i < list.length; i++){
+            			var index = i+1;
+            			var trid = "tr1" + i;
+            			if(i%2==0){
+            				$("#body1").append( "<tr id='"+trid+"'" +"style='background: rgb(250, 250, 250) none repeat scroll 0% 0%;'>" );
+            			}else{
+            				$("#body1").append( "<tr id='"+trid+"'");
+            			}
+            			
+            			$("#"+trid).append( "<td>" + index + "</td>");
+            			$("#"+trid).append( "<td colspan='4'>" + list[i].time+"~~~"+list[i].time1 + "</td>");
+            			$("#body1").append( "</tr>" );
+            		}
         		}
         	}else{
         		$("#body2").html("");
         		var list = data;
-        		for (var i = 0; i < list.length; i++){
-        			var index = i+1;
-        			var trid = "tr2" + i;
-        			if(i%2==0){
-        				$("#body2").append( "<tr id='"+trid+"'" +"style='background: rgb(250, 250, 250) none repeat scroll 0% 0%;'>" );
-        			}else{
-        				$("#body2").append( "<tr id='"+trid+"'");
-        			}
-        			
-        			$("#"+trid).append( "<td>" + index + "</td>");
-        			$("#"+trid).append( "<td colspan='4'>" + list[i].time+"~~~"+list[i].time1 + "</td>");
-        			$("#body2").append( "</tr>" );
-        		}        		
+        		if(list.length==0){
+        			alert("信息提示：未查询到结果！"); 
+        		}else{
+        			for (var i = 0; i < list.length; i++){
+            			var index = i+1;
+            			var trid = "tr2" + i;
+            			if(i%2==0){
+            				$("#body2").append( "<tr id='"+trid+"'" +"style='background: rgb(250, 250, 250) none repeat scroll 0% 0%;'>" );
+            			}else{
+            				$("#body2").append( "<tr id='"+trid+"'");
+            			}
+            			
+            			$("#"+trid).append( "<td>" + index + "</td>");
+            			$("#"+trid).append( "<td colspan='4'>" + list[i].time+"~~~"+list[i].time1 + "</td>");
+            			$("#body2").append( "</tr>" );
+            		}  
+        		}
         	}
         },
      });

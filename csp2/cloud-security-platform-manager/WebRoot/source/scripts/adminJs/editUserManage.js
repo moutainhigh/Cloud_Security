@@ -8,14 +8,14 @@ function edit(){
 	  if(p1==""){
 		    	$("#update_password_msg").html("<font color='red'>密码不能为空!</font>");
 	   }else if(p1.length<6||p1.length>20){
-		   $("#update_password_msg").html("请输入6-20位，支持中英文，数字，字符组合");
+		   $("#update_password_msg").html("请输入6-20位，支持英文，数字，字符组合");
 	   }else{
 		   	$("#update_password_msg").html("");
 	   }
 	  if(p2==""){
 		   	$("#update_confirm_password_msg").html("<font color='red'>确认密码不能为空!</font>");
 	  }else if(p2.length<6||p2.length>20){
-		   $("#update_confirm_password_msg").html("请输入6-20位，支持中英文，数字，字符组合");
+		   $("#update_confirm_password_msg").html("请输入6-20位，支持英文，数字，字符组合");
 	   }else{
 		   	$("#update_confirm_password_msg").html("");
 	   }
