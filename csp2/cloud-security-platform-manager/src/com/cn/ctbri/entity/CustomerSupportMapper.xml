@@ -53,13 +53,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!--用户信息查询tab start  -->
 	<select id="queryAssetInfo" parameterType="hashmap" resultMap="OrderAssetRM">
-		select assetId, assetAddr, min(assetName) as assetName from cs_order_asset where 1=1
-		<if test="assetname != null and assetname != ''">and assetName like concat('%',concat(#{assetname},'%'))</if>
-		<if test="assetaddr != null and assetaddr != ''">and assetAddr = #{assetaddr}</if>
+        select a.id as assetId, addr as assetAddr, name as assetName from cs_asset a,cs_order_asset oa where 1=1
+		and a.id = oa.assetId
+		<if test="assetname != null and assetname != ''">and name like concat('%',concat(#{assetname},'%'))</if>
+		<if test="assetaddr != null and assetaddr != ''">and addr like concat('%',concat(#{assetaddr},'%'))</if>
 		and orderId in (select id from cs_order where 1=1 
 		<if test="userId != null and userId != 0">and userId = #{userId}</if> 
 		<if test="orderno != null and orderno != ''">and orderId like concat('%',concat(#{orderno},'%'))</if>)
-		group by assetAddr
+		group by assetId
+		<!-- modify by tangxr 2016-11-8 -->
+		<!--  select assetId, assetAddr, min(assetName) as assetName from cs_order_asset where 1=1
+		<if test="assetname != null and assetname != ''">and assetName like concat('%',concat(#{assetname},'%'))</if>
+		<if test="assetaddr != null and assetaddr != ''">and assetAddr like concat('%',concat(#{assetaddr},'%'))</if>
+		and orderId in (select id from cs_order where 1=1 
+		<if test="userId != null and userId != 0">and userId = #{userId}</if> 
+		<if test="orderno != null and orderno != ''">and orderId like concat('%',concat(#{orderno},'%'))</if>)
+		group by assetAddr -->
 	</select>
 	
 	<select id="getUserInfoByAssetId" parameterType="hashmap" resultMap="UserRM">
@@ -74,7 +83,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		and id in
 		(select orderId from cs_order_asset where 1=1
 		<if test="assetname != null and assetname != ''">and assetName like concat('%',concat(#{assetname},'%'))</if>
-		<if test="assetaddr != null and assetaddr != ''">and assetAddr = #{assetaddr}</if>)
+		<if test="assetaddr != null and assetaddr != ''">and assetAddr like concat('%',concat(#{assetaddr},'%'))</if>)
+		and payFlag = 1
+		and delFlag !=1
+		order by create_date desc
 	</select>
 	
 	<select id="queryUserInfo" parameterType="hashmap" resultMap="UserRM">

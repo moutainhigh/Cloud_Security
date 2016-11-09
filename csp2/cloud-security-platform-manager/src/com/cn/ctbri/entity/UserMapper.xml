@@ -60,6 +60,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="endIP!=null">
 				endIP=#{endIP},
 			</if>
+			<if test="company!=null">
+				company=#{company},
+			</if>
+			<if test="job!=null">
+				job=#{job},
+			</if>
+			<if test="industry!=null">
+				industry=#{industry},
+			</if>
 		</set>
 		where id=#{id}
 	</update>
