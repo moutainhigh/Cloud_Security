@@ -1,5 +1,8 @@
 package com.cn.ctbri.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -23,6 +26,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+
+import sun.misc.BASE64Decoder;
 
 import com.cn.ctbri.cfg.CspWorker;
 import com.cn.ctbri.entity.Serv;
@@ -434,6 +439,9 @@ public class ServController {
 
 			map.remove("parent");
 			scanList = selfHelpOrderService.findScanTypeList(map);
+			
+			Serv serv = servService.findById(serviceId);
+			request.setAttribute("servName", serv.getName());
 		}
 		if(serviceDetail != null){
 			String detailIcon = serviceDetail.getDetailIcon();
@@ -552,61 +560,102 @@ public class ServController {
 		
 	}
 	
-	/**
-	 * 功能描述：上传服务详情图片
-	 * 参数描述：HttpServletRequest request,HttpServletResponse response
-	 *		 @time 2015-1-19
-	 */
-	@RequestMapping(value="/uploadDetail.html")
-	public void uploadDetailPhoto(HttpServletRequest request,HttpServletResponse response){
-
-		Map<String, Object> m = new HashMap<String, Object>();
-		try {
-    		//将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
-    		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
-					request.getSession().getServletContext());
-			// 检查form中是否有enctype="multipart/form-data"
-    		if(multipartResolver.isMultipart(request)){
-    			//将request变成多部分request
-    			MultipartHttpServletRequest multiRequest=(MultipartHttpServletRequest)request;
-    			//获取multiRequest 中所有的文件名
-    			Iterator iter=multiRequest.getFileNames();
-    			
-    			while(iter.hasNext()){
-    				//一次遍历所有文件
-    				MultipartFile multipartFile = multiRequest.getFile(iter.next().toString());
-    		        if(multipartFile==null){
-    		        	m.put("success", false);
-    		        	m.put("errorMsg", "请上传文件!");
-    		        	return;
-    		        }
-    				
-    		        String originalFileName=multipartFile.getOriginalFilename();
-    		        String fileType = originalFileName.substring(originalFileName.lastIndexOf(".")+1);
-    		        //判断文件格式
-//    		        if(!"png".equals(fileType.toLowerCase())){
-//    		        	m.put("successFlag", false);
-//    		        	m.put("errorMsg", "请导入png格式的文件!");
-//    		        	
+//	/**
+//	 * 功能描述：上传服务详情图片
+//	 * 参数描述：HttpServletRequest request,HttpServletResponse response
+//	 *		 @time 2015-1-19
+//	 */
+	//@RequestMapping(value="/uploadDetail.html")
+//	public void uploadDetailPhoto(HttpServletRequest request,HttpServletResponse response){
+//
+//		Map<String, Object> m = new HashMap<String, Object>();
+//		try {
+//    		//将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
+//    		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
+//					request.getSession().getServletContext());
+//			// 检查form中是否有enctype="multipart/form-data"
+//    		if(multipartResolver.isMultipart(request)){
+//    			//将request变成多部分request
+//    			MultipartHttpServletRequest multiRequest=(MultipartHttpServletRequest)request;
+//    			//获取multiRequest 中所有的文件名
+//    			Iterator iter=multiRequest.getFileNames();
+//    			
+//    			while(iter.hasNext()){
+//    				//一次遍历所有文件
+//    				MultipartFile multipartFile = multiRequest.getFile(iter.next().toString());
+//    		        if(multipartFile==null){
+//    		        	m.put("success", false);
+//    		        	m.put("errorMsg", "请上传文件!");
 //    		        	return;
 //    		        }
-    		        //上传文件名称；
-    		        String uploadFilePathName = String.valueOf(System.currentTimeMillis())+originalFileName.substring(originalFileName.lastIndexOf("."));
-    		        boolean isSuccFlag = SFTPUtil.upload(multipartFile, uploadFilePathName, 2);
+//    				
+//    		        String originalFileName=multipartFile.getOriginalFilename();
+//    		        String fileType = originalFileName.substring(originalFileName.lastIndexOf(".")+1);
+//    		        //判断文件格式
+////    		        if(!"png".equals(fileType.toLowerCase())){
+////    		        	m.put("successFlag", false);
+////    		        	m.put("errorMsg", "请导入png格式的文件!");
+////    		        	
+////    		        	return;
+////    		        }
+//    		        //上传文件名称；
+//    		        String uploadFilePathName = String.valueOf(System.currentTimeMillis())+originalFileName.substring(originalFileName.lastIndexOf("."));
+//    		        boolean isSuccFlag = SFTPUtil.upload(multipartFile, uploadFilePathName, 2);
+//
+//    		        if(isSuccFlag){
+//    					m.put("success", true);
+//    					m.put("filePath", uploadFilePathName);
+//    		        } else {
+//    		        	m.put("success", false);
+//    		        }
+//
+//    			}
+//    		}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			m.put("success", false);
+//			
+//		}finally {
+//			//object转化为Json格式
+//			JSONObject JSON = CommonUtil.objectToJson(response, m);
+//			try {
+//				// 把数据返回到页面
+//				CommonUtil.writeToJsp(response, JSON);
+//			} catch (IOException e1) {
+//				e1.printStackTrace();
+//			}
+//		}
+//	}
+	
+	@RequestMapping(value="/uploadDetail.html")
+	public void uploadDetailImages(HttpServletRequest request,HttpServletResponse response){
+		Map<String, Object> m = new HashMap<String, Object>();
+		byte[] bytes = null;  
+        ByteArrayInputStream bais = null;  
+		try {
+			String fileName = request.getParameter("fileName");
+			String base64String = request.getParameter("base64String");
+			base64String = base64String.substring(base64String.indexOf(",")+1);
 
-    		        if(isSuccFlag){
-    					m.put("success", true);
-    					m.put("filePath", uploadFilePathName);
-    		        } else {
-    		        	m.put("success", false);
-    		        }
+		    BASE64Decoder decoder = new sun.misc.BASE64Decoder(); 
+			bytes = decoder.decodeBuffer(base64String);  
+            bais = new ByteArrayInputStream(bytes);  
+            
+	        String fileType = fileName.substring(fileName.lastIndexOf("."));
+	        //上传文件名称；
+	        String uploadFilePathName = System.currentTimeMillis()+fileType;
+	        boolean isSuccFlag = SFTPUtil.upload(bais, uploadFilePathName, 2);
+			
+	        if(isSuccFlag){
+				m.put("success", true);
+				m.put("filePath", uploadFilePathName);
+	        } else {
+	        	m.put("success", false);
+	        }
 
-    			}
-    		}
-		} catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
 			m.put("success", false);
-			
 		}finally {
 			//object转化为Json格式
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
