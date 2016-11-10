@@ -67,7 +67,7 @@ $("#u10_input").click(function(){
 $("#u27_input").click(function(){
 	       // +'<input class="regist_txt"  id="u31_input" name="scanType" type="text" value=""/>'
 	var html = '<div id="u31" class="ax_text_field positionr">'
-	        +'<select class="regist_sel" id="u31_input" name="scanType">'
+	        +'<select class="regist_sel" id="u31_input" name="scanType" onchange="checkScanType(this)">'
 				+'<option value="-1" selected="selected">请选择</option>'
 				+'<option value="1">10分钟</option>'
 				+'<option value="2">30分钟</option>'
@@ -237,7 +237,7 @@ $(".upload_delete").click(function(){
 			          	<c:when test="${scanTypeList==null or scanTypeList.size() == 0}">
 			          		<div id="u31" class="ax_text_field positionr">
 						        <!-- <input class="regist_txt" id="u31_input" name="scanType" type="text" value=""/> -->
-						        <select class="regist_sel" id="u31_input" name="scanType">
+						        <select class="regist_sel" id="u31_input" name="scanType" onchange="checkScanType(this)">
 			                		<option value="-1" selected="selected">请选择</option>
 				                	<option value="1">10分钟</option>
 				                	<option value="2">30分钟</option>
@@ -253,7 +253,7 @@ $(".upload_delete").click(function(){
 						      <div id="u31" class="ax_text_field positionr">
 						        <!-- <input class="regist_txt" id="u31_input" name="scanType" type="text" value="${scanType.scan_name }"/>
 						      	  -->
-						      	  <select class="regist_sel" id="u31_input" name="scanType">
+						      	  <select class="regist_sel" id="u31_input" name="scanType" onchange="checkScanType(this)">
 			                		<option value="-1">请选择</option>
 			                		<c:if test="${scanType.scan_type==1}">
 				                		<option value="1" selected="selected">10分钟</option>
