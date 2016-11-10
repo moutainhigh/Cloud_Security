@@ -3,7 +3,6 @@ var maxPriceIndex=0;
 var scanTypeList;
 //价格维护
 $(function(){
-	
 	var oMark =document.getElementById('modelbox');
 	var oLogin =document.getElementById('box_servicePrice');
 	
@@ -52,7 +51,7 @@ function editPrice(servId,parentC){
 	        							'<table>'+
 	          								'<tr class="price_tr" id="singlePrice_tr">'+
 	            								'<td class="regist_title">单次价格</td>'+
-	            								'<td class="price_input"><input type="text" class="price_txt required" name="singlePrice" id="singlePrice"/><span id="regist_name_msg" style="color:red;float:left"></span></td>'+
+	            								'<td class="price_input"><input type="text" class="price_txt required" name="singlePrice" id="singlePrice" onblur="checkPrice(this)"/><span id="regist_name_msg" style="color:red;float:left" ></span></td>'+
 	            								'<td class="regist_prompt"></td>'+
 	          								'</tr>'+
 	        						 	'</table>'+
@@ -143,6 +142,8 @@ function editPrice(servId,parentC){
 					htmlStr = htmlStr.replace(new RegExp("title_timesLE_0",'gm'), "title_timesLE_"+i);
 					htmlStr = htmlStr.replace(new RegExp("deleteOnePrice(0)",'gm'),"deleteOnePrice("+i+")");
 					htmlStr = htmlStr.replace(new RegExp("getPriceType(this.value,0)",'gm'),"getPriceType(this.value,"+i+")");
+					htmlStr = htmlStr.replace("checkTimesG(0)","checkTimesG("+i+")");
+					htmlStr = htmlStr.replace("checkTimesLE(0)","checkTimesLE("+i+")");
 					$("#scanTypeTable_"+price.scanType).append(htmlStr);
 					//替换 类型
 					$("#type_"+i).val(price.type);
@@ -206,7 +207,60 @@ function scrollY(){
 }
 
 function saveServicePrice(){
-	//验证 TODO
+	//验证
+	var numberPatrn=new RegExp("^[0-9]+$");
+	var pricePattern = new RegExp("^[0-9]+(.[0-9]+)?$");
+	var checkFlag = true;
+	if ($("#singlePrice").length > 0&& !numberPatrn.test($("#singlePrice").val())) {
+		$("#singlePrice").css("border","solid 1px red");
+		checkFlag = false;
+	}
+	
+	for (var i = 0;i<=maxPriceIndex;i++) {
+		if ($("#type_"+i).length > 0) {
+			$("#price_"+i).css("border","solid 1px #cbc9c9");
+			$("#timesG_"+i).css("border","solid 1px #cbc9c9");
+			$("#timesLE_"+i).css("border","solid 1px #cbc9c9");
+			
+			var type = $("#type_"+i).val();
+			var timesG = $("#timesG_"+i).val();
+			var timesLE = $("#timesLE_"+i).val();
+			var price =  $("#price_"+i).val();
+			if (price=='' && timesG=='' && timesLE==''){
+				continue;
+			}
+			
+			if (!numberPatrn.test(timesG)){
+				$("#timesG_"+i).css("border","solid 1px red");
+				checkFlag = false;
+			}
+			if (!numberPatrn.test(timesLE)){
+				$("#timesLE_"+i).css("border","solid 1px red");
+				checkFlag = false;
+			}
+			
+			//检查价格
+			if(!pricePattern.test(price) ) {
+				$("#price_"+i).css("border","solid 1px red");
+				checkFlag = false;
+			}
+			
+			if (type == 1 && numberPatrn.test(timesG) && numberPatrn.test(timesLE) && Number(timesG) >= Number(timesLE)) {
+				$("#timesG_"+i).css("border","solid 1px red");
+				$("#timesLE_"+i).css("border","solid 1px red");
+				checkFlag = false;
+				continue;
+			}
+			
+			
+			
+		}
+	}
+	if(!checkFlag) {
+		alert("输入有误！");
+		return;
+	}
+	
 	$("#maxPriceIndex").val(maxPriceIndex);
 	
 	//表单提交
@@ -257,6 +311,8 @@ function addOnePrice(scantype_index){
 	htmlStr = htmlStr.replace(new RegExp("title_timesLE_0",'gm'), "title_timesLE_"+maxPriceIndex);
 	htmlStr = htmlStr.replace("deleteOnePrice(0)","deleteOnePrice("+maxPriceIndex+")");
 	htmlStr = htmlStr.replace("getPriceType(this.value,0)","getPriceType(this.value,"+maxPriceIndex+")");
+	htmlStr = htmlStr.replace("checkTimesG(0)","checkTimesG("+maxPriceIndex+")");
+	htmlStr = htmlStr.replace("checkTimesLE(0)","checkTimesLE("+maxPriceIndex+")");
 	$("#scanTypeTable_"+scantype_index).append(htmlStr);
 	$("#price_scanType_"+maxPriceIndex).val(scantype_index);
 	
@@ -321,5 +377,75 @@ function getScanTypeSettingFlag() {
 			$("#allLongPriceDiv").append(scanTypeDivHtml);
 		}
 	}
+}
+
+function checkPrice(Obj){
+		var price = $(Obj).val();
+		var pricePattern = new RegExp("^[0-9]+(.[0-9]+)?$");
+		//检查价格
+		if(!pricePattern.test(price)) {
+			$(Obj).css("border","solid 1px red");
+			
+		}else {
+			$(Obj).css("border","solid 1px #cbc9c9");
+		}
+}
+
+function checkTimesG(i){
+	var numberPatrn=new RegExp("^[0-9]+$");
+	
+	var type = $("#type_"+i).val();
+	var timesG = $("#timesG_"+i).val();
+	
+	if (!numberPatrn.test(timesG)) {
+		$("#timesG_"+i).css("border","solid 1px red");
+		if(numberPatrn.test(timesLE)) {
+			$("#timesLE_"+i).css("border","solid 1px #cbc9c9");
+		}
+		return;
+	}
+	
+	//检查区间
+	if (type == 1) {
+		var timesLE = $("#timesLE_"+i).val();
+		if (numberPatrn.test(timesLE) && Number(timesG) >= Number(timesLE)) {
+			$("#timesG_"+i).css("border","solid 1px red");
+			$("#timesLE_"+i).css("border","solid 1px red");
+			return;
+		}else if (numberPatrn.test(timesLE) && Number(timesG) <Number(timesLE)){
+			$("#timesG_"+i).css("border","solid 1px #cbc9c9");
+			$("#timesLE_"+i).css("border","solid 1px #cbc9c9");
+			return;
+		}
+	}
+	$("#timesG_"+i).css("border","solid 1px #cbc9c9");
+}
+
+function checkTimesLE(index){
+	var numberPatrn=new RegExp("^[0-9]+$");
+	
+	var timesG = $("#timesG_"+i).val();
+	var timesLE = $("#timesLE_"+i).val();
+	
+	if (!numberPatrn.test(timesLE)) {
+		$("#timesLE_"+i).css("border","solid 1px red");
+		if(numberPatrn.test(timesG)) {
+			$("#timesG_"+i).css("border","solid 1px #cbc9c9");
+		}
+		return;
+	}
+	
+	//检查区间
+	if (numberPatrn.test(timesG) && Number(timesG) >= Number(timesLE)) {
+		$("#timesG_"+i).css("border","solid 1px red");
+		$("#timesLE_"+i).css("border","solid 1px red");
+		return;
+	}else if (numberPatrn.test(timesG) && Number(timesG) <Number(timesLE)){
+		$("#timesG_"+i).css("border","solid 1px #cbc9c9");
+		$("#timesLE_"+i).css("border","solid 1px #cbc9c9");
+		return;
+	}
+
+	$("#timesLE_"+i).css("border","solid 1px #cbc9c9");
 }
 
