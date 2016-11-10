@@ -451,8 +451,9 @@ function saveDetails(serviceId,parent,flag){
 
 	var scanType = "";
 	$("select[name='scanType']").each(function(){
-		if($.trim($(this).val()) != ""){
-			scanType= scanType+","+$.trim($(this).val());
+		var scan = $.trim($(this).val());
+		if(scan != ""&& scanType.indexOf(scan)== -1){
+			scanType= scanType+","+scan;
 		}
 	});
 	if (scanType!="") {
@@ -527,4 +528,20 @@ function init(){
 
 function goBack(){
  history.go(-1);
+}
+
+function checkScanType(Obj){
+	var scanType = "";
+	var scan = $(Obj).val();
+	$("select[name='scanType']").each(function(){
+		if($.trim($(this).val()) != ""){
+			scanType= scanType+","+$.trim($(this).val());
+		}
+	});
+	scanType = scanType.replace(scan,"");
+	if (scanType.indexOf(scan) != -1){
+		$(Obj).val("-1");
+		alert("服务频率不能重复！");
+	}
+	
 }
