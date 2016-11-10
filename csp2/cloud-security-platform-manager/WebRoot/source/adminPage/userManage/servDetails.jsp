@@ -422,11 +422,11 @@ var params = {
 		var arrFiles = [];
 		for (var i = 0, file; file = files[i]; i++) {
 			if (file.type.indexOf("image") == 0) {
-				if (file.size >= 512000) {
-					alert('您这张"'+ file.name +'"图片大小过大，应小于500k');	
-				} else {
+				//if (file.size >= 512000) {
+					//alert('您这张"'+ file.name +'"图片大小过大，应小于500k');	
+				//} else {
 					arrFiles.push(file);	
-				}			
+				//}			
 			} else {
 				alert('文件"' + file.name + '"不是图片。');	
 			}
