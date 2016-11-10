@@ -24,6 +24,8 @@ function editApiPrice(servId){
 					htmlStr = htmlStr.replace(new RegExp("apiPrice_title_timesLE_0",'gm'), "apiPrice_title_timesLE_"+i);
 					htmlStr = htmlStr.replace(new RegExp("deleteOneApiPrice(0)",'gm'),"deleteOneApiPrice("+i+")");
 					htmlStr = htmlStr.replace(new RegExp("getApiPriceType(this.value,0)",'gm'),"getApiPriceType(this.value,"+i+")");
+					htmlStr = htmlStr.replace("checkApiTimesG(0)","checkApiTimesG("+i+")");
+					htmlStr = htmlStr.replace("checkApiTimesLE(0)","checkApiTimesLE("+i+")");
 					$("#apiPrice_table").append(htmlStr);
 					//替换 大于
 					$("#apiPrice_timesG_"+i).val(price.timesG);
@@ -49,8 +51,10 @@ function editApiPrice(servId){
 				htmlStr = htmlStr.replace(new RegExp("apiPrice_timesG_0",'gm'), "apiPrice_timesG_1");
 				htmlStr = htmlStr.replace(new RegExp("apiPrice_timesLE_0",'gm'), "apiPrice_timesLE_1");
 				htmlStr = htmlStr.replace(new RegExp("apiPrice_title_timesLE_0",'gm'), "apiPrice_title_timesLE_1");
-				htmlStr = htmlStr.replace(new RegExp("deleteOnePrice(0)",'gm'),"deleteOnePrice(1)");
-				htmlStr = htmlStr.replace(new RegExp("getPriceType(this.value,0)",'gm'),"getPriceType(this.value,1)");
+				htmlStr = htmlStr.replace(new RegExp("deleteOneApiPrice(0)",'gm'),"deleteOnePrice(1)");
+				htmlStr = htmlStr.replace(new RegExp("getApiPriceType(this.value,0)",'gm'),"getPriceType(this.value,1)");
+				htmlStr = htmlStr.replace("checkApiTimesG(0)","checkApiTimesG(1)");
+				htmlStr = htmlStr.replace("checkApiTimesLE(0)","checkApiTimesLE(1)");
 				$("#apiPrice_table").append(htmlStr);
 			}
 			
@@ -94,6 +98,8 @@ function addOneApiPrice(){
 	htmlStr = htmlStr.replace(new RegExp("apiPrice_title_timesLE_0",'gm'), "apiPrice_title_timesLE_"+maxApiPriceIndex);
 	htmlStr = htmlStr.replace(new RegExp("deleteOneApiPrice(0)",'gm'),"deleteOneApiPrice("+maxApiPriceIndex+")");
 	htmlStr = htmlStr.replace(new RegExp("getApiPriceType(this.value,0)",'gm'),"getApiPriceType(this.value,"+maxApiPriceIndex+")");
+	htmlStr = htmlStr.replace("checkApiTimesG(0)","checkApiTimesG("+maxApiPriceIndex+")");
+	htmlStr = htmlStr.replace("checkApiTimesLE(0)","checkApiTimesLE("+maxApiPriceIndex+")");
 	$("#apiPrice_table").append(htmlStr);
 }
 
@@ -115,7 +121,54 @@ function getApiPriceType(value, priceIndex){
 }
 
 function saveServiceApiPrice(){
-	//验证 TODO
+	var numberPatrn=new RegExp("^[0-9]+$");
+	var pricePattern = new RegExp("^[0-9]+(.[0-9]+)?$");
+	var checkFlag = true;
+	for (var i = 0;i<=maxApiPriceIndex;i++) {
+		if ($("#apiPrice_type_"+i).length > 0) {
+			$("#apiPrice_price_"+i).css("border","solid 1px #cbc9c9");
+			$("#apiPrice_timesG_"+i).css("border","solid 1px #cbc9c9");
+			$("#apiPrice_timesLE_"+i).css("border","solid 1px #cbc9c9");
+			
+			var type = $("#apiPrice_type_"+i).val();
+			var timesG = $("#apiPrice_timesG_"+i).val();
+			var timesLE = $("#apiPrice_timesLE_"+i).val();
+			var price =  $("#apiPrice_price_"+i).val();
+			var numFlag = true;
+			if (price=='' && timesG=='' && timesLE==''){
+				continue;
+			}
+			
+			
+			if (!numberPatrn.test(timesG)){
+				$("#apiPrice_timesG_"+i).css("border","solid 1px red");
+				checkFlag = false;
+			}
+			if (!numberPatrn.test(timesLE)){
+				$("#apiPrice_timesLE_"+i).css("border","solid 1px red");
+				checkFlag = false;
+			}
+			
+			//检查价格
+			if(!pricePattern.test(price) ) {
+				$("#apiPrice_price_"+i).css("border","solid 1px red");
+				checkFlag = false;
+			}
+			
+			if (type == 1 && numberPatrn.test(timesG) && numberPatrn.test(timesLE) && Number(timesG) >= Number(timesLE)) {
+				$("#apiPrice_timesG_"+i).css("border","solid 1px red");
+				$("#apiPrice_timesLE_"+i).css("border","solid 1px red");
+				checkFlag = false;
+				continue;
+			}
+			
+		}
+	}
+	if(!checkFlag) {
+		alert("输入有误！");
+		return;
+	}
+
 	$("#maxApiPriceIndex").val(maxApiPriceIndex);
 	
 	//表单提交
@@ -127,4 +180,74 @@ function saveServiceApiPrice(){
 		
 		window.location.href = "getServiceList.html";
 	});
+}
+
+function checkApiPrice(Obj){
+		var price = $(Obj).val();
+		var pricePattern = new RegExp("^[0-9]+(.[0-9]+)?$");
+		//检查价格
+		if(!pricePattern.test(price)) {
+			$(Obj).css("border","solid 1px red");
+			
+		}else {
+			$(Obj).css("border","solid 1px #cbc9c9");
+		}
+}
+
+function checkApiTimesG(i){
+	var numberPatrn=new RegExp("^[0-9]+$");
+	
+	var type = $("#apiPrice_type_"+i).val();
+	var timesG = $("#apiPrice_timesG_"+i).val();
+	
+	if (!numberPatrn.test(timesG)) {
+		$("#apiPrice_timesG_"+i).css("border","solid 1px red");
+		if(numberPatrn.test(timesLE)) {
+			$("#apiPrice_timesLE_"+i).css("border","solid 1px #cbc9c9");
+		}
+		return;
+	}
+	
+	//检查区间
+	if (type == 1) {
+		var timesLE = $("#apiPrice_timesLE_"+i).val();
+		if (numberPatrn.test(timesLE) && Number(timesG) >= Number(timesLE)) {
+			$("#apiPrice_timesG_"+i).css("border","solid 1px red");
+			$("#apiPrice_timesLE_"+i).css("border","solid 1px red");
+			return;
+		}else if (numberPatrn.test(timesLE) && Number(timesG) <Number(timesLE)){
+			$("#apiPrice_timesG_"+i).css("border","solid 1px #cbc9c9");
+			$("#apiPrice_timesLE_"+i).css("border","solid 1px #cbc9c9");
+			return;
+		}
+	}
+	$("#apiPrice_timesG_"+i).css("border","solid 1px #cbc9c9");
+}
+
+function checkApiTimesLE(index){
+	var numberPatrn=new RegExp("^[0-9]+$");
+	
+	var timesG = $("#apiPrice_timesG_"+i).val();
+	var timesLE = $("#apiPrice_timesLE_"+i).val();
+	
+	if (!numberPatrn.test(timesLE)) {
+		$("#apiPrice_timesLE_"+i).css("border","solid 1px red");
+		if(numberPatrn.test(timesG)) {
+			$("#apiPrice_timesG_"+i).css("border","solid 1px #cbc9c9");
+		}
+		return;
+	}
+	
+	//检查区间
+	if (numberPatrn.test(timesG) && Number(timesG) >= Number(timesLE)) {
+		$("#apiPrice_timesG_"+i).css("border","solid 1px red");
+		$("#apiPrice_timesLE_"+i).css("border","solid 1px red");
+		return;
+	}else if (numberPatrn.test(timesG) && Number(timesG) <Number(timesLE)){
+		$("#apiPrice_timesG_"+i).css("border","solid 1px #cbc9c9");
+		$("#apiPrice_timesLE_"+i).css("border","solid 1px #cbc9c9");
+		return;
+	}
+
+	$("#apiPrice_timesLE_"+i).css("border","solid 1px #cbc9c9");
 }
