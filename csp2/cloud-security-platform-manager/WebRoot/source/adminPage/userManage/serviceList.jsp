@@ -463,15 +463,15 @@ $(document).ready(function(){
 				        	</td>
 				        	<td class="price_title">大于</td>
 				        	<td class="price_input">
-					        	<input type="text"  class="price_txt" name="timesG_0" id="timesG_0"/>
+					        	<input type="text"  class="price_txt" name="timesG_0" id="timesG_0" onblur="checkTimesG(0)"/>
 				        	</td>
 				        	<td class="price_title"><p id="title_timesLE_0">小于等于</p></td>
 				        	<td class="price_input">
-					        	<input type="text"  class="price_txt" name="timesLE_0" id="timesLE_0"/>
+					        	<input type="text"  class="price_txt" name="timesLE_0" id="timesLE_0" onblur="checkTimesLE(0)"/>
 				        	</td>
 				        	<td class="price_title">价格</td>
 				        	<td class="price_input">
-					        	<input type="text"  class="price_txt" name="price_0" id="price_0"/>
+					        	<input type="text"  class="price_txt" name="price_0" id="price_0" onblur="checkPrice(this)"/>
 					        	<input type="hidden" name="price_scanType_0" id="price_scanType_0"/>
 				        	</td>
 				        	<td>
@@ -515,15 +515,15 @@ $(document).ready(function(){
 				        	</td>
 				        	<td class="price_title">大于</td>
 				        	<td class="price_input">
-					        	<input type="text"  class="price_txt" name="apiPrice_timesG_0" id="apiPrice_timesG_0"/>
+					        	<input type="text"  class="price_txt" name="apiPrice_timesG_0" id="apiPrice_timesG_0" onblur="checkApiTimesG(0)"/>
 				        	</td>
 				        	<td class="price_title"><p id="apiPrice_title_timesLE_0">小于等于</p></td>
 				        	<td class="price_input">
-					        	<input type="text"  class="price_txt" name="apiPrice_timesLE_0" id="apiPrice_timesLE_0"/>
+					        	<input type="text"  class="price_txt" name="apiPrice_timesLE_0" id="apiPrice_timesLE_0" onblur="checkApiTimesLE(0)"/>
 				        	</td>
 				        	<td class="price_title">价格</td>
 				        	<td class="price_input">
-					        	<input type="text"  class="price_txt" name="apiPrice_price_0" id="apiPrice_price_0"/>
+					        	<input type="text"  class="price_txt" name="apiPrice_price_0" id="apiPrice_price_0" onblur="checkApiPrice(this)"/>
 				        	</td>
 				        	<td>
 				        		<input type="button" value="删除行" onclick="deleteOneApiPrice(0)"/>
