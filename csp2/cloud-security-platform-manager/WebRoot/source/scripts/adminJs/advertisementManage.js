@@ -1,7 +1,6 @@
 //提交
 function add(){
 	var name=$("#regist_name").val();
-	var image=$("#regist_image").val();
 	var startDate=$('#regist_startDate').val();
     var endDate=$('#regist_endDate').val();
     var submitFlg = true;
@@ -25,17 +24,14 @@ function add(){
     	$("#regist_image_msg").html("格式不正确!");
     	submitFlg = false;
     }
-    //if(image=="") {
-    	//$("#regist_image_msg").html("广告图片不能为空!");
-    	//submitFlg = false;
-    //}else {
-    //	$("#regist_image_msg").html("");
-    //}
+
     //验证广告分类
     var adType = $("#regist_type").val();
     if(adType=="" ||adType==-1){
     	$("#regist_type_msg").html("广告分类不能为空!");
     	submitFlg = false;
+    }else {
+    	$("#regist_type_msg").html("");
     }
     
     if(startDate=="" || endDate=="") {
@@ -136,7 +132,7 @@ function toAdManagerUI(adType){
 
 //广告上移
 function upSort(tableIndex){
-	var upIndex = tableIndex-1;
+	var upIndex = Number(tableIndex)-1;
 	
 	var adId1 = $("#ad_id_"+tableIndex).val();
 	var adOrder1 = $("#ad_order_"+ upIndex).val();
@@ -164,7 +160,7 @@ function upSort(tableIndex){
 }
 //广告下移
 function downSort(tableIndex){
-	var downIndex = tableIndex+1;
+	var downIndex = Number(tableIndex)+1;
 	
 	var adId1 = $("#ad_id_"+tableIndex).val();
 	var adOrder1 = $("#ad_order_"+ downIndex).val();
