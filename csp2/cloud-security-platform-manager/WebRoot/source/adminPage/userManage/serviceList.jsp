@@ -255,7 +255,7 @@ $(document).ready(function(){
 	            <td class="regist_input" style="width:400px;">
 	            	<form enctype='multipart/form-data' method="post" name="form1" id="homeIconForm" > 
 	            	<div  class="uploader">
-			            <input type="text" class="regist_txt filename" readonly="readonly">
+			            <input type="text" class="regist_txt filename" readonly="readonly" id="homeIconName">
 			            <input type="button" class="filebutton" value="浏览.."/>
 			            <input type="file" id="u8_input" name="file" class="homeIconPath"/>
 		            </div>
@@ -271,7 +271,7 @@ $(document).ready(function(){
 	            <td class="regist_input" style="width:400px;">
 	            	<form enctype='multipart/form-data' method="post" name="form1" id="categoryIconForm" > 
 	            	<div  class="uploader">
-			            <input type="text" class="regist_txt filename" readonly="readonly">
+			            <input type="text" class="regist_txt filename" readonly="readonly" id="categoryIconName">
 			            <input type="button" class="filebutton" value="浏览.."/>
 			            <input type="file" id="u8_input" name="file" class="categoryIconPath"/>
 		            </div>
@@ -287,7 +287,7 @@ $(document).ready(function(){
 	            <td class="regist_input" style="width:400px;">
 	            	<form enctype='multipart/form-data' method="post" name="form1" id="detailIconForm" > 
 	            	<div  class="uploader">
-			            <input type="text" class="regist_txt filename" readonly="readonly">
+			            <input type="text" class="regist_txt filename" readonly="readonly" id="detailIconName">
 			            <input type="button" class="filebutton" value="浏览.."/>
 			            <input type="file" id="u8_input" name="file" class="detailIconPath"/>
 		            </div>
@@ -363,7 +363,7 @@ $(document).ready(function(){
 	            <td class="regist_input" style="width:400px;">
 	            	<form enctype='multipart/form-data' method="post" name="form1" id="homeIconForm1" > 
 	            	<div  class="uploader">
-			            <input type="text" class="regist_txt filename" readonly="readonly" id="homeIconName">
+			            <input type="text" class="regist_txt filename" readonly="readonly" id="editHomeIconName">
 			            <input type="button" class="filebutton" value="浏览.."/>
 			            <input type="file" class="file homeIconPath" name="file" />
 		            </div>
@@ -379,7 +379,7 @@ $(document).ready(function(){
 	            <td class="regist_input" style="width:400px;">
 	            	<form enctype='multipart/form-data' method="post" name="form1" id="categoryIconForm1" > 
 	            	<div  class="uploader">
-			            <input type="text" class="regist_txt filename" readonly="readonly" id="categoryIconName">
+			            <input type="text" class="regist_txt filename" readonly="readonly" id="editCategoryIconName">
 			            <input type="button" class="filebutton" value="浏览.."/>
 			            <input type="file" class="file categoryIconPath" name="file" />
 		            </div>
@@ -393,9 +393,9 @@ $(document).ready(function(){
 	         <tr class="register_tr">
 	            <td class="regist_title">详情服务图标</td>
 	            <td class="regist_input" style="width:400px;">
-	            	<form enctype='multipart/form-data' method="post" name="form1" id="detailIconFrom1" > 
+	            	<form enctype='multipart/form-data' method="post" name="form1" id="detailIconForm1" > 
 	            	<div  class="uploader">
-			            <input type="text" class="regist_txt filename" readonly="readonly" id="detailIconName">
+			            <input type="text" class="regist_txt filename" readonly="readonly" id="editDetailIconName">
 			            <input type="button" class="filebutton" value="浏览.."/>
 			            <input type="file" class="file detailIconPath" name="file" />
 		            </div>
