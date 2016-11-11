@@ -112,7 +112,7 @@ public class AdvertisementController {
 				m.put("success", false);
 				return;
 	        }
-    		String name =  new String(request.getParameter("name"));
+    		String name =  request.getParameter("name");
     		String startDateStr = request.getParameter("startDate");
     		String endDateStr = request.getParameter("endDate");
     		int type = Integer.valueOf(request.getParameter("type"));
