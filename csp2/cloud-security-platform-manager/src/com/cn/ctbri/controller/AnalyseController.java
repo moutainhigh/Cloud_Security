@@ -277,7 +277,8 @@ public class AnalyseController {
 		jsonObject.put("serviceUserList", sb.toString());
 		jsonObject.put("legend", sbType);
 		String resultGson = jsonObject.toString();// 转成json数据
-		response.setContentType("textml;charset=UTF-8");
+		response.setContentType("application/json;charset=UTF-8");
+		//response.setContentType("textml;charset=UTF-8");
 		response.getWriter().print(resultGson);
 		return null;
 	}
@@ -387,7 +388,8 @@ public class AnalyseController {
 		jsonObject.put("innerRing", sbInnerRing.toString());
 		jsonObject.put("detailService", sbDetailService.toString());
 		String resultGson = jsonObject.toString();// 转成json数据
-		response.setContentType("textml;charset=UTF-8");
+		//response.setContentType("textml;charset=UTF-8");
+		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().print(resultGson);
 		return null;
 	}
