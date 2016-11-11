@@ -4,8 +4,8 @@ $(function(){
 	//图片选择时,图片名称变换
 	$(".homeIconPath").change(function(){
 		$(this).parents(".uploader").find(".filename").val($(this).val());
-		$("#homeIconPathHidden").val($(this).val());
-		$("#edit_homeIconPathHidden").val($(this).val());
+		//$("#homeIconPathHidden").val($(this).val());
+		//$("#edit_homeIconPathHidden").val($(this).val());
 	});
 	//未选择图片时,		
 	$(".homeIconPath").each(function(){
@@ -17,8 +17,8 @@ $(function(){
 	//图片选择时,图片名称变换
 	$(".categoryIconPath").change(function(){
 		$(this).parents(".uploader").find(".filename").val($(this).val());
-		$("#categoryIconPathHidden").val($(this).val());
-		$("#edit_categoryIconPathHidden").val($(this).val());
+		//$("#categoryIconPathHidden").val($(this).val());
+		//$("#edit_categoryIconPathHidden").val($(this).val());
 	});
 	
 	//未选择图片时,		
@@ -31,8 +31,8 @@ $(function(){
 	//图片选择时,图片名称变换
 	$(".detailIconPath").change(function(){
 		$(this).parents(".uploader").find(".filename").val($(this).val());
-		$("#detailIconPathHidden").val($(this).val());
-		$("#edit_detailIconPathHidden").val($(this).val());
+		//$("#detailIconPathHidden").val($(this).val());
+		//$("#edit_detailIconPathHidden").val($(this).val());
 	});
 	//未选择图片时,		
 	$(".detailIconPath").each(function(){
@@ -106,9 +106,9 @@ $(function(){
 		}
 		$("#edit_serv_name").val(servName);
 		$("#edit_serv_remarks").val(remarks);
-		$("#homeIconName").val(homeIcon);
-		$("#categoryIconName").val(categoryIcon);
-		$("#detailIconName").val(detailIcon);
+		$("#editHomeIconName").val(homeIcon);
+		$("#editCategoryIconName").val(categoryIcon);
+		$("#editDetailIconName").val(detailIcon);
 		
 		$("#edit_homeIconPathHidden").val(homeIcon);
 		$("#edit_categoryIconPathHidden").val(categoryIcon);
