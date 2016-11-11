@@ -258,9 +258,11 @@ $("#us").hide("slow");
         	<div class="imgBox clearfix">
             	<h4>商品信息</h4>
             	<c:forEach var="detailImage" items="${detailImages}" varStatus="status">
-            		<div class="commoditys" style="overflow:hidden">
-            			<img src="${ctx}/source/images/serviceDetail/${detailImage }" alt=""/>
-            		</div>
+	            	<c:if test="${detailImage != null && detailImage != ''}">
+	            		<div class="commoditys" style="overflow:hidden">
+	            			<img src="${ctx}/source/images/serviceDetail/${detailImage }" alt=""/>
+	            		</div>
+	            	</c:if>
             	</c:forEach>
                 <!-- <div class="commoditys" style="height:618px; overflow:hidden">
                 	<c:if test="${service.id == 1}">
