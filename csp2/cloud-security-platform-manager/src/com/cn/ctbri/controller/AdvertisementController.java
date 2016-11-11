@@ -112,7 +112,8 @@ public class AdvertisementController {
 				m.put("success", false);
 				return;
 	        }
-    		String name =  request.getParameter("name");
+	        //解决中文乱码问题
+    		String name =  new String(request.getParameter("name").getBytes("ISO8859_1"), "UTF-8");
     		String startDateStr = request.getParameter("startDate");
     		String endDateStr = request.getParameter("endDate");
     		int type = Integer.valueOf(request.getParameter("type"));
