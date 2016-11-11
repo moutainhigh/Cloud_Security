@@ -161,7 +161,7 @@ $(function() {
 </div>
 <!--模态框-->
 <div class="modelbox" id="modelbox"></div>
-<div id="box_logoIn" class="box_logoIn user_model">
+<div id="box_logoIn" class="box_logoIn user_model" style="height:400px">
   <div class="add_ser_top w678">
 	<p class="w634">添加广告</p><p id="close" class="modelclose"><img src="${ctx}/source/adminImages/b_exit.jpg" width="25" height="26"></p>
    </div> 
