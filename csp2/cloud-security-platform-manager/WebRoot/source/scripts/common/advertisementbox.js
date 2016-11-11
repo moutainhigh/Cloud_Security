@@ -19,13 +19,16 @@ $(function(){
 		var _index =$(".add_ser").index(this);  //获取当前点击按钮
 		
 		$("#regist_name").val("");
-		$("#regist_image").val("");
+		$("#regist_images").val("");
+		$(".filename").val("");
+		$("#regist_type").val("");
 		$("#regist_startDate").val("");
 		$("#regist_endDate").val("");
 		
 		$("#regist_name_msg").html("");
 		$("#regist_image_msg").html("");
 		$("#regist_date_msg").html("");
+		$("#regist_type_msg").html("");
 		//var image=$(this).parent().find("a img");
 		//$(".box_logoIn").empty()
 		oMark.style.display ="block";
