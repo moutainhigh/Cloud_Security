@@ -38,7 +38,7 @@ function changeParentForSearch(){
 
 //上传首页服务图标
 function saveHomeIcon(){
-	var filename = $("#homeIconPathHidden").val();
+	var filename = $("#homeIconName").val();
     var fileFormat = filename.substring(filename.lastIndexOf("."));
 
     if(filename=="") {
@@ -54,14 +54,14 @@ function saveHomeIcon(){
 		success: function(data) {
 				
 			if(data.success){
-	    		alert("上传服务图标成功!");
+	    		alert("上传首页服务图标成功!");
 	    		$("#homeIconPathHidden").val(data.filePath);
 	    	}else{
-	    		alert("上传服务图标失败!");
+	    		alert("上传首页服务图标失败!");
 	    	}
 		  },
 	      error:function(data){
-	      	alert("上传服务图标失败!");
+	      	alert("上传首页服务图标失败!");
 	      }
 	}
 	// 将options传给ajaxForm
@@ -71,7 +71,7 @@ function saveHomeIcon(){
 
 //上传二级服务图标
 function saveCategoryIcon(){
-	var filename = $("#categoryIconPathHidden").val();
+	var filename = $("#categoryIconName").val();
     var fileFormat = filename.substring(filename.lastIndexOf("."));
 
     if(filename=="") {
@@ -87,14 +87,14 @@ function saveCategoryIcon(){
 		success: function(data) {
 				
 			if(data.success){
-	    		alert("上传服务图标成功!");
+	    		alert("上传二级服务图标成功!");
 	    		$("#categoryIconPathHidden").val(data.filePath);
 	    	}else{
-	    		alert("上传服务图标失败!");
+	    		alert("上传二级服务图标失败!");
 	    	}
 		  },
 	      error:function(data){
-	      	alert("上传服务图标失败!");
+	      	alert("上传二级服务图标失败!");
 	      }
 	}
 	// 将options传给ajaxForm
@@ -103,7 +103,7 @@ function saveCategoryIcon(){
 
 //上传详情服务图标
 function saveDetailIcon(){
-	var filename = $("#detailIconPathHidden").val();
+	var filename = $("#detailIconName").val();
     var fileFormat = filename.substring(filename.lastIndexOf("."));
 
     if(filename=="") {
@@ -120,14 +120,14 @@ function saveDetailIcon(){
 		success: function(data) {
 				
 			if(data.success){
-	    		alert("上传服务图标成功!");
+	    		alert("上传详情服务图标成功!");
 	    		$("#detailIconPathHidden").val(data.filePath);
 	    	}else{
-	    		alert("上传服务图标失败!");
+	    		alert("上传详情服务图标失败!");
 	    	}
 		  },
 	      error:function(data){
-	      	alert("上传服务图标失败!");
+	      	alert("上传详情服务图标失败!");
 	      }
 	}
 	// 将options传给ajaxForm
@@ -136,7 +136,7 @@ function saveDetailIcon(){
 
 //修改首页服务图标
 function editHomeIcon(){
-	var filename = $("#edit_homeIconPathHidden").val();
+	var filename = $("#editHomeIconName").val();
     var fileFormat = filename.substring(filename.lastIndexOf("."));
 
     if(filename=="") {
@@ -153,14 +153,14 @@ function editHomeIcon(){
 		success: function(data) {
 				
 			if(data.success){
-	    		alert("上传服务图标成功!");
+	    		alert("上传首页服务图标成功!");
 	    		$("#edit_homeIconPathHidden").val(data.filePath);
 	    	}else{
-	    		alert("上传服务图标失败!");
+	    		alert("上传首页服务图标失败!");
 	    	}
 		  },
 	      error:function(data){
-	      	alert("上传服务图标失败!");
+	      	alert("上传服首页务图标失败!");
 	      }
 	}
 	// 将options传给ajaxForm
@@ -170,7 +170,7 @@ function editHomeIcon(){
 
 //修改二级页服务图标
 function editCategoryIcon(){
-	var filename = $("#edit_categoryIconPathHidden").val();
+	var filename = $("#editCategoryIconName").val();
     var fileFormat = filename.substring(filename.lastIndexOf("."));
 
     if(filename=="") {
@@ -187,14 +187,14 @@ function editCategoryIcon(){
 		success: function(data) {
 				
 			if(data.success){
-	    		alert("上传服务图标成功!");
+	    		alert("上传二级服务图标成功!");
 	    		$("#edit_categoryIconPathHidden").val(data.filePath);
 	    	}else{
-	    		alert("上传服务图标失败!");
+	    		alert("上传二级服务图标失败!");
 	    	}
 		  },
 	      error:function(data){
-	      	alert("上传服务图标失败!");
+	      	alert("上传二级服务图标失败!");
 	      }
 	}
 	// 将options传给ajaxForm
@@ -204,9 +204,8 @@ function editCategoryIcon(){
 
 //修改详情页服务图标
 function editDetailIcon(){
-	var filename = $("#edit_detailIconPathHidden").val();
+	var filename = $("#editDetailIconName").val();
     var fileFormat = filename.substring(filename.lastIndexOf("."));
-
     if(filename=="") {
     	alert("未选择图片!");
     	return;
@@ -221,14 +220,14 @@ function editDetailIcon(){
 		success: function(data) {
 				
 			if(data.success){
-	    		alert("上传服务图标成功!");
+	    		alert("上传详情服务图标成功!");
 	    		$("#edit_detailIconPathHidden").val(data.filePath);
 	    	}else{
 	    		alert("上传服务图标失败!");
 	    	}
 		  },
 	      error:function(data){
-	      	alert("上传服务图标失败!");
+	      	alert("上传详情服务图标失败!");
 	      }
 	}
 	// 将options传给ajaxForm
