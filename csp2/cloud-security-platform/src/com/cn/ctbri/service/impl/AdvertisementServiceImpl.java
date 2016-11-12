@@ -48,6 +48,7 @@ public class AdvertisementServiceImpl implements IAdvertisementService{
     public void delete(int id) {
     	advertisementDao.deleteAdvertisement(id);
     }
+
 	public void update(Advertisement advertisement) {
 		advertisementDao.update(advertisement);
 		

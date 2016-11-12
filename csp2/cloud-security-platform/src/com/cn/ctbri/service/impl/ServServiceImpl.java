@@ -43,18 +43,15 @@ public class ServServiceImpl implements IServService{
 		return servDao.findAllService();
 	}
 
-	@Override
 	public int insert(Serv service) {
 		return servDao.insert(service);
 	}
 
-	@Override
 	public void updateById(Serv service) {
 		servDao.updateById(service);
 		
 	}
 
-	@Override
 	public void deleteById(int serviceId) {
 		servDao.deleteById(serviceId);
 		

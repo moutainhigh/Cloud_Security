@@ -23,13 +23,11 @@ public class ScanTypeServiceImpl implements IScanTypeService {
 		return scanTypeDao.findScanType(serviceId, scanType);
 	}
 
-	@Override
 	public void deleteByServiceId(int serviceId) {
 		scanTypeDao.deleteByServiceId(serviceId);
 		
 	}
 
-	@Override
 	public void insert(ScanType scanType) {
 		scanTypeDao.insert(scanType);
 		
