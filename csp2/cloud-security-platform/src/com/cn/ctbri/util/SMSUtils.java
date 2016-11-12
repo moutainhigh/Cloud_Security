@@ -276,6 +276,8 @@ public class SMSUtils {
             tpl_id = Long.parseLong(Configuration.getWarn4_model());
         }else if(order.getServiceId()==5){
             tpl_id = Long.parseLong(Configuration.getWarn5_model());
+        }else if(order.getServiceId()==6){ //waf
+        	tpl_id = Long.parseLong(Configuration.getWafMsg_model());
         }
         
         //设置对应的模板变量值
@@ -285,6 +287,8 @@ public class SMSUtils {
         String tpl_value = "";
         if(order.getServiceId()==5){
             tpl_value = "#code#=" + codeValue + "&#name#=" + assetName;
+        }else if(order.getServiceId()==6){
+            tpl_value = "#code#=" + codeValue + "&#time#=" + num;
         }else{
             tpl_value = "#code#=" + codeValue + "&#name#=" + assetName + "&#num#=" + num;
         }
