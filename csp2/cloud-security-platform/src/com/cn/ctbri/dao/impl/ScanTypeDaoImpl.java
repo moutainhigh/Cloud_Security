@@ -33,7 +33,6 @@ public class ScanTypeDaoImpl extends DaoCommon implements ScanTypeDao {
 		
 	}
 
-	@Override
 	public void insert(ScanType scanType) {
 		this.getSqlSession().insert(ns+"insert", scanType);
 		

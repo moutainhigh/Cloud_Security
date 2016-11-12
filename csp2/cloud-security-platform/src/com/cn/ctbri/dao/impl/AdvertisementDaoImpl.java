@@ -53,7 +53,7 @@ public class AdvertisementDaoImpl extends DaoCommon implements AdvertisementDao{
     public void deleteAdvertisement(int id) {
         getSqlSession().delete(ns +"delete",id);
     }
-    
+
 	public void update(Advertisement advertisement) {
 		getSqlSession().update(ns+"update",advertisement);
 	}

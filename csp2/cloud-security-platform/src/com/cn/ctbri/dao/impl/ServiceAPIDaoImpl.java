@@ -40,21 +40,18 @@ public class ServiceAPIDaoImpl extends DaoCommon implements ServiceAPIDao{
 	}
 
 
-	@Override
 	public int insert(ServiceAPI serviceAPI) {
 		this.getSqlSession().insert(ns + "insertServAPI", serviceAPI);
         return serviceAPI.getId();
 	}
 
 
-	@Override
 	public void updateById(ServiceAPI serviceAPI) {
 		this.getSqlSession().update(ns+"updateById", serviceAPI);
 		
 	}
 
 
-	@Override
 	public void deleteById(int apiId) {
 		this.getSqlSession().delete(ns+"deleteById", apiId);
 		

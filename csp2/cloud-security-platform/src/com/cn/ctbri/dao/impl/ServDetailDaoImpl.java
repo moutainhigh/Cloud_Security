@@ -16,12 +16,12 @@ public class ServDetailDaoImpl extends DaoCommon implements ServDetailDao {
 	 */
 	private String ns = "com.cn.ctbri.entity.ServDetailMapper.";
 	
-	@Override
+
 	public ServiceDetail findByServId(int serviceId) {
 		return this.getSqlSession().selectOne(ns + "findByServId",serviceId);
 	}
 
-	@Override
+
 	public void delete(int serviceId, int parentC) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("servId", serviceId);
@@ -29,7 +29,6 @@ public class ServDetailDaoImpl extends DaoCommon implements ServDetailDao {
 		this.getSqlSession().delete(ns + "delete",map);
 	}
 
-	@Override
 	public void insert(ServiceDetail sd) {
 		this.getSqlSession().insert(ns + "insert", sd);
 		

@@ -45,20 +45,17 @@ public class ServDaoImpl extends DaoCommon implements ServDao{
 		return this.getSqlSession().selectList(ns + "findAllService");
 	}
 
-	@Override
 	public int insert(Serv service) {
 		this.getSqlSession().insert(ns + "insert", service);
         return service.getId();
 	}
 
-	@Override
 	public void updateById(Serv service) {
 		this.getSqlSession().update(ns + "update", service);
 
 		
 	}
 
-	@Override
 	public void deleteById(int serviceId) {
 		this.getSqlSession().delete(ns + "deleteById", serviceId);
 		

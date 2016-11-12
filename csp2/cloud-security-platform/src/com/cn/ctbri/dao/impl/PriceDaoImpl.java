@@ -39,7 +39,6 @@ public class PriceDaoImpl extends DaoCommon implements PriceDao {
 		return this.getSqlSession().delete(ns+"delPrice", serviceId);
 	}
 
-	@Override
 	public List<Price> findPriceByScanTypeNull(int serviceId) {
 		Map map = new HashMap();
 		map.put("serviceId", serviceId);
