@@ -223,14 +223,16 @@ function clearTable(){
 							    	
 							        <div class="gj_title webgj_title">
 							        	<div class="gj_fl">
-							        	<c:if test="${alist==0}">
-							        	   <img src="${ctx}/source/images/icon_cg-green.jpg" width="85" height="85" />
-							        	   <p>未发现异常</p>
-							        	</c:if>
-							        	<c:if test="${alist!=0}">
-							                <img src="${ctx}/source/images/icon_cg.jpg" width="85" height="85" />
-							                <p>篡改告警次数</p>
-							                <p class="web_num">${alist}次</p>
+							        	<c:if test="${order.status == 1 || order.status == 2}">
+								        	<c:if test="${alist==0}">
+								        	   <img src="${ctx}/source/images/icon_cg-green.jpg" width="85" height="85" />
+								        	   <p>未发现异常</p>
+								        	</c:if>
+								        	<c:if test="${alist!=0}">
+								                <img src="${ctx}/source/images/icon_cg.jpg" width="85" height="85" />
+								                <p>篡改告警次数</p>
+								                <p class="web_num">${alist}次</p>
+								            </c:if>
 							            </c:if>
 							          </div>
 					       			<div class="gj_fr">
@@ -317,7 +319,7 @@ function clearTable(){
 							        </div>
 							        <div class="process">
 							       	  
-							       	  <c:if test="${asset.task.status==3}">
+							       	  <c:if test="${asset.task.status==3 || order.status == 1 || order.status == 2}">
 								       	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span>
 								       	  <span class="scan">未开始</span><span class="scan">扫描中</span><span class="scan scancur">完成</span>
 								       	  </p>
@@ -347,16 +349,16 @@ function clearTable(){
 								           </c:if>
 								           <!-- end -->
 							       	  </c:if>
-							       	  <c:if test="${asset.task.status==2}">
+							       	  <c:if test="${(asset.task.status==2 && (order.status == 4 || order.status == 3)) || order.status == 0}">
 								       	  <p style="padding-bottom:30px;"><span class="scantitle">扫描状态</span>
 								       	  <span class="scan">未开始</span><span class="scan scancur">扫描中</span><span class="scan ">完成</span>
 										  </p>
-										  <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1">${asset.task.progress }%</span>
+										  <p><span class="scantitle">扫描进度</span><span class="propercent" id="bar1">${asset.progress }%</span>
 								            <span class="processingbox">
 								            	<span class="progress">
-								                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: ${asset.task.progress }%" id="bar2">${asset.task.progress }%</span>
+								                    <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: ${asset.progress }%" id="bar2">${asset.progress }%</span>
 												</span>
-								            <span class="prourl" id="url">当前URL:${asset.task.currentUrl }</span>
+								            <span class="prourl" id="url">当前URL:${asset.currentUrl }</span>
 								            </span></p>
 							       	  </c:if>
 							            
