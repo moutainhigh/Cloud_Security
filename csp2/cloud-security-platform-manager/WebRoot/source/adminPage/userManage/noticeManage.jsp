@@ -12,12 +12,12 @@
 <link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/common.css"/>
 <link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/index.css"/>
 <style>
-.user_table thead tr th:nth-child(1) {padding-right: 184px;padding-left: 60px;}
+.user_table thead tr th:nth-child(1) {padding-right: 234px;padding-left: 60px;}
 .user_table thead tr th:nth-child(2) {padding-right: 298px;}
 .user_table thead tr th:nth-child(3) {padding-right: 187px;}
-.user_table tbody tr td:nth-child(1) {width: 220px;padding-left: 60px;}
+.user_table tbody tr td:nth-child(1) {width: 260px;padding-left: 60px;}
 .user_table tbody tr td:nth-child(2) {width: 360px;}
-.user_table tbody tr td:nth-child(3) {width: 234px;}
+.user_table tbody tr td:nth-child(3) {width: 200px;}
 </style>
 
 <script type="text/javascript" src="${ctx}/source/scripts/common/jquery.js"></script>
@@ -107,7 +107,7 @@ function deleteNotice(id){
         <table>
            <tr class="register_tr">
             <td class="regist_title">标题</td>
-            <td class="regist_input"><input type="text" class="regist_txt required" name="noticeName" id="noticeName"/></td>
+            <td class="regist_input"><input type="text" class="regist_txt required" name="noticeName" id="noticeName" maxlength="15"/></td>
             <td class="regist_prompt"></td>
           </tr>
           <tr class="register_tr">
@@ -134,7 +134,7 @@ function deleteNotice(id){
         <table>
           <tr class="register_tr">
             <td class="regist_title">标题</td>
-            <td class="regist_input"><input type="text" class="regist_txt" name="noticeName" id="editNoticeName"/><span id="regist_name_msg" style="color:red;float:left"></span></td>
+            <td class="regist_input"><input type="text" class="regist_txt" name="noticeName" id="editNoticeName" maxlength="15"/><span id="regist_name_msg" style="color:red;float:left"></span></td>
             <td class="regist_prompt" style="text-align:left;"></td>
           </tr>
           <tr class="register_tr">

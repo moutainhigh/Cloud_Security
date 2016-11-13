@@ -12,12 +12,12 @@
 <link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/common.css"/>
 <link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/index.css"/>
 <style>
-.user_table thead tr th:nth-child(1) {padding-right: 122px;padding-left: 60px;}
+.user_table thead tr th:nth-child(1) {padding-right: 152px;padding-left: 60px;}
 .user_table thead tr th:nth-child(2) {padding-right: 100px;}
 .user_table thead tr th:nth-child(3) {padding-right: 80px;}
 .user_table thead tr th:nth-child(4) {padding-right: 120px;}
 .user_table thead tr th:nth-child(5) {padding-right: 120px;}
-.user_table tbody tr td:nth-child(1) {width: 164px;padding-left: 60px;}
+.user_table tbody tr td:nth-child(1) {width: 210px;padding-left: 40px;}
 .user_table tbody tr td:nth-child(2) {width: 170px;}
 .user_table tbody tr td:nth-child(3) {width: 170px;}
 .user_table tbody tr td:nth-child(4) {width: 150px;}
