@@ -62,6 +62,7 @@ var getAllEngine = function() {
 			$("#equName").attr("value", data.engine_name);
 			$("#equIP").attr("value", data.engine_addr);
 			$("#factoryName").attr("value", data.equipment_factory);
+			$("#oldEquName").attr("value", data.engine_name);
 		}
 	});
 	$("#butType").empty();
@@ -117,18 +118,25 @@ var getAllEngine = function() {
 		alert("IP地址输入有误！");
 		return false;
 	}
-	$.ajax({
-        type: "POST",
-        url: "/cloud-security-platform-manager/checkEngineName.html",
-        data: {"engineName":engineName},
-        dataType:"json",
-        success: function(data){
-            if(data.count>0){
-            	alert(data.message);
-            }else{
-            	$("#addAndUpd").submit();
-            }
-        },
-     });
+	var oldEquName = $("#oldEquName").val();
+	if (oldEquName != null && oldEquName!='' && oldEquName == engineName){
+		$("#addAndUpd").submit();
+	}else {
+		$.ajax({
+	        type: "POST",
+	        url: "/cloud-security-platform-manager/checkEngineName.html",
+	        data: {"engineName":engineName},
+	        dataType:"json",
+	        success: function(data){
+	            if(data.count>0){
+	            	alert(data.message);
+	            }else{
+	            	$("#addAndUpd").submit();
+	            }
+	        },
+	     });
+	
+	}
+	
 	
 }
