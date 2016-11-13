@@ -630,7 +630,7 @@ function showServiceUseInfoMonth6(){
 				   			color:'#7aff75',
 				   			fontSize:14
 			   			},
-			   	        x:'150',
+			   	        x:'center',
 			   	        y:'15'
 			   	    },
 			   	    tooltip: {
@@ -653,7 +653,7 @@ function showServiceUseInfoMonth6(){
 			   	    radar: {
 			   	       indicator : indicatorList,
 			   	       radius:'50%',
-			   	       center:['40%', '52%']
+			   	       center:['50%', '52%']
 			   	    },
 			   	    series : (function (){
 			   	        var series = [];
