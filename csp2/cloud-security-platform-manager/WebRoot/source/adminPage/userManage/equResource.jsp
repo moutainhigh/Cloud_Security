@@ -205,6 +205,7 @@ cursor:pointer;
  	<div class="item">
  		<form id="addAndUpd" method="post" name="addAndUpd" onsubmit="vaildata();">
  		<input type="text" id="id" name="id" style="display:none;" />
+ 		<input type="hidden" id="oldEquName" style="display:none;" />
     	<div class="clearfix">
         	<label>设备引擎名称</label>
             <input type="text" id="equName" name="equName">
