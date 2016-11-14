@@ -7,6 +7,7 @@ var nameList1 = ['订单创建','订单操作','获取状态','获取结果','�
 $(function(){
 	//查看完整列表
 	$('#allAPIUsers').delegate(this,'click',function(){	
+		$("#apiUserCountList").empty();
 	    $.ajax({
 	    	type : "post",
 	    	url:"getAllAPIUserList.html",
@@ -140,21 +141,21 @@ function analysisAPI(){
     			tooltip : {
     	        	trigger: 'item',
     	        	formatter: "{a} <br/>{b} : {c} ({d}%)"
-    	    },    	    
+    	   		 },    	    
     	    //calculable : true,
-    	    series : [
-    	        {
-    	            name:'数量',
-    	            type:'pie',
-    	            radius : '50%',
-    	            center: ['48.5%', '50%'],
-    	            itemStyle : { normal: {label : {show: true, position: 'outer',formatter: "{b}:{c}"}}},
-    	            data: countList
-    	        }
+    	    	series : [
+	    	        {
+	    	            name:'数量',
+	    	            type:'pie',
+	    	            radius : '50%',
+	    	            center: ['48.5%', '50%'],
+	    	            itemStyle : { normal: {label : {show: true, position: 'outer',formatter: "{b}:{c}"}}},
+	    	            data: countList
+	    	        }
     	        ]
-    			};
+    		};
     		
-    			myChart1.setOption(option1);
+    		myChart1.setOption(option1);
         	},
         });
         	
@@ -570,50 +571,50 @@ function analysisAPIUser(){
 		   	   		countList.reverse();
 		   	   		var option9 = {
 		   	   			tooltip : {
-						show:true,
-				        trigger: 'axis',
-				        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-				            type : 'none'        // 默认为直线，可选为：'line' | 'shadow'
-				        }
-				    },
+							show:true,
+					        trigger: 'axis',
+					        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+					            type : 'none'        // 默认为直线，可选为：'line' | 'shadow'
+					        }
+				   		 },
 				    
-				    grid: { // 控制图的大小，调整下面这些值就可以，
-				    	 y: 10,
-			             x: 100,
-			             x2: 80,
-			             y2: 20,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
-			             borderColor:'#fff'
-			         },
-			         calculable : false,
-			         xAxis:  {
-	 			        type: 'value',
-	 			        show:false,
-	 			        splitLine:{
-	 			    		show:false
-	 			    	},
-	 			    	axisLabel:{  
-	 			            show:false
-	 			        }, 
-	 			        axisLine:{
-	 			        	show:false
-	 			        }
-	 			    },
-				    yAxis: {
-				        type: 'category',
-				        data: userList,
-				        splitLine:{
-	 			    		show:false
-	 			    	}
-				    },
-				    series: [
-				        {
-				            name: '数量',
-				            type: 'bar',
-				            //stack: '总量',
-				            itemStyle : { normal: {label : {show: true, position: 'right'}}},
-				            data: countList
-				        }
-				    ]
+					   	 grid: { // 控制图的大小，调整下面这些值就可以，
+					    	 y: 10,
+				             x: 100,
+				             x2: 80,
+				             y2: 20,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+				             borderColor:'#fff'
+				         },
+			         	 calculable : false,
+				         xAxis:  {
+		 			        type: 'value',
+		 			        show:false,
+		 			        splitLine:{
+		 			    		show:false
+		 			    	},
+		 			    	axisLabel:{  
+		 			            show:false
+		 			        }, 
+		 			        axisLine:{
+		 			        	show:false
+		 			        }
+		 			    },
+					    yAxis: {
+					        type: 'category',
+					        data: userList,
+					        splitLine:{
+		 			    		show:false
+		 			    	}
+					    },
+					    series: [
+					        {
+					            name: '数量',
+					            type: 'bar',
+					            //stack: '总量',
+					            itemStyle : { normal: {label : {show: true, position: 'right'}}},
+					            data: countList
+					        }
+					    ]
 		   	 };
 		   	   		
 		   	   			myChart9.setOption(option9);
