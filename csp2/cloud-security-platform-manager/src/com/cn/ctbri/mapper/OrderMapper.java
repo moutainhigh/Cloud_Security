@@ -34,7 +34,6 @@ public class OrderMapper implements RowMapper {
 		order.setDelFlag(rs.getInt("delFlag"));
 		order.setPayFlag(rs.getInt("payFlag"));
 		order.setPrice(rs.getBigDecimal("price"));
-		order.setCount(rs.getInt("count"));
 		order.setIsAPI(rs.getInt("isAPI"));
 		return order;
 	}
