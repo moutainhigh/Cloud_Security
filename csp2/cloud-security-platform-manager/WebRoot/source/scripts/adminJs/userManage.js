@@ -28,7 +28,7 @@ function checkName(){
                },
             }); 
 		}else{
-			$("#regist_name_msg").html("请输入4-20位字符");
+			$("#regist_name_msg").html("请输入4-20位英文、数字、下划线及其组合");
 			checkName1=0;
 		}
 	}
