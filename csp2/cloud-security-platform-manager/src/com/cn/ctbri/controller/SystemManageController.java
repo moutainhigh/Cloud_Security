@@ -199,7 +199,7 @@ public class SystemManageController {
 		Properties pro = new Properties();
 		///D:/tomcat7-32/webapps/cloud-security-platform/WEB-INF/classes/default.properties
 //		String path = this.getClass().getClassLoader().getResource("").getPath()+"default.properties";
-        String path = request.getSession().getServletContext().getRealPath("/WEB-INF/classes")+"\\default.properties";
+        String path = request.getSession().getServletContext().getRealPath("/WEB-INF/classes")+"/default.properties";
 //		String path=request.getSession().getServletContext().getRealPath("");
 		//String path = "conf/default.properties";
 		path = path.replaceAll("%20", " ");
@@ -213,6 +213,7 @@ public class SystemManageController {
 			pro.put("name",serverParamConfiguration.getServerEmailName());
 			pro.put("password",serverParamConfiguration.getServerEmailPassword());
 			pro.store(file, path); // 这句话表示重新写入配置文件
+			in.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
