@@ -90,6 +90,13 @@ $(function(){
 		$("#addJob").val("-1");
 		$("#addCompany").val("");
 		
+		$("#regist_name_msg").html("");
+		$("#regist_password_msg").html("");
+		$("#regist_confirm_password_msg").html("");
+		$("#add_mobile_msg").html("");
+		$("#regist_type_msg").html("");
+		$("#add_ip_msg").html("");
+		
 		oMark.style.display ="block";
 		oLogin.style.display ="block";
 		oMark.style.width = viewWidth() + 'px';
