@@ -57,6 +57,15 @@
 			
 }
 popBoxhide .close{ width:26px; height:26px; display:block; position:absolute; right:12px; top:13px; background:url(../images/user_ico_4.jpg) no-repeat; cursor:pointer;}
+
+
+.user_table tbody tr {height: 40px;line-height: 40px;}
+.user_table thead tr th:nth-child(1) {width: 50px;padding-left: 60px;padding-right: 50px;}
+.user_table thead tr th:nth-child(2) {padding-right: 160px;}
+.user_table thead tr th:nth-child(3) {padding-right: 100px;}
+.user_table tbody tr td:nth-child(1) {width: 50px;padding-left: 60px;padding-right: 50px;}
+.user_table tbody tr td:nth-child(2) {width: 200px;text-align: left;}
+.user_table tbody tr td:nth-child(3) {width: 100px;text-align: left;}
 </style>
  <script type="text/javascript">
 
@@ -166,8 +175,8 @@ popBoxhide .close{ width:26px; height:26px; display:block; position:absolute; ri
 	  <div class="add_ser_top w678" style="margin-left:0px">
 	<p class="w634">用户列表</p><p id="close" class="modelclose"><img src="${ctx}/source/adminImages/b_exit.jpg" width="25" height="26"></p>
    </div> 
-        <div class="system_table" style="display:block;">
-        	<table class="user_table" cellpadding="0" cellspacing="0">
+        <div class="system_table" style="display:block;overflow-y:auto;height:260px">
+        	<table class="user_table" cellpadding="0" cellspacing="0" style="width:670px;">
             	<thead>
                 	<tr>
                 		<th class="t_username" style="text-align:center">序号</th>
