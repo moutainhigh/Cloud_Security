@@ -208,7 +208,7 @@ cursor:pointer;
  		<input type="hidden" id="oldEquName" style="display:none;" />
     	<div class="clearfix">
         	<label>设备引擎名称</label>
-            <input type="text" id="equName" name="equName">
+            <input type="text" id="equName" name="equName" maxlength="10">
             
         </div>
         <div class="clearfix">
