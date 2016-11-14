@@ -35,7 +35,7 @@ var getAllEngine = function() {
 //						+ ")'>删除</a></td>" + "</tr>");
 				
 				tbody.append("<tr>"
-						+ "<td><a href='javascript:void(0)' style='color:#f1a31a;'><span onclick='openNamePopBox("+p['id']+","+p['engine']+", " +
+						+ "<td><a href='javascript:void(0)' style='color:#f1a31a;width:auto'><span onclick='openNamePopBox("+p['id']+","+p['engine']+", " +
 								"\""+p['engine_addr']+"\")'>" + p['engine_name']
 						+ "</span></a></td>" + "<td>"
 						+ p['engine_addr'] + "</td>" + "<td>"
