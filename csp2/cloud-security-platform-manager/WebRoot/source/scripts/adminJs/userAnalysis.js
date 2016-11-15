@@ -24,6 +24,13 @@ function activeAnalysis(){
         		//$("#tId").html("");
         		$(".initTr").hide();
         		var list = data;
+        		if(list.length==0){
+        			alert("信息提示：未查询到结果！"); 
+        			$(".seachTr").remove();
+        			$(".initTr").show();
+        			return;
+        		}
+        		$(".seachTr").remove();
         		for (var i = 0; i < list.length; i++){
         			var index = i+1;
         			var trid = "tr" + i;
@@ -68,7 +75,10 @@ function useAnalysis(){
         		var list = data;
         		if(list.length==0){
         			alert("信息提示：未查询到结果！"); 
+        			$(".seachTr2").remove();
+        			$(".initTr2").show();
         		}else{
+        			$(".seachTr2").remove();
         			for (var i = 0; i < list.length; i++){
             			var index = i+1;
             			var trid = "tr1" + i;
@@ -89,7 +99,10 @@ function useAnalysis(){
         		var list = data;
         		if(list.length==0){
         			alert("信息提示：未查询到结果！"); 
+        			$(".seachTr3").remove();
+        			$(".initTr3").show();
         		}else{
+        			$(".seachTr3").remove();
         			for (var i = 0; i < list.length; i++){
             			var index = i+1;
             			var trid = "tr2" + i;
