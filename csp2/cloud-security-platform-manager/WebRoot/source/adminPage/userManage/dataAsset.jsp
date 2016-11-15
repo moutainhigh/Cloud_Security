@@ -274,9 +274,9 @@ if(tablList==0&&anList==0){
                                 </div>
                                  <div class="analyse_lable fl">
                                     <label>订单开始时间</label>
-                                     <input type="text" class="text"  value="" id="begin_date1" name="begin_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                                     <input type="text" class="text"  value="" id="begin_date1" name="begin_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd'})">
                                     <label>-结束时间</label>
-                                     <input type="text" class="text"  value="" id="end_date1" name="end_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                                     <input type="text" class="text"  value="" id="end_date1" name="end_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd'})">
                                 </div>
                                 <div class="analyse_lable fl">
                                     <label>订单编号</label>
@@ -362,9 +362,9 @@ if(tablList==0&&anList==0){
                                 </div>
                                  <div class="analyse_lable fl">
                                     <label>订单开始时间</label>
-                                    <input type="text" class="text"  value="" id="begin_date2" name="begin_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                                    <input type="text" class="text"  value="" id="begin_date2" name="begin_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd'})">
                                     <label>-结束时间</label>
-                                    <input type="text" class="text"  value="" id="end_date2" name="end_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                                    <input type="text" class="text"  value="" id="end_date2" name="end_datevo" style="width:133px;" onclick="WdatePicker({skin:'whyGreen',isShowClear:true,readOnly:true,dateFmt:'yyyy-MM-dd'})">
                                 </div>
                                 <div class="analyse_lable fl">
                                     <label>订单编号</label>
