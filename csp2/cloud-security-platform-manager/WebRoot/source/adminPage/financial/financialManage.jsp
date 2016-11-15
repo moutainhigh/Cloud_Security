@@ -103,8 +103,8 @@
                 </form>
             </div>
             <div class="data_detail" id="orderLine">
-       	    	<div  id="orderAmountLine" style="width:530px;height:300px;margin-left:200px;"></div> 
-       	    	<div  id="orderAmountPie" style="width:530px;height:300px;margin-left:200px;"></div> 
+       	    	<div  id="orderAmountLine" style="width:530px;height:350px;margin-left:200px;"></div> 
+       	    	<div  id="orderAmountPie" style="width:530px;height:350px;margin-left:200px;"></div> 
             </div>
        <!--      <div class="data_detail" id="orderPie">
             </div> -->
