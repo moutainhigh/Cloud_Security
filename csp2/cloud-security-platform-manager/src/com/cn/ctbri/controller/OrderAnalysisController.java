@@ -130,12 +130,12 @@ public class OrderAnalysisController {
 		List<Map> list = orderService.findOrderWithServiceId(paramMap);
 		Gson gson= new Gson(); 
 		response.setContentType("text/html;charset=utf-8");
-		if(list.size()<=0){
-			Map map = new HashMap();
-			map.put("name", "无服务");
-			map.put("count", -1);
-			list.add(map);
-		}
+//		if(list.size()<=0){
+//			Map map = new HashMap();
+//			map.put("name", "无服务");
+//			map.put("count", -1);
+//			list.add(map);
+//		}
 		String resultGson = gson.toJson(list);
 		PrintWriter out;
 		out = response.getWriter();
@@ -166,14 +166,16 @@ public class OrderAnalysisController {
 		response.setContentType("text/html;charset=utf-8");
 		
 		List<Map> listRebuy = new ArrayList();
-		Map map = new HashMap();
-		map.put("name", "回购率");
-		map.put("count", list.size());
-		Map map1 = new HashMap();
-		map1.put("name", "未回购率");
-		map1.put("count", listAll.size()-list.size());
-		listRebuy.add(map);
-		listRebuy.add(map1);
+		if (listAll.size()!=0) {
+			Map map = new HashMap();
+			map.put("name", "回购率");
+			map.put("count", list.size());
+			Map map1 = new HashMap();
+			map1.put("name", "未回购率");
+			map1.put("count", listAll.size()-list.size());
+			listRebuy.add(map);
+			listRebuy.add(map1);
+		}
 		
 		String resultGson = gson.toJson(listRebuy);
 		PrintWriter out;
