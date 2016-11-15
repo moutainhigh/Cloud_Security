@@ -111,43 +111,43 @@ $(document).ready(function(){
                                         </tr>
                                     </thead>
                                     <tbody id="tId">
-                                     <tr>
+                                     <tr class="initTr">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="initTr">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="initTr">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="initTr">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="initTr">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="initTr">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="initTr">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="initTr">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="initTr">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="initTr">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
@@ -187,23 +187,23 @@ $(document).ready(function(){
                                         </tr>
                                     </thead>
                                     <tbody id="body1">
-                                        <tr>
+                                        <tr class="initTr2">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="initTr2">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="initTr2">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="initTr2">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="initTr2">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
@@ -220,23 +220,23 @@ $(document).ready(function(){
                                         </tr>
                                     </thead>
                                     <tbody id="body2">
-                                     <tr>
+                                     <tr class="initTr3">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="initTr3">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="initTr3">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="initTr3">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="initTr3">
                                             <td></td>
                                             <td colspan="4"></td>
                                         </tr>
