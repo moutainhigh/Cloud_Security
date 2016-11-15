@@ -545,6 +545,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findOrderAmountDayPie" parameterType="hashmap" resultType="com.cn.ctbri.entity.Order">
        SELECT IFNULL(sum(o.price),0) price,s.name servName FROM cs_order o,cs_service s
         WHERE s.id=o.serviceId AND o.payFlag = '1' 
+        and o.price is not null and o.price !=0
         <if test="beginDate!=null and beginDate!=''">
 	    <![CDATA[
 		AND o.create_date>=#{beginDate}  
@@ -563,6 +564,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findOrderAmountMonthPie" parameterType="String" resultType="com.cn.ctbri.entity.Order">
        SELECT IFNULL(sum(o.price),0) price,s.name servName FROM cs_order o,cs_service s
         WHERE s.id=o.serviceId AND o.payFlag = '1' and date_format(o.create_date,'%Y-%m')=#{createDate}
+	    and o.price is not null and o.price !=0
 	   GROUP BY s.name
 	   order by price
     </select>
@@ -570,7 +572,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
      <!--  日交易额总数 -->
     <select id="findOrderAmounDayLine" parameterType="hashmap" resultType="com.cn.ctbri.entity.Order">
        SELECT IFNULL(sum(o.price),0) price,DATE_FORMAT(o.create_date,'%H:00:00') time FROM cs_order o,cs_service s
-          WHERE s.id=o.serviceId AND o.payFlag = '1'
+          WHERE s.id=o.serviceId AND o.payFlag = '1'and o.price is not null and o.price !=0
         <if test="beginDate!=null and beginDate!=''">
 	    <![CDATA[
 		AND o.create_date>=#{beginDate}  
@@ -589,7 +591,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findOrderAmountMonthLine" parameterType="hashmap" resultType="com.cn.ctbri.entity.Order">
        SELECT o.price price,DATE_FORMAT(o.create_date,'%Y-%m-%d') AS time FROM cs_order o,cs_service s
         WHERE s.id=o.serviceId AND o.payFlag = '1' and date_format(o.create_date,'%Y-%m')=#{createDate} 
-        and s.id=#{servName}
+        and s.id=#{servName}  and o.price is not null and o.price !=0
 	   GROUP BY time
 	   order by time
     </select>
