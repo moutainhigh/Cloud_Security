@@ -78,12 +78,20 @@ $(function(){
 			{
 				$(this).parents('.user_form').siblings('.tableBox').find('.tableUsert').hide();
 				$(this).parents('.user_form').siblings('.tableBox').find('.tableUser').show();	
+				$("#loginCount").html("");
+        		$("#loginParent").html("");
+        		$(".seachTr2").remove();
+				$(".initTr2").show();
 				
 			}
 			else
 			{
 				$(this).parents('.user_form').siblings('.tableBox').find('.tableUsert').show();
-				$(this).parents('.user_form').siblings('.tableBox').find('.tableUser').hide();		
+				$(this).parents('.user_form').siblings('.tableBox').find('.tableUser').hide();	
+				$(".seachTr").remove();
+				$(".initTr").show();
+				$(".seachTr3").remove();
+				$(".initTr3").show();	
 			}
 		})
 		
