@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>服务维护列表页面</title>
+<title>商品详情配置</title>
 <link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/common.css"/>
 <link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/index.css"/>
 <style>
