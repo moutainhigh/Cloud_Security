@@ -117,6 +117,7 @@ public class FinancialController {
         }else{
         	paramMap.put("sta","0");
         }
+
 		paramMap.put("orderAmountPieList",orderAmountPieList);
 		paramMap.put("flag",flag);
 		JSONObject JSON = CommonUtil.objectToJson(response, paramMap);
@@ -165,6 +166,12 @@ public class FinancialController {
     		orderAmountLineList = financialService.findOrderAmountMonthLine(paramMap);
         	flag = "2";
     	}
+        
+        if(orderAmountLineList.size()>0){
+        	paramMap.put("sta","1");
+        }else{
+        	paramMap.put("sta","0");
+        }
         
 		paramMap.put("orderAmountLineList",orderAmountLineList);
 		paramMap.put("flag",flag);
