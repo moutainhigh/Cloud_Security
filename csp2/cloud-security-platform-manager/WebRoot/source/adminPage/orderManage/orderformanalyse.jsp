@@ -60,7 +60,7 @@
                                 </div>
                                 <div class="analyse_lable fl">
                                     <label>服务类型</label>
-                                    <select class="servicetext" id="servicetype1">
+                                    <select class="servicetext" id="servicetype1" style="border:1px solid #e0e0e0; height: 30px; line-height: 28px;">
                                     </select>
                                 </div>
                                 <input type="button" class="sub" style="right:-70px;" value="" onclick="getServiceDate(0)">
@@ -85,7 +85,7 @@
                                 </div>
                                 <div class="analyse_lable fl">
                                     <label>服务类型</label>
-                                    <select class="servicetext" id="servicetype2">
+                                    <select class="servicetext" id="servicetype2" style="border:1px solid #e0e0e0; height: 30px; line-height: 28px;">
                                     </select>
                                 </div>
                                 <input type="button" class="sub" value="" style="right:-70px;" onclick="getServiceDateReBuy(1)">
