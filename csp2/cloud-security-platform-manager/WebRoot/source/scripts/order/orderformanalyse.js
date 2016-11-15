@@ -215,6 +215,11 @@ var getServiceDate=function(repeat){
 				repeat:repeat
 			},
 			success: function(data){
+				if (data.length <= 0){
+					$("#"+divname).empty();
+					$("#"+divname).append("<div style='padding-left: 350px;padding-top: 150px;font-size: 16px;'>没有符合条件的订单！</div>");
+					return;
+				}
 				
 				$.each(data,function(i,p){
 					barlabel[i]=p['time'];
@@ -299,6 +304,11 @@ var getServiceDateReBuy=function(repeat){
 			repeat:repeat
 		},
 		success : function(data) {
+			if (data.length <= 0){
+				$("#"+divname).empty();
+				$("#"+divname).append("<div style='padding-left: 350px;padding-top: 150px;font-size: 16px;'>没有符合条件的订单！</div>");
+				return;
+			}
 			var series;
 			$.each(data, function(i, p) {
 				pielabel[i]=p['name'];
