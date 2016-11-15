@@ -195,6 +195,11 @@ $(function(){
 						// 为echarts对象加载数据 
 						myChart.setOption(option);
 					});
+				}else {
+					$("#orderAmountPie").empty();
+					//var htmlStr = "<div style="padding-left:200px">该时间内暂无数据！</div>"
+					$("#orderAmountPie").append("<div style='padding-left: 260px;padding-top: 200px;font-size: 16px;'>该时间内暂无数据！</div>");
+						return;
 				}
 				
 			}
@@ -211,56 +216,63 @@ $(function(){
 	        data: {"create_date":createDate,"servName":servName,"reportype":reportype},
 	        dataType:"json",
 	        success: function(data){
+	        	if(data.sta == "1"){
+		        	var name = "";
+					if(data.flag == "1"){
+						name += "日交易额总数";
+					}
+	                if(data.flag == "2"){
+						name += "月交易额总数";
+					}
+	                
+		        	$.each(data.orderAmountLineList,function(i,item){
+	    				label[i]=item['time'];
+	    				value[i]=item['price'];
+	    			});
+	    			require(['echarts','echarts/chart/line'],
+	    					function (ec) {
+	    				// 基于准备好的dom，初始化echarts图表
+	    				var myChart = ec.init(document.getElementById('orderAmountLine')); 
+	    				//设置数据
+	    				var option = {
+	    						title : {
+	    							text: name,
+	    							y: '30',
+	    							x: 'center'
+	    						},
+	    						tooltip : {
+	    							trigger: 'axis'
+	    			
+	    						}, 
+	    						//设置坐标轴
+	    						xAxis : [{
+	    							type : 'category',
+	    							data : label
+	    						}],
+	    						yAxis : [{
+	    							type : 'value'
+	    						}],
+	    						//设置数据
+	    						series : [{
+	    							"name":name,
+	    							"type":"line",
+	    							"data":value
+	    						}],
+	    						grid:{
+	    							width:440
+	    						}
+	    				};
+	    				// 为echarts对象加载数据 
+	    				myChart.setOption(option); 
+	    				window.onresize = myChart.resize;
+	    			})
 	        	
-	        	var name = "";
-				if(data.flag == "1"){
-					name += "日交易额总数";
-				}
-                if(data.flag == "2"){
-					name += "月交易额总数";
-				}
-                
-	        	$.each(data.orderAmountLineList,function(i,item){
-    				label[i]=item['time'];
-    				value[i]=item['price'];
-    			});
-    			require(['echarts','echarts/chart/line'],
-    					function (ec) {
-    				// 基于准备好的dom，初始化echarts图表
-    				var myChart = ec.init(document.getElementById('orderAmountLine')); 
-    				//设置数据
-    				var option = {
-    						title : {
-    							text: name,
-    							y: '30',
-    							x: 'center'
-    						},
-    						tooltip : {
-    							trigger: 'axis'
-    			
-    						}, 
-    						//设置坐标轴
-    						xAxis : [{
-    							type : 'category',
-    							data : label
-    						}],
-    						yAxis : [{
-    							type : 'value'
-    						}],
-    						//设置数据
-    						series : [{
-    							"name":name,
-    							"type":"line",
-    							"data":value
-    						}],
-    						grid:{
-    							width:440
-    						}
-    				};
-    				// 为echarts对象加载数据 
-    				myChart.setOption(option); 
-    				window.onresize = myChart.resize;
-    			})
+	        	} else {
+	        		$("#orderAmountLine").empty();
+					//var htmlStr = "<div style="padding-left:200px">该时间内暂无数据！</div>"
+					$("#orderAmountLine").append("<div style='padding-left: 260px;padding-top: 200px;font-size: 16px;'>该时间内暂无数据！</div>");
+						return;
+	        	}
 	          }
 	       });
 	}
