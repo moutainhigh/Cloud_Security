@@ -12,7 +12,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>广告管理</title>
+<title>广告区配置</title>
 <link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/common.css"/>
 <link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/index.css"/>
 <style>
