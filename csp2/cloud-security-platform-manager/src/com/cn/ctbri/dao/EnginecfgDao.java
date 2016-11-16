@@ -18,4 +18,6 @@ public interface EnginecfgDao {
     List<Map> findAllEnginecfg(Map map);
     
     int countEnginecfig(Map map);
+
+	List findEngineByParam(Map paramMap);
 }
