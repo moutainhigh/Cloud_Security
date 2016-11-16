@@ -175,7 +175,11 @@ function editPrice(servId,parentC){
 			oMark.style.width = viewWidth() + 'px';
 			oMark.style.height = documentHeight() + 'px';
 			oLogin.style.left = (viewWidth() - oLogin.offsetWidth)/2 + 'px';
-			oLogin.style.top = (viewHeight() - oLogin.offsetHeight)/2-25 + 'px';	
+			var topDis = (viewHeight() - oLogin.offsetHeight)/2-25;
+			if (topDis <= 0) {
+				topDis = 10;
+			}
+			oLogin.style.top = topDis + 'px';	
 			
 		},
 		error:function(data) {

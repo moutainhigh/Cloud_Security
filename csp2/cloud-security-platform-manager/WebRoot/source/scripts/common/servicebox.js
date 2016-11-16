@@ -67,7 +67,12 @@ $(function(){
 		oMark.style.width = viewWidth() + 'px';
 		oMark.style.height = documentHeight() + 'px';
 		addUI.style.left = (viewWidth() - addUI.offsetWidth)/2 + 'px';
-		addUI.style.top = (viewHeight() - addUI.offsetHeight)/2-25 + 'px';	
+		
+		var topDis = (viewHeight() - addUI.offsetHeight)/2-25;
+		if (topDis <= 0) {
+			topDis = 10;
+		}
+		addUI.style.top = topDis + 'px';	
 		
 		//image.clone(true).appendTo(".box_logoIn");
 	
