@@ -126,7 +126,7 @@ function test(){
             	<form id="form_sys" action="${ctx}/adminSaveServerParam.html" method="post">
                 	<div class="pz_form">
                     	<label>用户会话时长</label>
-                        <input type="text" name="sessionTime" value="${serverParamConfiguration.sessionTime}" class="pz_input">
+                        <input type="text" name="sessionTime" value="${serverParamConfiguration.sessionTime}" class="pz_input" id="sessionTime">
                     </div>
                     <div class="pz_form">
                     	<label>邮件服务器地址</label>
