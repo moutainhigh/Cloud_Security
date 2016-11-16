@@ -37,4 +37,8 @@ public class EnginecfgDaoImpl extends DaoCommon implements EnginecfgDao {
 		return this.getSqlSession().selectOne(ed+"count",map);
 	}
 
+	public List findEngineByParam(Map map) {
+		return this.getSqlSession().selectList(ed+"findEngine", map);
+	}
+
 }
