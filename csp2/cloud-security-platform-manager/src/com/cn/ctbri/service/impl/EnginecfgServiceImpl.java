@@ -39,4 +39,8 @@ public class EnginecfgServiceImpl implements IEnginecfgService {
 		return enginecfgDao.countEnginecfig(map);
 	}
 
+	public List findEngineByParam(Map paramMap) {
+		return enginecfgDao.findEngineByParam(paramMap);
+	}
+
 }
