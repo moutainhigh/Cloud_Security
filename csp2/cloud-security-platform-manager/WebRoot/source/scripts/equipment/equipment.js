@@ -101,6 +101,7 @@ var getAllEngine = function() {
 },addAndUpdate=function(){
 	var engineName = $.trim($("#equName").val());
 	var engineAddr = $.trim($("#equIP").val());
+	var engineId = $.trim($("#id").val());
 	
 	var newRegex = /^((?!([hH][tT][tT][pP][sS]?)\:*\/*)([\w\.\-]+(\:[\w\.\&%\$\-]+)*@)?((([^\s\(\)\<\>\\\"\.\[\]\,@;:]+)(\.[^\s\(\)\<\>\\\"\.\[\]\,@;:]+)*(\.[a-zA-Z]{2,4}))|((([01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}([01]?\d{1,2}|2[0-4]\d|25[0-5])))(\b\:(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0)\b)?((\/[^\/][\w\.\,\?\'\\\/\+&%\$#\=~_\-@]*)*[^\.\,\?\"\'\(\)\[\]!;<>{}\s\x7F-\xFF])?)$/;
     var strRegex = /^((([hH][tT][tT][pP][sS]?):\/\/)([\w\.\-]+(\:[\w\.\&%\$\-]+)*@)?((([^\s\(\)\<\>\\\"\.\[\]\,@;:]+)(\.[^\s\(\)\<\>\\\"\.\[\]\,@;:]+)*(\.[a-zA-Z]{2,4}))|((([01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}([01]?\d{1,2}|2[0-4]\d|25[0-5])))(\b\:(6553[0-5]|655[0-2]\d|65[0-4]\d{2}|6[0-4]\d{3}|[1-5]\d{4}|[1-9]\d{0,3}|0)\b)?((\/[^\/][\w\.\,\?\'\\\/\+&%\$#\=~_\-@]*)*[^\.\,\?\"\'\(\)\[\]!;<>{}\s\x7F-\xFF])?)$/;
@@ -118,25 +119,23 @@ var getAllEngine = function() {
 		alert("IP地址输入有误！");
 		return false;
 	}
-	var oldEquName = $("#oldEquName").val();
-	if (oldEquName != null && oldEquName!='' && oldEquName == engineName){
-		$("#addAndUpd").submit();
-	}else {
-		$.ajax({
-	        type: "POST",
-	        url: "/cloud-security-platform-manager/checkEngineName.html",
-	        data: {"engineName":engineName},
-	        dataType:"json",
-	        success: function(data){
-	            if(data.count>0){
-	            	alert(data.message);
-	            }else{
-	            	$("#addAndUpd").submit();
-	            }
-	        },
-	     });
-	
-	}
-	
-	
+	alert(id);
+	$.ajax({
+		type:"POST",
+		url:"checkEngineNameAndAddr.html",
+		dataType:"json",
+		data:{
+			"equId":engineId,
+			"engineName":engineName,
+			"engineAddr":engineAddr,
+		},
+		success:function(data){
+			if (data.message != null && data.message != ''){
+				alert(data.message);
+			}else {
+				$("#addAndUpd").submit();
+			}
+		}
+	});
+
 }
