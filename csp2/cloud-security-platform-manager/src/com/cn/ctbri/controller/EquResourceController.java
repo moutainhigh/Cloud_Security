@@ -359,20 +359,36 @@ public class EquResourceController {
 	 * @throws Exception 
 	 *		 @time 2016-11-8
 	 */
-	@RequestMapping(value="checkEngineName.html", method = RequestMethod.POST)
+	@RequestMapping(value="/checkEngineNameAndAddr.html", method = RequestMethod.POST)
 	@ResponseBody
-	public void checkEngineName(String engineName,HttpServletResponse response,HttpServletRequest request){
+	public void checkEngineNameAndAddr(String engineName,HttpServletResponse response,HttpServletRequest request){
 		try {
-			Map paramMap = new HashMap();
-			String equName = new String(engineName.getBytes("ISO-8859-1"), "UTF-8");
-			paramMap.put("engineName", equName);
-			paramMap.put("check", 1);
-			List<Map> list = enginecfgService.findAllEnginecfg(paramMap);
 			Map<String, Object> m = new HashMap<String, Object>();
+			
+			String equName = new String(engineName.getBytes("ISO-8859-1"), "UTF-8");
+			String engineAddr = request.getParameter("engineAddr");;
+			String equId = request.getParameter("equId");
+			
+			Map paramMap = new HashMap();
+			Integer id = null;
+			if (equId != null && !equId.equals("")){//修改
+				id = Integer.valueOf(equId);
+			}
+			paramMap.put("id",id);
+			paramMap.put("engineName", equName);
+			//paramMap.put("check", 1);
+			List list = enginecfgService.findEngineByParam(paramMap);
+			m.put("message", "");
 			if(list.size()>0){
 				m.put("message", "设备引擎名称已存在！");
+			}else {
+				paramMap.remove("engineName");
+				paramMap.put("engineAddr", engineAddr);
+				List AddrList = enginecfgService.findEngineByParam(paramMap);
+				if(AddrList.size()>0){
+					m.put("message", "设备引擎IP地址已存在！");
+				}
 			}
-			m.put("count", list.size()>0);
 			//object转化为Json格式
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
 		
