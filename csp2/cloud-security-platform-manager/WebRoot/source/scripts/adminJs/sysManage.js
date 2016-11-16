@@ -426,5 +426,15 @@ $(document).ready(function() {
 });
 
 function sysForm(){
+	var sessionTime = $("#sessionTime").val();
+	var numberPatrn=new RegExp("^[0-9]+$");
+	if (!numberPatrn.test(sessionTime)) {
+		alert("会话时长格式不正确！");
+		return;
+	}
+	if (sessionTime <=0 || sessionTime > 120) {
+		alert("会话时长不在1-120范围内");
+		return;
+	}
 	$("#form_sys").submit();
 }
