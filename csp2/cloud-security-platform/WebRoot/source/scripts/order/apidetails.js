@@ -92,6 +92,12 @@ $(function(){
     });
    //添加到购物车
     $("#shopCarAPI").click(function(){
+    
+    	var shopCarNum = Number($("#shopCarNum").html());
+    	if (shopCarNum >= 99) {
+    		alert("购物车中商品数量已达上限，请先清理购物车！");
+    		return;
+    	}
     	var createDate = getCreateDate();
 
     	var num = $('#num').val();//数量

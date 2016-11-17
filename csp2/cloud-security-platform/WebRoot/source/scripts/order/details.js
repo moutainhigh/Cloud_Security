@@ -373,6 +373,11 @@ $(function(){
    
 //点击“添加购物车”
     $("#addCar").click(function(){
+    	var shopCarNum = Number($("#shopCarNum").html());
+    	if (shopCarNum >= 99) {
+    		alert("购物车中商品数量已达上限，请先清理购物车！");
+    		return;
+    	}
     	var createDate = getCreateDate();
     	var orderType = $('.click').val();
     	var beginDate=$('#beginDate').val();
