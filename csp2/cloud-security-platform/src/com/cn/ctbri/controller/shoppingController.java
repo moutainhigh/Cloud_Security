@@ -428,164 +428,180 @@ public class shoppingController {
 				assetCount=1;
 			}
 			//进行价格分析
-			   //根据serviceid查询价格列表
-			if(serviceIdV==3||serviceIdV==4||serviceIdV==5){
-				 if(scanPeriod!=null&&!"".equals(scanPeriod)&&!"".equals(orderType)&&orderType.equals("1")){
-					 priceList = priceService.findPriceByServiceId(serviceIdV,Integer.parseInt(scanPeriod));	 
-				 }else{
-					 priceList = priceService.findPriceByServiceId(serviceIdV,0);
-				 }
-			
-			}else{
+			if (orderType!= null && orderType.equals("1")){  //长期
+				
+				int scanType = Integer.valueOf(scanPeriod); 			//服务频率
+				stimes = calTimes(scanType, beginDate, endDate);	//计算服务需要执行的总次数
+				calPrice = calPrice(serviceIdV,scanType,stimes,assetCount);//计算价格
+				
+			} else {	//单次
 				priceList = priceService.findPriceByServiceId(serviceIdV,0);
+				if (priceList != null && priceList.size() != 0){
+					//priceList按序排列，取第一个元素判断是不是单次价格
+					Price price = priceList.get(0);  
+					if (price.getType() == 0){
+						calPrice = price.getPrice() * assetCount;
+					}
+				}
 			}
+			   //根据serviceid查询价格列表
+//			if(serviceIdV==3||serviceIdV==4||serviceIdV==5){
+//				 if(scanPeriod!=null&&!"".equals(scanPeriod)&&!"".equals(orderType)&&orderType.equals("1")){
+//					 priceList = priceService.findPriceByServiceId(serviceIdV,Integer.parseInt(scanPeriod));	 
+//				 }else{
+//					 priceList = priceService.findPriceByServiceId(serviceIdV,0);
+//				 }
+//			
+//			}else{
+//				priceList = priceService.findPriceByServiceId(serviceIdV,0);
+//			}
 	        //长期
-	        if(orderType!=null&&!"".equals(orderType)&&orderType.equals("1")){	
-	        	long ms = 0;//时间之间的毫秒数
-	        	Date bDate = null;
-	        	Date eDate = null;
-	        	if(beginDate!=null&&beginDate!=""&endDate!=null&&endDate!=""){
-	        		bDate = DateUtils.stringToDateNYRSFM(beginDate);
-		            eDate = DateUtils.stringToDateNYRSFM(endDate);  
-		            ms = DateUtils.getMsByDays(bDate, eDate);
-	        	}
-	            
-	            int typeInt = Integer.parseInt(scanPeriod);
-	            
-		        switch(serviceIdV){
-		        case 1:
-		        case 2:
-		        	if(ms==0){
-		        		stimes = 1;//用于显示默认价格
-		        	}else{
-		        		//每周
-			        	if(typeInt==5){
-			        		int perWeek = 1000*3600*24*7;
-			        		if(ms%perWeek>0){
-			        			stimes = (long)(ms/perWeek)+1;
-			        		}else{
-			        			stimes = (long)(ms/perWeek);
-			        		}		        		
-			        	}else{//每月
-			        		while(ms>0){
-			        			bDate = DateUtils.getDayAfterMonth(bDate);
-			        			ms = DateUtils.getMsByDays(bDate, eDate);
-			        			stimes++;
-			        		}
-			        	}	
-		        	}
-		        	break;
-		        	
-		      
-		        case 3:
-		        case 4:
-		        	if(ms==0){
-		        		stimes = 1;//用于显示默认价格
-		        	}else if(typeInt==2){//30分钟
-			        	int min_30 = 1000*3600/2;
-			        	if(ms%min_30 > 0){
-			        		stimes = (long)(ms/min_30) + 1;
-			        	}else{
-			        		stimes = (long)(ms/min_30);
-			        	}
-		        	}else if(typeInt==3){//1小时
-		        		int oneHour = 1000*3600;
-			        	if(ms%oneHour > 0){
-			        		stimes = (long)(ms/oneHour) + 1;
-			        	}else{
-			        		stimes = (long)(ms/oneHour);
-			        	}
-		        	}else if(typeInt==4){//1天
-		        		int oneDay = 1000*3600*24;
-			        	if(ms%oneDay > 0){
-			        		stimes = (long)(ms/oneDay) + 1;
-			        	}else{
-				        	stimes = (long)(ms/oneDay);
-			        	}
-		        	}
-		        	break;
-		        	
-		        case 5:
-		        	if(ms==0){
-		        		stimes = 1;//用于显示默认价格
-		        	}else if(typeInt==1){//10分钟
-		        		int min_10 = 1000*3600/6;
-			        	if(ms%min_10 > 0){
-			        		stimes = (long)(ms/min_10) + 1;
-			        	}else{
-			        		stimes = (long)(ms/min_10);
-			        	}
-		        	}else if(typeInt==2){//30分钟
-		        		int min_30 = 1000*3600/2;
-			        	if(ms%min_30 > 0){
-			        		stimes = (long)(ms/min_30) + 1;
-			        	}else{
-			        		stimes = (long)(ms/min_30);
-			        	}
-		        	}else if(typeInt==3){//1小时
-		        		int oneHour = 1000*3600;
-			        	if(ms%oneHour > 0){
-			        		stimes = (long)(ms/oneHour) + 1;
-			        	}else{
-			        		stimes = (long)(ms/oneHour);
-			        	}
-		        	}     	
-		        	break;
-		        }
-		        if(priceList!=null && priceList.size()>0){
-				    for (int i = 0; i < priceList.size(); i++) {
-				    	Price onePrice = priceList.get(i);
-				        if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()!=0){//区间
-				        	if(stimes>onePrice.getTimesG()&&stimes<=onePrice.getTimesLE()){
-				    				calPrice = onePrice.getPrice()*stimes*assetCount;
-				    			break;
-				    		}
-				        	if(serviceIdV==4){
-				        		if(stimes>=onePrice.getTimesG()&&stimes<=onePrice.getTimesLE()){
-				    				calPrice = onePrice.getPrice()*stimes*assetCount;
-				    			break;
-				    		}
-				        	}
-				        	if((serviceIdV==5||serviceIdV==3) && stimes==1 && onePrice.getTimesG()==1){//服务5：特殊，times==1，取第二区间
-				        		calPrice = onePrice.getPrice()*assetCount;
-				    			break;
-				        	}
-				        }else if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()==0 && stimes>onePrice.getTimesG()){//超过
-			        			calPrice = onePrice.getPrice()*stimes*assetCount;			    			
-			        			break;
-				        }else if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0 && stimes <= 1){//单次类
-				        	calPrice = onePrice.getPrice()*assetCount;
-				        	break;
-				        }
-
-				    }
-		        }else{
-		        	calPrice = 0;
-		        }
-	        }else{//单次
-	        	stimes = 1;
-	        	if(priceList!=null && priceList.size()>0){
-				    for (int i = 0; i < priceList.size(); i++) {
-				    	Price onePrice = priceList.get(i);
-				    	if(serviceIdV!=5){
-				    		 if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0){
-					        		//单次
-						        	calPrice = onePrice.getPrice()*assetCount;
-						        	break;
-					         }
-				    	}else{//服务5没有单次价格
-				    		if(onePrice.getTimesG()==1){
-				        		//单次
-					        	calPrice = onePrice.getPrice()*assetCount;
-					        	break;
-				         }
-				    	}
-				       
-				    }
-	        	}else{
-	        		calPrice = 0;
-	        	}
-			}
+//	        if(orderType!=null&&!"".equals(orderType)&&orderType.equals("1")){	
+//	        	long ms = 0;//时间之间的毫秒数
+//	        	Date bDate = null;
+//	        	Date eDate = null;
+//	        	if(beginDate!=null&&beginDate!=""&endDate!=null&&endDate!=""){
+//	        		bDate = DateUtils.stringToDateNYRSFM(beginDate);
+//		            eDate = DateUtils.stringToDateNYRSFM(endDate);  
+//		            ms = DateUtils.getMsByDays(bDate, eDate);
+//	        	}
+//	            
+//	            int typeInt = Integer.parseInt(scanPeriod);
+//	            
+//		        switch(serviceIdV){
+//		        case 1:
+//		        case 2:
+//		        	if(ms==0){
+//		        		stimes = 1;//用于显示默认价格
+//		        	}else{
+//		        		//每周
+//			        	if(typeInt==5){
+//			        		int perWeek = 1000*3600*24*7;
+//			        		if(ms%perWeek>0){
+//			        			stimes = (long)(ms/perWeek)+1;
+//			        		}else{
+//			        			stimes = (long)(ms/perWeek);
+//			        		}		        		
+//			        	}else{//每月
+//			        		while(ms>0){
+//			        			bDate = DateUtils.getDayAfterMonth(bDate);
+//			        			ms = DateUtils.getMsByDays(bDate, eDate);
+//			        			stimes++;
+//			        		}
+//			        	}	
+//		        	}
+//		        	break;
+//		        	
+//		      
+//		        case 3:
+//		        case 4:
+//		        	if(ms==0){
+//		        		stimes = 1;//用于显示默认价格
+//		        	}else if(typeInt==2){//30分钟
+//			        	int min_30 = 1000*3600/2;
+//			        	if(ms%min_30 > 0){
+//			        		stimes = (long)(ms/min_30) + 1;
+//			        	}else{
+//			        		stimes = (long)(ms/min_30);
+//			        	}
+//		        	}else if(typeInt==3){//1小时
+//		        		int oneHour = 1000*3600;
+//			        	if(ms%oneHour > 0){
+//			        		stimes = (long)(ms/oneHour) + 1;
+//			        	}else{
+//			        		stimes = (long)(ms/oneHour);
+//			        	}
+//		        	}else if(typeInt==4){//1天
+//		        		int oneDay = 1000*3600*24;
+//			        	if(ms%oneDay > 0){
+//			        		stimes = (long)(ms/oneDay) + 1;
+//			        	}else{
+//				        	stimes = (long)(ms/oneDay);
+//			        	}
+//		        	}
+//		        	break;
+//		        	
+//		        case 5:
+//		        	if(ms==0){
+//		        		stimes = 1;//用于显示默认价格
+//		        	}else if(typeInt==1){//10分钟
+//		        		int min_10 = 1000*3600/6;
+//			        	if(ms%min_10 > 0){
+//			        		stimes = (long)(ms/min_10) + 1;
+//			        	}else{
+//			        		stimes = (long)(ms/min_10);
+//			        	}
+//		        	}else if(typeInt==2){//30分钟
+//		        		int min_30 = 1000*3600/2;
+//			        	if(ms%min_30 > 0){
+//			        		stimes = (long)(ms/min_30) + 1;
+//			        	}else{
+//			        		stimes = (long)(ms/min_30);
+//			        	}
+//		        	}else if(typeInt==3){//1小时
+//		        		int oneHour = 1000*3600;
+//			        	if(ms%oneHour > 0){
+//			        		stimes = (long)(ms/oneHour) + 1;
+//			        	}else{
+//			        		stimes = (long)(ms/oneHour);
+//			        	}
+//		        	}     	
+//		        	break;
+//		        }
+//		        if(priceList!=null && priceList.size()>0){
+//				    for (int i = 0; i < priceList.size(); i++) {
+//				    	Price onePrice = priceList.get(i);
+//				        if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()!=0){//区间
+//				        	if(stimes>onePrice.getTimesG()&&stimes<=onePrice.getTimesLE()){
+//				    				calPrice = onePrice.getPrice()*stimes*assetCount;
+//				    			break;
+//				    		}
+//				        	if(serviceIdV==4){
+//				        		if(stimes>=onePrice.getTimesG()&&stimes<=onePrice.getTimesLE()){
+//				    				calPrice = onePrice.getPrice()*stimes*assetCount;
+//				    			break;
+//				    		}
+//				        	}
+//				        	if((serviceIdV==5||serviceIdV==3) && stimes==1 && onePrice.getTimesG()==1){//服务5：特殊，times==1，取第二区间
+//				        		calPrice = onePrice.getPrice()*assetCount;
+//				    			break;
+//				        	}
+//				        }else if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()==0 && stimes>onePrice.getTimesG()){//超过
+//			        			calPrice = onePrice.getPrice()*stimes*assetCount;			    			
+//			        			break;
+//				        }else if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0 && stimes <= 1){//单次类
+//				        	calPrice = onePrice.getPrice()*assetCount;
+//				        	break;
+//				        }
+//
+//				    }
+//		        }else{
+//		        	calPrice = 0;
+//		        }
+//	        }else{//单次
+//	        	stimes = 1;
+//	        	if(priceList!=null && priceList.size()>0){
+//				    for (int i = 0; i < priceList.size(); i++) {
+//				    	Price onePrice = priceList.get(i);
+//				    	if(serviceIdV!=5){
+//				    		 if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0){
+//					        		//单次
+//						        	calPrice = onePrice.getPrice()*assetCount;
+//						        	break;
+//					         }
+//				    	}else{//服务5没有单次价格
+//				    		if(onePrice.getTimesG()==1){
+//				        		//单次
+//					        	calPrice = onePrice.getPrice()*assetCount;
+//					        	break;
+//				         }
+//				    	}
+//				       
+//				    }
+//	        	}else{
+//	        		calPrice = 0;
+//	        	}
+//			}
 
 			DecimalFormat df = new DecimalFormat("0.00"); 
           String  price = df.format(calPrice);
@@ -2637,165 +2653,182 @@ public class shoppingController {
 				assetCount=1;
 			}
 			//进行价格分析
-			//根据serviceid查询价格列表
-			if(serviceIdV==3||serviceIdV==4||serviceIdV==5){
-				 if(scanPeriod!=null&&!"".equals(scanPeriod)&&!"".equals(orderType)&&orderType.equals("1")){
-					 priceList = priceService.findPriceByServiceId(serviceIdV,Integer.parseInt(scanPeriod));	 
-				 }else{
-					 priceList = priceService.findPriceByServiceId(serviceIdV,0);
-				 }
-			
-			}else{
+			if (orderType!= null && orderType.equals("1")){  //长期
+				
+				int scanType = Integer.valueOf(scanPeriod); 			//服务频率
+				stimes = calTimes(scanType, beginDate, endDate);	//计算服务需要执行的总次数
+				calPrice = calPrice(serviceIdV,scanType,stimes,assetCount);//计算价格
+				
+			} else {	//单次
 				priceList = priceService.findPriceByServiceId(serviceIdV,0);
+				if (priceList != null && priceList.size() != 0){
+					//priceList按序排列，取第一个元素判断是不是单次价格
+					Price price = priceList.get(0);  
+					if (price.getType() == 0){
+						calPrice = price.getPrice() * assetCount;
+					}
+				}
 			}
+			
+			//根据serviceid查询价格列表
+//			if(serviceIdV==3||serviceIdV==4||serviceIdV==5){
+//				 if(scanPeriod!=null&&!"".equals(scanPeriod)&&!"".equals(orderType)&&orderType.equals("1")){
+//					 priceList = priceService.findPriceByServiceId(serviceIdV,Integer.parseInt(scanPeriod));	 
+//				 }else{
+//					 priceList = priceService.findPriceByServiceId(serviceIdV,0);
+//				 }
+//			
+//			}else{
+//				priceList = priceService.findPriceByServiceId(serviceIdV,0);
+//			}
 	        //长期
-	        if(orderType!=null&&!"".equals(orderType)&&orderType.equals("1")){	
-	        	long ms = 0;//时间之间的毫秒数
-	        	Date bDate = null;
-	        	Date eDate = null;
-	        	if(beginDate!=null&&beginDate!=""&endDate!=null&&endDate!=""){
-	        		bDate = DateUtils.stringToDateNYRSFM(beginDate);
-		            eDate = DateUtils.stringToDateNYRSFM(endDate);  
-		            ms = DateUtils.getMsByDays(bDate, eDate);
-	        	}
-	            
-	            int typeInt = Integer.parseInt(scanPeriod);
-	            
-		        switch(serviceIdV){
-		        case 1:
-		        case 2:
-		        	if(ms==0){
-		        		stimes = 1;//用于显示默认价格
-		        	}else{
-		        		//每周
-			        	if(typeInt==5){
-			        		int perWeek = 1000*3600*24*7;
-			        		if(ms%perWeek>0){
-			        			stimes = (long)(ms/perWeek)+1;
-			        		}else{
-			        			stimes = (long)(ms/perWeek);
-			        		}		        		
-			        	}else{//每月
-			        		while(ms>0){
-			        			bDate = DateUtils.getDayAfterMonth(bDate);
-			        			ms = DateUtils.getMsByDays(bDate, eDate);
-			        			stimes++;
-			        		}
-			        	}	
-		        	}
-		        	break;
-		        	
-		       
-		        case 3:
-		        case 4:
-		        	if(ms==0){
-		        		stimes = 1;//用于显示默认价格
-		        	}else if(typeInt==2){//30分钟
-			        	int min_30 = 1000*3600/2;
-			        	if(ms%min_30 > 0){
-			        		stimes = (long)(ms/min_30) + 1;
-			        	}else{
-			        		stimes = (long)(ms/min_30);
-			        	}
-		        	}else if(typeInt==3){//1小时
-		        		int oneHour = 1000*3600;
-			        	if(ms%oneHour > 0){
-			        		stimes = (long)(ms/oneHour) + 1;
-			        	}else{
-			        		stimes = (long)(ms/oneHour);
-			        	}
-		        	}else if(typeInt==4){//1天
-		        		int oneDay = 1000*3600*24;
-			        	if(ms%oneDay > 0){
-			        		stimes = (long)(ms/oneDay) + 1;
-			        	}else{
-			        		stimes = (long)(ms/oneDay);
-			        	}
-		        	}
-		        	break;
-		        	
-		        case 5:
-		        	if(ms==0){
-		        		stimes = 1;//用于显示默认价格
-		        	}else if(typeInt==1){//10分钟
-		        		int min_10 = 1000*3600/6;
-			        	if(ms%min_10 > 0){
-			        		stimes = (long)(ms/min_10) + 1;
-			        	}else{
-			        		stimes = (long)(ms/min_10);
-			        	}
-		        	}else if(typeInt==2){//30分钟
-		        		int min_30 = 1000*3600/2;
-			        	if(ms%min_30 > 0){
-			        		stimes = (long)(ms/min_30) + 1;
-			        	}else{
-			        		stimes = (long)(ms/min_30);
-			        	}
-		        	}else if(typeInt==3){//1小时
-		        		int oneHour = 1000*3600;
-			        	if(ms%oneHour > 0){
-			        		stimes = (long)(ms/oneHour) + 1;
-			        	}else{
-			        		stimes = (long)(ms/oneHour);
-			        	}
-		        	}
-		        			        	
-		        	break;
-		        }
-		        if(priceList!=null && priceList.size()>0){
-				    for (int i = 0; i < priceList.size(); i++) {
-				    	Price onePrice = priceList.get(i);
-				        if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()!=0){//区间
-				        	if(stimes>onePrice.getTimesG()&&stimes<=onePrice.getTimesLE()){
-				    				calPrice = onePrice.getPrice()*stimes*assetCount;
-				    			break;
-				    		}
-				        	if(serviceIdV==4){
-				        		if(stimes>=onePrice.getTimesG()&&stimes<=onePrice.getTimesLE()){
-				    				calPrice = onePrice.getPrice()*stimes*assetCount;
-				    			break;
-				    		}
-				        	}
-				        	if((serviceIdV==5||serviceIdV==3) && stimes==1 && onePrice.getTimesG()==1){//服务5：特殊，times==1，取第二区间
-				        		calPrice = onePrice.getPrice()*assetCount;
-				    			break;
-				        	}
-				        }else if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()==0 && stimes>onePrice.getTimesG()){//超过
-			        			calPrice = onePrice.getPrice()*stimes*assetCount;			    			
-			        			break;
-				        }else if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0 && stimes <= 1){//单次类
-				        	calPrice = onePrice.getPrice()*assetCount;
-				        	break;
-				        }
-
-				    }
-		        }else{
-		        	calPrice = 0;
-		        }
-	        }else{//单次
-	        	stimes = 1;
-	        	if(priceList!=null && priceList.size()>0){
-				    for (int i = 0; i < priceList.size(); i++) {
-				    	Price onePrice = priceList.get(i);
-				    	if(serviceIdV!=5){
-				    		 if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0){
-					        		//单次
-						        	calPrice = onePrice.getPrice()*assetCount;
-						        	break;
-					         }
-				    	}else{//服务5没有单次价格
-				    		if(onePrice.getTimesG()==1){
-				        		//单次
-					        	calPrice = onePrice.getPrice()*assetCount;
-					        	break;
-				         }
-				    	}
-				       
-				    }
-	        	}else{
-	        		calPrice = 0;
-	        	}
-			}
+//	        if(orderType!=null&&!"".equals(orderType)&&orderType.equals("1")){	
+//	        	long ms = 0;//时间之间的毫秒数
+//	        	Date bDate = null;
+//	        	Date eDate = null;
+//	        	if(beginDate!=null&&beginDate!=""&endDate!=null&&endDate!=""){
+//	        		bDate = DateUtils.stringToDateNYRSFM(beginDate);
+//		            eDate = DateUtils.stringToDateNYRSFM(endDate);  
+//		            ms = DateUtils.getMsByDays(bDate, eDate);
+//	        	}
+//	            
+//	            int typeInt = Integer.parseInt(scanPeriod);
+//	            
+//		        switch(serviceIdV){
+//		        case 1:
+//		        case 2:
+//		        	if(ms==0){
+//		        		stimes = 1;//用于显示默认价格
+//		        	}else{
+//		        		//每周
+//			        	if(typeInt==5){
+//			        		int perWeek = 1000*3600*24*7;
+//			        		if(ms%perWeek>0){
+//			        			stimes = (long)(ms/perWeek)+1;
+//			        		}else{
+//			        			stimes = (long)(ms/perWeek);
+//			        		}		        		
+//			        	}else{//每月
+//			        		while(ms>0){
+//			        			bDate = DateUtils.getDayAfterMonth(bDate);
+//			        			ms = DateUtils.getMsByDays(bDate, eDate);
+//			        			stimes++;
+//			        		}
+//			        	}	
+//		        	}
+//		        	break;
+//		        	
+//		       
+//		        case 3:
+//		        case 4:
+//		        	if(ms==0){
+//		        		stimes = 1;//用于显示默认价格
+//		        	}else if(typeInt==2){//30分钟
+//			        	int min_30 = 1000*3600/2;
+//			        	if(ms%min_30 > 0){
+//			        		stimes = (long)(ms/min_30) + 1;
+//			        	}else{
+//			        		stimes = (long)(ms/min_30);
+//			        	}
+//		        	}else if(typeInt==3){//1小时
+//		        		int oneHour = 1000*3600;
+//			        	if(ms%oneHour > 0){
+//			        		stimes = (long)(ms/oneHour) + 1;
+//			        	}else{
+//			        		stimes = (long)(ms/oneHour);
+//			        	}
+//		        	}else if(typeInt==4){//1天
+//		        		int oneDay = 1000*3600*24;
+//			        	if(ms%oneDay > 0){
+//			        		stimes = (long)(ms/oneDay) + 1;
+//			        	}else{
+//			        		stimes = (long)(ms/oneDay);
+//			        	}
+//		        	}
+//		        	break;
+//		        	
+//		        case 5:
+//		        	if(ms==0){
+//		        		stimes = 1;//用于显示默认价格
+//		        	}else if(typeInt==1){//10分钟
+//		        		int min_10 = 1000*3600/6;
+//			        	if(ms%min_10 > 0){
+//			        		stimes = (long)(ms/min_10) + 1;
+//			        	}else{
+//			        		stimes = (long)(ms/min_10);
+//			        	}
+//		        	}else if(typeInt==2){//30分钟
+//		        		int min_30 = 1000*3600/2;
+//			        	if(ms%min_30 > 0){
+//			        		stimes = (long)(ms/min_30) + 1;
+//			        	}else{
+//			        		stimes = (long)(ms/min_30);
+//			        	}
+//		        	}else if(typeInt==3){//1小时
+//		        		int oneHour = 1000*3600;
+//			        	if(ms%oneHour > 0){
+//			        		stimes = (long)(ms/oneHour) + 1;
+//			        	}else{
+//			        		stimes = (long)(ms/oneHour);
+//			        	}
+//		        	}
+//		        			        	
+//		        	break;
+//		        }
+//		        if(priceList!=null && priceList.size()>0){
+//				    for (int i = 0; i < priceList.size(); i++) {
+//				    	Price onePrice = priceList.get(i);
+//				        if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()!=0){//区间
+//				        	if(stimes>onePrice.getTimesG()&&stimes<=onePrice.getTimesLE()){
+//				    				calPrice = onePrice.getPrice()*stimes*assetCount;
+//				    			break;
+//				    		}
+//				        	if(serviceIdV==4){
+//				        		if(stimes>=onePrice.getTimesG()&&stimes<=onePrice.getTimesLE()){
+//				    				calPrice = onePrice.getPrice()*stimes*assetCount;
+//				    			break;
+//				    		}
+//				        	}
+//				        	if((serviceIdV==5||serviceIdV==3) && stimes==1 && onePrice.getTimesG()==1){//服务5：特殊，times==1，取第二区间
+//				        		calPrice = onePrice.getPrice()*assetCount;
+//				    			break;
+//				        	}
+//				        }else if(onePrice.getTimesG()!=0 && onePrice.getTimesLE()==0 && stimes>onePrice.getTimesG()){//超过
+//			        			calPrice = onePrice.getPrice()*stimes*assetCount;			    			
+//			        			break;
+//				        }else if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0 && stimes <= 1){//单次类
+//				        	calPrice = onePrice.getPrice()*assetCount;
+//				        	break;
+//				        }
+//
+//				    }
+//		        }else{
+//		        	calPrice = 0;
+//		        }
+//	        }else{//单次
+//	        	stimes = 1;
+//	        	if(priceList!=null && priceList.size()>0){
+//				    for (int i = 0; i < priceList.size(); i++) {
+//				    	Price onePrice = priceList.get(i);
+//				    	if(serviceIdV!=5){
+//				    		 if(onePrice.getTimesG()==0 && onePrice.getTimesLE()==0){
+//					        		//单次
+//						        	calPrice = onePrice.getPrice()*assetCount;
+//						        	break;
+//					         }
+//				    	}else{//服务5没有单次价格
+//				    		if(onePrice.getTimesG()==1){
+//				        		//单次
+//					        	calPrice = onePrice.getPrice()*assetCount;
+//					        	break;
+//				         }
+//				    	}
+//				       
+//				    }
+//	        	}else{
+//	        		calPrice = 0;
+//	        	}
+//			}
 
 			DecimalFormat df = new DecimalFormat("0.00"); 
           String  price = df.format(calPrice);
@@ -2850,20 +2883,45 @@ public class shoppingController {
 	 */
 	private boolean checkOrderType(String serviceId, String orderType) {
 		boolean result = false;
-		if (serviceId.equals("1") || serviceId.equals("2") || serviceId.equals("4")) {
-			//长期：1 单次：2
+		int servId = Integer.valueOf(serviceId);
+		ServiceDetail servDetail = servDetailService.findByServId(servId);
+		if (servDetail == null) {
+			return result;
+		}
+		int servType = servDetail.getServType(); //0:单次和长期 1：长期 2：单次
+		switch(servType) {
+		case 0:
 			if(orderType.equals("1") || orderType.equals("2")) {
 				result = true;
 			}
-			
-		} else if (serviceId.equals("3") || serviceId.equals("5")) {
-			// 网页篡改监测服务/网站可用性监测服务   
-			// 长期：1
+			break;
+		case 1:
 			if(orderType.equals("1")) {
 				result = true;
 			}
-			
-		} 
+			break;
+		case 2:
+			if(orderType.equals("2")) {
+				result = true;
+			}
+			break;
+		default:
+			break;
+		}
+//		if (serviceId.equals("1") || serviceId.equals("2") || serviceId.equals("4")) {
+//			//长期：1 单次：2
+//			if(orderType.equals("1") || orderType.equals("2")) {
+//				result = true;
+//			}
+//			
+//		} else if (serviceId.equals("3") || serviceId.equals("5")) {
+//			// 网页篡改监测服务/网站可用性监测服务   
+//			// 长期：1
+//			if(orderType.equals("1")) {
+//				result = true;
+//			}
+//			
+//		}
 //		else if (serviceId.equals("6")) {
 //			//waf 8：包月 9：包年
 //			if (orderType.equals("8") || orderType.equals("9")) {
