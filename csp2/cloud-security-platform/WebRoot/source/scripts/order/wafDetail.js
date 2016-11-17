@@ -63,6 +63,11 @@ $(function(){
     });
     //点击“添加购物车”按钮
     $("#addCarWaf").click(function(){
+    	var shopCarNum = Number($("#shopCarNum").html());
+    	if (shopCarNum >= 99) {
+    		alert("购物车中商品数量已达上限，请先清理购物车！");
+    		return;
+    	}
     //类型
       var orderType = $('.click').val(); 
       //开始时间
