@@ -162,7 +162,7 @@ ORDER BY a.create_date desc
     </select>
     
     <select id="findBuyShopList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
-    
+ select * from (   
  SELECT
   a.serverName,
   a.price,
@@ -263,8 +263,8 @@ WHERE a.id = b.orderId
 	 AND i.userId=#{userId}
 		      ) d
      WHERE c.id = d.id
-     
-     
+ )res    
+     ORDER BY res.createDate desc
   
  </select>
  <select id="findOrderCountByUserId" parameterType="hashmap" resultType="java.lang.Integer">
