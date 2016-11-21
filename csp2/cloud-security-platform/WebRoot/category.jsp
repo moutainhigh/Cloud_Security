@@ -87,6 +87,25 @@ function buyServiceAPI(apiId){
 					</ol>
 				</li>
 				<li>
+					<a href="javascript:;">系统安全帮</a>
+					<ol id="anquanbangAPI_ol">
+						<c:forEach var="serv" items="${systemServList}"  varStatus="status">
+							<c:if test="${status.count == 1}">
+							  <li style="border: none;">
+							</c:if>
+							<c:if test="${status.count != 1}">
+							  <li>
+							</c:if>
+							<a href="javascript:;" onclick="buyServiceAPI(${serv.id });">${serv.name }</a>
+							<form action="selfHelpOrderAPIInit.html" method="post" id="selfHelpOrderAPIInitForm">
+								<input type="hidden" id="category_apiId" name="apiId" value="${serv.id }"/>
+								<input type="hidden" id="indexPage" name="indexPage" value="2"/>
+							</form>
+							</li>
+						</c:forEach>
+					</ol>
+				</li>
+				<li>
 					<a href="${ctx}/sa_anquanbang.html" target="_blank">安全大数据</a>
 				</li>
 				<li style="border: none;">
