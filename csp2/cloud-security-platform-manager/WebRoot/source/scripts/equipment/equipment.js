@@ -119,7 +119,7 @@ var getAllEngine = function() {
 		alert("IP地址输入有误！");
 		return false;
 	}
-	alert(id);
+
 	$.ajax({
 		type:"POST",
 		url:"checkEngineNameAndAddr.html",
