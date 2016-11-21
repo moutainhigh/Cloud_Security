@@ -129,7 +129,7 @@ public class SystemFilter extends OncePerRequestFilter  {
 				String indexPage = request.getParameter("indexPage");
 				if(indexPage!=null){
 					int index = Integer.parseInt(request.getParameter("indexPage"));
-					if(index == 1){
+					if(index == 1 || index == 3){
 						request.getSession().setAttribute("serviceId", Integer.parseInt(request.getParameter("serviceId")));
 					}else if(index == 2){
 						request.getSession().setAttribute("apiId", Integer.parseInt(request.getParameter("apiId")));
