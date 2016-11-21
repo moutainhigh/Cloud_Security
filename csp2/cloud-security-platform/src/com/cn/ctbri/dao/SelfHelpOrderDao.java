@@ -128,4 +128,6 @@ public interface SelfHelpOrderDao {
 	OrderDetail getOrderAPIDetailById(String id,int userId);
 	//根据服务详情操作主键，查询
 	OrderDetail findOrderDetailById(String id,int userId);
+	
+	List<Serv> findServiceByParent(int parent);
 }
