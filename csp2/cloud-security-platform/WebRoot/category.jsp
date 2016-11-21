@@ -24,6 +24,10 @@ function buyServiceAPI(apiId){
 	$("#category_apiId").val(apiId);
 	$("#selfHelpOrderAPIInitForm").submit();
 }
+function buySystemService(servId){
+	$("#category_systemServId").val(servId);
+	$("#systemAnquanbangDetailUIForm").submit();
+}
 </script>
 	<body>
 		<div class="Divlist listJs fl" style="margin-right:48px;">
@@ -96,10 +100,10 @@ function buyServiceAPI(apiId){
 							<c:if test="${status.count != 1}">
 							  <li>
 							</c:if>
-							<a href="javascript:;" onclick="buyServiceAPI(${serv.id });">${serv.name }</a>
-							<form action="selfHelpOrderAPIInit.html" method="post" id="selfHelpOrderAPIInitForm">
-								<input type="hidden" id="category_apiId" name="apiId" value="${serv.id }"/>
-								<input type="hidden" id="indexPage" name="indexPage" value="2"/>
+							<a href="javascript:;" onclick="buySystemService(${serv.id });">${serv.name }</a>
+							<form action="systemAnquanbangDetailUI.html" method="post" id="systemAnquanbangDetailUIForm">
+								<input type="hidden" id="category_systemServId" name="serviceId" value="${serv.id }"/>
+								<input type="hidden" id="indexPage" name="indexPage" value="3"/>
 							</form>
 							</li>
 						</c:forEach>
