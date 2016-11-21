@@ -262,5 +262,11 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		map.put("userId", userId);
 		return this.getSqlSession().selectOne(ns+"findOrderDetailById", map);
 	}
+	
+	public List<Serv> findServiceByParent(int parent) {
+		Map map = new HashMap();
+		map.put("parentC", parent);
+		return this.getSqlSession().selectList(nv+"getServiceByParent", map);
+	}
 
 }
