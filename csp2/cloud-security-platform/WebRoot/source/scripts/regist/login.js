@@ -110,11 +110,32 @@ $(function(){
 										$("#serviceIdWafHidden").val(serviceId);
 										$("#indexPageWafHidden").val(indexPage);
 										$("#wafDetailsForm").submit();
-									}else{
+									}else if (indexPage ==1){
 										//window.location.href="selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
 										$("#serviceIdHidden").val(serviceId);
 										$("#indexPageHidden").val(indexPage);
 										$("#serviceLoginForm").submit();
+									} else if (indexPage ==3) {
+										var tempForm = document.createElement("form");
+			  							tempForm.action = "systemAnquanbangDetailUI.html";
+			  							tempForm.method = "post";
+			  							tempForm.style.display = "none";
+			  							
+			  						   	var indexPageInput = document.createElement("input");
+			  							indexPageInput.type="hidden"; 
+										indexPageInput.name= "indexPage"; 
+										indexPageInput.value= indexPage; 
+										tempForm.appendChild(indexPageInput); 
+										
+										var serviceIdInput = document.createElement("input");
+			  							serviceIdInput.type="hidden"; 
+										serviceIdInput.name= "serviceId"; 
+										serviceIdInput.value= serviceId; 
+										tempForm.appendChild(serviceIdInput);
+							
+										document.body.appendChild(tempForm);
+										tempForm.submit();
+										document.body.removeChild(tempForm);
 									}
 									break;
 								case 6:
