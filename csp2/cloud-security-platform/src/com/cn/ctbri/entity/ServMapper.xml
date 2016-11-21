@@ -49,6 +49,7 @@ group by ser.id
 UNION 
  select cs_service.*,-1,-1,-1,-1,0.0 from cs_service where cs_service.type=2
 ) serv
+where parentC=1
 order by serv.id
 	</select>
 	<select id="findById" resultMap="ServRM" parameterType="int">
@@ -118,4 +119,10 @@ order by serv.id
 	<delete id="deleteById" parameterType="int">
 		delete from cs_service where id=#{serviceId}
 	</delete>
+	
+	<select id="getServiceByParent"  parameterType="Map" resultMap="ServRM">
+		SELECT * FROM cs_service
+		where parentC=#{parentC}
+		ORDER BY id 
+	</select>
 </mapper>
