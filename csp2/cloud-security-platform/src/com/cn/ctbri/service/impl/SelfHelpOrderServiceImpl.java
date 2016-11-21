@@ -206,6 +206,10 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 	public OrderDetail findOrderDetailById(String id, int userId) {
 		return selfHelpOrderDao.findOrderDetailById(id, userId);
 	}
+	
+	public List<Serv> findServiceByParent(int parent) {
+		return selfHelpOrderDao.findServiceByParent(parent);
+	}
 
 	
 }
