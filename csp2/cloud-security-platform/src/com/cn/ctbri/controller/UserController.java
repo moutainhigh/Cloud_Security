@@ -639,7 +639,7 @@ public class UserController{
 			//add by tangxr 2016-3-14
 			if(request.getSession().getAttribute("indexPage")!=null){
 				int indexPage = (Integer) request.getSession().getAttribute("indexPage");
-				if(indexPage == 1 ){
+				if(indexPage == 1 || indexPage == 3){
 
 					int serviceId = (Integer) request.getSession().getAttribute("serviceId");
 					map.put("result", 5);
