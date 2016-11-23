@@ -172,9 +172,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!-- 插入任务告警信息 -->
     <insert id="insertTaskWarn" parameterType="com.cn.ctbri.entity.TaskWarn" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO cs_taskwarn
-        (cat1,cat2,name,severity,rule,ct,app_p,tran_p,url,msg,task_id,warn_time,group_id,serviceId,districtId) 
-        VALUES( #{cat1} , #{cat2},#{name},#{severity},#{rule},#{ct},#{app_p},#{tran_p},#{url},#{msg},#{task_id},#{warn_time},#{group_id},#{serviceId},#{districtId})
+    	INSERT INTO cs_taskwarn
+        (id,cat1,cat2,name,severity,rule,ct,app_p,tran_p,url,msg,task_id,warn_time) 
+        VALUES(#{id}, #{cat1} , #{cat2},#{name},#{severity},#{rule},#{ct},#{app_p},#{tran_p},#{url},#{msg},#{task_id},#{warn_time})
+        ON DUPLICATE KEY UPDATE 
+				cat1=#{cat1},
+				cat2=#{cat2},
+				name=#{name},
+                severity=#{severity},
+                rule=#{rule},
+                ct=#{ct},
+                app_p=#{app_p},
+                tran_p=#{tran_p},
+                url=#{url},
+                msg=#{msg},
+                task_id=#{task_id},
+                warn_time=#{warn_time}
     </insert>
     
     <!-- 获取订单还在执行的任务 -->
