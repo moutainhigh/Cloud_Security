@@ -92,11 +92,6 @@
 	        <value>RESULTQUEUE</value>  
 	    </constructor-arg>  
 	</bean>
-	<bean id="progressQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">  
-	    <constructor-arg>  
-	        <value>PROGRESSQUEUE</value>  
-	    </constructor-arg>  
-	</bean>
 	
 	<!-- <bean id="optQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">  
 	    <constructor-arg>  
@@ -106,7 +101,6 @@
 	<!-- 消息监听器    -->    
 	<bean id="taskConsumerListener" class="com.cn.ctbri.jms.TaskConsumerListener"/>
     <bean id="resultConsumerListener" class="com.cn.ctbri.jms.ResultConsumerListener"/>
-    <bean id="progressConsumerListener" class="com.cn.ctbri.jms.ProgressConsumerListener"/>
     <!-- <bean id="optConsumerListener" class="com.cn.ctbri.jms.OptConsumerListener"/>  -->
 	<!--这个是主题目的地，一对多的   --><!--    
 	<bean id="topicDestination" class="org.apache.activemq.command.ActiveMQTopic">  
@@ -124,12 +118,6 @@
 	    <property name="connectionFactory" ref="connectionFactory" />  
 	    <property name="destination" ref="resultQueueDestination" />  
 	    <property name="messageListener" ref="resultConsumerListener" />  
-	</bean>
-	
-	<bean id="jmsProgressContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">  
-	    <property name="connectionFactory" ref="connectionFactory" />  
-	    <property name="destination" ref="progressQueueDestination" />  
-	    <property name="messageListener" ref="progressConsumerListener" />  
 	</bean>
 	
 	<!-- <bean id="jmsOptContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">  
@@ -157,7 +145,7 @@
     	class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="taskJobDetail" />
     	<property name="cronExpression" value="0 0/1 * * * ?" />
-    	<!-- <property name="cronExpression" value="0 15 10 * * ? *" /> -->
+    	<!-- <property name="cronExpression" value="0 58 09 * * ? *" /> -->
     	 
     </bean>
     
@@ -174,6 +162,41 @@
     	class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="taskDelJobDetail" />
     	<property name="cronExpression" value="0 0/5 * * * ?" />
+    	<!--<property name="cronExpression" value="0 46 20 * * ? *" /> -->
+    </bean>
+    
+    <!-- Timer schedule -->
+    <!--要调度的对象，任务下发-->
+    <bean id="expJobBean" class="com.cn.ctbri.common.SchedulerExp" />
+    <bean id="expJobDetail"
+    	class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    	<property name="targetObject" ref="expJobBean" />
+    	<property name="targetMethod" value="execute" />
+    	<property name="concurrent" value="false" />
+    </bean>
+    <bean id="expTrigger"
+    	class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="expJobDetail" />
+    	<property name="cronExpression" value="0 0/6 * * * ?" /> 
+    	<!-- <property name="cronExpression" value="0 21 17 * * ? *" />-->
+    	 
+    </bean>
+    
+    <!-- Timer schedule -->
+    <!--要调度的对象，设备信息-->
+    <bean id="engineJobBean" class="com.cn.ctbri.common.SchedulerEngine" />
+    <bean id="engineJobDetail"
+    	class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    	<property name="targetObject" ref="engineJobBean" />
+    	<property name="targetMethod" value="execute" />
+    	<property name="concurrent" value="false" />
+    </bean>
+    <bean id="engineTrigger"
+    	class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="engineJobDetail" />
+    	<!-- <property name="cronExpression" value="0 0/2 * * * ?" /> -->
+    	<property name="cronExpression" value="0 00 11 * * ? *" />
+    	 
     </bean>
     
     <!-- 将lazy-init='false'那么容器启动就会执行调度程序   -->
@@ -183,7 +206,9 @@
     	<property name="triggers">
     		<list>
     			<ref bean="taskTrigger" />
-    			<!-- <ref bean="delTrigger" /> -->
+    			<ref bean="expTrigger" /> 
+    			<ref bean="delTrigger" />
+    			<ref bean="engineTrigger" />
     		</list>
     	</property>
     </bean>
