@@ -39,6 +39,12 @@ public interface IEngineService {
 	void updatedown(EngineCfg en);
 
 	EngineCfg getEngineById(int id);
+	
+	//begin 2016-10-12
+	//更新引擎
+	void saveOrUpdate(EngineCfg en);
+	//获取资源信息
+	List<EngineCfg> findResourceByParam(Map<String, Object> resourcMap);
 
 
 }
