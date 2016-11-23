@@ -59,9 +59,6 @@ public class InternalService {
     @Qualifier("taskQueueDestination")   
     private Destination taskDestination; 
     @Autowired  
-    @Qualifier("progressQueueDestination")   
-    private Destination progressDestination;
-    @Autowired  
     @Qualifier("resultQueueDestination")   
     private Destination resultDestination;
 	
