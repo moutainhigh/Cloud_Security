@@ -12,12 +12,16 @@ import com.cn.ctbri.entity.TaskWarn;
  * 版        本：  1.0
  */
 public interface ITaskWarnService {
-
+	
 	//根据订单id获取告警信息
 	List<TaskWarn> findTaskWarnByOrderId(Map<String, Object> hashmap);
 	//根据订单id获取告警次数
 	TaskWarn findTaskWarnCountByOrderId(String orderId);
 	//可用率统计
 	List<TaskWarn> findUseableByOrderId(String orderId);
+	//根据group_id查询
+	List<TaskWarn> findTaskWarnByGroupId(String groupId);
+	//根据task_id查询
+	List<TaskWarn> findTaskWarnByTaskId(int taskId);
 
 }
