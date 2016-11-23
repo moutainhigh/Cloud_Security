@@ -56,6 +56,14 @@ public class EngineServiceImpl implements IEngineService{
 		return engineDao.getEngineById(id);
 	}
 
+	public void saveOrUpdate(EngineCfg en) {
+		engineDao.saveOrUpdate(en);
+	}
+
+	public List<EngineCfg> findResourceByParam(Map<String, Object> resourcMap) {
+		return engineDao.findResourceByParam(resourcMap);
+	}
+
 
 	
 }
