@@ -52,4 +52,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE oa.orderId=#{orderId} AND oa.id=t.order_asset_Id AND tw.task_id=t.taskId
 		GROUP BY tw.url
 	</select>
+	<!-- 根据groupid查询 -->
+	<select id="findTaskWarnByGroupId" parameterType="String" resultMap="TaskWarnRM">
+	SELECT tw.* FROM cs_taskwarn tw WHERE tw.group_id=#{groupId}	
+	</select>
+	
+	<!-- 根据taskid查询 -->
+	<select id="findTaskWarnByTaskId" parameterType="Integer" resultMap="TaskWarnRM">
+	SELECT tw.* FROM cs_taskwarn tw WHERE tw.task_id=#{taskId}	
+	</select>
 </mapper>
