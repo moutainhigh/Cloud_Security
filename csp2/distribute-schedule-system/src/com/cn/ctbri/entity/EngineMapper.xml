@@ -30,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findEngineIdbyIP" parameterType="String" resultMap="EngineRM">
        select * from cs_enginecfg en 
        where en.engine_addr=#{engine_addr}
-       and en.activity between 0 and en.maxtask
+       <!-- and en.activity between 0 and en.maxtask -->
     </select>
     
     <!-- 根据id查找引擎EngineCfg -->
@@ -66,7 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from cs_enginecfg en 
         where en.engine_capacity like CONCAT(CONCAT('%', #{serviceId}), '%') and en.status = 1 
         and en.equipment_factory=0 
-        and en.activity between 0 and en.maxtask
+        <!--and en.activity between 0 and en.maxtask-->
         GROUP BY en.engine_number
     </select>
     
@@ -82,7 +82,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where en.id = #{id}
     </select>
     
+	<!--更新任务信息 -->
+    <insert id="saveOrUpdate" parameterType="com.cn.ctbri.entity.EngineCfg">
+		INSERT INTO cs_engine
+			(id,engine_number,engine_name,engine_addr,status,memoryUsage,
+			cpuUsage,diskUsage,updateDate) 
+			VALUES(#{id}, #{engine_number} , #{engine_name},#{engine_addr},#{status},
+			#{memoryUsage},#{cpuUsage},#{diskUsage},#{updateDate})
+			ON DUPLICATE KEY UPDATE 
+				engine_number=#{engine_number},
+				engine_name=#{engine_name},
+				engine_addr=#{engine_addr},
+                status=#{status},
+                memoryUsage=#{memoryUsage},
+                cpuUsage=#{cpuUsage},
+                diskUsage=#{diskUsage},
+                updateDate=#{updateDate}
+	</insert>
 	
-	
+	<select id="findResourceByParam" resultType="hashmap" parameterType="hashmap">
+		select * from cs_engine en
+		WHERE
+			1=1  
+			<if test="resourcename!=null and resourcename!=''">
+				and en.engine_number like CONCAT(CONCAT('%', #{resourcename}), '%')
+			</if>
+			<if test="resourceaddr!=null and resourceaddr!=''">
+				and en.engine_addr like CONCAT(CONCAT('%', #{resourceaddr}), '%')
+			</if>	 
+			<if test="isapi!=null">
+
+			</if>	  
+	</select>
 
 </mapper>

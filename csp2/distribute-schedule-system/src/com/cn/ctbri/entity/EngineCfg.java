@@ -40,6 +40,16 @@ public class EngineCfg implements Serializable{
 	private int status;
 	
 	private int engine;
+	
+	//内存占用
+	private double memoryUsage;
+	//cpu占用
+	private double cpuUsage;
+	//磁盘占用
+	private double diskUsage;
+	//更新时间
+	private Date updateDate;
+	
 	public int getId() {
 		return id;
 	}
@@ -126,6 +136,30 @@ public class EngineCfg implements Serializable{
 	}
 	public void setEngine(int engine) {
 		this.engine = engine;
+	}
+	public double getMemoryUsage() {
+		return memoryUsage;
+	}
+	public void setMemoryUsage(double memoryUsage) {
+		this.memoryUsage = memoryUsage;
+	}
+	public double getCpuUsage() {
+		return cpuUsage;
+	}
+	public void setCpuUsage(double cpuUsage) {
+		this.cpuUsage = cpuUsage;
+	}
+	public double getDiskUsage() {
+		return diskUsage;
+	}
+	public void setDiskUsage(double diskUsage) {
+		this.diskUsage = diskUsage;
+	}
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
 	}
 	
 }

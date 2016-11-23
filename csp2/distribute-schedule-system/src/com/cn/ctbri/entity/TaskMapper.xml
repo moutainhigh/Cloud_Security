@@ -20,10 +20,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="status==1">
 		  and t.execute_time between date_add(now(),interval -1 minute) and now()
 		</if>
-		 union 
+		<!-- union 
 		  select * from cs_task t
 		  where t.engine in (-1,0)
 		  and t.group_flag &lt;= date_add(now(),interval -10 minute)
+		limit #{page}-->
+	</select>
+	
+	<select id="findExpTask" parameterType="hashmap" resultMap="TaskRM">
+		  select * from cs_task t
+		  where 
+		  ((t.engine in (-1,0) and t.status != 3)
+			or (t.status in(0,1) and t.engine is NULL))
+		  and t.group_flag &lt;= date_add(now(),interval -10 minute) order by group_flag desc
+		  
 		<!--limit #{page}-->
 	</select>
 	
@@ -32,6 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from cs_task t
         where t.status = #{status} 
         <if test="status==2">
+          and t.engine not in (-1,0)
           and t.serviceId = #{serviceId} 
           and t.end_time &lt; now()
         </if>
@@ -40,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <!-- 根据条件查询引擎异常任务表 -->
-    <select id="findExpTask" parameterType="hashmap" resultMap="TaskRM">
+    <!-- <select id="findExpTask" parameterType="hashmap" resultMap="TaskRM">
         select * from cs_task t
         where t.status = #{status} 
         <if test="status==1">
@@ -48,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </if>
         order by t.execute_time
         limit #{page}
-    </select>
+    </select> -->
     
 	<!-- 更新任务信息 -->
 	<update id="update"  parameterType="com.cn.ctbri.entity.Task">
@@ -191,11 +202,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 二期 -->
     <!-- 根据订单Id和url查询任务 -->
     <select id="findTaskByOrderTaskId" parameterType="com.cn.ctbri.entity.Task" resultType="com.cn.ctbri.entity.Task">
-    	select * from cs_task t 
-    	where t.orderTaskId = #{orderTaskId} 
-    	<if test="status != 0">
-          and t.status != #{status} 
-        </if>
+        select * from cs_task a,
+	       (
+	       select min(t.taskId) as taskId from cs_task t 
+	    	where t.orderTaskId = #{orderTaskId}
+	    	<if test="status == 3">
+	          and t.status != #{status} 
+	        </if>
+	        <if test="status == 2">
+	          and t.status = #{status} 
+	        </if>
+	        <if test="status == 1">
+	          and t.status != #{status} 
+	        </if>
+	       group by t.group_flag
+	       ) b
+       where a.taskId = b.taskId
+        
     </select>
     
     <select id="findTaskByTaskObj" parameterType="com.cn.ctbri.entity.Task" resultType="com.cn.ctbri.entity.Task">
