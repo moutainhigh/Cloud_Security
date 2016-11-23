@@ -156,27 +156,14 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 				}else{//安恒
 					if(task.getServiceId()==5){//可用性检测
 						//根据groupId查询alarm表及taskwarn表
-//						List<TaskWarn> taskwarnList = taskWarnService.findTaskWarnByTaskId(task.getTaskId());
-//						if(taskwarnList!=null && taskwarnList.size()>0){
-						if(task.getStatus()==3){
-							//返回结果
-//							JSONArray taskwarnObject = new JSONArray().fromObject(taskwarnList);
-//							json.put("taskwarnObj", taskwarnObject);
-//							json.put("alarmObj", "");
-//							json.put("status", "success");
-//							ReInternalWorker.vulnScanGetOrderTaskResult(json.toString());
-							//返回结果
-							json.put("status", "success");
-							json.put("taskObj", task);
-							json.put("taskwarnObj", "");
-							json.put("alarmObj", "");
-							ReInternalWorker.vulnScanGetOrderTaskResult(json.toString());
-						}else{
-							JSONObject taskObject = new JSONObject().fromObject(task);
-							json.put("taskObj", taskObject);
-							json.put("status", "success");
-							ReInternalWorker.vulnScanGetOrderTaskStatus(json.toString());
-						}
+						List<TaskWarn> taskwarnList = taskWarnService.findTaskWarnByTaskId(task.getTaskId());
+						JSONObject taskObject = new JSONObject().fromObject(task);
+						json.put("taskObj", taskObject);
+						json.put("status", "success");
+						//返回结果
+						JSONArray taskwarnObject = new JSONArray().fromObject(taskwarnList);
+						json.put("taskwarnObj", taskwarnObject);
+						ReInternalWorker.vulnScanGetOrderTaskResult(json.toString());
 					}else{//其他
 						Map<String,Object> paramMap = new HashMap<String,Object>();
 						paramMap.put("taskId", task.getTaskId());
@@ -187,7 +174,6 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 							JSONArray alarmObject = new JSONArray().fromObject(alarmList);
 							json.put("status", "success");
 							json.put("taskObj", task);
-							json.put("taskwarnObj", "");
 							json.put("alarmObj", alarmObject);
 							ReInternalWorker.vulnScanGetOrderTaskResult(json.toString());
 						}else{
