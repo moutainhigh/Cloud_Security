@@ -75,12 +75,14 @@ import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAPI;
 import com.cn.ctbri.entity.OrderTask;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IOrderAPIService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IOrderTaskService;
 import com.cn.ctbri.service.ITaskService;
+import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.MD5Token;
@@ -112,6 +114,8 @@ public class NorthAPIService {
     private IOrderAPIService orderAPIService;
 	@Autowired
     private IUserService userService;
+	@Autowired
+    ITaskWarnService taskWarnService;
 	
 	//获取getSession
 	@GET
@@ -329,10 +333,17 @@ public class NorthAPIService {
 			if(order!=null){
 				//taskId 不空取任务信息，为空取订单状态
 				if(taskId!=null && taskId!=""){
-					List<Alarm> alist = alarmService.findAlarmByTaskId(taskId);
-					JSONArray alarmObject = new JSONArray().fromObject(alist);
-					json.put("code", 200);
-					json.put("alarmObj", alarmObject);
+					if(order.getServiceId()!=5){
+						List<Alarm> alist = alarmService.findAlarmByTaskId(taskId);
+						JSONArray alarmObject = new JSONArray().fromObject(alist);
+						json.put("code", 200);
+						json.put("alarmObj", alarmObject);
+					}else{
+						List<TaskWarn> taskwarnList = taskWarnService.findTaskWarnByTaskId(Integer.parseInt(taskId));
+						JSONArray taskwarnObj = new JSONArray().fromObject(taskwarnList);
+						json.put("code", 200);
+						json.put("taskwarnObj", taskwarnObj);
+					}
 					return json.toString();
 				}else{
 					return json.toString();
