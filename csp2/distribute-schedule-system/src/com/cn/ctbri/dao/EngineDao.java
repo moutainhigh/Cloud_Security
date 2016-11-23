@@ -34,5 +34,9 @@ public interface EngineDao {
 
 	EngineCfg getEngineById(int id);
 
+	void saveOrUpdate(EngineCfg en);
+
+	List<EngineCfg> findResourceByParam(Map<String, Object> resourcMap);
+
 
 }
