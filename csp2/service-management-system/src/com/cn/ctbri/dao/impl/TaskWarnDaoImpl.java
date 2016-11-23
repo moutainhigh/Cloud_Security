@@ -21,7 +21,7 @@ public class TaskWarnDaoImpl extends DaoCommon implements TaskWarnDao {
 	 * 功        能： UserMapper命名空间
 	 */
 	private String ns = "com.cn.ctbri.entity.TaskWarnMapper.";
-	
+		
 	//根据订单id获取告警信息
 	public List<TaskWarn> findTaskWarnByOrderId(Map<String, Object> hashmap) {
 		return getSqlSession().selectList(ns+"findTaskWarnByOrderId", hashmap);
@@ -33,6 +33,13 @@ public class TaskWarnDaoImpl extends DaoCommon implements TaskWarnDao {
 	//可用率统计
 	public List<TaskWarn> findUseableByOrderId(String orderId) {
 		return getSqlSession().selectList(ns+"findUseableByOrderId", orderId);
-	}		
+	}
+	//根据group_id查询
+	public List<TaskWarn> findTaskWarnByGroupId(String groupId) {
+		return getSqlSession().selectList(ns+"findTaskWarnByGroupId", groupId);
+	}
+	public List<TaskWarn> findTaskWarnBytaskId(int taskId) {
+		return getSqlSession().selectList(ns+"findTaskWarnByTaskId", taskId);
+	}
 	
 }
