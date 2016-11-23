@@ -1,5 +1,6 @@
 package com.cn.ctbri.webservice;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.POST;
@@ -19,6 +20,7 @@ import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderTask;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IOrderService;
@@ -185,16 +187,14 @@ public class ReInternalWebService {
 	public String VulnScan_Get_OrderTaskResult(String dataJson) {
 		Respones r = new Respones();
 		try {
+			//可用性告警初始化数量
+			int warnCount = 0;
 			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
 			String status = jsonObj.getString("status");
 			String taskStatus = jsonObj.getString("taskStatus");
 			if(status.equals("success")){
 				JSONObject taskObj = jsonObj.getJSONObject("taskObj");
-				String alarmStr = jsonObj.getString("alarmObj");
-				String taskwarnStr = jsonObj.getString("taskwarnObj");
-				//订单id
-//				String orderId = taskObj.getString("order_id");
-				//订单id
+				//任务状态
 				String task_status = taskObj.getString("status");
 				//任务id
 				int taskId = taskObj.getInt("taskId");
@@ -239,52 +239,92 @@ public class ReInternalWebService {
                 t.setReceiveBytes(receiveBytes);
 				taskService.insert(t);
 				
-				
-				//add by tangxr 2016-01-23
-//				Task t = taskService.findByOrderTaskId(orderTaskId);
-				if(alarmStr!=null && !alarmStr.equals("")){
-					JSONArray alarmArray = jsonObj.getJSONArray("alarmObj");
-					for (Object aObj : alarmArray) {
-						JSONObject alarmObj = (JSONObject) aObj;
-						taskId = Integer.parseInt(alarmObj.getString("taskId"));
-			            String alarm_time = alarmObj.getString("alarm_time");
-			            String url = alarmObj.getString("url");
-			            String alarm_type = alarmObj.getString("alarm_type");
-			            String name = alarmObj.getString("name");
-			            String score = alarmObj.getString("score");
-			            String advice = alarmObj.getString("advice");
-			            String alarm_content = alarmObj.getString("alarm_content");
-			            String keyword = alarmObj.getString("keyword");
-			            String serviceId = alarmObj.getString("serviceId");
-			            String level = alarmObj.getString("level");
-			            
-			            Alarm alarm = new Alarm();
-						alarm.setTaskId(taskId);
-//						alarm.setAlarm_time(DateUtils.stringToDateNYRSFM(alarm_time));
-						alarm.setAlarm_time(alarm_time);
-						alarm.setUrl(url);
-						alarm.setAlarm_type(alarm_type);
-						alarm.setName(name);
-						alarm.setScore(score);
-						alarm.setAdvice(advice);
-						alarm.setLevel(Integer.parseInt(level));
-						alarm.setAlarm_content(alarm_content);
-						alarm.setKeyword(keyword);
-						alarm.setServiceId(Integer.parseInt(serviceId));
-						alarmService.saveAlarm(alarm);
+				Order o = orderService.findOrderByOrderId(orderId);
+				if(o.getServiceId()!=5){
+					//add by tangxr 2016-01-23
+//					Task t = taskService.findByOrderTaskId(orderTaskId);
+					String alarmStr = jsonObj.getString("alarmObj");
+					if(alarmStr!=null && !alarmStr.equals("")){
+						JSONArray alarmArray = jsonObj.getJSONArray("alarmObj");
+						for (Object aObj : alarmArray) {
+							JSONObject alarmObj = (JSONObject) aObj;
+							taskId = Integer.parseInt(alarmObj.getString("taskId"));
+				            String alarm_time = alarmObj.getString("alarm_time");
+				            String url = alarmObj.getString("url");
+				            String alarm_type = alarmObj.getString("alarm_type");
+				            String name = alarmObj.getString("name");
+				            String score = alarmObj.getString("score");
+				            String advice = alarmObj.getString("advice");
+				            String alarm_content = alarmObj.getString("alarm_content");
+				            String keyword = alarmObj.getString("keyword");
+				            String serviceId = alarmObj.getString("serviceId");
+				            String level = alarmObj.getString("level");
+				            
+				            Alarm alarm = new Alarm();
+							alarm.setTaskId(taskId);
+//							alarm.setAlarm_time(DateUtils.stringToDateNYRSFM(alarm_time));
+							alarm.setAlarm_time(alarm_time);
+							alarm.setUrl(url);
+							alarm.setAlarm_type(alarm_type);
+							alarm.setName(name);
+							alarm.setScore(score);
+							alarm.setAdvice(advice);
+							alarm.setLevel(Integer.parseInt(level));
+							alarm.setAlarm_content(alarm_content);
+							alarm.setKeyword(keyword);
+							alarm.setServiceId(Integer.parseInt(serviceId));
+							alarmService.saveAlarm(alarm);
+						}
+					}
+				}else{
+					String taskwarnStr = jsonObj.getString("taskwarnObj");
+					if(taskwarnStr!=null && !taskwarnStr.equals("")){
+						JSONArray taskwarnArray = jsonObj.getJSONArray("taskwarnObj");
+						warnCount = taskwarnArray.size();
+						for (Object wObj : taskwarnArray) {
+							JSONObject warnObj = (JSONObject) wObj;
+							int warnid = warnObj.getInt("id");
+							String cat1 = warnObj.getString("cat1");
+							String cat2 = warnObj.getString("cat2");
+				            String name = warnObj.getString("name");
+				            String severity = warnObj.getString("severity");
+				            String rule = warnObj.getString("rule");
+				            String ct = warnObj.getString("ct");
+				            String app_p = warnObj.getString("app_p");
+				            String tran_p = warnObj.getString("tran_p");
+				            String url = warnObj.getString("url");
+				            String msg = warnObj.getString("msg");
+				            String task_id = warnObj.getString("task_id");
+				            
+				            TaskWarn taskwarn = new TaskWarn();
+				            taskwarn.setId(warnid);
+			                taskwarn.setCat1(cat1);
+			                taskwarn.setCat2(cat2);
+			                taskwarn.setName(name);
+			                taskwarn.setSeverity(Integer.parseInt(severity));
+			                taskwarn.setRule(rule);
+			                taskwarn.setCt(Integer.parseInt(ct));
+			                taskwarn.setApp_p(app_p);
+			                taskwarn.setTran_p(tran_p);
+			                taskwarn.setUrl(url);
+			                taskwarn.setMsg(msg);
+			                taskwarn.setTask_id(task_id);
+			                taskwarn.setWarn_time(new Date());
+			                taskwarn.setServiceId(5);
+			                taskService.insertTaskWarn(taskwarn);
+						}
 					}
 				}
-				if(taskwarnStr!=null && !taskwarnStr.equals("")){
-					JSONArray taskwarnObj = jsonObj.getJSONArray("taskwarnObj");
-				}
 				
-		        Task task = new Task();
-		        task.setTaskId(taskId);
-		        task.setOrderTaskId(orderTaskId);
-		        task.setStatus(3);
-		        task.setTaskProgress("101");
-		        //更新orderTask数据库
-		        taskService.update(task);
+				if(o.getServiceId()!=5||(o.getServiceId()==5&&task_status.equals("3"))){
+					Task task = new Task();
+			        task.setTaskId(taskId);
+			        task.setOrderTaskId(orderTaskId);
+			        task.setStatus(3);
+			        task.setTaskProgress("101");
+			        //更新orderTask数据库
+			        taskService.update(task);
+				}
 		        
 		        //add by tangxr 2016-2-25
 		        //查找运行的task
@@ -303,12 +343,12 @@ public class ReInternalWebService {
 				}
 		        //更新订单状态
 		        if(taskStatus.equals("finish")){
-		        	if(runs.size()==0 && count>0){
+		        	if(runs.size()==0 && (count>0||warnCount>0)){
 			        	Order order = new Order();
 						order.setId(orderId);
 						order.setStatus(2);//订单完成有告警
 						orderService.update(order);
-			        }else if(runs.size()==0 && count==0){
+			        }else if(runs.size()==0 && (count==0||warnCount==0)){
 			        	Order order = new Order();
 						order.setId(orderId);
 						order.setStatus(1);//订单完成无告警
@@ -316,7 +356,7 @@ public class ReInternalWebService {
 			        }
 		        	
 		        	//第三方推送  add by tangxr 2016-4-9
-		        	Order o = orderService.findOrderByOrderId(orderId);
+		        	
 		        	User user = userService.findUserByUserId(o.getUserId());
 		        	//第三方推送url
 		        	if(user!=null){
