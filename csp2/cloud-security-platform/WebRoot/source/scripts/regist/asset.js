@@ -127,7 +127,7 @@ function saveAsset() {
 		    		            					} else if(data.subResult == 2) {
 		    		            						$("#assetAddr_msg").html("请输入正确的资产地址!");
 		    		            					}else if(data.subResult == 3) {
-		    		            						$("#assetName_msg").html("资产地址重复!");
+		    		            						$("#assetAddr_msg").html("资产地址重复!");
 		    		            					}
 		    		            					break;
 		    		            				case 4:
