@@ -463,11 +463,17 @@ function saveDetails(serviceId,parent,flag){
 	//服务详细信息
 	var servIcon = '';
 	if(servSelected == 0){
-		if(flag){
-			servIcon = $("#servDetailHidden").val();
-		} else {
-			servIcon = $("#resServDetailHidden").val() + ";" + $("#servDetailHidden").val();
-		}
+		//if(flag){
+		//	servIcon = $("#servDetailHidden").val();
+		//} else {
+			$(".previewUploadName").each(function(index){ 
+				var fileName = $(this).val();
+				if (fileName!= null && fileName != '') {
+					servIcon = servIcon + ";" + fileName;
+				}
+			
+			});
+		//}
 		
 	} else {
 		servIcon = $.trim($("#u39_input").val());
