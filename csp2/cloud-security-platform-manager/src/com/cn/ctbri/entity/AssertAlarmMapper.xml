@@ -31,12 +31,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				    <if test="serverId!=null and serverId!=''">
 				     	 and o.serviceId=#{serverId}
 				    </if>
-					<if test="begin_date!=null and begin_date!=''">
+					<!-- <if test="begin_date!=null and begin_date!=''">
                     	 and date_format(o.begin_date,'%Y-%m-%d')=date_format(#{begin_date},'%Y-%m-%d')
              		</if>
           	 		<if test="end_date!=null and end_date!=''">
              	  		 and date_format(o.end_date,'%Y-%m-%d')=date_format(#{end_date},'%Y-%m-%d')
-           			</if>
+           			</if> -->
+           			<if test="begin_date!='' and end_date!=''">
+           				and date_format(o.begin_date,'%Y-%m-%d')&gt;=date_format(#{begin_date},'%Y-%m-%d')
+           				and date_format(o.begin_date,'%Y-%m-%d')&lt;=date_format(#{end_date},'%Y-%m-%d')
+		            </if>    
+		            <if test="begin_date!='' and end_date==''">
+		            	and date_format(o.begin_date,'%Y-%m-%d')&gt;=date_format(#{begin_date},'%Y-%m-%d')
+		            </if>
+		            <if test="begin_date=='' and end_date!=''">
+		            	and date_format(o.begin_date,'%Y-%m-%d')&lt;=date_format(#{end_date},'%Y-%m-%d')
+		            </if>
            			<if test="orderCode!=null and orderCode!=''">
              	   	   and o.id=#{orderCode}
            			</if>
@@ -62,12 +72,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				    <if test="serverId!=null and serverId!=''">
 				     	 and o.serviceId=#{serverId}
 				    </if>
-					<if test="begin_date!=null and begin_date!=''">
-                    	 and date_format(o.begin_date,'%Y-%m-%d')=date_format(#{begin_date},'%Y-%m-%d')
-             		</if>
-          	 		<if test="end_date!=null and end_date!=''">
-             	  		 and date_format(o.end_date,'%Y-%m-%d')=date_format(#{end_date},'%Y-%m-%d')
-           			</if>
+           			<if test="begin_date!='' and end_date!=''">
+           				and date_format(o.begin_date,'%Y-%m-%d')&gt;=date_format(#{begin_date},'%Y-%m-%d')
+           				and date_format(o.begin_date,'%Y-%m-%d')&lt;=date_format(#{end_date},'%Y-%m-%d')
+		            </if>    
+		            <if test="begin_date!='' and end_date==''">
+		            	and date_format(o.begin_date,'%Y-%m-%d')&gt;=date_format(#{begin_date},'%Y-%m-%d')
+		            </if>
+		            <if test="begin_date=='' and end_date!=''">
+		            	and date_format(o.begin_date,'%Y-%m-%d')&lt;=date_format(#{end_date},'%Y-%m-%d')
+		            </if>
            			<if test="orderCode!=null and orderCode!=''">
              	   	    and o.id=#{orderCode}
            			</if>

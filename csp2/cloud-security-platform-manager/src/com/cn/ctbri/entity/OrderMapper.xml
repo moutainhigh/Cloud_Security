@@ -589,7 +589,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <!--  当月交易额总数  -->
     <select id="findOrderAmountMonthLine" parameterType="hashmap" resultType="com.cn.ctbri.entity.Order">
-       SELECT o.price price,DATE_FORMAT(o.create_date,'%Y-%m-%d') AS time FROM cs_order o,cs_service s
+       SELECT IFNULL(sum(o.price),0) price,DATE_FORMAT(o.create_date,'%Y-%m-%d') AS time FROM cs_order o,cs_service s
         WHERE s.id=o.serviceId AND o.payFlag = '1' and date_format(o.create_date,'%Y-%m')=#{createDate} 
         and s.id=#{servName}  and o.price is not null and o.price !=0
 	   GROUP BY time

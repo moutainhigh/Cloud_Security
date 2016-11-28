@@ -106,8 +106,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="orderno != null and orderno != ''">and o.id like concat('%',concat(#{orderno},'%'))</if>
 		<if test="createDateS != null and createDateS != '' ">and o.create_date &gt;= #{createDateS}</if>
 		<if test="createDateE != null and createDateE != ''">and o.create_date &lt;= #{createDateE}</if>
-		<if test="servDateS != null and servDateS != ''">and o.begin_date &gt;= #{servDateS} </if>
-		<if test="servDateE != null and servDateE != ''">and (o.type = 1 and o.end_date &lt;= #{servDateE})</if>
+		<!-- <if test="servDateS != null and servDateS != ''">and o.begin_date &gt;= #{servDateS} </if>
+		<if test="servDateE != null and servDateE != ''">and (o.type = 1 and o.end_date &lt;= #{servDateE})</if> -->
+		
+		<if test="servDateS!='' and servDateE!=''">
+			and o.begin_date &gt;=#{servDateS}
+			and o.begin_date &lt;=#{servDateE}
+        </if>    
+        <if test="servDateS!='' and servDateE==''">
+        	and o.begin_date &gt;=#{servDateS}
+        </if>
+        <if test="servDateS=='' and servDateE!=''">
+        	and o.begin_date &lt;=#{servDateE}
+        </if>
 	<!-- 	<if test="isapi != null and isapi != ''"> and o.isAPI = #{isapi}</if> -->
 		<if test="orderusername != null and orderusername != ''"> and o.userId in (select id from cs_user where name like concat('%',concat(#{orderusername}, '%')))</if>
 		<if test="assetname != null and assetname != '' and assetaddr != null and assetaddr != ''">
@@ -119,7 +130,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="assetaddr != null and assetaddr != ''">
 			and o.id in (select orderId from cs_order_asset where assetAddr like concat('%', concat(#{assetaddr}, '%')))
 		</if>
-
+		and payFlag = 1
+		and delFlag !=1
+		order by create_date desc
 	</select>
 	<!-- 订单查询tab end -->
 	
