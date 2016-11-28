@@ -110,7 +110,7 @@
                  </div>
                  <div class="coupontab" style="width:1100px;">
 					<div class="user_center clear">
-					<div class="user_right" style="border-bottom:#e5e5e5 solid 1px;min-height:auto">
+					<div class="user_right" style="border-bottom:#e5e5e5 solid 1px;min-height:314px">
 						<div style="margin-top:14px;margin-left: 320px;">
 							<p class="dd_detail"><span class="bigfont">${order.name }</span></p>
 							<p class="dd_detail"><span class="detail_l fl">用户ID</span><span class="detail_r fl">${user.id}</span></p>
