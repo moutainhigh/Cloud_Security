@@ -11,8 +11,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <title>告警详情</title>
 <link href="${ctx}/source/adminCss/mian.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/source/adminCss/head_bottom.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/adminCss/backstage.css" type="text/css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/common.css"/>
+<link rel="stylesheet" type="text/css" href="${ctx}/source/manageCss/index.css"/>
 <link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet" />
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet" />	
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet" />
@@ -247,43 +248,10 @@ function websecDetail(logId){
        </div>        
 		</div>
         
-<div class="bottom_bj">
-<div class="bottom">
-<div class="bottom_main">
-  <h3><a href="###">新手入门</a></h3>
-  <ul>
-      <li><a href="${ctx}/registUI.html">新用户注册</a></li>
-    <li><a href="${ctx}/loginUI.html">用户登录</a></li>
-    <li><a href="###">找回密码</a></li>
-  </ul>
-</div>
-<div  class="bottom_main">
- <h3><a href="###"> 帮助</a></h3>
-  <ul>
-  <li><a href="${ctx}/aider.html">常见问题</a></li>
-  </ul>
-</div>
-<div  class="bottom_main">
-  <h3><a href="###">厂商合作</a></h3>
-  <ul>
-    <li><a href="###">华为</a></li>
-    <li><a href="###">安恒</a></li>
-    <li><a href="###">知道创宇</a></li>
-  </ul>
-</div>
-<div  class="bottom_main">
-<h3><a href="###">联系我们</a></h3>
-<ul>
-<li><a href="###">客户电话</a></li>
-</div>
-<div  class="bottom_main" style="width:380px;">
-<h3><a href="###">版权信息</a></h3>
- <ul>
- <li>Copyright&nbsp;©&nbsp;2015 中国电信股份有限公司北京研究院<br />
-京ICP备12019458号－10</li>
-</div>
-</div>
-</div>
+<!--============bottom============-->
+	<!-- footer start -->
+	<c:import url="/footer.html"></c:import>
+	<!-- footer end -->
 </body>
 
 
