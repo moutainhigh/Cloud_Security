@@ -41,7 +41,7 @@ function activeCustomerSupport(){
                 				if(userInfoList[i].assetlist[j] != null){
                 					if(userInfoList[i].assetlist[j].assetName != null && userInfoList[i].assetlist[j].assetName != ""
                 						&& userInfoList[i].assetlist[j].assetAddr != null && userInfoList[i].assetlist[j].assetAddr != ""){
-                        				html += '<tr><td>'+userInfoList[i].assetlist[j].assetName+'</td>';
+                        				html += '<tr><td><a href="javascript:void(0)" onclick="assetDetail('+userInfoList[i].assetlist[j].assetId+')">'+userInfoList[i].assetlist[j].assetName+'</a></td>';
                 			         	html +=	'<td>'+userInfoList[i].assetlist[j].assetAddr+'</td></tr>';
                 					}
                 				}
@@ -254,4 +254,21 @@ function activeQueryResource(){
         	}
         }
     });
+}
+
+function assetDetail(assetId){
+	$.ajax({
+	       type: "POST",
+	       url: "assetDetail.html",
+	       data: {"assetId":assetId},
+	       dataType:"json",
+	       success: function(data){
+	      		$("#assetName").html(data.assetName);
+	      		$("#assetAddr").html(data.assetAddr);
+	      		$("#create_date").html(data.create_date);
+	      		$("#purpose").html(data.purpose);
+	      		
+	      		$(".mark,.data_tanc").show();
+	      	}
+	     });
 }

@@ -1,52 +1,98 @@
-function edit(){
-	 var type=$("#editType").val();//获取用户类型
-	 var ipStart=$("#editStartIP").val();
-	 var ipEnd=$("#editEndIP").val();
-	 
-		 var p1=$("#update_password").val();//获取密码框的值
-		 var p2=$("#update_confirm_password").val();//获取重新输入的密码值
-	  if(p1==""){
-		    	$("#update_password_msg").html("<font color='red'>密码不能为空!</font>");
-	   }else if(p1.length<6||p1.length>20){
-		   $("#update_password_msg").html("请输入6-20位，支持英文，数字，字符组合");
-	   }else{
-		   	$("#update_password_msg").html("");
-	   }
-	  if(p2==""){
-		   	$("#update_confirm_password_msg").html("<font color='red'>确认密码不能为空!</font>");
-	  }else if(p2.length<6||p2.length>20){
-		   $("#update_confirm_password_msg").html("请输入6-20位，支持英文，数字，字符组合");
-	   }else{
-		   	$("#update_confirm_password_msg").html("");
-	   }
-	  if(p2!=null&&p2!=""){
-		  if (p1!=p2) {
-		   	$("#update_confirm_password_msg").html("<font color='red'>两次输入密码不一致，请重新输入</font>");
-		
-		  }else{
-		    $("#update_confirm_password_msg").html("");
-			 if(type=="-1"){
-				 $("#edit_type_msg").html("<font color='red'>请选择用户分组!</font>");
-			 }else{
-				 if(type=="3"){
-					 var mobile = $("#editPhone").val();
-					 if(mobile=="" || mobile==null){
-						 $("#edit_mobile_msg").html("企业用户手机号码不能为空!");
-					 }else{
-						 $("#edit_mobile_msg").html("");
-						 if(CheckIPEdit(ipStart,ipEnd)){
-							 $("#editUserForm").submit();
-						 }
-					 }
-				 }else{
-					 $("#edit_mobile_msg").html("");
-					 $("#editUserForm").submit();
-				 }
-				 
-			}
-		  }
-	  }
+var checkName1 = 0;
 
+//校验用户名
+function checkEditName(){
+	var name = $("#editUseName").val();
+	var	pattern	= /^[a-zA-Z0-9_]{4,20}$/;
+	var flag = pattern.test(name);
+	if(name==""||name==null){
+		$("#update_name_msg").html("用户名不能为空");
+		checkName1=0;
+	}else{
+		if(flag){
+			$.ajax({
+               type: "POST",
+               url: "/cloud-security-platform-manager/regist_checkName.html",
+               data: {"name":name,"mark":"edit"},
+               dataType:"json",
+               success: function(data){
+                   if(data.count>0){
+                   		$("#update_name_msg").html("用户名已经存在");
+                   		checkName1=0;
+                   }else{
+                   		$("#update_name_msg").html("");
+                   		checkName1=1;
+                   }
+               },
+            }); 
+		}else{
+			$("#update_name_msg").html("请输入4-20位英文、数字、下划线及其组合");
+			checkName1=0;
+		}
+	}
+}
+
+function edit(){
+	var type = $("#editType").val();// 获取用户类型
+	var ipStart = $("#editStartIP").val();
+	var ipEnd = $("#editEndIP").val();
+	var name = $("#editUseName").val();// 用户名
+	var editRealName = $("#editRealName").val();//真实姓名
+
+	checkEditName();
+	if (checkName1 == 1) {
+		if(editRealName.length>12){
+			 $("#update_realname_msg").html("真实姓名长度不能大于12");
+			 return;
+		 }else{
+			 $("#update_realname_msg").html("");
+		 }
+		var p1 = $("#update_password").val();// 获取密码框的值
+		var p2 = $("#update_confirm_password").val();// 获取重新输入的密码值
+		if (p1 == "") {
+			$("#update_password_msg").html("<font color='red'>密码不能为空!</font>");
+		} else if (p1.length < 6 || p1.length > 20) {
+			$("#update_password_msg").html("请输入6-20位，支持英文，数字，字符组合");
+		} else {
+			$("#update_password_msg").html("");
+		}
+		if (p2 == "") {
+			$("#update_confirm_password_msg").html(
+					"<font color='red'>确认密码不能为空!</font>");
+		} else if (p2.length < 6 || p2.length > 20) {
+			$("#update_confirm_password_msg").html("请输入6-20位，支持英文，数字，字符组合");
+		} else {
+			$("#update_confirm_password_msg").html("");
+		}
+		if (p2 != null && p2 != "") {
+			if (p1 != p2) {
+				$("#update_confirm_password_msg").html("<font color='red'>两次输入密码不一致，请重新输入</font>");
+
+			} else {
+				$("#update_confirm_password_msg").html("");
+				if (type == "-1") {
+					$("#edit_type_msg").html(
+							"<font color='red'>请选择用户分组!</font>");
+				} else {
+					if (type == "3") {
+						var mobile = $("#editPhone").val();
+						if (mobile == "" || mobile == null) {
+							$("#edit_mobile_msg").html("企业用户手机号码不能为空!");
+						} else {
+							$("#edit_mobile_msg").html("");
+							if (CheckIPEdit(ipStart, ipEnd)) {
+								$("#editUserForm").submit();
+							}
+						}
+					} else {
+						$("#edit_mobile_msg").html("");
+						$("#editUserForm").submit();
+					}
+
+				}
+			}
+		}
+	}
 }
 
 //验证IP

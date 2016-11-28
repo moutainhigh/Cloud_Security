@@ -76,6 +76,7 @@ function add(){
 	 var ipEnd=$("#addEndIP").val();
 	 var p1=$("#regist_password").val();//获取密码框的值
 	 var p2=$("#regist_confirm_password").val();//获取重新输入的密码值
+	 var realName=$("#realName").val();//真实姓名
 
 	 checkName();
 	 checkPassword();
@@ -89,6 +90,12 @@ function add(){
 			} else {
 				$("#regist_name_msg").html("");
 			}
+		 if(realName.length>12){
+			 $("#regist_realname_msg").html("真实姓名长度不能大于12");
+			 return;
+		 }else{
+			 $("#regist_realname_msg").html("");
+		 }
 //			if (p1 == "") {
 //				$("#regist_password_msg").html("<font color='red'>密码不能为空!</font>");
 //			} else if (p1.length < 6 || p1.length > 20) {
