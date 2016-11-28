@@ -218,11 +218,14 @@ $(function(){
 	        success: function(data){
 	        	if(data.sta == "1"){
 		        	var name = "";
+		        	var nameDetail = "";
 					if(data.flag == "1"){
 						name += "日交易额总数";
+						nameDetail += "时交易额总数";
 					}
 	                if(data.flag == "2"){
 						name += "月交易额总数";
+						nameDetail += "日交易额总数";
 					}
 	                
 		        	$.each(data.orderAmountLineList,function(i,item){
@@ -254,7 +257,7 @@ $(function(){
 	    						}],
 	    						//设置数据
 	    						series : [{
-	    							"name":name,
+	    							"name":nameDetail,
 	    							"type":"line",
 	    							"data":value
 	    						}],
