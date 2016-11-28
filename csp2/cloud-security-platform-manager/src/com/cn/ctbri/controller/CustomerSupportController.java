@@ -17,7 +17,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cn.ctbri.cfg.dssWorker;
+import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.ICustomerSupportSevice;
 import com.cn.ctbri.util.CommonUtil;
 
@@ -26,6 +28,8 @@ public class CustomerSupportController {
 
 	@Autowired
 	ICustomerSupportSevice customerSupportService;
+	@Autowired
+	IAssetService assetService;
 
 	/**
 	 * 功能描述：客服支持系统页面
@@ -189,4 +193,19 @@ public class CustomerSupportController {
 			e.printStackTrace();
 		}
 	}
+	
+	@RequestMapping(value="assetDetail.html")
+    public void assetDetail(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        int assetId = Integer.parseInt(request.getParameter("assetId"));
+        Asset asset = assetService.findById(assetId);
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("assetName", asset.getName());
+        map.put("assetAddr", asset.getAddr());
+        map.put("create_date", asset.getCreate_date());
+        map.put("purpose", asset.getPurpose());
+    	
+    	JSONObject JSON = CommonUtil.objectToJson(response, map);
+	    // 把数据返回到页面
+        CommonUtil.writeToJsp(response, JSON);
+    }
 }

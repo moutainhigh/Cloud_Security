@@ -73,10 +73,11 @@ public class AdminAssetController {
 	}
 	/**
 	 * 功能描述：资产用途统计分析/资产服务情况分析
+	 * @throws UnsupportedEncodingException 
 	 *		 @time 2015-10-29
 	 */
 	@RequestMapping("/adminPurposeAssetUI.html")
-	public String dataPurposeUI(HttpServletRequest request,HttpServletResponse response){
+	public String dataPurposeUI(HttpServletRequest request,HttpServletResponse response) throws UnsupportedEncodingException{
 		
 		String tablList = request.getParameter("tablList");
 		if(tablList==null||"".equals(tablList)){
@@ -87,7 +88,7 @@ public class AdminAssetController {
 			anList="0";
 		}
 		String assetUserType = request.getParameter("assetUserType1");
-		String purpose = request.getParameter("purpose");
+		String purpose = new String(request.getParameter("purpose").getBytes("ISO-8859-1"), "UTF-8");
 		String begin_date=request.getParameter("begin_datevo");
 		String end_date = request.getParameter("end_datevo");
 		Map<String, Object> paramMap = new HashMap<String, Object>();

@@ -393,11 +393,16 @@ public class UserController {
 	 */
 	@RequestMapping(value="regist_checkName.html", method = RequestMethod.POST)
 	@ResponseBody
-	public void regist_checkName(String name,HttpServletResponse response){
+	public void regist_checkName(String name,String mark,HttpServletResponse response){
 		List<User> users = userService.findUserByName(name);
 		int count = 0;
 		if(users.size()>0){
-			count = users.size();
+			//mark作为修改标识，修改用户名未变情况。
+			if(mark!=null){
+				count = 0;
+			}else{
+				count = users.size();
+			}
 		}
 		Map<String, Object> m = new HashMap<String, Object>();
 		m.put("count", count);

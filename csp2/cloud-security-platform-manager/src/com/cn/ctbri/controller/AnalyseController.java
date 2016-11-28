@@ -74,6 +74,8 @@ public class AnalyseController {
 	@ResponseBody
 	public String bugCount(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("application/json;charset=UTF-8");
 		Date currentDate = new Date();
 //		currentDate.setMonth(3);
 //		currentDate.setDate(19);
@@ -205,7 +207,7 @@ public class AnalyseController {
 		// "]\"";
 		jsonObject.put("listResult", results.toString());
 		String resultGson = jsonObject.toString();// 转成json数据
-		response.setContentType("textml;charset=UTF-8");
+//		response.setContentType("textml;charset=UTF-8");
 		response.getWriter().print(resultGson);
 		return null;
 	}
@@ -483,7 +485,9 @@ public class AnalyseController {
 		jsonObject.put("names", attackTypeList);
 
 		String resultGson = jsonObject.toString();// 转成json数据
-		response.setContentType("textml;charset=UTF-8");
+//		response.setContentType("textml;charset=UTF-8");
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("application/json;charset=UTF-8");
 		response.getWriter().print(resultGson);
 		return null;
 	}
