@@ -23,9 +23,98 @@
 <script type="text/javascript" src="${ctx}/source/scripts/common/justgage.1.0.1.min.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/adminJs/customerSupport.js"></script>
+<script type="text/javascript">
+$(function() {
+     $(".data_cuo").on('click', function() {
+        $(".mark,.data_tanc").hide();
+     });
+     
+     $(".data_btn").on('click', function() {
+        $(".mark,.data_tanc").hide();
+     });
+ });
+
+</script>
 </head>
 
+<style type="text/css">
+   .data_box{ width: 1180px; margin-top: 20px;margin-bottom: 60px; }
+   .data_nav{ height: 38px; border-bottom: 1px solid #cfcfcf; margin-bottom: 10px;} 
+   .data_nav ul li { width: 160px; float:left; text-align: center; line-height: 38px; height: 38px; font-size: 16px; border: 1px solid #a6a6a6;  border-bottom: 0px; border-radius: 10px 10px 0 0 ;}
+   .data_min{clear: both; overflow: hidden; }
+   .data_1{ width:382px; border:1px solid #cbcbcb; height: 380px; float: left; margin-right: 13px;}
+   .data_table{ width: 1138px; height: 360px; border:1px solid #cbcbcb; margin-top: 15px; padding: 20px;}
+   .data_table_tab {margin-bottom: 20px; width: 100%; }
+   .data_table_tab tr th{ border-bottom: 1px solid #000;height: 40px; text-align: left;} 
+   .data_table_tab tr td{ height: 40px; background: #f0f8fa;} 
+   .data_table_cont a{ color: #00bfff;}
+   .mark{ width: 100%; 
+    height: 100%;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #000;
+    filter: alpha(opacity=40);
+    opacity: 0.4;
+    z-index: 400;}
+   .data_tanc{ width: 680px; height: 355px;  position: fixed; z-index: 500; top: 50%; margin-top: -202px; left: 50%; margin-left:-340px; background: #fff;  border: 1px solid #787878; display: none; }
+   .data_tanctop{ height: 46px; border-bottom: 1px solid #787878; background: #3c85db;}
+   .data_tanctop h2{ color: #fff; font-size: 18px; line-height: 46px; padding-left: 30px; width: 200px; float: left;}
+   .data_cuo{ width: 21px; height: 21px; float: right; background: url(${ctx}/source/images/dailog-close.png); margin-right: 10px; margin-top: 10px; cursor: pointer;}
+   .data_tancmain{ padding: 10px 20px; }
+   .tancmain_table{  width: 100%;}
+   .tancmain_table tr th{ border: 1px solid #787878; height: 28px; text-align: center;} 
+   .tancmain_table tr td{ height: 28px; font-size: 14px; line-height: 29px;} 
+   .data_btn{ width: 145px; height: 30px; line-height: 30px; font-size: 16px; text-align: center; background: #cdcdcd; border-radius: 10px; margin:auto; color: #323232; cursor: pointer;}
+   .nodata{
+	    text-align: center;
+	    margin: auto;
+	    padding-top: 100px;
+	}
+   
+
+</style>
+
 <body>
+<!-- 资产详细信息开始 -->
+  <div class="data_tanc">
+     <div class="data_tanctop">
+       <h2>资产详情</h2>
+       <div class="data_cuo"></div>
+     </div>
+     <div class="data_tancmain">
+       <table class="tancmain_table" width="100%">
+              <tbody>
+                 <tr>
+                     <th width="25%">资产名称</th>
+                     <th width="75%" id="assetName" style="text-align:left"></th>
+                                     
+                 </tr>
+                  <tr>
+                     <th width="25%">资产地址</th>
+                     <th width="75%" id="assetAddr" style="text-align:left"></th>
+                                     
+                 </tr>
+                  <tr>
+                     <th width="25%">创建日期</th>
+                     <th width="75%" id="create_date" style="text-align:left"></th>
+                                     
+                 </tr>
+                  <tr>
+                     <th width="25%">资产用途</th>
+                     <th width="75%" id="purpose" style="text-align:left"></th>
+                                     
+                 </tr>
+                 
+                
+              </tbody>
+            </table>
+     </div>
+     <div class="data_btn">关闭</div>
+  </div>
+<!-- 资产详细信息结束 -->
+
 <div id="container">
 		<!--=============top==============-->
 		

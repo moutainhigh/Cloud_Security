@@ -248,7 +248,7 @@ $(document).ready(function(){
           </tr>
           <tr class="register_tr">
             <td class="regist_title">真实姓名</td>
-            <td class="regist_input"><input type="text" name="realName" id="realName" class="regist_txt"/></td>
+            <td class="regist_input"><input type="text" name="realName" id="realName" class="regist_txt"/><span id="regist_realname_msg" style="color:red;float:left;"></td>
             <td class="regist_prompt"></td>
           </tr>
           <tr class="register_tr">
@@ -337,7 +337,7 @@ $(document).ready(function(){
         <table>
           <tr class="register_tr">
             <td class="regist_title">用户账号</td>
-            <td class="regist_input"><input type="text" class="regist_txt" name="name" id="editUseName"/><span id="regist_name_msg" style="color:red;float:left"></span></td>
+            <td class="regist_input"><input type="text" class="regist_txt" name="name" id="editUseName"/><span id="update_name_msg" style="color:red;float:left"></span></td>
             <td class="regist_prompt" style="text-align:left;">4-20位字符，支持英文，数字，字符组合</td>
           </tr>
           <tr class="register_tr">
@@ -352,7 +352,7 @@ $(document).ready(function(){
           </tr>
           <tr class="register_tr">
             <td class="regist_title">真实姓名</td>
-            <td class="regist_input"><input type="text" name="realName" id="editRealName" class="regist_txt"/></td>
+            <td class="regist_input"><input type="text" name="realName" id="editRealName" class="regist_txt"/><span id="update_realname_msg" style="color:red;float:left;"></td>
             <td class="regist_prompt"></td>
           </tr>
           <tr class="register_tr">
