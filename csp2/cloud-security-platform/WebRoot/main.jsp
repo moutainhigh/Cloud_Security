@@ -76,11 +76,21 @@ html, body{height: 100%; min-height: 100%; position: relative;}
 						-->
 						<c:forEach var="list" items="${adList}" varStatus="status">
 							<c:if test="${status.index ==0}">
-								<li style=" display: list-item;"><div class="vb"><a href="${ctx}/registUI.html"><img src="${ctx}/source/images/ad/${list.image }" alt=""></a></div></li>
+								<li style=" display: list-item;">
 							</c:if>
 							<c:if test="${status.index !=0}">
-								<li style=""><div class="vb"><a href="#"><img src="${ctx}/source/images/ad/${list.image }" alt=""></a></div></li>
+								<li style="">
 							</c:if>
+									<div class="vb">
+										<c:if test="${list.id ==4 && list.image == 'NewVIP.png'}">
+											<a href="${ctx}/registUI.html"><img src="${ctx}/source/images/ad/${list.image }" alt="" style="width:100%;height:100%"></a>
+										</c:if>
+										<c:if test="${list.id !=4 && list.image != 'NewVIP.png'}">
+											<a href="#"><img src="${ctx}/source/images/ad/${list.image }" alt="" style="width:100%;height:100%"></a>
+										</c:if>
+										
+									</div>
+								</li>
 						</c:forEach>
 					</ul>
 				</div>
