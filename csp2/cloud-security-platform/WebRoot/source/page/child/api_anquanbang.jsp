@@ -98,10 +98,10 @@ function buyAPI(apiId){
 				<div class="bannerB">
 					<ul class="bannerHeight banner_img clearfix">
 					<c:forEach var="list" items="${adList}" varStatus="status">
-							<c:if test="${status.index ==0}">
+							<c:if test="${list.id ==12}">
 								<li style="display: list-item;">
 									<div class="vb data">
-									<a href="#"><img src="${ctx}/source/images/ad/${list.image }" alt="">
+									<a href="#"><img src="${ctx}/source/images/ad/${list.image }" alt="" style="width:100%;height:100%">
 										<span class="lt">已监测网站<em id="num">${webSite }</em>个</span>
 				                        <span class="rt">发现断网<em id="num3">${brokenNetwork }</em>次</span>
 				                        <span class="rm">发现<em id="num2">${leakNum }</em>个漏洞</span>
@@ -111,7 +111,7 @@ function buyAPI(apiId){
 								</li>
 							</c:if>
 							<c:if test="${status.index !=0}">
-								<li><div class="vb"><a href="#"><img src="${ctx}/source/images/ad/${list.image }" alt=""></a></div></li>
+								<li><div class="vb"><a href="#"><img src="${ctx}/source/images/ad/${list.image }" alt="" style="width:100%;height:100%"></a></div></li>
 							</c:if>
 					</c:forEach>
 						<!-- 
