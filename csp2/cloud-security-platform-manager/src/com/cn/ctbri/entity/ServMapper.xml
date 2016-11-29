@@ -111,10 +111,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<!-- 删除服务 -->
 	<delete id="delServ" parameterType="hashmap">
-		<if test="parent!=null and parent=='API'">
+		<if test="parent!=null and parent=='6'">
             delete from cs_service_api where id=#{servId}
         </if>
-		<if test="parent!=null and parent!='API'">
+		<if test="parent!=null and parent!='6'">
             delete from cs_service where id=#{servId}
         </if>
 	</delete>
