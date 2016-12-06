@@ -18,6 +18,7 @@ public class aaa {
 	    return sb.toString();  
 	} 
 	public static void main(String[] args) {
-		System.out.println(exChange("Hello World 2"));
+		System.out.println("主干");
+		System.out.println("Hello World");
 	}
 }
