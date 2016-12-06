@@ -1,0 +1,303 @@
+/*收银台页面*/
+.settlement-content h4 {
+	margin-left: 30px;
+	line-height: 18px;
+	font-size: 18px;
+	margin-top: 20px;
+	height: 18px;
+}
+
+.shoping_center {
+	background: #e4f3ff;
+	/*height: 208px;*/
+	padding-left: 30px;
+	padding-top: 14px;
+}
+
+.shoping_center ul li {
+	font-size: 16px;
+	line-height: 43px;
+	/*height: 43px;*/
+}
+
+.shoping_center ul li b {
+	width: 105px;
+	display: inline-block;
+	color: #565656;
+}
+
+.shoping_center ul li p {
+	display: inline-block;
+}
+
+.shoping_line {
+	border-top: 1px solid #f3f3f3;
+	margin: 0 20px;
+}
+
+.shoping_txt {
+	margin-left: 30px;
+	line-height: 16px;
+	font-size: 16px;
+	margin-top: 20px;
+	height: 16px;
+}
+
+.shoping_contant {
+	margin-top: 30px;
+	margin-left: 68px;
+	margin-bottom: 26px;
+	clear: both;
+	overflow: hidden;
+}
+
+.shopCant_Btn {
+	width: 22px;
+	height: 22px;
+	float: left;
+	margin-right: 20px;
+	margin-top: 8px;
+}
+
+.shopCant_fix {
+	font-size: 14px;
+	display: inline-block;
+	margin-right: 66px;
+	line-height: 35px;
+	height: 35px;
+}
+
+.shopCant_fix i {
+	background: url(../images/anquanbi.png) no-repeat;
+	width: 32px;
+	height: 35px;
+	display: block;
+	float: left;
+	margin-right: 16px;
+}
+
+.shopCant_con {
+	width: 155px;
+	height: 36px;
+	border: 1px solid #f3f3f3;
+	line-height: 36px;
+	display: inline-block;
+	text-align: center;
+	cursor: pointer;
+}
+
+.btnFox {
+	text-align: right;
+}
+
+.btnFox a {
+	width: 120px;
+	height: 50px;
+	color: #fff;
+	font-size: 18px;
+	line-height: 50px;
+	background: #d00000;
+	text-align: center;
+	display: inline-block;
+}
+
+.chekLost {
+	width: 22px;
+	height: 22px;
+	background: url(../images/checked.png) no-repeat;
+	vertical-align: middle;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.chekthis {
+	background: url(../images/unchecked.png) no-repeat;
+	width: 22px;
+	height: 22px;
+	vertical-align: middle;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.shop_pay {
+	/*width: 160px;*/
+	float: right;
+	font-size: 26px;
+	color: #d00000;
+	/*line-height: 36px;*/
+	text-align: center;
+	margin-right: 60px;
+}
+
+.shop_pay b {
+	font-size: 16px;
+	color: #000;
+	line-height: 36px;
+	display: block;
+	float: left;
+}
+
+/*支付成功(失败)页面*/
+.repay_box {
+	width: 1108px;
+	height: 408px;
+	border: 1px solid #f3f3f3;
+	margin-top: 20px;
+	margin-bottom: 60px;
+}
+
+.repay_contant {
+	width: 480px;
+	margin: auto;
+	/*margin-top: 10px;*/
+}
+
+.repay_txt {
+	font-size: 30px;
+	line-height: 40px;
+	color: #666;
+	/*height: 40px;*/
+	margin-bottom: 10px;
+	margin-top:100px;
+	text-align: center;
+}
+
+.repay_txt b {
+	width: 30px;
+	height: 21px;
+	background: url(../images/pay_right.png) no-repeat;
+	display: inline-block;
+	float: left;
+	margin-top: 11px;
+	margin-right: 10px;
+}
+
+.repay_list {
+	font-size: 14px;
+	color: #666;
+	margin-bottom: 10px;
+}
+
+.repay_txt p span {
+	color: #2499fb;
+	font-size: 36px;
+}
+
+.repay_mylist {
+	font-size: 14px;
+	color: #666;
+	margin-bottom: 10px;
+}
+
+.repay_anquan {
+	font-size: 14px;
+	color: #666;
+}
+
+.repay_mylist a {
+	color: #2674d0;
+}
+
+.repay_anquan a {
+	color: #2674d0;
+}
+
+.mark {
+	width: 100%;
+	height: 100%;
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: #000;
+	filter: alpha(opacity =     40);
+	opacity: 0.4;
+	z-index: 400;
+}
+
+.repay_tanc {
+	width: 244px;
+	height: 90px;
+	background: #fff;
+	position: absolute;
+	z-index: 500;
+	position: absolute;
+	top: 50%;
+	margin-top: -45px;
+	left: 50%;
+	margin-left: -122px;
+	border: 1px solid #f3f3f3;
+	display: none;
+}
+
+.tanc_main {
+	width: 100px;
+	margin: auto;
+	margin-top: 20px;
+}
+
+.tanc_main p {
+	font-size: 28px;
+	line-height: 40px;
+	color: #eb9712;
+	margin-right: 10px;
+	float: left;
+}
+
+.tanc_main b {
+	width: 28px;
+	height: 30px;
+	background: url(../images/anquanbi.png) no-repeat;
+	display: inline-block;
+	float: left;
+	margin-top: 5px;
+}
+
+.repay_fail {
+	width: 300px;
+	margin: auto;
+	margin-top: 130px;
+}
+
+.repay_failtxt {
+	font-size: 30px;
+	line-height: 40px;
+	color: #666;
+	height: 40px;
+	margin-bottom: 30px;
+}
+
+.repay_failtxt b {
+	width: 27px;
+	height: 27px;
+	background: url(../images/pay_warn.png) no-repeat;
+	display: inline-block;
+	float: left;
+	margin-top: 7px;
+	margin-right: 10px;
+}
+
+.repay_failtxt p span {
+	color: #2499fb;
+	font-size: 36px;
+}
+
+.repay_faillist {
+	font-size: 15px;
+	color: #666;
+	margin-left: 40px;
+}
+
+.repay_faillist a {
+	color: #2674d0;
+}
+
+.tanc_cuo {
+	float: right;
+	font-size: 16px;
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+	line-height: 20px;
+	text-align: center;
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.ApiPriceMapper">
+	<!-- 结果对象 -->
+	<resultMap type="com.cn.ctbri.entity.ApiPrice" id="ApiPriceRM">
+		<id property="id" column="id"/>
+		<result property="serviceId" column="serviceId"/>
+		<result property="timesG" column="timesG"/>
+		<result property="timesLE" column="timesLE"/>
+		<result property="price" column="price"/>
+	</resultMap>
+	
+	<!-- 插入价格信息 -->
+	<insert id="insertPrice" parameterType="com.cn.ctbri.entity.ApiPrice" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO cs_api_price 
+		(serviceId,timesG,timesLE,price) 
+		VALUES(#{serviceId},#{timesG},#{timesLE},#{price})
+	</insert>
+	<delete id="delPrice" parameterType="int">
+		delete from cs_api_price where serviceId=#{serviceId}
+	</delete>
+	
+	<!-- 根据serviceId查询价格列表-->
+	<select id="findPriceByServiceId" parameterType="int" resultMap="ApiPriceRM">
+		select * from cs_api_price where serviceId=#{serviceId} order by timesG ASC
+	</select>
+	
+	<select id="findPrice"  parameterType="hashmap" resultMap="ApiPriceRM">
+		select * from cs_api_price 
+		where 
+			serviceId=#{serviceId}
+		and
+		  ((timesG &lt; #{num} and timesLE &gt;= #{num}) or (timesG &lt; #{num} and timesLE = 0))
+	</select>
+	
+</mapper>

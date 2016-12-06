@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.PriceMapper">
+	<!-- 列集合 -->
+	<sql id="cols">serviceId,type,timesG,timesLE,price,scanType</sql>
+	<!-- 结果对象 -->
+	<resultMap type="com.cn.ctbri.entity.Price" id="PriceRM">
+		<id property="id" column="id"/>
+		<result property="serviceId" column="serviceId"/>
+		<result property="type" column="type"/>
+		<result property="timesG" column="timesG"/>
+		<result property="timesLE" column="timesLE"/>
+		<result property="price" column="price"/>
+		<result property="scanType" column="scan_type"/>
+	</resultMap>
+	
+	<!-- 插入价格信息 -->
+	<insert id="insertPrice" parameterType="com.cn.ctbri.entity.Price" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO cs_price 
+		(serviceId,type,timesG,timesLE,price,scan_type) 
+		VALUES(#{serviceId},#{type},#{timesG},#{timesLE},#{price},#{scanType})
+	</insert>
+	<delete id="delPrice" parameterType="int">
+		delete from cs_price where serviceId=#{serviceId}
+	</delete>
+	<!-- 根据serviceId查询价格列表-->
+	<select id="findPriceByServiceId" parameterType="hashmap" resultMap="PriceRM">
+	
+		select * from cs_price where serviceId=#{serviceId} 
+		<if test="type!=0">
+		and scan_type=#{type}
+		</if>
+		order by scan_type ASC,type ASC,timesG ASC
+	</select>
+	
+	<!-- 根据serviceId查询价格列表-->
+	<select id="findPriceByScanTypeNull" parameterType="hashmap" resultMap="PriceRM">
+		select * from cs_price where serviceId=#{serviceId} 
+		and scan_type is NULL
+		order by type ASC,timesG ASC
+	</select>
+	
+</mapper>

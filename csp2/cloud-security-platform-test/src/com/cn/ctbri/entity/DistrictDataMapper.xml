@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.DistrictDataMapper">
+	<sql id="cols">id,name,longitude,latitude</sql>
+
+	<resultMap type="com.cn.ctbri.entity.District" id="DistrictRM">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="longitude" column="longitude"/>
+		<result property="latitude" column="latitude"/>
+		<result property="count" column="count"/>
+		<result property="siteCount" column="siteCount"/>
+	</resultMap>
+	<!-- 查询省份 -->
+    <select id="findDistrictList" parameterType="hashmap" resultMap="DistrictRM">
+		select dis.id,dis.name,dis.longitude,dis.latitude,dis.count#{serviceId} as count from cs_district dis where dis.count#{serviceId} !=0
+		<if test='limit =="true"'>
+		 order by count desc limit 5     
+		</if>
+    </select>
+    
+    <!-- 根据省份id查询对应省份top5的数据 -->
+    <select id="getDistrictDataById" parameterType="hashmap" resultType="hashmap">
+		<!-- <if test="serviceId != 5">	
+			select dis.name,a1.name as leakName,COUNT(a1.name) AS count from cs_asset s,cs_district dis,
+			(select a.name,t1.assetId from cs_alarm a,
+			(select t.taskId,t.group_Id,oa1.assetId from cs_task t,
+			(select oa.id,oa.assetId from cs_order_asset oa,
+			(select o.id from cs_order o where  serviceId = #{serviceId}) o1
+			where o1.id = oa.orderId) oa1
+			where t.order_asset_Id = oa1.id) t1
+			where (a.taskId=t1.taskId or a.group_Id = t1.group_Id)) a1
+		</if>
+		<if test="serviceId == 5">
+			select dis.name,a1.name as leakName,COUNT(a1.name) AS count from cs_asset s,cs_district dis,
+			(select a.name,t1.assetId from cs_taskwarn a,
+			(select t.taskId,t.group_Id,oa1.assetId from cs_task t,
+			(select oa.id,oa.assetId from cs_order_asset oa,
+			(select o.id from cs_order o where  serviceId = #{serviceId}) o1
+			where o1.id = oa.orderId) oa1
+			where t.order_asset_Id = oa1.id) t1
+			where (a.task_Id=t1.taskId or a.group_Id = t1.group_Id)) a1
+		</if>
+			where  a1.assetId = s.id
+			and s.districtId = dis.id
+			and dis.id = #{districtId}
+			group by a1.name
+			order by count desc limit 5 -->
+			
+		<if test="serviceId != 5">	
+			select dis.name,a.name as leakName,COUNT(a.name) AS count from cs_alarm a,cs_district dis 
+		</if>
+		<if test="serviceId == 5">
+			select dis.name,a.name as leakName,COUNT(a.name) AS count from cs_taskwarn a,cs_district dis 
+		</if>
+			where a.districtId = dis.id 
+			and a.districtId = #{districtId}
+			and a.serviceId = #{serviceId}
+			<if test="serviceId != 5">
+			and a.level = 2
+			</if>
+			group by a.name 
+			order by count desc limit 5
+    </select>
+    
+    <!-- 服务能力告警top5的数据 -->
+    <select id="getServiceAlarmTop5" parameterType="String" resultType="hashmap">
+         <if test="serviceId != 5">  
+         select  a.name,COUNT(a.name) AS count from cs_alarm a,
+			(select t.taskId,t.group_Id from cs_task t,
+			(select oa.id from cs_order_asset oa,
+			(select o.id from cs_order o where  serviceId = #{serviceId}) o1
+			where o1.id = oa.orderId) oa1
+			where t.order_asset_Id = oa1.id) t1
+			where (a.taskId=t1.taskId or a.group_Id = t1.group_Id)
+			and a.level = 2
+         </if>
+         <if test="serviceId == 5">  
+         select  a.name,COUNT(a.name) AS count from cs_taskwarn a,
+			(select t.taskId,t.group_Id from cs_task t,
+			(select oa.id from cs_order_asset oa,
+			(select o.id from cs_order o where  serviceId = #{serviceId}) o1
+			where o1.id = oa.orderId) oa1
+			where t.order_asset_Id = oa1.id) t1
+			where (a.task_Id=t1.taskId or a.group_Id = t1.group_Id)
+         </if>
+         group by a.name
+		 order by count desc limit 5
+            
+    </select>
+    
+    <!-- 服务能力告警近5个月数量统计 -->
+    <select id="getServiceAlarmMonth5" parameterType="String" resultType="hashmap">
+    	select a.months,a.count from (
+         <if test="serviceId != 5"> 
+         select  DATE_FORMAT(a.alarm_time,'%Y.%m') months,count(a.id) count from cs_alarm a,
+			(select t.taskId,t.group_Id from cs_task t,
+			(select oa.id from cs_order_asset oa,
+			(select o.id from cs_order o where  serviceId = #{serviceId}) o1
+			where o1.id = oa.orderId) oa1
+			where t.order_asset_Id = oa1.id) t1
+			where (a.taskId=t1.taskId or a.group_Id = t1.group_Id)
+		 </if>
+		 <if test="serviceId == 5">   
+         select  DATE_FORMAT(a.warn_time,'%Y.%m') months,count(a.id) count from cs_taskwarn a,
+			(select t.taskId,t.group_Id from cs_task t,
+			(select oa.id from cs_order_asset oa,
+			(select o.id from cs_order o where  serviceId = #{serviceId}) o1
+			where o1.id = oa.orderId) oa1
+			where t.order_asset_Id = oa1.id) t1
+			where (a.task_Id=t1.taskId or a.group_Id = t1.group_Id)
+		 </if>
+			group by months
+			order by months desc limit 5) a order by a.months 
+    </select>
+    
+    <!-- 查询省份最大数值 -->
+    <select id="getMax" parameterType="hashmap" resultType="com.cn.ctbri.entity.Alarm">
+         select dis.id,dis.name,dis.longitude,dis.latitude,dis.count#{serviceId} as count from cs_district dis where dis.count#{serviceId} !=0
+		 order by count desc limit 1    
+    </select>
+    
+    <!-- 获取月份 add by 2015-10-15-->
+    <select id="getMonth" parameterType="Integer" resultType="String">
+         select DATE_FORMAT(date_sub(now(),interval #{i} month),'%Y.%m') months
+    </select>
+    
+    <!-- 根据月份获取告警 add by 2015-10-15-->
+    <select id="getServiceAlarmByMonth" parameterType="hashmap" resultType="com.cn.ctbri.entity.Alarm">
+         <if test="serviceId != 5"> 
+         select count(*) count from cs_alarm a
+         	where a.serviceId = #{serviceId}
+		    and DATE_FORMAT(a.alarm_time,'%Y.%m') = #{month}
+		 </if>
+		 <if test="serviceId == 5">   
+         select count(*) count from cs_taskwarn a
+         	where a.serviceId = #{serviceId}
+		    and DATE_FORMAT(a.warn_time,'%Y.%m') = #{month}
+		 </if>
+		 	
+    </select>
+    
+    <!-- 查询所有省份 -->
+    <select id="findDistrictListAll" resultMap="DistrictRM">
+		select dis.id,dis.name from cs_district dis 
+    </select>
+    
+    <!-- 根据ID查询名称 -->
+    <select id="findProvName" parameterType="hashmap" resultType="String">
+		select name from cs_district where id=#{provId}
+    </select>
+	
+	<!-- 近1个小时内漏洞的数据 -->
+    <select id="getVulnscanAlarmOneHour" resultType="hashmap" parameterType="hashmap">
+<!--             select a.name,a.count from 
+			(select name,serviceId,count(name) count,alarm_time from cs_alarm group by name) a
+		    where a.serviceId=1 and a.name &lt;&gt; '' and a.alarm_time &gt;= #{beginDate} and a.alarm_time &lt;= #{endDate}
+ -->		    
+		    select name,serviceId,count(name) count,alarm_time from cs_alarm where alarm_time &gt;= #{beginDate} and alarm_time &lt;= #{endDate} and serviceId=1 and name &lt;&gt; '' group by name
+    </select>
+	
+	<!-- 获取漏洞情况top20 -->
+    <select id="getVulnscanAlarmTOP20" resultType="hashmap">
+         select  a.name,COUNT(a.name) AS count from cs_alarm a
+		 where a.serviceId=1 and a.name &lt;&gt; ''
+         group by a.name
+         order by count desc limit 5
+    </select>
+	
+
+	
+	<!-- 根据月份获取各等级漏洞分布 -->
+    <select id="getVulnscanAlarm" resultType="hashmap" parameterType="hashmap">
+         select  COUNT(a.alarm_time) count,a.level,DATE_FORMAT(a.alarm_time,'%Y.%m') month1 from cs_alarm a
+		 where a.serviceId=1 and DATE_FORMAT(a.alarm_time,'%Y.%m') &gt;= #{month}
+         group by level,month1
+    </select>
+	
+	<!-- 最近6个月内不同类型服务订单数量变化 -->
+    <select id="getServiceUseInfoMonth6" resultType="hashmap" parameterType="hashmap">
+		SELECT order1.serviceId,COUNT(order1.serviceId) count FROM `cs_order` order1
+		 WHERE DATE_FORMAT(order1.begin_date,'%Y.%m') &gt;= #{beginMonth} and DATE_FORMAT(order1.begin_date,'%Y.%m') &lt;= #{endMonth}
+		GROUP BY order1.serviceId
+	
+    </select>
+	
+	<!-- 获取行业注册用户数 -->
+    <select id="getIndustryUserCount" resultType="hashmap">
+		SELECT count(*) userCount,user1.industry FROM `cs_user` user1 WHERE user1.industry IS NOT NULL AND user1.industry != '-1' and user1.industry !='' group by user1.industry
+    </select>
+	<!-- 获取行业订单数 -->
+    <select id="getIndustryOrderCount" resultType="hashmap">
+		select user1.industry,if(isnull(mm.count1),0,mm.count1) orderCount from cs_user user1 
+		LEFT JOIN
+		(SELECT count(order1.id) count1, user2.industry industry from cs_order order1,cs_user user2 WHERE order1.userId=user2.id and order1.payFlag='1' group by user2.industry)mm
+		on mm.industry=user1.industry WHERE user1.industry is not null and user1.industry !='-1' and user1.industry !='' group by user1.industry
+    </select>
+
+	<!-- 根据servID获取按日期分组的订单数量 -->
+    <select id="getOrderCountTimesAndServiceId" resultType="hashmap">
+<!-- 		SELECT days.dayName,if(isnull(m.count1),0,m.count1) count2 from cs_days days LEFT JOIN
+		(SELECT DATE_FORMAT(order1.create_date,'%Y-%m-%d') date1, count(order1.create_date) count1 from cs_order order1 
+		WHERE order1.create_date>=DATE_SUB(NOW(),INTERVAL 1 YEAR) and order1.serviceId=#{serviceId}
+		GROUP BY  date1)m
+		ON days.dayName=m.date1 -->
+		{call pro_getOrderForOneYear(#{beginDate,  mode=IN},  
+                                   #{endDate,  mode=IN},#{serviceId,  mode=IN})}
+    </select>
+	
+	<!-- 获取一年内的日期 -->
+    <select id="getDaysInYear" resultType="hashmap" parameterType="hashmap" statementType="CALLABLE">
+    	<!--  select * from cs_days -->
+    	 {call pro_dayInYear(#{beginDate,  mode=IN},  
+                                   #{endDate,  mode=IN})}
+    </select>
+
+	<!-- 获取一年内的所有月份的最后一天 -->
+    <select id="getLastDayForMonthInYear" resultType="hashmap" parameterType="hashmap" statementType="CALLABLE">
+    	<!-- SELECT LAST_DAY(dayName) lastday,DATE_FORMAT(dayName,'%Y-%m') months FROM `cs_days` GROUP BY months -->
+    	 {call pro_lastdayForMonth(#{beginDate,  mode=IN},  
+                                   #{endDate,  mode=IN})}
+    </select>	
+    
+    <!-- 获取同一网站同一漏洞数大于等于3的-->
+<!--     <select id="getVulnscanAlarmOver3" resultType="hashmap">
+    	SELECT count,url,name FROM v_VulnscanAlarmAllCount where count>=3
+    </select>
+    
+    获取同一网站同一漏洞数
+    <select id="getVulnscanAlarmAllCount" resultType="hashmap">
+    	SELECT count,url,name FROM v_VulnscanAlarmAllCount
+    </select> -->
+    
+    <!-- 获取漏洞大于3的网站的用途分组个数-->
+    <select id="getAssetPurpose" resultType="hashmap">
+    	select count(asset.purpose) count,asset.purpose from cs_asset asset where asset.addr in(select DISTINCT mm.url from 
+		(select count(name) AS count,url,name from cs_alarm group by url,name) mm where mm.count>=3) 
+		and asset.purpose !='' GROUP BY asset.purpose
+    </select>
+    
+    <!-- 更新地域告警数 -->
+	<update id="updateDistrict"  parameterType="java.util.HashMap">
+		update cs_district 
+		<set>
+			count#{serviceId}=#{count} + count#{serviceId}
+		</set>
+		where id = #{id}
+	</update>
+	<update id="updateSiteCount"  parameterType="java.util.List">
+	 
+	      <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+				update cs_district 
+				<set>
+				  siteCount=${item.siteCount}
+				</set>
+				where id = ${item.id}
+		 </foreach>
+		 
+    </update>
+    
+    <select id ="getSiteCount" resultMap="DistrictRM">
+		select dis.name, dis.siteCount from cs_district dis
+    </select>
+    <select id="getAllAlarmCount" resultType="hashmap">
+     select name, count1+count2+count3+count4+count5+wafAlarmCount alarmCount from cs_district
+    </select>
+    <update id="updateWafAlarmCount"   parameterType="java.util.List">
+    	<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+				update cs_district 
+				<set>
+				  wafAlarmCount=${item.wafAlarmCount}
+				</set>
+				where id = ${item.id}
+		 </foreach>
+    </update>
+</mapper>
