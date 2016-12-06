@@ -18,6 +18,17 @@ public class aaa {
 	    return sb.toString();  
 	} 
 	public static void main(String[] args) {
-		System.out.println(exChange("Hello World"));
+<<<<<<< .working
+		
+		System.out.println("1");
+		1
+		2
+		3
+		4
+		5
+		
+=======
+		System.out.println(exChange("Hello World 2"));
+>>>>>>> .merge-right.r4638
 	}
 }
