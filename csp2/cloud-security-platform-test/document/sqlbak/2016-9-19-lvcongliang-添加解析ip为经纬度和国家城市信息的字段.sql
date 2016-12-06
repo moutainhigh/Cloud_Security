@@ -1,1 +1,0 @@
-alter table cs_ipposition add sourceStatus int(1) default 0 comment '数据来源（0：未知数据，或者初始数据，1：电信接口数据，2：百度接口通过ip查询出经纬度数据，但是不能根据经纬度查询出国家城市信息，3：百度接口不仅通过ip将经纬度查询出来，还根据经纬度将城市信息查询出来）'
