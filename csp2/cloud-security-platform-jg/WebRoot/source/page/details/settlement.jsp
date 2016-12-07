@@ -263,7 +263,12 @@
                        	<!-- <button type="button" class="click">在线支付</button>
                         <button type="button">邮局汇款</button>
                         <button type="button">公司转账</button> -->
-                        <button type="button" class="click">安全币</button>
+                        <c:if test="${service.id!=7}">
+                            <button type="button" class="click" id="aqb">安全币</button>
+                        </c:if>
+                        <c:if test="${service.id==7}">
+                            <button type="button" class="##" id="zfb">支付宝</button>
+                        </c:if>
                        </div>
                         <div class="hr"></div>
                     </li>
@@ -272,10 +277,10 @@
                     	<h3 class="fl">订单详情</h3>
                     	
 					<input type="hidden" id="serviceName" value="${service.name }"/>
-                    <c:if test="${service.id le 5 }">
+                    <c:if test="${service.id le 5}">
                     	<a class="fr" style="color:#2499fb;padding-right:54px;" href="javaScript:void(0);" onclick="javaScript:orderBack();" style="cursor:hand;">返回修改订单信息</a>
                     </c:if>
-                    <c:if test="${service.id gt 5 }">
+                    <c:if test="${service.id gt 5 } && ${service.id ne 7}">
                     	<a class="fr" style="color:#2499fb;padding-right:54px;" href="javaScript:void(0);" onclick="javaScript:wafOrderBack();" style="cursor:hand;">返回修改订单信息</a>
                     </c:if>
                     </div>
@@ -289,9 +294,15 @@
 	                                 	<td width="16%" style="font-size:14px;">
 	                                    	${orderDetail.serviceName}
 	                                    </td>
-	                                   
 	                                    <td width="36%" style="font-size:14px;">
-	                                    	${orderDetail.assetName}
+                                            <c:if test="${service.id != 7}">
+	                                    	  ${orderDetail.assetName}
+                                            </c:if>
+                                            <!--
+                                            <c:if test="${service.id == 7}">
+                                                ${orderDetail.}
+                                            </c:if>
+                                            -->
 	                                    </td>
 	                                    <td width="32%" style="font-size:14px;">
 	                                    	<fmt:formatDate value="${orderDetail.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
