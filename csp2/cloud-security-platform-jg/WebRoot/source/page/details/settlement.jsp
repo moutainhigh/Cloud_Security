@@ -277,10 +277,10 @@
                     	<h3 class="fl">订单详情</h3>
                     	
 					<input type="hidden" id="serviceName" value="${service.name }"/>
-                    <c:if test="${service.id le 5}">
+                    <c:if test="${service.id <= 5}">
                     	<a class="fr" style="color:#2499fb;padding-right:54px;" href="javaScript:void(0);" onclick="javaScript:orderBack();" style="cursor:hand;">返回修改订单信息</a>
                     </c:if>
-                    <c:if test="${service.id gt 5 } && ${service.id ne 7}">
+                    <c:if test="${service.id == 6 }">
                     	<a class="fr" style="color:#2499fb;padding-right:54px;" href="javaScript:void(0);" onclick="javaScript:wafOrderBack();" style="cursor:hand;">返回修改订单信息</a>
                     </c:if>
                     </div>
