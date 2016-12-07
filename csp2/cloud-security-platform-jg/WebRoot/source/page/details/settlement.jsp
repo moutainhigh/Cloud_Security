@@ -395,7 +395,12 @@
                 	<i>1</i>个订单，总额：
                 	<span>
                 		<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
-                		<em>&nbsp;安全币</em>
+                		<c:if test="${service.id <= 6 }">
+                          <em>&nbsp;安全币</em>
+                        </c:if>
+                        <c:if test="${service.id >= 7 }">
+                          <em>&nbsp;人民币</em>
+                        </c:if>
                 	</span>
                 </li>
                 <!--  
@@ -407,7 +412,12 @@
                 	应付总额：
                 	<span>
                 		<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
-                		<em>&nbsp;安全币</em>
+                        <c:if test="${service.id <= 6 }">
+                		  <em>&nbsp;安全币</em>
+                        </c:if>
+                        <c:if test="${service.id >= 7 }">
+                          <em>&nbsp;人民币</em>
+                        </c:if>
                 	</span>
                 </li>
             </ul>
@@ -418,18 +428,26 @@
             	<p>应付总额：
             	<span style="padding-bottom:10px;">
 	            	<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
-	            	<em style="font-size:14px">&nbsp;安全币</em>
+                    <c:if test="${service.id <= 6 }">
+	            	  <em style="font-size:14px">&nbsp;安全币</em>
+                    </c:if>
+                    <c:if test="${service.id == 7 }">
+                      <em style="font-size:14px">&nbsp;人民币</em>
+                    </c:if>
             	</span>
             	</c:if>
             	
             	<c:if test="${not empty orderDetail}">
 	            	<c:if test="${orderDetail.isAPI==0}">
-		            		<c:if test="${orderDetail.serviceId gt 5 }">
+		            		<c:if test="${orderDetail.serviceId == 6 }">
 		            			<input id="settlementWaf" class="submit" type="button" value="提交订单"/>
 		            		</c:if>
 		            		<c:if test="${orderDetail.serviceId le 5 }">            		
 		            			<input id="settlement" class="submit" type="submit" value="提交订单"/>
 		            		</c:if>
+                            <c:if test="${orderDetail.serviceId == 7 }">
+                                <input id="settlementSys" class="submit" type="button" value="提交订单"/>
+                            </c:if>
 		            	</c:if>
 		            	
 		            	
