@@ -20,6 +20,7 @@
 
 <script src="${ctx}/source/scripts/order/details.js"></script>
 <script src="${ctx}/source/scripts/order/wafDetail.js"></script>
+<script src="${ctx}/source/scripts/order/sysServDetail.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
   $(function() {
@@ -264,7 +265,7 @@
                         <button type="button">邮局汇款</button>
                         <button type="button">公司转账</button> -->
                         <c:if test="${service.id!=7}">
-                            <button type="button" class="click" id="aqb">安全币</button>
+                            <button type="button" class="click">安全币</button>
                         </c:if>
                         <c:if test="${service.id==7}">
                             <button type="button" class="##" id="zfb">支付宝</button>
@@ -399,7 +400,7 @@
                           <em>&nbsp;安全币</em>
                         </c:if>
                         <c:if test="${service.id >= 7 }">
-                          <em>&nbsp;人民币</em>
+                          <em>&nbsp;元</em>
                         </c:if>
                 	</span>
                 </li>
@@ -416,7 +417,7 @@
                 		  <em>&nbsp;安全币</em>
                         </c:if>
                         <c:if test="${service.id >= 7 }">
-                          <em>&nbsp;人民币</em>
+                          <em>&nbsp;元</em>
                         </c:if>
                 	</span>
                 </li>
@@ -432,7 +433,7 @@
 	            	  <em style="font-size:14px">&nbsp;安全币</em>
                     </c:if>
                     <c:if test="${service.id == 7 }">
-                      <em style="font-size:14px">&nbsp;人民币</em>
+                      <em style="font-size:14px">&nbsp;元</em>
                     </c:if>
             	</span>
             	</c:if>
