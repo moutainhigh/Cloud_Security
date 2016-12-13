@@ -18,7 +18,7 @@ public class OrderDetail {
 	private String assetName;//资产名称
 	private String assetAddr;//资产地址
 	private String ipArray;//ip地址
-	private int wafTimes;//服务期限
+	private int wafTimes;//waf购买次数
 	public String getId() {
 		return id;
 	}
