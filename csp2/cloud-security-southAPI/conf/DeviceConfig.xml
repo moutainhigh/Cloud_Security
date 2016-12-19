@@ -12,26 +12,26 @@
 			 	<ScannerUserName>admin</ScannerUserName>
 				<ScannerPassword>admin123456</ScannerPassword>
 			</DeviceScanner>
-			<DeviceScanner id="10002">
+		<DeviceScanner id="10002">
 				<DeviceID>10002</DeviceID>
 				<ScannerFactory>Arnhem</ScannerFactory>
 				<ScannerFactoryName>安恒</ScannerFactoryName>
 				<ScannerWebUrl>https://219.141.189.187:62443</ScannerWebUrl>
 				<ScannerEngineAPI>https://219.141.189.187:62443</ScannerEngineAPI>
 			 	<ScannerUserName>admin</ScannerUserName>
-				<ScannerPassword>admin123456</ScannerPassword>				
+				<ScannerPassword>admin123456</ScannerPassword>
 			</DeviceScanner>
-			<DeviceScanner id="10003">
+		<DeviceScanner id="10003">
 				<DeviceID>10003</DeviceID>
 				<ScannerFactory>Arnhem</ScannerFactory>
 				<ScannerFactoryName>安恒</ScannerFactoryName>
 				<ScannerWebUrl>https://219.141.189.187:63443</ScannerWebUrl>
 				<ScannerEngineAPI>https://219.141.189.187:63443</ScannerEngineAPI>
 			 	<ScannerUserName>admin</ScannerUserName>
-				<ScannerPassword>admin123456</ScannerPassword>				
+				<ScannerPassword>admin123456</ScannerPassword>
 			</DeviceScanner>
-			
-			<!--测试用引擎 
+
+			<!--测试用引擎
 			<DeviceScanner id="10004">
 				<DeviceID>10004</DeviceID>
 				<ScannerFactory>Arnhem</ScannerFactory>
@@ -54,8 +54,8 @@
 		<DeviceDDOSList>
 			<DeviceDDOS id="20001">
 				<ID></ID>
-			</DeviceDDOS>		
+			</DeviceDDOS>
 		</DeviceDDOSList>
-		<DeviceWAFList state="ON" configFile="WafConfig.xml" />		
+		<DeviceWAFList state="ON" configFile="WafConfig.xml" />
 	</DeviceList>
 </DeviceAdapterConfig>

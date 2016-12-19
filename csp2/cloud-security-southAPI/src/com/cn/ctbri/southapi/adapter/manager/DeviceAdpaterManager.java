@@ -19,6 +19,8 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import com.cn.ctbri.southapi.adapter.manager.DeviceAdapterConstant;
+import com.cn.ctbri.southapi.adapter.basedata.IPDataBaseAdapter;
+import com.cn.ctbri.southapi.adapter.basedata.URLDataBaseAdapter;
 import com.cn.ctbri.southapi.adapter.config.DeviceConfigInfo;
 import com.cn.ctbri.southapi.adapter.config.ScannerTaskUniParam;
 import com.cn.ctbri.southapi.adapter.scanner.ArnhemDeviceAdpater;
@@ -45,11 +47,15 @@ public class DeviceAdpaterManager {
 
 	public static ArnhemDeviceAdpater arnhemDeviceAdpater = new ArnhemDeviceAdpater();
 	public static WebsocDeviceAdapter websocDeviceAdapter = new WebsocDeviceAdapter();
+	
 	public static NsfocusWAFAdapter nsfocusWAFAdapter = new NsfocusWAFAdapter();
+	
+	public static IPDataBaseAdapter ipDataBaseAdapter = new IPDataBaseAdapter();
+	public static URLDataBaseAdapter urlDataBaseAdapter = new URLDataBaseAdapter();
 	
 	//加载设备错误信息
 	private static final String LOAD_DEVICE_ERROR = "{\"status\":\"fail\",\"message\":\"Load DeviceConfig failed!!\"}";
-	//初始胡错误信息
+	//初始化错误信息
 	private static final String INIT_DEVICE_ERROR = "{\"status\":\"fail\",\"message\":\"Init DeviceAdapter failed!!\"}";
 	//设备操作失败错误信息
 	private static final String DEVICE_OPERATION_ERROR = "{\"status\":\"fail\",\"message\":\"This device does not support the operation\"}";
@@ -727,7 +733,7 @@ public class DeviceAdpaterManager {
 	public String createVirtSite(int resourceId,int deviceId,JSONObject jsonObject) {
 		return nsfocusWAFAdapter.createVirtSite(resourceId, deviceId, jsonObject);
 	}
-	public String createVSiteInResource(int resourceId,JSONObject jsonObject) {
+	public String createVirtSiteInResource(int resourceId,JSONObject jsonObject) {
 		return nsfocusWAFAdapter.createVirtSite(resourceId, jsonObject);
 	}
 	
@@ -868,11 +874,10 @@ public class DeviceAdpaterManager {
 	}
 	
 	public String getLocationFromIp(JSONObject jsonObject) {
-		return nsfocusWAFAdapter.getLocationFromIp(jsonObject);
+		return ipDataBaseAdapter.getLocationFromIp(jsonObject);
 	}
 	
 	public String getWafPublicIpListInResource(int resourceId) {
 		return nsfocusWAFAdapter.getPublicIpListInResource(resourceId);
-		
 	}
 }

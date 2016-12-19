@@ -190,7 +190,7 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 			Element rootElement = document.getRootElement();
 			String value = rootElement.attributeValue("value");
 			if ("AuthErr".equals(value) && createSessionId(username, password, arnhemServerWebrootUrl)) {
-				String redirectResponse = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class);
+				String redirectResponse = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
 				return redirectResponse;
 			} else {
 				return response;

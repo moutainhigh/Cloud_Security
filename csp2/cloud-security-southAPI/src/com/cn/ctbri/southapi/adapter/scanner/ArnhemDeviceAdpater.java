@@ -8,11 +8,11 @@ import java.util.Map.Entry;
 
 import com.cn.ctbri.southapi.adapter.config.DeviceConfigInfo;
 import com.cn.ctbri.southapi.adapter.config.ScannerTaskUniParam;
-import com.cn.ctbri.southapi.adapter.manager.IDeviceAdpater;
+
 
 import net.sf.json.JSONArray;
 
-public class ArnhemDeviceAdpater implements IDeviceAdpater {
+public class ArnhemDeviceAdpater{
 	
 	protected static String ARNHEM_FACTORY = "Arnhem";
 	

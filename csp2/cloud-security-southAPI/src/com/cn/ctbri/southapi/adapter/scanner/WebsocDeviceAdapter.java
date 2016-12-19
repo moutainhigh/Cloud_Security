@@ -12,9 +12,9 @@ import org.dom4j.io.SAXReader;
 
 import com.cn.ctbri.southapi.adapter.config.DeviceConfigInfo;
 import com.cn.ctbri.southapi.adapter.config.ScannerTaskUniParam;
-import com.cn.ctbri.southapi.adapter.manager.IDeviceAdpater;
 
-public class WebsocDeviceAdapter implements IDeviceAdpater{
+
+public class WebsocDeviceAdapter{
 	public WebsocDeviceAdapter(){
 		
 	}

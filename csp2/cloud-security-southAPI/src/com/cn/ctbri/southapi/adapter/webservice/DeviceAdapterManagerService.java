@@ -519,7 +519,7 @@ public class DeviceAdapterManagerService {
 			return errNullWafDevice();
 		int resourceId = jsonObject.getInt("resourceId");
 		jsonObject.remove("resourceId");
-		return deviceAdpaterManager.createVSiteInResource(resourceId, jsonObject);
+		return deviceAdpaterManager.createVirtSiteInResource(resourceId, jsonObject);
 	}
 	
 	@POST
