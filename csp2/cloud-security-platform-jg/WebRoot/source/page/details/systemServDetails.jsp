@@ -72,6 +72,7 @@
 				</div>
 			</div>
 		</div>
+
 	<div class="dataCent">
 			<div class="data-crumbs">
 				<a href="${ctx}/index.html" style="font-size: 20px;">安全帮</a><i>&gt;</i><a href="${ctx}/web_anquanbang.html">系统安全帮</a><i>&gt;</i><a href="javascript:;">${service.name }</a>
@@ -91,7 +92,7 @@
 					<ul>
 						<li class="clearfix">
 							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
-                            <div class="fl price"><strong id="price">99</strong><strong></strong></div> 
+                            <div class="fl price"><strong id="price"></strong><strong></strong></div> 
                           	<span style="position: relative;top: 7px;left:7px;color:#d00000">元</span>
                           	<span style="position: relative;top: 7px;left:7px"><u>由绿盟科技提供服务并开具发票</u></span>
 						</li>
@@ -101,7 +102,7 @@
                            <!--
                             <button class="click Single" value="8" onclick="changeDiv('Single');" style="width: 90px;">包月</button>
                             -->
-                            <button class="long" value="9" onclick="changeDiv('long');" style="width: 90px; checked="checked">包年</button>
+                            <button class="click long" value="1" style="width: 90px;">包年</button>
                            </div> 
                            
 						</li>
@@ -123,7 +124,7 @@
 						 <li class="clearfix">
                         	<label class="fl">内网主机数</label>
                         	<div class="fl" style="top:3px;">
-                              <select class="text select" id="num" onchange="changePrice();" style="margin-left: 0px;">   
+                              <select class="text select" id="num" onchange="changePrice()" style="margin-left: 0px;">   
                                 <option value="6">64</option>
                                 <option value="7">128</option>
                               </select> 
@@ -135,7 +136,7 @@
                     <!--
                     	<button style="background:#d00000; width:146px;" id="addCar">添加到购物车</button>
                     -->
-                        <button style="background:#5aba5f; width:126px" id="buyNow">立即购买</button>
+                        <button style="background:#5aba5f; width:126px" id="buyNowsys">立即购买</button>
                     </div>
 				</div>
                 <form action="wafDetails.html" method="post" id="wafDetailsForm">
