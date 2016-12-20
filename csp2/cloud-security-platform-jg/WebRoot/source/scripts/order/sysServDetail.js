@@ -1,7 +1,10 @@
 $(function(){
+  //初始化价格
   changePrice();
+
 });
 
+//计算价格
 function changePrice(){
   //var serviceId = $('#serviceId').val();
   var serviceId = 7;
