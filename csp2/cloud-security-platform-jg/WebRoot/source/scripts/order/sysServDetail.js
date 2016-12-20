@@ -1,3 +1,7 @@
+$(function(){
+  changePrice();
+});
+
 function changePrice(){
   //var serviceId = $('#serviceId').val();
   var serviceId = 7;
