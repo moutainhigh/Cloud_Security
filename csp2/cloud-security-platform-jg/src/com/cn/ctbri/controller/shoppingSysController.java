@@ -362,7 +362,7 @@ public class shoppingSysController {
 	        	if (priceList == null|| priceList.size() == 0){		//按服务频率查询不到时，价格可能不按频率设置
 	        		priceList = priceService.findPriceByScanTypeNull(serviceId);
 	        	}
-	        	if (priceList == null|| priceList.size() == 0)
+	        	if (priceList != null|| priceList.size() > 0)
 	        	{
 	        		for (int i = 0; i < priceList.size(); i++) {
 						if (priceList.get(i).getScanType() == scanTypeint) {
