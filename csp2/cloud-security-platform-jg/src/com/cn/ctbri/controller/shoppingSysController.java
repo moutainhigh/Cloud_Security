@@ -326,6 +326,7 @@ public class shoppingSysController {
      * 参数描述： 
 	 *  add  ltb
      *       @time 2016-12-7
+     *      传参数只有 serviceId   scanType  
      */
     @RequestMapping(value="syscalPrice.html", method=RequestMethod.POST)
     @ResponseBody
@@ -339,32 +340,32 @@ public class shoppingSysController {
         try{
         	//获得订单id
 			int serviceId = Integer.parseInt(request.getParameter("serviceId"));
-			String type = request.getParameter("type");				//服务频率
-			String beginDate = request.getParameter("beginDate");
-			String endDate = request.getParameter("endDate");
-			int assetCount = Integer.parseInt(request.getParameter("assetCount"));
-			String orderType = request.getParameter("orderType");   //选类型  单次:2/长期:1
+//			String type = request.getParameter("type");				//服务频率
+//			String beginDate = request.getParameter("beginDate");//
+//			String endDate = request.getParameter("endDate");
+//			int assetCount = Integer.parseInt(request.getParameter("assetCount"));
+			String scanType = request.getParameter("scanType");   //选类型   6 7
 			
 			//和运营管理数据同步
 //			synPriceData(serviceId);
 			
 			
 			//进行价格分析
-			if (orderType!= null && orderType.equals("1")){  //长期
+			if (scanType!= null && scanType!=""){  //长期
 				
-	        	int scanType = Integer.valueOf(type); 			//服务频率
+	        	int scanTypeint = Integer.valueOf(scanType); 			//服务频率
 				//times = calTimes(scanType, beginDate, endDate);	//计算服务需要执行的总次数
 	        	
 				//calPrice = calPrice(serviceId,scanType,times,assetCount);//计算价格
 	        	//cs_scanType  scanType=6 对应64IP   scanType=7 对应  128ip
-	        	List<Price> priceList = priceService.findPriceByServiceId(serviceId,scanType);
+	        	List<Price> priceList = priceService.findPriceByServiceId(serviceId,scanTypeint);
 	        	if (priceList == null|| priceList.size() == 0){		//按服务频率查询不到时，价格可能不按频率设置
 	        		priceList = priceService.findPriceByScanTypeNull(serviceId);
 	        	}
 	        	if (priceList == null|| priceList.size() == 0)
 	        	{
 	        		for (int i = 0; i < priceList.size(); i++) {
-						if (priceList.get(i).getScanType() == scanType) {
+						if (priceList.get(i).getScanType() == scanTypeint) {
 							 calPrice = priceList.get(i).getPrice();
 							 break;
 						}
