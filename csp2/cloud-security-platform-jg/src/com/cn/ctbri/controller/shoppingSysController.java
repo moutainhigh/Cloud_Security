@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +26,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.common.HuaweiWorker;
+import com.cn.ctbri.entity.APICount;
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.Linkman;
+import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderAPI;
 import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.Price;
@@ -201,11 +207,12 @@ public class shoppingSysController {
 			String orderType = request.getParameter("type");  //orderType 从页面获取  长期单次
 	        //String beginDate = request.getParameter("beginDate");
 			String beginDate = DateUtils.dateToString(new Date());
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(new Date());
-			cal.add(Calendar.YEAR, 1);
+			//Calendar cal = Calendar.getInstance();
+			//cal.setTime(new Date());
+			//cal.add(Calendar.YEAR, 1);
 	        //String endDate = request.getParameter("endDate");
-			String endDate =DateUtils.dateToString(cal.getTime());
+			
+			String endDate =DateUtils.dateToString(getAfterYear(new Date()));
 			
 	        String scanPeriod = request.getParameter("scanType"); // 频率  64ip(6)   128ip(7)  
 	        String serviceId = request.getParameter("serviceId");
@@ -320,6 +327,215 @@ public class shoppingSysController {
 		
 	}
 	
+	/**
+     * 功能描述： 保存订单
+     * 参数描述：  
+	 * @throws Exception 
+     *       @time 2016-12-20
+     */
+    @RequestMapping(value="saveOrderSys.html",method=RequestMethod.POST)
+    @ResponseBody
+    public void saveOrderAPI(HttpServletResponse response,HttpServletRequest request) throws Exception{
+        Map<String, Object> m = new HashMap<String, Object>();
+        
+        User globle_user = (User) request.getSession().getAttribute("globle_user");
+      String orderDetailId = request.getParameter("orderDetailId");
+   
+        String linkname =request.getParameter("linkname");
+        String phone = request.getParameter("phone");
+        String email = request.getParameter("email");
+
+        if(orderDetailId==null||"".equals(orderDetailId)||linkname==null||"".equals(linkname)){
+        	m.put("error", true);
+        	 
+    		//object转化为Json格式
+    		JSONObject JSON = CommonUtil.objectToJson(response, m);
+    		try {
+    			// 把数据返回到页面
+    			CommonUtil.writeToJsp(response, JSON);
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    		return;
+        }
+        /***判断参数开始**/
+        if(phone!=null&&!"".equals(phone)) {
+        	Pattern p = Pattern.compile("^[1][3,4,5,7,8][0-9]{9}$");  
+        	
+        	Matcher matcher = p.matcher(phone); 
+        	if(!matcher.find()){
+        		m.put("error", true);
+        		//object转化为Json格式
+        		JSONObject JSON = CommonUtil.objectToJson(response, m);
+        		try {
+        			// 把数据返回到页面
+        			CommonUtil.writeToJsp(response, JSON);
+        		} catch (IOException e) {
+        			e.printStackTrace();
+        		}
+        		return;
+        	}
+        }
+        
+        if(email!=null&&!"".equals(email)){
+     	   Pattern emailP = Pattern.compile("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$");  
+            Matcher ematcher = emailP.matcher(email); 
+            if(!ematcher.find()){
+         	   m.put("error", true);
+         		 //object转化为Json格式
+         	       JSONObject JSON = CommonUtil.objectToJson(response, m);
+         	       try {
+         	           // 把数据返回到页面
+         	           CommonUtil.writeToJsp(response, JSON);
+         	       } catch (IOException e) {
+         	           e.printStackTrace();
+         	       }
+         	       return;
+            }
+        }
+        OrderDetail orderDetailVo = selfHelpOrderService.findOrderDetailById(orderDetailId, globle_user.getId());  ///
+        
+        if(orderDetailVo==null){
+        	m.put("error", true);
+       	 
+    		//object转化为Json格式
+    		JSONObject JSON = CommonUtil.objectToJson(response, m);
+    		try {
+    			// 把数据返回到页面
+    			CommonUtil.writeToJsp(response, JSON);
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    		return;
+        }
+        
+      //长期：订单结束时间不能早于当前订单提交时间,add by zsh,2016-7-27
+        String nowDate = DateUtils.dateToString(new Date());
+        if(1 == orderDetailVo.getType() && orderDetailVo.getEnd_date()!=null && 
+        		DateUtils.dateToString(orderDetailVo.getEnd_date())!="" && 
+        		nowDate.compareTo( DateUtils.dateToString(orderDetailVo.getEnd_date()))>0){
+    		m.put("timeCompare", false);
+    		//object转化为Json格式
+            JSONObject JSON = CommonUtil.objectToJson(response, m);
+            try {
+                // 把数据返回到页面
+                CommonUtil.writeToJsp(response, JSON);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        
+        String orderId = "";
+        //创建订单（任务），调北向api   
+    	try {
+    		SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+       	    String orderDate = odf.format(new Date());
+       	         orderId = orderDate+String.valueOf(Random.fivecode());
+    		//orderId = NorthAPIWorker.vulnScanCreateAPI(type, time*num, apiId, globle_user.getApikey(), globle_user.getId());
+		} catch (Exception e) {
+			m.put("message", "系统异常，暂时不能购买sys，请稍后购买~~");
+		}
+    	//北向API返回orderId，创建用户订单
+    	if(!orderId.equals("") && orderId != null){
+    		//新增联系人
+            Linkman linkObj = new Linkman();
+            int linkmanId = Random.eightcode();
+            linkObj.setId(linkmanId);
+            linkObj.setName(linkname);
+            linkObj.setMobile(phone);
+            linkObj.setEmail(email);
+            linkObj.setUserId(globle_user.getId());
+            selfHelpOrderService.insertLinkman(linkObj);
+            
+            Order order = new Order();
+            order.setId(orderId);
+            order.setType(1);
+            order.setBegin_date(new Date());
+            order.setEnd_date(getAfterYear(new Date()));
+            order.setServiceId(orderDetailVo.getServiceId());
+            order.setCreate_date(new Date());
+            order.setUserId(globle_user.getId());
+            order.setContactId(linkmanId);
+            order.setStatus(1);//完成
+            order.setPayFlag(0);
+            order.setPrice(orderDetailVo.getPrice());
+            order.setIsAPI(0);//  非api订单
+            selfHelpOrderService.insertOrder(order);  //插入cs_order
+            
+            //新增API订单
+            /*
+            OrderAPI oAPI = new OrderAPI();
+            oAPI.setId(orderId);
+            oAPI.setBegin_date(new Date());
+            oAPI.setEnd_date(getAfterYear(new Date()));
+            oAPI.setApiId(orderDetailVo.getServiceId());
+            oAPI.setCreate_date(new Date());
+            oAPI.setPackage_type(orderDetailVo.getType());
+            oAPI.setNum(orderDetailVo.getWafTimes());
+            oAPI.setBuyNum(orderDetailVo.getWafTimes());
+            oAPI.setUserId(globle_user.getId());
+            oAPI.setContactId(linkmanId);
+            oAPI.setPayFlag(1);
+            orderAPIService.insert(oAPI);
+            
+            //记录用户购买服务接口次数
+            APICount count = new APICount();
+            count.setUserId(globle_user.getId());
+            count.setCount(orderDetailVo.getScan_type()*orderDetailVo.getWafTimes());
+            count.setApiId(orderDetailVo.getServiceId());
+            orderAPIService.insertOrUpdateCount(count);
+            //获得服务名称
+            ServiceAPI api =serviceAPIService.findById(orderDetailVo.getServiceId());*/
+            
+            //插入数据到order_list
+            //OrderList 是购物车订单list
+            
+            Serv serv = servService.findById(orderDetailVo.getServiceId());
+		    OrderList ol = new OrderList();
+		    //生成订单id
+		    SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
+			String orderDate = odf.format(new Date());
+			String id = orderDate+String.valueOf(Random.fivecode());
+//		    String  id = String.valueOf(Random.eightcode());
+		    ol.setId(id);
+		    ol.setCreate_date(new Date());
+		    ol.setOrderId(orderId);
+		    ol.setUserId(globle_user.getId());
+		    ol.setPrice(orderDetailVo.getPrice());
+		    ol.setServerName(serv.getName());
+		    orderListService.insert(ol);
+		    m.put("orderListId", id);
+            m.put("message", true);
+    	}else{
+    		m.put("message", "系统异常，暂时不能购买api，请稍后购买~~");
+    	}
+        
+        
+		//object转化为Json格式
+		JSONObject JSON = CommonUtil.objectToJson(response, m);
+		try {
+			// 把数据返回到页面
+			CommonUtil.writeToJsp(response, JSON);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    /**
+     * 得到某个日期的后一年日期
+     * @param d
+     * @return
+     */
+    public static Date getAfterYear(Date d){
+         Date date = d;
+         Calendar calendar = Calendar.getInstance();  
+         calendar.setTime(date);  
+         calendar.add(Calendar.YEAR,1); 
+         date = calendar.getTime();  
+         return date;
+    }
+    
 	
 	 /**
      * 功能描述： 计算商品价格
