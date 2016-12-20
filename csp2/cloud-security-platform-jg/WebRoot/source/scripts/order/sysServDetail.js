@@ -17,15 +17,11 @@ function changePrice(){
       var price = data.price;
       $("#price").html(price);
     }, 
-    error: function(data){
-      alert('Error loading document'); 
-    }
-    /*
+    
     error: function(data){ 
       if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
         window.location.href = "loginUI.html"; } 
       else { window.location.href = "loginUI.html"; } 
       } 
-  }
-  */});
+  });
 }
