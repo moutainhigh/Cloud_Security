@@ -124,7 +124,7 @@ public class shoppingSysController {
 	 *     @time 2016-07-18
 	 */
 	@RequestMapping(value="systemOrderOperaInit.html",method=RequestMethod.POST)
-	public String systemOrderOpera(HttpServletRequest request){
+	public String systemOrderOperaInit(HttpServletRequest request){
 		 User globle_user = (User) request.getSession().getAttribute("globle_user");
 		    int serviceId = Integer.parseInt(request.getParameter("serviceId"));
 		    //判断serviceId是否存在
@@ -248,6 +248,8 @@ public class shoppingSysController {
 					return "redirect:/index.html";
 				}
 			}
+		
+	        
 			
 			//计算价格
 			double calPrice = 0;				
@@ -303,6 +305,7 @@ public class shoppingSysController {
 		        
 		        selfHelpOrderService.SaveOrderDetail(orderDetail);
 		        OrderDetail orderDetailVo = selfHelpOrderService.findOrderDetailById(detailId, globle_user.getId());
+		        orderDetailVo.setServiceName("极光自助扫描服务");
 				  request.setAttribute("orderDetail", orderDetailVo);
 			        request.setAttribute("service", service);
 			        request.setAttribute("user", globle_user);
@@ -335,7 +338,7 @@ public class shoppingSysController {
      */
     @RequestMapping(value="saveOrderSys.html",method=RequestMethod.POST)
     @ResponseBody
-    public void saveOrderAPI(HttpServletResponse response,HttpServletRequest request) throws Exception{
+    public void saveOrderSys(HttpServletResponse response,HttpServletRequest request) throws Exception{
         Map<String, Object> m = new HashMap<String, Object>();
         
         User globle_user = (User) request.getSession().getAttribute("globle_user");
@@ -462,32 +465,8 @@ public class shoppingSysController {
             order.setPrice(orderDetailVo.getPrice());
             order.setIsAPI(0);//  非api订单
             selfHelpOrderService.insertOrder(order);  //插入cs_order
-            
-            //新增API订单
-            /*
-            OrderAPI oAPI = new OrderAPI();
-            oAPI.setId(orderId);
-            oAPI.setBegin_date(new Date());
-            oAPI.setEnd_date(getAfterYear(new Date()));
-            oAPI.setApiId(orderDetailVo.getServiceId());
-            oAPI.setCreate_date(new Date());
-            oAPI.setPackage_type(orderDetailVo.getType());
-            oAPI.setNum(orderDetailVo.getWafTimes());
-            oAPI.setBuyNum(orderDetailVo.getWafTimes());
-            oAPI.setUserId(globle_user.getId());
-            oAPI.setContactId(linkmanId);
-            oAPI.setPayFlag(1);
-            orderAPIService.insert(oAPI);
-            
-            //记录用户购买服务接口次数
-            APICount count = new APICount();
-            count.setUserId(globle_user.getId());
-            count.setCount(orderDetailVo.getScan_type()*orderDetailVo.getWafTimes());
-            count.setApiId(orderDetailVo.getServiceId());
-            orderAPIService.insertOrUpdateCount(count);
-            //获得服务名称
-            ServiceAPI api =serviceAPIService.findById(orderDetailVo.getServiceId());*/
-            
+           
+
             //插入数据到order_list
             //OrderList 是购物车订单list
             
@@ -508,7 +487,7 @@ public class shoppingSysController {
 		    m.put("orderListId", id);
             m.put("message", true);
     	}else{
-    		m.put("message", "系统异常，暂时不能购买api，请稍后购买~~");
+    		m.put("message", "系统异常，暂时不能购买sys，请稍后购买~~");
     	}
         
         
@@ -546,7 +525,7 @@ public class shoppingSysController {
      */
     @RequestMapping(value="syscalPrice.html", method=RequestMethod.POST)
     @ResponseBody
-	public void calPrice(HttpServletResponse response,HttpServletRequest request){
+	public void syscalPrice(HttpServletResponse response,HttpServletRequest request){
     	Map<String, Object> m = new HashMap<String, Object>();
     	//价格
 		double calPrice = 0;
@@ -768,7 +747,7 @@ public class shoppingSysController {
 	 *      add by ltb   2016-12-13
 	 */
 	@RequestMapping(value="sysorderBack.html", method=RequestMethod.POST)
-	public String  orderBack(HttpServletResponse response,HttpServletRequest request) throws Exception{
+	public String  sysorderBack(HttpServletResponse response,HttpServletRequest request) throws Exception{
 		 Map<String, Object> map = new HashMap<String, Object>();
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
 		String result="";
@@ -777,7 +756,7 @@ public class shoppingSysController {
 		String assetIds = request.getParameter("assetIds");
         String orderDetailId = request.getParameter("orderDetailId");
         String apiVal=request.getParameter("apiId");
-        if(assetIds==null||"".equals(assetIds)||orderDetailId==null||"".equals(orderDetailId)){
+        if(orderDetailId==null||"".equals(orderDetailId)){
         	return "redirect:/index.html";	
         }
         if (apiVal != null && !"".equals(apiVal)) {
@@ -804,11 +783,12 @@ public class shoppingSysController {
 	    		   assetIdsList.add(assetArray[i]);
 	    	   }
 		}
-        OrderDetail orderDetail = selfHelpOrderService.getOrderDetailById(orderDetailId, globle_user.getId(),assetIdsList);
-       if(orderDetail==null){
+        OrderDetail orderDetailVal = selfHelpOrderService.findOrderDetailById(orderDetailId, globle_user.getId());
+     //   OrderDetail orderDetail = selfHelpOrderService.getOrderDetailById(orderDetailId, globle_user.getId(),assetIdsList);
+       if(orderDetailVal==null){
     	   return "redirect:/index.html";	
        }
-	    String assetAddr = "";
+	 /*   String assetAddr = "";
 	    if(assetIds.length()>0){
 	          assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
             	for(int i=0;i<assetArray.length;i++){
@@ -816,9 +796,9 @@ public class shoppingSysController {
                 	assetAddr = assetAddr + asset.getAddr()+",";
                 }
 	        	//根据id查询service add by tangxr 2016-3-14
-	    	    Serv service = servService.findById(orderDetail.getServiceId());
+	    	    Serv service = servService.findById(orderDetailVal.getServiceId());
 	    	    //根据service Id查询服务详细信息
-	    	    ServiceDetail servDetail = servDetailService.findByServId(orderDetail.getServiceId());
+	    	    ServiceDetail servDetail = servDetailService.findByServId(orderDetailVal.getServiceId());
 	    	    request.setAttribute("service", service);
 	    	    request.setAttribute("servDetail", servDetail);
 	    	    //商品详细信息的图片
@@ -832,7 +812,7 @@ public class shoppingSysController {
 	    	    request.setAttribute("detailImages", detailImages);
 	        	result = "/source/page/details/vulnScanDetails";	
 	     
-	    }
+	    }*/
 	    //获取服务对象资产
 	    List<Asset> serviceAssetList = selfHelpOrderService.findServiceAsset(globle_user.getId());
 	    //网站安全帮列表
@@ -841,11 +821,11 @@ public class shoppingSysController {
 		List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
 		//查询服务频率
 		//查找服务频率
-	    List<ScanType> scanTypeList = scanTypeService.findScanTypeById(orderDetail.getServiceId());
+	    List<ScanType> scanTypeList = scanTypeService.findScanTypeById(orderDetailVal.getServiceId());
 		int carnum=shopCarList.size()+apiList.size();
 		request.setAttribute("carnum", carnum);  
 		request.setAttribute("assetIds", assetIds);  
-		request.setAttribute("orderDetail", orderDetail);
+		request.setAttribute("orderDetail", orderDetailVal);
 		request.setAttribute("scanTypeList", scanTypeList);  
 		request.setAttribute("serviceAssetList", serviceAssetList);
 		return result;
