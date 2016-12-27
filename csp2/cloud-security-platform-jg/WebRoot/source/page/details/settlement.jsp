@@ -277,7 +277,7 @@
                     <div class="clearfix">
                     	<h3 class="fl">订单详情</h3>
                     	
-					<input type="hidden" id="serviceName" value="${service.name }"/>
+                                    
                     <c:if test="${service.id <= 5}">
                     	<a class="fr" style="color:#2499fb;padding-right:54px;" href="javaScript:void(0);" onclick="javaScript:orderBack();" style="cursor:hand;">返回修改订单信息</a>
                     </c:if>
@@ -295,17 +295,24 @@
 	                                 	<td width="16%" style="font-size:14px;">
 	                                    	${orderDetail.serviceName}
 	                                    </td>
-	                                    <td width="36%" style="font-size:14px;">
+	                                    <td width="16%" style="font-size:14px;">
                                             <c:if test="${service.id != 7}">
 	                                    	  ${orderDetail.assetName}
                                             </c:if>
-                                            <!--
+                                           
                                             <c:if test="${service.id == 7}">
-                                                ${orderDetail.}
+                                            	<c:if test="${orderDetail.scan_type==6}">
+		                                    	  64IP
+	                                            </c:if>
+	                                           
+	                                            <c:if test="${orderDetail.scan_type==7}">
+	                                                128IP
+	                                            </c:if>
+                                
                                             </c:if>
-                                            -->
+                                          
 	                                    </td>
-	                                    <td width="32%" style="font-size:14px;">
+	                                    <td width="52%" style="font-size:14px;">
 	                                    	<fmt:formatDate value="${orderDetail.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
 	                                    	<c:if test="${orderDetail.end_date!=null&&orderDetail.end_date!=''}">
 	                                    	~<fmt:formatDate value="${orderDetail.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
