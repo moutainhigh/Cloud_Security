@@ -18,6 +18,7 @@ import net.sf.json.JSONObject;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.client.urlconnection.HTTPSProperties;
@@ -194,7 +195,8 @@ public class NorthAPIWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //获取响应结果
-        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, json.toString());
+        Builder builder = service.type(MediaType.APPLICATION_JSON);
+        String response = builder.post(String.class, json.toString());
         JSONObject obj = JSONObject.fromObject(response);
 		String stateCode = obj.getString("code");
 		if(stateCode.equals("201")){
