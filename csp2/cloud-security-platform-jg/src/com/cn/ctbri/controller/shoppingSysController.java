@@ -339,7 +339,7 @@ public class shoppingSysController {
     @RequestMapping(value="saveOrderSys.html",method=RequestMethod.POST)
     @ResponseBody
     public void saveOrderSys(HttpServletResponse response,HttpServletRequest request) throws Exception{
-        Map<String, Object> m = new HashMap<String, Object>();
+    	Map<String, Object> m = new HashMap<String, Object>();
         
         User globle_user = (User) request.getSession().getAttribute("globle_user");
       String orderDetailId = request.getParameter("orderDetailId");
@@ -396,8 +396,7 @@ public class shoppingSysController {
          	       return;
             }
         }
-        OrderDetail orderDetailVo = selfHelpOrderService.findOrderDetailById(orderDetailId, globle_user.getId());  ///
-        
+        OrderDetail orderDetailVo = selfHelpOrderService.findOrderDetailById(orderDetailId, globle_user.getId());
         if(orderDetailVo==null){
         	m.put("error", true);
        	 
@@ -412,7 +411,7 @@ public class shoppingSysController {
     		return;
         }
         
-      //长期：订单结束时间不能早于当前订单提交时间,add by zsh,2016-7-27
+      //长期：订单结束时间不能早于当前订单提交时间  2016-12-29
         String nowDate = DateUtils.dateToString(new Date());
         if(1 == orderDetailVo.getType() && orderDetailVo.getEnd_date()!=null && 
         		DateUtils.dateToString(orderDetailVo.getEnd_date())!="" && 
@@ -430,14 +429,14 @@ public class shoppingSysController {
         }
         
         String orderId = "";
-        //创建订单（任务），调北向api   
+        //创建订单（任务），调北向api，modify by tangxr 2015-12-21
     	try {
     		SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
        	    String orderDate = odf.format(new Date());
        	         orderId = orderDate+String.valueOf(Random.fivecode());
     		//orderId = NorthAPIWorker.vulnScanCreateAPI(type, time*num, apiId, globle_user.getApikey(), globle_user.getId());
 		} catch (Exception e) {
-			m.put("message", "系统异常，暂时不能购买sys，请稍后购买~~");
+			m.put("message", "系统异常，暂时不能购买api，请稍后购买~~");
 		}
     	//北向API返回orderId，创建用户订单
     	if(!orderId.equals("") && orderId != null){
@@ -463,14 +462,37 @@ public class shoppingSysController {
             order.setStatus(1);//完成
             order.setPayFlag(0);
             order.setPrice(orderDetailVo.getPrice());
-            order.setIsAPI(0);//  非api订单
-            selfHelpOrderService.insertOrder(order);  //插入cs_order
-           
-
-            //插入数据到order_list
-            //OrderList 是购物车订单list
+            order.setIsAPI(0);//api订单
+            selfHelpOrderService.insertOrder(order);   //插入cs_order
             
-            Serv serv = servService.findById(orderDetailVo.getServiceId());
+            /*
+            //新增API订单
+            OrderAPI oAPI = new OrderAPI();
+            oAPI.setId(orderId);
+            oAPI.setBegin_date(new Date());
+            oAPI.setEnd_date(getAfterYear(new Date()));
+            oAPI.setApiId(orderDetailVo.getServiceId());
+            oAPI.setCreate_date(new Date());
+            oAPI.setPackage_type(orderDetailVo.getType());
+            oAPI.setNum(orderDetailVo.getWafTimes());
+            oAPI.setBuyNum(orderDetailVo.getWafTimes());
+            oAPI.setUserId(globle_user.getId());
+            oAPI.setContactId(linkmanId);
+            oAPI.setPayFlag(1);
+            orderAPIService.insert(oAPI);
+            
+            //记录用户购买服务接口次数
+            APICount count = new APICount();
+            count.setUserId(globle_user.getId());
+            count.setCount(orderDetailVo.getScan_type()*orderDetailVo.getWafTimes());
+            count.setApiId(orderDetailVo.getServiceId());
+            orderAPIService.insertOrUpdateCount(count);
+            */
+            
+            //获得服务名称
+            Serv servSys =servService.findById(orderDetailVo.getServiceId());
+            
+            //插入数据到order_list
 		    OrderList ol = new OrderList();
 		    //生成订单id
 		    SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
@@ -482,8 +504,8 @@ public class shoppingSysController {
 		    ol.setOrderId(orderId);
 		    ol.setUserId(globle_user.getId());
 		    ol.setPrice(orderDetailVo.getPrice());
-		    ol.setServerName(serv.getName());
-		    orderListService.insert(ol);
+		    ol.setServerName(servSys.getName());
+		    orderListService.insert(ol);  //  插入到cs_order_list
 		    m.put("orderListId", id);
             m.put("message", true);
     	}else{
@@ -835,8 +857,8 @@ public class shoppingSysController {
     /**
      * 功能描述： 收银台页面 -支付宝
      * */
-    @RequestMapping("cashierAliPayUI.html")
-    public String cashier(Model model, HttpServletRequest request){
+    @RequestMapping("AliPaycashierUI.html")
+    public String AliPaycashier(Model model, HttpServletRequest request){
     	String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
     	//获取orderId,购买时间,交易金额
     	OrderList orderList = orderListService.findById(orderListId);
@@ -875,6 +897,106 @@ public class shoppingSysController {
         model.addAttribute("balance",balance);
     	return "source/page/details/shoppingcashier-desk2";
     }
+    
+    /**
+     * 功能描述： 支付成功页面
+     * */
+    @RequestMapping(value="repayUISys.html", method=RequestMethod.POST)
+    public String toRepayUIsys(Model m,HttpServletRequest request, HttpServletResponse response){
+    	String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
+		OrderList orderList = orderListService.findById(orderListId);
+		
+		//不是当前用户的订单,不能支付
+    	User globle_user = (User) request.getSession().getAttribute("globle_user");
+    	if (orderListId== null || orderList == null ||orderList.getUserId()!= globle_user.getId()) {
+    		return "redirect:/index.html";
+    	}
+    	
+    	
+		//获取修改时间的订单编号
+		String modifyOrderIdList = request.getParameter("modifyOrderId");
+		if (modifyOrderIdList != null && !modifyOrderIdList.equals("") && !modifyOrderIdList.equals("undefined")){
+			String modifyOrderId[] = modifyOrderIdList.split(",");
+			for(String id:modifyOrderId){
+				if(!orderList.getOrderId().contains(id.trim()+",")&&
+						!orderList.getOrderId().endsWith(id.trim())){
+					return "redirect:/index.html"; 
+				}
+			}
+			m.addAttribute("modifyOrderId", modifyOrderId);
+			m.addAttribute("beginDate", orderList.getPay_date());  //部分服务调整的开始时间时间
+		}
+		
+		if (orderList.getPay_date()== null){
+			m.addAttribute("paySuccess", 1);
+		} else {
+			String[] api = orderList.getServerName().split(",");
+//			//判断所有订单都是API
+//			boolean apiOrderFlg = true;//true：所有订单都是API
+//			for(String name: api) {
+//				if(!name.endsWith("API")){
+//					apiOrderFlg = false;
+//					break;
+//				}
+//			}
+//			m.addAttribute("apiOrderFlg", apiOrderFlg);
+			m.addAttribute("paySuccess", 0);
+			m.addAttribute("orderList", orderList);
+			
+			Double price = orderList.getPrice();//支付金额
+	    	DecimalFormat df = new DecimalFormat("0.00");
+	    	String priceStr = df.format(price);
+	    	m.addAttribute("price", priceStr);
+			
+		}
+    	return "/source/page/details/repay";
+    	
+    }
+    
+    /**
+     * 功能描述： 确认支付
+     * */
+    @RequestMapping(value="payConfirmAli.html", method=RequestMethod.POST)
+    public void payConfirmAli(HttpServletRequest request, HttpServletResponse response){
+    	Map<String, Object> m = new HashMap<String, Object>();
+    	try {
+    		String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
+    		OrderList orderList = orderListService.findById(orderListId);
+    		if (orderList == null) {
+    			m.put("payFlag", 1);
+    			return;
+    		}
+    		
+    		//不是当前用户的订单,不能支付
+        	User globle_user = (User) request.getSession().getAttribute("globle_user");
+        	if (orderList.getUserId()!= globle_user.getId()) {
+        		m.put("payFlag", 2);
+    			return;
+        	}
+        	
+    		Double price = orderList.getPrice();//支付金额
+    		//收银台页面刷新，再次支付
+    		if (orderList.getPay_date() != null){
+    			//不能重复支付
+    			m.put("payFlag", 1);
+    			return;
+    		}
+    		
+    		
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	}finally {
+    		//object转化为Json格式
+    		JSONObject JSON = CommonUtil.objectToJson(response, m);
+    		try {
+    			// 把数据返回到页面
+    			CommonUtil.writeToJsp(response, JSON);
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    	}
+    }
+    
     
 	/**
 	 * 检查各服务的服务类型
