@@ -47,12 +47,77 @@ $(function(){
 
       },
       error:function(data){
-        alert("cuowu!");
+        if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+          window.location.href = "loginUI.html"; } 
+        else { window.location.href = "loginUI.html"; } 
       }
     });
   });
 
+  
+  //结算页提交订单
+  $("#settlementSys").click(function(){
+  	alert("abc");
+  	var createDate = getCreateDate();
+  	var orderType = $('#orderType').val();
+  	var orderDetailId = $("#orderDetailId").val();	//muji
+  	var userName =  $(".test_name").text();
+    var userAdd = $(".test_add").text();
+    var mobile =  $(".test_iphone").text();
+    var userId = $("#userIdHidden").val();
+  	$.ajax({
+  		type: "POST",
+  	    async: false, 
+  	    url: "saveOrderSys.html", 
+  	    data: {"orderDetailId":orderDetailId,    
+  			   "createDate":createDate,
+  			   "linkname":userName,
+  			   "phone":mobile,
+  			   "email":userAdd
+     			},  
+  	     dataType: "json",
+  	     success: function(data) {
+   			if(data.error){
+   				alert("参数值数据异常!!");
+   				window.location.href = "index.html";
+  		     	    return;
+   			}else if(data.assetsStatus == true){
+  					alert("订单资产没有验证,请重新下单!");
+  		     	    return;
+  				}else if(data.timeCompare == false){
+  					alert("订单无效,请重新下单!");
+  		     		return;
+  				}else if(data.orderStatus == false){
+  					alert("订单有异常,请重新下单!");
+  		     	    return;
+  				}else{
+   		    	var orderListId = data.orderListId;
+  	    			//window.location.href = "cashierUI.html?orderListId="+orderListId;
+  	    			//虚拟表单post提交
+  			    	var tempForm = document.createElement("form");
+  					tempForm.action = "cashierUI.html";
+  					tempForm.method = "post";
+  					tempForm.style.display = "none";
+  				
+  					var orderListIdInput = document.createElement("input");
+  					orderListIdInput.type="hidden"; 
+  					orderListIdInput.name= "orderListId"; 
+  					orderListIdInput.value= orderListId; 
+  					tempForm.appendChild(orderListIdInput);
+  				
+  					document.body.appendChild(tempForm);
+  					tempForm.submit();
+  					document.body.removeChild(tempForm);
+  				}
+  	    }, 
+  	    error: function(data){ 
+  	    	alert("baocuo");
+  	    } 
+  	});
+  });
+  
 });
+
 function getCreateDate(){
   var now = new Date();
   var createDate = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"-"+(now.getDate()<10?"0":"")+now.getDate()+" "+now.getHours()+":"+now.getMinutes()+":"+now.getSeconds();
