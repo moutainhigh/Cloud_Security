@@ -167,7 +167,7 @@
 		<input type="hidden" id="orderDetailId" name="orderDetailId" value="${orderDetail.id}"/>
 		<input type="hidden" id="assetIds" name="assetIds" value="${orderDetail.asstId}"/>
 		<input type="hidden" id="assetAddr" name="domainName" value="${orderDetail.assetAddr}"/>
-          <input type="hidden" id="orderType" name="orderType" value="${orderDetail.type}"/>
+        <input type="hidden" id="orderType" name="orderType" value="${orderDetail.type}"/>
 		<input type="hidden" id="ipArrayHidden" name="ipArray" value="${ipArray }"/>
 		<input type="hidden" id="timesHidden" name="times" value="${times }"/>
 		
@@ -454,7 +454,7 @@
 		            			<input id="settlement" class="submit" type="submit" value="提交订单"/>
 		            		</c:if>
                             <c:if test="${orderDetail.serviceId == 7 }">
-                                <input id="settlementSys" class="submit" type="button" value="提交订单"/>
+                                <input id="settlementSys" class="submit" type="submit" value="提交订单"/>
                             </c:if>
 		            	</c:if>
 		            	
