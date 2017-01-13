@@ -321,6 +321,8 @@ public class OrderMgrController {
      	       }
      	       return;
       	}
+      	
+      	//当 使用极光服务时候   不需要 asset 时，assetId参数怎么操作 
     	String assetIds = orderDetailVo.getAsstId();
     	  assetArray = assetIds.split(","); //拆分字符为"," ,然后把结果交给数组strArray 
     	  for(int i=0;i<assetArray.length;i++){
@@ -485,7 +487,7 @@ public class OrderMgrController {
    	    ol.setUserId(globle_user.getId());
    	    ol.setPrice(orderDetail.getPrice());
    	    ol.setServerName(serv.getName());
-   	    orderListService.insert(ol);
+   	    orderListService.insert(ol);   //插入cs_order_list
    	    
    	    m.put("orderListId", id);
    	    //object转化为Json格式
