@@ -29,9 +29,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cn.ctbri.common.HuaweiWorker;
 import com.cn.ctbri.common.NorthAPIWorker;
 import com.cn.ctbri.common.WafAPIWorker;
+import com.cn.ctbri.entity.APICount;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Order;
+import com.cn.ctbri.entity.OrderAPI;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.OrderList;
@@ -256,6 +258,7 @@ public class shoppingController {
         String result = "/source/page/details/settlement";
         return result;
 	}
+	
 	
 	
 	/**
@@ -2113,10 +2116,30 @@ public class shoppingController {
     		String orderIds = orderList.getOrderId();
     		if(orderIds!=null&&!"".equals(orderIds)){
     			String strArray[] = orderIds.split(",");
-    			orderNum= strArray.length;
+    			
+    			
     			for (int m=0;m<strArray.length;m++){
     				orderIdList.add(strArray[m]);
     			}
+    			
+    			orderNum= strArray.length;
+    			if (orderNum == 1) {
+    				List orderHashList = orderService.findByOrderId(orderIdList.get(0));
+    				if (orderHashList == null ||orderHashList.size() == 0) {
+    		    		return false;
+    		    	}
+    				HashMap<String, Object> order=new HashMap<String, Object>();
+    			    order=(HashMap) orderHashList.get(0);
+    			    int serviceId=0;
+    			    serviceId=(Integer) order.get("serviceId");
+    			    if (serviceId == 7) {//极光自助扫描接口
+    			    	User loginUser = userService.findUserById(globle_user.getId()).get(0);
+    			    	
+						return result;
+					}
+				}
+    			
+    			
     			list = selfHelpOrderService.findBuyShopList(orderIdList,globle_user.getId());
     		}
     		
