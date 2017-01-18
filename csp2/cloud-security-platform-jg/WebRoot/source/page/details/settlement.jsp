@@ -261,15 +261,18 @@
                     <li class="listone">
                     	<h3>支付方式</h3>
                        <div class="clickBox" style="margin-top:20px; margin-left:50px;" id="clickBox">
+                       <button type="button" class="click">安全币</button>
                        	<!-- <button type="button" class="click">在线支付</button>
                         <button type="button">邮局汇款</button>
                         <button type="button">公司转账</button> -->
+                        <!--  
                         <c:if test="${service.id!=7}">
                             <button type="button" class="click">安全币</button>
                         </c:if>
                         <c:if test="${service.id==7}">
                             <button type="button" class="##" id="zfb">支付宝</button>
                         </c:if>
+                        -->
                        </div>
                         <div class="hr"></div>
                     </li>
@@ -407,7 +410,7 @@
                           <em>&nbsp;安全币</em>
                         </c:if>
                         <c:if test="${service.id >= 7 }">
-                          <em>&nbsp;元</em>
+                          <em>&nbsp;安全币</em>
                         </c:if>
                 	</span>
                 </li>
@@ -424,7 +427,7 @@
                 		  <em>&nbsp;安全币</em>
                         </c:if>
                         <c:if test="${service.id >= 7 }">
-                          <em>&nbsp;元</em>
+                          <em>&nbsp;安全币</em>
                         </c:if>
                 	</span>
                 </li>
@@ -440,7 +443,7 @@
 	            	  <em style="font-size:14px">&nbsp;安全币</em>
                     </c:if>
                     <c:if test="${service.id == 7 }">
-                      <em style="font-size:14px">&nbsp;元</em>
+                      <em style="font-size:14px">&nbsp;安全币</em>
                     </c:if>
             	</span>
             	</c:if>
