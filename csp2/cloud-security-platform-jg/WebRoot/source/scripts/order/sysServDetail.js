@@ -57,7 +57,6 @@ $(function(){
   
   //结算页提交订单
   $("#settlementSys").click(function(){
-  	alert("abc");
   	var createDate = getCreateDate();
   	var orderType = $('#orderType').val();
   	var orderDetailId = $("#orderDetailId").val();	//muji
