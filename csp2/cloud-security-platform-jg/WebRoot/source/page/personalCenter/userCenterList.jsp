@@ -75,9 +75,13 @@
                             </td>
                             <td class="order" valign="top">
                             	<p class="stylep" style="width:84px;">
-                            	<c:if test="${list.isAPI==0}">
+                            	<c:if test="${list.isAPI==0 && list.serviceId!=7}">
 									<c:if test="${list.type==1}">长期</c:if>
 									<c:if test="${list.type==2}">单次</c:if> 
+								</c:if>
+								<c:if test="${list.isAPI==0 && list.serviceId==7}">
+									<c:if test="${list.price==64}">64IP</c:if>
+									<c:if test="${list.price==256}">128IP</c:if> 
 								</c:if>
 								<c:if test="${list.isAPI==1}">
 									<!--<c:if test="${list.package_type==1}">套餐1</c:if>
@@ -195,7 +199,11 @@
 						                 </a>
 						                
 						            </c:if>
-						         
+						         	<c:if test="${list.serviceId==6}">
+						               	<a href="${ctx}/jiguangselfHelpOrderOpera.html?orderId=${list.id }&type=${list.type}" target="_blank" title="">
+						                 	查看详情!
+						                </a>						                 
+						            </c:if>
                             	</p>
                        			<p style="width:98px; height:auto;">
 									<!-- 订单删除操作 -->
