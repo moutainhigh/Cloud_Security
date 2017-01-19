@@ -81,7 +81,7 @@
 								</c:if>
 								<c:if test="${list.isAPI==0 && list.serviceId==7}">
 									<c:if test="${list.price==64}">64IP</c:if>
-									<c:if test="${list.price==256}">128IP</c:if> 
+									<c:if test="${list.price==128}">128IP</c:if> 
 								</c:if>
 								<c:if test="${list.isAPI==1}">
 									<!--<c:if test="${list.package_type==1}">套餐1</c:if>
