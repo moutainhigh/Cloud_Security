@@ -823,7 +823,7 @@ public class UserController{
 	        	HashMap<String,Object>  mapOrder = (HashMap<String,Object>)orderList.get(i);
 	        	String orderListId = (String)mapOrder.get("orderListId");
 	        	//根据orderListId查询订单
-	        	List ol = orderService.findByOrderListId(orderListId,null);
+	        	List ol = orderService.findByOrderListId(orderListId,null); // 查询from cs_order o,cs_service s  o.id = orderlistid
 	        	for(int j = 0; j < ol.size(); j++){
 	        		//获取对应资产 add by tangxr 2016-4-25
 		        	HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
