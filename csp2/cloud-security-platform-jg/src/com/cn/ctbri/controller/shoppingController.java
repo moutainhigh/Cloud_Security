@@ -2125,6 +2125,13 @@ public class shoppingController {
     			orderNum= strArray.length;
     			if (orderNum == 1) {
     				List orderHashList = orderService.findByOrderId(orderIdList.get(0));
+    				/*
+    				 * <select id="findOrderByOrderId" resultType="hashmap" parameterType="String">
+        					select o.id,o.serviceId,o.type,s.name,s.parentC,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI,o.userId
+        					from cs_order o,cs_service s
+        					where o.id = #{orderId} and o.serviceId = s.id
+    					</select>
+    				 * */
     				if (orderHashList == null ||orderHashList.size() == 0) {
     		    		return false;
     		    	}
@@ -2134,7 +2141,27 @@ public class shoppingController {
     			    serviceId=(Integer) order.get("serviceId");
     			    if (serviceId == 7) {//极光自助扫描接口
     			    	User loginUser = userService.findUserById(globle_user.getId()).get(0);
-    			    	
+    			    	Date createDate = (Date)order.get("create_date");
+    			    	Date  beginDate =(Date)order.get("begin_date");
+    			    	String orderId = (String)order.get("id");
+    			    	status = status+order.get("status");
+    	//	添加极光接口位置    String intResString = jiguangjiekou();
+    			    	if (orderId != null && !"".equals(orderId)) {
+        					// 更新订单资产表
+        					//selfHelpOrderService.updateOrderAPI(
+        						//	shopCar.getOrderId(), orderId);
+        					// 更新订单表   UPDATE  cs_order o  
+        					selfHelpOrderService.updateOrder(orderId,
+        							orderId, "0",status,orderList.getId(),orderList.getPay_date());
+        					
+        					/*更新 修改时间的订单Id
+        					if (modifyOrderId.contains(shopCar.getOrderId())){
+        						modifyOrderId.remove(shopCar.getOrderId());
+        						modifyOrderId.add(orderId);
+        					}*/
+        				} else {
+        					result = false;
+        				}
 						return result;
 					}
 				}
