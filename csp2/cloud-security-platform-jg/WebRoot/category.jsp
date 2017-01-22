@@ -38,7 +38,7 @@ function buySystemService(servId){
 					<a href="${ctx}/web_anquanbang.html">网站安全帮</a>
 					<ol id="anquanbang_ol">
 						<c:forEach var="list" items="${servList}" varStatus="status">
-							<c:if test="${list.id != 6}">
+							<c:if test="${list.id < 6}">
 								<c:if test="${status.count == 1}">
 								  <li style="border: none;">
 								</c:if>
@@ -101,7 +101,12 @@ function buySystemService(servId){
 							  <li>
 							</c:if>
 							<a href="javascript:;" onclick="buySystemService(${serv.id });">${serv.name }</a>
+							
+							<form action="systemOrderOperaInit.html" method="post" id="systemAnquanbangDetailUIForm">
+							<!--
+							systemOrderOperaInit.html systemOrderOperaInit
 							<form action="systemAnquanbangDetailUI.html" method="post" id="systemAnquanbangDetailUIForm">
+							-->
 								<input type="hidden" id="category_systemServId" name="serviceId" value="${serv.id }"/>
 								<input type="hidden" id="indexPage" name="indexPage" value="3"/>
 							</form>
