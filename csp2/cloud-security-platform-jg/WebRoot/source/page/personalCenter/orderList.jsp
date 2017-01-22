@@ -27,7 +27,7 @@
                         	<td class="order">
                             	<div class="fl htd" style="width:207px; padding-left:90px;">
                                     <span class="tl fl">
-                                        <img src="${ctx}/source/images/serviceIcon/${olist.homeIcon }" alt="" style="position:relative; top:6px;width:48px;height:48px">
+                                        <img src="${ctx}/source/images/serviceIcon/${olist.homeIcon}" alt="" style="position:relative; top:6px;width:48px;height:48px">
                                     </span>
                                     
                                     <div class="tr fl">
@@ -56,8 +56,10 @@
                                          </h2>
                                          </c:if>
                                          <c:if test="${list.isAPI==0&&list.serviceId==7}">
-							                 	<a href="${ctx}/systemOrderOperaInit.html?serviceId=${list.serviceId}" target="_blank">${list.name}</a>
-							                 </c:if>
+                                         	<h2>
+							                 <a href="${ctx}/systemOrderOperaInit.html?serviceId=${list.serviceId}" target="_blank">${list.name}</a>
+							                </h2>
+							             </c:if>
                                             <c:if test="${list.isAPI==2&&list.serviceId==6}">
                                          <h2>
 							                   <a href="${ctx}/wafDetails.html?serviceId=6" target="_blank">${list.name}</a>
@@ -113,8 +115,8 @@
 				                <c:if test="${list.isAPI==0 && list.serviceId!=7 && (list.status==1)}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
 				                <c:if test="${list.isAPI==0 && list.serviceId!=7 && (list.status==2)}"><p class="stylep" style="width:108px;">已结束<b class="endend"></b></p></c:if>
 				                
-				                <c:if test="${list.isAPI==0 && list.serviceId==7 && list.end_date>temp}"><p class="stylep" style="width:108px;">服务中<b class="endend"></b></p></c:if>
-				                <c:if test="${list.isAPI==0 && list.serviceId==7 && list.end_date<=temp}"><p class="stylep" style="width:108px;">已结束<b class="endend"></b></p></c:if>
+				                <c:if test="${list.isAPI==0 && list.serviceId==7 && list.end_date>temp}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
+				                <c:if test="${list.isAPI==0 && list.serviceId==7 && list.end_date<=temp}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
 				                
 				                <!-- <c:if test="${list.isAPI==1 && list.status==0}"><p class="stylep" style="width:108px;">已下单<b class="wait"></b></p></c:if> -->
 				                <c:if test="${list.isAPI==1 && list.status==0}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
