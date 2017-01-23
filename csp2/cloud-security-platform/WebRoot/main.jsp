@@ -11,6 +11,10 @@
 <link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
 <link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
 <link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
+<script src="${ctx}/source/scripts/common/adview_pic_cpc_cpm_cpa_guanggao_gg_ads_300x250.js" ></script>  
+<script type="text/javascript">
+ if (typeof(killads)=='undefined'){alert('您的浏览器可能安装了广告屏蔽插件，请检查');}
+</script> 
 <SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
 <script src="${ctx}/source/scripts/common/jquery.js"></script>
 <script src="${ctx}/source/scripts/common/portalindex.js"></script>
