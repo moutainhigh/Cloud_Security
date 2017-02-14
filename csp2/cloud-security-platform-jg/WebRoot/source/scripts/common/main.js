@@ -134,6 +134,11 @@ function buySelfHelpOrderAPIMain(apiId){
 	$("#apiIdHidden").val(apiId);
 	$("#APIMainForm").submit();
 }	
+function buySelfHelpOrderSysMain(serviceId){
+	//$("#sysIdHidden").val(serviceId);
+	$("#sysIdHidden").val(serviceId);
+	$("#SysMainForm").submit();
+}	
 
 
 
