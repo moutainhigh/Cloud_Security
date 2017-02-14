@@ -91,7 +91,7 @@ function buySystemService(servId){
 					</ol>
 				</li>
 				<li>
-					<a href="javascript:;">系统安全帮</a>
+					<a href="${ctx}/system_anquanbang.html">系统安全帮</a>
 					<ol id="anquanbangAPI_ol">
 						<c:forEach var="serv" items="${systemServList}"  varStatus="status">
 							<c:if test="${status.count == 1}">
