@@ -29,6 +29,7 @@ public class SystemFilter extends OncePerRequestFilter  {
             HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		//存放在没有Session之前，可以放行的连接
+
 		List<String> list = new ArrayList<String>();
 		list.add("/asset_verification.html");
 		list.add("/registUI.html");
@@ -67,6 +68,7 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/findUseAssetAddr.html");
 		//add by tangxr 2016-1-23
 		list.add("/web_anquanbang.html");//网络安全帮 
+		list.add("/system_anquanbang.html");//系统安全帮
 		//list.add("/sa_anquanbang.html");//安全动态感知
 		list.add("/joinUs.html");//加入我们
 		list.add("/knowUs.html");//了解我们
@@ -133,6 +135,9 @@ public class SystemFilter extends OncePerRequestFilter  {
 						request.getSession().setAttribute("serviceId", Integer.parseInt(request.getParameter("serviceId")));
 					}else if(index == 2){
 						request.getSession().setAttribute("apiId", Integer.parseInt(request.getParameter("apiId")));
+					}
+					else if(index == 4){
+						request.getSession().setAttribute("serviceId", Integer.parseInt(request.getParameter("serviceId")));
 					}
 					request.getSession().setAttribute("indexPage", index);
 				}else{
