@@ -123,7 +123,7 @@ public class shoppingSysController {
 	 * 参数描述：  无
 	 *     @time 2016-07-18
 	 */
-	@RequestMapping(value="systemOrderOperaInit.html",method=RequestMethod.POST)
+	@RequestMapping(value="systemOrderOperaInit.html")
 	public String systemOrderOperaInit(HttpServletRequest request){
 		 User globle_user = (User) request.getSession().getAttribute("globle_user");
 		    int serviceId = Integer.parseInt(request.getParameter("serviceId"));
