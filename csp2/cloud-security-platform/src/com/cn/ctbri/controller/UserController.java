@@ -1916,7 +1916,9 @@ public class UserController{
   		m.addAttribute("currentId", currentId);
 	  	} catch (UnsupportedEncodingException e) {
 	  		e.printStackTrace();
-	  	}  	  
+	  	} catch (Exception e) {
+	  		e.printStackTrace();
+	  	} 	  
 
 		return "/source/page/anquanbang/anquan_state";
 	}
