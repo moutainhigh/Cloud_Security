@@ -41,6 +41,7 @@ import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.Notice;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceAPI;
+import com.cn.ctbri.entity.ServiceSys;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAdvertisementService;
 import com.cn.ctbri.service.IAlarmService;
@@ -49,6 +50,7 @@ import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServiceAPIService;
+import com.cn.ctbri.service.IServiceSysService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.AddressUtils;
@@ -91,6 +93,9 @@ public class UserController{
     ITaskService taskService;
 	@Autowired
 	IAdvertisementService adService;
+	@Autowired
+    IServiceSysService serviceSysService;
+	
 
 	/**
 	 * 功能描述： 基本资料
@@ -294,6 +299,8 @@ public class UserController{
         //获取首页的广告
         List adList = adService.findAdvertisementByType(0);
         
+        List servSyslist = serviceSysService.findSysPriceList();
+        
         //查询网页篡改个数 
 //        int whorseNum = selfHelpOrderService.findLeakNum(3);
         //查询木马检测个数 
@@ -315,6 +322,7 @@ public class UserController{
         m.addAttribute("servList", servList);
         m.addAttribute("servAPIList", servAPIList);
         m.addAttribute("adList", adList);
+        m.addAttribute("servSyslist", servSyslist);
 //        m.addAttribute("noticeList", list);
 		return "/main";
 	}
@@ -1975,7 +1983,7 @@ public class UserController{
 	}
 	
 	/**
-	 * 功能描述： 跳转网站安全帮
+	 * 功能描述： 跳转api安全帮
 	 *		 @time 2016-4-18
 	 */
 	@RequestMapping(value="/api_anquanbang.html")
@@ -2138,5 +2146,37 @@ public class UserController{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * 功能描述： 跳转系统安全帮
+	 *		 @time 2017-2-8
+	 */
+	@RequestMapping(value="/system_anquanbang.html")
+	public String systemAnquanbang(Model m){
+	    //获取公告
+	    List<Notice> list = noticeService.findAllNotice();
+	    //获取服务类型
+        List servList = serviceSysService.findSysPriceList();//需要修改为system
+        //查询漏洞个数
+        int leakNum = selfHelpOrderService.findLeakNum(1);
+        //查询网页数
+        int webPageNum = selfHelpOrderService.findWebPageNum();
+        //检测网页数
+        int webSite = selfHelpOrderService.findWebSite();
+        //断网次数
+        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
+        //获取安全能力API页面的广告
+        List adList = adService.findAdvertisementByType(2);
+        
+        System.out.println(servList);
+        m.addAttribute("leakNum", leakNum);
+        m.addAttribute("webPageNum", webPageNum);
+        m.addAttribute("webSite", webSite);
+        m.addAttribute("brokenNetwork", brokenNetwork);
+        m.addAttribute("servList", servList);
+        m.addAttribute("noticeList", list);
+        m.addAttribute("adList", adList);
+		return "/source/page/child/system_anquanbang";
 	}
 }
