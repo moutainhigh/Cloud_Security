@@ -41,7 +41,7 @@ function showUnreadNews()
 
 function buySys(serviceId){
 	$("#sysIdNew").val(serviceId);
-	$("#selfHelpOrderAPIInitNewForm").submit();
+	$("#systemOrderOperaInitNewForm").submit();
 }
     //定时30s刷新一次
     //setInterval('showUnreadNews()',20000);
@@ -183,8 +183,8 @@ function buySys(serviceId){
 		                                    	<!--<a style="left:112px" href="${ctx}/selfHelpOrderAPIInit.html?apiId=${list.id }&indexPage=2" class="btn">购买</a>
 		                                    -->
 		                                    <a style="left:62px" href="javascript:;" onclick="buySys(${list.id });" class="btn">购买</a>
-		                                    <form action="selfHelpOrderAPIInit.html" method="post" id="selfHelpOrderAPIInitNewForm">
-												<input type="hidden" id="apiIdNew" name="apiId"/>
+		                                    <form action="systemOrderOperaInit.html" method="post" id="systemOrderOperaInitNewForm">
+												<input type="hidden" id="sysIdNew" name="serviceId"/>
 												<input type="hidden" id="indexPage" name="indexPage" value="4"/>
 											</form>
 		                                    </div>
