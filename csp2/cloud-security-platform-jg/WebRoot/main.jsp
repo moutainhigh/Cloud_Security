@@ -308,10 +308,10 @@ html, body {
 							<a href="${ctx}/system_anquanbang.html" class="fr">查看更多<b></b></a>
 						</div>
 						<ul class="newlist newlist-top fl">
-							<c:forEach var="sysList" items="${servAPIList}"
+							<c:forEach var="sysList" items="${servSyslist}"
 								varStatus="status">
 								<c:choose>
-									<c:when test="${sysList.id<=3}">
+									<c:when test="${sysList.id>=7}">
 
 										<li class="fl"><a href="javascript:;"
 											onclick="buySelfHelpOrderSysMain(${sysList.serviceId});">
