@@ -92,17 +92,19 @@
 					<ul>
 						<li class="clearfix">
 							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
-                            <div class="fl price"><strong id="price"></strong><strong></strong></div> 
-                          	<span style="position: relative;top: 7px;left:7px;color:#d00000">元</span>
+                            <div class="fl price"><strong id="price">0</strong><strong></strong></div> 
+                          	<span style="position: relative;top: 7px;left:7px;color:#d00000">安全币</span>
                           	<span style="position: relative;top: 7px;left:7px"><u>由绿盟科技提供服务并开具发票</u></span>
 						</li>
                           <li class="clearfix">
-							<label class="fl">选 类 型</label>
-                           <div class="fl clickBox" id="clickBox">
+							<label class="fl">服务期限</label>
+                           <div class="fl" style="top:3px;">
+                           	<select class="text select" id="clickBox" onclick="changeDiv();" style="margin-left: 0px;">
+                           		<option value="1">1年</option>
+                           	</select>
                            <!--
                             <button class="click Single" value="8" onclick="changeDiv('Single');" style="width: 90px;">包月</button>
                             -->
-                            <button class="click long" value="1" style="width: 90px;">包年</button>
                            </div> 
                            
 						</li>
@@ -139,15 +141,19 @@
                         <button style="background:#5aba5f; width:126px" id="buyNowsys">立即购买</button>
                     </div>
 				</div>
-                <form action="wafDetails.html" method="post" id="wafDetailsForm">
-					<input type="hidden" id="serviceIdWafHidden" name="serviceId" value=""/>
-				</form>
 				
 			</div>
 		</div>
         <div class="commodity">
         	<div class="imgBox clearfix">
             	<h4>商品信息</h4>
+            	<c:forEach var="detailImage" items="${detailImages}" varStatus="status">
+	            	<c:if test="${detailImage != null && detailImage != ''}">
+	            		<div class="commoditys" style="overflow:hidden">
+	            			<img src="${ctx}/source/images/serviceDetail/${detailImage }" alt=""/>
+	            		</div>
+	            	</c:if>
+            	</c:forEach>
                 <div class="commoditys" style="overflow:hidden">
                 	<img src="${ctx}/source/images/portal/jiguang_detail.jpg" alt="">
                 </div>
