@@ -58,5 +58,8 @@
 		
 		<mapper resource="com/cn/ctbri/entity/ServDetailMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/ScanTypeMapper.xml"/>
+		
+		<!-- add by cy 系统安全帮  2017-2-20 -->
+		<mapper resource="com/cn/ctbri/entity/ServiceSysMapper.xml"/>
 	</mappers>
 </configuration>  
