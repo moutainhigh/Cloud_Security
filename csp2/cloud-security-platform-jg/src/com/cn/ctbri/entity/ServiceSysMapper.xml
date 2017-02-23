@@ -30,12 +30,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="findSysPriceList" resultType="map">
-	select * from cs_service service LEFT JOIN cs_price price  
+	select * from (
+select * from(
+(SELECT service.*,price.scan_type, price.type priceType,price.timesG,price.price FROM  (
+       select s.*,detail.servType from cs_service s join cs_service_detail detail on detail.serviceId = s.id) service join
+       cs_price price
+ON price.serviceId = service.id
+AND
+(service.servType=0  AND price.timesG=1))
+order by price.price) serr
+group by serr.id
+UNION
+
+select * from(
+SELECT service.*,price.scan_type, price.type priceType,price.timesG,price.price FROM  
+       (select s.*,detail.servType from cs_service s join cs_service_detail detail on detail.serviceId = s.id) service join
+       cs_price price
+ON price.serviceId = service.id
+AND service.servType=1
+order by service.id,price.price) ser
+group by ser.id
+
+) serv
+where parentC=3
+order by serv.id
+	<!--  select * from cs_service service LEFT JOIN cs_price price  
 	on 
 		price.serviceId = service.id and 
 		price.timesG = 0 where
 		service.id = 7
-	order by service.id
+	order by service.id-->
 	</select>
 	
 	<!-- 添加系统安全帮服务 -->
