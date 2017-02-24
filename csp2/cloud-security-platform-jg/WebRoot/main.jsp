@@ -254,7 +254,7 @@ html, body {
 									<c:when test="${apiList.id >=3 && apiList.id <=5}">
 
 										<li class="fl"><a href="javascript:;"
-											onclick="buySelfHelpOrderAPIMain(${apiList.serviceId});">
+											onclick="buySelfHelpOrderAPIMain(${apiList.id});">
 												<i><img src="${ctx}/source/images/portal/API_Sign.png"
 													alt=""></i> <!--<c:if test="${apiList.id ==3}">
                                     	<p><img src="${ctx}/source/images/portal/webPageTamper.png" alt=""></p>
@@ -314,7 +314,7 @@ html, body {
 									<c:when test="${sysList.id>=7}">
 
 										<li class="fl"><a href="javascript:;"
-											onclick="buySelfHelpOrderSysMain(${sysList.serviceId});">
+											onclick="buySelfHelpOrderSysMain(${sysList.id});">
 												<i><img src="${ctx}/source/images/portal/API_Sign.png"
 													alt=""></i> 
 												<p>
