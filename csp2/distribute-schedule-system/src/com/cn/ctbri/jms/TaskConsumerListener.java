@@ -757,9 +757,9 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 					EngineCfg engine = engineService.findEngineIdbyIP(ip);
 					if(engine!=null){
 						if(!jsonObject.get("memoryUsage").equals("null") && jsonObject.get("cpuUsage") != null && jsonObject.get("diskUsage") != null){
-							double memory_usage = jsonObject.getDouble("memoryUsage");
-							double cpu_usage = jsonObject.getDouble("cpuUsage");
-							double disk_usage = jsonObject.getDouble("diskUsage");
+							double memory_usage = jsonObject.getDouble("memoryUsage")/100;
+							double cpu_usage = jsonObject.getDouble("cpuUsage")/100;
+							double disk_usage = jsonObject.getDouble("diskUsage")/100;
 							
 							int activity = engine.getActivity();
 							int maxTask = engine.getMaxTask();
