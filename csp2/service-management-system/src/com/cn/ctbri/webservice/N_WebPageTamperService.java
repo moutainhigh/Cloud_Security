@@ -311,7 +311,7 @@ public class N_WebPageTamperService {
 			        	json.put("code", "200");
 			        	json.put("message", "订单操作成功");
 			        }else if(result.equals("wrong")){
-			        	json.put("code", "421");
+			        	json.put("code", "431");
 			        	json.put("message", "任务未下发到设备或设备异常");
 			        }else{
 			        	json.put("code", "404");
@@ -447,7 +447,7 @@ public class N_WebPageTamperService {
 							json.put("alarmObj", alarmObject);
 	//						return json.toString();
 						}else{
-							json.put("code", 421);
+							json.put("code", 431);
 							json.put("message", "订单taskId有误，请检查");
 						}
 					}
