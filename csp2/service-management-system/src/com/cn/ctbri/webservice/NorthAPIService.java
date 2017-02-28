@@ -628,7 +628,7 @@ public class NorthAPIService {
 			}
 			
 			//返回json
-			json.put("code", 201);
+			json.put("code", 200);
 			json.put("token", "");
 		} catch (Exception e) {
 			e.printStackTrace();
