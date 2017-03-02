@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import com.cn.ctbri.common.Constants;
 import com.cn.ctbri.entity.Advertisement;
 import com.cn.ctbri.entity.ApiPrice;
+import com.cn.ctbri.entity.Partner;
 import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.ScanType;
 import com.cn.ctbri.entity.Serv;
@@ -27,6 +28,7 @@ import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.ServiceDetail;
 import com.cn.ctbri.service.IAdvertisementService;
 import com.cn.ctbri.service.IApiPriceService;
+import com.cn.ctbri.service.IPartnerService;
 import com.cn.ctbri.service.IPriceService;
 import com.cn.ctbri.service.IScanTypeService;
 import com.cn.ctbri.service.IServDetailService;
@@ -61,6 +63,8 @@ public class ServerManagerService {
 	IPriceService priceService;
 	@Autowired
 	IApiPriceService apiPriceService;
+	@Autowired
+	IPartnerService partnerService;
 	
 	/**
 	 * 功能描述：广告添加
@@ -590,6 +594,45 @@ public class ServerManagerService {
 			json.put("messaage", "修改服务价格失败");
 		}
 		
+		return json.toString();
+	}
+	
+	/**
+	 * 功能描述：更新合作方
+	 * */
+	@POST
+	@Path("/server/updatePartner")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updatePartner(String dataJson){
+		JSONObject json = new JSONObject();
+		try {
+			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
+			String partnerStr = jsonObj.getString("partnerArray");
+			if(partnerStr!=null && !partnerStr.equals("")){
+				JSONArray partnerArray = jsonObj.getJSONArray("partnerArray");
+				//先删除在更新
+				String oldName = "";
+				partnerService.delete(oldName);
+				for (Object pObj : partnerArray) {
+					JSONObject partnerObj = (JSONObject) pObj;
+		            String partnerName = partnerObj.getString("partnerName");
+		            String beginIpStr = partnerObj.getString("begin_ip");
+		            String endIpStr = partnerObj.getString("end_ip");
+		            
+		            Partner partner = new Partner();
+					partner.setPartnerName(partnerName);
+					partner.setBegin_ip(beginIpStr);
+					partner.setEnd_ip(endIpStr);
+			        partnerService.insert(partner);
+				}
+			}
+			json.put("code", 200);//返回200表示成功
+			json.put("messaage", "更新成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("code", 400);//返回400表示失败
+			json.put("messaage", "更新失败");
+		}
 		return json.toString();
 	}
 	
