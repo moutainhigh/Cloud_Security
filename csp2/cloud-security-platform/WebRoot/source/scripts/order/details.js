@@ -881,7 +881,7 @@ function tasknum_verification(){
 					    		            					} else if(data.subResult == 2) {
 					    		            						$("#assetAddr_msg").html("请输入正确的网站地址!");
 					    		            					}else if(data.subResult == 3) {
-					    		            						$("#assetName_msg").html("网站地址重复!");
+					    		            						$("#assetAddr_msg").html("网站地址重复!");
 					    		            					}
 					    		            					break;
 					    		            				case 4:
