@@ -8,7 +8,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cn.ctbri.entity.OrderTask;
+import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IOrderTaskService;
+import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.DateUtils;
 
 /**
@@ -25,6 +27,8 @@ public class Scheduler4Exception {
 
 	@Autowired
     IOrderTaskService orderTaskService;
+	@Autowired
+    IUserService userService;
 
 	public void execute() throws Exception {
 		logger.info("[下发任务调度]:任务表扫描开始......");
@@ -73,8 +77,16 @@ public class Scheduler4Exception {
             if(websoc != null && websoc != ""){
             	customManu = websoc.split(","); //拆分字符为"," ,然后把结果交给数组customManu 
             }
+            //查询user,新增合作方
+            User user = userService.finUserByOrder(o.getOrderId());
+            String partner = "";
+            if(user!=null){
+            	if(user.getPartner()!=null){
+            		partner = user.getPartner();
+            	}
+            }
         	String result = "";
-        	result = InternalWorker.vulnScanCreate(scanMode, targetUrl, scanType, begin_date, end_date, scanPeriod, scanDepth, maxPages, stategy, customManu, orderTaskId, serviceId);
+        	result = InternalWorker.vulnScanCreate(scanMode, targetUrl, scanType, begin_date, end_date, scanPeriod, scanDepth, maxPages, stategy, customManu, orderTaskId, serviceId, partner);
         	if(result.equals("success")){
         		o.setWarn(1);
         		orderTaskService.update(o);

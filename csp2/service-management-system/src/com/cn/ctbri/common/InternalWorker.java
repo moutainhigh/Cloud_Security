@@ -167,12 +167,14 @@ public class InternalWorker {
 	 *         MaxPages    最大页面数,
 	 *         Stategy     策略,
 	 *         CustomManu  指定厂家，可以多个，以逗号区分,
-	 *         Reserve     保留字段
+	 *         Reserve     保留字段,
+	 *         Partner     合作方
 	 *		 @time 2015-10-16
 	 */
 	public static String vulnScanCreate(String scanMode, String targetURL, String scanType, 
     		String startTime, String endTime, String scanPeriod, String scanDepth, 
-    		String maxPages, String stategy, String customManu[], String orderTaskId, String serviceId) {
+    		String maxPages, String stategy, String customManu[], String orderTaskId,
+    		String serviceId, String partner) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("scanMode", scanMode);
@@ -188,6 +190,7 @@ public class InternalWorker {
 		json.put("customManus", customManus);
 		json.put("orderTaskId", orderTaskId);
 		json.put("serviceId", serviceId);
+		json.put("partner", partner);
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Create_orderTask;
     	//创建jersery客户端配置对象
@@ -235,6 +238,10 @@ public class InternalWorker {
 		String stateCode = obj.getString("code");
 		if(stateCode.equals("200")){
 			return "success";
+		}else if(stateCode.equals("424")){
+			return "wait";
+		}else if(stateCode.equals("423")){
+			return "other";
 		}else if(stateCode.equals("421")){
 			return "wrong";
 		}else{
@@ -377,7 +384,7 @@ public class InternalWorker {
 	 *		 @time 2015-10-16
 	 */
 	private static void buildConfig(String url,ClientConfig config) {
-		if(url.startsWith("http")) {
+		if(url.startsWith("http")) {//？？？
         	SSLContext ctx = getSSLContext();
         	config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
         		     new HostnameVerifier() {
@@ -391,7 +398,7 @@ public class InternalWorker {
 
 
     public static void main(String[] args) {
-    	String create = vulnScanCreate("2", "http://www.testfire.net", "", "2016-02-04 17:55:35", "", "", "", "", "", new String[]{"2"},"35_16020515441179849", "1");
+    	String create = vulnScanCreate("2", "http://www.testfire.net", "", "2016-02-04 17:55:35", "", "", "", "", "", new String[]{"2"},"35_16020515441179849", "1", "");
 //    	String o = vulnScanGetOrderTaskStatus("1","4");
     	System.out.println(create);
     }
