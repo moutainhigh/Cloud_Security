@@ -64,4 +64,9 @@ public class UserDaoImpl extends DaoCommon implements UserDao {
 		return getSqlSession().selectOne(ns+"findUserByApiKey", apiKey);
 	}
 
+
+	public User finUserByOrder(String orderId) {
+		return getSqlSession().selectOne(ns+"finUserByOrder", orderId);
+	}
+
 }
