@@ -22,4 +22,6 @@ public interface UserDao {
 	public void insertAPINum(APINum num);
 
 	public User findUserByApiKey(String apiKey);
+
+	public User finUserByOrder(String orderId);
 }
