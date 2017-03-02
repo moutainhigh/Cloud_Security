@@ -18,5 +18,7 @@ public interface IUserService {
 	void insertAPINum(APINum num);
 
 	User findUserByApiKey(String apiKey);
+
+	User finUserByOrder(String orderId);
     
 }
