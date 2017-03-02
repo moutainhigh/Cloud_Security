@@ -41,4 +41,8 @@ public class UserServiceImpl implements IUserService{
 		return userDao.findUserByApiKey(apiKey);
 	}
 
+	public User finUserByOrder(String orderId) {
+		return userDao.finUserByOrder(orderId);
+	}
+
 }
