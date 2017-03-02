@@ -1918,6 +1918,8 @@ public class UserController{
 	  		e.printStackTrace();
 	  	} catch (Exception e) {
 	  		e.printStackTrace();
+//	  		m.addAttribute("error", "服务器异常，请您耐心等待...");
+//	  		return "/source/page/anquanbang/anquan_state";
 	  	} 	  
 
 		return "/source/page/anquanbang/anquan_state";
