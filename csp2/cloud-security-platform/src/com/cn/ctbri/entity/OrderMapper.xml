@@ -347,6 +347,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and o.serviceId = 6
 			and DATE_FORMAT(o.begin_date, '%Y-%m-%d') between date_add(CURDATE(),interval -1 day) and CURDATE()
 		</if>
+		<if test="isAPI==1">
+			select * from cs_order o
+			where o.status in (0) 
+			and o.delFlag !=1
+			and	o.payFlag = 1
+			and o.isAPI = 1
+		</if>
 		 <!--<if test="isAPI==0">
 		   and o.status not in (1,2) 
            and o.isAPI = 0
