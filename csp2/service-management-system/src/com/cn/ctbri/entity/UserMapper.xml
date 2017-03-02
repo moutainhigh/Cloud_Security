@@ -10,16 +10,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="apikey" column="apikey"/>
 		<result property="urlAddr" column="urlAddr"/>
 		<result property="token" column="token"/>
+		<result property="partner" column="partner"/>
 	</resultMap>
 	
 	<!-- 插入用户 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.User">
 		insert into cs_user 
-		(id,apikey,urlAddr,token,type) values(#{id},#{apikey},#{urlAddr},#{token},#{type})
+		(id,apikey,urlAddr,token,type,partner) values(#{id},#{apikey},#{urlAddr},#{token},#{type},#{partner})
 		ON DUPLICATE KEY UPDATE 
 		apikey=#{apikey},
 		urlAddr=#{urlAddr},
-		token=#{token}
+		token=#{token},
+		partner=#{partner}
 	</insert>
 	
 	<!-- 修改推送url -->
@@ -27,7 +29,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update cs_user
 		<set>
 			<if test="urlAddr!=null">
-				urlAddr=#{urlAddr}
+				urlAddr=#{urlAddr},
+			</if>
+			<if test="partner!=null">
+				partner=#{partner}
 			</if>
 		</set>
 		where token=#{token}
@@ -61,5 +66,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 通过apiKey查询user -->
 	<select id="findUserByApiKey" parameterType="String" resultMap="UserRM">
 		select * from cs_user u where u.token = #{token}
+	</select>
+	
+	<!-- 通过orderId查询user -->
+	<select id="finUserByOrder" parameterType="String" resultMap="UserRM">
+		select u.* from cs_user u,cs_order o where o.apiKey = u.apikey and o.id = #{orderId}
 	</select>
 </mapper>

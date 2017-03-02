@@ -32,6 +32,8 @@ public class User implements java.io.Serializable{
 	private int count;
 	//用户类型2：普通，3：企业
 	private int type;
+	//合作方
+	private String partner;
 	public int getId() {
 		return id;
 	}
@@ -103,6 +105,12 @@ public class User implements java.io.Serializable{
 	}
 	public void setType(int type) {
 		this.type = type;
+	}
+	public String getPartner() {
+		return partner;
+	}
+	public void setPartner(String partner) {
+		this.partner = partner;
 	}
 	
 }
