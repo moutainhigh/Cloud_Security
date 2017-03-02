@@ -392,7 +392,6 @@ function checkConfirmEmail(){
 }
 //提交表单及校验
 function submitForm(){
-
 	var name = $("#regist_name").val();
 	var p1 = $("#regist_password").val();
 	var p2=$("#regist_confirm_password").val();
@@ -404,6 +403,7 @@ function submitForm(){
 	var checkNumber = $("#checkNumber1").val();
 	var agreeId = $("#agreeId").val();//同意协议
     var email = $("#regist_confirm_email").val();
+    var partner = $("#partner").val();//合作方
 	checkActivationCode();
 	checkPhoneActivationCode();
 	checkName();
@@ -432,11 +432,14 @@ function submitForm(){
 		 	               'mobile':mobile,
 		 	               'checkNumber':checkNumber,
 		 	               'verification_code':verification_code,
-		 	               'email':email
+		 	               'email':email,
+		 	               'partner':partner
 		 	               //'remeberMe':remeberMe
 						},
 						dataType:"json",
 						success: function(data){
+							$('#register_btn').attr('disabled',"disabled");
+							$("#register_btn").css("opacity","0.4"); 
 							if(data.result != 0) {
 								//刷新验证码
 								checkNumberImage();
@@ -446,6 +449,8 @@ function submitForm(){
 									$("#checkNumber1_prompt").fadeOut();
 						    	
 						    	}
+								$('#register_btn').removeAttr('disabled');
+								$("#register_btn").css("opacity",""); 
 							}
 					    	
 							switch(data.result) {
@@ -460,6 +465,8 @@ function submitForm(){
 									$("#regist_name_flag").show();
 									$("#regist_name_prompt").html("<b></b>" + data.msg);
 							   		$("#regist_name_prompt").fadeIn();
+							   		$('#register_btn').removeAttr('disabled');
+									$("#register_btn").css("opacity",""); 
 							   		break;
 								case 2:
 									//密码
@@ -467,6 +474,8 @@ function submitForm(){
 									$("#regist_password_flag").show();
 									$("#regist_password_prompt").html("<b></b>" + data.msg);
 									$("#regist_password_prompt").fadeIn();
+									$('#register_btn').removeAttr('disabled');
+									$("#register_btn").css("opacity",""); 
 									break;
 								case 3:
 									//确认密码
@@ -474,6 +483,8 @@ function submitForm(){
 								   	$("#regist_confirm_password_flag").show();
 								   	$("#regist_confirm_password_prompt").html("<b></b>" + data.msg);
 								   	$("#regist_confirm_password_prompt").fadeIn();
+								   	$('#register_btn').removeAttr('disabled');
+									$("#register_btn").css("opacity",""); 
 								   	break;
 								case 4:
 									//公司
@@ -481,6 +492,8 @@ function submitForm(){
 								   	$("#company_flag").show();
 								   	$("#company_prompt").html("<b></b>" + data.msg);
 								   	$("#company_prompt").fadeIn();
+								   	$('#register_btn').removeAttr('disabled');
+									$("#register_btn").css("opacity",""); 
 								   	break;
 								case 5:
 									//行业
@@ -494,6 +507,8 @@ function submitForm(){
 			                		$("#regist_phone_flag").show();
 			                        $("#regist_phone_prompt").html("<b></b>" + data.msg);
 			                        $("#regist_phone_prompt").fadeIn();
+			                        $('#register_btn').removeAttr('disabled');
+									$("#register_btn").css("opacity",""); 
 			                        break;
 								case 8:
 									//验证码
@@ -501,6 +516,8 @@ function submitForm(){
 									$("#checkNumber1_flag").show();
 									$("#checkNumber1_prompt").html("<b></b>" + data.msg);
 									$("#checkNumber1_prompt").fadeIn();
+									$('#register_btn').removeAttr('disabled');
+									$("#register_btn").css("opacity",""); 
 									break;
 								case 9:
 									//手机验证码
@@ -508,6 +525,8 @@ function submitForm(){
 				           			$("#verification_code_flag").show();
 				           			$("#verification_code_prompt").html("<b></b>" + data.msg);
 				           			$("#verification_code_prompt").fadeIn();
+				           			$('#register_btn').removeAttr('disabled');
+									$("#register_btn").css("opacity",""); 
 				           			break;
 				           		case 10:
 									//邮箱地址
