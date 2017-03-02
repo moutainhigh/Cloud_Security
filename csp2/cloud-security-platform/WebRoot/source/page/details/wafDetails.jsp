@@ -273,11 +273,28 @@
               <c:forEach items="${assList}" var="asset"  varStatus="status">
                 <li>
                     <div class="rcent">
-                        <h3>
+                        <!-- <h3>
                         <label onclick='selWafAsset(this)'><input type="radio" name="anquan" class="radio" style="display:none" value="${asset.id}"><i class=""></i></label>
                         	<b>${asset.name }</b>
                          </h3>
-                       <div class="tBox">${asset.addr }</div>
+                       <div class="tBox">${asset.addr }</div>-->
+                       <h3>
+                            <c:if test="${asset.status == '0' }">
+                                  <label style="margin:0 16px 0 0;">
+                                       <span style="padding-left:40px;padding-top:20px">${asset.name }</span>
+	                              </label>
+	                        </c:if>
+	                        
+	                        <c:if test="${asset.status == '1' }">
+                                <label onclick='selWafAsset(this)'><input type="radio" name="anquan" class="radio" style="display:none" value="${asset.id}"><i class=""></i></label>
+                        		<b>${asset.name }</b>
+	                        </c:if>
+                        </h3>
+                        <div class="tBox">${asset.addr }  
+                            <c:if test="${asset.status == '0' }">
+                          	<a href="${ctx}/userAssetsUI.html?type=1"  style='padding-left:20px;color:#2499fb;font-size:14px;'>未验证</a>
+                     		</c:if>
+                     	</div>
                     </div>
                 </li>
                  </c:forEach>
