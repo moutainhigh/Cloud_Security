@@ -58,5 +58,8 @@
 		
 		<mapper resource="com/cn/ctbri/entity/ServDetailMapper.xml"/>
 		<mapper resource="com/cn/ctbri/entity/ScanTypeMapper.xml"/>
+		
+		<!-- 2016-12-01 update by tangxr -->
+		<mapper resource="com/cn/ctbri/entity/PartnerMapper.xml"/>
 	</mappers>
 </configuration>  
