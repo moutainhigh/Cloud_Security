@@ -74,13 +74,14 @@ import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAPI;
 import com.cn.ctbri.entity.OrderTask;
 import com.cn.ctbri.entity.Task;
+import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.entity.User;
-import com.cn.ctbri.service.IAPIKeyService;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IOrderAPIService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IOrderTaskService;
 import com.cn.ctbri.service.ITaskService;
+import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.Common;
 import com.cn.ctbri.util.DateUtils;
@@ -106,9 +107,9 @@ public class N_AvailabilityService {
 	@Autowired
     private IOrderAPIService orderAPIService;
 	@Autowired
-    private IAPIKeyService apiKeyService;
-	@Autowired
     private IUserService userService;
+	@Autowired
+    ITaskWarnService taskWarnService;
 	
 	//创建漏洞扫描订单（任务）
 	@POST
@@ -312,9 +313,20 @@ public class N_AvailabilityService {
 			        }else if(result.equals("wrong")){
 			        	json.put("code", "431");
 			        	json.put("message", "任务未下发到设备或设备异常");
+			        }else if(result.equals("wait")){
+			        	json.put("code", "424");
+			        	json.put("message", "任务等待中");
+			        }else if(result.equals("other")){
+			        	json.put("code", "423");
+			        	json.put("message", "任务已完成或目前没有可以操作的任务");
 			        }else{
-			        	json.put("code", "404");
-			        	json.put("message", "订单操作失败");
+			        	if(o.getStatus()==2||o.getStatus()==1){
+			        		json.put("code", "423");
+				        	json.put("message", "任务已完成或目前没有可以操作的任务");
+			        	}else{
+			        		json.put("code", "404");
+				        	json.put("message", "订单操作失败");
+			        	}
 			        }
 				}else{
 					json.put("code", 421);
@@ -441,11 +453,10 @@ public class N_AvailabilityService {
 						String[] strs = orderTaskId.split("_");  	
 						String oId = strs[1];
 						if(orderId.equals(oId)){
-							List<Alarm> alist = alarmService.findAlarmByTaskId(taskId);
-							JSONArray alarmObject = new JSONArray().fromObject(alist);
+							List<TaskWarn> taskwarnList = taskWarnService.findTaskWarnByTaskId(Integer.parseInt(taskId));
+							JSONArray taskwarnObj = new JSONArray().fromObject(taskwarnList);
 							json.put("code", 200);
-							json.put("alarmObj", alarmObject);
-	//						return json.toString();
+							json.put("taskwarnObj", taskwarnObj);
 						}else{
 							json.put("code", 431);
 							json.put("message", "订单taskId有误，请检查");

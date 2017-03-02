@@ -673,6 +673,49 @@ public class NorthAPIService {
     }
 	
 	
+	//设置user
+	@POST
+    @Path("/useraction/setUser")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String setUser(String dataJson) {
+		JSONObject json = new JSONObject();
+		try {
+			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
+			//userID
+			String userID = jsonObj.getString("userID");
+			//apiKey
+			String apiKey = jsonObj.getString("apiKey");
+			//合作方
+			String partner = jsonObj.getString("partner");
+			if(userID!=null && !userID.equals("") && apiKey!=null && !apiKey.equals("")){
+				User u = userService.findUserByUserId(Integer.parseInt(userID));
+				if(u == null){
+					u = new User();
+					u.setId(Integer.parseInt(userID));
+					u.setApikey(apiKey);
+					u.setType(2);
+					u.setPartner(partner);
+					userService.insert(u);
+				}else{
+					u.setPartner(partner);
+					userService.insert(u);
+				}
+				//返回json
+				json.put("code", 201);
+				json.put("message", "success");
+			}else{
+				json.put("code", 404);//返回404表示失败
+				json.put("message", "无效的UserID或APIKey");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			json.put("code", 404);//返回404表示失败
+			json.put("message", "失败");
+		}
+        return json.toString();
+    }
+	
+	
 	/**
      * 得到某个日期的后一年日期
      * @param d

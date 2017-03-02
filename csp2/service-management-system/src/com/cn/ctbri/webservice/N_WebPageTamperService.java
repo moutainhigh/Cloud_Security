@@ -313,9 +313,20 @@ public class N_WebPageTamperService {
 			        }else if(result.equals("wrong")){
 			        	json.put("code", "431");
 			        	json.put("message", "任务未下发到设备或设备异常");
+			        }else if(result.equals("wait")){
+			        	json.put("code", "424");
+			        	json.put("message", "任务等待中");
+			        }else if(result.equals("other")){
+			        	json.put("code", "423");
+			        	json.put("message", "任务已完成或目前没有可以操作的任务");
 			        }else{
-			        	json.put("code", "404");
-			        	json.put("message", "订单操作失败");
+			        	if(o.getStatus()==2||o.getStatus()==1){
+			        		json.put("code", "423");
+				        	json.put("message", "任务已完成或目前没有可以操作的任务");
+			        	}else{
+			        		json.put("code", "404");
+				        	json.put("message", "订单操作失败");
+			        	}
 			        }
 				}else{
 					json.put("code", 421);
