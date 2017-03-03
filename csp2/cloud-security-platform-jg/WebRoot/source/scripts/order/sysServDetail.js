@@ -6,7 +6,7 @@ $(function(){
   $("#buyNowsys").click(function(){
     var createDate = getCreateDate();
     //orderType
-    var type = 1;
+    var type = 1;//长期单次
     var scanType = $("#num").val();
     var indexPage = $("#indexPage").val();
     var serviceId = 7;
@@ -110,7 +110,9 @@ $(function(){
   				}
   	    }, 
   	    error: function(data){ 
-  	    	alert("baocuo");
+  	    	if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+	    		 window.location.href = "loginUI.html"; } 
+	    	 else { window.location.href = "loginUI.html"; }
   	    } 
   	});
   });
@@ -124,15 +126,21 @@ function getCreateDate(){
 }
 //计算价格
 function changePrice(){
-  //var serviceId = $('#serviceId').val();
-  var serviceId = 7;
-  var scanType = $("#num").val();
+  var serviceId = $('#serviceIdHidden').val();
+  //var ipNum = $("#ipNum").val();
+  //var nodeNum = $("#nodeNum").val();
+  var duration = $("#duration").val();
+  var scanType = null;
+  if(serviceId==7)
+	  scanType=$("#ipNum").val();
+  else if(serviceId==8)
+	  scanType=$("#nodeNum").val();
             
   $.ajax({ type: "POST",
     async: false, 
     url: "syscalPrice.html", 
-    //serviceId及scan_type
-    data: {"serviceId":serviceId,"scanType":scanType},
+    //服务id，服务时长，scantype
+    data: {"serviceId":serviceId,"duration":duration,"scanType":scanType},
     dataType: "json",
     success: function(data) {
       var price = data.price;
