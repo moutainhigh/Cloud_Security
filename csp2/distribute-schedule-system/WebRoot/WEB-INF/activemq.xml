@@ -33,7 +33,8 @@
 		
 		<transportConnectors>
             <transportConnector name="openwire" uri="tcp://localhost:61616" discoveryUri="multicast://default"/>
-            <transportConnector name="xmpp" uri="xmpp://localhost:61222"/>
+            <!-- <transportConnector name="xmpp" uri="xmpp://localhost:61222"/> -->
+
         </transportConnectors>
 	</broker>
 
