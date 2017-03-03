@@ -651,7 +651,7 @@ public class shoppingSysController {
 			if(price.getType()== 1 && timelength > price.getTimesG() && timelength <= price.getTimesLE()){  //区间
 				sumPrice = price.getPrice()*timelength;
 				break;
-			}else if (price.getType()== 2 && timelength>price.getTimesG()){  //大于
+			}else if (price.getType()== 2 && timelength>=price.getTimesG()){  //大于
 				sumPrice = price.getPrice()*timelength*scanType/price.getTimesG();
 				break;
 			}
