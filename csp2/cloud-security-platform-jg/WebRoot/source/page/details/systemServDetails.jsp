@@ -128,8 +128,8 @@
 	                        	<label class="fl">内网主机数</label>
 	                        	<div class="fl" style="top:3px;">
 	                              <select class="text select" id="ipNum" onchange="changePrice()" style="margin-left: 0px;">   
-	                                <option value="15">64</option>
-	                                <option value="16">128</option>
+	                                <option value="64">64</option>
+	                                <option value="128">128</option>
 	                              </select> 
 	                           </div>  
 	                        </li>
@@ -140,13 +140,13 @@
 	                        	<label class="fl">节点个数</label>
 	                        	<div class="fl" style="top:3px;">
 	                              <select class="text select" id="nodeNum" onchange="changePrice()" style="margin-left: 0px;">   
-	                                <option value="17">10</option>
-	                                <option value="18">20</option>
-	                                <option value="19">30</option>
-	                                <option value="20">50</option>
-	                                <option value="21">100</option>
-	                                <option value="22">200</option>
-	                                <option value="23">500</option>
+	                                <option value="10">10</option>
+	                                <option value="20">20</option>
+	                                <option value="30">30</option>
+	                                <option value="50">50</option>
+	                                <option value="100">100</option>
+	                                <option value="200">200</option>
+	                                <option value="500">500</option>
 	                              </select> 
 	                           </div>  
 	                        </li>
