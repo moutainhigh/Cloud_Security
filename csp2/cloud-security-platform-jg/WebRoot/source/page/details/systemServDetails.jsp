@@ -98,6 +98,7 @@
                           		<span style="position: relative;top: 7px;left:7px"><u>由绿盟科技提供服务并开具发票</u></span>
                           	</c:if>
 						</li>
+
                           <li class="clearfix">
 							<label class="fl">服务期限</label>
                            <div class="fl" style="top:3px;">
@@ -123,8 +124,8 @@
                            	</select>                    
                            </div>                            
 						</li>
-						<c:if test="${service.id==7} ">
-							 <li class="clearfix">
+						<c:if test="${service.id==7 }">
+						<li class="clearfix">
 	                        	<label class="fl">内网主机数</label>
 	                        	<div class="fl" style="top:3px;">
 	                              <select class="text select" id="ipNum" onchange="changePrice()" style="margin-left: 0px;">   
@@ -132,9 +133,9 @@
 	                                <option value="128">128</option>
 	                              </select> 
 	                           </div>  
-	                        </li>
-                        </c:if>
-                        
+	                     </li>
+	                     </c:if>
+						
                         <c:if test="${service.id==8 }">
 	                         <li class="clearfix">
 	                        	<label class="fl">节点个数</label>
