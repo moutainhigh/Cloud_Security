@@ -145,7 +145,7 @@ public class shoppingSysController {
 		    //根据id查询service add by tangxr 2016-3-14
 		    Serv service = servService.findById(serviceId);
 		    //根据service Id查询服务详细信息
-		    ServiceDetail servDetail = servDetailService.findByServId(serviceId);
+		    ServiceDetail servDetail = servDetailService.findByServId(serviceId);    //查找cs_service_detail表
 		    if(servDetail == null){
 		    	return "redirect:/index.html";
 		    }
@@ -162,7 +162,7 @@ public class shoppingSysController {
 		    	}
 		    }
 		    //查找服务频率
-		    List<ScanType> scanTypeList = scanTypeService.findScanTypeById(serviceId);
+		    List<ScanType> scanTypeList = scanTypeService.findScanTypeById(serviceId);  // 调用cs_scanType 中的 getScanTypeById
 		    //获取服务对象资产
 		    List<Asset> serviceAssetList = selfHelpOrderService.findServiceAsset(globle_user.getId());
 		    //网站安全帮列表
@@ -190,7 +190,7 @@ public class shoppingSysController {
 	}
 
 	/**
-	 * 功能描述： 保存极光详情页操作
+	 * 功能描述： 保存{39608ce6-d506-4c6d-8166-864bbc2d7aba}极光详情页操作
 	 * 参数描述：  无
 	 *     @time 2016-11-29
 	 */
@@ -214,7 +214,7 @@ public class shoppingSysController {
 			
 			String endDate =DateUtils.dateToString(getAfterYear(new Date()));
 			
-	        String scanPeriod = request.getParameter("scanType"); // 频率  64ip(6)   128ip(7)  
+	        String scanPeriod = request.getParameter("scanType"); // 频率  64ip(15)   128ip(16)  
 	        String serviceId = request.getParameter("serviceId");
 	        String createDate = DateUtils.dateToString(new Date());
 			//String assetIds;
@@ -561,20 +561,23 @@ public class shoppingSysController {
 //			String beginDate = request.getParameter("beginDate");//
 //			String endDate = request.getParameter("endDate");
 //			int assetCount = Integer.parseInt(request.getParameter("assetCount"));
-			String scanType = request.getParameter("scanType");   //选类型   6 7
-			
+			String scanType = request.getParameter("scanType");   //选类型   64  128
+			int duration =Integer.parseInt(request.getParameter("duration"));   //选择服务时长
 			//和运营管理数据同步
 //			synPriceData(serviceId);
 			
 			
 			//进行价格分析
-			if (scanType!= null && scanType!=""){  //长期
-				
+			if (scanType!= null && scanType!=""){
+				//长期
 	        	int scanTypeint = Integer.valueOf(scanType); 			//服务频率
+	        	calPrice = calPrice(serviceId, scanTypeint, duration);
 				//times = calTimes(scanType, beginDate, endDate);	//计算服务需要执行的总次数
 	        	
 				//calPrice = calPrice(serviceId,scanType,times,assetCount);//计算价格
 	        	//cs_scanType  scanType=6 对应64IP   scanType=7 对应  128ip
+	        	//select * from cs_price where serviceId=#{serviceId}  <if test="type!=0"> and scan_type=#{type}
+	        	/*
 	        	List<Price> priceList = priceService.findPriceByServiceId(serviceId,scanTypeint);
 	        	if (priceList == null|| priceList.size() == 0){		//按服务频率查询不到时，价格可能不按频率设置
 	        		priceList = priceService.findPriceByScanTypeNull(serviceId);
@@ -583,7 +586,8 @@ public class shoppingSysController {
 	        	{
 	        		for (int i = 0; i < priceList.size(); i++) {
 						if (priceList.get(i).getScanType() == scanTypeint) {
-							 calPrice = priceList.get(i).getPrice();
+							//calPrice = calPrice(serviceId, scanTypeint, duration);
+						calPrice = priceList.get(i).getPrice();
 							 break;
 						}
 					}
@@ -591,32 +595,8 @@ public class shoppingSysController {
 	        	else {
 					calPrice = 0;
 				}
-	        	
-	        	/*
-	        	switch (scanType) {
-				case 6: //64IP
-					calPrice = 64;
-					break;
-				case 7: //128IP
-					calPrice = 128;
-					break;
-
-				default:
-					break;
-				}*/
-				
-			} /*else {	//单次
-				
-				  List<Price> priceList = priceService.findPriceByServiceId(serviceId,0);
-				  if (priceList != null && priceList.size() != 0){
-					  //priceList按序排列，取第一个元素判断是不是单次价格
-					  Price price = priceList.get(0);  
-					  if (price.getType() == 0){
-						  calPrice = price.getPrice() * assetCount;
-					  }
-				  }
-				 
-			} */
+	        	*/				
+			} 
 			
 			
 			DecimalFormat df = new DecimalFormat("0.00"); 
@@ -643,94 +623,21 @@ public class shoppingSysController {
 	}
     
     /**
-     * 计算当前服务需要执行的总次数
-     * ltb
-     * @time 2016-12-7
-     * */
-    /*
-    private long calTimes(int scanType,String beginDate, String endDate){
-    	long times = 0; 
-    	long ms = 0;//时间之间的毫秒数
-    	Date bDate = null;
-    	Date eDate = null;
-    	if(beginDate!=null&&beginDate!=""&endDate!=null&&endDate!=""){
-    		bDate = DateUtils.stringToDateNYRSFM(beginDate);
-            eDate = DateUtils.stringToDateNYRSFM(endDate);  
-            ms = DateUtils.getMsByDays(bDate, eDate);
-    	}
-    	
-    	if (ms == 0){
-    		return 1;
-    	}
-    	
-    	switch(scanType){
-    	case 1:		//10分钟
-    		int min_10 = 1000*3600/6;
-        	if(ms%min_10 > 0){
-        		times = (long)(ms/min_10) + 1;
-        	}else{
-        		times = (long)(ms/min_10);
-        	}
-    		break;
-    	case 2:		//30分钟
-    		int min_30 = 1000*3600/2;
-        	if(ms%min_30 > 0){
-        		times = (long)(ms/min_30) + 1;
-        	}else{
-        		times = (long)(ms/min_30);
-        	}
-    		break;
-    	case 3:		//1小时
-    		int oneHour = 1000*3600;
-        	if(ms%oneHour > 0){
-        		times = (long)(ms/oneHour) + 1;
-        	}else{
-        		times = (long)(ms/oneHour);
-        	}
-    		break;
-    	case 4:		//1天
-    		int oneDay = 1000*3600*24;
-        	if(ms%oneDay > 0){
-        		times = (long)(ms/oneDay) + 1;
-        	}else{
-	        	times = (long)(ms/oneDay);
-        	}
-    		break;
-    	case 5:		//每周
-    		int perWeek = 1000*3600*24*7;
-    		if(ms%perWeek>0){
-    			times = (long)(ms/perWeek)+1;
-    		}else{
-    			times = (long)(ms/perWeek);
-    		}
-    		break;
-    	case 6:		//每月
-    		while(ms>0){
-    			bDate = DateUtils.getDayAfterMonth(bDate);
-    			ms = DateUtils.getMsByDays(bDate, eDate);
-    			times++;
-    		}
-    		break;
-    	default:
-    		break;
-    	}
-    	
-    	return times;
-    }
-    */
-    /**
 	 *计算价格
 	 *ltb
-	 * @time  2016-12-7
+	 * @time  2017-3-2
+	 * serviceId 对应cs_service表中id
+	 * scanType 对应 cs_service表中 scan_Type字段 代表端点个数
+	 * timelength  代表1，2，3.....11，12，24 个月
 	 */
-    /*
-    private double calPrice(int serviceId, int scanType, long times, int assetCount) {
+    
+    private double calPrice(int serviceId, int scanType, int timelength) {
     	double sumPrice = 0;
     	
     	//根据serviceid查询价格列表
     	List<Price> priceList = priceService.findPriceByServiceId(serviceId,scanType);
     	if (priceList == null|| priceList.size() == 0){		//按服务频率查询不到时，价格可能不按频率设置
-    		priceList = priceService.findPriceByScanTypeNull(serviceId);
+    		priceList = priceService.findPriceByScanTypeNull(serviceId); //pricemapper.xml   查找cs_price
     	}
     	
     	//价格列表不存在时，
@@ -738,13 +645,14 @@ public class shoppingSysController {
     		return sumPrice;
     	}
     	
+    	//price.getType()==0,1,2     0:单次价格；1：区间价格；2：大于区间价格
 		for (int i = 0; i < priceList.size(); i++) {
 			Price price = priceList.get(i);
-			if(price.getType()== 1 && times > price.getTimesG() && times <= price.getTimesLE()){  //区间
-				sumPrice = price.getPrice()*times*assetCount;
+			if(price.getType()== 1 && timelength > price.getTimesG() && timelength <= price.getTimesLE()){  //区间
+				sumPrice = price.getPrice()*timelength;
 				break;
-			}else if (price.getType()== 2 && times>price.getTimesG()){  //大于
-				sumPrice = price.getPrice()*times*assetCount;
+			}else if (price.getType()== 2 && timelength>price.getTimesG()){  //大于
+				sumPrice = price.getPrice()*timelength*scanType/price.getTimesG();
 				break;
 			}
 		}
@@ -752,14 +660,14 @@ public class shoppingSysController {
 		if (sumPrice == 0){   
 			//例如：服务Id=1,times=1时,取单次的价格进行计算
 			//     服务Id=4,times=1时,取第一个区间的价格进行计算
-			sumPrice = priceList.get(0).getPrice()*times*assetCount;
+			sumPrice = priceList.get(0).getPrice()*timelength;
 		}
 		
 		
 		return sumPrice;
     	
     }
- 	*/
+ 
     
 
 	/**
