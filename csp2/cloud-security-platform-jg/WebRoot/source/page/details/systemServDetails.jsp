@@ -102,7 +102,7 @@
                           <li class="clearfix">
 							<label class="fl">服务期限</label>
                            <div class="fl" style="top:3px;">
-                           	<select class="text select" id="duration" onclick="changePrice();" style="margin-left: 0px;">
+                           	<select class="text select" id="duration" onchange="changePrice();" style="margin-left: 0px;">
                            		<c:if test="${service.id==7}">
                            			<option value="12">1年</option>
                            		</c:if>
