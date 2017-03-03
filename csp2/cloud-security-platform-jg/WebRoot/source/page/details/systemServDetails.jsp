@@ -143,11 +143,10 @@
 	                                <option value="17">10</option>
 	                                <option value="18">20</option>
 	                                <option value="19">30</option>
-	                                <option value="20">40</option>
-	                                <option value="21">50</option>
-	                                <option value="22">100</option>
-	                                <option value="23">200</option>
-	                                <option value="24">500</option>
+	                                <option value="20">50</option>
+	                                <option value="21">100</option>
+	                                <option value="22">200</option>
+	                                <option value="23">500</option>
 	                              </select> 
 	                           </div>  
 	                        </li>
