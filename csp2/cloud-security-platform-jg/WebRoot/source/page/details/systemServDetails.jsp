@@ -81,7 +81,7 @@
 			<div class="dataBox clearfix">
 				<div class="dataL fl">
 					<div class="dataImg fl">
-					<img src="${ctx}/source/images/portal/jiguang_icon.jpg" alt="" style=""/>
+					<img src="${ctx}/source/images/serviceIcon/${service.detailIcon }" alt="" style=""/>
 					</div>
 				</div>
 					<div class="dataR detailsR fl" style="width:640px;">
@@ -94,45 +94,63 @@
 							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
                             <div class="fl price"><strong id="price">0</strong><strong></strong></div> 
                           	<span style="position: relative;top: 7px;left:7px;color:#d00000">安全币</span>
-                          	<span style="position: relative;top: 7px;left:7px"><u>由绿盟科技提供服务并开具发票</u></span>
+                          	<c:if test="${service.id==7 }">
+                          		<span style="position: relative;top: 7px;left:7px"><u>由绿盟科技提供服务并开具发票</u></span>
+                          	</c:if>
 						</li>
                           <li class="clearfix">
 							<label class="fl">服务期限</label>
                            <div class="fl" style="top:3px;">
-                           	<select class="text select" id="clickBox" onclick="changeDiv();" style="margin-left: 0px;">
-                           		<option value="1">1年</option>
-                           	</select>
-                           <!--
-                            <button class="click Single" value="8" onclick="changeDiv('Single');" style="width: 90px;">包月</button>
-                            -->
-                           </div> 
-                           
+                           	<select class="text select" id="duration" onclick="changePrice();" style="margin-left: 0px;">
+                           		<c:if test="${service.id==7}">
+                           			<option value="12">1年</option>
+                           		</c:if>
+                           		<c:if test="${service.id==8}">
+                           			<option value="1">1月</option>
+                           			<option value="2">2月</option>
+                           			<option value="3">3月</option>
+                           			<option value="4">4月</option>
+                           			<option value="5">5月</option>
+                           			<option value="6">6月</option>
+                           			<option value="7">7月</option>
+                           			<option value="8">8月</option>
+                           			<option value="9">9月</option>
+                           			<option value="10">10月</option>
+                           			<option value="11">11月</option>
+                           			<option value="12">1年</option>
+                           			<option value="24">2年</option>
+                           		</c:if>
+                           	</select>                    
+                           </div>                            
 						</li>
-<!--
-                            <li class="clearfix" id="yearDiv" style="display:none">
-                            <label class="fl">服务期限</label>
-                            <div class="fl" style="top:3px;">
-                              <select class="text select" id="month" onchange="changePrice();" style="margin-left: 0px;">
-                                <option value="1">1年</option>
-                                <option value="2">2年</option>
-                                <option value="3">3年</option>
-                                 <option value="4">4年</option>
-                                  <option value="5">5年</option>
-                              </select> 
-                              <span style="position: relative;top: 7px;left:7px">（服务开始时间以成功支付时间为准）</span>
-                           </div> 
-						</li>
--->
-						 <li class="clearfix">
-                        	<label class="fl">内网主机数</label>
-                        	<div class="fl" style="top:3px;">
-                              <select class="text select" id="num" onchange="changePrice()" style="margin-left: 0px;">   
-                                <option value="6">64</option>
-                                <option value="7">128</option>
-                              </select> 
-                           </div> 
-                           
-                        </li>
+						<c:if test="${service.id==7} ">
+							 <li class="clearfix">
+	                        	<label class="fl">内网主机数</label>
+	                        	<div class="fl" style="top:3px;">
+	                              <select class="text select" id="ipNum" onchange="changePrice()" style="margin-left: 0px;">   
+	                                <option value="64">64</option>
+	                                <option value="128">128</option>
+	                              </select> 
+	                           </div>  
+	                        </li>
+                        </c:if>
+                        
+                        <c:if test="${service.id==8 }">
+	                         <li class="clearfix">
+	                        	<label class="fl">节点个数</label>
+	                        	<div class="fl" style="top:3px;">
+	                              <select class="text select" id="nodeNum" onchange="changePrice()" style="margin-left: 0px;">   
+	                                <option value="10">10</option>
+	                                <option value="20">20</option>
+	                                <option value="30">30</option>
+	                                <option value="50">50</option>
+	                                <option value="100">100</option>
+	                                <option value="200">200</option>
+	                                <option value="500">500</option>
+	                              </select> 
+	                           </div>  
+	                        </li>
+                        </c:if>
 					</ul>
                     <div class="btnBox" style="text-align:left; margin-left:0px; margin-top:32px; margin-bottom:0px;">
                     <!--
@@ -154,9 +172,11 @@
 	            		</div>
 	            	</c:if>
             	</c:forEach>
+            	<!--
                 <div class="commoditys" style="overflow:hidden">
                 	<img src="${ctx}/source/images/portal/jiguang_detail.jpg" alt="">
                 </div>
+                  -->
             </div>
         </div>
 		<div class="safe04">
