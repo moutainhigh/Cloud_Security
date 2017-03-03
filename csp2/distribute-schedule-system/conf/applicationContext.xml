@@ -75,6 +75,7 @@
     <!--真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供  -->     
 	<bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">  
 	    <property name="brokerURL" value="tcp://localhost:61616"/>  
+	    <property name="trustAllPackages" value="true"/>
 	</bean>
 	 <!--Spring用于管理真正的ConnectionFactory的ConnectionFactory  -->      
 	<bean id="connectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">  
@@ -144,8 +145,8 @@
     <bean id="taskTrigger"
     	class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="taskJobDetail" />
-    	<property name="cronExpression" value="0 0/1 * * * ?" />
-    	<!-- <property name="cronExpression" value="0 58 09 * * ? *" /> -->
+    	<!-- <property name="cronExpression" value="0 0/2 * * * ?" />-->
+    	<property name="cronExpression" value="0 54 15 * * ? *" /> 
     	 
     </bean>
     
@@ -205,10 +206,10 @@
     	lazy-init="false">
     	<property name="triggers">
     		<list>
-    			<ref bean="taskTrigger" />
+    			<!--<ref bean="taskTrigger" />
     			<ref bean="expTrigger" /> 
     			<ref bean="delTrigger" />
-    			<ref bean="engineTrigger" />
+    			<ref bean="engineTrigger" /> -->
     		</list>
     	</property>
     </bean>
