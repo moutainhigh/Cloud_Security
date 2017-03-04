@@ -14,7 +14,7 @@ import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.DateUtils;
 
 /**
- * 扫描订单任务表的调度类
+ * 扫描订单任务表(异常)的调度类
  * 
  * @author tangxr 
  * 
