@@ -149,8 +149,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入任务信息 -->
     <insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO cs_task
-        (execute_time,begin_time,end_time,websoc,serviceId,order_id,orderTaskId,assetAddr,scanMode,scanType,group_flag,status) 
-        VALUES( #{execute_time} , #{begin_time},#{end_time},#{websoc},#{serviceId},#{order_id},#{orderTaskId},#{assetAddr},#{scanMode},#{scanType},#{group_flag},#{status})
+        (execute_time,begin_time,end_time,websoc,serviceId,order_id,orderTaskId,assetAddr,scanMode,scanType,group_flag,status,partner) 
+        VALUES( #{execute_time} , #{begin_time},#{end_time},#{websoc},#{serviceId},#{order_id},#{orderTaskId},#{assetAddr},#{scanMode},#{scanType},#{group_flag},#{status},#{partner})
     </insert>
     
     <select id="getTypeByAssetId" parameterType="Integer" resultType="com.cn.ctbri.entity.OrderAsset">
