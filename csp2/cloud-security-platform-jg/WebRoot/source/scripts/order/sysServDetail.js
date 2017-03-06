@@ -4,12 +4,16 @@ $(function(){
 
   //立即购买
   $("#buyNowsys").click(function(){
-    var createDate = getCreateDate();
-    //orderType
-    var type = 1;//长期单次
-    var scanType = $("#num").val();
+    var createDate = getCreateDate();    
+    var serviceId = $('#serviceIdHidden').val();
+    var duration = $("#duration").val();
+    var scanType = null;
+    if(serviceId==7)
+  	  scanType=$("#ipNum").val();
+    else if(serviceId==8)
+  	  scanType=$("#nodeNum").val();
     var indexPage = $("#indexPage").val();
-    var serviceId = 7;
+    var type = "1";//orderType订单类型：长期单次
 
     $.ajax({
       type:"POST",
@@ -27,6 +31,12 @@ $(function(){
         typeInput.name= "type"; 
         typeInput.value= type; 
         tempForm.appendChild(typeInput);
+        
+        var durationInput = document.createElement("input");
+        durationInput.type="hidden"; 
+        durationInput.name= "duration"; 
+        durationInput.value= duration; 
+        tempForm.appendChild(durationInput);
               
         var scanTypeInput = document.createElement("input");
         scanTypeInput.type="hidden"; 
@@ -47,9 +57,12 @@ $(function(){
 
       },
       error:function(data){
+    	  /*
         if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
           window.location.href = "loginUI.html"; } 
         else { window.location.href = "loginUI.html"; } 
+        */
+    	  alert("baocuo");
       }
     });
   });
@@ -127,8 +140,6 @@ function getCreateDate(){
 //计算价格
 function changePrice(){
   var serviceId = $('#serviceIdHidden').val();
-  //var ipNum = $("#ipNum").val();
-  //var nodeNum = $("#nodeNum").val();
   var duration = $("#duration").val();
   var scanType = null;
   if(serviceId==7)
