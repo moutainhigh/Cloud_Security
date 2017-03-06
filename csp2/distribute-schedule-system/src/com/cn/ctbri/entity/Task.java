@@ -49,6 +49,7 @@ public class Task implements Serializable{
     private String executeTime;//vo执行时间
     private String groupFlag;//vo执行时间
 	private int isNextTask;//是否下一次扫描任务
+	private String partner;//合作方
     
 	public int getTaskId() {
 		return taskId;
@@ -261,4 +262,11 @@ public class Task implements Serializable{
 	public void setIsNextTask(int isNextTask) {
 		this.isNextTask = isNextTask;
 	}
+	public String getPartner() {
+		return partner;
+	}
+	public void setPartner(String partner) {
+		this.partner = partner;
+	}
+	
 }
