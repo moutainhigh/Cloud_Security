@@ -214,14 +214,15 @@ public class shoppingSysController {
 			
 			String endDate =DateUtils.dateToString(getAfterYear(new Date()));
 			
-	        String scanPeriod = request.getParameter("scanType"); // 频率  64ip(15)   128ip(16)  
+			String duration = request.getParameter("duration");
+	        String scanPeriod = request.getParameter("scanType"); // 频率  绿盟64ip(scanType = 15)   128ip(16)   金山10对应 10ip
 	        String serviceId = request.getParameter("serviceId");
 	        String createDate = DateUtils.dateToString(new Date());
 			//String assetIds;
 			
 	      //判断参数值是否为空
 	      
-	        if((orderType==null||"".equals(orderType))||(beginDate==null||"".equals(beginDate))||(serviceId==null||"".equals(serviceId))){
+	        if((orderType==null||"".equals(orderType))||(beginDate==null||"".equals(beginDate))||(serviceId==null||"".equals(serviceId))||(duration==null||"".equals(duration))){
 	        	return "redirect:/index.html";
 	        }
 	        /*
@@ -660,7 +661,7 @@ public class shoppingSysController {
 		if (sumPrice == 0){   
 			//例如：服务Id=1,times=1时,取单次的价格进行计算
 			//     服务Id=4,times=1时,取第一个区间的价格进行计算
-			sumPrice = priceList.get(0).getPrice()*timelength;
+			sumPrice = priceList.get(0).getPrice()*timelength*scanType/priceList.get(0).getTimesG();
 		}
 		
 		
