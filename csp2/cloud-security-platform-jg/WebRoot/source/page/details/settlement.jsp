@@ -456,7 +456,7 @@
 		            		<c:if test="${orderDetail.serviceId le 5 }">            		
 		            			<input id="settlement" class="submit" type="submit" value="提交订单"/>
 		            		</c:if>
-                            <c:if test="${orderDetail.serviceId == 7 }">
+                            <c:if test="${orderDetail.serviceId >= 7 }">
                                 <input id="settlementSys" class="submit" type="submit" value="提交订单"/>
                             </c:if>
 		            	</c:if>
