@@ -24,6 +24,7 @@
 <script src="${ctx}/source/scripts/order/details.js"></script> -->
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
+
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <style>
 .dataBox .dataR ul li label {width: 74px;}
@@ -99,14 +100,20 @@
                           	</c:if>
 						</li>
 
-                          <li class="clearfix">
+                          	<li class="clearfix">
 							<label class="fl">服务期限</label>
-                           <div class="fl" style="top:3px;">
-                           	<select class="text select" id="duration" onchange="changePrice();" style="margin-left: 0px;">
-                           		<c:if test="${service.id==7}">
+                           	<div class="fl" style="top:3px;">
+                           <!-- 
+                           <select class="text select" id="duration" onchange="changePrice();" style="margin-left: 0px;">
+                            <select class="text select" id="duration" onchange="changeDur();" style="margin-left: 0px;">
+                            -->
+                           	<c:if test="${service.id==7}">
+                           		<select class="text select" id="duration" onchange="changePrice();" style="margin-left: 0px;">
                            			<option value="12">1年</option>
-                           		</c:if>
-                           		<c:if test="${service.id==8}">
+                           		</select> 
+                           	</c:if>
+                           	<c:if test="${service.id==8}">
+                           		<select class="text select" id="duration" onchange="changeDur();" style="margin-left: 0px;">
                            			<option value="1">1月</option>
                            			<option value="2">2月</option>
                            			<option value="3">3月</option>
@@ -120,8 +127,24 @@
                            			<option value="11">11月</option>
                            			<option value="12">1年</option>
                            			<option value="24">2年</option>
-                           		</c:if>
-                           	</select>                    
+                           		</select> 
+                           	</c:if>
+                           	<c:if test="${service.id==9}">
+                           		<select class="text select" id="duration" onchange="changePrice();" style="margin-left: 0px;">
+                           			<option value="1">1月</option>
+                           			<option value="2">2月</option>
+                           			<option value="3">3月</option>
+                           			<option value="4">4月</option>
+                           			<option value="5">5月</option>
+                           			<option value="6">6月</option>
+                           			<option value="7">7月</option>
+                           			<option value="8">8月</option>
+                           			<option value="9">9月</option>
+                           			<option value="10">10月</option>
+                           			<option value="11">11月</option>
+                           			<option value="12">1年</option>
+                           		</select> 
+                           	</c:if>                           	                   
                            </div>                            
 						</li>
 						<c:if test="${service.id==7 }">
@@ -140,7 +163,8 @@
 	                         <li class="clearfix">
 	                        	<label class="fl">节点个数</label>
 	                        	<div class="fl" style="top:3px;">
-	                              <select class="text select" id="nodeNum" onchange="changePrice()" style="margin-left: 0px;">   
+	                              <select class="text select" id="nodeNum" onchange="changePrice()" style="margin-left: 0px;"> 
+	                              <!-- 
 	                                <option value="10">10</option>
 	                                <option value="20">20</option>
 	                                <option value="30">30</option>
@@ -148,6 +172,7 @@
 	                                <option value="100">100</option>
 	                                <option value="200">200</option>
 	                                <option value="500">500</option>
+	                                  --> 
 	                              </select> 
 	                           </div>  
 	                        </li>
