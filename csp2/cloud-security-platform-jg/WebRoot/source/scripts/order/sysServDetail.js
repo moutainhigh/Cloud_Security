@@ -1,4 +1,5 @@
 $(function(){
+  changeDur();
   //初始化价格
   changePrice();
 
@@ -132,13 +133,39 @@ $(function(){
   
 });
 
+function changeDur(){
+	var duration = $("#duration").val();
+	$("#nodeNum").empty();
+	var text = null;
+	if(duration =="12"){
+		text+="<option value='30' selected='selected'>30</option>";
+		text+="<option value='50'>50</option>";
+	}
+	if(duration ==24){
+		text+="<option value='10' selected='selected'>10</option>";
+		text+="<option value='20'>20</option>";
+		text+="<option value='30'>30</option>";
+		text+="<option value='50'>50</option>";
+	}
+	if(!text){
+		text+="<option value='100' selected='selected'>100</option>";
+	}
+	else{
+		text+="<option value='100'>100</option>";
+	}
+	text+="<option value='200'>200</option>";
+	text+="<option value='500'>500</option>";
+	$("#nodeNum").append(text);
+	changePrice();
+}
+
 function getCreateDate(){
   var now = new Date();
   var createDate = now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"-"+(now.getDate()<10?"0":"")+now.getDate()+" "+now.getHours()+":"+now.getMinutes()+":"+now.getSeconds();
   return createDate;
 }
 //计算价格
-function changePrice(){
+function changePrice(){	
   var serviceId = $('#serviceIdHidden').val();
   var duration = $("#duration").val();
   var scanType = null;
