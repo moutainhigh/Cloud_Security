@@ -339,12 +339,11 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 	    				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，扫描进度["+task.getTaskProgress()+"];User="+null);
 	
 	//    			}else if(status.contains("not found")){
-	    			}
-//	    			else if(status.equals("")){
-//	    				task.setTaskProgress("101");
-//	    				task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
-//	    				taskService.update(task);
-//	    			} 
+	    			}else if(status.equals("")){
+	    				task.setTaskProgress("101");
+	    				task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
+	    				taskService.update(task);
+	    			} 
 		        }catch (Exception e) {
 		        	e.printStackTrace();
 		        	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]异常!;User="+null);
