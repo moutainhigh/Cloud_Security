@@ -66,6 +66,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from cs_enginecfg en 
         where en.engine_capacity like CONCAT(CONCAT('%', #{serviceId}), '%') and en.status = 1 
         and en.equipment_factory=0 
+        <if test="partner!=null and partner!=''">
+			and en.partner = #{partner}
+		</if>
         <!--and en.activity between 0 and en.maxtask-->
         GROUP BY en.engine_number
     </select>
