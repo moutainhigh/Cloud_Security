@@ -218,6 +218,7 @@ public class shoppingSysController {
 	        String scanPeriod = request.getParameter("scanType"); // 频率  绿盟64ip(scanType = 15)   128ip(16)   金山10对应 10ip
 	        String serviceId = request.getParameter("serviceId");
 	        String createDate = DateUtils.dateToString(new Date());
+	        int durationint =Integer.parseInt(duration);
 			//String assetIds;
 			
 	      //判断参数值是否为空
@@ -267,13 +268,15 @@ public class shoppingSysController {
 				    	   if(scanPeriod==null || "".equals(scanPeriod)){
 				    		   return "redirect:/index.html";
 				    	   }
+				    	/*   
 						for (int i = 0; i < priceList.size(); i++) {
 							
 							if (priceList.get(i).getScanType()==scanTypeInt ) {
 								calPrice = priceList.get(i).getPrice();
 								break;
 							}
-						}
+						}*/
+				    	 calPrice =calPrice(serviceIdInt, scanTypeInt, durationint);
 					}
 				}
 				else {
@@ -306,7 +309,7 @@ public class shoppingSysController {
 		        
 		        selfHelpOrderService.SaveOrderDetail(orderDetail);
 		        OrderDetail orderDetailVo = selfHelpOrderService.findOrderDetailById(detailId, globle_user.getId());
-		        orderDetailVo.setServiceName("极光自助扫描服务");
+		        orderDetailVo.setServiceName(service.getName());
 				  request.setAttribute("orderDetail", orderDetailVo);
 			        request.setAttribute("service", service);
 			        request.setAttribute("user", globle_user);
