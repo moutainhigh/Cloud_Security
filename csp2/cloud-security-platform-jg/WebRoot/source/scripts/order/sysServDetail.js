@@ -13,6 +13,8 @@ $(function(){
   	  scanType=$("#ipNum").val();
     else if(serviceId==8)
   	  scanType=$("#nodeNum").val();
+    else
+    	scanType="1";
     var indexPage = $("#indexPage").val();
     var type = "1";//orderType订单类型：长期单次
 
@@ -86,6 +88,8 @@ $(function(){
   	  scanType=$("#ipNum").val();
     else if(serviceId==8)
   	  scanType=$("#nodeNum").val();
+    else
+    	scanType="1";
     
 	$.ajax({ type: "POST",
 	     async: false, 
@@ -225,7 +229,9 @@ function changePrice(){
 	  scanType=$("#ipNum").val();
   else if(serviceId==8)
 	  scanType=$("#nodeNum").val();
-            
+  else
+  	scanType="1";
+  
   $.ajax({ type: "POST",
     async: false, 
     url: "syscalPrice.html", 
