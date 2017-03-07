@@ -86,10 +86,8 @@
 					</div>
 				</div>
 					<div class="dataR detailsR fl" style="width:640px;">
-					<h2 style="font-size:20px; margin-bottom:18px;">${service.name }</h2>
-				<!--
-                  <a href="javascript:showShopCar();" class="buttoncar" style="right:0px;"><b>${carnum}</b><i></i>我的购物车&gt;</a>
-				-->
+					<h2 style="font-size:20px; margin-bottom:18px;">${service.name }</h2>				
+                  <a href="javascript:showShopCar();" class="buttoncar" style="right:0px;"><b id="shopCarNum">${carnum}</b><i></i>我的购物车&gt;</a>
 					<ul>
 						<li class="clearfix">
 							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
@@ -178,10 +176,8 @@
 	                        </li>
                         </c:if>
 					</ul>
-                    <div class="btnBox" style="text-align:left; margin-left:0px; margin-top:32px; margin-bottom:0px;">
-                    <!--
-                    	<button style="background:#d00000; width:146px;" id="addCar">添加到购物车</button>
-                    -->
+                    <div class="btnBox" style="text-align:left; margin-left:0px; margin-top:32px; margin-bottom:0px;">                  
+                    	<button style="background:#d00000; width:146px;" id="addSysCar">添加到购物车</button>
                         <button style="background:#5aba5f; width:126px" id="buyNowsys">立即购买</button>
                     </div>
 				</div>
