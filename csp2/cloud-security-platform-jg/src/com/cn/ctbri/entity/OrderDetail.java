@@ -18,7 +18,7 @@ public class OrderDetail {
 	private String assetName;//资产名称
 	private String assetAddr;//资产地址
 	private String ipArray;//ip地址
-	private int wafTimes;//服务期限
+	private int wafTimes;//waf 服务期限（数字代表月份） or API服务的购买数量  or系统安全帮的购买时长
 	public String getId() {
 		return id;
 	}
