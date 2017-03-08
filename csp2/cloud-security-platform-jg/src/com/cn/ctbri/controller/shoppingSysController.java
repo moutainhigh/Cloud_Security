@@ -190,7 +190,7 @@ public class shoppingSysController {
 	}
 
 	/**
-	 * 功能描述： 保存{39608ce6-d506-4c6d-8166-864bbc2d7aba}极光详情页操作
+	 * 功能描述： 保存{39608ce6-d506-4c6d-8166-864bbc2d7aba}极光详情页操作,立即购买
 	 * 参数描述：  无
 	 *     @time 2016-11-29
 	 */
@@ -212,7 +212,7 @@ public class shoppingSysController {
 			//cal.add(Calendar.YEAR, 1);
 	        //String endDate = request.getParameter("endDate");
 			
-			String endDate =DateUtils.dateToString(getAfterYear(new Date()));
+			
 			
 			String duration = request.getParameter("duration");
 	        String scanPeriod = request.getParameter("scanType"); // 频率  绿盟64ip(scanType = 15)   128ip(16)   金山10对应 10ip
@@ -221,6 +221,9 @@ public class shoppingSysController {
 	        int durationint =Integer.parseInt(duration);
 			//String assetIds;
 			
+	        
+	        String endDate =DateUtils.dateToString(getAfterFewMonth(new Date(), durationint));
+	        
 	      //判断参数值是否为空
 	      
 	        if((orderType==null||"".equals(orderType))||(beginDate==null||"".equals(beginDate))||(serviceId==null||"".equals(serviceId))||(duration==null||"".equals(duration))){
@@ -302,12 +305,13 @@ public class shoppingSysController {
 		        //orderDetail.setAsstId("0"); //
 		        orderDetail.setPrice(Double.parseDouble(price));
 		        orderDetail.setCreate_date(sdf.parse(createDate));
+		        orderDetail.setWafTimes(durationint); //使用waftimes字段记录 购买时长
 		        
 		        if (scanPeriod!=null && !"".equals(scanPeriod)) {
 					orderDetail.setScan_type(Integer.parseInt(scanPeriod));
 				}
 		        
-		        selfHelpOrderService.SaveOrderDetail(orderDetail);
+		        selfHelpOrderService.SaveOrderDetail(orderDetail); //insert into cs_settlemet
 		        OrderDetail orderDetailVo = selfHelpOrderService.findOrderDetailById(detailId, globle_user.getId());
 		        orderDetailVo.setServiceName(service.getName());
 				  request.setAttribute("orderDetail", orderDetailVo);
@@ -335,7 +339,7 @@ public class shoppingSysController {
 	}
 	
 	/**
-     * 功能描述： 保存订单
+     * 功能描述： 提交订单
      * 参数描述：  
 	 * @throws Exception 
      *       @time 2016-12-20
@@ -400,7 +404,7 @@ public class shoppingSysController {
          	       return;
             }
         }
-        OrderDetail orderDetailVo = selfHelpOrderService.findOrderDetailById(orderDetailId, globle_user.getId());
+        OrderDetail orderDetailVo = selfHelpOrderService.findOrderDetailById(orderDetailId, globle_user.getId()); //SELECT * from cs_settlemet
         if(orderDetailVo==null){
         	m.put("error", true);
        	 
@@ -458,7 +462,7 @@ public class shoppingSysController {
             order.setId(orderId);
             order.setType(1);
             order.setBegin_date(new Date());
-            order.setEnd_date(getAfterYear(new Date()));
+            order.setEnd_date(getAfterFewMonth(new Date(),orderDetailVo.getWafTimes()));  ///waftimes字段中保存月份时长 结束时间= 当前时间+购买月份时长
             order.setServiceId(orderDetailVo.getServiceId());
             order.setCreate_date(new Date());
             order.setUserId(globle_user.getId());
@@ -466,7 +470,8 @@ public class shoppingSysController {
             order.setStatus(1);//完成
             order.setPayFlag(0);
             order.setPrice(orderDetailVo.getPrice());
-            order.setIsAPI(0);//api订单
+            order.setIsAPI(3);// 0:web  1：API  2:waf 3：系统安全帮
+         
             selfHelpOrderService.insertOrder(order);   //插入cs_order
             
             /*
@@ -540,7 +545,19 @@ public class shoppingSysController {
          date = calendar.getTime();  
          return date;
     }
-    
+    /**
+     * 得到某个日期的后几个月的日期
+     * @param d
+     * @return
+     */
+    public static Date getAfterFewMonth(Date d,int duration){
+         Date date = d;
+         Calendar calendar = Calendar.getInstance();  
+         calendar.setTime(date);  
+         calendar.add(Calendar.MONTH,duration); 
+         date = calendar.getTime();  
+         return date;
+    }
 	
 	 /**
      * 功能描述： 计算商品价格
