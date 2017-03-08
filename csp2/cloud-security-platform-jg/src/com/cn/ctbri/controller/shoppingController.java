@@ -2139,20 +2139,25 @@ public class shoppingController {
     			    order=(HashMap) orderHashList.get(0);
     			    int serviceId=0;
     			    serviceId=(Integer) order.get("serviceId");
-    			    if (serviceId == 7) {//极光自助扫描接口
+    			    if (serviceId == 7|| serviceId==8||serviceId==9) {//极光自助、金山、云眼  接口
     			    	User loginUser = userService.findUserById(globle_user.getId()).get(0);
     			    	Date createDate = (Date)order.get("create_date");
     			    	Date  beginDate =(Date)order.get("begin_date");
     			    	String orderId = (String)order.get("id");
     			    	status = status+order.get("status");
     	//	添加极光接口位置    String intResString = jiguangjiekou();
+//    			    	添加金山接口位置    String intResString = jinshanjiekou();
+//    			    	添加云眼接口位置    String intResString = yunyanjiekou();
+    			    	
     			    	if (orderId != null && !"".equals(orderId)) {
         					// 更新订单资产表
         					//selfHelpOrderService.updateOrderAPI(
         						//	shopCar.getOrderId(), orderId);
         					// 更新订单表   UPDATE  cs_order o  
+    			    		//void updateOrder(String orderId,String newOrderId,String isAPI,String status, String orderListId, Date creatDate);
+    			    		// 系统安全帮 isAPI＝3
         					selfHelpOrderService.updateOrder(orderId,
-        							orderId, "0",status,orderList.getId(),orderList.getPay_date());
+        							orderId, "3",status,orderList.getId(),orderList.getPay_date());
         					
         					/*更新 修改时间的订单Id
         					if (modifyOrderId.contains(shopCar.getOrderId())){
