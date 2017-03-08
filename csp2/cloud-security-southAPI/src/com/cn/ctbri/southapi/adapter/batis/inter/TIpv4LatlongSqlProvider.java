@@ -56,7 +56,14 @@ public class TIpv4LatlongSqlProvider {
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
-        return SQL();
+        if (example != null && example.getRows() != null){
+        	if(example.getOffset() != null){
+        		return SQL() + " limit " + example.getOffset()+","+example.getRows();
+        	}
+        	return SQL() + " limit " + example.getRows();
+        }else{
+            return SQL();
+        }
     }
 
   

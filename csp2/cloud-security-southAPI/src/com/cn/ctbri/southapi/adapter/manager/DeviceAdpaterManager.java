@@ -23,6 +23,7 @@ import com.cn.ctbri.southapi.adapter.basedata.IPDataBaseAdapter;
 import com.cn.ctbri.southapi.adapter.basedata.URLDataBaseAdapter;
 import com.cn.ctbri.southapi.adapter.config.DeviceConfigInfo;
 import com.cn.ctbri.southapi.adapter.config.ScannerTaskUniParam;
+import com.cn.ctbri.southapi.adapter.jinshan.JinshanDeviceAdapter;
 import com.cn.ctbri.southapi.adapter.scanner.ArnhemDeviceAdpater;
 import com.cn.ctbri.southapi.adapter.scanner.WebsocDeviceAdapter;
 import com.cn.ctbri.southapi.adapter.waf.NsfocusWAFAdapter;
@@ -53,6 +54,7 @@ public class DeviceAdpaterManager {
 	public static IPDataBaseAdapter ipDataBaseAdapter = new IPDataBaseAdapter();
 	public static URLDataBaseAdapter urlDataBaseAdapter = new URLDataBaseAdapter();
 	
+	public static JinshanDeviceAdapter jinshanDeviceAdapter = new JinshanDeviceAdapter();
 	//加载设备错误信息
 	private static final String LOAD_DEVICE_ERROR = "{\"status\":\"fail\",\"message\":\"Load DeviceConfig failed!!\"}";
 	//初始化错误信息
@@ -879,5 +881,21 @@ public class DeviceAdpaterManager {
 	
 	public String getWafPublicIpListInResource(int resourceId) {
 		return nsfocusWAFAdapter.getPublicIpListInResource(resourceId);
+	}
+	
+	public String createTimeOnOrder(com.alibaba.fastjson.JSONObject jsonObject) {
+		return jinshanDeviceAdapter.createTimeOnOrder(jsonObject);
+	}
+	
+	public String getTimeOnUninstallInfo(com.alibaba.fastjson.JSONObject jsonObject) {
+		return jinshanDeviceAdapter.getUninstallInfo(jsonObject);
+	}
+	
+	public String getTimeOnHostCount(com.alibaba.fastjson.JSONObject jsonObject) {
+		return jinshanDeviceAdapter.getHostCount(jsonObject);
+	}
+	
+	public String getTimeOnOauthUrl(com.alibaba.fastjson.JSONObject jsonObject){
+		return jinshanDeviceAdapter.getOauthUrl(jsonObject);
 	}
 }

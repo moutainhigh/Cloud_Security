@@ -1,5 +1,6 @@
 package com.cn.ctbri.southapi.adapter.scanner;
 
+
 import com.cn.ctbri.southapi.adapter.config.ScannerTaskUniParam;
 import com.cn.ctbri.southapi.adapter.manager.CommonDeviceOperation;
 
@@ -11,6 +12,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.xml.XMLSerializer;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -23,6 +25,10 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 public class ArnhemDeviceOperation extends CommonDeviceOperation {
+	
+	static Logger logger = Logger.getLogger(ArnhemDeviceOperation.class.getName());
+	
+	
 	private String arnhemServerWebrootUrl = "";
 	private String username = "";
 	private String password = "";
@@ -331,7 +337,10 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 	public  String getStatusByTaskId(ScannerTaskUniParam scannerTaskUniParam) {
 		//创建路径
 		String url = arnhemServerWebrootUrl + "/rest/task/Test/" + scannerTaskUniParam.getTaskId();
-		return postMethod(url);		
+		//测试
+		String returnString = postMethod(url);
+		logger.error(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+returnString);
+		return returnString;		
 	}
 	
 	/**
@@ -347,7 +356,9 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
         String xml = "<Task><TaskID>" + scannerTaskUniParam.getTaskId() + "</TaskID><ProductID>" + scannerTaskUniParam.getProductId() +"</ProductID ></Task>";
         //创建路径
         String url = arnhemServerWebrootUrl + "/rest/task/getTaskProgress";
-        return postMethod(url, xml);
+		String returnString = postMethod(url, xml);
+		logger.error(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+returnString);
+		return returnString;	
 
     }
 

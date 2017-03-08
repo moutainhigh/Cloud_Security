@@ -3,36 +3,14 @@ package com.cn.ctbri.southapi.adapter.batis.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TViewIpv4LocationExample {
+public class TCityLocationExample {
     protected String orderByClause;
-    
-    //limit语句偏移量
-    protected String offset;
-    
-    public String getOffset() {
-		return offset;
-	}
-
-	//limit语句返回行数
-    protected String rows;
 
     protected boolean distinct;
 
-	public void setOffset(String offset) {
-		this.offset = offset;
-	}
+    protected List<Criteria> oredCriteria;
 
-	public String getRows() {
-		return rows;
-	}
-
-	public void setRows(String rows) {
-		this.rows = rows;
-	}
-
-	protected List<Criteria> oredCriteria;
-
-    public TViewIpv4LocationExample() {
+    public TCityLocationExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -126,483 +104,63 @@ public class TViewIpv4LocationExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andLatlongIdIsNull() {
-            addCriterion("latlong_id is null");
+        public Criteria andLocationIdIsNull() {
+            addCriterion("location_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andLatlongIdIsNotNull() {
-            addCriterion("latlong_id is not null");
+        public Criteria andLocationIdIsNotNull() {
+            addCriterion("location_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andLatlongIdEqualTo(Long value) {
-            addCriterion("latlong_id =", value, "latlongId");
+        public Criteria andLocationIdEqualTo(Long value) {
+            addCriterion("location_id =", value, "locationId");
             return (Criteria) this;
         }
 
-        public Criteria andLatlongIdNotEqualTo(Long value) {
-            addCriterion("latlong_id <>", value, "latlongId");
+        public Criteria andLocationIdNotEqualTo(Long value) {
+            addCriterion("location_id <>", value, "locationId");
             return (Criteria) this;
         }
 
-        public Criteria andLatlongIdGreaterThan(Long value) {
-            addCriterion("latlong_id >", value, "latlongId");
+        public Criteria andLocationIdGreaterThan(Long value) {
+            addCriterion("location_id >", value, "locationId");
             return (Criteria) this;
         }
 
-        public Criteria andLatlongIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("latlong_id >=", value, "latlongId");
+        public Criteria andLocationIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("location_id >=", value, "locationId");
             return (Criteria) this;
         }
 
-        public Criteria andLatlongIdLessThan(Long value) {
-            addCriterion("latlong_id <", value, "latlongId");
+        public Criteria andLocationIdLessThan(Long value) {
+            addCriterion("location_id <", value, "locationId");
             return (Criteria) this;
         }
 
-        public Criteria andLatlongIdLessThanOrEqualTo(Long value) {
-            addCriterion("latlong_id <=", value, "latlongId");
+        public Criteria andLocationIdLessThanOrEqualTo(Long value) {
+            addCriterion("location_id <=", value, "locationId");
             return (Criteria) this;
         }
 
-        public Criteria andLatlongIdIn(List<Long> values) {
-            addCriterion("latlong_id in", values, "latlongId");
+        public Criteria andLocationIdIn(List<Long> values) {
+            addCriterion("location_id in", values, "locationId");
             return (Criteria) this;
         }
 
-        public Criteria andLatlongIdNotIn(List<Long> values) {
-            addCriterion("latlong_id not in", values, "latlongId");
+        public Criteria andLocationIdNotIn(List<Long> values) {
+            addCriterion("location_id not in", values, "locationId");
             return (Criteria) this;
         }
 
-        public Criteria andLatlongIdBetween(Long value1, Long value2) {
-            addCriterion("latlong_id between", value1, value2, "latlongId");
+        public Criteria andLocationIdBetween(Long value1, Long value2) {
+            addCriterion("location_id between", value1, value2, "locationId");
             return (Criteria) this;
         }
 
-        public Criteria andLatlongIdNotBetween(Long value1, Long value2) {
-            addCriterion("latlong_id not between", value1, value2, "latlongId");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetworkIsNull() {
-            addCriterion("network is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetworkIsNotNull() {
-            addCriterion("network is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetworkEqualTo(String value) {
-            addCriterion("network =", value, "network");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetworkNotEqualTo(String value) {
-            addCriterion("network <>", value, "network");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetworkGreaterThan(String value) {
-            addCriterion("network >", value, "network");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetworkGreaterThanOrEqualTo(String value) {
-            addCriterion("network >=", value, "network");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetworkLessThan(String value) {
-            addCriterion("network <", value, "network");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetworkLessThanOrEqualTo(String value) {
-            addCriterion("network <=", value, "network");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetworkLike(String value) {
-            addCriterion("network like", value, "network");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetworkNotLike(String value) {
-            addCriterion("network not like", value, "network");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetworkIn(List<String> values) {
-            addCriterion("network in", values, "network");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetworkNotIn(List<String> values) {
-            addCriterion("network not in", values, "network");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetworkBetween(String value1, String value2) {
-            addCriterion("network between", value1, value2, "network");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetworkNotBetween(String value1, String value2) {
-            addCriterion("network not between", value1, value2, "network");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetmaskIsNull() {
-            addCriterion("netmask is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetmaskIsNotNull() {
-            addCriterion("netmask is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetmaskEqualTo(String value) {
-            addCriterion("netmask =", value, "netmask");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetmaskNotEqualTo(String value) {
-            addCriterion("netmask <>", value, "netmask");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetmaskGreaterThan(String value) {
-            addCriterion("netmask >", value, "netmask");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetmaskGreaterThanOrEqualTo(String value) {
-            addCriterion("netmask >=", value, "netmask");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetmaskLessThan(String value) {
-            addCriterion("netmask <", value, "netmask");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetmaskLessThanOrEqualTo(String value) {
-            addCriterion("netmask <=", value, "netmask");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetmaskLike(String value) {
-            addCriterion("netmask like", value, "netmask");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetmaskNotLike(String value) {
-            addCriterion("netmask not like", value, "netmask");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetmaskIn(List<String> values) {
-            addCriterion("netmask in", values, "netmask");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetmaskNotIn(List<String> values) {
-            addCriterion("netmask not in", values, "netmask");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetmaskBetween(String value1, String value2) {
-            addCriterion("netmask between", value1, value2, "netmask");
-            return (Criteria) this;
-        }
-
-        public Criteria andNetmaskNotBetween(String value1, String value2) {
-            addCriterion("netmask not between", value1, value2, "netmask");
-            return (Criteria) this;
-        }
-
-        public Criteria andLatitudeIsNull() {
-            addCriterion("latitude is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLatitudeIsNotNull() {
-            addCriterion("latitude is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLatitudeEqualTo(String value) {
-            addCriterion("latitude =", value, "latitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLatitudeNotEqualTo(String value) {
-            addCriterion("latitude <>", value, "latitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLatitudeGreaterThan(String value) {
-            addCriterion("latitude >", value, "latitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLatitudeGreaterThanOrEqualTo(String value) {
-            addCriterion("latitude >=", value, "latitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLatitudeLessThan(String value) {
-            addCriterion("latitude <", value, "latitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLatitudeLessThanOrEqualTo(String value) {
-            addCriterion("latitude <=", value, "latitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLatitudeLike(String value) {
-            addCriterion("latitude like", value, "latitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLatitudeNotLike(String value) {
-            addCriterion("latitude not like", value, "latitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLatitudeIn(List<String> values) {
-            addCriterion("latitude in", values, "latitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLatitudeNotIn(List<String> values) {
-            addCriterion("latitude not in", values, "latitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLatitudeBetween(String value1, String value2) {
-            addCriterion("latitude between", value1, value2, "latitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLatitudeNotBetween(String value1, String value2) {
-            addCriterion("latitude not between", value1, value2, "latitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongitudeIsNull() {
-            addCriterion("longitude is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongitudeIsNotNull() {
-            addCriterion("longitude is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongitudeEqualTo(String value) {
-            addCriterion("longitude =", value, "longitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongitudeNotEqualTo(String value) {
-            addCriterion("longitude <>", value, "longitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongitudeGreaterThan(String value) {
-            addCriterion("longitude >", value, "longitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongitudeGreaterThanOrEqualTo(String value) {
-            addCriterion("longitude >=", value, "longitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongitudeLessThan(String value) {
-            addCriterion("longitude <", value, "longitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongitudeLessThanOrEqualTo(String value) {
-            addCriterion("longitude <=", value, "longitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongitudeLike(String value) {
-            addCriterion("longitude like", value, "longitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongitudeNotLike(String value) {
-            addCriterion("longitude not like", value, "longitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongitudeIn(List<String> values) {
-            addCriterion("longitude in", values, "longitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongitudeNotIn(List<String> values) {
-            addCriterion("longitude not in", values, "longitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongitudeBetween(String value1, String value2) {
-            addCriterion("longitude between", value1, value2, "longitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andLongitudeNotBetween(String value1, String value2) {
-            addCriterion("longitude not between", value1, value2, "longitude");
-            return (Criteria) this;
-        }
-
-        public Criteria andAccuracyRadiusIsNull() {
-            addCriterion("accuracy_radius is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAccuracyRadiusIsNotNull() {
-            addCriterion("accuracy_radius is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAccuracyRadiusEqualTo(String value) {
-            addCriterion("accuracy_radius =", value, "accuracyRadius");
-            return (Criteria) this;
-        }
-
-        public Criteria andAccuracyRadiusNotEqualTo(String value) {
-            addCriterion("accuracy_radius <>", value, "accuracyRadius");
-            return (Criteria) this;
-        }
-
-        public Criteria andAccuracyRadiusGreaterThan(String value) {
-            addCriterion("accuracy_radius >", value, "accuracyRadius");
-            return (Criteria) this;
-        }
-
-        public Criteria andAccuracyRadiusGreaterThanOrEqualTo(String value) {
-            addCriterion("accuracy_radius >=", value, "accuracyRadius");
-            return (Criteria) this;
-        }
-
-        public Criteria andAccuracyRadiusLessThan(String value) {
-            addCriterion("accuracy_radius <", value, "accuracyRadius");
-            return (Criteria) this;
-        }
-
-        public Criteria andAccuracyRadiusLessThanOrEqualTo(String value) {
-            addCriterion("accuracy_radius <=", value, "accuracyRadius");
-            return (Criteria) this;
-        }
-
-        public Criteria andAccuracyRadiusLike(String value) {
-            addCriterion("accuracy_radius like", value, "accuracyRadius");
-            return (Criteria) this;
-        }
-
-        public Criteria andAccuracyRadiusNotLike(String value) {
-            addCriterion("accuracy_radius not like", value, "accuracyRadius");
-            return (Criteria) this;
-        }
-
-        public Criteria andAccuracyRadiusIn(List<String> values) {
-            addCriterion("accuracy_radius in", values, "accuracyRadius");
-            return (Criteria) this;
-        }
-
-        public Criteria andAccuracyRadiusNotIn(List<String> values) {
-            addCriterion("accuracy_radius not in", values, "accuracyRadius");
-            return (Criteria) this;
-        }
-
-        public Criteria andAccuracyRadiusBetween(String value1, String value2) {
-            addCriterion("accuracy_radius between", value1, value2, "accuracyRadius");
-            return (Criteria) this;
-        }
-
-        public Criteria andAccuracyRadiusNotBetween(String value1, String value2) {
-            addCriterion("accuracy_radius not between", value1, value2, "accuracyRadius");
-            return (Criteria) this;
-        }
-
-        public Criteria andPostalCodeIsNull() {
-            addCriterion("postal_code is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPostalCodeIsNotNull() {
-            addCriterion("postal_code is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPostalCodeEqualTo(String value) {
-            addCriterion("postal_code =", value, "postalCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andPostalCodeNotEqualTo(String value) {
-            addCriterion("postal_code <>", value, "postalCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andPostalCodeGreaterThan(String value) {
-            addCriterion("postal_code >", value, "postalCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andPostalCodeGreaterThanOrEqualTo(String value) {
-            addCriterion("postal_code >=", value, "postalCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andPostalCodeLessThan(String value) {
-            addCriterion("postal_code <", value, "postalCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andPostalCodeLessThanOrEqualTo(String value) {
-            addCriterion("postal_code <=", value, "postalCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andPostalCodeLike(String value) {
-            addCriterion("postal_code like", value, "postalCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andPostalCodeNotLike(String value) {
-            addCriterion("postal_code not like", value, "postalCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andPostalCodeIn(List<String> values) {
-            addCriterion("postal_code in", values, "postalCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andPostalCodeNotIn(List<String> values) {
-            addCriterion("postal_code not in", values, "postalCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andPostalCodeBetween(String value1, String value2) {
-            addCriterion("postal_code between", value1, value2, "postalCode");
-            return (Criteria) this;
-        }
-
-        public Criteria andPostalCodeNotBetween(String value1, String value2) {
-            addCriterion("postal_code not between", value1, value2, "postalCode");
+        public Criteria andLocationIdNotBetween(Long value1, Long value2) {
+            addCriterion("location_id not between", value1, value2, "locationId");
             return (Criteria) this;
         }
 
@@ -673,6 +231,76 @@ public class TViewIpv4LocationExample {
 
         public Criteria andLocaleCodeNotBetween(String value1, String value2) {
             addCriterion("locale_code not between", value1, value2, "localeCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andContinentCodeIsNull() {
+            addCriterion("continent_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContinentCodeIsNotNull() {
+            addCriterion("continent_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andContinentCodeEqualTo(String value) {
+            addCriterion("continent_code =", value, "continentCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andContinentCodeNotEqualTo(String value) {
+            addCriterion("continent_code <>", value, "continentCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andContinentCodeGreaterThan(String value) {
+            addCriterion("continent_code >", value, "continentCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andContinentCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("continent_code >=", value, "continentCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andContinentCodeLessThan(String value) {
+            addCriterion("continent_code <", value, "continentCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andContinentCodeLessThanOrEqualTo(String value) {
+            addCriterion("continent_code <=", value, "continentCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andContinentCodeLike(String value) {
+            addCriterion("continent_code like", value, "continentCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andContinentCodeNotLike(String value) {
+            addCriterion("continent_code not like", value, "continentCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andContinentCodeIn(List<String> values) {
+            addCriterion("continent_code in", values, "continentCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andContinentCodeNotIn(List<String> values) {
+            addCriterion("continent_code not in", values, "continentCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andContinentCodeBetween(String value1, String value2) {
+            addCriterion("continent_code between", value1, value2, "continentCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andContinentCodeNotBetween(String value1, String value2) {
+            addCriterion("continent_code not between", value1, value2, "continentCode");
             return (Criteria) this;
         }
 
@@ -886,6 +514,76 @@ public class TViewIpv4LocationExample {
             return (Criteria) this;
         }
 
+        public Criteria andSubdivision1IsoCodeIsNull() {
+            addCriterion("subdivision_1_iso_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision1IsoCodeIsNotNull() {
+            addCriterion("subdivision_1_iso_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision1IsoCodeEqualTo(String value) {
+            addCriterion("subdivision_1_iso_code =", value, "subdivision1IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision1IsoCodeNotEqualTo(String value) {
+            addCriterion("subdivision_1_iso_code <>", value, "subdivision1IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision1IsoCodeGreaterThan(String value) {
+            addCriterion("subdivision_1_iso_code >", value, "subdivision1IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision1IsoCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("subdivision_1_iso_code >=", value, "subdivision1IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision1IsoCodeLessThan(String value) {
+            addCriterion("subdivision_1_iso_code <", value, "subdivision1IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision1IsoCodeLessThanOrEqualTo(String value) {
+            addCriterion("subdivision_1_iso_code <=", value, "subdivision1IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision1IsoCodeLike(String value) {
+            addCriterion("subdivision_1_iso_code like", value, "subdivision1IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision1IsoCodeNotLike(String value) {
+            addCriterion("subdivision_1_iso_code not like", value, "subdivision1IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision1IsoCodeIn(List<String> values) {
+            addCriterion("subdivision_1_iso_code in", values, "subdivision1IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision1IsoCodeNotIn(List<String> values) {
+            addCriterion("subdivision_1_iso_code not in", values, "subdivision1IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision1IsoCodeBetween(String value1, String value2) {
+            addCriterion("subdivision_1_iso_code between", value1, value2, "subdivision1IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision1IsoCodeNotBetween(String value1, String value2) {
+            addCriterion("subdivision_1_iso_code not between", value1, value2, "subdivision1IsoCode");
+            return (Criteria) this;
+        }
+
         public Criteria andSubdivision1NameIsNull() {
             addCriterion("subdivision_1_name is null");
             return (Criteria) this;
@@ -953,6 +651,76 @@ public class TViewIpv4LocationExample {
 
         public Criteria andSubdivision1NameNotBetween(String value1, String value2) {
             addCriterion("subdivision_1_name not between", value1, value2, "subdivision1Name");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision2IsoCodeIsNull() {
+            addCriterion("subdivision_2_iso_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision2IsoCodeIsNotNull() {
+            addCriterion("subdivision_2_iso_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision2IsoCodeEqualTo(String value) {
+            addCriterion("subdivision_2_iso_code =", value, "subdivision2IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision2IsoCodeNotEqualTo(String value) {
+            addCriterion("subdivision_2_iso_code <>", value, "subdivision2IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision2IsoCodeGreaterThan(String value) {
+            addCriterion("subdivision_2_iso_code >", value, "subdivision2IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision2IsoCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("subdivision_2_iso_code >=", value, "subdivision2IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision2IsoCodeLessThan(String value) {
+            addCriterion("subdivision_2_iso_code <", value, "subdivision2IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision2IsoCodeLessThanOrEqualTo(String value) {
+            addCriterion("subdivision_2_iso_code <=", value, "subdivision2IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision2IsoCodeLike(String value) {
+            addCriterion("subdivision_2_iso_code like", value, "subdivision2IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision2IsoCodeNotLike(String value) {
+            addCriterion("subdivision_2_iso_code not like", value, "subdivision2IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision2IsoCodeIn(List<String> values) {
+            addCriterion("subdivision_2_iso_code in", values, "subdivision2IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision2IsoCodeNotIn(List<String> values) {
+            addCriterion("subdivision_2_iso_code not in", values, "subdivision2IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision2IsoCodeBetween(String value1, String value2) {
+            addCriterion("subdivision_2_iso_code between", value1, value2, "subdivision2IsoCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubdivision2IsoCodeNotBetween(String value1, String value2) {
+            addCriterion("subdivision_2_iso_code not between", value1, value2, "subdivision2IsoCode");
             return (Criteria) this;
         }
 
@@ -1093,6 +861,76 @@ public class TViewIpv4LocationExample {
 
         public Criteria andCityNameNotBetween(String value1, String value2) {
             addCriterion("city_name not between", value1, value2, "cityName");
+            return (Criteria) this;
+        }
+
+        public Criteria andMetroCodeIsNull() {
+            addCriterion("metro_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMetroCodeIsNotNull() {
+            addCriterion("metro_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMetroCodeEqualTo(String value) {
+            addCriterion("metro_code =", value, "metroCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andMetroCodeNotEqualTo(String value) {
+            addCriterion("metro_code <>", value, "metroCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andMetroCodeGreaterThan(String value) {
+            addCriterion("metro_code >", value, "metroCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andMetroCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("metro_code >=", value, "metroCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andMetroCodeLessThan(String value) {
+            addCriterion("metro_code <", value, "metroCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andMetroCodeLessThanOrEqualTo(String value) {
+            addCriterion("metro_code <=", value, "metroCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andMetroCodeLike(String value) {
+            addCriterion("metro_code like", value, "metroCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andMetroCodeNotLike(String value) {
+            addCriterion("metro_code not like", value, "metroCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andMetroCodeIn(List<String> values) {
+            addCriterion("metro_code in", values, "metroCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andMetroCodeNotIn(List<String> values) {
+            addCriterion("metro_code not in", values, "metroCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andMetroCodeBetween(String value1, String value2) {
+            addCriterion("metro_code between", value1, value2, "metroCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andMetroCodeNotBetween(String value1, String value2) {
+            addCriterion("metro_code not between", value1, value2, "metroCode");
             return (Criteria) this;
         }
 

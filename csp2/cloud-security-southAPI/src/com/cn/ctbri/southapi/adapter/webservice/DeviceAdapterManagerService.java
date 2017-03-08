@@ -568,5 +568,33 @@ public class DeviceAdapterManagerService {
 		int resourceId = jsonObject.getInt("resourceId");
 		return deviceAdpaterManager.getWafPublicIpListInResource(resourceId);
 	}
+	@POST
+	@Path("/timeon/createOrder")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String createTimeOnOrder(String dataJson) {
+		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
+		return deviceAdpaterManager.createTimeOnOrder(jsonObject);
+	}
+	@POST
+	@Path("/timeon/getUninstallInfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTimeOnUninstallInfo(String dataJson) {
+		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
+		return deviceAdpaterManager.getTimeOnUninstallInfo(jsonObject);
+	}
+	@POST
+	@Path("/timeon/getHostCount")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTimOnHostCount(String dataJson) {
+		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
+		return deviceAdpaterManager.getTimeOnHostCount(jsonObject);
+	}
+	@POST
+	@Path("/timeon/getOauthUrl")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTimOnOauthUrl(String dataJson) {
+		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
+		return deviceAdpaterManager.getTimeOnOauthUrl(jsonObject);
+	}
 
 }

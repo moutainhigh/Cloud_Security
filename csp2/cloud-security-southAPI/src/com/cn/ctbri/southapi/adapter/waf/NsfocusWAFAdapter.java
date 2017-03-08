@@ -69,6 +69,7 @@ public class NsfocusWAFAdapter {
 			while (wafConfDevIterator.hasNext()) {
 				Map.Entry<Integer, WAFConfigDevice> wafConfigDeviceEntry = (Entry<Integer, WAFConfigDevice>) wafConfDevIterator.next();
 				int devId = wafConfigDeviceEntry.getKey();
+				
 				WAFConfigDevice wafConfigDevice = wafConfigDeviceEntry.getValue();
 				String[] apiPublicIp = wafConfigDevice.getDevicePublicIPList();
 				String apiAddr = wafConfigDevice.getApiAddr();
@@ -76,7 +77,9 @@ public class NsfocusWAFAdapter {
 				String apiValue = wafConfigDevice.getApiValue();
 				String apiUsername = wafConfigDevice.getApiUserName();
 				String apiPassword = wafConfigDevice.getApiPwd();
+				System.out.println(resourceId+"  "+devId+"  "+apiAddr);
 				nsfocusWAFOperation = new NsfocusWAFOperation(apiAddr, apiKey, apiValue, apiUsername, apiPassword, apiPublicIp);
+				System.out.println(nsfocusWAFOperation.toString());
 				mapNsfocusWAFOperation.put(devId, nsfocusWAFOperation);
 			}
 			mapNsfocusWAFOperationGroup.put(resourceId, mapNsfocusWAFOperation);
@@ -224,7 +227,9 @@ public class NsfocusWAFAdapter {
 	 */
 	public String getSitesInResource(int resourceId) {
 		HashMap<Integer,NsfocusWAFOperation> map = mapNsfocusWAFOperationGroup.get(resourceId);
+		System.out.println(resourceId);
 		JSONArray siteArray = new JSONArray();
+		System.out.println(map.get(30001).toString());
 		for (Entry<Integer, NsfocusWAFOperation> entry : map.entrySet()) {
 			JSONArray tempDeviceJsonArray = JSONArray.fromObject(entry.getValue().getSites());
 			JSONObject tempDeviceJsonObject = new JSONObject();

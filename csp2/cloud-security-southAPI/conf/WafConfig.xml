@@ -5,7 +5,8 @@
 		<WAFDeviceGroup>
 			<ResourceID>10001</ResourceID>
 			<ResourceURI>/WAF/DEVICE/CTBRI/Group001</ResourceURI>
-			<DeployMode>Single/HA/MUTUAL-HA/BALANCE</DeployMode>
+			<!-- <DeployMode>Single/HA/MUTUAL-HA/BALANCE</DeployMode> -->
+			<DeployMode>HA</DeployMode>
 			<WAFDeviceList>
 				<WAFDevice>
 					<WAFDevID>30001</WAFDevID>
@@ -62,8 +63,8 @@
 					<WAFDevPhyIP>219.141.189.185</WAFDevPhyIP>
 					<WAFPublicIPList>219.141.189.185</WAFPublicIPList>
 					<WAFDevAPI>
-						<!-- 部署186，内网地址-->
-						<APIAddr>https://172.16.100.184:8443</APIAddr>
+						<!-- 部署186，内网地址
+						<APIAddr>https://172.16.100.184:8443</APIAddr>-->
 						<!-- 部署外网-->
 						<APIAddr>https://219.141.189.189:61184</APIAddr>
 						<APIKey>vmwaf</APIKey>
@@ -106,6 +107,48 @@
 			</WAFDeviceList>
 		</WAFDeviceGroup>
 		-->
+		<WAFDeviceGroup>
+			<ResourceID>10003</ResourceID>
+			<ResourceURI>/WAF/DEVICE/CTBRI/Group003</ResourceURI>
+			<DeployMode>HA</DeployMode>
+			<WAFDeviceList>
+				<WAFDevice>
+					<WAFDevID>30001</WAFDevID>
+					<WAFFactory>nsfocus</WAFFactory>
+					<WAFFactoryName>绿盟</WAFFactoryName>
+					<WAFDevPhyIP>192.168.0.28</WAFDevPhyIP>
+					<WAFPublicIPList></WAFPublicIPList>
+					<WAFDevAPI>
+						<APIAddr>https://183.78.180.10:443</APIAddr>
+						<APIKey>vmwaf</APIKey>
+						<APIValue>EDB1-8043-EEB3-2541</APIValue>
+						<APIUserName>admin</APIUserName>
+						<APIPwd>nsfocus</APIPwd>
+					</WAFDevAPI>
+					<WAFDevSyslog identifyType="IP" syslogVer="6.0.5.0" syslogCode="BASE64">
+						<WAFDevTag></WAFDevTag>
+					</WAFDevSyslog>
+				</WAFDevice>
+				<WAFDevice>
+					<WAFDevID>30002</WAFDevID>
+					<WAFFactory>nsfocus</WAFFactory>
+					<WAFFactoryName>绿盟</WAFFactoryName>
+					<WAFDevPhyIP>192.168.0.133</WAFDevPhyIP>
+					<WAFPublicIPList></WAFPublicIPList>
+					<WAFDevAPI>
+						<APIAddr>https://183.78.182.254:443</APIAddr>
+						<APIKey>vmwaf</APIKey>
+						<APIValue>FE7E-5AEE-60E2-3C1C</APIValue>
+						<APIUserName>admin</APIUserName>
+						<APIPwd>nsfocus</APIPwd>
+					</WAFDevAPI>
+					<WAFDevSyslog identifyType="IP" syslogVer="6.0.5.0" syslogCode="BASE64">
+						<WAFDevTag></WAFDevTag>
+					</WAFDevSyslog>				
+				</WAFDevice>			
+			</WAFDeviceList>
+			
+		</WAFDeviceGroup>
 	</WAFDeviceManage>
 	<SyslogGroup type="waf" >
 		<Syslog factory="nsfocus" ver="6.0.5.0" regexTag="tag:{1}\S+[ \t]{1}">

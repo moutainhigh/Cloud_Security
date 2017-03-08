@@ -13,64 +13,44 @@ import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
 import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
 import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
 
-import com.cn.ctbri.southapi.adapter.batis.model.TViewIpv4Location;
-import com.cn.ctbri.southapi.adapter.batis.model.TViewIpv4LocationExample.Criteria;
-import com.cn.ctbri.southapi.adapter.batis.model.TViewIpv4LocationExample.Criterion;
-import com.cn.ctbri.southapi.adapter.batis.model.TViewIpv4LocationExample;
+import com.cn.ctbri.southapi.adapter.batis.model.TCityLocation;
+import com.cn.ctbri.southapi.adapter.batis.model.TCityLocationExample.Criteria;
+import com.cn.ctbri.southapi.adapter.batis.model.TCityLocationExample.Criterion;
+import com.cn.ctbri.southapi.adapter.batis.model.TCityLocationExample;
 import java.util.List;
 import java.util.Map;
 
-public class TViewIpv4LocationSqlProvider {
+public class TCityLocationSqlProvider {
 
-    public String countByExample(TViewIpv4LocationExample example) {
+    public String countByExample(TCityLocationExample example) {
         BEGIN();
         SELECT("count(*)");
-        FROM("t_view_ipv4_location");
+        FROM("t_city_location");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String deleteByExample(TViewIpv4LocationExample example) {
+    public String deleteByExample(TCityLocationExample example) {
         BEGIN();
-        DELETE_FROM("t_view_ipv4_location");
+        DELETE_FROM("t_city_location");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String insertSelective(TViewIpv4Location record) {
+    public String insertSelective(TCityLocation record) {
         BEGIN();
-        INSERT_INTO("t_view_ipv4_location");
+        INSERT_INTO("t_city_location");
         
-        if (record.getLatlongId() != null) {
-            VALUES("latlong_id", "#{latlongId,jdbcType=BIGINT}");
-        }
-        
-        if (record.getNetwork() != null) {
-            VALUES("network", "#{network,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getNetmask() != null) {
-            VALUES("netmask", "#{netmask,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getLatitude() != null) {
-            VALUES("latitude", "#{latitude,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getLongitude() != null) {
-            VALUES("longitude", "#{longitude,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getAccuracyRadius() != null) {
-            VALUES("accuracy_radius", "#{accuracyRadius,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getPostalCode() != null) {
-            VALUES("postal_code", "#{postalCode,jdbcType=VARCHAR}");
+        if (record.getLocationId() != null) {
+            VALUES("location_id", "#{locationId,jdbcType=BIGINT}");
         }
         
         if (record.getLocaleCode() != null) {
             VALUES("locale_code", "#{localeCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getContinentCode() != null) {
+            VALUES("continent_code", "#{continentCode,jdbcType=VARCHAR}");
         }
         
         if (record.getContinentName() != null) {
@@ -85,8 +65,16 @@ public class TViewIpv4LocationSqlProvider {
             VALUES("country_name", "#{countryName,jdbcType=VARCHAR}");
         }
         
+        if (record.getSubdivision1IsoCode() != null) {
+            VALUES("subdivision_1_iso_code", "#{subdivision1IsoCode,jdbcType=VARCHAR}");
+        }
+        
         if (record.getSubdivision1Name() != null) {
             VALUES("subdivision_1_name", "#{subdivision1Name,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getSubdivision2IsoCode() != null) {
+            VALUES("subdivision_2_iso_code", "#{subdivision2IsoCode,jdbcType=VARCHAR}");
         }
         
         if (record.getSubdivision2Name() != null) {
@@ -97,6 +85,10 @@ public class TViewIpv4LocationSqlProvider {
             VALUES("city_name", "#{cityName,jdbcType=VARCHAR}");
         }
         
+        if (record.getMetroCode() != null) {
+            VALUES("metro_code", "#{metroCode,jdbcType=VARCHAR}");
+        }
+        
         if (record.getTimeZone() != null) {
             VALUES("time_zone", "#{timeZone,jdbcType=VARCHAR}");
         }
@@ -104,81 +96,52 @@ public class TViewIpv4LocationSqlProvider {
         return SQL();
     }
 
-    public String selectByExample(TViewIpv4LocationExample example) {
+    public String selectByExample(TCityLocationExample example) {
         BEGIN();
         if (example != null && example.isDistinct()) {
-            SELECT_DISTINCT("latlong_id");
+            SELECT_DISTINCT("location_id");
         } else {
-            SELECT("latlong_id");
+            SELECT("location_id");
         }
-        SELECT("network");
-        SELECT("netmask");
-        SELECT("latitude");
-        SELECT("longitude");
-        SELECT("accuracy_radius");
-        SELECT("postal_code");
         SELECT("locale_code");
+        SELECT("continent_code");
         SELECT("continent_name");
         SELECT("country_iso_code");
         SELECT("country_name");
+        SELECT("subdivision_1_iso_code");
         SELECT("subdivision_1_name");
+        SELECT("subdivision_2_iso_code");
         SELECT("subdivision_2_name");
         SELECT("city_name");
+        SELECT("metro_code");
         SELECT("time_zone");
-        FROM("t_view_ipv4_location");
+        FROM("t_city_location");
         applyWhere(example, false);
         
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
-        if (example != null && example.getRows() != null){
-        	if(example.getOffset() != null){
-        		return SQL() + " limit " + example.getOffset()+","+example.getRows();
-        	}
-        	return SQL() + " limit " + example.getRows();
-        }else{
-            return SQL();
-        }
-
+        
+        return SQL();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        TViewIpv4Location record = (TViewIpv4Location) parameter.get("record");
-        TViewIpv4LocationExample example = (TViewIpv4LocationExample) parameter.get("example");
+        TCityLocation record = (TCityLocation) parameter.get("record");
+        TCityLocationExample example = (TCityLocationExample) parameter.get("example");
         
         BEGIN();
-        UPDATE("t_view_ipv4_location");
+        UPDATE("t_city_location");
         
-        if (record.getLatlongId() != null) {
-            SET("latlong_id = #{record.latlongId,jdbcType=BIGINT}");
-        }
-        
-        if (record.getNetwork() != null) {
-            SET("network = #{record.network,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getNetmask() != null) {
-            SET("netmask = #{record.netmask,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getLatitude() != null) {
-            SET("latitude = #{record.latitude,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getLongitude() != null) {
-            SET("longitude = #{record.longitude,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getAccuracyRadius() != null) {
-            SET("accuracy_radius = #{record.accuracyRadius,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getPostalCode() != null) {
-            SET("postal_code = #{record.postalCode,jdbcType=VARCHAR}");
+        if (record.getLocationId() != null) {
+            SET("location_id = #{record.locationId,jdbcType=BIGINT}");
         }
         
         if (record.getLocaleCode() != null) {
             SET("locale_code = #{record.localeCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getContinentCode() != null) {
+            SET("continent_code = #{record.continentCode,jdbcType=VARCHAR}");
         }
         
         if (record.getContinentName() != null) {
@@ -193,8 +156,16 @@ public class TViewIpv4LocationSqlProvider {
             SET("country_name = #{record.countryName,jdbcType=VARCHAR}");
         }
         
+        if (record.getSubdivision1IsoCode() != null) {
+            SET("subdivision_1_iso_code = #{record.subdivision1IsoCode,jdbcType=VARCHAR}");
+        }
+        
         if (record.getSubdivision1Name() != null) {
             SET("subdivision_1_name = #{record.subdivision1Name,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getSubdivision2IsoCode() != null) {
+            SET("subdivision_2_iso_code = #{record.subdivision2IsoCode,jdbcType=VARCHAR}");
         }
         
         if (record.getSubdivision2Name() != null) {
@@ -203,6 +174,10 @@ public class TViewIpv4LocationSqlProvider {
         
         if (record.getCityName() != null) {
             SET("city_name = #{record.cityName,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getMetroCode() != null) {
+            SET("metro_code = #{record.metroCode,jdbcType=VARCHAR}");
         }
         
         if (record.getTimeZone() != null) {
@@ -215,30 +190,85 @@ public class TViewIpv4LocationSqlProvider {
 
     public String updateByExample(Map<String, Object> parameter) {
         BEGIN();
-        UPDATE("t_view_ipv4_location");
+        UPDATE("t_city_location");
         
-        SET("latlong_id = #{record.latlongId,jdbcType=BIGINT}");
-        SET("network = #{record.network,jdbcType=VARCHAR}");
-        SET("netmask = #{record.netmask,jdbcType=VARCHAR}");
-        SET("latitude = #{record.latitude,jdbcType=VARCHAR}");
-        SET("longitude = #{record.longitude,jdbcType=VARCHAR}");
-        SET("accuracy_radius = #{record.accuracyRadius,jdbcType=VARCHAR}");
-        SET("postal_code = #{record.postalCode,jdbcType=VARCHAR}");
+        SET("location_id = #{record.locationId,jdbcType=BIGINT}");
         SET("locale_code = #{record.localeCode,jdbcType=VARCHAR}");
+        SET("continent_code = #{record.continentCode,jdbcType=VARCHAR}");
         SET("continent_name = #{record.continentName,jdbcType=VARCHAR}");
         SET("country_iso_code = #{record.countryIsoCode,jdbcType=VARCHAR}");
         SET("country_name = #{record.countryName,jdbcType=VARCHAR}");
+        SET("subdivision_1_iso_code = #{record.subdivision1IsoCode,jdbcType=VARCHAR}");
         SET("subdivision_1_name = #{record.subdivision1Name,jdbcType=VARCHAR}");
+        SET("subdivision_2_iso_code = #{record.subdivision2IsoCode,jdbcType=VARCHAR}");
         SET("subdivision_2_name = #{record.subdivision2Name,jdbcType=VARCHAR}");
         SET("city_name = #{record.cityName,jdbcType=VARCHAR}");
+        SET("metro_code = #{record.metroCode,jdbcType=VARCHAR}");
         SET("time_zone = #{record.timeZone,jdbcType=VARCHAR}");
         
-        TViewIpv4LocationExample example = (TViewIpv4LocationExample) parameter.get("example");
+        TCityLocationExample example = (TCityLocationExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
     }
 
-    protected void applyWhere(TViewIpv4LocationExample example, boolean includeExamplePhrase) {
+    public String updateByPrimaryKeySelective(TCityLocation record) {
+        BEGIN();
+        UPDATE("t_city_location");
+        
+        if (record.getLocaleCode() != null) {
+            SET("locale_code = #{localeCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getContinentCode() != null) {
+            SET("continent_code = #{continentCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getContinentName() != null) {
+            SET("continent_name = #{continentName,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCountryIsoCode() != null) {
+            SET("country_iso_code = #{countryIsoCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCountryName() != null) {
+            SET("country_name = #{countryName,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getSubdivision1IsoCode() != null) {
+            SET("subdivision_1_iso_code = #{subdivision1IsoCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getSubdivision1Name() != null) {
+            SET("subdivision_1_name = #{subdivision1Name,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getSubdivision2IsoCode() != null) {
+            SET("subdivision_2_iso_code = #{subdivision2IsoCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getSubdivision2Name() != null) {
+            SET("subdivision_2_name = #{subdivision2Name,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCityName() != null) {
+            SET("city_name = #{cityName,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getMetroCode() != null) {
+            SET("metro_code = #{metroCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getTimeZone() != null) {
+            SET("time_zone = #{timeZone,jdbcType=VARCHAR}");
+        }
+        
+        WHERE("location_id = #{locationId,jdbcType=BIGINT}");
+        
+        return SQL();
+    }
+
+    protected void applyWhere(TCityLocationExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }
