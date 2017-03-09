@@ -720,11 +720,13 @@ public class shoppingController {
 		 List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
 		 //查询安全能力API
 		 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
-		 if((shopCarList!=null&&shopCarList.size()>0)||(apiList!=null&&apiList.size()>0)){
+		 List sysList = selfHelpOrderService.findShopCarSysList(String.valueOf(globle_user.getId()), 0,"");
+		 if((shopCarList!=null&&shopCarList.size()>0)||(apiList!=null&&apiList.size()>0)||(sysList!=null&&sysList.size()>0)){
 			 flag=true;
 		 }
         request.setAttribute("shopCarList", shopCarList);
         request.setAttribute("apiList", apiList);
+        request.setAttribute("sysList", sysList);
         request.setAttribute("flag", flag);
         request.setAttribute("user", globle_user);
 	     String result = "/source/page/details/shoppingCart-order";
