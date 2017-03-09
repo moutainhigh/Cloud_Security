@@ -95,8 +95,11 @@ public interface ISelfHelpOrderService {
    // 查询购物车-网站安全帮列表
 	List<ShopCar> findShopCarList(String userId,int payFlag,String orderId);
 	
-	  // 查询购物车-网站安全帮列表
+	  // 查询购物车-api安全帮列表
 	List<ShopCar> findShopCarAPIList(String userId,int payFlag,String orderId);
+	// 查询购物车-系统安全帮列表
+	List findShopCarSysList(String userId,int payFlag,String orderId);
+	
 	//查询结算页的订单列表
 	List<ShopCar> findBuyShopList(List orderId,int userId);
 	//更新订单资产表
@@ -135,4 +138,6 @@ public interface ISelfHelpOrderService {
 //	List<ScanType> findScanType(int serviceId, int scanType);
 	
 	List<Serv> findServiceByParent(int i);
+
+	
 }
