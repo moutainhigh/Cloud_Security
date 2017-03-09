@@ -134,6 +134,12 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 		// TODO Auto-generated method stub
 		return selfHelpOrderDao.findShopCarAPIList(userId, payFlag,orderId);
 	}
+	
+	@Override
+	public List<ShopCar> findShopCarSysList(String userId, int payFlag, String orderId) {
+		// TODO Auto-generated method stub
+		return selfHelpOrderDao.findShopCarSysList(userId, payFlag,orderId);
+	}
 
 	public List<ShopCar> findBuyShopList(List orderId,int userId) {
 		// TODO Auto-generated method stub
@@ -210,6 +216,8 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 	public List<Serv> findServiceByParent(int parent) {
 		return selfHelpOrderDao.findServiceByParent(parent);
 	}
+
+	
 
 	
 }
