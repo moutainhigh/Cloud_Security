@@ -157,8 +157,8 @@
 				                <c:if test="${list.isAPI==2 && (list.status==4)}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
 				                <c:if test="${list.isAPI==2 && (list.status==1)}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
 				                
-				                <c:if test="${list.isAPI==3 && list.serviceId==7 && list.end_date>temp}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
-				                <c:if test="${list.isAPI==3 && list.serviceId==7 && list.end_date<=temp}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
+				                <c:if test="${list.isAPI==3 && list.end_date>temp}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
+				                <c:if test="${list.isAPI==3 && list.end_date<=temp}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
 				                
                             </td>
                             <td class="order" valign="top">
@@ -242,13 +242,13 @@
 						                 </a>
 						                
 						            </c:if>
-						         	<c:if test="${list.serviceId==7}">
+						         	<c:if test="${list.isAPI==3}">
 						               	<a href="${ctx}/systemOrderOperaInit.html?serviceId=${list.serviceId}" target="_blank">查看详情！</a>						                 
 						            </c:if>
                             	</p>
                        			<p style="width:98px; height:auto;">
 									<!-- 订单删除操作 -->
-									<c:if test="${list.serviceId!=7 }">
+									<c:if test="${list.isAPI!=3 }">
              						<a href="javascript:void(0)" onclick="deleteOrder('${list.id}','${list.begin_date}')">删除</a>
              						</c:if>
 								</p>
