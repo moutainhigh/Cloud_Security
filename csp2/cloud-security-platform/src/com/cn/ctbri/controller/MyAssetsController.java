@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -799,7 +800,7 @@ public class MyAssetsController {
 			//代码验证
 			if(verification_msg.equals("codeVerification")){
 				 //获取已知代码
-				 String code1 = String.valueOf(request.getParameter("code1"));
+				 String code1 = StringEscapeUtils.unescapeHtml(String.valueOf(request.getParameter("code1"))).trim();
 //				 String code1 = new String(String.valueOf(request.getParameter("code1")).getBytes("ISO-8859-1"),"UTF-8");
 				 
 				 String str = GetNetContent.getNodeList(path);
