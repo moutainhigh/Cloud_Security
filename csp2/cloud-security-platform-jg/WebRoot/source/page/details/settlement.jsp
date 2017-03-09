@@ -347,6 +347,35 @@
 	                                 </tr>
 	                            </tbody>
 	                            </c:if>
+	                            <c:if test="${orderDetail.isAPI==3}">
+	                        	<tbody>
+	                            	 <tr height="40">
+	                                 	<td width="16%" style="font-size:14px;">
+	                                    	${orderDetail.serviceName}
+	                                    </td>
+	                                    <td width="16%" style="font-size:14px;">                                           
+                                            <c:if test="${service.id == 7}">
+                                            	${orderDetail.scan_type}IP                                         	
+                                            </c:if>
+                                          	<c:if test="${service.id == 8}">
+                                            	${orderDetail.scan_type}节点                                         	
+                                            </c:if>
+                                            <c:if test="${service.id == 9}">
+                                            	1                                         	
+                                            </c:if>
+	                                    </td>
+	                                    <td width="52%" style="font-size:14px;">
+	                                    	<fmt:formatDate value="${orderDetail.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
+	                                    	<c:if test="${orderDetail.end_date!=null&&orderDetail.end_date!=''}">
+	                                    	~<fmt:formatDate value="${orderDetail.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
+	                                    	</c:if>
+	                                    </td>
+	                                    <td width="18%" style="font-size:14px;">
+	                                    	<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
+	                                    </td>
+	                                 </tr>
+	                            </tbody>
+	                            </c:if>
                            </c:if>
                            
                         </table>
@@ -406,12 +435,9 @@
                 	<i>1</i>个订单，总额：
                 	<span>
                 		<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
-                		<c:if test="${service.id <= 6 }">
-                          <em>&nbsp;安全币</em>
-                        </c:if>
-                        <c:if test="${service.id >= 7 }">
-                          <em>&nbsp;安全币</em>
-                        </c:if>
+                		
+                          <em>&nbsp;安全币</em>                                                
+                       
                 	</span>
                 </li>
                 <!--  
@@ -423,12 +449,9 @@
                 	应付总额：
                 	<span>
                 		<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
-                        <c:if test="${service.id <= 6 }">
+                        
                 		  <em>&nbsp;安全币</em>
-                        </c:if>
-                        <c:if test="${service.id >= 7 }">
-                          <em>&nbsp;安全币</em>
-                        </c:if>
+                                                                       
                 	</span>
                 </li>
             </ul>
@@ -439,12 +462,9 @@
             	<p>应付总额：
             	<span style="padding-bottom:10px;">
 	            	<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
-                    <c:if test="${service.id <= 6 }">
+                    
 	            	  <em style="font-size:14px">&nbsp;安全币</em>
-                    </c:if>
-                    <c:if test="${service.id == 7 }">
-                      <em style="font-size:14px">&nbsp;安全币</em>
-                    </c:if>
+                    
             	</span>
             	</c:if>
             	
@@ -459,13 +479,18 @@
                             <c:if test="${orderDetail.serviceId >= 7 }">
                                 <input id="settlementSys" class="submit" type="submit" value="提交订单"/>
                             </c:if>
-		            	</c:if>
+		           	</c:if>
 		            	
 		            	
-		            	<c:if test="${orderDetail.isAPI==1}">
+		            <c:if test="${orderDetail.isAPI==1}">
 		            	
-		            		<input id="settlementAPI" class="submit" type="submit" value="提交订单"/>
-		            	</c:if>
+		            	<input id="settlementAPI" class="submit" type="submit" value="提交订单"/>
+		            </c:if>
+		            	
+		            <c:if test="${orderDetail.isAPI==3}">
+		            		
+                    	<input id="settlementSys" class="submit" type="submit" value="提交订单"/>                            
+		            </c:if>
 		          </c:if>
 		         </p>
             </div>
