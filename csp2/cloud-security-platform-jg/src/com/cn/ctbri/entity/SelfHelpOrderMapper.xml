@@ -160,6 +160,34 @@ WHERE a.id = b.orderId
 </if>
 ORDER BY a.create_date desc
     </select>
+ <!-- 查询购物车列表 -->
+    <select id="findShopCarSysList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
+    SELECT
+  a.id  orderId,
+  a.serverName,
+  a.price,  
+  a.serviceId,
+  a.isAPI,
+  a.status,
+  a.scan_type,
+  a.begin_date beginDate,
+  a.end_date endDate
+FROM (SELECT
+          co.*,
+          cs.name          serverName
+      FROM cs_order co,
+           cs_service cs
+      WHERE co.serviceId = cs.id
+          AND co.userId =#{userId}
+          AND co.payFlag = 0
+          AND co.isAPI = 3) a       
+    
+<if test="orderId!=''">
+	WHERE
+    a.id=#{orderId}
+</if>
+ORDER BY a.create_date desc
+    </select>
     
     <select id="findBuyShopList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
  select * from (   
