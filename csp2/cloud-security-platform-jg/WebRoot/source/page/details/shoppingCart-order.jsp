@@ -277,7 +277,7 @@
                                             </td>
                                     <td width="20%">
                                     	<c:if test="${shopCar.serviceId==7 }">${shopCar.scanType }IP</c:if>
-                                    	<c:if test="${shopCar.serviceId==7 }">${shopCar.scanType }节点</c:if>
+                                    	<c:if test="${shopCar.serviceId==8 }">${shopCar.scanType }节点</c:if>
                                     	<c:if test="${shopCar.serviceId==9 }">1</c:if>
                                     </td>
                                     <td width="29%">
