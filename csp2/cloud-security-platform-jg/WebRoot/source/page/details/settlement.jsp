@@ -168,6 +168,8 @@
 		<input type="hidden" id="assetIds" name="assetIds" value="${orderDetail.asstId}"/>
 		<input type="hidden" id="assetAddr" name="domainName" value="${orderDetail.assetAddr}"/>
         <input type="hidden" id="orderType" name="orderType" value="${orderDetail.type}"/>
+        
+        <input type="hidden" id="scanType" name="scanType" value="${orderDetail.scan_type}"/>
 		<input type="hidden" id="ipArrayHidden" name="ipArray" value="${ipArray }"/>
 		<input type="hidden" id="timesHidden" name="times" value="${times }"/>
 		
@@ -348,6 +350,7 @@
 	                            </tbody>
 	                            </c:if>
 	                            <c:if test="${orderDetail.isAPI==3}">
+	                            
 	                        	<tbody>
 	                            	 <tr height="40">
 	                                 	<td width="16%" style="font-size:14px;">
