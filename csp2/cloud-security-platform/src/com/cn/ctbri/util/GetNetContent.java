@@ -1,16 +1,7 @@
 package com.cn.ctbri.util;
-import java.net.URL;
-import java.net.URLConnection;
-
-import org.htmlparser.Node;
 import org.htmlparser.Parser;
-
-import org.htmlparser.util.NodeIterator;
-import org.htmlparser.util.NodeList;
-
 import org.htmlparser.util.ParserException;
 import org.htmlparser.visitors.HtmlPage;
-import org.htmlparser.visitors.TextExtractingVisitor;
 
 //http://blog.sina.com.cn/s/blog_7f95d0c40100xxsl.html
 public class GetNetContent {
@@ -22,16 +13,18 @@ public class GetNetContent {
  public static String getNodeList(String url){
 	 
     Parser parser = null;
-    TextExtractingVisitor visitor = null;
+//    TextExtractingVisitor visitor = null;
+    HtmlPage visitor = null;
     try {
          parser = new Parser(url);
 //         parser.setEncoding("GBK");
 //         parser.setEncoding(parser.getLexer().getPage().getQICHAODEFAULT_CHARSET());
-         visitor = new TextExtractingVisitor();
-         parser.visitAllNodesWith(visitor);
-         
-//         visitor = new HtmlPage(parser);
+         //获取整个文本
+//         visitor = new TextExtractingVisitor();
 //         parser.visitAllNodesWith(visitor);
+         //获取html文本
+         visitor = new HtmlPage(parser);
+         parser.visitAllNodesWith(visitor);
     } catch (Exception e) {
         try {
             parser.setEncoding("UTF-8");
@@ -41,7 +34,8 @@ public class GetNetContent {
             e1.printStackTrace();
         }
     }
-    String nodeList = visitor.getExtractedText();
+//    String nodeList = visitor.getExtractedText();
+    String nodeList = visitor.getBody().toHtml();
     
     return nodeList;
  }
