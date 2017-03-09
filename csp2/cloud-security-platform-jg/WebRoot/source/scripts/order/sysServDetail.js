@@ -133,12 +133,14 @@ $(function(){
     var userAdd = $(".test_add").text();
     var mobile =  $(".test_iphone").text();
     var userId = $("#userIdHidden").val();
+    var scanType = $("#scanType").val();
   	$.ajax({
   		type: "POST",
   	    async: false, 
   	    url: "saveOrderSys.html", 
   	    data: {"orderDetailId":orderDetailId,    
   			   "createDate":createDate,
+  			   "scanType":scanType,
   			   "linkname":userName,
   			   "phone":mobile,
   			   "email":userAdd
