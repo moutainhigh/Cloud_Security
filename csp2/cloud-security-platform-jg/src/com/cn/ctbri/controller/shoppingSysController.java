@@ -301,7 +301,7 @@ public class shoppingSysController {
 		        orderDetail.setType(Integer.parseInt(orderType));
 		        orderDetail.setServiceId(serviceIdInt);
 		        orderDetail.setUserId(globle_user.getId());
-		        orderDetail.setIsAPI(0);
+		        orderDetail.setIsAPI(3); //
 		        //orderDetail.setAsstId("0"); //
 		        orderDetail.setPrice(Double.parseDouble(price));
 		        orderDetail.setCreate_date(sdf.parse(createDate));
