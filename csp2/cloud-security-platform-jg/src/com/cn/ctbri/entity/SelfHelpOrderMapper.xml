@@ -217,7 +217,7 @@ FROM (SELECT
             separator="," close=")">  
           #{orderId} 
         </foreach>  
-          AND (r.isAPI = 0 OR r.isAPI = 2)
+          AND (r.isAPI = 0 OR r.isAPI = 2 OR r.isAPI = 3)
            AND r.userId=#{userId}        
           ) a,
   (SELECT
