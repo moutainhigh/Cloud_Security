@@ -75,7 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                <!-- and (o.status in (3,4,5) -->
                and ( (o.begin_date &lt;= now() and o.status in (0))
                or o.status in (3,4,5)
-               or (end_date &gt;= now() and o.isAPI = 1))
+               or (end_date &gt;= now() and o.isAPI in(1,3) ))
         </if>
         <!--<if test="type!=null">有警告的  
               and o.status in (1,2)
