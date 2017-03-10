@@ -119,7 +119,7 @@
 										${list.scan_type} 节点
 									</c:if> 
 									<c:if test="${list.serviceId==9 }">
-										1
+										1个
 									</c:if> 
 								</c:if>
 								<c:if test="${list.isAPI==1}">
