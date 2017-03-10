@@ -88,7 +88,7 @@
 								<c:if test="${list.isAPI==3}">
 									<c:if test="${list.serviceId==7}">${list.scan_type}IP</c:if>
 									<c:if test="${list.serviceId==8}">${list.scan_type}节点</c:if> 
-									<c:if test="${list.serviceId==9}">1</c:if> 
+									<c:if test="${list.serviceId==9}">1个</c:if> 
 								</c:if>
 								<c:if test="${list.isAPI==1}">
 									<!--<c:if test="${list.package_type==1}">套餐1</c:if>
