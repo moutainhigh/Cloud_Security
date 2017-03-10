@@ -355,6 +355,8 @@ public class shoppingSysController {
         String linkname =request.getParameter("linkname");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
+        
+        String scanType = request.getParameter("scanType");
 
         if(orderDetailId==null||"".equals(orderDetailId)||linkname==null||"".equals(linkname)){
         	m.put("error", true);
@@ -467,10 +469,11 @@ public class shoppingSysController {
             order.setCreate_date(new Date());
             order.setUserId(globle_user.getId());
             order.setContactId(linkmanId);
-            order.setStatus(1);//完成
+            order.setStatus(1);//..1:服务中  2:已结束 3:已下单 
             order.setPayFlag(0);
             order.setPrice(orderDetailVo.getPrice());
             order.setIsAPI(3);// 0:web  1：API  2:waf 3：系统安全帮
+            order.setScan_type(Integer.parseInt(scanType)); //设置服务时长
          
             selfHelpOrderService.insertOrder(order);   //插入cs_order
             
