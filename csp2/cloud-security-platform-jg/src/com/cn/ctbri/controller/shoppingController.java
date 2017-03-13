@@ -686,7 +686,8 @@ public class shoppingController {
           List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
        //查询安全能力API
 		 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
-		 int carnum=shopCarList.size()+apiList.hashCode();
+		 List sysList = selfHelpOrderService.findShopCarSysList(String.valueOf(globle_user.getId()), 0, "");
+		 int carnum=shopCarList.size()+apiList.size()+sysList.size();
 		 request.setAttribute("carnum", carnum);
 		 
 		   m.put("sucess", true);
@@ -794,6 +795,7 @@ public class shoppingController {
 		}
 		List list = new ArrayList();
 		List shopAPIList = new ArrayList();
+		List shopSysList = new ArrayList();
 		List<ShopCar> shopList = new ArrayList();
 		int orderNum=0;
 		List<String> orderIdList=new ArrayList();
@@ -809,7 +811,7 @@ public class shoppingController {
 	    		  //有些订单号没有或有些订单不属于该用户时，跳转到首页
 	    		  return "redirect:/index.html";
 	    	  }
-	    	  list = selfHelpOrderService.findBuyShopList(orderIdList,globle_user.getId());
+	    	 list = selfHelpOrderService.findBuyShopList(orderIdList,globle_user.getId());
 	    	 linkman = orderService.findLinkmanByOrderId(strArray[0]);
 			}else {
 				//有些订单号没有或有些订单不属于该用户时，跳转到首页
@@ -824,18 +826,22 @@ public class shoppingController {
 	      
 	      DecimalFormat df = new DecimalFormat("0.00");
 	      double shopCount=0.0;
-	     if(list!=null&&list.size()>0){
-	       for(int i=0;i<list.size();i++){
-	    	   ShopCar shopCar = (ShopCar)list.get(i);
-	    	   if(shopCar.getIsAPI()==0||shopCar.getIsAPI()==2){
-	    		   shopList.add(shopCar);
-	    	   }else{
-	    		   
-	    		   shopAPIList.add(shopCar);
-	    	   }
-	    	   shopCount=shopCount+shopCar.getPrice();
-	       }	 
-	     }
+		if (list != null && list.size() > 0) {
+			for (int i = 0; i < list.size(); i++) {
+				ShopCar shopCar = (ShopCar) list.get(i);
+				if (shopCar.getIsAPI() == 3) {
+					shopSysList.add(shopCar);
+				} else {
+					if (shopCar.getIsAPI() == 0 || shopCar.getIsAPI() == 2) {
+						shopList.add(shopCar);
+					} else {
+
+						shopAPIList.add(shopCar);
+					}
+				}
+				shopCount = shopCount + shopCar.getPrice();
+			}
+		}
 	     
 	  
 	    request.setAttribute("linkman", linkman);
@@ -843,6 +849,7 @@ public class shoppingController {
 		request.setAttribute("shopCount", df.format(shopCount));
 		request.setAttribute("shopList", shopList);
 		request.setAttribute("shopAPIList", shopAPIList);
+		request.setAttribute("shopSysList", shopSysList);
 		 request.setAttribute("user", globle_user);
 		//判断显示结算页的按钮
 		request.setAttribute("shop", 0);
