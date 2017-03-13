@@ -966,6 +966,177 @@ public class shoppingSysController {
 		return result;
 	}
 	
+	/**
+	 * 功能描述： 添加购物车-系统安全帮 参数描述： 无
+	 * 
+	 * @throws Exception
+	 *             add by gxy 2016-5-03
+	 */
+	@RequestMapping(value = "shoppingCarSys.html", method = RequestMethod.POST)
+	public void shoppingCarAPI(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		Map<String, Object> m = new HashMap<String, Object>();
+
+		
+		String detailId = "";
+		
+		List<Price> priceList = new ArrayList();
+
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
+
+		String orderType = request.getParameter("orderType");
+		String beginDate = DateUtils.dateToString(new Date());
+		String duration = request.getParameter("duration");
+		String scanPeriod = request.getParameter("scanType"); // 频率
+																// 绿盟64ip(scanType
+																// = 15)
+																// 128ip(16)
+																// 金山10对应 10ip
+		String serviceId = request.getParameter("serviceId");
+		String createDate = DateUtils.dateToString(new Date());
+		int durationint = Integer.parseInt(duration);
+		String endDate = DateUtils.dateToString(getAfterFewMonth(new Date(), durationint));
+
+		// 判断参数值是否为空
+		if ((orderType == null || "".equals(orderType)) || (beginDate == null || "".equals(beginDate))
+				|| (serviceId == null || "".equals(serviceId)) || (duration == null || "".equals(duration))) {
+			m.put("error", true);
+			// object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return;
+		}
+
+		// 根据判断服务id是否存在
+		Serv service = servService.findById(Integer.parseInt(serviceId));
+		if (service == null) {
+			m.put("error", true);
+			// object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return;
+		}
+
+		// 判断类型是否存在 ordertype是页面点击的类型
+		if (!checkOrderType(serviceId, orderType)) {
+			m.put("error", true);
+			// object转化为Json格式
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				// 把数据返回到页面
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return;
+		}
+		// 单次
+		if (orderType.equals("2")) {
+			if (endDate != null && "".equals(endDate)) {
+				m.put("error", true);
+				// object转化为Json格式
+				JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+			}
+		}
+		// 计算价格
+		double calPrice = 0;
+
+		int serviceIdInt = Integer.parseInt(serviceId);
+		int scanTypeInt = Integer.parseInt(scanPeriod);
+		if (orderType != null && orderType.equals("1")) { // 长期
+			priceList = priceService.findPriceByServiceId(serviceIdInt, scanTypeInt);
+			if (priceList != null && priceList.size() != 0) {
+				// scanPeriod 是web服务的服务频率 ，是系统安全帮的 扫描种类 有 6、7两种
+				if (scanPeriod == null || "".equals(scanPeriod)) {
+					m.put("error", true);
+					// object转化为Json格式
+					JSONObject JSON = CommonUtil.objectToJson(response, m);
+					try {
+						// 把数据返回到页面
+						CommonUtil.writeToJsp(response, JSON);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					return;
+				}
+				calPrice = calPrice(serviceIdInt, scanTypeInt, durationint);
+			}
+		} else {
+			calPrice = 0;
+		}
+		DecimalFormat df = new DecimalFormat("0.00");
+		String price = df.format(calPrice); // 计算价格完成
+
+		
+        Order order = new Order();
+        SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//
+		String orderDate = odf.format(new Date());
+		detailId = orderDate + String.valueOf(Random.fivecode());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //
+		
+		order.setId(detailId);
+		order.setType(Integer.parseInt(orderType));
+		order.setBegin_date(DateUtils.stringToDateNYRSFM(beginDate));
+		order.setEnd_date(DateUtils.stringToDateNYRSFM(endDate));
+		 order.setServiceId(serviceIdInt);
+		 order.setUserId(globle_user.getId());
+		 order.setIsAPI(3); //
+		 order.setPrice(Double.parseDouble(price));
+		 order.setCreate_date(sdf.parse(createDate));
+		 order.setWafTimes(durationint); 
+		 order.setPayFlag(0);//未支付
+		 if (scanPeriod != null && !"".equals(scanPeriod)) {
+				order.setScan_type(Integer.parseInt(scanPeriod));
+		 }
+		 selfHelpOrderService.insertOrder(order);
+		///////////////////////////////////////////
+
+			// 新增联系人
+			Linkman linkObj = new Linkman();
+			int linkmanId = Random.eightcode();
+			linkObj.setId(linkmanId);
+			linkObj.setName(globle_user.getName());
+			linkObj.setMobile(globle_user.getMobile());
+			linkObj.setEmail(globle_user.getEmail());
+			linkObj.setUserId(globle_user.getId());
+			selfHelpOrderService.insertLinkman(linkObj);		
+		
+
+		
+
+		// 网站安全帮列表
+		List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0, "");
+		// 查询安全能力API
+		List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0, "");
+		// 查询系统安全帮
+		List sysList = selfHelpOrderService.findShopCarSysList(String.valueOf(globle_user.getId()), 0, "");
+		int carnum = shopCarList.size() + apiList.size() + sysList.size();
+		request.setAttribute("carnum", carnum);
+		 m.put("sucess", true);
+		 JSONObject JSON = CommonUtil.objectToJson(response, m);
+	        // 把数据返回到页面
+         CommonUtil.writeToJsp(response, JSON);
+		 //object转化为Json格式
+	       
+		  
+	}
+	
 }
 
 
