@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.UserMapper">
+	<sql id="cols">id,apikey,urlAddr,token</sql>
+	
+	<resultMap type="com.cn.ctbri.entity.User" id="UserRM">
+		<id property="id" column="id"/>
+		<result property="apikey" column="apikey"/>
+		<result property="urlAddr" column="urlAddr"/>
+		<result property="token" column="token"/>
+		<result property="partner" column="partner"/>
+	</resultMap>
+	
+	<!-- 插入用户 -->
+	<insert id="insert" parameterType="com.cn.ctbri.entity.User">
+		insert into cs_user 
+		(id,apikey,urlAddr,token,type,partner) values(#{id},#{apikey},#{urlAddr},#{token},#{type},#{partner})
+		ON DUPLICATE KEY UPDATE 
+		apikey=#{apikey},
+		urlAddr=#{urlAddr},
+		token=#{token},
+		partner=#{partner}
+	</insert>
+	
+	<!-- 修改推送url -->
+	<update id="update" parameterType="com.cn.ctbri.entity.User">
+		update cs_user
+		<set>
+			<if test="urlAddr!=null">
+				urlAddr=#{urlAddr},
+			</if>
+			<if test="partner!=null">
+				partner=#{partner}
+			</if>
+		</set>
+		where token=#{token}
+	</update>
+	
+	<!-- 通过token查询user -->
+	<select id="findUserByToken" parameterType="String" resultMap="UserRM">
+		select * from cs_user u where u.token = #{token}
+	</select>
+	
+	<!-- 通过userId查询user -->
+	<select id="findUserByUserId" parameterType="int" resultMap="UserRM">
+		select * from cs_user u where u.id = #{userId}
+	</select>
+	
+	<!-- 更新api数量 -->
+	<update id="updateCount" parameterType="com.cn.ctbri.entity.User">
+		update cs_user
+		set
+		api#{api} = api#{api} + #{count}
+		where apikey=#{apikey}
+	</update>
+	
+	<!-- 插入用户api -->
+	<insert id="insertAPINum" parameterType="com.cn.ctbri.entity.APINum">
+		insert into cs_api 
+		(apikey,service_type,api_type,status,create_time,count,apiId,orderId,taskId,token) 
+		values(#{apikey},#{service_type},#{api_type},#{status},#{create_time},#{count},#{apiId},#{orderId},#{taskId},#{token})
+	</insert>
+	
+	<!-- 通过apiKey查询user -->
+	<select id="findUserByApiKey" parameterType="String" resultMap="UserRM">
+		select * from cs_user u where u.token = #{token}
+	</select>
+	
+	<!-- 通过orderId查询user -->
+	<select id="finUserByOrder" parameterType="String" resultMap="UserRM">
+		select u.* from cs_user u,cs_order o where o.apiKey = u.apikey and o.id = #{orderId}
+	</select>
+</mapper>

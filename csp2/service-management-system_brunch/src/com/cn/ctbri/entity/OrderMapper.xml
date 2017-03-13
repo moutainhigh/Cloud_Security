@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.OrderMapper">
+	<sql id="cols">id,type,begin_date,end_date,serviceId,create_date,task_date,scan_type,userId,contactId,remarks,status</sql>
+	<resultMap type="com.cn.ctbri.entity.Order" id="OrderRM">
+		<id property="id" column="id"/>
+		<result property="type" column="type"/>
+		<result property="begin_date" column="begin_date"/>
+		<result property="end_date" column="end_date"/>
+		<result property="serviceId" column="serviceId"/>
+		<result property="create_date" column="create_date"/>
+		<result property="task_date" column="task_date"/>
+		<result property="scan_type" column="scan_type"/>
+		<result property="userId" column="userId"/>
+		<result property="contactId" column="contactId"/>
+		<result property="remarks" column="remarks"/>
+		<result property="status" column="status"/>
+	</resultMap>
+	
+	
+	<!-- 根据用户查询所有记录 -->
+    <select id="findOrderByUserId" resultMap="OrderRM" parameterType="Integer">
+        select * from cs_order
+        where userId = #{userId}
+    </select>
+	<!-- 查询所有记录 -->
+	<select id="list" resultType="hashmap" parameterType="int">
+		select o.id,o.type,s.name,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status
+		from cs_order o,cs_service s
+		where o.userId = #{id} and o.serviceId = s.id
+		order by o.create_date desc
+	</select>
+	
+    
+    <!-- 根据任务查询订单信息 -->
+    <select id="findOrderByTask" resultMap="OrderRM" parameterType="com.cn.ctbri.entity.Task">
+        select o.*
+        from cs_task t join cs_order_asset oa 
+        on t.order_asset_Id = oa.id join cs_order o 
+        on oa.orderId = o.id 
+        where t.taskId = #{taskId}
+    </select>
+    
+   <!-- 根据id 更新订单信息 -->
+	<update id="update"  parameterType="com.cn.ctbri.entity.Order">
+		update cs_order
+		<set>
+			<if test="status!=null">
+				status = #{status},
+			</if>
+			<if test="websoc!=null">
+                websoc = #{websoc}
+            </if>
+		</set>
+		where id = #{id}
+	</update>
+    
+    <!-- 插入订单 -->
+    <insert id="insert" parameterType="com.cn.ctbri.entity.Order">
+        insert into cs_order
+        (id, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, contactId, remarks, status, websoc, apiKey) 
+        values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks}, #{status}, #{websoc}, #{apiKey})
+    </insert>
+    
+    <!-- 根据订单Id查询记录 -->
+    <select id="findOrderByOrderId" resultType="com.cn.ctbri.entity.Order" parameterType="String">
+        select o.id,o.type,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.userId,o.status,o.websoc
+        from cs_order o
+        where o.id = #{orderId}
+    </select>
+    
+    <!-- 删除订单 -->
+    <delete id="delete" parameterType="String">
+        delete from cs_order where id = #{orderId}
+    </delete>
+</mapper>
