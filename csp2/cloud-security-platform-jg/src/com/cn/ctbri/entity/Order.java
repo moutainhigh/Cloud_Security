@@ -37,6 +37,14 @@ public class Order {
 	//add by tangxr
 	private String orderListId;//orderlistid
 	//end
+	private int wafTimes;//waf 服务期限（数字代表月份） or API服务的购买数量  or系统安全帮的购买时长
+	public int getWafTimes() {
+		return wafTimes;
+	}
+	public void setWafTimes(int wafTimes) {
+		this.wafTimes = wafTimes;
+	}
+	
 	public String getBegin_datevo() {
 		return begin_datevo;
 	}
