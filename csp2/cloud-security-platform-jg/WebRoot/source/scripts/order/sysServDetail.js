@@ -72,7 +72,6 @@ $(function(){
 
 //点击“添加购物车”
   $("#addSysCar").click(function(){
-  	alert("abc");
   	var shopCarNum = Number($("#shopCarNum").html());
 	if (shopCarNum >= 99) {
 		alert("购物车中商品数量已达上限，请先清理购物车！");
@@ -93,7 +92,7 @@ $(function(){
     
 	$.ajax({ type: "POST",
 	     async: false, 
-	     url: "shoppingCar.html",
+	     url: "shoppingCarSys.html",
 	     data: {"orderType":orderType,
 			   	"duration": duration,
 			   	"scanType":scanType,
@@ -106,7 +105,7 @@ $(function(){
 			   		}
 			   		 if(data.sucess){
 			   			 alert("添加购物车成功!");
-			   			 buyService(serviceId);
+			   			 buySysService(serviceId);
 			   			// window.location.href="selfHelpOrderInit.html?serviceId="+serviceId+"&indexPage="+indexPage;
 			   		 }
 			   			
@@ -268,4 +267,10 @@ function showShopCar(){
 		    	 else { window.location.href = "loginUI.html"; } } 
 		});
 
-		}
+}
+
+function buySysService(serviceId){
+
+    $("#sysIdNew").val(serviceId);
+  	$("#systemOrderOperaInitNewForm").submit();
+  }
