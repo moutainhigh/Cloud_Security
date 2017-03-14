@@ -811,7 +811,6 @@ public class UserController{
 	@RequestMapping(value="orderList.html")
 	public String orderList(HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
-//		List orderList = orderService.findOrderByUserId(globle_user.getId());
 		List orderList = orderService.findByUserIdAndPage(globle_user.getId(),-1,null,null,1);
 		if(orderList.size()>2){
 			orderList = orderList.subList(0, 2);
@@ -828,10 +827,6 @@ public class UserController{
 	        		//获取对应资产 add by tangxr 2016-4-25
 		        	HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
 		        	String orderId = (String)map.get("id");
-		        	String type1 = map.get("type").toString();
-		        	Map<String,Object> paramMap = new HashMap<String,Object>();
-		        	paramMap.put("orderId", orderId);
-		        	paramMap.put("type", type1);
 		        	
 			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
 			        map.put("assetList", assetList);
