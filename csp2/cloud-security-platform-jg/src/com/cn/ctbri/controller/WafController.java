@@ -246,7 +246,9 @@ public class WafController {
         List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
         //查询安全能力API
 		   List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
-		 int carnum=shopCarList.size()+apiList.size();
+		// 查询系统安全帮
+			List sysList = selfHelpOrderService.findShopCarSysList(String.valueOf(globle_user.getId()), 0, "");
+			int carnum = shopCarList.size() + apiList.size() + sysList.size();
 		 request.setAttribute("carnum", carnum);  
 		request.setAttribute("assList", assList);
 		request.setAttribute("service", service);
@@ -627,7 +629,9 @@ public class WafController {
 			            List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
 			         //查询安全能力API
 			  		 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
-			  		 int carnum=shopCarList.size()+apiList.size();
+			  	// 查询系统安全帮
+			 		List sysList = selfHelpOrderService.findShopCarSysList(String.valueOf(globle_user.getId()), 0, "");
+			 		int carnum = shopCarList.size() + apiList.size() + sysList.size();
 			  		 request.setAttribute("carnum", carnum);
 			  		 
 			  		   m.put("sucess", true);
@@ -1151,7 +1155,9 @@ public class WafController {
 	        List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
 	     //查询安全能力API
 			 List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
-			 int carnum=shopCarList.size()+apiList.size();
+			// 查询系统安全帮
+				List sysList = selfHelpOrderService.findShopCarSysList(String.valueOf(globle_user.getId()), 0, "");
+				int carnum = shopCarList.size() + apiList.size() + sysList.size();
 			 request.setAttribute("carnum", carnum);
 			 request.setAttribute("assList", assList);
 			request.setAttribute("service", service); 
