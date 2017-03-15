@@ -1093,6 +1093,7 @@ public class shoppingSysController {
 		String orderDate = odf.format(new Date());
 		detailId = orderDate + String.valueOf(Random.fivecode());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //
+		int linkmanId = Random.eightcode();
 		
 		order.setId(detailId);
 		order.setType(Integer.parseInt(orderType));
@@ -1105,6 +1106,7 @@ public class shoppingSysController {
 		 order.setCreate_date(sdf.parse(createDate));
 		 order.setWafTimes(durationint); 
 		 order.setPayFlag(0);//未支付
+		 order.setContactId(linkmanId);
 		 if (scanPeriod != null && !"".equals(scanPeriod)) {
 				order.setScan_type(Integer.parseInt(scanPeriod));
 		 }
@@ -1113,12 +1115,13 @@ public class shoppingSysController {
 
 			// 新增联系人
 			Linkman linkObj = new Linkman();
-			int linkmanId = Random.eightcode();
+			
 			linkObj.setId(linkmanId);
 			linkObj.setName(globle_user.getName());
 			linkObj.setMobile(globle_user.getMobile());
 			linkObj.setEmail(globle_user.getEmail());
 			linkObj.setUserId(globle_user.getId());
+			
 			selfHelpOrderService.insertLinkman(linkObj);		
 		
 
