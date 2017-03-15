@@ -291,6 +291,38 @@ WHERE a.id = b.orderId
 	 AND i.userId=#{userId}
 		      ) d
      WHERE c.id = d.id
+     
+     Union
+
+SELECT
+     e.serverName,
+	 e.price,
+     e.isAPI,
+	 0,<!-- 系统安全帮没有astName字段，0占位 -->
+     0,<!-- 系统安全帮没有addr字段，0占位 -->
+	e.id orderId,
+    e.type    orderType,
+    e.begin_date    beginDate,
+    e.end_date endDate,
+    e.serviceId,
+    e.scan_type     scanPeriod,
+    e.websoc,
+    e.num buynum,
+    e.create_date createDate
+FROM (SELECT
+		   s.name           serverName,
+		   r.*
+      FROM cs_order r,
+           cs_service s
+      WHERE r.serviceId = s.id
+          AND r.id IN
+             <foreach item="orderId" index="index" collection="orderIds" open="("  
+            separator="," close=")">  
+          #{orderId} 
+        </foreach>         
+          AND (r.isAPI = 0 OR r.isAPI = 2 OR r.isAPI = 3)
+		  AND r.userId=#{userId}        
+	  ) e
  )res    
      ORDER BY res.createDate desc
   
