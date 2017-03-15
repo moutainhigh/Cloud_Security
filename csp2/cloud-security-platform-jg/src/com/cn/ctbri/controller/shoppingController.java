@@ -797,7 +797,7 @@ public class shoppingController {
 		}
 		List list = new ArrayList();
 		List shopAPIList = new ArrayList();
-		List shopSysList = new ArrayList();
+		List<ShopCar> shopSysList = new ArrayList();
 		List<ShopCar> shopList = new ArrayList();
 		int orderNum=0;
 		List<String> orderIdList=new ArrayList();
@@ -833,6 +833,7 @@ public class shoppingController {
 				ShopCar shopCar = (ShopCar) list.get(i);
 				if (shopCar.getIsAPI() == 3) {
 					shopSysList.add(shopCar);
+					
 				} else {
 					if (shopCar.getIsAPI() == 0 || shopCar.getIsAPI() == 2) {
 						shopList.add(shopCar);
@@ -844,7 +845,7 @@ public class shoppingController {
 				shopCount = shopCount + shopCar.getPrice();
 			}
 		}
-	     
+		System.out.println(shopSysList); 
 	  
 	    request.setAttribute("linkman", linkman);
 		request.setAttribute("orderNum", orderNum);
@@ -855,8 +856,8 @@ public class shoppingController {
 		 request.setAttribute("user", globle_user);
 		//判断显示结算页的按钮
 		request.setAttribute("shop", 0);
-		 String result = "/source/page/details/newSettlement";
-	        return result;
+		String result = "/source/page/details/newSettlement";
+	    return result;
 	}
 	 /**
 	 * 功能描述： 购物车提交订单
