@@ -387,8 +387,8 @@
                                        		<a href="${ctx}/systemOrderOperaInit.html?serviceId=${shopSys.serviceId}&indexPage=4" target="_blank">${shopSys.serverName}</a>
                                        </td>
                                         <td width="30%"><p>                                     
-	                                        <c:if test="${shopSys.serviceId==7 }">${shopSys.scan_type }IP</c:if>
-	                                    	<c:if test="${shopSys.serviceId==8 }">${shopSys.scanType }节点</c:if>
+	                                        <c:if test="${shopSys.serviceId==7 }">${shopSys.scanPeriod }IP</c:if>
+	                                    	<c:if test="${shopSys.serviceId==8 }">${shopSys.scanPeriod }节点</c:if>
 	                                    	<c:if test="${shopSys.serviceId==9 }">1个</c:if>
                                         </p></td>
                                         <td width="35%">
