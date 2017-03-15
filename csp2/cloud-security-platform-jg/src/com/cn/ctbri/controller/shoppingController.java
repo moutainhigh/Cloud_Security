@@ -845,7 +845,7 @@ public class shoppingController {
 				shopCount = shopCount + shopCar.getPrice();
 			}
 		}
-		System.out.println(shopSysList); 
+		//System.out.println(shopSysList); 
 	  
 	    request.setAttribute("linkman", linkman);
 		request.setAttribute("orderNum", orderNum);
