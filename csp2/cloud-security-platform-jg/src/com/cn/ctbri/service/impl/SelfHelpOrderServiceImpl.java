@@ -135,7 +135,6 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 		return selfHelpOrderDao.findShopCarAPIList(userId, payFlag,orderId);
 	}
 	
-	@Override
 	public List<ShopCar> findShopCarSysList(String userId, int payFlag, String orderId) {
 		// TODO Auto-generated method stub
 		return selfHelpOrderDao.findShopCarSysList(userId, payFlag,orderId);
