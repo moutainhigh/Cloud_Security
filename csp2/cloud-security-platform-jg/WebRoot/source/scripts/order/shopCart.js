@@ -3,6 +3,8 @@ $(function(){
     //购物车点击“去结算”
     $("#shopBuy").click(function(){
     	var userId = $("#userIdHidden").val();
+    	var scanType = $("#scanTypeHidden").val();
+    	
        var str="";
 		$("input:checkbox[name=check_name]:checked").each(function(obj){
 		   str+=$(this).val()+",";
@@ -15,7 +17,8 @@ $(function(){
 			     async: false, 
 			     url: "checkShoppOrder.html",
 			     data:{"str":str,
-			            "userId":userId
+			            "userId":userId,
+			            "scanType":scanType
 			           },
 			    dataType: "json", 
 			     success: function(data) {
