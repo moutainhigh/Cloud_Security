@@ -156,7 +156,6 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		 carMap.put("orderId", orderId);
 		 return this.getSqlSession().selectList(ns + "findShopCarAPIList",carMap);
 	}
-	@Override
 	public List<ShopCar> findShopCarSysList(String userId, int payFlag, String orderId) {
 		// TODO Auto-generated method stub
 		Map carMap = new HashMap();
