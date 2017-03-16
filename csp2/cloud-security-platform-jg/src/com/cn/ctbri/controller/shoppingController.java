@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.common.HuaweiWorker;
 import com.cn.ctbri.common.NorthAPIWorker;
+import com.cn.ctbri.common.SysWorker;
 import com.cn.ctbri.common.WafAPIWorker;
 import com.cn.ctbri.entity.APICount;
 import com.cn.ctbri.entity.Asset;
@@ -2159,6 +2160,7 @@ public class shoppingController {
     			    	Date  beginDate =(Date)order.get("begin_date");
     			    	String orderId = (String)order.get("id");
     			    	status = status+order.get("status");
+    			    	System.out.println(SysWorker.getJinshanoauthurl("123456"));
     	//	添加极光接口位置    String intResString = jiguangjiekou();
 //    			    	添加金山接口位置    String intResString = jinshanjiekou();
 //    			    	添加云眼接口位置    String intResString = yunyanjiekou();
