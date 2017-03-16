@@ -29,7 +29,6 @@ function buySystemService(servId){
 	$("#systemAnquanbangDetailUIForm").submit();
 }
 </script>
-	<body>
 		<div class="Divlist listJs fl" style="margin-right:48px;">
 			<a href="#" class="hbule">商品分类<i></i>
 			</a>
@@ -118,5 +117,4 @@ function buySystemService(servId){
 			</ul>
 
 		</div>
-	</body>
 </html>
