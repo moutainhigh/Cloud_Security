@@ -26,6 +26,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from cs_order o,cs_service s
         where o.id = #{orderId} and o.serviceId = s.id
     </select>
+    <!-- 根据用户id和serviceId 查询记录 -->
+    
+    <select id="findOrderByUserIdAndServiceId" resultType="hashmap" parameterType="hashmap">
+        select o.begin_date ,o.end_date from cs_order o where o.userId = #{userId} and o.serviceId = #{serviceId} order by begin_date desc
+    </select>
+    
 	<!-- 根据用户查询所有记录 -->
     <select id="findOrderByUserId" resultType="hashmap" parameterType="Integer">
         select o.homeIcon,o.id,o.type,o.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI,o.package_type,o.num,o.delFlag from
