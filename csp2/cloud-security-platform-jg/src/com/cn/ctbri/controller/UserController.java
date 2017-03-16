@@ -825,21 +825,23 @@ public class UserController{
 			orderList = orderList.subList(0, 2);
 		}
         //根据orderId查询task表判断告警是否查看过
+		
         if(orderList != null && orderList.size() > 0){
         	//个人中心显示前两条订单信息
 	        for(int i = 0; i < orderList.size(); i++){
 	        	HashMap<String,Object>  mapOrder = (HashMap<String,Object>)orderList.get(i);
 	        	String orderListId = (String)mapOrder.get("orderListId");
 	        	//根据orderListId查询订单
-	        	List ol = orderService.findByOrderListId(orderListId,null); // 查询from cs_order o,cs_service s  o.id = orderlistid
+	        	List ol = orderService.findByOrderListId(orderListId,null); // 查询from cs_order o,cs_service s  o.orderListId = orderlistid
 	        	for(int j = 0; j < ol.size(); j++){
 	        		//获取对应资产 add by tangxr 2016-4-25
 		        	HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
 		        	String orderId = (String)map.get("id");
 		        	String type1 = map.get("type").toString();
-		        	Map<String,Object> paramMap = new HashMap<String,Object>();
-		        	paramMap.put("orderId", orderId);
-		        	paramMap.put("type", type1);
+		        	
+		        	//Map<String,Object> paramMap = new HashMap<String,Object>();
+		        	//paramMap.put("orderId", orderId);
+		        	//paramMap.put("type", type1);
 		        	
 			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
 			        map.put("assetList", assetList);
@@ -853,6 +855,7 @@ public class UserController{
 	        }
         }	
         
+ 
         //获取当前时间
         SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String temp = setDateFormat.format(Calendar.getInstance().getTime());
