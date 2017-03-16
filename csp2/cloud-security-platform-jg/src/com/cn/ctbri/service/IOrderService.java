@@ -13,6 +13,13 @@ import com.cn.ctbri.entity.Task;
  */
 public interface IOrderService {
 	/**
+	 * 功能描述：根据用户名和serviceId 查询订单 
+	 * 
+	 * @time 2017-3-16 返回值 ： List
+	 */
+	List findOrderByUserIdAndServiceId(int userId,int serviceId);
+	
+	/**
 	 * 功能描述：根据用户名查询订单 参数描述：int id
 	 * 
 	 * @time 2015-1-15 返回值 ： List
@@ -32,6 +39,8 @@ public interface IOrderService {
 	 * @time 2015-1-21 返回值 ： List
 	 */
 	List findOrderByUserId(int userId);
+	
+	
 
 	/**
 	 * 功能描述：组合查询订单追踪
@@ -188,5 +197,6 @@ public interface IOrderService {
 	
 	//根据条件查询删除订单
 	List<Order> findDelOrderByMap(Map<String, Object> map);
+	
 
 }
