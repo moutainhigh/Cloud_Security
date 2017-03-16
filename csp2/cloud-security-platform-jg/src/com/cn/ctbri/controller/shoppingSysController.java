@@ -197,9 +197,11 @@ public class shoppingSysController {
 	 *     @time 2016-11-29
 	 */
 	@RequestMapping(value="jiGuangselfHelpOrderOpera.html",method=RequestMethod.POST)
-	public String jiGuangselfHelpOrderOpera(HttpServletRequest request){
+	public String jiGuangselfHelpOrderOpera(HttpServletRequest request, HttpServletResponse response){
 		String assetArray[] = null;
 		String detailId = "";
+		Map<String, Object> m = new HashMap<String, Object>();//返回是否可以下单的状态
+		
 		List assetIdsList = new ArrayList();
 		List<Price> priceList = new ArrayList();
 		System.out.println("12345678900000000");
@@ -256,7 +258,32 @@ public class shoppingSysController {
 				}
 			}
 		
-	        
+	        // 判定是否可以 立即购买 ，如果购买时间 出现重叠则禁止购买
+			List orderList = orderService.findOrderByUserIdAndServiceId(globle_user.getId(), Integer.parseInt(serviceId));		
+			if(orderList.size()>0&&orderList!=null){
+				//HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
+				HashMap<String,Object>  orderMap = (HashMap<String,Object>)orderList.get(0);
+				
+				String strBeginDate = orderMap.get("begin_date").toString();
+				String strEndDate =  orderMap.get("end_date").toString();
+				String strNowDate = DateUtils.dateToString(new Date());
+				
+				if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0) {
+					JSONObject JSON = CommonUtil.objectToJson(response, m);
+					try {
+						// 把数据返回到页面
+						m.put("message", "已有同类订单，不能重复购买");
+						CommonUtil.writeToJsp(response, JSON);
+						System.out.println("已有同类订单，不能重复购买");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					//String result = result = "/source/page/details/systemServDetails";
+					//systemOrderOperaInit
+			        //return result;
+					
+				}
+			}
 			
 			//计算价格
 			double calPrice = 0;				
@@ -335,7 +362,7 @@ public class shoppingSysController {
 			e.printStackTrace();
 			//return "redirect:/index.html";
 		}
-		return "";
+		return "redirect:/index.html";
 		
 		
 	}
@@ -357,7 +384,7 @@ public class shoppingSysController {
         String linkname =request.getParameter("linkname");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
-        
+      
         String scanType = request.getParameter("scanType");
 
         if(orderDetailId==null||"".equals(orderDetailId)||linkname==null||"".equals(linkname)){
@@ -460,7 +487,7 @@ public class shoppingSysController {
             linkObj.setMobile(phone);
             linkObj.setEmail(email);
             linkObj.setUserId(globle_user.getId());
-            selfHelpOrderService.insertLinkman(linkObj);
+            selfHelpOrderService.insertLinkman(linkObj);    ////
             
             Order order = new Order();
             order.setId(orderId);
