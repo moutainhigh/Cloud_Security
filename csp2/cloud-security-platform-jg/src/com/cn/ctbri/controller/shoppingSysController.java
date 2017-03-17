@@ -1,6 +1,9 @@
 package com.cn.ctbri.controller;
 
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cn.ctbri.cfg.Configuration;
 import com.cn.ctbri.common.HuaweiWorker;
 import com.cn.ctbri.entity.APICount;
 import com.cn.ctbri.entity.Asset;
@@ -57,6 +61,7 @@ import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
+import com.cn.ctbri.util.GetNetContent;
 import com.cn.ctbri.util.Random;
 import com.sun.org.apache.xerces.internal.impl.dv.xs.DecimalDV;
 
@@ -192,6 +197,75 @@ public class shoppingSysController {
 	}
 
 	/**
+	 * 功能描述：查看服务是否可以购买，是否有时间重叠
+	 * 参数描述： Asset asset
+	 *		 @time 2015-1-19
+	 *	返回值：无
+	 */
+	@RequestMapping(value="checkifcanbuy.html",method=RequestMethod.POST)
+	public void checkifcanbuy(HttpServletRequest request,HttpServletResponse response){
+		 //用户
+    	User globle_user = (User) request.getSession().getAttribute("globle_user");
+		//int id = Integer.valueOf(request.getParameter("id"));
+    	String serviceId = request.getParameter("serviceId");
+		
+		//获取验证方式:代码验证 ;上传文件验证
+		String check_msg;
+		Map<String, Object> m = new HashMap<String, Object>();
+		//m.put("status", status);//返回验证状态
+		try {
+//			
+			// 判定是否可以 立即购买 ，如果购买时间 出现重叠则禁止购买
+						List orderList = orderService.findOrderByUserIdAndServiceId(globle_user.getId(), Integer.parseInt(serviceId));		
+						if(orderList.size()>0&&orderList!=null){
+							//HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
+							HashMap<String,Object>  orderMap = (HashMap<String,Object>)orderList.get(0);
+							
+							String strBeginDate = orderMap.get("begin_date").toString();
+							String strEndDate =  orderMap.get("end_date").toString();
+							String strNowDate = DateUtils.dateToString(new Date());
+							
+							if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0) {
+								
+	
+									// 把数据返回到页面
+									m.put("status", 0);
+									m.put("message", "已有同类订单，不能重复购买");
+									JSONObject JSON = CommonUtil.objectToJson(response, m);
+									CommonUtil.writeToJsp(response, JSON);
+									System.out.println("已有同类订单，不能重复购买");
+									return ;
+
+							}
+							else {
+								m.put("status", 1);
+								m.put("message", "可以购买");
+								JSONObject JSON = CommonUtil.objectToJson(response, m);
+								CommonUtil.writeToJsp(response, JSON);
+								System.out.println("可以购买");
+								// 把数据返回到页面
+								 CommonUtil.writeToJsp(response, JSON);
+								 return;
+								
+							}
+						}
+			
+		} catch (Exception e) {
+			m.put("status", 2);
+			m.put("message", "crush");
+			JSONObject JSON = CommonUtil.objectToJson(response, m);
+			try {
+				CommonUtil.writeToJsp(response, JSON);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			System.out.println("购买crush");
+			e.printStackTrace();
+			return;
+		}
+	}
+	/**
 	 * 功能描述： 保存{39608ce6-d506-4c6d-8166-864bbc2d7aba}极光详情页操作,立即购买
 	 * 参数描述：  无
 	 *     @time 2016-11-29
@@ -258,32 +332,7 @@ public class shoppingSysController {
 				}
 			}
 		
-	        // 判定是否可以 立即购买 ，如果购买时间 出现重叠则禁止购买
-			List orderList = orderService.findOrderByUserIdAndServiceId(globle_user.getId(), Integer.parseInt(serviceId));		
-			if(orderList.size()>0&&orderList!=null){
-				//HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
-				HashMap<String,Object>  orderMap = (HashMap<String,Object>)orderList.get(0);
-				
-				String strBeginDate = orderMap.get("begin_date").toString();
-				String strEndDate =  orderMap.get("end_date").toString();
-				String strNowDate = DateUtils.dateToString(new Date());
-				
-				if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0) {
-					JSONObject JSON = CommonUtil.objectToJson(response, m);
-					try {
-						// 把数据返回到页面
-						m.put("message", "已有同类订单，不能重复购买");
-						CommonUtil.writeToJsp(response, JSON);
-						System.out.println("已有同类订单，不能重复购买");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					//String result = result = "/source/page/details/systemServDetails";
-					//systemOrderOperaInit
-			        //return result;
-					
-				}
-			}
+	        
 			
 			//计算价格
 			double calPrice = 0;				
