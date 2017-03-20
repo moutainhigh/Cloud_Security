@@ -23,7 +23,7 @@
 <!-- <script src="${ctx}/source/scripts/order/wafDetail.js"></script>
 <script src="${ctx}/source/scripts/order/details.js"></script> -->
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script> 
 
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <style>
@@ -76,9 +76,12 @@
 
 	<div class="dataCent">
 			<div class="data-crumbs">
-				<a href="${ctx}/index.html" style="font-size: 20px;">安全帮</a><i>&gt;</i><a href="${ctx}/web_anquanbang.html">系统安全帮</a><i>&gt;</i><a href="javascript:;">${service.name }</a>
+				<a href="${ctx}/index.html" style="font-size: 20px;">安全帮</a><i>&gt;</i><a href="${ctx}/system_anquanbang.html">系统安全帮</a><i>&gt;</i><a href="javascript:;">${service.name }</a>
 			</div>
 				<input type="hidden" id="serviceIdHidden" value="${service.id }"/>
+				
+				<input type="hidden" id="message" value="${message }"/>
+				
 			<div class="dataBox clearfix">
 				<div class="dataL fl">
 					<div class="dataImg fl">
