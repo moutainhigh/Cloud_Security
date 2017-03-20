@@ -71,6 +71,7 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 /**
+ * 
  * 创 建 人  ：  tang
  * 创建日期：  2016-3-10
  * 描        述：  订单管理控制层
