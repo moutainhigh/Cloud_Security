@@ -325,9 +325,9 @@ public class MyAssetsController {
 			if(addrName.indexOf("/")!=-1){
 				domainName = addrName.substring(0, addrName.indexOf("/"));
 				notDomainName = addrName.substring(addrName.indexOf("/"));
-				addr = "http://"+domainName.toLowerCase()+notDomainName;
+				addr = "https://"+domainName.toLowerCase()+notDomainName;
 			}else{
-				addr = "http://"+addrName.toLowerCase();
+				addr = "https://"+addrName.toLowerCase();
 			}
 		}else{
 			addrName = addr;
