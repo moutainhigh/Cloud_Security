@@ -244,7 +244,7 @@ public class shoppingSysController {
 								CommonUtil.writeToJsp(response, JSON);
 								System.out.println("可以购买");
 								// 把数据返回到页面
-								 CommonUtil.writeToJsp(response, JSON);
+								 //CommonUtil.writeToJsp(response, JSON);
 								 return;
 								
 							}
@@ -256,7 +256,7 @@ public class shoppingSysController {
 							CommonUtil.writeToJsp(response, JSON);
 							System.out.println("可以购买");
 							// 把数据返回到页面
-							 CommonUtil.writeToJsp(response, JSON);
+							// CommonUtil.writeToJsp(response, JSON);
 							 return;
 							
 						}
