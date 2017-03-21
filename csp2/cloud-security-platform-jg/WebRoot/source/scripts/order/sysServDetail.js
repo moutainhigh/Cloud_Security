@@ -102,7 +102,7 @@ $(function(){
     			  "serviceId":serviceId}, 
     		  dataType:"json",
     		  success:function(da){
-    			  //alert("checkifcanbuy-success");
+    			  alert("checkifcanbuy-success");
     			  alert(da.status);
     			  
     			  if(da.status==1){
