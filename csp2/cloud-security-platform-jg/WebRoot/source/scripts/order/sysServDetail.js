@@ -2,75 +2,6 @@ $(function(){
   changeDur();
   //初始化价格
   changePrice();
-
-  /*
-  //立即购买
-  $("#buyNowsys").click(function(){
-    var createDate = getCreateDate();    
-    var serviceId = $('#serviceIdHidden').val();
-    var duration = $("#duration").val();
-    var scanType = null;
-    if(serviceId==7)
-  	  scanType=$("#ipNum").val();
-    else if(serviceId==8)
-  	  scanType=$("#nodeNum").val();
-    else
-    	scanType="1";
-    var indexPage = $("#indexPage").val();
-    var type = "1";//orderType订单类型：长期单次
-
-    $.ajax({
-      type:"POST",
-      async: false,
-      url:"getSession.html",
-      dataType:"json",
-      success:function(data){
-        var tempForm = document.createElement("form");
-        tempForm.action = "jiGuangselfHelpOrderOpera.html";
-        tempForm.method = "post";
-        tempForm.style.display = "none";
-
-        var typeInput = document.createElement("input");
-        typeInput.type="hidden"; 
-        typeInput.name= "type"; 
-        typeInput.value= type; 
-        tempForm.appendChild(typeInput);
-        
-        var durationInput = document.createElement("input");
-        durationInput.type="hidden"; 
-        durationInput.name= "duration"; 
-        durationInput.value= duration; 
-        tempForm.appendChild(durationInput);
-              
-        var scanTypeInput = document.createElement("input");
-        scanTypeInput.type="hidden"; 
-        scanTypeInput.name= "scanType"; 
-        scanTypeInput.value= scanType; 
-        tempForm.appendChild(scanTypeInput);
-              
-        var serviceIdInput = document.createElement("input");
-        serviceIdInput.type="hidden"; 
-        serviceIdInput.name= "serviceId"; 
-        serviceIdInput.value= serviceId; 
-        tempForm.appendChild(serviceIdInput);
-                           
-              
-        document.body.appendChild(tempForm);
-        tempForm.submit();
-        document.body.removeChild(tempForm);
-
-      },
-      error:function(data){
-    	  
-        if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-          window.location.href = "loginUI.html"; } 
-        else { window.location.href = "loginUI.html"; } 
-        
-    	  alert("baocuo");
-      }
-    });
-  });
-*/
   
   //立即购买
   $("#buyNowsys").click(function(){
@@ -93,7 +24,6 @@ $(function(){
       url:"getSession.html",
       dataType:"json",
       success:function(data){
-    	  //alert("getSession-success");
     	  $.ajax({
     		  type:"POST",
     		  url:"checkifcanbuy.html",
@@ -101,10 +31,7 @@ $(function(){
     		  data: {
     			  "serviceId":serviceId}, 
     		  dataType:"json",
-    		  success:function(da){
-    			  alert("checkifcanbuy-success");
-    			  alert(da.status);
-    			  
+    		  success:function(da){    			  
     			  if(da.status==1){
     				var tempForm = document.createElement("form");
       		        tempForm.action = "jiGuangselfHelpOrderOpera.html";
@@ -144,17 +71,14 @@ $(function(){
     			  }
     		  },
     		  error:function(da){
-    			  alert("checkifcanbuy-error");
+    			  window.location.href = "loginUI.html";
     		  }
     	  });                                                    
       },
-      error:function(data){
-    	 /* 
+      error:function(data){    	
         if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
           window.location.href = "loginUI.html"; } 
-        else { window.location.href = "loginUI.html"; } 
-        */
-    	  alert("getSession-error");
+        else { window.location.href = "loginUI.html"; }         
       }
     });
   });
