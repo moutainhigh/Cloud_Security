@@ -30,6 +30,7 @@ import se.akerfeldt.com.google.gson.Gson;
 
 import com.cn.ctbri.common.APIWorker;
 import com.cn.ctbri.common.Constants;
+import com.cn.ctbri.common.SysWorker;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.AlarmDDOS;
 import com.cn.ctbri.entity.Asset;
@@ -1414,6 +1415,55 @@ public class WarnDetailController {
         return "/source/page/order/orderDetail";
     }
 	
+    /**
+     * 功能描述： 用户中心-订单跟踪-订单详情-系统安全帮类 订单详情
+     * 参数描述：  无
+     *     @time 2017-3-21
+     */
+    @RequestMapping(value="orderSysDetails.html")
+    public String orderSysDetails(HttpServletRequest request){
+        String orderId = request.getParameter("orderId");
+        //获取订单信息
+        List orderList = orderService.findByOrderId(orderId);
+        String status="";
+        
+		//不是当前用户的订单,不能查看
+    	User globle_user = (User) request.getSession().getAttribute("globle_user");
+    	if (orderId== null || orderList == null ||orderList.size() == 0) {
+    		return "redirect:/index.html";
+    	}
+  	
+    	 HashMap<String, Object> order=new HashMap<String, Object>();
+ 	    order=(HashMap) orderList.get(0);
+ 	    if (((Integer)order.get("userId"))!= globle_user.getId()) {
+ 	    	return "redirect:/index.html";
+ 	    }
+
+ 	    String strBeginDate = order.get("begin_date").toString();
+		String strEndDate =  order.get("end_date").toString();
+		String strNowDate = DateUtils.dateToString(new Date());
+		int serviceId = (Integer)order.get("serviceId");
+    	status = status+order.get("status");
+    	Integer userid = new Integer(globle_user.getId());
+    	if (strNowDate.compareTo(strEndDate)>0 || strNowDate.compareTo(strBeginDate)<0) 
+    	{
+    		return "";//时间不在服务范围内
+    	}
+    	else {
+			if (serviceId == 8) { //调用金山接口
+				String useridString = ((Integer)order.get("userId")).toString();
+				String urlRes = SysWorker.getJinshanoauthurl(useridString);
+				if (!urlRes.equals("failed")) {
+					request.setAttribute("jinshanURL", urlRes);
+				}
+			}
+    		
+		}
+    	
+ 	    
+        return "/source/page/order/orderDetail";
+    }
+    
     /**
      * 功能描述： 用户中心-订单跟踪-历史记录查询
      * 参数描述：  无
