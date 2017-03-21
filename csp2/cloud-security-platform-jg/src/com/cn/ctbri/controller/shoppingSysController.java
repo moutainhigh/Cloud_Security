@@ -249,6 +249,17 @@ public class shoppingSysController {
 								
 							}
 						}
+						else {
+							m.put("status", 1);
+							m.put("message", "可以购买");
+							JSONObject JSON = CommonUtil.objectToJson(response, m);
+							CommonUtil.writeToJsp(response, JSON);
+							System.out.println("可以购买");
+							// 把数据返回到页面
+							 CommonUtil.writeToJsp(response, JSON);
+							 return;
+							
+						}
 			
 		} catch (Exception e) {
 			m.put("status", 2);
