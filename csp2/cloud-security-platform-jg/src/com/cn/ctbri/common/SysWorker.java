@@ -67,7 +67,7 @@ public class SysWorker {
 		失败：{"message":"Enterprises already have this order","status":"failed"}
 
 	 */
-	public static String getJinshanOrderStatus(String companyId, String companyName, String tCount){
+	public static String getJinshanCreateOrder(String companyId, String companyName, String tCount){
 		JSONObject json =new JSONObject();
 		json.put("companyId", companyId);
 		json.put("name", companyName);
