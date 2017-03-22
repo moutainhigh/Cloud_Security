@@ -2161,10 +2161,15 @@ public class shoppingController {
     			    	Date  beginDate =(Date)order.get("begin_date");
     			    	String orderId = (String)order.get("id");
     			    	status = status+order.get("status");
-    			    	System.out.println(SysWorker.getJinshanoauthurl("123456"));
+    			    	Integer userid = new Integer(globle_user.getId());
+    			    	int scanTypeint = (Integer)order.get("scan_type");
+    			    	Integer scanTypeInteger = new Integer(scanTypeint);
+    			
+    			    	//System.out.println(SysWorker.getJinshanoauthurl("123456"));
     	//	添加极光接口位置    String intResString = jiguangjiekou();
 //    			    	添加金山接口位置    String intResString = jinshanjiekou();
 //    			    	添加云眼接口位置    String intResString = yunyanjiekou();
+    			    	
     			    	
     			    	if (orderId != null && !"".equals(orderId)) {
         					// 更新订单资产表
@@ -2173,8 +2178,23 @@ public class shoppingController {
         					// 更新订单表   UPDATE  cs_order o  
     			    		//void updateOrder(String orderId,String newOrderId,String isAPI,String status, String orderListId, Date creatDate);
     			    		// 系统安全帮 isAPI＝3
-        					selfHelpOrderService.updateOrder(orderId,
-        							orderId, "3",status,orderList.getId(),orderList.getPay_date());
+    			    		if (serviceId == 8) {// 金山接口
+    			    			String strTeString = "test11";
+								String strResString = SysWorker.getJinshanCreateOrder(strTeString+userid.toString(), loginUser.getCompany(), scanTypeInteger.toString());
+								if (!strResString.equals("success")) {
+									result = false; // 接口创建订单失败
+									System.out.println("金山接口创建失败");
+								} 
+								else {
+									System.out.println("金山接口创建成功" + orderId + " userid:"+userid.toString());
+								}
+								
+								String strUninstallPasswd = SysWorker.getJinshanUninstallInfo(strTeString+userid.toString());
+								selfHelpOrderService.updateSysOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date(),strUninstallPasswd);
+								System.out.println("getJinshanUninstallInfo");
+								
+							}
+        					
         					
         					/*更新 修改时间的订单Id
         					if (modifyOrderId.contains(shopCar.getOrderId())){
@@ -3005,7 +3025,7 @@ public class shoppingController {
 	}
 	
 	/**
-     * 功能描述： 订单详情
+     * 功能描述： 订单详情,支付成功之后的跳转
      * */
     @RequestMapping(value="orderDetailsUI.html")
     public String toOrderDetails(Model m,HttpServletRequest request, HttpServletResponse response){
