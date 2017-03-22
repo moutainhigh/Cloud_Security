@@ -184,6 +184,22 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		this.getSqlSession().update(ns+"updateOrder",map);
 	}
 
+	public void updateSysOrder(String orderId, String newOrderId, String isAPI,
+			String status, String orderListId, Date creatDate, String remarks) {
+		
+		// TODO Auto-generated method stub
+		Map map = new HashMap();
+		map.put("orderId", orderId);
+		map.put("newOrderId", newOrderId);
+		map.put("isAPI", isAPI);
+		map.put("status", status);
+		map.put("orderListId", orderListId);
+		map.put("createDate", creatDate);
+		map.put("remarks", remarks);
+		this.getSqlSession().update(ns+"updateSysOrder",map);
+	}
+
+	
 	public void updateOrderAPI(String orderId, String newOrderId) {
 		Map map = new HashMap();
 		map.put("orderId", orderId);
@@ -278,5 +294,6 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		return this.getSqlSession().selectList(nv+"getServiceByParent", map);
 	}
 
+	
 	
 }
