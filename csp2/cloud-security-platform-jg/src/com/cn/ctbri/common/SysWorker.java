@@ -70,7 +70,12 @@ public class SysWorker {
 	public static String getJinshanCreateOrder(String companyId, String companyName, String tCount){
 		JSONObject json =new JSONObject();
 		json.put("companyId", companyId);
-		json.put("name", companyName);
+		if (companyName.equals("")) {
+			json.put("name", "nocompanyname");
+		}
+		else {
+			json.put("name", companyName);
+		}
 		json.put("tCount", tCount);
 		
 		String url = SERVER_SYS_ROOT + SYS_jinshan_getOrderIndex;
@@ -117,8 +122,17 @@ public class SysWorker {
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
         String textEntity = response.getEntity(String.class);
 //      String status = JSONObject.fromObject(textEntity).getString("status");
-        System.out.println(textEntity);
-        return textEntity;
+        
+        String status = JSONObject.fromObject(textEntity).getString("status");
+        if (status.equals("success")) {
+			
+        	String struninstallPassword = JSONObject.fromObject(textEntity).getString("uninstallPassword");   	
+        	return struninstallPassword;
+		}
+        else {
+			return "failed";
+		}
+
 	}
 	
 	/**
@@ -149,6 +163,8 @@ public class SysWorker {
         String textEntity = response.getEntity(String.class);
 //      String status = JSONObject.fromObject(textEntity).getString("status");
         System.out.println(textEntity);
+        
+        
         return textEntity;
 	}
 	
