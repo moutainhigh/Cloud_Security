@@ -1422,6 +1422,8 @@ public class WarnDetailController {
      */
     @RequestMapping(value="orderSysDetails.html")
     public String orderSysDetails(HttpServletRequest request){
+    	
+    	String strTeString = "test11";
         String orderId = request.getParameter("orderId");
         //获取订单信息
         List orderList = orderService.findByOrderId(orderId);
@@ -1452,7 +1454,7 @@ public class WarnDetailController {
     	else {
 			if (serviceId == 8) { //调用金山接口
 				String useridString = ((Integer)order.get("userId")).toString();
-				String urlRes = SysWorker.getJinshanoauthurl(useridString);
+				String urlRes = SysWorker.getJinshanoauthurl(strTeString+useridString);
 				if (!urlRes.equals("failed")) {
 					request.setAttribute("jinshanURL", urlRes);
 				}
