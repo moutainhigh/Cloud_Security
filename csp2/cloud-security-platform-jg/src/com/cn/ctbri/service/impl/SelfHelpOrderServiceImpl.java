@@ -149,6 +149,12 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 		// TODO Auto-generated method stub
 		selfHelpOrderDao.updateOrder(orderId, newOrderId,isAPI,status,orderListId,creatDate);
 	}
+	
+	public void updateSysOrder(String orderId, String newOrderId, String isAPI,
+			String status, String orderListId, Date creatDate, String remarks) {
+		// TODO Auto-generated method stub
+		selfHelpOrderDao.updateSysOrder(orderId, newOrderId,isAPI,status,orderListId,creatDate,remarks);
+	}
 
 	public void updateOrderAPI(String orderId, String newOrderId) {
 		// TODO Auto-generated method stub
@@ -215,6 +221,8 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 	public List<Serv> findServiceByParent(int parent) {
 		return selfHelpOrderDao.findServiceByParent(parent);
 	}
+
+	
 
 	
 
