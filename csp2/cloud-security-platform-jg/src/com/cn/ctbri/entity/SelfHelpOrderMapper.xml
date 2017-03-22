@@ -359,6 +359,29 @@ FROM (SELECT
  WHERE o.isAPI=#{isAPI} AND o.id=#{orderId}
  
  </update>
+ 
+ <update id="updateSysOrder" parameterType="hashmap">
+ UPDATE  cs_order o 
+ <set>
+	  <if test="newOrderId!=null">
+	    o.id=#{newOrderId}, 
+	    o.create_date=#{createDate},
+	 </if>
+	 
+	 <if test="status!=''">
+	   o.status = #{status},
+	 </if>
+	 <if test="orderListId!=''">
+	   o.orderListId = #{orderListId},
+	 </if>
+	 <if test="remarks!=''">
+	   o.remarks = #{remarks}
+	 </if>
+ </set>
+ WHERE o.isAPI=#{isAPI} AND o.id=#{orderId}
+ 
+ </update>
+ 
  <update id="updateShopOrder" parameterType="com.cn.ctbri.entity.ShopCar">
    update cs_order set status=#{status} where id=#{orderId}
  
