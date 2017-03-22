@@ -28,6 +28,7 @@ public class SystemFilter extends OncePerRequestFilter  {
 	protected void doFilterInternal(HttpServletRequest request,  
             HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
+		System.out.println(">>>>>>>>>>>>>>>>>>>>:" + request.getRequestURL());
 		//存放在没有Session之前，可以放行的连接
 
 		List<String> list = new ArrayList<String>();
