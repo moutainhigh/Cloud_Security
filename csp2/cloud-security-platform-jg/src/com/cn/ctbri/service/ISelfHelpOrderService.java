@@ -106,6 +106,8 @@ public interface ISelfHelpOrderService {
 	void updateOrderAsset(String orderId,String newOrderId);
 	//更新订单表
 	void updateOrder(String orderId,String newOrderId,String isAPI,String status, String orderListId, Date creatDate);
+	//更新系统安全帮订单表
+	void updateSysOrder(String orderId,String newOrderId,String isAPI,String status, String orderListId, Date creatDate,String remarks);
 	//更新订单api表
 	void updateOrderAPI(String orderId,String newOrderId);
 	//修改订单状态
