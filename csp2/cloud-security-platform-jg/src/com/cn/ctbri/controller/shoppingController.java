@@ -2174,7 +2174,7 @@ public class shoppingController {
     			    		//void updateOrder(String orderId,String newOrderId,String isAPI,String status, String orderListId, Date creatDate);
     			    		// 系统安全帮 isAPI＝3
     			    		if (serviceId == 8) {// 金山接口
-    			    			String strTeString = "test11";
+    			    			String strTeString = "test111";
 								String strResString = SysWorker.getJinshanCreateOrder(strTeString+userid.toString(), loginUser.getCompany(), scanTypeInteger.toString());
 								if (!strResString.equals("success")) {
 									result = false; // 接口创建订单失败
