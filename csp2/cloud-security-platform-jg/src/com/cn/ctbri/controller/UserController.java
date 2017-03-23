@@ -1008,7 +1008,7 @@ public class UserController{
 			user.setApikey(UUID.randomUUID().toString().replace("-", ""));
 			
 			//安全币功能(注册时奖励500安全币)  add by zhangsh 2016-5-17
-			user.setBalance(500D);
+			user.setBalance(2000D);
 			//user.setLastSignInTime(new Date());
 			userService.insert(user);
 			
