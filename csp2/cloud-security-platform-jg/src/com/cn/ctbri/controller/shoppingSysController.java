@@ -356,9 +356,12 @@ public class shoppingSysController {
 								//HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
 								HashMap<String,Object>  orderMap = (HashMap<String,Object>)orderList.get(0);								
 								String strBeginDate = orderMap.get("begin_date").toString();
-								String strEndDate =  orderMap.get("end_date").toString();
+								String strEndDate =  orderMap.get("end_date").toString();			
+								String strpayflag = orderMap.get("payFlag").toString();
+								
+									
 								String strNowDate = DateUtils.dateToString(new Date());							
-								if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0) {
+								if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0 && strpayflag.equals("1")) {
 										// 把数据返回到页面
 									Serv serviceRe = servService.findById(Integer.parseInt(serviceId));
 									ServiceDetail servDetailRe = servDetailService.findByServId(Integer.parseInt(serviceId));
