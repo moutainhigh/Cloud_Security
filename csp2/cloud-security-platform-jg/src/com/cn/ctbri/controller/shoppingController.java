@@ -2188,6 +2188,10 @@ public class shoppingController {
 								System.out.println("url:"+SysWorker.getJinshanoauthurl(strTeString+userid.toString()));
 								
 							}
+    			    		else {
+								selfHelpOrderService.updateOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date());
+							}
+    			    		
         					
         					
         					/*更新 修改时间的订单Id
