@@ -2164,12 +2164,7 @@ public class shoppingController {
     			    	Integer userid = new Integer(globle_user.getId());
     			    	int scanTypeint = (Integer)order.get("scan_type");
     			    	Integer scanTypeInteger = new Integer(scanTypeint);
-    			
-    			    	//System.out.println(SysWorker.getJinshanoauthurl("123456"));
-    	//	添加极光接口位置    String intResString = jiguangjiekou();
-//    			    	添加金山接口位置    String intResString = jinshanjiekou();
-//    			    	添加云眼接口位置    String intResString = yunyanjiekou();
-    			    	
+    				    	
     			    	
     			    	if (orderId != null && !"".equals(orderId)) {
         					// 更新订单资产表
@@ -2187,11 +2182,10 @@ public class shoppingController {
 								} 
 								else {
 									System.out.println("金山接口创建成功" + orderId + " userid:"+userid.toString());
+									String strUninstallPasswd = SysWorker.getJinshanUninstallInfo(strTeString+userid.toString());
+									selfHelpOrderService.updateSysOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date(),strUninstallPasswd);
 								}
-								
-								String strUninstallPasswd = SysWorker.getJinshanUninstallInfo(strTeString+userid.toString());
-								selfHelpOrderService.updateSysOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date(),strUninstallPasswd);
-								System.out.println("getJinshanUninstallInfo");
+								System.out.println("url:"+SysWorker.getJinshanoauthurl(strTeString+userid.toString()));
 								
 							}
         					
