@@ -397,8 +397,8 @@ FROM (SELECT
  <update id="updatePayFlag" parameterType="hashMap">
       	update cs_order
       	set
-      	 payFlag = #{payFlag},
-      	 remarks = #{remarks}
+      	 payFlag = #{payFlag}
+      	 
       	where
       	 id in (${orderId})
  </update>
