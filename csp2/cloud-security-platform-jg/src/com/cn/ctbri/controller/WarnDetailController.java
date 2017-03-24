@@ -1463,7 +1463,7 @@ public class WarnDetailController {
 		}
     	
  	    
-        return "/source/page/order/orderDetail";
+        return "/source/page/personalCenter/listExternal";
     }
     
     /**
