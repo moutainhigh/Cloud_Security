@@ -115,7 +115,7 @@ public interface ISelfHelpOrderService {
 	//更新支付时间，支付金额
 	void updatePayDate(OrderList ol);
 	//更新订单支付状态
-	void updateOrderPayFlag(String orderIds,int payFlag, int remarks);
+	void updateOrderPayFlag(String orderIds,int payFlag);
 	//修改订单状态
 	void updateOrderStatus(String orderIds, int status);
 	//修改订单开始时间和结束时间
