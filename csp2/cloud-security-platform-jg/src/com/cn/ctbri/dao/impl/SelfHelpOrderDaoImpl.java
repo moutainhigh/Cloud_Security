@@ -223,11 +223,11 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		getSqlSession().update(ns + "updatePayDate", ol);
 	}
 	
-	public void updateOrderPayFlag(String orderIds, int payFlag, int remarks) {
+	public void updateOrderPayFlag(String orderIds, int payFlag) {
 		Map map = new HashMap();
 		map.put("orderId", orderIds);
 		map.put("payFlag", payFlag);
-		map.put("remarks", remarks);
+		
 		
 		this.getSqlSession().update(ns + "updatePayFlag", map);
 	}
