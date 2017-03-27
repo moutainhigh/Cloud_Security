@@ -20,6 +20,14 @@ public interface IOrderService {
 	List findOrderByUserIdAndServiceId(int userId,int serviceId);
 	
 	/**
+	 * 功能描述：根据用户名查找已经支付过的最新的系统安全帮订单
+	 * 
+	 * @time 2017-3-16 返回值 ： List
+	 */
+	List findPaidSysOrderByUserId(int userId);
+	
+	
+	/**
 	 * 功能描述：根据用户名查询订单 参数描述：int id
 	 * 
 	 * @time 2015-1-15 返回值 ： List
