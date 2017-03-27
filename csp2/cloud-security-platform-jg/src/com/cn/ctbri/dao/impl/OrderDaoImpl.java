@@ -68,6 +68,19 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 		map.put("serviceId", serviceId);
 		return this.getSqlSession().selectList(ns + "findOrderByUserIdAndServiceId" , map);
 	}
+    
+    /**
+     * 功能描述：根据用户查询已经支付过的最新的系统安全帮订单
+     * 参数描述：int userId
+     *       @time 2017-3-16
+     * 返回值    ：  List
+     */
+    public List findPaidSysOrderByUserId(int userId) {
+		// TODO Auto-generated method stub
+    	Map map = new HashMap();		
+		map.put("userId", userId);	
+		return this.getSqlSession().selectList(ns + "findPaidSysOrderByUserId" , map);
+	}
     /**
      * 功能描述：组合查询订单追踪
      *       @time 2015-1-15
