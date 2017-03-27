@@ -50,6 +50,7 @@ import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServiceAPIService;
+import com.cn.ctbri.service.IServiceSysService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.AddressUtils;
@@ -71,6 +72,7 @@ import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
  * 描        述：  用户控制层
  * 版        本：  1.0
  */
+
 @Controller
 public class UserController{
 	
@@ -92,6 +94,9 @@ public class UserController{
     ITaskService taskService;
 	@Autowired
 	IAdvertisementService adService;
+	@Autowired
+    IServiceSysService serviceSysService;
+	
 
 	/**
 	 * 功能描述： 基本资料
@@ -295,6 +300,8 @@ public class UserController{
         //获取首页的广告
         List adList = adService.findAdvertisementByType(0);
         
+        List servSyslist = serviceSysService.findSysPriceList();
+        
         //查询网页篡改个数 
 //        int whorseNum = selfHelpOrderService.findLeakNum(3);
         //查询木马检测个数 
@@ -316,6 +323,7 @@ public class UserController{
         m.addAttribute("servList", servList);
         m.addAttribute("servAPIList", servAPIList);
         m.addAttribute("adList", adList);
+        m.addAttribute("servSyslist", servSyslist);
 //        m.addAttribute("noticeList", list);
 		return "/main";
 	}
@@ -812,22 +820,29 @@ public class UserController{
 	@RequestMapping(value="orderList.html")
 	public String orderList(HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
+//		List orderList = orderService.findOrderByUserId(globle_user.getId());
 		List orderList = orderService.findByUserIdAndPage(globle_user.getId(),-1,null,null,1);
 		if(orderList.size()>2){
 			orderList = orderList.subList(0, 2);
 		}
         //根据orderId查询task表判断告警是否查看过
+		
         if(orderList != null && orderList.size() > 0){
         	//个人中心显示前两条订单信息
 	        for(int i = 0; i < orderList.size(); i++){
 	        	HashMap<String,Object>  mapOrder = (HashMap<String,Object>)orderList.get(i);
 	        	String orderListId = (String)mapOrder.get("orderListId");
 	        	//根据orderListId查询订单
-	        	List ol = orderService.findByOrderListId(orderListId,null);
+	        	List ol = orderService.findByOrderListId(orderListId,null); // 查询from cs_order o,cs_service s  o.orderListId = orderlistid
 	        	for(int j = 0; j < ol.size(); j++){
 	        		//获取对应资产 add by tangxr 2016-4-25
 		        	HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
 		        	String orderId = (String)map.get("id");
+		        	String type1 = map.get("type").toString();
+		        	
+		        	//Map<String,Object> paramMap = new HashMap<String,Object>();
+		        	//paramMap.put("orderId", orderId);
+		        	//paramMap.put("type", type1);
 		        	
 			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
 			        map.put("assetList", assetList);
@@ -841,6 +856,7 @@ public class UserController{
 	        }
         }	
         
+ 
         //获取当前时间
         SimpleDateFormat setDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String temp = setDateFormat.format(Calendar.getInstance().getTime());
@@ -992,7 +1008,7 @@ public class UserController{
 			//生成apikey add by tangxr 2016-4-9
 			user.setApikey(UUID.randomUUID().toString().replace("-", ""));
 			
-			//安全币功能(注册时奖励2000安全币)  add by zhangsh 2016-5-17
+			//安全币功能(注册时奖励500安全币)  add by zhangsh 2016-5-17
 			user.setBalance(2000D);
 			//user.setLastSignInTime(new Date());
 			userService.insert(user);
@@ -1912,11 +1928,7 @@ public class UserController{
   		m.addAttribute("currentId", currentId);
 	  	} catch (UnsupportedEncodingException e) {
 	  		e.printStackTrace();
-	  	} catch (Exception e) {
-	  		e.printStackTrace();
-//	  		m.addAttribute("error", "服务器异常，请您耐心等待...");
-//	  		return "/source/page/anquanbang/anquan_state";
-	  	} 	  
+	  	}  	  
 
 		return "/source/page/anquanbang/anquan_state";
 	}
@@ -1975,7 +1987,7 @@ public class UserController{
 	}
 	
 	/**
-	 * 功能描述： 跳转网站安全帮
+	 * 功能描述： 跳转api安全帮
 	 *		 @time 2016-4-18
 	 */
 	@RequestMapping(value="/api_anquanbang.html")
@@ -2138,5 +2150,37 @@ public class UserController{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * 功能描述： 跳转系统安全帮
+	 *		 @time 2017-2-8
+	 */
+	@RequestMapping(value="/system_anquanbang.html")
+	public String systemAnquanbang(Model m){
+	    //获取公告
+	    List<Notice> list = noticeService.findAllNotice();
+	    //获取服务类型
+        List servList = serviceSysService.findSysPriceList();//需要修改为system
+        //查询漏洞个数
+        int leakNum = selfHelpOrderService.findLeakNum(1);
+        //查询网页数
+        int webPageNum = selfHelpOrderService.findWebPageNum();
+        //检测网页数
+        int webSite = selfHelpOrderService.findWebSite();
+        //断网次数
+        int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
+        //获取安全能力API页面的广告
+        List adList = adService.findAdvertisementByType(2);
+        
+        System.out.println(servList);
+        m.addAttribute("leakNum", leakNum);
+        m.addAttribute("webPageNum", webPageNum);
+        m.addAttribute("webSite", webSite);
+        m.addAttribute("brokenNetwork", brokenNetwork);
+        m.addAttribute("servList", servList);
+        m.addAttribute("noticeList", list);
+        m.addAttribute("adList", adList);
+		return "/source/page/child/system_anquanbang";
 	}
 }
