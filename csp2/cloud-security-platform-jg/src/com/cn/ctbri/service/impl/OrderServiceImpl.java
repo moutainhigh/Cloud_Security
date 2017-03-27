@@ -228,6 +228,12 @@ public class OrderServiceImpl implements IOrderService{
 		// TODO Auto-generated method stub
 		return orderDao.findOrderByUserIdAndServiceId(userId,serviceId);
 	}
+	
+	public List findPaidSysOrderByUserId(int userId) {
+		// TODO Auto-generated method stub
+		return orderDao.findPaidSysOrderByUserId(userId);
+	}
+
 
 	
 }
