@@ -45,10 +45,18 @@ public interface OrderDao {
      */
     List findOrderByUserIdAndServiceId(int userId, int serviceId);
     /**
+     * 功能描述：查找已经支付过的最新的系统安全帮订单
+     * 参数描述：int userId,
+     *       @time 2017-3-26
+     * 返回值    ：  List<Order>
+     */
+    List findPaidSysOrderByUserId(int userId);
+    /**
      * 功能描述：组合查询订单追踪
      *       @time 2015-1-15
      * 返回值    ：  List<Order>
      */
+    
     List findByCombineOrderTrack(Map<String, Object> paramMap);
     
     /**
