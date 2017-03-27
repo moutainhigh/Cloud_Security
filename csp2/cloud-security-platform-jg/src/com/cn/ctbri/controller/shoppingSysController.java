@@ -1220,9 +1220,9 @@ public class shoppingSysController {
                 
 				//m.put("status", 0);
 				m.put("error", true);
-				m.put("message", "购物车已有同类订单，不能重复购买");
+				//m.put("message", "购物车已有同类订单，不能重复购买");
 				JSONObject JSON = CommonUtil.objectToJson(response, m);
-				//CommonUtil.writeToJsp(response, JSON);
+				CommonUtil.writeToJsp(response, JSON);
 				
 				
 				// object转化为Json格式
