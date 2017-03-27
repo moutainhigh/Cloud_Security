@@ -789,53 +789,74 @@ public class shoppingController {
 	 *     @time 2016-05-07
 	 *     add gxy
 	 */
-	@RequestMapping(value="shopBuy.html",method=RequestMethod.POST)
-	public String shopBuy(HttpServletRequest request){
-		 User globle_user = (User) request.getSession().getAttribute("globle_user");
+	@RequestMapping(value = "shopBuy.html", method = RequestMethod.POST)
+	public String shopBuy(HttpServletRequest request) {
+		User globle_user = (User) request.getSession().getAttribute("globle_user");
 
 		String str = request.getParameter("str");
-		if(str==null||"".equals(str)){
+		if (str == null || "".equals(str)) {
 			return "redirect:/index.html";
 		}
 		List list = new ArrayList();
 		List shopAPIList = new ArrayList();
 		List<ShopCar> shopSysList = new ArrayList();
 		List<ShopCar> shopList = new ArrayList();
-		int orderNum=0;
-		List<String> orderIdList=new ArrayList();
+		int orderNum = 0;
+		List<String> orderIdList = new ArrayList();
 		Linkman linkman = new Linkman();
-	      if(str!=null&&!"".equals(str)){
-	    	  String strArray[] = str.substring(0, str.length()-1).split(",");
-	    	  orderNum= strArray.length;
-	    	  for (int m=0;m<strArray.length;m++){
-	    		  orderIdList.add(strArray[m]);
-	    	  }
-	    	  int count = selfHelpOrderService.findOrderCountByUserId(orderIdList,globle_user.getId());
-	    	  if (orderIdList.size()== 0 ||count != orderIdList.size()) {
-	    		  //有些订单号没有或有些订单不属于该用户时，跳转到首页
-	    		  return "redirect:/index.html";
-	    	  }
-	    	 list = selfHelpOrderService.findBuyShopList(orderIdList,globle_user.getId());
-	    	 linkman = orderService.findLinkmanByOrderId(strArray[0]);
-			}else {
-				//有些订单号没有或有些订单不属于该用户时，跳转到首页
-	    		  return "redirect:/index.html";
+		if (str != null && !"".equals(str)) {
+			String strArray[] = str.substring(0, str.length() - 1).split(",");
+			orderNum = strArray.length;
+			for (int m = 0; m < strArray.length; m++) {
+				orderIdList.add(strArray[m]);
 			}
-	      
-	      //检查订单是否失效
-	      if(!checkOrderDate(list)){
-	    	//有些订单号失效时，跳转到首页
-    		  return "redirect:/index.html";
-	      }
-	      
-	      DecimalFormat df = new DecimalFormat("0.00");
-	      double shopCount=0.0;
+			int count = selfHelpOrderService.findOrderCountByUserId(orderIdList, globle_user.getId());
+			if (orderIdList.size() == 0 || count != orderIdList.size()) {
+				// 有些订单号没有或有些订单不属于该用户时，跳转到首页
+				return "redirect:/index.html";
+			}
+			list = selfHelpOrderService.findBuyShopList(orderIdList, globle_user.getId());
+			linkman = orderService.findLinkmanByOrderId(strArray[0]);
+		} else {
+			// 有些订单号没有或有些订单不属于该用户时，跳转到首页
+			return "redirect:/index.html";
+		}
+
+		// 检查订单是否失效
+		if (!checkOrderDate(list)) {
+			// 有些订单号失效时，跳转到首页
+			return "redirect:/index.html";
+		}
+		List orderList = orderService.findPaidSysOrderByUserId(globle_user.getId());
+		DecimalFormat df = new DecimalFormat("0.00");
+		double shopCount = 0.0;
 		if (list != null && list.size() > 0) {
 			for (int i = 0; i < list.size(); i++) {
 				ShopCar shopCar = (ShopCar) list.get(i);
 				if (shopCar.getIsAPI() == 3) {
+					if (orderList.size() > 0 && orderList != null) {
+						for (int j = 0; j < orderList.size(); j++) {
+
+							HashMap<String, Object> orderMap = (HashMap<String, Object>) orderList.get(j);
+							String strBeginDate = orderMap.get("begin_date").toString();
+							String strEndDate = orderMap.get("end_date").toString();
+							String strNowDate = DateUtils.dateToString(new Date());
+							String ServiceId = orderMap.get("serviceId").toString();
+							String shopCarServiceId = String.valueOf(shopCar.getServiceId());
+							System.out.println(strBeginDate + "  " + strEndDate + "  " + strNowDate + "  " + ServiceId
+									+ "  " + shopCarServiceId);
+							if (strNowDate.compareTo(strBeginDate) > 0 && strNowDate.compareTo(strEndDate) < 0
+									&& ServiceId.equals(shopCarServiceId)) {
+								System.out.println(strNowDate.compareTo(strBeginDate) > 0);
+								System.out.println(strNowDate.compareTo(strEndDate) < 0);
+								System.out.println(ServiceId.equals(shopCarServiceId));
+								return "redirect:/index.html";
+							}
+
+						}
+					} 
 					shopSysList.add(shopCar);
-					
+
 				} else {
 					if (shopCar.getIsAPI() == 0 || shopCar.getIsAPI() == 2) {
 						shopList.add(shopCar);
@@ -847,19 +868,19 @@ public class shoppingController {
 				shopCount = shopCount + shopCar.getPrice();
 			}
 		}
-		//System.out.println(shopSysList); 
-	  
-	    request.setAttribute("linkman", linkman);
+		// System.out.println(shopSysList);
+
+		request.setAttribute("linkman", linkman);
 		request.setAttribute("orderNum", orderNum);
 		request.setAttribute("shopCount", df.format(shopCount));
 		request.setAttribute("shopList", shopList);
 		request.setAttribute("shopAPIList", shopAPIList);
 		request.setAttribute("shopSysList", shopSysList);
-		 request.setAttribute("user", globle_user);
-		//判断显示结算页的按钮
+		request.setAttribute("user", globle_user);
+		// 判断显示结算页的按钮
 		request.setAttribute("shop", 0);
 		String result = "/source/page/details/newSettlement";
-	    return result;
+		return result;
 	}
 	 /**
 	 * 功能描述： 购物车提交订单
