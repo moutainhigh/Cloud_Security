@@ -117,6 +117,14 @@ $(function(){
 			   			alert("参数值数据异常!");
 			   			//window.location.href="index.html";
 			   		}
+			   		if(data.status==3){
+			   			alert("此商品只能购买一次，去我的订单里看看吧!");
+			   			//window.location.href="index.html";
+			   		}
+			   		if(data.status==4){
+			   			alert("此商品已经加入到购物车了，去我的购物车里看看吧!");
+			   			//window.location.href="index.html";
+			   		}
 			   		 if(data.sucess){
 			   			 alert("添加购物车成功!");
 			   			 buySystemService(serviceId);
