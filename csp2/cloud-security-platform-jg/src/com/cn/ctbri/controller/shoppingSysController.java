@@ -1203,23 +1203,55 @@ public class shoppingSysController {
 				return;
 			}
 		}
-		
-		// 判定是否可以 立即购买 ，如果购物车里有相同serviceId的订单，就不允许添加购物车
-		List orderList = orderService.findOrderByUserIdAndServiceId(globle_user.getId(), Integer.parseInt(serviceId));
-		if (orderList.size() > 0 && orderList != null) {
+		//判断是否可以添加购物车，如果有正在运行的购买的订单就不允许添加
+		List orderList = orderService.findOrderByUserIdAndServiceId(globle_user.getId(), Integer.parseInt(serviceId));		
+		if(orderList.size()>0&&orderList!=null){
+			//HashMap<String,Object>  map = (HashMap<String,Object>)ol.get(j);
+			HashMap<String,Object>  orderMap = (HashMap<String,Object>)orderList.get(0);								
+			String strBeginDate = orderMap.get("begin_date").toString();
+			String strEndDate =  orderMap.get("end_date").toString();			
+			String strpayflag = orderMap.get("payFlag").toString();
+			
+				
+			String strNowDate = DateUtils.dateToString(new Date());							
+			if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0 && strpayflag.equals("1")) {
+				m.put("status", 3);
+				//m.put("error", true);
+				//m.put("message", "购物车已有同类订单，不能重复购买");
+				JSONObject JSON = CommonUtil.objectToJson(response, m);
+				CommonUtil.writeToJsp(response, JSON);
+				
+				
+				// object转化为Json格式
+				//JSONObject JSON = CommonUtil.objectToJson(response, m);
+				try {
+					// 把数据返回到页面
+					CommonUtil.writeToJsp(response, JSON);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+
+			}
+
+		}
+			
+		// 判定是否可以添加购物车 ，如果购物车里有相同serviceId的订单，就不允许添加购物车
+		List orderList2 = orderService.findOrderByUserIdAndServiceIdCheckShopCar(globle_user.getId(), Integer.parseInt(serviceId));
+		if (orderList2.size() > 0 && orderList2 != null) {
 			// HashMap<String,Object> map = (HashMap<String,Object>)ol.get(j);
-			HashMap<String, Object> orderMap = (HashMap<String, Object>) orderList.get(0);
-			System.out.println(orderMap);
+			HashMap<String, Object> orderMap2 = (HashMap<String, Object>) orderList2.get(0);
+			System.out.println(orderMap2);
 			//String strBeginDate = orderMap.get("begin_date").toString();
 			//String strEndDate = orderMap.get("end_date").toString();
 			//String strNowDate = DateUtils.dateToString(new Date());
 			//String strServiceId = orderMap.get("serviceId").toString();
-			String strpayflag = orderMap.get("payFlag").toString();
-			if (strpayflag.equals("0") ) {
+			String strpayflag2 = orderMap2.get("payFlag").toString();
+			if (strpayflag2.equals("0") ) {
 				
                 
-				//m.put("status", 0);
-				m.put("error", true);
+				m.put("status", 4);
+				//m.put("error", true);
 				//m.put("message", "购物车已有同类订单，不能重复购买");
 				JSONObject JSON = CommonUtil.objectToJson(response, m);
 				CommonUtil.writeToJsp(response, JSON);
