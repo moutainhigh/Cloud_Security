@@ -3,7 +3,6 @@ $(function(){
     //购物车点击“去结算”
     $("#shopBuy").click(function(){
     	var userId = $("#userIdHidden").val();
-    	var scanType = $("#scanTypeHidden").val();
     	
        var str="";
 		$("input:checkbox[name=check_name]:checked").each(function(obj){
@@ -17,8 +16,7 @@ $(function(){
 			     async: false, 
 			     url: "checkShoppOrder.html",
 			     data:{"str":str,
-			            "userId":userId,
-			            "scanType":scanType
+			            "userId":userId
 			           },
 			    dataType: "json", 
 			     success: function(data) {
@@ -46,8 +44,15 @@ $(function(){
 								document.body.removeChild(tempForm);
   
 						   
-					     }else{
-					    	 alert("部分订单已失效，请重新下单!");
+					     }			   		
+			   			 else{
+			   				if(data.status==-2){
+				   				alert("此商品只能购买一次，去我的订单里看看吧!");
+				   			 }
+			   				else{
+			   					alert("部分订单已失效，请重新下单!");
+			   				}
+					    	 
 					    	 window.location.href="showShopCar.html";
 					     } 
 			   		 }
