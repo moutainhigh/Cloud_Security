@@ -1867,25 +1867,28 @@ public class shoppingController {
 									status=-2;
 								}
 								//去结算时，如果同时结算多个系统安全帮订单，某个类型相同的数量大于1，就提示错误
-								List orderList2 = orderService.findOrderByUserIdAndServiceIdCheckShopCar(globle_user.getId(), Integer.parseInt(shopCarServiceId));
-								System.out.println(ServiceId+"     "+globle_user.getId());
-								if (orderList2.size() > 1) {
-									               
-										m.put("status", -3);
-										JSONObject JSON = CommonUtil.objectToJson(response, m);
-							    	       try {
-							    	           // 把数据返回到页面
-							    	           CommonUtil.writeToJsp(response, JSON);
-							    	       } catch (IOException e) {
-							    	           e.printStackTrace();
-							    	       }
-							    	       return;
+								
 									
 
-								}
+								
 
 							}
 						} 
+						int countserid7=0;
+						int countserid8=0;
+						int countserid9=0;
+						if(shopCar.getServiceId()==7){
+							countserid7++;
+						}
+						if(shopCar.getServiceId()==8){
+							countserid8++;
+						}
+						if(shopCar.getServiceId()==9){
+							countserid7++;
+						}
+						if(countserid7>1 || countserid8>1 ||countserid9>1){
+							status=-3;
+						}
 					}
 				}
 			}
