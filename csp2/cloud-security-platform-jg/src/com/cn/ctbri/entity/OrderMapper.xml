@@ -32,6 +32,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select o.begin_date ,o.end_date , o.payFlag from cs_order o where o.userId = #{userId} and o.serviceId = #{serviceId} and payFlag=1 order by begin_date desc
     </select>
     
+     <select id="findOrderByUserIdAndServiceIdCheckShopCar" resultType="hashmap" parameterType="hashmap">
+        select o.begin_date ,o.end_date , o.payFlag from cs_order o where o.userId = #{userId} and o.serviceId = #{serviceId} and payFlag=0 order by begin_date desc
+    </select>
+    
     <select id="findPaidSysOrderByUserId" resultType="hashmap" parameterType="hashmap">
         select o.begin_date ,o.end_date , o.payFlag, o.serviceId from (select max(begin_date) begin_date from cs_order where isAPI=3 and payFlag=1 group by  serviceId ) a,  cs_order o where o.userId = #{userId} and a.begin_date=o.begin_date  order by begin_date desc
     </select>
