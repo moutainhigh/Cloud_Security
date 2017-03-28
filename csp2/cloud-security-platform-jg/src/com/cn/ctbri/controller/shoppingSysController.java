@@ -1309,6 +1309,7 @@ public class shoppingSysController {
 		 order.setCreate_date(sdf.parse(createDate));
 		 order.setWafTimes(durationint); 
 		 order.setPayFlag(0);//未支付
+		 order.setNum(Integer.parseInt(duration));
 		 order.setContactId(linkmanId);
 		 if (scanPeriod != null && !"".equals(scanPeriod)) {
 				order.setScan_type(Integer.parseInt(scanPeriod));
