@@ -34,10 +34,17 @@ public class SysWorker {
 	
 	private static String SERVER_SYS_ROOT;
 	//private static String resourceId;
+	//金山
 	private static String SYS_jinshan_getOrderIndex;
 	private static String SYS_jinshan_getUninstallInfo;
 	private static String SYS_jinshan_getHostCount;
 	private static String SYS_jinshan_getOauthUrl;
+	
+	
+	 //云眼
+	private static String SYS_yunyan_gettoken;
+	private static String SYS_yunyan_destroyToken;
+	private static String SYS_yunyan_getloginurl;
 	
 	static{
 		try {
@@ -49,6 +56,10 @@ public class SysWorker {
 			SYS_jinshan_getUninstallInfo = p.getProperty("SYS_jinshan_getUninstallInfo");
 			SYS_jinshan_getHostCount = p.getProperty("SYS_jinshan_getHostCount");
 			SYS_jinshan_getOauthUrl = p.getProperty("SYS_jinshan_getOauthUrl");
+			
+			SYS_yunyan_gettoken = p.getProperty("SYS_yunyan_gettoken");
+			SYS_yunyan_destroyToken = p.getProperty("SYS_yunyan_destroyToken");
+			SYS_yunyan_getloginurl = p.getProperty("SYS_yunyan_getloginurl");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -210,6 +221,130 @@ url解码后：
        // System.out.println(textEntity);
        // return textEntity;
 	}
+	
+	/**
+	 * 功能描述：获取yunyan  token
+	 * @param userId 用户ID（唯一标识）
+	 * 		 
+	 * @time 2017-3-28
+	 * 返回成功："status": "success",
+  	"token": "51f7fdf203668e843c895a4241f9a4ec",
+  	"randomChar": "gK9XNUGANOnN23e8QjdLPFs8merlsdxf"
+
+
+	 */
+	public static String getYunyanToken(String userId){
+		JSONObject json =new JSONObject();
+		json.put("userId", userId);
+
+		
+		String url = SERVER_SYS_ROOT +SYS_yunyan_gettoken ;
+		//创建jersery客户端配置对象
+		ClientConfig config = new DefaultClientConfig();
+		//检查安全传输协议设置
+		buildConfig(url, config);
+		//创建Jersery客户端对象
+        Client client = Client.create(config);
+      //连接服务器
+        WebResource service = client.resource(url);
+      //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+//      String status = JSONObject.fromObject(textEntity).getString("status");
+        
+        String status = JSONObject.fromObject(textEntity).getString("status");
+        if (status.equals("success")) {
+			
+        	String strtoken = JSONObject.fromObject(textEntity).getString("token");   	
+        	return strtoken;
+		}
+        else {
+			return "failed";
+		}
+
+	}
+	
+	
+	/**
+	 * 功能描述：注销yunyan  token
+	 * @param userId 用户ID（唯一标识）
+	 * 		 
+	 * @time 2017-3-28
+	 * 返回成功"status":"success"
+
+
+	 */
+	public static String destroyYunyanToken(String userId){
+		JSONObject json =new JSONObject();
+		json.put("userId", userId);
+
+		
+		String url = SERVER_SYS_ROOT +SYS_yunyan_destroyToken ;
+		//创建jersery客户端配置对象
+		ClientConfig config = new DefaultClientConfig();
+		//检查安全传输协议设置
+		buildConfig(url, config);
+		//创建Jersery客户端对象
+        Client client = Client.create(config);
+      //连接服务器
+        WebResource service = client.resource(url);
+      //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+//      String status = JSONObject.fromObject(textEntity).getString("status");
+        
+        String status = JSONObject.fromObject(textEntity).getString("status");
+        if (status.equals("success")) {
+			
+        	return "success";
+		}
+        else {
+			return "failed";
+		}
+
+	}
+	
+	/**
+	 * 功能描述：获取yunyan  登录url
+	 * @param token 
+	 * 		 
+	 * @time 2017-3-28
+	 * 返回成功{"url":"http://180.153.47.196:8088/stewardweb/securityLogin.do?token=4e1a3c6fd528d4e9186ee4ef6c1edd13","status":"success"}
+
+
+
+	 */
+	public static String getYunyanloginURL(String token){
+		JSONObject json =new JSONObject();
+		json.put("token", token);
+
+		
+		String url = SERVER_SYS_ROOT +SYS_yunyan_getloginurl ;
+		//创建jersery客户端配置对象
+		ClientConfig config = new DefaultClientConfig();
+		//检查安全传输协议设置
+		buildConfig(url, config);
+		//创建Jersery客户端对象
+        Client client = Client.create(config);
+      //连接服务器
+        WebResource service = client.resource(url);
+      //获取响应结果
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        String textEntity = response.getEntity(String.class);
+//      String status = JSONObject.fromObject(textEntity).getString("status");
+        
+        String status = JSONObject.fromObject(textEntity).getString("status");
+        if (status.equals("success")) {
+        	String urlRes = JSONObject.fromObject(textEntity).getString("url");   	
+        	return urlRes;
+
+		}
+        else {
+			return "failed";
+		}
+
+	}
+	
 	/**
 	 * 功能描述： Base64解码
 	 *		 @time 2017-3-15
