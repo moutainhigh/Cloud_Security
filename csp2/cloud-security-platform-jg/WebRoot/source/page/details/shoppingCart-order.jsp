@@ -283,12 +283,19 @@
                                     <td width="29%">
                                  
                                      <p style="text-align: center">
+                                     <!--
                                      <fmt:formatDate value="${shopCar.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                    
                                      <c:if test="${shopCar.endDate!=null&&shopCar.endDate!=''}">
                                        ~  
                                        <fmt:formatDate value="${shopCar.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                      </c:if>
+                                       -->
+                                      <c:if test="${shopCar.buynum <12}">${shopCar.buynum }月</c:if>
+                                      <c:if test="${shopCar.buynum >=12 }">
+                                      <fmt:formatNumber type="number" value="${shopCar.buynum/12}" maxFractionDigits="0"/>年                                                                          	
+                                      </c:if>
+
                                      </p>
                                      
                                     </td>
