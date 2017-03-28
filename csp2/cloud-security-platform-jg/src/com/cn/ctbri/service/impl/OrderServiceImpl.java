@@ -234,9 +234,9 @@ public class OrderServiceImpl implements IOrderService{
 		return orderDao.findPaidSysOrderByUserId(userId);
 	}
 	
-	public List findOrderByUserIdAndServiceIdCheckShopCar(int id, int parseInt) {
+	public List findOrderByUserIdAndServiceIdCheckShopCar(int userId, int serviceId) {
 		// TODO Auto-generated method stub
-		return null;
+		return orderDao.findOrderByUserIdAndServiceIdCheckShopCar(userId,serviceId);
 	}
 
 
