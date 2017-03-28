@@ -206,5 +206,12 @@ public interface IOrderService {
 	//根据条件查询删除订单
 	List<Order> findDelOrderByMap(Map<String, Object> map);
 	
+	/**
+	 * 功能描述：根据用户名和serviceId 查询购物车订单 
+	 * 
+	 * @time 2017-3-27 返回值 ： List
+	 */
+	List findOrderByUserIdAndServiceIdCheckShopCar(int id, int parseInt);
+	
 
 }
