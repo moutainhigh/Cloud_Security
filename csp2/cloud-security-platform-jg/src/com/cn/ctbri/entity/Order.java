@@ -38,6 +38,17 @@ public class Order {
 	private String orderListId;//orderlistid
 	//end
 	private int wafTimes;//waf 服务期限（数字代表月份） or API服务的购买数量  or系统安全帮的购买时长
+	
+	private int num;
+	
+	
+	
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
 	public int getWafTimes() {
 		return wafTimes;
 	}
