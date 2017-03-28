@@ -3,6 +3,19 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<link href="${ctx}/source/css/orderlist.css" type="text/css" rel="stylesheet">
+<SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
+<script src="${ctx}/source/scripts/common/jquery.js"></script>
+<script type="text/javascript"  src="${ctx}/source/scripts/common/jquery.form.js"></script>
+<script src="${ctx}/source/scripts/order/orderList.js"></script>
+</head>
+
+<body>
+
 <%
 	response.setHeader("Pragma","No-cache"); 
 	response.setHeader("Cache-Control","no-cache"); 
@@ -210,11 +223,26 @@
 						                 </a>
 						                
 						            </c:if>
-						             <c:if test="${list.isAPI==3}">						                
+						             <c:if test="${list.isAPI==3}">			             
+						             	<input type="hidden" id="orderIdHidden" name="orderIdHidden" value="${list.id }" />						             						             	
+						             	<c:if test="${list.end_date>temp}">
+						             		<a href="javascript:void(0)" id="listExternal" class="prompt">查看详情</a>
+						             	</c:if>
+						             	<c:if test="${list.end_date<=temp}">
+						             		<a href="javascript:void(0)" class="prompt" type="button" onclick="alertMsg('该订单已过期！');">查看详情</a>
+						             	</c:if>								             				
+						             	<!--       
 						                 <a href="${ctx}/systemOrderOperaInit.html?serviceId=${list.serviceId}" target="_blank">查看详情！</a>
+						                  --> 
 						            </c:if>
 						         
                             	</p>
+                            	<p style="width:98px; height:auto;">
+									<!-- 金山订单卸载密码 -->
+									<c:if test="${list.isAPI==3 && list.serviceId==8 }">									
+             							<a href="javascript:void(0)" id="listPassword" class="prompt" type="button" onclick="alertMsg('卸载密码：${list.remarks }');">卸载密码</a>										
+             						</c:if>
+								</p>
                        			<p style="width:98px; height:auto;">
 									<!-- 订单删除操作 -->
 									<c:if test="${list.isAPI!=3 }">
@@ -232,3 +260,5 @@
             </div>
         </div>
     </c:forEach>
+ </body>
+ </html>
