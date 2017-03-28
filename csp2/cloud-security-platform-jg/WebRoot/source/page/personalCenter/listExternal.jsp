@@ -9,120 +9,6 @@
 <script src="${ctx}/source/scripts/common/popBox.js"></script>
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
-<style>
-.content{
-	background-color:#010937;
-	
-}
-.content .x{ width:670px; margin:0 auto;text-align:center; padding:200px 0;}
-.content .x h2{ font-size:26px; color:#fff; font-weight:bold; margin-bottom:40px;}
-.content .search .text{ 
-	width:540px; 
-	height:40px; 
-	border:#CCC solid 1px; 
-	border-radius:4px; 
-	line-height:40px; 
-	padding-left:20px;
-	border-right:none;
-	font-size:16px;
-	
-}
-::-moz-placeholder {
-    color: #aea4a2;
-	font-weight:bold;
-}
-
-input:-ms-input-placeholder{
-    color: #aea4a2;
-	font-weight:bold;
-}
-
-input::-webkit-input-placeholder {
-    color: #aea4a2;
-	font-weight:bold;
-}
-.content .search .fous{
-	border:#317ef3 solid 1px;
-	border-right:none;
-}
-.content .x .btn{ 
-	cursor: pointer;
-    width: 102px;
-    height:44px;
-    line-height: 40px;
-    padding: 0;
-    border: 0;
-    background: none;
-    background-color: #38f;
-    font-size: 16px;
-    color: white;
-    box-shadow: none;
-    font-weight:bold;
-	position:relative; 
-	left:-2px;
-	top:0px;
-	font-family:"微软雅黑";
-
-}
-.logoimg{
-	margin-bottom:24px;
-}
-.content .x .btn:hover{
-	background-color:#317ef3;
-}
-.result h4{ 
-	margin:20px 0 0  10px; 
-	font-size:20px;
-	cursor:pointer;
-	color:#fff;
-}
-.result h4 span{
-	font-size:20px;
-	color:#b4bd42;
-	padding-right:82px;
-}
-.result-cent{
-	margin-top:20px;
-
-}
-</style>
-<script>
-	$(function(){
-		
-		fos();
-			
-	})
-	function fos(){
-		$('.text').focus(function(){
-			$(this).addClass('fous');	
-		})
-		$('.text').blur(function(){
-			$(this).removeClass('fous');	
-		})	
-	}
-	
-function detectionUrl(){
-	var urlInfo = $("#urlInfo").val();
-		$.ajax({
-            type: "POST",
-            url: "detectionUrl.html",
-            data: {"urlInfo":urlInfo},
-            dataType:"json",
-            success: function(data){
-                if(data){
-                $("#noneId").hide();
-            	    $("#haveId").show();
-            	   return;
-                }else{
-            	     $("#noneId").show();
-            	    $("#haveId").hide();
-            	   
-                }
-            },
-         }); 
-	}
-	
-</script>
 </head>
 
 <body>
@@ -133,22 +19,20 @@ function detectionUrl(){
 			<div class="head">
 				<div class="headBox">
 					<div class="safeL fl" style="width:260px; margin-right:13%">
-						<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:4px;"/>
-						<span style="font-size: 20px;color: #4a4a4a; padding-left:10px;position:relative; top:-10px;">X专区</span>
-                        <!-- <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px; font-weight:normal;">X专区</strong>
-						 -->
+						<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:4px;"/></a>                       
 					</div>
 					<div class="safem fl">
-						<span class="fl"><a href="${ctx}/index.html" class="hbule this">首页</a></span>
-						
+						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
+								
 						<!-- 商品分类 start -->
 						<c:import url="/category.html"></c:import>
 						<!-- 商品分类 end -->
-						
-						<span class="fl"><a href="${ctx}/knowUs.html" class="hbule">关于我们</a></span>
+				
+						<span class="fl"><a href="${ctx}/knowUs.html">关于我们</a></span>
 						<span class="fl shopping" style="margin-right:0">
 							<a href="${ctx}/showShopCar.html"><i></i>购物车</a>
 						</span>
+						
 					</div>
 					<div class="safer fr" style="margin-left:0px;">
 						<!-- 如果已经登录则显示用户名，否则需要登录 -->
@@ -171,8 +55,10 @@ function detectionUrl(){
 
 		</div>
 		
-	   	<div style="height:550px;width:100%">
-	        <iframe src="${jinshanURL}" width="100%" height="100%" scrolling="no" style="border:0px"></iframe>
+	   	<div style="width:100%">
+	        <iframe src="${jinshanURL}" width="100%" height="2000px" scrolling="auto" style="border:0px"></iframe>
+	        
+	       
 	    </div>
 		<div class="safe04">
 			<div class="imgBox clearfix">
