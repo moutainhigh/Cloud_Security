@@ -275,8 +275,7 @@
                                             <a href="${ctx}/systemOrderOperaInit.html?serviceId=${shopCar.serviceId}&indexPage=4" target="_blank">${shopCar.serverName}</a>
                                             </c:if>                              
                                             </td>
-                                    <td width="20%">
-                                    	<input type="hidden" id="scanTypeHidden" value="${shopCar.scan_type }" />                                    	
+                                    <td width="20%">                                    	
                                     	<c:if test="${shopCar.serviceId==7 }">${shopCar.scan_type }IP</c:if>
                                     	<c:if test="${shopCar.serviceId==8 }">${shopCar.scan_type }节点</c:if>
                                     	<c:if test="${shopCar.serviceId==9 }">1个</c:if>
