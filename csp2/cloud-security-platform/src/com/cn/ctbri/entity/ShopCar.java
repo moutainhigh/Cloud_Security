@@ -26,6 +26,15 @@ public class ShopCar implements Serializable{
 	private Date begin_date;//开始时间
 	private Date end_date;//结束日期
 	private Date createDate;
+	private int scan_type;	
+	
+	
+	public int getScan_type() {
+		return scan_type;
+	}
+	public void setScan_type(int scan_type) {
+		this.scan_type = scan_type;
+	}
 	public String getOrderId() {
 		return orderId;
 	}

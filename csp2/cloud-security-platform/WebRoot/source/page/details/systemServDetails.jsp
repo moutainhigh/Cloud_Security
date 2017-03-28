@@ -23,7 +23,8 @@
 <!-- <script src="${ctx}/source/scripts/order/wafDetail.js"></script>
 <script src="${ctx}/source/scripts/order/details.js"></script> -->
 <script type="text/javascript" src="${ctx}/source/scripts/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/common/zezao.js"></script> 
+
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <style>
 .dataBox .dataR ul li label {width: 74px;}
@@ -72,97 +73,135 @@
 				</div>
 			</div>
 		</div>
+
 	<div class="dataCent">
 			<div class="data-crumbs">
-				<a href="${ctx}/index.html" style="font-size: 20px;">安全帮</a><i>&gt;</i><a href="${ctx}/web_anquanbang.html">系统安全帮</a><i>&gt;</i><a href="javascript:;">${service.name }</a>
+				<a href="${ctx}/index.html" style="font-size: 20px;">安全帮</a><i>&gt;</i><a href="${ctx}/system_anquanbang.html">系统安全帮</a><i>&gt;</i><a href="javascript:;">${service.name }</a>
 			</div>
 				<input type="hidden" id="serviceIdHidden" value="${service.id }"/>
+				
+				<input type="hidden" id="message" value="${message }"/>
+				
 			<div class="dataBox clearfix">
 				<div class="dataL fl">
 					<div class="dataImg fl">
-					<img src="${ctx}/source/images/portal/jiguang_icon.jpg" alt="" style=""/>
+					<img src="${ctx}/source/images/serviceIcon/${service.detailIcon }" alt="" style=""/>
 					</div>
 				</div>
 					<div class="dataR detailsR fl" style="width:640px;">
-					<h2 style="font-size:20px; margin-bottom:18px;">${service.name }</h2>
-                  <a href="javascript:showShopCar();" class="buttoncar" style="right:0px;"><b>${carnum}</b><i></i>我的购物车&gt;</a>
-				
+					<h2 style="font-size:20px; margin-bottom:18px;">${service.name }</h2>				
+                  <a href="javascript:showShopCar();" class="buttoncar" style="right:0px;"><b id="shopCarNum">${carnum}</b><i></i>我的购物车&gt;</a>
 					<ul>
 						<li class="clearfix">
 							<label class="fl">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</label>
-                            <div class="fl price"><strong id="price">99</strong><strong></strong></div> 
-                          	<span style="position: relative;top: 7px;left:7px;color:#d00000">元</span>
-                          	<span style="position: relative;top: 7px;left:7px"><u>由绿盟科技提供服务并开具发票</u></span>
+                            <div class="fl price"><strong id="price">0</strong><strong></strong></div> 
+                          	<span style="position: relative;top: 7px;left:7px;color:#d00000">安全币</span>
+                          	<c:if test="${service.id==7 }">
+                          		<span style="position: relative;top: 7px;left:7px"><u>由绿盟科技提供服务并开具发票</u></span>
+                          	</c:if>
 						</li>
-                          <li class="clearfix">
-							<label class="fl">选 类 型</label>
-                           <div class="fl clickBox" id="clickBox">
-                            <button class="click Single" value="8" onclick="changeDiv('Single');" style="width: 90px;">包月</button>
-                            <button class="long" value="9" onclick="changeDiv('long');" style="width: 90px;">包年</button>
-                           </div> 
-                           
-						</li>
-                 		<li class="clearfix" id="monthDiv" style="display:block;">
+
+                          	<li class="clearfix">
 							<label class="fl">服务期限</label>
-                            <div class="fl" style="top:3px;">
-                              <select class="text select" id="month" onchange="changePrice();" style="margin-left: 0px;">
-                                <option value="1">1个月</option>
-                                <option value="2">2个月</option>
-                                <option value="3">3个月</option>
-                                 <option value="4">4个月</option>
-                                  <option value="5">5个月</option>
-                                  <option value="6">6个月</option>
-                                  <option value="7">7个月</option>
-                                   <option value="8">8个月</option>
-                                   <option value="9">9个月</option>
-                                    <option value="10">10个月</option>
-                                    <option value="11">11个月</option>
-                              </select>
-                              <span style="position: relative;top: 7px;left:7px">（服务开始时间以成功支付时间为准）</span>
-                           </div> 
-                           
-						</li> 
-                            <li class="clearfix" id="yearDiv" style="display:none">
-                            <label class="fl">服务期限</label>
-                            <div class="fl" style="top:3px;">
-                              <select class="text select" id="month" onchange="changePrice();" style="margin-left: 0px;">
-                                <option value="1">1年</option>
-                                <option value="2">2年</option>
-                                <option value="3">3年</option>
-                                 <option value="4">4年</option>
-                                  <option value="5">5年</option>
-                              </select> 
-                              <span style="position: relative;top: 7px;left:7px">（服务开始时间以成功支付时间为准）</span>
-                           </div> 
+                           	<div class="fl" style="top:3px;">
+                           <!-- 
+                           <select class="text select" id="duration" onchange="changePrice();" style="margin-left: 0px;">
+                            <select class="text select" id="duration" onchange="changeDur();" style="margin-left: 0px;">
+                            -->
+                           	<c:if test="${service.id==7}">
+                           		<select class="text select" id="duration" onchange="changePrice();" style="margin-left: 0px;">
+                           			<option value="12">1年</option>
+                           		</select> 
+                           	</c:if>
+                           	<c:if test="${service.id==8}">
+                           		<select class="text select" id="duration" onchange="changeDur();" style="margin-left: 0px;">
+                           			<option value="1">1月</option>
+                           			<option value="2">2月</option>
+                           			<option value="3">3月</option>
+                           			<option value="4">4月</option>
+                           			<option value="5">5月</option>
+                           			<option value="6">6月</option>
+                           			<option value="7">7月</option>
+                           			<option value="8">8月</option>
+                           			<option value="9">9月</option>
+                           			<option value="10">10月</option>
+                           			<option value="11">11月</option>
+                           			<option value="12">1年</option>
+                           			<option value="24">2年</option>
+                           		</select> 
+                           	</c:if>
+                           	<c:if test="${service.id==9}">
+                           		<select class="text select" id="duration" onchange="changePrice();" style="margin-left: 0px;">
+                           			<option value="1">1月</option>
+                           			<option value="2">2月</option>
+                           			<option value="3">3月</option>
+                           			<option value="4">4月</option>
+                           			<option value="5">5月</option>
+                           			<option value="6">6月</option>
+                           			<option value="7">7月</option>
+                           			<option value="8">8月</option>
+                           			<option value="9">9月</option>
+                           			<option value="10">10月</option>
+                           			<option value="11">11月</option>
+                           			<option value="12">1年</option>
+                           		</select> 
+                           	</c:if>                           	                   
+                           </div>                            
 						</li>
-						 <li class="clearfix">
-                        	<label class="fl">内网主机数</label>
-                        	<div class="fl" style="top:3px;">
-                              <select class="text select" id="num" onchange="changePrice();" style="margin-left: 0px;">
-                                <option value="64">64</option>
-                                <option value="128">128</option>
-                              </select> 
-                           </div> 
-                           
-                        </li>
+						<c:if test="${service.id==7 }">
+						<li class="clearfix">
+	                        	<label class="fl">内网主机数</label>
+	                        	<div class="fl" style="top:3px;">
+	                              <select class="text select" id="ipNum" onchange="changePrice()" style="margin-left: 0px;">   
+	                                <option value="64">64</option>
+	                                <option value="128">128</option>
+	                              </select> 
+	                           </div>  
+	                     </li>
+	                     </c:if>
+						
+                        <c:if test="${service.id==8 }">
+	                         <li class="clearfix">
+	                        	<label class="fl">节点个数</label>
+	                        	<div class="fl" style="top:3px;">
+	                              <select class="text select" id="nodeNum" onchange="changePrice()" style="margin-left: 0px;"> 
+	                              <!-- 
+	                                <option value="10">10</option>
+	                                <option value="20">20</option>
+	                                <option value="30">30</option>
+	                                <option value="50">50</option>
+	                                <option value="100">100</option>
+	                                <option value="200">200</option>
+	                                <option value="500">500</option>
+	                                  --> 
+	                              </select> 
+	                           </div>  
+	                        </li>
+                        </c:if>
 					</ul>
-                    <div class="btnBox" style="text-align:left; margin-left:0px; margin-top:32px; margin-bottom:0px;">
-                    	<button style="background:#d00000; width:146px;" id="addCar">添加到购物车</button>
-                        <button style="background:#5aba5f; width:126px" id="buyNow">立即购买</button>
+                    <div class="btnBox" style="text-align:left; margin-left:0px; margin-top:32px; margin-bottom:0px;">                  
+                    	<button style="background:#d00000; width:146px;" id="addSysCar">添加到购物车</button>
+                        <button style="background:#5aba5f; width:126px" id="buyNowsys">立即购买</button>
                     </div>
 				</div>
-                <form action="wafDetails.html" method="post" id="wafDetailsForm">
-					<input type="hidden" id="serviceIdWafHidden" name="serviceId" value=""/>
-				</form>
 				
 			</div>
 		</div>
         <div class="commodity">
         	<div class="imgBox clearfix">
             	<h4>商品信息</h4>
+            	<c:forEach var="detailImage" items="${detailImages}" varStatus="status">
+	            	<c:if test="${detailImage != null && detailImage != ''}">
+	            		<div class="commoditys" style="overflow:hidden">
+	            			<img src="${ctx}/source/images/serviceDetail/${detailImage }" alt=""/>
+	            		</div>
+	            	</c:if>
+            	</c:forEach>
+            	<!--
                 <div class="commoditys" style="overflow:hidden">
                 	<img src="${ctx}/source/images/portal/jiguang_detail.jpg" alt="">
                 </div>
+                  -->
             </div>
         </div>
 		<div class="safe04">
@@ -230,420 +269,9 @@
     </div>
 
 </div> 
-<div class="waf-detais-pop popBoxhide" id="wafpop">
-	<i class="close chide" id="wafclose"></i>
-    <div class="Pophead">
-    	<h2>请选择要服务的网站域名（单选）</h2>
-        <a href="#"  class="ass "><i><img src="${ctx}/source/images/add.png" alt=""></i>新增域名</a>
-    </div>
-	<div class="popBox">
-    <!--请选择要服务的网站内容显示-->
-        <div class="centone" id="senone" style="display:none;" >
-             <ul style="height:175px;" id="assBox">
-              <c:forEach items="${assList}" var="asset"  varStatus="status">
-                <li>
-                    <div class="rcent">
-                        <h3>
-                        
-                        	<b>${asset.name }</b>
-                         </h3>
-                       <div class="tBox">${asset.addr }</div>
-                    </div>
-                <br /><br /></li>
-                 </c:forEach>
-            </ul>
-           <div class="hide" style="position: relative;">
-           	 <p style="margin: 20px 20px 0px 40px">填写域名对应的IP:端口号（例：192.168.1.1:8080），不填写端口号使用默认端口号(http:默认端口号80；https默认端口号443)，对应多个ip时请逐个添加
-</p>
-               <div class="add_ip clearfix">
-                    <ol id="wafBox" class="waf-addBox fl">
-                        <li class="basic"><input type="text" class="text"></input><br /><br /></li>
-                        <span class="fl" id="acIp"><em><img src="${ctx}/source/images/add.png" alt=""></em>新增IP</span>
-                    </ol>
-           		</div>
-           		
-           </div>
-           <style>
 
-           
-           </style>
-           <div class="waf-detailsbtoom clearfix" style="margin-bottom:20px;">
-           	<a href="javascript:;" class="submit">确定</a>
-           </div>
-        </div>
-        <!--新增网站内容显示-->
-        d<br /><br /><div class="centone" id="sentwo" style="display:none;">
-           <form id="saveWafAsset" action="" method="post">
-            <div class="addhttp">
-                <div class="popBox">
-                    <ul style="height:auto;">
-                      <li class="clearfix">
-                          <label class="fl">网站名称</label> <div class="fl"><input class="boz_inout_1" type="text" name="name" id="assetName" maxlength="20"></div>
-                            
-                        <br /><br /></li>
-                     <!-- <li class="clearfix">
-                            <label class="fl">网站地址类型</label><div class="fl">
-                                <label><input type="radio" name="addrType" checked="checked" id="assetAddrType1" value="http">http</input></label>
-                                <label style="margin-left:10px;"><input type="radio" name="addrType" id="assetAddrType2" value="https">https</label>
-                             </div>
-                        </li> --> 
-                       <li class="clearfix">
-                        	<label class="fl">网站地址</label> <div class="fl"><input class="boz_inout_1" type="text" name="addr" id="InertAddr"  maxlength="100" onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')"></div>
-                            
-                        	<div class="fl" style="margin-left:88px;font-size: 14px;color: rgb(227, 41, 41);">云WAF订单只支持域名网站</div>
-                        <br /><br /></li>
-                        <li class="clearfix">
-                            <label class="fl">示例</label> 
-                            <div class="fl" style="margin-bottom:10px;">                              
-                                 <p style="margin:0px;">http://xxx.xxx.xxx.xxx</p>
-                                 <p style="margin:0px;">https://xxx.xxx.xxx.xxx:1234</p>
-                                 <p style="margin:0px;">http://xxx.xxx.xxx.xxx:8080/home</p>                                 
-                            </div>
-                        <br /><br /></li>
-                        
-                         <li class="clearfix">
-                            <label class="fl">物理位置</label> 
-                                <div class="fl">
-                                    <select class="user_secta_count spiclesel" id="districtId" name="districtId" onchange="getCitys(this.value)" style="width:119px;height: 35px;">
-				                        <option selected="selected" value="-1">请选择省份</option>
-			                        </select> 
-			    					<select  class="user_secta_count spiclesel"  id="city" name="city" disabled="disabled" style="width:119px;height: 35px;">
-			    			      		<option value="-1">请选择城市</option>
-			    					</select>
-                                </div>
-			    					
-                        <br /><br /></li>
-                        <li class="clearfix">wi
-                            <label class="fl">网站用途</label> 
-                            <div class="fl">
-                                       <select class="user_secta_count spiclesel" id="purpose" name="purpose" style="width:242px;height: 35px;">
-                                          <option selected="selected" value="-1">请选择资产用途</option>
-							   				<option value="公共服务">公共服务</option>
-							   				<option value="信息发布">信息发布</option>
-							   				<option value="信息服务">信息服务</option>
-							   				<option value="社交">社交</option>
-							   				<option value="娱乐">娱乐</option>
-							   				<option value="电子商务/金融">电子商务/金融</option>
-							   				<option value="移动互联网">移动互联网</option>
-							   				<option value="教育/医疗">教育/医疗</option>
-							   				<option value="其他">其他</option>   
-                                        </select>
-                             </div>
-                             
-                        <br /><br /></li>
-                    </ul>
-                   
-                 </div>
-            
-            </div>
-             <div class="bottom clearfix">
-                        <a href="javascript:;" class="btn sub" style="margin:0 20px 0 30px;" onclick="saveWafAsset()">提交</a>
-                        <a href="javascript:;" class="btn sub return" id="back">返回</a>
-                    </div>
-            </form>
-        </div>
-    </div>
-	<div class="bottom clearfix">
-    	<a href="javascript:;" class="btn ok">确定</a>
-    </div>
     
 </div>
-<div class="shade"></div>
-<script>
-$(function(){
-	//单选JS
-$(document).ready(function(){
-		var arrtlink=[];	
-		$('#waf_http').click(function(){
-		 $.ajax({ type: "POST",
-		     	async: false, 
-		     	url: "getAssetList.html",
-		     	data: {"wafFlag":"1"}, 
-		     	dataType: "json", 
-		     	success: function(data) {
-			     	if(data.success){
-				     	//如果当前用户没有资产，则进入新增资产页面
-						var assCount = data.assList.length;
-						if(assCount!=0){
-							$('#sentwo').hide(1);
-							$('#senone').show(1);
-						}else{
-							$('#senone').hide(1);
-							$('#sentwo').show(1);	
-						}
-			     	}
-		     	},
-		     	error:function(data) {
-		      		if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-		    		 		window.location.href = "loginUI.html"; } 
-		    	 	else { window.location.href = "loginUI.html"; } 
-		    	 	} 
-		  });
-		  
-		    var ipList = [];
-			$('.fack li').each(function(index, element) {
-				var ip= $(this).contents().filter(function() { return this.nodeType == 3; }).text(); 
-				if(ip!=null && ip!=''){
-					ipList.push(ip);
-				}		
-			});
-			if(ipList.length!=0){
-			//恢复输入框填写状态
-			$('#wafBox li').remove();
-			//恢复列表选中状态
-			$('#senone li').removeClass('ac');
-			$('#senone li i').removeClass('this');
-			var ytext=$('.ym span').text();
-			$('#senone .tBox').each(function(index, element) {
-                var stxt= $(this).text();
-				if(ytext==stxt){
-					$(this)	.parents('li').addClass('ac');
-					$(this)	.parents('.ac').find('i').addClass('this');
-				}
-				
-            });
-			//添加输入框的动作
-			var list='';
-				var index=1;
-				for(var i=0;i<ipList.length;i++){
-					index++;
-					 list+='<li class="waflist">';
-					list+='<input type="text" class="text" data-id='+ipList[i] +' value="'+ ipList[i]+'">';
-					list+='<i><img src="${ctx}/source/images/p-dle.png" alt=""></i>';
-					list+='</li>';  
-				}
-				$('#wafBox span').before(list);
-				$('.hide').show();
-			}
-			
-			//显示遮罩层
-			$('.shade').show();
-			//显示
-			$('.waf-detais-pop').animate({
-				opacity: '1',
-				top: '45%',
-				left: '50%',
-				marginTop: '-224px'
-			}, 500);
-		})
-        //弹框切换动作
-		$('.ass').click(function(){
-			$('#saveWafAsset')[0].reset();	
-			$('#senone').hide();
-			$('#sentwo').show();
-			//添加网站页面的数据清空 start
-			$('#assetName').val('');
-			$('#InertAddr').val('');
-			$('#districtId').val(-1);
-			//清空城市下拉框
-			$("#city").empty();
-			$("#city").append( '<option value="-1">请选择城市</option>');
-			$("#city").attr('disabled','disabled');
-			$('#purpose').val(-1);
-			$(".addMsg").html("");
-			//添加网站页面的数据清空 end
-		})
-		$('#back').click(function(){
-			$('#sentwo').hide();
-			$('#senone').show();	
-		})
-		//添加输入框的动作
-		
-		var html='';
-			html+='<li class="waflist">';
-				html+='<input type="text" class="text"  value="">';
-				html+='<i><img src="${ctx}/source/images/p-dle.png" alt=""></i>';
-			html+='</li>';
-			
-			
-		//添加输入框事件	
-		$('#acIp').click(function(){
-			var lenght=$('#wafBox li').length;
-			if(lenght==5){
-				$('#wafBox span').fadeOut(200);
-					
-			}else{
-				$('#wafBox span').before(html);	
-			}
-		});
-		//删除输入框
-		$('#wafBox').delegate('i','click',function(){
-           // alert($('#wafBox .waflist').length);
-			var wf=$('.waflist').length;
-			if(wf==4){
-				$('#acIp').fadeIn(200);		
-			}
-			$(this).parent('li').remove();	
-		});
-
-		$('.submit').click(function(){
-			var acleng =$('#senone .ac').length;
-			var  ips = new Array();
-			var flag = true;
-			//判断是否什么都没选为空
-			if(acleng==0){
-			//	alert("请选择网站域名!");
-			//关闭后效果
-                $('.waf-detais-pop').animate({
-                    opacity: '1',
-                    top: '50%',
-                    left: '50%',
-                    marginTop: '-1200px'
-                 }, 500);
-                 //隐藏遮罩层
-                 $('.shade').hide();
-				return;	
-			}
-			//选中的网站地址           
-            var acval=$('#senone .ac .rcent div').text();
-            $('#wafBox li input:text').each(function(index, element) {
-                var le= $(this).val();
-                var temp = [];
-                if(le!=null && le!=''){
-                	temp = le.split(':');
-                	if(temp.length>2){
-                		alert("IP格式不正确!不正确IP为:"+le);
-                		flag = false;
-                		return;
-                	}else if(temp.length==1){
-                		if(!isIp(temp[0])){
-	                		alert("IP格式不正确!不正确IP为:"+le);
-	                		flag = false;
-	                		return;
-                		}else if(acval.indexOf('https')!=-1){
-                			le+=":443";
-                		}else if(acval.indexOf('http')!=-1){
-                			le+=":80";
-                		}
-                	}else{
-                		if((!isIp(temp[0]))||(!isPort(temp[1]))){
-	                		alert("IP格式不正确!不正确IP为:"+le);
-	                		flag = false;
-	                		return;
-                		}
-                	}
-                }else{
-                	alert("请输入IP地址!");
-                	flag = false;
-	                return;
-                }
-                if(flag){
-                	ips.push(le);
-                }
-            });
-            if(!flag){
-            	//ip地址有误
-            	return;
-            }
-
-			else if(ips.length==0){
-				alert("请输入IP地址!");
-            }else if(isRepeat(ips)){
-            	alert("IP地址不能重复!");
-            }
-			else{
-                $('#wafBox input:text').each(function(index, element) {
-                        arrtlink.length=0;
-                        $('.fack li').remove();
-                        //选中的网站地址           
-                        var acval=$('#senone .ac .rcent div').text();
-                        var assetId = $('#senone .ac .rcent').find('input').val();
-                        $('#wafBox input:text').each(function(index, element) {
-                            var tval= $(this).val();
-                            //存入val值
-                            arrtlink.push(tval);
-                        });
-                        //页面添加网址
-                        $('.ym span').text(acval);                       
-						$('.ym span').attr('id',assetId);
-						
-                        var list='';
-                        var index=0;
-                        for(var i=0;i<arrtlink.length;i++){
-                            if(arrtlink[i]!=null && arrtlink[i]!=''){
-                                index++;
-                            	list+='<li id='+ index +'><em>ip<b>'+ index +'</b>：</em>'+ arrtlink[i] +'</li>';
-                            }
-                               
-                        }
-                        $('.fack').append(list);
-                        
-                        //显示页面删除和容器标签
-                        $('#dele').show();
-                        $('.not').hide();
-                        $('.http').show();
-                         //关闭后效果
-                        $('.waf-detais-pop').animate({
-                            opacity: '1',
-                            top: '50%',
-                            left: '50%',
-                            marginTop: '-1200px'
-                        }, 500);
-                        //隐藏遮罩层
-                        $('.shade').hide();
-                    
-                });
-
-
-
-				
-			}
-			
-			
-		})
-		
-		
-		//关闭窗口按钮
-		$('#wafclose').click(function(){
-			if(arrtlink.length==0){
-				$('#senone .hide .text').val('');
-				$('#senone li').removeClass('ac');
-				$('#senone li i').removeClass('this');
-				$('#senone .hide').hide();
-                $('#wafBox .waflist').remove();	
-				
-			}
-				 //关闭后效果
-				$('.waf-detais-pop').animate({
-					opacity: '1',
-					top: '50%',
-					left: '50%',
-					marginTop: '-1200px'
-				}, 500);
-				//隐藏遮罩层
-				$('.shade').hide();
-				
-				//添加网站页面的数据清空 start
-				$('#assetName').val('');
-				$('#InertAddr').val('');
-				$('#districtId').val(-1);
-				//清空城市下拉框
-				$("#city").empty();
-				$("#city").append( '<option value="-1">请选择城市</option>');
-				$("#city").attr('disabled','disabled');
-				$('#purpose').val(-1);
-				$(".addMsg").html("");
-				//添加网站页面的数据清空 end
-		})
-		//页面删除按钮
-		$('#dele').click(function(){
-				arrtlink.length=0;
-                $('#senone .hide .text').val('');
-               
-				$('.ym span').text('');
-				$('.fack li').remove();
-				$('#senone li').removeClass('ac');
-				$('#senone li i').removeClass('this');
-				$('#wafBox .waflist').remove();
-				$('#senone .hide').hide();
-                $(this).hide();
-                $('.http').hide();
-                $('.not').show();
-		})	
-})	
-})
-</script>
-
 
 </body>
 

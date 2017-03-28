@@ -236,6 +236,82 @@
                         </div>
                          </c:if>
                         
+                        
+                      <c:if test="${not empty sysList}">
+                        <div class="tabox" style=" margin-left:0px; width:1108px; padding:0;padding-top:10px">
+                       
+                        	<table class="ordertab" width="100%">
+                            	<tbody>
+                                	<tr>
+                                    	<td width="18%">
+                                            <i class="check-all"></i>
+                                           	系统安全帮                                   	
+                                        </td>                                     
+                                       	<td width="18%">数量</td>
+                                        <td width="14%">服务时间</td>
+                                        <td width="6%">价格</td>
+                                        <td width="4%">操作</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                           	<c:forEach var="shopCar" items="${sysList}">
+                        	<table class="test-table" width="100%">
+                        		<tbody>                           	
+                                	<tr height="40">
+                                    	<td width="20%">
+                                     	<c:if test="${shopCar.status==-1}">
+                                           <div style="width: 50px; float: left; vertical-align: middle; margin: 0px 20px;"><font color="red">已失效</font></div>
+                                        </c:if>
+                                        <c:if test="${shopCar.status!=-1}">
+                                        	<label style=" margin: 0 20px 0 40px; width:16px; height:16px;display:inline-block;">
+                                            	<input type="checkbox" class="ck" style="display:none" value="${shopCar.orderId}" isApi="0" name="check_name" />
+                                           		<i class="chck" style="margin: 0; position:relative; top:0"></i>
+                                           	</label>
+                                         </c:if>
+                                            
+                                           <c:if test="${shopCar.serviceId!=6}">
+                                          
+                                            <a href="${ctx}/systemOrderOperaInit.html?serviceId=${shopCar.serviceId}&indexPage=4" target="_blank">${shopCar.serverName}</a>
+                                            </c:if>                              
+                                            </td>
+                                    <td width="20%">                                    	
+                                    	<c:if test="${shopCar.serviceId==7 }">${shopCar.scan_type }IP</c:if>
+                                    	<c:if test="${shopCar.serviceId==8 }">${shopCar.scan_type }节点</c:if>
+                                    	<c:if test="${shopCar.serviceId==9 }">1个</c:if>
+                                    </td>
+                                    <td width="29%">
+                                 
+                                     <p style="text-align: center">
+                                     <!--
+                                     <fmt:formatDate value="${shopCar.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                   
+                                     <c:if test="${shopCar.endDate!=null&&shopCar.endDate!=''}">
+                                       ~  
+                                       <fmt:formatDate value="${shopCar.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                     </c:if>
+                                       -->
+                                      <c:if test="${shopCar.buynum <12}">${shopCar.buynum }月</c:if>
+                                      <c:if test="${shopCar.buynum >=12 }">
+                                      <fmt:formatNumber type="number" value="${shopCar.buynum/12}" maxFractionDigits="0"/>年                                                                          	
+                                      </c:if>
+
+                                     </p>
+                                     
+                                    </td>
+                                    <td width="10%">
+                                      	<em class="price" style="padding:5px 0px 5px 10px">
+                                      		<fmt:formatNumber type="number" value="${shopCar.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
+                                      	</em>
+                                    </td>
+                                    <td width="5%" ><a href="#" onclick="delShopCar('${shopCar.orderId}');">删除</a></td>
+                                    
+                                  </tr>                                 
+                            </tbody>
+                        </table>
+                        </c:forEach>
+                        </div>
+                         </c:if>
                        
                         	<div class="settle" style="width:1108px;">
                                 <span>已选择<b>0</b>个订单</span>

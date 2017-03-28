@@ -140,7 +140,9 @@ public class shoppingAPIController {
         List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
         //查询安全能力API
 		   List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
-		 int carnum=shopCarList.size()+apiList.size();
+		// 查询系统安全帮
+			List sysList = selfHelpOrderService.findShopCarSysList(String.valueOf(globle_user.getId()), 0, "");
+			int carnum = shopCarList.size() + apiList.size() + sysList.size();
         request.setAttribute("apiId", apiId);
         request.setAttribute("indexPage", indexPage);
         request.setAttribute("serviceAPI", serviceAPI);
@@ -648,7 +650,8 @@ public class shoppingAPIController {
             List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
             //查询安全能力API
    		   List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
-   		 int carnum=shopCarList.size()+apiList.size();
+   		   List sysList = selfHelpOrderService.findShopCarSysList(String.valueOf(globle_user.getId()), 0, "");
+		 int carnum=shopCarList.size()+apiList.size()+sysList.size();
    		 request.setAttribute("carnum", carnum);  
 	   m.put("sucess", true);
 	//object转化为Json格式

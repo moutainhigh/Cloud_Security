@@ -3,6 +3,18 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<link href="${ctx}/source/css/orderlist.css" type="text/css" rel="stylesheet">
+<SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
+<script src="${ctx}/source/scripts/common/jquery.js"></script>
+<script type="text/javascript"  src="${ctx}/source/scripts/common/jquery.form.js"></script>
+<script src="${ctx}/source/scripts/order/orderList.js"></script>
+</head>
+
+<body>
 <%
 	response.setHeader("Pragma","No-cache"); 
 	response.setHeader("Cache-Control","no-cache"); 
@@ -38,8 +50,19 @@
                                          <h2 style="height: 90px;padding-top: 10px;line-height: 45px;font-size: 14px;color: #343434;text-align: left;*width: 208px;*text-align: left;">
 							                 <!-- ${list.name}
 							                 	<br>${status.index+1}_${list.id}-->
-							                 <c:if test="${list.isAPI==0&&list.serviceId!=6}">
+							                 <!--
+							                 <c:if test="${list.isAPI==0&&list.serviceId<6}">
 							                 	<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.serviceId}&indexPage=1" target="_blank">${list.name}<br>${status.index+1}_${list.id}</a>
+							                 </c:if>
+							                 <c:if test="${list.isAPI==0&&list.serviceId>=7}">
+							                 	<a href="${ctx}/systemOrderOperaInit.html?serviceId=${list.serviceId}&indexPage=4" target="_blank">${list.name}<br>${status.index+1}_${list.id}</a>
+							                 </c:if>
+							                   -->
+							                 <c:if test="${list.isAPI==0 && list.serviceId<6}">
+							                 	<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.serviceId}&indexPage=1" target="_blank">${list.name}<br>${status.index+1}_${list.id}</a>
+							                 </c:if>
+							                 <c:if test="${list.isAPI==3}">
+							                 	<a href="${ctx}/systemOrderOperaInit.html?serviceId=${list.serviceId}&indexPage=4" target="_blank">${list.name}<br>${status.index+1}_${list.id}</a>
 							                 </c:if>
 							                 <c:if test="${list.isAPI==2&&list.serviceId==6}">
 							                   <a href="${ctx}/wafDetails.html?serviceId=6" target="_blank">${list.name}<br>${status.index+1}_${list.id}</a>
@@ -50,23 +73,40 @@
                                          </h2>
                                         </c:if>
                                         <c:if test="${fn:length(olist.order)==1}">
-                                          <c:if test="${list.isAPI==0&&list.serviceId!=6}">
+                                        <!--
+                                          <c:if test="${list.isAPI==0&&list.serviceId<6}">
                                          <h2>
 							                   <a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.serviceId}&indexPage=1" target="_blank">${list.name}</a>
                                          </h2>
                                          </c:if>
+                                         <c:if test="${list.isAPI==0&&list.serviceId>=7}">
+                                         <h2>
+							                   <a href="${ctx}/systemOrderOperaInit.html?serviceId=${list.serviceId}&indexPage=4" target="_blank">${list.name}</a>
+                                         </h2>
+                                         </c:if>
+                                           -->
+                                         	<c:if test="${list.isAPI==0 && list.serviceId<6}">
+                                         		<h2>
+							                   		<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.serviceId}&indexPage=1" target="_blank">${list.name}</a>
+                                         		</h2>
+                                         	</c:if>
+                                         	<c:if test="${list.isAPI==3}">
+                                         		<h2>
+							                   		<a href="${ctx}/systemOrderOperaInit.html?serviceId=${list.serviceId}&indexPage=4" target="_blank">${list.name}</a>
+                                         		</h2>
+                                         	</c:if>
                                             <c:if test="${list.isAPI==2&&list.serviceId==6}">
-                                         <h2>
-							                   <a href="${ctx}/wafDetails.html?serviceId=6" target="_blank">${list.name}</a>
-                                         </h2>
-                                         </c:if>
+                                         		<h2>
+							                   		<a href="${ctx}/wafDetails.html?serviceId=6" target="_blank">${list.name}</a>
+                                         		</h2>
+                                         	</c:if>
                                             <c:if test="${list.isAPI==1}">
-                                         <h2>
-							                   <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${list.serviceId}&indexPage=2" target="_blank">${list.name}</a>
-                                         </h2>
-                                         </c:if>
+                                         		<h2>
+							                   		<a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${list.serviceId}&indexPage=2" target="_blank">${list.name}</a>
+                                         		</h2>
+                                         	</c:if>
                                         </c:if>
-                                         </div>
+                                        </div>	
                                     	<c:forEach var="asset" items="${list.assetList}" varStatus="status">
                                         	<div class="listDiv"><p style="text-align: left; margin:0; line-height:24px;">资产名称：${asset.name}</p></div>
                                         </c:forEach>
@@ -75,9 +115,24 @@
                             </td>
                             <td class="order" valign="top">
                             	<p class="stylep" style="width:84px;">
-                            	<c:if test="${list.isAPI==0}">
+                            	<c:if test="${list.isAPI==0 && list.serviceId<6}">
 									<c:if test="${list.type==1}">长期</c:if>
 									<c:if test="${list.type==2}">单次</c:if> 
+								</c:if>
+								<c:if test="${list.isAPI==3}">
+									<c:if test="${list.serviceId==7}">
+										${list.scan_type} IP
+										<!--
+										<c:if test="${list.price==64}">64IP</c:if>
+										<c:if test="${list.price==128}">128IP</c:if>
+									  -->
+									</c:if>									
+									<c:if test="${list.serviceId==8 }">
+										${list.scan_type} 节点
+									</c:if> 
+									<c:if test="${list.serviceId==9 }">
+										1个
+									</c:if> 
 								</c:if>
 								<c:if test="${list.isAPI==1}">
 									<!--<c:if test="${list.package_type==1}">套餐1</c:if>
@@ -98,13 +153,13 @@
 				                <c:if test="${list.isAPI==0 && (list.status==4||list.status==5)&&list.websoc!=2}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
 				                <c:if test="${list.isAPI==0 && (list.status==3)&&list.websoc!=2}"><p class="stylep" style="width:108px;">服务中<b class="endend"></b></p></c:if>  -->
 				                
-				                <c:if test="${list.isAPI==0 && list.begin_date>temp}"><p class="stylep" style="width:108px;">已下单<b class="wait"></b></p></c:if>
-				                <c:if test="${list.isAPI==0 && list.begin_date<=temp && list.status!=3 && list.status!=2 && list.status!=1}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
-				                <c:if test="${list.isAPI==0 && (list.status==3)&&list.websoc!=2}"><p class="stylep" style="width:108px;">服务中<b class="endend"></b></p></c:if>
+				                <c:if test="${list.isAPI==0 && list.serviceId<7 && list.begin_date>temp}"><p class="stylep" style="width:108px;">已下单<b class="wait"></b></p></c:if>
+				                <c:if test="${list.isAPI==0 && list.serviceId<7 && list.begin_date<=temp && list.status!=3 && list.status!=2 && list.status!=1}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
+				                <c:if test="${list.isAPI==0 && list.serviceId<7 && (list.status==3)&&list.websoc!=2}"><p class="stylep" style="width:108px;">服务中<b class="endend"></b></p></c:if>
 				                
-				                <c:if test="${list.isAPI==0 && (list.status==1)}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
-				                <c:if test="${list.isAPI==0 && (list.status==2)}"><p class="stylep" style="width:108px;">已结束<b class="endend"></b></p></c:if>
-				                
+				                <c:if test="${list.isAPI==0 && list.serviceId<7 && (list.status==1)}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
+				                <c:if test="${list.isAPI==0 && list.serviceId<7 && (list.status==2)}"><p class="stylep" style="width:108px;">已结束<b class="endend"></b></p></c:if>
+				          
 				                <!-- <c:if test="${list.isAPI==1 && list.status==0}"><p class="stylep" style="width:108px;">已下单<b class="wait"></b></p></c:if> -->
 				                <c:if test="${list.isAPI==1 && list.status==0}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
 				                <c:if test="${list.isAPI==1 && list.status==1}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
@@ -113,6 +168,10 @@
 				                <c:if test="${list.isAPI==2 && (list.status==5)}"><p class="stylep" style="width:108px;">域名解析未生效</b></p></c:if>
 				                <c:if test="${list.isAPI==2 && (list.status==4)}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
 				                <c:if test="${list.isAPI==2 && (list.status==1)}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
+				                
+				                <c:if test="${list.isAPI==3 && list.end_date>temp}"><p class="stylep" style="width:108px;">服务中<b class="ing"></b></p></c:if>
+				                <c:if test="${list.isAPI==3 && list.end_date<=temp}"><p class="stylep" style="width:108px;">已结束<b class="end"></b></p></c:if>
+				                
                             </td>
                             <td class="order" valign="top">
                             	<p style="width:174px; line-height:24px; margin-top:33px;" class="stylep"><fmt:formatDate value="${list.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/><br><fmt:formatDate value="${list.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
@@ -195,11 +254,30 @@
 						                 </a>
 						                
 						            </c:if>
-						         
+						             <c:if test="${list.isAPI==3}">			             
+						             	<input type="hidden" id="orderIdHidden" name="orderIdHidden" value="${list.id }" />
+						             	<c:if test="${list.end_date>temp}">
+						             		<a href="javascript:void(0)" id="listExternal" class="prompt">查看详情</a>
+						             	</c:if>
+						             	<c:if test="${list.end_date<=temp}">
+						             		<a href="javascript:void(0)" class="prompt" type="button" onclick="alertMsg('该订单已过期！');">查看详情</a>
+						             	</c:if>						             				
+						             	<!--       
+						                 <a href="${ctx}/systemOrderOperaInit.html?serviceId=${list.serviceId}" target="_blank">查看详情！</a>
+						                  --> 
+						            </c:if>						         	
                             	</p>
+                            	<p style="width:98px; height:auto;">
+									<!-- 金山订单卸载密码 -->
+									<c:if test="${list.isAPI==3 && list.serviceId==8 }">				
+             							<a href="javascript:void(0)" id="listPassword" class="prompt" type="button" onclick="alertMsg('卸载密码：${list.remarks }');">卸载密码</a>
+             						</c:if>
+								</p>
                        			<p style="width:98px; height:auto;">
 									<!-- 订单删除操作 -->
+									<c:if test="${list.isAPI!=3 }">
              						<a href="javascript:void(0)" onclick="deleteOrder('${list.id}','${list.begin_date}')">删除</a>
+             						</c:if>
 								</p>
                             </td>
                         </tr>
@@ -212,3 +290,5 @@
             </div>
         </div>
     </c:forEach>
+  </body>
+</html>

@@ -375,6 +375,39 @@
                            </c:forEach>
                         </div>
                       </c:if>   
+                      
+                      <c:if test="${not empty shopSysList}">
+                        <div class="tabox" style=" margin-left:0px; width:1108px; padding:0;padding-top:10px">
+                           <c:forEach var="shopSys" items="${shopSysList}">
+                        	<table class="test-table" width="100%">
+                                <tbody>
+                                     <tr height="40">
+                                        <td width="20%" style="padding-left:60px;">
+                                        	<input type="hidden" name="orderId" value="${shopSys.orderId}"/>
+                                       		<a href="${ctx}/systemOrderOperaInit.html?serviceId=${shopSys.serviceId}&indexPage=4" target="_blank">${shopSys.serverName}</a>
+                                       </td>
+                                        <td width="30%"><p>                                     
+	                                        <c:if test="${shopSys.serviceId==7 }">${shopSys.scanPeriod }IP</c:if>
+	                                    	<c:if test="${shopSys.serviceId==8 }">${shopSys.scanPeriod }节点</c:if>
+	                                    	<c:if test="${shopSys.serviceId==9 }">1个</c:if>
+                                        </p></td>
+                                        <td width="35%">
+                                        <fmt:formatDate value="${shopSys.beginDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                         - <fmt:formatDate value="${shopSys.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                         </td>
+                                        <td width="15%">
+	                                        <em class="price">
+	                                        	<fmt:formatNumber type="number" value="${shopSys.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
+	                                        </em>
+                                        </td>
+                                        
+                                     </tr>
+                                     
+                                </tbody>
+                            </table>
+                           </c:forEach>
+                        </div>
+                      </c:if>   
                         
                         <div class="hr" style="margin-top:30px;"></div>
                     </li>

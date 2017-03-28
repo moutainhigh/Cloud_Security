@@ -156,6 +156,15 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		 carMap.put("orderId", orderId);
 		 return this.getSqlSession().selectList(ns + "findShopCarAPIList",carMap);
 	}
+	public List<ShopCar> findShopCarSysList(String userId, int payFlag, String orderId) {
+		// TODO Auto-generated method stub
+		Map carMap = new HashMap();
+		 carMap.put("userId", userId);
+		 carMap.put("payFlag", payFlag);
+		 carMap.put("orderId", orderId);
+		 return this.getSqlSession().selectList(ns + "findShopCarSysList",carMap);
+	}
+
 
 	public List<ShopCar> findBuyShopList(List orderIds,int userId) {
 		Map map = new HashMap();
@@ -175,6 +184,22 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		this.getSqlSession().update(ns+"updateOrder",map);
 	}
 
+	public void updateSysOrder(String orderId, String newOrderId, String isAPI,
+			String status, String orderListId, Date creatDate, String remarks) {
+		
+		// TODO Auto-generated method stub
+		Map map = new HashMap();
+		map.put("orderId", orderId);
+		map.put("newOrderId", newOrderId);
+		map.put("isAPI", isAPI);
+		map.put("status", status);
+		map.put("orderListId", orderListId);
+		map.put("createDate", creatDate);
+		map.put("remarks", remarks);
+		this.getSqlSession().update(ns+"updateSysOrder",map);
+	}
+
+	
 	public void updateOrderAPI(String orderId, String newOrderId) {
 		Map map = new HashMap();
 		map.put("orderId", orderId);
@@ -198,11 +223,11 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		getSqlSession().update(ns + "updatePayDate", ol);
 	}
 	
-	public void updateOrderPayFlag(String orderIds, int payFlag, int remarks) {
+	public void updateOrderPayFlag(String orderIds, int payFlag) {
 		Map map = new HashMap();
 		map.put("orderId", orderIds);
 		map.put("payFlag", payFlag);
-		map.put("remarks", remarks);
+		
 		
 		this.getSqlSession().update(ns + "updatePayFlag", map);
 	}
@@ -269,4 +294,6 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		return this.getSqlSession().selectList(nv+"getServiceByParent", map);
 	}
 
+	
+	
 }

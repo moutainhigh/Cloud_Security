@@ -26,12 +26,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from cs_order o,cs_service s
         where o.id = #{orderId} and o.serviceId = s.id
     </select>
+    <!-- 根据用户id和serviceId 查询记录 -->
+    
+    <select id="findOrderByUserIdAndServiceId" resultType="hashmap" parameterType="hashmap">
+        select o.begin_date ,o.end_date , o.payFlag from cs_order o where o.userId = #{userId} and o.serviceId = #{serviceId} and payFlag=1 order by begin_date desc
+    </select>
+    
+     <select id="findOrderByUserIdAndServiceIdCheckShopCar" resultType="hashmap" parameterType="hashmap">
+        select o.begin_date ,o.end_date , o.payFlag from cs_order o where o.userId = #{userId} and o.serviceId = #{serviceId} and payFlag=0 order by begin_date desc
+    </select>
+    
+    <select id="findPaidSysOrderByUserId" resultType="hashmap" parameterType="hashmap">
+        select o.begin_date ,o.end_date , o.payFlag, o.serviceId from (select max(begin_date) begin_date from cs_order where isAPI=3 and payFlag=1 group by  serviceId ) a,  cs_order o where o.userId = #{userId} and a.begin_date=o.begin_date  order by begin_date desc
+    </select>
+    
 	<!-- 根据用户查询所有记录 -->
     <select id="findOrderByUserId" resultType="hashmap" parameterType="Integer">
         select o.homeIcon,o.id,o.type,o.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI,o.package_type,o.num,o.delFlag from
 		(select s.home_icon as homeIcon,o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI, 0 as package_type,0 as num,o.delFlag
 		        from cs_order o,cs_service s
-		        where o.userId = #{userId} and o.serviceId = s.id and isAPI in(0,2)
+		        where o.userId = #{userId} and o.serviceId = s.id and isAPI in(0,2,3)
 		union
 		select s.home_icon as homeIcon,o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI,oa.package_type,oa.num,o.delFlag
 		        from cs_order o,cs_service_api s,cs_order_api oa
@@ -59,7 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select o.homeIcon,o.id,o.type,o.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI,o.package_type,o.num,o.price,o.orderListId from
 		(select s.home_icon as homeIcon, o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI, 0 as package_type,0 as num,o.delFlag,o.price,ifnull(o.orderListId,o.id) as orderListId
 		        from cs_order o,cs_service s
-		        where o.userId = #{userId} and o.serviceId = s.id and isAPI in(0,2)
+		        where o.userId = #{userId} and o.serviceId = s.id and isAPI in(0,2,3)
 		union
 		select s.home_icon,o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI,oa.package_type,oa.num,o.delFlag,o.price,ifnull(o.orderListId,o.id) as orderListId
 		        from cs_order o,cs_service_api s,cs_order_api oa
@@ -75,7 +89,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                <!-- and (o.status in (3,4,5) -->
                and ( (o.begin_date &lt;= now() and o.status in (0))
                or o.status in (3,4,5)
-               or (end_date &gt;= now() and o.isAPI = 1))
+               or (end_date &gt;= now() and o.isAPI in(1,3) ))
         </if>
         <!--<if test="type!=null">有警告的  
               and o.status in (1,2)
@@ -97,7 +111,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select o.homeIcon,o.id,o.type,o.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI,o.package_type,o.num,o.price,o.orderListId from
 		(select s.home_icon as homeIcon,o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI, 0 as package_type,0 as num,o.delFlag,o.price,ifnull(o.orderListId,o.id) as orderListId
 		        from cs_order o,cs_service s
-		        where o.orderListId = #{orderListId} and o.serviceId = s.id and isAPI in(0,2)
+		        where o.orderListId = #{orderListId} and o.serviceId = s.id and isAPI in(0,2,3)
 		union
 		select s.home_icon as homeIcon,o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI,oa.package_type,oa.num,o.delFlag,o.price,ifnull(o.orderListId,o.id) as orderListId
 		        from cs_order o,cs_service_api s,cs_order_api oa

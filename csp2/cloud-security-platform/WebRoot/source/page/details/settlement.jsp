@@ -20,9 +20,10 @@
 
 <script src="${ctx}/source/scripts/order/details.js"></script>
 <script src="${ctx}/source/scripts/order/wafDetail.js"></script>
+<script src="${ctx}/source/scripts/order/sysServDetail.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
-  $(function() {
+  $(function() {	
      $(".test-tablespan").on('click', function() {
         $(".ta-box").hide();
         $(".listone_box").show();
@@ -166,9 +167,12 @@
 		<input type="hidden" id="orderDetailId" name="orderDetailId" value="${orderDetail.id}"/>
 		<input type="hidden" id="assetIds" name="assetIds" value="${orderDetail.asstId}"/>
 		<input type="hidden" id="assetAddr" name="domainName" value="${orderDetail.assetAddr}"/>
-          <input type="hidden" id="orderType" name="orderType" value="${orderDetail.type}"/>
+        <input type="hidden" id="orderType" name="orderType" value="${orderDetail.type}"/>
+        
+        <input type="hidden" id="scanType" name="scanType" value="${orderDetail.scan_type}"/>
 		<input type="hidden" id="ipArrayHidden" name="ipArray" value="${ipArray }"/>
 		<input type="hidden" id="timesHidden" name="times" value="${times }"/>
+		
 		
 		
 		<input type="hidden" name="indexPage" value="1"/>
@@ -260,10 +264,18 @@
                     <li class="listone">
                     	<h3>支付方式</h3>
                        <div class="clickBox" style="margin-top:20px; margin-left:50px;" id="clickBox">
+                       <button type="button" class="click">安全币</button>
                        	<!-- <button type="button" class="click">在线支付</button>
                         <button type="button">邮局汇款</button>
                         <button type="button">公司转账</button> -->
-                        <button type="button" class="click">安全币</button>
+                        <!--  
+                        <c:if test="${service.id!=7}">
+                            <button type="button" class="click">安全币</button>
+                        </c:if>
+                        <c:if test="${service.id==7}">
+                            <button type="button" class="##" id="zfb">支付宝</button>
+                        </c:if>
+                        -->
                        </div>
                         <div class="hr"></div>
                     </li>
@@ -271,11 +283,11 @@
                     <div class="clearfix">
                     	<h3 class="fl">订单详情</h3>
                     	
-					<input type="hidden" id="serviceName" value="${service.name }"/>
-                    <c:if test="${service.id le 5 }">
+                                    
+                    <c:if test="${service.id <= 5}">
                     	<a class="fr" style="color:#2499fb;padding-right:54px;" href="javaScript:void(0);" onclick="javaScript:orderBack();" style="cursor:hand;">返回修改订单信息</a>
                     </c:if>
-                    <c:if test="${service.id gt 5 }">
+                    <c:if test="${service.id == 6 }">
                     	<a class="fr" style="color:#2499fb;padding-right:54px;" href="javaScript:void(0);" onclick="javaScript:wafOrderBack();" style="cursor:hand;">返回修改订单信息</a>
                     </c:if>
                     </div>
@@ -289,11 +301,24 @@
 	                                 	<td width="16%" style="font-size:14px;">
 	                                    	${orderDetail.serviceName}
 	                                    </td>
-	                                   
-	                                    <td width="36%" style="font-size:14px;">
-	                                    	${orderDetail.assetName}
+	                                    <td width="16%" style="font-size:14px;">
+                                            <c:if test="${service.id != 7}">
+	                                    	  ${orderDetail.assetName}
+                                            </c:if>
+                                           
+                                            <c:if test="${service.id == 7}">
+                                            	<c:if test="${orderDetail.scan_type==6}">
+		                                    	  64IP
+	                                            </c:if>
+	                                           
+	                                            <c:if test="${orderDetail.scan_type==7}">
+	                                                128IP
+	                                            </c:if>
+                                
+                                            </c:if>
+                                          
 	                                    </td>
-	                                    <td width="32%" style="font-size:14px;">
+	                                    <td width="52%" style="font-size:14px;">
 	                                    	<fmt:formatDate value="${orderDetail.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
 	                                    	<c:if test="${orderDetail.end_date!=null&&orderDetail.end_date!=''}">
 	                                    	~<fmt:formatDate value="${orderDetail.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
@@ -320,6 +345,36 @@
 	                                    	${orderDetail.wafTimes}
 	                                    </td>
 	                                    <td width="30%" style="font-size:14px;">
+	                                    	<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
+	                                    </td>
+	                                 </tr>
+	                            </tbody>
+	                            </c:if>
+	                            <c:if test="${orderDetail.isAPI==3}">
+	                            
+	                        	<tbody>
+	                            	 <tr height="40">
+	                                 	<td width="16%" style="font-size:14px;">
+	                                    	${orderDetail.serviceName}
+	                                    </td>
+	                                    <td width="16%" style="font-size:14px;">                                           
+                                            <c:if test="${service.id == 7}">
+                                            	${orderDetail.scan_type}IP                                         	
+                                            </c:if>
+                                          	<c:if test="${service.id == 8}">
+                                            	${orderDetail.scan_type}节点                                         	
+                                            </c:if>
+                                            <c:if test="${service.id == 9}">
+                                            	1                                         	
+                                            </c:if>
+	                                    </td>
+	                                    <td width="52%" style="font-size:14px;">
+	                                    	<fmt:formatDate value="${orderDetail.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
+	                                    	<c:if test="${orderDetail.end_date!=null&&orderDetail.end_date!=''}">
+	                                    	~<fmt:formatDate value="${orderDetail.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
+	                                    	</c:if>
+	                                    </td>
+	                                    <td width="18%" style="font-size:14px;">
 	                                    	<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
 	                                    </td>
 	                                 </tr>
@@ -384,7 +439,9 @@
                 	<i>1</i>个订单，总额：
                 	<span>
                 		<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
-                		<em>&nbsp;安全币</em>
+                		
+                          <em>&nbsp;安全币</em>                                                
+                       
                 	</span>
                 </li>
                 <!--  
@@ -396,7 +453,9 @@
                 	应付总额：
                 	<span>
                 		<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
-                		<em>&nbsp;安全币</em>
+                        
+                		  <em>&nbsp;安全币</em>
+                                                                       
                 	</span>
                 </li>
             </ul>
@@ -407,25 +466,32 @@
             	<p>应付总额：
             	<span style="padding-bottom:10px;">
 	            	<fmt:formatNumber type="number" value=" ${orderDetail.price}" maxFractionDigits="2" minFractionDigits="2" groupingUsed="false"/>
-	            	<em style="font-size:14px">&nbsp;安全币</em>
+                    
+	            	  <em style="font-size:14px">&nbsp;安全币</em>
+                    
             	</span>
             	</c:if>
             	
             	<c:if test="${not empty orderDetail}">
 	            	<c:if test="${orderDetail.isAPI==0}">
-		            		<c:if test="${orderDetail.serviceId gt 5 }">
+		            		<c:if test="${orderDetail.serviceId == 6 }">
 		            			<input id="settlementWaf" class="submit" type="button" value="提交订单"/>
 		            		</c:if>
 		            		<c:if test="${orderDetail.serviceId le 5 }">            		
 		            			<input id="settlement" class="submit" type="submit" value="提交订单"/>
-		            		</c:if>
-		            	</c:if>
+		            		</c:if>                           
+		           	</c:if>
 		            	
 		            	
-		            	<c:if test="${orderDetail.isAPI==1}">
+		            <c:if test="${orderDetail.isAPI==1}">
 		            	
-		            		<input id="settlementAPI" class="submit" type="submit" value="提交订单"/>
-		            	</c:if>
+		            	<input id="settlementAPI" class="submit" type="submit" value="提交订单"/>
+		            </c:if>
+		            	
+		            <c:if test="${orderDetail.isAPI==3}">
+		            		
+                    	<input id="settlementSys" class="submit" type="submit" value="提交订单"/>                            
+		            </c:if>
 		          </c:if>
 		         </p>
             </div>

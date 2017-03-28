@@ -224,6 +224,21 @@ public class OrderServiceImpl implements IOrderService{
 	public List<Order> findDelOrderByMap(Map<String, Object> map) {
 		return orderDao.findDelOrderByMap(map);
 	}
+	public List findOrderByUserIdAndServiceId(int userId, int serviceId) {
+		// TODO Auto-generated method stub
+		return orderDao.findOrderByUserIdAndServiceId(userId,serviceId);
+	}
+	
+	public List findPaidSysOrderByUserId(int userId) {
+		// TODO Auto-generated method stub
+		return orderDao.findPaidSysOrderByUserId(userId);
+	}
+	
+	public List findOrderByUserIdAndServiceIdCheckShopCar(int userId, int serviceId) {
+		// TODO Auto-generated method stub
+		return orderDao.findOrderByUserIdAndServiceIdCheckShopCar(userId,serviceId);
+	}
+
 
 	
 }

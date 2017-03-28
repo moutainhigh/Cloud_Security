@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.quartz.ee.jta.UserTransactionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,7 @@ import se.akerfeldt.com.google.gson.Gson;
 
 import com.cn.ctbri.common.APIWorker;
 import com.cn.ctbri.common.Constants;
+import com.cn.ctbri.common.SysWorker;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.AlarmDDOS;
 import com.cn.ctbri.entity.Asset;
@@ -89,7 +91,8 @@ public class WarnDetailController {
         //时间分组标志
         request.setAttribute("group_flag", groupId);
         //获取订单信息
-        List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
+        List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId); 
+        /* SELECT a.id ,COUNT(a.id)	FROM (SELECT o.id ,t.taskId FROM cs_order o, cs_order_asset oa, cs_task t WHERE o.id={id} AND oa.id=t.order_asset_Id)a GROUP BY a.id HAVING a.id={id}*/
         request.setAttribute("order", orderList.get(0));
         //获取服务ID
         int serviceId=0;
@@ -98,7 +101,8 @@ public class WarnDetailController {
 	    serviceId=(Integer) order.get("serviceId");
         
         //根据orderId查询正在执行的任务
-        List runList = orderService.findTaskRunning(orderId);
+        List runList = orderService.findTaskRunning(orderId); 
+        //SELECT t.* FROM cs_task t,cs_order_asset oa  WHERE t.order_asset_Id = oa.id AND oa.orderId=#{orderId} and t.status = 2
         
         List assetList = orderAssetService.findAssetNameByOrderId(orderId);
         
@@ -1413,6 +1417,70 @@ public class WarnDetailController {
     }
 	
     /**
+     * 功能描述： 用户中心-订单跟踪-订单详情-系统安全帮类 订单详情
+     * 参数描述：  无
+     *     @time 2017-3-21
+     */
+    @RequestMapping(value="orderSysDetails.html")
+    public String orderSysDetails(HttpServletRequest request){
+    	
+    	String strTeString = "test111996";
+        String orderId = request.getParameter("orderId");
+        //获取订单信息
+        List orderList = orderService.findByOrderId(orderId);
+        String status="";
+        
+		//不是当前用户的订单,不能查看
+    	User globle_user = (User) request.getSession().getAttribute("globle_user");
+    	if (orderId== null || orderList == null ||orderList.size() == 0) {
+    		return "redirect:/index.html";
+    	}
+  	
+    	 HashMap<String, Object> order=new HashMap<String, Object>();
+ 	    order=(HashMap) orderList.get(0);
+ 	    if (((Integer)order.get("userId"))!= globle_user.getId()) {
+ 	    	return "redirect:/index.html";
+ 	    }
+
+ 	    String strBeginDate = order.get("begin_date").toString();
+		String strEndDate =  order.get("end_date").toString();
+		String strNowDate = DateUtils.dateToString(new Date());
+		int serviceId = (Integer)order.get("serviceId");
+    	status = status+order.get("status");
+    	Integer userid = new Integer(globle_user.getId());
+    	if (strNowDate.compareTo(strEndDate)>0 || strNowDate.compareTo(strBeginDate)<0) 
+    	{
+    		return "";//时间不在服务范围内
+    	}
+    	else {
+			if (serviceId == 8) { //调用金山接口
+				String useridString = ((Integer)order.get("userId")).toString();
+				String urlRes = SysWorker.getJinshanoauthurl(strTeString+useridString);
+				if (!urlRes.equals("failed")) {
+					request.setAttribute("jinshanURL", urlRes);
+				}
+			}
+    		
+			else if (serviceId == 9) { //云眼APM
+				String useridString = ((Integer)order.get("userId")).toString();
+				String userTokenString  = SysWorker.getYunyanToken(useridString);
+				if (!userTokenString.equals("failed")) {
+				//
+					String urlyunyanString = SysWorker.getYunyanloginURL(userTokenString);
+					if (!urlyunyanString.equals("failed")) {
+						request.setAttribute("yunyanURL", urlyunyanString);	
+					}
+					
+				}
+			}
+			
+		}
+    	
+ 	    
+        return "/source/page/personalCenter/listExternal";
+    }
+    
+    /**
      * 功能描述： 用户中心-订单跟踪-历史记录查询
      * 参数描述：  无
      *     @time 2015-3-12
@@ -2116,6 +2184,9 @@ public class WarnDetailController {
         try {
 			String orderId = request.getParameter("orderId");
 			//获取订单信息
+			/*select o.id,o.serviceId,o.type,s.name,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI,o.userId
+        from cs_order o,cs_service_api s
+        where o.id = #{orderId} and o.serviceId = s.id*/
 			List orderList = orderService.findAPIInfoByOrderId(orderId);
 
 			//不是当前用户的订单,不能查看

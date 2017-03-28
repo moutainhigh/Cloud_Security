@@ -134,6 +134,11 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 		// TODO Auto-generated method stub
 		return selfHelpOrderDao.findShopCarAPIList(userId, payFlag,orderId);
 	}
+	
+	public List<ShopCar> findShopCarSysList(String userId, int payFlag, String orderId) {
+		// TODO Auto-generated method stub
+		return selfHelpOrderDao.findShopCarSysList(userId, payFlag,orderId);
+	}
 
 	public List<ShopCar> findBuyShopList(List orderId,int userId) {
 		// TODO Auto-generated method stub
@@ -143,6 +148,12 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 	public void updateOrder(String orderId, String newOrderId,String isAPI,String status,String orderListId,Date creatDate) {
 		// TODO Auto-generated method stub
 		selfHelpOrderDao.updateOrder(orderId, newOrderId,isAPI,status,orderListId,creatDate);
+	}
+	
+	public void updateSysOrder(String orderId, String newOrderId, String isAPI,
+			String status, String orderListId, Date creatDate, String remarks) {
+		// TODO Auto-generated method stub
+		selfHelpOrderDao.updateSysOrder(orderId, newOrderId,isAPI,status,orderListId,creatDate,remarks);
 	}
 
 	public void updateOrderAPI(String orderId, String newOrderId) {
@@ -160,8 +171,8 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 		selfHelpOrderDao.updateShopOrder(order);
 	}
 
-	public void updateOrderPayFlag(String orderIds, int payFlag, int remarks) {
-		selfHelpOrderDao.updateOrderPayFlag(orderIds, payFlag, remarks);
+	public void updateOrderPayFlag(String orderIds, int payFlag) {
+		selfHelpOrderDao.updateOrderPayFlag(orderIds, payFlag);
 	}
 	
 	public void updatePayDate(OrderList ol) {
@@ -210,6 +221,10 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 	public List<Serv> findServiceByParent(int parent) {
 		return selfHelpOrderDao.findServiceByParent(parent);
 	}
+
+	
+
+	
 
 	
 }

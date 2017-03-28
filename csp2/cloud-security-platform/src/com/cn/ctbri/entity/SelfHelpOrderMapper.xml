@@ -31,8 +31,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入订单 -->
     <insert id="insert" parameterType="order">
         insert into cs_order
-        (id, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, contactId, remarks, status, websoc, tasknum, payFlag, isAPI,price) 
-        values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks}, #{status}, #{websoc}, #{tasknum}, #{payFlag}, #{isAPI}, #{price})
+        (id, type, begin_date, end_date, serviceId, create_date, task_date, scan_type, userId, contactId, remarks, status, websoc, tasknum, payFlag, isAPI,price,num) 
+        values(#{id}, #{type}, #{begin_date}, #{end_date}, #{serviceId}, #{create_date}, #{task_date}, #{scan_type}, #{userId}, #{contactId}, #{remarks}, #{status}, #{websoc}, #{tasknum}, #{payFlag}, #{isAPI}, #{price}, #{wafTimes})
     </insert>
     
     <!-- 查询漏洞个数 -->
@@ -160,6 +160,35 @@ WHERE a.id = b.orderId
 </if>
 ORDER BY a.create_date desc
     </select>
+ <!-- 查询购物车列表 -->
+    <select id="findShopCarSysList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
+    SELECT
+  a.id  orderId,
+  a.serverName,
+  a.price,  
+  a.serviceId,
+  a.isAPI,
+  a.status,
+  a.scan_type,
+  a.begin_date beginDate,
+  a.end_date endDate,
+  a.num buynum
+FROM (SELECT
+          co.*,
+          cs.name          serverName
+      FROM cs_order co,
+           cs_service cs
+      WHERE co.serviceId = cs.id
+          AND co.userId =#{userId}
+          AND co.payFlag = 0
+          AND co.isAPI = 3) a       
+    
+<if test="orderId!=''">
+	WHERE
+    a.id=#{orderId}
+</if>
+ORDER BY a.create_date desc
+    </select>
     
     <select id="findBuyShopList" resultType="com.cn.ctbri.entity.ShopCar" parameterType="hashmap">
  select * from (   
@@ -189,7 +218,7 @@ FROM (SELECT
             separator="," close=")">  
           #{orderId} 
         </foreach>  
-          AND (r.isAPI = 0 OR r.isAPI = 2)
+          AND (r.isAPI = 0 OR r.isAPI = 2 OR r.isAPI = 3)
            AND r.userId=#{userId}        
           ) a,
   (SELECT
@@ -263,6 +292,38 @@ WHERE a.id = b.orderId
 	 AND i.userId=#{userId}
 		      ) d
      WHERE c.id = d.id
+     
+    Union
+
+SELECT
+     e.serverName,
+	 e.price,
+     e.isAPI,
+	 0,<!-- 系统安全帮没有astName字段，0占位 -->
+     0,<!-- 系统安全帮没有addr字段，0占位 -->  
+	e.id orderId,
+    e.type    orderType,
+    e.begin_date    beginDate,
+    e.end_date endDate,
+    e.serviceId,
+    e.scan_type     scanPeriod,
+    e.websoc,
+    e.num buynum,
+    e.create_date createDate
+FROM (SELECT
+		   s.name           serverName,
+		   r.*
+      FROM cs_order r,
+           cs_service s
+      WHERE r.serviceId = s.id
+          AND r.id IN
+             <foreach item="orderId" index="index" collection="orderIds" open="("  
+            separator="," close=")">  
+          #{orderId} 
+        </foreach>         
+          AND r.isAPI = 3
+		  AND r.userId=#{userId}        
+	  ) e
  )res    
      ORDER BY res.createDate desc
   
@@ -299,6 +360,29 @@ WHERE a.id = b.orderId
  WHERE o.isAPI=#{isAPI} AND o.id=#{orderId}
  
  </update>
+ 
+ <update id="updateSysOrder" parameterType="hashmap">
+ UPDATE  cs_order o 
+ <set>
+	  <if test="newOrderId!=null">
+	    o.id=#{newOrderId}, 
+	    o.create_date=#{createDate},
+	 </if>
+	 
+	 <if test="status!=''">
+	   o.status = #{status},
+	 </if>
+	 <if test="orderListId!=''">
+	   o.orderListId = #{orderListId},
+	 </if>
+	 <if test="remarks!=''">
+	   o.remarks = #{remarks}
+	 </if>
+ </set>
+ WHERE o.isAPI=#{isAPI} AND o.id=#{orderId}
+ 
+ </update>
+ 
  <update id="updateShopOrder" parameterType="com.cn.ctbri.entity.ShopCar">
    update cs_order set status=#{status} where id=#{orderId}
  
@@ -314,8 +398,8 @@ WHERE a.id = b.orderId
  <update id="updatePayFlag" parameterType="hashMap">
       	update cs_order
       	set
-      	 payFlag = #{payFlag},
-      	 remarks = #{remarks}
+      	 payFlag = #{payFlag}
+      	 
       	where
       	 id in (${orderId})
  </update>

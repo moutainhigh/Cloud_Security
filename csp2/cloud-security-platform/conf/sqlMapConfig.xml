@@ -61,5 +61,8 @@
 		
 		<!-- 2016-12-01 update by tangxr -->
 		<mapper resource="com/cn/ctbri/entity/PartnerMapper.xml"/>
+
+		<!-- add by cy 系统安全帮  2017-2-20 -->
+		<mapper resource="com/cn/ctbri/entity/ServiceSysMapper.xml"/>
 	</mappers>
 </configuration>  

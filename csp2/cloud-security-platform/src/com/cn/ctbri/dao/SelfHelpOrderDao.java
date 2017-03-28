@@ -96,12 +96,17 @@ public interface SelfHelpOrderDao {
 
 	  // 查询购物车-安全能力API列表
 	List<ShopCar> findShopCarAPIList(String userId,int payFlag,String orderId);
+	// 查询系统安全帮购物车列表
+	List<ShopCar> findShopCarSysList(String userId, int payFlag, String orderId);
 	//查询结算页的订单列表
 	List<ShopCar> findBuyShopList(List orderId,int userId);
+	
 	//更新订单资产表
 	void updateOrderAsset(String orderId,String newOrderId);
 	//更新订单表
 	void updateOrder(String orderId,String newOrderId,String isAPI,String status, String orderListId, Date creatDate);
+	//更新系统安全帮订单列表
+	void updateSysOrder(String orderId,String newOrderId,String isAPI,String status, String orderListId, Date creatDate,String remarks);
 	//更新订单api表
 	void updateOrderAPI(String orderId,String newOrderId);
 	//修改订单状态
@@ -109,7 +114,7 @@ public interface SelfHelpOrderDao {
 	//更新支付时间
 	void updatePayDate(OrderList ol);
 	//更新订单支付状态
-	void updateOrderPayFlag(String orderIds, int payFlag, int remarks);
+	void updateOrderPayFlag(String orderIds, int payFlag);
 	//修改订单状态
 	void updateOrderStatus(String orderIds, int status);
 	//修改订单开始时间和结束时间
@@ -130,4 +135,6 @@ public interface SelfHelpOrderDao {
 	OrderDetail findOrderDetailById(String id,int userId);
 	
 	List<Serv> findServiceByParent(int parent);
+
+	
 }
