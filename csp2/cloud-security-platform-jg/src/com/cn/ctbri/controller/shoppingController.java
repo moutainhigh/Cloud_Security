@@ -827,34 +827,14 @@ public class shoppingController {
 			// 有些订单号失效时，跳转到首页
 			return "redirect:/index.html";
 		}
-		List orderList = orderService.findPaidSysOrderByUserId(globle_user.getId());
+		
 		DecimalFormat df = new DecimalFormat("0.00");
 		double shopCount = 0.0;
 		if (list != null && list.size() > 0) {
 			for (int i = 0; i < list.size(); i++) {
 				ShopCar shopCar = (ShopCar) list.get(i);
 				if (shopCar.getIsAPI() == 3) {
-					if (orderList.size() > 0 && orderList != null) {
-						for (int j = 0; j < orderList.size(); j++) {
-
-							HashMap<String, Object> orderMap = (HashMap<String, Object>) orderList.get(j);
-							String strBeginDate = orderMap.get("begin_date").toString();
-							String strEndDate = orderMap.get("end_date").toString();
-							String strNowDate = DateUtils.dateToString(new Date());
-							String ServiceId = orderMap.get("serviceId").toString();
-							String shopCarServiceId = String.valueOf(shopCar.getServiceId());
-							System.out.println(strBeginDate + "  " + strEndDate + "  " + strNowDate + "  " + ServiceId
-									+ "  " + shopCarServiceId);
-							if (strNowDate.compareTo(strBeginDate) > 0 && strNowDate.compareTo(strEndDate) < 0
-									&& ServiceId.equals(shopCarServiceId)) {
-								System.out.println(strNowDate.compareTo(strBeginDate) > 0);
-								System.out.println(strNowDate.compareTo(strEndDate) < 0);
-								System.out.println(ServiceId.equals(shopCarServiceId));
-								return "redirect:/index.html";
-							}
-
-						}
-					} 
+				
 					shopSysList.add(shopCar);
 
 				} else {
@@ -1839,7 +1819,9 @@ public class shoppingController {
 
 	try{
 		 boolean flag = true;
+		 int status=0;
 		String str = request.getParameter("str");
+		
 		
 		List list = new ArrayList();
 		int orderNum=0;
@@ -1854,18 +1836,46 @@ public class shoppingController {
 			}
 	      
 	      flag = checkOrderDate(list);
-	     //修改订单状态已作废
-//	     if(!flag){
-//	    	  if(list!=null&&list.size()>0){
-//	   	       for(int i=0;i<list.size();i++){
-//	   	    	   ShopCar shopCar = (ShopCar)list.get(i);
-//	   	    	  shopCar.setStatus(-1);
-//	   	    	 selfHelpOrderService.updateShopOrder(shopCar);
-//	   	       }	 
-//	   	     } 
-//	     }
+	     //检查购物车的系统安全帮订单下单时是否有正在运行的同类型系统安全帮订单
+	      List orderList = orderService.findPaidSysOrderByUserId(globle_user.getId());
+			
+			
+			
+			if (list != null && list.size() > 0) {
+				for (int i = 0; i < list.size(); i++) {
+					ShopCar shopCar = (ShopCar) list.get(i);
+					if (shopCar.getIsAPI() == 3) {
+						if (orderList.size() > 0 && orderList != null) {
+							for (int j = 0; j < orderList.size(); j++) {
+
+								HashMap<String, Object> orderMap = (HashMap<String, Object>) orderList.get(j);
+								String strBeginDate = orderMap.get("begin_date").toString();
+								String strEndDate = orderMap.get("end_date").toString();
+								String strNowDate = DateUtils.dateToString(new Date());
+								String ServiceId = orderMap.get("serviceId").toString();
+								String shopCarServiceId = String.valueOf(shopCar.getServiceId());
+								System.out.println(strBeginDate + "  " + strEndDate + "  " + strNowDate + "  " + ServiceId
+										+ "  " + shopCarServiceId);
+								if (strNowDate.compareTo(strBeginDate) > 0 && strNowDate.compareTo(strEndDate) < 0
+										&& ServiceId.equals(shopCarServiceId)) {
+									System.out.println(strNowDate.compareTo(strBeginDate) > 0);
+									System.out.println(strNowDate.compareTo(strEndDate) < 0);
+									System.out.println(ServiceId.equals(shopCarServiceId));
+									shopCar.setStatus(-1);
+									selfHelpOrderService.updateShopOrder(shopCar);
+									flag=false;
+									status=-2;
+								}
+
+							}
+						} 
+					}
+				}
+			}
+
 	   //object转化为Json格式
 	         m.put("flag", flag);
+	         m.put("status", status);
 			JSONObject JSON = CommonUtil.objectToJson(response, m);
 			try {
 				// 把数据返回到页面
