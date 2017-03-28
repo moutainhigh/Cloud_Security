@@ -620,7 +620,8 @@ public class shoppingSysController {
             order.setPayFlag(0);
             order.setPrice(orderDetailVo.getPrice());
             order.setIsAPI(3);// 0:web  1：API  2:waf 3：系统安全帮
-            order.setScan_type(Integer.parseInt(scanType)); //设置服务时长
+            order.setScan_type(Integer.parseInt(scanType)); //设置节点个数 
+            order.setWafTimes(orderDetailVo.getWafTimes()); // 设置服务时长
          
             selfHelpOrderService.insertOrder(order);   //插入cs_order
             
