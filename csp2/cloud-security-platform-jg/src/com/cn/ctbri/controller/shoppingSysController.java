@@ -1122,7 +1122,7 @@ public class shoppingSysController {
 	 *             add by gxy 2016-5-03
 	 */
 	@RequestMapping(value = "shoppingCarSys.html", method = RequestMethod.POST)
-	public void shoppingCarAPI(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void shoppingCarSys(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Map<String, Object> m = new HashMap<String, Object>();
 
 		
