@@ -23,7 +23,7 @@
 <script src="${ctx}/source/scripts/order/sysServDetail.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 <script type="text/javascript">
-  $(function() {
+  $(function() {	
      $(".test-tablespan").on('click', function() {
         $(".ta-box").hide();
         $(".listone_box").show();
@@ -172,6 +172,7 @@
         <input type="hidden" id="scanType" name="scanType" value="${orderDetail.scan_type}"/>
 		<input type="hidden" id="ipArrayHidden" name="ipArray" value="${ipArray }"/>
 		<input type="hidden" id="timesHidden" name="times" value="${times }"/>
+		
 		
 		
 		<input type="hidden" name="indexPage" value="1"/>
@@ -478,10 +479,7 @@
 		            		</c:if>
 		            		<c:if test="${orderDetail.serviceId le 5 }">            		
 		            			<input id="settlement" class="submit" type="submit" value="提交订单"/>
-		            		</c:if>
-                            <c:if test="${orderDetail.serviceId >= 7 }">
-                                <input id="settlementSys" class="submit" type="submit" value="提交订单"/>
-                            </c:if>
+		            		</c:if>                           
 		           	</c:if>
 		            	
 		            	
