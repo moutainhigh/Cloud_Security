@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.quartz.ee.jta.UserTransactionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -1423,7 +1424,7 @@ public class WarnDetailController {
     @RequestMapping(value="orderSysDetails.html")
     public String orderSysDetails(HttpServletRequest request){
     	
-    	String strTeString = "test11";
+    	String strTeString = "test111996";
         String orderId = request.getParameter("orderId");
         //获取订单信息
         List orderList = orderService.findByOrderId(orderId);
@@ -1460,6 +1461,19 @@ public class WarnDetailController {
 				}
 			}
     		
+			else if (serviceId == 9) { //云眼APM
+				String useridString = ((Integer)order.get("userId")).toString();
+				String userTokenString  = SysWorker.getYunyanToken(useridString);
+				if (!userTokenString.equals("failed")) {
+				//
+					String urlyunyanString = SysWorker.getYunyanloginURL(userTokenString);
+					if (!urlyunyanString.equals("failed")) {
+						request.setAttribute("yunyanURL", urlyunyanString);	
+					}
+					
+				}
+			}
+			
 		}
     	
  	    
