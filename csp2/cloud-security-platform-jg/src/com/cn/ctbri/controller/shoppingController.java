@@ -1864,13 +1864,21 @@ public class shoppingController {
 									shopCar.setStatus(-1);
 									selfHelpOrderService.updateShopOrder(shopCar);
 									flag=false;
-									
+									status=-2;
 								}
 								//去结算时，如果同时结算多个系统安全帮订单，某个类型相同的数量大于1，就提示错误
 								List orderList2 = orderService.findOrderByUserIdAndServiceIdCheckShopCar(globle_user.getId(), Integer.parseInt(ServiceId));
 								if (orderList2.size() > 1) {			
 									               
-										m.put("status", -2);
+										m.put("status", -3);
+										JSONObject JSON = CommonUtil.objectToJson(response, m);
+							    	       try {
+							    	           // 把数据返回到页面
+							    	           CommonUtil.writeToJsp(response, JSON);
+							    	       } catch (IOException e) {
+							    	           e.printStackTrace();
+							    	       }
+							    	       return;
 									
 
 								}
