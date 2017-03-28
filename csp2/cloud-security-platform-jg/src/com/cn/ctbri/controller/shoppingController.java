@@ -1838,12 +1838,15 @@ public class shoppingController {
 	      flag = checkOrderDate(list);
 	     //检查购物车的系统安全帮订单下单时是否有正在运行的同类型系统安全帮订单
 	      List orderList = orderService.findPaidSysOrderByUserId(globle_user.getId());
-			
+	      int countserid7=0;
+		  int countserid8=0;
+		  int countserid9=0;
 			
 			
 			if (list != null && list.size() > 0) {
 				for (int i = 0; i < list.size(); i++) {
 					ShopCar shopCar = (ShopCar) list.get(i);
+					
 					if (shopCar.getIsAPI() == 3) {
 						if (orderList.size() > 0 && orderList != null) {
 							for (int j = 0; j < orderList.size(); j++) {
@@ -1866,7 +1869,7 @@ public class shoppingController {
 									flag=false;
 									status=-2;
 								}
-								//去结算时，如果同时结算多个系统安全帮订单，某个类型相同的数量大于1，就提示错误
+								
 								
 									
 
@@ -1874,9 +1877,8 @@ public class shoppingController {
 
 							}
 						} 
-						int countserid7=0;
-						int countserid8=0;
-						int countserid9=0;
+						//去结算时，如果同时结算多个系统安全帮订单，某个类型相同的数量大于1，就提示错误
+						
 						if(shopCar.getServiceId()==7){
 							countserid7++;
 						}
@@ -1886,11 +1888,12 @@ public class shoppingController {
 						if(shopCar.getServiceId()==9){
 							countserid7++;
 						}
-						if(countserid7>1 || countserid8>1 ||countserid9>1){
-							status=-3;
-						}
+						
 					}
 				}
+			}
+			if(countserid7>1 || countserid8>1 ||countserid9>1){
+				status=-3;
 			}
 
 	   //object转化为Json格式
