@@ -161,7 +161,10 @@ public class N_VulnscanService {
 							}
 							boolean urlStatus = Common.urlCheck(targetURL);
 							if(urlStatus){
-								return "targetURL不是有效的地址，请输入正确的网站地址!";
+								json.put("code", 000);
+								json.put("message", "targetURL不是有效的地址，请输入正确的网站地址!");
+								return json.toString();
+//								return "targetURL不是有效的地址，请输入正确的网站地址!";
 							}
 							
 							
