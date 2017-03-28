@@ -1894,6 +1894,7 @@ public class shoppingController {
 			}
 			if(countserid7>1 || countserid8>1 ||countserid9>1){
 				status=-3;
+				flag=false;
 			}
 
 	   //object转化为Json格式
