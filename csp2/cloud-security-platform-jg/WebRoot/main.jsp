@@ -7,22 +7,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="utf-8">
-	<title>安全帮-中国电信云安全服务在线商城</title>
-	<link href="${ctx}/source/css/base.css" type="text/css"
-		rel="stylesheet">
-		<link href="${ctx}/source/css/popBox.css" type="text/css"
-			rel="stylesheet">
-			<link href="${ctx}/source/css/portalindex.css" type="text/css"
-				rel="stylesheet">
-				<SCRIPT LANGUAGE="JavaScript"
-					src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0></SCRIPT>
-				<script src="${ctx}/source/scripts/common/jquery.js"></script>
-				<script src="${ctx}/source/scripts/common/portalindex.js"></script>
-				<script src="${ctx}/source/scripts/common/popBox.js"></script>
-				<script src="${ctx}/source/scripts/common/slidelf.js"></script>
-				<script src="${ctx}/source/scripts/common/main.js"></script>
-				<link href="${ctx}/source/images/chinatelecom.ico"
-					rel="shortcut icon" />
+<title>安全帮-中国电信云安全服务在线商城</title>
+<link href="${ctx}/source/css/base.css" type="text/css" rel="stylesheet">
+<link href="${ctx}/source/css/popBox.css" type="text/css" rel="stylesheet">	
+<link href="${ctx}/source/css/portalindex.css" type="text/css" rel="stylesheet">
+<script src="${ctx}/source/scripts/common/adview_pic_cpc_cpm_cpa_guanggao_gg_ads_300x250.js" ></script>  
+<script type="text/javascript">
+ if (typeof(killads)=='undefined'){alert('您的浏览器可能安装了广告屏蔽插件，请检查');}
+</script> 
+<SCRIPT LANGUAGE="JavaScript" src=http://float2006.tq.cn/floatcard?adminid=9682007&sort=0 ></SCRIPT>
+<script src="${ctx}/source/scripts/common/jquery.js"></script>
+<script src="${ctx}/source/scripts/common/portalindex.js"></script>
+<script src="${ctx}/source/scripts/common/popBox.js"></script>
+<script src="${ctx}/source/scripts/common/slidelf.js"></script>
+<script src="${ctx}/source/scripts/common/main.js"></script>
+<link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
 
 				<style>
 html, body {
