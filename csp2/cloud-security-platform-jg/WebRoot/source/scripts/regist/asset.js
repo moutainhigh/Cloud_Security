@@ -466,7 +466,7 @@ function verificationAsset(){
 			} 
 		}
 //	var code1 = document.getElementById('code').innerHTML;
-	var code1 = $("#code").val();
+	var code1 = $("#code").html();
 	$.ajax({
         type: "POST",
         url: "asset_verification.html",

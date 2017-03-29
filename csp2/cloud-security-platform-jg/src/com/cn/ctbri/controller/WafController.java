@@ -88,13 +88,13 @@ public class WafController {
 				String IpAddressRegex ="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
 				boolean flag=false;
 				boolean ipflag=false;
-				List assList = new ArrayList();
+				List<Asset> assList = new ArrayList();
 				if(list!=null&&list.size()>0){
 					for(int i=0;i<list.size();i++){
 						Asset asset = (Asset)list.get(i);
-						if (asset.getStatus() == 0) {
-							continue;
-						}
+//						if (asset.getStatus() == 0) {
+//							continue;
+//						}
 						
 						String addr = asset.getAddr();
 						String addInfo = "";
@@ -197,9 +197,9 @@ public class WafController {
 		if(list!=null&&list.size()>0){
 			for(int i=0;i<list.size();i++){
 				Asset asset = (Asset)list.get(i);
-				if (asset.getStatus() == 0) {
-					continue;
-				}
+//				if (asset.getStatus() == 0) {
+//					continue;
+//				}
 				String addr = asset.getAddr();
 				String addInfo = "";
 				//判断http协议
@@ -370,6 +370,7 @@ public class WafController {
         }
      
 	}catch(Exception e){
+			e.printStackTrace();
 			flag=false;
 			 m.put("errorIp", "");
 		}

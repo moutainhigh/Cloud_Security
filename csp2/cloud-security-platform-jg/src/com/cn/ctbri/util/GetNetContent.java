@@ -1,93 +1,43 @@
 package com.cn.ctbri.util;
-import java.net.URL;
-import java.net.URLConnection;
-
 import org.htmlparser.Node;
+import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
-
-import org.htmlparser.util.NodeIterator;
+import org.htmlparser.filters.AndFilter;
 import org.htmlparser.util.NodeList;
-
 import org.htmlparser.util.ParserException;
-import org.htmlparser.visitors.HtmlPage;
-import org.htmlparser.visitors.TextExtractingVisitor;
 
-//http://blog.sina.com.cn/s/blog_7f95d0c40100xxsl.html
 public class GetNetContent {
-	public static void main(String[] args){    
-//    NodeList rt= getNodeList("http://localhost:80/cloud-security-platform/"); 
-//    System.out.println(rt.toHtml());
- }   
-
- public static String getNodeList(String url){
-	 
-    Parser parser = null;
-    TextExtractingVisitor visitor = null;
-    try {
-         parser = new Parser(url);
-//         parser.setEncoding("GBK");
-//         parser.setEncoding(parser.getLexer().getPage().getQICHAODEFAULT_CHARSET());
-         visitor = new TextExtractingVisitor();
-         parser.visitAllNodesWith(visitor);
-         
-//         visitor = new HtmlPage(parser);
-//         parser.visitAllNodesWith(visitor);
-    } catch (Exception e) {
-        try {
-            parser.setEncoding("UTF-8");
-            parser.reset();
-            parser.visitAllNodesWith(visitor);
-        } catch (ParserException e1) {
-            e1.printStackTrace();
-        }
-    }
-    String nodeList = visitor.getExtractedText();
-    
-    return nodeList;
- }
+	public  static String getNodeList(String url){  
+		Parser parser = null;
+	    String body = "";//正文  
+	    try{  
+	        parser = new Parser(url);//要解析的网页  
+	        parser.setEncoding("UTF-8");//设置编码  
+//	        NodeFilter filter_text = new AndFilter(new TagNameFilter("div"),new HasAttributeFilter("class","safeBox"));//正文节点过滤  
+	        NodeFilter filter_text = new AndFilter();//不过滤
+	        
+	        parser.reset();//重置  
+	        NodeList nodelist = parser.parse(filter_text);//过滤出符合filter_text的节点LIST  
+	        Node[] nodes = nodelist.toNodeArray();//转化为数组  
+	        StringBuffer buftext = new StringBuffer();  
+	        String line = null;  
+	        for(int i=0; i<nodes.length; i++){//循环加到buftext上  
+	            line = nodes[i].toHtml();  
+	             if(line != null){  
+	                 buftext.append(line);  
+	             }  
+	        }  
+	        body = buftext.toString();  
+	        System.out.println(body);//输出  
+	    }catch(Exception e){
+	    	try {
+	            parser.setEncoding("UTF-8");
+	            parser.reset();
+	        } catch (ParserException e1) {
+	            e1.printStackTrace();
+	        }
+	        e.printStackTrace();  
+	    }  
+	    return body;
+	 }   
 }
- /*
-	 public static void main(String[] args){    
-         String url="http://localhost:8080/cloud-security-platform/";
-         ArrayList<String> rt= getNodeList(url);      
-         for (int i = 0; i < rt.size(); i++){
-            System.out.println(rt.get(i));
-          }      
-     }         
-     public static ArrayList<String> getNodeList(String url){
-         final ArrayList<String> result=new ArrayList<String>();
-         Parser parser = null;
-         NodeList nodeList=null;
-         try {
-            parser = new Parser(url);
-            parser.setEncoding("GBK");
-            nodeList = parser.parse(
-                   new NodeFilter(){
-                       public boolean accept(Node node){
-                           Node need=node;
-                          if(getStringsByRegex(node.getText())){
-                              for(int i=0;i<6;i++){
-                              result.add(need.toPlainTextString());                          
-                              need=need.getPreviousSibling().getPreviousSibling();
-                              }
-                              return true;
-                          }                          
-                          return false;
-                       }                   
-                	  }
-            );               
-         }catch (ParserException e) {
-            e.printStackTrace();
-         }
-         return result;
-     }    
-     public static boolean getStringsByRegex(String txt) {
-         String regex="td class=\"no\"";   
-         Pattern p = Pattern.compile(regex);
-         Matcher m = p.matcher(txt);
-         if (m.find()){
-             return true;
-         }  
-         return false;
-     }
-*/

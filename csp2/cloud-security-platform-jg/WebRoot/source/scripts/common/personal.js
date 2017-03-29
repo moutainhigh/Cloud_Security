@@ -3,6 +3,8 @@ $(function (){
 	$("#industry").val(industry);
 	var job = $("#hid_job").val();
 	$("#job").val(job);
+	var partner = $("#hid_partner").val();
+	$("#partner").val(partner);
 });
 
 //校验手机号码是否出现重复
@@ -55,6 +57,7 @@ function checkUserData(){
 	var job = $("#job").val();
 	var company = $("#company").val();
 	var email=$("#regist_email").val();
+	var partner=$("#partner").val();
 	var reg=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
 	var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
 	if(patrn.test(company)){
@@ -81,7 +84,8 @@ function checkUserData(){
 	    			   	"industry":industry,
 	    			   	"job":job,
 	    			   	"email":email,
-	    			   	"company":company},  
+	    			   	"company":company,
+	    			   	"partner":partner},  
     		     dataType: "json",
     		     success: function(data) {
     		     	if (data.result == 0){

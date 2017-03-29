@@ -90,8 +90,7 @@ $(function(){
      // var price = $('#price').html().substr(1);
       var domainId = $('.ym span').attr('id');
       //网站域名
-      var domainName =$('.ym span').text();
-     
+      var domainName = $.trim($('.ym span').text());
       if(beginDate==""||beginDate==null){
         		alert("开始时间不能为空");
         		return;
@@ -168,7 +167,7 @@ $(function(){
       }
  
       //网站域名
-      var domainName = $('.ym span').text();
+      var domainName = $.trim($('.ym span').text());
       var domainId = $('.ym span').attr('id');
       var price = $('#price').html().substr(1);
       var ipAddr ="/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/";
@@ -655,19 +654,50 @@ function saveWafAsset() {
 				    				 							if(list!=null&&list.length>0){
 				    				 								$("#assBox").empty();
 				    				 								$.each(list,function(n,asset) {
-				    				 						         var temp = "<li>"+
-				    				 					            	 		"<div class='rcent'>"+
-				    				 					            	 		"<h3>"+
-				    				 			                                "<label onclick='selWafAsset(this)'>"+
-				    				 			                                     "<input type='radio' class='radio'  style='display:none' name='anquan' value='"+asset.id+"'><i class=''></i>"+
-				    				 			                                "</label>"+
-				    				 			                                 "<b>"+asset.name+"</b>"+
-				    				 			                            
-				    				 			                            "</h3>"+
-				    				 			                            "<div class='tBox'>"+asset.addr+"</div>"+
-				    				 			                            "</div>"+
-				    				 			                            "</li>";  
-				    				 						         		$("#assBox").append(temp);
+//				    				 						         var temp = "<li>"+
+//				    				 					            	 		"<div class='rcent'>"+
+//				    				 					            	 		"<h3>"+
+//				    				 			                                "<label onclick='selWafAsset(this)'>"+
+//				    				 			                                     "<input type='radio' class='radio'  style='display:none' name='anquan' value='"+asset.id+"'><i class=''></i>"+
+//				    				 			                                "</label>"+
+//				    				 			                                 "<b>"+asset.name+"</b>"+
+//				    				 			                            
+//				    				 			                            "</h3>"+
+//				    				 			                            "<div class='tBox'>"+asset.addr+"</div>"+
+//				    				 			                            "</div>"+
+//				    				 			                            "</li>";  
+//				    				 						         		$("#assBox").append(temp);
+				    				 									if (asset.status == '0') {
+	    		    				 										var temp = "<li>"+
+	    		    				 					            	 		"<div class='rcent'>"+
+	    		    				 					            	 		"<h3>"+
+	    		    				 			                                "<label style='margin:0 16px 0 0;'>"+
+	    		    				 			                                     "<span style='padding-left:40px;padding-top:20px'>"+
+	    		    				 			                                     	asset.name+
+	    		    				 			                                     "</span>"+
+	    		    				 			                                "</label>"+
+	    		    				 			                            "</h3>"+
+	    		    				 			                            "<div class='tBox'>"+asset.addr+
+	    		    				 			                            	"<a href='userAssetsUI.html?type=1'  style='padding-left:20px;color:#2499fb;font-size:14px;'>未验证</a>"+
+	    		    				 			                            "</div>"+
+	    		    				 			                            "</div>"+
+	    		    				 			                            "</li>";  
+	    		    				 									}else {
+	    		    				 										var temp = "<li>"+
+	    		    				 					            	 		"<div class='rcent'>"+
+	    		    				 					            	 		"<h3>"+
+	    		    				 			                               "<label onclick='selWafAsset(this)'>"+
+			    				 			                                     "<input type='radio' class='radio'  style='display:none' name='anquan' value='"+asset.id+"'><i class=''></i>"+
+			    				 			                                   "</label>"+
+	    		    				 			                                 "<b>"+asset.name+"</b>"+
+	    		    				 			                            "</h3>"+
+	    		    				 			                            "<div class='tBox'>"+asset.addr+
+	    		    				 			                            "</div>"+
+	    		    				 			                            "</div>"+
+	    		    				 			                            "</li>";  
+	    		    				 									}
+	    		    				 						         
+				    				 									$("#assBox").append(temp);
 				    				 						           });  
 				    				 								} 
 				    				 							$('#sentwo').fadeOut(20);

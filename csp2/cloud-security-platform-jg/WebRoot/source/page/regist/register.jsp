@@ -46,6 +46,10 @@
 	window.onload=function(){
 		//页面加载时清空所有的val值，如需要请取消注释；
 		$('.prompttext').val('');
+		//注册按钮样式初始化
+		$('#register_btn').removeAttr('disabled');
+		$('#register_btn').css('background-color','#2499fb');
+		$("#register_btn").css("opacity","");
 }
 
 </script>
@@ -138,6 +142,15 @@
                                  </select>
                             <div class="prompt fl"><b></b>支持6-20位，支持中英文/数字/字符组合</div>
                         </li>
+                   		<!-- 新增合作方 add by tangxr 2016-11-30 -->     
+                        <li class="clearfix">
+                         	 <select class="scelt" id="partner" name="partner">
+                                <option selected="selected" value="-1">请选择合作方</option>
+				            	<c:forEach items="${partnerList}" var="partner"  varStatus="status">
+					            	<option value="${partner.partnerName}">${partner.partnerName}</option>
+				            	</c:forEach>
+                             </select>
+                        </li>
                         <li class="clearfix">
                         	<div class="list fl">
                             	<input type="text" placeholder="" class="text prompttext" name="mobile" id="regist_phone" onblur="checkMobile()"/>
@@ -176,7 +189,7 @@
                         
                     </ul>
                     <div class="subBox" style=" position:relative; top:-18px;">
-                    	<input type="button" style="background-color: rgb(36, 153, 251);" class="submit" onclick="submitForm()" value="立即注册">
+                    	<input type="button" style="background-color: rgb(36, 153, 251);" class="submit" onclick="submitForm()" id="register_btn" value="立即注册">
                     </div>
                     <div class="subBox" style=" position:relative; top:5px;">
                     	<span>已有安全帮账号？<a href="${ctx }/loginUI.html">直接登录</a><i></i></span>

@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -114,10 +115,10 @@ public class MyAssetsController {
 	    String oldAddr = request.getParameter("oldAddr");
 	    String oldAddrVal="";
 	    if(oldAddr!=null&&!"".equals(oldAddr)){
-	    	oldAddrVal=oldAddr.toLowerCase();
+	    	oldAddrVal=oldAddr;
 	    }
 
-	    String addr = asset.getAddr().toLowerCase();
+	    String addr = asset.getAddr();
 	    //判断资产地址是否包含http
 	    Pattern pattern2 = Pattern.compile("([hH][tT][tT][pP][sS]?):\\/\\/([\\w.]+\\/?)\\S*");
 		Matcher matcher2 =	pattern2.matcher(addr);
@@ -155,7 +156,7 @@ public class MyAssetsController {
 	    	}else if(!addr.trim().equals(oldAddrVal)){
 	    		Map<String, Object> paramMap1 = new HashMap<String, Object>();
 				paramMap1.put("userId", globle_user.getId());
-				paramMap1.put("addr", addr.toLowerCase().trim());
+				paramMap1.put("addr", addr.trim());
 				List<Asset> listForAddr = assetService.findByAssetAddr(paramMap1);
 				if(listForAddr != null && listForAddr.size()>0){
 					m.put("msg", '2');//1：表示资产地址已经存在
@@ -206,11 +207,14 @@ public class MyAssetsController {
 			User globle_user = (User) request.getSession().getAttribute("globle_user");
 			
 			String name = request.getParameter("assetName");//资产名称
-			String addr = request.getParameter("assetAddr").toLowerCase();//资产地址
+			String addr = request.getParameter("assetAddr");//资产地址
 //			String addrType = request.getParameter("addrType");//资产类型
 			String purpose = request.getParameter("purpose");//用途
 			String prov = request.getParameter("prov");
 			String city = request.getParameter("city");
+			
+			//资产域名转换限制 add by tangxr 2016-11-25
+			addr = getNewAddr(addr);
 			
 			//验证资产数量
 			subResult = checkAssetCount(globle_user.getId());
@@ -299,6 +303,45 @@ public class MyAssetsController {
 		
 	}
 	
+	//资产域名转换限制
+	private String getNewAddr(String addr) {
+		String addrName = "";
+		//域名
+		String domainName = "";
+		//非域名部分
+		String notDomainName = "";
+		//判断http协议
+		if(addr.indexOf("http://")!=-1){
+			addrName = addr.trim().substring(7,addr.length());
+			if(addrName.indexOf("/")!=-1){
+				domainName = addrName.substring(0, addrName.indexOf("/"));
+				notDomainName = addrName.substring(addrName.indexOf("/"));
+				addr = "http://"+domainName.toLowerCase()+notDomainName;
+			}else{
+				addr = "http://"+addrName.toLowerCase();
+			}
+		}else if(addr.indexOf("https://")!=-1){
+			addrName = addr.trim().substring(8,addr.length());
+			if(addrName.indexOf("/")!=-1){
+				domainName = addrName.substring(0, addrName.indexOf("/"));
+				notDomainName = addrName.substring(addrName.indexOf("/"));
+				addr = "https://"+domainName.toLowerCase()+notDomainName;
+			}else{
+				addr = "https://"+addrName.toLowerCase();
+			}
+		}else{
+			addrName = addr;
+			if(addrName.indexOf("/")!=-1){
+				domainName = addrName.substring(0, addrName.indexOf("/"));
+				notDomainName = addrName.substring(addrName.indexOf("/"));
+				addr = "http://"+domainName.toLowerCase()+notDomainName;
+			}else{
+				addr = "http://"+addrName.toLowerCase();
+			}
+		}
+		return addr;
+	}
+
 	private int checkAssetName(String assetName, String oldAssetName, int userId) {
 		if (null == assetName || assetName == "") {
 //			return "请输入网站名称!";
@@ -356,7 +399,7 @@ public class MyAssetsController {
 		}
 		
 	    //验证资产地址是否重复
-		String addr = assetAddress.toLowerCase();
+		String addr = assetAddress;
 		//判断资产地址是否包含http
 		Pattern pattern2 = Pattern.compile("([hH][tT][tT][pP][sS]?):\\/\\/([\\w.]+\\/?)\\S*");
 		Matcher matcher2 =	pattern2.matcher(addr);
@@ -561,7 +604,7 @@ public class MyAssetsController {
 			}
 			
 			String name = request.getParameter("assetName");
-			String assetAddr = request.getParameter("assetAddr").toLowerCase();
+			String assetAddr = request.getParameter("assetAddr");
 			String districtId = request.getParameter("prov");
 			String city = request.getParameter("city");
 			String purpose = request.getParameter("purpose");
@@ -575,6 +618,9 @@ public class MyAssetsController {
 		    if((assetAddr.trim().toLowerCase().indexOf("http://")==-1||assetAddr.trim().toLowerCase().indexOf("https://")==-1)){
 		    
 		    }*/
+			
+			//资产域名转换 add by tangxr 2016-11-25
+			assetAddr = getNewAddr(assetAddr);
 			
 			String oldCity = "";
 			if(oldAsset.getCity()!= null){
@@ -739,7 +785,7 @@ public class MyAssetsController {
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
 		int id = Integer.valueOf(request.getParameter("id"));
 		Asset _asset = assetService.findById(id,globle_user.getId());
-		String path = _asset.getAddr().toLowerCase();
+		String path = _asset.getAddr();
 		int status = _asset.getStatus();
 		//获取验证方式:代码验证 ;上传文件验证
 		String verification_msg;
@@ -754,7 +800,7 @@ public class MyAssetsController {
 			//代码验证
 			if(verification_msg.equals("codeVerification")){
 				 //获取已知代码
-				 String code1 = String.valueOf(request.getParameter("code1"));
+				 String code1 = StringEscapeUtils.unescapeHtml(String.valueOf(request.getParameter("code1"))).trim();
 //				 String code1 = new String(String.valueOf(request.getParameter("code1")).getBytes("ISO-8859-1"),"UTF-8");
 				 
 				 String str = GetNetContent.getNodeList(path);
@@ -963,10 +1009,13 @@ public class MyAssetsController {
 		try {
 			User globle_user = (User) request.getSession().getAttribute("globle_user");
 			String name = request.getParameter("assetName");//资产名称
-			String addr = request.getParameter("assetAddr").toLowerCase();//资产地址
+			String addr = request.getParameter("assetAddr");//资产地址
 			String purpose = request.getParameter("purpose");//用途
 			String prov = request.getParameter("prov");
 			String city = request.getParameter("city");
+			
+			//资产域名转换限制 add by tangxr 2016-11-25
+			addr = getNewAddr(addr);
 			
 			//验证资产数量
 			subResult = checkAssetCount(globle_user.getId());
@@ -1080,12 +1129,16 @@ public class MyAssetsController {
 		try {
 			User globle_user = (User) request.getSession().getAttribute("globle_user");
 			String name = request.getParameter("assetName");//资产名称
-			String addr = request.getParameter("assetAddr").toLowerCase();//资产地址
+			String addr = request.getParameter("assetAddr");//资产地址
 //			String addrType = request.getParameter("addrType");//资产类型
 			String purpose = request.getParameter("purpose");//用途
 			String prov = request.getParameter("prov");
 			String city = request.getParameter("city");
 //			String wafFlag = request.getParameter("wafFlag");
+			
+			//资产域名转换限制 add by tangxr 2016-11-25
+			addr = getNewAddr(addr);
+			
 			//验证资产数量
 			subResult = checkAssetCount(globle_user.getId());
 			if (subResult != 0) {
@@ -1184,9 +1237,9 @@ public class MyAssetsController {
 		    if(serviceAssetList!=null&&serviceAssetList.size()>0){
 		    	for(int i=0;i<serviceAssetList.size();i++){
 		    		Asset newAsset = (Asset)serviceAssetList.get(i);
-		    		if (newAsset.getStatus() == 0) {
-						continue;
-					}
+//		    		if (newAsset.getStatus() == 0) {
+//						continue;
+//					}
 		    		String newAddr = newAsset.getAddr();
 		    		String addressInfo = "";
 		    		//判断http协议

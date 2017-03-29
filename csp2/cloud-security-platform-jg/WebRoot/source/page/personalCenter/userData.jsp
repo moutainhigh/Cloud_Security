@@ -138,6 +138,18 @@
                                 	
                                 </div>
                              </li><li class="clearfix">
+                            	<label class="fl">合&nbsp; 作&nbsp; 方</label>
+								<div class="fl dataListR">
+									<input type="hidden" id="hid_partner" value="${user.partner}"/>
+                                	<select class="scelt" id="partner" name="partner">
+                                    	<option selected="selected" value="-1">请选择合作方</option>
+					                	<c:forEach items="${partnerList}" var="partner"  varStatus="status">
+							            	<option value="${partner.partnerName}">${partner.partnerName}</option>
+						            	</c:forEach>
+                                    </select>
+                                </div>
+                             </li>
+                             <li class="clearfix">
                             	<label class="fl">职&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;业</label>
 								<div class="fl dataListR">
 									<input type="hidden" id="hid_job" value="${user.job}"/>

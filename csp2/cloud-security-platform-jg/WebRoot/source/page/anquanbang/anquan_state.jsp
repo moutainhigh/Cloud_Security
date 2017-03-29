@@ -202,7 +202,7 @@
 		<div style="position:absolute; z-index:1">
 			<img src="${ctx}/source/images/portal/state_logo.png" id="logo_img"/>
 		</div>
-		<c:if test="${sessionScope.globle_user.name =='anquanbang' ||sessionScope.globle_user.name =='liuyanzhe' ||sessionScope.globle_user.name =='timelysnow'}">
+		<c:if test="${sessionScope.globle_user.name =='anquanbang' ||sessionScope.globle_user.name =='liuyanzhe' ||sessionScope.globle_user.name =='timelysnow' ||sessionScope.globle_user.name =='test11'}">
 		<nav>
 			<ul class="clearfix navlist">
 				<li class="active">
@@ -308,6 +308,10 @@
 					<script type="text/javascript">
 					var typejson ='${wafEventTypeCount}';
 					window.currentId='${currentId}';
+					var error = '${error}';
+					if(error!=''){
+						alert(error);
+					}
 					</script>
 					<script type="text/javascript" src="${ctx}/source/attacking/js/attacking.js"></script>
                 </div>

@@ -27,6 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="urlAddr" column="urlAddr"/>
 		<result property="balance" column="balance"/>
 		<result property="lastSignInTime" column="lastSignInTime"/>
+		<result property="partner" column="partner"/>
 	</resultMap>
 	
 	<resultMap type="com.cn.ctbri.entity.MobileInfo" id="MobileInfo">
@@ -83,7 +84,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				password=#{password},
 			</if>
 			<if test="ipProvice!=null">
-				ipProvice=#{ipProvice}
+				ipProvice=#{ipProvice},
+			</if>
+			<if test="partner!=null">
+				partner=#{partner}
 			</if>
 		</set>
 		where id=#{id}
@@ -100,8 +104,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入用户 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.User">
 		insert into cs_user 
-		(name,password,mobile,email,status,type,remarks,createTime,realName,ip,industry,job,company,apikey,urlAddr,balance,lastSignInTime,Salt,ipProvice) 
-		values(#{name},#{password},#{mobile},#{email},#{status},#{type},#{remarks},#{createTime},#{realName},#{ip},#{industry},#{job},#{company},#{apikey},#{urlAddr},#{balance},#{lastSignInTime},#{Salt},#{ipProvice})
+		(name,password,mobile,email,status,type,remarks,createTime,realName,ip,industry,job,company,apikey,urlAddr,balance,lastSignInTime,Salt,ipProvice,partner) 
+		values(#{name},#{password},#{mobile},#{email},#{status},#{type},#{remarks},#{createTime},#{realName},#{ip},#{industry},#{job},#{company},#{apikey},#{urlAddr},#{balance},#{lastSignInTime},#{Salt},#{ipProvice},#{partner})
 	</insert>
 	
 	<!-- 按用户名查询用户 -->

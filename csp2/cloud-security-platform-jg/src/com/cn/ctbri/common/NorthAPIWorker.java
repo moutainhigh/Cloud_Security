@@ -73,6 +73,10 @@ public class NorthAPIWorker {
 	 * 设置回调地址
 	 */
 	private static String CallbackAddr;
+	/**
+	 * 设置user
+	 */
+	private static String SetUser;
 	
 	static{
 		try {
@@ -89,6 +93,7 @@ public class NorthAPIWorker {
 			North_Create_Order_API = p.getProperty("North_Create_Order_API");
 			Login = p.getProperty("Login");
 			CallbackAddr = p.getProperty("CallbackAddr");
+			SetUser = p.getProperty("SetUser");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -438,6 +443,45 @@ public class NorthAPIWorker {
         return response;
 	}
 	
+	
+	/**
+	 * 功能描述：设置user
+	 * 参数描述： 
+	 *		 @time 2016-12-3
+	 */
+	public static String setUser(String userID, String apiKey, String partner) {
+		String resout = "";
+		try{
+			//组织发送内容JSON
+			JSONObject json = new JSONObject();
+			json.put("userID", userID);
+			json.put("apiKey", apiKey);
+			json.put("partner", partner);
+			//创建任务发送路径
+	    	String url = SERVER_WEB_ROOT + SetUser;
+	    	//创建jersery客户端配置对象
+		    ClientConfig config = new DefaultClientConfig();
+		    //检查安全传输协议设置
+		    buildConfig(url,config);
+		    //创建Jersery客户端对象
+	        Client client = Client.create(config);
+	        //连接服务器
+	        WebResource service = client.resource(url);
+	        //获取响应结果
+	        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, json.toString());
+	        JSONObject obj = JSONObject.fromObject(response);
+	        String stateCode = obj.getString("code");
+			if(stateCode.equals("201")){
+				resout="success";
+			}else{
+				resout="error";
+			}
+		}catch(Exception e){
+	        e.printStackTrace();
+		    resout = "不能同步";
+		}
+		return resout;
+	}
 	
 	/**
 	 * 功能描述：空字符串转化方法

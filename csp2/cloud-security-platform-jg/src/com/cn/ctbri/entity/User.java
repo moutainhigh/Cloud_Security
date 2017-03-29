@@ -63,6 +63,8 @@ public class User implements java.io.Serializable{
 	private String Salt;
 	//ip地址所在的省
 	private String ipProvice;
+	//合作方
+	private String partner;
 	//构造方法
 	public User(){}
 	public User(String name, String password, int status, int type) {
@@ -317,5 +319,10 @@ public class User implements java.io.Serializable{
 	public void setIpProvice(String ipProvice) {
 		this.ipProvice = ipProvice;
 	}
-	
+	public String getPartner() {
+		return partner;
+	}
+	public void setPartner(String partner) {
+		this.partner = partner;
+	}
 }
