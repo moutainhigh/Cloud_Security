@@ -1457,7 +1457,7 @@ public class WarnDetailController {
 				String useridString = ((Integer)order.get("userId")).toString();
 				String urlRes = SysWorker.getJinshanoauthurl(strTeString+useridString);
 				if (!urlRes.equals("failed")) {
-					request.setAttribute("jinshanURL", urlRes);
+					request.setAttribute("returnURL", urlRes);
 				}
 			}
     		
@@ -1468,10 +1468,15 @@ public class WarnDetailController {
 				//
 					String urlyunyanString = SysWorker.getYunyanloginURL(userTokenString);
 					if (!urlyunyanString.equals("failed")) {
-						request.setAttribute("yunyanURL", urlyunyanString);	
+						request.setAttribute("returnURL", urlyunyanString);	
 					}
 					
 				}
+			}
+			
+			else if (serviceId == 7) { // 绿盟极光
+				//
+				
 			}
 			
 		}
