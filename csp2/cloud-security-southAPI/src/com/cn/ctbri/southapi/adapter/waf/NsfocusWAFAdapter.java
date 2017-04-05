@@ -77,9 +77,7 @@ public class NsfocusWAFAdapter {
 				String apiValue = wafConfigDevice.getApiValue();
 				String apiUsername = wafConfigDevice.getApiUserName();
 				String apiPassword = wafConfigDevice.getApiPwd();
-				System.out.println(resourceId+"  "+devId+"  "+apiAddr);
 				nsfocusWAFOperation = new NsfocusWAFOperation(apiAddr, apiKey, apiValue, apiUsername, apiPassword, apiPublicIp);
-				System.out.println(nsfocusWAFOperation.toString());
 				mapNsfocusWAFOperation.put(devId, nsfocusWAFOperation);
 			}
 			mapNsfocusWAFOperationGroup.put(resourceId, mapNsfocusWAFOperation);
@@ -227,9 +225,7 @@ public class NsfocusWAFAdapter {
 	 */
 	public String getSitesInResource(int resourceId) {
 		HashMap<Integer,NsfocusWAFOperation> map = mapNsfocusWAFOperationGroup.get(resourceId);
-		System.out.println(resourceId);
 		JSONArray siteArray = new JSONArray();
-		System.out.println(map.get(30001).toString());
 		for (Entry<Integer, NsfocusWAFOperation> entry : map.entrySet()) {
 			JSONArray tempDeviceJsonArray = JSONArray.fromObject(entry.getValue().getSites());
 			JSONObject tempDeviceJsonObject = new JSONObject();
@@ -1238,7 +1234,7 @@ public class NsfocusWAFAdapter {
 	}
 	
 	public String getEventTypeCountByMonth(JSONObject jsonObject) {
-		try {
+		
 			
 			//校验传入参数
 			if(0>=jsonObject.getInt("interval")||null==jsonObject.get("startDate")||jsonObject.getString("startDate").length()<0){
@@ -1247,7 +1243,8 @@ public class NsfocusWAFAdapter {
 				errorJsonObject.put("message", "EventType count error.Interval or startDate is null.");
 				return errorJsonObject.toString();
 			}
-			
+			SqlSession sqlSession = null;
+		try {
 			//获取时间间隔
 			int interval = jsonObject.getInt("interval");
 			//获取结束时间
@@ -1264,7 +1261,7 @@ public class NsfocusWAFAdapter {
 			
 			//按月统计事件类型
 			
-			SqlSession sqlSession = getSqlSession();
+			sqlSession = getSqlSession();
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			
 			List<JSONObject> typeCountList = new ArrayList<JSONObject>();
@@ -1298,6 +1295,8 @@ public class NsfocusWAFAdapter {
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "Eventtype count error!!!");
 			return errorJsonObject.toString();
+		} finally {
+			closeSqlSession(sqlSession);
 		}
 	}
 	
