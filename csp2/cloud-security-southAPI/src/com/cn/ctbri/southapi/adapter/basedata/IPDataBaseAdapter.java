@@ -1431,18 +1431,4 @@ public class IPDataBaseAdapter {
 		
 	}
 	
-
-	public static void main(String args[]){
-		IPDataBaseAdapter adapter = new IPDataBaseAdapter();
-		JSONObject object = new JSONObject();
-		object.put("ip", "1.27.89.1");
-		object.put("begDate", "2016-11-11");
-		object.put("endDate", "2016-12-12");
-		JSONArray array = new JSONArray();
-		array.add("1.27.89.1");
-		array.add("1.229.205.1");
-		object.put("ipList", array);
-		System.out.println(adapter.getMalurlCountByTargetTop10());
-	}
-	
 }
