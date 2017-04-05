@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- WAF Config -->
+<WAF_CONFIG>
+	<WAFDeviceManage>
+		<WAFDeviceGroup>
+			<ResourceID>10001</ResourceID>
+			<ResourceURI>/WAF/DEVICE/CTBRI/Group001</ResourceURI>
+			<!-- <DeployMode>Single/HA/MUTUAL-HA/BALANCE</DeployMode> -->
+			<DeployMode>HA</DeployMode>
+			<WAFDeviceList>
+				<WAFDevice>
+					<WAFDevID>30001</WAFDevID>
+					<WAFFactory>nsfocus</WAFFactory>
+					<WAFFactoryName>绿盟</WAFFactoryName>
+					<WAFDevPhyIP>172.16.100.209</WAFDevPhyIP>
+					<WAFPublicIPList>219.141.189.183</WAFPublicIPList>
+					<WAFDevAPI>
+						<!-- 部署186，内网地址
+						<APIAddr>https://172.16.100.209:8443</APIAddr>
+						-->
+						<!-- 部署外网 -->
+						<APIAddr>https://219.141.189.189:58442</APIAddr>
+						<APIKey>vmwaf</APIKey>
+						<APIValue>E34A-44A6-E12B-E1C9</APIValue>
+						<APIUserName>admin</APIUserName>
+						<APIPwd>nsfocus</APIPwd>
+					</WAFDevAPI>
+					<WAFDevSyslog identifyType="IP" syslogVer="6.0.5.0" syslogCode="BASE64">
+						<WAFDevTag></WAFDevTag>
+					</WAFDevSyslog>
+				</WAFDevice>
+				<WAFDevice>
+					<WAFDevID>30002</WAFDevID>
+					<WAFFactory>nsfocus</WAFFactory>
+					<WAFFactoryName>绿盟</WAFFactoryName>
+					<WAFDevPhyIP>172.16.100.210</WAFDevPhyIP>
+					<WAFPublicIPList>219.141.189.183</WAFPublicIPList>
+					<WAFDevAPI>
+						<!-- 部署186，内网地址
+						<APIAddr>https://172.16.100.210:8443</APIAddr>
+						部署外网 -->
+						<APIAddr>https://219.141.189.189:58443</APIAddr>
+						<APIKey>vmwaf</APIKey>
+						<APIValue>9E7B-960F-0DA7-4BC0</APIValue>
+						<APIUserName>admin</APIUserName>
+						<APIPwd>nsfocus</APIPwd>
+					</WAFDevAPI>
+					<WAFDevSyslog identifyType="Tag" syslogVer="6.0.5.0" syslogCode="BASE64">
+						<WAFDevTag>waf_g2</WAFDevTag>
+					</WAFDevSyslog>
+				</WAFDevice>
+			</WAFDeviceList>
+		</WAFDeviceGroup>
+		<WAFDeviceGroup>
+			<ResourceID>10002</ResourceID>
+			<ResourceURI>/WAF/DEVICE/CTBRI/Group002</ResourceURI>
+			<DeployMode>Single/HA/MUTUAL-HA/BALANCE</DeployMode>
+			<WAFDeviceList>
+				<WAFDevice>
+					<WAFDevID>30001</WAFDevID>
+					<WAFFactory>nsfocus</WAFFactory>
+					<WAFFactoryName>绿盟</WAFFactoryName>
+					<WAFDevPhyIP>219.141.189.185</WAFDevPhyIP>
+					<WAFPublicIPList>219.141.189.185</WAFPublicIPList>
+					<WAFDevAPI>
+						<!-- 部署186，内网地址
+						<APIAddr>https://172.16.100.184:8443</APIAddr>-->
+						<!-- 部署外网-->
+						<APIAddr>https://219.141.189.189:61184</APIAddr>
+						<APIKey>vmwaf</APIKey>
+						<APIValue>FF20-23C9-8164-A9B2</APIValue>
+						<APIUserName>admin</APIUserName>
+						<APIPwd>anquanbang.net</APIPwd>
+					</WAFDevAPI>
+					<WAFDevSyslog identifyType="IP" syslogVer="6.0.5.0" syslogCode="BASE64">
+						<WAFDevTag></WAFDevTag>
+					</WAFDevSyslog>
+				</WAFDevice>
+			</WAFDeviceList>
+		</WAFDeviceGroup>
+		<!--
+		<WAFDeviceGroup>
+			<ResourceID>10003</ResourceID>
+			<ResourceURI>/WAF/DEVICE/CTBRI/Group002</ResourceURI>
+			<DeployMode>Single/HA/MUTUAL-HA/BALANCE</DeployMode>
+			<WAFDeviceList>
+				<WAFDevice>
+					<WAFDevID>30001</WAFDevID>
+					<WAFFactory>nsfocus</WAFFactory>
+					<WAFFactoryName>绿盟</WAFFactoryName>
+					<WAFDevPhyIP>172.16.100.183</WAFDevPhyIP>
+					<WAFPublicIPList></WAFPublicIPList>
+					<WAFDevSyslog identifyType="IP" syslogVer="6.0.5.0" syslogCode="BASE64">
+						<WAFDevTag></WAFDevTag>
+					</WAFDevSyslog>
+				</WAFDevice>
+				<WAFDevice>
+					<WAFDevID>30001</WAFDevID>
+					<WAFFactory>nsfocus</WAFFactory>
+					<WAFFactoryName>绿盟</WAFFactoryName>
+					<WAFDevPhyIP>172.16.100.184</WAFDevPhyIP>
+					<WAFPublicIPList></WAFPublicIPList>
+					<WAFDevSyslog identifyType="IP" syslogVer="6.0.5.0" syslogCode="BASE64">
+						<WAFDevTag></WAFDevTag>
+					</WAFDevSyslog>
+				</WAFDevice>
+			</WAFDeviceList>
+		</WAFDeviceGroup>
+		-->
+		<WAFDeviceGroup>
+			<ResourceID>10003</ResourceID>
+			<ResourceURI>/WAF/DEVICE/CTBRI/Group003</ResourceURI>
+			<DeployMode>HA</DeployMode>
+			<WAFDeviceList>
+				<WAFDevice>
+					<WAFDevID>30001</WAFDevID>
+					<WAFFactory>nsfocus</WAFFactory>
+					<WAFFactoryName>绿盟</WAFFactoryName>
+					<WAFDevPhyIP>192.168.0.28</WAFDevPhyIP>
+					<WAFPublicIPList></WAFPublicIPList>
+					<WAFDevAPI>
+						<APIAddr>https://183.78.180.10:443</APIAddr>
+						<APIKey>vmwaf</APIKey>
+						<APIValue>EDB1-8043-EEB3-2541</APIValue>
+						<APIUserName>admin</APIUserName>
+						<APIPwd>nsfocus</APIPwd>
+					</WAFDevAPI>
+					<WAFDevSyslog identifyType="IP" syslogVer="6.0.5.0" syslogCode="BASE64">
+						<WAFDevTag></WAFDevTag>
+					</WAFDevSyslog>
+				</WAFDevice>
+				<WAFDevice>
+					<WAFDevID>30002</WAFDevID>
+					<WAFFactory>nsfocus</WAFFactory>
+					<WAFFactoryName>绿盟</WAFFactoryName>
+					<WAFDevPhyIP>192.168.0.133</WAFDevPhyIP>
+					<WAFPublicIPList></WAFPublicIPList>
+					<WAFDevAPI>
+						<APIAddr>https://183.78.182.254:443</APIAddr>
+						<APIKey>vmwaf</APIKey>
+						<APIValue>FE7E-5AEE-60E2-3C1C</APIValue>
+						<APIUserName>admin</APIUserName>
+						<APIPwd>nsfocus</APIPwd>
+					</WAFDevAPI>
+					<WAFDevSyslog identifyType="IP" syslogVer="6.0.5.0" syslogCode="BASE64">
+						<WAFDevTag></WAFDevTag>
+					</WAFDevSyslog>				
+				</WAFDevice>			
+			</WAFDeviceList>
+			
+		</WAFDeviceGroup>
+	</WAFDeviceManage>
+	<SyslogGroup type="waf" >
+		<Syslog factory="nsfocus" ver="6.0.5.0" regexTag="tag:{1}\S+[ \t]{1}">
+		    <WafLog item="ddos" tag="waf_log_ddos" >
+				<dbopt sql="INSERT INTO t_waf_log_ddos(resource_id,resource_uri,resource_ip,stat_time,alertlevel,event_type,dst_ip,dst_port,action) VALUES(@ResourceID,@ResourceURI,@WAFDevPhyIP,#stat_time,#alertlevel,#event_type,#dst_ip,#dst_port,#action)"/>
+				<precondition>
+					<pre id="1" method="StringReplace" argcount="2" arg0="action:ENTER DEFEND MODE" arg1="action:ENTER^DEFEND^MODE"/>
+					<pre id="2" method="StringReplace" argcount="2" arg0="action:QUIT DEFEND MODE" arg1="action:QUIT^DEFEND^MODE"/>
+					<pre id="3" method="StringReplace" argcount="2" arg0="action:Advertisement Announced" arg1="action:Advertisement^Announced"/>
+					<pre id="4" method="StringReplace" argcount="2" arg0="action:DDoS Mitigated by ADS" arg1="action:DDoS^Mitigated^by^ADS"/>
+					<pre id="5" method="StringReplace" argcount="2" arg0="action:DDoS Mitigated by WAF" arg1="action:DDoS^Mitigated^by^WAF"/>
+				</precondition>
+				<match reg="[a-zA-Z_]+:{1}\d{4}-\d{2}-\d{2} {1}\d{2}:\d{2}:\d{2}|[a-zA-Z_]+:{1}\S+">
+					<trans id="1" name="stat_time" express="StringtoDate" />
+				</match>
+            </WafLog>
+ 		    <WafLog item="deface" tag="waf_log_deface" >
+				<dbopt sql="INSERT INTO t_waf_log_deface(resource_id,resource_uri,resource_ip,site_id,protect_id,stat_time,alertlevel,event_type,dst_ip,dst_port,url,reason) VALUES(@ResourceID,@ResourceURI,@WAFDevPhyIP,#site_id,#protect_id,#stat_time,#alertlevel,#event_type,#dst_ip,#dst_port,#url,#reason)"/>
+				<precondition>
+					<pre id="1" method="StringReplace" argcount="2" arg0="reason:Including insecure contents" arg1="reason:Including^insecure^contents"/>
+					<pre id="2" method="StringReplace" argcount="2" arg0="reason:Illegally changing the original contents" arg1="reason:Illegally^changing^the^original^contents"/>
+					<pre id="3" method="StringReplace" argcount="2" arg0="reason:Illegally changing the original contents" arg1="reason:Illegally^changing^the^original^contents"/>
+				</precondition>
+				<match reg="[a-zA-Z_]+:{1}\d{4}-\d{2}-\d{2} {1}\d{2}:\d{2}:\d{2}|[a-zA-Z_]+:{1}\S+">
+					<trans id="1" name="stat_time" express="StringtoDate" />
+				</match>
+			</WafLog>
+		    <WafLog item="arp" tag="waf_log_arp" >
+				<dbopt sql="INSERT INTO t_waf_log_arp(resource_id,resource_uri,resource_ip,stat_time,alertlevel,event_type,attack_type,src_ip,src_mac,dst_ip,dst_mac,status,action,def_ip,def_mac,conflit_mac,count_num) VALUES(@ResourceID,@ResourceURI,@WAFDevPhyIP,#stat_time,#alertlevel,#event_type,#attack_type,#src_ip,#src_mac,#dst_ip,#dst_mac,#status,#action,#def_ip,#def_mac,#conflit_mac,#count_num)"/>
+				<precondition>
+					<pre id="1" method="StringReplace" argcount="2" arg0="attack_type:MAC conflict" arg1="attack_type:MAC^conflict"/>
+					<pre id="2" method="StringReplace" argcount="2" arg0="attack_type:Invalid ARP" arg1="attack_type:Invalid^ARP"/>
+					<pre id="3" method="StringReplace" argcount="2" arg0="attack_type:Gateway Fakement" arg1="attack_type:Gateway^Fakement"/>
+					<pre id="4" method="StringReplace" argcount="2" arg0="status:Attack Succeeded" arg1="status:Attack^Succeeded"/>
+				</precondition>
+				<match reg="[a-zA-Z_]+:{1}\d{4}-\d{2}-\d{2} {1}\d{2}:\d{2}:\d{2}|[a-zA-Z_]+:{1}\S+">
+					<trans id="1" name="stat_time" express="StringtoDate" />
+				</match>
+             </WafLog>
+		    <WafLog item="websec" tag="waf_log_websec" >
+				<dbopt sql="INSERT INTO t_waf_log_websec(resource_id,resource_uri,resource_ip,site_id,protect_id,dst_ip,dst_port,src_ip,src_port,method,domain,uri,alertlevel,event_type,stat_time,policy_id,rule_id,action,block,block_info,http,alertinfo,proxy_info,characters,count_num,protocol_type,wci,wsi) VALUES(@ResourceID,@ResourceURI,@WAFDevPhyIP,#site_id,#protect_id,#dst_ip,#dst_port,#src_ip,#src_port,#method,#domain,#uri,#alertlevel,#event_type,#stat_time,#policy_id,#rule_id,#action,#block,#block_info,#http,#alertinfo,#proxy_info,#characters,#count_num,#protocol_type,#wci,#wsi)"/>
+				<match reg="[a-zA-Z_]+:{1}\d{4}-\d{2}-\d{2} {1}\d{2}:\d{2}:\d{2}|[a-zA-Z_]+:{1}\S+">
+					<trans id="1" name="stat_time" express="StringtoDate" />
+					<trans id="2" name="http" express="Base64toString" />
+					<trans id="3" name="alertinfo" express="Base64toString" />
+					<trans id="5" name="wci" express="Base64toString" />
+					<trans id="6" name="wsi" express="Base64toString" />
+				</match>
+			</WafLog>
+		    <WafLog item="webstat" tag="waf_log_wafstat" >
+				<dbopt sql=""/>
+				<match reg="[a-zA-Z_]+:{1}\d{4}-\d{2}-\d{2} {1}\d{2}:\d{2}:\d{2}|[a-zA-Z_]+:{1}\S+">
+				</match>
+            </WafLog>
+		</Syslog>
+	</SyslogGroup>
+	<SyslogServer serverIP="172.16.100.86" port="5144" threadPoolSize="10" disposeBlockSize="1" packetDisposeMode="Store">
+		<Store>
+			<JdbDriver>com.mysql.jdbc.Driver</JdbDriver>
+			<!-- 部署到186服务器，186数据库
+			<JdbcURL>jdbc:mysql:///southapi</JdbcURL>
+			-->
+			<!-- 部署到本地，186服务器 -->
+			<JdbcURL>jdbc:mysql://219.141.189.186:63306/southapi</JdbcURL>
+			<JdbcUser>root</JdbcUser>
+			<JdbcPwd>mssp@ctbri&amp;</JdbcPwd>
+		</Store>
+		<Relay relayServerIP="127.0.0.1" relayPort="514" relayProtocol="udp" relayMode="Raw" />
+	</SyslogServer>
+</WAF_CONFIG>
