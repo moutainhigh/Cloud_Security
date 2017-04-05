@@ -26,23 +26,23 @@ public class JinshanDeviceOperation extends CommonDeviceOperation{
 		
 		try {
 			Properties properties = new Properties();
-			properties.load(JinshanDeviceOperation.class.getClassLoader().getResourceAsStream("jinshanTimeOnConfig.properties"));
-			apiSecret = properties.getProperty("apiSecret");
-			baseUrl = properties.getProperty("baseUrl");
+			properties.load(JinshanDeviceOperation.class.getClassLoader().getResourceAsStream("SystemServiceConfig.properties"));
+			apiSecret = properties.getProperty("timeOnApiSecret");
+			baseUrl = properties.getProperty("timeOnBaseUrl");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	//创建基础webresource通信资源
-	private WebResource createBasicWebResource(String url) {
+	private Client createBasicWebClient(String url) {
     	ClientConfig config = new DefaultClientConfig();
     	//通信层配置设定
 		buildConfig(url,config);
 		//创建客户端
 		Client client = Client.create(config);
 		//连接服务器
-		WebResource service = client.resource(url);
-		return service;
+
+		return client;
 	}
 	private String postMethodWithParams(String url,HashMap paramsHashMap) {
         
@@ -52,8 +52,10 @@ public class JinshanDeviceOperation extends CommonDeviceOperation{
 			Entry entry = (Entry) iterator.next();
 			params.add(entry.getKey().toString(), entry.getValue().toString());
 		}
-        WebResource service = createBasicWebResource(url);
+		Client client = createBasicWebClient(url);
+        WebResource service = client.resource(url);
         String response = service.post(String.class, params);
+        client.destroy();
         return response;
 	}
 	
@@ -69,7 +71,7 @@ public class JinshanDeviceOperation extends CommonDeviceOperation{
 		return EncryptUtility.getMD5(sb.toString()).toUpperCase();
 	}
 	//订单接口 
-	public String createTimeOnOrder(JSONObject jsonObject){
+	public String getOrderIndex(JSONObject jsonObject){
 		if (jsonObject.get("companyId")==null||jsonObject.getString("companyId").length()<=0
 				||jsonObject.get("name")==null||jsonObject.getString("name").length()<=0
 				||jsonObject.get("tCount")==null||jsonObject.getString("tCount").length()<=0) {
@@ -163,7 +165,7 @@ public class JinshanDeviceOperation extends CommonDeviceOperation{
 
 		String companyIdString = jsonObject.getString("companyId");
 		String timeStampString = String.valueOf(System.currentTimeMillis());
-		JSONObject paramsObject = new JSONObject(false);
+		JSONObject paramsObject = new JSONObject(true);
 		paramsObject.put("company_id", companyIdString);
 		paramsObject.put("timestamp", timeStampString);
 		String sercetString = generateSign(paramsObject);
@@ -179,17 +181,4 @@ public class JinshanDeviceOperation extends CommonDeviceOperation{
 		returnJsonObject.put("url", EncryptUtility.encodeBase64Str(sb.toString()));
 		return returnJsonObject.toJSONString();
 	}
-	
-	public static void main(String[] args) {
-		// TODO 测试实例
-		JSONObject object = new JSONObject(false);
-		object.put("companyId", "123456");
-		object.put("name" , "anquanbangtest2");
-		object.put("tCount", 64);
-		JinshanDeviceOperation operation = new JinshanDeviceOperation();
-		String outString = operation.getHostCount(object);
-		System.out.println(outString);
-		System.out.println(EncryptUtility.decodeBase64Str("aHR0cDovLzYwLjIwNS4xNjkuMjIzL09hdXRoL2luZGV4P2NvbXBhbnlfaWQ9MTIzNDU2JnRpbWVzdGFtcD0xNDg3MjMwNzU4ODc1JnNlcmNldD03Q0M4NUU2MjQwQjQ5MTExNThGQTlEMzEwNDlGNDYwQw=="));
-	}
-
 }

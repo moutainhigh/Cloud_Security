@@ -53,19 +53,20 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 	 *		 @time 2015-01-05
 	 */	
 	public boolean createSessionId(String username, String password, String serverWebRoot){
+		 // 登陆信息
+		this.username=username;
+		this.password=password;
+		arnhemServerWebrootUrl=serverWebRoot;
+		String xmlContent = "<Login><Name>" + username+ "</Name><Password>" + password + "</Password></Login>";
+   	 	// 登陆服务器地址
+        String url = serverWebRoot + "/rest/login";
+        // 创建客户端配置对象
+        ClientConfig config = new DefaultClientConfig(); 
+        buildConfig(url, config);
+        // 建立客户端
+        Client client = Client.create(config);
 		try {
-			 // 登陆信息
-			this.username=username;
-			this.password=password;
-			arnhemServerWebrootUrl=serverWebRoot;
-	    	 String xmlContent = "<Login><Name>" + username+ "</Name><Password>" + password + "</Password></Login>";
-	    	 // 登陆服务器地址
-	         String url = serverWebRoot + "/rest/login";
-	         // 创建客户端配置对象
-	         ClientConfig config = new DefaultClientConfig(); 
-	         buildConfig(url, config);
-	         // 建立客户端
-	         Client client = Client.create(config);
+
 	         // 连接服务器
 	         WebResource service = client.resource(url); 
 	         // 发送请求，接收返回数据
@@ -82,11 +83,14 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 	         Element s = ele.element("SessionId");
 	         connectSessionId = s.getText();
 	         arnhemServerWebrootUrl = serverWebRoot;
+	         
 	         return true;
 	   	}catch(Exception e) {
 	   		e.printStackTrace();
 			return false;
-	   	}
+	   	}finally {
+			client.destroy();
+		}
 	}
 	
 	
@@ -108,10 +112,8 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 		Client client = Client.create(config);
 		//连接服务器
 		WebResource service = client.resource(url);
-		
 		//获取响应结果
 		String response = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xml);
-		
 		//解析响应结果内容，如果登录错误重新登录
 		try {
 			SAXReader reader = new SAXReader();
@@ -119,7 +121,7 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 			Element rootElement = document.getRootElement();
 			String value = rootElement.attributeValue("value");
 			if ("AuthErr"==value&&createSessionId(username, password, arnhemServerWebrootUrl)) {
-				String redirectResponse = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xml);				
+				String redirectResponse = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xml);
 				return redirectResponse;
 			} else {
 				return response;
@@ -127,6 +129,8 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 		} catch (DocumentException e) {
 			e.printStackTrace();
 			return response;
+		}finally {
+			client.destroy();
 		}
 	}
 	
@@ -169,6 +173,8 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 		} catch (DocumentException e) {
 			e.printStackTrace();
 			return response;
+		}finally {
+			client.destroy();
 		}
 	}
 
@@ -204,6 +210,8 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 		} catch (DocumentException e) {
 			e.printStackTrace();
 			return response;
+		}finally {
+			client.destroy();
 		}
 	}
 	
@@ -338,8 +346,9 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 		//创建路径
 		String url = arnhemServerWebrootUrl + "/rest/task/Test/" + scannerTaskUniParam.getTaskId();
 		//测试
+		//logger.error("111111111111111111111!!!!");
 		String returnString = postMethod(url);
-		logger.error(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+returnString);
+		//logger.error(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+returnString);
 		return returnString;		
 	}
 	
@@ -356,7 +365,8 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
         String xml = "<Task><TaskID>" + scannerTaskUniParam.getTaskId() + "</TaskID><ProductID>" + scannerTaskUniParam.getProductId() +"</ProductID ></Task>";
         //创建路径
         String url = arnhemServerWebrootUrl + "/rest/task/getTaskProgress";
-		String returnString = postMethod(url, xml);
+		logger.error("##########################################");
+        String returnString = postMethod(url, xml);
 		logger.error(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+returnString);
 		return returnString;	
 

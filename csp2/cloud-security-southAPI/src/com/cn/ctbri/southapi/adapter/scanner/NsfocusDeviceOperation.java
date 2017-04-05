@@ -35,25 +35,27 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 
 	
 	public boolean createSessionId(String username, String password, String serverWebRoot) {
+		this.username = username;
+		this.password = password;
+		nsfocusServerWebrootUrl = serverWebRoot;
+		
+		String xmlContent = "xml=<?xml version='1.0' encoding='utf-8' ?><root>"
+				+"<username><![CDATA["+username+"]]></username>"
+				+"<password><![CDATA["+password+"]]></password></root>";
+		String url = nsfocusServerWebrootUrl+"/httprpc/login/";
+		
+		ClientConfig config = new DefaultClientConfig();
+		//通信层配置设定
+		buildConfig(url,config);
+		//创建客户端
+		Client client = Client.create(config);
+
 		try {
-			this.username = username;
-			this.password = password;
-			nsfocusServerWebrootUrl = serverWebRoot;
-			
-			String xmlContent = "xml=<?xml version='1.0' encoding='utf-8' ?><root>"
-					+"<username><![CDATA["+username+"]]></username>"
-					+"<password><![CDATA["+password+"]]></password></root>";
-			String url = nsfocusServerWebrootUrl+"/httprpc/login/";
-			
-			ClientConfig config = new DefaultClientConfig();
-			//通信层配置设定
-			buildConfig(url,config);
-			//创建客户端
-			Client client = Client.create(config);
 			//连接服务器
 			WebResource service = client.resource(url);
 			//获取响应结果
 			ClientResponse response = service.type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(ClientResponse.class, xmlContent);
+			
 			String[] cookie = response.getCookies().get(0).toString().split(";");
 			HashMap<String, String> cookieHashMap = new HashMap<String, String>();
 			for (int i = 0; i < cookie.length; i++) {
@@ -67,6 +69,8 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
+		}finally {
+			client.destroy();
 		}
 	}
 	
@@ -85,6 +89,7 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 		String cookie = response.getCookies().toString();
 		String body = response.getEntity(String.class);
 		//For 2
+		client.destroy();
 		return cookie+"/r/n"+body;
 	}
 	
@@ -111,6 +116,7 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
         //连接服务器，返回结果
         //String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).delete(String.class);
         String response = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class);
+        client.destroy();
         return response;
 	}
 	
@@ -309,6 +315,4 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 	 * @param args
 	 * @throws IOException 
 	 */
-	public static void main(String[] args){
-	}
 }

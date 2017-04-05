@@ -78,8 +78,8 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		return true;
 	}
 	
-	//创建基础wenresource通信资源
-	private WebResource createBasicWebResource(String url) {
+	//创建基础webresource通信资源
+	private Client createBasicClient(String url) {
     	ClientConfig config = new DefaultClientConfig();
     	//通信层配置设定
 		buildConfig(url,config);
@@ -88,7 +88,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		client.addFilter(new HTTPBasicAuthFilter(nsfocusWafUsername,nsfocusWafPassword));
 		//连接服务器
 		WebResource service = client.resource(url);
-		return service;
+		return client;
 	}
 	/**
 	 * 功能描述：post方法请求(填充xml)
@@ -99,7 +99,8 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	 */
 	private  String postMethod(String url, String jsonString) {
 		//创建客户端配置对象
-		WebResource service = createBasicWebResource(url);
+		Client client = createBasicClient(url);
+		WebResource service = client.resource(url);
 		Builder builder = service.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 		//获取响应结果
 		ClientResponse response = builder.post(ClientResponse.class, jsonString);
@@ -117,37 +118,47 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	 * @return String响应结果
 	 */
 	private String postMethod(String url) {
-        WebResource service = createBasicWebResource(url);
+		Client client = createBasicClient(url);
+		WebResource service = client.resource(url);
         Builder builder = service.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
         String response = builder.post(String.class);
+        client.destroy();
         return response;
 	}
 	
 	private String getMethod(String url){
-        WebResource service = createBasicWebResource(url);   
+		Client client = createBasicClient(url);
+		WebResource service = client.resource(url); 
         Builder builder =  service.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
         String response = builder.get(String.class);
+        client.destroy();
         return response;
     }
 	
 	private String delMethod(String url){
-        WebResource service = createBasicWebResource(url);   
+		Client client = createBasicClient(url);
+		WebResource service = client.resource(url);  
         Builder builder =  service.type("application/json");
         String response = builder.delete(String.class);
+        client.destroy();
         return response;
 	}
 	private String delMethod(String url,String jsonString) {
-		WebResource service = createBasicWebResource(url);
+		Client client = createBasicClient(url);
+		WebResource service = client.resource(url);
         Builder builder =  service.type("application/json");
         String response = builder.delete(String.class, jsonString);
+        client.destroy();
 		return response;
 	}
 	
 	
 	private String putmethod(String url, String jsonString) {
-		WebResource service = createBasicWebResource(url);
+		Client client = createBasicClient(url);
+		WebResource service = client.resource(url);
 		Builder builder = service.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 		String response = builder.put(String.class,jsonString);
+        client.destroy();
 		return response;
 	}
 	

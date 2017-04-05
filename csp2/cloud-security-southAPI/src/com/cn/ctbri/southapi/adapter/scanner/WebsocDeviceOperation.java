@@ -92,8 +92,10 @@ public class WebsocDeviceOperation {
         if(null==code||"".equalsIgnoreCase(code)||"101".equalsIgnoreCase(code)){
         	createSessionId(username, password, serverWebRoot);
         	String redirectResponse = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_FORM_URLENCODED).post(String.class, jsonContent); 
+        	client.destroy();
         	return redirectResponse;
         }else {
+        	client.destroy();
         	return response;			
 		}
 	}

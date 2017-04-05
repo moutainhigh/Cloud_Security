@@ -433,13 +433,7 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.getWafLogWebSecSrcIpList();
 	}
 	
-	@POST
-	@Path("/getLocationFromIp")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String getLocationFromIp(String dataJson) {
-		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		return deviceAdpaterManager.getLocationFromIp(jsonObject);
-	}
+
 	
 	@POST
 	@Path("/getSites")
@@ -568,33 +562,269 @@ public class DeviceAdapterManagerService {
 		int resourceId = jsonObject.getInt("resourceId");
 		return deviceAdpaterManager.getWafPublicIpListInResource(resourceId);
 	}
+	
+	//安全基础数据
+	//4IP与经纬度数据接口
+	//4.1获取单IP经纬度信息
 	@POST
-	@Path("/timeon/createOrder")
+	@Path("/secbasedata/iplatlong/getlatlongbyip")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String createTimeOnOrder(String dataJson) {
+	public String getLatlongByIP(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getLatlongByIP(jsonObject);
+	}
+	
+	//4.2获取多IP经纬度信息
+	@POST
+	@Path("/secbasedata/iplatlong/getlatlongbyiplist")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getLatlongByIPList(String dataJson){
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getLatlongByIpList(jsonObject);
+	}
+	
+	//6.1获取当天国内活动恶意url信息
+	@GET
+	@Path("/secbasedata/malurl/getdatabycntoday")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalurlDataByCNToday() {
+		return deviceAdpaterManager.getMalurlDataByCNToday();
+	}
+	
+	//6.2获取当天全球活动恶意URL信息
+	@GET
+	@Path("/secbasedata/malurl/getdatabytoday")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalurlDataByToday(){
+		return deviceAdpaterManager.getMalurlDataByToday();
+	}
+	
+	//6.3获取指定时间段内国内活动恶意url信息
+	@POST
+	@Path("/secbasedata/malurl/getdatabycnperiod")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalurlDataByCNPeriod(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getMalurlDataByCNPeriod(jsonObject);
+	}
+	//6.4
+	@POST
+	@Path("/secbasedata/malurl/getdatabyperiod")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalurlDataByPeriod(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getMalurlDataByPeriod(jsonObject);
+	}
+	//6.5
+	@GET
+	@Path("/secbasedata/malurl/getdatabycn")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalurlDataByCN(){
+		return deviceAdpaterManager.getMalurlDataByCN();
+	}
+	//6.6
+	@GET
+	@Path("/secbasedata/malurl/getdata")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalurlData(){
+		return deviceAdpaterManager.getMalurlData();
+	}
+	//6.7
+	@GET
+	@Path("/secbasedata/malurl/gettargetlistbycn")
+	public String getMalurlTargetListByCN() {
+		return deviceAdpaterManager.getMalurlTargetListByCN();
+	}
+	//6.8
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/secbasedata/malurl/getdatabycntarget")
+	public String getMalurlDataByCNTarget(String dataJson) {
+		
+		try {
+			JSONObject jsonObject = JSONObject.fromObject(dataJson);
+			return deviceAdpaterManager.getMalurlDataByCNTarget(jsonObject);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "json error");
+			return errorJsonObject.toString();
+		}
+		
+	}
+	//6.9
+	@GET
+	@Path("/secbasedata/malurl/getfieldlistbycn")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalurlFieldListByCN() {
+		return deviceAdpaterManager.getMalurlFieldListByCN();
+	}
+	//6.10
+	@POST
+	@Path("/secbasedata/malurl/getdatabycnfield")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalurlDataByCNField(String dataJson) {
+		try {
+			JSONObject jsonObject = JSONObject.fromObject(dataJson);
+			return deviceAdpaterManager.getMalurlDataByCNField(jsonObject);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "json error");
+			return errorJsonObject.toString();
+		}
+	}
+	//6.11
+	@POST
+	@Path("/secbasedata/malurl/getdatabydomain")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalurlDataByDomain(String dataJson) {
+		
+		try {
+			JSONObject jsonObject = JSONObject.fromObject(dataJson);
+			return deviceAdpaterManager.getMalurlDataByDomain(jsonObject);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "json error");
+			return errorJsonObject.toString();
+		}
+		
+		
+	}
+	
+	
+	
+	//8
+	//1.
+	@GET
+	@Path("/secbasedata/malurl/getcountbycountryvalid")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalUrlCountByCountryValid() {
+		return deviceAdpaterManager.getMalUrlCountByCountryValid();
+	}
+	//2按国家类别分类获取全部的恶意url个数，带是否有效的状态
+	@GET
+	@Path("/secbasedata/malurl/getcountbycountrywithvalid")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalUrlCountByCountryWithValidState(){
+		return deviceAdpaterManager.getMalUrlCountByCountryWithValidState();
+	}
+	//3.
+	@GET
+	@Path("/secbasedata/malurl/getcountvalid")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalUrlCountValid() {
+		return deviceAdpaterManager.getMalUrlCountValid();
+	}
+	//4.获取所有恶意url个数
+	@GET
+	@Path("/secbasedata/malurl/getcount")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalUrlCount() {
+		return deviceAdpaterManager.getMalUrlCount();
+	}
+	
+	//5.
+	@POST
+	@Path("/secbasedata/malurl/getcountbymonth")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalUrlCountByMonth(String dataJson) {
+		try {
+			JSONObject jsonObject = JSONObject.fromObject(dataJson);
+			return deviceAdpaterManager.getMalUrlCountByMonth(jsonObject);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "json error");
+			return errorJsonObject.toString();
+		}
+	}
+	
+	//6.
+	@GET
+	@Path("/secbasedata/malurl/getcountbycnprovince")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalUrlCountByCNProvince(){
+		return deviceAdpaterManager.getMalUrlCountByCNProvince();
+	}
+	
+	//7.
+	@GET
+	@Path("/secbasedata/malurl/getcountbyfieldtop5")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalurlCountByFieldTop5() {
+		return deviceAdpaterManager.getMalurlCountByFieldTop5();
+	}
+	
+	//8.
+	@GET
+	@Path("/secbasedata/malurl/getcountbytargettop10")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalurlCountByTargetTop10() {
+		return deviceAdpaterManager.getMalurlCountByTargetTop10();
+	}
+	
+	@POST
+	@Path("/systemservice/timeon/getorderindex")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTimeOnOrderIndex(String dataJson) {
 		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
-		return deviceAdpaterManager.createTimeOnOrder(jsonObject);
+		return deviceAdpaterManager.getTimeOnOrderIndex(jsonObject);
 	}
 	@POST
-	@Path("/timeon/getUninstallInfo")
+	@Path("/systemservice/timeon/getuninstallinfo")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getTimeOnUninstallInfo(String dataJson) {
 		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
 		return deviceAdpaterManager.getTimeOnUninstallInfo(jsonObject);
 	}
 	@POST
-	@Path("/timeon/getHostCount")
+	@Path("/systemservice/timeon/gethostcount")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getTimOnHostCount(String dataJson) {
 		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
 		return deviceAdpaterManager.getTimeOnHostCount(jsonObject);
 	}
 	@POST
-	@Path("/timeon/getOauthUrl")
+	@Path("/systemservice/timeon/getoauthurl")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getTimOnOauthUrl(String dataJson) {
 		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
 		return deviceAdpaterManager.getTimeOnOauthUrl(jsonObject);
 	}
+	
+	@POST
+	@Path("/systemservice/cloudinsight/gettoken")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getCloudInsightToken(String dataJson) {
+		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
+		return deviceAdpaterManager.getCloudInsightToken(jsonObject);
+	}
+	
+	@POST
+	@Path("/systemservice/cloudinsight/destroytoken")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String destroyCloudInsightToken(String dataJson) {
+		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
+		return deviceAdpaterManager.destroyCloudInsightToken(jsonObject);
+	}
+	
+	@POST
+	@Path("/systemservice/cloudinsight/getloginurl")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getCloudInsightLoginURL(String dataJson){
+		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
+		return deviceAdpaterManager.getCloudInsightLoginURL(jsonObject);
+	}
+	
 
 }

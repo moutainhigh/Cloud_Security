@@ -7,8 +7,8 @@ public class JinshanDeviceAdapter {
 		JinshanDeviceOperation jinshanDeviceOperation = new JinshanDeviceOperation();
 		return jinshanDeviceOperation;
 	}
-	public String createTimeOnOrder(JSONObject jsonObject) {
-		return getJinshanDeviceOperation().createTimeOnOrder(jsonObject);
+	public String getTimeOnOrderIndex(JSONObject jsonObject) {
+		return getJinshanDeviceOperation().getOrderIndex(jsonObject);
 	}
 	public String getUninstallInfo(JSONObject jsonObject) {
 		return getJinshanDeviceOperation().getUninstallInfo(jsonObject);

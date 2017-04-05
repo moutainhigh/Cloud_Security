@@ -1,67 +1,127 @@
 package com.cn.ctbri.southapi.adapter.batis.inter;
 
 import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
+import static org.apache.ibatis.jdbc.SqlBuilder.DELETE_FROM;
 import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
+import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
 import static org.apache.ibatis.jdbc.SqlBuilder.ORDER_BY;
 import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
 import static org.apache.ibatis.jdbc.SqlBuilder.SELECT_DISTINCT;
+import static org.apache.ibatis.jdbc.SqlBuilder.SET;
 import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
+import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
+import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
 import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
 
-import com.cn.ctbri.southapi.adapter.batis.model.TIpv4LatlongExample.Criteria;
-import com.cn.ctbri.southapi.adapter.batis.model.TIpv4LatlongExample.Criterion;
-import com.cn.ctbri.southapi.adapter.batis.model.TIpv4LatlongExample;
+import com.cn.ctbri.southapi.adapter.batis.model.TViewWebPhishCountryCount;
+import com.cn.ctbri.southapi.adapter.batis.model.TViewWebPhishCountryCountExample.Criteria;
+import com.cn.ctbri.southapi.adapter.batis.model.TViewWebPhishCountryCountExample.Criterion;
+import com.cn.ctbri.southapi.adapter.batis.model.TViewWebPhishCountryCountExample;
 import java.util.List;
+import java.util.Map;
 
-public class TIpv4LatlongSqlProvider {
+public class TViewWebPhishCountryCountSqlProvider {
 
-    public String countByExample(TIpv4LatlongExample example) {
+    public String countByExample(TViewWebPhishCountryCountExample example) {
         BEGIN();
         SELECT("count(*)");
-        FROM("t_ipv4_latlong");
+        FROM("t_view_web_phish_country_count");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String selectByExample(TIpv4LatlongExample example) {
+    public String deleteByExample(TViewWebPhishCountryCountExample example) {
+        BEGIN();
+        DELETE_FROM("t_view_web_phish_country_count");
+        applyWhere(example, false);
+        return SQL();
+    }
+
+    public String insertSelective(TViewWebPhishCountryCount record) {
+        BEGIN();
+        INSERT_INTO("t_view_web_phish_country_count");
+        
+        if (record.getWebphishCountry() != null) {
+            VALUES("webphish_country", "#{webphishCountry,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getWebphishCountrycode() != null) {
+            VALUES("webphish_countrycode", "#{webphishCountrycode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getWebphishCount() != null) {
+            VALUES("webphish_count", "#{webphishCount,jdbcType=BIGINT}");
+        }
+        
+        if (record.getIsvalid() != null) {
+            VALUES("isvalid", "#{isvalid,jdbcType=INTEGER}");
+        }
+        
+        return SQL();
+    }
+
+    public String selectByExample(TViewWebPhishCountryCountExample example) {
         BEGIN();
         if (example != null && example.isDistinct()) {
-            SELECT_DISTINCT("latlong_id");
+            SELECT_DISTINCT("webphish_country");
         } else {
-            SELECT("latlong_id");
+            SELECT("webphish_country");
         }
-        SELECT("network");
-        SELECT("netmask");
-        SELECT("startip");
-        SELECT("endip");
-        SELECT("location_id");
-        SELECT("registered_country_location_id");
-        SELECT("represented_country_location_id");
-        SELECT("is_anonymous_proxy");
-        SELECT("is_satellite_provider");
-        SELECT("postal_code");
-        SELECT("latitude");
-        SELECT("longitude");
-        SELECT("accuracy_radius");
-        FROM("t_ipv4_latlong");
+        SELECT("webphish_countrycode");
+        SELECT("webphish_count");
+        SELECT("isvalid");
+        FROM("t_view_web_phish_country_count");
         applyWhere(example, false);
         
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
-        if (example != null && example.getRows() != null){
-        	if(example.getOffset() != null){
-        		return SQL() + " limit " + example.getOffset()+","+example.getRows();
-        	}
-        	return SQL() + " limit " + example.getRows();
-        }else{
-            return SQL();
-        }
+        
+        return SQL();
     }
 
-  
+    public String updateByExampleSelective(Map<String, Object> parameter) {
+        TViewWebPhishCountryCount record = (TViewWebPhishCountryCount) parameter.get("record");
+        TViewWebPhishCountryCountExample example = (TViewWebPhishCountryCountExample) parameter.get("example");
+        
+        BEGIN();
+        UPDATE("t_view_web_phish_country_count");
+        
+        if (record.getWebphishCountry() != null) {
+            SET("webphish_country = #{record.webphishCountry,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getWebphishCountrycode() != null) {
+            SET("webphish_countrycode = #{record.webphishCountrycode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getWebphishCount() != null) {
+            SET("webphish_count = #{record.webphishCount,jdbcType=BIGINT}");
+        }
+        
+        if (record.getIsvalid() != null) {
+            SET("isvalid = #{record.isvalid,jdbcType=INTEGER}");
+        }
+        
+        applyWhere(example, true);
+        return SQL();
+    }
 
-    protected void applyWhere(TIpv4LatlongExample example, boolean includeExamplePhrase) {
+    public String updateByExample(Map<String, Object> parameter) {
+        BEGIN();
+        UPDATE("t_view_web_phish_country_count");
+        
+        SET("webphish_country = #{record.webphishCountry,jdbcType=VARCHAR}");
+        SET("webphish_countrycode = #{record.webphishCountrycode,jdbcType=VARCHAR}");
+        SET("webphish_count = #{record.webphishCount,jdbcType=BIGINT}");
+        SET("isvalid = #{record.isvalid,jdbcType=INTEGER}");
+        
+        TViewWebPhishCountryCountExample example = (TViewWebPhishCountryCountExample) parameter.get("example");
+        applyWhere(example, true);
+        return SQL();
+    }
+
+    protected void applyWhere(TViewWebPhishCountryCountExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }

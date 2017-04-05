@@ -1196,7 +1196,7 @@ public class NsfocusWAFAdapter {
 			calendar.add(Calendar.DATE, -interval);
 			Date dateBefore = calendar.getTime();
 			//根据时间间隔获取时间段
-			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			
 			sqlSession = getSqlSession();
 			TWafLogWebsecCountMapper mapper = sqlSession.getMapper(TWafLogWebsecCountMapper.class);

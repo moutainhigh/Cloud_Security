@@ -1,12 +1,21 @@
 package com.cn.ctbri.southapi.adapter.systemserv;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 
+import javax.ws.rs.core.MediaType;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializeFilter;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.cn.ctbri.southapi.adapter.manager.CommonDeviceOperation;
 import com.cn.ctbri.southapi.adapter.utils.EncryptUtility;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
@@ -22,10 +31,10 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 		
 		try {
 			Properties properties = new Properties();
-			properties.load(NsfocusSysServOperation.class.getClassLoader().getResourceAsStream("nsfocusSysServ.properties"));
-			apiKey = properties.getProperty("apiKey");
-			apiSecret = properties.getProperty("apiSecret");
-			baseURL = properties.getProperty("baseURL");
+			properties.load(NsfocusSysServOperation.class.getClassLoader().getResourceAsStream("SystemServiceConfig.properties"));
+			apiKey = properties.getProperty("AuroraScanApiKey");
+			apiSecret = properties.getProperty("AuroraScanApiSecret");
+			baseURL = properties.getProperty("AuroraScanBaseURL");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -38,9 +47,9 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 	 * @param apiSecret
 	 * @return timeStrap,signHashString
 	 */
-	private ApiSign createSign(int apiId,String apiKey,String apiSecret) {
+	private ApiSign createSign(int apiId,String apiKey,String apiSecret,Long timestrap) {
 		ApiSign apiSign = new ApiSign();
-		Long timestrap = System.currentTimeMillis();
+		
 
 
 		
@@ -53,12 +62,18 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 		String signString = jsonObject.toString();
 		System.out.println(signString);
 		String signHashString = EncryptUtility.HMACSHA256(signString, apiKey);
-		apiSign.setTimestrap(1484032931632L);
+		apiSign.setTimestrap(timestrap);
 		apiSign.setSign(signHashString);
 
 		return apiSign;
 	}
 	
+	private String createParamsString(com.alibaba.fastjson.JSONObject jsonObject){
+		String jsonString = jsonObject.toJSONString();
+		System.out.println(jsonString);
+		String paramsStringBase64 = EncryptUtility.encodeBase64Str(jsonString);
+		return paramsStringBase64;
+	}
 	/**
 	 * 带key-value参数的post方法
 	 * @param url
@@ -77,28 +92,56 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 		WebResource service = client.resource(url);
 		//获取响应结果
 		String response = service.queryParams(params).post(String.class);
+		client.destroy();
 		//For 2
 		return response;
+	}
+	
+	private  String postMethod(String url, String jsonString) {
+		//创建客户端配置对象
+    	ClientConfig config = new DefaultClientConfig();
+    	//通信层配置设定
+		buildConfig(url,config);
+		//创建客户端
+		Client client = Client.create(config);
+		//
+		//连接服务器
+		WebResource service = client.resource(url);
+		ClientResponse response = service.post(ClientResponse.class,jsonString);
+		//String cookie = response.getCookies().toString();
+		String body = response.getEntity(String.class);
+		client.destroy();
+		//For 2
+		return body;
 	}
 	/**
 	 * 创建绿盟极光自助扫描订单
 	 * @param orderJsonObject
 	 * @return responseJsonString
+	 * JSONObject orderJsonObject
 	 */
-	public String createNsfocusSysOrder(JSONObject orderJsonObject){
-		if (orderJsonObject.get("apiId")==null||orderJsonObject.getString("apiId").length()<=0) {
+	public String createNsfocusSysOrder(){
+		/*if (orderJsonObject.get("apiId")==null||orderJsonObject.getString("apiId").length()<=0) {
 			JSONObject errJsonObject = new JSONObject();
 			errJsonObject.put("status", "failed");
 			errJsonObject.put("reason", "apiId is null");
-		}
-		MultivaluedMapImpl params = new MultivaluedMapImpl();
-		params.add("api_key", "");
-		params.add("timestrap", "");
-		params.add("api_id", "");
-		params.add("sign", "");
-		params.add("params", "");
-		String responeJsonString = postMethodWithParams("url", params);
-		return null;
+		}*/
+		com.alibaba.fastjson.JSONObject postJsonObject = new com.alibaba.fastjson.JSONObject(false);
+		com.alibaba.fastjson.JSONObject paramJsonObject = new com.alibaba.fastjson.JSONObject(false);
+		Long timestrap = System.currentTimeMillis();
+		paramJsonObject.put("sku_id", "anqb000001");
+		paramJsonObject.put("AnqbUid", "testshao");
+		paramJsonObject.put("AnqbOrderID", "test20170331");
+		
+		postJsonObject.put("api_key", apiKey);
+		postJsonObject.put("timestrap", timestrap);
+		postJsonObject.put("api_id", 501);
+		postJsonObject.put("sign", createSign(501, apiKey, apiSecret, timestrap).getSign());
+		postJsonObject.put("params", createParamsString(paramJsonObject));
+		System.out.println(paramJsonObject);
+		System.out.println(postJsonObject.toJSONString());
+		String responeJsonString = postMethod("https://www.nscloud.com/api/krosa/meari/anqb/create_order", postJsonObject.toJSONString());
+		return responeJsonString;
 	}
 	//TODO 等待厂家接口
 	public String renewNsfocusSysOrder(JSONObject orderJsonObject) {
@@ -109,12 +152,23 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 		}
 		MultivaluedMapImpl params = new MultivaluedMapImpl();
 		params.add("", "");
-		String responseJsonString = postMethodWithParams("", params);
+		String responseJsonString = postMethod("","");
 		return null;
 	}
 	
 	public String name() {
 		return null;
+	}
+	
+	public static void main(String[] args) {
+		com.alibaba.fastjson.JSONObject testJsonObject = new com.alibaba.fastjson.JSONObject(false);
+		testJsonObject.put("a", "123");
+		testJsonObject.put("z", "sas");
+		testJsonObject.put("b", "456");
+		testJsonObject.put("c", "789");
+		testJsonObject.put("aa", "000");
+		NsfocusSysServOperation operation = new NsfocusSysServOperation();
+		System.out.println(operation.createNsfocusSysOrder());
 	}
 	
 }

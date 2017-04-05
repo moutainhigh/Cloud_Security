@@ -26,6 +26,7 @@ import com.cn.ctbri.southapi.adapter.config.ScannerTaskUniParam;
 import com.cn.ctbri.southapi.adapter.jinshan.JinshanDeviceAdapter;
 import com.cn.ctbri.southapi.adapter.scanner.ArnhemDeviceAdpater;
 import com.cn.ctbri.southapi.adapter.scanner.WebsocDeviceAdapter;
+import com.cn.ctbri.southapi.adapter.systemserv.CloudInsightAdapter;
 import com.cn.ctbri.southapi.adapter.waf.NsfocusWAFAdapter;
 import com.cn.ctbri.southapi.adapter.waf.config.WAFConfigManager;
 
@@ -55,6 +56,8 @@ public class DeviceAdpaterManager {
 	public static URLDataBaseAdapter urlDataBaseAdapter = new URLDataBaseAdapter();
 	
 	public static JinshanDeviceAdapter jinshanDeviceAdapter = new JinshanDeviceAdapter();
+	
+	public static CloudInsightAdapter cloudInsightAdapter = new CloudInsightAdapter();
 	//加载设备错误信息
 	private static final String LOAD_DEVICE_ERROR = "{\"status\":\"fail\",\"message\":\"Load DeviceConfig failed!!\"}";
 	//初始化错误信息
@@ -875,16 +878,134 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getAlertLevelCountByMonth(jsonObject);
 	}
 	
-	public String getLocationFromIp(JSONObject jsonObject) {
-		return ipDataBaseAdapter.getLocationFromIp(jsonObject);
-	}
-	
 	public String getWafPublicIpListInResource(int resourceId) {
 		return nsfocusWAFAdapter.getPublicIpListInResource(resourceId);
 	}
 	
-	public String createTimeOnOrder(com.alibaba.fastjson.JSONObject jsonObject) {
-		return jinshanDeviceAdapter.createTimeOnOrder(jsonObject);
+	//4.1获取单IP经纬度信息
+	public String getLatlongByIP(JSONObject jsonObject) {
+		return ipDataBaseAdapter.getLatlongByIP(jsonObject);
+	}
+	
+	//4.2获取多ip经纬度信息
+	public String getLatlongByIpList(JSONObject jsonObject) {
+		return ipDataBaseAdapter.getLatlongByIpList(jsonObject);
+	}
+	
+	//4.3获取国内IP地址经纬度数据总数
+	public String getIpLatlongCNCount() {
+		return ipDataBaseAdapter.getIpLatlongCNCount();
+	}
+	
+	//4.4获取国内IP地址经纬度数据块 POST
+	public String getIpLatlongCNDataBlock(JSONObject jsonObject){
+		return ipDataBaseAdapter.getIpLatlongCNDataBlock(jsonObject);
+	}
+	
+	//4.5获取全球IP地址经纬度数据总数
+	public String getIpLatlongTotalCount() {
+		return ipDataBaseAdapter.getIpLatlongTotalCount();
+	}
+	
+	//4.6获取全球IP地址经纬度数据块
+	public String getIpLatlongDataBlock(JSONObject jsonObject) {
+		return ipDataBaseAdapter.getIpLatlongDataBlock(jsonObject);
+	}
+	
+	//6.1获取当天国内活动恶意url信息
+	public String getMalurlDataByCNToday() {
+		return ipDataBaseAdapter.getMalurlDataByCNToday();
+	}
+	
+	//6.2获取当天全球活动恶意URL信息
+	public String getMalurlDataByToday(){
+		return ipDataBaseAdapter.getMalurlDataByToday();
+	}
+	
+	//6.3获取指定时间段内国内活动恶意url信息
+	public String getMalurlDataByCNPeriod(JSONObject jsonObject) {
+		return ipDataBaseAdapter.getMalurlDataByCNPeriod(jsonObject);
+	}
+	
+	//6.4获取指定时间段内全球活动恶意url信息
+	public String getMalurlDataByPeriod(JSONObject jsonObject) {
+		return ipDataBaseAdapter.getMalurlDataByPeriod(jsonObject);
+	}
+	
+	//6.5获取国内所有活动恶意url信息
+	public String getMalurlDataByCN() {
+		return ipDataBaseAdapter.getMalurlDataByCN();
+	}
+	//6.6获取全球所有活动恶意url信息
+	public String getMalurlData() {
+		return ipDataBaseAdapter.getMalurlData();
+	}
+	//6.7获取国内所有活动恶意URL针对的目标列表
+	public String getMalurlTargetListByCN() {
+		return ipDataBaseAdapter.getMalurlTargetListByCN();
+	}
+	//6.8获取国内针对特定目标所有活动恶意url信息
+	public String getMalurlDataByCNTarget(JSONObject jsonObject) {
+		return ipDataBaseAdapter.getDataByCNTarget(jsonObject);
+	}
+	//6.9
+	public String getMalurlFieldListByCN() {
+		return ipDataBaseAdapter.getFieldListByCN();
+	}
+	//6.10
+	public String getMalurlDataByCNField(JSONObject jsonObject) {
+		return ipDataBaseAdapter.getDataByCNField(jsonObject);
+	}
+	//6.11
+	public String getMalurlDataByDomain(JSONObject jsonObject) {
+		return ipDataBaseAdapter.getDataByDomain(jsonObject);
+	}
+	
+	
+	//1.按国家类别分类获取活动的恶意url个数
+	public String getMalUrlCountByCountryValid() {
+		return ipDataBaseAdapter.getMalUrlCountByCountryValid();
+	}
+	//2.1按国家类别分类获取全部的恶意url个数，带是否有效状态
+	public String getMalUrlCountByCountryWithValidState(){
+		return ipDataBaseAdapter.getMalUrlCountByCountryWithValidState();
+	}
+
+	//3.获取全部的活动url个数
+	public String getMalUrlCountValid(){
+		return ipDataBaseAdapter.getMalUrlCountValid();
+	}
+	
+	//4.
+	public String getMalUrlCount() {
+		return ipDataBaseAdapter.getMalUrlCount();
+	}
+	
+	//5.
+	public String getMalUrlCountByMonth(JSONObject jsonObject) {
+		return ipDataBaseAdapter.getMalUrlCountByMonth(jsonObject);
+	}
+	
+	
+	//6.按省份获取活动的url个数
+	public String getMalUrlCountByCNProvince() {
+		return ipDataBaseAdapter.getMalUrlCountByCNProvince();
+	}
+	
+	//7.
+	public String getMalurlCountByFieldTop5() {
+		return ipDataBaseAdapter.getMalurlCountByFieldTop5();
+	}
+	
+	//8.
+	public String getMalurlCountByTargetTop10() {
+		return ipDataBaseAdapter.getMalurlCountByTargetTop10();
+	}
+	
+	//systemservicemanager
+	
+	public String getTimeOnOrderIndex(com.alibaba.fastjson.JSONObject jsonObject) {
+		return jinshanDeviceAdapter.getTimeOnOrderIndex(jsonObject);
 	}
 	
 	public String getTimeOnUninstallInfo(com.alibaba.fastjson.JSONObject jsonObject) {
@@ -897,5 +1018,17 @@ public class DeviceAdpaterManager {
 	
 	public String getTimeOnOauthUrl(com.alibaba.fastjson.JSONObject jsonObject){
 		return jinshanDeviceAdapter.getOauthUrl(jsonObject);
+	}
+	
+	public String getCloudInsightToken(com.alibaba.fastjson.JSONObject jsonObject) {
+		return cloudInsightAdapter.getToken(jsonObject);
+	}
+	
+	public String destroyCloudInsightToken(com.alibaba.fastjson.JSONObject jsonObject) {
+		return cloudInsightAdapter.destroyToken(jsonObject);
+	}
+	
+	public String getCloudInsightLoginURL(com.alibaba.fastjson.JSONObject jsonObject) {
+		return cloudInsightAdapter.getLoginURL(jsonObject);
 	}
 }

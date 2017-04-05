@@ -1,49 +1,64 @@
 package com.cn.ctbri.southapi.adapter.batis.inter;
 
 import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
+import static org.apache.ibatis.jdbc.SqlBuilder.DELETE_FROM;
 import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
+import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
 import static org.apache.ibatis.jdbc.SqlBuilder.ORDER_BY;
 import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
 import static org.apache.ibatis.jdbc.SqlBuilder.SELECT_DISTINCT;
+import static org.apache.ibatis.jdbc.SqlBuilder.SET;
 import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
+import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
+import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
 import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
 
-import com.cn.ctbri.southapi.adapter.batis.model.TIpv4LatlongExample.Criteria;
-import com.cn.ctbri.southapi.adapter.batis.model.TIpv4LatlongExample.Criterion;
-import com.cn.ctbri.southapi.adapter.batis.model.TIpv4LatlongExample;
+import com.cn.ctbri.southapi.adapter.batis.model.TViewWebPhishFieldCount;
+import com.cn.ctbri.southapi.adapter.batis.model.TViewWebPhishFieldCountExample.Criteria;
+import com.cn.ctbri.southapi.adapter.batis.model.TViewWebPhishFieldCountExample.Criterion;
+import com.cn.ctbri.southapi.adapter.batis.model.TViewWebPhishFieldCountExample;
 import java.util.List;
+import java.util.Map;
 
-public class TIpv4LatlongSqlProvider {
+public class TViewWebPhishFieldCountSqlProvider {
 
-    public String countByExample(TIpv4LatlongExample example) {
+    public String countByExample(TViewWebPhishFieldCountExample example) {
         BEGIN();
         SELECT("count(*)");
-        FROM("t_ipv4_latlong");
+        FROM("t_view_web_phish_field_count");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String selectByExample(TIpv4LatlongExample example) {
+    public String insertSelective(TViewWebPhishFieldCount record) {
+        BEGIN();
+        INSERT_INTO("t_view_web_phish_field_count");
+        
+        if (record.getWebphishField() != null) {
+            VALUES("webphish_field", "#{webphishField,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCount() != null) {
+            VALUES("count", "#{count,jdbcType=BIGINT}");
+        }
+        
+        if (record.getIsvalid() != null) {
+            VALUES("isvalid", "#{isvalid,jdbcType=INTEGER}");
+        }
+        
+        return SQL();
+    }
+
+    public String selectByExample(TViewWebPhishFieldCountExample example) {
         BEGIN();
         if (example != null && example.isDistinct()) {
-            SELECT_DISTINCT("latlong_id");
+            SELECT_DISTINCT("webphish_field");
         } else {
-            SELECT("latlong_id");
+            SELECT("webphish_field");
         }
-        SELECT("network");
-        SELECT("netmask");
-        SELECT("startip");
-        SELECT("endip");
-        SELECT("location_id");
-        SELECT("registered_country_location_id");
-        SELECT("represented_country_location_id");
-        SELECT("is_anonymous_proxy");
-        SELECT("is_satellite_provider");
-        SELECT("postal_code");
-        SELECT("latitude");
-        SELECT("longitude");
-        SELECT("accuracy_radius");
-        FROM("t_ipv4_latlong");
+        SELECT("count");
+        SELECT("isvalid");
+        FROM("t_view_web_phish_field_count");
         applyWhere(example, false);
         
         if (example != null && example.getOrderByClause() != null) {
@@ -59,9 +74,43 @@ public class TIpv4LatlongSqlProvider {
         }
     }
 
-  
+    public String updateByExampleSelective(Map<String, Object> parameter) {
+        TViewWebPhishFieldCount record = (TViewWebPhishFieldCount) parameter.get("record");
+        TViewWebPhishFieldCountExample example = (TViewWebPhishFieldCountExample) parameter.get("example");
+        
+        BEGIN();
+        UPDATE("t_view_web_phish_field_count");
+        
+        if (record.getWebphishField() != null) {
+            SET("webphish_field = #{record.webphishField,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCount() != null) {
+            SET("count = #{record.count,jdbcType=BIGINT}");
+        }
+        
+        if (record.getIsvalid() != null) {
+            SET("isvalid = #{record.isvalid,jdbcType=INTEGER}");
+        }
+        
+        applyWhere(example, true);
+        return SQL();
+    }
 
-    protected void applyWhere(TIpv4LatlongExample example, boolean includeExamplePhrase) {
+    public String updateByExample(Map<String, Object> parameter) {
+        BEGIN();
+        UPDATE("t_view_web_phish_field_count");
+        
+        SET("webphish_field = #{record.webphishField,jdbcType=VARCHAR}");
+        SET("count = #{record.count,jdbcType=BIGINT}");
+        SET("isvalid = #{record.isvalid,jdbcType=INTEGER}");
+        
+        TViewWebPhishFieldCountExample example = (TViewWebPhishFieldCountExample) parameter.get("example");
+        applyWhere(example, true);
+        return SQL();
+    }
+
+    protected void applyWhere(TViewWebPhishFieldCountExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }
