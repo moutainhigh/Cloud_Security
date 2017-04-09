@@ -30,36 +30,6 @@ public class TViewWebPhishCountryCountSqlProvider {
         return SQL();
     }
 
-    public String deleteByExample(TViewWebPhishCountryCountExample example) {
-        BEGIN();
-        DELETE_FROM("t_view_web_phish_country_count");
-        applyWhere(example, false);
-        return SQL();
-    }
-
-    public String insertSelective(TViewWebPhishCountryCount record) {
-        BEGIN();
-        INSERT_INTO("t_view_web_phish_country_count");
-        
-        if (record.getWebphishCountry() != null) {
-            VALUES("webphish_country", "#{webphishCountry,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getWebphishCountrycode() != null) {
-            VALUES("webphish_countrycode", "#{webphishCountrycode,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getWebphishCount() != null) {
-            VALUES("webphish_count", "#{webphishCount,jdbcType=BIGINT}");
-        }
-        
-        if (record.getIsvalid() != null) {
-            VALUES("isvalid", "#{isvalid,jdbcType=INTEGER}");
-        }
-        
-        return SQL();
-    }
-
     public String selectByExample(TViewWebPhishCountryCountExample example) {
         BEGIN();
         if (example != null && example.isDistinct()) {
@@ -77,47 +47,6 @@ public class TViewWebPhishCountryCountSqlProvider {
             ORDER_BY(example.getOrderByClause());
         }
         
-        return SQL();
-    }
-
-    public String updateByExampleSelective(Map<String, Object> parameter) {
-        TViewWebPhishCountryCount record = (TViewWebPhishCountryCount) parameter.get("record");
-        TViewWebPhishCountryCountExample example = (TViewWebPhishCountryCountExample) parameter.get("example");
-        
-        BEGIN();
-        UPDATE("t_view_web_phish_country_count");
-        
-        if (record.getWebphishCountry() != null) {
-            SET("webphish_country = #{record.webphishCountry,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getWebphishCountrycode() != null) {
-            SET("webphish_countrycode = #{record.webphishCountrycode,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getWebphishCount() != null) {
-            SET("webphish_count = #{record.webphishCount,jdbcType=BIGINT}");
-        }
-        
-        if (record.getIsvalid() != null) {
-            SET("isvalid = #{record.isvalid,jdbcType=INTEGER}");
-        }
-        
-        applyWhere(example, true);
-        return SQL();
-    }
-
-    public String updateByExample(Map<String, Object> parameter) {
-        BEGIN();
-        UPDATE("t_view_web_phish_country_count");
-        
-        SET("webphish_country = #{record.webphishCountry,jdbcType=VARCHAR}");
-        SET("webphish_countrycode = #{record.webphishCountrycode,jdbcType=VARCHAR}");
-        SET("webphish_count = #{record.webphishCount,jdbcType=BIGINT}");
-        SET("isvalid = #{record.isvalid,jdbcType=INTEGER}");
-        
-        TViewWebPhishCountryCountExample example = (TViewWebPhishCountryCountExample) parameter.get("example");
-        applyWhere(example, true);
         return SQL();
     }
 

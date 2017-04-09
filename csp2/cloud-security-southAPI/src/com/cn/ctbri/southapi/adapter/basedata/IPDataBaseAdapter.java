@@ -1104,6 +1104,8 @@ public class IPDataBaseAdapter {
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "database error");
 			return errorJsonObject.toString();
+		} finally {
+			closeSqlSession(sqlSession);
 		}
 		
 	}
@@ -1153,6 +1155,8 @@ public class IPDataBaseAdapter {
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "database error");
 			return errorJsonObject.toString();
+		} finally {
+			closeSqlSession(sqlSession);
 		}
 		
 	}
@@ -1226,6 +1230,38 @@ public class IPDataBaseAdapter {
 		}
 	}
 	
+	//2b按国家类别分类获取全部的恶意url个数
+	public String getMalUrlAllCountByCountry() {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getOpenPhishSqlSession();
+			TViewWebPhishCountryCountMapper webPhishCountryCountMapper = sqlSession.getMapper(TViewWebPhishCountryCountMapper.class);
+			List<TViewWebPhishCountryCount> countList = webPhishCountryCountMapper.selectByExampleGroupBy();
+			JSONArray countJsonArray = new JSONArray();
+			for (TViewWebPhishCountryCount tViewWebPhishCountryCount : countList) {
+				JSONObject countJsonObject = new JSONObject();
+				countJsonObject.put("country", tViewWebPhishCountryCount.getWebphishCountry());
+				countJsonObject.put("countryCode", tViewWebPhishCountryCount.getWebphishCountrycode());
+				countJsonObject.put("count", tViewWebPhishCountryCount.getWebphishCount());
+				countJsonArray.add(countJsonObject);
+			}
+			JSONObject returnJsonObject = new JSONObject();
+			returnJsonObject.put("status", "success");
+			returnJsonObject.put("countList", countJsonArray);
+			
+			return returnJsonObject.toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "database error");
+			return errorJsonObject.toString();
+		} finally {
+			closeSqlSession(sqlSession);
+		}
+	}
+	
 //	3.获取有效的恶意url个数
 	public String getMalUrlCountValid() {
 		SqlSession sqlSession = null;
@@ -1256,8 +1292,55 @@ public class IPDataBaseAdapter {
 		SqlSession sqlSession = null;
 		try {
 			sqlSession = getOpenPhishSqlSession();
+			
+			TWebPhishExample webPhishExample = new TWebPhishExample();
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date begDate = sdf.parse("2016-01-01");
+			Date endDate = sdf.parse("2017-01-01");
+			webPhishExample.createCriteria().andVerifiedTimeBetween(sdf.format(begDate),sdf.format(endDate));
+
+			
+			
 			TWebPhishMapper webPhishMapper = sqlSession.getMapper(TWebPhishMapper.class);
-			int countNum = webPhishMapper.countByExample(new TWebPhishExample());
+			int countNum = webPhishMapper.countByExample(webPhishExample);
+			JSONObject returnJsonObject = new JSONObject();
+			returnJsonObject.put("status", "success");
+			returnJsonObject.put("count", countNum);
+			return returnJsonObject.toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "database error");
+			return errorJsonObject.toString();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "date error");
+			return errorJsonObject.toString();
+		} finally {
+			closeSqlSession(sqlSession);
+		}
+	}
+	
+	public String getMalUrlCountInChina() {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getOpenPhishSqlSession();
+			TWebPhishMapper webPhishMapper = sqlSession.getMapper(TWebPhishMapper.class);
+			TWebPhishExample webPhishExample = new TWebPhishExample();
+			List<String> list = new ArrayList<String>();
+			list.add("CN");
+			list.add("HK");
+			list.add("TW");
+			list.add("MO");
+			webPhishExample.createCriteria().andWebphishCountrycodeIn(list);
+			int countNum = webPhishMapper.countByExample(webPhishExample);
 			JSONObject returnJsonObject = new JSONObject();
 			returnJsonObject.put("status", "success");
 			returnJsonObject.put("count", countNum);
@@ -1273,7 +1356,8 @@ public class IPDataBaseAdapter {
 			closeSqlSession(sqlSession);
 		}
 	}
-//	5.按月份获取中国有效的恶意url个数
+	
+//	5.按月份获取有效的恶意url个数
 	public String getMalUrlCountByMonth(JSONObject jsonObject){
 		if(null==jsonObject.get("month")||jsonObject.getInt("month")<=0){
 			JSONObject errorJsonObject = new JSONObject();
@@ -1359,6 +1443,38 @@ public class IPDataBaseAdapter {
 			closeSqlSession(sqlSession);
 		}
 	}
+	
+	public String getMalUrlAllCountByCNProvince() {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getOpenPhishSqlSession();
+
+			TViewWebPhishProvinceCountMapper webPhishProvinceCountMapper = sqlSession.getMapper(TViewWebPhishProvinceCountMapper.class);
+			List<TViewWebPhishProvinceCount> provinceCountList = webPhishProvinceCountMapper.selectByExampleWithoutValid();
+			JSONArray provinceCountArray = new JSONArray();
+			for (TViewWebPhishProvinceCount tViewWebPhishProvinceCount : provinceCountList) {
+				JSONObject provinceCountObject = new JSONObject();
+				provinceCountObject.put("countryCode", tViewWebPhishProvinceCount.getWebphishCountrycode());
+				provinceCountObject.put("province", tViewWebPhishProvinceCount.getWebphishSubdivision1());
+				provinceCountObject.put("count", tViewWebPhishProvinceCount.getCount());
+				provinceCountArray.add(provinceCountObject);
+			}
+			JSONObject returnJsonObject = new JSONObject();
+			returnJsonObject.put("status", "success");
+			returnJsonObject.put("countList", provinceCountArray);
+			return returnJsonObject.toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "database error");
+			return errorJsonObject.toString();
+		} finally {
+			closeSqlSession(sqlSession);
+		}
+	}
+	
 	//7.按仿冒对象行业为单位获取有效的恶意url个数
 	public String getMalurlCountByFieldTop5() {
 		SqlSession sqlSession = null;
@@ -1429,6 +1545,14 @@ public class IPDataBaseAdapter {
 			closeSqlSession(sqlSession);
 		}
 		
+		
+		
 	}
+	
+	public static void main(String[] args) {
+		IPDataBaseAdapter adapter = new IPDataBaseAdapter();
+		System.out.println(adapter.getMalUrlCount());
+	}
+	
 	
 }

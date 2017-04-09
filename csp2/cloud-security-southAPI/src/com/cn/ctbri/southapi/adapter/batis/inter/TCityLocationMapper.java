@@ -21,36 +21,6 @@ public interface TCityLocationMapper {
     @SelectProvider(type=TCityLocationSqlProvider.class, method="countByExample")
     int countByExample(TCityLocationExample example);
 
-    @DeleteProvider(type=TCityLocationSqlProvider.class, method="deleteByExample")
-    int deleteByExample(TCityLocationExample example);
-
-    @Delete({
-        "delete from t_city_location",
-        "where location_id = #{locationId,jdbcType=BIGINT}"
-    })
-    int deleteByPrimaryKey(Long locationId);
-
-    @Insert({
-        "insert into t_city_location (location_id, locale_code, ",
-        "continent_code, continent_name, ",
-        "country_iso_code, country_name, ",
-        "subdivision_1_iso_code, subdivision_1_name, ",
-        "subdivision_2_iso_code, subdivision_2_name, ",
-        "city_name, metro_code, ",
-        "time_zone)",
-        "values (#{locationId,jdbcType=BIGINT}, #{localeCode,jdbcType=VARCHAR}, ",
-        "#{continentCode,jdbcType=VARCHAR}, #{continentName,jdbcType=VARCHAR}, ",
-        "#{countryIsoCode,jdbcType=VARCHAR}, #{countryName,jdbcType=VARCHAR}, ",
-        "#{subdivision1IsoCode,jdbcType=VARCHAR}, #{subdivision1Name,jdbcType=VARCHAR}, ",
-        "#{subdivision2IsoCode,jdbcType=VARCHAR}, #{subdivision2Name,jdbcType=VARCHAR}, ",
-        "#{cityName,jdbcType=VARCHAR}, #{metroCode,jdbcType=VARCHAR}, ",
-        "#{timeZone,jdbcType=VARCHAR})"
-    })
-    int insert(TCityLocation record);
-
-    @InsertProvider(type=TCityLocationSqlProvider.class, method="insertSelective")
-    int insertSelective(TCityLocation record);
-
     @SelectProvider(type=TCityLocationSqlProvider.class, method="selectByExample")
     @Results({
         @Result(column="location_id", property="locationId", jdbcType=JdbcType.BIGINT, id=true),
@@ -111,31 +81,4 @@ public interface TCityLocationMapper {
         @Result(column="time_zone", property="timeZone", jdbcType=JdbcType.VARCHAR)
     })
     TCityLocation selectByPrimaryKey(Long locationId);
-
-    @UpdateProvider(type=TCityLocationSqlProvider.class, method="updateByExampleSelective")
-    int updateByExampleSelective(@Param("record") TCityLocation record, @Param("example") TCityLocationExample example);
-
-    @UpdateProvider(type=TCityLocationSqlProvider.class, method="updateByExample")
-    int updateByExample(@Param("record") TCityLocation record, @Param("example") TCityLocationExample example);
-
-    @UpdateProvider(type=TCityLocationSqlProvider.class, method="updateByPrimaryKeySelective")
-    int updateByPrimaryKeySelective(TCityLocation record);
-
-    @Update({
-        "update t_city_location",
-        "set locale_code = #{localeCode,jdbcType=VARCHAR},",
-          "continent_code = #{continentCode,jdbcType=VARCHAR},",
-          "continent_name = #{continentName,jdbcType=VARCHAR},",
-          "country_iso_code = #{countryIsoCode,jdbcType=VARCHAR},",
-          "country_name = #{countryName,jdbcType=VARCHAR},",
-          "subdivision_1_iso_code = #{subdivision1IsoCode,jdbcType=VARCHAR},",
-          "subdivision_1_name = #{subdivision1Name,jdbcType=VARCHAR},",
-          "subdivision_2_iso_code = #{subdivision2IsoCode,jdbcType=VARCHAR},",
-          "subdivision_2_name = #{subdivision2Name,jdbcType=VARCHAR},",
-          "city_name = #{cityName,jdbcType=VARCHAR},",
-          "metro_code = #{metroCode,jdbcType=VARCHAR},",
-          "time_zone = #{timeZone,jdbcType=VARCHAR}",
-        "where location_id = #{locationId,jdbcType=BIGINT}"
-    })
-    int updateByPrimaryKey(TCityLocation record);
 }

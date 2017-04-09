@@ -966,9 +966,13 @@ public class DeviceAdpaterManager {
 	public String getMalUrlCountByCountryValid() {
 		return ipDataBaseAdapter.getMalUrlCountByCountryValid();
 	}
-	//2.1按国家类别分类获取全部的恶意url个数，带是否有效状态
+	//2按国家类别分类获取全部的恶意url个数，带是否有效状态
 	public String getMalUrlCountByCountryWithValidState(){
 		return ipDataBaseAdapter.getMalUrlCountByCountryWithValidState();
+	}
+	//2b 按国家类别分类获取全部的恶意url个数
+	public String getMalUrlAllCountByCountry() {
+		return ipDataBaseAdapter.getMalUrlAllCountByCountry();
 	}
 
 	//3.获取全部的活动url个数
@@ -981,6 +985,10 @@ public class DeviceAdpaterManager {
 		return ipDataBaseAdapter.getMalUrlCount();
 	}
 	
+	public String getMalUrlCountInChina(){
+		return ipDataBaseAdapter.getMalUrlCountInChina();
+	}
+	
 	//5.
 	public String getMalUrlCountByMonth(JSONObject jsonObject) {
 		return ipDataBaseAdapter.getMalUrlCountByMonth(jsonObject);
@@ -990,6 +998,10 @@ public class DeviceAdpaterManager {
 	//6.按省份获取活动的url个数
 	public String getMalUrlCountByCNProvince() {
 		return ipDataBaseAdapter.getMalUrlCountByCNProvince();
+	}
+	//6b 
+	public String getMalUrlAllCountByCNProvince() {
+		return ipDataBaseAdapter.getMalUrlAllCountByCNProvince();
 	}
 	
 	//7.

@@ -716,6 +716,13 @@ public class DeviceAdapterManagerService {
 	public String getMalUrlCountByCountryWithValidState(){
 		return deviceAdpaterManager.getMalUrlCountByCountryWithValidState();
 	}
+	
+	@GET
+	@Path("/secbasedata/malurl/getallcountbycountry")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalUrlAllCountByCountry() {
+		return deviceAdpaterManager.getMalUrlAllCountByCountry();
+	}
 	//3.
 	@GET
 	@Path("/secbasedata/malurl/getcountvalid")
@@ -729,6 +736,13 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMalUrlCount() {
 		return deviceAdpaterManager.getMalUrlCount();
+	}
+	
+	@GET
+	@Path("/secbasedata/malurl/getcountinchina")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalUrlCountInChina(){
+		return deviceAdpaterManager.getMalUrlCountInChina();
 	}
 	
 	//5.
@@ -755,6 +769,13 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMalUrlCountByCNProvince(){
 		return deviceAdpaterManager.getMalUrlCountByCNProvince();
+	}
+	
+	@GET
+	@Path("/secbasedata/malurl/getallcountbycnprovince")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalUrlAllCountByCNProvince(){
+		return deviceAdpaterManager.getMalUrlAllCountByCNProvince();
 	}
 	
 	//7.

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializeFilter;
@@ -18,6 +19,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.representation.Form;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 import net.sf.json.JSONObject;
@@ -97,7 +99,7 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 		return response;
 	}
 	
-	private  String postMethod(String url, String jsonString) {
+	private  String postMethod(String url, Form form) {
 		//创建客户端配置对象
     	ClientConfig config = new DefaultClientConfig();
     	//通信层配置设定
@@ -107,7 +109,7 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 		//
 		//连接服务器
 		WebResource service = client.resource(url);
-		ClientResponse response = service.post(ClientResponse.class,jsonString);
+		ClientResponse response = service.post(ClientResponse.class,form);
 		//String cookie = response.getCookies().toString();
 		String body = response.getEntity(String.class);
 		client.destroy();
@@ -128,11 +130,13 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 		}*/
 		com.alibaba.fastjson.JSONObject postJsonObject = new com.alibaba.fastjson.JSONObject(false);
 		com.alibaba.fastjson.JSONObject paramJsonObject = new com.alibaba.fastjson.JSONObject(false);
-		Long timestrap = System.currentTimeMillis();
+		Long timestrap = System.currentTimeMillis()/1000;
+		System.out.println(timestrap);
+		
 		paramJsonObject.put("sku_id", "anqb000001");
 		paramJsonObject.put("AnqbUid", "testshao");
 		paramJsonObject.put("AnqbOrderID", "test20170331");
-		
+		/*
 		postJsonObject.put("api_key", apiKey);
 		postJsonObject.put("timestrap", timestrap);
 		postJsonObject.put("api_id", 501);
@@ -140,10 +144,18 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 		postJsonObject.put("params", createParamsString(paramJsonObject));
 		System.out.println(paramJsonObject);
 		System.out.println(postJsonObject.toJSONString());
-		String responeJsonString = postMethod("https://www.nscloud.com/api/krosa/meari/anqb/create_order", postJsonObject.toJSONString());
+		*/
+		Form form = new Form();
+		form.add("api_key", apiKey);
+		form.add("timestrap", timestrap);
+		form.add("api_id", 501);
+		form.add("sign", createSign(501, apiKey, apiSecret, timestrap).getSign());
+		form.add("params", createParamsString(paramJsonObject));
+		String responeJsonString = postMethod("https://www.nscloud.com/api/krosa/meari/anqb/create_order", form);
 		return responeJsonString;
 	}
 	//TODO 等待厂家接口
+	/*
 	public String renewNsfocusSysOrder(JSONObject orderJsonObject) {
 		if (orderJsonObject.get("apiId")==null||orderJsonObject.getString("apiId").length()<=0) {
 			JSONObject errJsonObject = new JSONObject();
@@ -155,11 +167,11 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 		String responseJsonString = postMethod("","");
 		return null;
 	}
-	
+	*/
 	public String name() {
 		return null;
 	}
-	
+	/*
 	public static void main(String[] args) {
 		com.alibaba.fastjson.JSONObject testJsonObject = new com.alibaba.fastjson.JSONObject(false);
 		testJsonObject.put("a", "123");
@@ -170,7 +182,7 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 		NsfocusSysServOperation operation = new NsfocusSysServOperation();
 		System.out.println(operation.createNsfocusSysOrder());
 	}
-	
+	*/
 }
 class ApiSign{
 	//标志位

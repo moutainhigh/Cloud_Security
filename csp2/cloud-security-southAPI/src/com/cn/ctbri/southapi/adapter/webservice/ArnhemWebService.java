@@ -112,7 +112,7 @@ public class ArnhemWebService {
 		String response = service.type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xml);
 		
 		//For 2
-
+		client.destroy();
 		return response;
 	}
 	private  void buildConfig(String url,ClientConfig config) {

@@ -271,12 +271,15 @@ public class NsfocusWAFAdapter {
 			record.setId(targetId);
 			
 			record.setResourceid(resourceId);
+			SqlSession sqlSession = null;
 			try {
-				SqlSession sqlSession = getSqlSession();
+				sqlSession = getSqlSession();
 				TWafNsfocusTargetinfoMapper mapper = sqlSession.getMapper(TWafNsfocusTargetinfoMapper.class);
 				mapper.insertSelective(record);
 			} catch (IOException e) {
 				e.printStackTrace();
+			} finally {
+				closeSqlSession(sqlSession);
 			}
 			
 			JSONObject tempDeviceJsonObject = new JSONObject();
