@@ -2,7 +2,14 @@ package com.cn.ctbri.util;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Properties;
 import java.util.regex.Pattern;
+
+import com.cn.ctbri.common.InternalWorker;
+import com.cn.ctbri.listener.CspContextListener;
+
+import net.sf.json.JSONObject;
 
 public class Common {
 
@@ -102,5 +109,32 @@ public class Common {
 				}
 			return false;
 		}
-	
+	public static void successCodeAndMessage(JSONObject json){
+		json.put("code",CspContextListener.allPropertisMap.get("successCode"));
+		json.put("message", CspContextListener.allPropertisMap.get("successMessage"));
+	}
+	public static void failCodeAndMessage(JSONObject json){
+		json.put("code",CspContextListener.allPropertisMap.get("failCode"));
+		json.put("message", CspContextListener.allPropertisMap.get("failMessage"));
+	}
+	public static void paramErrCodeAndMessage(JSONObject json){
+		json.put("code",CspContextListener.allPropertisMap.get("paramErrCode"));
+		json.put("message", CspContextListener.allPropertisMap.get("paramErrMessage"));
+	}
+	public static void tokenInvalidCodeAndMessage(JSONObject json){
+		json.put("code",CspContextListener.allPropertisMap.get("failCode"));
+		json.put("message", CspContextListener.allPropertisMap.get("failMessage"));
+	}
+	public static void permissionDeniedCodeAndMessage(JSONObject json){
+		json.put("code",CspContextListener.allPropertisMap.get("permissionDeniedCode"));
+		json.put("message", CspContextListener.allPropertisMap.get("permissionDeniedMessage"));
+	}
+	public static void expiredCodeAndMessage(JSONObject json){
+		json.put("code",CspContextListener.allPropertisMap.get("expiredCode"));
+		json.put("message", CspContextListener.allPropertisMap.get("expiredMessage"));
+	}
+	public static void usedUpCodeCodeAndMessage(JSONObject json){
+		json.put("code",CspContextListener.allPropertisMap.get("usedUpCode"));
+		json.put("message", CspContextListener.allPropertisMap.get("usedUpMessage"));
+	}
 }
