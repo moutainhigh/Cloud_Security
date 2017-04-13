@@ -1,261 +1,268 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
-        <title>ECharts</title>
-        <script src="../js/jquery.js"></script>
-        
-        <script src="../js/echarts.min.js"></script>
-        <script src="../js/china.js"></script>
-        <style>#china-map {width:100%; margin: auto;}</style>
-    </head>
-    <style type="text/css">
-    	#backImg{
-   		background: url("../image/background4.png");
-    </style>
-    <body>        
-		<div id="backImg" style="width:100%;height:100%;position:relative">
-			<div id="logo" style="width:116px;height:43px;left:3%;top:3%;position:absolute;z-index:10;background: url('../image/anquanbang_white_logo.png');"></div>
-        	<div id="china-map"> 		
-        	</div>
-        	<!--
-        	<div id="object-map" style="width:50%;height:50px ;right:'25px';bottom:0px;z-index:999;">
-        		sdjhghfhfhh
-        	</div>      -->
-        </div>
-        
-        <script>
-        	/**设置中国地图高度宽度
-        	*/
-        	var worldMapContainer = document.getElementById('china-map');
-			//用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
-			var resizeWorldMapContainer = function () {
-	   	   worldMapContainer.style.width = window.innerWidth+'px';
-	   	 	worldMapContainer.style.height = window.innerHeight+'px';
-			};
-			//设置容器高宽
-			resizeWorldMapContainer();
-            var myChart = echarts.init(document.getElementById('china-map'));
-            /**设置table高度宽度
-        	
-            var objectContainer = document.getElementById('object-map');
-			//用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
-			var resizeObjectContainer = function () {
-	   	   		objectContainer.style.width = window.innerWidth*0.5+'px';
-	   	 		objectContainer.style.height = window.innerHeight*0.5+'px';
-			};
-			resizeObjectContainer();
-			
-       		function randomData() {
-		    	return Math.round(Math.random()*1000);
-			}*/
-		//alert(1);
-		$(document).ready(function(){  
-				    jQuery.ajax({  
-				        type: 'GET',  
-				        //contentType: 'application/json',  
-				        url: "chinaURL.html",  
-				        dataType: 'json',
-				        
-				        success: function(mapData){
-			//alert(data);
-			var data=mapData.mapData;
-			var count=mapData.count;
-			data.sort(function(a, b) {
-        		return b.value - a.value;
-   			 })	
-   			 var categoryData=[];
-   			 var barData=[];
-   			 var xData=[];
-   			  for(var i=0;i<5;i++){
-			    categoryData.push(data[i].name);
-			    barData.push(data[i].value);
-			    var x={};
-			    x.name=data[i].name;
-			    x.value=data[i].value;
-			    x.visualMap=false;
-			    xData.push(x);
-			    
-			  }
-			  barData.reverse();
-			  categoryData.reverse();
-   			xData=xData.reverse();
-   			 
-		
-		var option = {
-		   // backgroundColor: '#404a59',//背景yanse
-		    title: [{
-		        text: '全国恶意URL数量分布图',
-		         subtext: '总数'+count+'个',
-		       // subtext: '纯属虚构',
-		        left: 'center',
-		        top: '5%',
-		        textStyle: {
-		            color: '#fff'
-		        },
-		        subtextStyle: {
-		            color: '#fff'
-		        },
-		    },{
-		        id: 'statistic',
-		        text: '恶意URL数量Top5',
-		        left: 120,
-		        top: '65%',
-		        width: 100,
-		        textStyle: {
-		            color: '#fff',
-		            fontSize: 16}
-		        }],
-		    tooltip: {
-		        trigger: 'item'
-		    },
-		    legend: {
-		        orient: 'vertical',
-		        left: '5%',
-		        data:['恶意URL数量'],
-		        top: '10%',
-		        textStyle: {
-		            color: '#fff'
-		        }
-		    },
-	  visualMap:[ {
-		        min: 0,
-		        max: 250,
-		        right:'5%',
-		        top: '60%',
-		        text:['高','低'],
-		        realtime: false,
-		        calculable: false,
-		        textStyle: {
-			                color: '#ddd'//为字体颜色
-			   },
-		        inRange: {
-		          color: [  '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
-		        }
-		    }],
-		    toolbox: {
-		        show: false,
-		        orient: 'vertical',
-		        left: 'right',
-		        top: 'center',
-		        feature: {
-		            dataView: {readOnly: false},
-		            restore: {},
-		            saveAsImage: {}
-		        }
-		    },
-		     grid: {
-		        left:'5%',
-		        top: '70%',
-		        bottom: 2,
-		        //height: '20%'
-		        height:'25%' ,
-		        width: '20%'
-		    },
-		    xAxis: {
-		    	show: false,
-		        type: 'value',
-		        scale: true,
-		        min:0,
-		        position: 'top',
-		        boundaryGap: false,
-		        splitLine: {
-		            show: false
-		        },
-		        axisLine: {
-		            show: false
-		        },
-		        axisTick: {
-		            show: false
-		        },
-		        axisLabel: {
-		            margin: 2,
-		            textStyle: {
-		                color: '#aaa'
-		            }
-		        },
-		    },
-		    yAxis: {
-		    	//show :false,
-		        type: 'category',
-		        //  name: 'TOP 20',
-		        nameGap: 16,
-		        axisLine: {
-		            show: true,
-		            lineStyle: {
-		                color: '#ddd'
-		            }
-		        },
-		        axisTick: {
-		            show: false,
-		            lineStyle: {
-		                color: '#ddd'
-		            }
-		        },
-		        axisLabel: {
-		            interval: 0,
-		            textStyle: {
-		                color: '#ddd'
-		            }
-		        },
-		        data: categoryData
-		    },
-		    series: [
-		       // 
-		        {
-		            name: '恶意URL数',
-		            type: 'map',
-		            mapType: 'china',
-		            roam: false,
-		            label: {
-		                normal: {
-		                    show:true
-		                },
-		                emphasis: {
-		                    show: true
-		                }
-		            },
-		            data:data
-		        }, {
-			        id: 'bar',
-			        zlevel: 2,
-			        type: 'bar',
-			        symbol: 'none',
-			       // visualMap: false,
-			        itemStyle: {
-			            normal: {
-			            	formatter: '{b} : {c}',
-			                color: function(params) {
-			                            // build a color map as your need.
-			                            var colorList = [
-			                              '#00FFFF','#00ff00','#FCCE10','#FF6100', '#C1232B'
-			                            ];
-			                            return colorList[params.dataIndex]
-			                        },
-                      	label: {
-					              show: true,
-					              position: 'right',
-					               formatter: ' {c}'
-					          }
-                
-			            }
-			            
-			        },
-			
-			        data: xData
-			        //[{name: '北京', value: 382, visualMap: false},{name: '香港', value: 277, visualMap: false},{name: '河南', value: 188, visualMap: false},{name: '福建', value: 100, visualMap: false},{name: '陕西', value: 76, visualMap: false}   ].reverse(),
-			    }
-		       
-		    ]
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+<title>ECharts</title>
+<script src="../js/jquery.js"></script>
+
+<script src="../js/echarts.min.js"></script>
+<script src="../js/china.js"></script>
+<style>
+#china-map {
+	width: 100%;
+	margin: auto;
+}
+</style>
+</head>
+<style type="text/css">
+#backImg {
+	background: url("../image/background4.png");
+}
+</style>
+<body>
+	<div id="backImg" style="width:100%;height:100%;position:relative">
+		<div id="logo"
+			style="width:116px;height:43px;left:3%;top:3%;position:absolute;z-index:10;background: url('../image/anquanbang_white_logo.png');"></div>
+		<div id="china-map"></div>
+	</div>
+
+	<script>
+		/**设置中国地图高度宽度
+		 */
+		var worldMapContainer = document.getElementById('china-map');
+		//用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
+		var resizeWorldMapContainer = function() {
+			worldMapContainer.style.width = window.innerWidth + 'px';
+			worldMapContainer.style.height = window.innerHeight + 'px';
 		};
-		myChart.setOption(option);
-		window.onresize = myChart.resize;
-		//
-		} 
-	    });  
-        	});
-        </script>
-        
-    </body>
+		//设置容器高宽
+		resizeWorldMapContainer();
+		var myChart = echarts.init(document.getElementById('china-map'));
+
+		$(document)
+				.ready(
+						function() {
+							jQuery
+									.ajax({
+										type : 'GET',
+
+										url : "chinaURL.html",
+										dataType : 'json',
+										success : function(mapData) {
+
+											var data = mapData.mapData;
+											var count = mapData.count;
+											data.sort(function(a, b) {
+												return b.value - a.value;
+											})
+											var categoryData = [];
+											var barData = [];
+											var xData = [];
+											for (var i = 0; i < 5; i++) {
+												categoryData.push(data[i].name);
+												barData.push(data[i].value);
+												var x = {};
+												x.name = data[i].name;
+												x.value = data[i].value;
+												x.visualMap = false;
+												xData.push(x);
+
+											}
+											barData.reverse();
+											categoryData.reverse();
+											xData = xData.reverse();
+
+											var option = {
+												// backgroundColor: '#404a59',//背景yanse
+												title : [
+														{
+															text : '全国恶意URL数量分布图',
+															subtext : '总数'
+																	+ count
+																	+ '个',
+															// subtext: '纯属虚构',
+															left : 'center',
+															top : '5%',
+															textStyle : {
+																color : '#fff'
+															},
+															subtextStyle : {
+																color : '#fff'
+															},
+														},
+														{
+															id : 'statistic',
+															text : '恶意URL数量Top5',
+															left : 120,
+															top : '65%',
+															width : 100,
+															textStyle : {
+																color : '#fff',
+																fontSize : 16
+															}
+														} ],
+												tooltip : {
+													trigger : 'item'
+												},
+												legend : {
+													orient : 'vertical',
+													left : '5%',
+													data : [ '恶意URL数量' ],
+													top : '10%',
+													textStyle : {
+														color : '#fff'
+													}
+												},
+												visualMap : [ {
+													min : 0,
+													max : 250,
+													right : '5%',
+													top : '60%',
+													text : [ '高', '低' ],
+													realtime : false,
+													calculable : false,
+													textStyle : {
+														color : '#ddd'//为字体颜色
+													},
+													inRange : {
+														color : [ '#ffffbf',
+																'#fee090',
+																'#fdae61',
+																'#f46d43',
+																'#d73027',
+																'#a50026' ]
+													}
+												} ],
+												toolbox : {
+													show : false,
+													orient : 'vertical',
+													left : 'right',
+													top : 'center',
+													feature : {
+														dataView : {
+															readOnly : false
+														},
+														restore : {},
+														saveAsImage : {}
+													}
+												},
+												grid : {
+													left : '5%',
+													top : '70%',
+													bottom : 2,
+													//height: '20%'
+													height : '25%',
+													width : '20%'
+												},
+												xAxis : {
+													show : false,
+													type : 'value',
+													scale : true,
+													min : 0,
+													position : 'top',
+													boundaryGap : false,
+													splitLine : {
+														show : false
+													},
+													axisLine : {
+														show : false
+													},
+													axisTick : {
+														show : false
+													},
+													axisLabel : {
+														margin : 2,
+														textStyle : {
+															color : '#aaa'
+														}
+													},
+												},
+												yAxis : {
+													//show :false,
+													type : 'category',
+													//  name: 'TOP 20',
+													nameGap : 16,
+													axisLine : {
+														show : true,
+														lineStyle : {
+															color : '#ddd'
+														}
+													},
+													axisTick : {
+														show : false,
+														lineStyle : {
+															color : '#ddd'
+														}
+													},
+													axisLabel : {
+														interval : 0,
+														textStyle : {
+															color : '#ddd'
+														}
+													},
+													data : categoryData
+												},
+												series : [
+														// 
+														{
+															name : '恶意URL数',
+															type : 'map',
+															mapType : 'china',
+															roam : false,
+															label : {
+																normal : {
+																	show : true
+																},
+																emphasis : {
+																	show : true
+																}
+															},
+															data : data
+														},
+														{
+															id : 'bar',
+															zlevel : 2,
+															type : 'bar',
+															symbol : 'none',
+															// visualMap: false,
+															itemStyle : {
+																normal : {
+																	formatter : '{b} : {c}',
+																	color : function(
+																			params) {
+																		// build a color map as your need.
+																		var colorList = [
+																				'#00FFFF',
+																				'#00ff00',
+																				'#FCCE10',
+																				'#FF6100',
+																				'#C1232B' ];
+																		return colorList[params.dataIndex]
+																	},
+																	label : {
+																		show : true,
+																		position : 'right',
+																		formatter : ' {c}'
+																	}
+
+																}
+
+															},
+
+															data : xData
+														//[{name: '北京', value: 382, visualMap: false},{name: '香港', value: 277, visualMap: false},{name: '河南', value: 188, visualMap: false},{name: '福建', value: 100, visualMap: false},{name: '陕西', value: 76, visualMap: false}   ].reverse(),
+														}
+
+												]
+											};
+											myChart.setOption(option);
+											window.onresize = myChart.resize;
+											//
+										}
+									});
+						});
+	</script>
+
+</body>
 </html>
