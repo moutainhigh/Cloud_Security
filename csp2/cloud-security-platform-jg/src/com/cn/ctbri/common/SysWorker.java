@@ -46,6 +46,9 @@ public class SysWorker {
 	private static String SYS_yunyan_destroyToken;
 	private static String SYS_yunyan_getloginurl;
 	
+	//绿盟
+	private static String SYS_jiguang_getauthurlString;
+	
 	static{
 		try {
 			Properties p = new Properties();
@@ -56,11 +59,10 @@ public class SysWorker {
 			SYS_jinshan_getUninstallInfo = p.getProperty("SYS_jinshan_getUninstallInfo");
 			SYS_jinshan_getHostCount = p.getProperty("SYS_jinshan_getHostCount");
 			SYS_jinshan_getOauthUrl = p.getProperty("SYS_jinshan_getOauthUrl");
-			
+			//
 			SYS_yunyan_gettoken = p.getProperty("SYS_yunyan_gettoken");
 			SYS_yunyan_destroyToken = p.getProperty("SYS_yunyan_destroyToken");
-			SYS_yunyan_getloginurl = p.getProperty("SYS_yunyan_getloginurl");
-			
+			SYS_yunyan_getloginurl = p.getProperty("SYS_yunyan_getloginurl");		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -248,11 +250,14 @@ url解码后：
       //连接服务器
         WebResource service = client.resource(url);
       //获取响应结果
+        System.out.println("111111111111111111111111111111111getYunyanToken");
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
+        System.out.println("22222222222222222222222222222222getYunyanToken");
         String textEntity = response.getEntity(String.class);
 //      String status = JSONObject.fromObject(textEntity).getString("status");
-        
+        System.out.println("4444444444444444444444444444444"+textEntity);
         String status = JSONObject.fromObject(textEntity).getString("status");
+        System.out.println("33333333333333333333333333333333getYunyanToken");
         if (status.equals("success")) {
 			
         	String strtoken = JSONObject.fromObject(textEntity).getString("token");   	
