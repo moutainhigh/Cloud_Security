@@ -1253,6 +1253,7 @@
 
 											var mapData = data.mapdata;
 											var count = data.count;
+											var validcount = data.validCount;
 											mapData.sort(function(a, b) {
 												return b.value - a.value;
 											})
@@ -1283,7 +1284,7 @@
 															text : '全球恶意URL分布图',
 															subtext : '总数'
 																	+ count
-																	+ '个',
+																	+ '个'+'失效'+validcount+'个',
 															left : 'center',
 															top : '3%',
 															textStyle : {
