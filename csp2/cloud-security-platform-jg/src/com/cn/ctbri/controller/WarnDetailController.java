@@ -1433,12 +1433,15 @@ public class WarnDetailController {
 		//不是当前用户的订单,不能查看
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
     	if (orderId== null || orderList == null ||orderList.size() == 0) {
+    		System.out.println("orderId is null");
     		return "redirect:/index.html";
+    		
     	}
   	
     	 HashMap<String, Object> order=new HashMap<String, Object>();
  	    order=(HashMap) orderList.get(0);
  	    if (((Integer)order.get("userId"))!= globle_user.getId()) {
+ 	    	System.out.println("userid not equal");
  	    	return "redirect:/index.html";
  	    }
 
@@ -1450,6 +1453,7 @@ public class WarnDetailController {
     	Integer userid = new Integer(globle_user.getId());
     	if (strNowDate.compareTo(strEndDate)>0 || strNowDate.compareTo(strBeginDate)<0) 
     	{
+    		System.out.println("time not in service");
     		return "";//时间不在服务范围内
     	}
     	else {
