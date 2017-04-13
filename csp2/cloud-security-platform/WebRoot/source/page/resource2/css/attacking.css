@@ -1,0 +1,272 @@
+/*
+ * 模拟攻击页面
+ */
+
+*{
+	margin: 0;
+	padding: 0;
+    font-family: "微软雅黑", "Open Sans Bold", "Oswald", sans-serif;
+}
+
+html,body{
+	width: 100%;
+	height: 100%;
+}
+
+body{
+	font-family: "LTH";
+	font-size: 12px;
+	color: white;
+}
+
+a{
+	text-decoration: none;
+}
+
+th {
+    font-weight: normal;
+}
+
+.land {
+  fill: rgba(0, 0, 0, 0.5);
+  stroke: #fff;
+  stroke-width: .5px;
+}
+
+.boundary {
+  fill: none;
+  stroke: #fff;
+  stroke-width: .5px;
+}
+
+.background-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+}
+
+.background-image img {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+.content {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    z-index: 10;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 4;
+}
+
+.buffer {
+    visibility: hidden;
+}
+
+.world {
+    stroke: #555;
+    stroke-linejoin: round;
+}
+
+.data tr.row:hover {
+    background-color: #0c2b4a;
+}
+
+.map_path {
+    stroke: #0CC;
+	stroke-width: 1;
+	fill: rgba(0, 0, 0, 0.3);
+}
+
+.grid_path {
+    stroke: rgba(128, 128, 128, 0.7);
+	stroke-width: 1;
+	fill: none;
+	opacity: 1;
+}
+
+.shadow {
+    -moz-box-shadow: 0 0 5px 5px rgb( 40, 50, 80 );
+    -webkit-box-shadow: 0 0 5px 5px rgb( 40, 50, 80 );
+    box-shadow: 0 0 5px 5px rgb( 40, 50, 80 );
+}
+
+.box {
+    position: absolute;
+    z-index: 20;
+    1px -1px 0 #000, 
+    -1px 1px 0 #000, 
+    1px 1px 0 #000;
+}
+
+.gray-bg {
+    background: rgb( 32, 32, 32 );
+    background: transparent\9;
+	background: rgba( 32, 32, 32, 0.8 );
+	-webkit-background-clip:padding-box; /* for Safari */
+	background-clip:padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+}
+
+/* 表格样式。 */
+.th-title{
+	height: 26px;
+	line-height: 26px;
+	padding-left: 18px;
+	font-size: 16px;
+	background: rgba(58,173,174,0.1);
+}
+
+.title-circle{
+	width: 20px;
+	height: 20px;
+	border: 2px solid #3DC2C2;
+	-webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+    float:right;
+    margin-right:10px;
+}
+.title-triangle{
+	width: 0;
+	height: 0;
+	border-top: 10px solid #3DC2C2;
+	border-left: 6px solid transparent;
+	border-right: 6px solid transparent;
+	margin-top: 6px;
+	margin-left: 4px;
+}
+
+.attack-type {
+
+   bottom:0px;
+   left: 7px;
+}
+#attack-type,
+#events{
+    table-layout: fixed;
+    border-collapse: collapse;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #3DC2C2;
+    font-size: 12px;
+}
+/**
+#events{
+	width: 1034px;
+}
+*/
+
+#attack-type tr,
+#events tr {
+    height: 18px;
+    line-height: 18px;
+	text-align: left;
+}
+
+#attack-type tr td,
+#events tr td {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding-left: 8px;
+}
+
+.type-number{
+	text-align: right;
+    padding-right: 10px;
+}
+
+#attack-type td span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.data {
+    width: 200px;
+}
+
+#attack-type th {
+    text-transform: uppercase;
+}
+
+#attack-type td span.numeric {
+    font-size: 12px;
+}
+
+#attack-type .col-type{
+	width: 220px;
+}
+
+#attack-type .col-number{
+	width: 76px;
+}
+
+#attack-type tr.row:hover,
+#events tr.row:hover, {
+    background-color: #0c2b4a;
+}
+
+/* 实时信息 */
+.console {
+    left: 245px;
+    bottom: 0px;
+    width: 925px;
+}
+
+#events td, #events th {
+    text-shadow: none;
+}
+
+#attack-type td:last-child, #events th:last-child {
+    padding-right: 0px;
+}
+
+#events tr.second-level {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+#events tr td:nth-child(3),
+#events tr td:nth-child(7),
+#events tr td:nth-child(11){
+	background: rgba(73, 75, 75, 0.1);
+}
+
+#events span.overflow {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#events colgroup col.col-timestamp {
+	text-align: center;
+    width: 168px;
+}
+
+#events colgroup col.col-attacker-org,
+#events colgroup col.col-attacked-org {
+    width: 136px;
+}
+
+#events colgroup col.col-attacker-ip,
+#events colgroup col.col-attacked-ip {
+    width: 140px;
+}
+
+#events colgroup col.col-service {
+    width: 184px;
+}
+
+#events colgroup col.col-port {
+    width: 70px;
+}
+
+#events colgroup col.col-border {
+    width: 10px;
+}
