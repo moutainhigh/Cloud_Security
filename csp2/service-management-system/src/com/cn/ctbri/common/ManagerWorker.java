@@ -109,7 +109,9 @@ public class ManagerWorker {
         //获取响应结果
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
         JSONObject obj = JSONObject.fromObject(response.getEntity(String.class));
-		String stateCode = obj.getString("code");
+        response.close();
+        client.destroy();
+        String stateCode = obj.getString("code");
 		if(stateCode.equals("201")){
 			return "success";
 		}else{
@@ -145,6 +147,7 @@ public class ManagerWorker {
 		WebResource service = client.resource(url);
 		//获取响应结果
 		ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
+		client.destroy();
 		return response;
 	}
 	/**
@@ -163,6 +166,7 @@ public class ManagerWorker {
 		WebResource service = client.resource(url);
 		//获取响应结果
 		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
+		client.destroy();
 		return response;
 	}
 	/**

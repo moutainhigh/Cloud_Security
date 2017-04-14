@@ -611,13 +611,13 @@ public class N_MalUrlService {
         client.setConnectTimeout(5000);
         long clientEnd = new Date().getTime();
         
-        System.out.println("创建client时间是： "+ (clientEnd-clientBegin));
+       // System.out.println("创建client时间是： "+ (clientEnd-clientBegin));
         try{
         	 long serviceBegin = new Date().getTime();
         	 //连接服务器
             WebResource service = client.resource(url);
             long serviceEnd = new Date().getTime();
-            System.out.println("创建service时间是： "+ (serviceEnd-serviceBegin));
+           // System.out.println("创建service时间是： "+ (serviceEnd-serviceBegin));
             //获取响应结果
             if(json == null)
             	response = service.type(MediaType.APPLICATION_JSON_TYPE).get(String.class);
