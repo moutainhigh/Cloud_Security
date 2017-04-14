@@ -180,6 +180,8 @@ public class InternalWorker {
         WebResource service = client.resource(url);
         //获取响应结果
         String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, json.toString());
+       
+        client.destroy();
         return response;
 	}
 	
@@ -208,6 +210,8 @@ public class InternalWorker {
         ClientResponse response = service.type(MediaType.APPLICATION_JSON).put(ClientResponse.class);
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         System.out.println(textEntity);
         return status+"";
 	}
@@ -237,6 +241,8 @@ public class InternalWorker {
         ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         System.out.println(textEntity);
         return status+"";
 	}
@@ -264,6 +270,8 @@ public class InternalWorker {
         ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         System.out.println(textEntity);
         return status+"";
 	}
@@ -291,6 +299,8 @@ public class InternalWorker {
         ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         System.out.println(textEntity);
         return status+"";
 	}
@@ -321,6 +331,8 @@ public class InternalWorker {
 		WebResource service = client.resource(url);
 		//获取响应结果
 		ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
+		
+        client.destroy();
 		return response;
 	}
 	/**
@@ -339,6 +351,8 @@ public class InternalWorker {
 		WebResource service = client.resource(url);
 		//获取响应结果
 		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
+		
+        client.destroy();
 		return response;
 	}
 	/**

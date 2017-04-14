@@ -79,6 +79,8 @@ public class SouthAPIWorker {
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
         String textEntity = response.getEntity(String.class);
         String status = JSONObject.fromObject(textEntity).getString("status");
+        response.close();
+        client.destroy();
         System.out.println(textEntity);
         return status;
 	}
@@ -142,6 +144,8 @@ public class SouthAPIWorker {
         //获取响应结果
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         if(deviceId.equals("11001")){
         	String jsStr = JSONObject.fromObject(textEntity).getString("result");
             String virtual_group_id = JSONObject.fromObject(jsStr).getString("virtual_group_id");
@@ -173,6 +177,8 @@ public class SouthAPIWorker {
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         System.out.println(textEntity);
         return textEntity;
 	}
@@ -207,6 +213,8 @@ public class SouthAPIWorker {
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         System.out.println(textEntity);
         return textEntity;
     }
@@ -236,6 +244,8 @@ public class SouthAPIWorker {
         WebResource service = client.resource(url);
         //获取响应结果
         String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, json.toString());
+        
+        client.destroy();
         return response;
     }
     /**
@@ -254,6 +264,8 @@ public class SouthAPIWorker {
 		WebResource service = client.resource(url);
 		//获取响应结果
 		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xml);
+		
+        client.destroy();
 		return response;
 	}
 	/**
@@ -272,6 +284,8 @@ public class SouthAPIWorker {
 		WebResource service = client.resource(url);
 		//获取响应结果
 		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
+		
+        client.destroy();
 		return response;
 	}
 	/**
@@ -316,7 +330,10 @@ public class SouthAPIWorker {
         //获取响应结果
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         System.out.println(textEntity);
+       
         return textEntity;
 	}
 	
@@ -345,6 +362,8 @@ public class SouthAPIWorker {
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         System.out.println(textEntity);
         return textEntity;
     }
@@ -366,6 +385,8 @@ public class SouthAPIWorker {
         WebResource service = client.resource(url);
         //获取响应结果
         String response = service.type(MediaType.APPLICATION_JSON_TYPE).get(String.class);
+        
+        client.destroy();
         return response;
     }
     
@@ -393,6 +414,8 @@ public class SouthAPIWorker {
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
 //        System.out.println(textEntity);
+        response.close();
+        client.destroy();
         return textEntity;
     }
     /**
@@ -419,6 +442,8 @@ public class SouthAPIWorker {
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
 //        System.out.println(textEntity);
+        response.close();
+        client.destroy();
         return textEntity;
     }
     
@@ -445,6 +470,8 @@ public class SouthAPIWorker {
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         return textEntity;
     }
     
@@ -473,6 +500,8 @@ public class SouthAPIWorker {
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         System.out.println(textEntity);
         return textEntity;
 	}
@@ -496,6 +525,8 @@ public class SouthAPIWorker {
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         System.out.println(textEntity);
         return textEntity;
 	}
@@ -519,6 +550,8 @@ public class SouthAPIWorker {
         ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         System.out.println(textEntity);
         return textEntity;
 	}

@@ -167,6 +167,8 @@ public class ReInternalWorker {
         ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, jsondata);
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         System.out.println(textEntity);
         return status+"";
 	}
@@ -196,6 +198,8 @@ public class ReInternalWorker {
         ClientResponse response = service.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, json);
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         System.out.println(textEntity);
         return status+"";
 	}
@@ -225,6 +229,8 @@ public class ReInternalWorker {
         ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         System.out.println(textEntity);
         return status+"";
 	}
@@ -250,6 +256,8 @@ public class ReInternalWorker {
         //获取响应结果
         ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class,jsonObj);
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         System.out.println(textEntity);
         return textEntity;
 	}
@@ -276,6 +284,8 @@ public class ReInternalWorker {
         //获取响应结果
         ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class,jsonObj);
         String textEntity = response.getEntity(String.class);
+        response.close();
+        client.destroy();
         System.out.println(textEntity);
         return textEntity;
 	}
@@ -306,6 +316,8 @@ public class ReInternalWorker {
 		WebResource service = client.resource(url);
 		//获取响应结果
 		ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
+		
+        client.destroy();
 		return response;
 	}
 	/**
@@ -324,6 +336,8 @@ public class ReInternalWorker {
 		WebResource service = client.resource(url);
 		//获取响应结果
 		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
+		
+        client.destroy();
 		return response;
 	}
 	/**
