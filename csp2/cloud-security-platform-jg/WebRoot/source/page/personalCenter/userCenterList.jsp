@@ -254,10 +254,9 @@
 						                 </a>
 						                
 						            </c:if>
-						             <c:if test="${list.isAPI==3}">			             
-						             	<input type="hidden" id="orderIdHidden" name="orderIdHidden" value="${list.id }" />
+						             <c:if test="${list.isAPI==3}">			             						             							             	
 						             	<c:if test="${list.end_date>temp}">
-						             		<a href="javascript:void(0)" id="listExternal" class="prompt">查看详情</a>
+						             		<a href="javascript:void(0)" class="prompt" onclick="listExternal(${list.id})">查看详情</a>
 						             	</c:if>
 						             	<c:if test="${list.end_date<=temp}">
 						             		<a href="javascript:void(0)" class="prompt" type="button" onclick="alertMsg('该订单已过期！');">查看详情</a>
