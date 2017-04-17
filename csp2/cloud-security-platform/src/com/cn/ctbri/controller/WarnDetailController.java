@@ -1457,7 +1457,7 @@ public class WarnDetailController {
 				String useridString = ((Integer)order.get("userId")).toString();
 				String urlRes = SysWorker.getJinshanoauthurl(strTeString+useridString);
 				if (!urlRes.equals("failed")) {
-					request.setAttribute("jinshanURL", urlRes);
+					request.setAttribute("returnURL", urlRes);
 				}
 			}
     		
@@ -1468,16 +1468,61 @@ public class WarnDetailController {
 				//
 					String urlyunyanString = SysWorker.getYunyanloginURL(userTokenString);
 					if (!urlyunyanString.equals("failed")) {
-						request.setAttribute("yunyanURL", urlyunyanString);	
+						request.setAttribute("returnURL", urlyunyanString);	
 					}
 					
 				}
+			}
+			
+			else if (serviceId == 7) { // 绿盟极光
+				//
+				//SysWorker.destroyYunyanToken(userId);
 			}
 			
 		}
     	
  	    
         return "/source/page/personalCenter/listExternal";
+    }
+    
+    /**
+     * 功能描述： 销毁token
+     * 参数描述：  无
+     *     @time 2017-4-14
+     */
+    @RequestMapping(value="destroyWindow.html")
+    public void destroyWindow(HttpServletRequest request){
+        try {
+			String orderId = request.getParameter("orderId");
+			//获取订单信息
+		
+			 List orderList = orderService.findByOrderId(orderId);
+			 User globle_user = (User) request.getSession().getAttribute("globle_user");
+		    	System.out.println("****>>>>>>>>>>>>>ordersysdetail.html");
+		    	if (orderId== null || orderList == null ||orderList.size() == 0) {
+		    		System.out.println("destory*****>>>>>>>>>>>>>>>>>>>>>orderId is null");
+		    		return ;
+		    		
+		    	}
+		  	
+		    	 HashMap<String, Object> order=new HashMap<String, Object>();
+		 	    order=(HashMap) orderList.get(0);
+		 	    if (((Integer)order.get("userId"))!= globle_user.getId()) {
+		 	    	System.out.println("destroy*****>>>>>>>>>>>>>>>>>>>>>userid not equal");
+		 	    	return ;
+		 	    }
+		 	    
+		 	   int serviceId = (Integer)order.get("serviceId");
+		 	   if (serviceId == 9) {
+		 		   //注销云眼token
+		 		  String useridString = ((Integer)order.get("userId")).toString();
+		 		   SysWorker.destroyYunyanToken(useridString);
+			}
+
+			 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
     
     /**

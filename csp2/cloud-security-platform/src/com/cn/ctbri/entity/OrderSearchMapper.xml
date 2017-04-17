@@ -25,8 +25,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			(select s.home_icon as homeIcon,o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI, 0 as package_type,0 as num,o.delFlag,oa.assetAddr as addr,oa.assetName as addrName,o.price,ifnull(o.orderListId,o.id) as orderListId
 	        from cs_order o,cs_service s,cs_order_asset oa
 	        where o.userId = #{userId} and o.serviceId = s.id and isAPI in(0,2,3) 
-	            and o.id = oa.orderId
+	          	and o.id = oa.orderId
 	            and oa.assetAddr is not null
+	         
+	        union
+	        select s.home_icon as homeIcon,o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI, 0 as package_type,0 as num,o.delFlag,oa.assetAddr as addr,oa.assetName as addrName,o.price,ifnull(o.orderListId,o.id) as orderListId
+	        from cs_order o,cs_service s,cs_order_asset oa
+	        where o.userId = #{userId} and o.serviceId = s.id and isAPI=3 
+	 
 	        union
 	        select s.home_icon as homeIcon,o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI,oa.package_type,oa.num,o.delFlag,null as addr,null as addrName,o.price,ifnull(o.orderListId,o.id) as orderListId
 	        from cs_order o,cs_service_api s,cs_order_api oa
@@ -50,18 +56,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="begin_date==null and end_date!=null">
                 AND b.begin_date &lt;= #{end_date}                                             
             </if>
-            <if test="state==3"><!-- 已下单 -->
+            <!-- 已下单 -->
+            <if test="state==3">
                 AND b.begin_date &gt; #{currentDate}
             </if>
-            <if test="state==1"><!-- 服务中 -->
+            <!-- 服务中 -->
+            <if test="state==1">
                 and b.status in (4,5)
                 or (end_date &gt;= now() and b.isAPI = 1)
                 
             </if>
-            <if test="state==2"><!-- 已结束 -->
+            <!-- 已结束  -->
+            <if test="state==2">
                 <!-- AND c.end_date &lt; #{currentDate} -->
                 AND b.status in (1,2)
             </if>
+            
             <if test="search!=null and search!=''">
                 and (b.addrName like CONCAT(CONCAT('%', #{search}), '%') or b.addr like CONCAT(CONCAT('%', #{search}), '%'))
             </if>
@@ -111,6 +121,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        where o.userId = #{userId} and o.serviceId = s.id and isAPI in(0,2,3) 
 	            and o.id = oa.orderId
 	            and oa.assetAddr is not null
+	        union
+       		select s.home_icon as homeIcon,o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI, 0 as package_type,0 as num,o.delFlag,oa.assetAddr as addr,oa.assetName as addrName,o.price,ifnull(o.orderListId,o.id) as orderListId
+	        from cs_order o,cs_service s,cs_order_asset oa
+	        where o.userId = #{userId} and o.serviceId = s.id and isAPI = 3
+
 	        union
 	        select s.home_icon as homeIcon,o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI,oa.package_type,oa.num,o.delFlag,null as addr,null as addrName,o.price,ifnull(o.orderListId,o.id) as orderListId
 	        from cs_order o,cs_service_api s,cs_order_api oa
