@@ -1,44 +1,34 @@
-$(function(){
 	
-	////系统安全帮订单获取商品详情页
-	$("#listExternal").click(function(){
-		var orderId = $("#orderIdHidden").val();
-			$.ajax({ type: "POST",
-			     async: false, 
-			     url: "getSession.html", 
-			     dataType: "json", 
-			     success: function(data) {
-			     	//虚拟表单post提交
-						    	var tempForm = document.createElement("form");
-	 							tempForm.action = "orderSysDetails.html";
-	 							tempForm.method = "post";
-	 							tempForm.style.display = "none";
-	 							
-	 							var typeInput = document.createElement("input");
-	 							typeInput.type="hidden"; 
-								typeInput.name= "orderId"; 
-								typeInput.value= orderId; 
-								tempForm.appendChild(typeInput);
-									
-								document.body.appendChild(tempForm);
-								tempForm.submit();
-								document.body.removeChild(tempForm);		    
-			    	 }, 
-			     error: function(data){ 			    	 
-			    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
-			    		 window.location.href = "loginUI.html"; } 
-			    	 else { window.location.href = "loginUI.html"; } 
-			    	 } 
-			});
-	});
-	
-	/*
-	$("#listPassword").click(function(){
-		var remarks = $("#remarks").val();
-		alert(remarks);
-	});
-	*/
-})
+	//系统安全帮订单获取商品详情页
+	function listExternal(orderId){
+		$.ajax({ type: "POST",
+		     async: false, 
+		     url: "getSession.html", 
+		     dataType: "json", 
+		     success: function(data) {
+		     	//虚拟表单post提交
+				    	var tempForm = document.createElement("form");
+						tempForm.action = "orderSysDetails.html";
+						tempForm.method = "post";
+						tempForm.style.display = "none";
+						
+						var typeInput = document.createElement("input");
+						typeInput.type="hidden"; 
+						typeInput.name= "orderId"; 
+						typeInput.value= orderId; 
+						tempForm.appendChild(typeInput);
+							
+						document.body.appendChild(tempForm);
+						tempForm.submit();
+						document.body.removeChild(tempForm);		    
+	    	 	}, 
+		     error: function(data){ 			    	 
+		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+		    		 window.location.href = "loginUI.html"; } 
+		    	 else { window.location.href = "loginUI.html"; } 
+	    	 	} 
+		});
+	}
 
 
 	function alertMsg(msg) { //mode为空，即只有一个确认按钮，mode为1时有确认和取消两个按钮
