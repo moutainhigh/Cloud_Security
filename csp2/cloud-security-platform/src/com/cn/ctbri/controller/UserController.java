@@ -820,6 +820,7 @@ public class UserController{
 	@RequestMapping(value="orderList.html")
 	public String orderList(HttpServletRequest request){
 		User globle_user = (User) request.getSession().getAttribute("globle_user");
+//		List orderList = orderService.findOrderByUserId(globle_user.getId());
 		List orderList = orderService.findByUserIdAndPage(globle_user.getId(),-1,null,null,1);
 		if(orderList.size()>2){
 			orderList = orderList.subList(0, 2);
@@ -839,10 +840,9 @@ public class UserController{
 		        	String orderId = (String)map.get("id");
 		        	String type1 = map.get("type").toString();
 		        	
-		        	//Map<String,Object> paramMap = new HashMap<String,Object>();
+					//Map<String,Object> paramMap = new HashMap<String,Object>();
 		        	//paramMap.put("orderId", orderId);
 		        	//paramMap.put("type", type1);
-
 		        	
 			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
 			        map.put("assetList", assetList);
@@ -1928,11 +1928,7 @@ public class UserController{
   		m.addAttribute("currentId", currentId);
 	  	} catch (UnsupportedEncodingException e) {
 	  		e.printStackTrace();
-	  	} catch (Exception e) {
-	  		e.printStackTrace();
-//	  		m.addAttribute("error", "服务器异常，请您耐心等待...");
-//	  		return "/source/page/anquanbang/anquan_state";
-	  	} 	  
+	  	}  	  
 
 		return "/source/page/anquanbang/anquan_state";
 	}
