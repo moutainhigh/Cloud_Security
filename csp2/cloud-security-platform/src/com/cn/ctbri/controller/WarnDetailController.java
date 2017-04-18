@@ -1417,7 +1417,6 @@ public class WarnDetailController {
     }
 	
     /**
-
      * 功能描述： 用户中心-订单跟踪-订单详情-系统安全帮类 订单详情
      * 参数描述：  无
      *     @time 2017-3-21
