@@ -303,7 +303,7 @@ function getServ(c){
 					            <option value="50" >网站可用性监测服务</option>
 					            <option value="62" >云WAF网站安全防护服务</option>
 					            <option value="73" >极光自助扫描服务</option>
-					            <option value="83" >金山上网行为服务</option>
+					            <option value="83" >上网行为管理服务</option>
 					            <option value="93" >云眼APM服务</option>				
 					            <option value="11" >WEB漏洞监测能力API</option>
 					            <option value="21" >网站挂马监测能力API</option>
