@@ -26,9 +26,9 @@
 
 .rides-cs {
 	filter: alpha(Opacity = 80);
-	-moz-opacity: 0.9;
-	opacity: 0.9;
-	background: #111;
+	-moz-opacity: 0.1;
+	opacity: 0.95;
+	background-color:rgba(1,1,1,0.4);
 	position: absolute;
 	bottom: 0px;
 	right: 1px;
@@ -56,7 +56,8 @@
 }
 
 .rides-cs .floatR .cn {
-	background: #F7F7F7;
+	
+	background:#F7F7F7;
 }
 
 .rides-cs .cn h3 {
@@ -135,17 +136,17 @@
 
 			setInterval(dsb, 1000);
 		}
-		var x = 0;
+		
 		var urlData;
 		var x = 0;
 		function dsb() {
 			var tbody = document.getElementById("table-id");
-
+			var url;	
 			if (x < 100) {
-				tbody.innerHTML = "<tr class='second-level'><th class='th-title col-attacker-org'>编号</th><th class='col-border'></th><th class='th-title col-attacker-ip'>URL</th><th class='col-border'></th><th class='th-title col-attacked-org'>领域</th><th class='col-border'></th><th class='th-title col-attacked-ip'>国家</th><th class='col-border'></th><th class='th-title col-service'>地区</th><th class='col-border'></th><th class='th-title col-service'>钓鱼目标</th></tr>";
+				tbody.innerHTML = "<tr class='second-level'><th class='th-title col-service'>编号</th><th class='col-border'></th><th class='th-title col-attacker-ip'>URL</th><th class='col-border'></th><th class='th-title col-attacked-ip'>国家</th><th class='col-border'></th><th class='th-title col-service'>地区</th></tr>";
 				for (var i = 0; i < 7; i++) {
 					var tr = document.createElement("tr");
-					tr.setAttribute("class", "second-level");
+					tr.setAttribute("class", "third-level");
 					td = document.createElement("td");
 					td.innerHTML = urlData[i + x].id;
 					tr.appendChild(td);
@@ -154,18 +155,19 @@
 					tr.appendChild(td2);
 
 					td3 = document.createElement("td");
-					td3.innerHTML = urlData[i + x].domain;
+					if(urlData[i + x].url.length<=20){
+						url=urlData[i + x].url.length;
+					}
+					else{
+						url=urlData[i + x].url.substring(0,50);
+					}
+					td3.innerHTML = url;
 					tr.appendChild(td3);
 					td4 = document.createElement("td");
 					td4.setAttribute("class", "col-border");
 					tr.appendChild(td4);
 
-					td5 = document.createElement("td");
-					td5.innerHTML = urlData[i + x].field;
-					tr.appendChild(td5);
-					td6 = document.createElement("td");
-					td6.setAttribute("class", "col-border");
-					tr.appendChild(td6);
+					
 
 					td3 = document.createElement("td");
 					td3.innerHTML = urlData[i + x].country;
@@ -181,12 +183,7 @@
 					td4.setAttribute("class", "col-border");
 					tr.appendChild(td4);
 
-					td3 = document.createElement("td");
-					td3.innerHTML = urlData[i + x].target;
-					tr.appendChild(td3);
-					td4 = document.createElement("td");
-					td4.setAttribute("class", "col-border");
-					tr.appendChild(td4);
+					
 					tbody.appendChild(tr);
 				}
 				x = x + 1;
@@ -205,7 +202,7 @@
 		var mainContainer = document.getElementById('backImg');
 		var resizemainMapContainer = function() {
 			mainContainer.style.width = window.innerWidth + 'px';
-			mainContainer.style.height = window.innerHeight + 'px';
+			mainContainer.style.height = window.innerHeight+ 'px';
 		};
 		resizemainMapContainer();
 
@@ -213,7 +210,7 @@
 		//用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
 		var resizeWorldMapContainer = function() {
 			//worldMapContainer.style.width = window.innerWidth-10+'px';
-			worldMapContainer.style.height = window.innerHeight + 'px';
+			worldMapContainer.style.height = window.innerHeight*1 + 'px';
 		};
 		//设置容器高宽
 		resizeWorldMapContainer();
@@ -1187,6 +1184,7 @@
 		$(document)
 				.ready(
 						function() {
+							lhs();
 							jQuery.ajax({
 								type : 'GET',
 								//contentType: 'application/json',  
@@ -1206,7 +1204,7 @@
 											opacity : 'show'
 										}, 'normal', function() {
 											$('#divFloatToolsView').show();
-											lhs();
+											//lhs();
 											x = 0;
 										});
 										$('#aFloatTools_Show').attr('style',
@@ -1282,21 +1280,24 @@
 												title : [
 														{
 															text : '全球恶意URL分布图',
-															subtext : '总数'
+															subtext : '钓鱼网站总数：'
 																	+ count
-																	+ '个'+'失效'+validcount+'个',
+																	+ '个     '+'活跃数：'+validcount+'个',
 															left : 'center',
-															top : '3%',
+															top : '1%',
 															textStyle : {
 																color : '#fff'
 															},
 															subtextStyle : {
-																color : '#fff'
-															}
+																color : '#f3e925',
+																fontWeight:'bolder',
+																fontSize:15
+																
+															},
 														},
 														{
 															id : 'statistic',
-															text : '恶意URL数量Top5',
+															text : '活跃恶意URL数量Top5',
 															left : 120,
 															top : '65%',
 															width : 100,
@@ -1451,7 +1452,7 @@
 															},
 														},
 														{
-															name : 'Top 5',
+															name : '',
 															type : 'effectScatter',
 															coordinateSystem : 'geo',
 															data : xData

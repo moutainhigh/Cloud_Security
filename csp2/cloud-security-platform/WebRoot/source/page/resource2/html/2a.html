@@ -61,6 +61,7 @@
 
 											var data = mapData.mapdata;
 											var count = mapData.count;
+											var validcount=mapData.validcount;
 											data.sort(function(a, b) {
 												return b.value - a.value;
 											})
@@ -86,22 +87,25 @@
 												title : [
 														{
 															text : '全国恶意URL数量分布图',
-															subtext : '总数'
+															subtext : '钓鱼网站总数：'
 																	+ count
-																	+ '个',
+																	+ '个     '+'活跃数：'+validcount+'个',
 															// subtext: '纯属虚构',
 															left : 'center',
-															top : '5%',
+															top : '1%',
 															textStyle : {
 																color : '#fff'
 															},
 															subtextStyle : {
-																color : '#fff'
+																color : '#f3e925',
+																fontWeight:'bolder',
+																fontSize:15
+																
 															},
 														},
 														{
 															id : 'statistic',
-															text : '恶意URL数量Top5',
+															text : '活跃恶意URL数量Top5',
 															left : 120,
 															top : '65%',
 															width : 100,

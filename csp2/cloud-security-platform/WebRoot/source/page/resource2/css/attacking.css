@@ -154,7 +154,9 @@ th {
     border-collapse: collapse;
     white-space: nowrap;
     overflow: hidden;
-    color: #3DC2C2;
+   /*color: #3DC2C2;*/
+    color: #cff7f6;
+   
     font-size: 12px;
 }
 /**
@@ -168,6 +170,7 @@ th {
     height: 18px;
     line-height: 18px;
 	text-align: left;
+	
 }
 
 #attack-type tr td,
@@ -175,6 +178,7 @@ th {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	padding-left: 8px;
+	color: #3DC2C2;
 }
 
 .type-number{
@@ -231,6 +235,10 @@ th {
     text-align: center;
     text-transform: uppercase;
 }
+#events tr.third-level {
+    text-align: center;
+   
+}
 
 #events tr td:nth-child(3),
 #events tr td:nth-child(7),
@@ -257,10 +265,12 @@ th {
 #events colgroup col.col-attacker-ip,
 #events colgroup col.col-attacked-ip {
     width: 140px;
+     
 }
 
 #events colgroup col.col-service {
     width: 184px;
+    
 }
 
 #events colgroup col.col-port {
