@@ -380,12 +380,12 @@ public class MaliciousUrlValidDataController {
 		provinceSet.add("台湾");
 		String url=bundle.getString("Province_Valid_Url");//按省份获得有效恶意url个数
 		String allCountUrl=bundle.getString("China_Malurl_All_Count");//获得全部恶意url个数
-		String validCountUrl=bundle.getString("Malurl_Valid_COUNT");//获得有效恶意url个数
+		String validCountUrl=bundle.getString("China_Malurl_Valid_Count");//获得有效恶意url个数
 		JerseyJsonUtil jerseyJsonUtil=new JerseyJsonUtil();
 		String count=JSONObject.fromObject(jerseyJsonUtil.getMethod(SOUTH_SERVER_WEB_ROOT+allCountUrl)).
 				get("count").toString();
-		//String validCount=JSONObject.fromObject(jerseyJsonUtil.getMethod(SOUTH_SERVER_WEB_ROOT+validCountUrl)).
-		//		get("count").toString();
+		String validCount=JSONObject.fromObject(jerseyJsonUtil.getMethod(SOUTH_SERVER_WEB_ROOT+validCountUrl)).
+				get("count").toString();
 		String str=jerseyJsonUtil.getMethod(SOUTH_SERVER_WEB_ROOT+url);
 		JSONObject jb=JSONObject.fromObject(str);
 		JSONArray countList=(JSONArray) jb.get("countList");
@@ -424,7 +424,7 @@ public class MaliciousUrlValidDataController {
 		}
 		JSONObject jsonObject=new JSONObject();
 		jsonObject.put("count", count);
-		jsonObject.put("validcount", '0');
+		jsonObject.put("validcount", validCount);
 		jsonObject.put("mapdata", jsonArray);
 		
 		//System.out.println(jsonArray.toString());
@@ -479,6 +479,7 @@ public class MaliciousUrlValidDataController {
 		JSONObject jsonObject2 = new JSONObject();
 		jsonObject2.put("month","13");
 		String str=jerseyJsonUtil.postMethod(url, jsonObject2.toString());
+		System.out.println(str);
 		JSONObject jb=JSONObject.fromObject(str);
 		
 		JSONArray countList=(JSONArray) jb.get("countList");
@@ -499,12 +500,13 @@ public class MaliciousUrlValidDataController {
 				jsonArray2.add(ob.getString("count"));
 				index=Integer.valueOf(ob.getString("count"));
 			}else{
-				jsonArray3.add(ob.getString("count"));
+				//jsonArray3.add(ob.getString("count"));
 				int x=sumIndex-Integer.valueOf(ob.getString("count"))-index;
 				if(x<0){
 					x=0;
 				}else jsonArray4.add(x);
 				sumIndex=Integer.valueOf(ob.getString("count"))+index;
+				jsonArray3.add(sumIndex);
 			}
 			
 		}
