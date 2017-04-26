@@ -43,7 +43,7 @@
                                     <span class="tl fl">
                                     <!-- <img src="${ctx}/source/images/serviceIcon/${olist.home_icon}" alt="" style="position:relative; top:6px;">
                                           -->
-                                       <img src="${ctx}/source/images/serviceIcon/${olist.homeIcon}" alt="" style="position:relative; top:6px;width:48px;height:48px">
+                                       <img src="${ctx}/source/images/serviceIcon/${list.homeIcon}" alt="" style="position:relative; top:6px;width:48px;height:48px">
                                     </span>
                                     
                                     <div class="tr fl">
