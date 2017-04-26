@@ -9,11 +9,17 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,11 +40,6 @@ import com.cn.ctbri.service.IScanTypeService;
 import com.cn.ctbri.service.IServDetailService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.IServiceAPIService;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 /**
  * 创 建 人  ：  zhang_shaohua
@@ -639,17 +640,14 @@ public class ServerManagerService {
 	public static void main(String[] args){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
-		
-		ClientConfig config = new DefaultClientConfig();
-		//检查安全传输协议设置
-        Client client = Client.create(config);
-      //连接服务器
-        WebResource service = client.resource("http://localhost:8080/csp/rest/servermanager/advertisement/delAD/"+8);
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class,json.toString());        
-        System.out.println(response.toString());
-
-        String addresses = response.getEntity(String.class);
-        System.out.println(addresses);
+        //创建任务发送路径
+		String url = "http://localhost:8080/csp/rest/servermanager/advertisement/delAD/"+8;
+		System.out.println("****设置user****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        System.out.println(str);
 	}
 
 }
