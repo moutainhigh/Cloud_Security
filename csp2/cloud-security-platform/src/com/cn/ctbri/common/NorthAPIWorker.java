@@ -9,19 +9,19 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
+
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.WebResource.Builder;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
 /**
  * 创 建 人  ：  tangxr
  * 创建日期：  2015-10-16
@@ -134,21 +134,16 @@ public class NorthAPIWorker {
 	
 	
 	public static boolean getNorthSession() {
-		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + Session;
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        String response = service.type(MediaType.APPLICATION_JSON).get(String.class);
-        JSONObject obj = JSONObject.fromObject(response);
+		String url = SERVER_WEB_ROOT + Session;
+		System.out.println("****session****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().get();
+        String str = (String)response.readEntity(String.class);
+        JSONObject obj = JSONObject.fromObject(str);
 		String stateCode = obj.getString("code");
-		if(stateCode.equals("200")){
+        response.close();
+        if(stateCode.equals("200")){
 			return true;
 		}else{
 			return false;
@@ -190,19 +185,15 @@ public class NorthAPIWorker {
 		json.put("serviceId", serviceId);
 		json.put("apiKey", apiKey);
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + North_Create_Order;
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        Builder builder = service.type(MediaType.APPLICATION_JSON);
-        String response = builder.post(String.class, json.toString());
-        JSONObject obj = JSONObject.fromObject(response);
+		String url = SERVER_WEB_ROOT + North_Create_Order;
+		System.out.println("****创建订单****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json.toString(), MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        client.close();
+        JSONObject obj = JSONObject.fromObject(str);
 		String stateCode = obj.getString("code");
 		if(stateCode.equals("201")){
 			String orderId = obj.getString("orderId");
@@ -222,19 +213,15 @@ public class NorthAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("opt", opt);
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + North_Opt_Order + orderId;
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        String response = service.type(MediaType.APPLICATION_JSON).put(String.class,json.toString());
-        JSONObject obj = JSONObject.fromObject(response);
-		String stateCode = obj.getString("code");
+        String url = SERVER_WEB_ROOT + North_Opt_Order + orderId;
+		System.out.println("****订单进行操作****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);  
+        WebTarget target = client.target(url);
+        Response response = target.request().put(Entity.entity(json.toString(), MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        JSONObject obj = JSONObject.fromObject(str);
+        String stateCode = obj.getString("code");
+        response.close();
         return stateCode;
 	}
 	
@@ -247,21 +234,15 @@ public class NorthAPIWorker {
 	 *		 @time 2015-10-16
 	 */
 	public static String vulnScanGetStatus(String orderId) {
-		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + North_Get_OrderStatus + orderId;
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-//	    config.getClasses().add(JacksonJsonProvider.class);
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);   
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+		//创建任务发送路径       
+        String url = SERVER_WEB_ROOT + North_Get_OrderStatus + orderId;
+		System.out.println("****获得订单/任务当前执行状态****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);  
+        WebTarget target = client.target(url);
+        Response response = target.request().get();
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	
@@ -274,20 +255,14 @@ public class NorthAPIWorker {
 	 */
 	public static String vulnScanGetResult(String orderId,String taskId) {
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + North_Get_OrderResult + orderId + "/" + taskId;
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-//	    config.getClasses().add(JacksonJsonProvider.class);
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);   
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+		String url = SERVER_WEB_ROOT + North_Get_OrderResult + orderId + "/" + taskId;
+		System.out.println("****获得订单/任务当前执行结果****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);  
+        WebTarget target = client.target(url);
+        Response response = target.request(MediaType.APPLICATION_JSON_TYPE).get();
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	
@@ -299,18 +274,14 @@ public class NorthAPIWorker {
 	 */
 	public static String vulnScanGetReport(String orderId) {
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + North_Get_OrderReport + orderId;
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        String response = service.type(MediaType.APPLICATION_JSON_TYPE).get(String.class);   
-        JSONObject obj = JSONObject.fromObject(response);
+		String url = SERVER_WEB_ROOT + North_Get_OrderReport + orderId;
+		System.out.println("****获得订单检测结果报告****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);  
+        WebTarget target = client.target(url);
+        Response response = target.request(MediaType.APPLICATION_JSON_TYPE).get();
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        JSONObject obj = JSONObject.fromObject(str);
 		String stateCode = obj.getString("code");
 		if(stateCode.equals("200")){
 			String iofile = obj.getString("iofile");
@@ -327,16 +298,13 @@ public class NorthAPIWorker {
 	 */
 	public static void deleteOrder(String orderId) {
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + North_Del_Order + orderId;
-		//创建配置
-		ClientConfig config = new DefaultClientConfig();
-		//绑定配置
-    	buildConfig(url,config);
-    	//创建客户端
-        Client client = Client.create(config);
-        WebResource service = client.resource(url);
-        //获取响应结果
-        String response = service.type(MediaType.APPLICATION_JSON_TYPE).get(String.class); 
+		String url = SERVER_WEB_ROOT + North_Del_Order + orderId;
+		System.out.println("****删除订单****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);  
+        WebTarget target = client.target(url);
+        Response response = target.request(MediaType.APPLICATION_JSON_TYPE).get();
+        String str = (String)response.readEntity(String.class);
+        response.close();
 	}
 	
 	/**
@@ -355,18 +323,14 @@ public class NorthAPIWorker {
 		json.put("apiKey", apiKey);
 		json.put("userId", userId);
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + North_Create_Order_API;
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, json.toString());
-        JSONObject obj = JSONObject.fromObject(response);
+		String url = SERVER_WEB_ROOT + North_Create_Order_API;
+		System.out.println("****创建API订单****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        JSONObject obj = JSONObject.fromObject(str);
 		String stateCode = obj.getString("code");
 		if(stateCode.equals("201")){
 			String orderId = obj.getString("orderId");
@@ -388,19 +352,15 @@ public class NorthAPIWorker {
 		json.put("userID", userID);
 		json.put("apiKey", apiKey);
 		json.put("randomChar", randomChar);
-		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + Login;
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, json.toString());
-        JSONObject obj = JSONObject.fromObject(response);
+		//创建任务发送路径		
+		String url = SERVER_WEB_ROOT + Login;
+		System.out.println("****获取会话令牌****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        JSONObject obj = JSONObject.fromObject(str);
         String stateCode = obj.getString("code");
 		if(stateCode.equals("201")){
 			String token = obj.getString("token");
@@ -421,26 +381,14 @@ public class NorthAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("callbackAddr", callbackAddr);
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + CallbackAddr + token;
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, json.toString());
-//        JSONObject obj = JSONObject.fromObject(response);
-//        String stateCode = obj.getString("code");
-//		if(stateCode.equals("201")){
-//			String token = obj.getString("token");
-//			return token;
-//		}else{
-//			return "";
-//		}
-        return response;
+		String url = SERVER_WEB_ROOT + CallbackAddr + token;
+		System.out.println("****设置回调地址****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	
@@ -458,29 +406,28 @@ public class NorthAPIWorker {
 			json.put("apiKey", apiKey);
 			json.put("partner", partner);
 			//创建任务发送路径
-	    	String url = SERVER_WEB_ROOT + SetUser;
-	    	//创建jersery客户端配置对象
-		    ClientConfig config = new DefaultClientConfig();
-		    //检查安全传输协议设置
-		    buildConfig(url,config);
-		    //创建Jersery客户端对象
-	        Client client = Client.create(config);
-	        //连接服务器
-	        WebResource service = client.resource(url);
-	        //获取响应结果
-	        String response = service.type(MediaType.APPLICATION_JSON).post(String.class, json.toString());
-	        JSONObject obj = JSONObject.fromObject(response);
+			String url = SERVER_WEB_ROOT + SetUser;
+			System.out.println("****设置user****");  
+	        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+	        WebTarget target = client.target(url);
+	        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+	        String str = (String)response.readEntity(String.class);
+	        response.close();
+	        JSONObject obj = JSONObject.fromObject(str);
 	        String stateCode = obj.getString("code");
 			if(stateCode.equals("201")){
 				resout="success";
 			}else{
 				resout="error";
 			}
+	        
 		}catch(Exception e){
 	        e.printStackTrace();
 		    resout = "不能同步";
 		}
 		return resout;
+			
+			
 	}
 	
 	/**
@@ -497,63 +444,66 @@ public class NorthAPIWorker {
 	 * 参数描述:String sessionId 回话ID, String taskId任务ID
 	 *		 @time 2015-01-05
 	 */
-	private static ClientResponse postMethod(String url, JSONObject json) {
-		//创建客户端配置对象
-    	ClientConfig config = new DefaultClientConfig();
-    	//通信层配置设定
-		buildConfig(url,config);
-		//创建客户端
-		Client client = Client.create(config);
-		//连接服务器
-		WebResource service = client.resource(url);
-		//获取响应结果
-		ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
-		return response;
-	}
+//	private static ClientResponse postMethod(String url, JSONObject json) {
+//		//创建客户端配置对象
+//    	ClientConfig config = new DefaultClientConfig();
+//    	//通信层配置设定
+//		buildConfig(url,config);
+//		//创建客户端
+//		Client client = Client.create(config);
+//		//连接服务器
+//		WebResource service = client.resource(url);
+//		//获取响应结果
+//		ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
+//		return response;
+//	}
 	/**
 	 * 功能描述：get方法请求
 	 * 参数描述:String url 请求路径, String sessionId 回话ID
 	 *		 @time 2015-01-05
 	 */
-	private static String getMethod(String url,String sessionId){
-		//创建客户端配置对象
-    	ClientConfig config = new DefaultClientConfig();
-    	//通信层配置设定
-		buildConfig(url,config);
-		//创建客户端
-		Client client = Client.create(config);
-		//连接服务器
-		WebResource service = client.resource(url);
-		//获取响应结果
-		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
-		return response;
-	}
+//	private static String getMethod(String url,String sessionId){
+//		//创建客户端配置对象
+//    	ClientConfig config = new DefaultClientConfig();
+//    	//通信层配置设定
+//		buildConfig(url,config);
+//		//创建客户端
+//		Client client = Client.create(config);
+//		//连接服务器
+//		WebResource service = client.resource(url);
+//		//获取响应结果
+//		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
+//		return response;
+//	}
 	/**
 	 * 功能描述：安全通信配置设置
 	 * 参数描述:String url 路径,ClientConfig config 配置对象
 	 *		 @time 2015-10-16
 	 */
-	private static void buildConfig(String url,ClientConfig config) {
-		if(url.startsWith("http")) {
-        	SSLContext ctx = getSSLContext();
-        	config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
-        		     new HostnameVerifier() {
-        		         public boolean verify( String s, SSLSession sslSession ) {
-        		             return true;
-        		         }
-        		     }, ctx
-        		 ));
-        }
-	}
+//	private static void buildConfig(String url,ClientConfig config) {
+//		if(url.startsWith("http")) {
+//        	SSLContext ctx = getSSLContext();
+//        	config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
+//        		     new HostnameVerifier() {
+//        		         public boolean verify( String s, SSLSession sslSession ) {
+//        		             return true;
+//        		         }
+//        		     }, ctx
+//        		 ));
+//        }
+//	}
 
 
     public static void main(String[] args) {
-//        String create = vulnScanCreate("2", new String[]{"http://www.testfire.net"}, "", "2016-02-16 17:55:35", "", "", "", "", "", new String[]{"2"} ,"1");
+//    	boolean qq = getNorthSession();
+//      String create = vulnScanCreate("2", new String[]{"http://www.testfire.net"}, "", "2016-02-16 17:55:35", "", "", "", "", "", new String[]{"2"} ,"1","");
 //    	String status = vulnScanGetStatus("16021615033414544");
 //    	String opt = vulnScanOptOrder("16021615033414544","stop");//resume/stop
 //    	String result = vulnScanGetResult("16021615033414544","1");
-    	String report = vulnScanGetReport("16021615033414544");
-        System.out.println(report);
+//    	String api = vulnScanCreateAPI(1, 2, 1, "ddfs", 96);
+    	String log = login("96", "fsdf", "fsadfsa");
+    	
+        System.out.println(log);
     }
 
 

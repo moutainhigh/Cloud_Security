@@ -17,20 +17,21 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
+
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.cn.ctbri.controller.WafController;
 import com.cn.ctbri.util.DateUtils;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
 /**
  * 创 建 人  ：  tangxr
  * 创建日期：  2016-05-25
@@ -70,20 +71,13 @@ public class WafAPIWorker {
 		json.put("resourceId", "10001");
 		json.put("deviceId", "30001");
 		String url = SERVER_WAF_ROOT + "/rest/adapter/getSites";       
-		//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-//        String status = JSONObject.fromObject(textEntity).getString("status");
-        System.out.println(textEntity);
-        return textEntity;
+        System.out.println("****获取全部站点、虚拟站点信息****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	/**
 	 * 功能描述： 添加ip到工作接口
@@ -100,21 +94,15 @@ public class WafAPIWorker {
 		json.put("deviceId", "30001");
 		json.put("ip", ip);
 		json.put("mask", mask);
-		String url = SERVER_WAF_ROOT + "/rest/adapter/postIpToEth";       
-		//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-//        String status = JSONObject.fromObject(textEntity).getString("status");
-        System.out.println(textEntity);
-        return textEntity;
+        //创建任务发送路径
+		String url = SERVER_WAF_ROOT + "/rest/adapter/postIpToEth";
+		System.out.println("****添加ip到工作接口****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	/**
@@ -140,20 +128,15 @@ public class WafAPIWorker {
 		json.put("port", port);
 		json.put("cert", cert);
 		json.put("type", type);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/createSite";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        
-        return textEntity;
+        //创建任务发送路径
+  		String url = SERVER_WAF_ROOT + "/rest/adapter/createSite";
+  		System.out.println("****新建站点****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	/**
@@ -181,20 +164,15 @@ public class WafAPIWorker {
 		json.put("port", port);
 		json.put("cert", cert);
 		json.put("type", type);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/alterSite";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        
-        return textEntity;
+        //创建任务发送路径
+  		String url = SERVER_WAF_ROOT + "/rest/adapter/alterSite";
+  		System.out.println("****修改站点****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	
@@ -225,20 +203,15 @@ public class WafAPIWorker {
 		json.put("include", include);
 		json.put("exclude", exclude);
 		json.put("server", server);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/createVirtualSiteInResource";
-    	System.out.println("test06"+url);
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+        //创建任务发送路径
+  		String url = SERVER_WAF_ROOT + "/rest/adapter/createVirtualSiteInResource";
+  		System.out.println("****在resource中统一新建虚拟站点****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	/**
@@ -250,18 +223,15 @@ public class WafAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("resourceId", resourceId);
 		json.put("targetKey", targetKey);
-		//创建任务发送路径
-		String url = SERVER_WAF_ROOT + "/rest/adapter/deleteVirtualSiteInResource";
-		//创建配置
-		ClientConfig config = new DefaultClientConfig();
-		//绑定配置
-    	buildConfig(url,config);
-    	//创建客户端
-        Client client = Client.create(config);
-        WebResource service = client.resource(url);
-        String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, json.toString());
-//        String textEntity = response.getEntity(String.class);
-        return response;
+        //创建任务发送路径
+  		String url = SERVER_WAF_ROOT + "/rest/adapter/deleteVirtualSiteInResource";
+  		System.out.println("****删除waf****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	
@@ -275,18 +245,13 @@ public class WafAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("dstIp", dstIpList);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogWebsecByIp";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+        System.out.println("****根据ip查询websec日志信息****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	/**
@@ -299,18 +264,13 @@ public class WafAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("logId", logId);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogWebsecById";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+        System.out.println("****根据logId查询websec日志信息****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	/**
@@ -323,18 +283,13 @@ public class WafAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("dstIp", dstIpList);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogArpByIp";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+        System.out.println("****根据ip查询arp日志信息****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	/**
@@ -347,18 +302,13 @@ public class WafAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("dstIp", dstIpList);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogDdosByIp";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+        System.out.println("****根据ip查询ddos日志信息****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	/**
@@ -371,18 +321,13 @@ public class WafAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("dstIp", dstIpList);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogDefaceByIp";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+        System.out.println("****根据ip查询deface（防篡改）日志信息****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	/**
@@ -396,18 +341,13 @@ public class WafAPIWorker {
 		json.put("dstIp", dstIpList);
 		json.put("interval", interval);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogWebsecInTime";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+        System.out.println("****根据ip和时间查询websec日志信息****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	/**
@@ -421,18 +361,13 @@ public class WafAPIWorker {
 		json.put("interval", interval);
 		json.put("timeUnit", timeUnit);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getAllWafLogWebsecInTime";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+        System.out.println("****根据时间查询websec日志信息****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	/**
@@ -445,36 +380,26 @@ public class WafAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("currentId", currentId);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getAllWafLogWebsecThanCurrentId";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+        System.out.println("****根据自增的主键id来查询数据****");  
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
+	
 	public static String getLocationFromIp(String ip){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("ip", ip);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getLocationFromIp";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	/**
 	 * 功能描述：获取安全事件类型统计信息
@@ -493,36 +418,26 @@ public class WafAPIWorker {
 		}
 		json.put("timeUnit", timeUnit);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafEventTypeCount";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
+	
+	
 	public static String getEventTypeCountInTimeCurrent(long topNum){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("topNum",topNum);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getEventTypeCountInTimeCurrent";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	/**
 	 * 获取最新前N条数据
@@ -531,18 +446,12 @@ public class WafAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("topNum", topNum);
 		String url = SERVER_WAF_ROOT + "/rest/adapter/getWafLogWebsecCurrent";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+		Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	/**
 	 * 功能描述：获取安全事件类型统计信息
@@ -556,18 +465,12 @@ public class WafAPIWorker {
 		json.put("timeUnit", timeUnit);
 		json.put("dstIp", dstIpList);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafEventTypeCount";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	
@@ -581,18 +484,12 @@ public class WafAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("interval", interval);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafAlertLevelCount";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	public static String getWafAlertLevelCount(String interval,List<String> dstIpList){
@@ -601,18 +498,12 @@ public class WafAPIWorker {
 		json.put("interval", interval);
 		json.put("dstIp", dstIpList);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafAlertLevelCount";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	/**
@@ -625,18 +516,12 @@ public class WafAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("interval", interval);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getEventTypeCountByDay";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	/**
@@ -650,18 +535,12 @@ public class WafAPIWorker {
 		json.put("interval", interval);
 		json.put("startDate", startDate);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getEventTypeCountByMonth";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	/**
@@ -675,18 +554,12 @@ public class WafAPIWorker {
 		json.put("interval", interval);
 		json.put("startDate", startDate);
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafAlertLevelCountByMonth";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	/**
@@ -694,21 +567,13 @@ public class WafAPIWorker {
 	 * @return
 	 */
 	public static String getWafLogWebSecDstIpList(){
-		//组织发送内容JSON
-		JSONObject json = new JSONObject();
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafLogWebSecDstIpList";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().get();
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	
@@ -720,18 +585,12 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
     	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafLogWebSecSrcIpList";
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);
-        String textEntity = response.getEntity(String.class);
-        return textEntity;
+    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+        WebTarget target = client.target(url);
+        Response response = target.request().get();
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	
@@ -781,54 +640,54 @@ public class WafAPIWorker {
 	 * 参数描述:String sessionId 回话ID, String taskId任务ID
 	 *		 @time 2015-12-31
 	 */
-	private static String postMethod(String url, String xml, String sessionId) {
-		//创建客户端配置对象
-    	ClientConfig config = new DefaultClientConfig();
-    	//通信层配置设定
-		buildConfig(url,config);
-		//创建客户端
-		Client client = Client.create(config);
-		//连接服务器
-		WebResource service = client.resource(url);
-		//获取响应结果
-		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xml);
-		return response;
-	}
+//	private static String postMethod(String url, String xml, String sessionId) {
+//		//创建客户端配置对象
+//    	ClientConfig config = new DefaultClientConfig();
+//    	//通信层配置设定
+//		buildConfig(url,config);
+//		//创建客户端
+//		Client client = Client.create(config);
+//		//连接服务器
+//		WebResource service = client.resource(url);
+//		//获取响应结果
+//		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xml);
+//		return response;
+//	}
 	/**
 	 * 功能描述：get方法请求
 	 * 参数描述:String url 请求路径, String sessionId 回话ID
 	 *		 @time 2015-12-31
 	 */
-	private static String getMethod(String url,String sessionId){
-		//创建客户端配置对象
-    	ClientConfig config = new DefaultClientConfig();
-    	//通信层配置设定
-		buildConfig(url,config);
-		//创建客户端
-		Client client = Client.create(config);
-		//连接服务器
-		WebResource service = client.resource(url);
-		//获取响应结果
-		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
-		return response;
-	}
+//	private static String getMethod(String url,String sessionId){
+//		//创建客户端配置对象
+//    	ClientConfig config = new DefaultClientConfig();
+//    	//通信层配置设定
+//		buildConfig(url,config);
+//		//创建客户端
+//		Client client = Client.create(config);
+//		//连接服务器
+//		WebResource service = client.resource(url);
+//		//获取响应结果
+//		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
+//		return response;
+//	}
 	/**
 	 * 功能描述：安全通信配置设置
 	 * 参数描述:String url 路径,ClientConfig config 配置对象
 	 *		 @time 2015-12-31
 	 */
-	private static void buildConfig(String url,ClientConfig config) {
-		if(url.startsWith("https")) {
-        	SSLContext ctx = getSSLContext();
-        	config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
-        		     new HostnameVerifier() {
-        		         public boolean verify( String s, SSLSession sslSession ) {
-        		             return true;
-        		         }
-        		     }, ctx
-        		 ));
-        }
-	}
+//	private static void buildConfig(String url,ClientConfig config) {
+//		if(url.startsWith("https")) {
+//        	SSLContext ctx = getSSLContext();
+//        	config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
+//        		     new HostnameVerifier() {
+//        		         public boolean verify( String s, SSLSession sslSession ) {
+//        		             return true;
+//        		         }
+//        		     }, ctx
+//        		 ));
+//        }
+//	}
 	
     
     public static void main(String[] args) throws UnsupportedEncodingException {
