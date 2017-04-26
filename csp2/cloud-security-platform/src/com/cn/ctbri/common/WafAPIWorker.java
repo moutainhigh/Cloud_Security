@@ -59,6 +59,9 @@ public class WafAPIWorker {
 	public WafAPIWorker() {
 	}
 	
+	static Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+    final static WebTarget mainTarget = client.target(SERVER_WAF_ROOT);
+	
 	/**
 	 * 功能描述： 获取全部站点、虚拟站点信息
 	 * @param resourceId 设备资源编号，
@@ -70,10 +73,8 @@ public class WafAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("resourceId", "10001");
 		json.put("deviceId", "30001");
-		String url = SERVER_WAF_ROOT + "/rest/adapter/getSites";       
         System.out.println("****获取全部站点、虚拟站点信息****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getSites");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -95,10 +96,8 @@ public class WafAPIWorker {
 		json.put("ip", ip);
 		json.put("mask", mask);
         //创建任务发送路径
-		String url = SERVER_WAF_ROOT + "/rest/adapter/postIpToEth";
 		System.out.println("****添加ip到工作接口****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/postIpToEth");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -129,10 +128,8 @@ public class WafAPIWorker {
 		json.put("cert", cert);
 		json.put("type", type);
         //创建任务发送路径
-  		String url = SERVER_WAF_ROOT + "/rest/adapter/createSite";
   		System.out.println("****新建站点****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/createSite");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -165,10 +162,8 @@ public class WafAPIWorker {
 		json.put("cert", cert);
 		json.put("type", type);
         //创建任务发送路径
-  		String url = SERVER_WAF_ROOT + "/rest/adapter/alterSite";
   		System.out.println("****修改站点****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/alterSite");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -204,10 +199,8 @@ public class WafAPIWorker {
 		json.put("exclude", exclude);
 		json.put("server", server);
         //创建任务发送路径
-  		String url = SERVER_WAF_ROOT + "/rest/adapter/createVirtualSiteInResource";
   		System.out.println("****在resource中统一新建虚拟站点****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/createVirtualSiteInResource");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -224,10 +217,8 @@ public class WafAPIWorker {
 		json.put("resourceId", resourceId);
 		json.put("targetKey", targetKey);
         //创建任务发送路径
-  		String url = SERVER_WAF_ROOT + "/rest/adapter/deleteVirtualSiteInResource";
   		System.out.println("****删除waf****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/deleteVirtualSiteInResource");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -244,10 +235,8 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("dstIp", dstIpList);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogWebsecByIp";
         System.out.println("****根据ip查询websec日志信息****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getWaflogWebsecByIp");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -263,10 +252,8 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("logId", logId);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogWebsecById";
         System.out.println("****根据logId查询websec日志信息****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getWaflogWebsecById");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -282,10 +269,8 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("dstIp", dstIpList);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogArpByIp";
         System.out.println("****根据ip查询arp日志信息****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getWaflogArpByIp");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -301,10 +286,8 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("dstIp", dstIpList);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogDdosByIp";
         System.out.println("****根据ip查询ddos日志信息****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getWaflogDdosByIp");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -320,10 +303,8 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("dstIp", dstIpList);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogDefaceByIp";
         System.out.println("****根据ip查询deface（防篡改）日志信息****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getWaflogDefaceByIp");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -340,10 +321,8 @@ public class WafAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("dstIp", dstIpList);
 		json.put("interval", interval);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWaflogWebsecInTime";
         System.out.println("****根据ip和时间查询websec日志信息****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getWaflogWebsecInTime");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -360,10 +339,8 @@ public class WafAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("interval", interval);
 		json.put("timeUnit", timeUnit);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getAllWafLogWebsecInTime";
         System.out.println("****根据时间查询websec日志信息****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getAllWafLogWebsecInTime");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -379,10 +356,8 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("currentId", currentId);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getAllWafLogWebsecThanCurrentId";
         System.out.println("****根据自增的主键id来查询数据****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getAllWafLogWebsecThanCurrentId");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -393,9 +368,7 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("ip", ip);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getLocationFromIp";
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getLocationFromIp");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -417,9 +390,7 @@ public class WafAPIWorker {
 			json.put("topNum",topNum);
 		}
 		json.put("timeUnit", timeUnit);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafEventTypeCount";
-    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getWafEventTypeCount");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -431,9 +402,7 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("topNum",topNum);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getEventTypeCountInTimeCurrent";
-    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getEventTypeCountInTimeCurrent");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -445,9 +414,7 @@ public class WafAPIWorker {
 	public static String getWafLogWebsecCurrent(int topNum){
 		JSONObject json = new JSONObject();
 		json.put("topNum", topNum);
-		String url = SERVER_WAF_ROOT + "/rest/adapter/getWafLogWebsecCurrent";
-		Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getWafLogWebsecCurrent");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -464,9 +431,7 @@ public class WafAPIWorker {
 		json.put("interval", interval);
 		json.put("timeUnit", timeUnit);
 		json.put("dstIp", dstIpList);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafEventTypeCount";
-    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getWafEventTypeCount");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -483,9 +448,7 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("interval", interval);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafAlertLevelCount";
-    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getWafAlertLevelCount");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -497,9 +460,7 @@ public class WafAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("interval", interval);
 		json.put("dstIp", dstIpList);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafAlertLevelCount";
-    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getWafAlertLevelCount");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -515,9 +476,7 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("interval", interval);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getEventTypeCountByDay";
-    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getEventTypeCountByDay");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -534,9 +493,7 @@ public class WafAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("interval", interval);
 		json.put("startDate", startDate);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getEventTypeCountByMonth";
-    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getEventTypeCountByMonth");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -553,9 +510,7 @@ public class WafAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("interval", interval);
 		json.put("startDate", startDate);
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafAlertLevelCountByMonth";
-    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getWafAlertLevelCountByMonth");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -567,9 +522,7 @@ public class WafAPIWorker {
 	 * @return
 	 */
 	public static String getWafLogWebSecDstIpList(){
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafLogWebSecDstIpList";
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getWafLogWebSecDstIpList");
         Response response = target.request().get();
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -584,9 +537,7 @@ public class WafAPIWorker {
 	public static String getWafLogWebSecSrcIpList(){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
-    	String url = SERVER_WAF_ROOT + "/rest/adapter/getWafLogWebSecSrcIpList";
-    	Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path("/rest/adapter/getWafLogWebSecSrcIpList");
         Response response = target.request().get();
         String str = (String)response.readEntity(String.class);
         response.close();
