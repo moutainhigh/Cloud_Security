@@ -35,6 +35,7 @@ import com.cn.ctbri.common.SysWorker;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.AlarmDDOS;
 import com.cn.ctbri.entity.Asset;
+import com.cn.ctbri.entity.Linkman;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.entity.User;
@@ -1481,7 +1482,15 @@ public class WarnDetailController {
 			
 			else if (serviceId == 7) { // 绿盟极光
 				//
-				//SysWorker.destroyYunyanToken(userId);
+				String useridString = ((Integer)order.get("userId")).toString();
+				//orderId
+				Linkman linkman = orderService.findLinkmanByOrderId(orderId); 
+				
+				String urljiguangString = SysWorker.getjiguangURL(useridString, orderId, linkman.getMobile(), linkman.getName());
+				if (!urljiguangString.equals("failed")&&urljiguangString!=null) {
+					request.setAttribute("returnURL", urljiguangString);
+				}
+				
 			}
 			
 		}
