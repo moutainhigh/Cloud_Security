@@ -15,6 +15,10 @@
   <listener>
       <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>   	
    </listener>
+   <!-- rest client -->
+   <listener>
+	<listener-class>com.cn.ctbri.listener.ContextClient</listener-class>
+   </listener>
      <filter>
         <filter-name>SystemFilter</filter-name>  
         <filter-class>com.cn.ctbri.filter.SystemFilter</filter-class>  
