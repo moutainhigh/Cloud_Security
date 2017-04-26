@@ -571,16 +571,84 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getLatlongByIP(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		return deviceAdpaterManager.getLatlongByIP(jsonObject);
+		return deviceAdpaterManager.getIpLatlongByIP(jsonObject);
 	}
 	
 	//4.2获取多IP经纬度信息
 	@POST
 	@Path("/secbasedata/iplatlong/getlatlongbyiplist")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getLatlongByIPList(String dataJson){
+	public String getIpLatlongByIPList(String dataJson){
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		return deviceAdpaterManager.getLatlongByIpList(jsonObject);
+		return deviceAdpaterManager.getIpLatlongByIpList(jsonObject);
+	}
+	
+	//4.3获取国内IP地址经纬度数据总数
+	@GET
+	@Path("/secbasedata/iplatlong/getcncount")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getIpLatlongCNCount(){
+		return deviceAdpaterManager.getIpLatlongCNCount();
+	}
+	
+	//4.4获取国内IP地址经纬度数据块
+	@POST
+	@Path("/secbasedata/iplatlong/getcndatablock")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getIpLatlongCNDataBlock(String dataJson){
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getIpLatlongCNDataBlock(jsonObject);
+	}
+	
+	//4.5获取全球IP地址经纬度数据总数
+	@GET
+	@Path("/secbasedata/iplatlong/gettotalcount")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getIpLatlongTotalCount(String dataJson) {
+		return deviceAdpaterManager.getIpLatlongTotalCount();
+	}
+	
+	//4.6获取全球IP地址经纬度数据块
+	@POST
+	@Path("/secbasedata/iplatlong/getdatablock")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getIpLatlongDataBlock(String dataJson){
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getIpLatlongDataBlock(jsonObject);
+	}
+	
+	//5.1 获取国内地理信息数据总数
+	@GET
+	@Path("/secbasedata/nationlocation/getcncount")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getNationLocationCNCount() {
+		return deviceAdpaterManager.getNationLocationCNCount();
+	}
+	
+	//5.2 获取国内地理信息数据块
+	@POST
+	@Path("/secbasedata/nationlocation/getcndatablock")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getNationLocationCNDataBlock(String dataJson){
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getNationLocationCNDataBlock(jsonObject);
+	}
+	
+	//5.3 获取全球地理信息数据总数
+	@GET
+	@Path("/secbasedata/nationlocation/gettotalcount")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getNationLocationTotalCount(){
+		return deviceAdpaterManager.getNationLocationTotalCount();
+	}
+	
+	//5.4 获取全球地理信息数据块
+	@POST
+	@Path("/secbasedata/nationlocation/getdatablock")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getNationLocationDataBlock(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getNationLocationDataBlock(jsonObject);
 	}
 	
 	//6.1获取当天国内活动恶意url信息
@@ -628,6 +696,14 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMalurlData(){
 		return deviceAdpaterManager.getMalurlData();
+	}
+	//6.6b
+	@POST
+	@Path("/secbasedata/malurl/gettopdata")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalurlTopData(String jsonString) {
+		JSONObject jsonObject = JSONObject.fromObject(jsonString);
+		return deviceAdpaterManager.getMalurlTopData(jsonObject);
 	}
 	//6.7
 	@GET
@@ -745,6 +821,13 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.getMalUrlCountInChina();
 	}
 	
+	@GET
+	@Path("/secbasedata/malurl/getcountinchinavalid")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMalUrlCountInChinaValid() {
+		return deviceAdpaterManager.getMalUrlCountInChinaValid();
+	}
+	
 	//5.
 	@POST
 	@Path("/secbasedata/malurl/getcountbymonth")
@@ -846,6 +929,24 @@ public class DeviceAdapterManagerService {
 		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
 		return deviceAdpaterManager.getCloudInsightLoginURL(jsonObject);
 	}
+	
+	@POST
+	@Path("/systemservice/nsfocus/createorder")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String createNsfocusSysOrder(String dataJson) {
+		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
+		return deviceAdpaterManager.createNsfocusSysOrder(jsonObject);
+	}
+	
+	@POST
+	@Path("/systemservice/nsfocus/reneworder")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String renewNsfocusSysOrder(String dataJson){
+		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
+		return deviceAdpaterManager.renewNsfocusSysOrder(jsonObject);
+	}
+	
+	
 	
 
 }
