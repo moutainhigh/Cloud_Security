@@ -122,7 +122,6 @@ public class shoppingSysController {
 			e.printStackTrace();
 		}
 	}
-	
 	/**
 	 * 功能描述： 极光页面初始化
 	 * 参数描述：  无
