@@ -174,7 +174,7 @@ $(document).ready(function(){
 							<dd>查询指定域名或IP是否存在活动恶意URL信息</dd>
 						</dl>
 					</div>
-					<div class="apiR fl" style="width:500px;>
+					<div class="apiR fl" style="width:500px;">
 						<div class="listtab" style="display:block">
 							<ul>
 								<li class="clearfix"><label class="fl">接口描述：</label>
