@@ -102,6 +102,10 @@ public class NorthAPIWorker {
 	public NorthAPIWorker() {
 	}
 	
+	//全局client
+	static Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+    final static WebTarget mainTarget = client.target(SERVER_WEB_ROOT);
+	
 	/**
 	 * 功能描述： 获取安全套接层上下文对象
 	 *		 @time 2015-01-05
@@ -134,10 +138,8 @@ public class NorthAPIWorker {
 	
 	
 	public static boolean getNorthSession() {
-		String url = SERVER_WEB_ROOT + Session;
 		System.out.println("****session****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path(Session);
         Response response = target.request().get();
         String str = (String)response.readEntity(String.class);
         JSONObject obj = JSONObject.fromObject(str);
@@ -185,10 +187,8 @@ public class NorthAPIWorker {
 		json.put("serviceId", serviceId);
 		json.put("apiKey", apiKey);
 		//创建任务发送路径
-		String url = SERVER_WEB_ROOT + North_Create_Order;
 		System.out.println("****创建订单****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path(North_Create_Order);
         Response response = target.request().post(Entity.entity(json.toString(), MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -213,10 +213,8 @@ public class NorthAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("opt", opt);
 		//创建任务发送路径
-        String url = SERVER_WEB_ROOT + North_Opt_Order + orderId;
 		System.out.println("****订单进行操作****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);  
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path(North_Opt_Order + orderId);
         Response response = target.request().put(Entity.entity(json.toString(), MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         JSONObject obj = JSONObject.fromObject(str);
@@ -235,10 +233,8 @@ public class NorthAPIWorker {
 	 */
 	public static String vulnScanGetStatus(String orderId) {
 		//创建任务发送路径       
-        String url = SERVER_WEB_ROOT + North_Get_OrderStatus + orderId;
 		System.out.println("****获得订单/任务当前执行状态****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);  
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path(North_Get_OrderStatus + orderId);
         Response response = target.request().get();
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -255,10 +251,8 @@ public class NorthAPIWorker {
 	 */
 	public static String vulnScanGetResult(String orderId,String taskId) {
 		//创建任务发送路径
-		String url = SERVER_WEB_ROOT + North_Get_OrderResult + orderId + "/" + taskId;
 		System.out.println("****获得订单/任务当前执行结果****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);  
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path(North_Get_OrderResult + orderId + "/" + taskId);
         Response response = target.request(MediaType.APPLICATION_JSON_TYPE).get();
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -274,10 +268,8 @@ public class NorthAPIWorker {
 	 */
 	public static String vulnScanGetReport(String orderId) {
 		//创建任务发送路径
-		String url = SERVER_WEB_ROOT + North_Get_OrderReport + orderId;
 		System.out.println("****获得订单检测结果报告****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);  
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path(North_Get_OrderReport + orderId);
         Response response = target.request(MediaType.APPLICATION_JSON_TYPE).get();
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -298,10 +290,8 @@ public class NorthAPIWorker {
 	 */
 	public static void deleteOrder(String orderId) {
 		//创建任务发送路径
-		String url = SERVER_WEB_ROOT + North_Del_Order + orderId;
 		System.out.println("****删除订单****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);  
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path(North_Del_Order + orderId);
         Response response = target.request(MediaType.APPLICATION_JSON_TYPE).get();
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -323,10 +313,8 @@ public class NorthAPIWorker {
 		json.put("apiKey", apiKey);
 		json.put("userId", userId);
 		//创建任务发送路径
-		String url = SERVER_WEB_ROOT + North_Create_Order_API;
 		System.out.println("****创建API订单****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path(North_Create_Order_API);
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -353,10 +341,8 @@ public class NorthAPIWorker {
 		json.put("apiKey", apiKey);
 		json.put("randomChar", randomChar);
 		//创建任务发送路径		
-		String url = SERVER_WEB_ROOT + Login;
 		System.out.println("****获取会话令牌****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path(Login);
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -381,10 +367,8 @@ public class NorthAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("callbackAddr", callbackAddr);
 		//创建任务发送路径
-		String url = SERVER_WEB_ROOT + CallbackAddr + token;
 		System.out.println("****设置回调地址****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url);
+        WebTarget target = mainTarget.path(CallbackAddr + token);
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -406,10 +390,8 @@ public class NorthAPIWorker {
 			json.put("apiKey", apiKey);
 			json.put("partner", partner);
 			//创建任务发送路径
-			String url = SERVER_WEB_ROOT + SetUser;
 			System.out.println("****设置user****");  
-	        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-	        WebTarget target = client.target(url);
+	        WebTarget target = mainTarget.path(SetUser);
 	        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
 	        String str = (String)response.readEntity(String.class);
 	        response.close();

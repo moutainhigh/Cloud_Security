@@ -10,13 +10,9 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import net.sf.json.JSONObject;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
@@ -54,16 +50,17 @@ public class APIWorker {
     public APIWorker() {
 	}
 	
+    static Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+    final static WebTarget mainTarget = client.target(SERVER_WEB_ROOT);
+    
 	/**
 	 * 功能描述： 获取用户购买服务次数
 	 * @param orderId 订单编号
 	 * @time 2016-5-25
 	 */
 	public static String getUserCount(String orderId){
-		String url = SERVER_WEB_ROOT + VulnScan_serviceCreateAPICount;
 		System.out.println("****获取用户购买服务次数****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);  
-        WebTarget target = client.target(url+orderId);  
+        WebTarget target = mainTarget.path(VulnScan_serviceCreateAPICount+orderId);
         Response response = target.request(MediaType.APPLICATION_JSON).buildGet().invoke();
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -76,10 +73,8 @@ public class APIWorker {
 	 * @time 2016-5-25
 	 */
 	public static String getUserAllCount(String orderId){
-        String url = SERVER_WEB_ROOT + VulnScan_analysisAPICount;
 		System.out.println("****获取某订单扫描所有api的次数****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);  
-        WebTarget target = client.target(url+orderId);  
+        WebTarget target = mainTarget.path(VulnScan_analysisAPICount+orderId);
         Response response = target.request().get();
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -93,10 +88,8 @@ public class APIWorker {
 	 * @time 2016-5-25
 	 */
 	public static String getAPIHistory(String scanUrl, String beginDate, String endDate, String orderId){
-        String url = SERVER_WEB_ROOT + VulnScan_getAPIHistory;
 		System.out.println("****根据订单号获取调用接口历史记录****");  
-        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-        WebTarget target = client.target(url+orderId).queryParam("scanUrl", scanUrl)
+        WebTarget target = mainTarget.path(VulnScan_getAPIHistory+orderId).queryParam("scanUrl", scanUrl)
         		.queryParam("beginDate", beginDate)
         		.queryParam("endDate", endDate);
         Response response = target.request().get();
