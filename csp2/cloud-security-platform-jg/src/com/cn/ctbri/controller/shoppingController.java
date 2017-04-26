@@ -2216,7 +2216,9 @@ public class shoppingController {
     			    order=(HashMap) orderHashList.get(0);
     			    int serviceId=0;
     			    serviceId=(Integer) order.get("serviceId");
-    			    if (serviceId == 7|| serviceId==8||serviceId==9) {//极光自助、金山、云眼  接口
+    			    int isAPI=0;
+    			    isAPI = (Integer)order.get("isAPI");
+    			    if ((serviceId == 7|| serviceId==8||serviceId==9)&&isAPI!=1) {//极光自助、金山、云眼  接口
     			    	User loginUser = userService.findUserById(globle_user.getId()).get(0);
     			    	Date createDate = (Date)order.get("create_date");
     			    	Date  beginDate =(Date)order.get("begin_date");
@@ -2225,7 +2227,7 @@ public class shoppingController {
     			    	Integer userid = new Integer(globle_user.getId());
     			    	int scanTypeint = (Integer)order.get("scan_type");
     			    	Integer scanTypeInteger = new Integer(scanTypeint);
-    				    	
+    			    	Linkman linkman = orderService.findLinkmanByOrderId(orderId);  	
     			    	
     			    	if (orderId != null && !"".equals(orderId)) {
         					// 更新订单资产表
@@ -2247,6 +2249,11 @@ public class shoppingController {
 									selfHelpOrderService.updateSysOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date(),strUninstallPasswd);
 								}
 								System.out.println("url:"+SysWorker.getJinshanoauthurl(strTeString+userid.toString()));
+								
+							}else if (serviceId == 7) {//极光接口 
+								System.out.println(""+orderId );
+								String strInstanceid = SysWorker.getjiguanginstanceID(userid.toString(), orderId, linkman.getMobile(), linkman.getName());
+								selfHelpOrderService.updateSysOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date(),strInstanceid);
 								
 							}
     			    		else {
@@ -2446,7 +2453,7 @@ public class shoppingController {
     				String orderId = "";
 //	    		 orderVal = orderVal+ shopCar.getOrderId()+",";
     				try {
-    					if(shopCar.getServiceId()!=6){
+    					
     						orderId = NorthAPIWorker.vulnScanCreateAPI(
     								Integer.parseInt(shopCar.getAstName()),
     								shopCar.getBuynum(), shopCar.getServiceId(),
@@ -2455,7 +2462,7 @@ public class shoppingController {
 //    						String orderDate = odf.format(new Date());
 //    						orderId = orderDate+String.valueOf(Random.fivecode());
     						orderVal = orderVal+ orderId+",";
-    					}
+    					
     				} catch (Exception e) {
     					e.printStackTrace();
     				}
