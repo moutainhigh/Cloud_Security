@@ -39,38 +39,25 @@ import com.cn.ctbri.southapi.adapter.batis.model.TViewWebPhishTargetCount;
 import com.cn.ctbri.southapi.adapter.batis.model.TViewWebPhishTargetCountExample;
 import com.cn.ctbri.southapi.adapter.batis.model.TWebPhish;
 import com.cn.ctbri.southapi.adapter.batis.model.TWebPhishExample;
+import com.cn.ctbri.southapi.adapter.common.CommonDatabaseController;
 import com.cn.ctbri.southapi.adapter.manager.DeviceAdapterConstant;
 import com.cn.ctbri.southapi.adapter.utils.IPUtility;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public class IPDataBaseAdapter {
-	private static int MONTH_NUM = 6;
-	
-	
+public class IPDataBaseAdapter {	
 	//获取sqlSession
 	private  SqlSession getSqlSession() throws IOException{
-		Reader reader;
-		reader = Resources.getResourceAsReader(DeviceAdapterConstant.RESOURCE_DATABASE_CONFIG);
-		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-		SqlSession sqlSession = sqlSessionFactory.openSession();
-		return sqlSession;
+		return CommonDatabaseController.getSqlSession();
 	}
 	//sqlsession判空
-	public static void closeSqlSession(SqlSession sqlSession){
-		if(sqlSession==null){
-			return;
-		}
-		sqlSession.close();
+	private static void closeSqlSession(SqlSession sqlSession){
+		CommonDatabaseController.closeSqlSession(sqlSession);
 	}
 	
 	private  SqlSession getOpenPhishSqlSession() throws IOException{
-		Reader reader;
-		reader = Resources.getResourceAsReader(DeviceAdapterConstant.RESOURCE_DATABASE_CONFIG);
-		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader, "openphish");
-		SqlSession sqlSession = sqlSessionFactory.openSession();
-		return sqlSession;
+		return CommonDatabaseController.getOpenPhishSqlSession();
 	}
 	
 	
@@ -228,6 +215,7 @@ public class IPDataBaseAdapter {
 			list.add("CH");
 			list.add("HK");
 			list.add("TW");
+			list.add("MO");
 			tCityLocationExample.or().andCountryIsoCodeIn(list);
 			List<TCityLocation> cityLocationList = tCityLocationMapper.selectByExample(tCityLocationExample);
 			List<Long> locationIdList = new ArrayList<Long>();
@@ -355,8 +343,11 @@ public class IPDataBaseAdapter {
 	
 	
 
-	
-	//2.1获取国内地理信息数据总数
+	/*
+	 * 安全基础数据-国家地理数据接口
+	 * 文档编号：5
+	 */
+	//5.1获取国内地理信息数据总数
 	public String getNationLocationCNCount() {
 		SqlSession sqlSession = null;
 		try {
@@ -384,7 +375,7 @@ public class IPDataBaseAdapter {
 		}
 
 	}
-	//2.2获取国内地理信息数据块
+	//5.2获取国内地理信息数据块
 	public String getNationLocationCNDataBlock(JSONObject jsonObject) {
 		SqlSession sqlSession = null;
 		try {
@@ -444,7 +435,7 @@ public class IPDataBaseAdapter {
 			closeSqlSession(sqlSession);
 		}
 	}
-	
+	/*
 	//2.2获取国内地理信息数据块
 	public String getNationLocationTotalCount(){
 		SqlSession sqlSession = null;
@@ -484,10 +475,11 @@ public class IPDataBaseAdapter {
 		}
 
 	}
+	*/
 	
-	//2.3获取全球地理信息总数
-		public String getLocationCount() {
-			SqlSession sqlSession = null;
+	//5.3获取全球地理信息数据总数
+	public String getNationLocationTotalCount() {
+		SqlSession sqlSession = null;
 			try {
 				sqlSession = getSqlSession();
 				TCityLocationMapper tCityLocationMapper = sqlSession.getMapper(TCityLocationMapper.class);
@@ -506,42 +498,62 @@ public class IPDataBaseAdapter {
 			} finally {
 				closeSqlSession(sqlSession);
 			}
-
-		}
+	}
 		
-		//2.4获取全球地理信息数据块
-	public String getNationLocationDataBlock(){
-			SqlSession sqlSession = null;
-			try {
-				sqlSession = getSqlSession();
-				TCityLocationMapper tCityLocationMapper = sqlSession.getMapper(TCityLocationMapper.class);
-				TCityLocationExample tCityLocationExample = new TCityLocationExample();
-				List<TCityLocation> cityLocationList = tCityLocationMapper.selectByExample(tCityLocationExample);
-				JSONArray locationJsonArray = new JSONArray();
-				for (TCityLocation tCityLocation : cityLocationList) {
-					JSONObject locationJsonObject = new JSONObject();
-					locationJsonObject.put("country", tCityLocation.getCountryName());
-					locationJsonObject.put("country_iso_code", tCityLocation.getCountryIsoCode());
-					locationJsonObject.put("subdivision_1_name", tCityLocation.getSubdivision1Name());
-					locationJsonObject.put("subdivision_2_name", tCityLocation.getSubdivision2Name());
-					locationJsonObject.put("city", tCityLocation.getCityName());
-					locationJsonObject.put("timezone", tCityLocation.getTimeZone());
-					locationJsonArray.add(locationJsonObject);
-				}
-				JSONObject returnJsonObject = new JSONObject();
-				returnJsonObject.put("locationList", locationJsonArray);
-				return returnJsonObject.toString();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				JSONObject errorJsonObject = new JSONObject();
-				errorJsonObject.put("status", "failed");
-				errorJsonObject.put("message", "database error");
-				return errorJsonObject.toString();
-			} finally {
-				closeSqlSession(sqlSession);
+	//5.4获取全球地理信息数据块
+	public String getNationLocationDataBlock(JSONObject jsonObject) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getSqlSession();
+			String begIndex = jsonObject.getString("begIndex");
+			String endIndex = jsonObject.getString("endIndex");
+			TIpv4LatlongExample ipLatlongExample = new TIpv4LatlongExample();
+			
+			TCityLocationMapper tCityLocationMapper = sqlSession.getMapper(TCityLocationMapper.class);
+			TCityLocationExample tCityLocationExample = new TCityLocationExample();
+			List<TCityLocation> cityLocationList = tCityLocationMapper.selectByExample(tCityLocationExample);
+			List<Long> locationIdList = new ArrayList<Long>();
+			for (TCityLocation tCityLocation : cityLocationList) {
+				locationIdList.add(tCityLocation.getLocationId());
 			}
+			TIpv4LatlongMapper ipv4LatlongMapper = sqlSession.getMapper(TIpv4LatlongMapper.class);
+			ipLatlongExample.createCriteria().andLocationIdIn(locationIdList);
+			ipLatlongExample.setOrderByClause("latlong_id asc");
+			ipLatlongExample.setOffset(String.valueOf(Integer.parseInt(begIndex)-1));
+			ipLatlongExample.setRows(String.valueOf(Integer.parseInt(endIndex)-1));
+			List<TIpv4Latlong> ipv4LatlongList = ipv4LatlongMapper.selectByExample(ipLatlongExample);
+			JSONArray locationJsonArray = new JSONArray();
+			for (TIpv4Latlong tIpv4Latlong : ipv4LatlongList) {
+				JSONObject locationJsonObject = new JSONObject();
+				locationJsonObject.put("network", tIpv4Latlong.getNetwork());
+				locationJsonObject.put("netmask", tIpv4Latlong.getNetmask());
+				locationJsonObject.put("latitude", tIpv4Latlong.getLatitude());
+				locationJsonObject.put("longtitude", tIpv4Latlong.getLongitude());
+				TCityLocation cityLocation = tCityLocationMapper.selectByPrimaryKey(tIpv4Latlong.getLocationId());
+				if (cityLocation!=null) {
+					locationJsonObject.put("continent", cityLocation.getContinentName());
+					locationJsonObject.put("country", cityLocation.getCountryName());
+					locationJsonObject.put("country_iso_code", cityLocation.getCountryIsoCode());
+					locationJsonObject.put("subdivision_1_name", cityLocation.getSubdivision1Name());
+					locationJsonObject.put("subdivision_2_name", cityLocation.getSubdivision2Name());
+					locationJsonObject.put("city", cityLocation.getCityName());
+				}
 
+				locationJsonArray.add(locationJsonObject);
+			}
+			JSONObject returnJsonObject = new JSONObject();
+			returnJsonObject.put("latlongList", locationJsonArray);
+			return returnJsonObject.toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "database error");
+			return errorJsonObject.toString();
+		} finally {
+			closeSqlSession(sqlSession);
+		}
 	}
 	
 	//3.1获取当天国内活动恶意url信息
@@ -554,7 +566,8 @@ public class IPDataBaseAdapter {
 			cnCodeList.add("CN");
 			cnCodeList.add("HK");
 			cnCodeList.add("TW");
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			cnCodeList.add("MO");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
 			webPhishExample.createCriteria().andWebphishCountrycodeIn(cnCodeList).andVerifiedTimeLike("%"+sdf.format(new Date())+"%").andIsvalidEqualTo(1);
 			
 			TWebPhishMapper webPhishMapper = sqlSession.getMapper(TWebPhishMapper.class);
@@ -598,7 +611,7 @@ public class IPDataBaseAdapter {
 		try {
 			sqlSession = getOpenPhishSqlSession();
 			TWebPhishExample webPhishExample = new TWebPhishExample();
-			List<String> cnCodeList = new ArrayList<String>();
+
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			webPhishExample.createCriteria().andVerifiedTimeLike("%"+sdf.format(new Date())+"%").andIsvalidEqualTo(1);			
 			TWebPhishMapper webPhishMapper = sqlSession.getMapper(TWebPhishMapper.class);
@@ -834,6 +847,64 @@ public class IPDataBaseAdapter {
 				malUrlJsonObject.put("ip", tWebPhish.getWebphishIp());
 				malUrlJsonObject.put("asn", tWebPhish.getWebphishAsn());
 				malUrlJsonObject.put("asnName", tWebPhish.getWebphishAsnname());
+				malUrlJsonObject.put("country", tWebPhish.getWebphishCountry());
+				malUrlJsonObject.put("countryCode", tWebPhish.getWebphishCountrycode());
+				malUrlJsonObject.put("subdivision1", tWebPhish.getWebphishSubdivision1());
+				malUrlJsonObject.put("subdivision2", tWebPhish.getWebphishSubdivision2());
+				malUrlJsonObject.put("city", tWebPhish.getWebphishCity());
+				malUrlJsonObject.put("target", tWebPhish.getWebphishTarget());
+				malUrlJsonObject.put("verifiedTime",tWebPhish.getVerifiedTime());
+				malUrlJsonObject.put("isValid", tWebPhish.getIsvalid());
+				malUrlJsonArray.add(malUrlJsonObject);
+			}
+			JSONObject returnJsonObject = new JSONObject();
+			returnJsonObject.put("status", "success");
+			returnJsonObject.put("webphishList", malUrlJsonArray);
+			return returnJsonObject.toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "Database error!!!");
+			return errorJsonObject.toString();
+		} finally {
+			closeSqlSession(sqlSession);
+		}
+	}
+	
+	//3.6获取全球所有活动恶意URL信息-最新x条
+	public String getMalurlTopData(JSONObject jsonObject){
+		if (jsonObject.get("topNum")==null||jsonObject.getString("topNum").length()<=0) {
+			JSONObject errorJsonObject = new JSONObject();
+			jsonObject.put("status", "failed");
+			jsonObject.put("message", "topNum is null");
+			return errorJsonObject.toString();
+		}
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getOpenPhishSqlSession();
+			TWebPhishExample webPhishExample = new TWebPhishExample();
+			List<String> cnCodeList = new ArrayList<String>();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			webPhishExample.createCriteria().andIsvalidEqualTo(1);
+			webPhishExample.setOrderByClause("webphish_id desc");
+			webPhishExample.setRows(jsonObject.getString("topNum"));
+			
+			TWebPhishMapper webPhishMapper = sqlSession.getMapper(TWebPhishMapper.class);
+			List<TWebPhish> webPhishList = webPhishMapper.selectByExample(webPhishExample);
+			JSONArray malUrlJsonArray = new JSONArray();
+			for (TWebPhish tWebPhish : webPhishList) {
+				JSONObject malUrlJsonObject = new JSONObject();
+				malUrlJsonObject.put("id", tWebPhish.getWebphishId());
+				malUrlJsonObject.put("url", tWebPhish.getWebphishUrl());
+				malUrlJsonObject.put("field", tWebPhish.getWebphishField());
+				malUrlJsonObject.put("domain", tWebPhish.getWebphishDomain());
+				malUrlJsonObject.put("ip", tWebPhish.getWebphishIp());
+				malUrlJsonObject.put("asn", tWebPhish.getWebphishAsn());
+				malUrlJsonObject.put("asnName", tWebPhish.getWebphishAsnname());
+				malUrlJsonObject.put("country", tWebPhish.getWebphishCountry());
+				malUrlJsonObject.put("countryCode", tWebPhish.getWebphishCountrycode());
 				malUrlJsonObject.put("subdivision1", tWebPhish.getWebphishSubdivision1());
 				malUrlJsonObject.put("subdivision2", tWebPhish.getWebphishSubdivision2());
 				malUrlJsonObject.put("city", tWebPhish.getWebphishCity());
@@ -1298,7 +1369,7 @@ public class IPDataBaseAdapter {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			Date begDate = sdf.parse("2016-01-01");
 			Date endDate = sdf.parse("2017-01-01");
-			webPhishExample.createCriteria().andVerifiedTimeBetween(sdf.format(begDate),sdf.format(endDate));
+			webPhishExample.createCriteria();
 
 			
 			
@@ -1340,6 +1411,35 @@ public class IPDataBaseAdapter {
 			list.add("TW");
 			list.add("MO");
 			webPhishExample.createCriteria().andWebphishCountrycodeIn(list);
+			int countNum = webPhishMapper.countByExample(webPhishExample);
+			JSONObject returnJsonObject = new JSONObject();
+			returnJsonObject.put("status", "success");
+			returnJsonObject.put("count", countNum);
+			return returnJsonObject.toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "database error");
+			return errorJsonObject.toString();
+		} finally {
+			closeSqlSession(sqlSession);
+		}
+	}
+	
+	public String getMalUrlCountInChinaValid() {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getOpenPhishSqlSession();
+			TWebPhishMapper webPhishMapper = sqlSession.getMapper(TWebPhishMapper.class);
+			TWebPhishExample webPhishExample = new TWebPhishExample();
+			List<String> list = new ArrayList<String>();
+			list.add("CN");
+			list.add("HK");
+			list.add("TW");
+			list.add("MO");
+			webPhishExample.createCriteria().andWebphishCountrycodeIn(list).andIsvalidEqualTo(1);
 			int countNum = webPhishMapper.countByExample(webPhishExample);
 			JSONObject returnJsonObject = new JSONObject();
 			returnJsonObject.put("status", "success");
@@ -1483,7 +1583,7 @@ public class IPDataBaseAdapter {
 			TViewWebPhishFieldCountExample fieldCountExample = new TViewWebPhishFieldCountExample();
 			fieldCountExample.or().andWebphishFieldIsNotNull().andIsvalidEqualTo(1).andWebphishFieldNotEqualTo("");
 			fieldCountExample.setOrderByClause("count desc");
-			fieldCountExample.setRows("5");
+			fieldCountExample.setRows("10");
 			TViewWebPhishFieldCountMapper fieldCountMapper = sqlSession.getMapper(TViewWebPhishFieldCountMapper.class);
 			List<TViewWebPhishFieldCount> fieldCountList = fieldCountMapper.selectByExample(fieldCountExample);
 			JSONArray fieldCountArray = new JSONArray();
@@ -1551,7 +1651,9 @@ public class IPDataBaseAdapter {
 	
 	public static void main(String[] args) {
 		IPDataBaseAdapter adapter = new IPDataBaseAdapter();
-		System.out.println(adapter.getMalUrlCount());
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("topNum", "2");
+		System.out.println(adapter.getMalurlTopData(jsonObject));
 	}
 	
 	

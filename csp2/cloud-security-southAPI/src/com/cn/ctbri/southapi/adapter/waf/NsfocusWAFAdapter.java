@@ -31,6 +31,7 @@ import org.dom4j.io.SAXReader;
 import com.cn.ctbri.southapi.adapter.batis.inter.*;
 import com.cn.ctbri.southapi.adapter.batis.model.*;
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecExample.Criteria;
+import com.cn.ctbri.southapi.adapter.common.CommonDatabaseController;
 import com.cn.ctbri.southapi.adapter.waf.config.*;
 import com.cn.ctbri.southapi.adapter.waf.syslog.WAFSyslogManager;
 import com.cn.ctbri.southapi.adapter.manager.DeviceAdapterConstant;
@@ -46,6 +47,14 @@ public class NsfocusWAFAdapter {
 	public static HashMap<Integer, HashMap<Integer, NsfocusWAFOperation>> mapNsfocusWAFOperationGroup = new HashMap<Integer, HashMap<Integer,NsfocusWAFOperation>>();
 	public NsfocusWAFOperation nsfocusWAFOperation = null;
 	public static Blob blob;
+	
+	public SqlSession getSqlSession() throws IOException{
+		return CommonDatabaseController.getSqlSession();
+	}
+	
+	public void closeSqlSession(SqlSession sqlSession) {
+		CommonDatabaseController.closeSqlSession(sqlSession);
+	}
 	/**
 	 * 初始化waf适配器
 	 * @param wafConfigManager waf配置
@@ -167,20 +176,9 @@ public class NsfocusWAFAdapter {
 		return tWafLogDeface;
 	}
 	//获取sqlSession
-	private  SqlSession getSqlSession() throws IOException{
-		Reader reader;
-		reader = Resources.getResourceAsReader(DeviceAdapterConstant.RESOURCE_DATABASE_CONFIG);
-		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-		SqlSession sqlSession = sqlSessionFactory.openSession();
-		return sqlSession;
-	}
+
 	//sqlsession判空
-	public static void closeSqlSession(SqlSession sqlSession){
-		if(sqlSession==null){
-			return;
-		}
-		sqlSession.close();
-	}
+
 	//配置xstream
 	private XStream getXStream() {
 		//转换格式为json
@@ -447,7 +445,7 @@ public class NsfocusWAFAdapter {
 			for (Entry<Integer, NsfocusWAFOperation> entry : map.entrySet()) {
 				targetinfoKey.setDeviceid(entry.getKey());
 				TWafNsfocusTargetinfo tWafNsfocusTargetinfo = new TWafNsfocusTargetinfo();
-				sqlSession = getSqlSession();
+				sqlSession = CommonDatabaseController.getSqlSession();
 				TWafNsfocusTargetinfoMapper mapper = sqlSession.getMapper(TWafNsfocusTargetinfoMapper.class);
 				JSONObject responseJsonObject = new JSONObject();
 				if (mapper.selectByPrimaryKey(targetinfoKey) != null) {
@@ -468,7 +466,7 @@ public class NsfocusWAFAdapter {
 			e.printStackTrace();
 			sqlSession.rollback();
 		} finally {
-			closeSqlSession(sqlSession);
+			CommonDatabaseController.closeSqlSession(sqlSession);
 		}
 		return deleteVirtJsonArray.toString();
 	}
@@ -488,7 +486,7 @@ public class NsfocusWAFAdapter {
 	public String getWafLogWebsec(List<String> dstIpList) {
 		SqlSession sqlSession = null;
 		try {
-			sqlSession = getSqlSession();
+			sqlSession = CommonDatabaseController.getSqlSession();
 			TWafLogWebsecExample example = new TWafLogWebsecExample();
 			example.or().andDstIpIn(dstIpList);
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);

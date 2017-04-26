@@ -604,7 +604,7 @@ public class DeviceAdapterManagerService {
 	@GET
 	@Path("/secbasedata/iplatlong/gettotalcount")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getIpLatlongTotalCount(String dataJson) {
+	public String getIpLatlongTotalCount() {
 		return deviceAdpaterManager.getIpLatlongTotalCount();
 	}
 	

@@ -27,6 +27,7 @@ import com.cn.ctbri.southapi.adapter.jinshan.JinshanDeviceAdapter;
 import com.cn.ctbri.southapi.adapter.scanner.ArnhemDeviceAdpater;
 import com.cn.ctbri.southapi.adapter.scanner.WebsocDeviceAdapter;
 import com.cn.ctbri.southapi.adapter.systemserv.CloudInsightAdapter;
+import com.cn.ctbri.southapi.adapter.systemserv.NsfocusSysServOperation;
 import com.cn.ctbri.southapi.adapter.waf.NsfocusWAFAdapter;
 import com.cn.ctbri.southapi.adapter.waf.config.WAFConfigManager;
 
@@ -58,6 +59,8 @@ public class DeviceAdpaterManager {
 	public static JinshanDeviceAdapter jinshanDeviceAdapter = new JinshanDeviceAdapter();
 	
 	public static CloudInsightAdapter cloudInsightAdapter = new CloudInsightAdapter();
+	
+	public static NsfocusSysServOperation nsfocusSysServOperation = new NsfocusSysServOperation();
 	//加载设备错误信息
 	private static final String LOAD_DEVICE_ERROR = "{\"status\":\"fail\",\"message\":\"Load DeviceConfig failed!!\"}";
 	//初始化错误信息
@@ -470,8 +473,9 @@ public class DeviceAdpaterManager {
 		}
 		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
-			return responseToJSON(arnhemDeviceAdpater.getProgressByTaskId(deviceId,scannerTaskUniParam)).toString();
-			
+			String responseString =  responseToJSON(arnhemDeviceAdpater.getProgressByTaskId(deviceId,scannerTaskUniParam)).toString();
+			System.out.println(responseString);
+			return responseString;
 		} else if (DeviceAdapterConstant.DEVICE_SCANNER_WEBSOC.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim())) {
 			String response = websocDeviceAdapter.getProgressByVirtualGroupId(deviceId, scannerTaskUniParam);
 			JSONObject responseObject = JSONObject.fromObject(response);
@@ -883,12 +887,12 @@ public class DeviceAdpaterManager {
 	}
 	
 	//4.1获取单IP经纬度信息
-	public String getLatlongByIP(JSONObject jsonObject) {
+	public String getIpLatlongByIP(JSONObject jsonObject) {
 		return ipDataBaseAdapter.getLatlongByIP(jsonObject);
 	}
 	
 	//4.2获取多ip经纬度信息
-	public String getLatlongByIpList(JSONObject jsonObject) {
+	public String getIpLatlongByIpList(JSONObject jsonObject) {
 		return ipDataBaseAdapter.getLatlongByIpList(jsonObject);
 	}
 	
@@ -910,6 +914,26 @@ public class DeviceAdpaterManager {
 	//4.6获取全球IP地址经纬度数据块
 	public String getIpLatlongDataBlock(JSONObject jsonObject) {
 		return ipDataBaseAdapter.getIpLatlongDataBlock(jsonObject);
+	}
+	
+	//5.1 获取国内地理信息数据总数
+	public String getNationLocationCNCount() {
+		return ipDataBaseAdapter.getNationLocationCNCount();
+	}
+	
+	//5.2 获取国内地理信息数据块
+	public String getNationLocationCNDataBlock(JSONObject jsonObject){
+		return ipDataBaseAdapter.getNationLocationCNDataBlock(jsonObject);
+	}
+	
+	//5.3 获取全球地理信息数据总数
+	public String getNationLocationTotalCount(){
+		return ipDataBaseAdapter.getNationLocationTotalCount();
+	}
+	
+	//5.4 获取全球地理信息数据块
+	public String getNationLocationDataBlock(JSONObject jsonObject) {
+		return ipDataBaseAdapter.getNationLocationDataBlock(jsonObject);
 	}
 	
 	//6.1获取当天国内活动恶意url信息
@@ -939,6 +963,10 @@ public class DeviceAdpaterManager {
 	//6.6获取全球所有活动恶意url信息
 	public String getMalurlData() {
 		return ipDataBaseAdapter.getMalurlData();
+	}
+	//6.6b获取全球所有活动恶意url信息-最新n条
+	public String getMalurlTopData(JSONObject jsonObject){
+		return ipDataBaseAdapter.getMalurlTopData(jsonObject);
 	}
 	//6.7获取国内所有活动恶意URL针对的目标列表
 	public String getMalurlTargetListByCN() {
@@ -989,6 +1017,10 @@ public class DeviceAdpaterManager {
 		return ipDataBaseAdapter.getMalUrlCountInChina();
 	}
 	
+	public String getMalUrlCountInChinaValid() {
+		return ipDataBaseAdapter.getMalUrlCountInChinaValid();
+	}
+	
 	//5.
 	public String getMalUrlCountByMonth(JSONObject jsonObject) {
 		return ipDataBaseAdapter.getMalUrlCountByMonth(jsonObject);
@@ -1015,7 +1047,7 @@ public class DeviceAdpaterManager {
 	}
 	
 	//systemservicemanager
-	
+	//jinshan
 	public String getTimeOnOrderIndex(com.alibaba.fastjson.JSONObject jsonObject) {
 		return jinshanDeviceAdapter.getTimeOnOrderIndex(jsonObject);
 	}
@@ -1031,7 +1063,7 @@ public class DeviceAdpaterManager {
 	public String getTimeOnOauthUrl(com.alibaba.fastjson.JSONObject jsonObject){
 		return jinshanDeviceAdapter.getOauthUrl(jsonObject);
 	}
-	
+	//yunyan
 	public String getCloudInsightToken(com.alibaba.fastjson.JSONObject jsonObject) {
 		return cloudInsightAdapter.getToken(jsonObject);
 	}
@@ -1043,4 +1075,14 @@ public class DeviceAdpaterManager {
 	public String getCloudInsightLoginURL(com.alibaba.fastjson.JSONObject jsonObject) {
 		return cloudInsightAdapter.getLoginURL(jsonObject);
 	}
+	
+	public String createNsfocusSysOrder(com.alibaba.fastjson.JSONObject jsonObject) {
+		return nsfocusSysServOperation.createNsfocusSysOrder(jsonObject);
+	}
+	
+	public String renewNsfocusSysOrder(com.alibaba.fastjson.JSONObject jsonObject) {
+		return nsfocusSysServOperation.renewNsfocusSysOrder(jsonObject);
+	}
+	
+	
 }

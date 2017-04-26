@@ -6,8 +6,29 @@ import java.util.List;
 
 public class TWebPhishExample {
     protected String orderByClause;
+    
+    //limit语句偏移量
+    protected String offset;
+	//limit语句返回行数
+    protected String rows;
 
     protected boolean distinct;
+    
+	public void setOffset(String offset) {
+		this.offset = offset;
+	}
+
+	public String getRows() {
+		return rows;
+	}
+
+	public void setRows(String rows) {
+		this.rows = rows;
+	}
+	
+    public String getOffset() {
+		return offset;
+	}
 
     protected List<Criteria> oredCriteria;
 

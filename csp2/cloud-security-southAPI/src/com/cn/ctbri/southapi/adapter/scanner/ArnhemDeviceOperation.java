@@ -21,6 +21,7 @@ import org.dom4j.io.SAXReader;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
@@ -69,8 +70,10 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 
 	         // 连接服务器
 	         WebResource service = client.resource(url); 
+	         Builder builder = service.type(MediaType.APPLICATION_XML);
 	         // 发送请求，接收返回数据
-	         String response = service.type(MediaType.APPLICATION_XML).post(String.class, xmlContent);
+	         String response = builder.post(String.class, xmlContent);
+	         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>"+response);
 	         if(response==null){
 	        	 return false;
 	         }
@@ -82,14 +85,15 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 	         Element ele = doc.getRootElement();
 	         Element s = ele.element("SessionId");
 	         connectSessionId = s.getText();
+	         System.out.println(connectSessionId);
 	         arnhemServerWebrootUrl = serverWebRoot;
-	         
+	         System.out.println(arnhemServerWebrootUrl);
 	         return true;
 	   	}catch(Exception e) {
 	   		e.printStackTrace();
 			return false;
 	   	}finally {
-			client.destroy();
+			//client.destroy();
 		}
 	}
 	
@@ -168,7 +172,7 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 				String redirectResponse = service.cookie(new NewCookie("sessionid",connectSessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class);
 				return redirectResponse;
 			} else {
-				return response;
+				return response;  
 			}
 		} catch (DocumentException e) {
 			e.printStackTrace();
