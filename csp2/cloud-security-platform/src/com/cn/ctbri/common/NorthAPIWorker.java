@@ -19,6 +19,8 @@ import javax.ws.rs.core.Response;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
+import com.cn.ctbri.listener.ContextClient;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -103,8 +105,7 @@ public class NorthAPIWorker {
 	}
 	
 	//全局client
-	static Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-    final static WebTarget mainTarget = client.target(SERVER_WEB_ROOT);
+    final static WebTarget mainTarget = ContextClient.client.target(SERVER_WEB_ROOT);
 	
 	/**
 	 * 功能描述： 获取安全套接层上下文对象
@@ -192,7 +193,6 @@ public class NorthAPIWorker {
         Response response = target.request().post(Entity.entity(json.toString(), MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
-        client.close();
         JSONObject obj = JSONObject.fromObject(str);
 		String stateCode = obj.getString("code");
 		if(stateCode.equals("201")){

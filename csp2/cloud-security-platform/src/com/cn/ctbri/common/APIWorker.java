@@ -8,15 +8,12 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
-
 import com.cn.ctbri.controller.WafController;
+import com.cn.ctbri.listener.ContextClient;
 /**
  * 创 建 人  ：  tangxr
  * 创建日期：  2016-05-25
@@ -50,8 +47,7 @@ public class APIWorker {
     public APIWorker() {
 	}
 	
-    static Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-    final static WebTarget mainTarget = client.target(SERVER_WEB_ROOT);
+    final static WebTarget mainTarget = ContextClient.client.target(SERVER_WEB_ROOT);
     
 	/**
 	 * 功能描述： 获取用户购买服务次数

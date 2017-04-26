@@ -2,36 +2,23 @@ package com.cn.ctbri.common;
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
-
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.cn.ctbri.controller.WafController;
-import com.cn.ctbri.util.DateUtils;
+import com.cn.ctbri.listener.ContextClient;
 /**
  * 创 建 人  ：  tangxr
  * 创建日期：  2016-05-25
@@ -59,8 +46,7 @@ public class WafAPIWorker {
 	public WafAPIWorker() {
 	}
 	
-	static Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-    final static WebTarget mainTarget = client.target(SERVER_WAF_ROOT);
+    final static WebTarget mainTarget = ContextClient.client.target(SERVER_WAF_ROOT);
 	
 	/**
 	 * 功能描述： 获取全部站点、虚拟站点信息
