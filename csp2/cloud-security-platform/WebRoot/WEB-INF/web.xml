@@ -10,14 +10,13 @@
     <param-name>webAppRootKey</param-name>
     <param-value>app1.root</param-value>
   </context-param>
-  
-  <!-- Spring容器配置 -->
-  <listener>
-      <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>   	
-   </listener>
-   <!-- rest client -->
+  <!-- rest client -->
    <listener>
 	<listener-class>com.cn.ctbri.listener.ContextClient</listener-class>
+   </listener>
+  <!-- Spring容器配置 -->
+   <listener>
+      <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>   	
    </listener>
      <filter>
         <filter-name>SystemFilter</filter-name>  
