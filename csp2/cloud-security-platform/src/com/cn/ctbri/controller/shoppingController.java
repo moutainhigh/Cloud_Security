@@ -51,6 +51,7 @@ import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.ServiceDetail;
 import com.cn.ctbri.entity.ShopCar;
 import com.cn.ctbri.entity.User;
+import com.cn.ctbri.listener.ContextClient;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAPIService;
@@ -1372,11 +1373,10 @@ public class shoppingController {
      * */
     private void synPriceData(int serviceId) {
     	try {
-			//创建任务发送路径
+	        //创建任务发送路径
 			String url = SERVER_WEB_ROOT + VulnScan_servicePrice;
 			System.out.println("****运营管理同步当前服务的价格****");  
-	        Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-	        WebTarget target = client.target(url);
+	        WebTarget target = ContextClient.client.target(url);
 	        Response response = target.request().post(Entity.entity(null, MediaType.APPLICATION_JSON));
 	        String str = (String)response.readEntity(String.class);
 	        response.close();
