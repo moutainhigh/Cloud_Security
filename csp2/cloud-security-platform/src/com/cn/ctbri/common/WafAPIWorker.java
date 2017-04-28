@@ -30,14 +30,14 @@ public class WafAPIWorker {
 	 * wafAPI服务器根路径
 	 */
 	
-	private static String SERVER_WAF_ROOT;
+//	private static String SERVER_WAF_ROOT;
 	private static String resourceId;
 	
 	static{
 		try {
 			Properties p = new Properties();
 			p.load(WafAPIWorker.class.getClassLoader().getResourceAsStream("northAPI.properties"));
-			SERVER_WAF_ROOT = p.getProperty("SERVER_WAF_ROOT");
+//			SERVER_WAF_ROOT = p.getProperty("SERVER_WAF_ROOT");
 			resourceId = p.getProperty("resourceId");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -46,7 +46,7 @@ public class WafAPIWorker {
 	public WafAPIWorker() {
 	}
 	
-    final static WebTarget mainTarget = ContextClient.client.target(SERVER_WAF_ROOT);
+    final static WebTarget mainTarget = ContextClient.mainWafTarget;
 	
 	/**
 	 * 功能描述： 获取全部站点、虚拟站点信息

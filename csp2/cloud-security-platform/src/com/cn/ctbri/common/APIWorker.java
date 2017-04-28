@@ -47,7 +47,7 @@ public class APIWorker {
     public APIWorker() {
 	}
 	
-    final static WebTarget mainTarget = ContextClient.client.target(SERVER_WEB_ROOT);
+    final static WebTarget mainTarget = ContextClient.mainTarget;
     
 	/**
 	 * 功能描述： 获取用户购买服务次数

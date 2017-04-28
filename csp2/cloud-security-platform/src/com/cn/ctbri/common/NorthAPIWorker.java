@@ -34,7 +34,7 @@ public class NorthAPIWorker {
 	/**
 	 * 服务能力管理服务器根路径
 	 */
-	private static String SERVER_WEB_ROOT;
+//	private static String SERVER_WEB_ROOT;
 	/**
 	 * session
 	 */
@@ -84,7 +84,7 @@ public class NorthAPIWorker {
 		try {
 			Properties p = new Properties();
 			p.load(NorthAPIWorker.class.getClassLoader().getResourceAsStream("northAPI.properties"));
-			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
+//			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
 			Session = p.getProperty("Session");
 			North_Create_Order = p.getProperty("North_Create_Order");
 			North_Opt_Order = p.getProperty("North_Opt_Order");
@@ -105,7 +105,7 @@ public class NorthAPIWorker {
 	}
 	
 	//全局client
-    final static WebTarget mainTarget = ContextClient.client.target(SERVER_WEB_ROOT);
+    final static WebTarget mainTarget = ContextClient.mainTarget;
 	
 	/**
 	 * 功能描述： 获取安全套接层上下文对象
