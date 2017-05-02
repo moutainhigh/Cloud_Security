@@ -505,6 +505,7 @@ public class MaliciousUrlAllDataController {
 		JSONArray jsonArray2=new JSONArray();
 		HashMap<String, String> map=new HashMap<String, String>();
 		map.put("Email Provider","电子邮件");
+		map.put("e-Commerce","电子商务");
 		map.put("Financial","金融");
 		map.put("Online Services","在线服务");
 		map.put("Payment Services","支付服务");
