@@ -36,7 +36,7 @@
 }
 
 .rides-cs .floatL {
-	width: 36px;
+	width: 35px;
 	float: left;
 	position: relative;
 	z-index: 5;
@@ -74,9 +74,11 @@
 	top: 0;
 	left: 0;
 	background: url(shopnc.png) no-repeat;
+	
+	background-size:cover;;
 	display: block;
 	width: 20px;
-	height: 156px;
+	height: 160px; 
 	overflow: hidden;
 	padding: 8px;
 }
@@ -143,8 +145,8 @@
 			var tbody = document.getElementById("table-id");
 			var url;	
 			if (x < 100) {
-				tbody.innerHTML = "<tr class='second-level'><th class='th-title col-service'>编号</th><th class='col-border'></th><th class='th-title col-attacker-ip'>URL</th><th class='col-border'></th><th class='th-title col-attacked-ip'>国家</th><th class='col-border'></th><th class='th-title col-service'>地区</th></tr>";
-				for (var i = 0; i < 7; i++) {
+				tbody.innerHTML = "<tr class='second-level'><th class='th-title col-service'>编号</th><th class='col-border'></th><th class='th-title col-attacker-ip'>URL</th><th class='col-border'></th><th class='th-title col-attacker-ip'>IP</th><th class='col-border'></th><th class='th-title col-attacked-ip'>国家</th><th class='col-border'></th><th class='th-title col-service'>地区</th></tr>";
+				for (var i = 0; i < 8; i++) {
 					var tr = document.createElement("tr");
 					tr.setAttribute("class", "third-level");
 					td = document.createElement("td");
@@ -155,8 +157,10 @@
 					tr.appendChild(td2);
 
 					td3 = document.createElement("td");
-					if(urlData[i + x].url.length<=20){
-						url=urlData[i + x].url.length;
+					if(urlData[i + x].url.length<=5){
+						url="";
+					}else if(urlData[i + x].url.length<=50){
+						url=urlData[i + x].url;
 					}
 					else{
 						url=urlData[i + x].url.substring(0,50);
@@ -166,8 +170,13 @@
 					td4 = document.createElement("td");
 					td4.setAttribute("class", "col-border");
 					tr.appendChild(td4);
-
 					
+					td3 = document.createElement("td");
+					td3.innerHTML = urlData[i + x].ip;
+					tr.appendChild(td3);
+					td4 = document.createElement("td");
+					td4.setAttribute("class", "col-border");
+					tr.appendChild(td4);
 
 					td3 = document.createElement("td");
 					td3.innerHTML = urlData[i + x].country;
