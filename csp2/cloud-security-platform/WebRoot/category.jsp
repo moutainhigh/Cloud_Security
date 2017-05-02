@@ -117,6 +117,9 @@ function buySystemService(servId){
 				<li>
 					<a href="${ctx}/sa_anquanbang.html" target="_blank">安全大数据</a>
 				</li>
+				<li>
+					<a href="${ctx}/source/page/resource2/html/index.html" target="_blank">钓鱼网站信息</a>
+				</li>
 				<li style="border: none;">
 					<a href="${ctx}/Xpage.html">x专区</a>
 				</li>
