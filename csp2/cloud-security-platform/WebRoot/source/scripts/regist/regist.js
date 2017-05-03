@@ -369,7 +369,8 @@ function checkPhoneActivationCode(){
 //验证邮箱
 function checkConfirmEmail(){
 	var emailVal=$("#regist_confirm_email").val();
-	var reg=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
+//	var reg=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
+	var reg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 	if(emailVal!=null&&emailVal!=''){
 		if(!reg.test(emailVal)){
 			$("#regist_confirm_Email_flag").attr("class","error");
