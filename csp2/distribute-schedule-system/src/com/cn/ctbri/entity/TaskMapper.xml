@@ -28,12 +28,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="findExpTask" parameterType="hashmap" resultMap="TaskRM">
-		  select * from cs_task t
-		  where 
+		  <!-- select * from cs_task t
+		  where
 		  ((t.engine in (-1,0) and t.status != 3)
 			or (t.status in(0,1) and t.engine is NULL))
+		  and t.group_flag &lt;= date_add(now(),interval -10 minute) order by group_flag desc -->
+		  select * from cs_task t
+		  where
+		  (t.status&lt;=0 and t.status&gt;-5)
 		  and t.group_flag &lt;= date_add(now(),interval -10 minute) order by group_flag desc
-		  
 		<!--limit #{page}-->
 	</select>
 	
@@ -149,9 +152,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入任务信息 -->
     <insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO cs_task
+        (execute_time,begin_time,end_time,websoc,serviceId,order_id,orderTaskId,assetAddr,scanMode,scanType,group_flag,status) 
+        VALUES( #{execute_time} , #{begin_time},#{end_time},#{websoc},#{serviceId},#{order_id},#{orderTaskId},#{assetAddr},#{scanMode},#{scanType},#{group_flag},#{status})
+    </insert>
+    
+    <!--<insert id="insert" parameterType="com.cn.ctbri.entity.Task" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cs_task
         (execute_time,begin_time,end_time,websoc,serviceId,order_id,orderTaskId,assetAddr,scanMode,scanType,group_flag,status,partner) 
         VALUES( #{execute_time} , #{begin_time},#{end_time},#{websoc},#{serviceId},#{order_id},#{orderTaskId},#{assetAddr},#{scanMode},#{scanType},#{group_flag},#{status},#{partner})
-    </insert>
+    </insert>-->
     
     <select id="getTypeByAssetId" parameterType="Integer" resultType="com.cn.ctbri.entity.OrderAsset">
         select distinct oa.scan_type,oa.orderId from cs_task t,cs_order_asset oa where t.order_asset_id = oa.id and t.order_asset_id = #{order_asset_Id}
@@ -222,7 +231,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="findTaskByTaskObj" parameterType="com.cn.ctbri.entity.Task" resultType="com.cn.ctbri.entity.Task">
-    	select * from cs_task t where t.orderTaskId = #{orderTaskId} and t.group_flag = #{group_flag}
+    	select * from cs_task t 
+    	where 1=1
+    	<if test="orderTaskId!=null">
+    	  and t.orderTaskId = #{orderTaskId}
+    	</if>
+    	<if test="group_flag!=null">
+    	  and t.group_flag = #{group_flag}
+    	</if>
+    	<if test="assetAddr!=null">
+    	  and t.assetAddr = #{assetAddr}
+    	</if>
     </select>
     
     <!-- 根据订单Id查询任务 -->
