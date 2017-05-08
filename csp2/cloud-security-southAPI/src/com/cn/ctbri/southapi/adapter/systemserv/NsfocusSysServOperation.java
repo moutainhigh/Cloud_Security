@@ -279,7 +279,7 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 		jsonObject.put("instanceId", "17041916363267699_anqb000001");
 		jsonObject.put("expiredTime", "2017-4-20 00:00:00");
 		jsonObject.put("cycle", "24");
-		System.out.println(operation.renewNsfocusSysOrder(jsonObject));
+		System.out.println(operation.createNsfocusSysOrder(jsonObject));
 	}
 	
 }

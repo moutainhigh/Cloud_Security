@@ -9,6 +9,27 @@ public class TCityLocationExample {
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
+    
+    //limit语句偏移量
+    protected String offset;
+	//limit语句返回行数
+    protected String rows;
+    
+	public void setOffset(String offset) {
+		this.offset = offset;
+	}
+
+	public String getRows() {
+		return rows;
+	}
+
+	public void setRows(String rows) {
+		this.rows = rows;
+	}
+	
+    public String getOffset() {
+		return offset;
+	}
 
     public TCityLocationExample() {
         oredCriteria = new ArrayList<Criteria>();

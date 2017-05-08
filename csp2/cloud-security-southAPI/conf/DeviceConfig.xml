@@ -12,7 +12,7 @@
 			 	<ScannerUserName>admin</ScannerUserName>
 				<ScannerPassword>admin123456</ScannerPassword>
 			</DeviceScanner>
-			<DeviceScanner id="10002">
+			<!--<DeviceScanner id="10002">
 				<DeviceID>10002</DeviceID>
 				<ScannerFactory>Arnhem</ScannerFactory>
 				<ScannerFactoryName>安恒</ScannerFactoryName>
@@ -29,7 +29,7 @@
 				<ScannerEngineAPI>https://219.141.189.187:63443</ScannerEngineAPI>
 			 	<ScannerUserName>admin</ScannerUserName>
 				<ScannerPassword>admin123456</ScannerPassword>
-			</DeviceScanner>
+			</DeviceScanner>-->
 			<!--测试用引擎
 			<DeviceScanner id="10004">
 				<DeviceID>10004</DeviceID>

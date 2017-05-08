@@ -19,11 +19,11 @@ public class InitServlet extends HttpServlet {
 	
 		DeviceAdpaterManager deviceAdpaterManager = new DeviceAdpaterManager();
 		deviceAdpaterManager.loadDeviceAdpater();
-		try {
+		/*try {
 			QuartzManager.runJob();
 		} catch (SchedulerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 }

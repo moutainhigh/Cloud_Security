@@ -212,7 +212,7 @@ public class IPDataBaseAdapter {
 			TCityLocationMapper tCityLocationMapper = sqlSession.getMapper(TCityLocationMapper.class);
 			TCityLocationExample tCityLocationExample = new TCityLocationExample();
 			List<String> list = new ArrayList<String>();
-			list.add("CH");
+			list.add("CN");
 			list.add("HK");
 			list.add("TW");
 			list.add("MO");
@@ -245,12 +245,59 @@ public class IPDataBaseAdapter {
 		SqlSession sqlSession = null;
 		try {
 			sqlSession = getSqlSession();
-			return null;
+			String begIndex = jsonObject.getString("begIndex");
+			String endIndex = jsonObject.getString("endIndex");
+			TIpv4LatlongExample ipLatlongExample = new TIpv4LatlongExample();
+			
+			TCityLocationMapper tCityLocationMapper = sqlSession.getMapper(TCityLocationMapper.class);
+			TCityLocationExample tCityLocationExample = new TCityLocationExample();
+			List<String> list = new ArrayList<String>();
+			list.add("CN");
+			list.add("HK");
+			list.add("TW");
+			list.add("MO");
+			tCityLocationExample.or().andCountryIsoCodeIn(list);
+			List<TCityLocation> cityLocationList = tCityLocationMapper.selectByExample(tCityLocationExample);
+			List<Long> locationIdList = new ArrayList<Long>();
+			for (TCityLocation tCityLocation : cityLocationList) {
+				locationIdList.add(tCityLocation.getLocationId());
+			}
+			TIpv4LatlongMapper ipv4LatlongMapper = sqlSession.getMapper(TIpv4LatlongMapper.class);
+			ipLatlongExample.createCriteria().andLocationIdIn(locationIdList);
+			ipLatlongExample.setOrderByClause("latlong_id asc");
+			ipLatlongExample.setOffset(String.valueOf(Integer.parseInt(begIndex)-1));
+			ipLatlongExample.setRows(String.valueOf(Integer.parseInt(endIndex)-1));
+			List<TIpv4Latlong> ipv4LatlongList = ipv4LatlongMapper.selectByExample(ipLatlongExample);
+			JSONArray locationJsonArray = new JSONArray();
+			for (TIpv4Latlong tIpv4Latlong : ipv4LatlongList) {
+				JSONObject locationJsonObject = new JSONObject();
+				locationJsonObject.put("network", tIpv4Latlong.getNetwork());
+				locationJsonObject.put("netmask", tIpv4Latlong.getNetmask());
+				locationJsonObject.put("latitude", tIpv4Latlong.getLatitude());
+				locationJsonObject.put("longtitude", tIpv4Latlong.getLongitude());
+				TCityLocation cityLocation = tCityLocationMapper.selectByPrimaryKey(tIpv4Latlong.getLocationId());
+				if (cityLocation!=null) {
+					locationJsonObject.put("continent", cityLocation.getContinentName());
+					locationJsonObject.put("country", cityLocation.getCountryName());
+					locationJsonObject.put("country_iso_code", cityLocation.getCountryIsoCode());
+					locationJsonObject.put("subdivision_1_name", cityLocation.getSubdivision1Name());
+					locationJsonObject.put("subdivision_2_name", cityLocation.getSubdivision2Name());
+					locationJsonObject.put("city", cityLocation.getCityName());
+				}
+
+				locationJsonArray.add(locationJsonObject);
+			}
+			JSONObject returnJsonObject = new JSONObject();
+			returnJsonObject.put("latlongList", locationJsonArray);
+			return returnJsonObject.toString();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return null;
-		}finally {
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "database error");
+			return errorJsonObject.toString();
+		} finally {
 			closeSqlSession(sqlSession);
 		}
 	}
@@ -355,7 +402,7 @@ public class IPDataBaseAdapter {
 			TCityLocationMapper tCityLocationMapper = sqlSession.getMapper(TCityLocationMapper.class);
 			TCityLocationExample tCityLocationExample = new TCityLocationExample();
 			List<String> list = new ArrayList<String>();
-			list.add("CH");
+			list.add("CN");
 			list.add("HK");
 			list.add("TW");
 			tCityLocationExample.or().andCountryIsoCodeIn(list);
@@ -375,6 +422,7 @@ public class IPDataBaseAdapter {
 		}
 
 	}
+	/*
 	//5.2获取国内地理信息数据块
 	public String getNationLocationCNDataBlock(JSONObject jsonObject) {
 		SqlSession sqlSession = null;
@@ -390,6 +438,7 @@ public class IPDataBaseAdapter {
 			list.add("CH");
 			list.add("HK");
 			list.add("TW");
+			list.add("MO");
 			tCityLocationExample.or().andCountryIsoCodeIn(list);
 			List<TCityLocation> cityLocationList = tCityLocationMapper.selectByExample(tCityLocationExample);
 			List<Long> locationIdList = new ArrayList<Long>();
@@ -434,28 +483,37 @@ public class IPDataBaseAdapter {
 		} finally {
 			closeSqlSession(sqlSession);
 		}
-	}
-	/*
-	//2.2获取国内地理信息数据块
-	public String getNationLocationTotalCount(){
+	}*/
+	//5.2获取国内地理信息数据块
+	public String getNationLocationCNDataBlock(JSONObject jsonObject){
 		SqlSession sqlSession = null;
 		try {
 			sqlSession = getSqlSession();
+			String begIndex = jsonObject.getString("begIndex");
+			String endIndex = jsonObject.getString("endIndex");
 			TCityLocationMapper tCityLocationMapper = sqlSession.getMapper(TCityLocationMapper.class);
 			TCityLocationExample tCityLocationExample = new TCityLocationExample();
 			List<String> list = new ArrayList<String>();
-			list.add("CH");
+			list.add("CN");
 			list.add("HK");
 			list.add("TW");
+			list.add("MO");
+			tCityLocationExample.setOrderByClause("location_id asc");
+			tCityLocationExample.setOffset(String.valueOf(Integer.parseInt(begIndex)-1));
+			tCityLocationExample.setRows(String.valueOf(Integer.parseInt(endIndex)-1));
 			tCityLocationExample.or().andCountryIsoCodeIn(list);
 			List<TCityLocation> cityLocationList = tCityLocationMapper.selectByExample(tCityLocationExample);
 			JSONArray locationJsonArray = new JSONArray();
 			for (TCityLocation tCityLocation : cityLocationList) {
 				JSONObject locationJsonObject = new JSONObject();
+				locationJsonObject.put("continent_code", tCityLocation.getContinentName());
+				locationJsonObject.put("continent_name", tCityLocation.getContinentCode());
 				locationJsonObject.put("country", tCityLocation.getCountryName());
 				locationJsonObject.put("country_iso_code", tCityLocation.getCountryIsoCode());
 				locationJsonObject.put("subdivision_1_name", tCityLocation.getSubdivision1Name());
+				locationJsonObject.put("subdivision_1_iso_code", tCityLocation.getSubdivision1IsoCode());
 				locationJsonObject.put("subdivision_2_name", tCityLocation.getSubdivision2Name());
+				locationJsonObject.put("subdivision_2_iso_code", tCityLocation.getSubdivision2IsoCode());
 				locationJsonObject.put("city", tCityLocation.getCityName());
 				locationJsonObject.put("timezone", tCityLocation.getTimeZone());
 				locationJsonArray.add(locationJsonObject);
@@ -475,7 +533,6 @@ public class IPDataBaseAdapter {
 		}
 
 	}
-	*/
 	
 	//5.3获取全球地理信息数据总数
 	public String getNationLocationTotalCount() {
@@ -507,49 +564,37 @@ public class IPDataBaseAdapter {
 			sqlSession = getSqlSession();
 			String begIndex = jsonObject.getString("begIndex");
 			String endIndex = jsonObject.getString("endIndex");
-			TIpv4LatlongExample ipLatlongExample = new TIpv4LatlongExample();
-			
 			TCityLocationMapper tCityLocationMapper = sqlSession.getMapper(TCityLocationMapper.class);
 			TCityLocationExample tCityLocationExample = new TCityLocationExample();
+			tCityLocationExample.setOrderByClause("location_id asc");
+			tCityLocationExample.setOffset(String.valueOf(Integer.parseInt(begIndex)-1));
+			tCityLocationExample.setRows(String.valueOf(Integer.parseInt(endIndex)-1));
 			List<TCityLocation> cityLocationList = tCityLocationMapper.selectByExample(tCityLocationExample);
-			List<Long> locationIdList = new ArrayList<Long>();
-			for (TCityLocation tCityLocation : cityLocationList) {
-				locationIdList.add(tCityLocation.getLocationId());
-			}
-			TIpv4LatlongMapper ipv4LatlongMapper = sqlSession.getMapper(TIpv4LatlongMapper.class);
-			ipLatlongExample.createCriteria().andLocationIdIn(locationIdList);
-			ipLatlongExample.setOrderByClause("latlong_id asc");
-			ipLatlongExample.setOffset(String.valueOf(Integer.parseInt(begIndex)-1));
-			ipLatlongExample.setRows(String.valueOf(Integer.parseInt(endIndex)-1));
-			List<TIpv4Latlong> ipv4LatlongList = ipv4LatlongMapper.selectByExample(ipLatlongExample);
 			JSONArray locationJsonArray = new JSONArray();
-			for (TIpv4Latlong tIpv4Latlong : ipv4LatlongList) {
+			for (TCityLocation tCityLocation : cityLocationList) {
 				JSONObject locationJsonObject = new JSONObject();
-				locationJsonObject.put("network", tIpv4Latlong.getNetwork());
-				locationJsonObject.put("netmask", tIpv4Latlong.getNetmask());
-				locationJsonObject.put("latitude", tIpv4Latlong.getLatitude());
-				locationJsonObject.put("longtitude", tIpv4Latlong.getLongitude());
-				TCityLocation cityLocation = tCityLocationMapper.selectByPrimaryKey(tIpv4Latlong.getLocationId());
-				if (cityLocation!=null) {
-					locationJsonObject.put("continent", cityLocation.getContinentName());
-					locationJsonObject.put("country", cityLocation.getCountryName());
-					locationJsonObject.put("country_iso_code", cityLocation.getCountryIsoCode());
-					locationJsonObject.put("subdivision_1_name", cityLocation.getSubdivision1Name());
-					locationJsonObject.put("subdivision_2_name", cityLocation.getSubdivision2Name());
-					locationJsonObject.put("city", cityLocation.getCityName());
-				}
-
+				
+				locationJsonObject.put("continent_code", tCityLocation.getContinentName());
+				locationJsonObject.put("continent_name", tCityLocation.getContinentCode());
+				locationJsonObject.put("country", tCityLocation.getCountryName());
+				locationJsonObject.put("country_iso_code", tCityLocation.getCountryIsoCode());
+				locationJsonObject.put("subdivision_1_name", tCityLocation.getSubdivision1Name());
+				locationJsonObject.put("subdivision_1_iso_code", tCityLocation.getSubdivision1IsoCode());
+				locationJsonObject.put("subdivision_2_name", tCityLocation.getSubdivision2Name());
+				locationJsonObject.put("subdivision_2_iso_code", tCityLocation.getSubdivision2IsoCode());
+				locationJsonObject.put("city", tCityLocation.getCityName());
+				locationJsonObject.put("timezone", tCityLocation.getTimeZone());
 				locationJsonArray.add(locationJsonObject);
 			}
 			JSONObject returnJsonObject = new JSONObject();
-			returnJsonObject.put("latlongList", locationJsonArray);
+			returnJsonObject.put("locationList", locationJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
-			errorJsonObject.put("message", "database error");
+			errorJsonObject.put("message", "Database error!!!");
 			return errorJsonObject.toString();
 		} finally {
 			closeSqlSession(sqlSession);
@@ -1643,18 +1688,6 @@ public class IPDataBaseAdapter {
 			return errorJsonObject.toString();
 		} finally {
 			closeSqlSession(sqlSession);
-		}
-		
-		
-		
-	}
-	
-	public static void main(String[] args) {
-		IPDataBaseAdapter adapter = new IPDataBaseAdapter();
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("topNum", "2");
-		System.out.println(adapter.getMalurlTopData(jsonObject));
-	}
-	
-	
+		}	
+	}	
 }

@@ -13,6 +13,7 @@ import org.quartz.impl.StdSchedulerFactory;
 
 public class QuartzManager{
 	public static void runJob() throws SchedulerException{
+		/*
 		JobDetail jobDetail = JobBuilder.newJob(EngineStatJob.class).withIdentity("myjob","group").build();
 		Trigger trigger = TriggerBuilder.newTrigger().withIdentity("myjob", "group").startNow()
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(60).repeatForever())
@@ -21,5 +22,6 @@ public class QuartzManager{
 		Scheduler scheduler = sf.getScheduler();
 		scheduler.scheduleJob(jobDetail,trigger);
 		scheduler.start();
+		*/
 	}
 } 

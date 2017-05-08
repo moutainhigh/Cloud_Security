@@ -73,7 +73,6 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 	         Builder builder = service.type(MediaType.APPLICATION_XML);
 	         // 发送请求，接收返回数据
 	         String response = builder.post(String.class, xmlContent);
-	         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>"+response);
 	         if(response==null){
 	        	 return false;
 	         }
@@ -350,16 +349,14 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 		//创建路径
 		String url = arnhemServerWebrootUrl + "/rest/task/Test/" + scannerTaskUniParam.getTaskId();
 		//测试
-		//logger.error("111111111111111111111!!!!");
 		String returnString = postMethod(url);
-		//logger.error(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+returnString);
 		return returnString;		
 	}
 	
 	/**
 	 * 序号:4.3.5
      * 根据任务id获取任务当前进度
-     * @param sessionId 会话id
+     * @pa·ionId 会话id
      * @param taskId 任务id
      * @param ProductId
      * @return 任务状态代码
@@ -369,9 +366,7 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
         String xml = "<Task><TaskID>" + scannerTaskUniParam.getTaskId() + "</TaskID><ProductID>" + scannerTaskUniParam.getProductId() +"</ProductID ></Task>";
         //创建路径
         String url = arnhemServerWebrootUrl + "/rest/task/getTaskProgress";
-		logger.error("##########################################");
         String returnString = postMethod(url, xml);
-		logger.error(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+returnString);
 		return returnString;	
 
     }
