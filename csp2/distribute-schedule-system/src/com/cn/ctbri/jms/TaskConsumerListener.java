@@ -114,6 +114,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
         	    Task taskRe = (Task) om.getObject();
         	    //引擎调度,任务分发
         	    if(taskRe != null){
+            	    CSPLoggerAdapter.error(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Date="+DateUtils.nowDate()+"0505:" + taskRe.getTaskId());
         	    	TaskConsumerListener taskConsumer = new TaskConsumerListener(taskRe,taskService,servService,taskWarnService,engineService,loggerService);
         	    	Thread thread = new Thread(taskConsumer);
     				thread.start();
@@ -142,6 +143,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 		JSONObject json = new JSONObject();
 
 		try {
+			CSPLoggerAdapter.error(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "**********************************"+t.getOrderTaskId()+"&"+t.getScanMode());
 			//查询最优的引擎top3
 			Map<String, Object> engineMap = new HashMap<String, Object>();
             engineMap.put("serviceId", t.getServiceId());
@@ -190,9 +192,21 @@ public class TaskConsumerListener implements MessageListener,Runnable{
         		json.put("result", "success");
         	}else {
 				t.setEngine(-1);
+				
+				//add by 2017-5-5
+				int status_code = t.getStatus()-1;
+				String result = "fail";
+				if ( status_code <= 0 && status_code> Integer.parseInt(Constants.TASK_EXCEPTION_FIVE)){
+					t.setStatus(status_code);
+					result = "exception "+status_code+" times";
+				}else if(status_code == -5 ){
+					t.setStatus(Integer.parseInt(Constants.TASK_FINISH));
+					result = "exception "+ -5 +" times";
+				}
+					
 				taskService.update(t);
 				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[引擎调度]: 引擎状态不可用!;User="+null);
-				json.put("result", "fail");
+				json.put("result", result);
 			}
         	
 		} catch (Exception e) {
@@ -231,8 +245,8 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	 * @return 
 	 */
 	private Task getArnhem(Task t, String sessionId, EngineCfg engine) {
-	    CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[下发任务调度]:任务-[" + t.getTaskId() + "]获取状态;User="+null);
-        
+	    CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[taskConsumer...]:task-[" + t.getTaskId() + "];User="+null);
+	    
 	    if(engine!=null){
 	    	String resultStr = SouthAPIWorker.getStatusByTaskId(engine.getEngine_number(), String.valueOf(t.getTaskId())+"_"+t.getOrder_id());
 	        String status = this.getStatusByResult(resultStr);
@@ -272,7 +286,11 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 		                        //下一次扫描时间
 		                        Date endTime = t.getEnd_time();
 		                        Map<String, Object> paramMap = new HashMap<String, Object>();
-		                        paramMap.put("executeTime", t.getGroup_flag());
+		                        if(t.getGroup_flag().compareTo(new Date())<0){
+		                        	paramMap.put("executeTime", DateUtils.dateToString(new Date()));
+		                        }else{
+		                        	paramMap.put("executeTime", t.getGroup_flag());
+		                        }
 		                        paramMap.put("scantime", this.scantime);
 		                        Date nextTime = taskService.getNextScanTime(paramMap);
 		                        if(nextTime.compareTo(endTime)<=0){
@@ -297,7 +315,11 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 		                            	task.setWebsoc(2);
 		                            }
 		                            //插入一条任务数据  获取任务id
-		                            int taskId = taskService.insert(task);
+		                            //add by 2017-5-5
+		                            Task ifnew = taskService.findTaskByTaskObj(task);
+		                            if(ifnew == null){
+		                            	int taskId = taskService.insert(task);
+		                            }
 		                        }
 		                    }
 		                }
@@ -307,6 +329,10 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 		                        Date endTime = t.getEnd_time();
 		                        Map<String, Object> paramMap = new HashMap<String, Object>();
 		                        Date nextTime = null;
+		                        //add by 2017-5-5
+		                        if(t.getGroup_flag().compareTo(new Date())<0){
+		                        	t.setGroup_flag(new Date());
+		                        }
 		                        if(t.getScanType()==1){
 		                        	nextTime = DateUtils.getAfterDate(t.getGroup_flag(),1);
 		                        }else if(t.getScanType()==5){
@@ -335,8 +361,11 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 		                            }else{
 		                            	task.setWebsoc(2);
 		                            }
-		                            //插入一条任务数据  获取任务id
-		                            int taskId = taskService.insert(task);
+		                            //add by 2017-5-5
+		                            Task ifnew = taskService.findTaskByTaskObj(task);
+		                            if(ifnew == null){
+		                            	int taskId = taskService.insert(task);
+		                            }
 		                        }
 		                    }
 		                }
@@ -353,6 +382,17 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	        }
 	    }else{
             t.setEngine(-1);
+            //add by 2017-5-5
+			int status_code = t.getStatus()-1;
+			String result = "fail";
+			if ( status_code <= 0 && status_code> Integer.parseInt(Constants.TASK_EXCEPTION_FIVE)){
+				t.setStatus(status_code);
+				result = "exception "+status_code+" times";
+			}else if(status_code == -5 ){
+				t.setStatus(Integer.parseInt(Constants.TASK_FINISH));
+				result = "exception "+ -5 +" times";
+			}
+				
             taskService.update(t);
         }
         return t;
