@@ -56,7 +56,7 @@ public class DelServlet extends HttpServlet {
 //        	String s = ArnhemWorker.removeTask(sessionId,"55049_16072909552723161",2);
 //        	System.out.println(s);
 //		}
-        for (int i = 173588;i<180595; i++) {//  16072909552723161
+        for (int i = 173673;i<180595; i++) {//  16072909552723161
 	      	String s = ArnhemWorker.removeTask(sessionId,i+"_16113016152646796",2);
 	      	System.out.println(s+i+"_16113016152646796");
 		}
