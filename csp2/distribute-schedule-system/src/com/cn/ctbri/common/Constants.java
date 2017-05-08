@@ -8,7 +8,22 @@ package com.cn.ctbri.common;
 public class Constants {
 	/**
 	 * 任务状态<br>
-	 * 1:已开始
+	 * 0:异常
+	 */
+	public static final String TASK_EXCEPTION_ONE = "-1";  //-1,-2,-3 ,-4,-5  重复调度三次结束执行，负值为执行异常
+	public static final String TASK_EXCEPTION_TWO = "-2";  
+	public static final String TASK_EXCEPTION_THREE = "-3";  
+	public static final String TASK_EXCEPTION_FOUR = "-4";  
+	public static final String TASK_EXCEPTION_FIVE = "-5";  
+	
+	/**
+	 * 任务状态<br>
+	 * 0:单次/暂停
+	 */
+	public static final String TASK_SINGLE_OR_PAUSE = "0"; 
+	/**
+	 * 任务状态<br>
+	 * 1:等待执行
 	 */
 	public static final String TASK_START = "1"; 
 	
