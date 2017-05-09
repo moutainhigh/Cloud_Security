@@ -268,6 +268,7 @@ public class InternalService {
 		JSONObject json = new JSONObject();
 		try {
 			//modify by 2016-8-18
+			//查询tlist，status=2
 			List<Task> tlist = taskService.findTaskByOrderId(orderId);
 			int serviceId = 0;
 			if(tlist!=null&&tlist.size()>0){
@@ -280,7 +281,7 @@ public class InternalService {
 				if(serviceId!=5){
 					task.setStatus(2);
 				}else{
-					task.setStatus(1);
+					task.setStatus(1);//sql status不等于1
 				}
 				List<Task> taskList = taskService.findTaskByOrderTaskId(task);
 				//将任务放到消息队列里	
