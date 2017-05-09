@@ -19,7 +19,7 @@ public class Task implements Serializable{
 	private Date execute_time;//执行时间
 	private int status;//任务状态（1：已执行，未执行）
 	private Date group_flag;//分组标记
-	private String remarks;//描述
+	private int exceptMark;//异常标识0~-5 默认0
 	private String engineIP;//引擎ip
 	private String taskProgress;//进度
 	private String currentUrl;//当前url
@@ -81,13 +81,13 @@ public class Task implements Serializable{
     public void setGroup_flag(Date group_flag) {
         this.group_flag = group_flag;
     }
-    public String getRemarks() {
-		return remarks;
+    public int getExceptMark() {
+		return exceptMark;
 	}
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
+	public void setExceptMark(int exceptMark) {
+		this.exceptMark = exceptMark;
 	}
-    public String getEngineIP() {
+	public String getEngineIP() {
         return engineIP;
     }
     public void setEngineIP(String engineIP) {
