@@ -11,11 +11,16 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.ctbri.southapi.adapter.manager.CommonDeviceOperation;
 import com.cn.ctbri.southapi.adapter.utils.EncryptUtility;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 public class JinshanDeviceOperation extends CommonDeviceOperation{
 	private static String apiSecret;
@@ -34,28 +39,24 @@ public class JinshanDeviceOperation extends CommonDeviceOperation{
 		}
 	}
 	//创建基础webresource通信资源
-	private Client createBasicWebClient(String url) {
-    	ClientConfig config = new DefaultClientConfig();
-    	//通信层配置设定
-		buildConfig(url,config);
-		//创建客户端
-		Client client = Client.create(config);
+	private WebTarget createBasicWebTarget(String baseUrl) {
+		Client c = ClientBuilder.newClient().register(JacksonJsonProvider.class);  
 		//连接服务器
-
-		return client;
+		WebTarget webTarget = c.target(baseUrl);
+		return webTarget;
 	}
 	private String postMethodWithParams(String url,HashMap paramsHashMap) {
-        
-        MultivaluedMapImpl params = new MultivaluedMapImpl();
+        /**
+		MultivaluedMapImpl params = new MultivaluedMapImpl();
         Iterator iterator = paramsHashMap.entrySet().iterator();
         while (iterator.hasNext()) {
 			Entry entry = (Entry) iterator.next();
 			params.add(entry.getKey().toString(), entry.getValue().toString());
 		}
-		Client client = createBasicWebClient(url);
-        WebResource service = client.resource(url);
-        String response = service.post(String.class, params);
-        client.destroy();
+        **/
+        WebTarget webTarget = createBasicWebTarget(baseUrl);
+		Response response = webTarget.path(url).request(MediaType.APPLICATION_JSON).post();
+        
         return response;
 	}
 	
