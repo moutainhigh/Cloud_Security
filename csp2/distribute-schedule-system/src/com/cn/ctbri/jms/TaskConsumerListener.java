@@ -193,14 +193,15 @@ public class TaskConsumerListener implements MessageListener,Runnable{
         	}else {
 				t.setEngine(-1);
 				
-				//add by 2017-5-5
-				int status_code = t.getStatus()-1;
+				//add by 2017-5-5 异常设置
+				int status_code = t.getExceptMark()-1;
 				String result = "fail";
 				if ( status_code <= 0 && status_code> Integer.parseInt(Constants.TASK_EXCEPTION_FIVE)){
-					t.setStatus(status_code);
+					t.setExceptMark(status_code);
 					result = "exception "+status_code+" times";
 				}else if(status_code == -5 ){
 					t.setStatus(Integer.parseInt(Constants.TASK_FINISH));
+					t.setExceptMark(Integer.parseInt(Constants.TASK_EXCEPTION_FIVE));
 					result = "exception "+ -5 +" times";
 				}
 					
@@ -324,7 +325,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 		                    }
 		                }
 		                if(serviceId==1||serviceId==2){//漏扫和木马
-		                    if(t.getScanMode() == 1){
+		                    if(t.getScanMode() == 1){//长期
 		                        //下一次扫描时间
 		                        Date endTime = t.getEnd_time();
 		                        Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -334,10 +335,13 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 		                        	t.setGroup_flag(new Date());
 		                        }
 		                        if(t.getScanType()==1){
+		                        	//按天
 		                        	nextTime = DateUtils.getAfterDate(t.getGroup_flag(),1);
 		                        }else if(t.getScanType()==5){
+		                        	//按周
 		                        	nextTime = DateUtils.getAfterDate(t.getGroup_flag(),7);
 		                        }else if(t.getScanType()==6){
+		                        	//按月
 		                        	nextTime = DateUtils.getAfterMonth(t.getGroup_flag());
 		                        }
 		                        if(nextTime.compareTo(endTime)<=0){
@@ -382,14 +386,15 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	        }
 	    }else{
             t.setEngine(-1);
-            //add by 2017-5-5
-			int status_code = t.getStatus()-1;
+            //add by 2017-5-5 异常设置
+			int status_code = t.getExceptMark()-1;
 			String result = "fail";
 			if ( status_code <= 0 && status_code> Integer.parseInt(Constants.TASK_EXCEPTION_FIVE)){
-				t.setStatus(status_code);
+				t.setExceptMark(status_code);
 				result = "exception "+status_code+" times";
 			}else if(status_code == -5 ){
-				t.setStatus(Integer.parseInt(Constants.TASK_FINISH));
+				task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
+				t.setExceptMark(Integer.parseInt(Constants.TASK_EXCEPTION_FIVE));
 				result = "exception "+ -5 +" times";
 			}
 				

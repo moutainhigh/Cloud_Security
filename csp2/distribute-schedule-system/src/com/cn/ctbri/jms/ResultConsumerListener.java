@@ -335,13 +335,15 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 	                    
 	                    // 获取任务进度引擎
 	                    String progressStr = SouthAPIWorker.getProgressByTaskId(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id(),String.valueOf(task.getServiceId()));
-	    				getProgressByRes(task.getTaskId(),progressStr);
+	                    getProgressByRes(task.getTaskId(),progressStr);
 	    				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，扫描进度["+task.getTaskProgress()+"];User="+null);
 	
 	//    			}else if(status.contains("not found")){
 	    			}else if(status.equals("")){
-	    				task.setTaskProgress("101");
+	    				//modify by 2017-5-8 任务找不到的情况,异常标识设置-5（不会再次下发任务）
+	    				task.setTaskProgress("0");
 	    				task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
+	    				task.setExceptMark(Integer.parseInt(Constants.TASK_EXCEPTION_FIVE));
 	    				taskService.update(task);
 	    			} 
 		        }catch (Exception e) {
