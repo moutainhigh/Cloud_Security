@@ -22,13 +22,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入任务信息 -->
 	<insert id="insert" parameterType="com.cn.ctbri.entity.Task" >	
         INSERT INTO cs_task
-		(taskId,order_asset_Id,execute_time,status,group_flag,remarks,
+		(taskId,order_asset_Id,execute_time,status,group_flag,
 		engineIP,taskProgress,currentUrl,begin_time,end_time,scanTime,
 		issueCount,requestCount,urlCount,averResponse,
-		averSendCount,sendBytes,receiveBytes,websoc) 
+		averSendCount,sendBytes,receiveBytes,websoc,exceptMark) 
 		VALUES(#{taskId}, #{order_asset_Id} , #{execute_time},#{status},#{group_flag},
-		#{remarks},#{engineIP},#{taskProgress},#{currentUrl},#{begin_time},#{end_time},#{scanTime},
-		#{issueCount},#{requestCount},#{urlCount},#{averResponse},#{averSendCount},#{sendBytes},#{receiveBytes},#{websoc})
+		#{engineIP},#{taskProgress},#{currentUrl},#{begin_time},#{end_time},#{scanTime},
+		#{issueCount},#{requestCount},#{urlCount},#{averResponse},#{averSendCount},#{sendBytes},#{receiveBytes},#{websoc},#{exceptMark})
 		ON DUPLICATE KEY UPDATE 
 				status=#{status},
 				engineIP=#{engineIP},
@@ -45,7 +45,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 averResponse=#{averResponse},
                 averSendCount=#{averSendCount},
                 sendBytes=#{sendBytes},
-                receiveBytes=#{receiveBytes}
+                receiveBytes=#{receiveBytes},
+                exceptMark=#{exceptMark}
 	</insert>
 	<!-- 根据orderId查询扫描次数 -->
 	<select id="findByOrderId" parameterType="int" resultType="Object">
