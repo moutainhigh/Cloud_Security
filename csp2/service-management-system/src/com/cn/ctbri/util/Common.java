@@ -111,7 +111,7 @@ public class Common {
 		}
 	public static void successCodeAndMessage(JSONObject json){
 		json.put("code",CspContextListener.allPropertisMap.get("successCode"));
-		json.put("message", CspContextListener.allPropertisMap.get("successMessage"));
+		//json.put("message", CspContextListener.allPropertisMap.get("successMessage"));
 	}
 	public static void failCodeAndMessage(JSONObject json){
 		json.put("code",CspContextListener.allPropertisMap.get("failCode"));
