@@ -1,15 +1,10 @@
 package com.cn.ctbri.dao.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cn.ctbri.dao.AlarmDDOSDao;
-import com.cn.ctbri.dao.AlarmDao;
 import com.cn.ctbri.dao.DaoCommon;
-import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.AlarmDDOS;
 /**
  * 创 建 人  ：  于永波
@@ -17,6 +12,9 @@ import com.cn.ctbri.entity.AlarmDDOS;
  * 描        述：  报警信息Dao接口实现类
  * 版        本：  1.0
  */
+
+//原来华为的接口实现类   现在不用啦  2017-05-09
+
 @Repository
 @Transactional
 public class AlarmDDOSDaoImpl extends DaoCommon implements AlarmDDOSDao {
