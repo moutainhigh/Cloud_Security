@@ -411,7 +411,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	            </if>
 			    order by t.execute_time desc
 			    <if test="type==1 and group_flag==null or group_flag==''">
-	             limit #{count}
+	             limit 1   <!-- #{count} -->
 	            </if>) b
 			where (a.taskId = b.taskId or a.group_id = b.group_id)
 			<if test="level!=null">
@@ -437,7 +437,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	            </if>
 			    order by t.execute_time desc
 			    <if test="type==1 and group_flag==null or group_flag==''">
-	             limit #{count}
+	             limit 1   <!-- #{count} -->
 	            </if>) b
 			where (a.taskId = b.taskId or a.group_id = b.group_id)
 			<if test="level!=null">
