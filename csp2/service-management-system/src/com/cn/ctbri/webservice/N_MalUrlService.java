@@ -4,17 +4,16 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.net.ssl.HostnameVerifier;
+
+
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.GET;
@@ -22,7 +21,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import net.sf.json.JSONObject;
 
@@ -31,17 +33,12 @@ import org.springframework.stereotype.Component;
 
 import com.cn.ctbri.entity.OrderAPI;
 import com.cn.ctbri.entity.User;
+import com.cn.ctbri.listener.ContextClient;
 import com.cn.ctbri.listener.CspContextListener;
 import com.cn.ctbri.service.IOrderAPIService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.Common;
-import com.sun.jersey.api.client.Client;
 
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
 
 /**
  * 创 建 人  ：  man
@@ -56,10 +53,13 @@ import com.sun.jersey.client.urlconnection.HTTPSProperties;
 @Component
 @Path("openapi/malurl")
 public class N_MalUrlService {
+	
 		@Autowired
-	    private IUserService userService;
-		@Autowired
-	    private IOrderAPIService orderAPIService;
+	    public IUserService userService;
+	    @Autowired
+		public IOrderAPIService orderAPIService;
+		
+
 		//获取当天国内活动恶意URL信息
 		@GET
 	    @Path("/getdatabycntoday/{token}")
@@ -599,34 +599,33 @@ public class N_MalUrlService {
 	 */
 	private String getSouthAPIByMethod(String methodName,JSONObject json){
 		
-		String  response = "";
-		String url = CspContextListener.allPropertisMap.get("SouthAPI_WEB_ROOT") + CspContextListener.allPropertisMap.get(methodName);
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    long clientBegin = new Date().getTime();
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        client.setConnectTimeout(5000);
-        long clientEnd = new Date().getTime();
+		Response  response = null;
+		String str = "";
+        WebTarget target = ContextClient.southAPImainTarget.path(CspContextListener.allPropertisMap.get(methodName));
+      
         
-       // System.out.println("创建client时间是： "+ (clientEnd-clientBegin));
         try{
-        	 long serviceBegin = new Date().getTime();
-        	 //连接服务器
-            WebResource service = client.resource(url);
-            long serviceEnd = new Date().getTime();
-           // System.out.println("创建service时间是： "+ (serviceEnd-serviceBegin));
+        	
             //获取响应结果
-            if(json == null)
-            	response = service.type(MediaType.APPLICATION_JSON_TYPE).get(String.class);
-            else
-            	response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class,json.toString());
+            if(json == null){
+            	response = target.request(MediaType.APPLICATION_JSON).get() ;
+            	str = response.readEntity(String.class);
+            }
+            	
+            	
+            else{
+            	response =  target.request(MediaType.APPLICATION_JSON).post(Entity.entity(json, MediaType.APPLICATION_JSON));
+                
+            	str = (String)response.readEntity(String.class);
+                
+            }
+            	
+        }catch(Exception e){
+        	e.printStackTrace();
         }finally{
-        	client.destroy();
+        	response.close();
         }
-        return response ;
+        return str ;
 	}
 	
 	/**
@@ -652,23 +651,7 @@ public class N_MalUrlService {
 		}else
 			Common.failCodeAndMessage(json);
 	}
-	/**
-	 * 功能描述：安全通信配置设置
-	 * 参数描述:String url 路径,ClientConfig config 配置对象
-	 *		 @time 2015-12-31
-	 */
-	private static void buildConfig(String url,ClientConfig config) {
-		if(url.startsWith("https")) {
-        	SSLContext ctx = getSSLContext();
-        	config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
-        		     new HostnameVerifier() {
-        		         public boolean verify( String s, SSLSession sslSession ) {
-        		             return true;
-        		         }
-        		     }, ctx
-        		 ));
-        }
-	}
+	
 	/**
 	 * 功能描述： 获取安全套接层上下文对象
 	 *		 @time 2015-12-31
