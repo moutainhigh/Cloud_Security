@@ -46,7 +46,7 @@ public class WafAPIWorker {
 	public WafAPIWorker() {
 	}
 	
-    final static WebTarget mainTarget = ContextClient.mainWafTarget;
+    final static WebTarget mainTarget = ContextClient.mainSouthTarget;
 	
 	/**
 	 * 功能描述： 获取全部站点、虚拟站点信息
