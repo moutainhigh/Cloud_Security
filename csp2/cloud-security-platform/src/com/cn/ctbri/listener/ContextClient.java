@@ -12,7 +12,7 @@ import javax.ws.rs.client.WebTarget;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 public class ContextClient implements ServletContextListener {   
-	
+	//add by 2017-5-10
 	private static String SERVER_WEB_ROOT;
 	private static String SERVER_SOUTH_ROOT;
 	static{
