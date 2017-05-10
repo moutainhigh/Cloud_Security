@@ -10,7 +10,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
-  
+
 public class ContextClient implements ServletContextListener {   
 	
 	private static String SERVER_WEB_ROOT;
