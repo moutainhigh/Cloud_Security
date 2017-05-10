@@ -16,24 +16,24 @@ import com.cn.ctbri.common.APIWorker;
 public class ContextClient implements ServletContextListener {   
 	
 	private static String SERVER_WEB_ROOT;
-	private static String SERVER_WAF_ROOT;
+	private static String SERVER_SOUTH_ROOT;
 	static{
 		try {
 			Properties p = new Properties();
 			p.load(ContextClient.class.getClassLoader().getResourceAsStream("northAPI.properties"));
 			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
-			SERVER_WAF_ROOT = p.getProperty("SERVER_WAF_ROOT");
+			SERVER_SOUTH_ROOT = p.getProperty("SERVER_SOUTH_ROOT");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	public static Client client = null;
 	public static WebTarget mainTarget = null;
-	public static WebTarget mainWafTarget = null;
+	public static WebTarget mainSouthTarget = null;
     public void contextInitialized(ServletContextEvent event) {
     	client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
     	mainTarget = client.target(SERVER_WEB_ROOT);
-    	mainWafTarget = client.target(SERVER_WAF_ROOT);
+    	mainSouthTarget = client.target(SERVER_SOUTH_ROOT);
         System.out.println("created on " +  new Date() + ".");   
     }   
   
