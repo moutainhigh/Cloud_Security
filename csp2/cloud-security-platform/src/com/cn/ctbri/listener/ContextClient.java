@@ -10,8 +10,6 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
-
-import com.cn.ctbri.common.APIWorker;
   
 public class ContextClient implements ServletContextListener {   
 	
