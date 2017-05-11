@@ -4,6 +4,7 @@ import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import com.cn.ctbri.common.ReInternalWorker;
 import com.cn.ctbri.common.SouthAPIWorker;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.EngineCfg;
+import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.logger.CSPLoggerAdapter;
@@ -34,6 +36,7 @@ import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.DateUtils;
+import com.cn.ctbri.util.PreDateUtil;
 
 public class ResultConsumerListener  implements MessageListener,Runnable{
 	
@@ -330,7 +333,41 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 	    				//任务完成后,引擎活跃数减1
 	                    en.setId(task.getEngine());
 	                    engineService.updatedown(en);
-	
+	                    
+	                    
+	                    //add by tang 2017-5-10
+	                    //篡改处理开始（本次结束，创建下次任务）
+	                    if(task.getServiceId()==3){
+	                    	// 获取此任务的服务模版名称
+		    	    		Serv service = servService.findById(task.getServiceId());
+		    	    		int scantime = PreDateUtil.preTaskData(task, en, service);//预处理
+	                        Date endTaskTime = task.getEnd_time();
+	                        Map<String, Object> paramMap = new HashMap<String, Object>();
+	                        paramMap.put("executeTime", DateUtils.dateToString(new Date()));
+	                        paramMap.put("scantime", scantime);
+	                        Date nextTime = taskService.getNextScanTime(paramMap);
+	                        if(nextTime.compareTo(endTaskTime)<=0){
+	                            //创建任务
+	                            Task newtask = new Task(); 
+	                            newtask.setExecute_time(nextTime);
+	                            newtask.setStatus(Integer.parseInt(Constants.TASK_START));
+	                            newtask.setGroup_flag(nextTime);
+	                            newtask.setBegin_time(task.getBegin_time());
+	                            newtask.setEnd_time(task.getEnd_time());
+	                            newtask.setOrderTaskId(task.getOrderTaskId());
+	                            newtask.setServiceId(task.getServiceId());
+	                            newtask.setScanMode(task.getScanMode());
+	                            newtask.setScanType(task.getScanType());
+	                            newtask.setAssetAddr(task.getAssetAddr());
+	                            newtask.setOrder_id(task.getOrder_id());
+	                            //插入一条任务数据  获取任务id
+	                            Task ifnew = taskService.findTaskByTaskObj(newtask);
+	                            if(ifnew == null){
+	                            	int taskId = taskService.insert(newtask);
+	                            }
+	                        }
+	                    }
+                        //篡改处理结束（本次结束，创建下次任务）
 	    			}else if("running".equals(status)){
 	                    
 	                    // 获取任务进度引擎
@@ -339,7 +376,7 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 	    				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + task.getTaskId() + "]扫描未完成，扫描进度["+task.getTaskProgress()+"];User="+null);
 	
 	//    			}else if(status.contains("not found")){
-	    			}else if(status.equals("")){
+	    			}else if(status.equals("")&&task.getServiceId()!=3){
 	    				//modify by 2017-5-8 任务找不到的情况,异常标识设置-5（不会再次下发任务）
 	    				task.setTaskProgress("0");
 	    				task.setStatus(Integer.parseInt(Constants.TASK_FINISH));
@@ -355,6 +392,8 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 
 	    CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务表扫描结束....;User="+null);
 	}
+	
+	
 
 	/**
 	 * 根据任务状态结果解析当前任务状态
