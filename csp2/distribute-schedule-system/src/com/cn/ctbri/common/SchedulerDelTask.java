@@ -18,7 +18,7 @@ import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.util.DateUtils;
 
 /**
- * 删除订单任务表的调度类
+ * 删除订单任务表的调度类（篡改、可用性特殊处理）
  * 
  * @author tangxr 
  * 
@@ -40,7 +40,6 @@ public class SchedulerDelTask {
          */
         Map<String, Object> delmap = new HashMap<String, Object>();
         delmap.put("status", Integer.parseInt(Constants.TASK_RUNNING));
-        delmap.put("serviceId", 5);//可用性Id
         // 获取任务表前n条未完成的记录
         List<Task> taskDelList = taskService.findDelTask(delmap);
         // 调用接口删除任务
@@ -53,9 +52,9 @@ public class SchedulerDelTask {
 	        String status = this.getStatusByResult(resultStr);
 	        
             if("running".equals(status)){
-                logger.info("[删除任务调度]:任务-[" + t.getTaskId() + "]开始下发!");
+                logger.info("[删除任务调度]:任务-[" + t.getTaskId() + "]开始删除!");
                 try {
-                	//删除安恒可用性任务
+                	//删除安恒可用性任务、篡改任务
                 	SouthAPIWorker.removeTask(en.getEngine_number(), String.valueOf(t.getTaskId())+"_"+t.getOrder_id());
                         
                     //任务完成后,引擎活跃数减1
@@ -65,8 +64,7 @@ public class SchedulerDelTask {
                     t.setStatus(Integer.parseInt(Constants.TASK_FINISH));
                     taskService.update(t);
                 } catch (Exception e) {
-                    logger.info("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
-//                    throw new RuntimeException("[下发任务调度]: 下发任务失败，远程存在同名任务请先删除或重新下订单!");
+                    logger.info("[删除任务调度]: 删除失败!");
                     continue;
                 }
                 logger.info("[删除任务调度]:任务-[" + t.getTaskId() + "]完成删除!");
