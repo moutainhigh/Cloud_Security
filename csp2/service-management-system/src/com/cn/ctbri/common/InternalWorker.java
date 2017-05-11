@@ -11,8 +11,11 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -24,13 +27,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONException;
 
 import com.cn.ctbri.entity.Order;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.UniformInterfaceException;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
+import com.cn.ctbri.listener.ContextClient;
+
 /**
  * 创 建 人  ：  tangxr
  * 创建日期：  2015-10-16
@@ -80,6 +78,8 @@ public class InternalWorker {
 	}
 	public InternalWorker() {
 	}
+
+	final static WebTarget mainTarget = ContextClient.mainTarget;	
 	
 	/**
 	 * 功能描述： 获取安全套接层上下文对象
@@ -110,49 +110,6 @@ public class InternalWorker {
     	}
     	return null;
     }
-	
-	/**
-	 * 功能描述：创建漏洞扫描订单（任务）
-	 * 参数描述： ScanMode 单次、长期,
-	 * 		   TargetURL 目标地址，只有一个
-	 * 		   ScanType 扫描方式（正常、快速、全量）,
-	 * 		   StartTime 计划开始时间,
-	 * 		   EndTime 单次扫描此项为空,
-	 *         ScanPeriod  周期,
-	 *         ScanDepth   检测深度,
-	 *         MaxPages    最大页面数,
-	 *         Stategy     策略,
-	 *         CustomManu  指定厂家，可以多个，以逗号区分,
-	 *         Reserve     保留字段
-	 * @param targetURL 
-	 * @throws JSONException 
-	 *		 @time 2015-10-16
-	 */
-	/*public static String createOrder(Order order, String[] targetURL) throws JSONException{
-		//组织发送内容JSON
-		JSONObject json = new JSONObject();
-		net.sf.json.JSONObject orderObj = net.sf.json.JSONObject.fromObject(order);
-		json.put("orderObj", orderObj);
-		net.sf.json.JSONArray targetURLs = net.sf.json.JSONArray.fromObject(targetURL);
-		json.put("targetURLs", targetURLs);
-		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + Create_Order;
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    config.getClasses().add(JacksonJsonProvider.class);
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
-        int status = response.getStatus();
-        String textEntity = response.getEntity(String.class);
-        System.out.println(textEntity);
-        return status+"";
-	}*/
 	
 	
 	/**
@@ -191,20 +148,13 @@ public class InternalWorker {
 		json.put("orderTaskId", orderTaskId);
 		json.put("serviceId", serviceId);
 		json.put("partner", partner);
-		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Create_orderTask;
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, json.toString());
-        JSONObject obj = JSONObject.fromObject(response);
-		client.destroy();
+		
+		System.out.println("****创建漏洞扫描订单（任务）****");  
+		WebTarget target = mainTarget.path(VulnScan_Create_orderTask);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        JSONObject obj = JSONObject.fromObject(str);
+        response.close();
         int stateCode = obj.getInt("code");
 		if(stateCode == 201){
 			return "success";
@@ -222,22 +172,14 @@ public class InternalWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("opt", opt);
-		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Opt_Order + "/" + orderId;
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    config.getClasses().add(JacksonJsonProvider.class);
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        String response = service.type(MediaType.APPLICATION_JSON).put(String.class, json.toString());
-        client.destroy();
-        JSONObject obj = JSONObject.fromObject(response);
-		String stateCode = obj.getString("code");
+
+		System.out.println("****对漏洞扫描订单进行操作，暂停，重启，停止****");  
+		WebTarget target = mainTarget.path(VulnScan_Opt_Order + "/" + orderId);
+        Response response = target.request().put(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        JSONObject obj = JSONObject.fromObject(str);
+        response.close();
+        String stateCode = obj.getString("code");//?code从哪里来的
 		if(stateCode.equals("200")){
 			return "success";
 		}else if(stateCode.equals("424")){
@@ -261,24 +203,12 @@ public class InternalWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("OrderId", OrderId);
-		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Get_OrderReport + OrderId;
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    config.getClasses().add(JacksonJsonProvider.class);
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+
+        System.out.println("****获得订单检测结果报告****");  
+		WebTarget target = mainTarget.path(VulnScan_Get_OrderReport + OrderId);
+        Response response = target.request().get();
         int status = response.getStatus();
-        String textEntity = response.getEntity(String.class);
         response.close();
-        client.destroy();
-        System.out.println(textEntity);
         return status+"";
 	}
 	
@@ -290,25 +220,12 @@ public class InternalWorker {
 	 *		 @time 2015-10-16
 	 */
 	public static String vulnScanGetOrderTaskResult(String orderId, String orderTaskId){
-		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskResult + "/" + orderTaskId + "/" + orderId;
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    config.getClasses().add(JacksonJsonProvider.class);
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+
+        System.out.println("****获得订单/任务检测结果****");  
+		WebTarget target = mainTarget.path(VulnScan_Get_orderTaskResult + "/" + orderTaskId + "/" + orderId);
+        Response response = target.request().get();
         int status = response.getStatus();
-        String textEntity = response.getEntity(String.class);
-        
         response.close();
-        client.destroy();
-        System.out.println(textEntity);
         return status+"";
 	}
 	
@@ -320,24 +237,12 @@ public class InternalWorker {
 	 *		 @time 2015-10-16
 	 */
 	public static String vulnScanGetOrderTaskStatus(String orderId, String orderTaskId){
-		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskStatus + "/" + orderTaskId + "/" + orderId;
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    config.getClasses().add(JacksonJsonProvider.class);
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+
+        System.out.println("****获得订单/任务当前执行状态****");  
+		WebTarget target = mainTarget.path(VulnScan_Get_orderTaskStatus + "/" + orderTaskId + "/" + orderId);
+        Response response = target.request().get();
         int status = response.getStatus();
-        String textEntity = response.getEntity(String.class);
         response.close();
-        client.destroy();
-        System.out.println(textEntity);
         return status+"";
 	}
 	
@@ -355,7 +260,7 @@ public class InternalWorker {
 	 * 参数描述:String sessionId 回话ID, String taskId任务ID
 	 *		 @time 2015-01-05
 	 */
-	private static ClientResponse postMethod(String url, JSONObject json) {
+/*	private static ClientResponse postMethod(String url, JSONObject json) {
 		//创建客户端配置对象
     	ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
@@ -369,13 +274,13 @@ public class InternalWorker {
 		ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
 		client.destroy();
 		return response;
-	}
+	}*/
 	/**
 	 * 功能描述：get方法请求
 	 * 参数描述:String url 请求路径, String sessionId 回话ID
 	 *		 @time 2015-01-05
 	 */
-	private static String getMethod(String url,String sessionId){
+/*	private static String getMethod(String url,String sessionId){
 		//创建客户端配置对象
     	ClientConfig config = new DefaultClientConfig();
     	//通信层配置设定
@@ -388,13 +293,13 @@ public class InternalWorker {
 		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
 		client.destroy();
 		return response;
-	}
+	}*/
 	/**
 	 * 功能描述：安全通信配置设置
 	 * 参数描述:String url 路径,ClientConfig config 配置对象
 	 *		 @time 2015-10-16
 	 */
-	private static void buildConfig(String url,ClientConfig config) {
+/*	private static void buildConfig(String url,ClientConfig config) {
 		if(url.startsWith("http")) {//？？？
         	SSLContext ctx = getSSLContext();
         	config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
@@ -405,7 +310,7 @@ public class InternalWorker {
         		     }, ctx
         		 ));
         }
-	}
+	}*/
 
 
     public static void main(String[] args) {

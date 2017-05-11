@@ -88,11 +88,7 @@ import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.MD5Token;
 import com.cn.ctbri.util.Random;
 import com.cn.ctbri.util.Respones;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
+
 /**
  * 创 建 人  ：  tangxr
  * 创建日期：  2015-10-19
@@ -1843,42 +1839,5 @@ public class NorthAPIService {
       return tcPr;
     }
 	 
-	public static void main(String[] args) {
-		//组织发送内容JSON
-		JSONObject json = new JSONObject();
-		Order order = new Order();
-		order.setId("66");
-		
-		net.sf.json.JSONObject orderObj = net.sf.json.JSONObject.fromObject(order);
-		json.put("orderObj", orderObj);
-
-	    ClientConfig config = new DefaultClientConfig();
-//	    config.getClasses().add(JacksonJsonProvider.class);
-        //检查安全传输协议设置
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource("http://localhost:8080/cspi/rest/openapi/vulnscan/order/15123016431657620");
-        
-//        WebResource service = client.resource("http://localhost:8080/cspi/rest/openapi/createOrder");
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).get(ClientResponse.class);        
-//        System.out.println(response.toString());
-
-        String addresses = response.getEntity(String.class);
-        JSONObject obj = new JSONObject().fromObject(addresses);
-        
-        net.sf.json.JSONObject taskObj = obj.getJSONObject("taskObj");
-        String engineIP = taskObj.getString("engineIP");
-        String taskProgress = taskObj.getString("taskProgress");
-        String currentUrl = taskObj.getString("currentUrl");
-        String issueCount = taskObj.getString("issueCount");
-        String requestCount = taskObj.getString("requestCount");
-        String urlCount = taskObj.getString("urlCount");
-        String averResponse = taskObj.getString("averResponse");
-        String averSendCount = taskObj.getString("averSendCount");
-        String sendBytes = taskObj.getString("sendBytes");
-        String receiveBytes = taskObj.getString("receiveBytes");
-        System.out.println(obj);
-        System.out.println(taskObj); 
-
-	}
+	
 }

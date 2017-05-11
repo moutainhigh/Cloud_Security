@@ -1,4 +1,4 @@
-package com.cn.ctbri.servlet;
+/*package com.cn.ctbri.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,34 +16,34 @@ import com.cn.ctbri.common.ArnhemWorker;
 import com.cn.ctbri.service.ITaskService;
 
 
-/**
+*//**
  * Servlet implementation class HomeServlet
- */
+ *//*
 //@WebServlet("/ReceiveServlet")
 public class DelServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	static Logger logger = Logger.getLogger(DelServlet.class.getName());
-	/**
+	*//**
 	 * Default constructor.
-	 */
+	 *//*
 	public DelServlet() {
 		// TODO Auto-generated constructor stub
 	}
 
-	/**
+	*//**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
-	 */
+	 *//*
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
 
-	/**
+	*//**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
-	 */
+	 *//*
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
@@ -68,3 +68,4 @@ public class DelServlet extends HttpServlet {
 	}
 
 }
+*/

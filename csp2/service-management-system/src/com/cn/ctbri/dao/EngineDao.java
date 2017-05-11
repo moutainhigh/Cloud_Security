@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.cn.ctbri.entity.EngineCfg;
-import com.cn.ctbri.entity.TaskWarn;
 
 /**
  * 创 建 人  ：  tang
@@ -13,6 +12,7 @@ import com.cn.ctbri.entity.TaskWarn;
  * 版        本：  1.0
  */
 public interface EngineDao {
+
 
 	List<EngineCfg> getUsableEngine(Map<String, Object> engineMap);
 

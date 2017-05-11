@@ -9,19 +9,18 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
 
 import net.sf.json.JSONObject;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
+import com.cn.ctbri.listener.ContextClient;
+
 /**
  * 创 建 人  ：  tangxr
  * 创建日期：  2016-7-14
@@ -52,6 +51,8 @@ public class ManagerWorker {
 	}
 	public ManagerWorker() {
 	}
+	
+	final static WebTarget mainTarget = ContextClient.mainManagerTarget;
 	
 	/**
 	 * 功能描述： 获取安全套接层上下文对象
@@ -96,22 +97,14 @@ public class ManagerWorker {
 		json.put("service_type", service_type);
 		json.put("api_type", api_type);
 		json.put("status", status);
-		//创建任务发送路径
-    	String url = SERVER_MANAGER_ROOT + Create_APINum;
-    	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url);
-        //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        JSONObject obj = JSONObject.fromObject(response.getEntity(String.class));
+
+		System.out.println("****创建api统计****");  
+		WebTarget target = mainTarget.path(Create_APINum);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        JSONObject obj = JSONObject.fromObject(str);
         response.close();
-        client.destroy();
-        String stateCode = obj.getString("code");
+		String stateCode = obj.getString("code");
 		if(stateCode.equals("201")){
 			return "success";
 		}else{
@@ -135,7 +128,7 @@ public class ManagerWorker {
 	 * 参数描述:String sessionId 回话ID, String taskId任务ID
 	 *		 @time 2015-01-05
 	 */
-	private static ClientResponse postMethod(String url, JSONObject json) {
+/*	private static ClientResponse postMethod(String url, JSONObject json) {
 		//创建客户端配置对象
     	ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
@@ -149,13 +142,13 @@ public class ManagerWorker {
 		ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
 		client.destroy();
 		return response;
-	}
+	}*/
 	/**
 	 * 功能描述：get方法请求
 	 * 参数描述:String url 请求路径, String sessionId 回话ID
 	 *		 @time 2015-01-05
 	 */
-	private static String getMethod(String url,String sessionId){
+/*	private static String getMethod(String url,String sessionId){
 		//创建客户端配置对象
     	ClientConfig config = new DefaultClientConfig();
     	//通信层配置设定
@@ -168,13 +161,13 @@ public class ManagerWorker {
 		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
 		client.destroy();
 		return response;
-	}
+	}*/
 	/**
 	 * 功能描述：安全通信配置设置
 	 * 参数描述:String url 路径,ClientConfig config 配置对象
 	 *		 @time 2015-10-16
 	 */
-	private static void buildConfig(String url,ClientConfig config) {
+/*	private static void buildConfig(String url,ClientConfig config) {
 		if(url.startsWith("http")) {
         	SSLContext ctx = getSSLContext();
         	config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
@@ -185,7 +178,7 @@ public class ManagerWorker {
         		     }, ctx
         		 ));
         }
-	}
+	}*/
 
 
     public static void main(String[] args) {

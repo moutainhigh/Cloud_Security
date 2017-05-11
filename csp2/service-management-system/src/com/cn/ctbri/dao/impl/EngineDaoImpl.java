@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.EngineDao;
-import com.cn.ctbri.dao.TaskWarnDao;
 import com.cn.ctbri.entity.EngineCfg;
-import com.cn.ctbri.entity.TaskWarn;
 /**
  * 创 建 人  ：tang
  * 创建日期：  2015-06-12

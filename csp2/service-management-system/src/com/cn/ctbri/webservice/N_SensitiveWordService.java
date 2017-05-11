@@ -92,6 +92,8 @@ import com.cn.ctbri.util.Respones;
  * 描        述：  接收北向WebService请求接口
  * 版        本：  1.0
  */
+//2017-05-10 网页敏感内容监测服务
+
 @Component
 @Path("openapi/sensitiveword")
 public class N_SensitiveWordService {

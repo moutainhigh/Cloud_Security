@@ -8,17 +8,17 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
+
+import com.cn.ctbri.listener.ContextClient;
 
 import net.sf.json.JSONObject;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
+
 /**
  * 创 建 人  ：  tangxr
  * 创建日期：  2016-4-9
@@ -29,6 +29,8 @@ public class ReNoticeWorker {
 	
 	public ReNoticeWorker() {
 	}
+	
+	final static WebTarget mainTarget = ContextClient.mainTarget;
 	
 	/**
 	 * 功能描述： 获取安全套接层上下文对象
@@ -78,7 +80,8 @@ public class ReNoticeWorker {
 	    json.put("message", message);
 		//创建任务发送路径
     	String url = callbackAddr;
-    	//创建jersery客户端配置对象
+    	
+/*    	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
@@ -89,7 +92,14 @@ public class ReNoticeWorker {
         //获取响应结果
         String response = service.type(MediaType.APPLICATION_JSON).post(String.class, json.toString());
         client.destroy();
-        return response;
+        return response;*/
+    	
+		System.out.println("****设置回调地址****");  
+        WebTarget target = ContextClient.client.target(url);
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
 	}
 	
 	
@@ -108,7 +118,7 @@ public class ReNoticeWorker {
 	 * 参数描述:String sessionId 回话ID, String taskId任务ID
 	 *		 @time 2015-01-05
 	 */
-	private static ClientResponse postMethod(String url, JSONObject json) {
+/*	private static ClientResponse postMethod(String url, JSONObject json) {
 		//创建客户端配置对象
     	ClientConfig config = new DefaultClientConfig();
     	//通信层配置设定
@@ -121,13 +131,13 @@ public class ReNoticeWorker {
 		ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
 		client.destroy();
 		return response;
-	}
+	}*/
 	/**
 	 * 功能描述：get方法请求
 	 * 参数描述:String url 请求路径, String sessionId 回话ID
 	 *		 @time 2015-01-05
 	 */
-	private static String getMethod(String url,String sessionId){
+/*	private static String getMethod(String url,String sessionId){
 		//创建客户端配置对象
     	ClientConfig config = new DefaultClientConfig();
     	//通信层配置设定
@@ -140,13 +150,13 @@ public class ReNoticeWorker {
 		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
 		client.destroy();
 		return response;
-	}
+	}*/
 	/**
 	 * 功能描述：安全通信配置设置
 	 * 参数描述:String url 路径,ClientConfig config 配置对象
 	 *		 @time 2015-10-16
 	 */
-	private static void buildConfig(String url,ClientConfig config) {
+/*	private static void buildConfig(String url,ClientConfig config) {
 		if(url.startsWith("http")) {
         	SSLContext ctx = getSSLContext();
         	config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
@@ -157,7 +167,7 @@ public class ReNoticeWorker {
         		     }, ctx
         		 ));
         }
-	}
+	}*/
 
 
     public static void main(String[] args) {

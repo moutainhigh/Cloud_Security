@@ -4,6 +4,7 @@ import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Singleton;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,11 +33,7 @@ import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ITaskService;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.spi.resource.Singleton;
+
 /**
  * 创 建 人  ：  于永波
  * 创建日期：  2015-01-05
@@ -252,14 +249,14 @@ public class ArnhemWebService {
                         +"}],"
                     +"}"
                 +"}]";
-	    ClientConfig config = new DefaultClientConfig();
+/*	    ClientConfig config = new DefaultClientConfig();
         //检查安全传输协议设置
         Client client = Client.create(config);
         //连接服务器
         WebResource service = client.resource("http://156a1l6950.iask.in/cspi/rest/arnhem/arnhemGetWarn");
         //获取响应结果
 //        service.header("Content-Type", "Application/xml");
-        String response = service.type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xmlstr);
+        String response = service.type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xmlstr);*/
 //          String response = service.type(MediaType.APPLICATION_JSON).post(String.class, str);
 //        String post = service.accept(MediaType.APPLICATION_XML).post(String.class, xmlstr);
 	}

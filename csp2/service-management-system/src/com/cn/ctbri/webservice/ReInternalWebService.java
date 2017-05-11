@@ -30,11 +30,7 @@ import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Respones;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
+
 /**
  * 创 建 人  ：  tangxr
  * 创建日期：  2015-10-19
@@ -377,44 +373,5 @@ public class ReInternalWebService {
 		}
     }
 	 
-	public static void main(String[] args) {
-		//组织发送内容JSON
-		JSONObject json = new JSONObject();
-//		Order order = new Order();
-//		order.setId("66");
-//		
-//		net.sf.json.JSONObject orderObj = net.sf.json.JSONObject.fromObject(order);
-//		json.put("orderObj", orderObj);
-		
-		json.put("ScanMode", 2);
-		json.put("targetURL", "");
-		json.put("ScanType", "");
-		json.put("StartTime", "2015-11-12 09:45:55");
-		json.put("EndTime", "");
-		json.put("ScanPeriod", 1);
-		json.put("ScanDepth", "");
-		json.put("MaxPages", "");
-		json.put("Stategy", "");
-		json.put("CustomManu", "");
-		json.put("orderId", "999999");
-		json.put("serviceId", 1);
-		json.put("websoc", 1);
-		json.put("taskTime", "");
 
-	    ClientConfig config = new DefaultClientConfig();
-//	    config.getClasses().add(JacksonJsonProvider.class);
-	    //检查安全传输协议设置
-        Client client = Client.create(config);
-        //连接服务器
-//        WebResource service = client.resource("http://localhost:8080/dss/rest/internalapi/vulnscan/orderTask");
-        WebResource service = client.resource("http://localhost:8080/cspi/rest/internalapi/vulnscan/re_orderTask/93103991");
-        
-//        WebResource service = client.resource("http://localhost:8080/cspi/rest/openapi/createOrder");
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json);        
-        System.out.println(response.toString());
-
-        String addresses = response.getEntity(String.class);
-        System.out.println(addresses); 
-
-	}
 }
