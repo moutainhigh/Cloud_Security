@@ -41,6 +41,7 @@ import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.LoggerUtil;
+import com.cn.ctbri.util.PreDateUtil;
 
 public class TaskConsumerListener implements MessageListener,Runnable{
 	static Logger logger = Logger.getLogger(TaskConsumerListener.class.getName());
@@ -208,6 +209,9 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 				taskService.update(t);
 				CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[引擎调度]: 引擎状态不可用!;User="+null);
 				json.put("result", result);
+				//add by 2017-5-9 返回异常
+//				JSONObject taskObject = new JSONObject().fromObject(t);
+//				json.put("taskObj", taskObject);
 			}
         	
 		} catch (Exception e) {
@@ -282,7 +286,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	                    
 	                    //modify by 2016-8-1
 	                    int serviceId = t.getServiceId();
-		                if(serviceId==3||serviceId==4){
+		                if(serviceId==4){//关键字
 		                    if(t.getScanMode() == 1){
 		                        //下一次扫描时间
 		                        Date endTime = t.getEnd_time();
