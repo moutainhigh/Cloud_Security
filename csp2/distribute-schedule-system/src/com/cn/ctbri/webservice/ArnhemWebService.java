@@ -3,6 +3,7 @@ package com.cn.ctbri.webservice;
 import java.net.URLDecoder;
 import java.util.Date;
 
+import javax.inject.Singleton;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,11 +23,7 @@ import org.springframework.stereotype.Component;
 
 import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.service.ITaskService;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.spi.resource.Singleton;
+
 /**
  * 创 建 人  ：  于永波
  * 创建日期：  2015-01-05
@@ -98,7 +95,7 @@ public class ArnhemWebService {
         return "<Result value=\"Success\"></Result>";
     }
 	
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 	    String xmlstr="<?xml version='1.0' encoding='UTF-8'?>"
 	    		        +"<SecEvent>"
                         +"<CAT1>WEB扫描</CAT1>"
@@ -147,5 +144,5 @@ public class ArnhemWebService {
         String response = service.type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xmlstr);
 //          String response = service.type(MediaType.APPLICATION_JSON).post(String.class, str);
 //        String post = service.accept(MediaType.APPLICATION_XML).post(String.class, xmlstr);
-	}
+	}*/
 }

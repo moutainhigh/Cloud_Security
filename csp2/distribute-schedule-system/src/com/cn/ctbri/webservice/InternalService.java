@@ -31,11 +31,7 @@ import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Respones;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
+
 /**
  * 创 建 人  ：  tangxr
  * 创建日期：  2015-10-19
@@ -122,7 +118,6 @@ public class InternalService {
 				task.setScanType(period);
 				task.setPartner(partner);
 				task.setOrder_end_time(end_date);
-				
 				//插入数据库
 				taskService.insert(task);
 				
@@ -169,12 +164,16 @@ public class InternalService {
 					        	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "[订单操作]:任务-[" + task.getTaskId() + "]开始操作状态!");
 					        	// 根据任务id获取任务状态
 				    			String sessionId = SouthAPIWorker.getSessionId(engine);
-				    			String resultStr = SouthAPIWorker.getStatusByTaskId(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
+				    			String resultStr = SouthAPIWorker.getStatusByTaskId(engine, String.valueOf
+
+(task.getTaskId())+"_"+task.getOrder_id());
 				    			String status = this.getStatusByResult(resultStr);
 //				    			if ("stop".equals(opt)) {
 				    			if ("running".equals(status)) {// 任务执行中
 				    				// 订单操作
-				    				String optStr = SouthAPIWorker.stopTask(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
+				    				String optStr = SouthAPIWorker.stopTask(engine, String.valueOf(task.getTaskId
+
+())+"_"+task.getOrder_id());
 				    				boolean res = this.getOptByRes(task.getTaskId(),optStr);
 				    				if(res){
 				    					json.put("code", "200");//成功
@@ -187,7 +186,9 @@ public class InternalService {
 				    				}
 				    			}else if("stop".equals(status)){//任务暂停中
 //				    			}else if("resume".equals(opt)){
-				    				String optStr = SouthAPIWorker.startTask(engine, String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
+				    				String optStr = SouthAPIWorker.startTask(engine, String.valueOf(task.getTaskId
+
+())+"_"+task.getOrder_id());
 				    				boolean res = this.getOptByRes(task.getTaskId(),optStr);
 				    				if(res){
 				    					json.put("code", "200");//成功
@@ -354,7 +355,7 @@ public class InternalService {
     }
 
 	 
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 //		Order order = new Order();
@@ -393,5 +394,5 @@ public class InternalService {
         String addresses = response.getEntity(String.class);
         System.out.println(addresses); 
 
-	}
+	}*/
 }

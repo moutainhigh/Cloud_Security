@@ -13,8 +13,11 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
 
 import org.apache.http.util.TextUtils;
 import org.dom4j.Attribute;
@@ -27,12 +30,8 @@ import net.sf.json.JSONObject;
 
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.jms.ResultConsumerListener.JSON_TYPE;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
+import com.cn.ctbri.listener.ContextClient;
+
 /**
  * 创 建 人  ：  tangxr
  * 创建日期：  2015-12-31
@@ -57,6 +56,9 @@ public class SouthAPIWorker {
 	}
 	public SouthAPIWorker() {
 	}
+	
+	final static WebTarget mainTarget = ContextClient.southAPImainTarget;
+	
 	/**
 	 * 功能描述： 获取SessionId
 	 * @param deviceId
@@ -68,7 +70,7 @@ public class SouthAPIWorker {
 		json.put("deviceId", deviceId);
 		String url = SERVER_WEB_ROOT + "/rest/adapter/loadDeviceAdapter";       
 		//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
+/*	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
 	    //创建Jersery客户端对象
@@ -81,7 +83,16 @@ public class SouthAPIWorker {
         String status = JSONObject.fromObject(textEntity).getString("status");
        
         System.out.println(textEntity);
+        return status;*/
+        
+		System.out.println("****分布式  获取SessionId****");  
+		WebTarget target = mainTarget.path("/rest/adapter/loadDeviceAdapter");
+        Response response = target.request().post(Entity.entity(deviceId, MediaType.APPLICATION_JSON));
+        String textEntity = response.readEntity(String.class);
+        String status = JSONObject.fromObject(textEntity).getString("status");
+        response.close();
         return status;
+        
 	}
 	
 	
@@ -131,7 +142,7 @@ public class SouthAPIWorker {
 		json.put("destIP", destIP);
 		json.put("destPort", destPort);
 		json.put("taskSLA", taskSLA);
-    	String url = SERVER_WEB_ROOT + "/rest/adapter/disposeScanTask";
+/*    	String url = SERVER_WEB_ROOT + "/rest/adapter/disposeScanTask";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
@@ -150,7 +161,23 @@ public class SouthAPIWorker {
             return virtual_group_id;
         }else{
         	return textEntity;
+        }*/
+        
+        
+		System.out.println("****分布式  下发任务****");  
+		WebTarget target = mainTarget.path("/rest/adapter/disposeScanTask");
+        Response response = target.request().post(Entity.entity(deviceId, MediaType.APPLICATION_JSON));
+        String textEntity = response.readEntity(String.class);
+        response.close();
+        if(deviceId.equals("11001")){
+        	String jsStr = JSONObject.fromObject(textEntity).getString("result");
+            String virtual_group_id = JSONObject.fromObject(jsStr).getString("virtual_group_id");
+            return virtual_group_id;
+        }else{
+        	return textEntity;
         }
+        
+        
 	}
 	/**
 	 * 功能描述：取消下发的任务
@@ -162,7 +189,7 @@ public class SouthAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("deviceId", deviceId);
 		json.put("taskId", taskId);
-    	String url = SERVER_WEB_ROOT + "/rest/adapter/removeTask";
+/*    	String url = SERVER_WEB_ROOT + "/rest/adapter/removeTask";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
@@ -177,7 +204,15 @@ public class SouthAPIWorker {
         String textEntity = response.getEntity(String.class);
         
         System.out.println(textEntity);
+        return textEntity;*/
+        
+		System.out.println("****分布式    取消下发的任务****");  
+		WebTarget target = mainTarget.path("/rest/adapter/removeTask");
+        Response response = target.request().post(Entity.entity(deviceId, MediaType.APPLICATION_JSON));
+        String textEntity = response.readEntity(String.class);
+        response.close();
         return textEntity;
+        
 	}
 	/**
 	 * 功能描述：空字符串转化方法
@@ -197,8 +232,8 @@ public class SouthAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("deviceId", deviceId);
 		json.put("taskId", taskId);
-    	String url = SERVER_WEB_ROOT + "/rest/adapter/getResultCountByTaskID";
-    	//创建jersery客户端配置对象
+    	//String url = SERVER_WEB_ROOT + "/rest/adapter/getResultCountByTaskID";
+/*    	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
@@ -212,7 +247,16 @@ public class SouthAPIWorker {
         String textEntity = response.getEntity(String.class);
         
         System.out.println(textEntity);
+        return textEntity;*/
+    	
+		System.out.println("****分布式    根据任务ID获取任务执行结果数****");  
+		WebTarget target = mainTarget.path("/rest/adapter/getResultCountByTaskID");
+        Response response = target.request().post(Entity.entity(deviceId, MediaType.APPLICATION_JSON));
+        String textEntity = response.readEntity(String.class);
+        response.close();
         return textEntity;
+    	
+    	
     }
 	/**
 	 * 功能描述：根据任务ID分页获取扫描结果
@@ -229,7 +273,7 @@ public class SouthAPIWorker {
 		json.put("productId", productId);
 		json.put("startNum", startNum);
 		json.put("size", size);
-    	String url = SERVER_WEB_ROOT + "/rest/adapter/getReportByTaskID";
+/*    	String url = SERVER_WEB_ROOT + "/rest/adapter/getReportByTaskID";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
@@ -242,66 +286,18 @@ public class SouthAPIWorker {
         String response = service.type(MediaType.APPLICATION_JSON_TYPE).post(String.class, json.toString());
         
         
-        return response;
-    }
-    /**
-	 * 功能描述：post方法请求
-	 * 参数描述:String sessionId 回话ID, String taskId任务ID
-	 *		 @time 2015-12-31
-	 */
-	private static String postMethod(String url, String xml, String sessionId) {
-		//创建客户端配置对象
-    	ClientConfig config = new DefaultClientConfig();
-    	//通信层配置设定
-		buildConfig(url,config);
-		//创建客户端
-		Client client = Client.create(config);
-		//连接服务器
-		WebResource service = client.resource(url);
-		//获取响应结果
-		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xml);
-		
+        return response;*/
         
-		return response;
-	}
-	/**
-	 * 功能描述：get方法请求
-	 * 参数描述:String url 请求路径, String sessionId 回话ID
-	 *		 @time 2015-12-31
-	 */
-	private static String getMethod(String url,String sessionId){
-		//创建客户端配置对象
-    	ClientConfig config = new DefaultClientConfig();
-    	//通信层配置设定
-		buildConfig(url,config);
-		//创建客户端
-		Client client = Client.create(config);
-		//连接服务器
-		WebResource service = client.resource(url);
-		//获取响应结果
-		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
-		
-      
-		return response;
-	}
-	/**
-	 * 功能描述：安全通信配置设置
-	 * 参数描述:String url 路径,ClientConfig config 配置对象
-	 *		 @time 2015-12-31
-	 */
-	private static void buildConfig(String url,ClientConfig config) {
-		if(url.startsWith("https")) {
-        	SSLContext ctx = getSSLContext();
-        	config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
-        		     new HostnameVerifier() {
-        		         public boolean verify( String s, SSLSession sslSession ) {
-        		             return true;
-        		         }
-        		     }, ctx
-        		 ));
-        }
-	}
-	
+		System.out.println("****分布式    根据任务ID获取任务执行结果数****");  
+		WebTarget target = mainTarget.path("/rest/adapter/getReportByTaskID");
+        Response response = target.request().post(Entity.entity(deviceId, MediaType.APPLICATION_JSON));
+        String textEntity = response.readEntity(String.class);
+        response.close();
+        return textEntity;
+        
+    }
+    
+
 	/**
 	 * 根据任务id获取任务当前状态
 	 * @param sessionId 会话id
@@ -314,7 +310,7 @@ public class SouthAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("deviceId", deviceId);
 		json.put("taskId", taskId);
-    	String url = SERVER_WEB_ROOT + "/rest/adapter/getStatusByTaskId";
+/*    	String url = SERVER_WEB_ROOT + "/rest/adapter/getStatusByTaskId";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
@@ -329,7 +325,15 @@ public class SouthAPIWorker {
       
         System.out.println(textEntity);
        
+        return textEntity;*/
+        
+		System.out.println("****分布式    根据任务id获取任务当前状态****");  
+		WebTarget target = mainTarget.path("/rest/adapter/getStatusByTaskId");
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String textEntity = response.readEntity(String.class);
+        response.close();
         return textEntity;
+        
 	}
 	
 	/**
@@ -344,7 +348,7 @@ public class SouthAPIWorker {
 		json.put("deviceId", deviceId);
 		json.put("taskId", taskId);
 		json.put("productId", productId);
-    	String url = SERVER_WEB_ROOT + "/rest/adapter/getProgressById";
+/*    	String url = SERVER_WEB_ROOT + "/rest/adapter/getProgressById";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
@@ -359,7 +363,15 @@ public class SouthAPIWorker {
         String textEntity = response.getEntity(String.class);
         
         System.out.println(textEntity);
+        return textEntity;*/
+        
+		System.out.println("****分布式    根据任务id获取任务当前状态****");  
+		WebTarget target = mainTarget.path("/rest/adapter/getProgressById");
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String textEntity = response.readEntity(String.class);
+        response.close();
         return textEntity;
+        
     }
     
     
@@ -368,7 +380,7 @@ public class SouthAPIWorker {
      */
     public static String getDeviceId() {
     	//组织发送内容JSON
-    	String url = SERVER_WEB_ROOT + "/rest/adapter/getDeviceId";
+/*    	String url = SERVER_WEB_ROOT + "/rest/adapter/getDeviceId";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
@@ -381,7 +393,16 @@ public class SouthAPIWorker {
         String response = service.type(MediaType.APPLICATION_JSON_TYPE).get(String.class);
         
        
-        return response;
+        return response;*/
+        
+        
+        System.out.println("****获取服务资源设备id****");  
+		WebTarget target = mainTarget.path("/rest/adapter/getDeviceId");
+        Response response = target.request().get();
+        response.close();
+        return response+"";
+
+        
     }
     
     /**
@@ -394,7 +415,7 @@ public class SouthAPIWorker {
     	//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("deviceId", deviceId);
-    	String url = SERVER_WEB_ROOT + "/rest/adapter/getEngineStat";
+/*    	String url = SERVER_WEB_ROOT + "/rest/adapter/getEngineStat";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
@@ -409,7 +430,15 @@ public class SouthAPIWorker {
         String textEntity = response.getEntity(String.class);
 //        System.out.println(textEntity);
        
+        return textEntity;*/
+        
+		System.out.println("****分布式    获取引擎的存活状态****");  
+		WebTarget target = mainTarget.path("/rest/adapter/getEngineStat");
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String textEntity = response.readEntity(String.class);
+        response.close();
         return textEntity;
+        
     }
     /**
      * 获取性能数据参数
@@ -421,7 +450,7 @@ public class SouthAPIWorker {
     	//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("deviceId", deviceId);
-    	String url = SERVER_WEB_ROOT + "/rest/adapter/getEngineStatRate";
+/*    	String url = SERVER_WEB_ROOT + "/rest/adapter/getEngineStatRate";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
@@ -436,7 +465,15 @@ public class SouthAPIWorker {
         String textEntity = response.getEntity(String.class);
 //        System.out.println(textEntity);
         
+        return textEntity;*/
+		
+		System.out.println("****分布式    获取性能数据参数****");  
+		WebTarget target = mainTarget.path("/rest/adapter/getEngineStatRate");
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String textEntity = response.readEntity(String.class);
+        response.close();
         return textEntity;
+		
     }
     
     /**
@@ -449,7 +486,7 @@ public class SouthAPIWorker {
     	//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("deviceId", deviceId);
-    	String url = SERVER_WEB_ROOT + "/rest/adapter/getTaskLoadInfo";
+/*    	String url = SERVER_WEB_ROOT + "/rest/adapter/getTaskLoadInfo";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
@@ -463,7 +500,15 @@ public class SouthAPIWorker {
         int status = response.getStatus();
         String textEntity = response.getEntity(String.class);
        
+        return textEntity;*/
+        
+		System.out.println("****分布式    获取性能数据参数****");  
+		WebTarget target = mainTarget.path("/rest/adapter/getTaskLoadInfo");
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String textEntity = response.readEntity(String.class);
+        response.close();
         return textEntity;
+        
     }
     
     /**
@@ -478,7 +523,7 @@ public class SouthAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("deviceId", deviceId);
 		json.put("taskId", taskId);
-    	String url = SERVER_WEB_ROOT + "/rest/adapter/getResultCountByTaskID";
+/*    	String url = SERVER_WEB_ROOT + "/rest/adapter/getResultCountByTaskID";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
@@ -493,7 +538,15 @@ public class SouthAPIWorker {
         String textEntity = response.getEntity(String.class);
        
         System.out.println(textEntity);
+        return textEntity;*/
+        
+		System.out.println("****分布式    根据任务ID获取弱点记录总数****");  
+		WebTarget target = mainTarget.path("/rest/adapter/getResultCountByTaskID");
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String textEntity = response.readEntity(String.class);
+        response.close();
         return textEntity;
+        
 	}
 	
 	// 开始停止的任务
@@ -502,7 +555,7 @@ public class SouthAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("deviceId", deviceId);
 		json.put("taskId", taskId);
-    	String url = SERVER_WEB_ROOT + "/rest/adapter/startTask";
+/*    	String url = SERVER_WEB_ROOT + "/rest/adapter/startTask";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
@@ -517,7 +570,15 @@ public class SouthAPIWorker {
         String textEntity = response.getEntity(String.class);
         
         System.out.println(textEntity);
+        return textEntity;*/
+        
+		System.out.println("****分布式    开始停止的任务****");  
+		WebTarget target = mainTarget.path("/rest/adapter/startTask");
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String textEntity = response.readEntity(String.class);
+        response.close();
         return textEntity;
+        
 	}
 
 	// 停止任务
@@ -526,7 +587,7 @@ public class SouthAPIWorker {
 		JSONObject json = new JSONObject();
 		json.put("deviceId", deviceId);
 		json.put("taskId", taskId);
-    	String url = SERVER_WEB_ROOT + "/rest/adapter/stopTask";
+/*    	String url = SERVER_WEB_ROOT + "/rest/adapter/stopTask";
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    //检查安全传输协议设置
@@ -541,7 +602,15 @@ public class SouthAPIWorker {
         String textEntity = response.getEntity(String.class);
         
         System.out.println(textEntity);
+        return textEntity;*/
+        
+		System.out.println("****分布式    停止任务****");  
+		WebTarget target = mainTarget.path("/rest/adapter/stopTask");
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String textEntity = response.readEntity(String.class);
+        response.close();
         return textEntity;
+        
 	}
 
     

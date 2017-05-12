@@ -10,20 +10,20 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
 
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
+import com.cn.ctbri.listener.ContextClient;
+
+
 /**
  * 创 建 人  ：  tangxr
  * 创建日期：  2015-11-18
@@ -87,6 +87,8 @@ public class ReInternalWorker {
 	}
 	public ReInternalWorker() {
 	}
+	
+	final static WebTarget mainTarget = ContextClient.mainTarget;	
 	
 	/**
 	 * 功能描述： 获取安全套接层上下文对象
@@ -153,7 +155,7 @@ public class ReInternalWorker {
 //		json.put("websoc", websoc);
 //		json.put("taskTime", taskTime);
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Create_orderTask;
+/*    	String url = SERVER_WEB_ROOT + VulnScan_Create_orderTask;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
@@ -164,13 +166,17 @@ public class ReInternalWorker {
         //连接服务器
         WebResource service = client.resource(url);
         //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, jsondata);
+        ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, jsondata);*/
+        
+        
+		System.out.println("****分布式  创建漏洞扫描订单（任务）****");  
+		WebTarget target = mainTarget.path(VulnScan_Create_orderTask);
+        Response response = target.request().post(Entity.entity(jsondata, MediaType.APPLICATION_JSON));
         int status = response.getStatus();
-        String textEntity = response.getEntity(String.class);
-        
-        
-        System.out.println(textEntity);
+        response.close();
         return status+"";
+
+        
 	}
 	
 	/**
@@ -186,7 +192,7 @@ public class ReInternalWorker {
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Opt_Order + OrderId;
     	//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
+/*	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
 	    buildConfig(url,config);
@@ -200,7 +206,15 @@ public class ReInternalWorker {
         String textEntity = response.getEntity(String.class);
        
         System.out.println(textEntity);
+        return status+"";*/
+        
+		System.out.println("****分布式    对漏洞扫描订单进行操作，暂停，重启，停止****");  
+		WebTarget target = mainTarget.path(VulnScan_Opt_Order + OrderId);
+        Response response = target.request().put(Entity.entity(json, MediaType.APPLICATION_JSON));
+        int status = response.getStatus();
+        response.close();
         return status+"";
+
 	}
 	
 	/**
@@ -215,7 +229,7 @@ public class ReInternalWorker {
 		json.put("OrderId", OrderId);
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Get_OrderReport + OrderId;
-    	//创建jersery客户端配置对象
+/*    	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
 	    //检查安全传输协议设置
@@ -230,7 +244,15 @@ public class ReInternalWorker {
         String textEntity = response.getEntity(String.class);
        
         System.out.println(textEntity);
+        return status+"";*/
+        
+        System.out.println("****分布式    获得订单检测结果报告****");  
+		WebTarget target = mainTarget.path(VulnScan_Get_OrderReport + OrderId);
+        Response response = target.request().get();
+        int status = response.getStatus();
+        response.close();
         return status+"";
+        
 	}
 	
 	/**
@@ -241,7 +263,7 @@ public class ReInternalWorker {
 	 */
 	public static String vulnScanGetOrderTaskResult(String jsonObj) {
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskResult;
+/*    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskResult;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
@@ -256,6 +278,13 @@ public class ReInternalWorker {
         String textEntity = response.getEntity(String.class);
        
         System.out.println(textEntity);
+        return textEntity;*/
+        
+		System.out.println("****分布式  获得订单/任务检测结果****");  
+		WebTarget target = mainTarget.path(VulnScan_Get_orderTaskResult);
+        Response response = target.request().post(Entity.entity(jsonObj, MediaType.APPLICATION_JSON));
+        String textEntity = response.readEntity(String.class);
+        response.close();
         return textEntity;
 	}
 	
@@ -268,7 +297,7 @@ public class ReInternalWorker {
 	 */
 	public static String vulnScanGetOrderTaskStatus(String jsonObj) {
 		//创建任务发送路径
-    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskStatus;
+/*    	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskStatus;
     	//创建jersery客户端配置对象
 	    ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
@@ -283,7 +312,15 @@ public class ReInternalWorker {
         String textEntity = response.getEntity(String.class);
         
         System.out.println(textEntity);
+        return textEntity;*/
+        
+		System.out.println("****分布式  获得订单/任务当前执行状态****");  
+		WebTarget target = mainTarget.path(VulnScan_Get_orderTaskStatus);
+        Response response = target.request().post(Entity.entity(jsonObj, MediaType.APPLICATION_JSON));
+        String textEntity = response.readEntity(String.class);
+        response.close();
         return textEntity;
+        
 	}
 	
 	/**
@@ -300,7 +337,7 @@ public class ReInternalWorker {
 	 * 参数描述:String sessionId 回话ID, String taskId任务ID
 	 *		 @time 2015-01-05
 	 */
-	private static ClientResponse postMethod(String url, JSONObject json) {
+/*	private static ClientResponse postMethod(String url, JSONObject json) {
 		//创建客户端配置对象
     	ClientConfig config = new DefaultClientConfig();
 	    config.getClasses().add(JacksonJsonProvider.class);
@@ -315,13 +352,13 @@ public class ReInternalWorker {
 		
       
 		return response;
-	}
+	}*/
 	/**
 	 * 功能描述：get方法请求
 	 * 参数描述:String url 请求路径, String sessionId 回话ID
 	 *		 @time 2015-01-05
 	 */
-	private static String getMethod(String url,String sessionId){
+/*	private static String getMethod(String url,String sessionId){
 		//创建客户端配置对象
     	ClientConfig config = new DefaultClientConfig();
     	//通信层配置设定
@@ -335,13 +372,13 @@ public class ReInternalWorker {
 		
        
 		return response;
-	}
+	}*/
 	/**
 	 * 功能描述：安全通信配置设置
 	 * 参数描述:String url 路径,ClientConfig config 配置对象
 	 *		 @time 2015-10-16
 	 */
-	private static void buildConfig(String url,ClientConfig config) {
+/*	private static void buildConfig(String url,ClientConfig config) {
 		if(url.startsWith("http")) {
         	SSLContext ctx = getSSLContext();
         	config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
@@ -352,7 +389,7 @@ public class ReInternalWorker {
         		     }, ctx
         		 ));
         }
-	}
+	}*/
 
 
     public static void main(String[] args) {

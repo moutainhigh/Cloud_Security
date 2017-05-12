@@ -1,4 +1,4 @@
-package com.cn.ctbri.test;
+/*package com.cn.ctbri.test;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.util.Properties;
@@ -18,53 +18,47 @@ import net.sf.json.JSONObject;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jettison.json.JSONException;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
-/**
+*//**
  * 创 建 人  ：  tangxr
  * 创建日期：  2015-10-16
  * 描        述：  内部接口本地Worker
  * 版        本：  1.0
- */
+ *//*
 public class InternalWorker {
 	
-	/**
+	*//**
 	 * 服务能力管理服务器根路径
-	 */
+	 *//*
 	private static String SERVER_WEB_ROOT = "http://localhost:8080/dss/";
-	/**
+	*//**
 	 * 创建漏洞扫描订单（任务）
-	 */
+	 *//*
 	private static String VulnScan_Create_orderTask = "rest/internalapi/vulnscan/orderTask";     
-	/**
+	*//**
 	 * 对漏洞扫描订单进行操作，暂停，重启，停止
-	 */
+	 *//*
 	private static String VulnScan_Opt_Order;
-	/**
+	*//**
 	 * 获得订单检测结果报告
-	 */
+	 *//*
 	private static String VulnScan_Get_OrderReport;
-	/**
+	*//**
 	 * 获得订单/任务检测结果
-	 */
+	 *//*
 	private static String VulnScan_Get_orderTaskResult;
-	/**
+	*//**
 	 * 获得订单/任务当前执行状态
-	 */
+	 *//*
 	private static String VulnScan_Get_orderTaskStatus;
 	
 	
 	public InternalWorker() {
 	}
 	
-	/**
+	*//**
 	 * 功能描述： 获取安全套接层上下文对象
 	 *		 @time 2015-01-05
-	 */
+	 *//*
 	private static SSLContext getSSLContext() {
 		//创建认证管理器
     	TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
@@ -91,7 +85,7 @@ public class InternalWorker {
     	return null;
     }
 	
-	/**
+	*//**
 	 * 功能描述：创建漏洞扫描订单（任务）
 	 * 参数描述： ScanMode 单次、长期,
 	 * 		   TargetURL 目标地址，只有一个
@@ -107,8 +101,8 @@ public class InternalWorker {
 	 * @param targetURL 
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
-	 */
-	/*public static String createOrder(Order order, String[] targetURL) throws JSONException{
+	 *//*
+	public static String createOrder(Order order, String[] targetURL) throws JSONException{
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		net.sf.json.JSONObject orderObj = net.sf.json.JSONObject.fromObject(order);
@@ -132,10 +126,10 @@ public class InternalWorker {
         String textEntity = response.getEntity(String.class);
         System.out.println(textEntity);
         return status+"";
-	}*/
+	}
 	
 	
-	/**
+	*//**
 	 * 功能描述：创建漏洞扫描订单（任务）
 	 * 参数描述： ScanMode 单次、长期,
 	 * 		   TargetURL 目标地址，只有一个,
@@ -149,7 +143,7 @@ public class InternalWorker {
 	 *         CustomManu  指定厂家，可以多个，以逗号区分,
 	 *         Reserve     保留字段
 	 *		 @time 2015-10-16
-	 */
+	 *//*
 	public static String vulnScanCreate(String scanMode, String targetURL, String scanType, 
     		String startTime, String endTime, String scanPeriod, String scanDepth, 
     		String maxPages, String stategy, String customManu[], String orderTaskId, String serviceId) {
@@ -183,12 +177,12 @@ public class InternalWorker {
         return response;
 	}
 	
-	/**
+	*//**
 	 * 功能描述：对漏洞扫描订单进行操作，暂停，重启，停止
 	 * 参数描述： OrderId 订单编号
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
-	 */
+	 *//*
 	public static String vulnScanOptOrderTask(String orderId) throws JSONException{
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
@@ -212,12 +206,12 @@ public class InternalWorker {
         return status+"";
 	}
 	
-	/**
+	*//**
 	 * 功能描述：获得订单检测结果报告
 	 * 参数描述： OrderId 订单编号
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
-	 */
+	 *//*
 	public static String lssuedTaskGetReport(String OrderId) throws JSONException{
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
@@ -241,13 +235,13 @@ public class InternalWorker {
         return status+"";
 	}
 	
-	/**
+	*//**
 	 * 功能描述：获得订单/任务检测结果
 	 * 参数描述： orderId 订单编号
 	 * 	       orderTaskId 订单任务编号
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
-	 */
+	 *//*
 	public static String vulnScanGetOrderTaskResult(String orderId, String orderTaskId){
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskResult + "/" + orderTaskId + "/" + orderId;
@@ -268,13 +262,13 @@ public class InternalWorker {
         return status+"";
 	}
 	
-	/**
+	*//**
 	 * 功能描述：获得订单/任务当前执行状态
 	 * 参数描述： orderId 订单编号
 	 * 		   orderTaskId 订单任务编号
 	 * @throws JSONException 
 	 *		 @time 2015-10-16
-	 */
+	 *//*
 	public static String vulnScanGetOrderTaskStatus(String orderId, String orderTaskId){
 		//创建任务发送路径
     	String url = SERVER_WEB_ROOT + VulnScan_Get_orderTaskStatus + "/" + orderTaskId + "/" + orderId;
@@ -295,20 +289,20 @@ public class InternalWorker {
         return status+"";
 	}
 	
-	/**
+	*//**
 	 * 功能描述：空字符串转化方法
 	 * 参数描述:String str 要转化的字符
 	 *		 @time 2015-01-05
-	 */
+	 *//*
 	private static String nullFilter(String str) {
     	return str==null ? "" : str;
     }
 
-    /**
+    *//**
 	 * 功能描述：post方法请求
 	 * 参数描述:String sessionId 回话ID, String taskId任务ID
 	 *		 @time 2015-01-05
-	 */
+	 *//*
 	private static ClientResponse postMethod(String url, JSONObject json) {
 		//创建客户端配置对象
     	ClientConfig config = new DefaultClientConfig();
@@ -323,11 +317,11 @@ public class InternalWorker {
 		ClientResponse response = service.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, json);
 		return response;
 	}
-	/**
+	*//**
 	 * 功能描述：get方法请求
 	 * 参数描述:String url 请求路径, String sessionId 回话ID
 	 *		 @time 2015-01-05
-	 */
+	 *//*
 	private static String getMethod(String url,String sessionId){
 		//创建客户端配置对象
     	ClientConfig config = new DefaultClientConfig();
@@ -341,11 +335,11 @@ public class InternalWorker {
 		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
 		return response;
 	}
-	/**
+	*//**
 	 * 功能描述：安全通信配置设置
 	 * 参数描述:String url 路径,ClientConfig config 配置对象
 	 *		 @time 2015-10-16
-	 */
+	 *//*
 	private static void buildConfig(String url,ClientConfig config) {
 		if(url.startsWith("http")) {
         	SSLContext ctx = getSSLContext();
@@ -366,3 +360,4 @@ public class InternalWorker {
     	System.out.println(create);
     }
 }
+*/

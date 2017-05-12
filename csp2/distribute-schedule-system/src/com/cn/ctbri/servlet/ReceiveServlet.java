@@ -27,7 +27,6 @@ import com.cn.ctbri.entity.Task;
 import com.cn.ctbri.entity.TaskWarn;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.ITaskService;
-import com.sun.jersey.spi.resource.Singleton;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;

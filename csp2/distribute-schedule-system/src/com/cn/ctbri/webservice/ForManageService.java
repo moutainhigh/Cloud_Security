@@ -33,11 +33,7 @@ import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Respones;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
+
 /**
  * 创 建 人  ：  tangxr
  * 创建日期：  2016-10-12
@@ -84,7 +80,7 @@ public class ForManageService {
         return json.toString();
     }
 	 
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 //		Order order = new Order();
@@ -123,5 +119,5 @@ public class ForManageService {
         String addresses = response.getEntity(String.class);
         System.out.println(addresses); 
 
-	}
+	}*/
 }
