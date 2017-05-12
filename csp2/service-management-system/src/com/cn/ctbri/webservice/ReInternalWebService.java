@@ -213,6 +213,7 @@ public class ReInternalWebService {
 	            String averSendCount = taskObj.getString("averSendCount");
 	            String sendBytes = taskObj.getString("sendBytes");
 	            String receiveBytes = taskObj.getString("receiveBytes");
+	            String exceptMark = taskObj.getString("exceptMark");
 				
 				Task t = new Task();
 				t.setTaskId(taskId);
@@ -233,6 +234,7 @@ public class ReInternalWebService {
                 t.setAverSendCount(averSendCount);
                 t.setSendBytes(sendBytes);
                 t.setReceiveBytes(receiveBytes);
+                t.setExceptMark(Integer.parseInt(exceptMark));
 				taskService.insert(t);
 				
 				Order o = orderService.findOrderByOrderId(orderId);
