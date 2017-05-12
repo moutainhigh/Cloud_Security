@@ -136,13 +136,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 插入任务信息 -->
     <insert id="insert" parameterType="com.cn.ctbri.entity.Task">
 		INSERT INTO cs_task
-			(taskId,order_asset_Id,execute_time,status,group_flag,remarks,
+			(taskId,order_asset_Id,execute_time,status,group_flag,
 			engineIP,taskProgress,currentUrl,begin_time,end_time,scanTime,
 			issueCount,requestCount,urlCount,averResponse,
-			averSendCount,sendBytes,receiveBytes,websoc,orderTaskId) 
+			averSendCount,sendBytes,receiveBytes,websoc,orderTaskId,exceptMark) 
 			VALUES(#{taskId}, #{order_asset_Id} , #{execute_time},#{status},#{group_flag},
-			#{remarks},#{engineIP},#{taskProgress},#{currentUrl},#{begin_time},#{end_time},#{scanTime},
-			#{issueCount},#{requestCount},#{urlCount},#{averResponse},#{averSendCount},#{sendBytes},#{receiveBytes},#{websoc},#{orderTaskId})
+			#{engineIP},#{taskProgress},#{currentUrl},#{begin_time},#{end_time},#{scanTime},
+			#{issueCount},#{requestCount},#{urlCount},#{averResponse},#{averSendCount},#{sendBytes},#{receiveBytes},#{websoc},#{orderTaskId},#{exceptMark})
 			ON DUPLICATE KEY UPDATE 
 				status=#{status},
 				engineIP=#{engineIP},
@@ -159,7 +159,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 averResponse=#{averResponse},
                 averSendCount=#{averSendCount},
                 sendBytes=#{sendBytes},
-                receiveBytes=#{receiveBytes}
+                receiveBytes=#{receiveBytes},
+                exceptMark=#{exceptMark}
 	</insert>
     
     <select id="getTypeByAssetId" parameterType="Integer" resultType="com.cn.ctbri.entity.OrderAsset">
@@ -241,7 +242,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	         t.engineIP, t.taskProgress, t.currentUrl,
 	         t.scanTime, t.issueCount, t.requestCount,
 	         t.urlCount, t.averResponse, t.averSendCount,
-	         t.sendBytes, t.receiveBytes, t.group_id, ot.url
+	         t.sendBytes, t.receiveBytes, t.group_id, ot.url, t.exceptMark
          from cs_task t,cs_order_task ot 
          where t.orderTaskId = ot.orderTaskId 
          and ot.orderId = #{orderId}
