@@ -60,12 +60,13 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 	public ResultConsumerListener() {
 	}
 
-	public ResultConsumerListener(Task task, IAlarmService alarmService, ITaskService taskService, ITaskWarnService taskWarnService,IEngineService engineService) {
+	public ResultConsumerListener(Task task, IAlarmService alarmService, ITaskService taskService, ITaskWarnService taskWarnService,IEngineService engineService, IServService servService) {
 		this.task = task;
 		this.alarmService = alarmService;
 		this.taskService = taskService;
 		this.taskWarnService = taskWarnService;
 		this.engineService = engineService;
+		this.servService = servService;
 	}
 
 	public void onMessage(Message message) {  
@@ -77,7 +78,7 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
         	    Task taskRe = (Task) om.getObject();
         	    //任务进度获取
         	    if(taskRe != null){
-        	    	ResultConsumerListener resultConsumer = new ResultConsumerListener(taskRe,alarmService,taskService,taskWarnService,engineService);
+        	    	ResultConsumerListener resultConsumer = new ResultConsumerListener(taskRe,alarmService,taskService,taskWarnService,engineService,servService);
         	    	Thread thread = new Thread(resultConsumer);
         	    	thread.start();
         	    }
@@ -341,9 +342,14 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 	                    	// 获取此任务的服务模版名称
 		    	    		Serv service = servService.findById(task.getServiceId());
 		    	    		int scantime = PreDateUtil.preTaskData(task, en, service);//预处理
-	                        Date endTaskTime = task.getEnd_time();
+	                        Date endTaskTime = task.getOrder_end_time();
 	                        Map<String, Object> paramMap = new HashMap<String, Object>();
-	                        paramMap.put("executeTime", DateUtils.dateToString(new Date()));
+	                        //以30分钟为例，
+	                        if(task.getGroup_flag().compareTo(new Date())<0){
+	                        	paramMap.put("executeTime", DateUtils.dateToString(new Date()));
+	                        }else{
+	                        	paramMap.put("executeTime", task.getGroup_flag());
+	                        }
 	                        paramMap.put("scantime", scantime);
 	                        Date nextTime = taskService.getNextScanTime(paramMap);
 	                        if(nextTime.compareTo(endTaskTime)<=0){
@@ -365,6 +371,9 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 	                            if(ifnew == null){
 	                            	int taskId = taskService.insert(newtask);
 	                            }
+	                        }else{
+	                        	//删除安恒篡改任务
+	                        	SouthAPIWorker.removeTask(en.getEngine_number(), String.valueOf(task.getTaskId())+"_"+task.getOrder_id());
 	                        }
 	                    }
                         //篡改处理结束（本次结束，创建下次任务）
