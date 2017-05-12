@@ -41,7 +41,9 @@
                         	<td class="order">
                             	<div class="fl htd" style="width:207px; padding-left:90px;">
                                     <span class="tl fl">
-                                        <img src="${ctx}/source/images/personalCenter/${list.serviceId }.png" alt="" style="position:relative; top:6px;">
+                                    <!-- <img src="${ctx}/source/images/serviceIcon/${olist.home_icon}" alt="" style="position:relative; top:6px;">
+                                          -->
+                                       <img src="${ctx}/source/images/serviceIcon/${list.homeIcon}" alt="" style="position:relative; top:6px;width:48px;height:48px">
                                     </span>
                                     
                                     <div class="tr fl">
@@ -184,7 +186,7 @@
                              <td class="order" valign="top">
                             	<p style="width:98px; line-height:24px;margin-top:33px; height:auto;" class="stylep">
              
-						            <c:if test="${list.serviceId==1||list.serviceId==2||list.serviceId==3||list.serviceId==4||list.serviceId==5}">
+						            <c:if test="${list.serviceId==1||list.serviceId==2||list.serviceId==3||list.serviceId==4||list.serviceId==5||list.serviceId==6||list.serviceId==7||list.serviceId==8}">
 						            
 						            	<c:if test="${list.isAPI==1}"><a href="${ctx}/apiDetails.html?orderId=${list.id }" target="_blank" >查看详情</a></c:if>
 						                <c:if test="${list.isAPI!=1 && list.begin_date>temp}"><a href="${ctx}/orderDetails.html?orderId=${list.id }" target="_blank" title="等待">查看详情</a></c:if>
@@ -212,11 +214,7 @@
 						                 	查看详情
 						                 </a>
 						                </c:if>
-						                <c:if test="${list.status==1&&list.isAPI==1}">
-						                 <a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${list.serviceId }&indexPage=2">
-						                 	查看详情
-						                 </a>
-						                </c:if>
+						                
 						                <!-- end -->
 						                
 						                <!-- 安恒的服务 -->
@@ -248,11 +246,12 @@
 						                 	查看详情
 						                 </a>
 						                 </c:if>
+						                 <c:if test="${list.isAPI==2 }">
 						                 <a href="${ctx}/domainNameUI.html?orderId=${list.id }" style="display:block;" title="设置域名解析"> 
 						                 <!-- <a href="javascript:void(0)" onclick="domainNameUI(${list.id })" title="设置域名解析">-->
 						                 	设置域名解析
 						                 </a>
-						                
+						                </c:if>
 						            </c:if>
 						             <c:if test="${list.isAPI==3}">			             						             							             	
 						             	<c:if test="${list.end_date>temp}">

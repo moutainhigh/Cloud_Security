@@ -71,11 +71,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from cs_order o,cs_service s
         where o.userId = #{userId} and o.serviceId = s.id -->
         select o.homeIcon,o.id,o.type,o.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI,o.package_type,o.num,o.price,o.orderListId from
-		(select s.home_icon as homeIcon, o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI, 0 as package_type,0 as num,o.delFlag,o.price,ifnull(o.orderListId,o.id) as orderListId
+		(select s.home_icon as homeIcon,o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI, 0 as package_type,0 as num,o.delFlag,o.price,ifnull(o.orderListId,o.id) as orderListId
 		        from cs_order o,cs_service s
 		        where o.userId = #{userId} and o.serviceId = s.id and isAPI in(0,2,3)
 		union
-		select s.home_icon,o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI,oa.package_type,oa.num,o.delFlag,o.price,ifnull(o.orderListId,o.id) as orderListId
+		select s.home_icon as homeIcon,o.id,o.type,s.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.remarks,o.status,o.websoc,o.payFlag,o.isAPI,oa.package_type,oa.num,o.delFlag,o.price,ifnull(o.orderListId,o.id) as orderListId
 		        from cs_order o,cs_service_api s,cs_order_api oa
 		        where o.userId = #{userId} and o.serviceId = s.id and isAPI = 1 and oa.id = o.id) o
         where 1=1

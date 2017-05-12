@@ -663,6 +663,7 @@ public class OrderMgrController {
 //        List runList = orderService.findTaskRunning(orderId);
         //订单状态
         String beginDate = df.format(order.getBegin_date());
+        String endDate = df.format(order.getEnd_date());
         int status = order.getStatus();
         int isAPI = order.getIsAPI();
         Map<String, Object> m = new HashMap<String, Object>();
@@ -672,7 +673,9 @@ public class OrderMgrController {
             m.put("status", true);
         }else if (isAPI==2 && (status==0||status==1||status==2||beginDate.compareTo(nowDate)>0)) {
         	 m.put("status", true);
-        }else{
+        }else if (isAPI==1 && (status==1||endDate.compareTo(nowDate)<0)) {
+       	 m.put("status", true);
+       }else{
             m.put("status", false);
         }
         //object转化为Json格式
