@@ -11,9 +11,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.ws.rs.client.ClientBuilder;
 
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
 
 public class CommonDeviceOperation {
 	/**
@@ -50,9 +49,10 @@ public class CommonDeviceOperation {
 	 * 参数描述:String url 路径,ClientConfig config 配置对象
 	 *		 @time 2015-01-05
 	 */
-	protected void buildConfig(String url,ClientConfig config) {
+	protected void buildConfig(String url,ClientBuilder builder) {
 		if(url.startsWith("https")) {
         	SSLContext ctx = getSSLContext();
+        	builder.sslContext(ctx);
         	config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
         		     new HostnameVerifier() {
         		         public boolean verify( String s, SSLSession sslSession ) {
@@ -60,6 +60,7 @@ public class CommonDeviceOperation {
         		         }
         		     }, ctx
         		 ));
+         */
         }
 	}
 	public static String getMd5(String plainText) {  

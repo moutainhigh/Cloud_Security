@@ -9,7 +9,6 @@ import java.util.Properties;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.cn.ctbri.southapi.adapter.manager.CommonDeviceOperation;
 import com.cn.ctbri.southapi.adapter.utils.EncryptUtility;
 
 import javax.ws.rs.client.Client;
@@ -17,12 +16,9 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.MultivaluedHashMap;
 
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
-
-public class JinshanDeviceOperation extends CommonDeviceOperation{
+public class JinshanDeviceOperation{
 	private static String apiSecret;
 	private static String baseUrl;
 	private static int SUCCESS = 0;
@@ -39,10 +35,11 @@ public class JinshanDeviceOperation extends CommonDeviceOperation{
 		}
 	}
 	//创建基础webresource通信资源
-	private WebTarget createBasicWebTarget(String baseUrl) {
-		Client c = ClientBuilder.newClient().register(JacksonJsonProvider.class);  
+	private WebTarget createBasicWebTarget(String targetUrl) {
+		ClientBuilder builder = ClientBuilder.newBuilder();  
 		//连接服务器
-		WebTarget webTarget = c.target(baseUrl);
+		Client c = null;
+		WebTarget webTarget = c.target(targetUrl);
 		return webTarget;
 	}
 	private String postMethodWithParams(String url,HashMap paramsHashMap) {
@@ -54,8 +51,17 @@ public class JinshanDeviceOperation extends CommonDeviceOperation{
 			params.add(entry.getKey().toString(), entry.getValue().toString());
 		}
         **/
+		MultivaluedHashMap params = new MultivaluedHashMap();
+		System.out.println(baseUrl);
+		System.out.println(url);
         WebTarget webTarget = createBasicWebTarget(baseUrl);
-		Response response = webTarget.path(url).request(MediaType.APPLICATION_JSON).post();
+        Iterator iterator = paramsHashMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+			Entry entry = (Entry) iterator.next();
+			params.add(entry.getKey().toString(), entry.getValue().toString());
+        }
+        
+		String response = webTarget.path(url).request().post(Entity.entity(params,MediaType.APPLICATION_FORM_URLENCODED_TYPE),String.class);
         
         return response;
 	}
@@ -85,7 +91,7 @@ public class JinshanDeviceOperation extends CommonDeviceOperation{
 		map.put("company_id", jsonObject.getString("companyId"));
 		map.put("name", jsonObject.getString("name"));
 		map.put("t_count", jsonObject.getString("tCount"));
-		String urlString = baseUrl + "/openapi/Order/index";
+		String urlString = "/openapi/Order/index";
 		String returnJsonString = postMethodWithParams(urlString, map);
 		//按照自己设定的格式返回相关内容
 		JSONObject returnJsonObject = JSON.parseObject(returnJsonString);
@@ -110,7 +116,7 @@ public class JinshanDeviceOperation extends CommonDeviceOperation{
 		}
 		HashMap map = new HashMap();
 		map.put("company_id", jsonObject.getString("companyId"));
-		String urlString = baseUrl+"/openapi/Order/get_uninstall_info";
+		String urlString = "/openapi/Order/get_uninstall_info";
 		String returnJsonString = postMethodWithParams(urlString, map);
 		JSONObject returnJsonObject = JSONObject.parseObject(returnJsonString);
 		if (returnJsonObject.getInteger("result")==SUCCESS) {
@@ -137,7 +143,7 @@ public class JinshanDeviceOperation extends CommonDeviceOperation{
 		}
 		HashMap map = new HashMap();
 		map.put("company_id", jsonObject.getString("companyId"));
-		String urlString = baseUrl+"/openapi/Order/get_host_count";
+		String urlString = "/openapi/Order/get_host_count";
 		String returnJsonString = postMethodWithParams(urlString, map);
 		JSONObject returnJsonObject = JSONObject.parseObject(returnJsonString);
 		if (returnJsonObject.getInteger("result")==SUCCESS) {
@@ -181,5 +187,13 @@ public class JinshanDeviceOperation extends CommonDeviceOperation{
 		returnJsonObject.put("status", "success");
 		returnJsonObject.put("url", EncryptUtility.encodeBase64Str(sb.toString()));
 		return returnJsonObject.toJSONString();
+	}
+	public static void main(String[] args) {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("companyId", "test12345");
+		jsonObject.put("name", "test12345");
+		jsonObject.put("tCount", 64);
+		JinshanDeviceOperation operation = new JinshanDeviceOperation();
+		System.out.println(operation.getOrderIndex(jsonObject));
 	}
 }
