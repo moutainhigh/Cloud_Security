@@ -297,7 +297,7 @@ html, body {
                     <div class="listL fl">
                         <div class="">
                             <a href="${ctx}/system_anquanbang.html">
-                            <p><img src="${ctx}/source/images/portal/API262-330.png" alt=""></p>
+                            <p><img src="${ctx}/source/images/portal/system_1.png" alt="" style="width:262px;height:330px"></p>
                             </a>
                         </div>
                     </div>
@@ -314,7 +314,7 @@ html, body {
 
 										<li class="fl"><a href="javascript:;"
 											onclick="buySelfHelpOrderSysMain(${sysList.id});">
-												<i><img src="${ctx}/source/images/portal/API_Sign.png"
+												<i><img src="${ctx}/source/images/portal/system_Sign.png"
 													alt=""></i> 
 												<p>
 													<img
