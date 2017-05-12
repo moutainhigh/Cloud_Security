@@ -40,6 +40,7 @@ public class SchedulerDelTask {
          */
         Map<String, Object> delmap = new HashMap<String, Object>();
         delmap.put("status", Integer.parseInt(Constants.TASK_RUNNING));
+        delmap.put("serviceId", 5);//可用性
         // 获取任务表前n条未完成的记录
         List<Task> taskDelList = taskService.findDelTask(delmap);
         // 调用接口删除任务
@@ -54,7 +55,7 @@ public class SchedulerDelTask {
             if("running".equals(status)){
                 logger.info("[删除任务调度]:任务-[" + t.getTaskId() + "]开始删除!");
                 try {
-                	//删除安恒可用性任务、篡改任务
+                	//删除安恒可用性任务
                 	SouthAPIWorker.removeTask(en.getEngine_number(), String.valueOf(t.getTaskId())+"_"+t.getOrder_id());
                         
                     //任务完成后,引擎活跃数减1
