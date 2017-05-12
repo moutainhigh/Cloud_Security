@@ -50,6 +50,7 @@ public class Task implements Serializable{
     private String groupFlag;//vo执行时间
 	private int isNextTask;//是否下一次扫描任务
 	private String partner;//合作方
+	private Date order_end_time;//订单结束时间
     
 	public int getTaskId() {
 		return taskId;
@@ -268,5 +269,10 @@ public class Task implements Serializable{
 	public void setPartner(String partner) {
 		this.partner = partner;
 	}
-	
+	public Date getOrder_end_time() {
+		return order_end_time;
+	}
+	public void setOrder_end_time(Date order_end_time) {
+		this.order_end_time = order_end_time;
+	}
 }

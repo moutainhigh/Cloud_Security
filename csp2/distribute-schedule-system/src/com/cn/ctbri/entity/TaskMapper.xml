@@ -35,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  and t.group_flag &lt;= date_add(now(),interval -10 minute) order by group_flag desc -->
 		  select * from cs_task t
 		  where
-		  (t.exceptMark&lt;0 and t.exceptMark&gt;-5)
+		  (t.exceptMark &lt;= 0 and t.exceptMark&gt;-5)
 		  and status not in (2,3)
 		  and t.group_flag &lt;= date_add(now(),interval -10 minute) order by group_flag desc
 		<!--limit #{page}-->
@@ -47,7 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where t.status = #{status} 
         <if test="status==2">
           and t.engine not in (-1,0)
-          and t.serviceId in (3,5)
+          and t.serviceId = #{serviceId}
           and t.end_time &lt; now()
         </if>
         <!-- and t.end_time between date_add(now(),interval -1 minute) and now() -->
@@ -97,7 +97,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 warn=#{warn},
             </if>
             <if test="exceptMark!=null">
-                exceptMark=#{exceptMark}
+                exceptMark=#{exceptMark},
+            </if>
+            <if test="order_end_time!=null">
+                order_end_time=#{order_end_time}
             </if>
 		</set>
 		where taskId = #{taskId}
