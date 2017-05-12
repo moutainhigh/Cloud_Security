@@ -5,10 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import net.sf.json.JSONArray;
@@ -17,9 +18,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cn.ctbri.entity.API;
 import com.cn.ctbri.service.IOrderAPIService;
-import com.cn.ctbri.service.IServService;
 
 @Component
 @Path("servermanager/api")
@@ -28,7 +27,7 @@ public class InternalService {
 	IOrderAPIService apiService;
 	
 	//获取某订单调用接口的次数
-	@POST
+	@GET
 	@Path("/createAPICount/{orderid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String VulnScan_serviceCreateAPICount(@PathParam("orderid") String orderid) {
@@ -50,7 +49,7 @@ public class InternalService {
     }
 	
 	//分析某订单号调用所有接口的次数
-	@POST
+	@GET
 	@Path("/analysisAPICount/{orderid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String VulnScan_analysisAPICount(@PathParam("orderid") String orderid) {
@@ -73,21 +72,24 @@ public class InternalService {
     }
 	
 	//查询某订单号调用所有接口的历史记录
-	@POST
+	@GET
 	@Path("/getAPIHistory/{orderid}")
 	@Consumes(MediaType.APPLICATION_JSON)  
 	@Produces(MediaType.APPLICATION_JSON)
-	public String VulnScan_GetAPIHistory(@PathParam("orderid") String orderid,String param) {
+	public String VulnScan_GetAPIHistory(@PathParam("orderid") String orderid,
+			@QueryParam("scanUrl")String scanUrl,
+			@QueryParam("beginDate")String beginDate,
+			@QueryParam("endDate")String endDate) {
 		JSONObject json = new JSONObject();
 		try {
 
 			Map<String,Object> paramMap = new HashMap<String,Object>();
 
-			JSONObject myJsonObject = JSONObject.fromObject(param);
+//			JSONObject myJsonObject = JSONObject.fromObject(param);
 			paramMap.put("orderId", orderid);
-			paramMap.put("scanUrl", myJsonObject.get("scanUrl"));
-			paramMap.put("beginDate", myJsonObject.get("beginDate"));
-			paramMap.put("endDate", myJsonObject.get("endDate"));
+			paramMap.put("scanUrl", scanUrl);
+			paramMap.put("beginDate", beginDate);
+			paramMap.put("endDate", endDate);
 			List apiList = apiService.findAPIHistoryInfoByParam(paramMap);
 			JSONArray jsonArray = new JSONArray().fromObject(apiList);
 
