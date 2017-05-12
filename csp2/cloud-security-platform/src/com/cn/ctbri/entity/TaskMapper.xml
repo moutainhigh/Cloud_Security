@@ -82,7 +82,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		            	and t.group_flag=#{group_flag}
 		            </if>
 		            <if test="group_flag==null or group_flag==''">
-		             ORDER BY t.execute_time DESC limit #{count}
+		             ORDER BY t.execute_time DESC limit 1 <!-- #{count} -->
 		            </if>
 					) a
 			CROSS JOIN
@@ -109,7 +109,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
             ORDER BY t.execute_time DESC 
             <if test="type==1 and group_flag==null or group_flag==''">
-                limit #{count}
+                limit 1 <!-- #{count} -->
             </if>
 	</select>
 	
@@ -127,7 +127,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		            </if>
 					ORDER BY t.execute_time DESC 
 					<if test="type==1 and group_flag==null or group_flag==''">
-		             limit #{count}
+		             limit 1 <!-- #{count} -->
 		            </if>
 			)	t order by t.execute_time desc limit 1
 	</select>
@@ -301,7 +301,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	            	and t.group_flag=#{group_flag}
 	            </if>
 	            <if test="group_flag==null or group_flag==''">
-	             ORDER BY t.execute_time DESC limit #{count}
+	             ORDER BY t.execute_time DESC limit 1 <!-- #{count} -->
 	            </if>
 	</select>
 	
