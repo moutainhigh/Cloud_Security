@@ -121,6 +121,7 @@ public class InternalService {
 				task.setScanMode(scanMode);
 				task.setScanType(period);
 				task.setPartner(partner);
+				task.setOrder_end_time(end_date);
 				
 				//插入数据库
 				taskService.insert(task);
