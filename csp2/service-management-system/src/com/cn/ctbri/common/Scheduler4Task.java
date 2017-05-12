@@ -36,7 +36,7 @@ public class Scheduler4Task {
 		 * 定时要job任务执行的逻辑
 		 */
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("task_status", Integer.parseInt(Constants.TASK_START));   //设置为 已开始？
+		map.put("task_status", Integer.parseInt(Constants.TASK_START));   //设置为未开始
 		// 获取订单任务表前n条未下发的记录
 		List<OrderTask> oTaskList = orderTaskService.findOrderTask(map);
 		logger.info("[下发任务调度]:当前等待下发的任务有 " + oTaskList.size() + " 个!");
