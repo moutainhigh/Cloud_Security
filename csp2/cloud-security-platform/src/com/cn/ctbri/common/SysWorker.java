@@ -1,31 +1,26 @@
 package com.cn.ctbri.common;
 
-import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
-import java.util.List;
 import java.util.Properties;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
+
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 import sun.misc.BASE64Decoder;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import com.cn.ctbri.controller.WafController;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
+import com.cn.ctbri.listener.ContextClient;
 
 public class SysWorker {
 	/**
@@ -68,6 +63,7 @@ public class SysWorker {
 	public SysWorker() {
 	}
 	
+	final static WebTarget southTarget = ContextClient.mainSouthTarget;
 	/**
 	 * 功能描述：获取订单状态
 	 * @param companyId 企业ID（唯一标识）
@@ -78,6 +74,17 @@ public class SysWorker {
 		失败：{"message":"Enterprises already have this order","status":"failed"}
 
 	 */
+	private static String postMethod(String url, String json) {
+		System.out.println(url);
+		Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+		WebTarget webTarget = client.target(SERVER_SYS_ROOT);
+		WebTarget target = webTarget.path(url);
+		Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+		String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
+	}
+	
 	public static String getJinshanCreateOrder(String companyId, String companyName, String tCount){
 		JSONObject json =new JSONObject();
 		json.put("companyId", companyId);
@@ -91,19 +98,11 @@ public class SysWorker {
 		
 		String url = SERVER_SYS_ROOT + SYS_jinshan_getOrderIndex;
 		//创建jersery客户端配置对象
-		ClientConfig config = new DefaultClientConfig();
-		//检查安全传输协议设置
-		buildConfig(url, config);
-		//创建Jersery客户端对象
-        Client client = Client.create(config);
-      //连接服务器
-        WebResource service = client.resource(url);
-      //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
+		String text = postMethod(SYS_jinshan_getOrderIndex, json.toString());
+		//String textEntity = response.getEntity(String.class);
 //      String status = JSONObject.fromObject(textEntity).getString("status");
-        System.out.println(textEntity);
-        String status =JSONObject.fromObject(textEntity).getString("status");
+        System.out.println(text);
+        String status =JSONObject.fromObject(text).getString("status");
         return status;
 	}
 	/**
@@ -122,16 +121,7 @@ public class SysWorker {
 		
 		String url = SERVER_SYS_ROOT + SYS_jinshan_getUninstallInfo;
 		//创建jersery客户端配置对象
-		ClientConfig config = new DefaultClientConfig();
-		//检查安全传输协议设置
-		buildConfig(url, config);
-		//创建Jersery客户端对象
-        Client client = Client.create(config);
-      //连接服务器
-        WebResource service = client.resource(url);
-      //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
+		String textEntity = postMethod(SYS_jinshan_getUninstallInfo, json.toString());
 //      String status = JSONObject.fromObject(textEntity).getString("status");
         
         String status = JSONObject.fromObject(textEntity).getString("status");
@@ -160,18 +150,9 @@ public class SysWorker {
 		json.put("companyId", companyId);
 
 		
-		String url = SERVER_SYS_ROOT + SYS_jinshan_getHostCount;
+		String url = SYS_jinshan_getHostCount;
 		//创建jersery客户端配置对象
-		ClientConfig config = new DefaultClientConfig();
-		//检查安全传输协议设置
-		buildConfig(url, config);
-		//创建Jersery客户端对象
-        Client client = Client.create(config);
-      //连接服务器
-        WebResource service = client.resource(url);
-      //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
+		String textEntity = postMethod(url, json.toString());
 //      String status = JSONObject.fromObject(textEntity).getString("status");
         System.out.println(textEntity);
         
@@ -196,18 +177,9 @@ url解码后：
 		json.put("companyId", companyId);
 
 		
-		String url = SERVER_SYS_ROOT + SYS_jinshan_getOauthUrl;
+		String url = SYS_jinshan_getOauthUrl;
 		//创建jersery客户端配置对象
-		ClientConfig config = new DefaultClientConfig();
-		//检查安全传输协议设置
-		buildConfig(url, config);
-		//创建Jersery客户端对象
-        Client client = Client.create(config);
-      //连接服务器
-        WebResource service = client.resource(url);
-      //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
+		String textEntity = postMethod(url, json.toString());
         String status = JSONObject.fromObject(textEntity).getString("status");
         if (status.equals("success")) {
 			
@@ -238,18 +210,9 @@ url解码后：
 		json.put("userId", userId);
 
 		
-		String url = SERVER_SYS_ROOT +SYS_yunyan_gettoken ;
+		String url = SYS_yunyan_gettoken ;
 		//创建jersery客户端配置对象
-		ClientConfig config = new DefaultClientConfig();
-		//检查安全传输协议设置
-		buildConfig(url, config);
-		//创建Jersery客户端对象
-        Client client = Client.create(config);
-      //连接服务器
-        WebResource service = client.resource(url);
-      //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
+		String textEntity = postMethod(url, json.toString());
 //      String status = JSONObject.fromObject(textEntity).getString("status");
         
         String status = JSONObject.fromObject(textEntity).getString("status");
@@ -279,18 +242,9 @@ url解码后：
 		json.put("userId", userId);
 
 		
-		String url = SERVER_SYS_ROOT +SYS_yunyan_destroyToken ;
+		String url = SYS_yunyan_destroyToken ;
 		//创建jersery客户端配置对象
-		ClientConfig config = new DefaultClientConfig();
-		//检查安全传输协议设置
-		buildConfig(url, config);
-		//创建Jersery客户端对象
-        Client client = Client.create(config);
-      //连接服务器
-        WebResource service = client.resource(url);
-      //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
+		String textEntity = postMethod(url, json.toString());
 //      String status = JSONObject.fromObject(textEntity).getString("status");
         
         String status = JSONObject.fromObject(textEntity).getString("status");
@@ -319,18 +273,9 @@ url解码后：
 		json.put("token", token);
 
 		
-		String url = SERVER_SYS_ROOT +SYS_yunyan_getloginurl ;
+		String url = SYS_yunyan_getloginurl ;
 		//创建jersery客户端配置对象
-		ClientConfig config = new DefaultClientConfig();
-		//检查安全传输协议设置
-		buildConfig(url, config);
-		//创建Jersery客户端对象
-        Client client = Client.create(config);
-      //连接服务器
-        WebResource service = client.resource(url);
-      //获取响应结果
-        ClientResponse response = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class, json.toString());
-        String textEntity = response.getEntity(String.class);
+		String textEntity = postMethod(url, json.toString());
 //      String status = JSONObject.fromObject(textEntity).getString("status");
         
         String status = JSONObject.fromObject(textEntity).getString("status");
@@ -408,63 +353,6 @@ url解码后：
     }
 
 
-    /**
-	 * 功能描述：post方法请求
-	 * 参数描述:String sessionId 回话ID, String taskId任务ID
-	 *		 @time 2015-12-31
-	 */
-	private static String postMethod(String url, String xml, String sessionId) {
-		//创建客户端配置对象
-    	ClientConfig config = new DefaultClientConfig();
-    	//通信层配置设定
-		buildConfig(url,config);
-		//创建客户端
-		Client client = Client.create(config);
-		//连接服务器
-		WebResource service = client.resource(url);
-		//获取响应结果
-		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xml);
-		return response;
-	}
-	/**
-	 * 功能描述：get方法请求
-	 * 参数描述:String url 请求路径, String sessionId 回话ID
-	 *		 @time 2015-12-31
-	 */
-	private static String getMethod(String url,String sessionId){
-		//创建客户端配置对象
-    	ClientConfig config = new DefaultClientConfig();
-    	//通信层配置设定
-		buildConfig(url,config);
-		//创建客户端
-		Client client = Client.create(config);
-		//连接服务器
-		WebResource service = client.resource(url);
-		//获取响应结果
-		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
-		return response;
-	}
-	/**
-	 * 功能描述：安全通信配置设置
-	 * 参数描述:String url 路径,ClientConfig config 配置对象
-	 *		 @time 2015-12-31
-	 */
-	private static void buildConfig(String url,ClientConfig config) {
-		if(url.startsWith("https")) {
-        	SSLContext ctx = getSSLContext();
-        	config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
-        		     new HostnameVerifier() {
-        		         public boolean verify( String s, SSLSession sslSession ) {
-        		             return true;
-        		         }
-        		     }, ctx
-        		 ));
-        }
-	}
-	   
-    public static void main(String[] args)  {
-//        String sites = getSites("10001", "30001");
-        System.out.println("sys worker ");
-        
-    }
+
+
 }
