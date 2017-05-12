@@ -11,9 +11,9 @@
     <param-value>app1.root</param-value>
   </context-param>
   <!-- rest client -->
-   <listener>
-	<listener-class>com.cn.ctbri.listener.ContextClient</listener-class>
-   </listener>
+  <listener>
+  	<listener-class>com.cn.ctbri.listener.ContextClient</listener-class>
+  </listener>
   <!-- Spring容器配置 -->
    <listener>
       <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>   	
