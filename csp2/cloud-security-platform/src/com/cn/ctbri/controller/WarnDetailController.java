@@ -151,7 +151,8 @@ public class WarnDetailController {
 	            map.put("task", task);
 	            
 	            if(task!=null){
-	                map.put("progress", 100);
+	                map.put("progress", task.getProgress());
+//	                map.put("progress", 100);
 	                if(task.getCurrentUrl()!=null && !task.getCurrentUrl().equals("")){
 	                	map.put("currentUrl", task.getCurrentUrl());
 	                }else{
@@ -180,23 +181,6 @@ public class WarnDetailController {
 //        	return "/source/error/errorMsg";
         	return "redirect:/orderTrackInit.html";
         }else{
-        	
-        	//有告警：修改task表是否查看告警标识为1
-            /*if(orderList.get(0).get("status").equals(2) || orderList.get(0).get("status").equals(3)){
-            	Map<String, Object> paramMap1 = new HashMap<String, Object>();
-            	if(type.equals("2")){
-            		paramMap1.put("orderId", orderId);
-            		taskService.update(paramMap1);
-            	}else{
-            		if(groupId != null){
-                		paramMap1.put("orderId", orderId);
-                		paramMap1.put("groupId", groupId);
-                		taskService.update(paramMap1);
-            		}
-            	}
-
-        	}*/
-    		
 	        paramMap.put("orderId", orderId);
 	        paramMap.put("type", type);
 	        paramMap.put("group_flag", groupId);
