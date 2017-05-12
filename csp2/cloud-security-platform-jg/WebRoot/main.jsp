@@ -314,7 +314,7 @@ html, body {
 
 										<li class="fl"><a href="javascript:;"
 											onclick="buySelfHelpOrderSysMain(${sysList.id});">
-												<i><img src="${ctx}/source/images/portal/API_Sign.png"
+												<i><img src="${ctx}/source/images/portal/system_Sign.png"
 													alt=""></i> 
 												<p>
 													<img
