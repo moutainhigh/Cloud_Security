@@ -87,7 +87,7 @@ public class SouthAPIWorker {
         
 		System.out.println("****分布式  获取SessionId****");  
 		WebTarget target = mainTarget.path("/rest/adapter/loadDeviceAdapter");
-        Response response = target.request().post(Entity.entity(deviceId, MediaType.APPLICATION_JSON));
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String textEntity = response.readEntity(String.class);
         String status = JSONObject.fromObject(textEntity).getString("status");
         response.close();
