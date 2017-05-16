@@ -46,5 +46,13 @@ public interface IEngineService {
 	//获取资源信息
 	List<EngineCfg> findResourceByParam(Map<String, Object> resourcMap);
 
+	/**
+	 * 方法描述:
+	 * @author man
+	 * @date 2017年5月12日
+	 * @param engineMap
+	 */
+	void updateStatus(Map<String, Object> engineMap);
+
 
 }

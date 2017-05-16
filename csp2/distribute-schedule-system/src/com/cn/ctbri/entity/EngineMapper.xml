@@ -118,4 +118,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>	  
 	</select>
 
+	<!-- 更新引擎状态 -->
+    <update id="updateStatus"  parameterType="hashmap">
+        update cs_enginecfg set status = #{status} where engine_number = #{engine_number}
+    </update>
 </mapper>

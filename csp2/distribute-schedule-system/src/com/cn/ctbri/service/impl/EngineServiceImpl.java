@@ -64,6 +64,10 @@ public class EngineServiceImpl implements IEngineService{
 		return engineDao.findResourceByParam(resourcMap);
 	}
 
+	public void updateStatus(Map<String, Object> engineMap) {
+		engineDao.updateStatus(engineMap);
+	}
+
 
 	
 }

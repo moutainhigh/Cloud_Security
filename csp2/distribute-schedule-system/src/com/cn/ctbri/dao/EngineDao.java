@@ -38,5 +38,13 @@ public interface EngineDao {
 
 	List<EngineCfg> findResourceByParam(Map<String, Object> resourcMap);
 
+	/**
+	 * 方法描述:
+	 * @author man
+	 * @date 2017年5月12日
+	 * @param engineMap
+	 */
+	void updateStatus(Map<String, Object> engineMap);
+
 
 }

@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.cn.ctbri.dao.DaoCommon;
 import com.cn.ctbri.dao.EngineDao;
 import com.cn.ctbri.dao.TaskWarnDao;
@@ -77,6 +78,10 @@ public class EngineDaoImpl extends DaoCommon implements EngineDao {
 
 	public List<EngineCfg> findResourceByParam(Map<String, Object> resourcMap) {
 		return getSqlSession().selectList(ns+"findResourceByParam",resourcMap);
+	}
+
+	public void updateStatus(Map<String, Object> engineMap) {
+		getSqlSession().insert(ns+"updateStatus", engineMap);
 	}
 		
 	
