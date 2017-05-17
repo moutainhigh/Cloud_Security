@@ -35,11 +35,11 @@
     
     <context:component-scan base-package="com.cn.ctbri" />
     
-    <bean id="taskService" class="com.cn.ctbri.service.impl.TaskServiceImpl" />
+<!--     <bean id="taskService" class="com.cn.ctbri.service.impl.TaskServiceImpl" />
     <bean id="orderService" class="com.cn.ctbri.service.impl.OrderServiceImpl" />
     <bean id="alarmService" class="com.cn.ctbri.service.impl.AlarmServiceImpl" />
     <bean id="engineService" class="com.cn.ctbri.service.impl.EngineServiceImpl" />
-    <bean id="assetService" class="com.cn.ctbri.service.impl.AssetServiceImpl" />
+    <bean id="assetService" class="com.cn.ctbri.service.impl.AssetServiceImpl" /> -->
     
     <!-- 配置dbcp数据源 -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
@@ -98,7 +98,7 @@
     <bean id="resultTrigger"
     	class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="resultJobDetail" />
-    	<property name="cronExpression" value="0 0/1 * * * ?" />
+    	<property name="cronExpression" value="0 0/3 * * * ?" />
     </bean>
     
     <!--要调度的对象，引擎异常-->
