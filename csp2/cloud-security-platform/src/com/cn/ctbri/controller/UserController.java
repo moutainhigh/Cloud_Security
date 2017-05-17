@@ -1,7 +1,6 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,9 +16,6 @@ import java.util.regex.Pattern;
 import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.crypto.RandomNumberGenerator;
@@ -39,15 +35,16 @@ import com.cn.ctbri.entity.AttackCount;
 import com.cn.ctbri.entity.LoginHistory;
 import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.Notice;
+import com.cn.ctbri.entity.Partner;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceAPI;
-import com.cn.ctbri.entity.ServiceSys;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAdvertisementService;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.INoticeService;
 import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
+import com.cn.ctbri.service.IPartnerService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServiceAPIService;
 import com.cn.ctbri.service.IServiceSysService;
@@ -65,6 +62,9 @@ import com.cn.ctbri.util.SMSUtils;
 import com.cn.ctbri.util.ThreeDes;
 import com.cn.ctbri.util.passwordLevelUtil;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 /**
  * 创 建 人  ：  于永波
@@ -95,6 +95,8 @@ public class UserController{
 	@Autowired
 	IAdvertisementService adService;
 	@Autowired
+    IPartnerService partnerService;
+	@Autowired
     IServiceSysService serviceSysService;
 	
 
@@ -106,6 +108,8 @@ public class UserController{
 	@RequestMapping("/userDataUI.html")
 	public String userData(Model model,HttpServletRequest request){
 		User user = (User) request.getSession().getAttribute("globle_user");
+		List<Partner> list = partnerService.findAllPartner();
+		model.addAttribute("partnerList",list);//合作方列表
 		model.addAttribute("user",user);		//传对象到页面
 		return "/source/page/personalCenter/userData";
 	}
@@ -128,6 +132,7 @@ public class UserController{
 		String job = request.getParameter("job");
 		String company = request.getParameter("company");
 		String email= request.getParameter("email");
+		String partner= request.getParameter("partner");
 		if(email!=null&&!"".equals(email)){
 		
 		 String check = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
@@ -177,11 +182,17 @@ public class UserController{
 			}else{
 				globle_user.setIndustry("");
 			}
-			//行业
+			//职业
 			if(!job.equals("-1")){
 				globle_user.setJob(job);
 			}else{
 				globle_user.setJob("");
+			}
+			//合作方
+			if(!partner.equals("-1")){
+				globle_user.setPartner(partner);
+			}else{
+				globle_user.setPartner("");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -215,6 +226,10 @@ public class UserController{
 		}
 		
 		userService.update(globle_user);
+		
+		//add by tangxr 登录时将信息同步至服务能力
+		String message = NorthAPIWorker.setUser(String.valueOf(globle_user.getId()), globle_user.getApikey(), globle_user.getPartner());
+		
 		//object转化为Json格式
 		m.put("result", 0);//个人资料保存成功
 		JSONObject JSON = CommonUtil.objectToJson(response, m);
@@ -646,6 +661,10 @@ public class UserController{
 			
 			//将User放置到Session中，用于这个系统的操作
 			request.getSession().setAttribute("globle_user", _user);
+			
+			//add by tangxr 登录时将信息同步至服务能力
+			String msg=NorthAPIWorker.setUser(String.valueOf(_user.getId()), _user.getApikey(), _user.getPartner());
+			
 			//add by tangxr 2016-3-14
 			if(request.getSession().getAttribute("indexPage")!=null){
 				int indexPage = (Integer) request.getSession().getAttribute("indexPage");
@@ -891,6 +910,8 @@ public class UserController{
 	 */
 	@RequestMapping(value="registUI.html")
 	public String registUI(Model m){
+		List<Partner> list = partnerService.findAllPartner();
+        m.addAttribute("partnerList",list);//合作方列表
 		m.addAttribute("flag", "zc");
 		return "/source/page/regist/register";
 	}
@@ -952,6 +973,11 @@ public class UserController{
 			//验证职业
 			if(user.getJob().equals("-1")){
 				user.setJob("");
+			}
+			
+			//验证职业
+			if(user.getPartner().equals("-1")){
+				user.setPartner("");
 			}
 			
 			//验证手机号
@@ -1926,10 +1952,11 @@ public class UserController{
   		}
   		m.addAttribute("wafEventTypeCount",attackCountList.toString());
   		m.addAttribute("currentId", currentId);
-	  	} catch (UnsupportedEncodingException e) {
-	  		e.printStackTrace();
+	  	} catch (Exception e) {
+//	  		e.printStackTrace();
+	  		m.addAttribute("error", "服务器异常，请您耐心等待...");
+	  		return "/source/page/anquanbang/anquan_state";
 	  	}  	  
-
 		return "/source/page/anquanbang/anquan_state";
 	}
 	
