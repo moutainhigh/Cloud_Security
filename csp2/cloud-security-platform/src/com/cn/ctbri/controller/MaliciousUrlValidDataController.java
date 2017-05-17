@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.junit.Test;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,23 +28,38 @@ import com.cn.ctbri.util.JerseyJsonUtil;
 /**
  * 
  * @author ：刘汉生
- * @date： 2017-3-23下午2:47:25 修 改 人 ：刘汉生  修改日期：
+ * @date： 2017-5-09下午7:47:25 修 改 人 ：刘汉生  修改日期：
  * @description： 统计分析 版 本： 1.0
  */
 @Controller
 public class MaliciousUrlValidDataController {
 
+	
+	private static ResourceBundle bundle=ResourceBundle.getBundle("northAPI");
+	//private static String SOUTH_SERVER_WEB_ROOT=bundle.getString("SOUTH_SERVER_WEB_ROOT");
+	@RequestMapping(value="malicious_URL.html")
+	public String badUrl(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+		return "/source/page/maliciousURL/malicious_URL";
+	}
+	@RequestMapping(value="chinaMaliciousUrl.html")
+	public String chinaMaliciousUrl(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+		return "/source/page/maliciousURL/chinaMaliciousUrl";
+	}
+	@RequestMapping(value="maliciousUrlAnalysis.html")
+	public String maliciousUrlAnalysis(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+		return "/source/page/maliciousURL/maliciousUrlAnalysis";
+	}
+	@RequestMapping(value="worldMaliciousUrl.html")
+	public String worldMaliciousUrl(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+		return "/source/page/maliciousURL/worldMaliciousUrl";
+	}
 	/**
 	 * 
 	 * 功能描述： 请求到按国家类别分类获取有效的恶意url个数，并进行翻译转发为json
 	 * 
 	 * 
 	 */
-	private static ResourceBundle bundle=ResourceBundle.getBundle("url");
-	private static String SOUTH_SERVER_WEB_ROOT=bundle.getString("SOUTH_SERVER_WEB_ROOT");
-	     
-	
-	@RequestMapping(value="source/page/resource2/html/countryURL.html")
+	@RequestMapping(value="countryURL.html")
 	@ResponseBody
 	public void worldMapURL(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
 		HashMap<String, String>map=new HashMap<String, String>();
@@ -93,7 +107,7 @@ public class MaliciousUrlValidDataController {
 		map.put("CF","中非");
 		map.put("TD","乍得");
 		map.put("CL","智利");
-		map.put("CN","中国");
+		map.put("CN","中国大陆");
 		map.put("CX","圣诞岛");
 		map.put("CC","科科斯（基林）群岛");
 		map.put("CO","哥伦比亚");
@@ -299,11 +313,11 @@ public class MaliciousUrlValidDataController {
 		String validCountUrl=bundle.getString("Malurl_Valid_COUNT");//获得全球有效恶意URL个数
 		JerseyJsonUtil jerseyJsonUtil=new JerseyJsonUtil();
 		
-		String count=JSONObject.fromObject(jerseyJsonUtil.getMethod(SOUTH_SERVER_WEB_ROOT+allCountUrl)).
+		String count=JSONObject.fromObject(jerseyJsonUtil.getMethod(allCountUrl)).
 				get("count").toString();
-		String validCount=JSONObject.fromObject(jerseyJsonUtil.getMethod(SOUTH_SERVER_WEB_ROOT+validCountUrl)).
+		String validCount=JSONObject.fromObject(jerseyJsonUtil.getMethod(validCountUrl)).
 				get("count").toString();
-		String str=jerseyJsonUtil.getMethod(SOUTH_SERVER_WEB_ROOT+url);
+		String str=jerseyJsonUtil.getMethod(url);
 		JSONObject jb=JSONObject.fromObject(str);
 		JSONArray countList=(JSONArray) jb.get("countList");
 		Iterator<Object>it=countList.iterator();
@@ -341,7 +355,7 @@ public class MaliciousUrlValidDataController {
 	 * 
 	 */
 	
-	@RequestMapping(value="source/page/resource2/html/chinaURL.html")
+	@RequestMapping(value="chinaURL.html")
 	@ResponseBody
 	public void chinaMapUI(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
 		HashSet<String>provinceSet=new HashSet<String>();
@@ -382,11 +396,11 @@ public class MaliciousUrlValidDataController {
 		String allCountUrl=bundle.getString("China_Malurl_All_Count");//获得全部恶意url个数
 		String validCountUrl=bundle.getString("China_Malurl_Valid_Count");//获得有效恶意url个数
 		JerseyJsonUtil jerseyJsonUtil=new JerseyJsonUtil();
-		String count=JSONObject.fromObject(jerseyJsonUtil.getMethod(SOUTH_SERVER_WEB_ROOT+allCountUrl)).
+		String count=JSONObject.fromObject(jerseyJsonUtil.getMethod(allCountUrl)).
 				get("count").toString();
-		String validCount=JSONObject.fromObject(jerseyJsonUtil.getMethod(SOUTH_SERVER_WEB_ROOT+validCountUrl)).
+		String validCount=JSONObject.fromObject(jerseyJsonUtil.getMethod(validCountUrl)).
 				get("count").toString();
-		String str=jerseyJsonUtil.getMethod(SOUTH_SERVER_WEB_ROOT+url);
+		String str=jerseyJsonUtil.getMethod(url);
 		JSONObject jb=JSONObject.fromObject(str);
 		JSONArray countList=(JSONArray) jb.get("countList");
 		Iterator<Object>it=countList.iterator();
@@ -440,18 +454,9 @@ public class MaliciousUrlValidDataController {
 	/**
 	 * 获取最新的恶意URL数据，前端动态效果
 	 */
-	public static void main(String[] args) {
-		String url=bundle.getString("getTopData");//按省份获得有效恶意url个数
-		JerseyJsonUtil jerseyJsonUtil=new JerseyJsonUtil();
-		JSONObject jsonObject2 = new JSONObject();
-		jsonObject2.put("topNum",1);
-		String str=jerseyJsonUtil.postMethod(SOUTH_SERVER_WEB_ROOT+url, jsonObject2.toString());
-		System.out.println(str);
-		
-	}
-	@RequestMapping(value="source/page/resource2/html/getTopData.html")
+	
+	@RequestMapping(value="getTopData.html")
 	@ResponseBody
-	@Test
 	public void getTopData(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
 		HashMap<String, String>map=new HashMap<String, String>();
 		map.put("AF","阿富汗");
@@ -498,7 +503,7 @@ public class MaliciousUrlValidDataController {
 		map.put("CF","中非");
 		map.put("TD","乍得");
 		map.put("CL","智利");
-		map.put("CN","中国");
+		map.put("CN","中国大陆");
 		map.put("CX","圣诞岛");
 		map.put("CC","科科斯（基林）群岛");
 		map.put("CO","哥伦比亚");
@@ -702,7 +707,7 @@ public class MaliciousUrlValidDataController {
 		JerseyJsonUtil jerseyJsonUtil=new JerseyJsonUtil();
 		JSONObject jsonObject2 = new JSONObject();
 		jsonObject2.put("topNum",100);
-		String str=jerseyJsonUtil.postMethod(SOUTH_SERVER_WEB_ROOT+url, jsonObject2.toString());
+		String str=jerseyJsonUtil.postMethod(url, jsonObject2.toString());
 		JSONObject jb=JSONObject.fromObject(str);
 		JSONObject result=new JSONObject();
 		result.put("status", "success");
@@ -726,7 +731,7 @@ public class MaliciousUrlValidDataController {
 			jsonArray.add(jsonObject);
 		}
 		result.put("webphishList", jsonArray);
-		System.out.println(str);
+		//System.out.println(str);
 		System.out.println(result.toString());
 		//System.out.println(str);
 		try {
@@ -747,10 +752,10 @@ public class MaliciousUrlValidDataController {
 	 * 
 	 */
 	
-	@RequestMapping(value="source/page/resource2/html/monthUrl.html")
+	@RequestMapping(value="monthUrl.html")
 	@ResponseBody
 	public void monthURL(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-		ResourceBundle bundle=ResourceBundle.getBundle("url");
+		ResourceBundle bundle=ResourceBundle.getBundle("northAPI");
 		String url=bundle.getString("monthUrl");
 		JerseyJsonUtil jerseyJsonUtil=new JerseyJsonUtil();
 		JSONObject jsonObject2 = new JSONObject();
@@ -807,10 +812,10 @@ public class MaliciousUrlValidDataController {
 	 * 
 	 */
 	
-	@RequestMapping(value="source/page/resource2/html/getcountbyfieldtop5.html")
+	@RequestMapping(value="getcountbyfieldtop5.html")
 	@ResponseBody
 	public void getcountbyfieldtop5(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-		ResourceBundle bundle=ResourceBundle.getBundle("url");
+		ResourceBundle bundle=ResourceBundle.getBundle("northAPI");
 		String url=bundle.getString("getcountbyfieldtop5");
 		JerseyJsonUtil jerseyJsonUtil=new JerseyJsonUtil();
 		String str=jerseyJsonUtil.getMethod(url);
@@ -851,10 +856,10 @@ public class MaliciousUrlValidDataController {
 	 * 
 	 */
 	
-	@RequestMapping(value="source/page/resource2/html/getcountbytargettop10.html")
+	@RequestMapping(value="getcountbytargettop10.html")
 	@ResponseBody
 	public void getcountbytargettop10(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-		ResourceBundle bundle=ResourceBundle.getBundle("url");
+		ResourceBundle bundle=ResourceBundle.getBundle("northAPI");
 		String url=bundle.getString("getcountbytargettop10");
 		JerseyJsonUtil jerseyJsonUtil=new JerseyJsonUtil();
 		String str=jerseyJsonUtil.getMethod(url);
