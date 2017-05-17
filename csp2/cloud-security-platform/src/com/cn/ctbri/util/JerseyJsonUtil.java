@@ -50,6 +50,8 @@ public class JerseyJsonUtil {
     	return null;
     }
 	
+	
+	//
 	final static WebTarget southTarget = ContextClient.mainSouthTarget;
 	
 	
@@ -70,12 +72,12 @@ public class JerseyJsonUtil {
 	 * @return json结果
 	 */
 	public String postMethod(String url, String json) {
-		Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-		WebTarget webTarget = client.target(url);
-		Response response = webTarget.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+		/*Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+		WebTarget webTarget = client.target(url);*/
+		
+		Response response = southTarget.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
 		String str = (String)response.readEntity(String.class);
         response.close();
-        client.close();
         return str;
 	}
 	//get方法
@@ -90,7 +92,6 @@ public class JerseyJsonUtil {
 		Response response = webTarget.request().get();
 		String str = (String)response.readEntity(String.class);
         response.close();
-		client.close();
         return str;
     }
 	//post方法，不带参数
@@ -105,7 +106,6 @@ public class JerseyJsonUtil {
 		Response response = webTarget.request().post(Entity.entity(null,MediaType.APPLICATION_JSON));
 		String str = (String)response.readEntity(String.class);
         response.close();
-        client.close();
         return str;
 	}
 }
