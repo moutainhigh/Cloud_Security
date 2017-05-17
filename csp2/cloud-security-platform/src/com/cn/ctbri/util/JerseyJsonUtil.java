@@ -75,7 +75,7 @@ public class JerseyJsonUtil {
 		/*Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
 		WebTarget webTarget = client.target(url);*/
 		
-		Response response = southTarget.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+		Response response = southTarget.path(url).request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
 		String str = (String)response.readEntity(String.class);
         response.close();
         return str;
@@ -87,9 +87,10 @@ public class JerseyJsonUtil {
 	 * @return json结果
 	 */
 	public String getMethod(String url){
+		/*
 		Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-		WebTarget webTarget = client.target(url);
-		Response response = webTarget.request().get();
+		WebTarget webTarget = client.target(url);*/
+		Response response = southTarget.path(url).request().get();
 		String str = (String)response.readEntity(String.class);
         response.close();
         return str;
