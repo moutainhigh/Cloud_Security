@@ -148,7 +148,10 @@ public class SystemFilter extends OncePerRequestFilter  {
 				//安全大数据
 				if ("/sa_anquanbang.html".equals(path)) {
 					request.getSession().setAttribute("afterLoginUrl", "sa_anquanbang.html");
-				}else {
+				}else if("/malicious_URL.html".equals(path)){
+					request.getSession().setAttribute("afterLoginUrl", "malicious_URL.html");
+				}
+				else {
 					request.getSession().setAttribute("afterLoginUrl", "userCenterUI.html");
 				}
 				//end
