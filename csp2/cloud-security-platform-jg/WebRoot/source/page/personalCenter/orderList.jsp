@@ -224,7 +224,7 @@
 						             <c:if test="${list.isAPI==3}">		             						     					             						             	
 						             	<c:if test="${list.end_date>temp}">
 						             		<!-- <a href="javascript:void(0)" class="prompt" onclick="listExternal('${list.id}')">查看详情</a> -->
-						             		<a href="${ctx}/orderDetailsUI.html?orderId=${list.id }" target="_blank" title="系统安全帮详情">
+						             		<a href="${ctx}/orderSysDetails.html?orderId=${list.id }" target="_blank" title="系统安全帮详情">
 						                 	查看详情
 						                 	</a>
 						             	</c:if>
