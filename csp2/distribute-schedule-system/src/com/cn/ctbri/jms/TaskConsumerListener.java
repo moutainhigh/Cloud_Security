@@ -177,9 +177,9 @@ public class TaskConsumerListener implements MessageListener,Runnable{
                 }
 			}
             
-		    //创宇任务下发
+		   
         	if(engineStatus){
-        		if(t.getWebsoc()==1){
+        		if(t.getWebsoc()==1){//创宇
     		        t = getWebsoc(t, sessionid, engineSel);
     		    }else if(t.getWebsoc()==2){//引擎调度
                     if(engineSel.getEngine()==3){//创宇
@@ -260,10 +260,10 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	            preTaskData(t,engine);
 	            try {
 	            	String lssued = SouthAPIWorker.disposeScanTask(engine.getEngine_number(), String.valueOf(t.getTaskId())+"_"+t.getOrder_id(), this.destURL, this.destIP, "80", this.tplName);
-	                System.out.println("任务logo"+lssued);
+	                //System.out.println("任务logo"+lssued);
 	            	boolean state = this.getStatusBylssued(lssued);
 	            	if(state){
-//	            	if(true){
+                	//if(true){
 	                    //任务下发后,引擎活跃数加1
 	                    engine.setId(engine.getId());
 	                    engineService.update(engine);
@@ -377,6 +377,8 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 		                        }
 		                    }
 		                }
+	                }else{
+	                	
 	                }
 	                
 	            } catch (Exception e) {
@@ -749,8 +751,9 @@ public class TaskConsumerListener implements MessageListener,Runnable{
     		//获取引擎状态json串
             String resultStr = SouthAPIWorker.getEngineStatRate(engineList.get(i).getEngine_number());
 
+            String enNum = engineList.get(i).getEngine_number();
             //解析引擎设备参数，返回负载值
-            getLoadForEngine(resultStr);
+            getLoadForEngine(resultStr, enNum);
           
     	}
 
@@ -791,12 +794,17 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	 * @param maxTask 引擎最大承载任务数
 	 * @return
 	 */
-	private Map<String,Double> getLoadForEngine(String resultStr){
+	private Map<String,Double> getLoadForEngine(String resultStr, String enNum){
 		Map<String,Double> loadMap = new HashMap<String,Double>();
 		double load = 0;
         try {
+        	Map<String, Object> engineMap = new HashMap<String, Object>();
+            engineMap.put("engine_number", enNum);
             String status = JSONObject.fromObject(resultStr).getString("status");
             if("success".equals(status)){
+            	//status=1 ,平台引擎可用
+                engineMap.put("status", 1);
+                engineService.updateStatus(engineMap);
             	//解析引擎list
 				JSONArray jsonList= JSONObject.fromObject(resultStr).getJSONArray("StatRateList"); 
 				for (int i = 0; i < jsonList.size(); i++) {
@@ -829,6 +837,9 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 					}
 				}
 			}else{
+				//status=0 ,平台引擎不可用
+				engineMap.put("status", 0);
+				engineService.updateStatus(engineMap);
 				logger.info("当前设备处于停止或者异常的状态!");
 			}
         } catch (Exception e) {

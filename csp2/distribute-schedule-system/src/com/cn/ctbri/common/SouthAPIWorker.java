@@ -166,7 +166,7 @@ public class SouthAPIWorker {
         
 		System.out.println("****分布式  下发任务****");  
 		WebTarget target = mainTarget.path("/rest/adapter/disposeScanTask");
-        Response response = target.request().post(Entity.entity(deviceId, MediaType.APPLICATION_JSON));
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String textEntity = response.readEntity(String.class);
         response.close();
         if(deviceId.equals("11001")){
@@ -208,7 +208,7 @@ public class SouthAPIWorker {
         
 		System.out.println("****分布式    取消下发的任务****");  
 		WebTarget target = mainTarget.path("/rest/adapter/removeTask");
-        Response response = target.request().post(Entity.entity(deviceId, MediaType.APPLICATION_JSON));
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String textEntity = response.readEntity(String.class);
         response.close();
         return textEntity;
@@ -251,7 +251,7 @@ public class SouthAPIWorker {
     	
 		System.out.println("****分布式    根据任务ID获取任务执行结果数****");  
 		WebTarget target = mainTarget.path("/rest/adapter/getResultCountByTaskID");
-        Response response = target.request().post(Entity.entity(deviceId, MediaType.APPLICATION_JSON));
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String textEntity = response.readEntity(String.class);
         response.close();
         return textEntity;
@@ -290,7 +290,7 @@ public class SouthAPIWorker {
         
 		System.out.println("****分布式    根据任务ID获取任务执行结果数****");  
 		WebTarget target = mainTarget.path("/rest/adapter/getReportByTaskID");
-        Response response = target.request().post(Entity.entity(deviceId, MediaType.APPLICATION_JSON));
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String textEntity = response.readEntity(String.class);
         response.close();
         return textEntity;
