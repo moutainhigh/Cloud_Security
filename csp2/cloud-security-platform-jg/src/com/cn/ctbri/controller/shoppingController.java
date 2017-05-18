@@ -3134,8 +3134,11 @@ public class shoppingController {
     		if (order.getBegin_date().getTime() <= new Date().getTime() && order.getStatus() == 3) { //status=3：执行中有告警 
     			return "redirect:/warningInit.html?orderId="+orderId+"&type="+order.getType()+"&websoc="+order.getWebsoc();
     		}
-    		
-    	}else{
+    		if (order.getIsAPI()==3) {
+    			return "redirect:/orderSysDetails.html?orderId="+orderId;
+    		} 
+		}
+    	else{
     		if (order.getIsAPI() == 2 && order.getStatus() == 4) {
     			return "redirect:/warningWaf.html?orderId="+orderId+"&type="+order.getType();
     		}
