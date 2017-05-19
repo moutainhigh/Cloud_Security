@@ -39,7 +39,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="findPaidSysOrderByUserId" resultType="hashmap" parameterType="hashmap">
         select o.begin_date ,o.end_date , o.payFlag, o.serviceId from (select max(begin_date) begin_date from cs_order where isAPI=3 and payFlag=1 group by  serviceId ) a,  cs_order o where o.userId = #{userId} and a.begin_date=o.begin_date  order by begin_date desc
     </select>
-    
 	<!-- 根据用户查询所有记录 -->
     <select id="findOrderByUserId" resultType="hashmap" parameterType="Integer">
         select o.homeIcon,o.id,o.type,o.name,o.serviceId,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI,o.package_type,o.num,o.delFlag from
