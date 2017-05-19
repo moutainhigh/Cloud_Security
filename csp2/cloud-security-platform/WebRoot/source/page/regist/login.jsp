@@ -65,7 +65,8 @@
                 	<ul>
                     	<li class="clearfix">
                         	<div class="list fl">
-                            	<input type="text" class="text prompttext" id="login_name" onchange="logiName();" name="userName" value="" placeholder="用户名/手机号"/>
+                        	<!-- <input type="text" class="text prompttext" id="login_name" onchange="logiName();" name="userName" value="" placeholder="用户名/手机号"/> -->
+                            	<input type="text" class="text prompttext" id="login_name" name="userName" value="" placeholder="用户名/手机号"/>
                                 <i id="login_name_flag" class="error" style="display:none"></i>
                             </div>
                             <div class="prompt fl" id="login_name_prompt"><b></b></div>

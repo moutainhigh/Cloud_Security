@@ -2198,7 +2198,6 @@ public class shoppingController {
     			for (int m=0;m<strArray.length;m++){
     				orderIdList.add(strArray[m]);
     			}
-    			
     			orderNum= strArray.length;
     			if (orderNum == 1) {
     				List orderHashList = orderService.findByOrderId(orderIdList.get(0));
@@ -2216,7 +2215,9 @@ public class shoppingController {
     			    order=(HashMap) orderHashList.get(0);
     			    int serviceId=0;
     			    serviceId=(Integer) order.get("serviceId");
-    			    if (serviceId == 7|| serviceId==8||serviceId==9) {//极光自助、金山、云眼  接口
+    			    int isAPI=0;
+    			    isAPI = (Integer)order.get("isAPI");
+    			    if ((serviceId == 7|| serviceId==8||serviceId==9)&&isAPI!=1) {//极光自助、金山、云眼  接口
     			    	User loginUser = userService.findUserById(globle_user.getId()).get(0);
     			    	Date createDate = (Date)order.get("create_date");
     			    	Date  beginDate =(Date)order.get("begin_date");
@@ -2225,7 +2226,7 @@ public class shoppingController {
     			    	Integer userid = new Integer(globle_user.getId());
     			    	int scanTypeint = (Integer)order.get("scan_type");
     			    	Integer scanTypeInteger = new Integer(scanTypeint);
-    				    	
+    			    	Linkman linkman = orderService.findLinkmanByOrderId(orderId);  	
     			    	
     			    	if (orderId != null && !"".equals(orderId)) {
         					// 更新订单资产表
@@ -2247,6 +2248,11 @@ public class shoppingController {
 									selfHelpOrderService.updateSysOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date(),strUninstallPasswd);
 								}
 								System.out.println("url:"+SysWorker.getJinshanoauthurl(strTeString+userid.toString()));
+								
+							}else if (serviceId == 7) {//极光接口 
+								System.out.println(""+orderId );
+								String strInstanceid = SysWorker.getjiguanginstanceID(userid.toString(), orderId, linkman.getMobile(), linkman.getName());
+								selfHelpOrderService.updateSysOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date(),strInstanceid);
 								
 							}
     			    		else {
@@ -2446,7 +2452,7 @@ public class shoppingController {
     				String orderId = "";
 //	    		 orderVal = orderVal+ shopCar.getOrderId()+",";
     				try {
-    					if(shopCar.getServiceId()!=6){
+    					
     						orderId = NorthAPIWorker.vulnScanCreateAPI(
     								Integer.parseInt(shopCar.getAstName()),
     								shopCar.getBuynum(), shopCar.getServiceId(),
@@ -2455,7 +2461,7 @@ public class shoppingController {
 //    						String orderDate = odf.format(new Date());
 //    						orderId = orderDate+String.valueOf(Random.fivecode());
     						orderVal = orderVal+ orderId+",";
-    					}
+    					
     				} catch (Exception e) {
     					e.printStackTrace();
     				}
@@ -3127,8 +3133,11 @@ public class shoppingController {
     		if (order.getBegin_date().getTime() <= new Date().getTime() && order.getStatus() == 3) { //status=3：执行中有告警 
     			return "redirect:/warningInit.html?orderId="+orderId+"&type="+order.getType()+"&websoc="+order.getWebsoc();
     		}
-    		
-    	}else{
+    		if (order.getIsAPI()==3) {
+    			return "redirect:/orderSysDetails.html?orderId="+orderId;
+    		} 
+		}
+    	else{
     		if (order.getIsAPI() == 2 && order.getStatus() == 4) {
     			return "redirect:/warningWaf.html?orderId="+orderId+"&type="+order.getType();
     		}
