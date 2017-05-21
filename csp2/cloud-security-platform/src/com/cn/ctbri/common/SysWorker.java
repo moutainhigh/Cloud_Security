@@ -41,6 +41,10 @@ public class SysWorker {
 	private static String SYS_yunyan_destroyToken;
 	private static String SYS_yunyan_getloginurl;
 	
+	//绿盟
+	private static String SYS_jiguang_getauthurl;
+	private static String SYS_jiguang_reneworder;
+	
 	static{
 		try {
 			Properties p = new Properties();
@@ -54,7 +58,10 @@ public class SysWorker {
 			
 			SYS_yunyan_gettoken = p.getProperty("SYS_yunyan_gettoken");
 			SYS_yunyan_destroyToken = p.getProperty("SYS_yunyan_destroyToken");
-			SYS_yunyan_getloginurl = p.getProperty("SYS_yunyan_getloginurl");
+			SYS_yunyan_getloginurl = p.getProperty("SYS_yunyan_getloginurl");	
+			
+			SYS_jiguang_getauthurl = p.getProperty("SYS_jiguang_getauthurl");
+			SYS_jiguang_reneworder = p.getProperty("SYS_jiguang_reneworder");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -289,6 +296,116 @@ url解码后：
 		}
 
 	}
+	
+	/**
+	 * 功能描述：获取jiguang  登录url
+	 * @param 
+	 * 		 
+	 * @time 2017-4-18
+	 * 返回成功{
+  "status": "success","url":""}
+
+
+
+	 */
+	public static String getjiguangURL(String userId ,String orderId ,String mobile ,String customerName ){
+		JSONObject json =new JSONObject();
+		json.put("userId", userId);
+		json.put("orderId", orderId);
+		json.put("mobile", mobile);
+		json.put("customerName",customerName);
+
+		
+		String url = SERVER_SYS_ROOT +SYS_jiguang_getauthurl ;
+		//创建jersery客户端配置对象
+		String textEntity = postMethod(url, json.toString());
+
+//      String status = JSONObject.fromObject(textEntity).getString("status");
+        System.out.println("***********************yunyantoken"+textEntity);
+        String status = JSONObject.fromObject(textEntity).getString("status");
+        if (status.equals("success")) {
+        	String urlRes = "failed";
+        	urlRes = JSONObject.fromObject(textEntity).getString("url");   	
+        	return urlRes;
+
+		}
+        else {
+			return "failed";
+		}
+
+	}
+	
+	/**
+	 * 功能描述：获取jiguang  登录url
+	 * @param 
+	 * 		 
+	 * @time 2017-4-18
+	 * 返回成功{
+  "status": "success","url":""}
+
+
+
+	 */
+	public static String getjiguanginstanceID(String userId ,String orderId ,String mobile ,String customerName ){
+		JSONObject json =new JSONObject();
+		json.put("userId", userId);
+		json.put("orderId", orderId);
+		json.put("mobile", mobile);
+		json.put("customerName",customerName);
+
+		
+		String url = SERVER_SYS_ROOT +SYS_jiguang_getauthurl ;
+		//创建jersery客户端配置对象
+		String textEntity = postMethod(url, json.toString());
+
+        String status = JSONObject.fromObject(textEntity).getString("status");
+        if (status.equals("success")) {
+        	String resId = "failed";
+        	resId = JSONObject.fromObject(textEntity).getString("instanceId");   	
+        	return resId;
+
+		}
+        else {
+			return "failed";
+		}
+
+	}
+	/**
+	 * 功能描述：获取jiguang续费
+	 * @param instanceId  实例id（唯一标识，由接口9.1返回）
+	 * 		 
+	 * @time 2017-4-18
+	 * 返回成功
+
+
+	 */
+	public static String getjiguangreneworder(String instanceId){
+		JSONObject json =new JSONObject();
+		json.put("instanceId", instanceId);
+
+		
+		String url = SERVER_SYS_ROOT +SYS_jiguang_reneworder ;
+		//创建jersery客户端配置对象
+		String textEntity = postMethod(url, json.toString());
+
+//      String status = JSONObject.fromObject(textEntity).getString("status");
+        System.out.println("***********************yunyanURL"+textEntity);
+        String status = JSONObject.fromObject(textEntity).getString("status");
+        if (status.equals("success")) {
+        //	String urlRes = JSONObject.fromObject(textEntity).getString("url");   	
+        //	return urlRes;
+        	return "success";
+
+		}
+        else {
+			return "failed";
+		}
+
+	}
+	
+
+	
+
 	
 	/**
 	 * 功能描述： Base64解码
