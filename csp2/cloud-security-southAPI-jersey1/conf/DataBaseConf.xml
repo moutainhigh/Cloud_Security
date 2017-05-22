@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC" />
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver" />
+                <!-- 部署 数据库：本地库
+                <property name="url" value="jdbc:mysql:///southapi" />
+                 -->
+                 <!-- 
+                <property name="url" value="jdbc:mysql:///southapi" /> 
+                  -->
+                <property name="url" value="jdbc:mysql://219.141.189.186:63306/southapi" />
+                <property name="username" value="root" />
+                <property name="password" value="mssp@ctbri&amp;" />
+            </dataSource>
+        </environment>
+        <environment id="openphish">
+        	<transactionManager type="JDBC" />
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver" />
+                <!-- 部署 数据库：本地库 -->
+                <property name="url" value="jdbc:mysql://219.141.189.186:63306/openphish" />
+                <!-- 
+                <property name="url" value="jdbc:mysql:///southapi" /> 
+                <property name="url" value="jdbc:mysql://219.141.189.186:63306/southapi" /> -->
+                <property name="username" value="root" />
+                <!-- 
+                <property name="password" value="mssp@ctbri&amp;" />
+                 -->
+                <property name="password" value="mssp@ctbri&amp;" />
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogWebsecMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogArpMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogDdosMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogDefaceMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafNsfocusTargetinfoMapper"></mapper>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogWebsecCountMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogWebsecDstMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogWebsecSrcMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TViewIpv4LocationMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TIpv4LatlongMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TCityLocationMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWebPhishMapper"/> 
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TViewWebPhishCountryCountMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TViewWebPhishProvinceCountMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TViewWebPhishFieldCountMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TViewWebPhishTargetCountMapper"/>
+    </mappers>
+</configuration>
