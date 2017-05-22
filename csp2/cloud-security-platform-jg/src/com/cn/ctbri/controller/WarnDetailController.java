@@ -1461,7 +1461,7 @@ public class WarnDetailController {
     	else {
 			if (serviceId == 8) { //调用金山接口
 				String useridString = ((Integer)order.get("userId")).toString();
-				String urlRes = SysWorker.getJinshanoauthurl(strTeString+useridString);
+				String urlRes = SysWorker.getJinshanoauthurl(orderId+useridString);
 				if (!urlRes.equals("failed")) {
 					request.setAttribute("returnURL", urlRes);
 				}
