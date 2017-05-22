@@ -6,16 +6,22 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Form;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
+
 import com.alibaba.fastjson.JSONObject;
 import com.cn.ctbri.southapi.adapter.manager.CommonDeviceOperation;
 import com.cn.ctbri.southapi.adapter.utils.EncryptUtility;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.representation.Form;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
+
 
 
 
@@ -50,6 +56,28 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 	}
 
 	/**
+	 * 创建Client
+	 * @param targetUrl
+	 * @return
+	 */
+	private Client createBasicClient() {
+		SSLContext ctx = getSSLContext();
+		ClientBuilder clientBuilder = ClientBuilder.newBuilder().sslContext(ctx);
+		HostnameVerifier allowAll = new HostnameVerifier() {
+			@Override
+			public boolean verify(String hostname, SSLSession session) {
+				return true;
+			}
+		};
+		// buildConfig(targetUrl, clientBuilder);
+		Client c = clientBuilder.hostnameVerifier(allowAll).build();
+		// 连接服务器
+		
+		return c;
+	}
+	
+	
+	/**
 	 * 创建标签
 	 * @param apiId
 	 * @param apiKey
@@ -74,49 +102,27 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 	
 	private String createParamsString(com.alibaba.fastjson.JSONObject jsonObject){
 		String jsonString = jsonObject.toJSONString();
-		System.out.println(jsonString);
 		String paramsStringBase64 = EncryptUtility.encodeBase64Str(jsonString);
 		return paramsStringBase64;
 	}
-	/**
-	 * 带key-value参数的post方法
-	 * @param url
-	 * @param params
-	 * @return response
-	 */
-	private  String postMethodWithParams(String url, MultivaluedMapImpl params) {
-		//创建客户端配置对象
-    	ClientConfig config = new DefaultClientConfig();
-    	//通信层配置设定
-		buildConfig(url,config);
-		//创建客户端
-		Client client = Client.create(config);
-		//
-		//连接服务器
-		WebResource service = client.resource(url);
-		//获取响应结果
-		String response = service.queryParams(params).post(String.class);
-		client.destroy();
-		//For 2
-		return response;
-	}
-	
+
 	private  String postMethod(String url, Form form) {
 		//创建客户端配置对象
-    	ClientConfig config = new DefaultClientConfig();
-    	//通信层配置设定
-		buildConfig(url,config);
+		
 		//创建客户端
-		Client client = Client.create(config);
+		Client client = createBasicClient();
+		//创建Target并建立连接
+		System.out.println(baseURL+url);
+		WebTarget webTarget = client.target(baseURL+url);
 		//
-		//连接服务器
-		WebResource service = client.resource(url);
-		ClientResponse response = service.post(ClientResponse.class,form);
-		//String cookie = response.getCookies().toString();
-		String body = response.getEntity(String.class);
-		client.destroy();
+		System.out.println(">>>>>>>>>>>");
+		Response response = webTarget.path(url).request().post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE),
+				Response.class);
+		String responseString = response.readEntity(String.class);
+		response.close();
+		client.close();
 		//For 2
-		return body;
+		return responseString;
 	}
 	/**
 	 * 创建绿盟极光自助扫描订单apiid=501
@@ -155,12 +161,13 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 
 
 		Form form = new Form();
-		form.add("api_key", apiKey);
-		form.add("timestrap", timestrap);
-		form.add("api_id", 501);
-		form.add("sign", createSign(501, apiKey, apiSecret, timestrap).getSign());
-		form.add("params", createParamsString(paramJsonObject));
-		String responseJsonString = postMethod(baseURL+createOrderURI, form);
+		form.param("api_key", apiKey);
+		form.param("timestrap", timestrap.toString());
+		form.param("api_id", "501");
+		form.param("sign", createSign(501, apiKey, apiSecret, timestrap).getSign());
+		form.param("params", createParamsString(paramJsonObject));
+		System.out.println(form);
+		String responseJsonString = postMethod(createOrderURI, form);
 		System.out.println(responseJsonString);
 
 		
@@ -258,11 +265,11 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 		String signString = createHashMac(signJsonObject);
 		
 		Form form = new Form();
-		form.add("api_key", apiKey);
-		form.add("timestrap", timestrap);
-		form.add("params", createParamsString(paramJsonObject));
-		form.add("api_id", 502);
-		form.add("sign", signString);
+		form.param("api_key", apiKey);
+		form.param("timestrap", timestrap.toString());
+		form.param("params", createParamsString(paramJsonObject));
+		form.param("api_id", "502");
+		form.param("sign", signString);
 		
 		String responseJsonString = postMethod(baseURL+renewOrderURI, form);
 		

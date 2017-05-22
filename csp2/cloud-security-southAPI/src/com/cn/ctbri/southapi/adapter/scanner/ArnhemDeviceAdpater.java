@@ -61,7 +61,7 @@ public class ArnhemDeviceAdpater{
 	}
 	
 	public String getState(String deviceId) {
-		return getDeviceById(deviceId).getState(getDeviceConfigById(deviceId).getScannerEngineAPI());
+		return getDeviceById(deviceId).getState();
 	}
 	
 	public String getTemplate(String deviceId){
@@ -264,7 +264,7 @@ public class ArnhemDeviceAdpater{
 			e.printStackTrace();
 
 		}
-		return operation.getEngineState(scannerEngineAPI);
+		return operation.getEngineState();
     	
     }
     /**

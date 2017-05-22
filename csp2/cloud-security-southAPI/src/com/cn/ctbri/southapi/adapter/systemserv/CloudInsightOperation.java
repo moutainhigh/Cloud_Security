@@ -3,17 +3,23 @@ package com.cn.ctbri.southapi.adapter.systemserv;
 import java.io.IOException;
 import java.util.Properties;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.ctbri.southapi.adapter.manager.CommonDeviceOperation;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.WebResource.Builder;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
+
 
 
 
@@ -34,25 +40,34 @@ public class CloudInsightOperation extends CommonDeviceOperation{
 		}
 	}
 	
-	private Client createBasicWebClient(String url) {
-    	ClientConfig config = new DefaultClientConfig();
-    	//通信层配置设定
-		buildConfig(url,config);
-		//创建客户端
-		Client client = Client.create(config);
-		//连接服务器
-		
-		return client;
+	private Client createBasicClient() {
+		SSLContext ctx = getSSLContext();
+		ClientBuilder clientBuilder = ClientBuilder.newBuilder().sslContext(ctx);
+		HostnameVerifier allowAll = new HostnameVerifier() {
+			@Override
+			public boolean verify(String hostname, SSLSession session) {
+				return true;
+			}
+		};
+		// buildConfig(targetUrl, clientBuilder);
+		Client c = clientBuilder.hostnameVerifier(allowAll).build().register(JacksonJsonProvider.class);
+		// 连接服务器
+		return c;
 	}
+	
+
 	
 	
 	private String getMethod(String url){
-		Client client = createBasicWebClient(url);
-		WebResource service = client.resource(url);  
-        Builder builder =  service.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
-        String response = builder.get(String.class);
-        client.destroy();
-        return response;
+		Client client = createBasicClient();
+		
+		WebTarget webTarget = client.target(stewardURL+url);
+		Response response = webTarget.request().get();
+		String responseString = response.readEntity(String.class);
+		System.out.println(responseString);
+		response.close();
+		client.close();
+        return responseString;
     }
 	
 	public String getToken(JSONObject jsonObject) {
@@ -63,7 +78,7 @@ public class CloudInsightOperation extends CommonDeviceOperation{
 			return errorJsonObject.toString();
 		}
 		String randomChar=RandomStringUtils.randomAlphanumeric(32);
-		String url = stewardURL + "/getToken.do" + "?username=" + jsonObject.getString("userId") + "&"+randomChar;
+		String url =  "/getToken.do?username=" + jsonObject.getString("userId") + "&"+randomChar;
 		String tokenString = getMethod(url);
 		JSONObject returnJsonObject = new JSONObject(true);
 		returnJsonObject.put("status", "success");
@@ -79,7 +94,7 @@ public class CloudInsightOperation extends CommonDeviceOperation{
 			jsonObject.put("message", "token is null");
 			return errorJsonObject.toString();
 		}
-		String url = stewardURL + "/destroyToken.do" + "?token="+jsonObject.getString("token");
+		String url = "/destroyToken.do" + "?token="+jsonObject.getString("token");
 		String returnString = getMethod(url);
 		JSONObject returnJsonObject = new JSONObject();
 		if (returnString.equals("201")) {

@@ -1,20 +1,25 @@
 package com.cn.ctbri.southapi.adapter.waf;
 
 import java.util.Iterator;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.cn.ctbri.southapi.adapter.manager.CommonDeviceOperation;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.WebResource.Builder;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+
 
 /**
  * 
@@ -78,18 +83,23 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		return true;
 	}
 	
-	//创建基础webresource通信资源
-	private Client createBasicClient(String url) {
-    	ClientConfig config = new DefaultClientConfig();
-    	//通信层配置设定
-		buildConfig(url,config);
-		//创建客户端
-		Client client = Client.create(config);
-		client.addFilter(new HTTPBasicAuthFilter(nsfocusWafUsername,nsfocusWafPassword));
-		//连接服务器
-		WebResource service = client.resource(url);
-		return client;
+	private Client createBasicClient() {
+		SSLContext ctx = getSSLContext();
+		ClientBuilder clientBuilder = ClientBuilder.newBuilder().sslContext(ctx);
+		HostnameVerifier allowAll = new HostnameVerifier() {
+			@Override
+			public boolean verify(String hostname, SSLSession session) {
+				return true;
+			}
+		};
+		// buildConfig(targetUrl, clientBuilder);
+		Client c = clientBuilder.hostnameVerifier(allowAll).build();
+		// 连接服务器
+		
+		return c;
 	}
+	
+
 	/**
 	 * 功能描述：post方法请求(填充xml)
 	 * @time 2015-10-21
@@ -110,6 +120,17 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		return body;
 	}
 	
+	private String postMethod(String url, String jsonString){
+		Client client = createBasicClient();
+		WebTarget webTarget = client.target(url);
+		HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder().credentials(nsfocusWafUsername, nsfocusWafPassword).build();
+		Response response = webTarget.register(feature).request().post(Entity.entity(jsonString,MediaType.APPLICATION_JSON_TYPE),Response.class);
+		String responsesString = response.readEntity(String.class);
+		response.close();
+		client.close();
+		return responsesString;
+	}
+	
 	/**
 	 * 功能描述：post方法请求(不填充xml)
 	 * @time 2015-10-21
@@ -126,23 +147,40 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
         return response;
 	}
 	
-	private String getMethod(String url){
-		Client client = createBasicClient(url);
-		WebResource service = client.resource(url); 
-        Builder builder =  service.type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
-        String response = builder.get(String.class);
-        client.destroy();
-        return response;
-    }
 	
-	private String delMethod(String url){
-		Client client = createBasicClient(url);
-		WebResource service = client.resource(url);  
-        Builder builder =  service.type("application/json");
-        String response = builder.delete(String.class);
-        client.destroy();
-        return response;
+	private String getMethod(String url) {
+		Client client = createBasicClient();
+		WebTarget webTarget = client.target(url);
+		HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder().credentials(nsfocusWafUsername, nsfocusWafPassword).build();
+		Response response = webTarget.register(feature).request().get();
+		String responsesString = response.readEntity(String.class);
+		response.close();
+		client.close();
+		return responsesString;
 	}
+
+	private String delMethod(String url) {
+		Client client = createBasicClient();
+		WebTarget webTarget = client.target(url);
+		HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder().credentials(nsfocusWafUsername, nsfocusWafPassword).build();
+		Response response = webTarget.register(feature).request().delete();
+		String responsesString = response.readEntity(String.class);
+		response.close();
+		client.close();
+		return responsesString;
+	}
+	
+	private String delMethod(String url,String jsonString) {
+		Client client = createBasicClient();
+		WebTarget webTarget = client.target(url);
+		HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder().credentials(nsfocusWafUsername, nsfocusWafPassword).build();
+		Response response = webTarget.register(feature).request().delete();
+		String responsesString = response.readEntity(String.class);
+		response.close();
+		client.close();
+		return responsesString;
+	}
+	
 	private String delMethod(String url,String jsonString) {
 		Client client = createBasicClient(url);
 		WebResource service = client.resource(url);
@@ -204,7 +242,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	//post基本操作
 	private String postOperation(String url,String jsonString){
 		String authString = getWAFAuth(nsfocusAPIKey, nsfocusAPIValue, "post");
-		String returnString = postMethod(url+authString, jsonString);
+		String returnString = postMethod2(url+authString, jsonString);
 		return returnString;
 	}
 	//delete基本操作，不带请求参数
@@ -327,7 +365,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		System.out.println(">>>createSiteJsonObject="+createSiteJsonObject);
 		System.out.println(">>>url="+nsfocusWafUrl+REST_URI_V1+"/sites");
 		String createSiteString = postOperation(nsfocusWafUrl+REST_URI_V1+"/sites",createSiteJsonObject.toString());
-		
+		System.out.println(createSiteString);
 		JSONArray responseArray = JSONArray.fromObject(createSiteString);
 		String responseString = responseArray.getString(0);
 		return responseString;
@@ -490,7 +528,14 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	 */
 	public String getAllIpFromEth(JSONObject jsonObject) {
 		return getOperation(nsfocusWafUrl+REST_URI_V1+"/interfaces/all/ip");
-	}		
+	}	
+	
+	public static void main(String[] args) {
+		NsfocusWAFOperation operation = new NsfocusWAFOperation("https://219.141.189.189:58442", "vmwaf", "E34A-44A6-E12B-E1C9", "admin", "nsfocus");
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("wafIp", "101.201.222.199");
+		System.out.println(operation.createSite(jsonObject));
+	}
 }
 
 
