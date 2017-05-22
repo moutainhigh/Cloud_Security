@@ -2218,7 +2218,7 @@ public class shoppingController {
     			    serviceId=(Integer) order.get("serviceId");
     			    int isAPI=0;
     			    isAPI = (Integer)order.get("isAPI");
-    			    if ((serviceId == 7|| serviceId==8||serviceId==9)&&isAPI!=1) {//极光自助、金山、云眼  接口
+    			    if ((serviceId == 7|| serviceId==8||serviceId==9)&&isAPI==3) {//极光自助、金山、云眼  接口
     			    	User loginUser = userService.findUserById(globle_user.getId()).get(0);
     			    	Date createDate = (Date)order.get("create_date");
     			    	Date  beginDate =(Date)order.get("begin_date");
@@ -2238,17 +2238,17 @@ public class shoppingController {
     			    		// 系统安全帮 isAPI＝3
     			    		if (serviceId == 8) {// 金山接口
     			    			String strTeString = "test111996";
-								String strResString = SysWorker.getJinshanCreateOrder(strTeString+userid.toString(), loginUser.getCompany(), scanTypeInteger.toString());
+								String strResString = SysWorker.getJinshanCreateOrder(orderId+userid.toString(), loginUser.getCompany(), scanTypeInteger.toString());
 								if (!strResString.equals("success")) {
 									result = false; // 接口创建订单失败
 									System.out.println("金山接口创建失败");
 								} 
 								else {
 									System.out.println("金山接口创建成功" + orderId + " userid:"+userid.toString());
-									String strUninstallPasswd = SysWorker.getJinshanUninstallInfo(strTeString+userid.toString());
+									String strUninstallPasswd = SysWorker.getJinshanUninstallInfo(orderId+userid.toString());
 									selfHelpOrderService.updateSysOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date(),strUninstallPasswd);
 								}
-								System.out.println("url:"+SysWorker.getJinshanoauthurl(strTeString+userid.toString()));
+								System.out.println("url:"+SysWorker.getJinshanoauthurl(orderId+userid.toString()));
 								
 							}else if (serviceId == 7) {//极光接口 
 								System.out.println(""+orderId );
