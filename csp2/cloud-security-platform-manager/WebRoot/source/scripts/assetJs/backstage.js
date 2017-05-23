@@ -83,7 +83,7 @@ function getCitys(provId){
 	//alert("ddddddddddddd");
 	//查询省对应的市  
 	 $.ajax({
-		 	data: {"provId":provId},
+		 	data: {"districtId":provId},
 	        type: "POST",
 	        cache: false,
 	        dataType: "json",
