@@ -132,7 +132,8 @@ if(serviceDetail != null && serviceDetail != ''){
 				var html = '';
 				html = html + '<div id="resUploadList_'+ i +'" class="upload_append_list"><p><strong>' + detailIconArray[i] + '</strong>'+ 
 					'<a href="javascript:" class="upload_delete" title="删除" data-index="'+ i +'">删除</a><br />' +
-					'<img id="resUploadImage_' + i + '" src="' + imgsrc + '" class="upload_image" /></p>'+ 
+					'<img id="resUploadImage_' + i + '" src="' + imgsrc + '" class="upload_image" />'+ 
+					'<input type="hidden" class="previewUploadName" value="'+detailIconArray[i]+'"/></p>'+
 					'<span id="resUploadProgress_' + i + '" class="upload_progress"></span>' +
 				'</div>';
 				$("#preview").append(html);
@@ -446,7 +447,7 @@ var params = {
 						'<a href="javascript:" class="upload_delete" title="删除" data-index="'+ i +'">删除</a><br />' +
 						'<img id="uploadImage_' + i + '" src="' + e.target.result + '" class="upload_image" /></p>'+ 
 						'<span id="uploadProgress_' + i + '" class="upload_progress"></span>' +
-						'<input type="hidden" id="uploadName_'+ i +'" value=""/>'+
+						'<input type="hidden" class="previewUploadName" id="uploadName_'+ i +'" value=""/>'+
 					'</div>';	
 					i++;
 					funAppendImage();
