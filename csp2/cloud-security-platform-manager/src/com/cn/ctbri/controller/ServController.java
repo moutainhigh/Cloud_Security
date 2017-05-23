@@ -65,7 +65,7 @@ public class ServController {
 	 *		 @time 2015-2-3
 	 */
 	@RequestMapping("/adminServUI.html")
-	public String adminDeleteUser(User user,HttpServletRequest request){
+	public String adminServUI(User user,HttpServletRequest request){
 		//获取服务类型
         List<Serv> servList = selfHelpOrderService.findService();
         request.setAttribute("servList", servList);//订单总数
