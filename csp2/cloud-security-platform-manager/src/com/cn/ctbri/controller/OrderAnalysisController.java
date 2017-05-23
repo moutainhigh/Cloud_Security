@@ -33,7 +33,7 @@ public class OrderAnalysisController {
 	IServService servService;
 	
 	@RequestMapping("/orderformanalyse.html")
-	public String admin(){
+	public String orderformanalyseUI(){
 		return "/source/adminPage/orderManage/orderformanalyse";
 	}
 	@RequestMapping("/getAllService.html")
