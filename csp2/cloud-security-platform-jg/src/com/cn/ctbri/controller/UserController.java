@@ -128,6 +128,8 @@ public class UserController{
 		String job = request.getParameter("job");
 		String company = request.getParameter("company");
 		String email= request.getParameter("email");
+		String partner = request.getParameter("partner");
+		
 		if(email!=null&&!"".equals(email)){
 		
 		 String check = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
@@ -182,6 +184,12 @@ public class UserController{
 				globle_user.setJob(job);
 			}else{
 				globle_user.setJob("");
+			}
+			//合作方
+			if(!partner.equals("-1")){
+				globle_user.setPartner(partner);
+			}else{
+				globle_user.setPartner("");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -646,6 +654,8 @@ public class UserController{
 			
 			//将User放置到Session中，用于这个系统的操作
 			request.getSession().setAttribute("globle_user", _user);
+			
+			String msg = NorthAPIWorker.setUser(String.valueOf(_user.getId()), _user.getApikey(), _user.getPartner());
 			//add by tangxr 2016-3-14
 			if(request.getSession().getAttribute("indexPage")!=null){
 				int indexPage = (Integer) request.getSession().getAttribute("indexPage");
