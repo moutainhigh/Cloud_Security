@@ -154,11 +154,16 @@ public class N_AvailabilityService {
 							
 							boolean flag = Common.isSameDate(date);
 							if(!flag){
-								return "startTime不能小于当前日期，请输入正确的日期!";
+								json.put("code", 404);
+								json.put("message", "startTime不能小于当前日期，请输入正确的日期!");
+								return json.toString();
 							}
 							boolean urlStatus = Common.urlCheck(targetURL);
 							if(urlStatus){
-								return "targetURL不是有效的地址，请输入正确的网站地址!";
+								json.put("code", 404);
+								json.put("message", "targetURL不是有效的地址，请输入正确的网站地址!");
+								return json.toString();
+//								return "targetURL不是有效的地址，请输入正确的网站地址!";
 							}
 							
 							//生成订单id，当前日期加5位随机数
