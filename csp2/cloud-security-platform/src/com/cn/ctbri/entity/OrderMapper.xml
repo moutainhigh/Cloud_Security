@@ -29,11 +29,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 根据用户id和serviceId 查询记录 -->
     
     <select id="findOrderByUserIdAndServiceId" resultType="hashmap" parameterType="hashmap">
-        select o.begin_date ,o.end_date , o.payFlag from cs_order o where o.userId = #{userId} and o.serviceId = #{serviceId} and payFlag=1 order by end_date desc
+        select o.begin_date ,o.end_date , o.payFlag ,o.isAPI from cs_order o where o.userId = #{userId} and o.serviceId = #{serviceId} and payFlag=1  order by end_date desc
     </select>
     
      <select id="findOrderByUserIdAndServiceIdCheckShopCar" resultType="hashmap" parameterType="hashmap">
-        select o.begin_date ,o.end_date , o.payFlag from cs_order o where o.userId = #{userId} and o.serviceId = #{serviceId} and payFlag=0 order by begin_date desc
+        select o.begin_date ,o.end_date , o.payFlag ,o.isAPI from cs_order o where o.userId = #{userId} and o.serviceId = #{serviceId} and payFlag=0  order by begin_date desc
     </select>
     
     <select id="findPaidSysOrderByUserId" resultType="hashmap" parameterType="hashmap">

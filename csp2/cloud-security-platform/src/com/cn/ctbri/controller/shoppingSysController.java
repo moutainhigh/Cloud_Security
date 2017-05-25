@@ -121,7 +121,6 @@ public class shoppingSysController {
 			e.printStackTrace();
 		}
 	}
-	
 	/**
 	 * 功能描述： 极光页面初始化
 	 * 参数描述：  无
@@ -225,9 +224,10 @@ public class shoppingSysController {
 							String strEndDate =  orderMap.get("end_date").toString();
 							String strNowDate = DateUtils.dateToString(new Date());
 							
+							String isAPI = orderMap.get("isAPI").toString();
 							String strpayflag = orderMap.get("payFlag").toString();
 							
-							if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0 && strpayflag.equals("1")) {
+							if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0 && strpayflag.equals("1")&&isAPI.equals("3")) {
 								
 	
 									// 把数据返回到页面
@@ -357,10 +357,10 @@ public class shoppingSysController {
 								String strBeginDate = orderMap.get("begin_date").toString();
 								String strEndDate =  orderMap.get("end_date").toString();			
 								String strpayflag = orderMap.get("payFlag").toString();
-								
+								String strisAPI = orderMap.get("isAPI").toString();
 									
 								String strNowDate = DateUtils.dateToString(new Date());							
-								if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0 && strpayflag.equals("1")) {
+								if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0 && strpayflag.equals("1")&&strisAPI.equals("3")) {
 										// 把数据返回到页面
 									Serv serviceRe = servService.findById(Integer.parseInt(serviceId));
 									ServiceDetail servDetailRe = servDetailService.findByServId(Integer.parseInt(serviceId));
@@ -1210,10 +1210,11 @@ public class shoppingSysController {
 			HashMap<String,Object>  orderMap = (HashMap<String,Object>)orderList.get(0);								
 			String strBeginDate = orderMap.get("begin_date").toString();
 			String strEndDate =  orderMap.get("end_date").toString();			
-			String strpayflag = orderMap.get("payFlag").toString();					
+			String strpayflag = orderMap.get("payFlag").toString();	
+			String strisAPI = orderMap.get("isAPI").toString();
 			String strNowDate = DateUtils.dateToString(new Date());	
 			
-			if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0 && strpayflag.equals("1")) {
+			if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0 && strpayflag.equals("1")&&strisAPI.equals("3")) {
 				m.put("status", 3);
 				//m.put("error", true);
 				//m.put("message", "购物车已有同类订单，不能重复购买");
@@ -1238,7 +1239,8 @@ public class shoppingSysController {
 		if (orderList2.size() > 0 && orderList2 != null) {			
 			HashMap<String, Object> orderMap2 = (HashMap<String, Object>) orderList2.get(0);			
 			String strpayflag2 = orderMap2.get("payFlag").toString();
-			if (strpayflag2.equals("0") ) {	                
+			String strisAPI = orderMap2.get("isAPI").toString();
+			if (strpayflag2.equals("0") && strisAPI.equals("3")) {	                
 				m.put("status", 4);
 				//m.put("error", true);
 				//m.put("message", "购物车已有同类订单，不能重复购买");
