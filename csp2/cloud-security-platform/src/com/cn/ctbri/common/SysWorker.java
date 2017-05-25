@@ -85,7 +85,7 @@ public class SysWorker {
 		System.out.println(url);
 		Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
 		WebTarget webTarget = client.target(SERVER_SYS_ROOT);
-		WebTarget target = webTarget.path(url);
+		WebTarget target = southTarget.path(url);
 		Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
 		String str = (String)response.readEntity(String.class);
         response.close();
