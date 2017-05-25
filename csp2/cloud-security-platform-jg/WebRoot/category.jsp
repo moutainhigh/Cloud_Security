@@ -70,27 +70,6 @@ function buySystemService(servId){
 					</ol>
 				</li>
 				<li>
-					<a href="${ctx}/api_anquanbang.html">安全能力API</a>
-					<ol id="anquanbangAPI_ol">
-						<c:forEach var="apiList" items="${servAPIList}"  varStatus="status">
-							<c:if test="${status.count == 1}">
-							  <li style="border: none;">
-							</c:if>
-							<c:if test="${status.count != 1}">
-							  <li>
-							</c:if>
-								<!--<a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${apiList.id }&indexPage=2">${apiList.name }</a>
-							-->
-							<a href="javascript:;" onclick="buyServiceAPI(${apiList.id });">${apiList.name }</a>
-							<form action="selfHelpOrderAPIInit.html" method="post" id="selfHelpOrderAPIInitForm">
-								<input type="hidden" id="category_apiId" name="apiId" value="${apiList.id }"/>
-								<input type="hidden" id="indexPage" name="indexPage" value="2"/>
-							</form>
-							</li>
-						</c:forEach>
-					</ol>
-				</li>
-				<li>
 					<a href="${ctx}/system_anquanbang.html">系统安全帮</a>
 					<ol id="anquanbangAPI_ol">
 						<c:forEach var="serv" items="${systemServList}"  varStatus="status">
@@ -114,6 +93,28 @@ function buySystemService(servId){
 						</c:forEach>
 					</ol>
 				</li>
+				<li>
+					<a href="${ctx}/api_anquanbang.html">安全能力API</a>
+					<ol id="anquanbangAPI_ol">
+						<c:forEach var="apiList" items="${servAPIList}"  varStatus="status">
+							<c:if test="${status.count == 1}">
+							  <li style="border: none;">
+							</c:if>
+							<c:if test="${status.count != 1}">
+							  <li>
+							</c:if>
+								<!--<a href="${ctx}/selfHelpOrderAPIInit.html?apiId=${apiList.id }&indexPage=2">${apiList.name }</a>
+							-->
+							<a href="javascript:;" onclick="buyServiceAPI(${apiList.id });">${apiList.name }</a>
+							<form action="selfHelpOrderAPIInit.html" method="post" id="selfHelpOrderAPIInitForm">
+								<input type="hidden" id="category_apiId" name="apiId" value="${apiList.id }"/>
+								<input type="hidden" id="indexPage" name="indexPage" value="2"/>
+							</form>
+							</li>
+						</c:forEach>
+					</ol>
+				</li>
+				
 				<li>
 					<a href="${ctx}/sa_anquanbang.html" target="_blank">安全大数据</a>
 				</li>
