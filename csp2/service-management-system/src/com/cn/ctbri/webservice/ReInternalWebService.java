@@ -357,7 +357,7 @@ public class ReInternalWebService {
 		        	
 		        	User user = userService.findUserByUserId(o.getUserId());
 		        	//第三方推送url
-		        	if(user!=null){
+		        	if(user!=null && user.getUrlAddr()!=null && !("").equals(user.getUrlAddr())){
 		        		String callbackAddr = user.getUrlAddr();
 			        	ReNoticeWorker.taskNotice(callbackAddr,orderId,o.getStatus(),"");
 		        	}
