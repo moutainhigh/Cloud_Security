@@ -14,9 +14,7 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.MediaType;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cn.ctbri.common.HuaweiWorker;
+import com.cn.ctbri.common.APIWorker;
 import com.cn.ctbri.entity.APICount;
 import com.cn.ctbri.entity.ApiPrice;
 import com.cn.ctbri.entity.Linkman;
@@ -51,11 +49,6 @@ import com.cn.ctbri.service.ITaskWarnService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Random;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 /**
  * 创 建 人  ：  tangxr
@@ -100,7 +93,7 @@ public class shoppingAPIController {
 	static{
 		try {
 			Properties p = new Properties();
-			p.load(HuaweiWorker.class.getClassLoader().getResourceAsStream("InternalAPI.properties"));
+			p.load(APIWorker.class.getClassLoader().getResourceAsStream("InternalAPI.properties"));
 			
 			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
 			VulnScan_serviceApiPrice = p.getProperty("VulnScan_serviceApiPrice");

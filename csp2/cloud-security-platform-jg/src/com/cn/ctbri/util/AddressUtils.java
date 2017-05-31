@@ -32,10 +32,11 @@ public class AddressUtils {
 	   String str = getJsonContent("http://ip.taobao.com/service/getIpInfo.php?ip="+IP);
 
 	   JSONObject obj = JSONObject.fromObject(str);
-	   JSONObject obj2 =  (JSONObject) obj.get("data");
+	   System.out.println(str);
+	   
 	   String code = obj.get("code").toString();
 	   if(code.equals("0")){
-
+		JSONObject obj2 =  (JSONObject) obj.get("data");
 	    resout =  obj2.get("region").toString();
 	   }else{
 	    resout =  "IP地址有误";

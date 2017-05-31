@@ -2,39 +2,22 @@ package com.cn.ctbri.common;
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import javax.ws.rs.core.Response;
 
 import com.cn.ctbri.controller.WafController;
-import com.cn.ctbri.util.DateUtils;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
+import com.cn.ctbri.listener.ContextClient;
 /**
  * 创 建 人  ：  tangxr
  * 创建日期：  2016-05-25
- * 描        述：  api接口本地Worker
+ * 描        述：  api接口本地Worker(用户获取api相关)
  * 版        本：  1.0
  */
 public class APIWorker {
@@ -50,7 +33,7 @@ public class APIWorker {
     static{
 		try {
 			Properties p = new Properties();
-			p.load(HuaweiWorker.class.getClassLoader().getResourceAsStream("northAPI.properties"));
+			p.load(APIWorker.class.getClassLoader().getResourceAsStream("northAPI.properties"));
 			
 			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
 			VulnScan_serviceCreateAPICount = p.getProperty("VulnScan_serviceCreateAPICount");
@@ -64,25 +47,19 @@ public class APIWorker {
     public APIWorker() {
 	}
 	
+    final static WebTarget mainTarget = ContextClient.mainTarget;
+    
 	/**
 	 * 功能描述： 获取用户购买服务次数
 	 * @param orderId 订单编号
 	 * @time 2016-5-25
 	 */
 	public static String getUserCount(String orderId){
-		String url = SERVER_WEB_ROOT + VulnScan_serviceCreateAPICount;
-		//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url+orderId);
-        //获取响应结果
-        ClientResponse clientResponse = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);        
-		String str = clientResponse.getEntity(String.class);
-        System.out.println(str);
+		System.out.println("****获取用户购买服务次数****");  
+        WebTarget target = mainTarget.path(VulnScan_serviceCreateAPICount+orderId);
+        Response response = target.request(MediaType.APPLICATION_JSON).buildGet().invoke();
+        String str = (String)response.readEntity(String.class);
+        response.close();
         return str;
 	}
 	
@@ -92,19 +69,11 @@ public class APIWorker {
 	 * @time 2016-5-25
 	 */
 	public static String getUserAllCount(String orderId){
-		String url = SERVER_WEB_ROOT + VulnScan_analysisAPICount;
-		//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url+orderId);
-        //获取响应结果
-        ClientResponse clientResponse = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);        
-		String str = clientResponse.getEntity(String.class);
-        System.out.println(str);
+		System.out.println("****获取某订单扫描所有api的次数****");  
+        WebTarget target = mainTarget.path(VulnScan_analysisAPICount+orderId);
+        Response response = target.request().get();
+        String str = (String)response.readEntity(String.class);
+        response.close();
         return str;
 	}
 	
@@ -115,25 +84,13 @@ public class APIWorker {
 	 * @time 2016-5-25
 	 */
 	public static String getAPIHistory(String scanUrl, String beginDate, String endDate, String orderId){
-		//组织发送内容JSON
-		JSONObject req = new JSONObject();
-		req.put("scanUrl", scanUrl);
-		req.put("beginDate", beginDate);
-		req.put("endDate", endDate);
-		String param = req.toString();
-		String url = SERVER_WEB_ROOT + VulnScan_getAPIHistory;
-		//创建jersery客户端配置对象
-	    ClientConfig config = new DefaultClientConfig();
-	    //检查安全传输协议设置
-	    buildConfig(url,config);
-	    //创建Jersery客户端对象
-        Client client = Client.create(config);
-        //连接服务器
-        WebResource service = client.resource(url+orderId);
-        //获取响应结果
-        ClientResponse clientResponse = service.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON).post(ClientResponse.class, param);  
-		String str = clientResponse.getEntity(String.class);
-        System.out.println(str);
+		System.out.println("****根据订单号获取调用接口历史记录****");  
+        WebTarget target = mainTarget.path(VulnScan_getAPIHistory+orderId).queryParam("scanUrl", scanUrl)
+        		.queryParam("beginDate", beginDate)
+        		.queryParam("endDate", endDate);
+        Response response = target.request().get();
+        String str = (String)response.readEntity(String.class);
+        response.close();
         return str;
 	}
 	
@@ -184,54 +141,54 @@ public class APIWorker {
 	 * 参数描述:String sessionId 回话ID, String taskId任务ID
 	 *		 @time 2015-12-31
 	 */
-	private static String postMethod(String url, String xml, String sessionId) {
+//	private static String postMethod(String url, String xml, String sessionId) {
 		//创建客户端配置对象
-    	ClientConfig config = new DefaultClientConfig();
-    	//通信层配置设定
-		buildConfig(url,config);
-		//创建客户端
-		Client client = Client.create(config);
-		//连接服务器
-		WebResource service = client.resource(url);
-		//获取响应结果
-		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xml);
-		return response;
-	}
+//    	ClientConfig config = new DefaultClientConfig();
+//    	//通信层配置设定
+//		buildConfig(url,config);
+//		//创建客户端
+//		Client client = Client.create(config);
+//		//连接服务器
+//		WebResource service = client.resource(url);
+//		//获取响应结果
+//		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).post(String.class, xml);
+//		return response;
+//	}
 	/**
 	 * 功能描述：get方法请求
 	 * 参数描述:String url 请求路径, String sessionId 回话ID
 	 *		 @time 2015-12-31
 	 */
-	private static String getMethod(String url,String sessionId){
+//	private static String getMethod(String url,String sessionId){
 		//创建客户端配置对象
-    	ClientConfig config = new DefaultClientConfig();
-    	//通信层配置设定
-		buildConfig(url,config);
-		//创建客户端
-		Client client = Client.create(config);
-		//连接服务器
-		WebResource service = client.resource(url);
-		//获取响应结果
-		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
-		return response;
-	}
+//    	ClientConfig config = new DefaultClientConfig();
+//    	//通信层配置设定
+//		buildConfig(url,config);
+//		//创建客户端
+//		Client client = Client.create(config);
+//		//连接服务器
+//		WebResource service = client.resource(url);
+//		//获取响应结果
+//		String response = service.cookie(new NewCookie("sessionid",sessionId)).type(MediaType.APPLICATION_XML).accept(MediaType.TEXT_XML).get(String.class);
+//		return response;
+//	}
 	/**
 	 * 功能描述：安全通信配置设置
 	 * 参数描述:String url 路径,ClientConfig config 配置对象
 	 *		 @time 2015-12-31
 	 */
-	private static void buildConfig(String url,ClientConfig config) {
-		if(url.startsWith("https")) {
-        	SSLContext ctx = getSSLContext();
-        	config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
-        		     new HostnameVerifier() {
-        		         public boolean verify( String s, SSLSession sslSession ) {
-        		             return true;
-        		         }
-        		     }, ctx
-        		 ));
-        }
-	}
+//	private static void buildConfig(String url,ClientConfig config) {
+//		if(url.startsWith("https")) {
+//        	SSLContext ctx = getSSLContext();
+//        	config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(
+//        		     new HostnameVerifier() {
+//        		         public boolean verify( String s, SSLSession sslSession ) {
+//        		             return true;
+//        		         }
+//        		     }, ctx
+//        		 ));
+//        }
+//	}
 	
     
     public static void main(String[] args) throws UnsupportedEncodingException {

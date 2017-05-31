@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cn.ctbri.cfg.Configuration;
-import com.cn.ctbri.common.HuaweiWorker;
 import com.cn.ctbri.entity.APICount;
 import com.cn.ctbri.entity.Asset;
 import com.cn.ctbri.entity.Linkman;
@@ -114,7 +113,7 @@ public class shoppingSysController {
 	static{
 		try {
 			Properties p = new Properties();
-			p.load(HuaweiWorker.class.getClassLoader().getResourceAsStream("InternalAPI.properties"));
+			p.load(shoppingSysController.class.getClassLoader().getResourceAsStream("InternalAPI.properties"));
 			
 			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
 			//VulnScan_servicePrice = p.getProperty("VulnScan_servicePrice");

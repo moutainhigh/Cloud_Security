@@ -231,6 +231,8 @@ public class Scheduler4Result {
 									            String averSendCount = taskObj.getString("averSendCount");
 									            String sendBytes = taskObj.getString("sendBytes");
 									            String receiveBytes = taskObj.getString("receiveBytes");
+									            String exceptMark = taskObj.getString("exceptMark");
+									            
 										        Task t = new Task();
 										        t.setTaskId(taskId);
 	//									        t.setOrder_asset_Id(String.valueOf(oaList.get(0).getId()));
@@ -249,6 +251,7 @@ public class Scheduler4Result {
 										        t.setAverSendCount(averSendCount);
 										        t.setSendBytes(sendBytes);
 								                t.setReceiveBytes(receiveBytes);
+								                t.setExceptMark(Integer.parseInt(exceptMark));
 										        t.setStatus(sta);
 										        taskService.insert(t);
 											}
@@ -353,6 +356,7 @@ public class Scheduler4Result {
 		            String sendBytes = taskObj.getString("sendBytes");
 		            String receiveBytes = taskObj.getString("receiveBytes");
 		            String url = taskObj.getString("url");
+		            String exceptMark = taskObj.getString("exceptMark");
 			        
 		            Map<String,Object> param = new HashMap<String,Object>();
 					param.put("orderId", order.getId());
@@ -377,6 +381,7 @@ public class Scheduler4Result {
 			        t.setAverSendCount(averSendCount);
 			        t.setSendBytes(sendBytes);
 	                t.setReceiveBytes(receiveBytes);
+	                t.setExceptMark(Integer.parseInt(exceptMark));
 			        t.setStatus(sta);
 			        taskService.insert(t);
 				}

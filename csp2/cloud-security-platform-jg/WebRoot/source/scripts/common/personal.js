@@ -58,7 +58,7 @@ function checkUserData(){
 	var company = $("#company").val();
 	var email=$("#regist_email").val();
 	var partner=$("#partner").val();
-	var reg=/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
+	var reg=/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 	var patrn=/[`~@#$%^&*()+<>"{},\\;'[\]]/im;  
 	if(patrn.test(company)){
 		$("#regist_company_msg").html("公司名称含有非法字符");

@@ -21,7 +21,7 @@
         http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">  
     
     <!-- Timer schedule -->
-    <!--要调度的对象,HW-->
+    <!--要调度的对象,HW
     <bean id="taskHWJobBean" class="com.cn.ctbri.scheduler.HuaweiScheduler4Task" />
     <bean id="taskHWJobDetail"
         class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -33,7 +33,7 @@
         class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="taskHWJobDetail" />
         <property name="cronExpression" value="0 0/1 * * * ?" />
-    </bean>
+    </bean>-->
     
     <!--要调度的对象，结果获取-->
     <bean id="resultJobBean" class="com.cn.ctbri.common.Scheduler4Result" />
@@ -46,9 +46,9 @@
     <bean id="resultTrigger"
     	class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="resultJobDetail" />
-    	<!-- <property name="cronExpression" value="0/30 * * * * ?" /> 
-    	<property name="cronExpression" value="0 0/1 * * * ?" />-->
-    	<property name="cronExpression" value="0 16 20 ? * *" />
+    	<!-- <property name="cronExpression" value="0/30 * * * * ?" /> -->
+    	<property name="cronExpression" value="0 0/1 * * * ?" />
+    	<!--<property name="cronExpression" value="0 16 20 ? * *" />-->
     </bean>
     
     <!--要调度的对象-->
@@ -146,8 +146,8 @@
         <property name="triggers">
             <list>
                  
-                <!--<ref bean="resultTrigger" />
-                <ref bean="taskWafAlarmTrigger" />
+                <ref bean="resultTrigger" />
+                <!--<ref bean="taskWafAlarmTrigger" />
                 <ref bean="wafTrigger" />
                 <ref bean="delTrigger"/>
                 <ref bean="sendMessageTrigger"/>

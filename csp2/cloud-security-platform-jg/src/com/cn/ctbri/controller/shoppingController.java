@@ -14,11 +14,17 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cn.ctbri.common.HuaweiWorker;
+
 import com.cn.ctbri.common.NorthAPIWorker;
 import com.cn.ctbri.common.SysWorker;
 import com.cn.ctbri.common.WafAPIWorker;
@@ -45,6 +51,7 @@ import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.ServiceDetail;
 import com.cn.ctbri.entity.ShopCar;
 import com.cn.ctbri.entity.User;
+import com.cn.ctbri.listener.ContextClient;
 import com.cn.ctbri.service.IAlarmService;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAPIService;
@@ -64,11 +71,6 @@ import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Random;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 /**
  * 
@@ -119,7 +121,7 @@ public class shoppingController {
 	static{
 		try {
 			Properties p = new Properties();
-			p.load(HuaweiWorker.class.getClassLoader().getResourceAsStream("InternalAPI.properties"));
+			p.load(shoppingController.class.getClassLoader().getResourceAsStream("InternalAPI.properties"));
 			
 			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
 			VulnScan_servicePrice = p.getProperty("VulnScan_servicePrice");
@@ -1371,15 +1373,13 @@ public class shoppingController {
      * */
     private void synPriceData(int serviceId) {
     	try {
-			//远程调用接口
-			ClientConfig config = new DefaultClientConfig();
-			//检查安全传输协议设置
-			Client client = Client.create(config);
-			//连接服务器
+	        //创建任务发送路径
 			String url = SERVER_WEB_ROOT + VulnScan_servicePrice;
-			WebResource service = client.resource(url+serviceId);
-			ClientResponse clientResponse = service.type(MediaType.APPLICATION_JSON_TYPE).post(ClientResponse.class);        
-			String str = clientResponse.getEntity(String.class);
+			System.out.println("****运营管理同步当前服务的价格****");  
+	        WebTarget target = ContextClient.mainClient.target(url);
+	        Response response = target.request().post(Entity.entity(null, MediaType.APPLICATION_JSON));
+	        String str = (String)response.readEntity(String.class);
+	        response.close();
 			
 			//解析json,进行数据同步
 			JSONObject jsonObject = JSONObject.fromObject(str);			
