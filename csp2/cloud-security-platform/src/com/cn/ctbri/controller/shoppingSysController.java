@@ -727,7 +727,6 @@ public class shoppingSysController {
         
         try{
         	//获得订单id
-        	System.out.println(request.getParameter("serviceId"));
 			int serviceId = Integer.parseInt(request.getParameter("serviceId"));
 //			String type = request.getParameter("type");				//服务频率
 //			String beginDate = request.getParameter("beginDate");//

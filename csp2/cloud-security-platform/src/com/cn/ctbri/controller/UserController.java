@@ -41,7 +41,6 @@ import com.cn.ctbri.entity.Notice;
 import com.cn.ctbri.entity.Partner;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceAPI;
-import com.cn.ctbri.entity.ServiceSys;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAdvertisementService;
 import com.cn.ctbri.service.IAlarmService;
@@ -66,9 +65,6 @@ import com.cn.ctbri.util.SMSUtils;
 import com.cn.ctbri.util.ThreeDes;
 import com.cn.ctbri.util.passwordLevelUtil;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 /**
  * 创 建 人  ：  于永波
