@@ -174,7 +174,7 @@ $(document).ready(function(){
 							<dd>查询指定域名或IP是否存在活动恶意URL信息</dd>
 						</dl>
 					</div>
-					<div class="apiR fl" style="width:500px;">
+					<div class="apiR fl" style="width:500px;>
 						<div class="listtab" style="display:block">
 							<ul>
 								<li class="clearfix"><label class="fl">接口描述：</label>
@@ -191,7 +191,7 @@ $(document).ready(function(){
 									</div></li>
 								<li class="clearfix"><label class="fl">参数说明：</label>
 									<div class="fl centapi">
-										<table class="tableapi" width="708" cellpadding="0"
+										<table class="tableapi" width="718" cellpadding="0"
 											cellspacing="0">
 											<thead>
 												<tr>
@@ -213,7 +213,7 @@ $(document).ready(function(){
 								<li class="clearfix" style="margin-top:28px;"><label
 									class="fl">发送请求：(示例)</label>
 									<div class="fl centapi">
-										<div class="cent-div" style="height:120px;width:608px;">
+										<div class="cent-div" style="height:120px;">
 											POST /rest/openapi/malurl/getdatabycntoday/{token}<br />
 											Content-Type: application/json<br /> Accept:
 											application/json;version=1.0<br /> { <br />
@@ -227,7 +227,7 @@ $(document).ready(function(){
 								<li class="clearfix" style="margin:22px 0px;"><label
 									class="fl">返回结果：(示例)</label>
 									<div class="fl centapi">
-										<div class="cent-div" style="height:220px;width:608px;">
+										<div class="cent-div" style="height:220px;">
 											成功：<br />{"code":200,"webphishList":[{"url":"","field":"","domain":"","ip":"","asn":"","asnName":"","subdivision1":"","subdivision2":"","city":"","target":"","verifiedTime":"","isValid":1}]}<br />
 
 											失败：<br />{"code":404,"message":"失败"}<br />
@@ -242,7 +242,7 @@ $(document).ready(function(){
 								<li class="clearfix"><label class="fl">返回结果<br>代码表：
 								</label>
 									<div class="fl centapi capi">
-										<table class="tableapi" width="708" cellpadding="0"
+										<table class="tableapi" width="718" cellpadding="0"
 											cellspacing="0">
 											<thead>
 												<tr>
@@ -314,7 +314,7 @@ $(document).ready(function(){
 
 											</tbody>
 										</table>
-										<table class="tableapi capi" width="708" cellpadding="0"
+										<table class="tableapi capi" width="718" cellpadding="0"
 											cellspacing="0">
 											<thead>
 												<tr>
@@ -404,7 +404,7 @@ $(document).ready(function(){
 								<li class="clearfix" style="margin:22px 0px;"><label
 									class="fl">返回结果：(示例)</label>
 									<div class="fl centapi">
-										<div class="cent-div" style="height:260px;width: 608px;">
+										<div class="cent-div" style="height:260px;">
 											成功：<br />{"code":200,"webphishList":[{"url":"","field":"","domain":"","ip":"","asn":"","asnName":"","country":"","countryCode":"","subdivision1":"","subdivision2":"","city":"","target":"","verifiedTime":"","isValid":1}]}<br />
 
 											失败：<br />{"code":404,"message":"失败"}<br />
@@ -579,7 +579,7 @@ $(document).ready(function(){
 								<li class="clearfix" style="margin-top:28px;"><label
 									class="fl">发送请求：(示例)</label>
 									<div class="fl centapi">
-										<div class="cent-div" style="height:160px;width: 608px;">
+										<div class="cent-div" style="height:160px;">
 											POST /rest/openapi/malurl/getdatabycnperiod/{token}<br />
 											Content-Type: application/json<br /> Accept:
 											application/json;version=1.0<br /> { <br />
@@ -768,7 +768,7 @@ $(document).ready(function(){
 								<li class="clearfix" style="margin-top:28px;"><label
 									class="fl">发送请求：(示例)</label>
 									<div class="fl centapi">
-										<div class="cent-div" style="height:160px;width:608px;">
+										<div class="cent-div" style="height:160px;">
 											POST /rest/openapi/malurl/getdatabyperiod/{token}<br />
 											Content-Type: application/json<br /> Accept:
 											application/json;version=1.0<br /> { <br />
@@ -781,7 +781,7 @@ $(document).ready(function(){
 								<li class="clearfix" style="margin:22px 0px;"><label
 									class="fl">返回结果：(示例)</label>
 									<div class="fl centapi">
-										<div class="cent-div" style="height:260px;width:608px">
+										<div class="cent-div" style="height:260px;">
 											成功：<br />
 											{"code":200,"webphishList":[{"url":"","field":"","domain":"","ip":"","asn":"","asnName":"","country":"","countryCode":"","subdivision1":"","subdivision2":"","city":"","target":"","verifiedTime":"","isValid":1}]}<br />
 
