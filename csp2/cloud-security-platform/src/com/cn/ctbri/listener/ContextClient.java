@@ -25,18 +25,21 @@ public class ContextClient implements ServletContextListener {
 			e.printStackTrace();
 		}
 	}
-	public static Client client = null;
+	public static Client mainClient = null;
+	public static Client southClient = null;
 	public static WebTarget mainTarget = null;
 	public static WebTarget mainSouthTarget = null;
     public void contextInitialized(ServletContextEvent event) {
-    	client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
-    	mainTarget = client.target(SERVER_WEB_ROOT);
-    	mainSouthTarget = client.target(SERVER_SOUTH_ROOT);
+    	mainClient = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+    	southClient = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+    	mainTarget = mainClient.target(SERVER_WEB_ROOT);
+    	mainSouthTarget = southClient.target(SERVER_SOUTH_ROOT);
         System.out.println("created on " +  new Date() + ".");   
     }   
   
     public void contextDestroyed(ServletContextEvent event) {  
-    	client.close();
+    	mainClient.close();
+    	southClient.close();
         System.out.println("destroyed on " +   new Date() + ".");   
     }   
 }   

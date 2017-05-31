@@ -1376,7 +1376,7 @@ public class shoppingController {
 	        //创建任务发送路径
 			String url = SERVER_WEB_ROOT + VulnScan_servicePrice;
 			System.out.println("****运营管理同步当前服务的价格****");  
-	        WebTarget target = ContextClient.client.target(url);
+	        WebTarget target = ContextClient.mainClient.target(url);
 	        Response response = target.request().post(Entity.entity(null, MediaType.APPLICATION_JSON));
 	        String str = (String)response.readEntity(String.class);
 	        response.close();

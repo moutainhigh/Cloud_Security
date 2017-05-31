@@ -48,7 +48,7 @@ public class SysWorker {
 	static{
 		try {
 			Properties p = new Properties();
-			p.load(WafAPIWorker.class.getClassLoader().getResourceAsStream("northAPI.properties"));
+			p.load(SysWorker.class.getClassLoader().getResourceAsStream("northAPI.properties"));
 			SERVER_SYS_ROOT = p.getProperty("SERVER_SYS_ROOT");
 			//resourceId = p.getProperty("resourceId");
 			SYS_jinshan_getOrderIndex = p.getProperty("SYS_jinshan_getOrderIndex");

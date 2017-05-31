@@ -342,7 +342,7 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("currentId", currentId);
-        System.out.println("****根据自增的主键id来查询数据****");  
+        //System.out.println("****根据自增的主键id来查询数据****");  
         WebTarget target = mainTarget.path("/rest/adapter/getAllWafLogWebsecThanCurrentId");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);

@@ -139,7 +139,7 @@ public class NorthAPIWorker {
 	
 	
 	public static boolean getNorthSession() {
-		System.out.println("****session****");  
+		//System.out.println("****session****");  
         WebTarget target = mainTarget.path(Session);
         Response response = target.request().get();
         String str = (String)response.readEntity(String.class);
@@ -233,8 +233,7 @@ public class NorthAPIWorker {
 	 */
 	public static String vulnScanGetStatus(String orderId) {
 		//创建任务发送路径       
-		System.out.println("****获得订单/任务当前执行状态****");  
-        WebTarget target = mainTarget.path(North_Get_OrderStatus + orderId);
+		WebTarget target = mainTarget.path(North_Get_OrderStatus + orderId);
         Response response = target.request().get();
         String str = (String)response.readEntity(String.class);
         response.close();
