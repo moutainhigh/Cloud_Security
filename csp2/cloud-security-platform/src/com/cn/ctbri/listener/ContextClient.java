@@ -25,6 +25,7 @@ public class ContextClient implements ServletContextListener {
 			e.printStackTrace();
 		}
 	}
+	
 	public static Client mainClient = null;
 	public static Client southClient = null;
 	public static WebTarget mainTarget = null;
