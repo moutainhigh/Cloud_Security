@@ -33,6 +33,7 @@ public class SysWorker {
 	 */
 	
 	private static String SERVER_SYS_ROOT;
+	
 	//private static String resourceId;
 	//金山
 	private static String SYS_jinshan_getOrderIndex;
