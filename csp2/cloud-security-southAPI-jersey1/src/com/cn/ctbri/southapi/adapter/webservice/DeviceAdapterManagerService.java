@@ -945,7 +945,14 @@ public class DeviceAdapterManagerService {
 		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
 		return deviceAdpaterManager.renewNsfocusSysOrder(jsonObject);
 	}
-	
+	@GET
+	@Path("/socket")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String sendRequest(){
+		//com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
+		return deviceAdpaterManager.getTaskStatus();
+	}
+
 	
 	
 

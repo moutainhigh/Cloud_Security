@@ -1,5 +1,14 @@
 package com.cn.ctbri.southapi.adapter.manager;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -718,6 +727,39 @@ public class DeviceAdpaterManager {
 			return arnhemDeviceAdpater.getIssueRepositoryList(deviceId);
 		}
 		return DEVICE_OPERATION_ERROR;	
+	}
+	public String getTaskStatus(){
+		try {
+	         Socket s = new Socket("127.0.0.1",12345);
+	         System.out.println("socket success");
+	         JSONObject jo=new JSONObject();
+	         jo.put("type","CreateTask");
+	         String str=jo.toString();
+	         System.out.println(str);
+	         //String info="type:";
+	         
+	         //构建IO
+	         InputStream is = s.getInputStream();//构建输入流，即客户端发送的数据
+	         OutputStream os = s.getOutputStream();//构建输出流，即客户端接收的数据
+	         BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os));
+	         bw.write(str);
+	         bw.flush();
+	         BufferedReader br = new BufferedReader(new InputStreamReader(is));
+	         String mess = br.readLine();
+	         System.out.println("服务器："+mess);
+	         bw.close();
+	         br.close();
+	         is.close();
+	         os.close();
+	         s.close();
+	         return mess;
+	      } catch (UnknownHostException e) {
+	         e.printStackTrace();
+	      } catch (IOException e) {
+	         e.printStackTrace();
+	      }
+	      
+		return null;
 	}
 	
 
