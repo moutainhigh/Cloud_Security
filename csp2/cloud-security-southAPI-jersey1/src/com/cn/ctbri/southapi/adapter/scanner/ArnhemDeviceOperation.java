@@ -84,15 +84,13 @@ public class ArnhemDeviceOperation extends CommonDeviceOperation {
 	         Element ele = doc.getRootElement();
 	         Element s = ele.element("SessionId");
 	         connectSessionId = s.getText();
-	         System.out.println(connectSessionId);
 	         arnhemServerWebrootUrl = serverWebRoot;
-	         System.out.println(arnhemServerWebrootUrl);
 	         return true;
 	   	}catch(Exception e) {
 	   		e.printStackTrace();
 			return false;
 	   	}finally {
-			//client.destroy();
+			client.destroy();
 		}
 	}
 	

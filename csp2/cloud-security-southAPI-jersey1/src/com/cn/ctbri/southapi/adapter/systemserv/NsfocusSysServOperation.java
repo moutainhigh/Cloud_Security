@@ -268,7 +268,7 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 		
 		return responseJsonString;
 	}
-	
+	/*
 	public static void main(String[] args) {
 		NsfocusSysServOperation operation = new NsfocusSysServOperation();
 		JSONObject jsonObject = new JSONObject();
@@ -281,7 +281,7 @@ public class NsfocusSysServOperation extends CommonDeviceOperation {
 		jsonObject.put("cycle", "24");
 		System.out.println(operation.createNsfocusSysOrder(jsonObject));
 	}
-	
+	*/
 }
 class ApiSign{
 	//标志位

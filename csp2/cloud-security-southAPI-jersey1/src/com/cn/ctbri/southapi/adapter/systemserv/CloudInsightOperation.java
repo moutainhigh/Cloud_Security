@@ -104,7 +104,7 @@ public class CloudInsightOperation extends CommonDeviceOperation{
 		returnJsonObject.put("url", url);
 		return returnJsonObject.toJSONString();
 	}
-
+	/*
 	public static void main(String[] args) {
 		CloudInsightOperation operation = new CloudInsightOperation();
 		JSONObject jsonObject = new JSONObject();
@@ -118,7 +118,7 @@ public class CloudInsightOperation extends CommonDeviceOperation{
 		System.out.println(operation.getLoginURL(jsonObject));
 		//System.out.println(operation.destroyToken(jsonObject));
 	}
-	
+	*/
 
 	
 	
