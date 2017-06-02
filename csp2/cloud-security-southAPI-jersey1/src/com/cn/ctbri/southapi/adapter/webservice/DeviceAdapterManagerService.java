@@ -945,12 +945,12 @@ public class DeviceAdapterManagerService {
 		com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
 		return deviceAdpaterManager.renewNsfocusSysOrder(jsonObject);
 	}
-	@GET
-	@Path("/socket")
+	@POST
+	@Path("/scanservice/createTask")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String sendRequest(){
-		//com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(dataJson);
-		return deviceAdpaterManager.getTaskStatus();
+	public String createScanTask(String dataJson){
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.createScanServiceTask(jsonObject);
 	}
 
 	

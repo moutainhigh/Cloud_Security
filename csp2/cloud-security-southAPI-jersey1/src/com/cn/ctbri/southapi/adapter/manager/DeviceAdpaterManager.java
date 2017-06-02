@@ -35,6 +35,7 @@ import com.cn.ctbri.southapi.adapter.config.ScannerTaskUniParam;
 import com.cn.ctbri.southapi.adapter.jinshan.JinshanDeviceAdapter;
 import com.cn.ctbri.southapi.adapter.scanner.ArnhemDeviceAdpater;
 import com.cn.ctbri.southapi.adapter.scanner.WebsocDeviceAdapter;
+import com.cn.ctbri.southapi.adapter.scanservice.ScanServiceSocket;
 import com.cn.ctbri.southapi.adapter.systemserv.CloudInsightAdapter;
 import com.cn.ctbri.southapi.adapter.systemserv.NsfocusSysServOperation;
 import com.cn.ctbri.southapi.adapter.waf.NsfocusWAFAdapter;
@@ -70,6 +71,8 @@ public class DeviceAdpaterManager {
 	public static CloudInsightAdapter cloudInsightAdapter = new CloudInsightAdapter();
 	
 	public static NsfocusSysServOperation nsfocusSysServOperation = new NsfocusSysServOperation();
+	
+	public static ScanServiceSocket scanServiceSocket = new ScanServiceSocket();
 	//加载设备错误信息
 	private static final String LOAD_DEVICE_ERROR = "{\"status\":\"fail\",\"message\":\"Load DeviceConfig failed!!\"}";
 	//初始化错误信息
@@ -728,39 +731,7 @@ public class DeviceAdpaterManager {
 		}
 		return DEVICE_OPERATION_ERROR;	
 	}
-	public String getTaskStatus(){
-		try {
-	         Socket s = new Socket("127.0.0.1",12345);
-	         System.out.println("socket success");
-	         JSONObject jo=new JSONObject();
-	         jo.put("type","CreateTask");
-	         String str=jo.toString();
-	         System.out.println(str);
-	         //String info="type:";
-	         
-	         //构建IO
-	         InputStream is = s.getInputStream();//构建输入流，即客户端发送的数据
-	         OutputStream os = s.getOutputStream();//构建输出流，即客户端接收的数据
-	         BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os));
-	         bw.write(str);
-	         bw.flush();
-	         BufferedReader br = new BufferedReader(new InputStreamReader(is));
-	         String mess = br.readLine();
-	         System.out.println("服务器："+mess);
-	         bw.close();
-	         br.close();
-	         is.close();
-	         os.close();
-	         s.close();
-	         return mess;
-	      } catch (UnknownHostException e) {
-	         e.printStackTrace();
-	      } catch (IOException e) {
-	         e.printStackTrace();
-	      }
-	      
-		return null;
-	}
+	
 	
 
 	
@@ -1126,5 +1097,8 @@ public class DeviceAdpaterManager {
 		return nsfocusSysServOperation.renewNsfocusSysOrder(jsonObject);
 	}
 	
+	public String createScanServiceTask(JSONObject jsonObject) {
+		return scanServiceSocket.createScanServiceTask(jsonObject);
+	}
 	
 }
