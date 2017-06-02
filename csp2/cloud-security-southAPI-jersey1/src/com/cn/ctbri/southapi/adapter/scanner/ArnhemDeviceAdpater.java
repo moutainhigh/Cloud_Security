@@ -11,6 +11,7 @@ import com.cn.ctbri.southapi.adapter.config.ScannerTaskUniParam;
 
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 public class ArnhemDeviceAdpater{
 	
@@ -117,7 +118,16 @@ public class ArnhemDeviceAdpater{
 	 */
 	public  String getStatusByTaskId(String deviceId, ScannerTaskUniParam scannerTaskUniParam) {
 		//创建路径
-		return getDeviceById(deviceId).getStatusByTaskId(scannerTaskUniParam);
+		try {
+			return getDeviceById(deviceId).getStatusByTaskId(scannerTaskUniParam);
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject npJsonObject = new JSONObject();
+			npJsonObject.put("status", "fail");
+			npJsonObject.put("message", "not find this device");
+			return npJsonObject.toString();
+		}
 	}
 	
 	/**
