@@ -61,4 +61,5 @@ public interface TaskDao {
 	public List<Task> findTaskByOrderId(String orderId);
 
 	public Task findTaskByTaskObj(Task task);
+	public int countTaskByEngine(int engineId);
 }

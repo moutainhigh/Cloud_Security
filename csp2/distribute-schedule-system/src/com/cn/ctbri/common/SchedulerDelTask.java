@@ -59,8 +59,8 @@ public class SchedulerDelTask {
                 	SouthAPIWorker.removeTask(en.getEngine_number(), String.valueOf(t.getTaskId())+"_"+t.getOrder_id());
                         
                     //任务完成后,引擎活跃数减1
-                    en.setId(t.getEngine());
-                    engineService.updatedown(en);
+                    //en.setId(t.getEngine());
+                    //engineService.updatedown(en);
                     //更新任务状态为finish
                     t.setStatus(Integer.parseInt(Constants.TASK_FINISH));
                     taskService.update(t);

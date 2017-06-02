@@ -56,4 +56,5 @@ public interface ITaskService {
 	List<Task> findTaskByOrderId(String orderId);
 
 	Task findTaskByTaskObj(Task task);
+	int countTaskByEngine(int engineId);
 }

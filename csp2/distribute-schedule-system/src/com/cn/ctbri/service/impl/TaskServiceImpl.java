@@ -86,5 +86,7 @@ public class TaskServiceImpl implements ITaskService{
 	public Task findTaskByTaskObj(Task task) {
 		return this.taskDao.findTaskByTaskObj(task);
 	}
-	
+	public int countTaskByEngine(int engineId){
+		return this.taskDao.countTaskByEngine(engineId);
+	}
 }

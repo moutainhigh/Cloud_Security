@@ -116,6 +116,14 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 	public Task findTaskByTaskObj(Task task) {
 		return this.getSqlSession().selectOne(ns+"findTaskByTaskObj",task);
 	}
+
+	/* (non-Javadoc)
+	 * @see com.cn.ctbri.dao.TaskDao#countTaskByEngine(int)
+	 */
+	public int countTaskByEngine(int engineId) {
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectOne(ns+"countTaskByEngine",engineId);
+	}
 	
 	
 

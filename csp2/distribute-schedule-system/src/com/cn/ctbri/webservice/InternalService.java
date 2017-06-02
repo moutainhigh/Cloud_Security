@@ -63,6 +63,7 @@ public class InternalService {
     @Path("/orderTask")
 	@Produces(MediaType.APPLICATION_JSON) 
 	public String VulnScan_Create_orderTask(String dataJson) {
+		System.out.print("================================================="+dataJson.toString());  
 		JSONObject json = new JSONObject();
 		try {
 			JSONObject jsonObj = JSONObject.fromObject(dataJson);
@@ -131,7 +132,7 @@ public class InternalService {
 			json.put("code", 404);//返回404表示失败
 			json.put("message", "创建订单任务失败");
 		}
-    	    	
+    	System.out.print("================================================="+json.toString());    	
         return json.toString();
     }
 	

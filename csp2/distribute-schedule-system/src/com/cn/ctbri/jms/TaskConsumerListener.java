@@ -266,7 +266,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
                 	//if(true){
 	                    //任务下发后,引擎活跃数加1
 	                    engine.setId(engine.getId());
-	                    engineService.update(engine);
+	                    //engineService.update(engine);
 	                    
 	                    //更新任务状态为running
 	                    t.setStatus(Integer.parseInt(Constants.TASK_RUNNING));
@@ -423,7 +423,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
             	virtual_group_id = SouthAPIWorker.disposeScanTask(engine.getEngine_number(), String.valueOf(t.getTaskId())+"_"+t.getOrder_id(), t.getAssetAddr(), "", "", this.tplName);
                 //任务下发后,引擎活跃数加1
                 engine.setId(engine.getId());
-                engineService.update(engine);
+                //engineService.update(engine);
                 //更新任务状态为running
                 t.setStatus(Integer.parseInt(Constants.TASK_RUNNING));
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -747,11 +747,11 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 		
 		arnhemEngineMap = new HashMap<String,Double>();
 	    
-		for (int i = 0; i < engineList.size(); i++) {		    
-    		//获取引擎状态json串
-            String resultStr = SouthAPIWorker.getEngineStatRate(engineList.get(i).getEngine_number());
-
-            String enNum = engineList.get(i).getEngine_number();
+		for (int i = 0; i < engineList.size(); i++) {
+			//(引擎从属的）平台id
+			String enNum = engineList.get(i).getEngine_number();
+    		//获取(引擎从属的）平台状态json串           
+			String resultStr = SouthAPIWorker.getEngineStatRate(enNum);            
             //解析引擎设备参数，返回负载值
             getLoadForEngine(resultStr, enNum);
           
@@ -795,6 +795,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	 * @return
 	 */
 	private Map<String,Double> getLoadForEngine(String resultStr, String enNum){
+		//System.out.println("================================================"+resultStr);
 		Map<String,Double> loadMap = new HashMap<String,Double>();
 		double load = 0;
         try {
@@ -818,7 +819,8 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 							double cpu_usage = jsonObject.getDouble("cpuUsage")/100;
 							double disk_usage = jsonObject.getDouble("diskUsage")/100;
 							
-							int activity = engine.getActivity();
+							//int activity = engine.getActivity();
+							int  activity = taskService.countTaskByEngine(engine.getId());
 							int maxTask = engine.getMaxTask();
 							double load_usage = (double)activity/(double)maxTask;
 							
@@ -828,6 +830,12 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 		                    double load_usageWeightD = Double.parseDouble(load_usageWeight);
 		                    
 		                    load = cpu_usageWeightD*cpu_usage + memory_usageWeightD*memory_usage + disk_usageWeightD*disk_usage + load_usage*load_usageWeightD;
+		                   // System.out.println("======================================引擎号和ip:"+enNum +"   "+ip+"=======load值："+load +"    "
+		                   // +cpu_usageWeightD  + "  " +  "  " + cpu_usage   + "  " +  "  " +  memory_usageWeightD  + "  " +  "  " + memory_usage   + "  " +  "  " +  disk_usageWeightD  + "  " +  "  " + disk_usage   + "  " +  "  " +  load_usage  + "  " +  "  " + load_usageWeightD);
+		                   
+		                    
+		                    
+		                    
 		                    if(load!=0){
 		                    	arnhemEngineMap.put(ip, load);
 		                    }
