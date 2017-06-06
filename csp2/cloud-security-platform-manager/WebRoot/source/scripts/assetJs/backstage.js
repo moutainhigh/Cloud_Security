@@ -179,12 +179,14 @@ function assert(m,n){
 	  		alert("至少输入一个查询条件！");
 	  	} 
 	}else if(m==0&&n==1){
-	  	if($("#assetType2").val()!=""||$("#purpose1").val()!=""){
+		if($("#assetType2").val()==""){
+			alert("请选择资产所属用户");
+		}else if( $("#purpose1").val()==""){
+				alert("请选择资产用途");
+		}else{
 	  		$("#purposeForm").action="${ctx}/adminPurposeAssetUI.html?tablList=0&anList=1"
 	  		$("#purposeForm").submit();
-	  	}else{
-	  		alert("至少输入一个查询条件！");
-	  	} 
+	  	}
 	}else if(m==0&&n==2){
 	  	if($("#assetType3").val()!=""||$("#purpose2").val()!=""){
 	  		var begin_date = $("#begin_date").val();
