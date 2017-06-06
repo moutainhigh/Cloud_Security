@@ -133,7 +133,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<!-- 资产用途统计分析 -->
  	<select id="findAssertPurpose" parameterType="hashmap" resultMap="AssetRM1">
-		 select cu.name name ,
+		 <!-- select cu.name name ,
 		   IFNULL(ca.purpose,'其他') disName,
 		   '' cityName,count(1) num 
            from cs_asset ca,cs_user cu 
@@ -149,7 +149,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
            <if test="end_date!=null and end_date!=''">
              and  ca.create_date &lt;= #{end_date}
            </if>
-           group by cu.type,IFNULL(ca.purpose,'其他')
+           group by cu.type,IFNULL(ca.purpose,'其他') -->
+           select cu.name name, ca.purpose disName,count(ca.id) num 
+           from cs_asset ca join cs_user cu on cu.id=ca.userid
+  		   where 1=1 
+  		   <if test="assetUserType!=null and assetUserType!=''">
+             and cu.type=#{assetUserType}
+           </if>
+          	 and ca.purpose=#{purpose}
+		   group by cu.id
 	</select>
 	<!-- 查询所有网站数 -->
 	<select id="getAssetCount" resultType="int">
