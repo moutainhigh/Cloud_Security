@@ -3,8 +3,16 @@ var stime;
 var etime;
 var serviceList = ['漏洞扫描','木马监测','可用性','篡改','关键字'];
 var timeList = ['00:00-04:00','04:00-08:00','8:00-12:00','12:00-16:00','16:00-20:00','20:00-24:00'];
+var timeList1 = ['01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','24:00'];
 var nameList1 = ['订单创建','订单操作','获取状态','获取结果','获取报告'];
 $(function(){
+	$("#analysisId").delegate(this,'click',function(){
+		stime= $("#begin_date1").val();
+		etime= $("#end_date1").val();
+		analysisAPI();
+	  	analysisAPIUser();
+
+	});
 	//查看完整列表
 	$('#allAPIUsers').delegate(this,'click',function(){	
 		$("#apiUserCountList").empty();
@@ -42,7 +50,7 @@ $(function(){
             })
     })
     
-	createDemos();	
+	//createDemos();	
 	//为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
     require.config({
         paths:{ 
@@ -379,7 +387,8 @@ function analysisAPI(){
 	   			map['type']='bar';
 	   			map['stack']='总量';
 	   			var map1 = {};
-	   			map1['show']=true;
+				map1['show']=false;
+	   			//map1['show']=true;
 	   			map1['position']='inside';
 	   			var map2 = {};
 	   			map2['label']=map1;
@@ -687,7 +696,8 @@ function analysisAPIUser(){
 			   			map['stack']='总量';
 			   			
 			   			var map1 = {};
-			   			map1['show']=true;
+						map1['show']=false;
+			   			//map1['show']=true;
 			   			map1['position']='inside';
 			   			var map2 = {};
 			   			map2['label']=map1;
@@ -695,10 +705,10 @@ function analysisAPIUser(){
 			   			itemStyleMap['normal']=map2;
 			   			map['itemStyle']=itemStyleMap;
 			   			
-	      				for(var k = 0; k < timeList.length; k++){
+	      				for(var k = 0; k < timeList1.length; k++){
 	      		   			var timeFlag = false;//该时间段是否存在
 	      		   			for(var i = 0; i < list.length; i++){
-		   	   					if(list[i].timevalue==timeList[k]&& list[i].service_type==j+1){
+		   	   					if(list[i].timevalue==timeList1[k]&& list[i].service_type==j+1){
 		   	   						valueList.push(list[i].counts);
 		   	   						timeFlag = true;
 		   	   						break;
@@ -746,7 +756,7 @@ function analysisAPIUser(){
 					                 //X轴刻度配置
 					                 interval:0 //0：表示全部显示不间隔；auto:表示自动根据刻度个数和宽度自动设置间隔个数
 					            },
-					            data : timeList
+					            data : timeList1
 					        }
 					    ],
 					    yAxis : [
