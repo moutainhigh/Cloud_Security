@@ -19,12 +19,14 @@ public class DistrictMapper implements RowMapper {
 		district.setName(rs.getString("name"));
 		district.setLongitude(rs.getString("longitude"));
 		district.setLatitude(rs.getString("latitude"));
-//		district.setCount1(rs.getInt("count1"));
-//		district.setCount2(rs.getInt("count2"));
-//		district.setCount3(rs.getInt("count3"));
-//		district.setCount4(rs.getInt("count4"));
-//		district.setCount5(rs.getInt("count5"));
-		district.setCount(rs.getString("count"));
+		district.setCount1(rs.getInt("count1"));
+		district.setCount2(rs.getInt("count2"));
+		district.setCount3(rs.getInt("count3"));
+		district.setCount4(rs.getInt("count4"));
+		district.setCount5(rs.getInt("count5"));
+//		district.setCount(rs.getString("count"));
+		district.setSiteCount(rs.getInt("siteCount"));
+		district.setWafAlarmCount(rs.getInt("wafAlarmCount"));
 		return district;
 	}
 
