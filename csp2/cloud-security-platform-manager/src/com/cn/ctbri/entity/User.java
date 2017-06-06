@@ -52,6 +52,20 @@ public class User implements java.io.Serializable{
 	private Date lastLoginTime;
 	//用户key add by 2016-6-14
 	private String apikey;
+	
+	//推送url add by 2016-4-8
+	private String urlAddr;
+	//安全币 add by 2016-5-17
+	private double balance;
+	//用户最后一次签到的时间
+	private Date lastSignInTime;
+	//加盐的值
+	private String Salt;
+	//ip地址所在的省
+	private String ipProvice;
+	//合作方
+	private String partner;
+	
 	//构造方法
 	public User(){}
 	public User(String name, String password, int status, int type) {
@@ -275,6 +289,42 @@ public class User implements java.io.Serializable{
 	}
 	public void setApikey(String apikey) {
 		this.apikey = apikey;
+	}
+	public String getUrlAddr() {
+		return urlAddr;
+	}
+	public void setUrlAddr(String urlAddr) {
+		this.urlAddr = urlAddr;
+	}
+	public double getBalance() {
+		return balance;
+	}
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+	public Date getLastSignInTime() {
+		return lastSignInTime;
+	}
+	public void setLastSignInTime(Date lastSignInTime) {
+		this.lastSignInTime = lastSignInTime;
+	}
+	public String getSalt() {
+		return Salt;
+	}
+	public void setSalt(String salt) {
+		Salt = salt;
+	}
+	public String getIpProvice() {
+		return ipProvice;
+	}
+	public void setIpProvice(String ipProvice) {
+		this.ipProvice = ipProvice;
+	}
+	public String getPartner() {
+		return partner;
+	}
+	public void setPartner(String partner) {
+		this.partner = partner;
 	}
 	
 }
