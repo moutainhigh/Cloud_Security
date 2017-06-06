@@ -27,6 +27,7 @@ public class AssetMapper implements RowMapper {
 		asset.setDistrictId(rs.getInt("districtId"));
 		asset.setCity(rs.getString("city"));
 		asset.setPurpose(rs.getString("purpose"));
+		asset.setAssetProvince(rs.getInt("assetProvince"));
 		return asset;
 	}
 }
