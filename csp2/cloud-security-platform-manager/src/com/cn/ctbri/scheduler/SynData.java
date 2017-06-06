@@ -2,6 +2,9 @@ package com.cn.ctbri.scheduler;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,6 +12,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -63,6 +67,9 @@ public class SynData {
 		p.load(in);
 		String find = p.getProperty(selectSql);
 		String add = p.getProperty(insertSql);
+		
+		deleteOldData(find); //先删除原始数据
+		
 		System.out.println(find);
 		System.out.println(add);
 		System.out.println("开始同步数据");
@@ -88,5 +95,41 @@ public class SynData {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
         String dateNowStr = sdf.format(d); 
         return dateNowStr;
+	}
+	
+	//删除原始数据
+	private void deleteOldData(String selectSql){
+		BasicDataSource ds = null;
+		Connection conn = null;
+		Statement sm = null;
+		try {
+			ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");  
+			ds = (BasicDataSource)ctx.getBean("dataSource"); 
+			conn = ds.getConnection();
+			sm = conn.createStatement();
+			
+			String tableName = selectSql.substring(selectSql.indexOf("from")+4);
+			String deleteSql = "delete from"+tableName;
+			
+			System.out.println(deleteSql);
+			sm.execute(deleteSql); 
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			try {
+				if(sm != null) {
+					sm.close();
+				}
+				if(conn != null){
+					conn.close();
+				}
+				if(ds != null){
+					ds.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
