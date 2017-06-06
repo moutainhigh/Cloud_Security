@@ -18,10 +18,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 查询报警信息  -->
 	<select id="getAPICount" parameterType="map" resultType="map">
 		SELECT count(*) count,service_type,api_type FROM `cs_api`  a  where a.service_type=#{serviceType}
-		<if test="beginTime!=null">
+		<if test="beginTime!=null and beginTime!='' ">
 			AND a.create_time &gt;= #{beginTime}
 		</if>	 
-		<if test="endTime!=null">
+		<if test="endTime!=null and endTime!='' ">
 			AND a.create_time &lt;=#{endTime}
 		</if>
 		 GROUP BY a.api_type
@@ -47,10 +47,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 查询开发者调用次数TOP5 -->
 	<select id="getAllAPIUserList" resultType="map" parameterType="map">
 		SELECT count(*) count1, `user`.`name`,api.apikey FROM `cs_user` user, cs_api api where `user`.apikey=api.apikey
-		<if test="beginTime!=null">
+		<if test="beginTime!=null and beginTime!='' ">
 			AND api.create_time &gt;= #{beginTime}
 		</if>	 
-		<if test="endTime!=null">
+		<if test="endTime!=null and endTime!='' ">
 			AND api.create_time &lt;=#{endTime}
 		</if>
 
@@ -61,10 +61,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 查询开发者调用次数TOP5 -->
 	<select id="getAPIUserCountTop5" resultType="map" parameterType="map">
 		SELECT count(*) count1, `user`.`name`,api.apikey FROM `cs_user` user, cs_api api where `user`.apikey=api.apikey
-		<if test="beginTime!=null">
+		<if test="beginTime!=null and beginTime!='' ">
 			AND api.create_time &gt;= #{beginTime}
 		</if>	 
-		<if test="endTime!=null">
+		<if test="endTime!=null and endTime!='' ">
 			AND api.create_time &lt;=#{endTime}
 		</if>
 
@@ -78,10 +78,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="userName!=null and userName!=''">
 			and `user`.`name`=#{userName}
 		</if>
-		<if test="beginTime!=null">
+		<if test="beginTime!=null and beginTime!='' ">
 			and a.create_time &gt;= #{beginTime}
 		</if>	 
-		<if test="endTime!=null">
+		<if test="endTime!=null and endTime!='' ">
 			AND a.create_time &lt;=#{endTime}
 		</if>	
 		and a.service_type &lt;&gt; 100
@@ -99,10 +99,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		else '20:00-24:00'
 		end AS timevalue
 		FROM `cs_api` WHERE service_type &lt;&gt; 100 
-		<if test="beginTime!=null">
+		<if test="beginTime!=null and beginTime!='' ">
 			and create_time &gt;= #{beginTime}
 		</if>	 
-		<if test="endTime!=null">
+		<if test="endTime!=null and endTime!='' ">
 			AND create_time &lt;=#{endTime}
 		</if>
 		GROUP BY service_type,timevalue ORDER BY service_type,timevalue 
@@ -111,19 +111,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<!-- 用户使用服务时段统计 -->
 	<select id="getAPITimesByUser" resultType="map" parameterType="map">
 		SELECT count(*) counts,a.service_type,	
-		case when DATE_FORMAT(a.create_time,'%H:%i') &gt; '00:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '04:00' then '00:00-04:00'
-		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '04:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '08:00' then '04:00-08:00'
-		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '08:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '12:00' then '08:00-12:00'
-		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '12:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '16:00' then '12:00-16:00'
-		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '16:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '20:00' then '16:00-20:00'
-		else '20:00-24:00'
+		case when DATE_FORMAT(a.create_time,'%H:%i') &gt; '00:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '01:00' then '01:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '01:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '02:00' then '02:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '02:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '03:00' then '03:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '03:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '04:00' then '04:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '04:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '05:00' then '05:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '05:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '06:00' then '06:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '06:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '07:00' then '07:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '07:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '08:00' then '08:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '08:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '09:00' then '09:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '09:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '10:00' then '10:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '10:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '11:00' then '11:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '11:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '12:00' then '12:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '12:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '13:00' then '13:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '13:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '14:00' then '14:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '14:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '15:00' then '15:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '15:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '16:00' then '16:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '16:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '17:00' then '17:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '17:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '18:00' then '18:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '18:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '19:00' then '19:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '19:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '20:00' then '20:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '20:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '21:00' then '21:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '21:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '22:00' then '22:00'
+		when DATE_FORMAT(a.create_time,'%H:%i') &gt; '22:00' and DATE_FORMAT(a.create_time,'%H:%i') &lt;= '23:00' then '23:00'
+		else '24:00'
 		end AS timevalue
 		FROM `cs_api` a left join cs_user user on `user`.apikey=a.apikey 
 		where a.service_type &lt;&gt; 100 
-		<if test="beginTime!=null">
+		<if test="beginTime!=null and beginTime!='' ">
 			and a.create_time &gt;= #{beginTime}
 		</if>	 
-		<if test="endTime!=null">
+		<if test="endTime!=null and endTime!='' ">
 			AND a.create_time &lt;=#{endTime}
 		</if>
 		<if test="userName!=null and userName!=''">
