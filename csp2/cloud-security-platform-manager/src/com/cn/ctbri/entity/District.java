@@ -13,10 +13,16 @@ public class District {
 	private String name;//地区名称
 	private String longitude;//地图坐标-经度
 	private String latitude;//地图坐标-纬度
-	private String count;
+	private int count1;
+	private int count2;
+	private int count3;
+	private int count4;
+	private int count5;
 	private String limit;
 	private int siteCount;  //高危网站数量
 	private int wafAlarmCount; //WAF告警数量
+	
+	private String count;
 	
     public int getId() {
         return id;
@@ -42,13 +48,8 @@ public class District {
     public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
-    public String getCount() {
-        return count;
-    }
-    public void setCount(String count) {
-        this.count = count;
-    }
-    public String getLimit() {
+    
+	public String getLimit() {
         return limit;
     }
     public void setLimit(String limit) {
@@ -66,7 +67,40 @@ public class District {
 	public void setWafAlarmCount(int wafAlarmCount) {
 		this.wafAlarmCount = wafAlarmCount;
 	}
-
-    
-	
+	public String getCount() {
+		return count;
+	}
+	public void setCount(String count) {
+		this.count = count;
+	}
+	public int getCount1() {
+		return count1;
+	}
+	public void setCount1(int count1) {
+		this.count1 = count1;
+	}
+	public int getCount2() {
+		return count2;
+	}
+	public void setCount2(int count2) {
+		this.count2 = count2;
+	}
+	public int getCount3() {
+		return count3;
+	}
+	public void setCount3(int count3) {
+		this.count3 = count3;
+	}
+	public int getCount4() {
+		return count4;
+	}
+	public void setCount4(int count4) {
+		this.count4 = count4;
+	}
+	public int getCount5() {
+		return count5;
+	}
+	public void setCount5(int count5) {
+		this.count5 = count5;
+	}
 }
