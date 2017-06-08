@@ -28,7 +28,7 @@ public class ScanServiceSocket {
 		}
 	}
 	
-	public String createScanServiceTask(JSONObject jsonObject){
+	/*public String createScanServiceTask(JSONObject jsonObject){
 		try {
 	         Socket s = new Socket(baseURL,basePort);
 	         System.out.println("socket success");
@@ -61,4 +61,5 @@ public class ScanServiceSocket {
 	      
 		return null;
 	}
+	*/
 }
