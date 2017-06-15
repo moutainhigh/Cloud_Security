@@ -157,6 +157,8 @@ public class shoppingAPIController {
 			result = "/source/page/details/apiDetails7";
 		} else if (apiId == 8) {
 			result = "/source/page/details/apiDetails8";
+		} else if (apiId == 9) {
+			result = "/source/page/details/apiDetails9";
 		}
         
         return result;
