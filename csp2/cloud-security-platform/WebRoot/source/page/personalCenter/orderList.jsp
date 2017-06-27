@@ -152,7 +152,7 @@
                              <td class="order" valign="top">
                             	<p style="width:98px; line-height:24px;margin-top:33px; height:auto;" class="stylep">
              
-						            <c:if test="${list.serviceId==1||list.serviceId==2||list.serviceId==3||list.serviceId==4||list.serviceId==5||list.serviceId==6||list.serviceId==7||list.serviceId==8}">
+						            <c:if test="${list.serviceId==1||list.serviceId==2||list.serviceId==3||list.serviceId==4||list.serviceId==5||list.serviceId==6||list.serviceId==7||list.serviceId==8||list.serviceId==9}">
 						            	<c:if test="${list.isAPI==1}"><a href="${ctx}/apiDetails.html?orderId=${list.id }" target="_blank" >查看详情</a></c:if>
 						                
 						                
