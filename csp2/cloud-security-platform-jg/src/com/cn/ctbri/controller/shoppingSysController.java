@@ -206,6 +206,7 @@ public class shoppingSysController {
     	User globle_user = (User) request.getSession().getAttribute("globle_user");
 		//int id = Integer.valueOf(request.getParameter("id"));
     	String serviceId = request.getParameter("serviceId");
+    	int intserviceId = Integer.parseInt(serviceId);
 		
 		//获取验证方式:代码验证 ;上传文件验证
 		String check_msg;
@@ -226,8 +227,8 @@ public class shoppingSysController {
 							
 							String isAPI = orderMap.get("isAPI").toString();
 							String strpayflag = orderMap.get("payFlag").toString();
-							
-							if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0 && strpayflag.equals("1")&&isAPI.equals("3")) {
+							if(strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0 && strpayflag.equals("1")&& isAPI.equals("3")&& intserviceId!=10){
+							//if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0 && strpayflag.equals("1")&&isAPI.equals("3")) {
 								
 	
 									// 把数据返回到页面
@@ -306,6 +307,7 @@ public class shoppingSysController {
 			
 			
 			String duration = request.getParameter("duration");
+			System.out.println("duration是"+duration);
 	        String scanPeriod = request.getParameter("scanType"); // 频率  绿盟64ip(scanType = 15)   128ip(16)   金山10对应 10ip
 	        String serviceId = request.getParameter("serviceId");
 	        String createDate = DateUtils.dateToString(new Date());
@@ -314,7 +316,15 @@ public class shoppingSysController {
 			
 	        
 	        String endDate =DateUtils.dateToString(getAfterFewMonth(new Date(), durationint));
-	        
+	        String portMessage =null;
+	        if(Integer.parseInt(serviceId) ==10)//如果是服务监测，就获取检测的ip和端口信息,如果不是就为空
+	        {
+	        	portMessage = request.getParameter("portMessage");
+	        	
+//	        	if (!checkIP(portMessage)) {
+//					return "redirect:/index.html";
+//				}
+	        }
 	      //判断参数值是否为空
 	      
 	        if((orderType==null||"".equals(orderType))||(beginDate==null||"".equals(beginDate))||(serviceId==null||"".equals(serviceId))||(duration==null||"".equals(duration))){
@@ -358,9 +368,11 @@ public class shoppingSysController {
 								String strEndDate =  orderMap.get("end_date").toString();			
 								String strpayflag = orderMap.get("payFlag").toString();
 								String strisAPI = orderMap.get("isAPI").toString();
+								int intserviceId = Integer.parseInt(serviceId);
 									
 								String strNowDate = DateUtils.dateToString(new Date());							
-								if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0 && strpayflag.equals("1")&&strisAPI.equals("3")) {
+								if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0 && strpayflag.equals("1")&& strisAPI.equals("3")&& intserviceId!=10) {
+									//System.out.println(strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0 && strpayflag.equals("1")&&(strisAPI.equals("3")&&(intserviceId==7 || intserviceId==8 || intserviceId==9)));
 										// 把数据返回到页面
 									Serv serviceRe = servService.findById(Integer.parseInt(serviceId));
 									ServiceDetail servDetailRe = servDetailService.findByServId(Integer.parseInt(serviceId));
@@ -453,6 +465,10 @@ public class shoppingSysController {
 		        orderDetail.setCreate_date(sdf.parse(createDate));
 		        orderDetail.setWafTimes(durationint); //使用waftimes字段记录 购买时长
 		        
+		        if(serviceIdInt==10){
+		        	orderDetail.setIpArray(portMessage);
+		        }
+		        
 		        if (scanPeriod!=null && !"".equals(scanPeriod)) {
 					orderDetail.setScan_type(Integer.parseInt(scanPeriod));
 				}
@@ -460,12 +476,13 @@ public class shoppingSysController {
 		        selfHelpOrderService.SaveOrderDetail(orderDetail); //insert into cs_settlemet
 		        OrderDetail orderDetailVo = selfHelpOrderService.findOrderDetailById(detailId, globle_user.getId());
 		        orderDetailVo.setServiceName(service.getName());
-				  request.setAttribute("orderDetail", orderDetailVo);
-			        request.setAttribute("service", service);
-			        request.setAttribute("user", globle_user);
+				request.setAttribute("orderDetail", orderDetailVo);
+			    request.setAttribute("service", service);
+			    request.setAttribute("user", globle_user);
+			    request.setAttribute("portMessage", portMessage);
 			        
-			        String result = "/source/page/details/settlement";
-			        return result;
+			    String result = "/source/page/details/settlement";
+			    return result;
 			
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -503,6 +520,7 @@ public class shoppingSysController {
         String email = request.getParameter("email");
       
         String scanType = request.getParameter("scanType");
+        String portMessage = request.getParameter("portMessage");//获取Serviceid为10的端口和ip信息
 
         if(orderDetailId==null||"".equals(orderDetailId)||linkname==null||"".equals(linkname)){
         	m.put("error", true);
@@ -621,6 +639,8 @@ public class shoppingSysController {
             order.setIsAPI(3);// 0:web  1：API  2:waf 3：系统安全帮
             order.setScan_type(Integer.parseInt(scanType)); //设置节点个数 
             order.setWafTimes(orderDetailVo.getWafTimes()); // 设置服务时长
+            
+            order.setRemarks(orderDetailVo.getIpArray());//获取ipArray，将serviceid=10的端口和ip存入cs_order
          
             selfHelpOrderService.insertOrder(order);   //插入cs_order
             
@@ -736,6 +756,7 @@ public class shoppingSysController {
 			int duration =Integer.parseInt(request.getParameter("duration"));   //选择服务时长
 			//和运营管理数据同步
 //			synPriceData(serviceId);
+			
 			
 			
 			//进行价格分析
@@ -1141,10 +1162,28 @@ public class shoppingSysController {
 																// 128ip(16)
 																// 金山10对应 10ip
 		String serviceId = request.getParameter("serviceId");
+		int intserviceId = Integer.parseInt(serviceId);
 		String createDate = DateUtils.dateToString(new Date());
 		int durationint = Integer.parseInt(duration);
 		String endDate = DateUtils.dateToString(getAfterFewMonth(new Date(), durationint));
-
+        
+		String portMessage =null;
+	    if(Integer.parseInt(serviceId) ==10)//如果是服务监测，就获取检测的ip和端口信息,如果不是就为空
+	    {
+	       portMessage = request.getParameter("portMessage");
+//	       if (!checkIP(portMessage)) {
+//				m.put("error", true);
+//				// object转化为Json格式
+//				JSONObject JSON = CommonUtil.objectToJson(response, m);
+//				try {
+//					// 把数据返回到页面
+//					CommonUtil.writeToJsp(response, JSON);
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//				return;
+//			}
+	    }
 		// 判断参数值是否为空
 		if ((orderType == null || "".equals(orderType)) || (beginDate == null || "".equals(beginDate))
 				|| (serviceId == null || "".equals(serviceId)) || (duration == null || "".equals(duration))) {
@@ -1214,7 +1253,8 @@ public class shoppingSysController {
 			String strisAPI = orderMap.get("isAPI").toString();
 			String strNowDate = DateUtils.dateToString(new Date());	
 			
-			if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0 && strpayflag.equals("1")&&strisAPI.equals("3")) {
+			
+			if (strNowDate.compareTo(strBeginDate)>0 && strNowDate.compareTo(strEndDate)<0 && strpayflag.equals("1")&&strisAPI.equals("3") && intserviceId!=10) {
 				m.put("status", 3);
 				//m.put("error", true);
 				//m.put("message", "购物车已有同类订单，不能重复购买");
@@ -1240,7 +1280,7 @@ public class shoppingSysController {
 			HashMap<String, Object> orderMap2 = (HashMap<String, Object>) orderList2.get(0);			
 			String strpayflag2 = orderMap2.get("payFlag").toString();
 			String strisAPI = orderMap2.get("isAPI").toString();
-			if (strpayflag2.equals("0") && strisAPI.equals("3")) {	                
+			if (strpayflag2.equals("0") && strisAPI.equals("3")&& intserviceId!=10) {	                
 				m.put("status", 4);
 				//m.put("error", true);
 				//m.put("message", "购物车已有同类订单，不能重复购买");
@@ -1315,6 +1355,7 @@ public class shoppingSysController {
 		 if (scanPeriod != null && !"".equals(scanPeriod)) {
 				order.setScan_type(Integer.parseInt(scanPeriod));
 		 }
+		 order.setRemarks(portMessage); 
 		 selfHelpOrderService.insertOrder(order);
 		///////////////////////////////////////////
 
@@ -1340,6 +1381,7 @@ public class shoppingSysController {
 		List sysList = selfHelpOrderService.findShopCarSysList(String.valueOf(globle_user.getId()), 0, "");
 		int carnum = shopCarList.size() + apiList.size() + sysList.size();
 		request.setAttribute("carnum", carnum);
+		request.setAttribute("portMessage", portMessage);
 		 m.put("sucess", true);
 		 JSONObject JSON = CommonUtil.objectToJson(response, m);
 	        // 把数据返回到页面
@@ -1347,6 +1389,62 @@ public class shoppingSysController {
 		 //object转化为Json格式
 	       
 		  
+	}
+	 /**
+		 *检查是不是IP或者域名
+		 *ltb
+		 * @time  2017-3-2
+		 * serviceId 对应cs_service表中id
+		 * scanType 对应 cs_service表中 scan_Type字段 代表端点个数
+		 * timelength  代表1，2，3.....11，12，24 个月
+		 */
+	private boolean checkIP(String portMessage) {
+		if(portMessage.length()>200){//传过来的字符串长度大于200，就不能存入数据库
+    		return false;
+    	}
+    	String[] str=null;
+    	String isUrlIP=null;
+		String port="";
+		String[] temp=null;
+		str=portMessage.split(";");
+		
+		boolean flagIP=false;
+		boolean flagURL=false;
+		
+		//检查是域名还是ip
+	    isUrlIP=str[0];
+	    if(isUrlIP.startsWith(" ")){  
+	    	 isUrlIP=  isUrlIP.substring(1, isUrlIP.length()).trim();  
+        }  
+        if(isUrlIP.endsWith(" ")){  
+        	 isUrlIP=  isUrlIP.substring(0, isUrlIP.length()-1).trim();  
+        }
+        if(isUrlIP.matches("^(http|https|ftp)\\://([a-zA-Z0-9\\.\\-]+(\\:[a-zA-Z0-9\\.&%\\$\\-]+)*@)?((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9\\-]+\\.)*[a-zA-Z0-9\\-]+\\.[a-zA-Z]{2,4})(\\:[0-9]+)?(/[^/][a-zA-Z0-9\\.\\,\\?\\'\\\\/\\+&%\\$#\\=~_\\-@]*)*$")){//是url
+        	flagURL=true;
+        	System.out.println("是url");
+        }
+        if(isUrlIP.matches("^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$")){  
+        	flagIP=true;
+        	System.out.println("是ip");
+        }
+        if(flagIP || flagURL){
+        	
+        }else{
+        	return false;
+        }        
+		
+		int i=0;
+		for(i=1;i<str.length;i++){//检查端口号信息
+			temp=str[i].split(":");	
+			if(!temp[1].matches("^[0-9]*$")){
+				return false;
+			}
+			if (Integer.parseInt(temp[1]) < 0 || Integer.parseInt(temp[1]) > 65535) {// 传过来的端口号小于0或者大于65535，返回首页
+				return false;
+			}
+		}
+		return true;
+	
 	}
 	
 }
