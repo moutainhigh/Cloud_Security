@@ -1240,6 +1240,8 @@ public class shoppingController {
 				result = "/source/page/details/apiDetails7";
 			} else if (apiId == 8) {
 				result = "/source/page/details/apiDetails8";
+			} else if (apiId == 9) {
+				result = "/source/page/details/apiDetails9";
 			}
 		}
         if(assetIds!=null&&!"".equals(assetIds)){
@@ -1847,6 +1849,7 @@ public class shoppingController {
 	      int countserid7=0;
 		  int countserid8=0;
 		  int countserid9=0;
+		 
 			
 			
 			if (list != null && list.size() > 0) {
@@ -1862,18 +1865,21 @@ public class shoppingController {
 								String strEndDate = orderMap.get("end_date").toString();
 								String strNowDate = DateUtils.dateToString(new Date());
 								String ServiceId = orderMap.get("serviceId").toString();
+								int intserviceId = Integer.parseInt(ServiceId);
 								String shopCarServiceId = String.valueOf(shopCar.getServiceId());
 								System.out.println(strBeginDate + "  " + strEndDate + "  " + strNowDate + "  " + ServiceId
 										+ "  " + shopCarServiceId);
-								if (strNowDate.compareTo(strBeginDate) > 0 && strNowDate.compareTo(strEndDate) < 0
-										&& ServiceId.equals(shopCarServiceId)) {
-									System.out.println(strNowDate.compareTo(strBeginDate) > 0);
-									System.out.println(strNowDate.compareTo(strEndDate) < 0);
-									System.out.println(ServiceId.equals(shopCarServiceId));
-									shopCar.setStatus(-1);
-									selfHelpOrderService.updateShopOrder(shopCar);
-									flag=false;
-									status=-2;
+								if (intserviceId != 10) {
+									if (strNowDate.compareTo(strBeginDate) > 0 && strNowDate.compareTo(strEndDate) < 0
+											&& ServiceId.equals(shopCarServiceId)) {
+										System.out.println(strNowDate.compareTo(strBeginDate) > 0);
+										System.out.println(strNowDate.compareTo(strEndDate) < 0);
+										System.out.println(ServiceId.equals(shopCarServiceId));
+										shopCar.setStatus(-1);
+										selfHelpOrderService.updateShopOrder(shopCar);
+										flag = false;
+										status = -2;
+									}
 								}
 								
 								
@@ -1892,7 +1898,7 @@ public class shoppingController {
 							countserid8++;
 						}
 						if(shopCar.getServiceId()==9){
-							countserid7++;
+							countserid9++;
 						}
 						
 					}
@@ -2218,7 +2224,7 @@ public class shoppingController {
     			    serviceId=(Integer) order.get("serviceId");
     			    int isAPI=0;
     			    isAPI = (Integer)order.get("isAPI");
-    			    if ((serviceId == 7|| serviceId==8||serviceId==9)&&isAPI==3) {//极光自助、金山、云眼  接口
+    			    if ((serviceId == 7|| serviceId==8||serviceId==9 ||serviceId==10)&&isAPI==3) {//极光自助、金山、云眼  接口
     			    	User loginUser = userService.findUserById(globle_user.getId()).get(0);
     			    	Date createDate = (Date)order.get("create_date");
     			    	Date  beginDate =(Date)order.get("begin_date");
@@ -2227,7 +2233,8 @@ public class shoppingController {
     			    	Integer userid = new Integer(globle_user.getId());
     			    	int scanTypeint = (Integer)order.get("scan_type");
     			    	Integer scanTypeInteger = new Integer(scanTypeint);
-    			    	Linkman linkman = orderService.findLinkmanByOrderId(orderId);  	
+    			    	Linkman linkman = orderService.findLinkmanByOrderId(orderId);  
+    			    	String portMessage=(String)order.get("remarks");
     			    	
     			    	if (orderId != null && !"".equals(orderId)) {
         					// 更新订单资产表
@@ -2255,7 +2262,14 @@ public class shoppingController {
 								String strInstanceid = SysWorker.getjiguanginstanceID(userid.toString(), orderId, linkman.getMobile(), linkman.getName());
 								selfHelpOrderService.updateSysOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date(),strInstanceid);
 								
+							}else if (serviceId == 10) {//服务监测 
+								System.out.println(""+orderId );
+								System.out.println(""+portMessage );
+								//String strInstanceid = SysWorker.getjiguanginstanceID(userid.toString(), orderId, linkman.getMobile(), linkman.getName());
+								selfHelpOrderService.updateSysOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date(),portMessage);
+								
 							}
+    			    	
     			    		else {
 								selfHelpOrderService.updateOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date());
 							}
