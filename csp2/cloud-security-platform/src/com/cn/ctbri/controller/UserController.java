@@ -2210,4 +2210,16 @@ public class UserController{
         m.addAttribute("adList", adList);
 		return "/source/page/child/system_anquanbang";
 	}
+	
+	
+	/**
+	 * 功能描述： 系统安全帮活动详情页面
+	 * 参数描述： Model m
+	 *		 @time 2017-6-27
+	 */
+	@RequestMapping(value="system_activity.html")
+	public String system_activity(Model m){
+		return "/system_fuli";
+	}
+	
 }
