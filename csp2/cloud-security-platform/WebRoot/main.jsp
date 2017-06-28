@@ -101,7 +101,7 @@ html, body {
 											src="${ctx}/source/images/ad/${list.image }" alt=""
 											style="width:100%;height:100%"></a>
 									</c:if>
-									<c:if test="${list.id !=4 && list.image != 'NewVIP.png'}">
+									<c:if test="${list.id !=4 && list.image != 'NewVIP.png' && list.id !=3 && list.image != 'xthd.png'}">
 										<a href="#"><img
 											src="${ctx}/source/images/ad/${list.image }" alt=""
 											style="width:100%;height:100%"></a>
