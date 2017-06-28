@@ -156,10 +156,10 @@ $(document).ready(function(){
                         	<dt>API表格</dt>
                         	<dd class="active">获取单IP经纬度信息</dd>
                             <dd>获取多IP经纬度信息</dd>
-                            <dd>获取国内IP地址经纬度数据总数</dd>
+<!--                             <dd>获取国内IP地址经纬度数据总数</dd>
                             <dd>获取国内IP地址经纬度数据块</dd>
                             <dd>获取全球IP地址经纬度数据总数</dd>
-                            <dd>获取全球IP地址经纬度数据块</dd>
+                            <dd>获取全球IP地址经纬度数据块</dd> -->
                         </dl>
                     </div>
                     <div class="apiR fl">
@@ -543,7 +543,7 @@ $(document).ready(function(){
                         
                         </ul>
                         </div>
-                        <div class="listtab">
+                        <!-- <div class="listtab">
                         	<ul>
                         	<li class="clearfix">
                             	<label class="fl">接口描述：</label>
@@ -1190,7 +1190,7 @@ $(document).ready(function(){
                             </li>
                         
                         </ul>
-                        </div>
+                        </div> -->
                     
                     </div>
                </div>
