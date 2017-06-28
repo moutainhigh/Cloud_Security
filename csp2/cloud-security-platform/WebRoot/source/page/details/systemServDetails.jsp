@@ -100,7 +100,48 @@
                           		<span style="position: relative;top: 7px;left:7px"><u>由绿盟科技提供服务并开具发票</u></span>
                           	</c:if>
 						</li>
-
+                        <c:if test="${service.id==10}">
+                         <li class="clearfix" style="margin-bottom:-5px;">
+                           <label class="fl">监控目标</label>
+                           <div class="fl" style="top:3px;">
+                           	<span><input id="ip" type="text" style="height:35px;width:376px;color:#999;border: #e5e5e5 solid 1px;border-radius: 2px;" value="&nbsp;&nbsp;例如：https://127.0.0.1 或 http://www.google.com" onFocus="if(value==defaultValue){value='';this.style.color='#000'}" onBlur="if(!value){value=defaultValue; this.style.color='#999'}"></span>
+                           
+                           </div>
+                         </li>
+                         <span id="ipCheck" style="color:red;margin-left:95px;"></span>
+                         <li class="clearfix" style="margin-bottom:-5px;">
+                           <label class="fl">监控服务</label>
+                           <div id="changePort" class="fl" style="top:3px;">
+                           	<span>
+                            	<select id="servName" class="text select" onchange="changePort()" style="margin-left: 0px;">
+                           			<option value="" data-type="">服务名称</option>
+                           			<option value="22" data-type="SSH">SSH</option>
+                           			<option value="80" data-type="WEB">WEB</option>
+                           			<option value="3306" data-type="MYSQL">MYSQL</option>
+                           		</select> 
+                           	</span>
+                           	<span><input id="portNum" type="text" class="text" style="height:35px;width:116px;"></span>
+	                            <button class="click Single" id="addService">添加</button>
+                           </div>
+                         </li>
+                         <span id="portCheck" style="color:red;margin-left:240px;"></span>
+                         <li class="clearfix" style="margin-top:5px;">
+                               <span><input id="servAddedHidden" type="hidden" class="text" style="height:34px;width:480px;"></span>
+                               <div>
+                                 <span><input id="servAdded" type="text" class="text" style="margin-left:94px;height:34px;width:260px;" readonly="readonly">
+                                 <button class="click Single" id="reset" style="margin-left:30px;">重置</button></span>
+                               </div>
+                         </li>
+                         <span id="addedPortCheck" style="color:red;margin-left:90px;"></span>
+                         <li class="clearfix">
+                               <label class="fl">监测频率</label>
+                            <div class="fl clickBox" id="time">
+	                            <button class="clickTime" value="1">15分钟</button>
+	                            <button class="long" value="2">30分钟</button>
+	                            <button class="long" value="3">1小时</button>
+                            </div> 
+                         </li>
+                       </c:if>
                           	<li class="clearfix">
 							<label class="fl">服务期限</label>
                            	<div class="fl" style="top:3px;">
@@ -144,6 +185,23 @@
                            			<option value="10">10月</option>
                            			<option value="11">11月</option>
                            			<option value="12">1年</option>
+                           		</select> 
+                           	</c:if>
+                           	<c:if test="${service.id==10}">
+                           		<select class="text select" id="duration" onchange="changePrice();" style="margin-left: 0px;">
+                           			<option value="1">1月</option>
+                           			<option value="2">2月</option>
+                           			<option value="3">3月</option>
+                           			<option value="4">4月</option>
+                           			<option value="5">5月</option>
+                           			<option value="6">6月</option>
+                           			<option value="7">7月</option>
+                           			<option value="8">8月</option>
+                           			<option value="9">9月</option>
+                           			<option value="10">10月</option>
+                           			<option value="11">11月</option>
+                           			<option value="12">1年</option>
+                           			<option value="24">2年</option>
                            		</select> 
                            	</c:if>                           	                   
                            </div>                            
@@ -274,7 +332,4 @@
 </div>
 
 </body>
-
-
-
 </html>

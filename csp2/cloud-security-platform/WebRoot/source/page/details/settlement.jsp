@@ -316,7 +316,7 @@
 	                                            </c:if>
                                 
                                             </c:if>
-                                          
+                                           
 	                                    </td>
 	                                    <td width="52%" style="font-size:14px;">
 	                                    	<fmt:formatDate value="${orderDetail.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
@@ -366,6 +366,9 @@
                                             </c:if>
                                             <c:if test="${service.id == 9}">
                                             	1                                         	
+                                            </c:if>
+                                            <c:if test="${service.id == 10}">
+                                            	${orderDetail.scan_type}                                        	
                                             </c:if>
 	                                    </td>
 	                                    <td width="52%" style="font-size:14px;">

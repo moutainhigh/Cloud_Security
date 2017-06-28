@@ -2,6 +2,60 @@ $(function(){
   changeDur();
   //初始化价格
   changePrice();
+  //选择服务频率时，改变价格
+//  $("#time").click(function(){
+//	  alert(0);
+//  })
+  //监控目标发生改变时清空已选端口
+  $("#ip").change(function(){
+	  var ip = $("#ip").val();	  
+	  if(!isIpOrDomain(ip)){
+		return false;
+	  }
+	  
+  });
+  //重置按钮
+  $("#reset").click(function(){
+	  $("#servAdded").val("");
+	  $("#servAddedHidden").val("");
+  })
+  //端口号改变时校验端口号
+  $("#portNum").change(function(){
+	  var port = $("#portNum").val();	  
+	  if(!isPort(port)){
+		return false;
+	  }
+  });
+  //已添加端口号改变时清空错误提示
+  $("#servAdded").change(function(){
+	  $("#addedPortCheck").val("");
+  });
+  //点击添加触发事件
+  $("#addService").click(function(){
+	var ip = $("#ip").val();
+	var port = $("#portNum").val();
+	if(!(isIpOrDomain(ip)&&isPort(port))){
+		return false;
+	}
+  	if($("#portNum").val()==""){
+  		return false;
+  	}
+  	var servAddedHidden = $("#servAddedHidden").val();
+  	var newAddedHidden = $("#servName").find("option:selected").attr("data-type") + ":" + $("#portNum").val() + ";";
+    var servAdded = $("#servAdded").val();
+    var addedNum = $("#servAdded").val().split(";").length;
+    if(addedNum > 5){
+    	alert("最多添加5个端口！");
+    	return false;
+    }
+    var newAdded =  $("#portNum").val() + ";";
+  	if(servAdded.indexOf(newAdded) != -1){
+  		alert("此端口已添加过！");
+  		return false;
+  	}
+  	$("#servAdded").val(servAdded + newAdded);
+  	$("#servAddedHidden").val(servAddedHidden + newAddedHidden);
+  })
   
   //立即购买
   $("#buyNowsys").click(function(){
@@ -9,15 +63,27 @@ $(function(){
     var serviceId = $('#serviceIdHidden').val();
     var duration = $("#duration").val();
     var scanType = null;
-    if(serviceId==7)
-  	  scanType=$("#ipNum").val();
-    else if(serviceId==8)
-  	  scanType=$("#nodeNum").val();
-    else
-    	scanType="1";
+    if (serviceId == 7) {
+       scanType = $("#ipNum").val();
+    } else if (serviceId == 8) {
+       scanType=$("#nodeNum").val();
+    } else if (serviceId == 10) {
+    	var ip = $("#ip").val();
+    	var port = $("#portNum").val();
+    	if(!isIpOrDomain(ip)){
+    		return false;
+    	}
+      	if($.trim($("#servAdded").val())==""){
+      		$("#addedPortCheck").val("请添加端口号!");
+      		return false;
+      	}
+       scanType=$("#time").find(".clickTime").val();
+    } else {
+       scanType="1";
+    }
     var indexPage = $("#indexPage").val();
     var type = "1";//orderType订单类型：长期单次
-
+    var port
     $.ajax({
       type:"POST",
       async: false,
@@ -61,6 +127,23 @@ $(function(){
       		        serviceIdInput.name= "serviceId"; 
       		        serviceIdInput.value= serviceId; 
       		        tempForm.appendChild(serviceIdInput);
+      		         
+      		        if(serviceId == 10){
+	      		    	var ip = $("#ip").val();
+	      		    	var port = $("#portNum").val();
+		      	    	if(!(isIpOrDomain(ip)&&isPort(port))){
+		      	    		return false;
+		      	    	}
+		      	      	if($.trim($("#servAdded").val())==""){
+		      	      		$("#addedPortCheck").val("请添加端口号!")
+		      	      		return false;
+		      	      	}
+      		        	var portMessageInput = document.createElement("input");
+      		        	portMessageInput.type="hidden"; 
+      		        	portMessageInput.name= "portMessage";                 
+      		        	portMessageInput.value= $("#ip").val() + ";" + $("#servAddedHidden").val().substring(0,$("#servAddedHidden").val().length-1); 
+        		        tempForm.appendChild(portMessageInput);
+      		        }
       		        
       		        document.body.appendChild(tempForm);
       		        tempForm.submit();
@@ -101,16 +184,34 @@ $(function(){
   	  scanType=$("#ipNum").val();
     else if(serviceId==8)
   	  scanType=$("#nodeNum").val();
+    else if(serviceId==10){
+    	var ip = $("#ip").val();
+    	if(!isIpOrDomain(ip)){
+    		return false;
+    	}
+        scanType=$("#time").find(".clickTime").val();
+    }
     else
-    	scanType="1";
-    
+      scanType="1";
+    var parameterObj = {
+    		"orderType":orderType,
+		   	"duration": duration,
+		   	"scanType":scanType,
+		   	"serviceId":serviceId
+		   	};
+    if(serviceId == 10){
+    	parameterObj = {
+        		"orderType":orderType,
+    		   	"duration": duration,
+    		   	"scanType":scanType,
+    		   	"serviceId":serviceId,
+    		   	"portMessage":$("#ip").val() + ";" + $("#servAddedHidden").val().substring(0,$("#servAddedHidden").val().length-1)
+    		   	};
+    }
 	$.ajax({ type: "POST",
 	     async: false, 
 	     url: "shoppingCarSys.html",
-	     data: {"orderType":orderType,
-			   	"duration": duration,
-			   	"scanType":scanType,
-			   	"serviceId":serviceId}, 
+	     data: parameterObj,
 	     dataType: "json", 
 	     success: function(data) {
 			   		if(data.error){
@@ -208,7 +309,7 @@ $(function(){
   	    } 
   	});
   });
-  
+
 });
 
 //金山商品详情页中服务期限与管理终端数的联动对应
@@ -288,5 +389,69 @@ function showShopCar(){
 		    		 window.location.href = "loginUI.html"; } 
 		    	 else { window.location.href = "loginUI.html"; } } 
 		});
+
+}
+//系统服务监测切换
+function changePort(){
+	var curPort = $("#changePort").find("option:selected").val();
+	$("#changePort").find("input").val(curPort);
+}
+//验证是否为ip或者是域名
+function isIpOrDomain(ip){
+	var ip = $("#ip").val();
+	var regString = /^(http|https|ftp)\:\/\/([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&%\$\-]+)*@)?((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.[a-zA-Z]{2,4})(\:[0-9]+)?([^/][a-zA-Z0-9\.\,\?\'\\/\+&%\$#\=~_\-@]*)*$/;
+	var reg =  new RegExp(regString);
+	if(reg.test(ip)){
+		$("#ipCheck").text(""); 
+		return true;
+	} else {
+		$("#ipCheck").text("IP或域名输入有误！");
+		return false;
+	}
+}
+//function isIpOrDomain(ip){
+//	var ipArray,j; 
+//	var ip = $("#ip").val();	  
+//    if(/[A-Za-z_-]/.test(ip)){ 
+//        if(!/^([\w-]+\.)+((com)|(net)|(org)|(gov\.cn)|(info)|(cc)|(com\.cn)|(net\.cn)|(org\.cn)|(name)|(biz)|(tv)|(cn)|(mobi)|(name)|(sh)|(ac)|(io)|(tw)|(com\.tw)|(hk)|(com\.hk)|(ws)|(travel)|(us)|(tm)|(la)|(me\.uk)|(org\.uk)|(ltd\.uk)|(plc\.uk)|(in)|(eu)|(it)|(jp))$/.test(ip)){ 
+//        	$("#ipCheck").text("IP或域名输入有误！");
+//            return false; 
+//        }
+//        $("#ipCheck").text(""); 
+//        return true;
+//    } 
+//    else{ 
+//        ipArray = ip.split("."); 
+//        j = ipArray.length 
+//        if(j!=4) 
+//        { 
+//        	$("#ipCheck").text("IP或域名输入有误！");
+//            return false; 
+//        } 
+//
+//        for(var i=0;i<4;i++) 
+//        { 
+//            if(ipArray[i].length==0 || ipArray[i]>255) 
+//            { 
+//            	$("#ipCheck").text("IP或域名输入有误！");
+//                return false; 
+//            } 
+//        }
+//        $("#ipCheck").text(""); 
+//        return true;
+//    } 
+//}
+//验证端口号是否正确
+function isPort(port){
+    var port = $("#portNum").val();	  
+	var reg = /^([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5])$/;
+	if(!reg.test(port)){
+		$("#portCheck").text("端口号输入有误！");
+		return false;
+		
+	} else {
+		$("#portCheck").text("");  
+		return true;
+	}
 
 }

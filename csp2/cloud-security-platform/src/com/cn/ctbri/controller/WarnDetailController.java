@@ -1424,7 +1424,7 @@ public class WarnDetailController {
     		
     	}
   	
-    	 HashMap<String, Object> order=new HashMap<String, Object>();
+    	HashMap<String, Object> order=new HashMap<String, Object>();
  	    order=(HashMap) orderList.get(0);
  	    if (((Integer)order.get("userId"))!= globle_user.getId()) {
  	    	System.out.println("*****>>>>>>>>>>>>>>>>>>>>>userid not equal");
@@ -1433,7 +1433,7 @@ public class WarnDetailController {
 
  	    String strBeginDate = order.get("begin_date").toString();
 		String strEndDate =  order.get("end_date").toString();
-		String strNowDate = DateUtils.dateToString(new Date());
+		String strNowDate = DateUtils.dateToString(new Date());		
 		int serviceId = (Integer)order.get("serviceId");
     	status = status+order.get("status");
     	Integer userid = new Integer(globle_user.getId());
@@ -1474,6 +1474,47 @@ public class WarnDetailController {
 				if (!urljiguangString.equals("failed")&&urljiguangString!=null) {
 					request.setAttribute("returnURL", urljiguangString);
 				}
+				
+			}
+			else if (serviceId == 10) { // 绿盟极光
+				//
+				String useridString = ((Integer)order.get("userId")).toString();
+				//orderId
+				Linkman linkman = orderService.findLinkmanByOrderId(orderId); 
+				
+				
+				String remarks = order.get("remarks").toString();
+				String scan_type = order.get("scan_type").toString();
+				int scanType=0;
+				if(Integer.parseInt(scan_type)==1){
+					scanType=15;
+				}else if(Integer.parseInt(scan_type)==2){
+					scanType=30;
+				}else{
+					scanType=60;
+				}
+				
+				
+				String[] str=null;
+				String port="";
+				String[] temp=null;
+				str=remarks.split(";");
+				int i=0;
+				for(i=1;i<str.length;i++){
+					temp=str[i].split(":");
+					port=port+temp[1]+",";
+				}
+				port = port.substring(0,port.length() - 1);
+				System.out.println(port);
+				System.out.println(str[0]);
+				String sysMonitorMessage="{\"type\":\"CreateTask\", \"task_type\":\"app_detect\", \"target\":\""+ str[0]+ "\", \"port\":\""+port+"\",  \"interval_time\":\""+scanType+"\", \"start_time\":\""+strBeginDate+"\", \"end_time\":\""+strEndDate+"\"}";
+				System.out.println(sysMonitorMessage);
+					
+				
+				//String urljiguangString = SysWorker.getsysMonitorURL(useridString, orderId, linkman.getMobile(), linkman.getName(),sysMonitorMessage);
+				//if (!urljiguangString.equals("failed")&&urljiguangString!=null) {
+				//.setAttribute("returnURL", urljiguangString);
+				//}
 				
 			}
 			
