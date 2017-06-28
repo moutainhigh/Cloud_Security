@@ -82,8 +82,10 @@ margin: 0 18%;
 
 		</div>
 
-		<!--  start -->
-		<c:import url="http://mp.weixin.qq.com/s/G5U2ZVKgpPUYsRB4iV8SsA"></c:import>
+		<!--  start-->
+		<div id="showimg">
+		<c:import url="http://mp.weixin.qq.com/s/Ya8A4jWnBB2IycFElZKRyw"></c:import> 
+		</div>
 		<!--  end -->
 		
 		<div class="safe04">
@@ -171,7 +173,7 @@ $(function(){
 			"next":"right-arrow",
 			"speed":300 //时间可以任意调动  以毫秒为单位
 		});
-		
+	
 	})
 	
 </script>
