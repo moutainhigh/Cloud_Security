@@ -2197,8 +2197,8 @@ public class UserController{
         int webSite = selfHelpOrderService.findWebSite();
         //断网次数
         int brokenNetwork = selfHelpOrderService.findBrokenNetwork();
-        //获取安全能力API页面的广告
-        List adList = adService.findAdvertisementByType(2);
+        //获取系统安全帮页面的广告
+        List adList = adService.findAdvertisementByType(3);
         
         System.out.println(servList);
         m.addAttribute("leakNum", leakNum);
