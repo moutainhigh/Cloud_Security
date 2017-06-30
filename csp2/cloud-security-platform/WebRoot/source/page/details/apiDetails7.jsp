@@ -109,8 +109,7 @@ $(document).ready(function(){
                         <li class="clearfix">
                         	<label class="fl" style="top:4px;">API&nbsp;&nbsp;简&nbsp;&nbsp;介</label>
                             <div class="fl" style="width:546px;">
-                            	<p>为目标网站提供敏感性词汇的监测。
-主要接口：任务创建、任务操作、任务执行状态、任务结果获取、订单报告获取等。</p>
+                            	<p>国家地理数据为全球国家行政区域相关的数据，包括国家名称，所属洲，行政区，城市等信息。</p>
                             </div>
                         </li>
                         <!-- <li class="clearfix">
