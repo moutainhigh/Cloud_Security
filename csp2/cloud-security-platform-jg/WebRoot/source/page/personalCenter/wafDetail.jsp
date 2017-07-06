@@ -24,6 +24,7 @@
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/wafPic.js"></script>
+<script type="text/javascript" src="${ctx}/source/scripts/order/wafDownloadDetail.js"></script>
 
 <script type="text/javascript">
 $(function() {
@@ -194,13 +195,17 @@ function websecDetail(logId){
 			</div>
 		</div>
 		<div class="dataCent seetlentBox order" style="width: 1156px;">
-		
+		<form id="exportForm" action="${ctx}/exportWAF.html" method="post">
        <div class="data_box">
         <div class="data_nav">
           <input type="hidden" value="${order.id }" id="orderId" name="orderId"/>
           <ul>
             <li>实时数据</li>
           </ul>
+          <p align='right'><span>下载Word报表&nbsp;</span>
+						<span><a href="javascript:void(0)" onclick="exportImgWAF()" ><img src="${ctx}/source/images/export.png" width="22" height="23"/>
+						</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+		</p>
         </div> 
         <div class="data_min">
         	<c:if test="${websecNum>0}">
@@ -250,7 +255,8 @@ function websecDetail(logId){
 	            	<div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div>
             </c:if>
         </div>
-       </div>        
+       </div>
+       </form>        
 		</div>
         
 		<div class="safe04">
