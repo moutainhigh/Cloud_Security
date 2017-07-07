@@ -86,7 +86,14 @@ public class WafDetailController {
 //        }
         
         List<String> dstIpList = new ArrayList();
+        List<Integer> orderAssetIdList = new ArrayList();
     	if(assets != null && assets.size() > 0){
+    		//获取资产id
+    		for(int i = 0; i<assets.size();i++){
+    			HashMap<String,Object>  map = (HashMap<String,Object>)assets.get(i);
+                int orderAssetId = (Integer)map.get("orderAssetId");
+                orderAssetIdList.add(orderAssetId);
+    		}
         	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
         	assetOrder=(HashMap) assets.get(0);
         	String ipArray=(String) assetOrder.get("ipArray");
@@ -98,12 +105,13 @@ public class WafDetailController {
             }
             dstIpList.add("219.141.189.183");
             
-            String websecStr = WafAPIWorker.getWaflogWebsecInTime(dstIpList, "1");
+            String websecStr = WafAPIWorker.getWaflogWebsecInTime(dstIpList, "120");
         	websecList = this.getWaflogWebsecByIp(websecStr);
         	request.setAttribute("websecList", websecList);
             
         }
         request.setAttribute("websecNum", websecList.size());
+        request.setAttribute("orderAssetIdList", orderAssetIdList);
         //end 
         return "/source/page/personalCenter/wafDetail";
     }
@@ -144,7 +152,7 @@ public class WafDetailController {
             
         }
     	
-    	String levelStr = WafAPIWorker.getWafAlertLevelCount("1",dstIpList);
+    	String levelStr = WafAPIWorker.getWafAlertLevelCount("120",dstIpList);
     	Map map = this.getWafAlertLevelCount(levelStr);
         
         int high = 0;
@@ -215,7 +223,7 @@ public class WafDetailController {
             dstIpList.add("219.141.189.183");
             
         }
-    	String eventStr = WafAPIWorker.getWafEventTypeCount("1","hour",dstIpList);
+    	String eventStr = WafAPIWorker.getWafEventTypeCount("120","hour",dstIpList);
     	Map map = this.getWafEventTypeCount(eventStr);
         
         List name = null;
@@ -278,7 +286,7 @@ public class WafDetailController {
             
         }
         
-    	String eventStr = WafAPIWorker.getWafEventTypeCount("1","hour",dstIpList);
+    	String eventStr = WafAPIWorker.getWafEventTypeCount("120","hour",dstIpList);
     	Map map = this.getWafEventTypeCount(eventStr);
         
         List name = null;
