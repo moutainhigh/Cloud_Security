@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.dao.CityMapper">
+  <resultMap id="BaseResultMap" type="com.cn.ctbri.model.City">
+    <id column="location_id" jdbcType="VARCHAR" property="locationId" />
+    <result column="locale_code" jdbcType="VARCHAR" property="localeCode" />
+    <result column="continent_code" jdbcType="VARCHAR" property="continentCode" />
+    <result column="continent_name" jdbcType="VARCHAR" property="continentName" />
+    <result column="country_iso_code" jdbcType="VARCHAR" property="countryIsoCode" />
+    <result column="country_name" jdbcType="VARCHAR" property="countryName" />
+    <result column="subdivision_1_iso_code" jdbcType="VARCHAR" property="subdivision1IsoCode" />
+    <result column="subdivision_1_name" jdbcType="VARCHAR" property="subdivision1Name" />
+    <result column="subdivision_2_iso_code" jdbcType="VARCHAR" property="subdivision2IsoCode" />
+    <result column="subdivision_2_name" jdbcType="VARCHAR" property="subdivision2Name" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="metro_code" jdbcType="VARCHAR" property="metroCode" />
+    <result column="time_zone" jdbcType="VARCHAR" property="timeZone" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    location_id, locale_code, continent_code, continent_name, country_iso_code, country_name, 
+    subdivision_1_iso_code, subdivision_1_name, subdivision_2_iso_code, subdivision_2_name, 
+    city_name, metro_code, time_zone
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_city_location
+    where location_id = #{locationId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_city_location
+    where location_id = #{locationId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cn.ctbri.model.City">
+    insert into t_city_location (location_id, locale_code, continent_code, 
+      continent_name, country_iso_code, country_name, 
+      subdivision_1_iso_code, subdivision_1_name, 
+      subdivision_2_iso_code, subdivision_2_name, 
+      city_name, metro_code, time_zone
+      )
+    values (#{locationId,jdbcType=VARCHAR}, #{localeCode,jdbcType=VARCHAR}, #{continentCode,jdbcType=VARCHAR}, 
+      #{continentName,jdbcType=VARCHAR}, #{countryIsoCode,jdbcType=VARCHAR}, #{countryName,jdbcType=VARCHAR}, 
+      #{subdivision1IsoCode,jdbcType=VARCHAR}, #{subdivision1Name,jdbcType=VARCHAR}, 
+      #{subdivision2IsoCode,jdbcType=VARCHAR}, #{subdivision2Name,jdbcType=VARCHAR}, 
+      #{cityName,jdbcType=VARCHAR}, #{metroCode,jdbcType=VARCHAR}, #{timeZone,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.ctbri.model.City">
+    insert into t_city_location
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="locationId != null">
+        location_id,
+      </if>
+      <if test="localeCode != null">
+        locale_code,
+      </if>
+      <if test="continentCode != null">
+        continent_code,
+      </if>
+      <if test="continentName != null">
+        continent_name,
+      </if>
+      <if test="countryIsoCode != null">
+        country_iso_code,
+      </if>
+      <if test="countryName != null">
+        country_name,
+      </if>
+      <if test="subdivision1IsoCode != null">
+        subdivision_1_iso_code,
+      </if>
+      <if test="subdivision1Name != null">
+        subdivision_1_name,
+      </if>
+      <if test="subdivision2IsoCode != null">
+        subdivision_2_iso_code,
+      </if>
+      <if test="subdivision2Name != null">
+        subdivision_2_name,
+      </if>
+      <if test="cityName != null">
+        city_name,
+      </if>
+      <if test="metroCode != null">
+        metro_code,
+      </if>
+      <if test="timeZone != null">
+        time_zone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="locationId != null">
+        #{locationId,jdbcType=VARCHAR},
+      </if>
+      <if test="localeCode != null">
+        #{localeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="continentCode != null">
+        #{continentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="continentName != null">
+        #{continentName,jdbcType=VARCHAR},
+      </if>
+      <if test="countryIsoCode != null">
+        #{countryIsoCode,jdbcType=VARCHAR},
+      </if>
+      <if test="countryName != null">
+        #{countryName,jdbcType=VARCHAR},
+      </if>
+      <if test="subdivision1IsoCode != null">
+        #{subdivision1IsoCode,jdbcType=VARCHAR},
+      </if>
+      <if test="subdivision1Name != null">
+        #{subdivision1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="subdivision2IsoCode != null">
+        #{subdivision2IsoCode,jdbcType=VARCHAR},
+      </if>
+      <if test="subdivision2Name != null">
+        #{subdivision2Name,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null">
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="metroCode != null">
+        #{metroCode,jdbcType=VARCHAR},
+      </if>
+      <if test="timeZone != null">
+        #{timeZone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.ctbri.model.City">
+    update t_city_location
+    <set>
+      <if test="localeCode != null">
+        locale_code = #{localeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="continentCode != null">
+        continent_code = #{continentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="continentName != null">
+        continent_name = #{continentName,jdbcType=VARCHAR},
+      </if>
+      <if test="countryIsoCode != null">
+        country_iso_code = #{countryIsoCode,jdbcType=VARCHAR},
+      </if>
+      <if test="countryName != null">
+        country_name = #{countryName,jdbcType=VARCHAR},
+      </if>
+      <if test="subdivision1IsoCode != null">
+        subdivision_1_iso_code = #{subdivision1IsoCode,jdbcType=VARCHAR},
+      </if>
+      <if test="subdivision1Name != null">
+        subdivision_1_name = #{subdivision1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="subdivision2IsoCode != null">
+        subdivision_2_iso_code = #{subdivision2IsoCode,jdbcType=VARCHAR},
+      </if>
+      <if test="subdivision2Name != null">
+        subdivision_2_name = #{subdivision2Name,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null">
+        city_name = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="metroCode != null">
+        metro_code = #{metroCode,jdbcType=VARCHAR},
+      </if>
+      <if test="timeZone != null">
+        time_zone = #{timeZone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where location_id = #{locationId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.ctbri.model.City">
+    update t_city_location
+    set locale_code = #{localeCode,jdbcType=VARCHAR},
+      continent_code = #{continentCode,jdbcType=VARCHAR},
+      continent_name = #{continentName,jdbcType=VARCHAR},
+      country_iso_code = #{countryIsoCode,jdbcType=VARCHAR},
+      country_name = #{countryName,jdbcType=VARCHAR},
+      subdivision_1_iso_code = #{subdivision1IsoCode,jdbcType=VARCHAR},
+      subdivision_1_name = #{subdivision1Name,jdbcType=VARCHAR},
+      subdivision_2_iso_code = #{subdivision2IsoCode,jdbcType=VARCHAR},
+      subdivision_2_name = #{subdivision2Name,jdbcType=VARCHAR},
+      city_name = #{cityName,jdbcType=VARCHAR},
+      metro_code = #{metroCode,jdbcType=VARCHAR},
+      time_zone = #{timeZone,jdbcType=VARCHAR}
+    where location_id = #{locationId,jdbcType=VARCHAR}
+  </update>
+</mapper>

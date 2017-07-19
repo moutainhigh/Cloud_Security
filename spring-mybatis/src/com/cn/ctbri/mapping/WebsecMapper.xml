@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.dao.WebsecMapper">
+  <resultMap id="BaseResultMap" type="com.cn.ctbri.model.Websec">
+    <id column="log_id" jdbcType="BIGINT" property="logId" />
+    <result column="resource_id" jdbcType="INTEGER" property="resourceId" />
+    <result column="resource_uri" jdbcType="VARCHAR" property="resourceUri" />
+    <result column="resource_ip" jdbcType="VARCHAR" property="resourceIp" />
+    <result column="site_id" jdbcType="VARCHAR" property="siteId" />
+    <result column="protect_id" jdbcType="VARCHAR" property="protectId" />
+    <result column="dst_ip" jdbcType="VARCHAR" property="dstIp" />
+    <result column="dst_port" jdbcType="VARCHAR" property="dstPort" />
+    <result column="src_ip" jdbcType="VARCHAR" property="srcIp" />
+    <result column="src_port" jdbcType="VARCHAR" property="srcPort" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+    <result column="domain" jdbcType="VARCHAR" property="domain" />
+    <result column="uri" jdbcType="VARCHAR" property="uri" />
+    <result column="alertlevel" jdbcType="VARCHAR" property="alertlevel" />
+    <result column="event_type" jdbcType="VARCHAR" property="eventType" />
+    <result column="stat_time" jdbcType="TIMESTAMP" property="statTime" />
+    <result column="policy_id" jdbcType="VARCHAR" property="policyId" />
+    <result column="rule_id" jdbcType="VARCHAR" property="ruleId" />
+    <result column="action" jdbcType="VARCHAR" property="action" />
+    <result column="block" jdbcType="VARCHAR" property="block" />
+    <result column="block_info" jdbcType="VARCHAR" property="blockInfo" />
+    <result column="alertinfo" jdbcType="VARCHAR" property="alertinfo" />
+    <result column="proxy_info" jdbcType="VARCHAR" property="proxyInfo" />
+    <result column="characters" jdbcType="VARCHAR" property="characters" />
+    <result column="count_num" jdbcType="VARCHAR" property="countNum" />
+    <result column="protocol_type" jdbcType="VARCHAR" property="protocolType" />
+    <result column="wci" jdbcType="VARCHAR" property="wci" />
+    <result column="wsi" jdbcType="VARCHAR" property="wsi" />
+    <result column="ip_latlong_valid" jdbcType="INTEGER" property="ipLatlongValid" />
+    <result column="src_country_code" jdbcType="VARCHAR" property="srcCountryCode" />
+    <result column="src_country" jdbcType="VARCHAR" property="srcCountry" />
+    <result column="src_subdivision_1" jdbcType="VARCHAR" property="srcSubdivision1" />
+    <result column="src_subdivision_2" jdbcType="VARCHAR" property="srcSubdivision2" />
+    <result column="src_city" jdbcType="VARCHAR" property="srcCity" />
+    <result column="src_latitude" jdbcType="VARCHAR" property="srcLatitude" />
+    <result column="src_longitude" jdbcType="VARCHAR" property="srcLongitude" />
+    <result column="dst_country_code" jdbcType="VARCHAR" property="dstCountryCode" />
+    <result column="dst_country" jdbcType="VARCHAR" property="dstCountry" />
+    <result column="dst_subdivision_1" jdbcType="VARCHAR" property="dstSubdivision1" />
+    <result column="dst_subdivision_2" jdbcType="VARCHAR" property="dstSubdivision2" />
+    <result column="dst_city" jdbcType="VARCHAR" property="dstCity" />
+    <result column="dst_latitude" jdbcType="VARCHAR" property="dstLatitude" />
+    <result column="dst_longitude" jdbcType="VARCHAR" property="dstLongitude" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.cn.ctbri.model.Websec">
+    <result column="http" jdbcType="LONGVARBINARY" property="http" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    log_id, resource_id, resource_uri, resource_ip, site_id, protect_id, dst_ip, dst_port, 
+    src_ip, src_port, method, domain, uri, alertlevel, event_type, stat_time, policy_id, 
+    rule_id, action, block, block_info, alertinfo, proxy_info, characters, count_num, 
+    protocol_type, wci, wsi, ip_latlong_valid, src_country_code, src_country, src_subdivision_1, 
+    src_subdivision_2, src_city, src_latitude, src_longitude, dst_country_code, dst_country, 
+    dst_subdivision_1, dst_subdivision_2, dst_city, dst_latitude, dst_longitude
+  </sql>
+  <sql id="Blob_Column_List">
+    http
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_waf_log_websec
+    where log_id = #{logId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_waf_log_websec
+    where log_id = #{logId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cn.ctbri.model.Websec">
+    insert into t_waf_log_websec (log_id, resource_id, resource_uri, 
+      resource_ip, site_id, protect_id, 
+      dst_ip, dst_port, src_ip, 
+      src_port, method, domain, 
+      uri, alertlevel, event_type, 
+      stat_time, policy_id, rule_id, 
+      action, block, block_info, 
+      alertinfo, proxy_info, characters, 
+      count_num, protocol_type, wci, 
+      wsi, ip_latlong_valid, src_country_code, 
+      src_country, src_subdivision_1, src_subdivision_2, 
+      src_city, src_latitude, src_longitude, 
+      dst_country_code, dst_country, dst_subdivision_1, 
+      dst_subdivision_2, dst_city, dst_latitude, 
+      dst_longitude, http)
+    values (#{logId,jdbcType=BIGINT}, #{resourceId,jdbcType=INTEGER}, #{resourceUri,jdbcType=VARCHAR}, 
+      #{resourceIp,jdbcType=VARCHAR}, #{siteId,jdbcType=VARCHAR}, #{protectId,jdbcType=VARCHAR}, 
+      #{dstIp,jdbcType=VARCHAR}, #{dstPort,jdbcType=VARCHAR}, #{srcIp,jdbcType=VARCHAR}, 
+      #{srcPort,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{domain,jdbcType=VARCHAR}, 
+      #{uri,jdbcType=VARCHAR}, #{alertlevel,jdbcType=VARCHAR}, #{eventType,jdbcType=VARCHAR}, 
+      #{statTime,jdbcType=TIMESTAMP}, #{policyId,jdbcType=VARCHAR}, #{ruleId,jdbcType=VARCHAR}, 
+      #{action,jdbcType=VARCHAR}, #{block,jdbcType=VARCHAR}, #{blockInfo,jdbcType=VARCHAR}, 
+      #{alertinfo,jdbcType=VARCHAR}, #{proxyInfo,jdbcType=VARCHAR}, #{characters,jdbcType=VARCHAR}, 
+      #{countNum,jdbcType=VARCHAR}, #{protocolType,jdbcType=VARCHAR}, #{wci,jdbcType=VARCHAR}, 
+      #{wsi,jdbcType=VARCHAR}, #{ipLatlongValid,jdbcType=INTEGER}, #{srcCountryCode,jdbcType=VARCHAR}, 
+      #{srcCountry,jdbcType=VARCHAR}, #{srcSubdivision1,jdbcType=VARCHAR}, #{srcSubdivision2,jdbcType=VARCHAR}, 
+      #{srcCity,jdbcType=VARCHAR}, #{srcLatitude,jdbcType=VARCHAR}, #{srcLongitude,jdbcType=VARCHAR}, 
+      #{dstCountryCode,jdbcType=VARCHAR}, #{dstCountry,jdbcType=VARCHAR}, #{dstSubdivision1,jdbcType=VARCHAR}, 
+      #{dstSubdivision2,jdbcType=VARCHAR}, #{dstCity,jdbcType=VARCHAR}, #{dstLatitude,jdbcType=VARCHAR}, 
+      #{dstLongitude,jdbcType=VARCHAR}, #{http,jdbcType=LONGVARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.ctbri.model.Websec">
+    insert into t_waf_log_websec
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="logId != null">
+        log_id,
+      </if>
+      <if test="resourceId != null">
+        resource_id,
+      </if>
+      <if test="resourceUri != null">
+        resource_uri,
+      </if>
+      <if test="resourceIp != null">
+        resource_ip,
+      </if>
+      <if test="siteId != null">
+        site_id,
+      </if>
+      <if test="protectId != null">
+        protect_id,
+      </if>
+      <if test="dstIp != null">
+        dst_ip,
+      </if>
+      <if test="dstPort != null">
+        dst_port,
+      </if>
+      <if test="srcIp != null">
+        src_ip,
+      </if>
+      <if test="srcPort != null">
+        src_port,
+      </if>
+      <if test="method != null">
+        method,
+      </if>
+      <if test="domain != null">
+        domain,
+      </if>
+      <if test="uri != null">
+        uri,
+      </if>
+      <if test="alertlevel != null">
+        alertlevel,
+      </if>
+      <if test="eventType != null">
+        event_type,
+      </if>
+      <if test="statTime != null">
+        stat_time,
+      </if>
+      <if test="policyId != null">
+        policy_id,
+      </if>
+      <if test="ruleId != null">
+        rule_id,
+      </if>
+      <if test="action != null">
+        action,
+      </if>
+      <if test="block != null">
+        block,
+      </if>
+      <if test="blockInfo != null">
+        block_info,
+      </if>
+      <if test="alertinfo != null">
+        alertinfo,
+      </if>
+      <if test="proxyInfo != null">
+        proxy_info,
+      </if>
+      <if test="characters != null">
+        characters,
+      </if>
+      <if test="countNum != null">
+        count_num,
+      </if>
+      <if test="protocolType != null">
+        protocol_type,
+      </if>
+      <if test="wci != null">
+        wci,
+      </if>
+      <if test="wsi != null">
+        wsi,
+      </if>
+      <if test="ipLatlongValid != null">
+        ip_latlong_valid,
+      </if>
+      <if test="srcCountryCode != null">
+        src_country_code,
+      </if>
+      <if test="srcCountry != null">
+        src_country,
+      </if>
+      <if test="srcSubdivision1 != null">
+        src_subdivision_1,
+      </if>
+      <if test="srcSubdivision2 != null">
+        src_subdivision_2,
+      </if>
+      <if test="srcCity != null">
+        src_city,
+      </if>
+      <if test="srcLatitude != null">
+        src_latitude,
+      </if>
+      <if test="srcLongitude != null">
+        src_longitude,
+      </if>
+      <if test="dstCountryCode != null">
+        dst_country_code,
+      </if>
+      <if test="dstCountry != null">
+        dst_country,
+      </if>
+      <if test="dstSubdivision1 != null">
+        dst_subdivision_1,
+      </if>
+      <if test="dstSubdivision2 != null">
+        dst_subdivision_2,
+      </if>
+      <if test="dstCity != null">
+        dst_city,
+      </if>
+      <if test="dstLatitude != null">
+        dst_latitude,
+      </if>
+      <if test="dstLongitude != null">
+        dst_longitude,
+      </if>
+      <if test="http != null">
+        http,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="logId != null">
+        #{logId,jdbcType=BIGINT},
+      </if>
+      <if test="resourceId != null">
+        #{resourceId,jdbcType=INTEGER},
+      </if>
+      <if test="resourceUri != null">
+        #{resourceUri,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceIp != null">
+        #{resourceIp,jdbcType=VARCHAR},
+      </if>
+      <if test="siteId != null">
+        #{siteId,jdbcType=VARCHAR},
+      </if>
+      <if test="protectId != null">
+        #{protectId,jdbcType=VARCHAR},
+      </if>
+      <if test="dstIp != null">
+        #{dstIp,jdbcType=VARCHAR},
+      </if>
+      <if test="dstPort != null">
+        #{dstPort,jdbcType=VARCHAR},
+      </if>
+      <if test="srcIp != null">
+        #{srcIp,jdbcType=VARCHAR},
+      </if>
+      <if test="srcPort != null">
+        #{srcPort,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="domain != null">
+        #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="uri != null">
+        #{uri,jdbcType=VARCHAR},
+      </if>
+      <if test="alertlevel != null">
+        #{alertlevel,jdbcType=VARCHAR},
+      </if>
+      <if test="eventType != null">
+        #{eventType,jdbcType=VARCHAR},
+      </if>
+      <if test="statTime != null">
+        #{statTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="policyId != null">
+        #{policyId,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleId != null">
+        #{ruleId,jdbcType=VARCHAR},
+      </if>
+      <if test="action != null">
+        #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="block != null">
+        #{block,jdbcType=VARCHAR},
+      </if>
+      <if test="blockInfo != null">
+        #{blockInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="alertinfo != null">
+        #{alertinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyInfo != null">
+        #{proxyInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="characters != null">
+        #{characters,jdbcType=VARCHAR},
+      </if>
+      <if test="countNum != null">
+        #{countNum,jdbcType=VARCHAR},
+      </if>
+      <if test="protocolType != null">
+        #{protocolType,jdbcType=VARCHAR},
+      </if>
+      <if test="wci != null">
+        #{wci,jdbcType=VARCHAR},
+      </if>
+      <if test="wsi != null">
+        #{wsi,jdbcType=VARCHAR},
+      </if>
+      <if test="ipLatlongValid != null">
+        #{ipLatlongValid,jdbcType=INTEGER},
+      </if>
+      <if test="srcCountryCode != null">
+        #{srcCountryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="srcCountry != null">
+        #{srcCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="srcSubdivision1 != null">
+        #{srcSubdivision1,jdbcType=VARCHAR},
+      </if>
+      <if test="srcSubdivision2 != null">
+        #{srcSubdivision2,jdbcType=VARCHAR},
+      </if>
+      <if test="srcCity != null">
+        #{srcCity,jdbcType=VARCHAR},
+      </if>
+      <if test="srcLatitude != null">
+        #{srcLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="srcLongitude != null">
+        #{srcLongitude,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCountryCode != null">
+        #{dstCountryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCountry != null">
+        #{dstCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="dstSubdivision1 != null">
+        #{dstSubdivision1,jdbcType=VARCHAR},
+      </if>
+      <if test="dstSubdivision2 != null">
+        #{dstSubdivision2,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCity != null">
+        #{dstCity,jdbcType=VARCHAR},
+      </if>
+      <if test="dstLatitude != null">
+        #{dstLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="dstLongitude != null">
+        #{dstLongitude,jdbcType=VARCHAR},
+      </if>
+      <if test="http != null">
+        #{http,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.ctbri.model.Websec">
+    update t_waf_log_websec
+    <set>
+      <if test="resourceId != null">
+        resource_id = #{resourceId,jdbcType=INTEGER},
+      </if>
+      <if test="resourceUri != null">
+        resource_uri = #{resourceUri,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceIp != null">
+        resource_ip = #{resourceIp,jdbcType=VARCHAR},
+      </if>
+      <if test="siteId != null">
+        site_id = #{siteId,jdbcType=VARCHAR},
+      </if>
+      <if test="protectId != null">
+        protect_id = #{protectId,jdbcType=VARCHAR},
+      </if>
+      <if test="dstIp != null">
+        dst_ip = #{dstIp,jdbcType=VARCHAR},
+      </if>
+      <if test="dstPort != null">
+        dst_port = #{dstPort,jdbcType=VARCHAR},
+      </if>
+      <if test="srcIp != null">
+        src_ip = #{srcIp,jdbcType=VARCHAR},
+      </if>
+      <if test="srcPort != null">
+        src_port = #{srcPort,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        method = #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="domain != null">
+        domain = #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="uri != null">
+        uri = #{uri,jdbcType=VARCHAR},
+      </if>
+      <if test="alertlevel != null">
+        alertlevel = #{alertlevel,jdbcType=VARCHAR},
+      </if>
+      <if test="eventType != null">
+        event_type = #{eventType,jdbcType=VARCHAR},
+      </if>
+      <if test="statTime != null">
+        stat_time = #{statTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="policyId != null">
+        policy_id = #{policyId,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleId != null">
+        rule_id = #{ruleId,jdbcType=VARCHAR},
+      </if>
+      <if test="action != null">
+        action = #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="block != null">
+        block = #{block,jdbcType=VARCHAR},
+      </if>
+      <if test="blockInfo != null">
+        block_info = #{blockInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="alertinfo != null">
+        alertinfo = #{alertinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="proxyInfo != null">
+        proxy_info = #{proxyInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="characters != null">
+        characters = #{characters,jdbcType=VARCHAR},
+      </if>
+      <if test="countNum != null">
+        count_num = #{countNum,jdbcType=VARCHAR},
+      </if>
+      <if test="protocolType != null">
+        protocol_type = #{protocolType,jdbcType=VARCHAR},
+      </if>
+      <if test="wci != null">
+        wci = #{wci,jdbcType=VARCHAR},
+      </if>
+      <if test="wsi != null">
+        wsi = #{wsi,jdbcType=VARCHAR},
+      </if>
+      <if test="ipLatlongValid != null">
+        ip_latlong_valid = #{ipLatlongValid,jdbcType=INTEGER},
+      </if>
+      <if test="srcCountryCode != null">
+        src_country_code = #{srcCountryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="srcCountry != null">
+        src_country = #{srcCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="srcSubdivision1 != null">
+        src_subdivision_1 = #{srcSubdivision1,jdbcType=VARCHAR},
+      </if>
+      <if test="srcSubdivision2 != null">
+        src_subdivision_2 = #{srcSubdivision2,jdbcType=VARCHAR},
+      </if>
+      <if test="srcCity != null">
+        src_city = #{srcCity,jdbcType=VARCHAR},
+      </if>
+      <if test="srcLatitude != null">
+        src_latitude = #{srcLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="srcLongitude != null">
+        src_longitude = #{srcLongitude,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCountryCode != null">
+        dst_country_code = #{dstCountryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCountry != null">
+        dst_country = #{dstCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="dstSubdivision1 != null">
+        dst_subdivision_1 = #{dstSubdivision1,jdbcType=VARCHAR},
+      </if>
+      <if test="dstSubdivision2 != null">
+        dst_subdivision_2 = #{dstSubdivision2,jdbcType=VARCHAR},
+      </if>
+      <if test="dstCity != null">
+        dst_city = #{dstCity,jdbcType=VARCHAR},
+      </if>
+      <if test="dstLatitude != null">
+        dst_latitude = #{dstLatitude,jdbcType=VARCHAR},
+      </if>
+      <if test="dstLongitude != null">
+        dst_longitude = #{dstLongitude,jdbcType=VARCHAR},
+      </if>
+      <if test="http != null">
+        http = #{http,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where log_id = #{logId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cn.ctbri.model.Websec">
+    update t_waf_log_websec
+    set resource_id = #{resourceId,jdbcType=INTEGER},
+      resource_uri = #{resourceUri,jdbcType=VARCHAR},
+      resource_ip = #{resourceIp,jdbcType=VARCHAR},
+      site_id = #{siteId,jdbcType=VARCHAR},
+      protect_id = #{protectId,jdbcType=VARCHAR},
+      dst_ip = #{dstIp,jdbcType=VARCHAR},
+      dst_port = #{dstPort,jdbcType=VARCHAR},
+      src_ip = #{srcIp,jdbcType=VARCHAR},
+      src_port = #{srcPort,jdbcType=VARCHAR},
+      method = #{method,jdbcType=VARCHAR},
+      domain = #{domain,jdbcType=VARCHAR},
+      uri = #{uri,jdbcType=VARCHAR},
+      alertlevel = #{alertlevel,jdbcType=VARCHAR},
+      event_type = #{eventType,jdbcType=VARCHAR},
+      stat_time = #{statTime,jdbcType=TIMESTAMP},
+      policy_id = #{policyId,jdbcType=VARCHAR},
+      rule_id = #{ruleId,jdbcType=VARCHAR},
+      action = #{action,jdbcType=VARCHAR},
+      block = #{block,jdbcType=VARCHAR},
+      block_info = #{blockInfo,jdbcType=VARCHAR},
+      alertinfo = #{alertinfo,jdbcType=VARCHAR},
+      proxy_info = #{proxyInfo,jdbcType=VARCHAR},
+      characters = #{characters,jdbcType=VARCHAR},
+      count_num = #{countNum,jdbcType=VARCHAR},
+      protocol_type = #{protocolType,jdbcType=VARCHAR},
+      wci = #{wci,jdbcType=VARCHAR},
+      wsi = #{wsi,jdbcType=VARCHAR},
+      ip_latlong_valid = #{ipLatlongValid,jdbcType=INTEGER},
+      src_country_code = #{srcCountryCode,jdbcType=VARCHAR},
+      src_country = #{srcCountry,jdbcType=VARCHAR},
+      src_subdivision_1 = #{srcSubdivision1,jdbcType=VARCHAR},
+      src_subdivision_2 = #{srcSubdivision2,jdbcType=VARCHAR},
+      src_city = #{srcCity,jdbcType=VARCHAR},
+      src_latitude = #{srcLatitude,jdbcType=VARCHAR},
+      src_longitude = #{srcLongitude,jdbcType=VARCHAR},
+      dst_country_code = #{dstCountryCode,jdbcType=VARCHAR},
+      dst_country = #{dstCountry,jdbcType=VARCHAR},
+      dst_subdivision_1 = #{dstSubdivision1,jdbcType=VARCHAR},
+      dst_subdivision_2 = #{dstSubdivision2,jdbcType=VARCHAR},
+      dst_city = #{dstCity,jdbcType=VARCHAR},
+      dst_latitude = #{dstLatitude,jdbcType=VARCHAR},
+      dst_longitude = #{dstLongitude,jdbcType=VARCHAR},
+      http = #{http,jdbcType=LONGVARBINARY}
+    where log_id = #{logId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.ctbri.model.Websec">
+    update t_waf_log_websec
+    set resource_id = #{resourceId,jdbcType=INTEGER},
+      resource_uri = #{resourceUri,jdbcType=VARCHAR},
+      resource_ip = #{resourceIp,jdbcType=VARCHAR},
+      site_id = #{siteId,jdbcType=VARCHAR},
+      protect_id = #{protectId,jdbcType=VARCHAR},
+      dst_ip = #{dstIp,jdbcType=VARCHAR},
+      dst_port = #{dstPort,jdbcType=VARCHAR},
+      src_ip = #{srcIp,jdbcType=VARCHAR},
+      src_port = #{srcPort,jdbcType=VARCHAR},
+      method = #{method,jdbcType=VARCHAR},
+      domain = #{domain,jdbcType=VARCHAR},
+      uri = #{uri,jdbcType=VARCHAR},
+      alertlevel = #{alertlevel,jdbcType=VARCHAR},
+      event_type = #{eventType,jdbcType=VARCHAR},
+      stat_time = #{statTime,jdbcType=TIMESTAMP},
+      policy_id = #{policyId,jdbcType=VARCHAR},
+      rule_id = #{ruleId,jdbcType=VARCHAR},
+      action = #{action,jdbcType=VARCHAR},
+      block = #{block,jdbcType=VARCHAR},
+      block_info = #{blockInfo,jdbcType=VARCHAR},
+      alertinfo = #{alertinfo,jdbcType=VARCHAR},
+      proxy_info = #{proxyInfo,jdbcType=VARCHAR},
+      characters = #{characters,jdbcType=VARCHAR},
+      count_num = #{countNum,jdbcType=VARCHAR},
+      protocol_type = #{protocolType,jdbcType=VARCHAR},
+      wci = #{wci,jdbcType=VARCHAR},
+      wsi = #{wsi,jdbcType=VARCHAR},
+      ip_latlong_valid = #{ipLatlongValid,jdbcType=INTEGER},
+      src_country_code = #{srcCountryCode,jdbcType=VARCHAR},
+      src_country = #{srcCountry,jdbcType=VARCHAR},
+      src_subdivision_1 = #{srcSubdivision1,jdbcType=VARCHAR},
+      src_subdivision_2 = #{srcSubdivision2,jdbcType=VARCHAR},
+      src_city = #{srcCity,jdbcType=VARCHAR},
+      src_latitude = #{srcLatitude,jdbcType=VARCHAR},
+      src_longitude = #{srcLongitude,jdbcType=VARCHAR},
+      dst_country_code = #{dstCountryCode,jdbcType=VARCHAR},
+      dst_country = #{dstCountry,jdbcType=VARCHAR},
+      dst_subdivision_1 = #{dstSubdivision1,jdbcType=VARCHAR},
+      dst_subdivision_2 = #{dstSubdivision2,jdbcType=VARCHAR},
+      dst_city = #{dstCity,jdbcType=VARCHAR},
+      dst_latitude = #{dstLatitude,jdbcType=VARCHAR},
+      dst_longitude = #{dstLongitude,jdbcType=VARCHAR}
+    where log_id = #{logId,jdbcType=BIGINT}
+  </update>
+  <select id="getMaxLogId" resultType="java.lang.Long">
+  	select max(log_id) from t_waf_log_websec 
+  </select>
+   <select id="selectAll"  resultMap="BaseResultMap">
+    select 
+        log_id,src_ip,dst_ip,domain
+    from t_waf_log_websec 
+   </select>
+   <select id="selectSeg"  parameterType="hashmap" resultMap="BaseResultMap">
+   		 select 
+        log_id,src_ip,dst_ip,domain
+    from t_waf_log_websec where log_id between #{preLogId,jdbcType=BIGINT} and #{maxLogId,jdbcType=BIGINT}
+   </select>
+   <update id="batchUpd"  parameterType="java.util.List">  
+            
+              <foreach collection="list" item="item" index="index" open="" close="" separator=";">  
+                    update t_waf_log_websec   
+                    <set>  
+                    	 <if test="ipLatlongValid != null">
+					        ip_latlong_valid = #{ipLatlongValid,jdbcType=INTEGER},
+					      </if>
+					      <if test="srcCountryCode != null">
+					        src_country_code = #{srcCountryCode,jdbcType=VARCHAR},
+					      </if>
+					      <if test="srcCountry != null">
+					        src_country = #{srcCountry,jdbcType=VARCHAR},
+					      </if>
+					      <if test="srcSubdivision1 != null">
+					        src_subdivision_1 = #{srcSubdivision1,jdbcType=VARCHAR},
+					      </if>
+					      <if test="srcSubdivision2 != null">
+					        src_subdivision_2 = #{srcSubdivision2,jdbcType=VARCHAR},
+					      </if>
+					      <if test="srcCity != null">
+					        src_city = #{srcCity,jdbcType=VARCHAR},
+					      </if>
+					      <if test="srcLatitude != null">
+					        src_latitude = #{srcLatitude,jdbcType=VARCHAR},
+					      </if>
+					      <if test="srcLongitude != null">
+					        src_longitude = #{srcLongitude,jdbcType=VARCHAR},
+					      </if>
+					      <if test="dstCountryCode != null">
+					        dst_country_code = #{dstCountryCode,jdbcType=VARCHAR},
+					      </if>
+					      <if test="dstCountry != null">
+					        dst_country = #{dstCountry,jdbcType=VARCHAR},
+					      </if>
+					      <if test="dstSubdivision1 != null">
+					        dst_subdivision_1 = #{dstSubdivision1,jdbcType=VARCHAR},
+					      </if>
+					      <if test="dstSubdivision2 != null">
+					        dst_subdivision_2 = #{dstSubdivision2,jdbcType=VARCHAR},
+					      </if>
+					      <if test="dstCity != null">
+					        dst_city = #{dstCity,jdbcType=VARCHAR},
+					      </if>
+					      <if test="dstLatitude != null">
+					        dst_latitude = #{dstLatitude,jdbcType=VARCHAR},
+					      </if>
+					      <if test="dstLongitude != null">
+					        dst_longitude = #{dstLongitude,jdbcType=VARCHAR},
+					      </if>
+                    </set>  
+                   where log_id = #{logId,jdbcType=BIGINT} 
+             </foreach>  
+                
+    </update>  
+</mapper>

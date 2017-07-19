@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.dao.IpMapper">
+  <resultMap id="BaseResultMap" type="com.cn.ctbri.model.Ip">
+    <id column="latlong_id" jdbcType="VARCHAR" property="latlongId" />
+    <result column="network" jdbcType="VARCHAR" property="network" />
+    <result column="netmask" jdbcType="VARCHAR" property="netmask" />
+    <result column="startip" jdbcType="VARCHAR" property="startip" />
+    <result column="endip" jdbcType="VARCHAR" property="endip" />
+    <result column="location_id" jdbcType="VARCHAR" property="locationId" />
+    <result column="registered_country_location_id" jdbcType="VARCHAR" property="registeredCountryLocationId" />
+    <result column="represented_country_location_id" jdbcType="VARCHAR" property="representedCountryLocationId" />
+    <result column="is_anonymous_proxy" jdbcType="VARCHAR" property="isAnonymousProxy" />
+    <result column="is_satellite_provider" jdbcType="VARCHAR" property="isSatelliteProvider" />
+    <result column="postal_code" jdbcType="VARCHAR" property="postalCode" />
+    <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+    <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+    <result column="accuracy_radius" jdbcType="VARCHAR" property="accuracyRadius" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    latlong_id, network, netmask, startip, endip, location_id, registered_country_location_id, 
+    represented_country_location_id, is_anonymous_proxy, is_satellite_provider, postal_code, 
+    latitude, longitude, accuracy_radius
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_ipv4_latlong
+    where latlong_id = #{latlongId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_ipv4_latlong
+    where latlong_id = #{latlongId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cn.ctbri.model.Ip">
+    insert into t_ipv4_latlong (latlong_id, network, netmask, 
+      startip, endip, location_id, 
+      registered_country_location_id, represented_country_location_id, 
+      is_anonymous_proxy, is_satellite_provider, 
+      postal_code, latitude, longitude, 
+      accuracy_radius)
+    values (#{latlongId,jdbcType=VARCHAR}, #{network,jdbcType=VARCHAR}, #{netmask,jdbcType=VARCHAR}, 
+      #{startip,jdbcType=VARCHAR}, #{endip,jdbcType=VARCHAR}, #{locationId,jdbcType=VARCHAR}, 
+      #{registeredCountryLocationId,jdbcType=VARCHAR}, #{representedCountryLocationId,jdbcType=VARCHAR}, 
+      #{isAnonymousProxy,jdbcType=VARCHAR}, #{isSatelliteProvider,jdbcType=VARCHAR}, 
+      #{postalCode,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR}, 
+      #{accuracyRadius,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.ctbri.model.Ip">
+    insert into t_ipv4_latlong
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="latlongId != null">
+        latlong_id,
+      </if>
+      <if test="network != null">
+        network,
+      </if>
+      <if test="netmask != null">
+        netmask,
+      </if>
+      <if test="startip != null">
+        startip,
+      </if>
+      <if test="endip != null">
+        endip,
+      </if>
+      <if test="locationId != null">
+        location_id,
+      </if>
+      <if test="registeredCountryLocationId != null">
+        registered_country_location_id,
+      </if>
+      <if test="representedCountryLocationId != null">
+        represented_country_location_id,
+      </if>
+      <if test="isAnonymousProxy != null">
+        is_anonymous_proxy,
+      </if>
+      <if test="isSatelliteProvider != null">
+        is_satellite_provider,
+      </if>
+      <if test="postalCode != null">
+        postal_code,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="accuracyRadius != null">
+        accuracy_radius,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="latlongId != null">
+        #{latlongId,jdbcType=VARCHAR},
+      </if>
+      <if test="network != null">
+        #{network,jdbcType=VARCHAR},
+      </if>
+      <if test="netmask != null">
+        #{netmask,jdbcType=VARCHAR},
+      </if>
+      <if test="startip != null">
+        #{startip,jdbcType=VARCHAR},
+      </if>
+      <if test="endip != null">
+        #{endip,jdbcType=VARCHAR},
+      </if>
+      <if test="locationId != null">
+        #{locationId,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredCountryLocationId != null">
+        #{registeredCountryLocationId,jdbcType=VARCHAR},
+      </if>
+      <if test="representedCountryLocationId != null">
+        #{representedCountryLocationId,jdbcType=VARCHAR},
+      </if>
+      <if test="isAnonymousProxy != null">
+        #{isAnonymousProxy,jdbcType=VARCHAR},
+      </if>
+      <if test="isSatelliteProvider != null">
+        #{isSatelliteProvider,jdbcType=VARCHAR},
+      </if>
+      <if test="postalCode != null">
+        #{postalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="accuracyRadius != null">
+        #{accuracyRadius,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.ctbri.model.Ip">
+    update t_ipv4_latlong
+    <set>
+      <if test="network != null">
+        network = #{network,jdbcType=VARCHAR},
+      </if>
+      <if test="netmask != null">
+        netmask = #{netmask,jdbcType=VARCHAR},
+      </if>
+      <if test="startip != null">
+        startip = #{startip,jdbcType=VARCHAR},
+      </if>
+      <if test="endip != null">
+        endip = #{endip,jdbcType=VARCHAR},
+      </if>
+      <if test="locationId != null">
+        location_id = #{locationId,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredCountryLocationId != null">
+        registered_country_location_id = #{registeredCountryLocationId,jdbcType=VARCHAR},
+      </if>
+      <if test="representedCountryLocationId != null">
+        represented_country_location_id = #{representedCountryLocationId,jdbcType=VARCHAR},
+      </if>
+      <if test="isAnonymousProxy != null">
+        is_anonymous_proxy = #{isAnonymousProxy,jdbcType=VARCHAR},
+      </if>
+      <if test="isSatelliteProvider != null">
+        is_satellite_provider = #{isSatelliteProvider,jdbcType=VARCHAR},
+      </if>
+      <if test="postalCode != null">
+        postal_code = #{postalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="accuracyRadius != null">
+        accuracy_radius = #{accuracyRadius,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where latlong_id = #{latlongId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.ctbri.model.Ip">
+    update t_ipv4_latlong
+    set network = #{network,jdbcType=VARCHAR},
+      netmask = #{netmask,jdbcType=VARCHAR},
+      startip = #{startip,jdbcType=VARCHAR},
+      endip = #{endip,jdbcType=VARCHAR},
+      location_id = #{locationId,jdbcType=VARCHAR},
+      registered_country_location_id = #{registeredCountryLocationId,jdbcType=VARCHAR},
+      represented_country_location_id = #{representedCountryLocationId,jdbcType=VARCHAR},
+      is_anonymous_proxy = #{isAnonymousProxy,jdbcType=VARCHAR},
+      is_satellite_provider = #{isSatelliteProvider,jdbcType=VARCHAR},
+      postal_code = #{postalCode,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=VARCHAR},
+      accuracy_radius = #{accuracyRadius,jdbcType=VARCHAR}
+    where latlong_id = #{latlongId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getLatLongByIp" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  	select location_id,latitude,longitude from t_ipv4_latlong where #{ip,jdbcType=INTEGER} between convert(startip,UNSIGNED)  and convert(endip,UNSIGNED)  order by convert(netmask,UNSIGNED) desc 
+  </select>
+  
+</mapper>
