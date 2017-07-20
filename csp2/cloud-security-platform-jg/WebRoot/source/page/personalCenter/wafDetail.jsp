@@ -24,7 +24,6 @@
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/esl.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/echarts/echarts.js"></script>
 <script type="text/javascript" src="${ctx}/source/scripts/order/wafPic.js"></script>
-<script type="text/javascript" src="${ctx}/source/scripts/order/wafDownloadDetail.js"></script>
 
 <script type="text/javascript">
 $(function() {
@@ -200,7 +199,7 @@ function websecDetail(logId){
         <div class="data_nav">
           <input type="hidden" value="${order.id }" id="orderId" name="orderId"/>
           
-          <input type="hidden" value="${orderAssetIdList[0] }" id="orderAssetId" name="orderAssetId"/>
+          <input type="hidden" value="${orderAssetId }" id="orderAssetId" name="orderAssetId"/>
           <ul>
             <li>实时数据</li>
           </ul>
@@ -209,6 +208,11 @@ function websecDetail(logId){
 						</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 		</p>
         </div> 
+      	
+      	<input  name="imgPieLevel" id="imgPieLevel" />
+		<input type="hidden" name="imgPieEvent" id="imgPieEvent" />
+		<input type="hidden" name="imgBar" id="imgBar" />
+      
         <div class="data_min">
         	<c:if test="${websecNum>0}">
              <div class="data_1" id="levelPie"></div>
