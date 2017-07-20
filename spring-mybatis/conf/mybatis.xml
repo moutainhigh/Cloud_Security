@@ -3,9 +3,13 @@
     "-//mybatis.org//DTD Config 3.0//EN"  
     "http://mybatis.org/dtd/mybatis-3-config.dtd">  
 <configuration>  
+
     <mappers>  
         <mapper resource="com/cn/ctbri/mapping/WebsecMapper.xml"/>  
         <mapper resource="com/cn/ctbri/mapping/IpMapper.xml"/>  
         <mapper resource="com/cn/ctbri/mapping/CityMapper.xml"/>  
+        <mapper resource="com/cn/ctbri/mapping/CntByTypeMapper.xml"/>
+        <mapper resource="com/cn/ctbri/mapping/CntByHourMapper.xml"/>  
+        <mapper resource="com/cn/ctbri/mapping/CntBySrcMapper.xml"/> 
     </mappers>  
 </configuration>

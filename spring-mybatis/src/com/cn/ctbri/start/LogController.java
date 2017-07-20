@@ -1,5 +1,7 @@
 package com.cn.ctbri.start;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
@@ -17,40 +19,18 @@ import com.cn.ctbri.utils.IPUtility;
 public class LogController {
 	public static void main(String[] args) {
 		
-		// TODO Auto-generated method stub
-		 ApplicationContext ctx=null;
-		 String path=System.getProperty("user.dir");
-	     ctx=new FileSystemXmlApplicationContext(path+"/conf/applicationContext.xml");
-	     /*WebsecMapper websecDao=(WebsecMapper) ctx.getBean("websecDao");
-	     IpMapper ipDao=(IpMapper) ctx.getBean("ipDao");
-	     Ip ip = getLocationId("76.123.103.168",ipDao);
-	     Websec websec = new Websec();
-	     if(ip != null){
-	    	 websec.setIpLatlongValid(1);
-	     }else
-	    	 websec.setIpLatlongValid(-1);
-	     CityMapper cityDao=(CityMapper) ctx.getBean("cityDao");
-	     City city = cityDao.selectByPrimaryKey("1000000001");
-	    
-	     
-	     websec.setDstCity(city.getCityName());
-	     websec.setDstCountry(city.getCountryName());
-	     websec.setDstCountryCode(city.getCountryIsoCode());
-	     websec.setDstSubdivision1(city.getSubdivision1Name());
-	     websec.setDstSubdivision2(city.getSubdivision2Name());
-	     websec.setDstLatitude(ip.getLatitude());
-	     websec.setDstLongitude(ip.getLongitude());
-	     websec.setLogId(235873l);
-	    //logid= 235873
-	     websecDao.updateByPrimaryKeySelective(websec);*/
+		File directory = new File("");//设定为当前文件夹 
+		try{ 
+		    System.out.println(directory.getCanonicalPath());//获取标准的路径 
+		    System.out.println(directory.getAbsolutePath());//获取绝对路径 
+		    ApplicationContext ctx=null;
+			 
+			// String path=System.getProperty("user.dir");
+			// System.out.println(path);
+		     ctx=new FileSystemXmlApplicationContext(directory.getAbsolutePath()+"/conf/applicationContext.xml");
+		}catch(Exception e){} 
+		 
 	}
-	static Ip getLocationId(String ipv4,IpMapper ipDao){
-		Ip ip = null;
-		Long ipLong = IPUtility.ip2long(ipv4);
-		List<Ip> list = (ArrayList<Ip>)ipDao.getLatLongByIp(ipLong);
-		if(list.size() > 0 )
-			ip = list.get(0);
-		return ip;
-	}
+	
 	
 }

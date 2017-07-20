@@ -1,9 +1,12 @@
 package com.cn.ctbri.dao;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.cn.ctbri.model.CntByType;
 import com.cn.ctbri.model.Websec;
 
 public interface WebsecMapper {
@@ -22,6 +25,8 @@ public interface WebsecMapper {
     int updateByPrimaryKey(Websec record);
     Long getMaxLogId();
     List<Websec> selectAll();
-    int batchUpd(List<Websec> websecList);
-    List<Websec>  selectSeg(Map<String,Long> hm);
+    void batchUpd(Map<String,List<Websec>> map);
+    CopyOnWriteArrayList<Websec>  selectSeg(Map<String,Long> hm);
+    Date selectMaxDay();
+  
 }

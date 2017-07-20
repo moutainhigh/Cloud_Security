@@ -1,15 +1,25 @@
 package com.cn.ctbri.schedular;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import com.cn.ctbri.dao.CityMapper;
 import com.cn.ctbri.dao.IpMapper;
@@ -29,16 +39,7 @@ public class QuartzWebsecUpd implements org.quartz.Job{
 		 ApplicationContext applicationContext=null;  
 	     try {  
 	            applicationContext=getApplicationContext(jobContext);  
-	            WebsecMapper websecDao=(WebsecMapper) applicationContext.getBean("websecDao");
-	            
-	   	     IpMapper ipDao=(IpMapper) applicationContext.getBean("ipDao");
-	   	     Ip ip = getLocationId("76.123.103.168",ipDao);
-	   	     Websec websec = new Websec();
-	   	     if(ip != null){
-	   	    	 websec.setIpLatlongValid(1);
-	   	    	 System.out.println("uuuuuuuuuuuuuuip not null");
-	   	     }else
-	   	    	 websec.setIpLatlongValid(-1);
+	            upd(applicationContext);
 	        } catch (Exception e) {  
 	            // TODO Auto-generated catch block  
 	            e.printStackTrace();  
@@ -46,30 +47,33 @@ public class QuartzWebsecUpd implements org.quartz.Job{
 	}
 	
 	private void upd(ApplicationContext ctx){
-		List<Websec> updlist = new ArrayList<Websec>();
-		WebsecMapper websecDao=(WebsecMapper) ctx.getBean("websecDao");
-		IpMapper ipDao=(IpMapper) ctx.getBean("ipDao");
-	    CityMapper cityDao=(CityMapper) ctx.getBean("cityDao");
-		Properties p = new Properties();
-		try {
-			p.load(QuartzWebsecUpd.class.getClassLoader().getResourceAsStream("conf/maxLogId.properties"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Long pre_maxLogId = Long.parseLong(p.getProperty("log_id"));
-		Long maxLogId = websecDao.getMaxLogId();
-		p.put("log_id", maxLogId);
-		List<Websec> websecList = null ;
-		if(pre_maxLogId == 0){
-			websecList = websecDao.selectAll();
+			
+			WebsecMapper websecDao=(WebsecMapper) ctx.getBean("websecDao");
+			IpMapper ipDao=(IpMapper) ctx.getBean("ipDao");
+		    CityMapper cityDao=(CityMapper) ctx.getBean("cityDao");
+			
+			Long pre_maxLogId = getPropsLogId();
+			Long maxLogId = websecDao.getMaxLogId();
+		
+		
+		
+			Map<String,Long> hm = new HashMap<String,Long>();
+			hm.put("preLogId", pre_maxLogId);
+			hm.put("maxLogId", maxLogId);
+			
+			//hm.put("maxLogId", 4l);
+			//hm.put("maxLogId", 219974l);
+			final CopyOnWriteArrayList<Websec> websecList = (CopyOnWriteArrayList<Websec>) websecDao.selectSeg(hm);
+			List<Websec> udpList = new ArrayList<Websec>();
+			System.out.println("=====记录条数：  ==== "+websecList.size());
 			for(Websec websec : websecList){
-				Websec upd = new Websec();
-				upd.setLogId(websec.getLogId());
+				//List<Websec> udpList = new ArrayList<Websec>();
+				Websec upd = null;
 				//设置攻击源的ip的经纬度和所在国家城市信息
-				if(websec.getSrcIp() != null && !websec.getSrcIp().equals("")){
+				if(websec.getSrcIp() != null && !websec.getSrcIp().equals("")){//只有攻击源ip不为空的情况，才新建对象
+					upd = new Websec();
 					Ip srcIp = getLocationId(websec.getSrcIp(),ipDao);
-					if(srcIp != null){
+					if(srcIp != null){//通过ip查到了经纬度地址，则设置 标志位为1，表示有效
 						upd.setIpLatlongValid(1);
 						upd.setSrcLatitude(srcIp.getLatitude());
 						upd.setSrcLongitude(srcIp.getLongitude());
@@ -82,87 +86,123 @@ public class QuartzWebsecUpd implements org.quartz.Job{
 							upd.setSrcSubdivision2(srccity.getSubdivision2Name());
 						}					
 						
-					}else{
+					}else{//通过ip没查到经纬度地址，则设置 标志位为-1，表示无效
 						upd.setIpLatlongValid(-1);
 					}
-				}
-				//设置目的ip的经纬度和所在国家城市信息
-				if(websec.getDomain() != null && !websec.getDomain().equalsIgnoreCase("None")){
-					if(websec.getDstIp() != null && !websec.getDstIp().equals("")){
-						Ip dstIp = getLocationId(websec.getDstIp(),ipDao);
-						if(dstIp != null){
-							
-							upd.setDstLatitude(dstIp.getLatitude());
-							upd.setDstLongitude(dstIp.getLongitude());
-							City dstcity = cityDao.selectByPrimaryKey(dstIp.getLocationId());
-							if(dstcity != null){
-								upd.setDstCity(dstcity.getCityName());
-								upd.setDstCountry(dstcity.getCountryName());
-								upd.setDstCountryCode(dstcity.getCountryIsoCode());
-								upd.setDstSubdivision1(dstcity.getSubdivision1Name());
-								upd.setDstSubdivision2(dstcity.getSubdivision2Name());
-							}					
-							
-						}
-				}
-			}
-			websecList.add(upd)	;	
-		}
-		
-	}else{
-		Map<String,Long> hm = new HashMap<String,Long>();
-		hm.put("preLogId", pre_maxLogId);
-		hm.put("LogId", maxLogId);
-		websecList = websecDao.selectSeg(hm);
-		for(Websec websec : websecList){
-			Websec upd = new Websec();
-			upd.setLogId(websec.getLogId());
-			//设置攻击源的ip的经纬度和所在国家城市信息
-			if(websec.getSrcIp() != null && !websec.getSrcIp().equals("")){
-				Ip srcIp = getLocationId(websec.getSrcIp(),ipDao);
-				if(srcIp != null){
-					upd.setIpLatlongValid(1);
-					upd.setSrcLatitude(srcIp.getLatitude());
-					upd.setSrcLongitude(srcIp.getLongitude());
-					City srccity = cityDao.selectByPrimaryKey(srcIp.getLocationId());
-					if(srccity != null){
-						upd.setSrcCity(srccity.getCityName());
-						upd.setSrcCountry(srccity.getCountryName());
-						upd.setSrcCountryCode(srccity.getCountryIsoCode());
-						upd.setSrcSubdivision1(srccity.getSubdivision1Name());
-						upd.setSrcSubdivision2(srccity.getSubdivision2Name());
-					}					
+					//继续设置攻击目标信息
+					//只有domain不是不为none，才是有效的攻击目标地址，设置目的ip的经纬度和所在国家城市信息
+					if(websec.getDomain() != null && !websec.getDomain().equalsIgnoreCase("None")){
+						if(websec.getDstIp() != null && !websec.getDstIp().equals("")){
+							Ip dstIp = getLocationId(websec.getDstIp(),ipDao);
+							if(dstIp != null){
+								
+								upd.setDstLatitude(dstIp.getLatitude());
+								upd.setDstLongitude(dstIp.getLongitude());
+								City dstcity = cityDao.selectByPrimaryKey(dstIp.getLocationId());
+								if(dstcity != null){
+									upd.setDstCity(dstcity.getCityName());
+									upd.setDstCountry(dstcity.getCountryName());
+									upd.setDstCountryCode(dstcity.getCountryIsoCode());
+									upd.setDstSubdivision1(dstcity.getSubdivision1Name());
+									upd.setDstSubdivision2(dstcity.getSubdivision2Name());
+								}					
+								
+							}
+					   }
+				    }
+					upd.setLogId(websec.getLogId());
+					udpList.add(upd)	;
+				}else{//攻击源地址未查到，就不查被攻击目标端了
 					
-				}else{
-					upd.setIpLatlongValid(-1);
+				}
+				
+			    
+			    System.out.println("======转中文值查询结束============");
+			   /* Map<String,List<Websec>> map = new HashMap<String,List<Websec>>();
+			    map.put("list", udpList);
+				 websecDao.batchUpd(map);*/
+			    System.out.println("======更新结束============Logid： "+upd.getLogId()+"============ipLatlongValid: "+upd.getIpLatlongValid());
+		    }
+			
+			int commitCnt = udpList.size()/100 ;
+			System.out.println("==================分： "+commitCnt+1 +"次提交");
+			 Map<String,List<Websec>> map = new HashMap<String,List<Websec>>();
+			if(commitCnt == 0){
+				System.out.println("======开始提交所有"+udpList.size()+"条记录============");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+			    System.out.println(sdf.format(getStartTime()));  
+			    
+			    map.put("list", udpList);
+			    websecDao.batchUpd(map);
+			    System.out.println("======结束提交所有"+udpList.size()+"条记录============");
+				System.out.println(sdf.format(getEndTime())); 
+				
+			}else{
+				for(int i = 0 ; i <= commitCnt ; i++){
+					List<Websec> segList = null ;
+					if(i == 0){
+						segList = udpList.subList(0, 100);
+					}else if( i == commitCnt ){
+						segList = udpList.subList(i*100, websecList.size());
+					}else {
+						segList = udpList.subList(i*100,(i+1)*100);
+					}
+					
+					//如果list为空，则不执行批量查询
+					if(segList.size() > 0){
+						System.out.println("======开始提交第"+i+1+"个100条记录============");
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+					    System.out.println(sdf.format(getStartTime()));  
+						map.put("list", segList);
+						websecDao.batchUpd(map);
+						System.out.println("======结束提交第"+i+1+"个100条记录============");
+						System.out.println(sdf.format(getEndTime())); 
+					}
+					 
 				}
 			}
-			//设置目的ip的经纬度和所在国家城市信息
-			if(websec.getDomain() != null && !websec.getDomain().equalsIgnoreCase("None")){
-				if(websec.getDstIp() != null && !websec.getDstIp().equals("")){
-					Ip dstIp = getLocationId(websec.getDstIp(),ipDao);
-					if(dstIp != null){
-						
-						upd.setDstLatitude(dstIp.getLatitude());
-						upd.setDstLongitude(dstIp.getLongitude());
-						City dstcity = cityDao.selectByPrimaryKey(dstIp.getLocationId());
-						if(dstcity != null){
-							upd.setDstCity(dstcity.getCityName());
-							upd.setDstCountry(dstcity.getCountryName());
-							upd.setDstCountryCode(dstcity.getCountryIsoCode());
-							upd.setDstSubdivision1(dstcity.getSubdivision1Name());
-							upd.setDstSubdivision2(dstcity.getSubdivision2Name());
-						}					
-						
-					}
-			}
-		}
-		websecList.add(upd)	;	
-	 }
-   }
-		websecDao.batchUpd(websecList);
-		}
+			this.updProps(maxLogId);
+			
+	}
+		
 	
+	
+	private Long getPropsLogId(){
+		Long logid= 0l ;
+		 Properties prop = new Properties();     
+	     try{
+	         //读取属性文件a.properties
+	    	 String path=System.getProperty("user.dir");
+	 	     InputStream in = new BufferedInputStream (new FileInputStream(path+"/conf/maxLogId.properties"));
+	         prop.load(in);     ///加载属性列表
+	         Iterator<String> it=prop.stringPropertyNames().iterator();
+	         while(it.hasNext()){
+	             String key=it.next();
+	             System.out.println(key+":"+prop.getProperty(key));
+	             logid = Long.parseLong((String)prop.get(key));
+	         }
+	         in.close();   
+	     }catch(Exception e){
+	         System.out.println(e);
+	     }
+	     return logid;
+	 } 
+	
+	private void updProps(Long logid){
+		 Properties prop = new Properties();     
+	     try{
+	         //读取属性文件a.properties
+	    	 String path=System.getProperty("user.dir");
+	 		//保存属性到properties文件
+	         FileOutputStream oFile = new FileOutputStream(path+"/conf/maxLogId.properties", true);//true表示追加打开
+	         prop.setProperty("log_id", Long.toString(logid));
+	         prop.store(oFile, "The New properties file");
+	         oFile.close();
+	     }
+	     catch(Exception e){
+	         System.out.println(e);
+	     }
+	}
 	/**
 	 * @param ipv4
 	 * @param ipDao
@@ -184,5 +224,25 @@ public class QuartzWebsecUpd implements org.quartz.Job{
 	                throw new JobExecutionException("No application context available in scheduler context for key \"" + APPLICATION_CONTEXT_KEY + "\"");  
 	            }  
 	            return appCtx;  
+	    }
+	    private static Date getStartTime() {  
+	        Calendar todayStart = Calendar.getInstance();  
+	        return todayStart.getTime();  
 	    }  
+	  
+	    private static Date getEndTime() {  
+	        Calendar todayEnd = Calendar.getInstance();  
+	        return todayEnd.getTime();  
+	    }  
+	    public static void main(String[] args) {
+	    	System.out.println("======开始提交第"+1+"个100条记录============");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+		    System.out.println(sdf.format(getStartTime()));  
+		    
+			 System.out.println("======结束提交第"+1+"个100条记录============");
+			System.out.println(sdf.format(getEndTime())); 
+			 
+		     
+		     
+		}
 }
