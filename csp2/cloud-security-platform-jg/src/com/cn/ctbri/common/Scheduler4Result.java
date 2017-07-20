@@ -359,10 +359,12 @@ public class Scheduler4Result {
 		            String exceptMark = taskObj.getString("exceptMark");
 			        
 		            Map<String,Object> param = new HashMap<String,Object>();
+		            System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$scheduler4Result "+url+order.getId());
 					param.put("orderId", order.getId());
 		        	param.put("url", url);
 		        	List<OrderAsset> oaList = orderAssetService.findOrderAssetId(param);
-		        	
+		        	System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$"+String.valueOf(oaList.get(0).getId()));
+		        	System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$taskID"+taskId);
 			        Task t = new Task();
 			        t.setTaskId(taskId);
 			        t.setOrder_asset_Id(String.valueOf(oaList.get(0).getId()));
