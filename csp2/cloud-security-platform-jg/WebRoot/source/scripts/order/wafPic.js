@@ -1,3 +1,7 @@
+var myChartPieLevel = null;
+var myChartPieEvent = null;
+var myChartBar = null;
+
 $(function(){	
 	
 	//为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
@@ -30,7 +34,7 @@ $(function(){
         ],
         function (ec) {//回调函数
             //--- 饼图 ---
-            var myChartPieLevel = ec.init(document.getElementById('levelPie'));
+            myChartPieLevel = ec.init(document.getElementById('levelPie'));
             myChartPieLevel.showLoading({
           	  text: 'loading...',
           	  effect : 'spin',
@@ -129,7 +133,7 @@ $(function(){
         ],
         function (ec) {//回调函数
             //--- 饼图 ---
-            var myChartPieEvent = ec.init(document.getElementById('eventPie'));
+            myChartPieEvent = ec.init(document.getElementById('eventPie'));
             myChartPieEvent.showLoading({
           	  text: 'loading...',
           	  effect : 'spin',
@@ -208,7 +212,7 @@ $(function(){
         ],
         function (ec) {//回调函数
             //--- 柱形图 ---
-        	var myChartBar = ec.init(document.getElementById('eventBar'));
+        	myChartBar = ec.init(document.getElementById('eventBar'));
         	myChartBar.showLoading({
           	  text: 'loading...',
           	  effect : 'spin',
@@ -340,5 +344,25 @@ $(function(){
     
     
 });
+
+function exportImgWAF(){
+    var dataPieLevel = myChartPieLevel.getDataURL("png"); 
+    var dataPieEvent = myChartPieEvent.getDataURL("png");
+    var dataBar = myChartBar.getDataURL("png");
+    /*
+    if(myChartPieLevel!=null){
+    	var dataPieLevel = myChartPieLevel.getDataURL("png"); 
+    	
+    }
+    else{
+    	alert("wu");
+    }
+    */
+    $("#imgPieLevel").val(dataPieLevel);
+    $("#imgPieEvent").val(dataPieEvent);
+    $("#imgBar").val(dataBar);
+    
+	$("#exportForm").submit();
+}
 
 
