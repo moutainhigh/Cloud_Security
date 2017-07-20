@@ -590,7 +590,7 @@ function testLineData4(){
 	return lineData4;
 }
 
-function exportImgWAF(){
+function exportImgWAF1(){
 	//alert("1234");
     //var dataPie = myChartPie.getDataURL("png");   
     //var dataBar = myChartBar.getDataURL("png");
