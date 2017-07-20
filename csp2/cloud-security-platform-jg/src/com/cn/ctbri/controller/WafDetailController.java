@@ -31,6 +31,7 @@ import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.util.CommonUtil;
+import com.fasterxml.jackson.databind.jsontype.impl.AsExternalTypeDeserializer;
 
 
 /**
@@ -54,6 +55,8 @@ public class WafDetailController {
     @Autowired
     IOrderListService orderListService;
     
+    private static String WAF_IP_STRING = "219.141.189.183";
+    private static String INTERVAL_STRING = "100";
     
     @RequestMapping(value="warningWaf.html")
     public String warningWaf(HttpServletRequest request,HttpServletResponse response) throws Exception{
@@ -84,34 +87,30 @@ public class WafDetailController {
 //        	websecList = this.getWaflogWebsecByIp(websecStr);
 //        	request.setAttribute("websecList", websecList);
 //        }
+     
         
         List<String> dstIpList = new ArrayList();
-        List<Integer> orderAssetIdList = new ArrayList();
     	if(assets != null && assets.size() > 0){
-    		//获取资产id
-    		for(int i = 0; i<assets.size();i++){
-    			HashMap<String,Object>  map = (HashMap<String,Object>)assets.get(i);
-                int orderAssetId = (Integer)map.get("orderAssetId");
-                orderAssetIdList.add(orderAssetId);
-    		}
         	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
         	assetOrder=(HashMap) assets.get(0);
         	String ipArray=(String) assetOrder.get("ipArray");
+        	int orderAssetId = (int) assetOrder.get("orderAssetId");
+        	
+        	request.setAttribute("orderAssetId",String.valueOf(orderAssetId));
         	String[] ips = null;   
             ips = ipArray.split(",");
             for (int n = 0; n < ips.length; n++) {
             	String[] ip = ips[n].split(":");
 				dstIpList.add(ip[0]);
             }
-            dstIpList.add("219.141.189.183");
+            dstIpList.add(WAF_IP_STRING);
             
-            String websecStr = WafAPIWorker.getWaflogWebsecInTime(dstIpList, "120");
+            String websecStr = WafAPIWorker.getWaflogWebsecInTime(dstIpList, INTERVAL_STRING);
         	websecList = this.getWaflogWebsecByIp(websecStr);
         	request.setAttribute("websecList", websecList);
             
         }
         request.setAttribute("websecNum", websecList.size());
-        request.setAttribute("orderAssetIdList", orderAssetIdList);
         //end 
         return "/source/page/personalCenter/wafDetail";
     }
@@ -148,11 +147,11 @@ public class WafDetailController {
             	String[] ip = ips[n].split(":");
 				dstIpList.add(ip[0]);
             }
-            dstIpList.add("219.141.189.183");
+            dstIpList.add(WAF_IP_STRING);
             
         }
     	
-    	String levelStr = WafAPIWorker.getWafAlertLevelCount("120",dstIpList);
+    	String levelStr = WafAPIWorker.getWafAlertLevelCount(INTERVAL_STRING,dstIpList);
     	Map map = this.getWafAlertLevelCount(levelStr);
         
         int high = 0;
@@ -220,10 +219,10 @@ public class WafDetailController {
             	String[] ip = ips[n].split(":");
 				dstIpList.add(ip[0]);
             }
-            dstIpList.add("219.141.189.183");
+            dstIpList.add(WAF_IP_STRING);
             
         }
-    	String eventStr = WafAPIWorker.getWafEventTypeCount("120","hour",dstIpList);
+    	String eventStr = WafAPIWorker.getWafEventTypeCount(INTERVAL_STRING,"hour",dstIpList);
     	Map map = this.getWafEventTypeCount(eventStr);
         
         List name = null;
@@ -282,11 +281,11 @@ public class WafDetailController {
             	String[] ip = ips[n].split(":");
 				dstIpList.add(ip[0]);
             }
-            dstIpList.add("219.141.189.183");
+            dstIpList.add(WAF_IP_STRING);
             
         }
         
-    	String eventStr = WafAPIWorker.getWafEventTypeCount("120","hour",dstIpList);
+    	String eventStr = WafAPIWorker.getWafEventTypeCount(INTERVAL_STRING,"hour",dstIpList);
     	Map map = this.getWafEventTypeCount(eventStr);
         
         List name = null;
@@ -356,7 +355,6 @@ public class WafDetailController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(multiResult);
         return multiResult;
     }
     
@@ -368,6 +366,7 @@ public class WafDetailController {
     public List getWaflogWebsecByIp(String reStr){
     	List reList = new ArrayList();
     	try {
+    		System.err.println(">>>>>>>>>>>>>>>>>>>>>>reStr="+reStr);
     		JSONObject obj = JSONObject.fromObject(reStr);
     		JSONArray jsonArray = obj.getJSONArray("wafLogWebsecList");
     		if(jsonArray!=null && jsonArray.size()>0){
@@ -402,7 +401,7 @@ public class WafDetailController {
 			        String wci = jsonObject.getString("wci");
 			        String wsi = jsonObject.getString("wsi");
 			        
-			        byte[] base64Bytes = Base64.decodeBase64(eventType.getBytes());	
+			        byte[] base64Bytes = eventType.getBytes();	
     				eventType = new String(base64Bytes,"UTF-8");
     				byte[] base64Bytes1 = Base64.decodeBase64(alertinfo.getBytes());	
     				alertinfo = new String(base64Bytes1,"UTF-8");
@@ -607,7 +606,7 @@ public class WafDetailController {
     @RequestMapping(value="getWafOneHour.html")
     @ResponseBody
     public void getWafOneHour(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    	String eventStr = WafAPIWorker.getWafEventTypeCount("24","hour",0);
+    	String eventStr = WafAPIWorker.getWafEventTypeCount(INTERVAL_STRING,"hour",0);
     	Map map = this.getWafEventTypeCount(eventStr);
         
         List name = null;
