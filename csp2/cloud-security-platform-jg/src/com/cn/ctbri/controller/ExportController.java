@@ -2,19 +2,24 @@ package com.cn.ctbri.controller;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.math.BigInteger;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -60,6 +65,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 import com.cn.ctbri.common.NorthAPIWorker;
 import com.cn.ctbri.constant.WarnType;
@@ -74,7 +80,15 @@ import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.ITaskService;
 import com.cn.ctbri.service.ITaskWarnService;
+import com.cn.ctbri.util.AttackList;
 import com.cn.ctbri.util.DateUtils;
+import com.cn.ctbri.util.FreeMarkerUtils;
+import com.cn.ctbri.util.Threat;
+import com.cn.ctbri.util.TimeList;
+
+import freemarker.template.Configuration;  
+import freemarker.template.Template;  
+import freemarker.template.TemplateException; 
 /**
  * 创 建 人  ：  txr
  * 创建日期：  2015-2-2
@@ -1227,10 +1241,13 @@ public class ExportController {
             String fileName, String data) 
             throws ServletException, IOException {
         try {
-            String[] url = data.split(",");
+        	String replaceData = data.replaceAll(" ", "+");
+            String[] url = replaceData.split(",");
+            System.out.println("file png raw data *******************: "+data);
             String u = url[1];
             // Base64解码
-            byte[] b = new BASE64Decoder().decodeBuffer(u);
+            byte[]  b= new BASE64Decoder().decodeBuffer(u);
+          //  System.out.println("file png *******************: "+ Arrays.toString(b));
             // 生成图片
             OutputStream out = new FileOutputStream(new File(fileName));
             out.write(b);
@@ -1266,6 +1283,192 @@ public class ExportController {
       CTTc cttc = cell.getCTTc();
       CTTcPr tcPr = cttc.isSetTcPr() ? cttc.getTcPr() : cttc.addNewTcPr();
       return tcPr;
+    }
+    
+    /**
+     * 功能描述：下载waf导入模板
+     * 参数描述：HttpServletRequest request,HttpServletResponse response
+     *       @time 2017-6-29
+     */
+    @RequestMapping(value="/exportWAF.html",method=RequestMethod.POST)
+    public void exportWAF(HttpServletRequest request,HttpServletResponse response) throws Exception{
+    		//System.out.println("");
+            String orderId = request.getParameter("orderId");
+            String group_flag = request.getParameter("group_flag");
+            String orderAssetId = request.getParameter("orderAssetId");
+            String imgPieLevel = request.getParameter("imgPieLevel");
+            String imgBar = request.getParameter("imgBar");
+            String imgPieEvent = request.getParameter("imgPieEvent");
+           // imgPieLevel = imgPieLevel.replaceAll(" ", "+");
+           // imgBar = imgBar.replaceAll(" ", "+");
+           // imgPieLevel = imgPieLevel.replaceAll(" ", "+");
+            
+            System.out.println("imgPie"+imgPieLevel);
+            System.out.println("imgbar:"+imgBar);
+            System.out.println("imgpieevent"+imgPieEvent);
+            //查找订单
+            Order order = orderService.findOrderById(orderId);
+            //获取对应资产
+            List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
+            Map<String, Object> paramMap = new HashMap<String, Object>();
+            paramMap.put("orderId", orderId);
+            paramMap.put("type", order.getType());
+            paramMap.put("count", assetList.size());
+            paramMap.put("websoc", order.getWebsoc());
+            paramMap.put("group_flag", group_flag);
+            paramMap.put("orderAssetId", orderAssetId);
+            paramMap.put("imgPieLevel", imgPieLevel);
+            paramMap.put("imgBar", imgBar);
+            paramMap.put("imgPieEvent", imgPieEvent);
+            
+            
+            
+            
+//            for (Asset asset : assetList) {
+                //预备导出数据
+                Map<String, Object> dataMap = this.getExportWafData(orderId,paramMap,request,response);
+                response.setCharacterEncoding("UTF-8");  
+                response.setContentType("application/msword");
+                File file = null;
+                InputStream inputStream = null;
+                ServletOutputStream out = null;
+                try {
+
+                    String fileName = orderId+"wafinfo.doc";
+                    fileName = new String(fileName.getBytes("gbk"),"iso-8859-1");
+                    response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
+
+                    file = FreeMarkerUtils.write("waffreemarker.ftl", dataMap);
+                    inputStream = new FileInputStream(file);
+                    out = response.getOutputStream();
+
+                    byte[] buffer = new byte[512];  // 缓冲区  
+                    int bytesToRead = -1;  
+                    // 通过循环将读入的Word文件的内容输出到浏览器中  
+                    while((bytesToRead = inputStream.read(buffer)) != -1) {  
+                        out.write(buffer, 0, bytesToRead);  
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+
+                    try {
+                        if (inputStream != null) {
+                                inputStream.close();
+                        }
+                        if (out != null) {
+                            out.close();
+                        }
+
+                        if (file != null) {
+                            file.delete();
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+    }
+    private String getImageStr(String fileName) throws Exception{
+    	 
+    	                
+    	//String imgFileString = "";
+    	InputStream in = null;
+    	byte[]  data = null;
+    	in = new FileInputStream(fileName);
+    	data = new byte[in.available()];
+    	in.read(data);
+    	in.close();
+    	BASE64Encoder encoder = new BASE64Encoder();
+    	
+		return encoder.encode(data);
+	}
+    private Map<String, Object> getExportWafData(String orderId, Map<String, Object> paramMap,HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+    
+    	//查找订单
+        Order order = orderService.findOrderById(orderId);
+        //获取对应资产
+        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
+        int orderAssetId = Integer.parseInt(paramMap.get("orderAssetId").toString());
+        OrderAsset oa = orderAssetService.findOrderAssetById(orderAssetId);
+        String webSite = oa.getAssetAddr();
+        String wafName = "";
+        wafName = oa.getAssetName();
+        SimpleDateFormat odf = new SimpleDateFormat("yyyy/MM/dd");//设置日期格式
+        String createDate = odf.format(new Date());
+        SimpleDateFormat odf1 = new SimpleDateFormat("yyyy年MM月dd日");//设置日期格式
+        String createDate1 = odf1.format(new Date());
+
+        
+        String strimgPieLevel = paramMap.get("imgPieLevel").toString();
+        String strimgBar = paramMap.get("imgBar").toString();
+        String strimgPieEvent = paramMap.get("imgPieEvent").toString();
+        
+        
+        
+        String filePath1 = request.getSession().getServletContext().getRealPath("/source/chart");
+        File file1 = new File(filePath1);
+        if(!file1.exists()){
+            file1.mkdir();
+        }
+        String imgFilePieLevel = filePath1 +"/"+ System.currentTimeMillis()+"strimgPieLevel"+".png";
+        String imgFileBar = filePath1 +"/"+ System.currentTimeMillis()+"strimgBar"+".png";
+        String imgFilePieEvent = filePath1 +"/"+ System.currentTimeMillis()+"strimgPieEvent"+".png";
+        createImage(request, response, imgFilePieLevel, strimgPieLevel);
+        createImage(request, response, imgFileBar, strimgBar);
+        createImage(request, response, imgFilePieEvent, strimgPieEvent);
+
+        
+        Map<String, Object> map = new HashMap<String, Object>();
+     //   String imgagefilePath = request.getSession().getServletContext().getRealPath("/source/chart");
+     //   String fileName = imgagefilePath +"/"+ "1498719516115"+".png";
+        try {
+        	
+            map.put("createDate1", createDate1);
+            map.put("webName", wafName);
+            map.put("webSite",webSite);
+            map.put("JCSJ", order.getBegin_date().toString());
+            map.put("LEAKNUM", "10");
+            map.put("HIGHNUM", "1");
+            map.put("MIDDLENUM", "2");
+            map.put("LOWNUM", "7");
+			map.put("img1", getImageStr(imgFilePieLevel));
+			map.put("img2", getImageStr(imgFileBar));
+			map.put("img3", getImageStr(imgFilePieEvent));
+			map.put("img4", getImageStr(imgFilePieEvent));
+			
+			List<Threat> threatlist = new ArrayList<Threat>();  
+	        for (int i = 0; i < 4; i++) {  
+	        	Threat t = new Threat();  
+	            t.setNum(i);;  
+	            t.setName("threat"+i);  
+	            threatlist.add(t);  
+	        }   
+	        map.put("threatList", threatlist);  
+	        List<TimeList> timeList = new ArrayList<TimeList>();  
+	        for (int i = 0; i < 4; i++) {  
+	        	TimeList t = new TimeList();  
+	            t.setNum(i);;  
+	            t.setName("time"+i);  
+	            timeList.add(t);  
+	        } 
+	        map.put("timeList", timeList);
+	        List<AttackList> attackList = new ArrayList<AttackList>();  
+	        for (int i = 0; i < 4; i++) {  
+	        	AttackList t = new AttackList();  
+	            t.setNum(i);;  
+	            t.setSourceIP("attackIP"+i);  
+	            attackList.add(t);  
+	        } 
+	        map.put("attackList", attackList);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return map;
     }
     
 }
