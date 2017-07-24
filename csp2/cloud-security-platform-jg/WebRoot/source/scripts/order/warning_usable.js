@@ -3,7 +3,7 @@ $(function(){
     require.config({
         paths:{ 
             echarts:'../echarts/echarts',
-//            'echarts/chart/line': '../echarts/echarts-map',
+            'echarts/chart/line': '../echarts/echarts-map',
         }
     });
 	
@@ -122,8 +122,8 @@ $(function(){
                     },true);//图形展示
                 }//ajax执行后台
             }); 
-//            var ecConfig = require('echarts/config');
-//            var zrEvent = require('zrender/tool/event');
+            var ecConfig = require('echarts/config');
+            var zrEvent = require('zrender/tool/event');
 //            myChart.on(ecConfig.EVENT.CLICK,function (param) {
 //            	var temp=myChart.getSeries()[param.seriesIndex].name;;
 //            	var orderId = $("#orderId").val();
