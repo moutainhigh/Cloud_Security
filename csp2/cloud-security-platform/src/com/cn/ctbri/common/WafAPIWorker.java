@@ -32,6 +32,7 @@ public class WafAPIWorker {
 	
 //	private static String SERVER_WAF_ROOT;
 	private static String resourceId;
+	private static String deviceId;
 	
 	static{
 		try {
@@ -39,6 +40,7 @@ public class WafAPIWorker {
 			p.load(WafAPIWorker.class.getClassLoader().getResourceAsStream("northAPI.properties"));
 //			SERVER_WAF_ROOT = p.getProperty("SERVER_WAF_ROOT");
 			resourceId = p.getProperty("resourceId");
+			deviceId = p.getProperty("deviceId");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -308,7 +310,18 @@ public class WafAPIWorker {
 		json.put("dstIp", dstIpList);
 		json.put("interval", interval);
         System.out.println("****根据ip和时间查询websec日志信息****");  
+        System.err.println(">>>>>>>>>json="+json.toString());
         WebTarget target = mainTarget.path("/rest/adapter/getWaflogWebsecInTime");
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
+	}
+	//根据域名查询websec日志信息
+	public static String getWafLogWebsecByDomainCurrent(List<String> domainList) {
+		JSONObject json = new JSONObject();
+		json.put("domain",domainList);
+        WebTarget target = mainTarget.path("/rest/adapter/getWafLogWebsecByDomainCurrent");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -354,7 +367,7 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("ip", ip);
-        WebTarget target = mainTarget.path("/rest/adapter/getLocationFromIp");
+        WebTarget target = mainTarget.path("/rest/adapter/secbasedata/iplatlong/getlatlongbyip");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
         response.close();
@@ -424,6 +437,17 @@ public class WafAPIWorker {
         return str;
 	}
 	
+	public static String getWafEventTypeCountByDomain(List<String> domainList) {
+		JSONObject json = new JSONObject();
+		json.put("domain", JSONArray.fromObject(domainList));
+		WebTarget target = mainTarget.path("/rest/adapter/getWafEventTypeCountLimitByDomain");
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
+		
+	}
+	
 	
 	/**
 	 * 功能描述：获取Level统计信息
@@ -452,6 +476,18 @@ public class WafAPIWorker {
         response.close();
         return str;
 	}
+	
+	public static String getAlertLevelCountLimitByDomain(List<String> domainList){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("domain",JSONArray.fromObject(domainList));
+        WebTarget target = mainTarget.path("/rest/adapter/getWafAlertLevelCountLimitByDomain");
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
+	}
+	
 	
 	/**
 	 * 功能描述：按日期获取一段时间内的告警类型统计
@@ -783,7 +819,7 @@ public class WafAPIWorker {
 //    		wafcreate = WafAPIWorker.getWafLogWebSecDstIpList();
 //    		wafcreate = WafAPIWorker.getWafAlertLevelCountByMonth("1","2016-08");
 //    		wafcreate = WafAPIWorker.getWafEventTypeCount("1","hour");
-    		wafcreate = WafAPIWorker.deleteVirtualSiteInResource("10001","fdbe5087-1439-4a09-bfb2-a325489dfb9b");
+//    		wafcreate = WafAPIWorker.deleteVirtualSiteInResource("10001","fdbe5087-1439-4a09-bfb2-a325489dfb9b");
 //    		String data=getLocationFromIp("1.2.2.3");
 //    		System.out.println("data:"+data);
     	} catch (Exception e) {

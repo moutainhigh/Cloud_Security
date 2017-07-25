@@ -71,7 +71,7 @@ $(function(){
                 	myChartPieLevel.hideLoading();  
                     myChartPieLevel.setOption({//图形
                     	title: {
-                            text: '最近一个小时事件风险分布图'
+                            text: '最近事件风险分布图'
                         },
                         tooltip : {
                             trigger: 'item',
@@ -152,7 +152,7 @@ $(function(){
                 	myChartPieEvent.hideLoading();  
                     myChartPieEvent.setOption({//图形
                     	title: {
-                            text: '事件类型分布图'
+                            text: '最近事件类型分布图'
                         },
                         tooltip : {
                             trigger: 'item',
@@ -231,7 +231,7 @@ $(function(){
                 	myChartBar.hideLoading();  
                     myChartBar.setOption({//图形
                     	title: {
-                            text: '最近一个小时事件发生事件'
+                            text: '最近事件类型统计图'
                         },
                     	tooltip : {
 //                            trigger: 'axis',

@@ -199,7 +199,7 @@ function websecDetail(logId){
         <div class="data_nav">
           <input type="hidden" value="${order.id }" id="orderId" name="orderId"/>
           <ul>
-            <li>实时数据</li>
+            <li>最新数据</li>
           </ul>
         </div> 
         <div class="data_min">
