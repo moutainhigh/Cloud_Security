@@ -1206,7 +1206,6 @@ public class WafController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(multiResult);
         return multiResult;
     }
     

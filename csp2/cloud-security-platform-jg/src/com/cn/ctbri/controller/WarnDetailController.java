@@ -1480,6 +1480,8 @@ public class WarnDetailController {
 			else if (serviceId == 10) { // 绿盟极光
 				String useridString = ((Integer)order.get("userId")).toString();
 				Linkman linkman = orderService.findLinkmanByOrderId(orderId); 				
+				
+				
 				String remarks = order.get("remarks").toString();
 				String scan_type = order.get("scan_type").toString();
 				int scanType=0;
@@ -1494,7 +1496,7 @@ public class WarnDetailController {
 				/********20170702-wq******************/
 				String[] infos = remarks.split(";");
 				String host = infos[0];
-				List<ServicePortVO> servicePorts = new ArrayList<>();
+				List<ServicePortVO> servicePorts = new ArrayList<ServicePortVO>();
 				String[] tmp = null;
 				
 				for (int i = 1, j = 0; i < infos.length; i++, j++) {

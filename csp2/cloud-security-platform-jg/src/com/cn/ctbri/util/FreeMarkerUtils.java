@@ -62,9 +62,11 @@ public class FreeMarkerUtils {
             Writer out = new OutputStreamWriter(new FileOutputStream(file),"utf-8");
             template.process(rootMap, out);
             out.close();
-        } catch (IOException | TemplateException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
+        } catch (TemplateException e) {
+        	e.printStackTrace();
+		}
         return file;
     }
 

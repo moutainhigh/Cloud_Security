@@ -56,7 +56,7 @@ public class WafDetailController {
     IOrderListService orderListService;
     
     private static String WAF_IP_STRING = "219.141.189.183";
-    private static String INTERVAL_STRING = "100";
+    private static String INTERVAL_STRING = "1";
     
     @RequestMapping(value="warningWaf.html")
     public String warningWaf(HttpServletRequest request,HttpServletResponse response) throws Exception{
@@ -87,25 +87,27 @@ public class WafDetailController {
 //        	websecList = this.getWaflogWebsecByIp(websecStr);
 //        	request.setAttribute("websecList", websecList);
 //        }
-     
         
         List<String> dstIpList = new ArrayList();
+        List<String> domainList = new ArrayList<String>();
     	if(assets != null && assets.size() > 0){
         	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
         	assetOrder=(HashMap) assets.get(0);
         	String ipArray=(String) assetOrder.get("ipArray");
-        	int orderAssetId = (int) assetOrder.get("orderAssetId");
+        	int orderAssetId = Integer.parseInt(String.valueOf(assetOrder.get("orderAssetId")));
         	
         	request.setAttribute("orderAssetId",String.valueOf(orderAssetId));
         	String[] ips = null;   
             ips = ipArray.split(",");
+           	String addr =(String) assetOrder.get("addr");
+        	String domain = (String) addr.substring(addr.indexOf("://")+3);
             for (int n = 0; n < ips.length; n++) {
             	String[] ip = ips[n].split(":");
 				dstIpList.add(ip[0]);
             }
             dstIpList.add(WAF_IP_STRING);
-            
-            String websecStr = WafAPIWorker.getWaflogWebsecInTime(dstIpList, INTERVAL_STRING);
+            domainList.add(domain);
+            String websecStr = WafAPIWorker.getWafLogWebsecByDomainCurrent(domainList);
         	websecList = this.getWaflogWebsecByIp(websecStr);
         	request.setAttribute("websecList", websecList);
             
@@ -137,10 +139,13 @@ public class WafDetailController {
     	String orderId = request.getParameter("orderId");
     	List assets = orderAssetService.findAssetsByOrderId(orderId);
     	List<String> dstIpList = new ArrayList();
+    	List<String> domainList = new ArrayList<String>();
     	if(assets != null && assets.size() > 0){
         	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
         	assetOrder=(HashMap) assets.get(0);
         	String ipArray=(String) assetOrder.get("ipArray");
+        	String addr =(String) assetOrder.get("addr");
+        	String domain = (String) addr.substring(addr.indexOf("://")+3);
         	String[] ips = null;   
             ips = ipArray.split(",");
             for (int n = 0; n < ips.length; n++) {
@@ -148,10 +153,9 @@ public class WafDetailController {
 				dstIpList.add(ip[0]);
             }
             dstIpList.add(WAF_IP_STRING);
-            
+            domainList.add(domain);
         }
-    	
-    	String levelStr = WafAPIWorker.getWafAlertLevelCount(INTERVAL_STRING,dstIpList);
+    	String levelStr = WafAPIWorker.getAlertLevelCountLimitByDomain(domainList);
     	Map map = this.getWafAlertLevelCount(levelStr);
         
         int high = 0;
@@ -197,7 +201,7 @@ public class WafDetailController {
     }
     
     /**
-     * 功能描述： 获取level饼图数据
+     * 功能描述： 获取event饼图数据
      * 参数描述：  无
      */
     @RequestMapping(value="getEventPieData.html", method = RequestMethod.POST)
@@ -209,10 +213,13 @@ public class WafDetailController {
         String orderId = request.getParameter("orderId");
     	List assets = orderAssetService.findAssetsByOrderId(orderId);
     	List<String> dstIpList = new ArrayList();
+    	List<String> domainList = new ArrayList<String>();
     	if(assets != null && assets.size() > 0){
         	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
         	assetOrder=(HashMap) assets.get(0);
         	String ipArray=(String) assetOrder.get("ipArray");
+        	String addr =(String) assetOrder.get("addr");
+        	String domain = (String) addr.substring(addr.indexOf("://")+3);
         	String[] ips = null;   
             ips = ipArray.split(",");
             for (int n = 0; n < ips.length; n++) {
@@ -220,9 +227,9 @@ public class WafDetailController {
 				dstIpList.add(ip[0]);
             }
             dstIpList.add(WAF_IP_STRING);
-            
+            domainList.add(domain);
         }
-    	String eventStr = WafAPIWorker.getWafEventTypeCount(INTERVAL_STRING,"hour",dstIpList);
+    	String eventStr = WafAPIWorker.getWafEventTypeCountByDomain(domainList);
     	Map map = this.getWafEventTypeCount(eventStr);
         
         List name = null;
@@ -259,7 +266,7 @@ public class WafDetailController {
     
     
     /**
-     * 功能描述： 获取level柱数据
+     * 功能描述： 获取event柱数据
      * 参数描述：  无
      */
     @RequestMapping(value="getEventBarData.html", method = RequestMethod.POST)
@@ -271,10 +278,13 @@ public class WafDetailController {
         String orderId = request.getParameter("orderId");
     	List assets = orderAssetService.findAssetsByOrderId(orderId);
     	List<String> dstIpList = new ArrayList();
+    	List<String> domainList = new ArrayList<String>();
     	if(assets != null && assets.size() > 0){
         	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
         	assetOrder=(HashMap) assets.get(0);
         	String ipArray=(String) assetOrder.get("ipArray");
+        	String addr =(String) assetOrder.get("addr");
+        	String domain = (String) addr.substring(addr.indexOf("://")+3);
         	String[] ips = null;   
             ips = ipArray.split(",");
             for (int n = 0; n < ips.length; n++) {
@@ -282,10 +292,10 @@ public class WafDetailController {
 				dstIpList.add(ip[0]);
             }
             dstIpList.add(WAF_IP_STRING);
-            
+            domainList.add(domain);
         }
         
-    	String eventStr = WafAPIWorker.getWafEventTypeCount(INTERVAL_STRING,"hour",dstIpList);
+    	String eventStr = WafAPIWorker.getWafEventTypeCountByDomain(domainList);
     	Map map = this.getWafEventTypeCount(eventStr);
         
         List name = null;
@@ -366,7 +376,6 @@ public class WafDetailController {
     public List getWaflogWebsecByIp(String reStr){
     	List reList = new ArrayList();
     	try {
-    		System.err.println(">>>>>>>>>>>>>>>>>>>>>>reStr="+reStr);
     		JSONObject obj = JSONObject.fromObject(reStr);
     		JSONArray jsonArray = obj.getJSONArray("wafLogWebsecList");
     		if(jsonArray!=null && jsonArray.size()>0){
@@ -501,7 +510,7 @@ public class WafDetailController {
 	        String wci = jsonObject.getString("wci");
 	        String wsi = jsonObject.getString("wsi");
 	        
-	        byte[] base64Bytes = Base64.decodeBase64(eventType.getBytes());	
+	        byte[] base64Bytes = eventType.getBytes();	
 			eventType = new String(base64Bytes,"UTF-8");
 			byte[] base64Bytes1 = Base64.decodeBase64(alertinfo.getBytes());	
 			alertinfo = new String(base64Bytes1,"UTF-8");
@@ -556,7 +565,7 @@ public class WafDetailController {
     			int count = e.getInt("count");
     			if(count!=0){
     				JSONObject jo = new JSONObject();
-    				byte[] base64Bytes = Base64.decodeBase64(e.getString("eventType").toString().getBytes());	
+    				byte[] base64Bytes = e.getString("eventType").toString().getBytes();	
     				String eventType = new String(base64Bytes,"UTF-8");
     				arr.add(eventType);
     				arra.add(count);
