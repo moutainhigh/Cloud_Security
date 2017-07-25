@@ -116,7 +116,7 @@ $(document).ready(function(){
 							</div></li>
 						<li class="clearfix"><label class="fl" style="top:4px;">API&nbsp;&nbsp;简&nbsp;&nbsp;介</label>
 							<div class="fl" style="width:546px;">
-								<p>为目标网站提供敏感性词汇的监测。 主要接口：任务创建、任务操作、任务执行状态、任务结果获取、订单报告获取等。</p>
+								<p>恶意URL为目前全球范围内所监测到的恶意URL地址及相关信息，包括恶意URL地址，域名，IP地址，所属国家地区，针对品牌等信息。</p>
 							</div></li>
 						<!-- <li class="clearfix">
 							<label class="fl">套&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;餐</label>

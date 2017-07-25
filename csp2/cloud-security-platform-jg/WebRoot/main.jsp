@@ -96,7 +96,12 @@ html, body {
 											src="${ctx}/source/images/ad/${list.image }" alt=""
 											style="width:100%;height:100%"></a>
 									</c:if>
-									<c:if test="${list.id !=4 && list.image != 'NewVIP.png'}">
+									<c:if test="${list.id ==13 && list.image == 'xthd.png'}">
+										<a href="${ctx}/system_activity.html"><img
+											src="${ctx}/source/images/ad/${list.image }" alt=""
+											style="width:100%;height:100%"></a>
+									</c:if>
+									<c:if test="${list.id !=4 && list.image != 'NewVIP.png' && list.id !=13 && list.image != 'xthd.png'}">
 										<a href="#"><img
 											src="${ctx}/source/images/ad/${list.image }" alt=""
 											style="width:100%;height:100%"></a>
@@ -231,6 +236,59 @@ html, body {
 						</ul>
 					</div>
 				</div>
+				
+                <div class="listBox clearfix">
+                    <div class="listL fl">
+                        <div class="">
+                            <a href="${ctx}/system_anquanbang.html">
+                            <p><img src="${ctx}/source/images/portal/system_1.png" alt="" style="width:262px;height:330px"></p>
+                            </a>
+                        </div>
+                    </div>
+					<div class="listR fl">
+						<div class="new-title clearfix">
+							<a href="${ctx}/system_anquanbang.html"><h3 class="fl">系统安全帮</h3></a>
+							<a href="${ctx}/system_anquanbang.html" class="fr">查看更多<b></b></a>
+						</div>
+						<ul class="newlist newlist-top fl">
+							<c:forEach var="sysList" items="${servSyslist}"
+								varStatus="status">
+								<c:choose>
+									<c:when test="${sysList.id>=7}">
+
+										<li class="fl"><a href="javascript:;"
+											onclick="buySelfHelpOrderSysMain(${sysList.id});">
+												<i><img src="${ctx}/source/images/portal/system_Sign.png"
+													alt=""></i> 
+												<p>
+													<img
+														src="${ctx}/source/images/serviceIcon/${sysList.home_icon}"
+														alt=""
+														style="width:130px;height:auto;margin-top: 25px;margin-left: 65px;">
+												</p>
+												<h4>${sysList.name}</h4>
+												<div class="purchase" style="left:77px">
+													<strong
+														style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">
+														<fmt:formatNumber type="number" value="${sysList.price }"
+															maxFractionDigits="2" minFractionDigits="2" /><em
+														style="font-size: 14px;color: #D00000;">&nbsp;安全币</em>
+													</strong>
+													<!-- <strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">${sysList.price}<em style="font-size: 14px;color: #D00000;">&nbsp;安全币</em></strong>
+	                                    	<strong class="oldprice">${sysList.price}<em style="font-size: 11px;">安全币</em></strong> -->
+												</div>
+										</a>
+									</c:when>
+								</c:choose>
+							</c:forEach>
+						</ul>
+						<form action="systemOrderOperaInit.html" method="post"
+							id="SysMainForm">
+							<input type="hidden" id="sysIdHidden" name="serviceId" value="" /> <input
+								type="hidden" id="indexPage" name="indexPage" value="4" />
+						</form>
+					</div>
+				</div>
 				<div class="listBox clearfix">
 					<div class="listL fl">
 						<div class="">
@@ -293,59 +351,6 @@ html, body {
 						</form>
 					</div>
 				</div>
-                <div class="listBox clearfix">
-                    <div class="listL fl">
-                        <div class="">
-                            <a href="${ctx}/system_anquanbang.html">
-                            <p><img src="${ctx}/source/images/portal/system_1.png" alt="" style="width:262px;height:330px"></p>
-                            </a>
-                        </div>
-                    </div>
-					<div class="listR fl">
-						<div class="new-title clearfix">
-							<a href="${ctx}/system_anquanbang.html"><h3 class="fl">系统安全帮</h3></a>
-							<a href="${ctx}/system_anquanbang.html" class="fr">查看更多<b></b></a>
-						</div>
-						<ul class="newlist newlist-top fl">
-							<c:forEach var="sysList" items="${servSyslist}"
-								varStatus="status">
-								<c:choose>
-									<c:when test="${sysList.id>=7}">
-
-										<li class="fl"><a href="javascript:;"
-											onclick="buySelfHelpOrderSysMain(${sysList.id});">
-												<i><img src="${ctx}/source/images/portal/system_Sign.png"
-													alt=""></i> 
-												<p>
-													<img
-														src="${ctx}/source/images/serviceIcon/${sysList.home_icon}"
-														alt=""
-														style="width:130px;height:auto;margin-top: 25px;margin-left: 65px;">
-												</p>
-												<h4>${sysList.name}</h4>
-												<div class="purchase" style="left:77px">
-													<strong
-														style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">
-														<fmt:formatNumber type="number" value="${sysList.price }"
-															maxFractionDigits="2" minFractionDigits="2" /><em
-														style="font-size: 14px;color: #D00000;">&nbsp;安全币</em>
-													</strong>
-													<!-- <strong style="font-size: 20px; color: #D00000;margin-right: 16px;font-family: Arial Regular; font-weight:normal">${sysList.price}<em style="font-size: 14px;color: #D00000;">&nbsp;安全币</em></strong>
-	                                    	<strong class="oldprice">${sysList.price}<em style="font-size: 11px;">安全币</em></strong> -->
-												</div>
-										</a>
-									</c:when>
-								</c:choose>
-							</c:forEach>
-						</ul>
-						<form action="systemOrderOperaInit.html" method="post"
-							id="SysMainForm">
-							<input type="hidden" id="sysIdHidden" name="serviceId" value="" /> <input
-								type="hidden" id="indexPage" name="indexPage" value="4" />
-						</form>
-					</div>
-				</div>
-
 
 
 

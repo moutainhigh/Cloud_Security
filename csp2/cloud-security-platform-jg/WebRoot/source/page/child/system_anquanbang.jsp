@@ -18,36 +18,13 @@
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
 <link href="${ctx}/source/images/chinatelecom.ico" rel="shortcut icon" />
+</head>
 <script type="text/javascript">
-    //首页广告页数据定时刷新,数据不去重
-$(function () {
-    //showUnreadNews();
-    window.setInterval(showUnreadNews,30000);
-});
-function showUnreadNews()
-{
-    $.ajax({
-        type: "GET",
-        url: "${ctx}/getNum.html",
-        dataType: "json",
-        success: function(data) {
-        	$("#num3").html(data.brokenNetwork);
-        	$("#num2").html(data.leakNum);
-            $("#num1").html(data.webPageNum);
-            $("#num").html(data.webSite);
-        }
-    });
-}
-
 function buySys(serviceId){
 	$("#sysIdNew").val(serviceId);
 	$("#systemOrderOperaInitNewForm").submit();
 }
-    //定时30s刷新一次
-    //setInterval('showUnreadNews()',20000);
 </script>
-</head>
-
 <body>
 	<div class="safeBox">
 		
@@ -95,56 +72,8 @@ function buySys(serviceId){
 			</div>
 			<div class="bannerBox chlid-index">
             <div class="v_show vBox">
-				<div class="bannerB">
-					<ul class="bannerHeight banner_img clearfix">
-					<c:forEach var="list" items="${adList}" varStatus="status">
-							<c:if test="${list.id ==12}">
-								<li style="display: list-item;">
-									<div class="vb data">
-									<a href="#"><img src="${ctx}/source/images/ad/${list.image }" alt="" style="width:100%;height:100%">
-										<span class="lt">已监测网站<em id="num">${webSite }</em>个</span>
-				                        <span class="rt">发现断网<em id="num3">${brokenNetwork }</em>次</span>
-				                        <span class="rm">发现<em id="num2">${leakNum }</em>个漏洞</span>
-				                        <span class="lm">检测页面<em id="num1">${webPageNum }</em>个</span>
-									</a>
-									</div>
-								</li>
-							</c:if>
-							<c:if test="${status.index !=0}">
-								<li><div class="vb"><a href="#"><img src="${ctx}/source/images/ad/${list.image }" alt="" style="width:100%;height:100%"></a></div></li>
-							</c:if>
-					</c:forEach>
-						<!-- 
-						<li style="display: list-item;">
-							<div class="vb data">
-							<a href="#"><img src="${ctx}/source/images/portal/banner4.png" alt="">
-								<span class="lt">已监测网站<em id="num">${webSite }</em>个</span>
-		                        <span class="rt">发现断网<em id="num3">${brokenNetwork }</em>次</span>
-		                        <span class="rm">发现<em id="num2">${leakNum }</em>个漏洞</span>
-		                        <span class="lm">检测页面<em id="num1">${webPageNum }</em>个</span>
-							</a>
-							</div></li>
-						<li><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/banner2.png" alt=""></a></div></li>
-                        <li><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/banner3.png" alt=""></a></div></li>
-                        <li><div class="vb"><a href="#"><img src="${ctx}/source/images/portal/banner1.png" alt=""></a></div></li>
-						 -->
-					</ul>
-				</div>
-             </div>
-				<ol class="bannerbtn circle clearfix">
-                    <!-- <li class="active"></li>
-                    <li></li>
-                    <li></li>
-                    <li></li> --> 
-                    <c:forEach var="list" items="${adList}" varStatus="status">
-                    	<c:if test="${status.index ==0}">
-							<li class="active"></li>
-						</c:if>
-						<c:if test="${status.index !=0}">
-							<li></li>
-						</c:if>
-					</c:forEach>
-				</ol>
+				<div class="bannerB">	
+				 	<div class="vb"><a href="#"><img src="${ctx}/source/images/ad/${adList[0].image }" alt="" style="width:100%;height:100%"></a></div>
 			</div>
 
 		</div>
