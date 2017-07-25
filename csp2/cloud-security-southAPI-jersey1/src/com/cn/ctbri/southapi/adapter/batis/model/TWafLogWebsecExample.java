@@ -9,6 +9,11 @@ public class TWafLogWebsecExample {
 
     protected boolean distinct;
 
+    //limit语句偏移量
+    protected String offset;
+	//limit语句返回行数
+    protected String rows;
+    
     protected List<Criteria> oredCriteria;
 
     public TWafLogWebsecExample() {
@@ -26,8 +31,24 @@ public class TWafLogWebsecExample {
     public void setDistinct(boolean distinct) {
         this.distinct = distinct;
     }
+    
+    public String getOffset() {
+		return offset;
+	}
 
-    public boolean isDistinct() {
+	public void setOffset(String offset) {
+		this.offset = offset;
+	}
+
+	public String getRows() {
+		return rows;
+	}
+
+	public void setRows(String rows) {
+		this.rows = rows;
+	}
+
+	public boolean isDistinct() {
         return distinct;
     }
 

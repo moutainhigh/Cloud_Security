@@ -38,6 +38,8 @@ import com.cn.ctbri.southapi.adapter.scanner.WebsocDeviceAdapter;
 import com.cn.ctbri.southapi.adapter.scanservice.ScanServiceSocket;
 import com.cn.ctbri.southapi.adapter.systemserv.CloudInsightAdapter;
 import com.cn.ctbri.southapi.adapter.systemserv.NsfocusSysServOperation;
+import com.cn.ctbri.southapi.adapter.taskissued.TaskReport;
+import com.cn.ctbri.southapi.adapter.taskissued.taskRequest;
 import com.cn.ctbri.southapi.adapter.waf.NsfocusWAFAdapter;
 import com.cn.ctbri.southapi.adapter.waf.config.WAFConfigManager;
 
@@ -73,13 +75,18 @@ public class DeviceAdpaterManager {
 	public static NsfocusSysServOperation nsfocusSysServOperation = new NsfocusSysServOperation();
 	
 	public static ScanServiceSocket scanServiceSocket = new ScanServiceSocket();
+	
+	public static taskRequest taskRequest = new taskRequest();
+	
+	public static TaskReport taskReport = new TaskReport();
 	//加载设备错误信息
 	private static final String LOAD_DEVICE_ERROR = "{\"status\":\"fail\",\"message\":\"Load DeviceConfig failed!!\"}";
 	//初始化错误信息
 	private static final String INIT_DEVICE_ERROR = "{\"status\":\"fail\",\"message\":\"Init DeviceAdapter failed!!\"}";
 	//设备操作失败错误信息
 	private static final String DEVICE_OPERATION_ERROR = "{\"status\":\"fail\",\"message\":\"This device does not support the operation\"}";
-
+	//
+	private static final String DEVICE_SELECT_ERROR = "{\"status\":\"fail\",\"message\":\"can not find this device\"}";
 	/**
 	 * 获取设备配置信息
 	 * @param deviceId
@@ -469,7 +476,13 @@ public class DeviceAdpaterManager {
 		}
 		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
-			return responseToJSON(arnhemDeviceAdpater.getStatusByTaskId(deviceId, scannerTaskUniParam)).toString();
+			try {
+				return responseToJSON(arnhemDeviceAdpater.getStatusByTaskId(deviceId, scannerTaskUniParam)).toString();
+			} catch (NullPointerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return DEVICE_SELECT_ERROR;
+			}
 		}
 		return DEVICE_OPERATION_ERROR;
 	}
@@ -772,17 +785,24 @@ public class DeviceAdpaterManager {
 	public String deleteVSiteInResource(int resourceId, JSONObject jsonObject) {
 		return nsfocusWAFAdapter.deleteVirtSite(resourceId, jsonObject);
 	}	
-	public String getWafLogWebsec(List<String> dstIpList) {
-		return nsfocusWAFAdapter.getWafLogWebsec(dstIpList);
+	public String getWafLogWebsecByIp(List<String> dstIpList) {
+		return nsfocusWAFAdapter.getWafLogWebsecByIp(dstIpList);
 	}
 	
 	public String getWafLogWebsecInTime(JSONObject jsonObject) {
 		return nsfocusWAFAdapter.getWafLogWebsecInTime(jsonObject);
 	}
 	
+	public String getWafLogWebsecByDomainCurrent(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getWafLogWebsecByDomainCurrent(jsonObject);
+	}
+	
+	
 	public String getAllWafLogWebsecInTime(JSONObject jsonObject) {
 		return nsfocusWAFAdapter.getAllWafLogWebsecInTime(jsonObject);
 	}
+	
+
 	
 	public String getAllWafLogWebsecThanCurrentId(JSONObject jsonObject) {
 		return nsfocusWAFAdapter.getAllWafLogWebsecThanCurrentId(jsonObject);
@@ -791,6 +811,8 @@ public class DeviceAdpaterManager {
 	public String getWafLogWebsecCurrent(JSONObject jsonObject) {
 		return nsfocusWAFAdapter.getWafLogWebsecCurrent(jsonObject);
 	}
+	
+	
 	
 	public String getWafLogWebsecById(String logId) {
 		if (null==logId||logId.length()<=0){
@@ -869,26 +891,57 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getEventTypeCountByMonth(jsonObject);
 	}
 	
-	public String getWafEventTypeCountInTime(JSONObject jsonObject) {
-		return nsfocusWAFAdapter.getEventTypeCountInTime(jsonObject);
+	public String getWafEventTypeCountByYear(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getEventTypeCountByYear(jsonObject);
 	}
+	
+	public String getWafEventTypeCountInterval(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getEventTypeCountInterval(jsonObject);
+	}
+	
+	public String getEventTypeCountLimitByIp(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getEventTypeCountLimitByIp(jsonObject);
+	}
+	
+	public String getEventTypeCountLimitByDomain(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getEventTypeCountLimitByDomain(jsonObject);
+	}
+	
 	public String getEventTypeCountInTimeCurrent(JSONObject jsonObject) {
 		return nsfocusWAFAdapter.getEventTypeCountInTimeCurrent(jsonObject);
 	}
+	public String getEventTypeCountInTime(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getEventTypeCountInTime(jsonObject);
+	}
 	public String getWafLogWebSecDstIpList() {
 		return nsfocusWAFAdapter.getWafLogWebSecDstIpList();
+	}
+	
+	public String getWafLogWebsecSrcIpCountInTime(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getWafLogWebsecSrcIpCountInTime(jsonObject);
 	}
 	
 	public String getWafLogWebSecSrcIpList() {
 		return nsfocusWAFAdapter.getWafLogWebSecSrcIpList();
 	}
 	
+	public String getWafLogWebSecTimeCount(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getWafLogWebSecTimeCount(jsonObject);
+	}
 	public String getAlertLevelCount() {
 		return nsfocusWAFAdapter.getAlertLevelCount();
 	}
 	
+	public String getAlertLevelCount(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getAlertLevelCountInTime(jsonObject);
+	}
+	
 	public String getAlertLevelCountByHour(JSONObject jsonObject) {
 		return nsfocusWAFAdapter.getAlertLevelCountByHour(jsonObject);
+	}
+	
+	public String getAlertLevelCountLimitByDomain(JSONObject jsonObject) {
+		return nsfocusWAFAdapter.getAlertLevelCountLimitByDomain(jsonObject);
 	}
 	
 	public String getAlertLevelCountByMonth(JSONObject jsonObject) {
@@ -899,6 +952,9 @@ public class DeviceAdpaterManager {
 		return nsfocusWAFAdapter.getPublicIpListInResource(resourceId);
 	}
 	
+	public String getLocationFromIp(JSONObject jsonObject) {
+		return ipDataBaseAdapter.getLocationFromIp(jsonObject);
+	}
 	//4.1获取单IP经纬度信息
 	public String getIpLatlongByIP(JSONObject jsonObject) {
 		return ipDataBaseAdapter.getLatlongByIP(jsonObject);
@@ -934,6 +990,13 @@ public class DeviceAdpaterManager {
 		return ipDataBaseAdapter.getNationLocationCNCount();
 	}
 	
+	public String getNationLocationCNByCity(JSONObject jsonObject){
+		return ipDataBaseAdapter.getNationLocationCNByCity(jsonObject);
+	}
+	
+	public String getNationLocationCNByCities(JSONObject jsonObject) {
+		return ipDataBaseAdapter.getNationLocationCNByCities(jsonObject);
+	}
 	//5.2 获取国内地理信息数据块
 	public String getNationLocationCNDataBlock(JSONObject jsonObject){
 		return ipDataBaseAdapter.getNationLocationCNDataBlock(jsonObject);
@@ -942,6 +1005,14 @@ public class DeviceAdpaterManager {
 	//5.3 获取全球地理信息数据总数
 	public String getNationLocationTotalCount(){
 		return ipDataBaseAdapter.getNationLocationTotalCount();
+	}
+	
+	public String getNationLocationByCity(JSONObject jsonObject){
+		return ipDataBaseAdapter.getNationLocationByCity(jsonObject);
+	}
+	
+	public String getNationLocationByCities(JSONObject jsonObject) {
+		return ipDataBaseAdapter.getNationLocationByCities(jsonObject);
 	}
 	
 	//5.4 获取全球地理信息数据块
@@ -1097,8 +1168,12 @@ public class DeviceAdpaterManager {
 		return nsfocusSysServOperation.renewNsfocusSysOrder(jsonObject);
 	}
 	
+	//三类扫描服务
 	public String createScanServiceTask(JSONObject jsonObject) {
-		return scanServiceSocket.createScanServiceTask(jsonObject);
+		return taskRequest.sendRequest(jsonObject);
+	}
+	public String getScanServiceReport(JSONObject jsonObject) {
+		return taskReport.getTaskReport(jsonObject);
 	}
 	
 }

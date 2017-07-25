@@ -106,6 +106,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		ClientResponse response = builder.post(ClientResponse.class, jsonString);
 		//String cookie = response.getCookies().toString();
 		String body = response.getEntity(String.class);
+		System.out.println(">>>>>>>>>>>>>body="+body);
 		//For 2
 		return body;
 	}
@@ -204,7 +205,10 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 	//post基本操作
 	private String postOperation(String url,String jsonString){
 		String authString = getWAFAuth(nsfocusAPIKey, nsfocusAPIValue, "post");
+		System.out.println("authString="+url+authString);
+		System.out.println("json="+jsonString);
 		String returnString = postMethod(url+authString, jsonString);
+		System.out.println("<<<<<<<<<<<<<"+returnString+">>>>>>>>>>>>>>>>>>");
 		return returnString;
 	}
 	//delete基本操作，不带请求参数
@@ -327,7 +331,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		System.out.println(">>>createSiteJsonObject="+createSiteJsonObject);
 		System.out.println(">>>url="+nsfocusWafUrl+REST_URI_V1+"/sites");
 		String createSiteString = postOperation(nsfocusWafUrl+REST_URI_V1+"/sites",createSiteJsonObject.toString());
-		
+		System.out.println(">>>createSiteString="+createSiteString);
 		JSONArray responseArray = JSONArray.fromObject(createSiteString);
 		String responseString = responseArray.getString(0);
 		return responseString;
@@ -400,7 +404,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		if(jsonObject.get("parent")==null || jsonObject.getString("parent").length()<=0 ){
 			JSONObject errJsonObject = new JSONObject();
 			errJsonObject.put("status", "failed");
-			errJsonObject.put("reason", "Parent is null!!!");
+			errJsonObject.put("reason", "parent is null");
 			return errJsonObject.toString();
 		}
 		
@@ -443,6 +447,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		createVSiteObject.put("0", tempJsonObject);
 		//发送创建虚拟站点请求并接收返回的内容
 		String createVSiteString = postOperation(nsfocusWafUrl+REST_URI_V1+"/sites/protect/virts",createVSiteObject.toString());
+		System.out.println(">>>>>>>>>>>"+createVSiteString);
 		JSONArray responseArray = JSONArray.fromObject(createVSiteString);
 		//取id位为0的返回内容，一般都为0
 		String responseString = responseArray.getString(0);

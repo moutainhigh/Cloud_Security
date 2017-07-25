@@ -1,7 +1,13 @@
 package com.cn.ctbri.southapi.adapter.batis.inter;
 
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsec;
+import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecAlertLevelCount;
+import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecDstSrc;
+import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecEventTypeCount;
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecExample;
+
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.DeleteProvider;
@@ -9,6 +15,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
@@ -199,5 +206,78 @@ public interface TWafLogWebsecMapper {
         @Result(column="http", property="http", jdbcType=JdbcType.LONGVARBINARY)
     })
     TWafLogWebsec selectByPrimaryKey(Long logId);
+
+    @Select("<script>"+
+    		"select count(*) as count,src_ip from t_waf_log_websec "+
+    		"where dst_ip in "+
+    		"<foreach item='item' index='index' collection='strList' open='(' separator=',' close=')'>"+
+    		"#{item}" +
+    		"</foreach> " +
+    		" AND stat_time between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP} "+
+    		" GROUP BY src_ip  ORDER BY count desc "+
+    		"limit #{limitNum,jdbcType=BIGINT}"+
+    		"</script>"
+    )
+    @Results({
+        @Result(column="count", property="count", jdbcType=JdbcType.VARCHAR),
+        @Result(column="src_ip", property="srcIp", jdbcType=JdbcType.VARCHAR)
+    })
+    List<TWafLogWebsecDstSrc> selectSrcIp(@Param("strList") List<String> strList,@Param("limitNum") int limitNum,@Param("startDate")Date startDate,@Param("endDate")Date endDate);
+    
+
+    @Select("<script>"+
+    		"SELECT e.event_type as event_type,COUNT(event_type) AS count "+
+    		"from (SELECT t.event_type from t_waf_log_websec as t "+
+    		"<where>"+
+    		"t.domain in "+
+    		"<foreach item='item' index='index' collection='domain' open='(' separator=',' close=')'>"+
+    		"#{item}"+
+    		"</foreach>"+
+    		"</where> "+
+    		"ORDER BY t.stat_time desc limit #{limitNum,jdbcType=BIGINT}) as e GROUP BY event_type"+
+    		"</script>"		
+    )
+    @Results({
+        @Result(column="event_type", property="eventType", jdbcType=JdbcType.VARCHAR),
+        @Result(column="count", property="count", jdbcType=JdbcType.VARCHAR)
+    })
+    List<TWafLogWebsecEventTypeCount> selectEventTypeCountsByDomain(@Param("domain") List<String> domain,@Param("limitNum") int limitNum);
+    
+    @Select("<script>"+
+    		"SELECT e.event_type as event_type,COUNT(event_type) AS count "+
+    		"from (SELECT t.event_type from t_waf_log_websec as t "+
+    		"<where>"+
+    		"t.dst_ip in "+
+    		"<foreach item='item' index='index' collection='dstIp' open='(' separator=',' close=')'>"+
+    		"#{item}"+
+    		"</foreach>"+
+    		"</where> "+
+    		"ORDER BY t.stat_time desc limit #{limitNum,jdbcType=BIGINT}) as e GROUP BY event_type"+
+    		"</script>"		
+    )
+    @Results({
+        @Result(column="event_type", property="eventType", jdbcType=JdbcType.VARCHAR),
+        @Result(column="count", property="count", jdbcType=JdbcType.VARCHAR)
+    })
+    List<TWafLogWebsecEventTypeCount> selectEventTypeCountsByDstIp(@Param("dstIp") List<String> dstIp,@Param("limitNum") int limitNum);
+    
+    @Select("<script>"+
+    		"SELECT e.alertlevel as alertlevel,COUNT(alertlevel) AS count "
+    		+ "from (SELECT t.alertlevel from t_waf_log_websec as t "
+    		+ "<where> "
+    		+ "t.domain in "
+    		+ "<foreach item='item' index='index' collection='domain' open='(' separator=',' close=')'>"
+    		+ "#{item}"
+    		+ "</foreach>"
+    		+ "</where>"
+    		+ "ORDER BY t.stat_time desc limit #{limitNum,jdbcType=BIGINT}) as e GROUP BY alertlevel"
+    		+ "</script>"
+    )
+    @Results({
+        @Result(column="alertlevel", property="alertlevel", jdbcType=JdbcType.VARCHAR),
+        @Result(column="count", property="count", jdbcType=JdbcType.VARCHAR)
+    })
+    List<TWafLogWebsecAlertLevelCount> selectAlertLevelCountByDomain(@Param("domain") List<String> domain,@Param("limitNum") int limitNum);
+    
 
 }

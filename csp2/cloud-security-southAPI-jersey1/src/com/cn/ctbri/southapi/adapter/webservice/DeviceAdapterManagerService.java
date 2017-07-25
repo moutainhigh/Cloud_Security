@@ -2,7 +2,6 @@ package com.cn.ctbri.southapi.adapter.webservice;
 
 import java.util.List;
 
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -251,8 +250,9 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafLogWebsecByIp(String dataJson){
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		@SuppressWarnings("unchecked")
 		List<String> dstIpList = (List<String>) jsonObject.get("dstIp");
-		return deviceAdpaterManager.getWafLogWebsec(dstIpList);
+		return deviceAdpaterManager.getWafLogWebsecByIp(dstIpList);
 	}
 	@POST
 	@Path("/getWaflogWebsecById")
@@ -268,6 +268,14 @@ public class DeviceAdapterManagerService {
 	public String getWafLogWebsecInTime(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		return deviceAdpaterManager.getWafLogWebsecInTime(jsonObject);
+	}
+	
+	@POST
+	@Path("/getWafLogWebsecByDomainCurrent")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafLogWebsecByDomainCurrent(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getWafLogWebsecByDomainCurrent(jsonObject);
 	}
 	
 	@POST
@@ -374,8 +382,18 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafEventType(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
-		return deviceAdpaterManager.getWafEventTypeCountInTime(jsonObject);
+		return deviceAdpaterManager.getWafEventTypeCountInterval(jsonObject);
 	}
+	
+	@POST
+	@Path("/getWafEventTypeCountLimitByDomain")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getEventTypeCountLimitByDomain(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getEventTypeCountLimitByDomain(jsonObject);
+	}
+	
+	
 	@POST
 	@Path("/getEventTypeCountInTimeCurrent")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -385,6 +403,7 @@ public class DeviceAdapterManagerService {
 	}
 	@POST
 	@Path("/getEventTypeCountByDay")
+	@Produces(MediaType.APPLICATION_JSON)
 	public String getEventTypeCountByDay(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		return deviceAdpaterManager.getWafEventTypeCountByDay(jsonObject);
@@ -392,10 +411,28 @@ public class DeviceAdapterManagerService {
 	
 	@POST
 	@Path("/getEventTypeCountByMonth")
+	@Produces(MediaType.APPLICATION_JSON)
 	public String getWafEventTypeCountByMonth(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		return deviceAdpaterManager.getWafEventTypeCountByMonth(jsonObject);
 	}
+	
+	@POST
+	@Path("/getEventTypeCountByYear")
+	public String getWafEventTypeCountByYear(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getWafEventTypeCountByYear(jsonObject);
+	}
+	
+	@POST
+	@Path("/getEventTypeCountInTime")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafEventTypeCountInTime(String dataJson){
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getEventTypeCountInTime(jsonObject);
+	}
+	
+	
 	
 	@GET
 	@Path("/getWafAlertLevelCount")
@@ -403,13 +440,31 @@ public class DeviceAdapterManagerService {
 	public String getWafAlertLevelCount() {
 		return deviceAdpaterManager.getAlertLevelCount();
 	}
+	
+	@POST
+	@Path("/getWafAlertLevelCountInTime")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafAlertLevelCountInTime(String dataJson){
+			JSONObject jsonObject = JSONObject.fromObject(dataJson);
+			return deviceAdpaterManager.getAlertLevelCount(jsonObject);
+	}
+	
 	@POST
 	@Path("/getWafAlertLevelCount")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getWafAlertLevelCountInTime(String dataJson) {
+	public String getWafAlertLevelCount(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		return deviceAdpaterManager.getAlertLevelCountByHour(jsonObject);
 	}
+	
+	@POST
+	@Path("/getWafAlertLevelCountLimitByDomain")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafAlertLevelCountLimitByDomain(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getAlertLevelCountLimitByDomain(jsonObject);
+	}
+	
 	@POST
 	@Path("/getWafAlertLevelCountByMonth")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -433,7 +488,29 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.getWafLogWebSecSrcIpList();
 	}
 	
-
+	@POST
+	@Path("/getWafLogWebSecTimeCount")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafLogWebSecTimeCount(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getWafLogWebSecTimeCount(jsonObject);
+	}
+	
+	@POST
+	@Path("/getWafLogWebsecSrcIpCountInTime")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getWafLogWebSecDstIpListInTime(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getWafLogWebsecSrcIpCountInTime(jsonObject);
+	}
+	
+	@POST
+	@Path("/getLocationFromIp")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getLocationFromIp(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getLocationFromIp(jsonObject);
+	}
 	
 	@POST
 	@Path("/getSites")
@@ -625,6 +702,22 @@ public class DeviceAdapterManagerService {
 		return deviceAdpaterManager.getNationLocationCNCount();
 	}
 	
+	@POST
+	@Path("/secbasedata/nationlocation/getcndatabycity")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getNationLocationCNByCity(String dataJson){
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getNationLocationCNByCity(jsonObject);
+	}
+	
+	@POST
+	@Path("/secbasedata/nationlocation/getcndatabycities")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getNationLocationCNByCities(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getNationLocationCNByCities(jsonObject);
+	}
+	
 	//5.2 获取国内地理信息数据块
 	@POST
 	@Path("/secbasedata/nationlocation/getcndatablock")
@@ -640,6 +733,22 @@ public class DeviceAdapterManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getNationLocationTotalCount(){
 		return deviceAdpaterManager.getNationLocationTotalCount();
+	}
+	
+	@POST
+	@Path("/secbasedata/nationlocation/getdatabycity")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getNationLocationByCity(String dataJson){
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getNationLocationByCity(jsonObject);
+	}
+	
+	@POST
+	@Path("/secbasedata/nationlocation/getdatabycities")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getNationLocationByCities(String dataJson) {
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getNationLocationByCities(jsonObject);
 	}
 	
 	//5.4 获取全球地理信息数据块
@@ -952,8 +1061,13 @@ public class DeviceAdapterManagerService {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		return deviceAdpaterManager.createScanServiceTask(jsonObject);
 	}
-
-	
+	@POST
+	@Path("/scanservice/getreport")
+	@Produces
+	public String getScanServiceReport(String dataJson){
+		JSONObject jsonObject = JSONObject.fromObject(dataJson);
+		return deviceAdpaterManager.getScanServiceReport(jsonObject);
+	}
 	
 
 }

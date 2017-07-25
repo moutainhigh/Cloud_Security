@@ -27,7 +27,7 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
 public class NsfocusDeviceOperation extends CommonDeviceOperation {
-	private String nsfocusServerWebrootUrl = "";
+	private static String nsfocusServerWebrootUrl = "";
 	private String username = "admin";
 	private String password = "1qa2ws3ed";
 	private String connectSessionId = "";
@@ -315,4 +315,8 @@ public class NsfocusDeviceOperation extends CommonDeviceOperation {
 	 * @param args
 	 * @throws IOException 
 	 */
+	public static void main(String[] args) {
+		NsfocusDeviceOperation operation = new NsfocusDeviceOperation();
+		nsfocusServerWebrootUrl = "";
+	}
 }

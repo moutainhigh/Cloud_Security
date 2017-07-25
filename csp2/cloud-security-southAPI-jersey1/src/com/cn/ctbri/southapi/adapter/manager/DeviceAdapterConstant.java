@@ -54,5 +54,8 @@ public class DeviceAdapterConstant {
 	public static final String DEFALUT_DEVICE_TYPE_DDOS = "DDOS" ;	
 	
 	public static final String DEVICE_STATE_ON = "ON";
-	public static final String DEVICE_STATE_OFF = "OFF";	
+	public static final String DEVICE_STATE_OFF = "OFF";
+	public static void main(String[] args) {
+		System.out.println(DeviceAdapterConstant.class.getClassLoader().getResource("/"));
+	}
 }

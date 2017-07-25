@@ -16,7 +16,7 @@ public class taskRequest {
 	public String sendRequest(JSONObject jsonObject){
 		try {
 			 System.out.println("socket success.............");
-	         Socket s = new Socket("192.168.204.129",9999);
+	         Socket s = new Socket("60.205.171.222",9999);
 	         System.out.println("socket success");
 	         //JSONObject jo=new JSONObject();
 	         //jo.put("type","CreateTask");
@@ -60,6 +60,10 @@ public class taskRequest {
 	         e.printStackTrace();
 	         return null;
 	      }
+	}
+	public static void main(String[] args) {
+		taskRequest taskRequest = new taskRequest();
+		taskRequest.sendRequest(new JSONObject());
 	}
 
 }

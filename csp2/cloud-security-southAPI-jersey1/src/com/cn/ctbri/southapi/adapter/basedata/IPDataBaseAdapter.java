@@ -60,7 +60,71 @@ public class IPDataBaseAdapter {
 		return CommonDatabaseController.getOpenPhishSqlSession();
 	}
 	
-	
+	public String getLocationFromIp(JSONObject jsonObject) {
+		if (jsonObject.get("ip")==null||jsonObject.getString("ip").length()<=0) {
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "Ip is null!!!");
+			return errorJsonObject.toString();
+		}
+		SqlSession sqlSession = null;
+		try {
+			sqlSession =  getSqlSession();
+			//判断ip是否为空，ip为空返回错误提示
+				//ip不为空，新建位置查询json对象，存入ip
+				String ip = jsonObject.getString("ip");
+				JSONObject locationFromIpObject = new JSONObject();
+				locationFromIpObject.put("ip", ip);
+				
+				//根据ip范围组装查询条件
+				TIpv4LatlongExample ipLatlongExample = new TIpv4LatlongExample();
+				//查询条件为：起始ip小于要查询的ip且结束ip大于要查询的ip，根据网关降序排列（确保排在前面的范围更精确）
+				ipLatlongExample.or().andStartipLessThanOrEqualTo(IPUtility.ip2long(ip)).andEndipGreaterThanOrEqualTo(IPUtility.ip2long(ip));
+				ipLatlongExample.setOrderByClause("netmask desc");
+				
+				//执行查询，如果没查到，直接返回ip
+				TIpv4LatlongMapper ipLatlongMapper = sqlSession.getMapper(TIpv4LatlongMapper.class);
+				List<TIpv4Latlong> tIpv4Latlongs = ipLatlongMapper.selectByExample(ipLatlongExample);
+				if(tIpv4Latlongs.isEmpty()){
+					return locationFromIpObject.toString();
+				}
+				
+				//如果查到了，取第一个值（排序后范围最小最精确地值）
+				TIpv4Latlong tIpv4Latlong = tIpv4Latlongs.get(0);
+				locationFromIpObject.put("network", tIpv4Latlong.getNetwork());
+				locationFromIpObject.put("netmask", tIpv4Latlong.getNetmask());
+				//根据ip信息中的位置编号，查询ip地理位置信息
+				TViewIpv4LocationExample locationExample = new TViewIpv4LocationExample();
+				locationExample.createCriteria().andLatlongIdEqualTo(tIpv4Latlong.getLatlongId());
+				TViewIpv4LocationMapper ipLocationMapper = sqlSession.getMapper(TViewIpv4LocationMapper.class);
+				List<TViewIpv4Location> locations = ipLocationMapper.selectByExample(locationExample);
+				
+
+				//如果地理位置信息不为空，则填充地理位置信息，如果为空，则直接返回ip查询结果（不带地理位置信息）
+				if (!locations.isEmpty()) {
+					TViewIpv4Location location = locations.get(0);
+					locationFromIpObject.put("latitude", tIpv4Latlong.getLatitude());
+					locationFromIpObject.put("longtitude", tIpv4Latlong.getLongitude());
+					locationFromIpObject.put("continent", location.getContinentName());
+					locationFromIpObject.put("country", location.getCountryName());
+					locationFromIpObject.put("subdivisionNo1Name", location.getSubdivision1Name());
+					locationFromIpObject.put("subdivisionNo2Name", location.getSubdivision2Name());
+					locationFromIpObject.put("city", location.getCityName());
+					locationFromIpObject.put("countryISOCode", location.getCountryIsoCode());
+				}
+				return locationFromIpObject.toString();
+		} catch (Exception exception) {
+			//如果执行查询操作时产生错误，返回状态失败，提示获取位置产生错误
+			exception.printStackTrace();			
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "Get location from IP error!!!");
+			return errorJsonObject.toString();
+		}finally {
+			//关闭连接
+			closeSqlSession(sqlSession);
+		}
+	}
 	//根据ip地址查询地理位置信息
 	//XXX 效率低，重新设计开发
 	public String getLatlongByIP(JSONObject jsonObject) {
@@ -81,7 +145,7 @@ public class IPDataBaseAdapter {
 				
 				//根据ip范围组装查询条件
 				TIpv4LatlongExample ipLatlongExample = new TIpv4LatlongExample();
-				//查询条件为：起始ip小于要查询的ip且结束ip大于要查询的ip，根据网关降序排列（确保排在前面的范围更精确）
+				//查询条件为：起始ip小于要查询的ip且结束ip大于要查询的ip，根据netmask降序排列（确保排在前面的范围更精确）
 				ipLatlongExample.or().andStartipLessThanOrEqualTo(IPUtility.ip2long(ip)).andEndipGreaterThanOrEqualTo(IPUtility.ip2long(ip));
 				ipLatlongExample.setOrderByClause("netmask desc");
 				
@@ -422,6 +486,8 @@ public class IPDataBaseAdapter {
 		}
 
 	}
+	
+	
 	/*
 	//5.2获取国内地理信息数据块
 	public String getNationLocationCNDataBlock(JSONObject jsonObject) {
@@ -484,6 +550,94 @@ public class IPDataBaseAdapter {
 			closeSqlSession(sqlSession);
 		}
 	}*/
+	
+	public String getNationLocationCNByCity(JSONObject jsonObject){
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getSqlSession();
+			TCityLocationMapper tCityLocationMapper = sqlSession.getMapper(TCityLocationMapper.class);
+			TCityLocationExample tCityLocationExample = new TCityLocationExample();
+			tCityLocationExample.createCriteria().andCityNameEqualTo(jsonObject.getString("city"));
+			List<TCityLocation> cityLocationList = tCityLocationMapper.selectByExample(tCityLocationExample);
+			TCityLocation tCityLocation = cityLocationList.get(0);
+			JSONObject locationJsonObject = new JSONObject();
+			locationJsonObject.put("subdivision_1_name", tCityLocation.getSubdivision1Name());
+			locationJsonObject.put("subdivision_1_iso_code", tCityLocation.getSubdivision1IsoCode());
+			locationJsonObject.put("city", tCityLocation.getCityName());
+			locationJsonObject.put("timezone", tCityLocation.getTimeZone());
+			return locationJsonObject.toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "database error");
+			return errorJsonObject.toString();
+		} catch (NullPointerException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "param error");
+			return errorJsonObject.toString();
+		}finally {
+			closeSqlSession(sqlSession);
+		}
+		
+	}
+	
+	public String getNationLocationCNByCities(JSONObject jsonObject){
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getSqlSession();
+			TCityLocationMapper tCityLocationMapper = sqlSession.getMapper(TCityLocationMapper.class);
+			TCityLocationExample tCityLocationExample = new TCityLocationExample();
+			JSONArray cityJsonArray = jsonObject.getJSONArray("cities");
+			List<String> cityList = JSONArray.toList(cityJsonArray);
+			tCityLocationExample.createCriteria().andCityNameIn(cityList);
+			List<TCityLocation> cityLocationList = tCityLocationMapper.selectByExample(tCityLocationExample);
+			JSONArray locationJsonArray = new JSONArray();
+			for (TCityLocation tCityLocation : cityLocationList) {
+				JSONObject locationJsonObject = new JSONObject();
+				locationJsonObject.put("subdivision_1_name", tCityLocation.getSubdivision1Name());
+				locationJsonObject.put("subdivision_1_iso_code", tCityLocation.getSubdivision1IsoCode());	
+				locationJsonObject.put("city", tCityLocation.getCityName());
+				locationJsonObject.put("timezone", tCityLocation.getTimeZone());
+				locationJsonArray.add(locationJsonObject);
+			}			
+			JSONObject returnJsonObject = new JSONObject();
+			returnJsonObject.put("locationList", locationJsonArray);
+			return returnJsonObject.toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "database error");
+			return errorJsonObject.toString();
+		} catch (NullPointerException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "param error");
+			return errorJsonObject.toString();
+		} catch (ClassCastException e) {
+			// TODO: handle exception
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "cities' param is null");
+			return errorJsonObject.toString();
+		}
+		finally {
+			closeSqlSession(sqlSession);
+		}
+		
+	}
+	
+	
+	
+	
 	//5.2获取国内地理信息数据块
 	public String getNationLocationCNDataBlock(JSONObject jsonObject){
 		SqlSession sqlSession = null;
@@ -526,12 +680,11 @@ public class IPDataBaseAdapter {
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
-			errorJsonObject.put("message", "Database error!!!");
+			errorJsonObject.put("message", "database error");
 			return errorJsonObject.toString();
 		} finally {
 			closeSqlSession(sqlSession);
 		}
-
 	}
 	
 	//5.3获取全球地理信息数据总数
@@ -555,6 +708,151 @@ public class IPDataBaseAdapter {
 			} finally {
 				closeSqlSession(sqlSession);
 			}
+	}
+	//查询全球城市地理位置信息，单条
+	public String getNationLocationByCity(JSONObject jsonObject){
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getSqlSession();
+			TCityLocationMapper tCityLocationMapper = sqlSession.getMapper(TCityLocationMapper.class);
+			TCityLocationExample tCityLocationExample = new TCityLocationExample();
+			tCityLocationExample.createCriteria().andCityNameEqualTo(jsonObject.getString("city"));
+			List<TCityLocation> cityLocationList = tCityLocationMapper.selectByExample(tCityLocationExample);
+			TCityLocation tCityLocation = cityLocationList.get(0);
+			JSONObject locationJsonObject = new JSONObject();
+			locationJsonObject.put("continent_code", tCityLocation.getContinentName());
+			locationJsonObject.put("continent_name", tCityLocation.getContinentCode());
+			locationJsonObject.put("country", tCityLocation.getCountryName());
+			locationJsonObject.put("country_iso_code", tCityLocation.getCountryIsoCode());
+			locationJsonObject.put("subdivision_1_name", tCityLocation.getSubdivision1Name());
+			locationJsonObject.put("subdivision_1_iso_code", tCityLocation.getSubdivision1IsoCode());
+			locationJsonObject.put("subdivision_2_name", tCityLocation.getSubdivision2Name());
+			locationJsonObject.put("subdivision_2_iso_code", tCityLocation.getSubdivision2IsoCode());
+			locationJsonObject.put("city", tCityLocation.getCityName());
+			locationJsonObject.put("timezone", tCityLocation.getTimeZone());
+			return locationJsonObject.toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "database error");
+			return errorJsonObject.toString();
+		} catch (NullPointerException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "param error");
+			return errorJsonObject.toString();
+		}finally {
+			closeSqlSession(sqlSession);
+		}
+		
+	}
+	
+	public String getNationLocationByCities(JSONObject jsonObject){
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getSqlSession();
+			TCityLocationMapper tCityLocationMapper = sqlSession.getMapper(TCityLocationMapper.class);
+			TCityLocationExample tCityLocationExample = new TCityLocationExample();
+			JSONArray cityJsonArray = jsonObject.getJSONArray("cities");
+			List<String> cityList = JSONArray.toList(cityJsonArray);
+			tCityLocationExample.createCriteria().andCityNameIn(cityList);
+			List<TCityLocation> cityLocationList = tCityLocationMapper.selectByExample(tCityLocationExample);
+			JSONArray locationJsonArray = new JSONArray();
+			for (TCityLocation tCityLocation : cityLocationList) {
+				JSONObject locationJsonObject = new JSONObject();
+				locationJsonObject.put("continent_code", tCityLocation.getContinentName());
+				locationJsonObject.put("continent_name", tCityLocation.getContinentCode());
+				locationJsonObject.put("country", tCityLocation.getCountryName());
+				locationJsonObject.put("country_iso_code", tCityLocation.getCountryIsoCode());
+				locationJsonObject.put("subdivision_1_name", tCityLocation.getSubdivision1Name());
+				locationJsonObject.put("subdivision_1_iso_code", tCityLocation.getSubdivision1IsoCode());
+				locationJsonObject.put("subdivision_2_name", tCityLocation.getSubdivision2Name());
+				locationJsonObject.put("subdivision_2_iso_code", tCityLocation.getSubdivision2IsoCode());
+				locationJsonObject.put("city", tCityLocation.getCityName());
+				locationJsonObject.put("timezone", tCityLocation.getTimeZone());
+				locationJsonArray.add(locationJsonObject);
+			}			
+			JSONObject returnJsonObject = new JSONObject();
+			returnJsonObject.put("locationList", locationJsonArray);
+			return returnJsonObject.toString();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "database error");
+			return errorJsonObject.toString();
+		} catch (NullPointerException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "param error");
+			return errorJsonObject.toString();
+		}finally {
+			closeSqlSession(sqlSession);
+		}
+		
+	}
+	
+	
+	public String getNationLocationWithParam(JSONObject jsonObject){
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = getSqlSession();
+			TCityLocationMapper tCityLocationMapper = sqlSession.getMapper(TCityLocationMapper.class);
+			TCityLocationExample tCityLocationExample = new TCityLocationExample();
+			if (jsonObject.get("city")!=null||jsonObject.getString("city").length()<=0) {
+				tCityLocationExample.createCriteria().andCityNameEqualTo(jsonObject.getString("city"));
+			}else if (jsonObject.get("subdivision_2_iso_code")!=null||jsonObject.getString("subdivision_2_iso_code").length()<0) {
+				tCityLocationExample.createCriteria().andSubdivision2IsoCodeEqualTo(jsonObject.getString("subdivision_2_iso_code"));
+			}else if (jsonObject.get("subdivision_2_name")!=null||jsonObject.getString("subdivision_2_name").length()<0) {
+				tCityLocationExample.createCriteria().andSubdivision2NameEqualTo(jsonObject.getString("subdivision_2_name"));
+			}else if (jsonObject.get("subdivision_1_iso_code")!=null||jsonObject.getString("subdivision_1_iso_code").length()<0) {
+				tCityLocationExample.createCriteria().andSubdivision1IsoCodeEqualTo(jsonObject.getString("subdivision_1_iso_code"));
+			}else if (jsonObject.get("subdivision_1_name")!=null||jsonObject.getString("subdivision_1_name").length()<0) {
+				tCityLocationExample.createCriteria().andSubdivision1NameEqualTo(jsonObject.getString("subdivision_1_name"));
+			}else if (jsonObject.get("country_iso_code")!=null||jsonObject.getString("country_iso_code").length()<0) {
+				tCityLocationExample.createCriteria().andCountryIsoCodeEqualTo(jsonObject.getString("country_iso_code"));
+			}else if (jsonObject.get("country_name")!=null||jsonObject.getString("country_name").length()<0) {
+				tCityLocationExample.createCriteria().andCountryNameEqualTo(jsonObject.getString("country_name"));
+			}
+			List<TCityLocation> cityLocationList = tCityLocationMapper.selectByExample(tCityLocationExample);
+			JSONArray locationJsonArray = new JSONArray();
+			for (TCityLocation tCityLocation : cityLocationList) {
+				JSONObject locationJsonObject = new JSONObject();
+				locationJsonObject.put("continent_code", tCityLocation.getContinentName());
+				locationJsonObject.put("continent_name", tCityLocation.getContinentCode());
+				locationJsonObject.put("country", tCityLocation.getCountryName());
+				locationJsonObject.put("country_iso_code", tCityLocation.getCountryIsoCode());
+				locationJsonObject.put("subdivision_1_name", tCityLocation.getSubdivision1Name());
+				locationJsonObject.put("subdivision_1_iso_code", tCityLocation.getSubdivision1IsoCode());
+				locationJsonObject.put("subdivision_2_name", tCityLocation.getSubdivision2Name());
+				locationJsonObject.put("subdivision_2_iso_code", tCityLocation.getSubdivision2IsoCode());
+				locationJsonObject.put("city", tCityLocation.getCityName());
+				locationJsonObject.put("timezone", tCityLocation.getTimeZone());
+				locationJsonArray.add(locationJsonObject);
+			}
+			JSONObject returnJsonObject = new JSONObject();
+			returnJsonObject.put("locationList", locationJsonArray);
+			return returnJsonObject.toString();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "database error");
+			return errorJsonObject.toString();
+		}finally {
+			closeSqlSession(sqlSession);
+		}
+		
 	}
 		
 	//5.4获取全球地理信息数据块
@@ -1412,14 +1710,13 @@ public class IPDataBaseAdapter {
 			TWebPhishExample webPhishExample = new TWebPhishExample();
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			Date begDate = sdf.parse("2016-01-01");
-			Date endDate = sdf.parse("2017-01-01");
 			webPhishExample.createCriteria();
 
 			
 			
 			TWebPhishMapper webPhishMapper = sqlSession.getMapper(TWebPhishMapper.class);
 			int countNum = webPhishMapper.countByExample(webPhishExample);
+			sqlSession.clearCache();
 			JSONObject returnJsonObject = new JSONObject();
 			returnJsonObject.put("status", "success");
 			returnJsonObject.put("count", countNum);
@@ -1430,14 +1727,6 @@ public class IPDataBaseAdapter {
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "database error");
-			return errorJsonObject.toString();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			e.printStackTrace();
-			JSONObject errorJsonObject = new JSONObject();
-			errorJsonObject.put("status", "failed");
-			errorJsonObject.put("message", "date error");
 			return errorJsonObject.toString();
 		} finally {
 			closeSqlSession(sqlSession);
@@ -1689,5 +1978,9 @@ public class IPDataBaseAdapter {
 		} finally {
 			closeSqlSession(sqlSession);
 		}	
-	}	
+	}
+	public static void main(String[] args) {
+		IPDataBaseAdapter adapter = new IPDataBaseAdapter();
+		System.out.println(adapter.getMalUrlCount());
+	}
 }
