@@ -84,11 +84,9 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 				boolean flag=true;
 				String dataText =null;
 				while(flag){
-					System.out.println("startId:"+startId);
 					flag=session.isOpen();
 					try{
 						dataText=getWafData(startId);
-						System.out.println("dataText:"+dataText);
 						JSONObject json = JSONObject.fromObject(dataText);
 						JSONArray array = (JSONArray) json.get("wafLogWebsecList");
 						startId=json.getLong("currentId");
@@ -139,8 +137,8 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			String desIP = obj.getString("dstIp");
 			String desPort = obj.getString("dstPort");
 			Date startTime =DateUtils.stringToDateNYRSFM(obj.getString("statTime")); ;
-			byte[] base64Bytes = Base64.decodeBase64(obj.getString("eventType")
-					.getBytes());
+			//byte[] base64Bytes = Base64.decodeBase64(obj.getString("eventType").getBytes());
+			byte[] base64Bytes = obj.getString("eventType").getBytes();
 			String eventType = new String(base64Bytes, "UTF-8");
 			Integer typeCode = EventTypeCode.typeToCodeMap.get(eventType);
 			String srcLongitude = null;

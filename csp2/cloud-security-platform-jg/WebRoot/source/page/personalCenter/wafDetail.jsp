@@ -201,7 +201,7 @@ function websecDetail(logId){
           
           <input type="hidden" value="${orderAssetId }" id="orderAssetId" name="orderAssetId"/>
           <ul>
-            <li>实时数据</li>
+            <li>最新数据</li>
           </ul>
           <p align='right'><span>下载Word报表&nbsp;</span>
 						<span><a href="javascript:void(0)" onclick="exportImgWAF()" ><img src="${ctx}/source/images/export.png" width="22" height="23"/>
