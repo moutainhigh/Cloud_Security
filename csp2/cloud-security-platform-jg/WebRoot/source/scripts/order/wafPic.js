@@ -131,7 +131,7 @@ $(function(){
             'echarts',
             'echarts/chart/pie'
         ],
-        function (ec) {//回调函数
+        function (ec) {//回调函数执行图表对象初始化
             //--- 饼图 ---
             myChartPieEvent = ec.init(document.getElementById('eventPie'));
             myChartPieEvent.showLoading({
@@ -149,6 +149,7 @@ $(function(){
             //后台获取数据
             $.ajax({
             	type : "post",
+            	async:false,
             	url:"getEventPieData.html?orderId="+$('#orderId').val(),
                 dataType:"json",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
@@ -202,7 +203,6 @@ $(function(){
         }
     );
     
-    
     // 动态加载echarts然后在回调函数中开始使用，注意保持按需加载结构定义图表路径
     require(
         [
@@ -228,6 +228,7 @@ $(function(){
           //后台获取数据
             $.ajax({
             	type: "post",
+            	async:false,
             	url:"getEventBarData.html?orderId="+$('#orderId').val(),
                 dataType:"json",
 //                contentType: "application/x-www-form-urlencoded; charset=utf-8",
