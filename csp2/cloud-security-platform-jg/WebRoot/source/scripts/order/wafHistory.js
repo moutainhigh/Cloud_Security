@@ -468,7 +468,7 @@ var ontimeLine = null;
 //});
     
 
-function exportWAF(){
+function exportImgWAF(){
     var dataPieLevel = myChartPieLevel.getDataURL("png");  
     var dataPieEvent = myChartPieEvent.getDataURL("png");
 	var dataBar = myChartBar.getDataURL("png"); 
