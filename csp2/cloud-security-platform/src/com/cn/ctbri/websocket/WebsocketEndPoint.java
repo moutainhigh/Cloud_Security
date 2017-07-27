@@ -148,6 +148,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			String srcName = null;
 			String desName = null;
 			IPPosition srcIPPosition = getIPPositions().get(srcIP);
+			System.out.println(srcIPPosition.getIp()+srcIPPosition.getCountryProvince());
 			// 1.优先使用百度接口根据ip查询经纬度
 			if (null == srcIPPosition) {// 数据库中不存在
 				srcIPPosition = new IPPosition();
