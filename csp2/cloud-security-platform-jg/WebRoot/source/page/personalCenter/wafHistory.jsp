@@ -213,7 +213,7 @@ function generate(){
 		<div class="dataCent seetlentBox order" style="width: 1156px;">
 		
 		<div>
-             <p><span>资产名称：</span>${orderAssetId }</p>
+             <p><span>资产名称：</span>${domainName}</p>
          </div>
          
        <div class="data_box">
