@@ -219,6 +219,7 @@ function generate(){
        <div class="data_box">
         <div class="data_nav">
           <input type="hidden" value="${order.id }" id="orderId" name="orderId"/>
+          <input type="hidden" value="${orderAssetId }" id="orderAssetId" name="orderAssetId"/>
           <input type="hidden" value="1" id="isHis" name="isHis"/>
           <input type="hidden" value="${level }" id="level" />
           <input type="hidden" value="${levelType}" id="levelType" />
