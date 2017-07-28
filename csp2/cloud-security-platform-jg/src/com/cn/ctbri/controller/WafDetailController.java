@@ -92,6 +92,8 @@ public class WafDetailController {
             ips = ipArray.split(",");
            	String addr =(String) assetOrder.get("addr");
         	String domain = (String) addr.substring(addr.indexOf("://")+3);
+        	String orderAssetId = assetOrder.get("orderAssetId").toString();
+        	request.setAttribute("orderAssetId", orderAssetId);
         	request.setAttribute("domainName", domain);
             for (int n = 0; n < ips.length; n++) {
             	String[] ip = ips[n].split(":");
@@ -133,19 +135,21 @@ public class WafDetailController {
     			lastrow.put("count",String.valueOf(total));
     			listTime.add(lastrow);
      	        request.setAttribute("resultList", listTime);
+     	        request.setAttribute("resultListTime", "1234testlisttiem");
             	//攻击源
             	websecStr = WafAPIWorker.getWafLogWebsecSrcIpCountInTime(startDate,"",timeUnit,dstIpList,10);
             	request.setAttribute("beginDate", startDate);
             	request.setAttribute("type", timeUnit);
             	websecList = WafAPIAnalysis.getWafLogWebsecSrcIp(websecStr);
             	request.setAttribute("websecList", websecList);
+            	request.setAttribute("websecListIp", websecList);
             	request.setAttribute("websecNum", websecList.size());
             	reurl = "/source/page/personalCenter/wafHistory";
             }else{
             	websecStr = WafAPIWorker.getWafLogWebsecByDomainCurrent(domainList);
             	reurl = "/source/page/personalCenter/wafDetail";
             	websecList = this.getWaflogWebsecByIp(websecStr);
-            	request.setAttribute("websecList", websecList);
+            	request.setAttribute("websecList", websecList.toString());
             	request.setAttribute("websecNum", websecList.size());
             }
 
