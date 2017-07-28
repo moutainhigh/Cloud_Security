@@ -732,7 +732,6 @@ public class MaliciousUrlValidDataController {
 		}
 		result.put("webphishList", jsonArray);
 		//System.out.println(str);
-		System.out.println(result.toString());
 		//System.out.println(str);
 		try {
 			CommonUtil.writeToJsp(response, result);
@@ -761,7 +760,6 @@ public class MaliciousUrlValidDataController {
 		JSONObject jsonObject2 = new JSONObject();
 		jsonObject2.put("month","13");
 		String str=jerseyJsonUtil.postMethod(url, jsonObject2.toString());
-		System.out.println(str);
 		JSONObject jb=JSONObject.fromObject(str);
 		
 		JSONArray countList=(JSONArray) jb.get("countList");

@@ -10,7 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap> 
 
 	<select id="findByIp"  resultMap="AttackSourceRM">
-		select * from cs_attack_source where ip=#{ip}
+		select * from cs_attack_source where ip=#{ip} limit 1
     </select>
     
     <select id="findCountByProvice"   resultType="hashmap">

@@ -64,7 +64,6 @@ public class WafDetailController {
         String orderId = request.getParameter("orderId");
         //是否查询历史
         String isHis = request.getParameter("isHis");
-        System.out.println("isHis=="+isHis);
         //查询时间
         String startDate = request.getParameter("beginDate");
         //周期类型
@@ -703,12 +702,11 @@ public class WafDetailController {
     @ResponseBody
     public void getWafOneHour(HttpServletRequest request, HttpServletResponse response) throws IOException {
     	String eventStr = WafAPIWorker.getWafEventTypeCount(INTERVAL_STRING,"hour",0);
-    	Map map = WafAPIAnalysis.getWafEventTypeCount(eventStr);
+    	Map map = WafAPIAnalysis.getWafEventTypeCountBase64(eventStr);
         
         List name = null;
         List value = null;
         JSONArray jsondata = null;
-        
         if(map != null && map.size() > 0){
 			name = (List) map.get("name");
 			value = (List) map.get("value");

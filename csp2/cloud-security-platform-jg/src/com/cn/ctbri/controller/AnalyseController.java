@@ -430,7 +430,6 @@ public class AnalyseController {
 		String wafcreate = null;
 		wafcreate=WafAPIWorker.getEventTypeCountByDay("30");
 		long end = System.currentTimeMillis();
-		System.out.println(end - start);
 		JSONArray jsonArray = JSONArray.fromObject(wafcreate);
 		List<String> attackTypeList = new ArrayList<String>();
 		List<Attack> attackList = new LinkedList<Attack>();
