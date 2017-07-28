@@ -162,7 +162,6 @@ public class DataAnalysisController {
 		for (int i = 0; i < attackSourceSize; i++) {
 			JSONObject obj = (JSONObject) jsonArray.get(i);
 			String srcIp = obj.getString("srcIp");
-			
 			//根据Ip查询所在省份
 			AttackSource attackSource = attackSourceService.findByIp(srcIp);
 			

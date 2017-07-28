@@ -83,7 +83,6 @@ public class SysWorker {
 
 	 */
 	private static String postMethod(String url, String json) {
-		System.out.println(url);
 		Client client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
 		WebTarget webTarget = client.target(SERVER_SYS_ROOT);
 		WebTarget target = southTarget.path(url);
@@ -109,7 +108,6 @@ public class SysWorker {
 		String text = postMethod(SYS_jinshan_getOrderIndex, json.toString());
 		//String textEntity = response.getEntity(String.class);
 //      String status = JSONObject.fromObject(textEntity).getString("status");
-        System.out.println(text);
         String status =JSONObject.fromObject(text).getString("status");
         return status;
 	}
@@ -162,7 +160,6 @@ public class SysWorker {
 		//创建jersery客户端配置对象
 		String textEntity = postMethod(url, json.toString());
 //      String status = JSONObject.fromObject(textEntity).getString("status");
-        System.out.println(textEntity);
         
         
         return textEntity;
@@ -198,8 +195,6 @@ url解码后：
         else {
 			return "failed";
 		}
-       // System.out.println(textEntity);
-       // return textEntity;
 	}
 	
 	/**

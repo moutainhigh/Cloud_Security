@@ -310,7 +310,6 @@ public class WafAPIWorker {
 		json.put("dstIp", dstIpList);
 		json.put("interval", interval);
         System.out.println("****根据ip和时间查询websec日志信息****");  
-        System.err.println(">>>>>>>>>json="+json.toString());
         WebTarget target = mainTarget.path("/rest/adapter/getWaflogWebsecInTime");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
@@ -355,7 +354,6 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("currentId", currentId);
-        //System.out.println("****根据自增的主键id来查询数据****");  
         WebTarget target = mainTarget.path("/rest/adapter/getAllWafLogWebsecThanCurrentId");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
@@ -512,7 +510,6 @@ public class WafAPIWorker {
 		WebTarget target = mainTarget.path("/rest/adapter/getEventTypeCountInTime");
 		Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
-        System.out.println("str2="+str);
         response.close();
         return str;
 	}
@@ -528,7 +525,6 @@ public class WafAPIWorker {
     	WebTarget target = mainTarget.path("/rest/adapter/getWafLogWebSecTimeCount");
 		Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
-        System.out.println("str="+str);
         response.close();
         return str;
 	}

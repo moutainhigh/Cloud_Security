@@ -64,7 +64,6 @@ public class WafDetailController {
         String orderId = request.getParameter("orderId");
         //是否查询历史
         String isHis = request.getParameter("isHis");
-        System.out.println("isHis"==isHis);
         //查询时间
         String startDate = request.getParameter("beginDate");
         //周期类型
@@ -200,7 +199,6 @@ public class WafDetailController {
         }
     	
     	String levelStr = "";
-    	System.out.println("isHis="+isHis);
     	if(null!=isHis&&isHis.equals("1")){//查询历史
     		levelStr = WafAPIWorker.getWafAlertLevelCountInTime(startDate,"",timeUnit,dstIpList);
     	}else{
@@ -287,7 +285,6 @@ public class WafDetailController {
     	Map map = new HashMap();
     	if(null!=isHis&&isHis.equals("1")){//查询历史
     		eventStr = WafAPIWorker.getEventTypeCountInTime(startDate,"",timeUnit,dstIpList);
-    		System.out.println("eventStr1="+eventStr);
     		map = WafAPIAnalysis.getWafEventTypeCountInTimeNoDecode(eventStr);
     	}else{
 			eventStr = WafAPIWorker.getWafEventTypeCountByDomain(domainList);
@@ -364,7 +361,6 @@ public class WafDetailController {
     	Map map = new HashMap();
     	if(null!=isHis&&isHis.equals("1")){//查询历史
     		eventStr = WafAPIWorker.getEventTypeCountInTime(startDate,"",timeUnit,dstIpList);
-    		System.out.println("eventStr="+eventStr);
     		map = WafAPIAnalysis.getWafEventTypeCountInTimeNoDecode(eventStr);
     	}else{
     		eventStr = WafAPIWorker.getWafEventTypeCountByDomain(domainList);
@@ -436,7 +432,6 @@ public class WafDetailController {
     			unit = "day";
     		}
     		eventStr = WafAPIWorker.getWafLogWebSecTimeCount(startDate+"-01","",unit,dstIpList);
-    		System.out.println("eventStr="+eventStr);
     	}
     	Map map = WafAPIAnalysis.analysisWafLogWebSecTimeCount(eventStr);
         
@@ -699,12 +694,11 @@ public class WafDetailController {
     @ResponseBody
     public void getWafOneHour(HttpServletRequest request, HttpServletResponse response) throws IOException {
     	String eventStr = WafAPIWorker.getWafEventTypeCount(INTERVAL_STRING,"hour",0);
-    	Map map = WafAPIAnalysis.getWafEventTypeCount(eventStr);
+    	Map map = WafAPIAnalysis.getWafEventTypeCountBase64(eventStr);
         
         List name = null;
         List value = null;
         JSONArray jsondata = null;
-        
         if(map != null && map.size() > 0){
 			name = (List) map.get("name");
 			value = (List) map.get("value");

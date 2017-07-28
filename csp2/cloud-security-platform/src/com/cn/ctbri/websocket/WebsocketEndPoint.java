@@ -148,7 +148,6 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			String srcName = null;
 			String desName = null;
 			IPPosition srcIPPosition = getIPPositions().get(srcIP);
-			System.out.println(srcIPPosition.getIp()+srcIPPosition.getCountryProvince());
 			// 1.优先使用百度接口根据ip查询经纬度
 			if (null == srcIPPosition) {// 数据库中不存在
 				srcIPPosition = new IPPosition();
@@ -357,7 +356,6 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 						AttackVO attackVO=new AttackVO(attack);
 						judgeRepeat(attackVO,srcPositionList,desPositionList);
 						jsonObject.put("attack", attackVO);
-						System.out.println("positionDetail:"+attackVO.getSrcLongitude()+"-"+attackVO.getSrcLatitude()+"----"+attackVO.getDesLongitude()+"-"+attackVO.getDesLatitude());
 						TextMessage returnMessage = new TextMessage(jsonObject.toString());
 						try {
 							session.sendMessage(returnMessage);
@@ -388,7 +386,6 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 						AttackVO attackVO=new AttackVO(attack);
 						judgeRepeat(attackVO,srcPositionList,desPositionList);
 						jsonObject.put("attack", attackVO);
-						System.out.println("positionDetail:"+attackVO.getSrcLongitude()+"-"+attackVO.getSrcLatitude()+"----"+attackVO.getDesLongitude()+"-"+attackVO.getDesLatitude());
 						TextMessage returnMessage = new TextMessage(jsonObject.toString());
 						try {
 							session.sendMessage(returnMessage);
@@ -569,11 +566,11 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 //		System.out.println(currentId);
 //		String text2=WafAPIWorker.getAllWafLogWebsecInTime(1+"", "date");
 //		System.out.println(text2);
-		String dataText=WafAPIWorker.getAllWafLogWebsecInTime(70677);
-		JSONObject json = JSONObject.fromObject(dataText);
-		JSONArray array = (JSONArray) json.get("wafLogWebsecList");
-		if(null!=array&&array.size()==0){
-			System.out.println("size==0");
-		}
+//		String dataText=WafAPIWorker.getAllWafLogWebsecInTime(70677);
+//		JSONObject json = JSONObject.fromObject(dataText);
+//		JSONArray array = (JSONArray) json.get("wafLogWebsecList");
+//		if(null!=array&&array.size()==0){
+//			System.out.println("size==0");
+//		}
 	}
 }

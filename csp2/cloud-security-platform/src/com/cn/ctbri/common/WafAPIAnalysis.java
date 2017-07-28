@@ -108,7 +108,6 @@ public class WafAPIAnalysis {
 	public static List getWafLogWebsecSrcIp(String reStr) {
 		List reList = new ArrayList();
     	try {
-    		System.out.println(reStr);
     		JSONObject obj = JSONObject.fromObject(reStr);
     		JSONArray jsonArray = obj.getJSONArray("list");
     		if(jsonArray!=null && jsonArray.size()>0){
@@ -148,6 +147,37 @@ public class WafAPIAnalysis {
     			if(count!=0){
     				JSONObject jo = new JSONObject();
     				byte[] base64Bytes = e.getString("eventType").toString().getBytes();	
+    				String eventType = new String(base64Bytes,"UTF-8");
+    				arr.add(eventType);
+    				arra.add(count);
+    				jo.put("value", count);
+    				jo.put("name", eventType);
+    				json.add(jo);
+    			}
+    			
+    		}	
+			reMap.put("name", arr);
+			reMap.put("value", arra);
+			reMap.put("json", json);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    	return reMap;
+    }
+    
+    public static Map getWafEventTypeCountBase64(String eventStr){
+    	Map<String,Object> reMap = new HashMap<String,Object>();
+    	List<Object> arr = new ArrayList<Object>();
+		List<Object> arra = new ArrayList<Object>();
+		JSONArray json = new JSONArray();
+    	try {
+    		JSONArray obj = new JSONArray().fromObject(eventStr);
+    		for (Object aObj : obj) {
+    			JSONObject e = (JSONObject) aObj;
+    			int count = e.getInt("count");
+    			if(count!=0){
+    				JSONObject jo = new JSONObject();
+    				byte[] base64Bytes = Base64.decodeBase64(e.getString("eventType").toString().getBytes());	
     				String eventType = new String(base64Bytes,"UTF-8");
     				arr.add(eventType);
     				arra.add(count);
