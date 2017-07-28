@@ -221,9 +221,11 @@ function generate(){
           <input type="hidden" value="${order.id }" id="orderId" name="orderId"/>
           <input type="hidden" value="${orderAssetId }" id="orderAssetId" name="orderAssetId"/>
           <input type="hidden" value="1" id="isHis" name="isHis"/>
-          <input type="hidden" value="${level }" id="level" />
-          <input type="hidden" value="${levelType}" id="levelType" />
-          <input type="hidden" value="${websecNum}" id="websecNum" />
+          <input type="hidden" value="${level }" id="level" name="level"/>
+          <input type="hidden" value="${levelType}" id="levelType" name="levelType"/>
+          <input type="hidden" value="${websecNum}" id="websecNum" name="websecNum"/>
+          <input type="hidden" value="${resultListTime}" id="resultListTime" name="resultListTime"/>
+          <input type="hidden" value="${websecListIp}" id="websecListIp" name="websecListIp"/>
           
           <!-- 导出图像 -->
           <input type="hidden" name="imgPieLevel" id="imgPieLevel" />
