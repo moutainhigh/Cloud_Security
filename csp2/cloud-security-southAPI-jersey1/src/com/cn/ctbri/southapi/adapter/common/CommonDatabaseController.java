@@ -105,16 +105,11 @@ public class CommonDatabaseController {
 	}
 	
 	public static void closeSqlSession(SqlSession sqlSession){
-		
-		return;
-		/*
 		if(sqlSession==null){
 			return;
 		}
-		sqlSession.close();
-		
-		sqlSession = null;
-		*/
+		//sqlSession.close();
+
 	}
 	
 }

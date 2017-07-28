@@ -6,8 +6,8 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.alibaba.fastjson.JSON;
-import com.cn.ctbri.southapi.adapter.batis.inter.AppReportMapper;
-import com.cn.ctbri.southapi.adapter.batis.inter.AppTaskMapper;
+import com.cn.ctbri.southapi.adapter.batis.mapper.AppReportMapper;
+import com.cn.ctbri.southapi.adapter.batis.mapper.AppTaskMapper;
 import com.cn.ctbri.southapi.adapter.batis.model.AppReport;
 import com.cn.ctbri.southapi.adapter.batis.model.AppReportExample;
 import com.cn.ctbri.southapi.adapter.batis.model.AppTaskExample;

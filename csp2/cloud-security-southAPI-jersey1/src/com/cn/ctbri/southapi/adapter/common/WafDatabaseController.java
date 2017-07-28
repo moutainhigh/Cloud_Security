@@ -54,7 +54,7 @@ public class WafDatabaseController {
 			return;
 		}
 		//sqlSession.close();
-		sqlSession = null;
+		//sqlSession=null;
 	}
 	
 }

@@ -67,7 +67,6 @@ public class JinshanDeviceOperation extends CommonDeviceOperation{
             sb.append(entry.getKey()+entry.getValue());
         }
 		sb.append(apiSecret);
-		System.out.println(sb);
 		return EncryptUtility.getMD5(sb.toString()).toUpperCase();
 	}
 	//订单接口 

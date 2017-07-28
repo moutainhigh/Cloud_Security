@@ -29,6 +29,14 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import com.cn.ctbri.southapi.adapter.batis.inter.*;
+import com.cn.ctbri.southapi.adapter.batis.mapper.TWafLogArpMapper;
+import com.cn.ctbri.southapi.adapter.batis.mapper.TWafLogDdosMapper;
+import com.cn.ctbri.southapi.adapter.batis.mapper.TWafLogDefaceMapper;
+import com.cn.ctbri.southapi.adapter.batis.mapper.TWafLogWebsecCountMapper;
+import com.cn.ctbri.southapi.adapter.batis.mapper.TWafLogWebsecDstMapper;
+import com.cn.ctbri.southapi.adapter.batis.mapper.TWafLogWebsecMapper;
+import com.cn.ctbri.southapi.adapter.batis.mapper.TWafLogWebsecSrcMapper;
+import com.cn.ctbri.southapi.adapter.batis.mapper.TWafNsfocusTargetinfoMapper;
 import com.cn.ctbri.southapi.adapter.batis.model.*;
 import com.cn.ctbri.southapi.adapter.batis.model.TWafLogWebsecExample.Criteria;
 import com.cn.ctbri.southapi.adapter.common.CommonDatabaseController;
@@ -45,9 +53,11 @@ import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 public class NsfocusWAFAdapter {	
 	//告警等级：高、中、低
 	private static final String[] ALERT_LEVEL_STRINGS = {"LOW","MEDIUM","HIGH"};
+	private static final String LIMIT_NUM_STRING = "100";
 	public static HashMap<Integer, HashMap<Integer, NsfocusWAFOperation>> mapNsfocusWAFOperationGroup = new HashMap<Integer, HashMap<Integer,NsfocusWAFOperation>>();
 	public NsfocusWAFOperation nsfocusWAFOperation = null;
 	public static Blob blob;
+
 	
 	public SqlSession getSqlSession() throws IOException{
 		return WafDatabaseController.getSqlSession();
@@ -290,7 +300,7 @@ public class NsfocusWAFAdapter {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
-				closeSqlSession(sqlSession);
+				closeDeviceSqlSession(sqlSession);
 			}
 			
 			JSONObject tempDeviceJsonObject = new JSONObject();
@@ -342,10 +352,7 @@ public class NsfocusWAFAdapter {
 	 */
 	public String createVirtSite(int resourceId, JSONObject jsonObject) {
 		//获取指定resource内需要操作的一组waf设备
-		System.out.println("$$$$$$$$$$$$$$$$$$$$$"+mapNsfocusWAFOperationGroup.toString());
 		HashMap<Integer, NsfocusWAFOperation> map = mapNsfocusWAFOperationGroup.get(resourceId);
-		System.out.println("*******************"+map.toString());
-		System.out.println(">>>>>>>>>>>>>>>>>>>"+map.entrySet().toString());
 		JSONObject createVirtSiteJsonObject = new JSONObject();
 		JSONArray createVirtSiteJsonArray = new JSONArray();
 		String targetId = UUID.randomUUID().toString();
@@ -393,7 +400,7 @@ public class NsfocusWAFAdapter {
 				e.printStackTrace();
 				sqlSession.rollback();
 			} finally {
-				closeSqlSession(sqlSession);
+				closeDeviceSqlSession(sqlSession);
 			}
 			
 			
@@ -460,7 +467,7 @@ public class NsfocusWAFAdapter {
 			for (Entry<Integer, NsfocusWAFOperation> entry : map.entrySet()) {
 				targetinfoKey.setDeviceid(entry.getKey());
 				TWafNsfocusTargetinfo tWafNsfocusTargetinfo = new TWafNsfocusTargetinfo();
-				sqlSession = CommonDatabaseController.getSqlSession();
+				sqlSession = getDeviceSqlSession();
 				TWafNsfocusTargetinfoMapper mapper = sqlSession.getMapper(TWafNsfocusTargetinfoMapper.class);
 				JSONObject responseJsonObject = new JSONObject();
 				if (mapper.selectByPrimaryKey(targetinfoKey) != null) {
@@ -481,7 +488,7 @@ public class NsfocusWAFAdapter {
 			e.printStackTrace();
 			sqlSession.rollback();
 		} finally {
-			CommonDatabaseController.closeSqlSession(sqlSession);
+			closeDeviceSqlSession(sqlSession);
 		}
 		return deleteVirtJsonArray.toString();
 	}
@@ -502,7 +509,7 @@ public class NsfocusWAFAdapter {
 		SqlSession sqlSession = null;
 		
 		try {
-			sqlSession = CommonDatabaseController.getSqlSession();
+			sqlSession = getSqlSession();
 			TWafLogWebsecExample example = new TWafLogWebsecExample();
 			example.or().andDstIpIn(dstIpList);
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
@@ -536,7 +543,7 @@ public class NsfocusWAFAdapter {
 		try {
 			
 			
-			sqlSession = CommonDatabaseController.getSqlSession();
+			sqlSession = getSqlSession();
 			TWafLogWebsecExample example = new TWafLogWebsecExample();
 			Criteria criteria = new TWafLogWebsecExample().createCriteria();
 			if (jsonObject.getJSONArray("dstIp")!=null&&jsonObject.getJSONArray("dstIp").get(0)!=null&&jsonObject.getJSONArray("dstIp").getString(0).length()>0) {
@@ -550,7 +557,7 @@ public class NsfocusWAFAdapter {
 			if (jsonObject.containsKey("limit")&&jsonObject.get("limit")!=null&&jsonObject.getString("limit").length()>0) {
 				example.setRows(jsonObject.getString("limit"));
 			}else {
-				example.setRows("1000");
+				example.setRows(LIMIT_NUM_STRING);
 			}
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			List<TWafLogWebsec> allList = mapper.selectByExampleWithBLOBs(example);
@@ -580,7 +587,7 @@ public class NsfocusWAFAdapter {
 			sqlSession = getSqlSession();
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			TWafLogWebsec wafLogWebsec = mapper.selectByPrimaryKey(Long.parseLong(logId));
-			
+			sqlSession.clearCache();
 			wafLogWebsec = getTWafLogWebsecBase64(wafLogWebsec);
 			XStream xStream = getXStream();
 			xStream.alias("wafLogWebsec", TWafLogWebsec.class);
@@ -681,7 +688,7 @@ public class NsfocusWAFAdapter {
 			if (jsonObject.containsKey("limit")&&jsonObject.get("limit")!=null&&jsonObject.getString("limit").length()>0) {
 				example.setRows(jsonObject.getString("limit"));
 			}else {
-				example.setRows("1000");
+				example.setRows(LIMIT_NUM_STRING);
 			}
 			sqlSession = getSqlSession();
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
@@ -789,7 +796,6 @@ public class NsfocusWAFAdapter {
 			for (TWafLogWebsec tWafLogWebsec : allList) {
 				tWafLogWebsec = getTWafLogWebsecBase64(tWafLogWebsec);
 			}
-			
 			//Java对象转为json数据
 			XStream xStream = getXStream();
 			xStream.alias("wafLogWebsecList", List.class);
@@ -799,7 +805,7 @@ public class NsfocusWAFAdapter {
 			return returnJsonObject.toString();
 		} catch (IOException e) {
 			e.printStackTrace();
-			return "{\"wafLogWebsecList\":\"sql io error\"}";
+			return "{\"wafLogWebsecList\":\"sql session error\"}";
 		} catch (DocumentException e) {
 			e.printStackTrace();
 			return "{\"wafLogWebsecList\":\"error\"}";
@@ -1328,7 +1334,7 @@ public class NsfocusWAFAdapter {
 				return errorJsonObject.toString();
 			}
 			List<String> domainList = JSONArray.toList(jsonObject.getJSONArray("domain"));
-			List<TWafLogWebsecEventTypeCount> list = mapper.selectEventTypeCountsByDomain(domainList, 1000);
+			List<TWafLogWebsecEventTypeCount> list = mapper.selectEventTypeCountsByDomain(domainList, Integer.parseInt(LIMIT_NUM_STRING));
 			sqlSession.clearCache();
 			//shijianleixingfanyi
 			SAXReader reader = new SAXReader();
@@ -1378,7 +1384,7 @@ public class NsfocusWAFAdapter {
 				return errorJsonObject.toString();
 			}
 			List<String> dstIpList = JSONArray.toList(jsonObject.getJSONArray("dstIp"));
-			List<TWafLogWebsecEventTypeCount> list = mapper.selectEventTypeCountsByDstIp(dstIpList, 1000);
+			List<TWafLogWebsecEventTypeCount> list = mapper.selectEventTypeCountsByDstIp(dstIpList, Integer.parseInt(LIMIT_NUM_STRING));
 			//shijianleixingfanyi
 			SAXReader reader = new SAXReader();
 			Document document = reader.read(NsfocusWAFAdapter.class.getClassLoader().getResource("/").getPath()+"WAF_Nsfocus_EventType.xml");
@@ -2055,7 +2061,7 @@ public class NsfocusWAFAdapter {
 			sqlSession = getSqlSession();
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			List<String> domainList = JSONArray.toList(jsonObject.getJSONArray("domain"));
-			List<TWafLogWebsecAlertLevelCount> list = mapper.selectAlertLevelCountByDomain(domainList, 1000);
+			List<TWafLogWebsecAlertLevelCount> list = mapper.selectAlertLevelCountByDomain(domainList, Integer.parseInt(LIMIT_NUM_STRING));
 			sqlSession.clearCache();
 			JSONObject returnJsonObject = new JSONObject();
 			for (TWafLogWebsecAlertLevelCount count : list) {
@@ -2201,14 +2207,12 @@ public class NsfocusWAFAdapter {
 			returnJsonObject.put("list", JSONArray.fromObject(list));
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "sql connection error");
 			return errorJsonObject.toString();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");

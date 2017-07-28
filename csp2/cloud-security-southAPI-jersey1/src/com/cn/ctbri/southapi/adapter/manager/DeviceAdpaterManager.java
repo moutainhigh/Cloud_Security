@@ -499,7 +499,6 @@ public class DeviceAdpaterManager {
 		if ( DeviceAdapterConstant.DEVICE_SCANNER_ARNHEM.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim()) )
 		{
 			String responseString =  responseToJSON(arnhemDeviceAdpater.getProgressByTaskId(deviceId,scannerTaskUniParam)).toString();
-			System.out.println(responseString);
 			return responseString;
 		} else if (DeviceAdapterConstant.DEVICE_SCANNER_WEBSOC.equals(getDeviceAdapterAttrInfo(deviceId).getScannerFactory().trim())) {
 			String response = websocDeviceAdapter.getProgressByVirtualGroupId(deviceId, scannerTaskUniParam);

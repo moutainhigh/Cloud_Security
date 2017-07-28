@@ -50,10 +50,10 @@
                 <property name="url" value="jdbc:mysql://localhost:3306/southapi" />
                	<property name="username" value="root" />
                 <property name="password" value="7172756" />-->
-                <!-- 部署 waf数据中心 
-                <property name="url" value="jdbc:mysql://219.141.189.186:30117/waflogdata" />-->
-                <property name="url" value="jdbc:mysql://219.141.189.186:63306/southapi"/>
-                <!-- 部署测试环境 -->
+                <!-- 部署 waf数据中心-->
+                <property name="url" value="jdbc:mysql://219.141.189.186:30117/waflogdata" />
+                <!-- 部署测试环境 
+                <property name="url" value="jdbc:mysql://219.141.189.186:63306/southapi"/> -->
                 <property name="username" value="root" />
                 <property name="password" value="mssp@ctbri&amp;" />
              </dataSource>

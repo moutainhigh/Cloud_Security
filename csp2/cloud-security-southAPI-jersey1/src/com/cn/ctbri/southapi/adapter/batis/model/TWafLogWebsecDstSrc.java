@@ -35,4 +35,12 @@ public class TWafLogWebsecDstSrc {
 	public void setStatDate(String statDate) {
 		this.statDate = statDate;
 	}
+
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
+	}
 }

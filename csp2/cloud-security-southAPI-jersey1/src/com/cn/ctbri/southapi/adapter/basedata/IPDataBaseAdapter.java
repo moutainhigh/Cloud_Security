@@ -15,14 +15,14 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import com.cn.ctbri.southapi.adapter.batis.inter.TCityLocationMapper;
-import com.cn.ctbri.southapi.adapter.batis.inter.TIpv4LatlongMapper;
-import com.cn.ctbri.southapi.adapter.batis.inter.TViewIpv4LocationMapper;
-import com.cn.ctbri.southapi.adapter.batis.inter.TViewWebPhishCountryCountMapper;
-import com.cn.ctbri.southapi.adapter.batis.inter.TViewWebPhishFieldCountMapper;
-import com.cn.ctbri.southapi.adapter.batis.inter.TViewWebPhishProvinceCountMapper;
-import com.cn.ctbri.southapi.adapter.batis.inter.TViewWebPhishTargetCountMapper;
-import com.cn.ctbri.southapi.adapter.batis.inter.TWebPhishMapper;
+import com.cn.ctbri.southapi.adapter.batis.mapper.TCityLocationMapper;
+import com.cn.ctbri.southapi.adapter.batis.mapper.TIpv4LatlongMapper;
+import com.cn.ctbri.southapi.adapter.batis.mapper.TViewIpv4LocationMapper;
+import com.cn.ctbri.southapi.adapter.batis.mapper.TViewWebPhishCountryCountMapper;
+import com.cn.ctbri.southapi.adapter.batis.mapper.TViewWebPhishFieldCountMapper;
+import com.cn.ctbri.southapi.adapter.batis.mapper.TViewWebPhishProvinceCountMapper;
+import com.cn.ctbri.southapi.adapter.batis.mapper.TViewWebPhishTargetCountMapper;
+import com.cn.ctbri.southapi.adapter.batis.mapper.TWebPhishMapper;
 import com.cn.ctbri.southapi.adapter.batis.model.TCityLocation;
 import com.cn.ctbri.southapi.adapter.batis.model.TCityLocationExample;
 import com.cn.ctbri.southapi.adapter.batis.model.TIpv4Latlong;
@@ -1978,9 +1978,5 @@ public class IPDataBaseAdapter {
 		} finally {
 			closeSqlSession(sqlSession);
 		}	
-	}
-	public static void main(String[] args) {
-		IPDataBaseAdapter adapter = new IPDataBaseAdapter();
-		System.out.println(adapter.getMalUrlCount());
 	}
 }
