@@ -22,6 +22,7 @@ import javax.ws.rs.core.NewCookie;
 
 import org.apache.commons.codec.binary.Base64;
 
+import se.akerfeldt.com.google.gson.JsonObject;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -104,7 +105,32 @@ public class WafAPIAnalysis {
         }
     	return reList;
 	}
-
+	public static List analysisEventTypeCountList(String eventString){
+		List reList = new ArrayList();
+		try {
+			JSONObject obj = JSONObject.fromObject(eventString);
+			JSONArray jsonArray = obj.getJSONArray("list");
+			if (jsonArray!=null && jsonArray.size()>0) {
+				for (int i = 0; i < jsonArray.size(); i++) {
+					Map<String,Object> newMap = new HashMap<String, Object>();
+					String object = jsonArray.getString(i);
+					JSONObject innerObj = JSONObject.fromObject(object);
+					int count = innerObj.getInt("count");
+					if (count!=0) {
+						String eventTypeStr = innerObj.getString("eventType");
+						newMap.put("count", count);
+						newMap.put("eventType", eventTypeStr);
+						reList.add(newMap);
+					}
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return reList ;
+	}
+	
 	public static List getWafLogWebsecSrcIp(String reStr) {
 		List reList = new ArrayList();
     	try {
