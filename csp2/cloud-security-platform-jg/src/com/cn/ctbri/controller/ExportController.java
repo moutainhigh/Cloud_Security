@@ -88,6 +88,7 @@ import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.FreeMarkerUtils;
 import com.cn.ctbri.util.Threat;
 import com.cn.ctbri.util.TimeList;
+import com.sun.corba.se.impl.resolver.SplitLocalResolverImpl;
 
 import freemarker.template.Configuration;  
 import freemarker.template.Template;  
@@ -1313,11 +1314,21 @@ public class ExportController {
             String imgBar = request.getParameter("imgBar");
             String imgPieEvent = request.getParameter("imgPieEvent");
             String levelTotal = request.getParameter("level");
+            String levelhigh = request.getParameter("levelhigh");
+            String levelmid = request.getParameter("levelmid");
+            String levellow = request.getParameter("levellow");
+            
+            String timeCountTotal = request.getParameter("timeCountTotal"); // time
             String timeListStrBase64 = request.getParameter("resultListTime");
-           // List timeList = (List)request.getAttribute("resultListTime");
-            String websecListStrBase64 = request.getParameter("websecListIp");
             String timeListStr =getFromBASE64(timeListStrBase64);
+            
+            String websecListStrBase64 = request.getParameter("websecListIp");   //ip        
             String websecListStr = getFromBASE64(websecListStrBase64);
+            String totalAttackIPStr = request.getParameter("totalAttackIP");
+            
+            String eventTypeTotalstr = request.getParameter("eventTypeTotal");  //event type
+            String strlistEventTypeStrBase64 = request.getParameter("strlistEventType");
+            String strlistEventTypeStr = getFromBASE64(strlistEventTypeStrBase64);
             
            // imgPieLevel = imgPieLevel.replaceAll(" ", "+");
            // imgBar = imgBar.replaceAll(" ", "+");
@@ -1341,8 +1352,17 @@ public class ExportController {
             paramMap.put("imgBar", imgBar);
             paramMap.put("imgPieEvent", imgPieEvent);
             paramMap.put("levelTotal", levelTotal);
-            paramMap.put("timeListStr", timeListStr);
-            paramMap.put("websecListStr", websecListStr);
+            paramMap.put("timeListStr", timeListStr);//time
+            paramMap.put("timeCountTotal", timeCountTotal);
+            paramMap.put("websecListStr", websecListStr);//ip
+            paramMap.put("totalAttackIPStr", totalAttackIPStr);
+            paramMap.put("eventTypeTotalstr", eventTypeTotalstr);//event
+            paramMap.put("strlistEventTypeStr", strlistEventTypeStr);
+            paramMap.put("levelhigh", levelhigh);
+            paramMap.put("levelmid", levelmid);
+            paramMap.put("levellow", levellow);
+            
+            
             
             
             
@@ -1441,13 +1461,23 @@ public class ExportController {
         String strimgPieEvent = paramMap.get("imgPieEvent").toString();
         
         String levelTotal =paramMap.get("levelTotal").toString();
-        String timeListStr = paramMap.get("timeListStr").toString();
+        String levelhigh =paramMap.get("levelhigh").toString();
+        String levelmid =paramMap.get("levelmid").toString();
+        String levellow =paramMap.get("levellow").toString();
+        
+        String eventListStr = paramMap.get("strlistEventTypeStr").toString();  // eventType
+        eventListStr = eventListStr.substring(1,eventListStr.length()-1);
+        eventListStr = eventListStr.replaceAll("},", "}:");
+        System.out.println("eventListStr============"+eventListStr);
+        List eventListArray = Arrays.asList(eventListStr.split(":"));
+        
+        String timeListStr = paramMap.get("timeListStr").toString();   //time
         timeListStr = timeListStr.substring(1,timeListStr.length()-1); // 去掉头和尾的 ［］
         timeListStr =timeListStr.replaceAll("},", "}:");
         System.out.println("timeListStr================"+timeListStr);
         List  timeListArray = Arrays.asList(timeListStr.split(":")); 
         
-        String websecListStr = paramMap.get("websecListStr").toString();
+        String websecListStr = paramMap.get("websecListStr").toString(); //ip
         websecListStr = websecListStr.substring(1,websecListStr.length()-1);
         if (websecListStr.indexOf("},")!=-1) {
         	websecListStr = websecListStr.replaceAll("},", "}:");
@@ -1486,19 +1516,23 @@ public class ExportController {
             map.put("webSite",webSite);
             map.put("JCSJ", order.getBegin_date().toString());
             map.put("LEAKNUM", levelTotal);
-            map.put("HIGHNUM", "1");
-            map.put("MIDDLENUM", "2");
-            map.put("LOWNUM", "7");
+            map.put("HIGHNUM", levelhigh);
+            map.put("MIDDLENUM", levelmid);
+            map.put("LOWNUM", levellow);
 			map.put("img1", getImageStr(imgFilePieLevel));
 			map.put("img2", getImageStr(imgFileBar));
 			map.put("img3", getImageStr(imgFilePieEvent));
 			map.put("img4", getImageStr(imgFilePieEvent));
 			
 			List<Threat> threatlist = new ArrayList<Threat>();  
-	        for (int i = 0; i < 4; i++) {  
-	        	Threat t = new Threat();  
-	            t.setNum(i);;  
-	            t.setName("threat"+i);  
+	        for (int i = 0; i < eventListArray.size(); i++) {  
+	        	Threat t = new Threat();
+	        	String eventTypeStr = (String)eventListArray.get(i);
+	        	String[] spilt = eventTypeStr.split(",");
+	        	String count = spilt[0].substring(spilt[0].indexOf("{count=")+7);
+	        	String eventTypeString = spilt[1].substring(spilt[1].indexOf("eventType=")+10,spilt[1].length()-1);
+	            t.setNum(count);  
+	            t.setName(eventTypeString);  
 	            threatlist.add(t);  
 	        }   
 	        map.put("threatList", threatlist);  
