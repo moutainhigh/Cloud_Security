@@ -3,6 +3,7 @@ package com.cn.ctbri.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.codec.binary.Base64;
@@ -124,8 +126,9 @@ public class WafDetailController {
         		String eventStr1 = WafAPIWorker.getWafLogWebSecTimeCount(startDate+"-01","",unit,dstIpList);
         		List listTime = WafAPIAnalysis.analysisWafLogWebSecTimeCountList(eventStr1);
         		int total = 0;
+        		
         		for (int i = 0; i < listTime.size(); i++) {
-    	 	        Map alarm = (Map) listTime.get(i);
+        			Map alarm  = (Map) listTime.get(i);
     	 	        String count = String.valueOf(alarm.get("count"));
     	 	        total = total + Integer.parseInt(count);
     	 	    }
@@ -134,14 +137,18 @@ public class WafDetailController {
     			lastrow.put("count",String.valueOf(total));
     			listTime.add(lastrow);
      	        request.setAttribute("resultList", listTime);
-     	        request.setAttribute("resultListTime", "1234testlisttiem");
+     	     
+     	        String strlisttime = new sun.misc.BASE64Encoder().encode(listTime.toString().getBytes());
+     	        request.setAttribute("resultListTime",strlisttime);
+     	
             	//攻击源
             	websecStr = WafAPIWorker.getWafLogWebsecSrcIpCountInTime(startDate,"",timeUnit,dstIpList,10);
             	request.setAttribute("beginDate", startDate);
             	request.setAttribute("type", timeUnit);
             	websecList = WafAPIAnalysis.getWafLogWebsecSrcIp(websecStr);
+            	String strattackip = new sun.misc.BASE64Encoder().encode(websecList.toString().getBytes());
             	request.setAttribute("websecList", websecList);
-            	request.setAttribute("websecListIp", websecList);
+            	request.setAttribute("websecListIp", strattackip);
             	request.setAttribute("websecNum", websecList.size());
             	reurl = "/source/page/personalCenter/wafHistory";
             }else{
@@ -159,6 +166,26 @@ public class WafDetailController {
         //end 
         return reurl;
     }
+    public String listToString(List list)throws JSONException{
+    	if (list==null) {
+    		return "";
+		}
+    	JSONArray array = new JSONArray();
+		JSONObject jsonObject = null;
+		for (int i = 0; i < list.size(); i++) {
+			jsonObject = new JSONObject();
+			Map alarm  = (Map) list.get(i);
+			jsonObject.put("time", String.valueOf(alarm.get("time")));
+			jsonObject.put("count", String.valueOf(alarm.get("count")));
+			array.add(jsonObject);
+		}
+		return array.toString();
+    	
+    	//return null;
+    }
+    public String listToString5(List list, char separator) {  
+        return org.apache.commons.lang.StringUtils.join(list.toArray(),separator);  
+    } 
     
     @RequestMapping(value="warningWafDetail.html")
     public void warningWafDetail(HttpServletRequest request,HttpServletResponse response) throws Exception{
