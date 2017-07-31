@@ -500,6 +500,19 @@ public class WafAPIWorker {
         response.close();
         return str;
 	}
+	public static String getWafAlertLevelCountDomainInTime(String startDate, String endDate, String timeUnit, List<String> domainList){
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("startDate", startDate);
+		json.put("endDate", endDate);
+		json.put("timeUnit", timeUnit);
+		json.put("domain", domainList);
+    	WebTarget target = mainTarget.path("/rest/adapter/getWafAlertLevelCountInTime");
+        Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        response.close();
+        return str;
+	}
 	public static String getEventTypeCountInTime(String startDate, String endDate, String timeUnit, List<String> dstIpList) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
@@ -513,15 +526,31 @@ public class WafAPIWorker {
         response.close();
         return str;
 	}
-	
-//获取历史
-	public static String getWafLogWebSecTimeCount(String startDate,String endDate, String timeUnit, List<String> dstIpList) {
+	public static String getEventTypeCountDomainInTime(String startDate, String endDate, String timeUnit, List<String> domainList) {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("startDate", startDate);
 		json.put("endDate", endDate);
 		json.put("timeUnit", timeUnit);
-		json.put("dstIp", dstIpList);
+		json.put("domain", domainList);
+		System.out.println(json);
+		WebTarget target = mainTarget.path("/rest/adapter/getEventTypeCountInTime");
+		Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
+        String str = (String)response.readEntity(String.class);
+        System.out.println("eventTypeCount="+str);
+        response.close();
+        return str;
+	}
+	
+//获取历史
+	public static String getWafLogWebSecTimeCount(String startDate,String endDate, String timeUnit, List<String> domainList) {
+		//组织发送内容JSON
+		JSONObject json = new JSONObject();
+		json.put("startDate", startDate);
+		json.put("endDate", endDate);
+		json.put("timeUnit", timeUnit);
+		json.put("domain", domainList);
+		System.out.println("timecountJson="+json);
     	WebTarget target = mainTarget.path("/rest/adapter/getWafLogWebSecTimeCount");
 		Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
@@ -529,17 +558,20 @@ public class WafAPIWorker {
         return str;
 	}
 	
-		public static String getWafLogWebsecSrcIpCountInTime(String startDate,String endDate, String timeUnit, List<String> dstIpList, int limit) {
+	
+	
+		public static String getWafLogWebsecSrcIpCountInTime(String startDate,String endDate, String timeUnit, List<String> domainList, int limit) {
 		//组织发送内容JSON
 				JSONObject json = new JSONObject();
 				json.put("startDate", startDate);
 				json.put("endDate", endDate);
 				json.put("timeUnit", timeUnit);
-				json.put("dstIp", dstIpList);
+				json.put("domain", domainList);
 				json.put("limit", limit);
 		    	WebTarget target = mainTarget.path("/rest/adapter/getWafLogWebsecSrcIpCountInTime");
 				Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
 		        String str = (String)response.readEntity(String.class);
+		        System.out.println("srcIpCount"+str);
 		        response.close();
 		        return str;
 	}

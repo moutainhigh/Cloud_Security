@@ -145,7 +145,7 @@ public class WafAPIAnalysis {
 			        int count = jsonObject.getInt("count");
 			        String dstIp = jsonObject.getString("srcIp");
 			        newMap.put("count", count);
-			        newMap.put("dstIp", dstIp);
+			        newMap.put("srcIp", dstIp);
 			        reList.add(newMap);
 				}
     		}

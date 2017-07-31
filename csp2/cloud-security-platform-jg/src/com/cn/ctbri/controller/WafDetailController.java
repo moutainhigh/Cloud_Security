@@ -105,7 +105,7 @@ public class WafDetailController {
             String websecStr = "";
             if(isHis!=null && isHis.equals("1")){
             	//level等级判断
-            	String levelStr = WafAPIWorker.getWafAlertLevelCountInTime(startDate,"",timeUnit,dstIpList);
+            	String levelStr = WafAPIWorker.getWafAlertLevelCountDomainInTime(startDate,"",timeUnit,domainList);
             	Map map = WafAPIAnalysis.getWafAlertLevelCount(levelStr);
             	Integer totallevel = (Integer) map.get("total");
             	Integer levelhigh = (Integer) map.get("high");
@@ -119,7 +119,7 @@ public class WafDetailController {
             	request.setAttribute("levellow", levellow);
             	
             	//告警类型判断
-            	String eventStr = WafAPIWorker.getEventTypeCountInTime(startDate,"",timeUnit,dstIpList);
+            	String eventStr = WafAPIWorker.getEventTypeCountDomainInTime(startDate,"",timeUnit,domainList);
         		Map map1 = WafAPIAnalysis.getWafEventTypeCountInTimeNoDecode(eventStr);
         		Integer totaltype = (Integer) map1.get("total");
             	request.setAttribute("levelType", totaltype);
@@ -141,7 +141,7 @@ public class WafDetailController {
         		}else if(timeUnit.equals("month")){
         			unit = "day";
         		}
-        		String eventStr1 = WafAPIWorker.getWafLogWebSecTimeCount(startDate+"-01","",unit,dstIpList);
+        		String eventStr1 = WafAPIWorker.getWafLogWebSecTimeCount(startDate+"-01","",unit,domainList);
         		List listTime = WafAPIAnalysis.analysisWafLogWebSecTimeCountList(eventStr1);
         		int totalTimeCount = 0;
         		for (int i = 0; i < listTime.size(); i++) {
@@ -160,7 +160,7 @@ public class WafDetailController {
      	        request.setAttribute("resultListTime",strlisttime);
      	
             	//攻击源
-            	websecStr = WafAPIWorker.getWafLogWebsecSrcIpCountInTime(startDate,"",timeUnit,dstIpList,10);
+            	websecStr = WafAPIWorker.getWafLogWebsecSrcIpCountInTime(startDate,"",timeUnit,domainList,10);
             	request.setAttribute("beginDate", startDate);
             	request.setAttribute("type", timeUnit);
             	websecList = WafAPIAnalysis.getWafLogWebsecSrcIp(websecStr);
@@ -181,7 +181,7 @@ public class WafDetailController {
             	websecStr = WafAPIWorker.getWafLogWebsecByDomainCurrent(domainList);
             	reurl = "/source/page/personalCenter/wafDetail";
             	websecList = this.getWaflogWebsecByIp(websecStr);
-            	request.setAttribute("websecList", websecList.toString());
+            	request.setAttribute("websecList", websecList);
             	request.setAttribute("websecNum", websecList.size());
             }
 
@@ -259,7 +259,7 @@ public class WafDetailController {
     	String levelStr = "";
     	System.out.println("isHis="+isHis);
     	if(null!=isHis&&isHis.equals("1")){//查询历史
-    		levelStr = WafAPIWorker.getWafAlertLevelCountInTime(startDate,"",timeUnit,dstIpList);
+    		levelStr = WafAPIWorker.getWafAlertLevelCountDomainInTime(startDate,"",timeUnit,domainList);
     	}else{
     		levelStr = WafAPIWorker.getAlertLevelCountLimitByDomain(domainList);
     	}
@@ -419,8 +419,7 @@ public class WafDetailController {
     	String eventStr = "";
     	Map map = new HashMap();
     	if(null!=isHis&&isHis.equals("1")){//查询历史
-    		eventStr = WafAPIWorker.getEventTypeCountInTime(startDate,"",timeUnit,dstIpList);
-    		System.out.println("eventStr="+eventStr);
+    		eventStr = WafAPIWorker.getEventTypeCountDomainInTime(startDate,"",timeUnit,domainList);
     		map = WafAPIAnalysis.getWafEventTypeCountInTimeNoDecode(eventStr);
     	}else{
     		eventStr = WafAPIWorker.getWafEventTypeCountByDomain(domainList);
@@ -470,17 +469,21 @@ public class WafDetailController {
     	String timeUnit = request.getParameter("timeUnit");
     	List assets = orderAssetService.findAssetsByOrderId(orderId);
     	List<String> dstIpList = new ArrayList();
+    	List<String> domainList = new ArrayList<String>();
     	if(assets != null && assets.size() > 0){
         	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
         	assetOrder=(HashMap) assets.get(0);
         	String ipArray=(String) assetOrder.get("ipArray");
+        	String addr =(String) assetOrder.get("addr");
+        	String domain = (String) addr.substring(addr.indexOf("://")+3);
         	String[] ips = null;   
             ips = ipArray.split(",");
             for (int n = 0; n < ips.length; n++) {
             	String[] ip = ips[n].split(":");
 				dstIpList.add(ip[0]);
             }
-            dstIpList.add("219.141.189.183");            
+            dstIpList.add("219.141.189.183");  
+            domainList.add(domain);
         }
         
     	String eventStr = "";
@@ -491,7 +494,7 @@ public class WafDetailController {
     		}else if(timeUnit.equals("month")){
     			unit = "day";
     		}
-    		eventStr = WafAPIWorker.getWafLogWebSecTimeCount(startDate+"-01","",unit,dstIpList);
+    		eventStr = WafAPIWorker.getWafLogWebSecTimeCount(startDate+"-01","",unit,domainList);
     		System.out.println("eventStr="+eventStr);
     	}
     	Map map = WafAPIAnalysis.analysisWafLogWebSecTimeCount(eventStr);
@@ -579,11 +582,6 @@ public class WafDetailController {
     				String object = jsonArray.getString(i);
 			        JSONObject jsonObject = JSONObject.fromObject(object);
 			        int logId = jsonObject.getInt("logId");
-			        int resourceId = jsonObject.getInt("resourceId");
-			        String resourceUri = jsonObject.getString("resourceUri");
-			        String resourceIp = jsonObject.getString("resourceIp");
-			        long siteId = jsonObject.getLong("siteId");
-			        int protectId = jsonObject.getInt("protectId");
 			        String dstIp = jsonObject.getString("dstIp");
 			        String dstPort = jsonObject.getString("dstPort");
 			        String srcIp = jsonObject.getString("srcIp");
@@ -599,11 +597,8 @@ public class WafDetailController {
 			        String blockInfo = jsonObject.getString("blockInfo");
 			        String alertinfo = jsonObject.getString("alertinfo");
 			        String proxyInfo = jsonObject.getString("proxyInfo");
-			        String characters = jsonObject.getString("characters");
 			        String countNum = jsonObject.getString("countNum");
 			        String protocolType = jsonObject.getString("protocolType");
-			        String wci = jsonObject.getString("wci");
-			        String wsi = jsonObject.getString("wsi");
 			        
 			        byte[] base64Bytes = eventType.getBytes();	
     				eventType = new String(base64Bytes,"UTF-8");
@@ -615,11 +610,6 @@ public class WafDetailController {
 
 			        
 			        newMap.put("logId", logId);
-			        newMap.put("resourceId", resourceId);
-			        newMap.put("resourceUri", resourceUri);
-			        newMap.put("resourceIp", resourceIp);
-			        newMap.put("siteId", siteId);
-			        newMap.put("protectId", protectId);
 			        newMap.put("dstIp", dstIp);
 			        newMap.put("dstPort", dstPort);
 			        newMap.put("srcIp", srcIp);
@@ -635,11 +625,9 @@ public class WafDetailController {
 			        newMap.put("blockInfo", blockInfo);
 			        newMap.put("alertinfo", alertinfo);
 			        newMap.put("proxyInfo", proxyInfo);
-			        newMap.put("characters", characters);
 			        newMap.put("countNum", countNum);
 			        newMap.put("protocolType", protocolType);
-			        newMap.put("wci", wci);
-			        newMap.put("wsi", wsi);
+
 			        
 			        reList.add(newMap);
 				}
@@ -679,11 +667,6 @@ public class WafDetailController {
     		JSONObject jsonObject = obj.getJSONObject("wafLogWebsec");
     		
 	        int logId = jsonObject.getInt("logId");
-	        int resourceId = jsonObject.getInt("resourceId");
-	        String resourceUri = jsonObject.getString("resourceUri");
-	        String resourceIp = jsonObject.getString("resourceIp");
-	        long siteId = jsonObject.getLong("siteId");
-	        int protectId = jsonObject.getInt("protectId");
 	        String dstIp = jsonObject.getString("dstIp");
 	        String dstPort = jsonObject.getString("dstPort");
 	        String srcIp = jsonObject.getString("srcIp");
@@ -699,11 +682,8 @@ public class WafDetailController {
 	        String blockInfo = jsonObject.getString("blockInfo");
 	        String alertinfo = jsonObject.getString("alertinfo");
 	        String proxyInfo = jsonObject.getString("proxyInfo");
-	        String characters = jsonObject.getString("characters");
 	        String countNum = jsonObject.getString("countNum");
 	        String protocolType = jsonObject.getString("protocolType");
-	        String wci = jsonObject.getString("wci");
-	        String wsi = jsonObject.getString("wsi");
 	        
 	        byte[] base64Bytes = eventType.getBytes();	
 			eventType = new String(base64Bytes,"UTF-8");
@@ -711,11 +691,6 @@ public class WafDetailController {
 			alertinfo = new String(base64Bytes1,"UTF-8");
 	        
 	        newMap.put("logId", logId);
-	        newMap.put("resourceId", resourceId);
-	        newMap.put("resourceUri", resourceUri);
-	        newMap.put("resourceIp", resourceIp);
-	        newMap.put("siteId", siteId);
-	        newMap.put("protectId", protectId);
 	        newMap.put("dstIp", dstIp);
 	        newMap.put("dstPort", dstPort);
 	        newMap.put("srcIp", srcIp);
@@ -731,11 +706,9 @@ public class WafDetailController {
 	        newMap.put("blockInfo", blockInfo);
 	        newMap.put("alertinfo", alertinfo);
 	        newMap.put("proxyInfo", proxyInfo);
-	        newMap.put("characters", characters);
 	        newMap.put("countNum", countNum);
 	        newMap.put("protocolType", protocolType);
-	        newMap.put("wci", wci);
-	        newMap.put("wsi", wsi);
+
 			 
         } catch (Exception e) {
             e.printStackTrace();
