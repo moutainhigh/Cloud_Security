@@ -34,6 +34,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.text.StrBuilder;
 import org.apache.poi.POIXMLDocument;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.Document;
@@ -68,6 +69,8 @@ import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 import com.cn.ctbri.common.NorthAPIWorker;
+import com.cn.ctbri.common.WafAPIAnalysis;
+import com.cn.ctbri.common.WafAPIWorker;
 import com.cn.ctbri.constant.WarnType;
 import com.cn.ctbri.entity.Alarm;
 import com.cn.ctbri.entity.Asset;
@@ -1285,6 +1288,16 @@ public class ExportController {
       return tcPr;
     }
     
+    public static String getFromBASE64(String s) { 
+    	if (s == null) return null; 
+    	BASE64Decoder decoder = new BASE64Decoder(); 
+    	try { 
+    	byte[] b = decoder.decodeBuffer(s); 
+    	return new String(b); 
+    	} catch (Exception e) { 
+    	return null; 
+    	} 
+    }
     /**
      * 功能描述：下载waf导入模板
      * 参数描述：HttpServletRequest request,HttpServletResponse response
@@ -1299,6 +1312,13 @@ public class ExportController {
             String imgPieLevel = request.getParameter("imgPieLevel");
             String imgBar = request.getParameter("imgBar");
             String imgPieEvent = request.getParameter("imgPieEvent");
+            String levelTotal = request.getParameter("level");
+            String timeListStrBase64 = request.getParameter("resultListTime");
+           // List timeList = (List)request.getAttribute("resultListTime");
+            String websecListStrBase64 = request.getParameter("websecListIp");
+            String timeListStr =getFromBASE64(timeListStrBase64);
+            String websecListStr = getFromBASE64(websecListStrBase64);
+            
            // imgPieLevel = imgPieLevel.replaceAll(" ", "+");
            // imgBar = imgBar.replaceAll(" ", "+");
            // imgPieLevel = imgPieLevel.replaceAll(" ", "+");
@@ -1320,6 +1340,9 @@ public class ExportController {
             paramMap.put("imgPieLevel", imgPieLevel);
             paramMap.put("imgBar", imgBar);
             paramMap.put("imgPieEvent", imgPieEvent);
+            paramMap.put("levelTotal", levelTotal);
+            paramMap.put("timeListStr", timeListStr);
+            paramMap.put("websecListStr", websecListStr);
             
             
             
@@ -1391,7 +1414,18 @@ public class ExportController {
         Order order = orderService.findOrderById(orderId);
         //获取对应资产
         List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
-        int orderAssetId = Integer.parseInt(paramMap.get("orderAssetId").toString());
+        Object oAssetId = paramMap.get("orderAssetId");
+        //查询时间
+       // String startDate = request.getParameter("beginDate");
+        //周期类型
+        //String timeUnit = request.getParameter("type");
+  
+        int orderAssetId=0;
+        if(oAssetId!=null)
+        {
+        	orderAssetId = Integer.parseInt(paramMap.get("orderAssetId").toString());
+        }
+        
         OrderAsset oa = orderAssetService.findOrderAssetById(orderAssetId);
         String webSite = oa.getAssetAddr();
         String wafName = "";
@@ -1405,6 +1439,21 @@ public class ExportController {
         String strimgPieLevel = paramMap.get("imgPieLevel").toString();
         String strimgBar = paramMap.get("imgBar").toString();
         String strimgPieEvent = paramMap.get("imgPieEvent").toString();
+        
+        String levelTotal =paramMap.get("levelTotal").toString();
+        String timeListStr = paramMap.get("timeListStr").toString();
+        timeListStr = timeListStr.substring(1,timeListStr.length()-1); // 去掉头和尾的 ［］
+        timeListStr =timeListStr.replaceAll("},", "}:");
+        System.out.println("timeListStr================"+timeListStr);
+        List  timeListArray = Arrays.asList(timeListStr.split(":")); 
+        
+        String websecListStr = paramMap.get("websecListStr").toString();
+        websecListStr = websecListStr.substring(1,websecListStr.length()-1);
+        if (websecListStr.indexOf("},")!=-1) {
+        	websecListStr = websecListStr.replaceAll("},", "}:");
+		}
+        System.out.println("webseclistStr============"+websecListStr);
+        List  websecListArray = Arrays.asList(websecListStr.split(":")); 
         
         
         
@@ -1420,6 +1469,12 @@ public class ExportController {
         createImage(request, response, imgFileBar, strimgBar);
         createImage(request, response, imgFilePieEvent, strimgPieEvent);
 
+        //高中低 数据统计
+        //*****************test WafAPIWorker
+       // String levelStr = WafAPIWorker.getWafAlertLevelCountInTime(startDate,"",timeUnit,dstIpList);
+    	//Map mapLevelcount = WafAPIAnalysis.getWafAlertLevelCount(levelStr);
+    	//Integer totallevel = (Integer) mapLevelcount.get("total");
+    	//*****************
         
         Map<String, Object> map = new HashMap<String, Object>();
      //   String imgagefilePath = request.getSession().getServletContext().getRealPath("/source/chart");
@@ -1430,7 +1485,7 @@ public class ExportController {
             map.put("webName", wafName);
             map.put("webSite",webSite);
             map.put("JCSJ", order.getBegin_date().toString());
-            map.put("LEAKNUM", "10");
+            map.put("LEAKNUM", levelTotal);
             map.put("HIGHNUM", "1");
             map.put("MIDDLENUM", "2");
             map.put("LOWNUM", "7");
@@ -1447,19 +1502,29 @@ public class ExportController {
 	            threatlist.add(t);  
 	        }   
 	        map.put("threatList", threatlist);  
+	        
 	        List<TimeList> timeList = new ArrayList<TimeList>();  
-	        for (int i = 0; i < 4; i++) {  
+	        for (int i = 0; i < timeListArray.size(); i++) {  
 	        	TimeList t = new TimeList();  
-	            t.setNum(i);;  
-	            t.setName("time"+i);  
+	        	String strTime = (String) timeListArray.get(i);
+	        	String[] spilt =  strTime.split(",");
+	        	String count = spilt[0].substring(spilt[0].indexOf("{count=")+7);
+	        	String timeName = spilt[1].substring(spilt[1].indexOf("time=")+5,spilt[1].length()-1);
+	            t.setNum(count);
+	            t.setName(timeName);  
 	            timeList.add(t);  
-	        } 
-	        map.put("timeList", timeList);
+	        }
+	        map.put("timeList",timeList);
+	        
 	        List<AttackList> attackList = new ArrayList<AttackList>();  
-	        for (int i = 0; i < 4; i++) {  
+	        for (int i = 0; i < websecListArray.size(); i++) {  
 	        	AttackList t = new AttackList();  
-	            t.setNum(i);;  
-	            t.setSourceIP("attackIP"+i);  
+	        	String strAttack = String.valueOf(websecListArray.get(i));
+	        	String[] spilt =  strAttack.split(",");
+	        	String count = spilt[0].substring(spilt[0].indexOf("{count=")+7);
+	        	String attackIP = spilt[1].substring(spilt[1].indexOf("dstIp=")+6,spilt[1].length()-1);
+	            t.setNum(count);;  
+	            t.setSourceIP(attackIP);  
 	            attackList.add(t);  
 	        } 
 	        map.put("attackList", attackList);
