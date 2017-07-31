@@ -228,20 +228,17 @@ function generate(){
           <input type="hidden" value="${order.id }" id="orderId" name="orderId"/>
           <input type="hidden" value="${orderAssetId }" id="orderAssetId" name="orderAssetId"/>
           <input type="hidden" value="1" id="isHis" name="isHis"/>
-<<<<<<< .mine
           <input type="hidden" value="${level }" id="level" name="level"/>
           <input type="hidden" value="${levelhigh }" id="levelhigh" name="levelhigh"/>
           <input type="hidden" value="${levelmid }" id="levelmid" name="levelmid"/>
           <input type="hidden" value="${levellow }" id="levellow" name="levellow"/>
           <input type="hidden" value="${levelType}" id="levelType" name="levelType" />
-=======
           <input type="hidden" value="${level }" id="level" name="level"/>
           <input type="hidden" value="${levelType}" id="levelType" name="levelType"/>
           <input type="hidden" value="${websecNum}" id="websecNum" name="websecNum"/>
           <input type="hidden" value="${resultListTime}" id="resultListTime" name="resultListTime"/>
           <input type="hidden" value="${websecListIp}" id="websecListIp" name="websecListIp"/>
-          
->>>>>>> .r5325
+
           <!-- 导出图像 -->
           <input type="hidden" name="imgPieLevel" id="imgPieLevel" />
           <input type="hidden" name="imgPieEvent" id="imgPieEvent" />
