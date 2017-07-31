@@ -108,13 +108,31 @@ public class WafDetailController {
             	String levelStr = WafAPIWorker.getWafAlertLevelCountInTime(startDate,"",timeUnit,dstIpList);
             	Map map = WafAPIAnalysis.getWafAlertLevelCount(levelStr);
             	Integer totallevel = (Integer) map.get("total");
+            	Integer levelhigh = (Integer) map.get("high");
+            	Integer levellow = (Integer) map.get("low");
+            	Integer levelmid = (Integer)map.get("mid");
+        		
+            	
             	request.setAttribute("level", totallevel);
+            	request.setAttribute("levelhigh", levelhigh);
+            	request.setAttribute("levelmid", levelmid);
+            	request.setAttribute("levellow", levellow);
             	
             	//告警类型判断
             	String eventStr = WafAPIWorker.getEventTypeCountInTime(startDate,"",timeUnit,dstIpList);
         		Map map1 = WafAPIAnalysis.getWafEventTypeCountInTimeNoDecode(eventStr);
         		Integer totaltype = (Integer) map1.get("total");
             	request.setAttribute("levelType", totaltype);
+            	List listEventType = WafAPIAnalysis.analysisEventTypeCountList(eventStr);
+            	int totalEventTypeCount = 0;
+            	for (int i = 0; i < listEventType.size(); i++) {
+					Map typeMap = (Map) listEventType.get(i);
+					String count = String.valueOf(typeMap.get("count"));
+					totalEventTypeCount = totalEventTypeCount + Integer.parseInt(count);
+				}
+            	request.setAttribute("eventTypeTotal", String.valueOf(totalEventTypeCount));
+            	String strlistEventType = new sun.misc.BASE64Encoder().encode(listEventType.toString().getBytes());
+     	        request.setAttribute("strlistEventType",strlistEventType); 
             	
         		//告警时段
         		String unit="";
@@ -125,17 +143,17 @@ public class WafDetailController {
         		}
         		String eventStr1 = WafAPIWorker.getWafLogWebSecTimeCount(startDate+"-01","",unit,dstIpList);
         		List listTime = WafAPIAnalysis.analysisWafLogWebSecTimeCountList(eventStr1);
-        		int total = 0;
-        		
+        		int totalTimeCount = 0;
         		for (int i = 0; i < listTime.size(); i++) {
         			Map alarm  = (Map) listTime.get(i);
     	 	        String count = String.valueOf(alarm.get("count"));
-    	 	        total = total + Integer.parseInt(count);
+    	 	       totalTimeCount = totalTimeCount + Integer.parseInt(count);
     	 	    }
-    	    	Map lastrow = new HashMap();
-    			lastrow.put("time","总计");
-    			lastrow.put("count",String.valueOf(total));
-    			listTime.add(lastrow);
+    	    //	Map lastrow = new HashMap();
+    		//	lastrow.put("time","总计");
+    		//	lastrow.put("count",String.valueOf(total));
+    		//	listTime.add(lastrow);
+        		request.setAttribute("timeCountTotal", String.valueOf(totalTimeCount));
      	        request.setAttribute("resultList", listTime);
      	     
      	        String strlisttime = new sun.misc.BASE64Encoder().encode(listTime.toString().getBytes());
@@ -150,6 +168,14 @@ public class WafDetailController {
             	request.setAttribute("websecList", websecList);
             	request.setAttribute("websecListIp", strattackip);
             	request.setAttribute("websecNum", websecList.size());
+            	int totalAttackIP = 0;
+        		for (int i = 0; i < listTime.size(); i++) {
+        			Map alarm  = (Map) listTime.get(i);
+    	 	        String count = String.valueOf(alarm.get("count"));
+    	 	       totalAttackIP = totalAttackIP + Integer.parseInt(count);
+    	 	    }
+            	request.setAttribute("totalAttackIP", String.valueOf(totalAttackIP));
+        		
             	reurl = "/source/page/personalCenter/wafHistory";
             }else{
             	websecStr = WafAPIWorker.getWafLogWebsecByDomainCurrent(domainList);
