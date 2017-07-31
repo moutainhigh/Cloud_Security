@@ -257,7 +257,7 @@ var ontimeLine = null;
 	                	myChartBar.hideLoading();  
 	                    myChartBar.setOption({//图形
 	                    	title: {
-	                            text: '最近一个小时事件发生事件'
+	                            text: '事件类型统计图'
 	                        },
 	                    	tooltip : {
 	//                            trigger: 'axis',
