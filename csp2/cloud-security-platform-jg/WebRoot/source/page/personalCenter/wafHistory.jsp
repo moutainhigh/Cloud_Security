@@ -266,13 +266,13 @@ function generate(){
           	<input type="text" style="width:256px;" name="beginDate" id="beginDate" readonly="readonly" value="${beginDate }" />
           	<button type="button" onclick="generate()" style="background-color: #e7e7e7; color: black;">生成</button>
 
-          	<!--  
+          	
           	<a href="javascript:void(0)" onclick="generate()" >生成</a>
 			<span>下载Word报表&nbsp;</span>
 			<span>
 				<a href="javascript:void(0)" onclick="exportImgWAF()" ><img src="${ctx}/source/images/export.png" width="22" height="23"/></a>
 			</span>	
-			-->		
+		
           </div>
           </div>
         </div>
