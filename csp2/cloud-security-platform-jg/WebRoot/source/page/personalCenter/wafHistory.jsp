@@ -348,7 +348,7 @@ function generate(){
 	              <tbody>
 	                 <c:forEach var="list" items="${websecList}" varStatus="sta">
 		                 <tr>
-		                     <td width="30%">${list.dstIp }</td>
+		                     <td width="30%">${list.srcIp }</td>
 		                     <td width="30%">${list.count }</td>                     
 		                 </tr>
 	                 </c:forEach>

@@ -568,6 +568,7 @@ public class WafAPIWorker {
 				json.put("timeUnit", timeUnit);
 				json.put("domain", domainList);
 				json.put("limit", limit);
+				System.out.println(json);
 		    	WebTarget target = mainTarget.path("/rest/adapter/getWafLogWebsecSrcIpCountInTime");
 				Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
 		        String str = (String)response.readEntity(String.class);

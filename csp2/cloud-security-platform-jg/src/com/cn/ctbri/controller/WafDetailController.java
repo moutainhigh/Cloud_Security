@@ -343,13 +343,13 @@ public class WafDetailController {
     	String eventStr = "";
     	Map map = new HashMap();
     	if(null!=isHis&&isHis.equals("1")){//查询历史
-    		eventStr = WafAPIWorker.getEventTypeCountInTime(startDate,"",timeUnit,dstIpList);
+    		eventStr = WafAPIWorker.getEventTypeCountDomainInTime(startDate,"",timeUnit,domainList);
     		map = WafAPIAnalysis.getWafEventTypeCountInTimeNoDecode(eventStr);
     	}else{
 			eventStr = WafAPIWorker.getWafEventTypeCountByDomain(domainList);
     		map = WafAPIAnalysis.getWafEventTypeCount(eventStr);
     	}
-        
+        System.out.println("eventpiestr="+eventStr);
         List name = null;
         List value = null;
         JSONArray jsondata = null;
@@ -425,7 +425,7 @@ public class WafDetailController {
     		eventStr = WafAPIWorker.getWafEventTypeCountByDomain(domainList);
     		map = WafAPIAnalysis.getWafEventTypeCount(eventStr);
     	}
-        
+        System.out.println("eventbarstr+"+eventStr);
         List name = null;
         List value = null;
         JSONArray jsondata = null;
