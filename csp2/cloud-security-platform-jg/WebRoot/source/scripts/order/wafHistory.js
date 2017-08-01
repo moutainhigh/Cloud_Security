@@ -244,6 +244,7 @@ var ontimeLine = null;
 	          //后台获取数据
 	            $.ajax({
 	            	type: "post",
+	            	async:false,
 	            	url:"getEventBarData.html",
 	            	data : {
 	            		"orderId":$('#orderId').val(),
@@ -362,6 +363,7 @@ var ontimeLine = null;
 	        	//后台获取数据
 	            $.ajax({
 	            	type: "post",
+	            	async:false,
 	            	url:"getOntimeLineData.html",
 	            	data : {
 	            		"orderId":$('#orderId').val(),
