@@ -75,4 +75,7 @@ public interface OrderDao {
 	
 	void delete(String orderId);
 	
+	//add by la 2017-6-9
+	//List<Order> findByAPIKey(String APIKey);
+	
 }
