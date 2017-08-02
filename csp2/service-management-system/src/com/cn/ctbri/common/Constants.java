@@ -114,9 +114,7 @@ public class Constants {
 	 * 对应保存在服务表中
 	 */
 	public static final String SERVICE_WYCGJCFW = "篡改监测模板";//"网页篡改监测服务"; 
-	
-	
-	
+
 	/**
 	 * 任务模版<br>
 	 * 可用性监测服务-周期1小时
