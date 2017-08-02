@@ -20,12 +20,13 @@ public class ContextClient implements ServletContextListener {
 	static{
 		try {
 			Properties p = new Properties();
+			Properties p1 = new Properties();
 			p.load(ContextClient.class.getClassLoader().getResourceAsStream("internal.properties"));
-			p.load(ContextClient.class.getClassLoader().getResourceAsStream("southAPI.properties"));
+			p1.load(ContextClient.class.getClassLoader().getResourceAsStream("southAPI.properties"));
 			
 			SERVER_WEB_ROOT = p.getProperty("SERVER_WEB_ROOT");
 			SERVER_MANAGER_ROOT = p.getProperty("SERVER_MANAGER_ROOT");
-			SouthAPI_WEB_ROOT=p.getProperty("SouthAPI_WEB_ROOT");
+			SouthAPI_WEB_ROOT=p1.getProperty("SouthAPI_WEB_ROOT");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
