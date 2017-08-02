@@ -29,6 +29,9 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cn.ctbri.common.ManagerWorker;
+import com.cn.ctbri.entity.API;
+import com.cn.ctbri.entity.APINum;
 import com.cn.ctbri.entity.OrderAPI;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.listener.ContextClient;
@@ -70,6 +73,11 @@ public class N_Secbasedata_NationLocationService {
 							String currentMethodName = getMethodName();
 							String southAPIReturn = getSouthAPIByMethod(currentMethodName,null);
 							southAPIWrapper3(southAPIReturn,json);
+							
+							for (int i = 0; i < oAPIList.size(); i++) {
+								countAPI(token, oAPIList.get(i).getId(), null, 7, 2);
+							}
+							
 						}else
 							Common.usedUpCodeCodeAndMessage(json);
 					}else
@@ -117,6 +125,11 @@ public class N_Secbasedata_NationLocationService {
 								
 								String southAPIReturn = getSouthAPIByMethod(currentMethodName,paramJson);
 								southAPIWrapper3(southAPIReturn,json);
+								
+								for (int i = 0; i < oAPIList.size(); i++) {
+									countAPI(token, oAPIList.get(i).getId(), null, 7, 2);
+								}
+								
 							}else
 								Common.usedUpCodeCodeAndMessage(json);
 						}else
@@ -154,6 +167,11 @@ public class N_Secbasedata_NationLocationService {
 							String currentMethodName = getMethodName();
 							String southAPIReturn = getSouthAPIByMethod(currentMethodName,null);
 							southAPIWrapper3(southAPIReturn,json);
+							
+							for (int i = 0; i < oAPIList.size(); i++) {
+								countAPI(token, oAPIList.get(i).getId(), null, 7, 2);
+							}
+							
 						}else
 							Common.usedUpCodeCodeAndMessage(json);
 					}else
@@ -201,6 +219,11 @@ public class N_Secbasedata_NationLocationService {
 								
 								String southAPIReturn = getSouthAPIByMethod(currentMethodName,paramJson);
 								southAPIWrapper3(southAPIReturn,json);
+								
+								for (int i = 0; i < oAPIList.size(); i++) {
+									countAPI(token, oAPIList.get(i).getId(), null, 7, 2);
+								}
+								
 							}else
 								Common.usedUpCodeCodeAndMessage(json);
 						}else
@@ -465,5 +488,34 @@ public class N_Secbasedata_NationLocationService {
 			Common.failCodeAndMessage(json);
 	}
 	
+	
+	//2016-8-25 统计api
+	public void countAPI(String token, String orderId, String taskId, int service_type, int api_type){
+		User user = userService.findUserByToken(token);
+		if(user.getType()!=3){
+			Map<String, Object> param = new HashMap<String, Object>();
+	        param.put("api_type", 1);
+	        param.put("orderId", orderId);
+	        API used = orderAPIService.findUsedByParam(param);
+			
+			//insert到统计表
+			APINum num = new APINum();
+			num.setApikey(user.getApikey());
+			num.setService_type(service_type);
+			num.setApi_type(api_type);//1表登录，2注销
+			num.setStatus(1);
+			num.setCreate_time(new Date());
+			
+			num.setApiId(used.getApiId());
+			num.setToken(token);
+			num.setOrderId(orderId);
+			if(taskId!=null){
+				num.setTaskId(Integer.parseInt(taskId));
+			}
+			userService.insertAPINum(num);
+			ManagerWorker.createAPINum(user.getApikey(), service_type, api_type, 1);
+		}
+		
+	}
 	
 }
