@@ -149,11 +149,31 @@ public class InternalWorker {
 		json.put("serviceId", serviceId);
 		json.put("partner", partner);
 		
+		System.out.println("--------------------------------------------------------json"+json);
+		System.out.println("scanMode"+scanMode);
+		System.out.println("targetURL"+targetURL);
+		System.out.println("scanType"+scanType);
+		System.out.println("startTime"+startTime);
+		System.out.println("endTime"+endTime);
+		System.out.println("scanPeriod"+scanPeriod);
+		System.out.println("scanDepth"+scanDepth);
+		System.out.println("maxPages"+maxPages);
+		System.out.println("stategy"+stategy);
+		System.out.println("customManus"+customManus);
+		System.out.println("orderTaskId"+orderTaskId);
+		System.out.println("serviceId"+serviceId);
+		System.out.println("partner"+partner);
+		
+		
 		System.out.println("****创建漏洞扫描订单（任务）****");  
 		WebTarget target = mainTarget.path(VulnScan_Create_orderTask);
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
+        
+        System.out.println("AAAAAAAAAAAAAA str"+str);
         JSONObject obj = JSONObject.fromObject(str);
+        System.out.println("BBBBBBBBBBBBBB obj"+obj);
+        
         response.close();
         int stateCode = obj.getInt("code");
 		if(stateCode == 201){
