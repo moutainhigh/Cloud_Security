@@ -516,9 +516,18 @@ public class NorthAPIService {
 		try {
 			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
 			//userID
-			String userID = jsonObj.getString("userID");
+			String userID = null;
+			if(jsonObj.containsKey("userID")){
+				//userID
+				userID = jsonObj.getString("userID");
+			}
+			
 			//apiKey
-			String apiKey = jsonObj.getString("apiKey");
+			String apiKey = null;
+			if(jsonObj.containsKey("apiKey")){
+				//userID
+				apiKey = jsonObj.getString("apiKey");
+			}
 			if(userID!=null && !userID.equals("") && apiKey!=null && !apiKey.equals("")){
 				User u = userService.findUserByUserId(Integer.parseInt(userID));
 				/*if(!userID.equals(u.getId())){
@@ -678,11 +687,25 @@ public class NorthAPIService {
 		try {
 			JSONObject jsonObj = new JSONObject().fromObject(dataJson);
 			//userID
-			String userID = jsonObj.getString("userID");
+			String userID = null;
+			if(jsonObj.containsKey("userID")){
+				//userID
+				userID = jsonObj.getString("userID");
+			}
+			
 			//apiKey
-			String apiKey = jsonObj.getString("apiKey");
+			String apiKey = null;
+			if(jsonObj.containsKey("apiKey")){
+				//userID
+				apiKey = jsonObj.getString("apiKey");
+			}
+			
 			//合作方
-			String partner = jsonObj.getString("partner");
+			String partner = null;
+			if(jsonObj.containsKey("partner")){
+				//userID
+				partner = jsonObj.getString("partner");
+			}
 			if(userID!=null && !userID.equals("") && apiKey!=null && !apiKey.equals("")){
 				User u = userService.findUserByUserId(Integer.parseInt(userID));
 				if(u == null){
