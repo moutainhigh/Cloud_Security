@@ -264,15 +264,15 @@ function generate(){
           <label class="fl">时间</label>
           <div class="fl" style="top:3px;">
           	<input type="text" style="width:256px;" name="beginDate" id="beginDate" readonly="readonly" value="${beginDate }" />
-          	<button type="button" onclick="generate()" style="background-color: #e7e7e7; color: black;">生成</button>
+          	<button type="button" onclick="generate()" style="background-color: #e7e7e7; color: black;border-radius: 12px;">生成</button>
 
-          	
+                   
           	<a href="javascript:void(0)" onclick="generate()" >生成</a>
 			<span>下载Word报表&nbsp;</span>
 			<span>
 				<a href="javascript:void(0)" onclick="exportImgWAF()" ><img src="${ctx}/source/images/export.png" width="22" height="23"/></a>
 			</span>	
-		
+				
           </div>
           </div>
         </div>
@@ -306,6 +306,13 @@ function generate(){
 	            <div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div>
             </c:if>
         </div>
+        
+        <!-- 隐藏图表 -->
+        <div>
+        	<div style="width:100%; height: 380px; padding: 20px; " id="sourceIP"></div>
+        	<div style="width:100%; height: 380px; padding: 20px; display:none;" id="sourceArea"></div>
+        </div>
+        
         告警时段统计数据
         <!-- 告警时段统计数据 -->
         <div class="data_table">
