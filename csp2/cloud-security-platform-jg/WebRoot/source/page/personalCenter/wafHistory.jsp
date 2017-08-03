@@ -244,6 +244,8 @@ function generate(){
           <input type="hidden" name="imgPieEvent" id="imgPieEvent" />
 		  <input type="hidden" name="imgBar" id="imgBar" />
 		  <input type="hidden" name="imgOntimeLine" id="imgOntimeLine"/>
+		  <input name="imgSourceArea" id="imgSourceArea"/>
+		  <input type="hidden" name="imgSourceIp" id="imgSourceIp"/>
           
           <ul  class="navlist centlist clearfix">
             <li><a href="${ctx}/warningWaf.html?orderId=${order.id }" title="">实时数据</a></li>
