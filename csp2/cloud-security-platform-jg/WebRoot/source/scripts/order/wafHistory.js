@@ -2,8 +2,10 @@ var myChartPieLevel = null;
 var myChartPieEvent = null;
 var myChartBar = null;
 var ontimeLine = null;
+var sourceIp = null;
+var sourceArea = null;
 //$(function(){	
-	
+	 
 	//为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
     require.config({
         paths:{ 
@@ -434,6 +436,232 @@ var ontimeLine = null;
 	    );
     }
     
+    //攻击源IP统计图
+    function sourceIpEvent(startDate,timeUnit){ 
+	    require(
+	        [
+	            'echarts',
+	            'echarts/chart/bar',
+	            'echarts/chart/line'
+	        ],
+	        function (ec) {//回调函数
+	        	sourceIp = ec.init(document.getElementById('sourceIP'));
+	        	sourceIp.showLoading({
+	            	  text: 'loading...',
+	            	  effect : 'spin',
+	            	  textStyle : {
+	            	        fontSize : 20,
+	            	        color:'#000'
+	            	    },
+	            	    effectOption :{
+	            	    	  backgroundColor:'#fff'
+	            	   }
+	
+	  	        });
+	        	
+	        	
+	        	//后台获取数据
+	            $.ajax({
+	            	type: "post",
+	            	//async:false,
+	            	url:"getSourceIpData.html",
+	            	data : {
+	            		"orderId":$('#orderId').val(),
+	            		"isHis":$('#isHis').val(),
+	            		"startDate":startDate,
+	            		"timeUnit":timeUnit
+	            	},
+	            	dataType:"json",
+	//                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+	                success:function(data){
+	                	ontimeLine.hideLoading();  
+	                	ontimeLine.setOption({
+	                		title: {
+	                            text: '攻击源IP统计图'
+	                        },
+	                        legend: {
+			      		        data:['攻击次数']
+			      		    },
+			      		    toolbox: {
+			      		        show : true,
+				      		  	feature : {
+				      		  		mark : true,
+				      		  		restore : true,
+				      		  		saveAsImage : true
+				      		  	}	
+			      		    },
+			      		    calculable : true,
+			      		    tooltip : {
+			      		        trigger: 'axis',
+			      		        formatter: "{b} : {c}次"
+			      		    },
+			      		    yAxis : [
+			      		        {
+			      		            type : 'value',
+			      		            axisLabel : {
+			      		                formatter: '{value}'
+			      		            }
+			      		        }
+			      		    ],
+			      		    xAxis : [
+			      		        {
+			      		            type : 'category',
+			      		            
+			      		            axisLabel : {
+			      		            	interval:'auto',
+			      		                formatter: '{value} '
+			      		            },
+			      		            boundaryGap : true,
+			      		            data : data.name
+			      		        }
+			      		    ],
+			      		    series : [
+			      		        {
+			      		            name:'IP攻击次数',
+			      		            type:'bar',
+			      		            itemStyle: {
+			      		                normal: {
+			      		                	label: {
+			      	                            show: true,
+			      	                            position: 'top',
+			      	                             textStyle: {
+			      	                                color: '#800080'
+			      	                            }
+			      	                        }
+			      		                }
+			      		            },
+			      		            barWidth:70,
+			      		            data:data.count
+			      		        }
+			      		    ]
+			        	},true);//图形展示
+	                    window.onresize = ontimeLine.resize;
+	                }//ajax执行后台
+	            }); 
+	        }
+	    );
+    }
+    
+    //攻击源区域分布图
+    function sourceAreaEvent(startDate,timeUnit){ 
+	    require(
+	        [
+	            'echarts',
+	            'echarts/chart/bar',
+	            'echarts/chart/line'
+	        ],
+	        function (ec) {//回调函数
+	        	sourceArea = ec.init(document.getElementById('sourceArea'));
+	        	sourceArea.showLoading({
+	            	  text: 'loading...',
+	            	  effect : 'spin',
+	            	  textStyle : {
+	            	        fontSize : 20,
+	            	        color:'#000'
+	            	    },
+	            	    effectOption :{
+	            	    	  backgroundColor:'#fff'
+	            	   }
+	
+	  	        });
+	        	
+	        	
+	        	//后台获取数据
+	            $.ajax({
+	            	type: "post",
+	            	//async:false,
+	            	url:"getSourceAreaData.html",
+	            	data : {
+	            		"orderId":$('#orderId').val(),
+	            		"isHis":$('#isHis').val(),
+	            		"startDate":startDate,
+	            		"timeUnit":timeUnit
+	            	},
+	            	dataType:"json",
+	//                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+	                success:function(data){
+	                	ontimeLine.hideLoading();  
+	                	ontimeLine.setOption({
+	                		title: {
+	                            text: '攻击源区域分布图'
+	                        },
+	                        legend: {
+	                        	 y : 'bottom',
+			      		        data:data.name
+			      		    },
+			      		    toolbox: {
+			      		        show : true,
+			      		        orient: 'vertical',
+	                            x: 'right',
+	                            y: 'center',
+				      		  	feature : {
+				      		  		mark : true,
+				      		  		restore : true,
+				      		  		saveAsImage : true
+				      		  	}	
+			      		    },
+			      		    calculable : false,
+			      		    tooltip : {
+			      		    	axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+		                                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+		                        },
+			      		        trigger: 'axis',
+			      		        formatter: "{b} : {c}次"
+			      		    },
+			      		    yAxis : [
+			      		        {
+			      		            type : 'value',			      		            
+			      		        }
+			      		    ],
+			      		    xAxis : [
+			      		        {
+			      		            type : 'category',
+			      		            
+			      		            axisLabel : {
+			      		            	interval:'auto',
+			      		                //formatter: '{value} '
+			      		            },
+			      		            //boundaryGap : true,
+			      		            data : ['']
+			      		        }
+			      		    ],
+			      		   
+		                    series :
+		                       function(){
+			                       var serie=[];
+			                       	 
+			                       for( var i=0;i < data.json.length;i++){
+			                    	   var num=[];
+			                    	   num[0]=data.json[i].value;
+			                    	   var item={
+			                    			 name:data.json[i].name,
+				                        	 type:'bar',
+		//		                        	 barWidth : 25,
+				                        	 itemStyle: {
+			                                     normal: {
+			                                         label: {
+			                                             show: true,
+			                                             textStyle: {
+			                                                 color: '#800080'
+			                                             }
+			                                         }
+			                                     }
+				                        	 },
+				                        	 data:num
+			                        	 };
+			                        	 serie.push(item);
+			                    	 };
+			                    	 return serie;
+		                    	}()	   			      		   
+			        	},true);//图形展示
+	                    window.onresize = ontimeLine.resize;
+	                }//ajax执行后台
+	            }); 
+	        }
+	    );
+    }
+    
+    
     function testX(){
     	return label;
     }
@@ -475,11 +703,15 @@ function exportImgWAF(){
     var dataPieEvent = myChartPieEvent.getDataURL("png");
 	var dataBar = myChartBar.getDataURL("png"); 
     var ontime = ontimeLine.getDataURL("png");  
+    var mySourceIp = sourceIp.getDataURL("png");
+    var mySourceArea = sourceArea.getDataURL("png");
 	
 	$("#imgPieLevel").val(dataPieLevel);
     $("#imgPieEvent").val(dataPieEvent);
     $("#imgBar").val(dataBar);
 	$("#imgOntimeLine").val(ontime);
+	//$("#imgSourceIp").val(mySourceIp);
+	//$("#imgSourceArea").val(mySourceArea);
 	$("#exportWafForm").submit();
 }
 
