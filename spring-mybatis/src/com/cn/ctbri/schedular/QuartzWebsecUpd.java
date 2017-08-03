@@ -35,7 +35,7 @@ public class QuartzWebsecUpd implements org.quartz.Job{
 	@Override
 	public void execute(JobExecutionContext jobContext) throws JobExecutionException {
 		// TODO Auto-generated method stub
-		
+		System.out.println("0");
 		 ApplicationContext applicationContext=null;  
 	     try {  
 	            applicationContext=getApplicationContext(jobContext);  
@@ -47,14 +47,16 @@ public class QuartzWebsecUpd implements org.quartz.Job{
 	}
 	
 	private void upd(ApplicationContext ctx){
-			
+			System.out.println("000000");
 			WebsecMapper websecDao=(WebsecMapper) ctx.getBean("websecDao");
 			IpMapper ipDao=(IpMapper) ctx.getBean("ipDao");
 		    CityMapper cityDao=(CityMapper) ctx.getBean("cityDao");
 			
-			Long pre_maxLogId = getPropsLogId();
-			Long maxLogId = websecDao.getMaxLogId();
-		
+		    //Long pre_maxLogId = getPropsLogId();
+		    Long pre_maxLogId = 28200l;
+			//Long maxLogId = websecDao.getMaxLogId();
+			Long maxLogId = 29200l;
+			
 		
 		
 			Map<String,Long> hm = new HashMap<String,Long>();
@@ -124,41 +126,45 @@ public class QuartzWebsecUpd implements org.quartz.Job{
 			    System.out.println("======更新结束============Logid： "+upd.getLogId()+"============ipLatlongValid: "+upd.getIpLatlongValid());
 		    }
 			
-			int commitCnt = udpList.size()/100 ;
-			System.out.println("==================分： "+commitCnt+1 +"次提交");
-			 Map<String,List<Websec>> map = new HashMap<String,List<Websec>>();
-			if(commitCnt == 0){
-				System.out.println("======开始提交所有"+udpList.size()+"条记录============");
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-			    System.out.println(sdf.format(getStartTime()));  
-			    
-			    map.put("list", udpList);
-			    websecDao.batchUpd(map);
-			    System.out.println("======结束提交所有"+udpList.size()+"条记录============");
-				System.out.println(sdf.format(getEndTime())); 
-				
-			}else{
-				for(int i = 0 ; i <= commitCnt ; i++){
-					List<Websec> segList = null ;
-					if(i == 0){
-						segList = udpList.subList(0, 100);
-					}else if( i == commitCnt ){
-						segList = udpList.subList(i*100, websecList.size());
-					}else {
-						segList = udpList.subList(i*100,(i+1)*100);
-					}
+			if(udpList.size() > 0){
+				System.out.println("=====需要提交的记录条数：  ==== "+udpList.size());
+				int commitCnt = udpList.size()/100 ;
+				System.out.println("==================分： "+commitCnt+1 +"次提交");
+				 Map<String,List<Websec>> map = new HashMap<String,List<Websec>>();
+				if(commitCnt == 0){
+					System.out.println("======开始提交所有"+udpList.size()+"条记录============");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+				    System.out.println(sdf.format(getStartTime()));  
+				    
+				    map.put("list", udpList);
+				    websecDao.batchUpd(map);
+				    System.out.println("======结束提交所有"+udpList.size()+"条记录============");
+					System.out.println(sdf.format(getEndTime())); 
 					
-					//如果list为空，则不执行批量查询
-					if(segList.size() > 0){
-						System.out.println("======开始提交第"+i+1+"个100条记录============");
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-					    System.out.println(sdf.format(getStartTime()));  
-						map.put("list", segList);
-						websecDao.batchUpd(map);
-						System.out.println("======结束提交第"+i+1+"个100条记录============");
-						System.out.println(sdf.format(getEndTime())); 
+				}else{
+					for(int i = 0 ; i <= commitCnt ; i++){
+						List<Websec> segList = null ;
+						if(i == 0){
+							segList = udpList.subList(0, 100);
+						}else if( i == commitCnt ){
+							segList = udpList.subList(i*100, udpList.size());
+						}else {
+							segList = udpList.subList(i*100,(i+1)*100);
+						}
+						
+						//如果list为空，则不执行批量查询
+						if(segList.size() > 0){
+							int n = i+1 ;
+							System.out.println("======开始提交第"+n+"个100条记录============");
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+						    System.out.println(sdf.format(getStartTime()));  
+							map.put("list", segList);
+							websecDao.batchUpd(map);
+							System.out.println("======结束提交第"+n+"个100条记录============");
+							System.out.println(sdf.format(getEndTime())); 
+						}
+						 
 					}
-					 
 				}
 			}
 			this.updProps(maxLogId);

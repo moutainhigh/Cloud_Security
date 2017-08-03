@@ -612,9 +612,11 @@
     from t_waf_log_websec 
    </select>
    <select id="selectSeg"  parameterType="hashmap" resultMap="BaseResultMap">
-   		 select 
-        log_id,src_ip,dst_ip,domain
-    from t_waf_log_websec where log_id between #{preLogId,jdbcType=BIGINT} and #{maxLogId,jdbcType=BIGINT}
+   		<![CDATA[ 	 select 
+        			log_id,src_ip,dst_ip,domain
+    				from t_waf_log_websec where log_id >= #{preLogId,jdbcType=BIGINT} and log_id <#{maxLogId,jdbcType=BIGINT} 
+    				and src_ip<>'192.168.0.1'
+   		]]>
    </select>
    <update id="batchUpd"  parameterType="map">
    		<foreach collection="list" item="item" index="index" open="" close="" separator=";">

@@ -105,14 +105,16 @@
   	select max(day) from cntByType
   </select>
   <select id="selectCntBySrc" resultMap="BaseResultMap" parameterType="map">
-  		select count(1) as num,dst_ip,domain,src_ip ,date_format(stat_time,'%Y-%m-%d') as day
+  		select count(1) as num,dst_ip,domain,src_ip ,src_country ,src_subdivision_1,date_format(stat_time,'%Y-%m-%d') as day
 		from
-		(SELECT  * from t_waf_log_websec 
+		(SELECT  * from t_waf_log_websec  where 
+		ip_latlong_valid
 		<if test="maxDate != null">
-			 where date_format(stat_time,'%Y-%m-%d')>#{maxDate,jdbcType=Date}
+			and date_format(stat_time,'%Y-%m-%d')>#{maxDate,jdbcType=DATE}
 		</if>
+		
 		) t 
-		group by dst_ip,domain,src_ip,date_format(stat_time,'%Y-%m-%d')
+		group by dst_ip,domain,src_ip,src_country ,src_subdivision_1,date_format(stat_time,'%Y-%m-%d')
 		order by date_format(stat_time,'%Y-%m-%d')
   </select>
   <insert id="batchInsert" parameterType="map">

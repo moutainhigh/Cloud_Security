@@ -201,7 +201,7 @@
   </update>
   
   <select id="getLatLongByIp" parameterType="java.lang.Long" resultMap="BaseResultMap">
-  	select location_id,latitude,longitude from t_ipv4_latlong where #{ip,jdbcType=INTEGER} between convert(startip,UNSIGNED)  and convert(endip,UNSIGNED)  order by convert(netmask,UNSIGNED) desc 
+  	<![CDATA[ select location_id,latitude,longitude from t_ipv4_latlong where   convert(startip,UNSIGNED)<=#{ip,jdbcType=INTEGER}  and convert(endip,UNSIGNED)>#{ip,jdbcType=INTEGER}  order by convert(netmask,UNSIGNED) desc ]]>
   </select>
   
 </mapper>

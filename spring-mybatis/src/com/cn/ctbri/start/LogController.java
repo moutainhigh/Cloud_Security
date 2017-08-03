@@ -28,7 +28,9 @@ public class LogController {
 			// String path=System.getProperty("user.dir");
 			// System.out.println(path);
 		     ctx=new FileSystemXmlApplicationContext(directory.getAbsolutePath()+"/conf/applicationContext.xml");
-		}catch(Exception e){} 
+		}catch(Exception e){
+			e.printStackTrace();
+		} 
 		 
 	}
 	

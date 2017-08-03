@@ -109,7 +109,7 @@
 		from
 		(SELECT  * from t_waf_log_websec 
 		<if test="maxDate != null">
-			 where date_format(stat_time,'%Y-%m-%d')>#{maxDate,jdbcType=Date}
+			 where date_format(stat_time,'%Y-%m-%d')>#{maxDate,jdbcType=DATE}
 		</if>
 		) t 
 		group by dst_ip,domain,event_type,date_format(stat_time,'%Y-%m-%d')
@@ -119,7 +119,7 @@
   		insert into cntByType (type,num,day,dst_ip,domain)
   		  		VALUES  
     <foreach collection="list" item="member" index="index" separator=",">  
-        (#{member.type}, #{member.num}, #{member.day}, #{member.dstIp}, #{member.domain})  
+        (#{member.type,jdbcType=VARCHAR}, #{member.num,jdbcType=BIGINT}, #{member.day,jdbcType=DATE}, #{member.dstIp,jdbcType=VARCHAR}, #{member.domain,jdbcType=VARCHAR})  
     </foreach> 
   </insert>
 </mapper>

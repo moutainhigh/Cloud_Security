@@ -25,8 +25,9 @@ public class QuartzWebsecCnt implements org.quartz.Job{
 		ApplicationContext applicationContext=null;  
 	     try {  
 	    	 applicationContext = getApplicationContext(jobContext);
-	    	 //cntType(applicationContext);
-	    	 //cntHour(applicationContext);
+	    	 System.out.println("1");
+	    	 cntType(applicationContext);
+	    	 cntHour(applicationContext);
 	    	 cntSrc(applicationContext);
 	        } catch (Exception e) {  
 	            // TODO Auto-generated catch block  
@@ -44,6 +45,7 @@ public class QuartzWebsecCnt implements org.quartz.Job{
 	            return appCtx;  
 	    }  
 	   private void cntType(ApplicationContext ctx) {
+		   System.out.println("11111");
 		   WebsecMapper websecDao=(WebsecMapper) ctx.getBean("websecDao");
 		   CntByTypeMapper cntByTypeDao = (CntByTypeMapper)ctx.getBean("cntByTypeDao");
 		   Date max_websecDate = websecDao.selectMaxDay();

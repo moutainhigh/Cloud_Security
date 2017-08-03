@@ -110,7 +110,7 @@
 		from
 		(SELECT  * from t_waf_log_websec 
 		<if test="maxDate != null">
-			 where date_format(stat_time,'%Y-%m-%d')>#{maxDate,jdbcType=Date}
+			 where date_format(stat_time,'%Y-%m-%d')>#{maxDate,jdbcType=DATE}
 		</if>
 		) t 
 		group by dst_ip,domain,date_format(stat_time,'%Y-%m-%d %H') ,date_format(stat_time,'%Y-%m-%d')

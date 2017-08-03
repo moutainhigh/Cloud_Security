@@ -26,6 +26,10 @@ public class IPUtility {
         //System.out.println(l);
         return l;  
     }
+    public static void main(String[] args){
+    	long a  = ip2long("61.49.22.114");
+    	System.out.println(a);
+    }
     /*
     public static final long ip2Long(final String ip) { 
     	String ipAddr = ip.trim();
