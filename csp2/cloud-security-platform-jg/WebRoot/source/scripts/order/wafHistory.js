@@ -710,8 +710,8 @@ function exportImgWAF(){
     $("#imgPieEvent").val(dataPieEvent);
     $("#imgBar").val(dataBar);
 	$("#imgOntimeLine").val(ontime);
-	//$("#imgSourceIp").val(mySourceIp);
-	//$("#imgSourceArea").val(mySourceArea);
+	$("#imgSourceIp").val(mySourceIp);
+	$("#imgSourceArea").val(mySourceArea);
 	$("#exportWafForm").submit();
 }
 
