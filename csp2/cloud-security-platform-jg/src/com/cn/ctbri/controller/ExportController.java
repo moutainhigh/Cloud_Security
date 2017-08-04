@@ -1294,7 +1294,7 @@ public class ExportController {
     	BASE64Decoder decoder = new BASE64Decoder(); 
     	try { 
     	byte[] b = decoder.decodeBuffer(s); 
-    	return new String(b); 
+    	return new String(b,"utf-8"); 
     	} catch (Exception e) { 
     	return null; 
     	} 
@@ -1317,22 +1317,26 @@ public class ExportController {
             String levelhigh = request.getParameter("levelhigh");
             String levelmid = request.getParameter("levelmid");
             String levellow = request.getParameter("levellow");
+            String listtimeString = request.getParameter("resultList");
             
             String timeCountTotal = request.getParameter("timeCountTotal"); // time
-            String timeListStrBase64 = request.getParameter("resultListTime");
-            String timeListStr =getFromBASE64(timeListStrBase64);
+            String timeStrBase64 = request.getParameter("resultListTime");
+            timeStrBase64 = timeStrBase64.replaceAll(" ", "+");
+            String timeJsonStr =getFromBASE64(timeStrBase64);
             
-            String websecListStrBase64 = request.getParameter("websecListIp");   //ip        
-            String websecListStr = getFromBASE64(websecListStrBase64);
+            String strattackipBase64 = request.getParameter("websecListIp");   //ip
             String totalAttackIPStr = request.getParameter("totalAttackIP");
+            strattackipBase64 = strattackipBase64.replaceAll(" ", "+");
+            String strJsonattackip = getFromBASE64(strattackipBase64);
             
             String eventTypeTotalstr = request.getParameter("eventTypeTotal");  //event type
-            String strlistEventTypeStrBase64 = request.getParameter("strlistEventType");
-            String strlistEventTypeStr = getFromBASE64(strlistEventTypeStrBase64);
+            String strEventTypeBase64 = request.getParameter("strlistEventType");
+            strEventTypeBase64 = strEventTypeBase64.replaceAll(" ", "+"); // 浏览器出现 将base64中的＋转换为空格
+            String strJsonEventTypeStr = getFromBASE64(strEventTypeBase64);
             
-           // imgPieLevel = imgPieLevel.replaceAll(" ", "+");
-           // imgBar = imgBar.replaceAll(" ", "+");
-           // imgPieLevel = imgPieLevel.replaceAll(" ", "+");
+            imgPieLevel = imgPieLevel.replaceAll(" ", "+");
+            imgBar = imgBar.replaceAll(" ", "+");
+            imgPieLevel = imgPieLevel.replaceAll(" ", "+");
             
             System.out.println("imgPie"+imgPieLevel);
             System.out.println("imgbar:"+imgBar);
@@ -1352,12 +1356,12 @@ public class ExportController {
             paramMap.put("imgBar", imgBar);
             paramMap.put("imgPieEvent", imgPieEvent);
             paramMap.put("levelTotal", levelTotal);
-            paramMap.put("timeListStr", timeListStr);//time
+            paramMap.put("timeJsonStr", timeJsonStr);//time
             paramMap.put("timeCountTotal", timeCountTotal);
-            paramMap.put("websecListStr", websecListStr);//ip
+            paramMap.put("strJsonattackip", strJsonattackip);//ip
             paramMap.put("totalAttackIPStr", totalAttackIPStr);
             paramMap.put("eventTypeTotalstr", eventTypeTotalstr);//event
-            paramMap.put("strlistEventTypeStr", strlistEventTypeStr);
+            paramMap.put("strJsonEventTypeStr", strJsonEventTypeStr);
             paramMap.put("levelhigh", levelhigh);
             paramMap.put("levelmid", levelmid);
             paramMap.put("levellow", levellow);
@@ -1454,7 +1458,7 @@ public class ExportController {
         String createDate = odf.format(new Date());
         SimpleDateFormat odf1 = new SimpleDateFormat("yyyy年MM月dd日");//设置日期格式
         String createDate1 = odf1.format(new Date());
-
+        
         
         String strimgPieLevel = paramMap.get("imgPieLevel").toString();
         String strimgBar = paramMap.get("imgBar").toString();
@@ -1465,27 +1469,33 @@ public class ExportController {
         String levelmid =paramMap.get("levelmid").toString();
         String levellow =paramMap.get("levellow").toString();
         
-        String eventListStr = paramMap.get("strlistEventTypeStr").toString();  // eventType
-        eventListStr = eventListStr.substring(1,eventListStr.length()-1);
+        String timeCountTotal = paramMap.get("timeCountTotal").toString();
+        String eventTypeTotalstr = paramMap.get("eventTypeTotalstr").toString();
+        
+        
+        String strJsonEventTypeStr = paramMap.get("strJsonEventTypeStr").toString();  // eventType
+        List listEventType = WafAPIAnalysis.analysisEventTypeCountList(strJsonEventTypeStr);
+       /* eventListStr = eventListStr.substring(1,eventListStr.length()-1);
         eventListStr = eventListStr.replaceAll("},", "}:");
         System.out.println("eventListStr============"+eventListStr);
-        List eventListArray = Arrays.asList(eventListStr.split(":"));
+        List eventListArray = Arrays.asList(eventListStr.split(":"));*/
         
-        String timeListStr = paramMap.get("timeListStr").toString();   //time
-        timeListStr = timeListStr.substring(1,timeListStr.length()-1); // 去掉头和尾的 ［］
+        String timeJsonStr = paramMap.get("timeJsonStr").toString();   //time
+        List listTime = WafAPIAnalysis.analysisWafLogWebSecTimeCountList(timeJsonStr);
+       /* timeListStr = timeListStr.substring(1,timeListStr.length()-1); // 去掉头和尾的 ［］
         timeListStr =timeListStr.replaceAll("},", "}:");
         System.out.println("timeListStr================"+timeListStr);
-        List  timeListArray = Arrays.asList(timeListStr.split(":")); 
+        List  timeListArray = Arrays.asList(timeListStr.split(":")); */
         
-        String websecListStr = paramMap.get("websecListStr").toString(); //ip
+        String strJsonattackip = paramMap.get("strJsonattackip").toString(); //ip
+        List listattackIP = WafAPIAnalysis.getWafLogWebsecSrcIp(strJsonattackip);
+        /*
         websecListStr = websecListStr.substring(1,websecListStr.length()-1);
         if (websecListStr.indexOf("},")!=-1) {
         	websecListStr = websecListStr.replaceAll("},", "}:");
 		}
         System.out.println("webseclistStr============"+websecListStr);
-        List  websecListArray = Arrays.asList(websecListStr.split(":")); 
-        
-        
+        List  websecListArray = Arrays.asList(websecListStr.split(":")); */
         
         String filePath1 = request.getSession().getServletContext().getRealPath("/source/chart");
         File file1 = new File(filePath1);
@@ -1519,13 +1529,18 @@ public class ExportController {
             map.put("HIGHNUM", levelhigh);
             map.put("MIDDLENUM", levelmid);
             map.put("LOWNUM", levellow);
-			map.put("img1", getImageStr(imgFilePieLevel));
-			map.put("img2", getImageStr(imgFileBar));
-			map.put("img3", getImageStr(imgFilePieEvent));
+            map.put("threattotal", eventTypeTotalstr);
+            map.put("timetotal", timeCountTotal);
+			map.put("img6", getImageStr(imgFilePieLevel));
+			map.put("img5", getImageStr(imgFileBar));
 			map.put("img4", getImageStr(imgFilePieEvent));
+			map.put("img3", getImageStr(imgFilePieEvent));
+			map.put("img2", getImageStr(imgFilePieEvent));
+			map.put("img1", getImageStr(imgFilePieEvent));
+			map.put("REPORTTYPE", "月报");
 			
 			List<Threat> threatlist = new ArrayList<Threat>();  
-	        for (int i = 0; i < eventListArray.size(); i++) {  
+	        /*for (int i = 0; i < eventListArray.size(); i++) {  
 	        	Threat t = new Threat();
 	        	String eventTypeStr = (String)eventListArray.get(i);
 	        	String[] spilt = eventTypeStr.split(",");
@@ -1534,11 +1549,21 @@ public class ExportController {
 	            t.setNum(count);  
 	            t.setName(eventTypeString);  
 	            threatlist.add(t);  
-	        }   
+	        }   */
+			
+			for (int i = 0; i < listEventType.size(); i++) {
+				Threat t = new Threat();
+				Map typeMap = (Map) listEventType.get(i);
+				String count = String.valueOf(typeMap.get("count"));
+				String eventTypeString = String.valueOf(typeMap.get("eventType"));
+				t.setNum(count);  
+	            t.setName(eventTypeString);  
+	            threatlist.add(t); 
+			}
 	        map.put("threatList", threatlist);  
 	        
-	        List<TimeList> timeList = new ArrayList<TimeList>();  
-	        for (int i = 0; i < timeListArray.size(); i++) {  
+	        List<TimeList> tl = new ArrayList<TimeList>();  
+	        /*for (int i = 0; i < timeListArray.size(); i++) {  
 	        	TimeList t = new TimeList();  
 	        	String strTime = (String) timeListArray.get(i);
 	        	String[] spilt =  strTime.split(",");
@@ -1547,20 +1572,39 @@ public class ExportController {
 	            t.setNum(count);
 	            t.setName(timeName);  
 	            timeList.add(t);  
-	        }
-	        map.put("timeList",timeList);
+	        }*/
+	        for (int i = 0; i < listTime.size(); i++) {
+				TimeList t = new TimeList();
+				Map timeMap = (Map)listTime.get(i);
+				String count = String.valueOf(timeMap.get("count"));
+				String timeName = String.valueOf(timeMap.get("time"));
+				t.setName(timeName);
+				t.setNum(count);
+				tl.add(t);
+			}
+	        
+	        map.put("timeList",tl);
 	        
 	        List<AttackList> attackList = new ArrayList<AttackList>();  
-	        for (int i = 0; i < websecListArray.size(); i++) {  
+	        /*for (int i = 0; i < websecListArray.size(); i++) {  
 	        	AttackList t = new AttackList();  
 	        	String strAttack = String.valueOf(websecListArray.get(i));
 	        	String[] spilt =  strAttack.split(",");
-	        	String count = spilt[0].substring(spilt[0].indexOf("{count=")+7);
-	        	String attackIP = spilt[1].substring(spilt[1].indexOf("dstIp=")+6,spilt[1].length()-1);
+	        	String count = spilt[1].substring(spilt[1].indexOf("count=")+6,spilt[1].length()-1);
+	        	String attackIP = spilt[0].substring(spilt[0].indexOf("{srcIp=")+7);
 	            t.setNum(count);;  
 	            t.setSourceIP(attackIP);  
 	            attackList.add(t);  
-	        } 
+	        } */
+	        for (int i = 0; i < listattackIP.size(); i++) {
+				AttackList t = new AttackList();
+				Map ipMap = (Map)listattackIP.get(i);
+				String count = String.valueOf(ipMap.get("count"));
+				String strsrcIP = String.valueOf(ipMap.get("srcIp"));
+				t.setNum(count);
+				t.setSourceIP(strsrcIP);
+				attackList.add(t);
+			}
 	        map.put("attackList", attackList);
 			
 		} catch (Exception e) {
