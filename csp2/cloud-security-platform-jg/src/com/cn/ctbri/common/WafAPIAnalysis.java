@@ -131,6 +131,28 @@ public class WafAPIAnalysis {
 		return reList ;
 	}
 	
+	public static Map analysisWafLogWebSecSrcIp(String eventStr) {
+		Map<String,Object> reMap = new HashMap<String,Object>();
+    	List<Object> arr = new ArrayList<Object>();
+		List<Object> arra = new ArrayList<Object>();
+    	try {
+    		JSONObject jsonObj = new JSONObject().fromObject(eventStr);
+    		JSONArray obj = jsonObj.getJSONArray("list");
+    		for (Object aObj : obj) {
+    			JSONObject e = (JSONObject) aObj;
+    			String srcIp = e.getString("srcIp");
+    			int count = e.getInt("count");
+    			arr.add(srcIp);
+				arra.add(count);
+    		}	
+			reMap.put("srcIp", arr);
+			reMap.put("count", arra);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    	return reMap;
+	}
+	
 	public static List getWafLogWebsecSrcIp(String reStr) {
 		List reList = new ArrayList();
     	try {
