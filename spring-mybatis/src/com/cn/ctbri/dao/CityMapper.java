@@ -3,13 +3,13 @@ package com.cn.ctbri.dao;
 import com.cn.ctbri.model.City;
 
 public interface CityMapper {
-    int deleteByPrimaryKey(String locationId);
+    int deleteByPrimaryKey(Long locationId);
 
     int insert(City record);
 
     int insertSelective(City record);
 
-    City selectByPrimaryKey(String locationId);
+    City selectByPrimaryKey(Long locationId);
 
     int updateByPrimaryKeySelective(City record);
 

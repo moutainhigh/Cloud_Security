@@ -53,9 +53,9 @@ public class QuartzWebsecUpd implements org.quartz.Job{
 		    CityMapper cityDao=(CityMapper) ctx.getBean("cityDao");
 			
 		    //Long pre_maxLogId = getPropsLogId();
-		    Long pre_maxLogId = 28200l;
+		    Long pre_maxLogId = 9700l;
 			//Long maxLogId = websecDao.getMaxLogId();
-			Long maxLogId = 29200l;
+			Long maxLogId = 9800l;
 			
 		
 		

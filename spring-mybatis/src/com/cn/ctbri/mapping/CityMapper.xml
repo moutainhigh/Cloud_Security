@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cn.ctbri.dao.CityMapper">
   <resultMap id="BaseResultMap" type="com.cn.ctbri.model.City">
-    <id column="location_id" jdbcType="VARCHAR" property="locationId" />
+    <id column="location_id" jdbcType="BIGINT" property="locationId" />
     <result column="locale_code" jdbcType="VARCHAR" property="localeCode" />
     <result column="continent_code" jdbcType="VARCHAR" property="continentCode" />
     <result column="continent_name" jdbcType="VARCHAR" property="continentName" />
@@ -21,15 +21,15 @@
     subdivision_1_iso_code, subdivision_1_name, subdivision_2_iso_code, subdivision_2_name, 
     city_name, metro_code, time_zone
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_city_location
-    where location_id = #{locationId,jdbcType=VARCHAR}
+    where location_id = #{locationId,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_city_location
-    where location_id = #{locationId,jdbcType=VARCHAR}
+    where location_id = #{locationId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.cn.ctbri.model.City">
     insert into t_city_location (location_id, locale_code, continent_code, 
@@ -38,7 +38,7 @@
       subdivision_2_iso_code, subdivision_2_name, 
       city_name, metro_code, time_zone
       )
-    values (#{locationId,jdbcType=VARCHAR}, #{localeCode,jdbcType=VARCHAR}, #{continentCode,jdbcType=VARCHAR}, 
+    values (#{locationId,jdbcType=BIGINT}, #{localeCode,jdbcType=VARCHAR}, #{continentCode,jdbcType=VARCHAR}, 
       #{continentName,jdbcType=VARCHAR}, #{countryIsoCode,jdbcType=VARCHAR}, #{countryName,jdbcType=VARCHAR}, 
       #{subdivision1IsoCode,jdbcType=VARCHAR}, #{subdivision1Name,jdbcType=VARCHAR}, 
       #{subdivision2IsoCode,jdbcType=VARCHAR}, #{subdivision2Name,jdbcType=VARCHAR}, 
@@ -90,7 +90,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="locationId != null">
-        #{locationId,jdbcType=VARCHAR},
+        #{locationId,jdbcType=BIGINT},
       </if>
       <if test="localeCode != null">
         #{localeCode,jdbcType=VARCHAR},
@@ -170,7 +170,7 @@
         time_zone = #{timeZone,jdbcType=VARCHAR},
       </if>
     </set>
-    where location_id = #{locationId,jdbcType=VARCHAR}
+    where location_id = #{locationId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.cn.ctbri.model.City">
     update t_city_location
@@ -186,6 +186,6 @@
       city_name = #{cityName,jdbcType=VARCHAR},
       metro_code = #{metroCode,jdbcType=VARCHAR},
       time_zone = #{timeZone,jdbcType=VARCHAR}
-    where location_id = #{locationId,jdbcType=VARCHAR}
+    where location_id = #{locationId,jdbcType=BIGINT}
   </update>
 </mapper>

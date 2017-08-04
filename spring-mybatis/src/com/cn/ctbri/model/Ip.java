@@ -1,21 +1,21 @@
 package com.cn.ctbri.model;
 
 public class Ip {
-    private String latlongId;
+    private Long latlongId;
 
     private String network;
 
     private String netmask;
 
-    private String startip;
+    private Long startip;
 
-    private String endip;
+    private Long endip;
 
-    private String locationId;
+    private Long locationId;
 
-    private String registeredCountryLocationId;
+    private Long registeredCountryLocationId;
 
-    private String representedCountryLocationId;
+    private Long representedCountryLocationId;
 
     private String isAnonymousProxy;
 
@@ -29,12 +29,12 @@ public class Ip {
 
     private String accuracyRadius;
 
-    public String getLatlongId() {
+    public Long getLatlongId() {
         return latlongId;
     }
 
-    public void setLatlongId(String latlongId) {
-        this.latlongId = latlongId == null ? null : latlongId.trim();
+    public void setLatlongId(Long latlongId) {
+        this.latlongId = latlongId;
     }
 
     public String getNetwork() {
@@ -53,44 +53,44 @@ public class Ip {
         this.netmask = netmask == null ? null : netmask.trim();
     }
 
-    public String getStartip() {
+    public Long getStartip() {
         return startip;
     }
 
-    public void setStartip(String startip) {
-        this.startip = startip == null ? null : startip.trim();
+    public void setStartip(Long startip) {
+        this.startip = startip;
     }
 
-    public String getEndip() {
+    public Long getEndip() {
         return endip;
     }
 
-    public void setEndip(String endip) {
-        this.endip = endip == null ? null : endip.trim();
+    public void setEndip(Long endip) {
+        this.endip = endip;
     }
 
-    public String getLocationId() {
+    public Long getLocationId() {
         return locationId;
     }
 
-    public void setLocationId(String locationId) {
-        this.locationId = locationId == null ? null : locationId.trim();
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
     }
 
-    public String getRegisteredCountryLocationId() {
+    public Long getRegisteredCountryLocationId() {
         return registeredCountryLocationId;
     }
 
-    public void setRegisteredCountryLocationId(String registeredCountryLocationId) {
-        this.registeredCountryLocationId = registeredCountryLocationId == null ? null : registeredCountryLocationId.trim();
+    public void setRegisteredCountryLocationId(Long registeredCountryLocationId) {
+        this.registeredCountryLocationId = registeredCountryLocationId;
     }
 
-    public String getRepresentedCountryLocationId() {
+    public Long getRepresentedCountryLocationId() {
         return representedCountryLocationId;
     }
 
-    public void setRepresentedCountryLocationId(String representedCountryLocationId) {
-        this.representedCountryLocationId = representedCountryLocationId == null ? null : representedCountryLocationId.trim();
+    public void setRepresentedCountryLocationId(Long representedCountryLocationId) {
+        this.representedCountryLocationId = representedCountryLocationId;
     }
 
     public String getIsAnonymousProxy() {

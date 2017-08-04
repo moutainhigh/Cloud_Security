@@ -1,17 +1,16 @@
 package com.cn.ctbri.dao;
 
+import com.cn.ctbri.model.Ip;
 import java.util.List;
 
-import com.cn.ctbri.model.Ip;
-
 public interface IpMapper {
-    int deleteByPrimaryKey(String latlongId);
+    int deleteByPrimaryKey(Long latlongId);
 
     int insert(Ip record);
 
     int insertSelective(Ip record);
 
-    Ip selectByPrimaryKey(String latlongId);
+    Ip selectByPrimaryKey(Long latlongId);
 
     int updateByPrimaryKeySelective(Ip record);
 

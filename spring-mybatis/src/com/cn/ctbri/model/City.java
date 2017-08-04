@@ -1,7 +1,7 @@
 package com.cn.ctbri.model;
 
 public class City {
-    private String locationId;
+    private Long locationId;
 
     private String localeCode;
 
@@ -27,12 +27,12 @@ public class City {
 
     private String timeZone;
 
-    public String getLocationId() {
+    public Long getLocationId() {
         return locationId;
     }
 
-    public void setLocationId(String locationId) {
-        this.locationId = locationId == null ? null : locationId.trim();
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
     }
 
     public String getLocaleCode() {
