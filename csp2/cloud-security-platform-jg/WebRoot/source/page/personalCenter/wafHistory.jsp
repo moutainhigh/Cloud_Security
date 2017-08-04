@@ -143,9 +143,10 @@ $(document).ready(function(){
  	 pielevel(startDate,timeUnit);  	 
  	 pieEvent(startDate,timeUnit);
  	 barEvent(startDate,timeUnit);
- 	 lineEvent(startDate,timeUnit);
+ 	 
  	 sourceIpEvent(startDate,timeUnit);
- 	 sourceAreaEvent(startDate,timeUnit);
+ 	 //sourceAreaEvent(startDate,timeUnit);
+ 	 lineEvent(startDate,timeUnit);
 
      
 }); 
@@ -235,11 +236,10 @@ function generate(){
           <input type="hidden" value="${levelmid }" id="levelmid" name="levelmid"/>
           <input type="hidden" value="${levellow }" id="levellow" name="levellow"/>
           <input type="hidden" value="${levelType}" id="levelType" name="levelType" />
-          <input type="hidden" value="${level }" id="level" name="level"/>
-          <input type="hidden" value="${levelType}" id="levelType" name="levelType"/>
-          <input type="hidden" value="${websecNum}" id="websecNum" name="websecNum"/>
-          <input type="hidden" value="${resultListTime}" id="resultListTime" name="resultListTime"/>
-          <input type="hidden" value="${websecListIp}" id="websecListIp" name="websecListIp"/>
+
+     
+
+
 
           <!-- 导出图像 -->
           <input type="hidden" name="imgPieLevel" id="imgPieLevel" />
@@ -247,7 +247,7 @@ function generate(){
 		  <input type="hidden" name="imgBar" id="imgBar" />
 		  <input type="hidden" name="imgOntimeLine" id="imgOntimeLine"/>
 		  <input type="hidden" name="imgSourceIp" id="imgSourceIp"/>
-		  <input name="imgSourceArea" id="imgSourceArea"/>
+		  <input type="hidden" name="imgSourceArea" id="imgSourceArea"/>
 
           
           <ul  class="navlist centlist clearfix">
@@ -269,10 +269,7 @@ function generate(){
           <label class="fl">时间</label>
           <div class="fl" style="top:3px;">
           	<input type="text" style="width:256px;" name="beginDate" id="beginDate" readonly="readonly" value="${beginDate }" />
-          	<button type="button" onclick="generate()" style="background-color: #e7e7e7; color: black;border-radius: 12px;">生成</button>
-
-                   
-          	<a href="javascript:void(0)" onclick="generate()" >生成</a>
+          	<button type="button" onclick="generate()" style="background-color: #e7e7e7; color: black;border-radius: 5px;">生成</button>
 			<span>下载Word报表&nbsp;</span>
 			<span>
 				<a href="javascript:void(0)" onclick="exportImgWAF()" ><img src="${ctx}/source/images/export.png" width="22" height="23"/></a>
@@ -302,21 +299,15 @@ function generate(){
              <div class="data_1" style="margin-right:0px;"><div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div></div>
             </c:if>-->
         </div>
+       
         <!-- 按时间段统计 -->
         <div class="data_table">
             <c:if test="${websecNum>0}">
-				<div style="width:100%; height: 380px; padding: 20px;" id="ontimeLine"></div>
+				<div style="width:100%; height: 380px; padding: 20px;" id="ontimeLine"></div>				
             </c:if>
             <c:if test="${websecNum==0}">
 	            <div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div>
             </c:if>
-        </div>
-        
-        <div class="data_table">        
-        	<div style="width:100%; height: 380px; padding: 20px; " id="sourceIP"></div>
-        </div>
-        <div class="data_table">
-        	<div style="width:100%; height: 380px; padding: 20px; " id="sourceArea"></div>
         </div>
         
         告警时段统计数据
@@ -345,6 +336,16 @@ function generate(){
 	            </div>
 	         </c:if>
 	    </div>
+	    
+         <!-- 按攻击源ip统计 -->
+        <div class="data_table">
+            <c:if test="${websecNum>0}">
+				<div style="width:100%; height: 380px; padding: 20px;" id="sourceIP"></div>				
+            </c:if>
+            <c:if test="${websecNum==0}">
+	            <div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div>
+            </c:if>
+        </div>
         
         <div class="data_table">
             <c:if test="${websecNum!=0}">
@@ -374,6 +375,16 @@ function generate(){
             </c:if>
         </div>
         
+       
+       <div class="data_table">
+            <c:if test="${websecNum>0}">
+				<div style="width:100%; height: 380px; padding: 20px;" id="sourceArea"></div>				
+            </c:if>
+            <c:if test="${websecNum==0}">
+	            <div class="nodata"><img src="${ctx}/source/images/waf_nodata.png"/></div>
+            </c:if>
+        </div>         
+
        </div>    
 		</div>
 		</form>
