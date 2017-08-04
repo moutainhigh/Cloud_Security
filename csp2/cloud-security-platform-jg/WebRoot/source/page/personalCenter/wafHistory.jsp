@@ -145,7 +145,7 @@ $(document).ready(function(){
  	 barEvent(startDate,timeUnit);
  	 lineEvent(startDate,timeUnit);
  	 sourceIpEvent(startDate,timeUnit);
- 	 //sourceAreaEvent(startDate,timeUnit);
+ 	 sourceAreaEvent(startDate,timeUnit);
 
      
 }); 
@@ -246,8 +246,9 @@ function generate(){
           <input type="hidden" name="imgPieEvent" id="imgPieEvent" />
 		  <input type="hidden" name="imgBar" id="imgBar" />
 		  <input type="hidden" name="imgOntimeLine" id="imgOntimeLine"/>
-		  <input name="imgSourceArea" id="imgSourceArea"/>
 		  <input type="hidden" name="imgSourceIp" id="imgSourceIp"/>
+		  <input name="imgSourceArea" id="imgSourceArea"/>
+
           
           <ul  class="navlist centlist clearfix">
             <li><a href="${ctx}/warningWaf.html?orderId=${order.id }" title="">实时数据</a></li>
@@ -311,10 +312,11 @@ function generate(){
             </c:if>
         </div>
         
-        <!-- 隐藏图表 -->
-        <div>
+        <div class="data_table">        
         	<div style="width:100%; height: 380px; padding: 20px; " id="sourceIP"></div>
-        	<div style="width:100%; height: 380px; padding: 20px; display:none;" id="sourceArea"></div>
+        </div>
+        <div class="data_table">
+        	<div style="width:100%; height: 380px; padding: 20px; " id="sourceArea"></div>
         </div>
         
         告警时段统计数据
