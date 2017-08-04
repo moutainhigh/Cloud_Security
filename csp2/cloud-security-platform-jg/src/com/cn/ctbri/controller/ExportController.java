@@ -1463,6 +1463,7 @@ public class ExportController {
         String strimgPieLevel = paramMap.get("imgPieLevel").toString();
         String strimgBar = paramMap.get("imgBar").toString();
         String strimgPieEvent = paramMap.get("imgPieEvent").toString();
+        String strimgSourceIp = paramMap.get("imgSourceIp").toString();
         
         String levelTotal =paramMap.get("levelTotal").toString();
         String levelhigh =paramMap.get("levelhigh").toString();
@@ -1505,9 +1506,12 @@ public class ExportController {
         String imgFilePieLevel = filePath1 +"/"+ System.currentTimeMillis()+"strimgPieLevel"+".png";
         String imgFileBar = filePath1 +"/"+ System.currentTimeMillis()+"strimgBar"+".png";
         String imgFilePieEvent = filePath1 +"/"+ System.currentTimeMillis()+"strimgPieEvent"+".png";
+        String imgFileSourceIp =filePath1 +"/"+ System.currentTimeMillis() +"strimgSourceIp"+".png";
+        
         createImage(request, response, imgFilePieLevel, strimgPieLevel);
         createImage(request, response, imgFileBar, strimgBar);
         createImage(request, response, imgFilePieEvent, strimgPieEvent);
+        createImage(request, response, imgFileSourceIp, strimgSourceIp);
 
         //高中低 数据统计
         //*****************test WafAPIWorker
@@ -1536,7 +1540,7 @@ public class ExportController {
 			map.put("img4", getImageStr(imgFilePieEvent));
 			map.put("img3", getImageStr(imgFilePieEvent));
 			map.put("img2", getImageStr(imgFilePieEvent));
-			map.put("img1", getImageStr(imgFilePieEvent));
+			map.put("img1", getImageStr(imgFileSourceIp));
 			map.put("REPORTTYPE", "月报");
 			
 			List<Threat> threatlist = new ArrayList<Threat>();  
