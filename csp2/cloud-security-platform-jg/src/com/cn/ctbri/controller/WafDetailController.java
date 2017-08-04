@@ -122,17 +122,18 @@ public class WafDetailController {
             	String eventStr = WafAPIWorker.getEventTypeCountDomainInTime(startDate,"",timeUnit,domainList);
         		Map map1 = WafAPIAnalysis.getWafEventTypeCountInTimeNoDecode(eventStr);
         		Integer totaltype = (Integer) map1.get("total");
-            	request.setAttribute("levelType", totaltype);
+            	/*request.setAttribute("levelType", totaltype);
             	List listEventType = WafAPIAnalysis.analysisEventTypeCountList(eventStr);
             	int totalEventTypeCount = 0;
             	for (int i = 0; i < listEventType.size(); i++) {
 					Map typeMap = (Map) listEventType.get(i);
 					String count = String.valueOf(typeMap.get("count"));
 					totalEventTypeCount = totalEventTypeCount + Integer.parseInt(count);
-				}
-            	request.setAttribute("eventTypeTotal", String.valueOf(totalEventTypeCount));
-            	String strlistEventType = new sun.misc.BASE64Encoder().encode(listEventType.toString().getBytes());
-     	        request.setAttribute("strlistEventType",strlistEventType); 
+				}*/
+            	request.setAttribute("eventTypeTotal", String.valueOf(totaltype));
+            	String strEventTypeBase64 = new String(eventStr.getBytes("UTF-8"),"UTF-8");
+            	strEventTypeBase64 = new sun.misc.BASE64Encoder().encode(strEventTypeBase64.toString().getBytes());
+     	        request.setAttribute("strlistEventType",strEventTypeBase64); 
             	
         		//告警时段
         		String unit="";
@@ -156,17 +157,18 @@ public class WafDetailController {
         		request.setAttribute("timeCountTotal", String.valueOf(totalTimeCount));
      	        request.setAttribute("resultList", listTime);
      	     
-     	        String strlisttime = new sun.misc.BASE64Encoder().encode(listTime.toString().getBytes());
-     	        request.setAttribute("resultListTime",strlisttime);
+     	        String strtimeBase64 = new sun.misc.BASE64Encoder().encode(eventStr1.toString().getBytes());
+     	        request.setAttribute("resultListTime",strtimeBase64);
      	
             	//攻击源
             	websecStr = WafAPIWorker.getWafLogWebsecSrcIpCountInTime(startDate,"",timeUnit,domainList,10);
             	request.setAttribute("beginDate", startDate);
             	request.setAttribute("type", timeUnit);
             	websecList = WafAPIAnalysis.getWafLogWebsecSrcIp(websecStr);
-            	String strattackip = new sun.misc.BASE64Encoder().encode(websecList.toString().getBytes());
+            	//String strattackip = new String(websecList.toString().getBytes("UTF-8"),"UTF-8");
+            	String strattackipBase64 = new sun.misc.BASE64Encoder().encode(websecStr.getBytes());
             	request.setAttribute("websecList", websecList);
-            	request.setAttribute("websecListIp", strattackip);
+            	request.setAttribute("websecListIp", strattackipBase64);
             	request.setAttribute("websecNum", websecList.size());
             	int totalAttackIP = 0;
         		for (int i = 0; i < listTime.size(); i++) {
@@ -523,6 +525,72 @@ public class WafDetailController {
 //        return jo.toString();
     }
     
+    @RequestMapping(value="getSourceIpData.html", method = RequestMethod.POST)
+    @ResponseBody
+    public void getSourceIpData(HttpServletRequest request, HttpServletResponse response){
+    	response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset=UTF-8");
+        
+        String orderId = request.getParameter("orderId");
+        String isHis = request.getParameter("isHis");
+        String startDate = request.getParameter("startDate");
+    	String timeUnit = request.getParameter("timeUnit");
+    	List assets = orderAssetService.findAssetsByOrderId(orderId);
+    	List<String> dstIpList = new ArrayList();
+    	List<String> domainList = new ArrayList<String>();
+    	if(assets != null && assets.size() > 0){
+        	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
+        	assetOrder=(HashMap) assets.get(0);
+        	String ipArray=(String) assetOrder.get("ipArray");
+        	String addr =(String) assetOrder.get("addr");
+        	String domain = (String) addr.substring(addr.indexOf("://")+3);
+        	String[] ips = null;   
+            ips = ipArray.split(",");
+            for (int n = 0; n < ips.length; n++) {
+            	String[] ip = ips[n].split(":");
+				dstIpList.add(ip[0]);
+            }
+            dstIpList.add("219.141.189.183");  
+            domainList.add(domain);
+        }
+        
+    	String eventStr = "";
+    	if(isHis.equals("1")){//历史查询
+    		String unit = "";
+    		if(timeUnit.equals("year")){
+    			unit = "month";
+    		}else if(timeUnit.equals("month")){
+    			unit = "day";
+    		}
+    		//eventStr = WafAPIWorker.getWafLogWebSecTimeCount(startDate+"-01","",unit,domainList);
+    		eventStr = WafAPIWorker.getWafLogWebsecSrcIpCountInTime(startDate,"",timeUnit,domainList,10);
+    		System.out.println("eventStr="+eventStr);
+    	}
+    	Map map = WafAPIAnalysis.analysisWafLogWebSecSrcIp(eventStr);
+        
+        List name = null;
+        List value = null;
+        
+        if(map != null && map.size() > 0){
+			name = (List) map.get("srcIp");
+			value = (List) map.get("count");
+        }
+
+        JSONObject jo = new JSONObject();
+        jo.put("name", name);
+        jo.put("count", value);
+        
+        PrintWriter out;
+        try {
+            out = response.getWriter();
+            out.write(jo.toString()); 
+            out.flush(); 
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        return jo.toString();
+    }
     
     /**
      * 解析新建站点
