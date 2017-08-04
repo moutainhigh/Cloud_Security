@@ -478,10 +478,7 @@ var sourceArea = null;
 	                	ontimeLine.setOption({
 	                		title: {
 	                            text: '攻击源IP统计图'
-	                        },
-	                        legend: {
-			      		        data:['攻击次数']
-			      		    },
+	                        },	                      
 			      		    toolbox: {
 			      		        show : true,
 				      		  	feature : {
@@ -492,12 +489,13 @@ var sourceArea = null;
 			      		    },
 			      		    calculable : true,
 			      		    tooltip : {
-			      		        trigger: 'axis',
+			      		        //trigger: 'axis',
 			      		        formatter: "{b} : {c}次"
 			      		    },
 			      		    yAxis : [
 			      		        {
 			      		            type : 'value',
+			      		            name : '攻击次数',
 			      		            axisLabel : {
 			      		                formatter: '{value}'
 			      		            }
@@ -605,8 +603,8 @@ var sourceArea = null;
 			      		    	axisPointer : {            // 坐标轴指示器，坐标轴触发有效
 		                                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
 		                        },
-			      		        trigger: 'axis',
-			      		        formatter: "{b} : {c}次"
+			      		        //trigger: 'axis',
+			      		        formatter: "{a} : {c}次"
 			      		    },
 			      		    yAxis : [
 			      		        {
@@ -630,11 +628,11 @@ var sourceArea = null;
 		                       function(){
 			                       var serie=[];
 			                       	 
-			                       for( var i=0;i < data.json.length;i++){
+			                       for( var i=0;i < data.name.length;i++){
 			                    	   var num=[];
-			                    	   num[0]=data.json[i].value;
+			                    	   num[0]=data.count[i];
 			                    	   var item={
-			                    			 name:data.json[i].name,
+			                    			 name:data.name[i],
 				                        	 type:'bar',
 		//		                        	 barWidth : 25,
 				                        	 itemStyle: {
