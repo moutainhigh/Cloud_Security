@@ -144,6 +144,8 @@ $(document).ready(function(){
  	 pieEvent(startDate,timeUnit);
  	 barEvent(startDate,timeUnit);
  	 lineEvent(startDate,timeUnit);
+ 	 sourceIpEvent(startDate,timeUnit);
+ 	 //sourceAreaEvent(startDate,timeUnit);
 
      
 }); 
