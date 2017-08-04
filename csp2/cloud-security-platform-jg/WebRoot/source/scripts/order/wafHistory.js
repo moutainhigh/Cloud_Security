@@ -474,8 +474,8 @@ var sourceArea = null;
 	            	dataType:"json",
 	//                contentType: "application/x-www-form-urlencoded; charset=utf-8",
 	                success:function(data){
-	                	ontimeLine.hideLoading();  
-	                	ontimeLine.setOption({
+	                	sourceIp.hideLoading();  
+	                	sourceIp.setOption({
 	                		title: {
 	                            text: '攻击源IP统计图'
 	                        },	                      
@@ -533,7 +533,7 @@ var sourceArea = null;
 			      		        }
 			      		    ]
 			        	},true);//图形展示
-	                    window.onresize = ontimeLine.resize;
+	                    window.onresize = sourceIp.resize;
 	                }//ajax执行后台
 	            }); 
 	        }
@@ -578,8 +578,8 @@ var sourceArea = null;
 	            	dataType:"json",
 	//                contentType: "application/x-www-form-urlencoded; charset=utf-8",
 	                success:function(data){
-	                	ontimeLine.hideLoading();  
-	                	ontimeLine.setOption({
+	                	sourceArea.hideLoading();  
+	                	sourceArea.setOption({
 	                		title: {
 	                            text: '攻击源区域分布图'
 	                        },
@@ -652,7 +652,7 @@ var sourceArea = null;
 			                    	 return serie;
 		                    	}()	   			      		   
 			        	},true);//图形展示
-	                    window.onresize = ontimeLine.resize;
+	                    window.onresize = sourceArea.resize;
 	                }//ajax执行后台
 	            }); 
 	        }
@@ -702,14 +702,14 @@ function exportImgWAF(){
 	var dataBar = myChartBar.getDataURL("png"); 
     var ontime = ontimeLine.getDataURL("png");  
     var mySourceIp = sourceIp.getDataURL("png");
-    var mySourceArea = sourceArea.getDataURL("png");
+    //var mySourceArea = sourceArea.getDataURL("png");
 	
 	$("#imgPieLevel").val(dataPieLevel);
     $("#imgPieEvent").val(dataPieEvent);
     $("#imgBar").val(dataBar);
 	$("#imgOntimeLine").val(ontime);
 	$("#imgSourceIp").val(mySourceIp);
-	$("#imgSourceArea").val(mySourceArea);
+	//$("#imgSourceArea").val(mySourceArea);
 	$("#exportWafForm").submit();
 }
 
