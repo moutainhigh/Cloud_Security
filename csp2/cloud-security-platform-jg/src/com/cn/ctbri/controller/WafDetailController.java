@@ -524,7 +524,7 @@ public class WafDetailController {
         }
 //        return jo.toString();
     }
-    
+  
     @RequestMapping(value="getSourceIpData.html", method = RequestMethod.POST)
     @ResponseBody
     public void getSourceIpData(HttpServletRequest request, HttpServletResponse response){
@@ -536,7 +536,7 @@ public class WafDetailController {
         String startDate = request.getParameter("startDate");
     	String timeUnit = request.getParameter("timeUnit");
     	List assets = orderAssetService.findAssetsByOrderId(orderId);
-    	List<String> dstIpList = new ArrayList();
+    	//List<String> dstIpList = new ArrayList();
     	List<String> domainList = new ArrayList<String>();
     	if(assets != null && assets.size() > 0){
         	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
@@ -544,13 +544,14 @@ public class WafDetailController {
         	String ipArray=(String) assetOrder.get("ipArray");
         	String addr =(String) assetOrder.get("addr");
         	String domain = (String) addr.substring(addr.indexOf("://")+3);
-        	String[] ips = null;   
+        	/*String[] ips = null;   
             ips = ipArray.split(",");
+            
             for (int n = 0; n < ips.length; n++) {
             	String[] ip = ips[n].split(":");
 				dstIpList.add(ip[0]);
             }
-            dstIpList.add("219.141.189.183");  
+            dstIpList.add("219.141.189.183");  */
             domainList.add(domain);
         }
         
@@ -591,7 +592,80 @@ public class WafDetailController {
         }
 //        return jo.toString();
     }
-    
+    @RequestMapping(value="getSourceAreaData.html", method = RequestMethod.POST)
+    @ResponseBody
+    public void getSourceAreaData(HttpServletRequest request, HttpServletResponse response){
+    	response.setCharacterEncoding("utf-8");
+        response.setContentType("application/json;charset=UTF-8");
+        
+        String orderId = request.getParameter("orderId");
+        String isHis = request.getParameter("isHis");
+        String startDate = request.getParameter("startDate");
+    	String timeUnit = request.getParameter("timeUnit");
+    	List assets = orderAssetService.findAssetsByOrderId(orderId);
+    	//List<String> dstIpList = new ArrayList();
+    	List<String> domainList = new ArrayList<String>();
+    	if(assets != null && assets.size() > 0){
+        	HashMap<String, Object> assetOrder = new HashMap<String, Object>();
+        	assetOrder=(HashMap) assets.get(0);
+        	String ipArray=(String) assetOrder.get("ipArray");
+        	String addr =(String) assetOrder.get("addr");
+        	String domain = (String) addr.substring(addr.indexOf("://")+3);
+        	/*String[] ips = null;   
+            ips = ipArray.split(",");
+            for (int n = 0; n < ips.length; n++) {
+            	String[] ip = ips[n].split(":");
+				dstIpList.add(ip[0]);
+            }*/
+          //  dstIpList.add("219.141.189.183");  
+            domainList.add(domain);
+        }
+        
+    	String eventStr = "";
+    	if(isHis.equals("1")){//历史查询
+    		String unit = "";
+    		if(timeUnit.equals("year")){
+    			unit = "month";
+    		}else if(timeUnit.equals("month")){
+    			unit = "day";
+    		}
+    		
+    		eventStr = WafAPIWorker.getWafLogWebsecSrcIpCountInTime(startDate,"",timeUnit,domainList,10);
+    		System.out.println("eventStr="+eventStr);
+    	}
+    	Map map = WafAPIAnalysis.analysisWafLogWebSecSrcIp(eventStr);
+        
+        List name = null;
+        List value = null;
+        
+        if(map != null && map.size() > 0){
+			name = (List) map.get("srcIp");
+			value = (List) map.get("count");
+			
+			for (int i = 0; i < name.size(); i++) {
+				String strIP = String.valueOf(name.get(i));
+				String strLocation = WafAPIWorker.getLocationFromIp(strIP);
+				name.set(i, strLocation);
+			}
+        }
+
+        
+        
+        JSONObject jo = new JSONObject();
+        jo.put("name", name);
+        jo.put("count", value);
+        
+        PrintWriter out;
+        try {
+            out = response.getWriter();
+            out.write(jo.toString()); 
+            out.flush(); 
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        return jo.toString();
+    }
     /**
      * 解析新建站点
      * @param siteStr
