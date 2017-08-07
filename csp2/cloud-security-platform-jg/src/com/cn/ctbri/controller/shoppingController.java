@@ -2088,7 +2088,8 @@ public class shoppingController {
     		
     		//更新 支付Flag(cs_order表) 未支付-->已支付
     		String orderIds = orderList.getOrderId();//订单条目编号(cs_order的id)
-    		selfHelpOrderService.updateOrderPayFlag(orderIds, 1);
+    		int payflag = 1;
+    		selfHelpOrderService.updateOrderPayFlag(orderIds, payflag);
     		
     		//取得服务时间更改的订单编号
     		String orderId = "";
