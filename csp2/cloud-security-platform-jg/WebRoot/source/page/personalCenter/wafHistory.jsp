@@ -246,7 +246,7 @@ function generate(){
           <input type="hidden" name="imgPieEvent" id="imgPieEvent" />
 		  <input type="hidden" name="imgBar" id="imgBar" />
 		  <input type="hidden" name="imgOntimeLine" id="imgOntimeLine"/>
-		  <input type="hidden" name="imgSourceIp" id="imgSourceIp"/>
+		  <input  name="imgSourceIp" id="imgSourceIp"/>
 		  <input type="hidden" name="imgSourceArea" id="imgSourceArea"/>
 
           
