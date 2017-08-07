@@ -1313,6 +1313,8 @@ public class ExportController {
             String imgPieLevel = request.getParameter("imgPieLevel");
             String imgBar = request.getParameter("imgBar");
             String imgPieEvent = request.getParameter("imgPieEvent");
+            String imgSourceIp = request.getParameter("imgSourceIp");
+            
             String levelTotal = request.getParameter("level");
             String levelhigh = request.getParameter("levelhigh");
             String levelmid = request.getParameter("levelmid");
@@ -1355,6 +1357,7 @@ public class ExportController {
             paramMap.put("imgPieLevel", imgPieLevel);
             paramMap.put("imgBar", imgBar);
             paramMap.put("imgPieEvent", imgPieEvent);
+            paramMap.put("imgSourceIp", imgSourceIp);
             paramMap.put("levelTotal", levelTotal);
             paramMap.put("timeJsonStr", timeJsonStr);//time
             paramMap.put("timeCountTotal", timeCountTotal);
@@ -1464,7 +1467,6 @@ public class ExportController {
         String strimgBar = paramMap.get("imgBar").toString();
         String strimgPieEvent = paramMap.get("imgPieEvent").toString();
         String strimgSourceIp = paramMap.get("imgSourceIp").toString();
-        
         String levelTotal =paramMap.get("levelTotal").toString();
         String levelhigh =paramMap.get("levelhigh").toString();
         String levelmid =paramMap.get("levelmid").toString();
