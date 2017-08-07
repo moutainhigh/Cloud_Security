@@ -702,6 +702,7 @@ function exportImgWAF(){
 	var dataBar = myChartBar.getDataURL("png"); 
     var ontime = ontimeLine.getDataURL("png");  
     var mySourceIp = sourceIp.getDataURL("png");
+    alert(mySourceIp);
     //var mySourceArea = sourceArea.getDataURL("png");
 	
 	$("#imgPieLevel").val(dataPieLevel);
