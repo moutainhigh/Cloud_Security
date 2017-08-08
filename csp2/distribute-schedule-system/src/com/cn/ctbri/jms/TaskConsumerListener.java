@@ -149,7 +149,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 			Map<String, Object> engineMap = new HashMap<String, Object>();
             engineMap.put("serviceId", t.getServiceId());
             
-            //查询引擎编号
+            //查询引擎编号,按照引擎编号分组，返回满足服务类型的平台列表
             List<EngineCfg> engineList = engineService.findEngineByParam(engineMap);
             
             List<EngineCfg> engineTop3 = getArnhemUsableEngine(engineList, t.getServiceId());
@@ -158,13 +158,14 @@ public class TaskConsumerListener implements MessageListener,Runnable{
             boolean engineStatus = false;
             String sessionid = "";
             String status = "";
+            
             for (EngineCfg engineCfg : engineTop3) {
             	engineSel = engineCfg;
 				for(int i=0;i<3;i++){
 					status = SouthAPIWorker.getSessionId(engineSel.getEngine_number());
 	                if(status.equals("success")){
 	                    engineStatus = true;
-	                    break;
+	                    break ;
 	                }
 	                if(!engineStatus){
 	                	continue;
@@ -264,10 +265,7 @@ public class TaskConsumerListener implements MessageListener,Runnable{
 	            	boolean state = this.getStatusBylssued(lssued);
 	            	if(state){
                 	//if(true){
-	                    //任务下发后,引擎活跃数加1
-	                    engine.setId(engine.getId());
-	                    //engineService.update(engine);
-	                    
+	                   
 	                    //更新任务状态为running
 	                    t.setStatus(Integer.parseInt(Constants.TASK_RUNNING));
 	                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

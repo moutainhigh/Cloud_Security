@@ -1,5 +1,6 @@
 package com.cn.ctbri.jms;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import javax.jms.ObjectMessage;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
+import net.sf.json.util.JSONTokener;
 
 import org.apache.http.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -442,7 +444,7 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 	 * @return
 	 */
 	private List<Alarm> getAlarmByRerult(String taskId, String taskStr, int serviceId) {
-		List<Alarm> aList = new ArrayList<Alarm>();
+		List<Alarm> aList = null ;
 		try {
 			JSONObject obj = new JSONObject().fromObject(taskStr);
 	        String report = obj.getString("Report");
@@ -452,71 +454,32 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 	        String func = funcsObj.getString("Func");
 	        JSONObject funcObj = new JSONObject().fromObject(func);
 	        String alarm_type = URLDecoder.decode(funcObj.getString("name"), "UTF-8");
-	        String site = funcObj.getString("site");
-	        JSONObject siteObj = new JSONObject().fromObject(site);
-	        String urlAb = URLDecoder.decode(siteObj.getString("@name"), "UTF-8");
-	        String time = URLDecoder.decode(siteObj.getString("@time"), "UTF-8");
-	        String score = URLDecoder.decode(siteObj.getString("@score"), "UTF-8");
-	        String issuetype = siteObj.getString("issuetype");
-	        if(getJSONType(issuetype) == JSON_TYPE.JSON_TYPE_OBJECT){
-	        	JSONObject issuetypeObj = new JSONObject().fromObject(issuetype);
-	        	String name = URLDecoder.decode(issuetypeObj.getString("@name"), "UTF-8");
-	        	String level = URLDecoder.decode(issuetypeObj.getString("@level"), "UTF-8");
-	        	String advice = URLDecoder.decode(issuetypeObj.getString("@advice"), "UTF-8");
-	        	if(advice.equals("Web Service SQL盲注")){
-				    advice = "SQL";
-				}
-	        	String issuedata = issuetypeObj.getString("issuedata");
-	        	if(getJSONType(issuedata) == JSON_TYPE.JSON_TYPE_OBJECT){
-	        		JSONObject issuedataObj = new JSONObject().fromObject(issuedata);
-	        		String url = URLDecoder.decode(issuedataObj.getString("@url"), "UTF-8");
-	            	String value = URLDecoder.decode(issuedataObj.getString("@value"), "UTF-8");
-	            	//放入alarm中
-	            	aList.add(addAlarm(taskId, time, urlAb, alarm_type,
-							name, score, advice, level, url, value,
-							serviceId));
-	        	}else if(getJSONType(issuedata) == JSON_TYPE.JSON_TYPE_ARRAY){
-	        		JSONArray issuesArray = issuetypeObj.getJSONArray("issuedata");
-	            	for (int j=0;j<issuesArray.size();j++) {
-	            		JSONObject issueObj = (JSONObject) issuesArray.get(j);
-	                	String url = URLDecoder.decode(issueObj.getString("@url"), "UTF-8");
-	                	String value = URLDecoder.decode(issueObj.getString("@value"), "UTF-8");
-	                	aList.add(addAlarm(taskId, time, urlAb, alarm_type,
-								name, score, advice, level, url, value,
-								serviceId));
-	            	}
-	        	}
-	        }else if(getJSONType(issuetype) == JSON_TYPE.JSON_TYPE_ARRAY){
-	        	JSONArray issuetypesArray = siteObj.getJSONArray("issuetype");
-	        	for (int i=0;i<issuetypesArray.size();i++) {
-	            	JSONObject issuetypeObj = (JSONObject) issuetypesArray.get(i);
-	            	String name = URLDecoder.decode(issuetypeObj.getString("@name"), "UTF-8");
-	            	String level = URLDecoder.decode(issuetypeObj.getString("@level"), "UTF-8");
-	            	String advice = URLDecoder.decode(issuetypeObj.getString("@advice"), "UTF-8");
-	            	if(advice.equals("Web Service SQL盲注")){
-					    advice = "SQL";
-					}
-	            	String issuedata = issuetypeObj.getString("issuedata");
-	            	if(getJSONType(issuedata) == JSON_TYPE.JSON_TYPE_OBJECT){
-	            		JSONObject issuedataObj = new JSONObject().fromObject(issuedata);
-	            		String url = URLDecoder.decode(issuedataObj.getString("@url"), "UTF-8");
-	                	String value = URLDecoder.decode(issuedataObj.getString("@value"), "UTF-8");
-	                	aList.add(addAlarm(taskId, time, urlAb, alarm_type,
-								name, score, advice, level, url, value,
-								serviceId));
-	            	}else if(getJSONType(issuedata) == JSON_TYPE.JSON_TYPE_ARRAY){
-	            		JSONArray issuesArray = issuetypeObj.getJSONArray("issuedata");
-	                	for (int j=0;j<issuesArray.size();j++) {
-	                		JSONObject issueObj = (JSONObject) issuesArray.get(j);
-	                    	String url = URLDecoder.decode(issueObj.getString("@url"), "UTF-8");
-	                    	String value = URLDecoder.decode(issueObj.getString("@value"), "UTF-8");
-							aList.add(addAlarm(taskId, time, urlAb, alarm_type,
-									name, score, advice, level, url, value,
-									serviceId));
-	                	}
-	            	}
-	    		}
-	        }
+	        //有可能返回多个site，即"site":[{},{}]
+	        
+	       // JSONArray siteArray = funcObj.getJSONArray("site");
+	        
+	        Object siteArray = new JSONTokener(funcObj.getString("site")).nextValue();  
+	        /*if(siteArray.size() > 1){
+	        	for(int i = 0 ; i < siteArray.size() ; i++){
+	        		JSONObject siteObj = siteArray.getJSONObject(i); 
+		        	aList=this.getAList(siteObj, taskId, serviceId, alarm_type);
+		        }
+		        	
+	        }else{
+	        	JSONObject siteObj = funcObj.getJSONObject("site");
+	        	aList=this.getAList(siteObj, taskId, serviceId, alarm_type);
+	        }*/
+	        if (siteArray instanceof JSONArray){  
+                JSONArray jsonArray = (JSONArray)siteArray;  
+                for (int k = 0; k < jsonArray.size(); k++) {  
+                	JSONObject siteObj = jsonArray.getJSONObject(k); 
+		        	aList=this.getAList(siteObj, taskId, serviceId, alarm_type);
+                }  
+            }else if (siteArray instanceof JSONObject) {  
+                JSONObject jsonObject = (JSONObject)siteArray;  
+                aList=this.getAList(jsonObject, taskId, serviceId, alarm_type); 
+            }  
+	        
 		} catch (Exception e) {
 		    e.printStackTrace();
 		    CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + taskId + "]解析任务结果发生异常!;User="+null);
@@ -524,6 +487,78 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
 		}
 		return aList;
 	}
+	
+	private List<Alarm> getAList(JSONObject siteObj, String taskId, int serviceId ,String alarm_type){
+		List<Alarm> aList = new ArrayList<Alarm>();
+		try{
+        String urlAb = URLDecoder.decode(siteObj.getString("@name"), "UTF-8");
+        String time = URLDecoder.decode(siteObj.getString("@time"), "UTF-8");
+        String score = URLDecoder.decode(siteObj.getString("@score"), "UTF-8");
+        String issuetype = siteObj.getString("issuetype");
+        if(getJSONType(issuetype) == JSON_TYPE.JSON_TYPE_OBJECT){
+        	JSONObject issuetypeObj = new JSONObject().fromObject(issuetype);
+        	String name = URLDecoder.decode(issuetypeObj.getString("@name"), "UTF-8");
+        	String level = URLDecoder.decode(issuetypeObj.getString("@level"), "UTF-8");
+        	String advice = URLDecoder.decode(issuetypeObj.getString("@advice"), "UTF-8");
+        	if(advice.equals("Web Service SQL盲注")){
+			    advice = "SQL";
+			}
+        	String issuedata = issuetypeObj.getString("issuedata");
+        	if(getJSONType(issuedata) == JSON_TYPE.JSON_TYPE_OBJECT){
+        		JSONObject issuedataObj = new JSONObject().fromObject(issuedata);
+        		String url = URLDecoder.decode(issuedataObj.getString("@url"), "UTF-8");
+            	String value = URLDecoder.decode(issuedataObj.getString("@value"), "UTF-8");
+            	//放入alarm中
+            	aList.add(addAlarm(taskId, time, urlAb, alarm_type,
+						name, score, advice, level, url, value,
+						serviceId));
+        	}else if(getJSONType(issuedata) == JSON_TYPE.JSON_TYPE_ARRAY){
+        		JSONArray issuesArray = issuetypeObj.getJSONArray("issuedata");
+            	for (int j=0;j<issuesArray.size();j++) {
+            		JSONObject issueObj = (JSONObject) issuesArray.get(j);
+                	String url = URLDecoder.decode(issueObj.getString("@url"), "UTF-8");
+                	String value = URLDecoder.decode(issueObj.getString("@value"), "UTF-8");
+                	aList.add(addAlarm(taskId, time, urlAb, alarm_type,
+							name, score, advice, level, url, value,
+							serviceId));
+            	}
+        	}
+        }else if(getJSONType(issuetype) == JSON_TYPE.JSON_TYPE_ARRAY){
+        	JSONArray issuetypesArray = siteObj.getJSONArray("issuetype");
+        	for (int i=0;i<issuetypesArray.size();i++) {
+            	JSONObject issuetypeObj = (JSONObject) issuetypesArray.get(i);
+            	String name = URLDecoder.decode(issuetypeObj.getString("@name"), "UTF-8");
+            	String level = URLDecoder.decode(issuetypeObj.getString("@level"), "UTF-8");
+            	String advice = URLDecoder.decode(issuetypeObj.getString("@advice"), "UTF-8");
+            	if(advice.equals("Web Service SQL盲注")){
+				    advice = "SQL";
+				}
+            	String issuedata = issuetypeObj.getString("issuedata");
+            	if(getJSONType(issuedata) == JSON_TYPE.JSON_TYPE_OBJECT){
+            		JSONObject issuedataObj = new JSONObject().fromObject(issuedata);
+            		String url = URLDecoder.decode(issuedataObj.getString("@url"), "UTF-8");
+                	String value = URLDecoder.decode(issuedataObj.getString("@value"), "UTF-8");
+                	aList.add(addAlarm(taskId, time, urlAb, alarm_type,
+							name, score, advice, level, url, value,
+							serviceId));
+            	}else if(getJSONType(issuedata) == JSON_TYPE.JSON_TYPE_ARRAY){
+            		JSONArray issuesArray = issuetypeObj.getJSONArray("issuedata");
+                	for (int j=0;j<issuesArray.size();j++) {
+                		JSONObject issueObj = (JSONObject) issuesArray.get(j);
+                    	String url = URLDecoder.decode(issueObj.getString("@url"), "UTF-8");
+                    	String value = URLDecoder.decode(issueObj.getString("@value"), "UTF-8");
+						aList.add(addAlarm(taskId, time, urlAb, alarm_type,
+								name, score, advice, level, url, value,
+								serviceId));
+                	}
+            	}
+    		}
+        }
+		}catch(Exception e){
+			   e.printStackTrace();
+        }
+        return aList;
+    }
 	
 	public Alarm addAlarm(String taskId, String time, String urlAb, 
 			String alarm_type, String name, String score, String advice, 
@@ -613,59 +648,27 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
      * @return
      */
     private Task getProgressByRes(int taskId, String progressStr) {
-        Task t = new Task();
+        Task t = null;
         try {
         	JSONObject obj = JSONObject.fromObject(progressStr);
         	String status = obj.getString("status");
-            if("Success".equals(status)){
-            	String taskState = obj.getString("TaskState");
-                if(!"other".equals(taskState) && !"wait".equals(taskState)){
-                    String engineIP = obj.getString("EngineIP");
-                    String taskProgress = obj.getString("TaskProgress");
-                    String currentUrl = URLDecoder.decode(obj.getString("CurrentUrl"), "UTF-8");
-                    String issueCount = obj.getString("IssueCount");
-                    String requestCount = obj.getString("RequestCount");
-                    String urlCount = obj.getString("UrlCount");
-                    String averResponse = obj.getString("AverResponse");
-                    String averSendCount = obj.getString("AverSendCount");
-                    String sendBytes = obj.getString("SendBytes");
-                    String receiveBytes = obj.getString("ReceiveBytes");
-                    t.setTaskId(taskId);
-                    t.setEngineIP(engineIP);
-                    t.setTaskProgress(taskProgress);
-                    t.setCurrentUrl(currentUrl);
-                    t.setIssueCount(issueCount);
-                    t.setRequestCount(requestCount);
-                    t.setUrlCount(urlCount);
-                    t.setAverResponse(averResponse);
-                    t.setAverSendCount(averSendCount);
-                    if(sendBytes!=null&&!sendBytes.equals("")){
-                        String bytes = sendBytes.substring(sendBytes.length()-2,sendBytes.length());
-                        String send = sendBytes.substring(0,sendBytes.length()-2);
-                        if(bytes.equals("KB")){
-                            t.setSendBytes(send);
-                        }else if(bytes.equals("MB")){
-                            t.setSendBytes(String.valueOf(Long.parseLong(send)*1024));
-                        }
-                    }
-                    
-                    if(receiveBytes!=null&&!receiveBytes.equals("")){
-                        String re = receiveBytes.substring(receiveBytes.length()-2,receiveBytes.length());
-                        String receive = receiveBytes.substring(0,receiveBytes.length()-2);
-                        if(re.equals("KB")){
-                            t.setReceiveBytes(receive);
-                        }else if(re.equals("MB")){
-                            t.setReceiveBytes(String.valueOf(Long.parseLong(receive)*1024));
-                        }
-                    }
-                    
-//                    t.setSendBytes(sendBytes);
-//                    t.setReceiveBytes(receiveBytes);
-                    // 插入任务进度信息表
-                    taskService.updateTask(t);
-                }
+            if("Success".equals(status) ){
+            	if(obj.containsKey("site")){
+            		
+            		JSONObject obj1 =  (JSONObject)obj.getJSONArray("site").getJSONObject(0) ;
+            		String taskState = obj1.getString("TaskState");
+            		if(!"other".equals(taskState) && !"wait".equals(taskState)){
+          			  t = updateTProcess(obj1,taskId);
+          		  }
+            	}else{
+            		String taskState = obj.getString("TaskState");
+            		  if(!"other".equals(taskState) && !"wait".equals(taskState)){
+            			 t = updateTProcess(obj,taskId);
+            		  }
+            	}   
             }
-        } catch (Exception e) {
+         }catch (Exception e) {
+        	
         	CSPLoggerAdapter.debug(CSPLoggerConstant.TYPE_LOGGER_ADAPTER_DEBUGGER, "Date="+DateUtils.nowDate()+";Message=[获取结果调度]:任务-[" + String.valueOf(taskId) + "]解析任务进度发生异常!;User="+null);
             e.printStackTrace();
             throw new RuntimeException("[获取结果调度]:任务-[" + String.valueOf(taskId) + "]解析任务进度发生异常!");
@@ -673,6 +676,59 @@ public class ResultConsumerListener  implements MessageListener,Runnable{
         return t;
     }
     
+    private Task updateTProcess(JSONObject obj,int taskId){
+    	Task t = new Task();
+        String engineIP = obj.getString("EngineIP");
+        String taskProgress = obj.getString("TaskProgress");
+        String currentUrl = null;
+		try {
+			currentUrl = URLDecoder.decode(obj.getString("CurrentUrl"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        String issueCount = obj.getString("IssueCount");
+        String requestCount = obj.getString("RequestCount");
+        String urlCount = obj.getString("UrlCount");
+        String averResponse = obj.getString("AverResponse");
+        String averSendCount = obj.getString("AverSendCount");
+        String sendBytes = obj.getString("SendBytes");
+        String receiveBytes = obj.getString("ReceiveBytes");
+        t.setTaskId(taskId);
+        t.setEngineIP(engineIP);
+        t.setTaskProgress(taskProgress);
+        t.setCurrentUrl(currentUrl);
+        t.setIssueCount(issueCount);
+        t.setRequestCount(requestCount);
+        t.setUrlCount(urlCount);
+        t.setAverResponse(averResponse);
+        t.setAverSendCount(averSendCount);
+        if(sendBytes!=null&&!sendBytes.equals("")){
+            String bytes = sendBytes.substring(sendBytes.length()-2,sendBytes.length());
+            String send = sendBytes.substring(0,sendBytes.length()-2);
+            if(bytes.equals("KB")){
+                t.setSendBytes(send);
+            }else if(bytes.equals("MB")){
+                t.setSendBytes(String.valueOf(Long.parseLong(send)*1024));
+            }
+        }
+        
+        if(receiveBytes!=null&&!receiveBytes.equals("")){
+            String re = receiveBytes.substring(receiveBytes.length()-2,receiveBytes.length());
+            String receive = receiveBytes.substring(0,receiveBytes.length()-2);
+            if(re.equals("KB")){
+                t.setReceiveBytes(receive);
+            }else if(re.equals("MB")){
+                t.setReceiveBytes(String.valueOf(Long.parseLong(receive)*1024));
+            }
+        }
+        
+//        t.setSendBytes(sendBytes);
+//        t.setReceiveBytes(receiveBytes);
+        // 插入任务进度信息表
+        taskService.updateTask(t);
+        return t ;
+    }
     
 	public enum JSON_TYPE{
         /**JSONObject*/    

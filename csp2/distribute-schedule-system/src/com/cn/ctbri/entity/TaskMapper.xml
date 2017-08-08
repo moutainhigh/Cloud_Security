@@ -249,7 +249,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     	select * from cs_task t where t.order_id = #{orderId} and t.status != 1
     </select>
      <!-- 查询某个引擎上正在运行的任务数 -->
-    <select id="countTaskByEngine" parameterType="String" resultType="Integer">
+    <select id="countTaskByEngine" parameterType="Integer" resultType="Integer">
     	select count(1) from cs_task t where t.status =2 and t.engine=#{engineId} 
     </select>
 </mapper>
