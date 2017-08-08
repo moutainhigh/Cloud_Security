@@ -209,12 +209,12 @@ public interface TWafLogWebsecMapper {
 
     @Select("<script>"+
     		"select count(*) as count,src_ip from t_waf_log_websec "+
-    		"where dst_ip in "+
+    		"where domain in "+
     		"<foreach item='item' index='index' collection='strList' open='(' separator=',' close=')'>"+
     		"#{item}" +
     		"</foreach> " +
     		" AND stat_time between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP} "+
-    		" GROUP BY src_ip  ORDER BY count desc "+
+    		" GROUP BY src_ip ORDER BY count desc "+
     		"limit #{limitNum,jdbcType=BIGINT}"+
     		"</script>"
     )

@@ -242,4 +242,7 @@
 		</Store>
 		<Relay relayServerIP="127.0.0.1" relayPort="514" relayProtocol="udp" relayMode="Raw" />
 	</SyslogServer>
+	<AlertConfig>
+		<statistic>1000</statistic>
+	</AlertConfig>
 </WAF_CONFIG>

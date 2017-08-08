@@ -26,9 +26,11 @@ public class DeviceAdapterConstant {
 	/**
 	 * Mybatis数据库配置路径
 	 */
-	public final static String RESOURCE_DATABASE_CONFIG = "./DataBaseConf.xml";
+	public static final String RESOURCE_DATABASE_CONFIG = "./DataBaseConf.xml";
 	//部署用
 	//public static final String RESOURCE_DATABASE_CONFIG = "../conf/DataBaseConf.xml";
+	
+	public static final String WAF_CONFIG = RootPath+"WafConfig.xml";
 	/**
 	 * waf告警事件类型
 	 */

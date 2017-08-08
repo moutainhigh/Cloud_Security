@@ -328,10 +328,7 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		}
 		JSONObject createSiteJsonObject = new JSONObject();
 		createSiteJsonObject.put("0", tempJsonObject);
-		System.out.println(">>>createSiteJsonObject="+createSiteJsonObject);
-		System.out.println(">>>url="+nsfocusWafUrl+REST_URI_V1+"/sites");
 		String createSiteString = postOperation(nsfocusWafUrl+REST_URI_V1+"/sites",createSiteJsonObject.toString());
-		System.out.println(">>>createSiteString="+createSiteString);
 		JSONArray responseArray = JSONArray.fromObject(createSiteString);
 		String responseString = responseArray.getString(0);
 		return responseString;
@@ -447,7 +444,6 @@ public class NsfocusWAFOperation extends CommonDeviceOperation {
 		createVSiteObject.put("0", tempJsonObject);
 		//发送创建虚拟站点请求并接收返回的内容
 		String createVSiteString = postOperation(nsfocusWafUrl+REST_URI_V1+"/sites/protect/virts",createVSiteObject.toString());
-		System.out.println(">>>>>>>>>>>"+createVSiteString);
 		JSONArray responseArray = JSONArray.fromObject(createVSiteString);
 		//取id位为0的返回内容，一般都为0
 		String responseString = responseArray.getString(0);

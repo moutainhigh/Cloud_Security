@@ -60,23 +60,23 @@
        	</environment>
     </environments>
     <mappers>
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogWebsecMapper"/>
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogArpMapper"/>
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogDdosMapper"/>
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogDefaceMapper"/>
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafNsfocusTargetinfoMapper"></mapper>
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogWebsecCountMapper"/>
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogWebsecDstMapper"/>
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWafLogWebsecSrcMapper"/>
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TViewIpv4LocationMapper"/>
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TIpv4LatlongMapper"/>
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TCityLocationMapper"/>
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TWebPhishMapper"/> 
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TViewWebPhishCountryCountMapper"/>
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TViewWebPhishProvinceCountMapper"/>
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TViewWebPhishFieldCountMapper"/>
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.TViewWebPhishTargetCountMapper"/>
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.AppReportMapper"/>
-    	<mapper class="com.cn.ctbri.southapi.adapter.batis.inter.AppTaskMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.TWafLogWebsecMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.TWafLogArpMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.TWafLogDdosMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.TWafLogDefaceMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.TWafNsfocusTargetinfoMapper"></mapper>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.TWafLogWebsecCountMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.TWafLogWebsecDstMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.TWafLogWebsecSrcMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.TViewIpv4LocationMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.TIpv4LatlongMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.TCityLocationMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.TWebPhishMapper"/> 
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.TViewWebPhishCountryCountMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.TViewWebPhishProvinceCountMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.TViewWebPhishFieldCountMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.TViewWebPhishTargetCountMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.AppReportMapper"/>
+    	<mapper class="com.cn.ctbri.southapi.adapter.batis.mapper.AppTaskMapper"/>
     </mappers>
 </configuration>

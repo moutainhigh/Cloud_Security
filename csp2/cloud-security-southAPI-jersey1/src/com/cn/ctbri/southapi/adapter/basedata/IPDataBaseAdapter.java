@@ -294,7 +294,6 @@ public class IPDataBaseAdapter {
 			countJsonObject.put("status", "success");
 			return countJsonObject.toString();		
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -355,7 +354,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("latlongList", locationJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -438,7 +436,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("latlongList", locationJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -475,7 +472,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("recordCount", recordCount);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -540,7 +536,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("latlongList", locationJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -567,14 +562,12 @@ public class IPDataBaseAdapter {
 			locationJsonObject.put("timezone", tCityLocation.getTimeZone());
 			return locationJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "database error");
 			return errorJsonObject.toString();
 		} catch (NullPointerException e) {
-			// TODO: handle exception
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -609,21 +602,18 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("locationList", locationJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "database error");
 			return errorJsonObject.toString();
 		} catch (NullPointerException e) {
-			// TODO: handle exception
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "param error");
 			return errorJsonObject.toString();
 		} catch (ClassCastException e) {
-			// TODO: handle exception
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "cities' param is null");
@@ -676,7 +666,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("locationList", locationJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -699,7 +688,6 @@ public class IPDataBaseAdapter {
 				returnJsonObject.put("recordCount", recordCount);
 				return returnJsonObject.toString();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				JSONObject errorJsonObject = new JSONObject();
 				errorJsonObject.put("status", "failed");
@@ -732,14 +720,12 @@ public class IPDataBaseAdapter {
 			locationJsonObject.put("timezone", tCityLocation.getTimeZone());
 			return locationJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "database error");
 			return errorJsonObject.toString();
 		} catch (NullPointerException e) {
-			// TODO: handle exception
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -780,14 +766,12 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("locationList", locationJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "database error");
 			return errorJsonObject.toString();
 		} catch (NullPointerException e) {
-			// TODO: handle exception
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -842,7 +826,6 @@ public class IPDataBaseAdapter {
 			return returnJsonObject.toString();
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
@@ -888,7 +871,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("locationList", locationJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -937,7 +919,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("webphishList", malUrlJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -981,7 +962,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("webphishList", malUrlJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1041,14 +1021,12 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("webphishList", malUrlJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "database error");
 			return errorJsonObject.toString();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1104,14 +1082,12 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("webphishList", malUrlJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "Database error!!!");
 			return errorJsonObject.toString();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1158,7 +1134,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("webphishList", malUrlJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1175,8 +1150,6 @@ public class IPDataBaseAdapter {
 		try {
 			sqlSession = getOpenPhishSqlSession();
 			TWebPhishExample webPhishExample = new TWebPhishExample();
-			List<String> cnCodeList = new ArrayList<String>();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			webPhishExample.createCriteria().isValid();
 			
 			TWebPhishMapper webPhishMapper = sqlSession.getMapper(TWebPhishMapper.class);
@@ -1205,7 +1178,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("webphishList", malUrlJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1228,8 +1200,6 @@ public class IPDataBaseAdapter {
 		try {
 			sqlSession = getOpenPhishSqlSession();
 			TWebPhishExample webPhishExample = new TWebPhishExample();
-			List<String> cnCodeList = new ArrayList<String>();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			webPhishExample.createCriteria().andIsvalidEqualTo(1);
 			webPhishExample.setOrderByClause("webphish_id desc");
 			webPhishExample.setRows(jsonObject.getString("topNum"));
@@ -1261,7 +1231,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("webphishList", malUrlJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1298,7 +1267,6 @@ public class IPDataBaseAdapter {
 			return returnJsonObject.toString();
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1317,7 +1285,6 @@ public class IPDataBaseAdapter {
 		try {
 			sqlSession = getOpenPhishSqlSession();
 			TWebPhishExample webPhishExample = new TWebPhishExample();
-			List<String> cnCodeList = new ArrayList<String>();
 			webPhishExample.createCriteria().isValid();
 			
 			TWebPhishMapper webPhishMapper = sqlSession.getMapper(TWebPhishMapper.class);
@@ -1334,7 +1301,6 @@ public class IPDataBaseAdapter {
 			return returnJsonObject.toString();
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1370,7 +1336,6 @@ public class IPDataBaseAdapter {
 			return returnJsonObject.toString();
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1398,7 +1363,6 @@ public class IPDataBaseAdapter {
 			cnCodeList.add("TW");
 			webPhishExample.createCriteria().andWebphishCountrycodeIn(cnCodeList).andWebphishTargetLike("%"+jsonObject.getString("target")+"%").andIsvalidEqualTo(1);
 			TWebPhishMapper webPhishMapper = sqlSession.getMapper(TWebPhishMapper.class);
-			//TODO List<TWebPhish> 
 			List<TWebPhish> webPhishList = webPhishMapper.selectByExample(webPhishExample);
 			JSONArray malUrlJsonArray = new JSONArray();
 			for (TWebPhish tWebPhish : webPhishList) {
@@ -1456,7 +1420,6 @@ public class IPDataBaseAdapter {
 			return returnJsonObject.toString();
 			//List targetListWithoutDup = new ArrayList(new HashSet(targetList));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1512,7 +1475,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("webphishList", malUrlJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1563,7 +1525,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("webphishList", malUrlJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1598,7 +1559,6 @@ public class IPDataBaseAdapter {
 			
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1633,7 +1593,6 @@ public class IPDataBaseAdapter {
 			
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1665,7 +1624,6 @@ public class IPDataBaseAdapter {
 			
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1690,7 +1648,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("count", countNum);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1709,11 +1666,8 @@ public class IPDataBaseAdapter {
 			
 			TWebPhishExample webPhishExample = new TWebPhishExample();
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			webPhishExample.createCriteria();
 
-			
-			
 			TWebPhishMapper webPhishMapper = sqlSession.getMapper(TWebPhishMapper.class);
 			int countNum = webPhishMapper.countByExample(webPhishExample);
 			sqlSession.clearCache();
@@ -1722,7 +1676,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("count", countNum);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1751,7 +1704,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("count", countNum);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1780,7 +1732,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("count", countNum);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1835,7 +1786,6 @@ public class IPDataBaseAdapter {
 		     returnJsonObject.put("countList", monthCountJsonArray);
 		     return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1867,7 +1817,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("countList", provinceCountArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1898,7 +1847,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("countList", provinceCountArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1934,7 +1882,6 @@ public class IPDataBaseAdapter {
 			return returnJsonObject.toString();
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
@@ -1969,7 +1916,6 @@ public class IPDataBaseAdapter {
 			returnJsonObject.put("countList", targetCountJsonArray);
 			return returnJsonObject.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");

@@ -499,7 +499,7 @@ public class DeviceAdapterManagerService {
 	@POST
 	@Path("/getWafLogWebsecSrcIpCountInTime")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getWafLogWebSecDstIpListInTime(String dataJson) {
+	public String getWafLogWebSecSrcIpListInTime(String dataJson) {
 		JSONObject jsonObject = JSONObject.fromObject(dataJson);
 		return deviceAdpaterManager.getWafLogWebsecSrcIpCountInTime(jsonObject);
 	}

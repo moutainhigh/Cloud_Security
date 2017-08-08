@@ -2,17 +2,19 @@ package com.cn.ctbri.southapi.adapter.batis.model;
 
 import java.util.Date;
 
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
 public class TWafLogWebsec {
     private Long logId;
-
+    @XStreamOmitField
     private Integer resourceId;
-
+    @XStreamOmitField
     private String resourceUri;
-
+    @XStreamOmitField
     private String resourceIp;
-
+    @XStreamOmitField
     private String siteId;
-
+    @XStreamOmitField
     private String protectId;
 
     private String dstIp;
@@ -34,9 +36,9 @@ public class TWafLogWebsec {
     private String eventType;
 
     private Date statTime;
-
+    @XStreamOmitField
     private String policyId;
-
+    @XStreamOmitField
     private String ruleId;
 
     private String action;
@@ -48,17 +50,17 @@ public class TWafLogWebsec {
     private String alertinfo;
 
     private String proxyInfo;
-
+    @XStreamOmitField
     private String characters;
 
     private String countNum;
 
     private String protocolType;
-
+    @XStreamOmitField 
     private String wci;
-
+    @XStreamOmitField 
     private String wsi;
-
+    @XStreamOmitField 
     private byte[] http;
 
     public Long getLogId() {
