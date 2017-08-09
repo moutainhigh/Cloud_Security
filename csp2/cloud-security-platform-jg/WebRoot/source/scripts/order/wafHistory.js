@@ -695,7 +695,7 @@ var sourceArea = null;
     
 //});
     
-
+/*
 function exportImgWAF(){
     var dataPieLevel = myChartPieLevel.getDataURL("png");  
     var dataPieEvent = myChartPieEvent.getDataURL("png");
@@ -713,6 +713,91 @@ function exportImgWAF(){
 	//$("#imgSourceArea").val(mySourceArea);
 	$("#exportWafForm").submit();
 }
+*/
+    
+$(function(){
+	$("#exportWAF").click(function(){
+		//var dataPieLevel = myChartPieLevel.getDataURL("png");  
+		var dataPieLevel = myChartPieLevel.getDataURL("png");
+	    var dataPieEvent = myChartPieEvent.getDataURL("png");
+		var dataBar = myChartBar.getDataURL("png"); 
+	    var ontime = ontimeLine.getDataURL("png");  
+	    var mySourceIp = sourceIp.getDataURL("png");
+	  //var mySourceArea = sourceArea.getDataURL("png");
+	    
+	    var imgPieLevel = dataPieLevel.substring(22);
+	    var imgPieEvent = dataPieEvent;
+	    var imgBar = dataBar; 
+	    var imgOntime = ontime;  
+	    var imgSourceIp = mySourceIp;
+	    
+	    var list={}; //声明为一个对象,这是一个数组对象  
+	    
+	    var img1= new Object();  
+	    img1.name = dataPieLevel;    
+	    list[0] = img1;  	      
+	    var img2= new Object();  
+	    img2.name = dataPieEvent;  
+	    list[1] = img2; 
+	    var img3= new Object();  
+	    img3.name = dataBar;  
+	    list[2] = img3;  
+	    var img4= new Object();  
+	    img4.name = ontime;  
+	    list[3] = img4;  
+	    var img5= new Object();  
+	    img5.name = mySourceIp;  
+	    list[4] = img5;  
+	    
+	    var orderId = $("#orderId").val();
+	    $.ajax({
+	    	type: "POST",
+	    	//type: "GET",
+	    	contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+		    async: false, 
+		    url: "exportWAF.html",
+		    /*
+		    String orderId = request.getParameter("orderId");
+            String group_flag = request.getParameter("group_flag");
+            String orderAssetId = request.getParameter("orderAssetId");
+            String imgPieLevel = request.getParameter("imgPieLevel");
+            String imgBar = request.getParameter("imgBar");
+            String imgPieEvent = request.getParameter("imgPieEvent");
+            String imgSourceIp = request.getParameter("imgSourceIp");
+            
+            String levelTotal = request.getParameter("level");
+            String levelhigh = request.getParameter("levelhigh");
+            String levelmid = request.getParameter("levelmid");
+            String levellow = request.getParameter("levellow");
+            String listtimeString = request.getParameter("resultList");
+            
+            String timeCountTotal = request.getParameter("timeCountTotal"); // time
+            String timeStrBase64 = request.getParameter("resultListTime");
+		     */
+		    data:{
+		    	//"orderId":orderId,
+		    	//"imgPieLevel":dataPieLevel,
+		        //"imgPieEvent":dataPieEvent
+		    	//"imgPieLevel":imgPieLevel,
+		    	//"imgPieEvent":dataPieEvent,
+		    	//"imgBar":imgBar,
+		    	//"imgOntimeLine":imgOntime, 
+		    	//"imgSourceIp":imgSourceIp
+		    	'img':JSON.stringify(list)
+		        },
+		    dataType: "json",		   
+		    success: function(data) {		    	
+		    	alert("chenggong");
+		     },
+		    error: function(data){ 
+		    	alert("shibai");
+		    	//window.location.href = "loginUI.html"; 
+		    	 
+		     } 
+	    });
+		//alert("abc");
+	});
+});
 
 
 
