@@ -82,7 +82,7 @@ text-decoration: none;
 
 .data_min{clear: both; overflow: hidden; }
 .data_1{ width:382px; border:1px solid #cbcbcb; height: 380px; float: left; margin-right: 13px;}
-.data_table{ width: 1138px; height: 360px; border:1px solid #cbcbcb; margin-top: 15px; padding: 20px;}
+.data_table{ width: 1138px; height: 380px; border:1px solid #cbcbcb; margin-top: 15px; padding: 20px;}
 .data_table_tab {margin-bottom: 20px; width: 100%; }
    .data_table_tab tr th{ border-bottom: 1px solid #000;height: 40px; text-align: left;} 
    .data_table_tab tr td{ height: 40px; background: #f0f8fa;} 
