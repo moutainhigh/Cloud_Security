@@ -143,10 +143,9 @@ $(document).ready(function(){
  	 pielevel(startDate,timeUnit);  	 
  	 pieEvent(startDate,timeUnit);
  	 barEvent(startDate,timeUnit);
- 	 
- 	 sourceIpEvent(startDate,timeUnit);
- 	 //sourceAreaEvent(startDate,timeUnit);
  	 lineEvent(startDate,timeUnit);
+	 sourceIpEvent(startDate,timeUnit); 	 	 
+ 	 //sourceAreaEvent(startDate,timeUnit);
 
      
 }); 
@@ -246,7 +245,7 @@ function generate(){
           <input type="hidden" name="imgPieEvent" id="imgPieEvent" />
 		  <input type="hidden" name="imgBar" id="imgBar" />
 		  <input type="hidden" name="imgOntimeLine" id="imgOntimeLine"/>
-		  <input  name="imgSourceIp" id="imgSourceIp"/>
+		  <input type="hidden"  name="imgSourceIp" id="imgSourceIp"/>
 		  <input type="hidden" name="imgSourceArea" id="imgSourceArea"/>
 
           
