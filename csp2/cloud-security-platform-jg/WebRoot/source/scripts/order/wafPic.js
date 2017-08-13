@@ -346,22 +346,25 @@ $(function(){
     
 });
 
+function strToHexCharCode(str) {
+	if(str === "")
+		return "";
+	var hexCharCode = [];
+	hexCharCode.push("0x"); 
+	for(var i = 0; i < str.length; i++) {
+		hexCharCode.push((str.charCodeAt(i)).toString(16));
+	}
+	return hexCharCode.join("");
+}
+
 function exportImgWAF(){
     var dataPieLevel = myChartPieLevel.getDataURL("png"); 
     var dataPieEvent = myChartPieEvent.getDataURL("png");
     var dataBar = myChartBar.getDataURL("png");
-    /*
-    if(myChartPieLevel!=null){
-    	var dataPieLevel = myChartPieLevel.getDataURL("png"); 
-    	
-    }
-    else{
-    	alert("wu");
-    }
-    */
-    $("#imgPieLevel").val(dataPieLevel);
-    $("#imgPieEvent").val(dataPieEvent);
-    $("#imgBar").val(dataBar);
+   
+    $("#imgPieLevel").val(strToHexCharCode(dataPieLevel));
+    $("#imgPieEvent").val(strToHexCharCode(dataPieEvent));
+    $("#imgBar").val(strToHexCharCode(dataBar));
     
 	$("#exportForm").submit();
 }
