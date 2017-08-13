@@ -4,9 +4,7 @@ var myChartBar = null;
 var ontimeLine = null;
 var sourceIp = null;
 var sourceArea = null;
-//$(function(){	
-	 
-	//为模块加载器配置echarts的路径，从当前页面链接到echarts.js，定义所需图表路径
+
     require.config({
         paths:{ 
             echarts:'../echarts/echarts',
@@ -159,6 +157,7 @@ var sourceArea = null;
 	            //后台获取数据
 	            $.ajax({
 	            	type : "post",
+	            	async:false,
 	            	url:"getEventPieData.html",
 	            	data : {
 	            		"orderId":$('#orderId').val(),
@@ -365,7 +364,7 @@ var sourceArea = null;
 	        	//后台获取数据
 	            $.ajax({
 	            	type: "post",
-	            	async:false,
+	            	//async:false,
 	            	url:"getOntimeLineData.html",
 	            	data : {
 	            		"orderId":$('#orderId').val(),
@@ -478,7 +477,11 @@ var sourceArea = null;
 	                	sourceIp.setOption({
 	                		title: {
 	                            text: '攻击源IP统计图'
-	                        },	                      
+	                        },
+	                        legend: {
+	                        	 y : 'bottom',
+			      		        data:data.name
+			      		    },
 			      		    toolbox: {
 			      		        show : true,
 				      		  	feature : {
@@ -490,7 +493,7 @@ var sourceArea = null;
 			      		    calculable : true,
 			      		    tooltip : {
 			      		        //trigger: 'axis',
-			      		        formatter: "{b} : {c}次"
+			      		        formatter: "{a} : {c}次"
 			      		    },
 			      		    yAxis : [
 			      		        {
@@ -503,35 +506,40 @@ var sourceArea = null;
 			      		    ],
 			      		    xAxis : [
 			      		        {
-			      		            type : 'category',
-			      		            
+			      		            type : 'category',			      		            
 			      		            axisLabel : {
 			      		            	interval:'auto',
-			      		                formatter: '{value} '
 			      		            },
-			      		            boundaryGap : true,
-			      		            data : data.name
+			      		            data : ['']
 			      		        }
 			      		    ],
-			      		    series : [
-			      		        {
-			      		            name:'IP攻击次数',
-			      		            type:'bar',
-			      		            itemStyle: {
-			      		                normal: {
-			      		                	label: {
-			      	                            show: true,
-			      	                            position: 'top',
-			      	                             textStyle: {
-			      	                                color: '#800080'
-			      	                            }
-			      	                        }
-			      		                }
-			      		            },
-			      		            barWidth:70,
-			      		            data:data.count
-			      		        }
-			      		    ]
+			      		    series : 
+			                       function(){
+			                       var serie=[];
+			                       	 
+			                       for( var i=0;i < data.name.length;i++){
+			                    	   var num=[];
+			                    	   num[0]=data.count[i];
+			                    	   var item={
+			                    			 name:data.name[i],
+				                        	 type:'bar',
+		//		                        	 barWidth : 25,
+				                        	 itemStyle: {
+			                                     normal: {
+			                                         label: {
+			                                             show: true,
+			                                             textStyle: {
+			                                                 color: '#800080'
+			                                             }
+			                                         }
+			                                     }
+				                        	 },
+				                        	 data:num
+			                        	 };
+			                        	 serie.push(item);
+			                    	 };
+			                    	 return serie;
+		                    	}()	 
 			        	},true);//图形展示
 	                    window.onresize = sourceIp.resize;
 	                }//ajax执行后台
@@ -692,112 +700,37 @@ var sourceArea = null;
     	return lineData3;
     }
     
+
+    function strToHexCharCode(str) {
+    	if(str === "")
+    		return "";
+    	var hexCharCode = [];
+    	hexCharCode.push("0x"); 
+    	for(var i = 0; i < str.length; i++) {
+    		hexCharCode.push((str.charCodeAt(i)).toString(16));
+    	}
+    	return hexCharCode.join("");
+    }
+
+
     
-//});
-    
-/*
 function exportImgWAF(){
     var dataPieLevel = myChartPieLevel.getDataURL("png");  
     var dataPieEvent = myChartPieEvent.getDataURL("png");
 	var dataBar = myChartBar.getDataURL("png"); 
     var ontime = ontimeLine.getDataURL("png");  
-    var mySourceIp = sourceIp.getDataURL("png");
-    alert(mySourceIp);
+    var mySourceIp = sourceIp.getDataURL("png");    
     //var mySourceArea = sourceArea.getDataURL("png");
 	
-	$("#imgPieLevel").val(dataPieLevel);
-    $("#imgPieEvent").val(dataPieEvent);
-    $("#imgBar").val(dataBar);
-	$("#imgOntimeLine").val(ontime);
-	$("#imgSourceIp").val(mySourceIp);
-	//$("#imgSourceArea").val(mySourceArea);
+	$("#imgPieLevel").val(strToHexCharCode(dataPieLevel));
+    $("#imgPieEvent").val(strToHexCharCode(dataPieEvent));
+    $("#imgBar").val(strToHexCharCode(dataBar));
+	$("#imgOntimeLine").val(strToHexCharCode(ontime));
+	$("#imgSourceIp").val(strToHexCharCode(mySourceIp));
+	//$("#imgSourceArea").val(strToHexCharCode(mySourceArea));
 	$("#exportWafForm").submit();
 }
-*/
-    
-$(function(){
-	$("#exportWAF").click(function(){
-		//var dataPieLevel = myChartPieLevel.getDataURL("png");  
-		var dataPieLevel = myChartPieLevel.getDataURL("png");
-	    var dataPieEvent = myChartPieEvent.getDataURL("png");
-		var dataBar = myChartBar.getDataURL("png"); 
-	    var ontime = ontimeLine.getDataURL("png");  
-	    var mySourceIp = sourceIp.getDataURL("png");
-	  //var mySourceArea = sourceArea.getDataURL("png");
-	    
-	    var imgPieLevel = dataPieLevel.substring(22);
-	    var imgPieEvent = dataPieEvent;
-	    var imgBar = dataBar; 
-	    var imgOntime = ontime;  
-	    var imgSourceIp = mySourceIp;
-	    
-	    var list={}; //声明为一个对象,这是一个数组对象  
-	    
-	    var img1= new Object();  
-	    img1.name = dataPieLevel;    
-	    list[0] = img1;  	      
-	    var img2= new Object();  
-	    img2.name = dataPieEvent;  
-	    list[1] = img2; 
-	    var img3= new Object();  
-	    img3.name = dataBar;  
-	    list[2] = img3;  
-	    var img4= new Object();  
-	    img4.name = ontime;  
-	    list[3] = img4;  
-	    var img5= new Object();  
-	    img5.name = mySourceIp;  
-	    list[4] = img5;  
-	    
-	    var orderId = $("#orderId").val();
-	    $.ajax({
-	    	type: "POST",
-	    	//type: "GET",
-	    	contentType:"application/x-www-form-urlencoded; charset=UTF-8",
-		    async: false, 
-		    url: "exportWAF.html",
-		    /*
-		    String orderId = request.getParameter("orderId");
-            String group_flag = request.getParameter("group_flag");
-            String orderAssetId = request.getParameter("orderAssetId");
-            String imgPieLevel = request.getParameter("imgPieLevel");
-            String imgBar = request.getParameter("imgBar");
-            String imgPieEvent = request.getParameter("imgPieEvent");
-            String imgSourceIp = request.getParameter("imgSourceIp");
-            
-            String levelTotal = request.getParameter("level");
-            String levelhigh = request.getParameter("levelhigh");
-            String levelmid = request.getParameter("levelmid");
-            String levellow = request.getParameter("levellow");
-            String listtimeString = request.getParameter("resultList");
-            
-            String timeCountTotal = request.getParameter("timeCountTotal"); // time
-            String timeStrBase64 = request.getParameter("resultListTime");
-		     */
-		    data:{
-		    	//"orderId":orderId,
-		    	//"imgPieLevel":dataPieLevel,
-		        //"imgPieEvent":dataPieEvent
-		    	//"imgPieLevel":imgPieLevel,
-		    	//"imgPieEvent":dataPieEvent,
-		    	//"imgBar":imgBar,
-		    	//"imgOntimeLine":imgOntime, 
-		    	//"imgSourceIp":imgSourceIp
-		    	'img':JSON.stringify(list)
-		        },
-		    dataType: "json",		   
-		    success: function(data) {		    	
-		    	alert("chenggong");
-		     },
-		    error: function(data){ 
-		    	alert("shibai");
-		    	//window.location.href = "loginUI.html"; 
-		    	 
-		     } 
-	    });
-		//alert("abc");
-	});
-});
+
 
 
 
