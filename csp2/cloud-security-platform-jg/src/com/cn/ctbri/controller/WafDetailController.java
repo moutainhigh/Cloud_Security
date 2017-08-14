@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,12 +76,21 @@ public class WafDetailController {
         //获取订单信息
         List<HashMap<String, Object>> orderList = orderService.findByOrderId(orderId);
         request.setAttribute("order", orderList.get(0));
-        //获取服务ID
+        //获取服务ID 、开始结束时间
         int serviceId=0;
         HashMap<String, Object> order=new HashMap<String, Object>();
 	    order=(HashMap) orderList.get(0);
 	    serviceId=(Integer) order.get("serviceId");
-
+	    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+	    Date beginDate = (Date) order.get("begin_date");
+	    Date endDate = (Date) order.get("end_date");
+	    String strBeginDate  = sdf.format(beginDate);
+	    String strEndDate = sdf.format(endDate);
+	    request.setAttribute("defenselength",strBeginDate+" - "+strEndDate);   // 设置防护时长
+	    
+	    
+	    
+	    
         List assets = orderAssetService.findAssetsByOrderId(orderId);
         List websecList = null;
         String reurl = "";
@@ -95,7 +106,14 @@ public class WafDetailController {
         	String domain = (String) addr.substring(addr.indexOf("://")+3);
         	String orderAssetId = assetOrder.get("orderAssetId").toString();
         	request.setAttribute("orderAssetId", orderAssetId);
-        	request.setAttribute("domainName", domain);
+        	request.setAttribute("domainName", domain);                            //设置域名
+        	if (ipArray!=null&&ipArray.length()!=0) {
+        		request.setAttribute("ipurl",ipArray.substring(0, ipArray.length()-1));  // 设置ip
+			}
+        	else
+        	{
+        		request.setAttribute("ipurl","");
+        	}
             for (int n = 0; n < ips.length; n++) {
             	String[] ip = ips[n].split(":");
 				dstIpList.add(ip[0]);
@@ -113,7 +131,7 @@ public class WafDetailController {
             	Integer levelmid = (Integer)map.get("mid");
         		
             	
-            	request.setAttribute("level", totallevel);
+            	request.setAttribute("level", totallevel);    //设置告警级别统计数  高中低
             	request.setAttribute("levelhigh", levelhigh);
             	request.setAttribute("levelmid", levelmid);
             	request.setAttribute("levellow", levellow);
@@ -130,10 +148,11 @@ public class WafDetailController {
 					String count = String.valueOf(typeMap.get("count"));
 					totalEventTypeCount = totalEventTypeCount + Integer.parseInt(count);
 				}*/
-            	request.setAttribute("eventTypeTotal", String.valueOf(totaltype));
-            	String strEventTypeBase64 = new String(eventStr.getBytes("UTF-8"),"UTF-8");
-            	strEventTypeBase64 = new sun.misc.BASE64Encoder().encode(strEventTypeBase64.toString().getBytes());
-     	        request.setAttribute("strlistEventType",strEventTypeBase64); 
+            	request.setAttribute("eventTypeTotal", String.valueOf(totaltype));    //设置告警级别总数
+            	//String strEventTypeBase64 = new String(eventStr.getBytes("UTF-8"),"UTF-8");
+            	//strEventTypeBase64 = new sun.misc.BASE64Encoder().encode(strEventTypeBase64.toString().getBytes());
+            	String strlistEventTypeHex = toHexString(eventStr);
+            	request.setAttribute("strlistEventType",strlistEventTypeHex);   // 设置告警类型list
             	
         		//告警时段
         		String unit="";
@@ -154,11 +173,12 @@ public class WafDetailController {
     		//	lastrow.put("time","总计");
     		//	lastrow.put("count",String.valueOf(total));
     		//	listTime.add(lastrow);
-        		request.setAttribute("timeCountTotal", String.valueOf(totalTimeCount));
-     	        request.setAttribute("resultList", listTime);
+        		request.setAttribute("timeCountTotal", String.valueOf(totalTimeCount));  //设置告警时段总数
+     	        request.setAttribute("resultList", listTime);        //设置告警时段list
      	     
-     	        String strtimeBase64 = new sun.misc.BASE64Encoder().encode(eventStr1.toString().getBytes());
-     	        request.setAttribute("resultListTime",strtimeBase64);
+     	        //String strtimeBase64 = new sun.misc.BASE64Encoder().encode(eventStr1.toString().getBytes());
+     	        String resultListTimeHex = toHexString(eventStr1);
+     	        request.setAttribute("resultListTime",resultListTimeHex);  // 设置告警time   list
      	
             	//攻击源
             	websecStr = WafAPIWorker.getWafLogWebsecSrcIpCountInTime(startDate,"",timeUnit,domainList,10);
@@ -166,10 +186,12 @@ public class WafDetailController {
             	request.setAttribute("type", timeUnit);
             	websecList = WafAPIAnalysis.getWafLogWebsecSrcIp(websecStr);
             	//String strattackip = new String(websecList.toString().getBytes("UTF-8"),"UTF-8");
-            	String strattackipBase64 = new sun.misc.BASE64Encoder().encode(websecStr.getBytes());
-            	request.setAttribute("websecList", websecList);
-            	request.setAttribute("websecListIp", strattackipBase64);
-            	request.setAttribute("websecNum", websecList.size());
+            	//String strattackipBase64 = new sun.misc.BASE64Encoder().encode(websecStr.getBytes());
+            	String websecListIpHex = toHexString(websecStr);
+            	
+            	request.setAttribute("websecList", websecList);       
+            	request.setAttribute("websecListIp", websecListIpHex);   // 设置攻击源ip list
+            	request.setAttribute("websecNum", websecList.size());    // 设置攻击源ip 总数
             	int totalAttackIP = 0;
         		for (int i = 0; i < listTime.size(); i++) {
         			Map alarm  = (Map) listTime.get(i);
@@ -194,6 +216,34 @@ public class WafDetailController {
         //end 
         return reurl;
     }
+    /*
+    public static String toHexString(String s) 
+    { 
+    	String str="0x"; 
+    	for (int i=0;i<s.length();i++) 
+    	{ 
+    		int ch = (int)s.charAt(i); 
+    		String s4 = Integer.toHexString(ch); 
+    		str = str + s4; 
+    	} 
+    	return str; 
+    } */
+    /**
+     * 将字符串编码成16进制数字,适用于所有字符（包括中文）
+     */
+    private static String hexString="0123456789ABCDEF";
+    public static String toHexString(String str){
+     //根据默认编码获取字节数组
+     byte[] bytes=str.getBytes();
+     StringBuilder sb=new StringBuilder(bytes.length*2);
+     //将字节数组中每个字节拆解成2位16进制整数
+     for(int i=0;i<bytes.length;i++){
+      sb.append(hexString.charAt((bytes[i]&0xf0)>>4));
+      sb.append(hexString.charAt((bytes[i]&0x0f)>>0));
+     }
+     return sb.toString();
+    }
+    
     public String listToString(List list)throws JSONException{
     	if (list==null) {
     		return "";
