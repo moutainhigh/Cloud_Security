@@ -1299,6 +1299,50 @@ public class ExportController {
     	return null; 
     	} 
     }
+
+    /** 
+     * @Title:hexString2String 
+     * @Description:16进制字符串转字符串 
+     * @param src 
+     *            16进制字符串 
+     * @return 字节数组 
+     * @throws 
+     */  
+    /*public static String hexString2String(String src) {  
+    	src = src.substring(2);
+        String temp = "";  
+        for (int i = 0; i < src.length() / 2; i++) {  
+            temp = temp  
+                    + (char) Integer.valueOf(src.substring(i * 2, i * 2 + 2),  
+                            16).byteValue();  
+        }  
+        return temp;  
+    } */
+    public static String hexString2String(String s) {  
+        if (s == null || s.equals("")) {  
+            return null;  
+        }  
+        s = s.replace(" ", ""); 
+        
+        
+        byte[] baKeyword = new byte[s.length() / 2];  
+        for (int i = 0; i < baKeyword.length; i++) {  
+            try {  
+                baKeyword[i] = (byte) (0xff & Integer.parseInt(  
+                        s.substring(i * 2, i * 2 + 2), 16));  
+            } catch (Exception e) {  
+                e.printStackTrace();  
+            }  
+        }  
+        try {  
+            s = new String(baKeyword, "UTF-8");  
+            new String();  
+        } catch (Exception e1) {  
+            e1.printStackTrace();  
+        }  
+        return s;  
+    }  
+    
     /**
      * 功能描述：下载waf导入模板
      * 参数描述：HttpServletRequest request,HttpServletResponse response
@@ -1310,10 +1354,29 @@ public class ExportController {
             String orderId = request.getParameter("orderId");
             String group_flag = request.getParameter("group_flag");
             String orderAssetId = request.getParameter("orderAssetId");
-            String imgPieLevel = request.getParameter("imgPieLevel");
-            String imgBar = request.getParameter("imgBar");
-            String imgPieEvent = request.getParameter("imgPieEvent");
-            String imgSourceIp = request.getParameter("imgSourceIp");
+            String imgPieLevelHex = request.getParameter("imgPieLevel");
+            String imgBarHex = request.getParameter("imgBar");
+            String imgPieEventHex = request.getParameter("imgPieEvent");
+            String imgSourceIpHex = request.getParameter("imgSourceIp");
+            String imgOntimeLineHex = request.getParameter("imgOntimeLine");
+            String ipurl = request.getParameter("ipurl"); 
+            String defenselength = request.getParameter("defenselength");
+           
+          //获取报表类型  月、年
+    	    String reporttype = request.getParameter("radioType");
+    	    if (reporttype.equals("month")) {
+    	    	reporttype = "月报";
+    		}else if (reporttype.equals("year")) {
+    			reporttype = "年报";
+    		}
+            
+            //16进制转base64数据
+            
+            String imgPieLevel = hexString2String(imgPieLevelHex);
+            String imgBar = hexString2String(imgBarHex);
+            String imgPieEvent = hexString2String(imgPieEventHex);
+            String imgSourceIp = hexString2String(imgSourceIpHex);
+            String imgOntimeLine = hexString2String(imgOntimeLineHex);
             
             String levelTotal = request.getParameter("level");
             String levelhigh = request.getParameter("levelhigh");
@@ -1322,23 +1385,28 @@ public class ExportController {
             String listtimeString = request.getParameter("resultList");
             
             String timeCountTotal = request.getParameter("timeCountTotal"); // time
-            String timeStrBase64 = request.getParameter("resultListTime");
-            timeStrBase64 = timeStrBase64.replaceAll(" ", "+");
-            String timeJsonStr =getFromBASE64(timeStrBase64);
+          //  String timeStrBase64 = request.getParameter("resultListTime");
+          //  timeStrBase64 = timeStrBase64.replaceAll(" ", "+");
+            String timeStrHex = request.getParameter("resultListTime");
+            String timeJsonStr =hexString2String(timeStrHex);
             
-            String strattackipBase64 = request.getParameter("websecListIp");   //ip
+           // String strattackipBase64 = request.getParameter("websecListIp");   //ip
             String totalAttackIPStr = request.getParameter("totalAttackIP");
-            strattackipBase64 = strattackipBase64.replaceAll(" ", "+");
-            String strJsonattackip = getFromBASE64(strattackipBase64);
+            //strattackipBase64 = strattackipBase64.replaceAll(" ", "+");
+            String strattackipHex = request.getParameter("websecListIp");
+            String strJsonattackip = hexString2String(strattackipHex);
             
             String eventTypeTotalstr = request.getParameter("eventTypeTotal");  //event type
-            String strEventTypeBase64 = request.getParameter("strlistEventType");
-            strEventTypeBase64 = strEventTypeBase64.replaceAll(" ", "+"); // 浏览器出现 将base64中的＋转换为空格
-            String strJsonEventTypeStr = getFromBASE64(strEventTypeBase64);
+           // String strEventTypeBase64 = request.getParameter("strlistEventType");
+            //strEventTypeBase64 = strEventTypeBase64.replaceAll(" ", "+"); // 浏览器出现 将base64中的＋转换为空格
+            String eventTypeHex = request.getParameter("strlistEventType");
+            String strJsonEventTypeStr = hexString2String(eventTypeHex);
             
             imgPieLevel = imgPieLevel.replaceAll(" ", "+");
             imgBar = imgBar.replaceAll(" ", "+");
             imgPieLevel = imgPieLevel.replaceAll(" ", "+");
+            imgSourceIp = imgSourceIp.replaceAll(" ", "+");
+            imgOntimeLine = imgOntimeLine.replaceAll(" ", "+");
             
             System.out.println("imgPie"+imgPieLevel);
             System.out.println("imgbar:"+imgBar);
@@ -1348,6 +1416,9 @@ public class ExportController {
             //获取对应资产
             List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
             Map<String, Object> paramMap = new HashMap<String, Object>();
+            paramMap.put("ipurl", ipurl);
+            paramMap.put("defenselength", defenselength);
+            paramMap.put("reporttype", reporttype);
             paramMap.put("orderId", orderId);
             paramMap.put("type", order.getType());
             paramMap.put("count", assetList.size());
@@ -1358,6 +1429,7 @@ public class ExportController {
             paramMap.put("imgBar", imgBar);
             paramMap.put("imgPieEvent", imgPieEvent);
             paramMap.put("imgSourceIp", imgSourceIp);
+            paramMap.put("imgOntimeLine", imgOntimeLine);
             paramMap.put("levelTotal", levelTotal);
             paramMap.put("timeJsonStr", timeJsonStr);//time
             paramMap.put("timeCountTotal", timeCountTotal);
@@ -1462,11 +1534,16 @@ public class ExportController {
         SimpleDateFormat odf1 = new SimpleDateFormat("yyyy年MM月dd日");//设置日期格式
         String createDate1 = odf1.format(new Date());
         
+        String stripurl = paramMap.get("ipurl").toString();
+        String strdefenselength = paramMap.get("defenselength").toString();
+ 
         
         String strimgPieLevel = paramMap.get("imgPieLevel").toString();
         String strimgBar = paramMap.get("imgBar").toString();
         String strimgPieEvent = paramMap.get("imgPieEvent").toString();
         String strimgSourceIp = paramMap.get("imgSourceIp").toString();
+        String strimgOntimeLine = paramMap.get("imgOntimeLine").toString();
+        
         String levelTotal =paramMap.get("levelTotal").toString();
         String levelhigh =paramMap.get("levelhigh").toString();
         String levelmid =paramMap.get("levelmid").toString();
@@ -1474,7 +1551,7 @@ public class ExportController {
         
         String timeCountTotal = paramMap.get("timeCountTotal").toString();
         String eventTypeTotalstr = paramMap.get("eventTypeTotalstr").toString();
-        
+        String strreporttype = paramMap.get("reporttype").toString();
         
         String strJsonEventTypeStr = paramMap.get("strJsonEventTypeStr").toString();  // eventType
         List listEventType = WafAPIAnalysis.analysisEventTypeCountList(strJsonEventTypeStr);
@@ -1509,11 +1586,13 @@ public class ExportController {
         String imgFileBar = filePath1 +"/"+ System.currentTimeMillis()+"strimgBar"+".png";
         String imgFilePieEvent = filePath1 +"/"+ System.currentTimeMillis()+"strimgPieEvent"+".png";
         String imgFileSourceIp =filePath1 +"/"+ System.currentTimeMillis() +"strimgSourceIp"+".png";
+        String imgFileOntimeLine = filePath1 +"/"+ System.currentTimeMillis() +"strimgOntimeLine"+".png"; 
         
         createImage(request, response, imgFilePieLevel, strimgPieLevel);
         createImage(request, response, imgFileBar, strimgBar);
         createImage(request, response, imgFilePieEvent, strimgPieEvent);
         createImage(request, response, imgFileSourceIp, strimgSourceIp);
+        createImage(request, response, imgFileOntimeLine, strimgOntimeLine);
 
         //高中低 数据统计
         //*****************test WafAPIWorker
@@ -1537,13 +1616,11 @@ public class ExportController {
             map.put("LOWNUM", levellow);
             map.put("threattotal", eventTypeTotalstr);
             map.put("timetotal", timeCountTotal);
-			map.put("img6", getImageStr(imgFilePieLevel));
-			map.put("img5", getImageStr(imgFileBar));
-			map.put("img4", getImageStr(imgFilePieEvent));
-			map.put("img3", getImageStr(imgFilePieEvent));
-			map.put("img2", getImageStr(imgFilePieEvent));
-			map.put("img1", getImageStr(imgFileSourceIp));
-			map.put("REPORTTYPE", "月报");
+			map.put("REPORTTYPE", strreporttype);
+			map.put("IP", stripurl);
+			map.put("DEFENDLENGTH", strdefenselength);
+			map.put("STARTTIME", "");
+			map.put("ENDTIME", "");
 			
 			List<Threat> threatlist = new ArrayList<Threat>();  
 	        /*for (int i = 0; i < eventListArray.size(); i++) {  
@@ -1607,11 +1684,22 @@ public class ExportController {
 				Map ipMap = (Map)listattackIP.get(i);
 				String count = String.valueOf(ipMap.get("count"));
 				String strsrcIP = String.valueOf(ipMap.get("srcIp"));
+				String strCountry = String.valueOf(ipMap.get("country"));
+				String strSubdiv = String.valueOf(ipMap.get("subdiv"));
 				t.setNum(count);
 				t.setSourceIP(strsrcIP);
+				t.setCountry(strCountry);
+				t.setSubdiv(strSubdiv);
 				attackList.add(t);
 			}
 	        map.put("attackList", attackList);
+	        
+	        map.put("img6", getImageStr(imgFilePieLevel));
+			map.put("img5", getImageStr(imgFileBar));
+			map.put("img4", getImageStr(imgFilePieEvent));
+			map.put("img3", getImageStr(imgFileOntimeLine));
+			map.put("img2", getImageStr(imgFileSourceIp));
+			//map.put("img1", getImageStr(imgFilePieEvent));
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
