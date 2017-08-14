@@ -220,6 +220,10 @@ function generate(){
          
        <div class="data_box">
         <div class="data_nav">
+          <input type="hidden" value="${ipurl}" id="ipurl" name="ipurl" />
+          <input type="hidden" value="${defenselength}" id="defenselength" name="defenselength" />
+          <input type="hidden" value="${reporttype}" id="reporttype" name="reporttype" />
+          <input type="hidden" value="${reportlength}" id="reportlength" name="reportlength" />
           <input type="hidden" value="${eventTypeTotal}" id="eventTypeTotal" name="eventTypeTotal" />
           <input type="hidden" value="${strlistEventType}" id="strlistEventType" name="strlistEventType" />
           <input type="hidden" value="${resultListTime}" id="resultListTime" name="resultListTime"/>
@@ -235,7 +239,7 @@ function generate(){
           <input type="hidden" value="${levelmid }" id="levelmid" name="levelmid"/>
           <input type="hidden" value="${levellow }" id="levellow" name="levellow"/>
           <input type="hidden" value="${levelType}" id="levelType" name="levelType" />
-
+			
      
 
 
