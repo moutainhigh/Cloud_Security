@@ -166,8 +166,15 @@ public class WafAPIAnalysis {
 			        
 			        int count = jsonObject.getInt("count");
 			        String dstIp = jsonObject.getString("srcIp");
+			        String srcCountry = jsonObject.getString("srcCountry");
+			        String srcCity = jsonObject.getString("srcCity");
+			        String srcSubdivision1 = jsonObject.getString("srcSubdivision1");
+			        String srcSubdivision2 = jsonObject.getString("srcSubdivision2");
+			        
 			        newMap.put("count", count);
 			        newMap.put("srcIp", dstIp);
+			        newMap.put("country", srcCountry);
+			        newMap.put("subdiv", srcCity+srcSubdivision1+srcSubdivision2);
 			        reList.add(newMap);
 				}
     		}
