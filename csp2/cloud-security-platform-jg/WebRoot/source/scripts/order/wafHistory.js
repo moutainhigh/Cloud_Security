@@ -705,7 +705,7 @@ var sourceArea = null;
     	if(str === "")
     		return "";
     	var hexCharCode = [];
-    	hexCharCode.push("0x"); 
+    	//hexCharCode.push("0x"); 
     	for(var i = 0; i < str.length; i++) {
     		hexCharCode.push((str.charCodeAt(i)).toString(16));
     	}
