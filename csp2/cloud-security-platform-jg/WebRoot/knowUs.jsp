@@ -108,7 +108,7 @@ $(function(){
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在安全帮，你可以像在线购买普通商品那样，购买和使用及时生效的安全服务。这样，你不用再购买昂贵的安全设备，不用再部署高大上的安全设备，不用再熬夜看使用手册，你要做的，就是：轻点鼠标，立享服务，晴空万里，一切都好！ </p>
                         <img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/16.jpg" style="width: 640px; visibility: visible !important; height: 340px;margin-left:-26px;"><br></p>
                         <img data-s="300,640" data-type="png"  src="${ctx}/source/images/knowUs/17.jpg" style="width: 640px; visibility: visible !important; height: 340px;"><br></p>
-                        <p style="font-size:15px;color:#FFCC00;line-height:40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“4”：SDS分布式调度管理系统、安全能力开放平台、安全大数据平台、安全态势感知平台</p>
+                        <p style="font-size:15px;color:#FFCC00;line-height:40px;">“4”：SDS分布式调度管理系统、安全能力开放平台、安全大数据平台、安全态势感知平台</p>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#10022;&nbsp;&nbsp;SDS分布式调度系统基于SDS架构设计，支持安全策略的解析与下发、安全资源的智能随选调度与管理、多厂家设备的统一能力适配和异构设备间的协同工作</p>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#10022;&nbsp;&nbsp;安全能力开放平台支持智能化的业务编排和管理、快速的自动化服务配置部署、已定义的业务能力输出</p>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#10022;&nbsp;&nbsp;安全大数据平台基于海量的安全数据源，通过行为建模、经验转化、算法应用进行多维度数据分析和展现</p>
