@@ -196,7 +196,7 @@ function buyWafOrder(serviceId){
 		</div>
 		<div class="safe02" style="padding-bottom:30px;">
         
-        	<div class="imgBox index_child">
+        	<div class="imgBox index_child" id='buydiv'>
 				<h2>网站安全监测及预警服务</h2>
                 <div class="listBox" style="width: 100%;">
                 	<div class="listR" style="width:1108px; margin:0 auto;">
@@ -213,22 +213,22 @@ function buyWafOrder(serviceId){
 		                                    <span style="right: 30px;">
 		                                    	${list.remarks }
 		                                    </span>
-		                                    <div class="purchase">
+		                                    <div class="purchase buydiv">
 		                                    <c:if test="${!empty list.price}">
-		                                    	<strong style="text-decoration:none;">
+		                                    	<strong style="text-decoration:none;" class="buystrong">
 		                                    	<fmt:formatNumber type="number" value="${list.price}" maxFractionDigits="2" minFractionDigits="2"/>
 		                                    	<em style="font-size: 14px;color: #D00000;">安全币</em>
 		                                    	</strong>
 		                                    </c:if>
 		                                    
 		                                   <c:if test="${empty list.price}">
-		                                    	<strong style="text-decoration:none;">
+		                                    	<strong style="text-decoration:none;" class="buystrong">
 		                                    		0.00<em style="font-size: 14px;color: #D00000;">安全币</em>
 		                                    	</strong>
 		                                    </c:if>
 		                                    	<!--<a href="${ctx}/selfHelpOrderInit.html?serviceId=${list.id }&indexPage=1" class="btn">购买</a>
 		                                    -->
-		                                    <a href="javascript:;" class="btn" onclick="buySefHelpOrder(${list.id });">购买</a>
+		                                    <a href="javascript:;" class="btn buy" onclick="buySefHelpOrder(${list.id });">购买</a>
 		                                    </div>
 		                               
 		                            </li>
@@ -247,7 +247,6 @@ function buyWafOrder(serviceId){
 		        <div class="safe02 service">
         	<div class="imgBox index_child">
 				<h2>网站安全防护及加固服务</h2>
-                
                 <div class="listBox" style="width: 100%;">
                 	<div class="listR" style="width:1108px; margin:0 auto;">
                     	<ul class="newlist child-newlist clearfix" style="margin-right:-40px;">
