@@ -50,7 +50,6 @@ $(document).ready(function(){
 	 //初始化时间格式
 	 $("#weeknumber").hide();
 	 var type=$('input:radio[name="radioType"]:checked').val();
-	 alert("chu:"+type);
 	 if(type=='month'){
 	 	$("#beginDate").bind("focus", function selectMonth() {
 	        WdatePicker({dateFmt: 'yyyy-MM', isShowToday: false, isShowClear: false, readOnly:true });  
@@ -96,19 +95,16 @@ $(document).ready(function(){
      	$('#beginDate').unbind(); //移除所有
      	//$('#beginDate').val(""); 
         var type=$(this).val();
-        alert("radio:"+type);
         if(type=='month'){
         	$('#beginDate').val('<%=str_date %>'); 
    			$("#beginDate").bind("focus", function selectMonth() {
    				WdatePicker({ dateFmt: 'yyyy-MM', isShowToday: false, isShowClear: false, readOnly:true });
    			}); 
-   			alert($('#beginDate').val());
    		}else if(type=='year'){
    			$('#beginDate').val('<%=str_dateY %>'); 
    			$("#beginDate").bind("focus", function selectMonth() {
    				WdatePicker({ dateFmt: 'yyyy', isShowToday: false, isShowClear: false, readOnly:true });
    			});
-   			alert($('#beginDate').val());
    		}else if(type=='week'){
    			$('#beginDate').val('<%=str_dateW %>'); 
    			if($("#weeknumber").is(":hidden")){$("#weeknumber").show();}
@@ -172,11 +168,29 @@ $(function() {
      $(".data_btn").on('click', function() {
         $(".mark,.data_tanc").hide();
      });
- });
+ }); 
 
 function generate(){
 	var type=$('input:radio[name="radioType"]:checked').val();
 	var beginDate=$("#beginDate").val();
+	if(type == 'week'){
+	   	var s = beginDate.replace(/-/g,"/");
+		var date = new Date(s);
+		var curTime = date.getTime() ; 
+		var day = date.getDay();
+		var oneDayTime = 24*60*60*1000 ; 
+
+		//显示周一
+		var MondayTime = curTime - (day-1)*oneDayTime ; 
+		//显示周日
+		var SundayTime =  curTime + (7-day)*oneDayTime ; 
+
+		//初始化日期时间
+		var monday = new Date(MondayTime);
+		var sunday = new Date(SundayTime);
+		beginDate = monday.getFullYear() + '-' + (monday.getMonth() + 1) + '-' + monday.getDate(); 
+
+	}
 	window.location.href='warningWaf.html?orderId=${order.id }&isHis=1&type='+type+'&beginDate='+beginDate;
 }
 </script>
