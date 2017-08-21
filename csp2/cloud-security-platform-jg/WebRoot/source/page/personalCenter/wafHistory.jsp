@@ -48,21 +48,29 @@
  
 $(document).ready(function(){
 	 //初始化时间格式
+	 $("#weeknumber").hide();
 	 var type=$('input:radio[name="radioType"]:checked').val();
+	 alert("chu:"+type);
 	 if(type=='month'){
 	 	$("#beginDate").bind("focus", function selectMonth() {
 	        WdatePicker({dateFmt: 'yyyy-MM', isShowToday: false, isShowClear: false, readOnly:true });  
 	     });
-	 }else{
+	 }else if(type=='year'){
 	 	$("#beginDate").bind("focus", function selectMonth() {
    				WdatePicker({ dateFmt: 'yyyy', isShowToday: false, isShowClear: false, readOnly:true });
+   			});
+	 }else if(type=='week'){
+	 	$("#beginDate").bind("focus", function selectMonth() {
+   				WdatePicker({ dateFmt: 'yyyy-MM-dd', isShowWeek:true,isShowClear: false, readOnly:true, onpicked:function(){$dp.$('weeknumber').value='第'+$dp.cal.getP('W','W')+'周'; }  });
    			});
 	 }
 	 
      //时间点击事件
      $('#beginDate').on('click', function() {
+     	$("#weeknumber").hide();
      	$('#beginDate').unbind(); //移除所有
         var type=$('input:radio[name="radioType"]:checked').val();
+        alert("on:"+type);
         if(type=='month'){
         	$('#beginDate').val('<%=str_date %>'); 
    			$("#beginDate").bind("focus", function selectMonth() {
@@ -74,32 +82,38 @@ $(document).ready(function(){
    				WdatePicker({ dateFmt: 'yyyy', isShowToday: false, isShowClear: false, readOnly:true });
    			});
    		}else if(type=='week'){
-   			$('#beginDate').val('<%=str_dateY %>'); 
+   			$('#beginDate').val('<%=str_dateW %>'); 
+   			if($("#weeknumber").is(":hidden")){$("#weeknumber").show();}
    			$("#beginDate").bind("focus", function selectMonth() {
-   				WdatePicker({isShowWeek:true,onpicked:getMonday});
+   				WdatePicker({ dateFmt: 'yyyy-MM-dd', isShowWeek:true,isShowClear: false, readOnly:true, onpicked:function(){$dp.$('weeknumber').value='第'+$dp.cal.getP('W','W')+'周'; }  });
    			});
    		}
      });
 
      //radio点击事件
      $('input:radio[name="radioType"]').on('click', function() {
+     	$("#weeknumber").hide();
      	$('#beginDate').unbind(); //移除所有
      	//$('#beginDate').val(""); 
         var type=$(this).val();
+        alert("radio:"+type);
         if(type=='month'){
         	$('#beginDate').val('<%=str_date %>'); 
    			$("#beginDate").bind("focus", function selectMonth() {
    				WdatePicker({ dateFmt: 'yyyy-MM', isShowToday: false, isShowClear: false, readOnly:true });
    			}); 
+   			alert($('#beginDate').val());
    		}else if(type=='year'){
    			$('#beginDate').val('<%=str_dateY %>'); 
    			$("#beginDate").bind("focus", function selectMonth() {
    				WdatePicker({ dateFmt: 'yyyy', isShowToday: false, isShowClear: false, readOnly:true });
    			});
+   			alert($('#beginDate').val());
    		}else if(type=='week'){
-   			$('#beginDate').val('<%=str_dateY %>'); 
+   			$('#beginDate').val('<%=str_dateW %>'); 
+   			if($("#weeknumber").is(":hidden")){$("#weeknumber").show();}
    			$("#beginDate").bind("focus", function selectMonth() {
-   				WdatePicker({isShowWeek:true,onpicked:getMonday});
+   				WdatePicker({ dateFmt: 'yyyy-MM-dd', isShowWeek:true,isShowClear: false, readOnly:true, onpicked:function(){$dp.$('weeknumber').value='第'+$dp.cal.getP('W','W')+'周'; }  });
    			});
    		}
      });
@@ -265,13 +279,15 @@ function generate(){
           	<label>
               <input type="radio" name="radioType" value="month" ${type == "month" ? "checked" : ""}/>月报
               <input type="radio" name="radioType" value="year" ${type == "year" ? "checked" : ""}/>年报
-              <!-- <input type="radio" name="radioType" value="week" ${type == "week" ? "checked" : ""}/>周报 -->
+              <input type="radio" name="radioType" value="week" ${type == "week" ? "checked" : ""}/>周报
             </label>
           </div>
           <div>
           <label class="fl">时间</label>
           <div class="fl" style="top:3px;">
           	<input type="text" style="width:256px;" name="beginDate" id="beginDate" readonly="readonly" value="${beginDate }" />
+          	<input id="weeknumber" type="text" style="width:50px;border:none;"  readonly="readonly" value=''/>
+			<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
           	<button type="button" onclick="generate()" style="background-color: #e7e7e7; color: black;border-radius: 5px;">生成</button>
 			<span>下载Word报表&nbsp;</span>
 			<span>
