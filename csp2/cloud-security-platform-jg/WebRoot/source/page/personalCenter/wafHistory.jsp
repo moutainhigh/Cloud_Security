@@ -286,7 +286,7 @@ function generate(){
           <label class="fl">时间</label>
           <div class="fl" style="top:3px;">
           	<input type="text" style="width:256px;" name="beginDate" id="beginDate" readonly="readonly" value="${beginDate }" />
-          	<input id="weeknumber" type="text" style="width:50px;border:none;"  readonly="readonly" value=''/>
+          	<input id="weeknumber" name="weeknumber" type="text" style="width:50px;border:none;"  readonly="readonly" value=''/>
 			<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
           	<button type="button" onclick="generate()" style="background-color: #e7e7e7; color: black;border-radius: 5px;">生成</button>
 			<span>下载Word报表&nbsp;</span>
