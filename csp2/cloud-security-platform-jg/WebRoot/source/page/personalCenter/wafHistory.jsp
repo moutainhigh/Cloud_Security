@@ -69,7 +69,6 @@ $(document).ready(function(){
      	$("#weeknumber").hide();
      	$('#beginDate').unbind(); //移除所有
         var type=$('input:radio[name="radioType"]:checked').val();
-        alert("on:"+type);
         if(type=='month'){
         	$('#beginDate').val('<%=str_date %>'); 
    			$("#beginDate").bind("focus", function selectMonth() {
@@ -114,7 +113,7 @@ $(document).ready(function(){
    		}
      });
      
-     
+     /*
      function getMonday(){
 		  //var today=new Date();
 		  var today=new Date($("#beginDate").val().replace(/-/g,   "/"));
@@ -147,6 +146,7 @@ $(document).ready(function(){
 	    var sunday=new Date(1000*60*60*24*(7-weekday) + today.getTime());    
 	    $("#beginDate").val(getDateStr(sunday));
 	 }
+	 */
 	 //图表
 	 var startDate = $('#beginDate').val();
    	 var timeUnit = $('input:radio[name="radioType"]:checked').val();
@@ -183,11 +183,11 @@ function generate(){
 		//显示周一
 		var MondayTime = curTime - (day-1)*oneDayTime ; 
 		//显示周日
-		var SundayTime =  curTime + (7-day)*oneDayTime ; 
+		//var SundayTime =  curTime + (7-day)*oneDayTime ; 
 
 		//初始化日期时间
 		var monday = new Date(MondayTime);
-		var sunday = new Date(SundayTime);
+		//var sunday = new Date(SundayTime);
 		beginDate = monday.getFullYear() + '-' + (monday.getMonth() + 1) + '-' + monday.getDate(); 
 
 	}
