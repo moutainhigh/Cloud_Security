@@ -17,9 +17,11 @@ import java.math.BigInteger;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -1342,7 +1344,44 @@ public class ExportController {
         }  
         return s;  
     }  
+    /**
+     * 功能描述：在初始时间上加减时间
+     * 参数描述：String orignalTimestr 初始时间,int addnum 间隔时间 ,String type 时间类型 1、月 2、年  3、周
+     *       @time 2017-6-29
+     */
     
+    public String TimeCalc(String orignalTimestr,int addnum,String type)
+    {
+    	SimpleDateFormat sdf;
+    	String reTimeString ="";
+    	if (type!=null&&type.equals("月报")) {
+    		sdf=new SimpleDateFormat("yyyy-MM");
+		}else if (type!=null&&type.equals("年报")) {
+			sdf=new SimpleDateFormat("yyyy");
+		}else  {
+			sdf=new SimpleDateFormat("yyyy-MM-dd");
+		}
+    	try {
+			Date dt = sdf.parse(orignalTimestr);
+			Calendar endCalendar = Calendar.getInstance();
+			endCalendar.setTime(dt);
+			//beginCalendar.add(field, amount);
+			if (type!=null&&type.equals("月报")) {
+				endCalendar.add(Calendar.MONTH, addnum);
+			}else if (type!=null&&type.equals("年报")) {
+				endCalendar.add(Calendar.YEAR, addnum);
+			}else if (type!=null&&type.equals("周报")){
+				endCalendar.add(Calendar.DAY_OF_YEAR, addnum*7);
+			}
+			
+			Date endDate = endCalendar.getTime(); 
+			reTimeString = sdf.format(endDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+    	return reTimeString;
+    }
     /**
      * 功能描述：下载waf导入模板
      * 参数描述：HttpServletRequest request,HttpServletResponse response
@@ -1361,15 +1400,21 @@ public class ExportController {
             String imgOntimeLineHex = request.getParameter("imgOntimeLine");
             String ipurl = request.getParameter("ipurl"); 
             String defenselength = request.getParameter("defenselength");
-           
+            
+            
           //获取报表类型  月、年
     	    String reporttype = request.getParameter("radioType");
     	    if (reporttype.equals("month")) {
     	    	reporttype = "月报";
     		}else if (reporttype.equals("year")) {
     			reporttype = "年报";
-    		}
-            
+    		}else if (reporttype.equals("week")) {
+    			reporttype = "周报";
+			}else{
+				reporttype = " ";
+			}
+    	    String beginDate = request.getParameter("beginDate");
+            String endDate = TimeCalc(beginDate, 1, reporttype);
             //16进制转base64数据
             
             String imgPieLevel = hexString2String(imgPieLevelHex);
@@ -1440,6 +1485,8 @@ public class ExportController {
             paramMap.put("levelhigh", levelhigh);
             paramMap.put("levelmid", levelmid);
             paramMap.put("levellow", levellow);
+            paramMap.put("beginDate", beginDate);
+            paramMap.put("endDate", endDate);
             
             
             
@@ -1553,6 +1600,9 @@ public class ExportController {
         String eventTypeTotalstr = paramMap.get("eventTypeTotalstr").toString();
         String strreporttype = paramMap.get("reporttype").toString();
         
+        String beginDate = paramMap.get("beginDate").toString();
+        String endDate = paramMap.get("endDate").toString();
+        
         String strJsonEventTypeStr = paramMap.get("strJsonEventTypeStr").toString();  // eventType
         List listEventType = WafAPIAnalysis.analysisEventTypeCountList(strJsonEventTypeStr);
        /* eventListStr = eventListStr.substring(1,eventListStr.length()-1);
@@ -1619,8 +1669,8 @@ public class ExportController {
 			map.put("REPORTTYPE", strreporttype);
 			map.put("IP", stripurl);
 			map.put("DEFENDLENGTH", strdefenselength);
-			map.put("STARTTIME", "");
-			map.put("ENDTIME", "");
+			map.put("STARTTIME", beginDate);
+			map.put("ENDTIME", endDate);
 			
 			List<Threat> threatlist = new ArrayList<Threat>();  
 	        /*for (int i = 0; i < eventListArray.size(); i++) {  
