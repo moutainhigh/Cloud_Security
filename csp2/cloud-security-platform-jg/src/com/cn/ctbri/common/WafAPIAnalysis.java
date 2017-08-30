@@ -60,6 +60,7 @@ public class WafAPIAnalysis {
     }
 
 	public static Map analysisWafLogWebSecTimeCount(String eventStr) {
+		System.out.println(eventStr);
 		Map<String,Object> reMap = new HashMap<String,Object>();
     	List<Object> arr = new ArrayList<Object>();
 		List<Object> arra = new ArrayList<Object>();
