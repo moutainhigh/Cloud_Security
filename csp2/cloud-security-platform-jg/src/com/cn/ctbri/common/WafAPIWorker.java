@@ -479,6 +479,7 @@ public class WafAPIWorker {
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("domain",JSONArray.fromObject(domainList));
+		json.put("limit", 1000);
         WebTarget target = mainTarget.path("/rest/adapter/getWafAlertLevelCountLimitByDomain");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);

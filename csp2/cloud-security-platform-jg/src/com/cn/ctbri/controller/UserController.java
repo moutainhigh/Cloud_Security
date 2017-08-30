@@ -1943,9 +1943,11 @@ public class UserController{
   		List<AttackCount> attackCountList = new ArrayList<AttackCount>();
   		for (int i = 0; i < array.size(); i++) {
   			JSONObject obj = (JSONObject) array.get(i);
-  			byte[] base64Bytes = org.apache.commons.codec.binary.Base64.decodeBase64(obj.get("eventType")
-  					.toString().getBytes());
-  			String eventType = new String(base64Bytes, "UTF-8");
+  			/**byte[] base64Bytes = org.apache.commons.codec.binary.Base64.decodeBase64(obj.get("eventType")
+  					.toString().getBytes());**/
+  			
+  			//String eventType = new String(base64Bytes, "UTF-8");
+  			String eventType = obj.getString("eventType");
 //  			Integer typeCode = EventTypeCode.typeToCodeMap.get(eventType);
   			Integer count = (Integer) obj.get("count");
   			attackCountList.add(new AttackCount(eventType, count));

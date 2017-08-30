@@ -343,6 +343,7 @@ public class AnalyseController {
 				orderValue.setCountNums(orderValue.getCountNums()+countNums);
 			}
 		}
+		/**
 		for(Entry<String,OrderCount> entry:orderCountMap.entrySet()){
 			sbType.append(",");
 			OrderCount orderCount=entry.getValue();
@@ -373,6 +374,42 @@ public class AnalyseController {
 			i++;
 		}
 		sbType.append("]");
+		**/
+		for(Entry<String,OrderCount> entry:orderCountMap.entrySet()){
+			//sbType.append(",");
+			OrderCount orderCount=entry.getValue();
+			int type = orderCount.getType();
+			String name = orderCount.getName();
+			long countNums = orderCount.getCountNums();
+			//sbType.append("'");
+			if (i > 0) {
+				sbDetailService.append(",");
+			}
+			sbDetailService.append("{value:" + countNums + ", name:'");
+			if (type == 1) {// 长期
+				sbType.append(",");
+				sbType.append("'");
+				sbType.append(longTerm);
+				sbDetailService.append(longTerm);
+				longTermSum += countNums;
+				sbType.append(name);
+				sbType.append("'");
+				//sbDetailService.append(name + "'}");
+			} else if(type==2){// 短期
+				sbType.append(",");
+				sbType.append("'");
+				sbType.append(single);
+				sbDetailService.append(single);
+				singleSum += countNums;
+				sbType.append(name);
+				sbType.append("'");
+				//sbDetailService.append(name + "'}");
+			}
+			sbDetailService.append(name + "'}");
+
+			i++;
+		}
+		sbType.append("]");
 		sbDetailService.append("]");
 		// 内圈：组装数据格式：[{value:335, name:'直达', selected:true},{value:679,
 		// name:'营销广告'},{value:1548, name:'搜索引擎'}]
@@ -381,12 +418,18 @@ public class AnalyseController {
 		sbInnerRing.append("{value:" + longTermSum + ",name:'" + longTerm
 				+ "'},{value:" + singleSum + ",name:'" + single + "'}");
 		sbInnerRing.append("]");
+
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("title", title);
 		jsonObject.put("type", sbType.toString());
 		jsonObject.put("innerRing", sbInnerRing.toString());
 		jsonObject.put("detailService", sbDetailService.toString());
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>sbType="+sbType);
+		System.out.println("<<<<<<<<<<<<<<<<<<<<<sbInnerRing="+sbInnerRing.toString());
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>sbDetailService"+sbDetailService.toString());
 		String resultGson = jsonObject.toString();// 转成json数据
+		//String resultGson = "{\"title\":\"" + title + "\",\"type\":" + sbType.toString() + ",\"innerRing\":" +sbInnerRing.toString() + ",\"detailService\":" + sbDetailService.toString() + "}";
+		System.out.println("<<<<<<<<<<<<<<<<<<<<resultJson="+resultGson);
 		response.setContentType("textml;charset=UTF-8");
 		response.getWriter().print(resultGson);
 		return null;
@@ -439,8 +482,9 @@ public class AnalyseController {
 		// 超过20个攻击类型后，需要通过排序查找出这段时间内攻击类型数量最多的20个
 		for(int i=0;i<size;i++){
 			JSONObject obj = (JSONObject) jsonArray.get(i);
-			byte[] base64Bytes = Base64.decodeBase64(obj.get("eventTypeBase64").toString().getBytes());	
-			String type = new String(base64Bytes,"UTF-8");
+			//byte[] base64Bytes = Base64.decodeBase64(obj.get("eventTypeBase64").toString().getBytes());	
+			//String type = new String(base64Bytes,"UTF-8");
+			String type = obj.getString("eventType");
 			JSONArray array=obj.getJSONArray("list");
 			int listSize=array.size();
 			int sum=0;

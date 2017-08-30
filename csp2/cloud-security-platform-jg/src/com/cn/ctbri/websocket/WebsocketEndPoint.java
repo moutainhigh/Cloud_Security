@@ -356,6 +356,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 						AttackVO attackVO=new AttackVO(attack);
 						judgeRepeat(attackVO,srcPositionList,desPositionList);
 						jsonObject.put("attack", attackVO);
+						System.out.println("positionDetail:"+attackVO.getSrcLongitude()+"-"+attackVO.getSrcLatitude()+"----"+attackVO.getDesLongitude()+"-"+attackVO.getDesLatitude());
 						TextMessage returnMessage = new TextMessage(jsonObject.toString());
 						try {
 							session.sendMessage(returnMessage);
@@ -516,61 +517,5 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			return position;
 		}
 		return updateRepeat(position,positionList);
-	}
-	public static void main(String[] args) {
-//		String position="1.3-1.8";
-//		String [] positionArray=position.split("-");
-//		System.out.println(positionArray[0]);
-//		System.out.println(positionArray[1]);
-//		double d = 3.1415926;
-//		double d=3.1415926;
-//		String result = String .format("%.1f",d);
-//		System.out.println(result);
-//		String text=WafAPIWorker.getWafLogWebsecCurrent(2);
-//		System.out.println("getFirstWafData:"+text);
-		String text="{\"wafLogWebsecList\": ["+
-  "{"
-+    "\"logId\": 69062,"+
-    "\"resourceId\": 10001,"+
-    "\"resourceUri\": \"/WAF/DEVICE/CTBRI/Group001\","+
-    "\"resourceIp\": \"172.16.100.210\","+
-    "\"siteId\": \"1472538509\","+
-    "\"protectId\": \"2472538509\","+
-    "\"dstIp\": \"219.141.189.183\","+
-    "\"dstPort\": \"80\","+
-    "\"srcIp\": \"106.184.4.137\","+
-    "\"srcPort\": \"60242\","+
-    "\"method\": \"GET\","+
-    "\"domain\": \"None\","+
-    "\"uri\": \"/docs/\","+
-    "\"alertlevel\": \"MEDIUM\","+
-    "\"eventType\": \"SFRUUOWNj+iurui/neiDjA==\","+
-    "\"statTime\": \"2016-09-07 15:55:29\","+
-    "\"policyId\": \"1\","+
-    "\"ruleId\": \"0\","+
-    "\"action\": \"Block\","+
-    "\"block\": \"No\","+
-    "\"blockInfo\": \"None\","+
-    "\"alertinfo\": \"cmVxdWVzdCBleGNlZWRzIHN5c3RlbSdzIGxpbWl0\","+
-    "\"proxyInfo\": \"None\","+
-    "\"characters\": \"Tm9uZQ==\","+
-    "\"countNum\": \"1\","+
-    "\"protocolType\": \"HTTP\","+
-    "\"wci\": \"Tm9uZQ==\","+
-    "\"wsi\": \"Tm9uZQ==\""+
-  "}"+
-"],\"currentId\":10}";
-//		System.out.println(text);
-//		JSONObject json=JSONObject.fromObject(text);
-//		int currentId=json.getInt("currentId");
-//		System.out.println(currentId);
-//		String text2=WafAPIWorker.getAllWafLogWebsecInTime(1+"", "date");
-//		System.out.println(text2);
-//		String dataText=WafAPIWorker.getAllWafLogWebsecInTime(70677);
-//		JSONObject json = JSONObject.fromObject(dataText);
-//		JSONArray array = (JSONArray) json.get("wafLogWebsecList");
-//		if(null!=array&&array.size()==0){
-//			System.out.println("size==0");
-//		}
 	}
 }

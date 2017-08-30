@@ -2355,7 +2355,7 @@ public class shoppingController {
     				        	int id = 0;
     				        	String addr = "";
     				        	String addrName = "";
-    				        	String wafIp = "192.168.0.133";
+    				        	String wafIp = "219.141.189.183";
     				        	String wafPort = "";
         						JSONArray ser = new JSONArray();
         						if(assets != null && assets.size() > 0){
@@ -2387,7 +2387,7 @@ public class shoppingController {
         						if(addrName.length()>20){
         							addrName = addrName.substring(0, 20);
         						}
-        						String wafcreate = WafAPIWorker.createVirtualSiteInResource("20001", addrName, wafIp, wafPort, "nsfocus.cer", "0", addr, "*", "", ser);
+        						String wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", addrName, wafIp, wafPort, "nsfocus.cer", "0", addr, "*", "", ser);
         						String targetKey = "";
         				    	try {
         				    		JSONObject obj = JSONObject.fromObject(wafcreate);
