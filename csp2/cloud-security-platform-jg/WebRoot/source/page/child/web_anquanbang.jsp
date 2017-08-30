@@ -258,12 +258,9 @@ function buyWafOrder(serviceId){
                                             	全天候网站保镖，<br>一站式管家服务
                                         </span>
                                         <div class="purchase">
-                                           
-                                            <strong style="display:block">
-                                            	<em style="font-size:20px;font-family: Arial Regular;">199.00</em>
-                                            	<em style="font-size: 14px;">安全币</em>
+                                           <strong style="display:block">
                                             </strong>
-                                             <strong style="display:block; font-size:30px;">100.00
+                                             <strong style="display:block; font-size:21px;">5980.00
                                              	<em style="font-size: 14px;color: #D00000;">安全币</em>
                                              </strong>
                                             <!--<a href="${ctx}/wafDetails.html?serviceId=6&indexPage=1" class="btn" style="width:80px;">购买</a>
@@ -271,9 +268,7 @@ function buyWafOrder(serviceId){
                                          	<a href="javascript:;" class="btn" style="width:80px;" onclick="buyWafOrder(6);">购买</a>
                                         </div>
                                     </div>
-                                <div class="mask">
-                                	<h6>即将上线</h6>
-                                </div>
+                               
                                 
                                
                             </li>
