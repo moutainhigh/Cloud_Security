@@ -69,7 +69,7 @@ public class WafDetailController {
         //是否查询历史
         String isHis = request.getParameter("isHis");
         //查询时间
-        String startDate = request.getParameter("beginDate");
+        String reportStartDate = request.getParameter("beginDate");
         //周期类型
     	String timeUnit = request.getParameter("type");
         User user = (User)request.getSession().getAttribute("globle_user");
@@ -82,9 +82,9 @@ public class WafDetailController {
 	    order=(HashMap) orderList.get(0);
 	    serviceId=(Integer) order.get("serviceId");
 	    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-	    Date beginDate = (Date) order.get("begin_date");
+	    Date orderbeginDate = (Date) order.get("begin_date");
 	    Date endDate = (Date) order.get("end_date");
-	    String strBeginDate  = sdf.format(beginDate);
+	    String strBeginDate  = sdf.format(orderbeginDate);
 	    String strEndDate = sdf.format(endDate);
 	    request.setAttribute("defenselength",strBeginDate+" - "+strEndDate);   // 设置防护时长
 	    
@@ -123,7 +123,7 @@ public class WafDetailController {
             String websecStr = "";
             if(isHis!=null && isHis.equals("1")){
             	//level等级判断
-            	String levelStr = WafAPIWorker.getWafAlertLevelCountDomainInTime(startDate,"",timeUnit,domainList);
+            	String levelStr = WafAPIWorker.getWafAlertLevelCountDomainInTime(reportStartDate,"",timeUnit,domainList);
             	Map map = WafAPIAnalysis.getWafAlertLevelCount(levelStr);
             	Integer totallevel = (Integer) map.get("total");
             	Integer levelhigh = (Integer) map.get("high");
@@ -137,7 +137,7 @@ public class WafDetailController {
             	request.setAttribute("levellow", levellow);
             	
             	//告警类型判断
-            	String eventStr = WafAPIWorker.getEventTypeCountDomainInTime(startDate,"",timeUnit,domainList);
+            	String eventStr = WafAPIWorker.getEventTypeCountDomainInTime(reportStartDate,"",timeUnit,domainList);
         		Map map1 = WafAPIAnalysis.getWafEventTypeCountInTimeNoDecode(eventStr);
         		Integer totaltype = (Integer) map1.get("total");
             	/*request.setAttribute("levelType", totaltype);
@@ -160,8 +160,10 @@ public class WafDetailController {
         			unit = "month";
         		}else if(timeUnit.equals("month")){
         			unit = "day";
-        		}
-        		String eventStr1 = WafAPIWorker.getWafLogWebSecTimeCount(startDate+"-01","",unit,domainList);
+        		}else if (timeUnit.equals("week")) {
+					unit = "week";
+				}
+        		String eventStr1 = WafAPIWorker.getWafLogWebSecTimeCount(reportStartDate+"-01","",unit,domainList);
         		List listTime = WafAPIAnalysis.analysisWafLogWebSecTimeCountList(eventStr1);
         		int totalTimeCount = 0;
         		for (int i = 0; i < listTime.size(); i++) {
@@ -181,8 +183,8 @@ public class WafDetailController {
      	        request.setAttribute("resultListTime",resultListTimeHex);  // 设置告警time   list
      	
             	//攻击源
-            	websecStr = WafAPIWorker.getWafLogWebsecSrcIpCountInTime(startDate,"",timeUnit,domainList,10);
-            	request.setAttribute("beginDate", startDate);
+            	websecStr = WafAPIWorker.getWafLogWebsecSrcIpCountInTime(reportStartDate,"",timeUnit,domainList,10);
+            	request.setAttribute("beginDate", reportStartDate);
             	request.setAttribute("type", timeUnit);
             	websecList = WafAPIAnalysis.getWafLogWebsecSrcIp(websecStr);
             	//String strattackip = new String(websecList.toString().getBytes("UTF-8"),"UTF-8");
@@ -545,7 +547,9 @@ public class WafDetailController {
     			unit = "month";
     		}else if(timeUnit.equals("month")){
     			unit = "day";
-    		}
+    		}else if (timeUnit.equals("week")) {
+				unit = "week";
+			}
     		eventStr = WafAPIWorker.getWafLogWebSecTimeCount(startDate+"-01","",unit,domainList);
     		System.out.println("eventStr="+eventStr);
     	}
@@ -612,7 +616,9 @@ public class WafDetailController {
     			unit = "month";
     		}else if(timeUnit.equals("month")){
     			unit = "day";
-    		}
+    		}else if (timeUnit.equals("week")) {
+				unit = "week";
+			}
     		//eventStr = WafAPIWorker.getWafLogWebSecTimeCount(startDate+"-01","",unit,domainList);
     		eventStr = WafAPIWorker.getWafLogWebsecSrcIpCountInTime(startDate,"",timeUnit,domainList,10);
     		System.out.println("eventStr="+eventStr);
@@ -679,7 +685,9 @@ public class WafDetailController {
     		}else if(timeUnit.equals("month")){
     			unit = "day";
     		}
-    		
+    		else if (timeUnit.equals("week")) {
+				unit = "week";
+			}
     		eventStr = WafAPIWorker.getWafLogWebsecSrcIpCountInTime(startDate,"",timeUnit,domainList,10);
     		System.out.println("eventStr="+eventStr);
     	}
