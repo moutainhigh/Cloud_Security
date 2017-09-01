@@ -396,11 +396,7 @@ FROM (SELECT
       	 id = #{id}
  </update>
  <update id="updatePayFlag" parameterType="hashMap">
-      	update cs_order
-      	set
-      	 payFlag = #{payFlag}
-      	where
-      	 id in (#{orderId})
+  update cs_order set payFlag = #{payFlag} where id = (#{orderId})
  </update>
  
  <update id="updateOrderStatus" parameterType="hashMap">
