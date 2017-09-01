@@ -2088,8 +2088,12 @@ public class shoppingController {
     		
     		//更新 支付Flag(cs_order表) 未支付-->已支付
     		String orderIds = orderList.getOrderId();//订单条目编号(cs_order的id)
+    		String strArrayId[] = orderIds.split(",");
+    		System.out.println("updateOrderPayFlag============"+orderIds);
     		int payflag = 1;
-    		selfHelpOrderService.updateOrderPayFlag(orderIds, payflag);
+    		for (int i = 0; i < strArrayId.length; i++) {
+				selfHelpOrderService.updateOrderPayFlag(strArrayId[i], payflag);
+			}
     		
     		//取得服务时间更改的订单编号
     		String orderId = "";
@@ -2502,8 +2506,9 @@ public class shoppingController {
     		}
     		
     		//更新orderList表中的orderId
-    		String newOrderIds = orderVal.substring(0,orderVal.length()-1);
+    		String newOrderIds = "";
     		if (orderVal != null&& !orderVal.equals("")) {
+    			newOrderIds = orderVal.substring(0,orderVal.length()-1);
     			orderList.setOrderId(newOrderIds);
     			orderListService.update(orderList);
     		}
