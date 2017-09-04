@@ -2196,6 +2196,7 @@ public class shoppingController {
     		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//小写的mm表示的是分钟  
     		List list = new ArrayList();
     		List shopAPIList = new ArrayList();
+    		List shopSysList = new ArrayList();
     		List<ShopCar> shopList = new ArrayList();
     		int orderNum=0;
     		String orderVal="";
@@ -2211,15 +2212,15 @@ public class shoppingController {
     			}
     			
     			orderNum= strArray.length;
-    			if (orderNum == 1) {
-    				List orderHashList = orderService.findByOrderId(orderIdList.get(0));
-    				/*
-    				 * <select id="findOrderByOrderId" resultType="hashmap" parameterType="String">
-        					select o.id,o.serviceId,o.type,s.name,s.parentC,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI,o.userId
-        					from cs_order o,cs_service s
-        					where o.id = #{orderId} and o.serviceId = s.id
-    					</select>
-    				 * */
+    			for (int i = 0; i < strArray.length; i++) {
+    				
+    				List orderHashList = orderService.findByOrderId(orderIdList.get(i));
+    				 // <select id="findOrderByOrderId" resultType="hashmap" parameterType="String">
+        				//	select o.id,o.serviceId,o.type,s.name,s.parentC,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI,o.userId
+        				//	from cs_order o,cs_service s
+        					//where o.id = #{orderId} and o.serviceId = s.id
+    					//</select>
+    				
     				if (orderHashList == null ||orderHashList.size() == 0) {
     		    		return false;
     		    	}
@@ -2259,6 +2260,7 @@ public class shoppingController {
 									System.out.println("金山接口创建成功" + orderId + " userid:"+userid.toString());
 									String strUninstallPasswd = SysWorker.getJinshanUninstallInfo(orderId+userid.toString());
 									selfHelpOrderService.updateSysOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date(),strUninstallPasswd);
+									 orderVal = orderVal+ orderId+",";
 								}
 								System.out.println("url:"+SysWorker.getJinshanoauthurl(orderId+userid.toString()));
 								
@@ -2266,30 +2268,33 @@ public class shoppingController {
 								System.out.println(""+orderId );
 								String strInstanceid = SysWorker.getjiguanginstanceID(userid.toString(), orderId, linkman.getMobile(), linkman.getName());
 								selfHelpOrderService.updateSysOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date(),strInstanceid);
+								 orderVal = orderVal+ orderId+",";
 								
 							}else if (serviceId == 10) {//服务监测 
 								System.out.println(""+orderId );
 								System.out.println(""+portMessage );
 								//String strInstanceid = SysWorker.getjiguanginstanceID(userid.toString(), orderId, linkman.getMobile(), linkman.getName());
 								selfHelpOrderService.updateSysOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date(),portMessage);
+								 orderVal = orderVal+ orderId+",";
 								
 							}
     			    	
     			    		else {
 								selfHelpOrderService.updateOrder(orderId,orderId, "3",status,orderList.getId(),orderList.getPay_date());
+								 orderVal = orderVal+ orderId+",";
 							}
     			    		
         					
         					
-        					/*更新 修改时间的订单Id
-        					if (modifyOrderId.contains(shopCar.getOrderId())){
-        						modifyOrderId.remove(shopCar.getOrderId());
-        						modifyOrderId.add(orderId);
-        					}*/
+        					//更新 修改时间的订单Id
+        				//	if (modifyOrderId.contains(shopCar.getOrderId())){
+        					//	modifyOrderId.remove(shopCar.getOrderId());
+        					//	modifyOrderId.add(orderId);
+        					//}
         				} else {
         					result = false;
         				}
-						return result;
+						//return result;
 					}
 				}
     			
@@ -2302,9 +2307,11 @@ public class shoppingController {
     				ShopCar shopCar = (ShopCar)list.get(i);
     				if(shopCar.getIsAPI()==0 || shopCar.getIsAPI()==2){
     					shopList.add(shopCar);
-    				}else{
+    				}else if (shopCar.getIsAPI()==1) {
     					shopAPIList.add(shopCar);
-    				}
+    				}else if (shopCar.getIsAPI()==3) {
+    					shopSysList.add(shopCar);
+					}
     			}	 
     		}
     		
@@ -2504,6 +2511,30 @@ public class shoppingController {
     			}
     			
     		}
+    		
+    		/*
+    		if (shopSysList != null && shopSysList.size() > 0) {
+    			for (int i = 0; i < shopSysList.size(); i++) {
+    				ShopCar shopCar = (ShopCar) shopSysList.get(i);
+    				String orderId = "";
+    				orderId = shopCar.getOrderId();
+    			   
+    			    
+    			    if (orderId != null && !"".equals(orderId)) {
+    					//更新 修改时间的订单Id
+    					if (modifyOrderId.contains(shopCar.getOrderId())){
+    						modifyOrderId.remove(shopCar.getOrderId());
+    						modifyOrderId.add(orderId);
+    					}
+    				} else {
+    					result = false;
+    				}
+    			   
+    			}//for
+    		}//shopSyslist
+    		*/
+    		
+    		
     		
     		//更新orderList表中的orderId
     		String newOrderIds = "";
