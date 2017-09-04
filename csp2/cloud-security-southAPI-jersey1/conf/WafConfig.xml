@@ -121,7 +121,7 @@
 					<WAFDevAPI>
 						<APIAddr>https://183.78.180.10:8443</APIAddr>
 						<APIKey>vmwaf</APIKey>
-						<APIValue>577B-423B-4D31-3FD4</APIValue>
+						<APIValue>9E0F-DD7A-F3E4-062A</APIValue>
 						<APIUserName>admin</APIUserName>
 						<APIPwd>nsfocus</APIPwd>
 					</WAFDevAPI>
@@ -138,7 +138,7 @@
 					<WAFDevAPI>
 						<APIAddr>https://183.78.182.254:8443</APIAddr>
 						<APIKey>vmwaf</APIKey>
-						<APIValue>EDB1-8043-EEB3-2541</APIValue>
+						<APIValue>577B-423B-4D31-3FD4</APIValue>
 						<APIUserName>admin</APIUserName>
 						<APIPwd>nsfocus</APIPwd>
 					</WAFDevAPI>
@@ -243,6 +243,6 @@
 		<Relay relayServerIP="127.0.0.1" relayPort="514" relayProtocol="udp" relayMode="Raw" />
 	</SyslogServer>
 	<AlertConfig>
-		<statistic>1000</statistic>
+		<statistic>100</statistic>
 	</AlertConfig>
 </WAF_CONFIG>

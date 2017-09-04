@@ -53,11 +53,18 @@ import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 public class NsfocusWAFAdapter {	
 	//告警等级：高、中、低
 	private static final String[] ALERT_LEVEL_STRINGS = {"LOW","MEDIUM","HIGH"};
-	private static final String LIMIT_NUM_STRING = "100";
+	private static String LIMIT_NUM_STRING;
 	public static HashMap<Integer, HashMap<Integer, NsfocusWAFOperation>> mapNsfocusWAFOperationGroup = new HashMap<Integer, HashMap<Integer,NsfocusWAFOperation>>();
 	public NsfocusWAFOperation nsfocusWAFOperation = null;
 	public static Blob blob;
-
+	
+	private static String getLimitNumString() throws DocumentException {
+		SAXReader reader = new SAXReader();
+		Document document = reader.read(DeviceAdapterConstant.WAF_CONFIG);
+		Element e = document.getRootElement().element("AlertConfig").element("statistic");
+		LIMIT_NUM_STRING = e.getTextTrim();
+		return LIMIT_NUM_STRING;	
+	}
 	
 	public SqlSession getSqlSession() throws IOException{
 		return WafDatabaseController.getSqlSession();
@@ -89,6 +96,7 @@ public class NsfocusWAFAdapter {
 		Iterator<?> iterator = wafConfigManager.mapWAFConfigDeviceManager.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Map.Entry<Integer,WAFConfigDeviceGroup> entry = (Entry<Integer, WAFConfigDeviceGroup>)iterator.next();
+			System.out.println("***WafConfig***\r\nkey="+entry.getKey()+"\r\nvalue="+entry.getValue().toString()+"************");
 			int resourceId = entry.getKey();
 			if("".equals(resourceId)) continue;
 			WAFConfigDeviceGroup wafConfigDeviceGroup = entry.getValue();
@@ -354,6 +362,10 @@ public class NsfocusWAFAdapter {
 		JSONArray createVirtSiteJsonArray = new JSONArray();
 		String targetId = UUID.randomUUID().toString();
 		int statusCount = 0;
+		System.out.println("***resourceId="+resourceId+"***");
+		System.out.println("***NsfocusWaf***");
+		System.out.println(map);
+		System.out.println("******");
 		for (Entry<Integer, NsfocusWAFOperation> entry : map.entrySet()) {
 			//新建站点
 			String siteJsonString = entry.getValue().createSite(jsonObject);
@@ -552,7 +564,7 @@ public class NsfocusWAFAdapter {
 			if (jsonObject.containsKey("limit")&&jsonObject.get("limit")!=null&&jsonObject.getString("limit").length()>0) {
 				example.setRows(jsonObject.getString("limit"));
 			}else {
-				example.setRows(LIMIT_NUM_STRING);
+				example.setRows(getLimitNumString());
 			}
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			List<TWafLogWebsec> allList = mapper.selectByExampleWithBLOBs(example);
@@ -682,7 +694,7 @@ public class NsfocusWAFAdapter {
 			if (jsonObject.containsKey("limit")&&jsonObject.get("limit")!=null&&jsonObject.getString("limit").length()>0) {
 				example.setRows(jsonObject.getString("limit"));
 			}else {
-				example.setRows(LIMIT_NUM_STRING);
+				example.setRows(getLimitNumString());
 			}
 			sqlSession = getSqlSession();
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
@@ -769,21 +781,27 @@ public class NsfocusWAFAdapter {
 		SqlSession sqlSession = null;
 		try {
 			//根据
+			System.out.println(">>>>>>json="+jsonObject.toString());
 			TWafLogWebsecExample example = new TWafLogWebsecExample();
 			sqlSession = getSqlSession();
+			System.out.println("1111111111111111111111111111");
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
+			System.out.println("2222222222222222222222");
 			int maxNum = mapper.selectMaxByExample(example);
+			System.out.println("33333333333333333333333");
 			if (jsonObject.get("currentId")!=null&&!jsonObject.getString("currentId").isEmpty()&&jsonObject.getLong("currentId")>0 ){
 				example.or().andLogIdGreaterThan(Long.parseLong(jsonObject.getString("currentId")));
 			}
-		
+			System.out.println(">>>>>>json="+jsonObject.toString());
+			System.out.println("<<<<<<<<<<<<example="+example.toString());
+
 			//组装查询条件并进行查询
 			
 			
 			//查询并返回结果
 
 			
-			List<TWafLogWebsec> allList = mapper.selectByExample(example);
+			List<TWafLogWebsec> allList = mapper.selectByExampleWithBLOBs(example);
 			//base64编码
 			for (TWafLogWebsec tWafLogWebsec : allList) {
 				tWafLogWebsec = getTWafLogWebsecBase64(tWafLogWebsec);
@@ -795,6 +813,7 @@ public class NsfocusWAFAdapter {
 			String jsonString =  xStream.toXML(allList);
 			JSONObject returnJsonObject = JSONObject.fromObject(jsonString);
 			returnJsonObject.put("currentId", maxNum);
+			System.out.println(">>>>>>>>>>returnJson="+returnJsonObject.toString());
 			return returnJsonObject.toString();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -1192,7 +1211,7 @@ public class NsfocusWAFAdapter {
 				TWafLogWebsecExample tWafLogWebsecExample = new TWafLogWebsecExample();
 				tWafLogWebsecExample.or(tWafLogWebseCriteria);
 				JSONObject eventTypeJsonObject = new JSONObject();
-				eventTypeJsonObject.put("eventType", eventTypeBase64);
+				eventTypeJsonObject.put("eventType", element.getTextTrim());
 				eventTypeJsonObject.put("count", mapper.countByExample(tWafLogWebsecExample));
 				typeCountList.add(eventTypeJsonObject);
 				tWafLogWebseCriteria.criteria.remove(tWafLogWebseCriteria.criteria.size()-1);
@@ -1290,7 +1309,7 @@ public class NsfocusWAFAdapter {
 				TWafLogWebsecExample tWafLogWebsecExample = new TWafLogWebsecExample();
 				tWafLogWebsecExample.or(tWafLogWebseCriteria);
 				JSONObject eventTypeJsonObject = new JSONObject();
-				eventTypeJsonObject.put("eventType", eventTypeBase64);
+				eventTypeJsonObject.put("eventType", element.getTextTrim());
 				eventTypeJsonObject.put("count", mapper.countByExample(tWafLogWebsecExample));
 				typeCountList.add(eventTypeJsonObject);
 				tWafLogWebseCriteria.criteria.remove(tWafLogWebseCriteria.criteria.size()-1);
@@ -1335,10 +1354,7 @@ public class NsfocusWAFAdapter {
 			if (jsonObject.containsKey("limit")&&jsonObject.getString("limit").length()>0&&jsonObject.getInt("limit")>0) {
 				limitNum = jsonObject.getInt("limit");
 			}else {
-				SAXReader reader = new SAXReader();
-				Document document = reader.read(DeviceAdapterConstant.WAF_CONFIG);
-				Element e = document.getRootElement().element("AlertConfig").element("statistic");
-				limitNum = Integer.parseInt(e.getTextTrim());
+				limitNum = Integer.parseInt(getLimitNumString());
 			}
 			List<TWafLogWebsecEventTypeCount> list = mapper.selectEventTypeCountsByDomain(domainList, limitNum);
 			sqlSession.clearCache();
@@ -1467,6 +1483,8 @@ public class NsfocusWAFAdapter {
 				cal.add(Calendar.YEAR, 1);
 			}else if (timeUnitString.equalsIgnoreCase("month")) {
 				cal.add(Calendar.MONTH, 1);
+			}else if(timeUnitString.equalsIgnoreCase("week")){
+				cal.add(Calendar.DATE, 7);
 			}else {
 				cal.add(Calendar.DATE, 1);
 			}
@@ -1552,12 +1570,14 @@ public class NsfocusWAFAdapter {
 			List<Element> typeElements = document.selectNodes("/TypeList/Type");
 			JSONArray jsonArray = new JSONArray();
 			for (Element element : typeElements) {
-				String eventTypeBase64 = stringToBase64(element.getTextTrim());
+				String eventTypeString = element.getTextTrim();
+				String eventTypeBase64 = stringToBase64(eventTypeString);
 				TWafLogWebsecCountExample countExample = new TWafLogWebsecCountExample();
 				countExample.or().andStatTimeBetween(sdf.format(dateBefore), sdf.format(dateNow)).andEventTypeEqualTo(element.attributeValue("name"));
 				List<TWafLogWebsecCount> counts = mapper.selectByExample(countExample);
 				JSONObject counntInTimeJsonObject = JSONObject.fromObject(getXStream().toXML(counts));				
 				counntInTimeJsonObject.put("eventTypeBase64", eventTypeBase64);
+				counntInTimeJsonObject.put("eventType", eventTypeString);
 				jsonArray.add(counntInTimeJsonObject);
 			}
 			
@@ -1801,7 +1821,7 @@ public class NsfocusWAFAdapter {
 	
 	public String getWafLogWebSecTimeCount(JSONObject jsonObject) {
 		if (jsonObject.get("timeUnit").equals(null)||jsonObject.getString("timeUnit").length()<=0
-				||!(jsonObject.getString("timeUnit").equalsIgnoreCase("day")||jsonObject.getString("timeUnit").equalsIgnoreCase("month")||jsonObject.getString("timeUnit").equalsIgnoreCase("year"))
+				||!(jsonObject.getString("timeUnit").equalsIgnoreCase("day")||jsonObject.getString("timeUnit").equalsIgnoreCase("month")||jsonObject.getString("timeUnit").equalsIgnoreCase("week")||jsonObject.getString("timeUnit").equalsIgnoreCase("year"))
 				||jsonObject.get("startDate").equals(null)||jsonObject.getString("startDate").length()<=0
 			) {
 			JSONObject errorJsonObject = new JSONObject();
@@ -1842,7 +1862,9 @@ public class NsfocusWAFAdapter {
 				cal.add(Calendar.YEAR, 1);
 			}else if (timeUnitString.equalsIgnoreCase("month")) {
 				cal.add(Calendar.YEAR, 1);
-			}else {
+			}else if (timeUnitString.equalsIgnoreCase("week")){
+				cal.add(Calendar.DATE, 7);
+			}else{
 				cal.add(Calendar.MONTH, 1);
 			}
 			Date endDate = cal.getTime();
@@ -1944,7 +1966,7 @@ public class NsfocusWAFAdapter {
 		SqlSession sqlSession = null;
 		//验证必要的输入参数
 		if (jsonObject.get("timeUnit").equals(null)||jsonObject.getString("timeUnit").length()<=0
-				||!(jsonObject.getString("timeUnit").equalsIgnoreCase("day")||jsonObject.getString("timeUnit").equalsIgnoreCase("month")||jsonObject.getString("timeUnit").equalsIgnoreCase("year"))
+				||!(jsonObject.getString("timeUnit").equalsIgnoreCase("day")||jsonObject.getString("timeUnit").equalsIgnoreCase("month")||jsonObject.getString("timeUnit").equalsIgnoreCase("week")||jsonObject.getString("timeUnit").equalsIgnoreCase("year"))
 				||jsonObject.get("startDate").equals(null)||jsonObject.getString("startDate").length()<=0
 			) {
 			//返回参数错误信息
@@ -1990,7 +2012,9 @@ public class NsfocusWAFAdapter {
 				cal.add(Calendar.YEAR, 1);
 			}else if (timeUnitString.equalsIgnoreCase("month")) {
 				cal.add(Calendar.MONTH, 1);
-			}else {
+			}else if (timeUnitString.equalsIgnoreCase("week")) {
+				cal.add(Calendar.DATE, 7);
+			}else{
 				cal.add(Calendar.DATE, 1);
 			}
 			Date endDate = cal.getTime();
@@ -2105,7 +2129,7 @@ public class NsfocusWAFAdapter {
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			List<String> domainList = JSONArray.toList(jsonObject.getJSONArray("domain"));
 			
-			int limitNum = Integer.parseInt(LIMIT_NUM_STRING);
+			int limitNum = Integer.parseInt(getLimitNumString());
 			if (jsonObject.containsKey("limit")&&jsonObject.getString("limit").length()>0&&jsonObject.getInt("limit")>=0) {
 				limitNum = jsonObject.getInt("limit");
 			}
@@ -2133,6 +2157,18 @@ public class NsfocusWAFAdapter {
 			JSONObject errorJsonObject = new JSONObject();
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "sql session error");
+			return errorJsonObject.toString();
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "limit number error");
+			return errorJsonObject.toString();
+		} catch (DocumentException e) {
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "document error");
 			return errorJsonObject.toString();
 		}finally {
 			closeSqlSession(sqlSession);
@@ -2208,8 +2244,7 @@ public class NsfocusWAFAdapter {
 		SqlSession sqlSession = null;
 		try {
 			//判断json内容是否正确
-			if(jsonObject.getJSONArray("domain").isEmpty()
-					||null==jsonObject.get("startDate")||jsonObject.getString("startDate").length()<=0
+			if(null==jsonObject.get("startDate")||jsonObject.getString("startDate").length()<=0
 					||null==jsonObject.get("limitNum")||jsonObject.getInt("limitNum")<=0
 					||null==jsonObject.get("timeUnit")||jsonObject.getString("timeUnit").length()<=0
 			){
@@ -2221,9 +2256,13 @@ public class NsfocusWAFAdapter {
 			sqlSession = getSqlSession();
 			TWafLogWebsecMapper mapper = sqlSession.getMapper(TWafLogWebsecMapper.class);
 			
-			List<String> strList = JSONArray.toList(jsonObject.getJSONArray("domain"));
 			
-			int limitNum = jsonObject.getInt("limit");
+			//默认获取攻击源ip前10位
+			int limitNum = 10;
+			if (jsonObject.containsKey("limit")&&jsonObject.getString("limit").length()>0&&jsonObject.getInt("limit")>=0) {
+				limitNum = jsonObject.getInt("limit");
+			}
+			
 			
 			String timeUnitString = jsonObject.getString("timeUnit");
 			SimpleDateFormat sdf = new SimpleDateFormat();
@@ -2241,7 +2280,9 @@ public class NsfocusWAFAdapter {
 				cal.add(Calendar.YEAR, 1);
 			}else if (timeUnitString.equalsIgnoreCase("month")) {
 				cal.add(Calendar.MONTH, 1);
-			}else {
+			}else if (timeUnitString.equalsIgnoreCase("week")){
+				cal.add(Calendar.DATE, 7);
+			}else{
 				cal.add(Calendar.DATE, 1);
 			}
 			
@@ -2258,7 +2299,15 @@ public class NsfocusWAFAdapter {
 				errorJsonObject.put("message", "parameter error");
 				return errorJsonObject.toString();
 			}
-			List<TWafLogWebsecDstSrc> list = mapper.selectSrcIp(strList, limitNum, startDate, endDate);
+			List<TWafLogWebsecDstSrc> list = new ArrayList<TWafLogWebsecDstSrc>();
+			if (jsonObject.containsKey("domain")&&!jsonObject.getJSONArray("domain").isEmpty()) {
+				List<String> strList = JSONArray.toList(jsonObject.getJSONArray("domain"));
+				list = mapper.selectSrcIp(strList, limitNum, startDate, endDate);
+			}
+			if (jsonObject.containsKey("dstIp")&&!jsonObject.getJSONArray("dstIp").isEmpty()) {
+				List<String> strList = JSONArray.toList(jsonObject.getJSONArray("dstIp"));
+				list = mapper.selectSrcIpByDstIp(strList, limitNum, startDate, endDate);
+			}
 			JSONObject returnJsonObject = new JSONObject();
 			returnJsonObject.put("status", "success");
 			returnJsonObject.put("list", JSONArray.fromObject(list));
@@ -2275,6 +2324,12 @@ public class NsfocusWAFAdapter {
 			errorJsonObject.put("status", "failed");
 			errorJsonObject.put("message", "json format error");
 			return errorJsonObject.toString();
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			JSONObject errorJsonObject = new JSONObject();
+			errorJsonObject.put("status", "failed");
+			errorJsonObject.put("message", "limit number error");
+			return errorJsonObject.toString();			
 		}finally {
 			closeSqlSession(sqlSession);
 		}

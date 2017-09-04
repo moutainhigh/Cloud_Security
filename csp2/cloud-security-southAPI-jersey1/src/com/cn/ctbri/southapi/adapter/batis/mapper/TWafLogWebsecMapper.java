@@ -208,21 +208,50 @@ public interface TWafLogWebsecMapper {
     TWafLogWebsec selectByPrimaryKey(Long logId);
 
     @Select("<script>"+
-    		"select count(*) as count,src_ip from t_waf_log_websec "+
-    		"where domain in "+
+    		"select count(*) as count,src_ip,src_country,src_subdivision_1,src_subdivision_2,src_city  from t_waf_log_websec "+
+    		"where "+
+    		"stat_time between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}"+
+    		"AND "+
+    		"domain in "+
     		"<foreach item='item' index='index' collection='strList' open='(' separator=',' close=')'>"+
     		"#{item}" +
     		"</foreach> " +
-    		" AND stat_time between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP} "+
     		" GROUP BY src_ip ORDER BY count desc "+
     		"limit #{limitNum,jdbcType=BIGINT}"+
     		"</script>"
     )
     @Results({
         @Result(column="count", property="count", jdbcType=JdbcType.VARCHAR),
-        @Result(column="src_ip", property="srcIp", jdbcType=JdbcType.VARCHAR)
+        @Result(column="src_ip", property="srcIp", jdbcType=JdbcType.VARCHAR),
+        @Result(column="src_country", property="srcCountry", jdbcType=JdbcType.VARCHAR),
+        @Result(column="src_subdivision_1", property="srcSubdivision1", jdbcType=JdbcType.VARCHAR),
+        @Result(column="src_subdivision_2", property="srcSubdivision2", jdbcType=JdbcType.VARCHAR),
+        @Result(column="src_city", property="srcCity", jdbcType=JdbcType.VARCHAR),
     })
     List<TWafLogWebsecDstSrc> selectSrcIp(@Param("strList") List<String> strList,@Param("limitNum") int limitNum,@Param("startDate")Date startDate,@Param("endDate")Date endDate);
+    
+    @Select("<script>"+
+    		"select count(*) as count,src_ip,src_country,src_subdivision_1,src_subdivision_2,src_city  from t_waf_log_websec "+
+    		"where "+
+    		" stat_time between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}"+
+    		" AND "+
+    		"dst_ip in "+
+    		"<foreach item='item' index='index' collection='strList' open='(' separator=',' close=')'>"+
+    		"#{item}" +
+    		"</foreach> " +
+    		" GROUP BY src_ip ORDER BY count desc "+
+    		"limit #{limitNum,jdbcType=BIGINT}"+
+    		"</script>"
+    )
+    @Results({
+        @Result(column="count", property="count", jdbcType=JdbcType.VARCHAR),
+        @Result(column="src_ip", property="srcIp", jdbcType=JdbcType.VARCHAR),
+        @Result(column="src_country", property="srcCountry", jdbcType=JdbcType.VARCHAR),
+        @Result(column="src_subdivision_1", property="srcSubdivision1", jdbcType=JdbcType.VARCHAR),
+        @Result(column="src_subdivision_2", property="srcSubdivision2", jdbcType=JdbcType.VARCHAR),
+        @Result(column="src_city", property="srcCity", jdbcType=JdbcType.VARCHAR),
+    })
+    List<TWafLogWebsecDstSrc> selectSrcIpByDstIp(@Param("strList") List<String> strList,@Param("limitNum") int limitNum,@Param("startDate")Date startDate,@Param("endDate")Date endDate);
     
 
     @Select("<script>"+
