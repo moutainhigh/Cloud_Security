@@ -48,68 +48,39 @@
  
 $(document).ready(function(){
 	 //初始化时间格式
-	 $("#weeknumber").hide();
-	 var type=$('input:radio[name="radioType"]:checked').val();
-	 if(type=='month'){
-	 	$("#beginDate").bind("focus", function selectMonth() {
-	        WdatePicker({dateFmt: 'yyyy-MM', isShowToday: false, isShowClear: false, readOnly:true });  
-	     });
-	 }else if(type=='year'){
-	 	$("#beginDate").bind("focus", function selectMonth() {
-   				WdatePicker({ dateFmt: 'yyyy', isShowToday: false, isShowClear: false, readOnly:true });
-   			});
-	 }else if(type=='week'){
-	 	$("#beginDate").bind("focus", function selectMonth() {
-   				WdatePicker({ dateFmt: 'yyyy-MM-dd', isShowWeek:true,isShowClear: false, readOnly:true, onpicked:function(){$dp.$('weeknumber').value='第'+$dp.cal.getP('W','W')+'周'; }  });
-   			});
-	 }
+	$("#weeknumber").hide();
+	$('#beginDate_m').val('<%=str_date %>');
+	$('#beginDate_y').val('<%=str_dateY %>'); 
+	$('#beginDate_w').val('<%=str_dateW %>'); 
+	$("#beginDate_m").bind("focus", function () {
+		WdatePicker({dateFmt: 'yyyy-MM', isShowToday: false, isShowClear: false, readOnly:true });  
+	});
+	
+	$("#beginDate_y").bind("focus", function () {
+   		WdatePicker({ dateFmt: 'yyyy', isShowToday: false, isShowClear: false, readOnly:true });
+   	});
+	
+	$("#beginDate_w").bind("focus", function () {
+   		WdatePicker({ dateFmt: 'yyyy-MM-dd', isShowWeek:true,isShowClear: false, readOnly:true, onpicked:function(){$dp.$('weeknumber').value='第'+$dp.cal.getP('W','W')+'周'; }  });
+   	});
 	 
-     //时间点击事件
-     $('#beginDate').on('click', function() {
-     	$("#weeknumber").hide();
-     	$('#beginDate').unbind(); //移除所有
-        var type=$('input:radio[name="radioType"]:checked').val();
-        if(type=='month'){
-        	$('#beginDate').val('<%=str_date %>'); 
-   			$("#beginDate").bind("focus", function selectMonth() {
-   				WdatePicker({ dateFmt: 'yyyy-MM', isShowToday: false, isShowClear: false, readOnly:true });
-   			}); 
-   		}else if(type=='year'){
-   			$('#beginDate').val('<%=str_dateY %>'); 
-   			$("#beginDate").bind("focus", function selectMonth() {
-   				WdatePicker({ dateFmt: 'yyyy', isShowToday: false, isShowClear: false, readOnly:true });
-   			});
-   		}else if(type=='week'){
-   			$('#beginDate').val('<%=str_dateW %>'); 
-   			if($("#weeknumber").is(":hidden")){$("#weeknumber").show();}
-   			$("#beginDate").bind("focus", function selectMonth() {
-   				WdatePicker({ dateFmt: 'yyyy-MM-dd', isShowWeek:true,isShowClear: false, readOnly:true, onpicked:function(){$dp.$('weeknumber').value='第'+$dp.cal.getP('W','W')+'周'; }  });
-   			});
-   		}
-     });
-
+    $("#beginDate_m").show();
      //radio点击事件
      $('input:radio[name="radioType"]').on('click', function() {
      	$("#weeknumber").hide();
-     	$('#beginDate').unbind(); //移除所有
-     	//$('#beginDate').val(""); 
+     	
         var type=$(this).val();
         if(type=='month'){
-        	$('#beginDate').val('<%=str_date %>'); 
-   			$("#beginDate").bind("focus", function selectMonth() {
-   				WdatePicker({ dateFmt: 'yyyy-MM', isShowToday: false, isShowClear: false, readOnly:true });
-   			}); 
+        	$('input:text[name="beginDate"]').hide();
+        	$("#beginDate_m").show();
    		}else if(type=='year'){
-   			$('#beginDate').val('<%=str_dateY %>'); 
-   			$("#beginDate").bind("focus", function selectMonth() {
-   				WdatePicker({ dateFmt: 'yyyy', isShowToday: false, isShowClear: false, readOnly:true });
-   			});
+   			$('input:text[name="beginDate"]').hide();
+        	$("#beginDate_y").show();
    		}else if(type=='week'){
-   			$('#beginDate').val('<%=str_dateW %>'); 
+   			$('input:text[name="beginDate"]').hide();
+        	$("#beginDate_w").show();
    			if($("#weeknumber").is(":hidden")){$("#weeknumber").show();}
-   			$("#beginDate").bind("focus", function selectMonth() {
-   				WdatePicker({ dateFmt: 'yyyy-MM-dd', isShowWeek:true,isShowClear: false, readOnly:true, onpicked:function(){$dp.$('weeknumber').value='第'+$dp.cal.getP('W','W')+'周'; }  });
-   			});
+   			
    		}
      });
      
@@ -299,7 +270,9 @@ function generate(){
           <div>
           <label class="fl">时间</label>
           <div class="fl" style="top:3px;">
-          	<input type="text" style="width:256px;" name="beginDate" id="beginDate" readonly="readonly" value="${beginDate }" />
+          	<input type="text" style="width:256px; display:none; " name="beginDate" id="beginDate_m" readonly="readonly" value="${beginDate }" />
+          	<input type="text" style="width:256px; display:none; " name="beginDate" id="beginDate_y" readonly="readonly" value="${beginDate }" />
+          	<input type="text" style="width:256px; display:none; " name="beginDate" id="beginDate_w" readonly="readonly" value="${beginDate }" />
           	<input id="weeknumber" name="weeknumber" type="text" style="width:50px;border:none;"  readonly="readonly" value=''/>
 			<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
           	<button type="button" onclick="generate()" style="background-color: #e7e7e7; color: black;border-radius: 5px;">生成</button>
