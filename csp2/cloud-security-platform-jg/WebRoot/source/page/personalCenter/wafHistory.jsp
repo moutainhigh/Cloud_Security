@@ -78,15 +78,15 @@ $(document).ready(function(){
 	}
  
      //radio点击事件
-     $('input:radio[name="radioType"]').on('click', function() {
-     	$("#weeknumber").hide();
-     	
+     $('input:radio[name="radioType"]').on('click', function() {    	
         var type=$(this).val();
         if(type=='month'){
         	$('input:text[name="beginDate"]').hide();
+        	$("#weeknumber").hide();
         	$("#beginDate_m").show();
    		}else if(type=='year'){
    			$('input:text[name="beginDate"]').hide();
+   			$("#weeknumber").hide();
         	$("#beginDate_y").show();
    		}else if(type=='week'){
    			$('input:text[name="beginDate"]').hide();
@@ -298,9 +298,12 @@ function generate(){
           <div>
           	<label>周期类型</label>
           	<label>
-              <input type="radio" name="radioType" value="month" ${type == "month" ? "checked" : ""}/>月报
-              <input type="radio" name="radioType" value="year" ${type == "year" ? "checked" : ""}/>年报
-              <input type="radio" name="radioType" value="week" ${type == "week" ? "checked" : ""}/>周报
+              <input type="radio" name="radioType"  style="width:20px;" value="month" ${type == "month" ? "checked" : ""}/>月报
+              &nbsp;
+              <input type="radio" name="radioType" style="width:20px;" value="year" ${type == "year" ? "checked" : ""}/>年报
+              &nbsp;
+              <input type="radio" name="radioType" style="width:20px;" value="week" ${type == "week" ? "checked" : ""}/>周报
+              &nbsp;
             </label>
           </div>
           <div>
@@ -309,7 +312,7 @@ function generate(){
           	<input type="text" style="width:256px; display:none; " name="beginDate" id="beginDate_m" readonly="readonly" value="${beginDate }" />
           	<input type="text" style="width:256px; display:none; " name="beginDate" id="beginDate_y" readonly="readonly" value="${beginDate }" />
           	<input type="text" style="width:256px; display:none; " name="beginDate" id="beginDate_w" readonly="readonly" value="${beginDate }" />
-          	<input id="weeknumber" name="weeknumber" type="text" style="width:50px;border:none;"  readonly="readonly" value=''/>
+          	<input id="weeknumber" name="weeknumber" type="text" style="width:50px;border:none; display:none;"  readonly="readonly" value=''/>
 			<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
           	<button type="button" onclick="generate()" style="background-color: #e7e7e7; color: black;border-radius: 5px;">生成</button>
 			<span>下载Word报表&nbsp;</span>
