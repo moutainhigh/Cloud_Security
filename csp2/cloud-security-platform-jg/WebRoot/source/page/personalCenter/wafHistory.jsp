@@ -49,6 +49,9 @@
 $(document).ready(function(){
 	 //初始化时间格式
 	$("#weeknumber").hide(); 
+	$('#beginDate_m').val('<%=str_date %>');
+	$('#beginDate_y').val('<%=str_dateY %>'); 
+	$('#beginDate_w').val('<%=str_dateW %>');
 	$("#beginDate_m").bind("focus", function () {
 		WdatePicker({dateFmt: 'yyyy-MM', isShowToday: false, isShowClear: false, readOnly:true });  
 	});
@@ -60,21 +63,19 @@ $(document).ready(function(){
 	$("#beginDate_w").bind("focus", function () {
    		WdatePicker({ dateFmt: 'yyyy-MM-dd', isShowWeek:true,isShowClear: false, readOnly:true, onpicked:function(){$dp.$('weeknumber').value='第'+$dp.cal.getP('W','W')+'周'; }  });
    	});
-	var beginDate = GetQueryString("beginDate"); 
-	var be = beginDate.split("-");
+	var beginD = GetQueryString("beginDate"); 
+	var be = beginD.split("-");
 	var s = be.length;
-	//$('#beginDate_m').val('<%=str_date %>');
-	//$('#beginDate_y').val('<%=str_dateY %>'); 
-	//$('#beginDate_w').val('<%=str_dateW %>');
 	if(s == 1){
-		$('#beginDate_y').val(beginDate);
+		$('#beginDate_y').val(beginD);
 		$("#beginDate_y").show();
 	}else if(s == 2){
-		$('#beginDate_w').val(beginDate);
+		$('#beginDate_m').val(beginD);
 		$("#beginDate_m").show();
 	}else if(s == 3){
-		$('#beginDate_w').val(beginDate);
+		$('#beginDate_w').val(beginD);
 		$("#beginDate_w").show();
+		$("#weeknumber").show();
 	}
  
      //radio点击事件
@@ -139,6 +140,7 @@ $(document).ready(function(){
 		var startDate=$("#beginDate_m").val();
 	}else if(type == 'week'){
 		var startDate=$("#beginDate_w").val();
+		
 	}
    	 var timeUnit = $('input:radio[name="radioType"]:checked').val();
  	 pielevel(startDate,timeUnit);  	 
