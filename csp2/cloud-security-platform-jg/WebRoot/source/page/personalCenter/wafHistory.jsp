@@ -48,10 +48,7 @@
  
 $(document).ready(function(){
 	 //初始化时间格式
-	$("#weeknumber").hide();
-	$('#beginDate_m').val('<%=str_date %>');
-	$('#beginDate_y').val('<%=str_dateY %>'); 
-	$('#beginDate_w').val('<%=str_dateW %>'); 
+	$("#weeknumber").hide(); 
 	$("#beginDate_m").bind("focus", function () {
 		WdatePicker({dateFmt: 'yyyy-MM', isShowToday: false, isShowClear: false, readOnly:true });  
 	});
@@ -63,8 +60,23 @@ $(document).ready(function(){
 	$("#beginDate_w").bind("focus", function () {
    		WdatePicker({ dateFmt: 'yyyy-MM-dd', isShowWeek:true,isShowClear: false, readOnly:true, onpicked:function(){$dp.$('weeknumber').value='第'+$dp.cal.getP('W','W')+'周'; }  });
    	});
-	 
-    $("#beginDate_m").show();
+	var beginDate = GetQueryString("beginDate"); 
+	var be = beginDate.split("-");
+	var s = be.length;
+	//$('#beginDate_m').val('<%=str_date %>');
+	//$('#beginDate_y').val('<%=str_dateY %>'); 
+	//$('#beginDate_w').val('<%=str_dateW %>');
+	if(s == 1){
+		$('#beginDate_y').val(beginDate);
+		$("#beginDate_y").show();
+	}else if(s == 2){
+		$('#beginDate_w').val(beginDate);
+		$("#beginDate_m").show();
+	}else if(s == 3){
+		$('#beginDate_w').val(beginDate);
+		$("#beginDate_w").show();
+	}
+ 
      //radio点击事件
      $('input:radio[name="radioType"]').on('click', function() {
      	$("#weeknumber").hide();
@@ -119,7 +131,15 @@ $(document).ready(function(){
 	 }
 	 */
 	 //图表
-	 var startDate = $('#beginDate').val();
+	 //var startDate = $('#beginDate').val();
+	var type=$('input:radio[name="radioType"]:checked').val();
+	if(type == 'year'){
+		var startDate=$("#beginDate_y").val();
+	}else if(type == 'month'){	
+		var startDate=$("#beginDate_m").val();
+	}else if(type == 'week'){
+		var startDate=$("#beginDate_w").val();
+	}
    	 var timeUnit = $('input:radio[name="radioType"]:checked').val();
  	 pielevel(startDate,timeUnit);  	 
  	 pieEvent(startDate,timeUnit);
@@ -141,10 +161,26 @@ $(function() {
      });
  }); 
 
+function GetQueryString(name) {  
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");  
+    var r = window.location.search.substr(1).match(reg);  //获取url中"?"符后的字符串并正则匹配
+    var context = "";  
+    if (r != null)  
+         context = r[2];  
+    reg = null;  
+    r = null;  
+    return context == null || context == "" || context == "undefined" ? "" : context;  
+}
+
 function generate(){
 	var type=$('input:radio[name="radioType"]:checked').val();
-	var beginDate=$("#beginDate").val();
-	if(type == 'week'){
+	//var beginDate=$("#beginDate").val();
+	if(type == 'year'){
+		var beginDate=$("#beginDate_y").val();
+	}else if(type == 'month'){	
+		var beginDate=$("#beginDate_m").val();
+	}else if(type == 'week'){
+		var beginDate=$("#beginDate_w").val();
 	   	var s = beginDate.replace(/-/g,"/");
 		var date = new Date(s);
 		var curTime = date.getTime() ; 
