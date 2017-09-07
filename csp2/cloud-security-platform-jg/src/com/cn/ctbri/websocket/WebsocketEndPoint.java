@@ -72,11 +72,12 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			TextMessage message) throws Exception {
 		long startId=0;
 		String receiveMsg=message.getPayload();
+//		System.out.println("receiveMsg+++"+receiveMsg);
 		if(StringUtils.isNotEmpty(receiveMsg)){
 			String[] arrayToken=receiveMsg.split("--");
 			//为了安全做的一个类似token认证
 			if(arrayToken!=null&&arrayToken[0]!=null&&"135de9e2fb6ae653e45f06ed18fbe9a7".equals(arrayToken[0])){
-				startId=Long.parseLong(arrayToken[1]);
+				startId=Long.parseLong(arrayToken[1])-500;
 				//源端的经纬度
 				LinkedList<String> srcPositionList=new LinkedList<String>();
 				//目的端的经纬度
@@ -85,16 +86,21 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 				String dataText =null;
 				while(flag){
 					flag=session.isOpen();
+					//System.out.println("flag"+flag);
 					try{
 						dataText=getWafData(startId);
+						//System.out.println("dataText"+dataText);
 						JSONObject json = JSONObject.fromObject(dataText);
 						JSONArray array = (JSONArray) json.get("wafLogWebsecList");
 						startId=json.getLong("currentId");
 						if(null!=array&&array.size()==0){
+							//System.out.println("++++++++");
 							Thread.sleep(1000*10);
 							continue;
 						}
 						flag=perSendData(session,message,array,srcPositionList,desPositionList);
+						//System.out.println(message.toString());
+						//System.out.println(array);
 					}catch(Exception ex){
 						ex.printStackTrace();
 					}
@@ -125,6 +131,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			return true;
 		}
 		long size = array.size();
+		//System.out.println("array.size"+size);
 		/**
 		 * Date：外层Map以时间作为key，时间精确到秒，每秒可能产生几百条数据量
 		 * String：内层Map以攻击类型作为Key，为了便于统计同一时间产生不同类型的攻击数量
@@ -148,6 +155,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			String srcName = null;
 			String desName = null;
 			IPPosition srcIPPosition = getIPPositions().get(srcIP);
+			//System.out.println("src"+srcIPPosition);
 			// 1.优先使用百度接口根据ip查询经纬度
 			if (null == srcIPPosition) {// 数据库中不存在
 				srcIPPosition = new IPPosition();
@@ -169,6 +177,8 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 					String wafCity=ipJson.getString("city");
 					srcName=wafCountry+wafCity;
 					srcIPPosition.setIp(srcIP);
+					//System.out.println("++++++++++++");
+					//System.out.println(srcLongitude+srcLatitude);
 					srcIPPosition.setRegisterTime(new Date());
 					srcIPPosition.setLongitude(srcLongitude);
 					srcIPPosition.setLatitude(srcLatitude);
@@ -182,6 +192,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 					String srcPosition = MapUtil.getPositionByIp(srcIP);
 					srcIPPosition.setIp(srcIP);
 					srcIPPosition.setRegisterTime(new Date());
+//					System.out.println("srcPosition"+srcPosition);
 					if (null != srcPosition) {
 						String[] positionArray = srcPosition.split(",");
 						srcLongitude = positionArray[0];
@@ -295,8 +306,10 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 				Attack attack = new Attack();
 				attack.setSrcLongitude(srcLongitude);
 				attack.setSrcLatitude(srcLatitude);
+			
 				attack.setDesLongitude(desLongitude);
 				attack.setDesLatitude(desLatitude);
+//				System.out.println(srcLatitude+srcLatitude+desLongitude);
 				attack.setDesName(desName);
 				attack.setSrcName(srcName);
 				attack.setStartTime(startTime);
@@ -356,7 +369,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 						AttackVO attackVO=new AttackVO(attack);
 						judgeRepeat(attackVO,srcPositionList,desPositionList);
 						jsonObject.put("attack", attackVO);
-						System.out.println("positionDetail:"+attackVO.getSrcLongitude()+"-"+attackVO.getSrcLatitude()+"----"+attackVO.getDesLongitude()+"-"+attackVO.getDesLatitude());
+//						System.out.println("positionDetail:"+attackVO.getSrcLongitude()+"-"+attackVO.getSrcLatitude()+"----"+attackVO.getDesLongitude()+"-"+attackVO.getDesLatitude());
 						TextMessage returnMessage = new TextMessage(jsonObject.toString());
 						try {
 							session.sendMessage(returnMessage);
