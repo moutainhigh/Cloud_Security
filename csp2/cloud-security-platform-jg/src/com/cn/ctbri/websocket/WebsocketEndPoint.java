@@ -77,34 +77,45 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			String[] arrayToken=receiveMsg.split("--");
 			//为了安全做的一个类似token认证
 			if(arrayToken!=null&&arrayToken[0]!=null&&"135de9e2fb6ae653e45f06ed18fbe9a7".equals(arrayToken[0])){
-				startId=Long.parseLong(arrayToken[1])-500;
+				startId=Long.parseLong(arrayToken[1]);
 				//源端的经纬度
 				LinkedList<String> srcPositionList=new LinkedList<String>();
 				//目的端的经纬度
 				LinkedList<String> desPositionList=new LinkedList<String>();
 				boolean flag=true;
+				boolean flag2=true;
 				String dataText =null;
 				while(flag){
 					flag=session.isOpen();
-					//System.out.println("flag"+flag);
-					try{
-						dataText=getWafData(startId);
-						//System.out.println("dataText"+dataText);
+					System.out.println("flag"+flag);
+					if(flag2){
+						dataText=getFirstWafData();
 						JSONObject json = JSONObject.fromObject(dataText);
 						JSONArray array = (JSONArray) json.get("wafLogWebsecList");
 						startId=json.getLong("currentId");
-						if(null!=array&&array.size()==0){
-							//System.out.println("++++++++");
-							Thread.sleep(1000*10);
-							continue;
-						}
 						flag=perSendData(session,message,array,srcPositionList,desPositionList);
-						//System.out.println(message.toString());
-						//System.out.println(array);
-					}catch(Exception ex){
-						ex.printStackTrace();
+						flag2=false;
+					}else{
+						try{
+							//dataText=getFirstWafData();
+							dataText=getWafData(startId);
+							//System.out.println("dataText"+dataText);
+							JSONObject json = JSONObject.fromObject(dataText);
+							JSONArray array = (JSONArray) json.get("wafLogWebsecList");
+							startId=json.getLong("currentId");
+							if(null!=array&&array.size()==0){
+								//System.out.println("++++++++");
+								Thread.sleep(1000*10);
+								continue;
+							}
+							flag=perSendData(session,message,array,srcPositionList,desPositionList);
+							//System.out.println(message.toString());
+							//System.out.println(array);
+						}catch(Exception ex){
+							ex.printStackTrace();
+						}
+						
 					}
-					
 				}
 			}
 		}
