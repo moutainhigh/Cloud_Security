@@ -106,16 +106,16 @@
   </select>
 
   <select id="selectCntByHour" resultMap="BaseResultMap" parameterType="map">
-  		select count(1) as num,dst_ip,domain,date_format(stat_time,'%Y-%m-%d %H:00:00') as hour  ,date_format(stat_time,'%Y-%m-%d') as day
+  		<![CDATA[ select count(1) as num,dst_ip,domain,date_format(stat_time,'%Y-%m-%d %H:00:00') as hour  ,date_format(stat_time,'%Y-%m-%d') as day
 		from
 		(SELECT  * from t_waf_log_websec  where 
-		ip_latlong_valid=1 
+		ip_latlong_valid=1 and src_ip<>'192.168.0.1'	]]>
 		<if test="maxDate != null">
 			 and date_format(stat_time,'%Y-%m-%d')>#{maxDate,jdbcType=DATE}
 		</if>
 		) t 
 		group by dst_ip,domain,date_format(stat_time,'%Y-%m-%d %H') ,date_format(stat_time,'%Y-%m-%d')
-		
+	
   </select>
   <insert id="batchInsert" parameterType="map">
   		insert into cntByHour (num,hour,day,dst_ip,domain)

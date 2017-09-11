@@ -105,16 +105,17 @@
   	select max(day) from cntByType
   </select>
   <select id="selectCntByType" resultMap="BaseResultMap" parameterType="map">
-  		select count(1) as num,dst_ip,domain,event_type as type ,date_format(stat_time,'%Y-%m-%d') as day
+  		<![CDATA[ 	 select count(1) as num,dst_ip,domain,event_type as type ,date_format(stat_time,'%Y-%m-%d') as day
 		from
 		(SELECT  * from t_waf_log_websec  where 
-		ip_latlong_valid=1 
+		ip_latlong_valid=1 and src_ip<>'192.168.0.1']]>
 		<if test="maxDate != null">
 			 and date_format(stat_time,'%Y-%m-%d')>#{maxDate,jdbcType=DATE}
 		</if>
+			
 		) t 
 		group by dst_ip,domain,event_type,date_format(stat_time,'%Y-%m-%d')
-		
+	
   </select>
   <insert id="batchInsert" parameterType="map">
   		insert into cntByType (type,num,day,dst_ip,domain) 
