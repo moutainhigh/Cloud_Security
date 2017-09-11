@@ -1,10 +1,7 @@
 package com.cn.ctbri.common;
-import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.util.List;
-import java.util.Properties;
-
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -17,7 +14,6 @@ import javax.ws.rs.core.Response;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import com.cn.ctbri.controller.WafController;
 import com.cn.ctbri.listener.ContextClient;
 /**
  * 创 建 人  ：  tangxr
@@ -30,21 +26,7 @@ public class WafAPIWorker {
 	 * wafAPI服务器根路径
 	 */
 	
-//	private static String SERVER_WAF_ROOT;
-	private static String resourceId;
-	private static String deviceId;
-	
-	static{
-		try {
-			Properties p = new Properties();
-			p.load(WafAPIWorker.class.getClassLoader().getResourceAsStream("northAPI.properties"));
-//			SERVER_WAF_ROOT = p.getProperty("SERVER_WAF_ROOT");
-			resourceId = p.getProperty("resourceId");
-			deviceId = p.getProperty("deviceId");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
 	public WafAPIWorker() {
 	}
 	
@@ -752,169 +734,5 @@ public class WafAPIWorker {
 //	}
 	
     
-    public static void main(String[] args) throws UnsupportedEncodingException {
-//        String sites = getSites("10001", "30001");
-    	WafController controller = new WafController();
-/*    	String eth = postIpToEth("10001", "30001", "187.6.0.2", "255.255.255.0");
-    	String postIpToEthRe = controller.analysisGetPostIpToEth(eth);
-    	System.out.println(postIpToEthRe);
-    	
-    	String createSite = createSite("10001", "30001", "new", "187.6.0.2", "80", "", "1");
-    	String createSiteRe = controller.analysisGetcreateSite(createSite);
-    	System.out.println(createSiteRe);*/
-    	
-//        System.out.println(eth);
-//    	String ethStr = "{\"ip_address\":[{\"ip\":\"187.6.0.1\",\"mask\":\"255.255.255.0\",\"multi_status\":200,\"multi_result\":\"created successfully\"}]}";
-/*    	JSONObject json = new JSONObject();
-		json.put("ip", "192.168.1.11");
-		json.put("port", "62222");
-    	JSONArray ser = JSONArray.fromObject(json);
-    	String virtualSite = createVirtualSite("10001", "30001", "1464833085", "testfire", "http://www.testfire.net/", "*", "", ser);
-    	String virtualSiteRe = controller.analysisGetCreateVirtualSite(virtualSite);
-    	System.out.println(virtualSiteRe);*/
-    	
-//    	List<String> dstIpList = new ArrayList();
-//    	dstIpList.add("219.141.189.184");
-//    	dstIpList.add("219.141.189.185");
-    	
-/*    	String wafLogByIp = getWaflogWebsecByIp(dstIpList);
-    	List list = controller.analysisGetWaflogWebsecByIp(wafLogByIp);
-    	if(list!=null&&list.size()>0){
-    		for (int i = 0; i < list.size(); i++) {
-				Map map = (Map)list.get(i);
-				int logId = (Integer)map.get("logId");
-				int resourceId = (Integer)map.get("resourceId");
-				String resourceUri = map.get("resourceUri").toString();
-				String resourceIp = map.get("resourceIp").toString();
-				long siteId = (Long)map.get("siteId");
-				int protectId = (Integer)map.get("protectId");
-				String dstIp = map.get("dstIp").toString();
-				String dstPort = map.get("dstPort").toString();
-				String srcIp = map.get("srcIp").toString();
-				String srcPort = map.get("srcPort").toString();
-				String method = map.get("method").toString();
-				String domain = map.get("domain").toString();
-				String uri = map.get("uri").toString();
-				String alertlevel = map.get("alertlevel").toString();
-				String eventType = map.get("eventType").toString();
-				String statTime = map.get("statTime").toString();
-				String action = map.get("action").toString();
-				String block = map.get("block").toString();
-				String blockInfo = map.get("blockInfo").toString();
-				String alertinfo = map.get("alertinfo").toString();
-				String proxyInfo = map.get("proxyInfo").toString();
-				String characters = map.get("characters").toString();
-		        int countNum = (Integer)map.get("countNum");
-		        String protocolType = map.get("protocolType").toString();
-		        String wci = map.get("wci").toString();
-		        String wsi = map.get("wsi").toString();
-		      
-			}
-    	}*/
-    	
-//    	String waf = getWafAlertLevelCount("1");
-    	
-/*    	String wafLogById = getWaflogWebsecById("2104");
-    	Map map = controller.analysisGetWaflogWebsecById(wafLogById);
-    	
-		int logId = (Integer)map.get("logId");
-		int resourceId = (Integer)map.get("resourceId");
-		String resourceUri = map.get("resourceUri").toString();
-		String resourceIp = map.get("resourceIp").toString();
-		long siteId = (Long)map.get("siteId");
-		int protectId = (Integer)map.get("protectId");
-		String dstIp = map.get("dstIp").toString();
-		String dstPort = map.get("dstPort").toString();
-		String srcIp = map.get("srcIp").toString();
-		String srcPort = map.get("srcPort").toString();
-		String method = map.get("method").toString();
-		String domain = map.get("domain").toString();
-		String uri = map.get("uri").toString();
-		String alertlevel = map.get("alertlevel").toString();
-		String eventType = map.get("eventType").toString();
-		String statTime = map.get("statTime").toString();
-		String action = map.get("action").toString();
-		String block = map.get("block").toString();
-		String blockInfo = map.get("blockInfo").toString();
-		String alertinfo = map.get("alertinfo").toString();
-		String proxyInfo = map.get("proxyInfo").toString();
-		String characters = map.get("characters").toString();
-        int countNum = (Integer)map.get("countNum");
-        String protocolType = map.get("protocolType").toString();
-        String wci = map.get("wci").toString();
-        String wsi = map.get("wsi").toString();*/
 
-
-    	
-    	
-    	/*String wafLogInTime = getWaflogWebsecInTime(dstIpList,"1");
-    	List list3 = controller.analysisGetWaflogWebsecInTime(wafLogInTime);
-    	if(list3!=null&&list3.size()>0){
-    		for (int i = 0; i < list3.size(); i++) {
-				Map map = (Map)list3.get(i);
-				int logId = (Integer)map.get("logId");
-				int resourceId = (Integer)map.get("resourceId");
-				String resourceUri = map.get("resourceUri").toString();
-				String resourceIp = map.get("resourceIp").toString();
-				long siteId = (Long)map.get("siteId");
-				int protectId = (Integer)map.get("protectId");
-				String dstIp = map.get("dstIp").toString();
-				String dstPort = map.get("dstPort").toString();
-				String srcIp = map.get("srcIp").toString();
-				String srcPort = map.get("srcPort").toString();
-				String method = map.get("method").toString();
-				String domain = map.get("domain").toString();
-				String uri = map.get("uri").toString();
-				String alertlevel = map.get("alertlevel").toString();
-				String eventType = map.get("eventType").toString();
-				String statTime = map.get("statTime").toString();
-				String action = map.get("action").toString();
-				String block = map.get("block").toString();
-				String blockInfo = map.get("blockInfo").toString();
-				String alertinfo = map.get("alertinfo").toString();
-				String proxyInfo = map.get("proxyInfo").toString();
-				String characters = map.get("characters").toString();
-		        int countNum = (Integer)map.get("countNum");
-		        String protocolType = map.get("protocolType").toString();
-		        String wci = map.get("wci").toString();
-		        String wsi = map.get("wsi").toString();
-		      
-			}
-    	}*/
-    		
-        String wafcreate = "";
-    	try {
-    		/*JSONObject obj = JSONObject.fromObject(ethStr);
-        	String ip_address = obj.getString("ip_address");
-            if("success".equals(status)){
-            	System.out.println(status);
-            }*/
-/*    		JSONObject siteObject = JSONObject.fromObject(ethStr);
-    		JSONObject ip_addressObject = siteObject.getJSONObject("ip_address");
-        	JSONObject ipObject = ip_addressObject.getJSONObject("ip");
-        	String mask = ipObject.getString("mask");
-        	System.out.println(mask);*/
-//    		virtualSite  = createVirtualSite("10001", "30001", "1464833085", "testfire", "http://www.testfire.net/", "*", "");
-//    		JSONArray ser = new JSONArray();
-//    		JSONObject jo = new JSONObject();
-//			jo.put("ip", "101.200.234.126");
-//			jo.put("port", "80");
-//			ser.add(jo);
-//    		wafcreate = WafAPIWorker.createVirtualSiteInResource("10001", "test0615", "219.141.189.183", "80", "nsfocus.cer", "0", "www.anquanbang", "*", "", ser);
-//    		wafcreate = WafAPIWorker.getEventTypeCountByDay("30");
-//    		wafcreate = WafAPIWorker.getAllWafLogWebsecInTime("48","minute");
-//    		wafcreate = WafAPIWorker.getEventTypeCountByMonth("1","2016-08");
-//    		wafcreate = WafAPIWorker.getWafLogWebSecSrcIpList();
-//    		wafcreate = WafAPIWorker.getWafLogWebSecDstIpList();
-//    		wafcreate = WafAPIWorker.getWafAlertLevelCountByMonth("1","2016-08");
-//    		wafcreate = WafAPIWorker.getWafEventTypeCount("1","hour");
-//    		wafcreate = WafAPIWorker.deleteVirtualSiteInResource("10001","fdbe5087-1439-4a09-bfb2-a325489dfb9b");
-//    		String data=getLocationFromIp("1.2.2.3");
-//    		System.out.println("data:"+data);
-    	} catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println(wafcreate);
-        
-    }
 }

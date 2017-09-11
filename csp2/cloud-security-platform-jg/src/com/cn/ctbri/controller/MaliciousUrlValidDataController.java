@@ -324,7 +324,8 @@ public class MaliciousUrlValidDataController {
 		JSONArray jsonArray=new JSONArray();
 		while(it.hasNext()){
 			JSONObject ob=(JSONObject) it.next();
-			if(ob.get("countryCode")!=null&&ob.get("countryCode").toString().length()>0){
+			if(ob.get("countryCode")!=null&&ob.get("countryCode").toString().length()>0&&
+					map.get(ob.get("countryCode"))!=null){
 				//System.out.println(ob.getString("countryCode"));
 				JSONObject jsonObject=new JSONObject();
 				jsonObject.put("code",ob.getString("countryCode"));
