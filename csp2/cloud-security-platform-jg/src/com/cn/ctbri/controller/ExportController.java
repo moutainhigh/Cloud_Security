@@ -1738,8 +1738,10 @@ public class ExportController {
 				String strSubdiv = String.valueOf(ipMap.get("subdiv"));
 				t.setNum(count);
 				t.setSourceIP(strsrcIP);
-				t.setCountry(strCountry);
-				t.setSubdiv(strSubdiv);
+				//t.setCountry(strCountry);
+				//t.setSubdiv(strSubdiv);
+				t.setCountry("**");
+				t.setSubdiv("**");
 				attackList.add(t);
 			}
 	        map.put("attackList", attackList);
