@@ -62,6 +62,9 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 
 	}
 
+	public  void deleteIp(IPPosition ipPosition){
+		ipPositionService.delete(ipPosition);
+	}
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session)
 			throws Exception {
@@ -87,8 +90,9 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 				String dataText =null;
 				while(flag){
 					flag=session.isOpen();
-					System.out.println("flag"+flag);
-					if(flag2){
+					//System.out.println("flag"+flag);
+					if(false){
+						//System.out.println("首次进入");
 						dataText=getFirstWafData();
 						JSONObject json = JSONObject.fromObject(dataText);
 						JSONArray array = (JSONArray) json.get("wafLogWebsecList");
@@ -150,9 +154,13 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 		 */
 		Map<Date,HashMap<Integer,LinkedList<Attack>>> attackSortMap=new TreeMap<Date,HashMap<Integer,LinkedList<Attack>>>(new DateComparator());
 		for (int i = 0; i < size; i++) {
+			//System.out.println("i:"+i);
 			JSONObject obj = (JSONObject) array.get(i);
-			String srcIP = obj.getString("srcIp");
-			String desIP = obj.getString("dstIp");
+			String srcIP = obj.getString("srcIp").trim();
+			String desIP = obj.getString("dstIp").trim();
+			if("0.0.0.0".equals(srcIP)||"0.0.0.0".equals(desIP)){
+				continue;
+			}
 			String desPort = obj.getString("dstPort");
 			Date startTime =DateUtils.stringToDateNYRSFM(obj.getString("statTime")); ;
 			//byte[] base64Bytes = Base64.decodeBase64(obj.getString("eventType").getBytes());
@@ -166,10 +174,15 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			String srcName = null;
 			String desName = null;
 			IPPosition srcIPPosition = getIPPositions().get(srcIP);
-			//System.out.println("src"+srcIPPosition);
+			//System.out.println("src前"+srcIPPosition.getIp()+" ;"+srcIPPosition.getLongitude()+" ;"+srcIPPosition.getLatitude());
 			// 1.优先使用百度接口根据ip查询经纬度
-			if (null == srcIPPosition) {// 数据库中不存在
+			if (null == srcIPPosition||srcIPPosition.getLongitude()==null||srcIPPosition.getLatitude()==null) {// 数据库中不存在
+				if(null!=srcIPPosition){
+					deleteIp(srcIPPosition);
+					//System.out.println("执行了删除");
+				}
 				srcIPPosition = new IPPosition();
+				
 				srcIPPosition.setSourceStatus(INITIALIZE);
 				ipPositionMap.put(srcIP, srcIPPosition);
 				//1.先调电信的接口
@@ -239,12 +252,15 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 				srcLatitude = srcIPPosition.getLatitude();
 				srcName = srcIPPosition.getCountryProvince();
 			}
-
+			//System.out.println("src后"+srcIPPosition.getIp()+" ;"+srcIPPosition.getLongitude()+" ;"+srcIPPosition.getLatitude());
 			// 1.优先使用百度接口根据ip查询经纬度
 			// 分析目标ip
 			IPPosition desIPPosition = getIPPositions().get(desIP);
-			if (null == desIPPosition) {// 数据库中不存在数据
-				
+			//System.out.println("des前"+desIPPosition.getIp()+" ;"+desIPPosition.getLongitude()+" ;"+desIPPosition.getLatitude());
+			if (null == desIPPosition||desIPPosition.getLongitude()==null||desIPPosition.getLatitude()==null) {// 数据库中不存在数据
+				if(null!=desIPPosition){
+					deleteIp(desIPPosition);
+				}
 				desIPPosition = new IPPosition();
 				desIPPosition.setSourceStatus(INITIALIZE);
 				ipPositionMap.put(desIP, desIPPosition);
@@ -310,7 +326,8 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 				desLatitude = desIPPosition.getLatitude();
 				desName = desIPPosition.getCountryProvince();
 			}
-
+			//System.out.println("des后"+desIPPosition.getIp()+" ;"+desIPPosition.getLongitude()+" ;"+desIPPosition.getLatitude());
+			//System.out.println("srcname:"+srcName+";desName"+desName);
 			if (StringUtils.isNotEmpty(srcName)
 					&& StringUtils.isNotEmpty(desName)) {
 				// 组装数据

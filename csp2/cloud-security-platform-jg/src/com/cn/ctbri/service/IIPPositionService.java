@@ -41,5 +41,12 @@ public interface IIPPositionService {
 	 * 异        常：
 	 */
 	void saveIPPosition(IPPosition ipPosition);
+	/**
+	 * 功能描述：删除ip
+	 * @author hansheng
+	 * @param ipPosition
+	 * @return
+	 */
+	int delete(IPPosition ipPosition);
 
 }

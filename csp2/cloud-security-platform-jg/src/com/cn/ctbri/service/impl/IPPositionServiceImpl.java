@@ -46,6 +46,11 @@ public class IPPositionServiceImpl implements IIPPositionService{
 		ipPositionDao.saveAsset(ipPosition);
 	}
 
+	public int delete(IPPosition ipPosition) {
+		
+		return ipPositionDao.deleteIP(ipPosition);
+	}
+
 	
 	
 }
