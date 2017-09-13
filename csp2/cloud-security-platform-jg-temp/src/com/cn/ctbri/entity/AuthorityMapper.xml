@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.AuthorityMapper">
+	<sql id="cols">id,authorityName,url,state,remark</sql>
+	
+	<resultMap type="com.cn.ctbri.entity.Authority" id="AuthorityRM">
+		<id property="id" column="id"/>
+		<result property="authorityName" column="authorityName"/>
+		<result property="url" column="url"/>
+		<result property="state" column="state"/>
+		<result property="remark" column="remark"/>
+	</resultMap>
+	<select id="findUrlByUserType" resultType="String" parameterType="int">
+		SELECT a.url
+		FROM cs_authority a,cs_authority_userType au
+		WHERE a.id = au.authorityId AND au.userType=#{userType};
+	</select>
+	<select id="findAllAuthority" resultMap="AuthorityRM" parameterType="int">
+		SELECT * FROM cs_authority
+	</select>
+	<insert id="saveAuthority">
+		insert into cs_authority
+		(authorityName,url)values(#{authorityName},#{url})
+	</insert>
+</mapper>

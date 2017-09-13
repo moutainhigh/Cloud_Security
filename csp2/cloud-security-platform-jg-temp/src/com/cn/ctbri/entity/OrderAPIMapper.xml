@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.OrderAPIMapper">
+	<sql id="cols">id,begin_date,end_date,apiId,create_date,package_type,num,userId,contactId,remarks,message,payFlag</sql>
+	<resultMap type="com.cn.ctbri.entity.OrderAPI" id="OrderAPIRM">
+		<id property="id" column="id"/>
+		<result property="begin_date" column="begin_date"/>
+		<result property="end_date" column="end_date"/>
+		<result property="apiId" column="apiId"/>
+		<result property="create_date" column="create_date"/>
+		<result property="package_type" column="package_type"/>
+		<result property="num" column="num"/>
+		<result property="userId" column="userId"/>
+		<result property="contactId" column="contactId"/>
+		<result property="remarks" column="remarks"/>
+		<result property="message" column="message"/>
+		<result property="payFlag" column="payFlag"/>
+	</resultMap>
+    
+    <!-- 插入API订单 -->
+    <insert id="insert" parameterType="com.cn.ctbri.entity.OrderAPI">
+        insert into cs_order_api
+        (id, begin_date, end_date, apiId, create_date, package_type, num, userId, contactId, remarks, message, payFlag,buynum) 
+        values(#{id}, #{begin_date}, #{end_date}, #{apiId}, #{create_date}, #{package_type}, #{num}, #{userId}, #{contactId}, #{remarks}, #{message}, #{payFlag}, #{buyNum})
+    </insert>
+    
+    <!-- 插入或更新API数量 -->
+    <insert id="insertOrUpdateCount" parameterType="com.cn.ctbri.entity.APICount">
+        insert into cs_api_count
+        (userId, api#{apiId}) 
+        values(#{userId}, #{count})
+        ON DUPLICATE KEY UPDATE 
+			api#{apiId}=#{count}
+    </insert>
+    
+    <select id="findOrderAPIByType" resultType="com.cn.ctbri.entity.OrderAPI" parameterType="hashmap">
+        select *
+        from cs_order_api oa
+        where oa.userId = #{userId} and oa.package_type = #{type} and oa.apiId = #{apiId}
+    </select>
+    <delete id="deleteOrderAPI" parameterType="hashmap">
+       delete from cs_order_api where id=#{orderId} and userId=#{userId}
+    </delete>
+</mapper>

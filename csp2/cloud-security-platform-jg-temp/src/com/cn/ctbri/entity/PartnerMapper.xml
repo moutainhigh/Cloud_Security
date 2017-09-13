@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.ctbri.entity.PartnerMapper">
+	<sql id="cols">id,partnerName,createDate,begin_ip,end_ip</sql>
+	
+	<resultMap type="com.cn.ctbri.entity.Partner" id="PartnerRM">
+		<id property="id" column="id"/>
+		<result property="partnerName" column="partnerName"/>
+		<result property="createDate" column="createDate"/>
+		<result property="begin_ip" column="begin_ip"/>
+		<result property="end_ip" column="end_ip"/>
+	</resultMap>
+	<!-- 修改合作方 -->
+	<update id="update" parameterType="com.cn.ctbri.entity.Partner">
+		update cs_partner
+		<set>
+			<if test="partnerName!=null">
+				partnerName=#{partnerName},
+			</if>
+			<if test="begin_ip!=null">
+				begin_ip=#{begin_ip},
+			</if>
+			<if test="end_ip!=null">
+				end_ip=#{end_ip},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<!-- 查询所有记录 -->
+	<select id="list" resultMap="PartnerRM" parameterType="com.cn.ctbri.entity.Partner">
+		select * from cs_partner
+		where 1=1
+        <if test="id!=null and id!=''">
+            and id=#{id}
+        </if>
+		group by partnerName order by id desc
+	</select>
+	
+	<!-- 插入合作方 -->
+	<insert id="insert" parameterType="com.cn.ctbri.entity.Partner">
+		insert into cs_partner
+		(partnerName,createDate,begin_ip,end_ip) values(#{partnerName},#{createDate},#{begin_ip},#{end_ip})
+	</insert>
+	
+	<!-- 删除合作方 -->
+	<delete id="delete" parameterType="String">
+		delete from cs_partner
+		where 1=1
+		<if test="_parameter !=null and _parameter!=''">
+            and partnerName=#{oldName}
+        </if>
+	</delete>
+	
+	<!-- 根据条件查询记录 -->
+	<select id="getlist" resultMap="PartnerRM" parameterType="hashmap">
+		select * from cs_partner
+		where 1=1
+        <if test="partnerName!=null and partnerName!=''">
+            and partnerName=#{partnerName}
+        </if>
+		order by id desc
+	</select>
+	
+</mapper>
