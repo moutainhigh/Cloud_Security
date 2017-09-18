@@ -19,6 +19,7 @@ import com.cn.ctbri.entity.OrderList;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceType;
 import com.cn.ctbri.entity.ShopCar;
+import com.cn.ctbri.util.DateUtils;
 /**
  * 创 建 人  ：  txr
  * 创建日期：  2015-1-14
@@ -294,6 +295,33 @@ public class SelfHelpOrderDaoImpl extends DaoCommon implements SelfHelpOrderDao{
 		return this.getSqlSession().selectList(nv+"getServiceByParent", map);
 	}
 
+	public void updateRenewOrder(int isAPI,int payFlag,Date beginDate, Date eDate,Date task_date,Date create_date,double price,String orderId) {
+		Map map = new HashMap();
+		 map.put("isAPI", isAPI);
+		 map.put("payFlag",payFlag);
+		 map.put("begin_date", beginDate);
+		 map.put("end_date", eDate);
+		 map.put("task_date", task_date);
+		 map.put("price", price);
+		 map.put("orderId", orderId);
+		 map.put("create_date", create_date);
+		this.getSqlSession().update(ns+"updateRenewOrder",map);
+	}
+
+	public void updateBuyRenewOrder(int isAPI,int payFlag,Date beginDate, Date eDate, Date task_date,
+			double price, String orderId,String scanType) {
+		// TODO Auto-generated method stub
+		Map map = new HashMap();
+		 map.put("isAPI", isAPI);
+		 map.put("payFlag",payFlag);
+		 map.put("begin_date", beginDate);
+		 map.put("end_date", eDate);
+		 map.put("task_date", task_date);
+		 map.put("price", price);
+		 map.put("orderId", orderId);
+		 map.put("scanType", scanType);
+		this.getSqlSession().update(ns+"updateBuyRenewOrder",map);
+	}
 	
 	
 }

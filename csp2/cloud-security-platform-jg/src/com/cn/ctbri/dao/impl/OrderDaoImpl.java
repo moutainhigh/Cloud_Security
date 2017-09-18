@@ -334,5 +334,14 @@ public class OrderDaoImpl extends DaoCommon implements OrderDao{
 		return this.getSqlSession().selectList(ns + "findOrderByUserIdAndServiceIdCheckShopCar" , map);
 	}
 
+	public List<Order> getWafOrderById() {
+		// TODO Auto-generated method stub
+		return this.getSqlSession().selectList(ns+"getWafOrderById");
+	}
+
+	public void updateLinkRenew(Map dateMap) {
+		// TODO Auto-generated method stub
+		this.getSqlSession().update(ns+"updateLinkRenew",dateMap);
+	}
 	
 }
