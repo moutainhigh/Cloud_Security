@@ -50,7 +50,6 @@ $(function(){
 		     url: "getSession.html", 
 		     dataType: "json", 
 		     success: function(data) {
-		    	 //window.location.href="wafDetails.html?serviceId=6";
     			 $("#serviceIdWafHidden").val(6);
     			 $("#wafDetailsForm").submit();
 		    	 }, 
@@ -86,8 +85,6 @@ $(function(){
     	  month=12;
       }
      var serviceId = $('#serviceIdHidden').val();
-     //价格
-     // var price = $('#price').html().substr(1);
       var domainId = $('.ym span').attr('id');
       //网站域名
       var domainName = $.trim($('.ym span').text());
@@ -244,8 +241,6 @@ $(function(){
 							domainIdInput.value= domainId; 
 							tempForm.appendChild(domainIdInput);
 							
-							
-							
 							var ipArrayInput = document.createElement("input");
   							ipArrayInput.type="hidden"; 
 							ipArrayInput.name= "ipArray"; 
@@ -255,8 +250,6 @@ $(function(){
 							document.body.appendChild(tempForm);
 							tempForm.submit();
 							document.body.removeChild(tempForm);
-		   		    	 //window.location.href="buyNowWafUI.html?type="+2+"&beginDate="+beginDate+"&timeswaf="+times+"&scanType="+scanType+"&serviceId="+serviceId+
-		   		    	 //"&domainName="+domainName+"&domainId="+domainId+"&price="+price+"&ipArray="+ipVal;
 		   		    	 }, 
 		   		     error: function(data){ 
 		   		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
@@ -272,7 +265,7 @@ $(function(){
 	});
      
  });
-   
+  
     $('#settlementWaf').click(function(){
 
     	var createDate = getCreateDate();
@@ -280,7 +273,7 @@ $(function(){
     	var userName =  $(".test_name").text();
         var userAdd = $(".test_add").text();
         var mobile =  $(".test_iphone").text();
-    	
+    	var orderId = $("#orderId").val();
     		$.ajax({ type: "POST",
 	    		     async: false, 
 	    		     url: "saveWafOrder.html", 
@@ -288,7 +281,8 @@ $(function(){
     			            "linkname": userName,
 		    			   	"email":userAdd,
 		    			   	"createDate":createDate,
-		    			   	"phone":mobile},  
+		    			   	"phone":mobile,
+		    			   	"orderId":orderId},  
 	    		     dataType: "json", 
 	    		     success: function(data) {
 		    		         if(data.error){
@@ -301,7 +295,6 @@ $(function(){
 			    				}else if(data.orderStatus == true){
 			    					 //alert("完成下单，去订单跟踪查看吧~~"); 
 		    		    			 var orderListId = data.orderListId;
-	    		    			 	 //window.location.href = "cashierUI.html?orderListId="+orderListId;
 	    		    			 	 //虚拟表单post提交
 							    	var tempForm = document.createElement("form");
 		  							tempForm.action = "cashierUI.html";
@@ -329,7 +322,71 @@ $(function(){
 		    	});
 
     });
-    
+
+    $('#settlementRenewWaf').click(function(){
+      	var orderDetailId = $("#orderDetailId").val();
+      	var userName =  $(".test_name").text();
+          var userAdd = $(".test_add").text();
+          var mobile =  $(".test_iphone").text();
+      	var orderId = $("#orderId").val();
+      	var reMonth = $('#Remonth').val();
+      	var orderIdList = $("#orderListId").val();
+      	var renew = $("#renew").val();
+     		$.ajax({ type: "POST",
+  	    		     async: false, 
+  	    		     url: "saveWafRenewOrder.html", 
+  	    		     data: {"orderDetailId":orderDetailId,
+      			            "linkname": userName,
+  		    			   	"email":userAdd,
+  		    			   	"phone":mobile,
+  		    			   	"orderId":orderId,
+  		    			   	"month":reMonth,
+  		    			   	"orderIdList":orderIdList},  
+  	    		     dataType: "json", 
+  	    		     success: function(data) {
+  		    		         if(data.error){
+  		    		        	alert("参数值数据异常!!");
+  			    				window.location.href = "index.html";
+  		    		     	    return;
+  		    		         }else if(data.assetsStatus == true){
+  			    					alert("订单资产未验证,请重新购买!");
+  			    		     		return;
+  			    				}else if(data.orderStatus == true){
+  			    					 //alert("完成下单，去订单跟踪查看吧~~"); 
+  		    		    			 var orderListId = data.orderListId;
+  	    		    			 	 //虚拟表单post提交
+  							    	var tempForm = document.createElement("form");
+  		  							tempForm.action = "cashierUI.html";
+  		  							tempForm.method = "post";
+  		  							tempForm.style.display = "none";
+  	  							
+  		  							var orderListIdInput = document.createElement("input");
+  		  							orderListIdInput.type="hidden"; 
+  									orderListIdInput.name= "orderListId"; 
+  									orderListIdInput.value= orderListId; 
+  									tempForm.appendChild(orderListIdInput);
+  								
+  									var renewInput = document.createElement("input");
+  									renewInput.type="hidden"; 
+  									renewInput.name= "renew"; 
+  									renewInput.value= renew; 
+  									tempForm.appendChild(renewInput);
+  									
+  									document.body.appendChild(tempForm);
+  									tempForm.submit();
+  									document.body.removeChild(tempForm);
+  			    				}else{
+  			    					alert("订单异常,请重新购买!");
+  			    		     		return;
+  			    				}
+  	    		    	 }, 
+  	    		     error: function(data){ 
+  	    		    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+  	    		    		 window.location.href = "loginUI.html"; } 
+  	    		    	 else { window.location.href = "loginUI.html"; } } 
+  		    	});
+
+      });
    });
 
   //判断ip地址是否无效
@@ -408,7 +465,6 @@ $(function(){
     			   			window.location.href="index.html";
     			   		 }else  if(data.sucess){
     			   			 alert("添加购物车成功!");
-    			   			 //window.location.href="wafDetails.html?serviceId="+data.serviceId;
     			   			 $("#serviceIdWafHidden").val(data.serviceId);
     		    			 $("#wafDetailsForm").submit();
     			   		 }
@@ -432,18 +488,6 @@ $(function(){
 //返回修改订单信息
 function wafOrderBack(){	
 	$("#orderBackForm").submit();
-	//var domainId=$("#assetIds").val();
-	//var beginDate=$('#beginDate').val();
-	//var endDate=$('#endDate').val();
-	//var serviceId = $("#serviceId").val();
-	//var scanType = $("#scanType").val();
-	//var domainName = $("#assetAddr").val();
-	//var ipArray = $("#ipArrayHidden").val();
-	//var times = $("#timesHidden").val();
-
-	//window.location.href="wafOrderBack.html?serviceId="+serviceId+"&beginDate="+beginDate+"&endDate="+endDate+
-	//"&scanType="+scanType+"&serviceId="+serviceId+"&domainId="+domainId+"&domainName="+domainName+"&ipArray="+ipArray+"&times="+times;
-
 }
 
 //提取修改信息
@@ -479,23 +523,6 @@ function getWafInfo(){
 	    	 $("#monthDiv").hide();
 			 
 		 }
-		/* $('#domainName').val(domainName);
-		 
-		 var ips = ipArray.split(',');
-		 for(var n in ips){
-			 if(n==0){
-	    		  $('#wafbox').children('li:first').children('input').val(ips[n]);
-
-	    	  }else{
-	    		     var imgSrc = getRootPath() + '/source/images/portal/del.png';
-	    			 var html = '';
-	    			 html+= '<li class="add-list"> ';
-	    			 html+='<input type="text" class="text"  style="width:236px;" name="IPValue" value="'+ips[n]+'">';
-	    			 html+='<i class="del_list"><img src='+ imgSrc+'></i>';
-	    			 html+='</li>';
-	    		  $('#wafbox').children('li:first').after(html);	
-	    	  }
-		 }*/
 		 
 		 //回显选中的资产
 		 var arrtlink = ipArray.split(",");
@@ -544,9 +571,6 @@ function changePrice(){
 	}
 
 }
-
-
-
 
 function saveWafAsset() {
 	//防止重复提交
@@ -640,7 +664,6 @@ function saveWafAsset() {
 			    				  	               'prov':prov,
 			    				  	               'city':city
 		    				 					},
-		    				 					//beforeSubmit:showRequest,
 		    				 					success: function(data) {
 		    				 						    $("#assetName_msg").html("");
 														$("#assetAddr_msg").html("");
@@ -654,19 +677,6 @@ function saveWafAsset() {
 				    				 							if(list!=null&&list.length>0){
 				    				 								$("#assBox").empty();
 				    				 								$.each(list,function(n,asset) {
-//				    				 						         var temp = "<li>"+
-//				    				 					            	 		"<div class='rcent'>"+
-//				    				 					            	 		"<h3>"+
-//				    				 			                                "<label onclick='selWafAsset(this)'>"+
-//				    				 			                                     "<input type='radio' class='radio'  style='display:none' name='anquan' value='"+asset.id+"'><i class=''></i>"+
-//				    				 			                                "</label>"+
-//				    				 			                                 "<b>"+asset.name+"</b>"+
-//				    				 			                            
-//				    				 			                            "</h3>"+
-//				    				 			                            "<div class='tBox'>"+asset.addr+"</div>"+
-//				    				 			                            "</div>"+
-//				    				 			                            "</li>";  
-//				    				 						         		$("#assBox").append(temp);
 				    				 									if (asset.status == '0') {
 	    		    				 										var temp = "<li>"+
 	    		    				 					            	 		"<div class='rcent'>"+
@@ -775,4 +785,31 @@ function selWafAsset(Obj){
     }else{
        $('#wafBox span').before('<li class="basic"><input type="text" class="text"></li>') 
     }
+}
+//续费月份选择
+function changeOrderInfo(){
+ var orderId=$("#orderId").val();
+	//获得选择的月份
+	var reMonth = $('#Remonth').val();
+   var priceVals = 880*reMonth;
+	   priceVals=priceVals.toFixed(2);
+	  $("[name='orderPrice']").html(priceVals);
+	 $.ajax({ type: "POST",
+	     async: false, 
+	     url: "changeOrderInfo.html",
+	     data: {
+	            "orderId":orderId,
+	            "month":reMonth
+			   	}, 
+	     dataType: "json", 
+	     success: function(data) {
+			   		$("#orderDate").html(data.orderDate);
+			   		$("#beginDate").val(data.beginDate);
+			   		$("#endDate").val(data.endDate);
+			 }, 
+	     error: function(data){ 
+	    	 if (data.responseText.indexOf("<!DOCTYPE html>") >= 0) { 
+	    		 window.location.href = "loginUI.html"; } 
+	    	 else { window.location.href = "loginUI.html"; } } 
+	});
 }
