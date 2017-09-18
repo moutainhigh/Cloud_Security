@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cn.ctbri.entity.Advertisement;
 import com.cn.ctbri.entity.Serv;
+import com.cn.ctbri.entity.Service;
 //import com.cn.ctbri.entity.Service;
 
 /**
