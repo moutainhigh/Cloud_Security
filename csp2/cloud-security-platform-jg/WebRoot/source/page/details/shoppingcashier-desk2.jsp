@@ -44,13 +44,13 @@ $(function(){
 			alert("请选择付款方式!");
 		}else{
 			var orderListId=$("#orderListId").val();
-		
+		   var renew=$("#renew").val();
 			$.ajax({
 				type:"POST",
 				async: false, 
 				url:"payConfirm.html",
 				dataType:"json",
-				data:{"orderListId":orderListId},
+				data:{"orderListId":orderListId,"renew":renew},
 				success: function(data) {
 					if (data.payFlag == 1){
 						alert("您的订单已支付完成，请勿重复支付!");
@@ -181,6 +181,7 @@ $(function(){
                                  	<tr>
                                  	<td valign="top"><b>购买内容</b></td>
                                  	<td>
+                                 	 <input type="hidden"  id="renew"  value="${renew }"/>
                                  	<p style="padding-left:4px;">
                                     	<c:forEach var="name" items="${serverName }" varStatus="status">
                                     		${name.key }*${name.value }&nbsp&nbsp&nbsp
