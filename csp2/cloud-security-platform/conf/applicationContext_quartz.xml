@@ -139,6 +139,20 @@
         <property name="cronExpression" value="0 59 15 ? * *" /><!-- 每天01:15触发 -->
     </bean>
     
+    <!-- 续费短信提醒 -->
+      <bean id="renewOrderBean" class="com.cn.ctbri.common.RenewOrder" />
+       <bean id="renewOrderDetail"
+        class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="renewOrderBean" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    <bean  id="renewOrderTrigger"  
+     class="org.springframework.scheduling.quartz.CronTriggerBean">
+      <property name="jobDetail" ref="renewOrderDetail" />
+        <property name="cronExpression" value="0 0 12 * * ? *" /><!-- 每天01:00触发 -->
+    </bean>
+    
     <!-- 将lazy-init='false'那么容器启动就会执行调度程序   -->
     <bean id="startQuertz"
         class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
