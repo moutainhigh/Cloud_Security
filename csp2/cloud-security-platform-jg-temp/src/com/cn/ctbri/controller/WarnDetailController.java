@@ -1493,7 +1493,6 @@ public class WarnDetailController {
 					scanType=60;
 				}
 
-				/********20170702-wq******************/
 				String[] infos = remarks.split(";");
 				String host = infos[0];
 				List<ServicePortVO> servicePorts = new ArrayList<ServicePortVO>();
