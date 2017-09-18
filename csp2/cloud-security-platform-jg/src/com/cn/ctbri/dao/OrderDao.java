@@ -192,5 +192,8 @@ public interface OrderDao {
 	List<Map<String, Object>> getServiceCount();
 	
 	List<Order> findDelOrderByMap(Map<String, Object> map);
+	 //查询需要续费提醒订单
+	List<Order> getWafOrderById();
+	void updateLinkRenew(Map dateMap);
 	
 }
