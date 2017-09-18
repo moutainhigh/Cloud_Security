@@ -253,7 +253,7 @@ public class AnalyseController {
 				}
 				StringBuilder sbUnit = new StringBuilder();
 				sbUnit.append("{");
-				int type = (Integer) map.get("type");
+				long type = (Long) map.get("type");
 				// String name=(String) map.get("name");
 				long userNums = (Long) map.get("userNums");
 				// 单元格式{value:135, name:'视频广告'},
@@ -376,34 +376,34 @@ public class AnalyseController {
 		sbType.append("]");
 		**/
 		for(Entry<String,OrderCount> entry:orderCountMap.entrySet()){
-			//sbType.append(",");
+			sbType.append(",");
 			OrderCount orderCount=entry.getValue();
 			int type = orderCount.getType();
 			String name = orderCount.getName();
 			long countNums = orderCount.getCountNums();
-			//sbType.append("'");
+			sbType.append("'");
 			if (i > 0) {
 				sbDetailService.append(",");
 			}
 			sbDetailService.append("{value:" + countNums + ", name:'");
 			if (type == 1) {// 长期
-				sbType.append(",");
-				sbType.append("'");
+				//sbType.append(",");
+				//sbType.append("'");
 				sbType.append(longTerm);
 				sbDetailService.append(longTerm);
 				longTermSum += countNums;
 				sbType.append(name);
 				sbType.append("'");
-				//sbDetailService.append(name + "'}");
+				sbDetailService.append(name + "'}");
 			} else if(type==2){// 短期
-				sbType.append(",");
-				sbType.append("'");
+				//sbType.append(",");
+				//sbType.append("'");
 				sbType.append(single);
 				sbDetailService.append(single);
 				singleSum += countNums;
 				sbType.append(name);
 				sbType.append("'");
-				//sbDetailService.append(name + "'}");
+				sbDetailService.append(name + "'}");
 			}
 			sbDetailService.append(name + "'}");
 

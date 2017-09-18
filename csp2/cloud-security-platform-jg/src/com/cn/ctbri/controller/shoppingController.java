@@ -1,6 +1,7 @@
 package com.cn.ctbri.controller;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
+import com.cn.ctbri.common.APIWorker;
 import com.cn.ctbri.common.NorthAPIWorker;
 import com.cn.ctbri.common.SysWorker;
 import com.cn.ctbri.common.WafAPIWorker;
@@ -71,7 +72,7 @@ import com.cn.ctbri.service.IUserService;
 import com.cn.ctbri.util.CommonUtil;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.Random;
-
+import com.cn.ctbri.util.SMSUtils;
 /**
  * 
  * 创 建 人  ：  tang
@@ -1972,6 +1973,7 @@ public class shoppingController {
     @RequestMapping("cashierUI.html")
     public String cashier(Model model, HttpServletRequest request){
     	String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
+    	String renew = request.getParameter("renew");
     	//获取orderId,购买时间,交易金额
     	OrderList orderList = orderListService.findById(orderListId);
     	
@@ -2007,6 +2009,7 @@ public class shoppingController {
         model.addAttribute("price", priceStr);
         model.addAttribute("serverName", serverNameMap);
         model.addAttribute("balance",balance);
+        model.addAttribute("renew",renew);
     	return "source/page/details/shoppingcashier-desk2";
     }
     
@@ -2018,6 +2021,8 @@ public class shoppingController {
     	Map<String, Object> m = new HashMap<String, Object>();
     	try {
     		String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
+    		//判断是否续费
+    		String renew = request.getParameter("renew");
     		OrderList orderList = orderListService.findById(orderListId);
     		if (orderList == null) {
     			m.put("payFlag", 1);
@@ -2070,8 +2075,12 @@ public class shoppingController {
     		}
     			
     		// 南向API调用 任务执行
-    		if(!orderTask(orderList, globle_user, orderIdOfModify)) {
-    			m.put("payFlag", 4);
+    		if(!orderTask(orderList, globle_user, orderIdOfModify,renew)) {
+    			try{
+    				m.put("payFlag", 4);
+    			}catch(Exception e){
+    				e.printStackTrace();
+    			}
     			return;
     		}
     		
@@ -2184,7 +2193,7 @@ public class shoppingController {
     	 return orderIdOfModify;
     }
     
-    public boolean orderTask(OrderList orderList, User globle_user, List<String> modifyOrderId){
+    public boolean orderTask(OrderList orderList, User globle_user, List<String> modifyOrderId,String renew){
     	boolean result = true;
     	try{
     		Date date = new Date();
@@ -2405,7 +2414,7 @@ public class shoppingController {
         				    		targetKey = obj.getString("targetKey"); 
         				    		String sta = obj.getString("status");
 //        				    		String sta = "success";
-        				    		if(sta.equals("success")){
+        				    		if(sta!=null&&!"".equals(sta)&&sta.equals("success")){
         				    			OrderAsset oa = new OrderAsset();
             				    		oa.setId(id);
             				    		oa.setTargetKey(targetKey);
@@ -2417,9 +2426,14 @@ public class shoppingController {
             			    			orderService.update(order);
             			    			
             				    		SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
-                						String orderDate = odf.format(new Date());
+            				    		if(renew!=null&&!"".equals(renew)){
+            				    			orderId = shopCar.getOrderId();
+            				    			orderVal=orderVal+ orderId+",";;
+            				    		}else{
+            				    		String orderDate = odf.format(new Date());
                 						orderId = orderDate+String.valueOf(Random.fivecode());
                 						orderVal = orderVal+ orderId+",";
+            				    		}
         				    		}else{
         				    			orderId = "";
         				    		}
@@ -2429,10 +2443,15 @@ public class shoppingController {
         				        }
         						//end
     						}else{
+    							if(renew!=null&&!"".equals(renew)){
+    				    			orderVal = shopCar.getOrderId();
+    				    			orderVal=orderVal+ orderId+",";
+    				    		}else{
     							SimpleDateFormat odf = new SimpleDateFormat("yyMMddHHmmss");//设置日期格式
         						String orderDate = odf.format(new Date());
         						orderId = orderDate+String.valueOf(Random.fivecode());
         						orderVal = orderVal+ orderId+",";
+    				    		}
     						}
     						
     					}
@@ -2539,8 +2558,14 @@ public class shoppingController {
     		//更新orderList表中的orderId
     		String newOrderIds = "";
     		if (orderVal != null&& !orderVal.equals("")) {
+    			if(renew!=null&&!"".equals(renew)){
+    				orderVal = orderVal.substring(0,orderVal.length()-1);
+    				orderList.setOrderId(orderVal);
+    				newOrderIds=orderVal;
+    			}else{
     			newOrderIds = orderVal.substring(0,orderVal.length()-1);
     			orderList.setOrderId(newOrderIds);
+    			}
     			orderListService.update(orderList);
     		}
     		
@@ -2562,7 +2587,7 @@ public class shoppingController {
      * 功能描述： 支付成功页面
      * */
     @RequestMapping(value="repayUI.html", method=RequestMethod.POST)
-    public String toRepayUI(Model m,HttpServletRequest request, HttpServletResponse response){
+    public String toRepayUI(Model m,HttpServletRequest request, HttpServletResponse response) throws IOException{
     	String orderListId = request.getParameter("orderListId");//订单编号(cs_order_list的id)
 		OrderList orderList = orderListService.findById(orderListId);
 		
@@ -2571,7 +2596,32 @@ public class shoppingController {
     	if (orderListId== null || orderList == null ||orderList.getUserId()!= globle_user.getId()) {
     		return "redirect:/index.html";
     	}
-    	
+    	/**waf 订单支付成功发送短信提醒开始**/
+		List<String> orderIdList=new ArrayList();
+
+		if(orderListId!=null&&!"".equals(orderListId)){
+			String strArray[] = orderListId.split(",");
+			for (int k=0;k<strArray.length;k++){
+				orderIdList.add(strArray[k]);
+			}
+		}
+		List	list = selfHelpOrderService.findBuyShopList(orderIdList,globle_user.getId());
+		Linkman linkman=orderService.findLinkmanByOrderId(orderListId);
+		for(int i=0;i<list.size();i++){
+			ShopCar shopCar = (ShopCar)list.get(i);
+			int serviceId = shopCar.getServiceId();
+			if(serviceId==6){
+			String mobile = 	linkman.getMobile();
+			  SMSUtils smsUtils = new SMSUtils();
+			     try {
+					smsUtils.sendMessage(mobile, "恭喜您已成功付款"+shopCar.getPrice()+" &nbsp;部分服务时间已根据订单支付成功时间自动调整为："+orderList.getPay_date()+"&nbsp;当前订单需要设置域名解析；");
+				} catch (URISyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		/**waf 订单支付成功发送短信提醒结束**/
     	
 		//获取修改时间的订单编号
 		String modifyOrderIdList = request.getParameter("modifyOrderId");
