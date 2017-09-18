@@ -239,6 +239,14 @@ public class OrderServiceImpl implements IOrderService{
 		return orderDao.findOrderByUserIdAndServiceIdCheckShopCar(userId,serviceId);
 	}
 
+	public List<Order> getWafOrderById() {
+		// TODO Auto-generated method stub
+		return orderDao.getWafOrderById();
+	}
+	public void updateLinkRenew(Map dateMap) {
+		// TODO Auto-generated method stub
+		orderDao.updateLinkRenew(dateMap);
+	}
 
 	
 }

@@ -89,5 +89,11 @@ public class OrderListServiceImpl implements IOrderListService{
 	public void updateOrderListId(String oldId, String newId) {
 		orderListDao.updateOrderListId(oldId, newId);
 	}
+	
+	public List getOrderInfoById(String orderId) {
+		// TODO Auto-generated method stub
+		return orderListDao.getOrderInfoById(orderId);
+	}
+
 
 }

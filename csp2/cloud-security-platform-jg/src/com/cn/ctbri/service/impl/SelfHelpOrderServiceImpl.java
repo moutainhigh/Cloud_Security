@@ -2,6 +2,7 @@ package com.cn.ctbri.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -222,9 +223,17 @@ public class SelfHelpOrderServiceImpl implements ISelfHelpOrderService{
 		return selfHelpOrderDao.findServiceByParent(parent);
 	}
 
+	//修改续费订单
+	public void updateRenewOrder(int isAPI,int payFlag,Date beginDate,Date eDate,Date task_date,Date createDate,double price,String orderId) {
+			// TODO Auto-generated method stub
+			selfHelpOrderDao.updateRenewOrder(isAPI,payFlag,beginDate,eDate,task_date,createDate,price,orderId);
+		}
+	  //立即支付续费订单
+	public void updateBuyRenewOrder(int isAPI,int payFlag,Date beginDate, Date eDate, Date task_date,
+				double price, String orderId,String scanType) {
+			// TODO Auto-generated method stub
+			selfHelpOrderDao.updateBuyRenewOrder(isAPI,payFlag, beginDate,eDate, task_date, price, orderId,scanType);
+	}
 	
 
-	
-
-	
 }

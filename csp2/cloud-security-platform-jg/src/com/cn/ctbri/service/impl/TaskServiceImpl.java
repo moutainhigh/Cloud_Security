@@ -94,5 +94,9 @@ public class TaskServiceImpl implements ITaskService{
 	public void insertTaskWarn(TaskWarn taskwarn) {
 		taskDao.insertTaskWarn(taskwarn);
 	}
+	public List<Task> getExecuteTimeById(String orderId) {
+		// TODO Auto-generated method stub
+		return taskDao.getExecuteTimeById(orderId);
+	}
 
 }
