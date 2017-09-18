@@ -470,5 +470,24 @@ AND a.id IN  <foreach item="assetId" index="index" collection="assetIdsList" ope
 AND s.serviceId=api.id
        
     </select>
+	<!-- 修改购物车续费订单 -->
+	<update id="updateRenewOrder" parameterType="Map" >
+		update cs_order  set  begin_date=#{begin_date},end_date=#{end_date}, task_date=#{task_date}, payFlag=#{payFlag},isAPI=#{isAPI},price=#{price},create_date=#{create_date}
+		
+	   where id=#{orderId}
+	</update>
+      <!-- 立即支付修改续费订单 -->
+	<update id="updateBuyRenewOrder" parameterType="Map" >
+		update cs_order  set  begin_date=#{begin_date},end_date=#{end_date}, task_date=#{task_date}, payFlag=#{payFlag},isAPI=#{isAPI},price=#{price},scan_type=#{scanType}
+	   where id=#{orderId}
+	</update>
+	<select id="getOrderInfoById" parameterType="Map" resultType="int">
+	
+      SELECT serviceId FROM cs_order  WHERE id in
+           	<foreach item="orderId" index="index" collection="orderIds" open="("
+			separator="," close=")">
+			#{orderId}
+		</foreach>
+	</select>
     
 </mapper>
