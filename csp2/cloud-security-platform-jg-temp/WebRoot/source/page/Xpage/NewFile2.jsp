@@ -16,7 +16,7 @@
     <script src="${ctx}/source/scripts/common/bootstrap-table.min.js"></script>
     <script src="${ctx}/source/scripts/common/bootstrap-table-zh-CN.js"></script>
     <script src="${ctx}/source/scripts/common/bootstrap-table-export.min.js"></script>
-    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+    <script src="${ctx}/source/scripts/common/tableExport.min.js"></script>
 	<style >
 @charset "utf-8";
 /**
