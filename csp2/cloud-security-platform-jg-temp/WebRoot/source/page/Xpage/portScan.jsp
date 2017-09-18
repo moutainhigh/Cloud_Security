@@ -10,117 +10,10 @@
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
 <style>
-.content{
-	background-color:#010937;
-	
-}
-.content .x{ width:670px; margin:0 auto;text-align:center; padding:200px 0;}
-.content .x h2{ font-size:26px; color:#fff; font-weight:bold; margin-bottom:40px;}
-.content .search .text{ 
-	width:540px; 
-	height:40px; 
-	border:#CCC solid 1px; 
-	border-radius:4px; 
-	line-height:40px; 
-	padding-left:20px;
-	border-right:none;
-	font-size:16px;
-	
-}
-::-moz-placeholder {
-    color: #aea4a2;
-	font-weight:bold;
-}
 
-input:-ms-input-placeholder{
-    color: #aea4a2;
-	font-weight:bold;
-}
-
-input::-webkit-input-placeholder {
-    color: #aea4a2;
-	font-weight:bold;
-}
-.content .search .fous{
-	border:#317ef3 solid 1px;
-	border-right:none;
-}
-.content .x .btn{ 
-	cursor: pointer;
-    width: 102px;
-    height:44px;
-    line-height: 40px;
-    padding: 0;
-    border: 0;
-    background: none;
-    background-color: #38f;
-    font-size: 16px;
-    color: white;
-    box-shadow: none;
-    font-weight:bold;
-	position:relative; 
-	left:-2px;
-	top:0px;
-	font-family:"微软雅黑";
-
-}
-.logoimg{
-	margin-bottom:24px;
-}
-.content .x .btn:hover{
-	background-color:#317ef3;
-}
-.result h4{ 
-	margin:20px 0 0  10px; 
-	font-size:20px;
-	cursor:pointer;
-	color:#fff;
-}
-.result h4 span{
-	font-size:20px;
-	color:#b4bd42;
-	padding-right:82px;
-}
-.result-cent{
-	margin-top:20px;
-
-}
 </style>
 <script>
-	$(function(){
-		
-		fos();
-			
-	})
-	function fos(){
-		$('.text').focus(function(){
-			$(this).addClass('fous');	
-		})
-		$('.text').blur(function(){
-			$(this).removeClass('fous');	
-		})	
-	}
-	
-function detectionUrl(){
-	var urlInfo = $("#urlInfo").val();
-		$.ajax({
-            type: "POST",
-            url: "detectionUrl.html",
-            data: {"urlInfo":urlInfo},
-            dataType:"json",
-            success: function(data){
-                if(data){
-                $("#noneId").hide();
-            	    $("#haveId").show();
-            	   return;
-                }else{
-            	     $("#noneId").show();
-            	    $("#haveId").hide();
-            	   
-                }
-            },
-         }); 
-	}
+
 	
 </script>
 </head>
@@ -128,13 +21,15 @@ function detectionUrl(){
 <body>
 	<div class="safeBox">
 		
-		<div class="safe01 detalis-head">
+		<div class="safe01">
 			<!--头部-->
 			<div class="head">
 				<div class="headBox">
 					<div class="safeL fl" style="width:260px; margin-right:13%">
-						<img src="${ctx}/source/images/anquanbang_white_logo.png" alt="" style="position:relative; top:4px;"/>
-						<a ><strong style="font-size:20px; color:#fff; padding-left:10px;position:relative; top:-10px;font-weight:normal;">X专区</strong></a>
+						<a href="${ctx}/index.html">
+							<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:4px;"/>
+						</a>
+						<span style="font-size: 20px;color: #4a4a4a; padding-left:10px;position:relative; top:-10px;">端口扫描</span>
                         <!-- <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px; font-weight:normal;">X专区</strong>
 						 -->
 					</div>
@@ -172,7 +67,12 @@ function detectionUrl(){
 		</div>
 		
 	   	<div style="height:550px;width:100%">
-	        <iframe src="${ctx}/source/page/Xpage/NewFile.jsp" width="100%" height="100%" scrolling="no" style="border:0px"></iframe>
+	   	    <div class='top'>
+	   	        <div class='link'>
+	   	            <a href="${ctx}/index.html" style="font-size: 20px;">安全帮</a><i>&gt;</i><a href="${ctx}/Xlist.html">X专区</a><i>&gt;</i><a href="javascript:;">漏洞检测</a>
+	   	        </div>
+	   	    </div>
+	        <iframe src="${ctx}/source/page/Xpage/NewFile2.jsp" width="100%" height="100%" scrolling="no" style="border:0px"></iframe>
 	    </div>
 		<div class="safe04">
 			<div class="imgBox clearfix">

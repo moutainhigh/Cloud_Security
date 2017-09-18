@@ -371,7 +371,7 @@ html, body {
 							</div>
 						</dd>
 					</a>
-					<a href="${ctx}/Xpage.html">
+					<a href="${ctx}/Xlist.html">
 						<dd class="fl frn frn2">
 							<div class="introduce">
 								<h4>X专区</h4>
