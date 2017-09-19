@@ -287,7 +287,7 @@
 	                                    </td>
 	                             <td width="10%" >
                                                <select class="text select"  id="Remonth"   onchange="changeOrderInfo()">
-						                                <option value="-1">请选择</option>
+						                                <option value="0">请选择</option>
 						                                <option value="1">1个月</option>
 						                                <option value="2">2个月</option>
 						                                <option value="3">3个月</option>
