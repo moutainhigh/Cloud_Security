@@ -10,7 +10,9 @@
 <script src="${ctx}/source/scripts/common/slidelf.js"></script>
 <script src="${ctx}/source/scripts/common/main.js"></script>
 <style>
-
+.imgBox {
+    margin-top: 35px;
+}
 </style>
 <script>
 

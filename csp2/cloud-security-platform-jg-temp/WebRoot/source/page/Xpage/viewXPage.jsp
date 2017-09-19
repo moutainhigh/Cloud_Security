@@ -85,6 +85,9 @@ input::-webkit-input-placeholder {
 	margin-top:20px;
 
 }
+.imgBox {
+    margin-top: 35px;
+}
 </style>
 <script>
 	$(function(){

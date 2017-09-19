@@ -16,6 +16,7 @@
     <script src="${ctx}/source/scripts/common/bootstrap-table.min.js"></script>
     <script src="${ctx}/source/scripts/common/bootstrap-table-zh-CN.js"></script>
     <script src="${ctx}/source/scripts/common/bootstrap-table-export.min.js"></script>
+   <!--  <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script> -->
     <script src="${ctx}/source/scripts/common/tableExport.min.js"></script>
 	<style >
 @charset "utf-8";
@@ -183,12 +184,13 @@ ul,li{
 
 .searchbox{
 	margin-right: 7%;
-	margin-left:1%;
 	width:54%;
 	height:100%;
 	padding-top:15px;
 	float: left;
 	position: relative;
+	margin-left: 100px;
+    margin-top: -46px;
 }
 
 
@@ -304,6 +306,9 @@ color: #fff;
 background-color: #ed9c28;
 border-color: #d58512;
 }
+.pagination-info {
+color:#fff;
+}
 </style>
 </head>
 <body  class="body container-fluid">
@@ -328,7 +333,7 @@ border-color: #d58512;
             </ul>
           </div>
           <div class="container searchbox">
-             <div class="tab-pane fade in active" id="home"   style="width:70%;align:center;left:10%;margin:0 auto;">
+             <div class="tab-pane fade in active" id="home"   style="width:90%;align:center;left:10%;margin:0 auto;">
                  <form role="form" method="post"  id="form" name="form"  >
                      <br/><br/>
 		             <div class="form-group">
@@ -361,9 +366,9 @@ border-color: #d58512;
           </div>
           <div class="container searchbox container2">
               <div class="row">
-                  <div id="task" style="margin-top:0px;width:80%;margin:0 auto">
+                  <div id="task" style="margin-top:0px;width:100%;margin:0 auto">
                   <br/>
-                  <table id="tb_departments" align="center" valign="center"></table>
+                  <table id="tb_departments" align="center" valign="center" class="table"></table>
           </div>
         </div>
     
