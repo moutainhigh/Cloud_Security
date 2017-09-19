@@ -332,6 +332,10 @@ $(function(){
       	var reMonth = $('#Remonth').val();
       	var orderIdList = $("#orderListId").val();
       	var renew = $("#renew").val();
+      	if(reMonth==0){
+      		alert("请选择续费时长！");
+      		return;
+      	}
      		$.ajax({ type: "POST",
   	    		     async: false, 
   	    		     url: "saveWafRenewOrder.html", 
@@ -791,7 +795,12 @@ function changeOrderInfo(){
  var orderId=$("#orderId").val();
 	//获得选择的月份
 	var reMonth = $('#Remonth').val();
-   var priceVals = 880*reMonth;
+	var priceVals;
+	if(reMonth==12){
+		priceVals = 9000;
+	}else {
+		priceVals = 880*reMonth;
+	}
 	   priceVals=priceVals.toFixed(2);
 	  $("[name='orderPrice']").html(priceVals);
 	 $.ajax({ type: "POST",
