@@ -2038,10 +2038,12 @@ public class shoppingController {
         	
     		Double price = orderList.getPrice();//支付金额
     		//收银台页面刷新，再次支付
-    		if (orderList.getPay_date() != null){
-    			//不能重复支付
-    			m.put("payFlag", 1);
-    			return;
+    		if("".equals(renew)){
+    			if (orderList.getPay_date() != null){
+    				//不能重复支付
+    				m.put("payFlag", 1);
+    				return;	
+    			}
     		}
     		
 //    		Date orderCreateDate = orderList.getCreate_date();//下单时间
