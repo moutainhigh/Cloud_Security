@@ -53,7 +53,7 @@ public interface IPPositionDao {
 	 * @param ipPosition
 	 * @return
 	 */
-	int deleteIP(IPPosition ipPosition);
+	int deleteIP(String ip);
 	
 	
 }

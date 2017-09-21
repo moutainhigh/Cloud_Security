@@ -47,6 +47,6 @@ public interface IIPPositionService {
 	 * @param ipPosition
 	 * @return
 	 */
-	int delete(IPPosition ipPosition);
+	int delete(String ip);
 
 }
