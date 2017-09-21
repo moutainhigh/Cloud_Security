@@ -22,9 +22,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 根据订单Id查询记录 -->
     <select id="findOrderByOrderId" resultType="hashmap" parameterType="String">
-        select o.id,o.serviceId,o.type,s.name,a.name,s.parentC,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI,o.userId,o.remarks,o.price
-        from cs_order o,cs_service s,cs_service_api a
-        where o.id = #{orderId} and (o.serviceId = s.id or o.serviceId = a.id)
+        select o.id,o.serviceId,o.type,s.name,s.parentC,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI,o.userId,o.remarks,o.price
+        from cs_order o,cs_service s
+        where o.id = #{orderId} and o.serviceId = s.id and o.isAPI != 1
+       	union
+       	select o.id,o.serviceId,o.type,a.name,a.parentC,o.begin_date,o.end_date,o.create_date,o.scan_type,o.status,o.websoc,o.payFlag,o.isAPI,o.userId,o.remarks,o.price
+        from cs_order o,cs_service_api a
+        where o.id = #{orderId} and  o.serviceId = a.id and o.isAPI = 1
     </select>
     <!-- 根据用户id和serviceId 查询记录 -->
     
