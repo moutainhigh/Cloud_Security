@@ -218,9 +218,11 @@
 						                 <!-- <a href="javascript:void(0)" onclick="domainNameUI(${list.id })" title="设置域名解析">--> 
 						                 	设置域名解析
 						                 </a>
-								  <a href="${ctx}/buyRenewWafUI.html?orderId=${list.id }&orderListId=${olist.orderListId }" style="display:block;" title="续费"> 
-						                 续费
+						                 <c:if test="${list.Renew==true}">
+										  <a href="${ctx}/buyRenewWafUI.html?orderId=${list.id }&orderListId=${olist.orderListId }" style="display:block;" title="续费"> 
+										                 续费
 						                  </a>
+						                  </c:if>
 						                  </c:if>
 						                
 						            </c:if>
