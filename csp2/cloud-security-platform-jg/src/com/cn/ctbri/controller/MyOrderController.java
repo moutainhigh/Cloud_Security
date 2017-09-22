@@ -139,13 +139,13 @@ public class MyOrderController {
 		        	paramMap.put("type", type);
 		        	//判断waf是否需要延期
 		        	if(serviceId==6&&status==4){
-			        	Date hourDate = DateUtils.getDateAfterHour(endDate);
-			        	String h = formatter.format(hourDate);
-			        	Date afterDate = new Date();
-			        	if(hourDate.getTime()==afterDate.getTime()){
-			        		 mv.addObject("Renew", true);
+			        	Date hourDate = DateUtils.getDateAfterHour(endDate);//订单结束日期后24小时
+			        	Date nowDate = new Date();  //现在时间
+			        	if(nowDate.getTime()>endDate.getTime() && 
+			        			nowDate.getTime()<=hourDate.getTime()){
+			        		 map.put("Renew", true);
 			        	}else{
-			        		 mv.addObject("Renew", false);
+			        		 map.put("Renew", false);
 			        	}
 		        	}
 
@@ -301,14 +301,13 @@ public class MyOrderController {
 		        	paramMap.put("type", type1);
 		        	//判断waf是否需要延期
 		        	if(serviceId==6&&status==4){
-			        	Date hourDate = DateUtils.getDateAfterHour(endDate);
-			        	String h = setDateFormat.format(hourDate);
-			        	Date afterDate = new Date();
-			        	if(hourDate.getTime()==afterDate.getTime()){
-			        		   mv.addObject("Renew", true);//续费判断
-			        	
+		        		Date hourDate = DateUtils.getDateAfterHour(endDate);//订单结束日期后24小时
+			        	Date nowDate = new Date();  //现在时间
+			        	if(nowDate.getTime()>endDate.getTime() && 
+			        			nowDate.getTime()<=hourDate.getTime()){
+			        		   map.put("Renew", true);
 			        	}else{
-			        		  mv.addObject("Renew", false);//续费判断
+			        		  map.put("Renew", false);
 			        	}
 		        	}
 		        	List<Task> taskList = taskService.findAllByOrderId(paramMap1);
@@ -420,11 +419,13 @@ public class MyOrderController {
 		        	int status = Integer.parseInt(map.get("status").toString());
 		        	//判断waf是否需要延期
 		        	if(serviceId==6&&status==4){
-			        	Date hourDate = DateUtils.getDateAfterHour(endDate);
-			        	String h = setDateFormat.format(hourDate);
-			        	Date afterDate = new Date();
-			        	if(hourDate.getTime()==afterDate.getTime()){
+		        		Date hourDate = DateUtils.getDateAfterHour(endDate);//订单结束日期后24小时
+			        	Date nowDate = new Date();  //现在时间
+			        	if(nowDate.getTime()>endDate.getTime() && 
+			        			nowDate.getTime()<=hourDate.getTime()){
 			        		map.put("Renew", true);
+			        	}else{
+			        		map.put("Renew", false);
 			        	}
 		        	}
 		        	Map<String,Object> paramMap1 = new HashMap<String,Object>();
