@@ -298,6 +298,30 @@ public class SMSUtils {
 
 	}
 	
+	/**waf续费短信提醒
+	 * 短信模板：【安全帮】恭喜您注册成功! 系统赠送500安全币。
+	 * @param args
+	 * @throws IOException
+	 */
+	public void sendMessage_Renew(String phoneNumber,String timeStr) throws IOException,URISyntaxException{
+		//修改为您的apikey.apikey可在官网（http://www.yuanpian.com)登录后用户中心首页看到
+        String apikey = Configuration.getApikey();
+        //修改为您要发送的手机号
+        String mobile = phoneNumber;
+        
+        //设置模板ID，如:您的订单#time#后即将到期，请及时续费
+        long tpl_id = Long.parseLong(Configuration.getRenew_model());
+        //设置对应的模板变量值
+        //如果变量名或者变量值中带有#&=%中的任意一个特殊符号，需要先分别进行urlencode编码
+        //如code值是#1234#,需作如下编码转换
+        String timeValue = URLEncoder.encode(timeStr, ENCODING);
+        String tpl_value = "#time#=" + timeValue;
+        //模板发送的调用示例
+        System.out.println(tplSendSms(apikey, tpl_id, tpl_value, mobile));
+        System.out.println(new Date()+ ":"+mobile+",模板:"+Configuration.getRenew_model());
+
+	}
+	
 	
 	public static void main(String[] args) throws IOException {
 	    String apikey = "312ba7231765d58bfb2830988c3dec82";
