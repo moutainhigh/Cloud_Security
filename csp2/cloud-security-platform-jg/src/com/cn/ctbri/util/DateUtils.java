@@ -311,12 +311,26 @@ public class DateUtils {
         date = calendar.getTime();  
         return date;
     }
+    
     /**
-     * 获取当前日期7天后的日期
+     * 获取当前日期24小时前的日期
      * @param date
      * @return
      */
-    public static Date getDateAfterDay(Date d){
+    public static Date getDateBeforeHour(Date d){
+    	Date date = d;
+        Calendar calendar = Calendar.getInstance();  
+        calendar.setTime(date);  
+        calendar.add(Calendar.HOUR,-24); 
+        date = calendar.getTime();  
+        return date;
+    }
+    /**
+     * 获取当前日期7天前的日期
+     * @param date
+     * @return
+     */
+    public static Date getDateBeforeDay(Date d){
     	Date date = d;
         Calendar calendar = Calendar.getInstance();  
         calendar.setTime(date);  
