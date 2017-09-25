@@ -23,8 +23,8 @@ public class PriceServiceImpl implements IPriceService{
 	
 
 
-	public List<Price> findPriceByServiceId(int serviceId,int type) {
-		return priceDao.findPriceByServiceId(serviceId,type);
+	public List<Price> findPriceByServiceId(int serviceId,int scanType) {
+		return priceDao.findPriceByServiceId(serviceId,scanType);
 	}
 
 	public void insertPrice(Price price) {
@@ -38,6 +38,10 @@ public class PriceServiceImpl implements IPriceService{
 
 	public List<Price> findPriceByScanTypeNull(int serviceId) {
 		return priceDao.findPriceByScanTypeNull(serviceId);
+	}
+
+	public List<Price> findPriceByServiceIdAndType(String serviceId, String type) {
+		return priceDao.findPriceByServiceIdAndType(serviceId,type);
 	}
 
 }
