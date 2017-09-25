@@ -20,11 +20,16 @@ public interface IPriceService {
      */
     int delPrice(int serviceId);
     /*
-     * 根据serviceid查询价格列表
+     * 根据serviceid和服务频率查询价格列表
      */
-    List<Price> findPriceByServiceId(int serviceId,int type);
+    List<Price> findPriceByServiceId(int serviceId,int scanType);
     /*
      * 根据serviceid查询scanType为空的价格列表
      */
 	List<Price> findPriceByScanTypeNull(int serviceId);
+	
+	/*
+     * 根据serviceid和选类型查询价格列表
+     */
+	List<Price> findPriceByServiceIdAndType(String serviceId,String type);
 }
