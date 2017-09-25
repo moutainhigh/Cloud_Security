@@ -58,7 +58,7 @@ public class RenewOrder {
 	    					Linkman linkman = orderService.findLinkmanById(order.getContactId()).get(0);
 	    					if(linkman.getSendDayStatus()==0){
 	    					  map.put("sendDayStatus", 1);
-	    					  smsUtils.sendMessage_Renew(linkman.getMobile(), "七日");
+	    					  smsUtils.sendMessage_Renew(linkman.getMobile(),order.getId(), "七天");
 	    					  
 	    						orderService.updateLinkRenew(map);
 	    					}
@@ -66,7 +66,7 @@ public class RenewOrder {
 	    					Linkman linkman = orderService.findLinkmanById(order.getContactId()).get(0);
 	    					if(linkman.getSendHourStatus()==0){
 	    						  map.put("sendHourStatus", 1);
-	    						  smsUtils.sendMessage_Renew(linkman.getMobile(), "24小时");
+	    						  smsUtils.sendMessage_Renew(linkman.getMobile(),order.getId(), "24小时");
 	    						  orderService.updateLinkRenew(map);
 	    					}
 	    				}
