@@ -126,7 +126,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
      <select id="selectMaxDay"  resultType="java.util.Date">
-  	select max(day) from cntByType
+  	select max(day) from cntBySrc
   </select>
   <select id="selectCntBySrc" resultMap="BaseResultMap" parameterType="map">
   		<![CDATA[ select count(1) as num,dst_ip,domain,src_ip ,src_country ,src_subdivision_1,date_format(stat_time,'%Y-%m-%d') as day
