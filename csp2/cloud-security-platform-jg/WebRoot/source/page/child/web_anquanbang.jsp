@@ -260,7 +260,8 @@ function buyWafOrder(serviceId){
                                         <div class="purchase">
                                            <strong style="display:block">
                                             </strong>
-                                             <strong style="display:block; font-size:21px;">5980.00
+                                             <strong style="display:block; font-size:21px;">
+                                             <fmt:formatNumber type="number" value="${wafPrice }" maxFractionDigits="2" minFractionDigits="2"/>
                                              	<em style="font-size: 14px;color: #D00000;">安全币</em>
                                              </strong>
                                             <!--<a href="${ctx}/wafDetails.html?serviceId=6&indexPage=1" class="btn" style="width:80px;">购买</a>
