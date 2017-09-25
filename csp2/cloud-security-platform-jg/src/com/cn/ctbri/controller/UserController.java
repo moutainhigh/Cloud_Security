@@ -39,6 +39,7 @@ import com.cn.ctbri.entity.LoginHistory;
 import com.cn.ctbri.entity.MobileInfo;
 import com.cn.ctbri.entity.Notice;
 import com.cn.ctbri.entity.Partner;
+import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.User;
@@ -48,6 +49,7 @@ import com.cn.ctbri.service.INoticeService;
 import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.service.IPartnerService;
+import com.cn.ctbri.service.IPriceService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServiceAPIService;
 import com.cn.ctbri.service.IServiceSysService;
@@ -98,6 +100,8 @@ public class UserController{
     IPartnerService partnerService;
 	@Autowired
     IServiceSysService serviceSysService;
+	@Autowired
+    IPriceService priceService;
 	
 
 	/**
@@ -1973,6 +1977,9 @@ public class UserController{
 	    List<Notice> list = noticeService.findAllNotice();
 	    //获取服务类型
         List servList = selfHelpOrderService.findService();
+        //获取云WAF的价钱
+        List<Price> priceList = priceService.findPriceByScanTypeNull(6);
+        m.addAttribute("wafPrice", priceList.get(0).getPrice());
         //查询漏洞个数
         int leakNum = selfHelpOrderService.findLeakNum(1);
         //查询网页数
