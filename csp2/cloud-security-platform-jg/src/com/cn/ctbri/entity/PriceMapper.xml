@@ -42,4 +42,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by type ASC,timesG ASC
 	</select>
 	
+	<!-- 根据serviceid和选类型查询价格列表-->
+	<select id="findPriceByServiceIdAndType" parameterType="hashmap" resultMap="PriceRM">
+	
+		select * from cs_price where serviceId=#{serviceId} 
+		and type=#{type}
+		order by scan_type ASC,timesG ASC
+	</select>
 </mapper>
