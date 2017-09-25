@@ -31,12 +31,14 @@ import com.cn.ctbri.entity.Order;
 import com.cn.ctbri.entity.OrderAsset;
 import com.cn.ctbri.entity.OrderDetail;
 import com.cn.ctbri.entity.OrderList;
+import com.cn.ctbri.entity.Price;
 import com.cn.ctbri.entity.Serv;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderListService;
 import com.cn.ctbri.service.IOrderService;
+import com.cn.ctbri.service.IPriceService;
 import com.cn.ctbri.service.ISelfHelpOrderService;
 import com.cn.ctbri.service.IServService;
 import com.cn.ctbri.util.CommonUtil;
@@ -64,6 +66,8 @@ public class WafController {
     IOrderListService orderListService;
     @Autowired
     IOrderService orderService;
+    @Autowired
+    IPriceService priceService;
 	 /**
 	 * 功能描述：获取所有资产列表
 	 * 参数描述：  无
@@ -244,7 +248,13 @@ public class WafController {
 			}
 		}
 		Serv service = servService.findById(serviceId);
-		  //网站安全帮列表
+		//获取包月价格
+		Double monthPrice = priceService.findPriceByServiceIdAndType("6", "8").get(0).getPrice();
+		request.setAttribute("monthPrice", monthPrice);
+		//获取包年价格
+		Double yearPrice = priceService.findPriceByServiceIdAndType("6", "9").get(0).getPrice();
+		request.setAttribute("yearPrice", yearPrice);
+		//网站安全帮列表
         List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
         //查询安全能力API
 		   List apiList = selfHelpOrderService.findShopCarAPIList(String.valueOf(globle_user.getId()), 0,"");
@@ -569,12 +579,14 @@ public class WafController {
 			   				return;
 				    }
 				    Date bDate=DateUtils.stringToDateNYRSFM(beginDate);
+				    List<Price> priceList = priceService.findPriceByServiceIdAndType(serviceId,orderType);
 				    if(orderType.equals("9")){//包年
-				    	countPrice =9000;
+				    	
+				    	countPrice =priceList.get(0).getPrice();
 				    	eDate = DateUtils.getDateAfterOneYear(bDate);
 				     
 				    }else{//包月
-				    	countPrice = 880*Integer.parseInt(month);
+				    	countPrice = priceList.get(0).getPrice()*Integer.parseInt(month);
 				    	eDate = DateUtils.getDateAfterMonths(bDate, Integer.parseInt(month));
 				    
 				    }
@@ -803,12 +815,13 @@ public class WafController {
 	    bDate = DateUtils.getDateAfter10Mins(bDate);
 	    Date eDate = new Date();
 	   
+	    List<Price> priceList = priceService.findPriceByServiceIdAndType(serviceId,scanType);
 	    if(scanType.equals("9")){//包年
-	    	countPrice =9000;
+	    	countPrice =priceList.get(0).getPrice();
 	    	eDate = DateUtils.getDateAfterOneYear(bDate);
 	     
 	    }else{//包月
-	    	countPrice = 880*Integer.parseInt(timeswaf);
+	    	countPrice = priceList.get(0).getPrice()*Integer.parseInt(timeswaf);
 	    	eDate = DateUtils.getDateAfterMonths(bDate, Integer.parseInt(timeswaf));
 	    
 	    }
@@ -1056,7 +1069,14 @@ public class WafController {
 		   	orderInfo=(HashMap) orderList.get(0);
 			Date newDate = DateUtils.getDateAfterMonths((Date)orderInfo.get("end_date"), Integer.parseInt(month));
 			double orderPrice = (Double)orderInfo.get("price");
-			double price = 880*Integer.parseInt(month);
+			double price;
+			if(month.equals("12")){
+				List<Price> priceList = priceService.findPriceByServiceIdAndType("6","9");
+				price = priceList.get(0).getPrice();
+			}else{
+				List<Price> priceList = priceService.findPriceByServiceIdAndType("6","9");
+				price = priceList.get(0).getPrice()*Integer.parseInt(month);
+			}
 			double sumprice = orderPrice+price;
     	//判断参数值
       	String orderDetailId = request.getParameter("orderDetailId");
@@ -1316,6 +1336,12 @@ public class WafController {
 	    	   return "redirect:/index.html";	
 	       }
 	       Serv service = servService.findById(orderDetail.getServiceId()); 
+	       //获取包月价格
+	       Double monthPrice = priceService.findPriceByServiceIdAndType("6", "8").get(0).getPrice();
+	       request.setAttribute("monthPrice", monthPrice);
+	       //获取包年价格
+	       Double yearPrice = priceService.findPriceByServiceIdAndType("6", "9").get(0).getPrice();
+	       request.setAttribute("yearPrice", yearPrice);
 	       //网站安全帮列表
 	        List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
 	     //查询安全能力API
@@ -1924,15 +1950,18 @@ public class WafController {
 				    }
 				    Date bDate=DateUtils.stringToDateNYRSFM(beginDate);
 				    Date eDate=null;
+				    List<Price> priceList = priceService.findPriceByServiceIdAndType(serviceId,orderType);
 				    if(orderType.equals("9")){//包年
-				    	countPrice =9000;
+				    	
+				    	countPrice =priceList.get(0).getPrice();
 				    	eDate = DateUtils.getDateAfterOneYear(bDate);
 				     
 				    }else{//包月
-				    	countPrice = 880*Integer.parseInt(month);
+				    	countPrice = priceList.get(0).getPrice()*Integer.parseInt(month);
 				    	eDate = DateUtils.getDateAfterMonths(bDate, Integer.parseInt(month));
 				    
 				    }
+				    
 				 selfHelpOrderService.updateRenewOrder(2,0,(Date)orderInfo.get("end_date"),eDate,DateUtils.stringToDateNYRSFM(beginDate),new Date(),countPrice,orderId);
 				 //网站安全帮列表
 			            List shopCarList = selfHelpOrderService.findShopCarList(String.valueOf(globle_user.getId()), 0,"");
@@ -2176,16 +2205,19 @@ public class WafController {
 			    //得到开始时间10分钟后
 			    bDate = DateUtils.getDateAfter10Mins(bDate);
 			    Date eDate = new Date();
-			   
+			    
+			    List<Price> priceList = priceService.findPriceByServiceIdAndType("6",scanType);
 			    if(scanType.equals("9")){//包年
-			    	countPrice =9000;
+			    	
+			    	countPrice =priceList.get(0).getPrice();
 			    	eDate = DateUtils.getDateAfterOneYear(bDate);
 			     
 			    }else{//包月
-			     countPrice = 880*timeswaf;
+			    	countPrice = priceList.get(0).getPrice()*timeswaf;
 			    	eDate = DateUtils.getDateAfterMonths(bDate, timeswaf);
 			    
 			    }
+			    
 			//新增订单
 
 			//生成订单id，当前日期加5位随机数
