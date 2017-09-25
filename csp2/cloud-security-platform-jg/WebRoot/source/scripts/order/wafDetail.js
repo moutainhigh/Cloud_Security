@@ -9,9 +9,9 @@ $(function(){
 				//价格
 
 				if(month==-1||month==1){
-					$("#price").html("5980");
+					$("#price").html(monthPrice);
 				}else{
-					var priceVals = 5980*(month-1);
+					var priceVals = monthPrice*(month-1);
 					$("#price").html(priceVals);
 				}
 			}
@@ -19,12 +19,12 @@ $(function(){
 				//价格
 
 				if(month==-1){
-					$("#price").html("5980");
+					$("#price").html(monthPrice);
 				}else{
 					if(month==11){
-						$("#price").html("9680");
+						$("#price").html(monthPrice*month);
 					}else{
-						var priceVals = 5980*(month+1);
+						var priceVals = monthPrice*(month+1);
 						$("#price").html(priceVals);
 					}
 				}
@@ -34,9 +34,9 @@ $(function(){
 	//价格
 	var month = $('#month').val();
 	if(month=='-1'){
-		$("#price").html("5980");
+		$("#price").html(monthPrice);
 	}else{
-		var priceVals = 5980*month;
+		var priceVals = monthPrice*month;
 		$("#price").html(priceVals);
 	}
 	
@@ -432,16 +432,16 @@ $(function(){
       if(value=='long'){
     	  $("#yearDiv").show();
     	   $("#monthDiv").hide();
-    	   $("#price").html("60000");
+    	   $("#price").html(yearPrice);
       }else{
     	  $("#yearDiv").hide();
     	   $("#monthDiv").show();
     	  
     		var month = $('#month').val();
     		if(month=='-1'){
-    			$("#price").html("5980");
+    			$("#price").html(monthPrice);
     		}else{
-    			var priceVals = 5980*month;
+    			var priceVals = monthPrice*month;
         		$("#price").html(priceVals);
     		}
     		
@@ -512,9 +512,9 @@ function getWafInfo(){
 	    	 $("#monthDiv").show();
 
     		if(times=='-1'){
-    			$("#price").html("5980");
+    			$("#price").html(monthPrice);
     		}else{
-    			var priceVals = 5980*times;
+    			var priceVals = monthPrice*times;
     			$("#price").html(priceVals);
     		}
 			 
@@ -522,7 +522,7 @@ function getWafInfo(){
 			 $('.long').addClass("click");
 			 $('.Single').removeClass("click");
 			 $('#beginDateForYear').val(beginDate.substring(0,10));
-			 $("#price").html("9000");
+			 $("#price").html(yearPrice);
 			 $("#yearDiv").show();
 	    	 $("#monthDiv").hide();
 			 
@@ -568,9 +568,9 @@ function changePrice(){
 	//获得选择的月份
 	var month = $('#month').val();
 	if(month=='-1'){
-		$("#price").html("5980");
+		$("#price").html(monthPrice);
 	}else{
-		var priceVals = 5980*month;
+		var priceVals = monthPrice*month;
 		$("#price").html(priceVals);
 	}
 
@@ -797,9 +797,9 @@ function changeOrderInfo(){
 	var reMonth = $('#Remonth').val();
 	var priceVals;
 	if(reMonth==12){
-		priceVals = 9000;
+		priceVals = yearPrice;
 	}else {
-		priceVals = 880*reMonth;
+		priceVals = monthPrice*reMonth;
 	}
 	   priceVals=priceVals.toFixed(2);
 	  $("[name='orderPrice']").html(priceVals);
