@@ -7,10 +7,12 @@
     <result column="dst_ip" jdbcType="VARCHAR" property="dstIp" />
     <result column="domain" jdbcType="VARCHAR" property="domain" />
     <result column="src_ip" jdbcType="VARCHAR" property="srcIp" />
+    <result column="src_country" jdbcType="VARCHAR" property="srcCountry" />
+    <result column="src_subdivision_1" jdbcType="VARCHAR" property="srcSubdivision1" />
     <result column="day" jdbcType="DATE" property="day" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, num, dst_ip, domain, src_ip, day
+    id, num, dst_ip, domain, src_ip, src_country, src_subdivision_1, day
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -24,9 +26,11 @@
   </delete>
   <insert id="insert" parameterType="com.cn.ctbri.model.CntBySrc">
     insert into cntBySrc (id, num, dst_ip, 
-      domain, src_ip, day)
+      domain, src_ip, src_country, 
+      src_subdivision_1, day)
     values (#{id,jdbcType=BIGINT}, #{num,jdbcType=BIGINT}, #{dstIp,jdbcType=VARCHAR}, 
-      #{domain,jdbcType=VARCHAR}, #{srcIp,jdbcType=VARCHAR}, #{day,jdbcType=DATE})
+      #{domain,jdbcType=VARCHAR}, #{srcIp,jdbcType=VARCHAR}, #{srcCountry,jdbcType=VARCHAR}, 
+      #{srcSubdivision1,jdbcType=VARCHAR}, #{day,jdbcType=DATE})
   </insert>
   <insert id="insertSelective" parameterType="com.cn.ctbri.model.CntBySrc">
     insert into cntBySrc
@@ -45,6 +49,12 @@
       </if>
       <if test="srcIp != null">
         src_ip,
+      </if>
+      <if test="srcCountry != null">
+        src_country,
+      </if>
+      <if test="srcSubdivision1 != null">
+        src_subdivision_1,
       </if>
       <if test="day != null">
         day,
@@ -66,6 +76,12 @@
       <if test="srcIp != null">
         #{srcIp,jdbcType=VARCHAR},
       </if>
+      <if test="srcCountry != null">
+        #{srcCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="srcSubdivision1 != null">
+        #{srcSubdivision1,jdbcType=VARCHAR},
+      </if>
       <if test="day != null">
         #{day,jdbcType=DATE},
       </if>
@@ -86,6 +102,12 @@
       <if test="srcIp != null">
         src_ip = #{srcIp,jdbcType=VARCHAR},
       </if>
+      <if test="srcCountry != null">
+        src_country = #{srcCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="srcSubdivision1 != null">
+        src_subdivision_1 = #{srcSubdivision1,jdbcType=VARCHAR},
+      </if>
       <if test="day != null">
         day = #{day,jdbcType=DATE},
       </if>
@@ -98,30 +120,33 @@
       dst_ip = #{dstIp,jdbcType=VARCHAR},
       domain = #{domain,jdbcType=VARCHAR},
       src_ip = #{srcIp,jdbcType=VARCHAR},
+      src_country = #{srcCountry,jdbcType=VARCHAR},
+      src_subdivision_1 = #{srcSubdivision1,jdbcType=VARCHAR},
       day = #{day,jdbcType=DATE}
     where id = #{id,jdbcType=BIGINT}
   </update>
-   <select id="selectMaxDay"  resultType="java.util.Date">
-  	select max(day) from cntByType
+     <select id="selectMaxDay"  resultType="java.util.Date">
+  	select max(day) from cntBySrc
   </select>
   <select id="selectCntBySrc" resultMap="BaseResultMap" parameterType="map">
   		select count(1) as num,dst_ip,domain,src_ip ,src_country ,src_subdivision_1,date_format(stat_time,'%Y-%m-%d') as day
 		from
 		(SELECT  * from t_waf_log_websec  where 
-		ip_latlong_valid
+		ip_latlong_valid=1 
 		<if test="maxDate != null">
 			and date_format(stat_time,'%Y-%m-%d')>#{maxDate,jdbcType=DATE}
 		</if>
 		
 		) t 
 		group by dst_ip,domain,src_ip,src_country ,src_subdivision_1,date_format(stat_time,'%Y-%m-%d')
-		order by date_format(stat_time,'%Y-%m-%d')
+		
   </select>
   <insert id="batchInsert" parameterType="map">
-  		insert into cntBySrc (src_ip,num,day,dst_ip,domain)
+  		insert into cntBySrc (src_ip,src_country ,src_subdivision_1,num,day,dst_ip,domain)
   		  		VALUES  
     <foreach collection="list" item="member" index="index" separator=",">  
-        (#{member.srcIp}, #{member.num}, #{member.day}, #{member.dstIp}, #{member.domain})  
+        (#{member.srcIp}, #{member.srcCountry},#{member.srcSubdivision1},#{member.num}, #{member.day}, #{member.dstIp}, #{member.domain})  
     </foreach> 
   </insert>
+  
 </mapper>
