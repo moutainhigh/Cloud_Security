@@ -870,6 +870,21 @@ public class UserController{
 			        List<Asset> assetList = orderAssetService.findAssetNameByOrderId(orderId);
 			        map.put("assetList", assetList);
 			        
+			        //判断waf是否需要延期
+			        int serviceId =(Integer)map.get("serviceId");
+		        	int status=(Integer)map.get("status");
+		        	Date endDate =(Date) map.get("end_date");
+		        	if(serviceId==6&&status==4){
+		        		Date hourDate = DateUtils.getDateAfterHour(endDate);//订单结束日期后24小时
+			        	Date nowDate = new Date();  //现在时间
+			        	if(nowDate.getTime()>endDate.getTime() && 
+			        			nowDate.getTime()<=hourDate.getTime()){
+			        		 map.put("Renew", true);
+			        	}else{
+			        		 map.put("Renew", false);
+			        	}
+		        	}
+			        
 			        //多资产情况下，判断已完成的 add by tangxr 2016-7-7 
 //			        List<Task> tlist = taskService.findAllByOrderId(paramMap);
 //					List<Task> finistlist = taskService.findFinishAlarmByOrderId(paramMap);
