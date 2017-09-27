@@ -298,6 +298,31 @@ public class SMSUtils {
 
 	}
 	
+	/**waf下单成功短信提醒
+	 * 短信模板：【安全帮】您好，您的云waf订单(#code#)下单成功，服务开始时间为：#time#；请尽快设置域名解析！
+	 * @param args
+	 * @throws IOException
+	 */
+	public void sendMessage_WafOrderSuccess(String phoneNumber,String orderId,Date time) throws IOException,URISyntaxException{
+		//修改为您的apikey.apikey可在官网（http://www.yuanpian.com)登录后用户中心首页看到
+        String apikey = Configuration.getApikey();
+        //修改为您要发送的手机号
+        String mobile = phoneNumber;
+        
+        //设置模板ID，如:您好，您的云waf订单(#code#)下单成功，服务开始时间为：#time#；请尽快设置域名解析！
+        long tpl_id = Long.parseLong(Configuration.getWafOrder_model());
+        //设置对应的模板变量值
+        //如果变量名或者变量值中带有#&=%中的任意一个特殊符号，需要先分别进行urlencode编码
+        //如code值是#1234#,需作如下编码转换
+        orderId = URLEncoder.encode(orderId, ENCODING);
+        String tpl_value = "#code#=" + orderId + "&#time#=" + DateUtils.dateToString(time);
+        //模板发送的调用示例
+        System.out.println(tplSendSms(apikey, tpl_id, tpl_value, mobile));
+        System.out.println(new Date()+ ":"+mobile+",模板:"+Configuration.getWafOrder_model());
+
+	}
+	
+	
 	/**waf续费短信提醒
 	 * 短信模板：【安全帮】您好，云WAF订单(#code#)将在#time#后停止服务，请及时续费。
 	 * @param args
