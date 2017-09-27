@@ -2600,25 +2600,25 @@ public class shoppingController {
     	}
     	/**waf 订单支付成功发送短信提醒开始**/
 		List<String> orderIdList=new ArrayList();
-
-		if(orderListId!=null&&!"".equals(orderListId)){
-			String strArray[] = orderListId.split(",");
+		
+		String orderIds = orderList.getOrderId();
+		if(orderIds!=null&&!"".equals(orderIds)){
+			String strArray[] = orderIds.split(",");
 			for (int k=0;k<strArray.length;k++){
 				orderIdList.add(strArray[k]);
 			}
 		}
 		List	list = selfHelpOrderService.findBuyShopList(orderIdList,globle_user.getId());
-		Linkman linkman=orderService.findLinkmanByOrderId(orderListId);
 		for(int i=0;i<list.size();i++){
 			ShopCar shopCar = (ShopCar)list.get(i);
 			int serviceId = shopCar.getServiceId();
 			if(serviceId==6){
-			String mobile = 	linkman.getMobile();
-			  SMSUtils smsUtils = new SMSUtils();
-			     try {
-					smsUtils.sendMessage(mobile, "恭喜您已成功付款"+shopCar.getPrice()+" &nbsp;部分服务时间已根据订单支付成功时间自动调整为："+orderList.getPay_date()+"&nbsp;当前订单需要设置域名解析；");
+				Linkman linkman=orderService.findLinkmanByOrderId(shopCar.getOrderId());
+				String mobile = linkman.getMobile();
+				SMSUtils smsUtils = new SMSUtils();
+			    try {
+			    	smsUtils.sendMessage_WafOrderSuccess(mobile, shopCar.getOrderId(), shopCar.getBeginDate());
 				} catch (URISyntaxException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
