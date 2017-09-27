@@ -37,6 +37,7 @@ public class Configuration {
 	private static String anquanbi_model;//注册赠送安全币模板
 	private static String wafMsg_model;//waf短信提醒
 	private static String renew_model;//续费短信提醒
+	private static String wafOrder_model;//waf下单成功短信提醒
 	static {
 		InputStream inputStream = Configuration.class.getClassLoader().getResourceAsStream("default.properties");
 		Properties prop = new Properties();
@@ -66,6 +67,7 @@ public class Configuration {
 		anquanbi_model=(String)prop.get("anquanbi_model");
 		wafMsg_model=(String)prop.get("wafMsg_model");
 		renew_model=(String)prop.get("renew_model");
+		wafOrder_model=(String)prop.get("wafOrder_model");
 	}
 	public static String getFileContent() {
 		return fileContent;
@@ -194,5 +196,11 @@ public class Configuration {
 	public static void setRenew_model(String renew_model) {
 		Configuration.renew_model = renew_model;
 	}
-    
+	//wafOrder_model
+	public static String getWafOrder_model() {
+		return wafOrder_model;
+	}
+	public static void setWafOrder_model(String wafOrder_model) {
+		Configuration.wafOrder_model = wafOrder_model;
+	}
 }
