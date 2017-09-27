@@ -308,7 +308,7 @@ html, body {
 							<c:forEach var="apiList" items="${servAPIList}"
 								varStatus="status">
 								<c:choose>
-									<c:when test="${apiList.id >=3 && apiList.id <=5}">
+									<c:when test="${apiList.id<=3}">
 
 										<li class="fl"><a href="javascript:;"
 											onclick="buySelfHelpOrderAPIMain(${apiList.id});">
