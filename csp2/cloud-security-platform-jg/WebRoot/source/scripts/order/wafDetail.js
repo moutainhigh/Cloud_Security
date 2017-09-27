@@ -1,4 +1,6 @@
 var saveAssetFlag = 0;
+var monthPrice;
+var yearPrice;
 $(function(){
 	//上下键操作下拉框
 	$("#month").keydown(function(event){
