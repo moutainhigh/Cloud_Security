@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -15,7 +16,6 @@ import java.util.TreeMap;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.TextMessage;
@@ -27,6 +27,8 @@ import com.cn.ctbri.constant.EventTypeCode;
 import com.cn.ctbri.entity.Attack;
 import com.cn.ctbri.entity.AttackCount;
 import com.cn.ctbri.entity.IPPosition;
+import com.cn.ctbri.entity.User;
+import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IIPPositionService;
 import com.cn.ctbri.util.DateUtils;
 import com.cn.ctbri.util.MapUtil;
@@ -49,6 +51,8 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 
 	@Autowired
 	IIPPositionService ipPositionService;
+	@Autowired
+	IAssetService assetService;
 	// 存储格式（IP,IPPosition）
 	static Map<String, IPPosition> ipPositionMap = null;
 	private long id = 0;
@@ -71,11 +75,13 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session)
 			throws Exception {
+		
 	}
 
 	@Override
 	protected void handleTextMessage(WebSocketSession session,
 			TextMessage message) throws Exception {
+		User user  = (User) session.getAttributes().get("globle_user");
 		long startId = 0;
 		String receiveMsg = message.getPayload();
 		// System.out.println("receiveMsg+++"+receiveMsg);
@@ -90,19 +96,38 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 				// 目的端的经纬度
 				LinkedList<String> desPositionList = new LinkedList<String>();
 				boolean flag = true;
-				boolean flag2 = true;
+				//加一个初始条件判断是不是第一次进入循环，主要原因是之前的代码断开连接靠异常处理，如果没有数据会陷入死循环，浪费连接
+				boolean flag2=true;
 				String dataText = null;
 				while (flag) {
+					//System.out.println("startId:"+startId);
 					flag = session.isOpen();
-					// System.out.println("flag"+flag);
-
+					//System.out.println("flag第一次："+flag);
 					try {
-						// dataText=getFirstWafData();
-						dataText = getWafData(startId);
+						int userid=user.getId();
+						int type=user.getType();
+						//由于type功能无法使用，为了临时方便看效果加上该条
+						if(user.getName().equals("anquanbang")){
+							type=0;
+						}
+						List<String>addrList=new ArrayList<String>();
+						if(type!=0){
+							addrList=assetService.findDomainByUserId(userid);
+						}
+						dataText = getWafData(startId,addrList,type);
 						// System.out.println("dataText"+dataText);
 						JSONObject json = JSONObject.fromObject(dataText);
 						JSONArray array = (JSONArray) json
 								.get("wafLogWebsecList");
+						//注意下面if判断只会第一次调用的时候执行你 
+						if(flag2){
+							//第一次载入500条如果没有数据默认资产没有报警数据，直接跳出循环不再监听
+							if(array.size()==0){
+								flag=false;
+							}
+							flag2=false;
+						}
+						System.out.println("aaaaaa:"+array.size());
 						startId = json.getLong("currentId");
 						if (null != array && array.size() == 0) {
 							// System.out.println("++++++++");
@@ -114,6 +139,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 						// System.out.println(message.toString());
 						// System.out.println(array);
 					} catch (Exception ex) {
+						flag=false;
 						ex.printStackTrace();
 					}
 				}
@@ -134,9 +160,9 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 		return text;
 	}
 
-	public String getWafData(long currentId) {
+	public String getWafData(long currentId,List<String> addrList,int type) {
 		WafAPIWorker worker = new WafAPIWorker();
-		String text = worker.getAllWafLogWebsecInTime(currentId);
+		String text = worker.getAllWafLogWebsecInTime(currentId, addrList,type);
 		return text;
 	}
 

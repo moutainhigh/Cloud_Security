@@ -927,7 +927,11 @@ public class WafDetailController {
     @RequestMapping(value="getWafOneHour.html")
     @ResponseBody
     public void getWafOneHour(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    	String eventStr = WafAPIWorker.getWafEventTypeCount(INTERVAL_STRING,"hour",0);
+    	User user=(User)request.getSession().getAttribute("globle_user");
+    	List <String>domainList=assetService.findDomainByUserId(user.getId());
+    	int type=user.getType();
+    	type=0;//由于权限已经加上但本版本不上，所以type写死为0，可以获得所有用户数据，下次分权限注释此行即可
+    	String eventStr = WafAPIWorker.getWafEventTypeCount(INTERVAL_STRING,"hour",0,domainList,type);
     	Map map = WafAPIAnalysis.getWafEventTypeCount(eventStr);
         
         List name = null;

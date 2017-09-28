@@ -37,6 +37,17 @@ public class AssetDaoImpl extends DaoCommon implements AssetDao{
 		return list;
 	}
 	/**
+	 * @author hansheng
+	 * 功能描述：根据用户名查询addr 安全大数据隔离权限
+	 * 参数描述：int id
+	 *		 @time 2017-9-26
+	 * 返回值    ：  List
+	 */
+	public List<String> findDomainByUserId(int userid){
+		List<String> list = this.getSqlSession().selectList(ns + "findDomainByUserId",userid);
+		return list;
+	}
+	/**
 	 * 功能描述：新增资产
 	 * 参数描述：Asset asset
 	 *		 @time 2015-1-16

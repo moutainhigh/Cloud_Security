@@ -31,7 +31,9 @@ import com.cn.ctbri.constant.EventTypeCode;
 import com.cn.ctbri.entity.AlarmBug;
 import com.cn.ctbri.entity.AttackCount;
 import com.cn.ctbri.entity.OrderCount;
+import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAlarmService;
+import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.IOrderService;
 import com.cn.ctbri.util.DateUtils;
 
@@ -45,6 +47,8 @@ import com.cn.ctbri.util.DateUtils;
 public class AnalyseController {
 	@Autowired
 	private IAlarmService alarmService;
+	@Autowired
+	private IAssetService assetService;
 
 	@Autowired
 	private IOrderService orderService;
@@ -570,8 +574,12 @@ public class AnalyseController {
 
 	@RequestMapping(value = "mapUI.html")
 	public String mapUI(HttpServletRequest request) throws UnsupportedEncodingException {
+		User user=(User)request.getSession().getAttribute("globle_user");
+		List <String>domainList=assetService.findDomainByUserId(user.getId());
 		WafAPIWorker worker = new WafAPIWorker();
-		String texts = worker.getWafEventTypeCount(null,"forever",0);
+		int type=user.getType();
+		type=0;//由于后期权限不上暂时写死保持所有用户数据显示，后期加权限直接注释本行即可
+		String texts = worker.getWafEventTypeCount(null,"forever",0,domainList,user.getType());
 		JSONArray array = JSONArray.fromObject(texts);
 		List<AttackCount> attackCountList = new ArrayList<AttackCount>();
 		for (int i = 0; i < array.size(); i++) {

@@ -2,6 +2,7 @@ package com.cn.ctbri.common;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.util.List;
+
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -14,6 +15,7 @@ import javax.ws.rs.core.Response;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import com.cn.ctbri.entity.User;
 import com.cn.ctbri.listener.ContextClient;
 /**
  * 创 建 人  ：  tangxr
@@ -332,10 +334,14 @@ public class WafAPIWorker {
 	 * @param currentId
 	 * @return
 	 */
-	public static String getAllWafLogWebsecInTime(long currentId){
+	public static String getAllWafLogWebsecInTime(long currentId,List<String> addrList,int type){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
 		json.put("currentId", currentId);
+		if(type!=0){
+			json.put("domain", addrList);
+		}
+		//System.out.println("json:"+json);
         WebTarget target = mainTarget.path("/rest/adapter/getAllWafLogWebsecThanCurrentId");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
         String str = (String)response.readEntity(String.class);
@@ -358,10 +364,13 @@ public class WafAPIWorker {
 	 * @param interval
 	 * @return
 	 */
-	public static String getWafEventTypeCount(String interval, String timeUnit,long topNum){
+	public static String getWafEventTypeCount(String interval, String timeUnit,long topNum,List<String>domainList,int type){
 		
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
+		if(type!=0){
+			json.put("domain",domainList);
+		}
 		if(!"forever".equals(timeUnit)){
 			json.put("interval", interval);
 		}
@@ -377,9 +386,16 @@ public class WafAPIWorker {
 	}
 	
 	
-	public static String getEventTypeCountInTimeCurrent(long topNum){
+	public static String getEventTypeCountInTimeCurrent(long topNum,User user,List<String>domainList){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
+		int type=user.getType();
+		if(user.getName().equals("anquanbang")){
+			type=0;
+		}
+		if(type!=0){
+			json.put("domain", domainList);
+		}
 		json.put("topNum",topNum);
         WebTarget target = mainTarget.path("/rest/adapter/getEventTypeCountInTimeCurrent");
         Response response = target.request().post(Entity.entity(json, MediaType.APPLICATION_JSON));
@@ -598,9 +614,12 @@ public class WafAPIWorker {
 	 * @param interval
 	 * @return
 	 */
-	public static String getWafAlertLevelCountByMonth(String interval,String startDate){
+	public static String getWafAlertLevelCountByMonth(String interval,String startDate,List<String> domainList,int type){
 		//组织发送内容JSON
 		JSONObject json = new JSONObject();
+		if(type!=0){
+			json.put("domain",domainList);
+		}
 		json.put("interval", interval);
 		json.put("startDate", startDate);
         WebTarget target = mainTarget.path("/rest/adapter/getWafAlertLevelCountByMonth");

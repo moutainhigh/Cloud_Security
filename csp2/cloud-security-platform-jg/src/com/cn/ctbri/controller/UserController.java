@@ -45,6 +45,7 @@ import com.cn.ctbri.entity.ServiceAPI;
 import com.cn.ctbri.entity.User;
 import com.cn.ctbri.service.IAdvertisementService;
 import com.cn.ctbri.service.IAlarmService;
+import com.cn.ctbri.service.IAssetService;
 import com.cn.ctbri.service.INoticeService;
 import com.cn.ctbri.service.IOrderAssetService;
 import com.cn.ctbri.service.IOrderService;
@@ -84,6 +85,8 @@ public class UserController{
     ISelfHelpOrderService selfHelpOrderService;
 	@Autowired
 	IAlarmService alarmService;
+	@Autowired
+	IAssetService assetService;
 	@Autowired
 	IOrderService orderService;
 	@Autowired
@@ -509,7 +512,7 @@ public class UserController{
 							CommonUtil.writeToJsp(response, JSON);
 						} catch (IOException e) {
 							e.printStackTrace();
-						}
+						} 
 						return;
 				 }
 			  }else{
@@ -522,7 +525,7 @@ public class UserController{
 							CommonUtil.writeToJsp(response, JSON);
 						} catch (IOException e) {
 							e.printStackTrace();
-						}
+						} 
 						return;
 				  }
 			  }
@@ -539,7 +542,7 @@ public class UserController{
 								CommonUtil.writeToJsp(response, JSON);
 							} catch (IOException e) {
 								e.printStackTrace();
-							}
+							} 
 							return;
 						}
 					}
@@ -553,7 +556,7 @@ public class UserController{
 							CommonUtil.writeToJsp(response, JSON);
 						} catch (IOException e) {
 							e.printStackTrace();
-						}
+						} 
 						return;
 				  }
 				}
@@ -570,7 +573,7 @@ public class UserController{
 					CommonUtil.writeToJsp(response, JSON);
 				} catch (IOException e) {
 					e.printStackTrace();
-				}
+				} 
 				return;
 			}
 			
@@ -586,7 +589,7 @@ public class UserController{
 					CommonUtil.writeToJsp(response, JSON);
 				} catch (IOException e) {
 					e.printStackTrace();
-				}
+				} 
 				return;
 			}
 			//如果是企业用户判断IP是否在库存地址段内
@@ -659,16 +662,14 @@ public class UserController{
 					CommonUtil.writeToJsp(response, JSON);
 				} catch (IOException e) {
 					e.printStackTrace();
-				}
+				} 
 				return;
 			}
 			
 			//将User放置到Session中，用于这个系统的操作
 			request.getSession().setAttribute("globle_user", _user);
-			
 			//add by tangxr 登录时将信息同步至服务能力
 			String msg=NorthAPIWorker.setUser(String.valueOf(_user.getId()), _user.getApikey(), _user.getPartner());
-			
 			//add by tangxr 2016-3-14
 			if(request.getSession().getAttribute("indexPage")!=null){
 				int indexPage = (Integer) request.getSession().getAttribute("indexPage");
@@ -685,7 +686,7 @@ public class UserController{
 						CommonUtil.writeToJsp(response, JSON);
 					} catch (IOException e) {
 						e.printStackTrace();
-					}
+					} 
 					return;
 				}else if(indexPage == 2){
 					int apiId = (Integer) request.getSession().getAttribute("apiId");
@@ -699,7 +700,7 @@ public class UserController{
 						CommonUtil.writeToJsp(response, JSON);
 					} catch (IOException e) {
 						e.printStackTrace();
-					}
+					} 
 					return;
 				}else{
 					map.put("result", 7);
@@ -711,6 +712,7 @@ public class UserController{
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
+					 
 					return;
 				}
 			}else{
@@ -724,6 +726,7 @@ public class UserController{
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				 
 				return ;
 			}
 		} catch (Exception e) {
@@ -735,6 +738,7 @@ public class UserController{
 			try {
 				// 把数据返回到页面
 				CommonUtil.writeToJsp(response, JSON);
+				
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -1915,7 +1919,7 @@ public class UserController{
 	 *		 @time 2015-1-8
 	 */
 	@RequestMapping(value="/sa_anquanbang.html")
-	public String saAnquanbang(Model m){
+	public String saAnquanbang(Model m,HttpServletRequest request){
 	  	try {
 	        
 	        JSONArray jsonArray;
@@ -1955,10 +1959,13 @@ public class UserController{
   		  }
   	  	  m.addAttribute("wafAlarmLevel",wafAlarmLevel);
   		WafAPIWorker worker = new WafAPIWorker();
-  		String texts = worker.getEventTypeCountInTimeCurrent(500);
+  		User user=(User)request.getSession().getAttribute("globle_user");
+  		List<String>domainList=assetService.findDomainByUserId(user.getId());
+  		String texts = worker.getEventTypeCountInTimeCurrent(500,user,domainList);
   		JSONObject json=JSONObject.fromObject(texts);
   		JSONArray array = json.getJSONArray("eventTypeCountList");
   		long currentId=json.getLong("currentId");
+  		System.out.println("初始化获得currentId:"+currentId);
   		List<AttackCount> attackCountList = new ArrayList<AttackCount>();
   		for (int i = 0; i < array.size(); i++) {
   			JSONObject obj = (JSONObject) array.get(i);
@@ -1974,7 +1981,7 @@ public class UserController{
   		m.addAttribute("wafEventTypeCount",attackCountList.toString());
   		m.addAttribute("currentId", currentId);
 	  	} catch (Exception e) {
-//	  		e.printStackTrace();
+  		e.printStackTrace();
 	  		m.addAttribute("error", "服务器异常，请您耐心等待...");
 	  		return "/source/page/anquanbang/anquan_state";
 	  	}  	  

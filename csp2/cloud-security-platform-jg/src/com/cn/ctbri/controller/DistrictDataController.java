@@ -401,6 +401,9 @@ public class DistrictDataController {
     @RequestMapping(value="getWafByLevelMonth6.html")
     @ResponseBody
     public void getWafByLevelMonth6(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    	User user=(User)request.getSession().getAttribute("globle_user");
+    	List <String>domainList=assetService.findDomainByUserId(user.getId());
+    	int type=user.getType();
     	JSONArray newArray = new JSONArray();
         //获取月份，近6个月
         List monthList = new ArrayList();
@@ -423,7 +426,8 @@ public class DistrictDataController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
         String startDate = dateFormat.format(date);
         //end
-    	String wafRes = WafAPIWorker.getWafAlertLevelCountByMonth("1", startDate);
+        type=0;//因为本次权限不上，所以获得所有用户信息，下次上权限注释本行即可
+    	String wafRes = WafAPIWorker.getWafAlertLevelCountByMonth("1", startDate,domainList,type);
     	
     	//自定义颜色值
     	String colors[] = {"#806bff","#eabf6c","#6bc770"};
