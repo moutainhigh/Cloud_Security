@@ -193,7 +193,6 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			String desPort = obj.getString("dstPort");
 			Date startTime = DateUtils.stringToDateNYRSFM(obj
 					.getString("statTime"));
-			;
 			// byte[] base64Bytes =
 			// Base64.decodeBase64(obj.getString("eventType").getBytes());
 			byte[] base64Bytes = obj.getString("eventType").getBytes();
@@ -242,6 +241,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 					srcIPPosition.setCountryProvince(srcName);
 					srcIPPosition.setSourceStatus(SOURCE_DIANXIN);
 					ipPositionService.saveIPPosition(srcIPPosition);
+					continue;
 				} else {// 电信接口不存在数据
 						// 2.电信接口如果不存在的话，再掉百度的接口
 
@@ -273,6 +273,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 						srcIPPosition.setCountryProvince(srcName);
 						srcIPPosition.setSourceStatus(SOURCE_BAIDU_CITY);
 						ipPositionService.saveIPPosition(srcIPPosition);
+						continue;
 					}
 
 				}
@@ -316,6 +317,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 					desIPPosition.setCountryProvince(desName);
 					desIPPosition.setSourceStatus(SOURCE_DIANXIN);
 					ipPositionService.saveIPPosition(desIPPosition);
+					continue;
 				} else {// 电信接口不存在数据
 
 					// 目标经纬度
@@ -348,6 +350,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 						desIPPosition.setCountryProvince(desName);
 						desIPPosition.setSourceStatus(SOURCE_BAIDU_CITY);
 						ipPositionService.saveIPPosition(desIPPosition);
+						continue;
 					}
 
 				}
