@@ -1965,7 +1965,7 @@ public class UserController{
   		JSONObject json=JSONObject.fromObject(texts);
   		JSONArray array = json.getJSONArray("eventTypeCountList");
   		long currentId=json.getLong("currentId");
-  		System.out.println("初始化获得currentId:"+currentId);
+  		//System.out.println("初始化获得currentId:"+currentId);
   		List<AttackCount> attackCountList = new ArrayList<AttackCount>();
   		for (int i = 0; i < array.size(); i++) {
   			JSONObject obj = (JSONObject) array.get(i);

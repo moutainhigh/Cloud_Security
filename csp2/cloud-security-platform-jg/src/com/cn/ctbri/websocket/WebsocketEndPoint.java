@@ -127,7 +127,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 							}
 							flag2=false;
 						}
-						System.out.println("aaaaaa:"+array.size());
+						//System.out.println("aaaaaa:"+array.size());
 						startId = json.getLong("currentId");
 						if (null != array && array.size() == 0) {
 							// System.out.println("++++++++");
