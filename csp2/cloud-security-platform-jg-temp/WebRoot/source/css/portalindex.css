@@ -2145,7 +2145,6 @@ padding: 20px 30px 0px 0px;
 #XListUl p {
 	width: 504px;
 	height: 170px;
-	background-color: yellow;
 	margin: 12px;
 }
 #XListUl span {
@@ -2153,7 +2152,7 @@ padding: 20px 30px 0px 0px;
     float: left;
     width: 347px;
     margin-left: 12px;
-    margin-top: 37px;
+    margin-top: 25px;
 }
 #XListUl a {
 	width: 106px;
@@ -2167,24 +2166,12 @@ padding: 20px 30px 0px 0px;
     line-height: 40px;
     float: right;
     margin-right: 12px;
-    margin-top: 51px;
+    margin-top: 30px;
 }
 #XListUl a:hover {
     background-color: #2499FB;
     color: #FFF;
 }
-/* X专区下导航栏 */
-.top {
-background-color:RGB(13,24,106);
-color:#fff;
-padding-top:20px;
-}
-.link {
-margin-left:124px;
-}
-.link a {
-color:#fff;
-}
-.link i {
-margin:0px 8px;
+#XListUl h4 {
+	position: static;
 }

@@ -44,15 +44,28 @@ html{
 	margin:0;
 	padding:0 15px;
 	border:0;
-	background: url('http://0day.websaas.com.cn/img/1112.jpg') no-repeat;
-	/*background-color: #269ABC;*/
+	background: url("${ctx}/source/images/portal/special1.png") no-repeat;
+/* 	background: url("http://0day.websaas.com.cn/img/1112.jpg") no-repeat; */
+	background-color: rgb(97,181,251);
 	background-size: cover;
 	position: absolute;
 	/*overflow:-Scroll;*/
 	overflow-x:hidden;
 	/*overflow:-moz-scrollbars-vertical;*/
 	 /*scroll="no";*/
+	 z-index: -10;
 }
+/* .body:after{
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    background-color: #9400D3;
+    opacity: 0.2;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+} */
 
 /**
  * 	滚动条
@@ -145,8 +158,8 @@ ul,li{
 	width:126px;
 	height:100%;
 	float: left;
-	font-size: 12px;
-	padding-top: 10px;
+	font-size: 14px;
+	padding-top: 17px;
 	color:#8f8d8d;
 	word-break:break-all ;
 	overflow:hidden; 
@@ -166,18 +179,18 @@ ul,li{
 	line-height:100%;
 	text-align:center;
 	padding-top:20px;
-	background: url("http://0day.websaas.com.cn/img/yq_1.png") 2px -5px no-repeat;
+	background: url("${ctx}/source/images/portal/yq_1.png") 2px -5px no-repeat;
 }
 
 .timeline_div_icon label{
 	line-height:14px;
-	color:rgb(253,149,38);
+	color:rgb(221,221,221);
 	font-size:14px;
 	cursor: pointer;
 	position: relative;
 }
 .timeline_div_icon label:hover{
-	color: rgb(253,149,38);
+	color: rgb(221,221,221);
 }
 
 
@@ -297,17 +310,30 @@ background-color:#FFF;
 .form-group label {
 color:#FFF;
 }
-.btn {
-background-color: #ed9c28;
-border-color: #d58512;
+thead {
+background-color:RGB(237,237,237);
 }
-.btn:hover {
-color: #fff;
-background-color: #ed9c28;
-border-color: #d58512;
+table {
+text-align: center;
 }
-.pagination-info {
-color:#fff;
+th {
+text-align: center;
+}
+.help-block {
+color:#CC0033;
+}
+.form-group label {
+color:#303030;
+}
+.timelinebox {
+margin-left: 29px;
+}
+#target, #port {
+width: 88%;
+height: 41px;
+}
+#form {
+margin-left: 31px;
 }
 </style>
 </head>
@@ -346,17 +372,6 @@ color:#fff;
 			             <input type="text" class="form-control" id="port"  name="port" placeholder="例如：0-65535 or 21，23，80"/>
 		             </div>
 		             <br/><br/>
-		             <div class="form-group">
-		                 <label for="name">扫描选项</label> 
-						 <select class="form-control" name="scan" id="scan">
-							<option selected="selected" value="default">默认选项</option>
-							<option value="TCP SYN">TCP SYN扫描</option>
-							<option value="TCP connect">TCP connect 扫描</option>
-							<option value="ping">ping 扫描</option>
-							<option value="UDP">UDP 扫描</option>
-						 </select>		
-		              </div>
-		              <br/><br/>
 		             <div class="form-group">
 		                 <button type="reset" class="btn">重置</button>
                          <button type="button" class="btn" onclick="submitForm()" id="btn_sub">提交</button>
@@ -448,7 +463,7 @@ $(document).ready(function() {
 $(".timeline_ul>li").hover(
           function () {
           $(this).find('.timeline_divicon_side').slideDown(400);
-          $(this).find('.timeline_span_left,.timeline_span_right').css('color','rgb(253,149,38)');
+          $(this).find('.timeline_span_left,.timeline_span_right').css('color','rgb(221,221,221)');
         },
         function(){
           if($(this).attr('data-onselect')!=1){
@@ -462,7 +477,7 @@ $(".timeline_ul>li").hover(
  $(".timeline_ul>li").click(function(){
           var checkid=$(this).find('.timeline_divicon_side').data('checkid')
           $(this).find('.timeline_divicon_side').slideDown(400);
-          $(this).find('.timeline_span_left,.timeline_span_right').css('color','rgb(253,149,38)');
+          $(this).find('.timeline_span_left,.timeline_span_right').css('color','rgb(221,221,221)');
           if($(this).attr('data-onselect')!=1){
 	    		var lastselect=$("li[data-onselect='1']");
 	    		lastselect.attr('data-onselect',0);

@@ -24,31 +24,24 @@
 </script>
 <body>
 	<div class="safeBox">
-		
 		<div class="safe01">
 			<!--头部-->
 			<div class="head">
 				<div class="headBox">
-					<!-- <div class="safeL fl">
-						<img src="${ctx}/source/images/portal/logo.png" alt=""/>
-					</div> -->
 					<div class="safeL fl" style="width:272px; margin-right:12%">
 						<a href="${ctx}/index.html"><img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:4px;"/></a>
-                          <span style="font-size: 20px;
-    color: #4a4a4a; padding-left:10px;position:relative; top:-10px;">X专区</span>
+						<a href="${ctx}/Xlist.html"><span style="font-size: 20px;color: #4a4a4a; padding-left:10px;position:relative; top:-10px;">X专区</span>
+						</a>
 					</div>
 					<div class="safem fl">
 						<span class="fl"><a href="${ctx}/index.html">首页</a></span>
-						
 						<!-- 商品分类 start -->
 						<c:import url="/category.html"></c:import>
 						<!-- 商品分类 end -->
-						
 						<span class="fl"><a href="${ctx}/knowUs.html">关于我们</a></span>
 						<span class="fl shopping" style="margin-right:0">
 							<a href="${ctx}/showShopCar.html"><i></i>购物车</a>
 						</span>
-						
 					</div>
 					<div class="safer fr" style="margin-left:0px;">
 						<!-- 如果已经登录则显示用户名，否则需要登录 -->
@@ -72,101 +65,35 @@
 				<div class="bannerB">	
 				 	<div class="vb"><a href="#"><img src="${ctx}/source/images/ad/Xlist.jpg" alt="" style="width:100%;height:100%"></a></div>
 			</div>
-
 		</div>
 		<div class="safe02" style="padding-bottom:30px;">
-        
         	<div class="imgBox index_child" id='buydiv'>
 				<h2>X专区</h2>
                 <div class="listBox" style="width: 100%;">
                 	<div class="listR" style="width:1108px; margin:0 auto;">
-<%--                     	<ul class="newlist row newlist-top child-newlist clearfix" style="margin-right:-38px;">
-                            <c:forEach var="list" items="${servList}" varStatus="status">
-	                          <!--<c:choose>
-                               <c:when test="${status.index<5}">-->
-		                            <li class="fl col-md-4">		                   
-		                                    <p><img src="${ctx}/source/images/serviceIcon/${list.category_icon }" alt="" style="width:210px;height:auto;margin-top: 35px;margin-left: 62px;"></p>
-		                                    <h4>${list.name }</h4>
-		                                    <span style="padding-right: 30px">
-		                                    	${list.remarks }
-		                                    </span>
-		                                    <div class="purchase buydiv">
-			                                     <c:if test="${!empty list.price}">
-			                                    	<strong style="text-decoration:none;font-size: 22px;" class="buystrong">
-			                                    	<fmt:formatNumber type="number" value="${list.price}" maxFractionDigits="2" minFractionDigits="2"/>
-			                                    	<em style="font-size: 14px;color: #D00000;">安全币</em>
-			                                    	</strong>
-			                                    </c:if>
-			                                    <c:if test="${empty list.price}">
-			                                    	<strong class="buystrong">
-			                                    		0<em style="font-size: 14px;color:#D00000;">&nbsp;安全币</em>
-			                                    	</strong>
-			                                    	<strong style="text-decoration:line-through;text-decoration-color:#D00000;" class="buystrong">
-			                                    		<em style="font-family:Arial Regular;font-size:22px;">99 </em> 
-			                                    		<em style="font-size: 14px;">安全币</em>
-			                                    	</strong>
-		                                    	</c:if>
-		                                    	<!--<a style="left:112px" href="${ctx}/selfHelpOrderAPIInit.html?apiId=${list.id }&indexPage=2" class="btn">购买</a>
-		                                    -->
-		                                    <a style="left:62px" href="javascript:;" onclick="buySys(${list.id });" class="btn buy">购买</a>
-		                                    <form action="systemOrderOperaInit.html" method="post" id="systemOrderOperaInitNewForm">
-												<input type="hidden" id="sysIdNew" name="serviceId"/>
-												<input type="hidden" id="indexPage" name="indexPage" value="4"/>
-											</form>
-		                                    </div>
-		                               
-		                            </li>
-		                         <!--</c:when>
-		                       </c:choose>-->
-                            </c:forEach>
-                        </ul> --%>
                         <ul class="newlist row newlist-top child-newlist clearfix" style="margin-right:-38px;" id="XListUl">
                                     <c:forEach var="list" items="${servList}" varStatus="status">
 			                            <li class="fl col-md-6 XListLi">		                   
 			                                    <p>
-	<%-- 			                                    <img src="${ctx}/source/images/serviceIcon/${list.category_icon }" alt="">
-	 --%>		                                    </p>
+			                                         <img src="${ctx}/source/images/portal/${list.categoryIcon}" alt="">
+		                                        </p>
+		                                        <c:if test="${status.index==0}">
+		                                            <h4 style="padding-left:217px;">${list.name}</h4>
+		                                        </c:if>
+		                                        <c:if test="${status.index==1}">
+		                                            <h4 style="padding-left:207px;">${list.name}</h4>
+		                                        </c:if>
 			                                    <div>
-			                                    <span>
-			                                    	${list.remarks}
-			                                    </span>
+			                                    <span>${list.remarks}</span>
 			                                    <a href="${ctx}/${list.linkPage}">GO!</a>
 			                                    </div>
-			                               
 			                            </li>                                    
-                                    
                                     </c:forEach>
-<%-- 		                            <li class="fl col-md-6 XListLi">		                   
-		                                    <p>
-			                                    <img src="${ctx}/source/images/serviceIcon/${list.category_icon }" alt="">
-		                                    </p>
-		                                    <div>
-		                                    <span>
-		                                    	在线漏洞检测，Struts2远程命令执行漏洞、Openssl Drown、Juniper Networks SSH、Java反序列化远程命令执行........
-		                                    </span>
-		                                    <a href="${ctx}/Xpage.html">GO!</a>
-		                                    </div>
-		                               
-		                            </li>
-		                             <li class="fl col-md-6 XListLi">		                   
-		                                    <p>
-		                                    <img src="${ctx}/source/images/serviceIcon/${list.category_icon }" alt="">
-		                                    </p>
-		                                    <div>
-		                                    <span>
-		                                    	端口扫描，检测服务器开放哪些端口。单次扫描端口数不要超过100个
-		                                    </span>
-		                                    <a href="javascript:;">GO!</a>
-		                                    </div>
-		                               
-		                            </li> --%>
                         </ul>
                     </div>
                 </div>
-        </div>
-			
+            </div>	
 		</div>
-		
 		<div class="safe04">
 			<div class="imgBox clearfix">
 				<div class="footL fl">
@@ -207,9 +134,7 @@
                             <dd>专家服务通道</dd>
                        </dl>
                     </li>
-					
 				</ol>
-				
 			</div>
 		</div>
 		<!-- 底部 start -->
@@ -230,11 +155,7 @@
            	<img src="${ctx}/source/images/portal/weixin.jpg" alt="">
            </div> 
     </div>
-
 </div>
-	
 <div class="shade"></div>
 </body>
-
-
 </html>

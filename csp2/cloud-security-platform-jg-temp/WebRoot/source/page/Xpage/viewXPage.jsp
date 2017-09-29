@@ -88,6 +88,26 @@ input::-webkit-input-placeholder {
 .imgBox {
     margin-top: 35px;
 }
+.bannerbox:{
+    margin-top: -35px;
+}
+/* X专区下导航栏 */
+.top {
+background-color: RGB(13,24,106);
+color: #fff;
+height: 45px;
+line-height: 68px;
+}
+.link {
+width: 1104px;
+margin: 0 auto;
+}
+.link a {
+color:#fff;
+}
+.link i {
+margin:0px 8px;
+}
 </style>
 <script>
 	$(function(){
@@ -139,7 +159,9 @@ function detectionUrl(){
 						<a href="${ctx}/index.html">
 							<img src="${ctx}/source/images/portal/logo.png" alt="" style="position:relative; top:4px;"/>
 						</a>
-						<span style="font-size: 20px;color: #4a4a4a; padding-left:10px;position:relative; top:-10px;">漏洞检测</span>
+						<a href="${ctx}/Xlist.html">
+						<span style="font-size: 20px;color: #4a4a4a; padding-left:10px;position:relative; top:-10px;">X专区</span>
+						</a>
                         <!-- <strong style="font-size:20px; color:#fff; padding-left:20px;position:relative; top:-10px; font-weight:normal;">X专区</strong>
 						 -->
 					</div>
@@ -182,7 +204,7 @@ function detectionUrl(){
 	   	            <a href="${ctx}/index.html" style="font-size: 20px;">安全帮</a><i>&gt;</i><a href="${ctx}/Xlist.html">X专区</a><i>&gt;</i><a href="javascript:;">漏洞检测</a>
 	   	        </div>
 	   	    </div>
-	        <iframe src="http://0day.websaas.com.cn/ctcc.html" width="100%" height="100%" scrolling="no" style="border:0px"></iframe>
+	        <iframe id="iframe1" src="http://0day.websaas.com.cn/ctcc.html" width="100%" height="100%" scrolling="no" style="border:0px"></iframe>
 	        
 	    </div>
 		<div class="safe04">
