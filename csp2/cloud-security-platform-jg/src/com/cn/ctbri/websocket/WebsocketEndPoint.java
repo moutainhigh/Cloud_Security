@@ -290,7 +290,7 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
 			// System.out.println("des前"+desIPPosition.getIp()+" ;"+desIPPosition.getLongitude()+" ;"+desIPPosition.getLatitude());
 			if (null == desIPPosition || desIPPosition.getLongitude() == null
 					|| desIPPosition.getLatitude() == null) {// 数据库中不存在数据
-				System.out.println("执行了删除");
+				//System.out.println("执行了删除");
 				deleteIp(desIP);
 				desIPPosition = new IPPosition();
 				desIPPosition.setSourceStatus(INITIALIZE);
