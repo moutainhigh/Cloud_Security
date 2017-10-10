@@ -19,8 +19,8 @@ import com.cn.ctbri.entity.TaskWarn;
  * @author googe
  *
  */
-@Repository
 @Transactional
+@Repository
 public class TaskDaoImpl extends DaoCommon implements TaskDao {
 	
 	/**
@@ -37,10 +37,6 @@ public class TaskDaoImpl extends DaoCommon implements TaskDao {
 	}
 
 
-	@Resource
-	public final void setSessionFactoryRegister(SqlSessionFactory sessionFactory) {
-		this.setSqlSessionFactory(sessionFactory);
-	}  
 	
 
 	public List<Task> findTaskByOrderId(String orderId) {

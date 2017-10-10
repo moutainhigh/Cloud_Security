@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.cn.ctbri.dao.XlistDao;
 import com.cn.ctbri.entity.Xlist;
+import com.cn.ctbri.portscanDao.AppReportDao;
+import com.cn.ctbri.portscanEntity.AppReport;
 import com.cn.ctbri.service.IXlistService;
 
 /**
@@ -20,7 +22,8 @@ public class XlistServiceImpl implements IXlistService {
 	
 	@Autowired
 	private XlistDao xlistDao;
-
+	@Autowired
+	private AppReportDao appReportDao;
 
 	public List<Xlist> listXlist() {
 		return xlistDao.listXlist();
@@ -43,6 +46,11 @@ public class XlistServiceImpl implements IXlistService {
 
 	public int deleteById(int id) {
 		return xlistDao.deleteById(id);
+	}
+
+	public AppReport getAppReportById(int id) {
+		// TODO Auto-generated method stub
+		return appReportDao.getAppReportById(id);
 	}
 
 }

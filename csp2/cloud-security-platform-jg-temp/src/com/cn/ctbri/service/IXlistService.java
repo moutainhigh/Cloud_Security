@@ -9,6 +9,7 @@ package com.cn.ctbri.service;
 import java.util.List;
 
 import com.cn.ctbri.entity.Xlist;
+import com.cn.ctbri.portscanEntity.AppReport;
 
 /**
  * 创 建 人  ：  裴丹丹
@@ -61,4 +62,6 @@ public interface IXlistService {
 	 * 返回值    ：  int
 	 */
 	int deleteById(int id);
+	
+	AppReport getAppReportById(int id);
 }

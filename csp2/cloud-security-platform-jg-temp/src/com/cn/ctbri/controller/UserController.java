@@ -102,6 +102,10 @@ public class UserController{
     IServiceSysService serviceSysService;
 	@Autowired
     IXlistService xlistService;
+	public static void main(String[] args) {
+		  String pass="123456";
+		 
+	}
 
 	/**
 	 * 功能描述： 基本资料
@@ -263,6 +267,7 @@ public class UserController{
 		return "redirect:/userDataUI.html";
 	}
 	
+
 	/**
      * 功能描述： 首页数据查询
      * 参数描述：  无
@@ -2231,15 +2236,5 @@ public class UserController{
 		return "/system_fuli";
 	}
 	
-	/**
-	 * 功能描述： 系统安全帮活动详情页面
-	 * 参数描述： Model m
-	 *		 @time 2017-8-24
-	 */
-	@RequestMapping("/Xlist.html")
-	public String showXlist(Model m) {
-		List<Xlist> servList = xlistService.listXlist();
-		m.addAttribute("servList", servList);
-		return "/source/page/child/Xlist";
-	}
+	
 }
