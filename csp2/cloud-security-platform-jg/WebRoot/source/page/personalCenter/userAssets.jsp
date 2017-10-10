@@ -492,8 +492,11 @@
 	      <pre><a href="http://www.anquanbang.net/userAssetsUI.html">网站安全帮</a></pre>
 	      </div> -->
 	      <!-- <input type="hidden" id="code" value="网站安全帮"> -->
-	      <textarea rows="4" cols="60" id = "code"><a href="http://www.anquanbang.net/userAssetsUI.html">网站安全帮</a>
+	      
+	        
+	      <textarea readonly rows="4" cols="60" id = "code"><a href="http://www.anquanbang.net/userAssetsUI.html">网站安全帮</a>
 		  </textarea>
+		
 	      <p>请在您的<span><a href="" id="c" target="_blank">网站首页</a></span>中任何位置加入如上代码。<!-- （<a href="javascript:void(0)" onclick="copyToClipBoard()">复制代码</a>） --><br />
 	       </p>
 	      <p>如果添加成功，网站首页能看见文字：“网站安全帮”</p>
