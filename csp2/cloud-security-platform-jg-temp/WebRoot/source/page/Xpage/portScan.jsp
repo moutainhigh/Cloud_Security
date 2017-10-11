@@ -401,7 +401,7 @@ cursor:auto;
 			                  <div class="timeline_div_icon">
 			                       <div class="timeline_divicon_side" data-checkid="0"><label>创建</label></div>
 			                  </div>
-			                  <label class="timeline_span_right">创建新任务</label>
+			                  <label class="timeline_span_right testclass">创建新任务</label>
 			              </li>
 			              <li class="li2">
 			                  <span class="timeline_span_left"></span>
