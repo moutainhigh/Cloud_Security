@@ -82,6 +82,7 @@ public class SystemFilter extends OncePerRequestFilter  {
 		list.add("/system_activity.html");//系统安全帮活动详情页面
 		list.add("/portScan.html");//x专区
 		list.add("/source/page/Xpage/portScanMethod.html");//x专区
+		list.add("/source/page/Xpage/portScanMethod2.html");//x专区
 		list.add("/Xlist.html");//x专区
 //		list.add("/serviceUserUI.html");
 //		list.add("/serviceUser.html");

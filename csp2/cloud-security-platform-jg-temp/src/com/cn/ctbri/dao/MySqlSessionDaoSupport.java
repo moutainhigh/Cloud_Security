@@ -23,7 +23,6 @@ public class MySqlSessionDaoSupport extends DaoSupport {
  
     @Autowired(required = false)
     public  void setSqlSessionFactory(@Qualifier("sqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
-    	System.out.println("aaaaaaa+++++bbbb");
         if (!this.externalSqlSession) {
             this.sqlSession = new SqlSessionTemplate(sqlSessionFactory);
         }
@@ -31,7 +30,6 @@ public class MySqlSessionDaoSupport extends DaoSupport {
  
     @Autowired(required = false)
     public final void setSqlSessionTemplate(@Qualifier("sqlSession")SqlSessionTemplate sqlSessionTemplate) {
-        System.out.println("sqlswssssssssssss");
     	this.sqlSession = sqlSessionTemplate;
         this.externalSqlSession = true;
     }

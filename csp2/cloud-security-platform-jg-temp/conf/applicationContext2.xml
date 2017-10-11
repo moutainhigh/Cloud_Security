@@ -31,7 +31,7 @@
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
 		<property name="url" value="${jdbc.portscanUrl}" />
 		<property name="username" value="${jdbc.username}"/>
-		<property name="password" value="${jdbc.password}" />
+		<property name="password" value="${jdbc.portscanPassword}" />
 		<property name="initialSize" value="${jdbc.initialSize}" />
 		<property name="maxActive" value="${jdbc.maxActive}" />
 		<property name="maxIdle" value="${jdbc.maxIdle}" />

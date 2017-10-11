@@ -3,6 +3,7 @@ package com.cn.ctbri.controller;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -37,8 +38,6 @@ public class XController {
 	private Logger log = Logger.getLogger(this.getClass());
 	private static ResourceBundle bundle = ResourceBundle.getBundle("northAPI");
 	private static String getScanServiceReportUrl = bundle
-			.getString("getscanservicereport_Url");
-	private static String creatScanServiceReportUrl = bundle
 			.getString("createscantask_Url");
 	@Autowired
 	IXlistService xlistService;
@@ -146,26 +145,33 @@ public class XController {
 	@ResponseBody
 	public void portScanMethod2(HttpServletRequest request,
 			HttpServletResponse response) {
-		/*
-		 * String target="tcp"; String port="34,45,78,89-102"; String
-		 * scan="tcp"; m172490z30.imwork.net anquanbang.net baidu.com google.com
-		 * 21-22,80,443 String agreement="tcp";
-		 */
-		// JerseyJsonUtil jerseyJsonUtil=new JerseyJsonUtil();
-		// String
-		// status=JSONObject.fromObject(jerseyJsonUtil.getMethod(SOUTH_SERVER_WEB_ROOT+getScanServiceReportUrl)).get("status").toString();
-
 		String target = request.getParameter("target");
 		String port = request.getParameter("port");
-		String scan = request.getParameter("scan");
-		String agreement = request.getParameter("port");
-
-		System.out.println(target);
-		System.out.println(port);
+		
 		SimpleDateFormat timeFormat = new SimpleDateFormat(
 				"yyyy-MM-dd HH:mm:ss");
 		long time = System.currentTimeMillis();
+		
 		String dataTime = timeFormat.format(time);
+		JSONObject result = new JSONObject();
+		JSONObject portLists = downResultParse(port, dataTime, target, "检测中");
+		result.put("status", "success");
+		result.put("portLists", portLists);
+		System.out.println(result.toString());
+		try {
+			// CommonUtil.writeJsonToJsp(response, jsonArray);
+			// CommonUtil.writeToJsp(response, jsonObject);
+			response.getWriter().write(result.toString());
+			response.getWriter().flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return;
+	}
+
+	public static JSONObject downResultParse(String port,String sendTime,String target,String value){
+		JSONObject jsonObject = new JSONObject();
 		List<Integer> list = new ArrayList<Integer>();
 		String[] strArr = port.split(",");
 		for (String str : strArr) {
@@ -188,31 +194,20 @@ public class XController {
 			}
 		}
 		int total = list.size();
-		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("total", total);
 		JSONArray jsonArray = new JSONArray();
 		for (int i = 0; i < total; i++) {
 			JSONObject jsonObject2 = new JSONObject();
 			jsonObject2.put("id", i + 1);
 			jsonObject2.put("port", list.get(i));
-			jsonObject2.put("agreement", scan);
-			jsonObject2.put("state", "up");
-			jsonObject2.put("time", dataTime);
+			jsonObject2.put("agreement", "unknown");
+			jsonObject2.put("state", value);
+			jsonObject2.put("time", sendTime);
 			jsonArray.add(jsonObject2);
 		}
 		jsonObject.put("rows", jsonArray);
-		try {
-			// CommonUtil.writeJsonToJsp(response, jsonArray);
-			// CommonUtil.writeToJsp(response, jsonObject);
-			response.getWriter().write(jsonArray.toString());
-			response.getWriter().flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return;
+		return jsonObject;
 	}
-
 	@RequestMapping("/source/page/Xpage/portScanMethod.html")
 	@ResponseBody
 	public void portScanMethod(HttpServletRequest request,
@@ -221,67 +216,88 @@ public class XController {
 		 * String target="tcp"; String port="34,45,78,89-102"; String
 		 * scan="tcp"; String agreement="tcp";
 		 */
-
-		JSONObject jsonObject2 = new JSONObject();
-		jsonObject2.put("type", "GetReport");
-		jsonObject2.put("task_type", "portscan");
-		jsonObject2.put("target", "http://www.anquanbang.net");
-
-		JerseyJsonUtil jerseyJsonUtil = new JerseyJsonUtil();
-		String count = JSONObject.fromObject(
-				jerseyJsonUtil.postMethod(getScanServiceReportUrl,
-						jsonObject2.toString())).toString();
-		JSONObject result = new JSONObject();
 		String target = request.getParameter("target");
 		String port = request.getParameter("port");
-		String scan = request.getParameter("scan");
-		String agreement = request.getParameter("port");
-		if (count == null
-				|| count.length() == 0
-				|| (!count.startsWith("{"))
-				|| !JSONObject.fromObject(count).getString("status")
-						.equals("success")) {
-			result.put("status", "false");
-			System.out.println(result.toString());
-			return;
-		}
-		// if(json==null||)
-		JSONObject json = JSONObject.fromObject(count);
-		String status = json.getString("status");
-		System.out.println(status);
 		SimpleDateFormat timeFormat = new SimpleDateFormat(
 				"yyyy-MM-dd HH:mm:ss");
-
-		JSONArray jsonArray = json.getJSONArray("reportList");
-		JSONObject report = null;
+		long time = System.currentTimeMillis();
+		long time2=time+1000;
+		String dataTime = timeFormat.format(time);
+		String dataTime2= timeFormat.format(time2);
+		JSONObject jsonObject2 = new JSONObject();
+		jsonObject2.put("type", "CreateTask");
+		jsonObject2.put("task_type", "portscan");
+		jsonObject2.put("target", target);
+		jsonObject2.put("port", port);
+		jsonObject2.put("interval_time", 1);
+		jsonObject2.put("start_time", dataTime);
+		jsonObject2.put("end_time", dataTime2);
+		JerseyJsonUtil jerseyJsonUtil = new JerseyJsonUtil();
+		System.out.println("url2:"+getScanServiceReportUrl);
+		System.out.println("json:"+jsonObject2.toString());
+		String postResult=jerseyJsonUtil.postMethod(getScanServiceReportUrl,
+				jsonObject2.toString());
+		System.out.println("postResult:"+postResult);
+		JSONObject createTaskResult = JSONObject.fromObject(postResult
+				);
+		String status=createTaskResult.getString("status");
+		JSONObject result = new JSONObject();
+		if(!"ok".equals(status)){
+			result.put("status", "false");
+			try {
+				// CommonUtil.writeJsonToJsp(response, jsonArray);
+				// CommonUtil.writeToJsp(response, jsonObject);
+				response.getWriter().write(result.toString());
+				response.getWriter().flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
+		}
+		try {
+			Thread.sleep(120000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		//String id=createTaskResult.getString("taskid");
+		String id="40";
+		System.out.println("id:"+id);
+		AppReport appReport=xlistService.getAppReportById(Integer.valueOf(id));
 		JSONObject portLists = new JSONObject();
 		JSONArray rows = new JSONArray();
 		int total = 0;
-		if (jsonArray != null && jsonArray.size() > 0) {
-			report = (JSONObject) jsonArray.get(0);
-			System.out.println(report.toString());
-
-			String dataTime = timeFormat.format(Long.valueOf(report
-					.getString("addTime")));
-			JSONObject portReport = (JSONObject) report.get("portReport");
-			Set<Object> idSet = portReport.keySet();
-			int i = 1;
-			for (Object id : idSet) {
-				// System.out.println(id);
-				total++;
-				String str = (String) id;
-				JSONObject object = new JSONObject();
-				JSONObject object2 = portReport.getJSONObject(str);
-				object.put("id", i);
-				object.put("port", object2.getString("port"));
-				object.put("agreement", object2.getString("protocol"));
-				object.put("state", object2.getString("state"));
-				object.put("time", dataTime);
-				i++;
-				rows.add(object);
+		System.out.println(appReport.toString());
+		if(appReport.getPortReport()==null){
+			try {
+				// CommonUtil.writeJsonToJsp(response, jsonArray);
+				// CommonUtil.writeToJsp(response, jsonObject);
+				response.getWriter().write(result.toString());
+				response.getWriter().flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			// System.out.println(dataTime);
+			return;
+		}else{
+			JSONArray json=JSONArray.fromObject(appReport.getPortReport());
+			Iterator<Object>it=json.iterator();
+			int i=0;
+			while(it.hasNext()){
+				JSONObject obj=(JSONObject) it.next();
+				total++;
+				JSONObject object = new JSONObject();
+				object.put("id", i+1);
+				object.put("port", obj.getString("port"));
+				object.put("agreement", obj.getString("protocol"));
+				object.put("state", obj.getString("state"));
+				object.put("time", dataTime);
+				rows.add(object);
+				i++;
+			}		
 		}
+			
 		portLists.put("total", total);
 		portLists.put("rows", rows);
 		result.put("status", "success");
@@ -328,7 +344,5 @@ public class XController {
 		System.out.println(appReport.toString());
 		return null;
 	}
-	
-	
 	
 }

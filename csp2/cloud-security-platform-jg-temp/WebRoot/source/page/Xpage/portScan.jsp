@@ -534,7 +534,7 @@ function submitForm(){
 		//alert("1");
 		jQuery.ajax({
 			type : 'POST',
-			url : "/csp/source/page/Xpage/portScanMethod.html",
+			url : "/csp/source/page/Xpage/portScanMethod2.html",
 			dataType : 'json',
 			data:{'target':target,'port':port,'scan':scan,'agreement':'tcp'},
 			success : function(data) {
@@ -542,7 +542,23 @@ function submitForm(){
 				//alert(data.status);
 				if(data.status=="success"){
 					 $('#tb_departments').bootstrapTable('load',data.portLists.rows);
-					 //confirm({title:'来自星星的提示',mess:'您确定要给文字设置绿色吗？',ico:'warn'});
+					 jQuery.ajax({
+							type : 'POST',
+							url : "/csp/source/page/Xpage/portScanMethod.html",
+							dataType : 'json',
+							data:{'target':target,'port':port,'scan':scan,'agreement':'tcp'},
+							success : function(data) {
+								var str=JSON.stringify(data);
+								//alert(data.status);
+								if(data.status=="success"){
+									 $('#tb_departments').bootstrapTable('load',data.portLists.rows);
+								}
+								else{
+									alert("暂无数据，请稍后");
+								}
+								//$('#tb_departments').bootstrapTable('load',data);
+							}
+						});
 				}
 				else{
 					alert("暂无数据，请稍后");
