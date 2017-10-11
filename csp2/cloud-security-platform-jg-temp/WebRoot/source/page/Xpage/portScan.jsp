@@ -116,7 +116,6 @@ ul,li{
 	height:100%;
 	float: left;
 	background: url("${ctx}/source/images/portal/xlittleCircle.png") 26px 18px no-repeat;
-	cursor: pointer;
 }
 
 .timeline_divicon_side{
@@ -325,6 +324,12 @@ text-decoration:none;
 line-height: 57px;
 right: 58px;
 }
+.li1 {
+cursor:pointer;
+}
+.li2 {
+cursor:auto;
+}
 </style>
 <script>
 
@@ -391,23 +396,23 @@ right: 58px;
 		   	    	<div class="contentbox">
 			          <div class="timelinebox">
 			            <ul class="timeline_ul">
-			              <li data-onselect="1">
+			              <li data-onselect="1" class="li1">
 			                  <span class="timeline_span_left"></span>
 			                  <div class="timeline_div_icon">
 			                       <div class="timeline_divicon_side" data-checkid="0"><label>创建</label></div>
 			                  </div>
-			                  <span class="timeline_span_right">创建新任务</span>
+			                  <label class="timeline_span_right">创建新任务</label>
 			              </li>
-			              <li>
+			              <li class="li2">
 			                  <span class="timeline_span_left"></span>
 			                  <div class="timeline_div_icon">
 			                          <div class="timeline_divicon_side" data-checkid="1"><label>详情</label></div>
 			                  </div>
-			                  <span class="timeline_span_right">查看详情</span>
+			                  <label class="timeline_span_right">查看详情</label>
 			              </li> 
 			            </ul>
 			          </div>
-			          <div class="container searchbox">
+			          <div class="container searchbox container1">
 			             <div class="tab-pane fade in active" id="home"   style="width:90%;align:center;left:10%;margin:0 auto;">
 			                 <form role="form" method="post"  id="form" name="form"  >
 					             <div class="form-group">
@@ -515,7 +520,17 @@ function submitForm(){
 		var port=$("#xport").val();
 		var scan=$("#scan").val();
 		//alert(target);
-		$(".timeline_ul li:eq(1)").click();
+		$(".li2").find('.timeline_divicon_side').slideDown(400);
+        $(".li2").find('.timeline_span_left,.timeline_span_right').css('color','#FCD833');
+        if($(".li2").attr('data-onselect')!=1){
+	   		var lastselect=$("li[data-onselect='1']");
+	   		lastselect.attr('data-onselect',0);
+	   		lastselect.find('.timeline_divicon_side').slideUp(200);
+			lastselect.find('.timeline_span_left,.timeline_span_right').css('color','#E5F3FF');
+			$(".li2").attr('data-onselect',1);
+	    }
+	    $('.container').hide();
+	    $('.container2').show();
 		//alert("1");
 		jQuery.ajax({
 			type : 'POST',
@@ -539,7 +554,7 @@ function submitForm(){
 }
 $(document).ready(function() {
 //左侧悬浮效果
-$(".timeline_ul>li").hover(
+$(".li1").hover(
           function () {
           $(this).find('.timeline_divicon_side').slideDown(400);
           $(this).find('.timeline_span_left,.timeline_span_right').css('color','#FCD833');
@@ -553,8 +568,7 @@ $(".timeline_ul>li").hover(
         }
         );
 //左侧点击切换
- $(".timeline_ul>li").click(function(){
-          var checkid=$(this).find('.timeline_divicon_side').data('checkid')
+ $(".li1").click(function(){
           $(this).find('.timeline_divicon_side').slideDown(400);
           $(this).find('.timeline_span_left,.timeline_span_right').css('color','#FCD833');
           if($(this).attr('data-onselect')!=1){
@@ -565,10 +579,10 @@ $(".timeline_ul>li").hover(
 				$(this).attr('data-onselect',1);
 	    	}
 	      $('.container').hide();
-	      $('.container').eq(checkid).show();
+	      $('.container1').show();
 }); 
 //默认点击 
-$(".timeline_ul li:eq(0)").click();
+$(".li1").click();
  $('#form').bootstrapValidator({
             message: 'This value is not valid',
             feedbackIcons: {
