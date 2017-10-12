@@ -1,0 +1,238 @@
+html,
+body,
+ul,
+li,
+ol,
+dl,
+dd,
+dt,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+form,
+fieldset,
+legend,
+img {
+  margin: 0;
+  padding: 0;
+}
+fieldset,
+img {
+  border: none;
+}
+img {
+  display: block;
+}
+address,
+caption,
+cite,
+code,
+dfn,
+th,
+var {
+  font-style: normal;
+  font-weight: normal;
+}
+ul,
+ol {
+  list-style: none;
+}
+body {
+  color: #333;
+  padding: 0 0;
+  font: 12px/20px "microsoft yahei", '微软雅黑', "SimSun", "宋体", "Arial Narrow", HELVETICA;
+/* overflow-y:scroll;overflow:hidden;*/ }
+a {
+  color: #666;
+  text-decoration: none;
+}
+#container {
+  width: 100%;
+  height: auto;
+}
+#top {
+  height: 65px;
+  width: 100%;
+  background-color: #2499fb;
+}
+#top .cover {
+  height: auto;
+  width: 100%;
+  background: #0b70c5;
+  transition: height 3s;
+  -moz-transition: height 3s;/* Firefox 4 */
+  -webkit-transition: height 3s;/* Safari and Chrome */
+  -o-transition: height 3s;/* Opera */
+}
+#top .top-wrap {
+  height: 100%;
+  width: 1108px;
+  margin: 0 auto;
+}
+#top .top-wrap .logo {
+  float: left;
+  display: block;
+  height: 43px;
+  width: 266px;
+  margin-top: 11px;
+  background: url(../backstageImg/logo.png) no-repeat 0 0;
+}
+#top .top-wrap .hello {
+  float: right;
+  height: 65px;
+  width: 118px;
+  background: url(../backstageImg/user.png) no-repeat 0 20px;
+  padding-left: 30px;
+  line-height: 65px;
+  font-size: 18px;
+  color: #ffffff;
+}
+#top .top-wrap .hello a {
+  font-size: 18px;
+  color: #ffffff;
+}
+#top .top-wrap .refresh {
+  float: right;
+  height: 65px;
+  width: 107px;
+  padding-left: 30px;
+  background: url(../backstageImg/ref.png) no-repeat 0 20px;
+  line-height: 65px;
+  font-size: 18px;
+  color: #ffffff;
+  cursor: pointer;
+  margin-left: 43px;
+}
+#top .top-wrap .nav {
+  height: 65px;
+  float: right;
+}
+#top .top-wrap .nav li {
+  height: 65px;
+  width: auto;
+  float: left;
+  cursor: pointer;
+  padding: 0 25px;
+  line-height: 65px;
+  font-size: 18px;
+  color: #ffffff;
+  position: relative;
+  z-index:20;
+}
+#top .top-wrap .nav li .lists {
+  height: auto;
+  width: 900px;
+  position: absolute;
+  top: 65px;
+  left: 0;
+  opacity: .8;
+}
+#top .top-wrap .nav li .lists .list-inner {
+  float: left;
+  width: 180px;
+  height: auto;
+  padding: 20px 20px;
+  background: #0263b3;
+  display: none;
+}
+#top .top-wrap .nav li .lists .list-inner p {
+  width: 180px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 16px;
+  text-indent: 20px;
+}
+#top .top-wrap .nav li .lists .list-inner p a {
+  display: block;
+  height: 50px;
+  width: 180px;
+  font-size: 16px;
+  line-height: 50px;
+  color: #FFFFFF;
+}
+#top .top-wrap .nav li .lists .list-inner p a:hover {
+  background: #0058a1;
+}
+#top .top-wrap .nav li .lists .list-inner p.li-inner-title {
+  height: 60px;
+  color: #b0b0b0;
+}
+#top .top-wrap .nav li:hover {
+  background: #0263b3;
+}
+#top:hover .cover {
+  height: 65px;
+}
+.top_hover {
+  height: 0;
+  background-color: #111;
+  -webkit-transition-timing-function: cubic-bezier(.2, 1, .3, 1);
+  transition-timing-function: cubic-bezier(.2, 1, .3, 1);
+}
+#content {
+  width: 100%;
+  height: auto;
+}
+#bottom {
+  height: 270px;
+  width: 100%;
+}
+#bottom .bot_top {
+  height: 180px;
+  width: 100%;
+  padding-top: 40px;
+  background: #5f5f5f;
+}
+#bottom .bot_top .bot_top-wrap {
+  width: 1108px;
+  height: 100%;
+  margin: 0 auto;
+}
+#bottom .bot_top .bot_top-wrap .btnicon {
+  height: 43px;
+  width: 289px;
+  float: left;
+}
+#bottom .bot_top .bot_top-wrap .code {
+  height: 94px;
+  width: 94px;
+  float: right;
+}
+#bottom .bot_top .bot_top-wrap ul {
+  width: 146px;
+  float: right;
+}
+#bottom .bot_top .bot_top-wrap ul li {
+  height: 24px;
+  color: #f9f9f9;
+}
+#bottom .bot_top .bot_top-wrap ul li a {
+  color: #f9f9f9;
+  font-size: 12px;
+}
+#bottom .bot_top .bot_top-wrap ul li a:hover {
+  color: #ffa351;
+}
+#bottom .bot_top .bot_top-wrap ul li.title {
+  height: 36px;
+  font-size: 16px;
+}
+#bottom .bot_bottom {
+  height: 50px;
+  width: 100%;
+  background: #323232;
+}
+#bottom .bot_bottom .bot_bottom-wrap {
+  width: 1108px;
+  height: 100%;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 50px;
+  color: #d8d8d8;
+  font-size: 12px;
+}
+/*# sourceMappingURL=common.css.map */
