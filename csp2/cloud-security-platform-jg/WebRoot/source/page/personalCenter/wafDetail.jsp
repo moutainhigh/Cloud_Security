@@ -164,7 +164,7 @@ function websecDetail(logId){
 		<div class="dataCent seetlentBox order" style="width: 1156px;">
 		<form id="exportForm" action="${ctx}/exportWAF.html" method="post">
       <div>
-          <p><span>资产名称：</span>${order.id }</p>
+          <p><span>资产名称：</span>${domainName }</p>
       </div>
 
        <div class="data_box">
